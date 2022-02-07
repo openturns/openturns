@@ -117,13 +117,12 @@ We are now going to mix these two samples to get an estimate of the sensitivity 
 For the sake of stability, computations will be performed with centered output.
 Let :math:`\overline{\vect{g}}` be the mean of the combined samples 
 :math:`\vect{g}(\mat{A})` and :math:`\vect{g}(\mat{B})`.
-Let :math:`\tilde{\vect{g}}` be the empirically centered function defined by:
+Let :math:`\tilde{\vect{g}}` be the empirically centered function defined,
+for any :math:`\vect{x} \in \Rset^{n_X}`, by:
 
 .. math::
 
-   \tilde{\vect{g}}(\vect{x}) = \vect{g}(\vect{x}) - \overline{\vect{g}}
-
-for any :math:`\vect{x} \in \Rset^{n_X}`.
+   \tilde{\vect{g}}(\vect{x}) = \vect{g}(\vect{x}) - \overline{\vect{g}}.
 
 To estimate the total variance :math:`\Var{Y}`,
 we use the :meth:`~openturns.Sample.computeVariance` method of the :class:`~openturns.Sample` :math:`\tilde{g}(\mat{A})`.
