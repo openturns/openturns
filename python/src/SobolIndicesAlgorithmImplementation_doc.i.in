@@ -7,8 +7,8 @@ Notes
 This method analyzes the influence of each component of an input random vector
 :math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` on an output random vector
 :math:`\vect{Y} = \left( Y^1, \ldots, Y^{n_Y} \right)` by computing Sobol' indices (see [sobol1993]_).
-It computes, for every random variable :math:`Y^k` (:math:`1 \leqslant k \leqslant n_Y`),
-the part of its variance due to each component :math:`X^i` (:math:`1 \leqslant i \leqslant n_X`) of :math:`\vect{X}`.
+It computes, for every output random variable :math:`Y^k` (:math:`1 \leqslant k \leqslant n_Y`),
+the part of its variance due to each input component :math:`X^i` (:math:`1 \leqslant i \leqslant n_X`) of :math:`\vect{X}`.
 
 Let :math:`\vect{g}` be the physical model such as :math:`\vect{Y}=\vect{g}(\vect{X})`. Let us first consider the case where :math:`n_Y=1`.
 In that case, we denote :math:`\vect{Y}` by :math:`Y`.
@@ -34,7 +34,7 @@ define :math:`V_i = V_{\{i\}}` and :math:`V_{i,j} = V_{\{i,j\}}`. We have:
 
     V_i     & = \Var{ \Expect{Y \vert X_i} } \\
     V_{i,j} & = \Var{ \Expect{ Y \vert X_i, X_j}  - \Expect{Y \vert X_i} - \Expect{Y \vert X_j} } \\
-            & = \Var{ \Expect{ Y \vert X_i, X_j} } - V_i - V_j.
+            & = \Var{ \Expect{ Y \vert X_i, X_j} } - V_i - V_j
 
 for :math:`i=1,\ldots,n_X`.
 
@@ -56,8 +56,6 @@ For any :math:`i=1,\ldots,n_X`, let us define
 
     VT_i   & = \sum_{I \ni i} V_I \\
     V_{-i} & = \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_{n_X}} }.
-
-for :math:`i=1,\ldots,n_X`.
 
 Total order Sobol' indices are defined as follows:
 
