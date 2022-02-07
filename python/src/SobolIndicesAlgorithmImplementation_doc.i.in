@@ -45,7 +45,7 @@ First and second order Sobol' indices are defined as follows:
     S_i     & = \frac{V_i}{\Var{Y}} \\
     S_{i,j} & = \frac{V_{i,j}}{\Var{Y}}
 
-for :math:`i=1,\ldots,n_X`.
+for :math:`i, j = 1,\ldots,n_X`.
 
 The first order Sobol' index :math:`S_i` measures the part of the variance of :math:`Y` explained by :math:`X_i` alone.
 The second order Sobol' index :math:`S_{i,j}`  measures the part of the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
