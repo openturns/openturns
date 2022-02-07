@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_USERDEFINEDSTATIONARYCOVARIANCEMODEL_HXX
 #define OPENTURNS_USERDEFINEDSTATIONARYCOVARIANCEMODEL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/RegularGrid.hxx"
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API UserDefinedStationaryCovarianceModel
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -55,14 +55,22 @@ public:
   UserDefinedStationaryCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::operator();
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point &tau) const override;
+#ifndef SWIG
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                         const Collection<Scalar>::const_iterator &t_begin) const override;
+#endif
+
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::operator();
   SquareMatrix operator() (const Point & tau) const override;
 
   /** Time grid/mesh accessor */
   RegularGrid getTimeGrid() const;
 
   /** Discretize the covariance function on a given TimeGrid */
-  using StationaryCovarianceModel::discretize;
+  using CovarianceModelImplementation::discretize;
   CovarianceMatrix discretize(const Mesh & mesh) const override;
   CovarianceMatrix discretize(const Sample & vertices) const override;
 

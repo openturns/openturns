@@ -65,6 +65,7 @@ Bonmin * Bonmin::clone() const
 /** Bonmin static methods */
 Bool Bonmin::IsAvailable()
 {
+  LOGWARN(OSS() << "Bonmin.IsAvailable is deprecated, use PlatformInfo.HasFeature(bonmin)");
 #ifdef OPENTURNS_HAVE_BONMIN
   return true;
 #else
@@ -114,7 +115,7 @@ void Bonmin::checkProblem(const OptimizationProblem & problem) const
 #ifdef OPENTURNS_HAVE_BONMIN
 
 /** Accessors to Bonmin options */
-static void GetOptionsFromResourceMap(BonminSetup & bonmin)
+static void GetOptionsFromResourceMap(SmartPtr<OptionsList> options)
 {
 //   Get options for Bonmin setup from ResourceMap
 //   See Bonmin/Ipopt user manuals for more details.
@@ -127,14 +128,17 @@ static void GetOptionsFromResourceMap(BonminSetup & bonmin)
     {
       String optionName(keys[i].substr(7));
       String type(ResourceMap::GetType(keys[i]));
-      if (type == "string")
-        bonmin.options()->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
+      Bool ok = false;
+      if (type == "str")
+        ok = options->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
       else if (type == "float")
-        bonmin.options()->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
-      else if (type == "unsigned int")
-        bonmin.options()->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
-      else
-        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Bonmin option " << optionName;
+        ok = options->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
+      else if (type == "int")
+        ok = options->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
+      else if (type == "bool")
+        ok = options->SetStringValue(optionName, ResourceMap::GetAsBool(keys[i]) ? "yes" : "no");
+      if (!ok)
+        throw InvalidArgumentException(HERE) << "Invalid Bonmin option " << optionName;
     }
 }
 
@@ -163,13 +167,17 @@ void Bonmin::run()
   app.options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
   app.options()->SetStringValue("sb", "yes"); // skip ipopt banner
   app.options()->SetIntegerValue("print_level", 0);
+  app.options()->SetStringValue("honor_original_bounds", "yes");// disabled in ipopt 3.14
   app.options()->SetIntegerValue("bonmin.bb_log_level", 0);
   app.options()->SetIntegerValue("bonmin.nlp_log_level", 0);
   app.options()->SetIntegerValue("bonmin.lp_log_level", 0);
   app.options()->SetIntegerValue("bonmin.oa_log_level", 0);
   app.options()->SetIntegerValue("bonmin.fp_log_level", 0);
   app.options()->SetIntegerValue("bonmin.milp_log_level", 0);
-  GetOptionsFromResourceMap(app);
+  GetOptionsFromResourceMap(app.options());
+  String optlist;
+  app.options()->PrintList(optlist);
+  LOGDEBUG(optlist);
 
   // Update setup with BonminProblem
   app.initialize(GetRawPtr(tminlp));
@@ -178,18 +186,18 @@ void Bonmin::run()
   Bab solver;
   solver(app);
 
-  // Retrieve MemoizeFunction input/output history
+  // Retrieve input/output history
   Sample inputHistory(tminlp->getInputHistory());
   Sample outputHistory(tminlp->getOutputHistory());
 
   // Create OptimizationResult, initialize error values
-  OptimizationResult optimResult(getProblem().getDimension());
+  OptimizationResult optimResult(getProblem());
   Scalar absoluteError = -1.0;
   Scalar relativeError = -1.0;
   Scalar residualError = -1.0;
   Scalar constraintError = -1.0;
 
-  /* Populate OptimizationResult from memoize history */
+  /* Populate OptimizationResult from history */
 
   for (UnsignedInteger i = 0; i < inputHistory.getSize(); ++ i)
   {
@@ -288,12 +296,14 @@ String Bonmin::__repr__() const
     {
       String optionName(keys[i].substr(7));
       String type(ResourceMap::GetType(keys[i]));
-      if (type == "string")
+      if (type == "str")
         oss << optionName << "=" << ResourceMap::GetAsString(keys[i]) << "\n";
       else if (type == "float")
         oss << optionName << "=" << ResourceMap::GetAsScalar(keys[i]) << "\n";
-      else if (type == "unsigned int")
+      else if (type == "int")
         oss << optionName << "=" << ResourceMap::GetAsUnsignedInteger(keys[i]) << "\n";
+      else if (type == "bool")
+        oss << optionName << "=" << ResourceMap::GetAsBool(keys[i]) << "\n";
       else
         throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Bonmin option " << optionName;
     }

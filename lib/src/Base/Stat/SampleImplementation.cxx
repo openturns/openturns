@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <cstdio>        // std::fopen, std::errno
 #include <cstring>       // std::strerror
+#include <regex>
 
 #include "openturns/OTconfig.hxx"
 #include "openturns/SampleImplementation.hxx"
@@ -35,7 +36,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Path.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "kendall.h"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -313,9 +314,8 @@ CLASSNAMEINIT(SampleImplementation)
 SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fileName,
     const String & csvSeparator)
 {
-  if (csvSeparator == " ") throw InvalidArgumentException(HERE) << "Error: the space separator is not compatible for CSV file.";
-
-
+  if ((csvSeparator == " ") || (csvSeparator == "\t"))
+    throw InvalidArgumentException(HERE) << "Error: the space/tab separator is not allowed for CSV file.";
 
   SampleImplementation impl(0, 0);
 
@@ -339,7 +339,7 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   locale_t new_locale = newlocale (LC_NUMERIC_MASK, "C", NULL);
   locale_t old_locale = uselocale(new_locale);
 #else
-#ifdef WIN32
+#ifdef _WIN32
   _configthreadlocale(_ENABLE_PER_THREAD_LOCALE);
 #endif
   const char * initialLocale = setlocale(LC_NUMERIC, NULL);
@@ -354,7 +354,7 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   uselocale(old_locale);
   freelocale(new_locale);
 #else
-#ifdef WIN32
+#ifdef _WIN32
   _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
 #endif
   setlocale(LC_NUMERIC, initialLocale);
@@ -364,10 +364,11 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   // Check the description
   if (impl.p_description_.isNull() || (impl.p_description_->getSize() != impl.getDimension()))
     impl.setDescription(Description::BuildDefault(impl.getDimension(), "data_"));
-  if (impl.getDimension() == 0) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
+  if (!(impl.getDimension() > 0)) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
 
 #else
-  impl = SampleImplementation::BuildFromTextFile(fileName, csvSeparator);
+  (void)fileName;
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without bison/flex support";
 #endif
   return impl;
 }
@@ -1130,10 +1131,10 @@ struct ReductionFunctor
   ReductionFunctor(const SampleImplementation & nsi, const OP & op = OP())
     : nsi_(nsi), op_(op), accumulator_(OP::GetInvariant(nsi_)) {}
 
-  ReductionFunctor(const ReductionFunctor & other, TBB::Split)
+  ReductionFunctor(const ReductionFunctor & other, TBBImplementation::Split)
     : nsi_(other.nsi_), op_(other.op_), accumulator_(OP::GetInvariant(nsi_)) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     NSI_const_iterator it = nsi_.begin() + r.begin();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i, ++it) op_.inplace_op( accumulator_, *it );
@@ -1155,7 +1156,7 @@ class ParallelFunctor
 public:
   ParallelFunctor(SampleImplementation & nsi, const OP & op) : nsi_(nsi), op_(op) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r) const
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) op_.inplace_op( nsi_[i] );
   }
@@ -1170,7 +1171,7 @@ public:
  */
 Point SampleImplementation::computeMean() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
   Point accumulated(dimension_);
 
   data_const_iterator it(data_begin());
@@ -1195,7 +1196,7 @@ Point SampleImplementation::computeMean() const
  */
 CovarianceMatrix SampleImplementation::computeCovariance() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the covariance of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the covariance of an empty sample.";
   // Special case for a sample of size 1
   if (size_ == 1) return CovarianceMatrix(dimension_, Point(dimension_ * dimension_));
 
@@ -1234,7 +1235,7 @@ CovarianceMatrix SampleImplementation::computeCovariance() const
  */
 Point SampleImplementation::computeStandardDeviation() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the standard deviation per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the standard deviation per component of an empty sample.";
   Point sd(computeVariance());
   for (UnsignedInteger i = 0; i < dimension_; ++i) sd[i] = sqrt(sd[i]);
   return sd;
@@ -1246,7 +1247,7 @@ Point SampleImplementation::computeStandardDeviation() const
  */
 Point SampleImplementation::computeVariance() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the variance per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the variance per component of an empty sample.";
 
   // Special case for a sample of size 1
   if (size_ == 1) return Point(dimension_, 0.0);
@@ -1273,16 +1274,6 @@ Point SampleImplementation::computeVariance() const
 
 }
 
-/*
- * Gives the standard deviation of each component of the sample
- */
-Point SampleImplementation::computeStandardDeviationPerComponent() const
-{
-  LOGWARN(OSS() << "Sample.computeStandardDeviationPerComponent is deprecated, use computeStandardDeviation");
-  return computeStandardDeviation();
-}
-
-
 
 /*
  * Gives the Pearson correlation matrix of the sample
@@ -1294,7 +1285,7 @@ CorrelationMatrix SampleImplementation::computePearsonCorrelation() const
 
 CorrelationMatrix SampleImplementation::computeLinearCorrelation() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the Pearson correlation of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Pearson correlation of an empty sample.";
   CorrelationMatrix correlation(dimension_);
   if (dimension_ == 1) return correlation;
 
@@ -1367,7 +1358,7 @@ struct Comparison
 /* Ranked sample */
 Pointer<SampleImplementation> SampleImplementation::rank() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot rank an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot rank an empty sample.";
   Pointer<SampleImplementation> rankedSample = new SampleImplementation(size_, dimension_);
 
   // Sort and rank all the marginal samples
@@ -1380,7 +1371,7 @@ Pointer<SampleImplementation> SampleImplementation::rank() const
       sortedMarginalSamples[j].index_ = j;
     }
     // sort
-    TBB::ParallelSort(sortedMarginalSamples.begin(), sortedMarginalSamples.end());
+    TBBImplementation::ParallelSort(sortedMarginalSamples.begin(), sortedMarginalSamples.end());
     // rank
     Scalar lastValue = sortedMarginalSamples[0].value_;
     UnsignedInteger lastIndex = 0;
@@ -1410,8 +1401,8 @@ Pointer<SampleImplementation> SampleImplementation::rank() const
 /* Ranked component */
 Pointer<SampleImplementation> SampleImplementation::rank(const UnsignedInteger index) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot rank an empty sample.";
-  if (index >= dimension_) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << dimension_;
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot rank an empty sample.";
+  if (!(index < dimension_)) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << dimension_;
   return getMarginal(index)->rank();
 }
 
@@ -1448,21 +1439,21 @@ struct NSI_Sortable
 /* Sorted sample, component by component */
 Pointer<SampleImplementation> SampleImplementation::sort() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
 
   Pointer<SampleImplementation> sortedSample = new SampleImplementation(size_, dimension_);
   // Special case for 1D sample
   if (dimension_ == 1)
   {
     Point sortedData(data_);
-    TBB::ParallelSort(sortedData.begin(), sortedData.end());
+    TBBImplementation::ParallelSort(sortedData.begin(), sortedData.end());
     sortedSample->setData(sortedData);
     return sortedSample;
   }
   // The nD samples
   Collection<NSI_Sortable> sortables(size_);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = NSI_Sortable(this, i);
-  TBB::ParallelSort(sortables.begin(), sortables.end());
+  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
   for (UnsignedInteger i = 0; i < size_; ++i) sortedSample->operator[](i) = sortables[i];
   if (!p_description_.isNull()) sortedSample->setDescription(getDescription());
   return sortedSample;
@@ -1470,28 +1461,28 @@ Pointer<SampleImplementation> SampleImplementation::sort() const
 
 void SampleImplementation::sortInPlace()
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
 
   // Special case for 1D sample
   if (dimension_ == 1)
   {
-    TBB::ParallelSort(data_.begin(), data_.end());
+    TBBImplementation::ParallelSort(data_.begin(), data_.end());
     return;
   }
   // The nD samples
   Collection<NSI_Sortable> sortables(size_);
   SampleImplementation work(*this);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = NSI_Sortable(&work, i);
-  TBB::ParallelSort(sortables.begin(), sortables.end());
+  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
   for (UnsignedInteger i = 0; i < size_; ++i) (*this)[i] = sortables[i];
 }
 
 /* Sorted sample, one component */
 Pointer<SampleImplementation> SampleImplementation::sort(const UnsignedInteger index) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
 
-  if (index >= getDimension()) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
+  if (!(index < getDimension())) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
 
   return getMarginal(index)->sort();
 }
@@ -1512,12 +1503,12 @@ struct Sortable
 /* Sorted according a component */
 Pointer<SampleImplementation> SampleImplementation::sortAccordingToAComponent(const UnsignedInteger index) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
-  if (index >= getDimension()) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (!(index < getDimension())) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
 
   Collection<Sortable> sortables(size_);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable((*this)[i], index);
-  TBB::ParallelSort(sortables.begin(), sortables.end());
+  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
   Pointer<SampleImplementation> sortedSample = new SampleImplementation(size_, dimension_);
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
@@ -1532,13 +1523,13 @@ Pointer<SampleImplementation> SampleImplementation::sortAccordingToAComponent(co
 /* Sorted according a component */
 void SampleImplementation::sortAccordingToAComponentInPlace(const UnsignedInteger index)
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
-  if (index >= getDimension()) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (!(index < getDimension())) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
 
   Collection<Sortable> sortables(size_);
   SampleImplementation work(*this);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable(work[i], index);
-  TBB::ParallelSort(sortables.begin(), sortables.end());
+  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
@@ -1587,7 +1578,7 @@ void SampleImplementation::sortUniqueInPlace()
  */
 CorrelationMatrix SampleImplementation::computeSpearmanCorrelation() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the Spearman correlation of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Spearman correlation of an empty sample.";
 
   return rank()->computePearsonCorrelation();
 }
@@ -1617,7 +1608,7 @@ struct ComputeKendallPolicy
     , smallCase_(smallCase)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     const UnsignedInteger size = input_.getSize();
     Point x(size);
@@ -1640,7 +1631,7 @@ struct ComputeKendallPolicy
 
 CorrelationMatrix SampleImplementation::computeKendallTau() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the Kendall tau of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Kendall tau of an empty sample.";
 
   // Use external efficient C implementation of the O(Nlog(N)) or O(N^2) Kendall tau computation depending on the sample size
   const Bool smallCase = size_ < ResourceMap::GetAsUnsignedInteger("Sample-SmallKendallTau");
@@ -1663,7 +1654,7 @@ CorrelationMatrix SampleImplementation::computeKendallTau() const
   // Now the computation
   Point result(caseNumber);
   const ComputeKendallPolicy policy( *this, result, indX, indY, smallCase );
-  TBB::ParallelFor( 0, caseNumber, policy );
+  TBBImplementation::ParallelFor( 0, caseNumber, policy );
   index = 0;
   for (UnsignedInteger i = 0; i < dimension_ - 1; ++i)
   {
@@ -1682,7 +1673,7 @@ CorrelationMatrix SampleImplementation::computeKendallTau() const
  */
 Point SampleImplementation::computeRange() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the range per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the range per component of an empty sample.";
   return getMax() - getMin();
 }
 
@@ -1691,7 +1682,7 @@ Point SampleImplementation::computeRange() const
  */
 Point SampleImplementation::computeMedian() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the median per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the median per component of an empty sample.";
   return computeQuantilePerComponent(0.5);
 }
 
@@ -1700,7 +1691,7 @@ Point SampleImplementation::computeMedian() const
  */
 Point SampleImplementation::computeSkewness() const
 {
-  if (size_ < 2) throw InternalException(HERE) << "Error: cannot compute the skewness per component of a sample of size less than 2.";
+  if (!(size_ >= 2)) throw InternalException(HERE) << "Error: cannot compute the skewness per component of a sample of size less than 2.";
 
   if (size_ == 2) return Point(dimension_, 0.0);
 
@@ -1720,7 +1711,7 @@ Point SampleImplementation::computeSkewness() const
   const Scalar factor = size_ * sqrt(size_ - 1.0) / (size_ - 2);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    if (centeredMoments[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
+    if (!(centeredMoments[i] < 0.0 || centeredMoments[i] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
     skewness[i] = factor * centeredMoments[i + dimension_] / pow(centeredMoments[i], 1.5);
   }
   return skewness;
@@ -1731,7 +1722,7 @@ Point SampleImplementation::computeSkewness() const
  */
 Point SampleImplementation::computeKurtosis() const
 {
-  if (size_ < 3) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 3.";
+  if (!(size_ >= 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 3.";
 
   if (size_ == 3) return Point(dimension_, 0.0);
 
@@ -1752,7 +1743,7 @@ Point SampleImplementation::computeKurtosis() const
   const Scalar factor2 = -3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    if (centeredMoments[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
+    if (!(centeredMoments[i] < 0.0 || centeredMoments[i] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
     kurtosis[i] = factor1 * centeredMoments[i + dimension_] / (centeredMoments[i] * centeredMoments[i]) + factor2;
   }
   return kurtosis;
@@ -1763,7 +1754,7 @@ Point SampleImplementation::computeKurtosis() const
  */
 Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
 
   // Special case: order 0, return (1,...,1)
   if (k == 0) return Point(dimension_, 1.0);
@@ -1792,7 +1783,7 @@ Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
  */
 Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
 
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Cannot compute centered moments on an empty sample";
 
@@ -1816,7 +1807,7 @@ Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
  */
 Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   if (!(prob >= 0.0) || !(prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
 
   // Special case for extremum cases
@@ -1860,9 +1851,9 @@ Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
  */
 Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(const Point & prob) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   const UnsignedInteger probSize = prob.getSize();
-  if (probSize == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component with an empty argument.";
+  if (!(probSize > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component with an empty argument.";
 
   // Check that prob is inside bounds
   for (UnsignedInteger p = 0; p < probSize; ++p)
@@ -1959,7 +1950,7 @@ Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(
  */
 Point SampleImplementation::computeQuantile(const Scalar prob) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
   if (getDimension() == 1) return computeQuantilePerComponent(prob);
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Scalar prob) const";
@@ -1967,7 +1958,7 @@ Point SampleImplementation::computeQuantile(const Scalar prob) const
 
 Pointer<SampleImplementation> SampleImplementation::computeQuantile(const Point & prob) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
   if (getDimension() == 1) return computeQuantilePerComponent(prob);
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Point & prob) const";
@@ -2015,13 +2006,13 @@ struct CDFPolicy
 Scalar SampleImplementation::computeEmpiricalCDF(const Point & point,
     const Bool tail) const
 {
-  if (size_ == 0) throw InvalidArgumentException(HERE) << "Cannot compute the empirical CDF of an empty sample.";
+  if (!(size_ > 0)) throw InvalidArgumentException(HERE) << "Cannot compute the empirical CDF of an empty sample.";
   if (getDimension() != point.getDimension()) throw InvalidArgumentException(HERE) << "Point has incorrect dimension. Got "
         << point.getDimension() << ". Expected " << getDimension();
 
   const CDFPolicy policy( *this, point, tail );
   ReductionFunctor<CDFPolicy> functor( *this, policy );
-  TBB::ParallelReduce( 0, size_, functor );
+  TBBImplementation::ParallelReduce( 0, size_, functor );
   return static_cast < Scalar > (functor.accumulator_) / size_;
 }
 
@@ -2029,7 +2020,7 @@ Scalar SampleImplementation::computeEmpiricalCDF(const Point & point,
 /* Maximum accessor */
 Point SampleImplementation::getMax() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Impossible to get the maximum of an empty Sample";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Impossible to get the maximum of an empty Sample";
 
   Point maxPoint(dimension_, - SpecFunc::MaxScalar);
   for(UnsignedInteger i = 0; i < size_; ++i)
@@ -2047,7 +2038,7 @@ Point SampleImplementation::getMax() const
 /* Minimum accessor */
 Point SampleImplementation::getMin() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Impossible to get the minimum of an empty Sample";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Impossible to get the minimum of an empty Sample";
 
   Point minPoint(dimension_, SpecFunc::MaxScalar);
   for(UnsignedInteger i = 0; i < size_; ++i)
@@ -2203,7 +2194,7 @@ SampleImplementation & SampleImplementation::operator /= (const Point & scaling)
   Point inverseScaling(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++ i)
   {
-    if (scaling[i] == 0.0) throw InvalidArgumentException(HERE) << "Error: the scaling must have nonzero components, here scaling=" << scaling;
+    if (!(scaling[i] < 0.0 || scaling[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the scaling must have nonzero components, here scaling=" << scaling;
     inverseScaling[i] = 1.0 / scaling[i];
   }
   scale(inverseScaling);
@@ -2239,7 +2230,7 @@ SampleImplementation SampleImplementation::operator / (const Point & scaling) co
 /* Get the i-th marginal sample */
 Pointer<SampleImplementation> SampleImplementation::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= dimension_) throw InvalidArgumentException(HERE) << "The index of a marginal sample must be in the range [0, dim-1]";
+  if (!(index < dimension_)) throw InvalidArgumentException(HERE) << "The index of a marginal sample must be in the range [0, dim-1]";
 
   // Special case for dimension 1
   if (dimension_ == 1) return clone();
@@ -2300,7 +2291,7 @@ Pointer<SampleImplementation> SampleImplementation::getMarginal(const Descriptio
   for (UnsignedInteger i = 0; i < description.getSize(); ++ i)
   {
     const UnsignedInteger index = getDescription().find(description[i]);
-    if (index >= getDimension())
+    if (!(index < getDimension()))
       throw InvalidArgumentException(HERE) << "Marginal " << description[i] << " not found";
     indices.add(index);
   }
@@ -2315,7 +2306,7 @@ Pointer<SampleImplementation> SampleImplementation::select(const UnsignedInteger
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger index = indices[i];
-    if (index >= size_) throw InvalidArgumentException(HERE) << "Error: expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
+    if (!(index < size_)) throw InvalidArgumentException(HERE) << "Error: expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
     std::copy(data_.begin() + index * dimension_, data_.begin() + (index + 1) * dimension_, result->data_.begin() + i * dimension_);
   }
   result->setDescription(getDescription());
@@ -2324,15 +2315,29 @@ Pointer<SampleImplementation> SampleImplementation::select(const UnsignedInteger
 
 /* Save to CSV file */
 void SampleImplementation::exportToCSVFile(const FileName & filename,
-    const String & csvSeparator) const
+    const String & csvSeparator,
+    const String & numSeparator,
+    const UnsignedInteger precision,
+    const String & format) const
 {
-
+  if (csvSeparator == numSeparator)
+    throw InvalidArgumentException(HERE) << "Column and decimal separators cannot be identical";
   std::ofstream csvFile(filename.c_str());
   if (csvFile.fail())
     throw FileOpenException(HERE) << "Could not open file " << filename;
+#ifndef __MINGW32__
+  if (numSeparator == ",")
+#ifdef _WIN32
+    csvFile.imbue(std::locale("fra_FRA.1252"));
+#else
+    csvFile.imbue(std::locale("fr_FR.utf-8"));
+#endif
+  else
+    csvFile.imbue(std::locale("C"));
+#else
   csvFile.imbue(std::locale("C"));
-  csvFile.precision(16);
-  csvFile << std::scientific;
+#endif
+
   // Export the description
   if (!p_description_.isNull())
   {
@@ -2348,15 +2353,54 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
     }
     csvFile << "\n";
   }
+
+  csvFile.precision(precision);
+  if (format == "scientific")
+    csvFile << std::scientific;
+  else if (format == "fixed")
+    csvFile << std::fixed;
+  else if (format != "defaultfloat")
+    throw InvalidArgumentException(HERE) << "Invalid format: " << format << " must be scientific/fixed/defaultfloat";
+
   // Write the data
   UnsignedInteger index = 0;
+#ifdef __MINGW32__
+  // MinGW fails with std::locale("fr_FR.utf-8")
+  std::stringstream ss;
+  ss.imbue(std::locale("C"));
+  ss.precision(precision);
+  if (format == "scientific")
+    ss << std::scientific;
+  else if (format == "fixed")
+    ss << std::fixed;
+#endif
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
+#ifndef __MINGW32__
     csvFile << data_[index];
+#else
+    // manually replace decimal separator
+    ss.str("");
+    ss << data_[index];
+    std::string str(ss.str());
+    if (numSeparator == ",")
+      str = regex_replace(str, std::regex("\\."), ",");
+    csvFile << str;
+#endif
     ++index;
     for(UnsignedInteger j = 1; j < dimension_; ++j)
     {
+#ifndef __MINGW32__
       csvFile << csvSeparator << data_[index];
+#else
+      // manually replace decimal separator
+      ss.str("");
+      ss << data_[index];
+      std::string str(ss.str());
+      if (numSeparator == ",")
+        str = regex_replace(str, std::regex("\\."), ",");
+      csvFile << csvSeparator << str;
+#endif
       ++index;
     } // j
     csvFile << "\n";

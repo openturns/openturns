@@ -27,7 +27,7 @@ solver.setMaximumConstraintError(1.0e-10)
 # algorithm
 start_pt = [0.0] * dim
 algo = ot.MultiFORM(solver, event, start_pt)
-algo.setMaximumNumberOfDesignPoints(4)
+algo.setMaximumDesignPointsNumber(4)
 algo.run()
 result = algo.getResult()
 

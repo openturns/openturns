@@ -40,42 +40,16 @@ OptimizationResult::OptimizationResult()
 }
 
 /* Default constructor */
-OptimizationResult::OptimizationResult(const UnsignedInteger inputDimension, const UnsignedInteger outputDimension)
+OptimizationResult::OptimizationResult(const OptimizationProblem & problem)
   : PersistentObject()
-{
-  absoluteErrorHistory_.setDimension(1);
-  relativeErrorHistory_.setDimension(1);
-  residualErrorHistory_.setDimension(1);
-  constraintErrorHistory_.setDimension(1);
-  inputHistory_.setDimension(inputDimension);
-  outputHistory_.setDimension(outputDimension);
-}
-
-/* Standard constructor */
-OptimizationResult::OptimizationResult(const Point & optimalPoint,
-                                       const Point &  optimalValue,
-                                       const UnsignedInteger evaluationNumber,
-                                       const Scalar absoluteError,
-                                       const Scalar relativeError,
-                                       const Scalar residualError,
-                                       const Scalar constraintError,
-                                       const OptimizationProblem & problem)
-  : PersistentObject()
-  , optimalPoint_(optimalPoint)
-  , optimalValue_(optimalValue)
-  , evaluationNumber_(evaluationNumber)
-  , absoluteError_(absoluteError)
-  , relativeError_(relativeError)
-  , residualError_(residualError)
-  , constraintError_(constraintError)
   , problem_(problem)
 {
   absoluteErrorHistory_.setDimension(1);
   relativeErrorHistory_.setDimension(1);
   residualErrorHistory_.setDimension(1);
   constraintErrorHistory_.setDimension(1);
-  inputHistory_.setDimension(optimalPoint.getDimension());
-  outputHistory_.setDimension(optimalValue.getDimension());
+  inputHistory_.setDimension(problem.getObjective().getInputDimension());
+  outputHistory_.setDimension(problem.getObjective().getOutputDimension());
 }
 
 /* Virtual constructor */
@@ -289,9 +263,14 @@ void OptimizationResult::store(const Point & x,
                                const Scalar residualError,
                                const Scalar constraintError)
 {
-  // assume the last point stored is the optimum
-  optimalPoint_ = x;
-  optimalValue_ = y;
+  if (!optimalValue_.getDimension()
+    || getProblem().hasLevelFunction() // consider the last value as optimal for nearest-point algos
+    || ((getProblem().isMinimization() && y[0] < optimalValue_[0])
+    || (!getProblem().isMinimization() && y[0] > optimalValue_[0])))
+  {
+    optimalPoint_ = x;
+    optimalValue_ = y;
+  }
 
   // update values
   absoluteError_ = absoluteError;
@@ -311,7 +290,7 @@ void OptimizationResult::store(const Point & x,
 
 Graph OptimizationResult::drawErrorHistory() const
 {
-  Graph result("Error history", "Iteration number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
+  Graph result("Error history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
   result.setGrid(true);
   result.setGridColor("black");
 // create a sample with the iteration number to be plotted as x data
@@ -358,10 +337,10 @@ Graph OptimizationResult::drawErrorHistory() const
 /* Draw optimal value graph */
 Graph OptimizationResult::drawOptimalValueHistory() const
 {
-  Graph result("Optimal value history", "Iteration number", "Optimal value", true, "topright", 1.0);
+  Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright", 1.0);
   result.setGrid(true);
   result.setGridColor("black");
-  Sample data(getOutputSample());
+  Sample data(getOutputSample().getMarginal(0));
   const UnsignedInteger size = data.getSize();
   const Bool minimization = problem_.isMinimization();
   for (UnsignedInteger i = 1; i < size; ++ i)

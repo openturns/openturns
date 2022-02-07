@@ -21,3 +21,8 @@ for sd in src:
     sample = sd.getSample(2000)
     d = ot.MetaModelAlgorithm.BuildDistribution(sample)
     print(d)
+
+sample = ot.Sample([[0], [142.857], [285.714], [428.571], [
+                   571.429], [714.286], [857.143], [1000.0]])
+d = ot.MetaModelAlgorithm.BuildDistribution(sample)
+print(d)

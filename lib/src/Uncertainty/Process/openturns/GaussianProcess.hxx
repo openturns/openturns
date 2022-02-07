@@ -42,8 +42,6 @@ class OT_API GaussianProcess
 
 public:
 
-  /** Some typedefs to ease reading */
-
   /** Default constructor */
   GaussianProcess();
 
@@ -70,7 +68,8 @@ public:
   void setTimeGrid(const RegularGrid & timeGrid) override;
 
   /** Set sampling method accessor */
-  void setSamplingMethod(const UnsignedInteger samplingMethod);
+  enum SamplingMethod { CHOLESKY, HMAT, GIBBS };
+  void setSamplingMethod(const SamplingMethod samplingMethod);
 
   /** Realization accessor */
   Field getRealization() const override;
@@ -123,7 +122,7 @@ protected:
   mutable HMatrix covarianceHMatrix_;
 
   /** Flag to manage process initialization */
-  mutable Bool isInitialized_;
+  mutable Bool isInitialized_ = false;
 
   /** Flag to tell if the process has a stationary trend */
   mutable Bool hasStationaryTrend_;
@@ -135,7 +134,7 @@ protected:
   mutable Point stationaryTrendValue_;
 
   /** Sampling method */
-  UnsignedInteger samplingMethod_;
+  UnsignedInteger samplingMethod_ = SamplingMethod::CHOLESKY;
 
 }; /* class GaussianProcess */
 

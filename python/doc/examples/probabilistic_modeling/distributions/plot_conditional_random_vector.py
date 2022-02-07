@@ -8,7 +8,7 @@ Create a conditional random vector
 #
 # .. math::
 #    \underline{X}|\underline{\Theta}
-#   
+#
 
 # %%
 from __future__ import print_function

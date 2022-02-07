@@ -1,12 +1,6 @@
 %feature("docstring") OT::LinearModelStepwiseAlgorithm
 "Stepwise linear model algorithm.
 
-**Available usages**:
-
-    LinearModelStepwiseAlgorithm(*inputSample, basis, outputSample, minimalIndices, isForward, penalty, maximumIterationNumber*)
-
-    LinearModelStepwiseAlgorithm(*inputSample, basis, outputSample, minimalIndices, startIndices, penalty, maximumIterationNumber*)
-
 Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
@@ -15,18 +9,11 @@ basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend.
 minimalIndices : sequence of int
     The indices of minimal model
-isForward : bool
-      the boolean value used for the stepwise regression method direction FORWARD and BACKWARD.
-startIndices : sequence of int
-     The indices of start model used for the stepwise regression method direction BOTH.
-penalty : float
-     The multiple of the degrees of freedom used for the penalty of the stepwise regression method:
-
-     - 2      Akaike   information criterion (AIC)
-     - log(n) Bayesian information criterion (BIC)
-maximumIterationNumber : int
-     The maximum number of iterations of the stepwise regression method.
-
+direction : int, default=FORWARD
+    BACKWARD, FORWARD or BOTH.
+startIndices : sequence of int, default=[]
+     The indices of start model used for the stepwise regression method.
+     Can only be specified in BOTH mode.
 
 See Also
 --------
@@ -34,12 +21,12 @@ LinearModelAlgorithm, LinearModelResult
 
 Notes
 -----
-The objective is to select the best linear regression model by using the 
-stepwise method. Starting from the `basis` and `minimalIndices`, the stepwise 
-strategy consists in adding basis elements (if `isForward` is True), dropping 
-some (if `isForward` is False) or adding and dropping (`both` strategy) some 
-elements. At each step, we get a model. We compute the corresponding penalty 
-(BIC or AIC) and we continue repeatedly this process until the penalty could 
+The objective is to select the best linear regression model by using the
+stepwise method. Starting from the `basis` and `minimalIndices`, the stepwise
+strategy consists in adding basis elements (`FORWARD`), dropping
+some (`BACKWARD`) or adding and dropping (`BOTH` strategy) some
+elements. At each step, we get a model. We compute the corresponding penalty
+(BIC or AIC) and we continue repeatedly this process until the penalty could
 not be improved or the maximum iterations number is reached.
 Finally we get a regression model between the scalar variable :math:`Y`
 and the :math:`n`-dimensional one :math:`\vect{X} = (X_i)_{i \leq n}` writes as follows:
@@ -50,6 +37,39 @@ and the :math:`n`-dimensional one :math:`\vect{X} = (X_i)_{i \leq n}` writes as 
 
 where :math:`\epsilon` is the residual, supposed to follow the standard Normal
 distribution, :math:`\phi_i` the i-th element of the basis.
+
+
+Examples
+--------
+Definition of the data set
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> func = ot.SymbolicFunction(['x1','x2', 'x3'], ['x1 + x2 + sin(x2 * 2 * pi_)/5 + 1e-3 * x3'])
+>>> dimension = 3
+>>> distribution = ot.ComposedDistribution([ot.Normal()]*dimension)
+>>> input_sample = distribution.getSample(20)
+>>> output_sample = func(input_sample)
+
+Creation of a basis
+
+>>> functions = []
+>>> input_description = ['x1','x2', 'x3']
+>>> functions.append(ot.SymbolicFunction(input_description, ['1.0'])) #Constant term
+>>> for i in range(dimension): #Linear terms
+...     functions.append(ot.SymbolicFunction(input_description, [input_description[i]])) 
+>>> basis = ot.Basis(functions)
+
+Stepwise regression
+
+>>> minimalIndices = [0]
+>>> direction = 1 #Forward selection
+>>> penalty = 2.0 #Akaike Information Criterion, log(n) can be used for a BIC
+>>> algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
+>>> algo_forward.setPenalty(penalty)
+>>> algo_forward.run()
+>>> result_forward = algo_forward.getResult()
 "
 
 // ---------------------------------------------------------------------
@@ -64,16 +84,6 @@ direction : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearModelStepwiseAlgorithm::getFormula
-"Accessor to the formula.
-
-Returns
--------
-formula : str
-    Formula."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::LinearModelStepwiseAlgorithm::getInputSample
 "Accessor to the input sample.
 
@@ -81,6 +91,16 @@ Returns
 -------
 input_sample : :class:`~openturns.Sample`
     Input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::setMaximumIterationNumber
+"Accessor to the maximum iteration number.
+
+Parameters
+----------
+maximum_iteration : int
+     The maximum number of iterations of the stepwise regression method."
 
 // ---------------------------------------------------------------------
 
@@ -101,6 +121,19 @@ Returns
 -------
 output_sample : :class:`~openturns.Sample`
     Output sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::setPenalty
+"Accessor to the penalty.
+
+Parameters
+----------
+penalty : positive float
+     The multiple of the degrees of freedom used for the penalty of the stepwise regression method:
+
+     - 2      Akaike   information criterion (AIC) (default)
+     - log(n) Bayesian information criterion (BIC)"
 
 // ---------------------------------------------------------------------
 

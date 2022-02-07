@@ -23,46 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 
-/* Many mathematical functions lack on Windows when using
-   Microsoft or Intel compilers.  We use Boost to define
-   them here, so that these definitions are not duplicated
-   across many files.  */
-#ifdef _MSC_VER
-#include <boost/math/special_functions.hpp>
-#include <boost/numeric/conversion/converter_policies.hpp>
-
-using boost::math::asinh;
-using boost::math::acosh;
-using boost::math::atanh;
-using boost::math::cbrt;
-using boost::math::erf;
-using boost::math::erfc;
-using boost::math::lgamma;
-using boost::math::tgamma;
-using boost::math::log1p;
-using boost::math::expm1;
-
-using boost::math::trunc;
-using boost::math::round;
-
-/* log2 is not defined */
-static inline double log2(double x)
-{
-  return log(x) / log(2.);
-}
-/* rint is not defined */
-static inline double rint(double x)
-{
-  return boost::numeric::RoundEven<double>::nearbyint(x);
-}
-/* nearbyint is not defined */
-static inline double nearbyint(double x)
-{
-  return boost::numeric::RoundEven<double>::nearbyint(x);
-}
-
-#endif /* _MSC_VER */
-
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API SpecFunc

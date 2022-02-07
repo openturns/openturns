@@ -29,7 +29,6 @@
 %include ContinuousDistribution.i
 %include EllipticalDistribution.i
 %include DiscreteDistribution.i
-%include CopulaImplementation.i
 %include ArchimedeanCopula.i
 %include SklarCopula.i
 

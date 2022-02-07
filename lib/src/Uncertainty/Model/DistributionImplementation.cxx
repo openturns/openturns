@@ -67,7 +67,7 @@
 #include "openturns/Box.hxx"
 #include "openturns/Tuples.hxx"
 #include "openturns/Combinations.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/GaussLegendre.hxx"
 #include "openturns/IteratedQuadrature.hxx"
@@ -562,9 +562,14 @@ Point DistributionImplementation::getRealization() const
 /* Get a numerical sample whose elements follow the distributionImplementation */
 Sample DistributionImplementation::getSample(const UnsignedInteger size) const
 {
-  Sample returnSample(size, dimension_);
+  SampleImplementation returnSample(size, dimension_);
+  UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
-    returnSample[i] = getRealization();
+  {
+    const Point point(getRealization());
+    std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+    shift += dimension_;
+  }
   returnSample.setName(getName());
   returnSample.setDescription(getDescription());
   return returnSample;
@@ -573,52 +578,39 @@ Sample DistributionImplementation::getSample(const UnsignedInteger size) const
 /* Get one realization of the distribution */
 Point DistributionImplementation::getRealizationByInversion() const
 {
-  // Use CDF inversion in the 1D case
-  if (dimension_ == 1) return computeQuantile(RandomGenerator::Generate());
-  // Use conditional CDF inversion in the 1D case
-  Point point(0);
-  for (UnsignedInteger i = 0; i < dimension_; ++ i)
-  {
-    const Scalar u = RandomGenerator::Generate();
-    LOGINFO(OSS(false) << "i=" << i << ", u=" << u);
-    point.add(computeConditionalQuantile(u, point));
-    LOGINFO(OSS(false) << "i=" << i << ", u=" << u << ", point=" << point);
-  }
-  return point;
+  return getSampleByInversion(1)[0];
 }
 
 /* Get a numerical sample whose elements follow the distributionImplementation */
 Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger size) const
 {
-  // Use CDF inversion in the 1D case
-  if (dimension_ == 1) return computeQuantile(RandomGenerator::Generate(size));
-  // Use conditional CDF inversion in the 1D case
-  Sample result(size, 0);
-  for (UnsignedInteger i = 0; i < dimension_; ++ i)
+  SampleImplementation returnSample(size, dimension_);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const Point u(RandomGenerator::Generate(size));
-    SampleImplementation q(size, 1);
-    q.setData(computeConditionalQuantile(u, result));
-    result.stack(q);
+    const Point point(computeSequentialConditionalQuantile(RandomGenerator::Generate(dimension_)));
+    std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+    shift += dimension_;
   }
-  return result;
+  returnSample.setName(getName());
+  returnSample.setDescription(getDescription());
+  return returnSample;
 }
 
 Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) const
 {
-  const SobolSequence sequence(1);
-  // Use CDF inversion in the 1D case
-  if (dimension_ == 1) return computeQuantile(sequence.generate(size).getImplementation()->getData());
-  // Use conditional CDF inversion in the 1D case
-  Sample result(size, 0);
-  for (UnsignedInteger i = 0; i < dimension_; ++ i)
+  static SobolSequence sequence(dimension_);
+  SampleImplementation returnSample(size, dimension_);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const Point u(sequence.generate(size).getImplementation()->getData());
-    SampleImplementation q(size, 1);
-    q.setData(computeConditionalQuantile(u, result));
-    result.stack(q);
+    const Point point(computeSequentialConditionalQuantile(sequence.generate()));
+    std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+    shift += dimension_;
   }
-  return result;
+  returnSample.setName(getName());
+  returnSample.setDescription(getDescription());
+  return returnSample;
 }
 
 /* Get the DDF of the distribution */
@@ -852,7 +844,7 @@ struct ComputeCDFPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_(i, 0) = distribution_.computeCDF(input_[i]);
   }
@@ -865,7 +857,7 @@ Sample DistributionImplementation::computeCDFParallel(const Sample & inSample) c
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeCDFPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -898,7 +890,7 @@ struct ComputeComplementaryCDFPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_(i, 0) = distribution_.computeComplementaryCDF(input_[i]);
   }
@@ -911,7 +903,7 @@ Sample DistributionImplementation::computeComplementaryCDFParallel(const Sample 
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeComplementaryCDFPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -944,7 +936,7 @@ struct ComputeSurvivalFunctionPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computeSurvivalFunction(input_[i]);
   }
@@ -957,7 +949,7 @@ Sample DistributionImplementation::computeSurvivalFunctionParallel(const Sample 
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeSurvivalFunctionPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -1371,8 +1363,14 @@ Scalar DistributionImplementation::computeEntropy() const
 Sample DistributionImplementation::computeDDFSequential(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  Sample outSample(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computeDDF(inSample[i]);
+  SampleImplementation outSample(size, dimension_);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Point point(computeDDF(inSample[i]));
+    std::copy(point.begin(), point.end(), outSample.data_begin() + shift);
+    shift += dimension_;
+  }
   return outSample;
 }
 
@@ -1391,11 +1389,17 @@ struct ComputeDDFPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] = distribution_.computeDDF(input_[i]);
+    const UnsignedInteger dimension = input_.getDimension();
+    UnsignedInteger shift = dimension * r.begin();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const Point point(distribution_.computeDDF(input_[i]));
+      std::copy(point.begin(), point.end(), output_.getImplementation()->data_begin() + shift);
+      shift += dimension;
+    }
   }
-
 }; /* end struct ComputeDDFPolicy */
 
 Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) const
@@ -1404,7 +1408,7 @@ Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) c
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeDDFPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -1440,7 +1444,7 @@ struct ComputePDFPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computePDF(input_[i]);
   }
@@ -1454,7 +1458,7 @@ Sample DistributionImplementation::computePDFParallel(const Sample & inSample) c
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputePDFPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -1489,7 +1493,7 @@ struct ComputeLogPDFPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computeLogPDF(input_[i]);
   }
@@ -1502,7 +1506,7 @@ Sample DistributionImplementation::computeLogPDFParallel(const Sample & inSample
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeLogPDFPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -1681,8 +1685,14 @@ Sample DistributionImplementation::computeQuantileSequential(const Point & prob,
     const Bool tail) const
 {
   const UnsignedInteger size = prob.getSize();
-  Sample result(size, dimension_);
-  for ( UnsignedInteger i = 0; i < size; ++ i ) result[i] = computeQuantile(prob[i], tail);
+  SampleImplementation result(size, dimension_);
+  UnsignedInteger shift = 0;
+  for ( UnsignedInteger i = 0; i < size; ++ i )
+  {
+    const Point point(computeQuantile(prob[i], tail));
+    std::copy(point.begin(), point.end(), result.data_begin() + shift);
+    shift += dimension_;
+  }
   return result;
 }
 
@@ -1703,9 +1713,16 @@ struct ComputeQuantilePolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] = distribution_.computeQuantile(prob_[i], tail_);
+    const UnsignedInteger dimension = distribution_.getDimension();
+    UnsignedInteger shift = dimension * r.begin();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const Point point(distribution_.computeQuantile(prob_[i], tail_));
+      std::copy(point.begin(), point.end(), output_.getImplementation()->data_begin() + shift);
+      shift += dimension;
+    }
   }
 
 }; /* end struct ComputeQuantilePolicy */
@@ -1716,7 +1733,7 @@ Sample DistributionImplementation::computeQuantileParallel(const Point & prob,
   const UnsignedInteger size = prob.getSize();
   Sample result(size, dimension_);
   const ComputeQuantilePolicy policy( prob, result, tail, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -1791,63 +1808,14 @@ Point DistributionImplementation::computePDFGradient(const Point & point) const
 /* ComputePDFGradient On a Sample */
 Sample DistributionImplementation::computePDFGradient(const Sample & inSample) const
 {
-  const Point initialParameters(getParameter());
-  const UnsignedInteger parametersDimension = initialParameters.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  // Empty sample ==> stack for each parameter
   Sample outSample(size, 0);
-  // Clone the distribution
-  Implementation cloneDistribution(clone());
-  // Increment for centered differences
-  const Scalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
-  // Increment for noncentered differences
-  const Scalar eps2 = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 2.0);
-  Point newParameters(initialParameters);
-  for (UnsignedInteger i = 0; i < parametersDimension; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar delta = 0.0;
-    Sample rightPDF;
-    // We will try a centered finite difference approximation
-    try
-    {
-      newParameters[i] = initialParameters[i] + eps;
-      cloneDistribution->setParameter(newParameters);
-      rightPDF = cloneDistribution->computePDF(inSample);
-      delta += eps;
-    }
-    catch (...)
-    {
-      // If something went wrong with the right point, stay at the center point
-      newParameters[i] = initialParameters[i];
-      cloneDistribution->setParameter(newParameters);
-      rightPDF = cloneDistribution->computePDF(inSample);
-    }
-    Sample leftPDF;
-    try
-    {
-      // If something is wrong with the right point, use non-centered finite differences
-      const Scalar leftEpsilon = delta == 0.0 ? eps2 : eps;
-      newParameters[i] = initialParameters[i] - leftEpsilon;
-      cloneDistribution->setParameter(newParameters);
-      leftPDF = cloneDistribution->computePDF(inSample);
-      delta += leftEpsilon;
-    }
-    catch (...)
-    {
-      // If something is wrong with the left point, it is either because the gradient is not computable or because we must use non-centered finite differences, in which case the right point has to be recomputed
-      if (delta == 0.0)
-        throw InvalidArgumentException(HERE) << "Error: cannot compute the PDF gradient at x=" << inSample << " for the current values of the parameters=" << initialParameters;
-      newParameters[i] = initialParameters[i] + eps2;
-      cloneDistribution->setParameter(newParameters);
-      rightPDF = cloneDistribution->computePDF(inSample);
-      delta += eps2;
-      // And the left point will be the center point
-      newParameters[i] = initialParameters[i];
-      cloneDistribution->setParameter(newParameters);
-      leftPDF = cloneDistribution->computePDF(inSample);
-    }
-    outSample.stack((rightPDF - leftPDF) / Point(1, delta));
-    newParameters[i] = initialParameters[i];
+    Point grad(computePDFGradient(inSample[i]));
+    if (i == 0)
+      outSample = Sample(size, grad.getDimension());
+    outSample[i] = grad;
   }
   return outSample;
 }
@@ -1885,7 +1853,7 @@ struct ComputeLogPDFGradientPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -1917,7 +1885,7 @@ Sample DistributionImplementation::computeLogPDFGradientParallel(const Sample & 
   const UnsignedInteger size = sample.getSize();
   Sample outSample(size, getParameterDimension());
   const ComputeLogPDFGradientPolicy policy( sample, outSample, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return outSample;
 }
 
@@ -1932,8 +1900,14 @@ Sample DistributionImplementation::computeLogPDFGradient(const Sample & inSample
 Sample DistributionImplementation::computeCDFGradient(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  Sample outSample(size, getParameterDimension());
-  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computeCDFGradient(inSample[i]);
+  SampleImplementation outSample(size, getParameterDimension());
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Point point(computeCDFGradient(inSample[i]));
+    std::copy(point.begin(), point.end(), outSample.data_begin() + shift);
+    shift += dimension_;
+  }
   return outSample;
 }
 
@@ -2356,10 +2330,62 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   return root;
 } // computeScalarQuantile
 
+
+// Structure used to implement the computeQuantile() method efficiently
+struct CopulaQuantileWrapper
+{
+  CopulaQuantileWrapper(const DistributionImplementation * p_distribution)
+    : p_distribution_(p_distribution)
+    , dimension_(p_distribution->getDimension())
+  {
+    // Nothing to do
+  }
+
+  Point computeDiagonal(const Point & u) const
+  {
+    const Point point(dimension_, u[0]);
+    const Scalar cdf = p_distribution_->computeCDF(point);
+    const Point value(1, cdf);
+    return value;
+  }
+
+  const DistributionImplementation * p_distribution_;
+  const UnsignedInteger dimension_;
+}; // struct CopulaQuantileWrapper
+
+/* Generic implementation of the quantile computation for copulas */
+Point DistributionImplementation::computeQuantileCopula(const Scalar prob,
+    const Bool tail) const
+{
+  const UnsignedInteger dimension = getDimension();
+  // Special case for bording values
+  const Scalar q = tail ? 1.0 - prob : prob;
+  if (q <= 0.0) return Point(dimension, 0.0);
+  if (q >= 1.0) return Point(dimension, 1.0);
+  // Special case for dimension 1
+  if (dimension == 1) return Point(1, q);
+  CopulaQuantileWrapper wrapper(this);
+  const Function f(bindMethod<CopulaQuantileWrapper, Point, Point>(wrapper, &CopulaQuantileWrapper::computeDiagonal, 1, 1));
+  Scalar leftTau = q;
+  const Point leftPoint(1, leftTau);
+  const Point leftValue(f(leftPoint));
+  Scalar leftCDF = leftValue[0];
+  // Upper bound of the bracketing interval
+  Scalar rightTau = 1.0 - (1.0 - q) / dimension;
+  Point rightPoint(1, rightTau);
+  const Point rightValue(f(rightPoint));
+  Scalar rightCDF = rightValue[0];
+  // Use Brent's method to compute the quantile efficiently
+  Brent solver(cdfEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
+  return Point(dimension, solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF));
+}
+
 /* Generic implementation of the quantile computation */
 Point DistributionImplementation::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (isCopula())
+    return computeQuantileCopula(prob, tail);
   Scalar marginalProb = 0.0;
   return computeQuantile(prob, tail, marginalProb);
 }
@@ -2800,6 +2826,8 @@ void DistributionImplementation::computeMean() const
 /* Get the mean of the distribution */
 Point DistributionImplementation::getMean() const
 {
+  if (isCopula())
+    return Point(getDimension(), 0.5);
   if (!isAlreadyComputedMean_) computeMean();
   return mean_;
 }
@@ -2812,6 +2840,11 @@ Point DistributionImplementation::getStandardDeviation() const
   if (dimension_ == 1) return Point(1, std::sqrt(getCovariance()(0, 0)));
   // In higher dimension, either use the covariance if it has already been
   // computed...
+
+  if (isCopula())
+    // 0.2886751345948128822545744 = 1 / sqrt(12)
+    return Point(getDimension(), 0.2886751345948128822545744);
+
   if (isAlreadyComputedCovariance_)
   {
     Point result(dimension_);
@@ -2828,6 +2861,8 @@ Point DistributionImplementation::getStandardDeviation() const
 /* Get the skewness of the distribution */
 Point DistributionImplementation::getSkewness() const
 {
+  if (isCopula())
+    return Point(getDimension(), 0.0);
   const Point variance(getCenteredMoment(2));
   const Point thirdMoment(getCenteredMoment(3));
   Point result(dimension_);
@@ -2838,6 +2873,10 @@ Point DistributionImplementation::getSkewness() const
 /* Get the kurtosis of the distribution */
 Point DistributionImplementation::getKurtosis() const
 {
+  if (isCopula())
+    // 1.8 = 9/5
+    return Point(getDimension(), 1.8);
+
   const Point variance(getCenteredMoment(2));
   const Point fourthMoment(getCenteredMoment(4));
   Point result(dimension_);
@@ -2863,10 +2902,76 @@ Point DistributionImplementation::getCenteredMoment(const UnsignedInteger n) con
 /* Compute the covariance of the distribution */
 void DistributionImplementation::computeCovariance() const
 {
-  if (isContinuous()) computeCovarianceContinuous();
+  if (isCopula()) computeCovarianceCopula();
+  else if (isContinuous()) computeCovarianceContinuous();
   else if (isDiscrete()) computeCovarianceDiscrete();
   else computeCovarianceGeneral();
 }
+
+
+
+struct CopulaCovarianceWrapper
+{
+  CopulaCovarianceWrapper(const Distribution & distribution)
+    : distribution_(distribution)
+  {
+    // Nothing to do
+  }
+
+  Point kernel(const Point & point) const
+  {
+    return Point(1, distribution_.computeCDF(point) - point[0] * point[1]);
+  }
+
+  const Distribution & distribution_;
+};
+
+/* Compute the covariance of the copula */
+void DistributionImplementation::computeCovarianceCopula() const
+{
+  const UnsignedInteger dimension = getDimension();
+  // We need this to initialize the covariance matrix in two cases:
+  // + this is the first call to this routine (which could be checked by testing the dimension of the copula and the dimension of the matrix
+  // + the copula has changed from a non-independent one to the independent copula
+  covariance_ = CovarianceMatrix(dimension);
+  // First the diagonal terms, which are the marginal covariances
+  // Uniform marginals, the diagonal is 1/12
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    // 0.08333333333333333333333333 = 1 / 12
+    covariance_(i, i) = 0.08333333333333333333333333;
+  }
+  // Off-diagonal terms if the copula is not the independent copula
+  if (!hasIndependentCopula())
+  {
+    const IteratedQuadrature integrator;
+    const Interval unitSquare(Point(2, 0.0), Point(2, 1.0));
+    // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
+    // We start with the loop over the coefficients because the most expensive task is to get the 2D marginal copulas
+    Indices indices(2);
+    for(UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
+    {
+      indices[0] = rowIndex;
+      for(UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
+      {
+        indices[1] = columnIndex;
+        // For the usual case of a bidimensional copula, no need to extract marginal distributions
+        Distribution marginalDistribution(*this);
+        if (dimension > 2) marginalDistribution = getMarginal(indices);
+        if (!marginalDistribution.getImplementation()->hasIndependentCopula())
+        {
+          // Build the integrand
+          CopulaCovarianceWrapper functionWrapper(marginalDistribution);
+          Function function(bindMethod<CopulaCovarianceWrapper, Point, Point>(functionWrapper, &CopulaCovarianceWrapper::kernel, 2, 1));
+          // Compute the covariance element
+          covariance_(rowIndex, columnIndex) = integrator.integrate(function, unitSquare)[0];
+        }
+      } // loop over column indices
+    } // loop over row indices
+  } // if !hasIndependentCopula
+  isAlreadyComputedCovariance_ = true;
+} // computeCovariance
+
 
 void DistributionImplementation::computeCovarianceContinuous() const
 {
@@ -3066,11 +3171,6 @@ CorrelationMatrix DistributionImplementation::getCorrelation() const
           R(i, j) = covariance_(i, j) / (sigmaI * sigma[j]);
   }
   return R;
-}
-
-CorrelationMatrix DistributionImplementation::getLinearCorrelation() const
-{
-  return getCorrelation();
 }
 
 CorrelationMatrix DistributionImplementation::getPearsonCorrelation() const
@@ -3441,7 +3541,7 @@ Scalar DistributionImplementation::computeDensityGeneratorSecondDerivative(const
 Distribution DistributionImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (isCopula())
-    return Uniform(0.0, 1.0);
+    return new IndependentCopula(1);
   return getMarginal(Indices(1, i));
 }
 
@@ -4733,10 +4833,8 @@ Distribution DistributionImplementation::acos() const
   if (a < -1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cos of a random variable that takes values less than -1 with positive probability.";
   const Scalar b = getRange().getUpperBound()[0];
   if (!(b <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cos of a random variable that takes values greater than 1 with positive probability.";
-  Point bounds(1, a);
-  Point values(1, std::acos(a));
-  bounds.add(b);
-  values.add(std::acos(b));
+  const Point bounds = {a, b};
+  const Point values = {std::acos(a), std::acos(b)};
   return new CompositeDistribution(SymbolicFunction("x", "acos(x)"), clone(), bounds, values);
 }
 
@@ -4747,10 +4845,8 @@ Distribution DistributionImplementation::asin() const
   if (a < -1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc sin of a random variable that takes values less than -1 with positive probability.";
   const Scalar b = getRange().getUpperBound()[0];
   if (!(b <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc sin of a random variable that takes values greater than 1 with positive probability.";
-  Point bounds(1, a);
-  Point values(1, std::asin(a));
-  bounds.add(b);
-  values.add(std::asin(b));
+  const Point bounds = {a, b};
+  const Point values = {std::asin(a), std::asin(b)};
   return new CompositeDistribution(SymbolicFunction("x", "asin(x)"), clone(), bounds, values);
 }
 
@@ -4758,11 +4854,9 @@ Distribution DistributionImplementation::atan() const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
-  Point bounds(1, a);
-  Point values(1, std::atan(a));
   const Scalar b = getRange().getUpperBound()[0];
-  bounds.add(b);
-  values.add(std::atan(b));
+  const Point bounds = {a, b};
+  const Point values = {std::atan(a), std::atan(b)};
   return new CompositeDistribution(SymbolicFunction("x", "atan(x)"), clone(), bounds, values);
 }
 
@@ -4788,10 +4882,8 @@ Distribution DistributionImplementation::sinh() const
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
-  Point values(1, std::sinh(a));
-  bounds.add(b);
-  values.add(std::sinh(b));
+  const Point bounds = {a, b};
+  const Point values = {std::sinh(a), std::sinh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "sinh(x)"), clone(), bounds, values);
 }
 
@@ -4800,10 +4892,8 @@ Distribution DistributionImplementation::tanh() const
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
-  Point values(1, std::tanh(a));
-  bounds.add(b);
-  values.add(std::tanh(b));
+  const Point bounds = {a, b};
+  const Point values = {std::tanh(a), std::tanh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "tanh(x)"), clone(), bounds, values);
 }
 
@@ -4813,10 +4903,8 @@ Distribution DistributionImplementation::acosh() const
   const Scalar a = getRange().getLowerBound()[0];
   if (!(a >= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cosh of a random variable that takes values less than 1 with positive probability.";
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
-  Point values(1, SpecFunc::Acosh(a));
-  bounds.add(b);
-  values.add(SpecFunc::Acosh(b));
+  const Point bounds = {a, b};
+  const Point values = {SpecFunc::Acosh(a), SpecFunc::Acosh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "acosh(x)"), clone(), bounds, values);
 }
 
@@ -4825,10 +4913,8 @@ Distribution DistributionImplementation::asinh() const
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
-  Point values(1, SpecFunc::Asinh(a));
-  bounds.add(b);
-  values.add(SpecFunc::Asinh(b));
+  const Point bounds = {a, b};
+  const Point values = {SpecFunc::Asinh(a), SpecFunc::Asinh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "asinh(x)"), clone(), bounds, values);
 }
 
@@ -4865,10 +4951,8 @@ Distribution DistributionImplementation::exp() const
   }
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
-  Point values(1, std::exp(a));
-  bounds.add(b);
-  values.add(std::exp(b));
+  const Point bounds = {a, b};
+  const Point values = {std::exp(a), std::exp(b)};
   return new CompositeDistribution(SymbolicFunction("x", "exp(x)"), clone(), bounds, values);
 }
 
@@ -4889,9 +4973,8 @@ Distribution DistributionImplementation::log() const
   const Scalar a = getRange().getLowerBound()[0];
   if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take the logarithm of a random variable that takes negative values with positive probability.";
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
+  const Point bounds = {a, b};
   Point values(1, (a == 0.0 ? std::log(computeQuantile(quantileEpsilon_)[0]) : std::log(a)));
-  bounds.add(b);
   values.add(std::log(b));
   return new CompositeDistribution(SymbolicFunction("x", "log(x)"), clone(), bounds, values);
 }
@@ -4903,9 +4986,12 @@ Distribution DistributionImplementation::ln() const
 
 Distribution DistributionImplementation::pow(const Scalar exponent) const
 {
+  LOGDEBUG(OSS() << "Scalar exponent=" << exponent);
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   // First, the case where the exponent is integer
   if (trunc(exponent) == exponent) return pow(static_cast< SignedInteger >(trunc(exponent)));
+  if (exponent == 0.5) return (*this).sqrt();
+  if (exponent == 1.0 / 3.0) return (*this).cbrt();
   const Scalar a = getRange().getLowerBound()[0];
   if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take a fractional power of a random variable that takes negative values with positive probability.";
 
@@ -4920,8 +5006,12 @@ Distribution DistributionImplementation::pow(const Scalar exponent) const
 
 Distribution DistributionImplementation::pow(const SignedInteger exponent) const
 {
+  LOGDEBUG(OSS() << "Signed integer exponent=" << exponent);
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
-  if (exponent == 0.0) return new Dirac(Point(1, 1.0));
+  if (exponent == 0) return new Dirac(Point(1, 1.0));
+  if (exponent == 1) return *this;
+  if (exponent == 2) return (*this).sqr();
+  if (exponent == -1) return (*this).inverse();
   const Scalar a = getRange().getLowerBound()[0];
   SymbolicFunction toPower("x", String(OSS() << (exponent < 0.0 ? "x^(" : "x^") << exponent << (exponent < 0.0 ? ")" : "")));
   // Easy case: a >= 0
@@ -4932,6 +5022,7 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     const Scalar b = getRange().getUpperBound()[0];
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
+    LOGDEBUG(OSS() << "a=" << a << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // Easy case: b <= 0
@@ -4942,6 +5033,7 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
   {
     bounds.add(b);
     values.add(b == 0.0 ? (exponent < 0.0 ? std::pow(computeQuantile(quantileEpsilon_, true)[0], 1.0 * exponent) : 0.0) : std::pow(b, 1.0 * exponent));
+    LOGDEBUG(OSS() << "b=" << b << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // Difficult case: a < 0 < b
@@ -4953,6 +5045,7 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     {
       bounds.add(b);
       values.add(std::pow(b, 1.0 * exponent));
+      LOGDEBUG(OSS() << "odd exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
       return new CompositeDistribution(toPower, clone(), bounds, values);
     }
     // A singularity at 0 for negative exponent
@@ -4962,13 +5055,15 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     values.add(SpecFunc::MaxScalar);
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
-    return new CompositeDistribution(SymbolicFunction("x", String(OSS() << "x^(" << exponent << ")")), clone(), bounds, values);
+    LOGDEBUG(OSS() << "odd exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
+    return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // For even exponent, the behaviour changes at 0
   bounds.add(0.0);
   values.add(exponent > 0 ? 0.0 : SpecFunc::MaxScalar);
   bounds.add(b);
   values.add(std::pow(b, 1.0 * exponent));
+  LOGDEBUG(OSS() << "even exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
   return new CompositeDistribution(toPower, clone(), bounds, values);
 }
 
@@ -4985,7 +5080,7 @@ Distribution DistributionImplementation::sqr() const
     const Point parameters(getParameter());
     return new SquaredNormal(parameters[0], parameters[1]);
   }
-  return pow(static_cast< SignedInteger >(2));
+  return new CompositeDistribution(SymbolicFunction("x", "x^2"), clone());
 }
 
 Distribution DistributionImplementation::inverse() const
@@ -4993,6 +5088,7 @@ Distribution DistributionImplementation::inverse() const
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
   Point bounds(1, a);
+  const SymbolicFunction inverseFunction("x", "1.0 / x");
   // Easy case: a >= 0
   if (a >= 0.0)
   {
@@ -5003,7 +5099,7 @@ Distribution DistributionImplementation::inverse() const
       values.add(1.0 / b);
     else
       values.add(0.0);
-    return new CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values);
+    return new CompositeDistribution(inverseFunction, clone(), bounds, values);
   }
   // Here, a < 0
   Point values(1);
@@ -5017,7 +5113,7 @@ Distribution DistributionImplementation::inverse() const
   {
     bounds.add(b);
     values.add(b == 0.0 ? 1.0 / computeQuantile(quantileEpsilon_, true)[0] : 1.0 / b);
-    return new CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values);
+    return new CompositeDistribution(inverseFunction, clone(), bounds, values);
   }
   // Difficult case: a < 0 < b
   // A singularity at 0
@@ -5035,7 +5131,7 @@ Distribution DistributionImplementation::inverse() const
     values.add(1.0 / b);
   else
     values.add(0.0);
-  return new CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values);
+  return new CompositeDistribution(inverseFunction, clone(), bounds, values);
 }
 
 Distribution DistributionImplementation::sqrt() const
@@ -5049,11 +5145,9 @@ Distribution DistributionImplementation::sqrt() const
   }
   const Scalar a = getRange().getLowerBound()[0];
   if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take the square root of a random variable that takes negative values with positive probability.";
-  Point bounds(1, a);
-  Point values(1, std::sqrt(a));
   const Scalar b = getRange().getUpperBound()[0];
-  bounds.add(b);
-  values.add(std::sqrt(b));
+  const Point bounds = {a, b};
+  const Point values = {std::sqrt(a), std::sqrt(b)};
   return new CompositeDistribution(SymbolicFunction("x", "sqrt(x)"), clone(), bounds, values);
 }
 
@@ -5061,29 +5155,35 @@ Distribution DistributionImplementation::cbrt() const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
-  Point bounds(1, a);
-  Point values(1, SpecFunc::Cbrt(a));
   const Scalar b = getRange().getUpperBound()[0];
-  bounds.add(b);
-  values.add(SpecFunc::Cbrt(b));
+  const Point bounds = {a, b};
+  const Point values = {SpecFunc::Cbrt(a), SpecFunc::Cbrt(b)};
   return new CompositeDistribution(SymbolicFunction("x", "cbrt(x)"), clone(), bounds, values);
 }
 
 Distribution DistributionImplementation::abs() const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
+  // First the easy cases
   const Scalar a = getRange().getLowerBound()[0];
-  Point bounds(1, a);
-  Point values(1, std::abs(a));
+  if (a >= 0.0) return *this;
   const Scalar b = getRange().getUpperBound()[0];
-  if ((a < 0.0) && (b > 0.0))
-  {
-    bounds.add(0.0);
-    values.add(0.0);
-  }
-  bounds.add(b);
-  values.add(std::abs(b));
+  if (b <= 0.0) return (*this) * (-1.0);
+  // Now the difficult case
+  const Point bounds = {a, 0.0, b};
+  const Point values = {std::abs(a), 0.0, b};
   return new CompositeDistribution(SymbolicFunction("x", "abs(x)"), clone(), bounds, values);
+}
+
+/* Quantile epsilon accessor */
+Scalar DistributionImplementation::getQuantileEpsilon() const
+{
+  return quantileEpsilon_;
+}
+
+void DistributionImplementation::setQuantileEpsilon(const Scalar quantileEpsilon)
+{
+  quantileEpsilon_ = quantileEpsilon;
 }
 
 END_NAMESPACE_OPENTURNS

@@ -36,8 +36,9 @@ static const Factory<MinCopula> Factory_MinCopula;
 
 /* Default constructor */
 MinCopula::MinCopula(const UnsignedInteger dim)
-  : CopulaImplementation()
+  : DistributionImplementation()
 {
+  isCopula_ = true;
   setName("MinCopula");
   // The range is generic for all the copulas
   setDimension(dim);
@@ -205,14 +206,14 @@ Bool MinCopula::hasIndependentCopula() const
 /* Method save() stores the object through the StorageManager */
 void MinCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MinCopula::load(Advocate & adv)
 {
   // The range is generic for all the copulas
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   computeRange();
 }
 

@@ -46,6 +46,9 @@ public:
 
   /** Constructor for multiD normal distribution */
   Normal(const Point & mean,
+         const Point & sigma);
+
+  Normal(const Point & mean,
          const Point & sigma,
          const CorrelationMatrix & R);
 
@@ -91,6 +94,7 @@ public:
   using EllipticalDistribution::computeCDF;
   Scalar computeCDF(const Scalar scalar) const override;
   Scalar computeCDF(const Point & point) const override;
+  Sample computeCDF(const Sample & sample) const override;
 
   using EllipticalDistribution::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Scalar scalar) const override;

@@ -1,6 +1,6 @@
 """
-Estimate a process event probability
-====================================
+Estimate a process-based event probability
+==========================================
 """
 # %%
 # The objective of this example is to evaluate the probability of an
@@ -13,7 +13,7 @@ Estimate a process event probability
 # We define the event :math:`\mathcal{E}` as:
 #
 # .. math::
-#    \begin{aligned} 
+#    \begin{aligned}
 #      \displaystyle \mathcal{E}(X) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{X_{\underline{t}}  \in \mathcal{A}  \right\}
 #    \end{aligned}
 #
@@ -34,7 +34,7 @@ Estimate a process event probability
 # We consider the domain :math:`\mathcal{A} =  [1,2] \times [1,2]`. Then the event :math:`\mathcal{E}` writes:
 #
 # .. math::
-#    \begin{aligned} 
+#    \begin{aligned}
 #      \displaystyle \mathcal{E}(\varepsilon) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{\varepsilon_{t}  \in \mathcal{A}  \right\}
 #    \end{aligned}
 #
@@ -43,10 +43,10 @@ Estimate a process event probability
 # property of the marginals:
 #
 # .. math::
-#    \begin{aligned} 
+#    \begin{aligned}
 #      p_1 = \mathbb{P}\left(\varepsilon_t  \in \mathcal{A}\right) = (\Phi(2) - \Phi(1))^2
 #    \end{aligned}
-#   
+#
 # with :math:`\Phi` the cumulative distribution function of the scalar standard *Normal* distribution.
 #
 # As the proces is discretized on a time grid of size :math:`N` and using the

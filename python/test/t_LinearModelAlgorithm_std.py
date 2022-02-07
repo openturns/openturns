@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+import openturns.testing as ott
 from math import sin
 
 ot.TESTPREAMBLE()
@@ -20,7 +21,7 @@ for i in range(size):
 
 test = ot.LinearModelAlgorithm(oneSample, twoSample)
 result = ot.LinearModelResult(test.getResult())
-print ("trend coefficients = ", result.getCoefficients())
+print("trend coefficients = ", result.getCoefficients())
 
 print("Fit y ~ 1 + 0.1 x + 10 x^2 model using 100 points")
 ot.RandomGenerator.SetSeed(0)
@@ -43,9 +44,29 @@ for i in range(size):
         X[i, 0] * X[i, 0] + 0.1 * ot.DistFunc.rNormal()
 test = ot.LinearModelAlgorithm(X, Y)
 result = test.getResult()
-print ("trend coefficients = ", result.getCoefficients())
+print("trend coefficients = ", result.getCoefficients())
+
+# Test various attributes
+cook = result.getCookDistances()
+cook_reference = [0.0233296, 0.0360369,
+                  0.00178903, 0.0502183, 0.0966701, 0.00562596]
+ott.assert_almost_equal(cook[0:6], cook_reference, 1e-5, 0.0)
+
+leverages = result.getLeverages()
+leverages_reference = [0.0864939, 0.0797831,
+                       0.0735447, 0.0677578, 0.0624023, 0.0574582]
+ott.assert_almost_equal(leverages[0:6], leverages_reference, 1e-6, 0.0)
 
 # with invalid sample description
 X.setDescription(['X0', 'price (euros)'])
 result = ot.LinearModelAlgorithm(X, Y).getResult()
-print(result.getFormula())
+print(result)
+
+# dof=0
+input_sample = ot.Sample([[1], [2]])
+output_sample = ot.Sample([[2], [6]])
+basis = ot.LinearBasisFactory(1).build()
+algo = ot.LinearModelAlgorithm(input_sample, basis, output_sample)
+algo.run()
+result = algo.getResult()
+print(result.getCoefficients(), result.getDegreesOfFreedom(), result.getResiduals())

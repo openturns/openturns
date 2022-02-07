@@ -7,6 +7,7 @@ Optimization using dlib
 
 # %%
 from __future__ import print_function
+import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -33,7 +34,7 @@ problem = ot.OptimizationProblem(rosenbrock)
 
 # %%
 # The optimization algorithm is instanciated from the problem to solve and the name of the algorithm
-algo = ot.Dlib(problem,'CG')
+algo = ot.Dlib(problem, 'cg')
 print("Dlib algorithm, type ", algo.getAlgorithmName())
 print("Maximum iteration number: ", algo.getMaximumIterationNumber())
 print("Maximum evaluation number: ", algo.getMaximumEvaluationNumber())
@@ -86,12 +87,13 @@ print("Constraint error: ", result.getConstraintError())
 # %%
 # Define the bounds and the problem
 bounds = ot.Interval([0.0, 0.0], [0.8, 2.0])
-boundedProblem = ot.OptimizationProblem(rosenbrock,ot.Function(),ot.Function(),bounds)
+boundedProblem = ot.OptimizationProblem(
+    rosenbrock, ot.Function(), ot.Function(), bounds)
 
 # %%
 # Define the Dlib algorithm
-boundedAlgo = ot.Dlib(boundedProblem,"LBFGS")
-boundedAlgo.setMaxSize(15) # Default value for LBFGS' maxSize parameter is 10
+boundedAlgo = ot.Dlib(boundedProblem, "lbfgs")
+boundedAlgo.setMaxSize(15)  # Default value for LBFGS' maxSize parameter is 10
 
 startingPoint = [0.5, 1.5]
 boundedAlgo.setStartingPoint(startingPoint)
@@ -129,17 +131,17 @@ view = viewer.View(graph)
 
 # %%
 # Define residual function
-import numpy as np
 n = 3
 m = 20
 x = [[0.5 + 0.1*i] for i in range(m)]
 
 model = ot.SymbolicFunction(['a', 'b', 'c', 'x'], ['a + b * exp(-c *x^2)'])
-p_ref = [2.8, 1.2, 0.5] # Reference a, b, c
+p_ref = [2.8, 1.2, 0.5]  # Reference a, b, c
 modelx = ot.ParametricFunction(model, [0, 1, 2], p_ref)
 
 # Generate reference sample (with normal noise)
-y = np.multiply(modelx(x), np.random.normal(1.0,0.05,m))
+y = np.multiply(modelx(x), np.random.normal(1.0, 0.05, m))
+
 
 def residualFunction(params):
     modelx = ot.ParametricFunction(model, [0, 1, 2], params)
@@ -148,13 +150,13 @@ def residualFunction(params):
 
 # %%
 # Definition of residual as ot.PythonFunction and optimization problem
-residual = ot.PythonFunction(n,m,residualFunction)
+residual = ot.PythonFunction(n, m, residualFunction)
 lsqProblem = ot.LeastSquaresProblem(residual)
 
 # %%
 # Definition of Dlib solver, setting starting point
-lsqAlgo = ot.Dlib(lsqProblem, "LSQ")
-lsqAlgo.setStartingPoint([0.0,0.0,0.0])
+lsqAlgo = ot.Dlib(lsqProblem, "least_squares")
+lsqAlgo.setStartingPoint([0.0, 0.0, 0.0])
 
 lsqAlgo.run()
 

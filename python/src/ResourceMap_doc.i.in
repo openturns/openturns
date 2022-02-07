@@ -45,7 +45,7 @@ Examples
 
 Parameters
 ----------
-key : str
+key : str, possible values are 'str','int','float' or 'bool'
     An identifier associated to the parameter.
 
 Returns
@@ -70,7 +70,7 @@ key : str
     An identifier associated to the parameter.
 value : str
     The value associated to that key. If the key already exists as a *float*,
-    an *unsigned int* or a *bool*, the given string is converted into the
+    an *int* or a *bool*, the given string is converted into the
     corresponding type.
 
 Examples
@@ -110,7 +110,7 @@ key : str
     An identifier associated to the parameter.
 value : bool
     The value associated to that key. The key is added to the bool map even if
-    it already exists in another map (float, unsigned int or string).
+    it already exists in another map (float, int or str).
 
 Examples
 --------
@@ -128,7 +128,7 @@ key : str
     An identifier associated to the parameter.
 value : bool
     The value associated to that key. The key is added to the bool map even if
-    it already exists in another map (float, unsigned int or string).
+    it already exists in another map (float, int or str).
 
 Examples
 --------
@@ -147,7 +147,7 @@ key : str
     An identifier associated to the parameter.
 value : float
     The value associated to that key. The key is added to the float map even if
-    it already exists in another map (string, unsigned int or bool).
+    it already exists in another map (str, int or bool).
 
 Examples
 --------
@@ -165,7 +165,7 @@ key : str
     An identifier associated to the parameter.
 value : float
     The value associated to that key. The key is added to the float map even if
-    it already exists in another map (string, unsigned int or bool).
+    it already exists in another map (str, int or bool).
 
 Examples
 --------
@@ -205,7 +205,7 @@ key : str
     An identifier associated to the parameter.
 value : str
     The value associated to that key. The key is added to the string map even if
-    it already exists in another map (float, unsigned int or bool).
+    it already exists in another map (float, int or bool).
 
 Examples
 --------
@@ -223,7 +223,7 @@ key : str
     An identifier associated to the parameter.
 value : str
     The value associated to that key. The key is added to the string map even if
-    it already exists in another map (float, unsigned int or bool).
+    it already exists in another map (float, int or bool).
 
 Examples
 --------
@@ -262,8 +262,8 @@ Parameters
 key : str
     An identifier associated to the parameter.
 value : int
-    The value associated to that key. The key is added to the unsigned integer
-    map even if it already exists in another map (float, string or bool).
+    The value associated to that key. The key is added to the integer
+    map even if it already exists in another map (float, str or bool).
 
 Examples
 --------
@@ -280,8 +280,8 @@ Parameters
 key : str
     An identifier associated to the parameter.
 value : int
-    The value associated to that key. The key is added to the unsigned integer
-    map even if it already exists in another map (float, string or bool).
+    The value associated to that key. The key is added to the integer
+    map even if it already exists in another map (float, str or bool).
 
 Examples
 --------
@@ -358,7 +358,7 @@ size : positive int
 Returns
 -------
 size : positive int
-    The number of *unsigned integer* constants defined in the ResourceMap."
+    The number of *int* constants defined in the ResourceMap."
 
 // ---------------------------------------------------------------------
 
@@ -408,7 +408,7 @@ keys : tuple of str
 Returns
 -------
 keys : tuple of str
-    The list of *unsigned integer* identifiers."
+    The list of *int* identifiers."
 
 // ---------------------------------------------------------------------
 
@@ -430,8 +430,7 @@ has_key : bool
 %feature("docstring") OT::ResourceMap::Reload
 "Reload the configuration.
 
-Reverts the values of the default keys.
-Does not erase new keys."
+Reverts the values of the default keys and erases new keys."
 
 // ---------------------------------------------------------------------
 

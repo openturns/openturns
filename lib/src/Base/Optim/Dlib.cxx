@@ -347,6 +347,7 @@ CLASSNAMEINIT(Dlib)
 
 Bool Dlib::IsAvailable()
 {
+  LOGWARN(OSS() << "Dlib.IsAvailable is deprecated, use PlatformInfo.HasFeature(dlib)");
 #ifdef OPENTURNS_HAVE_DLIB
   return true;
 #else
@@ -360,16 +361,16 @@ Description Dlib::GetAlgorithmNames()
 
   if (!algoNames.getSize())
   {
-    algoNames.add("CG");
-    algoNames.add("BFGS");
-    algoNames.add("LBFGS");
-    algoNames.add("Newton");
+    algoNames.add("cg");
+    algoNames.add("bfgs");
+    algoNames.add("lbfgs");
+    algoNames.add("newton");
 #ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
-    algoNames.add("Global");
+    algoNames.add("global");
 #endif
-    algoNames.add("LSQ");
-    algoNames.add("LSQLM");
-    algoNames.add("TrustRegion");
+    algoNames.add("least_squares");
+    algoNames.add("least_squares_lm");
+    algoNames.add("trust_region");
   }
   return algoNames;
 }
@@ -377,7 +378,7 @@ Description Dlib::GetAlgorithmNames()
 /** CONSTRUCTORS */
 Dlib::Dlib()
   : OptimizationAlgorithmImplementation()
-  , algoName_("BFGS")
+  , algoName_("bfgs")
   , wolfeRho_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeRho"))
   , wolfeSigma_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"))
   , maxLineSearchIterations_(ResourceMap::GetAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations"))
@@ -511,8 +512,8 @@ void Dlib::checkProblem(const OptimizationProblem & problem) const
   if (!problem.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
 
-  // "Global" requires finite bounds
-  if (algoName_ == "Global")
+  // "global" requires finite bounds
+  if (algoName_ == "global")
   {
     if (!problem.hasBounds())
       throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm requires problem to have bounds.";
@@ -528,12 +529,12 @@ void Dlib::checkProblem(const OptimizationProblem & problem) const
     }
   }
 
-  // Only "LSQ" and "LSQLM" support least squares problems
-  if (problem.hasResidualFunction() && !(algoName_ == "LSQ" || algoName_ == "LSQLM"))
+  // Only "least_squares" and "least_squares_lm" support least squares problems
+  if (problem.hasResidualFunction() && !(algoName_ == "least_squares" || algoName_ == "least_squares_lm"))
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support least squares problems.";
 
-  // "LSQ", "LSQLM" and "TrustRegion" require non bounded variables
-  if (problem.hasBounds() && (algoName_ == "LSQ" || algoName_ == "LSQLM" || algoName_ == "TrustRegion"))
+  // "least_squares", "least_squares_lm" and "trust_region" require non bounded variables
+  if (problem.hasBounds() && (algoName_ == "least_squares" || algoName_ == "least_squares_lm" || algoName_ == "trust_region"))
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm cannot solve bounded problems.";
 
 #ifndef OPENTURNS_HAVE_DLIB
@@ -562,20 +563,20 @@ void Dlib::run()
   DlibGradient objectiveDlibGradient(objectiveDlibFunction.getGradient());
 
   /** STARTING POINT: Convert startingPoint to dlib::matrix */
-  DlibMatrix optimPoint(dimension, 1);
+  DlibVector optimPoint(dimension, 1);
   for (UnsignedInteger i = 0; i < startingPoint.getDimension(); ++ i)
     optimPoint(i, 0) = startingPoint[i];
 
   /** BOUNDS **/
-  DlibMatrix lb(dimension, 1);
-  DlibMatrix ub(dimension, 1);
+  DlibVector lb(dimension, 1);
+  DlibVector ub(dimension, 1);
 
   if (getProblem().hasBounds())
   {
     // Extraction of bounds as vectors
     Interval bounds(getProblem().getBounds());
 
-    if (algoName_ != "Global" && !bounds.contains(startingPoint))
+    if (algoName_ != "global" && !bounds.contains(startingPoint))
       throw InvalidArgumentException(HERE) << "Error: starting point is not inside bounds x=" << startingPoint.__str__() << " bounds=" << bounds;
 
     Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
@@ -601,30 +602,30 @@ void Dlib::run()
   }
 
   // initialize result
-  result_ = OptimizationResult(dimension, objectiveDlibFunction.getOutputDimension());
+  result_ = OptimizationResult(getProblem());
 
   /** SWITCH BETWEEN ALGORITHMS **/
-  if (   algoName_ == "CG"
-         || algoName_ == "BFGS"
-         || algoName_ == "LBFGS"
-         || algoName_ == "Newton")
+  if (   algoName_ == "cg"
+         || algoName_ == "bfgs"
+         || algoName_ == "lbfgs"
+         || algoName_ == "newton")
   {
     // Create searchStrategy
     DlibSearchStrategy searchStrategy;
-    if (algoName_ == "CG")
+    if (algoName_ == "cg")
       searchStrategy = DlibCgSearchStrategy(wolfeRho_,
                                             wolfeSigma_,
                                             maxLineSearchIterations_);
-    else if (algoName_ == "BFGS")
+    else if (algoName_ == "bfgs")
       searchStrategy = DlibBfgsSearchStrategy(wolfeRho_,
                                               wolfeSigma_,
                                               maxLineSearchIterations_);
-    else if (algoName_ == "LBFGS")
+    else if (algoName_ == "lbfgs")
       searchStrategy = DlibLbfgsSearchStrategy( wolfeRho_,
                        wolfeSigma_,
                        maxLineSearchIterations_,
                        maxSize_);
-    else if (algoName_ == "Newton")
+    else if (algoName_ == "newton")
       searchStrategy = DlibNewtonSearchStrategy(wolfeRho_,
                        wolfeSigma_,
                        maxLineSearchIterations_,
@@ -674,7 +675,7 @@ void Dlib::run()
     }
   } // CG, BFGS/LBFGS, Newton
 #ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
-  else if (algoName_ == "Global")
+  else if (algoName_ == "global")
   {
     // Declare result and lambda function
     dlib::function_evaluation globalOptimResult;
@@ -683,11 +684,12 @@ void Dlib::run()
       return objectiveDlibFunction(input);
     };
 
+    const std::vector<bool> is_integer_variable(dimension, false);
     if (getProblem().isMinimization())
       globalOptimResult = dlib::find_min_global(objectiveLambdaFunction,
                           lb,
                           ub,
-                          std::vector<bool>(dimension, false),
+                          is_integer_variable,
                           dlib::max_function_calls(getMaximumEvaluationNumber()),
                           std::chrono::nanoseconds(dlib::FOREVER),
                           getMaximumAbsoluteError());
@@ -695,7 +697,7 @@ void Dlib::run()
       globalOptimResult = dlib::find_max_global(objectiveLambdaFunction,
                           lb,
                           ub,
-                          std::vector<bool>(dimension, false),
+                          is_integer_variable,
                           dlib::max_function_calls(getMaximumEvaluationNumber()),
                           std::chrono::nanoseconds(dlib::FOREVER),
                           getMaximumAbsoluteError());
@@ -727,7 +729,7 @@ void Dlib::run()
     result_.setEvaluationNumber(objectiveDlibFunction.getEvaluationNumber());
   }
 #endif
-  else if (algoName_ == "LSQ")
+  else if (algoName_ == "least_squares")
   {
     // Create stopStrategy
     DlibFunction residualDlibFunction(getProblem().getResidualFunction());
@@ -752,7 +754,7 @@ void Dlib::run()
       list[i] = i;
 
     // Create parameters vector
-    DlibMatrix params(dimension, 1);
+    DlibVector params(dimension, 1);
     std::copy(startingPoint.begin(), startingPoint.end(), params.begin());
 
     // Call to dlib::solve_least_squares: modification of params
@@ -763,7 +765,7 @@ void Dlib::run()
                               params,
                               initialTrustRegionRadius_);
   }
-  else if (algoName_ == "LSQLM")
+  else if (algoName_ == "least_squares_lm")
   {
     // Create stopStrategy
     DlibFunction residualDlibFunction(getProblem().getResidualFunction());
@@ -788,7 +790,7 @@ void Dlib::run()
       list[i] = i;
 
     // Create parameters vector
-    DlibMatrix params(dimension, 1);
+    DlibVector params(dimension, 1);
     std::copy(startingPoint.begin(), startingPoint.end(), params.begin());
 
     // Call to dlib::solve_least_squares: modification of params
@@ -800,7 +802,7 @@ void Dlib::run()
                                  initialTrustRegionRadius_
                                 );
   }
-  else if (algoName_ == "TrustRegion")
+  else if (algoName_ == "trust_region")
   {
     // Create stopStrategy
     DlibStopStrategy stopStrategy(*this,

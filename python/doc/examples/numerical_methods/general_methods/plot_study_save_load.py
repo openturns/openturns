@@ -17,8 +17,6 @@
 Save/load a study
 =================
 """
-# %% 
-
 # %%
 # The objective of this example is to demonstrate how to save the structures created within a script session to disk in order to be able to load them in a future session.
 #
@@ -69,8 +67,9 @@ str(loaded_distribution), str(loaded_function)
 #
 # Each object is identified whether with:
 #
-# - its name: it is useful to give names to the objects we want to save. If no name has been given by the user, we can use the name by default. The name of each object saved can be checked in the file.XML created or by printing the study in the python interface (with the command print).
-# - its id number : this id number is unique for each object. It is useful to distinguish objects of same type which names are identical, equal to the default name given ('Unnamed'). This id number may be checked by printing the study loaded in the python interface (with the command print): be careful, this print operation must be performed after having loaded the study (the id number may be different from the one indicated in the file.XML associated to the study).
+# - its name: it is useful to give names to the objects we want to save. If no name has been given by the user, we can use the default name. The name of each saved object can be checked in the output XML file or with the python `print` command (applied to the `Study` object).
+# - its id number: this id number is unique to each object. It distinguishes objects with identical type and name (like the default name "Unnamed"). This id number may be checked by printing the study **after** it has been loaded in the python interface (with the `print` command). It can differ from the id number indicated in the XML file the study was loaded from.
+# - for HDF5 storage (see below): the id serves both as xml id and hdf5 dataset name. Id uniqueness forbids any misleading in reading/writing hdf5 datasets.
 
 # %%
 # Create a Study Object
@@ -80,6 +79,12 @@ study = ot.Study()
 # Associate it to an XML file
 fileName = 'study.xml'
 study.setStorageManager(ot.XMLStorageManager(fileName))
+
+# %%
+# Alternatively, large amounts of data can be stored in binary HDF5 file. An XML file (`study_h5.xml`) serves as header for binary data, which are stored in the automatically created `study_h5.h5` file.
+study_h5 = ot.Study()
+fileName_h5 = 'study_h5.xml'
+study_h5.setStorageManager(ot.XMLH5StorageManager(fileName_h5))
 
 # %%
 # Add an object to the study; at this point it is not written to disk yet
@@ -101,7 +106,7 @@ study.load()
 
 # %%
 # Check the content of the myStudy
-print("Study = " , study)
+print("Study = ", study)
 
 # %%
 # List names of stored objects

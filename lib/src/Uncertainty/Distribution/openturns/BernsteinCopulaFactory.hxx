@@ -84,13 +84,12 @@ public:
       const Function & f,
       const Scalar alpha = ResourceMap::GetAsScalar("BernsteinCopulaFactory-alpha"));
 
+private:
   /** Build all the learning/validation partitions of the given sample */
   static void BuildCrossValidationSamples(const Sample & sample,
                                           const UnsignedInteger kFraction,
                                           Collection<Sample> & learningCollection,
                                           Collection<Sample> & validationCollection);
-
-private:
 
   /** Find the best bin number using an exhaustive search between two bounds given throug ResourceMap, or between 1 and size/2 if the bounds are in reverse order */
   static UnsignedInteger FindBestBinNumberSequential(const Function & mObjective,

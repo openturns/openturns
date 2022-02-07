@@ -75,18 +75,15 @@ public:
   virtual SquareMatrix operator() (const Scalar s, const Scalar t) const;
   virtual SquareMatrix operator() (const Point & s, const Point & t) const;
 
-  // compute standard representative computes the term \rho(s, t)
-  virtual Scalar computeStandardRepresentative(const Point & s,
-      const Point & t) const;
-
-#ifndef SWIG
-  virtual Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-      const Collection<Scalar>::const_iterator & t_begin) const;
-#endif
-
   // Special case for 1D model
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;
+  virtual Scalar computeAsScalar(const Point &tau) const;
+
+  // Special case for 1D input /output  model
+  virtual Scalar computeAsScalar(const Scalar s,
+                                 const Scalar t) const;
+  virtual Scalar computeAsScalar(const Scalar tau) const;
 
 #ifndef SWIG
   // Special case for 1D model
@@ -112,6 +109,13 @@ public:
   virtual CovarianceMatrix discretize(const Sample & vertices) const;
   virtual Sample discretizeRow(const Sample & vertices,
                                const UnsignedInteger p) const;
+  virtual Matrix computeCrossCovariance(const Sample &firstSample,
+                                        const Sample &secondSample) const;
+
+  virtual Matrix computeCrossCovariance(const Sample &sample,
+                                        const Point &point) const;
+  virtual Matrix computeCrossCovariance(const Point &point,
+                                        const Sample &sample) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
   virtual TriangularMatrix discretizeAndFactorize(const RegularGrid & timeGrid) const;
@@ -226,11 +230,11 @@ protected:
   /** Cholesky factor of covariance matrix of the output dependence structure */
   mutable TriangularMatrix outputCovarianceCholeskyFactor_;
 
-  /** Flag to tell if computeStandardRepresentative() method is defined */
-  Bool definesComputeStandardRepresentative_;
-
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;
+
+  /** Flag to tell if the model is stationary */
+  Bool isStationary_;
 
   /** Nugget factor */
   Scalar nuggetFactor_;

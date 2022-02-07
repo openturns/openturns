@@ -221,6 +221,7 @@ void NLopt::run()
   evaluationOutputHistory_ = Sample(0, 1);
   equalityConstraintHistory_ = Sample(0, getProblem().getEqualityConstraint().getOutputDimension());
   inequalityConstraintHistory_ = Sample(0, getProblem().getInequalityConstraint().getOutputDimension());
+  result_ = OptimizationResult(getProblem());
 
   nlopt::opt opt(algo, dimension);
 
@@ -343,8 +344,7 @@ void NLopt::run()
 
   Point optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
-  OptimizationResult result(dimension, 1);
-  result.setProblem(getProblem());
+  OptimizationResult result(getProblem());
 
   const UnsignedInteger size = evaluationInputHistory_.getSize();
 
@@ -497,6 +497,10 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
   algorithm->evaluationInputHistory_.add(inP);
   algorithm->evaluationOutputHistory_.add(outP);
 
+  // update result
+  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
+
   // gradient
   if (!grad.empty())
   {
@@ -552,7 +556,7 @@ void NLopt::ComputeInequalityConstraint(unsigned m, double * result, unsigned n,
     Matrix gradient(algorithm->getProblem().getInequalityConstraint().gradient(inP));
     // nlopt solves h(x)<=0
     gradient = gradient * -1.0;
-    std::copy(&gradient(0, 0), &gradient(n - 1, m - 1) + 1, grad);
+    std::copy(gradient.data(), gradient.data() + m * n, grad);
   }
 }
 
@@ -572,13 +576,14 @@ void NLopt::ComputeEqualityConstraint(unsigned m, double * result, unsigned n, c
   if (grad)
   {
     Matrix gradient(algorithm->getProblem().getEqualityConstraint().gradient(inP));
-    std::copy(&gradient(0, 0), &gradient(n - 1, m - 1) + 1, grad);
+    std::copy(gradient.data(), gradient.data() + m * n, grad);
   }
 }
 
 
 Bool NLopt::IsAvailable()
 {
+  LOGWARN(OSS() << "NLopt.IsAvailable is deprecated, use PlatformInfo.HasFeature(nlopt)");
 #ifdef OPENTURNS_HAVE_NLOPT
   return true;
 #else

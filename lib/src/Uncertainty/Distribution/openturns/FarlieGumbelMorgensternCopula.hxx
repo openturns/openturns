@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_FARLIEGUMBELMORGENSTERNCOPULA_HXX
 #define OPENTURNS_FARLIEGUMBELMORGENSTERNCOPULA_HXX
 
-#include "openturns/CopulaImplementation.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The FarlieGumbelMorgensternCopula distribution.
  */
 class OT_API FarlieGumbelMorgensternCopula
-  : public CopulaImplementation
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -62,15 +62,15 @@ public:
   Point getRealization() const override;
 
   /** Get the DDF of the distribution */
-  using CopulaImplementation::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
-  using CopulaImplementation::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using CopulaImplementation::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the Kendall concordance of the distribution */
@@ -83,11 +83,11 @@ public:
   Point computeCDFGradient(const Point & point) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalCDF;
+  using DistributionImplementation::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalQuantile;
+  using DistributionImplementation::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
 
   /** Parameters value accessors */
@@ -110,7 +110,7 @@ public:
   Scalar getTheta() const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  using CopulaImplementation::getMarginal;
+  using DistributionImplementation::getMarginal;
   Distribution getMarginal(const Indices & indices) const override;
 
   /** Compute the entropy of the distribution */

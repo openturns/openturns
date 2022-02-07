@@ -61,7 +61,7 @@ void CMinpack::checkProblem(const OptimizationProblem & problem) const
   if (!problem.hasResidualFunction())
     throw InvalidArgumentException(HERE) << getClassName() << " only supports least-square problems";
 
-  if (problem.getResidualFunction().getInputDimension() > problem.getResidualFunction().getOutputDimension())
+  if (!(problem.getResidualFunction().getInputDimension() <= problem.getResidualFunction().getOutputDimension()))
     throw InvalidArgumentException(HERE) << getClassName() << " does not support underdetermined least squares problems";
 
   if (problem.hasBounds())
@@ -153,6 +153,10 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
     algorithm->evaluationInputHistory_.add(inP);
     algorithm->evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
 
+    // update result
+    algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+    algorithm->result_.store(inP, Point(1, 0.5 * outP.normSquare()), 0.0, 0.0, 0.0, 0.0);
+
     std::copy(outP.begin(), outP.end(), fvec);
   }
   else if (iflag == 2)
@@ -165,7 +169,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
         for (int i = 0; i < m; ++ i)
           jacobian(i, j) *= jacfac[j];
     }
-    std::copy(&jacobian(0, 0), &jacobian(0, 0) + m * n, fjac);
+    std::copy(jacobian.data(), jacobian.data() + m * n, fjac);
   }
   // callbacks
   if (algorithm->progressCallback_.first)
@@ -202,12 +206,13 @@ void CMinpack::run()
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  result_ = OptimizationResult(getProblem());
 
   Point x(startingPoint);
   const int m = getProblem().getResidualFunction().getOutputDimension();
   const int n = getProblem().getResidualFunction().getInputDimension();
 
-  if (n > m)
+  if (!(n <= m))
     throw InvalidArgumentException(HERE) << "CMinpack does not support underdetermined least squares problems";
 
   int info = 0;
@@ -401,8 +406,7 @@ void CMinpack::run()
 
   Point optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
-  OptimizationResult result(dimension, 1);
-  result.setProblem(getProblem());
+  OptimizationResult result(getProblem());
 
   const UnsignedInteger size = evaluationInputHistory_.getSize();
 
@@ -491,6 +495,7 @@ void CMinpack::load(Advocate & adv)
 
 Bool CMinpack::IsAvailable()
 {
+  LOGWARN(OSS() << "CMinpack.IsAvailable is deprecated, use PlatformInfo.HasFeature(cminpack)");
 #ifdef OPENTURNS_HAVE_CMINPACK
   return true;
 #else

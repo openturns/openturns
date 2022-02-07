@@ -14,11 +14,11 @@ OTTypedInterfaceObjectHelper(Function)
 
 %typemap(in) const FunctionCollection & (OT::Pointer<OT::Collection<OT::Function> > temp) {
   void * ptr = 0;
-  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     // From interface class, ok
-  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, SWIG_TypeQuery("OT::Basis *"), 0))) {
+  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, SWIG_TypeQuery("OT::Basis *"), SWIG_POINTER_NO_NULL))) {
     // From Implementation*
-    OT::Basis * p_impl = reinterpret_cast< OT::Basis * >( ptr );
+    OT::Basis * p_impl = reinterpret_cast< OT::Basis * >(ptr);
     $1 = new OT::Collection<OT::Function>(*p_impl);
   } else {
     try {
@@ -31,9 +31,9 @@ OTTypedInterfaceObjectHelper(Function)
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const FunctionCollection & {
-  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< OT::Function >( $input )
-    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIG_TypeQuery("OT::Basis *"), 0)));
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
+    || OT::canConvertCollectionObjectFromPySequence< OT::Function >($input)
+    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIG_TypeQuery("OT::Basis *"), SWIG_POINTER_NO_NULL));
 }
 
 %apply const FunctionCollection & { const OT::Collection<OT::Function> & };
@@ -309,10 +309,13 @@ class PythonFunction(Function):
     hessian : a callable python object, optional
         Returns the hessian as a 3-d sequence of float.
         Default is None (uses finite-difference).
-    n_cpus : integer
+    n_cpus : int, default=None
         Number of cpus on which func should be distributed using multiprocessing.
         If -1, it uses all the cpus available. If 1, it does nothing.
-        Default is None.
+        Note that you should enforce the multiprocessing guidelines to enable this option, see
+        https://docs.python.org/3/library/multiprocessing.html#multiprocessing-programming
+        For example on Windows, the entry point of your program should be
+        protected using the `if __name__== '__main__'` idiom.
     copy : bool, optional
         If True, input sample is converted into a Python 2-d sequence before calling
         func_sample.  Otherwise, it is passed directy to func_sample.

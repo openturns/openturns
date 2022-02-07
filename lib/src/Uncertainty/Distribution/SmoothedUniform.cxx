@@ -351,6 +351,20 @@ Description SmoothedUniform::getParameterDescription() const
   return description;
 }
 
+SmoothedUniform::PointWithDescriptionCollection SmoothedUniform::getParametersCollection() const
+{
+  PointWithDescription parameter(getParameter());
+  parameter.setDescription(getParameterDescription());
+  parameter.setName(getName());
+  return PointWithDescriptionCollection(1, parameter);
+}
+
+void SmoothedUniform::setParametersCollection(const PointCollection & parametersCollection)
+{
+  if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Parameters must be of size 1";
+  setParameter(parametersCollection[0]);
+}
+
 /* A accessor */
 void SmoothedUniform::setA(const Scalar a)
 {

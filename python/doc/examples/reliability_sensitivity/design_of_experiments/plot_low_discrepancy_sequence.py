@@ -27,7 +27,7 @@ ot.Log.Show(ot.Log.NONE)
 # 1. Sobol sequence
 dimension = 2
 size = 1024
-sequence = ot.SobolSequence(2)
+sequence = ot.SobolSequence(dimension)
 sample = sequence.generate(size)
 graph = ot.Graph("Sobol", "", "", True, "")
 cloud = ot.Cloud(sample)
@@ -37,7 +37,7 @@ view = viewer.View(graph)
 # %%
 # 2. Halton sequence
 dimension = 2
-sequence = ot.HaltonSequence(2)
+sequence = ot.HaltonSequence(dimension)
 sample = sequence.generate(size)
 graph = ot.Graph("Halton", "", "", True, "")
 cloud = ot.Cloud(sample)
@@ -45,17 +45,43 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# 3. Reverse Halton sequence
+# 3. Halton sequence in high dimension: bad filling in upper dimensions
+dimension = 20
+sequence = ot.HaltonSequence(dimension)
+sample = sequence.generate(size).getMarginal([dimension-2, dimension-1])
+graph = ot.Graph("Halton (" + str(dimension - 2) + "," + str(dimension-1) + ")",
+                 "dim " + str(dimension-2), "dim " + str(dimension-1), True, "")
+cloud = ot.Cloud(sample)
+graph.add(cloud)
+view = viewer.View(graph)
+
+# %%
+# 4. Scrambled Halton sequence in high dimension
+dimension = 20
+sequence = ot.HaltonSequence(dimension)
+sequence.setScrambling("RANDOM")
+sample = sequence.generate(size).getMarginal([dimension-2, dimension-1])
+graph = ot.Graph("Halton (" + str(dimension - 2) + "," + str(dimension-1) + ")",
+                 "dim " + str(dimension-2), "dim " + str(dimension-1), True, "")
+cloud = ot.Cloud(sample)
+graph.add(cloud)
+view = viewer.View(graph)
+
+# %%
+# 5. Reverse Halton sequence
+dimension = 2
 sequence = ot.ReverseHaltonSequence(dimension)
 sample = sequence.generate(size)
-print('discrepancy=', ot.LowDiscrepancySequenceImplementation.ComputeStarDiscrepancy(sample))
+print('discrepancy=',
+      ot.LowDiscrepancySequenceImplementation.ComputeStarDiscrepancy(sample))
 graph = ot.Graph("Reverse Halton", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# 4. Haselgrove sequence
+# 6. Haselgrove sequence
+dimension = 2
 sequence = ot.HaselgroveSequence(dimension)
 sample = sequence.generate(size)
 graph = ot.Graph("Haselgrove", "", "", True, "")
@@ -67,7 +93,8 @@ view = viewer.View(graph)
 # Compare with uniform random sequence
 distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*2)
 sample = distribution.getSample(size)
-print('discrepancy=', ot.LowDiscrepancySequenceImplementation.ComputeStarDiscrepancy(sample))
+print('discrepancy=',
+      ot.LowDiscrepancySequenceImplementation.ComputeStarDiscrepancy(sample))
 graph = ot.Graph("Mersenne Twister", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)

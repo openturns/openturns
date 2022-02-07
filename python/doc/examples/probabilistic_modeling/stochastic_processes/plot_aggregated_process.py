@@ -14,7 +14,7 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create processes to aggregate
-myMesher = ot.IntervalMesher(ot.Indices([100,10]))
+myMesher = ot.IntervalMesher([100, 10])
 lowerbound = [0.0, 0.0]
 upperBound = [2.0, 4.0]
 myInterval = ot.Interval(lowerbound, upperBound)
@@ -35,7 +35,8 @@ myAggregatedProcess = ot.AggregatedProcess([myProcess1, myProcess2])
 
 # %%
 # Draw values of the realization on the 2nd marginal
-marginal = ot.HistogramFactory().build(myAggregatedProcess.getRealization().getValues().getMarginal(0))
+marginal = ot.HistogramFactory().build(
+    myAggregatedProcess.getRealization().getValues().getMarginal(0))
 graph = marginal.drawPDF()
 viewer.View(graph)
 plt.show()

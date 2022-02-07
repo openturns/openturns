@@ -28,9 +28,9 @@ Survival(inverseSurvival)=0.950000
 entropy=1.605465
 Minimum volume interval= [0.5, 6.65423]
 threshold= [0.95]
-Minimum volume level set= {x | f(x) <= 254.31} with f=
+Minimum volume level set= {x | f(x) <= 4.00034} with f=
 MinimumVolumeLevelSetEvaluation(Pareto(beta = 7.5, alpha=5, gamma=-7))
-beta= [3.58568e-111]
+beta= [0.0183093]
 Bilateral confidence interval= [0.538073, 8.68459]
 beta= [0.95]
 Unilateral confidence interval (lower tail)= [0.5, 6.65423]

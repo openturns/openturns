@@ -2,14 +2,14 @@
 Polynomial chaos is sensitive to the degree
 ===========================================
 """
-# %% 
+# %%
 #
 # Introduction
 # ------------
 #
 # In this example, we observe the sensitivity of the polynomial chaos expansion to the total degree of the polynomial. More precisely, we observe how this impacts the :math:`Q^2` predictivity coefficient.
 #
-# We consider the example of the cantilever beam. We create a sparse polynomial chaos with a linear enumeration rule and the family of orthogonal polynomials corresponding to each input variable. 
+# We consider the example of the cantilever beam. We create a sparse polynomial chaos with a linear enumeration rule and the family of orthogonal polynomials corresponding to each input variable.
 
 # %%
 import openturns as ot
@@ -27,7 +27,7 @@ maxDegree = 4
 # For real tests, we suggest using the following parameter value:
 
 # %%
-# maxDegree = 7 
+# maxDegree = 7
 
 # %%
 # Let us define the parameters of the cantilever beam problem.
@@ -54,6 +54,7 @@ def function_beam(X):
     Y = F * L ** 3 / (3 * E * I)
     return [Y]
 
+
 g = ot.PythonFunction(dim_input, dim_output, function_beam)
 g.setInputDescription(myDistribution.getDescription())
 
@@ -67,12 +68,12 @@ def ComputeSparseLeastSquaresChaos(
 ):
     """
     Create a sparse polynomial chaos based on least squares.
-    
-    * Uses the enumerate rule in multivariateBasis. 
-    * Uses the LeastSquaresStrategy to compute the coefficients based on 
-      least squares. 
-    * Uses LeastSquaresMetaModelSelectionFactory to use the LARS selection method. 
-    * Uses FixedStrategy in order to keep all the coefficients that the 
+
+    * Uses the enumerate rule in multivariateBasis.
+    * Uses the LeastSquaresStrategy to compute the coefficients based on
+      least squares.
+    * Uses LeastSquaresMetaModelSelectionFactory to use the LARS selection method.
+    * Uses FixedStrategy in order to keep all the coefficients that the
       LARS method selected.
 
     Parameters
@@ -140,7 +141,8 @@ def computeQ2Chaos(chaosResult, inputTest, outputTest):
 # %%
 def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, totalDegree):
     """Print statistics of a chaos."""
-    sparsityRate = computeSparsityRate(multivariateBasis, totalDegree, chaosResult)
+    sparsityRate = computeSparsityRate(
+        multivariateBasis, totalDegree, chaosResult)
     Q2 = computeQ2Chaos(chaosResult, inputTest, outputTest)
     metamodel = chaosResult.getMetaModel()
     val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
@@ -167,11 +169,11 @@ N = 20  # size of the train design
 n_valid = 1000  # size of the test design
 
 # %%
-# The seed is selected to get *interesting* results. 
+# The seed is selected to get *interesting* results.
 
 # %%
 magicSeed = 43  # 127 is funny too
-ot.RandomGenerator.SetSeed(magicSeed) 
+ot.RandomGenerator.SetSeed(magicSeed)
 
 # %%
 inputTrain = myDistribution.getSample(N)
@@ -191,9 +193,9 @@ for totalDegree in range(1, maxDegree + 1):
     pl.suptitle("Metamodel validation")
 
 # %%
-# We see that when the degree of the polynomial increases, the Q2 coefficient decreases. We also see that the sparsity rate increases: while the basis size grows rapidly with the degree, the algorithm selects a smaller fraction of this basis. This shows that the algorithm performs its task of selecting relevant coefficients. However, this selection does not seem to be sufficient to mitigate the large number of coefficients. 
+# We see that when the degree of the polynomial increases, the Q2 coefficient decreases. We also see that the sparsity rate increases: while the basis size grows rapidly with the degree, the algorithm selects a smaller fraction of this basis. This shows that the algorithm performs its task of selecting relevant coefficients. However, this selection does not seem to be sufficient to mitigate the large number of coefficients.
 #
-# Of course, this example is designed to make a predictivity decrease gradually. We are going to see that this situation is actually easy to reproduce. 
+# Of course, this example is designed to make a predictivity decrease gradually. We are going to see that this situation is actually easy to reproduce.
 
 # %%
 # Distribution of the predictivity coefficient
@@ -203,10 +205,12 @@ for totalDegree in range(1, maxDegree + 1):
 # Let us repeat the following experiment to see the variability of the Q2 coefficient.
 
 # %%
+
+
 def computeSampleQ2(N, n_valid, numberAttempts, maxDegree):
-    """For a given sample size N, for degree from 1 to maxDegree, 
+    """For a given sample size N, for degree from 1 to maxDegree,
     repeat the following experiment numberAttempts times:
-    create a sparse least squares chaos and compute the Q2 
+    create a sparse least squares chaos and compute the Q2
     using n_valid points.
     """
     Q2sample = ot.Sample(numberAttempts, maxDegree)
@@ -241,7 +245,7 @@ def plotQ2Boxplots(Q2sample, N):
 
 
 # %%
-# Each experiment is repeated several times. 
+# Each experiment is repeated several times.
 
 # %%
 numberAttempts = 50  # Number of repetitions
@@ -252,7 +256,7 @@ Q2sample = computeSampleQ2(N, n_valid, numberAttempts, maxDegree)
 plotQ2Boxplots(Q2sample, N)
 
 # %%
-# We see that when the size of the design of experiments is as small as 20, it is more appropriate to use a very low degree polynomial. Here 1 performs best and 4 is risky. 
+# We see that when the size of the design of experiments is as small as 20, it is more appropriate to use a very low degree polynomial. Here 1 performs best and 4 is risky.
 
 # %%
 N = 30  # size of the train design

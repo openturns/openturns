@@ -1,6 +1,6 @@
 """
-Create a custom stationary covariance model
-===========================================
+Create a stationary covariance model
+====================================
 """
 # %%
 # This use case illustrates how the user can define his own stationary covariance model thanks to the object *UserDefinedStationaryCovarianceModel* defined from:
@@ -12,7 +12,7 @@ Create a custom stationary covariance model
 #
 # .. math::
 #    \forall \underline{\tau} \in \mathcal{D}, \, C^{stat}(\underline{\tau}) =  \underline{\underline{C}}_k
-#   
+#
 # where :math:`k`  is such that :math:`\underline{\tau}_k` is the  vertex of :math:`\mathcal{M}` the nearest to :math:`\underline{t}.`
 
 # %%
@@ -35,6 +35,7 @@ mesh = ot.RegularGrid(t0, dt, N)
 
 def gamma(tau):
     return 1.0 / (1.0 + tau * tau)
+
 
 # Create the collection of HermitianMatrix
 coll = ot.SquareMatrixCollection()
@@ -66,7 +67,8 @@ for k in range(N):
 curve = ot.Curve(x, 'User Model')
 
 # Create the graph
-myGraph = ot.Graph('User covariance model', 'Time', 'Covariance function', True)
+myGraph = ot.Graph('User covariance model', 'Time',
+                   'Covariance function', True)
 myGraph.add(curve)
 myGraph.setLegendPosition('topright')
 view = viewer.View(myGraph)

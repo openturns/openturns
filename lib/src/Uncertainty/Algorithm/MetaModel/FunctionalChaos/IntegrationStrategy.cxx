@@ -21,7 +21,7 @@
 #include "openturns/IntegrationStrategy.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -111,7 +111,7 @@ struct IntegrationStrategyCoefficientsPolicy
     // Nothing to do
   }
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
     {
@@ -173,7 +173,7 @@ void IntegrationStrategy::computeCoefficients(const Function & function,
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
     weightedOutput[i] = weights_[i] * outputSample_(i, marginalIndex);
   IntegrationStrategyCoefficientsPolicy policy(weightedOutput, designMatrix, addedRanks, addedAlpha);
-  TBB::ParallelFor( 0, addedSize, policy );
+  TBBImplementation::ParallelFor( 0, addedSize, policy );
   alpha.add(addedAlpha);
   alpha_k_p_ = alpha;
   // The residual is the mean squared error between the model and the meta model

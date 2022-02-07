@@ -14,7 +14,8 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the underlying distribution, degrees
-distribution = ot.ComposedDistribution([ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
+distribution = ot.ComposedDistribution(
+    [ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
 marginalDegrees = [15, 8]
 
 # %%

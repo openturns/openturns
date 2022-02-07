@@ -1,6 +1,6 @@
 """
-Create a custom spectral model
-==============================
+Create a spectral model
+=======================
 """
 # %%
 #
@@ -50,8 +50,8 @@ ot.Log.Show(ot.Log.NONE)
 # Create the frequency grid:
 fmin = 0.1
 df = 0.5
-N = int((10.0 - fmin)/ df)
-fgrid =  ot.RegularGrid(fmin, df, N)
+N = int((10.0 - fmin) / df)
+fgrid = ot.RegularGrid(fmin, df, N)
 
 
 # %%
@@ -97,7 +97,8 @@ for k in range(N):
     x[k, 1] = value[0, 0].real
 
 # Create the graph
-graph = ot.Graph('Spectral user-defined model', 'Frequency', 'Spectral density value', True)
+graph = ot.Graph('Spectral user-defined model', 'Frequency',
+                 'Spectral density value', True)
 curve = ot.Curve(x, 'UserSpectral')
 graph.add(curve)
 graph.setLegendPosition('topright')

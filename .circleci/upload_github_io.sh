@@ -4,7 +4,7 @@
 set -xe
 
 # early exit on PRs
-if test -n "${CIRCLE_PULL_REQUEST}"
+if test -n "${CIRCLE_PULL_REQUEST}" -o "${CIRCLE_PROJECT_USERNAME}" != "openturns"
 then
   exit 0
 fi

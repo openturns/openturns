@@ -23,55 +23,34 @@ compilers, but CMake can also be used with other build systems (like
 NMake, for instance) and other compilers, see CMake documentation for
 further details.
 
-The following programs are required in order to build OpenTURNS on
-Windows:
-
--  `Boost <https://www.boost.org/>`_
+The following programs are required in order to build on Windows:
 
 -  `OpenBLAS <https://github.com/xianyi/OpenBLAS/>`_ (or any other BLAS
    implementation)
 
-The following programs are optional, and we will show how to embed them
-into OpenTURNS:
+The following programs are optional, and we will show how to embed them:
 
--  `hmat-oss <https://github.com/jeromerobert/hmat-oss/>`_
+-  `Boost <https://www.boost.org/>`_
 
 -  `LibXML2 <http://www.xmlsoft.org/>`_
 
--  `muParser <http://muparser.beltoforion.de/>`_
-
 -  `TBB <https://www.threadingbuildingblocks.org/>`_
 
-Precompiled binaries for all these programs are available on
-http://sourceforge.net/projects/openturns/files/openturns/openturns-x.y.
+-  `hmat-oss <https://github.com/jeromerobert/hmat-oss/>`_
+
 If you want to recompile them from sources, you may also have to install
 
--  `Subversion <https://subversion.apache.org/>`_
-
 -  `Git <http://git-scm.com/>`_
-
-The following programs are optional, and are currently not used by this
-native Windows port:
-
--  `R <http://www.r-project.org/>`_
-
--  `Python <http://www.python.org/>`_
-
-Some OpenTURNS components will thus not be available. If R is installed
-on your computer, you should edit ``openturns.conf`` and set
-``R-executable-command`` resource in order to let OpenTURNS use it. On
-the other hand, as OpenTURNS is built without Python bindings, Python
-scripts cannot be used afterwards.
 
 Installation layout
 ~~~~~~~~~~~~~~~~~~~
 
-In this tutorial, OpenTURNS dependencies are installed by following the
+In this tutorial, dependencies are installed by following the
 layout shown in figure [fig:win-inst-layout]. Below the top-level
 directory are four configurations (Debug and Release for Windows 32 bits
 or 64 bits). Of course, if you are only interested by a single
 configuration, there is no need to create others. Each configuration
-contains subdirectories for Boost, hmat-oss, LibXML2, muParser, OpenBLAS
+contains subdirectories for Boost, hmat-oss, LibXML2, OpenBLAS
 and TBB programs. Each project contains one or several directories:
 ``bin`` for DLLs, ``include`` for header files, and ``lib`` for static
 libraries.
@@ -179,8 +158,8 @@ the easiest solution is to:
 
    Visual Studio settings to build tbb as a static library
 
-Build and install OpenTURNS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Build and install
+~~~~~~~~~~~~~~~~~
 
 OpenBLAS and TBB are low level libraries. Other libraries use STL, and
 care must be taken to avoid mismatch between runtime libraries. To this
@@ -274,27 +253,6 @@ wants to modify some settings when compiling OpenTURNS, one has to go to
 Visual Studio solution file found there, in this case ``OpenTURNS.sln``.
 For instance, one can build OpenTURNS tests from this solution file.
 Beware to always check that active configuration is the desired one.
-
-Unresolved problems
--------------------
-
-Python bindings are not generated
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-After installing SWIG and Python binaries, we had been able to generate
-Python modules without trouble, but Python could not load those modules.
-It seems that the same version of Visual Studio must be used to compile
-Python and modules, but we could only find Python binaries built with
-Visual Studio 9. The solution is to build Python from sources, but this
-had not been tested yet.
-
-Tests are not run
-~~~~~~~~~~~~~~~~~
-
-Tests can be compiled but not launched from Visual Studio, because they
-are run via shell commands, and also because tests executable are
-generated in a subdirectory. It is possible to work around those
-limitations and run tests, but this is currently not automated.
 
 Troubleshooting
 ---------------

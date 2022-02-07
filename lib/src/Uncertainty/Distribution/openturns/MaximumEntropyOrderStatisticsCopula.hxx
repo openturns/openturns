@@ -72,12 +72,12 @@ public:
   PiecewiseHermiteEvaluation getApproximation(const UnsignedInteger k = 0) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  using CopulaImplementation::getMarginal;
+  using SklarCopula::getMarginal;
   Distribution getMarginal(const Indices & indices) const override;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
-  using CopulaImplementation::setParametersCollection;
+  using SklarCopula::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;
 
   /* Interface specific to MaximumEntropyOrderStatisticsCopula */
@@ -93,11 +93,8 @@ protected:
 
 private:
 
-  /** Compute the covariance of the copula */
-  void computeCovariance() const override;
-
   /** The underlying order statistics distribution */
-  MaximumEntropyOrderStatisticsDistribution distribution_;
+  MaximumEntropyOrderStatisticsDistribution maxEntropyDistribution_;
 
 }; /* class MaximumEntropyOrderStatisticsCopula */
 

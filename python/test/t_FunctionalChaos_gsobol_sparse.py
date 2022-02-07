@@ -9,7 +9,7 @@ TESTPREAMBLE()
 try:
     # Log.Show( Log.Flags() | Log.INFO )
 
-      # Problem parameters
+    # Problem parameters
     dimension = 8
 
     # Create the Ishigami function

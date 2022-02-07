@@ -1,11 +1,6 @@
 %feature("docstring") OT::KFold
 "K-fold.
 
-Available constructors:
-    KFold()
-
-    KFold(*k*)
-
 Parameters
 ----------
 k : positive integer
@@ -20,7 +15,7 @@ Notes
 -----
 KFold inherits from :class:`~openturns.FittingAlgorithm`.
 
-This class is not usable because it has sense only whithin the
+This class is not usable on its own because it has sense only within the
 :class:`~openturns.FunctionalChaosAlgorithm`."
 
 // ---------------------------------------------------------------------

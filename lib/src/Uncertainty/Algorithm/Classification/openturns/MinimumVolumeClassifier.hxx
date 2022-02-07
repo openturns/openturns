@@ -44,7 +44,7 @@ public:
 
   /** Parameters constructor */
   MinimumVolumeClassifier(const Distribution & distribution,
-                          const Scalar alpha);
+                          const Point & alpha);
 
   /** Virtual constructor */
   MinimumVolumeClassifier * clone() const override;
@@ -61,14 +61,14 @@ public:
   Indices classify(const Sample & inS) const override;
 
   /** Level set accessor */
-  LevelSet getLevelSet() const;
+  LevelSet getLevelSet(const UnsignedInteger j = 0) const;
 
   /** Grade a point as if it were associated to a class */
   Scalar grade(const Point & inP, const UnsignedInteger outC) const override;
 
   /** Distribution accessors */
   Distribution getDistribution() const;
-  Scalar getThreshold() const;
+  Point getThreshold() const;
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const override;
@@ -86,11 +86,11 @@ public:
 protected:
   // the distribution and confidence level that defines the minimum volume domain
   Distribution distribution_;
-  Scalar alpha_ = 0.0;
+  Point alpha_;
 
   mutable Bool isLevelSetComputed_ = false;
-  mutable LevelSet levelSet_;
-  mutable Scalar threshold_ = 0.0;
+  mutable Collection<LevelSet> levelSetCollection_;
+  mutable Point threshold_;
 
 }; /* class MinimumVolumeClassifier */
 

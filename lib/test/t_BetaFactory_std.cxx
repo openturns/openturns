@@ -74,13 +74,6 @@ int main(int, char *[])
     fullprint << "Default Beta=" << estimatedBeta << std::endl;
     estimatedBeta = factory.buildAsBeta(distribution.getParameter());
     fullprint << "Beta from parameters=" << estimatedBeta << std::endl;
-    // Test for constant sample
-    sample = Sample(size, Point(1, 0.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = Sample(size, Point(1, 1.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {

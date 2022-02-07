@@ -2,7 +2,7 @@
 Bayesian calibration of the flooding model
 ==========================================
 """
-# %% 
+# %%
 #
 # Abstract
 # --------
@@ -14,16 +14,16 @@ Bayesian calibration of the flooding model
 # -----------------------
 #
 # The vector of parameters to calibrate is:
-# 
+#
 # .. math::
 #    \theta = (K_s,Z_v,Z_m).
-# 
+#
 #
 # The variables to calibrate are :math:`(K_s,Z_v,Z_m)` and are set to the following values:
-# 
+#
 # .. math::
 #    K_s = 30, \qquad Z_v = 50, \qquad Z_m = 55.
-# 
+#
 #
 # Observations
 # ------------
@@ -33,26 +33,26 @@ Bayesian calibration of the flooding model
 #
 # .. math::
 #    \sigma=0.1.
-# 
+#
 #
 # Therefore, the observed water heights are:
 #
 # .. math::
 #    H_i = G(Q_i,K_s,Z_v,Z_m) + \epsilon_i
-# 
+#
 #
 # for :math:`i=1,...,n` where
 #
 # .. math::
 #    \epsilon \sim \mathcal{N}(0,\sigma^2)
-# 
+#
 #
 # and we make the hypothesis that the observation errors are independent.
 # We consider a sample size equal to:
 #
 # .. math::
 #    n=20.
-# 
+#
 #
 # The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`, i.e. each observation is a couple made of the flowrate and the corresponding river height.
 #
@@ -66,14 +66,16 @@ Bayesian calibration of the flooding model
 # -------------------------
 
 # %%
+import pylab as pl
+from openturns.viewer import View
+from openturns.usecases import flood_model as flood_model
+import openturns.viewer as viewer
 import numpy as np
 import openturns as ot
 ot.Log.Show(ot.Log.NONE)
-import openturns.viewer as viewer
 
 # %%
 # A basic implementation of the probabilistic model is available in the usecases module :
-from openturns.usecases import flood_model as flood_model
 fm = flood_model.FloodModel()
 
 # %%
@@ -87,7 +89,9 @@ fm = flood_model.FloodModel()
 # In these cases, we return an infinite number.
 
 # %%
-def functionFlooding(X) :
+
+
+def functionFlooding(X):
     L = 5.0e3
     B = 300.0
     Q, K_s, Z_v, Z_m = X
@@ -100,7 +104,7 @@ def functionFlooding(X) :
 
 
 # %%
-g = ot.PythonFunction(4, 1, functionFlooding) 
+g = ot.PythonFunction(4, 1, functionFlooding)
 g = ot.MemoizeFunction(g)
 g.setOutputDescription(["H (m)"])
 
@@ -137,8 +141,8 @@ outputH = g(inputSample)
 # Generate the observation noise and add it to the output of the model.
 
 # %%
-sigmaObservationNoiseH = 0.1 # (m)
-noiseH = ot.Normal(0.,sigmaObservationNoiseH)
+sigmaObservationNoiseH = 0.1  # (m)
+noiseH = ot.Normal(0., sigmaObservationNoiseH)
 ot.RandomGenerator.SetSeed(0)
 sampleNoiseH = noiseH.getSample(nbobs)
 Hobs = outputH + sampleNoiseH
@@ -147,11 +151,11 @@ Hobs = outputH + sampleNoiseH
 # Plot the Y observations versus the X observations.
 
 # %%
-Qobs = inputSample[:,0]
+Qobs = inputSample[:, 0]
 
 # %%
-graph = ot.Graph("Observations","Q (m3/s)","H (m)",True)
-cloud = ot.Cloud(Qobs,Hobs)
+graph = ot.Graph("Observations", "Q (m3/s)", "H (m)", True)
+cloud = ot.Cloud(Qobs, Hobs)
 graph.add(cloud)
 view = viewer.View(graph)
 
@@ -167,8 +171,9 @@ view = viewer.View(graph)
 def fullModelPy(X):
     Q, K_s, Z_v, Z_m = X
     H = g(X)[0]
-    sigmaH = 0.5 # (m^2) The standard deviation of the observation error.
-    return [H,sigmaH]
+    sigmaH = 0.5  # (m^2) The standard deviation of the observation error.
+    return [H, sigmaH]
+
 
 fullModel = ot.PythonFunction(4, 2, fullModelPy)
 model = ot.ParametricFunction(fullModel, [0], Qobs[0])
@@ -181,8 +186,8 @@ model
 KsInitial = 20.
 ZvInitial = 49.
 ZmInitial = 51.
-parameterPriorMean = ot.Point([KsInitial,ZvInitial,ZmInitial])
-paramDim = parameterPriorMean.getDimension()
+parameterPriorMean = [KsInitial, ZvInitial, ZmInitial]
+paramDim = len(parameterPriorMean)
 
 # %%
 # Define the covariance matrix of the parameters :math:`\theta` to calibrate.
@@ -194,21 +199,21 @@ sigmaZm = 1.
 
 # %%
 parameterPriorCovariance = ot.CovarianceMatrix(paramDim)
-parameterPriorCovariance[0,0] = sigmaKs**2
-parameterPriorCovariance[1,1] = sigmaZv**2
-parameterPriorCovariance[2,2] = sigmaZm**2
+parameterPriorCovariance[0, 0] = sigmaKs**2
+parameterPriorCovariance[1, 1] = sigmaZv**2
+parameterPriorCovariance[2, 2] = sigmaZm**2
 parameterPriorCovariance
 
 # %%
 # Define the the prior distribution :math:`\pi(\underline{\theta})` of the parameter :math:`\underline{\theta}`
 
 # %%
-prior = ot.Normal(parameterPriorMean,parameterPriorCovariance)
+prior = ot.Normal(parameterPriorMean, parameterPriorCovariance)
 prior.setDescription(['Ks', 'Zv', 'Zm'])
 prior
 
 # %%
-# Define the distribution of observations :math:`\underline{y} | \underline{z}` conditional on model predictions. 
+# Define the distribution of observations :math:`\underline{y} | \underline{z}` conditional on model predictions.
 #
 # Note that its parameter dimension is the one of :math:`\underline{z}`, so the model must be adjusted accordingly. In other words, the input argument of the `setParameter` method of the conditional distribution must be equal to the dimension of the output of the `model`. Hence, we do not have to set the actual parameters: only the type of distribution is used.
 
@@ -220,7 +225,7 @@ conditional
 # Proposal distribution: uniform.
 
 # %%
-proposal = [ot.Uniform(-5., 5.),ot.Uniform(-1., 1.),ot.Uniform(-1., 1.)]
+proposal = [ot.Uniform(-5., 5.), ot.Uniform(-1., 1.), ot.Uniform(-1., 1.)]
 proposal
 
 # %%
@@ -291,8 +296,6 @@ posterior = kernel.build(sample)
 # Display prior vs posterior for each parameter.
 
 # %%
-from openturns.viewer import View
-import pylab as pl
 
 fig = pl.figure(figsize=(12, 4))
 

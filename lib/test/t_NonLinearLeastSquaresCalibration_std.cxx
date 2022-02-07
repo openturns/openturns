@@ -54,9 +54,7 @@ int main(int, char *[])
     Sample y = model(x);
     y += Normal(Point(2), Point(2, 0.05), IdentityMatrix(2)).getSample(y.getSize());
     Point candidate(3, 1.0);
-    Indices bootstrapSizes(0);
-    bootstrapSizes.add(0);
-    bootstrapSizes.add(100);
+    const Indices bootstrapSizes = {0, 30};
     for (UnsignedInteger n = 0; n < bootstrapSizes.getSize(); ++n)
     {
       // With default optim

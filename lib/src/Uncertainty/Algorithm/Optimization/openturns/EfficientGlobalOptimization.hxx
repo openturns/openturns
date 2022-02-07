@@ -91,6 +91,9 @@ public:
   /** Expected improvement function */
   Sample getExpectedImprovement() const;
 
+  /** Kriging result accessor (especially useful after run() has been called) */
+  KrigingResult getKrigingResult() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

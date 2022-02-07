@@ -5,12 +5,12 @@ Create a parametric function
 # %%
 # In this example we are going to create a parametric function:
 #
-# .. math:: 
+# .. math::
 #    d_{L,I}(E, F):  \mathbb{R}^2  \rightarrow \mathbb{R}
-#   
+#
 # function from an existing "full" function:
 #
-# .. math:: 
+# .. math::
 #  d(E, F, L, I):  \mathbb{R}^4  \rightarrow \mathbb{R}
 #
 
@@ -29,6 +29,8 @@ def d_func(X):
     E, F, L, I = X
     d = -F * L**3 / (3.0 * E * I)
     return [d]
+
+
 beam = ot.PythonFunction(4, 1, d_func)
 
 # %%

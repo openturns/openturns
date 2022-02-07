@@ -3,31 +3,10 @@
 
 Returned by optimization solvers, see :class:`~openturns.OptimizationAlgorithm`.
 
-Available constructors:
-    OptimizationResult(*optimalPoint, optimalValue, evaluationNumber, absoluteError, relativeError, residualError, constraintError*)
-
-    OptimizationResult(*inputDimension, outputDimension*)
-
 Parameters
 ----------
-optimalPoint : sequence of float
-    Optimal point.
-optimalValue : sequence of float
-    Value at optimal point.
-evaluationNumber : int
-    Number of evaluations.
-absoluteError : float
-    Absolute error of the input :math:`\vect{x}`. See the `getAbsoluteError` method for details. 
-relativeError : float
-    Relative error of the input :math:`\vect{x}`. See the `getRelativeError` method for details.
-residualError : float
-    Residual error of the output of the objective function :math:`f(\vect{x})`. See the `getResidualError` method for details.
-constraintError : float
-    Constraint error.
-inputDimension : int
-    Dimension of the input of the objective function.
-outputDimension : int
-    Dimension of the output of the objective function."
+problem : :class:`~openturns.OptimizationProblem`
+    Problem being solved."
 
 // ---------------------------------------------------------------------
 

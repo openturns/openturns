@@ -119,7 +119,6 @@ ot_add_python_module(common common_module.i
                       Less.i Less_doc.i.in
                       LessOrEqual.i LessOrEqual_doc.i.in
                       Cache.i
-                      PlatformInfo.i PlatformInfo_doc.i.in
                       Pointer.i
                       InterfaceObject.i InterfaceObject_doc.i.in
                       TypedInterfaceObject.i
@@ -139,6 +138,7 @@ ot_add_python_module(typ typ_module.i
                       Collection.i Collection_doc.i.in
                       PersistentCollection.i
                       Description.i Description_doc.i.in
+                      PlatformInfo.i PlatformInfo_doc.i.in
                       Point.i Point_doc.i.in
                       PointWithDescription.i PointWithDescription_doc.i.in
                       DomainImplementation.i DomainImplementation_doc.i.in
@@ -191,19 +191,19 @@ ot_add_python_module(statistics statistics_module.i
                       FilteringWindowsImplementation.i FilteringWindowsImplementation_doc.i.in
                       FilteringWindows.i FilteringWindows_doc.i.in
                       Hamming.i Hamming_doc.i.in
-                      Hanning.i Hanning_doc.i.in
+                      Hann.i Hann_doc.i.in
                       FFTImplementation.i FFTImplementation_doc.i.in
                       FFT.i FFT_doc.i.in
                       SpectralModelImplementation.i SpectralModelImplementation_doc.i.in
                       SpectralModel.i SpectralModel_doc.i.in
                       CovarianceModelImplementation.i CovarianceModelImplementation_doc.i.in
                       CovarianceModel.i CovarianceModel_doc.i.in
-                      StationaryCovarianceModel.i
                       StationaryFunctionalCovarianceModel.i StationaryFunctionalCovarianceModel_doc.i.in
                       SpectralModelFactoryImplementation.i SpectralModelFactoryImplementation_doc.i.in
                       SpectralModelFactory.i SpectralModelFactory_doc.i.in
                       UserDefinedSpectralModel.i UserDefinedSpectralModel_doc.i.in
                       WelchFactory.i WelchFactory_doc.i.in
+                      KroneckerCovarianceModel.i KroneckerCovarianceModel_doc.i.in
                       ExponentialModel.i ExponentialModel_doc.i.in
                       ExponentiallyDampedCosineModel.i ExponentiallyDampedCosineModel_doc.i.in
                       CauchyModel.i CauchyModel_doc.i.in
@@ -227,6 +227,7 @@ ot_add_python_module(statistics statistics_module.i
                       HMatrix.i HMatrix_doc.i.in
                       HMatrixImplementation.i HMatrixImplementation_doc.i.in
                       BaseStatisticsTemplateDefs.i
+                      IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i.in
                    )
 
 ot_add_python_module(geom geom_module.i
@@ -330,6 +331,7 @@ ot_add_python_module(func func_module.i
                       KarhunenLoeveProjection.i KarhunenLoeveProjection_doc.i.in
                       KarhunenLoeveLifting.i KarhunenLoeveLifting_doc.i.in
                       IndicatorFunction.i IndicatorFunction_doc.i.in
+                      DistanceToDomainFunction.i DistanceToDomainFunction_doc.i.in
                       ValueFunction.i ValueFunction_doc.i.in
                       VertexValueFunction.i VertexValueFunction_doc.i.in
                       TranslationFunction.i TranslationFunction_doc.i.in
@@ -344,6 +346,7 @@ ot_add_python_module(func func_module.i
                       DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseEvaluation.i DatabaseEvaluation_doc.i.in
                       IndicatorEvaluation.i
+                      DistanceToDomainEvaluation.i
                       PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i.in
                       PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i.in
                       ProductPolynomialEvaluation.i ProductPolynomialEvaluation_doc.i.in
@@ -528,7 +531,6 @@ ot_add_python_module(model_copula model_copula_module.i
                       ContinuousDistribution.i
                       EllipticalDistribution.i
                       DiscreteDistribution.i
-                      CopulaImplementation.i CopulaImplementation_doc.i.in
                       ArchimedeanCopula.i ArchimedeanCopula_doc.i.in
                       SklarCopula.i SklarCopula_doc.i.in
                       IndependentCopula.i IndependentCopula_doc.i.in
@@ -725,6 +727,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
+                      VonMisesFactory.i VonMisesFactory_doc.i.in
                       WeibullMin.i WeibullMin_doc.i.in
                       WeibullMinFactory.i WeibullMinFactory_doc.i.in
                       WeibullMinMuSigma.i WeibullMinMuSigma_doc.i.in
@@ -778,6 +781,9 @@ TemperatureProfile.i TemperatureProfile_doc.i.in
 TemperatureProfileImplementation.i TemperatureProfileImplementation_doc.i.in
                       LowDiscrepancyExperiment.i LowDiscrepancyExperiment_doc.i.in
                       MonteCarloExperiment.i MonteCarloExperiment_doc.i.in
+                      SplitterImplementation.i SplitterImplementation_doc.i.in
+                      KFoldSplitter.i KFoldSplitter_doc.i.in
+                      LeaveOneOutSplitter.i LeaveOneOutSplitter_doc.i.in
                       UncertaintyWeightedExperimentTemplateDefs.i
                    )
 
@@ -941,7 +947,7 @@ ot_add_python_module(simulation simulation_module.i
                       SafeAndSlow.i SafeAndSlow_doc.i.in
                       SubsetSamplingResult.i SubsetSamplingResult_doc.i.in
                       SubsetSampling.i SubsetSampling_doc.i.in
-                      AdaptiveDirectionalSampling.i AdaptiveDirectionalSampling_doc.i.in
+                      AdaptiveDirectionalStratification.i AdaptiveDirectionalStratification_doc.i.in
                       ExpectationSimulationAlgorithm.i ExpectationSimulationAlgorithm_doc.i.in
                       ExpectationSimulationResult.i ExpectationSimulationResult_doc.i.in
                       SobolSimulationAlgorithm.i SobolSimulationAlgorithm_doc.i.in
@@ -980,7 +986,7 @@ endif ()
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
 
-set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py shims.py)
+set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py)
 
 install (FILES ${EXTRA_PYTHON_FILES}
           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
@@ -1052,7 +1058,7 @@ if (SPHINX_FOUND)
   set (sphinx_clones)
   foreach (file ${sphinx_sources})
     if (EXISTS ${file})
-      file (RELATIVE_PATH rel_file ${SPHINX_SOURCE_DIR} ${file})
+      file (RELATIVE_PATH rel_file "${SPHINX_SOURCE_DIR}" "${file}")
       get_filename_component (rel_path ${rel_file} PATH)
       file (MAKE_DIRECTORY ${SPHINX_BINARY_DIR}/${rel_path})
       set (sphinx_clone ${SPHINX_BINARY_DIR}/${rel_file})

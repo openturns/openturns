@@ -68,7 +68,7 @@ desired by the user. Note that the higher
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_data_analysis/statistical_hypothesis_testing/plot_cramer_vonmises_test`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_test_normality`
 
 .. topic:: References:
 

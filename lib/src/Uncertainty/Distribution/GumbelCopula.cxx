@@ -36,6 +36,7 @@ GumbelCopula::GumbelCopula()
   : ArchimedeanCopula()
   , theta_(2.0)
 {
+  isCopula_ = true;
   setName( "GumbelCopula" );
   // We set the dimension of the GumbelCopula distribution
   setDimension( 2 );
@@ -47,6 +48,7 @@ GumbelCopula::GumbelCopula(const Scalar theta)
   : ArchimedeanCopula()
   , theta_(0.0)
 {
+  isCopula_ = true;
   setName( "GumbelCopula" );
   // We set the dimension of the GumbelCopula distribution
   setDimension( 2 );
@@ -290,12 +292,6 @@ Scalar GumbelCopula::computeConditionalQuantile(const Scalar q, const Point & y)
   const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
   const Scalar factor = minusLogUPowTheta / (u * q * minusLogU);
   return std::exp(-std::pow(std::exp(theta_ * (std::log(factor) / (theta_ - 1.0) - SpecFunc::LambertW(std::pow(factor, inverseThetaMinusOne) * inverseThetaMinusOne))) - minusLogUPowTheta, 1.0 / theta_));
-}
-
-/* Compute the covariance of the distribution */
-void GumbelCopula::computeCovariance() const
-{
-  CopulaImplementation::computeCovariance();
 }
 
 /* Get the Kendall concordance of the distribution */

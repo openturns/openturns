@@ -31,22 +31,22 @@ static const Factory<StationaryFunctionalCovarianceModel> Factory_StationaryFunc
 
 /* Constructor based on input dimension */
 StationaryFunctionalCovarianceModel::StationaryFunctionalCovarianceModel()
-  : StationaryCovarianceModel(Point(1, 1.0), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(1, 1.0), Point(1, 1.0))
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 StationaryFunctionalCovarianceModel::StationaryFunctionalCovarianceModel(const Point & scale,
     const Point & amplitude,
     const Function & rho)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
+  isStationary_ = true;
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "Only models with one-dimensional output should be defined"
                                          << " (got output dimension=" << getOutputDimension() << ")";
   setRho(rho);
-  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
@@ -56,17 +56,23 @@ StationaryFunctionalCovarianceModel * StationaryFunctionalCovarianceModel::clone
 }
 
 /* Computation of the covariance function */
-Scalar StationaryFunctionalCovarianceModel::computeStandardRepresentative(const Point & tau) const
+Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   Point tauOverTheta(tau);
   for (UnsignedInteger i = 0; i < inputDimension_; ++ i)
     tauOverTheta[i] /= scale_[i];
-  return rho_(tauOverTheta)[0];
+  // The model is stationary
+  // Thus we should care about value for tau=0
+  const Scalar tauOverThetaNorm = tauOverTheta.norm();
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  if (tauOverThetaNorm <= SpecFunc::ScalarEpsilon)
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+  return outputCovariance(0, 0) * rho_(tauOverTheta)[0];
 }
 
-Scalar StationaryFunctionalCovarianceModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
   Point tauOverTheta(inputDimension_);
@@ -74,7 +80,28 @@ Scalar StationaryFunctionalCovarianceModel::computeStandardRepresentative(const 
   Collection<Scalar>::const_iterator t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++ i, ++ s_it, ++ t_it)
     tauOverTheta[i] = (*s_it - *t_it) / scale_[i];
-  return rho_(tauOverTheta)[0];
+  // The model is stationary
+  // Thus we should care about value for tau=0
+  const Scalar tauOverThetaNorm = tauOverTheta.norm();
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  if (tauOverThetaNorm <= SpecFunc::ScalarEpsilon)
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+  return outputCovariance(0, 0) * rho_(tauOverTheta)[0];
+}
+
+Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  if (tauOverThetaNorm <= SpecFunc::ScalarEpsilon)
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+  const Point tauOverTheta(1, tau / scale_[0]);
+  return outputCovariance(0, 0) * rho_(tauOverTheta)[0];
 }
 
 /* Gradient */
@@ -168,14 +195,14 @@ String StationaryFunctionalCovarianceModel::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void StationaryFunctionalCovarianceModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute( "rho_", rho_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void StationaryFunctionalCovarianceModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute( "rho_", rho_);
 }
 

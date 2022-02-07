@@ -46,12 +46,10 @@ GaussianProcess::GaussianProcess()
   , covarianceModel_()
   , covarianceCholeskyFactor_(0)
   , covarianceHMatrix_()
-  , isInitialized_(false)
   , hasStationaryTrend_(true)
   , checkedStationaryTrend_(true)
   , trend_()
   , stationaryTrendValue_(0.0)
-  , samplingMethod_(0)
 {
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(getOutputDimension(), "0.0")), getMesh());
@@ -69,12 +67,10 @@ GaussianProcess::GaussianProcess(const TrendTransform & trend,
   , covarianceModel_(covarianceModel)
   , covarianceCholeskyFactor_(0)
   , covarianceHMatrix_()
-  , isInitialized_(false)
   , hasStationaryTrend_(false)
   , checkedStationaryTrend_(false)
   , trend_(trend)
   , stationaryTrendValue_(trend.getOutputDimension())
-  , samplingMethod_(0)
 {
   if (trend.getTrendFunction().getInputDimension() != covarianceModel.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the covariance model input dimension=" << covarianceModel.getInputDimension();
   if (trend.getOutputDimension() != covarianceModel.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an output dimension=" << trend.getOutputDimension() << " different from the covariance model dimension=" << covarianceModel.getOutputDimension();
@@ -89,12 +85,10 @@ GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
   , covarianceModel_(covarianceModel)
   , covarianceCholeskyFactor_(0)
   , covarianceHMatrix_()
-  , isInitialized_(false)
   , hasStationaryTrend_(true)
   , checkedStationaryTrend_(true)
   , trend_()
   , stationaryTrendValue_(covarianceModel.getOutputDimension())
-  , samplingMethod_(0)
 {
   // We use the upper class accessor to prevent the reinitialization of the flags
   ProcessImplementation::setMesh(mesh);
@@ -125,7 +119,7 @@ void GaussianProcess::initialize() const
   }
 
   // There is a specific regularization for h-matrices
-  if (samplingMethod_ == 1)
+  if (samplingMethod_ == SamplingMethod::HMAT)
   {
     HMatrixFactory hmatFactory;
     HMatrixParameters hmatrixParameters;
@@ -150,30 +144,40 @@ void GaussianProcess::initialize() const
     Bool continuationCondition = true;
     // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
     // The regularization is needed for fast decreasing covariance models
-    const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
-    const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
+    Scalar maxEV = -1.0;
+    const Scalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
+    const Scalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
     Scalar cumulatedScaling = 0.0;
     Scalar scaling = startingScaling;
-    while (continuationCondition && (cumulatedScaling < maximalScaling))
+    while (continuationCondition)
     {
-      const UnsignedInteger fullSize = covarianceMatrix.getDimension();
-      for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
-      LOGINFO(OSS() << "Factor the covariance matrix");
       try
       {
         covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
         continuationCondition = false;
       }
-      catch (...)
+      // If the factorization failed regularize the matrix
+      // Here we use a generic exception as different exceptions may be thrown
+      catch (Exception &)
       {
+        // If the largest eigenvalue module has not been computed yet...
+        if (maxEV < 0.0)
+        {
+          maxEV = covarianceMatrix.computeLargestEigenValueModule();
+          LOGDEBUG(OSS() << "maxEV=" << maxEV);
+          scaling *= maxEV;
+        }
         cumulatedScaling += scaling ;
+        LOGDEBUG(OSS() << "scaling=" << scaling << ", cumulatedScaling=" << cumulatedScaling);
+        // Unroll the regularization to optimize the computation
+        for (UnsignedInteger i = 0; i < covarianceMatrix.getDimension(); ++i) covarianceMatrix(i, i) += scaling;
         scaling *= 2.0;
+        continuationCondition = scaling < maxEV * maximalScaling;
       }
-    } // While
-    if (scaling >= maximalScaling)
-      throw InvalidArgumentException(HERE) << "Error; Could not compute the Cholesky factor"
+    }
+    if (maxEV > 0.0 && scaling >= maximalScaling * maxEV)
+      throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky, could not compute the Cholesky factor."
                                            << " Scaling up to "  << cumulatedScaling << " was not enough";
-
     if (cumulatedScaling > 0.0)
       LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
   } // else samplingMethod_ != 1
@@ -224,11 +228,11 @@ void GaussianProcess::setTimeGrid(const RegularGrid & timeGrid)
 }
 
 /** Set sampling method accessor */
-void GaussianProcess::setSamplingMethod(const UnsignedInteger samplingMethod)
+void GaussianProcess::setSamplingMethod(const SamplingMethod samplingMethod)
 {
   if (samplingMethod > 2)
-    throw InvalidArgumentException(HERE) << "Sampling method should be 0 (Cholesky), 1 (H-Matrix implementation) or 2 (Gibbs, available only in dimension 1 ";
-  if ((samplingMethod == 2) && getOutputDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Sampling method should be 0 (Cholesky), 1 (H-Matrix implementation) or 2 (Gibbs, available only in dimension 1)";
+  if ((samplingMethod == SamplingMethod::GIBBS) && getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "Sampling method Gibbs is available only in dimension 1 ";
   // Set the sampling method
   if (samplingMethod != samplingMethod_)

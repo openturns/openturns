@@ -78,9 +78,6 @@ int main(int, char *[])
       if (index > 0) spatialCorrelation(index, index - 1) = 1.0 / index;
     }
     fullprint << "spatialCorrelation=" << spatialCorrelation << std::endl;
-    /* checking the cast*/
-    StationaryCovarianceModel mySecondOrderModel(ExponentialModel(scale, amplitude, spatialCorrelation));
-    fullprint << "mySecondOrderModel = " << mySecondOrderModel << std::endl;
 
     /* Second order model - high dimension */
     ExponentialModel myHighModel(scale, amplitude, spatialCorrelation);

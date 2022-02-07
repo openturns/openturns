@@ -155,8 +155,7 @@ void AbdoRackwitz::run()
   UnsignedInteger evaluationNumber = levelFunction.getEvaluationCallsNumber() - initialEvaluationNumber;
 
   // reset result
-  result_ = OptimizationResult(currentPoint_.getDimension());
-  result_.setProblem(getProblem());
+  result_ = OptimizationResult(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
   while ((!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) && (evaluationNumber <= getMaximumEvaluationNumber()))
@@ -170,7 +169,7 @@ void AbdoRackwitz::run()
     /* Compute the current Lagrange multiplier */
     const Scalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */
-    if (normGradientSquared == 0)
+    if (!(normGradientSquared > 0))
     {
       throw InternalException(HERE) << "Error in Abdo Rackwitz algorithm: the gradient of the level function is zero at point u=" << currentPoint_;
     }

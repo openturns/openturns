@@ -99,7 +99,8 @@ print("Residual sample = ", repr(
 # 2-d
 dist = ot.Uniform(-pi/2, pi/2)
 model = ot.SymbolicFunction(['x'], ['sin(x)', 'cos(x)'])
-metaModel = ot.SymbolicFunction(['x'], ['x - x^3/6.0 + x^5/120.0', 'cos(1.2*x)'])
+metaModel = ot.SymbolicFunction(
+    ['x'], ['x - x^3/6.0 + x^5/120.0', 'cos(1.2*x)'])
 x = dist.getSample(1000)
 y = model(x)
 val = ot.MetaModelValidation(x, y, metaModel)

@@ -183,9 +183,6 @@ public:
   /** Dump HMatrix onto file */
   void dump(const String & name) const;
 
-  /** Change HMatrix settings */
-  Bool setKey(const String & name, const String & value);
-
   /** String converter */
   String __repr__() const override;
 
@@ -194,7 +191,7 @@ public:
 
 private:
   // DO NOT USE
-  void * hmatInterface_;
+  std::shared_ptr<void> hmatInterface_;
   Pointer<HMatrixClusterTree> hmatClusterTree_;
   void * hmat_;
 
@@ -213,7 +210,6 @@ public:
 
 private:
   const CovarianceModel covarianceModel_;
-  Bool definesComputeStandardRepresentative_;
   const Sample vertices_;
   const Collection<Scalar>::const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;
@@ -232,7 +228,6 @@ public:
 
 private:
   const CovarianceModel covarianceModel_;
-  Bool definesComputeStandardRepresentative_;
   const Sample vertices_;
   const Collection<Scalar>::const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;

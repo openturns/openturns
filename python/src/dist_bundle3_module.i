@@ -48,6 +48,7 @@
 %include UserDefined.i
 %include UserDefinedFactory.i
 %include VonMises.i
+%include VonMisesFactory.i
 %include WeibullMin.i
 %include WeibullMinFactory.i
 %include WeibullMinMuSigma.i

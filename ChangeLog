@@ -1,6 +1,99 @@
 = New Features =
 
-== 1.17 release (in-progress) == #release-1.17
+== 1.19 release (in-progress) == #release-1.19
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed deprecated Hanning alias
+ * Removed deprecated AdaptiveDirectionalSampling alias
+ * Removed deprecated VisualTest::DrawCobWeb method
+ * Removed deprecated shims module
+ * Removed deprecated TBB.SetNumberOfThreads/GetNumberOfThreads
+ * Removed deprecated MultiFORM.setMaximumNumberOfDesignPoints/getMaximumNumberOfDesignPoints
+ * Removed deprecated SubsetSampling.getNumberOfSteps
+ * coupling_tools.execute: deprecated get_stderr,get_stdout for capture_output, returns CompletedProcess
+ * Deprecated Nlopt|Ceres|Bonmin|CMinpack|Ipopt|TBB|HMatrixFactory::IsAvailable in favor of PlatformInfo::HasFeature, see also GetFeatures
+
+=== Documentation ===
+
+=== Python module ===
+ * Hide C++ getImplementation methods and add Python-specific getImplementation methods with automatic dynamic typecasting
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
+== 1.18 release (2021-11-10) == #release-1.18
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+ * DistanceToDomainFunction
+
+==== API changes ====
+ * Removed deprecated MultiStart::setStartingPoints/getStartingPoints
+ * Removed deprecated KarhunenLoeveResult::getEigenValues
+ * Removed deprecated coupling_tools.execute is_shell/workdir/shell_exe/check_exit_code arguments
+ * RandomVector::get/setParameter and getParameterDescription available to PythonRandomVector
+ * Implemented CovarianceModel::computeCrossCovariance
+ * Deprecated Hanning in favor of Hann
+ * Deprecated AdaptiveDirectionalSampling in favor of AdaptiveDirectionalStratification
+ * Deprecated VisualTest::DrawCobWeb in favor of DrawParallelCoordinates
+ * IndicatorFunction constructor takes a Domain as input
+ * Intervals and DomainUnions get new method computeDistanceToDomain(Point or Sample)
+ * Renamed some ResourceMap keys: cache-max-size>Cache-MaxSize, parallel-threads>TBB-ThreadsNumber
+ * Deprecated TBB.SetNumberOfThreads/GetNumberOfThreads
+ * Deprecated MultiFORM.setMaximumNumberOfDesignPoints/getMaximumNumberOfDesignPoints
+ * Deprecated SubsetSampling.getNumberOfSteps
+ * Normal and Student distributions: no need to specify the R parameter if it is the identity matrix
+ * KrigingResult::getConditionalMean and getConditionalMarginalVariance yield Samples instead of Points when applied to Samples
+ * Deprecated shims module
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+ * #1840 (HMatrixFactory leaks)
+ * #1842 (libOT.so.0.0.0 doesn't have a SONAME)
+ * #1843 (Ali-Mikhail-Haq copula parameter value)
+ * #1844 (MaximumDistribution::computePDF is wrong when all the marginals are equal and independent)
+ * #1845 (MemoizeFunction does not propagate to finite difference gradient&hessian)
+ * #1847 (ParametricFunction require unnecessary function evaluations)
+ * #1854 (Sample indexing does not work on np.int64 type)
+ * #1856 (Speed up Normal computeSurvivalFunction)
+ * #1857 (ProductCovarianceModel fails when constructed with DiracCovarianceModel)
+ * #1858 (Normal::computeCDF(sample) crash for large dimensions)
+ * #1861 (Still some instabilities in Kriging with ot.StationaryFunctionalCovarianceModel)
+ * #1864 (FORM - IMPORTANCE FACTOR)
+ * #1868 (Not compatible with hmat-oss-1.7.1: no member named 'compressionMethod' in 'hmat_settings_t')
+ * #1870 (TruncatedDistribution fails to compute quantiles)
+ * #1874 (ProcessSample.getSampleAtVertex() may be useful as a public method)
+ * #1877 (How to model singular multivariate distributions?)
+ * #1878 (Rename Hanning filtering window)
+ * #1879 (Adaptive Directional Sampling Algorithm: the drawProbabilityConvergence graph may be wrong)
+ * #1880 (Adaptive Directional Sampling: some enhancements proposed)
+ * #1882 (Is Distribution::getLinearCorrelation useful ?)
+ * #1883 (Strange behavior of FORM ?)
+ * #1884 (setDesign can lead to wrong Sobol' indices)
+ * #1891 (Correlation of Halton sequence at high dimensions)
+ * #1911 (DirectionalSampling freezes python if not correctly initialized)
+ * #1912 (splitter: missing doc)
+ * #1915 (computePDFGradient(const Sample &) should rely on computePDFGradient(const Point &) in DistributionImplementation)
+ * #1918 (PythonDistribution does not allow to overload the isDiscrete() method)
+
+
+== 1.17 release (2021-05-12) == #release-1.17
 
 === Library ===
 
@@ -10,16 +103,28 @@
  * VertexValuePointToFieldFunction
  * KarhunenLoeveReduction
  * KarhunenLoeveValidation
+ * IsotropicCovarianceModel
+ * KroneckerCovarianceModel
+ * VonMisesFactory
+ * KFoldSplitter, LeaveOneOutSplitter
 
 ==== API changes ====
  * Removed deprecated Pairs alias
  * Removed deprecated SORMResult::getEventProbabilityHohenBichler/getGeneralisedReliabilityIndexHohenBichler
  * Removed deprecated OptimizationResult::getLagrangeMultipliers, OptimizationAlgorithm::computeLagrangeMultipliers
  * Removed deprecated FittingTest::Kolmogorov, FittingTest::BestModelKolmogorov (DistributionFactory argument only)
- * Moved Sample::computeStandardDeviationPerComponent, to computeStandardDeviation
+ * Deprecated Sample::computeStandardDeviationPerComponent, use computeStandardDeviation
  * Deprecated KarhunenLoeveResult::getEigenValues, use getEigenvalues
+ * Removed StationaryCovarianceModel
+ * CovarianceModel.computeAsScalar allows scalars
+ * Swapped SimulatedAnnealingLHS constructor SpaceFilling/TemperatureProfile arguments
+ * Added EfficientGlobalOptimization::getKrigingResult, gets the updated version of the KrigingResult passed to the constructor
+ * Deprecated MultiStart::setStartingPoints/getStartingPoints, use MultiStart::setStartingSample/getStartingSample instead
+ * MultiStart::setStartingPoint/getStartingPoint throws (previously did nothing)
 
 === Documentation ===
+ * Fixed example and plot of Kolmogorov statistics.
+ * Added a new example showing how to combine RandomWalkMetropolisHastings and PythonDistribution
 
 === Python module ===
  * Serialize Python wrapper objects using dill (PythonDistribution, PythonFunction ...)
@@ -27,9 +132,60 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1010 (The doc for ExpectationSimulationAlgorithm is confusing)
+ * #1052 (The Dirichlet and Normal distributions only have 1D graphics in the doc)
+ * #1224 (The examples in the doc of the DomainEvent class are unclear)
+ * #1229 (Better encapsulation of optional 3rd-party headers)
+ * #1240 (There is no theory documentation for ExpectationSimulationAlgorithm)
+ * #1257 (Cannot create a SimulatedAnnealingLHS without specifying the temperature profile)
+ * #1287 (The constructors of KernelSmoothing have no doc)
+ * #1418 (The Contour example does not present the second constructor)
+ * #1425 (There is no method to create a train / test pair)
+ * #1431 (The figure for LHSExperiment is not accurate)
+ * #1459 (There is no example which shows how to set a column of a Sample)
+ * #1497 (There is no example to create a multivariate Normal distribution)
+ * #1506 (The Brent class has no example)
+ * #1570 (Wrong formula for MauntzKucherenkoSensitivityAlgorithm)
+ * #1650 (There is no example of a parametric StationaryFunctionalCovarianceModel)
+ * #1656 (The help page of ExpectationSimulationAlgorithm is unclear)
  * #1661 (XMLH5StorageManager does not store IndicesCollection into HDF5 files)
  * #1662 (Operator() of a CovarianceModel with multidimensional output should yield object of type SquareMatrix)
  * #1680 (QuadraticBasisFactory multiplies cross products by 2)
+ * #1710 (Misleading y labels in VisualTest.DrawPairsMarginals())
+ * #1713 (The doc of the ResourceMap does not match the content of the ResourceMap)
+ * #1714 (The log-PDF of the Pareto is wrong)
+ * #1721 (The `draw` method of `SobolSimulationAlgorithm` does not reuse the descriptions)
+ * #1723 (There is no interesting example of the ExprTk feature of SymbolicFunction)
+ * #1725 (The BetaFactory help page has wrong equations)
+ * #1729 (LinearModelAnalysis sometimes fail)
+ * #1731 (The Extreme value example may be improved)
+ * #1737 (Low rank tensor doc issues)
+ * #1742 (The example which shows how to set the figure size is wrong.)
+ * #1751 (DrawCorrelationCoefficients has a wrong Text height)
+ * #1752 (Error while estimating the reduced log-likelihood when using a StationaryFunctionalCovarianceModel)
+ * #1758 (The LinearModelStepwiseAlgorithm has no example)
+ * #1759 (Kriging model with StationaryFunctionalCovarianceModel might provide bad results)
+ * #1768 (Bug in ExponentiallyDampedCosineModel & SphericalModel)
+ * #1771 (GridLayout hides the titles in the graph)
+ * #1772 (MinimumVolumeClassifier cannot draw 1D samples)
+ * #1774 (ExponentialModel::partialGradient is wrong)
+ * #1775 (ExponentialModel does not account correlation with Covariance ctor)
+ * #1776 (Typo in the Branin use case implementation)
+ * #1781 (The link_to_an_external_code example has small bugs)
+ * #1784 (The drawPDF method of Histogram sometimes fail)
+ * #1787 (CovarianceMatrix from SymmetricMatrix raises InvalidArgumentException)
+ * #1790 (LinearModelResult.getFormula() method is not updated by Stepwise regression)
+ * #1794 (Some doc examples seem to behave with new infrastructure)
+ * #1796 (VonMisesFactory is missing)
+ * #1803 (The API example of Experiment has a format issue)
+ * #1805 (Brent's implementation has a stability issue)
+ * #1807 (Beta::computeCharacteristicFunction is wrong if the lower bound is not zero)
+ * #1815 (1.16 fails with dlib-cpp-19.22)
+ * #1818 (Problem with wilksNumber)
+ * #1820 (Incoherent results in LinearModelAnalysis)
+ * #1835 (RegularizedIncompleteBeta returns nan)
+ * #1836 (Hypergeometric results differ without boost)
+ * #1837 (Poor performance when using pickle on OT objects)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

@@ -101,19 +101,6 @@ CalibrationResult CalibrationAlgorithmImplementation::getResult() const
   return result_;
 }
 
-void CalibrationAlgorithmImplementation::computeOutputAtPriorAndPosterior()
-{
-  if (model_.getEvaluation().getImplementation()->isActualImplementation())
-  {
-    Function localModel(model_);
-    localModel.setParameter(result_.getParameterPrior().getMean());
-    Sample outputAtPrior(localModel(inputObservations_));
-    localModel.setParameter(result_.getParameterPosterior().getMean());
-    Sample outputAtPosterior(localModel(inputObservations_));
-    result_.setOutputAtPriorAndPosteriorMean(outputAtPrior, outputAtPosterior);
-  }
-}
-
 /* Virtual copy constructor */
 CalibrationAlgorithmImplementation* CalibrationAlgorithmImplementation::clone() const
 {

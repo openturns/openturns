@@ -38,8 +38,8 @@ const Scalar          SobolSequence::Epsilon                  = 1.0 / power2(Max
 #include "SobolSequenceDirections.hxx"
 
 /* Constructor with parameters */
-SobolSequence::SobolSequence(const UnsignedInteger dimension) :
-  LowDiscrepancySequenceImplementation(dimension)
+SobolSequence::SobolSequence(const UnsignedInteger dimension)
+  : LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
 }
@@ -55,9 +55,9 @@ SobolSequence * SobolSequence::clone() const
 /* Initialize the sequence */
 void SobolSequence::initialize(const UnsignedInteger dimension)
 {
-  if((dimension == 0) || (dimension > MaximumDimension))
+  LowDiscrepancySequenceImplementation::initialize(dimension);
+  if(!(dimension <= MaximumDimension))
     throw InvalidDimensionException(HERE) << "Dimension must be in range [0-" << MaximumDimension << "], here dimension=" << dimension << ".";
-  dimension_ = dimension;
   // copy initial direction numbers
   base_ = Unsigned64BitsIntegerCollection(dimension_ * MaximumBase2Logarithm, 0);
 
@@ -145,7 +145,6 @@ String SobolSequence::__repr__() const
 {
   OSS oss;
   oss << "class=" << SobolSequence::GetClassName()
-      << " derived from " << LowDiscrepancySequenceImplementation::__repr__()
       << " coefficients=" << coefficients_
       << " seed=" << seed_;
   return oss;
@@ -175,6 +174,7 @@ UnsignedInteger SobolSequence::computePositionOfLowest0Bit(const Unsigned64BitsI
 void SobolSequence::save(Advocate & adv) const
 {
   LowDiscrepancySequenceImplementation::save(adv);
+  adv.saveAttribute( "base_", base_);
   adv.saveAttribute( "seed_", seed_);
   adv.saveAttribute( "coefficients_", coefficients_);
 }
@@ -184,7 +184,7 @@ void SobolSequence::save(Advocate & adv) const
 void SobolSequence::load(Advocate & adv)
 {
   LowDiscrepancySequenceImplementation::load(adv);
-  initialize(dimension_);
+  adv.loadAttribute( "base_", base_);
   adv.loadAttribute( "seed_", seed_);
   adv.loadAttribute( "coefficients_", coefficients_);
 }

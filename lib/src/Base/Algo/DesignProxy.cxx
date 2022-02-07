@@ -78,7 +78,7 @@ void DesignProxy::initialize() const
   // allocate cache
   UnsignedInteger cacheSize = ResourceMap::GetAsUnsignedInteger("DesignProxy-DefaultCacheSize");
   UnsignedInteger nbRows = x_.getSize();
-  if (nbRows == 0) throw InvalidArgumentException(HERE) << "Cannot initialize a DesignProxy with an empty sample";
+  if (!(nbRows > 0)) throw InvalidArgumentException(HERE) << "Cannot initialize a DesignProxy with an empty sample";
 
   UnsignedInteger nbCols = cacheSize / nbRows;
   // The cache stores at least the first function values

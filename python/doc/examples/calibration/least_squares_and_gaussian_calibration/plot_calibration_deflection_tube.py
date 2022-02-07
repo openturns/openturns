@@ -4,9 +4,10 @@ Calibration of the deflection of a tube
 """
 # %%
 # We consider a calibration of the deflection of a tube as described :ref:`here <use-case-deflection-tube>`.
-# 
+#
 
 # %%
+from openturns.usecases import deflection_tube as deflection_tube
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -19,7 +20,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the use case module :
-from openturns.usecases import deflection_tube as deflection_tube
 dt = deflection_tube.DeflectionTube()
 
 # %%
@@ -34,29 +34,30 @@ outputDeflection = dt.model(inputSample)
 outputDeflection[0:5]
 
 # %%
-observationNoiseSigma = [0.1e-6,0.05e-5,0.05e-5]
+observationNoiseSigma = [0.1e-6, 0.05e-5, 0.05e-5]
 observationNoiseCovariance = ot.CovarianceMatrix(3)
 for i in range(3):
-    observationNoiseCovariance[i,i] = observationNoiseSigma[i]**2
+    observationNoiseCovariance[i, i] = observationNoiseSigma[i]**2
 
 # %%
-noiseSigma = ot.Normal([0.,0.,0.],observationNoiseCovariance)
+noiseSigma = ot.Normal([0., 0., 0.], observationNoiseCovariance)
 sampleObservationNoise = noiseSigma.getSample(sampleSize)
 observedOutput = outputDeflection + sampleObservationNoise
 observedOutput[0:5]
 
 # %%
-observedInput = ot.Sample(sampleSize,2)
-observedInput[:,0] = inputSample[:,0] # F
-observedInput[:,1] = inputSample[:,5] # E
-observedInput.setDescription(["Force","Young Modulus"])
+observedInput = ot.Sample(sampleSize, 2)
+observedInput[:, 0] = inputSample[:, 0]  # F
+observedInput[:, 1] = inputSample[:, 5]  # E
+observedInput.setDescription(["Force", "Young Modulus"])
 observedInput[0:5]
 
 # %%
-fullSample = ot.Sample(sampleSize,5)
-fullSample[:,0:2] = observedInput
-fullSample[:,2:5] = observedOutput
-fullSample.setDescription(["Force","Young","Deflection","Left Angle","Right Angle"])
+fullSample = ot.Sample(sampleSize, 5)
+fullSample[:, 0:2] = observedInput
+fullSample[:, 2:5] = observedOutput
+fullSample.setDescription(
+    ["Force", "Young", "Deflection", "Left Angle", "Right Angle"])
 fullSample[0:5]
 
 # %%
@@ -68,11 +69,11 @@ view = viewer.View(graph)
 # --------------------------
 
 # %%
-XL = 1.4 # Exact : 1.5
-Xa = 1.2 # Exact : 1.0
-XD = 0.7 # Exact : 0.8
-Xd = 0.2 # Exact : 0.1
-thetaPrior = ot.Point([XL,Xa,XD,Xd])
+XL = 1.4  # Exact : 1.5
+Xa = 1.2  # Exact : 1.0
+XD = 0.7  # Exact : 0.8
+Xd = 0.2  # Exact : 0.1
+thetaPrior = [XL, Xa, XD, Xd]
 
 
 # %%
@@ -81,24 +82,25 @@ sigmaXa = 0.1 * Xa
 sigmaXD = 0.1 * XD
 sigmaXd = 0.1 * Xd
 parameterCovariance = ot.CovarianceMatrix(4)
-parameterCovariance[0,0] = sigmaXL**2
-parameterCovariance[1,1] = sigmaXa**2
-parameterCovariance[2,2] = sigmaXD**2
-parameterCovariance[3,3] = sigmaXd**2
+parameterCovariance[0, 0] = sigmaXL**2
+parameterCovariance[1, 1] = sigmaXa**2
+parameterCovariance[2, 2] = sigmaXD**2
+parameterCovariance[3, 3] = sigmaXd**2
 parameterCovariance
 
 # %%
-calibratedIndices = [1,2,3,4]
-calibrationFunction = ot.ParametricFunction(dt.model, calibratedIndices, thetaPrior)
+calibratedIndices = [1, 2, 3, 4]
+calibrationFunction = ot.ParametricFunction(
+    dt.model, calibratedIndices, thetaPrior)
 
 # %%
-sigmaObservation = [0.2e-6,0.03e-5,0.03e-5] # Exact : 0.1e-6
+sigmaObservation = [0.2e-6, 0.03e-5, 0.03e-5]  # Exact : 0.1e-6
 
 # %%
 errorCovariance = ot.CovarianceMatrix(3)
-errorCovariance[0,0] = sigmaObservation[0]**2
-errorCovariance[1,1] = sigmaObservation[1]**2
-errorCovariance[2,2] = sigmaObservation[2]**2
+errorCovariance[0, 0] = sigmaObservation[0]**2
+errorCovariance[1, 1] = sigmaObservation[1]**2
+errorCovariance[2, 2] = sigmaObservation[2]**2
 
 # %%
 calibrationFunction.setParameter(thetaPrior)
@@ -110,7 +112,8 @@ predictedOutput[0:5]
 # --------------------------------------------------
 
 # %%
-algo = ot.GaussianNonLinearCalibration(calibrationFunction, observedInput, observedOutput, thetaPrior, parameterCovariance, errorCovariance)
+algo = ot.GaussianNonLinearCalibration(
+    calibrationFunction, observedInput, observedOutput, thetaPrior, parameterCovariance, errorCovariance)
 
 # %%
 algo.run()

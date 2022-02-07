@@ -40,7 +40,7 @@ sed -i "s/CPACK_PACKAGE_VERSION_MINOR $oldminor/CPACK_PACKAGE_VERSION_MINOR $min
 number_of_dots=`grep -o '\.' <<< $version | wc -l`
 if test $number_of_dots -ge 2
 then
-  sed -i "s/set ( CPACK_PACKAGE_VERSION_PATCH $oldpatch/set ( CPACK_PACKAGE_VERSION_PATCH $patch/g" CMakeLists.txt
+  sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH $oldpatch/set (CPACK_PACKAGE_VERSION_PATCH $patch/g" CMakeLists.txt
 fi
 
 echo $version > VERSION

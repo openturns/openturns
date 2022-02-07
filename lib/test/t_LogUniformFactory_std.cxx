@@ -53,10 +53,6 @@ int main(int, char *[])
     fullprint << "Default logUniform=" << estimatedLogUniform << std::endl;
     estimatedLogUniform = factory.buildAsLogUniform(distribution.getParameter());
     fullprint << "LogUniform from parameters=" << estimatedLogUniform << std::endl;
-    // Test for constant sample
-    sample = Sample(size, Point(1, 1.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {

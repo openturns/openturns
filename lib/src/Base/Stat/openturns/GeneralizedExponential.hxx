@@ -20,7 +20,7 @@
 #ifndef OPENTURNS_GENERALIZEDEXPONENTIAL_HXX
 #define OPENTURNS_GENERALIZEDEXPONENTIAL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API GeneralizedExponential
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -51,16 +51,18 @@ public:
   GeneralizedExponential * clone() const override;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const override;
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point & tau) const override;
 #ifndef SWIG
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const override;
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                         const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
 
+  Scalar computeAsScalar(const Scalar tau) const override;
+
   /** Gradient */
-  virtual Matrix partialGradient(const Point & s,
-                                 const Point & t) const override;
+  Matrix partialGradient(const Point & s,
+                         const Point & t) const override;
 
   /** P accessor */
   Scalar getP() const;

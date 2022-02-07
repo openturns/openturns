@@ -47,6 +47,7 @@ public:
 
   enum Format { PNG = 1, EPS = 2, FIG = 4, PDF = 8, ALL = 255 };
   enum LogScale { NONE = 0, LOGX, LOGY, LOGXY };
+  enum TickLocation { TICKNONE, TICKX, TICKY, TICKXY };
 
   /** Default constructor */
   explicit GraphImplementation(const String & title = "");
@@ -100,16 +101,16 @@ public:
   virtual void setAxes(const Bool showAxes);
   Bool getAxes() const;
 
+  /** Ticks location flag accessor */
+  virtual void setTickLocation(const TickLocation tickLocation);
+  TickLocation getTickLocation() const;
+
   /** Set log scale for x, y both or none axes */
   virtual void setLogScale(const LogScale logScale);
-
-  /** Accessor for logScale_ */
   LogScale getLogScale() const;
 
   /** Hide or show grid */
   virtual void setGrid(const Bool showGrid);
-
-  /** Accessor for showGrid_ */
   Bool getGrid() const;
 
   /** Grid color accessor */
@@ -118,20 +119,14 @@ public:
 
   /** Accessor for xTitle */
   String getXTitle() const;
-
-  /** Accessor for xTitle */
   void setXTitle(const String & title);
 
   /** Accessor for yTitle */
   String getYTitle() const;
-
-  /** Accessor for yTitle */
   void setYTitle(const String & title);
 
   /** Accessor for title */
   virtual String getTitle() const;
-
-  /** Accessor for title */
   void setTitle(const String & title);
 
   /** The method that generates the graphic files */
@@ -152,8 +147,6 @@ public:
 
   /** Get the bounding box of the whole plot */
   virtual Interval getBoundingBox() const;
-
-  /** Set the bounding box of the whole plot */
   virtual void setBoundingBox(const Interval & boundingBox);
 
   /** Automatic bounding box accessor */
@@ -166,8 +159,6 @@ public:
 
   /** Get the legend font size */
   Scalar getLegendFontSize() const;
-
-  /** Set the legend font size */
   void setLegendFontSize(const Scalar legendFontSize);
 
   /** Check for legend position validity */
@@ -221,6 +212,9 @@ private:
 
   /** if TRUE, displays the axes on the graphic plot. if FALSE, hides the axes */
   Bool showAxes_;
+
+  /** Ticks location flag */
+  TickLocation tickLocation_ = TICKXY;
 
   /** Set the log scale for one, both or non of the axes */
   LogScale logScale_;

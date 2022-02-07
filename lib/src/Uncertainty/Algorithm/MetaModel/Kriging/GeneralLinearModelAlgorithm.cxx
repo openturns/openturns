@@ -29,6 +29,7 @@
 #include "openturns/LinearFunction.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/TNC.hxx"
+#include "openturns/Cobyla.hxx"
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicFunction.hxx"
 #else
@@ -38,6 +39,7 @@
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
 #include "openturns/MemoizeFunction.hxx"
+#include "openturns/MultiStart.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -363,8 +365,11 @@ void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
 
 void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
-  String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
+  const String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
   solver_ = OptimizationAlgorithm::Build(solverName);
+  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
+  if (cobyla)
+    cobyla->setIgnoreFailure(true);
   TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
   if (tnc)
     tnc->setIgnoreFailure(true);
@@ -562,8 +567,16 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   OptimizationProblem problem(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
   problem.setBounds(optimizationBounds_);
-  solver_.setStartingPoint(initialParameters);
   solver_.setProblem(problem);
+  try
+  {
+    // If the solver is single start, we can use its setStartingPoint method
+    solver_.setStartingPoint(initialParameters);
+  }
+  catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+  {
+    // Nothing to do if setStartingPoint is not defined
+  }
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
   solver_.run();
   const OptimizationAlgorithm::Result result(solver_.getResult());
@@ -628,7 +641,7 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
   if (epsilon <= 0) lastReducedLogLikelihood_ = SpecFunc::LowestScalar;
   // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
   else lastReducedLogLikelihood_ = constant - 0.5 * (logDeterminant + epsilon);
-  LOGINFO(OSS(false) << "Reduced log-likelihood=" << lastReducedLogLikelihood_);
+  LOGINFO(OSS(false) << "Point " << parameters << " -> reduced log-likelihood=" << lastReducedLogLikelihood_);
   return Point(1, lastReducedLogLikelihood_);
 }
 
@@ -645,30 +658,42 @@ Scalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
     LOGDEBUG("Add noise to the covariance matrix");
     for (UnsignedInteger i = 0; i < C.getDimension(); ++ i) C(i, i) += noise_[i];
   }
-  LOGDEBUG(OSS(false) << "C=\n" << C);
+  if (C.getDimension() < 20)
+    LOGDEBUG(OSS(false) << "C=\n" << C);
   LOGDEBUG("Compute the Cholesky factor of the covariance matrix");
   Bool continuationCondition = true;
+  Scalar maxEV = -1.0;
   const Scalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
   const Scalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
   Scalar cumulatedScaling = 0.0;
   Scalar scaling = startingScaling;
-  while (continuationCondition && (cumulatedScaling < maximalScaling))
+  while (continuationCondition)
   {
     try
     {
       covarianceCholeskyFactor_ = C.computeCholesky();
       continuationCondition = false;
     }
-    // If it has not yet been computed, compute it and store it
-    catch (InternalException &)
+    // If the factorization failed regularize the matrix
+    // Here we use a generic exception as different exceptions may be thrown
+    catch (const Exception &)
     {
+      // If the largest eigenvalue module has not been computed yet...
+      if (maxEV < 0.0)
+      {
+        maxEV = C.computeLargestEigenValueModule();
+        LOGDEBUG(OSS() << "maxEV=" << maxEV);
+        scaling *= maxEV;
+      }
       cumulatedScaling += scaling ;
+      LOGDEBUG(OSS() << "scaling=" << scaling << ", cumulatedScaling=" << cumulatedScaling);
       // Unroll the regularization to optimize the computation
       for (UnsignedInteger i = 0; i < C.getDimension(); ++i) C(i, i) += scaling;
       scaling *= 2.0;
+      continuationCondition = scaling < maxEV * maximalScaling;
     }
   }
-  if (scaling >= maximalScaling)
+  if (maxEV > 0.0 && scaling >= maximalScaling * maxEV)
     throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky, could not compute the Cholesky factor."
                                          << " Scaling up to "  << cumulatedScaling << " was not enough";
   if (cumulatedScaling > 0.0)

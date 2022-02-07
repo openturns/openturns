@@ -1,4 +1,0 @@
---------------------
-model flood S < 0.0 gamma= f( [1219.24,30.0003,50,55] )= [-3.1061]
-probabilityEstimate=1.256345e-02 varianceEstimate=1.574316e-06 standard deviation=1.25e-03 coefficient of variation=9.99e-02 confidenceLength(0.95)=4.92e-03 outerSampling=7880 blockSize=1
-probabilityEstimate=1.206711e-02 varianceEstimate=7.474442e-09 standard deviation=8.65e-05 coefficient of variation=7.16e-03 confidenceLength(0.95)=3.39e-04 outerSampling=988 blockSize=1 callsNumber=18622 gamma=[0.5,0.5]

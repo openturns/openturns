@@ -31,34 +31,34 @@ static const Factory<GeneralizedExponential> Factory_GeneralizedExponential;
 
 /* Default constructor */
 GeneralizedExponential::GeneralizedExponential(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("GeneralizedExponential-DefaultTheta")), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, ResourceMap::GetAsScalar("GeneralizedExponential-DefaultTheta")), Point(1, 1.0))
   , p_(1.0)
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const Point & scale,
     const Scalar p)
-  : StationaryCovarianceModel(scale, Point(1, 1.0))
+  : CovarianceModelImplementation(scale, Point(1, 1.0))
   , p_(0.0) // To pass the test !(p_ == p)
 {
+  isStationary_ = true;
   setP(p);
-  definesComputeStandardRepresentative_ = true;
 }
 
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const Point & scale,
     const Point & amplitude,
     const Scalar p)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
   , p_(0.0) // To pass the test !(p_ == p)
 {
+  isStationary_ = true;
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In GeneralizedExponential::GeneralizedExponential, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";
   setP(p);
-  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
@@ -68,16 +68,21 @@ GeneralizedExponential * GeneralizedExponential::clone() const
 }
 
 /* Computation of the covariance density function */
-Scalar GeneralizedExponential::computeStandardRepresentative(const Point & tau) const
+Scalar GeneralizedExponential::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar tauOverThetaNorm = tauOverTheta.norm();
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
+  Scalar tauOverThetaNorm = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    tauOverThetaNorm += dx * dx;
+  }
+  tauOverThetaNorm = sqrt(tauOverThetaNorm);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-pow(tauOverThetaNorm, p_));
 }
 
-Scalar GeneralizedExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+Scalar GeneralizedExponential::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar tauOverThetaNorm = 0;
@@ -89,7 +94,20 @@ Scalar GeneralizedExponential::computeStandardRepresentative(const Collection<Sc
     tauOverThetaNorm += dx * dx;
   }
   tauOverThetaNorm = sqrt(tauOverThetaNorm);
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-pow(tauOverThetaNorm, p_));
+}
+
+Scalar GeneralizedExponential::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-pow(tauOverThetaNorm, p_));
 }
 
 /* Gradient wrt s */
@@ -98,31 +116,38 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  const Point tau(s - t);
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar norm2 = tauOverTheta.normSquare();
-  // For zero norm
-  if (norm2 == 0.0)
+  Scalar norm = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = (s[i] - t[i]) / scale_[i];
+    norm += dx * dx;
+  }
+  norm = std::sqrt(norm);
+  Matrix gradient(inputDimension_, 1);
+  if (norm == 0.0)
   {
     // Negative infinite gradient for p < 1
-    if (p_ < 1.0) return Matrix(inputDimension_, 1, Point(inputDimension_, SpecFunc::LowestScalar));
-    // Non-zero gradient for p == 1
-    if (p_ == 1.0)
+    if (p_ < 1.0)
     {
-      Matrix gradient(inputDimension_, 1);
-      for (UnsignedInteger i = 0; i < inputDimension_; ++i) gradient(i, 0) = - amplitude_[0] * amplitude_[0] / scale_[i];
-      return gradient;
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        gradient(i, 0) = SpecFunc::LowestScalar;
+    }
+    // Non-zero gradient for p == 1
+    else if (p_ == 1.0)
+    {
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
     }
     // Zero gradient for p > 1
-    return Matrix(inputDimension_, 1);
+    return gradient;
   }
   // General case
-  const Scalar exponent = -std::pow(sqrt(norm2), p_);
-  const Scalar value = p_ * exponent * std::exp(exponent) / norm2;
+  const Scalar exponent = -std::pow(norm, p_);
+  const Scalar value = p_ * exponent * std::exp(exponent) / (norm * norm);
   // Needs tau/theta ==> reuse same NP
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] /= scale_[i];
-  return Matrix(inputDimension_, 1, tauOverTheta * value) * amplitude_[0] * amplitude_[0];
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    gradient(i, 0) = (s[i] - t[i]) / (scale_[i] * scale_[i]) * value * amplitude_[0] * amplitude_[0];
+  return gradient;
 }
 
 
@@ -189,14 +214,14 @@ void GeneralizedExponential::setP(const Scalar p)
 /* Method save() stores the object through the StorageManager */
 void GeneralizedExponential::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute("p_", p_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void GeneralizedExponential::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute("p_", p_);
 }
 

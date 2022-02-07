@@ -44,19 +44,13 @@ Create the each covariance models:
 >>> myCov1 = ot.AbsoluteExponential([3.0] * inputDimension)
 >>> myCov2 = ot.SquaredExponential([2.0] * inputDimension)
 
->>> amplitude= [4.0, 2.0]
->>> scale = [1.0, 1.0]
->>> spatialCorrelation = ot.CorrelationMatrix(inputDimension)
->>> spatialCorrelation[1,0] = 0.3
->>> myCov3 = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
-
 Define the scale of the tensorized model:
 
 >>> scale = [0.3, 0.8]
 
 Create the tensorized model:
 
->>> covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3], scale)
+>>> covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2], scale)
 
 Fix the same scale to each model:
 

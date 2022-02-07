@@ -1,14 +1,14 @@
 test number zero : default constructor and string converter
-matrix0 = class=SparseMatrix rows=0 columns=0
+matrix0 = class=SparseMatrix rows=0 columns=0 triplets=[]
 test number one : constructor with size, operator() and string converter
-matrix1 = class=SparseMatrix rows=4 columns=5
+matrix1 = class=SparseMatrix rows=4 columns=5 triplets=[[1,0,8],[0,2,5],[3,2,9],[2,4,2]]
 matrix1 as dense = 4x5
 [[ 0 0 5 0 0 ]
  [ 8 0 0 0 0 ]
  [ 0 0 0 0 2 ]
  [ 0 0 9 0 0 ]]
 test number two : copy constructor and string converter
-matrix2 = class=SparseMatrix rows=4 columns=5
+matrix2 = class=SparseMatrix rows=4 columns=5 triplets=[[1,0,8],[0,2,5],[3,2,9],[2,4,2]]
 test number three : get dimensions methods
 matrix1's nbRows = 4
 matrix1's nbColumns = 5
@@ -20,10 +20,21 @@ matrix1 transposed = 5x4
  [ 5 0 0 9 ]
  [ 0 0 0 0 ]
  [ 0 0 2 0 ]]
-test number ten : multiplication with a point method
 pt = class=Point name=Unnamed dimension=5 values=[1,2,3,4,5]
 ptResult = class=Point name=Unnamed dimension=4 values=[15,8,10,27]
-matrix3=class=SparseMatrix rows=4 columns=5
+dense1=5x6
+[[  0 10 20 30 40 50 ]
+ [  1 11 21 31 41 51 ]
+ [  2 12 22 32 42 52 ]
+ [  3 13 23 33 43 53 ]
+ [  4 14 24 34 44 54 ]]
+sparse*dense=4x6
+[[  10  60 110 160 210 260 ]
+ [   0  80 160 240 320 400 ]
+ [   8  28  48  68  88 108 ]
+ [  18 108 198 288 378 468 ]]
+same=true
+matrix3=class=SparseMatrix rows=4 columns=5 triplets=[[1,0,8],[0,2,5],[3,2,9],[2,4,2]]
 matrix3 as dense = 4x5
 [[ 0 0 5 0 0 ]
  [ 8 0 0 0 0 ]
@@ -32,7 +43,7 @@ matrix3 as dense = 4x5
 ptResult = class=Point name=Unnamed dimension=4 values=[15,8,10,27]
 matrix3(2, 4)=2
 matrix3(2, 4)=8
-matrix5=class=SparseMatrix rows=4 columns=5
+matrix5=class=SparseMatrix rows=4 columns=5 triplets=[[1,0,8],[0,2,5],[3,2,9],[2,4,2],[2,4,2]]
 matrix5 as dense = 4x5
 [[ 0 0 5 0 0 ]
  [ 8 0 0 0 0 ]

@@ -47,7 +47,7 @@ modelHessianCallNumberBefore = model.getHessianCallsNumber()
 model = ot.MemoizeFunction(model)
 
 # %%
-# Remove all the values stored in the history mechanism. 
+# Remove all the values stored in the history mechanism.
 # Care : it is done regardless the status of the History mechanism.
 
 # %%
@@ -72,7 +72,7 @@ algo.setMaximumStandardDeviation(0.001)
 algo.setMaximumOuterSampling(int(1e4))
 
 # %%
-# Define the HistoryStrategy to store the values of :math:`P_n` and :math:`\sigma_n` used ot draw the convergence graph. 
+# Define the HistoryStrategy to store the values of :math:`P_n` and :math:`\sigma_n` used ot draw the convergence graph.
 # Compact strategy : N points
 
 # %%
@@ -97,7 +97,7 @@ result.getProbabilityEstimate()
 result.getStandardDeviation()
 
 # %%
-# Display the variance of the simulation probability estimator. 
+# Display the variance of the simulation probability estimator.
 
 # %%
 result.getVarianceEstimate()
@@ -111,7 +111,7 @@ result.getOuterSampling()
 result.getOuterSampling() * result.getBlockSize()
 
 # %%
-# Save the number of calls to the model, its gradient and hessian done so far. 
+# Save the number of calls to the model, its gradient and hessian done so far.
 
 # %%
 modelCallNumberAfter = model.getEvaluationCallsNumber()
@@ -119,19 +119,19 @@ modelGradientCallNumberAfter = model.getGradientCallsNumber()
 modelHessianCallNumberAfter = model.getHessianCallsNumber()
 
 # %%
-# Display the number of iterations executed and the number of evaluations of the model. 
+# Display the number of iterations executed and the number of evaluations of the model.
 
 # %%
 modelCallNumberAfter - modelCallNumberBefore
 
 # %%
-# Get the mean point in event  domain care : only for Monte Carlo and LHS sampling methods. 
+# Get the mean point in event  domain care : only for Monte Carlo and LHS sampling methods.
 
 # %%
 result.getMeanPointInEventDomain()
 
 # %%
-# Get the associated importance factors care : only for Monte Carlo and LHS sampling methods. 
+# Get the associated importance factors care : only for Monte Carlo and LHS sampling methods.
 
 # %%
 result.getImportanceFactors()
@@ -141,22 +141,23 @@ graph = result.drawImportanceFactors()
 view = viewer.View(graph)
 
 # %%
-# Display the confidence interval length centered around the MonteCarlo probability. The confidence interval is 
+# Display the confidence interval length centered around the MonteCarlo probability. The confidence interval is
 #
 # .. math::
 #    IC = [\tilde{p} - 0.5 \ell, \tilde{p} + 0.5 \ell]
-# 
 #
-# with level 0.95, where :math:`\tilde{p}` is the estimated probability and :math:`\ell` is the confidence interval length. 
+#
+# with level 0.95, where :math:`\tilde{p}` is the estimated probability and :math:`\ell` is the confidence interval length.
 
 # %%
 probability = result.getProbabilityEstimate()
 length95 = result.getConfidenceLength(0.95)
 print("0.95 Confidence Interval length = ", length95)
-print("IC at 0.95 = [", probability - 0.5*length95, "; ", probability + 0.5*length95, "]")
+print("IC at 0.95 = [", probability - 0.5*length95,
+      "; ", probability + 0.5*length95, "]")
 
 # %%
-# Draw the convergence graph and the confidence interval of level alpha. By default, alpha = 0.95. 
+# Draw the convergence graph and the confidence interval of level alpha. By default, alpha = 0.95.
 
 # %%
 alpha = 0.90
@@ -164,7 +165,7 @@ graph = algo.drawProbabilityConvergence(alpha)
 view = viewer.View(graph)
 
 # %%
-# Get the numerical samples of the input and output random vectors stored according to the History Strategy specified and used to evaluate the probability estimator and its variance. 
+# Get the numerical samples of the input and output random vectors stored according to the History Strategy specified and used to evaluate the probability estimator and its variance.
 
 # %%
 inputSampleStored = model.getInputHistory()

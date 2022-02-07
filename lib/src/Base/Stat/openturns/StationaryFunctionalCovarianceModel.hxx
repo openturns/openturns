@@ -20,7 +20,7 @@
 #ifndef OPENTURNS_STATIONARYFUNCTIONALCOVARIANCEMODEL_HXX
 #define OPENTURNS_STATIONARYFUNCTIONALCOVARIANCEMODEL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API StationaryFunctionalCovarianceModel
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -49,12 +49,14 @@ public:
   StationaryFunctionalCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const override;
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point & tau) const override;
 #ifndef SWIG
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const override;
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                         const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
+  Scalar computeAsScalar(const Scalar tau) const override;
+
   /** Gradient */
   Matrix partialGradient(const Point & s, const Point & t) const override;
 

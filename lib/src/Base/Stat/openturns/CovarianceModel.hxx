@@ -60,19 +60,22 @@ public:
 
   /** Compute the covariance function */
   virtual SquareMatrix operator() (const Scalar s,
-                             const Scalar t) const;
+                                   const Scalar t) const;
 
   virtual SquareMatrix operator() (const Point & s,
-                             const Point & t) const;
-
-  // compute standard representative computes the term \rho(s, t)
-  virtual Scalar computeStandardRepresentative(const Point & s,
-      const Point & t) const;
+                                   const Point & t) const;
 
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;
 
-  virtual SquareMatrix operator() (const Scalar tau) const;
+  virtual Scalar computeAsScalar(const Point &tau) const;
+
+  virtual Scalar computeAsScalar(const Scalar s,
+                                 const Scalar t) const;
+
+  virtual Scalar computeAsScalar(const Scalar tau) const;
+
+  virtual SquareMatrix operator()(const Scalar tau) const;
 
   virtual SquareMatrix operator() (const Point & tau) const;
 
@@ -88,8 +91,15 @@ public:
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
   virtual CovarianceMatrix discretize(const Sample & vertices) const;
-  virtual Sample discretizeRow(const Sample & vertices,
+  virtual Sample discretizeRow(const Sample &vertices,
                                const UnsignedInteger p) const;
+
+  virtual Matrix computeCrossCovariance(const Sample &firstSample,
+                                        const Sample &secondSample) const;
+  virtual Matrix computeCrossCovariance(const Sample &sample,
+                                        const Point &point) const;
+  virtual Matrix computeCrossCovariance(const Point &point,
+                                        const Sample &sample) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
   virtual TriangularMatrix discretizeAndFactorize(const RegularGrid & timeGrid) const;

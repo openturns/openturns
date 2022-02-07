@@ -1,9 +1,9 @@
 """
-Create univariate and multivariate distributions: a quick start guide to distributions
-======================================================================================
+Quick start guide
+=================
 """
 # %%
-# Abstract 
+# Abstract
 # ---------
 #
 # In this example, we present classes for univariate and multivariate distributions. We demonstrate the probabilistic programming capabilities of the library. For univariate distributions, we show how to compute the probability density, the cumulated probability density and the quantiles. We also show how to create graphics. The `ComposedDistribution` class, which creates a distribution based on its marginals and its copula, is presented. We show how to truncate any distribution with the `TruncatedDistribution` class.
@@ -12,18 +12,20 @@ Create univariate and multivariate distributions: a quick start guide to distrib
 # Univariate distribution
 # -----------------------
 #
-# The library is a probabilistic programming library: it is possible to create a random variable and perform operations on this variable *without* generating a sample. 
+# The library is a probabilistic programming library: it is possible to create a random variable and perform operations on this variable *without* generating a sample.
 #
 # In the OpenTURNS platform, several *univariate distributions* are implemented. The most commonly used are:
 #
 #  - `Uniform`,
 #  - `Normal`,
-#  - `Beta`, 
-#  - `LogNormal`, 
-#  - `Exponential`, 
+#  - `Beta`,
+#  - `LogNormal`,
+#  - `Exponential`,
 #  - `Weibull`.
 
 # %%
+import pylab as plt
+import openturns.viewer as otv
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -36,7 +38,7 @@ ot.Log.Show(ot.Log.NONE)
 # Let us create a uniform random variable :math:`\mathcal{U}(2,5)`.
 
 # %%
-uniform = ot.Uniform(2,5)
+uniform = ot.Uniform(2, 5)
 
 # %%
 # The `drawPDF` method plots the probability density function.
@@ -72,7 +74,7 @@ sample = uniform.getSample(10)
 sample
 
 # %%
-# The most common way to "see" a sample is to plot the empirical histogram. 
+# The most common way to "see" a sample is to plot the empirical histogram.
 
 # %%
 sample = uniform.getSample(1000)
@@ -92,10 +94,10 @@ view = viewer.View(graph)
 # Since the method based on a marginal and a copula is more flexible, we illustrate below this principle.
 
 # %%
-# In the following script, we define a bivariate distribution made of two univariate distributions (Gaussian and uniform) and an independent copula. 
+# In the following script, we define a bivariate distribution made of two univariate distributions (Gaussian and uniform) and an independent copula.
 
 # %%
-# The second input argument of the `ComposedDistribution` class is optional: if it is not specified, the copula is independent by default. 
+# The second input argument of the `ComposedDistribution` class is optional: if it is not specified, the copula is independent by default.
 
 # %%
 normal = ot.Normal()
@@ -129,12 +131,12 @@ distribution.getSample(10)
 sample = distribution.getSample(1000)
 showAxes = True
 graph = ot.Graph("X0~N, X1~U", "X0", "X1", showAxes)
-cloud = ot.Cloud(sample, "blue", "fsquare", "") # Create the cloud
-graph.add(cloud) # Then, add it to the graph
+cloud = ot.Cloud(sample, "blue", "fsquare", "")  # Create the cloud
+graph.add(cloud)  # Then, add it to the graph
 view = viewer.View(graph)
 
 # %%
-# We see that the marginals are Gaussian and uniform and that the copula is independent. 
+# We see that the marginals are Gaussian and uniform and that the copula is independent.
 
 # %%
 # Define a plot a copula
@@ -145,7 +147,7 @@ view = viewer.View(graph)
 
 # %%
 R = ot.CorrelationMatrix(2)
-R[0,1] = 0.6
+R[0, 1] = 0.6
 copula = ot.NormalCopula(R)
 copula
 
@@ -161,7 +163,7 @@ view = viewer.View(graph)
 # -----------------------------------------------
 
 # %%
-# Now that we know that we can define a copula, we create a bivariate distribution with normal and uniform marginals and an arbitrary copula. We select the the Ali-Mikhail-Haq copula as an example of a non trivial dependence. 
+# Now that we know that we can define a copula, we create a bivariate distribution with normal and uniform marginals and an arbitrary copula. We select the the Ali-Mikhail-Haq copula as an example of a non trivial dependence.
 
 # %%
 normal = ot.Normal()
@@ -175,8 +177,8 @@ distribution
 sample = distribution.getSample(1000)
 showAxes = True
 graph = ot.Graph("X0~N, X1~U, Ali-Mikhail-Haq copula", "X0", "X1", showAxes)
-cloud = ot.Cloud(sample, "blue", "fsquare", "") # Create the cloud
-graph.add(cloud) # Then, add it to the graph
+cloud = ot.Cloud(sample, "blue", "fsquare", "")  # Create the cloud
+graph.add(cloud)  # Then, add it to the graph
 view = viewer.View(graph)
 
 # %%
@@ -198,10 +200,8 @@ pdfexp = exponential.drawPDF()
 cdfexp = exponential.drawCDF()
 
 # %%
-import openturns.viewer as otv
 
 # %% slideshow={"slide_type": "subslide"}
-import pylab as plt
 fig = plt.figure(figsize=(12, 4))
 ax = fig.add_subplot(2, 2, 1)
 _ = otv.View(pdfbeta, figure=fig, axes=[ax])
@@ -216,20 +216,20 @@ _ = otv.View(cdfexp, figure=fig, axes=[ax])
 # Truncate a distribution
 # -----------------------
 #
-# Any distribution can be truncated with the `TruncatedDistribution` class. 
+# Any distribution can be truncated with the `TruncatedDistribution` class.
 #
-# Let :math:`f_X` (resp. :math:`F_X`) the PDF (resp. the CDF) of the real random variable :math:`X`. Let :math:`a` and :math:`b` two reals with :math:`a<b`. Let :math:`Y` be the random variable :math:`max(a, min(b, X))`. Its distribution is the distribution of :math:`X` truncated to the :math:`[a,b]` interval. 
+# Let :math:`f_X` (resp. :math:`F_X`) the PDF (resp. the CDF) of the real random variable :math:`X`. Let :math:`a` and :math:`b` two reals with :math:`a<b`. Let :math:`Y` be the random variable :math:`max(a, min(b, X))`. Its distribution is the distribution of :math:`X` truncated to the :math:`[a,b]` interval.
 #
 # Therefore, the PDF of :math:`Y` is:
 #
 # .. math::
 #    f_Y(y) = \frac{f_X(y)}{F_X(b) - F_X(a)}
-# 
 #
-# if :math:`y\in[a,b]` and :math:`f_Y(y)=0` otherwise. 
+#
+# if :math:`y\in[a,b]` and :math:`f_Y(y)=0` otherwise.
 
 # %%
-# Consider for example the log-normal variable :math:`X` with mean :math:`\mu=0` and standard deviation :math:`\sigma=1`. 
+# Consider for example the log-normal variable :math:`X` with mean :math:`\mu=0` and standard deviation :math:`\sigma=1`.
 
 # %%
 X = ot.LogNormal()
@@ -240,7 +240,7 @@ view = viewer.View(graph)
 # We can truncate this distribution to the :math:`[1,2]` interval. We see that the PDF of the distribution becomes discontinuous at the truncation points 1 and 2.
 
 # %%
-Y = ot.TruncatedDistribution(X,1.,2.)
+Y = ot.TruncatedDistribution(X, 1., 2.)
 graph = Y.drawPDF()
 view = viewer.View(graph)
 
@@ -248,7 +248,7 @@ view = viewer.View(graph)
 # We can also also truncate it with only a lower bound.
 
 # %%
-Y = ot.TruncatedDistribution(X,1.,ot.TruncatedDistribution.LOWER)
+Y = ot.TruncatedDistribution(X, 1., ot.TruncatedDistribution.LOWER)
 graph = Y.drawPDF()
 view = viewer.View(graph)
 
@@ -256,7 +256,7 @@ view = viewer.View(graph)
 # We can finally truncate a distribution with an upper bound.
 
 # %%
-Y = ot.TruncatedDistribution(X,2.,ot.TruncatedDistribution.UPPER)
+Y = ot.TruncatedDistribution(X, 2., ot.TruncatedDistribution.UPPER)
 graph = Y.drawPDF()
 view = viewer.View(graph)
 

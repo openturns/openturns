@@ -43,6 +43,12 @@ UniVariateFunctionFamily::UniVariateFunctionFamily(const UniVariateFunctionFacto
   // Nothing to do
 }
 
+/* Constructor from implementation pointer */
+UniVariateFunctionFamily::UniVariateFunctionFamily(UniVariateFunctionFactory * p_implementation)
+  : TypedInterfaceObject<UniVariateFunctionFactory>(p_implementation)
+{
+  // Nothing to do
+}
 
 /* The method to get the function of any order */
 UniVariateFunction UniVariateFunctionFamily::build(const UnsignedInteger order) const

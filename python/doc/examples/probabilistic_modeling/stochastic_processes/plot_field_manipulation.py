@@ -1,6 +1,6 @@
 """
-Field manipulation
-==================
+Draw a field
+============
 """
 # %%
 # The objective here is to create and manipulate a field. A field is the agregation of a mesh :math:`\mathcal{M}` of a domain :math:`\mathcal{D} \in \mathbb{R}^n` and a sample of values in :math:`\mathbb{R}^d` associated to each vertex of the mesh.
@@ -40,7 +40,8 @@ field = myProcess.getRealization()
 
 # %%
 # Create a field from a mesh and some values
-values = ot.Normal([0.0]*2, [1.0]*2, ot.CorrelationMatrix(2)).getSample(len(mesh.getVertices()))
+values = ot.Normal([0.0]*2, [1.0]*2, ot.CorrelationMatrix(2)
+                   ).getSample(len(mesh.getVertices()))
 for i in range(len(values)):
     x = values[i]
     values[i] = 0.05 * x / x.norm()

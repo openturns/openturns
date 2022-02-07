@@ -2,75 +2,90 @@
 Calibration of the flooding model
 =================================
 """
-# %% 
+# %%
 # In this example we are interested in the calibration of the :ref:`flooding model <use-case-flood-model>`.
 #
 # Parameters to calibrate
 # -----------------------
 #
-# The vector of parameters to calibrate is: 
-# 
+# The vector of parameters to calibrate is:
+#
 # .. math::
 #    \theta = (K_s,Z_v,Z_m).
-# 
+#
 #
 # The variables to calibrate are :math:`(K_s,Z_v,Z_m)` and are set to the following values:
-# 
+#
 # .. math::
 #    K_s = 30, \qquad Z_v = 50, \qquad Z_m = 55.
-# 
+#
 #
 # Observations
 # ------------
 #
 # In this section, we describe the statistical model associated with the :math:`n` observations.
-# The errors of the water heights are associated with a gaussian distribution with a zero mean and a standard variation equal to:
-# 
+# The errors of the water heights are associated with a normal distribution with a zero mean and a standard variation equal to:
+#
 # .. math::
 #    \sigma=0.1.
-# 
+#
 #
 # Therefore, the observed water heights are:
-# 
+#
 # .. math::
 #    H_i = G(Q_i,K_s,Z_v,Z_m) + \epsilon_i
-# 
+#
 #
 # for :math:`i=1,...,n` where
-# 
+#
 # .. math::
 #    \epsilon \sim \mathcal{N}(0,\sigma^2)
-# 
+#
 #
 # and we make the hypothesis that the observation errors are independent.
 # We consider a sample size equal to:
-# 
+#
 # .. math::
 #    n=100.
-# 
+#
 #
 # The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`, i.e. each observation is a couple made of the flowrate and the corresponding river height.
 #
 # Analysis
 # --------
 #
-# In this model, the variables :math:`Z_m` and :math:`Z_v` are not identifiables, since only the difference :math:`Z_m-Z_v` matters. Hence, calibrating this model requires some regularization.
+# First, the slope :math:`\alpha` only depends on the difference :math:`Z_m - Z_v`.
+# This is why :math:`Z_v` and :math:`Z_m` cannot be identified at the same time.
+# In algebraic terms, there is an infinite number of couples :math:`(Z_v, Z_m)` which
+# generate the same difference :math:`Z_m - Z_v`.
+#
+# Second, the denominator of the expression of :math:`H` involves the product
+# :math:`K_s B \sqrt{\alpha}`.
+# In algebraic terms, there is an infinite number of couples :math:`(K_s, \alpha)` which
+# generate the same product :math:`K_s \sqrt{\alpha}`.
+# This is why either :math:`K_s` or :math:`\alpha` can be identified separately,
+# but not at the same time.
+# This shows that only one parameter can be identified.
+#
+# Hence, calibrating this model requires some regularization.
+# We return to this topic when analyzing the singular values of
+# the Jacobian matrix.
 
 # %%
 # Generate the observations
 # -------------------------
 
 # %%
+from openturns.usecases import flood_model as flood_model
+from matplotlib import pylab as plt
+import openturns.viewer as viewer
 import numpy as np
 import openturns as ot
 ot.ResourceMap.SetAsUnsignedInteger('Normal-SmallDimension', 1)
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the flooding use case :
-from openturns.usecases import flood_model as flood_model
 fm = flood_model.FloodModel()
 
 # %%
@@ -84,7 +99,9 @@ fm = flood_model.FloodModel()
 # In these cases, we return an infinite number, so that the optimization algorithm does not get trapped.
 
 # %%
-def functionFlooding(X) :
+
+
+def functionFlooding(X):
     L = 5.0e3
     B = 300.0
     Q, K_s, Z_v, Z_m = X
@@ -97,7 +114,7 @@ def functionFlooding(X) :
 
 
 # %%
-g = ot.PythonFunction(4, 1, functionFlooding) 
+g = ot.PythonFunction(4, 1, functionFlooding)
 g = ot.MemoizeFunction(g)
 g.setOutputDescription(["H (m)"])
 
@@ -106,7 +123,7 @@ g.setOutputDescription(["H (m)"])
 
 # %%
 Q = fm.Q
-Q
+print(Q)
 
 # %%
 # Set the parameters to be calibrated.
@@ -144,8 +161,8 @@ view = viewer.View(graph)
 # Generate the observation noise and add it to the output of the model.
 
 # %%
-sigmaObservationNoiseH = 0.1 # (m)
-noiseH = ot.Normal(0.,sigmaObservationNoiseH)
+sigmaObservationNoiseH = 0.1  # (m)
+noiseH = ot.Normal(0., sigmaObservationNoiseH)
 sampleNoiseH = noiseH.getSample(nbobs)
 Hobs = outputH + sampleNoiseH
 
@@ -153,11 +170,11 @@ Hobs = outputH + sampleNoiseH
 # Plot the Y observations versus the X observations.
 
 # %%
-Qobs = inputSample[:,0]
+Qobs = inputSample[:, 0]
 
 # %%
-graph = ot.Graph("Observations","Q (m3/s)","H (m)",True)
-cloud = ot.Cloud(Qobs,Hobs)
+graph = ot.Graph("Observations", "Q (m3/s)", "H (m)", True)
+cloud = ot.Cloud(Qobs, Hobs)
 graph.add(cloud)
 view = viewer.View(graph)
 
@@ -166,19 +183,19 @@ view = viewer.View(graph)
 # ----------------------------------
 
 # %%
-# Define the value of the reference values of the :math:`\theta` parameter. In the bayesian framework, this is called the mean of the *prior* gaussian distribution. In the data assimilation framework, this is called the *background*.
+# Define the value of the reference values of the :math:`\theta` parameter. In the bayesian framework, this is called the mean of the *prior* normal distribution. In the data assimilation framework, this is called the *background*.
 
 # %%
 KsInitial = 20.
 ZvInitial = 49.
 ZmInitial = 51.
-thetaPrior = ot.Point([KsInitial,ZvInitial,ZmInitial])
+thetaPrior = [KsInitial, ZvInitial, ZmInitial]
 
 # %%
-# The following statement create the calibrated function from the model. The calibrated parameters Ks, Zv, Zm are at indices 1, 2, 3 in the inputs arguments of the model.
+# The following statement create the calibrated function from the model. The calibrated parameters :math:`K_s`, :math:`Z_v`, :math:`Z_m` are at indices 1, 2, 3 in the inputs arguments of the model.
 
 # %%
-calibratedIndices = [1,2,3]
+calibratedIndices = [1, 2, 3]
 mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
 
 # %%
@@ -205,7 +222,7 @@ calibrationResult = algo.getResult()
 
 # %%
 thetaStar = calibrationResult.getParameterMAP()
-thetaStar
+print(thetaStar)
 
 # %%
 # In this case, we see that there seems to be a great distance from the reference value of :math:`\theta` to the optimum: the values seem too large in magnitude. The value of the optimum :math:`K_s` is nonpositive. In fact, there is an identification problem because the Jacobian matrix is rank-degenerate.
@@ -217,38 +234,55 @@ thetaStar
 # %%
 # In this section, we show how to diagnose the identification problem.
 #
-# The `getParameterPosterior` method returns the posterior gaussian distribution of :math:`\theta`.
+# The `getParameterPosterior` method returns the posterior normal distribution of :math:`\theta`.
 
 # %%
 distributionPosterior = calibrationResult.getParameterPosterior()
-distributionPosterior
+print(distributionPosterior)
 
 # %%
-# We see that there is a large covariance matrix diagonal. 
+# We see that there is a large covariance matrix diagonal.
 #
 # Let us compute a 95% confidence interval for the solution :math:`\theta^\star`.
 
 # %%
-distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+print(distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95)[0])
 
 # %%
-# The confidence interval is *very* large.
+# The confidence interval is *very* large. In order to clarify the situation, we compute the Jacobian matrix of the model at the candidate point.
 
 # %%
 mycf.setParameter(thetaPrior)
-thetaDim = thetaPrior.getDimension()
-jacobianMatrix = ot.Matrix(nbobs,thetaDim)
+thetaDim = len(thetaPrior)
+jacobianMatrix = ot.Matrix(nbobs, thetaDim)
 for i in range(nbobs):
-    jacobianMatrix[i,:] = mycf.parameterGradient(Qobs[i]).transpose()
-jacobianMatrix[0:5,:]
+    jacobianMatrix[i, :] = mycf.parameterGradient(Qobs[i]).transpose()
+print(jacobianMatrix[0:5, :])
 
 # %%
-jacobianMatrix.computeSingularValues()
+# The rank of the problem can be seen from the singular values of the Jacobian matrix.
 
 # %%
-# We can see that there are two singular values which are relatively close to zero. 
+print(jacobianMatrix.computeSingularValues())
+
+# %%
+# We can see that there are two singular values which are relatively close to zero.
 #
 # This explains why the Jacobian matrix is close to being rank-degenerate.
+#
+# Moreover, this allows to compute the actual dimensionality of the problem.
+# The algorithm we use computes the singular values in descending order.
+# Moreover, by definition, the singular values are nonnegative.
+# We see that the first singular value is close to :math:`10`
+# and the others are very close to :math:`0` in comparison.
+# This implies that the (numerical) rank of the Jacobian matrix is 1,
+# even if there are 3 parameters.
+#
+# Hence, only one parameter can be identified, be it :math:`K_s`, :math:`Z_v` or :math:`Z_m`.
+# The choice of the particular parameter to identify is free.
+# However, in hydraulic studies, the parameter :math:`K_s` is classically
+# calibrated while :math:`Z_v` and :math:`Z_m` are left constant.
 
 # %%
 # Conclusion of the linear least squares calibration
@@ -257,8 +291,8 @@ jacobianMatrix.computeSingularValues()
 # %%
 # There are several methods to solve the problem.
 #
-# * Given that the problem is not identifiable, we can use some regularization method. Two methods are provided in the library: the gaussian linear least squares `GaussianLinearCalibration` and the gaussian non linear least squares `GaussianNonlinearCalibration`.
-# * We can change the problem, replacing it with a problem which is identifiable. In the flooding model, replacing :math:`Z_v-Z_m` with :math:`\Delta Z` allows to solve the issue.
+# * Given that the problem is not identifiable, we can use some regularization method. Two methods are provided in the library: the Gaussian linear least squares `GaussianLinearCalibration` and the Gaussian non linear least squares `GaussianNonlinearCalibration`.
+# * We can change the problem, replacing it with a problem which is identifiable. In the flooding model, we can view :math:`Z_v` and :math:`Z_m` as constants and calibrate :math:`K_s` only.
 
 # %%
 # Calibration with non linear least squares
@@ -288,16 +322,17 @@ calibrationResult = algo.getResult()
 
 # %%
 thetaMAP = calibrationResult.getParameterMAP()
-thetaMAP
+print(thetaMAP)
 
 # %%
-# We can compute a 95% confidence interval of the parameter :math:`\theta^\star`. 
+# We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
 #
 # This confidence interval is based on bootstrap, based on a sample size equal to 100 (as long as the value of the `ResourceMap` key "NonLinearLeastSquaresCalibration-BootstrapSize" is unchanged). This confidence interval reflects the sensitivity of the optimum to the variability in the observations.
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95)[0])
 
 # %%
 # In this case, the value of the parameter :math:`K_s` is quite accurately computed, but there is a relatively large uncertainty on the values of :math:`Z_v` and :math:`Z_m`.
@@ -319,7 +354,7 @@ view = viewer.View(graph)
 
 # %%
 observationError = calibrationResult.getObservationsError()
-observationError
+print(observationError)
 
 # %%
 # We can see that the observation error is close to have a zero mean and a standard deviation equal to 0.1.
@@ -330,9 +365,9 @@ graph.setLegendPosition("topleft")
 view = viewer.View(graph)
 
 # %%
-# The analysis of the residuals shows that the distribution is centered on zero and symmetric. This indicates that the calibration performed well. 
+# The analysis of the residuals shows that the distribution is centered on zero and symmetric. This indicates that the calibration performed well.
 #
-# Moreover, the distribution of the residuals is close to being gaussian.
+# Moreover, the distribution of the residuals is close to being Gaussian.
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
@@ -346,14 +381,14 @@ view = viewer.View(graph)
 # The standard deviation of the observations.
 
 # %%
-sigmaH = 0.5 # (m^2)
+sigmaH = 0.5  # (m^2)
 
 # %%
 # Define the covariance matrix of the output Y of the model.
 
 # %%
 errorCovariance = ot.CovarianceMatrix(1)
-errorCovariance[0,0] = sigmaH**2
+errorCovariance[0, 0] = sigmaH**2
 
 # %%
 # Define the covariance matrix of the parameters :math:`\theta` to calibrate.
@@ -365,16 +400,17 @@ sigmaZm = 1.
 
 # %%
 sigma = ot.CovarianceMatrix(3)
-sigma[0,0] = sigmaKs**2
-sigma[1,1] = sigmaZv**2
-sigma[2,2] = sigmaZm**2
-sigma
+sigma[0, 0] = sigmaKs**2
+sigma[1, 1] = sigmaZv**2
+sigma[2, 2] = sigmaZm**2
+print(sigma)
 
 # %%
-# The `GaussianLinearCalibration` class performs the gaussian linear calibration by linearizing the model in the neighbourhood of the prior.
+# The `GaussianLinearCalibration` class performs Gaussian linear calibration by linearizing the model in the neighbourhood of the prior.
 
 # %%
-algo = ot.GaussianLinearCalibration(mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance,"SVD")
+algo = ot.GaussianLinearCalibration(
+    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance, "SVD")
 
 # %%
 # The `run` method computes the solution of the problem.
@@ -394,7 +430,7 @@ calibrationResult = algo.getResult()
 
 # %%
 thetaStar = calibrationResult.getParameterMAP()
-thetaStar
+print(thetaStar)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
@@ -409,7 +445,7 @@ graph = calibrationResult.drawObservationsVsPredictions()
 view = viewer.View(graph)
 
 # %%
-# In this case, the fit is better after calibration, but not perfect. Indeed, the cloud of points after calibration is not centered on the diagonal. 
+# In this case, the fit is better after calibration, but not perfect. Indeed, the cloud of points after calibration is not centered on the diagonal.
 
 # %%
 graph = calibrationResult.drawResiduals()
@@ -417,43 +453,45 @@ graph.setLegendPosition("topleft")
 view = viewer.View(graph)
 
 # %%
-# We see that the distribution of the residual is not centered on zero: the mean residual is approximately -0.5, which implies that the predictions are, on average, smaller than the observations. This is a proof that the calibration cannot be performed with this method in this particular case.
+# We see that the distribution of the residual is not centered on zero: the mean residual is approximately :math:`-0.5`, which implies that the predictions are, on average, smaller than the observations. This is a proof that the calibration cannot be performed with this method in this particular case.
 
 # %%
-# The `getParameterPosterior` method returns the posterior gaussian distribution of :math:`\theta`.
+# The `getParameterPosterior` method returns the posterior normal distribution of :math:`\theta`.
 
 # %%
 distributionPosterior = calibrationResult.getParameterPosterior()
-distributionPosterior
+print(distributionPosterior)
 
 # %%
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
 
 # %%
-distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+print(distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95)[0])
 
 # %%
-# We see that there is a large uncertainty on the value of the parameter :math:`K_s` which can be as small as 14 and as large as 34. 
+# We see that there is a large uncertainty on the value of the parameter :math:`K_s` which can be as small as :math:`14` and as large as :math:`34`.
 
 # %%
-# We can compare the prior and posterior distributions of the marginals of :math:`\theta`. 
+# We can compare the prior and posterior distributions of the marginals of :math:`\theta`.
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
 view = viewer.View(graph)
 
 # %%
-# The two distributions are different, which shows that the calibration is sensible to the observations (if the observations were not sensible, the two distributions were superimposed). Moreover, the two distributions are quite close, which implies that the prior distribution has played a roled in the calibration (otherwise the two distributions would be completely different, indicating that only the observations were taken into account). 
+# The two distributions are different, which shows that the calibration is sensible to the observations (if the observations were not sensible, the two distributions were superimposed). Moreover, the two distributions are quite close, which implies that the prior distribution has played a roled in the calibration (otherwise the two distributions would be completely different, indicating that only the observations were taken into account).
 
 # %%
 # Gaussian nonlinear calibration
 # ------------------------------
 
 # %%
-# The `GaussianNonLinearCalibration` class performs the gaussian nonlinear calibration.
+# The `GaussianNonLinearCalibration` class performs Gaussian nonlinear calibration.
 
 # %%
-algo = ot.GaussianNonLinearCalibration(mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance)
+algo = ot.GaussianNonLinearCalibration(
+    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance)
 
 # %%
 # The `run` method computes the solution of the problem.
@@ -473,7 +511,7 @@ calibrationResult = algo.getResult()
 
 # %%
 thetaStar = calibrationResult.getParameterMAP()
-thetaStar
+print(thetaStar)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
@@ -488,7 +526,7 @@ graph = calibrationResult.drawObservationsVsPredictions()
 view = viewer.View(graph)
 
 # %%
-# The fit is excellent after calibration. Indeed, the cloud of points after calibration is on the diagonal. 
+# The fit is excellent after calibration. Indeed, the cloud of points after calibration is on the diagonal.
 
 # %%
 graph = calibrationResult.drawResiduals()
@@ -498,7 +536,7 @@ view = viewer.View(graph)
 # We see that the histogram of the residual is centered on zero. This is a proof that the calibration did perform correctly.
 
 # %%
-# The `getParameterPosterior` method returns the posterior gaussian distribution of :math:`\theta`.
+# The `getParameterPosterior` method returns the posterior normal distribution of :math:`\theta`.
 
 # %%
 distributionPosterior = calibrationResult.getParameterPosterior()
@@ -507,20 +545,21 @@ distributionPosterior = calibrationResult.getParameterPosterior()
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
 
 # %%
-distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+print(distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95)[0])
 
 # %%
 # We see that there is a small uncertainty on the value of all parameters.
 
 # %%
-# We can compare the prior and posterior distributions of the marginals of :math:`\theta`. 
+# We can compare the prior and posterior distributions of the marginals of :math:`\theta`.
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
 view = viewer.View(graph)
 
 # %%
-# The two distributions are very different, with a spiky posterior distribution. This shows that the calibration is very sensible to the observations. 
+# The two distributions are very different, with a spiky posterior distribution. This shows that the calibration is very sensible to the observations.
 
 # %%
 # Tuning the posterior distribution estimation
@@ -529,15 +568,17 @@ view = viewer.View(graph)
 # The "GaussianNonLinearCalibration-BootstrapSize" key controls the posterior distribution estimation.
 #
 # * If "GaussianNonLinearCalibration-BootstrapSize" > 0 (by default it is equal to 100), then a bootstrap resample algorithm is used to see the dispersion of the MAP estimator. This allows to see the variability of the estimator with respect to the finite observation sample.
-# * If "GaussianNonLinearCalibration-BootstrapSize" is zero, then the gaussian linear calibration estimator is used (i.e. the `GaussianLinearCalibration` class) at the optimum. This is called the Laplace approximation. 
+# * If "GaussianNonLinearCalibration-BootstrapSize" is zero, then the Gaussian linear calibration estimator is used (i.e. the `GaussianLinearCalibration` class) at the optimum. This is called the Laplace approximation.
 #
-# We must configure the key before creating the object (otherwise changing the parameter does not change the result). 
+# We must configure the key before creating the object (otherwise changing the parameter does not change the result).
 
 # %%
-ot.ResourceMap_SetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize",0) 
+ot.ResourceMap_SetAsUnsignedInteger(
+    "GaussianNonLinearCalibration-BootstrapSize", 0)
 
 # %%
-algo = ot.GaussianNonLinearCalibration(mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance)
+algo = ot.GaussianNonLinearCalibration(
+    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance)
 
 # %%
 algo.run()
@@ -547,7 +588,8 @@ calibrationResult = algo.getResult()
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
+viewer = viewer.View(graph)
 
 plt.show()
 # %%
-# As we can see, this does not change much the posterior distribution, which remains spiky. 
+# As we can see, this does not change much the posterior distribution, which remains spiky.

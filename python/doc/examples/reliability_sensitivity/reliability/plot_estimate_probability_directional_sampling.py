@@ -1,9 +1,9 @@
 """
-Probability estimation: directional simulation
-==============================================
+Use the Directional Sampling Algorithm
+======================================
 """
 # %%
-# In this example we estimate a failure probability with the directional simulation algorithm provided by the `DirectionalSampling` class.
+# In this example we estimate a failure probability with the directional simulation algorithm provided by the :class:`~openturns.DirectionalSampling` class.
 
 # %%
 # Introduction
@@ -15,7 +15,7 @@ Probability estimation: directional simulation
 #    - `RiskyAndFast`
 #    - `MediumSafe`
 #    - `SafeAndSlow`
-#  
+#
 # 2. a *sampling strategy* to choose directions in the standard space. The available strategies are:
 #    - `RandomDirection`
 #    - `OrthogonalDirection`
@@ -25,6 +25,7 @@ Probability estimation: directional simulation
 
 # %%
 from __future__ import print_function
+from openturns.usecases import cantilever_beam as cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -32,7 +33,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :
-from openturns.usecases import cantilever_beam as cantilever_beam
 cb = cantilever_beam.CantileverBeam()
 
 # %%
@@ -81,3 +81,10 @@ algo.run()
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
 print('Pf=', probability)
+
+# %%
+# We can observe the convergence history with the `drawProbabilityConvergence`
+# method.
+graph = algo.drawProbabilityConvergence()
+graph.setLogScale(ot.GraphImplementation.LOGX)
+view = viewer.View(graph)

@@ -99,7 +99,7 @@ TimeSeries AggregatedProcess::getFuture(const UnsignedInteger stepNumber) const
   {
     timeGrid = getTimeGrid();
   }
-  catch (...)
+  catch (const InvalidArgumentException &)
   {
     throw InternalException(HERE) << "Error: can extend the realization of a process only if defined on a regular grid.";
   }

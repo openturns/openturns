@@ -144,12 +144,12 @@ Point GeneralizedPareto::computeDDF(const Point & point) const
   const Scalar z = (point[0] - u_) / sigma_;
   Point result(1);
   if (z < 0.0) return result;
-  if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8)
+  if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return result;
+  if (std::abs(xi_) < 1.0e-8)
   {
-    result[0] = -0.5 * std::exp(-z) * (1.0 + xi_ * z * (0.5 * z - 1.0)) / (sigma_ * sigma_);
+    result[0] = -std::exp(-z) * (1.0 + xi_ * (1.0 - z * (2.0 - 0.5 * z))) / (sigma_ * sigma_);
     return result;
   }
-  if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return result;
   result[0] = -(1.0 + xi_) * std::exp(-(2.0 + 1.0 / xi_) * log1p(xi_ * z)) / (sigma_ * sigma_);
   return result;
 }
@@ -161,8 +161,8 @@ Scalar GeneralizedPareto::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar z = (point[0] - u_) / sigma_;
   if (z < 0.0) return 0.0;
-  if (std::abs(z) * std::sqrt(std::abs(xi_)) < 1.0e-8) return std::exp(-z) * (1.0 + z * xi_ * (0.5 * z - 1.0)) / sigma_;
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return 0.0;
+  if (std::abs(xi_) < 1.0e-8) return std::exp(-z) * (1.0 - xi_ * z * (1.0 - 0.5 * z)) / sigma_;
   return std::exp(-(1.0 + 1.0 / xi_) * log1p(xi_ * z)) / sigma_;
 }
 
@@ -171,8 +171,8 @@ Scalar GeneralizedPareto::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar z = (point[0] - u_) / sigma_;
   if (z < 0.0) return SpecFunc::LowestScalar;
-  if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8) return -z + log1p(z * xi_ * (0.5 * z - 1.0)) - std::log(sigma_);
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return SpecFunc::LowestScalar;
+  if (std::abs(xi_) < 1.0e-8) return -z + log1p(-xi_ * z * (1.0 - 0.5 * z)) - std::log(sigma_);
   return -(1.0 + 1.0 / xi_) * log1p(xi_ * z) - std::log(sigma_);
 }
 
@@ -182,8 +182,8 @@ Scalar GeneralizedPareto::computeCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar z = (point[0] - u_) / sigma_;
   if (z <= 0.0) return 0.0;
-  if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return -expm1(-z) - 0.5 * xi_ * z * z * std::exp(-z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 1.0;
+  if (std::abs(xi_) < 1.0e-8) return -expm1(-z) - 0.5 * xi_ * z * z * std::exp(-z);
   return -expm1(-log1p(xi_ * z) / xi_);
 }
 

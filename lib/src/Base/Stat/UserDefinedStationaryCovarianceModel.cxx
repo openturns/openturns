@@ -30,27 +30,29 @@ static const Factory<UserDefinedStationaryCovarianceModel> Factory_UserDefinedSt
 
 /* Constructor with parameters */
 UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
-  : StationaryCovarianceModel()
+  : CovarianceModelImplementation()
   , covarianceCollection_(0)
   , mesh_()
   , nearestNeighbour_()
 {
   inputDimension_ = 1;
   outputDimension_ = 0;
+  isStationary_ = true;
 }
 
 // Classical constructor
 // For a stationary model, we need N covariance matrices with N the number of time stamps in the time grid
 UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
     const SquareMatrixCollection & covarianceFunction)
-  : StationaryCovarianceModel()
+  : CovarianceModelImplementation()
   , covarianceCollection_(0)
   , mesh_(mesh)
   , nearestNeighbour_(mesh)
 {
+  isStationary_ = true;
   const UnsignedInteger size = mesh.getVerticesNumber();
   if (size != covarianceFunction.getSize())
-    throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherents"
+    throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent"
                                          << " mesh size = " << size << "covariance function size = " << covarianceFunction.getSize();
   inputDimension_ = mesh.getDimension();
   covarianceCollection_ = SquareMatrixCollection(size);
@@ -70,6 +72,42 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
 UserDefinedStationaryCovarianceModel * UserDefinedStationaryCovarianceModel::clone() const
 {
   return new UserDefinedStationaryCovarianceModel(*this);
+}
+
+Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Point &tau) const
+{
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : UserDefinedStationaryCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "In UserDefinedStationaryCovarianceModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
+  // We filter the collection & return corresponding values
+  if (mesh_.getN() == 1)
+    return covarianceCollection_[0](0, 0);
+  UnsignedInteger index;
+  if (tau[0] < 0.0)
+    index = nearestNeighbour_.query(tau * (-1.0));
+  else
+    index = nearestNeighbour_.query(tau);
+  // index
+  return covarianceCollection_[index](0, 0);
+}
+
+Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+    const Collection<Scalar>::const_iterator &t_begin) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "Error : UserDefinedStationaryCovarianceModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
+  // Work on iterators
+  // Unfortunately there is no other solution then generating the tau point
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  Point tau(inputDimension_, 0.0);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    tau[i] = *s_it - *t_it;
+  }
+  return computeAsScalar(tau);
 }
 
 /* Computation of the covariance function */
@@ -119,7 +157,7 @@ String UserDefinedStationaryCovarianceModel::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void UserDefinedStationaryCovarianceModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute( "covarianceCollection_", covarianceCollection_);
   adv.saveAttribute( "mesh_", mesh_);
 }
@@ -127,7 +165,7 @@ void UserDefinedStationaryCovarianceModel::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void UserDefinedStationaryCovarianceModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute( "covarianceCollection_", covarianceCollection_);
   adv.loadAttribute( "mesh_", mesh_);
 }

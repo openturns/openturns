@@ -98,7 +98,7 @@ public:
   inline
   Cache() : PersistentObject(),
     enabled_(true),
-    maxSize_(ResourceMap::GetAsUnsignedInteger("cache-max-size")),
+    maxSize_(ResourceMap::GetAsUnsignedInteger("Cache-MaxSize")),
     hits_(0),
     keys_(),
     points_()

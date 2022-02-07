@@ -67,7 +67,7 @@ if ("1" STREQUAL "@HMAT_FOUND@")
   # if CMAKE_FIND_ROOT_PATH is defined and CMAKE_FIND_ROOT_PATH_MODE_PACKAGE set to ONLY
   # hardcoded PATHS guesses must be relative to CMAKE_FIND_ROOT_PATH
   if (DEFINED CMAKE_FIND_ROOT_PATH)
-    file (RELATIVE_PATH HMAT_DIR ${CMAKE_FIND_ROOT_PATH} ${HMAT_DIR})
+    file (RELATIVE_PATH HMAT_DIR "${CMAKE_FIND_ROOT_PATH}" "${HMAT_DIR}")
     set (HMAT_DIR "/${HMAT_DIR}")
   endif ()
 

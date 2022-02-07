@@ -45,7 +45,7 @@ SparseMatrix::SparseMatrix( const UnsignedInteger nbRows,
   columnPointer_.resize(nbColumns + 1, 0);
 }
 
-/** Constructor from triples */
+/* Constructor from triples */
 SparseMatrix::SparseMatrix(const UnsignedInteger nbRows,
                            const UnsignedInteger nbColumns,
                            const Indices & rowIndices,
@@ -108,11 +108,11 @@ SparseMatrix * SparseMatrix::clone() const
   return new SparseMatrix(*this);
 }
 
-/** Read-only accessor to values */
+/* Read-only accessor to values */
 Scalar SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger j) const
 {
-  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
-  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
+  if (!(i < nbRows_)) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (!(j < nbColumns_)) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
   for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
   {
     // TODO: sum duplicate coordinate values
@@ -122,11 +122,11 @@ Scalar SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger j
   return 0.0;
 }
 
-/** Filling matrix from coordinates and value */
+/* Filling matrix from coordinates and value */
 Scalar & SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger j)
 {
-  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
-  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
+  if (!(i < nbRows_)) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (!(j < nbColumns_)) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
   UnsignedInteger index = columnPointer_[j + 1];
   for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
   {
@@ -147,37 +147,39 @@ Scalar & SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger
   return values_[index];
 }
 
-/** Multiplication by a vector */
+/* Multiplication by a vector */
 Point SparseMatrix::operator *(const Point & rhs) const
 {
   if (rhs.getDimension() != nbColumns_) throw InvalidDimensionException(HERE) << "Invalid rhs size";
   Point output(nbRows_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
+  {
+    const Scalar yJ(rhs[j]);
     for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
-      output[rowIndex_[k]] += values_[k] * rhs[j];
+      output[rowIndex_[k]] += values_[k] * yJ;
+  }
   return output;
 }
 
-/** Get the dimensions of the matrix */
-/** Number of rows */
+/* Number of rows */
 UnsignedInteger SparseMatrix::getNbRows() const
 {
   return nbRows_;
 }
 
-/** Number of columns */
+/* Number of columns */
 UnsignedInteger SparseMatrix::getNbColumns() const
 {
   return nbColumns_;
 }
 
-/** Get the number of non-zeros elements */
+/* Get the number of non-zeros elements */
 UnsignedInteger SparseMatrix::getNbNonZeros() const
 {
   return size_;
 }
 
-/** Transposition */
+/* Transposition */
 SparseMatrix SparseMatrix::transpose() const
 {
   SparseMatrix output(getNbColumns(), getNbRows());
@@ -187,7 +189,7 @@ SparseMatrix SparseMatrix::transpose() const
   return output;
 }
 
-/** Sparse / dense conversions */
+/* Sparse / dense conversions */
 Matrix SparseMatrix::asDenseMatrix() const
 {
   Matrix result(nbRows_, nbColumns_);
@@ -197,12 +199,55 @@ Matrix SparseMatrix::asDenseMatrix() const
   return result;
 }
 
-/** Sparse / dense conversions */
+/* Multiplication with dense matrix */
+Matrix SparseMatrix::operator * (const Matrix & m) const
+{
+  if (m.getNbRows() != getNbColumns())
+    throw InvalidDimensionException(HERE) << "SparseMatrix multiplication expected row dimension " << getNbColumns();
+  Matrix result(getNbRows(), m.getNbColumns());
+  for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
+    for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
+      for (UnsignedInteger p = 0; p < m.getNbColumns(); ++ p)
+        result(rowIndex_[k], p) += values_[k] * m(j, p);
+  return result;
+}
+
+/* String converter */
 String SparseMatrix::__repr__() const
 {
-  return OSS(true) << "class=" << getClassName()
-         << " rows=" << getNbRows()
-         << " columns=" << getNbColumns();
+  OSS oss(true);
+  oss << "class=" << getClassName()
+      << " rows=" << getNbRows()
+      << " columns=" << getNbColumns()
+      << " triplets=[";
+  for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
+    for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
+    {
+      oss << "[" << rowIndex_[k] << "," << j << "," << values_[k] << "]";
+      oss << ((j == nbColumns_ - 1) && (k == columnPointer_[j + 1] - 1) ? "" : ",");
+    }
+  oss << "]";
+  return oss;
 }
+
+String SparseMatrix::__str__(const String & /*offset*/) const
+{
+  return __repr__();
+}
+
+/* Method save() stores the object through the StorageManager */
+// void SparseMatrix::save(Advocate & adv) const
+// {
+//   PersistentObject::save(adv);
+//   adv.saveAttribute( "values_", Point(Collection<Scalar>(values_.begin(), values_.end())));
+// }
+
+
+/* Method load() reloads the object from the StorageManager */
+// void SparseMatrix::load(Advocate & adv)
+// {
+//   PersistentObject::load(adv);
+//   adv.loadAttribute("values_", values_);
+// }
 
 END_NAMESPACE_OPENTURNS

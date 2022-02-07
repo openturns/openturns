@@ -1,9 +1,9 @@
 """
-Post analytical importance sampling
-===================================
+Use the post-analytical importance sampling algorithm
+=====================================================
 """
 # %%
-# In this example we want to estimate a threshold exceedance probability by combining approximation and simulation methods.
+# In this example we want to estimate the probability to exceed a threshold through the combination of approximation and simulation methods.
 #
 #   - perform an FORM or SORM study in order to find the design point,
 #
@@ -35,8 +35,8 @@ ot.Log.Show(ot.Log.NONE)
 # Create a model
 model = ot.SymbolicFunction(['x1', 'x2'], ['x1^2+x2'])
 R = ot.CorrelationMatrix(2)
-R[0,1] = -0.6
-inputDist = ot.Normal([0.,0.], R)
+R[0, 1] = -0.6
+inputDist = ot.Normal([0., 0.], R)
 inputDist.setDescription(['X1', 'X2'])
 inputVector = ot.RandomVector(inputDist)
 

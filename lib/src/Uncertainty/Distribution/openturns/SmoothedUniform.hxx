@@ -114,6 +114,10 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const override;
 
+  /** Parameters collection accessor */
+  void setParametersCollection(const PointCollection & parametersCollection) override;
+  PointWithDescriptionCollection getParametersCollection() const override;
+
   /** Check if the distribution is elliptical */
   Bool isElliptical() const override;
 

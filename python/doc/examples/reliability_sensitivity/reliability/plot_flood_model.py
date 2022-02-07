@@ -2,7 +2,7 @@
 Estimate a flooding probability
 ===============================
 """
-# %% 
+# %%
 #
 # In this example, we estimate the probability that the ouput of a function exceeds a given threshold with the FORM method. We consider the :ref:`flooding model <use-case-flood-model>`.
 
@@ -12,6 +12,7 @@ Estimate a flooding probability
 
 # %%
 from __future__ import print_function
+from openturns.usecases import flood_model as flood_model
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -19,15 +20,14 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the flooding model from the usecases module :
-from openturns.usecases import flood_model as flood_model
 fm = flood_model.FloodModel()
 
 # %%
-# We load the joint probability distribution of the input parameters. 
+# We load the joint probability distribution of the input parameters.
 distribution = fm.distribution
 
 # %%
-# We create the model. 
+# We create the model.
 
 # %%
 model = fm.model
@@ -50,7 +50,7 @@ event.setName('overflow')
 # ----------------------------------
 
 # %%
-# Define a solver. 
+# Define a solver.
 
 # %%
 optimAlgo = ot.Cobyla()
@@ -61,7 +61,7 @@ optimAlgo.setMaximumResidualError(1.0e-10)
 optimAlgo.setMaximumConstraintError(1.0e-10)
 
 # %%
-# Run FORM. 
+# Run FORM.
 
 # %%
 startingPoint = distribution.getMean()
@@ -71,7 +71,7 @@ result = algo.getResult()
 standardSpaceDesignPoint = result.getStandardSpaceDesignPoint()
 
 # %%
-# Retrieve results. 
+# Retrieve results.
 
 # %%
 result = algo.getResult()
@@ -79,7 +79,7 @@ probability = result.getEventProbability()
 print('Pf=', probability)
 
 # %%
-# Importance factors. 
+# Importance factors.
 
 # %%
 graph = result.drawImportanceFactors()

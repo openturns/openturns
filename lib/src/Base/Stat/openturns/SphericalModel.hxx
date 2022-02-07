@@ -1,7 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class is enables to build an exponential covariance
- *  model, a second order model's implementation
+ *  @brief This class is enables to build a spherical covariance model
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -23,7 +22,7 @@
 #define OPENTURNS_SPHERICALMODEL_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Mesh.hxx"
@@ -37,7 +36,7 @@ class RegularGrid;
  */
 
 class OT_API SphericalModel
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -57,20 +56,13 @@ public:
   SphericalModel * clone() const override;
 
   /** Computation of the covariance function, stationary interface */
-  using StationaryCovarianceModel::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const override;
-#ifndef SWIG
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const override;
-#endif
-
-  using StationaryCovarianceModel::operator();
-  SquareMatrix operator() (const Point & tau) const override;
+  using CovarianceModelImplementation::computeAsScalar;
   Scalar computeAsScalar(const Point & tau) const override;
-
-  /** Discretize the covariance function on a given TimeGrid */
-  using StationaryCovarianceModel::discretize;
-  CovarianceMatrix discretize(const RegularGrid & regularGrid) const override;
+#ifndef SWIG
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                         const Collection<Scalar>::const_iterator & t_begin) const override;
+#endif
+  Scalar computeAsScalar(const Scalar tau) const override;
 
   /** String converter */
   String __repr__() const override;

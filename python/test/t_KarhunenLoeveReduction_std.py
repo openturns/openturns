@@ -2,6 +2,7 @@ import openturns as ot
 import unittest
 import openturns.testing as ott
 
+
 class CheckKarhunenLoeveReduce(unittest.TestCase):
     def test_ZeroMean(self):
         # Create the KL result
@@ -60,12 +61,13 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         mean = ot.SymbolicFunction("x", "sign(x)")
         cov = ot.SquaredExponential([1.0], [0.1])
         mesh = ot.IntervalMesher([N]).build(ot.Interval(-2.0, 2.0))
-        process = ot.GaussianProcess(ot.TrendTransform(mean, mesh), cov, mesh) 
+        process = ot.GaussianProcess(ot.TrendTransform(mean, mesh), cov, mesh)
         sample = process.getSample(M)
         algo = ot.KarhunenLoeveSVDAlgorithm(sample, 1e-6)
         algo.run()
         result = algo.getResult()
-        trend = ot.TrendTransform(ot.P1LagrangeEvaluation(sample.computeMean()), mesh)
+        trend = ot.TrendTransform(
+            ot.P1LagrangeEvaluation(sample.computeMean()), mesh)
         sample2 = process.getSample(P)
         sample2.setName('reduction of sign(x) w/o trend')
         reduced1 = ot.KarhunenLoeveReduction(result)(sample2)
@@ -91,6 +93,7 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         if 0:
             from openturns.viewer import View
             View(g).save('reduction.png')
+
+
 if __name__ == "__main__":
     unittest.main()
-

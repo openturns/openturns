@@ -45,10 +45,12 @@ First and second order Sobol' indices are defined as follows:
     S_i     & = \frac{V_i}{\Var{Y}} \\
     S_{i,j} & = \frac{V_{i,j}}{\Var{Y}}
 
+for :math:`i, j = 1,\ldots,n_X`.
+
 The first order Sobol' index :math:`S_i` measures the part of the variance of :math:`Y` explained by :math:`X_i` alone.
 The second order Sobol' index :math:`S_{i,j}`  measures the part of the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
 
-Let us define
+For any :math:`i=1,\ldots,n_X`, let us define
 
 .. math::
 
@@ -61,7 +63,9 @@ Total order Sobol' indices are defined as follows:
 
 .. math::
 
-    ST_i = \frac{VT_i}{\Var{Y}} = 1 - \frac{V_{-i}}{\Var{Y}}.
+    ST_i = \frac{VT_i}{\Var{Y}} = 1 - \frac{V_{-i}}{\Var{Y}}
+
+for :math:`i=1,\ldots,n_X`.
 
 The total order Sobol' index :math:`ST_i` quantifies the part of the variance of :math:`Y` that is due to the effect of :math:`X_i`
 and its interactions with all the other input variables.
@@ -185,6 +189,9 @@ Corresponding confidence intervals are provided by the methods
 Their confidence level can be adjusted with :meth:`setConfidenceLevel`.
 The default confidence level is stored in the :class:`~openturns.ResourceMap`
 and can be accessed with the `SobolIndicesAlgorithm-DefaultConfidenceLevel` key.
+
+Indices estimates can be slightly outside of [0,1] if the estimator has not converged.
+For the same reason some first order indices estimates can be greater than the corresponding total order indices estimates.
 
 The asymptotic estimator of the distribution requires an asymptotic estimate
 of its variance, which is computed using the [janon2014]_
@@ -538,6 +545,8 @@ OT_SobolIndicesAlgorithm_getTotalOrderIndicesDistribution_doc
 %define OT_SobolIndicesAlgorithm_setDesign_doc
 "Sample accessor.
 
+Allows to estimate indices from a predefined Sobol design.
+
 Parameters
 ----------
 inputDesign : :class:`~openturns.Sample`
@@ -547,7 +556,8 @@ outputDesign : :class:`~openturns.Sample`
     Design for the evaluation of sensitivity indices, obtained as the evaluation
     of a Function (model) on the previous inputDesign
 N : int
-    Size of samples to generate"
+    Base size of the Sobol design"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::setDesign
 OT_SobolIndicesAlgorithm_setDesign_doc
+

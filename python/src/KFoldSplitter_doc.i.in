@@ -1,0 +1,35 @@
+%feature("docstring") OT::KFoldSplitter
+"K-fold splitter.
+
+Generates train/test indices to split samples in train/test sets.
+The sample is split into k folds.
+Each fold is then used once as test while the k - 1 other folds form the training set.
+
+Parameters
+----------
+N : int
+    Size of the set of indices in which the indices are chosen
+k : int
+    Number of folds
+
+Examples
+--------
+>>> import openturns as ot
+>>> X = ot.Normal().getSample(10)
+>>> k = 5
+>>> splitter = ot.KFoldSplitter(X.getSize(), k)
+>>> for indices1, indices2 in splitter:
+...     X_train, X_test = X[indices1], X[indices2]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KFoldSplitter::setRandomize
+"Set the value of the *randomize* flag.
+
+Note that the default value is set via the ResourceMap entry `KFoldSplitter-Randomize`.
+
+Parameters
+----------
+randomize : bool
+    Scramble the folds."

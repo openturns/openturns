@@ -1,6 +1,6 @@
 """
-Apply a Box-Cox transformation to a Field
-=========================================
+Use the Box-Cox transformation
+==============================
 """
 # %%
 #
@@ -61,8 +61,8 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define a process
-myIndices= ot.Indices([10,5])
-myMesher =ot.IntervalMesher(myIndices)
+myIndices = [10, 5]
+myMesher = ot.IntervalMesher(myIndices)
 myInterval = ot.Interval([0.0, 0.0], [2.0, 1.0])
 myMesh = myMesher.build(myInterval)
 amplitude = [1.0]

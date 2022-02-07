@@ -26,6 +26,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -327,6 +328,7 @@ Point Histogram::getStandardMoment(const UnsignedInteger n) const
 Distribution Histogram::getStandardRepresentative() const
 {
   const UnsignedInteger size = width_.getSize();
+  if (size == 1) return Uniform(-1.0, 1.0);
   // No need to transform an histogram if its range is already [-1.0, 1.0]
   if (first_ == -1.0 && std::abs(cumulatedWidth_[size - 1] - 2.0) <= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) return clone();
   const Scalar first = -1.0;

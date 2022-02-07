@@ -1,30 +1,30 @@
 """
-Central tendency analysis on the cantilever beam example
-========================================================
+Analyse the central tendency of a cantilever beam
+=================================================
 """
 # %%
-# In this example we perform a central tendency analysis of a random variable Y using the various methods available. We consider the :ref:`cantilever beam <use-case-cantilever-beam>` example and show how to use the `TaylorExpansionMoments` and `ExpectationSimulationAlgorithm` classes. 
+# In this example we perform a central tendency analysis of a random variable Y using the various methods available. We consider the :ref:`cantilever beam <use-case-cantilever-beam>` example and show how to use the `TaylorExpansionMoments` and `ExpectationSimulationAlgorithm` classes.
 
 # %%
 from __future__ import print_function
+from openturns.usecases import cantilever_beam as cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We first load the data class from the usecases module : 
-from openturns.usecases import cantilever_beam as cantilever_beam
+# We first load the data class from the usecases module :
 cb = cantilever_beam.CantileverBeam()
 
 # %%
 # We want to create the random variable of interest Y=g(X) where :math:`g(.)` is the physical model and :math:`X` is the input vectors. For this example we consider independent marginals.
 
 # %%
-# We set a `mean` vector and a unitary standard deviation : 
+# We set a `mean` vector and a unitary standard deviation :
 dim = cb.dim
 mean = [50.0, 1.0, 10.0, 5.0]
-sigma = ot.Point(dim, 1.0)
+sigma = [1.0] * dim
 R = ot.IdentityMatrix(dim)
 
 # %%
@@ -84,14 +84,15 @@ algo.run()
 print('model evaluation calls number=', f.getEvaluationCallsNumber())
 expectation_result = algo.getResult()
 expectation_mean = expectation_result.getExpectationEstimate()
-print('monte carlo mean=', expectation_mean, 'var=', expectation_result.getVarianceEstimate())
+print('monte carlo mean=', expectation_mean, 'var=',
+      expectation_result.getVarianceEstimate())
 
 # %%
 # Central dispersion analysis based on a sample
 # ---------------------------------------------
 
 # %%
-# Directly compute statistical moments based on a sample of Y. Sometimes the probabilistic model is not available and the study needs to start from the data. 
+# Directly compute statistical moments based on a sample of Y. Sometimes the probabilistic model is not available and the study needs to start from the data.
 
 # %%
 Y_s = Y.getSample(1000)

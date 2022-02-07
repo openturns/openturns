@@ -119,6 +119,9 @@ public:
   void setParameter(const Point & parameter) override;
   Point getParameter() const override;
 
+  /** Parameters description accessor */
+  Description getParameterDescription() const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

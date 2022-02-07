@@ -56,6 +56,8 @@ Sample SamplingStrategyImplementation::generate() const
 /* Generate a uniform random unit vector */
 Point SamplingStrategyImplementation::getUniformUnitVectorRealization(const UnsignedInteger dimension) const
 {
+  if (dimension == 0)
+    throw InvalidArgumentException(HERE) << "Cannot run a 0-d SamplingStrategy.";
   Point direction(dimension);
   Scalar norm = 0.0;
   do

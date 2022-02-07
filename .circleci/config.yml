@@ -5,30 +5,34 @@ jobs:
     docker:
       - image: openturns/archlinux-python
         environment:
-          MAKEFLAGS: "-j2"
+          MAKEFLAGS: "-j4"
+          OPENTURNS_NUM_THREADS: "4"
+    resource_class: large
     steps:
       - checkout
       - run:
-          name: Install
-          command: |
-            cd /tmp && git clone --depth 1 https://github.com/swig/swig.git && cd swig && ./autogen.sh && ./configure --without-alllang && make && sudo make install
-            sudo pip install git+https://github.com/sphinx-doc/sphinx.git
-      - run:
           name: Build and test
           command: ./.circleci/run_docker_linux.sh
+          no_output_timeout: 40m
       - run:
           name: Publish documentation
           command: ./.circleci/upload_github_io.sh
+      - store_artifacts:
+          path: ~/.local/share/openturns/doc/html
+          destination: html
 
   build_mingw:
     docker:
       - image: openturns/archlinux-mingw
         environment:
-          MAKEFLAGS: "-j2"
+          MAKEFLAGS: "-j4"
+          OPENTURNS_NUM_THREADS: "4"
+    resource_class: large
     steps:
       - checkout
       - run:
           name: Build and test
+          no_output_timeout: 20m
           command: ./.circleci/run_docker_mingw.sh
 
 workflows:

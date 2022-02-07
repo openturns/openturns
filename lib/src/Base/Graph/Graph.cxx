@@ -160,6 +160,18 @@ Bool Graph::getAxes() const
   return getImplementation()->getAxes();
 }
 
+/* Ticks location flag accessor */
+void Graph::setTickLocation(const TickLocation tickLocation)
+{
+  copyOnWrite();
+  getImplementation()->setTickLocation(tickLocation);
+}
+
+Graph::TickLocation Graph::getTickLocation() const
+{
+  return getImplementation()->getTickLocation();
+}
+
 /* Set log scale for x, y both or none axes */
 void Graph::setLogScale(const LogScale logScale)
 {

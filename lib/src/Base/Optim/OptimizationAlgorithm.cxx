@@ -27,6 +27,7 @@
 #include "openturns/Ipopt.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
+#include "openturns/PlatformInfo.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -226,11 +227,11 @@ void OptimizationAlgorithm::setStopCallback(StopCallback callBack, void * state)
 OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
 {
   OptimizationAlgorithm solver;
-  if (Ceres::IsAvailable() && Ceres::GetAlgorithmNames().contains(solverName))
+  if (PlatformInfo::HasFeature("ceres") && Ceres::GetAlgorithmNames().contains(solverName))
   {
     solver = Ceres(solverName);
   }
-  else if (CMinpack::IsAvailable() && (solverName == "CMinpack"))
+  else if (PlatformInfo::HasFeature("cminpack") && (solverName == "CMinpack"))
   {
     solver = CMinpack();
   }
@@ -242,19 +243,19 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   {
     solver = TNC();
   }
-  else if (NLopt::IsAvailable() && NLopt::GetAlgorithmNames().contains(solverName))
+  else if (PlatformInfo::HasFeature("nlopt") && NLopt::GetAlgorithmNames().contains(solverName))
   {
     solver = NLopt(solverName);
   }
-  else if (Dlib::IsAvailable() && Dlib::GetAlgorithmNames().contains(solverName))
+  else if (PlatformInfo::HasFeature("dlib") && Dlib::GetAlgorithmNames().contains(solverName))
   {
     solver = Dlib(solverName);
   }
-  else if (Bonmin::IsAvailable() && Bonmin::GetAlgorithmNames().contains(solverName))
+  else if (PlatformInfo::HasFeature("bonmin") && Bonmin::GetAlgorithmNames().contains(solverName))
   {
     solver = Bonmin(solverName);
   }
-  else if (solverName == "Ipopt")
+  else if (PlatformInfo::HasFeature("ipopt") && solverName == "Ipopt")
   {
     solver = Ipopt();
   }
@@ -289,19 +290,19 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & p
 Description OptimizationAlgorithm::GetAlgorithmNames()
 {
   Description names;
-  if (Bonmin::IsAvailable())
+  if (PlatformInfo::HasFeature("bonmin"))
     names.add(Bonmin::GetAlgorithmNames());
-  if (Ipopt::IsAvailable())
+  if (PlatformInfo::HasFeature("ipopt"))
     names.add("Ipopt");
-  if (Ceres::IsAvailable())
+  if (PlatformInfo::HasFeature("ceres"))
     names.add(Ceres::GetAlgorithmNames());
-  if (CMinpack::IsAvailable())
+  if (PlatformInfo::HasFeature("cminpack"))
     names.add("CMinpack");
   names.add("Cobyla");
-  if (Dlib::IsAvailable())
+  if (PlatformInfo::HasFeature("dlib"))
     names.add(Dlib::GetAlgorithmNames());
   names.add("TNC");
-  if (NLopt::IsAvailable())
+  if (PlatformInfo::HasFeature("nlopt"))
     names.add(NLopt::GetAlgorithmNames());
 
   return names;

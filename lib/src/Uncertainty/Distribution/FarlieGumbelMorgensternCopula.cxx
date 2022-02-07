@@ -34,9 +34,10 @@ static const Factory<FarlieGumbelMorgensternCopula> Factory_FarlieGumbelMorgenst
 
 /* Default constructor */
 FarlieGumbelMorgensternCopula::FarlieGumbelMorgensternCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , theta_(0.5)
 {
+  isCopula_ = true;
   setName( "FarlieGumbelMorgensternCopula" );
   setDimension( 2 );
   computeRange();
@@ -44,9 +45,10 @@ FarlieGumbelMorgensternCopula::FarlieGumbelMorgensternCopula()
 
 /* Parameters constructor */
 FarlieGumbelMorgensternCopula::FarlieGumbelMorgensternCopula(const Scalar theta)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , theta_(0.0)
 {
+  isCopula_ = true;
   setName( "FarlieGumbelMorgensternCopula" );
   // Check the value of theta
   setTheta(theta);
@@ -320,14 +322,14 @@ Scalar FarlieGumbelMorgensternCopula::computeEntropy() const
 /* Method save() stores the object through the StorageManager */
 void FarlieGumbelMorgensternCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "theta_", theta_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void FarlieGumbelMorgensternCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "theta_", theta_ );
   computeRange();
 }

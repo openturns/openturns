@@ -59,22 +59,6 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & mo
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
   const UnsignedInteger size = inputObservations.getSize();
   if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
-  // Compute the linearization
-  Function parametrizedModel(model);
-  parametrizedModel.setParameter(candidate);
-  // Flatten everything related to the model evaluations over the input observations
-  modelObservations_ = parametrizedModel(inputObservations);
-  gradientObservations_ = MatrixImplementation(parameterDimension, size * outputDimension);
-  UnsignedInteger shift = 0;
-  UnsignedInteger skip = parameterDimension * outputDimension;
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Matrix parameterGradient(parametrizedModel.parameterGradient(inputObservations[i]));
-    std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations_.getImplementation()->begin() + shift);
-    shift += skip;
-  }
-  gradientObservations_ = gradientObservations_.transpose();
-  parameterPrior_.setDescription(model.getParameterDescription());
 }
 
 /* Parameter constructor */
@@ -100,9 +84,35 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void LinearLeastSquaresCalibration::run()
 {
+  if (getModel().getEvaluation().getImplementation()->isActualImplementation())
+  {
+    // Compute the linearization
+    Function parametrizedModel(getModel());
+    parametrizedModel.setParameter(getParameterPrior().getMean());
+    // Flatten everything related to the model evaluations over the input observations
+    const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
+    const UnsignedInteger outputDimension = getOutputObservations().getDimension();
+    const UnsignedInteger size = getOutputObservations().getSize();
+    modelObservations_ = parametrizedModel(getInputObservations());
+    gradientObservations_ = MatrixImplementation(parameterDimension, size * outputDimension);
+    UnsignedInteger shift = 0;
+    UnsignedInteger skip = parameterDimension * outputDimension;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Matrix parameterGradient(parametrizedModel.parameterGradient(getInputObservations()[i]));
+      std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations_.getImplementation()->begin() + shift);
+      shift += skip;
+    }
+    gradientObservations_ = gradientObservations_.transpose();
+    parameterPrior_.setDescription(getModel().getParameterDescription());
+  }
+
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, gradientObservations_));
   const Point deltaTheta(method.solve(deltaY));
+  for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
+    if (!SpecFunc::IsNormal(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
+
   const Point thetaStar(getCandidate() - deltaTheta);
   const Point r(deltaY - gradientObservations_ * deltaTheta);
   const Scalar varianceError = r.normSquare() / (deltaY.getDimension() - deltaTheta.getDimension());
@@ -137,7 +147,6 @@ void LinearLeastSquaresCalibration::run()
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction);
-  computeOutputAtPriorAndPosterior();
 }
 
 /* Model observations accessor */

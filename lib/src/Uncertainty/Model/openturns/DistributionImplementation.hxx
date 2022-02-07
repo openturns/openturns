@@ -152,11 +152,9 @@ protected:
 public:
   /** Get a numerical sample whose elements follow the distributionImplementation */
   virtual Sample getSample(const UnsignedInteger size) const;
-protected:
   virtual Sample getSampleByInversion(const UnsignedInteger size) const;
   virtual Sample getSampleByQMC(const UnsignedInteger size) const;
 
-public:
   /** Get the DDF of the distribution */
   virtual Scalar computeDDF(const Scalar scalar) const;
   virtual Point  computeDDF(const Point & point) const;
@@ -316,6 +314,7 @@ protected:
       const Bool tail = false) const;
   virtual Sample computeQuantileParallel(const Point & prob,
                                          const Bool tail = false) const;
+  Point computeQuantileCopula(const Scalar prob, const Bool tail = false) const;
 public:
   virtual Sample computeQuantile(const Point & prob,
                                  const Bool tail = false) const;
@@ -409,8 +408,7 @@ public:
   /** Correlation matrix accessor */
   CorrelationMatrix getCorrelation() const;
 
-  /** Get the linear correlation of the distribution */
-  virtual CorrelationMatrix getLinearCorrelation() const;
+  /** Get the Pearson correlation of the distribution */
   virtual CorrelationMatrix getPearsonCorrelation() const;
 
   /** Get the Spearman correlation of the distribution */
@@ -763,6 +761,10 @@ public:
   Bool isParallel() const;
   void setParallel(const Bool flag);
 
+  /** Quantile epsilon accessor */
+  Scalar getQuantileEpsilon() const;
+  void setQuantileEpsilon(const Scalar quantileEpsilon);
+
 protected:
 
   /** Draw the PDF of a discrete distribution */
@@ -800,6 +802,7 @@ protected:
 
   /** Compute the covariance of the distribution */
   virtual void computeCovariance() const;
+  virtual void computeCovarianceCopula() const;
   virtual void computeCovarianceContinuous() const;
   virtual void computeCovarianceDiscrete() const;
   virtual void computeCovarianceGeneral() const;

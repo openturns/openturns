@@ -18,14 +18,14 @@ namespace OT {
   canConvert< _PyObject_, OT::FieldFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldFunction, 0 ))) {
-      OT::FieldFunction * p_nmf = reinterpret_cast< OT::FieldFunction * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__FieldFunction, SWIG_POINTER_NO_NULL))) {
+      OT::FieldFunction * p_nmf = reinterpret_cast< OT::FieldFunction * >(ptr);
       return p_nmf != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldFunctionImplementation, 0 ))) {
+    } else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__FieldFunctionImplementation, SWIG_POINTER_NO_NULL))) {
       OT::FieldFunctionImplementation * p_impl = reinterpret_cast< OT::FieldFunctionImplementation * >( ptr );
       return p_impl != NULL;
     } else {
-      return PyCallable_Check( pyObj );
+      return PyCallable_Check(pyObj);
     }
   }
 
@@ -38,10 +38,10 @@ namespace OT {
     if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldFunction, 0 ) ) ) {
       OT::FieldFunction * p_nmf = reinterpret_cast< OT::FieldFunction * >( ptr );
       return *p_nmf;
-    } else if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldFunctionImplementation, 0 ) ) ) {
-      OT::FieldFunctionImplementation * p_impl = reinterpret_cast< OT::FieldFunctionImplementation * >( ptr );
+    } else if ( SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__FieldFunctionImplementation, SWIG_POINTER_NO_NULL))) {
+      OT::FieldFunctionImplementation * p_impl = reinterpret_cast< OT::FieldFunctionImplementation * >(ptr);
       return *p_impl;
-    } else if (!PyCallable_Check( pyObj )) {
+    } else if (!PyCallable_Check(pyObj)) {
       throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a FieldFunction";
     }
     OT::FieldFunction pythonFunction(new OT::PythonFieldFunction(pyObj));

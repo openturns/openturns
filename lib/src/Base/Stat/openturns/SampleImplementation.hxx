@@ -476,7 +476,7 @@ public:
 
   /** Factory of SampleImplementation from CSV file */
   static SampleImplementation BuildFromCSVFile(const FileName & fileName,
-      const String & csvSeparator = ResourceMap::GetAsString( "csv-file-separator" ));
+      const String & csvSeparator = ResourceMap::GetAsString( "Sample-CSVFileSeparator" ));
 
   /** Factory of SampleImplementation from Text file */
   static SampleImplementation BuildFromTextFile(const FileName & fileName,
@@ -651,11 +651,6 @@ public:
   virtual Point computeStandardDeviation() const;
 
   /**
-   * @deprecated Gives the standard deviation of each component of the sample
-   */
-  virtual Point computeStandardDeviationPerComponent() const;
-
-  /**
    * Gives the Pearson correlation matrix of the sample
    */
   virtual CorrelationMatrix computeLinearCorrelation() const;
@@ -797,7 +792,10 @@ public:
 
   /** Save to CSV file */
   void exportToCSVFile(const FileName & filename,
-                       const String & csvSeparator = ResourceMap::GetAsString( "csv-file-separator" )) const;
+                       const String & csvSeparator = ResourceMap::GetAsString("Sample-CSVFileSeparator"),
+                       const String & numSeparator = ".",
+                       const UnsignedInteger precision = ResourceMap::GetAsUnsignedInteger("Sample-CSVPrecision"),
+                       const String & format = ResourceMap::Get("Sample-CSVFormat")) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

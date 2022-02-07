@@ -14,7 +14,7 @@ mkdir build && cd build
 
 ARCH=i686
 MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
-PYMAJMIN=38
+PYMAJMIN=310
 PREFIX=${PWD}/install
 CXXFLAGS="-Wall -Wextra -Werror -D_GLIBCXX_ASSERTIONS" ${ARCH}-w64-mingw32-cmake \
   -DSWIG_COMPILE_FLAGS="-O0 -Wno-unused-parameter -Wno-missing-field-initializers" \
@@ -29,6 +29,6 @@ CXXFLAGS="-Wall -Wextra -Werror -D_GLIBCXX_ASSERTIONS" ${ARCH}-w64-mingw32-cmake
 make install
 ${ARCH}-w64-mingw32-strip --strip-unneeded ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/openturns/*.pyd
 echo lib/test ${PREFIX}/Lib/site-packages/openturns | xargs -n 1 cp ${PREFIX}/bin/*.dll
-ctest -R pyinstallcheck --output-on-failure ${MAKEFLAGS}
+ctest -R pyinstallcheck --output-on-failure ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 make tests
-ctest -R cppcheck --output-on-failure --timeout 1000 ${MAKEFLAGS}
+ctest -R cppcheck --output-on-failure --timeout 1000 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random

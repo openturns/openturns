@@ -35,11 +35,11 @@ inputVector = ot.RandomVector(inputDist)
 #
 # .. math::
 #    f(X) = \begin{pmatrix}
-#             x_1^2 + x_2 \\ 
-#             x_1   + x_2^2 
+#             x_1^2 + x_2 \\
+#             x_1   + x_2^2
 #           \end{pmatrix}
 #
-# We define our model `f` with a `SymbolicFunction` 
+# We define our model `f` with a `SymbolicFunction`
 
 # %%
 f = ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2", "x2^2+x1"])
@@ -63,7 +63,7 @@ sample[:5]
 # %%
 # Basic operations on samples
 # ---------------------------
-# We have access to basic information about a sample such as 
+# We have access to basic information about a sample such as
 #
 # - minimum and maximum per component
 #
@@ -152,4 +152,3 @@ sample.computeKendallTau()
 #  - get  the sample Spearman correlation matrix :
 #
 sample.computeSpearmanCorrelation()
-

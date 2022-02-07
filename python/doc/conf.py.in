@@ -15,7 +15,10 @@
 import sys
 import os
 import subprocess
-from distutils.version import LooseVersion
+try:
+    from pkg_resources import parse_version as LooseVersion
+except ImportError:
+    from distutils.version import LooseVersion
 import sphinx
 import sphinx_gallery
 from sphinx_gallery.sorting import ExplicitOrder
@@ -38,7 +41,7 @@ extensions = []
 
 extensions.append('sphinx.ext.autodoc')
 
-if LooseVersion(sphinx.__version__) >= '1.8':
+if LooseVersion(sphinx.__version__) >= LooseVersion('1.8'):
     autodoc_default_options = {'members': None, 'inherited-members': None, 'exclude-members': 'thisown'}
 else:
     autodoc_default_flags =  ['members', 'inherited-members']
@@ -92,12 +95,13 @@ sphinx_gallery_conf = {
      'subsection_order': ExplicitOrder(['examples/data_analysis/manage_data_and_samples',
                                         'examples/data_analysis/sample_analysis',
                                         'examples/data_analysis/distribution_fitting',
-                                        'examples/data_analysis/statistical_hypothesis_testing',
+                                        'examples/data_analysis/statistical_tests',
                                         'examples/data_analysis/estimate_dependency_and_copulas',
                                         'examples/data_analysis/estimate_stochastic_processes',
                                         'examples/data_analysis/graphics',
                                         'examples/probabilistic_modeling/distributions',
                                         'examples/probabilistic_modeling/copulas',
+                                        'examples/probabilistic_modeling/random_vectors',
                                         'examples/probabilistic_modeling/stochastic_processes',
                                         'examples/meta_modeling/general_purpose_metamodels',
                                         'examples/meta_modeling/polynomial_chaos_metamodel',
@@ -117,6 +121,7 @@ sphinx_gallery_conf = {
                                         'examples/numerical_methods/general_methods',
                                         'examples/numerical_methods/optimization',
                                         'examples/graphs',]),
+     'show_signature': False,
 
 }
 

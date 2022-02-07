@@ -47,6 +47,7 @@ public:
   typedef GraphImplementation::DrawableCollection       DrawableCollection;
   typedef GraphImplementation::Format                   Format;
   typedef GraphImplementation::LogScale                 LogScale;
+  typedef GraphImplementation::TickLocation             TickLocation;
 
   /** Default constructor */
   explicit Graph(const String & title = "");
@@ -102,20 +103,18 @@ public:
 
   /** Hide or show x and y axes */
   void setAxes(const Bool showAxes);
-
-  /** Accessor for showAxes_ */
   Bool getAxes() const;
+
+  /** Ticks location flag accessor */
+  void setTickLocation(const TickLocation tickLocation);
+  TickLocation getTickLocation() const;
 
   /** Set log scale for x, y both or none axes */
   void setLogScale(const LogScale logScale);
-
-  /** Accessor for logScale_ */
   LogScale getLogScale() const;
 
   /** Hide or show grid */
   void setGrid(const Bool showGrid);
-
-  /** Accessor for showGrid_ */
   Bool getGrid() const;
 
   /** Grid color accessors */
@@ -124,20 +123,14 @@ public:
 
   /** Accesor for xTitle */
   String getXTitle() const;
-
-  /** Accessor for xTitle */
   void setXTitle(const String & title);
 
   /** Accessor for yTitle */
   String getYTitle() const;
-
-  /** Accessor for yTitle */
   void setYTitle(const String & title);
 
   /** Accesor for title */
   String getTitle() const;
-
-  /** Accesor for title */
   void setTitle(const String & title);
 
   /** The method that generates the graphic files */
@@ -158,8 +151,6 @@ public:
 
   /** Get the bounding box of the whole plot */
   Interval getBoundingBox() const;
-
-  /** Set the bounding box of the whole plot */
   void setBoundingBox(const Interval & boundingBox);
 
   /** Automatic bounding box accessor */
@@ -168,14 +159,10 @@ public:
 
   /** Get the legend position */
   String getLegendPosition() const;
-
-  /** Set the legend position */
   void setLegendPosition(const String & position);
 
   /** Get the legend font size */
   Scalar getLegendFontSize() const;
-
-  /** Set the legend font size */
   void setLegendFontSize(const Scalar legendFontSize);
 
   /** Check for legend position validity */

@@ -49,19 +49,7 @@ public:
   OptimizationResult();
 
   /** Default constructor */
-  explicit OptimizationResult(const UnsignedInteger inputDimension,
-                              const UnsignedInteger outputDimension = 1);
-
-
-  /** Standard constructor */
-  OptimizationResult(const Point & optimalPoint,
-                     const Point & optimalValue,
-                     const UnsignedInteger evaluationNumber,
-                     const Scalar absoluteError,
-                     const Scalar relativeError,
-                     const Scalar residualError,
-                     const Scalar constraintError,
-                     const OptimizationProblem & problem);
+  explicit OptimizationResult(const OptimizationProblem & problem);
 
   /** Virtual constructor */
   OptimizationResult * clone() const override;

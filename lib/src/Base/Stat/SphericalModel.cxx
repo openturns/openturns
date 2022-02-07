@@ -35,22 +35,22 @@ static const Factory<SphericalModel> Factory_SphericalModel;
 
 /* Constructor from input dimension */
 SphericalModel::SphericalModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , radius_(1.0)
 {
+  isStationary_ = true;
   if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
-  definesComputeStandardRepresentative_ = true;
 }
 
 /* Constructor with parameters */
 SphericalModel::SphericalModel(const Point & scale,
                                const Point & amplitude,
                                const Scalar radius)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
   , radius_(-1.0)
 {
+  isStationary_ = true;
   if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
-  definesComputeStandardRepresentative_ = true;
   setRadius(radius);
 }
 
@@ -60,35 +60,30 @@ SphericalModel * SphericalModel::clone() const
   return new SphericalModel(*this);
 }
 
-SquareMatrix SphericalModel::operator() (const Point & tau) const
-{
-  CovarianceMatrix covarianceMatrix(outputDimension_);
-  covarianceMatrix(0, 0) = computeAsScalar(tau);
-  return covarianceMatrix;
-}
-
-Scalar SphericalModel::computeAsScalar(const Point & tau) const
-{
-  return amplitude_[0] * computeStandardRepresentative(tau);
-}
-
 /* Computation of the representative function:
  * rho(tau) = amplitude_ * (1 - 0.5|tau/scale| (3 - (|tau/scale| / radius)^2)) for 0<=|tau/scale|<=radius, 0 otherwise
  */
-Scalar SphericalModel::computeStandardRepresentative(const Point & tau) const
+Scalar SphericalModel::computeAsScalar(const Point &tau) const
 {
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In SphericalModel::computeStandardRepresentative: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar normTauOverScaleA = tauOverTheta.norm() / radius_;
-  if (normTauOverScaleA <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
-  if (normTauOverScaleA >= 1.0) return 0.0;
-  return 1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA);
+  Scalar normTauOverScaleA = 0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    normTauOverScaleA += dx * dx;
+  }
+  normTauOverScaleA = sqrt(normTauOverScaleA);
+  normTauOverScaleA /= radius_;
+  if (normTauOverScaleA <= SpecFunc::ScalarEpsilon)
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
+  if (normTauOverScaleA >= 1.0)
+    return 0.0;
+  return amplitude_[0] * amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
 }
 
-Scalar SphericalModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar SphericalModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                                       const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar normTauOverScaleA = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
@@ -99,28 +94,25 @@ Scalar SphericalModel::computeStandardRepresentative(const Collection<Scalar>::c
     normTauOverScaleA += dx * dx;
   }
   normTauOverScaleA = sqrt(normTauOverScaleA) / radius_;
-  if (normTauOverScaleA <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
+  if (normTauOverScaleA <= SpecFunc::ScalarEpsilon)
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
   if (normTauOverScaleA >= 1.0) return 0.0;
-  return 1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA);
+  return amplitude_[0] * amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
 }
 
-/* Discretize the covariance function on a given TimeGrid */
-CovarianceMatrix SphericalModel::discretize(const RegularGrid & timeGrid) const
+Scalar SphericalModel::computeAsScalar(const Scalar tau) const
 {
-  const UnsignedInteger size = timeGrid.getN();
-  const UnsignedInteger fullSize = size;
-  const Scalar timeStep = timeGrid.getStep();
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
 
-  CovarianceMatrix cov(fullSize);
-
-  for (UnsignedInteger diag = 0; diag < size; ++diag)
-  {
-    const Scalar covTau = computeAsScalar(Point(1, diag * timeStep));
-    for (UnsignedInteger i = 0; i < size - diag; ++i)
-      cov(i, i + diag) = covTau;
-  }
-
-  return cov;
+  const Scalar normTauOverScaleA = std::abs(tau / scale_[0]) / radius_;
+  if (normTauOverScaleA <= SpecFunc::ScalarEpsilon)
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
+  if (normTauOverScaleA >= 1.0)
+    return 0.0;
+  return amplitude_[0] * amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
 }
 
 void SphericalModel::setFullParameter(const Point & parameter)
@@ -185,14 +177,14 @@ void SphericalModel::setRadius(const Scalar radius)
 /* Method save() stores the object through the StorageManager */
 void SphericalModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute("radius_", radius_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SphericalModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute("radius_", radius_);
 }
 

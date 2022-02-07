@@ -777,12 +777,11 @@ Scalar DistFunc::dHypergeometric(const UnsignedInteger n,
 {
   if (x + n < k + m) return 0.0;
   if (x > k || x > m) return 0.0;
+  if ((m == 0) || (m == n)) return 1.0;
 #ifdef OPENTURNS_HAVE_BOOST
   return boost::math::pdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x);
 #else
   // Check range
-  if ((x > m) || (x > k) || (x + n < m + k)) return 0.0;
-  if ((m == 0) || (m == n)) return 1.0;
   return std::exp(logdHypergeometric(n, k, m, x));
 #endif
 }
@@ -794,13 +793,13 @@ Scalar DistFunc::logdHypergeometric(const UnsignedInteger n,
 {
   if (x + n < k + m) return SpecFunc::LowestScalar;
   if (x > k || x > m) return SpecFunc::LowestScalar;
+  if ((m == 0) || (m == n)) return 0.0;
 #ifdef OPENTURNS_HAVE_BOOST
   return std::log(boost::math::pdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x));
 #else
   // Check range
-  if ((x > m) || (x > k) || (x + n < m + k)) return SpecFunc::LowestScalar;
-  if ((m == 0) || (m == n)) return 0.0;
   Scalar p = (1.0 * m) / n;
+  const Scalar nm = -SpecFunc::LOGSQRT2PI - 0.5 * std::log(m * (1.0 - p)) + SpecFunc::Stirlerr(n) - SpecFunc::Stirlerr(m) - SpecFunc::Stirlerr(n - m);
   Scalar kx = 0.0;
   if (x == 0) kx = k * log1p(-p);
   else if (x == k) kx = x * std::log(p);
@@ -808,8 +807,11 @@ Scalar DistFunc::logdHypergeometric(const UnsignedInteger n,
   Scalar nkmx = 0.0;
   if (x == m) nkmx = (n - k) * log1p(-p);
   else if (m - x == n - k) nkmx = (m - x) * std::log(p);
-  else nkmx = -SpecFunc::LOGSQRT2PI - 0.5 * std::log((m - x) * (1.0 - (1.0 * (m - x)) / (n - k))) + SpecFunc::Stirlerr(n - x) - SpecFunc::Stirlerr(m - x) - SpecFunc::Stirlerr(n - k - m + x) - bd0(m - x, (n - k) * p) - bd0(n - k - m + x, (n - k) * (1.0 - p));
-  const Scalar nm = -SpecFunc::LOGSQRT2PI - 0.5 * std::log(m * (1.0 - p)) + SpecFunc::Stirlerr(n) - SpecFunc::Stirlerr(m) - SpecFunc::Stirlerr(n - m);
+  else
+  {
+    const UnsignedInteger delta = n - k + x - m;
+    nkmx = -SpecFunc::LOGSQRT2PI - 0.5 * std::log((m - x) * (1.0 - (1.0 * (m - x)) / (n - k))) + SpecFunc::Stirlerr(n - k) - SpecFunc::Stirlerr(m - x) - SpecFunc::Stirlerr(delta) - bd0(m - x, (n - k) * p) - bd0(delta, (n - k) * (1.0 - p));
+  }
   return kx + nkmx - nm;
 #endif
 }
@@ -829,11 +831,11 @@ Scalar DistFunc::pHypergeometric(const UnsignedInteger n,
   // Compute the summation on the same side of the mode, ie
   // from 0 to x if x <= mode, or from x+1 to max(range) then complement if x > mode
   // Wikipedia H(n, k, m; x), OT H(n, k, m; x), Boost H(x; r, m, n) r = k
-  const UnsignedInteger mode = ((m + 1) * (k + 1)) / (n + 2);
+  const UnsignedInteger mode = (m + 1) * (k + 1);
   Bool complement = tail;
   Scalar cdf = 0.0;
   UnsignedInteger t = x;
-  if (x < mode)
+  if ((n + 2) * x < mode)
   {
     cdf = dHypergeometric(n, k, m, x);
     Scalar delta = cdf;
@@ -855,7 +857,7 @@ Scalar DistFunc::pHypergeometric(const UnsignedInteger n,
     if (t < xMax)
     {
       ++t;
-      cdf = dHypergeometric(n, k, m, t + 1);
+      cdf = dHypergeometric(n, k, m, t);
       Scalar delta = cdf;
       Scalar epsilon = complement ? SpecFunc::Precision : cdf * SpecFunc::Precision;
       while ((t <= xMax) && (delta > epsilon))

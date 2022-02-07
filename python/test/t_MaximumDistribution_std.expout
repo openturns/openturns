@@ -24,7 +24,7 @@ Survival(inverse survival)=0.95
 quantile= [2.31868]
 cdf(quantile)=0.95
 quantile (tail)= [0.123843]
-cdf (tail)=%.5g 0.95
+cdf (tail)=0.95
 Minimum volume interval= [-0.112778, 2.50221]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 2.46478} with f=
@@ -71,9 +71,9 @@ covariance= [[ 0.449251 ]]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  [1.0]
-ddf     = [0.018235]
-log pdf=-2.11
-pdf    =0.12124
+ddf     = [0.0911751]
+log pdf=-0.50052
+pdf    =0.60622
 cdf =0.42157
 ccdf=0.57843
 survival=0.57843
@@ -82,32 +82,32 @@ Survival(inverse survival)=0.95
 quantile= [2.31868]
 cdf(quantile)=0.95
 quantile (tail)= [0.123843]
-cdf (tail)=%.5g 0.95
+cdf (tail)=0.95
 Minimum volume interval= [-0.112778, 2.50221]
 threshold= 0.95
-Minimum volume level set= {x | f(x) <= 4.07422} with f=
+Minimum volume level set= {x | f(x) <= 2.46478} with f=
 MinimumVolumeLevelSetEvaluation(MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5))))
-beta=0.017005
+beta=0.085027
 Bilateral confidence interval= [-0.0547313, 2.57233]
 beta=0.95
 Unilateral confidence interval (lower tail)= [-0.112778, 2.50221]
 beta=0.95
 Unilateral confidence interval (upper tail)= [-0.112778, 2.50221]
 beta=0.95
-mean= [0.232593]
-standard deviation= [0.51247]
-skewness= [3.18756]
-kurtosis= [11.7489]
-covariance= [[ 0.262625 ]]
+mean= [1.16296]
+standard deviation= [0.66898]
+skewness= [0.302571]
+kurtosis= [3.20079]
+covariance= [[ 0.447534 ]]
 correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [0.232593]
-standard moment n= 2 , value= [0.360004]
-standard moment n= 3 , value= [0.644976]
-standard moment n= 4 , value= [1.30468]
-standard moment n= 5 , value= [2.90779]
+standard moment n= 1 , value= [1.16296]
+standard moment n= 2 , value= [1.80002]
+standard moment n= 3 , value= [3.22488]
+standard moment n= 4 , value= [6.5234]
+standard moment n= 5 , value= [14.539]
 Standard representative= MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
 Distribution  MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
 Elliptical =  False
@@ -119,9 +119,9 @@ covariance= [[ 0.449251 ]]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  [1.0]
-ddf     = [0.018235]
-log pdf=-2.11
-pdf    =0.12124
+ddf     = [0.0911751]
+log pdf=-0.50052
+pdf    =0.60622
 cdf =0.42157
 ccdf=0.57843
 survival=0.57843
@@ -130,31 +130,31 @@ Survival(inverse survival)=0.95
 quantile= [2.31868]
 cdf(quantile)=0.95
 quantile (tail)= [0.123843]
-cdf (tail)=%.5g 0.95
+cdf (tail)=0.95
 Minimum volume interval= [-0.112778, 2.50221]
 threshold= 0.95
-Minimum volume level set= {x | f(x) <= 4.07422} with f=
+Minimum volume level set= {x | f(x) <= 2.46478} with f=
 MinimumVolumeLevelSetEvaluation(MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5))))
-beta=0.017005
+beta=0.085027
 Bilateral confidence interval= [-0.0547313, 2.57233]
 beta=0.95
 Unilateral confidence interval (lower tail)= [-0.112778, 2.50221]
 beta=0.95
 Unilateral confidence interval (upper tail)= [-0.112778, 2.50221]
 beta=0.95
-mean= [0.232593]
-standard deviation= [0.51247]
-skewness= [3.18756]
-kurtosis= [11.7489]
-covariance= [[ 0.262625 ]]
+mean= [1.16296]
+standard deviation= [0.66898]
+skewness= [0.302571]
+kurtosis= [3.20079]
+covariance= [[ 0.447534 ]]
 correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [0.232593]
-standard moment n= 2 , value= [0.360004]
-standard moment n= 3 , value= [0.644976]
-standard moment n= 4 , value= [1.30468]
-standard moment n= 5 , value= [2.90779]
+standard moment n= 1 , value= [1.16296]
+standard moment n= 2 , value= [1.80002]
+standard moment n= 3 , value= [3.22488]
+standard moment n= 4 , value= [6.5234]
+standard moment n= 5 , value= [14.539]
 Standard representative= MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
 0.21785

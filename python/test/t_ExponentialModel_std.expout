@@ -7,7 +7,6 @@ discretized covariance over the time grid= RegularGrid(start=0, step=0.333333, n
  [ 2.86613 4       2.86613 2.05367 ]
  [ 2.05367 2.86613 4       2.86613 ]
  [ 1.47152 2.05367 2.86613 4       ]]
-mySecondOrderModel =  class= StationaryCovarianceModel
 myHighModel =  ExponentialModel(scale=[1], amplitude=[1,2,3], spatial correlation=
 [[ 1    1    0    ]
  [ 1    1    0.25 ]

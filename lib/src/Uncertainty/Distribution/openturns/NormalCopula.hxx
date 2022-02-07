@@ -21,11 +21,10 @@
 #ifndef OPENTURNS_NORMALCOPULA_HXX
 #define OPENTURNS_NORMALCOPULA_HXX
 
-#include "openturns/CopulaImplementation.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class implements a normal copula
  */
 class OT_API NormalCopula
-  : public CopulaImplementation
+  : public DistributionImplementation
 {
   CLASSNAME
 
@@ -71,17 +70,17 @@ public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the DDF of the NormalCopula distribution */
-  using CopulaImplementation::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the NormalCopula distribution */
-  using CopulaImplementation::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the NormalCopula distribution */
-  using CopulaImplementation::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
-  using CopulaImplementation::computeSurvivalFunction;
+  using DistributionImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Get the probability content of an interval */
@@ -103,23 +102,23 @@ public:
   Point computeCDFGradient(const Point & point) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalPDF;
+  using DistributionImplementation::computeConditionalPDF;
   Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
   Point computeConditionalPDF(const Point & x, const Sample & y) const override;
   Point computeSequentialConditionalPDF(const Point & x) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalCDF;
+  using DistributionImplementation::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
   Point computeSequentialConditionalCDF(const Point & x) const override;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalQuantile;
+  using DistributionImplementation::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  using CopulaImplementation::getMarginal;
+  using DistributionImplementation::getMarginal;
   Distribution getMarginal(const Indices & indices) const override;
 
   /** Get the isoprobabilist transformation */
@@ -135,7 +134,7 @@ public:
   Bool hasIndependentCopula() const override;
 
   /** Parameters value and description accessor */
-  using CopulaImplementation::setParametersCollection;
+  using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;
 
   /** Parameters value accessors */

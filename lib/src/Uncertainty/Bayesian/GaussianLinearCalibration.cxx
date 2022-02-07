@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/LinearFunction.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -65,21 +66,6 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
   if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
   globalErrorCovariance_ = errorCovariance.getDimension() != outputDimension;
   if (globalErrorCovariance_ && !(errorCovariance.getDimension() == outputDimension * size)) throw InvalidArgumentException(HERE) << "Error: expected an error covariance either of dimension=" << outputDimension << " or dimension=" << outputDimension * size << ", got dimension=" << errorCovariance.getDimension();
-  // Compute the linearization
-  Function parametrizedModel(model);
-  parametrizedModel.setParameter(candidate);
-  // Flatten everything related to the model evaluations over the input observations
-  modelObservations_ = parametrizedModel(inputObservations);
-  MatrixImplementation transposedGradientObservations(parameterDimension, size * outputDimension);
-  UnsignedInteger shift = 0;
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Matrix parameterGradient(parametrizedModel.parameterGradient(inputObservations[i]));
-    std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), transposedGradientObservations.begin() + shift);
-    shift += parameterDimension * outputDimension;
-  }
-  gradientObservations_ = transposedGradientObservations.transpose();
-  parameterPrior_.setDescription(model.getParameterDescription());
 }
 
 /* Parameter constructor */
@@ -98,7 +84,6 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
   , methodName_(methodName)
 {
   // Check the input
-  // Check the input
   const UnsignedInteger parameterDimension = candidate.getDimension();
   if (parameterCovariance.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a parameter covariance of dimension=" << parameterDimension << ", got dimension=" << parameterCovariance.getDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
@@ -112,6 +97,29 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void GaussianLinearCalibration::run()
 {
+  if (getModel().getEvaluation().getImplementation()->isActualImplementation())
+  {
+    // Compute the linearization
+    Function parametrizedModel(getModel());
+    parametrizedModel.setParameter(getParameterPrior().getMean());
+    // Flatten everything related to the model evaluations over the input observations
+    const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
+    const UnsignedInteger outputDimension = getOutputObservations().getDimension();
+    const UnsignedInteger size = getOutputObservations().getSize();
+    modelObservations_ = parametrizedModel(getInputObservations());
+    gradientObservations_ = MatrixImplementation(parameterDimension, size * outputDimension);
+    UnsignedInteger shift = 0;
+    UnsignedInteger skip = parameterDimension * outputDimension;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Matrix parameterGradient(parametrizedModel.parameterGradient(getInputObservations()[i]));
+      std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations_.getImplementation()->begin() + shift);
+      shift += skip;
+    }
+    gradientObservations_ = gradientObservations_.transpose();
+    parameterPrior_.setDescription(getModel().getParameterDescription());
+  }
+
   // Compute the difference of output observations and output predictions
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
   // Compute inverse of the Cholesky decomposition of the covariance matrix of the parameter
@@ -158,6 +166,9 @@ void GaussianLinearCalibration::run()
   // Solve the linear least squares problem
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
   const Point deltaTheta(method.solve(ybar));
+  for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
+    if (!SpecFunc::IsNormal(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
+
   const Point thetaStar(getCandidate() + deltaTheta);
   const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
   // Create the result object
@@ -165,7 +176,6 @@ void GaussianLinearCalibration::run()
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, Normal(Point(errorCovariance_.getDimension()), errorCovariance_), inputObservations_, outputObservations_, residualFunction);
-  computeOutputAtPriorAndPosterior();
 }
 
 /* Model observations accessor */

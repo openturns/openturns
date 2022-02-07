@@ -32,6 +32,8 @@ Classifier: Intended Audience :: Developers
 Classifier: Intended Audience :: Financial and Insurance Industry
 Classifier: Intended Audience :: Information Technology
 Classifier: Intended Audience :: Science/Research
+Requires-Dist: dill
+Requires-Dist: psutil
 
 OpenTURNS is a scientific C++ and Python library including an internal data model and algorithms
 dedicated to the treatment of uncertainties. The main goal of this library is giving

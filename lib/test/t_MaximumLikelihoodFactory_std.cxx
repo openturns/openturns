@@ -53,13 +53,6 @@ int main(int, char *[])
     fullprint << "Default uniform=" << estimatedUniform << std::endl;
     estimatedUniform = factory.buildAsUniform(distribution.getParameter());
     fullprint << "Uniform from parameters=" << estimatedUniform << std::endl;
-    // Test for constant sample
-    sample = Sample(size, Point(1, 0.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = Sample(size, Point(1, 1.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {

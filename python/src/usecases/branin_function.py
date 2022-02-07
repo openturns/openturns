@@ -4,7 +4,6 @@ Use case : Branin test function
 """
 from __future__ import print_function
 import openturns as ot
-import numpy as np
 
 
 class BraninModel():
@@ -57,10 +56,10 @@ class BraninModel():
         self.trueNoiseFunction = 0.1
 
         self.branin = ot.SymbolicFunction(['x1', 'x2'],
-                                      ['((x2-(5.1/(4*pi_^2))*x1^2+5*x1/pi_-6)^2+10*(1-1/8*pi_)*cos(x1)+10-54.8104)/51.9496',
-                                       str(self.trueNoiseFunction)])
+                                          ['((x2-(5.1/(4*pi_^2))*x1^2+5*x1/pi_-6)^2+10*(1-1/(8*pi_))*cos(x1)+10-54.8104)/51.9496',
+                                           str(self.trueNoiseFunction)])
         self.transfo = ot.SymbolicFunction(['u1', 'u2'],
-                                       ['15*u1-5', '15*u2'])
+                                           ['15*u1-5', '15*u2'])
 
         self.model = ot.ComposedFunction(self.branin, self.transfo)
 

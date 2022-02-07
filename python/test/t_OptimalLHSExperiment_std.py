@@ -36,9 +36,6 @@ print("PhiP=%f, C2=%f" %
 Nx = 50
 Ny = 50
 
-# Show the design
-# ot.Show(lhsGraph)
-
 # --------------------------------------------------#
 # ------------ MonteCarlo algorithm  ------------- #
 # --------------------------------------------------#
@@ -86,7 +83,7 @@ geomProfile = ot.GeometricProfile(T0, c, iMax)
 
 # 3) Simulated Annealing LHS with geometric temperature, C2 optimization
 optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    lhs, geomProfile, spaceFillingC2)
+    lhs, spaceFillingC2, geomProfile)
 print("lhs=", optimalLHSAlgorithm)
 design = optimalLHSAlgorithm.generate()
 print(
@@ -109,7 +106,7 @@ tempGraph = result.drawHistoryTemperature()
 
 # 4) Simulated Annealing LHS with geometric temperature, PhiP optimization
 optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    lhs, geomProfile, spaceFillingPhiP)
+    lhs, spaceFillingPhiP, geomProfile)
 print("lhs=", optimalLHSAlgorithm)
 design = optimalLHSAlgorithm.generate()
 print(
@@ -134,7 +131,7 @@ linearProfile = ot.LinearProfile(T0, iMax)
 
 # 5) Simulated Annealing LHS with linear temperature, C2 optimization
 optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    lhs, linearProfile, spaceFillingC2)
+    lhs, spaceFillingC2, linearProfile)
 print("lhs=", optimalLHSAlgorithm)
 design = optimalLHSAlgorithm.generate()
 print(
@@ -156,7 +153,7 @@ tempGraph = result.drawHistoryTemperature()
 
 # 6) Simulated Annealing LHS with linear temperature, PhiP optimization
 optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    lhs, linearProfile, spaceFillingPhiP)
+    lhs, spaceFillingPhiP, linearProfile)
 print("lhs=", optimalLHSAlgorithm)
 design = optimalLHSAlgorithm.generate()
 print(

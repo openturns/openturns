@@ -42,10 +42,11 @@ static const Factory<ComposedCopula> Factory_ComposedCopula;
 
 /* Default constructor */
 ComposedCopula::ComposedCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , copulaCollection_(0)
   , isIndependent_(false)
 {
+  isCopula_ = true;
   setName("ComposedCopula");
   DistributionCollection coll(1, IndependentCopula(2));
   setCopulaCollection(coll);
@@ -53,10 +54,11 @@ ComposedCopula::ComposedCopula()
 
 /* Default constructor */
 ComposedCopula::ComposedCopula(const DistributionCollection & coll)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , copulaCollection_()
   , isIndependent_(false)
 {
+  isCopula_ = true;
   setName("ComposedCopula");
   // We assign the copula collection through the accessor in order to compute the composed copula dimension
   setCopulaCollection(coll);
@@ -171,6 +173,30 @@ Point ComposedCopula::getRealization() const
       ++index;
     }
   }
+  return result;
+}
+
+Sample ComposedCopula::getSample(const UnsignedInteger size) const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger collectionSize = copulaCollection_.getSize();
+  Sample result(size, dimension);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < collectionSize; ++i)
+  {
+    const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
+    // Using parallel getSample
+    const Sample sample(copulaCollection_[i].getSample(size));
+    for (UnsignedInteger k = 0; k < size; ++k)
+    {
+      for (UnsignedInteger j = 0; j < copulaDimension; ++j)
+      {
+        result(k, j + shift) = sample(k, j);
+      }
+    }
+    shift += copulaDimension;
+  }
+  result.setDescription(getDescription());
   return result;
 }
 
@@ -792,7 +818,7 @@ Scalar ComposedCopula::computeEntropy() const
 /* Method save() stores the object through the StorageManager */
 void ComposedCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "copulaCollection_", copulaCollection_ );
   adv.saveAttribute( "isIndependent_", isIndependent_ );
 }
@@ -800,7 +826,7 @@ void ComposedCopula::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ComposedCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "copulaCollection_", copulaCollection_ );
   adv.loadAttribute( "isIndependent_", isIndependent_ );
   computeRange();

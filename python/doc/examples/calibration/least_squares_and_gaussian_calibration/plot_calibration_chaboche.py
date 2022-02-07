@@ -72,7 +72,7 @@ view = viewer.View(graph)
 R = 700e6  # Exact : 750e6
 C = 2500e6  # Exact : 2750e6
 Gamma = 8.0  # Exact : 10
-thetaPrior = ot.Point([R, C, Gamma])
+thetaPrior = [R, C, Gamma]
 
 
 # %%
@@ -119,7 +119,8 @@ thetaMAP
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[
+    0]
 
 # %%
 # We can see that the `Gamma` parameter has a large confidence interval : even the sign of the parameter is unknown.
@@ -198,7 +199,8 @@ thetaMAP
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[
+    0]
 
 # %%
 # We can see that all three parameters are estimated with a large confidence interval.
@@ -309,7 +311,8 @@ thetaMAP
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[
+    0]
 
 # %%
 # We can see that all three parameters are estimated with a large confidence interval.
@@ -393,7 +396,8 @@ thetaMAP
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[
+    0]
 
 # %%
 # We can see that all three parameters are estimated with a large confidence interval.

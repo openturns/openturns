@@ -13,6 +13,10 @@ Available constructor:
 where :math:`\displaystyle SR = \displaystyle \sum_{i=1}^n \frac{ \log(x_i)}{1+x_i^c}`
 and :math:`\displaystyle SSR = \displaystyle \sum_{i=1}^n \frac{ x_i^c\log(x_i)}{1+x_i^c}`
 
+The resolution of this equation can be tuned through
+`BurrFactory-RelativePrecision`, `BurrFactory-ResidualPrecision`,
+`BurrFactory-MaximumIteration` in :class:`~openturns.ResourceMap`
+
 Then
 
 .. math::

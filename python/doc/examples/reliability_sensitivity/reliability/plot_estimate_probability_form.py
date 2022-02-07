@@ -1,13 +1,13 @@
 """
-Estimate a probability with FORM
-================================
+Use the FORM - SORM algorithms
+==============================
 """
 # %%
 # In this example we estimate a failure probability with the `FORM` algorithm on the :ref:`cantilever beam <use-case-cantilever-beam>` example. More precisely, we show how to use the associated results:
 #
 # - the design point in both physical and standard space,
-# - the probability estimation according to the FORM approximation, and the following SORM ones: Tvedt, Hohen-Bichler and Breitung,
-# - the Hasofer reliability index and the generalized ones evaluated from the Breitung, Tvedt and Hohen-Bichler approximations,
+# - the probability estimation according to the FORM approximation, and the following SORM ones: Tvedt, Hohenbichler and Breitung,
+# - the Hasofer reliability index and the generalized ones evaluated from the Breitung, Tvedt and Hohenbichler approximations,
 # - the importance factors defined as the normalized director factors of the design point in the :math:`U`-space
 # - the sensitivity factors of the Hasofer reliability index and the FORM probability.
 # - the coordinates of the mean point in the standard event space.
@@ -16,7 +16,7 @@ Estimate a probability with FORM
 #
 # .. math::
 #    \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)du_1
-# 
+#
 #
 # where :math:`E_1` is the spheric univariate distribution of the standard space and :math:`\beta` is the reliability index.
 
@@ -26,6 +26,7 @@ Estimate a probability with FORM
 
 # %%
 from __future__ import print_function
+from openturns.usecases import cantilever_beam as cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -33,7 +34,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :
-from openturns.usecases import cantilever_beam as cantilever_beam
 cb = cantilever_beam.CantileverBeam()
 
 # %%
@@ -55,6 +55,10 @@ event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
 event.setName("deviation")
 
 # %%
+# FORM Analysis
+# -------------
+
+# %%
 # Define a solver
 optimAlgo = ot.Cobyla()
 optimAlgo.setMaximumEvaluationNumber(1000)
@@ -70,6 +74,10 @@ algo.run()
 result = algo.getResult()
 
 # %%
+# Analysis of the results
+# -----------------------
+
+# %%
 # Probability
 result.getEventProbability()
 
@@ -81,13 +89,13 @@ result.getHasoferReliabilityIndex()
 # Design point in the standard U* space.
 
 # %%
-result.getStandardSpaceDesignPoint()
+print(result.getStandardSpaceDesignPoint())
 
 # %%
 # Design point in the physical X space.
 
 # %%
-result.getPhysicalSpaceDesignPoint()
+print(result.getPhysicalSpaceDesignPoint())
 
 # %%
 # Importance factors
@@ -96,13 +104,13 @@ view = viewer.View(graph)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawHasoferReliabilityIndexSensitivity()
-marginalSensitivity.setLegends(["E","F","L","I"])
+marginalSensitivity.setLegends(["E", "F", "L", "I"])
 marginalSensitivity.setLegendPosition('bottom')
 view = viewer.View(marginalSensitivity)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawEventProbabilitySensitivity()
-marginalSensitivity.setLegends(["E","F","L","I"])
+marginalSensitivity.setLegends(["E", "F", "L", "I"])
 marginalSensitivity.setLegendPosition('bottom')
 view = viewer.View(marginalSensitivity)
 
@@ -145,3 +153,45 @@ sorm_result.getEventProbabilityHohenbichler()
 sorm_result.getEventProbabilityTvedt()
 
 plt.show()
+
+# %%
+# FORM analysis with finite difference gradient
+# ---------------------------------------------
+
+# %%
+# When the considered function has no analytical expression, the gradient may not be known.
+# In this case, a constant step finite difference gradient definition may be used.
+
+# %%
+
+
+def cantilever_beam_python(X):
+    E, F, L, I = X
+    return [F*L**3/(3*E*I)]
+
+
+cbPythonFunction = ot.PythonFunction(4, 1, func=cantilever_beam_python)
+epsilon = [1e-8]*4  # Here, a constant step of 1e-8 is used for every dimension
+gradStep = ot.ConstantStep(epsilon)
+cbPythonFunction.setGradient(ot.CenteredFiniteDifferenceGradient(gradStep,
+                                                                 cbPythonFunction.getEvaluation()))
+G = ot.CompositeRandomVector(cbPythonFunction, vect)
+event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
+event.setName("deviation")
+
+# %%
+# However, given the different nature of the model variables, a blended (variable)
+# finite difference step may be preferable:
+# The step depends on the location in the input space
+gradStep = ot.BlendedStep(epsilon)
+cbPythonFunction.setGradient(ot.CenteredFiniteDifferenceGradient(gradStep,
+                                                                 cbPythonFunction.getEvaluation()))
+G = ot.CompositeRandomVector(cbPythonFunction, vect)
+event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
+event.setName("deviation")
+
+# %%
+# We can then run the FORM analysis in the same way as before:
+algo = ot.FORM(optimAlgo, event, distribution.getMean())
+algo.run()
+result = algo.getResult()

@@ -1,5 +1,5 @@
 """
-Time series manipulation
+Manipulate a time series
 ========================
 """
 # %%
@@ -8,10 +8,10 @@ Time series manipulation
 # It is possible to draw a time series, using interpolation between the values: see the use case on the Field.
 #
 # A time series can be obtained as a realization of a multivariate stochastic process  :math:`X: \Omega \times [0,T] \rightarrow \mathbb{R}^d`   of dimension :math:`d` where :math:`[0,T]` is discretized according to the regular grid :math:`(t_0, \dots, t_{N-1})` . The  values :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` of the  time series are defined by:
-#   
-# .. math::  
+#
+# .. math::
 #    \forall i \in [0, N-1],\quad \underline{x}_i= X(\omega)(t_i)
-#   
+#
 #
 # A time series is stored in the **TimeSeries** object that stores the regular time grid and the associated values.
 

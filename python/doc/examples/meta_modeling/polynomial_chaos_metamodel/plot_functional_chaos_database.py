@@ -18,7 +18,8 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # Create a function R^n --> R^p
 # For example R^4 --> R
-myModel = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], ['1+x1*x2 + 2*x3^2+x4^4'])
+myModel = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], [
+                              '1+x1*x2 + 2*x3^2+x4^4'])
 
 # Create a distribution of dimension n
 # for example n=3 with indpendent components
@@ -34,7 +35,8 @@ dimension = X.getDimension()
 
 # %%
 # build the orthogonal basis
-coll = [ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i)) for i in range(dimension)]
+coll = [ot.StandardDistributionPolynomialFactory(
+    distribution.getMarginal(i)) for i in range(dimension)]
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
 productBasis = ot.OrthogonalProductPolynomialFactory(coll, enumerateFunction)
 
@@ -44,7 +46,8 @@ degree = 6
 adaptiveStrategy = ot.FixedStrategy(
     productBasis, enumerateFunction.getStrataCumulatedCardinal(degree))
 projectionStrategy = ot.LeastSquaresStrategy()
-algo = ot.FunctionalChaosAlgorithm(X, Y, distribution, adaptiveStrategy, projectionStrategy)
+algo = ot.FunctionalChaosAlgorithm(
+    X, Y, distribution, adaptiveStrategy, projectionStrategy)
 algo.run()
 
 # %%

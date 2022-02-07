@@ -49,7 +49,7 @@ covarianceFactory = ot.StationaryCovarianceModelFactory()
 
 # Set the spectral factory algorithm
 segmentNumber = 5
-spectralFactory = ot.WelchFactory(ot.Hanning(), segmentNumber)
+spectralFactory = ot.WelchFactory(ot.Hann(), segmentNumber)
 covarianceFactory.setSpectralModelFactory(spectralFactory)
 
 # Check the current spectral factory
@@ -88,7 +88,8 @@ for i in range(N):
             sampleValueEstimated[i, 0] = estimatedValue[0, 0]
             sampleValueModel[i, 0] = modelValue[0, 0]
 sampleT = tgrid.getVertices()
-graph = ot.Graph('Covariance estimation', 'time', 'Covariance value C(0,t)', True)
+graph = ot.Graph('Covariance estimation', 'time',
+                 'Covariance value C(0,t)', True)
 curveEstimated = ot.Curve(sampleT, sampleValueEstimated, 'Estimated model')
 graph.add(curveEstimated)
 curveModel = ot.Curve(sampleT, sampleValueModel, 'Exact model')

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_ORDINALSUMCOPULA_HXX
 #define OPENTURNS_ORDINALSUMCOPULA_HXX
 
-#include "openturns/CopulaImplementation.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/UserDefined.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * made from a collection of copulas joined by an independent copula
  */
 class OT_API OrdinalSumCopula
-  : public CopulaImplementation
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -79,15 +79,15 @@ public:
   Point getRealization() const override;
 
   /** Get the DDF of the OrdinalSumCopula */
-  using CopulaImplementation::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the OrdinalSumCopula */
-  using CopulaImplementation::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the OrdinalSumCopula */
-  using CopulaImplementation::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the probability content of an interval */
@@ -103,24 +103,24 @@ public:
   Point computeCDFGradient(const Point & point) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  using CopulaImplementation::getMarginal;
+  using DistributionImplementation::getMarginal;
   Distribution getMarginal(const Indices & indices) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalPDF;
+  using DistributionImplementation::computeConditionalPDF;
   Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalCDF;
+  using DistributionImplementation::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalQuantile;
+  using DistributionImplementation::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
-  using CopulaImplementation::setParametersCollection;
+  using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & setParametersCollection) override;
 
   /** Parameters value accessors */

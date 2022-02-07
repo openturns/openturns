@@ -1,25 +1,11 @@
 import openturns as ot
-from matplotlib import pyplot as plt
-from openturns.viewer import View
+from openturns.viewer import PlotDesign
 ot.RandomGenerator.SetSeed(0)
-
-# Generate sample with the given plane
-distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
+dim = 3
 size = 10
-experiment = ot.LHSExperiment(distribution, size)
-
-sample = experiment.generate()
-
-# Create an empty graph
-graph = ot.Graph("LHS experiment", "x1", "x2", True, "")
-
-# Create the cloud
-cloud = ot.Cloud(sample, "blue", "fsquare", "")
-
-# Then, draw it
-graph.add(cloud)
-
-fig = plt.figure(figsize=(4, 4))
-axis = fig.add_subplot(111)
-axis.set_xlim(auto=True)
-View(graph, figure=fig, axes=[axis], add_legend=False)
+distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*dim)
+bounds = distribution.getRange()
+lhs = ot.LHSExperiment(distribution, size)
+sample = lhs.generate()
+subdivisions = [size]*dim
+fig = PlotDesign(sample, bounds, subdivisions)

@@ -35,6 +35,7 @@
 #include "openturns/HistoryStrategy.hxx"
 #include "openturns/HistoryStrategyImplementation.hxx"
 #include "openturns/Last.hxx"
+#include "openturns/KroneckerCovarianceModel.hxx"
 #include "openturns/LowDiscrepancySequence.hxx"
 #include "openturns/LowDiscrepancySequenceImplementation.hxx"
 #include "openturns/Null.hxx"
@@ -52,12 +53,11 @@
 #include "openturns/FilteringWindowsImplementation.hxx"
 #include "openturns/FilteringWindows.hxx"
 #include "openturns/Hamming.hxx"
-#include "openturns/Hanning.hxx"
+#include "openturns/Hann.hxx"
 #include "openturns/SpectralModel.hxx"
 #include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/SpectralModelImplementation.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/StationaryCovarianceModel.hxx"
 #include "openturns/StationaryFunctionalCovarianceModel.hxx"
 #include "openturns/SpectralModelFactoryImplementation.hxx"
 #include "openturns/SpectralModelFactory.hxx"
@@ -86,5 +86,6 @@
 #include "openturns/HMatrixImplementation.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/HMatrixFactory.hxx"
+#include "openturns/IsotropicCovarianceModel.hxx"
 
 #endif /* OPENTURNS_OTSTAT_HXX */

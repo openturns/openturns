@@ -129,7 +129,7 @@ SymmetricTensor QuadraticEvaluation::getQuadratic() const
 /* Operator () */
 Point QuadraticEvaluation::operator() (const Point & inP) const
 {
-  if ((inP.getDimension() != linear_.getNbColumns()) || (inP.getDimension() != quadratic_.getNbRows())) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  if ((inP.getDimension() != linear_.getNbColumns()) || (inP.getDimension() != quadratic_.getNbRows())) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inP.getDimension();
   /* We don't have a true linear algebra with tensors, so we must perform the tensor/vector product by hand */
   const Point delta(inP - center_);
   Point result(constant_ + linear_ * delta);
@@ -156,7 +156,7 @@ Point QuadraticEvaluation::operator() (const Point & inP) const
 
 Sample QuadraticEvaluation::operator() (const Sample & inS) const
 {
-  if ((inS.getDimension() != linear_.getNbColumns()) || (inS.getDimension() != quadratic_.getNbRows())) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  if ((inS.getDimension() != linear_.getNbColumns()) || (inS.getDimension() != quadratic_.getNbRows())) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
   if (size == 0)
     return Sample(0, inS.getDimension());

@@ -68,6 +68,7 @@
 #include "openturns/TruncatedNormalFactory.hxx"
 #include "openturns/UniformFactory.hxx"
 #include "openturns/UserDefinedFactory.hxx"
+#include "openturns/VonMisesFactory.hxx"
 #include "openturns/WeibullMaxFactory.hxx"
 #include "openturns/WeibullMinFactory.hxx"
 
@@ -107,6 +108,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(TriangularFactory());
   collection.add(TruncatedNormalFactory());
   collection.add(UniformFactory());
+  collection.add(VonMisesFactory());
   collection.add(WeibullMaxFactory());
   collection.add(WeibullMinFactory());
   return collection;
@@ -177,6 +179,13 @@ DistributionFactory::DistributionFactory(const UnsignedInteger bootstrapSize)
 /* Parameter constructor */
 DistributionFactory::DistributionFactory(const DistributionFactoryImplementation & factory)
   : TypedInterfaceObject<DistributionFactoryImplementation>(factory.clone())
+{
+  // Nothing to do
+}
+
+/* Constructor from implementation pointer */
+DistributionFactory::DistributionFactory(DistributionFactoryImplementation * p_implementation)
+  : TypedInterfaceObject<DistributionFactoryImplementation>(p_implementation)
 {
   // Nothing to do
 }
