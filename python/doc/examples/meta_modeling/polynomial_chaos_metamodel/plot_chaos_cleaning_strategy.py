@@ -465,7 +465,7 @@ score_Q2 = compute_cleaning_PCE(
 #
 # When we keep only 10 coefficients among the first 56 ones, the polynomial chaos metamodel is much better: the coefficients are associated with a low polynomial degree, so that the quadrature rule estimates them with greater accuracy.
 #
-# We would like to know which combination is best. In the following loop, we consider the maximum number of considered coefficients from 1 to 500 and the number of selected coefficients from 1 to 30. In order to produce the combinations, we use the `product` function from the `itertools` module. For each combination, we compute the :math:`Q^2` score and select the combination with highest :math:`Q^2` coefficient. As shown in [Muller2016]_, page 268, the computed :math:`Q^2` may be optimistic, but this is not the point of the current example.
+# We would like to know which combination is best. In the following loop, we consider the maximum number of considered coefficients from 1 to 500 and the number of selected coefficients from 1 to 30. In order to produce the combinations, we use the `product` function from the `itertools` module. For each combination, we compute the :math:`Q^2` score and select the combination with highest :math:`Q^2` coefficient. As shown in [Muller2016]_ page 268, the computed :math:`Q^2` may be optimistic, but this is not the point of the current example.
 
 # %%
 #
@@ -520,99 +520,62 @@ score_Q2 = compute_cleaning_PCE(
 #
 # Each time the selection method is called, it is passed a coefficient :math:`a_{\boldsymbol{\alpha}}` which is a new candidate to be considered by the algorithm. The first time the method is evaluated, the active multiindex set is empty, so that it must be filled with the first coefficients in the multiindex set, according to the enumeration rule. The second time (and up to the end of the algorithm), the candidate coefficient is considered to be added to the multiindex set.
 #
-# Executing the function prints the following messages where the word "basis" is equivalent to "multiindex set".
+# Executing the function prints messages that we can process to produce the following listing. On each step, we print the list of integers corresponding to the indices of the coefficients in the active multiindex set.
+
+# %%
 #
 # .. code-block::
 #
-#     INF - Build the iso-probabilistic transformation
-#     INF - Same copula for input vector and basis
-#     INF - Build the iso-probabilistic transformation
-#     INF - Same copula for input vector and basis
-#     INF - Work on output marginal 0 over 0
-#     INF - Compute the initial basis
-#     INF - Compute the coefficients
-#     INF - Generate output data
-#     INF - Initialize the proxy, reason=empty input sample
-#     INF - Adapt the basis
-#     INF - initial state:
-#     INF -   vector index=16
-#     INF -   coeffs  size=16
-#     INF -   coeffs      =[3.50498,1.62543,6.83047e-16,-8.01876e-16,-1.09591e-15,-4.05058e-16,-9.87925e-16,-0.641392,-8.93383e-17,-3.66894e-16,-1.2911,-6.33174e-17,-4.59702e-17,-1.53523e-16,-1.9082e-17,1.37243]#16
-#     INF -   I_p     size=16
-#     INF -   I_p         =[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-#     INF - final state:
-#     INF -   vector index=17 / 101 (16.8%)
-#     INF -   coeffs  size=5
-#     INF -   coeffs      =[3.50498,1.62543,-0.641392,-1.2911,1.37243]
-#     INF -   rem coeffs  =[6.83047e-16,-8.01876e-16,-1.09591e-15,-4.05058e-16,-9.87925e-16,-8.93383e-17,-3.66894e-16,-6.33174e-17,-4.59702e-17,-1.53523e-16,-1.9082e-17]#11
-#     INF -   I_p     size=6
-#     INF -   I_p         =[0,1,7,10,15,16]
-#     INF - Compute the coefficients
-#     INF - Initialize the proxy, reason=new basis
-#     INF - Adapt the basis
-#     INF - initial state:
-#     INF -   vector index=17
-#     INF -   coeffs  size=6
-#     INF -   coeffs      =[3.50498,1.62543,-0.641392,-1.2911,1.37243,-1.19653e-15]
-#     INF -   I_p     size=6
-#     INF -   I_p         =[0,1,7,10,15,16]
-#     INF - final state:
-#     INF -   vector index=18 / 101 (17.8%)
-#     INF -   coeffs  size=5
-#     INF -   coeffs      =[3.50498,1.62543,-0.641392,-1.2911,1.37243]
-#     INF -   rem coeffs  =[-1.19653e-15]
-#     INF -   I_p     size=6
-#     INF -   I_p         =[0,1,7,10,15,17]
-#     [...]
-#
-
+#    Step 1:  [0, 1, 7, 10, 15, 16]
+#    Step 2:  [0, 1, 7, 10, 15, 17]
+#    Step 3:  [0, 1, 7, 10, 15, 18]
+#    Step 4:  [0, 1, 7, 10, 15, 19]
+#    Step 5:  [0, 1, 7, 10, 15, 20]
+#    Step 6:  [0, 1, 7, 10, 15, 21]
+#    Step 7:  [0, 1, 7, 10, 15, 22]
+#    Step 8:  [0, 1, 7, 10, 15, 23]
+#    Step 9:  [0, 1, 7, 10, 15, 24]
+#    Step 10: [0, 1, 7, 10, 15, 25]
+#    [...]
+#    Step 15: [0, 1, 7, 10, 15, 30]
+#    Step 16: [0, 1, 7, 10, 15, 30, 31]
+#    [...]
+#    Step 20: [0, 1, 7, 10, 15, 30, 35]
+#    Step 21: [0, 1, 7, 10, 15, 30, 35, 36]
+#    [...]
+#    Step 25: [0, 1, 7, 10, 15, 30, 35, 40]
+#    Step 26: [0, 1, 7, 10, 15, 30, 35, 40, 41]
+#    [...]
+#    Step 34: [0, 1, 7, 10, 15, 30, 35, 40, 49]
+#    Step 35: [0, 1, 7, 10, 15, 30, 35, 40, 49, 50]
+#    [...]
+#    Step 69: [0, 1, 7, 10, 15, 30, 35, 40, 49, 84]
+#    Step 70: [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 85]
+#    [...]
+#    Step 74: [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89]
+#    Step 75: [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 90]
+#    [...]
+#    Step 83: [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98]
+#    Step 84: [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98, 99]
+#    Step 85: [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98, 100]
+#    Step 86: [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98]
+#    Step 87: [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98]
 
 # %%
 #
-# In order to process the previous content, we save it into a text file and read the selected coefficients at each step. On output, the variable `list_of_selected_indices` is a list, where each item is the list of integers corresponding to the indices of the coefficients in the active multiindex set.
-
-# %%
-f = open("selection_output.txt","r")
-lines = f.readlines()
-
-list_of_selected_indices = []
-line_index = 0
-is_state_initial = True
-step_index = 0
-for line in lines:
-    line_index += 1
-    if line[0:20] == "INF - initial state:":
-        is_state_initial = True
-        step_index += 1
-    if line[0:18] == "INF - final state:":
-        #print("Line #", line_index, ", final state")
-        is_state_initial = False
-    if line[0:21] == "INF -   I_p         =":
-        indices_str = line[22:-2]
-        indices_str_list = indices_str.split(",")
-        indices = []
-        for index in indices_str_list:
-            indices.append(int(index))
-        if is_state_initial:
-            print("Step %d" % (step_index))
-        else:
-            print("  ", indices)
-        if len(list_of_selected_indices) == 0:
-            # If the list of indices is empty, add the first indices
-            list_of_selected_indices.append(indices)
-        elif not is_state_initial:
-            # If this is the final state, add the indices
-            list_of_selected_indices.append(indices)
-
-# %%
+# The previous text (and a detailed analysis of the output file) allows to understand what exactly happens in the algorithm. To understand each step, note that the significant threshold is equal to :math:`\epsilon = 10^{-10}`.
 #
-# The previous text (and a detailed analysis of the output file) allows to understand what exactly happens in the algorithm, where the significant threshold is equal to :math:`\epsilon = 10^{-10}`.
-#
-# - On the first step, the initial basis is empty and filled with the indices [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]. The greatest coefficient in absolute value is :math:`a_0 = 3.505`, which leads to the threshold :math:`\epsilon |a_0| = 3.505 \times 10^{-10}`. Most of the considered coefficient are, however, too close to zero. This is why only the coefficients [0, 1, 7, 10, 15] are kept in the basis. The corresponding coefficients are [3.505, 1.625,-0.6414, -1.291, 1.372].
-# - On the second step, the candidate index 16 is considered. Its coefficient is :math:`a_{16} = -1.197 \times 10^{-15}`, which is much too low to be selected. Hence, the basis is unchanged and the active multiindex set is [0, 1, 7, 10, 15] on the end of this step.
+# - During the initialization, the initial basis is empty and filled with the indices [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]. The greatest coefficient in absolute value is :math:`a_0 = 3.505`, which leads to the threshold :math:`\epsilon |a_0| = 3.505 \times 10^{-10}`. Most of the considered coefficient are, however, too close to zero. This is why only the coefficients [0, 1, 7, 10, 15] are kept in the basis. The corresponding coefficients are [3.505, 1.625,-0.6414, -1.291, 1.372].
+# - On step 1, the candidate index 16 is considered. Its coefficient is :math:`a_{16} = -1.197 \times 10^{-15}`, which is much too low to be selected. Hence, the basis is unchanged and the active multiindex set is [0, 1, 7, 10, 15] on the end of this step.
 # - From the step 3 to the step 15, the active multiindex set is unchanged, because no considered coefficient becomes greater than the threshold.
-# - On step 16, the candidate index 30 is considered, with corresponding coefficient :math:`a_{30} = -1.612`. Since this coefficient has an absolute value greater than the threshold, it gets selected and the active multiindex set is [0, 1, 7, 10, 15, 30] on the end of this step.
-# - On the last step, the selected multiindex set contains the indices [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98] and the corresponding coefficients are [3.508, 1.625, -0.6414, -1.291, 1.372, -1.613, 0.2076, -1.090, 0.4092, -0.2078, 0.1753, -0.3250].
+# - On step 16, the candidate index 30 is considered, with corresponding coefficient :math:`a_{30} = -1.612`. Since this coefficient has an absolute value greater than the threshold, it gets selected and the active multiindex set is [0, 1, 7, 10, 15, 30] on the end of this step. From this step to the end, the index 30 will not leave the active set. 
+# - On the step 20, the index 35 enters the active set. 
+# - On the step 25, the index 40 enters the active set. 
+# - On the step 34, the index 49 enters the active set. 
+# - On the step 69, the index 84 enters the active set. 
+# - On the step 74, the index 89 enters the active set. 
+# - On the step 83, the index 98 enters the active set. 
+# - On the last step, the active multiindex set contains the indices [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98] and the corresponding coefficients are [3.508, 1.625, -0.6414, -1.291, 1.372, -1.613, 0.2076, -1.090, 0.4092, -0.2078, 0.1753, -0.3250].
 #
 # We see that the algorithm was able so select 12 coefficients in the first 101 coefficients considered by the algorithm. It could have selected more coefficients since we provided 16 slots to fill thanks to the `mostSignificant` parameter. The considered coefficients were, however, too close to zero and were below the threshold.
 
