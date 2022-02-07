@@ -10,5 +10,3 @@ Gamma          = Gamma(k = 2.3, lambda = 1, gamma = 1)
 Estimated gamma= Gamma(k = 2.26872, lambda = 0.995441, gamma = 1.02147)
 Default gamma= Gamma(k = 1, lambda = 1, gamma = 0)
 Gamma from parameters= Gamma(k = 2.3, lambda = 1, gamma = 1)
-Estimated distribution= class=Gamma name=Gamma dimension=1 k=2.53274e+305 lambda=1 gamma=0
-Estimated distribution= class=Gamma name=Gamma dimension=1 k=2.53274e+305 lambda=1 gamma=0.9999

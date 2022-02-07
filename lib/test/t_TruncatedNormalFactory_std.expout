@@ -30,8 +30,6 @@ TruncatedNormal          =class=TruncatedNormal name=TruncatedNormal dimension=1
 Estimated TruncatedNormal=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=-0.072 sigma=1 a=3 b=5
 Default TruncatedNormal=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-1 b=1
 TruncatedNormal from parameters=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=3 b=6
-Estimated distribution=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-2.2e-15 b=2.2e-15
-Estimated distribution=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=1 sigma=1 a=1 b=1
 buildMethodOfMoments
 Estimated from moments=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=2.1 sigma=3 a=-1 b=4
 buildMethodOfLikelihoodMaximization

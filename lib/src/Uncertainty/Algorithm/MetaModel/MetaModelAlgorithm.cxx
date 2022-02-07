@@ -152,6 +152,7 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
       try
       {
         const Distribution candidateDistribution(factories[j].build(marginalSample));
+        candidateDistribution.getStandardDeviation();// ensure at least 2 first moments are defined for Stieltjes
         const Scalar pValue = FittingTest::Kolmogorov(marginalSample, candidateDistribution, level).getPValue();
         const Bool isKSAccepted = (pValue >= level);
         if (isKSAccepted)
@@ -166,7 +167,17 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
         else
           LOGINFO(OSS() << "Tested distribution & not selected = " << candidateDistribution.getImplementation()->getClassName() << ", pValue=" << pValue);
       }
-      catch (...)
+      catch (const InvalidArgumentException &)
+      {
+        // Just skip the factories incompatible with the current marginal sample
+        // or distribution that are not valid according to the KS test
+      }
+      catch (const NotDefinedException &)
+      {
+        // Just skip the factories incompatible with the current marginal sample
+        // or distribution that are not valid according to the KS test
+      }
+      catch (const InternalException &)
       {
         // Just skip the factories incompatible with the current marginal sample
         // or distribution that are not valid according to the KS test

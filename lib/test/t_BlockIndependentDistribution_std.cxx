@@ -224,7 +224,7 @@ int main(int, char *[])
     distribution = BlockIndependentDistribution(collection);
     fullprint << "isoprobabilistic transformation (general non-normal)=" << distribution.getIsoProbabilisticTransformation().__str__() << std::endl;
     {
-      UnsignedInteger dim = distribution.getDimension();
+      dim = distribution.getDimension();
       Scalar x = 0.6;
       Point y(dim - 1, 0.2);
       fullprint << "conditional PDF=" << distribution.computeConditionalPDF(x, y) << std::endl;

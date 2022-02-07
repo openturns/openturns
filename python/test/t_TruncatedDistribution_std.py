@@ -206,3 +206,8 @@ dist = ot.TruncatedDistribution(dist, 4.2E-19, ot.TruncatedDistribution.LOWER)
 bounds = ot.Interval([-2, -3], [2, 3.0], [True, False], [True, True])
 dist = ot.TruncatedDistribution(ot.Normal(2), bounds)
 print('proba=%.6f' % dist.computeCDF([3.0, -3.0]))
+
+# relative range wrt quantile epsilon issue
+unif = ot.Uniform(0.0, 1e12)
+trunc = ot.TruncatedDistribution(unif, 0.25, 2.0)
+print('q@0.1=', trunc.computeQuantile(0.1))

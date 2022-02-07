@@ -29,7 +29,7 @@
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -79,7 +79,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   setAmplitude(amplitude);
   setScale(scale);
   activeParameter_.fill();
-  updateOutputCovariance();
 }
 
 /* Standard constructor with scale, amplitude and spatial correlation parameter parameter */
@@ -111,29 +110,32 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   : PersistentObject()
   , scale_(0)
   , inputDimension_(scale.getDimension())
-  , amplitude_(0)
+  , amplitude_(spatialCovariance.getDimension())
   , outputDimension_(spatialCovariance.getDimension())
   , outputCorrelation_(0)
   , outputCovariance_(spatialCovariance)
   , outputCovarianceCholeskyFactor_(0)
-  , isDiagonal_(true)
+  , isDiagonal_(spatialCovariance.isDiagonal())
   , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
-  Point amplitude(outputDimension_);
-  for (UnsignedInteger i = 0; i < outputDimension_; ++i) amplitude[i] = sqrt(spatialCovariance(i, i));
-  // Check that the amplitudes are valid
-  setAmplitude(amplitude);
+  setScale(scale);
+  for (UnsignedInteger i = 0; i < outputDimension_; ++i)
+  {
+    const Scalar amplitudeI = sqrt(spatialCovariance(i, i));
+    if (!(amplitudeI > 0.0))
+      throw InvalidArgumentException(HERE) << "The " << i << "-th diagonal component of the spatial covariance is non positive";
+    amplitude_[i] = amplitudeI;
+  }
   // Convert the spatial covariance into a spatial correlation
   if (!spatialCovariance.isDiagonal())
   {
     outputCorrelation_ = CorrelationMatrix(outputDimension_);
-    for (UnsignedInteger i = 0; i < outputDimension_; ++i)
-      for (UnsignedInteger j = 0; j < i; ++j)
-        outputCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
+    for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for (UnsignedInteger i = j + 1; i < outputDimension_; ++i)
+        outputCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude_[i] * amplitude_[j]);
   } // !isDiagonal
-  setScale(scale);
   activeParameter_.fill();
 }
 
@@ -183,19 +185,43 @@ Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
   if (t.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   // Return the scalar value
+  // Even if model is stationary we do not create a new Point tau
+  // We prefer relying on the iterator method
   return computeAsScalar(s.begin(), t.begin());
 }
 
-Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & ,
+Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator &,
     const Collection<Scalar>::const_iterator & ) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
 }
+
 Scalar CovarianceModelImplementation::computeAsScalar(const Point &) const
 {
   if (outputDimension_ != 1)
     throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar (const Point & tau) const";
+}
+
+Scalar CovarianceModelImplementation::computeAsScalar(const Scalar s,
+    const Scalar t) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  if (isStationary())
+    return computeAsScalar(s - t);
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Scalar s, const Scalar t) const";
+}
+
+Scalar CovarianceModelImplementation::computeAsScalar(const Scalar) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Scalar tau) const";
 }
 
 /* Computation of the covariance function */
@@ -206,12 +232,12 @@ SquareMatrix CovarianceModelImplementation::operator() (const Scalar tau) const
 
 SquareMatrix CovarianceModelImplementation::operator() (const Point & tau) const
 {
-  if (isStationary() && (getOutputDimension()==1))
+  if (isStationary() && (getOutputDimension() == 1))
   {
-     SquareMatrix result(1);
-     result(0, 0) = computeAsScalar(tau);
-     return result;
-    }
+    SquareMatrix result(1);
+    result(0, 0) = computeAsScalar(tau);
+    return result;
+  }
 
   if (isStationary())
     throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::operator()(const Point & tau) const";
@@ -273,7 +299,6 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
   {
     Matrix gradient(size, 1);
     const Scalar covRef = computeAsScalar(s, t);
-    const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
     Pointer<CovarianceModelImplementation> p_implementation(clone());
     for (UnsignedInteger k = 0; k < size; ++ k)
     {
@@ -313,6 +338,9 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
 /* Discretize the covariance function on a given TimeGrid/Mesh */
 CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & timeGrid) const
 {
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+
   if (isStationary())
   {
     const UnsignedInteger size = timeGrid.getN();
@@ -320,6 +348,22 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
     const UnsignedInteger fullSize = size * outputDimension_;
     CovarianceMatrix covarianceMatrix(fullSize);
 
+    if (outputDimension_ == 1)
+    {
+      // The stationary property of this model allows to optimize the discretize operation
+      // over a regular time grid: the large covariance matrix is block-diagonal
+      // Fill the matrix by block-diagonal
+      // The main diagonal has a specific treatment as only its lower triangular part
+      // has to be copied
+      for (UnsignedInteger diag = 0; diag < size; ++diag)
+      {
+        const Scalar covTau = computeAsScalar(diag * timeStep);
+        for (UnsignedInteger i = 0; i < size - diag; ++i)
+          covarianceMatrix(i, i + diag) = covTau;
+      }
+      return covarianceMatrix;
+    }
+    // General multivariate (stationary) case
     // Fill-in the matrix by blocks
     for (UnsignedInteger diagonalOffset = 0; diagonalOffset < size; ++diagonalOffset)
     {
@@ -340,6 +384,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
     } // row index of the block
     return covarianceMatrix;
   }
+  // Non stationary case
   return discretize(timeGrid.getVertices());
 }
 
@@ -359,7 +404,7 @@ struct CovarianceModelDiscretizePolicy
     , outputDimension_(model.getOutputDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -387,15 +432,15 @@ struct CovarianceModelDiscretizeScalarPolicy
   const UnsignedInteger inputDimension_;
 
   CovarianceModelDiscretizeScalarPolicy(const Sample & input,
-      CovarianceMatrix & output,
-      const CovarianceModelImplementation & model)
+                                        CovarianceMatrix & output,
+                                        const CovarianceModelImplementation & model)
     : input_(*input.getImplementation())
     , output_(*output.getImplementation())
     , model_(model)
     , inputDimension_(input_.getDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -416,7 +461,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     CovarianceMatrix covarianceMatrix(size);
     const CovarianceModelDiscretizeScalarPolicy policy(vertices, covarianceMatrix, *this);
     // The loop is over the lower block-triangular part
-    TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     return covarianceMatrix;
   }
   else
@@ -425,9 +470,213 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     CovarianceMatrix covarianceMatrix(fullSize);
     const CovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     return covarianceMatrix;
   }
+}
+
+struct CrossCovarianceFunctor1D
+{
+  const SampleImplementation &firstSample_;
+  const SampleImplementation &secondSample_;
+  MatrixImplementation &output_;
+  const CovarianceModelImplementation &model_;
+
+  CrossCovarianceFunctor1D(const Sample &firstSample,
+                           const Sample &secondSample,
+                           Matrix &output,
+                           const CovarianceModelImplementation &model)
+    : firstSample_(*firstSample.getImplementation())
+    , secondSample_(*secondSample.getImplementation())
+    , output_(*output.getImplementation())
+    , model_(model)
+  {
+  }
+
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
+  {
+
+    const UnsignedInteger inputDimension = firstSample_.getDimension();
+    for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
+    {
+      // Fill by column
+      // Fill Matrix is firstSampleSize x secondSampleSize
+      // As we might have strong differences between sizes, the loop rely on final blocksize
+      const UnsignedInteger columnIndex = index / firstSample_.getSize();
+      const UnsignedInteger rowIndex = index - columnIndex * firstSample_.getSize();
+      output_(rowIndex, columnIndex) = model_.computeAsScalar(firstSample_.data_begin() + (rowIndex * inputDimension),
+                                       secondSample_.data_begin() + (columnIndex * inputDimension));
+    }
+  } // operator()
+};
+/* end struct CrossCovarianceFunctor1D */
+
+struct CrossCovarianceFunctor
+{
+  const SampleImplementation &firstSample_;
+  const SampleImplementation &secondSample_;
+  MatrixImplementation &output_;
+  const CovarianceModelImplementation &model_;
+  const UnsignedInteger dimension_;
+
+  CrossCovarianceFunctor(const Sample &firstSample,
+                         const Sample &secondSample,
+                         Matrix &output,
+                         const CovarianceModelImplementation &model)
+    : firstSample_(*firstSample.getImplementation())
+    , secondSample_(*secondSample.getImplementation())
+    , output_(*output.getImplementation())
+    , model_(model)
+    , dimension_(model.getOutputDimension())
+  {
+  }
+
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      // Fill by column
+      // jLocal ==> which column to fill
+      // jBase : use of block size to determine first element of matrix
+      // iLocal : for a fixed jLocal row, which iLocal-th element to fill
+      // iBase : same as jBase but for rows
+      const UnsignedInteger jLocal = i / firstSample_.getSize();
+      const UnsignedInteger jBase = jLocal * dimension_;
+      const UnsignedInteger iLocal = i - jLocal * firstSample_.getSize();
+      const UnsignedInteger iBase = iLocal * dimension_;
+      // Local covariance matrix
+      const SquareMatrix localCovariance(model_(firstSample_[iLocal], secondSample_[jLocal]));
+      for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
+      {
+        for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
+        {
+          output_(iBase + ii, jBase + jj) = localCovariance(ii, jj);
+        }
+      }
+    }
+  }
+};
+/* end struct CrossCovarianceFunctor */
+
+Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &firstSample,
+    const Sample &secondSample) const
+{
+  if (firstSample.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the first sample has a dimension=" << firstSample.getDimension() << " different from the input dimension=" << inputDimension_;
+
+  if (secondSample.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the second sample has a dimension=" << secondSample.getDimension() << " different from the input dimension=" << inputDimension_;
+
+  const UnsignedInteger dimension = getOutputDimension();
+  if (dimension == 1)
+  {
+    const UnsignedInteger firstSampleSize = firstSample.getSize();
+    const UnsignedInteger secondSampleSize = secondSample.getSize();
+    Matrix result(firstSampleSize, secondSampleSize);
+    const CrossCovarianceFunctor1D policy(firstSample, secondSample, result, *this);
+    // The loop is over X & Y samples
+    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+    return result;
+  }
+  const UnsignedInteger firstSampleSize = firstSample.getSize();
+  const UnsignedInteger firstSampleFullSize = firstSampleSize * dimension;
+  const UnsignedInteger secondSampleSize = secondSample.getSize();
+  const UnsignedInteger secondSampleFullSize = secondSampleSize * dimension;
+  Matrix result(firstSampleFullSize, secondSampleFullSize);
+  const CrossCovarianceFunctor policy(firstSample, secondSample, result, *this);
+  // The loop is over the lower block-triangular part
+  TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+  return result;
+}
+
+struct CrossCovariancePointFunctor1D
+{
+  const SampleImplementation &sample_;
+  const Point &point_;
+  MatrixImplementation &output_;
+  const CovarianceModelImplementation &model_;
+
+  CrossCovariancePointFunctor1D(const Sample &sample,
+                                const Point &point,
+                                Matrix &output,
+                                const CovarianceModelImplementation &model)
+    : sample_(*sample.getImplementation())
+    , point_(point)
+    , output_(*output.getImplementation())
+    , model_(model)
+  {
+  }
+
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
+  {
+
+    const UnsignedInteger inputDimension = point_.getDimension();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      output_(i, 0) = model_.computeAsScalar(sample_.data_begin() + (i * inputDimension),
+                                             point_.begin());
+    }
+  } // operator()
+};
+/* end struct CrossCovariancePointFunctor1D */
+
+struct CrossCovariancePointFunctor
+{
+  const SampleImplementation &sample_;
+  const Point &point_;
+  MatrixImplementation &output_;
+  const CovarianceModelImplementation &model_;
+
+  CrossCovariancePointFunctor(const Sample &sample,
+                              const Point &point,
+                              Matrix &output,
+                              const CovarianceModelImplementation &model)
+    : sample_(*sample.getImplementation())
+    , point_(point)
+    , output_(*output.getImplementation())
+    , model_(model)
+  {
+  }
+
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
+  {
+    const UnsignedInteger dimension = model_.getOutputDimension();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      SquareMatrix localCovariance(model_(sample_[i], point_));
+      for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++columnIndex)
+        for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
+          output_(i * dimension + rowIndex, columnIndex) = localCovariance(rowIndex, columnIndex);
+    }
+  } // operator()
+};
+/* end struct CrossCovariancePointFunctor */
+
+Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sample,
+    const Point &point) const
+{
+  const UnsignedInteger size = sample.getSize();
+  const UnsignedInteger outputDimension = getOutputDimension();
+  if (outputDimension == 1)
+  {
+    Matrix result(size, 1);
+    const CrossCovariancePointFunctor1D policy(sample, point, result, *this);
+    // The loop is over the lower block-triangular part
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+    return result;
+  }
+  const UnsignedInteger fullSize = size * outputDimension;
+  Matrix result(fullSize, outputDimension);
+  const CrossCovariancePointFunctor policy(sample, point, result, *this);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  return result;
+}
+
+Matrix CovarianceModelImplementation::computeCrossCovariance(const Point &point,
+    const Sample &sample) const
+{
+  // TODO : transposeInPlace
+  return computeCrossCovariance(sample, point).transpose();
 }
 
 CovarianceMatrix CovarianceModelImplementation::discretize(const Mesh & mesh) const
@@ -455,7 +704,7 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
     CovarianceMatrix covarianceMatrix(size);
     const CovarianceModelDiscretizeScalarPolicy policy( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     // Compute the Cholesky
     return covarianceMatrix.computeCholesky(false);
   }
@@ -485,7 +734,7 @@ struct CovarianceModelScalarDiscretizeRowPolicy
     , model_(model)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = model_.computeAsScalar(p_, input_[i]);
   }
@@ -511,7 +760,7 @@ struct CovarianceModelDiscretizeRowPolicy
     , outputDimension_(model.getOutputDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -534,12 +783,12 @@ Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
   if (outputDimension_ == 1)
   {
     const CovarianceModelScalarDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBB::ParallelForCondition(isParallel(), 0, size, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
   }
   else
   {
     const CovarianceModelDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBB::ParallelForCondition(isParallel(), 0, size, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
   }
   return result;
 }
@@ -617,7 +866,7 @@ void CovarianceModelImplementation::setAmplitude(const Point & amplitude)
   if (amplitude.getDimension() != outputDimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude: the given amplitude has a dimension=" << amplitude.getDimension() << " different from the dimension=" << outputDimension_;
   for (UnsignedInteger index = 0; index < outputDimension_; ++index)
     if (!(amplitude[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude, the component " << index << " of amplitude is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude, the component " << index << " of amplitude=" << amplitude << " is non positive" ;
   amplitude_ = amplitude;
   updateOutputCovariance();
 }
@@ -687,14 +936,14 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
   UnsignedInteger index = 0;
   // Check the size
   const UnsignedInteger totalSize = inputDimension_ + outputDimension_ * (outputDimension_ + 1) / 2;
-  if (parameter.getSize() < totalSize)
+  if (!(parameter.getSize() >= totalSize))
     throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;
 
   for (UnsignedInteger i = 0; i < inputDimension_; ++ i)
   {
     if (!(parameter[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter, the component " << index << " of scale is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, the component " << index << " of scale is non positive";
     scale_[i] = parameter[index];
     ++ index;
   }
@@ -702,7 +951,7 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
   for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
   {
     if (!(parameter[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter, the component " << index << " of amplitude is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, the component " << index << " of amplitude is non positive";
     amplitude_[i] = parameter[index];
     ++ index;
   }
@@ -881,9 +1130,9 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     const Bool correlationFlag) const
 {
   if (inputDimension_ != 1) throw NotDefinedException(HERE) << "Error: can draw covariance models only if input dimension=1, here input dimension=" << inputDimension_;
-  if (rowIndex >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
-  if (columnIndex >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
-  if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;
+  if (!(rowIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
+  if (!(columnIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
+  if (!(pointNumber >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;
   // Check if the model is stationary and if we want to draw it this way
   if (asStationary && isStationary())
   {
@@ -910,9 +1159,9 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     curve.setColor("red");
     graph.add(curve);
     return graph;
-  }
+  } // asStationary && isStationary()
   // Here we draw a non-stationary model
-  const Sample gridT = RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices();
+  const Sample gridT(RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices());
   CovarianceMatrix matrix(discretize(gridT));
   const UnsignedInteger dimension = matrix.getDimension();
   // Normalize the data if needed
@@ -934,7 +1183,25 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
   } // correlationFlag
   matrix.checkSymmetry();
   Sample data(pointNumber * pointNumber, 1);
-  data.getImplementation()->setData(*matrix.getImplementation());
+  // Here we extract the relevant data for multidimensional output models
+  if (outputDimension_ == 1)
+    data.getImplementation()->setData(*matrix.getImplementation());
+  else
+  {
+    UnsignedInteger sampleIndex = 0;
+    UnsignedInteger rowShift = 0;
+    for (UnsignedInteger i = 0; i < pointNumber; ++i)
+    {
+      UnsignedInteger columnShift = 0;
+      for (UnsignedInteger j = 0; j < pointNumber; ++j)
+      {
+        data(sampleIndex, 0) = matrix(rowShift + rowIndex, columnShift + columnIndex);
+        ++sampleIndex;
+        columnShift += outputDimension_;
+      } // j
+      rowShift += outputDimension_;
+    } // i
+  } // outputDimension_ > 1
   Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true, "bottomright");
   graph.setGrid(true);
   Contour contour(pointNumber, pointNumber, data);

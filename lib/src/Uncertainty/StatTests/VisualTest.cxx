@@ -221,7 +221,7 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
     for (UnsignedInteger j = 0; j < i; ++ j)
     {
       const Indices indices = {j, i};
-      const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
+      const Cloud cloud(sample.getMarginal(indices), ResourceMap::GetAsString("Drawable-DefaultColor"), ResourceMap::GetAsString("Drawable-DefaultPointStyle"));
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
       graph.add(cloud);
       int location = GraphImplementation::TICKNONE;
@@ -341,13 +341,13 @@ Graph VisualTest::DrawLinearModelResidual(const LinearModelResult & linearModelR
   return VisualTest::DrawLinearModelResidual(sample1, sample2, linearModelResult);
 }
 
-/* Draw the CobWeb visual test */
-Graph VisualTest::DrawCobWeb(const Sample & inputSample,
-                             const Sample & outputSample,
-                             const Scalar minValue,
-                             const Scalar maxValue,
-                             const String & color,
-                             const Bool quantileScale)
+/* Draw the parallel coordinates visual test */
+Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
+    const Sample & outputSample,
+    const Scalar minValue,
+    const Scalar maxValue,
+    const String & color,
+    const Bool quantileScale)
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the input sample is empty.";
@@ -482,24 +482,50 @@ Sample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Sample & sample)
 {
   const UnsignedInteger size = sample.getSize();
   Sample result(size, 1);
+  const Scalar scalarSize = static_cast<Scalar>(size - 1);
+  /* To ease reading and implementation, we have a full double
+     loop for i & j variables from 0 to size
+     It is also possible to reduce costs by a factor 2 by completing
+     sequentially (not practice for maintenance and similar performance as current
+     implementation)
+
+     for (UnsignedInteger i = 0; i < size; ++i)
+     {
+       const Scalar uI = sample(i, 0);
+        const Scalar vI = sample(i, 1);
+       UnsignedInteger cardinalIJ = 0;
+       for (UnsignedInteger j = 0; j < i; ++j)
+       {
+         const Scalar uJ = sample(j, 0);
+         const Scalar vJ = sample(j, 1);
+         cardinalIJ = (uJ <= uI) && (vJ <= vI);
+         result(i, 0) += cardinalIJ;
+         cardinalIJ = (uI <= uJ) && (vI <= vJ);
+         result(j, 0) += cardinalIJ;
+       }
+     }
+     for (UnsignedInteger i = 0; i < size; ++i) result(i, 0) /= scalarSize;
+  */
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Point pointI(sample[i]);
-    const Scalar uI = pointI[0];
-    const Scalar vI = pointI[1];
+    const Scalar uI = sample(i, 0);
+    const Scalar vI = sample(i, 1);
     UnsignedInteger cardinal = 0;
     for (UnsignedInteger j = 0; j < i; ++j)
     {
-      const Point pointJ(sample[j]);
-      cardinal += (pointJ[0] <= uI) && (pointJ[1] <= vI);
+      const Scalar uJ = sample(j, 0);
+      const Scalar vJ = sample(j, 1);
+      cardinal += (uJ <= uI) && (vJ <= vI);
     }
     for (UnsignedInteger j = i + 1; j < size; ++j)
     {
-      const Point pointJ(sample[j]);
-      cardinal += (pointJ[0] <= uI) && (pointJ[1] <= vI);
+      const Scalar uJ = sample(j, 0);
+      const Scalar vJ = sample(j, 1);
+      cardinal += (uJ <= uI) && (vJ <= vI);
     }
-    result[i] = Point(1, cardinal / static_cast<Scalar>(size - 1));
+    result(i, 0) = cardinal / scalarSize;
   }
+
   return result.sort(0);
 }
 
@@ -513,7 +539,7 @@ Sample VisualTest::ComputeKendallPlotTheoreticalStatistics(const Distribution & 
   for (UnsignedInteger i = 0; i < maximumIteration; ++i)
   {
     const Sample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(copula.getSample(size)));
-    for (UnsignedInteger j = 0; j < size; ++j) result[j] = (result[j] * i + empiricalStatistics[j]) / (i + 1);
+    for (UnsignedInteger j = 0; j < size; ++j) result(j, 0) = (result(j, 0) * i + empiricalStatistics(j, 0)) / (i + 1);
   }
   return result;
 }

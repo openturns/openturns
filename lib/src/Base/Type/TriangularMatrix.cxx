@@ -152,6 +152,7 @@ Scalar & TriangularMatrix::operator() (const UnsignedInteger i,
   if (!isLowerTriangular() && (i > j))
     throw InvalidArgumentException(HERE) << "Error; The triangular matrix is upper. "
                                          << "The indices are not valid" ;
+  copyOnWrite();
   return  (*getImplementation())(i, j) ;
 }
 

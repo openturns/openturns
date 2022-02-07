@@ -25,6 +25,7 @@ reliability analysis.
 - 2018: (1.11, 1.12) Domains arithmetic, asymptotic Sobol' estimators, new simulation algorithms
 - 2019: (1.13, 1.14) Calibration, new optimization algorithms, system events
 - 2020: (1.15, 1.16) hmat AcaRandom compression, Spectra iterative SVD, examples gallery, C++11, XML/H5 storage
+- 2021: (1.17, 1.18) Karhunen-Loeve validation, new covariance models
 
 People
 ------
@@ -62,10 +63,23 @@ If you use OpenTURNS in a scientific publication, we would appreciate citations 
 
 .. code-block:: bash
 
-    @article{OpenTURNS,
-    title={OpenTURNS: An industrial software for uncertainty quantification in simulation},
-    author={Michaël Baudin, Anne Dutfoy, Bertrand Iooss, Anne-Laure Popelin},
-    year={2015}
+    @Inbook{Baudin2016,
+    author="Baudin, Micha{\"e}l
+    and Dutfoy, Anne
+    and Iooss, Bertrand
+    and Popelin, Anne-Laure",
+    editor="Ghanem, Roger
+    and Higdon, David
+    and Owhadi, Houman",
+    title="OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation",
+    bookTitle="Handbook of Uncertainty Quantification",
+    year="2016",
+    publisher="Springer International Publishing",
+    address="Cham",
+    pages="1--38",
+    isbn="978-3-319-11259-6",
+    doi="10.1007/978-3-319-11259-6_64-1",
+    url="https://doi.org/10.1007/978-3-319-11259-6_64-1"
     }
 
 

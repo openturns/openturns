@@ -21,11 +21,13 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # define the objective function
-objective = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], ['x1 + 2 * x2 - 3 * x3 + 4 * x4'])
+objective = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], [
+                                'x1 + 2 * x2 - 3 * x3 + 4 * x4'])
 
 # %%
 # define the constraints
-inequality_constraint = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], ['x1-x3'])
+inequality_constraint = ot.SymbolicFunction(
+    ['x1', 'x2', 'x3', 'x4'], ['x1-x3'])
 
 # %%
 # define the problem bounds
@@ -57,4 +59,3 @@ print('x^=', result.getOptimalPoint())
 graph = result.drawOptimalValueHistory()
 view = viewer.View(graph)
 plt.show()
-

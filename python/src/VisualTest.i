@@ -10,3 +10,4 @@
 
 %include openturns/VisualTest.hxx
 
+

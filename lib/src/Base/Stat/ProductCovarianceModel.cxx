@@ -65,7 +65,7 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
 {
   // Check if the given models have an input dimension=1
   const UnsignedInteger size = collection.getSize();
-  if (size == 0)
+  if (!(size > 0))
     throw InvalidArgumentException(HERE) << "Error: the collection must have a positive size, here size=0";
   // Scale & amplitude
   Point scale(0);
@@ -92,7 +92,7 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
     // Add element to the collection
     // Get its scale, which is seen as a concatenation of collection scale
     const UnsignedInteger localInputDimension = collection[i].getInputDimension();
-    scale.add(collection[i].getScale());
+
     // Get amplitude as amplitude product
     const Scalar localAmplitude = collection[i].getAmplitude()[0];
     amplitude[0] *= localAmplitude;
@@ -100,38 +100,38 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
     // Get local active parameter
     const Indices localActiveParameter(collection[i].getActiveParameter());
     // Check if scale are active
-    for (UnsignedInteger j = 0; j < localInputDimension; ++j)
+    for (UnsignedInteger j = 0; j < collection[i].getScale().getSize(); ++j)
     {
       if (localActiveParameter.contains(j))
-        activeParameter_.add(inputDimension_ + j);
+        activeParameter_.add(scale.getSize() + j);
     }
     inputDimension_ += localInputDimension;
+    scale.add(collection[i].getScale());
 
     // Should we activate the amplitude parameter?
-    isAmplitudeActive = isAmplitudeActive || localActiveParameter.contains(localInputDimension);
+    isAmplitudeActive = isAmplitudeActive || localActiveParameter.contains(collection[i].getScale().getSize());
 
     // Number of specific parameter
-    extraParameterNumber_[i] = collection[i].getFullParameter().getSize() - (localInputDimension + 1);
+    extraParameterNumber_[i] = collection[i].getFullParameter().getSize() - (collection[i].getScale().getSize() + 1);
 
     // Check if model is stationary
     if (!collection[i].isStationary())
-        isStationary_ = false;
+      isStationary_ = false;
   }
 
   // Amplitude active
   if (isAmplitudeActive)
-    activeParameter_.add(inputDimension_);
+    activeParameter_.add(scale.getSize());
 
   // Handle active extra parameters
-  UnsignedInteger index = inputDimension_ + 1;
+  UnsignedInteger index = scale.getSize() + 1;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger localInputDimension = collection[i].getInputDimension();
     const Indices localActiveParameter(collection[i].getActiveParameter());
     // if extraParameterNumber_[i] > 0, check if the parameters are active
     for (UnsignedInteger j = 0; j < extraParameterNumber_[i]; ++j)
     {
-      if (localActiveParameter.contains(localInputDimension + j + 1))
+      if (localActiveParameter.contains(collection[i].getScale().getSize() + j + 1))
         activeParameter_.add(index + j);
     }
     // update index
@@ -194,6 +194,15 @@ Scalar ProductCovarianceModel::computeAsScalar(const Collection<Scalar>::const_i
   return rho;
 }
 
+Scalar ProductCovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  return collection_[0].getImplementation()->computeAsScalar(tau);
+}
+
 /* Gradient */
 Matrix ProductCovarianceModel::partialGradient(const Point & s,
     const Point & t) const
@@ -238,7 +247,7 @@ Matrix ProductCovarianceModel::partialGradient(const Point & s,
 /* Parameters accessor */
 void ProductCovarianceModel::setFullParameter(const Point & parameter)
 {
-  UnsignedInteger parameterDimension = inputDimension_ + 1;
+  UnsignedInteger parameterDimension = getScale().getSize() + 1;
   // Increase using the specific parameters
   for (UnsignedInteger i = 0; i < extraParameterNumber_.getSize(); ++i) parameterDimension += extraParameterNumber_[i];
 
@@ -250,13 +259,13 @@ void ProductCovarianceModel::setFullParameter(const Point & parameter)
 
   UnsignedInteger start = 0;
   // Index for extra parameters
-  UnsignedInteger index = inputDimension_ + 1;
-  Point scale(inputDimension_);
+  UnsignedInteger index = getScale().getSize() + 1;
+  Point scale(getScale().getSize());
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
-    const UnsignedInteger atomInputDimension = collection_[i].getScale().getDimension();
-    const UnsignedInteger stop = start + atomInputDimension;
-    Point atomFullParameter(atomInputDimension);
+    const UnsignedInteger atomScaleDimension = collection_[i].getScale().getDimension();
+    const UnsignedInteger stop = start + atomScaleDimension;
+    Point atomFullParameter(atomScaleDimension);
     std::copy(parameter.begin() + start, parameter.begin() + stop, atomFullParameter.begin());
     // Duplicate scale
     std::copy(parameter.begin() + start, parameter.begin() + stop, scale.begin() + start);
@@ -265,46 +274,45 @@ void ProductCovarianceModel::setFullParameter(const Point & parameter)
     // Set extra
     for (UnsignedInteger k = 0; k < extraParameterNumber_[i]; ++k)
     {
-      atomFullParameter.add(parameter[index]);
-      index += 1;
+      atomFullParameter.add(parameter[index + k]);
     }
+    index += extraParameterNumber_[i];
     // update start index
     start = stop;
     collection_[i].setFullParameter(atomFullParameter);
   }
   // Copy scale (for get accessor)
   scale_ = scale;
-  setAmplitude(Point(1, parameter[inputDimension_]));
+  setAmplitude(Point(1, parameter[getScale().getSize()]));
 }
 
 void ProductCovarianceModel::setActiveParameter(const Indices & active)
 {
   // Propagate information to marginal models
   // First, check if active contains the amplitude.
-  Bool isAmplitudeActive = active.contains(inputDimension_);
+  const Bool isAmplitudeActive = active.contains(getScale().getSize());
   // variables that help to read active parameters
   const UnsignedInteger size = collection_.getSize();
-  UnsignedInteger inputDimension = 0;
-  UnsignedInteger index = inputDimension_ + 1;
-  Indices localActiveParameter;
-  for (UnsignedInteger i = 0; i < size; ++i)
+  UnsignedInteger scaleSize = 0;
+  UnsignedInteger index = getScale().getSize() + 1;
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
-    localActiveParameter = Indices(0);
-    // if extraParameterNumber_[i] > 0, check if the parameters are active
-    for (UnsignedInteger j = 0; j < localInputDimension; ++j)
+    const UnsignedInteger localScaleSize = collection_[i].getScale().getSize();
+    Indices localActiveParameter;
+    // scale parameters
+    for (UnsignedInteger j = 0; j < localScaleSize; ++ j)
     {
-      if (active.contains(inputDimension + j))
+      if (active.contains(scaleSize + j))
         localActiveParameter.add(j);
     }
-    inputDimension += localInputDimension;
+    scaleSize += localScaleSize;
     if (isAmplitudeActive)
-      localActiveParameter.add(localInputDimension);
+      localActiveParameter.add(localScaleSize);
     // Handle extra param
     for (UnsignedInteger j = 0; j < extraParameterNumber_[i]; ++j)
     {
       if (active.contains(index + j))
-        localActiveParameter.add(localInputDimension + j + 1);
+        localActiveParameter.add(localScaleSize + j + 1);
     }
     // update index
     index += extraParameterNumber_[i];
@@ -317,19 +325,17 @@ void ProductCovarianceModel::setActiveParameter(const Indices & active)
 
 Point ProductCovarianceModel::getFullParameter() const
 {
-  // Convention scale + amplitude + extraParam
-  Point result(0);
-  result.add(scale_);
+  // Convention scale + amplitude + extras
+  Point result(scale_);
   result.add(amplitude_);
   const UnsignedInteger size = extraParameterNumber_.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     if (extraParameterNumber_[i] > 0)
     {
-      const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
       const Point localFullParameter(collection_[i].getFullParameter());
-      for (UnsignedInteger k = 0; k < extraParameterNumber_[i]; ++k)
-        result.add(localFullParameter[localInputDimension + 1 + k]);
+      for (UnsignedInteger k = 0; k < extraParameterNumber_[i]; ++ k)
+        result.add(localFullParameter[collection_[i].getScale().getSize() + 1 + k]);
     }
   }
   return result;
@@ -337,20 +343,19 @@ Point ProductCovarianceModel::getFullParameter() const
 
 Description ProductCovarianceModel::getFullParameterDescription() const
 {
-  const UnsignedInteger size = inputDimension_ + 1;
+  const UnsignedInteger size = getScale().getSize();
   Description description(size);
-  for (UnsignedInteger i = 0; i < size - 1; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
     description[i] = OSS() << "scale_" << i;
   // Last element is amplitude
-  description[size - 1] = "amplitude_0";
-  for (UnsignedInteger i = 0; i < extraParameterNumber_.getSize(); ++i)
+  description.add("amplitude_0");
+  for (UnsignedInteger i = 0; i < extraParameterNumber_.getSize(); ++ i)
   {
     if (extraParameterNumber_[i] > 0)
     {
-      const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
       const Description localFullParameterDescription(collection_[i].getFullParameterDescription());
-      for (UnsignedInteger k = 0; k < extraParameterNumber_[i]; ++k)
-        description.add(OSS() << localFullParameterDescription[localInputDimension + 1 + k] << "_" << i);
+      for (UnsignedInteger k = 0; k < extraParameterNumber_[i]; ++ k)
+        description.add(OSS() << localFullParameterDescription[collection_[i].getScale().getSize() + 1 + k] << "_" << i);
     }
   }
 
@@ -359,8 +364,8 @@ Description ProductCovarianceModel::getFullParameterDescription() const
 
 void ProductCovarianceModel::setScale(const Point & scale)
 {
-  if (scale.getDimension() != inputDimension_)
-    throw InvalidArgumentException(HERE) << "Error: scale dimension should be " << inputDimension_ << ". Here we got " << scale.getDimension();
+  if (scale.getDimension() != getScale().getSize())
+    throw InvalidArgumentException(HERE) << "Error: scale dimension should be " << getScale().getSize() << ". Here we got " << scale.getDimension();
   // Set the scale
   UnsignedInteger start = 0;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
@@ -411,7 +416,7 @@ String ProductCovarianceModel::__str__(const String & ) const
 /* Marginal accessor */
 CovarianceModel ProductCovarianceModel::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
+  if (!(index < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
   if (getOutputDimension() == 1)
     return clone();
   Collection<CovarianceModel> coll(collection_.getSize());

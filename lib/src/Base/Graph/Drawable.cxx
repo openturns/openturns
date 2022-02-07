@@ -39,6 +39,13 @@ Drawable::Drawable(const DrawableImplementation & implementation):
   // Nothing to do
 }
 
+/* Constructor from implementation pointer */
+Drawable::Drawable(DrawableImplementation * p_implementation)
+  : TypedInterfaceObject<DrawableImplementation>(p_implementation)
+{
+  // Nothing to do
+}
+
 /* String converter */
 String Drawable::__repr__() const
 {

@@ -45,9 +45,9 @@ public:
   /** Default constructor */
   MultiStart();
 
-  /** Constructor with parameters */
+  /** Constructor that sets starting points */
   MultiStart(const OptimizationAlgorithm & solver,
-             const Sample & startingPoints);
+             const Sample & startingSample);
 
   /** Virtual constructor */
   MultiStart * clone() const override;
@@ -61,13 +61,19 @@ public:
   /** Problem accessor */
   void setProblem(const OptimizationProblem & problem) override;
 
-  /** Solver accessor */
+  /** Accessor to the underlying solver */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
+  /** Useless inherited method: throw */
+  void setStartingPoint(const Point & point) override;
+
   /** Starting points accessor */
-  void setStartingPoints(const Sample & sample);
-  Sample getStartingPoints() const;
+  void setStartingSample(const Sample & startingSample);
+  Sample getStartingSample() const;
+
+  /** Useless inherited method: throw */
+  Point getStartingPoint() const override;
 
   /** Flag for results management accessors */
   Bool getKeepResults() const;
@@ -83,12 +89,18 @@ public:
 
 protected:
 
-  /** Check whether this problem can be solved by this solver. */
+  /** Check that the solver is compatible with MultiStart */
+  void checkSolver(const OptimizationAlgorithm &) const;
+
+  /** Check whether this problem can be solved by this solver */
   void checkProblem(const OptimizationProblem & problem) const override;
+
+  /** Check that the optimization problem is consistent with the starting sample */
+  void checkStartingSampleConsistentWithOptimizationProblem(const Sample & startingSample, const OptimizationProblem & problem) const;
 
 private:
   OptimizationAlgorithm solver_;
-  Sample startingPoints_;
+  Sample startingSample_;
 
   /** Flag to tell if the collection of optimization results have to be kept */
   Bool keepResults_;

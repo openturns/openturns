@@ -60,12 +60,12 @@ view = viewer.View(graph)
 amplitude = [1.0, 2.0]
 scale = [4.0, 5.0]
 spatialCorrelation = ot.CorrelationMatrix(2)
-spatialCorrelation[0,1] = 0.8
+spatialCorrelation[0, 1] = 0.8
 mySpectralModel = ot.CauchyModel(scale, amplitude, spatialCorrelation)
 
 # %%
 # As usual we define a mesh,
-myTimeGrid =  ot.RegularGrid(0.0, 0.1, 20)
+myTimeGrid = ot.RegularGrid(0.0, 0.1, 20)
 
 # %%
 # and create the process thereafter
@@ -82,4 +82,3 @@ view = viewer.View(graph)
 # %%
 # Display figures
 plt.show()
-

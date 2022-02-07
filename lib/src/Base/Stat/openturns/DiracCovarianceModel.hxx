@@ -67,6 +67,7 @@ public:
   Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
                          const Collection<Scalar>::const_iterator &t_begin) const override;
 #endif
+  Scalar computeAsScalar(const Scalar tau) const override;
 
   /** Discretize the covariance function */
   using CovarianceModelImplementation::discretize;

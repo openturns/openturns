@@ -55,12 +55,14 @@ public:
   Scalar computeAsScalar(const Point & tau) const override;
 #ifndef SWIG
   Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const override;
+                         const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
 
+  Scalar computeAsScalar(const Scalar tau) const override;
+
   /** Gradient */
-  virtual Matrix partialGradient(const Point & s,
-                                 const Point & t) const override;
+  Matrix partialGradient(const Point & s,
+                         const Point & t) const override;
 
   /** P accessor */
   Scalar getP() const;

@@ -1,9 +1,9 @@
 """
-Use the Adaptive Directional Sampling Algorithm
-===============================================
+Use the Adaptive Directional Stratification Algorithm
+=====================================================
 """
 # %%
-# In this example we estimate a failure probability with the adaptive directional simulation algorithm provided by the :class:`~openturns.AdaptiveDirectionalSampling` class.
+# In this example we estimate a failure probability with the adaptive directional simulation algorithm provided by the :class:`~openturns.AdaptiveDirectionalStratification` class.
 
 # %%
 # Introduction
@@ -15,7 +15,7 @@ Use the Adaptive Directional Sampling Algorithm
 #    - `RiskyAndFast`
 #    - `MediumSafe`
 #    - `SafeAndSlow`
-#  
+#
 # 2. a *sampling strategy* to choose directions in the standard space. The available strategies are:
 #    - `RandomDirection`
 #    - `OrthogonalDirection`
@@ -25,6 +25,7 @@ Use the Adaptive Directional Sampling Algorithm
 
 # %%
 from __future__ import print_function
+from openturns.usecases import cantilever_beam as cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -32,7 +33,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :
-from openturns.usecases import cantilever_beam as cantilever_beam
 cb = cantilever_beam.CantileverBeam()
 
 # %%
@@ -68,7 +68,8 @@ samplingStrategy = ot.RandomDirection()
 # Create a simulation algorithm.
 
 # %%
-algo = ot.AdaptiveDirectionalSampling(event, rootStrategy, samplingStrategy)
+algo = ot.AdaptiveDirectionalStratification(
+    event, rootStrategy, samplingStrategy)
 algo.setMaximumCoefficientOfVariation(0.1)
 algo.setMaximumOuterSampling(40000)
 algo.setConvergenceStrategy(ot.Full())
@@ -80,5 +81,6 @@ algo.run()
 # %%
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
-print( result )
+print(result)
 print('Pf=', probability)
+print('Iterations=', result.getOuterSampling())

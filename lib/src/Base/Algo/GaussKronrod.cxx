@@ -41,7 +41,7 @@ GaussKronrod::GaussKronrod()
   , rule_()
 {
   // Check the maximum number of sub-intervals
-  if (maximumSubIntervals_ < 2) throw InvalidArgumentException(HERE) << "Error: the maximum number of sub-intervals must be at least 2, here maximumSubIntervals=" << maximumSubIntervals_ << ". Check the value of the key 'GaussKronrod-MaximumSubIntervals' in ResourceMap.";
+  if (!(maximumSubIntervals_ >= 2)) throw InvalidArgumentException(HERE) << "Error: the maximum number of sub-intervals must be at least 2, here maximumSubIntervals=" << maximumSubIntervals_ << ". Check the value of the key 'GaussKronrod-MaximumSubIntervals' in ResourceMap.";
 }
 
 /* Parameters constructor */
@@ -54,7 +54,7 @@ GaussKronrod::GaussKronrod(const UnsignedInteger maximumSubIntervals,
   , rule_(rule)
 {
   // Check the maximum number of sub-intervals
-  if (maximumSubIntervals < 2) throw InvalidArgumentException(HERE) << "Error: the maximum number of sub-intervals must be at least 2, here maximumSubIntervals=" << maximumSubIntervals;
+  if (!(maximumSubIntervals >= 2)) throw InvalidArgumentException(HERE) << "Error: the maximum number of sub-intervals must be at least 2, here maximumSubIntervals=" << maximumSubIntervals;
 }
 
 /* Virtual constructor */
@@ -89,7 +89,7 @@ Point GaussKronrod::integrate(const Function & function,
 {
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can integrate only 1D function, here input dimension=" << function.getInputDimension();
   const UnsignedInteger outputDimension = function.getOutputDimension();
-  if (outputDimension == 0) throw InvalidArgumentException(HERE) << "Error: can integrate only non-zero output dimension function";
+  if (!(outputDimension > 0)) throw InvalidArgumentException(HERE) << "Error: can integrate only non-zero output dimension function, here outputDimension = " << outputDimension;
   Point result(outputDimension);
   ai = Point(maximumSubIntervals_);
   ai[0] = a;
@@ -131,7 +131,7 @@ Point GaussKronrod::integrate(const Function & function,
   bi.resize(im + 1);
   ei.resize(im + 1);
   fi.erase(im + 1, maximumSubIntervals_);
-  if (error > maximumError_) LOGINFO(OSS() << "The GaussKronrod algorithm was not able to reach the requested error=" << maximumError_ << ", the achieved error is " << error);
+  if (!(error <= maximumError_)) LOGINFO(OSS() << "The GaussKronrod algorithm was not able to reach the requested error=" << maximumError_ << ", the achieved error is " << error);
   return result;
 }
 
@@ -227,7 +227,7 @@ Scalar GaussKronrod::integrate(const UniVariateFunction & function,
     ip = iErrorMax;
     error = sqrt(error);
   } // while (error >...)
-  if (error > maximumError_) LOGINFO(OSS() << "The GaussKronrod algorithm was not able to reach the requested error=" << maximumError_ << ", the achieved error is " << error);
+  if (!(error <= maximumError_)) LOGINFO(OSS() << "The GaussKronrod algorithm was not able to reach the requested error=" << maximumError_ << ", the achieved error is " << error);
   return result;
 }
 
@@ -277,7 +277,7 @@ UnsignedInteger GaussKronrod::getMaximumSubIntervals() const
 
 void GaussKronrod::setMaximumSubIntervals(const UnsignedInteger maximumSubIntervals)
 {
-  if (maximumSubIntervals < 1) throw InvalidArgumentException(HERE) << "Error: the number of intervals must be at least 1.";
+  if (!(maximumSubIntervals >= 1)) throw InvalidArgumentException(HERE) << "Error: the number of intervals must be at least 1, here it is " << maximumSubIntervals;
   maximumSubIntervals_ = maximumSubIntervals;
 }
 

@@ -275,7 +275,6 @@ pdf gradient (FD)= class=Point name=Unnamed dimension=8 values=[0.00095188,-0.00
 quantile= class=Point name=Unnamed dimension=4 values=[2.1934,4.3868,6.5802,8.7736]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=4 values=[-2.1934,-4.3868,-6.5802,-8.7736]
-Survival(inverseSurvival)=0.950000
 entropy=8.272233
 mean= class=Point name=Unnamed dimension=4 values=[0,0,0,0]
 standard deviation= class=Point name=Unnamed dimension=4 values=[1,2,3,4]

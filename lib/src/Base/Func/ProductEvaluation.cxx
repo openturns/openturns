@@ -39,12 +39,12 @@ ProductEvaluation::ProductEvaluation(const Evaluation & leftEvaluation,
   // Check if the dimensions of the left and right functions are compatible
   if (leftEvaluation.getOutputDimension() != 1)
   {
-    if (rightEvaluation.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension of at least one of the functions must be 1 in a product.";
+    if (rightEvaluation.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension of at least one of the functions must be 1 in a product, here it is " << rightEvaluation.getOutputDimension();
     LOGWARN("We exchanged the functions in order to have the left one with output dimension equals to 1");
     leftEvaluation_ = rightEvaluation;
     rightEvaluation_ = leftEvaluation;
   }
-  if (leftEvaluation_.getInputDimension() != rightEvaluation_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the two functions must have the same input dimension.";
+  if (leftEvaluation_.getInputDimension() != rightEvaluation_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the two functions must have the same input dimension, here left=" << leftEvaluation_.getInputDimension() << " and right=" << rightEvaluation_.getInputDimension();
   setDescription(rightEvaluation_.getDescription());
 }
 

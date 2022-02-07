@@ -12,13 +12,23 @@ add_subdirectory (Uncertainty)
 set_source_files_properties (Base/Func/SpecFunc/Faddeeva.cc PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 
 # Exclude Ceres sources from unity build (templates take much memory)
-set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+if (Ceres_FOUND)
+  set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
 
 # Exclude Dlib sources from unity build (Lapack re-included)
-set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+if (dlib_FOUND)
+  set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
+if (IPOPT_FOUND)
+  set_source_files_properties (Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
 
 # Exclude Bonmin/Ipopt sources
-set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+if (BONMIN_FOUND)
+  set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
 
 # Exclude LibXML sources
 if (LIBXML2_FOUND)
@@ -28,6 +38,11 @@ endif ()
 # Exclude HDF5 sources
 if (LIBXML2_FOUND AND HDF5_FOUND)
   set_source_files_properties (Base/Common/XMLH5StorageManager.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
+# Exclude HMAT sources
+if (HMAT_FOUND)
+  set_source_files_properties (Base/Stat/HMatrixFactory.cxx Base/Stat/HMatrixImplementation.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
 # SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from cotire builds
@@ -41,7 +56,6 @@ if (OPENTURNS_HAVE_EXPRTK)
   endif ()
 endif()
 
-set_source_files_properties (Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_DEFINITIONS "HAVE_STDDEF_H") # required for ipopt 3.11
 if ((OPENTURNS_HAVE_BONMIN OR OPENTURNS_HAVE_IPOPT) AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
     set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter")
@@ -51,7 +65,9 @@ if ((OPENTURNS_HAVE_BONMIN OR OPENTURNS_HAVE_IPOPT) AND CMAKE_CXX_COMPILER_ID MA
 endif ()
 
 # Exclude spectra sources from unity build (templates take a lot of memory)
-set_source_files_properties (Base/Algo/KarhunenLoeveP1Algorithm.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+if (Spectra_FOUND)
+  set_source_files_properties (Base/Algo/KarhunenLoeveP1Algorithm.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
 
 # Build main library
 foreach (built_source ${BUILT_SOURCEFILES})
@@ -66,14 +82,8 @@ if (BUILD_SHARED_LIBS)
 endif ()
 
 # soversion
-if (NOT DEFINED LIB_VERSION) 
-  set (LIB_VERSION 0.0.0)
-endif ()
-if (NOT DEFINED LIB_SOVERSION) 
-  set (LIB_SOVERSION 0)
-endif ()
-set_target_properties (OT PROPERTIES SOVERSION ${LIB_SOVERSION})
-set_target_properties (OT PROPERTIES VERSION ${LIB_VERSION})
+set_target_properties (OT PROPERTIES SOVERSION 0.20)
+set_target_properties (OT PROPERTIES VERSION 0.20.0)
 
 if (BISON_FOUND AND FLEX_FOUND)
   add_dependencies (OT generate_csv_lexer)
@@ -85,6 +95,10 @@ target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
 
 target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)
 target_include_directories (OT PUBLIC ${OPENTURNS_INCLUDE_DIRS})
+
+if (NOT CMAKE_VERSION VERSION_LESS 3.8)
+  target_compile_features(OT PUBLIC cxx_std_11)
+endif ()
 
 # Build an empty executable to check link dependencies and completeness
 add_executable (linktest main.cxx)

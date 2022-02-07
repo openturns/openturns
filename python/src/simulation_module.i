@@ -72,7 +72,7 @@
 %include SimulationSensitivityAnalysis.i
 %include SubsetSamplingResult.i
 %include SubsetSampling.i
-%include AdaptiveDirectionalSampling.i
+%include AdaptiveDirectionalStratification.i
 %include ExpectationSimulationResult.i
 %include ExpectationSimulationAlgorithm.i
 %include SobolSimulationResult.i

@@ -2,7 +2,7 @@
 Create mixed deterministic and probabilistic designs of experiments
 ===================================================================
 """
-# %% 
+# %%
 #
 # In this example we build a mixed deterministic and probabilistic design of experiments in which levels are defined from the probabilistic distribution of the input random vector. More precisely, we show how to create an `Axial` design of experiments whose points are updated so that they match the mean and variance of the distribution.
 #
@@ -17,7 +17,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Define the underlying random vector. 
+# Define the underlying random vector.
 
 # %%
 dim = 2
@@ -26,7 +26,7 @@ distribution = ot.Normal([2.0, 3.0], [0.5, 2.0], R)
 rv = ot.RandomVector(distribution)
 
 # %%
-# Define the structure of the design of experiments. 
+# Define the structure of the design of experiments.
 
 # %%
 levels = [1.0, 2.0, 3.0]
@@ -43,7 +43,7 @@ print('scaling=', scaling)
 sample *= scaling
 
 # %%
-# Center the design around the mean point of the distribution. 
+# Center the design around the mean point of the distribution.
 
 # %%
 center = rv.getMean()

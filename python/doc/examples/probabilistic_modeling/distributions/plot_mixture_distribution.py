@@ -7,7 +7,7 @@ Create a mixture of PDFs
 #
 # .. math::
 #    f(x) =  \sum_{i=1}^N \alpha_i p_i(x), \quad \alpha_i \geq 0, \quad \sum_i \alpha_i = 1
-#   
+#
 # The weigths are automatically normalized.
 #
 # It is also possible to create a mixture of copulas.
@@ -21,7 +21,8 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # create a collection of distribution and the associated weights
-distributions = [ot.Triangular(1.0, 2.0, 4.0), ot.Normal(-1.0, 1.0), ot.Uniform(5.0, 6.0)]
+distributions = [ot.Triangular(1.0, 2.0, 4.0),
+                 ot.Normal(-1.0, 1.0), ot.Uniform(5.0, 6.0)]
 weights = [0.4, 1.0, 0.2]
 
 # %%

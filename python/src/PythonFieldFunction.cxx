@@ -76,7 +76,7 @@ PythonFieldFunction::PythonFieldFunction(PyObject * pyCallable)
 
 
   ScopedPyObjectPointer descOut(PyObject_CallMethod( pyObj_,
-                                const_cast<char *>("getOutputDescription" ),
+                                const_cast<char *>("getOutputDescription"),
                                 const_cast<char *>("()")));
   if ( descOut.get()
        && PySequence_Check(descOut.get())

@@ -16,7 +16,10 @@ import openturns as ot
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from distutils.version import LooseVersion
+try:
+    from pkg_resources import parse_version as LooseVersion
+except ImportError:
+    from distutils.version import LooseVersion
 import os
 import re
 import warnings
@@ -32,8 +35,8 @@ class View(object):
 
     Parameters
     ----------
-    graph : :class:`~openturns.Graph, :class:`~openturns.Drawable`
-        A Graph or Drawable object.
+    graph : :class:`~openturns.Graph`, :class:`~openturns.Drawable` or :class:`~openturns.GridLayout`
+        An object to draw.
 
     pixelsize : 2-tuple of int
         The requested size in pixels (width, height).
@@ -201,6 +204,7 @@ class View(object):
                 axes = self._fig.axes
 
         if isinstance(graph, ot.GridLayout):
+            self._ax = []
             for i in range(graph.getNbRows()):
                 for j in range(graph.getNbColumns()):
                     graphij = graph.getGraph(i, j)
@@ -209,14 +213,16 @@ class View(object):
                     axes = [self._fig.add_subplot(graph.getNbRows(), graph.getNbColumns(
                     ), 1 + i * graph.getNbColumns() + j, **axes_kw)]
                     axes[0].axison = graphij.getAxes()
+                    axes[0].set_title(self._ToUnicode(graphij.getTitle()))
                     # hide frame top/right
-                    if LooseVersion(matplotlib.__version__) > '3.0':
+                    if LooseVersion(matplotlib.__version__) > LooseVersion('3.0'):
                         axes[0].spines['right'].set_visible(False)
                         axes[0].spines['top'].set_visible(False)
                     View(graphij, figure=self._fig, axes=axes, plot_kw=plot_kw,
                          contour_kw=contour_kw, clabel_kw=clabel_kw,
                          legend_kw=legend_kw)
-                    self._fig.suptitle(self._ToUnicode(graph.getTitle()))
+                    self._ax += axes
+            self._fig.suptitle(self._ToUnicode(graph.getTitle()))
             return
 
         drawables = graph.getDrawables()
@@ -276,7 +282,7 @@ class View(object):
         for drawable in drawables:
             drawableKind = drawable.getImplementation().getClassName()
 
-            # reset working dictionaries by explicitely creating copies
+            # reset working dictionaries by explicitly creating copies
             plot_kw = dict(plot_kw_default)
             bar_kw = dict(bar_kw_default)
             pie_kw = dict(pie_kw_default)

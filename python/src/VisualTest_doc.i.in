@@ -228,11 +228,8 @@ Draw a two-sample CDF-plot:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::VisualTest::DrawCobWeb
-"Draw a Cobweb plot.
-
-Available usages:
-    VisualTest.DrawCobWeb(*inputSample, outputSample, min, max, color, quantileScale=True*)
+%feature("docstring") OT::VisualTest::DrawParallelCoordinates
+"Draw a parallel coordinates plot.
 
 Parameters
 ----------
@@ -296,10 +293,10 @@ Generate a random sample from a Normal distribution:
 >>> model = ot.SymbolicFunction(['X0', 'X1'], formula)
 >>> outputSample = model(inputSample)
 
-Draw a Cobweb plot:
+Draw a parallel plot:
 
->>> cobweb = ot.VisualTest.DrawCobWeb(inputSample, outputSample, 1.0, 2.0, 'red', False)
->>> View(cobweb).show()"
+>>> parplot = ot.VisualTest.DrawParallelCoordinates(inputSample, outputSample, 1.0, 2.0, 'red', False)
+>>> View(parplot).show()"
 
 // ---------------------------------------------------------------------
 
@@ -454,6 +451,10 @@ Returns
 -------
 graph : :class:`~openturns.Graph`
     The graph object
+
+Notes
+-----
+The point style and the color are given by 'Drawable-DefaultPointStyle' and 'Drawable-DefaultColor' keys in :class:`~openturns.ResourceMap`.
 
 Examples
 --------

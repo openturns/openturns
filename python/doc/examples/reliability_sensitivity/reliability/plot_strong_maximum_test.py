@@ -79,11 +79,13 @@ confidenceLevel = 0.99
 # Create the Strong Maximum Test
 # CARE : the event must be declared in the standard space
 # 1. From the confidenceLevel parameter
-mySMT_CL = ot.StrongMaximumTest(myStandardEvent, standardSpaceDesignPoint,  importanceLevel, accuracyLevel,  confidenceLevel)
+mySMT_CL = ot.StrongMaximumTest(
+    myStandardEvent, standardSpaceDesignPoint,  importanceLevel, accuracyLevel,  confidenceLevel)
 
 # 2. Or from the  maximum number of points sampling the sphere
 pointsNumber = 1000
-mySMT_PN = ot.StrongMaximumTest(myStandardEvent, standardSpaceDesignPoint,  importanceLevel, accuracyLevel,  pointsNumber)
+mySMT_PN = ot.StrongMaximumTest(
+    myStandardEvent, standardSpaceDesignPoint,  importanceLevel, accuracyLevel,  pointsNumber)
 
 # Perform the test
 mySMT_CL.run()
@@ -110,7 +112,8 @@ print('Model values = ', values)
 # Get also the values of limit state function at these points
 vicinityDesignPoint = mySMT_CL.getNearDesignPointVerifyingEventPoints()
 values = mySMT_CL.getNearDesignPointVerifyingEventValues()
-print('Points verifying the Event in the vicinity of the design points = ', vicinityDesignPoint)
+print('Points verifying the Event in the vicinity of the design points = ',
+      vicinityDesignPoint)
 print('Model values = ', values)
 
 # Get all the points not verifying the event and outside the design point vicinity
@@ -124,5 +127,6 @@ print('Model values = ', values)
 # Get also the values of limit state function at these points
 vicinitySecurityPoints = mySMT_CL.getNearDesignPointViolatingEventPoints()
 values = mySMT_CL.getNearDesignPointViolatingEventValues()
-print('Points NOT verifying the Event outside the vicinity of the design points = ', vicinitySecurityPoints)
+print('Points NOT verifying the Event outside the vicinity of the design points = ',
+      vicinitySecurityPoints)
 print('Model values = ', values)

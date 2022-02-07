@@ -42,7 +42,7 @@ try:
         size *= 10
 
     # Define a point
-    point = Point(distribution.getDimension(), 1.0)
+    point = Point(distribution.getDimension(), 1.5)
     print("Point= ", repr(point))
 
     # Show PDF and CDF of point

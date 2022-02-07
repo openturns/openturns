@@ -4,7 +4,7 @@ Use case : Ishigami test function
 """
 from __future__ import print_function
 import openturns as ot
-import numpy as np
+import math as m
 
 
 class IshigamiModel():
@@ -94,32 +94,37 @@ class IshigamiModel():
         self.b = 0.1
 
         # First marginal : X1
-        self.X1 = ot.Uniform(-np.pi, np.pi)
+        self.X1 = ot.Uniform(-m.pi, m.pi)
         self.X1.setName("X1")
 
         # Second marginal : X2
-        self.X2 = ot.Uniform(-np.pi, np.pi)
+        self.X2 = ot.Uniform(-m.pi, m.pi)
         self.X2.setName("X2")
 
         # Third marginal : X3
-        self.X3 = ot.Uniform(-np.pi, np.pi)
+        self.X3 = ot.Uniform(-m.pi, m.pi)
         self.X3.setName("X1")
 
         # Input distribution
-        self.distributionX = ot.ComposedDistribution([self.X1, self.X2, self.X3])
+        self.distributionX = ot.ComposedDistribution(
+            [self.X1, self.X2, self.X3])
         self.distributionX.setDescription(['X1', 'X2', 'X3'])
 
-        self.ishigami = ot.SymbolicFunction(['X1', 'X2', 'X3', 'a', 'b'], ['sin(X1) + a * sin(X2)^2 + b * X3^4 * sin(X1)'])
+        self.ishigami = ot.SymbolicFunction(['X1', 'X2', 'X3', 'a', 'b'], [
+                                            'sin(X1) + a * sin(X2)^2 + b * X3^4 * sin(X1)'])
         # The Ishigami model
-        self.model = ot.ParametricFunction(self.ishigami, [3, 4], [self.a, self.b])
+        self.model = ot.ParametricFunction(
+            self.ishigami, [3, 4], [self.a, self.b])
 
         self.expectation = self.a / 2.0
-        self.variance = 1.0/2 + self.a**2/8.0 + self.b*np.pi**4/5.0 + self.b**2*np.pi**8/18.0
-        self.S1 = (1.0/2.0 + self.b*np.pi**4/5.0+self.b**2*np.pi**8/50.0)/self.variance
+        self.variance = 1.0/2 + self.a**2/8.0 + \
+            self.b*m.pi**4/5.0 + self.b**2*m.pi**8/18.0
+        self.S1 = (1.0/2.0 + self.b*m.pi**4/5.0 +
+                   self.b**2*m.pi**8/50.0)/self.variance
         self.S2 = (self.a**2/8.0)/self.variance
         self.S3 = 0.0
         self.S12 = 0.0
-        self.S13 = self.b**2*np.pi**8/2.0*(1.0/9.0-1.0/25.0)/self.variance
+        self.S13 = self.b**2*m.pi**8/2.0*(1.0/9.0-1.0/25.0)/self.variance
         self.S23 = 0.0
         self.S123 = 0.0
         self.ST1 = self.S1 + self.S13

@@ -165,13 +165,13 @@ Sample KrigingResult::getCovarianceCoefficients() const
 
 
 /* Compute mean of new points conditionally to observations */
-Point KrigingResult::getConditionalMean(const Sample & xi) const
+Sample KrigingResult::getConditionalMean(const Sample & xi) const
 {
   // For a process of dimension p & xi's size=s,
   // returned matrix should have dimensions (p * s) x (p * s)
   const UnsignedInteger inputDimension = xi.getDimension();
   if (inputDimension != covarianceModel_.getInputDimension())
-    throw InvalidArgumentException(HERE) << " In KrigingResult::getMean, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMean, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
   const UnsignedInteger sampleSize = xi.getSize();
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMean, expected a non empty sample";
@@ -179,11 +179,7 @@ Point KrigingResult::getConditionalMean(const Sample & xi) const
   // Need to think if it is required to implement a specific method
   // in order to avoid data copy
   // sample is of size xi.getSize() * covarianceModel.getDimension()
-  Sample output = metaModel_.operator()(xi);
-  // Result is a Point ==> data are transformed form Sample to
-  // Point by using a copy
-  Point mean(output.getImplementation()->getData());
-  return mean;
+  return metaModel_.operator()(xi);
 }
 
 /* Compute mean of new points conditionally to observations */
@@ -193,196 +189,6 @@ Point KrigingResult::getConditionalMean(const Point & xi) const
   // For Point, no problematic of copy
   const Point output = metaModel_.operator()(xi);
   return output;
-}
-
-struct KrigingResultCrossCovarianceFunctor
-{
-  const Sample & conditionnedPoints_;
-  const Sample & input_;
-  Matrix & output_;
-  const CovarianceModel & model_;
-  const UnsignedInteger dimension_;
-
-  KrigingResultCrossCovarianceFunctor(const Sample & conditionnedPoints,
-                                      const Sample & input,
-                                      Matrix & output,
-                                      const CovarianceModel & model)
-    : conditionnedPoints_(conditionnedPoints)
-    , input_(input)
-    , output_(output)
-    , model_(model)
-    , dimension_(model.getOutputDimension())
-  {}
-
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      // Fill by column
-      // jLocal ==> which column to fill
-      // jBase : use of block size to determine first element of matrix
-      // iLocal : for a fixed jLocal row, which iLocal-th element to fill
-      // iBase : same as jBase but for rows
-      const UnsignedInteger jLocal = i / conditionnedPoints_.getSize();
-      const UnsignedInteger jBase = jLocal * dimension_;
-      const UnsignedInteger iLocal = i - jLocal * conditionnedPoints_.getSize();
-      const UnsignedInteger iBase = iLocal * dimension_;
-      // Local covariance matrix
-      const SquareMatrix localCovariance(model_(conditionnedPoints_[iLocal], input_[jLocal]));
-      for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
-      {
-        for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
-        {
-          output_(iBase + ii, jBase + jj) = localCovariance(ii, jj);
-        }
-      }
-    }
-  }
-};
-/* end struct KrigingResultCrossCovarianceFunctor */
-
-struct KrigingResultCrossCovarianceFunctor1D
-{
-  const Sample & conditionnedPoints_;
-  const Sample & input_;
-  Matrix & output_;
-  const CovarianceModel & model_;
-
-  KrigingResultCrossCovarianceFunctor1D(const Sample &conditionnedPoints,
-                                        const Sample &input,
-                                        Matrix & output,
-                                        const CovarianceModel & model)
-    : conditionnedPoints_(conditionnedPoints)
-    , input_(input)
-    , output_(output)
-    , model_(model)
-  {
-  }
-
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
-  {
-
-    const UnsignedInteger inputDimension = input_.getDimension();
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      for (UnsignedInteger j = 0; j < input_.getSize(); ++j)
-        output_(i, j) = model_.getImplementation()->computeAsScalar(conditionnedPoints_.getImplementation()->data_begin() + (i * inputDimension),
-                        input_.getImplementation()->data_begin() + (j * inputDimension));
-    }
-  } // operator()
-};
-/* end struct KrigingResultCrossCovarianceFunctor1D */
-
-/* Compute cross matrix method ==> not necessary square matrix  */
-Matrix KrigingResult::getCrossMatrix(const Sample & x) const
-{
-  // Use of TBB structures
-  // The idea is that we work by blocks
-  // the (i,j) block corresponds to the interaction x[i], inputData[j]
-  // Each block is of size d x d
-  // So we have trainingSize * sampleSize blocks
-  // We fill the matrix by columns
-  const UnsignedInteger dimension = covarianceModel_.getOutputDimension();
-  if (dimension == 1)
-  {
-    const UnsignedInteger trainingSize = inputSample_.getSize();
-    const UnsignedInteger sampleSize = x.getSize();
-    Matrix result(trainingSize, sampleSize);
-    const KrigingResultCrossCovarianceFunctor1D policy(inputSample_, x, result, covarianceModel_);
-    // The loop is over the lower block-triangular part
-    TBB::ParallelFor(0, trainingSize, policy);
-    return result;
-  }
-  const UnsignedInteger trainingSize = inputSample_.getSize();
-  const UnsignedInteger trainingFullSize = trainingSize * dimension;
-  const UnsignedInteger sampleSize = x.getSize();
-  const UnsignedInteger sampleFullSize = sampleSize * dimension;
-  Matrix result(trainingFullSize, sampleFullSize);
-  const KrigingResultCrossCovarianceFunctor policy(inputSample_, x, result, covarianceModel_);
-  // The loop is over the lower block-triangular part
-  TBB::ParallelFor( 0, trainingSize * sampleSize, policy );
-  return result;
-}
-
-struct KrigingResultCrossCovariancePointFunctor
-{
-  const Sample &conditionnedPoints_;
-  const Point &input_;
-  Matrix &output_;
-  const CovarianceModel &model_;
-
-  KrigingResultCrossCovariancePointFunctor(const Sample &conditionnedPoints,
-      const Point &input,
-      Matrix &output,
-      const CovarianceModel &model)
-    : conditionnedPoints_(conditionnedPoints)
-    , input_(input)
-    , output_(output)
-    , model_(model)
-  {
-  }
-
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
-  {
-    const UnsignedInteger dimension = model_.getOutputDimension();
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      SquareMatrix localCovariance(model_(conditionnedPoints_[i], input_));
-      for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++columnIndex)
-        for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
-          output_(i * dimension + rowIndex, columnIndex) = localCovariance(rowIndex, columnIndex);
-    }
-  } // operator()
-};
-/* end struct KrigingResultCrossCovariancePointFunctor */
-
-struct KrigingResultCrossCovariancePointFunctor1D
-{
-  const Sample & conditionnedPoints_;
-  const Point & input_;
-  Matrix &output_;
-  const CovarianceModel & model_;
-
-  KrigingResultCrossCovariancePointFunctor1D(const Sample &conditionnedPoints,
-      const Point &input,
-      Matrix & output,
-      const CovarianceModel &model)
-    : conditionnedPoints_(conditionnedPoints)
-    , input_(input)
-    , output_(output)
-    , model_(model)
-  {
-  }
-
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
-  {
-
-    const UnsignedInteger inputDimension = input_.getDimension();
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      output_(i, 0) = model_.getImplementation()->computeAsScalar(conditionnedPoints_.getImplementation()->data_begin() + (i * inputDimension), input_.begin() );
-    }
-  } // operator()
-};
-/* end struct KrigingResultCrossCovariancePointFunctor1D */
-
-Matrix KrigingResult::getCrossMatrix(const Point & point) const
-{
-  const UnsignedInteger trainingSize = inputSample_.getSize();
-  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
-  if (outputDimension == 1)
-  {
-    Matrix result(trainingSize, 1);
-    const KrigingResultCrossCovariancePointFunctor1D policy(inputSample_, point, result, covarianceModel_);
-    // The loop is over the lower block-triangular part
-    TBB::ParallelFor(0, trainingSize, policy);
-    return result;
-  }
-  const UnsignedInteger trainingFullSize = trainingSize * covarianceModel_.getOutputDimension();
-  Matrix result(trainingFullSize, outputDimension);
-  const KrigingResultCrossCovariancePointFunctor policy(inputSample_, point, result, covarianceModel_);
-  TBB::ParallelFor(0, trainingSize, policy);
-  return result;
 }
 
 /* Compute cross matrix method ==> not necessary square matrix  */
@@ -452,9 +258,9 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   const CovarianceMatrix sigmaXX(covarianceModel_.discretize(sample));
 
   // 2) compute \sigma_{y,x}
-  // compute r(x), the crossCovariance between the conditionned data & xi
+  // compute r(x), the crossCovariance between the conditioned data & xi
   LOGINFO("Compute cross-interactions sigmaYX");
-  const Matrix crossCovariance(getCrossMatrix(sample));
+  const Matrix crossCovariance(covarianceModel_.computeCrossCovariance(getInputSample(), sample));
   // 3) Compute r^t R^{-1} r'(x)
   // As we get the Cholesky factor L, we can solve triangular linear system
   // We define B = L^{-1} * r(x)
@@ -544,9 +350,10 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
   const SquareMatrix sigmaXX(covarianceModel_(Point(inputDimension, 0.0)));
 
   // 2) compute \sigma_{y,x}
-  // compute r(x), the crossCovariance between the conditionned data & xi
+  // compute r(x), the crossCovariance between the conditioned data & xi
   LOGINFO("Compute cross-interactions sigmaYX");
-  const Matrix crossCovariance(getCrossMatrix(data));
+  const Matrix crossCovariance(covarianceModel_.computeCrossCovariance(getInputSample(), data));
+
   // 3) Compute r^t R^{-1} r'(x)
   // As we get the Cholesky factor L, we can solve triangular linear system
   // We define B = L^{-1} * r(x)
@@ -656,7 +463,9 @@ Normal KrigingResult::operator()(const Sample & xi) const
 {
   // The Normal distribution is defined by its mean & covariance
   LOGINFO("In KrigingResult::operator() : evaluating the mean");
-  const Point mean = getConditionalMean(xi);
+  const Sample meanAsSample = getConditionalMean(xi);
+  // Mean should be a Point ==> data are copied form the Sample to a Point
+  const Point mean(meanAsSample.getImplementation()->getData());
   LOGINFO("In KrigingResult::operator() : evaluating the covariance");
   const CovarianceMatrix covarianceMatrix = getConditionalCovariance(xi);
   // Check the covariance matrix. Indeed, if point is very similar to one of the learning points, covariance is null
@@ -684,7 +493,7 @@ Scalar KrigingResult::getConditionalMarginalVariance(const Point & point,
 }
 
 /** Compute marginal variance conditionally to observations (1 cov / point)*/
-Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
+Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     const UnsignedInteger marginalIndex) const
 {
 
@@ -706,15 +515,15 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     // Only diagonal of the discretization Matrix
     // First set sigmaXX
     const Point tau(inputDimension);
-    // There is no computeAsScalr(tau) method
-    const Scalar sigma2 = covarianceModel_(tau)(0, 0);
-    Point result(sampleSize, sigma2);
+    // There is no computeAsScalar(tau) method
+    const Point sigma2(1, covarianceModel_(tau)(0, 0));
+    Sample result(sampleSize, sigma2);
 
 
     // 2) compute \sigma_{y,x}
-    // compute r(x), the crossCovariance between the conditionned data & xi
+    // compute r(x), the crossCovariance between the conditioned data & xi
     LOGINFO("Compute cross-interactions sigmaYX");
-    const Matrix crossCovariance(getCrossMatrix(sample));
+    const Matrix crossCovariance(covarianceModel_.computeCrossCovariance(getInputSample(), sample));
     // 3) Compute r^t R^{-1} r'(x)
     // As we get the Cholesky factor L, we can solve triangular linear system
     // We define B = L^{-1} * r(x)
@@ -739,7 +548,7 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
       Scalar sum = 0.0;
       for (UnsignedInteger i = 0; i < B.getNbRows(); ++i)
         sum += B(i, j) * B(i, j);
-      result[j] -= sum;
+      result(j, 0) -= sum;
     }
 
     // Case of simple Kriging
@@ -790,18 +599,18 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
       Scalar sum = 0.0;
       for (UnsignedInteger i = 0; i < rho.getNbRows(); ++i)
         sum += rho(i, j) * rho(i, j);
-      result[j] += sum;
+      result(j, 0) += sum;
     }
     return result;
   }
 
-  Point marginalVariance(sampleSize);
+  Sample marginalVariance(sampleSize, 1);
 
   Point data(inputDimension);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j] = xi(i, j);
-    marginalVariance[i] = getConditionalMarginalVariance(data, marginalIndex);
+    marginalVariance(i, 0) = getConditionalMarginalVariance(data, marginalIndex);
   }
   return marginalVariance;
 }
@@ -822,7 +631,7 @@ Point KrigingResult::getConditionalMarginalVariance(const Point & point,
   return result;
 }
 
-Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
+Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     const Indices & indices) const
 {
 
@@ -836,12 +645,12 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, expected a non empty sample";
   // Compute the matrix & return only the marginalIndex diagonal element
-  Point result(0);
+  Sample result(inputDimension, indices.getSize());
   Point data(inputDimension);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j] = xi(i, j);
-    result.add(getConditionalMarginalVariance(data, indices));
+    result[i] = getConditionalMarginalVariance(data, indices);
   }
   return result;
 }

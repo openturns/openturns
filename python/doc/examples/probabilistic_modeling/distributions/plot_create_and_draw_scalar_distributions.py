@@ -10,7 +10,6 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 
-
 # %%
 # A continuous distribution
 # -------------------------
@@ -32,12 +31,14 @@ print(sample)
 # %%
 # We draw its PDF and CDF :
 graphPDF = distribution.drawPDF()
-graphPDF.setTitle(r"PDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$")
+graphPDF.setTitle(
+    r"PDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$")
 view = viewer.View(graphPDF)
 
 # %%
 graphCDF = distribution.drawCDF()
-graphCDF.setTitle(r"CDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$")
+graphCDF.setTitle(
+    r"CDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$")
 view = viewer.View(graphCDF)
 
 

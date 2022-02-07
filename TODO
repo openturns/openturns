@@ -1,2 +1,2 @@
-Remove Sample::computeStandardDeviationPerComponent
-Remove deprecated KLResult::getEigenValues
+Drop deprecated coupling_tools get_std* args
+Drop deprecated IsAvailable methods

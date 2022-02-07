@@ -93,3 +93,20 @@ print("importance factors=", printPoint(
     result.getImportanceFactors(), digits))
 print("Hasofer reliability index=%.6f" %
       result.getHasoferReliabilityIndex())
+
+# run twice
+f = ot.SymbolicFunction(['x'], ['x-1.25'])
+dist = ot.Normal(2.0, 0.5)
+vect = ot.RandomVector(dist)
+output = ot.CompositeRandomVector(f, vect)
+event = ot.ThresholdEvent(output, ot.Less(), 0.0)
+solver = ot.Cobyla()
+# -------------------------------------------------------
+algo = ot.FORM(solver, event, dist.getMean())
+algo.run()
+result = algo.getResult()
+# -------------------------------------------------------
+algo_2 = ot.FORM(solver, event, dist.getMean())
+algo_2.run()
+result_2 = algo_2.getResult()
+assert result.getEventProbability() == result_2.getEventProbability(), "wrong pf"

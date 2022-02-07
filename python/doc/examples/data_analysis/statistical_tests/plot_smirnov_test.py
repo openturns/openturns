@@ -2,7 +2,7 @@
 Test identical distributions
 ============================
 """
-# %% 
+# %%
 
 # %%
 # In this example we are going to estimate whether two samples follow the same distribution using the two samples Kolmogorov-Smirnov test and the graphical QQ-plot test.
@@ -12,7 +12,7 @@ Test identical distributions
 #
 # .. math::
 #    D^2 = \displaystyle \sqrt{\frac{n_1n_2}{n_1+n_2}} \sup_{x}|F_{n_1}^{*}(x) - F_{n_2}^{*}(x)|
-#   
+#
 # which tends towards the Kolmogorov distribution. The hypothesis of same distribution is rejected if :math:`D^2` is too high (depending on the p-value threshold).
 #
 # The QQ-plot graph plots empirical quantiles levels from two samples. If both samples correspond to the same probability distribution the curve should be close to the diagonal.

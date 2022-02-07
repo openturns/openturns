@@ -20,7 +20,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.16
+Version:        1.18
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -30,12 +30,16 @@ Source0:        http://downloads.sourceforge.net/openturns/openturns/openturns-%
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake, bison, flex, swig
-BuildRequires:  lapack-devel
 BuildRequires:  libxml2-devel
 %if ! 0%{?centos_version}
 BuildRequires:  hdf5-devel
 %endif
 BuildRequires:  boost-devel
+%if 0%{?suse_version}
+BuildRequires:  mpc-devel
+%else
+BuildRequires:  libmpc-devel
+%endif
 BuildRequires:  nlopt-devel
 BuildRequires:  tbb-devel
 BuildRequires:  python3-devel
@@ -45,6 +49,14 @@ BuildRequires:  cminpack-devel
 %if 0%{?fedora_version}
 BuildRequires:  ceres-solver-devel
 BuildRequires:  coin-or-Ipopt-devel
+%if 0%{?fedora_version} == 35
+BuildRequires:  coin-or-Bonmin-devel
+%endif
+BuildRequires:  dlib-devel, pkgconfig(x11), pkgconfig(libpng), pkgconfig(libjpeg), pkgconfig(sqlite3)
+BuildRequires:  flexiblas-devel
+BuildRequires:  primesieve-devel
+%else
+BuildRequires:  lapack-devel
 %endif
 
 %description
@@ -53,23 +65,6 @@ OpenTURNS Uncertainty treatment library
 %package libs
 Summary:        Uncertainty treatment library
 Group:          Development/Libraries/C and C++
-Requires:       libxml2
-%if ! 0%{?centos_version}
-Requires:       hdf5
-%endif
-%if ! 0%{?suse_version}
-Requires:       nlopt
-%endif
-Requires:       cminpack
-%if 0%{?fedora_version}
-Requires:       ceres-solver
-Requires:       coin-or-Ipopt
-%endif
-%if 0%{?mageia}
-Requires:       lib64tbb2
-%else
-Requires:       tbb
-%endif
 
 %description libs
 Uncertainty treatment library binaries 
@@ -78,9 +73,6 @@ Uncertainty treatment library binaries
 Summary:        OpenTURNS development files
 Group:          Development/Libraries/C and C++
 Requires:       %{name}-libs = %{version}
-Requires:       libxml2-devel
-Requires:       lapack-devel
-Requires:       tbb-devel
 Requires:       hmat-oss-devel
 
 %description devel
@@ -91,6 +83,10 @@ Summary:        Uncertainty treatment library
 Group:          Productivity/Scientific/Math
 Requires:       python3
 Requires:       %{name}-libs = %{version}
+%if ! 0%{?centos_version}
+Requires:       python3-dill
+Requires:       python3-psutil
+%endif
 
 %description -n python3-%{name}
 Python textual interface to OpenTURNS uncertainty library
@@ -114,8 +110,7 @@ make install DESTDIR=%{buildroot}
 rm -r %{buildroot}%{_datadir}/%{name}/doc
 
 %check
-make tests %{?_smp_mflags}
-LD_LIBRARY_PATH=%{buildroot}%{_libdir} ctest --output-on-failure %{?_smp_mflags}
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=2 ctest --output-on-failure %{?_smp_mflags} -E cppcheck --timeout 1000
 
 %clean
 rm -rf %{buildroot}
@@ -146,6 +141,12 @@ rm -rf %{buildroot}
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Fri Oct 15 2021 Julien Schueller <schueller at phimeca dot com> 1.18-1
+- New upstream release
+
+* Mon Apr 19 2021 Julien Schueller <schueller at phimeca dot com> 1.17-1
+- New upstream release
+
 * Mon Oct 19 2020 Julien Schueller <schueller at phimeca dot com> 1.16-1
 - New upstream release
 

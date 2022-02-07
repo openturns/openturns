@@ -25,14 +25,8 @@
 
 #define OPENTURNS_VERSION_STR "@PACKAGE_VERSION@"
 
-/* Support for regular expression library */
-#cmakedefine OPENTURNS_HAVE_LIBXML2
-
 /* Define to 1 if you have the <pthread.h> header file. */
 #cmakedefine OPENTURNS_HAVE_PTHREAD_H
-
-/* Support for TBB library */
-#cmakedefine OPENTURNS_HAVE_TBB
 
 /* Define to 1 if UnsignedLong and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64

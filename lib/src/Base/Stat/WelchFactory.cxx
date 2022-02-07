@@ -100,7 +100,7 @@ UnsignedInteger WelchFactory::getBlockNumber() const
 
 void WelchFactory::setBlockNumber(const UnsignedInteger blockNumber)
 {
-  if (blockNumber < 1) throw InvalidArgumentException(HERE) << "Error: the number of blocks should be at least 1";
+  if (!(blockNumber >= 1)) throw InvalidArgumentException(HERE) << "Error: the number of blocks should be at least 1";
   blockNumber_ = blockNumber;
 }
 
@@ -112,7 +112,7 @@ Scalar WelchFactory::getOverlap() const
 
 void WelchFactory::setOverlap(const Scalar overlap)
 {
-  if ((overlap < 0.0) || (overlap > 0.5)) throw InvalidArgumentException(HERE) << "Error: the overlap must be in [0, 0.5], here overlap=" << overlap;
+  if (!(overlap >= 0.0 && overlap <= 0.5)) throw InvalidArgumentException(HERE) << "Error: the overlap must be in [0, 0.5], here overlap=" << overlap;
   overlap_ = overlap;
 }
 

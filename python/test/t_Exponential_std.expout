@@ -49,4 +49,4 @@ standard moment n= 2  value= [2]
 standard moment n= 3  value= [6]
 standard moment n= 4  value= [24]
 standard moment n= 5  value= [120]
-Standard representative= Exponential(lambda = 1, gamma = 0)
+Standard representative= Gamma(k = 1, lambda = 1, gamma = 0)

@@ -1,0 +1,280 @@
+%feature("docstring") OT::AdaptiveDirectionalStratification
+"Adaptative directional simulation.
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    Event we are computing the probability of.
+rootStrategy : :class:`~openturns.RootStrategy`, optional
+    Strategy adopted to evaluate the intersections of each direction with the
+    limit state function and take into account the contribution of the
+    direction to the event probability.
+    Set to :class:`~openturns.SafeAndSlow` by default.
+samplingStrategy : :class:`~openturns.SamplingStrategy`, optional
+    Strategy adopted to sample directions.
+    Set to :class:`~openturns.RandomDirection` by default.
+
+Notes
+-----
+Let :math:`\mathcal D_f` denote the failure domain defined as
+:math:`\mathcal D_f = \{\ux \in \mathbb R^{n_X} | g(\ux) \leq 0\}`, where
+:math:`\ux` are realization of the random vector :math:`\uX` and :math:`g` is the limit-state
+function as defined elsewhere in the documentation.
+
+The purpose of the ADS-2 algorithm and its variants is to estimate the
+following probability:
+
+.. math::
+
+  P_f = \int_{\mathcal D_f} f_{\uX}(\ux)\di{\ux} \\
+      = \int_{\mathbb R^{n_X}} \mathbf{1}_{\{g(\ux) \:\leq 0\: \}}\,f_{\uX}(\ux)\di{\ux} \\
+      = \Prob{\{g(\uX) \leq 0\}}.
+
+Principles
+
+The ADS-2 method [munoz2011]_ combines the stratified and directional sampling concepts.
+Stratified sampling consists in splitting the support of the random vector
+:math:`\ux` into :math:`m` mutually exclusive and collectively exhaustive subsets.
+Here, ADS-2 splits the standard space into :math:`m = 2^d` quadrants, where
+:math:`d` is the dimension of the random vector :math:`\uX`.
+Stratified sampling is often run in two steps: (i) a learning step is used for
+polling the input space and detect the subsets that contribute most to the
+probability and (ii) an estimation step is used for estimating
+the probability by weighted sampling (some subsets are more sampled than the others).
+Directional sampling uses the spheric symmetry of the standard space for
+estimating the failure probability as the average of conditional probabilities
+calculated on directions drawn at random in the standard space.
+
+The learning step uses an a priori number of random directions that is
+uniformly distributed over the quadrants, meaning the weights are as follows:
+
+.. math::
+
+    \omega^1_i = \frac{1}{m}, \quad i = 1, \ldots, m.
+
+
+Directional sampling is used for estimating the failure probability in each quadrant:
+
+.. math::
+
+    \hat P_i^{DS} = \Prob{\{g(\uX) \leq 0\} \mid \uX \in \mathbb{Q}_i},\,i = 1, \ldots, m.
+
+
+and the corresponding estimation variances are denoted as :math:`\sigma_i^{DS\,2}`.
+These probabilities are estimated using the same number :math:`N^0_i` of random
+directions per quadrant as told by the uniform weights distribution.
+
+The probability of interest is then computed as a weighted average of the
+previously defined conditional probabilities:
+
+.. math::
+
+    \hat P_f = \sum\limits_{i=1}^m \omega_i \hat P_i^{DS}
+
+
+where :math:`\hat P_i^{DS}` is the conditional probability estimator in the i-th quadrant. The corresponding variance of the stratified estimator reads:
+
+.. math::
+
+    \sigma^2 = \frac{1}{N_l} \left( \sum\limits_{i=1}^m \omega_i \sigma_i^{DS} \right) ^2
+
+
+where :math:`\sigma_i^{DS\,2}` is the variance of the conditional probability
+estimator in the i-th quadrant.
+
+At the end of the learning step, the weights :math:`\omega_i` are updated so
+as to minimize the stratified estimator variance.
+Indeed, it can be shown that the updated weights:
+
+.. math::
+
+    \omega^2_i = \frac{\omega^1_i \sigma_i^{DS}}{\sum\limits_{j=1}^m \omega^1_j \sigma_j^{DS}}, i = 1, \ldots, m,
+
+
+minimize the final estimation variance in \eqref{eq:pf_est_sda2_var}.
+Note that some weights might be zero (due to a somewhat arbitrary rounding of
+the conditional probabilities' estimation variance). The quadrants associated
+with a zero-weight will not be sampled in the estimation step.
+
+Eventually, the estimation step proceeds in essentially the same way as the
+learning step with different weights for the quadrants though.
+\eqref{eq:pf_est_sda2} and \eqref{eq:pf_est_sda2_var} are used for evaluating
+the final probability probability estimate and its variance.
+
+The computational budget per step is parametrized by a fraction
+:math:`\gamma_l, l = 1,\,2` of the total budget :math:`N`, such that :math:`\gamma_1 + \gamma_2 = 1`.
+The number of directions sampled in quadrant :math:`i` at step :math:`l` is then defined as follows:
+
+.. math::
+
+    N^l_i = N * \gamma_l * \omega_i.
+
+
+The number of evaluation of the limit-state function :math:`g` is of course
+greater than the total budget :math:`N` since directional sampling is used.
+
+Variants
+
+The ADS-2+ variant performs a dimension reduction step after the learning step
+for reducing the number of stratified quadrants. The statistic :math:`\tilde T_k`
+aggregates the sensitivity of expectation along dimension :math:`k`.
+It is defined as follows:
+
+.. math::
+
+    \tilde T_k = \sum\limits_{i_l \in \lbrace -1,1 \rbrace,l \neq k} \lvert \tilde I_{(i_1,\dots,i_{k-1},-1,i_{k+1},\dots,i_p)} - \tilde I_{(i_1,\dots,i_{k-1},1,i_{k+1},\dots,i_p)} \rvert.
+
+It is used for ranking the contributions of the quadrants.
+Then, only the :math:`d' < d` most influential variables according to
+:math:`\tilde T_k` are stratified, leaving the remaining variables simulated without
+stratification. The corresponding quadrants will not be sampled.
+
+The DP-ADS-2 variant combines the ADS method with a rotation of the quadrants.
+The idea is to get a possible design point (available e.g. after a
+preliminary FORM analysis) on the bisector of one of the quadrants to make the
+stratification even more efficient and thus save some evaluations of the model.
+
+This 2-step algorithm can be generalized to :math:`L > 2` steps by adding more
+than one learning step. For now, only ADS-2 is implemented.
+
+See also
+--------
+EventSimulation"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::getRootStrategy
+"Get the root strategy.
+
+Returns
+-------
+strategy : :class:`~openturns.RootStrategy`
+    Root strategy adopted."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::setRootStrategy
+"Set the root strategy.
+
+Parameters
+----------
+strategy : :class:`~openturns.RootStrategy`
+    Root strategy adopted."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::getSamplingStrategy
+"Get the direction sampling strategy.
+
+Returns
+-------
+strategy : :class:`~openturns.SamplingStrategy`
+    Direction sampling strategy adopted."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::setSamplingStrategy
+"Set the direction sampling strategy.
+
+Parameters
+----------
+strategy : :class:`~openturns.SamplingStrategy`
+    Direction sampling strategy adopted."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::setPartialStratification
+"Partial stratification accessor.
+
+Parameters
+----------
+partialStratification : bool
+    Partial stratification."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::getPartialStratification
+"Partial stratification accessor.
+
+Returns
+-------
+partialStratification : bool
+    Partial stratification."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::setQuadrantOrientation
+"Quadrant orientation accessor.
+
+Parameters
+----------
+orientation : sequence of float
+    Quadrant orientation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::getQuadrantOrientation
+"Quadrant orientation accessor.
+
+Returns
+-------
+orientation : :class:`~openturns.Point`
+    Quadrant orientation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::setMaximumStratificationDimension
+"Maximum stratification dimension accessor.
+
+Parameters
+----------
+max : int
+    Maximum stratification dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::getMaximumStratificationDimension
+"Maximum stratification dimension accessor.
+
+Returns
+-------
+max : int
+    Maximum stratification dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::setGamma
+"Gamma accessor.
+
+The computational budget per step :math:`\gamma_l`.
+
+Parameters
+----------
+gamma : sequence of float
+    Gamma value."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::getGamma
+"Gamma accessor.
+
+The computational budget per step :math:`\gamma_l`.
+
+Returns
+-------
+gamma : :class:`~openturns.Point`
+    Gamma value."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::getTStatistic
+"T statistic accessor.
+
+The statistic :math:`\tilde T_k` aggregates the sensitivity of expectation.
+
+Returns
+-------
+gamma : :class:`~openturns.Point`
+    T statistic value."
+

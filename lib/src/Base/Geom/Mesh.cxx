@@ -120,7 +120,7 @@ void Mesh::setVertices(const Sample & vertices)
 /* Vertex accessor */
 Point Mesh::getVertex(const UnsignedInteger index) const
 {
-  if (index >= getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: the vertex index=" << index << " must be less than the number of vertices=" << getVerticesNumber();
+  if (!(index < getVerticesNumber())) throw InvalidArgumentException(HERE) << "Error: the vertex index=" << index << " must be less than the number of vertices=" << getVerticesNumber();
   return vertices_[index];
 }
 
@@ -149,7 +149,7 @@ void Mesh::setSimplices(const IndicesCollection & simplices)
 /* Simplex accessor */
 Indices Mesh::getSimplex(const UnsignedInteger index) const
 {
-  if (index >= getSimplicesNumber()) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
+  if (!(index < getSimplicesNumber())) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
   return Indices(simplices_.cbegin_at(index), simplices_.cend_at(index));
 }
 
@@ -192,7 +192,7 @@ Bool Mesh::isValid() const
 void Mesh::buildSimplexMatrix(const UnsignedInteger index,
                               SquareMatrix & matrix) const
 {
-  if (index >= getSimplicesNumber()) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
+  if (!(index < getSimplicesNumber())) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
   if (matrix.getDimension() != dimension_ + 1)
     matrix = SquareMatrix(dimension_ + 1);
   // Loop over the vertices of the simplex
@@ -209,7 +209,7 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     const UnsignedInteger index,
     Point & coordinates) const
 {
-  if (index >= getSimplicesNumber()) return false;
+  if (!(index < getSimplicesNumber())) return false;
   const Scalar epsilon = ResourceMap::GetAsScalar("Mesh-VertexEpsilon");
   if (dimension_ == 1)
   {
@@ -522,7 +522,7 @@ String Mesh::__str__(const String & ) const
 /* Drawing method */
 Graph Mesh::draw() const
 {
-  if (dimension_ > 3) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh of dimension > 3.";
+  if (!(dimension_ <= 3)) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh of dimension > 3, here dimension=" << dimension_;
   if (dimension_ == 1) return draw1D();
   if (dimension_ == 2) return draw2D();
   if (dimension_ == 3) return draw3D();
@@ -532,10 +532,10 @@ Graph Mesh::draw() const
 Graph Mesh::draw1D() const
 {
   checkValidity();
-  if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh of dimension different from 1 with the draw1D() method.";
+  if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh of dimension different from 1 with the draw1D() method, here dimension=" << dimension_;
   const UnsignedInteger verticesSize = getVerticesNumber();
   const UnsignedInteger simplicesSize = getSimplicesNumber();
-  if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
+  if (!(verticesSize > 0)) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
   Graph graph(String(OSS() << "Mesh " << getName()), "", getDescription()[0], true, "topright");
   // The vertices
   Cloud vertices(vertices_, Sample(verticesSize, Point(1, 0.0)));
@@ -561,7 +561,7 @@ Graph Mesh::draw2D() const
   checkValidity();
   const UnsignedInteger verticesSize = getVerticesNumber();
   const UnsignedInteger simplicesSize = getSimplicesNumber();
-  if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
+  if (!(verticesSize > 0)) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
   Graph graph(String(OSS() << "Mesh " << getName()), getDescription()[0], getDescription()[1], true, "topright");
   // The vertices
   Cloud vertices(vertices_);
@@ -639,10 +639,10 @@ Graph Mesh::draw3D(const Bool drawEdge,
   checkValidity();
   // First, check if the matrix is a rotation matrix of R^3
   if (rotation.getDimension() != 3) throw InvalidArgumentException(HERE) << "Error: the matrix is not a 3d square matrix.";
-  if (Point((rotation * rotation.transpose() - IdentityMatrix(3)).getImplementation()).norm() > 1e-5) throw InvalidArgumentException(HERE) << "Error: the matrix is not a rotation matrix.";
+  if (!(Point((rotation * rotation.transpose() - IdentityMatrix(3)).getImplementation()).norm() <= 1e-5)) throw InvalidArgumentException(HERE) << "Error: the matrix is not a rotation matrix.";
   const UnsignedInteger verticesSize = getVerticesNumber();
   const UnsignedInteger simplicesSize = getSimplicesNumber();
-  if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex or no simplex.";
+  if (!(verticesSize > 0)) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex or no simplex.";
   // We use a basic Painter algorithm for the visualization
   // Second, transform the vertices if needed
   const Bool noRotation = rotation.isDiagonal();
@@ -909,7 +909,7 @@ String Mesh::streamToVTKFormat() const
 
 String Mesh::streamToVTKFormat(const IndicesCollection & simplices) const
 {
-  if (dimension_ > 3) throw InvalidDimensionException(HERE) << "Error: cannot export a mesh of dimension=" << dimension_ << " into the VTK format. Maximum dimension is 3.";
+  if (!(dimension_ <= 3)) throw InvalidDimensionException(HERE) << "Error: cannot export a mesh of dimension=" << dimension_ << " into the VTK format. Maximum dimension is 3.";
   const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(16);
   OSS oss;

@@ -66,6 +66,8 @@ public:
   XMLH5StorageManager * clone() const override;
 
 #ifndef SWIG
+  void checkStorageManager() override;
+  void setStorageManager() override;
   void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value) override;
   void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value) override;
 

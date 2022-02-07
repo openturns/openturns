@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/RandomGenerator.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Pie.hxx"
@@ -139,16 +139,6 @@ Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedIn
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
   // return value
   const Point firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
-  for (UnsignedInteger p = 0; p < inputDescription_.getSize(); ++p)
-  {
-    if ((firstOrderSensitivity[p] > 1.0) || firstOrderSensitivity[p] < 0.0)
-      LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is not in the range [0, 1]. You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
-    // Another case : Si > STi
-    if (varianceI_(marginalIndex, p) > varianceTI_(marginalIndex, p))
-      LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is greater than its total order index . You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
-  }
   return firstOrderSensitivity;
 }
 
@@ -172,7 +162,7 @@ struct BootstrapPolicy
     , bsTO_(bsTO)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     Indices slice(size_);
     Sample VTi;
@@ -212,7 +202,7 @@ void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
     Sample bsFO(0, inputDimension);
     Sample bsTO(0, inputDimension);
     const UnsignedInteger size = size_;
-    // To have the exact same results with TBB, we have to precompute
+    // To have the exact same results with TBBImplementation, we have to precompute
     // RandomGenerator::IntegerGenerate calls and store results in a
     // variable.  This would require lots of memory when bootstrapSize_ is
     // large, thus let user specify block size.
@@ -231,7 +221,7 @@ void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
       const RandomGenerator::UnsignedIntegerCollection randomIndices(RandomGenerator::IntegerGenerate(size * effectiveBlockSize, size));
       const Indices indices(randomIndices.begin(), randomIndices.end());
       const BootstrapPolicy policy( *this, indices, size, bsFOpartial, bsTOpartial );
-      TBB::ParallelFor( 0, effectiveBlockSize, policy );
+      TBBImplementation::ParallelFor( 0, effectiveBlockSize, policy );
 
       bsFO.add(bsFOpartial);
       bsTO.add(bsTOpartial);
@@ -345,8 +335,6 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
           // Sij = (Vij - crossMean)/var - and S_{i}, S_{j}
           const Point firstOrderIndices(getFirstOrderIndices(q));
           secondOrderIndices_(k1, k2, q) = (yEDotyC[q] / (size_ - 1.0) - crossSquareMean[q]) / referenceVariance_[q] - firstOrderIndices[k1] - firstOrderIndices[k2] ;
-          if ((secondOrderIndices_(k1, k2, q) < 0.0) || (secondOrderIndices_(k1, k2, q) > 1.0))
-            LOGWARN(OSS() << "The estimated second order Sobol index (" << k1 << ", " << k2 << ") is not in the range [0, 1]. You may increase the sampling size.");
         }
       }
     }
@@ -366,16 +354,8 @@ Point SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedIn
     varianceI_ = computeIndices(outputDesign_, varianceTI_);
   }
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  const UnsignedInteger inputDimension = inputDescription_.getSize();
   if (marginalIndex >= outputDimension)
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
-  for (UnsignedInteger p = 0; p < inputDimension; ++p)
-  {
-    // Another case : Si > STi
-    if (varianceI_(marginalIndex, p) > varianceTI_(marginalIndex, p))
-      LOGWARN(OSS() << "The estimated total order Sobol index (" << p << ") is lesser than first order index . You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  varianceI_(marginalIndex, p) / referenceVariance_[marginalIndex] << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
-  }
   // return value
   return varianceTI_[marginalIndex] / referenceVariance_[marginalIndex] ;
 }
@@ -498,7 +478,6 @@ String SobolIndicesAlgorithmImplementation::__repr__() const
 }
 
 // Multiplication and sum of two Samples
-// TODO Write method in Sample ?
 Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & x,
     const Sample & y) const
 {
@@ -827,8 +806,8 @@ Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Poi
   // Add text description
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data(k, 0) = (k + 1.0) + dimension / 20.0;
-    data(k, 1) = 0.5 * values[k];
+    data(k, 0) = (k + 1.0) + 0.08;
+    data(k, 1) = values[k] - 0.04;
   }
 
   Text text(data, names, "right");
@@ -914,7 +893,10 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
     if (!(referenceVariance_[j] > 0.0))
       throw InvalidArgumentException(HERE) << "Null output sample variance";
 
+  // reset intermediate results
   alreadyComputedIndicesDistribution_ = false;
+  varianceI_.clear();
+  varianceTI_.clear();
 }
 
 /* Method save() stores the object through the StorageManager */

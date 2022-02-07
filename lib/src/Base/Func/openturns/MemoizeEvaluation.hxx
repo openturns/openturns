@@ -42,8 +42,8 @@ class OT_API MemoizeEvaluation
   CLASSNAME
 public:
 
-  typedef PersistentCollection<Scalar>               CacheKeyType;
-  typedef PersistentCollection<Scalar>               CacheValueType;
+  typedef PersistentCollection<Scalar>                        CacheKeyType;
+  typedef PersistentCollection<Scalar>                        CacheValueType;
   typedef Cache<CacheKeyType, CacheValueType>                 CacheType;
   typedef Pointer<CacheType>                                  CacheImplementation;
 

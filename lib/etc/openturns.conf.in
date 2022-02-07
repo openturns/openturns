@@ -12,19 +12,17 @@
 <!DOCTYPE configuration>
   <openturns-configuration version="1" >
 
-  <R-executable-command    value_str="@R_EXECUTABLE@" />
-  <csv-file-separator      value_str=";"              />
-  <temporary-directory     value_str="@TEMPDIR@"      />
-  <!-- parallel-threads is set by default to the number of core of the machine.
-       To set manually the number of thread used for parallel computing, uncomment the following line: 
+  <Path-TemporaryDirectory     value_str="@TEMPDIR@"      />
+  <!-- TBB-ThreadsNumber is set by default to the number of cores of the machine.
+       To set manually the number of threads used for parallel computing, uncomment the following line:
     -->
-  <!--<parallel-threads    value_int="1"    />-->
-  <cache-max-size          value_int="1024" />
-  <output-files-timeout    value_int="2"    />
+  <!--<TBB-ThreadsNumber    value_int="1"    />-->
+  <Cache-MaxSize          value_int="1024" />
 
   <!-- OT::Os parameters -->
-  <Os-create-process value_bool="false" />
+  <Os-CreateProcess value_bool="false" />
   <Os-RemoveFiles    value_bool="true"  />
+  <OS-DeleteTimeout    value_int="2"    />
   
   <!-- OT::XMLStorageManager parameters -->
   <XMLStorageManager-DefaultCompressionLevel value_int="0" />
@@ -44,7 +42,10 @@
 
   <!-- OT::KFold parameters -->
   <KFold-DefaultK value_int="10" />
-  
+
+  <!-- OT::KFoldSplitter parameters -->
+  <KFoldSplitter-Randomize value_bool="false" />
+
   <!-- OT::BlendedStep parameters -->
   <BlendedStep-DefaultEta value_float="1.0" />
 
@@ -89,6 +90,7 @@
   <Text-DefaultTextSize    value_float="0.75"            />
 
   <!-- OT::GraphImplementation parameters -->
+  <Graph-RExecutableCommand value_str="@R_EXECUTABLE@" />
   <Graph-DefaultHorizontalMargin value_float="0.05"          />
   <Graph-DefaultLegendFontSize   value_float="1.0"           />
   <Graph-DefaultVerticalMargin   value_float="0.05"          />
@@ -159,7 +161,7 @@
   <!-- OT::SolverImplementation parameters -->
   <Solver-DefaultAbsoluteError             value_float="1.0e-5"        />
   <Solver-DefaultRelativeError             value_float="1.0e-5"        />
-  <Solver-DefaultResidualError             value_float="1.0e-8"        />
+  <Solver-DefaultResidualError             value_float="0.0   "        />
   <Solver-DefaultMaximumFunctionEvaluation value_int="100" />
 
   <!-- OT::GaussKronrod parameters -->
@@ -217,10 +219,14 @@
   <FaureSequence-InitialSeed value_int="0" />
 
   <!-- OT::HaltonSequence parameters -->
+  <HaltonSequence-Scrambling value_str="NONE" />
   <HaltonSequence-InitialSeed value_int="0" />
 
   <!-- OT::HaselgroveSequence parameters -->
   <HaselgroveSequence-InitialSeed value_int="0" />
+
+  <!-- OT::LowDiscrepaancySequence parameters -->
+  <LowDiscrepancySequence-ScramblingSeed value_int="0" />
 
   <!-- OT::ReverseHaltonSequence parameters -->
   <ReverseHaltonSequence-InitialSeed value_int="0" />
@@ -262,7 +268,10 @@
   <Field-LevelNumber      value_int="30"     />
 
   <!-- OT::SampleImplementation parameters -->
-  <Sample-CommentMarkers         value_str="#"              />
+  <Sample-CSVFileSeparator      value_str=";"     />
+  <Sample-CSVPrecision           value_int="16" />
+  <Sample-CSVFormat              value="scientific" />
+  <Sample-CommentMarkers         value_str="#"    />
   <Sample-PrintEllipsisSize      value_int="3"    />
   <Sample-PrintEllipsisThreshold value_int="1000" />
   <Sample-SmallKendallTau        value_int="23"   />
@@ -318,14 +327,15 @@
   <BurrFactory-MaximumIteration  value_int="10" />
   
   <!-- OT::ConditionalDistribution parameters -->
-  <ConditionalDistribution-MarginalIntegrationNodesNumber value_int="256"    />
-  <ConditionalDistribution-MaximumIntegrationNodesNumber  value_int="100000" />
-  
+  <ConditionalDistribution-MarginalIntegrationNodesNumber value_int="256"          />
+  <ConditionalDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
+  <ConditionalDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
+
   <!-- OT::ComposedDistribution parameters -->
   <ComposedDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 
   <!-- OT::CompositeDistribution parameters -->
-  <CompositeDistribution-SolverEpsilon value_float="1.0e-10"       />
+  <CompositeDistribution-SolverEpsilon value_float="1.0e-14"       />
   <CompositeDistribution-StepNumber    value_int="256" />
 
   <!-- OT::Dirichlet parameters -->
@@ -476,6 +486,12 @@
   <!-- OT::UserDefined parameters -->
   <UserDefined-SmallSize value_int="10000" />
   
+  <!-- OT::VonMisesFactory parameters -->
+  <VonMisesFactory-AbsolutePrecision value_float="1e-12"        />
+  <VonMisesFactory-RelativePrecision value_float="1e-12"        />
+  <VonMisesFactory-ResidualPrecision value_float="1e-12"        />
+  <VonMisesFactory-MaximumIteration  value_int="10" />
+  
   <!-- OT::AliMikhailHaqCopulaFactory parameters -->
   <AliMikhailHaqCopulaFactory-ThetaEpsilon value_float="1.0e-14" />
 
@@ -557,10 +573,10 @@
   <!-- OT::DirectionalSampling parameters -->
   <DirectionalSampling-MeanContributionIntegrationNodesNumber value_int="255" />
 
-  <!-- OT::AdaptiveDirectionalSampling parameters -->
-  <AdaptiveDirectionalSampling-DefaultGamma                          value_float="0.5"         />
-  <AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension value_int="3" />
-  <AdaptiveDirectionalSampling-DefaultNumberOfSteps                  value_int="2" />
+  <!-- OT::AdaptiveDirectionalStratification parameters -->
+  <AdaptiveDirectionalStratification-DefaultGamma                          value_float="0.5"         />
+  <AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension value_int="3" />
+  <AdaptiveDirectionalStratification-DefaultNumberOfSteps                  value_int="2" />
 
   <!-- OT::AnalyticalResult parameters -->
   <AnalyticalResult-DefaultWidth                    value_float="1.0"           />
@@ -573,7 +589,7 @@
   <!-- OT::MultiFORM parameters -->
   <MultiFORM-DefaultGamma value_float="1.1" />
   <MultiFORM-DefaultDelta value_float="0.75" />
-  <MultiFORM-DefaultMaximumNumberOfDesignPoints value_int="4" />
+  <MultiFORM-DefaultMaximumDesignPointsNumber value_int="4" />
 
   <!-- OT::StrongMaximumTest parameters -->
   <StrongMaximumTest-DefaultDeltaPrecision     value_float="1.0e-7"  />
@@ -603,23 +619,22 @@
   <LinearModelAlgorithm-DecompositionMethod        value_str="QR"      />
 
   <!-- OT::LinearModelStepwiseAlgorithm parameters -->
-  <LinearModelStepwiseAlgorithm-IsForward                value_bool="true"       />
-  <LinearModelStepwiseAlgorithm-Penalty                  value_float="-1.0"      />
-  <LinearModelStepwiseAlgorithm-MaximumIterations        value_int="1000"        />
+  <LinearModelStepwiseAlgorithm-Penalty                  value_float="2.0"      />
+  <LinearModelStepwiseAlgorithm-MaximumIterationNumber   value_int="1000"        />
 
   <!-- OT::GeneralLinearModelAlgorithm parameters -->
-  <GeneralLinearModelAlgorithm-KeepCovariance                 value_bool="true"      />
-  <GeneralLinearModelAlgorithm-OptimizeParameters             value_bool="true"      />
-  <GeneralLinearModelAlgorithm-UnbiasedVariance               value_bool="true"      />
-  <GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate value_bool="true"      />
-  <GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound  value_float="1.0e-2"  />
-  <GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor value_float="2.0"     />
-  <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound  value_float="1.0e2"   />
-  <GeneralLinearModelAlgorithm-MaximalScaling                 value_float="1.0e5"   />
-  <GeneralLinearModelAlgorithm-MeanEpsilon                    value_float="1.0e-12" />
-  <GeneralLinearModelAlgorithm-StartingScaling                value_float="1.0e-13" />
-  <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm   value_str="TNC"     />
-  <GeneralLinearModelAlgorithm-LinearAlgebra                  value_str="LAPACK"  />
+  <GeneralLinearModelAlgorithm-KeepCovariance                   value_bool="true"      />
+  <GeneralLinearModelAlgorithm-OptimizeParameters               value_bool="true"      />
+  <GeneralLinearModelAlgorithm-UnbiasedVariance                 value_bool="true"      />
+  <GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate   value_bool="true"      />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound    value_float="1.0e-2"  />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor   value_float="2.0"     />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound    value_float="1.0e2"   />
+  <GeneralLinearModelAlgorithm-MaximalScaling                   value_float="1.0e5"   />
+  <GeneralLinearModelAlgorithm-MeanEpsilon                      value_float="1.0e-12" />
+  <GeneralLinearModelAlgorithm-StartingScaling                  value_float="1.0e-13" />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm     value_str="TNC"     />
+  <GeneralLinearModelAlgorithm-LinearAlgebra                    value_str="LAPACK"  />
 
   <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-MaximalScaling  value_float="1.0e5"   />
@@ -795,8 +810,12 @@
   <FittingTest-LillieforsMinimumSamplingSize value_int="10"     />
   <FittingTest-LillieforsMaximumSamplingSize value_int="100000" />
 
+  <!-- OT::PenalizedLeastSquaresAlgorithm parameters -->
+  <PenalizedLeastSquaresAlgorithm-UseNormal  value_bool="false" />
+
   <!-- OT::LeastSquaresMetaModelSelection parameters -->
   <LeastSquaresMetaModelSelection-ErrorThreshold      value_float="0.0" />
+  <LeastSquaresMetaModelSelection-MaximumError        value_float="0.5" />
   <LeastSquaresMetaModelSelection-MaximumErrorFactor  value_float="2.0" />
   <LeastSquaresMetaModelSelection-DecompositionMethod value_str="SVD"   />
 

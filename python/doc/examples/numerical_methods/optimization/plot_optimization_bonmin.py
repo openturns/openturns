@@ -2,7 +2,7 @@
 Optimization using bonmin
 =========================
 """
-# %% 
+# %%
 
 # %%
 # In this example we are going to explore mixed-integer non linear problems optimization using OpenTURNS' `bonmin <https://www.coin-or.org/Bonmin/index.html>`_ interface.
@@ -25,11 +25,11 @@ for algo in ot.Bonmin.GetAlgorithmNames():
 #
 # The following example will demonstrate the use of bonmin "BB" algorithm to solve the following problem:
 #
-# .. math:: 
+# .. math::
 #    \min - x_0 - x_1 - x_2
-#        
+#
 # such that:
-#     
+#
 # .. math::
 #    \begin{array}{l}
 #    (x_1 - \frac{1}{2})^2 + (x_2 - \frac{1}{2})^2 \leq \frac{1}{4} \\
@@ -53,19 +53,23 @@ for algo in ot.Bonmin.GetAlgorithmNames():
 
 # %%
 # Definition of objective function
-objectiveFunction = ot.SymbolicFunction(['x0','x1','x2','x3'], ['-x0 -x1 -x2'])
+objectiveFunction = ot.SymbolicFunction(
+    ['x0', 'x1', 'x2', 'x3'], ['-x0 -x1 -x2'])
 
 # Definition of variables bounds
-bounds = ot.Interval([0,0,0,0],[1,1e99,1e99,5],[True,True,True,True],[True,False,False,True])
+bounds = ot.Interval([0, 0, 0, 0], [1, 1e99, 1e99, 5], [
+                     True, True, True, True], [True, False, False, True])
 
 # Definition of constraints
 # Constraints in OpenTURNS are defined as g(x) = 0 and h(x) >= 0
 #    No equality constraint -> nothing to do
 #    Inequality constraints:
-h = ot.SymbolicFunction(['x0','x1','x2','x3'], ['-(x1-0.5)^2 - (x2-0.5)^2 + 0.25', 'x1 - x0', '-x0 - x2 - x3 + 2'])
-    
+h = ot.SymbolicFunction(['x0', 'x1', 'x2', 'x3'], [
+                        '-(x1-0.5)^2 - (x2-0.5)^2 + 0.25', 'x1 - x0', '-x0 - x2 - x3 + 2'])
+
 # Definition of variables types
-variablesType = [ot.OptimizationProblemImplementation.BINARY,ot.OptimizationProblemImplementation.CONTINUOUS,ot.OptimizationProblemImplementation.CONTINUOUS,ot.OptimizationProblemImplementation.INTEGER]
+variablesType = [ot.OptimizationProblemImplementation.BINARY, ot.OptimizationProblemImplementation.CONTINUOUS,
+                 ot.OptimizationProblemImplementation.CONTINUOUS, ot.OptimizationProblemImplementation.INTEGER]
 
 # Setting up Bonmin problem
 problem = ot.OptimizationProblem(objectiveFunction)
@@ -73,13 +77,13 @@ problem.setBounds(bounds)
 problem.setVariablesType(variablesType)
 problem.setInequalityConstraint(h)
 
-bonminAlgorithm = ot.Bonmin(problem,'B-BB')
+bonminAlgorithm = ot.Bonmin(problem, 'B-BB')
 bonminAlgorithm.setMaximumEvaluationNumber(10000)
 bonminAlgorithm.setMaximumIterationNumber(1000)
-bonminAlgorithm.setStartingPoint([0,0,0,0])
+bonminAlgorithm.setStartingPoint([0, 0, 0, 0])
 
-ot.ResourceMap.AddAsString('Bonmin-mu_oracle','loqo')
-ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit',5)
+ot.ResourceMap.AddAsString('Bonmin-mu_oracle', 'loqo')
+ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 5)
 
 # %%
 # Running the solver
@@ -90,4 +94,3 @@ result = bonminAlgorithm.getResult()
 print(" -- Optimal point = " + result.getOptimalPoint().__str__())
 print(" -- Optimal value = " + result.getOptimalValue().__str__())
 print(" -- Evaluation number = " + result.getInputSample().getSize().__str__())
-

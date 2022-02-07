@@ -6,7 +6,7 @@ Randomize the lines of a Sample
 import openturns as ot
 
 # %%
-# In this short example we present a simple way to mix the lines of a sample 
+# In this short example we present a simple way to mix the lines of a sample
 # thanks to the :class:`~openturns.KPermutationsDistribution` class.
 
 # %%
@@ -23,7 +23,7 @@ print(sample)
 # A new set of randomly mixed indices is a realization of a permutation of N elements amongst N :
 #
 mixingDistribution = ot.KPermutationsDistribution(N, N)
-newIndices = mixingDistribution.getSample(1)[0,:]
+newIndices = mixingDistribution.getSample(1)[0, :]
 
 # %%
 # The new indices will be these ones :
@@ -31,4 +31,4 @@ print("New indices : ", newIndices)
 
 # %%
 # Eventually the randomized sample is
-print( sample[[int(i) for i in newIndices]])
+print(sample[[int(i) for i in newIndices]])

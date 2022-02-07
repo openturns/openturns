@@ -45,7 +45,7 @@
 #include "openturns/Poisson.hxx"
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/FFT.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/Os.hxx"
@@ -989,9 +989,10 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
     constant_[0] = 0.0;
   }
 
-  // We cannot use parallelism if we have more than one atom due to the characteristic function cache
-  if (distributionCollection_.getSize() > 1) setParallel(false);
-  else setParallel(distributionCollection_[0].getImplementation()->isParallel());
+  // We cannot use parallelism if we have more than two atoms due to the characteristic function cache
+  if (distributionCollection_.getSize() == 1) setParallel(distributionCollection_[0].getImplementation()->isParallel());
+  else if (distributionCollection_.getSize() == 2) setParallel(distributionCollection_[0].getImplementation()->isParallel() && distributionCollection_[1].getImplementation()->isParallel());
+  else setParallel(false);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   // Need to precompute Mean, Covariance, PositionIndicator, DispersionIndicator, ReferenceBandwidth, EquivalentNormal only if at least two atoms
@@ -1035,7 +1036,7 @@ Point RandomMixture::getConstant() const
 }
 
 /* Distribution collection accessor */
-const DistributionCollection & RandomMixture::getDistributionCollection() const
+DistributionCollection RandomMixture::getDistributionCollection() const
 {
   return distributionCollection_;
 }
@@ -1423,7 +1424,7 @@ struct EquivalentNormalPDFSumPolicy
     , output_(output)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     UnsignedInteger fakeLevelMax = 0;
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -1502,14 +1503,14 @@ Sample RandomMixture::computePDF(const Point & xMin,
 
   Collection<Scalar> output(size);
   const  EquivalentNormalPDFSumPolicy policyGrid(*this, grid, two_b_sigma, levelMax, output);
-  TBB::ParallelFor( 0, size, policyGrid);
+  TBBImplementation::ParallelFor( 0, size, policyGrid);
 
   result.getImplementation()->setData(output);
 
   // Methods below will call computeDeltaCharacteristicFunction() on different threads
-  // if using TBB, which in turn calls equivalentNormal_.computeCharacteristicFunction()
+  // if using TBBImplementation, which in turn calls equivalentNormal_.computeCharacteristicFunction()
   // and then equivalentNormal_.getCovariance().  But covariance is lazily evaluated.
-  // We must ensure that it is computed before entering TBB multithreaded section.
+  // We must ensure that it is computed before entering TBBImplementation multithreaded section.
   (void) equivalentNormal_.getCovariance();
 
   switch(dimension_)
@@ -1545,7 +1546,7 @@ struct AddPDFOn1DGridPolicy
     , output_(output)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     Point x(1);
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -1577,7 +1578,7 @@ void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const Point & h,
   Collection<Complex> yk(N);
   // 1) compute \Sigma_+
   const  AddPDFOn1DGridPolicy policyGridPP(*this, xPlus, yk);
-  TBB::ParallelFor( 0, N, policyGridPP);
+  TBBImplementation::ParallelFor( 0, N, policyGridPP);
   for (UnsignedInteger j = 0; j < N; ++j)
     yk[j] *= fx[j];
 
@@ -1621,7 +1622,7 @@ struct AddPDFOn2DGridPolicy
     , output_(output)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     Point x(2);
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -1673,7 +1674,7 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
   ComplexMatrix yk(Nx, Ny);
   // 1) compute \Sigma_++
   const  AddPDFOn2DGridPolicy policyGridPP(*this, xPlus, yPlus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny, policyGridPP);
+  TBBImplementation::ParallelFor( 0, Nx * Ny, policyGridPP);
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk(i, j) *= fx[i] * fy[j];
@@ -1692,7 +1693,7 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
 
   // 3) compute \Sigma_+-
   const  AddPDFOn2DGridPolicy policyGridPM(*this, xPlus, yMinus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny, policyGridPM);
+  TBBImplementation::ParallelFor( 0, Nx * Ny, policyGridPM);
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk(i, j) *= fx[i] * std::conj(fy[Ny - 1 - j]);
@@ -1794,7 +1795,7 @@ struct AddPDFOn3DGridPolicy
     , output_(output)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     Point x(3);
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -1862,7 +1863,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   }
   ComplexTensor yk(Nx, Ny, Nz);
   const  AddPDFOn3DGridPolicy policyGridPPP(*this, xPlus, yPlus, zPlus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny * Nz, policyGridPPP);
+  TBBImplementation::ParallelFor( 0, Nx * Ny * Nz, policyGridPPP);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1884,7 +1885,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
 
   // 3) compute \Sigma_++-
   const  AddPDFOn3DGridPolicy policyGridPPM(*this, xPlus, yPlus, zMinus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny * Nz, policyGridPPM);
+  TBBImplementation::ParallelFor( 0, Nx * Ny * Nz, policyGridPPM);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1910,7 +1911,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
 
   // 5) compute \Sigma_+-+
   const  AddPDFOn3DGridPolicy policyGridPMP(*this, xPlus, yMinus, zPlus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny * Nz, policyGridPMP);
+  TBBImplementation::ParallelFor( 0, Nx * Ny * Nz, policyGridPMP);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1936,7 +1937,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
 
   // 7) compute \Sigma_+--
   const  AddPDFOn3DGridPolicy policyGridPMM(*this, xPlus, yMinus, zMinus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny * Nz, policyGridPMM);
+  TBBImplementation::ParallelFor( 0, Nx * Ny * Nz, policyGridPMM);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -2868,9 +2869,16 @@ Point RandomMixture::getParameter() const
 void RandomMixture::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != getParameter().getSize()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
-  const Scalar w = getWeight();
-  *this = RandomMixture(distributionCollection_, weights_, constant_);
-  setWeight(w);
+  const UnsignedInteger size = distributionCollection_.getSize();
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Point localParameter(distributionCollection_[i].getParameter());
+    std::copy(parameter.begin() + shift, parameter.begin() + shift + localParameter.getSize(), localParameter.begin());
+    shift += localParameter.getSize();
+    distributionCollection_[i].setParameter(localParameter);
+  }
+  setDistributionCollectionAndWeights(distributionCollection_, weights_, false);
 } // setParameter
 
 /* Parameters value and description accessor */

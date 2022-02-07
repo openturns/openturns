@@ -15,4 +15,8 @@ with open(fname, 'w') as f:
 aSample = ot.Sample.ImportFromTextFile(fname, ';', 0, ',')
 print('aSample from fr_FR.utf-8 file=', repr(aSample))
 
+# export in fr too
+aSample.exportToCSVFile(fname, ";", ",")
+with open(fname, 'r') as f:
+    print("export fr=", f.readlines()[1])
 os.remove(fname)

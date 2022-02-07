@@ -22,8 +22,8 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # Create a process
 grid = ot.RegularGrid(0.0, 0.1, 10)
-amplitude=[5.0]
-scale=[0.2]
+amplitude = [5.0]
+scale = [0.2]
 covModel = ot.ExponentialModel(scale, amplitude)
 X = ot.GaussianProcess(covModel, grid)
 

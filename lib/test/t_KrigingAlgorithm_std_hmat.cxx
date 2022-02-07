@@ -91,8 +91,8 @@ int main(int, char *[])
         assert_almost_equal(coll[k](0, 0), 0.0, 5.e-3, 5.e-3);
 
       // Validation of marginal variance
-      const Point marginalVariance(result.getConditionalMarginalVariance(X));
-      assert_almost_equal(marginalVariance, Point(sampleSize), 5.e-3, 5.e-3);
+      const Sample marginalVariance(result.getConditionalMarginalVariance(X));
+      assert_almost_equal(marginalVariance, Sample(sampleSize, 1), 5.e-3, 5.e-3);
     }
 
     {
@@ -165,11 +165,24 @@ int main(int, char *[])
         assert_almost_equal(coll[k](0, 0), 0.0, 1.5e-2, 1.5e-2);
 
       // Validation of marginal variance
-      const Point marginalVariance(result.getConditionalMarginalVariance(X));
-      assert_almost_equal(marginalVariance, Point(sampleSize), 1.5e-2, 1.5e-2);
+      const Sample marginalVariance(result.getConditionalMarginalVariance(X));
+      assert_almost_equal(marginalVariance, Sample(sampleSize, 1), 1.5e-2, 1.5e-2);
 
     }
 
+    {
+      // fix https: //github.com/openturns/openturns/issues/1861
+      RandomGenerator::SetSeed(0);
+      SymbolicFunction rho("tau", "exp(-abs(tau))*cos(2*pi_*abs(tau))");
+      const Point scale = {1.0};
+      StationaryFunctionalCovarianceModel model(scale, scale, rho);
+      const Sample x(Normal(0, 1.0).getSample(20));
+      const Sample y(x + Normal(0, 0.1).getSample(20));
+      KrigingAlgorithm algo(x, y, model, LinearBasisFactory().build());
+      algo.run();
+      KrigingResult result(algo.getResult());
+      assert_almost_equal(result.getConditionalMarginalVariance(x), Sample(x.getSize(), 1), 2e-6, 2e-6);
+    }
   }
   catch (TestFailed & ex)
   {

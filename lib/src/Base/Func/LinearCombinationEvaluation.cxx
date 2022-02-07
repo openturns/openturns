@@ -22,6 +22,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -107,13 +108,13 @@ struct LinearCombinationEvaluationPointFunctor
   {}
 
   LinearCombinationEvaluationPointFunctor(const LinearCombinationEvaluationPointFunctor & other,
-                                          TBB::Split)
+                                          TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(Point(other.accumulator_.getDimension()))
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) accumulator_ += evaluation_.coefficients_[i] * evaluation_.functionsCollection_[i](input_);
   } // operator()
@@ -133,7 +134,7 @@ Point LinearCombinationEvaluation::operator () (const Point & inP) const
   if (isZero_) return Point(getOutputDimension());
   const UnsignedInteger size = functionsCollection_.getSize();
   LinearCombinationEvaluationPointFunctor functor( inP, *this );
-  TBB::ParallelReduce( 0, size, functor );
+  TBBImplementation::ParallelReduce( 0, size, functor );
   const Point result(functor.accumulator_);
   callsNumber_.increment();
   return result;
@@ -176,7 +177,7 @@ void LinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const Fu
 {
   const UnsignedInteger size = functionsCollection.getSize();
   // Check for empty functions collection
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination from an empty collection of functions.";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination from an empty collection of functions.";
   // Check for incompatible number of functions and coefficients
   if (size != coefficients.getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination with a different number of functions and coefficients.";
   // Check for coherent input and output dimensions of the functions
@@ -299,7 +300,7 @@ Description LinearCombinationEvaluation::getParameterDescription() const
 /* Get the i-th marginal function */
 Evaluation LinearCombinationEvaluation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   const UnsignedInteger size = functionsCollection_.getSize();
   FunctionCollection marginalFunctions(size);
   for (UnsignedInteger j = 0; j < size; ++j) marginalFunctions[j] = functionsCollection_[j].getMarginal(i);
@@ -328,7 +329,7 @@ Bool LinearCombinationEvaluation::isLinear() const
 
 Bool LinearCombinationEvaluation::isLinearlyDependent(const UnsignedInteger index) const
 {
-  if (index > getOutputDimension())
+  if (!(index <= getOutputDimension()))
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function output dimension (" << getOutputDimension() << ")";
 
   for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)

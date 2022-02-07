@@ -9,8 +9,8 @@ Create a linear least squares model
 # .. math::
 #     \underline{y} \, \approx \, \widehat{h}(\underline{x}) \,
 #    = \, \sum_{j=0}^{n_X} \; a_j \; \psi_j(\underline{x})
-# 
-# 
+#
+#
 # Here
 #
 # .. math::
@@ -25,8 +25,8 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # Prepare an input sample
-x  = [[0.5,0.5], [-0.5,-0.5], [-0.5,0.5], [0.5,-0.5]]
-x += [[0.25,0.25], [-0.25,-0.25], [-0.25,0.25], [0.25,-0.25]]
+x = [[0.5, 0.5], [-0.5, -0.5], [-0.5, 0.5], [0.5, -0.5]]
+x += [[0.25, 0.25], [-0.25, -0.25], [-0.25, 0.25], [0.25, -0.25]]
 
 # %%
 # Compute the output sample from the input sample and a function
@@ -53,9 +53,11 @@ responseSurface = algo.getMetaModel()
 
 # %%
 # plot 2nd output of our model with x1=0.5
-graph = ot.ParametricFunction(responseSurface, [0], [0.5]).getMarginal(1).draw(-0.5, 0.5)
+graph = ot.ParametricFunction(
+    responseSurface, [0], [0.5]).getMarginal(1).draw(-0.5, 0.5)
 graph.setLegends(['linear LS'])
-curve = ot.ParametricFunction(model, [0], [0.5]).getMarginal(1).draw(-0.5, 0.5).getDrawable(0)
+curve = ot.ParametricFunction(model, [0], [0.5]).getMarginal(
+    1).draw(-0.5, 0.5).getDrawable(0)
 curve.setColor('red')
 curve.setLegend('model')
 graph.add(curve)

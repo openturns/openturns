@@ -34,8 +34,10 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/PlatformInfo.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/TBB.hxx"
 
-#define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); }
+#define TESTPREAMBLE { OT::TBB::Enable(); }
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -296,12 +298,24 @@ void checkClassWithClassName()
 
 inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
+  if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b))
+    throw TestFailed(OSS() << "Value a: " << a << " or b: " << b << " are invalid " << errMsg);
   if (std::abs(a - b) > atol + rtol * std::abs(b))
   {
     throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);
   }
 }
 
+inline void assert_almost_equal(const Indices &a, const Indices &b, const String errMsg = "")
+{
+  if (a.getSize() != b.getSize())
+    throw InvalidArgumentException(HERE) << "A and B must have the same size " << a.getSize() << " vs " << b.getSize();
+  const UnsignedInteger size = a.getSize();
+  for (UnsignedInteger j = 0; j < size; ++j)
+  {
+    assert_almost_equal(a[j], b[j], 0, 0, errMsg);
+  }
+}
 
 inline void assert_almost_equal(const Point & a, const Point & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
@@ -344,6 +358,21 @@ inline void assert_almost_equal(const Matrix &a, const Matrix &b, const Scalar r
   for (UnsignedInteger j = 0; j < columns; ++ j)
   {
     for (UnsignedInteger i = 0; i < rows; ++ i)
+    {
+      assert_almost_equal(a(i, j), b(i, j), rtol, atol, errMsg);
+    }
+  }
+}
+
+inline void assert_almost_equal(const SymmetricMatrix &a, const SymmetricMatrix &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  if (a.getDimension() != b.getDimension())
+    throw InvalidArgumentException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
+  const UnsignedInteger dimension = a.getDimension();
+
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+  {
+    for (UnsignedInteger i = j; i < dimension; ++i)
     {
       assert_almost_equal(a(i, j), b(i, j), rtol, atol, errMsg);
     }

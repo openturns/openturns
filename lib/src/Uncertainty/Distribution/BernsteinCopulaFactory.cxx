@@ -22,6 +22,7 @@
 #include "openturns/BernsteinCopulaFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/KFoldSplitter.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -63,18 +64,19 @@ void BernsteinCopulaFactory::BuildCrossValidationSamples(const Sample & sample,
   if (kFraction < 2) throw InvalidArgumentException(HERE) << "Error: the fraction number must be greater or equal to 2, here kFraction=" << kFraction;
   const UnsignedInteger size = sample.getSize();
   if (kFraction >= size) throw InvalidArgumentException(HERE) << "Error: the fraction number must be less than the sample size, here kFraction=" << kFraction << " and sample size=" << size;
-  const UnsignedInteger dimension = sample.getDimension();
+
   // Create the samples
   validationCollection = Collection<Sample>(0);
   learningCollection = Collection<Sample>(0);
+  KFoldSplitter splitter(size, kFraction);
   for (UnsignedInteger k = 0; k < kFraction; ++k)
   {
     // Select the points
-    Sample validationSample(0, dimension);
-    Sample learningSample(0, dimension);
-    for (UnsignedInteger j = 0; j < size; ++j)
-      if ((j % kFraction) == k) validationSample.add(sample[j]);
-      else learningSample.add(sample[j]);
+    Indices indices2;
+    Indices indices1(splitter.generate(indices2));
+    Sample validationSample(sample.select(indices2));
+    Sample learningSample(sample.select(indices1));
+
     // No need to rank the validation sample as it is supposed to
     // be distributed according to an unknown copula
     validationCollection.add(validationSample);

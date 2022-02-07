@@ -35,12 +35,10 @@ IndicatorFunction::IndicatorFunction ()
 
 
 /* Parameter constructor */
-IndicatorFunction::IndicatorFunction (const Function & function,
-                                      const ComparisonOperator & comparisonOperator,
-                                      const Scalar threshold)
+IndicatorFunction::IndicatorFunction (const Domain & domain)
   : Function()
 {
-  const Pointer<IndicatorEvaluation> p_evaluation = new IndicatorEvaluation(function.getEvaluation(), comparisonOperator, threshold);
+  const Pointer<IndicatorEvaluation> p_evaluation = new IndicatorEvaluation(domain);
   setEvaluation(Evaluation(p_evaluation));
   setGradient(NoGradient().clone());
   setHessian(NoHessian().clone());

@@ -22,7 +22,7 @@
 #include "openturns/LinearCombinationEvaluation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Description.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -76,7 +76,7 @@ void DualLinearCombinationEvaluation::setDescription(const Description & descrip
 /* Get the i-th marginal function */
 Evaluation DualLinearCombinationEvaluation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   // We use a LinearCombinationEvaluation instead of a DualLinearCombinationEvaluation as it is more efficient and more easy to read
   const UnsignedInteger size = coefficients_.getSize();
   Point marginalCoefficients(size);
@@ -167,13 +167,13 @@ struct DualLinearCombinationEvaluationPointFunctor
   {}
 
   DualLinearCombinationEvaluationPointFunctor(const DualLinearCombinationEvaluationPointFunctor & other,
-      TBB::Split)
+      TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(Point(other.accumulator_.getDimension()))
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) accumulator_ += evaluation_.coefficients_[i] * evaluation_.functionsCollection_[i](input_)[0];
   } // operator()
@@ -192,7 +192,7 @@ Point DualLinearCombinationEvaluation::operator () (const Point & inP) const
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   const UnsignedInteger size = functionsCollection_.getSize();
   DualLinearCombinationEvaluationPointFunctor functor( inP, *this );
-  TBB::ParallelReduce( 0, size, functor );
+  TBBImplementation::ParallelReduce( 0, size, functor );
   const Point result(functor.accumulator_);
   callsNumber_.increment();
   return result;
@@ -235,15 +235,17 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
 {
   const UnsignedInteger size = functionsCollection.getSize();
   // Check for empty functions collection
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination from an empty collection of functions.";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination from an empty collection of functions.";
   // Check for incompatible number of functions and coefficients
   if (size != coefficients.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination with a different number of functions and coefficients.";
   // Check for coherent input and output dimensions of the functions
   UnsignedInteger inputDimension = functionsCollection[0].getInputDimension();
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    if (functionsCollection[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given functions have incompatible input dimension.";
-    if (functionsCollection[i].getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given functions must have a one dimensional output.";
+    if (functionsCollection[i].getInputDimension() != inputDimension)
+      throw InvalidArgumentException(HERE) << "Error: the function with index " << i << " has input dimension " <<  functionsCollection[i].getInputDimension() << " while the function with index 0 has input dimension " << inputDimension;
+    if (functionsCollection[i].getOutputDimension() != 1)
+      throw InvalidArgumentException(HERE) << "Error: the function with index " << i << " has output dimension " <<  functionsCollection[i].getOutputDimension() << ", but it should be 1.";
   }
   // Keep only the non zero coefficients
   coefficients_ = Sample(0, coefficients.getDimension());
@@ -257,7 +259,7 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
     absoluteCoefficients[i] = Point(coefficients[i]).normInf();
     if (absoluteCoefficients[i] > maximumAbsoluteCoefficient) maximumAbsoluteCoefficient = absoluteCoefficients[i];
   }
-  if (maximumAbsoluteCoefficient == 0.0) throw InvalidArgumentException(HERE) << "Error: all the coefficients are zero.";
+  if (!(maximumAbsoluteCoefficient > 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximum absolute coefficient is " << maximumAbsoluteCoefficient << ". Are all coefficients null?";
   // Second pass, remove the small coefficients
   const Scalar epsilon = maximumAbsoluteCoefficient * ResourceMap::GetAsScalar("DualLinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -266,7 +268,7 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
     {
       Point currentCoefficient(coefficients[i]);
       for (UnsignedInteger j = 0; j < currentCoefficient.getDimension(); ++j)
-        if (std::abs(currentCoefficient[j]) <= epsilon)
+        if (!(std::abs(currentCoefficient[j]) > epsilon))
         {
           currentCoefficient[j] = 0.0;
           LOGWARN(OSS() << "set the component " << j << " of contributor " << i << "=" << currentCoefficient[j] << " to zero as it is too small");
@@ -274,7 +276,7 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
       coefficients_.add(currentCoefficient);
       functionsCollection_.add(functionsCollection[i]);
     }
-    else LOGWARN(OSS() << "removed the contributor " << i << "=" << functionsCollection[i] << " from the linear combination as its coefficient is too small.");
+    else LOGWARN(OSS() << "removed the contributor " << i << "=" << functionsCollection[i] << " from the linear combination as its coefficient " << absoluteCoefficients[i] << " is too small.");
   }
   Description description(0);
   Description inputDescription(functionsCollection[0].getInputDescription());

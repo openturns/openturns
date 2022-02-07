@@ -29,7 +29,7 @@ covarianceModel = ot.SquaredExponential(1)
 
 # %%
 # For the covariance model, we use a Matern model with :math:`\nu = 1.5` :
-covarianceModel = ot.MaternModel([1.0],1.5)
+covarianceModel = ot.MaternModel([1.0], 1.5)
 
 # %%
 # We are now ready to build the kriging algorithm, run it and store the result :
@@ -41,12 +41,12 @@ result = algo.getResult()
 # We can retrieve the covariance model from the result object and then access
 # the scale of the model :
 theta = result.getCovarianceModel().getScale()
-print("Scale of the covariance model : %.3e"%theta[0]) 
+print("Scale of the covariance model : %.3e" % theta[0])
 
 # %%
 # This hyperparameter is calibrated thanks to a maximization of the log-likelihood. We get this log-likehood as a function of :math:`\theta` :
 ot.ResourceMap.SetAsBool(
-"GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", True)
+    "GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", True)
 reducedLogLikelihoodFunction = algo.getReducedLogLikelihoodFunction()
 
 # %%
@@ -74,4 +74,3 @@ graph.setLegends([r"Matern $\nu = 1.5$", r"$\theta$ estimate"])
 # Display figures
 view = otv.View(graph)
 otv.View.ShowAll()
-

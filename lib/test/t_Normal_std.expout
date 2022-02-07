@@ -323,12 +323,10 @@ pdf     =0.0016318
 cdf=0.22145
 survival=0.067873
 Inverse survival=class=Point name=Unnamed dimension=4 values=[-2.1934,-4.38679,-6.58019,-8.77359]
-Survival(inverse survival)=0.95
 characteristic function=(0.0019305,0)
 log characteristic function=(-6.25,0)
 pdf gradient     =class=Point name=Unnamed dimension=14 values=[0.000951889,-0.000135984,0.000135984,0,-0.00115586,-0.000849901,-0.000521272,-0.000407952,0.00179952,-0.00106747,0.0025429,0.000652724,-0.00130545,0.00195817]
 pdf gradient (FD)=class=Point name=Unnamed dimension=8 values=[0.000951889,-0.000135984,0.000135984,0,-0.00115586,-0.000849901,-0.000521272,-0.000407952]
-cdf gradient     =class=Point name=Unnamed dimension=14 values=[-0.0866373,-0.0433187,-0.0444138,-0.0111035,-0.0282692,-0.00471154,-0.0327027,-0.00408783,0.0684072,0.0233814,0.0728962,0.0542182,0.0405874,0.0901964]
 quantile=class=Point name=Unnamed dimension=4 values=[2.193,4.387,6.58,8.774]
 cdf(quantile)=0.95
 entropy=8.2722

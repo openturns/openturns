@@ -7,12 +7,13 @@ Create a Python function
 #
 # The pure Python function to wrap must accept a sequence of floats and return a sequence of float.
 #
-# .. math:: 
+# .. math::
 #    f(x) = [x_0+x_1+x_2, (x_1-1)*e^{x_0} * x_2]
 #
 
 # %%
 from __future__ import print_function
+import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -58,7 +59,8 @@ function.gradient(x)
 
 # %%
 # define the same function on a Sample
-import numpy as np
+
+
 def regularFuncSample(X):
     # Create a numpy array with the contents of X without copy
     xarray = np.array(X, copy=False)
@@ -66,8 +68,8 @@ def regularFuncSample(X):
     x0, x1, x2 = xarray.T
     # Allocate a numpy array to store result
     y = np.zeros((len(X), 2))
-    y[:,0] = x0 + x1 + x2
-    y[:,1] = (x1 - 1.0) * np.exp(x0) * x2
+    y[:, 0] = x0 + x1 + x2
+    y[:, 1] = (x1 - 1.0) * np.exp(x0) * x2
     return y
 
 
@@ -87,4 +89,5 @@ print('x=', x, 'f(x)=', functionSample(x))
 # The most efficient solution is to provide evaluations both on Point and Sample.  This requires two Python function definitions, but if your code takes a lot of time, you should consider this option.
 
 # %%
-functionFast = ot.PythonFunction(3, 2, func=regularFunc, func_sample=regularFuncSample)
+functionFast = ot.PythonFunction(
+    3, 2, func=regularFunc, func_sample=regularFuncSample)

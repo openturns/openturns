@@ -42,7 +42,7 @@ public:
   typedef ApproximationAlgorithmImplementationFactory::FunctionCollection FunctionCollection;
 
   /** Default constructor */
-  PenalizedLeastSquaresAlgorithmFactory(const Bool useNormal = false);
+  PenalizedLeastSquaresAlgorithmFactory(const Bool useNormal = ResourceMap::GetAsBool("PenalizedLeastSquaresAlgorithm-UseNormal"));
 
   /** Virtual constructor */
   PenalizedLeastSquaresAlgorithmFactory * clone() const override;

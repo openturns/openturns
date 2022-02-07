@@ -13,10 +13,10 @@ Estimate a non stationary covariance function
 # :math:`C : \mathcal{D} \times [-4, 4] \rightarrow \mathbb{R}` defined by:
 #
 # .. math::
-#    \begin{aligned} 
+#    \begin{aligned}
 #      \displaystyle C(s,t) = \exp\left(-\dfrac{4|s-t|}{1+s^2+t^2}\right)
 #    \end{aligned}
-#   
+#
 # The domain :math:`\mathcal{D}` is discretized on a mesh :math:`\mathcal{M}` which is a time grid with 64 points.
 # We build a normal process :math:`X: \Omega \times [-4, 4]  \rightarrow \mathbb{R}` with zero mean and
 # :math:`C` as covariance function.
@@ -54,6 +54,7 @@ def f(X):
     s, t = X
     return [C(s, t)]
 
+
 func = ot.PythonFunction(2, 1, f)
 func.setDescription([':math:`s`', ':math:`t`', ':math:`cov`'])
 graph = func.draw([t0] * 2, [tmax] * 2)
@@ -71,7 +72,7 @@ for k in range(N):
     for l in range(k + 1):
         t = tgrid.getValue(l)
         covariance[k, l] = C(s, t)
-        
+
 covmodel = ot.UserDefinedCovarianceModel(tgrid, covariance)
 
 # %%

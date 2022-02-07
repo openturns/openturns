@@ -113,9 +113,9 @@ UnsignedInteger EnclosingSimplexMonotonic1D::queryScalar(const Scalar x) const
 {
   const UnsignedInteger size = vertices_.getSize();
   const UnsignedInteger notFound = simplices_.getSize();
-  if (increasing_ && (x < vertices_(0, 0) || x > vertices_(size - 1, 0)))
+  if (increasing_ && !(x >= vertices_(0, 0) && x <= vertices_(size - 1, 0)))
     return notFound;
-  if (!increasing_ && (x < vertices_(size - 1, 0) || x > vertices_(0, 0)))
+  if (!increasing_ && !(x >= vertices_(size - 1, 0) && x <= vertices_(0, 0)))
     return notFound;
   UnsignedInteger iMin = 0;
   UnsignedInteger iMax = size - 1;

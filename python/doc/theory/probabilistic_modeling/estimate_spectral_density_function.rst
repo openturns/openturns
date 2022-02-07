@@ -112,7 +112,7 @@ series :math:`w(t, T)\vect{x}(t)` in the computation of
 
 where :math:`W(f_p, T)` is the square module of the Fourier transform
 of :math:`w(t, T)` at the frequency :math:`f_p`. A judicious choice of
-tapering function such as the *Hanning window* :math:`w_H` can
+tapering function such as the *Hann window* :math:`w_H` can
 dramatically reduce the bias of the estimate:
 
 .. math::
@@ -130,12 +130,12 @@ fixing the number of segments, the *overlap* size parameter and a
 
    with :math:`K` = :math:`\sqrt{0.54^2 + \frac{1}{2} 0.46^2}`
 
--  The *Hanning* window described in :eq:`HamEff` which is supposed to be
+-  The *Hann* window described in :eq:`HamEff` which is supposed to be
    the most useful.
 
 .. topic:: API:
 
-    - See :class:`~openturns.Hanning`
+    - See :class:`~openturns.Hann`
     - See :class:`~openturns.Hamming`
     - See :class:`~openturns.WelchFactory`
 

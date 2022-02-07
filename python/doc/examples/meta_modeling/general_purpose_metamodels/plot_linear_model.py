@@ -1,81 +1,86 @@
 """
 Create a linear model
 =====================
+In this example we create a surrogate model using linear model approximation.
 """
 # %%
-# In this example we are going to create a global approximation of a model response using linear model approximation.
-#
-# Here :math:`h(x,y) = [2 x + 0.05 * \sin(x) - y]`.
+# The following 2-dimensional function is used in this example
+# :math:`h(x,y) = 2x - y + 3 + 0.05 \sin(0.8x)`.
 #
 
 # %%
-from __future__ import print_function
 import openturns as ot
-try:
-    get_ipython()
-except NameError:
-    import matplotlib
-    matplotlib.use('Agg')
-from openturns.viewer import View
-import numpy as np
-import matplotlib.pyplot as plt
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
-ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Hereafter we generate data using the previous model. We also add a noise: 
+# Generation of the data set
+# --------------------------
+#
+# We first generate the data and we add noise to the output observations:
 
 # %%
 ot.RandomGenerator.SetSeed(0)
 distribution = ot.Normal(2)
-distribution.setDescription(["x","y"])
+distribution.setDescription(['x', 'y'])
 func = ot.SymbolicFunction(['x', 'y'], ['2 * x - y + 3 + 0.05 * sin(0.8*x)'])
 input_sample = distribution.getSample(30)
 epsilon = ot.Normal(0, 0.1).getSample(30)
 output_sample = func(input_sample) + epsilon
 
 # %%
-# Let us run the linear model algorithm using the `LinearModelAlgorithm` class & get its associated result :
+# Linear regression
+# -----------------
+#
+# Let us run the linear model algorithm using the `LinearModelAlgorithm` class and get the associated results :
 
 # %%
 algo = ot.LinearModelAlgorithm(input_sample, output_sample)
-result = ot.LinearModelResult(algo.getResult())
+result = algo.getResult()
 
 # %%
-#  
+# Residuals analysis
+# ------------------
+#
+# We can now analyse the residuals of the regression on the training data.
+# For clarity purposes, only the first 5 residual values are printed.
 
 # %%
-# We get the result structure. As the underlying model is of type regression, it assumes a noise distribution associated to the residuals. Let us get it:
+residuals = result.getSampleResiduals()
+print(residuals[:5])
+
+# %%
+# Alternatively, the `standardized` or `studentized` residuals can be used:
+
+# %%
+stdresiduals = result.getStandardizedResiduals()
+print(stdresiduals[:5])
+
+# %%
+# Similarly, we can also obtain the underyling distribution characterizing the residuals:
 
 # %%
 print(result.getNoiseDistribution())
 
-# %%
-# We can get also residuals:
 
 # %%
-print(result.getSampleResiduals())
-
-# %%
-# We can get also `standardized` residuals (also called `studentized residuals`). 
-
-# %%
-print(result.getStandardizedResiduals())
-
-# %%
-# Now we got the result, we can perform a postprocessing analysis. We use `LinearModelAnalysis` for that purpose: 
+# ANOVA table
+# -----------
+#
+# In order to post-process the linear regression results, the `LinearModelAnalysis` class can be used:
 
 # %%
 analysis = ot.LinearModelAnalysis(result)
 print(analysis)
 
 # %%
-# It seems that the linear hypothesis could be accepted. Indeed, `R-Squared` value is nearly `1`. Also the adjusted value (taking into account the datasize & number of parameters) is similar to `R-Squared`. 
+# The results seem to indicate that the linear hypothesis can be accepted. Indeed, the `R-Squared` value is nearly `1`. Furthermore, the adjusted value, which takes into account the data set size and the number of hyperparameters, is similar to `R-Squared`.
 #
-# Also, we notice that both `Fisher-Snedecor` and `Student` p-values detailled above are less than 1%. This ensure the quality of the linear model.
+# We can also notice that the `Fisher-Snedecor` and `Student` p-values detailed above are lower than 1%. This ensures an acceptable quality of the linear model.
 
 # %%
+# Graphical analyses
+# ------------------
+#
 # Let us compare model and fitted values:
 
 # %%
@@ -83,35 +88,56 @@ graph = analysis.drawModelVsFitted()
 view = viewer.View(graph)
 
 # %%
-# Seems that the linearity hypothesis is accurate.
+# The previous figure seems to indicate that the linearity hypothesis is accurate.
 
 # %%
-# We complete this analysis using some usefull graphs :
+# Residuals can be plotted against the fitted values.
 
 # %%
-fig = plt.figure(figsize=(12,10))
-for k, plot in enumerate(["drawResidualsVsFitted", "drawScaleLocation", "drawQQplot",
-             "drawCookDistance", "drawResidualsVsLeverages", "drawCookVsLeverages"]):
-    graph = getattr(analysis, plot)()
-    ax = fig.add_subplot(3, 2, k + 1)
-    v = View(graph, figure=fig, axes=[ax])
-_ = v.getFigure().suptitle("Diagnostic graphs", fontsize=18)
+graph = analysis.drawResidualsVsFitted()
+view = viewer.View(graph)
 
 # %%
-# These graphics help asserting the linear model hypothesis. Indeed :
-#  
-#  - Quantile-to-quantile plot seems accurate
-#  
-#  - We notice heteroscedasticity within the noise
-#  
-#  - It seems that there is no outlier
+graph = analysis.drawScaleLocation()
+view = viewer.View(graph)
 
 # %%
-# Finally we give the intervals for each estimated coefficient (95% confidence interval):
+graph = analysis.drawQQplot()
+view = viewer.View(graph)
+
+# %%
+# In this case, the two distributions are very close: there is no obvious outlier.
+#
+# Cook's distance measures the impact of every invidual data point on the linear regression, and can be plotted as follows:
+
+# %%
+graph = analysis.drawCookDistance()
+view = viewer.View(graph)
+
+# %%
+# This graph shows us the index of the points with disproportionate influence.
+#
+# One of the components of the computation of Cook's distance at a given point is that point's *leverage*.
+# High-leverage points are far from their closest neighbors, so the fitted linear regression model must pass close to them.
+
+# %%
+graph = analysis.drawResidualsVsLeverages()
+view = viewer.View(graph)
+
+# %%
+# In this case, there seem to be no obvious influential outlier characterized by large leverage and residual values, as is also shown in the figure below:
+#
+# Similarly, we can also plot Cook's distances as a function of the sample leverages:
+
+# %%
+graph = analysis.drawCookVsLeverages()
+view = viewer.View(graph)
+
+# %%
+# Finally, we give the intervals for each estimated coefficient (95% confidence interval):
 
 # %%
 alpha = 0.95
 interval = analysis.getCoefficientsConfidenceInterval(alpha)
-print("confidence intervals with level=%1.2f : %s" % (alpha, interval))
-plt.show()
-
+print("confidence intervals with level=%1.2f : " % (alpha))
+print("%s" % (interval))

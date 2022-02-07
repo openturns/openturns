@@ -12,8 +12,8 @@ RandomGenerator.SetSeed(0)
 # random variables given their distributions
 # Third constructor: distribution of the maximum of independent
 # identically distributed random variables
-coll = [MaximumDistribution(Normal(5)), \
-        MaximumDistribution([Normal()]*5), \
+coll = [MaximumDistribution(Normal(5)),
+        MaximumDistribution([Normal()]*5),
         MaximumDistribution(Normal(), 5)]
 for distribution in coll:
     print("Distribution ", distribution)
@@ -30,7 +30,7 @@ for distribution in coll:
 
     # Test for sampling
     size = 10000
-    oneSample = distribution.getSample( size )
+    oneSample = distribution.getSample(size)
     print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
     print("mean=", oneSample.computeMean())
     print("covariance=", oneSample.computeCovariance())
@@ -51,42 +51,48 @@ for distribution in coll:
     print("Point= ", point)
 
     # Show PDF and CDF of point
-    DDF = distribution.computeDDF( point )
+    DDF = distribution.computeDDF(point)
     print("ddf     =", DDF)
-    LPDF = distribution.computeLogPDF( point )
+    LPDF = distribution.computeLogPDF(point)
     print("log pdf=%.5g" % LPDF)
-    PDF = distribution.computePDF( point )
+    PDF = distribution.computePDF(point)
     print("pdf    =%.5g" % PDF)
-    CDF = distribution.computeCDF( point )
+    CDF = distribution.computeCDF(point)
     print("cdf =%.5g" % CDF)
-    CCDF = distribution.computeComplementaryCDF( point )
+    CCDF = distribution.computeComplementaryCDF(point)
     print("ccdf=%.5g" % CCDF)
-    Survival = distribution.computeSurvivalFunction( point )
+    Survival = distribution.computeSurvivalFunction(point)
     print("survival=%.5g" % Survival)
     InverseSurvival = distribution.computeInverseSurvivalFunction(0.95)
     print("Inverse survival=", InverseSurvival)
-    print("Survival(inverse survival)=%.5g" % distribution.computeSurvivalFunction(InverseSurvival))
-    quantile = distribution.computeQuantile( 0.95 )
+    print("Survival(inverse survival)=%.5g" %
+          distribution.computeSurvivalFunction(InverseSurvival))
+    quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)=%.5g" % distribution.computeCDF(quantile))
-    quantileTail = distribution.computeQuantile( 0.95, True )
+    quantileTail = distribution.computeQuantile(0.95, True)
     print("quantile (tail)=", quantileTail)
-    CDFTail = distribution.computeComplementaryCDF( quantileTail )
-    print("cdf (tail)=%.5g", CDFTail)
+    CDFTail = distribution.computeComplementaryCDF(quantileTail)
+    print("cdf (tail)=%.5g" % CDFTail)
     # Confidence regions
-    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+        0.95)
     print("Minimum volume interval=", interval)
     print("threshold=", threshold)
-    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
+        0.95)
     print("Minimum volume level set=", levelSet)
     print("beta=%.5g" % beta)
-    levelSet, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    levelSet, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+        0.95)
     print("Bilateral confidence interval=", levelSet)
     print("beta=%.5g" % beta)
-    levelSet, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    levelSet, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, False)
     print("Unilateral confidence interval (lower tail)=", interval)
     print("beta=%.5g" % beta)
-    levelSet, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    levelSet, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=%.5g" % beta)
     mean = distribution.getMean()
@@ -106,7 +112,8 @@ for distribution in coll:
     kendall = distribution.getKendallTau()
     print("kendall=", kendall)
     for i in range(6):
-        print("standard moment n=", i, ", value=", distribution.getStandardMoment(i))
+        print("standard moment n=", i, ", value=",
+              distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
 # Issue #1643
 coll = [Uniform(), Normal()]

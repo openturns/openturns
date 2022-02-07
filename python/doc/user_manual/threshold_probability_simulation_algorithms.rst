@@ -21,7 +21,7 @@ Simulations methods
     PostAnalyticalControlledImportanceSampling
     PostAnalyticalImportanceSampling
     SubsetSampling
-    AdaptiveDirectionalSampling
+    AdaptiveDirectionalStratification
 
 Wilks' method
 =============

@@ -176,6 +176,8 @@ used for setting the sample description using :py:meth:`setDescription`.
 It can also contain some comments, if a line starts with one of the
 characters contained in `Sample-CommentsMarker` from the :class:`~openturns.ResourceMap`.
 
+The implementation follows the RFC 4180: https://tools.ietf.org/html/rfc4180
+
 See Also
 --------
 exportToCSVFile
@@ -198,15 +200,17 @@ And load it back
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::add
-"Append a vector (in-place).
+"Append a sample (in-place).
 
 Parameters
 ----------
-point : sequence of float
-    The point to append.
+point or sample : sequence or 2-d sequence of float
+    The point(s) to append.
 
 Examples
 --------
+Append an existing sample with a single point.
+
 >>> import openturns as ot
 >>> sample = ot.Sample(3, 2)
 >>> sample.add([1.0, 2.0])
@@ -214,7 +218,18 @@ Examples
 0 : [ 0 0 ]
 1 : [ 0 0 ]
 2 : [ 0 0 ]
-3 : [ 1 2 ]"
+3 : [ 1 2 ]
+
+Append an existing sample with an other sample.
+
+>>> sample.add(ot.Sample(2, [2.0, 1.0]))
+>>> print(sample)
+0 : [ 0 0 ]
+1 : [ 0 0 ]
+2 : [ 0 0 ]
+3 : [ 1 2 ]
+4 : [ 2 1 ]
+5 : [ 2 1 ]"
 
 // ---------------------------------------------------------------------
 
@@ -780,6 +795,19 @@ file_name : str
 separator : str
     Separating string.
     Default uses `csv-file-separator` from the :class:`~openturns.ResourceMap`.
+numSeparator : str, default='.'
+    Decimal separator.
+precision : int
+    Numerical precision
+    Default takes `Sample-CSVPrecision` entry from :class:`~openturns.ResourceMap`.
+format : str
+    Floating-point formatting, one of:
+
+    - scientific: exponent notation
+    - fixed: constant number of digits
+    - defaultfloat: variable number of digits
+
+    Default takes `Sample-CSVFormat` entry from :class:`~openturns.ResourceMap`.
 
 Notes
 -----

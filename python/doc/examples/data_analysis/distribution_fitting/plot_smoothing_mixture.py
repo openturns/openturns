@@ -2,7 +2,7 @@
 Bandwidth sensitivity in kernel smoothing
 =========================================
 """
-# %% 
+# %%
 #
 # Introduction
 # ------------
@@ -11,19 +11,19 @@ Bandwidth sensitivity in kernel smoothing
 #
 # .. math::
 #    f_1(x) = w_1 f_A(x) + w_2 f_B(x)
-# 
 #
-# for any :math:`x\in\mathbb{R}` where :math:`f_A` is the density of the Normal distribution 
-# :math:`\mathcal{N}(0,1)`, :math:`f_B` is the density of the Normal distribution 
+#
+# for any :math:`x\in\mathbb{R}` where :math:`f_A` is the density of the Normal distribution
+# :math:`\mathcal{N}(0,1)`, :math:`f_B` is the density of the Normal distribution
 # :math:`\mathcal{N}(3/2,(1/3)^2)` and the weights are :math:`w_1 = \frac{3}{4}` and :math:`w_2 = \frac{1}{4}`.
 #
-# This is a mixture of two Normal distributions: 1/4th of the observations have the :math:`\mathcal{N}(0,1)` 
-# distribution and 3/4th of the observations have the :math:`\mathcal{N}(3/2,(1/3)^2)` distribution. 
+# This is a mixture of two Normal distributions: 1/4th of the observations have the :math:`\mathcal{N}(0,1)`
+# distribution and 3/4th of the observations have the :math:`\mathcal{N}(3/2,(1/3)^2)` distribution.
 # This example is considered in (Wand, Jones, 1994), page 14, Figure 2.3.
 #
-# We consider a sample generated from independent realizations of :math:`f_1` and 
-# want to approximate the distribution from kernel smoothing. 
-# More precisely, we want to observe the sensitivity of the resulting density to the 
+# We consider a sample generated from independent realizations of :math:`f_1` and
+# want to approximate the distribution from kernel smoothing.
+# More precisely, we want to observe the sensitivity of the resulting density to the
 # bandwidth.
 #
 # References
@@ -51,7 +51,7 @@ import numpy as np
 n = 1000
 
 # %%
-# Then we define the two Normal distributions and their parameters. 
+# Then we define the two Normal distributions and their parameters.
 
 # %%
 w1 = 0.75
@@ -67,7 +67,7 @@ sample1 = distribution1.getSample(int(w1 * n))
 sample2 = distribution2.getSample(int(w2 * n))
 
 # %%
-# Then we merge the sub-samples into a larger one with the `add` method of the `Sample` class. 
+# Then we merge the sub-samples into a larger one with the `add` method of the `Sample` class.
 
 # %%
 sample = ot.Sample(sample1)
@@ -92,13 +92,13 @@ view = otv.View(graph)
 # Simulation based on a mixture
 # -----------------------------
 #
-# Since the distribution that we approximate is a mixture, it will be more convenient to create it from the `Mixture` class. It takes as input argument a list of distributions and a list of weights. 
+# Since the distribution that we approximate is a mixture, it will be more convenient to create it from the `Mixture` class. It takes as input argument a list of distributions and a list of weights.
 
 # %%
 distribution = ot.Mixture([distribution1, distribution2], [w1, w2])
 
 # %%
-# Then we generate a sample from it. 
+# Then we generate a sample from it.
 
 # %%
 sample = distribution.getSample(n)
@@ -130,7 +130,7 @@ view = otv.View(graph)
 # ----------------------------
 
 # %%
-# In this section, we observe the sensitivity of the kernel smoothing to the bandwidth. We consider the three following bandwidths: the small bandwidth 0.05, the large bandwidth 0.54 and 0.18 which is in-between. For each bandwidth, we use the second optional argument of the `build` method in order to select a specific bandwidth value. 
+# In this section, we observe the sensitivity of the kernel smoothing to the bandwidth. We consider the three following bandwidths: the small bandwidth 0.05, the large bandwidth 0.54 and 0.18 which is in-between. For each bandwidth, we use the second optional argument of the `build` method in order to select a specific bandwidth value.
 
 # %%
 hArray = [0.05, 0.54, 0.18]
@@ -151,7 +151,7 @@ for i in range(nLen):
     graph.setLegendPosition("topleft")
     graph.setXTitle("X")
     view = otv.View(graph, figure=fig, axes=[ax])
-    pl.ylim(top = 0.5)  # Common y-range
+    pl.ylim(top=0.5)  # Common y-range
 
 view = otv.View(graph)
 # %%
@@ -161,7 +161,7 @@ view = otv.View(graph)
 # Sensitivity to the bandwidth rule
 # ---------------------------------
 #
-# The library provides three different rules to compute the bandwidth. In this section, we compare the results that we can get with them. 
+# The library provides three different rules to compute the bandwidth. In this section, we compare the results that we can get with them.
 
 # %%
 h1 = factory.computeSilvermanBandwidth(sample)[0]
@@ -205,7 +205,7 @@ for i in range(nLen):
     if i > 0:
         graph.setYTitle("")
     view = otv.View(graph, figure=fig, axes=[ax])
-    pl.ylim(top = 0.5)  # Common y-range
+    pl.ylim(top=0.5)  # Common y-range
 
 view = otv.View(graph)
 

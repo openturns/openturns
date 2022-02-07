@@ -21,7 +21,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearModelStepwiseAlgorithm.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/Exception.hxx"
 #include "openturns/Combinations.hxx"
 #include "openturns/ConstantBasisFactory.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -30,6 +29,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 #include <cmath>
 
@@ -50,58 +50,34 @@ LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm()
   const ConstantBasisFactory factory(inputSample_.getDimension());
   const Function one(factory.build()[0]);
   basis_.add(one);
-  condensedFormula_ =  one.__str__();
 }
 
-/* Parameters constructor FORWARD and BACKWARD */
+/* Parameters constructor */
 LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample & inputSample,
     const Basis & basis,
     const Sample & outputSample,
     const Indices & minimalIndices,
-    const Bool isForward,
-    const Scalar penalty,
-    const UnsignedInteger maximumIterationNumber)
+    const Direction direction,
+    const Indices & startIndices)
   : PersistentObject()
   , inputSample_(inputSample)
   , basis_(basis)
   , outputSample_(outputSample)
-  , direction_(isForward ? FORWARD : BACKWARD)
-  , penalty_(penalty)
-  , maximumIterationNumber_(maximumIterationNumber)
-  , minimalIndices_(minimalIndices)
-  , condensedFormula_(basis.__str__())
-  , hasRun_(false)
-{
-  if (outputSample.getDimension() != 1)
-    throw InvalidArgumentException(HERE) << "Error: cannot perform step method based on output sample of dimension different from 1.";
-  if (inputSample.getSize() != outputSample.getSize())
-    throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << outputSample_.getSize() << " is different from the size of the input sample=" << inputSample_.getSize();
-}
-
-/* Parameters constructor BOTH */
-LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample & inputSample,
-    const Basis & basis,
-    const Sample & outputSample,
-    const Indices & minimalIndices,
-    const Indices & startIndices,
-    const Scalar penalty,
-    const UnsignedInteger maximumIterationNumber)
-  : PersistentObject()
-  , inputSample_(inputSample)
-  , basis_(basis)
-  , outputSample_(outputSample)
-  , direction_(BOTH)
-  , penalty_(penalty)
-  , maximumIterationNumber_(maximumIterationNumber)
+  , direction_(direction)
+  , penalty_(ResourceMap::GetAsScalar("LinearModelStepwiseAlgorithm-Penalty"))
+  , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("LinearModelStepwiseAlgorithm-MaximumIterationNumber"))
   , minimalIndices_(minimalIndices)
   , startIndices_(startIndices)
-  , condensedFormula_(basis.__str__())
   , hasRun_(false)
 {
   if (outputSample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Error: cannot perform step method based on output sample of dimension different from 1.";
   if (inputSample.getSize() != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << outputSample_.getSize() << " is different from the size of the input sample=" << inputSample_.getSize();
+  if (!direction)
+    throw InvalidArgumentException(HERE) << "Invalid direction value";
+  if (startIndices.getSize() && (direction != BOTH))
+    throw InvalidArgumentException(HERE) << "Can only specify startIndices in BOTH mode";
 }
 
 /* Virtual constructor */
@@ -119,7 +95,6 @@ String LinearModelStepwiseAlgorithm::__repr__() const
       << " direction=" << direction_
       << " penalty=" << penalty_
       << " maximumIterationNumber=" << maximumIterationNumber_
-      << " condensedFormula=" << condensedFormula_
       << " basis=" << basis_;
   return oss;
 }
@@ -132,7 +107,6 @@ String LinearModelStepwiseAlgorithm::__str__(const String & /*offset*/) const
       << " direction=" << direction_
       << " penalty=" << penalty_
       << " maximumIterationNumber=" << maximumIterationNumber_
-      << " condensedFormula=" << condensedFormula_
       << " basis=" << basis_;
   return oss;
 }
@@ -155,21 +129,27 @@ LinearModelStepwiseAlgorithm::Direction LinearModelStepwiseAlgorithm::getDirecti
 }
 
 /* Penalty accessors */
+void LinearModelStepwiseAlgorithm::setPenalty(const Scalar penalty)
+{
+  if (!(penalty > 0.0))
+    throw InvalidArgumentException(HERE) << "Penalty must be positive";
+  penalty_ = penalty;
+}
+
 Scalar LinearModelStepwiseAlgorithm::getPenalty() const
 {
   return penalty_;
 }
 
 /* Maximum number of iterations accessors */
+void LinearModelStepwiseAlgorithm::setMaximumIterationNumber(const UnsignedInteger maximumIteration)
+{
+  maximumIterationNumber_ = maximumIteration;
+}
+
 UnsignedInteger LinearModelStepwiseAlgorithm::getMaximumIterationNumber() const
 {
   return maximumIterationNumber_;
-}
-
-/* Formula accessor */
-String LinearModelStepwiseAlgorithm::getFormula() const
-{
-  return condensedFormula_;
 }
 
 /*
@@ -186,7 +166,7 @@ String LinearModelStepwiseAlgorithm::getFormula() const
 
 */
 
-/* TBB functor to speed-up forward insertion index computation
+/* TBBImplementation functor to speed-up forward insertion index computation
 
     If X is augmented by one column:
       X_+ = (X x_+)
@@ -231,11 +211,11 @@ struct UpdateForwardFunctor
     : basis_(basis), indexSet_(indexSet), Xmax_(Xmax), residual_(residual), Q_(Q)
     , criterion_(SpecFunc::MaxScalar), bestIndex_(Xmax.getNbColumns()) {}
 
-  UpdateForwardFunctor(const UpdateForwardFunctor & other, TBB::Split)
+  UpdateForwardFunctor(const UpdateForwardFunctor & other, TBBImplementation::Split)
     : basis_(other.basis_), indexSet_(other.indexSet_), Xmax_(other.Xmax_), residual_(other.residual_), Q_(other.Q_)
     , criterion_(other.criterion_), bestIndex_(other.bestIndex_) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     const UnsignedInteger size(Xmax_.getNbRows());
     Matrix xi(size, 1);
@@ -277,7 +257,7 @@ struct UpdateForwardFunctor
   }
 }; /* end struct UpdateForwardFunctor */
 
-/* TBB functor to speed-up backward insertion index computation
+/* TBBImplementation functor to speed-up backward insertion index computation
 
     If column i is removed from X:
       X_{-i} = X where column i is removed
@@ -342,12 +322,12 @@ struct UpdateBackwardFunctor
     , Y_(Y), residual_(residual), Q_(Q), invRt_(invRt)
     , criterion_(SpecFunc::MaxScalar), bestIndex_(invRt.getNbColumns()) {}
 
-  UpdateBackwardFunctor(const UpdateBackwardFunctor & other, TBB::Split)
+  UpdateBackwardFunctor(const UpdateBackwardFunctor & other, TBBImplementation::Split)
     : basis_(other.basis_), indexSet_(other.indexSet_), columnMaxToCurrent_(other.columnMaxToCurrent_), columnCurrentToMax_(other.columnCurrentToMax_)
     , Y_(other.Y_), residual_(other.residual_), Q_(other.Q_), invRt_(other.invRt_)
     , criterion_(other.criterion_), bestIndex_(other.bestIndex_) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     const UnsignedInteger size(Q_.getNbRows());
     const UnsignedInteger p(invRt_.getNbRows());
@@ -450,7 +430,7 @@ void LinearModelStepwiseAlgorithm::run()
 
     Scalar LF = SpecFunc::MaxScalar;
     UnsignedInteger indexF = maxX_.getNbColumns();
-    if (direction_ == FORWARD || direction_ == BOTH)
+    if (direction_ & FORWARD)
     {
       // indexSet = Imax - I*
       Indices indexSet;
@@ -460,14 +440,14 @@ void LinearModelStepwiseAlgorithm::run()
           indexSet.add(i);
       }
       UpdateForwardFunctor updateFunctor(basis_, indexSet, maxX_, currentResidual_, currentQ_);
-      TBB::ParallelReduce(0, indexSet.getSize(), updateFunctor);
+      TBBImplementation::ParallelReduce(0, indexSet.getSize(), updateFunctor);
       indexF = updateFunctor.bestIndex_;
       LF = penalty_ * (p + 1) + size * std::log(updateFunctor.criterion_ / size);
       LOGDEBUG(OSS() << "Best candidate in forward direction is " << indexF << "(" << basis_[indexF] << "), squared residual norm=" << updateFunctor.criterion_ << ", criterion=" << LF);
     }
     Scalar LB = SpecFunc::MaxScalar;
     UnsignedInteger indexB = maxX_.getNbColumns();
-    if (direction_ == BACKWARD || direction_ == BOTH)
+    if (direction_ & BACKWARD)
     {
       // indexSet = I* - Imin
       Indices indexSet;
@@ -477,7 +457,7 @@ void LinearModelStepwiseAlgorithm::run()
           indexSet.add(currentIndices_[i]);
       }
       UpdateBackwardFunctor updateFunctor(basis_, indexSet, columnMaxToCurrent, currentIndices_, Y_, currentResidual_, currentQ_, currentInvRt_);
-      TBB::ParallelReduce(0, indexSet.getSize(), updateFunctor);
+      TBBImplementation::ParallelReduce(0, indexSet.getSize(), updateFunctor);
       indexB = updateFunctor.bestIndex_;
       LB = penalty_ * (p - 1) + size * std::log(updateFunctor.criterion_ / size);
       LOGDEBUG(OSS() << "Best candidate in backward direction is " << indexB << "(" << basis_[indexB] << "), squared residual norm=" << updateFunctor.criterion_ << ", criterion=" << LB);
@@ -584,7 +564,7 @@ void LinearModelStepwiseAlgorithm::run()
   LinearCombinationFunction metaModel(currentFunctions, regression);
 
   result_ = LinearModelResult(inputSample_, Basis(currentFunctions), currentX_, outputSample_, metaModel,
-                              regression, condensedFormula_, coefficientsNames, residualSample, standardizedResiduals,
+                              regression, currentFunctions.__str__(), coefficientsNames, residualSample, standardizedResiduals,
                               diagonalGramInverse, leverages, cookDistances, sigma2[0]);
   hasRun_ = true;
 }
@@ -638,12 +618,11 @@ void LinearModelStepwiseAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "inputSample_", inputSample_ );
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
-  adv.saveAttribute( "direction_", static_cast<double>(direction_) );
+  adv.saveAttribute( "direction_", static_cast<UnsignedInteger>(direction_) );
   adv.saveAttribute( "penalty_", penalty_ );
   adv.saveAttribute( "maximumIterationNumber_", maximumIterationNumber_ );
   adv.saveAttribute( "minimalIndices_", minimalIndices_ );
   adv.saveAttribute( "startIndices_", startIndices_ );
-  adv.saveAttribute( "condensedFormula_", condensedFormula_ );
   adv.saveAttribute( "Y_", Y_ );
   adv.saveAttribute( "maxX_", maxX_ );
   adv.saveAttribute( "currentX_", currentX_ );
@@ -659,22 +638,16 @@ void LinearModelStepwiseAlgorithm::save(Advocate & adv) const
 void LinearModelStepwiseAlgorithm::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  double direction;
   adv.loadAttribute( "inputSample_", inputSample_ );
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
+  UnsignedInteger direction = 0;
   adv.loadAttribute( "direction_", direction );
-  if (direction < -0.5)
-    direction_ = BACKWARD;
-  else if (direction > 0.5)
-    direction_ = FORWARD;
-  else
-    direction_ = BOTH;
+  direction_ = static_cast<Direction>(direction);
   adv.loadAttribute( "penalty_", penalty_ );
   adv.loadAttribute( "maximumIterationNumber_", maximumIterationNumber_ );
   adv.loadAttribute( "minimalIndices_", minimalIndices_ );
   adv.loadAttribute( "startIndices_", startIndices_ );
-  adv.loadAttribute( "condensedFormula_", condensedFormula_ );
   adv.loadAttribute( "Y_", Y_ );
   adv.loadAttribute( "maxX_", maxX_ );
   adv.loadAttribute( "currentX_", currentX_ );

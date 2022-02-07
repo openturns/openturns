@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements kernelMixtures
+ *  @brief Class for a product-kernel multidimensional mixture.
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *

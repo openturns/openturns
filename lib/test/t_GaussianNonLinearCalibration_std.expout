@@ -5,7 +5,7 @@ MAP =class=Point name=Unnamed dimension=3 values=[2.8,1.2,0.5]
 MAP =class=Point name=Unnamed dimension=3 values=[2.8,1.2,0.5]
 error=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[-0.00016,-0.0022] sigma=class=Point name=Unnamed dimension=2 values=[1.7,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
 3. globalErrorCovariance
-Bootstrap size =100
+Bootstrap size =20
 1. Default optim
 MAP =class=Point name=Unnamed dimension=3 values=[2.8,1.2,0.5]
 2. TNC optim

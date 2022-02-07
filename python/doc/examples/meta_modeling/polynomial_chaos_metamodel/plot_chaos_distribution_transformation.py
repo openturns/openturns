@@ -2,7 +2,7 @@
 Apply a transform or inverse transform on your polynomial chaos
 ===============================================================
 """
-# %% 
+# %%
 #
 # Introduction
 # ------------
@@ -17,13 +17,13 @@ Apply a transform or inverse transform on your polynomial chaos
 #
 # .. math::
 #    \xi = T(X).
-# 
+#
 #
 # Let :math:`F_X` be the Cumulative Distribution Function (CDF) associated with the random variable :math:`X` and let :math:`F_\xi` be the CDF associated with the random variable :math:`\xi`. Therefore, :math:`F_\xi` is the CDF associated with the orthogonal polynomials involved in the polynomial chaos expansion. In this case, the transform is:
 #
 # .. math::
 #    \xi = F_\xi^{-1} \left( F_X(X) \right),
-# 
+#
 #
 # for any :math:`X \in \mathbb{R}`.
 
@@ -33,16 +33,16 @@ Apply a transform or inverse transform on your polynomial chaos
 #
 # We want to use the Hermite orthogonal polynomials to expand a Log-Normal random variable:
 #
-# * let :math:`X` follow the Log-Normal distribution with the following parameters: Lognormal(:math:`\mu=3 \times 10^4`, :math:`\sigma=9\times 10^3`), 
+# * let :math:`X` follow the Log-Normal distribution with the following parameters: Lognormal(:math:`\mu=3 \times 10^4`, :math:`\sigma=9\times 10^3`),
 # * let :math:`Z=\xi` follow the Normal distribution with zero mean and unit standard deviation (the letter :math:`Z` is often used for standard Normal random variables).
 #
 # Let :math:`F_{LN}` be the CDF of the Log-Normal distribution associated with :math:`X` and let :math:`\Phi` be the CDF of the standard Normal distribution.
 #
-# Therefore, 
+# Therefore,
 #
 # .. math::
 #    Z = T(X) = \Phi^{-1}(F_{LN}(X)),
-# 
+#
 #
 # for any :math:`X \in \mathbb{R}`.
 
@@ -50,10 +50,10 @@ Apply a transform or inverse transform on your polynomial chaos
 import openturns as ot
 
 # %%
-# In the first step, we define the LogNormal distribution. Its parameters - mean and standard deviation - have been selected so that there is no ambiguity with the standard Normal distribution. This parametrization can be used thanks to the `ParametrizedDistribution` class. 
+# In the first step, we define the LogNormal distribution. Its parameters - mean and standard deviation - have been selected so that there is no ambiguity with the standard Normal distribution. This parametrization can be used thanks to the `ParametrizedDistribution` class.
 
 # %%
-Xparam = ot.LogNormalMuSigma(3.0e4, 9.0e3, 15.0e3) # in N
+Xparam = ot.LogNormalMuSigma(3.0e4, 9.0e3, 15.0e3)  # in N
 X = ot.ParametrizedDistribution(Xparam)
 
 # %%
@@ -80,7 +80,7 @@ sampleZ
 # In the third step, we create the transform T which maps X to Z.
 
 # %%
-T = ot.DistributionTransformation(X,Z)
+T = ot.DistributionTransformation(X, Z)
 
 # %%
 # We apply this transform on the sample generated from `X`.
@@ -101,4 +101,4 @@ Tinverse(sampleZ)
 # Conclusion
 # ----------
 #
-# The `DistributionTransformation` class is rarely used directly because the polynomial chaos classes perform the transformation automatically. However, understanding how this transform is done clarifies why the coefficients of the chaos expansion cannot be related to the input random variable :math:`X`: the expansion is based on the standard variables :math:`\xi`. Hence, the absolute values of the corresponding coefficients have no straightforward interpretation, even though squaring them yields the part of the global variance associated with each coefficient. 
+# The `DistributionTransformation` class is rarely used directly because the polynomial chaos classes perform the transformation automatically. However, understanding how this transform is done clarifies why the coefficients of the chaos expansion cannot be related to the input random variable :math:`X`: the expansion is based on the standard variables :math:`\xi`. Hence, the absolute values of the corresponding coefficients have no straightforward interpretation, even though squaring them yields the part of the global variance associated with each coefficient.

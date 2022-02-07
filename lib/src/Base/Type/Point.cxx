@@ -292,7 +292,7 @@ Point & Point::operator *=(const Scalar scalar)
 Point operator /(const Point & point,
                  const Scalar scalar)
 {
-  if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
+  if (!(scalar > 0.0 || scalar < 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = point.getDimension();
   double alpha = 1.0 / scalar;
   Point result(point);
@@ -305,7 +305,7 @@ Point operator /(const Point & point,
 /*  In-place division operator */
 Point & Point::operator /=(const Scalar scalar)
 {
-  if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
+  if (!(scalar > 0.0 || scalar < 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = getDimension();
   double alpha = 1.0 / scalar;
   int one = 1;
@@ -395,7 +395,7 @@ Scalar Point::normSquare() const
 Point Point::normalize() const
 {
   const Scalar theNorm = norm();
-  if (theNorm == 0.0) throw InternalException(HERE) << "Error: cannot normalize a null vector";
+  if (!(theNorm > 0.0)) throw InternalException(HERE) << "Error: cannot normalize a null vector";
   return (*this) / theNorm;
 }
 
@@ -403,7 +403,7 @@ Point Point::normalize() const
 Point Point::normalizeSquare() const
 {
   const Scalar theNormSquare = normSquare();
-  if (theNormSquare == 0.0) throw InternalException(HERE) << "Error: cannot square normalize a null vector";
+  if (!(theNormSquare > 0.0)) throw InternalException(HERE) << "Error: cannot square normalize a null vector";
   Point result(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i) result[i] = pow((*this)[i], 2) / theNormSquare;
   return result;

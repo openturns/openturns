@@ -89,9 +89,9 @@ int main(int, char *[])
     formula[0] = oss;
     SymbolicFunction model(inputVar, formula);
     Sample outputSample(model(inputSample));
-    Graph cobwebValue(VisualTest::DrawCobWeb(inputSample, outputSample, 2.5, 3.0, "red", false));
+    Graph cobwebValue(VisualTest::DrawParallelCoordinates(inputSample, outputSample, 2.5, 3.0, "red", false));
     fullprint << "cobwebValue = " << cobwebValue << std::endl;
-    Graph cobwebQuantile(VisualTest::DrawCobWeb(inputSample, outputSample, 0.7, 0.9, "red", false));
+    Graph cobwebQuantile(VisualTest::DrawParallelCoordinates(inputSample, outputSample, 0.7, 0.9, "red", false));
     fullprint << "cobwebQuantile = " << cobwebQuantile << std::endl;
   }
 

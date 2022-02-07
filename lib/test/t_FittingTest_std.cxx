@@ -62,7 +62,7 @@ int main(int, char *[])
   distributionCollection.add(truncatednormal);
   continuousDistributionCollection.add(truncatednormal);
 
-  Student student(10.0, 10.0);
+  Student student(10.0, 10.0, 1.0);
   distributionCollection.add(student);
   continuousDistributionCollection.add(student);
 

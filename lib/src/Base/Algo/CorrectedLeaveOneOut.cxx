@@ -78,10 +78,9 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException(HERE) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
   const Scalar variance = y.computeVariance()[0];
-  if (!(variance > 0.0)) throw InvalidArgumentException(HERE) << "Null output sample variance.";
 
   const UnsignedInteger basisSize = method.getImplementation()->currentIndices_.getSize();
-  if (sampleSize < basisSize) throw InvalidArgumentException(HERE) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";
+  if (!(sampleSize >= basisSize)) throw InvalidArgumentException(HERE) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";
 
   // Build the design of experiments
   LOGINFO("Build the design matrix");
@@ -112,7 +111,7 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
   const Scalar traceInverse = method.getGramInverseTrace();
 
   const Scalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
-  const Scalar relativeError = correctingFactor * empiricalError / variance;
+  const Scalar relativeError = (!(variance > 0.0) ? 0.0 : correctingFactor * empiricalError / variance);
   LOGINFO(OSS() << "Relative error=" << relativeError);
   return relativeError;
 }

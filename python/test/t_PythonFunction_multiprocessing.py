@@ -2,30 +2,25 @@
 
 from __future__ import print_function
 import openturns as ot
-import numpy as np
 import multiprocessing
-n_cpus = multiprocessing.cpu_count()
+
 
 ot.TESTPREAMBLE()
 
-nvar = 100
-nsim = 10000
+
+def myfunPython(x):
+    n = x[0]
+    y = [1.0 / (2.0 ** n)]
+    return y
 
 
-def myfunPython(X):
-    XArray = np.array(X, copy=False)
-    res = 1 - XArray[:, 0]
-    return res.reshape(len(XArray), 1)
+if __name__ == '__main__':
 
+    n_cpus = multiprocessing.cpu_count()
+    nsim = 1000
+    myfun = ot.PythonFunction(1, 1, myfunPython, n_cpus=n_cpus)
 
-def createFunction():
-    return ot.PythonFunction(nvar, 1, func_sample=myfunPython, n_cpus=n_cpus)
-
-
-myfun = createFunction()
-sample = np.linspace(1.0 / nsim, 1.0, num=nsim)
-input = np.repeat(np.expand_dims(sample, axis=1),
-                  myfun.getInputDimension(), axis=1)
-out = myfun(input)
-# sum = 4999
-print("sum =", int(np.sum(out)))
+    X = [[i] for i in range(nsim)]
+    Y = myfun(X)
+    sum_y = nsim * Y.computeMean()[0]
+    assert sum_y == 2.0, "sum 2^-n = 2"

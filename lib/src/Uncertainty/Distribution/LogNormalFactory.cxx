@@ -31,6 +31,7 @@
 #include "openturns/LeastSquaresProblem.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/LeastSquaresDistributionFactory.hxx"
+#include "openturns/MemoizeFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -60,6 +61,7 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const Sample & sample) const
   if (sample.getSize() < 3) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution using the method of moments with a sample of size less than 3.";
   // ME
   const Scalar std = sample.computeStandardDeviation()[0];
+  if (!SpecFunc::IsNormal(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of moments.";
   const Scalar skew = sample.computeSkewness()[0];
   const Scalar a3 = skew;
@@ -76,61 +78,20 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const Sample & sample) const
   return result;
 }
 
-struct LogNormalFactoryLMLEParameterConstraint
-{
-  /** Constructor from a sample and a derivative factor estimate */
-  LogNormalFactoryLMLEParameterConstraint(const Sample & sample)
-    : sample_(sample)
-    , size_(sample.getSize())
-  {
-    // Nothing to do
-  };
-
-  Point computeConstraint(const Point & parameter) const
-  {
-    const Point sums(computeMaximumLikelihoodSums(parameter[0]));
-    return Point(1, sums[0] * (sums[2] - sums[1] * (1.0 + sums[1] / size_)) + size_ * sums[3]);
-  }
-
-  /*
-    S_0 = \sum_i (X_i - \gamma)^{-1}
-    S_1 = \sum_i \log(X_i - \gamma)
-    S_2 = \sum_i \log^2(X_i - \gamma)
-    S_3 = \sum_i \log(X_i - \gamma) / (X_i - \gamma)
-  */
-  Point computeMaximumLikelihoodSums(const Scalar gamma) const
-  {
-    Point sums(4, 0.0);
-    for (UnsignedInteger i = 0; i < size_; ++i)
-    {
-      const Scalar delta = sample_(i, 0) - gamma;
-      if (!(delta > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of local maximum likelihood, probably because the sample is constant.";
-      const Scalar logDelta = std::log(delta);
-      const Scalar inverseDelta = 1.0 / delta;
-      sums[0] += inverseDelta;
-      sums[1] += logDelta;
-      sums[2] += logDelta * logDelta;
-      sums[3] += logDelta * inverseDelta;
-    }
-    return sums;
-  }
-
-  // The data
-  Sample sample_;
-  UnsignedInteger size_;
-};
-
 /* Algoritm associated with the method of local likelihood maximization */
 LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sample & sample) const
 {
   const Scalar std = sample.computeStandardDeviation()[0];
+  if (!SpecFunc::IsNormal(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of local maximum likelihood.";
   const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   Scalar step = std * std::sqrt(quantileEpsilon);
   const Scalar xMin = sample.getMin()[0];
   Scalar right = xMin - quantileEpsilon;
   const LogNormalFactoryLMLEParameterConstraint constraint(sample);
-  const Function f(bindMethod<LogNormalFactoryLMLEParameterConstraint, Point, Point>(constraint, &LogNormalFactoryLMLEParameterConstraint::computeConstraint, 1, 1));
+  MemoizeFunction f(constraint);
+  f.enableCache();
+
   Scalar constraintRight = f(Point(1, right))[0];
   Scalar left = right - step;
   Scalar constraintLeft = f(Point(1, left))[0];
@@ -193,6 +154,7 @@ struct LogNormalFactoryMMEParameterConstraint
 LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const Sample & sample) const
 {
   const Scalar std = sample.computeStandardDeviation()[0];
+  if (!SpecFunc::IsNormal(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of modified moments.";
   const Scalar mean = sample.computeMean()[0];
   const Scalar xMin = sample.getMin()[0];
@@ -267,7 +229,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
     const UnsignedInteger method) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution from an empty sample";
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution from a sample of size < 3";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a LogNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   switch (method)
   {
@@ -276,10 +238,10 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
       {
         return buildMethodOfLocalLikelihoodMaximization(sample);
       }
-      catch (InvalidArgumentException &)
+      catch (InvalidArgumentException & ex)
       {
         // We switch to the moment estimate
-        LOGWARN(OSS() << "Warning! Unable to bracket the location parameter gamma. Using the modified moment estimator.");
+        LOGWARN(OSS() << ex.what());
         return buildAsLogNormal(sample, 1);
       }
       break;
@@ -288,10 +250,10 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
       {
         return buildMethodOfModifiedMoments(sample);
       }
-      catch (InvalidArgumentException &)
+      catch (InvalidArgumentException & ex)
       {
         // We switch to the moment estimate
-        LOGWARN(OSS() << "Warning! Unable to bracket the shape parameter sigma. Using the classical moment estimator.");
+        LOGWARN(OSS() << ex.what());
         return buildAsLogNormal(sample, 2);
       }
       break;

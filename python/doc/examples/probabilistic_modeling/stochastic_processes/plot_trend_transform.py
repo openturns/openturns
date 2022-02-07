@@ -22,7 +22,7 @@ Trend computation
 #
 # .. math::
 #    \underline{x}^{stat}_i = \underline{x}_i - f_{trend}(\underline{t}_i)
-#   
+#
 # where :math:`\underline{t}_i` is the simplex associated to the value :math:`\underline{x}_i`.
 #
 # This creation of the inverse trend function :math:`-f_{trend}` is done thanks to the method **getInverse()** which produces an object of type **InverseTrendTransform** that can be evaluated on a a field.
@@ -78,7 +78,8 @@ myFittingAlgorithm_2 = ot.KFold()
 
 # Define the basis function
 # For example composed of 5 functions
-myFunctionBasis = list(map(lambda fst: ot.SymbolicFunction(['t', 's'], [fst]), ['1', 't', 's', 't^2', 's^2']))
+myFunctionBasis = list(map(lambda fst: ot.SymbolicFunction(
+    ['t', 's'], [fst]), ['1', 't', 's', 't^2', 's^2']))
 
 # Define the trend function factory algorithm
 myTrendFactory = ot.TrendFactory(myBasisSequenceFactory, myFittingAlgorithm)

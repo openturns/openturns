@@ -9,7 +9,5 @@ Histogram          = Histogram(origin = -1.5, {w0 = 1, h0 = 0.0625}, {w1 = 0.7, 
 Estimated histogram= Histogram(origin = -1.49739, {w0 = 0.253137, h0 = 0.0588614}, {w1 = 0.253137, h1 = 0.0659721}, {w2 = 0.253137, h2 = 0.0620217}, {w3 = 0.253137, h3 = 0.0797986}, {w4 = 0.253137, h4 = 0.190016}, {w5 = 0.253137, h5 = 0.178164}, {w6 = 0.253137, h6 = 0.270604}, {w7 = 0.253137, h7 = 0.41677}, {w8 = 0.253137, h8 = 0.422696}, {w9 = 0.253137, h9 = 0.446398}, {w10 = 0.253137, h10 = 0.430597}, {w11 = 0.253137, h11 = 0.364624}, {w12 = 0.253137, h12 = 0.301418}, {w13 = 0.253137, h13 = 0.328676}, {w14 = 0.253137, h14 = 0.333811})
 Estimated histogram= Histogram(origin = -2, {w0 = 1, h0 = 0.0306}, {w1 = 1, h1 = 0.1267}, {w2 = 1, h2 = 0.3821}, {w3 = 1, h3 = 0.3611}, {w4 = 1, h4 = 0.0995})
 Default histogram= Histogram(origin = 0, {w0 = 1, h0 = 1})
-Estimated distribution= class=Histogram name=Histogram dimension=1 first=-5e-13 width=class=Point name=Unnamed dimension=1 values=[1e-12] height=class=Point name=Unnamed dimension=1 values=[1e+12]
-Estimated distribution= class=Histogram name=Histogram dimension=1 first=1 width=class=Point name=Unnamed dimension=1 values=[1e-12] height=class=Point name=Unnamed dimension=1 values=[1e+12]
 useQuantile= True [4.12126e-09]
 useQuantile= False [0.0150595]

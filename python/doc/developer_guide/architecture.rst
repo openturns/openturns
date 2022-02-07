@@ -165,11 +165,11 @@ example this list:
 +--------------------+-------------------+
 | **Distribution**   | **Version**       |
 +====================+===================+
-| Debian             | 8 “Jessie”        |
+| Debian             | 9 “Stretch”       |
 +--------------------+-------------------+
-| Ubuntu             | 14.04 “Trusty”    |
+| Ubuntu             | 18.04 “Bionic”    |
 +--------------------+-------------------+
-| Windows            | 7                 |
+| Windows            | 10                |
 +--------------------+-------------------+
 
 The primary development platform is Linux, and is known to work on
@@ -195,13 +195,19 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Linear algebra                        | `LAPACK <http://www.netlib.org/lapack/>`_                                       | 3.0               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Linear algebra (optional)             | `HMat <https://github.com/jeromerobert/hmat-oss>`_                              | 1.6               |
+| Linear algebra (optional)             | `HMat <https://github.com/jeromerobert/hmat-oss>`_                              | 1.7               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Linear algebra (optional)             | `Spectra <https://spectralib.org/>`_                                            | 0.8.1             |
+| Linear algebra (optional)             | `Spectra <https://spectralib.org/>`_                                            | 1.0.0             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Legacy analytical parser (optional)   | `muParser <http://muparser.beltoforion.de/>`_                                   | 2.2.3             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Prime numbers (optional)              | `primesieve <https://primesieve.org/>`_                                         | 7.5               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Special functions (optional)          | `Boost <http://www.boost.org/>`_                                                | 1.46              |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Special functions (optional)          | `MPFR <https://www.mpfr.org/>`_                                                 | 4.0.0             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Special functions (optional)          | `MPC <http://www.multiprecision.org/mpc>`_                                      | 1.1.0             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Optimization (optional)               | `NLopt <http://ab-initio.mit.edu/nlopt>`_                                       | 2.4               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
@@ -225,7 +231,7 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Multithreading (optional)             | `TBB <http://www.threadingbuildingblocks.org/>`_                                | 4.3               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Python support                        | `Python <http://www.python.org/>`_                                              | 2.6               |
+| Python support                        | `Python <http://www.python.org/>`_                                              | 3.5               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Plotting library (optional)           | `Matplotlib <http://matplotlib.org/>`_                                          | 1.3.1             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
@@ -308,9 +314,8 @@ Each pull-request on the GitHub code repository triggers continuous integration
 jobs for the different target platforms to be run on several free
 continuous integration services:
 
-- CircleCI (https://circleci.com/) for Linux
-- Travis (https://travis-ci.org/) for macOS
-- AppVeyor (https://www.appveyor.com/) for Windows
+- CircleCI (https://circleci.com/) for Linux/MinGW
+- Github Actions (https://github.com/actions) for macOS/Windows
 
 Each of these jobs checks that the library can be successfully compiled and
 that all unit tests pass. All jobs passing is one of the necessary conditions

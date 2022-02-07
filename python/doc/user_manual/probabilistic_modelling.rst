@@ -253,9 +253,9 @@ Random vectors
     :template: class.rst_t
 
     RandomVector
-    PythonRandomVector
 
     :template: classWithPlot.rst_t
+    PythonRandomVector
     CompositeRandomVector
     ConditionalRandomVector
 
@@ -285,6 +285,7 @@ Low-level distribution functions
     DistFunc_logdPoisson
     DistFunc_pHypergeometric
     DistFunc_pPearsonCorrelation
+    DistFunc_dNormal
     DistFunc_pNormal
     DistFunc_qNormal
     DistFunc_rBinomial

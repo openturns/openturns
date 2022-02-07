@@ -9,7 +9,7 @@ Build and validate a linear model
 #
 # .. math::
 #    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \varepsilon
-#   
+#
 # where :math:`\varepsilon` is the residual, supposed to follow the Normal(0.0, 1.0) distribution.
 #
 # The linear model may be validated graphically if :math:`\underline{X}` is of dimension 1, by drawing on the same graph the cloud :math:`(X_i, Y_i)`.
@@ -51,7 +51,8 @@ result = ot.LinearModelAlgorithm(Xsample, Ysample).getResult()
 print("coefficients of the linear regression model = ", result.getCoefficients())
 
 # Get the confidence intervals of the ai coefficients
-print("confidence intervals of the coefficients = ", ot.LinearModelAnalysis(result).getCoefficientsConfidenceInterval(0.9))
+print("confidence intervals of the coefficients = ",
+      ot.LinearModelAnalysis(result).getCoefficientsConfidenceInterval(0.9))
 
 
 # %%
@@ -66,17 +67,19 @@ view = viewer.View(graph)
 
 # %%
 # Check the nullity of the regression linear model coefficients
-resultLinearModelFisher = ot.LinearModelTest.LinearModelFisher(Xsample, Ysample, 
+resultLinearModelFisher = ot.LinearModelTest.LinearModelFisher(Xsample, Ysample,
                                                                result, 0.10)
 print("Test Success ? ", resultLinearModelFisher.getBinaryQualityMeasure())
-print("p-value of the LinearModelFisher Test = ", resultLinearModelFisher.getPValue())
+print("p-value of the LinearModelFisher Test = ",
+      resultLinearModelFisher.getPValue())
 print("p-value threshold = ", resultLinearModelFisher.getThreshold())
 
 # %%
 # Check, under the hypothesis of a gaussian sample, if the mean of the residual is equal to zero
-resultLinearModelResidualMean = ot.LinearModelTest.LinearModelResidualMean(Xsample, Ysample, 
+resultLinearModelResidualMean = ot.LinearModelTest.LinearModelResidualMean(Xsample, Ysample,
                                                                            result, 0.10)
 print("Test Success ? ", resultLinearModelResidualMean.getBinaryQualityMeasure())
-print("p-value of the LinearModelResidualMean Test = ", resultLinearModelResidualMean.getPValue())
+print("p-value of the LinearModelResidualMean Test = ",
+      resultLinearModelResidualMean.getPValue())
 print("p-value threshold = ", resultLinearModelResidualMean.getThreshold())
 plt.show()

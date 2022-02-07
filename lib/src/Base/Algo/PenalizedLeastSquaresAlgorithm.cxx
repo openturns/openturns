@@ -99,8 +99,8 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
 {
   const UnsignedInteger basisSize = indices.getSize();
   // Check if the penalization matrix has the proper dimension
-  if (penalizationMatrix_.getDimension() != basisSize) throw InvalidArgumentException(HERE) << "Error: the given penalization matrix has an improper dimension.";
-  if (!penalizationMatrix_.isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the given penalization matrix is not strictly definite positive.";
+  if (penalizationMatrix_.getDimension() != basisSize) throw InvalidArgumentException(HERE) << "Error: the given penalization matrix has an improper dimension: " << penalizationMatrix_.getDimension();
+  if (!penalizationMatrix_.isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the given penalization matrix is not positive definite.";
 }
 
 void PenalizedLeastSquaresAlgorithm::run()

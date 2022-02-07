@@ -55,7 +55,7 @@ process = ot.GaussianProcess(myCovarianceModel, time_grid)
 # %%
 # The dimension d of the process may be retrieved by
 dim = process.getOutputDimension()
-print("Dimension : %d"%dim)
+print("Dimension : %d" % dim)
 
 # %%
 # The underlying mesh of the process is obtained with the `getMesh` method :
@@ -77,7 +77,7 @@ view = viewer.View(graph)
 
 # %%
 # We can get the time grid of the process when the mesh can be interpreted as a regular time grid :
-print( process.getTimeGrid() )
+print(process.getTimeGrid())
 
 
 # %%
@@ -86,7 +86,7 @@ realization = process.getRealization()
 
 # %%
 # Here it is a sample of size :math:`100 \times 4` (100 time steps, 3 spatial cooordinates and the time variable). We are able to draw its marginals, for instance the first (index 0) one :math:`X_t^0`, against the time with no interpolation :
-interpolate=False
+interpolate = False
 graph = realization.drawMarginal(0, interpolate)
 graph.setTitle("First marginal of a realization of the process")
 graph.setXTitle("t")
@@ -110,7 +110,8 @@ continuousRealization = process.getContinuousRealization()
 # Once again we draw its first marginal :
 marginal0 = continuousRealization.getMarginal(0)
 graph = marginal0.draw(minMesh, maxMesh)
-graph.setTitle("First marginal of a P1-Lagrange continuous realization of the process")
+graph.setTitle(
+    "First marginal of a P1-Lagrange continuous realization of the process")
 graph.setXTitle("t")
 view = viewer.View(graph)
 
@@ -154,15 +155,15 @@ view = viewer.View(graph)
 print(process.getMarginal([1]))
 
 # %%
-# If we extract simultaneously two indices we build a 2D gaussian process : 
+# If we extract simultaneously two indices we build a 2D gaussian process :
 print(process.getMarginal([0, 2]))
 
 # %%
 # We can check whether the process is normal or not :
-print( "Is normal ? ", process.isNormal() )
+print("Is normal ? ", process.isNormal())
 
 # %%
 # and the stationarity as well :
-print( "Is stationary ? ", process.isStationary() )
+print("Is stationary ? ", process.isStationary())
 
 plt.show()

@@ -97,13 +97,13 @@ void GaussLegendre::generateNodesAndWeights()
 {
   // First, generate the 1D marginal rules over [0, 1]
   const UnsignedInteger dimension = discretization_.getSize();
-  if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive dimension";
+  if (!(dimension > 0)) throw InvalidArgumentException(HERE) << "Error: expected a positive dimension, not " << dimension;
   Collection<Point> marginalNodes(dimension);
   Collection<Point> marginalWeights(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const UnsignedInteger integrationNodesNumber(discretization_[i]);
-    if (integrationNodesNumber == 0) throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] is null.";
+    if (!(integrationNodesNumber > 0)) throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] has " << integrationNodesNumber << "nodes.";
     // Check if we already computed this 1D rule
     // We use the value 'dimension' as a guard
     UnsignedInteger indexAlreadyComputed = dimension;

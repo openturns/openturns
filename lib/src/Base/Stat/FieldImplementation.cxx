@@ -36,6 +36,7 @@
 #include "openturns/Os.hxx"
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -162,22 +163,22 @@ const Scalar & FieldImplementation::operator () (const UnsignedInteger i,
 
 NSI_point FieldImplementation::at (const UnsignedInteger index)
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   isAlreadyComputedInputMean_ = false;
   return (*this)[index];
 }
 
 NSI_const_point FieldImplementation::at (const UnsignedInteger index) const
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   return (*this)[index];
 }
 
 Scalar & FieldImplementation::at (const UnsignedInteger i,
                                   const UnsignedInteger j)
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j >= getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
+  if (!(j < getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
   isAlreadyComputedInputMean_ = false;
   return values_(i, j);
 }
@@ -185,8 +186,8 @@ Scalar & FieldImplementation::at (const UnsignedInteger i,
 const Scalar & FieldImplementation::at (const UnsignedInteger i,
                                         const UnsignedInteger j) const
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j >= getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
+  if (!(j < getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
   return values_(i, j);
 }
 
@@ -264,10 +265,10 @@ struct FieldInputMeanFunctor
   FieldInputMeanFunctor(const Point & volumes, const FieldImplementation & field)
     : volumes_(volumes), field_(field), accumulator_(field.getOutputDimension(), 0.0) {}
 
-  FieldInputMeanFunctor(const FieldInputMeanFunctor & other, TBB::Split)
+  FieldInputMeanFunctor(const FieldInputMeanFunctor & other, TBBImplementation::Split)
     : volumes_(other.volumes_), field_(other.field_), accumulator_(other.field_.getOutputDimension(), 0.0) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     const UnsignedInteger meshDimension = field_.getInputDimension();
     const UnsignedInteger dimension = field_.getOutputDimension();
@@ -292,9 +293,9 @@ void FieldImplementation::computeInputMean() const
 {
   const Point simplicesVolume(mesh_.computeSimplicesVolume());
   const Scalar totalVolume(simplicesVolume.norm1());
-  if (totalVolume == 0.0) throw InternalException(HERE) << "Error: cannot compute the input mean of a field supported by a mesh of zero volume.";
+  if (!(totalVolume > 0.0)) throw InternalException(HERE) << "Error: cannot compute the input mean of a field supported by a mesh of zero volume.";
   FieldInputMeanFunctor functor( simplicesVolume, *this );
-  TBB::ParallelReduce( 0, mesh_.getSimplicesNumber(), functor );
+  TBBImplementation::ParallelReduce( 0, mesh_.getSimplicesNumber(), functor );
   inputMean_ = functor.accumulator_ / totalVolume;
   isAlreadyComputedInputMean_ = true;
 }
@@ -483,9 +484,9 @@ Graph FieldImplementation::draw() const
 Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
                                         const Bool interpolate) const
 {
-  if (index >= getOutputDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
+  if (!(index < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
   const UnsignedInteger meshDimension = getInputDimension();
-  if (meshDimension > 2) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
+  if (!(meshDimension <= 2)) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
   const Sample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
   Graph graph(title, description_[0], description_[index + 1], true, "topright");

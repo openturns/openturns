@@ -14,35 +14,36 @@ Defining Python and symbolic functions: a quick start introduction to functions
 #
 # We consider the following example:
 #
-# * three input variables, 
-# * two outputs. 
+# * three input variables,
+# * two outputs.
 #
-# Moreover, we assume that the input distribution has independent Gaussian marginals. 
+# Moreover, we assume that the input distribution has independent Gaussian marginals.
 #
 # The function is defined by the equations:
-# 
+#
 # .. math::
 #    Y_1 = X_1 + X_2 + X_3
-# 
-# and 
+#
+# and
 #
 # .. math::
 #    Y_2 = X_1 - X_2 X_3
-# 
 #
-# for any :math:`X_1,X_2,X_3 \in \mathbb{R}`. 
+#
+# for any :math:`X_1,X_2,X_3 \in \mathbb{R}`.
 #
 # The exact expectation and standard deviation of the output random variable are presented in the following table.
 #
 # =============     ===========  ==================
-# Variable          Expectation  Standard deviation 
+# Variable          Expectation  Standard deviation
 # =============     ===========  ==================
-#  :math:`Y_1`       0            1.732              
-#  :math:`Y_2`       0            1.415              
+#  :math:`Y_1`       0            1.732
+#  :math:`Y_2`       0            1.415
 # =============     ===========  ==================
-# 
+#
 
 # %%
+import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -52,10 +53,10 @@ ot.Log.Show(ot.Log.NONE)
 # We first define the input random vector of the function.
 
 # %%
-X0 = ot.Normal(0.,1.)
-X1 = ot.Normal(0.,1.)
-X2 = ot.Normal(0.,1.)
-inputDistribution = ot.ComposedDistribution((X0,X1,X2))
+X0 = ot.Normal(0., 1.)
+X1 = ot.Normal(0., 1.)
+X2 = ot.Normal(0., 1.)
+inputDistribution = ot.ComposedDistribution((X0, X1, X2))
 inputRandomVector = ot.RandomVector(inputDistribution)
 
 
@@ -63,7 +64,7 @@ inputRandomVector = ot.RandomVector(inputDistribution)
 # The Python function
 # -------------------
 #
-# Based on a Python function defined with the `def` keyword, the `PythonFunction` class creates a function. 
+# Based on a Python function defined with the `def` keyword, the `PythonFunction` class creates a function.
 #
 # The simplest constructor of the `PythonFunction` class is:
 #
@@ -71,14 +72,14 @@ inputRandomVector = ot.RandomVector(inputDistribution)
 #
 # where
 #
-# * `nbInputs`: the number of inputs, 
+# * `nbInputs`: the number of inputs,
 # * `nbOutputs`: the number of outputs,
 # * `myPythonFunc`: a Python function.
 #
 # The goal of the `PythonFunction` class are:
 #
 # * to easily create a function in Python,
-# * use all the power of the Python libraries in order to evaluate the function. 
+# * use all the power of the Python libraries in order to evaluate the function.
 
 # %%
 # The function `mySimulator` has the calling sequence `y=mySimulator(x)` where:
@@ -88,9 +89,9 @@ inputRandomVector = ot.RandomVector(inputDistribution)
 
 # %%
 def mySimulator(x):
-    y0=x[0]+x[1]+x[2]
-    y1=x[0]-x[1]*x[2]
-    y=[y0,y1]
+    y0 = x[0]+x[1]+x[2]
+    y1 = x[0]-x[1]*x[2]
+    y = [y0, y1]
     return y
 
 
@@ -98,22 +99,22 @@ def mySimulator(x):
 # We now define the `PythonFunction` object.
 
 # %%
-myfunction = ot.PythonFunction (3 ,2 , mySimulator )
+myfunction = ot.PythonFunction(3, 2, mySimulator)
 
 # %%
 # This function can be evaluated using parentheses. It produces the same outputs as the `mySimulator` function.
 
 # %%
-myfunction([1.,2.,3.])
+myfunction([1., 2., 3.])
 
 # %%
 # However, the newly created `myfunction` has services that the basic Python function did not have. For example, we can create a `CompositeRandomVector` on top of it, by associating it to the input random vector.
 
 # %%
-outputVect =  ot.CompositeRandomVector(myfunction, inputRandomVector)
+outputVect = ot.CompositeRandomVector(myfunction, inputRandomVector)
 
 # %%
-# In the following example, we estimate the output mean based on a simple Monte-Carlo experiment using 10000 function evaluations. 
+# In the following example, we estimate the output mean based on a simple Monte-Carlo experiment using 10000 function evaluations.
 
 # %%
 montecarlosize = 10000
@@ -134,10 +135,10 @@ print(empiricalSd)
 #  ====================  =======  ========
 #  Type                  Input X  Output Y
 #  ====================  =======  ========
-#  `list` (Python)       NO       YES     
-#  `tuple` (Python)      NO       YES     
-#  `array` (NumPy)       NO       YES     
-#  `Point` (OpenTURNS)   YES      YES     
+#  `list` (Python)       NO       YES
+#  `tuple` (Python)      NO       YES
+#  `array` (NumPy)       NO       YES
+#  `Point` (OpenTURNS)   YES      YES
 #  ====================  =======  ========
 #
 
@@ -157,7 +158,7 @@ print(empiricalSd)
 #
 # myfunction = PythonFunction(nbInputs, nbOutputs, func_sample = mySimulator)
 #
-# where 
+# where
 #
 # * x: the input of the function, a `Sample` with size `nbExperiments` (`getSize`) and dimension `nbInputs` (`getDimension`),
 # * y: the output of the function
@@ -169,29 +170,28 @@ print(empiricalSd)
 # In the following, we present an vectorization example based on the `numpy` module.
 
 # %%
-import numpy as np
 
 
 # %%
-def mySimulatorVect (x):
+def mySimulatorVect(x):
     # Convert NumericalSample > Array Numpy
-    x = np.array (x)
-    x0 = x[: ,0] # Extract column 0
-    x1 = x[: ,1]
-    x2 = x[: ,2]
+    x = np.array(x)
+    x0 = x[:, 0]  # Extract column 0
+    x1 = x[:, 1]
+    x2 = x[:, 2]
     y0 = x0 + x1 + x2
     y1 = x0 - x1 * x2
     # Stack the two rows
-    y = np.vstack ((y0 ,y1 ))
-    y = y.transpose ()
+    y = np.vstack((y0, y1))
+    y = y.transpose()
     return y
 
 
 # %%
-myfunctionVect = ot.PythonFunction (3, 2, func_sample = mySimulatorVect )
+myfunctionVect = ot.PythonFunction(3, 2, func_sample=mySimulatorVect)
 
 # %%
-outputVect =  ot.CompositeRandomVector(myfunctionVect, inputRandomVector)
+outputVect = ot.CompositeRandomVector(myfunctionVect, inputRandomVector)
 
 # %%
 montecarlosize = 10000
@@ -209,21 +209,22 @@ print(empiricalSd)
 # The `MemoizeFunction` class defines a history system to store the calls to the function.
 #
 #  ====================   ===============================================
-#  Methods                Description 
+#  Methods                Description
 #  ====================   ===============================================
-#  `enableHistory()`      enables the history (it is enabled by default) 
-#  `disableHistory()`     disables the history 
-#  `clearHistory()`       deletes the content of the history 
-#  `getHistoryInput()`    a `Sample`, the history of inputs X 
-#  `getHistoryOutput()`   a `Sample`, the history of outputs Y 
+#  `enableHistory()`      enables the history (it is enabled by default)
+#  `disableHistory()`     disables the history
+#  `clearHistory()`       deletes the content of the history
+#  `getHistoryInput()`    a `Sample`, the history of inputs X
+#  `getHistoryOutput()`   a `Sample`, the history of outputs Y
 #  ====================   ===============================================
 
 # %%
-myfunction = ot.PythonFunction (3 ,2 , mySimulator )
+myfunction = ot.PythonFunction(3, 2, mySimulator)
 myfunction = ot.MemoizeFunction(myfunction)
 
 # %%
-outputVariableOfInterest =  ot.CompositeRandomVector(myfunction, inputRandomVector)
+outputVariableOfInterest = ot.CompositeRandomVector(
+    myfunction, inputRandomVector)
 montecarlosize = 10
 outputSample = outputVariableOfInterest.getSample(montecarlosize)
 
@@ -242,8 +243,8 @@ inputs
 #
 # This has at least two significant advantages.
 #
-# * It generally improves the performance. 
-# * This allows to automatically evaluate the exact gradient and Hessian matrix. 
+# * It generally improves the performance.
+# * This allows to automatically evaluate the exact gradient and Hessian matrix.
 #
 # In practice, some functions cannot be expressed as a symbolic function: in this case, the Python function cannot be avoided.
 
@@ -256,11 +257,12 @@ inputs
 #
 # where
 #
-# * list_of_inputs: a `list` of `nbInputs` strings, the names of the input variables, 
+# * list_of_inputs: a `list` of `nbInputs` strings, the names of the input variables,
 # * list_of_formulas: a `list` of `nbOutputs` strings, the equations.
 
 # %%
-myfunction = ot.SymbolicFunction(("x0","x1","x2"),("x0 + x1 + x2","x0 - x1 * x2"))
+myfunction = ot.SymbolicFunction(
+    ("x0", "x1", "x2"), ("x0 + x1 + x2", "x0 - x1 * x2"))
 
 # %%
 # A `SymbolicFunction`, like any other function, can also have a history.
@@ -269,7 +271,7 @@ myfunction = ot.SymbolicFunction(("x0","x1","x2"),("x0 + x1 + x2","x0 - x1 * x2"
 myfunction = ot.MemoizeFunction(myfunction)
 
 # %%
-outputVect =  ot.CompositeRandomVector(myfunction, inputRandomVector)
+outputVect = ot.CompositeRandomVector(myfunction, inputRandomVector)
 
 # %%
 montecarlosize = 10000
@@ -282,4 +284,4 @@ print(empiricalMean)
 
 # %%
 outputs = myfunction.getOutputHistory()
-outputs[1:10,:]
+outputs[1:10, :]

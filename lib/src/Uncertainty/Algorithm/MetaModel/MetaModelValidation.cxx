@@ -134,8 +134,10 @@ Distribution MetaModelValidation::getResidualDistribution(const Bool smooth) con
     ComposedDistribution::DistributionCollection coll(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++ j)
       coll[j] = HistogramFactory().build(residual_.getMarginal(j));
-    const Distribution copula(BernsteinCopulaFactory().build(residual_));
-    return ComposedDistribution(coll, copula);
+    // Estimate a copula only if dimension>1
+    if (dimension > 1)
+      return ComposedDistribution(coll, BernsteinCopulaFactory().build(residual_));
+    return coll[0];
   }
   return KernelSmoothing().build(residual_);
 }

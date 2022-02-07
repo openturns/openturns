@@ -34,5 +34,5 @@ name : str
 Returns
 -------
 impl : Implementation
-    The implementation class."
-    
+    A copy of the underlying implementation object."
+

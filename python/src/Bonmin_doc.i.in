@@ -137,16 +137,6 @@ algoName : :class:`~openturns.Description`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Bonmin::IsAvailable
-"Retrieves the names of the available optimization algorithms.
-
-Returns
--------
-algoName : bool
-    Returns true if Bonmin support is available, false if not."
-    
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Bonmin::setAlgorithmName
 "Accessor to algoName parameter. Sets the optimization algorithm to
 use. Possible values for algoName are B-BB, B-OA, B-QG, B-Hyb, B-Ecp, B-iFP. See

@@ -697,6 +697,7 @@ static double DurbinMatrix (int n, double d)
 #endif
   k = (int) (n * d) + 1;
   m = 2 * k - 1;
+  if (m <= 0) return 0.0;
   h = k - n * d;
   H = (double *) malloc ((m * m) * sizeof (double));
   Q = (double *) malloc ((m * m) * sizeof (double));

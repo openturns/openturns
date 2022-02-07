@@ -9,7 +9,7 @@ Specify a simulation algorithm
 #  - the precision of the probability estimator
 #  - the sample storage strategy
 #  - using callbacks to monitor progress and stopping criteria.
-#  
+#
 
 # %%
 from __future__ import print_function
@@ -49,7 +49,7 @@ experiment = ot.MonteCarloExperiment()
 algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
 
 # %%
-# Criteria 1: Define the Maximum Coefficient of variation of the probability estimator. 
+# Criteria 1: Define the Maximum Coefficient of variation of the probability estimator.
 
 # %%
 algo.setMaximumCoefficientOfVariation(0.05)
@@ -61,13 +61,13 @@ algo.setMaximumCoefficientOfVariation(0.05)
 algo.setMaximumOuterSampling(int(1e4))
 
 # %%
-# The block size parameter represents the number of samples evaluated per iteration, useful for parallelization. 
+# The block size parameter represents the number of samples evaluated per iteration, useful for parallelization.
 
 # %%
 algo.setBlockSize(2)
 
 # %%
-# HistoryStrategy to store the values of the probability used to draw the convergence graph. 
+# HistoryStrategy to store the values of the probability used to draw the convergence graph.
 
 # %%
 # Null strategy
@@ -82,7 +82,7 @@ algo.setConvergenceStrategy(ot.Compact(N))
 
 
 # %%
-# Use a callback to display the progress every 10%. 
+# Use a callback to display the progress every 10%.
 
 # %%
 def progress(p):
@@ -90,24 +90,28 @@ def progress(p):
         progress.t += 10.0
         print('progress=', p, '%')
     return False
+
+
 progress.t = 10.0
 algo.setProgressCallback(progress)
 
 
 # %%
-# Use a callback to stop the simulation. 
+# Use a callback to stop the simulation.
 
 # %%
 def stop():
     # here we never stop, but we could
     return False
+
+
 algo.setStopCallback(stop)
 
 # %%
 algo.run()
 
 # %%
-# Retrieve results. 
+# Retrieve results.
 
 # %%
 result = algo.getResult()

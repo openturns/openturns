@@ -56,7 +56,7 @@ for i in range(outputDimension * size):
     globalErrorCovariance[i, i] = 0.1 * (2.0 + (1.0 + i) * (1.0 + i))
     for j in range(i):
         globalErrorCovariance[i, j] = 0.1 / (1.0 + i + j)
-for bootstrapSize in [0, 100]:
+for bootstrapSize in [0, 30]:
     # 1. Constructor 1
     algo = ot.GaussianNonLinearCalibration(
         model, x, y, candidate, priorCovariance, errorCovariance

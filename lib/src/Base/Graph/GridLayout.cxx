@@ -111,6 +111,29 @@ void GridLayout::setGraph(const UnsignedInteger i, const UnsignedInteger j, cons
   graphCollection_[i * nbColumns_ + j] = elt;
 }
 
+Graph::GraphCollection GridLayout::getGraphCollection() const
+{
+  return graphCollection_;
+}
+
+void GridLayout::setGraphCollection(const Graph::GraphCollection & coll)
+{
+  if (coll.getSize() > graphCollection_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a graph collection of size at most " << graphCollection_.getSize() << ", got size=" << coll.getSize();
+  graphCollection_ = Graph::GraphCollection(nbRows_ * nbColumns_);
+  std::copy(coll.begin(), coll.end(), graphCollection_.begin());
+}
+
+void GridLayout::setLayout(const UnsignedInteger nbRows,
+                           const UnsignedInteger nbColumns)
+{
+  const UnsignedInteger oldSize = graphCollection_.getSize();
+  const UnsignedInteger newSize = nbRows * nbColumns;
+  if (newSize < oldSize) LOGWARN(OSS() << "The new layout will contain " << newSize << " graphs, the old layout was for " << oldSize << " graphs. The remaining graphs are removed from the layout.");
+  graphCollection_.resize(newSize);
+  nbRows_ = nbRows;
+  nbColumns_ = nbColumns;
+}
+
 void GridLayout::setTitle(const String & title)
 {
   title_ = title;

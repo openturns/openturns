@@ -136,8 +136,6 @@ OT_Distribution_getIsoProbabilisticTransformation_doc
 OT_Distribution_getKendallTau_doc
 %feature("docstring") OT::Distribution::getKurtosis
 OT_Distribution_getKurtosis_doc
-%feature("docstring") OT::Distribution::getLinearCorrelation
-OT_Distribution_getLinearCorrelation_doc
 %feature("docstring") OT::Distribution::getMarginal
 OT_Distribution_getMarginal_doc
 %feature("docstring") OT::Distribution::getMean
@@ -168,6 +166,10 @@ OT_Distribution_getRealization_doc
 OT_Distribution_getRoughness_doc
 %feature("docstring") OT::Distribution::getSample
 OT_Distribution_getSample_doc
+%feature("docstring") OT::Distribution::getSampleByInversion
+OT_Distribution_getSampleByInversion_doc
+%feature("docstring") OT::Distribution::getSampleByQMC
+OT_Distribution_getSampleByQMC_doc
 %feature("docstring") OT::Distribution::getShapeMatrix
 OT_Distribution_getShapeMatrix_doc
 %feature("docstring") OT::Distribution::getSkewness

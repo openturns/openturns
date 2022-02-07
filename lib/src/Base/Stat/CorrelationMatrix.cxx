@@ -46,6 +46,13 @@ CorrelationMatrix::CorrelationMatrix(const MatrixImplementation & i)
   // Nothing to do
 }
 
+/* Constructor from SymmetricMatrix */
+CorrelationMatrix::CorrelationMatrix(const SymmetricMatrix & sym)
+  : CovarianceMatrix(sym)
+{
+  // Nothing to do
+}
+
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 CorrelationMatrix::CorrelationMatrix(const UnsignedInteger dim)
   : CovarianceMatrix(dim)

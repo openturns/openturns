@@ -54,13 +54,6 @@ int main(int, char *[])
     fullprint << "Default triangular=" << estimatedTriangular << std::endl;
     estimatedTriangular = factory.buildAsTriangular(distribution.getParameter());
     fullprint << "Triangular from parameters=" << estimatedTriangular << std::endl;
-    // Test for constant sample
-    sample = Sample(size, Point(1, 0.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = Sample(size, Point(1, 1.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {
