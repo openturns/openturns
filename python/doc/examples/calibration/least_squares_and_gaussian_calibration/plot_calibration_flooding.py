@@ -4,6 +4,7 @@ Calibration of the flooding model
 """
 # %%
 # In this example we are interested in the calibration of the :ref:`flooding model <use-case-flood-model>`.
+# In this example we calibrate the parameters of a flooding model where only the difference between the downstream and upstream riverbed levels can be calibrated. This example shows how to manage the lack of identifiability in a calibration problem.
 #
 # Parameters to calibrate
 # -----------------------
@@ -50,6 +51,13 @@ Calibration of the flooding model
 #
 #
 # The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`, i.e. each observation is a couple made of the flowrate and the corresponding river height.
+#
+# Variables
+# ---------
+#
+# - Q : Input. Observed.
+# - Ks, Zv, Zm : Input. Calibrated.
+# - H: Output. Observed.
 #
 # Analysis
 # --------

@@ -92,7 +92,7 @@ paramDim = 3
 obsSize = 10
 
 # %%
-# - Define the observed inputs :math:`x_i`
+# Define the observed inputs :math:`x_i`
 
 # %%
 xmin = -2.
@@ -103,7 +103,7 @@ x_obs = rg.getVertices()
 x_obs
 
 # %%
-# - Define the parametric model :math:`z = f(x,\theta)` that associates each observation :math:`x_i` and values of the  parameters :math:`\theta_i` to the parameters of the distribution of the corresponding observation: here :math:`z=(\mu, \sigma)` where :math:`\mu`, the first output of the model, is the mean and :math:`\sigma`, the second output of the model, is the standard deviation.
+# Define the parametric model :math:`z = f(x,\theta)` that associates each observation :math:`x_i` and values of the  parameters :math:`\theta_i` to the parameters of the distribution of the corresponding observation: here :math:`z=(\mu, \sigma)` where :math:`\mu`, the first output of the model, is the mean and :math:`\sigma`, the second output of the model, is the standard deviation.
 
 # %%
 fullModel = ot.SymbolicFunction(
@@ -112,7 +112,7 @@ model = ot.ParametricFunction(fullModel, [0], x_obs[0])
 model
 
 # %%
-# - Define the observation noise :math:`\varepsilon {\sim} \mathcal N(0, 1)` and create a sample from it.
+# Define the observation noise :math:`\varepsilon {\sim} \mathcal N(0, 1)` and create a sample from it.
 
 # %%
 ot.RandomGenerator.SetSeed(0)
@@ -122,7 +122,7 @@ noiseSample = noise.getSample(obsSize)
 noiseSample
 
 # %%
-# - Define the vector of observations :math:`y_i`
+# Define the vector of observations :math:`y_i`
 
 # %%
 # In this model, we use a constant value of the parameter. The "true" value of :math:`\theta` is used to compute the model outputs.
@@ -138,7 +138,7 @@ for i in range(obsSize):
 y_obs
 
 # %%
-# - Draw the model vs the observations.
+# Draw the model predictions vs the observations.
 
 # %%
 functionnalModel = ot.ParametricFunction(fullModel, [1, 2, 3], thetaTrue)
@@ -152,7 +152,7 @@ graphModel.setLegendPosition("topleft")
 view = viewer.View(graphModel)
 
 # %%
-# - Define the distribution of observations :math:`\underline{y} | \underline{z}` conditional on model predictions
+# Define the distribution of observations :math:`\underline{y} | \underline{z}` conditional on model predictions
 #
 # Note that its parameter dimension is the one of :math:`\underline{z}`, so the model must be adjusted accordingly
 
@@ -161,7 +161,7 @@ conditional = ot.Normal()
 conditional
 
 # %%
-# - Define the mean :math:`\mu_\theta`, the covariance matrix :math:`\Sigma_\theta`, then the prior distribution :math:`\pi(\underline{\theta})` of the parameter :math:`\underline{\theta}`.
+# Define the mean :math:`\mu_\theta`, the covariance matrix :math:`\Sigma_\theta`, then the prior distribution :math:`\pi(\underline{\theta})` of the parameter :math:`\underline{\theta}`.
 
 # %%
 thetaPriorMean = [-3., 4., 1.]
@@ -177,7 +177,7 @@ prior.setDescription(['theta1', 'theta2', 'theta3'])
 prior
 
 # %%
-# - Proposal distribution: uniform.
+# Proposal distribution: uniform.
 
 # %%
 proposal = [ot.Uniform(-1., 1.)] * paramDim
@@ -200,7 +200,7 @@ mymcmc.computeLogLikelihood(thetaPriorMean)
 # ------------------------------------
 
 # %%
-# - Creation of the Random Walk Metropolis-Hastings (RWMH) sampler.
+# Creation of the Random Walk Metropolis-Hastings (RWMH) sampler.
 
 # %%
 initialState = thetaPriorMean

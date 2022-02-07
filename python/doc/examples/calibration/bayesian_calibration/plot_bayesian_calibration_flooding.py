@@ -7,7 +7,7 @@ Bayesian calibration of the flooding model
 # Abstract
 # --------
 #
-# The goal of this example is to present the statistical hypotheses of the bayesian calibration of the :ref:`flooding model<use-case-flood-model>`.
+# The goal of this example is to present the Bayesian calibration of the :ref:`flooding model<use-case-flood-model>`.
 
 # %%
 # Parameters to calibrate
@@ -56,10 +56,12 @@ Bayesian calibration of the flooding model
 #
 # The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`, i.e. each observation is a couple made of the flowrate and the corresponding river height.
 #
-# Analysis
-# --------
+# Variables
+# ---------
 #
-# In this model, the variables :math:`Z_m` and :math:`Z_v` are not identifiables, since only the difference :math:`Z_m-Z_v` matters. Hence, calibrating this model requires some regularization.
+# - Q : Input. Observed.
+# - Ks, Zv, Zm : Input. Calibrated.
+# - H: Output. Observed.
 
 # %%
 # Generate the observations
