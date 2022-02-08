@@ -472,57 +472,54 @@ void HMatrixImplementation::factorize(const String& method)
   else if (method != "LU")
     LOGWARN( OSS() << "Unknown factorization method: " << method << ". Valid values are: LU, LDLt, or LLt.");
 
+  // Compute an approximation of the max eigen value
+  const Scalar maxEV = computeApproximateLargestEigenValue();
   // Compute a reasonable regularization factor
-  Scalar lambda = 2.0 * computeApproximateLargestEigenValue() * ResourceMap::GetAsScalar("HMatrix-RegularizationEpsilon");
+  Scalar lambda = 2.0 * maxEV * ResourceMap::GetAsScalar("HMatrix-RegularizationEpsilon");
 
   // create a backup copy as the factorization can leave the matrix in a broken state and should not be reused
   hmat_matrix_t* hmatBackup = static_cast<hmat_matrix_t*>(hmat_);
   hmat_ = static_cast<hmat_interface_t*>(hmatInterface_.get())->copy(static_cast<hmat_matrix_t*>(hmatBackup));
 
-  // Do regularization
-  addIdentity(lambda);
   Bool done = false;
-  String msg;
   const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("HMatrix-FactorizationIterations");
-  for (UnsignedInteger iteration = 0; iteration < maximumIteration; ++ iteration)
+  UnsignedInteger iteration = 0;
+  // At least one regularization
+  Bool cont = true;
+  while (cont)
   {
+    // Double the current regularization factor by adding it another time
+    addIdentity(lambda);
     LOGDEBUG(OSS() << "Factorization, regularization loop " << iteration << ", regularization factor=" << lambda);
-    try
+
+    hmat_factorization_context_t context;
+    hmat_factorization_context_init(&context);
+    context.factorization = fact_method;
+    context.progress = NULL;
+    int rc = static_cast<hmat_interface_t *>(hmatInterface_.get())->factorize_generic(static_cast<hmat_matrix_t *>(hmat_), &context);
+    done = (rc == 0);
+    if (!done)
     {
-      hmat_factorization_context_t context;
-      hmat_factorization_context_init(&context);
-      context.factorization = fact_method;
-      context.progress = NULL;
-      static_cast<hmat_interface_t*>(hmatInterface_.get())->factorize_generic(static_cast<hmat_matrix_t*>(hmat_), &context);
-
-      // ditch the original instance
-      static_cast<hmat_interface_t*>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t*>(hmatBackup));
-      static_cast<hmat_interface_t*>(hmatInterface_.get())->finalize();
-
-      done = true;
-      LOGDEBUG("Factorization ok");
-    }
-    catch (std::exception& ex)
-    {
-      // hmat::LapackException is not yet exported
-      msg = ex.what();
-
       // ditch the copy and restart from the original instance
-      static_cast<hmat_interface_t*>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t*>(hmat_));
-      static_cast<hmat_interface_t*>(hmatInterface_.get())->finalize();
+      static_cast<hmat_interface_t *>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t *>(hmat_));
+      hmat_ = static_cast<hmat_interface_t *>(hmatInterface_.get())->copy(static_cast<hmat_matrix_t *>(hmatBackup));
 
-      hmat_ = static_cast<hmat_interface_t*>(hmatInterface_.get())->copy(static_cast<hmat_matrix_t*>(hmatBackup));
-
-      // Double the current regularization factor by adding it another time
-      addIdentity(lambda);
       // And double its value for next loop
       lambda += lambda;
-      LOGDEBUG(OSS() << "Must increase the regularization to " << lambda << " because " << msg);
+      LOGDEBUG(OSS() << "Must increase the regularization to " << lambda );
     }
-    if (done) break;
-  } // for
+    else
+    {
+      LOGDEBUG("Factorization ok");
+    }
+    iteration += 1;
+    cont = (iteration < maximumIteration) && (!done);
+  } // while
+  // ditch the original instance
+  static_cast<hmat_interface_t *>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t *>(hmatBackup));
+  static_cast<hmat_interface_t *>(hmatInterface_.get())->finalize();
   if (!done)
-    throw InternalException(HERE) << "Factorization failed, msg=" << msg;
+    throw InternalException(HERE) << "HMatrix::factorize : factorization failed, probably needs more regularization" ;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
