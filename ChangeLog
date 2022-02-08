@@ -5,8 +5,10 @@
 === Library ===
 
 ==== Major changes ====
+ * RandomWalkMetropolisHastings now updates all components at a time, previously updated componentwise
 
 ==== New classes ====
+ * Gibbs, RandomVectorMetropolisHastings
 
 ==== API changes ====
  * Removed deprecated Hanning alias
@@ -18,6 +20,8 @@
  * Removed deprecated SubsetSampling.getNumberOfSteps
  * coupling_tools.execute: deprecated get_stderr,get_stdout for capture_output, returns CompletedProcess
  * Deprecated Nlopt|Ceres|Bonmin|CMinpack|Ipopt|TBB|HMatrixFactory::IsAvailable in favor of PlatformInfo::HasFeature, see also GetFeatures
+ * RandomWalkMetropolisHastings API breaks to split the likelihood definition
+ * Deprecated CalibrationStrategy class
 
 === Documentation ===
 

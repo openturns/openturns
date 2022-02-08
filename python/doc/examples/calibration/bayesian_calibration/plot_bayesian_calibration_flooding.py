@@ -16,7 +16,7 @@ Bayesian calibration of the flooding model
 # The vector of parameters to calibrate is:
 #
 # .. math::
-#    \theta = (K_s,Z_v,Z_m).
+#    \vect{\theta} = (K_s,Z_v,Z_m).
 #
 #
 # The variables to calibrate are :math:`(K_s,Z_v,Z_m)` and are set to the following values:
@@ -54,7 +54,8 @@ Bayesian calibration of the flooding model
 #    n=20.
 #
 #
-# The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`, i.e. each observation is a couple made of the flowrate and the corresponding river height.
+# The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`,
+# i.e. each observation is a couple made of the flowrate and the corresponding river height.
 #
 # Analysis
 # --------
@@ -67,8 +68,7 @@ Bayesian calibration of the flooding model
 
 # %%
 import pylab as pl
-from openturns.viewer import View
-from openturns.usecases import flood_model as flood_model
+from openturns.usecases import flood_model
 import openturns.viewer as viewer
 import numpy as np
 import openturns as ot
@@ -130,7 +130,7 @@ Z_m.setDescription(["Zm (m)"])
 inputRandomVector = ot.ComposedDistribution([Q, K_s, Z_v, Z_m])
 
 # %%
-# Create a Monte-Carlo sample of the output H.
+# Create a Monte-Carlo sample of the output :math:`H`.
 
 # %%
 nbobs = 20
@@ -165,22 +165,26 @@ view = viewer.View(graph)
 # ----------------------------------
 
 # %%
-# Define the parametric model :math:`z = f(x,\theta)` that associates each observation :math:`x_i` and values of the  parameters :math:`\theta_i` to the parameters of the distribution of the corresponding observation: here :math:`z=(\mu, \sigma)`
+# Define the parametric model :math:`\vect z = f_Q(\vect\theta)` that associates each observation
+# :math:`Q` and value of the parameters :math:`\vect \theta = (K_s, Z_v, Z_m)`
+# to the parameters of the distribution of the corresponding observation:
+# here :math:`\vect z=(\mu, \sigma)` with :math:`\mu = G(Q, K_s, Z_v, Z_m)`
+# and :math:`\sigma = 0.5`.
 
 # %%
 def fullModelPy(X):
     Q, K_s, Z_v, Z_m = X
-    H = g(X)[0]
-    sigmaH = 0.5  # (m^2) The standard deviation of the observation error.
-    return [H, sigmaH]
+    mu = g(X)[0]
+    sigma = 0.5  # (m^2) The standard deviation of the observation error.
+    return [mu, sigma]
 
 
 fullModel = ot.PythonFunction(4, 2, fullModelPy)
-model = ot.ParametricFunction(fullModel, [0], Qobs[0])
-model
+linkFunction = ot.ParametricFunction(fullModel, [0], [np.nan])
+print(linkFunction)
 
 # %%
-# Define the value of the reference values of the :math:`\theta` parameter. In the bayesian framework, this is called the mean of the *prior* gaussian distribution. In the data assimilation framework, this is called the *background*.
+# Define the value of the reference values of the :math:`\vect\theta` parameter. In the Bayesian framework, this is called the mean of the *prior* Gaussian distribution. In the data assimilation framework, this is called the *background*.
 
 # %%
 KsInitial = 20.
@@ -190,7 +194,7 @@ parameterPriorMean = [KsInitial, ZvInitial, ZmInitial]
 paramDim = len(parameterPriorMean)
 
 # %%
-# Define the covariance matrix of the parameters :math:`\theta` to calibrate.
+# Define the covariance matrix of the parameters :math:`\vect\theta` to calibrate.
 
 # %%
 sigmaKs = 5.
@@ -202,100 +206,66 @@ parameterPriorCovariance = ot.CovarianceMatrix(paramDim)
 parameterPriorCovariance[0, 0] = sigmaKs**2
 parameterPriorCovariance[1, 1] = sigmaZv**2
 parameterPriorCovariance[2, 2] = sigmaZm**2
-parameterPriorCovariance
 
 # %%
-# Define the the prior distribution :math:`\pi(\underline{\theta})` of the parameter :math:`\underline{\theta}`
+# Define the the prior distribution :math:`\pi(\vect\theta)` of the parameter :math:`\vect\theta`
 
 # %%
 prior = ot.Normal(parameterPriorMean, parameterPriorCovariance)
 prior.setDescription(['Ks', 'Zv', 'Zm'])
-prior
 
 # %%
-# Define the distribution of observations :math:`\underline{y} | \underline{z}` conditional on model predictions.
+# Define the distribution of observations :math:`\vect{y} | \vect{z}` conditional on model predictions.
 #
-# Note that its parameter dimension is the one of :math:`\underline{z}`, so the model must be adjusted accordingly. In other words, the input argument of the `setParameter` method of the conditional distribution must be equal to the dimension of the output of the `model`. Hence, we do not have to set the actual parameters: only the type of distribution is used.
+# Note that its parameter dimension is the one of :math:`\vect{z}`, so the model must be adjusted accordingly. In other words, the input argument of the `setParameter` method of the conditional distribution must be equal to the dimension of the output of the `model`. Hence, we do not have to set the actual parameters: only the type of distribution is used.
 
 # %%
 conditional = ot.Normal()
-conditional
 
 # %%
-# Proposal distribution: uniform.
+# The proposed steps for :math:`K_s` :math:`Z_v` and :math:`Z_m`
+# will all follow uniform distributions,
+# but with different supports.
 
 # %%
 proposal = [ot.Uniform(-5., 5.), ot.Uniform(-1., 1.), ot.Uniform(-1., 1.)]
-proposal
 
 # %%
-# Test the MCMC sampler
+# Build a Gibbs sampler
 # ---------------------
-#
-# The MCMC sampler essentially computes the log-likelihood of the parameters.
 
-# %%
-mymcmc = ot.MCMC(prior, conditional, model, Qobs, Hobs, parameterPriorMean)
-
-# %%
-mymcmc.computeLogLikelihood(parameterPriorMean)
-
-# %%
-# Test the Metropolis-Hastings sampler
-# ------------------------------------
-
-# %%
-# - Creation of the Random Walk Metropolis-Hastings (RWMH) sampler.
-
-# %%
 initialState = parameterPriorMean
+mh_coll = [ot.RandomWalkMetropolisHastings(prior, initialState, proposal[i], [i]) for i in range(paramDim)]
+for mh in mh_coll: mh.setLikelihood(conditional, Hobs, linkFunction, Qobs)
+sampler = ot.Gibbs(mh_coll)
 
 # %%
-RWMHsampler = ot.RandomWalkMetropolisHastings(
-    prior, conditional, model, Qobs, Hobs, initialState, proposal)
+# Tuning of the Gibbs algorithm.
 
 # %%
-# Tuning of the RWMH algorithm.
+sampler.setThinning(1)
+sampler.setBurnIn(200)
 
 # %%
-# Strategy of calibration for the random walk (trivial example: default).
-
-# %%
-strategy = ot.CalibrationStrategyCollection(paramDim)
-RWMHsampler.setCalibrationStrategyPerComponent(strategy)
-
-# %%
-# Other parameters.
-
-# %%
-RWMHsampler.setVerbose(True)
-RWMHsampler.setThinning(1)
-RWMHsampler.setBurnIn(200)
-
-# %%
-# Generate a sample from the posterior distribution of the parameters theta.
+# Generate a sample from the posterior distribution of :math:`\vect \theta`.
 
 # %%
 sampleSize = 1000
-sample = RWMHsampler.getSample(sampleSize)
+sample = sampler.getSample(sampleSize)
 
 # %%
-# Look at the acceptance rate (basic checking of the efficiency of the tuning; value close to 0.2 usually recommended).
+# Look at the acceptance rates of the random walk Metropolis-Hastings samplers.
 
-# %%
-RWMHsampler.getAcceptanceRate()
+[mh.getAcceptanceRate() for mh in sampler.getMetropolisHastingsCollection()]
 
 # %%
 # Build the distribution of the posterior by kernel smoothing.
 
-# %%
 kernel = ot.KernelSmoothing()
 posterior = kernel.build(sample)
 
 # %%
 # Display prior vs posterior for each parameter.
-
-# %%
 
 fig = pl.figure(figsize=(12, 4))
 

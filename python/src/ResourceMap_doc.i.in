@@ -268,7 +268,7 @@ value : int
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.SetAsUnsignedInteger('MCMC-DefaultBurnIn', 0)"
+>>> ot.ResourceMap.SetAsUnsignedInteger('MetropolisHastings-DefaultBurnIn', 0)"
 
 // ---------------------------------------------------------------------
 
@@ -286,8 +286,8 @@ value : int
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.AddAsUnsignedInteger('MCMC-DefaultBurnIn2', 0)
->>> ot.ResourceMap.RemoveKey('MCMC-DefaultBurnIn2')"
+>>> ot.ResourceMap.AddAsUnsignedInteger('MetropolisHastings-DefaultBurnIn2', 0)
+>>> ot.ResourceMap.RemoveKey('MetropolisHastings-DefaultBurnIn2')"
 
 // ---------------------------------------------------------------------
 
@@ -307,7 +307,7 @@ value : int
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.GetAsUnsignedInteger('MCMC-DefaultBurnIn')
+>>> ot.ResourceMap.GetAsUnsignedInteger('MetropolisHastings-DefaultBurnIn')
 0..."
 
 // ---------------------------------------------------------------------

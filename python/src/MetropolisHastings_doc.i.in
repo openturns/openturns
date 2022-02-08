@@ -1,0 +1,52 @@
+// MetropolisHastings docstrings are defined in MetropolisHastingsImplementation_doc.i.in
+
+%feature("docstring") OT::MetropolisHastings
+OT_MetropolisHastings_doc
+%feature("docstring") OT::MetropolisHastings::setLikelihood
+OT_MetropolisHastings_setLikelihood_doc
+%feature("docstring") OT::MetropolisHastings::getTargetDistribution
+OT_MetropolisHastings_getTargetDistribution_doc
+%feature("docstring") OT::MetropolisHastings::getTargetLogPDF
+OT_MetropolisHastings_getTargetLogPDF_doc
+%feature("docstring") OT::MetropolisHastings::getTargetLogPDFSupport
+OT_MetropolisHastings_getTargetLogPDFSupport_doc
+%feature("docstring") OT::MetropolisHastingsImplementation::getMarginalIndices
+OT_MetropolisHastings_getMarginalIndices_doc
+%feature("docstring") OT::MetropolisHastings::setLikelihood
+OT_MetropolisHastings_setLikelihood_doc
+%feature("docstring") OT::MetropolisHastings::setBurnIn
+OT_MetropolisHastings_setBurnIn_doc
+%feature("docstring") OT::MetropolisHastings::getBurnIn
+OT_MetropolisHastings_getBurnIn_doc
+%feature("docstring") OT::MetropolisHastings::setThinning
+OT_MetropolisHastings_setThinning_doc
+%feature("docstring") OT::MetropolisHastings::getThinning
+OT_MetropolisHastings_getThinning_doc
+%feature("docstring") OT::MetropolisHastings::getAcceptanceRate
+OT_MetropolisHastings_getAcceptanceRate_doc
+%feature("docstring") OT::MetropolisHastings::computeLogLikelihood
+OT_MetropolisHastings_computeLogLikelihood_doc
+%feature("docstring") OT::MetropolisHastings::computeLogPosterior
+OT_MetropolisHastings_computeLogPosterior_doc
+%feature("docstring") OT::MetropolisHastings::setHistory
+OT_MetropolisHastings_setHistory_doc
+%feature("docstring") OT::MetropolisHastings::getHistory
+OT_MetropolisHastings_getHistory_doc
+%feature("docstring") OT::MetropolisHastings::getInitialState
+OT_MetropolisHastings_getInitialState_doc
+%feature("docstring") OT::MetropolisHastings::getConditional
+OT_MetropolisHastings_getConditional_doc
+%feature("docstring") OT::MetropolisHastings::getLinkFunction
+OT_MetropolisHastings_getLinkFunction_doc
+%feature("docstring") OT::MetropolisHastings::getObservations
+OT_MetropolisHastings_getObservations_doc
+%feature("docstring") OT::MetropolisHastings::getCovariates
+OT_MetropolisHastings_getCovariates_doc
+
+// copied from RandomVector
+%feature("docstring") OT::MetropolisHastings::getDimension
+OT_RandomVector_getDimension_doc
+%feature("docstring") OT::MetropolisHastings::getRealization
+OT_RandomVector_getRealization_doc
+%feature("docstring") OT::MetropolisHastings::getSample
+OT_RandomVector_getSample_doc

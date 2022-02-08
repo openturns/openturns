@@ -26,12 +26,11 @@
 #include "openturns/CalibrationAlgorithm.hxx"
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
 #include "openturns/CalibrationResult.hxx"
-#include "openturns/CalibrationStrategy.hxx"
-#include "openturns/CalibrationStrategyImplementation.hxx"
 #include "openturns/LinearLeastSquaresCalibration.hxx"
-#include "openturns/MCMC.hxx"
 #include "openturns/NonLinearLeastSquaresCalibration.hxx"
-#include "openturns/RandomWalkMetropolisHastings.hxx"
 #include "openturns/GaussianNonLinearCalibration.hxx"
+#include "openturns/MetropolisHastingsImplementation.hxx"
+#include "openturns/RandomWalkMetropolisHastings.hxx"
+#include "openturns/Gibbs.hxx"
 
 #endif /* OPENTURNS_OTBAYESIAN_HXX */

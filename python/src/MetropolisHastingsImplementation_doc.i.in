@@ -1,0 +1,465 @@
+%define OT_MetropolisHastings_doc
+"Base class for Metropolis-Hastings algorithms.
+
+Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
+
+Notes
+-----
+Metropolis-Hastings algorithms are Markov Chain Monte-Carlo algorithms:
+they can sample from a target distribution
+defined as having a PDF proportional to some known function.
+
+If :meth:`setLikelihood` is used,
+then a likelihood factor is applied to the PDF of the target distribution:
+in Bayesian terms, the initially targeted distribution is the prior,
+and multiplying its PDF by the likelihood yields the PDF of the posterior
+up to a multiplicative constant.
+
+See Also
+--------
+RandomWalkMetropolisHastings"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation
+OT_MetropolisHastings_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_setLikelihood_doc
+"Set the likelihood.
+
+Parameters
+----------
+conditional : :class:`~openturns.Distribution`
+    Required distribution to define the likelihood of the underlying Bayesian
+    statistical model.
+observations : 2-d sequence of float
+    Observations :math:`\vect y^i` required to define the likelihood.
+linkFunction : :class:`~openturns.Function`, optional
+    Function :math:`g` that maps the chain into the conditional distribution parameters.
+    If provided, its input dimension must match the chain dimension and its
+    output dimension must match the conditional distribution parameter dimension.
+    Else it is set to the identity.
+covariates : 2-d sequence of float, optional
+    Parameters :math:`\vect c^i` of the linkFunction for each observation :math:`\vect y^i`.
+    If provided, their dimension must match the parameter dimension of *linkFunction*.
+
+Notes
+-----
+Once this method is called, the class no longer samples from the distribution *targetDistribution*
+or from the distribution defined by *targetLogPDF* and *support*,
+but considers that distribution as being the prior.
+Let :math:`\pi(\vect \theta)` be the PDF of the prior at the point :math:`\vect \theta`.
+The class now samples from the posterior, whose PDF is proportional to :math:`L(\vect\theta) \, \pi(\vect\theta)`,
+the likelihood :math:`L(\vect \theta)` being defined from the arguments of this method.
+
+The optional parameters *linkFunction* and *covariates* allow several options to define the likelihood :math:`L(\vect \theta)`.
+Letting :math:`f` be the PDF of the distribution *conditional*:
+
+- Without *linkFunction* and *covariates* the likelihood term reads:
+
+    .. math:: L(\vect \theta) = \prod_{i=1}^n f(\vect{y}^i|\vect{\theta})
+
+- If only the *linkFunction* is provided:
+
+    .. math:: L(\vect \theta) = \prod_{i=1}^n f(\vect{y}^i|g(\vect{\theta}))
+
+- If both the *linkFunction* and *covariates* are provided:
+
+    .. math:: L(\vect \theta) = \prod_{i=1}^n f(\vect{y}^i|g_{\vect c^i}(\vect{\theta}))
+"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::setLikelihood
+OT_MetropolisHastings_setLikelihood_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_computeLogLikelihood_doc
+"Compute the logarithm of the likelihood w.r.t. observations.
+
+Parameters
+----------
+currentState : sequence of float
+    Current state.
+
+Returns
+-------
+logLikelihood : float
+    Logarithm of the likelihood w.r.t. observations
+    :math:`(\vect{y}^1, \dots, \vect{y}^n)`."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::computeLogLikelihood
+OT_MetropolisHastings_computeLogLikelihood_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_computeLogPosterior_doc
+"Compute the logarithm of the unnormalized posterior density.
+
+Parameters
+----------
+currentState : sequence of float
+    Current state.
+
+Returns
+-------
+logPosterior : float
+    Target log-PDF plus log-likelihood if the log-likelihood is defined"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::computeLogPosterior
+OT_MetropolisHastings_computeLogPosterior_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getBurnIn_doc
+"Get the length of the burn-in period.
+
+Returns
+-------
+lenght : int
+    Length of the burn-in period, that is the number of first iterates of the
+    MCMC chain which will be thrown away when generating the sample."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getBurnIn
+OT_MetropolisHastings_getBurnIn_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_setBurnIn_doc
+"Set the length of the burn-in period.
+
+Parameters
+----------
+lenght : int
+    Length of the burn-in period, that is the number of first iterates of the
+    MCMC chain which will be thrown away when generating the sample."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::setBurnIn
+OT_MetropolisHastings_setBurnIn_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getConditional_doc
+"Get the *conditional* distribution.
+
+Returns
+-------
+conditional : :class:`~openturns.Distribution`
+    The *conditional* argument provided to :meth:`setLikelihood`"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getConditional
+OT_MetropolisHastings_getConditional_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getLinkFunction_doc
+"Get the model.
+
+Returns
+-------
+linkFunction : :class:`~openturns.Function`
+    The *linkFunction* argument provided to :meth:`setLikelihood`"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getLinkFunction
+OT_MetropolisHastings_getLinkFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getObservations_doc
+"Get the observations.
+
+Returns
+-------
+observations : :class:`~openturns.Sample`
+    The *observations* argument provided to :meth:`setLikelihood`"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getObservations
+OT_MetropolisHastings_getObservations_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getCovariates_doc
+"Get the parameters.
+
+Returns
+-------
+parameters : :class:`~openturns.Point`
+    Fixed parameters of the model :math:`g` required to define the likelihood."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getCovariates
+OT_MetropolisHastings_getCovariates_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getTargetDistribution_doc
+"Get the target distribution.
+
+Returns
+-------
+targetDistribution : :class:`~openturns.Distribution`
+    The *targetDistribution* argument provided to the constructor"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getTargetDistribution
+OT_MetropolisHastings_getTargetDistribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getThinning_doc
+"Get the thinning parameter.
+
+Returns
+-------
+thinning : int
+    Thinning parameter: storing only every :math:`k^{th}` point after the
+    burn-in period.
+
+Notes
+-----
+When generating a sample of size :math:`q`, the number of MCMC iterations
+performed is :math:`l+1+(q-1)k` where :math:`l` is the burn-in period length
+and :math:`k` the thinning parameter."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getThinning
+OT_MetropolisHastings_getThinning_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_setThinning_doc
+"Set the thinning parameter.
+
+Parameters
+----------
+thinning : int, :math:`k \geq 0`
+    Thinning parameter: storing only every :math:`k^{th}` point after the
+    burn-in period.
+
+Notes
+-----
+When generating a sample of size :math:`q`, the number of MCMC iterations
+performed is :math:`l+1+(q-1)k` where :math:`l` is the burn-in period length
+and :math:`k` the thinning parameter."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::setThinning
+OT_MetropolisHastings_setThinning_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getHistory_doc
+"Get the history storage.
+
+Returns
+-------
+history : :class:`~openturns.HistoryStrategy`
+    Used to record the chain."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getHistory
+OT_MetropolisHastings_getHistory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_setHistory_doc
+"Set the history storage.
+
+Parameters
+----------
+history : :class:`~openturns.HistoryStrategy`
+    Used to record the chain."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::setHistory
+OT_MetropolisHastings_setHistory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getVerbose_doc
+"Tell whether the verbose mode is activated or not.
+
+Returns
+-------
+isVerbose : bool
+    The verbose mode is activated if it is *True*, desactivated otherwise."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getVerbose
+OT_MetropolisHastings_getVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_setVerbose_doc
+"Set the verbose mode.
+
+Parameters
+----------
+isVerbose : bool
+    The verbose mode is activated if it is *True*, desactivated otherwise."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::setVerbose
+OT_MetropolisHastings_setVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getAcceptanceRate_doc
+"Get acceptance rate.
+
+Returns
+-------
+acceptanceRate : float
+    Global acceptance rates over all the MCMC iterations performed."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getAcceptanceRate
+OT_MetropolisHastings_getAcceptanceRate_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getInitialState_doc
+"Get the initial state.
+
+Returns
+-------
+initialState : sequence of float
+    Initial state of the chain"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getInitialState
+OT_MetropolisHastings_getInitialState_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getAdaptationPeriod_doc
+"Get the adaptation step.
+
+Returns
+-------
+period : positive int
+    This number defines the number of samples before adaptation occurs during
+    the burnin phase."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getAdaptationPeriod
+OT_MetropolisHastings_getAdaptationPeriod_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_setAdaptationPeriod_doc
+"Set the adaptation period.
+
+Parameters
+----------
+period : positive int
+    This number defines the number of samples before adaptation occurs during
+    the burnin phase."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::setAdaptationPeriod
+OT_MetropolisHastings_setAdaptationPeriod_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getExpansionFactor_doc
+"Get the expansion factor.
+
+Returns
+-------
+expansionFactor : float
+    Expansion factor :math:`e` of the adaptation factor."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getExpansionFactor
+OT_MetropolisHastings_getExpansionFactor_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_setExpansionFactor_doc
+"Set the expansion factor.
+
+Parameters
+----------
+expansionFactor : float, :math:`e > 1`
+    Expansion factor :math:`e` of the adaptation factor."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::setExpansionFactor
+OT_MetropolisHastings_setExpansionFactor_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getAdaptationRange_doc
+"Get the range.
+
+Returns
+-------
+range : :class:`~openturns.Interval` of dimension 1
+    Range :math:`[m,M]` of the adaptation factor."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getAdaptationRange
+OT_MetropolisHastings_getAdaptationRange_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_setAdaptationRange_doc
+"Set the range.
+
+Parameters
+----------
+range : :class:`~openturns.Interval` of dimension 1
+    Range :math:`[m,M]` of the adaptation factor."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::setAdaptationRange
+OT_MetropolisHastings_setAdaptationRange_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getShrinkFactor_doc
+"Get the shrink factor.
+
+Returns
+-------
+shrinkFactor : float
+    Shrink factor :math:`s` of the adaptation factor."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getShrinkFactor
+OT_MetropolisHastings_getShrinkFactor_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_setShrinkFactor_doc
+"Set the shrink factor.
+
+Parameters
+----------
+shrinkFactor : float, :math:`0 < s < 1`
+    Shrink factor :math:`s` of the adaptation factor."
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::setShrinkFactor
+OT_MetropolisHastings_setShrinkFactor_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getTargetLogPDF_doc
+"Get the target log-pdf.
+
+Returns
+-------
+targetLogPDF : :class:`~openturns.Function`
+    The *targetLogPDF* argument provided to the constructor"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getTargetLogPDF
+OT_MetropolisHastings_getTargetLogPDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getTargetLogPDFSupport_doc
+"Get the target log-pdf support.
+
+Returns
+-------
+support : :class:`~openturns.Interval`
+    The *support* argument provided to the constructor"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getTargetLogPDFSupport
+OT_MetropolisHastings_getTargetLogPDFSupport_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MetropolisHastings_getMarginalIndices_doc
+"Get the indices of the sampled components.
+
+Returns
+-------
+marginalIndices : :class:`~openturns.Indices`
+    The *marginalIndices* argument provided to the constructor"
+%enddef
+%feature("docstring") OT::MetropolisHastingsImplementation::getMarginalIndices
+OT_MetropolisHastings_getMarginalIndices_doc

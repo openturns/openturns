@@ -25,7 +25,6 @@
 using namespace OT;
 using namespace OT::Test;
 typedef ComposedDistribution::DistributionCollection DistributionCollection;
-typedef RandomWalkMetropolisHastings::CalibrationStrategyCollection CalibrationStrategyCollection;
 
 int main(int, char *[])
 {
@@ -51,16 +50,14 @@ int main(int, char *[])
 
     Sample data(realDist.getSample(size));
 
-    // calibration parameters
-    CalibrationStrategyCollection calibrationColl(2);
-
-    // proposal distribution
+    // instrumental distribution
     DistributionCollection proposalColl;
     Uniform mean_proposal(-2.0, 2.0);
     Uniform std_proposal(-2.0, 2.0);
     proposalColl.add(mean_proposal);
     proposalColl.add(std_proposal);
-
+    ComposedDistribution instrumental(proposalColl);
+    
     // prior distribution
     Scalar mu0 = 25.0;
 
@@ -92,11 +89,11 @@ int main(int, char *[])
       Distribution conditional = Normal();
 
       // create a metropolis-hastings sampler
-      RandomWalkMetropolisHastings sampler(prior, conditional, data, initialState, proposalColl);
+      RandomWalkMetropolisHastings sampler(prior, initialState, instrumental);
+      sampler.setLikelihood(conditional, data);
       sampler.setVerbose(true);
       sampler.setThinning(2);
       sampler.setBurnIn(500);
-      sampler.setCalibrationStrategyPerComponent(calibrationColl);
 
       Scalar sigmay = ConditionalDistribution(Normal(), prior).getStandardDeviation()[0];
       Scalar w = size * pow(sigma0, 2.) / (size * pow(sigma0, 2.) + pow(sigmay, 2.0));

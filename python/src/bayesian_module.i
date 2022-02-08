@@ -32,14 +32,15 @@
 %include CalibrationResult.i
 %include CalibrationAlgorithmImplementation.i
 %include CalibrationAlgorithm.i
-%include CalibrationStrategyImplementation.i
-%include CalibrationStrategy.i
 %include GaussianLinearCalibration.i
 %include LinearLeastSquaresCalibration.i
-%include MCMC.i
+%include MetropolisHastingsImplementation.i
+%include MetropolisHastings.i
 %include NonLinearLeastSquaresCalibration.i
 %include GaussianNonLinearCalibration.i
+%include RandomVectorMetropolisHastings.i
 %include RandomWalkMetropolisHastings.i
+%include Gibbs.i
 
 /* At last we include template definitions */
 %include UncertaintyBayesianTemplateDefs.i

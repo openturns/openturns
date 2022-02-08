@@ -741,13 +741,14 @@ ot_add_python_module(bayesian bayesian_module.i
                       CalibrationAlgorithmImplementation.i CalibrationAlgorithmImplementation_doc.i.in
                       CalibrationAlgorithm.i CalibrationAlgorithm_doc.i.in
                       CalibrationResult.i CalibrationResult_doc.i.in
-                      CalibrationStrategyImplementation.i CalibrationStrategyImplementation_doc.i.in
-                      CalibrationStrategy.i CalibrationStrategy_doc.i.in
                       LinearLeastSquaresCalibration.i LinearLeastSquaresCalibration_doc.i.in
-                      MCMC.i MCMC_doc.i.in
+                      MetropolisHastingsImplementation.i MetropolisHastingsImplementation_doc.i.in
+                      MetropolisHastings.i MetropolisHastings_doc.i.in
                       NonLinearLeastSquaresCalibration.i NonLinearLeastSquaresCalibration_doc.i.in
                       GaussianNonLinearCalibration.i GaussianNonLinearCalibration_doc.i.in
+		      RandomVectorMetropolisHastings.i RandomVectorMetropolisHastings_doc.i.in
                       RandomWalkMetropolisHastings.i RandomWalkMetropolisHastings_doc.i.in
+                      Gibbs.i Gibbs_doc.i.in
                       ConditionalRandomVector.i ConditionalRandomVector_doc.i.in
                       UncertaintyBayesianTemplateDefs.i
                     )
