@@ -4,210 +4,186 @@
 Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
 
 Available constructor:
-    RandomWalkMetropolisHastings(*prior, conditional, observations, initialState, proposal*)
+    RandomWalkMetropolisHastings(*targetDistribution, initialState, proposal, marginalIndices*)
 
-    RandomWalkMetropolisHastings(*prior, conditional, model, modelParameters, observations, initialState, proposal*)
+    RandomWalkMetropolisHastings(*targetLogPDF, support, initialState, proposal, marginalIndices*)
 
 Parameters
 ----------
-prior : :class:`~openturns.Distribution`
-    Prior distribution of the parameters of the underlying Bayesian statistical
-    model.
-conditional : :class:`~openturns.Distribution`
-    Required distribution to define the likelihood of the underlying Bayesian
-    statistical model.
-model : :class:`~openturns.Function`
-    Function required to define the likelihood. 
-    The dimension of the output of the `model` argument must be equal 
-    to the dimension of the `setParameter` method of the `conditional` argument. 
-observations : 2-d sequence of float
-    Observations required to define the likelihood. 
-    If a `model` argument is specified, the `observations` correspond 
-    to the output of the `model`.
+targetDistribution : :class:`~openturns.Distribution`
+    Target distribution sampled
+targetLogPDF : :class:`~openturns.Function`
+    Target log-density up to an additive constant
+support : :class:`~openturns.Domain`
+    Support of the target when defined with *targetLogPDF*
 initialState : sequence of float
-    Initial state of the Monte-Carlo Markov chain on which the Sampler is
-    based.
-    The dimension of the `initialState` must be equal to the dimension of the `prior`. 
-modelParameters : 2-d sequence of float
-    Parameters of the model to be fixed. 
-    The dimension of the `modelParameters` argument must 
-    be equal to the dimension of the `setParameter` method of the `model` argument. 
-    The size of the `modelParameters` variable must 
-    be equal to the size of the `observations` argument. 
-proposal : list of :class:`~openturns.Distribution`
-    Distributions from which the transition kernels of the
-    :class:`~openturns.MCMC` are defined, as explained hereafter. In the
-    following of this paragraph, :math:`\delta \sim p_j` means that the
-    realization :math:`\delta` is obtained according to the :math:`j^{th}`
-    Distribution of the list *proposal* of size :math:`d`. The underlying
-    MCMC algorithm is a Metropolis-Hastings one which draws candidates (for the
-    next state of the chain) using a random walk: from the current state
-    :math:`\vect{\theta}^k`, the candidate :math:`\vect{c}^k` for
-    :math:`\vect{\theta}^{k+1}` can be expressed as
-    :math:`\vect{c}^k = \vect{\theta}^k +\vect{\delta}^k` where the
-    distribution of :math:`\vect{\delta}^k` does not depend on
-    :math:`\vect{\theta}^k`. More precisely, here, during the :math:`k^{th}`
-    Metropolis-Hastings iteration, only the :math:`j^{th}` component
-    :math:`\delta_j^k` of :math:`\vect{\delta}^k` , with :math:`j=k \mod d`, is
-    not zero and :math:`\delta_j^k = \lambda_j^k \delta^k` where
-    :math:`\lambda_j^k` is a deterministic scalar *calibration* coefficient and
-    where :math:`\delta^k \sim p_j`. Moreover, :math:`\lambda_j^k = 1` by default,
-    but adaptive strategy based on the acceptance rate of each component can be
-    defined using the method :meth:`setCalibrationStrategyPerComponent`.
+    Initial state of the chain
+proposal : :class:`~openturns.Distribution`
+    Distribution of the steps of the random walk
+marginalIndices : sequence of int, optional
+    Indices of the components to be updated.
+    If not specified, all components are updated.
+    The number of updated components must be equal to the dimension of *proposal*.
 
 Notes
 -----
-A RandomWalkMetropolisHastings enables to carry out :class:`~openturns.MCMC`
-sampling according to the preceding statements. It is important to note that
-sampling one new realization comes to carrying out :math:`d` Metropolis-
-Hastings iterations (such as described above): all of the components of the new
-realization can differ from the corresponding components of the previous
-realization. Besides, the burn-in and thinning parameters do not take into
-consideration the number of MCMC iterations indeed, but the number of sampled
-realizations.
+The random walk Metropolis-Hastings algorithm 
+is a Markov Chain Monte-Carlo algorithm.
+It draws candidates for the
+next state of the chain as follows: denoting the current state by
+:math:`\vect{\theta}^k`, the candidate :math:`\vect{c}^k` for
+:math:`\vect{\theta}^{k+1}` can be expressed as
+:math:`\vect{c}^k = \vect{\theta}^k +\vect{\delta}^k` where the
+distribution of :math:`\vect{\delta}^k` is the provided *proposal* distribution.
 
 Examples
 --------
 >>> import openturns as ot
+>>> import math as m
 >>> ot.RandomGenerator.SetSeed(0)
->>> chainDim = 3
->>> # Observations
->>> obsDim = 1
->>> obsSize = 10
->>> y = [-9.50794871493506, -3.83296694500105, -2.44545713047953,
-...      0.0803625289211318, 1.01898069723583, 0.661725805623086,
-...      -1.57581204592385, -2.95308465670895, -8.8878164296758,
-...      -13.0812290405651]
->>> y_obs = ot.Sample([[yi] for yi in y])
->>> # Parameters
->>> modelParameters = ot.Sample(obsSize, chainDim)
->>> for i in range(obsSize):
-...     for j in range(chainDim):
-...         modelParameters[i, j] = (-2 + 5.0 * i / 9.0) ** j
->>> # Model
->>> fullModel = ot.SymbolicFunction(
-...          ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'],
-...          ['p1*x1+p2*x2+p3*x3', '1.0'])
->>> parametersSet = range(chainDim)
->>> parametersValue = [0.0] * len(parametersSet)
->>> model = ot.ParametricFunction(fullModel, parametersSet, parametersValue)
->>> # Calibration parameters
->>> calibrationColl = [ot.CalibrationStrategy()]*chainDim
->>> # Proposal distribution
->>> proposalColl = [ot.Uniform(-1.0, 1.0)]*chainDim
->>> # Prior distribution
->>> sigma0 = [10.0]*chainDim
->>> #  Covariance matrix
->>> Q0_inv = ot.CorrelationMatrix(chainDim)
->>> for i in range(chainDim): 
-...     Q0_inv[i, i] = sigma0[i] * sigma0[i]
->>> mu0 = [0.0]*chainDim
->>> #  x0 ~ N(mu0, sigma0)
->>> prior = ot.Normal(mu0, Q0_inv)
->>> # Conditional distribution y~N(z, 1.0)
->>> conditional = ot.Normal()
->>> # Create a metropolis-hastings sampler
->>> sampler = ot.RandomWalkMetropolisHastings(
-...     prior, conditional, model, modelParameters, y_obs, mu0, proposalColl)
->>> sampler.setCalibrationStrategyPerComponent(calibrationColl)
->>> sampler.setBurnIn(200)
->>> sampler.setThinning(10)
->>> # Get a realization
->>> print(sampler.getRealization())
-[1.22816,1.0049,-1.99008]"
 
-// ---------------------------------------------------------------------
+Sample from a target distribution defined through its log-PDF (defined up to some additive constant) and its support:
 
-%feature("docstring") OT::RandomWalkMetropolisHastings::getAcceptanceRate
-"Get acceptance rate.
+>>> log_density = ot.SymbolicFunction('x', 'log(2 + sin(x)^2) - (2 + cos(3*x)^3 + sin(2*x)^3) * x')
+>>> support = ot.Interval([0.0], [2.0 * m.pi])
+>>> proposal = ot.Normal(0.0, 2.0)
+>>> initialState = [3.0]
+>>> sampler = ot.RandomWalkMetropolisHastings(log_density, support, initialState, proposal)
+>>> sampler.setBurnIn(20)
+>>> sampler.setThinning(2)
+>>> x = sampler.getSample(10)
 
-Returns
--------
-acceptanceRate : :class:`~openturns.Point` of dimension :math:`d`
-    Sequence whose the :math:`j^{th}` component corresponds to the acceptance
-    rate of the candidates :math:`\vect{c}^k` obtained from a state
-    :math:`\vect{\theta}^k` by only changing its :math:`j^{th}` component, that
-    is to the acceptance rate only relative to the :math:`k^{th}` MCMC
-    iterations such that :math:`k \mod d=j` (see the paragraph dedicated to the
-    constructors of the class above). These are global acceptance rates over
-    all the MCMC iterations performed."
+The target distribution can also be a :class:`~openturns.Distribution`.
+Since all :class:`~openturns.Distribution` objects have a :meth:`~openturns.Distribution.getSample`
+method, this is only useful in Bayesian settings where we also define a likelihood.
+The likelihood function penalizes the initially provided target distribution (now viewed as the *prior*)
+in order to get the *posterior* distribution.
+We sample from the posterior.
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::RandomWalkMetropolisHastings::getCalibrationStrategyPerComponent
-"Get the calibration strategy per component.
-
-Returns
--------
-strategy : list of :class:`~openturns.CalibrationStrategy`
-    A list of CalibrationStrategy *strategy*, whose :math:`j^{th}` component
-    :math:`strategy[j]` defines whether and how the :math:`\lambda_j^k` (see the
-    paragraph dedicated to the constructors of the class above) are rescaled,
-    on the basis of the last :math:`j^{th}` component acceptance rate
-    :math:`\rho_j^k` . The *calibration* coefficients are rescaled every
-    :math:`q\times d` MCMC iterations with
-    :math:`q = strategy[j].getCalibrationStep()`, thus on the basis of the
-    acceptances or refusals of the last :math:`q` candidates obtained by only
-    changing the :math:`j^{th}` component of the current state:
-    :math:`\lambda_j^k = \Phi_j (\rho_j^k)\lambda_j^{k-qd}` where
-    :math:`\Phi_j(.)` is defined by :math:`strategy[j].computeUpdateFactor()`."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::RandomWalkMetropolisHastings::setCalibrationStrategyPerComponent
-"Set the calibration strategy per component.
-
-Parameters
-----------
-strategy : list of :class:`~openturns.CalibrationStrategy`
-    A list of CalibrationStrategy *strategy*, whose :math:`j^{th}` component
-    :math:`strategy[j]` defines whether and how the :math:`\lambda_j^k` (see the
-    paragraph dedicated to the constructors of the class above) are rescaled,
-    on the basis of the last :math:`j^{th}` component acceptance rate
-    :math:`\rho_j^k` . The *calibration* coefficients are rescaled every
-    :math:`q\times d` MCMC iterations with
-    :math:`q = strategy[j].getCalibrationStep()`, thus on the basis of the
-    acceptances or refusals of the last :math:`q` candidates obtained by only
-    changing the :math:`j^{th}` component of the current state:
-    :math:`\lambda_j^k = \Phi_j (\rho_j^k)\lambda_j^{k-qd}` where
-    :math:`\Phi_j(.)` is defined by :math:`strategy[j].computeUpdateFactor()`."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::RandomWalkMetropolisHastings::setCalibrationStrategy
-"Set the calibration strategy.
-
-Parameters
-----------
-strategy : :class:`~openturns.CalibrationStrategy`
-    Same strategy applied for each component :math:`\lambda_j^k`.
-
-See also
---------
-setCalibrationStrategyPerComponent"
+>>> prior = ot.ComposedDistribution([ot.Uniform(-100.0, 100.0)] * 2)
+>>> proposal = ot.Normal([0.0] * 2, [0.5, 0.05], ot.IdentityMatrix(2))
+>>> initialState = [0.0] * 2
+>>> sampler = ot.RandomWalkMetropolisHastings(prior, initialState, proposal)
+>>> conditional = ot.Bernoulli()
+>>> data = ot.Sample([[53, 1], [57, 1], [58, 1], [63, 1], [66, 0], [67, 0],
+... [67, 0], [67, 0], [68, 0], [69, 0], [70, 0], [70, 0], [70, 1], [70, 1],
+... [72, 0], [73, 0], [75, 0], [75, 1], [76, 0], [76, 0], [78, 0], [79, 0], [81, 0]])
+>>> observations = data[:, 1]
+>>> covariates = data[:, 0]
+>>> fun = ot.SymbolicFunction(['alpha', 'beta', 'x'], ['exp(alpha + beta * x) / (1 + exp(alpha + beta * x))'])
+>>> linkFunction = ot.ParametricFunction(fun, [2], [0.0])
+>>> sampler.setLikelihood(conditional, observations, linkFunction, covariates)
+>>> alpha_beta = sampler.getSample(10)"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RandomWalkMetropolisHastings::getProposal
-"Get the proposal.
+"Get the proposal distribution.
 
 Returns
 -------
-proposal : list of :class:`~openturns.Distribution`
-    The :math:`d`-tuple of Distributions :math:`p_j (1 \leq j \leq d)` from
-    which the transition kernels of the random walk Metropolis-Hastings
-    algorithm are defined; look at the paragraph dedicated to the constructors
-    of the class above."
+proposal : :class:`~openturns.Distribution`
+    The distribution from which the transition kernels of the random walk
+    Metropolis-Hastings algorithm is defined"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RandomWalkMetropolisHastings::setProposal
-"Set the proposal.
+"Set the proposal distribution.
 
 Parameters
 ----------
-proposal : list of :class:`~openturns.Distribution`
-    The :math:`d`-tuple of Distributions :math:`p_j (1 \leq j \leq d)` from
-    which the transition kernels of the random walk Metropolis-Hastings
-    algorithm are defined; look at the paragraph dedicated to the constructors
-    of the class above."
+proposal : :class:`~openturns.Distribution`
+    The distribution from which the transition kernels of the random walk
+    Metropolis-Hastings algorithm is defined"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationPeriod
+"Get the calibration step.
+
+Returns
+----------
+period : positive int
+    Number of samples before the adaptation occurs"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationPeriod
+"Set the calibration step.
+
+Parameters
+----------
+period : positive int
+    Number of samples before the adaptation occurs"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationExpansionFactor
+"Get the expansion factor.
+
+Returns
+-------
+expansionFactor : float
+    Expansion factor :math:`e` for the adaptation"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationExpansionFactor
+"Set the expansion factor.
+
+Parameters
+----------
+expansionFactor : float, :math:`e > 1`
+    Expansion factor :math:`e` for the adaptation"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationRange
+"Get the range.
+
+Returns
+-------
+range : :class:`~openturns.Interval` of dimension 1
+    Range :math:`[m,M]` in the description of the method
+    :meth:`computeUpdateFactor`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationRange
+"Set the range.
+
+Parameters
+----------
+range : :class:`~openturns.Interval` of dimension 1
+    Range :math:`[m,M]` for the adaptation"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationShrinkFactor
+"Get the shrink factor.
+
+Returns
+-------
+shrinkFactor : float
+    Shrink factor :math:`s` for the adaptation"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationShrinkFactor
+"Set the shrink factor.
+
+Parameters
+----------
+shrinkFactor : float, :math:`0 < s < 1`
+    Shrink factor :math:`s` for the adaptation"
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationFactor
+"Get the adaptation factor.
+
+Returns
+-------
+factor : float
+    Current adaptation factor, for inspection."

@@ -32,11 +32,17 @@ Posterior sampling using a PythonDistribution
 #
 # The :class:`~openturns.RandomWalkMetropolisHastings` class can be used to sample from the posterior distribution. It relies on the following objects:
 #
-# - The conditional density :math:`p(t_{1:n}|f_{1:n}, \alpha, \beta)` will be defined as a :class:`~openturns.PythonDistribution`.
 # - The prior probability density :math:`\pi(\vect{\theta})` reflects beliefs about the possible values
 #   of :math:`\vect{\theta} = (\alpha, \beta)` before the experimental data are considered.
-# - Initial values :math:`\vect{\theta}_0` for the calibration parameters.
-# - Proposal distributions used to update each parameter sequentially.
+# - Initial values :math:`\vect{\theta}_0` of the parameters.
+# - An proposal distribution used to update parameters.
+#
+# Additionnaly we want to define the likelihood term defined by these objects:
+#
+# - The conditional density :math:`p(t_{1:n}|f_{1:n}, \alpha, \beta)` will be defined as a :class:`~openturns.PythonDistribution`.
+# - The sample of observations acting as the parameters of the conditional density
+#
+#
 #
 # Set up the PythonDistribution
 # -----------------------------
@@ -124,7 +130,7 @@ x = ot.Sample(np.vstack((Tobs, fail)).T)
 
 
 # %%
-# Define a uniform prior distribution for :math:`\alpha` and a Gamma prior distribution for :math:`\beta`
+# Define a uniform prior distribution for :math:`\alpha` and a Gamma prior distribution for :math:`\beta`.
 #
 
 # %%
@@ -147,7 +153,7 @@ prior.setDescription(['beta', 'alpha'])
 
 # %%
 
-initialState = ot.Point([a_beta / b_beta, 0.5*(alpha_max - alpha_min)])
+initialState = [a_beta / b_beta, 0.5*(alpha_max - alpha_min)]
 
 # %%
 # For our random walk proposal distributions, we choose normal steps, with standard deviation equal to roughly :math:`10\%` of the prior range (for the uniform prior) or standard deviation (for the normal prior).
@@ -158,6 +164,7 @@ initialState = ot.Point([a_beta / b_beta, 0.5*(alpha_max - alpha_min)])
 proposal = []
 proposal.append(ot.Normal(0., 0.1 * np.sqrt(a_beta / b_beta**2)))
 proposal.append(ot.Normal(0., 0.1 * (alpha_max - alpha_min)))
+proposal = ot.ComposedDistribution(proposal)
 
 # %%
 # Sample from the posterior distribution
@@ -165,18 +172,15 @@ proposal.append(ot.Normal(0., 0.1 * (alpha_max - alpha_min)))
 
 # %%
 
-RWMHsampler = ot.RandomWalkMetropolisHastings(
-    prior, conditional, x, initialState, proposal)
-strategy = ot.CalibrationStrategyCollection(2)
-RWMHsampler.setCalibrationStrategyPerComponent(strategy)
-RWMHsampler.setVerbose(True)
+sampler = ot.RandomWalkMetropolisHastings(prior, initialState, proposal)
+sampler.setLikelihood(conditional, x)
 sampleSize = 10000
-sample = RWMHsampler.getSample(sampleSize)
+sample = sampler.getSample(sampleSize)
 # compute acceptance rate
-print("Acceptance rate: %s" % (RWMHsampler.getAcceptanceRate()))
+print("Acceptance rate: %s" % (sampler.getAcceptanceRate()))
 
 # %%
-# Plot prior to posterior marginal plots
+# Plot prior to posterior marginal plots.
 #
 
 # %%
@@ -192,3 +196,44 @@ for parameter_index in range(2):
     graph.setLegends(['Posterior', 'Prior'])
     grid.setGraph(0, parameter_index, graph)
 _ = View(grid)
+
+# %%
+# Define an improper prior
+# --------------------------
+
+# %%
+# Now, define an improper prior:
+#
+# .. math::
+#   \mathcal \pi(\beta, \alpha) \propto \frac{1}{\beta}.
+#
+
+logpdf = ot.SymbolicFunction(['beta', 'alpha'], ['-log(beta)'])
+support = ot.Interval([0] * 2, [1] * 2)
+support.setFiniteUpperBound([False] * 2)
+
+# %%
+# Sample from the posterior distribution
+
+sampler2 = ot.RandomWalkMetropolisHastings(logpdf, support, initialState, proposal)
+sampler2.setLikelihood(conditional, x)
+sample2 = sampler2.getSample(1000)
+print("Acceptance rate: %s" % (sampler2.getAcceptanceRate()))
+
+# %%
+# Plot posterior marginal plots only as prior cannot be drawn meaningfully.
+#
+
+# %%
+kernel = ot.KernelSmoothing()
+posterior = kernel.build(sample)
+grid = ot.GridLayout(1, 2)
+grid.setTitle('Bayesian inference (with log-pdf)')
+for parameter_index in range(2):
+    graph = posterior.getMarginal(parameter_index).drawPDF()
+    graph.setColors(ot.Drawable.BuildDefaultPalette(2))
+    graph.setLegends(['Posterior'])
+    grid.setGraph(0, parameter_index, graph)
+_ = View(grid)
+
+View.ShowAll()

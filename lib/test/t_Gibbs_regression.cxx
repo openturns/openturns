@@ -25,7 +25,6 @@
 using namespace OT;
 using namespace OT::Test;
 typedef ComposedDistribution::DistributionCollection                DistributionCollection;
-typedef RandomWalkMetropolisHastings::CalibrationStrategyCollection CalibrationStrategyCollection;
 
 int main(int, char *[])
 {
@@ -82,15 +81,8 @@ int main(int, char *[])
     Point parametersValue(parametersPosition.getSize(), 0.0);
     ParametricFunction model(fullModel, parametersPosition, parametersValue);
 
-    // calibration parameters
-    CalibrationStrategyCollection calibrationColl(chainDim);
-
-    // proposal distribution
-    DistributionCollection proposalColl;
-    for (UnsignedInteger i = 0; i < chainDim; ++ i)
-    {
-      proposalColl.add(Uniform(-1.0, 1.0));
-    }
+    // instrumental distribution
+    Uniform instrumental(-1.0, 1.0);
 
     // prior distribution
     Point sigma0(chainDim, 10.0);// sigma0= (10.,10.,10.)
@@ -119,12 +111,16 @@ int main(int, char *[])
     // model=the link between the parameter and the output
     // y_obs=noisy observations of the output
     // mu0=starting point of the chain
-    // proposalColl=
-    RandomWalkMetropolisHastings sampler(prior, conditional, model, p, y_obs, mu0, proposalColl);
-    sampler.setVerbose(true);
+    Gibbs::MetropolisHastingsCollection coll;
+    for (UnsignedInteger j = 0; j < chainDim; ++ j)
+    {
+      RandomWalkMetropolisHastings mh(prior, mu0, instrumental, Indices(1, j));
+      mh.setLikelihood(conditional, y_obs, model, p);
+      coll.add(mh);
+    }
+    Gibbs sampler(coll);
     sampler.setThinning(4);
     sampler.setBurnIn(2000);
-    sampler.setCalibrationStrategyPerComponent(calibrationColl);
 
     // get a realization
     Point realization(sampler.getRealization());
@@ -136,9 +132,6 @@ int main(int, char *[])
 
     Point x_mu(sample.computeMean());
     Point x_sigma(sample.computeStandardDeviation());
-
-    // print acceptance rate
-    std::cout << "acceptance rate=" << sampler.getAcceptanceRate() << std::endl;
 
     // compute covariance
     CovarianceMatrix x_cov(sample.computeCovariance());
