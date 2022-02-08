@@ -93,7 +93,7 @@ paramDim = 3
 obsSize = 10
 
 # %%
-# Define the observed inputs :math:`x_i`
+# Define the observed inputs :math:`x_i`.
 
 # %%
 xmin = -2.
