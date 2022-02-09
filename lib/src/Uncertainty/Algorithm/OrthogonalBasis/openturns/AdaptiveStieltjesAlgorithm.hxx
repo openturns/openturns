@@ -27,8 +27,6 @@
 
 #include "openturns/OrthonormalizationAlgorithmImplementation.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
-#include "openturns/Collection.hxx"
-#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,8 +41,6 @@ class OT_API AdaptiveStieltjesAlgorithm
 {
   CLASSNAME
 public:
-  typedef Collection<Coefficients>           CoefficientsCollection;
-  typedef PersistentCollection<Coefficients> CoefficientsPersistentCollection;
 
   /** Default constructor */
   AdaptiveStieltjesAlgorithm();
@@ -113,7 +109,7 @@ private:
   }; // struct DotProductWrapper
 
   /** Cache to store the recurrence coefficients */
-  mutable CoefficientsPersistentCollection monicRecurrenceCoefficients_;
+  mutable Sample monicRecurrenceCoefficients_;
 
   /** Cache to store the squared norm of the monic orthogonal polynomials */
   mutable Point monicSquaredNorms_;

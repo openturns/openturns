@@ -40,7 +40,7 @@ OrthogonalUniVariatePolynomialFactory::OrthogonalUniVariatePolynomialFactory()
   : PersistentObject()
   , measure_()
   , coefficientsCache_(0)
-  , recurrenceCoefficientsCache_(0)
+  , recurrenceCoefficientsCache_(0, 3)
   , polynomialsCache_(0)
 {
   // Nothing to do. The derived class will have to call initializeCaches().
@@ -52,7 +52,7 @@ OrthogonalUniVariatePolynomialFactory::OrthogonalUniVariatePolynomialFactory(con
   : PersistentObject()
   , measure_(measure)
   , coefficientsCache_(0)
-  , recurrenceCoefficientsCache_(0)
+  , recurrenceCoefficientsCache_(0, 3)
   , polynomialsCache_(0)
 {
   // The derived class will have to call initializeCaches().
@@ -81,10 +81,7 @@ OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFactory::build(cons
   const UnsignedInteger cacheSize = polynomialsCache_.getSize();
   if (degree < cacheSize) return polynomialsCache_[degree];
   for (UnsignedInteger i = cacheSize; i <= degree; ++i)
-  {
-    CoefficientsCollection rec(buildRecurrenceCoefficientsCollection(i));
-    polynomialsCache_.add(OrthogonalUniVariatePolynomial(rec, buildCoefficients(i)));
-  };
+    polynomialsCache_.add(OrthogonalUniVariatePolynomial(buildRecurrenceCoefficientsCollection(i), buildCoefficients(i)));
   return polynomialsCache_[degree];
 }
 
@@ -128,9 +125,9 @@ OrthogonalUniVariatePolynomialFactory::Coefficients OrthogonalUniVariatePolynomi
 }
 
 /* Build the 3 terms recurrence coefficients up to the needed degree */
-OrthogonalUniVariatePolynomialFactory::CoefficientsCollection OrthogonalUniVariatePolynomialFactory::buildRecurrenceCoefficientsCollection(const UnsignedInteger degree) const
+Sample OrthogonalUniVariatePolynomialFactory::buildRecurrenceCoefficientsCollection(const UnsignedInteger degree) const
 {
-  CoefficientsCollection recurrenceCoefficients(degree);
+  Sample recurrenceCoefficients(degree, 3);
   for (UnsignedInteger i = 0; i < degree; ++i) recurrenceCoefficients[i] = getRecurrenceCoefficients(i);
   return recurrenceCoefficients;
 }

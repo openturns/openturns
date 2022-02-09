@@ -51,4 +51,5 @@ Examples
 >>> import openturns as ot
 >>> polynomial = ot.OrthogonalUniVariatePolynomialFamily().build(2)
 >>> print(polynomial.getRecurrenceCoefficients())
-[[1,0,0],[0.707107,0,-0.707107]]"
+0 : [  1         0         0        ]
+1 : [  0.707107  0        -0.707107 ]"

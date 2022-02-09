@@ -1,4 +1,4 @@
-class=AdaptiveStieltjesAlgorithm measure=class=Uniform name=Uniform dimension=1 a=-1 b=1 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,0,0]] monicSquaredNorms=class=Point name=Unnamed dimension=1 values=[1] isElliptical=true
+class=AdaptiveStieltjesAlgorithm measure=class=Uniform name=Uniform dimension=1 a=-1 b=1 monicRecurrenceCoefficients=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=3 data=[[1,0,0]] monicSquaredNorms=class=Point name=Unnamed dimension=1 values=[1] isElliptical=true
 Uniform Reference(0)=class=Point name=Unnamed dimension=3 values=[1.7321,0,0]
 Uniform AdaStielj(0)=class=Point name=Unnamed dimension=3 values=[1.7321,0,0]
 Uniform Reference(1)=class=Point name=Unnamed dimension=3 values=[1.9365,0,-1.118]
@@ -9,7 +9,7 @@ Uniform Reference(3)=class=Point name=Unnamed dimension=3 values=[1.9843,0,-1.00
 Uniform AdaStielj(3)=class=Point name=Unnamed dimension=3 values=[1.9843,0,-1.0062]
 Uniform Reference(4)=class=Point name=Unnamed dimension=3 values=[1.99,0,-1.0029]
 Uniform AdaStielj(4)=class=Point name=Unnamed dimension=3 values=[1.99,0,-1.0029]
-class=AdaptiveStieltjesAlgorithm measure=class=Beta name=Beta dimension=1 alpha=0.5 beta=2.5 a=-1 b=1 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,0.666667,0]] monicSquaredNorms=class=Point name=Unnamed dimension=1 values=[1] isElliptical=false
+class=AdaptiveStieltjesAlgorithm measure=class=Beta name=Beta dimension=1 alpha=0.5 beta=2.5 a=-1 b=1 monicRecurrenceCoefficients=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=3 data=[[1,0.666667,0]] monicSquaredNorms=class=Point name=Unnamed dimension=1 values=[1] isElliptical=false
 Beta Reference(0)=class=Point name=Unnamed dimension=3 values=[2.6833,-1.7889,0]
 Beta AdaStielj(0)=class=Point name=Unnamed dimension=3 values=[2.6833,1.7889,0]
 Beta Reference(1)=class=Point name=Unnamed dimension=3 values=[2.1822,-0.291,-0.8133]
