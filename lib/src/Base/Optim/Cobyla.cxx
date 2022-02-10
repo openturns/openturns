@@ -135,10 +135,16 @@ void Cobyla::run()
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
   int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
-
-  result_ = OptimizationResult(getProblem());
+  if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
+  {
+    if (ignoreFailure_)
+      LOGWARN(OSS() << "Warning! The Cobyla algorithm failed. The error message is " << cobyla_rc_string[returnCode - COBYLA_MINRC]);
+    else
+      throw InternalException(HERE) << "Solving problem by cobyla method failed (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
+  }
 
   // Update the result
+  result_ = OptimizationResult(getProblem());
   UnsignedInteger size = evaluationInputHistory_.getSize();
 
   Scalar absoluteError = -1.0;
@@ -195,14 +201,6 @@ void Cobyla::run()
   result_.setOptimalValue(evaluationOutputHistory_[optimalIndex]);
 
   result_.setEvaluationNumber(maxFun);
-
-  if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
-  {
-    if (ignoreFailure_)
-      LOGWARN(OSS() << "Warning! The Cobyla algorithm failed. The error message is " << cobyla_rc_string[returnCode - COBYLA_MINRC]);
-    else
-      throw InternalException(HERE) << "Solving problem by cobyla method failed (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
-  }
 }
 
 /* RhoBeg accessor */
