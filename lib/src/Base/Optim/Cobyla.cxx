@@ -87,6 +87,8 @@ void Cobyla::run()
   Point x(getStartingPoint());
   if (x.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
+  if (dimension == 0)
+    throw InvalidArgumentException(HERE) << "Dimension of the problem is zero";
 
   if (getProblem().hasBounds())
   {
