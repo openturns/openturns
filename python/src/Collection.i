@@ -52,8 +52,11 @@ PyObject * __getitem__(PyObject * arg) const
     Py_ssize_t stop = 0;
     Py_ssize_t step = 0;
     Py_ssize_t size = 0;
-    if (PySlice_GetIndicesEx(arg, self->getSize(), &start, &stop, &step, &size) < 0)
-      throw OT::InternalException(HERE) << "PySlice_GetIndicesEx failed";
+
+    if (PySlice_Unpack(arg, &start, &stop, &step) < 0)
+      throw OT::InvalidArgumentException(HERE) << "Collection.__getitem__: PySlice_Unpack failed";
+    size = PySlice_AdjustIndices(self->getSize(), &start, &stop, step);
+
     collectionType result(size);
     if (step == 1)
       std::copy(self->begin() + start, self->begin() + start + size, result.begin());
@@ -137,7 +140,9 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
     Py_ssize_t stop = 0;
     Py_ssize_t step = 0;
     Py_ssize_t size = 0;
-    PySlice_GetIndicesEx(arg, self->getSize(), &start, &stop, &step, &size);
+    if (PySlice_Unpack(arg, &start, &stop, &step) < 0)
+      throw OT::InvalidArgumentException(HERE) << "Collection.__setitem__: PySlice_Unpack failed";
+    size = PySlice_AdjustIndices(self->getSize(), &start, &stop, step);
     collectionType temp2;
     collectionType *val2 = 0;
     if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_NO_NULL))) {
