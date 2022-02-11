@@ -614,7 +614,7 @@ if (BUILD_PYTHON)
     endif ()
   endif ()
 
-  find_package (PythonInterp)
+  find_package (PythonInterp 3.5)
   if (PYTHONINTERP_FOUND)
     find_package (PythonLibs ${PYTHON_VERSION_STRING} EXACT)
     include (FindPythonModule)

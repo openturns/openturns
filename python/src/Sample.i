@@ -183,7 +183,7 @@ PyObject * __getitem__(PyObject * args) const
       Py_ssize_t stop = 0;
       Py_ssize_t step = 0;
       Py_ssize_t size = 0;
-      PySlice_GetIndicesEx(OT::SliceCast(args), self->getSize(), &start, &stop, &step, &size);
+      PySlice_GetIndicesEx(args, self->getSize(), &start, &stop, &step, &size);
       OT::Sample result(size, self->getDimension());
       for (Py_ssize_t i = 0; i < size; ++ i)
         result.at(i) = self->at(start + i * step);
@@ -274,7 +274,7 @@ PyObject * __getitem__(PyObject * args) const
       Py_ssize_t stop2 = 0;
       Py_ssize_t step2 = 0;
       Py_ssize_t size2 = 0;
-      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+      PySlice_GetIndicesEx(obj2, self->getDimension(), &start2, &stop2, &step2, &size2);
 
       OT::Point result(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
@@ -311,7 +311,7 @@ PyObject * __getitem__(PyObject * args) const
     Py_ssize_t stop1 = 0;
     Py_ssize_t step1 = 0;
     Py_ssize_t size1 = 0;
-    PySlice_GetIndicesEx(OT::SliceCast(obj1), self->getSize(), &start1, &stop1, &step1, &size1);
+    PySlice_GetIndicesEx(obj1, self->getSize(), &start1, &stop1, &step1, &size1);
     if (OT::isAPython< OT::_PyInt_ >(obj2))
     {
       // case 2.1: [slice/int] => Sample
@@ -337,7 +337,7 @@ PyObject * __getitem__(PyObject * args) const
       Py_ssize_t stop2 = 0;
       Py_ssize_t step2 = 0;
       Py_ssize_t size2 = 0;
-      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+      PySlice_GetIndicesEx(obj2, self->getDimension(), &start2, &stop2, &step2, &size2);
       OT::Sample result(size1, size2);
       for (Py_ssize_t i = 0; i < size1; ++ i)
         for (Py_ssize_t j = 0; j < size2; ++ j)
@@ -427,7 +427,7 @@ PyObject * __getitem__(PyObject * args) const
       Py_ssize_t stop2 = 0;
       Py_ssize_t step2 = 0;
       Py_ssize_t size2 = 0;
-      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+      PySlice_GetIndicesEx(obj2, self->getDimension(), &start2, &stop2, &step2, &size2);
       OT::Sample result(size1, size2);
       for (Py_ssize_t i = 0; i < size1; ++ i)
         for (Py_ssize_t j = 0; j < size2; ++ j)
@@ -491,7 +491,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       Py_ssize_t stop = 0;
       Py_ssize_t step = 0;
       Py_ssize_t size = 0;
-      PySlice_GetIndicesEx(OT::SliceCast(args), self->getSize(), &start, &stop, &step, &size);
+      PySlice_GetIndicesEx(args, self->getSize(), &start, &stop, &step, &size);
       OT::Sample temp;
       OT::Sample *val = 0;
       if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
@@ -601,7 +601,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       Py_ssize_t stop2 = 0;
       Py_ssize_t step2 = 0;
       Py_ssize_t size2 = 0;
-      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+      PySlice_GetIndicesEx(obj2, self->getDimension(), &start2, &stop2, &step2, &size2);
 
       OT::Point temp;
       OT::Point *val = 0;
@@ -653,7 +653,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
     Py_ssize_t stop1 = 0;
     Py_ssize_t step1 = 0;
     Py_ssize_t size1 = 0;
-    PySlice_GetIndicesEx(OT::SliceCast(obj1), self->getSize(), &start1, &stop1, &step1, &size1);
+    PySlice_GetIndicesEx(obj1, self->getSize(), &start1, &stop1, &step1, &size1);
 
     OT::Sample temp;
     OT::Sample *val = 0;
@@ -685,7 +685,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       Py_ssize_t stop2 = 0;
       Py_ssize_t step2 = 0;
       Py_ssize_t size2 = 0;
-      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+      PySlice_GetIndicesEx(obj2, self->getDimension(), &start2, &stop2, &step2, &size2);
       for (Py_ssize_t i = 0; i < size1; ++ i)
         for (Py_ssize_t j = 0; j < size2; ++ j)
           self->at(start1 + i * step1, start2 + j * step2) = val->at(i, j);
@@ -767,7 +767,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       Py_ssize_t stop2 = 0;
       Py_ssize_t step2 = 0;
       Py_ssize_t size2 = 0;
-      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+      PySlice_GetIndicesEx(obj2, self->getDimension(), &start2, &stop2, &step2, &size2);
       for (Py_ssize_t i = 0; i < size1; ++ i)
         for (Py_ssize_t j = 0; j < size2; ++ j)
           self->at(indices1[i], start2 + j * step2) = val->at(i, j);

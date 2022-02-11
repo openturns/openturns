@@ -35,7 +35,7 @@ PyObject * __getitem__(PyObject * args) const {
   // case #0: [slice] => Matrix
   if ( PySlice_Check( args ) )
   { 
-    PySlice_GetIndicesEx( OT::SliceCast( args ), self->getNbRows(), &start1, &stop1, &step1, &slicelength1 );
+    PySlice_GetIndicesEx(args, self->getNbRows(), &start1, &stop1, &step1, &slicelength1);
     OT::baseType result(slicelength1, self->getNbColumns());
     for( OT::UnsignedInteger j = 0; j < self->getNbColumns(); ++ j )
     {
@@ -64,7 +64,7 @@ PyObject * __getitem__(PyObject * args) const {
   // convert first list argument 
   if ( PySlice_Check( obj1 ) )
   { 
-    PySlice_GetIndicesEx( OT::SliceCast( obj1 ), self->getNbRows(), &start1, &stop1, &step1, &slicelength1 );
+    PySlice_GetIndicesEx(obj1, self->getNbRows(), &start1, &stop1, &step1, &slicelength1);
   }
   else
   {
@@ -83,7 +83,7 @@ PyObject * __getitem__(PyObject * args) const {
   // convert second list argument
   if ( PySlice_Check( obj2 ) )
   {
-    PySlice_GetIndicesEx( OT::SliceCast( obj2 ), self->getNbColumns(), &start2, &stop2, &step2, &slicelength2 );
+    PySlice_GetIndicesEx(obj2, self->getNbColumns(), &start2, &stop2, &step2, &slicelength2);
   }
   else
   {
@@ -162,7 +162,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   // case #0: [slice] <= baseType
   if ( PySlice_Check( args ) )
   {
-    PySlice_GetIndicesEx( OT::SliceCast( args ), self->getNbRows(), &start1, &stop1, &step1, &slicelength1 );
+    PySlice_GetIndicesEx(args, self->getNbRows(), &start1, &stop1, &step1, &slicelength1);
     OT::baseType temp2 ;
     OT::baseType *val2 = 0 ;
     if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_NO_NULL))) {
@@ -197,7 +197,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   // convert first list argument 
   if ( PySlice_Check( obj1 ) )
   { 
-    PySlice_GetIndicesEx(OT::SliceCast(obj1), self->getNbRows(), &start1, &stop1, &step1, &slicelength1);
+    PySlice_GetIndicesEx(obj1, self->getNbRows(), &start1, &stop1, &step1, &slicelength1);
   }
   else
   {
@@ -216,7 +216,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   // convert second list argument
   if ( PySlice_Check( obj2 ) )
   {
-    PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getNbColumns(), &start2, &stop2, &step2, &slicelength2);
+    PySlice_GetIndicesEx(obj2, self->getNbColumns(), &start2, &stop2, &step2, &slicelength2);
   }
   else
   {
