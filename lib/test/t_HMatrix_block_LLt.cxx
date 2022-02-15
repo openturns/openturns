@@ -58,22 +58,18 @@ int main(int, char *[])
     ResourceMap::SetAsUnsignedInteger("HMatrix-MaxLeafSize", 10);
 
     HMatrixFactory hmatrixFactory;
-    if (!hmatrixFactory.IsAvailable()) throw NotYetImplementedException(HERE);
 
     const UnsignedInteger n = 20;
 
-    Indices indices(0);
-    indices.add(n);
-    indices.add(n);
+    const Indices indices = {n, n};
     const IntervalMesher intervalMesher(indices);
-    const Point lowerBound(2, 0.0);
-    const Point upperBound(2, 1.0);
+    const Point lowerBound = {0.0, 0.0};
+    const Point upperBound = {1.0, 1.0};
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
     const Sample vertices(mesh2D.getVertices());
-    Point xMin(vertices.getMin());
-    Point xMax(vertices.getMax());
-    Point scale(2, 0.1);
-    CovarianceModel covarianceModel(ExponentialModel(scale, Point(2, 1.0)));
+    const Point scale = {0.1, 0.1};
+    const Point amplitude = {1.0, 1.0};
+    CovarianceModel covarianceModel(ExponentialModel(scale, amplitude));
 
     TestHMatrixTensorRealAssemblyFunction blockAssembly(covarianceModel, vertices);
     // Non-symmetric HMatrix
@@ -89,11 +85,6 @@ int main(int, char *[])
     hmatRef.gemm('N', 'T', -1., hmat, hmat, 1.);
     Scalar threshold = 5.e-3;
     fullprint << "|| M - L Lt || / || M ||" << ((hmatRef.norm() < threshold * refNorm) ? " < " : " > ") << threshold << std::endl;
-  }
-  catch (NotYetImplementedException & ex)
-  {
-    std::cerr << "Compiled without HMat" << std::endl;
-    return ExitCode::Success;
   }
   catch (TestFailed & ex)
   {
