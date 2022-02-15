@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_RANDOMWALKMETROPOLISHASTINGS_HXX
-#define OPENTURNS_RANDOMWALKMETROPOLISHASTINGS_HXX
+#ifndef OPENTURNS_INDEPENDENTMETROPOLISHASTINGS_HXX
+#define OPENTURNS_INDEPENDENTMETROPOLISHASTINGS_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/MetropolisHastingsImplementation.hxx"
@@ -28,28 +28,28 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class RandomWalkMetropolisHastings
+ * @class IndependentMetropolisHastings
  *
  * @brief Metropolis-Hastings algorithm.
  *
  */
-class OT_API RandomWalkMetropolisHastings
+class OT_API IndependentMetropolisHastings
   : public MetropolisHastingsImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  RandomWalkMetropolisHastings();
+  IndependentMetropolisHastings();
 
   /** Constructor with parameters*/
-  RandomWalkMetropolisHastings(const Distribution & targetDistribution,
+  IndependentMetropolisHastings(const Distribution & targetDistribution,
                                const Point & initialState,
                                const Distribution & proposal,
                                const Indices & marginalIndices = Indices());
 
   /** Constructor with parameters*/
-  RandomWalkMetropolisHastings(const Function & targetLogPDF,
+  IndependentMetropolisHastings(const Function & targetLogPDF,
                               const Domain & support,
                               const Point & initialState,
                               const Distribution & proposal,
@@ -60,30 +60,11 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  RandomWalkMetropolisHastings * clone() const override;
+  IndependentMetropolisHastings * clone() const override;
 
   /** Intrumental accessor */
   void setProposal(const Distribution & proposal);
   Distribution getProposal() const;
-
-  /** Adaptation range accessor */
-  void setAdaptationRange(const Interval & range);
-  Interval getAdaptationRange() const;
-
-  /** Adaptation expansion factor accessor */
-  void setAdaptationExpansionFactor(const Scalar expansionFactor);
-  Scalar getAdaptationExpansionFactor() const;
-
-  /** Adaptation shrink factor accessor */
-  void setAdaptationShrinkFactor(const Scalar shrinkFactor);
-  Scalar getAdaptationShrinkFactor() const;
-
-  /** Adaptation period accessor */
-  void setAdaptationPeriod(const UnsignedInteger period);
-  UnsignedInteger getAdaptationPeriod() const;
-
-  /** Adaptation factor accessor */
-  Scalar getAdaptationFactor() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -98,20 +79,9 @@ protected:
 private:
   // proposal densities of the markov chain
   Distribution proposal_;
-  Bool isProposalSymmetric_ = false;
 
-  // update factor
-  mutable Scalar adaptationFactor_ = 1.0;
-
-  // adaptation parameters
-  Interval adaptationRange_;
-  Scalar adaptationExpansionFactor_ = 0.0;
-  Scalar adaptationShrinkFactor_ = 0.0;
-  UnsignedInteger adaptationPeriod_ = 0;
-
-}; /* class RandomWalkMetropolisHastings */
-
+}; /* class IndependentMetropolisHastings */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_RANDOMWALKMETROPOLISHASTINGS_HXX */
+#endif /* OPENTURNS_INDEPENDENTMETROPOLISHASTINGS_HXX */

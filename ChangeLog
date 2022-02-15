@@ -11,6 +11,7 @@
 
 ==== New classes ====
  * RandomVectorMetropolisHastings
+ * IndependentMetropolisHastings
  * Gibbs
  * HSICEstimatorConditionalSensitivity
  * HSICEstimatorGlobalSensitivity
@@ -82,6 +83,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1260 (RandomWalkMetropolisHastings does not handle non-symmetric proposals properly)
  * #1840 (HMatrixFactory leaks)
  * #1842 (libOT.so.0.0.0 doesn't have a SONAME)
  * #1843 (Ali-Mikhail-Haq copula parameter value)
