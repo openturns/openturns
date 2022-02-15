@@ -78,9 +78,8 @@ String TensorProductExperiment::__repr__() const
 
 Bool TensorProductExperiment::hasUniformWeights() const
 {
-  const UnsignedInteger numberOfMarginalExperiments = collection_.getSize();
   bool hasUniformWeights = true;
-  for (UnsignedInteger i = 0; i < numberOfMarginalExperiments; ++i)
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
     if (!collection_[i].hasUniformWeights())
     {
