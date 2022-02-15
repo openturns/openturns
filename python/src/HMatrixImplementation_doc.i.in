@@ -343,9 +343,9 @@ transB : str
     Whether to use B or B^t: either N or T.
 alpha : float
     Coefficient
-a : :class:`~openturns.HMatrix`
+A : :class:`~openturns.HMatrix`
     Multiplied matrix A.
-b : :class:`~openturns.HMatrix`
+B : :class:`~openturns.HMatrix`
     Multiplied matrix B.    
 beta : float
     Coefficient."
