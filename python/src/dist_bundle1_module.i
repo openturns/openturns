@@ -54,6 +54,7 @@
 %include FisherSnedecorFactory.i
 %include Frechet.i
 %include FrechetFactory.i
+%include GalambosCopula.i
 %include Gamma.i
 %include GammaFactory.i
 %include GammaMuSigma.i

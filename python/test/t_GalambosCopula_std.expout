@@ -1,0 +1,36 @@
+Copula  class=GalambosCopulaname=GalambosCopuladimension=2theta=0.5
+Copula  GalambosCopula(theta = 0.5)
+Mean  class=Point name=Unnamed dimension=2 values=[0.5,0.5]
+Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.0241064,0.0241064,0.0833333]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= class=Point name=Unnamed dimension=2 values=[0.629877,0.871724]
+oneSample= class=Sample name=GalambosCopula implementation=class=SampleImplementation name=GalambosCopula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.0205545],[0.347057,0.937166],[0.92068,0.699802],[0.0632061,0.188369],[0.714382,0.437797],[0.373767,0.67536],[0.883503,0.441284],[0.92851,0.925177],[0.684575,0.834214],[0.359802,0.916859]]
+anotherSample mean= class=Point name=Unnamed dimension=2 values=[0.502777,0.501261]
+anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0251203,0.0251203,0.0835989]
+Point =  class=Point name=Unnamed dimension=2 values=[0.2,0.2]  pdf=1.231981  cdf=0.059814
+Quantile= class=Point name=Unnamed dimension=2 values=[0.67295,0.67295]
+CDF(quantile)=0.500000
+Quantile= class=Point name=Unnamed dimension=2 values=[0.180532,0.180532]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.0258323,0.0258323]
+Survival(inverseSurvival)=0.950000
+entropy=-0.062336
+CDF(x|y)=0.62707
+Quantile(p|y)=0.6
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.56939]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.0571768]
+margins= class=MarginalDistribution name=MarginalDistribution dimension=2 distribution=class=GalambosCopulaname=GalambosCopuladimension=2theta=0.5 indices=[1,0]
+margins PDF=1.178395
+margins CDF=0.088388
+margins quantile= class=Point name=Unnamed dimension=2 values=[0.971115,0.971115]
+margins CDF(qantile)=0.950000
+margins realization= class=Point name=Unnamed dimension=2 values=[0.915787,0.243714]
