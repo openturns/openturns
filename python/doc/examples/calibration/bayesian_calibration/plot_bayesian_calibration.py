@@ -84,6 +84,7 @@ import pylab as pl
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -96,9 +97,9 @@ obsSize = 10
 # Define the observed inputs :math:`x_i`.
 
 # %%
-xmin = -2.
-xmax = 3.
-step = (xmax-xmin)/(obsSize-1)
+xmin = -2.0
+xmax = 3.0
+step = (xmax - xmin) / (obsSize - 1)
 rg = ot.RegularGrid(xmin, step, obsSize)
 x_obs = rg.getVertices()
 
@@ -112,7 +113,8 @@ x_obs = rg.getVertices()
 
 # %%
 fullModel = ot.SymbolicFunction(
-    ['x', 'theta1', 'theta2', 'theta3'], ['theta1+theta2*x+theta3*x^2', '1.0'])
+    ["x", "theta1", "theta2", "theta3"], ["theta1+theta2*x+theta3*x^2", "1.0"]
+)
 
 # %%
 # To differentiate between the two classes of inputs (:math:`x` and :math:`\vect\theta`),
@@ -131,7 +133,7 @@ print(linkFunction)
 
 # %%
 ot.RandomGenerator.SetSeed(0)
-noiseStandardDeviation = 1.
+noiseStandardDeviation = 1.0
 noise = ot.Normal(0, noiseStandardDeviation)
 noiseSample = noise.getSample(obsSize)
 
@@ -174,23 +176,23 @@ conditional = ot.Normal()
 # Define the mean :math:`\mu_\theta`, the covariance matrix :math:`\Sigma_\theta`, then the prior distribution :math:`\pi(\vect\theta)` of the parameter :math:`\vect\theta`.
 
 # %%
-thetaPriorMean = [-3., 4., 1.]
+thetaPriorMean = [-3.0, 4.0, 1.0]
 
 # %%
-sigma0 = [2., 1., 1.5]  # standard deviations
+sigma0 = [2.0, 1.0, 1.5]  # standard deviations
 thetaPriorCovarianceMatrix = ot.CovarianceMatrix(paramDim)
 for i in range(paramDim):
-    thetaPriorCovarianceMatrix[i, i] = sigma0[i]**2
+    thetaPriorCovarianceMatrix[i, i] = sigma0[i] ** 2
 
 prior = ot.Normal(thetaPriorMean, thetaPriorCovarianceMatrix)
-prior.setDescription(['theta1', 'theta2', 'theta3'])
+prior.setDescription(["theta1", "theta2", "theta3"])
 
 # %%
 # The proposed steps for
 # :math:`\theta_1`, :math:`\theta_2` and :math:`\theta_3`
 # will all follow a uniform distribution.
 
-proposal = ot.Uniform(-1., 1.)
+proposal = ot.Uniform(-1.0, 1.0)
 
 # %%
 # Test the Metropolis-Hastings sampler
@@ -208,13 +210,17 @@ initialState = thetaPriorMean
 # Each sampler must be aware of the joint prior distribution.
 # We also use the same proposal distribution, but this is not mandatory.
 
-mh_coll = [ot.RandomWalkMetropolisHastings(prior, initialState, proposal, [i]) for i in range(paramDim)]
+mh_coll = [
+    ot.RandomWalkMetropolisHastings(prior, initialState, proposal, [i])
+    for i in range(paramDim)
+]
 
 # %%
 # Each sampler must be made aware of the likelihood.
 # Otherwise we would sample from the prior!
 
-for mh in mh_coll: mh.setLikelihood(conditional, y_obs, linkFunction, x_obs)
+for mh in mh_coll:
+    mh.setLikelihood(conditional, y_obs, linkFunction, x_obs)
 
 # %%
 # Finally, the :class:`~openturns.Gibbs` algorithm is constructed from all Metropolis-Hastings samplers.
@@ -260,10 +266,10 @@ fig = pl.figure(figsize=(12, 4))
 for parameter_index in range(paramDim):
     graph = posterior.getMarginal(parameter_index).drawPDF()
     priorGraph = prior.getMarginal(parameter_index).drawPDF()
-    priorGraph.setColors(['blue'])
+    priorGraph.setColors(["blue"])
     graph.add(priorGraph)
-    graph.setLegends(['Posterior', 'Prior'])
-    ax = fig.add_subplot(1, paramDim, parameter_index+1)
+    graph.setLegends(["Posterior", "Prior"])
+    ax = fig.add_subplot(1, paramDim, parameter_index + 1)
     _ = ot.viewer.View(graph, figure=fig, axes=[ax])
 
 _ = fig.suptitle("Bayesian calibration")
