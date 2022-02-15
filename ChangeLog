@@ -20,6 +20,7 @@
  * IterativeExtrema
  * IterativeMoments
  * IterativeThresholdExceedance
+ * TensorProductExperiment
 
 ==== API changes ====
  * Removed deprecated Hanning alias

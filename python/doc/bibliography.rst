@@ -79,6 +79,9 @@ Bibliography
 .. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October). 
     *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
+.. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
+    sparse grids.* Numerical algorithms, 18 (3), 209-232.
+    `pdf <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.3141&rep=rep1&type=pdf>`__
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
