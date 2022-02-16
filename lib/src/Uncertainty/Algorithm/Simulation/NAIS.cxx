@@ -53,7 +53,7 @@ NAIS::NAIS(const RandomVector & event,
   const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
   const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
   for (UnsignedInteger i = 0; i < rangeUpper.getSize(); ++i)
-    if (rangeUpper[i] || rangeLower[i]) throw InvalidArgumentException(HERE) << "Current version of NAIS is only adapted to unbounded distribution" ; 
+    if (rangeUpper[i] || rangeLower[i]) throw InvalidArgumentException(HERE) << "Current version of NAIS is only adapted to unbounded distribution" ;
   rhoQuantile_ = (getEvent().getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
 }
 
@@ -115,27 +115,22 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
   return naisResult_.getAuxiliaryDensity();
 }
 
-/** Function computing weigths  of sample */
+/** Function computing weigths of sample */
 Point NAIS::computeWeights(const Sample & samples,
                            const Sample & respectiveSamples,
                            const Scalar eventThresholdLocal,
                            const Distribution & auxiliaryDistribution)
 {
-  
-  const Point fValue = initialDistribution_.computeLogPDF(samples).asPoint();
-  const Point gValue = auxiliaryDistribution.computeLogPDF(samples).asPoint();
-  Point difference(fValue.getSize());
-  weights_ = Point(difference.getSize());
-  for (UnsignedInteger i = 0; i < fValue.getSize(); ++i)
+  weights_ = Point(samples.getSize());
+  for (UnsignedInteger i = 0; i < samples.getSize(); ++i)
   {
-    difference[i] = (fValue[i] - gValue[i]);
-  }
-
-  
-  //for (UnsignedInteger i = 0; i < difference.getSize(); ++i)
-  //{
     const Bool weightBool = getEvent().getOperator()(respectiveSamples(i, 0), eventThresholdLocal);
-    weights_[i] = weightBool * std::exp(difference[i]);
+    if (weightBool)
+    {
+      const Scalar fValue = initialDistribution_.computeLogPDF(samples[i]);
+      const Scalar gValue = auxiliaryDistribution.computeLogPDF(samples[i]);
+      weights_[i] = std::exp(fValue - gValue);
+    }
   }
   return weights_;
 }
@@ -172,7 +167,7 @@ void NAIS::run()
 
     // computation of current quantile
     quantileCourant = responsiveSample.computeQuantile(rhoQuantile_)[0];
-    
+
     // if failure probability reached, stop the adaptation
     if (getEvent().getOperator()(quantileCourant, getEvent().getThreshold()))
     {

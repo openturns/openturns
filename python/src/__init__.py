@@ -43,6 +43,32 @@ OPENTURNS_HOME                        --- Custom installation path
 OPENTURNS_CONFIG_PATH                 --- Path to configuration file
 OPENTURNS_LOG_SEVERITY                --- Log severity flag, for example "ALL"
 """
+from .uncertainty import *
+from .bayesian import *
+from .stattests import *
+from .simulation import *
+from .analytical import *
+from .transformation import *
+from .metamodel import *
+from .orthogonalbasis import *
+from .classification import *
+from .weightedexperiment import *
+from .model_process import *
+from .dist import *
+from .randomvector import *
+from .model_copula import *
+from .base import *
+from .experiment import *
+from .algo import *
+from .solver import *
+from .optim import *
+from .diff import *
+from .statistics import *
+from .func import *
+from .geom import *
+from .graph import *
+from .typ import *
+from .common import *
 import sys
 
 # SWIG-related: check if interactive mode
@@ -57,34 +83,6 @@ if not hasattr(sys, 'ps1'):
             signal.signal(signal.SIGINT, signal.SIG_DFL)
         except ValueError:
             pass
-
-from .common import *
-from .typ import *
-from .graph import *
-from .geom import *
-from .func import *
-from .statistics import *
-from .diff import *
-from .optim import *
-from .solver import *
-from .algo import *
-from .experiment import *
-from .base import *
-
-from .model_copula import *
-from .randomvector import *
-from .dist import *
-from .model_process import *
-from .weightedexperiment import *
-from .classification import *
-from .orthogonalbasis import *
-from .metamodel import *
-from .transformation import *
-from .analytical import *
-from .simulation import *
-from .stattests import *
-from .bayesian import *
-from .uncertainty import *
 
 
 def Show(graph):
