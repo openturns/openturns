@@ -77,7 +77,7 @@ print('Pf=', probability)
 # Hyperparameters of the algorithm
 n_IS = 10  # Number of samples at each iteration
 # Quantile determining the percentage of failure samples in the current population
-rho_quantile = 25
+rho_quantile = 0.25
 
 # Definition of the algoritm
 Nais_algo = ot.NAIS(event, n_IS, rho_quantile)

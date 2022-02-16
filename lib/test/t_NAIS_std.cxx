@@ -77,19 +77,19 @@ int main()
 	ProbabilitySimulationResult result = algo.getResult();
 	Scalar probability = result.getProbabilityEstimate();
 	std::cout << "Pf= " << probability << std::endl;
-  	
-	
+  		
   	// Hyperparameters of the algorithm
   	// Number of samples at each iteration
   	int n_IS= 10 ;
   	// Quantile determining the percentage of failure samples in the current population
-  	float rho_quantile = 25 ;
-
+  	float rho_quantile = 0.25 ;
+	
   	// Definition of the algoritm
   	NAIS NAIS_algo = NAIS(event,n_IS,rho_quantile);
-
+	
   	// Run of the algorithm
   	NAIS_algo.run();
+  	
   	NAISResult NAIS_result = NAIS_algo.getResult();
 	std::cout << "Probability of failure: " << NAIS_result.getProbabilityEstimate()<< std::endl;
   	std::cout << "Samples: " << NAIS_result.getSamples()<< std::endl;

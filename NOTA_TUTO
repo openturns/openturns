@@ -1,4 +1,9 @@
 
+%%%%%%%%%%%%%%%%COMPILE EXECUTE des test pour les cout et debug %%%%%%%%%%%%%%%%%%%%%
+make t_NAIS_std 
+./lib/test/t_NAIS_std
+
+faire test avec : ctest -R (nom de test)
     %%%%%%%%%%%%%%%%%%%%INSTAL Openturns %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     Je suis sous Ubuntu 20.04
