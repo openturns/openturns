@@ -125,15 +125,15 @@ Point NAIS::computeWeights(const Sample & samples,
   const Point fValue = initialDistribution_.computeLogPDF(samples).asPoint();
   const Point gValue = auxiliaryDistribution.computeLogPDF(samples).asPoint();
   Point difference(fValue.getSize());
-
+  weights_ = Point(difference.getSize());
   for (UnsignedInteger i = 0; i < fValue.getSize(); ++i)
   {
     difference[i] = (fValue[i] - gValue[i]);
   }
 
-  weights_ = Point(difference.getSize());
-  for (UnsignedInteger i = 0; i < difference.getSize(); ++i)
-  {
+  
+  //for (UnsignedInteger i = 0; i < difference.getSize(); ++i)
+  //{
     const Bool weightBool = getEvent().getOperator()(respectiveSamples(i, 0), eventThresholdLocal);
     weights_[i] = weightBool * std::exp(difference[i]);
   }
