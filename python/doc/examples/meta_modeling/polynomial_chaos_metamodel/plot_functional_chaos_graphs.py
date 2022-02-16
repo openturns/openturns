@@ -31,7 +31,7 @@ def drawFamily(factory, degreeMax=5):
     # Fix the number of points for the graph
     pointNumber = 101
 
-    # Bounds of the graph
+    # Define the bounds of the graph
     xMinJacobi = -1.0
     xMaxJacobi = 1.0
 
@@ -50,11 +50,11 @@ def drawFamily(factory, degreeMax=5):
 # Draw the 5-th first members of the Jacobi family.
 
 # %%
-# Create the Jacobi polynomials family using the default Jacobi.ANALYSIS
+# Create the Jacobi polynomials family using the default analysis  
 # parameter set
 alpha = 0.5
 beta = 1.5
-jacobiFamily = ot.JacobiFactory(alpha, beta)
+jacobiFamily = ot.JacobiFactory(alpha, beta, ot.JacobiFactory.ANALYSIS)
 graph = drawFamily(jacobiFamily)
 view = viewer.View(graph)
 
