@@ -1,0 +1,165 @@
+
+    %%%%%%%%%%%%%%%%%%%%INSTAL Openturns %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    Je suis sous Ubuntu 20.04
+    
+    Une fois récupéré le dépôt via git 
+    
+    sudo apt-get install gfortran
+    
+    sudo apt-get install liblapack-dev
+    
+    dans openturns crée dossier build
+    
+    puis avec cmake mettre chemin de openturns et du build et cliquer sur configurer et générer.
+
+    cd build
+    cmake -DCMAKE_INSTALL_PREFIX=$PWD/install ..
+    make install -j4
+
+    Run tests
+
+    make tests
+    ctest -j4
+    
+    to debug add option -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    
+    PYTHONPATH=/home/jfloquet/Bureau/openturns_Julien/internal_NAIS/build/install/lib/python3.8/site-packages:
+        %%%%%%%%%%%%%%%%%%%%INSTAL DOC %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        la doc sera dans build/install/share/openturns/doc
+        
+        Pour les dépendances tu as ça http://openturns.github.io/openturns/master/developer_guide/architecture.html#dependencies
+        
+        
+    
+    Faut enlever ce message du cmake -- Disabling documentation (need numpydoc/sphinx-gallery/matplotlib/libxml2/nlopt)
+    
+    Pour installer numpydoc, sphinx-gallery et sphinx-doc, j'ai du utiliser pip
+	
+	libXML2 je l'ai installé avec une commande sudo apt-get install libxml2-dev
+	et nlopt j'ai suivi le lien de MAthieu qui m'a permis de télécharger les fichiers, je les ai compilés avec cmake, make, make install
+	tu as besoin aussi de BISON et FLEX
+	install cminpack and ceres-solver
+	
+	cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/install -DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_SPHINX=ON -DSPHINX_FLAGS="-j4"
+	
+	to debug add option -DCMAKE_BUILD_TYPE=RelWithDebInfo
+	
+	modifier fichier .rst dans python/doc/ (bonne arborescence)
+    
+    %%%%%%%%%%%%%%%%%%%%%%% openturns DEBIAN %%%%%%%%%%%%%%%%%%%%%%%
+    
+ Une fois l'archive OVA contenant la VM téléchargée, il faut l'importer dans VirtualBox avant de pouvoir démarrer la VM :
+
+	Démarrer VirtualBox, par exemple en entrant la commande "virtualbox" dans un terminal.
+	Fichier --> Importer un appareil virtuel
+	Sélectionner le fichier OVA contenant la machine virtuelle à importer. Attention, l'import peut prendre quelques minutes.
+	Sélectionner la VM dans la liste et cliquer sur le bouton Démarrer.
+	AVERTISSEMENT : Les machines virtuelles ont été créées sur des postes Scibian et les archives OVA contiennent la configuration appropriée pour ces postes. Si vous utilisez un poste Neptune ou un poste non infogéré, il est probable que l'import de la VM fonctionne mais que VirtualBox refuse ensuite de la démarrer en raison d'une configuration inappropriée. Faites un clic droit sur la VM dans le menu VirtualBox et cliquez sur "Configuration" pour faire les modifications nécessaires.
+
+	Il y a 2 comptes utilisateur :
+
+	devel : utilisateur simple sans droits sudo. Mot de passe : openturns
+	root : superutilisateur doté de tous les droits. Mot de passe : openturns
+	Sur la page d'accueil, identifiez-vous en tant que devel. Il n'est pas possible de se logger directement en tant que root.
+
+	OpenTURNS est déjà construit dans le dossier /home/devel/GIT/openturns/build-exemple
+	et compilé dans le dossier /home/devel/GIT/openturns/build-exemple/install.
+
+	Pour le compiler à nouveau, il faut utiliser un autre dossier de compilation
+	appelé "build" dans la suite.
+
+	Créer le dossier de compilation
+	devel@OT-VM:~$ mkdir GIT/openturns/build
+
+	Configurer la compilation
+	Se placer dans le dossier "build" :
+
+	devel@OT-VM:~$ cd GIT/openturns/build
+
+	2.1) Première variante : compiler sans la doc
+
+	devel@OT-VM:~/GIT/openturns/build$ cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/install -DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_SPHINX=OFF
+
+	2.2) Seconde variante : compiler avec la doc
+
+	devel@OT-VM:~/GIT/openturns/build$ cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/install -DPYTHON_EXECUTABLE=/usr/bin/python3 -DSPHINX_FLAGS="-j6"
+
+	Explication de la commande cmake :
+
+	".." signifie "le dossier parent du dossier courant",
+	c'est-à-dire ~/GIT/openturns dans le cas présent.
+	C'est en effet dans ce dossier que se trouvent les fichiers sources.
+
+	Les options de cmake sont toutes préfixées par "-D".
+
+	"CMAKE_INSTALL_PREFIX" indique le dossier d'installation de la librairie compilée.
+	Ici, la macro $PWD signifie "le dossier courant" (càd ~/GIT/openturns/build) et
+	"/install" signifie qu'un sous-dossier nommé "install" devra y être créé
+	par le compilateur et que c'est dans ce sous-dossier que sera installé OpenTURNS.
+
+	"PYTHON_EXECUTABLE" donne l'adresse de l'exécutable Python à utiliser.
+	S'il n'est pas spécifié, seule la librairie C++ sera compilée.
+
+	"USE_SPHINX" est un bool indiquant si la documentation doit être compilée.
+	Par défaut ON.
+
+	"SPHINX_FLAGS" correspond aux options du compilateur de la doc (Sphinx).
+	"-j6" signifie que 6 coeurs seront utilisés dans l'opération.
+
+	Compiler OpenTURNS
+	Toujours dans le dossier "build" :
+
+	devel@OT-VM:~/GIT/openturns/build$ make install -j6
+
+	Le "-j6" de cette commande indique que 6 coeurs seront utilisés par la
+	compilation de la librairie. Cela ne concerne pas la compilation de la doc,
+	qui est gouvernée par l'option SPHINX_FLAGS de cmake (cf. ci-dessus).
+
+	Mettre à jour le PYTHONPATH
+	Dans /home/devel/.bashrc, ajouter une ligne pour permettre au système de
+	trouver la librairie OpenTURNS compilée :
+
+	Pour que Python détecte la librairie OpenTURNS compilee
+	export PYTHONPATH="/home/devel/GIT/openturns/build/install/lib/python3.7/site-packages:$PYTHONPATH"
+
+	Supprimer la ligne correspondant à la version précompilée :
+
+	export PYTHONPATH="/home/devel/GIT/openturns/build-exemple/install/lib/python3.7/site-packages:$PYTHONPATH"
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%  UTILIZZARE LIB OT Python IN locale %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    posizionarsi nella cartella che contiene la cartella di openturns e :
+    
+    python3 "import openturns as ot"
+    python3 "import MySuperClass"
+    
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%% MODULO NUOVO %%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    creato il tuo modulo seguendo queste istruzioni :
+    
+    
+    git clone https://github.com/yourusername/otmymodule.git
+
+    ./customize.sh OTMyModule MySuperClass
+
+    git rm customize.sh
+    git commit customize.sh -m "Removed customize script"
+
+    ./setVersionNumber.sh 1.0
+
+    mkdir build 
+    
+ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DOpenTURNS_DIR=/home/jfloquet/Bureau/openturns/build/install/lib/cmake/openturns ..
+
+make
+make check
+make install
+make installcheck
+
+%%%%%%%%%%%%%%%%%%%%%
+debug :
+c++filt (message d'erreur) 
+

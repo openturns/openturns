@@ -1,0 +1,78 @@
+%feature("docstring") OT::NAIS
+"Non Adaptative Importance Sampling (NAIS) algorhitm.
+
+Available constructors:
+    LHS(*event=ot.Event()*)
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    Event we are computing the probability of.
+
+Notes
+-----
+Using the probability distribution of a random vector :math:`\vect{X}`, we seek
+to evaluate the following probability:
+
+.. math::
+
+    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)\di{\ux}
+        = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
+
+Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
+vector, :math:`g(\vect{X},\vect{d})` the function known as *limit state function*
+which enables the definition of the event
+:math:`\cD_f = \{\vect{X} \in \Rset^n \, | \, g(\vect{X},\vect{d}) \le 0\}`.
+:math:`\mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }`
+describes the indicator function equal to 1 if
+:math:`g(\vect{x}_i,\vect{d}) \leq 0` and equal to 0 otherwise.
+
+LHS or Latin Hypercube Sampling is a sampling method enabling to better cover
+the domain of variations of the input variables, thanks to a stratified
+sampling strategy. This method is applicable in the case of independent input
+variables. The sampling procedure is based on dividing the range of each
+variable into several intervals of equal probability. The sampling is
+undertaken as follows:
+
+- Step 1: The range of each input variable is stratified into isoprobabilistic
+  cells,
+
+- Step 2: A cell is uniformly chosen among all the available cells,
+
+- Step 3: The random number is obtained by inverting the Cumulative Density
+  Function locally in the chosen cell,
+
+- Step 4: All the cells having a common strate with the previous cell are put
+  apart from the list of available cells.
+
+The estimator of the probability of failure with LHS is given by:
+
+.. math::
+
+    \widehat{P}_{f,LHS} = \frac{1}{N}
+                          \sum_{i=1}^N \mathbf{1}_{\{g(\uX^i,\vect{d}) \leq 0 \}}
+
+where the sample of :math:`\{ \uX^i,i=1 \hdots N \}` is obtained as described
+previously.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myFunction = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
+>>> # We create a 'usual' RandomVector from the Distribution
+>>> vect = ot.RandomVector(myDistribution)
+>>> # We create a composite random vector
+>>> output = ot.CompositeRandomVector(myFunction, vect)
+>>> # We create an event from this RandomVector
+>>> myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
+>>> # We create a LHS algorithm
+>>> myAlgo = ot.LHS(myEvent)
+>>> myAlgo.setMaximumOuterSampling(150)
+>>> myAlgo.setBlockSize(4)
+>>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> # Perform the simulation
+>>> myAlgo.run()
+>>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+Probability estimate=0.151667"
