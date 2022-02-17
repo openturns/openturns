@@ -62,6 +62,8 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Distrib
   : RandomVectorImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
+  , logProbCurrentConditionedToNew_(0.0)
+  , logProbNewConditionedToCurrent_(0.0)
   , history_(Full())
   , burnIn_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultBurnIn"))
   , thinning_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultThinning"))
@@ -79,7 +81,8 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Functio
   : RandomVectorImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
-  , marginalIndices_(marginalIndices)
+  , logProbCurrentConditionedToNew_(0.0)
+  , logProbNewConditionedToCurrent_(0.0)
   , history_(Full())
   , targetLogPDF_(targetLogPDF)
   , support_(support)
@@ -200,7 +203,7 @@ Point MetropolisHastingsImplementation::getRealization() const
     const Scalar newLogPosterior = computeLogPosterior(newState);
     
     // alpha = posterior(newstate)/posterior(oldstate)
-    const Scalar alphaLog = newLogPosterior - currentLogPosterior_;
+    const Scalar alphaLog = newLogPosterior - currentLogPosterior_ + logProbCurrentConditionedToNew_ - logProbNewConditionedToCurrent_;
     const Scalar uLog = log(RandomGenerator::Generate());
     if (uLog < alphaLog)
     {
@@ -394,12 +397,21 @@ Scalar MetropolisHastingsImplementation::getAcceptanceRate() const
   return static_cast<Scalar>(acceptedNumber_) / samplesNumber_;
 }
 
+void MetropolisHastingsImplementation::setConditionalLogProbabilities(const Scalar logProbNewConditionedToCurrent,
+                                                                      const Scalar logProbCurrentConditionedToNew) const
+{
+  logProbNewConditionedToCurrent_ = logProbNewConditionedToCurrent;
+  logProbCurrentConditionedToNew_ = logProbCurrentConditionedToNew;
+}
+
 /* Method save() stores the object through the StorageManager */
 void MetropolisHastingsImplementation::save(Advocate & adv) const
 {
   RandomVectorImplementation::save(adv);
   adv.saveAttribute("initialState_", initialState_);
   adv.saveAttribute("currentState_", currentState_);
+  adv.saveAttribute("logProbCurrentConditionedToNew_", logProbCurrentConditionedToNew_);
+  adv.saveAttribute("logProbNewConditionedToCurrent_", logProbNewConditionedToCurrent_);
   adv.saveAttribute("marginalIndices_", marginalIndices_);
   adv.saveAttribute("targetDistribution_", targetDistribution_);
   adv.saveAttribute("hasTargetDistribution_", hasTargetDistribution_);
@@ -420,6 +432,8 @@ void MetropolisHastingsImplementation::load(Advocate & adv)
   RandomVectorImplementation::load(adv);
   adv.loadAttribute("initialState_", initialState_);
   adv.loadAttribute("currentState_", currentState_);
+  adv.loadAttribute("logProbCurrentConditionedToNew_", logProbCurrentConditionedToNew_);
+  adv.loadAttribute("logProbNewConditionedToCurrent_", logProbNewConditionedToCurrent_);
   adv.loadAttribute("marginalIndices_", marginalIndices_);
   adv.loadAttribute("targetDistribution_", targetDistribution_);
   adv.loadAttribute("hasTargetDistribution_", hasTargetDistribution_);
