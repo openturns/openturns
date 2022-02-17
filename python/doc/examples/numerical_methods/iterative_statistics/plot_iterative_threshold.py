@@ -17,7 +17,7 @@ dim = 1
 distNormal = ot.Normal(dim)
 
 # %%
-# Let us consider a threshold value of 3.0. Each data value higher than 3.0 is counted as one exceedance. The counter used by the :class:`~openturns.IterativeThresholdExceedance` class is updated iteratively.
+# Let us consider a threshold value of :math:`3.0`. Each data value higher than :math:`3.0` is counted as one exceedance. The counter used by the :class:`~openturns.IterativeThresholdExceedance` class is updated iteratively.
 
 # %%
 thresholdValue = 3.0
