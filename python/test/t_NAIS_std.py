@@ -87,4 +87,4 @@ Nais_algo.run()
 NAIS_result = Nais_algo.getResult()
 
 print('Probability of failure:', NAIS_result.getProbabilityEstimate())
-print('Samples:', NAIS_result.getSamples())
+print('Sample:', NAIS_result.getSample())

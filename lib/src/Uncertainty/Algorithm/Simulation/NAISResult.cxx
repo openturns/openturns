@@ -37,58 +37,58 @@ NAISResult::NAISResult()
   //Nothing TO DO
 }
 
-/** get Probability Estimate */
+// Get Probability Estimate 
 Scalar NAISResult::getProbabilityEstimate() const 
 {
   return probabilityEstimate_;
 }
 
-/** set Probability Estimate */
+// Set Probability Estimate 
 void NAISResult::setProbabilityEstimate(const Scalar & probabilityEstimate)
 {
   probabilityEstimate_ = probabilityEstimate;
 }
 
-/** get Samples */
-Sample NAISResult::getSamples() const 
+// Get Samples 
+Sample NAISResult::getSample() const 
 {
-  return samples_;
+  return sample_;
 }
 
-/** set NAISResult Samples */
-void NAISResult::setSamples(const Sample & samples)
+// Set NAISResult Samples 
+void NAISResult::setSample(const Sample & sample)
 {
-  samples_ = samples;
+  sample_ = sample;
 }
 
-/** get Auxiliary Density */
+// Get Auxiliary Density 
 Distribution NAISResult::getAuxiliaryDensity() const
 {
   return auxiliaryDistribution_;
 }
 
-/** set Auxiliary Density */
+// Set Auxiliary Density 
 void NAISResult::setAuxiliaryDensity(const Distribution & auxiliaryDistribution)
 {
   auxiliaryDistribution_ = auxiliaryDistribution;
 }
 
-/* Method save() stores the object through the StorageManager */
+// Method save() stores the object through the StorageManager 
 void NAISResult::save(Advocate & adv) const
 {
   SimulationResult::save( adv );
   adv.saveAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
   adv.saveAttribute("probabilityEstimate_", probabilityEstimate_);
-  adv.saveAttribute("samples_", samples_);
+  adv.saveAttribute("sample_", sample_);
 }
 
-/* Method load() reloads the object from the StorageManager */
+// Method load() reloads the object from the StorageManager 
 void NAISResult::load(Advocate & adv)
 {
   SimulationResult::load( adv );
   adv.loadAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
   adv.loadAttribute("probabilityEstimate_", probabilityEstimate_);
-  adv.loadAttribute("samples_", samples_);
+  adv.loadAttribute("sample_", sample_);
 }
 
 END_NAMESPACE_OPENTURNS

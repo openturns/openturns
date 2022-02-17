@@ -53,17 +53,11 @@ public:
        const UnsignedInteger n_IS_value,
        const Scalar rho_quantile);
 
-  /** get weights */
+  /** Get weights */
   Point getWeights() const;
 
-  /** set weights */
-  void setWeights(const Point & weigth);
-
-  /** get outputsamples */
+  /** Get outputsamples */
   Sample getOutputSample() const;
-
-  /** set outputsamples */
-  void setOutputSample(const Sample & outputSample);
 
   /** Main function that computes the failure probability */
   void run() override;
@@ -77,7 +71,7 @@ private:
       const Point & weights);
 
   /** Function computing weigths  of sample */
-  Point computeWeights(const Sample & samples,
+  Point computeWeights(const Sample & sample,
                        const Sample & respectiveSamples,
                        const Scalar eventThresholdLocal,
                        const Distribution & AuxiliaryDistribution);

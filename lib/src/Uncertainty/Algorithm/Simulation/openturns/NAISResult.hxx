@@ -45,22 +45,22 @@ public:
   /** Default constructor */
   NAISResult();
 
-  /** get Probability Estimate */
+  /** Get Probability Estimate */
   Scalar getProbabilityEstimate() const;
 
-  /** set Probability Estimate */
+  /** Set Probability Estimate */
   void setProbabilityEstimate(const Scalar & probabilityEstimate);
 
-  /** get Samples */
-  Sample getSamples() const;
+  /** Get Samples */
+  Sample getSample() const;
 
-  /** set NAISResult Samples */
-  void setSamples(const Sample & samples);
+  /** Set NAISResult Samples */
+  void setSample(const Sample & sample);
 
-  /** get Auxiliary Density */
+  /** Get Auxiliary Density */
   Distribution getAuxiliaryDensity() const;
 
-  /** set Auxiliary Density */
+  /** Set Auxiliary Density */
   void setAuxiliaryDensity(const Distribution & auxiliaryDistribution);
   
   /** Method save() stores the object through the StorageManager */
@@ -78,7 +78,7 @@ private:
   Scalar probabilityEstimate_;
 
   // The fixed sample that will be returned at each call
-  Sample samples_;
+  Sample sample_;
 
 
 }; /* class NAISResult */
