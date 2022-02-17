@@ -26,7 +26,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/HSICStat.hxx"
-
+#include "openturns/ResourceMap.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Pie.hxx"
@@ -52,11 +52,11 @@ HSICEstimatorImplementation::HSICEstimatorImplementation()
   , HSIC_YY_()
   , R2HSICIndices_()
   , PValuesPermutation_()
-  , permutationSize_(0)
+  , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimatorImplementation-PermutationSize"))
   , isAlreadyComputedIndices_(false)
   , isAlreadyComputedPValuesPermutation_(false)
 {
-  // Nothing
+ // Nothing
 }
 
 
@@ -79,7 +79,7 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(
   , HSIC_YY_()
   , R2HSICIndices_()
   , PValuesPermutation_()
-  , permutationSize_(100)
+  , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimatorImplementation-PermutationSize"))
   , isAlreadyComputedIndices_(false)
   , isAlreadyComputedPValuesPermutation_(false)
 {
@@ -106,7 +106,7 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(
   , HSIC_XX_ ()
   , HSIC_YY_ ()
   , R2HSICIndices_ ()
-  , permutationSize_(100)
+  , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimatorImplementation-PermutationSize"))
   , isAlreadyComputedIndices_(false)
   , isAlreadyComputedPValuesPermutation_(false)
 {
@@ -129,10 +129,6 @@ SquareMatrix HSICEstimatorImplementation::computeWeightMatrix(const Sample & Y) 
   const Sample wY = weightFunction_(Y);
   const Scalar meanWY = wY.computeMean()[0];
   SquareMatrix mat(n_);
-  //for(UnsignedInteger j = 0; j < n_; ++j)
-  //{
-  //  mat(j, j) = wY(j, 0) / meanWY;
-  //}
   mat.setDiagonal(wY.asPoint() / meanWY);
   return mat;
 }
@@ -263,6 +259,11 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, const String 
   Cloud cloud(data, "red", "circle", "");
   graph.add(cloud);
 
+  /* Min & max indices values */
+  const Scalar minInd = data.getMin()[1];
+  const Scalar maxInd = data.getMax()[1];
+
+
   /* Add text description */
   for (UnsignedInteger k = 0; k < values.getDimension(); ++k)
   {
@@ -281,7 +282,27 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, const String 
   Text text(data, names, "right");
   text.setColor("black");
   graph.add(text);
-  graph.setXMargin(0.9);
+  //graph.setXMargin(0.9);
+  //graph.setYMargin(0.9);
+
+  // Set bounding box
+  Point lowerBound(2);
+  lowerBound[0] = 0.9;
+  if (minInd < 0)
+    lowerBound[1] = 1.1 * minInd;
+  else
+    lowerBound[1] = 0.9 * minInd;
+
+  Point upperBound(2);
+  upperBound[0] = values.getDimension() + 0.1 ;
+
+  if (maxInd > 0)
+    upperBound[1] = 1.1 * maxInd;
+  else
+    upperBound[1] = 0.9 * maxInd;
+
+  graph.setBoundingBox(Interval(lowerBound, upperBound));
+
   graph.setYMargin(0.9);
 
   return graph;

@@ -880,6 +880,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FAST-DefaultInterferenceFactor", 4);
   addAsUnsignedInteger("FAST-DefaultResamplingSize", 1);
 
+  // HSIC parameters //
+  addAsUnsignedInteger("HSICEstimatorImplementation-PermutationSize", 100);
+
   // RandomGenerator parameters //
   addAsUnsignedInteger("RandomGenerator-InitialSeed", 0);
 
