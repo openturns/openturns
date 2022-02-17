@@ -23,12 +23,12 @@
 #define OPENTURNS_HSICESTIMATORIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
+#include "openturns/ResourceMap.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/Function.hxx"
@@ -144,7 +144,7 @@ protected:
 
   Sample shuffledCopy(const Sample & inSample) const;
 
-  /* data */
+  /** Data */
   PersistentCollection <CovarianceModel> covarianceList_ ;
   Sample inputSample_ ;
   Sample outputSample_ ;

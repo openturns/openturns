@@ -60,4 +60,17 @@ void HSICEstimatorConditionalSensitivity::setWeightFunction(const Function & wei
   weightFunction_ = weightFunction;
   resetIndices();
 }
+
+/* Method save() stores the object through the StorageManager */
+void HSICEstimatorConditionalSensitivity::save(Advocate & adv) const
+{
+  HSICEstimatorImplementation::save(adv);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void HSICEstimatorConditionalSensitivity::load(Advocate & adv)
+{
+  HSICEstimatorImplementation::load(adv);
+}
+
 END_NAMESPACE_OPENTURNS

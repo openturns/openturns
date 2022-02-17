@@ -155,22 +155,7 @@ void HSICEstimatorGlobalSensitivity::run() const
 /* Method save() stores the object through the StorageManager */
 void HSICEstimatorGlobalSensitivity::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "covarianceList_", covarianceList_ );
-  adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "outputSample_", outputSample_ );
-  adv.saveAttribute( "estimatorType_", estimatorType_ );
-  adv.saveAttribute( "weightFunction_", weightFunction_ );
-  adv.saveAttribute( "n_", n_ );
-  adv.saveAttribute( "inputDimension_", inputDimension_ );
-  adv.saveAttribute( "HSIC_XY_", HSIC_XY_ );
-  adv.saveAttribute( "HSIC_XX_", HSIC_XX_ );
-  adv.saveAttribute( "HSIC_YY_", HSIC_YY_ );
-  adv.saveAttribute( "R2HSICIndices_", R2HSICIndices_ );
-  adv.saveAttribute( "PValuesPermutation_", PValuesPermutation_ );
-  adv.saveAttribute( "permutationSize_", permutationSize_ );
-  adv.saveAttribute( "isAlreadyComputedIndices_", isAlreadyComputedIndices_ );
-  adv.saveAttribute( "isAlreadyComputedPValuesPermutation_", isAlreadyComputedPValuesPermutation_ );
+  HSICEstimatorImplementation::save(adv);
   adv.saveAttribute( "PValuesAsymptotic_", PValuesAsymptotic_ );
   adv.saveAttribute( "isAlreadyComputedPValuesAsymptotic_", isAlreadyComputedPValuesAsymptotic_ );
 }
@@ -178,22 +163,7 @@ void HSICEstimatorGlobalSensitivity::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void HSICEstimatorGlobalSensitivity::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute( "covarianceList_", covarianceList_ );
-  adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "outputSample_", outputSample_ );
-  adv.loadAttribute( "estimatorType_", estimatorType_ );
-  adv.loadAttribute( "weightFunction_", weightFunction_ );
-  adv.loadAttribute( "n_", n_ );
-  adv.loadAttribute( "inputDimension_", inputDimension_ );
-  adv.loadAttribute( "HSIC_XY_", HSIC_XY_ );
-  adv.loadAttribute( "HSIC_XX_", HSIC_XX_ );
-  adv.loadAttribute( "HSIC_YY_", HSIC_YY_ );
-  adv.loadAttribute( "R2HSICIndices_", R2HSICIndices_ );
-  adv.loadAttribute( "PValuesPermutation_", PValuesPermutation_ );
-  adv.loadAttribute( "permutationSize_", permutationSize_ );
-  adv.loadAttribute( "isAlreadyComputedIndices_", isAlreadyComputedIndices_ );
-  adv.loadAttribute( "isAlreadyComputedPValuesPermutation_", isAlreadyComputedPValuesPermutation_ );
+  HSICEstimatorImplementation::load(adv);
   adv.loadAttribute( "PValuesAsymptotic_", PValuesAsymptotic_ );
   adv.loadAttribute( "isAlreadyComputedPValuesAsymptotic_", isAlreadyComputedPValuesAsymptotic_ );
 }

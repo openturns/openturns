@@ -64,6 +64,11 @@ public:
   /** Set the weight function */
   void setWeightFunction(const Function & weightFunction);
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
 };
 
 
