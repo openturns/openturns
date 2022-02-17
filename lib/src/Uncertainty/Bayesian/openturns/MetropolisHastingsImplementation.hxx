@@ -138,6 +138,8 @@ public:
 protected:
   Point initialState_;
   mutable Point currentState_;
+  mutable Scalar logProbCurrentConditionedToNew_;
+  mutable Scalar logProbNewConditionedToCurrent_;
   Indices marginalIndices_;
   mutable HistoryStrategy history_;
 
@@ -152,6 +154,9 @@ protected:
 
   /** Propose a new point in the chain */
   virtual Point getCandidate() const;
+
+  // Set conditional probabilities of new and current state w.r.t. one another
+  void setConditionalLogProbabilities(const Scalar logProbNewConditionedToCurrent, const Scalar logProbCurrentConditionedToNew) const;
 
 private:
   // target distribution
