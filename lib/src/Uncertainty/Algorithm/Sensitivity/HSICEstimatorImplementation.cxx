@@ -282,28 +282,19 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, const String 
   Text text(data, names, "right");
   text.setColor("black");
   graph.add(text);
-  //graph.setXMargin(0.9);
-  //graph.setYMargin(0.9);
 
   // Set bounding box
+  const Scalar step = maxInd - minInd;
+
   Point lowerBound(2);
   lowerBound[0] = 0.9;
-  if (minInd < 0)
-    lowerBound[1] = 1.1 * minInd;
-  else
-    lowerBound[1] = 0.9 * minInd;
+  lowerBound[1] = minInd - 0.05*step;
 
   Point upperBound(2);
-  upperBound[0] = values.getDimension() + 0.1 ;
-
-  if (maxInd > 0)
-    upperBound[1] = 1.1 * maxInd;
-  else
-    upperBound[1] = 0.9 * maxInd;
+  upperBound[0] = values.getDimension() + 0.2 ;
+  upperBound[1] = maxInd + 0.05*step;
 
   graph.setBoundingBox(Interval(lowerBound, upperBound));
-
-  graph.setYMargin(0.9);
 
   return graph;
 }
