@@ -6,14 +6,14 @@ Metamodel of a field function
 #
 # In this example we are going to create a metamodel of a field function following these steps:
 #
-# Step 1: Creation of a field model over an 1-d mesh.
-# Step 2: Creation of a Gaussian process.
-# Step 3: Karhunen-Loeve decomposition of a process with known covariance function.
-# Step 4: Karhunen-Loeve decomposition of a process with known trajectories.
-# Step 5: Projection of fields.
-# Step 6: Functional chaos decomposition between the coefficients of the input and output processes.
-# Step 7: Build a metamodel of the whole field model.
-# Step 8: Validate the metamodel.
+# 1. Creation of a field model over an 1-d mesh.
+# 2. Creation of a Gaussian process.
+# 3. Karhunen-Loeve decomposition of a process with known covariance function.
+# 4. Karhunen-Loeve decomposition of a process with known trajectories.
+# 5. Projection of fields.
+# 6. Functional chaos decomposition between the coefficients of the input and output processes.
+# 7. Build a metamodel of the whole field model.
+# 8. Validate the metamodel.
 #
 
 # %%
