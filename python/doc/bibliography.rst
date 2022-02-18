@@ -199,6 +199,9 @@ Bibliography
     Applications in Uncertainty Quantification.*, PhD thesis.
     Ecole Centrale de Nantes, France, 2015.
     `pdf <https://tel.archives-ouvertes.fr/tel-01143694/document>`__
+.. [rawlings2001] Rawlings, J. O., Pantula, S. G., and Dickey, D. A.
+    *Applied regression analysis: a research tool.*
+    Springer Science and Business Media, 2001.
 .. [rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__
