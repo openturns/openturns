@@ -3,17 +3,17 @@
 The Metropolis-Hastings Algorithm
 ---------------------------------
 
-| **Markov chain.** Considering a :math:`\sigma`-algebra :math:`\cA` on
-  :math:`\Omega`, a Markov chain is a process
-  :math:`{(X_k)}_{k\in\Nset}` such that
+**Markov chain.** Considering a :math:`\sigma`-algebra :math:`\cA` on
+:math:`\Omega`, a Markov chain is a process
+:math:`{(X_k)}_{k\in\Nset}` such that
 
-  .. math::
+.. math::
 
-     \begin{aligned}
-         \forall{}(A,x_0,\ldots,x_{k-1})\in\cA\times\Omega^k
-         \quad \Prob{X_k\in A \,|\, X_0=x_0, \ldots, X_{k-1}=x_{k-1}}
-         = \Prob{X_k\in A \,|\, X_{k-1}=x_{k-1}}.
-       \end{aligned}
+   \begin{aligned}
+       \forall{}(A,x_0,\ldots,x_{k-1})\in\cA\times\Omega^k
+       \quad \Prob{X_k\in A \,|\, X_0=x_0, \ldots, X_{k-1}=x_{k-1}}
+       = \Prob{X_k\in A \,|\, X_{k-1}=x_{k-1}}.
+   \end{aligned}
 
 An example is the *random walk* for which
 :math:`X_k = X_{k-1} + \varepsilon_k` where the steps
@@ -22,10 +22,9 @@ An example is the *random walk* for which
 | **Transition kernel.** A transition kernel on :math:`(\Omega, \cA)` is
   a mapping :math:`K: (\Omega, \cA) \rightarrow [0, 1]` such that
 
--  :math:`\forall{}A\in\cA \quad K(., A)` is measurable;
+-  For all :math:`A\in\cA, \quad K(., A)` is measurable;
 
--  | :math:`\forall{}x\in\Omega \quad K(x, .)` is a probability
-     distribution on :math:`(\Omega, \cA)`.
+-  For all :math:`x\in\Omega, \quad K(x, .)` is a probability distribution on :math:`(\Omega, \cA)`.
 
 The kernel :math:`K` has density :math:`k` if
 :math:`\forall(x,A)\in\Omega\times\cA \quad K(x, A) = \displaystyle\int_A \: k(x, y) \mbox{d}y`.
