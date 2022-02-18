@@ -665,6 +665,9 @@ void ResourceMap::loadDefaultConfiguration()
   // SymbolicParser parameters
   addAsString("SymbolicParser-Backend", SYMBOLICPARSER_DEFAULT_BACKEND);
 
+  // SymbolicParserExprTk parameters
+  addAsUnsignedInteger("SymbolicParserExprTk-SmallSize", 100);
+
   // DesignProxy parameters
   addAsUnsignedInteger("DesignProxy-DefaultCacheSize", 16777216);// 2^24=16777216=128 Mio
 
