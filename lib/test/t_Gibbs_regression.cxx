@@ -65,16 +65,8 @@ int main(int, char *[])
     }
     std::cout << "p=" << p << std::endl;
 
-    Description fullVariables(0);
-    fullVariables.add("p1");
-    fullVariables.add("p2");
-    fullVariables.add("p3");
-    fullVariables.add("x1");
-    fullVariables.add("x2");
-    fullVariables.add("x3");
-    Description formulas(0);
-    formulas.add("p1*x1+p2*x2+p3*x3");
-    formulas.add("1.0");
+    const Description fullVariables = {"p1", "p2", "p3", "x1", "x2", "x3"};
+    const Description formulas = {"p1*x1+p2*x2+p3*x3", "1.0"};
     SymbolicFunction fullModel(fullVariables, formulas);
     Indices parametersPosition(chainDim);
     parametersPosition.fill();
@@ -170,11 +162,11 @@ int main(int, char *[])
 
     std::cout << "sample mean=" << x_mu << std::endl;
     std::cout << "expected mean=" << mu_exp << std::endl;
+    assert_almost_equal(x_mu, mu_exp, 1e-1, 1e-3);
 
     std::cout << "covariance=" << x_cov << std::endl;
     std::cout << "expected covariance=" << Qn_inv << std::endl;
-
-
+    assert_almost_equal(x_cov, Qn_inv, 1e-3, 2e-2);
   }
   catch (TestFailed & ex)
   {

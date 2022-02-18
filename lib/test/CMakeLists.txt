@@ -583,8 +583,8 @@ if (Ceres_FOUND OR CMinpack_FOUND)
   ot_check_test (NonLinearLeastSquaresCalibration_std)
   ot_check_test (NonLinearLeastSquaresCalibration_noobs)
 endif ()
-ot_check_test (RandomWalkMetropolisHastings_std)
-ot_check_test (Gibbs_regression)
+ot_check_test (RandomWalkMetropolisHastings_std IGNOREOUT)
+ot_check_test (Gibbs_regression IGNOREOUT)
 
 
 # Classification
