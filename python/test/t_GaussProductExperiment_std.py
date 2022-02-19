@@ -8,14 +8,14 @@ TESTPREAMBLE()
 try:
     distribution = ComposedDistribution(
         DistributionCollection([Exponential(), Triangular(-1.0, -0.5, 1.0)]))
-    marginalDegrees = Indices([3, 6])
+    marginalSizes = Indices([3, 6])
     # Test the constructor based on marginal degrees
-    print("experiment1=", GaussProductExperiment(marginalDegrees))
+    print("experiment1=", GaussProductExperiment(marginalSizes))
     # Test the constructor based on distribution
     print("experiment2=", GaussProductExperiment(distribution))
     # Test the constructor based on marginal degrees and distribution
     experiment = GaussProductExperiment(
-        Distribution(distribution), marginalDegrees)
+        Distribution(distribution), marginalSizes)
     print("experiment = ", experiment)
     sample, weights = experiment.generateWithWeights()
     print("sample = ", repr(sample))

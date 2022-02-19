@@ -2,25 +2,83 @@
 "Gauss product experiment.
 
 Available constructors:
-    GaussProductExperiment(*marginalDegrees*)
+    GaussProductExperiment(*marginalSizes*)
 
     GaussProductExperiment(*distribution*)
 
-    GaussProductExperiment(*distribution, marginalDegrees*)
+    GaussProductExperiment(*distribution, marginalSizes*)
 
 Parameters
 ----------
-marginalDegrees : sequence of positive int
-    Numbers of points :math:`N_i` for each direction. Then, the total number of
-    points generated is :math:`cardI=\prod_{i=1}^n N_i`. If not specified,
-    each value :math:`N_i` is :math:`5`.
+marginalSizes : sequence of positive int
+    Numbers of points :math:`s_j` for each direction. Then, the total number of
+    points generated is :math:`\textrm{card}(I)=\prod_{j = 1}^{n_x} s_j`. If not specified,
+    each value :math:`s_j` is :math:`5`.
 distribution :
-    Distribution :math:`\mu` of dimension :math:`n` with an independent copula.
+    Distribution :math:`\mu` of dimension :math:`n_x` with an independent copula.
 
 Notes
 -----
 The number of points for each direction doesn't change and the :meth:`generate`
 method always gives the same sample.
+
+Let :math:`\mathcal{X} \subset \mathbb{R}^{n_x}` be the integration domain and let :math:`g : \mathcal{X} \rightarrow \mathbb{R}^{n_y}` be an integrable function. Let :math:`f : \mathcal{X} \rightarrow \mathbb{R}` be a probability density function. The Gauss tensor product experiment produces an approximation of the integral:
+
+.. math::
+
+    \int_{\mathcal{X}} g(\boldsymbol{x}) f(\boldsymbol{x}) d\boldsymbol{x} \approx \sum_{i = 1}^{s_t} w_i g\left(\boldsymbol{x}_i\right)
+
+where :math:`s_t \in \mathbb{N}` is the size of the tensor product design of experiments, :math:`w_1, ..., w_{s_t} \in \mathbb{R}` are the weights and :math:`\boldsymbol{x}_1, ..., \boldsymbol{x}_{s_t} \in \mathbb{R}^{n_x}` are the nodes. 
+
+Let :math:`\boldsymbol{k} = \left(k_1, ..., k_{n_x}\right) \in (\mathbb{N}^\star)^{n_x}`  be a multi-index where :math:`\mathbb{N}^\star = \{1, 2, ..., \}` is the set of natural numbers without zero. For each marginal index :math:`j = 1, ..., n_x`, let :math:`s_j \in \mathbb{N}` be its size, representing the number of nodes in the marginal quadrature. Let :math:`\left\{ Q_{s_j}^{(1)} \right\}_{j = 1, ..., n_x}` be the collection of marginal experiments where the exponent :math:`(1)` denotes univariate quadrature rule. 
+
+The size of the tensor product experiment is equal to the product of the marginal sizes:
+
+.. math::
+
+    s_t = \prod_{j = 1}^{n_x} s_j.
+
+The tensor product quadrature is ([gerstner1998]_ page 214):
+
+.. math::
+
+    Q^{(n_x)}_{s_t} = Q_{s_1}^{(1)} \otimes \cdots \otimes Q_{s_{n_x}}^{(1)}
+
+where:
+
+.. math::
+
+    Q_{s_1}^{(1)} \otimes \cdots \otimes Q_{s_{n_x}}^{(1)} (g) = \sum_{k_1 = 1}^{s_1} \cdots \sum_{k_{n_x} = 1}^{s_{n_x}} w_{s_1, k_1} \cdots w_{s_{n_x}, k_{n_x}}  g\left(x_{s_1, k_1}, \ldots, x_{s_{n_x}, k_{n_x}}\right).
+
+For any given multi-index :math:`\boldsymbol{k} = (k_1, ..., k_{n_x})`, we write 
+
+.. math::
+
+    \boldsymbol{k} \leq \left(s_1, ..., s_{n_x}\right)
+
+if and only if :math:`k_j \leq s_j` for :math:`j = 1, ..., n_x`. This means that each component of the multi-index is lower than its corresponding marginal size.
+The tensor product experiment is:
+
+.. math::
+
+    Q_{s_1}^{(1)} \otimes \cdots \otimes Q_{s_{n_x}}^{(1)} (g) = \sum_{\boldsymbol{k} \leq \left(n_{s_1}^{(1)}, ..., n_{s_{n_x}}^{(1)}\right)}  w_{\boldsymbol{k}} g\left(\boldsymbol{x}_{\boldsymbol{k}}\right).
+
+where each weight is equal to the product of the marginal elementary weights:
+
+.. math::
+
+    w_{\boldsymbol{k}} = \prod_{j = 1}^{n_x} w_{s_j, k_j} \in \mathbb{R}
+
+and each node is equal to the agregation of the marginal elementary nodes:
+
+.. math::
+
+    \boldsymbol{x}_{\boldsymbol{k}}
+    = \left(x_{s_1, k_1}, \ldots, x_{s_{n_x}, k_{n_x}}\right) \in \mathbb{R}^{n_x}.
+
+The set of multi-indices such that :math:`\boldsymbol{k} \leq \left(s_1, ..., s_{n_x}\right)` is produced using all the possible combinations of the indices with the :class:`~openturns.Tuples` class.
+
+
 
 See also
 --------
@@ -29,34 +87,39 @@ WeightedExperiment
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.ComposedDistribution([ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
->>> marginalDegrees = [3, 2]
->>> experiment = ot.GaussProductExperiment(distribution, marginalDegrees)
->>> print(experiment.generate())
+>>> marginal_1 = ot.Exponential()
+>>> marginal_2 = ot.Triangular(-1.0, -0.5, 1.0)
+>>> distribution = ot.ComposedDistribution([marginal_1, marginal_2])
+>>> marginalSizes = [3, 2]
+>>> experiment = ot.GaussProductExperiment(distribution, marginalSizes)
+>>> nodes, weights = experiment.generateWithWeights()
+>>> print(nodes)
     [ X0        X1        ]
 0 : [  0.415775 -0.511215 ]
 1 : [  2.29428  -0.511215 ]
 2 : [  6.28995  -0.511215 ]
 3 : [  0.415775  0.357369 ]
 4 : [  2.29428   0.357369 ]
-5 : [  6.28995   0.357369 ]"
+5 : [  6.28995   0.357369 ]
+>>> print(weights)
+[0.429018,0.168036,0.00626806,0.282075,0.110482,0.00412119]"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussProductExperiment::getMarginalDegrees
-"Get the marginal degrees.
+%feature("docstring") OT::GaussProductExperiment::getMarginalSizes
+"Get the marginal sizes.
 
 Returns
 -------
-marginalDegrees : :class:`~openturns.Indices`
-    Numbers of points :math:`N_i` for each direction."
+marginalSizes : :class:`~openturns.Indices`
+    Numbers of points :math:`s_j` for each direction."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussProductExperiment::setMarginalDegrees
-"Set the marginal degrees.
+%feature("docstring") OT::GaussProductExperiment::setMarginalSizes
+"Set the marginal sizes.
 
 Parameters
 ----------
-marginalDegrees : sequence of positive int
-    Numbers of points :math:`N_i` for each direction."
+marginalSizes : sequence of positive int
+    Numbers of points :math:`s_j` for each direction."

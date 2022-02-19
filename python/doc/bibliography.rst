@@ -74,6 +74,8 @@ Bibliography
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
+.. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
+    sparse grids.* _Numerical algorithms_, _18_(3), 209-232.
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__

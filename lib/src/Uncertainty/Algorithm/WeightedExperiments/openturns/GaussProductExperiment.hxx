@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level view of an monteCarloExperiment plane
+ *  @brief Abstract top-level view of an GaussProductExperiment
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -48,14 +48,14 @@ public:
   GaussProductExperiment();
 
   /** Parameters constructor */
-  explicit GaussProductExperiment(const Indices & marginalDegrees);
+  explicit GaussProductExperiment(const Indices & marginalSizes);
 
   /** Parameters constructor */
   explicit GaussProductExperiment(const Distribution & distribution);
 
   /** Parameters constructor */
   GaussProductExperiment(const Distribution & distribution,
-                         const Indices & marginalDegrees);
+                         const Indices & marginalSizes);
 
   /** Virtual constructor */
   GaussProductExperiment * clone() const override;
@@ -70,8 +70,8 @@ public:
   Sample generateWithWeights(Point & weightsOut) const override;
 
   /** Marginal degrees accessor */
-  void setMarginalDegrees(const Indices & marginalDegrees);
-  Indices getMarginalDegrees() const;
+  void setMarginalSizes(const Indices & marginalSizes);
+  Indices getMarginalSizes() const;
 
   /** Distribution accessor */
   void setDistribution(const Distribution & distribution) override;
@@ -88,14 +88,14 @@ private:
   void computeNodesAndWeights() const;
 
   // Distribution and marginal degrees accessor
-  void setDistributionAndMarginalDegrees(const Distribution & distribution,
-                                         const Indices & marginalDegrees);
+  void setDistributionAndMarginalSizes(const Distribution & distribution,
+                                         const Indices & marginalSizes);
 
   // Marginal orthogonal univariate polynomial family collection
   OrthogonalUniVariatePolynomialFamilyPersistentCollection collection_;
 
   // Marginal degrees
-  Indices marginalDegrees_;
+  Indices marginalSizes_;
 
   // Integration nodes; weights
   mutable Sample nodes_;
