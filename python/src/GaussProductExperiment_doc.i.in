@@ -78,6 +78,8 @@ and each node is equal to the agregation of the marginal elementary nodes:
 
 The set of multi-indices such that :math:`\boldsymbol{k} \leq \left(s_1, ..., s_{n_x}\right)` is produced using all the possible combinations of the indices with the :class:`~openturns.Tuples` class.
 
+The default marginal size is defined in the 
+`GaussProductExperiment-DefaultMarginalSize` key of the :class:`~openturns.ResourceMap`. 
 
 
 See also
@@ -102,7 +104,36 @@ Examples
 4 : [  2.29428   0.357369 ]
 5 : [  6.28995   0.357369 ]
 >>> print(weights)
-[0.429018,0.168036,0.00626806,0.282075,0.110482,0.00412119]"
+[0.429018,0.168036,0.00626806,0.282075,0.110482,0.00412119]
+
+In the following example [morokoff1995]_, we integrate a dimension 
+5 integrand with :math:`\mathcal{U}(0, 1)` marginal probability density functions.
+We use 7 nodes for each marginal, leading to a total of :math:`7^5 = 16807` nodes 
+for the tensor product Gauss quadrature. 
+
+>>> def g_function_py(x):
+>>>     value = (1.0 + 1.0 / dimension) ** dimension
+>>>     for i in range(dimension):
+>>>         value *= x[i] ** (1.0 / dimension)
+>>>     return [value]
+>>> 
+>>> dimension = 5
+>>> g_function = ot.PythonFunction(dimension, 1, g_function_py)
+>>> interval = ot.Interval([0.0] * dimension, [1.0] * dimension)
+>>> integral = 1.0
+>>> print('Exact integral = ', integral)
+Exact integral =  1.0
+>>> marginal_levels = [7] * dimension
+>>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension)
+>>> experiment = ot.GaussProductExperiment(distribution, marginal_levels)
+>>> nodes, weights = experiment.generateWithWeights()
+>>> number_of_nodes = nodes.getSize()
+>>> print('Number of nodes = ', number_of_nodes)
+Number of nodes =  16807
+>>> function_values = g_function(nodes).asPoint()
+>>> approximate_integral = function_values.dot(weights)
+>>> print('Approximate integral= ', approximate_integral)
+Approximate integral =  1.0040..."
 
 // ---------------------------------------------------------------------
 

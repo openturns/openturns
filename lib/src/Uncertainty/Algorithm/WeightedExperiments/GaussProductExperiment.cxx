@@ -49,7 +49,7 @@ GaussProductExperiment::GaussProductExperiment(const Indices & marginalSizes)
   , marginalSizes_(0)
   , nodes_(0, 0)
 {
-  // Here we have to set a distribution of dimension compatible with the marginal degrees
+  // Here we have to set a distribution of dimension compatible with the marginal sizes
   setDistributionAndMarginalSizes(ComposedDistribution(ComposedDistribution::DistributionCollection(marginalSizes.getSize())), marginalSizes);
 }
 
@@ -60,7 +60,7 @@ GaussProductExperiment::GaussProductExperiment(const Distribution & distribution
   , marginalSizes_(0)
   , nodes_(0, 0)
 {
-  setDistributionAndMarginalSizes(distribution, Indices(distribution.getDimension(), ResourceMap::GetAsUnsignedInteger( "GaussProductExperiment-DefaultMarginalDegree" )));
+  setDistributionAndMarginalSizes(distribution, Indices(distribution.getDimension(), ResourceMap::GetAsUnsignedInteger( "GaussProductExperiment-DefaultMarginalSize" )));
 }
 
 /* Constructor with parameters */
@@ -87,7 +87,7 @@ String GaussProductExperiment::__repr__() const
   oss << "class=" << GetClassName()
       << " name=" << getName()
       << " distribution=" << distribution_
-      << " marginal degrees=" << marginalSizes_;
+      << " marginal sizes=" << marginalSizes_;
   return oss;
 }
 
@@ -96,7 +96,7 @@ void GaussProductExperiment::setDistribution(const Distribution & distribution)
 {
   if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: the GaussProductExperiment can only be used with distributions having an independent copula.";
   const UnsignedInteger dimension = distribution.getDimension();
-  if (dimension != marginalSizes_.getSize()) throw InvalidArgumentException(HERE) << "Error: the given distribution has a dimension=" << dimension << "different from the number of marginal degrees=" << marginalSizes_.getSize() << ".";
+  if (dimension != marginalSizes_.getSize()) throw InvalidArgumentException(HERE) << "Error: the given distribution has a dimension=" << dimension << "different from the number of marginal sizes =" << marginalSizes_.getSize() << ".";
   collection_ = OrthogonalUniVariatePolynomialFamilyCollection(0);
   // Here we use the StandardDistributionPolynomialFactory class directly in order to benefit from the possible mapping to dedicated factories
   // The affine transform between the marginals and their standard representatives will be applied in computeNodesAndWeights()
@@ -118,11 +118,11 @@ Sample GaussProductExperiment::generateWithWeights(Point & weights) const
   return nodes_;
 }
 
-/** Marginal degrees accessor */
+/** Marginal sizes accessor */
 void GaussProductExperiment::setMarginalSizes(const Indices & marginalSizes)
 {
   const UnsignedInteger dimension = distribution_.getDimension();
-  if (marginalSizes.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the marginal degrees number must match the distribution dimension. Here, the degrees are " << marginalSizes << " and the dimension is " << dimension;
+  if (marginalSizes.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the marginal sizes number must match the distribution dimension. Here, the sizes are " << marginalSizes << " and the dimension is " << dimension;
   if (marginalSizes != marginalSizes_)
   {
     marginalSizes_ = marginalSizes;
@@ -130,11 +130,11 @@ void GaussProductExperiment::setMarginalSizes(const Indices & marginalSizes)
   }
 }
 
-/** Marginal degrees accessor */
+/** Marginal sizes accessor */
 void GaussProductExperiment::setDistributionAndMarginalSizes(const Distribution & distribution,
     const Indices & marginalSizes)
 {
-  // Set the marginal degrees here then the distribution with checks
+  // Set the marginal sizes here then the distribution with checks
   marginalSizes_ = marginalSizes;
   setDistribution(distribution);
 

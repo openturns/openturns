@@ -69,7 +69,7 @@ public:
   /** Sample generation */
   Sample generateWithWeights(Point & weightsOut) const override;
 
-  /** Marginal degrees accessor */
+  /** Marginal sizes accessor */
   void setMarginalSizes(const Indices & marginalSizes);
   Indices getMarginalSizes() const;
 
@@ -87,14 +87,14 @@ private:
   // Compute the tensor product nodes and weights
   void computeNodesAndWeights() const;
 
-  // Distribution and marginal degrees accessor
+  // Distribution and marginal sizes accessor
   void setDistributionAndMarginalSizes(const Distribution & distribution,
                                          const Indices & marginalSizes);
 
   // Marginal orthogonal univariate polynomial family collection
   OrthogonalUniVariatePolynomialFamilyPersistentCollection collection_;
 
-  // Marginal degrees
+  // Marginal sizes
   Indices marginalSizes_;
 
   // Integration nodes; weights

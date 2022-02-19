@@ -169,6 +169,8 @@ Bibliography
     computational experiments.*
     Journal of Statistical Planning and Inference, 43 :381-402, 1995.
     `pdf <https://www.osti.gov/servlets/purl/10184343>`__
+.. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). Quasi-monte carlo 
+    integration. Journal of computational physics, 122(2), 218-230.
 .. [munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,
