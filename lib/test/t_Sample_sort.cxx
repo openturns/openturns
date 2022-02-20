@@ -115,31 +115,30 @@ void test_1()
     OStream fullprint(std::cout);
     // Create expected nodes and weights, then sort and check that nothing changed.
     fullprint << "+ Test 1 : sort with custom algorithm" << std::endl;
-    Point column_1 = {0.11, 0.11, 0.11, 0.11, 0.11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88, 0.88, 0.88, 0.88, 0.88};
-    Point column_2 = {0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95};
-    UnsignedInteger size(column_1.getDimension());
+    Point column1 = {0.11, 0.11, 0.11, 0.11, 0.11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88, 0.88, 0.88, 0.88, 0.88};
+    Point column2 = {0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95};
+    UnsignedInteger size(column1.getDimension());
     UnsignedInteger dimension = 2;
-    Sample nodes_expected(size, dimension);
+    Sample nodesExpected(size, dimension);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      nodes_expected(i, 0) = column_1[i];
-      nodes_expected(i, 1) = column_2[i];
+      nodesExpected(i, 0) = column1[i];
+      nodesExpected(i, 1) = column2[i];
     }
-    const Point weights_expected = {0.03, 0.06, 0.07, 0.06, 0.03, 0.05, 0.10, 0.12, 0.10, 0.05, 0.03, 0.06, 0.07, 0.06, 0.03};
-    fullprint << "  nodes_expected = " << nodes_expected << std::endl;
-    fullprint << "  weights_expected = " << weights_expected << std::endl;
+    const Point weightsExpected = {0.03, 0.06, 0.07, 0.06, 0.03, 0.05, 0.10, 0.12, 0.10, 0.05, 0.03, 0.06, 0.07, 0.06, 0.03};
+    fullprint << "  nodesExpected = " << nodesExpected << std::endl;
+    fullprint << "  weightsExpected = " << weightsExpected << std::endl;
     //
-    Point weights(weights_expected);
-    Sample nodes(nodes_expected);
+    Point weights(weightsExpected);
+    Sample nodes(nodesExpected);
     //
     sortNodesAndWeights(nodes, weights);
-    fullprint << "  nodes = " << nodes << std::endl;
-    fullprint << "  weights = " << weights << std::endl;
+    printNodesAndWeights(nodes, weights);
     //
     const Scalar rtol = 1.0e-5;
     const Scalar atol = 1.0e-5;
-    assert_almost_equal(nodes_expected, nodes, rtol, atol);
-    assert_almost_equal(weights_expected, weights, rtol, atol);
+    assert_almost_equal(nodesExpected, nodes, rtol, atol);
+    assert_almost_equal(weightsExpected, weights, rtol, atol);
 }
 
 // Test 2 : sort with std::sort
@@ -170,50 +169,102 @@ void test_2()
     fullprint << std::endl;
 }
 
-// Test 3 : Sort with pairs
+// Test 3 : Sort weights with pairs
 void test_3()
 {
     OStream fullprint(std::cout);
-    fullprint << "+ Test 3 : sort with pairs";
+    fullprint << "+ Test 3 : sort weights with pairs" << std::endl;
 
     // Create expected nodes and weights, then sort and check that nothing changed.
-    fullprint << "+ Test 1 : sort with custom algorithm" << std::endl;
-    Point column_1 = {0.11, 0.11, 0.11, 0.11, 0.11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88, 0.88, 0.88, 0.88, 0.88};
-    Point column_2 = {0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95};
-    UnsignedInteger size(column_1.getDimension());
+    Point column1 = {0.11, 0.11, 0.11, 0.11, 0.11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88, 0.88, 0.88, 0.88, 0.88};
+    Point column2 = {0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95};
+    UnsignedInteger size(column1.getDimension());
     UnsignedInteger dimension = 2;
-    Sample nodes_expected(size, dimension);
+    Sample nodesExpected(size, dimension);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      nodes_expected(i, 0) = column_1[i];
-      nodes_expected(i, 1) = column_2[i];
+      nodesExpected(i, 0) = column1[i];
+      nodesExpected(i, 1) = column2[i];
     }
-    const Point weights_expected = {0.03, 0.06, 0.07, 0.06, 0.03, 0.05, 0.10, 0.12, 0.10, 0.05, 0.03, 0.06, 0.07, 0.06, 0.03};
-    fullprint << "  nodes_expected = " << nodes_expected << std::endl;
-    fullprint << "  weights_expected = " << weights_expected << std::endl;
+    const Point weightsExpected = {0.03, 0.06, 0.07, 0.06, 0.03, 0.05, 0.10, 0.12, 0.10, 0.05, 0.03, 0.06, 0.07, 0.06, 0.03};
+    fullprint << "  nodesExpected = " << nodesExpected << std::endl;
+    fullprint << "  weightsExpected = " << weightsExpected << std::endl;
     // Create pairs
     Collection< std::pair<Scalar, UnsignedInteger> > weightsPairs(size);
     for (UnsignedInteger i = 0; i < size; ++i)
-      weightsPairs[i] = std::pair<Scalar, UnsignedInteger>(weights_expected[i], i);
+      weightsPairs[i] = std::pair<Scalar, UnsignedInteger>(weightsExpected[i], i);
 
     std::sort(weightsPairs.begin(), weightsPairs.end());
 
     // Store sorted weights and nodes
-    Point weights_sorted(size);
-    Sample nodes_sorted(size, dimension);
-    UnsignedInteger sorted_index;
+    Point weightsSorted(size);
+    Sample nodesSorted(size, dimension);
+    UnsignedInteger sortedIndex;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      sorted_index = weightsPairs[i].second;
-      weights_sorted[i] = weights_expected[sorted_index];
+      sortedIndex = weightsPairs[i].second;
+      weightsSorted[i] = weightsExpected[sortedIndex];
       for (UnsignedInteger j = 0; j < dimension; ++j)
       {
-        nodes_sorted(i, j) = nodes_expected(sorted_index, j);
+        nodesSorted(i, j) = nodesExpected(sortedIndex, j);
       }
     }
-    fullprint << "  nodes_sorted = " << nodes_sorted << std::endl;
-    fullprint << "  weights_sorted = " << weights_sorted << std::endl;
-    printNodesAndWeights(nodes_sorted, weights_sorted);
+    printNodesAndWeights(nodesSorted, weightsSorted);
+}
+
+// Test 4 : Sort nodes with pairs
+void test_4()
+{
+    OStream fullprint(std::cout);
+    fullprint << "+ Test 4 : sort nodes with pairs" << std::endl;
+
+    // Create expected nodes and weights, then sort and check that nothing changed.
+    Indices permutation = {9,5,1,6,10,11,4,2,8,13,12,14,0,3,7};
+    Point pointColumn1 = {0.11, 0.11, 0.11, 0.11, 0.11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88, 0.88, 0.88, 0.88, 0.88};
+    Point pointColumn2 = {0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95};
+    const Point weightsColumn = {0.03, 0.06, 0.07, 0.06, 0.03, 0.05, 0.10, 0.12, 0.10, 0.05, 0.03, 0.06, 0.07, 0.06, 0.03};
+    UnsignedInteger size(pointColumn1.getDimension());
+    UnsignedInteger dimension = 2;
+    Sample nodesExpected(size, dimension);
+    Point weightsExpected(size);
+    Sample nodesShuffled(size, dimension);
+    Point weightsShuffled(size);
+    UnsignedInteger index;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      nodesExpected(i, 0) = pointColumn1[i];
+      nodesExpected(i, 1) = pointColumn2[i];
+      weightsExpected[i] = weightsColumn[i];
+      index = permutation[i];
+      nodesShuffled(i, 0) = pointColumn1[index];
+      nodesShuffled(i, 1) = pointColumn2[index];
+      weightsShuffled[i] = weightsColumn[index];
+    }
+    fullprint << "  Expected : " << std::endl;
+    printNodesAndWeights(nodesExpected, weightsExpected);
+    fullprint << "  Shuffled : " << std::endl;
+    printNodesAndWeights(nodesShuffled, weightsShuffled);
+    // Create pairs
+    Collection< std::pair<Point, UnsignedInteger> > pointsPairs(size);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      pointsPairs[i] = std::pair<Point, UnsignedInteger>(nodesShuffled[i], i);
+
+    std::sort(pointsPairs.begin(), pointsPairs.end());
+
+    // Store sorted weights and nodes
+    Point weightsSorted(size);
+    Sample nodesSorted(size, dimension);
+    UnsignedInteger sortedIndex;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      sortedIndex = pointsPairs[i].second;
+      weightsSorted[i] = weightsShuffled[sortedIndex];
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+      {
+        nodesSorted(i, j) = nodesShuffled(sortedIndex, j);
+      }
+    }
+    printNodesAndWeights(nodesSorted, weightsSorted);
 }
 
 int main(int, char *[])
@@ -225,6 +276,7 @@ int main(int, char *[])
     test_1();
     test_2();
     test_3();
+    test_4();
   }
   catch (TestFailed & ex)
   {
