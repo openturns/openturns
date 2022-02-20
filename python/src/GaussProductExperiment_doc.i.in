@@ -114,10 +114,10 @@ We use 7 nodes for each marginal, leading to a total of :math:`7^5 = 16807` node
 for the tensor product Gauss quadrature. 
 
 >>> def g_function_py(x):
->>>     value = (1.0 + 1.0 / dimension) ** dimension
->>>     for i in range(dimension):
->>>         value *= x[i] ** (1.0 / dimension)
->>>     return [value]
+...     value = (1.0 + 1.0 / dimension) ** dimension
+...     for i in range(dimension):
+...         value *= x[i] ** (1.0 / dimension)
+...     return [value]
 >>> 
 >>> dimension = 5
 >>> g_function = ot.PythonFunction(dimension, 1, g_function_py)
