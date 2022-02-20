@@ -135,7 +135,7 @@ Exact integral =  1.0
 Number of nodes =  16807
 >>> function_values = g_function(nodes).asPoint()
 >>> approximate_integral = function_values.dot(weights)
->>> print('Approximate integral= ', approximate_integral)
+>>> print('Approximate integral = ', approximate_integral)
 Approximate integral =  1.0040..."
 
 // ---------------------------------------------------------------------
