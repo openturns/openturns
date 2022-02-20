@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class Sample for standard methods
+ *  @brief The test file of class Sample for argsort
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -20,16 +20,12 @@
  */
 #include "openturns/OT.hxx"
 #include "openturns/OTtestcode.hxx"
+#include <algorithm>
+#include <functional>
+#include <array>
 
 using namespace OT;
 using namespace OT::Test;
-
-class TestObject : public Sample
-{
-public:
-  TestObject() : Sample(1, 1) {}
-  virtual ~TestObject() {}
-};
 
 // Compare two points, according to lexicographic order
 /** Returns -1 if node_1 < node_2, 
@@ -93,7 +89,9 @@ int main(int, char *[])
 
   try
   {
+    // Test 1
     // Create expected nodes and weights, then sort and check that nothing changed.
+    fullprint << "+ Test 1" << std::endl;
     Point column_1 = {0.11, 0.11, 0.11, 0.11, 0.11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88, 0.88, 0.88, 0.88, 0.88};
     Point column_2 = {0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95};
     UnsignedInteger size(column_1.getDimension());
@@ -119,6 +117,31 @@ int main(int, char *[])
     const Scalar atol = 1.0e-5;
     assert_almost_equal(nodes_expected, nodes, rtol, atol);
     assert_almost_equal(weights_expected, weights, rtol, atol);
+    //
+    // Test 2 : sort with std::sort
+    fullprint << "+ Test 2 : sort with std::sort" << std::endl;
+    UnsignedInteger size_sort = 10;
+    std::array<int, 10> s = {5, 7, 4, 2, 8, 6, 1, 9, 0, 3};
+    // 2.1 : default comparison
+    std::sort(s.begin(), s.end());
+    fullprint << "sorted with the default operator <" << std::endl;
+    for (UnsignedInteger i = 0; i < size_sort; ++i)
+    {
+        fullprint << s[i] << " ";
+    }
+    fullprint << std::endl;
+    // 2.2 : custom comparison
+    struct {
+        bool operator()(int a, int b) const { return a < b; }
+    } customLess;
+    std::sort(s.begin(), s.end(), customLess);
+    fullprint << "sorted with custom operator" << std::endl;
+    for (UnsignedInteger i = 0; i < size_sort; ++i)
+    {
+        fullprint << s[i] << " ";
+    }
+    fullprint << std::endl;
+
   }
   catch (TestFailed & ex)
   {
