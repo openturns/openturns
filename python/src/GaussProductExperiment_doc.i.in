@@ -12,15 +12,21 @@ Parameters
 ----------
 marginalSizes : sequence of positive int
     Numbers of points :math:`s_j` for each direction. Then, the total number of
-    points generated is :math:`\textrm{card}(I)=\prod_{j = 1}^{n_x} s_j`. If not specified,
-    each value :math:`s_j` is :math:`5`.
+    points generated is :math:`\textrm{card}(I)=\prod_{j = 1}^{n_x} s_j`. 
+    By default, the value of :math:`s_j` is equal to :math:`5`.
+    The default marginal size is defined in the 
+    `GaussProductExperiment-DefaultMarginalSize` key of the :class:`~openturns.ResourceMap`. 
 distribution :
     Distribution :math:`\mu` of dimension :math:`n_x` with an independent copula.
 
 Notes
 -----
-The number of points for each direction doesn't change and the :meth:`generate`
-method always gives the same sample.
+The tensor product design of experiments (DOE) is based on a collection of marginal multidimensional elementary design of experiments. It is anisotropic in the sense that each marginal DOE does not necessarily have the same size. Using more points in one component may be useful if we want to get more accurate results in that particular direction. 
+
+The Gauss tensor product experiment uses Gauss points in each direction. For each marginal, the algorithm computes the family of orthogonal polynomials depending on the marginal distribution using the :class:`~openturns.StandardDistributionPolynomialFactory` class. The input distribution must have an independent copula.  
+
+The :meth:`generate` method always returns the same sample, i.e. this is a 
+deterministic DOE.
 
 Let :math:`\mathcal{X} \subset \mathbb{R}^{n_x}` be the integration domain and let :math:`g : \mathcal{X} \rightarrow \mathbb{R}^{n_y}` be an integrable function. Let :math:`f : \mathcal{X} \rightarrow \mathbb{R}` be a probability density function. The Gauss tensor product experiment produces an approximation of the integral:
 
@@ -50,13 +56,15 @@ where:
 
     Q_{s_1}^{(1)} \otimes \cdots \otimes Q_{s_{n_x}}^{(1)} (g) = \sum_{k_1 = 1}^{s_1} \cdots \sum_{k_{n_x} = 1}^{s_{n_x}} w_{s_1, k_1} \cdots w_{s_{n_x}, k_{n_x}}  g\left(x_{s_1, k_1}, \ldots, x_{s_{n_x}, k_{n_x}}\right).
 
-For any given multi-index :math:`\boldsymbol{k} = (k_1, ..., k_{n_x})`, we write 
+For any multi-index :math:`\boldsymbol{k} = (k_1, ..., k_{n_x}) \in (\mathbb{N}^\star)^{n_x}`, we write 
 
 .. math::
 
     \boldsymbol{k} \leq \left(s_1, ..., s_{n_x}\right)
 
 if and only if :math:`k_j \leq s_j` for :math:`j = 1, ..., n_x`. This means that each component of the multi-index is lower than its corresponding marginal size.
+The set of multi-indices such that :math:`\boldsymbol{k} \leq \left(s_1, ..., s_{n_x}\right)` is produced using all the possible combinations of the indices with the :class:`~openturns.Tuples` class.
+
 The tensor product experiment is:
 
 .. math::
@@ -75,12 +83,6 @@ and each node is equal to the agregation of the marginal elementary nodes:
 
     \boldsymbol{x}_{\boldsymbol{k}}
     = \left(x_{s_1, k_1}, \ldots, x_{s_{n_x}, k_{n_x}}\right) \in \mathbb{R}^{n_x}.
-
-The set of multi-indices such that :math:`\boldsymbol{k} \leq \left(s_1, ..., s_{n_x}\right)` is produced using all the possible combinations of the indices with the :class:`~openturns.Tuples` class.
-
-The default marginal size is defined in the 
-`GaussProductExperiment-DefaultMarginalSize` key of the :class:`~openturns.ResourceMap`. 
-
 
 See also
 --------
