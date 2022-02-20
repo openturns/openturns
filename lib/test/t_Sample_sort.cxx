@@ -61,8 +61,8 @@ void sortNodesAndWeights(Sample & nodes, Point & weights)
   fullprint << "+ Simultaneously sort the nodes and weights" << std::endl;
   const UnsignedInteger size(weights.getDimension());
   const UnsignedInteger dimension(nodes.getDimension());
-  fullprint << "size = " << size << std::endl;
-  fullprint << "dimension = " << dimension << std::endl;
+  fullprint << "  size = " << size << std::endl;
+  fullprint << "  dimension = " << dimension << std::endl;
   UnsignedInteger is_i_greater_than_j;
   for (UnsignedInteger i = 0; i < size - 1; ++i)
   {
@@ -82,16 +82,39 @@ void sortNodesAndWeights(Sample & nodes, Point & weights)
   }
 }
 
-int main(int, char *[])
+// Print the nodes and weights
+void printNodesAndWeights(Sample nodes, Point weights)
 {
-  TESTPREAMBLE;
   OStream fullprint(std::cout);
-
-  try
+  fullprint << "+ Print the nodes and weights" << std::endl;
+  const UnsignedInteger size(weights.getDimension());
+  const UnsignedInteger dimension(nodes.getDimension());
+  fullprint << "  size = " << size << std::endl;
+  fullprint << "  dimension = " << dimension << std::endl;
+  fullprint << "weight, node" << std::endl;
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // Test 1
+    fullprint << weights[i] << " : [";
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+        if (j  == 0)
+        {
+          fullprint << nodes(i, j);
+        } else {
+          fullprint << ", " << nodes(i, j);
+        }
+    }
+    fullprint << "]" << std::endl;
+  }
+  fullprint << std::endl;
+}
+
+// Test 1
+void test_1()
+{
+    OStream fullprint(std::cout);
     // Create expected nodes and weights, then sort and check that nothing changed.
-    fullprint << "+ Test 1" << std::endl;
+    fullprint << "+ Test 1 : sort with custom algorithm" << std::endl;
     Point column_1 = {0.11, 0.11, 0.11, 0.11, 0.11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88, 0.88, 0.88, 0.88, 0.88};
     Point column_2 = {0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95};
     UnsignedInteger size(column_1.getDimension());
@@ -103,29 +126,33 @@ int main(int, char *[])
       nodes_expected(i, 1) = column_2[i];
     }
     const Point weights_expected = {0.03, 0.06, 0.07, 0.06, 0.03, 0.05, 0.10, 0.12, 0.10, 0.05, 0.03, 0.06, 0.07, 0.06, 0.03};
-    fullprint << "nodes_expected = " << nodes_expected << std::endl;
-    fullprint << "weights_expected = " << weights_expected << std::endl;
+    fullprint << "  nodes_expected = " << nodes_expected << std::endl;
+    fullprint << "  weights_expected = " << weights_expected << std::endl;
     //
     Point weights(weights_expected);
     Sample nodes(nodes_expected);
     //
     sortNodesAndWeights(nodes, weights);
-    fullprint << "nodes = " << nodes << std::endl;
-    fullprint << "weights = " << weights << std::endl;
+    fullprint << "  nodes = " << nodes << std::endl;
+    fullprint << "  weights = " << weights << std::endl;
     //
     const Scalar rtol = 1.0e-5;
     const Scalar atol = 1.0e-5;
     assert_almost_equal(nodes_expected, nodes, rtol, atol);
     assert_almost_equal(weights_expected, weights, rtol, atol);
-    //
-    // Test 2 : sort with std::sort
+}
+
+// Test 2 : sort with std::sort
+void test_2()
+{
+    OStream fullprint(std::cout);
     fullprint << "+ Test 2 : sort with std::sort" << std::endl;
-    UnsignedInteger size_sort = 10;
+    UnsignedInteger sizeSort = 10;
     std::array<int, 10> s = {5, 7, 4, 2, 8, 6, 1, 9, 0, 3};
     // 2.1 : default comparison
     std::sort(s.begin(), s.end());
-    fullprint << "sorted with the default operator <" << std::endl;
-    for (UnsignedInteger i = 0; i < size_sort; ++i)
+    fullprint << "  sorted with the default operator <" << std::endl;
+    for (UnsignedInteger i = 0; i < sizeSort; ++i)
     {
         fullprint << s[i] << " ";
     }
@@ -135,13 +162,69 @@ int main(int, char *[])
         bool operator()(int a, int b) const { return a < b; }
     } customLess;
     std::sort(s.begin(), s.end(), customLess);
-    fullprint << "sorted with custom operator" << std::endl;
-    for (UnsignedInteger i = 0; i < size_sort; ++i)
+    fullprint << "  sorted with custom operator" << std::endl;
+    for (UnsignedInteger i = 0; i < sizeSort; ++i)
     {
         fullprint << s[i] << " ";
     }
     fullprint << std::endl;
+}
 
+// Test 3 : Sort with pairs
+void test_3()
+{
+    OStream fullprint(std::cout);
+    fullprint << "+ Test 3 : sort with pairs";
+
+    // Create expected nodes and weights, then sort and check that nothing changed.
+    fullprint << "+ Test 1 : sort with custom algorithm" << std::endl;
+    Point column_1 = {0.11, 0.11, 0.11, 0.11, 0.11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88, 0.88, 0.88, 0.88, 0.88};
+    Point column_2 = {0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95};
+    UnsignedInteger size(column_1.getDimension());
+    UnsignedInteger dimension = 2;
+    Sample nodes_expected(size, dimension);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      nodes_expected(i, 0) = column_1[i];
+      nodes_expected(i, 1) = column_2[i];
+    }
+    const Point weights_expected = {0.03, 0.06, 0.07, 0.06, 0.03, 0.05, 0.10, 0.12, 0.10, 0.05, 0.03, 0.06, 0.07, 0.06, 0.03};
+    fullprint << "  nodes_expected = " << nodes_expected << std::endl;
+    fullprint << "  weights_expected = " << weights_expected << std::endl;
+    // Create pairs
+    Collection< std::pair<Scalar, UnsignedInteger> > weightsPairs(size);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      weightsPairs[i] = std::pair<Scalar, UnsignedInteger>(weights_expected[i], i);
+
+    std::sort(weightsPairs.begin(), weightsPairs.end());
+
+    // Store sorted weights and nodes
+    Point weights_sorted(size);
+    Sample nodes_sorted(size, dimension);
+    UnsignedInteger sorted_index;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      sorted_index = weightsPairs[i].second;
+      weights_sorted[i] = weights_expected[sorted_index];
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+      {
+        nodes_sorted(i, j) = nodes_expected(sorted_index, j);
+      }
+    }
+    fullprint << "  nodes_sorted = " << nodes_sorted << std::endl;
+    fullprint << "  weights_sorted = " << weights_sorted << std::endl;
+    printNodesAndWeights(nodes_sorted, weights_sorted);
+}
+
+int main(int, char *[])
+{
+  TESTPREAMBLE;
+
+  try
+  {
+    test_1();
+    test_2();
+    test_3();
   }
   catch (TestFailed & ex)
   {
