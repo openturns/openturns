@@ -1291,7 +1291,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("WeightedExperiment-DefaultSize", 100);
 
   // GaussProductExperiment parameters //
-  addAsUnsignedInteger("GaussProductExperiment-DefaultMarginalDegree", 5);
+  addAsUnsignedInteger("GaussProductExperiment-DefaultMarginalSize", 5);
 
   // HyperbolicAnisotropicEnumerateFunction parameters //
   addAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ", 0.4);

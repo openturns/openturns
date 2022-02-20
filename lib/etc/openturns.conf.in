@@ -658,7 +658,7 @@
   <WeightedExperiment-DefaultSize value_int="100" />
 
   <!-- OT::GaussProductExperiment parameters -->
-  <GaussProductExperiment-DefaultMarginalDegree value_int="5" />
+  <GaussProductExperiment-DefaultMarginalSize value_int="5" />
 
   <!-- OT::HyperbolicAnisotropicEnumerateFunction parameters -->
   <HyperbolicAnisotropicEnumerateFunction-DefaultQ value_float="0.4" />
