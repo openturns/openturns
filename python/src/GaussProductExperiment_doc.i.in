@@ -113,6 +113,7 @@ In the following example [morokoff1995]_, we integrate a dimension
 We use 7 nodes for each marginal, leading to a total of :math:`7^5 = 16807` nodes 
 for the tensor product Gauss quadrature. 
 
+>>> import openturns as ot
 >>> def g_function_py(x):
 ...     value = (1.0 + 1.0 / dimension) ** dimension
 ...     for i in range(dimension):
