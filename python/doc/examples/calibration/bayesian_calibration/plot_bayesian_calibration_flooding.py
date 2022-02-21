@@ -60,9 +60,9 @@ Bayesian calibration of the flooding model
 # Variables
 # ---------
 #
-# - Q : Input. Observed.
-# - Ks, Zv, Zm : Input. Calibrated.
-# - H: Output. Observed.
+# - :math:`Q` : Input. Observed.
+# - :math:`K_s`, :math:`Z_v`, :math:`Z_m` : Input. Calibrated.
+# - :math:`H`: Output. Observed.
 
 # %%
 # Generate the observations
