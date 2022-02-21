@@ -181,7 +181,9 @@ graphConvergence = algoMC.drawProbabilityConvergence()
 view = otv.View(graphConvergence)
 
 # %%
-# We can use the `getSample` method of the event to estimate the probability :math:`P_f`. This method draws realizations of the underlying random input vector `vecX` and returns `True` if the corresponding output random vector is in the domain event. Then the ratio between the number of realizations in the domain and the total of realizations is a rough estimate of the probability :math:`P_f` which we compare with the previous Monte-Carlo estimator.
+# We can use the :meth:`~openturns.DomainEvent.getSample` method of the event to estimate the probability :math:`P_f`.
+# This method draws realizations of the underlying random input vector `vecX` and returns `True` if the corresponding output random vector is in the domain event.
+# Then the ratio between the number of realizations in the domain and the total of realizations is a rough estimate of the probability :math:`P_f` which we compare with the previous Monte-Carlo estimator.
 N = 30000
 samples = event.getSample(N)
 print("Basic estimator : %.4f" % (sum(samples)[0] / N))
