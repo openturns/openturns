@@ -55,7 +55,7 @@ Combinations * Combinations::clone() const
 /* Experiment plane generation :
  *  all the combinations of k elements amongst {0, ..., n-1}
  */
-IndicesCollection Combinations::generate()
+IndicesCollection Combinations::generate() const
 {
   /* Quick return for trivial cases */
   if (k_ > n_) return IndicesCollection(0, k_);

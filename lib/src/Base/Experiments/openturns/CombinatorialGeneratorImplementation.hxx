@@ -55,7 +55,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  virtual IndicesCollection generate();
+  virtual IndicesCollection generate() const;
 
 protected:
 

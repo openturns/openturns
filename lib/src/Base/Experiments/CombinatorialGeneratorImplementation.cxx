@@ -49,7 +49,7 @@ String CombinatorialGeneratorImplementation::__repr__() const
 }
 
 /* Sample generation */
-IndicesCollection CombinatorialGeneratorImplementation::generate()
+IndicesCollection CombinatorialGeneratorImplementation::generate() const
 {
   throw NotYetImplementedException(HERE) << "In CombinatorialGeneratorImplementation::generate()";
 }

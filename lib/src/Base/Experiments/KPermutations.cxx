@@ -67,7 +67,7 @@ KPermutations * KPermutations::clone() const
 /* Experiment plane generation :
  *  all the kPermutations of k elements amongst {0, ..., n-1}
  */
-IndicesCollection KPermutations::generate()
+IndicesCollection KPermutations::generate() const
 {
   /* Quick return for trivial cases */
   if (k_ > n_) return IndicesCollection(0, k_);
