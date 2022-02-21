@@ -81,7 +81,7 @@ Variables
 In the particular situation where we want to calibrate this model, the following list presents which variables are observed input variables, input calibrated variables and observed output variables.
 
 - :math:`\epsilon`: Input. Observed.
-- R, C, gamma : Inputs. Calibrated.
+- :math:`R`, :math:`C`, :math:`\gamma` : Inputs. Calibrated.
 - :math:`\sigma`: Output. Observed.
 
 Thanks to

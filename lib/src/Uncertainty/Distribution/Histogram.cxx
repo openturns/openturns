@@ -497,7 +497,7 @@ Graph Histogram::drawPDF(const Scalar xMin,
                          const Bool logScale) const
 {
   if (logScale) throw NotYetImplementedException(HERE) << "in Histogram::drawPDF with logScale=true";
-  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const String xName(getDescription()[0]);
   Graph graphPDF(title, xName, "PDF", true, "topright");

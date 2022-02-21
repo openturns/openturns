@@ -3,7 +3,7 @@ Calibration of the deflection of a tube
 =======================================
 """
 # %%
-# We consider a calibration of the deflection of a tube as described :ref:`here <use-case-deflection-tube>`.
+# We calibrate the deflection of a tube as described :ref:`here <use-case-deflection-tube>`.
 # More precisely, we calibrate the mechanical parameters of a model which computes the vertical deflection of a tube and two deflection angles. This example shows how to calibrate a computer code which has several outputs.
 #
 

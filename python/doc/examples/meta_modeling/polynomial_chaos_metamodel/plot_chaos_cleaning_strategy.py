@@ -585,4 +585,4 @@ score_Q2 = compute_cleaning_PCE(
 # Conclusion
 # ----------
 #
-# We see that the `CleaningStrategy` class performs correctly in this particular case. We have seen how to select the hyperparameters which produce the best Q2 score. 
+# We see that the `~openturns.CleaningStrategy` class performs correctly in this particular case. We have seen how to select the hyperparameters which produce the best Q2 score. 
