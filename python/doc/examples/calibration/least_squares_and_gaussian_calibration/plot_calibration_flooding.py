@@ -62,19 +62,8 @@ Calibration of the flooding model
 # Analysis
 # --------
 #
-# First, the slope :math:`\alpha` only depends on the difference :math:`Z_m - Z_v`.
-# This is why :math:`Z_v` and :math:`Z_m` cannot be identified at the same time.
-# In algebraic terms, there is an infinite number of couples :math:`(Z_v, Z_m)` which
-# generate the same difference :math:`Z_m - Z_v`.
-#
-# Second, the denominator of the expression of :math:`H` involves the product
-# :math:`K_s B \sqrt{\alpha}`.
-# In algebraic terms, there is an infinite number of couples :math:`(K_s, \alpha)` which
-# generate the same product :math:`K_s \sqrt{\alpha}`.
-# This is why either :math:`K_s` or :math:`\alpha` can be identified separately,
-# but not at the same time.
-# This shows that only one parameter can be identified.
-#
+# In the description of the :ref:`flooding model<use-case-flood-model>`, we see that only one parameter 
+# can be identified.
 # Hence, calibrating this model requires some regularization.
 # We return to this topic when analyzing the singular values of
 # the Jacobian matrix.

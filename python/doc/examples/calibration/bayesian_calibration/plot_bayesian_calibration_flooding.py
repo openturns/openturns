@@ -63,6 +63,14 @@ Bayesian calibration of the flooding model
 # - Q : Input. Observed.
 # - Ks, Zv, Zm : Input. Calibrated.
 # - H: Output. Observed.
+#
+# Analysis
+# --------
+#
+# In the description of the :ref:`flooding model<use-case-flood-model>`, we see that only one parameter 
+# can be identified.
+# Hence, calibrating this model requires some regularization. 
+# In this example, we use Bayesian methods as a way to regularize the model.
 
 # %%
 # Generate the observations
