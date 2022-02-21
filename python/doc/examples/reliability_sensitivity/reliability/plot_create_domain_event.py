@@ -14,7 +14,7 @@ import openturns.viewer as otv
 from matplotlib import pylab as plt
 
 # %%
-# We consider a standard unit gaussian bivariate random vector :math:`\vect{X} = (X_1,X_2)` with
+# We consider a standard unit Gaussian bivariate random vector :math:`\vect{X} = (X_1,X_2)` with
 # independent marginals.
 dim = 2
 distX = ot.Normal(dim)
