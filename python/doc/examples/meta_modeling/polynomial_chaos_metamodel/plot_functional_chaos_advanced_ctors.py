@@ -143,8 +143,8 @@ Psi_i
 # Get the measure mu associated to the multivariate basis.
 
 # %%
-distributionMu = multivariateBasis.getMeasure()
-distributionMu
+distributionStandard = multivariateBasis.getMeasure()
+distributionStandard
 
 # %%
 # STEP 2: Truncature strategy of the multivariate orthonormal basis
@@ -209,9 +209,9 @@ evaluationCoeffStrategy_2 = ot.LeastSquaresStrategy(
 # Try integration.
 
 # %%
-marginalDegrees = [2] * inputDimension
+marginalSizes = [2] * inputDimension
 evaluationCoeffStrategy_3 = ot.IntegrationStrategy(
-    ot.GaussProductExperiment(distributionMu, marginalDegrees))
+    ot.GaussProductExperiment(distributionStandard, marginalSizes))
 
 # %%
 # STEP 4: Creation of the Functional Chaos Algorithm
