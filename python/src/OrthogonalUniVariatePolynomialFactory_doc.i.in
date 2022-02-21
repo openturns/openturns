@@ -78,7 +78,8 @@ Examples
 >>> import openturns as ot
 >>> polynomial_factory = ot.HermiteFactory()
 >>> print(polynomial_factory.buildRecurrenceCoefficientsCollection(2))
-[[1,0,0],[0.707107,0,-0.707107]]"
+0 : [  1         0         0        ]
+1 : [  0.707107  0        -0.707107 ]"
 
 
 // ---------------------------------------------------------------------

@@ -200,9 +200,14 @@ Bibliography
     Applications in Uncertainty Quantification.*, PhD thesis.
     Ecole Centrale de Nantes, France, 2015.
     `pdf <https://tel.archives-ouvertes.fr/tel-01143694/document>`__
+.. [rawlings2001] Rawlings, J. O., Pantula, S. G., and Dickey, D. A.
+    *Applied regression analysis: a research tool.*
+    Springer Science and Business Media, 2001.
 .. [rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__
+.. [rubinstein2017] Rubinstein, R. Y., & Kroese, D. P. (2017). *Simulation and the Monte Carlo method.* John Wiley & Sons.
+   `pdf <http://www.ru.ac.bd/wp-content/uploads/soites/25/2019/03/308_03_Rubinstein_Simulation-and-the-Monte-Carlo-Method-Wiley-2017.pdf>`__
 .. [saltelli1999] Saltelli, A., Tarantola, S. & Chan, K. *A quantitative, model
     independent method for global sensitivity analysis of model output.*
     Technometrics, 1999, 41(1), 39-56.

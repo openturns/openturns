@@ -64,7 +64,7 @@ public:
   OrthogonalUniVariatePolynomial build(const UnsignedInteger degree) const;
 
   /** Build the 3 terms recurrence coefficients up to the needed degree */
-  CoefficientsCollection buildRecurrenceCoefficientsCollection(const UnsignedInteger degree) const;
+  Sample buildRecurrenceCoefficientsCollection(const UnsignedInteger degree) const;
 
   /** Build the coefficients of the polynomial of the needed degree */
   Coefficients buildCoefficients(const UnsignedInteger degree) const;
@@ -107,7 +107,7 @@ protected:
   mutable CoefficientsPersistentCollection coefficientsCache_;
 
   /** A cache to save already computed recurrence coefficients */
-  mutable CoefficientsPersistentCollection recurrenceCoefficientsCache_;
+  mutable Sample recurrenceCoefficientsCache_;
 
   /** A cache to save already computed polynomials */
   mutable OrthogonalUniVariatePolynomialCollection polynomialsCache_;
