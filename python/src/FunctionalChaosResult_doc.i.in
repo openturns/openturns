@@ -3,10 +3,6 @@
 
 Returned by functional chaos algorithms, see :class:`~openturns.FunctionalChaosAlgorithm`.
 
-Available constructors:
-    FunctionalChaosResult(*model, distribution, transformation, inverseTransformation, composedModel, orthogonalBasis, indices, alpha_k, Psi_k, residuals, relativeErrors*)
-
-
 Parameters
 ----------
 model : :class:`~openturns.Function`
@@ -27,17 +23,17 @@ composedModel : :class:`~openturns.Function`
     This is the composition of the `model` and the `inverseTransformation`. 
 orthogonalBasis : :class:`~openturns.OrthogonalBasis`
     The multivariate orthogonal basis.
-indices : :class:`~openturns.Indices`
+indices : sequence of `int`
     The indices of the selected basis function within the orthogonal basis.
-alpha_k : :class:`~openturns.Sample`
+alpha_k : 2-d sequence of `float`
     The coefficients of the functional chaos expansion.
-Psi_k : :class:`~openturns.FunctionCollection`
+Psi_k : sequence of :class:`~openturns.Function`
     The functions of the multivariate basis selected by the algorithm.
-residuals : sequence of floats, :math:`\hat{\vect{r}} \in \mathbb{R}^{n_Y}`
+residuals : sequence of `float`, :math:`\hat{\vect{r}} \in \mathbb{R}^{n_Y}`
     For each output component, the residual is the square root of the sum of 
     squared differences between the model and the meta model, divided by the 
     sample size.
-relativeErrors : sequence of floats, :math:`\widehat{\vect{re}} \in \mathbb{R}^{n_Y}`
+relativeErrors : sequence of `float`, :math:`\widehat{\vect{re}} \in \mathbb{R}^{n_Y}`
     The relative error is the empirical error divided by the 
     sample variance of the output.
 
