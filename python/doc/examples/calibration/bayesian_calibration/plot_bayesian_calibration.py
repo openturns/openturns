@@ -163,7 +163,7 @@ graphModel.setLegendPosition("topleft")
 view = viewer.View(graphModel)
 
 # %%
-# Define the distribution of observations :math:`\vect{y} | \vect{z}` conditional on model predictions.
+# Define the distribution of observations :math:`y | \vect{z}` conditional on model predictions.
 #
 # Note that its parameter dimension is the one of :math:`\vect{z}`, so the model must be adjusted accordingly.
 
