@@ -74,7 +74,7 @@ adaptiveStrategy
 
 # %%
 distributionStandard = multivariateBasis.getMeasure()
-distributionStandard
+print(distributionStandard)
 
 # %%
 marginalSizes = [4] * dim_input

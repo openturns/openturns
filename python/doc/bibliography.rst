@@ -76,6 +76,7 @@ Bibliography
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
 .. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
     sparse grids.* Numerical algorithms, 18 (3), 209-232.
+    `pdf <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.3141&rep=rep1&type=pdf>`__
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
@@ -169,8 +170,8 @@ Bibliography
     computational experiments.*
     Journal of Statistical Planning and Inference, 43 :381-402, 1995.
     `pdf <https://www.osti.gov/servlets/purl/10184343>`__
-.. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). Quasi-monte carlo 
-    integration. Journal of computational physics, 122(2), 218-230.
+.. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). *Quasi-Monte Carlo 
+    integration.* Journal of computational physics, 122(2), 218-230.
 .. [munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,

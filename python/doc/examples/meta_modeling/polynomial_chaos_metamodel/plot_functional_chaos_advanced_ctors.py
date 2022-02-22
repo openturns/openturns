@@ -144,7 +144,7 @@ Psi_i
 
 # %%
 distributionStandard = multivariateBasis.getMeasure()
-distributionStandard
+print(distributionStandard)
 
 # %%
 # STEP 2: Truncature strategy of the multivariate orthonormal basis

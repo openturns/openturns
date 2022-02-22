@@ -21,7 +21,7 @@ distribution :
 
 Notes
 -----
-The tensor product design of experiments (DOE) is based on a collection of marginal multidimensional elementary design of experiments. It is anisotropic in the sense that each marginal DOE does not necessarily have the same size. Using more points in one component may be useful if we want to get more accurate results in that particular direction. 
+The tensor product design of experiments (DOE) is based on a collection of marginal multidimensional elementary designs of experiments. It is anisotropic in the sense that each marginal DOE does not necessarily have the same size. Using more points in one component may be useful if we want to get more accurate results in that particular direction. 
 
 The Gauss tensor product experiment uses Gauss points in each direction. For each marginal, the algorithm computes the family of orthogonal polynomials depending on the marginal distribution using the :class:`~openturns.StandardDistributionPolynomialFactory` class. The input distribution must have an independent copula.  
 
