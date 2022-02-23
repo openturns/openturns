@@ -667,6 +667,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // SymbolicParserExprTk parameters
   addAsUnsignedInteger("SymbolicParserExprTk-SmallSize", 100);
+  addAsUnsignedInteger("SymbolicParserExprTk-MaxStackDepth", 400);
+  addAsUnsignedInteger("SymbolicParserExprTk-MaxNodeDepth", 10000);
 
   // DesignProxy parameters
   addAsUnsignedInteger("DesignProxy-DefaultCacheSize", 16777216);// 2^24=16777216=128 Mio

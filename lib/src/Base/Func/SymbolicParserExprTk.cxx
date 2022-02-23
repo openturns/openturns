@@ -235,6 +235,8 @@ SymbolicParserExprTk::ExpressionCollection SymbolicParserExprTk::allocateExpress
       throw InvalidArgumentException(HERE) << "Invalid output variable: " << outputVariablesNames_[outputIndex];
   }
   exprtk::parser<Scalar> parser;
+  parser.settings().set_max_stack_depth(ResourceMap::GetAsUnsignedInteger("SymbolicParserExprTk-MaxStackDepth"));
+  parser.settings().set_max_node_depth(ResourceMap::GetAsUnsignedInteger("SymbolicParserExprTk-MaxNodeDepth"));
   // For each parser of a formula, do
   for (UnsignedInteger outputIndex = 0; outputIndex < numberOfParsers; ++ outputIndex)
   {
