@@ -130,6 +130,15 @@ int main(int, char *[])
     Point referencePValues = {0.742574, 0.950495, 0};
     Point pvaluesPerm = CSA.getPValuesPermutation();
     assert_almost_equal(pvaluesPerm, referencePValues);
+
+    /* Change weight function and recompute everything */
+    SymbolicFunction squaredExponential("x", "exp(-x^2)");
+    ComposedFunction alternateWeight(squaredExponential, g);
+    CSA.setWeightFunction(alternateWeight);
+    assert_almost_equal(CSA.getR2HSICIndices(), {0.0910527, 0.00738055, 0.166624});
+    assert_almost_equal(CSA.getHSICIndices(), {0.00218376, 0.000419288, 0.00898721});
+    assert_almost_equal(CSA.getPValuesPermutation(), {0.267327, 0.881188, 0.00990099});
+
   }
   catch (TestFailed & ex)
   {

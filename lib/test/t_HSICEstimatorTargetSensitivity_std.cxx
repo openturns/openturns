@@ -137,6 +137,15 @@ int main(int, char *[])
     Point pvaluesPerm = TSA.getPValuesPermutation();
     assert_almost_equal(pvaluesPerm, referencePValuesPerm);
 
+    /* Change filter function and recompute everything */
+    SymbolicFunction squaredExponential("x", "exp(-0.1 * x^2)");
+    ComposedFunction alternateFilter(squaredExponential, g);
+    TSA.setFilterFunction(alternateFilter);
+    assert_almost_equal(TSA.getR2HSICIndices(), {0.263026, 0.0041902, 0.00309598});
+    assert_almost_equal(TSA.getHSICIndices(), {1.54349e-05, 2.45066e-07, 1.88477e-07}, 1e-4, 0.0);
+    assert_almost_equal(TSA.getPValuesPermutation(), {0.0, 0.250749, 0.271728});
+    assert_almost_equal(TSA.getPValuesAsymptotic(), {0.0,0.270278,0.288026});
+
   }
   catch (TestFailed & ex)
   {
