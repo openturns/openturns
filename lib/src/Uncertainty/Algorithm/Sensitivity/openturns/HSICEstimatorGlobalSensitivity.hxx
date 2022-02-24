@@ -77,6 +77,9 @@ protected:
   mutable Point PValuesAsymptotic_ ;
   mutable Bool isAlreadyComputedPValuesAsymptotic_ ;
 
+  /* Reset all indices to void */
+  void resetIndices() override;
+
 private:
 
   /** Compute the weight matrix from the weight function */

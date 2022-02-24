@@ -37,8 +37,6 @@ pval : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::HSICEstimatorTargetSensitivity::getFilterFunction
 "Get the filter function used.
 
@@ -49,8 +47,6 @@ filterFunction : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::HSICEstimatorTargetSensitivity::setFilterFunction
 "Set the filter function.
 
@@ -58,8 +54,6 @@ Parameters
 ----------
 filterFunction : :class:`~openturns.Function`
     The filter function used for the target estimator."
-
-// ---------------------------------------------------------------------
 
 // ---------------------------------------------------------------------
 

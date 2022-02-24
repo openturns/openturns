@@ -48,6 +48,16 @@ HSICEstimatorConditionalSensitivity* HSICEstimatorConditionalSensitivity::clone(
   return new HSICEstimatorConditionalSensitivity(*this);
 }
 
+/* Compute the weight matrix from the weight function */
+SquareMatrix HSICEstimatorConditionalSensitivity::computeWeightMatrix(const Sample & Y) const
+{
+  const Sample wY(weightFunction_(Y));
+  const Scalar meanWY(wY.computeMean()[0]);
+  SquareMatrix mat(n_);
+  mat.setDiagonal(wY.asPoint() / meanWY);
+  return mat;
+}
+
 /* Get the weight function */
 Function HSICEstimatorConditionalSensitivity::getWeightFunction() const
 {

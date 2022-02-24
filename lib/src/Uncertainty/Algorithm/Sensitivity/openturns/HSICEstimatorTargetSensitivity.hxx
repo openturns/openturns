@@ -83,6 +83,8 @@ protected:
   mutable Bool isAlreadyComputedPValuesAsymptotic_ ;
   Function filterFunction_ ;
 
+  void resetIndices() override;
+
 private:
 
   /** Compute the weight matrix from the weight function */

@@ -34,8 +34,6 @@ pval : sequence of float
 
 // ---------------------------------------------------------------------
 
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::HSICEstimatorGlobalSensitivity::drawPValuesAsymptotic
 "Draw the p-values obtained with an asymptotic formula.
 

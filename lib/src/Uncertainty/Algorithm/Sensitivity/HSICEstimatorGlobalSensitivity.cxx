@@ -120,6 +120,14 @@ Point HSICEstimatorGlobalSensitivity::getPValuesAsymptotic() const
   return PValuesAsymptotic_;
 }
 
+/* Reset all indices to void */
+void HSICEstimatorGlobalSensitivity::resetIndices()
+{
+  HSICEstimatorImplementation::resetIndices();
+  PValuesAsymptotic_ = Point();
+  isAlreadyComputedPValuesAsymptotic_ = false;
+}
+
 /* Draw the asymptotic p-values */
 Graph HSICEstimatorGlobalSensitivity::drawPValuesAsymptotic() const
 {

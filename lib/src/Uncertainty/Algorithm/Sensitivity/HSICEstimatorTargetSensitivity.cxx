@@ -139,6 +139,14 @@ void HSICEstimatorTargetSensitivity::setFilterFunction(const Function & filterFu
   resetIndices();
 }
 
+/* Reset all indices to void */
+void HSICEstimatorTargetSensitivity::resetIndices()
+{
+  HSICEstimatorImplementation::resetIndices();
+  PValuesAsymptotic_ = Point();
+  isAlreadyComputedPValuesAsymptotic_ = false;
+}
+
 /* Draw the asymptotic p-values */
 Graph HSICEstimatorTargetSensitivity::drawPValuesAsymptotic() const
 {

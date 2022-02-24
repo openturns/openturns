@@ -44,7 +44,6 @@ HSICEstimatorImplementation::HSICEstimatorImplementation()
   , inputSample_()
   , outputSample_()
   , estimatorType_()
-  , weightFunction_()
   , n_(0)
   , inputDimension_(0)
   , HSIC_XY_()
@@ -60,36 +59,7 @@ HSICEstimatorImplementation::HSICEstimatorImplementation()
 }
 
 
-/* Default constructor */
-HSICEstimatorImplementation::HSICEstimatorImplementation(
-  const CovarianceModelCollection & covarianceList
-  , const Sample & X
-  , const Sample & Y
-  , const HSICStat & estimatorType, const Function & weightFunction )
-  : PersistentObject()
-  , covarianceList_(covarianceList)
-  , inputSample_(X)
-  , outputSample_(Y)
-  , estimatorType_(estimatorType)
-  , weightFunction_(weightFunction)
-  , n_(X.getSize())
-  , inputDimension_(X.getDimension())
-  , HSIC_XY_()
-  , HSIC_XX_()
-  , HSIC_YY_()
-  , R2HSICIndices_()
-  , PValuesPermutation_()
-  , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimatorImplementation-PermutationSize"))
-  , isAlreadyComputedIndices_(false)
-  , isAlreadyComputedPValuesPermutation_(false)
-{
-  if(covarianceList_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
-  if(outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";
-  if(inputSample_.getSize() != outputSample_.getSize()) throw InvalidDimensionException(HERE) << "Input and output samples must have the same size";
-
-}
-
-/* Default constructor */
+/* Constructor */
 HSICEstimatorImplementation::HSICEstimatorImplementation(
   const CovarianceModelCollection & covarianceList
 , const Sample & X
@@ -113,8 +83,6 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(
   if(covarianceList_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
   if(outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";
   if(inputSample_.getSize() != outputSample_.getSize()) throw InvalidDimensionException(HERE) << "Input and output samples must have the same size";
-
-  weightFunction_  = SymbolicFunction("x", "1");
 }
 
 /* Virtual constructor */
@@ -124,13 +92,9 @@ HSICEstimatorImplementation * HSICEstimatorImplementation::clone() const
 }
 
 /* Compute the weight matrix from the weight function */
-SquareMatrix HSICEstimatorImplementation::computeWeightMatrix(const Sample & Y) const
+SquareMatrix HSICEstimatorImplementation::computeWeightMatrix(const Sample&) const
 {
-  const Sample wY(weightFunction_(Y));
-  const Scalar meanWY(wY.computeMean()[0]);
-  SquareMatrix mat(n_);
-  mat.setDiagonal(wY.asPoint() / meanWY);
-  return mat;
+    throw NotYetImplementedException(HERE) << "Use the class HSICEstimatorConditionalSensitivity in order to perform conditional sensitivity analysis";
 }
 
 /* Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
@@ -174,6 +138,7 @@ void HSICEstimatorImplementation::setPermutationSize(const UnsignedInteger B)
 {
   permutationSize_ = B;
   PValuesPermutation_ = Point();
+  isAlreadyComputedPValuesPermutation_ = false;
 }
 
 /* Get permutation size */
@@ -371,6 +336,8 @@ void HSICEstimatorImplementation::resetIndices()
   HSIC_YY_ = Point();
   R2HSICIndices_ = Point();
   PValuesPermutation_ = Point();
+  isAlreadyComputedIndices_ = false;
+  isAlreadyComputedPValuesPermutation_ = false;
 }
 
 /* Get the dimension of the indices: the number of marginals */

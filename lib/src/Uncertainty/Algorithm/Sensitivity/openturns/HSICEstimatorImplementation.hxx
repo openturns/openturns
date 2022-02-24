@@ -51,11 +51,8 @@ public:
   /** Default constructor */
   HSICEstimatorImplementation();
 
-  /** Constructor with a weight function */
+  /** Constructor */
   HSICEstimatorImplementation(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y, const HSICStat & estimatorType);
-
-  /** Constructor with a unitary weight function */
-  HSICEstimatorImplementation(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y, const HSICStat & estimatorType, const Function & weightFunction );
 
   /* Here is the interface that all derived class must implement */
 
@@ -125,7 +122,7 @@ public:
 protected:
 
   /** Reset indices to void */
-  void resetIndices();
+  virtual void resetIndices();
 
   /** Compute p-value with permutation */
   virtual void computePValuesPermutation() const;

@@ -27,7 +27,6 @@ OT_HSICEstimator_setPermutationSize_doc
 
 // ---------------------------------------------------------------------
 
-// ---------------------------------------------------------------------
 %define OT_HSICEstimator_getPermutationSize_doc
 "Get the number of permutations.
 
@@ -40,6 +39,7 @@ permutationSize : int
 OT_HSICEstimator_getPermutationSize_doc
 
 // ---------------------------------------------------------------------
+
 %define OT_HSICEstimator_getCovarianceList_doc
 "Get the list of all covariance models used.
 
@@ -253,7 +253,6 @@ graph : :class:`~openturns.Graph`
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::drawValues
 OT_HSICEstimator_drawValues_doc
-// ---------------------------------------------------------------------
 
 // ---------------------------------------------------------------------
 

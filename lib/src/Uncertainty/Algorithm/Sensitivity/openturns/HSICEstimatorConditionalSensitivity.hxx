@@ -69,6 +69,11 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+private:
+
+  /** Compute the weight matrix from the weight function */
+  virtual SquareMatrix computeWeightMatrix(const Sample & Y) const override;
 };
 
 
