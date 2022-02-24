@@ -284,7 +284,7 @@ Graph HSICEstimatorImplementation::drawPValuesPermutation() const
 }
 
 /* Get the covariance list */
-PersistentCollection <CovarianceModel> HSICEstimatorImplementation::getCovarianceList() const
+HSICEstimatorImplementation::CovarianceModelCollection HSICEstimatorImplementation::getCovarianceList() const
 {
   return covarianceList_;
 }

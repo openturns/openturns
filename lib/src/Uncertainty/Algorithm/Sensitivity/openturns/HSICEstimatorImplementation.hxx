@@ -66,7 +66,7 @@ public:
   UnsignedInteger getPermutationSize() const;
 
   /** Get the covariance models */
-  PersistentCollection <CovarianceModel> getCovarianceList() const;
+  CovarianceModelCollection getCovarianceList() const;
 
   /** Set the covariance models */
   void setCovarianceList(const CovarianceModelCollection & coll);
