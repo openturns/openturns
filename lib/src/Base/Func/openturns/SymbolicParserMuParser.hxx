@@ -34,7 +34,7 @@ class SymbolicParserMuParser
 {
 
   CLASSNAME
-
+friend struct SymbolicParserMuParserPolicy;
 public:
   /** Default constructor */
   SymbolicParserMuParser();
@@ -48,9 +48,17 @@ public:
 private:
   void initialize() const;
 
-  mutable Collection<Pointer<MuParser> > parsers_;
-  mutable Point inputStack_;
+  Collection<Pointer<MuParser > > allocateExpressions(Point & stack) const;
 
+  mutable Collection<Pointer<MuParser> > expressions_;
+  mutable Point stack_;
+
+  // one expression per thread for batch evaluation
+  typedef Collection< Pointer< MuParser > > ExpressionCollection;
+  mutable Collection<ExpressionCollection> threadExpressions_;
+  mutable Collection<Point> threadStack_;
+
+  UnsignedInteger smallSize_ = 0;
 };
 
 END_NAMESPACE_OPENTURNS

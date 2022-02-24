@@ -2,6 +2,8 @@ import openturns as ot
 import math as m
 import time
 
+#ot.ResourceMap.SetAsString("SymbolicParser-Backend", "MuParser")
+
 # one evaluation of a big sample, varying formula length
 N = int(1e7)
 x = ot.ComposedDistribution([ot.Uniform(-m.pi, m.pi)] * 3).getSample(N)

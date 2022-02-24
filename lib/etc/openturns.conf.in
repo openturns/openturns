@@ -42,6 +42,9 @@
   <SymbolicParserExprTk-MaxStackDepth value_int="400" />
   <SymbolicParserExprTk-MaxNodeDepth value_int="10000" />
 
+  <!-- OT::SymbolicParserMuParser parameters -->
+  <SymbolicParserMuParser-SmallSize value_int="1000" />
+
   <!-- OT::DesignProxy parameters -->
   <DesignProxy-DefaultCacheSize value_int="16777216" />
 
