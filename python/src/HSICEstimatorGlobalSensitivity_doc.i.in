@@ -1,5 +1,3 @@
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::HSICEstimatorGlobalSensitivity
 "Implement a HSIC estimator for global analysis.
 
@@ -20,7 +18,48 @@ estimatorType : :class:`~openturns.HSICStat`
 
 See also
 --------
-:class:`~openturns.HSICEstimatorConditionalSensitivity`, :class:`~openturns.HSICEstimatorTargetSensitivity`"
+:class:`~openturns.HSICEstimatorConditionalSensitivity`, :class:`~openturns.HSICEstimatorTargetSensitivity`
+
+Examples
+--------
+>>> import openturns as ot
+>>> from math import pi
+
+Generate input and output samples.
+
+>>> # 3d input distribution with an independent copula
+>>> distX = ot.ComposedDistribution([ot.Uniform(-pi, pi)] * 3)
+>>> X = distX.getSample(100) # get a sample
+>>>
+>>> # Apply the Ishigami model.
+>>> inputs = ['X1', 'X2', 'X3']
+>>> formula = ['sin(X1) + 5.0 * (sin(X2))^2 + 0.1 * X3^4 * sin(X1)']
+>>> modelIshigami = ot.SymbolicFunction(inputs, formula)
+>>> Y = modelIshigami(X) # Y = modelIshigami(X)
+
+Define covariance kernels for the model inputs.
+Put them in a list.
+
+>>> covarianceList = []
+>>> for i in range(3):
+...     Xi = X.getMarginal(i)
+...     Cov = ot.SquaredExponential(1)
+...     Cov.setScale(Xi.computeStandardDeviation())
+...     covarianceList.append(Cov)
+
+Append the list with the covariance kernel for the model output.
+
+>>> covarianceList.append(ot.SquaredExponential(Y.computeStandardDeviation()))
+
+Choose the statistic that will be used to estimate the HSIC indices.
+
+>>> estimatorType = ot.HSICUStat() # could be HSICVStat instead
+
+Build and use the HSIC estimator for global sensitivity analysis.
+
+>>> hsic = ot.HSICEstimatorGlobalSensitivity(covarianceList, X, Y, estimatorType)
+>>> print(hsic.getR2HSICIndices())
+[0.18708,-0.00354117,0.0729187]"
 
 // ---------------------------------------------------------------------
 
