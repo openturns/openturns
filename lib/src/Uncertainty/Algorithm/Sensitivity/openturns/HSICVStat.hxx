@@ -41,13 +41,13 @@ public:
   HSICVStat* clone() const override;
 
   /** Compute the HSIC index for one marginal*/
-  virtual Scalar computeHSICIndex(const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const override;
+  Scalar computeHSICIndex(const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const override;
 
   /** Compute the asymptotic p-value */
-  virtual Scalar computePValue(const Gamma &dist, const UnsignedInteger n, const Scalar HSIC_obs, const Scalar mHSIC) const override;
+  Scalar computePValue(const Gamma &dist, const UnsignedInteger n, const Scalar HSIC_obs, const Scalar mHSIC) const override;
 
   /** Is compatible with a Conditional HSIC Estimator ? */
-  virtual Bool isCompatibleWithConditionalAnalysis() const override;
+  Bool isCompatibleWithConditionalAnalysis() const override;
 };
 
 END_NAMESPACE_OPENTURNS

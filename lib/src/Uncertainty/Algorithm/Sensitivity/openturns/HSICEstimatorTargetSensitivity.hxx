@@ -1,7 +1,7 @@
 
 //                                               -*- C++ -*-
 /**
- * @brief HSICESTIMATORTARGETSENSITIVITY implements the sensivity analysis method based on HSIC indices
+ * @brief HSICEstimatorTargetSensitivity implements the sensivity analysis method based on HSIC indices
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -88,7 +88,7 @@ protected:
 private:
 
   /** Compute the weight matrix from the weight function */
-  virtual SquareMatrix computeWeightMatrix(const Sample & Y) const override;
+  SquareMatrix computeWeightMatrix(const Sample & Y) const override;
 
   /** Compute the p-values with asymptotic formula */
   void computePValuesAsymptotic() const;

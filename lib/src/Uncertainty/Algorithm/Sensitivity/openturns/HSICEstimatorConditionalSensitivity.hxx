@@ -1,7 +1,7 @@
 
 //                                               -*- C++ -*-
 /**
- * @brief HSICESTIMATORCODITIONALSENSITIVITY implements the sensivity analysis method based on HSIC indices
+ * @brief HSICEstimatorConditionalSensitivity implements the sensivity analysis method based on HSIC indices
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -73,7 +73,7 @@ public:
 private:
 
   /** Compute the weight matrix from the weight function */
-  virtual SquareMatrix computeWeightMatrix(const Sample & Y) const override;
+  SquareMatrix computeWeightMatrix(const Sample & Y) const override;
 };
 
 

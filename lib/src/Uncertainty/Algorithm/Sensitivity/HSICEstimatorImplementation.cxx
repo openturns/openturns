@@ -98,7 +98,11 @@ SquareMatrix HSICEstimatorImplementation::computeWeightMatrix(const Sample&) con
 }
 
 /* Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
-Scalar HSICEstimatorImplementation::computeHSICIndex( const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const
+Scalar HSICEstimatorImplementation::computeHSICIndex(const Sample & inSample,
+                                                     const Sample & outSample,
+                                                     const CovarianceModel & inCovariance,
+                                                     const CovarianceModel & outCovariance,
+                                                     const SquareMatrix & weightMatrix) const
 {
   return estimatorType_.computeHSICIndex(inSample, outSample, inCovariance, outCovariance, weightMatrix);
 }
