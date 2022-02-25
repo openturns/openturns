@@ -59,8 +59,6 @@ SquareMatrix HSICEstimatorGlobalSensitivity::computeWeightMatrix(const Sample&) 
 /* Compute the asymptotic p-values */
 void HSICEstimatorGlobalSensitivity::computePValuesAsymptotic() const
 {
-  SquareMatrix W(computeWeightMatrix(outputSample_));
-
   PValuesAsymptotic_ = Point(inputDimension_);
 
   SquareMatrix H(n_, Collection<Scalar>(n_ * n_, -1.0 / n_));
@@ -75,12 +73,11 @@ void HSICEstimatorGlobalSensitivity::computePValuesAsymptotic() const
 
   const Scalar Ey = (sumKy - traceKy) / n_ / (n_ - 1 );
   const Matrix By = H * Ky * H;
+  const Point HSICobsPt(getHSICIndices());
 
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
     const Sample Xi(inputSample_.getMarginal(dim));
-    const Scalar HSICobs = computeHSICIndex(Xi, outputSample_, covarianceList_[dim], covarianceList_[inputDimension_], W);
-
     const CovarianceMatrix Kx(covarianceList_[dim].discretize(Xi));
     const Scalar traceKx = Kx.computeTrace();
     const Scalar sumKx = Kx.computeSumElements();
@@ -103,7 +100,7 @@ void HSICEstimatorGlobalSensitivity::computePValuesAsymptotic() const
     const Scalar beta = n_ * varHSIC / mHSIC;
 
     const Gamma distribution(alpha, 1.0 / beta);
-    const Scalar p = estimatorType_.computePValue(distribution, n_, HSICobs, mHSIC);
+    const Scalar p = estimatorType_.computePValue(distribution, n_, HSICobsPt[dim], mHSIC);
     PValuesAsymptotic_[dim] = p;
   }
   isAlreadyComputedPValuesAsymptotic_ = true ;
