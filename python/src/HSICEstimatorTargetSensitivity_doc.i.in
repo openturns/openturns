@@ -66,9 +66,9 @@ Define a filter function to apply to the model output.
 
 Build and use the HSIC estimator for target sensitivity analysis.
 
->>> hsic = ot.HSICEstimatorGlobalSensitivity(covarianceList, X, Y, estimatorType, filter)
+>>> hsic = ot.HSICEstimatorTargetSensitivity(covarianceList, X, Y, estimatorType, filter)
 >>> print(hsic.getR2HSICIndices())
-[0.238014,0.00167123,0.000377241]"
+[0.184124,-0.00585434,0.0339537]"
 
 // ---------------------------------------------------------------------
 

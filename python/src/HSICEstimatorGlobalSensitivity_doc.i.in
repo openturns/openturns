@@ -59,7 +59,7 @@ Build and use the HSIC estimator for global sensitivity analysis.
 
 >>> hsic = ot.HSICEstimatorGlobalSensitivity(covarianceList, X, Y, estimatorType)
 >>> print(hsic.getR2HSICIndices())
-[0.18708,-0.00354117,0.0729187]"
+[0.404051,0.0206756,0.0846069]"
 
 // ---------------------------------------------------------------------
 
