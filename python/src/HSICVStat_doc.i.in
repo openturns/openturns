@@ -11,32 +11,6 @@ See also
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::HSICVStat::computeHSICIndex
-"Compute the HSIC index between two samples.
-
-Parameters
-----------
-inSample : 2-d sequence of float
-    Input sample.
-
-outSample : 2-d sequence of float
-    Output sample.
-
-inCovariance : :class:`~openturns.CovarianceModel`
-    The covariance model associated with the input sample.
-
-outCovariance : :class:`~openturns.CovarianceModel`
-    The covariance model associated with the output sample.
-
-weightMatrix : :class:`~openturns.Matrix`
-    A weight matrix used for the statistics.
-
-Returns
--------
-hsicIndex : the HSIC index of the two :class:`~openturns.Sample`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::HSICVStat::isCompatibleWithConditionalAnalysis
 "Indicate the compatibility with a conditional HSIC estimator.
 
@@ -44,26 +18,5 @@ Returns
 -------
 isCompatible : bool
     Indicate the compatibility with a conditional HSIC estimator (true)."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::HSICVStat::computePValue
-"Compute the p-value of the statistic.
-
-Parameters
-----------
-dist : :class:`~openturns.Gamma`
-    A :class:`~openturns.Gamma` distribution to compute the p-value.
-
-n : int
-    The size of the samples.
-
-HSIC_obs : float
-
-mHSIC : float
-
-Returns
--------
-pvalue : the p-value of the statistic."
 
 // ---------------------------------------------------------------------

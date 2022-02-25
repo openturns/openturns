@@ -70,8 +70,10 @@ n : int
     The size of the samples.
 
 HSIC_obs : float
+    The previously computed HSIC index.
 
 mHSIC : float
+    Bias-correcting term (only actually used by U-statistics).
 
 Returns
 -------
