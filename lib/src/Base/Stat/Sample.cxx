@@ -757,6 +757,11 @@ void Sample::sortUniqueInPlace()
   getImplementation()->sortUniqueInPlace();
 }
 
+Indices Sample::argsort() const
+{
+  return getImplementation()->argsort();
+}
+
 /* Get the i-th marginal sample */
 Sample Sample::getMarginal(const UnsignedInteger index) const
 {

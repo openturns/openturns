@@ -225,6 +225,7 @@ void test_4()
     const Point weightsColumn = {0.03, 0.06, 0.07, 0.06, 0.03, 0.05, 0.10, 0.12, 0.10, 0.05, 0.03, 0.06, 0.07, 0.06, 0.03};
     UnsignedInteger size(pointColumn1.getDimension());
     UnsignedInteger dimension = 2;
+    // Create expected nodes and weights, and shuffled nodes and weights
     Sample nodesExpected(size, dimension);
     Point weightsExpected(size);
     Sample nodesShuffled(size, dimension);
@@ -262,6 +263,57 @@ void test_4()
       for (UnsignedInteger j = 0; j < dimension; ++j)
       {
         nodesSorted(i, j) = nodesShuffled(sortedIndex, j);
+      }
+    }
+    printNodesAndWeights(nodesSorted, weightsSorted);
+}
+
+// Test 5 : Sort nodes with lexicographicArgsort
+void test_5()
+{
+    OStream fullprint(std::cout);
+    fullprint << "+ Test 5 : sort nodes with lexicographicArgsort" << std::endl;
+
+    // Create expected nodes and weights, then sort and check that nothing changed.
+    Indices permutation = {9,5,1,6,10,11,4,2,8,13,12,14,0,3,7};
+    Point pointColumn1 = {0.11, 0.11, 0.11, 0.11, 0.11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88, 0.88, 0.88, 0.88, 0.88};
+    Point pointColumn2 = {0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95};
+    const Point weightsColumn = {0.03, 0.06, 0.07, 0.06, 0.03, 0.05, 0.10, 0.12, 0.10, 0.05, 0.03, 0.06, 0.07, 0.06, 0.03};
+    UnsignedInteger size(pointColumn1.getDimension());
+    UnsignedInteger dimension = 2;
+    // Create expected nodes and weights, and shuffled nodes and weights
+    Sample nodesExpected(size, dimension);
+    Point weightsExpected(size);
+    Sample nodesShuffled(size, dimension);
+    Point weightsShuffled(size);
+    UnsignedInteger index;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      nodesExpected(i, 0) = pointColumn1[i];
+      nodesExpected(i, 1) = pointColumn2[i];
+      weightsExpected[i] = weightsColumn[i];
+      index = permutation[i];
+      nodesShuffled(i, 0) = pointColumn1[index];
+      nodesShuffled(i, 1) = pointColumn2[index];
+      weightsShuffled[i] = weightsColumn[index];
+    }
+    fullprint << "  Expected : " << std::endl;
+    printNodesAndWeights(nodesExpected, weightsExpected);
+    fullprint << "  Shuffled : " << std::endl;
+    printNodesAndWeights(nodesShuffled, weightsShuffled);
+    // Lexicographic argsort
+    Indices order(nodesShuffled.argsort());
+
+    // Store sorted weights and nodes
+    Point weightsSorted(size);
+    Sample nodesSorted(size, dimension);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const UnsignedInteger index(order[i]);
+      weightsSorted[i] = weightsShuffled[index];
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+      {
+        nodesSorted(i, j) = nodesShuffled(index, j);
       }
     }
     printNodesAndWeights(nodesSorted, weightsSorted);

@@ -746,6 +746,9 @@ public:
   Pointer<SampleImplementation> sortUnique() const;
   void sortUniqueInPlace();
 
+  /** argsort */
+  Indices argsort() const;
+
   /** Get the i-th marginal sample */
   Pointer<SampleImplementation> getMarginal(const UnsignedInteger index) const;
 

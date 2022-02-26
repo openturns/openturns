@@ -1573,6 +1573,21 @@ void SampleImplementation::sortUniqueInPlace()
   if (last + 1 < size_) erase(last + 1, size_);
 }
 
+Indices SampleImplementation::argsort() const
+{
+  Collection< std::pair<Point, UnsignedInteger> > pointsPairs(size_);
+  for (UnsignedInteger i = 0; i < size_; ++i)
+    pointsPairs[i] = std::pair<Point, UnsignedInteger>(data_[i], i);
+
+  std::sort(pointsPairs.begin(), pointsPairs.end());
+
+  Indices sortedIndices(size_);
+  for (UnsignedInteger i = 0; i < size_; ++i)
+    sortedIndices[i] = pointsPairs[i].second;
+
+  return sortedIndices;
+}
+
 /*
  * Gives the Spearman correlation matrix of the sample
  */
