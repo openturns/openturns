@@ -28,11 +28,11 @@ using namespace OT;
 using namespace OT::Test;
 
 
-// Test 1 : Sort nodes with argsort
+// Test 1 : argsort
 void test_1()
 {
     OStream fullprint(std::cout);
-    fullprint << "+ Test 5 : sort nodes with argsort" << std::endl;
+    fullprint << "+ Test 1 : argsort" << std::endl;
 
     // Create expected nodes and weights, then sort and check that nothing changed.
     Indices permutation = {9,5,1,6,10,11,4,2,8,13,12,14,0,3,7};
@@ -57,10 +57,6 @@ void test_1()
       nodesShuffled(i, 1) = pointColumn2[index];
       weightsShuffled[i] = weightsColumn[index];
     }
-    fullprint << "  Expected : " << std::endl;
-    printNodesAndWeights(nodesExpected, weightsExpected);
-    fullprint << "  Shuffled : " << std::endl;
-    printNodesAndWeights(nodesShuffled, weightsShuffled);
     // Lexicographic argsort
     Indices order(nodesShuffled.argsort());
 
@@ -76,7 +72,9 @@ void test_1()
         nodesSorted(i, j) = nodesShuffled(index, j);
       }
     }
-    printNodesAndWeights(nodesSorted, weightsSorted);
+    // Test
+    assert_equal(nodesSorted, nodesExpected);
+    assert_equal(weightsSorted, weightsExpected);
 }
 
 int main(int, char *[])
