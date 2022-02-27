@@ -45,14 +45,10 @@ void printNodesAndWeights(Sample nodes, Point weights)
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     fullprint << weights[i] << " : [";
-    for (UnsignedInteger j = 0; j < dimension; ++j)
+    String separator("");
+    for (UnsignedInteger j = 0; j < dimension; ++j, separator = ", ")
     {
-        if (j  == 0)
-        {
-          fullprint << nodes(i, j);
-        } else {
-          fullprint << ", " << nodes(i, j);
-        }
+      fullprint << separator << nodes(i, j);
     }
     fullprint << "]" << std::endl;
   }
