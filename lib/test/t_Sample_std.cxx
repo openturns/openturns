@@ -113,6 +113,11 @@ void test_argsort()
     // Test
     assert_equal(nodesSorted, nodesExpected);
     assert_equal(weightsSorted, weightsExpected);
+    // Lexicographic argsort (decreasing order)
+    Indices orderDecreasing(nodesShuffled.argsort(false));
+    fullprint << "    orderDecreasing = " << orderDecreasing << std::endl;
+    Indices orderDecreasingExpected = {11,9,10,5,4,0,8,14,3,1,6,13,7,2,12};
+    assert_equal(orderDecreasing, orderDecreasingExpected);
 }
 
 int main(int, char *[])

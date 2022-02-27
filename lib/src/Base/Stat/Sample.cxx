@@ -757,9 +757,9 @@ void Sample::sortUniqueInPlace()
   getImplementation()->sortUniqueInPlace();
 }
 
-Indices Sample::argsort() const
+Indices Sample::argsort(Bool isIncreasing) const
 {
-  return getImplementation()->argsort();
+  return getImplementation()->argsort(isIncreasing);
 }
 
 /* Get the i-th marginal sample */

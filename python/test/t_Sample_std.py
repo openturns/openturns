@@ -123,6 +123,9 @@ try:
     indices = sample.argsort()
     print("indices = ", indices)
     assert indices == [3, 2, 0, 1]
+    indices = sample.argsort(False)
+    print("indices = ", indices)
+    assert indices == [1, 0, 2, 3]
 
 except:
     import sys

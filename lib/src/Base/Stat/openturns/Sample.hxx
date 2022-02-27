@@ -334,7 +334,7 @@ public:
   void sortUniqueInPlace();
 
   /** argsort */
-  Indices argsort() const;
+  Indices argsort(Bool isIncreasing = true) const;
 
   /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
   virtual String storeToTemporaryFile() const;

@@ -1573,12 +1573,22 @@ void SampleImplementation::sortUniqueInPlace()
   if (last + 1 < size_) erase(last + 1, size_);
 }
 
-Indices SampleImplementation::argsort() const
+Indices SampleImplementation::argsort(Bool isIncreasing) const
 {
   Collection< std::pair<Point, UnsignedInteger> > pointsPairs(size_);
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
-    pointsPairs[i] = std::pair<Point, UnsignedInteger>((*this)[i], i);
+    if (isIncreasing)
+    {
+      pointsPairs[i] = std::pair<Point, UnsignedInteger>((*this)[i], i);
+    }
+    else
+    {
+      const Point pointI(static_cast<Point>((*this)[i]));
+      const Point zero(dimension_);
+      const Point oppositePoint(zero - pointI);
+      pointsPairs[i] = std::pair<Point, UnsignedInteger>(oppositePoint, i);
+    }
   }
   std::sort(pointsPairs.begin(), pointsPairs.end());
 

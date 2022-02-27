@@ -24,3 +24,4 @@ selection=     [ v0 ]
 ok
 ok
 indices =  [3,2,0,1]
+indices =  [1,0,2,3]
