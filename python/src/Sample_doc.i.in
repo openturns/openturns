@@ -992,6 +992,10 @@ getDescription"
 %feature("docstring") OT::Sample::sort
 "Sort the sample.
 
+The ordering is based on the comparison operator of the `Point`. 
+Hence, the `sort` method orders the points in the sample 
+according to the lexicographic order. 
+
 Parameters
 ----------
 marginal_index : int, :math:`0 \leq i < n`, optional
@@ -1017,7 +1021,22 @@ Examples
     [ X0        X1        ]
 0 : [ -2.18139   0.350042 ]
 1 : [ -0.438266  1.20548  ]
-2 : [  0.608202 -1.26617  ]"
+2 : [  0.608202 -1.26617  ]
+
+In the following sample, the first component of all points is equal to -1, 
+which creates a tie where the other components must be used to make 
+a difference in the comparison. 
+The algorithm sorts the points taking into account all the components in the 
+points. 
+This shows that the algorithm uses lexicographic ordering, since using only 
+the first component would leave the sample unchanged.
+>>> import openturns as ot
+>>> sample = ot.Sample(
+>>>     [[-1.0, 1.0, 1.0], [-1.0, 1.0, 0.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, -1.0]]
+>>> )
+>>> sample.setDescription(['a', 'b', 'c'])
+>>> print(sample)
+>>> print(sample.sort())"
 
 // ---------------------------------------------------------------------
 
