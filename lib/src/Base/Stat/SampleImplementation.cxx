@@ -1576,12 +1576,9 @@ void SampleImplementation::sortUniqueInPlace()
 Indices SampleImplementation::argsort() const
 {
   Collection< std::pair<Point, UnsignedInteger> > pointsPairs(size_);
-
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
-    Point point_i(dimension_);
-    for (UnsignedInteger j = 0; j < dimension_; ++j) point_i[j] = operator()(i, j);
-    pointsPairs[i] = std::pair<Point, UnsignedInteger>(point_i, i);
+    pointsPairs[i] = std::pair<Point, UnsignedInteger>((*this)[i], i);
   }
   std::sort(pointsPairs.begin(), pointsPairs.end());
 
