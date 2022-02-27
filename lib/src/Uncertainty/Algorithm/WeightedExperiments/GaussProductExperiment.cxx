@@ -218,7 +218,12 @@ void GaussProductExperiment::load(Advocate & adv)
 {
   WeightedExperimentImplementation::load(adv);
   adv.loadAttribute("collection_", collection_);
-  adv.loadAttribute("marginalSizes_", marginalSizes_);
+  if (adv.hasAttribute("marginalSizes_"))
+    // new name
+    adv.loadAttribute("marginalSizes_", marginalSizes_);
+  else
+    // old name
+    adv.loadAttribute("marginalDegrees_", marginalSizes_);
   setDistributionAndMarginalSizes(distribution_, marginalSizes_);
 }
 
