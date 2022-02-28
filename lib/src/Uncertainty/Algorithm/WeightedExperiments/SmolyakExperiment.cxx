@@ -115,6 +115,7 @@ void SmolyakExperiment::computeNodesAndWeights() const
     // this is an empty quadrature
     if (multiindexSum <= level_ + dimension - 1 && multiindexSum >= level_ && multiindexMin > 0) ++combinationIndicesCollectionSize;
   }
+  LOGDEBUG(OSS() << "  combinationIndicesCollectionSize = " << combinationIndicesCollectionSize);
   // Store the indices
   IndicesCollection combinationIndicesCollection(combinationIndicesCollectionSize, dimension);
   combinationIndicesCollectionSize = 0;
@@ -133,6 +134,9 @@ void SmolyakExperiment::computeNodesAndWeights() const
         ++combinationIndicesCollectionSize;
     }
   }
+  LOGDEBUG(OSS() << "  combinationIndicesCollection = " << combinationIndicesCollection);
+  // Create the Smolyak list of quadratures
+  // Reduce to unique nodes and weights
 }
 
 /* Method save() stores the object through the StorageManager */
