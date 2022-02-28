@@ -121,73 +121,6 @@ void test_1()
     assert_almost_equal(weightsExpected, weights, rtol, atol);
 }
 
-// Test #2 : 2 experiments with dimensions [2, 3]
-void test_2()
-{
-    Log::Show(Log::ALL);
-    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: [Uniform * 2] with sizes [3, 2]
-    const Uniform uniform_1(-1.0, 1.0);
-    const Uniform uniform_2(-1.0, 1.0);
-    ComposedDistribution::DistributionCollection distributionCollection1;
-    distributionCollection1.add(Distribution(uniform_1));
-    distributionCollection1.add(Distribution(uniform_2));
-    ComposedDistribution distribution3(distributionCollection1);
-    Indices marginalSizes3(0);
-    marginalSizes3.add(3);
-    marginalSizes3.add(2);
-    const GaussProductExperiment marginalExperiment3(distribution3, marginalSizes3);
-    experimentCollection.add(marginalExperiment3);
-    // Marginal 1: [Normal * 2, with sizes [2, 2, 1]
-    const Normal normal_1(0.0, 1.0);
-    const Normal normal_2(0.0, 1.0);
-    const Normal normal_3(0.0, 1.0);
-    ComposedDistribution::DistributionCollection distributionCollection2;
-    distributionCollection2.add(Distribution(normal_1));
-    distributionCollection2.add(Distribution(normal_2));
-    distributionCollection2.add(Distribution(normal_3));
-    ComposedDistribution distribution4(distributionCollection2);
-    Indices marginalSizes4(0);
-    marginalSizes4.add(2);
-    marginalSizes4.add(2);
-    marginalSizes4.add(1);
-    const GaussProductExperiment marginalExperiment4(distribution4, marginalSizes4);  
-    experimentCollection.add(marginalExperiment4);
-    //
-    const UnsignedInteger level = 3;
-    SmolyakExperiment experiment(experimentCollection, level);
-    Point weights(0);
-    Sample nodes(experiment.generateWithWeights(weights));
-    //
-    sortNodesAndWeights(nodes, weights);
-    //
-    const int size(weights.getDimension());
-    const int dimension(nodes.getDimension());
-    const int weightDimension(weights.getDimension());
-    assert_equal(size, 24);
-    assert_equal(dimension, 5);
-    assert_equal(weightDimension, 24);
-    //
-    Point column1 = {-0.77459, -0.77459, -0.77459, -0.77459, -0.77459, -0.77459, -0.77459, -0.77459, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.77459, 0.77459, 0.77459, 0.77459, 0.77459, 0.77459, 0.77459, 0.77459};
-    Point column2 = {-0.57735, -0.57735, -0.57735, -0.57735, 0.57735, 0.57735, 0.57735, 0.57735, -0.57735, -0.57735, -0.57735, -0.57735, 0.57735, 0.57735, 0.57735, 0.57735, -0.57735, -0.57735, -0.57735, -0.57735, 0.57735, 0.57735, 0.57735, 0.57735};
-    Point column3 = {-1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0};
-    Point column4 = {-1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0};
-    Point column5 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-    Sample nodesExpected(size, dimension);
-    for (int i = 0; i < size; ++i)
-    {
-      nodesExpected(i, 0) = column1[i];
-      nodesExpected(i, 1) = column2[i];
-      nodesExpected(i, 2) = column3[i];
-      nodesExpected(i, 3) = column4[i];
-      nodesExpected(i, 4) = column5[i];
-    }
-    const Point weightsExpected = {0.0347222, 0.0347222, 0.0347222, 0.0347222, 0.0347222, 0.0347222, 0.0347222, 0.0347222, 0.0555556, 0.0555556, 0.0555556, 0.0555556, 0.0555556, 0.0555556, 0.0555556, 0.0555556, 0.0347222, 0.0347222, 0.0347222, 0.0347222, 0.0347222, 0.0347222, 0.0347222, 0.0347222};
-    const Scalar rtol = 1.0e-5;
-    const Scalar atol = 1.0e-5;
-    assert_almost_equal(nodesExpected, nodes, rtol, atol);
-    assert_almost_equal(weightsExpected, weights, rtol, atol);
-}
 // Test #3 : check hasUniformWeights
 void test_3()
 {
@@ -219,7 +152,7 @@ int main(int, char *[])
   try
   {
     test_1();
-    test_2();
+    test_3();
   }
   catch (TestFailed & ex)
   {

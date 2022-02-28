@@ -37,6 +37,18 @@ SmolyakExperiment::SmolyakExperiment()
   // Nothing to do
 }
 
+/* Constructor with parameters */
+SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collection, 
+    const UnsignedInteger level
+)
+  : WeightedExperimentImplementation()
+  , collection_(collection)
+  , level_(level)
+  , nodes_(0, 0)
+  , isAlreadyComputedNodesAndWeights_(false)
+{
+  // Nothing to do
+}
 /* Virtual constructor */
 SmolyakExperiment * SmolyakExperiment::clone() const
 {
