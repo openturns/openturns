@@ -22,6 +22,7 @@
 #define OPENTURNS_SMOLYAKEXPERIMENT_HXX
 
 #include "openturns/WeightedExperimentImplementation.hxx"
+#include "openturns/WeightedExperiment.hxx"
 #include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
