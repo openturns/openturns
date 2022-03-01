@@ -5,7 +5,6 @@
 %}
 
 OTTypedInterfaceObjectHelper(HSICStat)
-//%OTTypedCollectionInterfaceObjectHelper(HSICStat)
 
 %include HSICStat_doc.i
 
