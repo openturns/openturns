@@ -5,6 +5,7 @@
 === Library ===
 
 ==== Major changes ====
+ * HSIC sensitivity indices
  * RandomWalkMetropolisHastings now updates all components at a time, previously updated componentwise
 
 ==== New classes ====
