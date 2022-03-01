@@ -31,5 +31,13 @@
 #include "openturns/MartinezSensitivityAlgorithm.hxx"
 #include "openturns/JansenSensitivityAlgorithm.hxx"
 #include "openturns/SobolIndicesExperiment.hxx"
-
+#include "openturns/HSICEstimatorImplementation.hxx"
+#include "openturns/HSICEstimator.hxx"
+#include "openturns/HSICEstimatorConditionalSensitivity.hxx"
+#include "openturns/HSICEstimatorTargetSensitivity.hxx"
+#include "openturns/HSICEstimatorGlobalSensitivity.hxx"
+#include "openturns/HSICStat.hxx"
+#include "openturns/HSICStatImplementation.hxx"
+#include "openturns/HSICUStat.hxx"
+#include "openturns/HSICVStat.hxx"
 #endif /* OPENTURNS_OTSENSITIVITY_HXX */

@@ -208,3 +208,23 @@ Examples based on this use case
    :hidden:
  
    /auto_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_sobol
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="">
+
+.. only:: html
+
+ .. figure:: /auto_reliability_sensitivity/sensitivity_analysis/images/thumb/sphx_glr_plot_hsic_estimators_ishigami_thumb.png
+     :alt:
+
+     :ref:`sphx_glr_auto_reliability_sensitivity_sensitivity_analysis_plot_hsic_estimators_ishigami.py`
+
+.. raw:: html
+
+    </div>
+
+.. toctree::
+   :hidden:
+ 
+   /auto_reliability_sensitivity/sensitivity_analysis/plot_hsic_estimators_ishigami

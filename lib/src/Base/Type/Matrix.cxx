@@ -302,4 +302,37 @@ UnsignedInteger Matrix::stride(const UnsignedInteger dim) const
   return getImplementation()->stride(dim);
 }
 
+/** Hadamard product aka elementwise product */
+Matrix Matrix::computeHadamardProduct(const Matrix &other) const
+{
+  return Implementation(getImplementation())->computeHadamardProduct(*(other.getImplementation()));
+}
+
+/** Extract a diagonal */
+Matrix Matrix::getDiagonal(const SignedInteger k) const
+{
+  return getImplementation()->getDiagonal(k);
+}
+
+/** Fill a diagonal */
+void Matrix::setDiagonal(const Point &diag, const SignedInteger k)
+{
+  copyOnWrite();
+  getImplementation()->setDiagonal(diag, k);
+}
+
+/** Sum all coefficients */
+Scalar Matrix::computeSumElements() const
+{
+  return getImplementation()->computeSumElements();
+}
+
+/** All elements are squared */
+void Matrix::squareElements()
+{
+  copyOnWrite();
+  getImplementation()->squareElements();
+}
+
+
 END_NAMESPACE_OPENTURNS

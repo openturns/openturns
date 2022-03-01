@@ -315,6 +315,21 @@ public:
   /** Low-level data access */
   UnsignedInteger stride(const UnsignedInteger dim) const;
 
+  /** Extract diagonal */
+  MatrixImplementation getDiagonal(const SignedInteger k = 0) const;
+
+  /** Fill diagonal with values */
+  void setDiagonal(const Point &diag, const SignedInteger k = 0);
+
+  /** Hadamard product aka elementwise product */
+  MatrixImplementation computeHadamardProduct(const MatrixImplementation &other) const;
+
+  /** Sum all coefficients */
+  virtual Scalar computeSumElements() const;
+
+  /** All elements are squared */
+  void squareElements();
+
 protected:
 
   /** MatrixImplementation Dimensions */

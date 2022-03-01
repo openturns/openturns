@@ -8,7 +8,13 @@
  * RandomWalkMetropolisHastings now updates all components at a time, previously updated componentwise
 
 ==== New classes ====
- * Gibbs, RandomVectorMetropolisHastings
+ * RandomVectorMetropolisHastings
+ * Gibbs
+ * HSICEstimatorConditionalSensitivity
+ * HSICEstimatorGlobalSensitivity
+ * HSICEstimatorTargetSensitivity
+ * HSICUStat
+ * HSICVStat
 
 ==== API changes ====
  * Removed deprecated Hanning alias
