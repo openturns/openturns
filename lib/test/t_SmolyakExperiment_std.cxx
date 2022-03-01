@@ -54,12 +54,21 @@ UnsignedInteger comparePoints(const Point point1, const Point point2)
 // Simultaneously sort the nodes and weights
 void sortNodesAndWeights(Sample & nodes, Point & weights)
 {
+  OStream fullprint(std::cout);
+  fullprint << "sortNodesAndWeights()" << std::endl;
   const UnsignedInteger size(weights.getDimension());
+  fullprint << "size = " << size << std::endl;
   UnsignedInteger signOfIMinusJ;
+  if (size == 0)
+  {
+    return;      
+  }
   for (UnsignedInteger i = 0; i < size - 1; ++i)
   {
+    fullprint << "i = " << i << std::endl;
     for (UnsignedInteger j = i + 1; j < size; ++j)
     {
+      fullprint << "j = " << j << std::endl;
       signOfIMinusJ = comparePoints(nodes[i], nodes[j]);
       if (signOfIMinusJ == 1)
       {
@@ -78,6 +87,7 @@ void sortNodesAndWeights(Sample & nodes, Point & weights)
 void test_1()
 {
     Log::Show(Log::ALL);
+    OStream fullprint(std::cout);
     SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
     // Marginal 0: Uniform, with 3 nodes
     const Uniform distribution1(0.0, 1.0);
@@ -95,9 +105,12 @@ void test_1()
     const UnsignedInteger level = 3;
     SmolyakExperiment experiment(experimentCollection, level);
     Point weights(0);
+    fullprint << "generateWithWeights()" << std::endl;
     Sample nodes(experiment.generateWithWeights(weights));
     //
+    fullprint << "sortNodesAndWeights()" << std::endl;
     sortNodesAndWeights(nodes, weights);
+    fullprint << "sort done." << std::endl;
     //
     const int size(weights.getDimension());
     const int dimension(nodes.getDimension());

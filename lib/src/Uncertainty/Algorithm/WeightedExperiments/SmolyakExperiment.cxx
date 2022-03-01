@@ -79,6 +79,81 @@ Sample SmolyakExperiment::generateWithWeights(Point & weights) const
   return nodes_;
 }
 
+/* Compute minimum of multiindex */
+UnsignedInteger SmolyakExperiment::indicesMinimum(Indices indices) const
+{
+  const UnsignedInteger dimension = indices.getSize();
+  UnsignedInteger multiindexMin = indices[0];
+  for (UnsignedInteger j = 0; j < dimension; ++j) multiindexMin = std::min(indices[j], multiindexMin);
+  return multiindexMin;
+}
+
+/* Compute multiindex set for combination rule*/
+IndicesCollection SmolyakExperiment::computeCombination() const
+{
+  const UnsignedInteger dimension = collection_.getSize();
+  // Compute the maximum 1-norm of the multi-index (Gerstner & Griebel, 1998), page 215
+  const UnsignedInteger maximumSum = level_ + dimension - 1;
+  LOGDEBUG(OSS() << "  maximumSum = " << maximumSum);
+  // Create a multi-index set from norm 1
+  const LinearEnumerateFunction enumerateFunction(dimension);
+  // Compute the size
+  UnsignedInteger combinationIndicesCollectionSize = 0;
+  Indices indices(dimension);
+  for (UnsignedInteger strataIndex = level_; strataIndex < level_ + dimension; ++strataIndex)
+  {
+    LOGDEBUG(OSS() << "  strataIndex = " <<  strataIndex);
+    const UnsignedInteger strataCardinal = enumerateFunction.getStrataCardinal(strataIndex);
+    const UnsignedInteger cumulatedCardinal = enumerateFunction.getStrataCumulatedCardinal(
+        strataIndex
+    );
+    const UnsignedInteger indexStart = cumulatedCardinal - strataCardinal;
+    for (UnsignedInteger i = indexStart; i < cumulatedCardinal; ++i)
+    {
+      indices = enumerateFunction(i);
+      LOGDEBUG(OSS() << "  indices = " <<  indices);
+      UnsignedInteger multiindexMin = indicesMinimum(indices);
+      LOGDEBUG(OSS() << "  multiindexMin = " <<  multiindexMin);
+      if (multiindexMin > 0)
+      {
+        // Do not consider a multi-index which has a zero component:
+        // this is an empty quadrature
+        LOGDEBUG(OSS() << "  Store");
+        ++combinationIndicesCollectionSize;
+      }
+    } // loop over the indices in the strata
+  } // loop over the strata
+  LOGDEBUG(OSS() << "  combinationIndicesCollectionSize = " << combinationIndicesCollectionSize);
+  // Fill the indices
+  IndicesCollection combinationIndicesCollection(combinationIndicesCollectionSize, dimension);
+  UnsignedInteger multiindexIndex = 0;
+  for (UnsignedInteger strataIndex = level_; strataIndex < level_ + dimension; ++strataIndex)
+  {
+    LOGDEBUG(OSS() << "  strataIndex = " <<  strataIndex);
+    const UnsignedInteger strataCardinal = enumerateFunction.getStrataCardinal(strataIndex);
+    const UnsignedInteger cumulatedCardinal = enumerateFunction.getStrataCumulatedCardinal(
+        strataIndex
+    );
+    const UnsignedInteger indexStart = cumulatedCardinal - strataCardinal;
+    for (UnsignedInteger i = indexStart; i < cumulatedCardinal; ++i)
+    {
+      indices = enumerateFunction(i);
+      LOGDEBUG(OSS() << "  indices = " <<  indices);
+      UnsignedInteger multiindexMin = indicesMinimum(indices);
+      LOGDEBUG(OSS() << "  multiindexMin = " <<  multiindexMin);
+      if (multiindexMin > 0)
+      {
+        // Do not consider a multi-index which has a zero component:
+        // this is an empty quadrature
+        LOGDEBUG(OSS() << "  Store");
+        std::copy(indices.begin(), indices.end(), combinationIndicesCollection.begin_at(multiindexIndex));
+        ++multiindexIndex;
+      }
+    } // loop over the indices in the strata
+  } // loop over the strata
+  return combinationIndicesCollection;
+}
+  
 /* Compute the nodes and weights */
 /*         This may involve negative weights.
 
@@ -106,46 +181,8 @@ void SmolyakExperiment::computeNodesAndWeights() const
   LOGDEBUG(OSS() << "  dimension = " << dimension);
   if (!(dimension > 0))
     throw InvalidArgumentException(HERE) << "Error: expected a positive number of marginal experiments, here it is " << dimension;
-  // Compute the maximum 1-norm of the multi-index (Gerstner & Griebel, 1998), page 215
-  const UnsignedInteger maximumSum = level_ + dimension - 1;
-  LOGDEBUG(OSS() << "  maximumSum = " << maximumSum);
-  // Create the multi-index set for combination rule
-  // Create a multi-index set from norm 1
-  const LinearEnumerateFunction enumerateFunction(dimension);
-  const UnsignedInteger normOneIndicesCollectionSize =  enumerateFunction.getStrataCardinal(1 + maximumSum);
-  // Compute the size
-  UnsignedInteger combinationIndicesCollectionSize = 0;
-  Indices indices(dimension);
-  for (UnsignedInteger flatIndex = 0; flatIndex < normOneIndicesCollectionSize; ++flatIndex)
-  {
-    indices = enumerateFunction(flatIndex);
-    UnsignedInteger multiindexSum = 0;
-    for (UnsignedInteger j = 0; j < dimension; ++j) multiindexSum += indices[j];
-    UnsignedInteger multiindexMin = indices[0];
-    for (UnsignedInteger j = 0; j < dimension; ++j) multiindexMin = std::min(indices[j], multiindexMin);
-    // Do not consider a multi-index which has a zero component:
-    // this is an empty quadrature
-    if (multiindexSum <= level_ + dimension - 1 && multiindexSum >= level_ && multiindexMin > 0) ++combinationIndicesCollectionSize;
-  }
-  LOGDEBUG(OSS() << "  combinationIndicesCollectionSize = " << combinationIndicesCollectionSize);
-  // Store the indices
-  IndicesCollection combinationIndicesCollection(combinationIndicesCollectionSize, dimension);
-  combinationIndicesCollectionSize = 0;
-  for (UnsignedInteger flatIndex = 0; flatIndex < normOneIndicesCollectionSize; ++flatIndex)
-  {
-    indices = enumerateFunction(flatIndex);
-    UnsignedInteger multiindexSum = 0;
-    for (UnsignedInteger j = 0; j < dimension; ++j) multiindexSum += indices[j];
-    UnsignedInteger multiindexMin = indices[0];
-    for (UnsignedInteger j = 0; j < dimension; ++j) multiindexMin = std::min(indices[j], multiindexMin);
-    // Do not consider a multi-index which has a zero component:
-    // this is an empty quadrature
-    if (multiindexSum <= level_ + dimension - 1 && multiindexSum >= level_ && multiindexMin > 0)
-    {
-        std::copy(indices.begin(), indices.end(), combinationIndicesCollection.begin_at(combinationIndicesCollectionSize));
-        ++combinationIndicesCollectionSize;
-    }
-  }
+  // Compute multiindex set
+  IndicesCollection combinationIndicesCollection(computeCombination());
   LOGDEBUG(OSS() << "  combinationIndicesCollection = " << combinationIndicesCollection);
   // Create the Smolyak list of quadratures
   // Reduce to unique nodes and weights

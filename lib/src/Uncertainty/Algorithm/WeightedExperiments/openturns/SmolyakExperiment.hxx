@@ -76,6 +76,12 @@ private:
   // Marginal experiment collection
   WeightedExperimentPersistentCollection collection_;
 
+  // Minimum of a multiindex
+  UnsignedInteger indicesMinimum(Indices indices) const;
+  
+  // Combination technique multiindex set
+  IndicesCollection computeCombination() const;
+
   // Level
   mutable UnsignedInteger level_;
 
