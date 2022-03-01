@@ -48,6 +48,12 @@ HSICEstimatorConditionalSensitivity* HSICEstimatorConditionalSensitivity::clone(
   return new HSICEstimatorConditionalSensitivity(*this);
 }
 
+/* Compute the asymptotic p-values */
+void HSICEstimatorConditionalSensitivity::computePValuesAsymptotic() const
+{
+    throw NotYetImplementedException(HERE) << "HSICEstimatorConditionalSensitivity cannot compute asymptotic p-values.";
+}
+
 /* Compute the weight matrix from the weight function */
 SquareMatrix HSICEstimatorConditionalSensitivity::computeWeightMatrix(const Sample & Y) const
 {

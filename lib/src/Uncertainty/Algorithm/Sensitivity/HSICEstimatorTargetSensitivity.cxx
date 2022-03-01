@@ -26,7 +26,6 @@ CLASSNAMEINIT(HSICEstimatorTargetSensitivity)
 /* Default */
 HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity()
   : HSICEstimatorImplementation()
-  , isAlreadyComputedPValuesAsymptotic_(false)
 {
   // Nothing to do
 }
@@ -39,7 +38,6 @@ HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity(
   , const HSICStat & estimatorType
   , const Function & filterFunction )
   : HSICEstimatorImplementation(covarianceList, X, Y, estimatorType)
-  , isAlreadyComputedPValuesAsymptotic_(false)
 {
   filterFunction_ =  filterFunction;
   /* apply filter */
@@ -58,56 +56,6 @@ SquareMatrix HSICEstimatorTargetSensitivity::computeWeightMatrix(const Sample&) 
   /* Identity matrix */
   const IdentityMatrix mat(n_);
   return mat;
-}
-
-/* Compute the asymptotic p-values */
-void HSICEstimatorTargetSensitivity::computePValuesAsymptotic() const
-{
-  PValuesAsymptotic_ = Point(inputDimension_);
-
-  SquareMatrix H(n_, Collection<Scalar>(n_ * n_, -1.0 / n_));
-  for(UnsignedInteger j = 0; j < n_; ++j)
-  {
-    H(j, j) += 1.0;
-  }
-
-  const CovarianceMatrix Ky(covarianceList_[inputDimension_].discretize(outputSample_));
-  const Scalar traceKy = Ky.computeTrace();
-  const Scalar sumKy = Ky.computeSumElements();
-
-  const Scalar Ey = (sumKy - traceKy) / n_ / (n_ - 1 );
-  const Matrix By = H * Ky * H;
-  const Point HSICobsPt(getHSICIndices());
-
-  for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
-  {
-    const Sample Xi(inputSample_.getMarginal(dim));
-    const CovarianceMatrix Kx(covarianceList_[dim].discretize(Xi));
-    const Scalar traceKx = Kx.computeTrace();
-    const Scalar sumKx = Kx.computeSumElements();
-    const Scalar Ex = (sumKx - traceKx) / n_ / (n_ - 1);
-
-    const Matrix Bx = H * Kx * H;
-
-    /* Hadamard product then square all elements */
-    SquareMatrix B(Bx.computeHadamardProduct(By).getImplementation());
-    B.squareElements();
-
-    const Point nullDiag(n_);
-    B.setDiagonal(nullDiag, 0);
-
-    const Scalar mHSIC = (1 + Ex * Ey - Ex - Ey) / n_;
-    const Scalar factor = 2.0 * (n_ - 4) * (n_ - 5) / n_ / (n_ - 1) / (n_ - 2) / (n_ - 3) / n_ / (n_ - 1);
-    const Scalar varHSIC = B.computeSumElements() * factor;
-
-    const Scalar alpha = mHSIC * mHSIC / varHSIC;
-    const Scalar beta = n_ * varHSIC / mHSIC;
-
-    const Gamma distribution(alpha, 1.0 / beta);
-    const Scalar p = estimatorType_.computePValue(distribution, n_, HSICobsPt[dim], mHSIC);
-    PValuesAsymptotic_[dim] = p;
-  }
-  isAlreadyComputedPValuesAsymptotic_ = true ;
 }
 
 /* Get the asymptotic p-values */
@@ -157,21 +105,18 @@ void HSICEstimatorTargetSensitivity::run() const
   if(!(isAlreadyComputedIndices_))
   {
     computeIndices();
-    isAlreadyComputedIndices_ = true ;
   }
 
   /* Compute the p-values by permutation */
   if(!(isAlreadyComputedPValuesPermutation_))
   {
     computePValuesPermutation();
-    isAlreadyComputedPValuesPermutation_ = true ;
   }
 
   /* Compute the p-values asymptotically */
   if(!(isAlreadyComputedPValuesAsymptotic_))
   {
     computePValuesAsymptotic();
-    isAlreadyComputedPValuesAsymptotic_ = true ;
   }
 
 }

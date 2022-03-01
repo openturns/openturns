@@ -79,19 +79,15 @@ public:
 protected:
 
   /* data */
-  mutable Point PValuesAsymptotic_ ;
-  mutable Bool isAlreadyComputedPValuesAsymptotic_ ;
   Function filterFunction_ ;
 
+  /** Reset all indices to void */
   void resetIndices() override;
 
 private:
 
   /** Compute the weight matrix from the weight function */
   SquareMatrix computeWeightMatrix(const Sample & Y) const override;
-
-  /** Compute the p-values with asymptotic formula */
-  void computePValuesAsymptotic() const;
 
 };
 

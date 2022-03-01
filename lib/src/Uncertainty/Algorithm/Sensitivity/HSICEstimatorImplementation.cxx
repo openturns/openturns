@@ -52,8 +52,6 @@ HSICEstimatorImplementation::HSICEstimatorImplementation()
   , R2HSICIndices_()
   , PValuesPermutation_()
   , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimatorImplementation-PermutationSize"))
-  , isAlreadyComputedIndices_(false)
-  , isAlreadyComputedPValuesPermutation_(false)
 {
  // Nothing
 }
@@ -77,8 +75,6 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(
   , HSIC_YY_ ()
   , R2HSICIndices_ ()
   , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimatorImplementation-PermutationSize"))
-  , isAlreadyComputedIndices_(false)
-  , isAlreadyComputedPValuesPermutation_(false)
 {
   if(covarianceList_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
   if(outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";
@@ -175,6 +171,56 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
     PValuesPermutation_[dim] = count * 1.0 / (permutationSize_ + 1) ;
   }
   isAlreadyComputedPValuesPermutation_ = true ;
+}
+
+/* Compute the asymptotic p-values */
+void HSICEstimatorImplementation::computePValuesAsymptotic() const
+{
+  PValuesAsymptotic_ = Point(inputDimension_);
+
+  SquareMatrix H(n_, Collection<Scalar>(n_ * n_, -1.0 / n_));
+  for(UnsignedInteger j = 0; j < n_; ++j)
+  {
+    H(j, j) += 1.0;
+  }
+
+  const CovarianceMatrix Ky(covarianceList_[inputDimension_].discretize(outputSample_));
+  const Scalar traceKy = Ky.computeTrace();
+  const Scalar sumKy = Ky.computeSumElements();
+
+  const Scalar Ey = (sumKy - traceKy) / n_ / (n_ - 1 );
+  const Matrix By = H * Ky * H;
+  const Point HSICobsPt(getHSICIndices());
+
+  for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
+  {
+    const Sample Xi(inputSample_.getMarginal(dim));
+    const CovarianceMatrix Kx(covarianceList_[dim].discretize(Xi));
+    const Scalar traceKx = Kx.computeTrace();
+    const Scalar sumKx = Kx.computeSumElements();
+    const Scalar Ex = (sumKx - traceKx) / n_ / (n_ - 1);
+
+    const Matrix Bx = H * Kx * H;
+
+    /* Hadamard product then square all elements */
+    SquareMatrix B(Bx.computeHadamardProduct(By).getImplementation());
+    B.squareElements();
+
+    const Point nullDiag(n_);
+    B.setDiagonal(nullDiag, 0);
+
+    const Scalar mHSIC = (1 + Ex * Ey - Ex - Ey) / n_;
+    const Scalar factor = 2.0 * (n_ - 4) * (n_ - 5) / n_ / (n_ - 1) / (n_ - 2) / (n_ - 3) / n_ / (n_ - 1);
+    const Scalar varHSIC = B.computeSumElements() * factor;
+
+    const Scalar alpha = mHSIC * mHSIC / varHSIC;
+    const Scalar beta = n_ * varHSIC / mHSIC;
+
+    const Gamma distribution(alpha, 1.0 / beta);
+    const Scalar p = estimatorType_.computePValue(distribution, n_, HSICobsPt[dim], mHSIC);
+    PValuesAsymptotic_[dim] = p;
+  }
+  isAlreadyComputedPValuesAsymptotic_ = true ;
 }
 
 /* Get the HSIC indices */
@@ -324,7 +370,7 @@ void HSICEstimatorImplementation::setOutputSample(const Sample & outputSample)
 {
   if(outputSample.getDimension() != 1)
   {
-    throw NotYetImplementedException(HERE) << "Dimension of output sample should be 1.";
+    throw InvalidArgumentException(HERE) << "Dimension of output sample should be 1.";
   }
 
   outputSample_ = outputSample;
@@ -387,14 +433,12 @@ void HSICEstimatorImplementation::run() const
   if(!(isAlreadyComputedIndices_))
   {
     computeIndices();
-    isAlreadyComputedIndices_ = true ;
   }
 
   /* Compute the p-values by permutation */
   if(!(isAlreadyComputedPValuesPermutation_))
   {
     computePValuesPermutation();
-    isAlreadyComputedPValuesPermutation_ = true ;
   }
 }
 

@@ -72,6 +72,9 @@ public:
 
 private:
 
+  /** Compute the p-values with asymptotic formula */
+  void computePValuesAsymptotic() const override;
+
   /** Compute the weight matrix from the weight function */
   SquareMatrix computeWeightMatrix(const Sample & Y) const override;
 };

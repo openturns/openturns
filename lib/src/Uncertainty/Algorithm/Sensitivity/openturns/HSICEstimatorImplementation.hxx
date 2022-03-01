@@ -127,6 +127,9 @@ protected:
   /** Compute p-value with permutation */
   virtual void computePValuesPermutation() const;
 
+  /** Compute the p-values with asymptotic formula */
+  virtual void computePValuesAsymptotic() const;
+
   /** Compute the weight matrix from the weight function */
   virtual SquareMatrix computeWeightMatrix(const Sample & Y) const;
 
@@ -154,9 +157,11 @@ protected:
   mutable Point HSIC_YY_ ;
   mutable Point R2HSICIndices_;
   mutable Point PValuesPermutation_ ;
+  mutable Point PValuesAsymptotic_ ;
   UnsignedInteger permutationSize_ ;
-  mutable Bool isAlreadyComputedIndices_ ;
-  mutable Bool isAlreadyComputedPValuesPermutation_ ;
+  mutable Bool isAlreadyComputedIndices_ = false ;
+  mutable Bool isAlreadyComputedPValuesPermutation_ = false ;
+  mutable Bool isAlreadyComputedPValuesAsymptotic_ = false ;
 };
 
 END_NAMESPACE_OPENTURNS
