@@ -40,24 +40,23 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  RandomGenerator::SetSeed(0);
 
   try
   {
     /* We create four points in dimension 2*/
     const UnsignedInteger dimension = 2;
     Point point1(dimension);
-    point1[0] = 10.;
-    point1[1] = 20.;
+    point1[0] = 10.0;
+    point1[1] = 20.0;
     Point point2(dimension);
-    point2[0] = 11.;
-    point2[1] = 21.;
+    point2[0] = 11.0;
+    point2[1] = 21.0;
     Point point3(dimension);
-    point3[0] = 12.;
-    point3[1] = 22.;
+    point3[0] = 12.0;
+    point3[1] = 22.0;
     Point point4(dimension);
-    point4[0] = 15.;
-    point4[1] = 25.;
+    point4[0] = 15.0;
+    point4[1] = 25.0;
 
     /* We create a Sample */
     Sample sample1(0, 2);

@@ -40,21 +40,20 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  RandomGenerator::SetSeed(0);
 
   try
   {
     /* We create three points */
     const UnsignedInteger dimension = 2;
     Point point1(dimension);
-    point1[0] = 10.;
-    point1[1] = 20.;
+    point1[0] = 10.0;
+    point1[1] = 20.0;
     Point point2(dimension);
-    point2[0] = 11.;
-    point2[1] = 21.;
+    point2[0] = 11.0;
+    point2[1] = 21.0;
     Point point3(dimension);
-    point3[0] = 12.;
-    point3[1] = 22.;
+    point3[0] = 12.0;
+    point3[1] = 22.0;
 
     /* We create a Sample */
     Sample sample1(0, 2);
@@ -62,8 +61,8 @@ int main(int, char *[])
     sample1.add(point2);
     sample1.add(point3);
     Point referencethreshold(dimension);
-    referencethreshold[0] = 0.;
-    referencethreshold[1] = 3.;
+    referencethreshold[0] = 0.0;
+    referencethreshold[1] = 3.0;
 
     /* Iterative threshold, one point at a time */
     IterativeThresholdExceedance iterthresholdPoint(dimension, 15.0);
