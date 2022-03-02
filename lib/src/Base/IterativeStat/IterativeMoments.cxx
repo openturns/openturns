@@ -98,7 +98,7 @@ Point IterativeMoments::getVariance() const
   return centeredMoments_[1] / (iteration_ - 1);
 }
 
-/** Accessor to the skewness */
+/** Accessor to the unbiased estimator of the skewness */
 Point IterativeMoments::getSkewness() const
 {
   if (!(iteration_ > 2)) throw InternalException(HERE) << "Error: cannot compute the skewness of a sample of size less than 2.";
@@ -118,7 +118,7 @@ Point IterativeMoments::getSkewness() const
   return result;
 }
 
-/** Accessor to the kurtosis */
+/** Accessor to the unbiased estimator of the kurtosis */
 Point IterativeMoments::getKurtosis() const
 {
   if (!(iteration_ > 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis of a sample of size less than 3.";
@@ -134,14 +134,8 @@ Point IterativeMoments::getKurtosis() const
   const UnsignedInteger n = iteration_;
 
   const Scalar factor1 = n * (n + 1.0) / ((n - 1.0) * (n - 2.0) * (n - 3.0));
-  /*
-  Unbiased estimator:
-  const Scalar factor2 = -3.0 * (n - 1.0) * (n - 1.0) / ((n - 2.0) * (n - 3.0));
-  */
-  /* Corrected with Fischer -3 factor */
   const Scalar factor2 = -3.0 * (3.0 * n - 5) / ((n - 2.0) * (n - 3.0));
 
-  /* unbiased estimator */
   for(UnsignedInteger d = 0; d < dimension_; ++d)
   {
     result[d] = factor1 * centeredMoments_(3, d) / std::pow(varianceEstimator[d], 2) + factor2;
