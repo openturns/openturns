@@ -88,8 +88,6 @@ n_calls_1 = ot_f.getCallsNumber()
 assert_almost_equal(n_calls_1 - n_calls_0, 22, 0.0, 0.0)
 
 # check that marginals share the same cache
-
-
 def f_py(x):
     f_py.n += 1
     x0, x1 = x
