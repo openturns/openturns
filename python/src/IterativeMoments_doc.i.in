@@ -18,7 +18,47 @@ dataset without storing any data in memory.
 
 See also
 --------
-IterativeAlgorithm"
+IterativeAlgorithm
+
+Examples
+--------
+
+In the following example, we iteratively compute the sample statistics of a
+sample.
+This is based on a sample with size equal to 2000.
+In the `for` loop, each realization of the distribution is used to update
+the statistics up to the 4th order moments.
+
+>>> import openturns as ot
+>>> distNormal = ot.Normal()
+>>> order = 4
+>>> dim = 1
+>>> iterMoments = ot.IterativeMoments(order, dim)
+>>> size = 2000
+>>> meanEvolution = ot.Sample()
+>>> for i in range(size):
+... point = distNormal.getRealization()
+... iterMoments.increment(point)
+>>> print('Mean:     ', iterMoments.getMean())
+Mean:      [-0.0121961]
+>>> print('Variance: ', iterMoments.getVariance())
+Variance:  [0.985813]
+>>> print('Skewness: ', iterMoments.getSkewness())
+Skewness:  [0.0558925]
+>>> print('Kurtosis: ', iterMoments.getKurtosis())
+Kurtosis:  [3.12609]
+
+The statistics can also be updated with a single sample.
+
+>>> distNormal = ot.Normal()
+>>> dim = 1
+>>> order = 1
+>>> iterMoments = ot.IterativeMoments(order, dim)
+>>> size = 2000
+>>> sample = distNormal.getSample(size)
+>>> iterMoments.increment(sample)
+>>> print('Mean: ', iterMoments.getMean())
+Mean:  [-0.0100389]"
 
 // ---------------------------------------------------------------------
 
