@@ -9,7 +9,6 @@ Iterative threshold exceedance
 # %%
 import openturns as ot
 import openturns.viewer as otv
-ot.RandomGenerator.SetSeed(0)
 
 # %%
 # We first create a one-dimensional Gaussian random variable to generate data.
@@ -17,10 +16,10 @@ dim = 1
 distNormal = ot.Normal(dim)
 
 # %%
-# Let us consider a threshold value of 3.0. Each data value higher than 3.0 is counted as one exceedance. The counter used by the :class:`~openturns.IterativeThresholdExceedance` class is updated iteratively.
+# Let us consider a threshold value of 1.0. Each data value higher than 1.0 is counted as one exceedance. The counter used by the :class:`~openturns.IterativeThresholdExceedance` class is updated iteratively.
 
 # %%
-thresholdValue = 3.0
+thresholdValue = 1.0
 iterThreshold = ot.IterativeThresholdExceedance(dim, thresholdValue)
 
 # %%
@@ -35,20 +34,22 @@ iterThreshold = ot.IterativeThresholdExceedance(dim, thresholdValue)
 # %%
 size = 5000
 exceedanceNumbers = ot.Sample()
+probabilityEstimateSample = ot.Sample()
 for i in range(size):
     point = distNormal.getRealization()
     iterThreshold.increment(point)
-    exceedanceNumbers.add(iterThreshold.getThresholdExceedance())
+    numberOfExceedances = iterThreshold.getThresholdExceedance()[0]
+    exceedanceNumbers.add([numberOfExceedances])
+    probabilityEstimate = numberOfExceedances / iterThreshold.getIterationNumber()
+    probabilityEstimateSample.add([probabilityEstimate])
 
 # %%
 # We display the evolution of the number of exceedances.
 
 # %%
 curve = ot.Curve(exceedanceNumbers)
-curve.setColor("blue")
 curve.setLegend("number of exceedance")
-
-# %%
+#
 graph = ot.Graph(
     "Evolution of the number of exceedance",
     "iteration nb",
@@ -61,17 +62,38 @@ graph.setLegendPosition("bottomright")
 view = otv.View(graph)
 
 # %%
+# We see that the probability of exceeding the threshold converges. 
+
+# %%
+iterationSample = ot.Sample.BuildFromPoint(range(1, size + 1))
+curve = ot.Curve(iterationSample, probabilityEstimateSample)
+curve.setLegend("Prob. of exceeding the threshold")
+#
+graph = ot.Graph(
+    "Evolution of the sample probability",
+    "iteration nb",
+    "estimate of the probability",
+    True,
+)
+graph.add(curve)
+graph.setLegendPosition("topleft")
+graph.setLogScale(ot.GraphImplementation.LOGX)
+view = otv.View(graph)
+
+# %%
 # We can also increment with a :class:`~openturns.Sample`.
 
 # %%
 sample = distNormal.getSample(size)
 iterThreshold.increment(sample)
-print("Number of exceedance: ", iterThreshold.getThresholdExceedance())
-
+numberOfExceedances = iterThreshold.getThresholdExceedance()[0]
+print("Number of exceedance: ", numberOfExceedances)
 # %%
-# A simple computation shows that the probability of the data being higher than :math:`3` is approximately :math:`0.0013`.
+# A simple computation shows that the probability of the data being higher than :math:`1` is :math:`0.1587` (with 4 significant digits).
 # The empirical probability is close to this value:
-print("Exceedance prb: ", 0.0013)
+distribution = ot.Normal()
+exactProbability = distribution.computeComplementaryCDF(thresholdValue)
+print("Exact probability: ", exactProbability)
 print(
     "Empirical exceedance prb: ",
     iterThreshold.getThresholdExceedance()[0] / iterThreshold.getIterationNumber(),

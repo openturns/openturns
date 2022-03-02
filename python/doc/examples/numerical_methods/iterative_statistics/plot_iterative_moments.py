@@ -10,7 +10,6 @@ Using iterative statistics
 # %%
 import openturns as ot
 import openturns.viewer as otv
-ot.RandomGenerator.SetSeed(0)
 
 # %%
 # We first create a one-dimensional Gaussian random variable to generate data.
@@ -40,9 +39,11 @@ for i in range(size):
 
 # %%
 # We display the evolution of the mean.
-curve = ot.Curve(meanEvolution)
+iterationSample = ot.Sample.BuildFromPoint(range(1, size + 1))
+curve = ot.Curve(iterationSample, meanEvolution)
 graph = ot.Graph("Evolution of the mean", "iteration nb", "mean", True)
 graph.add(curve)
+graph.setLogScale(ot.GraphImplementation.LOGX)
 view = otv.View(graph)
 
 # %%
@@ -54,7 +55,7 @@ iterMoments.increment(sample)
 
 # %%
 # We print the total number of iterations and the mean.
-print("Total number of iteration: " + str(iterMoments.getIterationNumber()))
+print("Total number of iteration: ", iterMoments.getIterationNumber())
 print("Mean: ", iterMoments.getMean())
 
 # %%

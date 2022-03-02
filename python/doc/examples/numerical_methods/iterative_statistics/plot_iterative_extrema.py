@@ -9,12 +9,11 @@ Estimate iterative extrema
 # %%
 import openturns as ot
 import openturns.viewer as otv
-ot.RandomGenerator.SetSeed(0)
 
 # %%
-# We first create a one-dimensional Gaussian random variable to generate data.
+# We first create a one-dimensional Uniform random variable to generate data.
 dim = 1
-distNormal = ot.Normal(dim)
+distNormal = ot.Uniform()
 
 # %%
 # The :class:`~openturns.IterativeExtrema` class needs to know the dimension of the sample (here 1):
@@ -41,23 +40,22 @@ for i in range(size):
 
 # %%
 # We display the evolution of the minimum (in blue) and the maximum (orange).
-
-# %%
-curveMin = ot.Curve(minEvolution, "blue")
-curveMin.setColor("blue")
-curveMin.setLegend("minimum")
-
-# %%
-curveMax = ot.Curve(maxEvolution)
-curveMax.setColor("darkorange1")
-curveMax.setLegend("maximum")
-
-# %%
+iterationSample = ot.Sample.BuildFromPoint(range(1, size + 1))
+palette = ot.Drawable().BuildDefaultPalette(2)
+#
+curveMin = ot.Curve(iterationSample, minEvolution)
+curveMin.setColor(palette[0])
+curveMin.setLegend("min.")
+#
+curveMax = ot.Curve(iterationSample, maxEvolution)
+curveMax.setColor(palette[1])
+curveMax.setLegend("max.")
+#
 graph = ot.Graph("Evolution of the min/max", "iteration nb", "min/max", True)
 graph.add(curveMin)
 graph.add(curveMax)
-graph.setLegends(["minimum", "maximum"])
-graph.setLegendPosition("topright")
+graph.setLegendPosition("topleft")
+graph.setLogScale(ot.GraphImplementation.LOGX)
 view = otv.View(graph)
 
 # %%
