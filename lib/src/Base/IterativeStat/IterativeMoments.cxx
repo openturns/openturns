@@ -90,7 +90,6 @@ Point IterativeMoments::getMomentOne()
   }
 }
 
-
 /* Accessor to the mean */
 Point IterativeMoments::getMean() const
 {
