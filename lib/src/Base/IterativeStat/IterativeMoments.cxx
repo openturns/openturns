@@ -81,20 +81,14 @@ UnsignedInteger IterativeMoments::getOrder() const
 /** Accessor to the mean */
 Point IterativeMoments::getMean() const
 {
-  if (iteration_ >= 1)
-  {
-    return centeredMoments_[0] / iteration_;
-  }
-  else
-  {
-    return centeredMoments_[0];
-  }
+  if (!(iteration_ > 0)) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
+  return centeredMoments_[0] / iteration_;
 }
 
 /** Accessor to the variance */
 Point IterativeMoments::getVariance() const
 {
-  if (!(iteration_ > 0)) throw InternalException(HERE) << "Error: cannot compute the variance per component of an empty sample.";
+  if (!(iteration_ > 1)) throw InternalException(HERE) << "Error: cannot compute the variance of an empty sample.";
   if (!(orderMax_ >= 2)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum should be at least 2.";
 
   /* Special case for a size 1 */
@@ -107,7 +101,7 @@ Point IterativeMoments::getVariance() const
 /** Accessor to the skewness */
 Point IterativeMoments::getSkewness() const
 {
-  if (!(iteration_ >= 2)) throw InternalException(HERE) << "Error: cannot compute the skewness per component of a sample of size less than 2.";
+  if (!(iteration_ > 2)) throw InternalException(HERE) << "Error: cannot compute the skewness of a sample of size less than 2.";
   if (!(orderMax_ >= 3)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order should be at least 3.";
 
   /* Special case for a size 2 */
@@ -127,7 +121,7 @@ Point IterativeMoments::getSkewness() const
 /** Accessor to the kurtosis */
 Point IterativeMoments::getKurtosis() const
 {
-  if (!(iteration_ >= 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 3.";
+  if (!(iteration_ > 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis of a sample of size less than 3.";
   if (!(orderMax_ >= 4)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 4.";
 
   /* Special case for a size 3 */

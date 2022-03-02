@@ -80,12 +80,12 @@ Point IterativeThresholdExceedance::getThresholdExceedance() const
 void IterativeThresholdExceedance::increment(const Point & newData)
 {
   if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative threshold exceedance.";
-  iteration_ += 1;
+  ++ iteration_;
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     if (newData[i] > thresholdValue_)
     {
-      data_[i] += 1;
+      data_[i] += 1.0;
     }
   }
 }
@@ -97,12 +97,12 @@ void IterativeThresholdExceedance::increment(const Sample & newData)
 
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
-    iteration_ += 1;
+    ++ iteration_;
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       if (newData(j, i) > thresholdValue_)
       {
-        data_[i] += 1;
+        data_[i] += 1.0;
       }
     }
   }
