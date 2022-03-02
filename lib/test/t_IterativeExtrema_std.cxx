@@ -57,21 +57,23 @@ int main(int, char *[])
     iterextremaPoint.increment(point2);
     iterextremaPoint.increment(point3);
     Point computedmin = iterextremaPoint.getMin();
-    assert_almost_equal(referencemin, computedmin, 0, 0);
+    assert_equal(referencemin, computedmin);
     Point computedmax = iterextremaPoint.getMax();
-    assert_almost_equal(referencemax, computedmax, 0, 0);
+    assert_equal(referencemax, computedmax);
     UnsignedInteger iteration = iterextremaPoint.getIterationNumber();
-    assert_almost_equal(iteration, 3);
+    const UnsignedInteger expectedIteration1 = 3;
+    assert_equal(iteration, expectedIteration1);
 
     // Iterative extrema, one single sample
     IterativeExtrema iterextremaSample(dimension);
     iterextremaSample.increment(sample1);
     computedmin = iterextremaSample.getMin();
-    assert_almost_equal(referencemin, computedmin, 0, 0);
+    assert_equal(referencemin, computedmin);
     computedmax = iterextremaSample.getMax();
-    assert_almost_equal(referencemax, computedmax, 0, 0);
+    assert_equal(referencemax, computedmax);
     iteration = iterextremaSample.getIterationNumber();
-    assert_almost_equal(iteration, 3);
+    const UnsignedInteger expectedIteration2 = 3;
+    assert_equal(iteration, expectedIteration2);
 
     // Iterative extrema, one single sample, then one point at a time
     IterativeExtrema iterextremaMixed(dimension);
@@ -80,11 +82,12 @@ int main(int, char *[])
     iterextremaMixed.increment(point2);
     iterextremaMixed.increment(point3);
     computedmin = iterextremaMixed.getMin();
-    assert_almost_equal(referencemin, computedmin, 0, 0);
+    assert_equal(referencemin, computedmin);
     computedmax = iterextremaMixed.getMax();
-    assert_almost_equal(referencemax, computedmax, 0, 0);
+    assert_equal(referencemax, computedmax);
     iteration = iterextremaMixed.getIterationNumber();
-    assert_almost_equal(iteration, 6);
+    const UnsignedInteger expectedIteration3 = 6;
+    assert_equal(iteration, expectedIteration3);
 
     /* check whether objects are the same */
     assert_equal(iterextremaSample, iterextremaPoint);

@@ -63,18 +63,19 @@ int main(int, char *[])
     iterMoments.increment(point2);
     iterMoments.increment(point3);
     iterMoments.increment(point4);
-    assert_almost_equal(iterMoments.getMean(), referenceMean);
-    assert_almost_equal(iterMoments.getVariance(), referenceVariance);
-    assert_almost_equal(iterMoments.getSkewness(), referenceSkewness);
-    assert_almost_equal(iterMoments.getKurtosis(), referenceKurtosis);
+    const Scalar rtol = 1.e-14;
+    assert_almost_equal(iterMoments.getMean(), referenceMean, rtol);
+    assert_almost_equal(iterMoments.getVariance(), referenceVariance, rtol);
+    assert_almost_equal(iterMoments.getSkewness(), referenceSkewness, rtol);
+    assert_almost_equal(iterMoments.getKurtosis(), referenceKurtosis, rtol);
 
     /* Iterative kurtosis, with one sample */
     IterativeMoments iterMoments2(4, dimension);
     iterMoments2.increment(sample1);
     assert_almost_equal(iterMoments2.getMean(), referenceMean);
-    assert_almost_equal(iterMoments2.getVariance(), referenceVariance);
-    assert_almost_equal(iterMoments2.getSkewness(), referenceSkewness);
-    assert_almost_equal(iterMoments2.getKurtosis(), referenceKurtosis);
+    assert_almost_equal(iterMoments2.getVariance(), referenceVariance, rtol);
+    assert_almost_equal(iterMoments2.getSkewness(), referenceSkewness, rtol);
+    assert_almost_equal(iterMoments2.getKurtosis(), referenceKurtosis, rtol);
 
     /* We mix the Sample and the Points */
     Sample mixedSample = sample1;
@@ -90,14 +91,17 @@ int main(int, char *[])
     /* Here we declare an iterative object of maximum order 3 */
     IterativeMoments iterMoments3(3, dimension);
     iterMoments3.increment(mixedSample);
-    assert_almost_equal(iterMoments3.getIterationNumber(), 8);
-    assert_almost_equal(iterMoments3.getDimension(), 2);
-    assert_almost_equal(iterMoments3.getOrder(), 3);
+    const UnsignedInteger expectedIteration = 8;
+    assert_equal(iterMoments3.getIterationNumber(), expectedIteration);
+    const UnsignedInteger expectedDimension = 2;
+    assert_equal(iterMoments3.getDimension(), expectedDimension);
+    const UnsignedInteger expectedOrder = 3;
+    assert_equal(iterMoments3.getOrder(), expectedOrder);
 
     /* test the moments */
-    assert_almost_equal(iterMoments3.getMean(), referenceMixedMean);
-    assert_almost_equal(iterMoments3.getVariance(), referenceMixedVariance);
-    assert_almost_equal(iterMoments3.getSkewness(), referenceMixedSkewness);
+    assert_almost_equal(iterMoments3.getMean(), referenceMixedMean, rtol);
+    assert_almost_equal(iterMoments3.getVariance(), referenceMixedVariance, rtol);
+    assert_almost_equal(iterMoments3.getSkewness(), referenceMixedSkewness, rtol);
 
     /* check whether objects are different */
     assert_equal(iterMoments2 != iterMoments3, true);

@@ -58,17 +58,20 @@ int main(int, char *[])
     iterthresholdPoint.increment(point2);
     iterthresholdPoint.increment(point3);
     Point computedthreshold = iterthresholdPoint.getThresholdExceedance();
-    assert_almost_equal(referencethreshold, computedthreshold);
+    const Scalar rtol = 1.e-14;
+    assert_almost_equal(referencethreshold, computedthreshold, rtol);
     UnsignedInteger iteration = iterthresholdPoint.getIterationNumber();
-    assert_almost_equal(iteration, 3);
+    const UnsignedInteger expectedIteration1 = 3;
+    assert_equal(iteration, expectedIteration1);
 
     /* Iterative threshold, one single sample */
     IterativeThresholdExceedance iterthresholdSample(dimension, 15.0);
     iterthresholdSample.increment(sample1);
     computedthreshold = iterthresholdSample.getThresholdExceedance();
-    assert_almost_equal(referencethreshold, computedthreshold);
+    assert_almost_equal(referencethreshold, computedthreshold, rtol);
     iteration = iterthresholdSample.getIterationNumber();
-    assert_almost_equal(iteration, 3);
+    const UnsignedInteger expectedIteration2 = 3;
+    assert_equal(iteration, expectedIteration2);
 
     /* Iterative threshold, one single sample, then one point at a time */
     IterativeThresholdExceedance iterthresholdMixed(dimension, 15.0);
@@ -78,9 +81,10 @@ int main(int, char *[])
     iterthresholdMixed.increment(point3);
     computedthreshold = iterthresholdMixed.getThresholdExceedance();
     referencethreshold *= 2;
-    assert_almost_equal(referencethreshold, computedthreshold);
+    assert_almost_equal(referencethreshold, computedthreshold, rtol);
     iteration = iterthresholdMixed.getIterationNumber();
-    assert_almost_equal(iteration, 6);
+    const UnsignedInteger expectedIteration3 = 6;
+    assert_equal(iteration, expectedIteration3);
 
     /* check whether objects are the same */
     assert_equal(iterthresholdSample, iterthresholdPoint);
