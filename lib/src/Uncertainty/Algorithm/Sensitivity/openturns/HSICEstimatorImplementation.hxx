@@ -44,6 +44,8 @@ class OT_API HSICEstimatorImplementation
   : public PersistentObject
 {
   CLASSNAME
+  friend struct ComputeWeightMatrixPolicy;
+  friend struct PValuesPermutationPolicy;
 public:
 
   typedef Collection <CovarianceModel>  CovarianceModelCollection;
@@ -103,6 +105,9 @@ public:
 
   /** Compute all indices at once */
   virtual void run() const;
+
+  /* Is it safe to compute the permutation p values in parallel? */
+  Bool isParallel() const;
 
   /** Draw the HSIC indices */
   Graph drawHSICIndices() const;

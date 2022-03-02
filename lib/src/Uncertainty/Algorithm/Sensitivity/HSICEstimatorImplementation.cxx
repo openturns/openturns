@@ -31,6 +31,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Pie.hxx"
 #include "openturns/Text.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HSICEstimatorImplementation)
@@ -147,24 +148,96 @@ UnsignedInteger HSICEstimatorImplementation::getPermutationSize() const
   return permutationSize_;
 }
 
+struct ComputeWeightMatrixPolicy
+{
+  Collection<SquareMatrix> & weightMatrixCollection_;
+  const Collection<Sample> shuffleCollection_;
+  const HSICEstimatorImplementation & estimator_;
+  
+  ComputeWeightMatrixPolicy(Collection<SquareMatrix> & weightMatrixCollection, const Collection<Sample> shuffleCollection, const HSICEstimatorImplementation & estimator)
+    : weightMatrixCollection_(weightMatrixCollection)
+    , shuffleCollection_(shuffleCollection)
+    , estimator_(estimator)
+  {
+  //Nothing to do
+  }
+
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      weightMatrixCollection_[i] = estimator_.computeWeightMatrix(shuffleCollection_[i]);
+    }
+  }
+}; /* end struct ComputeWeightMatrixPolicy */
+
+struct PValuesPermutationPolicy
+{
+  Point & output_;
+  const UnsignedInteger dim_;
+  const Collection<Sample> shuffleCollection_;
+  const HSICEstimatorImplementation & estimator_;
+  const Collection<SquareMatrix> weightMatrixCollection_;
+  Sample xdim_;
+  CovarianceModel inputCovariance_;
+  CovarianceModel outputCovariance_;
+  
+  PValuesPermutationPolicy(Point & output, const UnsignedInteger dim, const Collection<Sample> shuffleCollection, const Collection<SquareMatrix> weightMatrixCollection, const HSICEstimatorImplementation & estimator)
+    : output_(output)
+    , dim_(dim)
+    , shuffleCollection_(shuffleCollection)
+    , weightMatrixCollection_(weightMatrixCollection)
+    , estimator_(estimator)
+    , xdim_(estimator_.getInputSample().getMarginal(dim_))
+    , inputCovariance_(estimator_.getCovarianceList()[dim_])
+    , outputCovariance_(estimator_.getCovarianceList()[estimator_.getInputSample().getDimension()])
+  {
+  //Nothing to do
+  }
+
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+	  const Sample Yp(shuffleCollection_[i]);
+      const SquareMatrix W(weightMatrixCollection_[i]);
+      output_[i] = estimator_.computeHSICIndex(xdim_, Yp, inputCovariance_, outputCovariance_, W);
+    }
+  }
+}; /* end struct PValuesPermutationPolicy */
+
 /* Compute p-value with permutation */
 void HSICEstimatorImplementation::computePValuesPermutation() const
 {
   const SquareMatrix Wobs(computeWeightMatrix(outputSample_));
   PValuesPermutation_ = Point(inputDimension_);
 
+  Collection<Sample> shuffleCollection;
+
+  for( UnsignedInteger b = 0; b < permutationSize_; ++b)
+  {
+  shuffleCollection.add(shuffledCopy(outputSample_));
+  }
+
+  Collection<SquareMatrix> weightMatrixCollection(permutationSize_);
+  ComputeWeightMatrixPolicy weightMatrixPolicy(weightMatrixCollection, shuffleCollection, *this);
+  // The loop is over permutations of the output vector
+  TBBImplementation::ParallelForIf(isParallel(), 0, permutationSize_, weightMatrixPolicy);
+
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
+
     const Sample xdim(inputSample_.getMarginal(dim));
     const Scalar HSIC_obs = computeHSICIndex(xdim, outputSample_, covarianceList_[dim], covarianceList_[inputDimension_], Wobs);
+    Point HSIC_loc(permutationSize_);
+    const PValuesPermutationPolicy policy(HSIC_loc, dim, shuffleCollection, weightMatrixCollection, *this);
+    // The loop is over permutations of the output vector
+    TBBImplementation::ParallelForIf(isParallel(), 0, permutationSize_, policy);
 
     UnsignedInteger count = 0;
     for( UnsignedInteger b = 0; b < permutationSize_; ++b)
     {
-      const Sample Yp(shuffledCopy(outputSample_));
-      const SquareMatrix W(computeWeightMatrix(Yp));
-      const Scalar HSIC_loc = computeHSICIndex(xdim, Yp, covarianceList_[dim], covarianceList_[inputDimension_], W);
-      if( HSIC_loc > HSIC_obs) count += 1;
+      if( HSIC_loc[b] > HSIC_obs) count += 1;
     }
 
     /* p-value by permutation */
@@ -254,6 +327,12 @@ Point HSICEstimatorImplementation::getPValuesPermutation() const
     isAlreadyComputedPValuesPermutation_ = true ;
   }
   return PValuesPermutation_;
+}
+
+/* Is it safe to compute the permutation p values in parallel? */
+Bool HSICEstimatorImplementation::isParallel() const
+{
+  return true;
 }
 
 /* Draw the HSIC indices */
