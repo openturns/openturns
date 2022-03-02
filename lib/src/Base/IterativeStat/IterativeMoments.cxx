@@ -85,16 +85,12 @@ Point IterativeMoments::getMean() const
   return centeredMoments_[0] / iteration_;
 }
 
-/* Accessor to the variance */
+/* Accessor to the unbiased variance */
 Point IterativeMoments::getVariance() const
 {
   if (!(iteration_ > 1)) throw InternalException(HERE) << "Error: cannot compute the variance of an empty sample.";
   if (!(orderMax_ >= 2)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum should be at least 2.";
 
-  /* Special case for a size 1 */
-  if (iteration_ == 1) return Point(dimension_, 0.0);
-
-  /* unbiased estimator */
   return centeredMoments_[1] / (iteration_ - 1);
 }
 
@@ -104,13 +100,8 @@ Point IterativeMoments::getSkewness() const
   if (!(iteration_ > 2)) throw InternalException(HERE) << "Error: cannot compute the skewness of a sample of size less than 2.";
   if (!(orderMax_ >= 3)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order should be at least 3.";
 
-  /* Special case for a size 2 */
-  if (iteration_ == 2) return Point(dimension_, 0.0);
-
-
   Point result(dimension_);
   const Point varianceEstimator(getVariance());
-  /* unbiased estimator */
   for(UnsignedInteger d = 0; d < dimension_; ++d)
   {
     result[d] = iteration_ / ((iteration_ - 1.0) * (iteration_ - 2.0)) * centeredMoments_(2, d) / std::pow(varianceEstimator[d], 1.5) ;
@@ -121,12 +112,8 @@ Point IterativeMoments::getSkewness() const
 /* Accessor to the unbiased estimator of the kurtosis */
 Point IterativeMoments::getKurtosis() const
 {
-  if (!(iteration_ > 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis of a sample of size less than 3.";
+  if (!(iteration_ > 4)) throw InternalException(HERE) << "Error: cannot compute the kurtosis of a sample of size less than 4.";
   if (!(orderMax_ >= 4)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 4.";
-
-  /* Special case for a size 3 */
-  if (iteration_ == 3) return Point(dimension_, 0.0);
-
 
   Point result(dimension_);
   const Point varianceEstimator(getVariance());
