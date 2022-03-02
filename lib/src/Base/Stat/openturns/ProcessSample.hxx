@@ -39,7 +39,6 @@ class OT_API ProcessSample
 public:
 
   /** Some typedefs to ease reading */
-  typedef Pointer<ProcessSampleImplementation> Implementation;
   typedef Collection<Sample>           SampleCollection;
   typedef PersistentCollection<Sample> SamplePersistentCollection;
 
