@@ -78,8 +78,7 @@ UnsignedInteger IterativeMoments::getOrder() const
   return orderMax_;
 }
 
-/** Accessor to the mean */
-Point IterativeMoments::getMean() const
+Point IterativeMoments::getMomentOne()
 {
   if (iteration_ >= 1)
   {
@@ -89,6 +88,15 @@ Point IterativeMoments::getMean() const
   {
     return centeredMoments_[0];
   }
+}
+
+
+/** Accessor to the mean */
+Point IterativeMoments::getMean() const
+{
+  if (!(iteration_ > 0)) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
+
+  return centeredMoments_[0] / iteration_;
 }
 
 /** Accessor to the variance */
@@ -159,7 +167,7 @@ Point IterativeMoments::getKurtosis() const
 void IterativeMoments::increment(const Point & newData)
 {
   /* mean at the previous step */
-  const Point mu_previous = getMean();
+  const Point mu_previous = getMomentOne();
   /* centered new data */
   const Point delta = newData - mu_previous;
 
@@ -179,7 +187,7 @@ void IterativeMoments::increment(const Sample & newData)
   for(UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
     /* mean at the previous step */
-    const Point mu_previous = getMean();
+    const Point mu_previous = getMomentOne();
     /* centered new data */
     const Point delta = newData[j] - mu_previous;
 

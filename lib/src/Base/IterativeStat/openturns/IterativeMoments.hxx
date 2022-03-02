@@ -108,6 +108,9 @@ public:
 
 
 private:
+
+  Point getMomentOne();
+
   void updateHigherMoments(UnsignedInteger orderMax, const Point & delta, const Point & delta_over_n );
 
 
