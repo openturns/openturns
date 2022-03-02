@@ -253,8 +253,6 @@ copula = myDist.getCopula()
 res = copula.computePDF([[0.5] * 2] * 10)
 
 # Test a discrete distribution
-
-
 class PoissonPy(ot.PythonDistribution):
 
     def __init__(self, lamb):
