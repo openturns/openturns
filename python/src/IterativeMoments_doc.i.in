@@ -63,7 +63,7 @@ Mean:  [-0.0100389]"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IterativeMoments::getKurtosis
-"Returns the current value of the iterative kurtosis
+"Returns the current value of the unbiased estimator of the kurtosis
 
 Returns
 -------
@@ -73,7 +73,7 @@ kurtosis : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IterativeMoments::getSkewness
-"Returns the current value of the skewness
+"Returns the current value of the unbiased estimator of the skewness
 
 Returns
 -------
@@ -83,7 +83,7 @@ skewness : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IterativeMoments::getVariance
-"Returns the current value of the variance
+"Returns the current value of the unbiased estimator of the variance
 
 Returns
 -------
