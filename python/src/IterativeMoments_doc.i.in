@@ -1,5 +1,3 @@
-
-
 %feature("docstring") OT::IterativeMoments
 "Iterative moments.
 
@@ -37,16 +35,16 @@ the statistics up to the 4th order moments.
 >>> size = 2000
 >>> meanEvolution = ot.Sample()
 >>> for i in range(size):
-... point = distNormal.getRealization()
-... iterMoments.increment(point)
+...     point = distNormal.getRealization()
+...     iterMoments.increment(point)
 >>> print('Mean:     ', iterMoments.getMean())
-Mean:      [-0.0121961]
+Mean:      [-0.00726852]
 >>> print('Variance: ', iterMoments.getVariance())
-Variance:  [0.985813]
+Variance:  [0.99156]
 >>> print('Skewness: ', iterMoments.getSkewness())
-Skewness:  [0.0558925]
+Skewness:  [0.0577277]
 >>> print('Kurtosis: ', iterMoments.getKurtosis())
-Kurtosis:  [3.12609]
+Kurtosis:  [3.11128]
 
 The statistics can also be updated with a single sample.
 
@@ -58,7 +56,7 @@ The statistics can also be updated with a single sample.
 >>> sample = distNormal.getSample(size)
 >>> iterMoments.increment(sample)
 >>> print('Mean: ', iterMoments.getMean())
-Mean:  [-0.0100389]"
+Mean:  [-0.017342]"
 
 // ---------------------------------------------------------------------
 
