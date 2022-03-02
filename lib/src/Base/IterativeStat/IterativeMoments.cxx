@@ -152,19 +152,22 @@ Point IterativeMoments::getKurtosis() const
 /**  Increment method from a Point */
 void IterativeMoments::increment(const Point & newData)
 {
-  /* mean at the previous step */
-  const Point mu_previous = getMean();
   /* centered new data */
-  const Point delta = newData - mu_previous;
-
-  iteration_ += 1;
+  Point delta(newData);
+  if (iteration_ > 0)
+  {
+    /* mean at the previous step */
+    const Point mu_previous(getMean());
+    delta -= mu_previous;
+  }
+  ++ iteration_;
   const Point delta_over_n = delta / iteration_;
 
   for(UnsignedInteger d = 0; d < dimension_; ++d)
   {
     centeredMoments_(0, d) += newData[d];
   }
-  if(orderMax_ > 1) updateHigherMoments(orderMax_, delta, delta_over_n );
+  if(orderMax_ > 1) updateHigherMoments(orderMax_, delta, delta_over_n);
 }
 
 /**  Increment method from a Sample */
@@ -172,26 +175,14 @@ void IterativeMoments::increment(const Sample & newData)
 {
   for(UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
-    /* mean at the previous step */
-    const Point mu_previous = getMean();
-    /* centered new data */
-    const Point delta = newData[j] - mu_previous;
-
-    iteration_ += 1;
-    const Point delta_over_n = delta / iteration_;
-
-    for(UnsignedInteger d = 0; d < dimension_; ++d)
-    {
-      centeredMoments_(0, d) += newData(j, d);
-    }
-    if(orderMax_ > 1) updateHigherMoments(orderMax_, delta, delta_over_n );
+    increment(newData[j]);
   }
 }
 
 /** Update the centered moments higher than 2 using a recurrence relation for 3 and more
     see: Simpler Online Updates for Arbitrary-Order Central Moments, Meng (2015)
 */
-void IterativeMoments::updateHigherMoments(UnsignedInteger orderMax, const Point & delta, const Point & delta_over_n )
+void IterativeMoments::updateHigherMoments(UnsignedInteger orderMax, const Point & delta, const Point & delta_over_n)
 {
   /* special case: second centered moment */
   if(orderMax == 2)
@@ -215,7 +206,7 @@ void IterativeMoments::updateHigherMoments(UnsignedInteger orderMax, const Point
           const UnsignedInteger binomialCoeff = SpecFunc::BinomialCoefficient(order, l) ;
           tmp += std::pow(delta_over_n[d], l) * centeredMoments_(order - l - 1, d) * binomialCoeff ;
         }
-        centeredMoments_(order - 1, d) += delta[d] * (std::pow(delta[d], order - 1) - std::pow(delta_over_n[d], order - 1) ) - tmp;
+        centeredMoments_(order - 1, d) += delta[d] * (std::pow(delta[d], order - 1) - std::pow(delta_over_n[d], order - 1)) - tmp;
       }
     }
   }
