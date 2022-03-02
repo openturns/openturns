@@ -31,7 +31,7 @@ CLASSNAMEINIT(IterativeThresholdExceedance)
 
 static const Factory<IterativeThresholdExceedance> Factory_IterativeThresholdExceedance;
 
-/** Default constructor */
+/* Default constructor */
 IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension, const Scalar thresholdValue)
   : IterativeAlgorithmImplementation(dimension)
   , thresholdValue_(thresholdValue)
@@ -40,13 +40,13 @@ IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger
   // Nothing to do
 }
 
-/** Virtual constructor */
+/* Virtual constructor */
 IterativeThresholdExceedance * IterativeThresholdExceedance::clone() const
 {
   return new IterativeThresholdExceedance(*this);
 }
 
-/** String converter */
+/* String converter */
 String IterativeThresholdExceedance::__repr__() const
 {
   OSS oss(true);
@@ -58,25 +58,25 @@ String IterativeThresholdExceedance::__repr__() const
   return oss;
 }
 
-/** String converter */
+/* String converter */
 String IterativeThresholdExceedance::__str__(const String & offset) const
 {
   return data_.__str__(offset);
 }
 
-/** Get the threshold value used */
+/* Get the threshold value used */
 Scalar IterativeThresholdExceedance::getThresholdValue() const
 {
   return thresholdValue_;
 }
 
-/** Get the values exceeding the specified threshold */
+/* Get the values exceeding the specified threshold */
 Point IterativeThresholdExceedance::getThresholdExceedance() const
 {
   return data_;
 }
 
-/** Increment the internal data with a Point */
+/* Increment the internal data with a Point */
 void IterativeThresholdExceedance::increment(const Point & newData)
 {
   if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative threshold exceedance.";
@@ -90,7 +90,7 @@ void IterativeThresholdExceedance::increment(const Point & newData)
   }
 }
 
-/** Increment the internal data with a Sample */
+/* Increment the internal data with a Sample */
 void IterativeThresholdExceedance::increment(const Sample & newData)
 {
   if (newData.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the dimension of the iterative threshold exceedance.";
@@ -108,7 +108,7 @@ void IterativeThresholdExceedance::increment(const Sample & newData)
   }
 }
 
-/** Method save() stores the object through the StorageManager */
+/* Method save() stores the object through the StorageManager */
 void IterativeThresholdExceedance::save(Advocate & adv) const
 {
   IterativeAlgorithmImplementation::save(adv);
@@ -117,7 +117,7 @@ void IterativeThresholdExceedance::save(Advocate & adv) const
 }
 
 
-/** Method load() reloads the object from the StorageManager */
+/* Method load() reloads the object from the StorageManager */
 void IterativeThresholdExceedance::load(Advocate & adv)
 {
   IterativeAlgorithmImplementation::load(adv);

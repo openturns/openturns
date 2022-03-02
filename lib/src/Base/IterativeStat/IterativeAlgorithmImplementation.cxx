@@ -24,7 +24,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IterativeAlgorithmImplementation)
 
-/** Default constructor */
+/* Default constructor */
 IterativeAlgorithmImplementation::IterativeAlgorithmImplementation()
   : PersistentObject()
   , iteration_(0)
@@ -33,7 +33,7 @@ IterativeAlgorithmImplementation::IterativeAlgorithmImplementation()
   // Nothing to do
 }
 
-/** Default constructor */
+/* Default constructor */
 IterativeAlgorithmImplementation::IterativeAlgorithmImplementation(const UnsignedInteger dimension)
   : PersistentObject()
   , iteration_(0)
@@ -47,13 +47,13 @@ IterativeAlgorithmImplementation * IterativeAlgorithmImplementation::clone() con
   return new IterativeAlgorithmImplementation(*this);
 }
 
-/** String converter */
+/* String converter */
 String IterativeAlgorithmImplementation::__repr__() const
 {
   return OSS(true) << "class=" << getClassName();
 }
 
-/** String converter */
+/* String converter */
 String IterativeAlgorithmImplementation::__str__(const String &) const
 {
   return __repr__();
@@ -79,13 +79,13 @@ UnsignedInteger IterativeAlgorithmImplementation::getDimension() const
   return dimension_;
 }
 
-/** Increment method from a Point */
+/* Increment method from a Point */
 void IterativeAlgorithmImplementation::increment(const Point & /*newData*/)
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class of IterativeAlgorithm!";
 }
 
-/** Increment method from a Sample */
+/* Increment method from a Sample */
 void IterativeAlgorithmImplementation::increment(const Sample & /*newData*/)
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class of IterativeAlgorithm!";

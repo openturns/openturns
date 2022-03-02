@@ -33,7 +33,7 @@ CLASSNAMEINIT(IterativeMoments)
 
 static const Factory<IterativeMoments> Factory_IterativeMoments;
 
-/** Default constructor */
+/* Default constructor */
 IterativeMoments::IterativeMoments(const UnsignedInteger orderMax, const UnsignedInteger dimension)
   : IterativeAlgorithmImplementation(dimension)
   , orderMax_(orderMax)
@@ -42,13 +42,13 @@ IterativeMoments::IterativeMoments(const UnsignedInteger orderMax, const Unsigne
   // Nothing to do
 }
 
-/** Virtual constructor */
+/* Virtual constructor */
 IterativeMoments * IterativeMoments::clone() const
 {
   return new IterativeMoments(*this);
 }
 
-/** String converter */
+/* String converter */
 String IterativeMoments::__repr__() const
 {
   OSS oss(true);
@@ -60,19 +60,19 @@ String IterativeMoments::__repr__() const
   return oss;
 }
 
-/** String converter */
+/* String converter */
 String IterativeMoments::__str__(const String & offset) const
 {
   return getCenteredMoments().__str__(offset);
 }
 
-/**  Accessor to the centered moments */
+/*  Accessor to the centered moments */
 Sample IterativeMoments::getCenteredMoments() const
 {
   return centeredMoments_;
 }
 
-/** Accessor to the maximum order declared */
+/* Accessor to the maximum order declared */
 UnsignedInteger IterativeMoments::getOrder() const
 {
   return orderMax_;
@@ -91,7 +91,7 @@ Point IterativeMoments::getMomentOne()
 }
 
 
-/** Accessor to the mean */
+/* Accessor to the mean */
 Point IterativeMoments::getMean() const
 {
   if (!(iteration_ > 0)) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
@@ -99,7 +99,7 @@ Point IterativeMoments::getMean() const
   return centeredMoments_[0] / iteration_;
 }
 
-/** Accessor to the variance */
+/* Accessor to the variance */
 Point IterativeMoments::getVariance() const
 {
   if (!(iteration_ > 0)) throw InternalException(HERE) << "Error: cannot compute the variance per component of an empty sample.";
@@ -112,7 +112,7 @@ Point IterativeMoments::getVariance() const
   return centeredMoments_[1] / (iteration_ - 1);
 }
 
-/** Accessor to the skewness */
+/* Accessor to the skewness */
 Point IterativeMoments::getSkewness() const
 {
   if (!(iteration_ >= 2)) throw InternalException(HERE) << "Error: cannot compute the skewness per component of a sample of size less than 2.";
@@ -132,7 +132,7 @@ Point IterativeMoments::getSkewness() const
   return result;
 }
 
-/** Accessor to the kurtosis */
+/* Accessor to the kurtosis */
 Point IterativeMoments::getKurtosis() const
 {
   if (!(iteration_ >= 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 3.";
@@ -163,7 +163,7 @@ Point IterativeMoments::getKurtosis() const
   return result;
 }
 
-/**  Increment method from a Point */
+/*  Increment method from a Point */
 void IterativeMoments::increment(const Point & newData)
 {
   /* mean at the previous step */
@@ -181,7 +181,7 @@ void IterativeMoments::increment(const Point & newData)
   if(orderMax_ > 1) updateHigherMoments(orderMax_, delta, delta_over_n );
 }
 
-/**  Increment method from a Sample */
+/*  Increment method from a Sample */
 void IterativeMoments::increment(const Sample & newData)
 {
   for(UnsignedInteger j = 0; j < newData.getSize(); ++j)
@@ -235,7 +235,7 @@ void IterativeMoments::updateHigherMoments(UnsignedInteger orderMax, const Point
   }
 }
 
-/** Accessor to the coefficient of variation */
+/* Accessor to the coefficient of variation */
 Point IterativeMoments::getCoefficientOfVariation() const
 {
   if ((orderMax_ < 2)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 2.";
@@ -251,7 +251,7 @@ Point IterativeMoments::getCoefficientOfVariation() const
   return coeficientOfVariationData;
 }
 
-/** Accessor to the standard error of the mean */
+/* Accessor to the standard error of the mean */
 Point IterativeMoments::getStandardErrorOfTheMean() const
 {
   if ((orderMax_ < 2)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 2.";
@@ -267,7 +267,7 @@ Point IterativeMoments::getStandardErrorOfTheMean() const
   return standardErrorOfTheMean;
 }
 
-/** Accessor to the standard deviation */
+/* Accessor to the standard deviation */
 Point IterativeMoments::getStandardDeviation() const
 {
   if ((orderMax_ < 2)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 2.";
@@ -283,7 +283,7 @@ Point IterativeMoments::getStandardDeviation() const
   return standardDeviationData;
 }
 
-/** Method save() stores the object through the StorageManager */
+/* Method save() stores the object through the StorageManager */
 void IterativeMoments::save(Advocate & adv) const
 {
   IterativeAlgorithmImplementation::save(adv);
@@ -291,7 +291,7 @@ void IterativeMoments::save(Advocate & adv) const
   adv.saveAttribute( "centeredMoments_", centeredMoments_);
 }
 
-/** Method load() reloads the object from the StorageManager */
+/* Method load() reloads the object from the StorageManager */
 void IterativeMoments::load(Advocate & adv)
 {
   IterativeAlgorithmImplementation::load(adv);

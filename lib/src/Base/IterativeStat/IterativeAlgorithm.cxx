@@ -40,21 +40,21 @@ IterativeAlgorithm::IterativeAlgorithm()
   // Nothing to do
 }
 
-/** Constructor */
+/* Constructor */
 IterativeAlgorithm::IterativeAlgorithm(const UnsignedInteger dimension)
   : TypedInterfaceObject<IterativeAlgorithmImplementation>(new IterativeAlgorithmImplementation(dimension))
 {
   // Nothing to do
 }
 
-/** Constructor from implementation */
+/* Constructor from implementation */
 IterativeAlgorithm::IterativeAlgorithm(const IterativeAlgorithmImplementation & implementation)
   : TypedInterfaceObject<IterativeAlgorithmImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
-/** Constructor from implementation */
+/* Constructor from implementation */
 IterativeAlgorithm::IterativeAlgorithm(const Implementation & p_implementation)
   : TypedInterfaceObject<IterativeAlgorithmImplementation>(p_implementation)
 {
@@ -99,13 +99,13 @@ UnsignedInteger IterativeAlgorithm::getDimension() const
   return getImplementation()->getDimension();
 }
 
-/** String converter */
+/* String converter */
 String IterativeAlgorithm::__repr__() const
 {
   return getImplementation()->__repr__();
 }
 
-/** String converter */
+/* String converter */
 String IterativeAlgorithm::__str__(const String & offset) const
 {
   return getImplementation()->__str__(offset);
