@@ -31,7 +31,7 @@ CLASSNAMEINIT(IterativeExtrema)
 
 static const Factory<IterativeExtrema> Factory_IterativeExtrema;
 
-/** Constructor */
+/* Constructor */
 IterativeExtrema::IterativeExtrema(const UnsignedInteger dimension)
   : IterativeAlgorithmImplementation(dimension)
   , minData_(dimension, 0.0)
@@ -40,13 +40,13 @@ IterativeExtrema::IterativeExtrema(const UnsignedInteger dimension)
   // Nothing to do
 }
 
-/** Virtual constructor */
+/* Virtual constructor */
 IterativeExtrema * IterativeExtrema::clone() const
 {
   return new IterativeExtrema(*this);
 }
 
-/** String converter */
+/* String converter */
 String IterativeExtrema::__repr__() const
 {
   OSS oss(true);
@@ -58,7 +58,7 @@ String IterativeExtrema::__repr__() const
   return oss;
 }
 
-/** String converter */
+/* String converter */
 String IterativeExtrema::__str__(const String &) const
 {
   OSS oss(false);
@@ -72,19 +72,19 @@ String IterativeExtrema::__str__(const String &) const
   return oss;
 }
 
-/** Accessor to the min */
+/* Accessor to the min */
 Point IterativeExtrema::getMin() const
 {
   return minData_;
 }
 
-/** Accessor to the max */
+/* Accessor to the max */
 Point IterativeExtrema::getMax() const
 {
   return maxData_;
 }
 
-/** Increment method from a Point */
+/* Increment method from a Point */
 void IterativeExtrema::increment(const Point & newData)
 {
   if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative extrema.";
@@ -113,7 +113,7 @@ void IterativeExtrema::increment(const Point & newData)
   }
 }
 
-/** Increment method from a Sample */
+/* Increment method from a Sample */
 void IterativeExtrema::increment(const Sample & newData)
 {
   if (newData.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the dimension of the extrema.";
@@ -146,7 +146,7 @@ void IterativeExtrema::increment(const Sample & newData)
   }
 }
 
-/** Method save() stores the object through the StorageManager */
+/* Method save() stores the object through the StorageManager */
 void IterativeExtrema::save(Advocate & adv) const
 {
   IterativeAlgorithmImplementation::save(adv);
@@ -155,7 +155,7 @@ void IterativeExtrema::save(Advocate & adv) const
 }
 
 
-/** Method load() reloads the object from the StorageManager */
+/* Method load() reloads the object from the StorageManager */
 void IterativeExtrema::load(Advocate & adv)
 {
   IterativeAlgorithmImplementation::load(adv);
