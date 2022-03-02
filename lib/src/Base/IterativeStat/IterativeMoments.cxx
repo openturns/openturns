@@ -35,9 +35,9 @@ static const Factory<IterativeMoments> Factory_IterativeMoments;
 
 /** Default constructor */
 IterativeMoments::IterativeMoments(const UnsignedInteger orderMax, const UnsignedInteger dimension)
-  : IterativeAlgorithmImplementation(dimension),
-    orderMax_(orderMax),
-    centeredMoments_(orderMax, dimension_)
+  : IterativeAlgorithmImplementation(dimension)
+  , orderMax_(orderMax)
+  , centeredMoments_(orderMax, dimension_)
 {
   // Nothing to do
 }
