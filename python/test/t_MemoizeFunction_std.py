@@ -94,8 +94,6 @@ def f_py(x):
     f_py.n += 1
     x0, x1 = x
     return [x0+x1, x0-x1]
-
-
 f_py.n = 0
 f_test = ot.MemoizeFunction(ot.PythonFunction(2, 2, f_py))
 f1 = f_test.getMarginal(0)

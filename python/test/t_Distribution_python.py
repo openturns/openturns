@@ -281,7 +281,6 @@ class PoissonPy(ot.PythonDistribution):
     def isIntegral(self):
         return True
 
-
 dist = ot.Distribution(PoissonPy(2.5))
 print("Is discrete?", dist.isDiscrete())
 print("Is integral?", dist.isIntegral())
