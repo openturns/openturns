@@ -36,3 +36,4 @@ inPoint[2] = 9.0
 outPoint = myFunction(inPoint)
 print("myFunction=", repr(myFunction))
 print(myFunction.getName(), "( ", repr(inPoint), " ) = ", repr(outPoint))
+

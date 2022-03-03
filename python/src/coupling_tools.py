@@ -151,8 +151,7 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
 
 class OTCalledProcessError(subprocess.CalledProcessError):
     def __str__(self):
-        err_msg = (':\n' + self.stderr[:200].decode()
-                   ) if self.stderr is not None else ''
+        err_msg = (':\n' + self.stderr[:200].decode()) if self.stderr is not None else ''
         return super(OTCalledProcessError, self).__str__() + err_msg
 
 
@@ -206,13 +205,11 @@ def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
     """
 
     if get_stdout:
-        warnings.warn(
-            'get_stdout is deprecated in favor of capture_output', DeprecationWarning)
+        warnings.warn('get_stdout is deprecated in favor of capture_output', DeprecationWarning)
         capture_output = True
 
     if get_stderr:
-        warnings.warn(
-            'get_stderr is deprecated in favor of capture_output', DeprecationWarning)
+        warnings.warn('get_stderr is deprecated in favor of capture_output', DeprecationWarning)
         capture_output = True
 
     # split cmd if not in a shell before passing it to os.execvp()
@@ -254,7 +251,7 @@ def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
         process.kill()
         stdout_data, stderr_data = process.communicate()
         raise RuntimeError('Command "' + cmd + '" times out after ' +
-                           str(timeout) + 's')
+                            str(timeout) + 's')
     returncode = process.poll()
 
     # check return code
