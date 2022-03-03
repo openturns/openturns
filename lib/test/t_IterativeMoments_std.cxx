@@ -305,12 +305,12 @@ int main(int, char *[])
 
   try
   {
-    test_SampleSize4_with_zero_variance();
-    test_SampleSize3_with_zero_variance();
-    test_SampleSize3();
-    test_SampleSize2();
-    test_SampleSize1();
     test_MainFeatures();
+    test_SampleSize1();
+    test_SampleSize2();
+    test_SampleSize3();
+    test_SampleSize3_with_zero_variance();
+    test_SampleSize4_with_zero_variance();
   }
   catch (TestFailed & ex)
   {
