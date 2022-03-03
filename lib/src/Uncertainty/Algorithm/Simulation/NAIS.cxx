@@ -144,19 +144,19 @@ void NAIS::run()
   Scalar currentQuantile = outputSample.computeQuantile(rhoQuantile_)[0];
   Distribution auxiliaryDistribution;
   if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
-    {
-      currentQuantile = getEvent().getThreshold();
-      auxiliaryDistribution = initialDistribution_;
-    }
-  else 
-    {
-      // Computation of weights_
-      weights_ = computeWeights(sample_, outputSample, currentQuantile, initialDistribution_);
+  {
+    currentQuantile = getEvent().getThreshold();
+    auxiliaryDistribution = initialDistribution_;
+  }
+  else
+  {
+    // Computation of weights_
+    weights_ = computeWeights(sample_, outputSample, currentQuantile, initialDistribution_);
 
-      // Computation of auxiliary distribution
-      auxiliaryDistribution = computeAuxiliaryDistribution(sample_, weights_);
-    }
-  
+    // Computation of auxiliary distribution
+    auxiliaryDistribution = computeAuxiliaryDistribution(sample_, weights_);
+  }
+
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
     // Drawing of samples using auxiliary density

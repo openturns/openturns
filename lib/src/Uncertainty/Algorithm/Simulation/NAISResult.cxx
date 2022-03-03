@@ -38,31 +38,31 @@ NAISResult::NAISResult()
   //Nothing TO DO
 }
 
-// Get Samples 
-Sample NAISResult::getSample() const 
+// Get Samples
+Sample NAISResult::getSample() const
 {
   return sample_;
 }
 
-// Set NAISResult Samples 
+// Set NAISResult Samples
 void NAISResult::setSample(const Sample & sample)
 {
   sample_ = sample;
 }
 
-// Get Auxiliary Density 
+// Get Auxiliary Density
 Distribution NAISResult::getAuxiliaryDensity() const
 {
   return auxiliaryDistribution_;
 }
 
-// Set Auxiliary Density 
+// Set Auxiliary Density
 void NAISResult::setAuxiliaryDensity(const Distribution & auxiliaryDistribution)
 {
   auxiliaryDistribution_ = auxiliaryDistribution;
 }
 
-// Method save() stores the object through the StorageManager 
+// Method save() stores the object through the StorageManager
 void NAISResult::save(Advocate & adv) const
 {
   SimulationResult::save( adv );
@@ -70,7 +70,7 @@ void NAISResult::save(Advocate & adv) const
   adv.saveAttribute("sample_", sample_);
 }
 
-// Method load() reloads the object from the StorageManager 
+// Method load() reloads the object from the StorageManager
 void NAISResult::load(Advocate & adv)
 {
   SimulationResult::load( adv );
