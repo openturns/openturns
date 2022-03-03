@@ -10,7 +10,7 @@ Risks'N Statistics in a structured industrial approach.
 
    contents
    examples/examples
-   usecases/use_cases
+   usecases/usecases
    install
    user_manual/user_manual
    theory/theory
