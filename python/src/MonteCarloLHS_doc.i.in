@@ -3,24 +3,22 @@
 
 Performs the optimization of an LHS using Monte Carlo simulations.
 
-Available constructors:
-    MonteCarloLHS(*lhsDesign, N*)
-
-    MonteCarloLHS(*lhsDesign, N, spaceFilling*)
-
 Parameters
 ----------
 lhsDesign : :class:`~openturns.LHSExperiment`
      Factory that generate designs
 N : int
     Number of simulations
-spaceFilling : :class:`~openturns.SpaceFilling`
-    Criterion to be optimized
-    Default spaceFilling is MinDist
+spaceFilling : :class:`~openturns.SpaceFilling`, optional
+    Criterion to be optimized, default is :class:`~openturns.SpaceFillingMinDist`
 
 Notes
 -----
-MonteCarloLHS generate N designs using lhsDesign and returns the optimal one with respect to spaceFilling
+MonteCarloLHS generates :math:`N` LHS designs and returns the optimal one with
+respect to a space-filling criterion.
+Unlike :class:`~openturns.SimulatedAnnealingLHS` it does not apply cell swaps
+directly so the design may not change that much if the shuffle property of the
+:class:`~openturns.LHSExperiment` is disabled.
 
 Examples
 --------

@@ -574,15 +574,18 @@ ot_check_test (TrendFactory_std)
 
 # Calibration
 ot_check_test (LinearLeastSquaresCalibration_std)
-ot_check_test (NonLinearLeastSquaresCalibration_std)
 ot_check_test (GaussianLinearCalibration_std)
-ot_check_test (GaussianNonLinearCalibration_std)
 ot_check_test (LinearLeastSquaresCalibration_noobs)
-ot_check_test (NonLinearLeastSquaresCalibration_noobs)
 ot_check_test (GaussianLinearCalibration_noobs)
-ot_check_test (GaussianNonLinearCalibration_noobs)
-ot_check_test (RandomWalkMetropolisHastings_std)
-ot_check_test (Gibbs_regression)
+if (Ceres_FOUND OR CMinpack_FOUND)
+  ot_check_test (GaussianNonLinearCalibration_std)
+  ot_check_test (GaussianNonLinearCalibration_noobs)
+  ot_check_test (NonLinearLeastSquaresCalibration_std)
+  ot_check_test (NonLinearLeastSquaresCalibration_noobs)
+endif ()
+ot_check_test (RandomWalkMetropolisHastings_std IGNOREOUT)
+ot_check_test (Gibbs_regression IGNOREOUT)
+
 
 # Classification
 ot_check_test (MixtureClassifier_std)

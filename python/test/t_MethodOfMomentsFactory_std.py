@@ -49,6 +49,8 @@ finiteLowerBound = [False, True]
 finiteUpperBound = [False, True]
 bounds = ot.Interval(lowerBound, upperBound,
                      finiteLowerBound, finiteUpperBound)
+factory = ot.MethodOfMomentsFactory(distribution, bounds)
+factory.setKnownParameter([a, b], [2, 3])
 factory.setOptimizationBounds(bounds)
 inf_distribution = factory.build(sample)
 print('estimated distribution=', inf_distribution)

@@ -47,9 +47,6 @@ public:
   /** Return the version number of OpenTURNS */
   static String GetVersion();
 
-  /** Return the name of the package OpenTURNS was built from */
-  static String GetName();
-
   /** Return the revision of the versioning system this version corresponds to (broken for the moment) */
   static String GetRevision();
 

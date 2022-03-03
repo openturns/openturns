@@ -1,5 +1,5 @@
 %feature("docstring")  OT::KarhunenLoeveProjection
-"Function dedicated to the projection of fields on a Karhunen Loeve basis.
+"Function dedicated to the projection of fields on a Karhunen-Loeve basis.
 
 Parameters
 ----------
@@ -8,11 +8,11 @@ KLResult : :class:`~openturns.KarhunenLoeveResult`
 
 Notes
 -----
-The class :class:`~openturns.KarhunenLoeveProjection` is a specific function  :class:`~openturns.FieldToPointFunction` dedicated to the projection of fields on a Karhunen Loeve basis.
+The class :class:`~openturns.KarhunenLoeveProjection` is a specific function  :class:`~openturns.FieldToPointFunction` dedicated to the projection of fields on a Karhunen-Loeve basis.
 
 See the documentation of :class:`~openturns.KarhunenLoeveResult` to get information on the projection function.
 
-The function acts on :class:`~openturns.Fields` or :class:`~openturns.ProcessSample` associated to a :class:`~openturns.Mesh` with an input dimension equal to :math:`n`."
+The function acts on :class:`~openturns.Field` or :class:`~openturns.ProcessSample` associated to a :class:`~openturns.Mesh` with an input dimension equal to :math:`n`."
 
 // ---------------------------------------------------------------------
 

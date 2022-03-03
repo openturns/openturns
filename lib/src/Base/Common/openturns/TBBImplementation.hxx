@@ -211,6 +211,9 @@ public:
   static void SetThreadsNumber(const UnsignedInteger threadsNumber);
   static UnsignedInteger GetThreadsNumber();
 
+  /** Thread id accessor */
+  static UnsignedInteger GetThreadIndex();
+
 private:
   friend struct TBB_init;
 

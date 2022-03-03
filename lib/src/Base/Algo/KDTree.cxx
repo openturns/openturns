@@ -355,6 +355,8 @@ void KDTree::insert(UnsignedInteger & inode,
 /* Get the index of the nearest neighbour of the given point */
 UnsignedInteger KDTree::query(const Point & x) const
 {
+  if (!points_.getSize())
+    throw InvalidArgumentException(HERE) << "Cannot query KDTree with no points";
   if (points_.getSize() == 1) return 0;
   Scalar smallestDistance = SpecFunc::MaxScalar;
   Point lowerBoundingBox(boundingBox_.getLowerBound());

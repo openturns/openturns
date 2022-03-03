@@ -6,6 +6,8 @@
 
 %include TriangularMatrix_doc.i
 
+%ignore OT::TriangularMatrix::operator * (const ScalarCollection &) const;
+
 %include openturns/TriangularMatrix.hxx
 
 namespace OT {
