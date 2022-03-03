@@ -17,7 +17,7 @@ in Complex Aerospace and Other Systems, A Practical Approach, Elsevier, 2015
 # n_IS : number of IS samples at each step (integer)
 # rho_quantile : percentage of points that are in the local failure domain (float between 0 and 100)
 
-import numpy as np
+import math
 import openturns as ot
 
 # Definition of limit state function
@@ -28,10 +28,10 @@ def four_branch(x):
     x2 = x[1]
     k = x[2]
 
-    g1 = 3+0.1*(x1-x2)**2-(x1+x2)/np.sqrt(2)
-    g2 = 3+0.1*(x1-x2)**2+(x1+x2)/np.sqrt(2)
-    g3 = (x1-x2)+k/np.sqrt(2)
-    g4 = (x2-x1)+k/np.sqrt(2)
+    g1 = 3+0.1*(x1-x2)**2-(x1+x2)/math.sqrt(2)
+    g2 = 3+0.1*(x1-x2)**2+(x1+x2)/math.sqrt(2)
+    g3 = (x1-x2)+k/math.sqrt(2)
+    g4 = (x2-x1)+k/math.sqrt(2)
 
     return [min((g1, g2, g3, g4))]
 
