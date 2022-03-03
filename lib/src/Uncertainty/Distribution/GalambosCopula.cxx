@@ -85,9 +85,9 @@ String GalambosCopula::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << GalambosCopula::GetClassName()
-      << "name=" << getName()
-      << "dimension=" << getDimension()
-      << "theta=" << theta_;
+      << ", name=" << getName()
+      << ", dimension=" << getDimension()
+      << ", theta=" << theta_;
   return oss;
 }
 
@@ -144,6 +144,12 @@ void GalambosCopula::setTheta(const Scalar theta)
     theta_ = theta;
     updatePickandFunction();
   }
+}
+
+/* Tell if the distribution has independent copula */
+Bool GalambosCopula::hasIndependentCopula() const
+{
+  return (theta_ == 0.0);
 }
 
 /* Method save() stores the object through the StorageManager */

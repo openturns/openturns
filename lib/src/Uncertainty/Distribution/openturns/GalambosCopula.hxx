@@ -65,6 +65,9 @@ public:
 
   /** Accessor to theta */
   Scalar getTheta() const;
+  
+  /** Tell if the distribution has independent copula */
+  Bool hasIndependentCopula() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

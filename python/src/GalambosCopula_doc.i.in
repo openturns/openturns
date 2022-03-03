@@ -12,9 +12,9 @@ The Galambos copula is a bivariate copula defined by:
 
 .. math::
 
-    C(u_1, u_2) = u_1u_2\exp\left[(-\log(u_1))^{-\theta} + (-\log(u_2))^{-\theta}\right]^{-1/\theta}
+   C(u_1, u_2) = u_1u_2\exp\left[(-\log(u_1))^{-\theta} + (-\log(u_2))^{-\theta}\right]^{-1/\theta}
 
-for :math:`(u_1, u_2) \in [0, 1]^2` and \theta > 0. This copula is an Extreme Value Copula based on the following Pickand function 
+for :math:`(u_1, u_2) \in [0, 1]^2` and :math:`\theta > 0`. This copula is an Extreme Value Copula based on the following Pickand function 
 :math:`t \in [0,1]`, :math:`A(t) = 1 - [t^{-\theta} + (1-t)^{-\theta}]^{-1/\theta}`
 
 See also
