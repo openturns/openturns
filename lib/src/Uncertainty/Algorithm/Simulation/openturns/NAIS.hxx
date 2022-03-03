@@ -66,7 +66,8 @@ public:
   NAISResult getResult() const;
 
 private:
-    /** Function computing the auxiliary distribution as a function of current samples and associated weights */
+
+  /** Function computing the auxiliary distribution as a function of current samples and associated weights */
   Distribution computeAuxiliaryDistribution(const Sample & sample,
       const Point & weights);
 

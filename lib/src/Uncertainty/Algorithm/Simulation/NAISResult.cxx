@@ -20,6 +20,7 @@
  */
 #include "openturns/NAISResult.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ProbabilitySimulationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,21 +33,9 @@ CLASSNAMEINIT(NAISResult);
 
 /* Default constructor */
 NAISResult::NAISResult()
-  : SimulationResult()
+  : ProbabilitySimulationResult()
 {
   //Nothing TO DO
-}
-
-// Get Probability Estimate 
-Scalar NAISResult::getProbabilityEstimate() const 
-{
-  return probabilityEstimate_;
-}
-
-// Set Probability Estimate 
-void NAISResult::setProbabilityEstimate(const Scalar & probabilityEstimate)
-{
-  probabilityEstimate_ = probabilityEstimate;
 }
 
 // Get Samples 
@@ -78,7 +67,6 @@ void NAISResult::save(Advocate & adv) const
 {
   SimulationResult::save( adv );
   adv.saveAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
-  adv.saveAttribute("probabilityEstimate_", probabilityEstimate_);
   adv.saveAttribute("sample_", sample_);
 }
 
@@ -87,7 +75,6 @@ void NAISResult::load(Advocate & adv)
 {
   SimulationResult::load( adv );
   adv.loadAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
-  adv.loadAttribute("probabilityEstimate_", probabilityEstimate_);
   adv.loadAttribute("sample_", sample_);
 }
 

@@ -26,7 +26,7 @@
 #include "openturns/Point.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/SimulationResult.hxx"
+#include "openturns/ProbabilitySimulationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * NAISResult is some NAISResult type to illustrate how to add some classes in Open TURNS
  */
 class OT_API NAISResult
-  : public SimulationResult
+  : public ProbabilitySimulationResult
 {
 
   CLASSNAME
@@ -44,12 +44,6 @@ public:
 
   /** Default constructor */
   NAISResult();
-
-  /** Get Probability Estimate */
-  Scalar getProbabilityEstimate() const;
-
-  /** Set Probability Estimate */
-  void setProbabilityEstimate(const Scalar & probabilityEstimate);
 
   /** Get Samples */
   Sample getSample() const;
@@ -73,9 +67,6 @@ private:
 
   // The fixed Auxiliary distribution that will be returned at each call
   Distribution auxiliaryDistribution_;
-
-  // The fixed Probability estimation that will be returned at each call
-  Scalar probabilityEstimate_;
 
   // The fixed sample that will be returned at each call
   Sample sample_;
