@@ -174,6 +174,7 @@ Bibliography
     computational experiments.*
     Journal of Statistical Planning and Inference, 43 :381-402, 1995.
     `pdf <https://www.osti.gov/servlets/purl/10184343>`__
+.. [Muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
 .. [munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,

@@ -149,7 +149,7 @@ for i in range(obsSize):
     y_obs[i, 0] = linkFunction(thetaTrue)[0] + noiseSample[i, 0]
 
 # %%
-# Draw the model vs the observations.
+# Draw the model predictions vs the observations.
 
 # %%
 functionnalModel = ot.ParametricFunction(fullModel, [1, 2, 3], thetaTrue)
@@ -163,9 +163,9 @@ graphModel.setLegendPosition("topleft")
 view = viewer.View(graphModel)
 
 # %%
-# Define the distribution of observations :math:`y | z` conditional on model predictions.
+# Define the distribution of observations :math:`y | \vect{z}` conditional on model predictions.
 #
-# Note that its parameter dimension is the one of :math:`z`, so the model must be adjusted accordingly.
+# Note that its parameter dimension is the one of :math:`\vect{z}`, so the model must be adjusted accordingly.
 
 # %%
 conditional = ot.Normal()

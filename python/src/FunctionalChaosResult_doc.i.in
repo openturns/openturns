@@ -1,11 +1,78 @@
 %feature("docstring") OT::FunctionalChaosResult
 "Functional chaos result.
 
+Returned by functional chaos algorithms, see :class:`~openturns.FunctionalChaosAlgorithm`.
+
+Parameters
+----------
+model : :class:`~openturns.Function`
+    The physical model, that maps the physical input 
+    :math:`\vect{X} \in \mathbb{R}^{n_X}` to the output 
+    :math:`\vect{Y} \in \mathbb{R}^{n_Y}`.
+distribution : :class:`~openturns.Distribution`
+    Distribution of the random vector :math:`\vect{X}`
+transformation : :class:`~openturns.Function`
+    The function that maps the physical input :math:`\vect{X}` to the 
+    standardized input :math:`\vect{\xi}`.
+inverseTransformation : :class:`~openturns.Function`
+    The function that maps standardized input :math:`\vect{\xi}` to the 
+    the physical input :math:`\vect{X}`.
+composedModel : :class:`~openturns.Function`
+    The functional chaos expansion model, that maps the standardized input 
+    :math:`\vect{\xi}` to the predicted output :math:`\vect{Y}`. 
+    This is the composition of the `model` and the `inverseTransformation`. 
+orthogonalBasis : :class:`~openturns.OrthogonalBasis`
+    The multivariate orthogonal basis.
+indices : sequence of `int`
+    The indices of the selected basis function within the orthogonal basis.
+alpha_k : 2-d sequence of `float`
+    The coefficients of the functional chaos expansion.
+Psi_k : sequence of :class:`~openturns.Function`
+    The functions of the multivariate basis selected by the algorithm.
+residuals : sequence of `float`, :math:`\hat{\vect{r}} \in \mathbb{R}^{n_Y}`
+    For each output component, the residual is the square root of the sum of 
+    squared differences between the model and the meta model, divided by the 
+    sample size.
+relativeErrors : sequence of `float`, :math:`\widehat{\vect{re}} \in \mathbb{R}^{n_Y}`
+    The relative error is the empirical error divided by the 
+    sample variance of the output.
+
 Notes
 -----
-Structure created by the method run() of
-:class:`~openturns.FunctionalChaosAlgorithm`, and obtained thanks to the method
-getResult()."
+Let :math:`n \in \mathbb{N}` be the sample size. 
+Let :math:`n_Y \in \mathbb{N}` be the dimension of the output of the 
+physical model. 
+For any :math:`j = 1, ..., n` and any :math:`i = 1, ..., n_Y`, 
+let :math:`y_{j, i} \in \mathbb{R}` be the output of the physical 
+model and let :math:`\hat{y}_{j, i} \in \mathbb{R}` be the output of the 
+metamodel. 
+For any :math:`i = 1, ..., n_Y`, let :math:`\vect{y}_i \in \mathbb{R}^n` be 
+the sample output and let :math:`\hat{\vect{y}}_i \in \mathbb{R}^n` be the 
+output predicted by the metamodel. 
+The marginal residual is:
+
+.. math::
+
+    \hat{r}_i = \frac{\sqrt{SS_i}}{n} 
+
+for :math:`i = 1, ..., n_Y`, where :math:`SS_i` is the marginal sum of squares:
+
+.. math::
+
+    SS_i = \sum_{j = 1}^n (y_{j, i} - \hat{y}_{j, i})^2.
+
+The marginal relative error is:
+
+.. math::
+
+    \widehat{re}_i = \frac{\hat{r}_i / n}{\hat{s}_{Y, i}^2}
+
+for :math:`i = 1, ..., n_Y`, where :math:`\hat{s}_{Y, i}^2` is the unbiased 
+sample variance of the :math:`i`-th output.
+
+This structure is created by the method `run()` of
+:class:`~openturns.FunctionalChaosAlgorithm`, and obtained thanks to the 
+`getResult()` method."
 
 // ---------------------------------------------------------------------
 
