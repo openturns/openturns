@@ -81,15 +81,20 @@ UnsignedInteger IterativeMoments::getOrder() const
 /* Accessor to the mean */
 Point IterativeMoments::getMean() const
 {
-  if (!(iteration_ > 0)) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
+  LOGDEBUG(OSS() << "IterativeMoments::getMean()");
+  if (!(iteration_ > 0)) throw InternalException(HERE) << "Error: cannot compute the mean per component of an empty sample.";
   return centeredMoments_[0] / iteration_;
 }
 
 /* Accessor to the unbiased variance */
 Point IterativeMoments::getVariance() const
 {
-  if (!(iteration_ > 1)) throw InternalException(HERE) << "Error: cannot compute the variance of an empty sample.";
+  LOGDEBUG(OSS() << "IterativeMoments::getVariance()");
+  if (!(iteration_ > 0)) throw InternalException(HERE) << "Error: cannot compute the variance per component of an empty sample.";
   if (!(orderMax_ >= 2)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum should be at least 2.";
+
+  /* Special case for a size 1 */
+  if (iteration_ == 1) return Point(dimension_, 0.0);
 
   return centeredMoments_[1] / (iteration_ - 1);
 }
@@ -97,13 +102,18 @@ Point IterativeMoments::getVariance() const
 /* Accessor to the unbiased estimator of the skewness */
 Point IterativeMoments::getSkewness() const
 {
-  if (!(iteration_ > 2)) throw InternalException(HERE) << "Error: cannot compute the skewness of a sample of size less than 2.";
+  LOGDEBUG(OSS() << "IterativeMoments::getSkewness()");
+  if (!(iteration_ >= 2)) throw InternalException(HERE) << "Error: cannot compute the skewness per component of a sample of size less than 2.";
   if (!(orderMax_ >= 3)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order should be at least 3.";
 
+  /* Special case for a size 2 */
+  if (iteration_ == 2) return Point(dimension_, 0.0);
+  
   Point result(dimension_);
   const Point varianceEstimator(getVariance());
   for(UnsignedInteger d = 0; d < dimension_; ++d)
   {
+    if (!(varianceEstimator[d] < 0.0 || varianceEstimator[d] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << d << " constant. The skewness is not defined.";
     result[d] = iteration_ / ((iteration_ - 1.0) * (iteration_ - 2.0)) * centeredMoments_(2, d) / std::pow(varianceEstimator[d], 1.5) ;
   }
   return result;
@@ -112,8 +122,12 @@ Point IterativeMoments::getSkewness() const
 /* Accessor to the unbiased estimator of the kurtosis */
 Point IterativeMoments::getKurtosis() const
 {
-  if (!(iteration_ > 4)) throw InternalException(HERE) << "Error: cannot compute the kurtosis of a sample of size less than 4.";
+  LOGDEBUG(OSS() << "IterativeMoments::getKurtosis()");
+  if (!(iteration_ >= 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 4.";
   if (!(orderMax_ >= 4)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 4.";
+
+  /* Special case for a size 3 */
+  if (iteration_ == 3) return Point(dimension_, 0.0);
 
   Point result(dimension_);
   const Point varianceEstimator(getVariance());
@@ -125,6 +139,8 @@ Point IterativeMoments::getKurtosis() const
 
   for(UnsignedInteger d = 0; d < dimension_; ++d)
   {
+    LOGDEBUG(OSS() << "varianceEstimator[d] = " << varianceEstimator[d]);
+    if (!(varianceEstimator[d] < 0.0 || varianceEstimator[d] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << d << " constant. The kurtosis is not defined.";
     result[d] = factor1 * centeredMoments_(3, d) / std::pow(varianceEstimator[d], 2) + factor2;
   }
   return result;
