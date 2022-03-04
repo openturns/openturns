@@ -20,7 +20,6 @@
  */
 #include "openturns/NAISResult.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ProbabilitySimulationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

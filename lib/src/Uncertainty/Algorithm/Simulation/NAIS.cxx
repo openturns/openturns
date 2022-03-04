@@ -21,7 +21,7 @@
 #include "openturns/NAISResult.hxx"
 #include "openturns/NAIS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SimulationAlgorithm.hxx"
+
 BEGIN_NAMESPACE_OPENTURNS
 
 /**

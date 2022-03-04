@@ -18,14 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NAISResult_HXX
-#define OPENTURNS_NAISResult_HXX
+#ifndef OPENTURNS_NAISRESULT_HXX
+#define OPENTURNS_NAISRESULT_HXX
 
-#include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/StorageManager.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/ComposedDistribution.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -76,4 +72,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NAISResult_HXX */
+#endif /* OPENTURNS_NAISRESULT_HXX */
