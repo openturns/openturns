@@ -7,10 +7,10 @@
 #include "openturns/ParametricFunction.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/CompositeRandomVector.hxx"
-#include "openturns/ProbabilitySimulationResult.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/Less.hxx"
+#include "openturns/ThresholdEvent.hxx"
 #include "openturns/SymbolicFunction.hxx"
 
 using namespace OT;
