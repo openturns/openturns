@@ -16,6 +16,9 @@
  * HSICEstimatorTargetSensitivity
  * HSICUStat
  * HSICVStat
+ * IterativeExtrema
+ * IterativeMoments
+ * IterativeThresholdExceedance
 
 ==== API changes ====
  * Removed deprecated Hanning alias

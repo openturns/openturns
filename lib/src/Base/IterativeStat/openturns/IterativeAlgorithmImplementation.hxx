@@ -51,7 +51,7 @@ public:
   IterativeAlgorithmImplementation();
 
   /** Default constructor */
-  IterativeAlgorithmImplementation(const UnsignedInteger dimension);
+  explicit IterativeAlgorithmImplementation(const UnsignedInteger dimension);
 
   /**
    * Virtual constructor

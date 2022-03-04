@@ -49,7 +49,7 @@ public:
    */
   IterativeAlgorithm();
 
-  IterativeAlgorithm(const UnsignedInteger dimension);
+  explicit IterativeAlgorithm(const UnsignedInteger dimension);
 
   IterativeAlgorithm(const IterativeAlgorithmImplementation & implementation);
 
