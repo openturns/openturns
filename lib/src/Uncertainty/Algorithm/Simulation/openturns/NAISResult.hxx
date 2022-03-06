@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_NAISRESULT_HXX
 #define OPENTURNS_NAISRESULT_HXX
 
-#include "openturns/StorageManager.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

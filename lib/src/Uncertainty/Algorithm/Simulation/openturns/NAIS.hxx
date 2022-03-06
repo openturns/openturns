@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_NAIS_HXX
 #define OPENTURNS_NAIS_HXX
 
-#include "openturns/StorageManager.hxx"
 #include "openturns/EventSimulation.hxx"
 #include "openturns/Mixture.hxx"
 #include "openturns/ComposedDistribution.hxx"

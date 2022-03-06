@@ -66,7 +66,7 @@ void NAISResult::setAuxiliaryDensity(const Distribution & auxiliaryDistribution)
 // Method save() stores the object through the StorageManager
 void NAISResult::save(Advocate & adv) const
 {
-  SimulationResult::save( adv );
+  ProbabilitySimulationResult::save(adv);
   adv.saveAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
   adv.saveAttribute("sample_", sample_);
 }
@@ -74,7 +74,7 @@ void NAISResult::save(Advocate & adv) const
 // Method load() reloads the object from the StorageManager
 void NAISResult::load(Advocate & adv)
 {
-  SimulationResult::load( adv );
+  ProbabilitySimulationResult::load(adv);
   adv.loadAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
   adv.loadAttribute("sample_", sample_);
 }
