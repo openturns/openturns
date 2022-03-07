@@ -40,25 +40,25 @@ NAISResult::NAISResult()
 }
 
 // Get Samples
-Sample NAISResult::getSample() const
+Sample NAISResult::getAuxiliarySample() const
 {
   return sample_;
 }
 
 // Set NAISResult Samples
-void NAISResult::setSample(const Sample & sample)
+void NAISResult::setAuxiliarySample(const Sample & sample)
 {
   sample_ = sample;
 }
 
 // Get Auxiliary Density
-Distribution NAISResult::getAuxiliaryDensity() const
+Distribution NAISResult::getAuxiliaryDistribution() const
 {
   return auxiliaryDistribution_;
 }
 
 // Set Auxiliary Density
-void NAISResult::setAuxiliaryDensity(const Distribution & auxiliaryDistribution)
+void NAISResult::setAuxiliaryDistribution(const Distribution & auxiliaryDistribution)
 {
   auxiliaryDistribution_ = auxiliaryDistribution;
 }

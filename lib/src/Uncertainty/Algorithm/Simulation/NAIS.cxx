@@ -42,12 +42,14 @@ NAIS::NAIS()
 
 // Default constructor
 NAIS::NAIS(const RandomVector & event,
-           const UnsignedInteger numberOfSamples,
+           const UnsignedInteger maximumOuterSampling,
+           const UnsignedInteger blockSize,
            const Scalar rhoQuantile)
   : EventSimulation(event)
-  , numberOfSample_(numberOfSamples)
   , initialDistribution_(getEvent().getAntecedent().getDistribution())
 {
+  setMaximumOuterSampling(maximumOuterSampling);
+  setBlockSize(blockSize);
   const Interval range(initialDistribution_.getRange());
   const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
   const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
@@ -91,8 +93,9 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
   // Computation of auxiliary distribution using ot.Mixture
   for (UnsignedInteger k = 0; k < dimensionSample ; ++k)
   {
-    Collection<Distribution> collectionOfDistribution(numberOfSample_);
-    for (UnsignedInteger i = 0; i < numberOfSample_ ; ++i)
+    UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
+    Collection<Distribution> collectionOfDistribution(numberOfSample);
+    for (UnsignedInteger i = 0; i < numberOfSample ; ++i)
     {
       collectionOfDistribution[i] = Normal(sample(i, k), silverman[k]);
     }
@@ -124,7 +127,7 @@ Point NAIS::computeWeights(const Sample & sample,
   weights_ = Point(sample.getSize());
   for (UnsignedInteger i = 0; i < criticalSample.getSize(); ++i)
   {
-    weights_[indiceCritic[i]] = std::exp(initialLogPDF[i][0] - auxilliaryLogPDF[i][0]);
+    weights_[indiceCritic[i]] = std::exp(initialLogPDF(i,0) - auxilliaryLogPDF(i,0));
   }
   return weights_;
 }
@@ -132,9 +135,10 @@ Point NAIS::computeWeights(const Sample & sample,
 // Main function that computes the failure probability
 void NAIS::run()
 {
+  UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
 
   // Drawing of samples using initial density
-  sample_ = initialDistribution_.getSample(numberOfSample_);
+  sample_ = initialDistribution_.getSample(numberOfSample);
 
   // Evaluation on limit state function
   Sample outputSample(getEvent().getFunction()(sample_));
@@ -159,7 +163,7 @@ void NAIS::run()
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
     // Drawing of samples using auxiliary density
-    sample_ = auxiliaryDistribution.getSample(numberOfSample_);
+    sample_ = auxiliaryDistribution.getSample(numberOfSample);
 
     // Evaluation on limit state function
     outputSample = getEvent().getFunction()(sample_);
@@ -208,9 +212,9 @@ void NAIS::run()
 
 
   // Save of data in Simulation naisResult_ structure
-  naisResult_.setProbabilityEstimate(sumPdfCritic / numberOfSample_);
-  naisResult_.setSample(sample_);
-  naisResult_.setAuxiliaryDensity(auxiliaryDistribution);
+  naisResult_.setProbabilityEstimate(sumPdfCritic / numberOfSample);
+  naisResult_.setAuxiliarySample(sample_);
+  naisResult_.setAuxiliaryDistribution(auxiliaryDistribution);
   outputSample_ = outputSample;
 
 }

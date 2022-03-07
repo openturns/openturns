@@ -1,7 +1,8 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
-
+#include "openturns/OT.hxx"
+#include "openturns/OTtestcode.hxx"
 #include "openturns/NAISResult.hxx"
 #include "openturns/NAIS.hxx"
 #include "openturns/ParametricFunction.hxx"
@@ -19,11 +20,12 @@ int main()
 {
   NAISResult naisResult;
   naisResult.setProbabilityEstimate(0.67);
-  std::cout << naisResult.getProbabilityEstimate() << std::endl;
-
+  OT::Test::assert_almost_equal(naisResult.getProbabilityEstimate(), 0.67);
+  
+  // Definition of function
   const String formula = "min(3+(0.1*pow(a-b,2))-((a+b)/(sqrt(2))),3+(0.1*pow(a-b,2))+((a+b)/(sqrt(2))),(a-b)+(c/ (sqrt(2))),(b-a)+(c/(sqrt(2))))";
   
-  // Definition de la pythonfunction generale
+  // Definition about input parameter of function
   Description input(3);
   input[0] = "a";
   input[1] = "b";
@@ -31,7 +33,7 @@ int main()
 
   const Function myfourBranch = SymbolicFunction(input, Description(1, formula));
 
-  // Transformation de la pythonfunction vers parametricfunction en figeant le parametre k
+  // Transformation of SymbolicFunction to ParametricFunction fixing parameter k
   const Indices indexFrozen = Indices(1,2);
   const Point identifPoint(1,7);
   ParametricFunction myfourBranchUpdate(myfourBranch, indexFrozen, identifPoint);
@@ -63,26 +65,29 @@ int main()
   // Retrieve results
   const ProbabilitySimulationResult result = algo.getResult();
   const Scalar probability = result.getProbabilityEstimate();
-  std::cout << "Pf= " << probability << std::endl;
-	
+  OT::Test::assert_almost_equal(probability, 0.00238288);
+  	
   // Hyperparameters of the algorithm
   
   // Number of samples at each iteration
   const int numberSamples= 10 ;
+  const int blockSize = 1 ;
   
   // Quantile determining the percentage of failure samples in the current population
   const float rhoQuantile = 0.25 ;
 
   // Definition of the algoritm
-  NAIS NAIS_algo = NAIS(event,numberSamples,rhoQuantile);
+  NAIS NAIS_algo = NAIS(event,numberSamples,blockSize,rhoQuantile);
 
   // Run of the algorithm
   NAIS_algo.run();
 
   const NAISResult NAIS_result = NAIS_algo.getResult();
-  std::cout << "Probability of failure: " << NAIS_result.getProbabilityEstimate()<< std::endl;
-  std::cout << "Sample: " << NAIS_result.getSample()<< std::endl;
-
+  OT::Test::assert_almost_equal(NAIS_result.getProbabilityEstimate(), 5.25234e-05);
+  /*const Point pointTest(0.6075705477671911);
+  const Sample sampleTest(pointTest);
+  OT::Test::assert_almost_equal(NAIS_result.getAuxiliarySample()[0][0], sampleTest);*/
+  
   return 0;
 }
 

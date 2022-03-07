@@ -41,16 +41,16 @@ public:
   NAISResult();
 
   /** Get Samples */
-  Sample getSample() const;
+  Sample getAuxiliarySample() const;
 
   /** Set NAISResult Samples */
-  void setSample(const Sample & sample);
+  void setAuxiliarySample(const Sample & sample);
 
   /** Get Auxiliary Density */
-  Distribution getAuxiliaryDensity() const;
+  Distribution getAuxiliaryDistribution() const;
 
   /** Set Auxiliary Density */
-  void setAuxiliaryDensity(const Distribution & auxiliaryDistribution);
+  void setAuxiliaryDistribution(const Distribution & auxiliaryDistribution);
   
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

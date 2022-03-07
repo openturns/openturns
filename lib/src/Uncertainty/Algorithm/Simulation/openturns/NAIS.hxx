@@ -45,7 +45,8 @@ public:
 
   /** Default constructor */
   NAIS(const RandomVector & event,
-       const UnsignedInteger n_IS_value,
+       const UnsignedInteger maximumOuterSampling,
+       const UnsignedInteger blockSize,
        const Scalar rho_quantile);
 
   /** Get weights */
@@ -72,9 +73,6 @@ private:
                        const Scalar eventThresholdLocal,
                        const Distribution & AuxiliaryDistribution);
                        
-  // Number of samples at each iteration
-  UnsignedInteger numberOfSample_ = 0;
-
   // Current weights samples
   Point weights_;
 

@@ -21,8 +21,6 @@ import math
 import openturns as ot
 
 # Definition of limit state function
-
-
 def four_branch(x):
     x1 = x[0]
     x2 = x[1]
@@ -36,10 +34,10 @@ def four_branch(x):
     return [min((g1, g2, g3, g4))]
 
 
-# Definition de la pythonfunction generale
+# Definition of a pythonfunction 
 my_four_branch = ot.PythonFunction(3, 1, four_branch)
 
-# Transformation de la pythonfunction vers parametricfunction en figeant le parametre k
+# Transformation of pythonfunction to parametricfunction fixing parameter k
 index_frozen = [2]
 my_four_branch_6 = ot.ParametricFunction(my_four_branch, index_frozen, [6])
 my_four_branch_7 = ot.ParametricFunction(my_four_branch, index_frozen, [7])
@@ -76,15 +74,16 @@ print('Pf=', probability)
 
 # Hyperparameters of the algorithm
 n_IS = 10  # Number of samples at each iteration
+blockSize = 1
 # Quantile determining the percentage of failure samples in the current population
 rho_quantile = 0.25
 
 # Definition of the algoritm
-Nais_algo = ot.NAIS(event, n_IS, rho_quantile)
+Nais_algo = ot.NAIS(event, n_IS, blockSize, rho_quantile)
 
 # Run of the algorithm
 Nais_algo.run()
 NAIS_result = Nais_algo.getResult()
 
 print('Probability of failure:', NAIS_result.getProbabilityEstimate())
-print('Sample:', NAIS_result.getSample())
+print('Sample:', NAIS_result.getAuxiliarySample())
