@@ -255,6 +255,9 @@
   <FAST-DefaultInterferenceFactor value_int="4" />
   <FAST-DefaultResamplingSize     value_int="1" />
 
+  <!-- OT::HSICEstimator parameters -->
+  <HSICEstimator-PermutationSize value_int="100" />
+
   <!-- OT::RandomGenerator parameters -->
   <RandomGenerator-InitialSeed value_int="0" />
   
