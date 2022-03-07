@@ -321,7 +321,7 @@ void HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction &f,
   else if (compressionMethod == "AcaRandom")
     ctx_assemble.compression = hmat_create_compression_aca_random(assemblyEpsilon);
   else
-    LOGWARN(OSS() << "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial or AcaPlus");
+    throw InvalidArgumentException(HERE) << "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial, AcaPlus or AcaRandom";
 
   int rc = static_cast<hmat_interface_t *>(hmatInterface_.get())->assemble_generic(static_cast<hmat_matrix_t *>(hmat_), &ctx_assemble);
   if (rc != 0)
@@ -416,7 +416,7 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction &f,
   else if (compressionMethod == "AcaRandom")
     ctx_assemble.compression = hmat_create_compression_aca_random(assemblyEpsilon);
   else
-    LOGWARN(OSS() << "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial or AcaPlus");
+    throw InvalidArgumentException(HERE) <<  "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial, AcaPlus or AcaRandom";
 
   int rc = static_cast<hmat_interface_t *>(hmatInterface_.get())->assemble_generic(static_cast<hmat_matrix_t *>(hmat_), &ctx_assemble);
   if (rc != 0)
