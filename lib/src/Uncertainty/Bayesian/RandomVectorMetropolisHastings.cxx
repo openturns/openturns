@@ -75,13 +75,12 @@ RandomVectorMetropolisHastings* RandomVectorMetropolisHastings::clone() const
 
 Point RandomVectorMetropolisHastings::getCandidate() const
 {
-  RandomVector randomVector(randomVector_);
   if (randomVectorLinkFunction_.getEvaluation().getImplementation()->isActualImplementation())
   {
     const Point parameter(randomVectorLinkFunction_(currentState_));
-    randomVector.setParameter(parameter);
+    randomVector_.setParameter(parameter);
   }
-  const Point prop(randomVector.getRealization());
+  const Point prop(randomVector_.getRealization());
   Point newState(currentState_);
   for (UnsignedInteger j = 0; j < marginalIndices_.getSize(); ++ j)
     newState[marginalIndices_[j]] = prop[j];

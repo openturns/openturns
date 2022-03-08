@@ -70,7 +70,7 @@ protected:
   Point getCandidate() const override;
 
 private:
-  RandomVector randomVector_;
+  mutable RandomVector randomVector_;
   
   // link between the state and the parameters of the source random vector
   Function randomVectorLinkFunction_;
