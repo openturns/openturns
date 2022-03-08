@@ -41,22 +41,22 @@ RandomVectorMetropolisHastings::RandomVectorMetropolisHastings()
 
 
 /* Parameters constructor */
-RandomVectorMetropolisHastings::RandomVectorMetropolisHastings(const RandomVector & source,
+RandomVectorMetropolisHastings::RandomVectorMetropolisHastings(const RandomVector & randomVector,
                                                               const Point & initialState,
                                                               const Indices & marginalIndices,
-                                                              const Function & sourceLinkFunction)
+                                                              const Function & linkFunction)
   : MetropolisHastingsImplementation(Normal(initialState.getDimension()), initialState, marginalIndices)
 {
-  setSource(source);
-  if (sourceLinkFunction.getEvaluation().getImplementation()->isActualImplementation())
+  setRandomVector(randomVector);
+  if (linkFunction.getEvaluation().getImplementation()->isActualImplementation())
   {
-    if (sourceLinkFunction.getInputDimension() != initialState.getDimension())
-      throw InvalidDimensionException(HERE) << "The source link function input dimension (" << sourceLinkFunction.getInputDimension()
+    if (linkFunction.getInputDimension() != initialState.getDimension())
+      throw InvalidDimensionException(HERE) << "The link function input dimension (" << linkFunction.getInputDimension()
                                             << ") does not match the dimension of the state (" << initialState.getDimension() << ").";
-    if (sourceLinkFunction.getOutputDimension() != source.getParameter().getDimension())
-      throw InvalidDimensionException(HERE) << "The source link function output dimension (" << sourceLinkFunction.getOutputDimension()
-                                            << ") does not match the parameter dimension of the source (" << source.getParameter().getDimension() << ").";
-    sourceLinkFunction_ = sourceLinkFunction;
+    if (linkFunction.getOutputDimension() != randomVector.getParameter().getDimension())
+      throw InvalidDimensionException(HERE) << "The link function output dimension (" << linkFunction.getOutputDimension()
+                                            << ") does not match the parameter dimension of the randomVector (" << randomVector.getParameter().getDimension() << ").";
+    randomVectorLinkFunction_ = linkFunction;
   }
 }
 
@@ -67,7 +67,7 @@ String RandomVectorMetropolisHastings::__repr__() const
   return OSS() << "class=" << RandomVectorMetropolisHastings::GetClassName()
          << " name=" << getName()
          << " derived from " << MetropolisHastingsImplementation::__repr__()
-         << " source=" << source_;
+         << " randomVector=" << randomVector_;
 }
 
 
@@ -83,13 +83,13 @@ Scalar RandomVectorMetropolisHastings::computeLogPDFPrior(const Point & /*state*
 
 Point RandomVectorMetropolisHastings::getCandidate() const
 {
-  RandomVector source(source_);
-  if (sourceLinkFunction_.getEvaluation().getImplementation()->isActualImplementation())
+  RandomVector randomVector(randomVector_);
+  if (randomVectorLinkFunction_.getEvaluation().getImplementation()->isActualImplementation())
   {
-    const Point parameter(sourceLinkFunction_(currentState_));
-    source.setParameter(parameter);
+    const Point parameter(randomVectorLinkFunction_(currentState_));
+    randomVector.setParameter(parameter);
   }
-  const Point prop(source.getRealization());
+  const Point prop(randomVector.getRealization());
   Point newState(currentState_);
   for (UnsignedInteger j = 0; j < marginalIndices_.getSize(); ++ j)
     newState[marginalIndices_[j]] = prop[j];
@@ -97,34 +97,34 @@ Point RandomVectorMetropolisHastings::getCandidate() const
 }
 
 
-void RandomVectorMetropolisHastings::setSource(const RandomVector & source)
+void RandomVectorMetropolisHastings::setRandomVector(const RandomVector & randomVector)
 {
-  if (source.getDimension() != marginalIndices_.getSize())
-    throw InvalidArgumentException(HERE) << "The source random variable dimension (" << source.getDimension()
+  if (randomVector.getDimension() != marginalIndices_.getSize())
+    throw InvalidArgumentException(HERE) << "The random variable dimension (" << randomVector.getDimension()
                                          << ") does not match the block size.(" << marginalIndices_.getSize() << ")";
-  source_ = source;
+  randomVector_ = randomVector;
 }
 
 
-RandomVector RandomVectorMetropolisHastings::getSource() const
+RandomVector RandomVectorMetropolisHastings::getRandomVector() const
 {
-  return source_;
+  return randomVector_;
 }
 
 /* Method save() stores the object through the StorageManager */
 void RandomVectorMetropolisHastings::save(Advocate & adv) const
 {
   MetropolisHastingsImplementation::save(adv);
-  adv.saveAttribute("source_", source_);
-  adv.saveAttribute("sourceLinkFunction_", sourceLinkFunction_);
+  adv.saveAttribute("randomVector_", randomVector_);
+  adv.saveAttribute("randomVectorLinkFunction_", randomVectorLinkFunction_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void RandomVectorMetropolisHastings::load(Advocate & adv)
 {
   MetropolisHastingsImplementation::load(adv);
-  adv.loadAttribute("source_", source_);
-  adv.loadAttribute("sourceLinkFunction_", sourceLinkFunction_);
+  adv.loadAttribute("randomVector_", randomVector_);
+  adv.loadAttribute("randomVectorLinkFunction_", randomVectorLinkFunction_);
 }
 
 

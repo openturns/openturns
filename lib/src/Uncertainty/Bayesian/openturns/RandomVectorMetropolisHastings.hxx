@@ -43,10 +43,10 @@ public:
   RandomVectorMetropolisHastings();
 
   /** Constructor with parameters*/
-  RandomVectorMetropolisHastings(const RandomVector & source,
+  RandomVectorMetropolisHastings(const RandomVector & randomVector,
                                  const Point & initialState,
                                  const Indices & marginalIndices = Indices(),
-                                 const Function & sourceLinkFunction = Function());
+                                 const Function & linkFunction = Function());
 
   String __repr__() const override;
 
@@ -56,8 +56,8 @@ public:
   RandomVectorMetropolisHastings * clone() const override;
 
   /** RV accessor */
-  void setSource(const RandomVector & proposal);
-  RandomVector getSource() const;
+  void setRandomVector(const RandomVector & randomVector);
+  RandomVector getRandomVector() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -70,10 +70,10 @@ protected:
   Point getCandidate() const override;
 
 private:
-  RandomVector source_;
+  RandomVector randomVector_;
   
   // link between the state and the parameters of the source random vector
-  Function sourceLinkFunction_;
+  Function randomVectorLinkFunction_;
 
   // prior log pdf
   Scalar computeLogPDFPrior(const Point & state) const;

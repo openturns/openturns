@@ -5,7 +5,7 @@ Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
 
 Parameters
 ----------
-source : :class:`~openturns.RandomVector`
+randomVector : :class:`~openturns.RandomVector`
     Source term
 initialState : sequence of float
     Initial state of the chain
@@ -13,15 +13,18 @@ marginalIndices : sequence of int, optional
     Indices of the components to be updated.
     If not specified, all components are updated.
     The number of updated components must be equal to the dimension of *proposal*.
-sourceLinkFunction : :class:`~openturns.Function`, optional
-    Link between the state of the chain and the parameters of *source*
+linkFunction : :class:`~openturns.Function`, optional
+    Link between the state of the chain and the parameters of *randomVector*.
+    If not provided, then the parameters of *randomVector* are not updated,
+    which means that samples from *randomVector* are produced independently
+    from the state of the Markov chain.
 
 Notes
 -----
 The random walk Metropolis-Hastings algorithm is
 a Markov Chain Monte-Carlo algorithm.
 It draws candidates for the next state of the chain following direct
-realizations of the *source* random variable.
+realizations of the *randomVector* random variable.
 
 Examples
 --------
@@ -31,9 +34,9 @@ Examples
 
 Sample from a random variable:
 
->>> source = ot.RandomVector(ot.Normal())
+>>> randomVector = ot.RandomVector(ot.Normal())
 >>> initialState = [3.0]
->>> sampler = ot.RandomVectorMetropolisHastings(source, initialState)
+>>> sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState)
 >>> sampler.setBurnIn(20)
 >>> sampler.setThinning(2)
 >>> x = sampler.getSample(10)
@@ -42,22 +45,22 @@ We can also link the parameters of the random vector to the state of the chain,
 here the parameters of the random vector being the ones of the underlying distribution:
 
 >>> slf = ot.SymbolicFunction(['x'], ['0.0', '0.1'])
->>> sampler = ot.RandomVectorMetropolisHastings(source, initialState, [0], slf)"
+>>> sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState, [0], slf)"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomVectorMetropolisHastings::getSource
+%feature("docstring") OT::RandomVectorMetropolisHastings::getRandomVector
 "Get the proposal distribution.
 
 Returns
 -------
-source : :class:`~openturns.RandomVector`
+randomVector : :class:`~openturns.RandomVector`
     The distribution from which the transition kernels of the random walk
     Metropolis-Hastings algorithm is defined"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomVectorMetropolisHastings::setSource
+%feature("docstring") OT::RandomVectorMetropolisHastings::setRandomVector
 "Set the proposal distribution.
 
 Parameters
