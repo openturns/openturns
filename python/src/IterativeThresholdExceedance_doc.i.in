@@ -1,6 +1,5 @@
 %feature("docstring") OT::IterativeThresholdExceedance
-"Iterative minimum and maximum.
-
+"Iterative threshold exceedance.
 
 Parameters
 ----------

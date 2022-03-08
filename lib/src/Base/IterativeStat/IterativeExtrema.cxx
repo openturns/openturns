@@ -120,7 +120,7 @@ void IterativeExtrema::increment(const Sample & newData)
 
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
-    iteration_ += 1;
+    ++ iteration_;
     if (iteration_ > 1)
     {
       for (UnsignedInteger i = 0; i < dimension_; ++i)

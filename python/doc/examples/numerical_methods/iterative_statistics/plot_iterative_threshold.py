@@ -1,10 +1,11 @@
 """
-Iterative threshold exceedance
-==============================
+Estimate threshold exceedance iteratively
+=========================================
 """
 
 # %%
-# In this example, we use the :class:`~openturns.IterativeThresholdExceedance` class to count the number of threshold exceedances.
+# In this example, we use the :class:`~openturns.IterativeThresholdExceedance` 
+# class to count the number of threshold exceedances.
 
 # %%
 import openturns as ot
@@ -16,7 +17,9 @@ dim = 1
 distNormal = ot.Normal(dim)
 
 # %%
-# Let us consider a threshold value of 1.0. Each data value higher than 1.0 is counted as one exceedance. The counter used by the :class:`~openturns.IterativeThresholdExceedance` class is updated iteratively.
+# Let us consider a threshold value of 1.0. Each data value higher than 1.0 is 
+# counted as one exceedance. The counter used by the 
+# :class:`~openturns.IterativeThresholdExceedance` class is updated iteratively.
 
 # %%
 thresholdValue = 1.0
@@ -30,7 +33,8 @@ print("Exact probability: ", exactProbability)
 
 # %%
 # We can now perform the simulations.
-# In our case most of the data fall below the specified threshold value so the number of exceedances should be low.
+# In our case most of the data fall below the specified threshold value so 
+# the number of exceedances should be low.
 
 # %%
 # We first increment the object one :class:`~openturns.Point` at a time.

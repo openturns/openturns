@@ -1,5 +1,5 @@
 //                                               -*- C++ -*-
-/**
+/*
  *  @brief IterativeAlgorithm is the base class to implement iterative statistics.
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -24,7 +24,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IterativeAlgorithm)
 
-/**
+/*
  * Default constructor
  *
  * The constructor sets a new Id to the object,
@@ -40,28 +40,28 @@ IterativeAlgorithm::IterativeAlgorithm()
   // Nothing to do
 }
 
-/** Constructor */
+/* Constructor */
 IterativeAlgorithm::IterativeAlgorithm(const UnsignedInteger dimension)
   : TypedInterfaceObject<IterativeAlgorithmImplementation>(new IterativeAlgorithmImplementation(dimension))
 {
   // Nothing to do
 }
 
-/** Constructor from implementation */
+/* Constructor from implementation */
 IterativeAlgorithm::IterativeAlgorithm(const IterativeAlgorithmImplementation & implementation)
   : TypedInterfaceObject<IterativeAlgorithmImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
-/** Constructor from implementation */
+/* Constructor from implementation */
 IterativeAlgorithm::IterativeAlgorithm(const Implementation & p_implementation)
   : TypedInterfaceObject<IterativeAlgorithmImplementation>(p_implementation)
 {
   // Nothing to do
 }
 
-/**
+/*
  * Increment methods
  *
  * @warning These methods MUST be overloaded in derived classes.
@@ -79,7 +79,7 @@ void IterativeAlgorithm::increment(const Sample & newData)
   return getImplementation()->increment(newData);
 }
 
-/**
+/*
  * Iteration accessor
  *
  * This method returns the current iteration number of the algorithm.
@@ -89,7 +89,7 @@ UnsignedInteger IterativeAlgorithm::getIterationNumber() const
   return getImplementation()->getIterationNumber();
 }
 
-/**
+/*
  * Dimension accessor
  *
  * This method returns the dimension of the object.
@@ -99,13 +99,13 @@ UnsignedInteger IterativeAlgorithm::getDimension() const
   return getImplementation()->getDimension();
 }
 
-/** String converter */
+/* String converter */
 String IterativeAlgorithm::__repr__() const
 {
   return getImplementation()->__repr__();
 }
 
-/** String converter */
+/* String converter */
 String IterativeAlgorithm::__str__(const String & offset) const
 {
   return getImplementation()->__str__(offset);

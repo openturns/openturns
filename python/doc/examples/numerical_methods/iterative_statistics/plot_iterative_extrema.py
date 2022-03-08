@@ -1,6 +1,6 @@
 """
-Estimate iterative extrema
-==========================
+Estimate extrema iteratively
+============================
 """
 
 # %%
@@ -16,17 +16,23 @@ dim = 1
 distNormal = ot.Uniform()
 
 # %%
-# The :class:`~openturns.IterativeExtrema` class needs to know the dimension of the sample (here 1):
+# The :class:`~openturns.IterativeExtrema` class needs the dimension of the sample 
+# (here 1):
 
 # %%
 iterExtrema = ot.IterativeExtrema(dim)
 
 # %%
 # We can now perform the simulations.
-# In our case most of the data should be in the [-3,3] interval. Consequently with few samples the expected minimum should be around -3 and the expected maximum should be around 3.
+# In our case most of the data should be in the [-3,3] interval. 
+# Consequently with few samples the expected minimum should be around -3 
+# and the expected maximum should be around 3.
 # We first increment the object with one :class:`~openturns.Point` at a time.
-# At any given step the current minimum is obtained thanks to the :meth:`~openturns.IterativeExtrema.getMin` method, the current maximum with the :meth:`~openturns.IterativeExtrema.getMax` method and the
-# current number of iterations is given by the :meth:`~openturns.IterativeMoments.getIterationNumber` method.
+# At any given step the current minimum is obtained thanks to 
+# the :meth:`~openturns.IterativeExtrema.getMin` method, the current maximum 
+# with the :meth:`~openturns.IterativeExtrema.getMax` method and the
+# current number of iterations is given by the
+# :meth:`~openturns.IterativeMoments.getIterationNumber` method.
 
 # %%
 size = 2000

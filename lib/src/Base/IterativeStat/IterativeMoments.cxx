@@ -33,7 +33,7 @@ CLASSNAMEINIT(IterativeMoments)
 
 static const Factory<IterativeMoments> Factory_IterativeMoments;
 
-/** Default constructor */
+/* Default constructor */
 IterativeMoments::IterativeMoments(const UnsignedInteger orderMax, const UnsignedInteger dimension)
   : IterativeAlgorithmImplementation(dimension)
   , orderMax_(orderMax)
@@ -99,7 +99,12 @@ Point IterativeMoments::getVariance() const
   return centeredMoments_[1] / (iteration_ - 1);
 }
 
-/* Accessor to the unbiased estimator of the skewness */
+/* Accessor to the unbiased estimator of the skewness
+   The factors used in the formula below allow to provide an unbiased 
+   estimate the skewness.
+   Joanes, Derrick N.; Gill, Christine A. (1998), 
+   "Comparing measures of sample skewness and kurtosis", 
+   Journal of the Royal Statistical Society, Series D */
 Point IterativeMoments::getSkewness() const
 {
   LOGDEBUG(OSS() << "IterativeMoments::getSkewness()");
@@ -119,7 +124,12 @@ Point IterativeMoments::getSkewness() const
   return result;
 }
 
-/* Accessor to the unbiased estimator of the kurtosis */
+/* Accessor to the unbiased estimator of the kurtosis 
+   The factors used in the formula below allow to provide an unbiased 
+   estimate the kurtosis.
+   Joanes, Derrick N.; Gill, Christine A. (1998), 
+   "Comparing measures of sample skewness and kurtosis", 
+   Journal of the Royal Statistical Society, Series D */
 Point IterativeMoments::getKurtosis() const
 {
   LOGDEBUG(OSS() << "IterativeMoments::getKurtosis()");
@@ -214,15 +224,15 @@ Point IterativeMoments::getCoefficientOfVariation() const
 {
   if ((orderMax_ < 2)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 2.";
 
-  Point coeficientOfVariationData(dimension_, 0.0);
+  Point coefficientOfVariationData(dimension_, 0.0);
   const Point meanData(getMean());
   const Point varData(getVariance());
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    coeficientOfVariationData[i] = std::pow(varData[i], 0.5) / meanData[i];
+    coefficientOfVariationData[i] = std::pow(varData[i], 0.5) / meanData[i];
   }
 
-  return coeficientOfVariationData;
+  return coefficientOfVariationData;
 }
 
 /* Accessor to the standard error of the mean */
