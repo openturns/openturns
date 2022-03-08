@@ -103,7 +103,7 @@ proposal : :class:`~openturns.Distribution`
 "Get the calibration step.
 
 Returns
-----------
+-------
 period : positive int
     Number of samples before the adaptation occurs"
 

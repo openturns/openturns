@@ -872,7 +872,7 @@ OT_Drawable_getTextSize_doc
 "Accessor to the text size.
 
 Parameters
------------
+----------
 size : float
        Size of the Text.
 
