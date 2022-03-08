@@ -20,11 +20,8 @@
  */
 
 #include "openturns/RandomWalkMetropolisHastings.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ConditionalDistribution.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

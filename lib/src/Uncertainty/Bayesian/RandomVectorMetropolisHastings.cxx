@@ -20,10 +20,7 @@
  */
 
 #include "openturns/RandomVectorMetropolisHastings.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SpecFunc.hxx"
-#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,7 +42,7 @@ RandomVectorMetropolisHastings::RandomVectorMetropolisHastings(const RandomVecto
                                                               const Point & initialState,
                                                               const Indices & marginalIndices,
                                                               const Function & linkFunction)
-  : MetropolisHastingsImplementation(Normal(initialState.getDimension()), initialState, marginalIndices)
+  : MetropolisHastingsImplementation(initialState, marginalIndices)
 {
   setRandomVector(randomVector);
   if (linkFunction.getEvaluation().getImplementation()->isActualImplementation())
@@ -74,11 +71,6 @@ String RandomVectorMetropolisHastings::__repr__() const
 RandomVectorMetropolisHastings* RandomVectorMetropolisHastings::clone() const
 {
   return new RandomVectorMetropolisHastings(*this);
-}
-
-Scalar RandomVectorMetropolisHastings::computeLogPDFPrior(const Point & /*state*/) const
-{
-  return 0.0;
 }
 
 Point RandomVectorMetropolisHastings::getCandidate() const

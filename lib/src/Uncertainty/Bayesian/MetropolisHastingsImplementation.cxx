@@ -20,11 +20,8 @@
  */
 
 #include "openturns/MetropolisHastingsImplementation.hxx"
-#include "openturns/ConditionalDistribution.hxx"
-#include "openturns/Normal.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/IdentityMatrix.hxx"
 #include "openturns/Full.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/ParametricFunction.hxx"
@@ -43,6 +40,20 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation()
   // Nothing to do
 }
 
+/* Parameters constructor */
+MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Point & initialState,
+                                                                   const Indices & marginalIndices)
+  : RandomVectorImplementation()
+  , initialState_(initialState)
+  , currentState_(initialState)
+  , history_(Full())
+  , burnIn_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultBurnIn"))
+  , thinning_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultThinning"))
+{
+  setMarginalIndices(marginalIndices);
+  history_.setDimension(initialState.getDimension());
+  setDescription(Description::BuildDefault(initialState.getSize(), "x"));
+}
 
 /* Parameters constructor */
 MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Distribution & targetDistribution,
@@ -93,15 +104,15 @@ void MetropolisHastingsImplementation::setLikelihood(const Distribution & condit
   observations_ = observations;
   if (linkFunction.getEvaluation().getImplementation()->isActualImplementation())
   {
-    if (linkFunction.getInputDimension() != targetDistribution_.getDimension())
+    if (linkFunction.getInputDimension() != initialState_.getDimension())
       throw InvalidDimensionException(HERE) << "The linkFunction input dimension (" << linkFunction.getInputDimension()
-                                            << ") does not match the dimension of the prior (" << targetDistribution_.getDimension() << ").";
+                                            << ") does not match the dimension of the prior (" << initialState_.getDimension() << ").";
     linkFunction_ = linkFunction;
   }
   else
   {
     // when not provided, set the model to the identity
-    const SymbolicFunction fullFunction(Description::BuildDefault(targetDistribution_.getDimension(), "x"), Description::BuildDefault(targetDistribution_.getDimension(), "x"));
+    const SymbolicFunction fullFunction(Description::BuildDefault(initialState_.getDimension(), "x"), Description::BuildDefault(initialState_.getDimension(), "x"));
     linkFunction_ = ParametricFunction(fullFunction, Indices(0), Point(0));
   }
   if (conditional.getParameterDimension() != linkFunction_.getOutputDimension())
@@ -146,7 +157,6 @@ Point MetropolisHastingsImplementation::getCandidate() const
   throw NotYetImplementedException(HERE) << "MetropolisHastingsImplementation::getCandidate";
 }
 
-
 Scalar MetropolisHastingsImplementation::computeLogPDFPrior(const Point & state) const
 {
   if (targetLogPDF_.getEvaluation().getImplementation()->isActualImplementation())
@@ -156,8 +166,9 @@ Scalar MetropolisHastingsImplementation::computeLogPDFPrior(const Point & state)
     else
       return SpecFunc::LowestScalar;
   }
-  else
+  else if (hasTargetDistribution_)
     return getTargetDistribution().computeLogPDF(state);
+  return 0.0;
 }
 
 Scalar MetropolisHastingsImplementation::computeLogPosterior(const Point & state) const
@@ -239,11 +250,14 @@ void MetropolisHastingsImplementation::setTargetDistribution(const Distribution 
     throw InvalidDimensionException(HERE) << "The initial state dimension (" << initialState_.getDimension()
                                           << ") does not match the targetDistribution dimension (" << targetDistribution.getDimension() << ").";
   targetDistribution_ = targetDistribution;
+  hasTargetDistribution_ = true;
   setDescription(targetDistribution.getDescription());
 }
 
 Distribution MetropolisHastingsImplementation::getTargetDistribution() const
 {
+  if (!hasTargetDistribution_)
+    throw InvalidArgumentException(HERE) << "No target distribution provided";
   return targetDistribution_;
 }
 
@@ -257,7 +271,6 @@ void MetropolisHastingsImplementation::setTargetLogPDF(const Function & targetLo
     throw InvalidDimensionException(HERE) << "The initial state dimension (" << initialState_.getDimension() << ") does not match the prior dimension (" << targetLogPDF.getInputDimension() << ").";
   targetLogPDF_ = targetLogPDF;
   support_ = support;
-  targetDistribution_ = Normal(targetLogPDF.getInputDimension());// FIXME?
   setDescription(targetLogPDF.getInputDescription());
 }
 
@@ -275,11 +288,15 @@ void MetropolisHastingsImplementation::setMarginalIndices(const Indices & margin
 
 Function MetropolisHastingsImplementation::getTargetLogPDF() const
 {
+  if (!targetLogPDF_.getEvaluation().getImplementation()->isActualImplementation())
+    throw InvalidArgumentException(HERE) << "No target log-pdf provided";
   return targetLogPDF_;
 }
 
 Domain MetropolisHastingsImplementation::getTargetLogPDFSupport() const
 {
+  if (!targetLogPDF_.getEvaluation().getImplementation()->isActualImplementation())
+    throw InvalidArgumentException(HERE) << "No target log-pdf provided";
   return support_;
 }
   
@@ -381,6 +398,7 @@ void MetropolisHastingsImplementation::save(Advocate & adv) const
   adv.saveAttribute("currentState_", currentState_);
   adv.saveAttribute("marginalIndices_", marginalIndices_);
   adv.saveAttribute("targetDistribution_", targetDistribution_);
+  adv.saveAttribute("hasTargetDistribution_", hasTargetDistribution_);
   adv.saveAttribute("targetLogPDF_", targetLogPDF_);
   adv.saveAttribute("support_", support_);
   adv.saveAttribute("conditional_", conditional_);
@@ -400,6 +418,7 @@ void MetropolisHastingsImplementation::load(Advocate & adv)
   adv.loadAttribute("currentState_", currentState_);
   adv.loadAttribute("marginalIndices_", marginalIndices_);
   adv.loadAttribute("targetDistribution_", targetDistribution_);
+  adv.loadAttribute("hasTargetDistribution_", hasTargetDistribution_);
   adv.loadAttribute("targetLogPDF_", targetLogPDF_);
   adv.loadAttribute("support_", support_);
   adv.loadAttribute("conditional_", conditional_);

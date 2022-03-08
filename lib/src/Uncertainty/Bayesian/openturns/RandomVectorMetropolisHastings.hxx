@@ -75,9 +75,6 @@ private:
   // link between the state and the parameters of the source random vector
   Function randomVectorLinkFunction_;
 
-  // prior log pdf
-  Scalar computeLogPDFPrior(const Point & state) const;
-
 }; /* class RandomVectorMetropolisHastings */
 
 
