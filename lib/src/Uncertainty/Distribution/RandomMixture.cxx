@@ -3282,19 +3282,14 @@ Distribution RandomMixture::getMarginal(const Indices & indices) const
   const UnsignedInteger outputDimension = indices.getSize();
   const UnsignedInteger size = distributionCollection_.getSize();
   Matrix marginalWeights(outputDimension, size);
-  Point marginalConstant(outputDimension);
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
     const UnsignedInteger index_i = indices[i];
-    marginalConstant[i] = constant_[index_i];
     const Matrix row(weights_.getRow(index_i));
     for (UnsignedInteger j = 0; j < outputDimension; ++j) marginalWeights(i, j) = row(0, j);
-    marginalDescription[i] = description[index_i];
   }
-  RandomMixture::Implementation marginal(new RandomMixture(distributionCollection_, marginalWeights, marginalConstant));
-  marginal->setDescription(marginalDescription);
+  RandomMixture::Implementation marginal(new RandomMixture(distributionCollection_, marginalWeights, constant_.select(indices)));
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 

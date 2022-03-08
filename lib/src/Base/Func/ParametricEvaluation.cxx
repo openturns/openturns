@@ -81,18 +81,10 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
   // Check if the given reference point has a dimension compatible with the function
   if (referencePoint.getDimension() != parametersSize) throw InvalidArgumentException(HERE) << "Error: the given reference point dimension=" << referencePoint.getDimension() << " does not match the parameters size=" << parametersSize;
   // Set the relevant part of the reference point in the parameters
-  const Description functionInputDescription(function.getInputDescription());
-  Description parameterDescription(parametersSize);
-  for (UnsignedInteger i = 0; i < parametersSize; ++ i)
-  {
-    parameterDescription[i] = functionInputDescription[parametersPositions_[i]];
-  }
   parameter_ = referencePoint;
-  parameterDescription_ = parameterDescription;
+  parameterDescription_ = function.getInputDescription().select(parametersPositions_);
   // And finally the input/output descriptions
-  Description inputDescription(0);
-  for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) inputDescription.add(functionInputDescription[inputPositions_[i]]);
-  setInputDescription(inputDescription);
+  setInputDescription(function.getInputDescription().select(inputPositions_));
   setOutputDescription(function_.getOutputDescription());
 }
 
