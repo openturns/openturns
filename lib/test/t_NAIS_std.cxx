@@ -77,16 +77,15 @@ int main()
   const float rhoQuantile = 0.25 ;
 
   // Definition of the algoritm
-  NAIS NAIS_algo = NAIS(event,numberSamples,blockSize,rhoQuantile);
-
+  NAIS NAIS_algo = NAIS(event,rhoQuantile);
+  NAIS_algo.setMaximumOuterSampling(numberSamples);
+  NAIS_algo.setBlockSize(blockSize);
+  
   // Run of the algorithm
   NAIS_algo.run();
 
   const NAISResult NAIS_result = NAIS_algo.getResult();
   OT::Test::assert_almost_equal(NAIS_result.getProbabilityEstimate(), 5.25234e-05);
-  /*const Point pointTest(0.6075705477671911);
-  const Sample sampleTest(pointTest);
-  OT::Test::assert_almost_equal(NAIS_result.getAuxiliarySample()[0][0], sampleTest);*/
   
   return 0;
 }

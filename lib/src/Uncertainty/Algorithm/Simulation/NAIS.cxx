@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/NAIS.hxx"
-//#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -28,9 +27,6 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 CLASSNAMEINIT(NAIS);
-
-//static const Factory<NAIS> Factory_NAIS;
-
 
 // Default constructor
 NAIS::NAIS()
@@ -42,14 +38,10 @@ NAIS::NAIS()
 
 // Default constructor
 NAIS::NAIS(const RandomVector & event,
-           const UnsignedInteger maximumOuterSampling,
-           const UnsignedInteger blockSize,
-           const Scalar rhoQuantile)
+           const Scalar rhoQuantile = 0.7)
   : EventSimulation(event)
   , initialDistribution_(getEvent().getAntecedent().getDistribution())
 {
-  setMaximumOuterSampling(maximumOuterSampling);
-  setBlockSize(blockSize);
   const Interval range(initialDistribution_.getRange());
   const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
   const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
@@ -163,11 +155,27 @@ void NAIS::run()
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
     // Drawing of samples using auxiliary density
-    sample_ = auxiliaryDistribution.getSample(numberOfSample);
-
+    //sample_ = auxiliaryDistribution.getSample(numberOfSample);
+    std::cout << auxiliaryDistribution.getSample(numberOfSample) << std::endl;
     // Evaluation on limit state function
-    outputSample = getEvent().getFunction()(sample_);
-
+    //outputSample = getEvent().getFunction()(sample_);
+    std::cout << getEvent().getFunction()(auxiliaryDistribution.getSample(numberOfSample)) << std::endl;
+    
+    sample_ = Sample(0, initialDistribution_.getDimension());
+    outputSample = Sample(0, 1);
+    
+    for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++ i)
+    {
+      const Sample blockSample(auxiliaryDistribution.getSample(getBlockSize()));
+      sample_.add(blockSample);
+      //std::cout << blockSample << std::endl;
+      //std::cout << sample_ << std::endl;
+      outputSample.add(getEvent().getFunction()(blockSample));
+      
+      if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+        throw InternalException(HERE) << "User stopped simulation";
+    } 
+    std::cout << outputSample << std::endl;
     // Computation of current quantile
     currentQuantile = outputSample.computeQuantile(rhoQuantile_)[0];
 
@@ -184,6 +192,10 @@ void NAIS::run()
       // Update of auxiliary distribution
       auxiliaryDistribution = computeAuxiliaryDistribution(sample_, weights_);
     }
+    
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InternalException(HERE) << "User stopped simulation";
+      
   } // while
 
   // Find failure sample indices

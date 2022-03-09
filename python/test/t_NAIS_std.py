@@ -19,6 +19,7 @@ in Complex Aerospace and Other Systems, A Practical Approach, Elsevier, 2015
 
 import math
 import openturns as ot
+from openturns.testing import assert_almost_equal
 
 # Definition of limit state function
 def four_branch(x):
@@ -69,21 +70,21 @@ algo.run()
 # retrieve results
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
-print('Pf=', probability)
-
+assert_almost_equal(probability, 0.0023828813801648916)
 
 # Hyperparameters of the algorithm
-n_IS = 10  # Number of samples at each iteration
+numberSamples = 10  # Number of samples at each iteration
 blockSize = 1
 # Quantile determining the percentage of failure samples in the current population
 rho_quantile = 0.25
 
 # Definition of the algoritm
-Nais_algo = ot.NAIS(event, n_IS, blockSize, rho_quantile)
+Nais_algo = ot.NAIS(event, rho_quantile)
+Nais_algo.setMaximumOuterSampling(numberSamples);
+Nais_algo.setBlockSize(blockSize);
 
 # Run of the algorithm
 Nais_algo.run()
 NAIS_result = Nais_algo.getResult()
 
-print('Probability of failure:', NAIS_result.getProbabilityEstimate())
-print('Sample:', NAIS_result.getAuxiliarySample())
+assert_almost_equal(NAIS_result.getProbabilityEstimate(), 5.252337792590882e-05)

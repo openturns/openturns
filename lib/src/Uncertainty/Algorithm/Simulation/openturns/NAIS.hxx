@@ -45,8 +45,6 @@ public:
 
   /** Default constructor */
   NAIS(const RandomVector & event,
-       const UnsignedInteger maximumOuterSampling,
-       const UnsignedInteger blockSize,
        const Scalar rho_quantile);
 
   /** Get weights */
@@ -86,7 +84,7 @@ private:
   Distribution initialDistribution_;
 
   // Quantile
-  Scalar rhoQuantile_ = 0.0;
+  Scalar rhoQuantile_;
 
   // Result of NAIS algorhytm
   NAISResult naisResult_;

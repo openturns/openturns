@@ -757,7 +757,7 @@ ot_pyinstallcheck_test (AdaptiveDirectionalStratification_hyperplane)
 ot_pyinstallcheck_test (AdaptiveDirectionalStratification_std)
 ot_pyinstallcheck_test (ExpectationSimulationAlgorithm_std)
 ot_pyinstallcheck_test (SobolSimulationAlgorithm_std)
-ot_pyinstallcheck_test (NAIS_std)
+ot_pyinstallcheck_test (NAIS_std IGNOREOUT)
 
 ## StatTests
 ot_pyinstallcheck_test (VisualTest_std)
