@@ -106,11 +106,7 @@ Point RandomWalkMetropolisHastings::getCandidate() const
       LOGTRACE(OSS() << "rho=" << rho << " delta=" << adaptationFactor_);
   }
 
-  Point prop(adaptationFactor_ * proposal_.getRealization());
-  Point newState(currentState_);
-  for (UnsignedInteger j = 0; j < marginalIndices_.getSize(); ++ j)
-    newState[marginalIndices_[j]] += prop[j];
-  return newState;
+  return currentState_.select(marginalIndices_) + adaptationFactor_ * proposal_.getRealization();
 }
 
 

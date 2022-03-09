@@ -192,7 +192,11 @@ Point MetropolisHastingsImplementation::getRealization() const
   // for each new sample
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const Point newState(getCandidate());
+    Point newState(currentState_);
+    const Point candidate(getCandidate());
+    for (UnsignedInteger j = 0; j < marginalIndices_.getSize(); ++ j)
+      newState[marginalIndices_[j]] = candidate[j];
+
     const Scalar newLogPosterior = computeLogPosterior(newState);
     
     // alpha = posterior(newstate)/posterior(oldstate)

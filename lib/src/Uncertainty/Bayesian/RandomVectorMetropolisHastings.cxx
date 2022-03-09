@@ -80,11 +80,7 @@ Point RandomVectorMetropolisHastings::getCandidate() const
     const Point parameter(randomVectorLinkFunction_(currentState_));
     randomVector_.setParameter(parameter);
   }
-  const Point prop(randomVector_.getRealization());
-  Point newState(currentState_);
-  for (UnsignedInteger j = 0; j < marginalIndices_.getSize(); ++ j)
-    newState[marginalIndices_[j]] = prop[j];
-  return newState;
+  return randomVector_.getRealization();
 }
 
 
