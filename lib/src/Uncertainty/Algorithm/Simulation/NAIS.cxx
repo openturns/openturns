@@ -2,7 +2,7 @@
 /**
  *  @brief NAIS implement Non Parametric Adaptive Importance Sampling algorithm
  *
- *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,7 @@ NAIS::NAIS()
 
 // Default constructor
 NAIS::NAIS(const RandomVector & event,
-           const Scalar rhoQuantile = 0.7)
+           const Scalar rhoQuantile)
   : EventSimulation(event)
   , initialDistribution_(getEvent().getAntecedent().getDistribution())
 {
@@ -85,7 +85,7 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
   // Computation of auxiliary distribution using ot.Mixture
   for (UnsignedInteger k = 0; k < dimensionSample ; ++k)
   {
-    UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
+    const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
     Collection<Distribution> collectionOfDistribution(numberOfSample);
     for (UnsignedInteger i = 0; i < numberOfSample ; ++i)
     {
@@ -127,7 +127,7 @@ Point NAIS::computeWeights(const Sample & sample,
 // Main function that computes the failure probability
 void NAIS::run()
 {
-  UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
+  const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
 
   // Drawing of samples using initial density
   sample_ = initialDistribution_.getSample(numberOfSample);
@@ -154,13 +154,7 @@ void NAIS::run()
 
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
-    // Drawing of samples using auxiliary density
-    //sample_ = auxiliaryDistribution.getSample(numberOfSample);
-    std::cout << auxiliaryDistribution.getSample(numberOfSample) << std::endl;
-    // Evaluation on limit state function
-    //outputSample = getEvent().getFunction()(sample_);
-    std::cout << getEvent().getFunction()(auxiliaryDistribution.getSample(numberOfSample)) << std::endl;
-    
+    // Drawing of samples using auxiliary density and evaluation on limit state function
     sample_ = Sample(0, initialDistribution_.getDimension());
     outputSample = Sample(0, 1);
     
@@ -168,14 +162,12 @@ void NAIS::run()
     {
       const Sample blockSample(auxiliaryDistribution.getSample(getBlockSize()));
       sample_.add(blockSample);
-      //std::cout << blockSample << std::endl;
-      //std::cout << sample_ << std::endl;
       outputSample.add(getEvent().getFunction()(blockSample));
       
       if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
         throw InternalException(HERE) << "User stopped simulation";
     } 
-    std::cout << outputSample << std::endl;
+
     // Computation of current quantile
     currentQuantile = outputSample.computeQuantile(rhoQuantile_)[0];
 
@@ -221,7 +213,6 @@ void NAIS::run()
   {
     sumPdfCritic += std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0));
   }
-
 
   // Save of data in Simulation naisResult_ structure
   naisResult_.setProbabilityEstimate(sumPdfCritic / numberOfSample);

@@ -2,7 +2,7 @@
 /**
  *  @brief NAIS implement Non Parametric Adaptive Importance Sampling algorithm
  *
- *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,7 @@ public:
 
   /** Default constructor */
   NAIS(const RandomVector & event,
-       const Scalar rho_quantile);
+       const Scalar rho_quantile = 0.7);
 
   /** Get weights */
   Point getWeights() const;
