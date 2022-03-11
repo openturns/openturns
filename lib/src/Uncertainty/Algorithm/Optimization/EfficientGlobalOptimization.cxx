@@ -50,7 +50,8 @@ EfficientGlobalOptimization::EfficientGlobalOptimization()
 
 /* Constructor with parameters */
 EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProblem & problem,
-    const KrigingResult & krigingResult)
+    const KrigingResult & krigingResult,
+    const Function & noise)
   : OptimizationAlgorithmImplementation(problem)
   , krigingResult_(krigingResult)
   , solver_(new Cobyla)
@@ -64,6 +65,11 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
 {
   checkProblem(problem);
   if (krigingResult_.getMetaModel().getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Metamodel must be 1-d";
+  if (noise.getEvaluation().getImplementation()->isActualImplementation())
+  {
+    setMetamodelNoise(noise);
+    setNoiseModel(noise);
+  }
 }
 
 
@@ -150,20 +156,15 @@ void EfficientGlobalOptimization::run()
   Sample outputSample(krigingResult_.getOutputSample());
   UnsignedInteger size = inputSample.getSize();
   Point noise(size);
-  const Bool hasNoise = model.getOutputDimension() == 2;
+  const Bool hasNoise = metamodelNoise_.getEvaluation().getImplementation()->isActualImplementation();
   if (hasNoise)
   {
-    // always use 2nd marginal to evaluate noise at initial design and new points
-    Sample noiseSample(model.getMarginal(1)(inputSample));
+    Sample noiseSample(metamodelNoise_(inputSample));
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
       noise[i] = noiseSample(i, 0);
       if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
     }
-
-    // use noise model for criterion optimization if provided, else fallback to objective 2nd marginal
-    if (noiseModel_.getOutputDimension() != 1)
-      noiseModel_ = model.getMarginal(1);
   }
   UnsignedInteger evaluationNumber = 0;
   Bool exitLoop = false;
@@ -307,9 +308,8 @@ void EfficientGlobalOptimization::run()
     expectedImprovement_.add(improvementValue);
 
     const Point newPoint(improvementResult.getOptimalPoint());
-    const Point newOutput(model(newPoint));
+    const Point newValue(model(newPoint));
     ++ evaluationNumber;
-    const Point newValue(Point(1, newOutput[0]));// noise can be provided on the 2nd marginal
 
     LOGINFO(OSS() << "New point x=" << newPoint << " f(x)=" << newValue << " evaluations=" << evaluationNumber);
 
@@ -331,7 +331,7 @@ void EfficientGlobalOptimization::run()
     const Scalar residualError = std::abs(optimalValue - optimalValuePrev);
     const Scalar constraintError = -1.0;
 
-    result.store(newPoint, newOutput, absoluteError, relativeError, residualError, constraintError);
+    result.store(newPoint, newValue, absoluteError, relativeError, residualError, constraintError);
 
     // general convergence criteria
     exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
@@ -375,8 +375,9 @@ void EfficientGlobalOptimization::run()
 
     if (hasNoise)
     {
-      if (!(newOutput[1] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
-      noise.add(newOutput[1]);
+      const Point newNoise(metamodelNoise_(newPoint));
+      if (!(newNoise[0] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
+      noise.add(newNoise[0]);
     }
 
     ++ iterationNumber;
@@ -410,8 +411,8 @@ void EfficientGlobalOptimization::run()
   } // while
 
   krigingResult_ = metaModelResult; // update krigingResult_ to take new points into account
-  result.setFinalPoints(Sample(1, optimizer));
-  result.setFinalValues(Sample(1, Point(1, optimalValue)));
+  result.setOptimalPoint(optimizer);
+  result.setOptimalValue(Point(1, optimalValue));
   result.setEvaluationNumber(evaluationNumber);
   result.setIterationNumber(iterationNumber);
   setResult(result);
@@ -433,13 +434,12 @@ String EfficientGlobalOptimization::__repr__() const
 /* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void EfficientGlobalOptimization::checkProblem(const OptimizationProblem & problem) const
 {
-  if (problem.getObjective().getOutputDimension() > 2) // 2nd marginal can be used as noise
+  if (problem.getObjective().getOutputDimension() > 1)
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
   if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " does not support constraints";
   if (!problem.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support non continuous problems";
-
 }
 
 
@@ -529,7 +529,21 @@ Scalar EfficientGlobalOptimization::getAEITradeoff() const
   return aeiTradeoff_;
 }
 
+/* metamodel noise accessor */
+void EfficientGlobalOptimization::setMetamodelNoise(const Function & noiseModel)
+{
+  const UnsignedInteger dimension = getProblem().getDimension();
+  if (noiseModel.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Noise model must be of dimension " << dimension;
+  if (noiseModel.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Noise model must be 1-d";
+  metamodelNoise_ = noiseModel;
+}
 
+Function EfficientGlobalOptimization::getMetamodelNoise() const
+{
+  return metamodelNoise_;
+}
+
+/* optimization noise accessor */
 void EfficientGlobalOptimization::setNoiseModel(const Function & noiseModel)
 {
   const UnsignedInteger dimension = getProblem().getDimension();

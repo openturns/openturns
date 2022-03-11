@@ -3,7 +3,7 @@ Multi-objective optimization using Pagmo
 ========================================
 """
 # %%
-# In this example we are going to explore optimization using OpenTURNS' `Pagmo <https://esa.github.io/pagmo2/>`_ interface.
+# In this example we are going to explore optimization using the `Pagmo <https://esa.github.io/pagmo2/>`_ solver.
 
 # %%
 from __future__ import print_function

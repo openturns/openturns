@@ -381,6 +381,8 @@ Graph OptimizationResult::drawErrorHistory() const
 /* Draw optimal value graph */
 Graph OptimizationResult::drawOptimalValueHistory() const
 {
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "drawOptimalValueHistory is not available for multi-objective";
   Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright", 1.0);
   result.setGrid(true);
   result.setGridColor("black");

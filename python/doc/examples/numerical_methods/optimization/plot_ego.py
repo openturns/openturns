@@ -207,9 +207,9 @@ lowerbound = bm.lowerbound
 upperbound = bm.upperbound
 
 # %%
-# and we load the model function :
-model = bm.model
-objectiveFunction = model.getMarginal(0)
+# and we load the model function and its noise :
+objectiveFunction = bm.model
+noise = bm.noiseModel
 
 # %%
 # We build a sample out of the three minima :
@@ -237,8 +237,8 @@ distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dim)
 sampleSize = 50
 experiment = ot.LHSExperiment(distribution, sampleSize)
 inputSample = experiment.generate()
-modelEval = model(inputSample)
-outputSample = modelEval.getMarginal(0)
+outputSample = objectiveFunction(inputSample)
+noiseSample = noise(inputSample)
 
 # %%
 graph = ot.Graph("Initial LHS design of experiment - n=%d" %
@@ -254,8 +254,7 @@ kriging = ot.KrigingAlgorithm(
     inputSample, outputSample, covarianceModel, basis)
 
 # %%
-noise = [x[1] for x in modelEval]
-kriging.setNoise(noise)
+kriging.setNoise([x[0] for x in noiseSample])
 kriging.run()
 
 # %%
@@ -265,21 +264,17 @@ kriging.run()
 # %%
 # We define the problem :
 problem = ot.OptimizationProblem()
-problem.setObjective(model)
+problem.setObjective(objectiveFunction)
 bounds = ot.Interval(lowerbound, upperbound)
 problem.setBounds(bounds)
 
 # %%
-# We configure the maximum number of function evaluations to 20. We assume that the function is noisy, with a constant variance.
+# We configure the algorithm, with the model noise:
+algo = ot.EfficientGlobalOptimization(problem, kriging.getResult(), noise)
+algo.setMaximumEvaluationNumber(20)
 
 # %%
-# We configure the algorithm :
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
-# assume constant noise var
-guessedNoiseFunction = 0.1
-noiseModel = ot.SymbolicFunction(['x1', 'x2'], [str(guessedNoiseFunction)])
-algo.setNoiseModel(noiseModel)
-algo.setMaximumEvaluationNumber(20)
+# We run the algorithm and get the result:
 algo.run()
 result = algo.getResult()
 
@@ -287,11 +282,10 @@ result = algo.getResult()
 result.getIterationNumber()
 
 # %%
-# we have to use the multi-objective accessors because the objective is 2-d
-result.getFinalPoints()
+result.getOptimalPoint()
 
 # %%
-result.getFinalValues()
+result.getOptimalValue()
 
 # %%
 fexact
