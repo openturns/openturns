@@ -54,6 +54,12 @@ void HSICEstimatorConditionalSensitivity::computePValuesAsymptotic() const
     throw NotYetImplementedException(HERE) << "HSICEstimatorConditionalSensitivity cannot compute asymptotic p-values.";
 }
 
+/* Is it safe to compute the weight matrices in parallel? */
+Bool HSICEstimatorConditionalSensitivity::isWeightMatrixParallel() const
+{
+  return weightFunction_.getImplementation()->isParallel();;
+}
+
 /* Compute the weight matrix from the weight function */
 SquareMatrix HSICEstimatorConditionalSensitivity::computeWeightMatrix(const Sample & Y) const
 {

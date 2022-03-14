@@ -222,7 +222,7 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
   Collection<SquareMatrix> weightMatrixCollection(permutationSize_);
   ComputeWeightMatrixPolicy weightMatrixPolicy(weightMatrixCollection, shuffleCollection, *this);
   // The loop is over permutations of the output vector
-  TBBImplementation::ParallelForIf(isParallel(), 0, permutationSize_, weightMatrixPolicy);
+  TBBImplementation::ParallelForIf(isWeightMatrixParallel(), 0, permutationSize_, weightMatrixPolicy);
 
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
@@ -232,7 +232,7 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
     Point HSIC_loc(permutationSize_);
     const PValuesPermutationPolicy policy(HSIC_loc, dim, shuffleCollection, weightMatrixCollection, *this);
     // The loop is over permutations of the output vector
-    TBBImplementation::ParallelForIf(isParallel(), 0, permutationSize_, policy);
+    TBBImplementation::ParallelForIf(isPvaluesParallel(), 0, permutationSize_, policy);
 
     UnsignedInteger count = 0;
     for( UnsignedInteger b = 0; b < permutationSize_; ++b)
@@ -329,8 +329,14 @@ Point HSICEstimatorImplementation::getPValuesPermutation() const
   return PValuesPermutation_;
 }
 
+/* Is it safe to compute the weight matrices in parallel? */
+Bool HSICEstimatorImplementation::isWeightMatrixParallel() const
+{
+  return true;
+}
+
 /* Is it safe to compute the permutation p values in parallel? */
-Bool HSICEstimatorImplementation::isParallel() const
+Bool HSICEstimatorImplementation::isPvaluesParallel() const
 {
   Bool isParallel = true;
   for (UnsignedInteger i = 0; i < covarianceList_.getSize(); ++i)
@@ -569,3 +575,4 @@ void HSICEstimatorImplementation::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
+
