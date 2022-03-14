@@ -176,8 +176,8 @@ struct PValuesPermutationPolicy
   Point & output_;
   const UnsignedInteger dim_;
   const Collection<Sample> shuffleCollection_;
-  const HSICEstimatorImplementation & estimator_;
   const Collection<SquareMatrix> weightMatrixCollection_;
+  const HSICEstimatorImplementation & estimator_;
   Sample xdim_;
   CovarianceModel inputCovariance_;
   CovarianceModel outputCovariance_;
