@@ -3,17 +3,11 @@
 
 Refer to :ref:`anderson_darling_test`.
 
-**Available usages**:
-
-    NormalityTest.AndersonDarlingNormal(*sample*)
-
-    NormalityTest.AndersonDarlingNormal(*sample, level*)
-
 Parameters
 ----------
 sample : 2-d sequence of float
     Tested sample.
-level : positive float
+level : positive float, optional
     Threshold p-value of the test (= first kind risk), it must be
     :math:`< 1`, equal to 0.05 by default.
 
@@ -49,17 +43,11 @@ class=TestResult name=Unnamed type=AndersonDarlingNormal binaryQualityMeasure=tr
 
 Refer to :ref:`cramer_vonmises_test`.
 
-**Available usages**:
-
-    NormalityTest.CramerVonMisesNormal(*sample*)
-
-    NormalityTest.CramerVonMisesNormal(*sample, level*)
-
 Parameters
 ----------
 sample : 2-d sequence of float
     Tested sample.
-level : positive float
+level : positive float, optional
     Threshold p-value of the test (= first kind risk), it must be
     :math:`< 1`, equal to 0.05 by default.
 

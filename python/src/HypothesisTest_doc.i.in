@@ -1,20 +1,13 @@
 %feature("docstring") OT::HypothesisTest::ChiSquared
 "Test whether two discrete samples are independent.
 
-**Available usages**:
-
-    HypothesisTest.ChiSquared(*firstSample, secondSample*)
-
-    HypothesisTest.ChiSquared(*firstSample, secondSample, level*)
-
-
 Parameters
 ----------
 firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-level : positive float :math:`< 1`
+level : positive float :math:`< 1`, optional
     Threshold p-value of the test (= first kind risk), it must be
     :math:`< 1`, equal to 0.05 by default.
 
@@ -44,20 +37,13 @@ class=TestResult name=Unnamed type=ChiSquared binaryQualityMeasure=true p-value 
 %feature("docstring") OT::HypothesisTest::FullPearson
 "Test whether two discrete samples are independent.
 
-**Available usages**:
-
-    HypothesisTest.FullPearson(*firstSample, secondSample*)
-
-    HypothesisTest.FullPearson(*firstSample, secondSample, level*)
-
-
 Parameters
 ----------
 firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-level : positive float :math:`< 1`
+level : positive float :math:`< 1`, optional
     Threshold p-value of the test (= first kind risk), it must be
     :math:`< 1`, equal to 0.05 by default.
 
@@ -103,20 +89,13 @@ Examples
 %feature("docstring") OT::HypothesisTest::FullSpearman
 "Test whether two samples have no rank correlation.
 
-**Available usages**:
-
-    HypothesisTest.FullSpearman(*firstSample, secondSample*)
-
-    HypothesisTest.FullSpearman(*firstSample, secondSample, level*)
-
-
 Parameters
 ----------
 firstSample : 2-d sequence of float
     Sample of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Sample of dimension 1.
-level : positive float :math:`< 1`
+level : positive float :math:`< 1`, optional
     Threshold p-value of the test (= first kind risk), it must be
     :math:`< 1`, equal to 0.05 by default.
 
@@ -153,13 +132,6 @@ Examples
 %feature("docstring") OT::HypothesisTest::PartialPearson
 "Test whether two discrete samples are independent.
 
-**Available usages**:
-
-    HypothesisTest.PartialPearson(*firstSample, secondSample, selection*)
-
-    HypothesisTest.PartialPearson(*firstSample, secondSample, selection, level*)
-
-
 Parameters
 ----------
 firstSample : 2-d sequence of float
@@ -169,7 +141,7 @@ secondSample : 2-d sequence of float
 selection : sequence of integers, maximum integer value :math:`< n`
     List of indices selecting which subsets of the first sample will successively
     be tested with the second sample through the Pearson test.
-level : positive float :math:`< 1`
+level : positive float :math:`< 1`, optional
     Threshold p-value of the test (= first kind risk), it must be
     :math:`< 1`, equal to 0.05 by default.
 
@@ -211,13 +183,6 @@ Examples
 %feature("docstring") OT::HypothesisTest::PartialSpearman
 "Test whether two sample have no rank correlation.
 
-**Available usages**:
-
-HypothesisTest_PartialSpearman(*firstSample, secondSample, selection*)
-
-HypothesisTest_PartialSpearman(*firstSample, secondSample, selection, level*)
-
-
 Parameters
 ----------
 firstSample : 2-d sequence of float
@@ -227,7 +192,7 @@ secondSample : 2-d sequence of float
 selection : sequence of integers, maximum integer value :math:`< n`
     List of indices selecting which subsets of the first sample will successively
     be tested with the second sample through the Spearman test.
-level : positive float :math:`< 1`
+level : positive float :math:`< 1`, optional
     Threshold p-value of the test (= first kind risk), it must be
     :math:`< 1`, equal to 0.05 by default.
 
@@ -267,20 +232,13 @@ Examples
 
 Refer to :ref:`pearson_test`.
 
-**Available usages**:
-
-    HypothesisTest.Pearson(*firstSample, secondSample*)
-
-    HypothesisTest.Pearson(*firstSample, secondSample, level*)
-
-
 Parameters
 ----------
 firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-level : positive float :math:`< 1`
+level : positive float :math:`< 1`, optional
     Threshold p-value of the test (= first kind risk), it must be
     :math:`< 1`, equal to 0.05 by default.
 
@@ -318,20 +276,13 @@ class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value thr
 
 Refer to :ref:`spearman_test`.
 
-**Available usages**:
-
-    HypothesisTest.Spearman(*firstSample, secondSample*)
-
-    HypothesisTest.Spearman(*firstSample, secondSample, level*)
-
-
 Parameters
 ----------
 firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-level : positive float :math:`< 1`
+level : positive float :math:`< 1`, optional
     Threshold p-value of the test (= first kind risk), it must be
     :math:`< 1`, equal to 0.05 by default.
 
