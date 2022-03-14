@@ -106,9 +106,6 @@ public:
   /** Compute all indices at once */
   virtual void run() const;
 
-  /* Is it safe to compute the permutation p values in parallel? */
-  Bool isParallel() const;
-
   /** Draw the HSIC indices */
   Graph drawHSICIndices() const;
 
@@ -143,6 +140,9 @@ protected:
 
   /** Compute HSIC and R2-HSIC indices */
   virtual void computeIndices() const;
+  
+  /* Is it safe to compute the permutation p values in parallel? */
+  Bool isParallel() const;
 
   /** Draw values stored in a point */
   Graph drawValues(const Point &values, const String &title) const;
