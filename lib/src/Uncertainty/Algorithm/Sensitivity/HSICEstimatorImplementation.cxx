@@ -332,12 +332,12 @@ Point HSICEstimatorImplementation::getPValuesPermutation() const
 /* Is it safe to compute the permutation p values in parallel? */
 Bool HSICEstimatorImplementation::isParallel() const
 {
-  bool isParallel_ = true;
+  Bool isParallel = true;
   for (UnsignedInteger i = 0; i < covarianceList_.getSize(); ++i)
   {
-    isParallel_ = isParallel_ && covarianceList_[i].getImplementation()->isParallel();
+    isParallel = isParallel && covarianceList_[i].getImplementation()->isParallel();
   }
-  return isParallel_;
+  return isParallel;
 }
 
 /* Draw the HSIC indices */
