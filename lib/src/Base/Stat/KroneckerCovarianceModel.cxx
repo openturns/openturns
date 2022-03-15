@@ -179,7 +179,7 @@ Matrix KroneckerCovarianceModel::partialGradient(const Point &s, const Point &t)
 /* Is it safe to compute discretize in parallel? */
 Bool KroneckerCovarianceModel::isParallel() const
 {
-  return rho_.getImplementation()->isParallel();;
+  return rho_.getImplementation()->isParallel();
 }
 
 /* Computation of the covariance function, stationary interface
