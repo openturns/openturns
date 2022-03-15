@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+Create a sphinx build environment for the OpenTURNS documentation
+with only some of the source files in order to accelerate Sphinx builds.
+Sphinx is then called to build the HTML doc using all available cores.
+HTML files are written to a subfolder of the build folder called `install`.
 
 Parameters
 ----------
