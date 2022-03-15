@@ -57,7 +57,7 @@ void HSICEstimatorConditionalSensitivity::computePValuesAsymptotic() const
 /* Is it safe to compute the weight matrices in parallel? */
 Bool HSICEstimatorConditionalSensitivity::isWeightMatrixParallel() const
 {
-  return weightFunction_.getImplementation()->isParallel();;
+  return weightFunction_.getImplementation()->isParallel();
 }
 
 /* Compute the weight matrix from the weight function */
