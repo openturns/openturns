@@ -5,10 +5,17 @@
 === Library ===
 
 ==== Major changes ====
+ * HSIC sensitivity indices
  * RandomWalkMetropolisHastings now updates all components at a time, previously updated componentwise
 
 ==== New classes ====
- * Gibbs, RandomVectorMetropolisHastings
+ * RandomVectorMetropolisHastings
+ * Gibbs
+ * HSICEstimatorConditionalSensitivity
+ * HSICEstimatorGlobalSensitivity
+ * HSICEstimatorTargetSensitivity
+ * HSICUStat
+ * HSICVStat
 
 ==== API changes ====
  * Removed deprecated Hanning alias
@@ -31,8 +38,9 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1444 (The calibration examples are unclear)
+ * #1947 (The constructor of FunctionalChaosResult is undocumented)
  * #1958 (Performance of OrthogonalUniVariatePolynomial (precision, speed))
-
 
 == 1.18 release (2021-11-10) == #release-1.18
 

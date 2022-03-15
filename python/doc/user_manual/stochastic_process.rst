@@ -174,7 +174,7 @@ Check hypothesis on time series
 
     DickeyFullerTest
 
-Karhunen Loeve decomposition
+Karhunen-Loeve decomposition
 ============================
 
 .. autosummary::

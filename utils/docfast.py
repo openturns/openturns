@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-"""
-Create a sphinx build environment for the OpenTURNS documentation
-with only some of the source files in order to accelerate Sphinx builds.
-Sphinx is then called to build the HTML doc using all available cores.
-HTML files are written to a subfolder of the build folder called `install`.
 
 Parameters
 ----------
@@ -264,4 +258,3 @@ ot_folder = os.path.dirname(os.path.abspath(ot.__file__))  # install folder
 for pypath in glob.iglob(os.path.join(ot_folder, "**", "*.BACKUP"), recursive=True):
     os.remove(pypath[0:-7] + ".py")
     os.rename(pypath, pypath[0:-7] + ".py")
-

@@ -158,12 +158,14 @@ public:
   Point symVectProd (const Point & pt) const;
 
   /** Using triangular matrix */
+#ifndef SWIG
   ScalarCollection triangularVectProd (const ScalarCollection & pt,
                                        const char side = 'L',
                                        const Bool transpose = false) const;
-  ScalarCollection triangularVectProd (const Point & pt,
-                                       const char side = 'L',
-                                       const Bool transpose = false) const;
+#endif
+  Point triangularVectProd (const Point & pt,
+                            const char side = 'L',
+                            const Bool transpose = false) const;
 
   /** Multiplication with a Scalar */
   MatrixImplementation operator * (const Scalar s) const;
@@ -314,6 +316,21 @@ public:
 
   /** Low-level data access */
   UnsignedInteger stride(const UnsignedInteger dim) const;
+
+  /** Extract diagonal */
+  MatrixImplementation getDiagonal(const SignedInteger k = 0) const;
+
+  /** Fill diagonal with values */
+  void setDiagonal(const Point &diag, const SignedInteger k = 0);
+
+  /** Hadamard product aka elementwise product */
+  MatrixImplementation computeHadamardProduct(const MatrixImplementation &other) const;
+
+  /** Sum all coefficients */
+  virtual Scalar computeSumElements() const;
+
+  /** All elements are squared */
+  void squareElements();
 
 protected:
 

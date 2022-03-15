@@ -72,23 +72,31 @@ d        Triangular(0.09,0.1,0.11)
 E        Normal(200000,2000)
 ======== ==========================
 
+Variables
+---------
+
+In the particular situation where we want to calibrate this model, the following list presents which variables are observed input variables, input calibrated variables and observed output variables.
+
+* F, E: Input. Observed.
+* L, a, D, d: Input. Calibrated.
+* :math:`g_1`, :math:`g_2`, :math:`g_3`: Output. Observed.
 
 References
 ----------
 
-    * Deflection of beams by Russ Elliott. http://www.clag.org.uk/beam.html
-    * https://upload.wikimedia.org/wikipedia/commons/f/ff/Simple_beam_with_offset_load.svg
-    * https://en.wikipedia.org/wiki/Deflection_(engineering)
-    * https://mechanicalc.com/reference/beam-deflection-tables
-    * https://en.wikipedia.org/wiki/Second_moment_of_area
-    * Shigley's Mechanical Engineering Design (9th Edition), Richard G. Budynas, J. Keith Nisbettn, McGraw Hill (2011)
-    * Mechanics of Materials (7th Edition), James M. Gere, Barry J. Goodno, Cengage Learning (2009)
-    * Statics and Mechanics of Materials (5th Edition), Ferdinand Beer, E. Russell Johnston, Jr., John DeWolf, David Mazurek. Mc Graw Hill (2011) Chapter 15: deflection of beams.
+* Deflection of beams by Russ Elliott. http://www.clag.org.uk/beam.html
+* https://upload.wikimedia.org/wikipedia/commons/f/ff/Simple_beam_with_offset_load.svg
+* https://en.wikipedia.org/wiki/Deflection_(engineering)
+* https://mechanicalc.com/reference/beam-deflection-tables
+* https://en.wikipedia.org/wiki/Second_moment_of_area
+* Shigley's Mechanical Engineering Design (9th Edition), Richard G. Budynas, J. Keith Nisbettn, McGraw Hill (2011)
+* Mechanics of Materials (7th Edition), James M. Gere, Barry J. Goodno, Cengage Learning (2009)
+* Statics and Mechanics of Materials (5th Edition), Ferdinand Beer, E. Russell Johnston, Jr., John DeWolf, David Mazurek. Mc Graw Hill (2011) Chapter 15: deflection of beams.
 
 Load the use case
 -----------------
 
-We can load this classical model from the use cases module as follows :
+We can load this model from the use cases module as follows :
 
 .. code-block:: python
 

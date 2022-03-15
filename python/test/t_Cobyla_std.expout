@@ -13,3 +13,4 @@ algo= class=Cobyla class=OptimizationAlgorithmImplementation problem=class=Optim
 x^= [5.0000,5.0000,-3.0000,5.0000]
 f(x^)= [44.0000]
 lambda^= [0.0000,0.0000,3.0000,0.0000,1.0000,2.0000,0.0000,4.0000]
+OK

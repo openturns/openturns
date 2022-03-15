@@ -78,3 +78,10 @@ for minimization in [True, False]:
     print('x^=', printPoint(result.getOptimalPoint(), 4))
     print('f(x^)=', printPoint(result.getOptimalValue(), 4))
     print('lambda^=', printPoint(result.computeLagrangeMultipliers(), 4))
+
+# empty problem
+algo = ot.Cobyla()
+try:
+    algo.run()
+except:
+    print('OK')

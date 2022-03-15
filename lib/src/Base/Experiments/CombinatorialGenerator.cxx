@@ -57,7 +57,7 @@ String CombinatorialGenerator::__repr__() const
 }
 
 /* Sample generation */
-IndicesCollection CombinatorialGenerator::generate()
+IndicesCollection CombinatorialGenerator::generate() const
 {
   return getImplementation()->generate();
 }

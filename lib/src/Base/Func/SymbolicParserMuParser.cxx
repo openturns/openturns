@@ -22,6 +22,7 @@
 #include "openturns/SymbolicParserMuParser.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 #include "muParser.h"
 
@@ -70,6 +71,7 @@ static const Factory<SymbolicParserMuParser> Factory_SymbolicParserMuParser;
 
 SymbolicParserMuParser::SymbolicParserMuParser()
   : SymbolicParserImplementation()
+  , smallSize_(ResourceMap::GetAsUnsignedInteger("SymbolicParserMuParser-SmallSize"))
 {
   // Nothing to do
 }
@@ -80,49 +82,55 @@ SymbolicParserMuParser * SymbolicParserMuParser::clone() const
   return new SymbolicParserMuParser(*this);
 }
 
-
-void SymbolicParserMuParser::initialize() const
+Collection<Pointer<MuParser > > SymbolicParserMuParser::allocateExpressions(Point & stack) const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
-  const UnsignedInteger numberOfParsers(formulas_.getSize());
-  if (parsers_.getSize() == numberOfParsers) return;
-  inputStack_ = Point(inputDimension);
-  parsers_ = Collection<Pointer<MuParser> >(numberOfParsers);
+  const UnsignedInteger numberOfParsers = formulas_.getSize();
+  stack = Point(inputDimension);
+  Collection<Pointer<MuParser> > parsers(numberOfParsers);
   try
   {
     // For each parser of a formula, do
     for (UnsignedInteger outputIndex = 0; outputIndex < numberOfParsers; ++ outputIndex)
     {
-      parsers_[outputIndex] = new MuParser;
+      parsers[outputIndex] = new MuParser;
       for (UnsignedInteger inputIndex = 0; inputIndex < inputDimension; ++ inputIndex)
       {
         // DefineVar defines all the values given to variables
-        parsers_[outputIndex].get()->DefineVar(inputVariablesNames_[inputIndex].c_str(), &inputStack_[inputIndex]);
+        parsers[outputIndex].get()->DefineVar(inputVariablesNames_[inputIndex].c_str(), &stack[inputIndex]);
       }
-      parsers_[outputIndex].get()->SetExpr(formulas_[outputIndex].c_str());
+      parsers[outputIndex].get()->SetExpr(formulas_[outputIndex].c_str());
     }
   }
   catch (mu::Parser::exception_type & ex)
   {
     throw InvalidArgumentException(HERE) << "Error constructing an analytical function, message=" << ex.GetMsg() << " formula=" << ex.GetExpr() << " token=" << ex.GetToken() << " position=" << ex.GetPos();
   }
+  return parsers;
+}
+
+void SymbolicParserMuParser::initialize() const
+{
+  const UnsignedInteger numberOfParsers = formulas_.getSize();
+  if (expressions_.getSize() == numberOfParsers) return;
+  expressions_ = allocateExpressions(stack_);
 }
 
 Point SymbolicParserMuParser::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
-  const UnsignedInteger outputDimension(formulas_.getSize());
+  const UnsignedInteger outputDimension = formulas_.getSize();
   if (inP.getDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
   if (outputDimension == 0) return Point();
   initialize();
-  std::copy(inP.begin(), inP.end(), inputStack_.begin());
+  std::copy(inP.begin(), inP.end(), stack_.begin());
   Point result(outputDimension);
   try
   {
     for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
     {
-      const Scalar value = parsers_[outputIndex].get()->Eval();
+      const Scalar value = expressions_[outputIndex]->Eval();
       // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors
       if (checkOutput_ && !SpecFunc::IsNormal(value))
         throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
@@ -136,6 +144,56 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
   return result;
 }
 
+
+
+struct SymbolicParserMuParserPolicy
+{
+  const SampleImplementation & input_;
+  SampleImplementation & output_;
+  const SymbolicParserMuParser & evaluation_;
+
+  SymbolicParserMuParserPolicy(const Sample & input,
+                                  Sample & output,
+                                  const SymbolicParserMuParser & evaluation)
+    : input_(*input.getImplementation())
+    , output_(*output.getImplementation())
+    , evaluation_(evaluation)
+  {}
+
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
+  {
+    const UnsignedInteger threadIndex = TBBImplementation::GetThreadIndex();
+    if (!evaluation_.threadStack_[threadIndex].getDimension())
+      evaluation_.threadExpressions_[threadIndex] = evaluation_.allocateExpressions(evaluation_.threadStack_[threadIndex]);
+
+    const UnsignedInteger inputDimension = evaluation_.inputVariablesNames_.getSize();
+    const UnsignedInteger outputDimension = evaluation_.formulas_.getSize();
+
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
+    {
+      std::copy(&input_(i, 0), &input_(i, 0) + inputDimension, evaluation_.threadStack_[threadIndex].begin());
+
+      try
+      {
+        for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+        {
+          const Scalar value = evaluation_.threadExpressions_[threadIndex][outputIndex]->Eval();
+          // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors
+          if (evaluation_.checkOutput_ && !SpecFunc::IsNormal(value))
+            throw InternalException(HERE) << "Cannot evaluate " << evaluation_.formulas_[outputIndex] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
+          output_(i, outputIndex) = value;
+        }
+      }
+      catch (mu::Parser::exception_type & ex)
+      {
+        throw InternalException(HERE) << ex.GetMsg();
+      }
+    }
+  }
+
+}; /* end struct SymbolicParserMuParserPolicy */
+
+
 Sample SymbolicParserMuParser::operator() (const Sample & inS) const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
@@ -146,24 +204,21 @@ Sample SymbolicParserMuParser::operator() (const Sample & inS) const
   initialize();
   const UnsignedInteger size = inS.getSize();
   Sample result(size, outputDimension);
-  try
+  if (size < smallSize_)
   {
-    for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      std::copy(&inS(i, 0), &inS(i, 0) + inputDimension, inputStack_.begin());
-      for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
-      {
-        const Scalar value = parsers_[outputIndex].get()->Eval();
-        // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors
-        if (checkOutput_ && !SpecFunc::IsNormal(value))
-          throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
-        result(i, outputIndex) = value;
-      } // outputIndex
-    } // i
+    // account for the penalty on small samples
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      result[i] = operator()(inS[i]);
   }
-  catch (mu::Parser::exception_type & ex)
+  else
   {
-    throw InternalException(HERE) << ex.GetMsg();
+    if (threadExpressions_.getSize() != TBBImplementation::GetThreadsNumber())
+    {
+      threadExpressions_.resize(TBBImplementation::GetThreadsNumber());
+      threadStack_.resize(TBBImplementation::GetThreadsNumber());
+    }
+    const SymbolicParserMuParserPolicy policy(inS, result, *this);
+    TBBImplementation::ParallelFor(0, size, policy);
   }
   return result;
 }

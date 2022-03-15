@@ -28,7 +28,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Matrix.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
 
@@ -46,11 +46,16 @@ MethodOfMomentsFactory::MethodOfMomentsFactory()
 }
 
 /* Parameters constructor */
-MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution)
+MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution,
+                                               const Interval & optimizationBounds)
   : DistributionFactoryImplementation()
   , distribution_(distribution)
+  , optimizationBounds_(optimizationBounds)
 {
-  solver_ = OptimizationAlgorithm::Build(LeastSquaresProblem());
+  LeastSquaresProblem problem(SymbolicFunction("x", "x^2"));
+  if (optimizationBounds.getDimension())
+    problem.setBounds(Interval(1));
+  solver_ = OptimizationAlgorithm::Build(problem);
 
   // Initialize optimization solver parameter using the ResourceMap
   solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber"));

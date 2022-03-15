@@ -157,12 +157,7 @@ inline
 int
 isAPython< _PyInt_ >(PyObject * pyObj)
 {
-  // PyInt type is deprecated
-#if PY_MAJOR_VERSION >= 3
   return PyLong_Check(pyObj);
-#else
-  return PyInt_Check(pyObj) || PyLong_Check(pyObj);
-#endif
 }
 
 template <>
@@ -316,11 +311,7 @@ inline
 int
 isAPython< _PyBytes_ >(PyObject * pyObj)
 {
-#if PY_MAJOR_VERSION >= 3
   return PyBytes_Check(pyObj);
-#else
-  return PyString_Check(pyObj);
-#endif
 }
 
 template <>
@@ -336,11 +327,7 @@ inline
 String
 convert< _PyBytes_, String >(PyObject * pyObj)
 {
-#if PY_MAJOR_VERSION >= 3
   return PyBytes_AsString(pyObj);
-#else
-  return PyString_AsString(pyObj);
-#endif
 }
 
 template <>
@@ -348,11 +335,7 @@ inline
 PyObject *
 convert< String, _PyBytes_ >(String s)
 {
-#if PY_MAJOR_VERSION >= 3
   return PyBytes_FromString(s.data());
-#else
-  return PyString_FromString(s.data());
-#endif
 }
 
 
@@ -402,11 +385,7 @@ inline
 int
 isAPython< _PyString_ >(PyObject * pyObj)
 {
-#if PY_MAJOR_VERSION >= 3
   return PyUnicode_Check(pyObj);
-#else
-  return PyString_Check(pyObj) || PyUnicode_Check(pyObj);
-#endif
 }
 
 template <>
@@ -429,18 +408,7 @@ String
 convert< _PyString_, String >(PyObject * pyObj)
 {
   String result;
-#if PY_MAJOR_VERSION >= 3
   result = convert< _PyUnicode_, String >(pyObj);
-#else
-  if(isAPython<_PyBytes_>(pyObj))
-  {
-    result = convert<_PyBytes_, String>(pyObj);
-  }
-  else if (isAPython<_PyUnicode_>(pyObj))
-  {
-    result = convert<_PyUnicode_, String>(pyObj);
-  }
-#endif
   return result;
 }
 
@@ -449,11 +417,7 @@ inline
 PyObject *
 convert< String, _PyString_ >(String s)
 {
-#if PY_MAJOR_VERSION >= 3
   return convert<String, _PyUnicode_>(s);
-#else
-  return convert<String, _PyBytes_>(s);
-#endif
 }
 
 
@@ -1751,20 +1715,6 @@ convert< _PySequence_, WhittleFactoryState >(PyObject *)
 {
   return WhittleFactoryState();
 }
-
-
-// PySliceObject type is deprecated
-#if PY_VERSION_HEX >= 0x03020000
-inline PyObject* SliceCast(PyObject* pyObj)
-{
-  return pyObj;
-}
-#else
-inline PySliceObject* SliceCast(PyObject* pyObj)
-{
-  return (PySliceObject*)pyObj;
-}
-#endif
 
 
 inline

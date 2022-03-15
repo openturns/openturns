@@ -100,7 +100,7 @@ Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
 {
   if (this == &other) return true;
   // The copula...
-  if (!(hasIndependentCopula() && other.hasIndependentCopula())) return false;
+  if (hasIndependentCopula() != other.hasIndependentCopula()) return false;
   if (!(copula_ == other.getCopula())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)

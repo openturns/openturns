@@ -38,7 +38,7 @@ class SymbolicParserExprTk
 {
 
   CLASSNAME
-
+friend struct SymbolicParserExprTkPolicy;
 public:
   /** Default constructor */
   SymbolicParserExprTk();
@@ -61,10 +61,20 @@ public:
 private:
   void initialize() const;
 
+  typedef Collection< Pointer< exprtk::expression<Scalar> > > ExpressionCollection;
+  ExpressionCollection allocateExpressions(Point & stack) const;
+
+  // expression for single evaluation
   mutable Collection< Pointer< exprtk::expression<Scalar> > > expressions_;
-  mutable Point inputStack_;
+  mutable Point stack_;
+
+  // one expression per thread for batch evaluation
+  mutable Collection<ExpressionCollection> threadExpressions_;
+  mutable Collection<Point> threadStack_;
+
   Description outputVariablesNames_;
 
+  UnsignedInteger smallSize_ = 0;
 };
 
 END_NAMESPACE_OPENTURNS

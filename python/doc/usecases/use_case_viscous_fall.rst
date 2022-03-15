@@ -82,12 +82,12 @@ The parameters :math:`z_0`, :math:`v_0`, :math:`m` and :math:`c` are probabilist
 References
 ----------
 
-    * Steven C. Chapra. Applied numerical methods with Matlab for engineers and scientists, Third edition. 2012. Chapter 7, "Optimization", p.182.
+* Steven C. Chapra. Applied numerical methods with Matlab for engineers and scientists, Third edition. 2012. Chapter 7, "Optimization", p.182.
 
 Load the use case
 -----------------
 
-We can load this classical model from the use cases module as follows :
+We can load this model from the use cases module as follows :
 
 .. code-block:: python
 

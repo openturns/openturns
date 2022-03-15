@@ -954,6 +954,15 @@ ot_add_python_module(simulation simulation_module.i
                       ExpectationSimulationResult.i ExpectationSimulationResult_doc.i.in
                       SobolSimulationAlgorithm.i SobolSimulationAlgorithm_doc.i.in
                       SobolSimulationResult.i SobolSimulationResult_doc.i.in
+                      HSICStatImplementation.i HSICStatImplementation_doc.i.in
+                      HSICStat.i HSICStat_doc.i.in
+                      HSICUStat.i HSICUStat_doc.i.in
+                      HSICVStat.i HSICVStat_doc.i.in
+                      HSICEstimator.i HSICEstimator_doc.i.in
+                      HSICEstimatorImplementation.i HSICEstimatorImplementation_doc.i.in
+                      HSICEstimatorConditionalSensitivity.i HSICEstimatorConditionalSensitivity_doc.i.in
+                      HSICEstimatorGlobalSensitivity.i HSICEstimatorGlobalSensitivity_doc.i.in
+                      HSICEstimatorTargetSensitivity.i HSICEstimatorTargetSensitivity_doc.i.in
                       UncertaintySimulationTemplateDefs.i
                     )
 

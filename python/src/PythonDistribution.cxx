@@ -56,8 +56,6 @@ PythonDistribution::PythonDistribution(PyObject * pyObject)
 
   Py_XINCREF(pyObj_);
 
-  if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("computeCDF") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a computeCDF() method.";
-
   // Set the name of the object as its Python classname
   ScopedPyObjectPointer cls(PyObject_GetAttrString ( pyObj_,
                             const_cast<char *>( "__class__" ) ) );
@@ -72,9 +70,11 @@ PythonDistribution::PythonDistribution(PyObject * pyObject)
                             const_cast<char *>( "()" ) ));
   setDimension(checkAndConvert< _PyInt_, UnsignedInteger >( dim.get() ));
 
-  if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("computeCDF") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a computeCDF() method.";
+  if (!PyObject_HasAttrString(pyObj_, const_cast<char *>("computeCDF")))
+    throw InvalidArgumentException(HERE) << "Error: the given object does not have a computeCDF() method.";
 
-  if ((getDimension() > 1) && !PyObject_HasAttrString( pyObj_, const_cast<char *>("getRange") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a getRange() method.";
+  if ((getDimension() > 1) && !PyObject_HasAttrString(pyObj_, const_cast<char *>("getRange")))
+    throw InvalidArgumentException(HERE) << "Error: the given object does not have a getRange() method.";
 
   computeRange();
 }

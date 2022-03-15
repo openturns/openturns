@@ -665,6 +665,14 @@ void ResourceMap::loadDefaultConfiguration()
   // SymbolicParser parameters
   addAsString("SymbolicParser-Backend", SYMBOLICPARSER_DEFAULT_BACKEND);
 
+  // SymbolicParserExprTk parameters
+  addAsUnsignedInteger("SymbolicParserExprTk-SmallSize", 100);
+  addAsUnsignedInteger("SymbolicParserExprTk-MaxStackDepth", 400);
+  addAsUnsignedInteger("SymbolicParserExprTk-MaxNodeDepth", 10000);
+
+  // SymbolicParserMuParser parameters
+  addAsUnsignedInteger("SymbolicParserMuParser-SmallSize", 1000);
+
   // DesignProxy parameters
   addAsUnsignedInteger("DesignProxy-DefaultCacheSize", 16777216);// 2^24=16777216=128 Mio
 
@@ -879,6 +887,9 @@ void ResourceMap::loadDefaultConfiguration()
   // FAST parameters //
   addAsUnsignedInteger("FAST-DefaultInterferenceFactor", 4);
   addAsUnsignedInteger("FAST-DefaultResamplingSize", 1);
+
+  // HSIC parameters //
+  addAsUnsignedInteger("HSICEstimatorImplementation-PermutationSize", 100);
 
   // RandomGenerator parameters //
   addAsUnsignedInteger("RandomGenerator-InitialSeed", 0);

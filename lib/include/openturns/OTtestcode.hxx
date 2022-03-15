@@ -379,6 +379,15 @@ inline void assert_almost_equal(const SymmetricMatrix &a, const SymmetricMatrix 
   }
 }
 
+template <typename T>
+void assert_equal(const T & a, const T & b, const String errMsg = "")
+{
+  if (a != b)
+  {
+    throw TestFailed(OSS() << "Value " << a << " is not equal to " << b << " " << errMsg);
+  }
+}
+
 } /* namespace Test */
 
 END_NAMESPACE_OPENTURNS

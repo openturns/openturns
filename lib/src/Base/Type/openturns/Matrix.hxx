@@ -184,6 +184,21 @@ public:
   UnsignedInteger elementSize() const;
   UnsignedInteger stride(const UnsignedInteger dim) const;
 
+  /** Extract diagonal */
+  Matrix getDiagonal(const SignedInteger k = 0) const;
+
+  /** Fill diagonal with values */
+  void setDiagonal(const Point &diag, const SignedInteger k = 0);
+
+  /** Hadamard product aka elementwise product */
+  Matrix computeHadamardProduct(const Matrix &other) const;
+
+  /** Sum all coefficients */
+  virtual Scalar computeSumElements() const;
+
+  /** All elements are squared */
+  void squareElements();
+
 }; /* class Matrix */
 
 /** Declaration of friend operators */

@@ -64,7 +64,7 @@ Creation of a basis
 Stepwise regression
 
 >>> minimalIndices = [0]
->>> direction = 1 #Forward selection
+>>> direction = ot.LinearModelStepwiseAlgorithm.BACKWARD
 >>> penalty = 2.0 #Akaike Information Criterion, log(n) can be used for a BIC
 >>> algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
 >>> algo_forward.setPenalty(penalty)

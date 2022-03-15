@@ -4,6 +4,7 @@ Calibration of the logistic model
 """
 # %%
 # We present a calibration study of the logistic growth model defined :ref:`here <use-case-logistic>`.
+# In this example, we calibrate the parameters of a model which predicts the dynamics of the size of a population. This shows how you can calibrate a model which predicts a time dependent output. You need to view the output time series as a vector.
 
 # %%
 # Analysis of the data

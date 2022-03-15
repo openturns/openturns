@@ -75,6 +75,17 @@ UnsignedInteger TBBImplementation::GetThreadsNumber()
   return ThreadsNumber_;
 }
 
+
+UnsignedInteger TBBImplementation::GetThreadIndex()
+{
+#ifdef OPENTURNS_HAVE_TBB
+  return tbb::this_task_arena::current_thread_index();
+#else
+  return 0;
+#endif
+}
+
+
 void TBBImplementation::Enable()
 {
   const UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger("TBBImplementation-ThreadsNumber");
