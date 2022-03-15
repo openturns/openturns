@@ -41,8 +41,6 @@ int main(int, char *[])
     copula.setName("a Galambos copula");
     fullprint << "Copula " << copula << std::endl;
     std::cout << "Copula " << copula << std::endl;
-    //fullprint << "entropy=" << copula.computeEntropy() << std::endl;
-    //fullprint << "entropy (MC)=" << -copula.computeLogPDF(copula.getSample(1000000)).computeMean()[0] << std::endl;
     fullprint << "Mean " << copula.getMean() << std::endl;
     // Is this copula an elliptical distribution?
     fullprint << "Elliptical distribution= " << (copula.isElliptical() ? "true" : "false") << std::endl;

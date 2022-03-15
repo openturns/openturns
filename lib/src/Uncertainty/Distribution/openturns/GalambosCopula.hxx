@@ -82,7 +82,7 @@ private:
   // update function when parameters are modified
   void updatePickandFunction();
 
-  /** Joe Copula parameters */
+  /** Galambos Copula parameters */
   Scalar theta_;
 
 }; /* class GalambosCopula */
