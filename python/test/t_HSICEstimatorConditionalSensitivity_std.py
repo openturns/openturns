@@ -82,7 +82,7 @@ CSA.setPermutationSize(b)
 
 # We get the pvalue estimate by permutations
 pvaluesPerm = CSA.getPValuesPermutation()
-ott.assert_almost_equal(pvaluesPerm, [0.74257426, 0.95049505, 0.00000000])
+ott.assert_almost_equal(pvaluesPerm, [0.74257426, 0.94059406, 0.00000000])
 
 # Change the weight function and recompute everything
 squaredExponential = ot.SymbolicFunction("x", "exp(-x^2)")
@@ -90,4 +90,4 @@ alternateWeight = ot.ComposedFunction(squaredExponential, g)
 CSA.setWeightFunction(alternateWeight)
 ott.assert_almost_equal(CSA.getR2HSICIndices(), [0.0910527, 0.00738055, 0.166624])
 ott.assert_almost_equal(CSA.getHSICIndices(), [0.00218376, 0.000419288, 0.00898721])
-ott.assert_almost_equal(CSA.getPValuesPermutation(), [0.267327, 0.881188, 0.00990099])
+ott.assert_almost_equal(CSA.getPValuesPermutation(), [0.287129, 0.881188, 0.00000000])

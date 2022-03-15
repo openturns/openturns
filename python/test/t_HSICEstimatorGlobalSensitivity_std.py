@@ -68,7 +68,7 @@ hsic.setPermutationSize(b)
 
 # We get the pvalue estimate by permutations
 pvaluesPerm = hsic.getPValuesPermutation()
-ott.assert_almost_equal(pvaluesPerm, [0.00000000, 0.30669331, 0.00000000])
+ott.assert_almost_equal(pvaluesPerm, [0.00000000, 0.29670330, 0.00199800])
 
 pvaluesAs = hsic.getPValuesAsymptotic()
 ott.assert_almost_equal(pvaluesAs, [0.00000000, 0.33271992, 0.00165620])

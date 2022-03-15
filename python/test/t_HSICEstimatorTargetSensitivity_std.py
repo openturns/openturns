@@ -87,7 +87,7 @@ TSA.setPermutationSize(b)
 
 # We get the pvalue estimate by permutations
 pvaluesPerm = TSA.getPValuesPermutation()
-ott.assert_almost_equal(pvaluesPerm, [0.00000000, 0.25674326, 0.23776224])
+ott.assert_almost_equal(pvaluesPerm, [0.00000000, 0.23376623, 0.26573427])
 
 # Change the filter function and recompute everything
 squaredExponential = ot.SymbolicFunction("x", "exp(-0.1 * x^2)")
@@ -95,5 +95,5 @@ alternateFilter = ot.ComposedFunction(squaredExponential, g)
 TSA.setFilterFunction(alternateFilter)
 ott.assert_almost_equal(TSA.getR2HSICIndices(), [0.263026,0.0041902,0.00309598])
 ott.assert_almost_equal(TSA.getHSICIndices(), [1.54349e-05,2.45066e-07,1.88477e-07], 1e-4, 0.0)
-ott.assert_almost_equal(TSA.getPValuesPermutation(), [0.0,0.250749,0.271728])
+ott.assert_almost_equal(TSA.getPValuesPermutation(), [0.0,0.264735,0.279720])
 ott.assert_almost_equal(TSA.getPValuesAsymptotic(), [0.0,0.270278,0.288026])
