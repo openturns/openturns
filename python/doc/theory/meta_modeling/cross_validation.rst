@@ -122,7 +122,7 @@ follows:
        \frac{h(\underline{x}^{(i)}) - \widehat{h}(\underline{x}^{(i)})}{1 - h_i}
 
 where :math:`h_i` is the :math:`i`-th diagonal term of the matrix
-  :math:`\underline{\underline{\Psi}} (\underline{\underline{\Psi}}^{\textsf{T}}\underline{\underline{\Psi}})^{-1} \underline{\underline{\Psi}}^{\textsf{T}}`
+:math:`\underline{\underline{\Psi}} (\underline{\underline{\Psi}}^{\textsf{T}}\underline{\underline{\Psi}})^{-1} \underline{\underline{\Psi}}^{\textsf{T}}`
 with :math:`\underline{\underline{\Psi}}` being the information
 matrix:
 
