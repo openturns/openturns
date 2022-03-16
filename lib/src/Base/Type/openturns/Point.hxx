@@ -186,6 +186,9 @@ OT_API Point operator + (const Point & lhs,
 OT_API Point operator - (const Point & lhs,
                          const Point & rhs);
 
+/** Unary minus operator */
+OT_API Point operator - (const Point & lhs);
+
 #endif
 
 

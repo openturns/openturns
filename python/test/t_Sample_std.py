@@ -115,6 +115,18 @@ try:
     sample = Normal(4).getSample(5)
     assert sample.getMarginal(['X3', 'X1']).getDescription() == [
         'X3', 'X1'], "wrong marginal"
+    
+    # argsort
+    sample = Sample(
+      [[-1.0, 1.0, 0.0], [-1.0, 1.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, -1.0]]
+    )
+    indices = sample.argsort()
+    print("indices = ", indices)
+    assert indices == [3, 2, 0, 1]
+    indices = sample.argsort(False)
+    print("indices = ", indices)
+    assert indices == [1, 0, 2, 3]
+
 except:
     import sys
     print("t_Sample_std.py", sys.exc_info()[0], sys.exc_info()[1])
