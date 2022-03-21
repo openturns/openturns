@@ -36,6 +36,10 @@ next state of the chain as follows: denoting the current state by
 :math:`\vect{c}^k = \vect{\theta}^k +\vect{\delta}^k` where the
 distribution of :math:`\vect{\delta}^k` is the provided *proposal* distribution.
 
+See Also
+--------
+Gibbs, RandomVectorMetropolisHastings
+
 Examples
 --------
 >>> import openturns as ot
