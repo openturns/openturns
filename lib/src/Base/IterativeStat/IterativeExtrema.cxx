@@ -93,15 +93,9 @@ void IterativeExtrema::increment(const Point & newData)
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      if (newData[i] > maxData_[i])
-      {
-        maxData_[i] = newData[i];
-      }
-      if (newData[i] < minData_[i])
-      {
-        minData_[i] = newData[i];
-      }
-    }
+      if (newData[i] > maxData_[i]) maxData_[i] = newData[i];
+      if (newData[i] < minData_[i]) minData_[i] = newData[i];
+    } // loop over the dimensions
   }
   else
   {
@@ -109,41 +103,14 @@ void IterativeExtrema::increment(const Point & newData)
     {
       maxData_[i] = newData[i];
       minData_[i] = newData[i];
-    }
+    } // loop over the dimensions
   }
 }
 
 /* Increment method from a Sample */
 void IterativeExtrema::increment(const Sample & newData)
 {
-  if (newData.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the dimension of the extrema.";
-
-  for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
-  {
-    ++ iteration_;
-    if (iteration_ > 1)
-    {
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-      {
-        if (newData(j, i) > maxData_[i])
-        {
-          maxData_[i] = newData(j, i);
-        }
-        if (newData(j, i) < minData_[i])
-        {
-          minData_[i] = newData(j, i);
-        }
-      }
-    }
-    else
-    {
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-      {
-        minData_[i]= newData(j, i);
-        maxData_[i]= newData(j, i);
-      }
-    }
-  }
+  for (UnsignedInteger j = 0; j < newData.getSize(); ++j) increment(newData[j]);
 }
 
 /* Method save() stores the object through the StorageManager */

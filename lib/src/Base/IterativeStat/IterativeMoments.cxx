@@ -152,7 +152,7 @@ Point IterativeMoments::getKurtosis() const
     LOGDEBUG(OSS() << "varianceEstimator[d] = " << varianceEstimator[d]);
     if (!(varianceEstimator[d] < 0.0 || varianceEstimator[d] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << d << " constant. The kurtosis is not defined.";
     result[d] = factor1 * centeredMoments_(3, d) / std::pow(varianceEstimator[d], 2) + factor2;
-  }
+  } // loop over the dimensions
   return result;
 }
 
@@ -170,20 +170,14 @@ void IterativeMoments::increment(const Point & newData)
   ++ iteration_;
   const Point delta_over_n = delta / iteration_;
 
-  for(UnsignedInteger d = 0; d < dimension_; ++d)
-  {
-    centeredMoments_(0, d) += newData[d];
-  }
+  for(UnsignedInteger d = 0; d < dimension_; ++d) centeredMoments_(0, d) += newData[d];
   if(orderMax_ > 1) updateHigherMoments(orderMax_, delta, delta_over_n);
 }
 
 /*  Increment method from a Sample */
 void IterativeMoments::increment(const Sample & newData)
 {
-  for(UnsignedInteger j = 0; j < newData.getSize(); ++j)
-  {
-    increment(newData[j]);
-  }
+  for(UnsignedInteger j = 0; j < newData.getSize(); ++j) increment(newData[j]);
 }
 
 /* Update the centered moments higher than 2 using a recurrence relation for 3 and more
@@ -194,10 +188,7 @@ void IterativeMoments::updateHigherMoments(UnsignedInteger orderMax, const Point
   /* special case: second centered moment */
   if(orderMax == 2)
   {
-    for(UnsignedInteger d = 0; d < dimension_; ++d)
-    {
-      centeredMoments_(1, d) += delta[d] * (delta[d] - delta_over_n[d]);
-    }
+    for(UnsignedInteger d = 0; d < dimension_; ++d) centeredMoments_(1, d) += delta[d] * (delta[d] - delta_over_n[d]);
   }
   else
   {
@@ -212,10 +203,10 @@ void IterativeMoments::updateHigherMoments(UnsignedInteger orderMax, const Point
         {
           const UnsignedInteger binomialCoeff = SpecFunc::BinomialCoefficient(order, l) ;
           tmp += std::pow(delta_over_n[d], l) * centeredMoments_(order - l - 1, d) * binomialCoeff ;
-        }
+        } // loop over lower order moments
         centeredMoments_(order - 1, d) += delta[d] * (std::pow(delta[d], order - 1) - std::pow(delta_over_n[d], order - 1)) - tmp;
-      }
-    }
+      } // loop of the the order of the moment
+    } // loop over the dimensions
   }
 }
 
@@ -227,10 +218,7 @@ Point IterativeMoments::getCoefficientOfVariation() const
   Point coefficientOfVariationData(dimension_, 0.0);
   const Point meanData(getMean());
   const Point varData(getVariance());
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    coefficientOfVariationData[i] = std::pow(varData[i], 0.5) / meanData[i];
-  }
+  for (UnsignedInteger i = 0; i < dimension_; ++i) coefficientOfVariationData[i] = std::pow(varData[i], 0.5) / meanData[i];
 
   return coefficientOfVariationData;
 }
@@ -243,10 +231,7 @@ Point IterativeMoments::getStandardErrorOfTheMean() const
   Point standardErrorOfTheMean(dimension_, 0.0);
   const Point varData(getVariance());
 
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    standardErrorOfTheMean[i] = std::pow(varData[i], 0.5) / std::pow(iteration_, 0.5);
-  }
+  for (UnsignedInteger i = 0; i < dimension_; ++i) standardErrorOfTheMean[i] = std::pow(varData[i], 0.5) / std::pow(iteration_, 0.5);
 
   return standardErrorOfTheMean;
 }
@@ -259,10 +244,7 @@ Point IterativeMoments::getStandardDeviation() const
   Point standardDeviationData(dimension_, 0.0);
   const Point varData(getVariance());
 
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    standardDeviationData[i] = std::pow(varData[i], 0.5);
-  }
+  for (UnsignedInteger i = 0; i < dimension_; ++i) standardDeviationData[i] = std::pow(varData[i], 0.5);
 
   return standardDeviationData;
 }

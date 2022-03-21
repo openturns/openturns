@@ -82,12 +82,7 @@ void IterativeThresholdExceedance::increment(const Point & newData)
   if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative threshold exceedance.";
   ++ iteration_;
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    if (newData[i] > thresholdValue_)
-    {
-      data_[i] += 1.0;
-    }
-  }
+    if (newData[i] > thresholdValue_) data_[i] += 1.0;
 }
 
 /* Increment the internal data with a Sample */
@@ -95,17 +90,7 @@ void IterativeThresholdExceedance::increment(const Sample & newData)
 {
   if (newData.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the dimension of the iterative threshold exceedance.";
 
-  for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
-  {
-    ++ iteration_;
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      if (newData(j, i) > thresholdValue_)
-      {
-        data_[i] += 1.0;
-      }
-    }
-  }
+  for (UnsignedInteger j = 0; j < newData.getSize(); ++j) increment(newData[j]);
 }
 
 /* Method save() stores the object through the StorageManager */
