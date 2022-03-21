@@ -218,7 +218,7 @@ Point IterativeMoments::getCoefficientOfVariation() const
   Point coefficientOfVariationData(dimension_, 0.0);
   const Point meanData(getMean());
   const Point varData(getVariance());
-  for (UnsignedInteger i = 0; i < dimension_; ++i) coefficientOfVariationData[i] = std::pow(varData[i], 0.5) / meanData[i];
+  for (UnsignedInteger i = 0; i < dimension_; ++i) coefficientOfVariationData[i] = std::sqrt(varData[i]) / meanData[i];
 
   return coefficientOfVariationData;
 }
@@ -231,7 +231,7 @@ Point IterativeMoments::getStandardErrorOfTheMean() const
   Point standardErrorOfTheMean(dimension_, 0.0);
   const Point varData(getVariance());
 
-  for (UnsignedInteger i = 0; i < dimension_; ++i) standardErrorOfTheMean[i] = std::pow(varData[i], 0.5) / std::pow(iteration_, 0.5);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) standardErrorOfTheMean[i] = std::sqrt(varData[i] / iteration_);
 
   return standardErrorOfTheMean;
 }
@@ -244,7 +244,7 @@ Point IterativeMoments::getStandardDeviation() const
   Point standardDeviationData(dimension_, 0.0);
   const Point varData(getVariance());
 
-  for (UnsignedInteger i = 0; i < dimension_; ++i) standardDeviationData[i] = std::pow(varData[i], 0.5);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) standardDeviationData[i] = std::sqrt(varData[i]);
 
   return standardDeviationData;
 }
