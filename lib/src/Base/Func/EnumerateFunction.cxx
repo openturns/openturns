@@ -96,6 +96,12 @@ UnsignedInteger EnumerateFunction::getMaximumDegreeCardinal(const UnsignedIntege
   return getImplementation()->getMaximumDegreeCardinal(maximumDegree);
 }
 
+/* Basis size from degree */
+UnsignedInteger EnumerateFunction::getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const
+{
+  return getImplementation()->getBasisSizeFromTotalDegree(maximumDegree);
+}
+
 /* Dimension accessor */
 void EnumerateFunction::setDimension(const UnsignedInteger dimension)
 {

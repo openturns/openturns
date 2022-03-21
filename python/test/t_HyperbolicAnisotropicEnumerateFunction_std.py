@@ -60,3 +60,5 @@ for dimension in range(1, 4):
     for d in range(10):
         idx = f.getMaximumDegreeStrataIndex(d)
         print('dim', dimension, 'degree', d, 'max_degree_strata_index', idx)
+        size = f.getBasisSizeFromTotalDegree(d)
+        print('degree', d, 'size', size)
