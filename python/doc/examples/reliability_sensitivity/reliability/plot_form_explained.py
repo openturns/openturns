@@ -36,7 +36,7 @@ distX = ot.ComposedDistribution([distX1, distX2])
 
 # %%
 # We can draw the bidimensional PDF of the distribution `distX` over :math:`[0,-10] \times [10,10]` :
-ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 8)
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 8)
 graphPDF = distX.drawPDF([0, -10], [10, 10])
 graphPDF.setTitle(r'2D-PDF of the input variables $(X_1, X_2)$')
 graphPDF.setXTitle(r'$x_1$')
