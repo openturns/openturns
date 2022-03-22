@@ -52,7 +52,7 @@ functions. It proceeds as follows:
 
 .. math::
 
-    |a_j| \leq \epsilon \times \max_{ k \in K } |a_k|
+    |a_j| \leq \epsilon \times \max_{ k \in K, k \neq 0 } |a_k|
 
 where :math:`\epsilon` is the significance factor, default is
 :math:`\epsilon = 10^{-4}`.
