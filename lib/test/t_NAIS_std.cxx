@@ -71,7 +71,7 @@ int main()
   
   // Number of samples at each iteration
   const int numberSamples= 10 ;
-  const int blockSize = 1 ;
+  const int blockSize = 10 ;
   
   // Quantile determining the percentage of failure samples in the current population
   const float rhoQuantile = 0.25 ;
@@ -85,8 +85,8 @@ int main()
   NAIS_algo.run();
 
   const NAISResult NAIS_result = NAIS_algo.getResult();
-  //OT::Test::assert_almost_equal(NAIS_result.getProbabilityEstimate(), 5.25234e-05);
-  
+  OT::Test::assert_almost_equal(NAIS_result.getProbabilityEstimate(), 5.25234e-05);
+  std::cout<< NAIS_result.getAuxiliarySample() << std::endl;
   return 0;
 }
 

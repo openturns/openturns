@@ -154,10 +154,10 @@ void NAIS::run()
 
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
-    // Drawing of samples using auxiliary density and evaluation on limit state function
+    // Drawing of samples using auxiliary density and evaluation on limit state function   
     sample_ = Sample(0, initialDistribution_.getDimension());
     outputSample = Sample(0, 1);
-    
+
     for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++ i)
     {
       const Sample blockSample(auxiliaryDistribution.getSample(getBlockSize()));
@@ -167,7 +167,7 @@ void NAIS::run()
       if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
         throw InternalException(HERE) << "User stopped simulation";
     } 
-
+    
     // Computation of current quantile
     currentQuantile = outputSample.computeQuantile(rhoQuantile_)[0];
 
