@@ -1,18 +1,25 @@
-#include <iostream>
-#include <algorithm>
-#include <string>
+//                                               -*- C++ -*-
+/**
+ *  @brief The test file of class NAIS and NAISResult for standard methods
+ *
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 #include "openturns/OT.hxx"
 #include "openturns/OTtestcode.hxx"
-#include "openturns/NAISResult.hxx"
-#include "openturns/NAIS.hxx"
-#include "openturns/ParametricFunction.hxx"
-#include "openturns/RandomGenerator.hxx"
-#include "openturns/CompositeRandomVector.hxx"
-#include "openturns/MonteCarloExperiment.hxx"
-#include "openturns/ProbabilitySimulationAlgorithm.hxx"
-#include "openturns/Less.hxx"
-#include "openturns/ThresholdEvent.hxx"
-#include "openturns/SymbolicFunction.hxx"
 
 using namespace OT;
 
@@ -26,10 +33,7 @@ int main()
   const String formula = "min(3+(0.1*pow(a-b,2))-((a+b)/(sqrt(2))),3+(0.1*pow(a-b,2))+((a+b)/(sqrt(2))),(a-b)+(c/ (sqrt(2))),(b-a)+(c/(sqrt(2))))";
   
   // Definition about input parameter of function
-  Description input(3);
-  input[0] = "a";
-  input[1] = "b";
-  input[2] = "c";
+  const Description input = {"a", "b", "c"};
 
   const Function myfourBranch = SymbolicFunction(input, Description(1, formula));
 
@@ -70,23 +74,23 @@ int main()
   // Hyperparameters of the algorithm
   
   // Number of samples at each iteration
-  const int numberSamples= 10 ;
-  const int blockSize = 10 ;
+  const Scalar numberSamples= 10 ;
+  const Scalar blockSize = 1 ;
   
   // Quantile determining the percentage of failure samples in the current population
   const float rhoQuantile = 0.25 ;
 
   // Definition of the algoritm
-  NAIS NAIS_algo = NAIS(event,rhoQuantile);
-  NAIS_algo.setMaximumOuterSampling(numberSamples);
-  NAIS_algo.setBlockSize(blockSize);
+  NAIS algoNais(event,rhoQuantile);
+  algoNais.setMaximumOuterSampling(numberSamples);
+  algoNais.setBlockSize(blockSize);
   
   // Run of the algorithm
-  NAIS_algo.run();
+  algoNais.run();
 
-  const NAISResult NAIS_result = NAIS_algo.getResult();
-  OT::Test::assert_almost_equal(NAIS_result.getProbabilityEstimate(), 5.25234e-05);
-  std::cout<< NAIS_result.getAuxiliarySample() << std::endl;
+  const NAISResult resultNais(algoNais.getResult());
+  OT::Test::assert_almost_equal(resultNais.getProbabilityEstimate(), 0.00145074);
+  std::cout<< resultNais.getAuxiliarySample() << std::endl;
   return 0;
 }
 

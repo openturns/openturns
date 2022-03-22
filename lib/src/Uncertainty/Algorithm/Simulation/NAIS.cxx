@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/NAIS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -27,6 +28,8 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 CLASSNAMEINIT(NAIS);
+
+static const Factory<NAIS> Factory_NAIS;
 
 // Default constructor
 NAIS::NAIS()

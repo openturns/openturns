@@ -87,5 +87,4 @@ Nais_algo.setBlockSize(blockSize);
 Nais_algo.run()
 NAIS_result = Nais_algo.getResult()
 
-assert_almost_equal(NAIS_result.getProbabilityEstimate(), 5.252337792590882e-05)
-#assert_almost_equal(NAIS_result.getAuxiliarySample())
+assert_almost_equal(NAIS_result.getProbabilityEstimate(), 0.00145074)

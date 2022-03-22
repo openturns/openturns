@@ -1,78 +1,102 @@
 %feature("docstring") OT::NAIS
-"Non Adaptative Importance Sampling (NAIS) algorhitm.
+"Non Adaptive Importance Sampling (NAIS) algorithm.
 
 Available constructors:
-    LHS(*event=ot.Event()*)
+    NAIS(*event, rhoQuantile*)
 
 Parameters
 ----------
-event : :class:`~openturns.RandomVector`
-    Event we are computing the probability of.
+event : :class:`~openturns.ThresholdEvent`
+    Event we are computing the probability of failure.
+
+rhoQuantile : float  :math:` 0<\rho<1`
+    Quantile function input to determine the intermediate level of NAIS algorithm.
 
 Notes
 -----
-Using the probability distribution of a random vector :math:`\vect{X}`, we seek
-to evaluate the following probability:
+
+The following explanations are given for a failure event defined as :math:`g(\mathbf{X})<T` with :math:`\mathbf{X}` a random vector following a joint PDF :math:`f_\mathbf{X}`, :math:`T` a threshold and :math:`g` a limit state function, without loss of generality.
+
+The Importance Sampling (IS) probability estimate by Importance Sampling :math:`\widehat{P}^\text{IS}` is given by:
 
 .. math::
 
-    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)\di{\ux}
-        = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
+    \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{h_0(\mathbf{x}_i)}{h(\mathbf{x}_i)}.
 
-Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
-vector, :math:`g(\vect{X},\vect{d})` the function known as *limit state function*
-which enables the definition of the event
-:math:`\cD_f = \{\vect{X} \in \Rset^n \, | \, g(\vect{X},\vect{d}) \le 0\}`.
-:math:`\mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }`
-describes the indicator function equal to 1 if
-:math:`g(\vect{x}_i,\vect{d}) \leq 0` and equal to 0 otherwise.
+with :math:`h_0 = f_\mathbf{X}` the PDF of :math:`\mathbf{X}`, :math:`h` the auxiliary PDF of Importance Sampling, :math:`N`the number of independent samples generated with :math:`h`
+and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the indicator function of failure domain. 
 
-LHS or Latin Hypercube Sampling is a sampling method enabling to better cover
-the domain of variations of the input variables, thanks to a stratified
-sampling strategy. This method is applicable in the case of independent input
-variables. The sampling procedure is based on dividing the range of each
-variable into several intervals of equal probability. The sampling is
-undertaken as follows:
-
-- Step 1: The range of each input variable is stratified into isoprobabilistic
-  cells,
-
-- Step 2: A cell is uniformly chosen among all the available cells,
-
-- Step 3: The random number is obtained by inverting the Cumulative Density
-  Function locally in the chosen cell,
-
-- Step 4: All the cells having a common strate with the previous cell are put
-  apart from the list of available cells.
-
-The estimator of the probability of failure with LHS is given by:
+The optimal density minimizing the variance of the estimator :math:`h_{opt}` is  defined as:
 
 .. math::
 
-    \widehat{P}_{f,LHS} = \frac{1}{N}
-                          \sum_{i=1}^N \mathbf{1}_{\{g(\uX^i,\vect{d}) \leq 0 \}}
+    h_{opt}=\frac{{\mathbf{1}}_{g(x)<T}h_0}{P}.
 
-where the sample of :math:`\{ \uX^i,i=1 \hdots N \}` is obtained as described
-previously.
+with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest and unknown. 
+
+The objective of Non parametric Adaptive Importance Sampling (NAIS) technique is to approximate the IS optimal auxiliary density :math:`h_{opt}` from the preceding equation with a kernel density function (e.g. Gaussian kernel). Its iterative principle is described by the following steps.
+
+1. :math:`k=1` and set :math:`\rho \in [0,1]`
+
+2. Generate the population :math:`\mathbf{x}_1^{(k)},...,\mathbf{x}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the function :math:`g` in order to have :math:`y_1^{(k)}=g(\mathbf{x}_1^{(k)}),...,y_N^{(k)} = g(\mathbf{x}_N^{(k)})`
+
+3. Compute the empirical :math:`\rho`-quantile :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})`
+
+
+4. Estimate :math:`I_k= \frac{1}{kN} \displaystyle \sum_{j=1}^{k}\sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{h_0(\mathbf{x}_i^{(j)})}{h_{j-1}(\mathbf{x}_i^{(j)})}` 
+
+5. Update the Gaussian kernel sampling PDF with:
+
+.. math::
+
+    h_{k}(\mathbf{x})=\frac{1}{k N I_k \det\left(B_{k+1}\right)}\sum_{j=1}^{k}\sum_{i=1}^{N}  w_{j}(\mathbf{x}_i^{(j)})K_d\left(B_{k+1}^{-1}\left(\mathbf{x}-\mathbf{x}_i^{(j)}\right)\right)
+
+where :math:`K_d` is the standard :math:`d`-dimensional Gaussian function with zero mean and a diagonal covariance matrix. :math:`B_{k+1}=\text{diag}(b^1_{k+1},...,b^d_{k+1})` and :math:`w_j={\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{h_0(\mathbf{x}_i^{(j)})}{h_{j-1}(\mathbf{x}_i^{(j)})}`. The coefficients of matrix :math:`B_{k+1}` can be approximated (Silverman Rule) or postulated according to the AMISE (Asymptotic Mean Integrated Square Error) criterion for example.
+
+6. If :math:`q_k>T`, :math:`k\leftarrow k+1`, go to Step 2
+
+7. Estimate the probability :math:`\widehat{P}^{NAIS}(g(\mathbf{\mathbf{X}}<T))=\frac{1}{N}\displaystyle \sum_{i=1}^{N} \mathbf{1}_{g(\mathbf{x}_i^{(k)})<T} \frac{h_0(\mathbf{x}_i^{(k)})}{h_{k-1}(\mathbf{x}_i^{(k)})}`
+
+The NAIS algorithm with the Silverman rule is implemented in the current NAIS class.
+
 
 Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
+>>> # We create the function defining the limit state
 >>> myFunction = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> # We define a joint PDF of interest 
 >>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> # We create a 'usual' RandomVector from the Distribution
 >>> vect = ot.RandomVector(myDistribution)
 >>> # We create a composite random vector
 >>> output = ot.CompositeRandomVector(myFunction, vect)
 >>> # We create an event from this RandomVector
->>> myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
->>> # We create a LHS algorithm
->>> myAlgo = ot.LHS(myEvent)
->>> myAlgo.setMaximumOuterSampling(150)
->>> myAlgo.setBlockSize(4)
->>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> myEvent = ot.ThresholdEvent(output, ot.Less(), -10.0)
+>>> # We create a NAIS algorithm
+>>> myAlgo = ot.NAIS(myEvent, 0.1)
 >>> # Perform the simulation
 >>> myAlgo.run()
 >>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
-Probability estimate=0.151667"
+Probability estimate=0.000696"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::getOutputSample
+"Output sample accessor of the final NAIS step.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    Output sample that realize the event."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::getWeights
+"Output sample associated weights accessor of the final NAIS step.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    Output sample associated weights."

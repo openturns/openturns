@@ -1,39 +1,18 @@
-%define OT_NAISResult_doc
-"NAISResult class.
-
-Examples
---------
->>> import openturns
->>> a = openturns.NAISResult()
-
-Notes
------
-Template module class."
-%enddef
 %feature("docstring") OT::NAISResult
-OT_NAISResult_doc
+"NAIS result.
 
-// ---------------------------------------------------------------------
+See also
+--------
+NAIS, SimulationResult"
 
-%define OT_NAISResult_getProbabilityEstimate_doc
-"Square of a point.
+// ---------------------------------------------------------------------------
 
-Parameters
-----------
-point : sequence of float 
-    Input point
+%feature("docstring") OT::NAISResult::getAuxiliaryDistribution
+"Accessor of the auxiliary distribution at the final NAIS step.
 
 Returns
 -------
-square : :py:class:`openturns.Point`
-    Square of point
-                  
-Examples
---------
->>> import openturns as ot
->>> a = ot.NAISResult()
->>> point = ot.Point([1.0, 2.0, 3.0])
-class=Point name=Unnamed dimension=3 values=[1,4,9]"
-%enddef
-%feature("docstring") OT::NAIS::getProbabilityEstimate
-OT_NAISResult_getProbabilityEstimate_doc
+auxiliaryDistribution : :class:`~openturns.Distribution`
+    Auxiliary distribution at the final NAIS step."
+
+
