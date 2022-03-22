@@ -74,8 +74,8 @@ int main()
   // Hyperparameters of the algorithm
   
   // Number of samples at each iteration
-  const Scalar numberSamples= 10 ;
-  const Scalar blockSize = 1 ;
+  const UnsignedInteger numberSamples= 10 ;
+  const UnsignedInteger blockSize = 1 ;
   
   // Quantile determining the percentage of failure samples in the current population
   const float rhoQuantile = 0.25 ;
