@@ -41,6 +41,10 @@ def TESTPREAMBLE():
 %import statistics_module.i
 %import BaseStatisticsTemplateDefs.i
 
+/* Base/IterativeStat */
+%import iterative_statistics_module.i
+%import BaseIterativeStatisticsTemplateDefs.i
+
 /* Base/Graph */
 %import graph_module.i
 %import BaseGraphTemplateDefs.i

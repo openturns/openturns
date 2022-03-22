@@ -667,6 +667,11 @@ ot_pyinstallcheck_test (CombinatorialGenerator_std)
 ot_pyinstallcheck_test (Experiment_python)
 ot_pyinstallcheck_test (Splitter_std IGNOREOUT)
 
+# IterativeStat
+ot_pyinstallcheck_test (IterativeExtrema_std IGNOREOUT)
+ot_pyinstallcheck_test (IterativeThreshold_std IGNOREOUT)
+ot_pyinstallcheck_test (IterativeMoments_std IGNOREOUT)
+
 ## OrthogonalBasis
 ot_pyinstallcheck_test (LinearEnumerateFunction_std)
 ot_pyinstallcheck_test (HyperbolicAnisotropicEnumerateFunction_std)

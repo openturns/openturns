@@ -154,3 +154,16 @@ Spatial lookup
     RegularGridEnclosingSimplex
     EnclosingSimplexMonotonic1D
     BoundingVolumeHierarchy
+
+Iterative statistics
+====================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    IterativeAlgorithm
+    IterativeExtrema
+    IterativeMoments
+    IterativeThresholdExceedance
+

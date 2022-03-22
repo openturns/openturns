@@ -7,6 +7,7 @@
 ==== Major changes ====
  * HSIC sensitivity indices
  * RandomWalkMetropolisHastings now updates all components at a time, previously updated componentwise
+ * Iterative statistics
 
 ==== New classes ====
  * RandomVectorMetropolisHastings
@@ -16,6 +17,9 @@
  * HSICEstimatorTargetSensitivity
  * HSICUStat
  * HSICVStat
+ * IterativeExtrema
+ * IterativeMoments
+ * IterativeThresholdExceedance
 
 ==== API changes ====
  * Removed deprecated Hanning alias

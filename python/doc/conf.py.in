@@ -120,6 +120,7 @@ sphinx_gallery_conf = {
                                         'examples/calibration/bayesian_calibration',
                                         'examples/numerical_methods/general_methods',
                                         'examples/numerical_methods/optimization',
+                                        'examples/numerical_methods/iterative_statistics',
                                         'examples/graphs',]),
      'show_signature': False,
 
