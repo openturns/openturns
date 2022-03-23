@@ -184,8 +184,21 @@ void SmolyakExperiment::computeNodesAndWeights() const
   // Compute multiindex set
   IndicesCollection combinationIndicesCollection(computeCombination());
   LOGDEBUG(OSS() << "  combinationIndicesCollection = " << combinationIndicesCollection);
-  // Create the Smolyak list of quadratures
+  // Create elementary Smolyak quadratures
+  Sample nodes(0, dimension);
+  Point weights(0);
+  const UnsignedInteger numberOfUnitaryQuadratures= combinationIndicesCollection.getSize();
+  for (UnsignedInteger i = 0; i < numberOfUnitaryQuadratures; ++i)
+  {
+    LOGDEBUG(OSS() << "  i = " << i);
+    
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      LOGDEBUG(OSS() << combinationIndicesCollection(i, j));
+    } // Loop over the dimensions
+  } // Loop over the marginal levels
   // Reduce to unique nodes and weights
+  // TODO
 }
 
 /* Method save() stores the object through the StorageManager */
