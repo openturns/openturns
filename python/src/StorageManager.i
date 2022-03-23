@@ -6,4 +6,7 @@
 
 %include StorageManager_doc.i
 
+%ignore OT::LoadAction;
+%ignore OT::SaveAction;
+
 %include openturns/StorageManager.hxx
