@@ -21,7 +21,7 @@
 
 #include "openturns/Dlib.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/PersistentObject.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OSS.hxx"
 
 #ifdef OPENTURNS_HAVE_DLIB
@@ -344,6 +344,8 @@ private:
 #endif
 
 CLASSNAMEINIT(Dlib)
+
+static const Factory<Dlib> Factory_Dlib;
 
 Bool Dlib::IsAvailable()
 {

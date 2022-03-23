@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IntersectionEvent)
 
-// static const Factory<IntersectionEvent> Factory_IntersectionEvent;
+static const Factory<IntersectionEvent> Factory_IntersectionEvent;
 
 /* Default constructor */
 IntersectionEvent::IntersectionEvent()
