@@ -201,6 +201,13 @@ void GaussProductExperiment::computeNodesAndWeights() const
   isAlreadyComputedNodesAndWeights_ = true;
 }
 
+/* Set size
+void GaussProductExperiment::setSize(const UnsignedInteger size)
+{
+  const Indices marginalDegrees = {size};
+  setMarginalDegrees(marginalDegrees);
+}*/
+
 /* Method save() stores the object through the StorageManager */
 void GaussProductExperiment::save(Advocate & adv) const
 {

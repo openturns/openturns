@@ -19,9 +19,11 @@
  *
  */
 #include "openturns/SmolyakExperiment.hxx"
+#include "openturns/TensorProductExperiment.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/Indices.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -191,11 +193,36 @@ void SmolyakExperiment::computeNodesAndWeights() const
   for (UnsignedInteger i = 0; i < numberOfUnitaryQuadratures; ++i)
   {
     LOGDEBUG(OSS() << "  i = " << i);
-    
+    WeightedExperimentCollection collection;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       LOGDEBUG(OSS() << combinationIndicesCollection(i, j));
+      collection[i] = collection_[i];
+      collection[i].setSize(combinationIndicesCollection(i, j));
     } // Loop over the dimensions
+    TensorProductExperiment elementaryExperiment(collection);
+    Point elementaryWeights(0);
+    Sample elementaryNodes(elementaryExperiment.generateWithWeights(elementaryWeights));
+    // Compute Smolyak coefficient
+    UnsignedInteger marginalLevelsSum = 0;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      marginalLevelsSum += combinationIndicesCollection(i, j);
+    } // Loop over the dimensions
+    exponent = level_ + dimension - marginalLevelsSum - 1;
+    Scalar smolyakSign;
+    if (exponent % 2 == 0)
+    {
+      smolyakSign = 1.0;
+    }
+    else:
+    {
+      smolyakSign = -1.0;
+    }
+    const UnsignedInteger binomial = SpecFunc::BinomialCoefficient(dimension - 1, marginalLevelsSum - level_);
+    const Scalar smolyakFactor = smolyakSign * binomial;
+    nodes.add(elementaryNodes);
+    weights.add(smolyak_factor * elementaryWeights);
   } // Loop over the marginal levels
   // Reduce to unique nodes and weights
   // TODO
