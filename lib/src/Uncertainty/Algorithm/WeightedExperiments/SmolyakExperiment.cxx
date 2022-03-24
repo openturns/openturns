@@ -209,20 +209,20 @@ void SmolyakExperiment::computeNodesAndWeights() const
     {
       marginalLevelsSum += combinationIndicesCollection(i, j);
     } // Loop over the dimensions
-    exponent = level_ + dimension - marginalLevelsSum - 1;
+    const UnsignedInteger exponent = level_ + dimension - marginalLevelsSum - 1;
     Scalar smolyakSign;
     if (exponent % 2 == 0)
     {
       smolyakSign = 1.0;
     }
-    else:
+    else
     {
       smolyakSign = -1.0;
     }
     const UnsignedInteger binomial = SpecFunc::BinomialCoefficient(dimension - 1, marginalLevelsSum - level_);
     const Scalar smolyakFactor = smolyakSign * binomial;
     nodes.add(elementaryNodes);
-    weights.add(smolyak_factor * elementaryWeights);
+    weights.add(smolyakFactor * elementaryWeights);
   } // Loop over the marginal levels
   // Reduce to unique nodes and weights
   // TODO
