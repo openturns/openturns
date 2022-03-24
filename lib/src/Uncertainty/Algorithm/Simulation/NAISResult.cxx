@@ -39,6 +39,12 @@ NAISResult::NAISResult()
   //Nothing TO DO
 }
 
+/* Virtual constructor */
+NAISResult * NAISResult::clone() const
+{
+  return new NAISResult(*this);
+}
+
 // Get Samples
 Sample NAISResult::getAuxiliarySample() const
 {

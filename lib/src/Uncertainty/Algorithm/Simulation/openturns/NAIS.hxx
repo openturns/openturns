@@ -46,6 +46,9 @@ public:
   /** Default constructor */
   NAIS(const RandomVector & event,
        const Scalar rho_quantile = 0.7);
+       
+  /** Virtual constructor */
+  NAIS * clone() const override;
 
   /** Get weights */
   Point getWeights() const;

@@ -78,7 +78,7 @@ int main()
   const UnsignedInteger blockSize = 1 ;
   
   // Quantile determining the percentage of failure samples in the current population
-  const float rhoQuantile = 0.25 ;
+  const Scalar rhoQuantile = 0.25 ;
 
   // Definition of the algoritm
   NAIS algoNais(event,rhoQuantile);

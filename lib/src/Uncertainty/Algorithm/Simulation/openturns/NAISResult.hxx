@@ -39,6 +39,9 @@ public:
 
   /** Default constructor */
   NAISResult();
+  
+  /** Virtual constructor */
+  NAISResult * clone() const override;
 
   /** Get Samples */
   Sample getAuxiliarySample() const;

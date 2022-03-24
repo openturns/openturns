@@ -1,16 +1,13 @@
 %feature("docstring") OT::NAIS
 "Non Adaptive Importance Sampling (NAIS) algorithm.
 
-Available constructors:
-    NAIS(*event, rhoQuantile*)
-
 Parameters
 ----------
-event : :class:`~openturns.ThresholdEvent`
+event : :class:`~openturns.Event`
     Event we are computing the probability of failure.
 
 rhoQuantile : float  :math:` 0<\rho<1`
-    Quantile function input to determine the intermediate level of NAIS algorithm.
+    Intermediate quantile level.
 
 Notes
 -----
@@ -51,7 +48,10 @@ The objective of Non parametric Adaptive Importance Sampling (NAIS) technique is
 
     h_{k}(\mathbf{x})=\frac{1}{k N I_k \det\left(B_{k+1}\right)}\sum_{j=1}^{k}\sum_{i=1}^{N}  w_{j}(\mathbf{x}_i^{(j)})K_d\left(B_{k+1}^{-1}\left(\mathbf{x}-\mathbf{x}_i^{(j)}\right)\right)
 
-where :math:`K_d` is the standard :math:`d`-dimensional Gaussian function with zero mean and a diagonal covariance matrix. :math:`B_{k+1}=\text{diag}(b^1_{k+1},...,b^d_{k+1})` and :math:`w_j={\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{h_0(\mathbf{x}_i^{(j)})}{h_{j-1}(\mathbf{x}_i^{(j)})}`. The coefficients of matrix :math:`B_{k+1}` can be approximated (Silverman Rule) or postulated according to the AMISE (Asymptotic Mean Integrated Square Error) criterion for example.
+where :math:`K_d` is the standard :math:`d`-dimensional Gaussian function with zero mean and a diagonal covariance matrix. 
+:math:`B_{k+1}=\text{diag}(b^1_{k+1},...,b^d_{k+1})` 
+and :math:`w_j={\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{h_0(\mathbf{x}_i^{(j)})}{h_{j-1}(\mathbf{x}_i^{(j)})}`. 
+The coefficients of matrix :math:`B_{k+1}` can be approximated (Silverman Rule) or postulated according to the AMISE (Asymptotic Mean Integrated Square Error) criterion for example.
 
 6. If :math:`q_k>T`, :math:`k\leftarrow k+1`, go to Step 2
 

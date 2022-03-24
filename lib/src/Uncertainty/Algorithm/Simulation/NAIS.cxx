@@ -53,6 +53,12 @@ NAIS::NAIS(const RandomVector & event,
   rhoQuantile_ = (getEvent().getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
 }
 
+/* Virtual constructor */
+NAIS * NAIS::clone() const
+{
+  return new NAIS(*this);
+}
+    
 // Get weights
 Point NAIS::getWeights() const
 {
