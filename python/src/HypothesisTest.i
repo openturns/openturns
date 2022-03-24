@@ -6,6 +6,4 @@
 
 %include HypothesisTest_doc.i
 
-%nodefaultctor HypothesisTest;
-
 %include openturns/HypothesisTest.hxx

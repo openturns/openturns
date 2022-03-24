@@ -27,10 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-NormalityTest::NormalityTest()
-{
-}
-
 
 /* Anderson Darling normality test for normal distributions. */
 TestResult NormalityTest::AndersonDarlingNormal(const Sample & sample,

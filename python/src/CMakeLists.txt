@@ -179,7 +179,6 @@ ot_add_python_module(statistics statistics_module.i
                       TestResult.i TestResult_doc.i.in
                       RandomGenerator.i RandomGenerator_doc.i.in
                       RandomGeneratorState.i RandomGeneratorState_doc.i.in
-                      CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
                       LowDiscrepancySequenceImplementation.i LowDiscrepancySequenceImplementation_doc.i.in
                       LowDiscrepancySequence.i LowDiscrepancySequence_doc.i.in
                       SobolSequence.i SobolSequence_doc.i.in
@@ -229,7 +228,9 @@ ot_add_python_module(statistics statistics_module.i
                       BaseStatisticsTemplateDefs.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i.in
                    )
-
+ot_add_python_module(CorrelationAnalysis correlationanalysis_module.i
+                      CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
+                    )
 ot_add_python_module(iterative_statistics iterative_statistics_module.i
                       IterativeAlgorithm.i IterativeAlgorithm_doc.i.in
                       IterativeAlgorithmImplementation.i IterativeAlgorithmImplementation_doc.i.in
@@ -278,7 +279,6 @@ ot_add_python_module(func func_module.i
                       LinearEnumerateFunction.i LinearEnumerateFunction_doc.i.in
                       HyperbolicAnisotropicEnumerateFunction.i HyperbolicAnisotropicEnumerateFunction_doc.i.in
                       NormInfEnumerateFunction.i NormInfEnumerateFunction_doc.i.in
-                      SpecFunc.i SpecFunc_doc.i.in
                       EvaluationImplementation.i EvaluationImplementation_doc.i.in
                       Evaluation.i Evaluation_doc.i.in
                       GradientImplementation.i GradientImplementation_doc.i.in
@@ -400,6 +400,9 @@ ot_add_python_module(func func_module.i
                       BaseFuncTemplateDefs.i
                    )
 
+ot_add_python_module(SpecFunc specfunc_module.i
+                      SpecFunc.i SpecFunc_doc.i.in
+                    )
 ot_add_python_module(diff diff_module.i
                       FiniteDifferenceStepImplementation.i FiniteDifferenceStepImplementation_doc.i.in
                       FiniteDifferenceStep.i FiniteDifferenceStep_doc.i.in
@@ -604,8 +607,10 @@ ot_add_python_module(model_process model_process_module.i
                       UncertaintyProcessTemplateDefs.i
                    )
 
-ot_add_python_module(dist_bundle1 dist_bundle1_module.i
+ot_add_python_module(DistFunc distfunc_module.i
                       DistFunc.i DistFunc_doc.i.in
+                    )
+ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Arcsine.i Arcsine_doc.i.in
                       ArcsineFactory.i ArcsineFactory_doc.i.in
                       ArcsineMuSigma.i ArcsineMuSigma_doc.i.in
@@ -861,8 +866,6 @@ ot_add_python_module(metamodel metamodel_module.i
                       LinearModelStepwiseAlgorithm.i LinearModelStepwiseAlgorithm_doc.i.in
                       LinearModelAlgorithm.i LinearModelAlgorithm_doc.i.in
                       LinearModelAnalysis.i LinearModelAnalysis_doc.i.in
-                      LinearModelTest.i LinearModelTest_doc.i.in
-                      VisualTest.i VisualTest_doc.i.in
                       RandomVector.i RandomVector_doc.i.in
                       PythonEvaluation.cxx
                       PythonGradient.cxx
@@ -977,13 +980,24 @@ ot_add_python_module(simulation simulation_module.i
                     )
 
 ot_add_python_module(stattests stattests_module.i
-                      FittingTest.i FittingTest_doc.i.in
-                      HypothesisTest.i HypothesisTest_doc.i.in
-                      NormalityTest.i NormalityTest_doc.i.in
                       DickeyFullerTest.i DickeyFullerTest_doc.i.in
                       UncertaintyStatTestsTemplateDefs.i
                     )
-
+ot_add_python_module(FittingTest fittingtest_module.i
+                      FittingTest.i FittingTest_doc.i.in
+                    )
+ot_add_python_module(HypothesisTest hypothesistest_module.i
+                      HypothesisTest.i HypothesisTest_doc.i.in
+                    )
+ot_add_python_module(LinearModelTest linearmodeltest_module.i
+                      LinearModelTest.i LinearModelTest_doc.i.in
+                    )                
+ot_add_python_module(NormalityTest normalitytest_module.i
+                      NormalityTest.i NormalityTest_doc.i.in
+                    )
+ot_add_python_module(VisualTest visualtest_module.i
+                      VisualTest.i VisualTest_doc.i.in
+                    )
 ot_add_python_module(uncertainty uncertainty_module.i
                       FAST.i FAST_doc.i.in
                       EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i.in

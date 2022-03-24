@@ -119,7 +119,7 @@ best_aic : float
 
 See Also
 --------
-FittingTest_AIC
+FittingTest.AIC
 
 Examples
 --------
@@ -155,7 +155,7 @@ best_aicc : float
 
 See Also
 --------
-FittingTest_AICC
+FittingTest.AICC
 
 Examples
 --------
@@ -195,7 +195,7 @@ In case of ties, the order in the list matters: the first one which minimizes th
 
 See Also
 --------
-FittingTest_BIC
+FittingTest.BIC
 
 Examples
 --------
@@ -230,7 +230,7 @@ best_result : :class:`~openturns.TestResult`
 
 See Also
 --------
-FittingTest_ChiSquared
+FittingTest.ChiSquared
 
 Examples
 --------
@@ -265,7 +265,7 @@ best_result : :class:`~openturns.TestResult`
 
 See Also
 --------
-FittingTest_Kolmogorov
+FittingTest.Kolmogorov
 
 Examples
 --------
@@ -490,7 +490,7 @@ best_result : :class:`~openturns.TestResult`
 
 See Also
 --------
-FittingTest_Lilliefors
+FittingTest.Lilliefors
 
 Examples
 --------

@@ -30,9 +30,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-VisualTest::VisualTest()
-{
-}
 
 /* Draw the QQplot of the two Samples when its dimension is 1 */
 Graph VisualTest::DrawQQplot(const Sample & sample1,
@@ -429,56 +426,8 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
   return cobWeb;
 }
 
-/* Draw the Kendall plot to assess a copula for a bidimensional sample */
-Graph VisualTest::DrawKendallPlot(const Sample & data,
-                                  const Distribution & copula)
-{
-  if (data.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the data sample is empty.";
-  if (data.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the data sample has a dimension not equal to 2.";
-  if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
-  if (copula.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the copula has a dimension not equal to 2.";
-  const Sample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(data));
-  const Sample theoreticalStatistics(ComputeKendallPlotTheoreticalStatistics(copula, data.getSize()));
-  Graph graph("Kendall Plot", copula.getName(), data.getName(), true, "topleft");
-  // Draw the first diagonal
-  Sample dataDiagonal(0, 2);
-  dataDiagonal.add(Point(2, 0.0));
-  dataDiagonal.add(Point(2, 1.0));
-  Curve diagonal(dataDiagonal);
-  diagonal.setColor("red");
-  diagonal.setLineStyle("dashed");
-  graph.add(diagonal);
-  // Draw the Kendall curve
-  graph.add(Curve(theoreticalStatistics, empiricalStatistics));
-  return graph;
-}
-
-/* Draw the Kendall plot to assess if two bidimensional samples share the same copula */
-Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
-                                  const Sample & secondSample)
-{
-  if (firstSample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the first sample is empty.";
-  if (secondSample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the second sample is empty.";
-  if (firstSample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the first sample has a dimension not equal to 2.";
-  if (secondSample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the second sample has a dimension not equal to 2.";
-  const Sample firstEmpiricalStatistics(ComputeKendallPlotEmpiricalStatistics(firstSample));
-  const Sample secondEmpiricalStatistics(ComputeKendallPlotEmpiricalStatistics(secondSample));
-  Graph graph("Kendall Plot", firstSample.getName(), secondSample.getName(), true, "topleft");
-  // Draw the first diagonal
-  Sample data(0, 2);
-  data.add(Point(2, 0.0));
-  data.add(Point(2, 1.0));
-  Curve diagonal(data);
-  diagonal.setColor("red");
-  diagonal.setLineStyle("dashed");
-  graph.add(diagonal);
-  // Draw the Kendall curve
-  graph.add(Curve(firstEmpiricalStatistics, secondEmpiricalStatistics));
-  return graph;
-}
-
 /* Compute the Kendall plot empirical statistic associated with a bidimensional sample */
-Sample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Sample & sample)
+static Sample ComputeKendallPlotEmpiricalStatistics(const Sample & sample)
 {
   const UnsignedInteger size = sample.getSize();
   Sample result(size, 1);
@@ -530,7 +479,7 @@ Sample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Sample & sample)
 }
 
 /* Compute the Kendall plot theoretical statistic associated with a bidimensional copula */
-Sample VisualTest::ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
+static Sample ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
     const UnsignedInteger size)
 {
   if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
@@ -542,6 +491,54 @@ Sample VisualTest::ComputeKendallPlotTheoreticalStatistics(const Distribution & 
     for (UnsignedInteger j = 0; j < size; ++j) result(j, 0) = (result(j, 0) * i + empiricalStatistics(j, 0)) / (i + 1);
   }
   return result;
+}
+
+/* Draw the Kendall plot to assess a copula for a bidimensional sample */
+Graph VisualTest::DrawKendallPlot(const Sample & data,
+                                  const Distribution & copula)
+{
+  if (data.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the data sample is empty.";
+  if (data.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the data sample has a dimension not equal to 2.";
+  if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
+  if (copula.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the copula has a dimension not equal to 2.";
+  const Sample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(data));
+  const Sample theoreticalStatistics(ComputeKendallPlotTheoreticalStatistics(copula, data.getSize()));
+  Graph graph("Kendall Plot", copula.getName(), data.getName(), true, "topleft");
+  // Draw the first diagonal
+  Sample dataDiagonal(0, 2);
+  dataDiagonal.add(Point(2, 0.0));
+  dataDiagonal.add(Point(2, 1.0));
+  Curve diagonal(dataDiagonal);
+  diagonal.setColor("red");
+  diagonal.setLineStyle("dashed");
+  graph.add(diagonal);
+  // Draw the Kendall curve
+  graph.add(Curve(theoreticalStatistics, empiricalStatistics));
+  return graph;
+}
+
+/* Draw the Kendall plot to assess if two bidimensional samples share the same copula */
+Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
+                                  const Sample & secondSample)
+{
+  if (firstSample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the first sample is empty.";
+  if (secondSample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the second sample is empty.";
+  if (firstSample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the first sample has a dimension not equal to 2.";
+  if (secondSample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the second sample has a dimension not equal to 2.";
+  const Sample firstEmpiricalStatistics(ComputeKendallPlotEmpiricalStatistics(firstSample));
+  const Sample secondEmpiricalStatistics(ComputeKendallPlotEmpiricalStatistics(secondSample));
+  Graph graph("Kendall Plot", firstSample.getName(), secondSample.getName(), true, "topleft");
+  // Draw the first diagonal
+  Sample data(0, 2);
+  data.add(Point(2, 0.0));
+  data.add(Point(2, 1.0));
+  Curve diagonal(data);
+  diagonal.setColor("red");
+  diagonal.setLineStyle("dashed");
+  graph.add(diagonal);
+  // Draw the Kendall curve
+  graph.add(Curve(firstEmpiricalStatistics, secondEmpiricalStatistics));
+  return graph;
 }
 
 END_NAMESPACE_OPENTURNS

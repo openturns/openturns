@@ -33,10 +33,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-HypothesisTest::HypothesisTest()
-{
-}
-
 
 /* Independence test between 2 scalar scalar samples for discrete distributions
  * The samples here are issued from discrete distributions. Thus there is a transformation

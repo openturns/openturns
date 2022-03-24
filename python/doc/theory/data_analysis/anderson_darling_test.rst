@@ -67,7 +67,7 @@ desired by the user. Note that the higher
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.NormalityTest_AndersonDarlingNormal`
+    - See :py:func:`~openturns.NormalityTest.AndersonDarlingNormal`
 
 .. topic:: Examples:
 

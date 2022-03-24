@@ -26,9 +26,6 @@
 %import UncertaintyModelCopulaTemplateDefs.i
 
 /* Uncertainty/StatTests */
-%include FittingTest.i
-%include HypothesisTest.i
-%include NormalityTest.i
 %include DickeyFullerTest.i
 
 /* At last we include template definitions */

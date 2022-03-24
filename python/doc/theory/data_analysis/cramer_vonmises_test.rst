@@ -64,7 +64,7 @@ desired by the user. Note that the higher
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.NormalityTest_CramerVonMisesNormal`
+    - See :py:func:`~openturns.NormalityTest.CramerVonMisesNormal`
 
 .. topic:: Examples:
 

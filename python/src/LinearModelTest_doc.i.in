@@ -31,7 +31,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelResidualMean
+LinearModelTest.LinearModelResidualMean
 
 Notes
 -----
@@ -100,7 +100,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelFisher, LinearModelTest_LinearModelHarrisonMcCabe
+LinearModelTest.LinearModelFisher, LinearModelTest.LinearModelHarrisonMcCabe
 
 Notes
 -----
@@ -172,8 +172,8 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelBreuschPagan, LinearModelTest_LinearModelResidualMean,
-LinearModelTest_LinearModelDurbinWatson
+LinearModelTest.LinearModelBreuschPagan, LinearModelTest.LinearModelResidualMean,
+LinearModelTest.LinearModelDurbinWatson
 
 Notes
 -----
@@ -242,8 +242,8 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelHarrisonMcCabe, LinearModelTest_LinearModelResidualMean,
-LinearModelTest_LinearModelDurbinWatson
+LinearModelTest.LinearModelHarrisonMcCabe, LinearModelTest.LinearModelResidualMean,
+LinearModelTest.LinearModelDurbinWatson
 
 Notes
 -----
@@ -317,7 +317,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelBreuschPagan, LinearModelTest_LinearModelHarrisonMcCabe, LinearModelTest_LinearModelResidualMean
+LinearModelTest.LinearModelBreuschPagan, LinearModelTest.LinearModelHarrisonMcCabe, LinearModelTest.LinearModelResidualMean
 
 Notes
 -----
@@ -386,7 +386,7 @@ testResults : Collection of :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_FullRegression, LinearModelTest_LinearModelFisher
+LinearModelTest.FullRegression, LinearModelTest.LinearModelFisher
 
 Notes
 -----
@@ -443,7 +443,7 @@ testResults : Collection of :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_PartialRegression, LinearModelTest_LinearModelFisher
+LinearModelTest.PartialRegression, LinearModelTest.LinearModelFisher
 
 Notes
 -----
