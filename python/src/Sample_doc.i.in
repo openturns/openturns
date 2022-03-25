@@ -81,6 +81,7 @@ experiments
 1 : [ 2 3 ]
 2 : [ 4 5 ]"
 
+// ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::BuildFromPoint
 "Static method for building a sample from a sequence of float.
@@ -103,6 +104,8 @@ Examples
 >>> data = [2.0, 2.0, 1.0, 1.0, 2.0, 3.0, 1.0, 2.0, 2.0, 1.0]
 >>> sample = ot.Sample.BuildFromPoint(data)"
 
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Sample::ImportFromCSVFile
 "Static method for building a sample from a CSV file.
 
@@ -124,6 +127,8 @@ Notes
 The file may or may not contain a header line (columns spanned with strings
 delimited with quotes). If it does contain such a header line, it will be
 used for setting the sample description using :py:meth:`setDescription`.
+
+The implementation follows the RFC 4180: https://tools.ietf.org/html/rfc4180.
 
 See Also
 --------
@@ -175,8 +180,6 @@ delimited with quotes). If it does contain such a header line, it will be
 used for setting the sample description using :py:meth:`setDescription`.
 It can also contain some comments, if a line starts with one of the
 characters contained in `Sample-CommentsMarker` from the :class:`~openturns.ResourceMap`.
-
-The implementation follows the RFC 4180: https://tools.ietf.org/html/rfc4180
 
 See Also
 --------
