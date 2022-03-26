@@ -144,7 +144,7 @@ Bibliography
     Management Science, vol 46. Springer, Boston, MA
     `pdf <https://www.researchgate.net/profile/Pierre_LEcuyer/publication/226670289_Recent_Advances_in_Randomized_Quasi-Monte_Carlo_Methods/links/0deec52dd9d449512b000000/Recent-Advances-in-Randomized-Quasi-Monte-Carlo-Methods.pdf>`__
 .. [lemaire2009] Lemaire M., *Structural reliability*, John Wiley & Sons, 2009.
-.. [leMaitre2010Spectral] Le Maître, O., & Knio, O. M. (2010). 
+.. [leMaitre2010] Le Maître, O., & Knio, O. M. (2010). 
     *Spectral methods for uncertainty quantification: with applications to computational fluid dynamics*. Springer Science & Business Media.
 .. [Lilliefors1967] *On the Kolmogorov-Smirnov Test for Normality with Mean and Variance Unknown*
     Hubert W. Lilliefors
@@ -207,8 +207,8 @@ Bibliography
 .. [nlopt2009] Steven G. Johnson, The NLopt nonlinear-optimization package,
     http://ab-initio.mit.edu/nlopt
 .. [petras2003] Petras, K. (2003). *Smolyak cubature of given polynomial 
-   degree with few nodes for increasing dimension.* _Numerische Mathematik_, 
-   _93_(4), 729-753.
+    degree with few nodes for increasing dimension.* Numerische Mathematik, 
+    93 (4), 729-753.
 .. [pmfre01116] Dumas A., *Lois asymptotiques des estimateurs des indices de Sobol'*,
     Technical report, Phimeca, 2018.
     `pdf <https://openturns.github.io/openturns/papers/RT-PMFRE-01116-001C_-_Rapport_loi_estimateur_sobol.pdf>`__
@@ -267,5 +267,7 @@ Bibliography
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
+.. [sullivan2015] Sullivan, T. J. (2015). 
+    *Introduction to uncertainty quantification*. Springer.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.   

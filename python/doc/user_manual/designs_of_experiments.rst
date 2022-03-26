@@ -69,6 +69,7 @@ Deterministic weighted experiments
     GaussProductExperiment
     LowDiscrepancyExperiment
     TensorProductExperiment
+    SmolyakExperiment
 
 .. _low_discrepancy_sequence_api:
 

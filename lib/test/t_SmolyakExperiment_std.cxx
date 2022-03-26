@@ -43,6 +43,25 @@ void sortNodesAndWeights(Sample & nodes, Point & weights)
   } // loop over points
 }
 
+// Simultaneously print the nodes and weights
+void printNodesAndWeights(Sample & nodes, Point & weights)
+{
+  const UnsignedInteger size = nodes.getSize();
+  const UnsignedInteger dimension = nodes.getDimension();
+  OStream fullprint(std::cout);
+  fullprint << "printNodesAndWeights" << std::endl;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    fullprint << "[" << i << "] " << weights[i] << " : " ;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      fullprint << nodes(i, j) << " ";
+    } // loop over dimensions
+    fullprint << std::endl;
+  } // loop over points
+  fullprint << "done" << std::endl;
+}
+
 // Test #1 : 2 experiments with dimensions 1
 void test_1()
 {
@@ -71,6 +90,7 @@ void test_1()
     fullprint << "sortNodesAndWeights()" << std::endl;
     sortNodesAndWeights(nodes, weights);
     fullprint << "sort done." << std::endl;
+    printNodesAndWeights(nodes, weights);
     //
     const int size(weights.getDimension());
     const int dimension(nodes.getDimension());

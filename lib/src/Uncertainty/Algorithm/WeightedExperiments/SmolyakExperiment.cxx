@@ -154,7 +154,7 @@ IndicesCollection SmolyakExperiment::computeCombination() const
   } // loop over the strata
   return combinationIndicesCollection;
 }
-  
+
 /* Compute the nodes and weights */
 /*         This may involve negative weights.
 
@@ -197,14 +197,24 @@ void SmolyakExperiment::computeNodesAndWeights() const
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       LOGDEBUG(OSS() << "  j = " << j << ", size = " << combinationIndicesCollection(i, j));
-      collection.add(collection_[i]);
-      collection[i].setSize(combinationIndicesCollection(i, j));
+      WeightedExperiment marginalExperiment(collection_[j]);
+      marginalExperiment.setSize(combinationIndicesCollection(i, j));
+      collection.add(marginalExperiment);
     } // Loop over the dimensions
     LOGDEBUG(OSS() << "  TensorProductExperiment");
     TensorProductExperiment elementaryExperiment(collection);
     LOGDEBUG(OSS() << "  generateWithWeights()");
     Point elementaryWeights(0);
     Sample elementaryNodes(elementaryExperiment.generateWithWeights(elementaryWeights));
+    LOGDEBUG(OSS() << "  elementaryNodes");
+    for (UnsignedInteger i = 0; i < elementaryNodes.getSize(); ++i)
+    {
+        LOGDEBUG(OSS() << "[" << i << "] " << elementaryWeights[i] << " : ");
+        for (UnsignedInteger j = 0; j < dimension; ++j)
+        {
+          LOGDEBUG(OSS() << elementaryNodes(i, j) << " ");
+        } // loop over dimensions
+    } // loop over points
     // Compute Smolyak coefficient
     LOGDEBUG(OSS() << "  Compute Smolyak coefficient");
     UnsignedInteger marginalLevelsSum = 0;
@@ -221,10 +231,21 @@ void SmolyakExperiment::computeNodesAndWeights() const
     const UnsignedInteger binomial = SpecFunc::BinomialCoefficient(dimension - 1, marginalLevelsSum - level_);
     LOGDEBUG(OSS() << "  binomial = " << binomial);
     const Scalar smolyakFactor = smolyakSign * binomial;
-    LOGDEBUG(OSS() << "  add()");
+    LOGDEBUG(OSS() << "  add " << elementaryNodes.getSize() << " nodes");
     duplicatedNodes.add(elementaryNodes);
     duplicatedWeights.add(smolyakFactor * elementaryWeights);
   } // Loop over the marginal levels
+  const UnsignedInteger duplicateSize = duplicatedNodes.getSize();
+  LOGDEBUG(OSS() << "Number of candidate nodes = " << duplicateSize);
+  LOGDEBUG(OSS() << "printNodesAndWeights");
+  for (UnsignedInteger i = 0; i < duplicateSize; ++i)
+  {
+    LOGDEBUG(OSS() << "[" << i << "] " << duplicatedWeights[i] << " : ");
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      LOGDEBUG(OSS() << duplicatedNodes(i, j) << " ");
+    } // loop over dimensions
+  } // loop over points
   // Reduce to unique nodes and weights
   LOGDEBUG(OSS() << "Reduce to unique nodes and weights");
   nodes_ = Sample(0, dimension);
@@ -232,7 +253,6 @@ void SmolyakExperiment::computeNodesAndWeights() const
   const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
   const Scalar absoluteEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon" );
   UnsignedInteger size = 0;
-  UnsignedInteger duplicateSize(duplicatedWeights.getDimension());
   for (UnsignedInteger indexOfCandidateNode = 0; indexOfCandidateNode < duplicateSize; ++indexOfCandidateNode)
   {
     bool isAlreadyInQuadrature = false;
@@ -240,6 +260,7 @@ void SmolyakExperiment::computeNodesAndWeights() const
     const Point candidateNode(duplicatedNodes[indexOfCandidateNode]);
     const Scalar candidateWeight = duplicatedWeights[indexOfCandidateNode];
     const Scalar candidateNorm = candidateNode.norm();
+    LOGDEBUG(OSS() << "[" << indexOfCandidateNode << "], candidate=" << candidateNode);
     // Search if the node is already in the reduced experiment
     for (UnsignedInteger j = 0; j < size; ++j)
     {
@@ -247,7 +268,7 @@ void SmolyakExperiment::computeNodesAndWeights() const
       const Scalar distance = delta.norm();
       if (distance <= absoluteEpsilon + relativeEpsilon * candidateNorm)
       {
-        LOGDEBUG(OSS() << "  -> Found at" << j);
+        LOGDEBUG(OSS() << "  -> Found at : " << j);
         isAlreadyInQuadrature = true;
         indexOfUniqueNode = j;
         break;
