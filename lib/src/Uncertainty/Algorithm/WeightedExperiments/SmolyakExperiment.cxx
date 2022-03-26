@@ -176,8 +176,6 @@ sample of unique nodes:
 */
 void SmolyakExperiment::computeNodesAndWeights() const
 {
-  const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
-  const Scalar absoluteEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon" );
   LOGDEBUG(OSS() << "SmolyakExperiment::computeNodesAndWeights()");
   const UnsignedInteger dimension = collection_.getSize();
   LOGDEBUG(OSS() << "  dimension = " << dimension);
@@ -187,8 +185,8 @@ void SmolyakExperiment::computeNodesAndWeights() const
   IndicesCollection combinationIndicesCollection(computeCombination());
   LOGDEBUG(OSS() << "  combinationIndicesCollection = " << combinationIndicesCollection);
   // Create elementary Smolyak quadratures
-  Sample nodes(0, dimension);
-  Point weights(0);
+  Sample duplicatedNodes(0, dimension);
+  Point duplicatedWeights(0);
   const UnsignedInteger numberOfUnitaryQuadratures= combinationIndicesCollection.getSize();
   for (UnsignedInteger i = 0; i < numberOfUnitaryQuadratures; ++i)
   {
@@ -221,11 +219,51 @@ void SmolyakExperiment::computeNodesAndWeights() const
     }
     const UnsignedInteger binomial = SpecFunc::BinomialCoefficient(dimension - 1, marginalLevelsSum - level_);
     const Scalar smolyakFactor = smolyakSign * binomial;
-    nodes.add(elementaryNodes);
-    weights.add(smolyakFactor * elementaryWeights);
+    duplicatedNodes.add(elementaryNodes);
+    duplicatedWeights.add(smolyakFactor * elementaryWeights);
   } // Loop over the marginal levels
   // Reduce to unique nodes and weights
-  // TODO
+  nodes_ = Sample(0, dimension);
+  weights_ = Point(0);
+  const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
+  const Scalar absoluteEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon" );
+  UnsignedInteger size = 0;
+  UnsignedInteger duplicateSize(duplicatedWeights.getDimension());
+  for (UnsignedInteger indexOfCandidateNode = 0; indexOfCandidateNode < duplicateSize; ++indexOfCandidateNode)
+  {
+    bool isAlreadyInQuadrature = false;
+    UnsignedInteger indexOfUniqueNode = -1;
+    const Point candidateNode(duplicatedNodes[indexOfCandidateNode]);
+    const Scalar candidateWeight = duplicatedWeights[indexOfCandidateNode];
+    const Scalar candidateNorm = candidateNode.norm();
+    // Search if the node is already in the reduced experiment
+    for (UnsignedInteger j = 0; j < size; ++j)
+    {
+      const Point delta = candidateNode - nodes_[j];
+      const Scalar distance = delta.norm();
+      if (distance <= absoluteEpsilon + relativeEpsilon * candidateNorm)
+      {
+        LOGDEBUG(OSS() << "  -> Found at" << j);
+        isAlreadyInQuadrature = true;
+        indexOfUniqueNode = j;
+        break;
+      }
+    }
+    if (isAlreadyInQuadrature)
+    {
+      // Combine to the unique weight
+      LOGDEBUG(OSS() << "    Add " << candidateWeight << " to the weight");
+      weights_[indexOfUniqueNode] += candidateWeight;
+    }
+    else
+    {
+      // Add the (node, weight)
+      size += 1;
+      LOGDEBUG(OSS() << "    (node, weight) is new, nb. of unique (nodes, weights) :" << size);
+      nodes_.add(candidateNode);
+      weights_.add(candidateWeight);
+    }
+  }
 }
 
 /* Method save() stores the object through the StorageManager */
