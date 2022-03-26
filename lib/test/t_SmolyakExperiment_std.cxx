@@ -24,63 +24,23 @@
 using namespace OT;
 using namespace OT::Test;
 
-// Compare two points, according to lexicographic order
-/** Returns -1 if node_1 < node_2, 
- *           0 if node1 == node_2,
- *           1 otherwise.
- */
-UnsignedInteger comparePoints(const Point point1, const Point point2)
-{
-  const UnsignedInteger dimension(point1.getDimension());
-  if (!(point2.getDimension() == dimension))
-    throw InvalidArgumentException(HERE) << "Error: Dimension of point 1 is " << dimension << " but dimension of point 2 is " << point2.getDimension();
-  UnsignedInteger comparison = 0;
-  for (UnsignedInteger k = 0; k < dimension; ++k)
-  {
-    if (point1[k] < point2[k])
-    {
-      comparison = -1;
-      break;
-    }
-    if (point1[k] > point2[k])
-    {
-      comparison = 1;
-      break;
-    }
-  }
-  return comparison;
-}
-
 // Simultaneously sort the nodes and weights
 void sortNodesAndWeights(Sample & nodes, Point & weights)
 {
-  OStream fullprint(std::cout);
-  fullprint << "sortNodesAndWeights()" << std::endl;
-  const UnsignedInteger size(weights.getDimension());
-  fullprint << "size = " << size << std::endl;
-  UnsignedInteger signOfIMinusJ;
-  if (size == 0)
+  const Indices order(nodes.argsort());
+  const UnsignedInteger size = nodes.getSize();
+  const UnsignedInteger dimension = nodes.getDimension();
+  Sample nodesUnordered(nodes);
+  Point weightsUnordered(weights);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    return;      
-  }
-  for (UnsignedInteger i = 0; i < size - 1; ++i)
-  {
-    fullprint << "i = " << i << std::endl;
-    for (UnsignedInteger j = i + 1; j < size; ++j)
+    const UnsignedInteger index(order[i]);
+    weights[i] = weightsUnordered[index];
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      fullprint << "j = " << j << std::endl;
-      signOfIMinusJ = comparePoints(nodes[i], nodes[j]);
-      if (signOfIMinusJ == 1)
-      {
-        const Point tempPoint(nodes[i]);
-        nodes[i] = nodes[j];
-        nodes[j] = tempPoint;
-        const Scalar tempWeight(weights[i]);
-        weights[i] = weights[j];
-        weights[j] = tempWeight;
-      }
-    }
-  }
+      nodes(i, j) = nodesUnordered(index, j);
+    } // loop over dimensions
+  } // loop over points
 }
 
 // Test #1 : 2 experiments with dimensions 1
@@ -115,27 +75,27 @@ void test_1()
     const int size(weights.getDimension());
     const int dimension(nodes.getDimension());
     const int weightDimension(weights.getDimension());
-    assert_equal(size, 15);
+    assert_equal(size, 14);
     assert_equal(dimension, 2);
-    assert_equal(weightDimension, 15);
+    assert_equal(weightDimension, 14);
     //
-    Point column_1 = {0.11270, 0.11270, 0.11270, 0.11270, 0.11270, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88729, 0.88729, 0.88729, 0.88729, 0.88729};
-    Point column_2 = {0.04691, 0.23076, 0.5, 0.76923, 0.95309, 0.04691, 0.23076, 0.5, 0.76923, 0.95309, 0.04691, 0.23076, 0.5, 0.76923, 0.95309};
+    Point column_1 = {0.211325, 0.788675, 0.5, 0.5, 0.112702, 0.5, 0.887298, 0.211325, 0.211325, 0.788675, 0.788675, 0.5, 0.5, 0.5};
+    Point column_2 = {0.5, 0.5, 0.211325, 0.788675, 0.5, 0.5, 0.5, 0.211325, 0.788675, 0.211325, 0.788675, 0.112702, 0.5, 0.887298};
     Sample nodesExpected(size, dimension);
     for (int i = 0; i < size; ++i)
     {
       nodesExpected(i, 0) = column_1[i];
       nodesExpected(i, 1) = column_2[i];
     }
-    const Point weightsExpected = {0.03290, 0.06647, 0.07901, 0.06647, 0.03290, 0.05265, 0.10636, 0.12642, 0.10636, 0.05265, 0.03290, 0.06647, 0.07901, 0.06647, 0.03290};
+    const Point weightsExpected = {-0.5, -0.5, -0.5, -0.5, 0.277778, 0.444444, 0.277778, 0.25, 0.25, 0.25, 0.25, 0.277778, 0.444444, 0.277778};
     const Scalar rtol = 1.0e-5;
     const Scalar atol = 1.0e-5;
     assert_almost_equal(nodesExpected, nodes, rtol, atol);
     assert_almost_equal(weightsExpected, weights, rtol, atol);
 }
 
-// Test #3 : check hasUniformWeights
-void test_3()
+// Test #2 : check hasUniformWeights
+void test_2()
 {
     SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
     // Marginal 0: Uniform, with 3 nodes
@@ -165,7 +125,7 @@ int main(int, char *[])
   try
   {
     test_1();
-    test_3();
+    test_2();
   }
   catch (TestFailed & ex)
   {

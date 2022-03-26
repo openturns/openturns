@@ -1,0 +1,104 @@
+%feature("docstring") OT::SmolyakExperiment
+"Smolyak experiment.
+
+Parameters
+----------
+experiments : list of :class:`~openturns.WeightedExperiment`
+    List of :math:`n` marginal experiments of the Smolyak experiment. 
+    Each marginal experiment can have arbitrary dimension.
+
+Notes
+-----
+The Smolyak design of experiments (DOE) is based on a collection 
+of marginal multidimensional elementary designs of experiments. 
+Compared to the :class:`~openturns.TensorProductExperiment`, the 
+Smolyak experiment has a significantly lower number of nodes [petras2003]_. 
+This implementation uses the combination technique ([gerstner1998]_ page 215).
+
+Let :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^p` be the multi-index :math:`\boldsymbol{k} = (k_1, ..., k_p)` where 
+
+.. math::
+
+    \mathbb{N}^\star = \{1, 2, ..., \}
+
+is the set of natural numbers without zero. 
+Consider the 1 and the infinity norms ([leMaitre2010Spectral]_ page 57, eq. 3.28):
+
+.. math::
+
+    \|\boldsymbol{k}\|_1 = \sum_{i = 1}^p k_i \qquad
+    \|\boldsymbol{k}\|_\infty = \max_{i = 1} k_i.
+
+for any :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^p`.
+
+The tensor product quadrature is :
+
+.. math::
+
+    Q_\ell^{(p)} = Q_{\ell}^{(1)} \otimes ... \otimes Q_{\ell}^{(1)}.
+
+The following theorem provides an equivalent equation for the tensor product quadrature ([leMaitre2010Spectral]_ page 57, eq. 3.30). 
+
+The tensor product quadrature is :
+
+.. math::
+
+    Q_\ell^{(p)} = \sum_{\|\boldsymbol{k}\|_\infty \leq \ell} \Delta_{k_1}^{(1)} \otimes ... \otimes \Delta_{k_p}^{(1)}
+
+The significant part of the previous equation is the set of multi-indices :math:`\|\boldsymbol{k}\|_\infty \leq \ell`, which involves many terms. 
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+In the following example, we tensorize two Gauss-Legendre 
+quadratures, using 3 nodes in the first dimension and 5 nodes in the second.
+
+>>> import openturns as ot
+>>> experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [3])
+>>> experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [5])
+>>> collection = [experiment1, experiment2]
+>>> multivariate_experiment = ot.SmolyakExperiment(collection)
+>>> nodes, weights = multivariate_experiment.generateWithWeights()
+
+Marginal DOEs do not necessarily have dimension 1. 
+In the following example, we tensorize two DOEs, where the 
+first one has dimension 2, and the second one has dimension 3.
+
+>>> import openturns as ot
+>>> # Experiment 1 : Uniform * 2 with 3 and 2 nodes.
+>>> marginal_sizes_1 = [3, 2]
+>>> dimension_1 = len(marginal_sizes_1)
+>>> distribution_1 = ot.ComposedDistribution([ot.Uniform()] * dimension_1)
+>>> experiment_1 = ot.GaussProductExperiment(distribution_1, marginal_sizes_1)
+>>> # Experiment 2 : Normal * 3 with 2, 2 and 1 nodes.
+>>> marginal_sizes_2 = [2, 2, 1]
+>>> dimension_2 = len(marginal_sizes_2)
+>>> distribution_2 = ot.ComposedDistribution([ot.Normal()] * dimension_2)
+>>> experiment_2 = ot.GaussProductExperiment(distribution_2, marginal_sizes_2)
+>>> # Tensor product
+>>> collection = [experiment_1, experiment_2]
+>>> multivariate_experiment = ot.SmolyakExperiment(collection)
+>>> nodes, weights = multivariate_experiment.generateWithWeights()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmolyakExperiment::getWeightedExperimentCollection
+"Get the marginals of the experiment.
+
+Returns
+-------
+experiments : list of :class:`~openturns.WeightedExperiment`
+    List of the marginals of the experiment."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmolyakExperiment::setWeightedExperimentCollection
+"Set the marginals of the experiment.
+
+Parameters
+----------
+experiments : list of :class:`~openturns.WeightedExperiment`
+    List of the marginals of the experiment."

@@ -29,6 +29,7 @@
 %include BootstrapExperiment.i
 %include FixedExperiment.i
 %include GaussProductExperiment.i
+%include SmolyakExperiment.i
 %include ImportanceSamplingExperiment.i
 %include LHSExperiment.i
 %include TemperatureProfileImplementation.i

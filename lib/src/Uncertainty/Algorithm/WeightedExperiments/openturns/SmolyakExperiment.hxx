@@ -89,9 +89,6 @@ private:
   mutable Sample nodes_;
   mutable Point weights_;
 
-  // Flag to manage the computation of nodes and weights
-  mutable Bool isAlreadyComputedNodesAndWeights_;
-
 }; /* class SmolyakExperiment */
 
 

@@ -47,7 +47,6 @@ SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collec
   , collection_(collection)
   , level_(level)
   , nodes_(0, 0)
-  , isAlreadyComputedNodesAndWeights_(false)
 {
   // Nothing to do
 }
@@ -76,12 +75,12 @@ Bool SmolyakExperiment::hasUniformWeights() const
 /* Sample generation */
 Sample SmolyakExperiment::generateWithWeights(Point & weights) const
 {
-  if (!isAlreadyComputedNodesAndWeights_) computeNodesAndWeights();
+  computeNodesAndWeights();
   weights = weights_;
   return nodes_;
 }
 
-/* Compute minimum of multiindex */
+/* Compute the minimum of a multiindex */
 UnsignedInteger SmolyakExperiment::indicesMinimum(Indices indices) const
 {
   const UnsignedInteger dimension = indices.getSize();
@@ -185,44 +184,49 @@ void SmolyakExperiment::computeNodesAndWeights() const
   IndicesCollection combinationIndicesCollection(computeCombination());
   LOGDEBUG(OSS() << "  combinationIndicesCollection = " << combinationIndicesCollection);
   // Create elementary Smolyak quadratures
+  LOGDEBUG(OSS() << "Create elementary Smolyak quadratures");
   Sample duplicatedNodes(0, dimension);
   Point duplicatedWeights(0);
   const UnsignedInteger numberOfUnitaryQuadratures= combinationIndicesCollection.getSize();
+  LOGDEBUG(OSS() << "numberOfUnitaryQuadratures = " << numberOfUnitaryQuadratures);
   for (UnsignedInteger i = 0; i < numberOfUnitaryQuadratures; ++i)
   {
     LOGDEBUG(OSS() << "  i = " << i);
+    LOGDEBUG(OSS() << "  Set marginal experiments");
     WeightedExperimentCollection collection;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      LOGDEBUG(OSS() << combinationIndicesCollection(i, j));
-      collection[i] = collection_[i];
+      LOGDEBUG(OSS() << "  j = " << j << ", size = " << combinationIndicesCollection(i, j));
+      collection.add(collection_[i]);
       collection[i].setSize(combinationIndicesCollection(i, j));
     } // Loop over the dimensions
+    LOGDEBUG(OSS() << "  TensorProductExperiment");
     TensorProductExperiment elementaryExperiment(collection);
+    LOGDEBUG(OSS() << "  generateWithWeights()");
     Point elementaryWeights(0);
     Sample elementaryNodes(elementaryExperiment.generateWithWeights(elementaryWeights));
     // Compute Smolyak coefficient
+    LOGDEBUG(OSS() << "  Compute Smolyak coefficient");
     UnsignedInteger marginalLevelsSum = 0;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       marginalLevelsSum += combinationIndicesCollection(i, j);
     } // Loop over the dimensions
     const UnsignedInteger exponent = level_ + dimension - marginalLevelsSum - 1;
+    LOGDEBUG(OSS() << "  exponent = " << exponent);
     Scalar smolyakSign;
-    if (exponent % 2 == 0)
-    {
-      smolyakSign = 1.0;
-    }
-    else
-    {
-      smolyakSign = -1.0;
-    }
+    if (exponent % 2 == 0) smolyakSign = 1.0;
+    else smolyakSign = -1.0;
+    LOGDEBUG(OSS() << "  smolyakSign = " << smolyakSign);
     const UnsignedInteger binomial = SpecFunc::BinomialCoefficient(dimension - 1, marginalLevelsSum - level_);
+    LOGDEBUG(OSS() << "  binomial = " << binomial);
     const Scalar smolyakFactor = smolyakSign * binomial;
+    LOGDEBUG(OSS() << "  add()");
     duplicatedNodes.add(elementaryNodes);
     duplicatedWeights.add(smolyakFactor * elementaryWeights);
   } // Loop over the marginal levels
   // Reduce to unique nodes and weights
+  LOGDEBUG(OSS() << "Reduce to unique nodes and weights");
   nodes_ = Sample(0, dimension);
   weights_ = Point(0);
   const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
