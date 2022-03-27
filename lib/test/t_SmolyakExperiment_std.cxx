@@ -34,7 +34,7 @@ void sortNodesAndWeights(Sample & nodes, Point & weights)
   Point weightsUnordered(weights);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger index(order[i]);
+    const int index(order[i]);
     weights[i] = weightsUnordered[index];
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
@@ -52,12 +52,12 @@ void printNodesAndWeights(Sample & nodes, Point & weights)
   fullprint << "printNodesAndWeights" << std::endl;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    fullprint << "[" << i << "] " << weights[i] << " : " ;
+    fullprint << "[" << i << "] " << weights[i] << " : (" ;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       fullprint << nodes(i, j) << " ";
     } // loop over dimensions
-    fullprint << std::endl;
+    fullprint << ")" << std::endl;
   } // loop over points
   fullprint << "done" << std::endl;
 }
@@ -87,9 +87,11 @@ void test_1()
     fullprint << "generateWithWeights()" << std::endl;
     Sample nodes(experiment.generateWithWeights(weights));
     //
+    fullprint << "Before sort:" << std::endl;
+    printNodesAndWeights(nodes, weights);
     fullprint << "sortNodesAndWeights()" << std::endl;
     sortNodesAndWeights(nodes, weights);
-    fullprint << "sort done." << std::endl;
+    fullprint << "After sort:" << std::endl;
     printNodesAndWeights(nodes, weights);
     //
     const int size(nodes.getSize());
@@ -108,7 +110,9 @@ void test_1()
       nodesExpected(i, 1) = column_2[i];
     }
     Point weightsExpected = {0.277778, 0.25, -0.5, 0.25, 0.277778, -0.5, 0.888888, -0.5, 0.277778, 0.25, -0.5, 0.25, 0.277778};
+    fullprint << "Expected :" << std::endl;
     sortNodesAndWeights(nodesExpected, weightsExpected);
+    printNodesAndWeights(nodesExpected, weightsExpected);
     const Scalar rtol = 1.0e-5;
     const Scalar atol = 1.0e-5;
     assert_almost_equal(nodesExpected, nodes, rtol, atol);
@@ -139,6 +143,28 @@ void test_2()
     
 }
 
+void test_3()
+{
+    Log::Show(Log::ALL);
+    OStream fullprint(std::cout);
+    Point column_1 = {0.112702, 0.211325, 0.211325, 0.211325, 0.5, 0.5, 0.5, 0.5, 0.5, 0.788675, 0.788675, 0.788675, 0.887298 };
+    Point column_2 = {0.5, 0.211325, 0.5, 0.788675, 0.112702, 0.211325, 0.788675, 0.887298, 0.5, 0.211325, 0.5, 0.788675, 0.5 };
+    const int size = 13;
+    const UnsignedInteger dimension = 2;
+    Sample nodes(size, dimension);
+    for (int i = 0; i < size; ++i)
+    {
+      nodes(i, 0) = column_1[i];
+      nodes(i, 1) = column_2[i];
+    }
+    Point weights = {0.277778, 0.25, -0.5, 0.25, 0.277778, -0.5, 0.888888, -0.5, 0.277778, 0.25, -0.5, 0.25, 0.277778};
+    fullprint << "Before sort :" << std::endl;
+    printNodesAndWeights(nodes, weights);
+    sortNodesAndWeights(nodes, weights);
+    fullprint << "After sort :" << std::endl;
+    printNodesAndWeights(nodes, weights);
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -146,7 +172,6 @@ int main(int, char *[])
   try
   {
     test_1();
-    test_2();
   }
   catch (TestFailed & ex)
   {
