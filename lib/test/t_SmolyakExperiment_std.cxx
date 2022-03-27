@@ -59,7 +59,23 @@ void printNodesAndWeights(Sample & nodes, Point & weights)
     } // loop over dimensions
     fullprint << ")" << std::endl;
   } // loop over points
-  fullprint << "done" << std::endl;
+}
+
+// Round sample to given number of digits
+void roundSample(Sample & nodes, UnsignedInteger numberOfDigits)
+{
+  const UnsignedInteger size = nodes.getSize();
+  const UnsignedInteger dimension = nodes.getDimension();
+  const Scalar factor = std::pow(10, numberOfDigits);
+  long long rounded;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      rounded = (long long) (factor * nodes(i, j));
+      nodes(i, j) = rounded / factor;
+    } // loop over dimensions
+  } // loop over points
 }
 
 // Test #1 : 2 experiments with dimensions 1
@@ -70,15 +86,11 @@ void test_1()
     SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
     // Marginal 0: Uniform, with 3 nodes
     const Uniform distribution1(0.0, 1.0);
-    Indices marginalSizes1(0);
-    marginalSizes1.add(3);
-    const GaussProductExperiment marginalExperiment1(distribution1, marginalSizes1);  
+    const GaussProductExperiment marginalExperiment1(distribution1);  
     experimentCollection.add(marginalExperiment1);
     // Marginal 1: Uniform, with 5 nodes
     const Uniform distribution2(0.0, 1.0);
-    Indices marginalSizes2(0);
-    marginalSizes2.add(5);
-    const GaussProductExperiment marginalExperiment2(distribution2, marginalSizes2);  
+    const GaussProductExperiment marginalExperiment2(distribution2);  
     experimentCollection.add(marginalExperiment2);
     //
     const UnsignedInteger level = 3;
@@ -87,11 +99,10 @@ void test_1()
     fullprint << "generateWithWeights()" << std::endl;
     Sample nodes(experiment.generateWithWeights(weights));
     //
-    fullprint << "Before sort:" << std::endl;
-    printNodesAndWeights(nodes, weights);
-    fullprint << "sortNodesAndWeights()" << std::endl;
+    UnsignedInteger numberOfDigits = 10;
+    roundSample(nodes, numberOfDigits);
     sortNodesAndWeights(nodes, weights);
-    fullprint << "After sort:" << std::endl;
+    fullprint << "nodes = " << std::endl;
     printNodesAndWeights(nodes, weights);
     //
     const int size(nodes.getSize());
@@ -125,15 +136,11 @@ void test_2()
     SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
     // Marginal 0: Uniform, with 3 nodes
     const Uniform distribution1(0.0, 1.0);
-    Indices marginalSizes1(0);
-    marginalSizes1.add(3);
-    const GaussProductExperiment marginalExperiment1(distribution1, marginalSizes1);  
+    const GaussProductExperiment marginalExperiment1(distribution1);  
     experimentCollection.add(marginalExperiment1);
     // Marginal 1: Uniform, with 5 nodes
     const Uniform distribution2(0.0, 1.0);
-    Indices marginalSizes2(0);
-    marginalSizes2.add(5);
-    const GaussProductExperiment marginalExperiment2(distribution2, marginalSizes2);  
+    const GaussProductExperiment marginalExperiment2(distribution2);  
     experimentCollection.add(marginalExperiment2);
     //
     const UnsignedInteger level = 3;
@@ -141,28 +148,6 @@ void test_2()
     const bool hasUniformWeights = experiment.hasUniformWeights();
     assert_equal(hasUniformWeights, false);
     
-}
-
-void test_3()
-{
-    Log::Show(Log::ALL);
-    OStream fullprint(std::cout);
-    Point column_1 = {0.112702, 0.211325, 0.211325, 0.211325, 0.5, 0.5, 0.5, 0.5, 0.5, 0.788675, 0.788675, 0.788675, 0.887298 };
-    Point column_2 = {0.5, 0.211325, 0.5, 0.788675, 0.112702, 0.211325, 0.788675, 0.887298, 0.5, 0.211325, 0.5, 0.788675, 0.5 };
-    const int size = 13;
-    const UnsignedInteger dimension = 2;
-    Sample nodes(size, dimension);
-    for (int i = 0; i < size; ++i)
-    {
-      nodes(i, 0) = column_1[i];
-      nodes(i, 1) = column_2[i];
-    }
-    Point weights = {0.277778, 0.25, -0.5, 0.25, 0.277778, -0.5, 0.888888, -0.5, 0.277778, 0.25, -0.5, 0.25, 0.277778};
-    fullprint << "Before sort :" << std::endl;
-    printNodesAndWeights(nodes, weights);
-    sortNodesAndWeights(nodes, weights);
-    fullprint << "After sort :" << std::endl;
-    printNodesAndWeights(nodes, weights);
 }
 
 int main(int, char *[])

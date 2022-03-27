@@ -35,9 +35,7 @@ int main(int, char *[])
     marginals.add(Exponential());
     marginals.add(Triangular(-1.0, -0.5, 1.0));
     ComposedDistribution distribution(marginals);
-    Indices marginalDegrees(0);
-    marginalDegrees.add(3);
-    marginalDegrees.add(6);
+    Indices marginalDegrees = {3, 6};
     // Test the constructor based on marginal degrees
     fullprint << "experiment1=" << GaussProductExperiment(marginalDegrees) << std::endl;
     // Test the constructor based on distribution
@@ -50,9 +48,7 @@ int main(int, char *[])
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
     // Test set marginal degrees
-    Indices marginalDegreesBis(0);
-    marginalDegreesBis.add(7);
-    marginalDegreesBis.add(13);
+    Indices marginalDegreesBis = {7, 13};
     experiment.setMarginalDegrees(marginalDegreesBis);
     fullprint << "experiment = " << experiment << std::endl;
     Point weightsBis(0);
