@@ -122,6 +122,12 @@ void GaussProductExperiment::setMarginalSizes(const Indices & marginalSizes)
   if (marginalSizes != marginalSizes_)
   {
     marginalSizes_ = marginalSizes;
+    size_ = 1;
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      const UnsignedInteger dI = marginalDegrees_[i];
+      size_ *= dI;
+    } // Loop over the dimensions
     isAlreadyComputedNodesAndWeights_ = false;
   }
 }
@@ -130,17 +136,8 @@ void GaussProductExperiment::setMarginalSizes(const Indices & marginalSizes)
 void GaussProductExperiment::setDistributionAndMarginalSizes(const Distribution & distribution,
     const Indices & marginalSizes)
 {
-  // Set the marginal sizes here then the distribution with checks
-  marginalSizes_ = marginalSizes;
+  setMarginalSizes(marginalSizes);
   setDistribution(distribution);
-
-  const UnsignedInteger dimension = distribution_.getDimension();
-  size_ = 1;
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
-  {
-    const UnsignedInteger dI = marginalSizes_[i];
-    size_ *= dI;
-  }
 }
 
 Indices GaussProductExperiment::getMarginalSizes() const
@@ -201,12 +198,20 @@ void GaussProductExperiment::computeNodesAndWeights() const
   isAlreadyComputedNodesAndWeights_ = true;
 }
 
-/* Set size
+/* Set size 
+   The first dimension gets the size, the other dimensions get a 
+   marginal size equal to 1. */
 void GaussProductExperiment::setSize(const UnsignedInteger size)
 {
-  const Indices marginalDegrees = {size};
-  setMarginalDegrees(marginalDegrees);
-}*/
+  const UnsignedInteger dimension = distribution_.getDimension();
+  if (dimension > 0)
+  {
+    Indices marginalSizes(dimension);
+    marginalSizes[0] = size;
+    for (UnsignedInteger i = 1; i < dimension; ++ i) marginalSizes[i] = 1;
+    setMarginalDegrees(marginalSizes);
+  }
+}
 
 /* Method save() stores the object through the StorageManager */
 void GaussProductExperiment::save(Advocate & adv) const

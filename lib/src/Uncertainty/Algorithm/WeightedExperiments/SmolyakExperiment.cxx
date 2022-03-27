@@ -200,9 +200,10 @@ void SmolyakExperiment::computeNodesAndWeights() const
       WeightedExperiment marginalExperiment(collection_[j]);
       marginalExperiment.setSize(combinationIndicesCollection(i, j));
       collection.add(marginalExperiment);
+      LOGDEBUG(OSS() << "  marginalExperiment = " << marginalExperiment);
     } // Loop over the dimensions
-    LOGDEBUG(OSS() << "  TensorProductExperiment");
     TensorProductExperiment elementaryExperiment(collection);
+    LOGDEBUG(OSS() << "  TensorProductExperiment : " << elementaryExperiment);
     LOGDEBUG(OSS() << "  generateWithWeights()");
     Point elementaryWeights(0);
     Sample elementaryNodes(elementaryExperiment.generateWithWeights(elementaryWeights));

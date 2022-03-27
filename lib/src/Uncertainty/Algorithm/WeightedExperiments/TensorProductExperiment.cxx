@@ -118,6 +118,7 @@ void TensorProductExperiment::computeNodesAndWeights() const
   Indices marginalSizeIndices(numberOfMarginalExperiments);
   for (UnsignedInteger i = 0; i < numberOfMarginalExperiments; ++i)
   {
+    LOGDEBUG(OSS() << "i = " << i << ", experiment = " << collection_[i]);
     Point weights;
     const Sample nodes(collection_[i].generateWithWeights(weights));
     marginalNodesCollection[i] = nodes;

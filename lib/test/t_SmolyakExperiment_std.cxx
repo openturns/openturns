@@ -92,22 +92,23 @@ void test_1()
     fullprint << "sort done." << std::endl;
     printNodesAndWeights(nodes, weights);
     //
-    const int size(weights.getDimension());
+    const int size(nodes.getSize());
     const int dimension(nodes.getDimension());
     const int weightDimension(weights.getDimension());
-    assert_equal(size, 14);
+    assert_equal(size, 13);
     assert_equal(dimension, 2);
-    assert_equal(weightDimension, 14);
+    assert_equal(weightDimension, 13);
     //
-    Point column_1 = {0.211325, 0.788675, 0.5, 0.5, 0.112702, 0.5, 0.887298, 0.211325, 0.211325, 0.788675, 0.788675, 0.5, 0.5, 0.5};
-    Point column_2 = {0.5, 0.5, 0.211325, 0.788675, 0.5, 0.5, 0.5, 0.211325, 0.788675, 0.211325, 0.788675, 0.112702, 0.5, 0.887298};
+    Point column_1 = {0.112702, 0.211325, 0.211325, 0.211325, 0.5, 0.5, 0.5, 0.5, 0.5, 0.788675, 0.788675, 0.788675, 0.887298};
+    Point column_2 = {0.5, 0.211325, 0.5, 0.788675, 0.112702, 0.211325, 0.5, 0.788675, 0.887298, 0.211325, 0.5, 0.788675, 0.5};
     Sample nodesExpected(size, dimension);
     for (int i = 0; i < size; ++i)
     {
       nodesExpected(i, 0) = column_1[i];
       nodesExpected(i, 1) = column_2[i];
     }
-    const Point weightsExpected = {-0.5, -0.5, -0.5, -0.5, 0.277778, 0.444444, 0.277778, 0.25, 0.25, 0.25, 0.25, 0.277778, 0.444444, 0.277778};
+    Point weightsExpected = {0.277778, 0.25, -0.5, 0.25, 0.277778, -0.5, 0.888888, -0.5, 0.277778, 0.25, -0.5, 0.25, 0.277778};
+    sortNodesAndWeights(nodesExpected, weightsExpected);
     const Scalar rtol = 1.0e-5;
     const Scalar atol = 1.0e-5;
     assert_almost_equal(nodesExpected, nodes, rtol, atol);
