@@ -61,7 +61,7 @@ void printNodesAndWeights(Sample & nodes, Point & weights)
   } // loop over points
 }
 
-// Round sample to given number of digits
+// Round sample to given number of decimal digits
 void roundSample(Sample & nodes, UnsignedInteger numberOfDigits)
 {
   const UnsignedInteger size = nodes.getSize();
