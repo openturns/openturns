@@ -277,31 +277,39 @@ HMatrixImplementation::~HMatrixImplementation()
 void
 HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction& f, char symmetry)
 {
+  const HMatrixParameters parameters;
+  assemble(f, parameters, symmetry);
+}
+
+void HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction &f,
+                                     const HMatrixParameters & parameters,
+                                     char symmetry)
+{
 #ifdef OPENTURNS_HAVE_HMAT
   int sym = 0;
-  switch(symmetry)
+  switch (symmetry)
   {
-    case 'N':
-    case 'n':
-      break;
-    case 'L':
-    case 'l':
-      sym = 1;
-      break;
-    default:
-      throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
+  case 'N':
+  case 'n':
+    break;
+  case 'L':
+  case 'l':
+    sym = 1;
+    break;
+  default:
+    throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
   }
 
   hmat_assemble_context_t ctx_assemble;
   hmat_assemble_context_init(&ctx_assemble);
   ctx_assemble.lower_symmetric = sym;
   ctx_assemble.simple_compute = &trampoline_simple;
-  ctx_assemble.user_context = const_cast<HMatrixRealAssemblyFunction*>(&f);
+  ctx_assemble.user_context = const_cast<HMatrixRealAssemblyFunction *>(&f);
   ctx_assemble.progress = NULL;
 
-  const Scalar assemblyEpsilon = ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon");
+  const Scalar assemblyEpsilon = parameters.getAssemblyEpsilon();
+  const String compressionMethod = parameters.getCompressionMethod();
 
-  const String compressionMethod = ResourceMap::GetAsString("HMatrix-CompressionMethod");
   if (compressionMethod == "Svd")
     ctx_assemble.compression = hmat_create_compression_svd(assemblyEpsilon);
   else if (compressionMethod == "AcaFull")
@@ -313,15 +321,17 @@ HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction& f, char symme
   else if (compressionMethod == "AcaRandom")
     ctx_assemble.compression = hmat_create_compression_aca_random(assemblyEpsilon);
   else
-    LOGWARN( OSS() << "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial or AcaPlus");
+    throw InvalidArgumentException(HERE) << "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial, AcaPlus or AcaRandom";
 
-  static_cast<hmat_interface_t*>(hmatInterface_.get())->assemble_generic(static_cast<hmat_matrix_t*>(hmat_), &ctx_assemble);
+  int rc = static_cast<hmat_interface_t *>(hmatInterface_.get())->assemble_generic(static_cast<hmat_matrix_t *>(hmat_), &ctx_assemble);
+  if (rc != 0)
+    throw InternalException(HERE) << "In HMatrix::assemble, something went wrong";
   hmat_delete_compression(ctx_assemble.compression);
 
   // recompression after build
-  const Scalar recompressionEpsilon = ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon");
-  static_cast<hmat_interface_t*>(hmatInterface_.get())->set_low_rank_epsilon(static_cast<hmat_matrix_t*>(hmat_), recompressionEpsilon);
-  static_cast<hmat_interface_t*>(hmatInterface_.get())->truncate(static_cast<hmat_matrix_t*>(hmat_));
+  const Scalar recompressionEpsilon = parameters.getRecompressionEpsilon();
+  static_cast<hmat_interface_t *>(hmatInterface_.get())->set_low_rank_epsilon(static_cast<hmat_matrix_t *>(hmat_), recompressionEpsilon);
+  static_cast<hmat_interface_t *>(hmatInterface_.get())->truncate(static_cast<hmat_matrix_t *>(hmat_));
 
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -359,19 +369,27 @@ UnsignedInteger HMatrixImplementation::getNbColumns() const
 
 void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry)
 {
+  const HMatrixParameters parameters;
+  assemble(f, parameters, symmetry);
+}
+
+void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction &f,
+                                     const HMatrixParameters &parameters,
+                                     char symmetry)
+{
 #ifdef OPENTURNS_HAVE_HMAT
   int sym = 0;
-  switch(symmetry)
+  switch (symmetry)
   {
-    case 'N':
-    case 'n':
-      break;
-    case 'L':
-    case 'l':
-      sym = 1;
-      break;
-    default:
-      throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
+  case 'N':
+  case 'n':
+    break;
+  case 'L':
+  case 'l':
+    sym = 1;
+    break;
+  default:
+    throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
   }
 
   hmat_assemble_context_t ctx_assemble;
@@ -379,12 +397,14 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction& f,
   ctx_assemble.lower_symmetric = sym;
   ctx_assemble.prepare = &trampoline_hmat_prepare_block;
   ctx_assemble.block_compute = &trampoline_compute;
-  ctx_assemble.user_context = const_cast<HMatrixTensorRealAssemblyFunction*>(&f);
+  ctx_assemble.user_context = const_cast<HMatrixTensorRealAssemblyFunction *>(&f);
   ctx_assemble.progress = NULL;
 
-  const Scalar assemblyEpsilon = ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon");
+  const Scalar assemblyEpsilon = parameters.getAssemblyEpsilon();
+  const String compressionMethod = parameters.getCompressionMethod();
+  const Scalar recompressionEpsilon = parameters.getRecompressionEpsilon();
 
-  const String compressionMethod = ResourceMap::GetAsString("HMatrix-CompressionMethod");
+
   if (compressionMethod == "Svd")
     ctx_assemble.compression = hmat_create_compression_svd(assemblyEpsilon);
   else if (compressionMethod == "AcaFull")
@@ -396,15 +416,15 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction& f,
   else if (compressionMethod == "AcaRandom")
     ctx_assemble.compression = hmat_create_compression_aca_random(assemblyEpsilon);
   else
-    LOGWARN( OSS() << "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial or AcaPlus");
+    throw InvalidArgumentException(HERE) <<  "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial, AcaPlus or AcaRandom";
 
-  static_cast<hmat_interface_t*>(hmatInterface_.get())->assemble_generic(static_cast<hmat_matrix_t*>(hmat_), &ctx_assemble);
+  int rc = static_cast<hmat_interface_t *>(hmatInterface_.get())->assemble_generic(static_cast<hmat_matrix_t *>(hmat_), &ctx_assemble);
+  if (rc != 0)
+    throw InvalidArgumentException(HERE) << "Something went wrong in assemble";
   hmat_delete_compression(ctx_assemble.compression);
 
-  // recompression after build
-  const Scalar recompressionEpsilon = ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon");
-  static_cast<hmat_interface_t*>(hmatInterface_.get())->set_low_rank_epsilon(static_cast<hmat_matrix_t*>(hmat_), recompressionEpsilon);
-  static_cast<hmat_interface_t*>(hmatInterface_.get())->truncate(static_cast<hmat_matrix_t*>(hmat_));
+  static_cast<hmat_interface_t *>(hmatInterface_.get())->set_low_rank_epsilon(static_cast<hmat_matrix_t *>(hmat_), recompressionEpsilon);
+  static_cast<hmat_interface_t *>(hmatInterface_.get())->truncate(static_cast<hmat_matrix_t *>(hmat_));
 
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -452,57 +472,54 @@ void HMatrixImplementation::factorize(const String& method)
   else if (method != "LU")
     LOGWARN( OSS() << "Unknown factorization method: " << method << ". Valid values are: LU, LDLt, or LLt.");
 
+  // Compute an approximation of the max eigen value
+  const Scalar maxEV = computeApproximateLargestEigenValue();
   // Compute a reasonable regularization factor
-  Scalar lambda = 2.0 * computeApproximateLargestEigenValue() * ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon");
+  Scalar lambda = 2.0 * maxEV * ResourceMap::GetAsScalar("HMatrix-RegularizationEpsilon");
 
   // create a backup copy as the factorization can leave the matrix in a broken state and should not be reused
   hmat_matrix_t* hmatBackup = static_cast<hmat_matrix_t*>(hmat_);
   hmat_ = static_cast<hmat_interface_t*>(hmatInterface_.get())->copy(static_cast<hmat_matrix_t*>(hmatBackup));
 
-  // Do regularization
-  addIdentity(lambda);
   Bool done = false;
-  String msg;
   const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("HMatrix-FactorizationIterations");
-  for (UnsignedInteger iteration = 0; iteration < maximumIteration; ++ iteration)
+  UnsignedInteger iteration = 0;
+  // At least one regularization
+  Bool cont = true;
+  while (cont)
   {
+    // Double the current regularization factor by adding it another time
+    addIdentity(lambda);
     LOGDEBUG(OSS() << "Factorization, regularization loop " << iteration << ", regularization factor=" << lambda);
-    try
+
+    hmat_factorization_context_t context;
+    hmat_factorization_context_init(&context);
+    context.factorization = fact_method;
+    context.progress = NULL;
+    int rc = static_cast<hmat_interface_t *>(hmatInterface_.get())->factorize_generic(static_cast<hmat_matrix_t *>(hmat_), &context);
+    done = (rc == 0);
+    if (!done)
     {
-      hmat_factorization_context_t context;
-      hmat_factorization_context_init(&context);
-      context.factorization = fact_method;
-      context.progress = NULL;
-      static_cast<hmat_interface_t*>(hmatInterface_.get())->factorize_generic(static_cast<hmat_matrix_t*>(hmat_), &context);
-
-      // ditch the original instance
-      static_cast<hmat_interface_t*>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t*>(hmatBackup));
-      static_cast<hmat_interface_t*>(hmatInterface_.get())->finalize();
-
-      done = true;
-      LOGDEBUG("Factorization ok");
-    }
-    catch (std::exception& ex)
-    {
-      // hmat::LapackException is not yet exported
-      msg = ex.what();
-
       // ditch the copy and restart from the original instance
-      static_cast<hmat_interface_t*>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t*>(hmat_));
-      static_cast<hmat_interface_t*>(hmatInterface_.get())->finalize();
+      static_cast<hmat_interface_t *>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t *>(hmat_));
+      hmat_ = static_cast<hmat_interface_t *>(hmatInterface_.get())->copy(static_cast<hmat_matrix_t *>(hmatBackup));
 
-      hmat_ = static_cast<hmat_interface_t*>(hmatInterface_.get())->copy(static_cast<hmat_matrix_t*>(hmatBackup));
-
-      // Double the current regularization factor by adding it another time
-      addIdentity(lambda);
       // And double its value for next loop
       lambda += lambda;
-      LOGDEBUG(OSS() << "Must increase the regularization to " << lambda << " because " << msg);
+      LOGDEBUG(OSS() << "Must increase the regularization to " << lambda );
     }
-    if (done) break;
-  } // for
+    else
+    {
+      LOGDEBUG("Factorization ok");
+    }
+    iteration += 1;
+    cont = (iteration < maximumIteration) && (!done);
+  } // while
+  // ditch the original instance
+  static_cast<hmat_interface_t *>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t *>(hmatBackup));
+  static_cast<hmat_interface_t *>(hmatInterface_.get())->finalize();
   if (!done)
-    throw InternalException(HERE) << "Factorization failed, msg=" << msg;
+    throw InternalException(HERE) << "HMatrix::factorize : factorization failed, probably needs more regularization" ;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
