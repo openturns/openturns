@@ -136,7 +136,6 @@ Marginal DOEs do not necessarily have dimension 1.
 In the following example, we tensorize two DOEs, where the 
 first one has dimension 2, and the second one has dimension 3.
 
->>> import openturns as ot
 >>> # Experiment 1 : Uniform * 2 with 3 and 2 nodes.
 >>> marginal_sizes_1 = [3, 2]
 >>> dimension_1 = len(marginal_sizes_1)
