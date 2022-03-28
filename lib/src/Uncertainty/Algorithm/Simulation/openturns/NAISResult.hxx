@@ -83,11 +83,11 @@ public:
   void load(Advocate & adv) override;
   
   // Not implemented
-  void drawImportanceFactors() const ;
-  void getConfidenceLength() const ;
-  void getImportanceFactors() const ;
-  void getMeanPointInEventDomain() const ;
-  void getProbabilityDistribution() const ;
+  Graph drawImportanceFactors() const;
+  Scalar getConfidenceLength(const Scalar level) const override;
+  PointWithDescription getImportanceFactors() const;
+  Point getMeanPointInEventDomain() const;
+  Normal getProbabilityDistribution() const;
 
 private:
 

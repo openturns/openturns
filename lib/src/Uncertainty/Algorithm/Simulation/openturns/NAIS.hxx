@@ -102,12 +102,12 @@ private:
   NAISResult naisResult_;
   
   // Not Implemented
-  void drawProbabilityConvergence() const;
-  void getConvergenceStrategy() const;
-  void getMaximumCoefficientOfVariation() const;
-  void getMaximumStandardDeviation() const;
-  void setConvergenceStrategy() const;
-  void setMaximumCoefficientOfVariation() const;  
+  Graph drawProbabilityConvergence(const Scalar level) const;
+  HistoryStrategy getConvergenceStrategy() const;
+  Scalar getMaximumCoefficientOfVariation() const;
+  Scalar getMaximumStandardDeviation() const;
+  void setConvergenceStrategy(const HistoryStrategy & convergenceStrategy) const;
+  void setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation) const;  
 
 }; /* class NAIS */
 

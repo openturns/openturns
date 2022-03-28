@@ -264,32 +264,32 @@ void NAIS::run()
 
 }
 
-void NAIS::drawProbabilityConvergence() const
+Graph NAIS::drawProbabilityConvergence(const Scalar level) const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
-void NAIS::getConvergenceStrategy() const
+HistoryStrategy NAIS::getConvergenceStrategy() const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
-void NAIS::getMaximumCoefficientOfVariation() const
+Scalar NAIS::getMaximumCoefficientOfVariation() const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
-void NAIS::getMaximumStandardDeviation() const
+Scalar NAIS::getMaximumStandardDeviation() const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
-void NAIS::setConvergenceStrategy() const
+void NAIS::setConvergenceStrategy(const HistoryStrategy & convergenceStrategy) const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
-void NAIS::setMaximumCoefficientOfVariation() const
+void NAIS::setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation) const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }

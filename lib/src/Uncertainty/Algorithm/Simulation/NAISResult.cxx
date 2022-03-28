@@ -127,27 +127,27 @@ void NAISResult::load(Advocate & adv)
   adv.loadAttribute("sample_", auxiliaryInputSample_);
 }
 
-void NAISResult::drawImportanceFactors() const
+Graph NAISResult::drawImportanceFactors() const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
-void NAISResult::getConfidenceLength() const
+Scalar NAISResult::getConfidenceLength(const Scalar level) const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
-void NAISResult::getImportanceFactors() const
+PointWithDescription NAISResult::getImportanceFactors() const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
-void NAISResult::getMeanPointInEventDomain() const
+Point NAISResult::getMeanPointInEventDomain() const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
-void NAISResult::getProbabilityDistribution() const
+Normal NAISResult::getProbabilityDistribution() const
 {
   throw NotYetImplementedException(HERE) << "Not implemented";
 }
