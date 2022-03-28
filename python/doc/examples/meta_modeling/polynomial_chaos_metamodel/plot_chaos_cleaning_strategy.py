@@ -4,63 +4,85 @@ Create a sparse chaos by integration
 """
 # %%
 #
-# The goal of this example is to show how to create a sparse polynomial chaos expansion (PCE) when we estimate its coefficients by integration. We show how to use the `CleaningStrategy` class.
+# The goal of this example is to show how to create a sparse polynomial chaos  
+# expansion (PCE) when we estimate its coefficients by integration. We show  
+# how to use the :class:`~openturns.CleaningStrategy` class.
 #
 # Polynomial chaos expansion
 # --------------------------
 #
-# Let :math:`g : \mathcal{X} \rightarrow \mathbb{R}` be a function where :math:`\mathcal{X} \subseteq \mathbb{R}^p` is the domain of :math:`g`. Let :math:`f` be a probability density function on :math:`\mathcal{X}`. Let :math:`T` be the iso-probabilistic transformation from the physical space :math:`\mathcal{X}` to the standard space :math:`\mathcal{\bar{X}}`:
+# Let :math:`g : \mathcal{X} \rightarrow \mathbb{R}` be a function 
+# where :math:`\mathcal{X} \subseteq \mathbb{R}^p` is the domain of :math:`g`.  
+# Let :math:`f` be a probability density function on :math:`\mathcal{X}`.  
+# Let :math:`T` be the iso-probabilistic transformation from the physical  
+# space :math:`\mathcal{X}` to the standard space :math:`\mathcal{\bar{X}}`:
 #
-#   .. math::
+# .. math::
 #
-#     \xi = T(\boldsymbol{x}) \in \mathcal{\bar{X}}
+#   \xi = T(\boldsymbol{x}) \in \mathcal{\bar{X}}
 #
 # for any :math:`\boldsymbol{x} \in \mathcal{X}`.
 # Let :math:`h` be the function defined by the equation :
 #
-#   .. math::
+# .. math::
 #
-#     h(\boldsymbol{\xi}) = \left(g \circ T^{-1}\right)(\boldsymbol{\xi})
+#   h(\boldsymbol{\xi}) = \left(g \circ T^{-1}\right)(\boldsymbol{\xi})
 #
 # for any :math:`\boldsymbol{\xi} \in \mathcal{\bar{X}}`.
 # The polynomial chaos decomposition of :math:`h` is ([blatman2009]_ page 73) :
 #
-#   .. math::
+# .. math::
 #
-#     h(\boldsymbol{\xi}) \approx \sum_{\boldsymbol{\alpha} \in \mathbb{N}^p} a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi})
+#   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathbb{N}^p}
+#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}) + \epsilon
 #
-# where :math:`\boldsymbol{\alpha} = (\alpha_1, ..., \alpha_p) \in \mathbb{N}^p` is a multiindex, :math:`a_{\boldsymbol{\alpha}} \in \mathbb{R}` is the coefficient and :math:`\psi_{\boldsymbol{\alpha}} : \mathcal{\bar{X}} \rightarrow \mathbb{R}` is a multivariate polynomial.
+# where :math:`\boldsymbol{\alpha} = (\alpha_1, ..., \alpha_p) \in \mathbb{N}^p`  
+# is a multiindex, :math:`a_{\boldsymbol{\alpha}} \in \mathbb{R}` is the  
+# coefficient,  :math:`\psi_{\boldsymbol{\alpha}} : \mathcal{\bar{X}} \rightarrow \mathbb{R}`  
+# is a multivariate polynomial and :math:`\epsilon` is a random variable.
 
 # %%
 #
 # Truncated expansion
 # -------------------
-# In practice, we cannot consider an infinite series and must truncate the decomposition at a given order. Only a selection of coefficients must be kept. This leads to a subset of all possible multiindices. In the remainder of this text, we call this selection the *multiindex set*.
+# In practice, we cannot consider an infinite series and must truncate  
+# the decomposition at a given order. Only a selection of coefficients must  
+# be kept. This leads to a subset of all possible multiindices. In the  
+# remainder of this text, we call this selection the *multiindex set*.
 #
-# Several multiindex sets can be considered. A simple method is to truncate the polynomial up to a given maximum total degree :math:`d \in \mathbb{N}`. Let :math:`\mathcal{A}^{d}` be the multi-index set defined by
+# Several multiindex sets can be considered. A simple method is to truncate  
+# the polynomial up to a given maximum total degree :math:`d \in \mathbb{N}`.  
+# Let :math:`\mathcal{A}^{d}` be the multi-index set defined by
 #
-#   .. math::
+# .. math::
 #
-#     \mathcal{A}^{d} = \left\{ \boldsymbol{\alpha} \in \mathbb{N}^p \; | \; \|\boldsymbol{\alpha}\|_1 \leq d\right\}
+#   \mathcal{A}^{d} = \left\{ \boldsymbol{\alpha} \in \mathbb{N}^p  
+#   \; | \; \|\boldsymbol{\alpha}\|_1 \leq d\right\}
 #
 # where
 #
-#   .. math::
+# .. math::
 #
-#     \|\boldsymbol{\alpha}\|_d = \alpha_1 + ... + \alpha_p
+#   \|\boldsymbol{\alpha}\|_d = \alpha_1 + ... + \alpha_p
 #
 # is the 1-norm of the multi-index :math:`\boldsymbol{\alpha}`.
 # Therefore, the truncated polynomial chaos expansion is:
 #
-#   .. math::
+# .. math::
 #
-#     h(\boldsymbol{\xi}) \approx \sum_{\boldsymbol{\alpha} \in \mathcal{A}^{d}} a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}).
+#   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathcal{A}^{d}}
+#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}) + \epsilon.
 #
-# In order to ensure a low error, we may choose a large value of the parameter :math:`P`. This, however, leads to a large number of coefficients :math:`\boldsymbol{\alpha} \in \mathcal{A}^{d}` to estimate. More precisely, the number of coefficients to estimate is ([blatman2009]_ page 73) :
+# In order to ensure a low error, we may choose a large value of the  
+# parameter :math:`P`. This, however, leads to a large number of  
+# coefficients :math:`\boldsymbol{\alpha} \in \mathcal{A}^{d}` to  
+# estimate. More precisely, the number of coefficients to estimate  
+# is ([blatman2009]_ page 73) :
 #
-#   .. math::
+# .. math::
 #
-#     \textrm{card}\left(\mathcal{A}^{d}\right) = {p + d \choose d} = \frac{(p + d)!}{p! d!}
+#   \textrm{card}\left(\mathcal{A}^{d}\right) = {p + d \choose d}  
+#   = \frac{(p + d)!}{p! d!}
 #
 # where :math:`p!` is the factorial number of :math:`p`.
 
@@ -68,26 +90,35 @@ Create a sparse chaos by integration
 #
 # Low-rank polynomial chaos expansion
 # -----------------------------------
-# For any :math:`\boldsymbol{\alpha} \in \mathbb{N}^p`, let :math:`\|\boldsymbol{\alpha}\|_0` be the rank of the multiindex, that is, the number of nonzero components:
+# For any :math:`\boldsymbol{\alpha} \in \mathbb{N}^p`, let  
+# :math:`\|\boldsymbol{\alpha}\|_0` be the rank of the multiindex, that is,  
+# the number of nonzero components:
 #
-#   .. math::
+# .. math::
 #
-#     \|\boldsymbol{\alpha}\|_0 = \sum_{i = 1}^p \boldsymbol{1}_{\alpha_i > 0}
+#   \|\boldsymbol{\alpha}\|_0 = \sum_{i = 1}^p \boldsymbol{1}_{\alpha_i > 0}
 #
 # where :math:`\boldsymbol{1}` is the indicator function.
-# The multiindex set of maximum total degree :math:`d \in \mathbb{N}` and maximum rank :math:`j \in \mathbb{N}` is ([blatman2009]_ page 74) is :
+# The multiindex set of maximum total degree :math:`d \in \mathbb{N}`  
+# and maximum rank :math:`j \in \mathbb{N}` is ([blatman2009]_ page 74) is :
 #
-#   .. math::
+# .. math::
 #
-#     \mathcal{A}^{d,j} = \left\{ \boldsymbol{\alpha} \in \mathbb{N}^p \; | \; \|\boldsymbol{\alpha}\|_1 \leq d, \; \; \|\boldsymbol{\alpha}\|_0 \leq j\right\}.
+#   \mathcal{A}^{d,j} = \left\{ \boldsymbol{\alpha} \in \mathbb{N}^p  
+#   \; | \; \|\boldsymbol{\alpha}\|_1 \leq d, \;  
+#   \; \|\boldsymbol{\alpha}\|_0 \leq j\right\}.
 #
 # Therefore, the rank-`j` polynomial chaos expansion is:
 #
-#   .. math::
+# .. math::
 #
-#     h(\boldsymbol{\xi}) \approx \sum_{\boldsymbol{\alpha} \in \mathcal{A}^{d,j}} a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}).
+#   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in  
+#   \mathcal{A}^{d,j}} a_{\boldsymbol{\alpha}}  
+#   \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}) + \epsilon.
 #
-# The rank is now an hyperparameter of the model: [blatman2009]_ suggests to use :math:`j = 2, 3, 4`. An example of low-rank PCE for the G-Sobol' function is given in [blatman2009]_ page 75.
+# The rank is now an hyperparameter of the model: [blatman2009]_ suggests  
+# to use :math:`j = 2, 3, 4`. An example of low-rank PCE for the G-Sobol'  
+# function is given in [blatman2009]_ page 75.
 #
 # *Note.* It is currently not possible to create a low-rank PCE in OpenTURNS.
 
@@ -95,68 +126,90 @@ Create a sparse chaos by integration
 #
 # Model selection
 # ---------------
-# If :math:`\textrm{card}\left(\mathcal{A}^{d}\right)` is large, many coefficients may be poorly estimated, which may reduce the quality of the metamodel. We may want to select a subset of the coefficients which best predict the output. In other words, we may compute a subset
+# If :math:`\textrm{card}\left(\mathcal{A}^{d}\right)` is large, many coefficients  
+# may be poorly estimated, which may reduce the quality of the metamodel. We may  
+# want to select a subset of the coefficients which best predict the output.  
+# In other words, we may compute a subset
 #
-#   .. math::
+# .. math::
 #
-#     \mathcal{A} \subseteq \mathcal{A}^{d}
+#   \mathcal{A} \subseteq \mathcal{A}^{d}
 #
 # such that ([blatman2009]_ page 86) :
 #
-#   .. math::
+# .. math::
 #
-#     h(\boldsymbol{\xi}) \approx \sum_{\boldsymbol{\alpha} \in \mathcal{A}} a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi}).
+#   h(\boldsymbol{\xi}) = \sum_{\boldsymbol{\alpha} \in \mathcal{A}}  
+#   a_{\boldsymbol{\alpha}} \psi_{\boldsymbol{\alpha}}(\boldsymbol{\xi})  
+#   + \epsilon.
 #
+# An enumeration rule is a function from the set of integers :math:`k` to  
+# the corresponding set of multiindices :math:`\boldsymbol{\alpha}`. More  
+# precisely, let :math:`r : \mathbb{N} \rightarrow \mathbb{N}^p` be the  
+# function such that :
 #
-# An enumeration rule is a function from the set of integers :math:`k` to the corresponding set of multiindices :math:`\boldsymbol{\alpha}`. More precisely, let :math:`r : \mathbb{N} \rightarrow \mathbb{N}^p` be the function such that :
+# .. math::
 #
-#   .. math::
-#
-#     r(k) = \boldsymbol{\alpha}
+#   r(k) = \boldsymbol{\alpha}
 #
 # for any :math:`k \geq 0`.
-# Let :math:`K \in \mathbb{N}` be a parameter representing the number of coefficients considered in the selection. Given an enumeration rule for the multiindices :math:`\boldsymbol{\alpha}`, at most :math:`K` multiindices will be considered. Let :math:`\mathcal{A}_K` be the corresponding multiindex set :
+# Let :math:`K \in \mathbb{N}` be a parameter representing the number of  
+# coefficients considered in the selection. Given an enumeration rule for  
+# the multiindices :math:`\boldsymbol{\alpha}`, at most :math:`K` multiindices  
+# will be considered. Let :math:`\mathcal{A}_K` be the corresponding multiindex set :
 #
-#   .. math::
+# .. math::
 #
-#     \mathcal{A}_K = \left\{ \boldsymbol{\alpha} \; | \; r^{-1}(\boldsymbol{\alpha}) = k \leq K \right\}.
+#   \mathcal{A}_K = \left\{ \boldsymbol{\alpha}  
+#   \; | \; r^{-1}(\boldsymbol{\alpha}) = k \leq K \right\}.
 #
 #
-# Let :math:`\epsilon > 0` be a parameter representing the minimum relative value of a significant coefficient :math:`a_{\boldsymbol{\alpha}}`. The `CleaningStrategy` uses the following criteria to select the coefficients :
+# Let :math:`\epsilon > 0` be a parameter representing the minimum relative 
+# value of a significant coefficient :math:`a_{\boldsymbol{\alpha}}`. 
+# The `CleaningStrategy` uses the following criteria to select the coefficients :
 #
-#   .. math::
+# .. math::
 #
-#     \mathcal{A}_\epsilon =
-#        \left\{
-#        |a_{\boldsymbol{\alpha}}| \leq \epsilon \max_{ a_{\boldsymbol{\alpha}} \in \mathcal{A}_K } |a_{\boldsymbol{\alpha}}|
-#        \right\}
+#   \mathcal{A}_\epsilon =
+#   \left\{
+#   |a_{\boldsymbol{\alpha}}| \geq \epsilon \max_{ a_{\boldsymbol{\alpha}} 
+#   \in \mathcal{A}_K } |a_{\boldsymbol{\alpha}}| \right\}
 #
-# where :math:`\epsilon` is the significance factor, default is :math:`\epsilon = 10^{-4}`.
+# where :math:`\epsilon` is the significance factor, default is 
+# :math:`\epsilon = 10^{-4}`. This rule selects only the coefficients which 
+# are significantly different from zero. 
 
 # %%
 #
 # Sparsity index
 # --------------
-# The sparsity index of a multiindex set is the ratio of the cardinality of the multiindex set to the cardinality of the multiindex set of the equivalent multiindex with maximum total degree. For a given multiindex set :math:`\mathcal{A}`, let :math:`d` be the maximum 1-norm of multiindices in the set :
+# The sparsity index of a multiindex set is the ratio of the cardinality of  
+# the multiindex set to the cardinality of the multiindex set of the  
+# equivalent multiindex with maximum total degree. For a given multiindex  
+# set :math:`\mathcal{A}`, let :math:`d` be the maximum 1-norm of multiindices  
+# in the set :
 #
-#   .. math::
+# .. math::
 #
-#     d := \textrm{max}_{\boldsymbol{\alpha} \in \mathcal{A}} \|\boldsymbol{\alpha}\|_1.
+#   d := \textrm{max}_{\boldsymbol{\alpha} \in \mathcal{A}}  
+#   \|\boldsymbol{\alpha}\|_1.
 #
 # The index of sparsity of :math:`\mathcal{A}` is ([blatman2009]_  eq. 4.42 page 86) :
 #
-#   .. math::
+# .. math::
 #
-#     \textrm{IS}(\mathcal{A}) = \frac{\textrm{card}(\mathcal{A})}{\textrm{card}\left(\mathcal{A}^d\right)}.
-#
-#
-# *Note.* The index of sparsity as defined by [blatman2009]_ is close to zero when the model is very sparse. The following complementary indicator is close to 1 when the model is very sparse:
-#
-#   .. math::
-#
-#     \textrm{IS}_{\textrm{c}}(\mathcal{A}) = 1 - \frac{\textrm{card}(\mathcal{A})}{\textrm{card}\left(\mathcal{A}^d\right)}.
+#   \textrm{IS}(\mathcal{A}) 
+#   = \frac{\textrm{card}(\mathcal{A})}{\textrm{card}\left(\mathcal{A}^d\right)}.
 #
 #
+# *Note.* The index of sparsity as defined by [blatman2009]_ is close to zero when 
+# the model is very sparse. The following complementary indicator is close 
+# to 1 when the model is very sparse:
+#
+# .. math::
+#
+#   \textrm{IS}_{\textrm{c}}(\mathcal{A}) 
+#   = 1 - \frac{\textrm{card}(\mathcal{A})}{\textrm{card}\left(\mathcal{A}^d\right)}.
 #
 
 # %%
@@ -168,7 +221,9 @@ import itertools
 
 # %%
 #
-# The following function takes a polynomial chaos result as input and prints a given maximum number of coefficients of this polynomial. It can take into account a threshold, so that we can avoid to print coefficients which are very close to zero.
+# The following function takes a polynomial chaos result as input and prints a 
+# given maximum number of coefficients of this polynomial. It can take into account 
+# a threshold, so that we can avoid to print coefficients which are very close to zero.
 
 # %%
 def printCoefficientsTable(
@@ -209,7 +264,9 @@ def printCoefficientsTable(
 
 # %%
 #
-# The next function computes the polynomial chaos Q2 score using simple validation on a test sample generated by Monte-Carlo sampling. The actual computation is performed by the `MetaModelValidation` class.
+# The next function computes the polynomial chaos Q2 score using simple validation  
+# on a test sample generated by Monte-Carlo sampling. The actual computation  
+# is performed by the `MetaModelValidation` class.
 
 # %%
 def compute_polynomial_chaos_Q2(
@@ -246,7 +303,8 @@ def compute_polynomial_chaos_Q2(
 
 # %%
 #
-# The following function creates a validation plot using the `draw` method of the `MetaModelValidation` class.
+# The following function creates a validation plot using the `draw` method  
+# of the `MetaModelValidation` class.
 
 # %%
 def draw_polynomial_chaos_validation(
@@ -287,7 +345,11 @@ def draw_polynomial_chaos_validation(
 
 # %%
 #
-# We consider the Ishigami model which has three inputs uniform in the :math:`[-\pi, \pi]` interval. This is an interesting example for our purpose because it is highly non linear, so that a high polynomial degree will be required in order to produce a polynomial chaos expansion with Q2 score sufficiently close to 1.
+# We consider the Ishigami model which has three inputs uniform in the  
+# :math:`[-\pi, \pi]` interval. This is an interesting example for our   
+# purpose because it is highly non linear, so that a high polynomial degree   
+# will be required in order to produce a polynomial chaos expansion with Q2   
+# score sufficiently close to 1.
 
 # %%
 im = ishigami_function.IshigamiModel()
@@ -298,8 +360,16 @@ print(im.distributionX)
 
 # %%
 #
-# Then we create the multivariate basis onto which the function is expanded. By default, it is associated with the linear enumeration rule. Since our marginals are uniform, the `OrthogonalProductPolynomialFactory` class produce Legendre polynomials.
-# In order to create the multivariate basis of polynomials, we must specify the number of functions in the basis. In this particular case, we compute that number depending on the total degree. The `getMaximumDegreeStrataIndex` method of the enumeration function computes the number of layers necessary to achieve that total degree. Then the number of functions up to that layer is computed with the `getStrataCumulatedCardinal` method.
+# Then we create the multivariate basis onto which the function is expanded.   
+# By default, it is associated with the linear enumeration rule. Since our   
+# marginals are uniform, the `OrthogonalProductPolynomialFactory` class   
+# produce Legendre polynomials.
+# In order to create the multivariate basis of polynomials, we must specify the   
+# number of functions in the basis. In this particular case, we compute that   
+# number depending on the total degree. The `getMaximumDegreeStrataIndex` method   
+# of the enumeration function computes the number of layers necessary to achieve   
+# that total degree. Then the number of functions up to that layer is computed   
+# with the `getStrataCumulatedCardinal` method.
 
 # %%
 dimension = im.distributionX.getDimension()
@@ -318,7 +388,12 @@ print(adaptiveStrategy)
 
 # %%
 #
-# We compute the coefficients using a multivariate tensor product Gaussian quadrature rule. Since the coefficients are computed in the standardized space, we first use the `getMeasure` method of the multivariate basis in order to get that standardized distribution. Then we use the `GaussProductExperiment` class to create the quadrature, using 6 nodes on each of the dimensions.
+# We compute the coefficients using a multivariate tensor product Gaussian   
+# quadrature rule. Since the coefficients are computed in the standardized   
+# space, we first use the `getMeasure` method of the multivariate basis in   
+# order to get that standardized distribution. Then we use the   
+# `GaussProductExperiment` class to create the quadrature, using 6 nodes on each   
+# of the dimensions.
 
 # %%
 standard_distribution = multivariateBasis.getMeasure()
@@ -332,9 +407,11 @@ print("Sample size = ", experiment.generate().getSize())
 
 # %%
 #
-# We see that 216 nodes are involved in this quadrature rule, which is the result of :math:`6^3 = 216`.
+# We see that 216 nodes are involved in this quadrature rule, which is the result   
+# of :math:`6^3 = 216`.
 #
-# In the next cell, we compute the coefficients of the polynomial chaos expansion using integration.
+# In the next cell, we compute the coefficients of the polynomial chaos expansion   
+# using integration.
 
 # %%
 projectionStrategy = ot.IntegrationStrategy(experiment)
@@ -346,14 +423,18 @@ result = chaosalgo.getResult()
 
 # %%
 #
-# We now validate the metamodel by drawing the validation graph. We see that many points are close to the red test line, which indicates that the predictions of the polynomial chaos expansion are close to the output observations from the model.
+# We now validate the metamodel by drawing the validation graph. We see that   
+# many points are close to the red test line, which indicates that the   
+# predictions of the polynomial chaos expansion are close to the output   
+# observations from the model.
 
 # %%
 view = draw_polynomial_chaos_validation(result, im.model, im.distributionX)
 
 # %%
 #
-# In order to have a closer look on the result, we use the `printCoefficientsTable` function in order to print the first 10 coefficients.
+# In order to have a closer look on the result, we use the   
+# `printCoefficientsTable` function in order to print the first 10 coefficients.
 
 # %%
 printCoefficientsTable(result)
@@ -361,9 +442,12 @@ printCoefficientsTable(result)
 
 # %%
 #
-# We see that there are 56 coefficients in the metamodel and that many of these coefficients are close to zero.
+# We see that there are 56 coefficients in the metamodel and that many of   
+# these coefficients are close to zero.
 #
-# If we print only coefficients greater than :math:`10^{-14}`, we see that only a fraction of them are significant and that these significant coefficients have a relatively large polynomial degree.
+# If we print only coefficients greater than :math:`10^{-14}`, we see that   
+# only a fraction of them are significant and that these significant coefficients   
+# have a relatively large polynomial degree.
 
 # %%
 printCoefficientsTable(result, threshold=1.0e-14)
@@ -371,7 +455,8 @@ printCoefficientsTable(result, threshold=1.0e-14)
 
 # %%
 #
-# The previous experiments suggest to keep only the coefficients which are significant in the model: this is the topic of the next section.
+# The previous experiments suggest to keep only the coefficients which are   
+# significant in the model: this is the topic of the next section.
 
 # %%
 #
@@ -381,9 +466,16 @@ printCoefficientsTable(result, threshold=1.0e-14)
 
 # %%
 #
-# The `CleaningStrategy` has the following algorithm. On input, it considers only the first `maximumConsideredTerms` coefficients :math:`a_{\boldsymbol{\alpha}}`. On output it selects the `mostSignificant` most significant coefficients. To do this, it uses the `significanceFactor` parameter.
+# The `CleaningStrategy` has the following algorithm. On input, it considers   
+# only the first `maximumConsideredTerms` coefficients   
+# :math:`a_{\boldsymbol{\alpha}}`. On output it selects the `mostSignificant`   
+# most significant coefficients. To do this, it uses the   
+# `significanceFactor` parameter.
 #
-# The following function will help to create a sparse PCE using the `CleaningStrategy`. It takes into account the number of considered coefficients in the expansion, the number of significant coefficients to keep and the relative factor and returns the Q2 score.
+# The following function will help to create a sparse PCE using the   
+# `CleaningStrategy`. It takes into account the number of considered coefficients   
+# in the expansion, the number of significant coefficients to keep and the   
+# relative factor and returns the Q2 score.
 
 # %%
 def compute_cleaning_PCE(
@@ -435,7 +527,8 @@ def compute_cleaning_PCE(
 
 # %%
 #
-# In the next cell, we consider at most 500 coefficients and keep only the 5 most significant coefficients. The factor is set to a relatively low value.
+# In the next cell, we consider at most 500 coefficients and keep only   
+# the 5 most significant coefficients. The factor is set to a relatively low value.
 
 # %%
 maximumConsideredTerms = 500
@@ -448,9 +541,13 @@ score_Q2 = compute_cleaning_PCE(
 
 # %%
 #
-# We see that when we keep only 5 coefficients among the first 500 ones, these coefficient have a very high polynomial degree. Indeed, it occurs that these poorly estimated coefficients have a high absolute value. Hence, the criteria selects them as significant coefficients, which leads to a poor metamodel
+# We see that when we keep only 5 coefficients among the first 500 ones,   
+# these coefficient have a very high polynomial degree. Indeed, it occurs that   
+# these poorly estimated coefficients have a high absolute value. Hence, the   
+# criteria selects them as significant coefficients, which leads to a poor metamodel
 #
-# Let us reduce the number of considered coefficients and increase the number of selected coefficients.
+# Let us reduce the number of considered coefficients and increase the number   
+# of selected coefficients.
 
 # %%
 maximumConsideredTerms = 56
@@ -463,9 +560,18 @@ score_Q2 = compute_cleaning_PCE(
 
 # %%
 #
-# When we keep only 10 coefficients among the first 56 ones, the polynomial chaos metamodel is much better: the coefficients are associated with a low polynomial degree, so that the quadrature rule estimates them with greater accuracy.
+# When we keep only 10 coefficients among the first 56 ones, the polynomial   
+# chaos metamodel is much better: the coefficients are associated with a low   
+# polynomial degree, so that the quadrature rule estimates them with greater accuracy.
 #
-# We would like to know which combination is best. In the following loop, we consider the maximum number of considered coefficients from 1 to 500 and the number of selected coefficients from 1 to 30. In order to produce the combinations, we use the `product` function from the `itertools` module. For each combination, we compute the :math:`Q^2` score and select the combination with highest :math:`Q^2` coefficient. As shown in [Muller2016]_ page 268, the computed :math:`Q^2` may be optimistic, but this is not the point of the current example.
+# We would like to know which combination is best. In the following loop, we   
+# consider the maximum number of considered coefficients from 1 to 500 and the   
+# number of selected coefficients from 1 to 30. In order to produce the   
+# combinations, we use the `product` function from the `itertools` module.   
+# For each combination, we compute the :math:`Q^2` score and select the   
+# combination with highest :math:`Q^2` coefficient. As shown in [Muller2016]_   
+# page 268, the computed :math:`Q^2` may be optimistic, but this is not the   
+# point of the current example.
 
 # %%
 #
@@ -492,7 +598,9 @@ print("Number of selected coefficients : ", mostSignificant)
 
 # %%
 #
-# We see that the best solution could be to select at most 16 significant coefficients among the first 101 ones. Let us see the Q2 score and the coefficients in this situation. 
+# We see that the best solution could be to select at most 16 significant   
+# coefficients among the first 101 ones. Let us see the Q2 score and the   
+# coefficients in this situation. 
 
 # %%
 score_Q2 = compute_cleaning_PCE(
@@ -502,14 +610,21 @@ score_Q2 = compute_cleaning_PCE(
 
 # %%
 #
-# These parameters lead to a total number of coefficients equal to 12. Among the 16 most significant coefficients, only 12 satisfy the criteria. Most of the coefficients have a small polynomial degree although some have a total degree equal as large as 7.
+# These parameters lead to a total number of coefficients equal to 12. Among   
+# the 16 most significant coefficients, only 12 satisfy the criteria. Most of   
+# the coefficients have a small polynomial degree although some have a total   
+# degree equal as large as 7.
 
 # %%
 #
 # Intermediate steps of the algorithm
 # -----------------------------------
 #
-# If we set the `verbose` optional input argument of the `compute_cleaning_PCE` function to `True`, then intermediate messages are printed in the Terminal (but not in the Jupyter output). For each step of the adaptivity algorithm, the code prints some of the internal parameters of the algorithm. The datastructure uses several variables that we now describe. 
+# If we set the `verbose` optional input argument of the   
+# `compute_cleaning_PCE` function to `True`, then intermediate messages are   
+# printed in the Terminal (but not in the Jupyter output). For each step of   
+# the adaptivity algorithm, the code prints some of the internal parameters   
+# of the algorithm. The datastructure uses several variables that we now describe. 
 #
 # - `Psi_k_p_` : the collection of functions in the current active polynomial multiindex set,
 # - `I_p_` : the list of indices of the selected coefficients based according to the enumeration rule,
@@ -518,9 +633,17 @@ score_Q2 = compute_cleaning_PCE(
 # - `conservedPsi_k_ranks_` : the index of the first polynomial in the selected multiindex set,
 # - `currentVectorIndex_` : the current value of the index in the full multiindex set, according to the enumeration rule.
 #
-# Each time the selection method is called, it is passed a coefficient :math:`a_{\boldsymbol{\alpha}}` which is a new candidate to be considered by the algorithm. The first time the method is evaluated, the active multiindex set is empty, so that it must be filled with the first coefficients in the multiindex set, according to the enumeration rule. The second time (and up to the end of the algorithm), the candidate coefficient is considered to be added to the multiindex set.
+# Each time the selection method is called, it is passed a   
+# coefficient :math:`a_{\boldsymbol{\alpha}}` which is a new candidate to be   
+# considered by the algorithm. The first time the method is evaluated, the   
+# active multiindex set is empty, so that it must be filled with the first   
+# coefficients in the multiindex set, according to the enumeration rule. The   
+# second time (and up to the end of the algorithm), the candidate coefficient   
+# is considered to be added to the multiindex set.
 #
-# Executing the function prints messages that we can process to produce the following listing. On each step, we print the list of integers corresponding to the indices of the coefficients in the active multiindex set.
+# Executing the function prints messages that we can process to produce the   
+# following listing. On each step, we print the list of integers corresponding   
+# to the indices of the coefficients in the active multiindex set.
 
 # %%
 #
@@ -563,21 +686,49 @@ score_Q2 = compute_cleaning_PCE(
 
 # %%
 #
-# The previous text (and a detailed analysis of the output file) allows to understand what exactly happens in the algorithm. To understand each step, note that the significant threshold is equal to :math:`\epsilon = 10^{-10}`.
+# The previous text (and a detailed analysis of the output file) allows to   
+# understand what exactly happens in the algorithm. To understand each step,   
+# note that the significant threshold is equal to :math:`\epsilon = 10^{-10}`.
 #
-# - During the initialization, the initial basis is empty and filled with the indices [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]. The greatest coefficient in absolute value is :math:`a_0 = 3.505`, which leads to the threshold :math:`\epsilon |a_0| = 3.505 \times 10^{-10}`. Most of the considered coefficient are, however, too close to zero. This is why only the coefficients [0, 1, 7, 10, 15] are kept in the basis. The corresponding coefficients are [3.505, 1.625,-0.6414, -1.291, 1.372].
-# - On step 1, the candidate index 16 is considered. Its coefficient is :math:`a_{16} = -1.197 \times 10^{-15}`, which is much too low to be selected. Hence, the basis is unchanged and the active multiindex set is [0, 1, 7, 10, 15] on the end of this step.
-# - From the step 3 to the step 15, the active multiindex set is unchanged, because no considered coefficient becomes greater than the threshold.
-# - On step 16, the candidate index 30 is considered, with corresponding coefficient :math:`a_{30} = -1.612`. Since this coefficient has an absolute value greater than the threshold, it gets selected and the active multiindex set is [0, 1, 7, 10, 15, 30] on the end of this step. From this step to the end, the index 30 will not leave the active set. 
+# - During the initialization, the initial basis is empty and filled with the   
+#   indices [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]. 
+#   The coefficient with index equal to 0 corrresponds to the mean of the 
+#   polynomial chaos expansion. As a result, we always want to select that 
+#   coefficient in the active set. 
+#   Hence, the calculation of the largest coefficient in absolute value is 
+#   performed from the indices from 1 to 15.
+#   The largest coefficient in absolute value is :math:`a_1 = 1.625`, which leads   
+#   to the threshold :math:`\epsilon |a_1| = 1.625 \times 10^{-10}`. Most of   
+#   the considered coefficient are, however, too close to zero. This is why only   
+#   the coefficients [0, 1, 7, 10, 15] are kept in the basis. The   
+#   corresponding coefficients are [3.505, 1.625,-0.6414, -1.291, 1.372].
+# - On step 1, the candidate index 16 is considered. Its coefficient is   
+#   :math:`a_{16} = -1.197 \times 10^{-15}`, which is much too low to be   
+#   selected. Hence, the basis is unchanged and the active multiindex set   
+#   is [0, 1, 7, 10, 15] on the end of this step.
+# - From the step 3 to the step 15, the active multiindex set is unchanged,   
+#   because no considered coefficient becomes greater than the threshold.
+# - On step 16, the candidate index 30 is considered, with corresponding   
+#   coefficient :math:`a_{30} = -1.612`. Since this coefficient has an absolute   
+#   value greater than the threshold, it gets selected and the active multiindex   
+#   set is [0, 1, 7, 10, 15, 30] on the end of this step. From this step to the   
+#   end, the index 30 will not leave the active set. 
 # - On the step 20, the index 35 enters the active set. 
 # - On the step 25, the index 40 enters the active set. 
 # - On the step 34, the index 49 enters the active set. 
 # - On the step 69, the index 84 enters the active set. 
 # - On the step 74, the index 89 enters the active set. 
 # - On the step 83, the index 98 enters the active set. 
-# - On the last step, the active multiindex set contains the indices [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98] and the corresponding coefficients are [3.508, 1.625, -0.6414, -1.291, 1.372, -1.613, 0.2076, -1.090, 0.4092, -0.2078, 0.1753, -0.3250].
+# - On the last step, the active multiindex set contains the indices   
+#   [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98] and the corresponding   
+#   coefficients are [3.508, 1.625, -0.6414, -1.291, 1.372, -1.613, 0.2076,   
+#   -1.090, 0.4092, -0.2078, 0.1753, -0.3250].
 #
-# We see that the algorithm was able so select 12 coefficients in the first 101 coefficients considered by the algorithm. It could have selected more coefficients since we provided 16 slots to fill thanks to the `mostSignificant` parameter. The considered coefficients were, however, too close to zero and were below the threshold.
+# We see that the algorithm was able so select 12 coefficients in the first   
+# 101 coefficients considered by the algorithm. It could have selected   
+# more coefficients since we provided 16 slots to fill thanks to the   
+# `mostSignificant` parameter. The considered coefficients were, however,   
+# too close to zero and were below the threshold.
 
 
 # %%
@@ -585,4 +736,6 @@ score_Q2 = compute_cleaning_PCE(
 # Conclusion
 # ----------
 #
-# We see that the `~openturns.CleaningStrategy` class performs correctly in this particular case. We have seen how to select the hyperparameters which produce the best Q2 score. 
+# We see that the :class:`~openturns.CleaningStrategy` class performs correctly in   
+# this particular case. We have seen how to select the hyperparameters which   
+# produce the best Q2 score. 
