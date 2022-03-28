@@ -129,27 +129,27 @@ void NAISResult::load(Advocate & adv)
 
 Graph NAISResult::drawImportanceFactors() const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAISResult::drawImportanceFactors";
 }
 
-Scalar NAISResult::getConfidenceLength(const Scalar level) const
+Scalar NAISResult::getConfidenceLength(const Scalar) const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAISResult::getConfidenceLength";
 }
 
 PointWithDescription NAISResult::getImportanceFactors() const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAISResult::getImportanceFactors";
 }
 
 Point NAISResult::getMeanPointInEventDomain() const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAISResult::getMeanPointInEventDomain";
 }
 
 Normal NAISResult::getProbabilityDistribution() const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAISResult::getProbabilityDistribution";
 }
 
 END_NAMESPACE_OPENTURNS

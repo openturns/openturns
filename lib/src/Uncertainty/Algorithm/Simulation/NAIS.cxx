@@ -264,34 +264,34 @@ void NAIS::run()
 
 }
 
-Graph NAIS::drawProbabilityConvergence(const Scalar level) const
+Graph NAIS::drawProbabilityConvergence(const Scalar) const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAIS::drawProbabilityConvergence";
 }
 
 HistoryStrategy NAIS::getConvergenceStrategy() const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAIS::getConvergenceStrategy";
 }
 
 Scalar NAIS::getMaximumCoefficientOfVariation() const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAIS::getMaximumCoefficientOfVariation";
 }
 
 Scalar NAIS::getMaximumStandardDeviation() const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAIS::getMaximumStandardDeviation";
 }
 
-void NAIS::setConvergenceStrategy(const HistoryStrategy & convergenceStrategy) const
+void NAIS::setConvergenceStrategy(const HistoryStrategy) const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAIS::setConvergenceStrategy";
 }
 
-void NAIS::setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation) const
+void NAIS::setMaximumCoefficientOfVariation(const Scalar) const
 {
-  throw NotYetImplementedException(HERE) << "Not implemented";
+  throw NotYetImplementedException(HERE) << "in NAIS::setMaximumCoefficientOfVariation";
 }
 
 // Accessor to naisResult_s

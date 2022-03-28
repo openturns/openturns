@@ -84,7 +84,7 @@ public:
   
   // Not implemented
   Graph drawImportanceFactors() const;
-  Scalar getConfidenceLength(const Scalar level) const override;
+  Scalar getConfidenceLength(const Scalar) const override;
   PointWithDescription getImportanceFactors() const;
   Point getMeanPointInEventDomain() const;
   Normal getProbabilityDistribution() const;
