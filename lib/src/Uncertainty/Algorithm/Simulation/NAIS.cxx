@@ -65,10 +65,28 @@ Point NAIS::getWeights() const
   return weights_;
 }
 
-// Get outputsamples
-Sample NAIS::getOutputSample() const
+// Get auxiliary input sample
+Sample NAIS::getAuxiliaryInputSample() const
 {
-  return outputSample_;
+  return auxiliaryInputSample_;
+}
+
+// Get rhoQuantile
+Scalar NAIS::getRhoQuantile() const
+{
+  return rhoQuantile_;
+}
+
+// Set rhoQuantile
+void NAIS::setRhoQuantile(const Scalar & rhoQuantile)
+{
+  rhoQuantile_ = rhoQuantile;
+}
+
+// Get auxiliary output samples
+Sample NAIS::getAuxiliaryOutputSample() const
+{
+  return auxiliaryOutputSample_;
 }
 
 // Function computing the auxiliary distribution as a function of current sample and associated weights_
@@ -139,13 +157,13 @@ void NAIS::run()
   const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
 
   // Drawing of samples using initial density
-  sample_ = initialDistribution_.getSample(numberOfSample);
+  auxiliaryInputSample_ = initialDistribution_.getSample(numberOfSample);
 
   // Evaluation on limit state function
-  Sample outputSample(getEvent().getFunction()(sample_));
+  Sample auxiliaryOutputSample(getEvent().getFunction()(auxiliaryInputSample_));
 
   // Computation of current quantile
-  Scalar currentQuantile = outputSample.computeQuantile(rhoQuantile_)[0];
+  Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(rhoQuantile_)[0];
   Distribution auxiliaryDistribution;
   if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
   {
@@ -155,30 +173,30 @@ void NAIS::run()
   else
   {
     // Computation of weights_
-    weights_ = computeWeights(sample_, outputSample, currentQuantile, initialDistribution_);
+    weights_ = computeWeights(auxiliaryInputSample_, auxiliaryOutputSample, currentQuantile, initialDistribution_);
 
     // Computation of auxiliary distribution
-    auxiliaryDistribution = computeAuxiliaryDistribution(sample_, weights_);
+    auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample_, weights_);
   }
 
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
     // Drawing of samples using auxiliary density and evaluation on limit state function   
-    sample_ = Sample(0, initialDistribution_.getDimension());
-    outputSample = Sample(0, 1);
+    auxiliaryInputSample_ = Sample(0, initialDistribution_.getDimension());
+    auxiliaryOutputSample = Sample(0, 1);
 
     for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++ i)
     {
       const Sample blockSample(auxiliaryDistribution.getSample(getBlockSize()));
-      sample_.add(blockSample);
-      outputSample.add(getEvent().getFunction()(blockSample));
+      auxiliaryInputSample_.add(blockSample);
+      auxiliaryOutputSample.add(getEvent().getFunction()(blockSample));
       
       if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
         throw InternalException(HERE) << "User stopped simulation";
     } 
     
     // Computation of current quantile
-    currentQuantile = outputSample.computeQuantile(rhoQuantile_)[0];
+    currentQuantile = auxiliaryOutputSample.computeQuantile(rhoQuantile_)[0];
 
     // If failure probability reached, stop the adaptation
     if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
@@ -188,10 +206,10 @@ void NAIS::run()
     else
     {
       // Computation of weights_
-      weights_ = computeWeights(sample_, outputSample, currentQuantile, auxiliaryDistribution);
+      weights_ = computeWeights(auxiliaryInputSample_, auxiliaryOutputSample, currentQuantile, auxiliaryDistribution);
 
       // Update of auxiliary distribution
-      auxiliaryDistribution = computeAuxiliaryDistribution(sample_, weights_);
+      auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample_, weights_);
     }
     
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
@@ -201,15 +219,15 @@ void NAIS::run()
 
   // Find failure sample indices
   Indices indicesCritic(0);
-  for (UnsignedInteger i = 0; i < outputSample.getSize(); ++i)
+  for (UnsignedInteger i = 0; i < auxiliaryOutputSample.getSize(); ++i)
   {
     // Find failure Points
-    if (getEvent().getOperator()(outputSample(i, 0), getEvent().getThreshold()))
+    if (getEvent().getOperator()(auxiliaryOutputSample(i, 0), getEvent().getThreshold()))
       indicesCritic.add(i);
   } // for i
 
-  const Sample resp_sampleCritic(outputSample.select(indicesCritic));
-  const Sample sampleCritic(sample_.select(indicesCritic));
+  const Sample resp_sampleCritic(auxiliaryOutputSample.select(indicesCritic));
+  const Sample sampleCritic(auxiliaryInputSample_.select(indicesCritic));
 
   // Evaluate initial log PDF in parallel on failure sample
   Sample logPDFInitCritic(initialDistribution_.computeLogPDF(sampleCritic));
@@ -222,13 +240,58 @@ void NAIS::run()
   {
     sumPdfCritic += std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0));
   }
+  Scalar failureProbability = sumPdfCritic / numberOfSample;
+  Scalar varianceCritic = 0.0;
+  Scalar varianceCriticTemporary;
+  for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
+  {
+    varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0))-failureProbability;
+    varianceCritic += varianceCriticTemporary*varianceCriticTemporary;
+  }  // for i 
+  
+  Scalar variancenonCritic = (numberOfSample -indicesCritic.getSize()) * (failureProbability*failureProbability);
+  Scalar varianceEstimate = (varianceCritic + variancenonCritic)/(numberOfSample-1) ;
 
   // Save of data in Simulation naisResult_ structure
   naisResult_.setProbabilityEstimate(sumPdfCritic / numberOfSample);
-  naisResult_.setAuxiliarySample(sample_);
   naisResult_.setAuxiliaryDistribution(auxiliaryDistribution);
-  outputSample_ = outputSample;
+  naisResult_.setAuxiliaryInputSample(auxiliaryInputSample_);
+  naisResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
+  naisResult_.setMaximumOuterSampling(getMaximumOuterSampling());
+  naisResult_.setBlockSize(getBlockSize());
+  naisResult_.setVarianceEstimate(varianceEstimate);
+  auxiliaryOutputSample_ = auxiliaryOutputSample;
 
+}
+
+void NAIS::drawProbabilityConvergence() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
+}
+
+void NAIS::getConvergenceStrategy() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
+}
+
+void NAIS::getMaximumCoefficientOfVariation() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
+}
+
+void NAIS::getMaximumStandardDeviation() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
+}
+
+void NAIS::setConvergenceStrategy() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
+}
+
+void NAIS::setMaximumCoefficientOfVariation() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
 // Accessor to naisResult_s

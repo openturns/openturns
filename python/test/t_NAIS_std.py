@@ -5,17 +5,7 @@ Non parametric Adaptive Importance Sampling algorithm
 Python implementation of adaptive Importance Sampling by Cross Entropy
 M. Balesdent and L. Brevault of ONERA, the French Aerospace Lab for the
 openTURNS consortium
-
-source :  J. Morio & M. Balesdent, Estimation of Rare Event Probabilities
-in Complex Aerospace and Other Systems, A Practical Approach, Elsevier, 2015
-
-
 """
-
-# Parameters of the class
-# event : ThresholdEvent based on composite vector of input variables on limit state function
-# n_IS : number of IS samples at each step (integer)
-# rho_quantile : percentage of points that are in the local failure domain (float between 0 and 100)
 
 import math
 import openturns as ot
@@ -73,7 +63,7 @@ probability = result.getProbabilityEstimate()
 assert_almost_equal(probability, 0.0023828813801648916)
 
 # Hyperparameters of the algorithm
-numberSamples = 10  # Number of samples at each iteration
+numberSamples = 10000  # Number of samples at each iteration
 blockSize = 1
 # Quantile determining the percentage of failure samples in the current population
 rho_quantile = 0.25
@@ -87,4 +77,4 @@ Nais_algo.setBlockSize(blockSize);
 Nais_algo.run()
 NAIS_result = Nais_algo.getResult()
 
-assert_almost_equal(NAIS_result.getProbabilityEstimate(), 0.00145074)
+assert_almost_equal(NAIS_result.getProbabilityEstimate(), 0.00227031)

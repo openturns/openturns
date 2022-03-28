@@ -52,9 +52,18 @@ public:
 
   /** Get weights */
   Point getWeights() const;
+  
+  /** Get auxiliary input sample */
+  Sample getAuxiliaryInputSample() const;
+
+  /** Get rhoQuantile */
+  Scalar getRhoQuantile() const;
+  
+  /** Set rhoQuantile */
+  void setRhoQuantile(const Scalar & rhoQuantile);
 
   /** Get outputsamples */
-  Sample getOutputSample() const;
+  Sample getAuxiliaryOutputSample() const;
 
   /** Main function that computes the failure probability */
   void run() override;
@@ -78,10 +87,10 @@ private:
   Point weights_;
 
   // Current Sample
-  Sample sample_;
+  Sample auxiliaryInputSample_;
 
-  // Current output sample
-  Sample outputSample_;
+  // Current auxiliary output sample
+  Sample auxiliaryOutputSample_;
 
   // Initial distribution
   Distribution initialDistribution_;
@@ -89,8 +98,16 @@ private:
   // Quantile
   Scalar rhoQuantile_;
 
-  // Result of NAIS algorhytm
+  // Result of NAIS algorithm
   NAISResult naisResult_;
+  
+  // Not Implemented
+  void drawProbabilityConvergence() const;
+  void getConvergenceStrategy() const;
+  void getMaximumCoefficientOfVariation() const;
+  void getMaximumStandardDeviation() const;
+  void setConvergenceStrategy() const;
+  void setMaximumCoefficientOfVariation() const;  
 
 }; /* class NAIS */
 

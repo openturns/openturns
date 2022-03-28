@@ -45,16 +45,28 @@ NAISResult * NAISResult::clone() const
   return new NAISResult(*this);
 }
 
-// Get Samples
-Sample NAISResult::getAuxiliarySample() const
+// Get Input Samples
+Sample NAISResult::getAuxiliaryInputSample() const
 {
-  return sample_;
+  return auxiliaryInputSample_;
 }
 
-// Set NAISResult Samples
-void NAISResult::setAuxiliarySample(const Sample & sample)
+// Set Input Samples
+void NAISResult::setAuxiliaryInputSample(const Sample & auxiliaryInputSample)
 {
-  sample_ = sample;
+  auxiliaryInputSample_ = auxiliaryInputSample;
+}
+
+// Get Output Samples
+Sample NAISResult::getAuxiliaryOutputSample() const
+{
+  return auxiliaryOutputSample_;
+}
+
+// Set Output Samples
+void NAISResult::setAuxiliaryOutputSample(const Sample & auxiliaryOutputSample)
+{
+  auxiliaryOutputSample_ = auxiliaryOutputSample;
 }
 
 // Get Auxiliary Density
@@ -69,12 +81,42 @@ void NAISResult::setAuxiliaryDistribution(const Distribution & auxiliaryDistribu
   auxiliaryDistribution_ = auxiliaryDistribution;
 }
 
+// Set Maximum Outer Sampling
+void NAISResult::setMaximumOuterSampling(const UnsignedInteger & maximumOuterSampling)
+{
+  maximumOuterSampling_ = maximumOuterSampling;
+}
+
+// Get Maximum Outer Sampling
+UnsignedInteger NAISResult::getMaximumOuterSampling() const
+{
+  return maximumOuterSampling_;
+}
+
+// Set Block Size
+void NAISResult::setBlockSize(const UnsignedInteger & blocSize)
+{
+  blocSize_ = blocSize;
+}
+
+// Get Block Size
+UnsignedInteger NAISResult::getBlockSize() const
+{
+  return blocSize_;
+}
+
+// Set Variance Estimate 
+void NAISResult::setVarianceEstimate(const Scalar & varianceEstimate)
+{
+  varianceEstimate_ = varianceEstimate;
+}  
+
 // Method save() stores the object through the StorageManager
 void NAISResult::save(Advocate & adv) const
 {
   ProbabilitySimulationResult::save(adv);
   adv.saveAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
-  adv.saveAttribute("sample_", sample_);
+  adv.saveAttribute("sample_", auxiliaryInputSample_);
 }
 
 // Method load() reloads the object from the StorageManager
@@ -82,7 +124,32 @@ void NAISResult::load(Advocate & adv)
 {
   ProbabilitySimulationResult::load(adv);
   adv.loadAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
-  adv.loadAttribute("sample_", sample_);
+  adv.loadAttribute("sample_", auxiliaryInputSample_);
+}
+
+void NAISResult::drawImportanceFactors() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
+}
+
+void NAISResult::getConfidenceLength() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
+}
+
+void NAISResult::getImportanceFactors() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
+}
+
+void NAISResult::getMeanPointInEventDomain() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
+}
+
+void NAISResult::getProbabilityDistribution() const
+{
+  throw NotYetImplementedException(HERE) << "Not implemented";
 }
 
 END_NAMESPACE_OPENTURNS

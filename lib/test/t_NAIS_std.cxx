@@ -74,7 +74,7 @@ int main()
   // Hyperparameters of the algorithm
   
   // Number of samples at each iteration
-  const UnsignedInteger numberSamples= 10 ;
+  const UnsignedInteger numberSamples= 10000 ;
   const UnsignedInteger blockSize = 1 ;
   
   // Quantile determining the percentage of failure samples in the current population
@@ -89,8 +89,6 @@ int main()
   algoNais.run();
 
   const NAISResult resultNais(algoNais.getResult());
-  OT::Test::assert_almost_equal(resultNais.getProbabilityEstimate(), 0.00145074);
-  std::cout<< resultNais.getAuxiliarySample() << std::endl;
+  OT::Test::assert_almost_equal(resultNais.getProbabilityEstimate(), 0.00227031);
   return 0;
 }
-

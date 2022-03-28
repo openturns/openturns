@@ -1,9 +1,10 @@
 %feature("docstring") OT::NAIS
+
 "Non Adaptive Importance Sampling (NAIS) algorithm.
 
 Parameters
 ----------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Event we are computing the probability of failure.
 
 rhoQuantile : float  :math:` 0<\rho<1`
@@ -59,6 +60,9 @@ The coefficients of matrix :math:`B_{k+1}` can be approximated (Silverman Rule) 
 
 The NAIS algorithm with the Silverman rule is implemented in the current NAIS class.
 
+source : [Morio2015]_ J. Morio & M. Balesdent, Estimation of Rare Event Probabilities
+in Complex Aerospace and Other Systems, A Practical Approach, Elsevier, 2015
+
 
 Examples
 --------
@@ -75,11 +79,9 @@ Examples
 >>> # We create an event from this RandomVector
 >>> myEvent = ot.ThresholdEvent(output, ot.Less(), -10.0)
 >>> # We create a NAIS algorithm
->>> myAlgo = ot.NAIS(myEvent, 0.1)
+>>> algo = ot.NAIS(myEvent, 0.1)
 >>> # Perform the simulation
->>> myAlgo.run()
->>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
-Probability estimate=0.000696"
+>>> algo.run()"
 
 // ---------------------------------------------------------------------------
 

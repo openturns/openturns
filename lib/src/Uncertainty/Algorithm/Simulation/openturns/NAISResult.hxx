@@ -43,32 +43,71 @@ public:
   /** Virtual constructor */
   NAISResult * clone() const override;
 
-  /** Get Samples */
-  Sample getAuxiliarySample() const;
-
-  /** Set NAISResult Samples */
-  void setAuxiliarySample(const Sample & sample);
+  /** Get Input Samples */
+  Sample getAuxiliaryInputSample() const;
+  
+  /** Set Auxiliary input sample */
+  void setAuxiliaryInputSample(const Sample & auxiliaryInputSample);
+  
+  /** Get Output Samples */
+  Sample getAuxiliaryOutputSample() const;
+  
+  /** Set Auxiliary output sample */
+  void setAuxiliaryOutputSample(const Sample & auxiliaryInputSample);
 
   /** Get Auxiliary Density */
   Distribution getAuxiliaryDistribution() const;
-
+  
   /** Set Auxiliary Density */
   void setAuxiliaryDistribution(const Distribution & auxiliaryDistribution);
+  
+  /** Set Maximum Outer Sampling */
+  void setMaximumOuterSampling(const UnsignedInteger & maximumOuterSampling);
+  
+  /** Get Maximum Outer Sampling */
+  UnsignedInteger getMaximumOuterSampling() const;
+  
+  /** Set Block Size */
+  void setBlockSize(const UnsignedInteger & blocSize);
+  
+  /** Get Block Size */
+  UnsignedInteger getBlockSize() const;
+  
+  /** Set Variance Estimate */
+  void setVarianceEstimate(const Scalar & varianceEstimate);
   
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+  
+  // Not implemented
+  void drawImportanceFactors() const ;
+  void getConfidenceLength() const ;
+  void getImportanceFactors() const ;
+  void getMeanPointInEventDomain() const ;
+  void getProbabilityDistribution() const ;
 
 private:
 
   // The fixed Auxiliary distribution that will be returned at each call
   Distribution auxiliaryDistribution_;
+  
+  // The input Auxiliary sample
+  Sample auxiliaryInputSample_;
+  
+  // The output Auxiliary sample
+  Sample auxiliaryOutputSample_;
 
-  // The fixed sample that will be returned at each call
-  Sample sample_;
+  // The Maximum Outer Sampling
+  UnsignedInteger maximumOuterSampling_;
 
+  // The Block Size
+  UnsignedInteger blocSize_;
+  
+  // The Variance Estimate 
+  Scalar varianceEstimate_;
 
 }; /* class NAISResult */
 
