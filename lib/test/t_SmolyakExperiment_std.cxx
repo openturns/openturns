@@ -96,14 +96,11 @@ void test_1()
     const UnsignedInteger level = 3;
     SmolyakExperiment experiment(experimentCollection, level);
     Point weights(0);
-    fullprint << "generateWithWeights()" << std::endl;
     Sample nodes(experiment.generateWithWeights(weights));
     //
-    UnsignedInteger numberOfDigits = 10;
+    UnsignedInteger numberOfDigits = 14;
     roundSample(nodes, numberOfDigits);
     sortNodesAndWeights(nodes, weights);
-    fullprint << "nodes = " << std::endl;
-    printNodesAndWeights(nodes, weights);
     //
     const int size(nodes.getSize());
     const int dimension(nodes.getDimension());
@@ -121,9 +118,7 @@ void test_1()
       nodesExpected(i, 1) = column_2[i];
     }
     Point weightsExpected = {0.277778, 0.25, -0.5, 0.25, 0.277778, -0.5, 0.888888, -0.5, 0.277778, 0.25, -0.5, 0.25, 0.277778};
-    fullprint << "Expected :" << std::endl;
     sortNodesAndWeights(nodesExpected, weightsExpected);
-    printNodesAndWeights(nodesExpected, weightsExpected);
     const Scalar rtol = 1.0e-5;
     const Scalar atol = 1.0e-5;
     assert_almost_equal(nodesExpected, nodes, rtol, atol);
