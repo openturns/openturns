@@ -8,7 +8,7 @@ Create a polynomial chaos metamodel by integration on the cantilever beam
 # In order to do this, we use the `GaussProductExperiment` class.
 
 # %%
-from openturns.usecases import cantilever_beam as cantilever_beam
+from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

@@ -102,7 +102,7 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import chaboche_model as chaboche_model
+    >>> from openturns.usecases import chaboche_model
     >>> # Load the Chaboche use case
     >>> cm = chaboche_model.ChabocheModel()
 

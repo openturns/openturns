@@ -91,7 +91,7 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import viscous_free_fall as viscous_free_fall
+    >>> from openturns.usecases import viscous_free_fall
     >>> # Load the viscous free fall model
     >>> fm = viscous_free_fall.ViscousFreeFall()
 

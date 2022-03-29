@@ -45,7 +45,7 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import ackley_function as ackley_function
+    >>> from openturns.usecases import ackley_function
     >>> # Load the Ackley model
     >>> am = ackley_function.AckleyModel()
 

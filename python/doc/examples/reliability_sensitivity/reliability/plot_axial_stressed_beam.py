@@ -18,7 +18,7 @@ Axial stressed beam : comparing different methods to estimate a probability
 # %%
 from __future__ import print_function
 import numpy as np
-from openturns.usecases import stressed_beam as stressed_beam
+from openturns.usecases import stressed_beam
 
 import openturns as ot
 import openturns.viewer as viewer

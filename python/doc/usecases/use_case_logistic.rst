@@ -144,7 +144,7 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import logistic_model as logistic_model
+    >>> from openturns.usecases import logistic_model
     >>> # Load the logistic model
     >>> lm = logistic_model.LogisticModel()
 

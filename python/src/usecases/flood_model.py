@@ -44,7 +44,7 @@ class FloodModel():
 
     Examples
     --------
-    >>> from openturns.usecases import flood_model as flood_model
+    >>> from openturns.usecases import flood_model
     >>> # Load the flood model
     >>> fm = flood_model.FloodModel()
     """

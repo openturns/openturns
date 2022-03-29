@@ -85,7 +85,7 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import branin_function as branin_function
+    >>> from openturns.usecases import branin_function
     >>> # Load the Branin-Hoo test case
     >>> bm = branin_function.BraninModel()
 

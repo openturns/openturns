@@ -13,7 +13,7 @@ Estimate a probability with Monte-Carlo on axial stressed beam: a quick start gu
 # -----------------------
 
 # %%
-from openturns.usecases import stressed_beam as stressed_beam
+from openturns.usecases import stressed_beam
 import openturns as ot
 import numpy as np
 import openturns.viewer as viewer
