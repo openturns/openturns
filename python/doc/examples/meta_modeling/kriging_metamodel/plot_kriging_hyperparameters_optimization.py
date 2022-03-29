@@ -347,9 +347,9 @@ Y_train = model(X_train)
 # First, we create a multivariate distribution, based on independent `Uniform` marginals which have the bounds required by the covariance model.
 
 # %%
-distributions = []
+distributions = ot.DistributionCollection()
 for i in range(dim):
-    distributions.append(ot.Uniform(lbounds[i], ubounds[i]))
+    distributions.add(ot.Uniform(lbounds[i], ubounds[i]))
 boundedDistribution = ot.ComposedDistribution(distributions)
 
 # %%

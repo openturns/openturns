@@ -764,7 +764,7 @@ ot_add_python_module(bayesian bayesian_module.i
 
 ot_add_python_module(classification classification_module.i
                       MixtureClassifier.i MixtureClassifier_doc.i.in
-		              MinimumVolumeClassifier.i MinimumVolumeClassifier_doc.i.in
+		      MinimumVolumeClassifier.i MinimumVolumeClassifier_doc.i.in
                       UncertaintyClassificationTemplateDefs.i
                    )
 
@@ -776,20 +776,20 @@ ot_add_python_module(weightedexperiment weightedexperiment_module.i
                       ImportanceSamplingExperiment.i ImportanceSamplingExperiment_doc.i.in
                       GaussProductExperiment.i GaussProductExperiment_doc.i.in
                       TensorProductExperiment.i TensorProductExperiment_doc.i.in
-                      LHSExperiment.i LHSExperiment_doc.i.in
-                      SimulatedAnnealingLHS.i SimulatedAnnealingLHS_doc.i.in
-                      MonteCarloLHS.i MonteCarloLHS_doc.i.in
-                      LHSResult.i LHSResult_doc.i.in
-                      OptimalLHSExperiment.i OptimalLHSExperiment_doc.i.in
-                      SpaceFillingPhiP.i SpaceFillingPhiP_doc.i.in
-                      SpaceFillingMinDist.i SpaceFillingMinDist_doc.i.in
-                      SpaceFillingC2.i SpaceFillingC2_doc.i.in
-                      SpaceFillingImplementation.i SpaceFillingImplementation_doc.i.in
-                      SpaceFilling.i SpaceFilling_doc.i.in
-                      LinearProfile.i LinearProfile_doc.i.in
-                      GeometricProfile.i GeometricProfile_doc.i.in
-                      TemperatureProfile.i TemperatureProfile_doc.i.in
-                      TemperatureProfileImplementation.i TemperatureProfileImplementation_doc.i.in
+LHSExperiment.i LHSExperiment_doc.i.in
+SimulatedAnnealingLHS.i SimulatedAnnealingLHS_doc.i.in
+MonteCarloLHS.i MonteCarloLHS_doc.i.in
+LHSResult.i LHSResult_doc.i.in
+OptimalLHSExperiment.i OptimalLHSExperiment_doc.i.in
+SpaceFillingPhiP.i SpaceFillingPhiP_doc.i.in
+SpaceFillingMinDist.i SpaceFillingMinDist_doc.i.in
+SpaceFillingC2.i SpaceFillingC2_doc.i.in
+SpaceFillingImplementation.i SpaceFillingImplementation_doc.i.in
+SpaceFilling.i SpaceFilling_doc.i.in
+LinearProfile.i LinearProfile_doc.i.in
+GeometricProfile.i GeometricProfile_doc.i.in
+TemperatureProfile.i TemperatureProfile_doc.i.in
+TemperatureProfileImplementation.i TemperatureProfileImplementation_doc.i.in
                       LowDiscrepancyExperiment.i LowDiscrepancyExperiment_doc.i.in
                       MonteCarloExperiment.i MonteCarloExperiment_doc.i.in
                       SplitterImplementation.i SplitterImplementation_doc.i.in

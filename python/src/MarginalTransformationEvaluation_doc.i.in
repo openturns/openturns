@@ -11,7 +11,7 @@ Available constructors:
 
 Parameters
 ----------
-distCol : sequence of :class:`~openturns.Distribution`
+distCol : :class:`~openturns.DistributionCollection`
     A collection of distributions.
 direction : integer
     Flag for the direction of the transformation, either integer or 
@@ -21,7 +21,7 @@ direction : integer
 standardMarginal : :class:`~openturns.Distribution`
     Target distribution marginal
     Default is Uniform(0, 1)
-outputDistCol : sequence of :class:`~openturns.Distribution`
+outputDistCol : :class:`~openturns.DistributionCollection`
     A collection of distributions.
 
 Notes
