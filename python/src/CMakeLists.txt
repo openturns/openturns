@@ -2,6 +2,11 @@
 
 add_definitions (${OPENTURNS_SWIG_DEFINITIONS})
 
+set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
+
+# allows to pass compile flags like -O1 to reduce memory usage
+set (SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
+
 # generate SWIG runtime header
 execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/openturns)
 add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
@@ -70,8 +75,6 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
 
   target_link_libraries_with_dynamic_lookup (${module_target} ${PYTHON_LIBRARIES})
 
-  # allows to pass compile flags like -O1 to reduce memory usage
-  set (SWIG_COMPILE_FLAGS "" CACHE STRING "Additional flags used when compiling swig generated code")
   set_target_properties (${module_target} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 
   set_target_properties (${module_target} PROPERTIES UNITY_BUILD OFF)
