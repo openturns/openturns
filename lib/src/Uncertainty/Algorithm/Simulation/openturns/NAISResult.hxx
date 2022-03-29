@@ -73,21 +73,14 @@ public:
   /** Get Block Size */
   UnsignedInteger getBlockSize() const;
   
-  /** Set Variance Estimate */
-  void setVarianceEstimate(const Scalar & varianceEstimate);
+  /** Coefficient of variation estimate accessor */
+  Scalar getCoefficientOfVariation() const override;
   
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-  
-  // Not implemented
-  Graph drawImportanceFactors() const;
-  Scalar getConfidenceLength(const Scalar) const override;
-  PointWithDescription getImportanceFactors() const;
-  Point getMeanPointInEventDomain() const;
-  Normal getProbabilityDistribution() const;
 
 private:
 

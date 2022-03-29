@@ -105,11 +105,11 @@ UnsignedInteger NAISResult::getBlockSize() const
   return blocSize_;
 }
 
-// Set Variance Estimate 
-void NAISResult::setVarianceEstimate(const Scalar & varianceEstimate)
+// Coefficient of variation estimate accessor 
+Scalar NAISResult::getCoefficientOfVariation() const
 {
-  varianceEstimate_ = varianceEstimate;
-}  
+  return sqrt(varianceEstimate_)/probabilityEstimate_;
+}
 
 // Method save() stores the object through the StorageManager
 void NAISResult::save(Advocate & adv) const
@@ -127,29 +127,6 @@ void NAISResult::load(Advocate & adv)
   adv.loadAttribute("sample_", auxiliaryInputSample_);
 }
 
-Graph NAISResult::drawImportanceFactors() const
-{
-  throw NotYetImplementedException(HERE) << "in NAISResult::drawImportanceFactors";
-}
 
-Scalar NAISResult::getConfidenceLength(const Scalar) const
-{
-  throw NotYetImplementedException(HERE) << "in NAISResult::getConfidenceLength";
-}
-
-PointWithDescription NAISResult::getImportanceFactors() const
-{
-  throw NotYetImplementedException(HERE) << "in NAISResult::getImportanceFactors";
-}
-
-Point NAISResult::getMeanPointInEventDomain() const
-{
-  throw NotYetImplementedException(HERE) << "in NAISResult::getMeanPointInEventDomain";
-}
-
-Normal NAISResult::getProbabilityDistribution() const
-{
-  throw NotYetImplementedException(HERE) << "in NAISResult::getProbabilityDistribution";
-}
 
 END_NAMESPACE_OPENTURNS
