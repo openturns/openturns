@@ -99,9 +99,6 @@ private:
   // The Block Size
   UnsignedInteger blocSize_;
   
-  // The Variance Estimate 
-  Scalar varianceEstimate_;
-
 }; /* class NAISResult */
 
 END_NAMESPACE_OPENTURNS
