@@ -3,13 +3,12 @@
 add_definitions (${OPENTURNS_SWIG_DEFINITIONS})
 
 # generate SWIG runtime header
-set (SWIG_PYTHON_OPTIONS "-python")
 execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/openturns)
-add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.hxx
+add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
                      COMMAND ${SWIG_EXECUTABLE}
-                     ARGS ${SWIG_PYTHON_OPTIONS} ${CMAKE_SWIG_FLAGS} ${OPENTURNS_SWIG_DEFINITIONS} -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.hxx
-                     COMMENT "Swig header")
-add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.hxx)
+                     ARGS -python -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
+                     COMMENT "Swig runtime header")
+add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h)
 add_custom_target (generate_docstrings)
 add_custom_target (pylib)
 
