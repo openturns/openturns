@@ -93,18 +93,6 @@ UnsignedInteger NAISResult::getMaximumOuterSampling() const
   return maximumOuterSampling_;
 }
 
-// Set Block Size
-void NAISResult::setBlockSize(const UnsignedInteger & blocSize)
-{
-  blocSize_ = blocSize;
-}
-
-// Get Block Size
-UnsignedInteger NAISResult::getBlockSize() const
-{
-  return blocSize_;
-}
-
 // Coefficient of variation estimate accessor 
 Scalar NAISResult::getCoefficientOfVariation() const
 {

@@ -67,12 +67,6 @@ public:
   /** Get Maximum Outer Sampling */
   UnsignedInteger getMaximumOuterSampling() const;
   
-  /** Set Block Size */
-  void setBlockSize(const UnsignedInteger & blocSize);
-  
-  /** Get Block Size */
-  UnsignedInteger getBlockSize() const;
-  
   /** Coefficient of variation estimate accessor */
   Scalar getCoefficientOfVariation() const override;
   
@@ -95,9 +89,6 @@ private:
 
   // The Maximum Outer Sampling
   UnsignedInteger maximumOuterSampling_;
-
-  // The Block Size
-  UnsignedInteger blocSize_;
   
 }; /* class NAISResult */
 
