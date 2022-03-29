@@ -556,23 +556,17 @@ Distribution Student::getMarginal(const Indices & indices) const
   // General case
   const UnsignedInteger outputDimension = indices.getSize();
   CorrelationMatrix R(outputDimension);
-  Point sigma(outputDimension);
-  Point mean(outputDimension);
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
   // Extract the correlation matrix, the marginal standard deviations and means
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
     const UnsignedInteger index_i = indices[i];
-    sigma[i] = sigma_[index_i];
-    mean[i] = mean_[index_i];
-    for (UnsignedInteger j = 0; j <= i; ++j) R(i, j) = R_(index_i, indices[j]);
-    marginalDescription[i] = description[index_i];
+    for (UnsignedInteger j = 0; j <= i; ++ j)
+      R(i, j) = R_(index_i, indices[j]);
   }
-  Student::Implementation marginal(new Student(nu_, mean, sigma, R));
-  marginal->setDescription(marginalDescription);
+  Student::Implementation marginal(new Student(nu_, mean_.select(indices), sigma_.select(indices), R));
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
-} // getMarginal(Indices)
+}
 
 /* Compute the radial distribution CDF */
 Scalar Student::computeRadialDistributionCDF(const Scalar radius,

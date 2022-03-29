@@ -2291,13 +2291,7 @@ Pointer<SampleImplementation> SampleImplementation::getMarginal(const Indices & 
 
   // If the sample has a description, extract the marginal description
   if (!p_description_.isNull())
-  {
-    const Description description(getDescription());
-    Description marginalDescription(outputDimension);
-    for (UnsignedInteger i = 0; i < outputDimension; ++ i)
-      marginalDescription[i] = description[indices[i]];
-    marginalSample->setDescription(marginalDescription);
-  }
+    marginalSample->setDescription(getDescription().select(indices));
 
   for (UnsignedInteger i = 0; i < size_; ++i)
   {

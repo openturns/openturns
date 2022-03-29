@@ -568,17 +568,9 @@ Distribution Mixture::getMarginal(const Indices & indices) const
     collection.add(distributionCollection_[index].getMarginal(indices));
     collection[index].setWeight(distributionCollection_[index].getWeight());
   }
-  const UnsignedInteger outputDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    marginalDescription[i] = description[index_i];
-  }
   Mixture* marginal(new Mixture(collection));
   marginal->isCopula_ = isCopula_;
-  marginal->setDescription(marginalDescription);
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 }
 

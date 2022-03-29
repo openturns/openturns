@@ -626,19 +626,19 @@ void ResourceMap::loadDefaultConfiguration()
 {
 #ifndef _WIN32
   addAsString("Path-TemporaryDirectory", "/tmp");
-  addAsUnsignedInteger("TBBImplementation-ThreadsNumber", sysconf(_SC_NPROCESSORS_CONF));
+  addAsUnsignedInteger("TBB-ThreadsNumber", sysconf(_SC_NPROCESSORS_CONF));
 #else
   addAsString("Path-TemporaryDirectory", "TEMP");
   UnsignedInteger numberOfProcessors = 0;
   std::istringstream iss(getenv("NUMBER_OF_PROCESSORS"));
   iss >> numberOfProcessors;
-  addAsUnsignedInteger("TBBImplementation-ThreadsNumber", numberOfProcessors);
+  addAsUnsignedInteger("TBB-ThreadsNumber", numberOfProcessors);
 #endif
   if (const char* env_num_threads = std::getenv("OPENTURNS_NUM_THREADS"))
   {
     try
     {
-      setAsUnsignedInteger("TBBImplementation-ThreadsNumber", std::stoi(env_num_threads));
+      setAsUnsignedInteger("TBB-ThreadsNumber", std::stoi(env_num_threads));
     }
     catch (const std::invalid_argument &)
     {
@@ -889,7 +889,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FAST-DefaultResamplingSize", 1);
 
   // HSIC parameters //
-  addAsUnsignedInteger("HSICEstimatorImplementation-PermutationSize", 100);
+  addAsUnsignedInteger("HSICEstimator-PermutationSize", 100);
 
   // RandomGenerator parameters //
   addAsUnsignedInteger("RandomGenerator-InitialSeed", 0);

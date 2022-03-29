@@ -66,5 +66,5 @@ posterior_sample = s[:, 0:2]
 mean = posterior_sample.computeMean()
 stddev = posterior_sample.computeStandardDeviation()
 print(mean, stddev)
-ott.assert_almost_equal(mean, [0.824453, -0.0215115])
-ott.assert_almost_equal(stddev, [0.00197192, 0.968657])
+ott.assert_almost_equal(mean, [-0.0788226, 2.80322])
+ott.assert_almost_equal(stddev, [0.0306272, 0.0591087])

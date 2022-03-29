@@ -47,6 +47,10 @@ public:
   MetropolisHastingsImplementation();
 
   /** Constructor with parameters*/
+  MetropolisHastingsImplementation(const Point & initialState,
+                                   const Indices & marginalIndices = Indices());
+
+  /** Constructor with parameters*/
   MetropolisHastingsImplementation(const Distribution & targetDistribution,
                                    const Point & initialState,
                                    const Indices & marginalIndices = Indices());
@@ -152,6 +156,7 @@ protected:
 private:
   // target distribution
   Distribution targetDistribution_;
+  Bool hasTargetDistribution_ = false;
 
   // ... when defined via its log-pdf
   Function targetLogPDF_;
@@ -176,7 +181,7 @@ private:
   mutable Scalar currentLogPosterior_ = 0.0;
 
   // prior log pdf
-  Scalar computeLogPDFPrior(const Point & state) const;
+  virtual Scalar computeLogPDFPrior(const Point & state) const;
 
   void setTargetDistribution(const Distribution & targetDistribution);
   void setTargetLogPDF(const Function & targetLogPDF, const Domain & support);

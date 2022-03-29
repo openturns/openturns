@@ -398,8 +398,6 @@ Distribution MixedHistogramUserDefined::getMarginal(const Indices & indices) con
   Indices marginalKind;
   PointCollection marginalTicksCollection;
   UnsignedInteger marginalTotalSize = 1;
-  Description description(getDescription());
-  Description marginalDescription;
   Indices discretization;
   for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
   {
@@ -409,7 +407,6 @@ Distribution MixedHistogramUserDefined::getMarginal(const Indices & indices) con
     const UnsignedInteger size = ticksCollection_[index].getSize();
     discretization.add((kind_[index] == DISCRETE) ? size : size - 1);
     marginalTotalSize *= discretization[j];
-    marginalDescription.add(description[index]);
   }
   IndicesCollection marginalAllIndices(Tuples(discretization).generate());
   Point marginalProbabilityTable(marginalTotalSize);
@@ -437,7 +434,7 @@ Distribution MixedHistogramUserDefined::getMarginal(const Indices & indices) con
   }
 
   MixedHistogramUserDefined marginal(marginalTicksCollection, marginalKind, marginalProbabilityTable);
-  marginal.setDescription(marginalDescription);
+  marginal.setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 

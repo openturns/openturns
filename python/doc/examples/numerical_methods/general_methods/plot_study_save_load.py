@@ -1,29 +1,14 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Save/load a study
 =================
+The objective of this example is to demonstrate how to save the structures created within a script session to disk in order to be able to load them in a future session.
+
+There are several possible ways to achieve this:
+
+- with the standard pickle module
+- with openturns's Study
+
 """
-# %%
-# The objective of this example is to demonstrate how to save the structures created within a script session to disk in order to be able to load them in a future session.
-#
-# There are several possible ways to achieve this:
-#
-# - with the standard pickle module
-# - with openturns's Study
 
 # %%
 from __future__ import print_function
@@ -118,8 +103,8 @@ study.hasObject('distribution')
 
 # %%
 # Load the objects; we must create a void object of the desired type (or parent type)
-distributionLoaded = ot.Normal()
-functionLoaded = ot.Function()
-study.fillObject('distribution', loaded_distribution)
-study.fillObject('function', loaded_function)
-str(loaded_distribution), str(loaded_function)
+distribution2 = ot.Normal()
+function2 = ot.Function()
+study.fillObject('distribution', distribution2)
+study.fillObject('function', function2)
+str(distribution2), str(function2)

@@ -102,7 +102,7 @@ ot_pyinstallcheck_test (HermitianMatrix_std)
 ot_pyinstallcheck_test (TriangularComplexMatrix_std)
 ot_pyinstallcheck_test (Matrix_slice)
 ot_pyinstallcheck_test (Matrix_operators)
-if (NUMPY_FOUND AND NOT PYTHON_VERSION_STRING VERSION_LESS 2.7)
+if (NUMPY_FOUND)
   ot_pyinstallcheck_test (Matrix_numpy)
 endif ()
 

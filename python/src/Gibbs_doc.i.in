@@ -16,9 +16,12 @@ which sequentially calls samplers
 (implemented as :class:`MetropolisHastings` objects)
 of the conditional distributions of one or several components.
 
+See Also
+--------
+RandomWalkMetropolisHastings, RandomVectorMetropolisHastings
+
 Examples
 --------
-
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> chainDim = 3
