@@ -49,7 +49,7 @@ public:
   /** Experiment plane generation :
    *  all the combinations of k elements amongst {0, ..., n-1}
    */
-  IndicesCollection generate() override;
+  IndicesCollection generate() const override;
 
   /** String converter */
   String __repr__() const override;

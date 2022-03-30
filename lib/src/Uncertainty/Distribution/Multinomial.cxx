@@ -1,3 +1,4 @@
+
 //                                               -*- C++ -*-
 /**
  *  @brief The Multinomial distribution
@@ -604,19 +605,8 @@ Distribution Multinomial::getMarginal(const Indices & indices) const
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  const UnsignedInteger outputDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
-  Point marginalP(outputDimension);
-  // Extract the correlation matrix, the marginal standard deviations and means
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    marginalP[i] = p_[index_i];
-    marginalDescription[i] = description[index_i];
-  }
-  Multinomial::Implementation marginal(new Multinomial(n_, marginalP));
-  marginal->setDescription(marginalDescription);
+  Multinomial::Implementation marginal(new Multinomial(n_, p_.select(indices)));
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 

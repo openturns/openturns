@@ -52,7 +52,7 @@ public:
   String __repr__() const override;
 
   /** Sample generation */
-  virtual IndicesCollection generate();
+  virtual IndicesCollection generate() const;
 
 }; /* class CombinatorialGenerator */
 

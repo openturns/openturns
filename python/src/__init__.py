@@ -70,6 +70,7 @@ from .solver import *
 from .algo import *
 from .experiment import *
 from .base import *
+from .iterative_statistics import *
 
 from .model_copula import *
 from .randomvector import *

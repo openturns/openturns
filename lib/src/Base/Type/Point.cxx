@@ -231,6 +231,14 @@ Point operator - (const Point & lhs, const Point & rhs)
 }
 
 
+/* Unary minus operator */
+Point operator - (const Point & lhs)
+{
+  double alpha = -1.0;
+  Point result(lhs * alpha);
+  return result;
+}
+
 
 /* In-place subtraction operator */
 Point & Point::operator -=(const Point & other)

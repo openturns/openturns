@@ -95,7 +95,7 @@ i : int
     Field index
 
 Returns
---------
+-------
 field : :class:`~openturns.Field`
     i-th field in the sample.
 "

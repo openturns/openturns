@@ -20,11 +20,11 @@ for any :math:`t\in[t_0, t_{final}]`, with the initial condition:
 
 where :
 
-    - :math:`a > 0` and :math:`b > 0` are two real parameters,
-    - :math:`y(t)` is the size of the population at time :math:`t`,
-    - :math:`t_0` is the initial time,
-    - :math:`y_0` is the initial population at time :math:`t=t_0`,
-    - :math:`t_{final}` is the final time.
+- :math:`a > 0` and :math:`b > 0` are two real parameters,
+- :math:`y(t)` is the size of the population at time :math:`t`,
+- :math:`t_0` is the initial time,
+- :math:`y_0` is the initial population at time :math:`t=t_0`,
+- :math:`t_{final}` is the final time.
 
 The :math:`a` parameter sets the growth rate of the population. The :math:`b` parameter acts as a competition parameter which limits the size of the population by increasing the competition between its members. 
 
@@ -64,8 +64,8 @@ for any :math:`t\in[t_0, t_{final}]`.
 
 We want to see the solution of the ordinary differential equation when uncertainties are taken into account in the parameters:
 
-    - the initial U.S. population :math:`y_0`,
-    - the parameters :math:`a` and :math:`b`.
+- the initial U.S. population :math:`y_0`,
+- the parameters :math:`a` and :math:`b`.
 
 Indeed, Pearl and Reed [2] estimated the parameters :math:`a` and :math:`b` using the U.S. census data from 1790 to 1910 while we have the data up to 2000. Moreover, the method used by Pearl and Reed to estimate the parameters could be improved; they only used 3 dates to estimate the parameters instead of using least squares, for example. Finally, Pearl and Reed did not provide confidence intervals for the parameters :math:`a` and :math:`b`. 
 
@@ -110,14 +110,22 @@ Variable      Distribution
 :math:`C`     gaussian, mean :math:`c`, coefficient of variation 30% 
 ===========   ===============================================================
 
-No particular probabilistic method was used to set these distributions. An improvement would be to use calibration methods to get a better quantification of these distributions. An improvement would be to use calibration methods to get a better quantification of these distributions. 
+No particular probabilistic method was used to set these distributions. An improvement would be to use calibration methods to get a better quantification of these distributions. Calibration methods could be used to get a better quantification of these distributions.
 
+Variables
+---------
+
+In the particular situation where we want to calibrate this model, the following list presents which variables are observed input variables, input calibrated variables and observed output variables.
+
+- t: Input. Observed.
+- :math:`z_0`, a, c: Inputs. Calibrated.
+- z: Output. Observed.
 
 Notes
 -----
 
-    * This example is based on [1], chapter "First order differential equations", page 28. The data used in [1] are from [3]. The logistic growth model was first suggested by Pierre François Verhulst near 1840. The data are from [1] for the time interval from 1790 to 1950, then from [2] for the time interval from 1960 to 2000.
-    * Calibrating this model may require to take into account for the time dependency of the measures.
+* This example is based on [1], chapter "First order differential equations", page 28. The data used in [1] are from [3]. The logistic growth model was first suggested by Pierre François Verhulst near 1840. The data are from [1] for the time interval from 1790 to 1950, then from [2] for the time interval from 1960 to 2000.
+* Calibrating this model may require to take into account for the time dependency of the measures.
 
 
 References
@@ -132,7 +140,7 @@ References
 Load the use case
 -----------------
 
-We can load this classical model from the use cases module as follows :
+We can load this model from the use cases module as follows :
 
 .. code-block:: python
 

@@ -310,4 +310,12 @@ Bool SymmetricMatrix::operator == (const Matrix & rhs) const
   return true;
 }
 
+/** Sum all coefficients */
+Scalar SymmetricMatrix::computeSumElements() const
+{
+  checkSymmetry();
+  return getImplementation()->computeSumElements();
+}
+
+
 END_NAMESPACE_OPENTURNS

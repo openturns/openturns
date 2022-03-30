@@ -54,7 +54,7 @@ View(graph)
 # and :math:`X_i | Z_i \sim \mathcal{N}(\mu_{Z_i}, 1.0)`.
 #
 # Let :math:`n_0` (resp. :math:`n_1`) denote the number of indices :math:`i`
-# such that :mathl`Z_i=0` (resp. :math:`Z_i=1`).
+# such that :math:`Z_i=0` (resp. :math:`Z_i=1`).
 #
 # Conditionally to all :math:`X_i` and all :math:`Z_i`,
 # :math:`\mu_0` and :math:`\mu_1` are independent:

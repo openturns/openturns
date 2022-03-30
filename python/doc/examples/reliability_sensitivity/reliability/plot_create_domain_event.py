@@ -7,20 +7,20 @@ Create a domain event
 # --------
 #
 # We present in this example the creation and the use of a :class:`~openturns.DomainEvent` through a
-# simple MC estimator.
+# simple Monte-Carlo estimator.
 #
 import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pylab as plt
 
 # %%
-# We consider a standard unit gaussian bivariate random vector :math:`X = (X_1,X_2)` with
+# We consider a standard unit Gaussian bivariate random vector :math:`\vect{X} = (X_1,X_2)` with
 # independent marginals.
 dim = 2
 distX = ot.Normal(dim)
 
 # %%
-# We define a model :math:`f` which maps a vector of :math:`mathbb{R}^2` to an other vector of :math`mathbb{R}^2`
+# We define a model :math:`f` which maps a vector of :math:`\mathbb{R}^2` to another vector of :math:`\mathbb{R}^2`
 #
 # .. math::
 #
@@ -43,7 +43,7 @@ vecY = ot.CompositeRandomVector(f, vecX)
 #
 
 # %%
-# We define for each marginals of `vecY` a domain of interest, say :math:`[0,1] \times [0,1]`
+# We define for each marginals of the output random vector `vecY` a domain of interest, say :math:`[0,1] \times [0,1]`
 domain = ot.Interval([0.0, 0.0], [1.0, 1.0])
 
 # %%
@@ -51,11 +51,11 @@ domain = ot.Interval([0.0, 0.0], [1.0, 1.0])
 event = ot.DomainEvent(vecY, domain)
 
 # %%
-# Formally this domain is
+# This domain is
 #
 # .. math::
 #
-#    \mathcal{D} = \{ x=(x_1, x_2) \in \mathbb{R}^2 / x_1+x_2 \in [0,1] \mathrm{and~} , 2x_1 \in [0,1] \}
+#    \mathcal{D} = \{ \vect{x}=(x_1, x_2) \in \mathbb{R}^2 \; | \; x_1+x_2 \in [0,1] \; \mathrm{and} \; 2x_1 \in [0,1] \}.
 #
 #
 
@@ -134,30 +134,26 @@ myPolygon.setColor('darkgray')
 myPolygon.setEdgeColor('darkgray')
 myGraph.add(myPolygon)
 
-# Some annotation
-texts = [
-    r'$\mathcal{D} = \{ x=(x_1, x_2) \in \mathbb{R}^2 / x_1+x_2 \in [0,1] \mathrm{~and~} 2x_1 \in [0,1] \}$']
+# Some annotation                                                                             
+texts = [r'$\mathcal{D} = \{ \mathbf{x}=(x_1, x_2) \in \mathbb{R}^2 \; | \; x_1+x_2 \in [0,1] \; \mathrm{and} \; 2x_1 \in [0,1] \}$']
 
 myText = ot.Text([0.25], [0.0], texts)
 myText.setTextSize(1)
 myGraph.add(myText)
-#view = otv.View(graphStandardSpace)
-
-
 view = otv.View(myGraph)
 
 
 # %%
-# A simple example
-# ----------------
+# An example
+# ----------
 #
-# For illustration purpose, consider the integral
+# Consider the integral
 #
 # .. math::
 #
-#    P_f = \int_{\mathcal{D}} \mathbf{1}_{\mathcal{D}} df_{X_1,X_2}(x)
+#    P_f = \int_{\mathcal{D}} \mathbf{1}_{\mathcal{D}}(\vect{x}) f_{X_1,X_2}(\vect{x}) d \vect{x}
 #
-# where :math:`{\mathcal{D}}` is the previous domain event and :math:`f_{X_1,X_2}` is the density of the input distribution.
+# where :math:`{\mathcal{D}}` is the previous domain event, :math:`\mathbf{1}_{\mathcal{D}}` is the indicator function on the domain and :math:`f_{X_1,X_2}` is the probability density function of the input variable.
 
 # %%
 # We observe the integration domain :math:`{\mathcal{D}}` superimposed on the 2D-PDF.
@@ -176,7 +172,6 @@ algoMC.setMaximumOuterSampling(1000)
 algoMC.setBlockSize(100)
 algoMC.setMaximumCoefficientOfVariation(0.02)
 algoMC.run()
-# print(algoMC.getResult())
 print("Pf = %.4f" % algoMC.getResult().getProbabilityEstimate())
 
 
@@ -186,7 +181,9 @@ graphConvergence = algoMC.drawProbabilityConvergence()
 view = otv.View(graphConvergence)
 
 # %%
-# We can use the `getSample` method of the event to estimate the probability :math:`P_f`. This method draws realizations of the underlying random input vector `vecX` and returns `True` if the corresponding output random vector is in the domain event. Then the ratio between the number of realizations in the domain and the total of realizations is a rough estimate of the probability :math:`P_f` which we compare with the previous MC estimator.
+# We can use the :meth:`~openturns.DomainEvent.getSample` method of the event to estimate the probability :math:`P_f`.
+# This method draws realizations of the underlying random input vector `vecX` and returns `True` if the corresponding output random vector is in the domain event.
+# Then the ratio between the number of realizations in the domain and the total of realizations is a rough estimate of the probability :math:`P_f` which we compare with the previous Monte-Carlo estimator.
 N = 30000
 samples = event.getSample(N)
 print("Basic estimator : %.4f" % (sum(samples)[0] / N))

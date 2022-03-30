@@ -114,15 +114,8 @@ Distribution MaximumEntropyOrderStatisticsCopula::getMarginal(const Indices & in
     marginal->setDescription(Description(1, getDescription()[indices[0]]));
     return marginal;
   }
-  Description marginalDescription(0);
-  const Description description(getDescription());
   MaximumEntropyOrderStatisticsCopula::Implementation marginal(new MaximumEntropyOrderStatisticsCopula(maxEntropyDistribution_.getMarginalAsMaximumEntropyOrderStatisticsDistribution(indices)));
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const UnsignedInteger j = indices[i];
-    marginalDescription.add(description[j]);
-  }
-  marginal->setDescription(marginalDescription);
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 }
 

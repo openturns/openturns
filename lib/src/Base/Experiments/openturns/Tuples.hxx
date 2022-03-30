@@ -48,7 +48,7 @@ public:
   /** Experiment plane generation :
    *  all the tuples taking values in {0,...,bounds[0]-1}x...x{0,...,bounds[n-1]-1}
    */
-  IndicesCollection generate() override;
+  IndicesCollection generate() const override;
 
   /** String converter */
   String __repr__() const override;

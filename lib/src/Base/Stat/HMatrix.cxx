@@ -58,10 +58,26 @@ void HMatrix::assemble(const HMatrixRealAssemblyFunction& f, char symmetry)
   getImplementation()->assemble(f, symmetry);
 }
 
+void HMatrix::assemble(const HMatrixRealAssemblyFunction &f,
+                       const HMatrixParameters & parameters,
+                      char symmetry)
+{
+  copyOnWrite();
+  getImplementation()->assemble(f, parameters, symmetry);
+}
+
 void HMatrix::assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry)
 {
   copyOnWrite();
   getImplementation()->assemble(f, symmetry);
+}
+
+void HMatrix::assemble(const HMatrixTensorRealAssemblyFunction &f,
+                       const HMatrixParameters &parameters,
+                       char symmetry)
+{
+  copyOnWrite();
+  getImplementation()->assemble(f, parameters, symmetry);
 }
 
 void HMatrix::factorize(const String& method)

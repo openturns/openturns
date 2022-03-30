@@ -574,15 +574,18 @@ ot_check_test (TrendFactory_std)
 
 # Calibration
 ot_check_test (LinearLeastSquaresCalibration_std)
-ot_check_test (NonLinearLeastSquaresCalibration_std)
 ot_check_test (GaussianLinearCalibration_std)
-ot_check_test (GaussianNonLinearCalibration_std)
 ot_check_test (LinearLeastSquaresCalibration_noobs)
-ot_check_test (NonLinearLeastSquaresCalibration_noobs)
 ot_check_test (GaussianLinearCalibration_noobs)
-ot_check_test (GaussianNonLinearCalibration_noobs)
-ot_check_test (RandomWalkMetropolisHastings_std)
-ot_check_test (Gibbs_regression)
+if (Ceres_FOUND OR CMinpack_FOUND)
+  ot_check_test (GaussianNonLinearCalibration_std)
+  ot_check_test (GaussianNonLinearCalibration_noobs)
+  ot_check_test (NonLinearLeastSquaresCalibration_std)
+  ot_check_test (NonLinearLeastSquaresCalibration_noobs)
+endif ()
+ot_check_test (RandomWalkMetropolisHastings_std IGNOREOUT)
+ot_check_test (Gibbs_regression IGNOREOUT)
+
 
 # Classification
 ot_check_test (MixtureClassifier_std)
@@ -605,6 +608,12 @@ ot_check_test (ImportanceSamplingExperiment_std)
 ot_check_test (LHSExperiment_std)
 ot_check_test (LowDiscrepancyExperiment_std)
 ot_check_test (MonteCarloExperiment_std)
+ot_check_test (TensorProductExperiment_std IGNOREOUT)
+
+# IterativeStat
+ot_check_test (IterativeExtrema_std IGNOREOUT)
+ot_check_test (IterativeThreshold_std IGNOREOUT)
+ot_check_test (IterativeMoments_std IGNOREOUT)
 
 # OrthogonalBasis
 ot_check_test (LinearEnumerateFunction_std)
@@ -656,6 +665,10 @@ endif ()
 ot_check_test (ANCOVA_std)
 ot_check_test (FAST_std)
 ot_check_test (SobolIndicesAlgorithm_std)
+ot_check_test (HSICStat_std IGNOREOUT)
+ot_check_test (HSICEstimatorConditionalSensitivity_std IGNOREOUT)
+ot_check_test (HSICEstimatorGlobalSensitivity_std IGNOREOUT)
+ot_check_test (HSICEstimatorTargetSensitivity_std IGNOREOUT)
 
 # Simulation
 ot_check_test (DirectionalSampling_std)

@@ -103,7 +103,7 @@ Different types of design of experiments can be determined:
 | The first category is the *random patterns*, where the set of input
   data is generated from the joint distribution of the input random
   vector, according to the Monte Carlo sampling technique or the LHS one
-  (refer to and ).
+  (refer to [rubinstein2017]_ and [mckay1979]_).
 | Care: the LHS sampling method requires the independence of the input
   random variables.
 | The second category is the *low discrepancy sequences*.

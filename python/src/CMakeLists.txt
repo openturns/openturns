@@ -230,6 +230,15 @@ ot_add_python_module(statistics statistics_module.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i.in
                    )
 
+ot_add_python_module(iterative_statistics iterative_statistics_module.i
+                      IterativeAlgorithm.i IterativeAlgorithm_doc.i.in
+                      IterativeAlgorithmImplementation.i IterativeAlgorithmImplementation_doc.i.in
+                      IterativeExtrema.i IterativeExtrema_doc.i.in
+                      IterativeThresholdExceedance.i IterativeThresholdExceedance_doc.i.in
+                      IterativeMoments.i IterativeMoments_doc.i.in
+                      BaseIterativeStatisticsTemplateDefs.i
+                   )
+
 ot_add_python_module(geom geom_module.i
                       Domain.i Domain_doc.i.in
                       BipartiteGraph.i BipartiteGraph_doc.i.in
@@ -766,7 +775,8 @@ ot_add_python_module(weightedexperiment weightedexperiment_module.i
                       FixedExperiment.i FixedExperiment_doc.i.in
                       ImportanceSamplingExperiment.i ImportanceSamplingExperiment_doc.i.in
                       GaussProductExperiment.i GaussProductExperiment_doc.i.in
-                      LHSExperiment.i LHSExperiment_doc.i.in
+                      TensorProductExperiment.i TensorProductExperiment_doc.i.in
+LHSExperiment.i LHSExperiment_doc.i.in
 SimulatedAnnealingLHS.i SimulatedAnnealingLHS_doc.i.in
 MonteCarloLHS.i MonteCarloLHS_doc.i.in
 LHSResult.i LHSResult_doc.i.in
@@ -953,6 +963,15 @@ ot_add_python_module(simulation simulation_module.i
                       ExpectationSimulationResult.i ExpectationSimulationResult_doc.i.in
                       SobolSimulationAlgorithm.i SobolSimulationAlgorithm_doc.i.in
                       SobolSimulationResult.i SobolSimulationResult_doc.i.in
+                      HSICStatImplementation.i HSICStatImplementation_doc.i.in
+                      HSICStat.i HSICStat_doc.i.in
+                      HSICUStat.i HSICUStat_doc.i.in
+                      HSICVStat.i HSICVStat_doc.i.in
+                      HSICEstimator.i HSICEstimator_doc.i.in
+                      HSICEstimatorImplementation.i HSICEstimatorImplementation_doc.i.in
+                      HSICEstimatorConditionalSensitivity.i HSICEstimatorConditionalSensitivity_doc.i.in
+                      HSICEstimatorGlobalSensitivity.i HSICEstimatorGlobalSensitivity_doc.i.in
+                      HSICEstimatorTargetSensitivity.i HSICEstimatorTargetSensitivity_doc.i.in
                       UncertaintySimulationTemplateDefs.i
                     )
 

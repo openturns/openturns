@@ -63,6 +63,11 @@ public:
   String getCompressionMethod() const;
   UnsignedInteger getCompressionMethodAsUnsignedInteger() const;
 
+  /** accessor for factorization method */
+  void setFactorizationMethod(const String & factorization);
+  String getFactorizationMethod() const;
+
+
   /* String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
@@ -79,7 +84,7 @@ private:
   Scalar admissibilityFactor_;
   String clusteringAlgorithm_;
   String compressionMethod_;
-
+  String factorizationMethod_;
 };
 
 

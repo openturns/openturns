@@ -1,20 +1,21 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-try:
-    size = 10
-    for dimension in range(1, 4):
-        f = LinearEnumerateFunction(dimension)
-        print("First", size, " values for dimension", dimension)
-        for index in range(size):
-            multiIndex = f(index)
-            print("index=", index, ", multi-index=", multiIndex,
-                  ", linear index=", f.inverse(multiIndex))
-except:
-    import sys
-    print("t_LinearEnumerateFunction_std.py",
-          sys.exc_info()[0], sys.exc_info()[1])
+
+size = 10
+for dimension in range(1, 4):
+    f = ot.LinearEnumerateFunction(dimension)
+    print("First", size, " values for dimension", dimension)
+    for index in range(size):
+        multiIndex = f(index)
+        inverse = f.inverse(multiIndex)
+        print("index=", index, ", multi-index=", multiIndex,
+              ", linear index=", inverse)
+        assert inverse == index, "no bijection"
+    for d in range(10):
+        idx = f.getMaximumDegreeStrataIndex(d)
+        print('degree', d, 'max_degree_strata_index', idx)

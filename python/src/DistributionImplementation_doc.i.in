@@ -1836,7 +1836,7 @@ m : :class:`~openturns.Point`
 
 Notes
 -----
-The moments are centered with respect to the given shift :\math:`\vect{s}`:
+The moments are centered with respect to the given shift :math:`\vect{s}`:
 
 .. math::
 

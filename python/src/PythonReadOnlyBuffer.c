@@ -154,13 +154,7 @@ Buffer_repr(Buffer * self)
   sprintf(s, "<read-only buffer at %p shape=(%s)>", self->bufferview.data, r);
   free(r);
 
-#if PY_VERSION_HEX >= 0x03010000
   result = PyUnicode_DecodeUTF8(s, (Py_ssize_t) strlen(s), "surrogateescape");
-#elif PY_VERSION_HEX >= 0x03000000
-  result = PyUnicode_FromStringAndSize(s, (Py_ssize_t) strlen(s));
-#else
-  result = PyString_FromStringAndSize(s, (Py_ssize_t) strlen(s));
-#endif
   free(s);
   return result;
 }
@@ -204,54 +198,7 @@ Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
   return 0;
 }
 
-#if PY_VERSION_HEX < 0x03000000
-
-static Py_ssize_t
-Buffer_getreadbuffer(PyObject *obj, Py_ssize_t segment, void **ptrptr)
-{
-  Buffer* self = (Buffer*)obj;
-  if (segment != 0)
-  {
-    PyErr_SetString(PyExc_ValueError, "invalid segment");
-    return -1;
-  }
-  *ptrptr = self->bufferview.data;
-  return self->bufferview.length * self->bufferview.itemsize;
-}
-
-static Py_ssize_t
-Buffer_getsegcount(PyObject *obj, Py_ssize_t *lenp)
-{
-  Buffer* self = (Buffer*)obj;
-  if (lenp)
-  {
-    *lenp = self->bufferview.length * self->bufferview.itemsize;
-  }
-  return 1;
-}
-
-static Py_ssize_t
-Buffer_getcharbuffer(PyObject *obj, Py_ssize_t segment, char **ptrptr)
-{
-  Buffer* self = (Buffer*)obj;
-  if (segment != 0)
-  {
-    PyErr_SetString(PyExc_ValueError, "invalid segment");
-    return -1;
-  }
-  *ptrptr = (void*) self->bufferview.data;
-  return self->bufferview.length * self->bufferview.itemsize;
-}
-
-#endif
-
 static PyBufferProcs Buffer_as_buffer = {
-#if PY_VERSION_HEX < 0x03000000
-  (readbufferproc)    Buffer_getreadbuffer,
-  (writebufferproc)   0,
-  (segcountproc)      Buffer_getsegcount,
-  (charbufferproc)    Buffer_getcharbuffer,
-#endif
   (getbufferproc)     Buffer_getbuffer,
   (releasebufferproc) 0
 };
@@ -295,11 +242,7 @@ Buffer_reduce(PyObject *obj, PyObject *args)
   for(i = 0; i < self->bufferview.ndim; ++i)
     PyTuple_SET_ITEM(strideTuple, i, PyLong_FromSsize_t(self->bufferview.strides[i]));
 
-#if PY_VERSION_HEX >= 0x03000000
   rawObj = PyBytes_FromStringAndSize((const char*)self->bufferview.data, self->bufferview.itemsize * self->bufferview.length);
-#else
-  rawObj = PyString_FromStringAndSize((const char*)self->bufferview.data, self->bufferview.itemsize * self->bufferview.length);
-#endif
 
   return Py_BuildValue("O(n)(NNN)",
              /* We use Buffer type to build its own instance */
@@ -369,11 +312,7 @@ static const char Buffer_doc[] =                                          \
 "or converted into a Sample or a numpy array.";
 
 static PyTypeObject BufferType = {
-#if PY_VERSION_HEX >= 0x03000000
     PyVarObject_HEAD_INIT(NULL, 0)
-#else
-    PyObject_HEAD_INIT(NULL)
-#endif
     .tp_name = "openturns.memoryview.Buffer",
     .tp_basicsize = sizeof(Buffer),
     .tp_dealloc = (destructor)Buffer_dealloc,
@@ -381,11 +320,7 @@ static PyTypeObject BufferType = {
     .tp_as_sequence = &Buffer_as_sequence,
     .tp_str = (reprfunc) Buffer_repr,
     .tp_as_buffer = &Buffer_as_buffer,
-#if PY_VERSION_HEX >= 0x03000000
     .tp_flags = Py_TPFLAGS_DEFAULT,
-#else
-    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_NEWBUFFER,
-#endif
     .tp_doc = Buffer_doc,
     .tp_iter = (getiterfunc) Buffer_iter,
     .tp_methods = Buffer_methods,
@@ -486,13 +421,7 @@ static PySequenceMethods Buffer_as_sequence = {
     .sq_concat = (binaryfunc)NULL,
     .sq_repeat = (ssizeargfunc)NULL,
     .sq_item = (ssizeargfunc)Buffer_item,
-#if PY_MAJOR_VERSION < 3
-    .sq_slice = (ssizessizeargfunc)NULL,
-#endif
     .sq_ass_item = (ssizeobjargproc)NULL,
-#if PY_MAJOR_VERSION < 3
-    .sq_ass_slice = (ssizessizeobjargproc)NULL,
-#endif
     .sq_contains = (objobjproc)NULL,
     .sq_inplace_concat = (binaryfunc) NULL,
     .sq_inplace_repeat = (ssizeargfunc)NULL,
@@ -511,14 +440,7 @@ struct module_state {
 };
 
 
-#if PY_MAJOR_VERSION >= 3
 #define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
-#else
-#define GETSTATE(m) (&_state)
-static struct module_state _state;
-#endif
-
-#if PY_MAJOR_VERSION >= 3
 
 static PyObject *
 error_out(PyObject *m, PyObject *args) {
@@ -562,14 +484,6 @@ PyInit_memoryview(void);
 
 PyMODINIT_FUNC
 PyInit_memoryview(void)
-
-#else
-
-#define INITERROR return
-
-PyMODINIT_FUNC
-initmemoryview(void)
-#endif
 {
   PyObject *module;
   struct module_state *st;
@@ -578,11 +492,7 @@ initmemoryview(void)
   if (PyType_Ready(&BufferType) < 0)
       INITERROR;
 
-#if PY_MAJOR_VERSION >= 3
   module = PyModule_Create(&openturns_memoryview_module);
-#else
-  module = Py_InitModule(openturns_memoryview_module_name, NULL);
-#endif
 
   if (module == NULL)
       INITERROR;
@@ -597,7 +507,5 @@ initmemoryview(void)
   Py_INCREF(&BufferType);
   PyModule_AddObject(module, "Buffer", (PyObject *)&BufferType);
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }

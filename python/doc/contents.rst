@@ -7,7 +7,7 @@ Contents
     :maxdepth: 1
 
     examples/examples
-    usecases/use_cases
+    usecases/usecases
     install
     user_manual/user_manual
     theory/theory

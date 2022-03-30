@@ -57,8 +57,10 @@ class OT_API HMatrix :
   HMatrix copy() const;
 
   void assemble(const HMatrixRealAssemblyFunction& f, char symmetry);
+  void assemble(const HMatrixRealAssemblyFunction &f, const HMatrixParameters& parameters, char symmetry);
 
   void assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry);
+  void assemble(const HMatrixTensorRealAssemblyFunction &f, const HMatrixParameters &parameters, char symmetry);
 
   void factorize(const String& method);
 

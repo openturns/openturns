@@ -24,4 +24,5 @@
 #include "openturns/OTtestcode.hxx"
 %}
 
+%ignore OT::Test::assert_equal;
 %include openturns/OTtestcode.hxx

@@ -232,6 +232,20 @@ public:
     return false;
   }
 
+  inline
+  Collection<T> select(const Collection<UnsignedInteger> & marginalIndices) const
+  {
+    Collection<T> marginalCollection(marginalIndices.getSize());
+    for (UnsignedInteger i = 0; i < marginalIndices.getSize(); ++ i)
+    {
+      const UnsignedInteger index = marginalIndices[i];
+      if (index >= coll__.size())
+        throw OutOfBoundException(HERE) << "Selection index is out of range (" << index << ") as size=" << coll__.size();
+      marginalCollection[i] = coll__[index];
+    }
+    return marginalCollection;
+  }
+
   /* Method __getitem__() is for Python */
   inline
   T __getitem__(SignedInteger i) const

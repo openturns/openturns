@@ -28,6 +28,7 @@
 #include "openturns/Sample.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/CovarianceModel.hxx"
+#include "openturns/HMatrixParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -134,8 +135,10 @@ public:
   UnsignedInteger getNbColumns() const;
 
   void assemble(const HMatrixRealAssemblyFunction& f, char symmetry);
-  void assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry);
-  void factorize(const String& method);
+  void assemble(const HMatrixRealAssemblyFunction &f, const HMatrixParameters & parameters, char symmetry);
+  void assemble(const HMatrixTensorRealAssemblyFunction &f, char symmetry);
+  void assemble(const HMatrixTensorRealAssemblyFunction &f, const HMatrixParameters &parameters, char symmetry);
+  void factorize(const String &method);
 
   /** Compute this <- alpha * this */
   void scale(Scalar alpha);

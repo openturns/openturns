@@ -125,10 +125,18 @@ OT_HMatrix_transpose_doc
 %define OT_HMatrix_assemble_doc
 "Assemble matrix.
 
+Available usages:
+    
+    assemble(f, symmetry)
+
+    assemble(f, parameters, symmetry)
+
 Parameters
 ----------
 f : :class:`~openturns.HMatrixRealAssemblyFunction` or :class:`~openturns.HMatrixTensorRealAssemblyFunction`
     Assembly function.
+parameters : :class:`~openturns.HMatrixParameters`
+    Parameters used within HMatrix 
 symmetry : str
     Symmetry flag, either N or L"
 %enddef
@@ -343,9 +351,9 @@ transB : str
     Whether to use B or B^t: either N or T.
 alpha : float
     Coefficient
-a : :class:`~openturns.HMatrix`
+A : :class:`~openturns.HMatrix`
     Multiplied matrix A.
-b : :class:`~openturns.HMatrix`
+B : :class:`~openturns.HMatrix`
     Multiplied matrix B.    
 beta : float
     Coefficient."

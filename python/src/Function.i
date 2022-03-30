@@ -8,8 +8,6 @@
 %include BaseFuncCollection.i
 
 OTTypedInterfaceObjectHelper(Function)
-//OTTypedCollectionInterfaceObjectHelper(Function)
-
 
 
 %typemap(in) const FunctionCollection & (OT::Pointer<OT::Collection<OT::Function> > temp) {

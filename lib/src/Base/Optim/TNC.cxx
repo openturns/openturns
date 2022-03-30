@@ -120,6 +120,8 @@ void TNC::run()
   Point x(getStartingPoint());
   if (x.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
+  if (dimension == 0)
+    throw InvalidArgumentException(HERE) << "Dimension of the problem is zero";
 
   Interval bounds(getProblem().getBounds());
   if (!getProblem().hasBounds())
@@ -212,9 +214,18 @@ void TNC::run()
    */
 
   int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
+
+  if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
+  {
+    if (ignoreFailure_)
+      LOGWARN(OSS() << "Warning! TNC algorithm failed. The error message is " << tnc_rc_string[returnCode - TNC_MINRC]);
+    else
+      throw InternalException(HERE) << "Solving problem by TNC method failed (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
+  }
   p_nfeval_ = 0;
 
   // Update the result
+  result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = evaluationInputHistory_.getSize();
 
   Scalar absoluteError = -1.0;
@@ -254,14 +265,6 @@ void TNC::run()
   result_.setOptimalPoint(x);
   const Scalar sign = getProblem().isMinimization() ? 1.0 : -1.0;
   result_.setOptimalValue(Point(1, sign * f));
-
-  if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
-  {
-    if (ignoreFailure_)
-      LOGWARN(OSS() << "Warning! TNC algorithm failed. The error message is " << tnc_rc_string[returnCode - TNC_MINRC]);
-    else
-      throw InternalException(HERE) << "Solving problem by TNC method failed (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
-  }
 }
 
 /* Scale accessor */

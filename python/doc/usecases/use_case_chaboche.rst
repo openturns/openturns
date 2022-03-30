@@ -75,6 +75,15 @@ We generate a Monte-Carlo samplg with size :math:`n`:
 for :math:`i = 1,..., n`.
 The observations are the pairs :math:`\{(\epsilon_i,\sigma_i)\}_{i=1,...,n}`, i.e. each observation is a couple made of the strain and the corresponding stress.
 
+Variables
+---------
+
+In the particular situation where we want to calibrate this model, the following list presents which variables are observed input variables, input calibrated variables and observed output variables.
+
+- :math:`\epsilon`: Input. Observed.
+- :math:`R`, :math:`C`, :math:`\gamma` : Inputs. Calibrated.
+- :math:`\sigma`: Output. Observed.
+
 Thanks to
 ---------
 
@@ -89,7 +98,7 @@ References
 Load the use case
 -----------------
 
-We can load this classical model from the use cases module as follows :
+We can load this model from the use cases module as follows :
 
 .. code-block:: python
 

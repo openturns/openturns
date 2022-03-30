@@ -44,5 +44,6 @@
 #include "openturns/SplitterImplementation.hxx"
 #include "openturns/KFoldSplitter.hxx"
 #include "openturns/LeaveOneOutSplitter.hxx"
+#include "openturns/TensorProductExperiment.hxx"
 
 #endif /* OPENTURNS_OTWEIGHTEDEXPERIMENTS_HXX */

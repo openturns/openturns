@@ -70,7 +70,7 @@ The exact :math:`P_f` is
 Load the use case
 -----------------
  
-We can load this classical model from the use cases module as follows :
+We can load this model from the use cases module as follows :
 
 .. code-block:: python
 

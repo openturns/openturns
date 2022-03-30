@@ -67,6 +67,8 @@ int main(int, char *[])
     //sigma0s.add(2.0);
 
 
+    const Point mean_ref = {24.9529, 26.884};
+    const Point stddev_ref = {1.79439e-14, 1.79439e-14};
     // play with the variance of the prior:
     // if the prior variance is low (information concerning the mu parameter is strong)
     // then the posterior mean will be equal to the prior mean
@@ -112,7 +114,8 @@ int main(int, char *[])
       Sample sample(sampler.getSample(50));
 
       std::cout << "  obtained posterior ~N(" << sample.computeMean()[0] << ", " << sample.computeStandardDeviation()[0] << ")" << std::endl;
-
+      assert_almost_equal(sample.computeMean()[0], mean_ref[i]);
+      assert_almost_equal(sample.computeStandardDeviation()[0], stddev_ref[i]);
       std::cout << "  acceptance rate=" << sampler.getAcceptanceRate() << std::endl;
     }
 

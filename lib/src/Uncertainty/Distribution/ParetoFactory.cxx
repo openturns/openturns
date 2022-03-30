@@ -27,6 +27,7 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/LinearLeastSquares.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
+#include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -211,7 +212,11 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample) const
 
 Pareto ParetoFactory::buildAsPareto(const Sample & sample) const
 {
+#if defined(OPENTURNS_HAVE_CERES) || defined(OPENTURNS_HAVE_CMINPACK)
   return buildMethodOfLeastSquares(sample);
+#else
+  return buildMethodOfLikelihoodMaximization(sample);
+#endif
 }
 
 Pareto ParetoFactory::buildAsPareto(const Point & parameters) const

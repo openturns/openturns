@@ -46,6 +46,8 @@ Bibliography
     of space filling designs: optimization of Latin hypercube samples and
     subprojection properties.* Journal of Simulation, 7:276-289, 2013.
     `pdf <https://arxiv.org/pdf/1307.6835.pdf>`__
+.. [daveiga2015] Da Veiga, S. (2015). *Global sensitivity analysis with dependence measures.*
+    Journal of Statistical Computation and Simulation, 85(7), 1283-1305.
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
     `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
@@ -77,6 +79,9 @@ Bibliography
 .. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
     sparse grids.* Numerical algorithms, 18 (3), 209-232.
     `pdf <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.3141&rep=rep1&type=pdf>`__
+.. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October). 
+    *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
+    algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
@@ -146,6 +151,8 @@ Bibliography
     `pdf <http://academicos.fciencias.unam.mx/wp-content/uploads/sites/91/2015/04/Lillifors_normality_ks.pdf>`__
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
+.. [marrel2021] Marrel, A., & Chabridon, V. (2021). *Statistical developments for target and conditional sensitivity analysis: 
+    application on safety studies for nuclear reactor.* Reliability Engineering & System Safety, 107711.
 .. [marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
     Journal of Statistical Computational and Simulation, vol 46, pp101 - 110,1993.
 .. [martinez2011] Martinez, J-M., *Analyse de sensibilite globale par decomposition de la variance*,
@@ -173,6 +180,7 @@ Bibliography
 .. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). *Quasi-Monte Carlo 
     integration.* Journal of computational physics, 122(2), 218-230.
     `pdf <https://www.math.ucla.edu/~caflisch/Pubs/Pubs1995-1999/actaNumerica1998.pdf>`__
+.. [Muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
 .. [munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,
@@ -205,9 +213,14 @@ Bibliography
     Applications in Uncertainty Quantification.*, PhD thesis.
     Ecole Centrale de Nantes, France, 2015.
     `pdf <https://tel.archives-ouvertes.fr/tel-01143694/document>`__
+.. [rawlings2001] Rawlings, J. O., Pantula, S. G., and Dickey, D. A.
+    *Applied regression analysis: a research tool.*
+    Springer Science and Business Media, 2001.
 .. [rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__
+.. [rubinstein2017] Rubinstein, R. Y., & Kroese, D. P. (2017). *Simulation and the Monte Carlo method.* John Wiley & Sons.
+   `pdf <http://www.ru.ac.bd/wp-content/uploads/soites/25/2019/03/308_03_Rubinstein_Simulation-and-the-Monte-Carlo-Method-Wiley-2017.pdf>`__
 .. [saltelli1999] Saltelli, A., Tarantola, S. & Chan, K. *A quantitative, model
     independent method for global sensitivity analysis of model output.*
     Technometrics, 1999, 41(1), 39-56.

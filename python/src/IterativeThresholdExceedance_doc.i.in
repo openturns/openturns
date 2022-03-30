@@ -1,0 +1,69 @@
+%feature("docstring") OT::IterativeThresholdExceedance
+"Iterative threshold exceedance.
+
+Parameters
+----------
+dimension : int, default=1
+    Dimension of the input data
+
+thresholdValue : float, default=0.0
+    Threshold value
+
+Notes
+-----
+This class iteratively counts the number of threshold exceedances
+of an iteratively increasing
+dataset without storing any data in memory.
+
+See also
+--------
+IterativeAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 5
+>>> threshold = 0.5
+>>> myThresholdExceedance = ot.IterativeThresholdExceedance(dim, threshold)
+>>> n = ot.Normal(dim)
+>>> size = 50
+
+Increment with 50 points:
+
+>>> for i in range(size):
+...     point = n.getRealization()
+...     myThresholdExceedance.increment(point)
+>>> print(myThresholdExceedance.getThresholdExceedance())
+[14,14,14,17,12]
+>>> print(myThresholdExceedance.getIterationNumber())
+50
+
+Increment with one sample of size 50:
+
+>>> sample = n.getSample(size)
+>>> myThresholdExceedance.increment(sample)
+>>> print(myThresholdExceedance.getIterationNumber())
+100
+>>> print(myThresholdExceedance.getThresholdExceedance())
+[38,30,35,27,32]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeThresholdExceedance::getThresholdExceedance
+"Returns the number of threshold exceedances component per component
+
+Returns
+-------
+thresholdExceedance : :class:`~openturns.Point`
+    current number of threshold exceedances component per component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeThresholdExceedance::getThresholdValue
+"Returns the value of the threshold
+
+Returns
+-------
+thresholdValue : float
+    the value of the threshold."

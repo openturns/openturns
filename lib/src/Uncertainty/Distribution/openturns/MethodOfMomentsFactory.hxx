@@ -39,7 +39,8 @@ public:
   MethodOfMomentsFactory();
 
   /** Parameters constructor */
-  MethodOfMomentsFactory(const Distribution & distribution);
+  explicit MethodOfMomentsFactory(const Distribution & distribution,
+                                  const Interval & optimizationBounds = Interval());
 
   /** Virtual constructor */
   MethodOfMomentsFactory * clone() const override;

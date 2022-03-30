@@ -36,6 +36,7 @@ HMatrixParameters::HMatrixParameters()
   , admissibilityFactor_(ResourceMap::GetAsScalar("HMatrix-AdmissibilityFactor"))
   , clusteringAlgorithm_(ResourceMap::GetAsString("HMatrix-ClusteringAlgorithm"))
   , compressionMethod_(ResourceMap::GetAsString("HMatrix-CompressionMethod"))
+  , factorizationMethod_(ResourceMap::GetAsString("HMatrix-FactorizationMethod"))
 {
   // Nothing to do
 }
@@ -126,8 +127,19 @@ String HMatrixParameters::__repr__() const
       << ", recompression epsilon=" << recompressionEpsilon_
       << ", admissibility factor=" << admissibilityFactor_
       << ", clustering algorithm=" << clusteringAlgorithm_
-      << ", compression method=" << compressionMethod_;
+      << ", compression method=" << compressionMethod_
+      << ", factorization method=" << factorizationMethod_;
   return oss;
+}
+
+void HMatrixParameters::setFactorizationMethod(const String &factorization)
+{
+  factorizationMethod_ = factorization;
+}
+
+String HMatrixParameters::getFactorizationMethod() const
+{
+  return factorizationMethod_;
 }
 
 String HMatrixParameters::__str__(const String & ) const
@@ -147,6 +159,7 @@ void HMatrixParameters::save(Advocate & adv) const
   adv.saveAttribute("admissibilityFactor_", admissibilityFactor_);
   adv.saveAttribute("clusteringAlgorithm_", clusteringAlgorithm_);
   adv.saveAttribute("compressionMethod_", compressionMethod_);
+  adv.saveAttribute("factorizationMethod_", factorizationMethod_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -158,6 +171,7 @@ void HMatrixParameters::load(Advocate & adv)
   adv.loadAttribute("admissibilityFactor_", admissibilityFactor_);
   adv.loadAttribute("clusteringAlgorithm_", clusteringAlgorithm_);
   adv.loadAttribute("compressionMethod_", compressionMethod_);
+  adv.loadAttribute("factorizationMethod_", factorizationMethod_);
 }
 
 END_NAMESPACE_OPENTURNS

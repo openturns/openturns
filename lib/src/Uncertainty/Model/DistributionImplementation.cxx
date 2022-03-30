@@ -3690,7 +3690,7 @@ Graph DistributionImplementation::drawPDF(const Scalar xMin,
     const Bool logScale) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PDF only if dimension equals 1, here dimension=" << dimension_;
-  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with a point number < 2";
   if (isDiscrete()) return drawDiscretePDF(xMin, xMax, logScale);
   // Discretization of the x axis
@@ -3941,7 +3941,7 @@ Graph DistributionImplementation::drawLogPDF(const Scalar xMin,
 {
   if (dimension_ == 2) return drawLogPDF(Indices(2, pointNumber), logScale, logScale);
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D or 2D distributions";
-  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a logPDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a logPDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a logPDF with a point number < 2";
   if (isDiscrete()) return drawDiscreteLogPDF(xMin, xMax, logScale);
   // Discretization of the x axis
@@ -4169,7 +4169,7 @@ Graph DistributionImplementation::drawDiscreteCDF(const Scalar xMin,
   //         ---[-----------------------------]----
   //         -------[-----------------]------------
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the CDF of a multidimensional discrete distribution this way.";
-  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   // Create the graph that will store the staircase representing the empirical CDF
   const String title(OSS() << getDescription()[0] << " CDF");
   const Sample support(getSupport(Interval(xMin, xMax)));
@@ -4205,7 +4205,7 @@ Graph DistributionImplementation::drawCDF(const Scalar xMin,
     const Bool logScale) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDF only if dimension equals 1, here dimension=" << dimension_;
-  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a CDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a CDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a CDF with a point number < 2";
   if (isDiscrete()) return drawDiscreteCDF(xMin, xMax, logScale);
   const CDFWrapper cdfWrapper(this);
@@ -4344,7 +4344,7 @@ Graph DistributionImplementation::drawDiscreteSurvivalFunction(const Scalar xMin
   //         ---[-----------------------------]----
   //         -------[-----------------]------------
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the SurvivalFunction of a multidimensional discrete distribution this way.";
-  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   // Create the graph that will store the staircase representing the empirical SurvivalFunction
   const String title(OSS() << getDescription()[0] << " SurvivalFunction");
   const Sample support(getSupport(Interval(xMin, xMax)));
@@ -4380,7 +4380,7 @@ Graph DistributionImplementation::drawSurvivalFunction(const Scalar xMin,
     const Bool logScale) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: can draw a SurvivalFunction only if dimension equals 1, here dimension=" << dimension_;
-  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a SurvivalFunction with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a SurvivalFunction with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a SurvivalFunction with a point number < 2";
   if (isDiscrete()) return drawDiscreteSurvivalFunction(xMin, xMax, logScale);
   const SurvivalFunctionWrapper survivalWrapper(Collection<Implementation>(0), this);

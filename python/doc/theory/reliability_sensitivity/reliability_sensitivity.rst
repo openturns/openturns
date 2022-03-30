@@ -39,7 +39,7 @@ Sensitivity analysis
     sensitivity_fast
     importance_form
     sensitivity_form
-
+    sensitivity_hsic
 
 Probability of exceeding a threshold
 ------------------------------------

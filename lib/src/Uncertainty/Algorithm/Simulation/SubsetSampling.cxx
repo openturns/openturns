@@ -254,9 +254,6 @@ void SubsetSampling::run()
     ++ numberOfSteps_;
 
     Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
-
-    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
-      throw InternalException(HERE) << "User stopped simulation";
   }
 
   setResult(SubsetSamplingResult(getEvent(), probabilityEstimate, varianceEstimate, numberOfSteps_ * getMaximumOuterSampling(), getBlockSize(), sqrt(coefficientOfVariationSquare)));
@@ -450,6 +447,9 @@ void SubsetSampling::generatePoints(Scalar threshold)
         currentLevelSample_[i * blockSize + j] = blockSample[j];
       }
     }
+
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InternalException(HERE) << "User stopped simulation";
   }
 }
 

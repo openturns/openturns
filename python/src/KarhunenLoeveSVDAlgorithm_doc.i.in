@@ -2,11 +2,11 @@
 "Computation of Karhunen-Loeve decomposition using SVD approximation.
 
 Available constructors:
-    KarhunenLoeveSVDAlgorithm(*sample, s, centeredFlag*)
+    KarhunenLoeveSVDAlgorithm(*sample, threshold, centeredSample*)
 
-    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, s, centeredFlag*)
+    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, threshold, centeredSample*)
 
-    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, sampleWeights, s, centeredFlag*)
+    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, sampleWeights, threshold, centeredSample*)
 
 Parameters
 ----------
@@ -16,12 +16,11 @@ verticesWeights : sequence of float
     The weights associated to the vertices of the mesh defining the sample.
 sampleWeights : sequence of float
     The weights associated to the fields of the sample.
-s : float, :math:`\geq0`
-    The threshold used to select the most significant eigenmodes, defined in  :class:`~openturns.KarhunenLoeveAlgorithm`.
-centeredFlag : bool
+threshold : positive float, default=0.0
+    The threshold used to select the most significant eigenmodes, defined in :class:`~openturns.KarhunenLoeveAlgorithm`.
+centeredSample : bool, default=False
     Flag to tell if the sample is drawn according to a centered
-    process or if it has to be centered using the empirical mean. The
-    default value is *False*.
+    process or if it has to be centered using the empirical mean.
     
 Notes
 -----
