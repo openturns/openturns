@@ -22,10 +22,10 @@ distribution :
 Notes
 -----
 The Gauss product experiment is a tensor product experiment
-which uses Gauss points in each direction
-(so, using the notations of the :class:`~openturns.TensorProductExperiment`
-documentation, :math:`n_e = d_x` and :math:`d_j=1`
-for every index :math:`j = 1, ..., n_e`).
+which uses Gauss points in each direction. 
+Using the notations of the :class:`~openturns.TensorProductExperiment`
+documentation, we have :math:`n_e = d_x` and :math:`d_j=1`
+for every index :math:`j = 1, ..., n_e`.
 
 For each marginal, the algorithm computes the family of orthogonal 
 polynomials depending on the marginal distribution using the
