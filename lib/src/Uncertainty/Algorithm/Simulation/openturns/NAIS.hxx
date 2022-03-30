@@ -45,25 +45,16 @@ public:
 
   /** Default constructor */
   NAIS(const RandomVector & event,
-       const Scalar rho_quantile = 0.7);
+       const Scalar rhoQuantile = 0.7);
        
   /** Virtual constructor */
   NAIS * clone() const override;
-
-  /** Get weights */
-  Point getWeights() const;
-  
-  /** Get auxiliary input sample */
-  Sample getAuxiliaryInputSample() const;
 
   /** Get rhoQuantile */
   Scalar getRhoQuantile() const;
   
   /** Set rhoQuantile */
   void setRhoQuantile(const Scalar & rhoQuantile);
-
-  /** Get outputsamples */
-  Sample getAuxiliaryOutputSample() const;
 
   /** Main function that computes the failure probability */
   void run() override;
@@ -83,15 +74,6 @@ private:
                        const Scalar eventThresholdLocal,
                        const Distribution & AuxiliaryDistribution);
                        
-  // Current weights samples
-  Point weights_;
-
-  // Current Sample
-  Sample auxiliaryInputSample_;
-
-  // Current auxiliary output sample
-  Sample auxiliaryOutputSample_;
-
   // Initial distribution
   Distribution initialDistribution_;
 

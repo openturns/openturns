@@ -66,10 +66,10 @@ assert_almost_equal(probability, 0.0023828813801648916)
 numberSamples = 10000  # Number of samples at each iteration
 blockSize = 1
 # Quantile determining the percentage of failure samples in the current population
-rho_quantile = 0.25
+rhoQuantile = 0.25
 
 # Definition of the algoritm
-Nais_algo = ot.NAIS(event, rho_quantile)
+Nais_algo = ot.NAIS(event, rhoQuantile)
 Nais_algo.setMaximumOuterSampling(numberSamples);
 Nais_algo.setBlockSize(blockSize);
 

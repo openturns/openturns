@@ -59,18 +59,6 @@ NAIS * NAIS::clone() const
   return new NAIS(*this);
 }
     
-// Get weights
-Point NAIS::getWeights() const
-{
-  return weights_;
-}
-
-// Get auxiliary input sample
-Sample NAIS::getAuxiliaryInputSample() const
-{
-  return auxiliaryInputSample_;
-}
-
 // Get rhoQuantile
 Scalar NAIS::getRhoQuantile() const
 {
@@ -83,21 +71,15 @@ void NAIS::setRhoQuantile(const Scalar & rhoQuantile)
   rhoQuantile_ = rhoQuantile;
 }
 
-// Get auxiliary output samples
-Sample NAIS::getAuxiliaryOutputSample() const
-{
-  return auxiliaryOutputSample_;
-}
-
-// Function computing the auxiliary distribution as a function of current sample and associated weights_
+// Function computing the auxiliary distribution as a function of current sample and associated weights
 Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
-    const Point & weights_)
+    const Point & weights)
 {
-  Scalar weightsPower2 = weights_.normSquare();
+  Scalar weightsPower2 = weights.normSquare();
   Scalar sumWeights = 0.0;
-  for (UnsignedInteger i = 0; i < weights_.getSize(); ++i)
+  for (UnsignedInteger i = 0; i < weights.getSize(); ++i)
   {
-    sumWeights += weights_[i];
+    sumWeights += weights[i];
   }
   // Computation of weight
   const Scalar neff = sumWeights * sumWeights / weightsPower2;
@@ -118,7 +100,7 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
     {
       collectionOfDistribution[i] = Normal(sample(i, k), silverman[k]);
     }
-    margins[k] = Mixture(collectionOfDistribution, weights_);
+    margins[k] = Mixture(collectionOfDistribution, weights);
   } // for k
   return ComposedDistribution(margins);
 }
@@ -143,12 +125,12 @@ Point NAIS::computeWeights(const Sample & sample,
   const Sample initialLogPDF = initialDistribution_.computeLogPDF(criticalSample);
   // Compute initial distribution logPDF in parallel
   const Sample auxilliaryLogPDF = auxiliaryDistribution.computeLogPDF(criticalSample);
-  weights_ = Point(sample.getSize());
+  Point weights = Point(sample.getSize());
   for (UnsignedInteger i = 0; i < criticalSample.getSize(); ++i)
   {
-    weights_[indiceCritic[i]] = std::exp(initialLogPDF(i,0) - auxilliaryLogPDF(i,0));
+    weights[indiceCritic[i]] = std::exp(initialLogPDF(i,0) - auxilliaryLogPDF(i,0));
   }
-  return weights_;
+  return weights;
 }
 
 // Main function that computes the failure probability
@@ -157,10 +139,10 @@ void NAIS::run()
   const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
 
   // Drawing of samples using initial density
-  auxiliaryInputSample_ = initialDistribution_.getSample(numberOfSample);
+  Sample auxiliaryInputSample = initialDistribution_.getSample(numberOfSample);
 
   // Evaluation on limit state function
-  Sample auxiliaryOutputSample(getEvent().getFunction()(auxiliaryInputSample_));
+  Sample auxiliaryOutputSample(getEvent().getFunction()(auxiliaryInputSample));
 
   // Computation of current quantile
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(rhoQuantile_)[0];
@@ -172,23 +154,23 @@ void NAIS::run()
   }
   else
   {
-    // Computation of weights_
-    weights_ = computeWeights(auxiliaryInputSample_, auxiliaryOutputSample, currentQuantile, initialDistribution_);
+    // Computation of weights
+    const Point weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, initialDistribution_);
 
     // Computation of auxiliary distribution
-    auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample_, weights_);
+    auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
   }
 
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
     // Drawing of samples using auxiliary density and evaluation on limit state function   
-    auxiliaryInputSample_ = Sample(0, initialDistribution_.getDimension());
+    auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());
     auxiliaryOutputSample = Sample(0, 1);
 
     for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++ i)
     {
       const Sample blockSample(auxiliaryDistribution.getSample(getBlockSize()));
-      auxiliaryInputSample_.add(blockSample);
+      auxiliaryInputSample.add(blockSample);
       auxiliaryOutputSample.add(getEvent().getFunction()(blockSample));
       
       if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
@@ -205,11 +187,11 @@ void NAIS::run()
     }
     else
     {
-      // Computation of weights_
-      weights_ = computeWeights(auxiliaryInputSample_, auxiliaryOutputSample, currentQuantile, auxiliaryDistribution);
+      // Computation of weights
+      const Point weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, auxiliaryDistribution);
 
       // Update of auxiliary distribution
-      auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample_, weights_);
+      auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
     }
     
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
@@ -227,7 +209,7 @@ void NAIS::run()
   } // for i
 
   const Sample resp_sampleCritic(auxiliaryOutputSample.select(indicesCritic));
-  const Sample sampleCritic(auxiliaryInputSample_.select(indicesCritic));
+  const Sample sampleCritic(auxiliaryInputSample.select(indicesCritic));
 
   // Evaluate initial log PDF in parallel on failure sample
   Sample logPDFInitCritic(initialDistribution_.computeLogPDF(sampleCritic));
@@ -255,13 +237,11 @@ void NAIS::run()
   // Save of data in Simulation naisResult_ structure
   naisResult_.setProbabilityEstimate(sumPdfCritic / numberOfSample);
   naisResult_.setAuxiliaryDistribution(auxiliaryDistribution);
-  naisResult_.setAuxiliaryInputSample(auxiliaryInputSample_);
+  naisResult_.setAuxiliaryInputSample(auxiliaryInputSample);
   naisResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
   naisResult_.setOuterSampling(getMaximumOuterSampling());
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
-  auxiliaryOutputSample_ = auxiliaryOutputSample;
-
 }
 
 
