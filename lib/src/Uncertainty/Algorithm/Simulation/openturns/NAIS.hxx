@@ -73,7 +73,7 @@ private:
                        const Sample & respectiveSamples,
                        const Scalar eventThresholdLocal,
                        const Distribution & AuxiliaryDistribution);
-                       
+
   // Initial distribution
   Distribution initialDistribution_;
 

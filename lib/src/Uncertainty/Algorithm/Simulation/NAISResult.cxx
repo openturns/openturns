@@ -57,6 +57,18 @@ void NAISResult::setAuxiliaryInputSample(const Sample & auxiliaryInputSample)
   auxiliaryInputSample_ = auxiliaryInputSample;
 }
 
+// Get Weights 
+Point NAISResult::getWeights() const
+{
+  return weights_;
+} 
+
+// Set Weights 
+void NAISResult::setWeights(const Point & weights)
+{
+  weights_ = weights;
+}
+
 // Get Output Samples
 Sample NAISResult::getAuxiliaryOutputSample() const
 {

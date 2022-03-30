@@ -49,6 +49,12 @@ public:
   /** Set Auxiliary input sample */
   void setAuxiliaryInputSample(const Sample & auxiliaryInputSample);
   
+  /** Get Weights */
+  Point getWeights() const;
+  
+  /** Set Weights */
+  void setWeights(const Point & weights);
+  
   /** Get Output Samples */
   Sample getAuxiliaryOutputSample() const;
   
@@ -80,6 +86,9 @@ private:
   
   // The output Auxiliary sample
   Sample auxiliaryOutputSample_;
+  
+  // Current weights samples
+  Point weights_;
   
 }; /* class NAISResult */
 

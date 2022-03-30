@@ -140,6 +140,7 @@ void NAIS::run()
 
   // Drawing of samples using initial density
   Sample auxiliaryInputSample = initialDistribution_.getSample(numberOfSample);
+  Point weights;
 
   // Evaluation on limit state function
   Sample auxiliaryOutputSample(getEvent().getFunction()(auxiliaryInputSample));
@@ -155,7 +156,7 @@ void NAIS::run()
   else
   {
     // Computation of weights
-    const Point weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, initialDistribution_);
+    weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, initialDistribution_);
 
     // Computation of auxiliary distribution
     auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
@@ -188,7 +189,7 @@ void NAIS::run()
     else
     {
       // Computation of weights
-      const Point weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, auxiliaryDistribution);
+      weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, auxiliaryDistribution);
 
       // Update of auxiliary distribution
       auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
@@ -239,6 +240,7 @@ void NAIS::run()
   naisResult_.setAuxiliaryDistribution(auxiliaryDistribution);
   naisResult_.setAuxiliaryInputSample(auxiliaryInputSample);
   naisResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
+  naisResult_.setWeights(weights);
   naisResult_.setOuterSampling(getMaximumOuterSampling());
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
