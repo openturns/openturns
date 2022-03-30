@@ -192,7 +192,6 @@ void SmolyakExperiment::computeNodesAndWeights() const
   for (UnsignedInteger i = 0; i < numberOfUnitaryQuadratures; ++i)
   {
     LOGDEBUG(OSS() << "  i = " << i);
-    LOGDEBUG(OSS() << "  Set marginal experiments");
     WeightedExperimentCollection collection;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
@@ -204,18 +203,8 @@ void SmolyakExperiment::computeNodesAndWeights() const
     } // Loop over the dimensions
     TensorProductExperiment elementaryExperiment(collection);
     LOGDEBUG(OSS() << "  TensorProductExperiment : " << elementaryExperiment);
-    LOGDEBUG(OSS() << "  generateWithWeights()");
     Point elementaryWeights(0);
     Sample elementaryNodes(elementaryExperiment.generateWithWeights(elementaryWeights));
-    LOGDEBUG(OSS() << "  elementaryNodes");
-    for (UnsignedInteger i = 0; i < elementaryNodes.getSize(); ++i)
-    {
-        LOGDEBUG(OSS() << "[" << i << "] " << elementaryWeights[i] << " : ");
-        for (UnsignedInteger j = 0; j < dimension; ++j)
-        {
-          LOGDEBUG(OSS() << elementaryNodes(i, j) << " ");
-        } // loop over dimensions
-    } // loop over points
     // Compute Smolyak coefficient
     LOGDEBUG(OSS() << "  Compute Smolyak coefficient");
     UnsignedInteger marginalLevelsSum = 0;
@@ -238,17 +227,7 @@ void SmolyakExperiment::computeNodesAndWeights() const
   } // Loop over the marginal levels
   const UnsignedInteger duplicateSize = duplicatedNodes.getSize();
   LOGDEBUG(OSS() << "Number of candidate nodes = " << duplicateSize);
-  LOGDEBUG(OSS() << "printNodesAndWeights");
-  for (UnsignedInteger i = 0; i < duplicateSize; ++i)
-  {
-    LOGDEBUG(OSS() << "[" << i << "] " << duplicatedWeights[i] << " : ");
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-    {
-      LOGDEBUG(OSS() << duplicatedNodes(i, j) << " ");
-    } // loop over dimensions
-  } // loop over points
   // Reduce to unique nodes and weights
-  LOGDEBUG(OSS() << "Reduce to unique nodes and weights");
   nodes_ = Sample(0, dimension);
   weights_ = Point(0);
   const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
