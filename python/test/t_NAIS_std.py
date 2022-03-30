@@ -70,7 +70,7 @@ rho_quantile = 0.25
 
 # Definition of the algoritm
 Nais_algo = ot.NAIS(event, rho_quantile)
-Nais_algo.setMaximumOuterSampling(numberSamples);
+Nais_algo.setOuterSampling(numberSamples);
 Nais_algo.setBlockSize(blockSize);
 
 # Run of the algorithm

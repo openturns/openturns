@@ -61,12 +61,6 @@ public:
   /** Set Auxiliary Density */
   void setAuxiliaryDistribution(const Distribution & auxiliaryDistribution);
   
-  /** Set Maximum Outer Sampling */
-  void setMaximumOuterSampling(const UnsignedInteger & maximumOuterSampling);
-  
-  /** Get Maximum Outer Sampling */
-  UnsignedInteger getMaximumOuterSampling() const;
-  
   /** Coefficient of variation estimate accessor */
   Scalar getCoefficientOfVariation() const override;
   
@@ -86,9 +80,6 @@ private:
   
   // The output Auxiliary sample
   Sample auxiliaryOutputSample_;
-
-  // The Maximum Outer Sampling
-  UnsignedInteger maximumOuterSampling_;
   
 }; /* class NAISResult */
 

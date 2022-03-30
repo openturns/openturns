@@ -81,18 +81,6 @@ void NAISResult::setAuxiliaryDistribution(const Distribution & auxiliaryDistribu
   auxiliaryDistribution_ = auxiliaryDistribution;
 }
 
-// Set Maximum Outer Sampling
-void NAISResult::setMaximumOuterSampling(const UnsignedInteger & maximumOuterSampling)
-{
-  maximumOuterSampling_ = maximumOuterSampling;
-}
-
-// Get Maximum Outer Sampling
-UnsignedInteger NAISResult::getMaximumOuterSampling() const
-{
-  return maximumOuterSampling_;
-}
-
 // Coefficient of variation estimate accessor 
 Scalar NAISResult::getCoefficientOfVariation() const
 {

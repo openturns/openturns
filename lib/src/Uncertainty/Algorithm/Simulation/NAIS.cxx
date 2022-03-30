@@ -257,7 +257,7 @@ void NAIS::run()
   naisResult_.setAuxiliaryDistribution(auxiliaryDistribution);
   naisResult_.setAuxiliaryInputSample(auxiliaryInputSample_);
   naisResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
-  naisResult_.setMaximumOuterSampling(getMaximumOuterSampling());
+  naisResult_.setOuterSampling(getMaximumOuterSampling());
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
   auxiliaryOutputSample_ = auxiliaryOutputSample;
