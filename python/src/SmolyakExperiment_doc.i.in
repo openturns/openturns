@@ -16,7 +16,25 @@ Smolyak experiment has a significantly lower number of nodes [petras2003]_.
 This implementation uses the combination technique ([gerstner1998]_ page 215).
 Smolyak quadrature involve weights which are negative ([sullivan2015]_ page 177).
 
-Let :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^p` be the multi-index :math:`\boldsymbol{k} = (k_1, ..., k_p)` where 
+Let :math:`\mathcal{X} \subset \mathbb{R}^{d_x}` be the integration domain 
+and let :math:`g : \mathcal{X} \rightarrow \mathbb{R}^{d_y}` be an integrable 
+function. 
+Let :math:`f : \mathcal{X} \rightarrow \mathbb{R}` be a probability density 
+function. The Smolyak experiment produces an approximation of the 
+integral :
+
+.. math::
+
+    \int_{\mathcal{X}} g(\boldsymbol{x}) f(\boldsymbol{x}) d\boldsymbol{x} 
+    \approx \sum_{i = 1}^{s_t} w_i g\left(\boldsymbol{x}_i\right)
+
+where :math:`s_t \in \mathbb{N}` is the size of the Smolyak  
+design of experiments, :math:`w_1, ..., w_{s_t} \in \mathbb{R}` are the 
+weights and :math:`\boldsymbol{x}_1, ..., \boldsymbol{x}_{s_t} \in \mathbb{R}^{d_x}` 
+are the nodes. 
+
+Let :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^{d_x}` be the multi-index 
+:math:`\boldsymbol{k} = (k_1, ..., k_p)` where 
 
 .. math::
 
@@ -27,50 +45,67 @@ Consider the 1 and the infinity norms ([leMaitre2010]_ page 57, eq. 3.28):
 
 .. math::
 
-    \|\boldsymbol{k}\|_1 = \sum_{i = 1}^p k_i \qquad
+    \|\boldsymbol{k}\|_1 = \sum_{i = 1}^{d_x} k_i \qquad
     \|\boldsymbol{k}\|_\infty = \max_{i = 1} k_i.
 
-for any :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^p`.
+for any :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^{d_x}`.
 
 The tensor product quadrature is :
 
 .. math::
 
-    Q_\ell^{(p)} = Q_{\ell}^{(1)} \otimes ... \otimes Q_{\ell}^{(1)}.
+    Q_\ell^{(d_x)} = Q_{\ell}^{(1)} \otimes ... \otimes Q_{\ell}^{(1)}.
 
-The following theorem provides an equivalent equation for the tensor product quadrature ([leMaitre2010]_ page 57, eq. 3.30):
+The following theorem provides an equivalent equation for the tensor product 
+quadrature ([leMaitre2010]_ page 57, eq. 3.30):
 
 .. math::
 
-    Q_\ell^{(p)} = \sum_{\|\boldsymbol{k}\|_\infty \leq \ell} \Delta_{k_1}^{(1)} \otimes ... \otimes \Delta_{k_p}^{(1)}
+    Q_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_\infty \leq \ell} 
+    \Delta_{k_1}^{(1)} \otimes ... \otimes \Delta_{k_p}^{(1)}
 
-The significant part of the previous equation is the set of multi-indices :math:`\|\boldsymbol{k}\|_\infty \leq \ell`, which involves many terms. 
+The significant part of the previous equation is the set of multi-indices 
+:math:`\|\boldsymbol{k}\|_\infty \leq \ell`, which involves many terms. 
 
-One of the ways to reduce the size of this set is to consider the smaller set of mult-indices :math:`\|\boldsymbol{k}\|_1 \leq \ell + p - 1`. The sparse quadrature ([leMaitre2010]_ page 57, eq. 3.29, [gerstner1998]_  page 214) is introduced in the following definition.
+One of the ways to reduce the size of this set is to consider the smaller set 
+of mult-indices :math:`\|\boldsymbol{k}\|_1 \leq \ell + {d_x} - 1`. The sparse 
+quadrature ([leMaitre2010]_ page 57, eq. 3.29, [gerstner1998]_  page 214) 
+is introduced in the following definition.
 
 The Smolyak sparse quadrature formula at level :math:`\ell` is :
 
 .. math::
 
-    Q_\ell^{(p)} = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + p - 1} \Delta_{k_1}^{(1)} \otimes ... \otimes \Delta_{k_p}^{(1)}
+    Q_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + p - 1} 
+    \Delta_{k_1}^{(1)} \otimes ... \otimes \Delta_{k_p}^{(1)}
 
 for any :math:`\ell \geq 1`. 
 
-The following formula expresses the multivariate quadrature in terms of combinations univariate quadratures, known as the *combination technique*.
+The following formula expresses the multivariate quadrature in terms of 
+combinations univariate quadratures, known as the *combination technique*.
 The sparse quadrature formula at level :math:`\ell` is :
 
 .. math::
 
-    Q_\ell^{(p)} = \sum_{\ell \leq \|\boldsymbol{k}\|_1 \leq \ell + p - 1} (-1)^{\ell + p - \|\boldsymbol{k}\|_1 - 1} {p - 1 \choose \|\boldsymbol{k}\|_1 - \ell} Q_{k_1}^{(1)} \otimes ... \otimes Q_{k_p}^{(1)}
+    Q_\ell^{(p)} = \sum_{\ell \leq \|\boldsymbol{k}\|_1 \leq \ell + p - 1} 
+    (-1)^{\ell + p - \|\boldsymbol{k}\|_1 - 1} 
+    {p - 1 \choose \|\boldsymbol{k}\|_1 - \ell} 
+    Q_{k_1}^{(1)} \otimes ... \otimes Q_{k_p}^{(1)}
 
 for any :math:`\ell \geq 1`. 
 
-The following theorem presents the absolute error of a sparse quadrature ([sullivan2015]_ page 177, eq. 9.10).
-Assume that :math:`h \in \mathcal{C}^r([0, 1]^p)` and that we use a sparse quadrature with :math:`n_\ell$ nodes at level :math:`\ell`. Therefore,
+The following theorem presents the absolute error of a sparse 
+quadrature ([sullivan2015]_ page 177, eq. 9.10).
+Assume that :math:`g \in \mathcal{C}^r([0, 1]^p)` and that we use a sparse 
+quadrature with :math:`n_\ell` nodes at level :math:`\ell`. 
+In this particular case, the probability density function :math:`f` is 
+equal to 1. 
+Therefore,
 
 .. math::
 
-    \left|\int_{[0, 1]^p} h(\boldsymbol{\xi}) d\boldsymbol{\xi} - Q_\ell(h)\right|
+    \left|\int_{[0, 1]^p} g(\boldsymbol{x}) d\boldsymbol{x} 
+    - Q_\ell(g)\right|
     = O \left(n_\ell^{-r} (\log(n_\ell))^{(p - 1)(r + 1)}\right).
 
 See also
@@ -79,18 +114,19 @@ WeightedExperiment
 
 Examples
 --------
-In the following example, we tensorize two Gauss-Legendre 
-quadratures, using 3 nodes in the first dimension and 5 nodes in the second.
+In the following example, we create Smolyak quadrature using two Gauss-Legendre 
+marginal quadratures.
 
 >>> import openturns as ot
 >>> experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [3])
 >>> experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [5])
 >>> collection = [experiment1, experiment2]
->>> multivariate_experiment = ot.SmolyakExperiment(collection)
+>>> level = 3
+>>> multivariate_experiment = ot.SmolyakExperiment(collection, level)
 >>> nodes, weights = multivariate_experiment.generateWithWeights()
 
 Marginal DOEs do not necessarily have dimension 1. 
-In the following example, we tensorize two DOEs, where the 
+In the following example, we create a Smolyak quadrature using two DOEs, where the 
 first one has dimension 2, and the second one has dimension 3.
 
 >>> import openturns as ot
@@ -104,9 +140,10 @@ first one has dimension 2, and the second one has dimension 3.
 >>> dimension_2 = len(marginal_sizes_2)
 >>> distribution_2 = ot.ComposedDistribution([ot.Normal()] * dimension_2)
 >>> experiment_2 = ot.GaussProductExperiment(distribution_2, marginal_sizes_2)
->>> # Tensor product
+>>> # Smolyak
 >>> collection = [experiment_1, experiment_2]
->>> multivariate_experiment = ot.SmolyakExperiment(collection)
+>>> level = 3
+>>> multivariate_experiment = ot.SmolyakExperiment(collection, level)
 >>> nodes, weights = multivariate_experiment.generateWithWeights()"
 
 // ---------------------------------------------------------------------
