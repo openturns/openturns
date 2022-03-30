@@ -82,7 +82,7 @@ int main()
 
   // Definition of the algoritm
   NAIS algoNais(event,rhoQuantile);
-  algoNais.setOuterSampling(numberSamples);
+  algoNais.setMaximumOuterSampling(numberSamples);
   algoNais.setBlockSize(blockSize);
   
   // Run of the algorithm
