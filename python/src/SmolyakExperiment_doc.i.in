@@ -14,7 +14,9 @@ of marginal multidimensional elementary designs of experiments.
 Compared to the :class:`~openturns.TensorProductExperiment`, the 
 Smolyak experiment has a significantly lower number of nodes [petras2003]_. 
 This implementation uses the combination technique ([gerstner1998]_ page 215).
-Smolyak quadrature involve weights which are negative ([sullivan2015]_ page 177).
+Smolyak quadrature involve weights which are negative ([sullivan2015]_ page 177). 
+The size of the experiment is only known after the nodes and weights are computed, 
+that is, after the `generateWithWeights` method is called. 
 
 Let :math:`\mathcal{X} \subset \mathbb{R}^{d_x}` be the integration domain 
 and let :math:`g : \mathcal{X} \rightarrow \mathbb{R}^{d_y}` be an integrable 

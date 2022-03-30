@@ -90,13 +90,15 @@ void test_1()
     experimentCollection.add(marginalExperiment1);
     // Marginal 1: Uniform, with 5 nodes
     const Uniform distribution2(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment2(distribution2);  
+    const GaussProductExperiment marginalExperiment2(distribution2);
     experimentCollection.add(marginalExperiment2);
     //
     const UnsignedInteger level = 3;
     SmolyakExperiment experiment(experimentCollection, level);
     Point weights(0);
     Sample nodes(experiment.generateWithWeights(weights));
+    const int experimentSize = experiment.getSize();
+    assert_equal(experimentSize, 13);
     //
     UnsignedInteger numberOfDigits = 14;
     roundSample(nodes, numberOfDigits);

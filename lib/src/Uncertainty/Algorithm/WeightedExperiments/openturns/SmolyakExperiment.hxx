@@ -60,7 +60,14 @@ public:
   Bool hasUniformWeights() const override;
 
   /** Sample generation */
-  Sample generateWithWeights(Point & weightsOut) const override;
+  Sample generateWithWeights(Point & weightsOut);
+
+  /** Distribution collection accessor */
+  void setWeightedExperimentCollection(const WeightedExperimentCollection & coll);
+  const WeightedExperimentCollection & getWeightedExperimentCollection() const;
+
+  /** Size accessor */
+  UnsignedInteger getSize() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -88,6 +95,8 @@ private:
   // Integration nodes; weights
   mutable Sample nodes_;
   mutable Point weights_;
+
+  bool isAlreadyComputed_;
 
 }; /* class SmolyakExperiment */
 

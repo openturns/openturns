@@ -24,6 +24,7 @@
 #include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/BlockIndependentDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,8 +36,9 @@ SmolyakExperiment::SmolyakExperiment()
   , collection_(0)
   , level_(0)
   , nodes_(0, 0)
+  , isAlreadyComputed_(false)
 {
-  // Nothing to do
+   // Nothing to do
 }
 
 /* Constructor with parameters */
@@ -47,9 +49,18 @@ SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collec
   , collection_(collection)
   , level_(level)
   , nodes_(0, 0)
+  , isAlreadyComputed_(false)
 {
-  // Nothing to do
+  const UnsignedInteger numberOfMarginalExperiments = collection_.getSize();
+  BlockIndependentDistribution::DistributionCollection distributionCollection(numberOfMarginalExperiments);
+  for (UnsignedInteger i = 0; i < numberOfMarginalExperiments; ++i)
+  {
+    distributionCollection[i] = collection_[i].getDistribution();
+  }
+  const BlockIndependentDistribution distribution(distributionCollection);
+  WeightedExperimentImplementation::setDistribution(distribution);
 }
+
 /* Virtual constructor */
 SmolyakExperiment * SmolyakExperiment::clone() const
 {
@@ -73,10 +84,12 @@ Bool SmolyakExperiment::hasUniformWeights() const
 }
 
 /* Sample generation */
-Sample SmolyakExperiment::generateWithWeights(Point & weights) const
+Sample SmolyakExperiment::generateWithWeights(Point & weights)
 {
   computeNodesAndWeights();
   weights = weights_;
+  WeightedExperimentImplementation::setSize(nodes_.getSize());
+  isAlreadyComputed_ = true;
   return nodes_;
 }
 
@@ -269,6 +282,26 @@ void SmolyakExperiment::computeNodesAndWeights() const
       weights_.add(candidateWeight);
     }
   }
+}
+
+/* Distribution collection accessor */
+const SmolyakExperiment::WeightedExperimentCollection & SmolyakExperiment::getWeightedExperimentCollection() const
+{
+  return collection_;
+}
+
+/* Distribution collection accessor */
+void SmolyakExperiment::setWeightedExperimentCollection(const WeightedExperimentCollection & coll)
+{
+  collection_ = coll;
+  isAlreadyComputed_ = false;
+}
+
+/* Get size */
+UnsignedInteger SmolyakExperiment::getSize() const
+{
+  if (!isAlreadyComputed_) throw InvalidArgumentException(HERE) << "Error: the size is not set yet. Please generate the experiment.";
+  return WeightedExperimentImplementation::getSize();
 }
 
 /* Method save() stores the object through the StorageManager */
