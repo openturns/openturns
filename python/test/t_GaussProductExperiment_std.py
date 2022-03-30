@@ -1,26 +1,24 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-try:
-    distribution = ComposedDistribution(
-        DistributionCollection([Exponential(), Triangular(-1.0, -0.5, 1.0)]))
-    marginalSizes = Indices([3, 6])
-    # Test the constructor based on marginal degrees
-    print("experiment1=", GaussProductExperiment(marginalSizes))
-    # Test the constructor based on distribution
-    print("experiment2=", GaussProductExperiment(distribution))
-    # Test the constructor based on marginal degrees and distribution
-    experiment = GaussProductExperiment(
-        Distribution(distribution), marginalSizes)
-    print("experiment = ", experiment)
-    sample, weights = experiment.generateWithWeights()
-    print("sample = ", repr(sample))
-    print("weights = ", repr(weights))
-except:
-    import sys
-    print("t_GaussProductExperiment_std.py",
-          sys.exc_info()[0], sys.exc_info()[1])
+# Test default constructor
+print("experiment0=", repr(ot.GaussProductExperiment().generate()))
+
+distribution = ot.ComposedDistribution(
+  [ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
+marginalSizes = [3, 6]
+# Test the constructor based on marginal degrees
+print("experiment1=", ot.GaussProductExperiment(marginalSizes))
+# Test the constructor based on distribution
+print("experiment2=", ot.GaussProductExperiment(distribution))
+# Test the constructor based on marginal degrees and distribution
+experiment = ot.GaussProductExperiment(distribution, marginalSizes)
+print("experiment = ", experiment)
+sample, weights = experiment.generateWithWeights()
+print("sample = ", repr(sample))
+print("weights = ", repr(weights))
+

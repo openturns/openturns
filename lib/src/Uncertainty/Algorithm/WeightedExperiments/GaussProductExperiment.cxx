@@ -20,7 +20,6 @@
  */
 #include "openturns/GaussProductExperiment.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
-#include "openturns/AdaptiveStieltjesAlgorithm.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -34,10 +33,7 @@ typedef Collection< Point > PointCollection;
 
 /* Default constructor */
 GaussProductExperiment::GaussProductExperiment()
-  : WeightedExperimentImplementation()
-  , collection_(0)
-  , marginalSizes_(0)
-  , nodes_(0, 0)
+  : GaussProductExperiment(Indices(1, 1))
 {
   // Nothing to do
 }
