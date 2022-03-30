@@ -666,6 +666,7 @@ ot_pyinstallcheck_test (MonteCarloExperiment_std)
 ot_pyinstallcheck_test (CombinatorialGenerator_std)
 ot_pyinstallcheck_test (Experiment_python)
 ot_pyinstallcheck_test (Splitter_std IGNOREOUT)
+ot_pyinstallcheck_test (TensorProductExperiment_std IGNOREOUT)
 
 # IterativeStat
 ot_pyinstallcheck_test (IterativeExtrema_std IGNOREOUT)

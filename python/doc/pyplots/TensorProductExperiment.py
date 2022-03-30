@@ -3,17 +3,14 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 ot.RandomGenerator.SetSeed(0)
 
-# Generate sample with the given plane
-distribution = ot.ComposedDistribution(
-    [ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
-marginalDegrees = ot.Indices([3, 6])
-experiment = ot.GaussProductExperiment(
-    ot.Distribution(distribution), marginalDegrees)
-
+experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [3])
+experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [5])
+collection = [experiment1, experiment2]
+experiment = ot.TensorProductExperiment(collection)
 sample = experiment.generate()
 
 # Create an empty graph
-graph = ot.Graph("Gauss product experiment", "x1", "x2", True, "")
+graph = ot.Graph("Tensor product Gauss experiment", "x1", "x2", True, "")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "fsquare", "")

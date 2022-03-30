@@ -775,7 +775,8 @@ ot_add_python_module(weightedexperiment weightedexperiment_module.i
                       FixedExperiment.i FixedExperiment_doc.i.in
                       ImportanceSamplingExperiment.i ImportanceSamplingExperiment_doc.i.in
                       GaussProductExperiment.i GaussProductExperiment_doc.i.in
-                      LHSExperiment.i LHSExperiment_doc.i.in
+                      TensorProductExperiment.i TensorProductExperiment_doc.i.in
+LHSExperiment.i LHSExperiment_doc.i.in
 SimulatedAnnealingLHS.i SimulatedAnnealingLHS_doc.i.in
 MonteCarloLHS.i MonteCarloLHS_doc.i.in
 LHSResult.i LHSResult_doc.i.in
