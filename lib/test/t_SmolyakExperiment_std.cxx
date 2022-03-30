@@ -20,6 +20,10 @@
  */
 #include "openturns/OT.hxx"
 #include "openturns/OTtestcode.hxx"
+#include <iostream>
+#include <map>
+#include <string>
+#include <string_view>
 
 using namespace OT;
 using namespace OT::Test;
@@ -147,13 +151,64 @@ void test_2()
     
 }
 
+void print_map(std::string comment, const std::map<std::string, int>& m)
+{
+    std::cout << comment ;
+    // iterate using C++17 facilities
+    for (const auto& [key, value] : m) {
+        std::cout << '[' << key << "] = " << value << "; ";
+    }
+    std::cout << '\n';
+}
+ 
+void test_3()
+{
+    // Create a map of three (strings, int) pairs
+    std::map<std::string, int> m { {"CPU", 10}, {"GPU", 15}, {"RAM", 20}, };
+ 
+    print_map("1) Initial map: ", m);
+ 
+    m["CPU"] = 25;  // update an existing value
+    m["SSD"] = 30;  // insert a new value
+    print_map("2) Updated map: ", m);
+ 
+    // using operator[] with non-existent key always performs an insert
+    std::cout << "3) m[UPS] = " << m["UPS"] << '\n';
+    print_map("4) Updated map: ", m);
+ 
+    m.erase("GPU");
+    print_map("5) After erase: ", m);
+ 
+ 
+    m.clear();
+    std::cout << std::boolalpha << "8) Map is empty: " << m.empty() << '\n';
+}
+
+void test_4()
+{
+    int size = 13;
+    int dimension = 2;
+    Point column_1 = {0.112702, 0.211325, 0.211325, 0.211325, 0.5, 0.5, 0.5, 0.5, 0.5, 0.788675, 0.788675, 0.788675, 0.887298};
+    Point column_2 = {0.5, 0.211325, 0.5, 0.788675, 0.112702, 0.211325, 0.5, 0.788675, 0.887298, 0.211325, 0.5, 0.788675, 0.5};
+    Sample nodes(size, dimension);
+    for (int i = 0; i < size; ++i)
+    {
+      nodes(i, 0) = column_1[i];
+      nodes(i, 1) = column_2[i];
+    }
+    Point weights = {0.277778, 0.25, -0.5, 0.25, 0.277778, -0.5, 0.888888, -0.5, 0.277778, 0.25, -0.5, 0.25, 0.277778};
+    printNodesAndWeights(nodes, weights);
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
 
   try
   {
-    test_1();
+    // test_1();
+    // test_2();
+    test_3();
   }
   catch (TestFailed & ex)
   {
