@@ -34,8 +34,7 @@ The input distribution must have an independent copula.
 
 See also
 --------
-WeightedExperiment
-TensorProductExperiment
+WeightedExperiment, TensorProductExperiment
 
 Examples
 --------
