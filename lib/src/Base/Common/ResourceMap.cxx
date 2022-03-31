@@ -750,6 +750,10 @@ void ResourceMap::loadDefaultConfiguration()
   // FieldToPointConnection parameters //
   addAsUnsignedInteger("FieldToPointConnection-BlockSize", 256);
 
+  // FieldToPointFunctionalChaosAlgorithm
+  addAsBool("FieldToPointFunctionalChaosAlgorithm-DefaultRecompress", false);
+  addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal");
+
   // SQP parameters //
   addAsScalar("SQP-DefaultOmega", 1.0e-4);
   addAsScalar("SQP-DefaultSmooth", 1.2);
