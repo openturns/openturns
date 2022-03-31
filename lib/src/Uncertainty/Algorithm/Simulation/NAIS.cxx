@@ -161,14 +161,18 @@ void NAIS::run()
     // Computation of auxiliary distribution
     auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
   }
-
+  
+  UnsignedInteger iterationWhile = 0;
+  
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
+    ++iterationWhile;
+    
     // Drawing of samples using auxiliary density and evaluation on limit state function   
     auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());
     auxiliaryOutputSample = Sample(0, 1);
 
-    for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++ i)
+    for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++i)
     {
       const Sample blockSample(auxiliaryDistribution.getSample(getBlockSize()));
       auxiliaryInputSample.add(blockSample);
@@ -241,7 +245,7 @@ void NAIS::run()
   naisResult_.setAuxiliaryInputSample(auxiliaryInputSample);
   naisResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
   naisResult_.setWeights(weights);
-  naisResult_.setOuterSampling(getMaximumOuterSampling());
+  naisResult_.setOuterSampling(getMaximumOuterSampling()*iterationWhile);
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
 }
