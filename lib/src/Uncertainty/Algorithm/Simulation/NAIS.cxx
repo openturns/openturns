@@ -233,7 +233,7 @@ void NAIS::run()
   }  // for i 
   
   Scalar variancenonCritic = (numberOfSample -indicesCritic.getSize()) * (failureProbability*failureProbability);
-  Scalar varianceEstimate = (varianceCritic + variancenonCritic)/(numberOfSample-1) ;
+  Scalar varianceEstimate = (varianceCritic + variancenonCritic)/(numberOfSample-1)/numberOfSample ;
 
   // Save of data in Simulation naisResult_ structure
   naisResult_.setProbabilityEstimate(sumPdfCritic / numberOfSample);

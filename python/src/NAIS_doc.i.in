@@ -7,7 +7,7 @@ Parameters
 event : :class:`~openturns.RandomVector`
     Event we are computing the probability of failure.
 
-rhoQuantile : float  :math:` 0<\rho<1`
+rhoQuantile : float  :math:`0<\rho<1`
     Intermediate quantile level.
 
 Notes
@@ -95,10 +95,32 @@ outputSample : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------------
 
+%feature("docstring") OT::NAIS::getRhoQuantile
+"Accessor to the intermediate quantile level.
+
+Returns
+-------
+rhoQuantile : : float
+    Intermediate quantile level."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::setRhoQuantile
+"Accessor to the intermediate quantile level.
+
+Parameters
+----------
+rhoQuantile : : float  :math:`0<\rho<1`
+    Intermediate quantile level."
+    
+// ---------------------------------------------------------------------------
+
 %feature("docstring") OT::NAIS::getWeights
-"Output sample associated weights accessor of the final NAIS step.
+"Auxiliary distribution input sample associated weights accessor of the final NAIS step.
 
 Returns
 -------
 weights : :class:`~openturns.Point`
-    Output sample associated weights."
+    Auxiliary distribution input sample associated weights."    
+    
+
