@@ -24,7 +24,7 @@ This construction leads to an actual copula if and only if :math:`N` is a multip
 
 See also
 --------
-BernsteincopulaFactory
+BernsteinCopulaFactory
 
 Examples
 --------
