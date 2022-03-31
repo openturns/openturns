@@ -179,7 +179,7 @@ OT_EnumerateFunction_getStrataCardinal_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getStrataCumulatedCardinal_doc
-"Get the cardinal of the cumulated strata above or equal to the given strata.
+"Get the cardinal of the cumulated strata lower or equal to the given strata.
 
 Parameters
 ----------
@@ -190,9 +190,9 @@ strataIndex : int
 Returns
 -------
 cardinal : int
-    Number of members of the basis associated to the strata of index inferior or equal
+    Number of members of the basis associated to the strata of index lower or equal
     to *strataIndex*. In the context of product of polynomial basis, this is
-    the number of polynomials of the basis which total degree is inferior or
+    the number of polynomials of the basis which total degree is lower or
     equal to *strataIndex*.
 
 Examples
