@@ -2,61 +2,106 @@
 "Gauss product experiment.
 
 Available constructors:
-    GaussProductExperiment(*marginalDegrees*)
+    GaussProductExperiment(*marginalSizes*)
 
     GaussProductExperiment(*distribution*)
 
-    GaussProductExperiment(*distribution, marginalDegrees*)
+    GaussProductExperiment(*distribution, marginalSizes*)
 
 Parameters
 ----------
-marginalDegrees : sequence of positive int
-    Numbers of points :math:`N_i` for each direction. Then, the total number of
-    points generated is :math:`cardI=\prod_{i=1}^n N_i`. If not specified,
-    each value :math:`N_i` is :math:`5`.
+marginalSizes : sequence of positive int
+    Numbers of points :math:`s_j` for each direction. Then, the total number of
+    points generated is :math:`\textrm{card}(I)=\prod_{j = 1}^{d_x} s_j`. 
+    By default, the value of :math:`s_j` is equal to :math:`5`.
+    The default marginal size is defined in the 
+    `GaussProductExperiment-DefaultMarginalSize` key of the :class:`~openturns.ResourceMap`. 
 distribution :
-    Distribution :math:`\mu` of dimension :math:`n` with an independent copula.
+    Distribution :math:`\mu` of dimension :math:`d_x` with an independent copula.
 
 Notes
 -----
-The number of points for each direction doesn't change and the :meth:`generate`
-method always gives the same sample.
+The Gauss product experiment is a tensor product experiment
+which uses Gauss points in each direction. 
+Using the notations of the :class:`~openturns.TensorProductExperiment`
+documentation, we have :math:`n_e = d_x` and :math:`d_j=1`
+for every index :math:`j = 1, ..., n_e`.
+
+For each marginal, the algorithm computes the family of orthogonal 
+polynomials depending on the marginal distribution using the
+:class:`~openturns.StandardDistributionPolynomialFactory` class. 
+The input distribution must have an independent copula.  
 
 See also
 --------
-WeightedExperiment
+WeightedExperiment, TensorProductExperiment
 
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.ComposedDistribution([ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
->>> marginalDegrees = [3, 2]
->>> experiment = ot.GaussProductExperiment(distribution, marginalDegrees)
->>> print(experiment.generate())
+>>> marginal_1 = ot.Exponential()
+>>> marginal_2 = ot.Triangular(-1.0, -0.5, 1.0)
+>>> distribution = ot.ComposedDistribution([marginal_1, marginal_2])
+>>> marginalSizes = [3, 2]
+>>> experiment = ot.GaussProductExperiment(distribution, marginalSizes)
+>>> nodes, weights = experiment.generateWithWeights()
+>>> print(nodes)
     [ X0        X1        ]
 0 : [  0.415775 -0.511215 ]
 1 : [  2.29428  -0.511215 ]
 2 : [  6.28995  -0.511215 ]
 3 : [  0.415775  0.357369 ]
 4 : [  2.29428   0.357369 ]
-5 : [  6.28995   0.357369 ]"
+5 : [  6.28995   0.357369 ]
+>>> print(weights)
+[0.429018,0.168036,0.00626806,0.282075,0.110482,0.00412119]
+
+In the following example [morokoff1995]_, we integrate a dimension 
+5 integrand with :math:`\mathcal{U}(0, 1)` marginal probability density functions.
+We use 7 nodes for each marginal, leading to a total of :math:`7^5 = 16807` nodes 
+for the tensor product Gauss quadrature. 
+
+>>> import openturns as ot
+>>> def g_function_py(x):
+...     value = (1.0 + 1.0 / dimension) ** dimension
+...     for i in range(dimension):
+...         value *= x[i] ** (1.0 / dimension)
+...     return [value]
+>>> 
+>>> dimension = 5
+>>> g_function = ot.PythonFunction(dimension, 1, g_function_py)
+>>> interval = ot.Interval([0.0] * dimension, [1.0] * dimension)
+>>> integral = 1.0
+>>> print('Exact integral = ', integral)
+Exact integral =  1.0
+>>> marginal_levels = [7] * dimension
+>>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension)
+>>> experiment = ot.GaussProductExperiment(distribution, marginal_levels)
+>>> nodes, weights = experiment.generateWithWeights()
+>>> number_of_nodes = nodes.getSize()
+>>> print('Number of nodes = ', number_of_nodes)
+Number of nodes =  16807
+>>> function_values = g_function(nodes).asPoint()
+>>> approximate_integral = function_values.dot(weights)
+>>> print('Approximate integral = ', approximate_integral)
+Approximate integral =  1.0040..."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussProductExperiment::getMarginalDegrees
-"Get the marginal degrees.
+%feature("docstring") OT::GaussProductExperiment::getMarginalSizes
+"Get the marginal sizes.
 
 Returns
 -------
-marginalDegrees : :class:`~openturns.Indices`
-    Numbers of points :math:`N_i` for each direction."
+marginalSizes : :class:`~openturns.Indices`
+    Numbers of points :math:`s_j` for each direction."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussProductExperiment::setMarginalDegrees
-"Set the marginal degrees.
+%feature("docstring") OT::GaussProductExperiment::setMarginalSizes
+"Set the marginal sizes.
 
 Parameters
 ----------
-marginalDegrees : sequence of positive int
-    Numbers of points :math:`N_i` for each direction."
+marginalSizes : sequence of positive int
+    Numbers of points :math:`s_j` for each direction."

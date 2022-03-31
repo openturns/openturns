@@ -118,7 +118,7 @@ and each node is equal to the agregation of the marginal elementary nodes:
 
 See also
 --------
-WeightedExperiment
+WeightedExperiment, GaussProductExperiment
 
 Examples
 --------

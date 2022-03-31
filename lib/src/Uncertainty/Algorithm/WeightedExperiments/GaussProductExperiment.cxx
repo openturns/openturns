@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level view of an monteCarloExperiment plane
+ *  @brief Abstract top-level view of an GaussProductExperiment
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -36,42 +36,42 @@ typedef Collection< Point > PointCollection;
 GaussProductExperiment::GaussProductExperiment()
   : WeightedExperimentImplementation()
   , collection_(0)
-  , marginalDegrees_(0)
+  , marginalSizes_(0)
   , nodes_(0, 0)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-GaussProductExperiment::GaussProductExperiment(const Indices & marginalDegrees)
+GaussProductExperiment::GaussProductExperiment(const Indices & marginalSizes)
   : WeightedExperimentImplementation()
   , collection_(0)
-  , marginalDegrees_(0)
+  , marginalSizes_(0)
   , nodes_(0, 0)
 {
-  // Here we have to set a distribution of dimension compatible with the marginal degrees
-  setDistributionAndMarginalDegrees(ComposedDistribution(ComposedDistribution::DistributionCollection(marginalDegrees.getSize())), marginalDegrees);
+  // Here we have to set a distribution of dimension compatible with the marginal sizes
+  setDistributionAndMarginalSizes(ComposedDistribution(ComposedDistribution::DistributionCollection(marginalSizes.getSize())), marginalSizes);
 }
 
 /* Constructor with parameters */
 GaussProductExperiment::GaussProductExperiment(const Distribution & distribution)
   : WeightedExperimentImplementation()
   , collection_(0)
-  , marginalDegrees_(0)
+  , marginalSizes_(0)
   , nodes_(0, 0)
 {
-  setDistributionAndMarginalDegrees(distribution, Indices(distribution.getDimension(), ResourceMap::GetAsUnsignedInteger( "GaussProductExperiment-DefaultMarginalDegree" )));
+  setDistributionAndMarginalSizes(distribution, Indices(distribution.getDimension(), ResourceMap::GetAsUnsignedInteger( "GaussProductExperiment-DefaultMarginalSize" )));
 }
 
 /* Constructor with parameters */
 GaussProductExperiment::GaussProductExperiment(const Distribution & distribution,
-    const Indices & marginalDegrees)
+    const Indices & marginalSizes)
   : WeightedExperimentImplementation()
   , collection_(0)
-  , marginalDegrees_(0)
+  , marginalSizes_(0)
   , nodes_(0, 0)
 {
-  setDistributionAndMarginalDegrees(distribution, marginalDegrees);
+  setDistributionAndMarginalSizes(distribution, marginalSizes);
 }
 
 /* Virtual constructor */
@@ -87,7 +87,7 @@ String GaussProductExperiment::__repr__() const
   oss << "class=" << GetClassName()
       << " name=" << getName()
       << " distribution=" << distribution_
-      << " marginal degrees=" << marginalDegrees_;
+      << " marginal sizes=" << marginalSizes_;
   return oss;
 }
 
@@ -96,7 +96,7 @@ void GaussProductExperiment::setDistribution(const Distribution & distribution)
 {
   if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: the GaussProductExperiment can only be used with distributions having an independent copula.";
   const UnsignedInteger dimension = distribution.getDimension();
-  if (dimension != marginalDegrees_.getSize()) throw InvalidArgumentException(HERE) << "Error: the given distribution has a dimension=" << dimension << "different from the number of marginal degrees=" << marginalDegrees_.getSize() << ".";
+  if (dimension != marginalSizes_.getSize()) throw InvalidArgumentException(HERE) << "Error: the given distribution has a dimension=" << dimension << "different from the number of marginal sizes =" << marginalSizes_.getSize() << ".";
   collection_ = OrthogonalUniVariatePolynomialFamilyCollection(0);
   // Here we use the StandardDistributionPolynomialFactory class directly in order to benefit from the possible mapping to dedicated factories
   // The affine transform between the marginals and their standard representatives will be applied in computeNodesAndWeights()
@@ -118,38 +118,38 @@ Sample GaussProductExperiment::generateWithWeights(Point & weights) const
   return nodes_;
 }
 
-/** Marginal degrees accessor */
-void GaussProductExperiment::setMarginalDegrees(const Indices & marginalDegrees)
+/** Marginal sizes accessor */
+void GaussProductExperiment::setMarginalSizes(const Indices & marginalSizes)
 {
   const UnsignedInteger dimension = distribution_.getDimension();
-  if (marginalDegrees.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the marginal degrees number must match the distribution dimension. Here, the degrees are " << marginalDegrees << " and the dimension is " << dimension;
-  if (marginalDegrees != marginalDegrees_)
+  if (marginalSizes.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the marginal sizes number must match the distribution dimension. Here, the sizes are " << marginalSizes << " and the dimension is " << dimension;
+  if (marginalSizes != marginalSizes_)
   {
-    marginalDegrees_ = marginalDegrees;
+    marginalSizes_ = marginalSizes;
     isAlreadyComputedNodesAndWeights_ = false;
   }
 }
 
-/** Marginal degrees accessor */
-void GaussProductExperiment::setDistributionAndMarginalDegrees(const Distribution & distribution,
-    const Indices & marginalDegrees)
+/** Marginal sizes accessor */
+void GaussProductExperiment::setDistributionAndMarginalSizes(const Distribution & distribution,
+    const Indices & marginalSizes)
 {
-  // Set the marginal degrees here then the distribution with checks
-  marginalDegrees_ = marginalDegrees;
+  // Set the marginal sizes here then the distribution with checks
+  marginalSizes_ = marginalSizes;
   setDistribution(distribution);
 
   const UnsignedInteger dimension = distribution_.getDimension();
   size_ = 1;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    const UnsignedInteger dI = marginalDegrees_[i];
+    const UnsignedInteger dI = marginalSizes_[i];
     size_ *= dI;
   }
 }
 
-Indices GaussProductExperiment::getMarginalDegrees() const
+Indices GaussProductExperiment::getMarginalSizes() const
 {
-  return marginalDegrees_;
+  return marginalSizes_;
 }
 
 /* Compute the tensor product nodes and weights */
@@ -162,7 +162,7 @@ void GaussProductExperiment::computeNodesAndWeights() const
   PointCollection marginalWeights(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const UnsignedInteger dI = marginalDegrees_[i];
+    const UnsignedInteger dI = marginalSizes_[i];
     const Distribution marginalI(distribution_.getMarginal(i));
     const Distribution standardMarginalI(marginalI.getStandardRepresentative());
     // Here we compute the affine transform mapping the standard marginal into the marginal
@@ -198,9 +198,9 @@ void GaussProductExperiment::computeNodesAndWeights() const
     /* Update the indices */
     ++indices[0];
     /* Propagate the remainders */
-    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalDegrees_[j]);
+    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalSizes_[j]);
     /* Correction of the indices. The last index cannot overflow. */
-    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalDegrees_[j];
+    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalSizes_[j];
   } // Loop over the n-D nodes
   isAlreadyComputedNodesAndWeights_ = true;
 }
@@ -210,7 +210,7 @@ void GaussProductExperiment::save(Advocate & adv) const
 {
   WeightedExperimentImplementation::save(adv);
   adv.saveAttribute("collection_", collection_);
-  adv.saveAttribute("marginalDegrees_", marginalDegrees_);
+  adv.saveAttribute("marginalSizes_", marginalSizes_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -218,8 +218,13 @@ void GaussProductExperiment::load(Advocate & adv)
 {
   WeightedExperimentImplementation::load(adv);
   adv.loadAttribute("collection_", collection_);
-  adv.loadAttribute("marginalDegrees_", marginalDegrees_);
-  setDistributionAndMarginalDegrees(distribution_, marginalDegrees_);
+  if (adv.hasAttribute("marginalSizes_"))
+    // new name
+    adv.loadAttribute("marginalSizes_", marginalSizes_);
+  else
+    // old name
+    adv.loadAttribute("marginalDegrees_", marginalSizes_);
+  setDistributionAndMarginalSizes(distribution_, marginalSizes_);
 }
 
 
