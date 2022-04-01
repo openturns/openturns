@@ -12,8 +12,9 @@ rhoQuantile : float  :math:`0<\rho<1`
 
 Notes
 -----
-
-The following explanations are given for a failure event defined as :math:`g(\mathbf{X})<T` with :math:`\mathbf{X}` a random vector following a joint PDF :math:`f_\mathbf{X}`, :math:`T` a threshold and :math:`g` a limit state function, without loss of generality.
+The following explanations are given for a failure event defined as :math:`g(\mathbf{X})<T` with :math:`\mathbf{X}` 
+a random vector following a joint PDF :math:`f_\mathbf{X}`, :math:`T` a threshold and :math:`g` a limit state function,
+without loss of generality.
 
 The Importance Sampling (IS) probability estimate by Importance Sampling :math:`\widehat{P}^\text{IS}` is given by:
 
@@ -21,8 +22,9 @@ The Importance Sampling (IS) probability estimate by Importance Sampling :math:`
 
     \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{h_0(\mathbf{x}_i)}{h(\mathbf{x}_i)}.
 
-with :math:`h_0 = f_\mathbf{X}` the PDF of :math:`\mathbf{X}`, :math:`h` the auxiliary PDF of Importance Sampling, :math:`N`the number of independent samples generated with :math:`h`
-and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the indicator function of failure domain. 
+with :math:`h_0 = f_\mathbf{X}` the PDF of :math:`\mathbf{X}`, :math:`h` the auxiliary PDF of Importance Sampling, 
+:math:`N`the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
+indicator function of failure domain. 
 
 The optimal density minimizing the variance of the estimator :math:`h_{opt}` is  defined as:
 
@@ -30,13 +32,17 @@ The optimal density minimizing the variance of the estimator :math:`h_{opt}` is 
 
     h_{opt}=\frac{{\mathbf{1}}_{g(x)<T}h_0}{P}.
 
-with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest and unknown. 
+with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest
+ and unknown. 
 
-The objective of Non parametric Adaptive Importance Sampling (NAIS) technique is to approximate the IS optimal auxiliary density :math:`h_{opt}` from the preceding equation with a kernel density function (e.g. Gaussian kernel). Its iterative principle is described by the following steps.
+The objective of Non parametric Adaptive Importance Sampling (NAIS) technique is to approximate the IS optimal auxiliary density
+ :math:`h_{opt}` from the preceding equation with a kernel density function (e.g. Gaussian kernel). Its iterative principle is 
+ described by the following steps.
 
 1. :math:`k=1` and set :math:`\rho \in [0,1]`
 
-2. Generate the population :math:`\mathbf{x}_1^{(k)},...,\mathbf{x}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the function :math:`g` in order to have :math:`y_1^{(k)}=g(\mathbf{x}_1^{(k)}),...,y_N^{(k)} = g(\mathbf{x}_N^{(k)})`
+2. Generate the population :math:`\mathbf{x}_1^{(k)},...,\mathbf{x}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the 
+function :math:`g` in order to have :math:`y_1^{(k)}=g(\mathbf{x}_1^{(k)}),...,y_N^{(k)} = g(\mathbf{x}_N^{(k)})`
 
 3. Compute the empirical :math:`\rho`-quantile :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})`
 
@@ -52,7 +58,8 @@ The objective of Non parametric Adaptive Importance Sampling (NAIS) technique is
 where :math:`K_d` is the standard :math:`d`-dimensional Gaussian function with zero mean and a diagonal covariance matrix. 
 :math:`B_{k+1}=\text{diag}(b^1_{k+1},...,b^d_{k+1})` 
 and :math:`w_j={\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{h_0(\mathbf{x}_i^{(j)})}{h_{j-1}(\mathbf{x}_i^{(j)})}`. 
-The coefficients of matrix :math:`B_{k+1}` can be approximated (Silverman Rule) or postulated according to the AMISE (Asymptotic Mean Integrated Square Error) criterion for example.
+The coefficients of matrix :math:`B_{k+1}` can be approximated (Silverman Rule) or postulated according to the AMISE 
+(Asymptotic Mean Integrated Square Error) criterion for example.
 
 6. If :math:`q_k>T`, :math:`k\leftarrow k+1`, go to Step 2
 
@@ -60,8 +67,7 @@ The coefficients of matrix :math:`B_{k+1}` can be approximated (Silverman Rule) 
 
 The NAIS algorithm with the Silverman rule is implemented in the current NAIS class.
 
-source : [Morio2015]_ J. Morio & M. Balesdent, Estimation of Rare Event Probabilities
-in Complex Aerospace and Other Systems, A Practical Approach, Elsevier, 2015
+source : [Morio2015]_ 
 
 
 Examples

@@ -1,12 +1,5 @@
 #!/usr/bin/env python
 
-"""
-Non parametric Adaptive Importance Sampling algorithm
-Python implementation of adaptive Importance Sampling by Cross Entropy
-M. Balesdent and L. Brevault of ONERA, the French Aerospace Lab for the
-openTURNS consortium
-"""
-
 import math
 import openturns as ot
 from openturns.testing import assert_almost_equal
