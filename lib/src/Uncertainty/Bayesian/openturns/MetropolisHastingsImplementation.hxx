@@ -138,8 +138,8 @@ public:
 protected:
   Point initialState_;
   mutable Point currentState_;
-  mutable Scalar logProbCurrentConditionedToNew_;
-  mutable Scalar logProbNewConditionedToCurrent_;
+  mutable Scalar logProbCurrentConditionedToNew_ = 0.0;
+  mutable Scalar logProbNewConditionedToCurrent_ = 0.0;
   Indices marginalIndices_;
   mutable HistoryStrategy history_;
 
