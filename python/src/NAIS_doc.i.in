@@ -5,7 +5,7 @@
 Parameters
 ----------
 event : :class:`~openturns.RandomVector`
-    Event we are computing the probability of failure.
+    Event we are computing the probability of.
 
 rhoQuantile : float  :math:`0<\rho<1`
     Intermediate quantile level.
@@ -16,28 +16,29 @@ The following explanations are given for a failure event defined as :math:`g(\ma
 a random vector following a joint PDF :math:`f_\mathbf{X}`, :math:`T` a threshold and :math:`g` a limit state function,
 without loss of generality.
 
-The Importance Sampling (IS) probability estimate by Importance Sampling :math:`\widehat{P}^\text{IS}` is given by:
+The Importance Sampling (IS) probability estimate :math:`\widehat{P}^\text{IS}` is given by:
 
 .. math::
 
-    \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{h_0(\mathbf{x}_i)}{h(\mathbf{x}_i)}.
+    \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{h_0(\mathbf{x}_i)}{h(\mathbf{x}_i)},
 
 with :math:`h_0 = f_\mathbf{X}` the PDF of :math:`\mathbf{X}`, :math:`h` the auxiliary PDF of Importance Sampling, 
 :math:`N`the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
-indicator function of failure domain. 
+indicator function of the failure domain. 
 
 The optimal density minimizing the variance of the estimator :math:`h_{opt}` is  defined as:
 
 .. math::
 
-    h_{opt}=\frac{{\mathbf{1}}_{g(x)<T}h_0}{P}.
+    h_{opt}=\frac{{\mathbf{1}}_{g(x)<T}h_0}{P},
 
 with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest
  and unknown. 
 
-The objective of Non parametric Adaptive Importance Sampling (NAIS) technique is to approximate the IS optimal auxiliary density
- :math:`h_{opt}` from the preceding equation with a kernel density function (e.g. Gaussian kernel). Its iterative principle is 
- described by the following steps.
+The objective of Non parametric Adaptive Importance Sampling (NAIS) [morio2015]_ is to approximate 
+the IS optimal auxiliary density :math:`h_{opt}` from the preceding equation 
+with a kernel density function (e.g. Gaussian kernel). 
+Its iterative principle is described by the following steps.
 
 1. :math:`k=1` and set :math:`\rho \in [0,1]`
 
@@ -55,10 +56,10 @@ function :math:`g` in order to have :math:`y_1^{(k)}=g(\mathbf{x}_1^{(k)}),...,y
 
     h_{k}(\mathbf{x})=\frac{1}{k N I_k \det\left(B_{k+1}\right)}\sum_{j=1}^{k}\sum_{i=1}^{N}  w_{j}(\mathbf{x}_i^{(j)})K_d\left(B_{k+1}^{-1}\left(\mathbf{x}-\mathbf{x}_i^{(j)}\right)\right)
 
-where :math:`K_d` is the standard :math:`d`-dimensional Gaussian function with zero mean and a diagonal covariance matrix. 
+where :math:`K_d` is the standard :math:`d`-dimensional normal distribution with zero mean and diagonal covariance matrix,
 :math:`B_{k+1}=\text{diag}(b^1_{k+1},...,b^d_{k+1})` 
 and :math:`w_j={\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{h_0(\mathbf{x}_i^{(j)})}{h_{j-1}(\mathbf{x}_i^{(j)})}`. 
-The coefficients of matrix :math:`B_{k+1}` can be approximated (Silverman Rule) or postulated according to the AMISE 
+The coefficients of the matrix :math:`B_{k+1}` can be approximated (Silverman Rule) or postulated according to the AMISE 
 (Asymptotic Mean Integrated Square Error) criterion for example.
 
 6. If :math:`q_k>T`, :math:`k\leftarrow k+1`, go to Step 2
@@ -66,8 +67,6 @@ The coefficients of matrix :math:`B_{k+1}` can be approximated (Silverman Rule) 
 7. Estimate the probability :math:`\widehat{P}^{NAIS}(g(\mathbf{\mathbf{X}}<T))=\frac{1}{N}\displaystyle \sum_{i=1}^{N} \mathbf{1}_{g(\mathbf{x}_i^{(k)})<T} \frac{h_0(\mathbf{x}_i^{(k)})}{h_{k-1}(\mathbf{x}_i^{(k)})}`
 
 The NAIS algorithm with the Silverman rule is implemented in the current NAIS class.
-
-source : [Morio2015]_ 
 
 
 Examples

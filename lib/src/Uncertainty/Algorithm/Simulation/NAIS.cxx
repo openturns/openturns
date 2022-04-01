@@ -227,20 +227,19 @@ void NAIS::run()
   {
     sumPdfCritic += std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0));
   }
-  Scalar failureProbability = sumPdfCritic / numberOfSample;
+  const Scalar failureProbability = sumPdfCritic / numberOfSample;
   Scalar varianceCritic = 0.0;
-  Scalar varianceCriticTemporary;
   for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
   {
-    varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0))-failureProbability;
+    Scalar varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0))-failureProbability;
     varianceCritic += varianceCriticTemporary*varianceCriticTemporary;
   }  // for i 
   
-  Scalar variancenonCritic = (numberOfSample -indicesCritic.getSize()) * (failureProbability*failureProbability);
-  Scalar varianceEstimate = (varianceCritic + variancenonCritic)/(numberOfSample-1)/numberOfSample ;
+  const Scalar variancenonCritic = (numberOfSample -indicesCritic.getSize()) * (failureProbability*failureProbability);
+  const Scalar varianceEstimate = (varianceCritic + variancenonCritic)/(numberOfSample-1)/numberOfSample ;
 
   // Save of data in Simulation naisResult_ structure
-  naisResult_.setProbabilityEstimate(sumPdfCritic / numberOfSample);
+  naisResult_.setProbabilityEstimate(failureProbability);
   naisResult_.setAuxiliaryDistribution(auxiliaryDistribution);
   naisResult_.setAuxiliaryInputSample(auxiliaryInputSample);
   naisResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
