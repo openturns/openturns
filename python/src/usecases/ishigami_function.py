@@ -81,7 +81,7 @@ class IshigamiModel():
 
     Examples
     --------
-    >>> from openturns.usecases import ishigami_function as ishigami_function
+    >>> from openturns.usecases import ishigami_function
     >>> # Load the Ishigami model
     >>> im = ishigami_function.IshigamiModel()
     """

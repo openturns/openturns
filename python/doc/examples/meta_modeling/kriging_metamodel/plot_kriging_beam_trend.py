@@ -16,7 +16,7 @@ Choose the trend basis of a kriging metamodel
 # -----------------------
 
 # %%
-from openturns.usecases import cantilever_beam as cantilever_beam
+from openturns.usecases import cantilever_beam
 import openturns as ot
 from openturns.viewer import View
 ot.RandomGenerator.SetSeed(0)

@@ -12,7 +12,7 @@ Create a polynomial chaos for the Ishigami function: a quick start guide to poly
 # ----------------
 
 # %%
-from openturns.usecases import ishigami_function as ishigami_function
+from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

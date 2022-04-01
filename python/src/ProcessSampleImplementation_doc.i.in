@@ -576,3 +576,27 @@ sample_at_i : :class:`Sample`
 %enddef
 %feature("docstring") OT::ProcessSampleImplementation::getSampleAtVertex
 OT_ProcessSample_getSampleAtVertex_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_erase_doc
+"Erase point(s) at or between index(es) (in-place).
+
+Parameters
+----------
+f : int, :math:`0 \leq f < m`
+    The index of the first point to erase.
+l : int, :math:`f < l \leq m`, optional
+    The index after the last point to erase.
+    Default uses `l = f + 1` and only removes `sample[f]`."
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::erase
+OT_ProcessSample_erase_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_clear_doc
+"Erase all field values."
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::clear
+OT_ProcessSample_clear_doc

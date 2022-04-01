@@ -203,7 +203,7 @@ public:
   CovarianceMatrix computeCovariance() const;
 
   /**
-   * Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
+   * Method computeStandard() gives the standard deviation of each component of the sample
    */
   Point computeStandardDeviation() const;
 

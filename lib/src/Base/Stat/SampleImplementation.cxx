@@ -644,15 +644,13 @@ String SampleImplementation::storeToTemporaryFile() const
   {
     Scalar value = data_[index];
     ++index;
-    Bool isNaN = value != value;
-    if (isNaN) dataFile << '\"' << value << '\"';
+    if (SpecFunc::IsNaN(value)) dataFile << '\"' << value << '\"';
     else dataFile << value;
     for (UnsignedInteger j = 1; j < dimension_; ++j)
     {
       value = data_[index];
       ++index;
-      isNaN = value != value;
-      if (isNaN) dataFile << ' ' << '\"' << value << '\"';
+      if (SpecFunc::IsNaN(value)) dataFile << ' ' << '\"' << value << '\"';
       else dataFile << ' ' << value;
     }
     dataFile << "\n";
@@ -675,7 +673,7 @@ String SampleImplementation::streamToRFormat() const
     {
       const Scalar value = data_[index];
       index += dimension_;
-      const Bool isNaN = value != value;
+      const Bool isNaN = SpecFunc::IsNaN(value);
       oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
     }
   }

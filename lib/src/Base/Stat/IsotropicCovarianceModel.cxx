@@ -18,11 +18,19 @@
  *
  */
 #include "openturns/IsotropicCovarianceModel.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IsotropicCovarianceModel)
 
+static const Factory<IsotropicCovarianceModel> Factory_IsotropicCovarianceModel;
+
+IsotropicCovarianceModel::IsotropicCovarianceModel()
+  : IsotropicCovarianceModel(CovarianceModel(), 1)
+{
+  // Nothing to do
+}
 
 /* Parameters constructor */
 IsotropicCovarianceModel::IsotropicCovarianceModel(const CovarianceModel & oneDimensional,

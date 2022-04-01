@@ -9,7 +9,7 @@ Estimate a probability with Monte Carlo
 
 # %%
 from __future__ import print_function
-from openturns.usecases import stressed_beam as stressed_beam
+from openturns.usecases import stressed_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

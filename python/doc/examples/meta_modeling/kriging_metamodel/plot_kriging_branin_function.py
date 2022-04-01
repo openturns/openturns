@@ -12,7 +12,7 @@ from numpy import sqrt
 import openturns as ot
 import openturns.viewer as viewer
 import openturns.viewer as otv
-from openturns.usecases import branin_function as branin_function
+from openturns.usecases import branin_function
 from matplotlib import pylab as plt
 
 

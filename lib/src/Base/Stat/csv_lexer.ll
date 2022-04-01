@@ -45,6 +45,10 @@ integer   {digit}+
 exponent  [eE]{sign}?{integer}
 real      {sign}?({integer}("."({integer})?)?|"."{integer}){exponent}?
 
+nan       {sign}?[nN][aA][nN]
+inf       [+]?[iI][nN][fF]
+neg_inf   -[iI][nN][fF]
+
 string    [[:alnum:]!#\$%&'()\*\+\-\./\:\<=\>\?@\[\\\]\^_`\{\|\}~]*
 
 space     [ \t]
@@ -52,6 +56,12 @@ space     [ \t]
 %%
 
 {real} { yylval_param->real = atof(yytext); return(REAL); }
+
+{nan}       { yylval_param->real = NAN; return(REAL); }
+
+{inf}       { yylval_param->real = INFINITY; return(REAL); }
+
+{neg_inf}   { yylval_param->real = -INFINITY; return(REAL); }
 
 {string}    { yylval_param->st = yytext; return(STRING); }
 

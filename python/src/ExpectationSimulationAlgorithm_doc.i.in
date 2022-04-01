@@ -267,7 +267,7 @@ in this example, it will trigger first.
 The comparison with the exact mean is satisfactory, given the relatively 
 small sample size.
 
->>> from openturns.usecases import cantilever_beam as cantilever_beam
+>>> from openturns.usecases import cantilever_beam
 >>> cb = cantilever_beam.CantileverBeam()
 >>> sigma = cb.distribution.getStandardDeviation()
 >>> print('sigma=', sigma)

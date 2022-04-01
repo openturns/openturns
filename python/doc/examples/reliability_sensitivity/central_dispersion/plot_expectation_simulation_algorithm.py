@@ -13,7 +13,7 @@ from matplotlib import pylab as plt
 # %%
 # We shall use this algorithm for the :ref:`Ishigami function <use-case-ishigami>` that we load from the `usecases` module :
 #
-from openturns.usecases import ishigami_function as ishigami_function
+from openturns.usecases import ishigami_function
 im = ishigami_function.IshigamiModel()
 
 

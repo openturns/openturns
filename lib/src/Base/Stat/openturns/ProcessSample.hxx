@@ -72,6 +72,13 @@ public:
 
   void add(const Sample & sample);
 
+  /** Erase elements */
+  void erase(const UnsignedInteger index);
+  void erase(const UnsignedInteger first, const UnsignedInteger last);
+
+  /** Clear data */
+  void clear();
+
   /** Field accessor */
   void setField (const Field & field, const UnsignedInteger i);
   Field getField (const UnsignedInteger i) const;

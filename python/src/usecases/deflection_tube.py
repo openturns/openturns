@@ -43,7 +43,7 @@ class DeflectionTube():
 
     Examples
     --------
-    >>> from openturns.usecases import deflection_tube as deflection_tube
+    >>> from openturns.usecases import deflection_tube
     >>> # Load the deflection tube model
     >>> dt = deflection_tube.DeflectionTube()
     """

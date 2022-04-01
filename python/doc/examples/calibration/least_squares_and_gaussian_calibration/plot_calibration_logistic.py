@@ -11,7 +11,7 @@ Calibration of the logistic model
 # --------------------
 
 # %%
-from openturns.usecases import logistic_model as logistic_model
+from openturns.usecases import logistic_model
 import openturns as ot
 import numpy as np
 import openturns.viewer as viewer

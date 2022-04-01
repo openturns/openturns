@@ -76,7 +76,7 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import ishigami_function as ishigami_function
+    >>> from openturns.usecases import ishigami_function
     >>> # Load the Ishigami use case
     >>> im = ishigami_function.IshigamiModel()
 

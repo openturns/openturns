@@ -8,7 +8,7 @@ Calibration of the deflection of a tube
 #
 
 # %%
-from openturns.usecases import deflection_tube as deflection_tube
+from openturns.usecases import deflection_tube
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

@@ -73,7 +73,7 @@ Calibration of the flooding model
 # -------------------------
 
 # %%
-from openturns.usecases import flood_model as flood_model
+from openturns.usecases import flood_model
 from matplotlib import pylab as plt
 import openturns.viewer as viewer
 import numpy as np

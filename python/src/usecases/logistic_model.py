@@ -44,7 +44,7 @@ class LogisticModel():
 
     Examples
     --------
-    >>> from openturns.usecases import logistic_model as logistic_model
+    >>> from openturns.usecases import logistic_model
     >>> # Load the logistic model
     >>> lm = logistic_model.LogisticModel()
     """

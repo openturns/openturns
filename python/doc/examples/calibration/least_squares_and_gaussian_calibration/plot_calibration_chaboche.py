@@ -11,7 +11,7 @@ import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-from openturns.usecases import chaboche_model as chaboche_model
+from openturns.usecases import chaboche_model
 
 ot.Log.Show(ot.Log.NONE)
 

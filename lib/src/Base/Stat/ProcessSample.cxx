@@ -99,6 +99,24 @@ void ProcessSample::add(const Sample & values)
   getImplementation()->add(values);
 }
 
+void ProcessSample::erase(const UnsignedInteger index)
+{
+  copyOnWrite();
+  getImplementation()->erase(index, index + 1);
+}
+
+void ProcessSample::erase(const UnsignedInteger first, const UnsignedInteger last)
+{
+  copyOnWrite();
+  getImplementation()->erase(first, last);
+}
+
+void ProcessSample::clear()
+{
+  copyOnWrite();
+  getImplementation()->clear();
+}
+
 
 /* Operators accessors */
 Field ProcessSample::getField(const UnsignedInteger index) const
