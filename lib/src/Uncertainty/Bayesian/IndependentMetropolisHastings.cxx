@@ -83,8 +83,7 @@ Point IndependentMetropolisHastings::getCandidate() const
   const Scalar logProbNew = proposal_.computeLogPDF(candidate);
 
   // LogPDF of the proposal distribution at the current point
-  const UnsignedInteger proposalDimension = proposal_.getDimension();
-const Point current(currentState_.select(marginalIndices_));
+  const Point current(currentState_.select(marginalIndices_));
   const Scalar logProbCurrent = proposal_.computeLogPDF(current);
 
   setConditionalLogProbabilities(logProbNew, logProbCurrent);
