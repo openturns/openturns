@@ -162,11 +162,11 @@ void NAIS::run()
     auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
   }
   
-  UnsignedInteger iterationWhile = 0;
+  UnsignedInteger iterationNumber  = 0;
   
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
-    ++iterationWhile;
+    ++iterationNumber ;
     
     // Drawing of samples using auxiliary density and evaluation on limit state function   
     auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());
@@ -231,12 +231,12 @@ void NAIS::run()
   Scalar varianceCritic = 0.0;
   for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
   {
-    Scalar varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0))-failureProbability;
+    const Scalar varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0))-failureProbability;
     varianceCritic += varianceCriticTemporary*varianceCriticTemporary;
   }  // for i 
   
-  const Scalar variancenonCritic = (numberOfSample -indicesCritic.getSize()) * (failureProbability*failureProbability);
-  const Scalar varianceEstimate = (varianceCritic + variancenonCritic)/(numberOfSample-1)/numberOfSample ;
+  const Scalar variancenonCritic = (numberOfSample - indicesCritic.getSize()) * (failureProbability * failureProbability);
+  const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (numberOfSample - 1) / numberOfSample ;
 
   // Save of data in Simulation naisResult_ structure
   naisResult_.setProbabilityEstimate(failureProbability);
@@ -244,7 +244,7 @@ void NAIS::run()
   naisResult_.setAuxiliaryInputSample(auxiliaryInputSample);
   naisResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
   naisResult_.setWeights(weights);
-  naisResult_.setOuterSampling(getMaximumOuterSampling()*iterationWhile);
+  naisResult_.setOuterSampling(getMaximumOuterSampling()*iterationNumber );
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
 }

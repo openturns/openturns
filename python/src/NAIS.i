@@ -2,7 +2,6 @@
 
 %{
 #include "openturns/NAIS.hxx"
-#include "openturns/NAISResult.hxx"
 %}
 
 %include NAIS_doc.i

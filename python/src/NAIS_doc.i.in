@@ -68,6 +68,9 @@ The coefficients of the matrix :math:`B_{k+1}` can be approximated (Silverman Ru
 
 The NAIS algorithm with the Silverman rule is implemented in the current NAIS class.
 
+See also
+--------
+SubsetSampling
 
 Examples
 --------
