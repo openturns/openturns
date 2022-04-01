@@ -26,7 +26,7 @@ result : float"
 
 See also
 --------
-SpecFunc_BesselI0
+SpecFunc.BesselI0
 
 Parameters
 ----------
@@ -66,7 +66,7 @@ result : float"
 
 See also
 --------
-SpecFunc_BesselI1
+SpecFunc.BesselI1
 
 Parameters
 ----------
@@ -107,7 +107,7 @@ result : float"
 
 See also
 --------
-SpecFunc_BesselK
+SpecFunc.BesselK
 
 Parameters
 ----------
@@ -148,7 +148,7 @@ result : float"
 
 See also
 --------
-SpecFunc_Beta
+SpecFunc.Beta
 
 Parameters
 ----------
@@ -170,7 +170,7 @@ result : float"
 
 See also
 --------
-SpecFunc_Beta
+SpecFunc.Beta
 
 Parameters
 ----------
@@ -215,7 +215,7 @@ result : float
 
 See also
 --------
-SpecFunc_IncompleteBeta, SpecFunc_RegularizedIncompleteBetaInverse
+SpecFunc.IncompleteBeta, SpecFunc.RegularizedIncompleteBetaInverse
 
 Parameters
 ----------
@@ -246,7 +246,7 @@ Beta function.
 
 See also
 --------
-SpecFunc_IncompleteBeta, SpecFunc_Beta
+SpecFunc.IncompleteBeta, SpecFunc.Beta
 
 Parameters
 ----------
@@ -273,7 +273,7 @@ result : float
 
 See also
 --------
-SpecFunc_RegularizedIncompleteBeta
+SpecFunc.RegularizedIncompleteBeta
 
 Parameters
 ----------
@@ -357,7 +357,7 @@ with :math:`ErfC` the complementary error function.
 
 See also
 --------
-SpecFunc_ErfC
+SpecFunc.ErfC
 
 Parameters
 ----------
@@ -379,7 +379,7 @@ result : complex"
 
 See also
 --------
-SpecFunc_Faddeeva
+SpecFunc.Faddeeva
 
 Parameters
 ----------
@@ -419,7 +419,7 @@ result : float or complex"
 
 See also
 --------
-SpecFunc_Gamma
+SpecFunc.Gamma
 
 Parameters
 ----------
@@ -443,7 +443,7 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc_Gamma
+SpecFunc.Gamma
 
 Parameters
 ----------
@@ -465,7 +465,7 @@ result : float"
 
 See also
 --------
-SpecFunc_Gamma
+SpecFunc.Gamma
 
 Parameters
 ----------
@@ -509,7 +509,7 @@ result : float
 
 See also
 --------
-SpecFunc_IncompleteGamma
+SpecFunc.IncompleteGamma
 
 Parameters
 ----------
@@ -537,7 +537,7 @@ result : float
 
 See also
 --------
-SpecFunc_Gamma, SpecFunc_IncompleteGamma
+SpecFunc.Gamma, SpecFunc.IncompleteGamma
 
 Parameters
 ----------
@@ -564,7 +564,7 @@ result : float
 
 See also
 --------
-SpecFunc_Gamma, SpecFunc_RegularizedIncompleteGamma
+SpecFunc.Gamma, SpecFunc.RegularizedIncompleteGamma
 
 Parameters
 ----------
@@ -592,7 +592,7 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc_Gamma
+SpecFunc.Gamma
 
 Parameters
 ----------
@@ -615,7 +615,7 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc_Gamma
+SpecFunc.Gamma
 
 Parameters
 ----------
@@ -636,7 +636,7 @@ result : float"
 
 See also
 --------
-SpecFunc_DiGamma
+SpecFunc.DiGamma
 
 Parameters
 ----------
@@ -659,7 +659,7 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc_Gamma
+SpecFunc.Gamma
 
 Parameters
 ----------
@@ -701,7 +701,7 @@ with :math:`\Gamma` the Gamma function.
 
 See also
 --------
-SpecFunc_Gamma
+SpecFunc.Gamma
 
 Parameters
 ----------
@@ -804,7 +804,7 @@ with :math:`Erf` the error function.
 
 See also
 --------
-SpecFunc_Erf
+SpecFunc.Erf
 
 Parameters
 ----------
@@ -826,7 +826,7 @@ result : float or complex"
 
 See also
 --------
-SpecFunc_Erf
+SpecFunc.Erf
 
 Parameters
 ----------
@@ -850,7 +850,7 @@ with :math:`ErfC` the complementary error function.
 
 See also
 --------
-SpecFunc_ErfC
+SpecFunc.ErfC
 
 Parameters
 ----------
@@ -874,7 +874,7 @@ with :math:`Erf` the error function.
 
 See also
 --------
-SpecFunc_Erf
+SpecFunc.Erf
 
 Parameters
 ----------
@@ -1152,7 +1152,7 @@ result : bool"
 
 See also
 --------
-SpecFunc_Stirlerr
+SpecFunc.Stirlerr
 
 Parameters
 ----------
@@ -1174,7 +1174,7 @@ result : float"
 
 See also
 --------
-SpecFunc_LogFactorial
+SpecFunc.LogFactorial
 
 Parameters
 ----------

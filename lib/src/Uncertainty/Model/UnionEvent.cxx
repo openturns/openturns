@@ -28,7 +28,8 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(UnionEvent)
 
-// static const Factory<UnionEvent> Factory_UnionEvent;
+static const Factory<UnionEvent> Factory_UnionEvent;
+static const Factory<PersistentCollection<RandomVector> > Factory_PersistentCollection_RandomVector;
 
 /* Default constructor */
 UnionEvent::UnionEvent()
@@ -187,7 +188,7 @@ Scalar UnionEvent::getThreshold() const
 void UnionEvent::save(Advocate & adv) const
 {
   RandomVectorImplementation::save(adv);
-  adv.saveAttribute( "eventCollection_", eventCollection_ );
+  adv.saveAttribute("eventCollection_", eventCollection_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -195,7 +196,7 @@ void UnionEvent::load(Advocate & adv)
 {
   RandomVectorImplementation::load(adv);
   RandomVectorPersistentCollection eventCollection;
-  adv.loadAttribute( "eventCollection_", eventCollection );
+  adv.loadAttribute("eventCollection_", eventCollection);
   setEventCollection(eventCollection);
 }
 

@@ -6,6 +6,4 @@
 
 %include NormalityTest_doc.i
 
-%nodefaultctor NormalityTest;
-
 %include openturns/NormalityTest.hxx

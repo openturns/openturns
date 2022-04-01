@@ -23,7 +23,7 @@ dist = ot.Normal(dim)
 
 # %%
 # We can draw the bidimensional PDF of the distribution `dist` over :math:`[-5,5] \times [-5,5]` :
-ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 8)
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 8)
 graphPDF = dist.drawPDF([-5, -5], [5, 5])
 graphPDF.setTitle(r'2D-PDF of the input variables $(X_1, X_2)$')
 graphPDF.setXTitle(r'$x_1$')

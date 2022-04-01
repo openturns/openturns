@@ -48,7 +48,6 @@
 %include HaltonSequence.i 
 %include HaselgroveSequence.i 
 %include ReverseHaltonSequence.i 
-%include CorrelationAnalysis.i 
 %include FilteringWindowsImplementation.i
 %include FilteringWindows.i
 %include Hamming.i

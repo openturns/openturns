@@ -18,8 +18,8 @@ coef : :class:`~openturns.Point`
 
 See Also
 --------
-CorrelationAnalysis_PearsonCorrelation, CorrelationAnalysis_SRC, 
-CorrelationAnalysis_PRCC"
+CorrelationAnalysis.PearsonCorrelation, CorrelationAnalysis.SRC, 
+CorrelationAnalysis.PRCC"
 
 // ---------------------------------------------------------------------
 
@@ -43,8 +43,8 @@ coef : :class:`~openturns.Point`
 
 See Also
 --------
-CorrelationAnalysis_SpearmanCorrelation, CorrelationAnalysis_SRRC,
-CorrelationAnalysis_PCC"
+CorrelationAnalysis.SpearmanCorrelation, CorrelationAnalysis.SRRC,
+CorrelationAnalysis.PCC"
 
 // ---------------------------------------------------------------------
 
@@ -68,8 +68,8 @@ coef : :class:`~openturns.Point`
 
 See Also
 --------
-CorrelationAnalysis_PCC, CorrelationAnalysis_SRC,
-CorrelationAnalysis_SpearmanCorrelation"
+CorrelationAnalysis.PCC, CorrelationAnalysis.SRC,
+CorrelationAnalysis.SpearmanCorrelation"
 
 // ---------------------------------------------------------------------
 
@@ -93,8 +93,8 @@ coef : :class:`~openturns.Point`
 
 See Also
 --------
-CorrelationAnalysis_PRCC, CorrelationAnalysis_SRRC,
-CorrelationAnalysis_PearsonCorrelation"
+CorrelationAnalysis.PRCC, CorrelationAnalysis.SRRC,
+CorrelationAnalysis.PearsonCorrelation"
 
 // ---------------------------------------------------------------------
 
@@ -121,8 +121,8 @@ coef : :class:`~openturns.Point`
 
 See Also
 --------
-CorrelationAnalysis_PearsonCorrelation, CorrelationAnalysis_PCC,
-CorrelationAnalysis_SRRC"
+CorrelationAnalysis.PearsonCorrelation, CorrelationAnalysis.PCC,
+CorrelationAnalysis.SRRC"
 
 // ---------------------------------------------------------------------
 
@@ -150,8 +150,8 @@ coef : :class:`~openturns.Point`
 
 See Also
 --------
-CorrelationAnalysis_SpearmanCorrelation, CorrelationAnalysis_PRCC,
-CorrelationAnalysis_SRC"
+CorrelationAnalysis.SpearmanCorrelation, CorrelationAnalysis.PRCC,
+CorrelationAnalysis.SRC"
 
 // ---------------------------------------------------------------------
 
@@ -175,5 +175,5 @@ coef : :class:`~openturns.Point`
 
 See Also
 --------
-CorrelationAnalysis_SpearmanCorrelation, CorrelationAnalysis_PRCC,
-CorrelationAnalysis_SRC, CorrelationAnalysis_SRRC"
+CorrelationAnalysis.SpearmanCorrelation, CorrelationAnalysis.PRCC,
+CorrelationAnalysis.SRC, CorrelationAnalysis.SRRC"

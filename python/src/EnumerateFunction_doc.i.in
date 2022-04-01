@@ -12,6 +12,8 @@ OT_EnumerateFunction_getMaximumDegreeStrataIndex_doc
 OT_EnumerateFunction_getStrataCardinal_doc
 %feature("docstring") OT::EnumerateFunction::getStrataCumulatedCardinal
 OT_EnumerateFunction_getStrataCumulatedCardinal_doc
+%feature("docstring") OT::EnumerateFunction::getBasisSizeFromTotalDegree
+OT_EnumerateFunction_getBasisSizeFromTotalDegree_doc
 %feature("docstring") OT::EnumerateFunction::inverse
 OT_EnumerateFunction_inverse_doc
 %feature("docstring") OT::EnumerateFunction::setDimension

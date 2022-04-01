@@ -74,6 +74,9 @@ public:
   /** The cardinal of indices of degree max <= maximumDegree */
   UnsignedInteger getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const;
 
+  /** Basis size from degree */
+  UnsignedInteger getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const;
+
   /** Dimension accessor */
   void setDimension(const UnsignedInteger dimension);
   UnsignedInteger getDimension() const;

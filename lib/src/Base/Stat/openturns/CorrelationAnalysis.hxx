@@ -34,45 +34,39 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class OT_API CorrelationAnalysis
+namespace CorrelationAnalysis
 {
-public:
-
   /** Compute the Pearson correlation coefficient between the input sample and the output sample */
-  static Point PearsonCorrelation(const Sample & inputSample,
+  OT_API Point PearsonCorrelation(const Sample & inputSample,
                                   const Sample & outputSample);
 
   /** Compute the Spearman correlation coefficient between the input sample and the output sample */
-  static Point SpearmanCorrelation(const Sample & inputSample,
+  OT_API Point SpearmanCorrelation(const Sample & inputSample,
                                    const Sample & outputSample);
 
   /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
-  static Point SRC(const Sample & inputSample,
+  OT_API Point SRC(const Sample & inputSample,
                    const Sample & outputSample,
                    const Bool normalize = false);
 
   /** Compute the signed Standard Regression Coefficients (SRC) between the input sample and the output sample */
-  static Point SignedSRC(const Sample & inputSample,
+  OT_API Point SignedSRC(const Sample & inputSample,
                          const Sample & outputSample);
 
   /** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
-  static Point PCC(const Sample & inputSample,
+  OT_API Point PCC(const Sample & inputSample,
                    const Sample & outputSample);
 
   /** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
-  static Point SRRC(const Sample & inputSample,
+  OT_API Point SRRC(const Sample & inputSample,
                     const Sample & outputSample,
                     const Bool normalize = false);
 
   /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
-  static Point PRCC(const Sample & inputSample,
+  OT_API Point PRCC(const Sample & inputSample,
                     const Sample & outputSample);
 
-private:
-  /** Default constructor */
-  CorrelationAnalysis();
-
-}; /* class CorrelationAnalysis */
+}; /* CorrelationAnalysis */
 
 END_NAMESPACE_OPENTURNS
 

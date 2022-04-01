@@ -38,7 +38,6 @@ namespace OT {
 
   // These should be inherited from CovarianceMatrix 
   Point __mul__(Point p) { return (*self) * p; } 
-  Matrix __mul__(Scalar s) { return (*self) * s; }
 
 } // CorrelationMatrix
 } // OT

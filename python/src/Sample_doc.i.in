@@ -99,7 +99,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> n = 20
->>> x = ot.Sample_BuildFromPoint(range(n))
+>>> x = ot.Sample.BuildFromPoint(range(n))
 >>> data = [2.0, 2.0, 1.0, 1.0, 2.0, 3.0, 1.0, 2.0, 2.0, 1.0]
 >>> sample = ot.Sample.BuildFromPoint(data)"
 

@@ -64,40 +64,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-// 0.39894228040143267 = 1 / sqrt(2.pi)
-const Scalar SpecFunc::ISQRT2PI              = 0.3989422804014326779399462;
-// 2.5066282746310005024 = sqrt(2.pi)
-const Scalar SpecFunc::SQRT2PI               = 2.506628274631000502415765;
-// 0.91893853320467274177 = log(sqrt(2.pi))
-const Scalar SpecFunc::LOGSQRT2PI            = 0.91893853320467274178;
-// 0.57721566490153286 = Euler constant gamma
-const Scalar SpecFunc::EulerConstant         = 0.57721566490153286;
-// 1.64493406684822643 = pi^2 / 6
-const Scalar SpecFunc::PI2_6                 = 1.64493406684822643;
-// 1.28254983016118640 = pi / sqrt(6)
-const Scalar SpecFunc::PI_SQRT6              = 1.28254983016118640;
-// 0.45005320754569466 = gamma * sqrt(6) / pi
-const Scalar SpecFunc::EULERSQRT6_PI         = 0.45005320754569466;
-// 3.28986813369645287 = pi^2 / 3
-const Scalar SpecFunc::PI2_3                 = 3.28986813369645287;
-// 0.55132889542179204 = sqrt(3) / pi
-const Scalar SpecFunc::SQRT3_PI              = 0.55132889542179204;
-// 1.81379936423421785 = pi / sqrt(3)
-const Scalar SpecFunc::PI_SQRT3              = 1.81379936423421785;
-// 6.283185307179586476925286 = 2*pi
-const Scalar SpecFunc::TWOPI                 = 6.283185307179586476925286;
-// 1.20205690315959429 = Zeta(3)
-const Scalar SpecFunc::ZETA3                 = 1.20205690315959429;
-// Scalar limits
-const Scalar SpecFunc::MinScalar     = std::numeric_limits<Scalar>::min();
-const Scalar SpecFunc::LogMinScalar  = std::log(MinScalar);
-const Scalar SpecFunc::MaxScalar     = std::numeric_limits<Scalar>::max();
-const Scalar SpecFunc::LogMaxScalar  = std::log(MaxScalar);
-const Scalar SpecFunc::LowestScalar  = -MaxScalar;
-const Scalar SpecFunc::ScalarEpsilon = std::numeric_limits<Scalar>::epsilon();
-// Maximum number of iterations for the algorithms
-const UnsignedInteger SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
-const Scalar SpecFunc::Precision = ResourceMap::GetAsScalar("SpecFunc-Precision");
+
 
 // Some facilities for NaN and inf
 Bool SpecFunc::IsNaN(const Scalar value)
@@ -116,7 +83,7 @@ Bool SpecFunc::IsNormal(const Scalar value)
 }
 
 // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
-Scalar SpecFunc::SmallCaseBesselI0(const Scalar x)
+static Scalar SmallCaseBesselI0(const Scalar x)
 {
   const Scalar x2 = x * x;
   Scalar value = 1.0;
@@ -131,7 +98,7 @@ Scalar SpecFunc::SmallCaseBesselI0(const Scalar x)
   return value;
 }
 
-Scalar SpecFunc::LargeCaseLogBesselI0(const Scalar x)
+static Scalar LargeCaseLogBesselI0(const Scalar x)
 {
   static Scalar A[12] = {0.125, 7.03125e-02,
                          7.32421875e-02, 1.1215209960938e-01,
@@ -175,7 +142,7 @@ Scalar SpecFunc::LogBesselI0(const Scalar x)
 }
 
 // Modified first kind Bessel function of order 1: BesselI1(x) = \sum_{m=0}\infty\frac{1}{m!(m+1)!}\left(\frac{x}{2}\right)^{2m+1}
-Scalar SpecFunc::SmallCaseBesselI1(const Scalar x)
+static Scalar SmallCaseBesselI1(const Scalar x)
 {
   const Scalar x2 = x * x;
   Scalar value = 1.0;
@@ -191,7 +158,7 @@ Scalar SpecFunc::SmallCaseBesselI1(const Scalar x)
   return value;
 }
 
-Scalar SpecFunc::LargeCaseLogBesselI1(const Scalar x)
+static Scalar LargeCaseLogBesselI1(const Scalar x)
 {
   static Scalar B[12] = { -0.375, -1.171875e-01,
                           -1.025390625e-01, -1.4419555664063e-01,
@@ -239,7 +206,7 @@ Scalar SpecFunc::LogBesselI1(const Scalar x)
 
 // Difference between the logarithms of BesselI1 and BesselI0:
 // DeltaLogBesselI10(x) = log(BesselI1(x)) - log(BesselI0(x))
-Scalar SpecFunc::LargeCaseDeltaLogBesselI10(const Scalar x)
+static Scalar LargeCaseDeltaLogBesselI10(const Scalar x)
 {
   static Scalar A[12] = {0.125, 7.03125e-02,
                          7.32421875e-02, 1.1215209960938e-01,

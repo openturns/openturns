@@ -174,7 +174,7 @@ print(smoothed.getSample(3))
 distribution = ot.Normal()
 kernel = ot.Normal()
 factory = ot.KernelSmoothing(kernel)
-ot.ResourceMap_SetAsScalar("KernelSmoothing-CutOffPlugin", 3.0)
+ot.ResourceMap.SetAsScalar("KernelSmoothing-CutOffPlugin", 3.0)
 ot.RandomGenerator.SetSeed(8457)
 sample = distribution.getSample(30)
 h = factory.computePluginBandwidth(sample)[0]

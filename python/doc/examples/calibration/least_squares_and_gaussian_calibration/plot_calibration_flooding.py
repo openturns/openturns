@@ -570,7 +570,7 @@ view = viewer.View(graph)
 # We must configure the key before creating the object (otherwise changing the parameter does not change the result).
 
 # %%
-ot.ResourceMap_SetAsUnsignedInteger(
+ot.ResourceMap.SetAsUnsignedInteger(
     "GaussianNonLinearCalibration-BootstrapSize", 0)
 
 # %%
