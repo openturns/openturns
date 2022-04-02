@@ -206,38 +206,48 @@ void test_3()
     assert_almost_equal(weightsExpected, weights, rtol, atol);
 }
 
-void print_map(std::string comment, const std::map<std::string, int>& m)
+void print_KeyValueMap(std::string comment, std::map<std::string, int> keyValueMap)
 {
     std::cout << comment ;
-    // iterate using C++17 facilities
-    for (const auto& [key, value] : m) {
-        std::cout << '[' << key << "] = " << value << "; ";
+    for (std::map<std::string, int>::iterator it = keyValueMap.begin(); it != keyValueMap.end(); ++ it)
+    {
+        std::cout << "[" << it->first << "] = " << it->second << "; ";
     }
-    std::cout << '\n';
+    std::cout << "\n";
 }
  
 void test_4()
 {
     // Create a map of three (strings, int) pairs
-    std::map<std::string, int> m { {"CPU", 10}, {"GPU", 15}, {"RAM", 20}, };
+    std::map<std::string, int> keyValueMap { {"CPU", 10}, {"GPU", 15}, {"RAM", 20}, };
  
-    print_map("1) Initial map: ", m);
+    print_KeyValueMap("1) Initial map: ", keyValueMap);
  
-    m["CPU"] = 25;  // update an existing value
-    m["SSD"] = 30;  // insert a new value
-    print_map("2) Updated map: ", m);
+    keyValueMap["CPU"] = 25;  // update an existing value
+    keyValueMap["SSD"] = 30;  // insert a new value
+    print_KeyValueMap("2) Updated map: ", keyValueMap);
  
     // using operator[] with non-existent key always performs an insert
-    std::cout << "3) m[UPS] = " << m["UPS"] << '\n';
-    print_map("4) Updated map: ", m);
+    std::cout << "3) keyValueMap[UPS] = " << keyValueMap["UPS"] << '\n';
+    print_KeyValueMap("4) Updated map: ", keyValueMap);
  
-    m.erase("GPU");
-    print_map("5) After erase: ", m);
+    keyValueMap.erase("GPU");
+    print_KeyValueMap("5) After erase: ", keyValueMap);
  
  
-    m.clear();
-    std::cout << std::boolalpha << "8) Map is empty: " << m.empty() << '\n';
+    keyValueMap.clear();
+    std::cout << std::boolalpha << "8) Map is empty: " << keyValueMap.empty() << '\n';
 }
+
+void print_NodeWeightMap(std::string comment, std::map<Point, Scalar> nodeWeightMap)
+{
+    std::cout << comment << std::endl;
+    for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
+    {
+        std::cout << it->first << " = " << it->second << std::endl;
+    }
+}
+ 
 
 void test_5()
 {
@@ -253,6 +263,13 @@ void test_5()
     }
     Point weights = {0.277778, 0.25, -0.5, 0.25, 0.277778, -0.5, 0.888888, -0.5, 0.277778, 0.25, -0.5, 0.25, 0.277778};
     printNodesAndWeights(nodes, weights);
+    // Fill the map
+    std::map<Point, Scalar> nodeWeightMap;
+    for (int i = 0; i < size; ++i)
+    {
+        nodeWeightMap[nodes[i]] = weights[i];
+    }
+    print_NodeWeightMap("1) Initial map: ", nodeWeightMap);
 }
 
 int main(int, char *[])
@@ -261,11 +278,11 @@ int main(int, char *[])
 
   try
   {
-    test_1();
-    test_2();
-    test_3();
-    // test_4();
-    // test_5();
+    // test_1();
+    // test_2();
+    // test_3();
+    test_4();
+    test_5();
   }
   catch (TestFailed & ex)
   {
