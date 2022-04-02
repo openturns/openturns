@@ -112,36 +112,14 @@ IndicesCollection SmolyakExperiment::computeCombination() const
   // Create a multi-index set from norm 1
   const LinearEnumerateFunction enumerateFunction(dimension);
   // Compute the size
-  UnsignedInteger combinationIndicesCollectionSize = 0;
-  Indices indices(dimension);
-  for (UnsignedInteger strataIndex = level_; strataIndex < level_ + dimension; ++strataIndex)
-  {
-    LOGDEBUG(OSS() << "  strataIndex = " <<  strataIndex);
-    const UnsignedInteger strataCardinal = enumerateFunction.getStrataCardinal(strataIndex);
-    const UnsignedInteger cumulatedCardinal = enumerateFunction.getStrataCumulatedCardinal(
-        strataIndex
-    );
-    const UnsignedInteger indexStart = cumulatedCardinal - strataCardinal;
-    for (UnsignedInteger i = indexStart; i < cumulatedCardinal; ++i)
-    {
-      indices = enumerateFunction(i);
-      LOGDEBUG(OSS() << "  indices = " <<  indices);
-      UnsignedInteger multiindexMin = indicesMinimum(indices);
-      LOGDEBUG(OSS() << "  multiindexMin = " <<  multiindexMin);
-      if (multiindexMin > 0)
-      {
-        // Do not consider a multi-index which has a zero component:
-        // this is an empty quadrature
-        LOGDEBUG(OSS() << "  Store");
-        ++combinationIndicesCollectionSize;
-      }
-    } // loop over the indices in the strata
-  } // loop over the strata
-  LOGDEBUG(OSS() << "  combinationIndicesCollectionSize = " << combinationIndicesCollectionSize);
+  UnsignedInteger cardinalMax = enumerateFunction.getStrataCumulatedCardinal(level_ - 1);
+  UnsignedInteger cardinalMin = enumerateFunction.getStrataCumulatedCardinal(level_ - dimension - 1);
+  UnsignedInteger combinationIndicesCollectionSize = cardinalMax - cardinalMin;
   // Fill the indices
   IndicesCollection combinationIndicesCollection(combinationIndicesCollectionSize, dimension);
   UnsignedInteger multiindexIndex = 0;
-  for (UnsignedInteger strataIndex = level_; strataIndex < level_ + dimension; ++strataIndex)
+  Indices indices(dimension);
+  for (UnsignedInteger strataIndex = level_ - dimension; strataIndex < level_; ++strataIndex)
   {
     LOGDEBUG(OSS() << "  strataIndex = " <<  strataIndex);
     const UnsignedInteger strataCardinal = enumerateFunction.getStrataCardinal(strataIndex);
@@ -152,17 +130,10 @@ IndicesCollection SmolyakExperiment::computeCombination() const
     for (UnsignedInteger i = indexStart; i < cumulatedCardinal; ++i)
     {
       indices = enumerateFunction(i);
+      for (UnsignedInteger j = 0; j < dimension; ++j) indices[j] += 1;
       LOGDEBUG(OSS() << "  indices = " <<  indices);
-      UnsignedInteger multiindexMin = indicesMinimum(indices);
-      LOGDEBUG(OSS() << "  multiindexMin = " <<  multiindexMin);
-      if (multiindexMin > 0)
-      {
-        // Do not consider a multi-index which has a zero component:
-        // this is an empty quadrature
-        LOGDEBUG(OSS() << "  Store");
-        std::copy(indices.begin(), indices.end(), combinationIndicesCollection.begin_at(multiindexIndex));
-        ++multiindexIndex;
-      }
+      std::copy(indices.begin(), indices.end(), combinationIndicesCollection.begin_at(multiindexIndex));
+      ++multiindexIndex;
     } // loop over the indices in the strata
   } // loop over the strata
   return combinationIndicesCollection;

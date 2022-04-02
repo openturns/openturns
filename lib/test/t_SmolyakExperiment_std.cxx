@@ -151,6 +151,61 @@ void test_2()
     
 }
 
+// Test #3 : 3 experiments with dimensions 1
+void test_3()
+{
+    Log::Show(Log::ALL);
+    OStream fullprint(std::cout);
+    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+    // Marginal 0: Uniform, with 3 nodes
+    const Uniform distribution1(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment1(distribution1);  
+    experimentCollection.add(marginalExperiment1);
+    // Marginal 1: Uniform, with 5 nodes
+    const Uniform distribution2(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment2(distribution2);
+    experimentCollection.add(marginalExperiment2);
+    // Marginal 2: Uniform, with 3 nodes
+    const Uniform distribution3(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment3(distribution3);  
+    experimentCollection.add(marginalExperiment3);
+    //
+    const UnsignedInteger level = 3;
+    SmolyakExperiment experiment(experimentCollection, level);
+    Point weights(0);
+    Sample nodes(experiment.generateWithWeights(weights));
+    const int experimentSize = experiment.getSize();
+    assert_equal(experimentSize, 25);
+    //
+    UnsignedInteger numberOfDigits = 14;
+    roundSample(nodes, numberOfDigits);
+    sortNodesAndWeights(nodes, weights);
+    //
+    const int size(nodes.getSize());
+    const int dimension(nodes.getDimension());
+    const int weightDimension(weights.getDimension());
+    assert_equal(size, 25);
+    assert_equal(dimension, 3);
+    assert_equal(weightDimension, 25);
+    //
+    Point column_1 = {0.11270167, 0.21132487, 0.21132487, 0.21132487, 0.21132487, 0.21132487, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.78867513, 0.78867513, 0.78867513, 0.78867513, 0.78867513, 0.88729833};
+    Point column_2 = {0.5, 0.21132487, 0.5, 0.5, 0.5, 0.78867513, 0.11270167, 0.21132487, 0.21132487, 0.21132487, 0.5, 0.5, 0.5, 0.5, 0.5, 0.78867513, 0.78867513, 0.78867513, 0.88729833, 0.21132487, 0.5, 0.5, 0.5, 0.78867513, 0.5       };
+    Point column_3 = {0.5, 0.5, 0.21132487, 0.5, 0.78867513, 0.5, 0.5, 0.21132487, 0.5, 0.78867513, 0.11270167, 0.21132487, 0.5, 0.78867513, 0.88729833, 0.21132487, 0.5, 0.78867513, 0.5, 0.5, 0.21132487, 0.5, 0.78867513, 0.5, 0.5};
+    Sample nodesExpected(size, dimension);
+    for (int i = 0; i < size; ++i)
+    {
+      nodesExpected(i, 0) = column_1[i];
+      nodesExpected(i, 1) = column_2[i];
+      nodesExpected(i, 2) = column_3[i];
+    }
+    Point weightsExpected = {0.277778, 0.25, 0.25,-1, 0.25, 0.25, 0.277778, 0.25,-1, 0.25, 0.277778,-1,2.33333,-1, 0.277778, 0.25,-1, 0.25, 0.277778, 0.25, 0.25,-1, 0.25, 0.25, 0.277778};
+    sortNodesAndWeights(nodesExpected, weightsExpected);
+    const Scalar rtol = 1.0e-5;
+    const Scalar atol = 1.0e-5;
+    assert_almost_equal(nodesExpected, nodes, rtol, atol);
+    assert_almost_equal(weightsExpected, weights, rtol, atol);
+}
+
 void print_map(std::string comment, const std::map<std::string, int>& m)
 {
     std::cout << comment ;
@@ -161,7 +216,7 @@ void print_map(std::string comment, const std::map<std::string, int>& m)
     std::cout << '\n';
 }
  
-void test_3()
+void test_4()
 {
     // Create a map of three (strings, int) pairs
     std::map<std::string, int> m { {"CPU", 10}, {"GPU", 15}, {"RAM", 20}, };
@@ -184,7 +239,7 @@ void test_3()
     std::cout << std::boolalpha << "8) Map is empty: " << m.empty() << '\n';
 }
 
-void test_4()
+void test_5()
 {
     int size = 13;
     int dimension = 2;
@@ -206,9 +261,11 @@ int main(int, char *[])
 
   try
   {
-    // test_1();
-    // test_2();
+    test_1();
+    test_2();
     test_3();
+    // test_4();
+    // test_5();
   }
   catch (TestFailed & ex)
   {
