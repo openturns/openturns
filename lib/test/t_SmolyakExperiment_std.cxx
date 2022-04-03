@@ -238,8 +238,52 @@ void test_4()
     keyValueMap.clear();
     std::cout << std::boolalpha << "8) Map is empty: " << keyValueMap.empty() << std::endl;;
 }
+/* Comparison class with std:map interface. 
+*/
+class NodeWeightCompare
+{
+public:
+    NodeWeightCompare(const Scalar absoluteEpsilon, 
+                      const Scalar relativeEpsilon):
+                      absoluteEpsilon_(absoluteEpsilon)
+                      , relativeEpsilon_(relativeEpsilon)
+    {
+        // Nothing to do
+    };
 
-void print_NodeWeightMap(std::map<Point, Scalar> nodeWeightMap)
+    /* Compare two points, according to lexicographic order
+    * Returns true if x < y, false otherwise.
+    */
+    bool operator()(const Point x, const Point y) const {
+        const UnsignedInteger dimension = x.getDimension();
+        if (y.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the two points must have the same dimension. Here x has dimension " << dimension << " while y has dimension " << y.getDimension();
+        const Point delta = x - y;
+        const Scalar distance = delta.norm();
+        bool comparison = false;
+        const Scalar maximumNorm = std::max(x.norm(), y.norm());
+        if (distance > absoluteEpsilon_ + relativeEpsilon_ * maximumNorm)
+        {
+            for (UnsignedInteger k = 0; k < dimension; ++k)
+            {
+                if (x[k] < y[k])
+                {
+                    comparison = true;
+                    break;
+                }
+            }
+        }
+        std::cout << "Compare(" << x << ", " << y << ") = " << comparison << std::endl;
+        return comparison;
+    }
+private:
+    // Absolute tolerance for comparison
+    Scalar absoluteEpsilon_;
+    // Relative tolerance for comparison
+    Scalar relativeEpsilon_;
+};
+
+
+void print_NodeWeightMap(std::map<Point, Scalar, NodeWeightCompare> nodeWeightMap)
 {
     std::cout << "print_NodeWeightMap. Size = " << nodeWeightMap.size() << std::endl;
     UnsignedInteger index = 0;
@@ -249,25 +293,36 @@ void print_NodeWeightMap(std::map<Point, Scalar> nodeWeightMap)
         ++ index;
     }
 }
- 
 
 void test_5()
 {
-    int dimension = 2;
-    Point column_1 = {0.1, 0.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, 0.7};
-    Point column_2 = {0.5, 0.5, 0.2, 0.5, 0.7, 0.7, 0.7, 0.5, 0.7, 0.8, 0.2};
-    int size = column_1.getSize();
+    const UnsignedInteger dimension = 2;
+    Point column_1 = {0.1, 0.1, 0.2, 0.2, 0.2, 0.2, 0.20001, 0.3, 0.3, 0.3, 0.30001};
+    Point column_2 = {0.5, 0.5, 0.2, 0.5, 0.7, 0.7, 0.70001, 0.6, 0.6, 0.6, 0.60001};
+    const UnsignedInteger size = column_1.getSize();
     Sample nodes(size, dimension);
-    for (int i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       nodes(i, 0) = column_1[i];
       nodes(i, 1) = column_2[i];
     }
     Point weights = {0.2, 0.2, 0.3, -0.5, 0.3, 0.2, -0.5, 0.8, -0.5, 0.2, 0.3};
     printNodesAndWeights(nodes, weights);
+    Scalar absoluteEpsilon = 1.e-2;
+    Scalar relativeEpsilon = 1.e-2;
+    NodeWeightCompare comparison(absoluteEpsilon, relativeEpsilon);
+    std::cout << "true = " << true << ", false = " << false << std::endl;
+    comparison(Point({0.1, 0.2}), Point({0.3, 0.4}));
+    comparison(Point({0.3, 0.4}), Point({0.1, 0.2}));
+    comparison(Point({0.1, 0.2}), Point({0.1, 0.2}));
+    comparison(Point({0.1001, 0.2001}), Point({0.1, 0.2}));
+    comparison(Point({0.1, 0.2}), Point({0.1001, 0.2001}));
+    comparison(Point({0.0001, 0.0001}), Point({0.0, 0.0}));
+    comparison(Point({0.0, 0.0}), Point({0.0001, 0.0001}));
     // Fill the map
-    std::map<Point, Scalar> nodeWeightMap;
-    for (int i = 0; i < size; ++i)
+    std::map<Point, Scalar, NodeWeightCompare> nodeWeightMap(NodeWeightCompare(absoluteEpsilon, relativeEpsilon));
+    // std::map<Point, Scalar> nodeWeightMap;
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
         std::map<Point, Scalar>::iterator search = nodeWeightMap.find(nodes[i]);
         if (search != nodeWeightMap.end()) {
