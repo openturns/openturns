@@ -53,15 +53,15 @@ void printNodesAndWeights(Sample & nodes, Point & weights)
   const UnsignedInteger size = nodes.getSize();
   const UnsignedInteger dimension = nodes.getDimension();
   OStream fullprint(std::cout);
-  fullprint << "printNodesAndWeights" << std::endl;
+  fullprint << "printNodesAndWeights. Size = " << size << std::endl;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    fullprint << "[" << i << "] " << weights[i] << " : (" ;
+    fullprint << "[" << i << "] : [" ;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       fullprint << nodes(i, j) << " ";
     } // loop over dimensions
-    fullprint << ")" << std::endl;
+    fullprint << "] = " << weights[i] << std::endl;
   } // loop over points
 }
 
@@ -228,7 +228,7 @@ void test_4()
     print_KeyValueMap("2) Updated map: ", keyValueMap);
  
     // using operator[] with non-existent key always performs an insert
-    std::cout << "3) keyValueMap[UPS] = " << keyValueMap["UPS"] << '\n';
+    std::cout << "3) keyValueMap[UPS] = " << keyValueMap["UPS"] << std::endl;;
     print_KeyValueMap("4) Updated map: ", keyValueMap);
  
     keyValueMap.erase("GPU");
@@ -236,40 +236,49 @@ void test_4()
  
  
     keyValueMap.clear();
-    std::cout << std::boolalpha << "8) Map is empty: " << keyValueMap.empty() << '\n';
+    std::cout << std::boolalpha << "8) Map is empty: " << keyValueMap.empty() << std::endl;;
 }
 
-void print_NodeWeightMap(std::string comment, std::map<Point, Scalar> nodeWeightMap)
+void print_NodeWeightMap(std::map<Point, Scalar> nodeWeightMap)
 {
-    std::cout << comment << std::endl;
+    std::cout << "print_NodeWeightMap. Size = " << nodeWeightMap.size() << std::endl;
+    UnsignedInteger index = 0;
     for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
     {
-        std::cout << it->first << " = " << it->second << std::endl;
+        std::cout << "[" << index << "] : " << it->first << " = " << it->second << std::endl;
+        ++ index;
     }
 }
  
 
 void test_5()
 {
-    int size = 13;
     int dimension = 2;
-    Point column_1 = {0.112702, 0.211325, 0.211325, 0.211325, 0.5, 0.5, 0.5, 0.5, 0.5, 0.788675, 0.788675, 0.788675, 0.887298};
-    Point column_2 = {0.5, 0.211325, 0.5, 0.788675, 0.112702, 0.211325, 0.5, 0.788675, 0.887298, 0.211325, 0.5, 0.788675, 0.5};
+    Point column_1 = {0.1, 0.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, 0.7};
+    Point column_2 = {0.5, 0.5, 0.2, 0.5, 0.7, 0.7, 0.7, 0.5, 0.7, 0.8, 0.2};
+    int size = column_1.getSize();
     Sample nodes(size, dimension);
     for (int i = 0; i < size; ++i)
     {
       nodes(i, 0) = column_1[i];
       nodes(i, 1) = column_2[i];
     }
-    Point weights = {0.277778, 0.25, -0.5, 0.25, 0.277778, -0.5, 0.888888, -0.5, 0.277778, 0.25, -0.5, 0.25, 0.277778};
+    Point weights = {0.2, 0.2, 0.3, -0.5, 0.3, 0.2, -0.5, 0.8, -0.5, 0.2, 0.3};
     printNodesAndWeights(nodes, weights);
     // Fill the map
     std::map<Point, Scalar> nodeWeightMap;
     for (int i = 0; i < size; ++i)
     {
-        nodeWeightMap[nodes[i]] = weights[i];
+        std::map<Point, Scalar>::iterator search = nodeWeightMap.find(nodes[i]);
+        if (search != nodeWeightMap.end()) {
+            std::cout << "Found     : " << search->first << " = " << search->second << std::endl;
+            search->second += weights[i];
+        } else {
+            std::cout << "Not found : " << nodes[i] << std::endl;
+            nodeWeightMap[nodes[i]] = weights[i];
+        }
     }
-    print_NodeWeightMap("1) Initial map: ", nodeWeightMap);
+    print_NodeWeightMap(nodeWeightMap);
 }
 
 int main(int, char *[])
@@ -281,7 +290,7 @@ int main(int, char *[])
     // test_1();
     // test_2();
     // test_3();
-    test_4();
+    //test_4();
     test_5();
   }
   catch (TestFailed & ex)
