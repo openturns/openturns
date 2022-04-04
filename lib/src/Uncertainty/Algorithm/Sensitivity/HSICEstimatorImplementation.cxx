@@ -265,24 +265,7 @@ Point HSICEstimatorImplementation::getPValuesPermutation() const
     computePValuesPermutation();
     isAlreadyComputedPValuesPermutation_ = true ;
   }
-  return PValuesPermutation_;
-}
-
-/* Is it safe to compute the weight matrices in parallel? */
-Bool HSICEstimatorImplementation::isWeightMatrixParallel() const
-{
-  return true;
-}
-
-/* Is it safe to compute the permutation p values in parallel? */
-Bool HSICEstimatorImplementation::isPvaluesParallel() const
-{
-  Bool isParallel = true;
-  for (UnsignedInteger i = 0; i < covarianceList_.getSize(); ++i)
-  {
-    isParallel = isParallel && covarianceList_[i].getImplementation()->isParallel();
-  }
-  return isParallel;
+  return PValuesPermutation_; 
 }
 
 /* Draw the HSIC indices */

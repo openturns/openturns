@@ -139,12 +139,6 @@ protected:
 
   /** Compute HSIC and R2-HSIC indices */
   virtual void computeIndices() const;
-  
-  /* Is it safe to compute the weight matrices in parallel? */
-  virtual Bool isWeightMatrixParallel() const;
-
-  /* Is it safe to compute the permutation p values in parallel? */
-  Bool isPvaluesParallel() const;
 
   /** Draw values stored in a point */
   Graph drawValues(const Point &values, const String &title) const;
