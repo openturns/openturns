@@ -124,25 +124,25 @@ view = viewer.View(graph)
 # %%
 # The parallel coordinates plot obtained is helpful : we see peculiar values for each marginal.
 #
-#
-
 
 # %%
 # Recall that the Ishigami model is given by
 #
 # .. math::
-#    f(X) = sin(X_1) + 7sin^2(X_2) + 0.1 X_3^4 sin(X_1)
+#    f(X) = \sin(X_1) + 7 \sin^2(X_2) + 0.1 X_3^4 \sin(X_1)
 #
 # with each marginal of :math:`X=(X_1, X_2, X_3)` uniform in :math:`]-\pi,\pi[`.
-
+#
 # Then the highest values of :math:`Y=f(X)` are obtained when each term is near its peak :
 #
-# - the :math:`sin(X_1)` term around :math:`X_1 = \pi / 2` ;
-# - the :math:`7sin^2(X_2)` term around :math:`X_2 = -\pi / 2` and :math:`X_2 = \pi / 2` ;
-# - the :math:`X_3^4 sin(X_1)` term around :math:`X_1 = \pi / 2` and :math:`X_3 = \{ -\pi, \pi}`.
+# - the :math:`\sin(X_1)` term around :math:`X_1 = \frac{\pi}{2}` ;
+# - the :math:`7 \sin^2(X_2)` term around :math:`X_2 = -\frac{\pi}{2}` and :math:`X_2 = \frac{\pi}{2}` ;
+# - the :math:`X_3^4 \sin(X_1)` term around :math:`X_1 = \frac{\pi}{2}` and :math:`X_3 = \{ -\pi, \pi \}`.
 #
-# These values can be seen on the parallel plot as for each marginal there is a cluster around respectively 1, 2 and 2 values for :math`X_1`, :math`X_2` and :math`X_3`.
-# This amounts to 4 different values 'realizing' the maximum and we can observe 4 distinct paths on the parallel plot as well.
+# These values can be seen on the parallel plot as for each marginal there is a
+# cluster around respectively 1, 2 and 2 values for :math:`X_1`, :math:`X_2` and :math:`X_3`.
+# This amounts to 4 different values 'realizing' the maximum and we can observe
+# 4 distinct paths on the parallel plot as well.
 #
 
 # %%

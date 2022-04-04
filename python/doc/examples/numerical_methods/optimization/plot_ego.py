@@ -18,8 +18,8 @@ EfficientGlobalOptimization examples
 
 
 # %%
-from openturns.usecases import branin_function as branin_function
-from openturns.usecases import ackley_function as ackley_function
+from openturns.usecases import branin_function
+from openturns.usecases import ackley_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

@@ -8,7 +8,7 @@ Create a polynomial chaos metamodel by integration on the cantilever beam
 # In order to do this, we use the `GaussProductExperiment` class.
 
 # %%
-from openturns.usecases import cantilever_beam as cantilever_beam
+from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -73,12 +73,12 @@ adaptiveStrategy
 # We begin by getting the standard measure associated with the multivariate polynomial basis. We see that the range of the `Beta` distribution has been standardized into the [-1,1] interval. This is the same for the `Uniform` distribution and the second `Beta` distribution.
 
 # %%
-distributionMu = multivariateBasis.getMeasure()
-distributionMu
+distributionStandard = multivariateBasis.getMeasure()
+print(distributionStandard)
 
 # %%
-marginalDegrees = [4] * dim_input
-experiment = ot.GaussProductExperiment(distributionMu, marginalDegrees)
+marginalSizes = [4] * dim_input
+experiment = ot.GaussProductExperiment(distributionStandard, marginalSizes)
 
 # %%
 # We can see the size of the associated design of experiments.

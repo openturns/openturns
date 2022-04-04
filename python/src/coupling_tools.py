@@ -249,9 +249,8 @@ def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
             for child in parent.children(recursive=True):
                 child.kill()
         process.kill()
-        stdout_data, stderr_data = process.communicate()
-        raise RuntimeError('Command "' + cmd + '" times out after ' +
-                            str(timeout) + 's')
+        raise
+
     returncode = process.poll()
 
     # check return code

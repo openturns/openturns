@@ -7,7 +7,7 @@ Analyse the central tendency of a cantilever beam
 
 # %%
 from __future__ import print_function
-from openturns.usecases import cantilever_beam as cantilever_beam
+from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

@@ -896,15 +896,11 @@ MaximumEntropyOrderStatisticsDistribution MaximumEntropyOrderStatisticsDistribut
   // Here we know that if the size is equal to the dimension, the indices are [0,...,dimension-1]
   if (size == dimension) return *this;
   // This call will check that indices are correct
-  DistributionCollection marginalDistributions(size);
-  Description marginalDescription(size);
-  const Description description(getDescription());
+  DistributionCollection marginalDistributions(distributionCollection_.select(indices));
   Collection<PiecewiseHermiteEvaluation> marginalExponentialFactorApproximation(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger j = indices[i];
-    marginalDistributions[i] = distributionCollection_[j];
-    marginalDescription[i] = description[j];
     if (useApproximation_ && (i > 0))
     {
       const UnsignedInteger jPrec = indices[i - 1];
@@ -917,7 +913,7 @@ MaximumEntropyOrderStatisticsDistribution MaximumEntropyOrderStatisticsDistribut
   }
   OrderStatisticsMarginalChecker checker(marginalDistributions);
   const Indices marginalPartition(checker.buildPartition());
-  MaximumEntropyOrderStatisticsDistribution marginal(marginalDistributions, marginalPartition, useApproximation_, marginalExponentialFactorApproximation, marginalDescription);
+  MaximumEntropyOrderStatisticsDistribution marginal(marginalDistributions, marginalPartition, useApproximation_, marginalExponentialFactorApproximation, getDescription().select(indices));
   return marginal;
 }
 

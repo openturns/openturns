@@ -58,3 +58,7 @@ OT_ProcessSample_getMax_doc
 OT_ProcessSample_getMin_doc
 %feature("docstring") OT::ProcessSample::getSampleAtVertex
 OT_ProcessSample_getSampleAtVertex_doc
+%feature("docstring") OT::ProcessSample::erase
+OT_ProcessSample_erase_doc
+%feature("docstring") OT::ProcessSample::clear
+OT_ProcessSample_clear_doc

@@ -100,7 +100,7 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import deflection_tube as deflection_tube 
+    >>> from openturns.usecases import deflection_tube
     >>> # Load the tube deflection model
     >>> dt = deflection_tube.DeflectionTube()
 

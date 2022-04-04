@@ -2,14 +2,18 @@
 
 add_definitions (${OPENTURNS_SWIG_DEFINITIONS})
 
+set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
+
+# allows to pass compile flags like -O1 to reduce memory usage
+set (SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
+
 # generate SWIG runtime header
-set (SWIG_PYTHON_OPTIONS "-python")
 execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/openturns)
-add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.hxx
+add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
                      COMMAND ${SWIG_EXECUTABLE}
-                     ARGS ${SWIG_PYTHON_OPTIONS} ${CMAKE_SWIG_FLAGS} ${OPENTURNS_SWIG_DEFINITIONS} -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.hxx
-                     COMMENT "Swig header")
-add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.hxx)
+                     ARGS -python -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
+                     COMMENT "Swig runtime header")
+add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h)
 add_custom_target (generate_docstrings)
 add_custom_target (pylib)
 
@@ -71,8 +75,6 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
 
   target_link_libraries_with_dynamic_lookup (${module_target} ${PYTHON_LIBRARIES})
 
-  # allows to pass compile flags like -O1 to reduce memory usage
-  set (SWIG_COMPILE_FLAGS "" CACHE STRING "Additional flags used when compiling swig generated code")
   set_target_properties (${module_target} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 
   set_target_properties (${module_target} PROPERTIES UNITY_BUILD OFF)
@@ -179,7 +181,6 @@ ot_add_python_module(statistics statistics_module.i
                       TestResult.i TestResult_doc.i.in
                       RandomGenerator.i RandomGenerator_doc.i.in
                       RandomGeneratorState.i RandomGeneratorState_doc.i.in
-                      CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
                       LowDiscrepancySequenceImplementation.i LowDiscrepancySequenceImplementation_doc.i.in
                       LowDiscrepancySequence.i LowDiscrepancySequence_doc.i.in
                       SobolSequence.i SobolSequence_doc.i.in
@@ -229,6 +230,17 @@ ot_add_python_module(statistics statistics_module.i
                       BaseStatisticsTemplateDefs.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i.in
                    )
+ot_add_python_module(CorrelationAnalysis correlationanalysis_module.i
+                      CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
+                    )
+ot_add_python_module(iterative_statistics iterative_statistics_module.i
+                      IterativeAlgorithm.i IterativeAlgorithm_doc.i.in
+                      IterativeAlgorithmImplementation.i IterativeAlgorithmImplementation_doc.i.in
+                      IterativeExtrema.i IterativeExtrema_doc.i.in
+                      IterativeThresholdExceedance.i IterativeThresholdExceedance_doc.i.in
+                      IterativeMoments.i IterativeMoments_doc.i.in
+                      BaseIterativeStatisticsTemplateDefs.i
+                   )
 
 ot_add_python_module(geom geom_module.i
                       Domain.i Domain_doc.i.in
@@ -269,7 +281,6 @@ ot_add_python_module(func func_module.i
                       LinearEnumerateFunction.i LinearEnumerateFunction_doc.i.in
                       HyperbolicAnisotropicEnumerateFunction.i HyperbolicAnisotropicEnumerateFunction_doc.i.in
                       NormInfEnumerateFunction.i NormInfEnumerateFunction_doc.i.in
-                      SpecFunc.i SpecFunc_doc.i.in
                       EvaluationImplementation.i EvaluationImplementation_doc.i.in
                       Evaluation.i Evaluation_doc.i.in
                       GradientImplementation.i GradientImplementation_doc.i.in
@@ -391,6 +402,9 @@ ot_add_python_module(func func_module.i
                       BaseFuncTemplateDefs.i
                    )
 
+ot_add_python_module(SpecFunc specfunc_module.i
+                      SpecFunc.i SpecFunc_doc.i.in
+                    )
 ot_add_python_module(diff diff_module.i
                       FiniteDifferenceStepImplementation.i FiniteDifferenceStepImplementation_doc.i.in
                       FiniteDifferenceStep.i FiniteDifferenceStep_doc.i.in
@@ -595,8 +609,10 @@ ot_add_python_module(model_process model_process_module.i
                       UncertaintyProcessTemplateDefs.i
                    )
 
-ot_add_python_module(dist_bundle1 dist_bundle1_module.i
+ot_add_python_module(DistFunc distfunc_module.i
                       DistFunc.i DistFunc_doc.i.in
+                    )
+ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Arcsine.i Arcsine_doc.i.in
                       ArcsineFactory.i ArcsineFactory_doc.i.in
                       ArcsineMuSigma.i ArcsineMuSigma_doc.i.in
@@ -748,6 +764,7 @@ ot_add_python_module(bayesian bayesian_module.i
                       GaussianNonLinearCalibration.i GaussianNonLinearCalibration_doc.i.in
 		      RandomVectorMetropolisHastings.i RandomVectorMetropolisHastings_doc.i.in
                       RandomWalkMetropolisHastings.i RandomWalkMetropolisHastings_doc.i.in
+                      IndependentMetropolisHastings.i IndependentMetropolisHastings_doc.i.in
                       Gibbs.i Gibbs_doc.i.in
                       ConditionalRandomVector.i ConditionalRandomVector_doc.i.in
                       UncertaintyBayesianTemplateDefs.i
@@ -766,7 +783,8 @@ ot_add_python_module(weightedexperiment weightedexperiment_module.i
                       FixedExperiment.i FixedExperiment_doc.i.in
                       ImportanceSamplingExperiment.i ImportanceSamplingExperiment_doc.i.in
                       GaussProductExperiment.i GaussProductExperiment_doc.i.in
-                      LHSExperiment.i LHSExperiment_doc.i.in
+                      TensorProductExperiment.i TensorProductExperiment_doc.i.in
+LHSExperiment.i LHSExperiment_doc.i.in
 SimulatedAnnealingLHS.i SimulatedAnnealingLHS_doc.i.in
 MonteCarloLHS.i MonteCarloLHS_doc.i.in
 LHSResult.i LHSResult_doc.i.in
@@ -850,8 +868,6 @@ ot_add_python_module(metamodel metamodel_module.i
                       LinearModelStepwiseAlgorithm.i LinearModelStepwiseAlgorithm_doc.i.in
                       LinearModelAlgorithm.i LinearModelAlgorithm_doc.i.in
                       LinearModelAnalysis.i LinearModelAnalysis_doc.i.in
-                      LinearModelTest.i LinearModelTest_doc.i.in
-                      VisualTest.i VisualTest_doc.i.in
                       RandomVector.i RandomVector_doc.i.in
                       PythonEvaluation.cxx
                       PythonGradient.cxx
@@ -966,13 +982,24 @@ ot_add_python_module(simulation simulation_module.i
                     )
 
 ot_add_python_module(stattests stattests_module.i
-                      FittingTest.i FittingTest_doc.i.in
-                      HypothesisTest.i HypothesisTest_doc.i.in
-                      NormalityTest.i NormalityTest_doc.i.in
                       DickeyFullerTest.i DickeyFullerTest_doc.i.in
                       UncertaintyStatTestsTemplateDefs.i
                     )
-
+ot_add_python_module(FittingTest fittingtest_module.i
+                      FittingTest.i FittingTest_doc.i.in
+                    )
+ot_add_python_module(HypothesisTest hypothesistest_module.i
+                      HypothesisTest.i HypothesisTest_doc.i.in
+                    )
+ot_add_python_module(LinearModelTest linearmodeltest_module.i
+                      LinearModelTest.i LinearModelTest_doc.i.in
+                    )                
+ot_add_python_module(NormalityTest normalitytest_module.i
+                      NormalityTest.i NormalityTest_doc.i.in
+                    )
+ot_add_python_module(VisualTest visualtest_module.i
+                      VisualTest.i VisualTest_doc.i.in
+                    )
 ot_add_python_module(uncertainty uncertainty_module.i
                       FAST.i FAST_doc.i.in
                       EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i.in

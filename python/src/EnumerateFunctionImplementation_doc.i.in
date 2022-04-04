@@ -83,7 +83,7 @@ OT_EnumerateFunction_getDimension_doc
 Parameters
 ----------
 maximumDegree : int
-    Number of polynoms of the basis.
+    Degree.
 
 Returns
 -------
@@ -190,7 +190,7 @@ strataIndex : int
 Returns
 -------
 cardinal : int
-    Number of members of the basis associated to the strates inferior or equal
+    Number of members of the basis associated to the strata of index inferior or equal
     to *strataIndex*. In the context of product of polynomial basis, this is
     the number of polynomials of the basis which total degree is inferior or
     equal to *strataIndex*.
@@ -262,3 +262,25 @@ dim : int, :math:`dim \geq 0`
 OT_EnumerateFunction_setDimension_doc
 
 // ---------------------------------------------------------------------
+
+%define OT_EnumerateFunction_getBasisSizeFromTotalDegree_doc
+"Get the basis size corresponding to a total degree.
+
+Parameters
+----------
+maximumDegree : int
+    Degree.
+
+Returns
+-------
+size : int
+    Number of members of the basis of degree :math:`max \leq maximumDegree`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ef = ot.LinearEnumerateFunction(2)
+>>> size = ef.getBasisSizeFromTotalDegree(3)"
+%enddef
+%feature("docstring") OT::EnumerateFunctionImplementation::getBasisSizeFromTotalDegree
+OT_EnumerateFunction_getBasisSizeFromTotalDegree_doc

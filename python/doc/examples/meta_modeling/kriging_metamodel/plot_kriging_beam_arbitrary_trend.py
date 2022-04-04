@@ -14,7 +14,7 @@ Configuring an arbitrary trend in Kriging
 # -----------------------
 
 # %%
-from openturns.usecases import cantilever_beam as cantilever_beam
+from openturns.usecases import cantilever_beam
 from matplotlib import pylab as plt
 import openturns.viewer as viewer
 import openturns as ot

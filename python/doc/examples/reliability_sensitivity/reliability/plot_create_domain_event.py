@@ -65,7 +65,7 @@ event = ot.DomainEvent(vecY, domain)
 
 # %%
 # We  represent the first marginal of `vecY`.
-ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 7)
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 7)
 graphModel0 = f.draw(0, 1, 0, [0.0, 0.0], [-5.0, -5.0], [5.0, 5.0])
 graphModel0.setXTitle(r'$x_1$')
 graphModel0.setYTitle(r'$x_2$')

@@ -36,6 +36,8 @@ class OT_API IsotropicCovarianceModel
   CLASSNAME
 
 public:
+  /** Default constructor */
+  IsotropicCovarianceModel();
 
   /** Parameters constructor */
   IsotropicCovarianceModel(const CovarianceModel & oneDimensional,

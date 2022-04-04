@@ -247,7 +247,7 @@ if (LIBXML2_FOUND)
 endif ()
 
 if (USE_HDF5)
-  find_package(HDF5 COMPONENTS CXX)
+  find_package(HDF5 COMPONENTS C CXX)
 endif ()
 if (HDF5_FOUND)
   set (OPENTURNS_HAVE_HDF5 TRUE)

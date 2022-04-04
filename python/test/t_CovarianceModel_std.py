@@ -291,6 +291,9 @@ for model in coll:
 
 # 13) Isotropic covariance model
 
+myIsotropicKernel = ot.IsotropicCovarianceModel()
+test_model(myIsotropicKernel)
+
 scale = 3.5
 amplitude = 1.5
 myOneDimensionalKernel = ot.SquaredExponential([scale], [amplitude])

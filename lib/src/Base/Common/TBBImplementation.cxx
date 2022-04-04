@@ -88,7 +88,7 @@ UnsignedInteger TBBImplementation::GetThreadIndex()
 
 void TBBImplementation::Enable()
 {
-  const UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger("TBBImplementation-ThreadsNumber");
+  const UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger("TBB-ThreadsNumber");
   SetThreadsNumber(nbThreads);
 }
 

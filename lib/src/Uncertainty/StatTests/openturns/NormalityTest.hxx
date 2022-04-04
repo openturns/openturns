@@ -32,20 +32,17 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class OT_API NormalityTest
+namespace NormalityTest
 {
-public:
 
   /** Anderson Darling normality test for normal distributions. */
-  static TestResult AndersonDarlingNormal(const Sample & sample,
-                                          const Scalar level = 0.05);
+  OT_API TestResult AndersonDarlingNormal(const Sample & sample,
+                                  const Scalar level = 0.05);
 
   /** Cramer Von Mises normality test for normal distributions. */
-  static TestResult CramerVonMisesNormal(const Sample & sample,
-                                         const Scalar level = 0.05);
+  OT_API TestResult CramerVonMisesNormal(const Sample & sample,
+                                  const Scalar level = 0.05);
 
-private:
-  NormalityTest();
 }; /* class NormalityTest */
 
 END_NAMESPACE_OPENTURNS

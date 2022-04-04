@@ -15,7 +15,7 @@ Estimate correlation coefficients
 
 # %%
 from __future__ import print_function
-from openturns.usecases import ishigami_function as ishigami_function
+from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

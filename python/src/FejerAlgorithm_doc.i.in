@@ -34,7 +34,7 @@ with :math:`f: \Rset^d \mapsto \Rset^p`, :math:`\vect{a}, \vect{b}\in\Rset^d` us
 
 where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i`th node of the :math:`N_i`-points and :math:`w^{N_i}_{n_i}` the associated weight.
 
-Let us note :math:`\theta_k=\dfrac{k\pi}{n}, k=0,1,...,n-1`, :math:`x_k = cos(\theta_k)`. The `Clenshaw-Curtis nodes are :math=`x_k`
+Let us note :math:`\theta_k=\dfrac{k\pi}{n}, k=0,1,...,n-1`, :math:`x_k = cos(\theta_k)`. The Clenshaw-Curtis nodes are :math:`x_k`
 and its associated weights are given as follows:
 
 .. math::
@@ -43,14 +43,14 @@ and its associated weights are given as follows:
 
 with :math:`b_j= 2` if :math:`j < n/2` else :math:`b_j=1`. Also, :math:`c_k = 1` if :math:`if k = 0[n]` else :math:`c_k = 2`
 
-The  `Fejer` of type `1` method relies on :math=`x_k = cos(\theta_{k+1/2})` nodes and associated weights are the following:
+The type-1 Fejer quadrature rule relies on :math:`x_k = cos(\theta_{k+1/2})` nodes and associated weights are the following:
 
 .. math::
 
     w_k=\dfrac{2}{n}\left(1-2\sum_{j=1}^{\lfloor n/2\rfloor}\dfrac{1}{4j^2-1}\cos\left(j\theta_{2k+1}\right)\right)
 
 
-Finally, the `Fejer`of type `2` method is very close to the `Clenshaw-Curtis` one. The two method do share the same
+Finally, the type-2 Fejer quadrature rule is very close to the Clenshaw-Curtis one. The two method do share the same
 nodes (except the endpoints that are set to `0` within the `Fejer` method).  Its associated weights are given as follows:
 
 .. math::

@@ -644,15 +644,13 @@ String SampleImplementation::storeToTemporaryFile() const
   {
     Scalar value = data_[index];
     ++index;
-    Bool isNaN = value != value;
-    if (isNaN) dataFile << '\"' << value << '\"';
+    if (SpecFunc::IsNaN(value)) dataFile << '\"' << value << '\"';
     else dataFile << value;
     for (UnsignedInteger j = 1; j < dimension_; ++j)
     {
       value = data_[index];
       ++index;
-      isNaN = value != value;
-      if (isNaN) dataFile << ' ' << '\"' << value << '\"';
+      if (SpecFunc::IsNaN(value)) dataFile << ' ' << '\"' << value << '\"';
       else dataFile << ' ' << value;
     }
     dataFile << "\n";
@@ -675,7 +673,7 @@ String SampleImplementation::streamToRFormat() const
     {
       const Scalar value = data_[index];
       index += dimension_;
-      const Bool isNaN = value != value;
+      const Bool isNaN = SpecFunc::IsNaN(value);
       oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
     }
   }
@@ -1573,6 +1571,33 @@ void SampleImplementation::sortUniqueInPlace()
   if (last + 1 < size_) erase(last + 1, size_);
 }
 
+Indices SampleImplementation::argsort(Bool isIncreasing) const
+{
+  Collection< std::pair<Point, UnsignedInteger> > pointsPairs(size_);
+  if (isIncreasing)
+  {
+    for (UnsignedInteger i = 0; i < size_; ++i)
+    {
+      pointsPairs[i] = std::pair<Point, UnsignedInteger>((*this)[i], i);
+    }
+  }
+  else
+  {
+    for (UnsignedInteger i = 0; i < size_; ++i)
+    {
+      const Point pointI(static_cast<Point>((*this)[i]));
+      pointsPairs[i] = std::pair<Point, UnsignedInteger>(- pointI, i);
+    }
+  }
+  std::sort(pointsPairs.begin(), pointsPairs.end());
+
+  Indices sortedIndices(size_);
+  for (UnsignedInteger i = 0; i < size_; ++i)
+    sortedIndices[i] = pointsPairs[i].second;
+
+  return sortedIndices;
+}
+
 /*
  * Gives the Spearman correlation matrix of the sample
  */
@@ -2264,13 +2289,7 @@ Pointer<SampleImplementation> SampleImplementation::getMarginal(const Indices & 
 
   // If the sample has a description, extract the marginal description
   if (!p_description_.isNull())
-  {
-    const Description description(getDescription());
-    Description marginalDescription(outputDimension);
-    for (UnsignedInteger i = 0; i < outputDimension; ++ i)
-      marginalDescription[i] = description[indices[i]];
-    marginalSample->setDescription(marginalDescription);
-  }
+    marginalSample->setDescription(getDescription().select(indices));
 
   for (UnsignedInteger i = 0; i < size_; ++i)
   {

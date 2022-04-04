@@ -192,50 +192,8 @@ Differential equation solvers
 Special constants & functions
 =============================
 
-Numerical constants
--------------------
-
-.. FAILS: http://trac.openturns.org/ticket/724
-
-    .. autodata:: SpecFunc.EULERSQRT6_PI
-
-    .. autodata:: SpecFunc.EulerConstant
-
-    .. autodata:: SpecFunc.ISQRT2PI
-
-    .. autodata:: SpecFunc.LogMaxScalar
-
-    .. autodata:: SpecFunc.LogMinScalar
-
-    .. autodata:: SpecFunc.LOGSQRT2PI
-
-    .. autodata:: SpecFunc.MaxScalar
-
-    .. autodata:: SpecFunc.MaximumIteration
-
-    .. autodata:: SpecFunc.MinScalar
-
-    .. autodata:: SpecFunc.ScalarEpsilon
-
-    .. autodata:: SpecFunc.PI2_3
-
-    .. autodata:: SpecFunc.PI2_6
-
-    .. autodata:: SpecFunc.PI_SQRT3
-
-    .. autodata:: SpecFunc.PI_SQRT6
-
-    .. autodata:: SpecFunc.Precision
-
-    .. autodata:: SpecFunc.SQRT2PI
-
-    .. autodata:: SpecFunc.SQRT3_PI
-
-    .. autodata:: SpecFunc.ZETA3
-
 Special functions
 -----------------
-
 Special functions are implemented as C++ static methods and are hence casted
 as Python functions.
 
@@ -243,59 +201,59 @@ as Python functions.
     :toctree: _generated/
     :template: function.rst_t
 
-    SpecFunc_BesselI0
-    SpecFunc_BesselI1
-    SpecFunc_BesselK
-    SpecFunc_Beta
-    SpecFunc_BinomialCoefficient
-    SpecFunc_BitCount
-    SpecFunc_Cbrt
-    SpecFunc_Dawson
-    SpecFunc_Debye
-    SpecFunc_DiGamma
-    SpecFunc_DiGammaInv
-    SpecFunc_DiLog
-    SpecFunc_Ei
-    SpecFunc_Erf
-    SpecFunc_ErfC
-    SpecFunc_ErfCX
-    SpecFunc_ErfI
-    SpecFunc_ErfInverse
-    SpecFunc_Expm1
-    SpecFunc_Faddeeva
-    SpecFunc_FaddeevaIm
-    SpecFunc_Gamma
-    SpecFunc_GammaCorrection
-    SpecFunc_HyperGeom_1_1
-    SpecFunc_HyperGeom_2_1
-    SpecFunc_HyperGeom_2_2
-    SpecFunc_IGamma1pm1
-    SpecFunc_IncompleteBeta
-    SpecFunc_IncompleteBetaInverse
-    SpecFunc_IncompleteGamma
-    SpecFunc_IncompleteGammaInverse
-    SpecFunc_IsNormal
-    SpecFunc_LambertW
-    SpecFunc_LnBeta
-    SpecFunc_LnGamma
-    SpecFunc_Log1MExp
-    SpecFunc_Log1p
-    SpecFunc_Log2
-    SpecFunc_LogBesselI0
-    SpecFunc_LogBesselI1
-    SpecFunc_LogBesselK
-    SpecFunc_LogBeta
-    SpecFunc_LogFactorial
-    SpecFunc_LogGamma
-    SpecFunc_LogGamma1p
-    SpecFunc_NextPowerOfTwo
-    SpecFunc_Psi
-    SpecFunc_RegularizedIncompleteBeta
-    SpecFunc_RegularizedIncompleteBetaInverse
-    SpecFunc_RegularizedIncompleteGamma
-    SpecFunc_RegularizedIncompleteGammaInverse
-    SpecFunc_Stirlerr
-    SpecFunc_TriGamma
+    SpecFunc.BesselI0
+    SpecFunc.BesselI1
+    SpecFunc.BesselK
+    SpecFunc.Beta
+    SpecFunc.BinomialCoefficient
+    SpecFunc.BitCount
+    SpecFunc.Cbrt
+    SpecFunc.Dawson
+    SpecFunc.Debye
+    SpecFunc.DiGamma
+    SpecFunc.DiGammaInv
+    SpecFunc.DiLog
+    SpecFunc.Ei
+    SpecFunc.Erf
+    SpecFunc.ErfC
+    SpecFunc.ErfCX
+    SpecFunc.ErfI
+    SpecFunc.ErfInverse
+    SpecFunc.Expm1
+    SpecFunc.Faddeeva
+    SpecFunc.FaddeevaIm
+    SpecFunc.Gamma
+    SpecFunc.GammaCorrection
+    SpecFunc.HyperGeom_1_1
+    SpecFunc.HyperGeom_2_1
+    SpecFunc.HyperGeom_2_2
+    SpecFunc.IGamma1pm1
+    SpecFunc.IncompleteBeta
+    SpecFunc.IncompleteBetaInverse
+    SpecFunc.IncompleteGamma
+    SpecFunc.IncompleteGammaInverse
+    SpecFunc.IsNormal
+    SpecFunc.LambertW
+    SpecFunc.LnBeta
+    SpecFunc.LnGamma
+    SpecFunc.Log1MExp
+    SpecFunc.Log1p
+    SpecFunc.Log2
+    SpecFunc.LogBesselI0
+    SpecFunc.LogBesselI1
+    SpecFunc.LogBesselK
+    SpecFunc.LogBeta
+    SpecFunc.LogFactorial
+    SpecFunc.LogGamma
+    SpecFunc.LogGamma1p
+    SpecFunc.NextPowerOfTwo
+    SpecFunc.Psi
+    SpecFunc.RegularizedIncompleteBeta
+    SpecFunc.RegularizedIncompleteBetaInverse
+    SpecFunc.RegularizedIncompleteGamma
+    SpecFunc.RegularizedIncompleteGammaInverse
+    SpecFunc.Stirlerr
+    SpecFunc.TriGamma
     TimerCallback
 
 .. _coupling_tools:

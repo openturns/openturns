@@ -14,20 +14,6 @@
 %include openturns/Collection.hxx
 %copyctor Collection;
 
-namespace OT {
-
-%extend Collection {
-
-Collection(PyObject * pyObj)
-{
-  return OT::buildCollectionFromPySequence< T >(pyObj);
-}
-
-template <class T> Collection(const Collection<T> & other)
-{
-  return new OT::Collection<T>(other);
-}
-
 
 %define OT_COLLECTION_GETITEM(collectionType, elementType)
 PyObject * __getitem__(PyObject * arg) const
@@ -222,6 +208,20 @@ OT_COLLECTION_GETITEM(collectionType, elementType)
 Bool __eq__(const collectionType & other) { return (*self) == other; }
 Bool __ne__(const collectionType & other) { return (*self) != other; }
 %enddef
+
+namespace OT {
+
+%extend Collection {
+
+Collection(PyObject * pyObj)
+{
+  return OT::buildCollectionFromPySequence< T >(pyObj);
+}
+
+template <class T> Collection(const Collection<T> & other)
+{
+  return new OT::Collection<T>(other);
+}
 
 } // %extend
 

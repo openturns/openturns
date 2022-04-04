@@ -46,7 +46,7 @@ class AxialStressedBeam():
 
     Examples
     --------
-    >>> from openturns.usecases import stressed_beam as stressed_beam
+    >>> from openturns.usecases import stressed_beam
     >>> # Load the axial stressed beam
     >>> sm = stressed_beam.AxialStressedBeam()
     """

@@ -29,6 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(MultiStart)
 
 static const Factory<MultiStart> Factory_MultiStart;
+static const Factory<PersistentCollection<OptimizationResult> > Factory_PersistentCollection_OptimizationResult;
 
 /* Constructor with no parameters */
 MultiStart::MultiStart()

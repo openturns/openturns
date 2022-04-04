@@ -34,61 +34,59 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class OT_API VisualTest
+namespace VisualTest
 {
-public:
-
 
   /** Draw the QQplot of two Samples when its dimension is 1 */
-  static Graph DrawQQplot(const Sample & sample1,
+  OT_API Graph DrawQQplot(const Sample & sample1,
                           const Sample & sample2,
                           const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"));
 
 
   /** Draw the QQplot of one Sample and one Distribution when its dimension is 1 */
-  static Graph DrawQQplot(const Sample & sample,
+  OT_API Graph DrawQQplot(const Sample & sample,
                           const Distribution & dist);
 
   /** Draw the CDFplot of two Samples when its dimension is 1 */
-  static Graph DrawCDFplot(const Sample & sample1,
+  OT_API Graph DrawCDFplot(const Sample & sample1,
                            const Sample & sample2);
 
 
   /** Draw the CDFplot of one Sample and one Distribution when its dimension is 1 */
-  static Graph DrawCDFplot(const Sample & sample,
+  OT_API Graph DrawCDFplot(const Sample & sample,
                            const Distribution & dist);
 
   /** Draw the Henry curve for one Sample when its dimension is 1 */
-  static Graph DrawHenryLine(const Sample & sample);
+  OT_API Graph DrawHenryLine(const Sample & sample);
 
   /** Draw the Henry line for a sample and a given normal distribution when its dimension is 1 */
-  static Graph DrawHenryLine(const Sample & sample,
+  OT_API Graph DrawHenryLine(const Sample & sample,
                              const Distribution & normal);
 
   /** Draw 2-d projections of a multivariate sample */
-  static GridLayout DrawPairs(const Sample & sample);
+  OT_API GridLayout DrawPairs(const Sample & sample);
 
   /** Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
-  static GridLayout DrawPairsMarginals(const Sample & sample, const Distribution & distribution);
+  OT_API GridLayout DrawPairsMarginals(const Sample & sample, const Distribution & distribution);
 
   /** Draw the visual test for a 1D LinearModel */
-  static Graph DrawLinearModel(const Sample & sample1,
+  OT_API Graph DrawLinearModel(const Sample & sample1,
                                const Sample & sample2,
                                const LinearModelResult & linearModelResult);
 
   /** Draw the visual test for a 1D LinearModel using the training Samples **/
-  static Graph DrawLinearModel(const LinearModelResult & linearModelResult);
+  OT_API Graph DrawLinearModel(const LinearModelResult & linearModelResult);
 
   /** Draw the visual test for a 1D LinearModel's residuals */
-  static Graph DrawLinearModelResidual(const Sample & sample1,
+  OT_API Graph DrawLinearModelResidual(const Sample & sample1,
                                        const Sample & sample2,
                                        const LinearModelResult & linearModelResult);
 
   /** Draw the visual test for a 1D LinearModel's residuals using the training Samples */
-  static Graph DrawLinearModelResidual(const LinearModelResult & linearModelResult);
+  OT_API Graph DrawLinearModelResidual(const LinearModelResult & linearModelResult);
 
   /** Draw the parallel coordinates visual test */
-  static Graph DrawParallelCoordinates(const Sample & inputSample,
+  OT_API Graph DrawParallelCoordinates(const Sample & inputSample,
                                        const Sample & outputSample,
                                        const Scalar minValue,
                                        const Scalar maxValue,
@@ -96,24 +94,15 @@ public:
                                        const Bool quantileScale = true);
 
   /** Draw the Kendall plot to assess a copula for a bidimensional sample */
-  static Graph DrawKendallPlot(const Sample & data,
+  OT_API Graph DrawKendallPlot(const Sample & data,
                                const Distribution & copula);
 
   /** Draw the Kendall plot to assess if two bidimensional samples share the same copula */
-  static Graph DrawKendallPlot(const Sample & firstSample,
+  OT_API Graph DrawKendallPlot(const Sample & firstSample,
                                const Sample & secondSample);
 
-private:
-
-  /** Compute the Kendall plot empirical statistic associated with a bidimensional sample */
-  static Sample ComputeKendallPlotEmpiricalStatistics(const Sample & sample);
-
-  /** Compute the Kendall plot theoretical statistic associated with a bidimensional copula */
-  static Sample ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
-      const UnsignedInteger size);
-
-  VisualTest();
-}; /* class VisualTest */
+} /* VisualTest */
 
 END_NAMESPACE_OPENTURNS
+
 #endif /* OPENTURNS_VISUALTEST_HXX */

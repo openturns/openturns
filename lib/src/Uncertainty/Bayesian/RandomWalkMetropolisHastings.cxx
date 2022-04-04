@@ -20,11 +20,8 @@
  */
 
 #include "openturns/RandomWalkMetropolisHastings.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ConditionalDistribution.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -109,11 +106,10 @@ Point RandomWalkMetropolisHastings::getCandidate() const
       LOGTRACE(OSS() << "rho=" << rho << " delta=" << adaptationFactor_);
   }
 
-  Point prop(adaptationFactor_ * proposal_.getRealization());
-  Point newState(currentState_);
-  for (UnsignedInteger j = 0; j < marginalIndices_.getSize(); ++ j)
-    newState[marginalIndices_[j]] += prop[j];
-  return newState;
+  Point prop(proposal_.getRealization());
+  if(!isProposalSymmetric_)
+    setConditionalLogProbabilities(proposal_.computeLogPDF(prop), proposal_.computeLogPDF(-1.0 * prop));
+  return currentState_.select(marginalIndices_) + adaptationFactor_ * prop;
 }
 
 
@@ -122,11 +118,26 @@ void RandomWalkMetropolisHastings::setProposal(const Distribution & proposal)
   if (proposal.getDimension() != marginalIndices_.getSize())
     throw InvalidArgumentException(HERE) << "The proposal density dimension (" << proposal.getDimension()
                                          << ") does not match the block size (" << marginalIndices_.getSize() << ")";
-  if (!(proposal.getSkewness().norm() < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")))
-    throw InvalidArgumentException(HERE) << "The proposal density is not symmetric.";
-  if (!(proposal.getMean().norm() < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")))
-    throw InvalidArgumentException(HERE) << "The proposal density must have a null mean.";
   proposal_ = proposal;
+
+  // In the following, we try do determine whether the proposal distribution is symmetric.
+  // If the proposal distribution has an independent copula, we test a sufficient and necessary condition.
+  // Otherwise, we test a condition that is only sufficient.
+
+  // Necessary condition for symmetry: the distribution has zero mean.
+  isProposalSymmetric_ = proposal.getMean().norm() < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+  if (proposal.hasIndependentCopula())
+  {
+    for (UnsignedInteger j = 0; j < proposal.getDimension(); ++ j)
+    {
+      if (!isProposalSymmetric_) break;
+      isProposalSymmetric_ = isProposalSymmetric_ && proposal.getMarginal(j).isElliptical();
+    }
+  } // independent copula: zero-mean marginals are elliptical
+  else
+  {
+    isProposalSymmetric_ = isProposalSymmetric_ && proposal.isElliptical();
+  } // dependent copula: the whole zero-mean distribution is elliptical
 }
 
 
@@ -197,6 +208,7 @@ void RandomWalkMetropolisHastings::save(Advocate & adv) const
 {
   MetropolisHastingsImplementation::save(adv);
   adv.saveAttribute("proposal_", proposal_);
+  adv.saveAttribute("isProposalSymmetric_", isProposalSymmetric_);
   adv.saveAttribute("adaptationFactor_", adaptationFactor_);
   adv.saveAttribute("adaptationRange_", adaptationRange_);
   adv.saveAttribute("adaptationExpansionFactor_", adaptationExpansionFactor_);
@@ -209,6 +221,7 @@ void RandomWalkMetropolisHastings::load(Advocate & adv)
 {
   MetropolisHastingsImplementation::load(adv);
   adv.loadAttribute("proposal_", proposal_);
+  adv.loadAttribute("isProposalSymmetric_", isProposalSymmetric_);
   adv.loadAttribute("adaptationFactor_", adaptationFactor_);
   adv.loadAttribute("adaptationRange_", adaptationRange_);
   adv.loadAttribute("adaptationExpansionFactor_", adaptationExpansionFactor_);

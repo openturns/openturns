@@ -46,7 +46,7 @@ class CantileverBeam():
 
     Examples
     --------
-    >>> from openturns.usecases import cantilever_beam as cantilever_beam
+    >>> from openturns.usecases import cantilever_beam
     >>> # Load the cantilever beam model
     >>> cb = cantilever_beam.CantileverBeam()
     """

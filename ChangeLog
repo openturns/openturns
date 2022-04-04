@@ -7,15 +7,21 @@
 ==== Major changes ====
  * HSIC sensitivity indices
  * RandomWalkMetropolisHastings now updates all components at a time, previously updated componentwise
+ * Iterative statistics
 
 ==== New classes ====
  * RandomVectorMetropolisHastings
+ * IndependentMetropolisHastings
  * Gibbs
  * HSICEstimatorConditionalSensitivity
  * HSICEstimatorGlobalSensitivity
  * HSICEstimatorTargetSensitivity
  * HSICUStat
  * HSICVStat
+ * IterativeExtrema
+ * IterativeMoments
+ * IterativeThresholdExceedance
+ * TensorProductExperiment
 
 ==== API changes ====
  * Removed deprecated Hanning alias
@@ -77,6 +83,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1260 (RandomWalkMetropolisHastings does not handle non-symmetric proposals properly)
  * #1840 (HMatrixFactory leaks)
  * #1842 (libOT.so.0.0.0 doesn't have a SONAME)
  * #1843 (Ali-Mikhail-Haq copula parameter value)

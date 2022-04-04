@@ -86,3 +86,30 @@ We can check that all parameters are now active:
 
 >>> print(covModel.getParameterDescription())
 [scale_0,amplitude_0,n]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StationaryFunctionalCovarianceModel::setRho
+"Correlation function accessor.
+
+Parameters
+----------
+rho : :class:`~openturns.Function`
+    Correlation function :math:`\rho(\tau)`, must have 1-d output
+    No check is made that this is actually a correlation function
+    so the resulting discretized matrix can have negative eigenvalues if you're not careful enough
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StationaryFunctionalCovarianceModel::getRho
+"Correlation function accessor.
+
+Returns
+-------
+rho : :class:`~openturns.Function`
+    Correlation function :math:`\rho(\tau)`, must have 1-d output
+    No check is made that this is actually a correlation function
+    so the resulting discretized matrix can have negative eigenvalues if you're not careful enough
+"
+

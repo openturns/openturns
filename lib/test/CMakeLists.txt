@@ -584,8 +584,8 @@ if (Ceres_FOUND OR CMinpack_FOUND)
   ot_check_test (NonLinearLeastSquaresCalibration_noobs)
 endif ()
 ot_check_test (RandomWalkMetropolisHastings_std IGNOREOUT)
+ot_check_test (IndependentMetropolisHastings_std IGNOREOUT)
 ot_check_test (Gibbs_regression IGNOREOUT)
-
 
 # Classification
 ot_check_test (MixtureClassifier_std)
@@ -608,6 +608,12 @@ ot_check_test (ImportanceSamplingExperiment_std)
 ot_check_test (LHSExperiment_std)
 ot_check_test (LowDiscrepancyExperiment_std)
 ot_check_test (MonteCarloExperiment_std)
+ot_check_test (TensorProductExperiment_std IGNOREOUT)
+
+# IterativeStat
+ot_check_test (IterativeExtrema_std IGNOREOUT)
+ot_check_test (IterativeThreshold_std IGNOREOUT)
+ot_check_test (IterativeMoments_std IGNOREOUT)
 
 # OrthogonalBasis
 ot_check_test (LinearEnumerateFunction_std)

@@ -73,7 +73,7 @@ Calibration of the flooding model
 # -------------------------
 
 # %%
-from openturns.usecases import flood_model as flood_model
+from openturns.usecases import flood_model
 from matplotlib import pylab as plt
 import openturns.viewer as viewer
 import numpy as np
@@ -570,7 +570,7 @@ view = viewer.View(graph)
 # We must configure the key before creating the object (otherwise changing the parameter does not change the result).
 
 # %%
-ot.ResourceMap_SetAsUnsignedInteger(
+ot.ResourceMap.SetAsUnsignedInteger(
     "GaussianNonLinearCalibration-BootstrapSize", 0)
 
 # %%

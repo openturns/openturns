@@ -1,6 +1,6 @@
 import openturns as ot
 from openturns.viewer import View
-ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 10)
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 10)
 grid = ot.GridLayout(2, 2)
 pdf_graph = ot.Graph('PDFs of 1D Dirichlet distributions', 'x', '', True)
 cdf_graph = ot.Graph('CDFs of 1D Dirichlet distributions', 'x', '', True)

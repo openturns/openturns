@@ -52,7 +52,7 @@ class AckleyModel():
 
     Examples
     --------
-    >>> from openturns.usecases import ackley_function as ackley_function
+    >>> from openturns.usecases import ackley_function
     >>> # Load the Ackley model
     >>> am = ackley_function.AckleyModel()
     """

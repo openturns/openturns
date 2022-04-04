@@ -70,7 +70,7 @@ class ViscousFreeFall():
 
     Examples
     --------
-    >>> from openturns.usecases import viscous_free_fall as viscous_free_fall
+    >>> from openturns.usecases import viscous_free_fall
     >>> # Load the viscous free fall example
     >>> vff = viscous_free_fall.ViscousFreeFall()
     """

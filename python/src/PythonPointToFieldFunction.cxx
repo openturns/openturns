@@ -19,7 +19,7 @@
  *
  */
 #include <Python.h>
-#include "openturns/swig_runtime.hxx"
+#include "openturns/swigpyrun.h"
 
 #include "openturns/PythonPointToFieldFunction.hxx"
 #include "openturns/OSS.hxx"

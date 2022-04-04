@@ -255,6 +255,9 @@
   <FAST-DefaultInterferenceFactor value_int="4" />
   <FAST-DefaultResamplingSize     value_int="1" />
 
+  <!-- OT::HSICEstimator parameters -->
+  <HSICEstimator-PermutationSize value_int="100" />
+
   <!-- OT::RandomGenerator parameters -->
   <RandomGenerator-InitialSeed value_int="0" />
   
@@ -666,7 +669,7 @@
   <WeightedExperiment-DefaultSize value_int="100" />
 
   <!-- OT::GaussProductExperiment parameters -->
-  <GaussProductExperiment-DefaultMarginalDegree value_int="5" />
+  <GaussProductExperiment-DefaultMarginalSize value_int="5" />
 
   <!-- OT::HyperbolicAnisotropicEnumerateFunction parameters -->
   <HyperbolicAnisotropicEnumerateFunction-DefaultQ value_float="0.4" />
@@ -737,10 +740,12 @@
   <HMatrix-ForceSequential      value_bool="false"            />
   <HMatrix-AdmissibilityFactor  value_float="100.0"            />
   <HMatrix-AssemblyEpsilon      value_float="1.0e-4"         />
+  <HMatrix-RegularizationEpsilon value_float="1.0e-4"         />
   <HMatrix-RecompressionEpsilon value_float="1.0e-4"         />
   <HMatrix-ValidationError      value_float="0.0"            />
   <HMatrix-ClusteringAlgorithm  value_str="median"         />
   <HMatrix-CompressionMethod    value_str="AcaRandom"    />
+  <HMatrix-FactorizationMethod    value_str="LLt"    />
   <HMatrix-FactorizationIterations value_int="10"  />
   <HMatrix-LargestEigenValueIterations value_int="10"  />
   <HMatrix-MaxLeafSize          value_int="250"  />

@@ -46,7 +46,7 @@ class BraninModel():
 
     Examples
     --------
-    >>> from openturns.usecases import branin_function as branin_function
+    >>> from openturns.usecases import branin_function
     >>> # Load the Branin model
     >>> bm = branin_function.BraninModel()
     """

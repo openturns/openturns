@@ -32,6 +32,90 @@ public:
 };
 
 
+// Print the nodes and weights
+void printNodesAndWeights(Sample nodes, Point weights)
+{
+  OStream fullprint(std::cout);
+  fullprint << "+ Print the nodes and weights" << std::endl;
+  const UnsignedInteger size(weights.getDimension());
+  const UnsignedInteger dimension(nodes.getDimension());
+  fullprint << "  size = " << size << std::endl;
+  fullprint << "  dimension = " << dimension << std::endl;
+  fullprint << "weight, node" << std::endl;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    fullprint << weights[i] << " : [";
+    String separator("");
+    for (UnsignedInteger j = 0; j < dimension; ++j, separator = ", ")
+    {
+      fullprint << separator << nodes(i, j);
+    }
+    fullprint << "]" << std::endl;
+  }
+  fullprint << std::endl;
+}
+
+// Test argsort : argsort
+void test_argsort()
+{
+    Log::Show(Log::ALL);
+    OStream fullprint(std::cout);
+    fullprint << "+ Test argsort" << std::endl;
+
+    // Create expected nodes and weights, then sort and check that nothing changed.
+    Indices permutation = {9,5,1,6,10,11,4,2,8,13,12,14,0,3,7};
+    Point pointColumn1 = {0.11, 0.11, 0.11, 0.11, 0.11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.88, 0.88, 0.88, 0.88, 0.88};
+    Point pointColumn2 = {0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95, 0.04, 0.23, 0.5, 0.76, 0.95};
+    const Point weightsColumn = {0.03, 0.06, 0.07, 0.06, 0.03, 0.05, 0.10, 0.12, 0.10, 0.05, 0.03, 0.06, 0.07, 0.06, 0.03};
+    UnsignedInteger size(pointColumn1.getDimension());
+    UnsignedInteger dimension = 2;
+    // Create expected nodes and weights, and shuffled nodes and weights
+    Sample nodesExpected(size, dimension);
+    Point weightsExpected(size);
+    Sample nodesShuffled(size, dimension);
+    Point weightsShuffled(size);
+    UnsignedInteger index;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      nodesExpected(i, 0) = pointColumn1[i];
+      nodesExpected(i, 1) = pointColumn2[i];
+      weightsExpected[i] = weightsColumn[i];
+      index = permutation[i];
+      nodesShuffled(i, 0) = pointColumn1[index];
+      nodesShuffled(i, 1) = pointColumn2[index];
+      weightsShuffled[i] = weightsColumn[index];
+    }
+    fullprint << "    Shuffled :" << std::endl;
+    printNodesAndWeights(nodesShuffled, weightsShuffled);
+    // Lexicographic argsort
+    Indices order(nodesShuffled.argsort());
+    fullprint << "    order = " << order << std::endl;
+    Indices orderExpected = {12,2,7,13,6,1,3,14,8,0,4,5,10,9,11};
+    assert_equal(order, orderExpected);
+    // Store sorted weights and nodes
+    Point weightsSorted(size);
+    Sample nodesSorted(size, dimension);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const UnsignedInteger index(order[i]);
+      weightsSorted[i] = weightsShuffled[index];
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+      {
+        nodesSorted(i, j) = nodesShuffled(index, j);
+      }
+    }
+    fullprint << "    Sorted :" << std::endl;
+    printNodesAndWeights(nodesSorted, weightsSorted);
+    // Test
+    assert_equal(nodesSorted, nodesExpected);
+    assert_equal(weightsSorted, weightsExpected);
+    // Lexicographic argsort (decreasing order)
+    Indices orderDecreasing(nodesShuffled.argsort(false));
+    fullprint << "    orderDecreasing = " << orderDecreasing << std::endl;
+    Indices orderDecreasingExpected = {11,9,10,5,4,0,8,14,3,1,6,13,7,2,12};
+    assert_equal(orderDecreasing, orderDecreasingExpected);
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -85,24 +169,6 @@ int main(int, char *[])
 
     sample2[5] = point2;
     fullprint << "sample2=" << sample2 << std::endl;
-
-
-    try
-    {
-      // We get the tenth element of the sample
-      // THIS SHOULD NORMALY FAIL
-      Point tenthElement = sample1.at(9);
-
-      // Normally, we should never go here
-      throw TestFailed("Exception has NOT been thrown or catched !");
-
-    }
-    catch (OutOfBoundException & ex)
-    {
-      // Nothing to do
-    }
-
-
 
 
     // We try to create a sample with 5 times the same point
@@ -162,6 +228,25 @@ int main(int, char *[])
     indices[3] = 1;
     indices[4] = 2;
     fullprint << "selection=" << sample5.select(indices) << std::endl;
+    
+    // argsort
+    test_argsort();
+    try
+    {
+      // We get the tenth element of the sample
+      // THIS SHOULD NORMALY FAIL
+      Point tenthElement = sample1.at(9);
+
+      // Normally, we should never go here
+      throw TestFailed("Exception has NOT been thrown or catched !");
+
+    }
+    catch (OutOfBoundException & ex)
+    {
+      // Nothing to do
+    }
+
+
   }
   catch (TestFailed & ex)
   {

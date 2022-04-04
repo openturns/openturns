@@ -634,18 +634,8 @@ Distribution KernelMixture::getMarginal(const Indices & indices) const
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  const UnsignedInteger marginalDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(marginalDimension);
-  Point marginalBandwidth(marginalDimension);
-  for (UnsignedInteger i = 0; i < marginalDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    marginalBandwidth[i] = bandwidth_[index_i];
-    marginalDescription[i] = description[index_i];
-  }
-  KernelMixture::Implementation marginal(new KernelMixture(*p_kernel_, marginalBandwidth, sample_.getMarginal(indices)));
-  marginal->setDescription(marginalDescription);
+  KernelMixture::Implementation marginal(new KernelMixture(*p_kernel_, bandwidth_.select(indices), sample_.getMarginal(indices)));
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 }
 

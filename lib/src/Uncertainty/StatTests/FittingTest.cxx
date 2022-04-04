@@ -36,12 +36,6 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-/* Default constructor */
-FittingTest::FittingTest()
-{
-  // Nothing to do
-}
-
 /* Best model for a given numerical sample by AIC */
 Distribution FittingTest::BestModelAIC(const Sample &sample,
                                        const DistributionFactoryCollection &factoryCollection,

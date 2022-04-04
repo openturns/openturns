@@ -98,6 +98,7 @@ protected:
 private:
   // proposal densities of the markov chain
   Distribution proposal_;
+  Bool isProposalSymmetric_ = false;
 
   // update factor
   mutable Scalar adaptationFactor_ = 1.0;

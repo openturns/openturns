@@ -10,15 +10,25 @@ index= 7 , multi-index= [7] , linear index= 7
 index= 8 , multi-index= [8] , linear index= 8
 index= 9 , multi-index= [9] , linear index= 9
 degree 0 max_degree_strata_index 0
+degree 0 size 1
 degree 1 max_degree_strata_index 1
+degree 1 size 2
 degree 2 max_degree_strata_index 2
+degree 2 size 3
 degree 3 max_degree_strata_index 3
+degree 3 size 4
 degree 4 max_degree_strata_index 4
+degree 4 size 5
 degree 5 max_degree_strata_index 5
+degree 5 size 6
 degree 6 max_degree_strata_index 6
+degree 6 size 7
 degree 7 max_degree_strata_index 7
+degree 7 size 8
 degree 8 max_degree_strata_index 8
+degree 8 size 9
 degree 9 max_degree_strata_index 9
+degree 9 size 10
 First 10  values for dimension 2
 index= 0 , multi-index= [0,0] , linear index= 0
 index= 1 , multi-index= [1,0] , linear index= 1
@@ -31,16 +41,26 @@ index= 7 , multi-index= [2,1] , linear index= 7
 index= 8 , multi-index= [1,2] , linear index= 8
 index= 9 , multi-index= [0,3] , linear index= 9
 degree 0 max_degree_strata_index 0
+degree 0 size 1
 degree 1 max_degree_strata_index 1
+degree 1 size 3
 degree 2 max_degree_strata_index 2
+degree 2 size 6
 degree 3 max_degree_strata_index 3
+degree 3 size 10
 degree 4 max_degree_strata_index 4
+degree 4 size 15
 degree 5 max_degree_strata_index 5
+degree 5 size 21
 degree 6 max_degree_strata_index 6
+degree 6 size 28
 degree 7 max_degree_strata_index 7
+degree 7 size 36
 degree 8 max_degree_strata_index 8
+degree 8 size 45
 degree 9 max_degree_strata_index 9
-First 10  values for dimension 3
+degree 9 size 55
+First 55  values for dimension 3
 index= 0 , multi-index= [0,0,0] , linear index= 0
 index= 1 , multi-index= [1,0,0] , linear index= 1
 index= 2 , multi-index= [0,1,0] , linear index= 2
@@ -51,13 +71,68 @@ index= 6 , multi-index= [1,0,1] , linear index= 6
 index= 7 , multi-index= [0,2,0] , linear index= 7
 index= 8 , multi-index= [0,1,1] , linear index= 8
 index= 9 , multi-index= [0,0,2] , linear index= 9
+index= 10 , multi-index= [3,0,0] , linear index= 10
+index= 11 , multi-index= [2,1,0] , linear index= 11
+index= 12 , multi-index= [2,0,1] , linear index= 12
+index= 13 , multi-index= [1,2,0] , linear index= 13
+index= 14 , multi-index= [1,1,1] , linear index= 14
+index= 15 , multi-index= [1,0,2] , linear index= 15
+index= 16 , multi-index= [0,3,0] , linear index= 16
+index= 17 , multi-index= [0,2,1] , linear index= 17
+index= 18 , multi-index= [0,1,2] , linear index= 18
+index= 19 , multi-index= [0,0,3] , linear index= 19
+index= 20 , multi-index= [4,0,0] , linear index= 20
+index= 21 , multi-index= [3,1,0] , linear index= 21
+index= 22 , multi-index= [3,0,1] , linear index= 22
+index= 23 , multi-index= [2,2,0] , linear index= 23
+index= 24 , multi-index= [2,1,1] , linear index= 24
+index= 25 , multi-index= [2,0,2] , linear index= 25
+index= 26 , multi-index= [1,3,0] , linear index= 26
+index= 27 , multi-index= [1,2,1] , linear index= 27
+index= 28 , multi-index= [1,1,2] , linear index= 28
+index= 29 , multi-index= [1,0,3] , linear index= 29
+index= 30 , multi-index= [0,4,0] , linear index= 30
+index= 31 , multi-index= [0,3,1] , linear index= 31
+index= 32 , multi-index= [0,2,2] , linear index= 32
+index= 33 , multi-index= [0,1,3] , linear index= 33
+index= 34 , multi-index= [0,0,4] , linear index= 34
+index= 35 , multi-index= [5,0,0] , linear index= 35
+index= 36 , multi-index= [4,1,0] , linear index= 36
+index= 37 , multi-index= [4,0,1] , linear index= 37
+index= 38 , multi-index= [3,2,0] , linear index= 38
+index= 39 , multi-index= [3,1,1] , linear index= 39
+index= 40 , multi-index= [3,0,2] , linear index= 40
+index= 41 , multi-index= [2,3,0] , linear index= 41
+index= 42 , multi-index= [2,2,1] , linear index= 42
+index= 43 , multi-index= [2,1,2] , linear index= 43
+index= 44 , multi-index= [2,0,3] , linear index= 44
+index= 45 , multi-index= [1,4,0] , linear index= 45
+index= 46 , multi-index= [1,3,1] , linear index= 46
+index= 47 , multi-index= [1,2,2] , linear index= 47
+index= 48 , multi-index= [1,1,3] , linear index= 48
+index= 49 , multi-index= [1,0,4] , linear index= 49
+index= 50 , multi-index= [0,5,0] , linear index= 50
+index= 51 , multi-index= [0,4,1] , linear index= 51
+index= 52 , multi-index= [0,3,2] , linear index= 52
+index= 53 , multi-index= [0,2,3] , linear index= 53
+index= 54 , multi-index= [0,1,4] , linear index= 54
 degree 0 max_degree_strata_index 0
+degree 0 size 1
 degree 1 max_degree_strata_index 1
+degree 1 size 4
 degree 2 max_degree_strata_index 2
+degree 2 size 10
 degree 3 max_degree_strata_index 3
+degree 3 size 20
 degree 4 max_degree_strata_index 4
+degree 4 size 35
 degree 5 max_degree_strata_index 5
+degree 5 size 56
 degree 6 max_degree_strata_index 6
+degree 6 size 84
 degree 7 max_degree_strata_index 7
+degree 7 size 120
 degree 8 max_degree_strata_index 8
+degree 8 size 165
 degree 9 max_degree_strata_index 9
+degree 9 size 220

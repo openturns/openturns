@@ -47,6 +47,10 @@ public:
   MetropolisHastingsImplementation();
 
   /** Constructor with parameters*/
+  MetropolisHastingsImplementation(const Point & initialState,
+                                   const Indices & marginalIndices = Indices());
+
+  /** Constructor with parameters*/
   MetropolisHastingsImplementation(const Distribution & targetDistribution,
                                    const Point & initialState,
                                    const Indices & marginalIndices = Indices());
@@ -134,6 +138,8 @@ public:
 protected:
   Point initialState_;
   mutable Point currentState_;
+  mutable Scalar logProbCurrentConditionedToNew_ = 0.0;
+  mutable Scalar logProbNewConditionedToCurrent_ = 0.0;
   Indices marginalIndices_;
   mutable HistoryStrategy history_;
 
@@ -149,9 +155,13 @@ protected:
   /** Propose a new point in the chain */
   virtual Point getCandidate() const;
 
+  // Set conditional probabilities of new and current state w.r.t. one another
+  void setConditionalLogProbabilities(const Scalar logProbNewConditionedToCurrent, const Scalar logProbCurrentConditionedToNew) const;
+
 private:
   // target distribution
   Distribution targetDistribution_;
+  Bool hasTargetDistribution_ = false;
 
   // ... when defined via its log-pdf
   Function targetLogPDF_;
@@ -176,7 +186,7 @@ private:
   mutable Scalar currentLogPosterior_ = 0.0;
 
   // prior log pdf
-  Scalar computeLogPDFPrior(const Point & state) const;
+  virtual Scalar computeLogPDFPrior(const Point & state) const;
 
   void setTargetDistribution(const Distribution & targetDistribution);
   void setTargetLogPDF(const Function & targetLogPDF, const Domain & support);

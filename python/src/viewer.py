@@ -170,6 +170,8 @@ class View(object):
         clabel_kw_default = self._CheckDict(clabel_kw)
         text_kw_default = self._CheckDict(text_kw)
         legend_kw = self._CheckDict(legend_kw)
+        legend_handles = []
+        legend_labels = []
 
         # scaled grid graphs
         if isinstance(graph, ot.GridLayout) and graph.getNbRows() * graph.getNbColumns() > 1:
@@ -455,9 +457,9 @@ class View(object):
                         # https://github.com/matplotlib/matplotlib/pull/10710
                         warnings.warn(
                             'pyplot.clabel likely failed as in #10710')
-                for i in range(len(contourset.levels)):
-                    contourset.collections[i].set_label(
-                        '_nolegend_' if i > 0 else drawable.getLegend())
+                artists, _ = contourset.legend_elements()
+                legend_handles.append(artists[0])
+                legend_labels.append(drawable.getLegend())
 
             elif drawableKind == 'Staircase':
                 self._ax[0].step(x, y, **step_kw)
@@ -539,7 +541,11 @@ class View(object):
             # by default legend is a bit too large
             legend_kw.setdefault('prop', {'size': 10})
 
-            self._ax[0].legend(**legend_kw)
+            if len(legend_handles):
+                self._ax[0].legend(legend_handles, legend_labels, **legend_kw)
+            else:
+                self._ax[0].legend(**legend_kw)
+
         # Make squares look like squares
         if square_axes:
             try:

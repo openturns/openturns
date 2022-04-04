@@ -42,10 +42,6 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-LinearModelTest::LinearModelTest()
-{
-}
-
 /*  */
 TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,

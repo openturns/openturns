@@ -13,7 +13,7 @@ Logistic growth model
 
 # %%
 from __future__ import print_function
-from openturns.usecases import logistic_model as logistic_model
+from openturns.usecases import logistic_model
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

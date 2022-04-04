@@ -82,7 +82,7 @@ def TimerCallback(duration):
     >>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
     >>> algo.setMaximumOuterSampling(int(1e9))
     >>> algo.setMaximumCoefficientOfVariation(-1.0)
-    >>> timer = TimerCallback(1.5)
+    >>> timer = ot.TimerCallback(1.5)
     >>> algo.setStopCallback(timer)
     >>> algo.run()
     """

@@ -26,9 +26,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-/* Default constructor */
-CorrelationAnalysis::CorrelationAnalysis() {}
-
 /* Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
 Point CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,
     const Sample & outputSample)

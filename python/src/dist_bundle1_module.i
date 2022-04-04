@@ -20,7 +20,6 @@
 %import model_copula_module.i
 
 /* Uncertainty/Distribution (except copulas) */
-%include DistFunc.i
 %include Arcsine.i
 %include ArcsineFactory.i
 %include ArcsineMuSigma.i

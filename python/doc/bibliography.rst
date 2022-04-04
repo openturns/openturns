@@ -76,6 +76,9 @@ Bibliography
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
+.. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
+    sparse grids.* Numerical algorithms, 18 (3), 209-232.
+    `pdf <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.3141&rep=rep1&type=pdf>`__
 .. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October). 
     *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
@@ -174,6 +177,9 @@ Bibliography
     computational experiments.*
     Journal of Statistical Planning and Inference, 43 :381-402, 1995.
     `pdf <https://www.osti.gov/servlets/purl/10184343>`__
+.. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). *Quasi-Monte Carlo 
+    integration.* Journal of computational physics, 122(2), 218-230.
+    `pdf <https://www.math.ucla.edu/~caflisch/Pubs/Pubs1995-1999/actaNumerica1998.pdf>`__
 .. [Muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
 .. [munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the

@@ -36,124 +36,121 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class OT_API FittingTest
+namespace FittingTest
 {
-public:
 
   typedef Collection<DistributionFactory> DistributionFactoryCollection;
   typedef Collection<Distribution>        DistributionCollection;
 
   /** Best model for a given numerical sample by AIC */
-  static Distribution BestModelAIC(const Sample &sample,
+  OT_API Distribution BestModelAIC(const Sample &sample,
                                    const DistributionFactoryCollection &factoryCollection,
                                    Scalar &bestAICOut);
 
   /** Best model for a given numerical sample by AIC */
-  static Distribution BestModelAIC(const Sample &sample,
+  OT_API Distribution BestModelAIC(const Sample &sample,
                                    const DistributionCollection &distributionCollection,
                                    Scalar &bestAICOut);
 
   /** Best model for a given numerical sample by AICc */
-  static Distribution BestModelAICC(const Sample &sample,
+  OT_API Distribution BestModelAICC(const Sample &sample,
                                     const DistributionFactoryCollection &factoryCollection,
                                     Scalar &bestAICOut);
 
   /** Best model for a given numerical sample by AICc */
-  static Distribution BestModelAICC(const Sample &sample,
+  OT_API Distribution BestModelAICC(const Sample &sample,
                                     const DistributionCollection &distributionCollection,
                                     Scalar &bestAICOut);
 
   /** Best model for a given numerical sample by BIC */
-  static Distribution BestModelBIC(const Sample  & sample,
+  OT_API Distribution BestModelBIC(const Sample  & sample,
                                    const DistributionFactoryCollection & factoryCollection,
                                    Scalar & bestBICOut);
 
   /** Best model for a given numerical sample by BIC */
-  static Distribution BestModelBIC(const Sample  & sample,
+  OT_API Distribution BestModelBIC(const Sample  & sample,
                                    const DistributionCollection & distributionCollection,
                                    Scalar & bestBICOut);
 
   /** Best model for a given numerical sample by Lilliefors */
-  static Distribution BestModelLilliefors(const Sample  & sample,
+  OT_API Distribution BestModelLilliefors(const Sample  & sample,
                                           const DistributionFactoryCollection & factoryCollection,
                                           TestResult & bestResultOut);
 
   /** Best model for a given numerical sample by Kolmogorov */
-  static Distribution BestModelKolmogorov(const Sample  & sample,
+  OT_API Distribution BestModelKolmogorov(const Sample  & sample,
                                           const DistributionCollection & distributionCollection,
                                           TestResult & bestResultOut);
 
   /** Best model for a given numerical sample by ChiSquared */
-  static Distribution BestModelChiSquared(const Sample  & sample,
+  OT_API Distribution BestModelChiSquared(const Sample  & sample,
                                           const DistributionFactoryCollection & factoryCollection,
                                           TestResult & bestResultOut);
 
   /** Best model for a given numerical sample by ChiSquared */
-  static Distribution BestModelChiSquared(const Sample  & sample,
+  OT_API Distribution BestModelChiSquared(const Sample  & sample,
                                           const DistributionCollection & distributionCollection,
                                           TestResult & bestResultOut);
 
   /** Akaike Information Criterion computation */
-  static Scalar AIC(const Sample &sample,
+  OT_API Scalar AIC(const Sample &sample,
                     const Distribution &distribution,
                     const UnsignedInteger estimatedParameters = 0);
 
   /** Akaike Information Criterion computation */
-  static Distribution AIC(const Sample &sample,
+  OT_API Distribution AIC(const Sample &sample,
                           const DistributionFactory &factory,
                           Scalar &bestAICOut);
 
   /** Akaike Information Criterion corrected (AICc) computation */
-  static Scalar AICC(const Sample &sample,
+  OT_API Scalar AICC(const Sample &sample,
                      const Distribution &distribution,
                      const UnsignedInteger estimatedParameters = 0);
 
   /** Akaike Information Criterion corrected (AICc) computation */
-  static Distribution AICC(const Sample &sample,
+  OT_API Distribution AICC(const Sample &sample,
                            const DistributionFactory &factory,
                            Scalar &bestAICOut);
 
   /** Bayesian Information Criterion computation */
-  static Scalar BIC(const Sample & sample,
+  OT_API Scalar BIC(const Sample & sample,
                     const Distribution & distribution,
                     const UnsignedInteger estimatedParameters = 0);
 
   /** Bayesian Information Criterion computation */
-  static Distribution BIC(const Sample & sample,
+  OT_API Distribution BIC(const Sample & sample,
                           const DistributionFactory & factory,
                           Scalar & bestBICOut);
 
   /** Kolmogorov fitting test for continuous distributions */
-  static TestResult Kolmogorov(const Sample & sample,
+  OT_API TestResult Kolmogorov(const Sample & sample,
                                const Distribution & distribution,
                                const Scalar level = 0.05);
 
   /** Lilliefors fitting test for continuous distributions */
-  static TestResult Lilliefors(const Sample & sample,
+  OT_API TestResult Lilliefors(const Sample & sample,
                                const DistributionFactory & factory,
                                Distribution & estimatedDistribution,
                                const Scalar level = 0.05);
 
   /** Kolmogorov statistics computation */
-  static Scalar ComputeKolmogorovStatistics(const Sample & sample,
+  OT_API Scalar ComputeKolmogorovStatistics(const Sample & sample,
       const Distribution & distribution);
 
   /** ChiSquared fitting test for discrete distributions */
-  static TestResult ChiSquared(const Sample & sample,
+  OT_API TestResult ChiSquared(const Sample & sample,
                                const Distribution & distribution,
                                const Scalar level = 0.05,
                                const UnsignedInteger estimatedParameters = 0);
 
   /** ChiSquared fitting test for discrete distributions */
-  static TestResult ChiSquared(const Sample & sample,
+  OT_API TestResult ChiSquared(const Sample & sample,
                                const DistributionFactory & factory,
                                Distribution & estimatedDistribution,
                                const Scalar level = 0.05);
 
-private:
-  FittingTest();
-
-}; /* class FittingTest */
+} // FittingTest
 
 END_NAMESPACE_OPENTURNS
+
 #endif /* OPENTURNS_FITTINGTEST_HXX */
