@@ -109,6 +109,10 @@ public:
   /** MatrixImplementation transpose */
   MatrixImplementation transpose() const;
 
+  /** Resize */
+  using Collection<Scalar>::resize;
+  void resize(const UnsignedInteger newRowDim, const UnsignedInteger newColDim);
+
   /** MatrixImplementation reshape */
   MatrixImplementation reshape(const UnsignedInteger newRowDim,
                                const UnsignedInteger newColDim) const;
