@@ -44,8 +44,7 @@ class OT_API HSICEstimatorImplementation
   : public PersistentObject
 {
   CLASSNAME
-  friend struct ComputeWeightMatrixPolicy;
-  friend struct PValuesPermutationPolicy;
+
 public:
 
   typedef Collection <CovarianceModel>  CovarianceModelCollection;
