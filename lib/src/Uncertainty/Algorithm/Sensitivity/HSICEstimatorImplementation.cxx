@@ -173,7 +173,7 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
 
     for( UnsignedInteger b = 0; b < permutationSize_; ++b)
     {
-	  const Sample Yp(shuffleCollection[b]);
+      const Sample Yp(shuffleCollection[b]);
       const SquareMatrix W(weightMatrixCollection[b]);
       HSIC_loc = computeHSICIndex(xdim, Yp, covarianceList_[dim], covarianceList_[inputDimension_], W);
       if( HSIC_loc > HSIC_obs) count += 1;
