@@ -139,6 +139,46 @@ IndicesCollection SmolyakExperiment::computeCombination() const
   return combinationIndicesCollection;
 }
 
+/* Comparison class with std:map interface. */
+class NodeWeightCompare
+{
+public:
+    NodeWeightCompare(const Scalar absoluteEpsilon, 
+                      const Scalar relativeEpsilon):
+                      absoluteEpsilon_(absoluteEpsilon)
+                      , relativeEpsilon_(relativeEpsilon)
+    {
+        // Nothing to do
+    };
+
+    /* Compare two points, according to lexicographic order
+    * Returns true if x < y, false otherwise.
+    */
+    bool operator()(const Point x, const Point y) const {
+        const UnsignedInteger dimension = x.getDimension();
+        if (y.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the two points must have the same dimension. Here x has dimension " << dimension << " while y has dimension " << y.getDimension();
+        const Point delta = x - y;
+        const Scalar distance = delta.norm();
+        bool comparison = false;
+        const Scalar maximumNorm = std::max(x.norm(), y.norm());
+        comparison = (distance < absoluteEpsilon_);
+        if (comparison)
+        {
+          std::cout << "Compare :" << x << " < " << y << " = " << comparison << " (distance = " << distance << ")" << std::endl;
+        }
+        else
+        {
+          std::cout << "Compare : " << x << " >= " << y << " = " << comparison << " (distance = " << distance << ")" << std::endl;
+        }
+        return comparison;
+    }
+private:
+    // Absolute tolerance for comparison
+    Scalar absoluteEpsilon_;
+    // Relative tolerance for comparison
+    Scalar relativeEpsilon_;
+};
+
 /* Compute the nodes and weights */
 /*         This may involve negative weights.
 
@@ -168,91 +208,67 @@ void SmolyakExperiment::computeNodesAndWeights() const
   IndicesCollection combinationIndicesCollection(computeCombination());
   LOGDEBUG(OSS() << "  combinationIndicesCollection = " << combinationIndicesCollection);
   // Create elementary Smolyak quadratures
-  LOGDEBUG(OSS() << "Create elementary Smolyak quadratures");
   Sample duplicatedNodes(0, dimension);
   Point duplicatedWeights(0);
   const UnsignedInteger numberOfUnitaryQuadratures= combinationIndicesCollection.getSize();
-  LOGDEBUG(OSS() << "numberOfUnitaryQuadratures = " << numberOfUnitaryQuadratures);
   for (UnsignedInteger i = 0; i < numberOfUnitaryQuadratures; ++i)
   {
-    LOGDEBUG(OSS() << "  i = " << i);
     WeightedExperimentCollection collection;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      LOGDEBUG(OSS() << "  j = " << j << ", size = " << combinationIndicesCollection(i, j));
       WeightedExperiment marginalExperiment(collection_[j]);
       marginalExperiment.setSize(combinationIndicesCollection(i, j));
       collection.add(marginalExperiment);
-      LOGDEBUG(OSS() << "  marginalExperiment = " << marginalExperiment);
     } // Loop over the dimensions
     TensorProductExperiment elementaryExperiment(collection);
-    LOGDEBUG(OSS() << "  TensorProductExperiment : " << elementaryExperiment);
     Point elementaryWeights(0);
     Sample elementaryNodes(elementaryExperiment.generateWithWeights(elementaryWeights));
     // Compute Smolyak coefficient
-    LOGDEBUG(OSS() << "  Compute Smolyak coefficient");
     UnsignedInteger marginalLevelsSum = 0;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       marginalLevelsSum += combinationIndicesCollection(i, j);
     } // Loop over the dimensions
     const UnsignedInteger exponent = level_ + dimension - marginalLevelsSum - 1;
-    LOGDEBUG(OSS() << "  exponent = " << exponent);
     Scalar smolyakSign;
     if (exponent % 2 == 0) smolyakSign = 1.0;
     else smolyakSign = -1.0;
-    LOGDEBUG(OSS() << "  smolyakSign = " << smolyakSign);
     const UnsignedInteger binomial = SpecFunc::BinomialCoefficient(dimension - 1, marginalLevelsSum - level_);
-    LOGDEBUG(OSS() << "  binomial = " << binomial);
     const Scalar smolyakFactor = smolyakSign * binomial;
-    LOGDEBUG(OSS() << "  add " << elementaryNodes.getSize() << " nodes");
     duplicatedNodes.add(elementaryNodes);
     duplicatedWeights.add(smolyakFactor * elementaryWeights);
   } // Loop over the marginal levels
   const UnsignedInteger duplicateSize = duplicatedNodes.getSize();
-  LOGDEBUG(OSS() << "Number of candidate nodes = " << duplicateSize);
   // Reduce to unique nodes and weights
-  nodes_ = Sample(0, dimension);
-  weights_ = Point(0);
   const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
   const Scalar absoluteEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon" );
-  UnsignedInteger size = 0;
-  for (UnsignedInteger indexOfCandidateNode = 0; indexOfCandidateNode < duplicateSize; ++indexOfCandidateNode)
+  // Fill the map
+  std::map<Point, Scalar, NodeWeightCompare> nodeWeightMap(NodeWeightCompare(absoluteEpsilon, relativeEpsilon));
+  for (UnsignedInteger i = 0; i < duplicateSize; ++i)
   {
-    bool isAlreadyInQuadrature = false;
-    UnsignedInteger indexOfUniqueNode = -1;
-    const Point candidateNode(duplicatedNodes[indexOfCandidateNode]);
-    const Scalar candidateWeight = duplicatedWeights[indexOfCandidateNode];
-    const Scalar candidateNorm = candidateNode.norm();
-    LOGDEBUG(OSS() << "[" << indexOfCandidateNode << "], candidate=" << candidateNode);
-    // Search if the node is already in the reduced experiment
-    for (UnsignedInteger j = 0; j < size; ++j)
-    {
-      const Point delta = candidateNode - nodes_[j];
-      const Scalar distance = delta.norm();
-      if (distance <= absoluteEpsilon + relativeEpsilon * candidateNorm)
-      {
-        LOGDEBUG(OSS() << "  -> Found at : " << j);
-        isAlreadyInQuadrature = true;
-        indexOfUniqueNode = j;
-        break;
-      }
+    LOGDEBUG(OSS() << "[" << i << "], search for " << duplicatedNodes[i]);
+    std::map<Point, Scalar>::iterator search = nodeWeightMap.find(duplicatedNodes[i]);
+    if (search != nodeWeightMap.end()) {
+      LOGDEBUG(OSS() << "  Found " << duplicatedNodes[i]);
+      search->second += duplicatedWeights[i];
+    } else {
+      LOGDEBUG(OSS() << "  Node " << duplicatedNodes[i] << " not found ");
+      search->second += duplicatedWeights[i];
+      nodeWeightMap[duplicatedNodes[i]] = duplicatedWeights[i];
     }
-    if (isAlreadyInQuadrature)
-    {
-      // Combine to the unique weight
-      LOGDEBUG(OSS() << "    Add " << candidateWeight << " to the weight");
-      weights_[indexOfUniqueNode] += candidateWeight;
-    }
-    else
-    {
-      // Add the (node, weight)
-      size += 1;
-      LOGDEBUG(OSS() << "    (node, weight) is new, nb. of unique (nodes, weights) :" << size);
-      nodes_.add(candidateNode);
-      weights_.add(candidateWeight);
-    }
-  }
+  } // Loop over the (potentially) duplicated nodes
+  // Extract the map
+  UnsignedInteger size = nodeWeightMap.size();
+  LOGDEBUG(OSS() << "  map size = " << size);
+  nodes_ = Sample(size, dimension);
+  weights_ = Point(size);
+  UnsignedInteger index = 0;
+  for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
+  {
+    nodes_[index] = it->first;
+    weights_[index] = it->second;
+    ++ index;
+  } // Loop over the unique nodes
 }
 
 /* Distribution collection accessor */
