@@ -101,6 +101,7 @@ void test_1()
     SmolyakExperiment experiment(experimentCollection, level);
     Point weights(0);
     Sample nodes(experiment.generateWithWeights(weights));
+    printNodesAndWeights(nodes, weights);
     const int experimentSize = experiment.getSize();
     assert_equal(experimentSize, 13);
     //
@@ -206,40 +207,7 @@ void test_3()
     assert_almost_equal(weightsExpected, weights, rtol, atol);
 }
 
-void print_KeyValueMap(std::string comment, std::map<std::string, int> keyValueMap)
-{
-    std::cout << comment ;
-    for (std::map<std::string, int>::iterator it = keyValueMap.begin(); it != keyValueMap.end(); ++ it)
-    {
-        std::cout << "[" << it->first << "] = " << it->second << "; ";
-    }
-    std::cout << "\n";
-}
- 
-void test_4()
-{
-    // Create a map of three (strings, int) pairs
-    std::map<std::string, int> keyValueMap { {"CPU", 10}, {"GPU", 15}, {"RAM", 20}, };
- 
-    print_KeyValueMap("1) Initial map: ", keyValueMap);
- 
-    keyValueMap["CPU"] = 25;  // update an existing value
-    keyValueMap["SSD"] = 30;  // insert a new value
-    print_KeyValueMap("2) Updated map: ", keyValueMap);
- 
-    // using operator[] with non-existent key always performs an insert
-    std::cout << "3) keyValueMap[UPS] = " << keyValueMap["UPS"] << std::endl;;
-    print_KeyValueMap("4) Updated map: ", keyValueMap);
- 
-    keyValueMap.erase("GPU");
-    print_KeyValueMap("5) After erase: ", keyValueMap);
- 
- 
-    keyValueMap.clear();
-    std::cout << std::boolalpha << "8) Map is empty: " << keyValueMap.empty() << std::endl;;
-}
-/* Comparison class with std:map interface. 
-*/
+/* Comparison class with std:map interface. */
 class NodeWeightCompare
 {
 public:
@@ -257,22 +225,16 @@ public:
     bool operator()(const Point x, const Point y) const {
         const UnsignedInteger dimension = x.getDimension();
         if (y.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the two points must have the same dimension. Here x has dimension " << dimension << " while y has dimension " << y.getDimension();
-        const Point delta = x - y;
-        const Scalar distance = delta.norm();
         bool comparison = false;
-        const Scalar maximumNorm = std::max(x.norm(), y.norm());
-        if (distance > absoluteEpsilon_ + relativeEpsilon_ * maximumNorm)
+        for (UnsignedInteger k = 0; k < dimension; ++k)
         {
-            for (UnsignedInteger k = 0; k < dimension; ++k)
+            if (x[k] < y[k])
             {
-                if (x[k] < y[k])
-                {
-                    comparison = true;
-                    break;
-                }
+                comparison = true;
+                break;
             }
         }
-        std::cout << "Compare(" << x << ", " << y << ") = " << comparison << std::endl;
+        // std::cout << "Compare(" << x << ", " << y << ") = " << comparison << std::endl;
         return comparison;
     }
 private:
@@ -294,20 +256,75 @@ void print_NodeWeightMap(std::map<Point, Scalar, NodeWeightCompare> nodeWeightMa
     }
 }
 
+// Implement merge with std::map
+void mergeNodesAndWeights(const Sample duplicatedNodes, const Point duplicatedWeights,
+                          const Scalar absoluteEpsilon, const Scalar relativeEpsilon, 
+                          Sample & nodes, Point & weights)
+{
+    UnsignedInteger duplicatedSize = duplicatedNodes.getSize();
+    if (duplicatedWeights.getDimension() != duplicatedSize) throw InvalidArgumentException(HERE) << "Error: the weights must have dimension " << duplicatedSize << " but have dimension " << duplicatedWeights.getDimension();
+    UnsignedInteger dimension = duplicatedNodes.getDimension();
+    // Fill the map
+    std::map<Point, Scalar, NodeWeightCompare> nodeWeightMap(NodeWeightCompare(absoluteEpsilon, relativeEpsilon));
+    for (UnsignedInteger i = 0; i < duplicatedSize; ++i)
+    {
+        std::map<Point, Scalar>::iterator search = nodeWeightMap.find(duplicatedNodes[i]);
+        if (search != nodeWeightMap.end()) {
+            std::cout << "[" << i << "], found     : " << search->first << " = " << search->second << std::endl;
+            search->second += duplicatedWeights[i];
+        } else {
+            std::cout << "[" << i << "], not found : " << duplicatedNodes[i] << std::endl;
+            nodeWeightMap[duplicatedNodes[i]] = duplicatedWeights[i];
+        }
+    }
+    print_NodeWeightMap(nodeWeightMap);
+    // Extract the map
+    UnsignedInteger size = nodeWeightMap.size();
+    Sample uniqueNodes(size, dimension);
+    Point uniqueWeights(size);
+    UnsignedInteger index = 0;
+    for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
+    {
+        std::cout << "[" << index << "], add " << it->first << " = " << it->second << std::endl;
+        uniqueNodes[index] = it->first;
+        uniqueWeights[index] = it->second;
+        ++ index;
+    }
+    nodes = uniqueNodes;
+    weights = uniqueWeights;
+}
+
+// Test simplified merged operation
 void test_5()
 {
+    std::cout << "test_5" << std::endl;
     const UnsignedInteger dimension = 2;
     Point column_1 = {0.1, 0.1, 0.2, 0.2, 0.2, 0.2, 0.20001, 0.3, 0.3, 0.3, 0.30001};
     Point column_2 = {0.5, 0.5, 0.2, 0.5, 0.7, 0.7, 0.70001, 0.6, 0.6, 0.6, 0.60001};
-    const UnsignedInteger size = column_1.getSize();
-    Sample nodes(size, dimension);
-    for (UnsignedInteger i = 0; i < size; ++i)
+    const UnsignedInteger duplicatedSize = column_1.getSize();
+    Sample duplicatedNodes(duplicatedSize, dimension);
+    for (UnsignedInteger i = 0; i < duplicatedSize; ++i)
     {
-      nodes(i, 0) = column_1[i];
-      nodes(i, 1) = column_2[i];
+      duplicatedNodes(i, 0) = column_1[i];
+      duplicatedNodes(i, 1) = column_2[i];
     }
-    Point weights = {0.2, 0.2, 0.3, -0.5, 0.3, 0.2, -0.5, 0.8, -0.5, 0.2, 0.3};
-    printNodesAndWeights(nodes, weights);
+    Point duplicatedWeights = {0.2, 0.2, 0.3, -0.5, 0.3, 0.2, -0.5, 0.8, -0.5, 0.2, 0.3};
+    printNodesAndWeights(duplicatedNodes, duplicatedWeights);
+    Scalar absoluteEpsilon = 1.e-2;
+    Scalar relativeEpsilon = 1.e-2;
+    Sample nodes(0, 0);
+    Point weights(0);
+    mergeNodesAndWeights(duplicatedNodes, duplicatedWeights, 
+                         absoluteEpsilon, relativeEpsilon, 
+                         nodes, weights);
+    sortNodesAndWeights(nodes, weights);
+    printNodesAndWeights(nodes, weights);    
+}
+
+// Test Point comparison
+void test_6()
+{
+    std::cout << "test_6" << std::endl;
     Scalar absoluteEpsilon = 1.e-2;
     Scalar relativeEpsilon = 1.e-2;
     NodeWeightCompare comparison(absoluteEpsilon, relativeEpsilon);
@@ -319,21 +336,33 @@ void test_5()
     comparison(Point({0.1, 0.2}), Point({0.1001, 0.2001}));
     comparison(Point({0.0001, 0.0001}), Point({0.0, 0.0}));
     comparison(Point({0.0, 0.0}), Point({0.0001, 0.0001}));
-    // Fill the map
-    std::map<Point, Scalar, NodeWeightCompare> nodeWeightMap(NodeWeightCompare(absoluteEpsilon, relativeEpsilon));
-    // std::map<Point, Scalar> nodeWeightMap;
-    for (UnsignedInteger i = 0; i < size; ++i)
+}
+
+// Test realistic Smolyak quadrature
+void test_7()
+{
+    std::cout << "test_7" << std::endl;
+    const UnsignedInteger dimension = 2;
+    Point column_1 = {0.5, 0.788675, 0.788675, 0.788675, 0.887298, 0.5};
+    Point column_2 = {0.887298, 0.211325, 0.5, 0.788675, 0.5, 0.5};
+    const UnsignedInteger duplicatedSize = column_1.getSize();
+    Sample duplicatedNodes(duplicatedSize, dimension);
+    for (UnsignedInteger i = 0; i < duplicatedSize; ++i)
     {
-        std::map<Point, Scalar>::iterator search = nodeWeightMap.find(nodes[i]);
-        if (search != nodeWeightMap.end()) {
-            std::cout << "Found     : " << search->first << " = " << search->second << std::endl;
-            search->second += weights[i];
-        } else {
-            std::cout << "Not found : " << nodes[i] << std::endl;
-            nodeWeightMap[nodes[i]] = weights[i];
-        }
+      duplicatedNodes(i, 0) = column_1[i];
+      duplicatedNodes(i, 1) = column_2[i];
     }
-    print_NodeWeightMap(nodeWeightMap);
+    Point duplicatedWeights = {0.277778, 0.25, -0.5, 0.25, 0.277778, 0.277778};
+    printNodesAndWeights(duplicatedNodes, duplicatedWeights);
+    Scalar absoluteEpsilon = 1.e-8;
+    Scalar relativeEpsilon = 1.e-8;
+    Sample nodes(0, 0);
+    Point weights(0);
+    mergeNodesAndWeights(duplicatedNodes, duplicatedWeights, 
+                         absoluteEpsilon, relativeEpsilon, 
+                         nodes, weights);
+    sortNodesAndWeights(nodes, weights);
+    printNodesAndWeights(nodes, weights);    
 }
 
 int main(int, char *[])
@@ -346,7 +375,9 @@ int main(int, char *[])
     // test_2();
     // test_3();
     //test_4();
-    test_5();
+    //test_5();
+    //test_6();
+    test_7();
   }
   catch (TestFailed & ex)
   {
