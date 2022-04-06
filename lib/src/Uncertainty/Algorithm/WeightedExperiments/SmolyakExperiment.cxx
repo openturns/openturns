@@ -157,18 +157,21 @@ public:
     bool operator()(const Point x, const Point y) const {
         const UnsignedInteger dimension = x.getDimension();
         if (y.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the two points must have the same dimension. Here x has dimension " << dimension << " while y has dimension " << y.getDimension();
-        const Point delta = x - y;
-        const Scalar distance = delta.norm();
         bool comparison = false;
-        const Scalar maximumNorm = std::max(x.norm(), y.norm());
-        comparison = (distance < absoluteEpsilon_);
-        if (comparison)
+        for (UnsignedInteger k = 0; k < dimension; ++k)
         {
-          std::cout << "Compare :" << x << " < " << y << " = " << comparison << " (distance = " << distance << ")" << std::endl;
-        }
-        else
-        {
-          std::cout << "Compare : " << x << " >= " << y << " = " << comparison << " (distance = " << distance << ")" << std::endl;
+            // std::cout << "  " << x[k] << " < " << y[k] << " ?" << std::endl;
+            const Scalar maximumXY = std::max(std::abs(x[k]), std::abs(y[k]));
+            const Scalar delta = absoluteEpsilon_ + relativeEpsilon_ * maximumXY;
+            if (x[k] + delta < y[k])
+            {
+                comparison = true;
+                break;
+            } 
+            else if (x[k] > y[k] + delta)
+            {
+                break;
+            }
         }
         return comparison;
     }
@@ -178,6 +181,43 @@ private:
     // Relative tolerance for comparison
     Scalar relativeEpsilon_;
 };
+
+// Implement merge with std::map
+void SmolyakExperiment::mergeNodesAndWeights(
+    const Sample duplicatedNodes, const Point duplicatedWeights) const
+{
+    const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
+    const Scalar absoluteEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon" );
+    UnsignedInteger duplicatedSize = duplicatedNodes.getSize();
+    if (duplicatedWeights.getDimension() != duplicatedSize) throw InvalidArgumentException(HERE) << "Error: the weights must have dimension " << duplicatedSize << " but have dimension " << duplicatedWeights.getDimension();
+    UnsignedInteger dimension = duplicatedNodes.getDimension();
+    // Fill the map
+    std::map<Point, Scalar, NodeWeightCompare> nodeWeightMap(NodeWeightCompare(absoluteEpsilon, relativeEpsilon));
+    for (UnsignedInteger i = 0; i < duplicatedSize; ++i)
+    {
+        std::map<Point, Scalar>::iterator search = nodeWeightMap.find(duplicatedNodes[i]);
+        if (search != nodeWeightMap.end()) {
+            LOGDEBUG(OSS() << "[" << i << "], found     : " << search->first << " = " << search->second);
+            search->second += duplicatedWeights[i];
+        } else {
+            LOGDEBUG(OSS() << "[" << i << "], not found : " << duplicatedNodes[i]);
+            nodeWeightMap[duplicatedNodes[i]] = duplicatedWeights[i];
+        }
+    }
+    // print_NodeWeightMap(nodeWeightMap);
+    // Extract the map
+    UnsignedInteger size = nodeWeightMap.size();
+    Sample nodes_(size, dimension);
+    Point weights_(size);
+    UnsignedInteger index = 0;
+    for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
+    {
+        LOGDEBUG(OSS() << "[" << index << "], add " << it->first << " = " << it->second);
+        nodes_[index] = it->first;
+        weights_[index] = it->second;
+        ++ index;
+    }
+}
 
 /* Compute the nodes and weights */
 /*         This may involve negative weights.
@@ -238,37 +278,8 @@ void SmolyakExperiment::computeNodesAndWeights() const
     duplicatedNodes.add(elementaryNodes);
     duplicatedWeights.add(smolyakFactor * elementaryWeights);
   } // Loop over the marginal levels
-  const UnsignedInteger duplicateSize = duplicatedNodes.getSize();
   // Reduce to unique nodes and weights
-  const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
-  const Scalar absoluteEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon" );
-  // Fill the map
-  std::map<Point, Scalar, NodeWeightCompare> nodeWeightMap(NodeWeightCompare(absoluteEpsilon, relativeEpsilon));
-  for (UnsignedInteger i = 0; i < duplicateSize; ++i)
-  {
-    LOGDEBUG(OSS() << "[" << i << "], search for " << duplicatedNodes[i]);
-    std::map<Point, Scalar>::iterator search = nodeWeightMap.find(duplicatedNodes[i]);
-    if (search != nodeWeightMap.end()) {
-      LOGDEBUG(OSS() << "  Found " << duplicatedNodes[i]);
-      search->second += duplicatedWeights[i];
-    } else {
-      LOGDEBUG(OSS() << "  Node " << duplicatedNodes[i] << " not found ");
-      search->second += duplicatedWeights[i];
-      nodeWeightMap[duplicatedNodes[i]] = duplicatedWeights[i];
-    }
-  } // Loop over the (potentially) duplicated nodes
-  // Extract the map
-  UnsignedInteger size = nodeWeightMap.size();
-  LOGDEBUG(OSS() << "  map size = " << size);
-  nodes_ = Sample(size, dimension);
-  weights_ = Point(size);
-  UnsignedInteger index = 0;
-  for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
-  {
-    nodes_[index] = it->first;
-    weights_[index] = it->second;
-    ++ index;
-  } // Loop over the unique nodes
+  mergeNodesAndWeights(duplicatedNodes, duplicatedWeights);
 }
 
 /* Distribution collection accessor */

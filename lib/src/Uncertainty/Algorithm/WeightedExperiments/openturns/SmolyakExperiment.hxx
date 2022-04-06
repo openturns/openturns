@@ -80,6 +80,10 @@ private:
   // Compute the tensor product nodes and weights
   void computeNodesAndWeights() const;
 
+  // Merge (potentially) duplicated nodes
+  void mergeNodesAndWeights(
+    const Sample duplicatedNodes, const Point duplicatedWeights) const;
+  
   // Marginal experiment collection
   WeightedExperimentPersistentCollection collection_;
 
