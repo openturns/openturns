@@ -152,15 +152,14 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
 {
   const SquareMatrix Wobs(computeWeightMatrix(outputSample_));
   PValuesPermutation_ = Point(inputDimension_);
-  Sample ShuffledSample;
   Collection<Sample> shuffleCollection(permutationSize_);
   Collection<SquareMatrix> weightMatrixCollection(permutationSize_);
 
   for( UnsignedInteger b = 0; b < permutationSize_; ++b)
   {
-    ShuffledSample = shuffledCopy(outputSample_);
-    shuffleCollection[b] = ShuffledSample;
-    weightMatrixCollection[b] = computeWeightMatrix(ShuffledSample);
+    const Sample shuffledSample = shuffledCopy(outputSample_);
+    shuffleCollection[b] = shuffledSample;
+    weightMatrixCollection[b] = computeWeightMatrix(shuffledSample);
   }
 
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
@@ -168,14 +167,13 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
 
     const Sample xdim(inputSample_.getMarginal(dim));
     const Scalar HSIC_obs = computeHSICIndex(xdim, outputSample_, covarianceList_[dim], covarianceList_[inputDimension_], Wobs);
-    Scalar HSIC_loc;
     UnsignedInteger count = 0;
 
     for( UnsignedInteger b = 0; b < permutationSize_; ++b)
     {
       const Sample Yp(shuffleCollection[b]);
       const SquareMatrix W(weightMatrixCollection[b]);
-      HSIC_loc = computeHSICIndex(xdim, Yp, covarianceList_[dim], covarianceList_[inputDimension_], W);
+      const Scalar HSIC_loc = computeHSICIndex(xdim, Yp, covarianceList_[dim], covarianceList_[inputDimension_], W);
       if( HSIC_loc > HSIC_obs) count += 1;
     }
 
