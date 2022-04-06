@@ -320,6 +320,7 @@ void ExtremeValueCopula::setPickandFunction(const Function & pickandFunction,
   } // check
   pickandFunction_ = pickandFunction;
   isAlreadyComputedCovariance_ = false;
+  setParallel(pickandFunction_.getImplementation()->isParallel());
 }
 
 /* Pickand function accessor */

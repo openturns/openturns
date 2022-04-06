@@ -38,12 +38,8 @@ GalambosCopula::GalambosCopula()
   , theta_(0.5)
 {
   setName("GalambosCopula");
-  // We set the dimension of the GalambosCopula distribution
-  setDimension(2);
   // update function wrt parameters
   updatePickandFunction();
-  // We don't know if the function is thread-safe and it may be called in parallel through computePDF()
-  setParallel(false);
 }
 
 /* Parameters constructor */
@@ -54,12 +50,8 @@ GalambosCopula::GalambosCopula(const Scalar theta)
   setTheta(theta);
 
   setName("GalambosCopula");
-  // We set the dimension of the GalambosCopula distribution
-  setDimension(2);
   // update function wrt parameters
   updatePickandFunction();
-  // We don't know if the function is thread-safe and it may be called in parallel through computePDF()
-  setParallel(false);
 }
 
 /* update function wrt parameters */
@@ -114,10 +106,8 @@ Point GalambosCopula::getParameter() const
 
 void GalambosCopula::setParameter(const Point & parameter)
 {
-  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected at least 1 value, got " << parameter.getSize();
-  const Scalar w = getWeight();
-  *this = GalambosCopula(parameter[0]);
-  setWeight(w);
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected only 1 value, got " << parameter.getSize();
+  setTheta(parameter[0]);
 }
 
 /* Parameters description accessor */

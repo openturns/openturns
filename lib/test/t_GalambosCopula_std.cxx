@@ -89,21 +89,6 @@ int main(int, char *[])
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
 
-    // Confidence regions: takes too much time
-    // Scalar threshold;
-    // fullprint << "Minimum volume interval=" << copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
-    // fullprint << "threshold=" << threshold << std::endl;
-    // Scalar beta;
-    // LevelSet levelSet(copula.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
-    // fullprint << "Minimum volume level set=" << levelSet << std::endl;
-    // fullprint << "beta=" << beta << std::endl;
-    // fullprint << "Bilateral confidence interval=" << copula.computeBilateralConfidenceIntervalWithMarginalProbability(0.95, beta) << std::endl;
-    // fullprint << "beta=" << beta << std::endl;
-    // fullprint << "Unilateral confidence interval (lower tail)=" << copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, false, beta) << std::endl;
-    // fullprint << "beta=" << beta << std::endl;
-    // fullprint << "Unilateral confidence interval (upper tail)=" << copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
-    // fullprint << "beta=" << beta << std::endl;
-
     // Covariance and correlation
     CovarianceMatrix covariance = copula.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
@@ -153,3 +138,4 @@ int main(int, char *[])
 
   return ExitCode::Success;
 }
+
