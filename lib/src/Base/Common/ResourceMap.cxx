@@ -545,7 +545,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
           if (value.size() > 0)
           {
             mapString_[key] = value;
-            break;
+            continue;
           }
         } // String
         // Try to get a Scalar value
@@ -557,7 +557,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
             std::istringstream iss(value);
             iss >> scalarValue;
             mapScalar_[key] = scalarValue;
-            break;
+            continue;
           }
         } // Scalar
         // Try to get an UnsignedInteger value
@@ -569,7 +569,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
             std::istringstream iss(value);
             iss >> unsignedIntegerValue;
             mapUnsignedInteger_[key] = unsignedIntegerValue;
-            break;
+            continue;
           }
         } // UnsignedInteger
         // Try to get a Bool value
@@ -588,7 +588,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
               iss >> boolValue;
             }
             mapBool_[key] = boolValue;
-            break;
+            continue;
           }
         } // Bool
       } // if XML::IsElement
@@ -648,8 +648,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Cache-MaxSize", 1024);
 
   // Os parameters
-  addAsBool("Os-CreateProcess", "false");
-  addAsBool("Os-RemoveFiles", "true");
+  addAsBool("Os-CreateProcess", false);
+  addAsBool("Os-RemoveFiles", true);
   addAsUnsignedInteger("OS-DeleteTimeout", 2);
 
   // XMLStorageManager parameters
@@ -879,7 +879,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Pagmo-nspso-v_coeff", 0.5);
   addAsUnsignedInteger("Pagmo-nspso-leader_selection_range", 60);
   addAsString("Pagmo-nspso-diversity_mechanism", "crowding distance");
-  
+
   // Dlib optimization parameters //
   addAsScalar("Dlib-DefaultInitialTrustRegionRadius", 1.0);
   addAsScalar("Dlib-DefaultWolfeRho", 0.01);

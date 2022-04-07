@@ -23,7 +23,7 @@
   <Os-CreateProcess value_bool="false" />
   <Os-RemoveFiles    value_bool="true"  />
   <OS-DeleteTimeout    value_int="2"    />
-  
+
   <!-- OT::XMLStorageManager parameters -->
   <XMLStorageManager-DefaultCompressionLevel value_int="0" />
 
@@ -145,7 +145,7 @@
   <OptimizationAlgorithm-DefaultMaximumConstraintError  value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumRelativeError    value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumResidualError    value_float="1.0e-5"        />
-  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value_int="100" />
+  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value_int="1000" />
   <OptimizationAlgorithm-DefaultMaximumIterationNumber  value_int="100" />
 
   <!-- OT::Pagmo parameters -->
@@ -324,20 +324,20 @@
   <Compact-DefaultHalfMaximumSize value_int="1024" />
 
   <!-- OT::FaureSequence parameters -->
-  <FaureSequence-InitialSeed value_int="0" />
+  <FaureSequence-InitialSeed value_int="1" />
 
   <!-- OT::HaltonSequence parameters -->
   <HaltonSequence-Scrambling value_str="NONE" />
-  <HaltonSequence-InitialSeed value_int="0" />
+  <HaltonSequence-InitialSeed value_int="1" />
 
   <!-- OT::HaselgroveSequence parameters -->
-  <HaselgroveSequence-InitialSeed value_int="0" />
+  <HaselgroveSequence-InitialSeed value_int="1" />
 
   <!-- OT::LowDiscrepaancySequence parameters -->
   <LowDiscrepancySequence-ScramblingSeed value_int="0" />
 
   <!-- OT::ReverseHaltonSequence parameters -->
-  <ReverseHaltonSequence-InitialSeed value_int="0" />
+  <ReverseHaltonSequence-InitialSeed value_int="1" />
 
   <!-- OT::SobolSequence parameters -->
   <SobolSequence-InitialSeed value_int="1" />
@@ -670,7 +670,7 @@
   <SobolSimulationAlgorithm-DefaultIndexQuantileLevel   value_float="0.05"           />
   <SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon value_float="1.0e-2"         />
   <SobolSimulationAlgorithm-DefaultBlockSize            value_int="1000" />
-  <SobolSimulationAlgorithm-DefaultBatchSize            value_int="1000" />
+  <SobolSimulationAlgorithm-DefaultBatchSize            value_int="1" />
 
   <!-- OT::SimulationSensitivityAnalysis parameters -->
   <SimulationSensitivityAnalysis-DefaultSampleMargin value_int="400" />
