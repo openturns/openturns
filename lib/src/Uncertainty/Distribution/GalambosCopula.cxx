@@ -59,7 +59,7 @@ void GalambosCopula::updatePickandFunction()
 {
   String formula(OSS() << "1-(t^(-" << theta_ << ") + (1-t)^(-" << theta_ << "))^(-1.0/" << theta_ << ")");
 
-  ExtremeValueCopula::setPickandFunction(SymbolicFunction(Description(1, "t"), Description(1, formula)), false);
+  ExtremeValueCopula::setPickandFunction(SymbolicFunction("t", formula), false);
 
   computeRange();
 }
