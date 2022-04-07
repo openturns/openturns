@@ -127,7 +127,7 @@ int main(int, char *[])
     CSA.setPermutationSize(b);
 
     /* We get the pvalue estimate by permutations */
-    Point referencePValues = {0.742574, 0.950495, 0};
+    Point referencePValues = {0.742574, 0.940594, 0};
     Point pvaluesPerm = CSA.getPValuesPermutation();
     assert_almost_equal(pvaluesPerm, referencePValues);
 
@@ -137,7 +137,7 @@ int main(int, char *[])
     CSA.setWeightFunction(alternateWeight);
     assert_almost_equal(CSA.getR2HSICIndices(), {0.0910527, 0.00738055, 0.166624});
     assert_almost_equal(CSA.getHSICIndices(), {0.00218376, 0.000419288, 0.00898721});
-    assert_almost_equal(CSA.getPValuesPermutation(), {0.267327, 0.881188, 0.00990099});
+    assert_almost_equal(CSA.getPValuesPermutation(), {0.287129, 0.881188, 0.00000000});
 
   }
   catch (TestFailed & ex)

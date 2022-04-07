@@ -103,7 +103,7 @@ int main(int, char *[])
     hsic.setPermutationSize(b);
 
     /* We get the pvalue estimate by permutations */
-    Point referencePValuesPerm = {0, 0.306693, 0};
+    Point referencePValuesPerm = {0, 0.296703, 0.00199800};
     Point pvaluesPerm = hsic.getPValuesPermutation();
     assert_almost_equal(pvaluesPerm, referencePValuesPerm);
 

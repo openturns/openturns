@@ -152,17 +152,27 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
 {
   const SquareMatrix Wobs(computeWeightMatrix(outputSample_));
   PValuesPermutation_ = Point(inputDimension_);
+  Collection<Sample> shuffleCollection(permutationSize_);
+  Collection<SquareMatrix> weightMatrixCollection(permutationSize_);
+
+  for( UnsignedInteger b = 0; b < permutationSize_; ++b)
+  {
+    const Sample shuffledSample = shuffledCopy(outputSample_);
+    shuffleCollection[b] = shuffledSample;
+    weightMatrixCollection[b] = computeWeightMatrix(shuffledSample);
+  }
 
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
+
     const Sample xdim(inputSample_.getMarginal(dim));
     const Scalar HSIC_obs = computeHSICIndex(xdim, outputSample_, covarianceList_[dim], covarianceList_[inputDimension_], Wobs);
-
     UnsignedInteger count = 0;
+
     for( UnsignedInteger b = 0; b < permutationSize_; ++b)
     {
-      const Sample Yp(shuffledCopy(outputSample_));
-      const SquareMatrix W(computeWeightMatrix(Yp));
+      const Sample Yp(shuffleCollection[b]);
+      const SquareMatrix W(weightMatrixCollection[b]);
       const Scalar HSIC_loc = computeHSICIndex(xdim, Yp, covarianceList_[dim], covarianceList_[inputDimension_], W);
       if( HSIC_loc > HSIC_obs) count += 1;
     }
@@ -170,7 +180,7 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
     /* p-value by permutation */
     PValuesPermutation_[dim] = count * 1.0 / (permutationSize_ + 1) ;
   }
-  isAlreadyComputedPValuesPermutation_ = true ;
+  isAlreadyComputedPValuesPermutation_ = true;
 }
 
 /* Compute the asymptotic p-values */
@@ -253,7 +263,7 @@ Point HSICEstimatorImplementation::getPValuesPermutation() const
     computePValuesPermutation();
     isAlreadyComputedPValuesPermutation_ = true ;
   }
-  return PValuesPermutation_;
+  return PValuesPermutation_; 
 }
 
 /* Draw the HSIC indices */
@@ -485,3 +495,4 @@ void HSICEstimatorImplementation::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
+

@@ -44,6 +44,7 @@ class OT_API HSICEstimatorImplementation
   : public PersistentObject
 {
   CLASSNAME
+
 public:
 
   typedef Collection <CovarianceModel>  CovarianceModelCollection;
