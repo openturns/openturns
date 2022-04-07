@@ -231,8 +231,8 @@ void NAIS::run()
   Scalar varianceCritic = 0.0;
   for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
   {
-    const Scalar varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0))-failureProbability;
-    varianceCritic += varianceCriticTemporary*varianceCriticTemporary;
+    const Scalar varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0)) - failureProbability;
+    varianceCritic += varianceCriticTemporary * varianceCriticTemporary;
   }  // for i 
   
   const Scalar variancenonCritic = (numberOfSample - indicesCritic.getSize()) * (failureProbability * failureProbability);
