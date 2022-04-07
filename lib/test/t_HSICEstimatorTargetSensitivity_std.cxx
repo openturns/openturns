@@ -57,7 +57,7 @@ int main(int, char *[])
 
     /* We define the covariance models for the HSIC indices. */
     /* For the input, we consider a SquaredExponential covariance model. */
-    HSICEstimator::CovarianceModelCollection covarianceList(0);
+    HSICEstimator::CovarianceModelCollection covarianceModelCollection(0);
 
     /* Input sample */
     for (UnsignedInteger i = 0; i < 3; ++i)
@@ -66,14 +66,14 @@ int main(int, char *[])
       CovarianceModel Cov;
       Cov = SquaredExponential(1);
       Cov.setScale(Xi.computeStandardDeviation());
-      covarianceList.add(Cov);
+      covarianceModelCollection.add(Cov);
     }
 
     /* Output sample with squared exponential covariance */
     CovarianceModel Cov2;
     Cov2 = SquaredExponential(1);
     Cov2.setScale(Y.computeStandardDeviation());
-    covarianceList.add(Cov2);
+    covarianceModelCollection.add(Cov2);
 
     /* We choose an estimator type :
        - unbiased: HSICUStat;
@@ -111,7 +111,7 @@ int main(int, char *[])
     Function filter = ComposedFunction(g2, g );
 
     /* We eventually build the HSIC object! */
-    HSICEstimatorTargetSensitivity TSA(covarianceList, X, Y, estimatorType, filter);
+    HSICEstimatorTargetSensitivity TSA(covarianceModelCollection, X, Y, estimatorType, filter);
 
     /* We get the R2-HSIC */
     Point referenceR2HSIC = {0.268637, 0.00468423, 0.00339962};

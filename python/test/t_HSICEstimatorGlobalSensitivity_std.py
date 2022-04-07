@@ -31,19 +31,19 @@ Y = modelIshigami(X)
 
 # We define the covariance models for the HSIC indices.
 # For the input, we consider a SquaredExponential covariance model.
-covarianceList = ot.CovarianceModelCollection()
+covarianceModelCollection = ot.CovarianceModelCollection()
 
 # Input sample
 for i in range(3):
     Xi = X.getMarginal(i)
     Cov = ot.SquaredExponential(1)
     Cov.setScale(Xi.computeStandardDeviation())
-    covarianceList.add(Cov)
+    covarianceModelCollection.add(Cov)
 
 # Output sample with squared exponential covariance
 Cov2 = ot.SquaredExponential(1)
 Cov2.setScale(Y.computeStandardDeviation())
-covarianceList.add(Cov2)
+covarianceModelCollection.add(Cov2)
 
 #  We choose an estimator type :
 #   - unbiased: HSICUStat;
@@ -52,7 +52,7 @@ covarianceList.add(Cov2)
 estimatorType = ot.HSICUStat()
 
 # We eventually build the HSIC object!
-hsic = ot.HSICEstimatorGlobalSensitivity(covarianceList, X, Y, estimatorType)
+hsic = ot.HSICEstimatorGlobalSensitivity(covarianceModelCollection, X, Y, estimatorType)
 
 # We get the HSIC indices
 HSICIndices = hsic.getHSICIndices()

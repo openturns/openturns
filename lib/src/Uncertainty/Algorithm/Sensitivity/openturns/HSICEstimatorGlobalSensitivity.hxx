@@ -51,7 +51,7 @@ public:
   HSICEstimatorGlobalSensitivity();
 
   /** Constructor */
-  HSICEstimatorGlobalSensitivity(const CovarianceModelCollection & covarianceList,  const Sample & X,  const Sample & Y, const HSICStat & estimatorType);
+  HSICEstimatorGlobalSensitivity(const CovarianceModelCollection & covarianceModelCollection,  const Sample & X,  const Sample & Y, const HSICStat & estimatorType);
 
   /** Virtual constructor */
   HSICEstimatorGlobalSensitivity* clone() const override;

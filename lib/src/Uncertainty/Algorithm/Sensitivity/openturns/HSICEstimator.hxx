@@ -92,10 +92,10 @@ public:
   UnsignedInteger getPermutationSize() const;
 
   /** Get the covariance models */
-  HSICEstimatorImplementation::CovarianceModelCollection getCovarianceList() const;
+  HSICEstimatorImplementation::CovarianceModelCollection getCovarianceModelCollection() const;
 
   /** Set the covariance models */
-  void setCovarianceList(const CovarianceModelCollection & coll);
+  void setCovarianceModelCollection(const CovarianceModelCollection & coll);
 
   /** Get the input sample */
   Sample getInputSample() const;

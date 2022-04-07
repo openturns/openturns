@@ -32,11 +32,11 @@ HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity()
 
 /* Constructor */
 HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity(
-  const CovarianceModelCollection & covarianceList
+  const CovarianceModelCollection & covarianceModelCollection
   , const Sample & X, const Sample & Y
   , const HSICStat & estimatorType
   , const Function & weightFunction)
-  : HSICEstimatorImplementation(covarianceList, X, Y, estimatorType)
+  : HSICEstimatorImplementation(covarianceModelCollection, X, Y, estimatorType)
 {
   if (!estimatorType_.isCompatibleWithConditionalAnalysis()) throw InvalidArgumentException(HERE) << "You must use an appropriate HSICStat object for ConditionalSensitivity";
   weightFunction_ = weightFunction;
