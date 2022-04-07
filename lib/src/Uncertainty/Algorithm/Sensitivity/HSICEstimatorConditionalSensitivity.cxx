@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/HSICEstimatorConditionalSensitivity.hxx"
+#include "openturns/HSICVStat.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HSICEstimatorConditionalSensitivity)
@@ -33,12 +34,11 @@ HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity()
 /* Constructor */
 HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity(
   const CovarianceModelCollection & covarianceModelCollection
-  , const Sample & X, const Sample & Y
-  , const HSICStat & estimatorType
+  , const Sample & X
+  , const Sample & Y
   , const Function & weightFunction)
-  : HSICEstimatorImplementation(covarianceModelCollection, X, Y, estimatorType)
+  : HSICEstimatorImplementation(covarianceModelCollection, X, Y, HSICVStat())
 {
-  if (!estimatorType_.isCompatibleWithConditionalAnalysis()) throw InvalidArgumentException(HERE) << "You must use an appropriate HSICStat object for ConditionalSensitivity";
   weightFunction_ = weightFunction;
 }
 

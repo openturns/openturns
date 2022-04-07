@@ -52,7 +52,9 @@ public:
   HSICEstimatorConditionalSensitivity();
 
   /** Constructor */
-  HSICEstimatorConditionalSensitivity(const CovarianceModelCollection & covarianceModelCollection, const Sample & X, const Sample & Y, const HSICStat & estimatorType,
+  HSICEstimatorConditionalSensitivity(const CovarianceModelCollection & covarianceModelCollection,
+                                      const Sample &X,
+                                      const Sample &Y,
                                       const Function & weightFunction);
 
   /** Virtual constructor */

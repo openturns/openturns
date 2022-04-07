@@ -15,9 +15,6 @@ X : 2-d sequence of float
 Y : 2-d sequence of float
     The output sample used for the HSIC analysis of dimension 1.
 
-estimatorType : :class:`~openturns.HSICStat`
-    An estimator for internal computations.
-
 weightFunction : :class:`~openturns.Function`
     A weight function used for the inputs.
 
@@ -27,7 +24,7 @@ See also
 
 Notes
 -----
-Conditional sensitivity analysis can only be performed using the :class:`~openturns.HSICVStat` estimator :class:`~openturns.HSICUStat` is unavailable.
+Conditional sensitivity analysis relies on the :class:`~openturns.HSICVStat` estimator.
 
 Examples
 --------
@@ -60,11 +57,6 @@ Append the list with the covariance kernel for the model output.
 
 >>> covarianceModelCollection.append(ot.SquaredExponential(Y.computeStandardDeviation()))
 
-Choose the statistic that will be used to estimate the HSIC indices.
-In the case of conditional sensitivity analysis, only :class:`~openturns.HSICVStat` is available.
-
->>> vstat = ot.HSICVStat()
-
 To perform sensititivity analysis under the condition that the output belongs or is near a domain,
 define a weight function based on the distance to this domain.
 
@@ -74,7 +66,7 @@ define a weight function based on the distance to this domain.
 
 Build and use the HSIC estimator for conditional sensitivity analysis.
 
->>> hsic = ot.HSICEstimatorConditionalSensitivity(covarianceModelCollection, X, Y, vstat, weight)
+>>> hsic = ot.HSICEstimatorConditionalSensitivity(covarianceModelCollection, X, Y, weight)
 >>> print(hsic.getR2HSICIndices())
 [0.280788,0.00600014,0.0577616]"
 

@@ -44,11 +44,6 @@ Cov2 = ot.SquaredExponential(1)
 Cov2.setScale(Y.computeStandardDeviation())
 covarianceModelCollection.add(Cov2)
 
-# We choose an estimator type :
-#  - unbiased: HSICUStat (not available here!!);
-#  - biased: HSICVStat.
-#
-estimatorType = ot.HSICVStat()
 
 # We define a distance function for the weights
 # For the TSA, the critical domain is [5,+inf].
@@ -63,8 +58,10 @@ g2 = ot.ParametricFunction(foo, [1], [0.1*stdDev])
 weight = ot.ComposedFunction(g2, g)
 
 # We eventually build the HSIC object
+# HSICVStat event is already embedded as it is the only one available
+# for that kind of analysis
 CSA = ot.HSICEstimatorConditionalSensitivity(
-    covarianceModelCollection, X, Y, estimatorType, weight)
+    covarianceModelCollection, X, Y, weight)
 
 # We get the R2-HSIC
 R2HSIC = CSA.getR2HSICIndices()
