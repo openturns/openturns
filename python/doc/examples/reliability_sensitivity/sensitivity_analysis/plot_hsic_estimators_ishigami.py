@@ -221,7 +221,7 @@ estimatorType = ot.HSICVStat()
 # %%
 # We build the conditional HSIC estimator
 condHSIC = ot.HSICEstimatorConditionalSensitivity(
-    covarianceModelCollection, X, Y, estimatorType, weightFunction
+    covarianceModelCollection, X, Y, weightFunction
 )
 
 # %%
