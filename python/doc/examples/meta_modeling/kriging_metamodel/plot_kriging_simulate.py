@@ -44,7 +44,6 @@ Kriging : generate trajectories from a metamodel
 # We begin by defining the function `g` as a symbolic function. Then we define the `x_train` variable which contains the inputs of the design of experiments of the training step. Then we compute the `y_train` corresponding outputs. The variable `n_train` is the size of the training design of experiments.
 
 # %%
-import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -54,22 +53,21 @@ ot.Log.Show(ot.Log.NONE)
 g = ot.SymbolicFunction(['x'], ['sin(x)'])
 
 # %%
-x_train = ot.Sample([[x] for x in [1., 3., 4., 6., 7.9, 11., 11.5]])
+x_train = [[x] for x in [1., 3., 4., 6., 7.9, 11., 11.5]]
 y_train = g(x_train)
-n_train = x_train.getSize()
+n_train = len(x_train)
 n_train
 
 # %%
 # In order to compare the function and its metamodel, we use a test (i.e. validation) design of experiments made of a regular grid of 100 points from 0 to 12. Then we convert this grid into a `Sample` and we compute the outputs of the function on this sample.
 
 # %%
-xmin = 0.
-xmax = 12.
-n_test = 100
+xmin = 0.0
+xmax = 12.0
+n_test = 101
 step = (xmax-xmin)/(n_test-1)
 myRegularGrid = ot.RegularGrid(xmin, step, n_test)
-x_test_coord = myRegularGrid.getValues()
-x_test = ot.Sample([[x] for x in x_test_coord])
+x_test = myRegularGrid.getVertices()
 y_test = g(x_test)
 
 
@@ -111,7 +109,7 @@ view = viewer.View(graph)
 # %%
 dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
-covarianceModel = ot.MaternModel([1.]*dimension, 1.5)
+covarianceModel = ot.MaternModel([1.0]*dimension, 1.5)
 algo = ot.KrigingAlgorithm(x_train, y_train, covarianceModel, basis)
 algo.run()
 krigingResult = algo.getResult()
@@ -157,48 +155,7 @@ view = viewer.View(graph)
 # This is why we use the `ConditionedGaussianProcess`, which provides a `Process`.
 
 # %%
-n_test = 100
-step = (xmax-xmin)/(n_test-1)
-myRegularGrid = ot.RegularGrid(xmin, step, n_test)
-vertices = myRegularGrid.getVertices()
-
-
-# %%
-# If we directly use the `vertices` values, we get:
-#
-#     RuntimeError: InternalException : Error: the matrix is not definite positive.
-#
-# Indeed, some points in `vertices` are also in `x_train`. This is why the conditioned covariance matrix is singular at these points.
-#
-# This is why we define the following function which deletes points in `vertices` which are also found in `x_train`.
-
-# %%
-def deleteCommonValues(x_train, x_test):
-    '''
-    Delete from x_test the values which are in x_train so that
-    values in x_test have no interect with x_train.
-    '''
-    x_test_filtered = x_test  # Initialize
-    for x_train_value in x_train:
-        print("Checking %s" % (x_train_value))
-        indices = np.argwhere(x_test == x_train_value)
-        if len(indices) == 1:
-            print("   Delete %s" % (x_train_value))
-            x_test_filtered = np.delete(x_test_filtered, indices[0, 0])
-        else:
-            print("   OK")
-    return x_test_filtered
-
-
-# %%
-vertices_filtered = deleteCommonValues(
-    np.array(x_train.asPoint()), np.array(vertices.asPoint()))
-
-# %%
-evaluationMesh = ot.Mesh(ot.Sample([[vf] for vf in vertices_filtered]))
-
-# %%
-process = ot.ConditionedGaussianProcess(krigingResult, evaluationMesh)
+process = ot.ConditionedGaussianProcess(krigingResult, myRegularGrid)
 
 # %%
 trajectories = process.getSample(10)

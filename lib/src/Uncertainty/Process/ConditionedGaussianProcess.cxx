@@ -37,6 +37,7 @@ ConditionedGaussianProcess::ConditionedGaussianProcess()
   : GaussianProcess()
   , krigingResult_()
   , trendEvaluationMesh_()
+  , knownValuesIndices_()
 {
   // Nothing to do
 }
@@ -46,6 +47,7 @@ ConditionedGaussianProcess::ConditionedGaussianProcess(const KrigingResult & res
   : GaussianProcess()
   , krigingResult_(result)
   , trendEvaluationMesh_()
+  , knownValuesIndices_()
 {
   // set covariance model
   covarianceModel_ = result.getCovarianceModel();
@@ -73,7 +75,8 @@ String ConditionedGaussianProcess::__repr__() const
       << ", mesh=" << mesh_
       << ", trend=" << trend_
       << ", covariance=" << covarianceModel_
-      << ", conditional covariance =" << covarianceCholeskyFactor_;
+      << ", conditional covariance =" << covarianceCholeskyFactor_
+      << ", knownValuesIndices =" << knownValuesIndices_;
   return oss;
 }
 
@@ -92,13 +95,73 @@ String ConditionedGaussianProcess::__str__(const String & ) const
 void ConditionedGaussianProcess::initialize()
 {
   if (isInitialized_) return;
-  // Build the covariance factor
   const Sample vertices(mesh_.getVertices());
   // Build the covariance matrix
   CovarianceMatrix covarianceMatrix(krigingResult_.getConditionalCovariance(vertices));
+  // Now check if there is any point both in the input sample and in the mesh vertices.
+  // They are characterized by
+  // a zero cross: a null row and a null column which cross at a zero diagonal element.
+  // The trick is to replace this value by the maximum marginal variance, then to
+  // remember to set to zero the value at the corresponding index during the sampling phase
+  Scalar maximumVariance = 0.0;
+  for (UnsignedInteger i = 0; i < covarianceMatrix.getDimension(); ++i)
+    maximumVariance = std::max(maximumVariance, covarianceMatrix(i, i));
+  const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
+  const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
+  const Scalar epsilon = maximumVariance * startingScaling;
+  for (UnsignedInteger i = 0; i < covarianceMatrix.getDimension(); ++i)
+    if (covarianceMatrix(i, i) <= epsilon)
+      {
+        // Enforce a strict zero cross
+        for (UnsignedInteger j = 0; j < i; ++j)
+          covarianceMatrix(i, j) = 0.0;
+        // Then put the maximum variance on the diagonal.
+        // In theory any positive number should work but
+        // this way the condition number should be greatly improved.
+        covarianceMatrix(i, i) = maximumVariance;
+        knownValuesIndices_.add(i);
+      }
   // Get the Cholesky factor
   LOGINFO(OSS(false) << "Evaluation of the Cholesky factor");
-  covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
+
+  // Boolean flag to tell if the regularization is enough
+  Bool continuationCondition = true;
+  // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
+  // The regularization is needed for fast decreasing covariance models
+  Scalar maxEV = -1.0;
+  Scalar cumulatedScaling = 0.0;
+  Scalar scaling = startingScaling;
+  while (continuationCondition)
+  {
+    try
+    {
+      covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
+      continuationCondition = false;
+    }
+    // If the factorization failed regularize the matrix
+    // Here we use a generic exception as different exceptions may be thrown
+    catch (Exception &)
+    {
+      // If the largest eigenvalue module has not been computed yet...
+      if (maxEV < 0.0)
+      {
+        maxEV = covarianceMatrix.computeLargestEigenValueModule();
+        LOGDEBUG(OSS() << "maxEV=" << maxEV);
+        scaling *= maxEV;
+      }
+      cumulatedScaling += scaling ;
+      LOGDEBUG(OSS() << "scaling=" << scaling << ", cumulatedScaling=" << cumulatedScaling);
+      // Unroll the regularization to optimize the computation
+      for (UnsignedInteger i = 0; i < covarianceMatrix.getDimension(); ++i) covarianceMatrix(i, i) += scaling;
+      scaling *= 2.0;
+      continuationCondition = scaling < maxEV * maximalScaling;
+    }
+  }
+  if (maxEV > 0.0 && scaling >= maximalScaling * maxEV)
+    throw InvalidArgumentException(HERE) << "In GaussianProcess, could not compute the Cholesky factor."
+                                         << " Scaling up to " << cumulatedScaling << " was not enough";
+  if (cumulatedScaling > 0.0)
+    LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
   // Build the trend function
   LOGINFO(OSS(false) << "Build of the trend function");
   const Function krigingEvaluation(krigingResult_.getMetaModel());
@@ -150,7 +213,11 @@ Field ConditionedGaussianProcess::getRealization() const
   // x an iid sequence of standard normal random variables
   const UnsignedInteger fullSize = covarianceCholeskyFactor_.getDimension();
   Sample values(fullSize, getOutputDimension());
-  values.getImplementation()->setData(trendEvaluationMesh_.getImplementation()->getData() + covarianceCholeskyFactor_ * DistFunc::rNormal(fullSize));
+  Point deviation(covarianceCholeskyFactor_ * DistFunc::rNormal(fullSize));
+  // Set to zero the deviations at known positions
+  for (UnsignedInteger i = 0; i < knownValuesIndices_.getSize(); ++i)
+    deviation[knownValuesIndices_[i]] = 0.0;
+  values.getImplementation()->setData(trendEvaluationMesh_.getImplementation()->getData() + deviation);
   // Add the description
   values.setDescription(getDescription());
   return Field(mesh_, values);
@@ -175,6 +242,7 @@ void ConditionedGaussianProcess::save(Advocate & adv) const
   GaussianProcess::save(adv);
   adv.saveAttribute("krigingResult_", krigingResult_);
   adv.saveAttribute("trendEvaluationMesh_", trendEvaluationMesh_);
+  adv.saveAttribute("knownValuesIndices_", knownValuesIndices_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -183,6 +251,7 @@ void ConditionedGaussianProcess::load(Advocate & adv)
   GaussianProcess::load(adv);
   adv.loadAttribute("krigingResult_", krigingResult_);
   adv.loadAttribute("trendEvaluationMesh_", trendEvaluationMesh_);
+  adv.loadAttribute("knownValuesIndices_", knownValuesIndices_);
 }
 
 END_NAMESPACE_OPENTURNS
