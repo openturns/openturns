@@ -41,12 +41,8 @@ JoeCopula::JoeCopula()
   , psi2_(0.5)
 {
   setName("JoeCopula");
-  // We set the dimension of the JoeCopula distribution
-  setDimension(2);
   // update function wrt parameters
   updatePickandFunction();
-  // We don't know if the function is thread-safe and it may be called in parallel through computePDF()
-  setParallel(false);
 }
 
 /* Parameters constructor */
@@ -63,12 +59,8 @@ JoeCopula::JoeCopula(const Scalar theta,
   setPsi2(psi2);
 
   setName("JoeCopula");
-  // We set the dimension of the JoeCopula distribution
-  setDimension(2);
   // update function wrt parameters
   updatePickandFunction();
-  // We don't know if the function is thread-safe and it may be called in parallel through computePDF()
-  setParallel(false);
 }
 
 /* update function wrt parameters */

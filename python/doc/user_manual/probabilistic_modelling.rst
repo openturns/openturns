@@ -220,6 +220,7 @@ Refer to :ref:`copula`.
     EmpiricalBernsteinCopula
     ExtremeValueCopula
     JoeCopula
+    GalambosCopula
     MarshallOlkinCopula
     MaximumEntropyOrderStatisticsCopula
 

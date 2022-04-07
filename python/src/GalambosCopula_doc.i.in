@@ -1,0 +1,59 @@
+%feature("docstring") OT::GalambosCopula
+"Galambos copula.
+
+Parameters
+----------
+theta : float
+    Parameter :math:`\theta > 0`. Default is :math:`\theta=0.5`.
+
+Notes
+-----
+The Galambos copula is a bivariate copula defined by:
+
+.. math::
+
+   C(u_1, u_2) = u_1u_2\exp\left[(-\log(u_1))^{-\theta} + (-\log(u_2))^{-\theta}\right]^{-1/\theta}
+
+for :math:`(u_1, u_2) \in [0, 1]^2` and :math:`\theta > 0`.
+This copula is an Extreme Value Copula based on the Pickand function :math:`A` defined for all :math:`t \in (0,1)` by
+
+.. math::
+
+   A(t) = 1 - [t^{-\theta} + (1-t)^{-\theta}]^{-1/\theta}.
+
+See also
+--------
+ExtremeValueCopula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.GalambosCopula(0.5)
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GalambosCopula::getTheta
+"Get the Galambos copula parameter :math:`\theta`.
+
+Returns
+-------
+theta : float
+    The scalar parameter :math:`\theta > 0`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GalambosCopula::setTheta
+"Set the Galambos copula parameter :math:`\theta`.
+
+Parameters
+----------
+theta : float
+    The scalar parameter :math:`\theta > 0`.
+"
