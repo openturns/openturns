@@ -87,6 +87,7 @@ void test_1()
 {
     Log::Show(Log::ALL);
     OStream fullprint(std::cout);
+    fullprint << "test_1" << std::endl;
     SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
     // Marginal 0: Uniform, with 3 nodes
     const Uniform distribution1(0.0, 1.0);
@@ -135,6 +136,8 @@ void test_1()
 // Test #2 : check hasUniformWeights
 void test_2()
 {
+    OStream fullprint(std::cout);
+    fullprint << "test_2" << std::endl;
     SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
     // Marginal 0: Uniform, with 3 nodes
     const Uniform distribution1(0.0, 1.0);
@@ -157,6 +160,7 @@ void test_3()
 {
     Log::Show(Log::ALL);
     OStream fullprint(std::cout);
+    fullprint << "test_3" << std::endl;
     SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
     // Marginal 0: Uniform, with 3 nodes
     const Uniform distribution1(0.0, 1.0);
@@ -208,10 +212,12 @@ void test_3()
 }
 
 /* Comparison class with std:map interface. */
-class NodeWeightCompare
+// TODO : remove this from the unit test OR 
+//        move it to a proper class.
+class PointApproximateComparison
 {
 public:
-    NodeWeightCompare(const Scalar absoluteEpsilon, 
+    PointApproximateComparison(const Scalar absoluteEpsilon, 
                       const Scalar relativeEpsilon):
                       absoluteEpsilon_(absoluteEpsilon)
                       , relativeEpsilon_(relativeEpsilon)
@@ -228,9 +234,16 @@ public:
         bool comparison = false;
         for (UnsignedInteger k = 0; k < dimension; ++k)
         {
-            if (x[k] < y[k])
+            // std::cout << "  " << x[k] << " < " << y[k] << " ?" << std::endl;
+            const Scalar maximumXY = std::max(std::abs(x[k]), std::abs(y[k]));
+            const Scalar delta = absoluteEpsilon_ + relativeEpsilon_ * maximumXY;
+            if (x[k] + delta < y[k])
             {
                 comparison = true;
+                break;
+            } 
+            else if (x[k] > y[k] + delta)
+            {
                 break;
             }
         }
@@ -245,7 +258,7 @@ private:
 };
 
 
-void print_NodeWeightMap(std::map<Point, Scalar, NodeWeightCompare> nodeWeightMap)
+void print_NodeWeightMap(std::map<Point, Scalar, PointApproximateComparison> nodeWeightMap)
 {
     std::cout << "print_NodeWeightMap. Size = " << nodeWeightMap.size() << std::endl;
     UnsignedInteger index = 0;
@@ -265,7 +278,7 @@ void mergeNodesAndWeights(const Sample duplicatedNodes, const Point duplicatedWe
     if (duplicatedWeights.getDimension() != duplicatedSize) throw InvalidArgumentException(HERE) << "Error: the weights must have dimension " << duplicatedSize << " but have dimension " << duplicatedWeights.getDimension();
     UnsignedInteger dimension = duplicatedNodes.getDimension();
     // Fill the map
-    std::map<Point, Scalar, NodeWeightCompare> nodeWeightMap(NodeWeightCompare(absoluteEpsilon, relativeEpsilon));
+    std::map<Point, Scalar, PointApproximateComparison> nodeWeightMap(PointApproximateComparison(absoluteEpsilon, relativeEpsilon));
     for (UnsignedInteger i = 0; i < duplicatedSize; ++i)
     {
         std::map<Point, Scalar>::iterator search = nodeWeightMap.find(duplicatedNodes[i]);
@@ -295,7 +308,7 @@ void mergeNodesAndWeights(const Sample duplicatedNodes, const Point duplicatedWe
 }
 
 // Test simplified merged operation
-void test_5()
+void test_4()
 {
     std::cout << "test_5" << std::endl;
     const UnsignedInteger dimension = 2;
@@ -322,29 +335,56 @@ void test_5()
 }
 
 // Test Point comparison
-void test_6()
+void test_5()
 {
     std::cout << "test_6" << std::endl;
     Scalar absoluteEpsilon = 1.e-2;
     Scalar relativeEpsilon = 1.e-2;
-    NodeWeightCompare comparison(absoluteEpsilon, relativeEpsilon);
+    PointApproximateComparison comparison(absoluteEpsilon, relativeEpsilon);
     std::cout << "true = " << true << ", false = " << false << std::endl;
-    comparison(Point({0.1, 0.2}), Point({0.3, 0.4}));
-    comparison(Point({0.3, 0.4}), Point({0.1, 0.2}));
-    comparison(Point({0.1, 0.2}), Point({0.1, 0.2}));
-    comparison(Point({0.1001, 0.2001}), Point({0.1, 0.2}));
-    comparison(Point({0.1, 0.2}), Point({0.1001, 0.2001}));
-    comparison(Point({0.0001, 0.0001}), Point({0.0, 0.0}));
-    comparison(Point({0.0, 0.0}), Point({0.0001, 0.0001}));
+    //
+    Point x1({0.1, 0.2});
+    Point y1({0.3, 0.4});
+    //
+    std::cout << "(1) Compare = " << x1 << " and " << y1 << std::endl;
+    bool comparison1 = comparison(x1, y1);
+    assert_equal(comparison1, true);
+    //
+    std::cout << "(2) Compare = " << y1 << " and " << x1 << std::endl;
+    bool comparison1_bis = comparison(y1, x1);
+    assert_equal(comparison1_bis, false);
+    //
+    std::cout << "(3) Compare = " << x1 << " and " << x1 << std::endl;
+    bool comparison3 = comparison(x1, x1);
+    assert_equal(comparison3, false);
+    //
+    Point x1_bis({0.1001, 0.2001});
+    std::cout << "(4) Compare = " << x1_bis << " and " << x1 << std::endl;
+    bool comparison4 = comparison(x1_bis, x1);
+    assert_equal(comparison4, false);
+    //
+    std::cout << "(5) Compare = " << x1 << " and " << x1_bis << std::endl;
+    bool comparison5 = comparison(x1, x1_bis);
+    assert_equal(comparison5, false);
+    //
+    Point zero({0.0, 0.0});
+    Point zero_close({0.0001, 0.0001});
+    std::cout << "(6) Compare = " << zero << " and " << zero_close << std::endl;
+    bool comparison6 = comparison(zero, zero_close);
+    assert_equal(comparison6, false);
+    //
+    std::cout << "(7) Compare = " << zero_close << " and " << zero << std::endl;
+    bool comparison7 = comparison(zero_close, zero);
+    assert_equal(comparison7, false);
 }
 
 // Test realistic Smolyak quadrature
-void test_7()
+void test_6()
 {
     std::cout << "test_7" << std::endl;
     const UnsignedInteger dimension = 2;
-    Point column_1 = {0.5, 0.788675, 0.788675, 0.788675, 0.887298, 0.5};
-    Point column_2 = {0.887298, 0.211325, 0.5, 0.788675, 0.5, 0.5};
+    Point column_1 = {0.5,      0.788675, 0.788675, 0.788675, 0.887298, 0.5, 0.500001};
+    Point column_2 = {0.887298, 0.211325, 0.5,      0.788675, 0.5,      0.5, 0.5};
     const UnsignedInteger duplicatedSize = column_1.getSize();
     Sample duplicatedNodes(duplicatedSize, dimension);
     for (UnsignedInteger i = 0; i < duplicatedSize; ++i)
@@ -352,10 +392,10 @@ void test_7()
       duplicatedNodes(i, 0) = column_1[i];
       duplicatedNodes(i, 1) = column_2[i];
     }
-    Point duplicatedWeights = {0.277778, 0.25, -0.5, 0.25, 0.277778, 0.277778};
+    Point duplicatedWeights = {0.277778, 0.25, -0.5, 0.25, 0.277778, 0.277778, 0.277778};
     printNodesAndWeights(duplicatedNodes, duplicatedWeights);
-    Scalar absoluteEpsilon = 1.e-8;
-    Scalar relativeEpsilon = 1.e-8;
+    Scalar absoluteEpsilon = 1.e-2;
+    Scalar relativeEpsilon = 1.e-2;
     Sample nodes(0, 0);
     Point weights(0);
     mergeNodesAndWeights(duplicatedNodes, duplicatedWeights, 
@@ -371,13 +411,12 @@ int main(int, char *[])
 
   try
   {
-    // test_1();
-    // test_2();
-    // test_3();
-    //test_4();
-    //test_5();
-    //test_6();
-    test_7();
+    test_1();
+    test_2();
+    test_3();
+    test_4();
+    test_5();
+    test_6();
   }
   catch (TestFailed & ex)
   {

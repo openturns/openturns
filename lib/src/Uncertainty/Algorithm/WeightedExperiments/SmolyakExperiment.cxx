@@ -140,10 +140,10 @@ IndicesCollection SmolyakExperiment::computeCombination() const
 }
 
 /* Comparison class with std:map interface. */
-class NodeWeightCompare
+class PointApproximateComparison
 {
 public:
-    NodeWeightCompare(const Scalar absoluteEpsilon, 
+    PointApproximateComparison(const Scalar absoluteEpsilon, 
                       const Scalar relativeEpsilon):
                       absoluteEpsilon_(absoluteEpsilon)
                       , relativeEpsilon_(relativeEpsilon)
@@ -186,37 +186,40 @@ private:
 void SmolyakExperiment::mergeNodesAndWeights(
     const Sample duplicatedNodes, const Point duplicatedWeights) const
 {
-    const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
-    const Scalar absoluteEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon" );
-    UnsignedInteger duplicatedSize = duplicatedNodes.getSize();
-    if (duplicatedWeights.getDimension() != duplicatedSize) throw InvalidArgumentException(HERE) << "Error: the weights must have dimension " << duplicatedSize << " but have dimension " << duplicatedWeights.getDimension();
+  LOGDEBUG(OSS() << "SmolyakExperiment::mergeNodesAndWeights()");
+  const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
+  const Scalar absoluteEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon" );
+  UnsignedInteger duplicatedSize = duplicatedNodes.getSize();
+  LOGDEBUG(OSS() << "Number of (potentially) duplicated nodes =" << duplicatedSize);
+  if (duplicatedWeights.getDimension() != duplicatedSize) throw InvalidArgumentException(HERE) << "Error: the weights must have dimension " << duplicatedSize << " but have dimension " << duplicatedWeights.getDimension();
     UnsignedInteger dimension = duplicatedNodes.getDimension();
-    // Fill the map
-    std::map<Point, Scalar, NodeWeightCompare> nodeWeightMap(NodeWeightCompare(absoluteEpsilon, relativeEpsilon));
-    for (UnsignedInteger i = 0; i < duplicatedSize; ++i)
-    {
-        std::map<Point, Scalar>::iterator search = nodeWeightMap.find(duplicatedNodes[i]);
-        if (search != nodeWeightMap.end()) {
-            LOGDEBUG(OSS() << "[" << i << "], found     : " << search->first << " = " << search->second);
-            search->second += duplicatedWeights[i];
-        } else {
-            LOGDEBUG(OSS() << "[" << i << "], not found : " << duplicatedNodes[i]);
-            nodeWeightMap[duplicatedNodes[i]] = duplicatedWeights[i];
-        }
+  // Fill the map
+  std::map<Point, Scalar, PointApproximateComparison> nodeWeightMap(PointApproximateComparison(absoluteEpsilon, relativeEpsilon));
+  for (UnsignedInteger i = 0; i < duplicatedSize; ++i)
+  {
+    std::map<Point, Scalar>::iterator search = nodeWeightMap.find(duplicatedNodes[i]);
+    if (search != nodeWeightMap.end()) {
+      LOGDEBUG(OSS() << "[" << i << "], found     : " << search->first << " = " << search->second);
+      search->second += duplicatedWeights[i];
+    } else {
+      LOGDEBUG(OSS() << "[" << i << "], not found : " << duplicatedNodes[i]);
+      nodeWeightMap[duplicatedNodes[i]] = duplicatedWeights[i];
     }
-    // print_NodeWeightMap(nodeWeightMap);
-    // Extract the map
-    UnsignedInteger size = nodeWeightMap.size();
-    Sample nodes_(size, dimension);
-    Point weights_(size);
-    UnsignedInteger index = 0;
-    for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
-    {
-        LOGDEBUG(OSS() << "[" << index << "], add " << it->first << " = " << it->second);
-        nodes_[index] = it->first;
-        weights_[index] = it->second;
-        ++ index;
-    }
+  }
+  // print_NodeWeightMap(nodeWeightMap);
+  // Extract the map
+  UnsignedInteger size = nodeWeightMap.size();
+  LOGDEBUG(OSS() << "Extract the map");
+  nodes_ = Sample(size, dimension);
+  weights_ = Point(size);
+  UnsignedInteger index = 0;
+  for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
+  {
+    LOGDEBUG(OSS() << "[" << index << "], add " << it->first << " = " << it->second);
+    nodes_[index] = it->first;
+    weights_[index] = it->second;
+    ++ index;
+  }
 }
 
 /* Compute the nodes and weights */
