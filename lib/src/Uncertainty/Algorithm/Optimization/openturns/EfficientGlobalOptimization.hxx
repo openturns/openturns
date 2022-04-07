@@ -46,7 +46,8 @@ public:
 
   /** Constructor with parameters */
   EfficientGlobalOptimization(const OptimizationProblem & problem,
-                              const KrigingResult & krigingResult);
+                              const KrigingResult & krigingResult,
+                              const Function & noise = Function());
 
   /** Virtual constructor */
   EfficientGlobalOptimization * clone() const override;
@@ -83,6 +84,10 @@ public:
   /** AEI tradeoff constant accessor */
   void setAEITradeoff(const Scalar c);
   Scalar getAEITradeoff() const;
+
+  /** Metamodel noise function accessor */
+  void setMetamodelNoise(const Function & metaModelNoise);
+  Function getMetamodelNoise() const;
 
   /** Improvement noise function accessor */
   void setNoiseModel(const Function & noiseModel);
@@ -130,8 +135,10 @@ private:
   // AEI tradeoff constant u(x)=mk(x)+c*sk(x)
   Scalar aeiTradeoff_;
 
+  // noise model called at design points
+  Function metamodelNoise_;
+
   // optional noise model for improvement optimization only
-  // for the metamodel noise the 2nd marginal of the objective is used
   Function noiseModel_;
 
   mutable Sample expectedImprovement_;

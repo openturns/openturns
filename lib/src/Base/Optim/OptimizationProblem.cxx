@@ -157,6 +157,7 @@ Scalar OptimizationProblem::getLevelValue() const
 
 void OptimizationProblem::setLevelValue(Scalar levelValue)
 {
+  copyOnWrite();
   getImplementation()->setLevelValue(levelValue);
 }
 
@@ -184,20 +185,21 @@ UnsignedInteger OptimizationProblem::getDimension() const
 }
 
 /* Minimization accessor */
-void OptimizationProblem::setMinimization(Bool minimization)
+void OptimizationProblem::setMinimization(Bool minimization, UnsignedInteger marginalIndex)
 {
   copyOnWrite();
-  getImplementation()->setMinimization(minimization);
+  getImplementation()->setMinimization(minimization, marginalIndex);
 }
 
-Bool OptimizationProblem::isMinimization() const
+Bool OptimizationProblem::isMinimization(UnsignedInteger marginalIndex) const
 {
-  return getImplementation()->isMinimization();
+  return getImplementation()->isMinimization(marginalIndex);
 }
 
 /* Variables type table */
 void OptimizationProblem::setVariablesType(const Indices & variablesType)
 {
+  copyOnWrite();
   getImplementation()->setVariablesType(variablesType);
 }
 

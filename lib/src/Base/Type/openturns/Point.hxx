@@ -58,6 +58,11 @@ public:
   /** Initializer list constructor */
   Point(std::initializer_list<Scalar> initList);
 
+  /** Constructor from a range of elements */
+  template <typename InputIterator>
+  Point(InputIterator first, InputIterator last)
+  : InternalType(first, last) {}
+
   /** Virtual constructor */
   Point * clone() const override;
 

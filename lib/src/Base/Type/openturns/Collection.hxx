@@ -146,8 +146,8 @@ public:
 
   /** Constructor from a range of elements */
   template <typename InputIterator>
-  Collection(const InputIterator first,
-             const InputIterator last)
+  Collection(InputIterator first,
+             InputIterator last)
     : coll__(first, last)
   {
     // Nothing to do
@@ -392,6 +392,11 @@ public:
   UnsignedInteger elementSize() const
   {
     return sizeof(T);
+  }
+
+  inline InternalType toStdVector() const
+  {
+    return coll__;
   }
 #endif
 

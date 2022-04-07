@@ -37,6 +37,7 @@ static const Factory<OptimizationProblemImplementation> Factory_OptimizationProb
 /* Default constructor */
 OptimizationProblemImplementation::OptimizationProblemImplementation()
   : PersistentObject()
+  , minimizationCollection_(1, true)
 {
   // Nothing to do
 }
@@ -44,8 +45,9 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
 OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & objective)
   : PersistentObject()
   , objective_(objective)
+  , minimizationCollection_(objective.getOutputDimension(), true)
   , dimension_(objective.getInputDimension())
-  , variablesType_(Indices(dimension_, CONTINUOUS))
+  , variablesType_(dimension_, CONTINUOUS)
 {
   // Nothing to do
 }
@@ -59,6 +61,7 @@ OptimizationProblemImplementation::OptimizationProblemImplementation( const Func
     const Interval & bounds)
   : PersistentObject()
   , objective_(objective)
+  , minimizationCollection_(objective.getOutputDimension(), true)
   , dimension_(objective.getInputDimension())
   , variablesType_(Indices(dimension_, CONTINUOUS))
 {
@@ -220,14 +223,18 @@ UnsignedInteger OptimizationProblemImplementation::getDimension() const
 }
 
 /* Minimization accessor */
-void OptimizationProblemImplementation::setMinimization(Bool minimization)
+void OptimizationProblemImplementation::setMinimization(Bool minimization, UnsignedInteger marginalIndex)
 {
-  minimization_ = minimization;
+  if (marginalIndex >= objective_.getOutputDimension())
+    throw InvalidDimensionException(HERE) << "marginal index ("<< marginalIndex <<") cannot exceed objective dimension (" << objective_.getOutputDimension();
+  minimizationCollection_[marginalIndex] = minimization;
 }
 
-Bool OptimizationProblemImplementation::isMinimization() const
+Bool OptimizationProblemImplementation::isMinimization(UnsignedInteger marginalIndex) const
 {
-  return minimization_;
+  if (marginalIndex >= objective_.getOutputDimension())
+    throw InvalidDimensionException(HERE) << "marginal index ("<< marginalIndex <<") cannot exceed objective dimension (" << objective_.getOutputDimension();
+  return minimizationCollection_[marginalIndex];
 }
 
 // Variables type table
@@ -263,9 +270,12 @@ String OptimizationProblemImplementation::__repr__() const
   oss << " objective=" << objective_
       << " equality constraint=" << (hasEqualityConstraint() ? equalityConstraint_.__repr__() : "none")
       << " inequality constraint=" << (hasInequalityConstraint() ? inequalityConstraint_.__repr__() : "none");
-  oss << " bounds=" << (hasBounds() ? bounds_.__repr__() : "none")
-      << " minimization=" << minimization_
-      << " dimension=" << dimension_;
+  oss << " bounds=" << (hasBounds() ? bounds_.__repr__() : "none");
+  if (minimizationCollection_.getSize() == 1)
+    oss << " minimization=" << (minimizationCollection_[0] ? true : false);
+  else
+    oss << " minimization=" << minimizationCollection_;
+  oss << " dimension=" << dimension_;
   return oss;
 }
 
@@ -277,7 +287,7 @@ void OptimizationProblemImplementation::save(Advocate & adv) const
   adv.saveAttribute( "equalityConstraint_", equalityConstraint_ );
   adv.saveAttribute( "inequalityConstraint_", inequalityConstraint_ );
   adv.saveAttribute( "bounds_", bounds_ );
-  adv.saveAttribute( "minimization_", minimization_ );
+  adv.saveAttribute( "minimizationCollection_", minimizationCollection_ );
   adv.saveAttribute( "dimension_", dimension_ );
 }
 
@@ -289,7 +299,14 @@ void OptimizationProblemImplementation::load(Advocate & adv)
   adv.loadAttribute( "equalityConstraint_", equalityConstraint_ );
   adv.loadAttribute( "inequalityConstraint_", inequalityConstraint_ );
   adv.loadAttribute( "bounds_", bounds_ );
-  adv.loadAttribute( "minimization_", minimization_ );
+  if (adv.hasAttribute("minimizationCollection_"))
+    adv.loadAttribute("minimizationCollection_", minimizationCollection_);
+  else
+  {
+    Bool minimization = true;
+    adv.loadAttribute("minimization_", minimization);
+    minimizationCollection_ = BoolCollection(1, minimization);
+  }
   adv.loadAttribute( "dimension_", dimension_ );
 }
 

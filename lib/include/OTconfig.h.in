@@ -27,6 +27,9 @@
 //* Define if you have the `bonmin` library. */
 #cmakedefine OPENTURNS_HAVE_BONMIN
 
+//* Define if you have the `pagmo` library. */
+#cmakedefine OPENTURNS_HAVE_PAGMO
+
 //* Define to 1 if you have flex lexical analyser generator. */
 #cmakedefine OPENTURNS_HAVE_FLEX
 
