@@ -36,7 +36,7 @@ weights and :math:`\boldsymbol{x}_1, ..., \boldsymbol{x}_{s_t} \in \mathbb{R}^{d
 are the nodes. 
 
 Let :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^{d_x}` be the multi-index 
-:math:`\boldsymbol{k} = (k_1, ..., k_p)` where 
+:math:`\boldsymbol{k} = (k_1, ..., k_{d_x})` where 
 
 .. math::
 
@@ -52,19 +52,24 @@ Consider the 1 and the infinity norms ([leMaitre2010]_ page 57, eq. 3.28):
 
 for any :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^{d_x}`.
 
+Let :math:`\ell` be an integer representing the level of the quadrature. 
+Let :math:`Q_{\ell}^{(1)}` be a univariate quadrature of level :math:`\ell`. 
+Depending on the level :math:`\ell`, we can compute the actual number of nodes 
+depending on a particular choice of that number of nodes and depending 
+on the quadrature rule. 
 The tensor product quadrature is :
 
 .. math::
 
-    Q_\ell^{(d_x)} = Q_{\ell}^{(1)} \otimes ... \otimes Q_{\ell}^{(1)}.
+    T_\ell^{(d_x)} = Q_{\ell}^{(1)} \otimes ... \otimes Q_{\ell}^{(1)}.
 
 The following theorem provides an equivalent equation for the tensor product 
 quadrature ([leMaitre2010]_ page 57, eq. 3.30):
 
 .. math::
 
-    Q_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_\infty \leq \ell} 
-    \Delta_{k_1}^{(1)} \otimes ... \otimes \Delta_{k_p}^{(1)}
+    T_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_\infty \leq \ell} 
+    \Delta_{k_1}^{(1)} \otimes ... \otimes \Delta_{k_{d_x}}^{(1)}.
 
 The significant part of the previous equation is the set of multi-indices 
 :math:`\|\boldsymbol{k}\|_\infty \leq \ell`, which involves many terms. 
@@ -78,8 +83,8 @@ The Smolyak sparse quadrature formula at level :math:`\ell` is :
 
 .. math::
 
-    Q_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + p - 1} 
-    \Delta_{k_1}^{(1)} \otimes ... \otimes \Delta_{k_p}^{(1)}
+    S_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + p - 1} 
+    \Delta_{k_1}^{(1)} \otimes ... \otimes \Delta_{k_{d_x}}^{(1)}
 
 for any :math:`\ell \geq 1`. 
 
@@ -89,16 +94,16 @@ The sparse quadrature formula at level :math:`\ell` is :
 
 .. math::
 
-    Q_\ell^{(p)} = \sum_{\ell \leq \|\boldsymbol{k}\|_1 \leq \ell + p - 1} 
-    (-1)^{\ell + p - \|\boldsymbol{k}\|_1 - 1} 
-    {p - 1 \choose \|\boldsymbol{k}\|_1 - \ell} 
-    Q_{k_1}^{(1)} \otimes ... \otimes Q_{k_p}^{(1)}
+    S_\ell^{(d_x)} = \sum_{\ell \leq \|\boldsymbol{k}\|_1 \leq \ell + d_x - 1} 
+    (-1)^{\ell + d_x - \|\boldsymbol{k}\|_1 - 1} 
+    {d_x - 1 \choose \|\boldsymbol{k}\|_1 - \ell} 
+    Q_{k_1}^{(1)} \otimes ... \otimes Q_{k_{d_x}}^{(1)}
 
 for any :math:`\ell \geq 1`. 
 
 The following theorem presents the absolute error of a sparse 
 quadrature ([sullivan2015]_ page 177, eq. 9.10).
-Assume that :math:`g \in \mathcal{C}^r([0, 1]^p)` and that we use a sparse 
+Assume that :math:`g \in \mathcal{C}^r([0, 1]^{d_x})` and that we use a sparse 
 quadrature with :math:`n_\ell` nodes at level :math:`\ell`. 
 In this particular case, the probability density function :math:`f` is 
 equal to 1. 
