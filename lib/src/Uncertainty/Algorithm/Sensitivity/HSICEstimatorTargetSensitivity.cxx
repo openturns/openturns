@@ -32,12 +32,12 @@ HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity()
 
 /* Constructor */
 HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity(
-  const CovarianceModelCollection & covarianceList
+  const CovarianceModelCollection & covarianceModelCollection
   , const Sample & X
   , const Sample & Y
   , const HSICStat & estimatorType
   , const Function & filterFunction )
-  : HSICEstimatorImplementation(covarianceList, X, Y, estimatorType)
+  : HSICEstimatorImplementation(covarianceModelCollection, X, Y, estimatorType)
 {
   filterFunction_ =  filterFunction;
   /* apply filter */

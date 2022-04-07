@@ -4,10 +4,10 @@ OT_HSICEstimator_doc
 OT_HSICEstimator_setPermutationSize_doc
 %feature("docstring") OT::HSICEstimator::getPermutationSize
 OT_HSICEstimator_getPermutationSize_doc
-%feature("docstring") OT::HSICEstimator::getCovarianceList
-OT_HSICEstimator_getCovarianceList_doc
-%feature("docstring") OT::HSICEstimator::setCovarianceList
-OT_HSICEstimator_setCovarianceList_doc
+%feature("docstring") OT::HSICEstimator::getCovarianceModelCollection
+OT_HSICEstimator_getCovarianceModelCollection_doc
+%feature("docstring") OT::HSICEstimator::setCovarianceModelCollection
+OT_HSICEstimator_setCovarianceModelCollection_doc
 %feature("docstring") OT::HSICEstimator::getInputSample
 OT_HSICEstimator_getInputSample_doc
 %feature("docstring") OT::HSICEstimator::setInputSample

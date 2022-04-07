@@ -40,7 +40,7 @@ OT_HSICEstimator_getPermutationSize_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_HSICEstimator_getCovarianceList_doc
+%define OT_HSICEstimator_getCovarianceModelCollection_doc
 "Get the list of all covariance models used.
 
 Returns
@@ -48,12 +48,12 @@ Returns
 coll : CovarianceModelCollection
     The list of all covariance models used. The last one is the ouput covariance model."
 %enddef
-%feature("docstring") OT::HSICEstimatorImplementation::getCovarianceList
-OT_HSICEstimator_getCovarianceList_doc
+%feature("docstring") OT::HSICEstimatorImplementation::getCovarianceModelCollection
+OT_HSICEstimator_getCovarianceModelCollection_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_HSICEstimator_setCovarianceList_doc
+%define OT_HSICEstimator_setCovarianceModelCollection_doc
 "Set the covariance models.
 
 Parameters
@@ -61,8 +61,8 @@ Parameters
 coll : CovarianceModelCollection
     The list of all covariance models."
 %enddef
-%feature("docstring") OT::HSICEstimatorImplementation::setCovarianceList
-OT_HSICEstimator_setCovarianceList_doc
+%feature("docstring") OT::HSICEstimatorImplementation::setCovarianceModelCollection
+OT_HSICEstimator_setCovarianceModelCollection_doc
 
 // ---------------------------------------------------------------------
 

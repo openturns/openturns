@@ -5,7 +5,7 @@
 
 Parameters
 ----------
-covarianceList : list of :class:`~openturns.CovarianceModel`
+covarianceModelCollection : list of :class:`~openturns.CovarianceModel`
     List of all covariance kernels. The :math:`d` first kernels are linked to the input 
     and the last one is for the output.
 
@@ -45,16 +45,16 @@ Generate input and output samples.
 Define covariance kernels for the model inputs.
 Put them in a list.
 
->>> covarianceList = []
+>>> covarianceModelCollection = []
 >>> for i in range(3):
 ...     Xi = X.getMarginal(i)
 ...     Cov = ot.SquaredExponential(1)
 ...     Cov.setScale(Xi.computeStandardDeviation())
-...     covarianceList.append(Cov)
+...     covarianceModelCollection.append(Cov)
 
 Append the list with the covariance kernel for the model output.
 
->>> covarianceList.append(ot.SquaredExponential(Y.computeStandardDeviation()))
+>>> covarianceModelCollection.append(ot.SquaredExponential(Y.computeStandardDeviation()))
 
 Choose the statistic that will be used to estimate the HSIC indices.
 
@@ -66,7 +66,7 @@ Define a filter function to apply to the model output.
 
 Build and use the HSIC estimator for target sensitivity analysis.
 
->>> hsic = ot.HSICEstimatorTargetSensitivity(covarianceList, X, Y, estimatorType, filter)
+>>> hsic = ot.HSICEstimatorTargetSensitivity(covarianceModelCollection, X, Y, estimatorType, filter)
 >>> print(hsic.getR2HSICIndices())
 [0.184124,-0.00585434,0.0339537]"
 

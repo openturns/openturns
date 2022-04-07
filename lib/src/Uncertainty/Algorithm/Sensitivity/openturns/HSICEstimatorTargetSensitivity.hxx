@@ -50,7 +50,7 @@ public:
   HSICEstimatorTargetSensitivity();
 
   /** Constructor */
-  HSICEstimatorTargetSensitivity(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y, const HSICStat & estimatorType, const Function & filterFunction);
+  HSICEstimatorTargetSensitivity(const CovarianceModelCollection & covarianceModelCollection, const Sample & X, const Sample & Y, const HSICStat & estimatorType, const Function & filterFunction);
 
   /** Virtual constructor */
   HSICEstimatorTargetSensitivity* clone() const override;

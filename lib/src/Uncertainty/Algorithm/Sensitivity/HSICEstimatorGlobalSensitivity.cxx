@@ -32,11 +32,11 @@ HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity()
 
 /* Constructor */
 HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity(
-  const CovarianceModelCollection & covarianceList
+  const CovarianceModelCollection & covarianceModelCollection
   , const Sample & X
   , const Sample & Y,
   const HSICStat & estimatorType)
-  : HSICEstimatorImplementation(covarianceList, X, Y, estimatorType)
+  : HSICEstimatorImplementation(covarianceModelCollection, X, Y, estimatorType)
 {
   // Nothing to do
 }
