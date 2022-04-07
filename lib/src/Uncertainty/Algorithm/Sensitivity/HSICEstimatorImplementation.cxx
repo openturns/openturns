@@ -425,13 +425,12 @@ Sample HSICEstimatorImplementation::shuffledCopy(const Sample & inSample) const
     see https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
   */
   Sample sampleOut(inSample);
-  Point ptmp(sampleOut.getDimension());
   for(UnsignedInteger i = sampleOut.getSize() - 1; i > 0; --i)
   {
     const UnsignedInteger j = RandomGenerator::IntegerGenerate(i + 1);
-    ptmp = sampleOut[i];
-    sampleOut[i] = sampleOut[j];
-    sampleOut[j] = ptmp;
+    // swap i & j rows
+    for (UnsignedInteger d = 0; d < sampleOut.getDimension(); ++d)
+        std::swap(sampleOut(j, d), sampleOut(i, d));
   }
   return sampleOut;
 }
