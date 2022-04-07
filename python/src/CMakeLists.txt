@@ -980,6 +980,8 @@ ot_add_python_module(simulation simulation_module.i
                       HSICEstimatorGlobalSensitivity.i HSICEstimatorGlobalSensitivity_doc.i.in
                       HSICEstimatorTargetSensitivity.i HSICEstimatorTargetSensitivity_doc.i.in
                       UncertaintySimulationTemplateDefs.i
+                      NAISResult.i NAISResult_doc.i.in
+                      NAIS.i NAIS_doc.i.in
                     )
 
 ot_add_python_module(stattests stattests_module.i

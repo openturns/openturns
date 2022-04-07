@@ -48,5 +48,7 @@
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/ExpectationSimulationAlgorithm.hxx"
 #include "openturns/SobolSimulationAlgorithm.hxx"
+#include "openturns/NAISResult.hxx"
+#include "openturns/NAIS.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

@@ -173,6 +173,8 @@ Bibliography
 .. [minka2012] Thomas P. Minka,
     *Estimating a Dirichlet distribution*, Microsoft Research report, 2000 (revised 2003, 2009, 2012).
     `pdf <http://research.microsoft.com/en-us/um/people/minka/papers/dirichlet/minka-dirichlet.pdf>`__
+.. [morio2015] Morio J., Balesdent M., *Estimation of Rare Event Probabilities in Complex Aerospace and Other Systems*,
+    A Practical Approach, Elsevier, 2015.
 .. [morris1995] D. Morris and J. Mitchell. *Exploratory designs for
     computational experiments.*
     Journal of Statistical Planning and Inference, 43 :381-402, 1995.
@@ -261,5 +263,4 @@ Bibliography
     Analysis*, Second Edition, Springer-Verlag, 1993.
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
-    First Edition, Chapman & Hall, 1994.
-
+    First Edition, Chapman & Hall, 1994.   
