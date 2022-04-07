@@ -56,7 +56,7 @@ function :math:`g` in order to have :math:`y_1^{(k)}=g(\mathbf{x}_1^{(k)}),...,y
 
     h_{k}(\mathbf{x})=\frac{1}{k N I_k \det\left(B_{k+1}\right)}\sum_{j=1}^{k}\sum_{i=1}^{N}  w_{j}(\mathbf{x}_i^{(j)})K_d\left(B_{k+1}^{-1}\left(\mathbf{x}-\mathbf{x}_i^{(j)}\right)\right)
 
-where :math:`K_d` is the standard :math:`d`-dimensional normal distribution with zero mean and diagonal covariance matrix,
+where :math:`K_d` is the PDF of the standard :math:`d`-dimensional normal distribution,
 :math:`B_{k+1}=\text{diag}(b^1_{k+1},...,b^d_{k+1})` 
 and :math:`w_j={\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{h_0(\mathbf{x}_i^{(j)})}{h_{j-1}(\mathbf{x}_i^{(j)})}`. 
 The coefficients of the matrix :math:`B_{k+1}` can be approximated (Silverman Rule) or postulated according to the AMISE 
