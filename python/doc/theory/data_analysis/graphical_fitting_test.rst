@@ -8,7 +8,7 @@ random vector :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It
 seeks to verify the compatibility between a sample of data
 :math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}` and a
 candidate probability distribution previous chosen.
-The use of graphical tools allows to answer this question in the one
+The use of graphical tools allows one to answer this question in the one
 dimensional case :math:`n_X =1`, and with a continuous distribution.
 The QQ-plot, and henry line tests are defined in the case to
 :math:`n_X = 1`. Thus we denote :math:`\vect{X} = X^1 = X`. The first

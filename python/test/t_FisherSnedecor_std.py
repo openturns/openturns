@@ -8,7 +8,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = FisherSnedecor(5.5, 10.5)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

@@ -89,7 +89,7 @@ public:
 
 private:
 
-  /** The functional chaos result tht allows to build the random vector */
+  /** The functional chaos result that allows one to build the random vector */
   FunctionalChaosResult functionalChaosResult_;
 
 }; /* class FunctionalChaosSobolIndices */

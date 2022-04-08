@@ -8,9 +8,9 @@ Parameters
 kernel : :class:`~openturns.Distribution`, optional
     Univariate distribution of the kernel that will be used. By default, the standard Normal distribution is used. 
 binned : bool, optional
-    Activates bining mecanism only in the univariate or bivariate cases. It allows to speed up the manipulation of the density function of the resulting distribution.  By default, the mecanism is activated.
+    Activates bining mechanism only in the univariate or bivariate cases. It allows one to speed up the manipulation of the density function of the resulting distribution.  By default, the mechanism is activated.
 binNumber : int, :math:`binNumber \geq 2`, optional
-    Indicates the number of bins used by the bining mecanism. By default, OpenTURNS uses the values stored in the *ResourceMap*.
+    Indicates the number of bins used by the bining mechanism. By default, OpenTURNS uses the values stored in the *ResourceMap*.
 boundaryCorrection : bool, optional
     Activates the boundary correction using the mirroring technique.
     By default, the correction is not provided.
@@ -96,7 +96,7 @@ Parameters
 sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
 bandwidth : :class:`~openturns.Point`
-    Contains the bandwith in each direction.
+    Contains the bandwidth in each direction.
 
 Returns
 -------
@@ -125,7 +125,7 @@ Parameters
 sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
 bandwidth : :class:`~openturns.Point`
-    Contains the bandwith in each direction.
+    Contains the bandwidth in each direction.
 
 Returns
 -------
@@ -154,7 +154,7 @@ Parameters
 sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
 bandwidth : :class:`~openturns.Point`
-    Contains the bandwith in each direction.
+    Contains the bandwidth in each direction.
 
 Returns
 -------
@@ -183,7 +183,7 @@ Parameters
 sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
 bandwidth : :class:`~openturns.Point`, optional
-    Contains the bandwith in each direction. If not specified, the bandwith is calculated using the mixed rule from data.
+    Contains the bandwidth in each direction. If not specified, the bandwidth is calculated using the mixed rule from data.
 
 Returns
 -------
@@ -229,12 +229,12 @@ Compare the PDFs:
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::getBandwidth
-"Accessor to the bandwith used in the kernel smoothing.
+"Accessor to the bandwidth used in the kernel smoothing.
 
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwith used in each direction. 
+    Bandwidth used in each direction.
 "
 
 // ---------------------------------------------------------------------
@@ -340,22 +340,22 @@ automaticUpperBound : bool
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::computeSilvermanBandwidth
-"Compute the bandwith according to the Silverman rule.
+"Compute the bandwidth according to the Silverman rule.
 
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwith which components are evaluated according to the Silverman rule assuming a normal distribution. The bandwith uses a robust estimate of the sample standard deviation, based on the interquartile range (rather than the standard deviation of the distribution and the sample). This method can manage a multivariate sample and produces a multivariate bandwidth.
+    Bandwidth which components are evaluated according to the Silverman rule assuming a normal distribution. The bandwidth uses a robust estimate of the sample standard deviation, based on the interquartile range (rather than the standard deviation of the distribution and the sample). This method can manage a multivariate sample and produces a multivariate bandwidth.
 "
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::computePluginBandwidth
-"Compute the bandwith according to the plugin rule.
+"Compute the bandwidth according to the plugin rule.
 
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwith wich components are evaluated according to the plugin rule. 
+    Bandwidth which components are evaluated according to the plugin rule.
 
 Notes
 -----
@@ -374,12 +374,12 @@ computation time."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::computeMixedBandwidth
-"Compute the bandwith according to a mixed rule.
+"Compute the bandwidth according to a mixed rule.
 
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwith wich components are evaluated according to a mixed rule.
+    Bandwidth which components are evaluated according to a mixed rule.
 
 Notes
 ----- 

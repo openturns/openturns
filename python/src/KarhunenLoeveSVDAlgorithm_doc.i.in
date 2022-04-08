@@ -32,7 +32,7 @@ The SVD approach is a particular case of the quadrature approach (see :class:`~o
 
     \vect{\theta}_p^j(\vect{s})= \left[\mat{C}(\vect{s}, \vect{s}_p) \right]_{:, j}
 
-The SVD approach is used when the covariance function is not explicitely known but only through :math:`K` fields of the associated stochastic process :math:`\vect{X}`: :math:`(\vect{X}_1, \dots, \vect{X}_K)`.
+The SVD approach is used when the covariance function is not explicitly known but only through :math:`K` fields of the associated stochastic process :math:`\vect{X}`: :math:`(\vect{X}_1, \dots, \vect{X}_K)`.
 
 It consists in :
 

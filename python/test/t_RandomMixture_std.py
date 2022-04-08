@@ -24,7 +24,7 @@ references.append(ot.Gamma(3.0, 1.0, 0.0))
 print("testCases=", testCases)
 print("references=", references)
 for testIndex in range(len(testCases)):
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = ot.RandomMixture(testCases[testIndex])
     distribution.setBlockMin(5)
     distribution.setBlockMax(20)

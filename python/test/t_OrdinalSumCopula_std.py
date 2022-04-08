@@ -6,7 +6,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 R = ot.CorrelationMatrix(2)
 R[0, 1] = 0.5
 collection = [ot.FrankCopula(3.0), ot.NormalCopula(R), ot.ClaytonCopula(2.0)]

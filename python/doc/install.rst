@@ -44,7 +44,7 @@ so when a full upgrade is needed our advice is to create a new environment from 
 Alternatively, you can download the `otconda <https://github.com/openturns/otconda>`_ bundle
 containing the library and its modules that allows for an offline installation.
 Note that pre-releases are published on conda-forge like regular releases, so
-if you want to stick to the stable version you will have to explicitely specify
+if you want to stick to the stable version you will have to explicitly specify
 the required version, eg :code:`conda install openturns=1.16`.
 
 Windows

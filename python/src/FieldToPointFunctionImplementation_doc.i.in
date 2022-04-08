@@ -37,7 +37,7 @@ Examples
 
 Use the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` to create a function that acts on fields of input dimension :math:`n=1` and input dimension :math:`d=2`  and returns their spatial mean vector of dimension :math:`d'=2`.
 
-Using the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` allows to define a persistent state between the evaluations of the function.
+Using the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` allows one to define a persistent state between the evaluations of the function.
 
 >>> class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
 ...     def __init__(self):

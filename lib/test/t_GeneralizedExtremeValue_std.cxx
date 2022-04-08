@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Collection<GeneralizedExtremeValue> all_cases(0);
     all_cases.add(GeneralizedExtremeValue(2.0, 1.5, -0.15));
     all_cases.add(GeneralizedExtremeValue(2.0, 1.5,  0.0));

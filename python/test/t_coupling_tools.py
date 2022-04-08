@@ -317,7 +317,7 @@ def check_get():
     remove(result_file)
 
     # Y = ct.get(outfile="output.py", tokens=["@Y1=", "@Y2="],
-    #                       occurence=[0, 0], col=[0, 3], line=[0, 2])
+    #                       occurrence=[0, 0], col=[0, 3], line=[0, 2])
 
 
 def check_get_token_escaped():

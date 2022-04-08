@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Epanechnikov()
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

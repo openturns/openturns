@@ -210,7 +210,7 @@ Solving the Non Linear Gaussian Calibration Problem
 The implementation of the resolution of the gaussian non linear calibration 
 problem involves the Cholesky decomposition of the covariance matrices :math:`B` 
 and :math:`R`. 
-This allows to transform the sum of two Mahalanobis distances into a single 
+This allows one to transform the sum of two Mahalanobis distances into a single
 euclidian norm. 
 This leads to a classical non linear least squares problem. 
 

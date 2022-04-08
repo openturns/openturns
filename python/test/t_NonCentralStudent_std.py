@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = NonCentralStudent(7.2, 4.8, -3.7)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

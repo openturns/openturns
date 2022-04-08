@@ -17,7 +17,7 @@ Compare covariance models
 # The anisotropic squared exponential model
 # -----------------------------------------
 #
-# The `SquaredExponential` class allows to define covariance models :
+# The `SquaredExponential` class allows one to define covariance models :
 #
 # * :math:`\sigma\in\mathbb{R}` is the amplitude parameter,
 # * :math:`\boldsymbol{\theta}\in\mathbb{R}^d` is the scale.

@@ -328,7 +328,7 @@ public:
     return coll__.empty();
   }
 
-  /** find returns the index of the first occurence of the value */
+  /** find returns the index of the first occurrence of the value */
   UnsignedInteger find(const T & val) const
   {
     return std::find(coll__.begin(), coll__.end(), val) - coll__.begin();

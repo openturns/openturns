@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     //    checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 3;
     IndependentCopula copula(dim);
     fullprint << "Copula " << copula << std::endl;

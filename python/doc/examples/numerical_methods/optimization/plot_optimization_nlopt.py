@@ -23,7 +23,7 @@ for algo in ot.NLopt.GetAlgorithmNames():
 # More details on NLopt algorithms are available `here <https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/>`_ .
 
 # %%
-# The optimization algorithm is instanciated from the NLopt name
+# The optimization algorithm is instantiated from the NLopt name
 algo = ot.NLopt('LD_SLSQP')
 
 # %%

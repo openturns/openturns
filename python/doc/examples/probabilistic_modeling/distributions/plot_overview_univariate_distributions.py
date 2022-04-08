@@ -11,7 +11,7 @@ Overview of univariate distribution management
 # - the distributions with several parametrizations (particularly with the `Beta` distribution),
 # - the arithmetic of distributions and functions of distributions,
 # - the `CompositeDistribution` for more general functions,
-# - how to define our customized distibution with `PythonDistribution` if the distribution do not exist.
+# - how to define our customized distribution with `PythonDistribution` if the distribution do not exist.
 
 # %%
 import openturns as ot

@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Collection<Gamma> allDistributions(0);
     allDistributions.add(Gamma(1.5, 2.5, -0.5));
     allDistributions.add(Gamma(15.0, 2.5));

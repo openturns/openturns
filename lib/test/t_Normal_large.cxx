@@ -33,7 +33,7 @@ int main(int, char *[])
   try
   {
     // Big test case for correlated components
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 4;
     Point meanPoint(dim, 1.0);
     Point sigma(dim, 1.0);

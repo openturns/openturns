@@ -37,7 +37,7 @@ class OT_API PostAnalyticalControlledImportanceSampling :
 
   CLASSNAME
 public:
-  /** for save/load mecanism */
+  /** for save/load mechanism */
   PostAnalyticalControlledImportanceSampling();
 
   /** Constructor with parameters */

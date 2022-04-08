@@ -80,7 +80,7 @@ private:
       // Nothing to do
     };
 
-    // This method allows to compute <qN, qN>
+    // This method allows one to compute <qN, qN>
     Point kernelSym(const Point & point) const
     {
       const Scalar pdf = weight_.computePDF(point);
@@ -91,7 +91,7 @@ private:
       return result;
     };
 
-    // This method allows to compute <qN, qN> and <x.qN, qN>
+    // This method allows one to compute <qN, qN> and <x.qN, qN>
     Point kernelGen(const Point & point) const
     {
       const Scalar pdf = weight_.computePDF(point);

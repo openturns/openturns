@@ -249,7 +249,7 @@ solution : :class:`~openturns.Point` or :class:`~openturns.Matrix`
 Notes
 -----
 This will handle both matrices and vectors. Note that you'd better type
-explicitely the matrix if it has some properties that could simplify the
+explicitly the matrix if it has some properties that could simplify the
 resolution (see :class:`~openturns.TriangularMatrix`).
 
 This uses LAPACK'S `DGESV <http://www.netlib.org/lapack/lapack-3.1.1/html/dgesv.f.html>`_

@@ -56,7 +56,7 @@ public:
   /** Virtual constructor */
   KernelSmoothing * clone() const override;
 
-  /** Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
+  /** Build a Normal kernel mixture based on the given sample. If no bandwidth has already been set, Silverman's rule is used */
   using DistributionFactoryImplementation::build;
   Distribution build(const Sample & sample) const override;
 
@@ -117,7 +117,7 @@ private:
 
   void setBandwidth(const Point & bandwidth) const;
 
-  // Bandwith of the smoothing
+  // Bandwidth of the smoothing
   mutable Point bandwidth_;
 
   // 1D kernel for kernel product

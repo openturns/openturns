@@ -7,7 +7,7 @@ TESTPREAMBLE()
 
 try:
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     meanPoint = Point(1)
     meanPoint[0] = 1.0
     sigma = Point(1)

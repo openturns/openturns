@@ -33,7 +33,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     CovarianceMatrix cov(1);
     Wishart distribution(cov, 3.0);
     fullprint << "Distribution " << distribution << std::endl;

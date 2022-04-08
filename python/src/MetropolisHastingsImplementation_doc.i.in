@@ -115,7 +115,7 @@ OT_MetropolisHastings_computeLogPosterior_doc
 
 Returns
 -------
-lenght : int
+burnin : int
     Length of the burn-in period, that is the number of first iterates of the
     MCMC chain which will be thrown away when generating the sample."
 %enddef
@@ -129,7 +129,7 @@ OT_MetropolisHastings_getBurnIn_doc
 
 Parameters
 ----------
-lenght : int
+burnin : int
     Length of the burn-in period, that is the number of first iterates of the
     MCMC chain which will be thrown away when generating the sample."
 %enddef

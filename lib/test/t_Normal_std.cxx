@@ -46,7 +46,7 @@ int main(int, char *[])
   setRandomGenerator();
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     for (UnsignedInteger dim = 1; dim <= 4; dim++)
     {
       fullprint << "\n*** Case " << dim << " ***\n" << std::endl;

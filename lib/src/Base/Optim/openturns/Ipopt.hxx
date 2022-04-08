@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class Ipopt
- * Ipopt allows to solve a MINLP optimization problem, including:
+ * Ipopt allows one to solve a MINLP optimization problem, including:
  * + objective functions of continuous, discrete or binary variables
  * + multiple equality, inequality and bounds constraints
  */

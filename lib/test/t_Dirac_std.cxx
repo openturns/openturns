@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     // 1D tests
     {
       Dirac distribution(0.7);

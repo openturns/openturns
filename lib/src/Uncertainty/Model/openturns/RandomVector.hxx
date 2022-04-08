@@ -91,13 +91,13 @@ public:
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;
 
-  /** This method allows to access the antecedent RandomVector in case of a composite RandomVector */
+  /** This method allows one to access the antecedent RandomVector in case of a composite RandomVector */
   RandomVector getAntecedent() const;
 
-  /** This method allows to access the Function in case of a composite RandomVector */
+  /** This method allows one to access the Function in case of a composite RandomVector */
   Function getFunction() const;
 
-  /** This method allows to access the Distribution in case of a usual RandomVector */
+  /** This method allows one to access the Distribution in case of a usual RandomVector */
   Distribution getDistribution() const;
 
   /** Operator accessor */

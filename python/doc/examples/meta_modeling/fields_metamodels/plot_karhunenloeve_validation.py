@@ -32,7 +32,7 @@ algo.run()
 klresult = algo.getResult()
 
 # %%
-# Instanciate the validation service.
+# Instantiate the validation service.
 validation = ot.KarhunenLoeveValidation(processSample, klresult)
 
 # %%

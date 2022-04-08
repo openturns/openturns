@@ -201,7 +201,7 @@ view = viewer.View(graph)
 # We observe that the negative residuals occur with nearly the same frequency of the positive residuals: this is a first   sign of good quality. Furthermore, the residuals are most of the times contained in the [-1,1] interval, which is a sign of quality given the amplitude of the output (approximately from 5 to 25 cm).
 
 # %%
-# The `drawValidation` method allows to compare the observed outputs and the metamodel outputs.
+# The `drawValidation` method allows one to compare the observed outputs and the metamodel outputs.
 
 # %%
 graph = val.drawValidation()

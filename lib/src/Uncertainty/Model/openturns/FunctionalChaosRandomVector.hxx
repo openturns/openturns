@@ -77,7 +77,7 @@ private:
   /** Flag to tell if the covariance has already been computed */
   mutable Bool isAlreadyComputedCovariance_;
 
-  /** The functional chaos result tht allows to build the random vector */
+  /** The functional chaos result that allows one to build the random vector */
   FunctionalChaosResult functionalChaosResult_;
 
 }; /* class FunctionalChaosRandomVector */

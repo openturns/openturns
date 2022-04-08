@@ -40,7 +40,7 @@ Use the class :class:`~openturns.OpenTURNSPythonPointToFieldFunction` to create 
     - the mesh that discretizes :math:`[0, 1]` into 10 regular intervalls of length 0.1 (:math:`n=1`)
     - the value associated to the vertex number :math:`i` is :math:`\vect{v}'_i = i*\vect{v}` (:math:`d'=2`)
 
-Using the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` allows to define a persistent state between the evaluations of the function.
+Using the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` allows one to define a persistent state between the evaluations of the function.
 
 >>> class FUNC(ot.OpenTURNSPythonPointToFieldFunction):
 ...     def __init__(self):

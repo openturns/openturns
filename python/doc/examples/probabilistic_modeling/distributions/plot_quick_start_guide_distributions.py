@@ -143,7 +143,7 @@ view = viewer.View(graph)
 # ----------------------
 
 # %%
-# The `NormalCopula` class allows to create a Gaussian copula. Such a copula is defined by its correlation matrix.
+# The `NormalCopula` class allows one to create a Gaussian copula. Such a copula is defined by its correlation matrix.
 
 # %%
 R = ot.CorrelationMatrix(2)

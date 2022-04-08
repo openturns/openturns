@@ -72,7 +72,7 @@ public:
   void load(Advocate & adv) override;
 
 private:
-  /** The kriging result tht allows to build the random vector */
+  /** The kriging result that allows one to build the random vector */
   KrigingResult krigingResult_;
 
   /** The points on which we seek the realizations */

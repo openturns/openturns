@@ -60,7 +60,7 @@ StrongMaximumTest::StrongMaximumTest()
 
 /*
  * @class StrongMaximumTest
- * StrongMaximumTest allows to validate a design point
+ * StrongMaximumTest allows one to validate a design point
  */
 
 /* Standard constructor */

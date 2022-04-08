@@ -4,7 +4,7 @@ Estimate a flooding probability
 """
 # %%
 #
-# In this example, we estimate the probability that the ouput of a function exceeds a given threshold with the FORM method. We consider the :ref:`flooding model <use-case-flood-model>`.
+# In this example, we estimate the probability that the output of a function exceeds a given threshold with the FORM method. We consider the :ref:`flooding model <use-case-flood-model>`.
 
 # %%
 # Define the model

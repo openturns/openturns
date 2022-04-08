@@ -94,7 +94,7 @@ void CMinpack::checkProblem(const OptimizationProblem & problem) const
 
 void CMinpack::Transform(Point & x, int n, const Interval & bounds, Point & jacfac)
 {
-  // this transformation allows to handle box constraints
+  // this transformation allows one to handle box constraints
   // http://apps.jcns.fz-juelich.de/doku/sc/lmfit:constraints
 
   // u = xmiddle + xwidth * tanh(x)

@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Triangular(-0.5, 1.5, 2.5)
     print("Distribution ",  distribution)
 

@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * @brief The class implements the concept of comparison operator defined in ComparisonOperator.
  *
- * This class is abstract so it can not be instanciated. It must be derived.
+ * This class is abstract so it can not be instantiated. It must be derived.
  * @see ComparisonOperator
  */
 class OT_API ComparisonOperatorImplementation

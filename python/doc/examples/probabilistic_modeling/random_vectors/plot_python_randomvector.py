@@ -48,7 +48,7 @@ class RVEC(ot.PythonRandomVector):
 
 
 # %%
-# Instanciate our distribution
+# Instantiate our distribution
 randomVector = ot.RandomVector(RVEC())
 
 # %%

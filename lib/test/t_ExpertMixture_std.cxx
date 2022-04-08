@@ -45,7 +45,7 @@ int main(int, char *[])
     mean[0] = 1.0;
     aCollection.add( Normal(mean, Point(2, 1.0), R) );
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Mixture distribution(aCollection, Point(aCollection.getSize(), 1.0));
 
     // Create a mixture classifier

@@ -623,7 +623,7 @@ if (BUILD_PYTHON)
     # this name was chosen in common with pyagrum for otagrum
     set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
 
-    # ptr conversion argument to handle None correctly in swig 4.x, this just allows to pass compilation with swig 3.x
+    # ptr conversion argument to handle None correctly in swig 4.x, this just allows one to pass compilation with swig 3.x
     if (SWIG_VERSION VERSION_LESS 4)
       list (APPEND OPENTURNS_SWIG_DEFINITIONS -DSWIG_POINTER_NO_NULL=0x0)
     endif ()

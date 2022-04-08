@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Bonmin allows to describe a MINLP optimization algorithm
+ *  @brief Bonmin allows one to describe a MINLP optimization algorithm
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *

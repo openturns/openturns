@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Bonmin allows to describe a MINLP optimization algorithm
+ *  @brief Bonmin allows one to describe a MINLP optimization algorithm
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class Bonmin
- * Bonmin allows to solve a MINLP optimization problem, including:
+ * Bonmin allows one to solve a MINLP optimization problem, including:
  * + objective functions of continuous, discrete or binary variables
  * + multiple equality, inequality and bounds constraints
  */

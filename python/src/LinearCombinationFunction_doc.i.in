@@ -1,7 +1,7 @@
 %feature("docstring") OT::LinearCombinationFunction
 "Linear combination of functions.
 
-Allows to create a function which is the linear combination of functions
+Allows one to create a function which is the linear combination of functions
 with scalar weights.
 
 :math:`functionCollection  = (f_1, \hdots, f_N)`

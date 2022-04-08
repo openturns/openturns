@@ -164,7 +164,7 @@ fft : a :class:`~openturns.FFT`
 Returns
 -------
 k : positive int
-    Size of each block the sample is splitted into, this allows to save space
+    Size of each block the sample is split into, this allows one to save space
     while allowing multithreading, when available we recommend to use
     the number of available CPUs, set by default to 1."
 
@@ -176,6 +176,6 @@ k : positive int
 Parameters
 ----------
 k : positive int
-    Size of each block the sample is splitted into, this allows to save space
+    Size of each block the sample is split into, this allows one to save space
     while allowing multithreading, when available we recommend to use
     the number of available CPUs, set by default to :math:`1`."

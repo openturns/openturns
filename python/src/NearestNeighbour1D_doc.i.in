@@ -1,7 +1,7 @@
 %feature("docstring") OT::NearestNeighbour1D
 "Partition tree data structure for 1D points.
 
-Allows to store and search 1D points fast, by using
+Allows one to store and search 1D points fast, by using
 dichotomy on sorted points.
 
 Parameters

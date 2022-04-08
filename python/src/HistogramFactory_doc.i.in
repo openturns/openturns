@@ -130,7 +130,7 @@ and let :math:`IQR` be the inter-quartiles range:
     IQR = Q_3 - Q_1.
     \end{aligned}
 
-In this case, the bandwidth is the robust estimator of the AMISE-optimal bandwith, 
+In this case, the bandwidth is the robust estimator of the AMISE-optimal bandwidth,
 known as Freedman and Diaconis rule [freedman1981]_:
 
 .. math::

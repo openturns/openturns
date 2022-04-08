@@ -165,7 +165,7 @@ def computeCrossingProbability_FORM(b, t, mu_S, covariance, R, delta_t):
 # %%
 
 # %%
-# First, fix some parameters: :math:`(\mu_R, \sigma_R, \mu_S, \sigma_S, \Delta t, T, b)` and the covariance model wich is the Squared Exponential model.
+# First, fix some parameters: :math:`(\mu_R, \sigma_R, \mu_S, \sigma_S, \Delta t, T, b)` and the covariance model which is the Squared Exponential model.
 # Be careful to the parameter  :math:`\Delta t` which is of great importance: if it is too small, the simulation methods have problems to converge because the correlation rate is too high between the instants :math:`t` and :math:`t+\Delta t`.
 # We advice to take :math:`\Delta t \simeq 10^{-1}`.
 #

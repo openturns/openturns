@@ -6,7 +6,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.Frechet(1.5, 6.0, -1.0)
 print("Distribution ", distribution)
 

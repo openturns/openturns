@@ -218,7 +218,7 @@ Reproducing this sampling experiment a large number of times would allow
 to get the distribution of the estimated parameter :math:`\hat{\vect{\theta}}`. 
 In practice, we only have one single sample of :math:`n` observations. 
 If this sample is large enough and correctly represents the variability 
-of the observations, the bootstrap method allows to generate 
+of the observations, the bootstrap method allows one to generate
 observations resamples, which, in turn, allow to get a sample of 
 :math:`\hat{\vect{\theta}}`. 
 An approximate distribution of :math:`\hat{\vect{\theta}}` can then be computed 

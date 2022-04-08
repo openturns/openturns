@@ -43,11 +43,11 @@ int main(int, char *[])
     checkClassWithClassName<TestObject>();
 
     {
-      // Instanciate one distribution object
+      // Instantiate one distribution object
       Multinomial distribution;
     }
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Multinomial distribution(5, Point(3, 0.25));
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;

@@ -33,7 +33,7 @@ int main(int, char *[])
   try
   {
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 1;
     Point meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
@@ -42,7 +42,7 @@ int main(int, char *[])
     CorrelationMatrix R = IdentityMatrix(dim);
     Normal distribution1(meanPoint, sigma, R);
 
-    // Instanciate another distribution object
+    // Instantiate another distribution object
     meanPoint[0] = -1.5;
     sigma[0] = 4.0;
     Normal distribution2(meanPoint, sigma, R);

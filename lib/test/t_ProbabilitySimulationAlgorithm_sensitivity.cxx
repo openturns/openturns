@@ -76,7 +76,7 @@ int main(int, char *[])
     ProbabilitySimulationResult result(myAlgo.getResult());
     fullprint << "MonteCarlo result=" << result << std::endl;
 
-    /* Compute sensitivity informations */
+    /* Compute sensitivity information */
     fullprint << "mean point in event domain=" << result.getMeanPointInEventDomain() << std::endl;
     fullprint << "importance factors=" << result.getImportanceFactors() << std::endl;
 

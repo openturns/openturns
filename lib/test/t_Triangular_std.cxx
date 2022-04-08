@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Triangular distribution(-0.5, 1.5, 2.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;

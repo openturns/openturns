@@ -53,7 +53,7 @@ try:
     result = myAlgo.getResult()
     print("MonteCarlo result=", result)
 
-    # Compute sensitivity informations
+    # Compute sensitivity information
     print("mean point in event domain=", result.getMeanPointInEventDomain())
     print("importance factors=", result.getImportanceFactors())
 

@@ -103,7 +103,7 @@ int main(int, char *[])
 
     UnsignedInteger dim = aCollection.getSize();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     ComposedDistribution distribution(aCollection, IndependentCopula(dim));
     // Test for sampling
     UnsignedInteger size = 10000;

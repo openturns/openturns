@@ -100,8 +100,8 @@ print('Limit state calls =', N_SS)
 # check that the event sample is right
 inputEventSample = mySS.getEventInputSample()
 outputEventSample = mySS.getEventOutputSample()
-ouputG = limitState(inputEventSample)
-diffSample = ouputG - outputEventSample
+outputG = limitState(inputEventSample)
+diffSample = outputG - outputEventSample
 ott.assert_almost_equal(diffSample.computeMean(), [0.0])
 
 # null variance case

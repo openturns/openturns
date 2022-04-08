@@ -31,7 +31,7 @@ int main(int, char *[])
   setRandomGenerator();
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 2;
     AliMikhailHaqCopula copula(0.5);
     copula.setName("a aliMikhailHaq copula");

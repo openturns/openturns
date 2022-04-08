@@ -43,7 +43,7 @@ public:
   typedef Collection<Scalar> ScalarCollection;
   typedef Distribution::Implementation            Implementation;
 
-  /** for save/load mecanism */
+  /** for save/load mechanism */
   DirectionalSampling();
 
   /** Constructor with parameters */

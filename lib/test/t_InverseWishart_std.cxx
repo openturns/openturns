@@ -33,7 +33,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     CovarianceMatrix cov(1);
     InverseWishart distribution(cov, 5.0);
     fullprint << "Distribution " << distribution << std::endl;

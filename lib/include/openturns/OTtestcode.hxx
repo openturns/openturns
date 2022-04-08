@@ -187,7 +187,7 @@ void showClassName()
 /**
  * @fn checkConstructorAndDestructor()
  *
- * Try to instanciate an object and delete it. This method tests the
+ * Try to instantiate an object and delete it. This method tests the
  * default constructor and the destructor ot the class.
  */
 template <class T>
@@ -204,7 +204,7 @@ void checkConstructorAndDestructor()
 /**
  * @fn checkCopyConstructor()
  *
- * Try to instanciate an object and copy-construct it.
+ * Try to instantiate an object and copy-construct it.
  */
 template <class T>
 void checkCopyConstructor()

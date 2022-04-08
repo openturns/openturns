@@ -14,7 +14,7 @@ startingSample : 2-d sequence of float
 
 Notes
 -----
-A global number of evaluations can be explicitely set,
+A global number of evaluations can be explicitly set,
 in that case all starting points might not be used depending on the number
 of evaluations allocated to the internal solver.
 

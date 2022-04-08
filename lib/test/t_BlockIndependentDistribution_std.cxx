@@ -83,7 +83,7 @@ int main(int, char *[])
       fullprint << "Quantile (ref)=" << ref.computeQuantile( 0.5 ) << std::endl;
       fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
     }
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     CorrelationMatrix R(3);
     R(0, 1) = 0.5;
     R(0, 2) = 0.25;

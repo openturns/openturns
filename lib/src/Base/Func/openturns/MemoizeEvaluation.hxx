@@ -135,7 +135,7 @@ public:
 
 private:
 
-  /** An history mechanism that allows to remember all the input/output associations including duplicate calls */
+  /** An history mechanism that allows one to remember all the input/output associations including duplicate calls */
   mutable HistoryStrategy inputStrategy_;
   mutable HistoryStrategy outputStrategy_;
 

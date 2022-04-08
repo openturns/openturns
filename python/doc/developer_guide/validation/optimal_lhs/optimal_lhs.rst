@@ -18,7 +18,7 @@ Preliminary validations
 For specific designs, criteria values (:math:`C_2`, mindist and :math:`\phi_{p}`) obtained with openturns module are compared with values computed by the DiceDesign R package.
 Those scripts are located in the *validation* folder of this module.  Comparisons are very good, absolute error is less than :math:`10^{-13}`
 
-As mentionned previously, :math:`C_2` criterion can be computed efficiently when a small perturbation is performed on design.
+As mentioned previously, :math:`C_2` criterion can be computed efficiently when a small perturbation is performed on design.
 This specific method is compared to the DiceDesign's ones: absolute error is less or equal to :math:`10^{-10}`.
 
 Note that for :math:`\phi_p` criterion, DiceDesign computes the new value after a permutation without taking into account the oldest criterion.

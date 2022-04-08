@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Sample x(4, 1);
     x[0][0] = 1.0;
     x[1][0] = 2.0;

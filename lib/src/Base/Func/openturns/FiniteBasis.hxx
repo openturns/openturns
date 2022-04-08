@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class FiniteBasis
  *
- * Allows to use a NMF collection as a Basis, required to use chaos algo, used in TrendFactory
+ * Allows one to use a NMF collection as a Basis, required to use chaos algo, used in TrendFactory
  */
 
 class OT_API FiniteBasis

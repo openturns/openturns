@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Binomial distribution(15, 0.7);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;

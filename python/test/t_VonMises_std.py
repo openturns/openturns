@@ -6,7 +6,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.VonMises(-0.5, 1.5)
 print("Distribution ", distribution)
 

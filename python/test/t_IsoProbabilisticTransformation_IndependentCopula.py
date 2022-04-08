@@ -36,7 +36,7 @@ try:
 
     dim = aCollection.getSize()
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = ComposedDistribution(aCollection, IndependentCopula(dim))
     # Test for sampling
     size = 10000

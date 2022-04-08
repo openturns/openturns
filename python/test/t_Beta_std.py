@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Beta(2.0, 3.0, -1.0, 2.0)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

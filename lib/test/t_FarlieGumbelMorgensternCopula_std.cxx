@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 2;
     FarlieGumbelMorgensternCopula copula(0.7);
     copula.setName("a farlieGumbelMorgenstern copula");

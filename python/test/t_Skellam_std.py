@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Skellam(10.0, 5.0)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

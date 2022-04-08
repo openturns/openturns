@@ -5,7 +5,7 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 x = [[1.0], [2.0], [3.0], [3.0]]
 p = [0.3, 0.1, 0.6, 0.6]
 distribution = ot.UserDefined(x, p)

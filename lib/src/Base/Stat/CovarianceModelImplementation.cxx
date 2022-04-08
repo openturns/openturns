@@ -350,7 +350,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
 
     if (outputDimension_ == 1)
     {
-      // The stationary property of this model allows to optimize the discretize operation
+      // The stationary property of this model allows one to optimize the discretize operation
       // over a regular time grid: the large covariance matrix is block-diagonal
       // Fill the matrix by block-diagonal
       // The main diagonal has a specific treatment as only its lower triangular part

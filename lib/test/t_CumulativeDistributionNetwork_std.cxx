@@ -42,7 +42,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     BipartiteGraph graph(2, 2);
     graph(0, 0) = 0;
     graph(0, 1) = 1;

@@ -223,7 +223,7 @@ Append an existing sample with a single point.
 2 : [ 0 0 ]
 3 : [ 1 2 ]
 
-Append an existing sample with an other sample.
+Append an existing sample with another sample.
 
 >>> sample.add(ot.Sample(2, [2.0, 1.0]))
 >>> print(sample)
@@ -1223,7 +1223,7 @@ index : int, :math:`0 \leq i < m`
 Returns
 -------
 remainder_sample : :class:`~openturns.Sample`
-    The remainder sample (everyting that comes after the truncation index).
+    The remainder sample (everything that comes after the truncation index).
 
 Examples
 --------

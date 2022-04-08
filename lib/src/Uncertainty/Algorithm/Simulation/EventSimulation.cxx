@@ -105,11 +105,11 @@ String EventSimulation::__repr__() const
 /* Performs the actual computation. */
 void EventSimulation::run()
 {
-  /* We want to compute the probability of occurence of the given event
+  /* We want to compute the probability of occurrence of the given event
    *  We estimate this probability by computing the empirical mean of a
    * sample of size at most outerSampling * blockSize, this sample being
-   * built by blocks of size blockSize. It allows to use efficiently the
-   * distribution of the computation as well as it allows to deal with
+   * built by blocks of size blockSize. It allows one to use efficiently the
+   * distribution of the computation as well as it allows one to deal with
    * a sample size > 2^32 by a combination of blockSize and outerSampling
    */
   // First, reset the convergence history

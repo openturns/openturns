@@ -144,7 +144,7 @@ int main(int, char *[])
     IndependentCopula aCopula(aCollection.getSize());
     aCopula.setName("Independent copula");
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     ComposedDistribution myDistribution(aCollection, Copula(aCopula));
     myDistribution.setName("myDist");
 
