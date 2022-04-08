@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 sample = ot.Normal(3).getSample(10)

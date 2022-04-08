@@ -11,7 +11,6 @@ Viscous free fall: metamodel of a field function
 # ----------------
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import numpy as np
 import openturns.viewer as viewer

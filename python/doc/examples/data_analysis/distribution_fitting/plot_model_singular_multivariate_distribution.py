@@ -9,7 +9,6 @@ Model a singular multivariate distribution
 # A way to do that is to use an EmpiricalBernsteinCopula with a bin number equal to the sample size
 # (also called the empirical beta copula in this case)
 
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 import math as m

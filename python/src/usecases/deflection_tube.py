@@ -2,7 +2,6 @@
 Use case : vertical deflection of a tube
 ========================================
 """
-from __future__ import print_function
 import openturns as ot
 
 

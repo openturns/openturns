@@ -7,7 +7,6 @@ Mix/max search using optimization
 # In this example we are going to evaluate the min and max values of the output variable of interest in a domain using an optimization algorithm.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

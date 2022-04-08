@@ -7,7 +7,6 @@ Mix/max search and sensitivity from design
 # In this example, we are going to evaluate the minimum and maximum values of the output variable of interest from a sample and to evaluate the gradient of the limit-state function defining the output variable of interest at a particular point.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

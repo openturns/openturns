@@ -27,7 +27,6 @@ Parallel coordinates graph as sensitivity tool
 # In that second case, the range is automatically converted into a quantile based scale range.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

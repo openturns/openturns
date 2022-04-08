@@ -6,7 +6,6 @@ Use a randomized QMC algorithm
 # In this example we are going to estimate a failure probability on the :ref:`cantilever beam <use-case-cantilever-beam>`.
 
 # %%
-from __future__ import print_function
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer

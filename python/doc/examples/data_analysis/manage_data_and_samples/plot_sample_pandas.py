@@ -8,7 +8,6 @@ Link Pandas and OpenTURNS
 # In this example we are going to explore interaction with Pandas data analysis tool.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import pandas as pd
 ot.Log.Show(ot.Log.NONE)

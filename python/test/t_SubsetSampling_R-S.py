@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from __future__ import print_function, division
 import openturns as ot
 import openturns.testing as ott
 

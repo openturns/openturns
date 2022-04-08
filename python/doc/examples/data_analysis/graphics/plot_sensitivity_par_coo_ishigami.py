@@ -27,7 +27,6 @@ Visualize sensitivity
 # In that second case, the range is automatically converted into a quantile based scale range.
 
 # %%
-from __future__ import print_function
 from openturns.usecases.ishigami_function import IshigamiModel
 import openturns as ot
 import openturns.viewer as viewer

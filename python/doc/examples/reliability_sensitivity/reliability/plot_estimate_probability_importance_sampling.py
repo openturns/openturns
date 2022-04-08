@@ -19,7 +19,6 @@ Use the Importance Sampling algorithm
 # --------------------------------
 
 # %%
-from __future__ import print_function
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer

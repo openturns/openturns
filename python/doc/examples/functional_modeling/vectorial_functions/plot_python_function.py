@@ -12,7 +12,6 @@ Create a Python function
 #
 
 # %%
-from __future__ import print_function
 import numpy as np
 import openturns as ot
 import openturns.viewer as viewer

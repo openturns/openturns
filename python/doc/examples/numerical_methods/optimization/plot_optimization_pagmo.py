@@ -6,7 +6,6 @@ Multi-objective optimization using Pagmo
 # In this example we are going to explore optimization using the `Pagmo <https://esa.github.io/pagmo2/>`_ solver.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 from openturns.viewer import View
 

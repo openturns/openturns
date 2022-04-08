@@ -7,7 +7,6 @@ Fit a non parametric copula
 # In this example we are going to estimate a normal copula from a sample using non parametric representations.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

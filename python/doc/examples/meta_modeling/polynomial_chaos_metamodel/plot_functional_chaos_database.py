@@ -9,7 +9,6 @@ Polynomial chaos over database
 # If not known, statistical inference can be used to select a possible candidate, and fitting tests can validate such an hypothesis.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

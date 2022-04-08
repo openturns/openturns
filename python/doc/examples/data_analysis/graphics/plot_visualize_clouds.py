@@ -7,7 +7,6 @@ Visualize clouds
 # In this example we are going to draw clouds of points from a data sample.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

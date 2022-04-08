@@ -7,7 +7,6 @@ Optimization using NLopt
 # In this example we are going to explore optimization using OpenTURNS' `NLopt <https://nlopt.readthedocs.io/en/latest/>`_ interface.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

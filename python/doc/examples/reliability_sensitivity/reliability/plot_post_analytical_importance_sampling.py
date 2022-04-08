@@ -24,7 +24,6 @@ Use the post-analytical importance sampling algorithm
 # The controlled importance sampling technique is only accessible within the post analytical context.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

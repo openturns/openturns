@@ -4,7 +4,6 @@ Create and draw multivariate distributions
 """
 # %%
 # In this example we create and draw multidimensional distributions.
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pylab as plt

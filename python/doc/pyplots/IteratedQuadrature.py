@@ -1,4 +1,3 @@
-from __future__ import print_function
 import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View

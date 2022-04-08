@@ -3,7 +3,6 @@
 # We sample the from the posterior distribution of the parameters of a mixture model.
 # This example is drawn from Example 9.2 from *Monte-Carlo Statistical methods* by Robert and Casella (2004).
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 import numpy as np

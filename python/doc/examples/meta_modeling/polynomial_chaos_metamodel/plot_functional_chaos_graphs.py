@@ -7,7 +7,6 @@ Polynomial chaos graphs
 # More precisely, we draw some members of the 1D polynomial family.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

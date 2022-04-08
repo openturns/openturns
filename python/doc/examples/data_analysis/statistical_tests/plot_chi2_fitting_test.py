@@ -7,7 +7,6 @@ Test a discrete distribution
 # In this example we are going to perform a Chi2 goodness-of-fit test for an 1-d discrete distribution.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

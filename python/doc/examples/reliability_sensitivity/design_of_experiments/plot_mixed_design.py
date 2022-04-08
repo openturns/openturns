@@ -9,7 +9,6 @@ Create mixed deterministic and probabilistic designs of experiments
 # The example here is an axial design of experiments where levels are proportional to the standard deviation of each component of the random input vector, and centered on the mean vector of the random input vector.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import math as m
 import openturns.viewer as viewer

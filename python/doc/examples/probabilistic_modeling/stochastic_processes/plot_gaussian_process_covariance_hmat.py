@@ -9,7 +9,6 @@ Create a gaussian process from a cov. model using HMatrix
 # This is an advanced topic and we should highlight key ideas only in this example.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

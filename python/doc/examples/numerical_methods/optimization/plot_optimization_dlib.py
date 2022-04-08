@@ -6,7 +6,6 @@ Optimization using dlib
 # In this example we are going to explore optimization using OpenTURNS' `dlib <http://dlib.net/>`_ interface.
 
 # %%
-from __future__ import print_function
 import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
