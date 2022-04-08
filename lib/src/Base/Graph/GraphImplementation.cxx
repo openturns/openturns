@@ -301,7 +301,7 @@ String GraphImplementation::getGridColor() const
   return gridColor_;
 }
 
-/* Accesor for xTitle */
+/* Accessor for xTitle */
 String GraphImplementation::getXTitle() const
 {
   return xTitle_;
@@ -325,13 +325,13 @@ void GraphImplementation::setYTitle(const String & title)
   yTitle_ = title;
 }
 
-/* Accesor for title */
+/* Accessor for title */
 String GraphImplementation::getTitle() const
 {
   return title_;
 }
 
-/* Accesor for title */
+/* Accessor for title */
 void GraphImplementation::setTitle(const String & title)
 {
   title_ = title;

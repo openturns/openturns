@@ -267,7 +267,7 @@ static integer c__100 = 100;
     }
     return 0;
 
-/*     Entry point for intialization. */
+/*     Entry point for initialization. */
 
 
 L_mvints:

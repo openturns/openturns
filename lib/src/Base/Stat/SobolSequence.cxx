@@ -111,7 +111,7 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
 }
 
 
-/* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
+/* Generate a pseudo-random vector of independent numbers uniformly distributed over [0, 1[ */
 Point SobolSequence::generate() const
 {
   if (seed_ == 0)

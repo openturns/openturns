@@ -46,7 +46,7 @@ OT_HSICEstimator_getPermutationSize_doc
 Returns
 -------
 coll : CovarianceModelCollection
-    The list of all covariance models used. The last one is the ouput covariance model."
+    The list of all covariance models used. The last one is the output covariance model."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getCovarianceModelCollection
 OT_HSICEstimator_getCovarianceModelCollection_doc
@@ -93,7 +93,7 @@ OT_HSICEstimator_setInputSample_doc
 // ---------------------------------------------------------------------
 
 %define OT_HSICEstimator_getOutputSample_doc
-"Get the ouput sample.
+"Get the output sample.
 
 Returns
 -------

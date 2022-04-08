@@ -64,7 +64,7 @@ void FaureSequence::initialize(const UnsignedInteger dimension)
   computeInitialBinomialCoefficients();
 }
 
-/* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
+/* Generate a pseudo-random vector of independent numbers uniformly distributed over [0, 1[ */
 Point FaureSequence::generate() const
 {
   Point realization(dimension_);

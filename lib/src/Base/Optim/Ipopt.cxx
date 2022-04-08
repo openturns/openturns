@@ -142,7 +142,7 @@ void Ipopt::run()
   app->Options()->PrintList(optlist);
   LOGDEBUG(optlist);
 
-  // Intialize the IpoptApplication and process the options
+  // Initialize the IpoptApplication and process the options
   ApplicationReturnStatus status = app->Initialize();
   if (status != Solve_Succeeded)
   {

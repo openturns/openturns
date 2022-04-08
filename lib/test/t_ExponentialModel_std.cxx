@@ -45,8 +45,8 @@ int main(int, char *[])
 
 
     /* Default constructor */
-    ExponentialModel myDefautModel;
-    fullprint << "myDefautModel = " << myDefautModel << std::endl;
+    ExponentialModel myDefaultModel;
+    fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
 
     /* Second order model with parameters */
     ExponentialModel myModel(scale, amplitude);

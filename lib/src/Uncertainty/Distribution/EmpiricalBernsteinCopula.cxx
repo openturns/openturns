@@ -393,7 +393,7 @@ Scalar EmpiricalBernsteinCopula::computeConditionalPDF(const Scalar x,
     allConditioningAtomPDF[i] = conditioningAtomPDF;
     conditioningPDF += conditioningAtomPDF;
   }
-  // Should not occur except if underflow occured
+  // Should not occur except if underflow occurred
   if (conditioningPDF <= 0.0) return 0.0;
   // Second, the conditioned part
   Scalar conditionedPDF = 0.0;
@@ -483,7 +483,7 @@ Scalar EmpiricalBernsteinCopula::computeConditionalCDF(const Scalar x,
     allConditioningAtomPDF[i] = conditioningAtomPDF;
     conditioningPDF += conditioningAtomPDF;
   }
-  // Should not occur except if underflow occured
+  // Should not occur except if underflow occurred
   if (conditioningPDF <= 0.0) return 0.0;
   // Second, the conditioned part
   Scalar conditionedCDF = 0.0;

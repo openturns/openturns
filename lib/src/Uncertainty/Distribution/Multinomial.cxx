@@ -695,7 +695,7 @@ void Multinomial::computeCovariance() const
   {
     const Scalar pI = p_[i];
     covariance_(i, i) = pI * (1.0 - pI) * n_;
-    // Be careful! in these computations, n_ cannot be at the begining of the formula else -n_ will underflow the UnsignedInteger range!
+    // Be careful! in these computations, n_ cannot be at the beginning of the formula else -n_ will underflow the UnsignedInteger range!
     for (UnsignedInteger j = 0; j < i; ++j) covariance_(i, j) = -pI * p_[j] * n_;
   }
   isAlreadyComputedCovariance_ = true;

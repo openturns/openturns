@@ -48,7 +48,7 @@ Polygon::Polygon(const Sample & data,
   setEdgeColor(getColor());
 }
 
-/* Contructor from 2 data sets */
+/* Constructor from 2 data sets */
 Polygon::Polygon(const Sample & dataX,
                  const Sample & dataY,
                  const String & legend)
@@ -69,7 +69,7 @@ Polygon::Polygon(const Sample & dataX,
   setEdgeColor(getColor());
 }
 
-/* Contructor from 2 data sets */
+/* Constructor from 2 data sets */
 Polygon::Polygon(const Point & dataX,
                  const Point & dataY,
                  const String & legend)

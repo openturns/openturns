@@ -23,7 +23,7 @@ def drawFamily(factory, degreeMax=5):
     titleJacobi = factory.__class__.__name__.replace(
         'Factory', '') + " polynomials"
 
-    # Create an empty graph which will be fullfilled
+    # Create an empty graph which will be fulfilled
     # with curves
     graphJacobi = ot.Graph(
         titleJacobi, "z", "polynomial values", True, "topright")

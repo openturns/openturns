@@ -71,7 +71,7 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
   } // size > 0
 }
 
-/* Contructor from 2 data sets */
+/* Constructor from 2 data sets */
 PolygonArray::PolygonArray(const Sample & coordinates,
                            const UnsignedInteger verticesNumber,
                            const Description & palette,

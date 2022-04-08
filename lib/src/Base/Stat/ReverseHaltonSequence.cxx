@@ -51,7 +51,7 @@ void ReverseHaltonSequence::initialize(const UnsignedInteger dimension)
   seed_ = ResourceMap::GetAsUnsignedInteger( "ReverseHaltonSequence-InitialSeed" );
 }
 
-/* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[
+/* Generate a pseudo-random vector of independent numbers uniformly distributed over [0, 1[
    See Bart Vandewoestyne, Ronald Cools, "Good permutations for deterministic scrambled Halton sequences in terms of L2-discrepancy", Journal of Computational and Applied Mathematics, 189, 341-361 (2006) */
 Point ReverseHaltonSequence::generate() const
 {

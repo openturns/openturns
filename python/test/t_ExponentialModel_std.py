@@ -19,8 +19,8 @@ try:
     scale = Point(inputDimension, 1.0)
 
     # Default constructor
-    myDefautModel = ExponentialModel()
-    print("myDefautModel = ", myDefautModel)
+    myDefaultModel = ExponentialModel()
+    print("myDefaultModel = ", myDefaultModel)
 
     # Second order model with parameters
     myModel = ExponentialModel(scale, amplitude)

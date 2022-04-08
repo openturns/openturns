@@ -177,7 +177,7 @@ void MaternModel::setScale(const Point & scale)
 void MaternModel::setFullParameter(const Point & parameter)
 {
   /*
-    Care! To make the method not bogus, the size of paramter argument
+    Care! To make the method not bogus, the size of parameter argument
     should be :
      - Size of scale : inputDimension_
      - Size of amplitude : here 1

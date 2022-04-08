@@ -36,7 +36,7 @@ CLASSNAMEINIT(DrawableImplementation)
 
 static const Factory<DrawableImplementation> Factory_DrawableImplementation;
 
-/* default graphic paramaters */
+/* default graphic parameters */
 
 Bool DrawableImplementation::IsFirstInitialization          = true;
 
@@ -1297,7 +1297,7 @@ String DrawableImplementation::getLineStyle() const
   return lineStyle_;
 }
 
-/* Accesor for line style */
+/* Accessor for line style */
 void DrawableImplementation::setLineStyle(const String & lineStyle)
 {
   if(!IsValidLineStyle(lineStyle))  throw InvalidArgumentException(HERE) << "Given line style=" << lineStyle << " is incorrect";

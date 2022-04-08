@@ -45,8 +45,8 @@ int main(int, char *[])
 
 
     /* Default constructor */
-    CauchyModel myDefautModel;
-    fullprint << "myDefautModel = " << myDefautModel << std::endl;
+    CauchyModel myDefaultModel;
+    fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
 
     /* Second order model with parameters */
     CauchyModel myModel(scale, amplitude);

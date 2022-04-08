@@ -215,7 +215,7 @@ void checkCopyConstructor()
   // Call the default constructor
   T anObject;
 
-  // Call the copy-contructor
+  // Call the copy-constructor
   T anCopiedObject( anObject );
 }
 

@@ -21,8 +21,8 @@ try:
     # Frequency values
     for frequency in [0.1, 0.2]:
         # Default constructor
-        myDefautModel = ExponentiallyDampedCosineModel()
-        print("myDefautModel = ", myDefautModel)
+        myDefaultModel = ExponentiallyDampedCosineModel()
+        print("myDefaultModel = ", myDefaultModel)
 
         # Second order model with parameters
         myModel = ExponentiallyDampedCosineModel(

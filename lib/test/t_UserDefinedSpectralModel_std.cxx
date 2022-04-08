@@ -54,8 +54,8 @@ int main(int, char *[])
   {
 
     /* Default constructor */
-    UserDefinedSpectralModel myDefautModel;
-    fullprint << "myDefautModel = " << myDefautModel << std::endl;
+    UserDefinedSpectralModel myDefaultModel;
+    fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
 
     /* Default dimension parameter to evaluate the model */
     const UnsignedInteger dimension = 2;

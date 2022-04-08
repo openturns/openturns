@@ -6,7 +6,7 @@ Kriging : quick-start
 # Abstract
 # --------
 #
-# In this example, we create a kriging metamodel for a function which has scalar real inputs and outputs. We show how to create the learning and the validation samples. We show how to create the kriging metamodel by chosing a trend and a covariance model. Finally, we compute the predicted kriging confidence interval using the conditional variance.
+# In this example, we create a kriging metamodel for a function which has scalar real inputs and outputs. We show how to create the learning and the validation samples. We show how to create the kriging metamodel by choosing a trend and a covariance model. Finally, we compute the predicted kriging confidence interval using the conditional variance.
 
 # %%
 # Introduction

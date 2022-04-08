@@ -85,7 +85,7 @@ void HaltonSequence::initialize(const UnsignedInteger dimension)
   } // i
 }
 
-/* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
+/* Generate a pseudo-random vector of independent numbers uniformly distributed over [0, 1[ */
 Point HaltonSequence::generate() const
 {
   Point realization(dimension_);

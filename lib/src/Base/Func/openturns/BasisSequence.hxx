@@ -47,7 +47,7 @@ public:
   /** Default constructor */
   BasisSequence(const Basis & psi);
 
-  /** Contructor from implementation */
+  /** Constructor from implementation */
   BasisSequence(const BasisSequenceImplementation & implementation);
 
   /** Dimension accessor */

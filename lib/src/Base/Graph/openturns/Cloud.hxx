@@ -53,12 +53,12 @@ public:
   explicit Cloud(const ComplexCollection & data,
                  const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Cloud(const Sample & dataX,
         const Sample & dataY,
         const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Cloud(const Point & dataX,
         const Point & dataY,
         const String & legend = "");

@@ -52,7 +52,7 @@ public:
   /** Virtual constructor */
   NearestPointCheckerResult * clone() const override;
 
-  /** Assigment operator */
+  /** Assignment operator */
 
   /** verifyingConstraintPoints accessor */
   Sample  getVerifyingConstraintPoints() const;

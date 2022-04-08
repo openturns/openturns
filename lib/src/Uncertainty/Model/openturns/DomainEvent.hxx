@@ -52,7 +52,7 @@ public:
   DomainEvent(const RandomVector & antecedent,
               const Domain & domain);
 
-  /** Virtual contructor */
+  /** Virtual constructor */
   DomainEvent * clone() const override;
 
   /** String converter */

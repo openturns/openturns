@@ -1,4 +1,4 @@
-myDefautModel =  ExponentialModel(scale=[1], amplitude=[1], no spatial correlation)
+myDefaultModel =  ExponentialModel(scale=[1], amplitude=[1], no spatial correlation)
 myModel =  ExponentialModel(scale=[1], amplitude=[2], no spatial correlation)
 covariance matrix at t =  1.0  :  [[ 1.47152 ]]
 covariance matrix at t =  -1.0  :  [[ 1.47152 ]]

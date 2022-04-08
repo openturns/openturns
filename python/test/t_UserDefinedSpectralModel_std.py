@@ -16,8 +16,8 @@ def cleanScalar(inScalar):
 try:
 
     # Default constructor
-    myDefautModel = UserDefinedSpectralModel()
-    print("myDefautModel = ", myDefautModel)
+    myDefaultModel = UserDefinedSpectralModel()
+    print("myDefaultModel = ", myDefaultModel)
 
     # Default dimension parameter to evaluate the model
     dimension = 2
