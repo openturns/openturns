@@ -180,3 +180,16 @@ hasUniformWeights : bool
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation::hasUniformWeights
 OT_WeightedExperiment_hasUniformWeights_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_setLevel_doc
+"Accessor to the level of quadrature.
+
+Parameters
+----------
+level : positive int
+    Level of quadrature. This is equal to the size of the quadrature."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::setLevel
+OT_WeightedExperiment_setLevel_doc

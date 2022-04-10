@@ -114,6 +114,11 @@ The Smolyak sparse quadrature formula at level :math:`\ell` is :
 
 for any :math:`\ell \geq 1`. 
 
+As shown by the previous equation, for a given multi-index :math:`\boldsymbol{k}` 
+the Smolyak quadrature requires to set the level of each marginal experiment to 
+an integer which depends on the multi-index. 
+This is done using the `setLevel` method of the marginal quadrature. 
+
 The following formula expresses the multivariate quadrature in terms of 
 combinations univariate quadratures, known as the *combination technique*.
 The sparse quadrature formula at level :math:`\ell` is :

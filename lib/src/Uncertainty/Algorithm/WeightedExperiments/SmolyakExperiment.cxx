@@ -260,7 +260,7 @@ void SmolyakExperiment::computeNodesAndWeights() const
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       WeightedExperiment marginalExperiment(collection_[j]);
-      marginalExperiment.setSize(combinationIndicesCollection(i, j));
+      marginalExperiment.setLevel(combinationIndicesCollection(i, j));
       collection.add(marginalExperiment);
     } // Loop over the dimensions
     TensorProductExperiment elementaryExperiment(collection);

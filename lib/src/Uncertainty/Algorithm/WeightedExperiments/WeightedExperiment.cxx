@@ -94,4 +94,10 @@ Bool WeightedExperiment::hasUniformWeights() const
   return getImplementation()->hasUniformWeights();
 }
 
+void WeightedExperiment::setLevel(const UnsignedInteger level)
+{
+  return getImplementation()->setLevel(level);
+}
+
+
 END_NAMESPACE_OPENTURNS

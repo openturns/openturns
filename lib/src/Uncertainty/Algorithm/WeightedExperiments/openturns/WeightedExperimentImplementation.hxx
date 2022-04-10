@@ -77,6 +77,9 @@ public:
   /** Sample generation with weights*/
   virtual Sample generateWithWeights(Point & weights) const;
 
+  /** Level accessor */
+  virtual void setLevel(const UnsignedInteger level);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

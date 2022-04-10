@@ -72,6 +72,9 @@ public:
   /** Uniform weights ? */
   virtual Bool hasUniformWeights() const;
 
+  /** Set the level */
+  virtual void setLevel(const UnsignedInteger level);
+
 } ; /* class WeightedExperiment */
 
 END_NAMESPACE_OPENTURNS

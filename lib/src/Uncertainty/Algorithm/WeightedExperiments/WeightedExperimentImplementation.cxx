@@ -119,6 +119,13 @@ Sample WeightedExperimentImplementation::generateWithWeights(Point & ) const
   throw NotYetImplementedException(HERE) << "In WeightedExperimentImplementation::generateWithWeights()";
 }
 
+/* Set the level of quadrature */
+void WeightedExperimentImplementation::setLevel(const UnsignedInteger level)
+{
+  const UnsignedInteger size = level;
+  setSize(size);
+}
+
 /* Method save() stores the object through the StorageManager */
 void WeightedExperimentImplementation::save(Advocate & adv) const
 {
