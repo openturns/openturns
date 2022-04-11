@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+
 import openturns as ot
 import openturns.testing as ott
 

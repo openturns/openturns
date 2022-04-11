@@ -59,8 +59,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 code = '''
-# -*- coding: utf-8 -*-
-
 # 1. Get input
 import sys
 inFile = sys.argv[1]
