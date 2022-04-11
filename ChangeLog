@@ -46,6 +46,7 @@
 
 === Bug fixes ===
  * #1444 (The calibration examples are unclear)
+ * #1830 (Incompatible documentation for CauchyModel)
  * #1947 (The constructor of FunctionalChaosResult is undocumented)
  * #1958 (Performance of OrthogonalUniVariatePolynomial (precision, speed))
  * #2012 (Cannot sample a ConditionedGaussianProcess on a mesh containing conditioning points)

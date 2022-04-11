@@ -21,7 +21,7 @@ The spectral density function of input dimension **n** and output dimension **p*
 
 .. math::
 
-   \forall (i,j) \in [0,p-1]^2, S(f)_{i,j} =  \Sigma_{i,j} \prod_{k=1}^{n} \frac{\theta_k}{1 + (2\pi \theta_k f)^2}
+   \forall (i,j) \in [0,p-1]^2, S(f)_{i,j} =  2 \Sigma_{i,j} \prod_{k=1}^{n} \frac{\theta_k}{1 + (2\pi \theta_k f)^2}
 
 
 Examples
