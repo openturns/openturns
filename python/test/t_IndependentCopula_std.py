@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     dim = 3
     copula = IndependentCopula(dim)
     print("Copula =", repr(copula))
@@ -22,7 +22,7 @@ try:
     # Is this copula elliptical ?
     print("Elliptical copula = ", copula.hasEllipticalCopula())
 
-    # Is this copula independant ?
+    # Is this copula independent ?
     print("hasIndependentCopula = ", copula.hasIndependentCopula())
 
     # Test for realization of copula
@@ -133,4 +133,4 @@ try:
 
 except:
     import sys
-    print("t_IndependantCopula.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_IndependentCopula.py", sys.exc_info()[0], sys.exc_info()[1])

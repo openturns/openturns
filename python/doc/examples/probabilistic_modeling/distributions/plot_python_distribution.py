@@ -140,7 +140,7 @@ class UniformNdPy(ot.PythonDistribution):
 
 
 # %%
-# Let us instanciate the distribution:
+# Let us instantiate the distribution:
 
 # %%
 distribution = ot.Distribution(UniformNdPy([5, 6], [7, 9]))

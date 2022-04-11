@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate distributions with different shape parameters
+    // Instantiate distributions with different shape parameters
     Point xiValues(3);
     xiValues[0] = -0.2;
     xiValues[1] = 0.0;

@@ -70,7 +70,7 @@ int main(int, char *[])
     // Create a copula
     IndependentCopula aCopula(aCollection.getSize());
     aCopula.setName("Independent copula");
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     ComposedDistribution distribution(aCollection, aCopula);
     distribution.setName("myDist");
     UnsignedInteger dim = distribution.getDimension();

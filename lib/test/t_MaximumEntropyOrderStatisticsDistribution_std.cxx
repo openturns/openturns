@@ -53,7 +53,7 @@ int main(int, char *[])
     coll.add(Triangular(3.0, 4.5, 5.0));
     coll.add(Beta(2.5, 3.5, 4.7, 5.2));
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     MaximumEntropyOrderStatisticsDistribution distribution(coll);
     UnsignedInteger dim = distribution.getDimension();
     fullprint << "Distribution " << distribution << std::endl;

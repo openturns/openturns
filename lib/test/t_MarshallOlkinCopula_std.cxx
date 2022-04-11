@@ -45,7 +45,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     MarshallOlkinCopula copula(0.5, 0.5);
     fullprint << "Copula " << copula << std::endl;
     std::cout << "Copula " << copula << std::endl;

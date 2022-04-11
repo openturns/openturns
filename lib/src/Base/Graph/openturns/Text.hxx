@@ -60,14 +60,14 @@ public:
        const String & textPosition = "top",
        const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Text(const Sample & dataX,
        const Sample & dataY,
        const Description & texts,
        const String & textPosition = "top",
        const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Text(const Point & dataX,
        const Point & dataY,
        const Description & texts,

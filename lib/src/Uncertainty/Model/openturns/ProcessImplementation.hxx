@@ -128,7 +128,7 @@ protected:
   Description description_;
 
   /** Dimension of the process */
-  UnsignedInteger ouputDimension_;
+  UnsignedInteger outputDimension_;
 
   /** The mesh over which the process is defined or discretized */
   Mesh mesh_;

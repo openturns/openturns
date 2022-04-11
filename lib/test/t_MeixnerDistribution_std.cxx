@@ -39,7 +39,7 @@ int main(int, char *[])
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumRelativeError", 1.0e-6 );
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumConstraintError", 1.0e-6 );
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumObjectiveError", 1.0e-6 );
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     MeixnerDistribution distribution(1.5, 0.5, 2.5, -0.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;

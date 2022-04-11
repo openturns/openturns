@@ -21,7 +21,7 @@ Estimate a non stationary covariance function
 # We build a normal process :math:`X: \Omega \times [-4, 4]  \rightarrow \mathbb{R}` with zero mean and
 # :math:`C` as covariance function.
 # We discretize the covariance model :math:`C` using :math:`C(t_k, t_\ell)` for each :math:`(t_k, t_\ell)\in \mathcal{M} \times \mathcal{M}`.
-# We get a :math:`N=10^3` fields from the process :math:`X` from wich we estimate the covariance model :math:`C`.
+# We get a :math:`N=10^3` fields from the process :math:`X` from which we estimate the covariance model :math:`C`.
 #
 # We use the object *NonStationaryCovarianceModelFactory* which creates a *UserDefinedCovarianceModel*.
 

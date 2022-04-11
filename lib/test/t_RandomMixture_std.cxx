@@ -56,7 +56,7 @@ int main(int, char *[])
     fullprint << "references=" << references << std::endl;
     for (UnsignedInteger testIndex = 0; testIndex < testCases.getSize(); ++testIndex)
     {
-      // Instanciate one distribution object
+      // Instantiate one distribution object
       RandomMixture distribution(testCases[testIndex]);
       distribution.setBlockMin(5);
       distribution.setBlockMax(20);

@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 2;
     Point meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;

@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = Arcsine(5.2, 11.6)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)

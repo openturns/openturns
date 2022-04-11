@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     allDistributions = [Student(6.5, -0.5, 2.0)]
     dim = 2
     R = CorrelationMatrix(dim)

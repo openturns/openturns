@@ -1,7 +1,7 @@
 %feature("docstring") OT::KDTree
 "Partition tree data structure.
 
-Allows to store and search points fast.
+Allows one to store and search points fast.
 
 Available constructors:
     KDTree(*sample*)

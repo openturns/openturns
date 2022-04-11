@@ -44,7 +44,7 @@ int main(int, char *[])
     {
       R(i, i - 1) = 0.5;
     }
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Normal distribution(meanPoint, sigma, R);
     UnsignedInteger discretization = 300;
     Sample sample(distribution.getSample(discretization));

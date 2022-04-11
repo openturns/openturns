@@ -28,7 +28,7 @@ try:
     inPoint[1] = 2.3
     inPoint[2] = 3.4
     print("myHessian=", myHessian)
-    # Reduce the ouput precision because we use finite difference so only 5
+    # Reduce the output precision because we use finite difference so only 5
     # digits are significant
     PlatformInfo.SetNumericalPrecision(5)
     print("Value at ", inPoint, "=", myHessian.hessian(inPoint))

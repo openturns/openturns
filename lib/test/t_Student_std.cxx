@@ -63,7 +63,7 @@ int main(int, char *[])
     {
       Student distribution(allDistributions[iDist]);
       const UnsignedInteger dim = distribution.getDimension();
-      // Instanciate one distribution object
+      // Instantiate one distribution object
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
 

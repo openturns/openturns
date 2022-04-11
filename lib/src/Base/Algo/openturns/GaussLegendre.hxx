@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class allows to compute integrals of a function over an
+ *  @brief This class allows one to compute integrals of a function over an
  *         interval.
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca

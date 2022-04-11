@@ -6,7 +6,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 dim = 2
 copula = ot.JoeCopula(0.5, 0.5, 0.5)
 print("Copula ", repr(copula))

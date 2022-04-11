@@ -82,7 +82,7 @@ Text::Text(const ComplexCollection & data,
   textSize_ = ResourceMap::GetAsScalar("Text-DefaultTextSize");
 }
 
-/* Contructor from 2 data sets */
+/* Constructor from 2 data sets */
 Text::Text(const Sample & dataX,
            const Sample & dataY,
            const Description & textAnnotations,

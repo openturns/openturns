@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = TruncatedNormal(0.5, 3.0, -2.0, 2.0)
     print("Distribution ", distribution)
 

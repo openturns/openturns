@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     for dim in range(1, 2):
         theta = Point(dim + 1)
         for i in range(dim + 1):

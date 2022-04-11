@@ -141,7 +141,7 @@ Examples
 Parameters
 ----------
 fullSVD : bool, optional
-    Whether the null parts of the orthogonal factors are explicitely stored
+    Whether the null parts of the orthogonal factors are explicitly stored
     or not.
     Default is *False* and computes a reduced SVD.
 keep_intact : bool, optional
@@ -185,7 +185,7 @@ where :math:`\mat{U}` is an :math:`n_r \times n_r` orthogonal matrix,
 Parameters
 ----------
 fullSVD : bool, optional
-    Whether the null parts of the orthogonal factors are explicitely stored
+    Whether the null parts of the orthogonal factors are explicitly stored
     or not.
     Default is *False* and computes a reduced SVD.
 keep_intact : bool, optional
@@ -258,7 +258,7 @@ Notes
 -----
 
 This will handle both matrices and vectors, as well as underdetermined, square
-or overdetermined linear systems although you'd better type explicitely your
+or overdetermined linear systems although you'd better type explicitly your
 matrix if it has some properties that could simplify the resolution (see
 :class:`~openturns.TriangularMatrix`, :class:`~openturns.SquareMatrix`).
 

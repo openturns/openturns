@@ -59,7 +59,7 @@ void HaselgroveSequence::initialize(const UnsignedInteger dimension)
   seed_ = ResourceMap::GetAsUnsignedInteger( "HaselgroveSequence-InitialSeed" );
 }
 
-/* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
+/* Generate a pseudo-random vector of independent numbers uniformly distributed over [0, 1[ */
 Point HaselgroveSequence::generate() const
 {
   Point realization(dimension_);

@@ -9,8 +9,8 @@ RandomGenerator.SetSeed(0)
 try:
 
     # Default constructor
-    myDefautModel = UserDefinedStationaryCovarianceModel()
-    print("myDefautModel = ", myDefautModel)
+    myDefaultModel = UserDefinedStationaryCovarianceModel()
+    print("myDefaultModel = ", myDefaultModel)
 
     # Default dimension parameter to evaluate the model
     dimension = 1

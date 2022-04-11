@@ -85,7 +85,7 @@ int main(int, char *[])
   /* Stream operator */
   fullprint << "desc1 = " << ref_desc1 << std::endl;
 
-  /* sort method and copy on write mecanism */
+  /* sort method and copy on write mechanism */
   Description desc5(3);
   desc5[0] = "c";
   desc5[1] = "b";

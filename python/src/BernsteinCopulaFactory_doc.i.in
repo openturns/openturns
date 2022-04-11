@@ -1,7 +1,7 @@
 %feature("docstring") OT::BernsteinCopulaFactory
 "BernsteinCopula copula factory.
 
-This class allows to estimate a copula in a nonparametric way as an :class:`~openturns.EmpiricalBernsteinCopula`.
+This class allows one to estimate a copula in a nonparametric way as an :class:`~openturns.EmpiricalBernsteinCopula`.
 
 See also
 --------

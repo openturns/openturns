@@ -31,7 +31,7 @@ int main(int, char *[])
   PlatformInfo::SetNumericalPrecision(5);
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 2;
     EmpiricalBernsteinCopula copula(Normal(2).getSample(12), 3);
     copula.setName("a empiricalBernstein copula");

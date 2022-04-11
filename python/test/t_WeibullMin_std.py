@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = WeibullMin(2.0, 1.5, -0.5)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

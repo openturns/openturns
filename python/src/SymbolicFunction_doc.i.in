@@ -7,7 +7,7 @@ inputs : sequence of str, or str
     List of input variables names of the function.
 formulas : sequence of str, or str
     List of analytical formulas between the inputs and the outputs.
-    The function is defined by *ouputs = formulas(inputs)*.
+    The function is defined by *outputs = formulas(inputs)*.
 
 Available functions:
 
@@ -85,7 +85,7 @@ Examples
 [3,-1]
 
 `ExprTk <http://www.partow.net/programming/exprtk/>`_
-allows to write multiple outputs; in this case, the constructor has a special syntax,
+allows one to write multiple outputs; in this case, the constructor has a special syntax,
 it contains input variables names, but also output variables names, and formula is a string:
 
 >>> import openturns as ot
@@ -112,7 +112,7 @@ The following example splits the formula into four parts to manage its length:
 [155900]
 
 `ExprTk <http://www.partow.net/programming/exprtk/>`_
-allows to manage intermediate variables with the `var` keyword.
+allows one to manage intermediate variables with the `var` keyword.
 This is convenient in the situation where several outputs require
 the same intermediate calculation or if the output is a complex
 function of the input.
@@ -216,4 +216,4 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.SymbolicFunction.GetValidOperators()[0])
-= -> assignement, can only be applied to variable names (priority -1)"
+= -> assignment, can only be applied to variable names (priority -1)"

@@ -68,7 +68,7 @@ Scalar KarhunenLoeveAlgorithmImplementation::getThreshold() const
 void KarhunenLoeveAlgorithmImplementation::setThreshold(const Scalar threshold)
 {
   if (!(threshold <= 1.0 && threshold >= 0.0))
-    LOGWARN(OSS() << "threshold must be between 0.0 and 1.0 but is " << threshold);
+    throw InvalidArgumentException(HERE) << "threshold must be between 0.0 and 1.0 but is " << threshold;
 
   threshold_ = threshold;
 }

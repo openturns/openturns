@@ -51,7 +51,7 @@ revision : str
 Parameters
 ----------
 precision : int
-    String ouput numerical precision."
+    String output numerical precision."
 
 // ---------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ precision : int
 Returns
 -------
 precision : int
-    String ouput numerical precision."
+    String output numerical precision."
 
 // ---------------------------------------------------------------------
 

@@ -59,7 +59,7 @@ Curve::Curve(const Sample & data,
   setPointStyle("none");
 }
 
-/* Contructor from 2 data sets */
+/* Constructor from 2 data sets */
 Curve::Curve(const Sample & dataX,
              const Sample & dataY,
              const String & legend)
@@ -79,7 +79,7 @@ Curve::Curve(const Sample & dataX,
   setPointStyle("none");
 }
 
-/* Contructor from 2 data sets */
+/* Constructor from 2 data sets */
 Curve::Curve(const Point & dataX,
              const Point & dataY,
              const String & legend)

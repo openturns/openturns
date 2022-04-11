@@ -166,7 +166,7 @@ private:
   /** Bounds of the ordinal sum */
   Point bounds_;
 
-  /** Lenghts of the blocks */
+  /** Lengths of the blocks */
   Point blockLengths_;
 
   /** Discrete distribution to select the component of the sum for sampling */

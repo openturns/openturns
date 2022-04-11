@@ -29,7 +29,7 @@ blockSize : int, :math:`blockSize \geq 1`
 
 Notes
 -----
-For Monte Carlo, LHS and Importance Sampling methods, this allows to save space
+For Monte Carlo, LHS and Importance Sampling methods, this allows one to save space
 while allowing multithreading, when available we recommend
 to use the number of available CPUs; for the Directional Sampling, we recommend
 to set it to 1."
@@ -122,8 +122,8 @@ verbosity_enabled : bool
 Notes
 -----
 It launches the simulation on a sample of size at most *outerSampling * blockSize*,
-this sample being built by blocks of size *blockSize*. It allows to use
-efficiently the distribution of the computation as well as it allows to deal
+this sample being built by blocks of size *blockSize*. It allows one to use
+efficiently the distribution of the computation as well as it allows one to deal
 with a sample size :math:`> 2^{32}` by a combination of *blockSize* and
 *outerSampling*.
 

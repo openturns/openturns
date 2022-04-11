@@ -74,7 +74,7 @@ private:
   /** The dictionnary of factories */
   CatalogType catalog_;
 
-  /** Default constructor is private so Catalog can not be instanciated */
+  /** Default constructor is private so Catalog can not be instantiated */
   Catalog();
 
   /** Add a new factory to the catalog */

@@ -42,7 +42,7 @@ aCopula = ot.IndependentCopula(dim)
 aCopula.setName("Independent copula")
 print("Copula = ", repr(aCopula))
 print("Copula = ", aCopula)
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.ComposedDistribution(aCollection, aCopula)
 distribution.setName("myDist")
 print("Distribution = ", repr(distribution))
@@ -166,7 +166,7 @@ for i in range(1, dim):
 anotherCopula = ot.NormalCopula(correlation)
 anotherCopula.setName("Normal copula")
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.ComposedDistribution(aCollection, anotherCopula)
 distribution.setName("myDist")
 distributionRef = ot.Normal(mean, sigma, correlation)

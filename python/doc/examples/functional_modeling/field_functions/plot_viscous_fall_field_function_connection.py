@@ -74,7 +74,7 @@ altitudeWithFiveInputs = ot.PythonPointToFieldFunction(
 # -----------------------------
 
 # %%
-# We define a function which has 4 inputs and 5 outputs: the 5th ouput `zmin` is set to zero.
+# We define a function which has 4 inputs and 5 outputs: the 5th output `zmin` is set to zero.
 
 # %%
 projectionFunction = ot.SymbolicFunction(

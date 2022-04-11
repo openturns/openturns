@@ -122,7 +122,7 @@ UnsignedInteger NormInfEnumerateFunction::inverse(const Indices & indices) const
   const UnsignedInteger size = indices.getSize();
   if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension, here size=" << size << " and dimension=" << dimension;
 
-  // start from the begining of the strata
+  // start from the beginning of the strata
   UnsignedInteger strataIndex = 0;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
     strataIndex = std::max(strataIndex, indices[i]);

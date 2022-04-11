@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NearestPointChecker checks wether the nearest point found is really the nearestpoint
+ *  @brief NearestPointChecker checks whether the nearest point found is really the nearestpoint
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class NearestPointChecker
- *  checks wether the nearest point found is really the nearestpoint
+ *  checks whether the nearest point found is really the nearestpoint
  *
  */
 

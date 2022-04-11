@@ -1,4 +1,4 @@
-myDefautModel =  class=ExponentiallyDampedCosineModel(scale=[1], amplitude=[1], frequency=1)
+myDefaultModel =  class=ExponentiallyDampedCosineModel(scale=[1], amplitude=[1], frequency=1)
 myModel =  class=ExponentiallyDampedCosineModel(scale=[1], amplitude=[1], frequency=0.1)
 covariance matrix at t =  1.0  :  [[ 0.297621 ]]
 covariance matrix at t =  -1.0  :  [[ 0.297621 ]]
@@ -7,7 +7,7 @@ discretized covariance over the time grid= RegularGrid(start=0, step=0.333333, n
  [ 0.700873 1        0.700873 0.46903  ]
  [ 0.46903  0.700873 1        0.700873 ]
  [ 0.297621 0.46903  0.700873 1        ]]
-myDefautModel =  class=ExponentiallyDampedCosineModel(scale=[1], amplitude=[1], frequency=1)
+myDefaultModel =  class=ExponentiallyDampedCosineModel(scale=[1], amplitude=[1], frequency=1)
 myModel =  class=ExponentiallyDampedCosineModel(scale=[1], amplitude=[1], frequency=0.2)
 covariance matrix at t =  1.0  :  [[ 0.113681 ]]
 covariance matrix at t =  -1.0  :  [[ 0.113681 ]]

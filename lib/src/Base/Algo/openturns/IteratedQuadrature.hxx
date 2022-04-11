@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class allows to compute integrals of a function over a
+ *  @brief This class allows one to compute integrals of a function over a
  *         domain defined by functions
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -58,7 +58,7 @@ public:
   Point integrate(const Function & function,
                   const Interval & interval) const override;
 
-  // This method allows to get the estimated integration error as a scalar
+  // This method allows one to get the estimated integration error as a scalar
   Point integrate(const Function & function,
                   const Scalar a,
                   const Scalar b,

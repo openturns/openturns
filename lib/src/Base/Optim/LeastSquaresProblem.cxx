@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief LeastSquaresProblem allows to describe an optimization problem
+ *  @brief LeastSquaresProblem allows one to describe an optimization problem
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *

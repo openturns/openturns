@@ -6,7 +6,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.Pareto(7.5, 5.0, -7.0)
 
 print("Distribution ", repr(distribution))

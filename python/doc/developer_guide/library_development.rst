@@ -1,7 +1,7 @@
 Library development
 ===================
 
-This section provides informations on how to develop within the
+This section provides information on how to develop within the
 perimeter of the library and it’s documentation.
 
 If you are willing to contribute the actual development of the library, please
@@ -358,7 +358,7 @@ Namespace
 ~~~~~~~~~
 
 All the classes of the library are accessible within a single namespace
-named OT and aliased as OpenTURNS. It allows to insulate these classes
+named OT and aliased as OpenTURNS. It allows one to insulate these classes
 from classes from another project that could share the same name. Macros
 are provided to enclose your code in the namespace as follow:
 

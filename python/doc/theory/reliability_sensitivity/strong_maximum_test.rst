@@ -268,7 +268,7 @@ trace of the limit state function on the sphere of radius
      method for computing the probability of failure.
      However, the information obtained through the Strong Max Test,
      according to which :math:`\vect{OP}^*` is the actual design point,
-     is quite essential : it allows to construct an effective importance
+     is quite essential : it allows one to construct an effective importance
      sampling density, e.g. a multidimensional Gaussian distribution
      centered on :math:`\vect{OP}^*`.
 

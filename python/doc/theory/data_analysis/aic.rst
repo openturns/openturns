@@ -9,7 +9,7 @@ distributions by using a sample of data
 :math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}`.
 
 We denote by :math:`\cM_1`,…, :math:`\cM_K` the parametric models 
-envisaged by user among the :ref:`parametric models <parametric_distibution_factories>`. 
+envisaged by user among the :ref:`parametric models <parametric_distribution_factories>`.
 We suppose here that the parameters of these models have been estimated
 previously by :ref:`Maximum Likelihood <maximum_likelihood>`
 the on the basis of the sample

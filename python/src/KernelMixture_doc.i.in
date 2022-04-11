@@ -6,9 +6,9 @@ Parameters
 kernel : :class:`~openturns.Distribution`
     Univariate distribution of the kernel that will be used, :math:`K`.
 bandwidth : sequence of float
-    Contains the bandwith in each direction, :math:`(h_1, \dots, h_d)`.
+    Contains the bandwidth in each direction, :math:`(h_1, \dots, h_d)`.
 sample : 2-d sequence of float
-    The data on wich each kernel is centered,
+    The data on which each kernel is centered,
     :math:`(\vect{X}_1, \dots, \vect{X}_N) \in \Rset^d`.
 
 Notes
@@ -34,8 +34,8 @@ Create a *KernelMixture*:
 >>> import openturns as ot
 >>> kernel = ot.Uniform()
 >>> sample = ot.Normal().getSample(5)
->>> bandwith = [1.0]
->>> distribution = ot.KernelMixture(kernel, bandwith, sample)
+>>> bandwidth = [1.0]
+>>> distribution = ot.KernelMixture(kernel, bandwidth, sample)
  
 Draw a sample:
 
@@ -62,21 +62,21 @@ kernel : :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelMixture::getBandwidth
-"Accessor to the bandwith used in the linear combination.
+"Accessor to the bandwidth used in the linear combination.
 
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwith used in each direction."
+    Bandwidth used in each direction."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelMixture::setBandwidth
-"Set the bandwith used in the linear combination.
+"Set the bandwidth used in the linear combination.
 
 Parameters
 ----------
 bandwidth : sequence of float
-    Bandwith used in each direction."
+    Bandwidth used in each direction."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelMixture::setInternalSample
@@ -85,4 +85,4 @@ bandwidth : sequence of float
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample on wich the kernels are centered."
+    Sample on which the kernels are centered."

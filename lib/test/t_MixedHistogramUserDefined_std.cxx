@@ -54,7 +54,7 @@ int main(int, char *[])
   probabilityTable.add(0.35);
   probabilityTable.add(0.4);
   probabilityTable.add(0.45);
-  // Instanciate one distribution object
+  // Instantiate one distribution object
   MixedHistogramUserDefined distribution(ticksCollection, kind, probabilityTable);
   std::cout << "Distribution " << distribution.__repr__() << std::endl;
   std::cout << "Distribution " << distribution << std::endl;

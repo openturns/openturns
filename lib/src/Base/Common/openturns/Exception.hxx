@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 #ifndef SWIG
 /*
- * A helper class that saves the position where it was instanciated in file.
+ * A helper class that saves the position where it was instantiated in file.
  * This class works in conjonction with the preprocessor (cpp). See HERE macro
  */
 class OT_API PointInSourceFile

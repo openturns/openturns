@@ -67,7 +67,7 @@ view = otv.View(graphModel)
 # In the general case the probability density function :math:`f_{X_1,X_2}` and the domain of integration :math:`\mathcal{D}` are difficult to handle.
 
 # %%
-# We first define RandomVector objects and the failure event associated to the ouput random variable.
+# We first define RandomVector objects and the failure event associated to the output random variable.
 vectorX = ot.RandomVector(distX)
 vectorY = ot.CompositeRandomVector(f, vectorX)
 s = 10.0
@@ -126,7 +126,7 @@ view = otv.View(graphPDF)
 # - finding the design point : that is the nearest point wrt the origin in the standard space ;
 # - estimating the probability integral.
 #
-# As mentionned, both the density function and the domain of integration are complex in general.
+# As mentioned, both the density function and the domain of integration are complex in general.
 # The first step of the FORM method makes the density easier to work with and the second step tackles
 # the domain of integration problem.
 #

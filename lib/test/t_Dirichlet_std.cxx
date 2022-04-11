@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     for (UnsignedInteger dim = 1; dim <= 2; dim++)
     {
       Point theta(dim + 1);

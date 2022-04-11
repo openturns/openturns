@@ -292,7 +292,7 @@ doublereal mvndfn_0_(int n__, integer *n, doublereal *w, doublereal *correl,
     }
     return ret_val;
 
-/*     Entry point for intialization. */
+/*     Entry point for initialization. */
 
 
 L_mvndnt:

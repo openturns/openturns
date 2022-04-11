@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <nlopt.hpp>
 
-double myvfunc(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data)
+double myvfunc(const std::vector<double> &x, std::vector<double> &grad, void * /*my_func_data*/)
 {
   if (!grad.empty()) {
     grad[0] = 2.0*x[0];

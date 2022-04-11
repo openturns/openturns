@@ -30,11 +30,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class MetropolisHastingsImplementation
- *
  * @brief MetropolisHastingsImplementation base class
- *
- * This class is abstract so it can not be instanciated. It must be derived.
  */
 class OT_API MetropolisHastingsImplementation
   : public RandomVectorImplementation

@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     dim = 2
     meanPoint = Point(dim, 1.0)
     meanPoint[0] = 0.5

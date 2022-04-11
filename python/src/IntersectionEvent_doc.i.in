@@ -1,7 +1,7 @@
 %feature("docstring") OT::IntersectionEvent
 "Event defined as the intersection of several events.
 
-The occurence of all the events is necessary for the system event to occur (parallel system):
+The occurrence of all the events is necessary for the system event to occur (parallel system):
 
 .. math::
 

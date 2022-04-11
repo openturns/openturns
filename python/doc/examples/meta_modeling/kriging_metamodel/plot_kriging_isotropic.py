@@ -148,7 +148,7 @@ print(lower)
 
 # %%
 # This means that temperatures are likely to vary a lot along the X axis
-# and much slower accross the Y axis based on the observation data.
+# and much slower across the Y axis based on the observation data.
 
 # %%
 # Predict with an isotropic covariance kernel

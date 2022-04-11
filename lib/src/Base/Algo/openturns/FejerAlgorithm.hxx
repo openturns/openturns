@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class allows to compute integrals of a function over an
+ *  @brief This class allows one to compute integrals of a function over an
  *         interval. It implements a tensorized Fejer & Clenshaw-Curtis
  *         quadrature
  *

@@ -37,7 +37,7 @@ try:
         for j in range(i):
             RCopula[i, j] = (i + j + 1.0) / (2.0 * dim)
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = ComposedDistribution(aCollection, NormalCopula(RCopula))
     # Test for sampling
     size = 10000

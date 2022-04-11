@@ -127,7 +127,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   if (binNumberY < 2)
     throw InvalidArgumentException(HERE) << "Error: the adjusted bin number=" << binNumberY << " must be at least equal to 2.";
 
-  // Now we define the table with elements E_{i,j} where E[i,j] counts the occurence of the element [xi, yj]
+  // Now we define the table with elements E_{i,j} where E[i,j] counts the occurrence of the element [xi, yj]
   // Bivariate sample
   Sample data(firstSample);
   data.stack(secondSample);
@@ -284,7 +284,7 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const Sample
     const Indices & selection,
     const Scalar level)
 {
-  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Pearson test can be performed only with an 1-d ouput sample.";
+  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Pearson test can be performed only with an 1-d output sample.";
   if (!selection.check(firstSample.getDimension())) throw InvalidArgumentException(HERE) << "Error: invalid selection, repeated indices or values out of bound";
   const UnsignedInteger size = selection.getSize();
   TestResultCollection results(size);
@@ -299,7 +299,7 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialSpearman(const Sampl
     const Indices & selection,
     const Scalar level)
 {
-  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Spearman test can be performed only with an 1-d ouput sample.";
+  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Spearman test can be performed only with an 1-d output sample.";
   if (!selection.check(firstSample.getDimension())) throw InvalidArgumentException(HERE) << "Error: invalid selection, repeated indices or values out of bound";
   const UnsignedInteger size = selection.getSize();
   TestResultCollection results(size);

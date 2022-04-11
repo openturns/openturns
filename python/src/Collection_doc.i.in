@@ -186,7 +186,7 @@ val : collection value type
 Returns
 -------
 index : int
-    The index of the first occurence of the value,
+    The index of the first occurrence of the value,
     or the size of the container if not found.
     When several values match, only the first index is returned."
 

@@ -55,7 +55,7 @@ int main(int, char *[])
     frequencies[1] = h[1] * l[1];
     frequencies[2] = h[2] * l[2];
     frequencies[3] = h[3] * l[3];
-    // Instanciate one distribution object using ticks/frequencies
+    // Instantiate one distribution object using ticks/frequencies
     {
       Histogram distribution(ticks, frequencies);
       fullprint << "ticks=" << ticks << " frequencies=" << frequencies << std::endl;

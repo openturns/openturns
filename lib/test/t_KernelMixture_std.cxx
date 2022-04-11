@@ -53,7 +53,7 @@ int main(int, char *[])
     aCollection.add( Normal(meanPoint, sigma, IdentityMatrix(dimension)) );
     sample.add(meanPoint);
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Normal kernel;
     KernelMixture distribution(kernel, sigma, sample);
     fullprint << "Distribution " << distribution << std::endl;

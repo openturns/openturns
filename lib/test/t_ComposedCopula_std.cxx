@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     CorrelationMatrix R(3);
     R(0, 1) = 0.5;
     R(0, 2) = 0.25;

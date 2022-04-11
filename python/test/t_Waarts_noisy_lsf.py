@@ -110,7 +110,7 @@ try:
     aCopula = IndependentCopula(aCollection.getSize())
     aCopula.setName("Independent copula")
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     myDistribution = ComposedDistribution(aCollection, aCopula)
     myDistribution.setName("myDist")
 

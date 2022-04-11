@@ -84,7 +84,7 @@ int main(int, char *[])
     meanPoint += Point(dimension, 1.0);
     aCollection.add( Normal(meanPoint, sigma, R) );
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Mixture distribution(aCollection, Point(aCollection.getSize(), 2.0));
     fullprint << "Distribution " << distribution << std::endl;
     distribution = Mixture(aCollection);

@@ -59,7 +59,7 @@ Cloud::Cloud(const ComplexCollection & data,
   setData(sample);
 }
 
-/* Contructor from 2 data sets */
+/* Constructor from 2 data sets */
 Cloud::Cloud(const Sample & dataX,
              const Sample & dataY,
              const String & legend):

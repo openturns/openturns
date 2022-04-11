@@ -130,7 +130,7 @@ The domain  :math:`\cD_N` that discretizes the domin :math:`\cD`."
 Returns
 -------
 basis : :class:`~openturns.Basis`
-    The basis in wich the eigenfunctions are projected."
+    The basis in which the eigenfunctions are projected."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getBasisSize
@@ -140,7 +140,7 @@ Returns
 -------
 basisSize : int
     The number of elements of the functional basis considered.
-    The basis in wich the eigenfunctions are projected."
+    The basis in which the eigenfunctions are projected."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getExperiment

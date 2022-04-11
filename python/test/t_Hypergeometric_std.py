@@ -6,7 +6,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.Hypergeometric(25, 7, 14)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)

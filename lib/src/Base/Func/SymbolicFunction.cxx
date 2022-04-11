@@ -204,7 +204,7 @@ void SymbolicFunction::InitializeDocumentation()
 
   // Third, the operators
   ValidOperators_.setName("Valid operators");
-  ValidOperators_.add("= -> assignement, can only be applied to variable names (priority -1)");
+  ValidOperators_.add("= -> assignment, can only be applied to variable names (priority -1)");
   ValidOperators_.add("&& -> logical and (priority 1)");
   ValidOperators_.add("|| -> logical or (priority 1)");
   ValidOperators_.add("^^ -> logical xor (priority 1)");

@@ -42,7 +42,7 @@ class OT_API PostAnalyticalSimulation
 
   CLASSNAME
 public:
-  /** for save/load mecanism */
+  /** for save/load mechanism */
   PostAnalyticalSimulation();
 
   /** Constructor with parameters */

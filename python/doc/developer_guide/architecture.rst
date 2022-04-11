@@ -401,7 +401,7 @@ A and whose reference (or pointer) is returned by a static method
 .. figure:: Figures/modeling_notions/singleton.png
    :alt: Singleton structure.
 
-It is a very common pattern that allows to find and share an object
+It is a very common pattern that allows one to find and share an object
 (which must remain unique) in different portions of code. Examples of
 such objects include shared hardware resources (standard output, error,
 log, etc.), but also internal functions that cannot or must not be
@@ -411,7 +411,7 @@ ResourceMap and IdFactory follow this pattern.
 Factory pattern
 ~~~~~~~~~~~~~~~
 
-This pattern allows to define a unique interface for the creation of
+This pattern allows one to define a unique interface for the creation of
 objects belonging to a class hierarchy without knowing in advance their
 exact type. Figure [fig:factory] illustrates this pattern. The creation
 of the concrete object (ClassA or ClassB) is delegated to a sub-class

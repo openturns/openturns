@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Binomial(15, 0.7)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

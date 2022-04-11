@@ -43,7 +43,7 @@ int main(int, char *[])
     try
     {
 
-      // Instanciate one distribution object
+      // Instantiate one distribution object
       Point meanPoint(1);
       meanPoint[0] = 1.0;
       Point sigma(1);

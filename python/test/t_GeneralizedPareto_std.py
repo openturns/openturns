@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
     for xi in [-0.2, 0.0, 0.2]:
-        # Instanciate one distribution object
+        # Instantiate one distribution object
         distribution = GeneralizedPareto(1.5, xi, 0.5)
 
         print("Distribution ", repr(distribution))

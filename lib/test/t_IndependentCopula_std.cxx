@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     //    checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 3;
     IndependentCopula copula(dim);
     fullprint << "Copula " << copula << std::endl;
@@ -58,7 +58,7 @@ int main(int, char *[])
     // Is this copula elliptical ?
     fullprint << "Elliptical = " << (copula.hasEllipticalCopula() ? "true" : "false") << std::endl;
 
-    // Is this copula independant ?
+    // Is this copula independent ?
     fullprint << "Independent = " << (copula.hasIndependentCopula() ? "true" : "false") << std::endl;
 
     // Test for realization of copula

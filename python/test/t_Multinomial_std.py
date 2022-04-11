@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Multinomial(5, Point(3, 0.25))
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

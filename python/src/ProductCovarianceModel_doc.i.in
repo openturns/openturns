@@ -10,7 +10,7 @@ Notes
 -----
 The *product* covariance function is a covariance function with 
 dimension :math:`d=1`. 
-This allows to create a higher input dimension covariance model 
+This allows one to create a higher input dimension covariance model
 by combining models of smaller input dimensions. 
 The input dimension of each model in the collection does not necessarily have to be equal to 1. 
 It defines a covariance model from the given collection as follows.

@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     R = CorrelationMatrix(3)
     R[0, 1] = 0.5
     R[0, 2] = 0.25

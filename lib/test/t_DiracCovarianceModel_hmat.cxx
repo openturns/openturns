@@ -59,8 +59,8 @@ int main(int, char *[])
     // Dimension
     const UnsignedInteger dimension = 2;
 
-    DiracCovarianceModel myDefautModel;
-    fullprint << "myDefautModel = " << myDefautModel << std::endl;
+    DiracCovarianceModel myDefaultModel;
+    fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
     // Amplitude of dimension 2
     Point amplitude(dimension);
     for (UnsignedInteger k = 0; k < dimension; ++k) amplitude[k] = 1.5 + 2.0 * k;

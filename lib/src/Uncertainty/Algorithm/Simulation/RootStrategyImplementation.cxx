@@ -128,7 +128,7 @@ void RootStrategyImplementation::setOriginValue(const Scalar originValue)
 
 /* We have to store the value of the performance function at the origin for two reasons:
    + to save computations, as this value will be reused for each direction
-   + to check if the origin is in the failure space or not, wich change the meaning of the roots
+   + to check if the origin is in the failure space or not, which change the meaning of the roots
 */
 Scalar RootStrategyImplementation::getOriginValue() const
 {

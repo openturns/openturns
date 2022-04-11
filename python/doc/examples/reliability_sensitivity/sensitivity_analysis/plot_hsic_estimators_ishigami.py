@@ -134,7 +134,7 @@ view4 = otv.View(graph4)
 #
 # We define a filter function on the output variable for the target
 # analysis. In this example we use the function :math:`\exp{(-d/s)}` where :math:`d` is the distance
-# to a well-choosen interval.
+# to a well-chosen interval.
 
 # %%
 # We first define a critical domain: in our case that is the :math:`[5,+\infty[` interval.

@@ -76,7 +76,7 @@ where :math:`\overline{x}^i` denotes the empirical mean of the sample
 Thus, :math:`0 \leq R^2 \leq 1`. A value close to 1 indicates a good fit
 of the linear model, whereas a value close to 0 indicates that the
 linear model does not provide a relevant forecast. A statistical test
-allows to detect significant values of :math:`R^2`. Again, a
+allows one to detect significant values of :math:`R^2`. Again, a
 :math:`p`-value is provided: the higher the :math:`p`-value, the more
 significant the coefficient of determination.
 

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NearestPointProblem allows to describe an optimization problem
+ *  @brief NearestPointProblem allows one to describe an optimization problem
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class NearestPointProblem
- * NearestPointProblem allows to describe an optimization problem
+ * NearestPointProblem allows one to describe an optimization problem
  */
 
 class OT_API NearestPointProblem

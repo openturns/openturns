@@ -92,7 +92,7 @@ distX : :class:`~openturns.Distribution`, univariate
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CompositeDistribution::setFunction
-"Fix the function through wich the distribution is push-forwarded.
+"Fix the function through which the distribution is push-forwarded.
 
 Parameters
 ----------

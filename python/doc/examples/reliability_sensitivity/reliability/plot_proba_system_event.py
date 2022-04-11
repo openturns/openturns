@@ -89,7 +89,7 @@ def buildNormal(b, t, mu_S, covariance, delta_t=1e-5):
 
 
 # %%
-# This function creates the trivariate random vector :math:`(R, Y_t^1, Y_t^2)` where :math:`R` is independant from :math:`(Y_t^1, Y_t^2)`. We need to create this random vector because both events  :math:`\mathcal{E}_t^1` and :math:`\mathcal{E}_t^2` must be defined from the same random vector!
+# This function creates the trivariate random vector :math:`(R, Y_t^1, Y_t^2)` where :math:`R` is independent from :math:`(Y_t^1, Y_t^2)`. We need to create this random vector because both events  :math:`\mathcal{E}_t^1` and :math:`\mathcal{E}_t^2` must be defined from the same random vector!
 
 # %%
 def buildCrossing(b, t, mu_S, covariance, R, delta_t=1e-5):
@@ -165,7 +165,7 @@ def computeCrossingProbability_FORM(b, t, mu_S, covariance, R, delta_t):
 # %%
 
 # %%
-# First, fix some parameters: :math:`(\mu_R, \sigma_R, \mu_S, \sigma_S, \Delta t, T, b)` and the covariance model wich is the Squared Exponential model.
+# First, fix some parameters: :math:`(\mu_R, \sigma_R, \mu_S, \sigma_S, \Delta t, T, b)` and the covariance model which is the Squared Exponential model.
 # Be careful to the parameter  :math:`\Delta t` which is of great importance: if it is too small, the simulation methods have problems to converge because the correlation rate is too high between the instants :math:`t` and :math:`t+\Delta t`.
 # We advice to take :math:`\Delta t \simeq 10^{-1}`.
 #

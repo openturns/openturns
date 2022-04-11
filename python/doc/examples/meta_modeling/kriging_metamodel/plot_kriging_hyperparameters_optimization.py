@@ -303,7 +303,7 @@ def printCovarianceParameterChange(covarianceModel1, covarianceModel2):
 printCovarianceParameterChange(covarianceModel, notUpdatedCovarianceModel)
 
 # %%
-# We see that the parameters did not change *at all*: disabling the optimization allows to keep a constant covariance model. In a practical algorithm, we may, for example, add a block of 10 new points before updating the parameters of the covariance model. At this point, we may reuse the previous covariance model so that the optimization starts from a better point, compared to the parameters default values. This will reduce the cost of the optimization.
+# We see that the parameters did not change *at all*: disabling the optimization allows one to keep a constant covariance model. In a practical algorithm, we may, for example, add a block of 10 new points before updating the parameters of the covariance model. At this point, we may reuse the previous covariance model so that the optimization starts from a better point, compared to the parameters default values. This will reduce the cost of the optimization.
 
 # %%
 # Configure the local optimization solver

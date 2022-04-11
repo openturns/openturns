@@ -4,7 +4,7 @@ add_definitions (${OPENTURNS_SWIG_DEFINITIONS})
 
 set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
 
-# allows to pass compile flags like -O1 to reduce memory usage
+# allows one to pass compile flags like -O1 to reduce memory usage
 set (SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
 
 # generate SWIG runtime header

@@ -8,7 +8,7 @@ ot.TESTPREAMBLE()
 
 ot.RandomGenerator.SetSeed(0)
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 dim = 2
 copula = ot.GalambosCopula(0.5)
 ott.assert_almost_equal(copula.getMean(), [0.5, 0.5], 0.0, 0.0)

@@ -4,7 +4,7 @@ Kriging: metamodel of the Branin-Hoo function
 """
 # %%
 # As a popular use case in optimization we briefly present the construction of a metamodel
-# of the Branin (also refered to as Branin-Hoo) function.
+# of the Branin (also referred to as Branin-Hoo) function.
 #
 
 # %%

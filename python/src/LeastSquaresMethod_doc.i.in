@@ -34,7 +34,7 @@ OT_LeastSquaresMethod_update_doc
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LeastSquaresMethod::Build
-"Instanciate a decomposition method from its name.
+"Instantiate a decomposition method from its name.
 
 Parameters
 ----------

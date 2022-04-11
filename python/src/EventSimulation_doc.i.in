@@ -79,10 +79,10 @@ Notes
 -----
 It launches the simulation and creates a :class:`~openturns.SimulationResult`,
 structure containing all the results obtained after simulation.
-It computes the probability of occurence of the given event by computing the
+It computes the probability of occurrence of the given event by computing the
 empirical mean of a sample of size at most *outerSampling * blockSize*,
-this sample being built by blocks of size *blockSize*. It allows to use
-efficiently the distribution of the computation as well as it allows to deal
+this sample being built by blocks of size *blockSize*. It allows one to use
+efficiently the distribution of the computation as well as it allows one to deal
 with a sample size :math:`> 2^{32}` by a combination of *blockSize* and
 *outerSampling*.
 

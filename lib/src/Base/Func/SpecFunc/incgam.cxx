@@ -24,7 +24,7 @@ void incgam(const Scalar a,
   //   p,     function P(a,x)
   //   q,     function Q(a,x)
   //   ierr , error flag
-  //          ierr = 0, computation succesful
+  //          ierr = 0, computation successful
   //          ierr = 1, overflow/underflow problems. The function values
   //          (P(a,x) and Q(a,x)) are set to zero.
   // ----------------------------------------------------------------------
@@ -111,7 +111,7 @@ void invincgam(const Scalar a,
   //   xr   ,  soluction of the equations P(a, xr) = p and Q(a, xr) = q
   //          with a as a given positive parameter.
   //   ierr ,  error flag
-  //          ierr = 0,   computation succesful
+  //          ierr = 0,   computation successful
   //          ierr = -1,  overflow problem in the computation of one of the
   //                   gamma factors before starting the Newton iteration.
   //                   The initial approximation to the root is given

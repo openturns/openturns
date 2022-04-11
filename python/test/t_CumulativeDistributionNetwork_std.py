@@ -7,7 +7,7 @@ import openturns.testing as ott
 ot.RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     graph = ot.BipartiteGraph([[0, 1], [0, 1]])
     distribution = ot.CumulativeDistributionNetwork([ot.Normal(2)] * 2, graph)
     print("Distribution ", repr(distribution))

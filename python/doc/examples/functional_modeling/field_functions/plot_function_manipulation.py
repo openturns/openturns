@@ -84,7 +84,7 @@ f.clearHistory()
 f.disableHistory()
 
 # %%
-# Enable the cache mecanism
+# Enable the cache mechanism
 f4 = ot.MemoizeFunction(func4)
 f4.enableCache()
 for i in range(10):

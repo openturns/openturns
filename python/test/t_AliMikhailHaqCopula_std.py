@@ -8,7 +8,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     dim = 2
     copula = AliMikhailHaqCopula(0.5)
     print("Copula ", repr(copula))

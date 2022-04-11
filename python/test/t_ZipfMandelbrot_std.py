@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = ZipfMandelbrot(15, 1.2, 2.)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

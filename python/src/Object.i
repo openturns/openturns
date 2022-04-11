@@ -49,7 +49,7 @@ def Object___setstate__(self, state):
     import os
 
     # call ctor to initialize underlying cxx obj
-    # as it is instanciated from object.__new__
+    # as it is instantiated from object.__new__
     self.__init__()
 
     study = Study()

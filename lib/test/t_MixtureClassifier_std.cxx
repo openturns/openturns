@@ -39,7 +39,7 @@ int main(int, char *[])
     aCollection.add( Uniform(5., 7.) );
     aCollection.add( Triangular(7., 8., 9.) );
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Mixture distribution(aCollection, Point(aCollection.getSize(), 1.0));
     fullprint << "mixture=" << distribution.__str__() << std::endl;
     Classifier classifier(MixtureClassifier(distribution).clone());

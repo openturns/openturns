@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * @brief The class implements the concept of CalibrationAlgorithm.
  *
- * This class is abstract so it can not be instanciated. It must be derived.
+ * This class is abstract so it can not be instantiated. It must be derived.
  * @see CalibrationAlgorithm
  */
 class OT_API CalibrationAlgorithmImplementation

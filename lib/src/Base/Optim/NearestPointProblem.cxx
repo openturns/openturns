@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NearestPointProblem allows to describe an optimization problem
+ *  @brief NearestPointProblem allows one to describe an optimization problem
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *

@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 2;
     ExtremeValueCopula copula(SymbolicFunction("t", "(t-0.5)^2+0.75"));
     copula.setName("an extreme value copula");

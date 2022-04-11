@@ -244,7 +244,7 @@ inputs
 # This has at least two significant advantages.
 #
 # * It generally improves the performance.
-# * This allows to automatically evaluate the exact gradient and Hessian matrix.
+# * This allows one to automatically evaluate the exact gradient and Hessian matrix.
 #
 # In practice, some functions cannot be expressed as a symbolic function: in this case, the Python function cannot be avoided.
 

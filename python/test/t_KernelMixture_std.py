@@ -5,7 +5,7 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 dimension = 3
 meanPoint = ot.Point([0.5, -0.5, 1])
 sigma = [2, 3, 1]
@@ -23,7 +23,7 @@ meanPoint += [1.0]*dimension
 aCollection.add(ot.Normal(meanPoint, sigma, ot.IdentityMatrix(dimension)))
 sample.add(meanPoint)
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.KernelMixture(ot.Normal(), sigma, sample)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)

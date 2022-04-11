@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationProblem allows to describe an optimization problem
+ *  @brief OptimizationProblem allows one to describe an optimization problem
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class OptimizationProblem
- * OptimizationProblem allows to define an optimization problem, including:
+ * OptimizationProblem allows one to define an optimization problem, including:
  * + multiple objective functions
  * + multiple equality, inequality and bounds constraints
  * + continuous or discrete (lattice) search spaces

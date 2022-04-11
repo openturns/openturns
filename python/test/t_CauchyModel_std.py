@@ -18,8 +18,8 @@ try:
     scale = Point(defaultDimension, 1.0)
 
     # Default constructor
-    myDefautModel = CauchyModel()
-    print("myDefautModel = ", myDefautModel)
+    myDefaultModel = CauchyModel()
+    print("myDefaultModel = ", myDefaultModel)
 
     # Second order model with parameters
     myModel = CauchyModel(scale, amplitude)

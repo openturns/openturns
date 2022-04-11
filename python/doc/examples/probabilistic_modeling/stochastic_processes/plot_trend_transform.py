@@ -7,12 +7,12 @@ Trend computation
 #
 # We note :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` the values of the initial field associated to the mesh :math:`\mathcal{M}` of :math:`\mathcal{D} \in \mathbb{R}^n`, where :math:`\underline{x}_i \in \mathbb{R}^d` and :math:`(\underline{x}^{stat}_0, \dots, \underline{x}^{stat}_{N-1})` the values of the resulting stationary field.
 #
-# The object **TrendFactory** allows to estimate a trend and is built from:
+# The object **TrendFactory** allows one to estimate a trend and is built from:
 #
 # - a regression strategy that generates a basis using the Least Angle Regression method thanks to the object **LARS**,
 # - a fitting algorithm that estimates the empirical error on each sub-basis using the leave one out strategy, thanks to the object **CorrectedLeaveOneOut** or the k-fold algorithm thanks to the object **KFold**.
 #
-# Then, the trend transformation is estimated from the initial field :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` and a function basis :math:`\mathcal{B}` thanks to the method **build** of the object **TrendFactory**, which produces an object of type **TrendTransform**. This last object allows to:
+# Then, the trend transformation is estimated from the initial field :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` and a function basis :math:`\mathcal{B}` thanks to the method **build** of the object **TrendFactory**, which produces an object of type **TrendTransform**. This last object allows one to:
 #
 # - add the trend to a given field :math:`\underline{w}_0, \dots, \underline{w}_{N-1}` defined on the same mesh :math:`\mathcal{M}`: the resulting field  shares the same mesh than the initial field. For example, it may be useful to add the trend to a realization of the stationary process :math:`X_{stat}` in order to get a realization of the process :math:`X`
 #

@@ -11,7 +11,7 @@ ot.RandomGenerator.SetSeed(0)
 ot.ResourceMap.SetAsBool(
     "MaximumEntropyOrderStatisticsDistribution-UseApproximation", True)
 
-# Instanciate one copula object
+# Instantiate one copula object
 copula = ot.MaximumEntropyOrderStatisticsCopula(
     [ot.Trapezoidal(-2.0, -1.1, -1.0, 1.0),
      ot.LogUniform(1.0, 1.2),

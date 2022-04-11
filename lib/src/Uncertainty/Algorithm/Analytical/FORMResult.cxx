@@ -122,7 +122,7 @@ void FORMResult::computeEventProbabilitySensitivity() const
   Distribution antecedent(getLimitStateVariable().getImplementation()->getAntecedent().getDistribution());
   UnsignedInteger dimension = antecedent.getDimension();
 
-  /* Be carefull! computeCDF method takes an Point as an input argument */
+  /* Be careful! computeCDF method takes an Point as an input argument */
   /* in the standard space all marginals of the standard distribution are identical */
   /* evaluate one marginal at the reliability index : the marginal is symmetric with respect to zero */
   const Distribution standardMarginalDistribution(antecedent.getStandardDistribution().getMarginal(0));

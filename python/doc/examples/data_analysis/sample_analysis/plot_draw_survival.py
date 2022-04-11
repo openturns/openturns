@@ -86,7 +86,7 @@ p2
 p1 + p2
 
 # %%
-# The `drawCDF` and `drawSurvivalFunction` methods allows to draw the functions :math:`F` and :math:`S`.
+# The `drawCDF` and `drawSurvivalFunction` methods allows one to draw the functions :math:`F` and :math:`S`.
 
 # %%
 graph = distribution.drawCDF()
@@ -155,7 +155,7 @@ p1 = sample.computeEmpiricalCDF([10])
 p1
 
 # %%
-# Activating the second optional argument allows to compute the empirical survival function.
+# Activating the second optional argument allows one to compute the empirical survival function.
 
 # %%
 p2 = sample.computeEmpiricalCDF([10], True)

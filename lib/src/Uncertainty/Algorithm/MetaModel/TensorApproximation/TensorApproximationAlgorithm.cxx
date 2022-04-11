@@ -143,7 +143,7 @@ void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalInd
     Scalar & marginalResidual,
     Scalar & marginalRelativeError)
 {
-  // proxies are reused accross marginals because the basis is the same
+  // proxies are reused across marginals because the basis is the same
   const UnsignedInteger dimension = transformedInputSample_.getDimension();
   if (proxy_.getSize() == 0)
   {

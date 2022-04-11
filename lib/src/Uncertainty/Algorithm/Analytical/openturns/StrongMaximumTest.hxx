@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class StrongMaximumTest
- * StrongMaximumTest allows to validate a design point
+ * StrongMaximumTest allows one to validate a design point
  */
 class OT_API StrongMaximumTest :
   public PersistentObject

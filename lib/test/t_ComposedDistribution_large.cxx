@@ -52,7 +52,7 @@ int main(int, char *[])
 
     // Create a copula
     IndependentCopula aCopula(dimension);
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     ComposedDistribution distribution(aCollection, aCopula);
     fullprint << "Distribution created." << std::endl;
     // Is this distribution an elliptical distribution?

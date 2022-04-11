@@ -156,19 +156,19 @@ RandomVector RandomVector::getMarginal(const Indices & indices) const
   return getImplementation()->getMarginal(indices);
 }
 
-/* This method allows to access the antecedent RandomVector in case of a composite RandomVector */
+/* This method allows one to access the antecedent RandomVector in case of a composite RandomVector */
 RandomVector RandomVector::getAntecedent() const
 {
   return getImplementation()->getAntecedent();
 }
 
-/* This method allows to access the Function in case of a composite RandomVector */
+/* This method allows one to access the Function in case of a composite RandomVector */
 Function RandomVector::getFunction() const
 {
   return getImplementation()->getFunction();
 }
 
-/* This method allows to access the Distribution in case of a usual RandomVector */
+/* This method allows one to access the Distribution in case of a usual RandomVector */
 Distribution RandomVector::getDistribution() const
 {
   return getImplementation()->getDistribution();

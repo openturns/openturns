@@ -73,14 +73,14 @@ Sample PostAnalyticalImportanceSampling::computeBlockSample()
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
     blockSample(i, 0) = 0.0;
-    // If the event has occured
+    // If the event has occurred
     if (isRealized[i])
     {
       realizedIndices.add(i);
     }
   }
   const Sample realizedInputSample(inputSample.select(realizedIndices));
-  // If the event occured, the value is p_initial(x[i]) / p_importance(x[i])
+  // If the event occurred, the value is p_initial(x[i]) / p_importance(x[i])
   const Sample p_initial(standardDistribution_.computePDF(realizedInputSample));
   const Sample p_importance(standardDistribution_.computePDF(realizedInputSample - standardSpaceDesignPoint));
 

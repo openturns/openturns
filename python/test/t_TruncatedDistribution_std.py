@@ -22,7 +22,7 @@ def cleanCovariance(inCovariance):
     return inCovariance
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 referenceDistribution = [ot.TruncatedNormal(2.0, 1.5, 1.0, 4.0),
                          ot.TruncatedNormal(2.0, 1.5, 1.0, 200.0),
                          ot.TruncatedNormal(2.0, 1.5, -200.0, 4.0),

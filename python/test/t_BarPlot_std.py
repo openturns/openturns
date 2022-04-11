@@ -8,7 +8,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     dim = 1
     meanPoint = Point(dim, 1.0)
     meanPoint[0] = 0.5
@@ -18,7 +18,7 @@ try:
 
     distribution1 = Normal(meanPoint, sigma, R)
 
-    # Instanciate another distribution object
+    # Instantiate another distribution object
     meanPoint[0] = -1.5
     sigma[0] = 4.0
 

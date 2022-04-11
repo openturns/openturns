@@ -121,7 +121,7 @@ public:
   void setGridColor(const String & color);
   String getGridColor() const;
 
-  /** Accesor for xTitle */
+  /** Accessor for xTitle */
   String getXTitle() const;
   void setXTitle(const String & title);
 
@@ -129,7 +129,7 @@ public:
   String getYTitle() const;
   void setYTitle(const String & title);
 
-  /** Accesor for title */
+  /** Accessor for title */
   String getTitle() const;
   void setTitle(const String & title);
 

@@ -178,7 +178,7 @@ class TestInverseWishartMethods(ut.TestCase):
                 indice += 1
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.InverseWishart(ot.CovarianceMatrix(1), 5.0)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)

@@ -93,7 +93,7 @@ private:
   // Index of the next vector to be generated
   UnsignedInteger currentVectorIndex_;
 
-  // Maximum size of the curent basis
+  // Maximum size of the current basis
   UnsignedInteger maximumSize_;
 
   // Relative significance factor of a vector

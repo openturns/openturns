@@ -35,8 +35,8 @@ int main(int, char *[])
   {
 
     /* Default constructor */
-    UserDefinedStationaryCovarianceModel myDefautModel;
-    fullprint << "myDefautModel = " << myDefautModel << std::endl;
+    UserDefinedStationaryCovarianceModel myDefaultModel;
+    fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
 
     // Default dimension parameter to evaluate the model
     const UnsignedInteger dimension = 1;

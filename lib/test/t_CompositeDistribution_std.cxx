@@ -42,7 +42,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     SymbolicFunction f("x", "x^2 + 2 * sin(x)");
     CompositeDistribution distribution(f, Normal());
     fullprint << "Distribution " << distribution << std::endl;
