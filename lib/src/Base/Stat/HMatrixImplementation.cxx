@@ -289,15 +289,15 @@ void HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction &f,
   int sym = 0;
   switch (symmetry)
   {
-  case 'N':
-  case 'n':
-    break;
-  case 'L':
-  case 'l':
-    sym = 1;
-    break;
-  default:
-    throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
+    case 'N':
+    case 'n':
+      break;
+    case 'L':
+    case 'l':
+      sym = 1;
+      break;
+    default:
+      throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
   }
 
   hmat_assemble_context_t ctx_assemble;
@@ -381,15 +381,15 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction &f,
   int sym = 0;
   switch (symmetry)
   {
-  case 'N':
-  case 'n':
-    break;
-  case 'L':
-  case 'l':
-    sym = 1;
-    break;
-  default:
-    throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
+    case 'N':
+    case 'n':
+      break;
+    case 'L':
+    case 'l':
+      sym = 1;
+      break;
+    default:
+      throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
   }
 
   hmat_assemble_context_t ctx_assemble;

@@ -305,7 +305,7 @@ int main(int, char *[])
       for(UnsignedInteger newCol = 1; newCol < 6; ++ newCol)
       {
         MatrixImplementation B(*A.getImplementation());
-        fullprint << "----------" << newRow << "x" << newCol <<std::endl;
+        fullprint << "----------" << newRow << "x" << newCol << std::endl;
         B.resize(newRow, newCol);
         fullprint << B.__str__() << std::endl;
       }

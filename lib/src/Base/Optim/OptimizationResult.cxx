@@ -305,9 +305,9 @@ void OptimizationResult::store(const Point & x,
   if (getProblem().getObjective().getOutputDimension() <= 1)
   {
     if (!getOptimalValue().getDimension()
-      || getProblem().hasLevelFunction() // consider the last value as optimal for nearest-point algos
-      || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0])
-      || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0])))
+        || getProblem().hasLevelFunction() // consider the last value as optimal for nearest-point algos
+        || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0])
+            || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0])))
     {
       setOptimalPoint(x);
       setOptimalValue(y);

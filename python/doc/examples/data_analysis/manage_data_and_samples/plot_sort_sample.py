@@ -24,7 +24,7 @@ two_dice_distribution = ot.ComposedDistribution([die_distribution]*2)
 # We now build a sample of size :math:`n=5` from this distribution :
 n = 5
 sample = two_dice_distribution.getSample(n)
-print(sample) 
+print(sample)
 
 # %%
 # Useful methods
@@ -99,4 +99,3 @@ print(sampleUnique)
 
 # %%
 # Nothing happens here because pairs are already unique !
-

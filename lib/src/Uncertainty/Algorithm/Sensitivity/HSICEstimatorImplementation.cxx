@@ -53,16 +53,16 @@ HSICEstimatorImplementation::HSICEstimatorImplementation()
   , PValuesPermutation_()
   , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
 {
- // Nothing
+// Nothing
 }
 
 
 /* Constructor */
 HSICEstimatorImplementation::HSICEstimatorImplementation(
   const CovarianceModelCollection & covarianceModelCollection
-, const Sample & X
-, const Sample & Y
-, const HSICStat & estimatorType)
+  , const Sample & X
+  , const Sample & Y
+  , const HSICStat & estimatorType)
   : PersistentObject()
   , covarianceModelCollection_(covarianceModelCollection)
   , inputSample_(X)
@@ -90,15 +90,15 @@ HSICEstimatorImplementation * HSICEstimatorImplementation::clone() const
 /* Compute the weight matrix from the weight function */
 SquareMatrix HSICEstimatorImplementation::computeWeightMatrix(const Sample&) const
 {
-    throw NotYetImplementedException(HERE) << "Use the class HSICEstimatorConditionalSensitivity in order to perform conditional sensitivity analysis";
+  throw NotYetImplementedException(HERE) << "Use the class HSICEstimatorConditionalSensitivity in order to perform conditional sensitivity analysis";
 }
 
 /* Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
 Scalar HSICEstimatorImplementation::computeHSICIndex(const Sample & inSample,
-                                                     const Sample & outSample,
-                                                     const CovarianceModel & inCovariance,
-                                                     const CovarianceModel & outCovariance,
-                                                     const SquareMatrix & weightMatrix) const
+    const Sample & outSample,
+    const CovarianceModel & inCovariance,
+    const CovarianceModel & outCovariance,
+    const SquareMatrix & weightMatrix) const
 {
   return estimatorType_.computeHSICIndex(inSample, outSample, inCovariance, outCovariance, weightMatrix);
 }
@@ -239,7 +239,7 @@ Point HSICEstimatorImplementation::getHSICIndices() const
   if(!(isAlreadyComputedIndices_))
   {
     computeIndices();
-    isAlreadyComputedIndices_ = true ; 
+    isAlreadyComputedIndices_ = true ;
   }
   return HSIC_XY_;
 }
@@ -263,7 +263,7 @@ Point HSICEstimatorImplementation::getPValuesPermutation() const
     computePValuesPermutation();
     isAlreadyComputedPValuesPermutation_ = true ;
   }
-  return PValuesPermutation_; 
+  return PValuesPermutation_;
 }
 
 /* Draw the HSIC indices */
@@ -313,11 +313,11 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, const String 
 
   Point lowerBound(2);
   lowerBound[0] = 0.9;
-  lowerBound[1] = minInd - 0.05*step;
+  lowerBound[1] = minInd - 0.05 * step;
 
   Point upperBound(2);
   upperBound[0] = values.getDimension() + 0.2 ;
-  upperBound[1] = maxInd + 0.05*step;
+  upperBound[1] = maxInd + 0.05 * step;
 
   graph.setBoundingBox(Interval(lowerBound, upperBound));
 
@@ -430,7 +430,7 @@ Sample HSICEstimatorImplementation::shuffledCopy(const Sample & inSample) const
     const UnsignedInteger j = RandomGenerator::IntegerGenerate(i + 1);
     // swap i & j rows
     for (UnsignedInteger d = 0; d < sampleOut.getDimension(); ++d)
-        std::swap(sampleOut(j, d), sampleOut(i, d));
+      std::swap(sampleOut(j, d), sampleOut(i, d));
   }
   return sampleOut;
 }

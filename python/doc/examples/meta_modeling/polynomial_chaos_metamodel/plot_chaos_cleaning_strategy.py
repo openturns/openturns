@@ -184,8 +184,8 @@ def printCoefficientsTable(
     maximum_number_of_printed_coefficients : int
         The maximum number of printed coefficients.
     threshold : float, stricly positive
-        If a coefficient has an absolute value striclty greater than the 
-        threshold, it is printed. 
+        If a coefficient has an absolute value striclty greater than the
+        threshold, it is printed.
     """
     basis = polynomialChaosResult.getOrthogonalBasis()
     coefficients = polynomialChaosResult.getCoefficients()
@@ -216,8 +216,8 @@ def compute_polynomial_chaos_Q2(
     polynomialchaos_result, g_function, input_distribution, n_valid=1000
 ):
     """
-    Compute the Q2 score of the polynomial chaos. 
-    
+    Compute the Q2 score of the polynomial chaos.
+
 
     Parameters
     ----------
@@ -229,7 +229,7 @@ def compute_polynomial_chaos_Q2(
         The input distribution.
     n_valid : int
         The number of simulations to compute the Q2 score.
-    
+
     Returns
     -------
     Q2 : float
@@ -253,10 +253,10 @@ def draw_polynomial_chaos_validation(
     polynomialchaos_result, g_function, input_distribution, n_valid=1000
 ):
     """
-    Validate the polynomial chaos. 
-    
+    Validate the polynomial chaos.
+
     Create the validation plot.
-    
+
 
     Parameters
     ----------
@@ -268,7 +268,7 @@ def draw_polynomial_chaos_validation(
         The input distribution.
     n_valid : int
         The number of simulations to compute the Q2 score.
-    
+
     Returns
     -------
     Q2 : float
@@ -311,9 +311,11 @@ totalDegree = 5  # Polynomial degree
 enumerate_function = multivariateBasis.getEnumerateFunction()
 strataIndex = enumerate_function.getMaximumDegreeStrataIndex(totalDegree)
 print("strataIndex = ", strataIndex)
-number_of_terms_in_basis = enumerate_function.getStrataCumulatedCardinal(strataIndex)
+number_of_terms_in_basis = enumerate_function.getStrataCumulatedCardinal(
+    strataIndex)
 print("number_of_terms_in_basis = ", number_of_terms_in_basis)
-adaptiveStrategy = ot.FixedStrategy(multivariateBasis, number_of_terms_in_basis)
+adaptiveStrategy = ot.FixedStrategy(
+    multivariateBasis, number_of_terms_in_basis)
 print(adaptiveStrategy)
 
 # %%
@@ -391,24 +393,24 @@ def compute_cleaning_PCE(
 ):
     """
     Compute a PCE using CleaningStrategy.
-    
+
     Parameters
     ----------
     maximumConsideredTerms : int
-        The maximum number of coefficients considered by the algorithm during 
+        The maximum number of coefficients considered by the algorithm during
         intermediate steps.
-        
+
     mostSignificant : int
-        The maximum number of coefficients selected by the algorithm in 
+        The maximum number of coefficients selected by the algorithm in
         the final PCE.
 
     significanceFactor : float
-        The relative part of any coefficient with respect to the maximum 
+        The relative part of any coefficient with respect to the maximum
         coefficient.
 
     verbose : bool
         If set to True, print intermediate messages.
-    
+
     Returns
     -------
     Q2 : float
@@ -469,8 +471,8 @@ score_Q2 = compute_cleaning_PCE(
 
 # %%
 #
-maximumConsideredTerms_list = list(range(1, 500, 50))  
-mostSignificant_list = list(range(1, 30, 5))  
+maximumConsideredTerms_list = list(range(1, 500, 50))
+mostSignificant_list = list(range(1, 30, 5))
 iterator = itertools.product(maximumConsideredTerms_list, mostSignificant_list)
 best_score = 0.0
 best_parameters = []
@@ -492,7 +494,7 @@ print("Number of selected coefficients : ", mostSignificant)
 
 # %%
 #
-# We see that the best solution could be to select at most 16 significant coefficients among the first 101 ones. Let us see the Q2 score and the coefficients in this situation. 
+# We see that the best solution could be to select at most 16 significant coefficients among the first 101 ones. Let us see the Q2 score and the coefficients in this situation.
 
 # %%
 score_Q2 = compute_cleaning_PCE(
@@ -509,7 +511,7 @@ score_Q2 = compute_cleaning_PCE(
 # Intermediate steps of the algorithm
 # -----------------------------------
 #
-# If we set the `verbose` optional input argument of the `compute_cleaning_PCE` function to `True`, then intermediate messages are printed in the Terminal (but not in the Jupyter output). For each step of the adaptivity algorithm, the code prints some of the internal parameters of the algorithm. The datastructure uses several variables that we now describe. 
+# If we set the `verbose` optional input argument of the `compute_cleaning_PCE` function to `True`, then intermediate messages are printed in the Terminal (but not in the Jupyter output). For each step of the adaptivity algorithm, the code prints some of the internal parameters of the algorithm. The datastructure uses several variables that we now describe.
 #
 # - `Psi_k_p_` : the collection of functions in the current active polynomial multiindex set,
 # - `I_p_` : the list of indices of the selected coefficients based according to the enumeration rule,
@@ -568,13 +570,13 @@ score_Q2 = compute_cleaning_PCE(
 # - During the initialization, the initial basis is empty and filled with the indices [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]. The greatest coefficient in absolute value is :math:`a_0 = 3.505`, which leads to the threshold :math:`\epsilon |a_0| = 3.505 \times 10^{-10}`. Most of the considered coefficient are, however, too close to zero. This is why only the coefficients [0, 1, 7, 10, 15] are kept in the basis. The corresponding coefficients are [3.505, 1.625,-0.6414, -1.291, 1.372].
 # - On step 1, the candidate index 16 is considered. Its coefficient is :math:`a_{16} = -1.197 \times 10^{-15}`, which is much too low to be selected. Hence, the basis is unchanged and the active multiindex set is [0, 1, 7, 10, 15] on the end of this step.
 # - From the step 3 to the step 15, the active multiindex set is unchanged, because no considered coefficient becomes greater than the threshold.
-# - On step 16, the candidate index 30 is considered, with corresponding coefficient :math:`a_{30} = -1.612`. Since this coefficient has an absolute value greater than the threshold, it gets selected and the active multiindex set is [0, 1, 7, 10, 15, 30] on the end of this step. From this step to the end, the index 30 will not leave the active set. 
-# - On the step 20, the index 35 enters the active set. 
-# - On the step 25, the index 40 enters the active set. 
-# - On the step 34, the index 49 enters the active set. 
-# - On the step 69, the index 84 enters the active set. 
-# - On the step 74, the index 89 enters the active set. 
-# - On the step 83, the index 98 enters the active set. 
+# - On step 16, the candidate index 30 is considered, with corresponding coefficient :math:`a_{30} = -1.612`. Since this coefficient has an absolute value greater than the threshold, it gets selected and the active multiindex set is [0, 1, 7, 10, 15, 30] on the end of this step. From this step to the end, the index 30 will not leave the active set.
+# - On the step 20, the index 35 enters the active set.
+# - On the step 25, the index 40 enters the active set.
+# - On the step 34, the index 49 enters the active set.
+# - On the step 69, the index 84 enters the active set.
+# - On the step 74, the index 89 enters the active set.
+# - On the step 83, the index 98 enters the active set.
 # - On the last step, the active multiindex set contains the indices [0, 1, 7, 10, 15, 30, 35, 40, 49, 84, 89, 98] and the corresponding coefficients are [3.508, 1.625, -0.6414, -1.291, 1.372, -1.613, 0.2076, -1.090, 0.4092, -0.2078, 0.1753, -0.3250].
 #
 # We see that the algorithm was able so select 12 coefficients in the first 101 coefficients considered by the algorithm. It could have selected more coefficients since we provided 16 slots to fill thanks to the `mostSignificant` parameter. The considered coefficients were, however, too close to zero and were below the threshold.
@@ -585,4 +587,4 @@ score_Q2 = compute_cleaning_PCE(
 # Conclusion
 # ----------
 #
-# We see that the `~openturns.CleaningStrategy` class performs correctly in this particular case. We have seen how to select the hyperparameters which produce the best Q2 score. 
+# We see that the `~openturns.CleaningStrategy` class performs correctly in this particular case. We have seen how to select the hyperparameters which produce the best Q2 score.

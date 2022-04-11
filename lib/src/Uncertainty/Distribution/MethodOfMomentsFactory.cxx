@@ -47,7 +47,7 @@ MethodOfMomentsFactory::MethodOfMomentsFactory()
 
 /* Parameters constructor */
 MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution,
-                                               const Interval & optimizationBounds)
+    const Interval & optimizationBounds)
   : DistributionFactoryImplementation()
   , distribution_(distribution)
   , optimizationBounds_(optimizationBounds)

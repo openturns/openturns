@@ -60,7 +60,7 @@ void HMatrix::assemble(const HMatrixRealAssemblyFunction& f, char symmetry)
 
 void HMatrix::assemble(const HMatrixRealAssemblyFunction &f,
                        const HMatrixParameters & parameters,
-                      char symmetry)
+                       char symmetry)
 {
   copyOnWrite();
   getImplementation()->assemble(f, parameters, symmetry);

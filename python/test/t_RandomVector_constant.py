@@ -19,4 +19,3 @@ print("vect realization (first )=", repr(vect.getRealization()))
 print("vect realization (second)=", repr(vect.getRealization()))
 print("vect realization (third )=", repr(vect.getRealization()))
 print("vect sample =", repr(vect.getSample(5)))
-

@@ -105,8 +105,8 @@ struct SymbolicParserExprTkPolicy
   const SymbolicParserExprTk & evaluation_;
 
   SymbolicParserExprTkPolicy(const Sample & input,
-                                  Sample & output,
-                                  const SymbolicParserExprTk & evaluation)
+                             Sample & output,
+                             const SymbolicParserExprTk & evaluation)
     : input_(*input.getImplementation())
     , output_(*output.getImplementation())
     , evaluation_(evaluation)

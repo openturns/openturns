@@ -70,8 +70,8 @@ int main(int, char *[])
     Sample vertices(vertices2D.getSize(), 3);
     for (UnsignedInteger i = 0; i < vertices2D.getSize(); ++i)
     {
-      vertices(i,0) = vertices2D(i,0);
-      vertices(i,1) = vertices2D(i,1);
+      vertices(i, 0) = vertices2D(i, 0);
+      vertices(i, 1) = vertices2D(i, 1);
     }
     const Point scale = {0.1, 0.1, 0.1};
     const Point amplitude = {1.0, 1.0, 1.0};

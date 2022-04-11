@@ -46,7 +46,7 @@ print("psample2=", psample2)
 psample3 = ot.ProcessSample(8, timeSeries)
 psample3.erase(2)
 assert psample3.getSize() == 7, "wrong size"
-psample3.erase(2,5)
+psample3.erase(2, 5)
 assert psample3.getSize() == 4, "wrong size"
 psample3.clear()
 assert psample3.getSize() == 0, "wrong size"

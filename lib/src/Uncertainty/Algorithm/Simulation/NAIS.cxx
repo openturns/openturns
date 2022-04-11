@@ -58,7 +58,7 @@ NAIS * NAIS::clone() const
 {
   return new NAIS(*this);
 }
-    
+
 // Get rhoQuantile
 Scalar NAIS::getRhoQuantile() const
 {
@@ -128,7 +128,7 @@ Point NAIS::computeWeights(const Sample & sample,
   Point weights = Point(sample.getSize());
   for (UnsignedInteger i = 0; i < criticalSample.getSize(); ++i)
   {
-    weights[indiceCritic[i]] = std::exp(initialLogPDF(i,0) - auxilliaryLogPDF(i,0));
+    weights[indiceCritic[i]] = std::exp(initialLogPDF(i, 0) - auxilliaryLogPDF(i, 0));
   }
   return weights;
 }
@@ -161,14 +161,14 @@ void NAIS::run()
     // Computation of auxiliary distribution
     auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
   }
-  
+
   UnsignedInteger iterationNumber  = 0;
-  
+
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
     ++iterationNumber ;
-    
-    // Drawing of samples using auxiliary density and evaluation on limit state function   
+
+    // Drawing of samples using auxiliary density and evaluation on limit state function
     auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());
     auxiliaryOutputSample = Sample(0, 1);
 
@@ -177,11 +177,11 @@ void NAIS::run()
       const Sample blockSample(auxiliaryDistribution.getSample(getBlockSize()));
       auxiliaryInputSample.add(blockSample);
       auxiliaryOutputSample.add(getEvent().getFunction()(blockSample));
-      
+
       if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
         throw InternalException(HERE) << "User stopped simulation";
-    } 
-    
+    }
+
     // Computation of current quantile
     currentQuantile = auxiliaryOutputSample.computeQuantile(rhoQuantile_)[0];
 
@@ -198,10 +198,10 @@ void NAIS::run()
       // Update of auxiliary distribution
       auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
     }
-    
+
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
       throw InternalException(HERE) << "User stopped simulation";
-      
+
   } // while
 
   // Find failure sample indices
@@ -233,8 +233,8 @@ void NAIS::run()
   {
     const Scalar varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0)) - failureProbability;
     varianceCritic += varianceCriticTemporary * varianceCriticTemporary;
-  }  // for i 
-  
+  }  // for i
+
   const Scalar variancenonCritic = (numberOfSample - indicesCritic.getSize()) * (failureProbability * failureProbability);
   const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (numberOfSample - 1) / numberOfSample ;
 

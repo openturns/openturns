@@ -87,9 +87,9 @@ public:
 
   /** Likelihood accessor */
   virtual void setLikelihood(const Distribution & conditional,
-                            const Sample & observations,
-                            const Function & linkFunction = Function(),
-                            const Sample & covariates = Sample(0, 0));
+                             const Sample & observations,
+                             const Function & linkFunction = Function(),
+                             const Sample & covariates = Sample(0, 0));
 
   /** Conditional accessor */
   Distribution getConditional() const;

@@ -57,7 +57,7 @@ struct PagmoProblem
   PagmoProblem() {};
 
   PagmoProblem(const Pagmo * algorithm)
-  : algorithm_(algorithm)
+    : algorithm_(algorithm)
   {
     // pagmo wants the integer components grouped at the end, so renumbering is in order
     Indices renum;
@@ -215,7 +215,7 @@ struct PagmoProblem
   pagmo::thread_safety get_thread_safety() const
   {
     return algorithm_->getProblem().getObjective().getImplementation()->isParallel() ?
-      pagmo::thread_safety::constant : pagmo::thread_safety::none;
+           pagmo::thread_safety::constant : pagmo::thread_safety::none;
   }
 
   static UnsignedInteger evaluationNumber_;
@@ -558,7 +558,7 @@ void Pagmo::run()
         optimalPoint = inP;
       }
       if ((getProblem().isMinimization() && (outP[0] < optimalValue))
-      || (!getProblem().isMinimization() && (outP[0] > optimalValue)))
+          || (!getProblem().isMinimization() && (outP[0] > optimalValue)))
       {
         optimalValue = outP[0];
         optimalPoint = inP;
@@ -636,7 +636,8 @@ Sample Pagmo::getStartingSample() const
 Description Pagmo::GetAlgorithmNames()
 {
   const Description algoNames = {"gaco", "de", "sade", "de1220", "gwo", "ihs", "pso", "pso_gen", "sea",
-    "sga", "simulated_annealing", "bee_colony", "cmaes", "xnes", "nsga2", "moead", "mhaco", "nspso"};
+                                 "sga", "simulated_annealing", "bee_colony", "cmaes", "xnes", "nsga2", "moead", "mhaco", "nspso"
+                                };
   return algoNames;
 }
 

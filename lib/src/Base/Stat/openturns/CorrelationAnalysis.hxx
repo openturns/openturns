@@ -36,35 +36,35 @@ BEGIN_NAMESPACE_OPENTURNS
 
 namespace CorrelationAnalysis
 {
-  /** Compute the Pearson correlation coefficient between the input sample and the output sample */
-  OT_API Point PearsonCorrelation(const Sample & inputSample,
-                                  const Sample & outputSample);
+/** Compute the Pearson correlation coefficient between the input sample and the output sample */
+OT_API Point PearsonCorrelation(const Sample & inputSample,
+                                const Sample & outputSample);
 
-  /** Compute the Spearman correlation coefficient between the input sample and the output sample */
-  OT_API Point SpearmanCorrelation(const Sample & inputSample,
-                                   const Sample & outputSample);
+/** Compute the Spearman correlation coefficient between the input sample and the output sample */
+OT_API Point SpearmanCorrelation(const Sample & inputSample,
+                                 const Sample & outputSample);
 
-  /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
-  OT_API Point SRC(const Sample & inputSample,
-                   const Sample & outputSample,
-                   const Bool normalize = false);
+/** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
+OT_API Point SRC(const Sample & inputSample,
+                 const Sample & outputSample,
+                 const Bool normalize = false);
 
-  /** Compute the signed Standard Regression Coefficients (SRC) between the input sample and the output sample */
-  OT_API Point SignedSRC(const Sample & inputSample,
-                         const Sample & outputSample);
+/** Compute the signed Standard Regression Coefficients (SRC) between the input sample and the output sample */
+OT_API Point SignedSRC(const Sample & inputSample,
+                       const Sample & outputSample);
 
-  /** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
-  OT_API Point PCC(const Sample & inputSample,
-                   const Sample & outputSample);
+/** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
+OT_API Point PCC(const Sample & inputSample,
+                 const Sample & outputSample);
 
-  /** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
-  OT_API Point SRRC(const Sample & inputSample,
-                    const Sample & outputSample,
-                    const Bool normalize = false);
+/** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
+OT_API Point SRRC(const Sample & inputSample,
+                  const Sample & outputSample,
+                  const Bool normalize = false);
 
-  /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
-  OT_API Point PRCC(const Sample & inputSample,
-                    const Sample & outputSample);
+/** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
+OT_API Point PRCC(const Sample & inputSample,
+                  const Sample & outputSample);
 
 }; /* CorrelationAnalysis */
 

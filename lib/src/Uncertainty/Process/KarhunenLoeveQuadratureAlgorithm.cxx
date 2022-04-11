@@ -341,7 +341,8 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   {
     selectedVariance += eigenValues[K];
     ++ K;
-  } while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
+  }
+  while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
   LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
 
   // Reduce and rescale the eigenvectors

@@ -226,14 +226,14 @@ UnsignedInteger OptimizationProblemImplementation::getDimension() const
 void OptimizationProblemImplementation::setMinimization(Bool minimization, UnsignedInteger marginalIndex)
 {
   if (marginalIndex >= objective_.getOutputDimension())
-    throw InvalidDimensionException(HERE) << "marginal index ("<< marginalIndex <<") cannot exceed objective dimension (" << objective_.getOutputDimension();
+    throw InvalidDimensionException(HERE) << "marginal index (" << marginalIndex << ") cannot exceed objective dimension (" << objective_.getOutputDimension();
   minimizationCollection_[marginalIndex] = minimization;
 }
 
 Bool OptimizationProblemImplementation::isMinimization(UnsignedInteger marginalIndex) const
 {
   if (marginalIndex >= objective_.getOutputDimension())
-    throw InvalidDimensionException(HERE) << "marginal index ("<< marginalIndex <<") cannot exceed objective dimension (" << objective_.getOutputDimension();
+    throw InvalidDimensionException(HERE) << "marginal index (" << marginalIndex << ") cannot exceed objective dimension (" << objective_.getOutputDimension();
   return minimizationCollection_[marginalIndex];
 }
 

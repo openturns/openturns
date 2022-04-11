@@ -22,19 +22,22 @@ nor1 = ot.Normal(mu1, 1.0)
 true_distribution = ot.Mixture([nor0, nor1], [1 - p, p])
 observations = np.array(true_distribution.getSample(500))
 
+
 def nor0post(pt):
     z = np.array(pt)[2:]
-    x0 = observations[z==0]
+    x0 = observations[z == 0]
     mu0 = x0.sum() / (0.1 + len(x0))
     sigma0 = 1.0 / (0.1 + len(x0))
     return [mu0, sigma0]
 
+
 def nor1post(pt):
     z = np.array(pt)[2:]
-    x1 = observations[z==1]
+    x1 = observations[z == 1]
     mu1 = x1.sum() / (0.1 + len(x1))
     sigma1 = 1.0 / (0.1 + len(x1))
     return [mu1, sigma1]
+
 
 def zpost(pt):
     mu0 = pt[0]
@@ -45,16 +48,20 @@ def zpost(pt):
     # output must be a 1d list or array in order to create a PythonFunction
     return res.reshape(-1)
 
+
 nor0posterior = ot.PythonFunction(2 + N, 2, nor0post)
 nor1posterior = ot.PythonFunction(2 + N, 2, nor1post)
 zposterior = ot.PythonFunction(2 + N, N, zpost)
 
 # We can now construct the Gibbs algorithm
 initialState = [0.0] * (N + 2)
-sampler0 = ot.RandomVectorMetropolisHastings(ot.RandomVector(ot.Normal()), initialState, [0], nor0posterior)
-sampler1 = ot.RandomVectorMetropolisHastings(ot.RandomVector(ot.Normal()), initialState, [1], nor1posterior)
+sampler0 = ot.RandomVectorMetropolisHastings(
+    ot.RandomVector(ot.Normal()), initialState, [0], nor0posterior)
+sampler1 = ot.RandomVectorMetropolisHastings(
+    ot.RandomVector(ot.Normal()), initialState, [1], nor1posterior)
 big_bernoulli = ot.ComposedDistribution([ot.Bernoulli()] * N)
-sampler2 = ot.RandomVectorMetropolisHastings(ot.RandomVector(big_bernoulli), initialState, range(2, N + 2), zposterior)
+sampler2 = ot.RandomVectorMetropolisHastings(ot.RandomVector(
+    big_bernoulli), initialState, range(2, N + 2), zposterior)
 gibbs = ot.Gibbs([sampler0, sampler1, sampler2])
 
 # Run the Gibbs algorithm

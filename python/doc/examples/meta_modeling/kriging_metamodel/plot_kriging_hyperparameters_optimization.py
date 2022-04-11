@@ -69,7 +69,8 @@ I.setDescription("I")
 dim = 4  # number of inputs
 R = ot.CorrelationMatrix(dim)
 R[2, 3] = -0.2
-myCopula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
+myCopula = ot.NormalCopula(
+    ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
 myDistribution = ot.ComposedDistribution([E, F, L, I], myCopula)
 
 # %%
@@ -103,7 +104,8 @@ scale_max_factor = 4.0  # Must be > 1, tune this to match your problem
 scale_min_factor = 0.1  # Must be < 1, tune this to match your problem
 maximum_scale_bounds = scale_max_factor * x_range
 minimum_scale_bounds = scale_min_factor * x_range
-scaleOptimizationBounds = ot.Interval(minimum_scale_bounds, maximum_scale_bounds)
+scaleOptimizationBounds = ot.Interval(
+    minimum_scale_bounds, maximum_scale_bounds)
 print("scaleOptimizationBounds")
 print(scaleOptimizationBounds)
 
@@ -328,7 +330,8 @@ finetune_covariance_model = result.getCovarianceModel()
 print(finetune_covariance_model)
 
 # %%
-printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model)
+printCovarianceParameterChange(
+    finetune_covariance_model, basic_covariance_model)
 
 
 # %%
@@ -358,7 +361,8 @@ K = 25  # design size
 LHS = ot.LHSExperiment(boundedDistribution, K)
 LHS.setAlwaysShuffle(True)
 SA_profile = ot.GeometricProfile(10.0, 0.95, 20000)
-LHS_optimization_algo = ot.SimulatedAnnealingLHS(LHS, ot.SpaceFillingC2(), SA_profile)
+LHS_optimization_algo = ot.SimulatedAnnealingLHS(
+    LHS, ot.SpaceFillingC2(), SA_profile)
 LHS_optimization_algo.generate()
 LHS_design = LHS_optimization_algo.getResult()
 starting_points = LHS_design.getOptimalDesign()
@@ -394,7 +398,8 @@ finetune_covariance_model = result.getCovarianceModel()
 print(finetune_covariance_model)
 
 # %%
-printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model)
+printCovarianceParameterChange(
+    finetune_covariance_model, basic_covariance_model)
 
 # %%
 # We see that there are no changes in the estimated parameters. This shows that the first optimization of the parameters worked fine.

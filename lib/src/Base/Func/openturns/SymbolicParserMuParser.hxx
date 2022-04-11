@@ -34,7 +34,7 @@ class SymbolicParserMuParser
 {
 
   CLASSNAME
-friend struct SymbolicParserMuParserPolicy;
+  friend struct SymbolicParserMuParserPolicy;
 public:
   /** Default constructor */
   SymbolicParserMuParser();

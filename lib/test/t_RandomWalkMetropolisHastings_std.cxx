@@ -57,7 +57,7 @@ int main(int, char *[])
     proposalColl.add(mean_proposal);
     proposalColl.add(std_proposal);
     ComposedDistribution instrumental(proposalColl);
-    
+
     // prior distribution
     Scalar mu0 = 25.0;
 

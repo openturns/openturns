@@ -44,16 +44,16 @@ public:
 
   /** Constructor with parameters*/
   IndependentMetropolisHastings(const Distribution & targetDistribution,
-                               const Point & initialState,
-                               const Distribution & proposal,
-                               const Indices & marginalIndices = Indices());
+                                const Point & initialState,
+                                const Distribution & proposal,
+                                const Indices & marginalIndices = Indices());
 
   /** Constructor with parameters*/
   IndependentMetropolisHastings(const Function & targetLogPDF,
-                              const Domain & support,
-                              const Point & initialState,
-                              const Distribution & proposal,
-                              const Indices & marginalIndices = Indices());
+                                const Domain & support,
+                                const Point & initialState,
+                                const Distribution & proposal,
+                                const Indices & marginalIndices = Indices());
   /** String converter */
   String __repr__() const override;
 

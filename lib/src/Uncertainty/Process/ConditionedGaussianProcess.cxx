@@ -111,16 +111,16 @@ void ConditionedGaussianProcess::initialize()
   const Scalar epsilon = maximumVariance * startingScaling;
   for (UnsignedInteger i = 0; i < covarianceMatrix.getDimension(); ++i)
     if (covarianceMatrix(i, i) <= epsilon)
-      {
-        // Enforce a strict zero cross
-        for (UnsignedInteger j = 0; j < i; ++j)
-          covarianceMatrix(i, j) = 0.0;
-        // Then put the maximum variance on the diagonal.
-        // In theory any positive number should work but
-        // this way the condition number should be greatly improved.
-        covarianceMatrix(i, i) = maximumVariance;
-        knownValuesIndices_.add(i);
-      }
+    {
+      // Enforce a strict zero cross
+      for (UnsignedInteger j = 0; j < i; ++j)
+        covarianceMatrix(i, j) = 0.0;
+      // Then put the maximum variance on the diagonal.
+      // In theory any positive number should work but
+      // this way the condition number should be greatly improved.
+      covarianceMatrix(i, i) = maximumVariance;
+      knownValuesIndices_.add(i);
+    }
   // Get the Cholesky factor
   LOGINFO(OSS(false) << "Evaluation of the Cholesky factor");
 

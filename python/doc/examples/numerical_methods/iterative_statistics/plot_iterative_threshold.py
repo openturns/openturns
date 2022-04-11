@@ -4,7 +4,7 @@ Estimate threshold exceedance iteratively
 """
 
 # %%
-# In this example, we use the :class:`~openturns.IterativeThresholdExceedance` 
+# In this example, we use the :class:`~openturns.IterativeThresholdExceedance`
 # class to count the number of threshold exceedances.
 
 # %%
@@ -17,8 +17,8 @@ dim = 1
 distNormal = ot.Normal(dim)
 
 # %%
-# Let us consider a threshold value of 1.0. Each data value higher than 1.0 is 
-# counted as one exceedance. The counter used by the 
+# Let us consider a threshold value of 1.0. Each data value higher than 1.0 is
+# counted as one exceedance. The counter used by the
 # :class:`~openturns.IterativeThresholdExceedance` class is updated iteratively.
 
 # %%
@@ -33,7 +33,7 @@ print("Exact probability: ", exactProbability)
 
 # %%
 # We can now perform the simulations.
-# In our case most of the data fall below the specified threshold value so 
+# In our case most of the data fall below the specified threshold value so
 # the number of exceedances should be low.
 
 # %%
@@ -72,7 +72,7 @@ graph.setLegendPosition("bottomright")
 view = otv.View(graph)
 
 # %%
-# The following plot shows that the probability of exceeding the threshold converges. 
+# The following plot shows that the probability of exceeding the threshold converges.
 
 # %%
 palette = ot.Drawable().BuildDefaultPalette(2)

@@ -71,8 +71,8 @@ String TensorProductExperiment::__repr__() const
 {
   OSS oss;
   oss << "class=" << GetClassName()
-    << " name=" << getName()
-    << " collection=" << collection_;
+      << " name=" << getName()
+      << " collection=" << collection_;
   return oss;
 }
 

@@ -89,7 +89,7 @@ private:
 
   // Distribution and marginal sizes accessor
   void setDistributionAndMarginalSizes(const Distribution & distribution,
-                                         const Indices & marginalSizes);
+                                       const Indices & marginalSizes);
 
   // Marginal orthogonal univariate polynomial family collection
   OrthogonalUniVariatePolynomialFamilyPersistentCollection collection_;

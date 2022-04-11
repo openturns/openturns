@@ -44,10 +44,10 @@ HSICStatImplementation * HSICStatImplementation::clone() const
 
 /* Compute the HSIC index for one marginal*/
 Scalar HSICStatImplementation::computeHSICIndex(const Sample&,
-                                                const Sample&,
-                                                const CovarianceModel&,
-                                                const CovarianceModel&,
-                                                const SquareMatrix&) const
+    const Sample&,
+    const CovarianceModel&,
+    const CovarianceModel&,
+    const SquareMatrix&) const
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class such as HSICUStat or HSICVStat.";
 }
@@ -60,9 +60,9 @@ Bool HSICStatImplementation::isCompatibleWithConditionalAnalysis() const
 
 /* Compute the asymptotic p-value */
 Scalar HSICStatImplementation::computePValue(const Gamma&,
-                                             const UnsignedInteger,
-                                             const Scalar,
-                                             const Scalar) const
+    const UnsignedInteger,
+    const Scalar,
+    const Scalar) const
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class such as HSICUStat or HSICVStat.";
 }

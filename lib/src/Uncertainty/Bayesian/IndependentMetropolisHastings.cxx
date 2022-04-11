@@ -39,9 +39,9 @@ IndependentMetropolisHastings::IndependentMetropolisHastings()
 
 /* Parameters constructor */
 IndependentMetropolisHastings::IndependentMetropolisHastings(const Distribution & targetDistribution,
-                                                          const Point & initialState,
-                                                          const Distribution & proposal,
-                                                           const Indices & marginalIndices)
+    const Point & initialState,
+    const Distribution & proposal,
+    const Indices & marginalIndices)
   : MetropolisHastingsImplementation(targetDistribution, initialState, marginalIndices)
 {
   setProposal(proposal);
@@ -49,10 +49,10 @@ IndependentMetropolisHastings::IndependentMetropolisHastings(const Distribution 
 
 /* Parameters constructor */
 IndependentMetropolisHastings::IndependentMetropolisHastings(const Function & targetLogPDF,
-                                                          const Domain & support,
-                                                          const Point & initialState,
-                                                          const Distribution & proposal,
-                                                           const Indices & marginalIndices)
+    const Domain & support,
+    const Point & initialState,
+    const Distribution & proposal,
+    const Indices & marginalIndices)
   : MetropolisHastingsImplementation(targetLogPDF, support, initialState, marginalIndices)
 {
   setProposal(proposal);

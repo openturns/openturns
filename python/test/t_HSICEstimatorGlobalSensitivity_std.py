@@ -51,7 +51,8 @@ covarianceModelCollection.add(Cov2)
 estimatorType = ot.HSICUStat()
 
 # We eventually build the HSIC object!
-hsic = ot.HSICEstimatorGlobalSensitivity(covarianceModelCollection, X, Y, estimatorType)
+hsic = ot.HSICEstimatorGlobalSensitivity(
+    covarianceModelCollection, X, Y, estimatorType)
 
 # We get the HSIC indices
 HSICIndices = hsic.getHSICIndices()
@@ -71,4 +72,3 @@ ott.assert_almost_equal(pvaluesPerm, [0.00000000, 0.29670330, 0.00199800])
 
 pvaluesAs = hsic.getPValuesAsymptotic()
 ott.assert_almost_equal(pvaluesAs, [0.00000000, 0.33271992, 0.00165620])
-

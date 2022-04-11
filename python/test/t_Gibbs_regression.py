@@ -34,7 +34,8 @@ print('p=', p)
 
 fullModel = ot.SymbolicFunction(
     ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'], ['p1*x1+p2*x2+p3*x3', '1.0'])
-linkFunction = ot.ParametricFunction(fullModel, range(chainDim), [0.0] * chainDim)
+linkFunction = ot.ParametricFunction(
+    fullModel, range(chainDim), [0.0] * chainDim)
 
 # instrumental distribution
 instrumental = ot.Uniform(-1., 1.)
@@ -60,8 +61,10 @@ conditional = ot.Normal()
 print('y~', conditional)
 
 # create a gibbs sampler
-mh_coll = [ot.RandomWalkMetropolisHastings(prior, mu0, instrumental, [i]) for i in range(chainDim)]
-for mh in mh_coll: mh.setLikelihood(conditional, y_obs, linkFunction, p)
+mh_coll = [ot.RandomWalkMetropolisHastings(
+    prior, mu0, instrumental, [i]) for i in range(chainDim)]
+for mh in mh_coll:
+    mh.setLikelihood(conditional, y_obs, linkFunction, p)
 sampler = ot.Gibbs(mh_coll)
 sampler.setThinning(4)
 sampler.setBurnIn(2000)

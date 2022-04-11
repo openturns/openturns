@@ -40,9 +40,9 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings()
 
 /* Parameters constructor */
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Distribution & targetDistribution,
-                                                          const Point & initialState,
-                                                          const Distribution & proposal,
-                                                           const Indices & marginalIndices)
+    const Point & initialState,
+    const Distribution & proposal,
+    const Indices & marginalIndices)
   : MetropolisHastingsImplementation(targetDistribution, initialState, marginalIndices)
   , adaptationRange_(Interval(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound"), ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationUpperBound")))
   , adaptationExpansionFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor"))
@@ -54,10 +54,10 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Distribution & 
 
 /* Parameters constructor */
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Function & targetLogPDF,
-                                                          const Domain & support,
-                                                          const Point & initialState,
-                                                          const Distribution & proposal,
-                                                           const Indices & marginalIndices)
+    const Domain & support,
+    const Point & initialState,
+    const Distribution & proposal,
+    const Indices & marginalIndices)
   : MetropolisHastingsImplementation(targetLogPDF, support, initialState, marginalIndices)
   , adaptationRange_(Interval(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound"), ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationUpperBound")))
   , adaptationExpansionFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor"))

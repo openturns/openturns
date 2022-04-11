@@ -319,7 +319,8 @@ void KarhunenLoeveSVDAlgorithm::run()
   {
     selectedVariance += eigenValues[K];
     ++ K;
-  } while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
+  }
+  while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
   LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
 
   // Stores the eigenmodes values in-place to avoid wasting memory

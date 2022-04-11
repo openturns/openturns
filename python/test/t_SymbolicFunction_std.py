@@ -183,7 +183,8 @@ except:
 
 f = ot.SymbolicFunction("x", "sqrt(x)")
 ev = f.getEvaluation()
-ev.setCheckOutput(False) # triggers copyOnWrite, ev is no longer the Evaluation of f
+# triggers copyOnWrite, ev is no longer the Evaluation of f
+ev.setCheckOutput(False)
 print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(ev([-1.0])[0]))
 
 # joe copula bug

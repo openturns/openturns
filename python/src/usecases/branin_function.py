@@ -59,7 +59,8 @@ class BraninModel():
                                            ['15*u1-5', '15*u2'])
 
         self.model = ot.ComposedFunction(self.branin, self.transfo)
-        self.noiseModel = ot.SymbolicFunction(['x1', 'x2'], [str(self.trueNoiseFunction)])
+        self.noiseModel = ot.SymbolicFunction(
+            ['x1', 'x2'], [str(self.trueNoiseFunction)])
         # %%
         self.lowerbound = ot.Point([0.0] * self.dim)
         self.upperbound = ot.Point([1.0] * self.dim)

@@ -153,8 +153,8 @@ struct SymbolicParserMuParserPolicy
   const SymbolicParserMuParser & evaluation_;
 
   SymbolicParserMuParserPolicy(const Sample & input,
-                                  Sample & output,
-                                  const SymbolicParserMuParser & evaluation)
+                               Sample & output,
+                               const SymbolicParserMuParser & evaluation)
     : input_(*input.getImplementation())
     , output_(*output.getImplementation())
     , evaluation_(evaluation)

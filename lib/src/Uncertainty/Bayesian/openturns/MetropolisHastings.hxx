@@ -54,14 +54,14 @@ public:
 
   /** Get a realization */
   Point getRealization() const;
-  
+
   /** Target distribution accessor */
   Distribution getTargetDistribution() const;
 
   /** Target log-pdf accessor */
   Function getTargetLogPDF() const;
   Domain getTargetLogPDFSupport() const;
-  
+
   /** Initial state accessor */
   Point getInitialState() const;
 
@@ -79,7 +79,7 @@ public:
   /** History accessor */
   void setHistory(const HistoryStrategy & strategy);
   HistoryStrategy getHistory() const;
-  
+
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
 
@@ -106,7 +106,7 @@ public:
 
   /** Compute the log-likelihood */
   Scalar computeLogPosterior(const Point & currentState) const;
-  
+
   /** Acceptance rate accessor*/
   Scalar getAcceptanceRate() const;
 

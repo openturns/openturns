@@ -119,9 +119,9 @@ HistoryStrategy MetropolisHastings::getHistory() const
 
 /* Likelihood accessor */
 void MetropolisHastings::setLikelihood(const Distribution & conditional,
-                                        const Sample & observations,
-                                        const Function & model,
-                                        const Sample & covariates)
+                                       const Sample & observations,
+                                       const Function & model,
+                                       const Sample & covariates)
 {
   copyOnWrite();
   getImplementation()->setLikelihood(conditional, observations, model, covariates);

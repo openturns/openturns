@@ -61,7 +61,7 @@ public:
   /** Constructor from a range of elements */
   template <typename InputIterator>
   Point(InputIterator first, InputIterator last)
-  : InternalType(first, last) {}
+    : InternalType(first, last) {}
 
   /** Virtual constructor */
   Point * clone() const override;

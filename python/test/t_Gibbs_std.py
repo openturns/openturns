@@ -50,16 +50,19 @@ for i in range(len(sigma0s)):
     conditional = ot.Normal()
 
     # create a Gibbs sampler
-    mean_sampler = ot.RandomWalkMetropolisHastings(prior, initialState, mean_instrumental, [0])
+    mean_sampler = ot.RandomWalkMetropolisHastings(
+        prior, initialState, mean_instrumental, [0])
     mean_sampler.setLikelihood(conditional, data)
-    std_sampler  = ot.RandomWalkMetropolisHastings(prior, initialState, std_instrumental, [1])
+    std_sampler = ot.RandomWalkMetropolisHastings(
+        prior, initialState, std_instrumental, [1])
     std_sampler.setLikelihood(conditional, data)
     sampler = ot.Gibbs([mean_sampler, std_sampler])
     sampler.setThinning(2)
     sampler.setBurnIn(500)
     realization = sampler.getRealization()
 
-    sigmay = ot.ConditionalDistribution(ot.Normal(), prior).getStandardDeviation()[0]
+    sigmay = ot.ConditionalDistribution(
+        ot.Normal(), prior).getStandardDeviation()[0]
     w = size * sigma0 ** 2. / (size * sigma0 ** 2. + sigmay ** 2.0)
 
     print("prior variance= %.12g" % (sigma0 ** 2.))
@@ -81,7 +84,8 @@ for i in range(len(sigma0s)):
     ott.assert_almost_equal(x_mu, mu_exp, 2e-1, 1e-1)
     ott.assert_almost_equal(x_sigma, sigma_exp, 1e-2, 1e-1)
 
-    print('acceptance rate=', [mh.getAcceptanceRate() for mh in sampler.getMetropolisHastingsCollection()])
+    print('acceptance rate=', [mh.getAcceptanceRate()
+                               for mh in sampler.getMetropolisHastingsCollection()])
 
 
 # improper prior
@@ -94,6 +98,7 @@ class CensoredWeibull(ot.PythonDistribution):
             if x[1]=0: x[0] is a censoring time
             if x[1]=1: x[0] is a time-to failure
     """
+
     def __init__(self, beta=5000.0, alpha=2.0):
         super(CensoredWeibull, self).__init__(2)
         self.beta = beta
@@ -103,29 +108,33 @@ class CensoredWeibull(ot.PythonDistribution):
         return ot.Interval([0, 0], [1, 1], [True]*2, [False, True])
 
     def computeLogPDF(self, x):
-        if not (self.alpha>0.0 and self.beta>0.0):
+        if not (self.alpha > 0.0 and self.beta > 0.0):
             return float('-inf')
-        log_pdf = -( x[0] / self.beta )**self.alpha
-        log_pdf += ( self.alpha - 1 ) * m.log( x[0] / self.beta ) * x[1]
-        log_pdf += m.log( self.alpha / self.beta ) * x[1]
+        log_pdf = -(x[0] / self.beta)**self.alpha
+        log_pdf += (self.alpha - 1) * m.log(x[0] / self.beta) * x[1]
+        log_pdf += m.log(self.alpha / self.beta) * x[1]
         return log_pdf
 
-    def setParameter( self, parameter ):
+    def setParameter(self, parameter):
         self.beta = parameter[0]
         self.alpha = parameter[1]
 
-    def getParameter( self ):
+    def getParameter(self):
         return [self.beta, self.alpha]
 
+
 conditional = ot.Distribution(CensoredWeibull())
-x = ot.Sample([[4380, 1], [1791,1], [1611,1], [1291,1], [6132,0], [5694,0], [5296,0], [4818,0], [4818,0], [4380,0]])
+x = ot.Sample([[4380, 1], [1791, 1], [1611, 1], [1291, 1], [6132, 0], [
+              5694, 0], [5296, 0], [4818, 0], [4818, 0], [4380, 0]])
 logpdf = ot.SymbolicFunction(['beta', 'alpha'], ['-log(beta)'])
 support = ot.Interval([0] * 2, [1] * 2)
 support.setFiniteUpperBound([False] * 2)
 initialState = [1.0, 1.0]
-rwmh_beta = ot.RandomWalkMetropolisHastings(logpdf, support, initialState, ot.Normal(0., 10000.0 ), [0])
+rwmh_beta = ot.RandomWalkMetropolisHastings(
+    logpdf, support, initialState, ot.Normal(0., 10000.0), [0])
 rwmh_beta.setLikelihood(conditional, x)
-rwmh_alpha = ot.RandomWalkMetropolisHastings(logpdf, support, initialState, ot.Normal(0., 0.5 ), [1])
+rwmh_alpha = ot.RandomWalkMetropolisHastings(
+    logpdf, support, initialState, ot.Normal(0., 0.5), [1])
 rwmh_alpha.setLikelihood(conditional, x)
 gibbs = ot.Gibbs([rwmh_beta, rwmh_alpha])
 sample = gibbs.getSample(1000)
@@ -136,11 +145,16 @@ print('sigma=', sample.computeStandardDeviation())
 # check recompute indices, update bug
 initial_state = [0.0, 0.0, 20.0]
 target = ot.Normal(3)
-weird_target = ot.ComposedDistribution([ot.Normal(), ot.Normal(), ot.Dirac(20.0)])
-normal0_rwmh = ot.RandomWalkMetropolisHastings(target, initial_state, ot.Uniform(-10, 10), [0]) # samples from Normal(0,1)
-normal1_rwmh = ot.RandomWalkMetropolisHastings(target, initial_state, ot.Uniform(-10, 10), [1]) # samples from Normal(0,1)
-dirac_rwmh = ot.RandomWalkMetropolisHastings(weird_target, initial_state, ot.Normal(), [2])     # samples from Dirac(20)
-gibbs = ot.Gibbs([normal0_rwmh, normal1_rwmh, dirac_rwmh]) # samples from Normal(0,1) x Normal(0,1) x Dirac(20)
+weird_target = ot.ComposedDistribution(
+    [ot.Normal(), ot.Normal(), ot.Dirac(20.0)])
+normal0_rwmh = ot.RandomWalkMetropolisHastings(
+    target, initial_state, ot.Uniform(-10, 10), [0])  # samples from Normal(0,1)
+normal1_rwmh = ot.RandomWalkMetropolisHastings(
+    target, initial_state, ot.Uniform(-10, 10), [1])  # samples from Normal(0,1)
+dirac_rwmh = ot.RandomWalkMetropolisHastings(
+    weird_target, initial_state, ot.Normal(), [2])     # samples from Dirac(20)
+# samples from Normal(0,1) x Normal(0,1) x Dirac(20)
+gibbs = ot.Gibbs([normal0_rwmh, normal1_rwmh, dirac_rwmh])
 sample = gibbs.getSample(1000)
 recompute = gibbs.getRecomputeLogPosterior()
 print(recompute)
@@ -148,5 +162,5 @@ assert recompute == ot.Indices([1, 0, 1]), "wrong recompute indices"
 mean = sample.computeMean()
 stddev = sample.computeStandardDeviation()
 print(mean, stddev)
-ott.assert_almost_equal(mean, [-0.015835,0.169951,20])
-ott.assert_almost_equal(stddev, [0.956516,1.05469,0])
+ott.assert_almost_equal(mean, [-0.015835, 0.169951, 20])
+ott.assert_almost_equal(stddev, [0.956516, 1.05469, 0])
