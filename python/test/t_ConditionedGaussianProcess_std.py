@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+import openturns.testing as ott
 from math import cos, sin
 
 ot.TESTPREAMBLE()
@@ -57,3 +58,17 @@ print("realization = ", repr(realization))
 sample = process.getSample(5000)
 mean = sample.computeMean()
 print("Mean over 5000 realizations = ", repr(mean))
+
+# Check if one can sample the process over a mesh containing conditioning points
+# and 100 new points
+vertices = ot.Sample(inputSample)
+vertices.add(ot.ComposedDistribution([ot.Uniform(0.0, 10.0)]*2).getSample(100))
+process = ot.ConditionedGaussianProcess(result, ot.Mesh(vertices))
+realization = process.getRealization()
+num = 0.0
+den = 0.0
+for i in range(len(inputSample)):
+    num += (realization.getValueAtIndex(i) - outputSample[i]).norm()
+    den += outputSample[i].norm()
+error = num / den
+ott.assert_almost_equal(error, 0.0, 1.0e-6, 1.0e-6)

@@ -92,6 +92,8 @@ private:
   /** Trend part - conditionned by the mesh points */
   Sample trendEvaluationMesh_;
 
+  /** Known values indices */
+  Indices knownValuesIndices_;
 }; /* class ConditionedGaussianProcess */
 
 END_NAMESPACE_OPENTURNS

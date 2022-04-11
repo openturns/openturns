@@ -694,7 +694,7 @@
   <AnalyticalResult-MeanPointIntegrationNodesNumber value_int="255" />
 
   <!-- OT::SystemFORM parameters -->
-  <SystemFORM-MaximalScaling  value_float="1.0e5"   />
+  <SystemFORM-MaximalScaling  value_float="1.0e-5"   />
   <SystemFORM-StartingScaling value_float="1.0e-13" />
 
   <!-- OT::MultiFORM parameters -->
@@ -741,14 +741,14 @@
   <GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound    value_float="1.0e-2"  />
   <GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor   value_float="2.0"     />
   <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound    value_float="1.0e2"   />
-  <GeneralLinearModelAlgorithm-MaximalScaling                   value_float="1.0e5"   />
+  <GeneralLinearModelAlgorithm-MaximalScaling                   value_float="1.0e-5"   />
   <GeneralLinearModelAlgorithm-MeanEpsilon                      value_float="1.0e-12" />
   <GeneralLinearModelAlgorithm-StartingScaling                  value_float="1.0e-13" />
   <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm     value_str="TNC"     />
   <GeneralLinearModelAlgorithm-LinearAlgebra                    value_str="LAPACK"  />
 
   <!-- OT::KrigingAlgorithm parameters -->
-  <KrigingAlgorithm-MaximalScaling  value_float="1.0e5"   />
+  <KrigingAlgorithm-MaximalScaling  value_float="1.0e-5"   />
   <KrigingAlgorithm-StartingScaling value_float="1.0e-13" />
   <KrigingAlgorithm-LinearAlgebra   value_str="LAPACK"  />
 
@@ -854,11 +854,11 @@
 
   <!-- OT::GaussianProcess parameters -->
   <GaussianProcess-StartingScaling       value_float="1.0e-13"       />
-  <GaussianProcess-MaximalScaling        value_float="1.0e5"         />
+  <GaussianProcess-MaximalScaling        value_float="1.0e-5"        />
   <GaussianProcess-GibbsMaximumIteration value_int="100" />
 
   <!-- OT::SpectralGaussianProcess parameters -->
-  <SpectralGaussianProcess-MaximalScaling    value_float="1.0e5"           />
+  <SpectralGaussianProcess-MaximalScaling    value_float="1.0e-5"          />
   <SpectralGaussianProcess-StartingScaling   value_float="1.0e-13"         />
   <SpectralGaussianProcess-CholeskyCacheSize value_int="16384" />
 
@@ -911,7 +911,7 @@
   <ARMALikelihoodFactory-DefaultRhoBeg             value_float="0.01"            />
   <ARMALikelihoodFactory-DefaultRhoEnd             value_float="1.0e-10"         />
   <ARMALikelihoodFactory-DefaultStartingPointScale value_float="1.0"             />
-  <ARMALikelihoodFactory-MaximalScaling            value_float="1.0e5"           />
+  <ARMALikelihoodFactory-MaximalScaling            value_float="1.0e-5"          />
   <ARMALikelihoodFactory-RootEpsilon               value_float="1.0e-6"          />
   <ARMALikelihoodFactory-StartingScaling           value_float="1.0e-13"         />
   <ARMALikelihoodFactory-DefaultMaximumEvaluationNumber             value_int="10000" />

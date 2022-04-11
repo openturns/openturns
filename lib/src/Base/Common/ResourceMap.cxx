@@ -1326,7 +1326,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("AnalyticalResult-MeanPointIntegrationNodesNumber", 255);
 
   // SystemFORM parameters //
-  addAsScalar("SystemFORM-MaximalScaling", 1.0e5);
+  addAsScalar("SystemFORM-MaximalScaling", 1.0e-5);
   addAsScalar("SystemFORM-StartingScaling", 1.0e-13);
 
   // MultiFORM parameters //
@@ -1373,14 +1373,14 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-2);
   addAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor", 2.0);
   addAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2);
-  addAsScalar("GeneralLinearModelAlgorithm-MaximalScaling", 1.0e5);
+  addAsScalar("GeneralLinearModelAlgorithm-MaximalScaling", 1.0e-5);
   addAsScalar("GeneralLinearModelAlgorithm-MeanEpsilon", 1.0e-12);
   addAsScalar("GeneralLinearModelAlgorithm-StartingScaling", 1.0e-13);
   addAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
   addAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
 
   // KrigingAlgorithm parameters //
-  addAsScalar("KrigingAlgorithm-MaximalScaling", 1.0e5);
+  addAsScalar("KrigingAlgorithm-MaximalScaling", 1.0e-5);
   addAsScalar("KrigingAlgorithm-StartingScaling", 1.0e-13);
   addAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK");
 
@@ -1486,13 +1486,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("HMatrix-ValidationRerun", 0);
 
   // GaussianProcess parameters //
-  addAsScalar("GaussianProcess-MaximalScaling", 1.0e5);
+  addAsScalar("GaussianProcess-MaximalScaling", 1.0e-5);
   addAsScalar("GaussianProcess-StartingScaling", 1.0e-13);
   addAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration", 100);
 
   // SpectralGaussianProcess parameters //
   addAsScalar("SpectralGaussianProcess-StartingScaling", 1.0e-13);
-  addAsScalar("SpectralGaussianProcess-MaximalScaling", 1.0e5);
+  addAsScalar("SpectralGaussianProcess-MaximalScaling", 1.0e-5);
   addAsUnsignedInteger("SpectralGaussianProcess-CholeskyCacheSize", 16384);
 
   // WhittleFactory parameters //
@@ -1544,7 +1544,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ARMALikelihoodFactory-DefaultRhoBeg", 0.01);
   addAsScalar("ARMALikelihoodFactory-DefaultRhoEnd", 1.0e-10);
   addAsScalar("ARMALikelihoodFactory-DefaultStartingPointScale", 1.0);
-  addAsScalar("ARMALikelihoodFactory-MaximalScaling", 1.0e5);
+  addAsScalar("ARMALikelihoodFactory-MaximalScaling", 1.0e-5);
   addAsScalar("ARMALikelihoodFactory-RootEpsilon", 1.0e-6);
   addAsScalar("ARMALikelihoodFactory-StartingScaling", 1.0e-13);
   addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber", 10000);
