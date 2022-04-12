@@ -20,7 +20,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.18
+Version:        1.19rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -28,7 +28,6 @@ License:        LGPLv3+
 URL:            http://www.openturns.org
 Source0:        http://downloads.sourceforge.net/openturns/openturns/openturns-%{version}.tar.bz2
 Source1:        %{name}-rpmlintrc
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake, bison, flex, swig
 BuildRequires:  libxml2-devel
 %if ! 0%{?centos_version}
@@ -42,6 +41,9 @@ BuildRequires:  libmpc-devel
 %endif
 BuildRequires:  nlopt-devel
 BuildRequires:  tbb-devel
+%if 0%{?fedora_version} || 0%{?mageia}
+BuildRequires:  pagmo-devel
+%endif
 BuildRequires:  python3-devel
 BuildRequires:  hmat-oss-devel
 BuildRequires:  spectra-devel
@@ -49,7 +51,7 @@ BuildRequires:  cminpack-devel
 %if 0%{?fedora_version}
 BuildRequires:  ceres-solver-devel
 BuildRequires:  coin-or-Ipopt-devel
-%if 0%{?fedora_version} == 35
+%if 0%{?fedora_version} >= 35
 BuildRequires:  coin-or-Bonmin-devel
 %endif
 BuildRequires:  dlib-devel, pkgconfig(x11), pkgconfig(libpng), pkgconfig(libjpeg), pkgconfig(sqlite3)
@@ -97,23 +99,18 @@ Python textual interface to OpenTURNS uncertainty library
 %build
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
-       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j32" \
-       -DPYTHON_EXECUTABLE=%{__python} \
+       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
        -DSWIG_COMPILE_FLAGS="-O1" \
        -DOPENTURNS_SYSCONFIG_PATH=/etc .
 make %{?_smp_mflags} OT
 make
 
 %install
-rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 rm -r %{buildroot}%{_datadir}/%{name}/doc
 
 %check
-LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=2 ctest --output-on-failure %{?_smp_mflags} -E cppcheck --timeout 1000
-
-%clean
-rm -rf %{buildroot}
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=2 ctest --output-on-failure %{?_smp_mflags} -E cppcheck --timeout 1000 --schedule-random
 
 %post libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
@@ -141,6 +138,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Tue Apr 12 2022 Julien Schueller <schueller at phimeca dot com> 1.19-1
+- New upstream release
+
 * Fri Oct 15 2021 Julien Schueller <schueller at phimeca dot com> 1.18-1
 - New upstream release
 
