@@ -157,10 +157,9 @@ def testSmolyakExperiment2():
     # Generate a Smolyak Gauss-Legendre rule in 3 dimensions.
     # Each marginal elementary experiment has 6 nodes.
     dimension = 3
-    marginalLevels = [maximumMarginalLevel] * dimension
     collection = []
     for i in range(dimension):
-        marginalExperiment = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0),)
+        marginalExperiment = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
         collection.append(marginalExperiment)
     level = 3
     smolyak = ot.SmolyakExperiment(collection, level)
@@ -169,7 +168,6 @@ def testSmolyakExperiment2():
     assert nodes.getDimension() == 3
     size = nodes.getSize()
     assert size == weights.getDimension()
-    assert size == maximumMarginalLevel ** dimension
 
 
 def testSmolyakExperiment3():
@@ -181,7 +179,7 @@ def testSmolyakExperiment3():
     dimension2 = 3
     distribution2 = ot.ComposedDistribution([ot.Normal()] * dimension2)
     experiment2 = ot.GaussProductExperiment(distribution2)
-    # Tensor product
+    # Smolyak experiment
     collection = [experiment1, experiment2]
     level = 3
     smolyak = ot.SmolyakExperiment(collection, level)
