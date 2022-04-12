@@ -22,18 +22,17 @@ Parametric spectral density functions
 
 **The Cauchy spectral model**
 
-Its is associated to the Exponential covariance model. The Cauchy spectral model is defined by:
+It is associated to the Kronecker covariance model built upon an exponential covariance model (AbsoluteExponential). The Cauchy spectral model is defined by:
 
 .. math::
   :label: cauchyModel
 
-    S_{ij}(f) = \displaystyle \frac{4R_{ij}a_ia_j(\lambda_i+ \lambda_j)}{(\lambda_i+ \lambda_j)^2 + (4\pi f)^2}, \quad \forall (i,j) \leq d
+    [S(f)]_{ij} = \displaystyle 2 \mat{\Sigma}_{ij}\prod_{k=1}^{n} \frac{\theta_k}{1 + (2\pi \theta_k f)^2}, \quad \forall (i,j) \leq d
 
-where :math:`\mat{R}`, :math:`\vect{a}` and :math:`\vect{\lambda}`
-are the parameters of the Exponential covariance model defined in
-section [ParamStationaryCovarianceFunction]. The relation
-:eq:`cauchyModel` can be explained with the spatial covariance function
-:math:`\mat{C}^{spat}(\tau)` defined in :eq:`relRA`.
+where :math:`\mat{\Sigma}` is the covariance matrix of the Kronecker
+covariance model and :math:`\vect{\theta} = (\theta_1, \dots, \theta_n)`
+is the vector of scale parameters of the AbsoluteExponential covariance 
+model.
 
 .. topic:: API:
 
