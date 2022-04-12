@@ -68,7 +68,9 @@ print("Multivariate UserDefined=", multivariateUserDefined)
 print("Has independent copula = ", multivariateUserDefined.hasIndependentCopula())
 
 print("Marginal 0=", multivariateUserDefined.getMarginal(0))
-indices = ot.Indices(2)
-indices[0] = 2
-indices[1] = 0
-print("Marginal (2, 0)=", multivariateUserDefined.getMarginal(indices))
+print("Marginal (2, 0)=", multivariateUserDefined.getMarginal([2, 0]))
+
+# cdf bug
+loi_UD = ot.UserDefined([[350],[358],[360],[353],[364],[355],[349],[351]])
+assert loi_UD.computeCDF([349]) == 0.125, "wrong cdf at min"
+assert loi_UD.computeCDF([364]) == 1.0, "wrong cdf at max"
