@@ -37,8 +37,10 @@
 #include <pagmo/algorithms/sga.hpp>
 #include <pagmo/algorithms/simulated_annealing.hpp>
 #include <pagmo/algorithms/bee_colony.hpp>
+#ifdef PAGMO_WITH_EIGEN3
 #include <pagmo/algorithms/cmaes.hpp>
 #include <pagmo/algorithms/xnes.hpp>
+#endif
 #include <pagmo/algorithms/nsga2.hpp>
 #include <pagmo/algorithms/moead.hpp>
 #include <pagmo/algorithms/maco.hpp>
@@ -446,6 +448,7 @@ void Pagmo::run()
     const UnsignedInteger limit = ResourceMap::GetAsUnsignedInteger("Pagmo-bee_colony-limit");
     algo = pagmo::bee_colony(generationNumber_, limit);
   }
+#ifdef PAGMO_WITH_EIGEN3
   else if (algoName_ == "cmaes")
   {
     // cmaes(unsigned gen = 1, double cc = -1, double cs = -1, double c1 = -1, double cmu = -1, double sigma0 = 0.5, double ftol = 1e-6, double xtol = 1e-6, bool memory = false, bool force_bounds = false, unsigned seed = pagmo::random_device::next())
@@ -467,6 +470,7 @@ void Pagmo::run()
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     algo = pagmo::xnes(generationNumber_, eta_mu, eta_sigma, eta_b, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, getProblem().hasBounds());
   }
+#endif
   else if (algoName_ == "nsga2")
   {
     // nsga2(unsigned gen = 1u, double cr = 0.95, double eta_c = 10., double m = 0.01, double eta_m = 50., unsigned seed = pagmo::random_device::next())
@@ -636,7 +640,11 @@ Sample Pagmo::getStartingSample() const
 Description Pagmo::GetAlgorithmNames()
 {
   const Description algoNames = {"gaco", "de", "sade", "de1220", "gwo", "ihs", "pso", "pso_gen", "sea",
-                                 "sga", "simulated_annealing", "bee_colony", "cmaes", "xnes", "nsga2", "moead", "mhaco", "nspso"
+                                 "sga", "simulated_annealing", "bee_colony",
+#ifdef PAGMO_WITH_EIGEN3
+                                 "cmaes", "xnes",
+#endif
+                                 "nsga2", "moead", "mhaco", "nspso"
                                 };
   return algoNames;
 }
