@@ -2,7 +2,7 @@
 /**
  *  @brief A math expression parser
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -153,8 +153,8 @@ struct SymbolicParserMuParserPolicy
   const SymbolicParserMuParser & evaluation_;
 
   SymbolicParserMuParserPolicy(const Sample & input,
-                                  Sample & output,
-                                  const SymbolicParserMuParser & evaluation)
+                               Sample & output,
+                               const SymbolicParserMuParser & evaluation)
     : input_(*input.getImplementation())
     , output_(*output.getImplementation())
     , evaluation_(evaluation)

@@ -62,7 +62,7 @@ Calibration of the flooding model
 # Analysis
 # --------
 #
-# In the description of the :ref:`flooding model<use-case-flood-model>`, we see that only one parameter 
+# In the description of the :ref:`flooding model<use-case-flood-model>`, we see that only one parameter
 # can be identified.
 # Hence, calibrating this model requires some regularization.
 # We return to this topic when analyzing the singular values of

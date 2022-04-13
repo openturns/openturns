@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 import math as m
@@ -88,6 +87,9 @@ ott.assert_almost_equal(pvaluesPerm, [0.74257426, 0.94059406, 0.00000000])
 squaredExponential = ot.SymbolicFunction("x", "exp(-x^2)")
 alternateWeight = ot.ComposedFunction(squaredExponential, g)
 CSA.setWeightFunction(alternateWeight)
-ott.assert_almost_equal(CSA.getR2HSICIndices(), [0.0910527, 0.00738055, 0.166624])
-ott.assert_almost_equal(CSA.getHSICIndices(), [0.00218376, 0.000419288, 0.00898721])
-ott.assert_almost_equal(CSA.getPValuesPermutation(), [0.287129, 0.881188, 0.00000000])
+ott.assert_almost_equal(CSA.getR2HSICIndices(), [
+                        0.0910527, 0.00738055, 0.166624])
+ott.assert_almost_equal(CSA.getHSICIndices(), [
+                        0.00218376, 0.000419288, 0.00898721])
+ott.assert_almost_equal(CSA.getPValuesPermutation(), [
+                        0.287129, 0.881188, 0.00000000])

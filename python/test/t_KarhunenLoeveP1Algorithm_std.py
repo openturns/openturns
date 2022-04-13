@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))

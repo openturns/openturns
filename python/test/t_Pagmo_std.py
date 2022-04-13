@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 import math
@@ -8,6 +7,7 @@ import sys
 
 ot.TESTPREAMBLE()
 # ot.Log.Show(ot.Log.ALL)
+
 
 def progress(percent):
     sys.stderr.write('-- progress=' + str(percent) + '%\n')
@@ -22,9 +22,10 @@ print('----- multi-obj -----')
 dim = 2
 
 # multi-objective zdt1 problem
-f = ot.SymbolicFunction(['x1', 'x2'], ['x1', 'var g := 1.0 + 9.0 * (x1 + x2); g * (1.0 - sqrt(x1 / g))'])
+f = ot.SymbolicFunction(
+    ['x1', 'x2'], ['x1', 'var g := 1.0 + 9.0 * (x1 + x2); g * (1.0 - sqrt(x1 / g))'])
 bounds = ot.Interval([0.0] * 2, [1.0] * 2)
-ineq = ot.SymbolicFunction(['x1', 'x2'], ['x1-x2']) # x1>x2
+ineq = ot.SymbolicFunction(['x1', 'x2'], ['x1-x2'])  # x1>x2
 
 # Create the initial population
 size = 100
@@ -48,8 +49,8 @@ for name in multi_obj:
         else:
             algo = ot.Pagmo(zdt1, name, pop0)
         algo.setBlockSize(8)
-        #algo.setProgressCallback(progress)
-        #algo.setStopCallback(stop)
+        # algo.setProgressCallback(progress)
+        # algo.setStopCallback(stop)
         algo.run()
         result = algo.getResult()
         x = result.getFinalPoints()
@@ -57,18 +58,19 @@ for name in multi_obj:
         fronts = result.getParetoFrontsIndices()
         assert len(fronts) > 0, "no pareto"
         print(name, len(fronts))
-        assert result.getEvaluationNumber() == algo.getGenerationNumber() * size, "wrong size"
+        assert result.getEvaluationNumber() == algo.getGenerationNumber() * \
+            size, "wrong size"
 
 # rosenbrock for the other algorithms
 print('----- mono-obj -----')
 dim = 2
 f = ot.SymbolicFunction(['x1', 'x2'], ['1+100*(x2-x1^2)^2+(1-x1)^2'])
-ineq = ot.SymbolicFunction(['x1', 'x2'], ['-x2']) # x2<0
+ineq = ot.SymbolicFunction(['x1', 'x2'], ['-x2'])  # x2<0
 bounds = ot.Interval([-1.5] * dim, [1.5] * dim)
 pop0 = ot.ComposedDistribution([ot.Uniform(-1.5, 1.5)] * 2).getSample(8)
 for i in range(pop0.getSize()):
-    if pop0[i,1] > 0.0:
-        pop0[i,1] =- pop0[i,1]
+    if pop0[i, 1] > 0.0:
+        pop0[i, 1] = - pop0[i, 1]
 for name in ot.Pagmo.GetAlgorithmNames():
     if name in multi_obj:
         continue
@@ -79,8 +81,8 @@ for name in ot.Pagmo.GetAlgorithmNames():
             problem.setInequalityConstraint(ineq)
         algo = ot.Pagmo(problem, name, pop0)
         algo.setBlockSize(8)
-        #algo.setProgressCallback(progress)
-        #algo.setStopCallback(stop)
+        # algo.setProgressCallback(progress)
+        # algo.setStopCallback(stop)
         algo.run()
         result = algo.getResult()
         x = result.getOptimalPoint()
@@ -90,28 +92,40 @@ for name in ot.Pagmo.GetAlgorithmNames():
         print(name, x, y)
 
 print('----- minlp -----')
+
+
 def minlp_obj(x):
     obj = 0
     for i in range(3):
-        obj += (x[2*i-2]-3)**2 / 1000. - (x[2*i-2]-x[2*i-1]) + math.exp(20.*(x[2*i - 2]-x[2*i-1]))
+        obj += (x[2*i-2]-3)**2 / 1000. - (x[2*i-2]-x[2*i-1]) + \
+            math.exp(20.*(x[2*i - 2]-x[2*i-1]))
     return [obj]
+
+
 def minlp_cstr(x):
     ce1 = 4*(x[0]-x[1])**2+x[1]-x[2]**2+x[2]-x[3]**2
-    ce2 = 8*x[1]*(x[1]**2-x[0])-2*(1-x[1])+4*(x[1]-x[2])**2+x[0]**2+x[2]-x[3]**2+x[3]-x[4]**2
-    ce3 = 8*x[2]*(x[2]**2-x[1])-2*(1-x[2])+4*(x[2]-x[3])**2+x[1]**2-x[0]+x[3]-x[4]**2+x[0]**2+x[4]-x[5]**2
-    ce4 = 8*x[3]*(x[3]**2-x[2])-2*(1-x[3])+4*(x[3]-x[4])**2+x[2]**2-x[1]+x[4]-x[5]**2+x[1]**2+x[5]-x[0]
-    ci1 = 8*x[4]*(x[4]**2-x[3])-2*(1-x[4])+4*(x[4]-x[5])**2+x[3]**2-x[2]+x[5]+x[2]**2-x[1]
-    ci2 = -(8*x[5] * (x[5]**2-x[4])-2*(1-x[5]) +x[4]**2-x[3]+x[3]**2 - x[4])
-    return [-ce1,-ce2,-ce3,-ce4,-ci1,-ci2]
+    ce2 = 8*x[1]*(x[1]**2-x[0])-2*(1-x[1])+4*(x[1]-x[2])**2 + \
+        x[0]**2+x[2]-x[3]**2+x[3]-x[4]**2
+    ce3 = 8*x[2]*(x[2]**2-x[1])-2*(1-x[2])+4*(x[2]-x[3])**2 + \
+        x[1]**2-x[0]+x[3]-x[4]**2+x[0]**2+x[4]-x[5]**2
+    ce4 = 8*x[3]*(x[3]**2-x[2])-2*(1-x[3])+4*(x[3]-x[4])**2 + \
+        x[2]**2-x[1]+x[4]-x[5]**2+x[1]**2+x[5]-x[0]
+    ci1 = 8*x[4]*(x[4]**2-x[3])-2*(1-x[4])+4*(x[4]-x[5])**2 + \
+        x[3]**2-x[2]+x[5]+x[2]**2-x[1]
+    ci2 = -(8*x[5] * (x[5]**2-x[4])-2*(1-x[5]) + x[4]**2-x[3]+x[3]**2 - x[4])
+    return [-ce1, -ce2, -ce3, -ce4, -ci1, -ci2]
+
 
 f = ot.PythonFunction(6, 1, minlp_obj)
 bounds = ot.Interval([-5.0] * 6, [5.0] * 6)
 ineq = ot.PythonFunction(6, 6, minlp_cstr)
-pop0 = ot.ComposedDistribution([ot.Uniform(-5.0, 5.0)] * 4 + [ot.UserDefined([[i-5] for i in range(11)])] * 2).getSample(100)
+pop0 = ot.ComposedDistribution([ot.Uniform(-5.0, 5.0)] * 4 +
+                               [ot.UserDefined([[i-5] for i in range(11)])] * 2).getSample(100)
 problem = ot.OptimizationProblem(f)
 problem.setBounds(bounds)
 problem.setInequalityConstraint(ineq)
-problem.setVariablesType([ot.OptimizationProblemImplementation.CONTINUOUS] * 4 + [ot.OptimizationProblemImplementation.INTEGER] *2)
+problem.setVariablesType([ot.OptimizationProblemImplementation.CONTINUOUS]
+                         * 4 + [ot.OptimizationProblemImplementation.INTEGER] * 2)
 for name in ["gaco", "ihs", "sga"]:
     algo = ot.Pagmo(problem, name, pop0)
     algo.setBlockSize(8)

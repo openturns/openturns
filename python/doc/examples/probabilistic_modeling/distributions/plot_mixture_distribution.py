@@ -13,7 +13,6 @@ Create a mixture of PDFs
 # It is also possible to create a mixture of copulas.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

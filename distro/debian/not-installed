@@ -1,0 +1,4 @@
+usr/lib/python*/*-packages/openturns/*/*.pyc
+usr/lib/python*/*-packages/openturns/usecases/*/*.pyc
+usr/share/gdb/auto-load/usr/lib/*/libOT.so*gdb.py
+usr/share/openturns/doc/COPYING*

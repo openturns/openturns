@@ -7,7 +7,6 @@ Visualize pairs
 # In this example we are going to a visualize a multidimensional sample by drawing each pair of 2-d marginal clouds.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

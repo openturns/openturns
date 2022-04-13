@@ -12,7 +12,6 @@ Create a parametric spectral density function
 # The library defines this model thanks to the object *CauchyModel*.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

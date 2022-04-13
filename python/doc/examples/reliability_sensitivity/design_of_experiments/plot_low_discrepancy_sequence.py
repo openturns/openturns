@@ -16,7 +16,6 @@ Generate low discrepancy sequences
 # To illustrate these sequences we generate their first 1024 points and compare with the sequence obtained from the pseudo random generator (Merse Twister) as the latter has a higher discrepancy.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import math as m
 import openturns.viewer as viewer

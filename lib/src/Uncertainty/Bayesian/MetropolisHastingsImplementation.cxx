@@ -2,7 +2,7 @@
 /**
  *  @brief MetropolisHastingsImplementation base class
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,7 +42,7 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation()
 
 /* Parameters constructor */
 MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Point & initialState,
-                                                                   const Indices & marginalIndices)
+    const Indices & marginalIndices)
   : RandomVectorImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
@@ -57,8 +57,8 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Point &
 
 /* Parameters constructor */
 MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Distribution & targetDistribution,
-                                                                   const Point & initialState,
-                                                                   const Indices & marginalIndices)
+    const Point & initialState,
+    const Indices & marginalIndices)
   : RandomVectorImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
@@ -73,9 +73,9 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Distrib
 
 /* Parameters constructor */
 MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Function & targetLogPDF,
-                                                                   const Domain & support,
-                                                                   const Point & initialState,
-                                                                   const Indices & marginalIndices)
+    const Domain & support,
+    const Point & initialState,
+    const Indices & marginalIndices)
   : RandomVectorImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
@@ -92,14 +92,14 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Functio
 
 /* Likelihood accessor */
 void MetropolisHastingsImplementation::setLikelihood(const Distribution & conditional,
-                                                      const Sample & observations,
-                                                      const Function & linkFunction,
-                                                      const Sample & covariates)
+    const Sample & observations,
+    const Function & linkFunction,
+    const Sample & covariates)
 {
   conditional_ = conditional;
   if (observations.getDimension() != conditional.getDimension())
-          throw InvalidArgumentException(HERE) << "The observations dimension (" << observations.getDimension()
-                                               << ") does not match the conditional dimension (" << conditional.getDimension() << ").";
+    throw InvalidArgumentException(HERE) << "The observations dimension (" << observations.getDimension()
+                                         << ") does not match the conditional dimension (" << conditional.getDimension() << ").";
   observations_ = observations;
   if (linkFunction.getEvaluation().getImplementation()->isActualImplementation())
   {
@@ -121,10 +121,10 @@ void MetropolisHastingsImplementation::setLikelihood(const Distribution & condit
   {
     if (covariates.getDimension() != linkFunction_.getParameterDimension())
       throw InvalidArgumentException(HERE) << "The covariate dimension (" << covariates.getDimension()
-                                            << ") does not match linkFunction parameter dimension (" << linkFunction_.getParameterDimension() << ").";
+                                           << ") does not match linkFunction parameter dimension (" << linkFunction_.getParameterDimension() << ").";
     if (covariates.getSize() != observations.getSize())
       throw InvalidArgumentException(HERE) << "The covariate size (" << covariates.getSize()
-                                            << ") does not match the observations size (" << observations.getSize() << ").";
+                                           << ") does not match the observations size (" << observations.getSize() << ").";
     covariates_ = covariates;
   }
   else
@@ -197,7 +197,7 @@ Point MetropolisHastingsImplementation::getRealization() const
       newState[marginalIndices_[j]] = candidate[j];
 
     const Scalar newLogPosterior = computeLogPosterior(newState);
-    
+
     // alpha = posterior(newstate)/posterior(oldstate)
     const Scalar alphaLog = newLogPosterior - currentLogPosterior_ + logProbCurrentConditionedToNew_ - logProbNewConditionedToCurrent_;
     const Scalar uLog = log(RandomGenerator::Generate());
@@ -209,7 +209,7 @@ Point MetropolisHastingsImplementation::getRealization() const
       currentState_ = newState;
     }
 
-    // increment 1 by 1 as used in getCandidate 
+    // increment 1 by 1 as used in getCandidate
     ++ samplesNumber_;
   }
 
@@ -302,7 +302,7 @@ Domain MetropolisHastingsImplementation::getTargetLogPDFSupport() const
     throw InvalidArgumentException(HERE) << "No target log-pdf provided";
   return support_;
 }
-  
+
 Point MetropolisHastingsImplementation::getInitialState() const
 {
   return initialState_;
@@ -394,7 +394,7 @@ Scalar MetropolisHastingsImplementation::getAcceptanceRate() const
 }
 
 void MetropolisHastingsImplementation::setConditionalLogProbabilities(const Scalar logProbNewConditionedToCurrent,
-                                                                      const Scalar logProbCurrentConditionedToNew) const
+    const Scalar logProbCurrentConditionedToNew) const
 {
   logProbNewConditionedToCurrent_ = logProbNewConditionedToCurrent;
   logProbCurrentConditionedToNew_ = logProbCurrentConditionedToNew;

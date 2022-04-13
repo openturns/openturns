@@ -57,13 +57,13 @@ void NAISResult::setAuxiliaryInputSample(const Sample & auxiliaryInputSample)
   auxiliaryInputSample_ = auxiliaryInputSample;
 }
 
-// Get Weights 
+// Get Weights
 Point NAISResult::getWeights() const
 {
   return weights_;
-} 
+}
 
-// Set Weights 
+// Set Weights
 void NAISResult::setWeights(const Point & weights)
 {
   weights_ = weights;
@@ -93,10 +93,10 @@ void NAISResult::setAuxiliaryDistribution(const Distribution & auxiliaryDistribu
   auxiliaryDistribution_ = auxiliaryDistribution;
 }
 
-// Coefficient of variation estimate accessor 
+// Coefficient of variation estimate accessor
 Scalar NAISResult::getCoefficientOfVariation() const
 {
-  return sqrt(varianceEstimate_)/probabilityEstimate_;
+  return sqrt(varianceEstimate_) / probabilityEstimate_;
 }
 
 // Method save() stores the object through the StorageManager

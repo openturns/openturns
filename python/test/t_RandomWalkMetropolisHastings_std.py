@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 
@@ -45,7 +44,8 @@ data.setDescription(['Temp. (°F)', 'Failure'])
 print(data)
 
 
-fun = ot.SymbolicFunction(["alpha", "beta", "x"], ["exp(alpha + beta * x) / (1 + exp(alpha + beta * x))"])
+fun = ot.SymbolicFunction(["alpha", "beta", "x"], [
+                          "exp(alpha + beta * x) / (1 + exp(alpha + beta * x))"])
 linkFunction = ot.ParametricFunction(fun, [2], [0.0])
 instrumental = ot.Normal([0.0] * 2, [0.5, 0.05], ot.IdentityMatrix(2))
 
@@ -61,8 +61,8 @@ sample = rwmh.getSample(10000)
 mu = sample.computeMean()
 sigma = sample.computeStandardDeviation()
 print('mu=', mu, 'sigma=', sigma)
-ott.assert_almost_equal(mu, [14.8747,-0.230384])
-ott.assert_almost_equal(sigma, [7.3662,0.108103])
+ott.assert_almost_equal(mu, [14.8747, -0.230384])
+ott.assert_almost_equal(sigma, [7.3662, 0.108103])
 
 print('acceptance rate=', rwmh.getAcceptanceRate())
 ott.assert_almost_equal(rwmh.getAcceptanceRate(), 0.1999)
@@ -82,7 +82,8 @@ obsSize = 503
 ot.RandomGenerator.SetSeed(0)
 y_obs = ot.Normal(thetaTrue[0], 1.0).getSample(obsSize)
 x_obs = y_obs
-RWMHsampler = ot.RandomWalkMetropolisHastings(prior, initialState, instrumental)
+RWMHsampler = ot.RandomWalkMetropolisHastings(
+    prior, initialState, instrumental)
 RWMHsampler.setLikelihood(conditional, y_obs, model, x_obs)
 print("Log-likelihood of thetaTrue = {!r}".format(
     RWMHsampler.computeLogLikelihood(thetaTrue)))
@@ -95,7 +96,8 @@ obsSize = 504
 ot.RandomGenerator.SetSeed(0)
 y_obs = ot.Normal(thetaTrue[0], 1.0).getSample(obsSize)
 x_obs = y_obs
-RWMHsampler = ot.RandomWalkMetropolisHastings(prior, initialState, instrumental)
+RWMHsampler = ot.RandomWalkMetropolisHastings(
+    prior, initialState, instrumental)
 RWMHsampler.setLikelihood(conditional, y_obs, model, x_obs)
 print("Log-likelihood of thetaTrue = {!r}".format(
     RWMHsampler.computeLogLikelihood(thetaTrue)))

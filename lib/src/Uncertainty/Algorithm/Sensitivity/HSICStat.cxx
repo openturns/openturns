@@ -3,7 +3,7 @@
 /**
  * @brief HSICStat is the base class for atomic HSIC index.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,10 +41,10 @@ HSICStat::HSICStat(const HSICStatImplementation & implementation)
 }
 
 /* Compute the HSIC index for one marginal*/
-Scalar HSICStat::computeHSICIndex(const Sample & inSample, 
-                                  const Sample & outSample, 
-                                  const CovarianceModel & inCovariance, 
-                                  const CovarianceModel & outCovariance, 
+Scalar HSICStat::computeHSICIndex(const Sample & inSample,
+                                  const Sample & outSample,
+                                  const CovarianceModel & inCovariance,
+                                  const CovarianceModel & outCovariance,
                                   const SquareMatrix & weightMatrix) const
 {
   return getImplementation()->computeHSICIndex(inSample, outSample, inCovariance, outCovariance, weightMatrix);
@@ -57,9 +57,9 @@ Bool HSICStat::isCompatibleWithConditionalAnalysis() const
 }
 
 /* Compute the asymptotic p-value */
-Scalar HSICStat::computePValue(const Gamma &dist, 
-                               const UnsignedInteger n, 
-                               const Scalar HSIC_obs, 
+Scalar HSICStat::computePValue(const Gamma &dist,
+                               const UnsignedInteger n,
+                               const Scalar HSIC_obs,
                                const Scalar mHSIC) const
 {
   return getImplementation()->computePValue(dist, n, HSIC_obs, mHSIC);

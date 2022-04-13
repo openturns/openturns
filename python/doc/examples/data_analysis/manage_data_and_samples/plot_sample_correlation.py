@@ -14,7 +14,6 @@ Estimate correlation coefficients
 # - SRRC: Standard Rank Regression Coefficient
 
 # %%
-from __future__ import print_function
 from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as viewer

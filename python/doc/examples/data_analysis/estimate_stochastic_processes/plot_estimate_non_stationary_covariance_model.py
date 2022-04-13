@@ -26,7 +26,6 @@ Estimate a non stationary covariance function
 # We use the object *NonStationaryCovarianceModelFactory* which creates a *UserDefinedCovarianceModel*.
 
 # %%
-from __future__ import print_function
 import math as m
 import openturns as ot
 import openturns.viewer as viewer

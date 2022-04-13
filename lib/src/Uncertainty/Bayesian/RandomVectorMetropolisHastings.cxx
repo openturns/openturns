@@ -39,9 +39,9 @@ RandomVectorMetropolisHastings::RandomVectorMetropolisHastings()
 
 /* Parameters constructor */
 RandomVectorMetropolisHastings::RandomVectorMetropolisHastings(const RandomVector & randomVector,
-                                                              const Point & initialState,
-                                                              const Indices & marginalIndices,
-                                                              const Function & linkFunction)
+    const Point & initialState,
+    const Indices & marginalIndices,
+    const Function & linkFunction)
   : MetropolisHastingsImplementation(initialState, marginalIndices)
 {
   setRandomVector(randomVector);

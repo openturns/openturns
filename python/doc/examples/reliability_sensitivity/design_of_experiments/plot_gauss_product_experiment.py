@@ -6,7 +6,6 @@ Create a Gauss product design
 # In this example we are going to create a deterministic weighted design experiment using Gauss product.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

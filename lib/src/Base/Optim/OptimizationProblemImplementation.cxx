@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationProblemImplementation allows one to describe an optimization problem
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -226,14 +226,14 @@ UnsignedInteger OptimizationProblemImplementation::getDimension() const
 void OptimizationProblemImplementation::setMinimization(Bool minimization, UnsignedInteger marginalIndex)
 {
   if (marginalIndex >= objective_.getOutputDimension())
-    throw InvalidDimensionException(HERE) << "marginal index ("<< marginalIndex <<") cannot exceed objective dimension (" << objective_.getOutputDimension();
+    throw InvalidDimensionException(HERE) << "marginal index (" << marginalIndex << ") cannot exceed objective dimension (" << objective_.getOutputDimension();
   minimizationCollection_[marginalIndex] = minimization;
 }
 
 Bool OptimizationProblemImplementation::isMinimization(UnsignedInteger marginalIndex) const
 {
   if (marginalIndex >= objective_.getOutputDimension())
-    throw InvalidDimensionException(HERE) << "marginal index ("<< marginalIndex <<") cannot exceed objective dimension (" << objective_.getOutputDimension();
+    throw InvalidDimensionException(HERE) << "marginal index (" << marginalIndex << ") cannot exceed objective dimension (" << objective_.getOutputDimension();
   return minimizationCollection_[marginalIndex];
 }
 

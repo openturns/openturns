@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import scipy as sp
 import scipy.stats as st

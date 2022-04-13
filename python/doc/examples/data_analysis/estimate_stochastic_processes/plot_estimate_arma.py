@@ -53,7 +53,6 @@ Estimate a scalar ARMA process
 #
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import matplotlib.pyplot as plt
 ot.RandomGenerator.SetSeed(0)

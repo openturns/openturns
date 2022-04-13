@@ -7,7 +7,6 @@ Optimization using bonmin
 # %%
 # In this example we are going to explore mixed-integer non linear problems optimization using OpenTURNS' `bonmin <https://www.coin-or.org/Bonmin/index.html>`_ interface.
 # %%
-from __future__ import print_function
 import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 

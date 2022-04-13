@@ -25,7 +25,6 @@ Create a discrete Markov chain process
 # The library proposes to model it through the object *DiscreteMarkovChain* defined thanks to the origin :math:`X_{t_0}` (which can be either deterministic or uncertain), the transition matrix :math:`\mathcal{M}` and the time grid.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

@@ -5,7 +5,7 @@
  *        The antecedent of the event must be a "classical" composite random
  *        vector in the context of OpenTURNS.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by

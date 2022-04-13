@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class HSICEstimatorTargetSensitivity
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -144,7 +144,7 @@ int main(int, char *[])
     assert_almost_equal(TSA.getR2HSICIndices(), {0.263026, 0.0041902, 0.00309598});
     assert_almost_equal(TSA.getHSICIndices(), {1.54349e-05, 2.45066e-07, 1.88477e-07}, 1e-4, 0.0);
     assert_almost_equal(TSA.getPValuesPermutation(), {0.0, 0.264735, 0.279720});
-    assert_almost_equal(TSA.getPValuesAsymptotic(), {0.0,0.270278,0.288026});
+    assert_almost_equal(TSA.getPValuesAsymptotic(), {0.0, 0.270278, 0.288026});
 
   }
   catch (TestFailed & ex)

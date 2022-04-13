@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -115,10 +114,10 @@ try:
     sample = Normal(4).getSample(5)
     assert sample.getMarginal(['X3', 'X1']).getDescription() == [
         'X3', 'X1'], "wrong marginal"
-    
+
     # argsort
     sample = Sample(
-      [[-1.0, 1.0, 0.0], [-1.0, 1.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, -1.0]]
+        [[-1.0, 1.0, 0.0], [-1.0, 1.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, -1.0]]
     )
     indices = sample.argsort()
     print("indices = ", indices)

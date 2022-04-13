@@ -194,6 +194,7 @@ def getNewPoint(xMin, xMax, krigResult):
 # %%
 # We first call `getNewPoint` to get a point to add to the design of experiments.
 
+
 # %%
 xNew = getNewPoint(xMin, xMax, krigResult)
 xNew

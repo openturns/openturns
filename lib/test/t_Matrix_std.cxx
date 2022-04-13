@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Matrix for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -305,7 +305,7 @@ int main(int, char *[])
       for(UnsignedInteger newCol = 1; newCol < 6; ++ newCol)
       {
         MatrixImplementation B(*A.getImplementation());
-        fullprint << "----------" << newRow << "x" << newCol <<std::endl;
+        fullprint << "----------" << newRow << "x" << newCol << std::endl;
         B.resize(newRow, newCol);
         fullprint << B.__str__() << std::endl;
       }

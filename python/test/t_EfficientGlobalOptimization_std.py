@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import math as m
 import openturns.testing
@@ -19,7 +18,8 @@ formula = '((x2-(5.1/(4*pi_^2))*x1^2+5*x1/pi_-6)^2+10*(1-1/8*pi_)*cos(x1)+10-54.
 branin = ot.SymbolicFunction(['x1', 'x2'], [formula])
 transfo = ot.SymbolicFunction(['u1', 'u2'], ['15*u1-5', '15*u2'])
 model = ot.ComposedFunction(branin, transfo)
-noiseModel = ot.SymbolicFunction(['x1', 'x2'], ['0.96']) # assume constant noise var
+noiseModel = ot.SymbolicFunction(
+    ['x1', 'x2'], ['0.96'])  # assume constant noise var
 
 # problem
 problem = ot.OptimizationProblem()

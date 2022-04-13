@@ -82,7 +82,8 @@ estimatorType = ot.HSICUStat()
 
 # %%
 # We now build the HSIC estimator:
-globHSIC = ot.HSICEstimatorGlobalSensitivity(covarianceModelCollection, X, Y, estimatorType)
+globHSIC = ot.HSICEstimatorGlobalSensitivity(
+    covarianceModelCollection, X, Y, estimatorType)
 
 # %%
 # We get the R2-HSIC indices:

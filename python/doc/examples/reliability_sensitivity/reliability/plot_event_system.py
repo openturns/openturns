@@ -8,7 +8,6 @@ Create unions or intersections of events
 #
 # This example illustrates system events, which are defined as unions or intersections of other events. We will show how to estimate their probability both with Monte-Carlo sampling (using the class :class:`~openturns.ProbabilitySimulationAlgorithm`) and with a first order approximation (using the class :class:`~openturns.SystemFORM`).
 #
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pylab as plt

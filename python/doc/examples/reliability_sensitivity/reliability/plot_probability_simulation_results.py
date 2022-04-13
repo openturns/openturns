@@ -14,7 +14,6 @@ Exploitation of simulation algorithm results
 # - importance factors
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

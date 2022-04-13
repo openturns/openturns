@@ -4,7 +4,7 @@
  *         basis and eigenvalues of a given covariance model based on
  *         P1 Lagrange approximation.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -444,7 +444,8 @@ void KarhunenLoeveP1Algorithm::run()
   {
     selectedVariance += eigenValues[K];
     ++ K;
-  } while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
+  }
+  while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
   LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
 
   // Reduce and rescale the eigenvectors

@@ -7,7 +7,6 @@ Draw the QQ-Plot
 # In this example we are going to perform a visual goodness-of-fit test for an 1-d distribution with the QQ plot.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

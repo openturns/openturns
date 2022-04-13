@@ -6,7 +6,6 @@ Import / export a sample via a CSV file
 # In this example we are going to import and export a data sample from/to a CSV file.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 

@@ -76,7 +76,7 @@ cp -r distro/debian .
 
 # build source package
 echo "-- Creating source package "$pkgname"_$debver-$rel"
-debuild -us -uc -S
+debuild -us -uc -S --no-check-builddeps
 
 # rpm files
 echo "-- Copying files to $obs"

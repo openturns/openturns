@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class IterativeMoments for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -211,7 +211,7 @@ void test_SampleSize3_with_zero_variance()
   point1[0] = 10.0;
   point1[1] = 20.0;
 
-  /* We create a Sample with 1 point repeated 3 times: 
+  /* We create a Sample with 1 point repeated 3 times:
    * the mean, variance must pass, skewness and kurtosis must fail */
   Sample sample1(0, 2);
   sample1.add(point1);
@@ -253,7 +253,7 @@ void test_SampleSize4_with_zero_variance()
   point1[0] = 10.0;
   point1[1] = 20.0;
 
-  /* We create a Sample with 1 point repeated 4 times: 
+  /* We create a Sample with 1 point repeated 4 times:
    * the mean, variance must pass, skewness and kurtosis must fail */
   Sample sample1(0, 2);
   sample1.add(point1);

@@ -5,6 +5,8 @@ import openturns as ot
 from openturns.testing import assert_almost_equal
 
 # Definition of limit state function
+
+
 def four_branch(x):
     x1 = x[0]
     x2 = x[1]
@@ -18,7 +20,7 @@ def four_branch(x):
     return [min((g1, g2, g3, g4))]
 
 
-# Definition of a pythonfunction 
+# Definition of a pythonfunction
 my_four_branch = ot.PythonFunction(3, 1, four_branch)
 
 # Transformation of pythonfunction to parametricfunction fixing parameter k
@@ -63,8 +65,8 @@ rhoQuantile = 0.25
 
 # Definition of the algoritm
 Nais_algo = ot.NAIS(event, rhoQuantile)
-Nais_algo.setMaximumOuterSampling(numberSamples);
-Nais_algo.setBlockSize(blockSize);
+Nais_algo.setMaximumOuterSampling(numberSamples)
+Nais_algo.setBlockSize(blockSize)
 
 # Run of the algorithm
 Nais_algo.run()

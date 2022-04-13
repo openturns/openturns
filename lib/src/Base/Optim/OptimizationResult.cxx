@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationResult stores the result of a OptimizationAlgorithmImplementation
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -305,9 +305,9 @@ void OptimizationResult::store(const Point & x,
   if (getProblem().getObjective().getOutputDimension() <= 1)
   {
     if (!getOptimalValue().getDimension()
-      || getProblem().hasLevelFunction() // consider the last value as optimal for nearest-point algos
-      || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0])
-      || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0])))
+        || getProblem().hasLevelFunction() // consider the last value as optimal for nearest-point algos
+        || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0])
+            || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0])))
     {
       setOptimalPoint(x);
       setOptimalValue(y);

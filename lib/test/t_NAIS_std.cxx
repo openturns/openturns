@@ -28,28 +28,28 @@ int main()
   NAISResult naisResult;
   naisResult.setProbabilityEstimate(0.67);
   OT::Test::assert_almost_equal(naisResult.getProbabilityEstimate(), 0.67);
-  
+
   // Definition of function
   const String formula = "min(3+(0.1*pow(a-b,2))-((a+b)/(sqrt(2))),3+(0.1*pow(a-b,2))+((a+b)/(sqrt(2))),(a-b)+(c/ (sqrt(2))),(b-a)+(c/(sqrt(2))))";
-  
+
   // Definition about input parameter of function
   const Description input = {"a", "b", "c"};
 
   const Function myfourBranch = SymbolicFunction(input, Description(1, formula));
 
   // Transformation of SymbolicFunction to ParametricFunction fixing parameter k
-  const Indices indexFrozen = Indices(1,2);
-  const Point identifPoint(1,7);
+  const Indices indexFrozen = Indices(1, 2);
+  const Point identifPoint(1, 7);
   ParametricFunction myfourBranchUpdate(myfourBranch, indexFrozen, identifPoint);
 
   // Definition of input variable PDF
-  const Point mean(2,0.0) ;
-  const Point sigma(2,1.0) ;
+  const Point mean(2, 0.0) ;
+  const Point sigma(2, 1.0) ;
   const Normal distX(mean, sigma, CorrelationMatrix(2));
   const RandomVector inputVector = RandomVector(distX);
 
   // Determination of reference probability
-  
+
   // MonteCarlo experiment
   int numberOfMonteCarlo = 1000000;
 
@@ -70,21 +70,21 @@ int main()
   const ProbabilitySimulationResult result = algo.getResult();
   const Scalar probability = result.getProbabilityEstimate();
   OT::Test::assert_almost_equal(probability, 0.00238288);
-  	
+
   // Hyperparameters of the algorithm
-  
+
   // Number of samples at each iteration
-  const UnsignedInteger numberSamples= 10000 ;
+  const UnsignedInteger numberSamples = 10000 ;
   const UnsignedInteger blockSize = 1 ;
-  
+
   // Quantile determining the percentage of failure samples in the current population
   const Scalar rhoQuantile = 0.25 ;
 
   // Definition of the algoritm
-  NAIS algoNais(event,rhoQuantile);
+  NAIS algoNais(event, rhoQuantile);
   algoNais.setMaximumOuterSampling(numberSamples);
   algoNais.setBlockSize(blockSize);
-  
+
   // Run of the algorithm
   algoNais.run();
 

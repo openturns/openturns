@@ -39,37 +39,37 @@ public:
 
   /** Default constructor */
   NAISResult();
-  
+
   /** Virtual constructor */
   NAISResult * clone() const override;
 
   /** Get Input Samples */
   Sample getAuxiliaryInputSample() const;
-  
+
   /** Set Auxiliary input sample */
   void setAuxiliaryInputSample(const Sample & auxiliaryInputSample);
-  
+
   /** Get Weights */
   Point getWeights() const;
-  
+
   /** Set Weights */
   void setWeights(const Point & weights);
-  
+
   /** Get Output Samples */
   Sample getAuxiliaryOutputSample() const;
-  
+
   /** Set Auxiliary output sample */
   void setAuxiliaryOutputSample(const Sample & auxiliaryInputSample);
 
   /** Get Auxiliary Density */
   Distribution getAuxiliaryDistribution() const;
-  
+
   /** Set Auxiliary Density */
   void setAuxiliaryDistribution(const Distribution & auxiliaryDistribution);
-  
+
   /** Coefficient of variation estimate accessor */
   Scalar getCoefficientOfVariation() const override;
-  
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -80,16 +80,16 @@ private:
 
   // The fixed Auxiliary distribution that will be returned at each call
   Distribution auxiliaryDistribution_;
-  
+
   // The input Auxiliary sample
   Sample auxiliaryInputSample_;
-  
+
   // The output Auxiliary sample
   Sample auxiliaryOutputSample_;
-  
+
   // Current weights samples
   Point weights_;
-  
+
 }; /* class NAISResult */
 
 END_NAMESPACE_OPENTURNS

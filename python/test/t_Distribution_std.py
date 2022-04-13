@@ -1,5 +1,4 @@
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 import math as m
@@ -50,7 +49,8 @@ for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
     # pdf grad
     point = sample[0]
     PDFgr = distribution.computePDFGradient(point)
-    assert distribution.computePDFGradient([point]).getDimension() == len(PDFgr)
+    assert distribution.computePDFGradient(
+        [point]).getDimension() == len(PDFgr)
 
     # proba
     interval = distribution.getRange()

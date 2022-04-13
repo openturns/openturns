@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 ot.Log.Show(ot.Log.ALL)
 distribution = ot.Frechet(2.5, 2.0, -1.5)

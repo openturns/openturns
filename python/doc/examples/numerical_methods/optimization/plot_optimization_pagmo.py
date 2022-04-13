@@ -6,7 +6,6 @@ Multi-objective optimization using Pagmo
 # In this example we are going to explore optimization using the `Pagmo <https://esa.github.io/pagmo2/>`_ solver.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 from openturns.viewer import View
 
@@ -23,7 +22,8 @@ for algo in ot.Pagmo.GetAlgorithmNames():
 
 # %%
 # Create the problem, from ZDT test suite
-f = ot.SymbolicFunction(['x1', 'x2'], ['x1', 'var g := 1.0 + 9.0 * (x1 + x2); g * (1.0 - sqrt(x1 / g))'])
+f = ot.SymbolicFunction(
+    ['x1', 'x2'], ['x1', 'var g := 1.0 + 9.0 * (x1 + x2); g * (1.0 - sqrt(x1 / g))'])
 zdt1 = ot.OptimizationProblem(f)
 zdt1.setBounds(ot.Interval([0.0] * 2, [1.0] * 2))
 
@@ -53,13 +53,14 @@ len(fronts)
 # %%
 # We show the Pareto front
 graph = ot.Graph("Pareto front", "X1", "X2", True, 'topright')
-front = algo.getResult().getFinalPoints().select(fronts[0]).sortAccordingToAComponent(0)
+front = algo.getResult().getFinalPoints().select(
+    fronts[0]).sortAccordingToAComponent(0)
 data = ot.Sample(2*front.getSize()-1, 2)
 for i in range(front.getSize()):
     data[2*i] = front[i]
-    if i!= front.getSize()-1:
-        data[2*i+1,0] = front[i,0]
-        data[2*i+1,1] = front[i+1,1]
+    if i != front.getSize()-1:
+        data[2*i+1, 0] = front[i, 0]
+        data[2*i+1, 1] = front[i+1, 1]
 curve = ot.Curve(data)
 curve.setColor('blue')
 curve.setLegend(f"front {0}")
@@ -84,9 +85,9 @@ for k in range(len(fronts)):
     data = ot.Sample(2*front.getSize()-1, 2)
     for i in range(front.getSize()):
         data[2*i] = front[i]
-        if i!= front.getSize()-1:
-            data[2*i+1,0] = front[i,0]
-            data[2*i+1,1] = front[i+1,1]
+        if i != front.getSize()-1:
+            data[2*i+1, 0] = front[i, 0]
+            data[2*i+1, 1] = front[i+1, 1]
     curve = ot.Curve(data)
     curve.setColor(palette[k])
     curve.setLegend(f"generation {k}")

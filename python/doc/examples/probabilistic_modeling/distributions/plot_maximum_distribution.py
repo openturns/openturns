@@ -6,7 +6,6 @@ Create the distribution of the maximum of independent distributions
 # In this example we are going to build the distribution of the maximum of independent distributions.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
