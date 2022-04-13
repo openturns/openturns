@@ -409,7 +409,7 @@ if (USE_IPOPT)
 endif ()
 
 if (USE_PAGMO)
-  find_package (Pagmo)
+  find_package (Pagmo CONFIG)
   if (Pagmo_FOUND)
     message (STATUS "Found Pagmo: ${Pagmo_DIR} (found version \"${Pagmo_VERSION}\")")
     set (OPENTURNS_HAVE_PAGMO TRUE)
