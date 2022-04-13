@@ -84,13 +84,20 @@ Bool SmolyakExperiment::hasUniformWeights() const
 }
 
 /* Sample generation */
-Sample SmolyakExperiment::generateWithWeights(Point & weights)
+Sample SmolyakExperiment::generateWithWeights(Point & weights) 
 {
   computeNodesAndWeights();
   weights = weights_;
   WeightedExperimentImplementation::setSize(nodes_.getSize());
   isAlreadyComputed_ = true;
   return nodes_;
+}
+
+/* Sample generation */
+Sample SmolyakExperiment::generate() 
+{
+  Point weights;
+  return generateWithWeights(weights);
 }
 
 /* Compute the minimum of a multiindex */

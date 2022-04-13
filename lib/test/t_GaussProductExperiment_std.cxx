@@ -47,6 +47,9 @@ int main(int, char *[])
     Sample sample(experiment.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
+    // Test generate()
+    Sample sampleGenerate(experiment.generate());
+    fullprint << "sampleGenerate = " << sampleGenerate << std::endl;
     // Test set marginal degrees
     Indices marginalDegreesBis = {7, 13};
     experiment.setMarginalDegrees(marginalDegreesBis);

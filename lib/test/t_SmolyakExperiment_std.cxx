@@ -47,6 +47,23 @@ void sortNodesAndWeights(Sample & nodes, Point & weights)
   } // loop over points
 }
 
+// Sort the nodes 
+void sortNodes(Sample & nodes)
+{
+  const Indices order(nodes.argsort());
+  const UnsignedInteger size = nodes.getSize();
+  const UnsignedInteger dimension = nodes.getDimension();
+  Sample nodesUnordered(nodes);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const int index(order[i]);
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      nodes(i, j) = nodesUnordered(index, j);
+    } // loop over dimensions
+  } // loop over points
+}
+
 // Simultaneously print the nodes and weights
 void printNodesAndWeights(Sample & nodes, Point & weights)
 {
@@ -131,6 +148,11 @@ void test_1()
     const Scalar atol = 1.0e-5;
     assert_almost_equal(nodesExpected, nodes, rtol, atol);
     assert_almost_equal(weightsExpected, weights, rtol, atol);
+    // Test generate()
+    Sample nodesBis(experiment.generate());
+    roundSample(nodesBis, numberOfDigits);
+    sortNodes(nodesBis);
+    assert_almost_equal(nodesExpected, nodesBis, rtol, atol);
 }
 
 // Test #2 : check hasUniformWeights

@@ -59,8 +59,11 @@ public:
   /** Uniform weights ? */
   Bool hasUniformWeights() const override;
 
-  /** Sample generation */
+  /** Nodes and weights generation */
   Sample generateWithWeights(Point & weightsOut);
+
+  /** Nodes generation */
+  Sample generate();
 
   /** Distribution collection accessor */
   void setWeightedExperimentCollection(const WeightedExperimentCollection & coll);
