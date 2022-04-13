@@ -106,11 +106,11 @@ void test_1()
     OStream fullprint(std::cout);
     fullprint << "test_1" << std::endl;
     SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: Uniform, with 3 nodes
+    // Marginal 0: Uniform
     const Uniform distribution1(0.0, 1.0);
     const GaussProductExperiment marginalExperiment1(distribution1);  
     experimentCollection.add(marginalExperiment1);
-    // Marginal 1: Uniform, with 5 nodes
+    // Marginal 1: Uniform
     const Uniform distribution2(0.0, 1.0);
     const GaussProductExperiment marginalExperiment2(distribution2);
     experimentCollection.add(marginalExperiment2);
@@ -161,11 +161,11 @@ void test_2()
     OStream fullprint(std::cout);
     fullprint << "test_2" << std::endl;
     SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: Uniform, with 3 nodes
+    // Marginal 0: Uniform
     const Uniform distribution1(0.0, 1.0);
     const GaussProductExperiment marginalExperiment1(distribution1);  
     experimentCollection.add(marginalExperiment1);
-    // Marginal 1: Uniform, with 5 nodes
+    // Marginal 1: Uniform
     const Uniform distribution2(0.0, 1.0);
     const GaussProductExperiment marginalExperiment2(distribution2);  
     experimentCollection.add(marginalExperiment2);
@@ -184,15 +184,15 @@ void test_3()
     OStream fullprint(std::cout);
     fullprint << "test_3" << std::endl;
     SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: Uniform, with 3 nodes
+    // Marginal 0: Uniform
     const Uniform distribution1(0.0, 1.0);
     const GaussProductExperiment marginalExperiment1(distribution1);  
     experimentCollection.add(marginalExperiment1);
-    // Marginal 1: Uniform, with 5 nodes
+    // Marginal 1: Uniform
     const Uniform distribution2(0.0, 1.0);
     const GaussProductExperiment marginalExperiment2(distribution2);
     experimentCollection.add(marginalExperiment2);
-    // Marginal 2: Uniform, with 3 nodes
+    // Marginal 2: Uniform
     const Uniform distribution3(0.0, 1.0);
     const GaussProductExperiment marginalExperiment3(distribution3);  
     experimentCollection.add(marginalExperiment3);
@@ -233,6 +233,40 @@ void test_3()
     assert_almost_equal(weightsExpected, weights, rtol, atol);
 }
 
+// Test #4 : 2 experiments with dimensions 2 and 3
+void test_4()
+{
+    Log::Show(Log::ALL);
+    OStream fullprint(std::cout);
+    fullprint << "test_4" << std::endl;
+    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+    // Marginal 0: Uniform
+    ComposedDistribution::DistributionCollection aCollection;
+    const Uniform distribution1(0.0, 1.0);
+    const Uniform distribution2(0.0, 1.0);
+    aCollection.add(distribution1);
+    aCollection.add(distribution2);
+    ComposedDistribution distribution3(aCollection);
+    const GaussProductExperiment marginalExperiment1(distribution3);  
+    experimentCollection.add(marginalExperiment1);
+    // Marginal 1: Uniform
+    const Uniform distribution4(0.0, 1.0);
+    const Uniform distribution5(0.0, 1.0);
+    const Uniform distribution6(0.0, 1.0);
+    ComposedDistribution::DistributionCollection aCollection2;
+    aCollection2.add(distribution4);
+    aCollection2.add(distribution5);
+    aCollection2.add(distribution6);
+    ComposedDistribution distribution7(aCollection2);
+    const GaussProductExperiment marginalExperiment2(distribution7);
+    experimentCollection.add(marginalExperiment2);
+    //
+    const UnsignedInteger level = 3;
+    SmolyakExperiment experiment(experimentCollection, level);
+    Point weights(0);
+    Sample nodes(experiment.generateWithWeights(weights));
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -242,6 +276,7 @@ int main(int, char *[])
     test_1();
     test_2();
     test_3();
+    test_4();
   }
   catch (TestFailed & ex)
   {
