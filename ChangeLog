@@ -73,6 +73,7 @@
  * #1994 (default GaussProductExperiment is invalid)
  * #1997 (KLSVD spectrum cutoff error)
  * #2012 (Cannot sample a ConditionedGaussianProcess on a mesh containing conditioning points)
+ * #2014 (Precision issue with the Python KrigingAlgorithm test)
  * #2019 (Parametric stationary covariance models doc section needs refresh)
  * #2020 (Problem with the UserDefined distribution)
 

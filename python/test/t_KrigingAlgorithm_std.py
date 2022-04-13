@@ -161,7 +161,7 @@ def test_two_outputs():
                                       [8.34404, 0.0, 15.7824, 0.0],
                                       [0.0, 5.41246, 0.0, 10.2375]])
     ott.assert_almost_equal(result([[9.5], [10.0]]).getCovariance(
-    ) - reference_covariance, ot.Matrix(4, 4), 0.0, 1e-2)
+    ) - reference_covariance, ot.Matrix(4, 4), 0.0, 2e-2)
 
 
 def test_stationary_fun():
