@@ -81,9 +81,6 @@ where :math:`\alpha_k` is the parameter *stepmx*.
     - See :doc:`/auto_numerical_methods/optimization/plot_optimization_rosenbrock`
     - See :doc:`/auto_numerical_methods/optimization/plot_optimization_constraints`
     - See :doc:`/auto_numerical_methods/optimization/plot_optimization_nlopt`
-    - See :doc:`/auto_numerical_methods/optimization/plot_optimization_dlib`
-    - See :doc:`/auto_numerical_methods/optimization/plot_optimization_bonmin`
-    - See :doc:`/auto_numerical_methods/optimization/plot_optimization_pagmo`
 
 .. topic:: References:
 

@@ -76,6 +76,8 @@
  * #2014 (Precision issue with the Python KrigingAlgorithm test)
  * #2019 (Parametric stationary covariance models doc section needs refresh)
  * #2020 (Problem with the UserDefined distribution)
+ * #2024 (All of the Pagmo library is interfaced even if it has been compiled with a restricted API)
+ * #2025 (The lack of Bonmin generates an error during example compilation)
 
 
 == 1.18 release (2021-11-10) == #release-1.18
