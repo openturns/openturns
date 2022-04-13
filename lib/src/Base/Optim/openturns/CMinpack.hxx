@@ -59,8 +59,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  static Bool IsAvailable();
-
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   void checkProblem(const OptimizationProblem & problem) const override;

@@ -200,9 +200,6 @@ public:
     });
   }
 
-  /* Whether TBB is available */
-  static Bool IsAvailable();
-
   /* Enable/disable */
   static void Enable();
   static void Disable();

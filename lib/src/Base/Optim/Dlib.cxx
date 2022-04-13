@@ -347,16 +347,6 @@ CLASSNAMEINIT(Dlib)
 
 static const Factory<Dlib> Factory_Dlib;
 
-Bool Dlib::IsAvailable()
-{
-  LOGWARN(OSS() << "Dlib.IsAvailable is deprecated, use PlatformInfo.HasFeature(dlib)");
-#ifdef OPENTURNS_HAVE_DLIB
-  return true;
-#else
-  return false;
-#endif
-}
-
 Description Dlib::GetAlgorithmNames()
 {
   static Description algoNames;

@@ -53,9 +53,6 @@ public:
   /** Method to create an HMatrix object */
   HMatrix build(const Sample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters = HMatrixParameters());
 
-  /** Tell whether HMat support is available */
-  static Bool IsAvailable();
-
   /** String converter */
   String __repr__() const override;
 

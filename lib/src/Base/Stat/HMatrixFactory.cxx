@@ -49,20 +49,6 @@ HMatrixFactory * HMatrixFactory::clone() const
   return new HMatrixFactory( *this );
 }
 
-
-/** Tell whether HMat support is available */
-Bool
-HMatrixFactory::IsAvailable()
-{
-  LOGWARN(OSS() << "HMatrixFactory.IsAvailable is deprecated, use PlatformInfo.HasFeature(hmat)");
-#ifdef OPENTURNS_HAVE_HMAT
-  return true;
-#else
-  return false;
-#endif
-}
-
-
 HMatrix
 HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters)
 {

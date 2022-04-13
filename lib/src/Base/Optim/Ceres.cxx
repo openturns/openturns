@@ -542,16 +542,6 @@ void Ceres::load(Advocate & adv)
   adv.loadAttribute("algoName_", algoName_);
 }
 
-Bool Ceres::IsAvailable()
-{
-  LOGWARN(OSS() << "Ceres.IsAvailable is deprecated, use PlatformInfo.HasFeature(ceres)");
-#ifdef OPENTURNS_HAVE_CERES
-  return true;
-#else
-  return false;
-#endif
-}
-
 void Ceres::Initialize()
 {
 #ifdef OPENTURNS_HAVE_CERES
