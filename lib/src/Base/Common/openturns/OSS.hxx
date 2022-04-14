@@ -202,7 +202,7 @@ public:
 }; /* class OSS */
 
 template <typename _Tp>
-struct AllElementsPredicate : public std::unary_function<_Tp, Bool>
+struct AllElementsPredicate
 {
   Bool
   operator()(const _Tp&) const
