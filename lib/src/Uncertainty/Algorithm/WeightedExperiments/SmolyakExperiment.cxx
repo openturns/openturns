@@ -56,6 +56,8 @@ SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collec
   for (UnsignedInteger i = 0; i < numberOfMarginalExperiments; ++i)
   {
     distributionCollection[i] = collection_[i].getDistribution();
+    const UnsignedInteger marginalDimension = distributionCollection[i].getDimension();
+    if (marginalDimension != 1) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " has dimension " << marginalDimension << " which is different from 1";
   }
   const BlockIndependentDistribution distribution(distributionCollection);
   WeightedExperimentImplementation::setDistribution(distribution);
