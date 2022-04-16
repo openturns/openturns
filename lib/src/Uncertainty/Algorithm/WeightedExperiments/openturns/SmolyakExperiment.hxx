@@ -43,6 +43,8 @@ public:
   typedef Collection<WeightedExperiment> WeightedExperimentCollection;
   typedef PersistentCollection<WeightedExperiment> WeightedExperimentPersistentCollection;
 
+  /** Compare two points approximately */
+  static bool comparePointsApproximately(const Point x, const Point y);
 
   /** Default constructor */
   SmolyakExperiment();

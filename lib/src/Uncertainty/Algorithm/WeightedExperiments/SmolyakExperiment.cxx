@@ -314,6 +314,16 @@ UnsignedInteger SmolyakExperiment::getSize() const
   return WeightedExperimentImplementation::getSize();
 }
 
+/* Compare two points approximately 
+   This is for testing purposes only. */
+bool SmolyakExperiment::comparePointsApproximately(const Point x, const Point y)
+{
+  const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon");
+  const Scalar absoluteEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon");
+  PointApproximateComparison comparison(absoluteEpsilon, relativeEpsilon);
+  return comparison(x, y);
+}
+
 /* Method save() stores the object through the StorageManager */
 void SmolyakExperiment::save(Advocate & adv) const
 {
