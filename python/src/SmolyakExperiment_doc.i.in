@@ -5,7 +5,7 @@ Parameters
 ----------
 experiments : list of :class:`~openturns.WeightedExperiment`
     List of :math:`n` marginal experiments of the Smolyak experiment. 
-    Each marginal experiment can have arbitrary dimension.
+    Each marginal experiment must have dimension 1.
 
 Notes
 -----
@@ -159,27 +159,6 @@ marginal quadratures.
 >>> experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [3])
 >>> experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [5])
 >>> collection = [experiment1, experiment2]
->>> level = 3
->>> multivariate_experiment = ot.SmolyakExperiment(collection, level)
->>> nodes, weights = multivariate_experiment.generateWithWeights()
-
-Marginal DOEs do not necessarily have dimension 1. 
-In the following example, we create a Smolyak quadrature using two DOEs, where the 
-first one has dimension 2, and the second one has dimension 3.
-
->>> import openturns as ot
->>> # Experiment 1 : Uniform * 2 with 3 and 2 nodes.
->>> marginal_sizes_1 = [3, 2]
->>> dimension_1 = len(marginal_sizes_1)
->>> distribution_1 = ot.ComposedDistribution([ot.Uniform()] * dimension_1)
->>> experiment_1 = ot.GaussProductExperiment(distribution_1, marginal_sizes_1)
->>> # Experiment 2 : Normal * 3 with 2, 2 and 1 nodes.
->>> marginal_sizes_2 = [2, 2, 1]
->>> dimension_2 = len(marginal_sizes_2)
->>> distribution_2 = ot.ComposedDistribution([ot.Normal()] * dimension_2)
->>> experiment_2 = ot.GaussProductExperiment(distribution_2, marginal_sizes_2)
->>> # Smolyak
->>> collection = [experiment_1, experiment_2]
 >>> level = 3
 >>> multivariate_experiment = ot.SmolyakExperiment(collection, level)
 >>> nodes, weights = multivariate_experiment.generateWithWeights()"
