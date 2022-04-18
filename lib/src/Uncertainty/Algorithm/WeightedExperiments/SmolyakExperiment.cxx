@@ -131,7 +131,7 @@ IndicesCollection SmolyakExperiment::computeCombination() const
   IndicesCollection combinationIndicesCollection(combinationIndicesCollectionSize, dimension);
   UnsignedInteger multiindexIndex = 0;
   Indices indices(dimension);
-  const UnsignedInteger strataIndexMin = (level_ == 1) ? 0 : level_ - dimension;
+  const UnsignedInteger strataIndexMin = (level_ < dimension) ? 0 : level_ - dimension;
   LOGDEBUG(OSS() << "  strataIndexMin = " << strataIndexMin);
   LOGDEBUG(OSS() << "  level_ = " << level_);
   for (UnsignedInteger strataIndex = strataIndexMin; strataIndex < level_; ++strataIndex)

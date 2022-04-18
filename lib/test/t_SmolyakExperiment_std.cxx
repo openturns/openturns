@@ -331,17 +331,54 @@ void test_5()
     assert_almost_equal(nodesExpected, nodesBis, rtol, atol);
 }
 
+// Test #6 : 3 experiments, level = 2
+void test_6()
+{
+    Log::Show(Log::ALL);
+    OStream fullprint(std::cout);
+    fullprint << "test_6" << std::endl;
+    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+    // Marginal 0: Uniform
+    const Uniform distribution1(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment1(distribution1);  
+    experimentCollection.add(marginalExperiment1);
+    // Marginal 1: Uniform
+    const Uniform distribution2(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment2(distribution2);
+    experimentCollection.add(marginalExperiment2);
+    // Marginal 2: Uniform
+    const Uniform distribution3(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment3(distribution3);
+    experimentCollection.add(marginalExperiment3);
+    //
+    const UnsignedInteger level = 2;
+    SmolyakExperiment experiment(experimentCollection, level);
+    Point weights(0);
+    Sample nodes(experiment.generateWithWeights(weights));
+    printNodesAndWeights(nodes, weights);
+    const int experimentSize = experiment.getSize();
+    assert_equal(experimentSize, 7);
+    //
+    const int size(nodes.getSize());
+    const int dimension(nodes.getDimension());
+    const int weightDimension(weights.getDimension());
+    assert_equal(size, 7);
+    assert_equal(dimension, 3);
+    assert_equal(weightDimension, 7);
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
 
   try
   {
-    test_1();
-    test_2();
-    test_3();
-    test_4();
-    test_5();
+    // test_1();
+    // test_2();
+    // test_3();
+    // test_4();
+    // test_5();
+    test_6();
   }
   catch (TestFailed & ex)
   {
