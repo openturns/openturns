@@ -1,6 +1,6 @@
 """
-Use the Smolyak quadrature
-==========================
+Plot the Smolyak quadrature
+===========================
 """
 # %%
 # The goal of this example is to present different properties of Smolyak's
@@ -41,13 +41,15 @@ for i in range(number_of_rows):
         graph.setBoundingBox(bounding_box)
         grid.setGraph(i, j, graph)
 
-unit_width = 3.0
+unit_width = 2.0
 total_width = unit_width * number_of_columns
 unit_height = unit_width
 total_height = unit_height * number_of_rows
 view = otv.View(grid, figure_kw={"figsize": (total_width, total_height)})
 _ = plt.suptitle("Smolyak-Legendre")
 _ = plt.subplots_adjust(wspace=0.4, hspace=0.4)
+plt.tight_layout()
+plt.show()
 
 # %%
 # In the previous plot, the number of nodes is denoted by :math:`n`. 
@@ -55,16 +57,87 @@ _ = plt.subplots_adjust(wspace=0.4, hspace=0.4)
 # when the quadrature level increases. 
 
 # %%
-# Secondly, we want to plot the number of nodes depending on the dimension 
+# Secondly, we want to compute the number of nodes depending on the dimension 
 # and the level. 
 
+# %%
+# Assume that the number of nodes depends on the level 
+# from the equation :math:`n_\ell^1 = O\left(2^\ell\right)`. 
+# In a fully tensorized grid, the number of nodes is  
+# ([gerstner1998]_ page 216):
+# 
+# .. math::
+# 
+#     n_{\textrm{tensorisation}} = O\left(2^{\ell d}\right).
+#
+# We are going to see that Smolyak's quadrature reduces drastically that number.
+# Let :math:`m_\ell` be the number of the marginal univariate quadrature of 
+# level :math:`\ell`. 
+# The number of nodes in Smolyak's sparse grid is:
+# 
+# .. math::
+# 
+#     n_\ell^d = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + d - 1} m_{k_1} \cdots m_{k_d}.
+#
+# If :math:`n_\ell^1 = O\left(2^\ell\right)` therefore the number of nodes of 
+# Smolyak's quadrature is:
+# 
+# .. math::
+# 
+#     n_{\textrm{Smolyak}} = O\left(2^\ell \ell^{d - 1}\right).
+#
+
+level_max = 8  # Maximum level
+dimension_max = 8  # Maximum dimension
+level_list = list(range(1, 1 + level_max))
+graph = ot.Graph("Smolyak vs tensorized quadrature", r"$level$", r"$n$", True, "topleft")
+dimension_list = list(range(1, dimension_max, 2))
+palette = ot.Drawable().BuildDefaultPalette(len(dimension_list))
+graph_index = 0
+for dimension in dimension_list:
+    number_of_nodes = ot.Sample(level_max, 1)
+    # Tensorized
+    for level in level_list:
+        number_of_nodes[level - 1, 0] = 2 ** (level * dimension)
+    curve = ot.Curve(ot.Sample.BuildFromPoint(level_list), number_of_nodes)
+    curve.setLegend("")
+    curve.setLineStyle("solid")
+    curve.setColor(palette[graph_index])
+    curve.setLegend("Tensor, d = %d" % (dimension))
+    graph.add(curve)
+    # Smolyak
+    for level in level_list:
+        number_of_nodes[level - 1, 0] = 2 ** level * level ** (dimension - 1)
+    curve = ot.Curve(ot.Sample.BuildFromPoint(level_list), number_of_nodes)
+    curve.setLegend("")
+    curve.setLineStyle("dashed")
+    curve.setColor(palette[graph_index])
+    curve.setLegend("Smolyak, d = %d" % (dimension))
+    graph.add(curve)
+    graph_index += 1
+graph.setLogScale(ot.GraphImplementation.LOGY)
+view = otv.View(
+    graph,
+    figure_kw={"figsize": (5.0, 3.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plt.tight_layout()
+plt.show()
+
+
+# %%
+# In the following cell, we count the number of nodes in Smolyak's quadrature 
+# using a Gauss-Legendre marginal univariate experiment. 
+# We perform a loop over the levels from 1 to 8 
+# and the dimensions from 1 to 7. 
 
 level_max = 8  # Maximum level
 dimension_max = 8  # Maximum dimension
 uniform = ot.GaussProductExperiment(ot.Uniform(-1.0, 1.0))
 level_list = list(range(1, 1 + level_max))
-graph = ot.Graph("Smolyak quadrature", r"$level$", r"$n$", True, "topleft")
+graph = ot.Graph("Smolyak-Legendre quadrature", r"$level$", r"$n$", True, "topleft")
 palette = ot.Drawable().BuildDefaultPalette(dimension_max - 1)
+graph_index = 0
 for dimension in range(1, dimension_max):
     number_of_nodes = ot.Sample(level_max, 1)
     for level in level_list:
@@ -76,18 +149,20 @@ for dimension in range(1, dimension_max):
     cloud = ot.Cloud(ot.Sample.BuildFromPoint(level_list), number_of_nodes)
     cloud.setLegend("$d = %d$" % (dimension))
     cloud.setPointStyle("bullet")
-    cloud.setColor(palette[dimension - 1])
+    cloud.setColor(palette[graph_index])
     graph.add(cloud)
     curve = ot.Curve(ot.Sample.BuildFromPoint(level_list), number_of_nodes)
     curve.setLegend("")
     curve.setLineStyle("dashed")
-    curve.setColor(palette[dimension - 1])
+    curve.setColor(palette[graph_index])
     graph.add(curve)
+    graph_index += 1
 graph.setLogScale(ot.GraphImplementation.LOGY)
 view = otv.View(
     graph,
-    figure_kw={"figsize": (4.0, 3.0)},
+    figure_kw={"figsize": (5.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 
+plt.tight_layout()
 plt.show()

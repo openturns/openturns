@@ -177,6 +177,8 @@ Bibliography
     `pdf <http://research.microsoft.com/en-us/um/people/minka/papers/dirichlet/minka-dirichlet.pdf>`__
 .. [morio2015] Morio J., Balesdent M., *Estimation of Rare Event Probabilities in Complex Aerospace and Other Systems*,
     A Practical Approach, Elsevier, 2015.
+.. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). 
+    *Quasi-monte carlo integration.* Journal of computational physics, 122(2), 218-230.
 .. [morris1995] D. Morris and J. Mitchell. *Exploratory designs for
     computational experiments.*
     Journal of Statistical Planning and Inference, 43 :381-402, 1995.
