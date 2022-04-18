@@ -51,6 +51,7 @@ SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collec
   , nodes_(0, 0)
   , isAlreadyComputed_(false)
 {
+  if (level == 0) throw InvalidArgumentException(HERE) << "Error: the level is zero";
   const UnsignedInteger numberOfMarginalExperiments = collection_.getSize();
   BlockIndependentDistribution::DistributionCollection distributionCollection(numberOfMarginalExperiments);
   for (UnsignedInteger i = 0; i < numberOfMarginalExperiments; ++i)
@@ -90,7 +91,8 @@ Sample SmolyakExperiment::generateWithWeights(Point & weights)
 {
   computeNodesAndWeights();
   weights = weights_;
-  WeightedExperimentImplementation::setSize(nodes_.getSize());
+  UnsignedInteger size = nodes_.getSize();
+  if (size > 0)  WeightedExperimentImplementation::setSize(size);
   isAlreadyComputed_ = true;
   return nodes_;
 }
@@ -124,11 +126,15 @@ IndicesCollection SmolyakExperiment::computeCombination() const
   UnsignedInteger cardinalMax = enumerateFunction.getStrataCumulatedCardinal(level_ - 1);
   UnsignedInteger cardinalMin = enumerateFunction.getStrataCumulatedCardinal(level_ - dimension - 1);
   UnsignedInteger combinationIndicesCollectionSize = cardinalMax - cardinalMin;
+  LOGDEBUG(OSS() << "  combinationIndicesCollectionSize = " << combinationIndicesCollectionSize);
   // Fill the indices
   IndicesCollection combinationIndicesCollection(combinationIndicesCollectionSize, dimension);
   UnsignedInteger multiindexIndex = 0;
   Indices indices(dimension);
-  for (UnsignedInteger strataIndex = level_ - dimension; strataIndex < level_; ++strataIndex)
+  const UnsignedInteger strataIndexMin = (level_ == 1) ? 0 : level_ - dimension;
+  LOGDEBUG(OSS() << "  strataIndexMin = " << strataIndexMin);
+  LOGDEBUG(OSS() << "  level_ = " << level_);
+  for (UnsignedInteger strataIndex = strataIndexMin; strataIndex < level_; ++strataIndex)
   {
     LOGDEBUG(OSS() << "  strataIndex = " <<  strataIndex);
     const UnsignedInteger strataCardinal = enumerateFunction.getStrataCardinal(strataIndex);
@@ -181,7 +187,7 @@ public:
             {
                 break;
             }
-        }
+        } // Loop over the dimensions
         return comparison;
     }
 private:
@@ -214,20 +220,23 @@ void SmolyakExperiment::mergeNodesAndWeights(
       LOGDEBUG(OSS() << "[" << i << "], not found : " << duplicatedNodes[i]);
       nodeWeightMap[duplicatedNodes[i]] = duplicatedWeights[i];
     }
-  }
-  // print_NodeWeightMap(nodeWeightMap);
+  } // Loop over (potentially) duplicated nodes, weights
   // Extract the map
   UnsignedInteger size = nodeWeightMap.size();
+  LOGDEBUG(OSS() << "size = " <<  size);
   LOGDEBUG(OSS() << "Extract the map");
   nodes_ = Sample(size, dimension);
   weights_ = Point(size);
-  UnsignedInteger index = 0;
-  for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
+  if (size > 0)
   {
-    LOGDEBUG(OSS() << "[" << index << "], add " << it->first << " = " << it->second);
-    nodes_[index] = it->first;
-    weights_[index] = it->second;
-    ++ index;
+    UnsignedInteger index = 0;
+    for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
+    {
+      LOGDEBUG(OSS() << "[" << index << "], add " << it->first << " = " << it->second);
+      nodes_[index] = it->first;
+      weights_[index] = it->second;
+      ++ index;
+    } // Loop over unique nodes, weights in map
   }
 }
 
@@ -282,9 +291,7 @@ void SmolyakExperiment::computeNodesAndWeights() const
       marginalLevelsSum += combinationIndicesCollection(i, j);
     } // Loop over the dimensions
     const UnsignedInteger exponent = level_ + dimension - marginalLevelsSum - 1;
-    Scalar smolyakSign;
-    if (exponent % 2 == 0) smolyakSign = 1.0;
-    else smolyakSign = -1.0;
+    const Scalar smolyakSign = (exponent % 2 == 0) ? 1.0 : -1.0;
     const UnsignedInteger binomial = SpecFunc::BinomialCoefficient(dimension - 1, marginalLevelsSum - level_);
     const Scalar smolyakFactor = smolyakSign * binomial;
     duplicatedNodes.add(elementaryNodes);

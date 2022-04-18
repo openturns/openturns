@@ -275,6 +275,62 @@ void test_4()
     assert_equal(comparison7, false);
 }
 
+// Test #5 : 2 experiments, level = 1
+void test_5()
+{
+    Log::Show(Log::ALL);
+    OStream fullprint(std::cout);
+    fullprint << "test_5" << std::endl;
+    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+    // Marginal 0: Uniform
+    const Uniform distribution1(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment1(distribution1);  
+    experimentCollection.add(marginalExperiment1);
+    // Marginal 1: Uniform
+    const Uniform distribution2(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment2(distribution2);
+    experimentCollection.add(marginalExperiment2);
+    //
+    const UnsignedInteger level = 1;
+    SmolyakExperiment experiment(experimentCollection, level);
+    Point weights(0);
+    Sample nodes(experiment.generateWithWeights(weights));
+    printNodesAndWeights(nodes, weights);
+    const int experimentSize = experiment.getSize();
+    assert_equal(experimentSize, 1);
+    //
+    UnsignedInteger numberOfDigits = 14;
+    roundSample(nodes, numberOfDigits);
+    sortNodesAndWeights(nodes, weights);
+    //
+    const int size(nodes.getSize());
+    const int dimension(nodes.getDimension());
+    const int weightDimension(weights.getDimension());
+    assert_equal(size, 1);
+    assert_equal(dimension, 2);
+    assert_equal(weightDimension, 1);
+    //
+    Point column_1 = {0.5};
+    Point column_2 = {0.5};
+    Sample nodesExpected(size, dimension);
+    for (int i = 0; i < size; ++i)
+    {
+      nodesExpected(i, 0) = column_1[i];
+      nodesExpected(i, 1) = column_2[i];
+    }
+    Point weightsExpected = {1.0};
+    sortNodesAndWeights(nodesExpected, weightsExpected);
+    const Scalar rtol = 1.0e-5;
+    const Scalar atol = 1.0e-5;
+    assert_almost_equal(nodesExpected, nodes, rtol, atol);
+    assert_almost_equal(weightsExpected, weights, rtol, atol);
+    // Test generate()
+    Sample nodesBis(experiment.generate());
+    roundSample(nodesBis, numberOfDigits);
+    sortNodes(nodesBis);
+    assert_almost_equal(nodesExpected, nodesBis, rtol, atol);
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -285,6 +341,7 @@ int main(int, char *[])
     test_2();
     test_3();
     test_4();
+    test_5();
   }
   catch (TestFailed & ex)
   {

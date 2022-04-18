@@ -106,6 +106,7 @@ def roundSample(sample, numberOfDigits):
 
 def testSmolyakExperiment1():
     # Generate a Smolyak Gauss-Legendre rule in 2 dimensions.
+    print("testSmolyakExperiment1:")
     experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     collection = [experiment1, experiment2]
@@ -187,9 +188,9 @@ def sortNodes(nodes):
     sortedNodes = nodes[indices]
     return sortedNodes
 
-def testSmolyakExperiment1Bis():
-    print("testSmolyakExperiment1Bis:")
-    # Test generate()
+def testSmolyakExperiment2():
+    # Test generate() method
+    print("testSmolyakExperiment2:")
     experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
     collection = [experiment1, experiment2]
@@ -225,9 +226,10 @@ def testSmolyakExperiment1Bis():
     atol = 1.0e-5
     ott.assert_almost_equal(nodes, nodesExact, rtol, atol)
 
-def testSmolyakExperiment2():
+def testSmolyakExperiment3():
     # Generate a Smolyak Gauss-Legendre rule in 3 dimensions.
     # Each marginal elementary experiment has 6 nodes.
+    print("testSmolyakExperiment3:")
     dimension = 3
     collection = []
     for i in range(dimension):
@@ -241,7 +243,44 @@ def testSmolyakExperiment2():
     size = nodes.getSize()
     assert size == weights.getDimension()
 
+def testSmolyakExperiment4():
+    # Special case : Level = 1
+    print("testSmolyakExperiment4:")
+    ot.Log.Show(ot.Log.ALL)
+    # Generate a Smolyak Gauss-Legendre rule in 2 dimensions.
+    experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
+    experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
+    collection = [experiment1, experiment2]
+    level = 1
+    smolyak = ot.SmolyakExperiment(collection, level)
+    nodes, weights = smolyak.generateWithWeights()
+    numberOfDigits = 14
+    nodes = roundSample(nodes, numberOfDigits)
+    nodes, weights = sortNodesAndWeights(nodes, weights)
+    print("Computed:")
+    printNodesAndWeights(nodes, weights)
+    # Sort
+    nodesExact = ot.Sample([[0.5, 0.5]])
+    weightsExact = ot.Point([1.0])
+    nodesExact, weightsExact = sortNodesAndWeights(nodesExact, weightsExact)
+    print("Expected:")
+    printNodesAndWeights(nodesExact, weightsExact)
+    rtol = 0.0
+    atol = 1.0e-5
+    ott.assert_almost_equal(nodes, nodesExact, rtol, atol)
+    ott.assert_almost_equal(weights, weightsExact, rtol, atol)
+    #
+    size = smolyak.getSize()
+    print("size = ", size)
+    assert size == 1
+    #
+    distribution = smolyak.getDistribution()
+    collection = [ot.Uniform(0.0, 1.0), ot.Uniform(0.0, 1.0)]
+    expected_distribution = ot.BlockIndependentDistribution(collection)
+    assert distribution == expected_distribution
+
 # Testing
 testSmolyakExperiment1()
-testSmolyakExperiment1Bis()
 testSmolyakExperiment2()
+testSmolyakExperiment3()
+testSmolyakExperiment4()

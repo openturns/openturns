@@ -15,3 +15,14 @@ printNodesAndWeights. Size = 13
 [12] : [0.887298 0.5 ] = 0.277778
 test_2
 test_3
+test_4
+(1) Compare = [0.1,0.2] and [0.3,0.4]
+(2) Compare = [0.3,0.4] and [0.1,0.2]
+(3) Compare = [0.1,0.2] and [0.1,0.2]
+(4) Compare = [0.1001,0.2001] and [0.1,0.2]
+(5) Compare = [0.1,0.2] and [0.1001,0.2001]
+(6) Compare = [0,0] and [0.0001,0.0001]
+(7) Compare = [0.0001,0.0001] and [0,0]
+test_5
+printNodesAndWeights. Size = 1
+[0] : [0.5 0.5 ] = 1
