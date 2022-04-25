@@ -16,7 +16,9 @@ Smolyak experiment has a significantly lower number of nodes [petras2003]_.
 This implementation uses the combination technique ([gerstner1998]_ page 215).
 Smolyak quadrature involve weights which are negative ([sullivan2015]_ page 177). 
 The size of the experiment is only known after the nodes and weights have been computed, 
-that is, after the `generateWithWeights()` method is called. 
+that is, after the `generateWithWeights()` method is called.
+
+**Method**
 
 Let :math:`\mathcal{X} \subset \mathbb{R}^{d_x}` be the integration domain 
 and let :math:`g : \mathcal{X} \rightarrow \mathbb{R}^{d_y}` be an integrable 
@@ -36,11 +38,11 @@ weights and :math:`\boldsymbol{x}_1, ..., \boldsymbol{x}_{s_t} \in \mathbb{R}^{d
 are the nodes. 
 
 Let :math:`\boldsymbol{k} = (k_1, ..., k_{d_x}) \in (\mathbb{N}^\star)^{d_x}` 
-be the multi-index where 
+be the multi-index where
 
 .. math::
 
-    \mathbb{N}^\star = \{1, 2, ..., \}
+    \mathbb{N}^\star = \{1, 2, ... \}
 
 is the set of natural numbers without zero. 
 Consider the 1 and the infinity norms ([leMaitre2010]_ page 57, eq. 3.28):
@@ -54,8 +56,8 @@ for any :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^{d_x}`.
 
 Let :math:`\ell` be an integer representing the level of the quadrature. 
 Let :math:`Q_{\ell}^{(1)}` be a marginal quadrature of level :math:`\ell`. 
-This marginal quadrature can have dimension 1 (as is suggested by the exponent in the 
-notation :math:`Q_{\ell}^{(1)}`), but this is not mandatory. 
+This marginal quadrature must have dimension 1 as is suggested by the exponent in the 
+notation :math:`Q_{\ell}^{(1)}`. 
 Depending on the level :math:`\ell`, we can compute the actual number of nodes 
 depending on a particular choice of that number of nodes and depending 
 on the quadrature rule. 
@@ -109,7 +111,7 @@ The Smolyak sparse quadrature formula at level :math:`\ell` is :
 
 .. math::
 
-    S_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + p - 1} 
+    S_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + d_x - 1} 
     \Delta_{k_1}^{(1)} \otimes \cdots \otimes \Delta_{k_{d_x}}^{(1)}
 
 for any :math:`\ell \geq 1`. 
@@ -120,7 +122,9 @@ an integer which depends on the multi-index.
 This is done using the `setLevel` method of the marginal quadrature. 
 
 The following formula expresses the multivariate quadrature in terms of 
-combinations univariate quadratures, known as the *combination technique*.
+combinations univariate quadratures, known as the *combination technique*. 
+This method combines elementary tensorized quadratures, summing them 
+depending on the binomial coefficient. 
 The sparse quadrature formula at level :math:`\ell` is :
 
 .. math::
@@ -130,9 +134,59 @@ The sparse quadrature formula at level :math:`\ell` is :
     {d_x - 1 \choose \|\boldsymbol{k}\|_1 - \ell} 
     Q_{k_1}^{(1)} \otimes \cdots \otimes Q_{k_{d_x}}^{(1)}
 
-for any :math:`\ell \geq 1`. 
+for any :math:`\ell \geq 1` where the binomial coefficient is:
 
-The following theorem presents the absolute error of a sparse 
+.. math::
+
+    {n \choose k} = \frac{n!}{k! (n - k)!}
+
+for any integers :math:`n \geq 0` and :math:`0 \leq k \leq n`.
+
+**Merge duplicate nodes**
+
+The Smolyak quadrature requires to merge the potentially duplicated nodes of the 
+elementary quadratures. 
+This can reduce the number of nodes, which may be particularily suitable when the 
+marginal quadrature rule is nested such as, for example, with Fejér or Clenshaw-Curtis 
+quadrature rule. 
+If, however, the elementary quadrature rules have nodes which are computed up to some 
+rounding error, the merging algorithm cannot identify that two nodes which are 
+close to each other are, indeed, the same. 
+Let :math:`\epsilon_r, \epsilon_a > 0` be the relative and absolute tolerances. 
+These parameters can be set using the :class:`~openturns.ResourceMap` keys `SmolyakExperiment-DefaultPointRelativeEpsilon` and `SmolyakExperiment-DefaultPointAbsoluteEpsilon`. 
+The criteria is based on a mixed absolute and relative tolerance. 
+Two candidate nodes :math:`\boldsymbol{x}_1, \boldsymbol{x}_2 \in \mathbb{R}^{d_x}` 
+are close to each other and are to be merged if:
+
+.. math::
+
+    |(x_1)_i - (y_1)_i| \leq \delta_i
+
+for :math:`i = 1, ..., d_x`, where :math:`\delta_i` is equal to:
+
+.. math::
+
+    \delta_i = \epsilon_a + \epsilon_r 
+    \max\left(\left|(x_1)_i\right|, \left|(y_1)_i\right|\right).
+
+If two candidate nodes :math:`\boldsymbol{x}_1, \boldsymbol{x}_2 \in \mathbb{R}^{d_x}`, 
+associated with the two weights :math:`w_1, w_2 \in \mathbb{R}`, are to be merged, 
+then the merged node is 
+
+.. math::
+
+    \boldsymbol{x}_1' = \boldsymbol{x}_1
+
+and the merged weight is:
+
+
+.. math::
+
+    w_1' = w_1 + w_2.
+
+**Accuracy**
+    
+The following equation presents the absolute error of a sparse 
 quadrature ([sullivan2015]_ page 177, eq. 9.10).
 Assume that :math:`g \in \mathcal{C}^r([0, 1]^{d_x})` and that we use a sparse 
 quadrature with :math:`n_\ell` nodes at level :math:`\ell`. 
@@ -142,9 +196,9 @@ Therefore,
 
 .. math::
 
-    \left|\int_{[0, 1]^p} g(\boldsymbol{x}) d\boldsymbol{x} 
+    \left|\int_{[0, 1]^{d_x}} g(\boldsymbol{x}) d\boldsymbol{x} 
     - Q_\ell(g)\right|
-    = O \left(n_\ell^{-r} (\log(n_\ell))^{(p - 1)(r + 1)}\right).
+    = O \left(n_\ell^{-r} (\log(n_\ell))^{(d_x - 1)(r + 1)}\right).
 
 See also
 --------
