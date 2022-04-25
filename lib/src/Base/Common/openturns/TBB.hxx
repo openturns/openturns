@@ -29,9 +29,6 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API TBB
 {
 public:
-  /* Whether TBB is available */
-  static Bool IsAvailable();
-
   /* Enable/disable */
   static void Enable();
   static void Disable();

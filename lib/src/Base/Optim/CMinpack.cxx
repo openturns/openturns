@@ -493,15 +493,5 @@ void CMinpack::load(Advocate & adv)
   OptimizationAlgorithmImplementation::load(adv);
 }
 
-Bool CMinpack::IsAvailable()
-{
-  LOGWARN(OSS() << "CMinpack.IsAvailable is deprecated, use PlatformInfo.HasFeature(cminpack)");
-#ifdef OPENTURNS_HAVE_CMINPACK
-  return true;
-#else
-  return false;
-#endif
-}
-
 END_NAMESPACE_OPENTURNS
 

@@ -51,16 +51,6 @@ static const TBB_init initializer_TBBImplementation;
 UnsignedInteger TBBImplementation::ThreadsNumber_ = 1;
 tbb::task_arena * TBBImplementation::P_task_arena_ = 0;
 
-Bool TBBImplementation::IsAvailable()
-{
-  LOGWARN(OSS() << "TBB.IsAvailable is deprecated, use PlatformInfo.HasFeature(tbb)");
-#ifdef OPENTURNS_HAVE_TBB
-  return true;
-#else
-  return false;
-#endif
-}
-
 void TBBImplementation::SetThreadsNumber(const UnsignedInteger threadNumber)
 {
   if (!threadNumber)

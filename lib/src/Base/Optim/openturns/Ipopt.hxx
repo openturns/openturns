@@ -48,9 +48,6 @@ public:
   /** Virtual constructor */
   Ipopt * clone() const override;
 
-  /** Ipopt static methods */
-  static Bool IsAvailable();  // Check whether Ipopt support is available
-
   /** Performing the actual computation. */
   void run() override;
 

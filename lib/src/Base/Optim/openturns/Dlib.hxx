@@ -51,7 +51,6 @@ public:
   Dlib * clone() const override;
 
   /** Dlib static methods */
-  static Bool IsAvailable();  // Check whether Dlib support is available
   static Description GetAlgorithmNames(); // List available dlib search strategies
 
   /** ACCESSORS */

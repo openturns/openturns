@@ -157,7 +157,7 @@ class OTCalledProcessError(subprocess.CalledProcessError):
 
 
 def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
-            check=True, capture_output=False, get_stdout=False, get_stderr=False,
+            check=True, capture_output=False,
             timeout=None, env=None):
     """
     Launch an external process.
@@ -204,16 +204,6 @@ def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
     >>> int(cp.stdout)
     42
     """
-
-    if get_stdout:
-        warnings.warn(
-            'get_stdout is deprecated in favor of capture_output', DeprecationWarning)
-        capture_output = True
-
-    if get_stderr:
-        warnings.warn(
-            'get_stderr is deprecated in favor of capture_output', DeprecationWarning)
-        capture_output = True
 
     # split cmd if not in a shell before passing it to os.execvp()
     try:

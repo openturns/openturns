@@ -1,5 +1,26 @@
 = New Features =
 
+== 1.20 release (in-progress) == #release-1.20
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed coupling_tools.execute get_stderr,get_stdout arguments
+ * Removed deprecated Nlopt|Ceres|Bonmin|CMinpack|Ipopt|TBB|HMatrixFactory::IsAvailable methods
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
 == 1.19rc1 release (2022-04-14) == #release-1.19rc1
 
 === Library ===

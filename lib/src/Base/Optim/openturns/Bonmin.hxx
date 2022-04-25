@@ -50,9 +50,7 @@ public:
   Bonmin * clone() const override;
 
   /** Bonmin static methods */
-  static Bool IsAvailable();  // Check whether Bonmin support is available
   static Description GetAlgorithmNames(); // List available bonmin algorithm names
-
 
   /** Accessors to Bonmin attributes */
   void setAlgorithmName(const String & algoName);

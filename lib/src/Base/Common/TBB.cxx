@@ -24,11 +24,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-Bool TBB::IsAvailable()
-{
-  return TBBImplementation::IsAvailable();
-}
-
 void TBB::SetThreadsNumber(const UnsignedInteger threadNumber)
 {
   TBBImplementation::SetThreadsNumber(threadNumber);

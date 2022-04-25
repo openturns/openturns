@@ -70,9 +70,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Whether support is available */
-  static Bool IsAvailable();
-
 #ifndef SWIG
   /** Initialize logging library */
   static void Initialize();
