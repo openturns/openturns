@@ -13,9 +13,9 @@ Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
     Optimization problem to solve
-algoName : str
+algoName : str, default='gaco'
     Identifier of the optimization method to use.
-startingSample : 2-d sequence of float
+startingSample : 2-d sequence of float, optional
     Initial population
 
 Notes
