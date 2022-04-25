@@ -11,9 +11,9 @@ dominant points: a pareto front.
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationAlgorithm`
-    The internal solver
-algoName : str, optional
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve
+algoName : str
     Identifier of the optimization method to use.
 startingSample : 2-d sequence of float
     Initial population
