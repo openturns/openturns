@@ -11,9 +11,9 @@ dominant points: a pareto front.
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationAlgorithm`
-    The internal solver
-algoName : str, optional
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve
+algoName : str
     Identifier of the optimization method to use.
 startingSample : 2-d sequence of float
     Initial population
@@ -25,50 +25,50 @@ within the bounds of the :class:`~openturns.OptimizationProblem`, but this is no
 
 Pagmo provides the following global `heuristics <https://esa.github.io/pagmo2/overview.html#list-of-algorithms>`_:
 
-+---------------------+-------------------------------------------------+-----------------+---------+
-| Algorithm           | Description                                     | Multi-objective | Integer |
-+=====================+=================================================+=================+=========+
-| gaco                | Extended Ant Colony Optimization                | no              | yes     |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| de                  | Differential Evolution                          | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| sade                | Self-adaptive DE (jDE and iDE)                  | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| de1220              | Self-adaptive DE (de_1220 aka pDE)              | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| gwo                 | Grey wolf optimizer                             | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| ihs                 | Improved Harmony Search                         | no              | yes     |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| pso                 | Particle Swarm Optimization                     | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| pso_gen             | Particle Swarm Optimization Generational        | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| sea                 | (N+1)-ES Simple Evolutionary Algorithm          | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| sga                 | Simple Genetic Algorithm                        | no              | yes     |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| simulated_annealing | Corana’s Simulated Annealing                    | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| bee_colony          | Artificial Bee Colony                           | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| cmaes               | Covariance Matrix Adaptation Evo. Strategy      | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| xnes                | Exponential Evolution Strategies                | no              | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| nsga2               | Non-dominated Sorting GA                        | yes             | yes     |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| moead               | Multi-objective EA vith Decomposition           | yes             | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| mhaco               | Multi-objective Hypervolume-based ACO           | yes             | yes     |
-+---------------------+-------------------------------------------------+-----------------+---------+
-| nspso               | Non-dominated Sorting PSO                       | yes             | no      |
-+---------------------+-------------------------------------------------+-----------------+---------+
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| Algorithm           | Description                                     | Multi-objective | MINLP | Batch |
++=====================+=================================================+=================+=======+=======+
+| gaco                | Extended Ant Colony Optimization                | no              | yes   | yes   |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| de                  | Differential Evolution                          | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| sade                | Self-adaptive DE (jDE and iDE)                  | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| de1220              | Self-adaptive DE (de_1220 aka pDE)              | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| gwo                 | Grey wolf optimizer                             | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| ihs                 | Improved Harmony Search                         | no              | yes   | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| pso                 | Particle Swarm Optimization                     | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| pso_gen             | Particle Swarm Optimization Generational        | no              | no    | yes   |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| sea                 | (N+1)-ES Simple Evolutionary Algorithm          | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| sga                 | Simple Genetic Algorithm                        | no              | yes   | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| simulated_annealing | Corana’s Simulated Annealing                    | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| bee_colony          | Artificial Bee Colony                           | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| cmaes               | Covariance Matrix Adaptation Evo. Strategy      | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| xnes                | Exponential Evolution Strategies                | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| nsga2               | Non-dominated Sorting GA                        | yes             | yes   | yes   |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| moead               | Multi-objective EA vith Decomposition           | yes             | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| mhaco               | Multi-objective Hypervolume-based ACO           | yes             | yes   | yes   |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| nspso               | Non-dominated Sorting PSO                       | yes             | no    | yes   |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
 
 Only gaco and ihs natively support constraints, but for the other algorithms
 constraints are emulated through penalization.
-Also gaco, pso_gen, nsga2, mhaco and nspso support batch evaluation,
-except when constraints are emulated, see :meth:`setBlockSize`.
+Some algorithms support batch evaluation, except when constraints are emulated,
+see :meth:`setBlockSize`.
 Default parameters are available in the :class:`~openturns.ResourceMap` for
 each algorithm, refer to the correspondings keys in the Pagmo `documentation <https://esa.github.io/pagmo2/>`_.
 
