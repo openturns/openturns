@@ -1588,6 +1588,7 @@ void ResourceMap::loadDefaultConfiguration()
   // SmolyakExperiment parameters //
   addAsScalar("SmolyakExperiment-DefaultPointRelativeEpsilon", 1.0e-8);
   addAsScalar("SmolyakExperiment-DefaultPointAbsoluteEpsilon", 1.0e-8);
+  addAsBool("SmolyakExperiment-MergeQuadrature", true);
 
 }
 

@@ -298,7 +298,15 @@ void SmolyakExperiment::computeNodesAndWeights() const
     duplicatedWeights.add(smolyakFactor * elementaryWeights);
   } // Loop over the marginal levels
   // Reduce to unique nodes and weights
-  mergeNodesAndWeights(duplicatedNodes, duplicatedWeights);
+  if (ResourceMap::GetAsBool("SmolyakExperiment-MergeQuadrature"))
+  {
+    mergeNodesAndWeights(duplicatedNodes, duplicatedWeights);
+  }
+  else
+  {
+    nodes_ = Sample(duplicatedNodes);
+    weights_ = Point(duplicatedWeights);
+  }
 }
 
 /* Distribution collection accessor */

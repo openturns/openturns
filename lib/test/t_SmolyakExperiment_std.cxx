@@ -367,18 +367,92 @@ void test_6()
     assert_equal(weightDimension, 7);
 }
 
+// Test #7 : use ResourceMap keys
+void test_7()
+{
+    OStream fullprint(std::cout);
+    fullprint << "test_7" << std::endl;
+    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+    // Marginal 0: Uniform
+    const Uniform distribution1(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment1(distribution1);  
+    experimentCollection.add(marginalExperiment1);
+    // Marginal 1: Uniform
+    const Uniform distribution2(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment2(distribution2);
+    experimentCollection.add(marginalExperiment2);
+    // Marginal 2: Uniform
+    const Uniform distribution3(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment3(distribution3);
+    experimentCollection.add(marginalExperiment3);
+    // Test 1 : with default settings
+    const UnsignedInteger level = 4;
+    SmolyakExperiment experiment(experimentCollection, level);
+    Point weights(0);
+    Sample nodes(experiment.generateWithWeights(weights));
+    printNodesAndWeights(nodes, weights);
+    const int experimentSize = experiment.getSize();
+    fullprint << "experimentSize = " << experimentSize << std::endl;
+    assert_equal(experimentSize, 69);
+    //
+    const int size(nodes.getSize());
+    const int dimension(nodes.getDimension());
+    const int weightDimension(weights.getDimension());
+    assert_equal(size, 69);
+    assert_equal(dimension, 3);
+    assert_equal(weightDimension, 69);
+    // Test 2 : Disable merge
+    ResourceMap::SetAsBool("SmolyakExperiment-MergeQuadrature", false);
+    Point weightsBis(0);
+    Sample nodesBis(experiment.generateWithWeights(weightsBis));
+    printNodesAndWeights(nodesBis, weightsBis);
+    const int experimentSizeBis = experiment.getSize();
+    fullprint << "experimentSizeBis = " << experimentSizeBis << std::endl;
+    assert_equal(experimentSizeBis, 83);
+    //
+    const int sizeBis(nodesBis.getSize());
+    const int dimensionBis(nodesBis.getDimension());
+    const int weightDimensionBis(weightsBis.getDimension());
+    assert_equal(sizeBis, 83);
+    assert_equal(dimensionBis, 3);
+    assert_equal(weightDimensionBis, 83);
+    ResourceMap::SetAsBool("SmolyakExperiment-MergeQuadrature", true);
+    // Test 3 : Set tolerances to zero
+    Scalar defaultRelativeEpsilon(ResourceMap::GetAsScalar("SmolyakExperiment-DefaultPointRelativeEpsilon"));
+    Scalar defaultAbsoluteEpsilon(ResourceMap::GetAsScalar("SmolyakExperiment-DefaultPointAbsoluteEpsilon"));
+    ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointRelativeEpsilon", 0.0);
+    ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointAbsoluteEpsilon", 0.0);
+    Point weightsTer(0);
+    Sample nodesTer(experiment.generateWithWeights(weightsTer));
+    printNodesAndWeights(nodesTer, weightsTer);
+    const int experimentSizeTer = experiment.getSize();
+    fullprint << "experimentSizeTer = " << experimentSizeTer << std::endl;
+    assert_equal(experimentSizeTer, 83);
+    //
+    const int sizeTer(nodesTer.getSize());
+    const int dimensionTer(nodesTer.getDimension());
+    const int weightDimensionTer(weightsTer.getDimension());
+    assert_equal(sizeTer, 83);
+    assert_equal(dimensionTer, 3);
+    assert_equal(weightDimensionTer, 83);
+    ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointRelativeEpsilon", defaultRelativeEpsilon);
+    ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointAbsoluteEpsilon", defaultAbsoluteEpsilon);
+    
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
 
   try
   {
-    // test_1();
-    // test_2();
-    // test_3();
-    // test_4();
-    // test_5();
+    test_1();
+    test_2();
+    test_3();
+    test_4();
+    test_5();
     test_6();
+    test_7();
   }
   catch (TestFailed & ex)
   {
