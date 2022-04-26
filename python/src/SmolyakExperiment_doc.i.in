@@ -50,7 +50,7 @@ Consider the 1 and the infinity norms ([leMaitre2010]_ page 57, eq. 3.28):
 .. math::
 
     \|\boldsymbol{k}\|_1 = \sum_{i = 1}^{d_x} k_i \qquad
-    \|\boldsymbol{k}\|_\infty = \max_{i = 1} k_i.
+    \|\boldsymbol{k}\|_\infty = \max_{i = 1, ..., d_x} k_i.
 
 for any :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^{d_x}`.
 
@@ -146,7 +146,7 @@ for any integers :math:`n \geq 0` and :math:`0 \leq k \leq n`.
 
 The Smolyak quadrature requires to merge the potentially duplicated nodes of the 
 elementary quadratures. 
-This can reduce the number of nodes, which may be particularily suitable when the 
+This can reduce the number of nodes, which may be particularily efficient when the 
 marginal quadrature rule is nested such as, for example, with Fejér or Clenshaw-Curtis 
 quadrature rule. 
 If, however, the elementary quadrature rules have nodes which are computed up to some 
