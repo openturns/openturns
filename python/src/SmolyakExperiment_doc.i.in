@@ -146,12 +146,32 @@ for any integers :math:`n \geq 0` and :math:`0 \leq k \leq n`.
 
 The Smolyak quadrature requires to merge the potentially duplicated nodes of the 
 elementary quadratures. 
+To do so, a dictionnary is used so that unique nodes only are kept. 
+This algorithm is enable by default, but it can be disabled with the 
+`SmolyakExperiment-MergeQuadrature` boolean key of the `ResourceMap`. 
 This can reduce the number of nodes, which may be particularily efficient when the 
 marginal quadrature rule is nested such as, for example, with Fejér or Clenshaw-Curtis 
 quadrature rule. 
+
+If two candidate nodes :math:`\boldsymbol{x}_1, \boldsymbol{x}_2 \in \mathbb{R}^{d_x}`, 
+associated with the two weights :math:`w_1, w_2 \in \mathbb{R}`, are to be merged, 
+then the merged node is 
+
+.. math::
+
+    \boldsymbol{x}_1' = \boldsymbol{x}_1
+
+and the merged weight is:
+
+
+.. math::
+
+    w_1' = w_1 + w_2.
+
 If, however, the elementary quadrature rules have nodes which are computed up to some 
-rounding error, the merging algorithm cannot identify that two nodes which are 
+rounding error, the merging algorithm may not detect that two nodes which are 
 close to each other are, indeed, the same. 
+This is why rounding errors must be taken into account. 
 Let :math:`\epsilon_r, \epsilon_a > 0` be the relative and absolute tolerances. 
 These parameters can be set using the :class:`~openturns.ResourceMap` keys `SmolyakExperiment-DefaultPointRelativeEpsilon` and `SmolyakExperiment-DefaultPointAbsoluteEpsilon`. 
 The criteria is based on a mixed absolute and relative tolerance. 
@@ -169,20 +189,9 @@ for :math:`i = 1, ..., d_x`, where :math:`\delta_i` is equal to:
     \delta_i = \epsilon_a + \epsilon_r 
     \max\left(\left|(x_1)_i\right|, \left|(y_1)_i\right|\right).
 
-If two candidate nodes :math:`\boldsymbol{x}_1, \boldsymbol{x}_2 \in \mathbb{R}^{d_x}`, 
-associated with the two weights :math:`w_1, w_2 \in \mathbb{R}`, are to be merged, 
-then the merged node is 
-
-.. math::
-
-    \boldsymbol{x}_1' = \boldsymbol{x}_1
-
-and the merged weight is:
-
-
-.. math::
-
-    w_1' = w_1 + w_2.
+If the bounds of the input distribution are either very close to zero 
+or very large, then the default settings may not work properly: in this case, 
+please fine tune the parameters to match your needs.
 
 **Accuracy**
     
