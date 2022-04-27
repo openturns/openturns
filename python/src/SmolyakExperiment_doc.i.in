@@ -147,8 +147,8 @@ for any integers :math:`n \geq 0` and :math:`0 \leq k \leq n`.
 The Smolyak quadrature requires to merge the potentially duplicated nodes of the 
 elementary quadratures. 
 To do so, a dictionnary is used so that unique nodes only are kept. 
-This algorithm is enable by default, but it can be disabled with the 
-`SmolyakExperiment-MergeQuadrature` boolean key of the `ResourceMap`. 
+This algorithm is enabled by default, but it can be disabled with the 
+`SmolyakExperiment-MergeQuadrature` boolean key of the :class:`~openturns.ResourceMap`. 
 This can reduce the number of nodes, which may be particularily efficient when the 
 marginal quadrature rule is nested such as, for example, with Fejér or Clenshaw-Curtis 
 quadrature rule. 
@@ -206,7 +206,7 @@ Therefore,
 .. math::
 
     \left|\int_{[0, 1]^{d_x}} g(\boldsymbol{x}) d\boldsymbol{x} 
-    - Q_\ell(g)\right|
+    - S_\ell(g)\right|
     = O \left(n_\ell^{-r} (\log(n_\ell))^{(d_x - 1)(r + 1)}\right).
 
 See also
