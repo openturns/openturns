@@ -35,13 +35,13 @@ int main(int, char *[])
     marginals.add(Exponential());
     marginals.add(Triangular(-1.0, -0.5, 1.0));
     ComposedDistribution distribution(marginals);
-    Indices marginalDegrees = {3, 6};
+    Indices marginalSizes = {3, 6};
     // Test the constructor based on marginal degrees
-    fullprint << "experiment1=" << GaussProductExperiment(marginalDegrees) << std::endl;
+    fullprint << "experiment1=" << GaussProductExperiment(marginalSizes) << std::endl;
     // Test the constructor based on distribution
     fullprint << "experiment2=" << GaussProductExperiment(distribution) << std::endl;
     // Test the constructor based on marginal degrees and distribution
-    GaussProductExperiment experiment(distribution, marginalDegrees);
+    GaussProductExperiment experiment(distribution, marginalSizes);
     fullprint << "experiment = " << experiment << std::endl;
     Point weights(0);
     Sample sample(experiment.generateWithWeights(weights));
@@ -51,8 +51,8 @@ int main(int, char *[])
     Sample sampleGenerate(experiment.generate());
     fullprint << "sampleGenerate = " << sampleGenerate << std::endl;
     // Test set marginal degrees
-    Indices marginalDegreesBis = {7, 13};
-    experiment.setMarginalDegrees(marginalDegreesBis);
+    Indices marginalSizesBis = {7, 13};
+    experiment.setMarginalSizes(marginalSizesBis);
     fullprint << "experiment = " << experiment << std::endl;
     Point weightsBis(0);
     Sample sampleBis(experiment.generateWithWeights(weightsBis));
@@ -88,25 +88,6 @@ int main(int, char *[])
     assert_equal(sizeQuater, 47);
     assert_equal(dimensionQuater, 2);
     assert_equal(weightDimensionQuater, 47);
-    // Test set marginal sizes, then distribution, with modified dimensionBis
-    // The order matters: first set the marginal sizes, then the distribution.
-    Indices marginalDegreesTer = {7, 3, 9};
-    experiment.setMarginalDegrees(marginalDegreesTer);
-    Collection<Distribution> marginalsTer(0);
-    marginalsTer.add(Normal());
-    marginalsTer.add(Uniform());
-    marginalsTer.add(Exponential());
-    ComposedDistribution distributionTer(marginalsTer);
-    experiment.setDistribution(distributionTer);
-    fullprint << "experiment = " << experiment << std::endl;
-    Point weightsCinq(0);
-    Sample sampleCinq(experiment.generateWithWeights(weightsCinq));
-    const int sizeCinq(sampleCinq.getSize());
-    const int dimensionCinq(sampleCinq.getDimension());
-    const int weightDimensionCinq(weightsCinq.getDimension());
-    assert_equal(sizeCinq, 189);
-    assert_equal(dimensionCinq, 3);
-    assert_equal(weightDimensionCinq, 189);
   }
   catch (TestFailed & ex)
   {
