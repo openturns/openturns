@@ -2,7 +2,7 @@
 /**
  *  @brief The KPermutationsDistribution distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -222,17 +222,10 @@ Distribution KPermutationsDistribution::getMarginal(const Indices & indices) con
   if (dimension == 1) return clone();
   // General case
   const UnsignedInteger outputDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    marginalDescription[i] = description[index_i];
-  }
   KPermutationsDistribution::Implementation marginal(new KPermutationsDistribution(outputDimension, n_));
-  marginal->setDescription(marginalDescription);
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
-} // getMarginal(Indices)
+}
 
 /* Get the support of a discrete distribution that intersect a given interval */
 Sample KPermutationsDistribution::getSupport(const Interval & interval) const

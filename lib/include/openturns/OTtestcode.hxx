@@ -2,7 +2,7 @@
 /**
  *  @brief The header file that declares exit codes for tests
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -187,7 +187,7 @@ void showClassName()
 /**
  * @fn checkConstructorAndDestructor()
  *
- * Try to instanciate an object and delete it. This method tests the
+ * Try to instantiate an object and delete it. This method tests the
  * default constructor and the destructor ot the class.
  */
 template <class T>
@@ -204,7 +204,7 @@ void checkConstructorAndDestructor()
 /**
  * @fn checkCopyConstructor()
  *
- * Try to instanciate an object and copy-construct it.
+ * Try to instantiate an object and copy-construct it.
  */
 template <class T>
 void checkCopyConstructor()
@@ -215,7 +215,7 @@ void checkCopyConstructor()
   // Call the default constructor
   T anObject;
 
-  // Call the copy-contructor
+  // Call the copy-constructor
   T anCopiedObject( anObject );
 }
 

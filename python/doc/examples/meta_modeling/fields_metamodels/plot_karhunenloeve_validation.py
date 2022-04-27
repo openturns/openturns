@@ -8,7 +8,6 @@ Validation of a Karhunen-Loeve decomposition
 #
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -32,7 +31,7 @@ algo.run()
 klresult = algo.getResult()
 
 # %%
-# Instanciate the validation service.
+# Instantiate the validation service.
 validation = ot.KarhunenLoeveValidation(processSample, klresult)
 
 # %%

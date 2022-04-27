@@ -221,9 +221,11 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Optimization (optional)               | `Ipopt <https://coin-or.github.io/Ipopt/>`_                                     | 3.11.9            |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| CSV parser (optional)                 | flex                                                                            | 2.5.33            |
+| Optimization (optional)               | `Pagmo <https://esa.github.io/pagmo2/>`_                                        | 2.12.0            |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| CSV parser (optional)                 | bison                                                                           | 2.4               |
+| CSV parser (optional)                 | `Flex <https://github.com/westes/flex>`_                                        | 2.5.33            |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| CSV parser (optional)                 | `Bison <https://www.gnu.org/software/bison/>`_                                  | 2.4               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | XML support (optional)                | `LibXml2 <http://xmlsoft.org/>`_                                                | 2.6.27            |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
@@ -235,7 +237,7 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Plotting library (optional)           | `Matplotlib <http://matplotlib.org/>`_                                          | 1.3.1             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Legacy plotting (optional)            | R                                                                               | 2.0.1             |
+| Legacy plotting (optional)            | `R <https://www.r-project.org/>`_                                               | 2.0.1             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | C++/Python wrapper                    | `SWIG <http://www.swig.org/>`_                                                  | 3.0.0             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
@@ -399,7 +401,7 @@ A and whose reference (or pointer) is returned by a static method
 .. figure:: Figures/modeling_notions/singleton.png
    :alt: Singleton structure.
 
-It is a very common pattern that allows to find and share an object
+It is a very common pattern that allows one to find and share an object
 (which must remain unique) in different portions of code. Examples of
 such objects include shared hardware resources (standard output, error,
 log, etc.), but also internal functions that cannot or must not be
@@ -409,7 +411,7 @@ ResourceMap and IdFactory follow this pattern.
 Factory pattern
 ~~~~~~~~~~~~~~~
 
-This pattern allows to define a unique interface for the creation of
+This pattern allows one to define a unique interface for the creation of
 objects belonging to a class hierarchy without knowing in advance their
 exact type. Figure [fig:factory] illustrates this pattern. The creation
 of the concrete object (ClassA or ClassB) is delegated to a sub-class

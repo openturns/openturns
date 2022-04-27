@@ -5,7 +5,7 @@
 
 Parameters
 ----------
-covarianceList : list of :class:`~openturns.CovarianceModel`
+covarianceModelCollection : list of :class:`~openturns.CovarianceModel`
     List of all covariance kernels. The :math:`d` first kernels are linked to the input 
     and the last one is for the output.
 
@@ -49,16 +49,16 @@ Generate input and output samples.
 Define covariance kernels for the model inputs.
 Put them in a list.
 
->>> covarianceList = []
+>>> covarianceModelCollection = []
 >>> for i in range(3):
 ...     Xi = X.getMarginal(i)
 ...     Cov = ot.SquaredExponential(1)
 ...     Cov.setScale(Xi.computeStandardDeviation())
-...     covarianceList.append(Cov)
+...     covarianceModelCollection.append(Cov)
 
 Append the list with the covariance kernel for the model output.
 
->>> covarianceList.append(ot.SquaredExponential(Y.computeStandardDeviation()))
+>>> covarianceModelCollection.append(ot.SquaredExponential(Y.computeStandardDeviation()))
 
 Choose the statistic that will be used to estimate the HSIC indices.
 In the case of conditional sensitivity analysis, only :class:`~openturns.HSICVStat` is available.
@@ -74,7 +74,7 @@ define a weight function based on the distance to this domain.
 
 Build and use the HSIC estimator for conditional sensitivity analysis.
 
->>> hsic = ot.HSICEstimatorConditionalSensitivity(covarianceList, X, Y, vstat, weight)
+>>> hsic = ot.HSICEstimatorConditionalSensitivity(covarianceModelCollection, X, Y, vstat, weight)
 >>> print(hsic.getR2HSICIndices())
 [0.280788,0.00600014,0.0577616]"
 

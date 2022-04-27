@@ -7,13 +7,13 @@ This method deals with the modelling of a probability distribution of a
 random vector :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It
 seeks to rank variable candidate distributions by using a sample of data
 :math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}`.
-The Bayesian Information Criterion (BIC) allows to
+The Bayesian Information Criterion (BIC) allows one to
 answer this question in the one dimensional case :math:`n_X =1`.
 
 Let us limit the case to :math:`n_X = 1`. Thus we denote
 :math:`\vect{X} = X^1 = X`. Moreover, let us denote by :math:`\cM_1`,…,
 :math:`\cM_K` the parametric models envisaged by user among the
-:ref:`parametric models <parametric_distibution_factories>`. We
+:ref:`parametric models <parametric_distribution_factories>`. We
 suppose here that the parameters of these models have been estimated
 previously by :ref:`Maximum Likelihood <maximum_likelihood>`
 the on the basis of the sample

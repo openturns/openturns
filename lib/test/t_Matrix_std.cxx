@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Matrix for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -272,5 +272,44 @@ int main(int, char *[])
   Sample resultS4T(matrix34.getImplementation()->genSampleProd(S2, true, true, 'R'));
   fullprint << "S2^T*matrix34^T = " << resultS4T << std::endl;
 
+  // resize
+  Collection<Matrix> coll;
+  Matrix A1(2, 2);
+  A1(0, 0) = 1.0;
+  A1(1, 0) = 2.0;
+  A1(0, 1) = 3.0;
+  A1(1, 1) = 4.0;
+  coll.add(A1);
+  Matrix A2(3, 2);
+  A2(0, 0) = 1.0;
+  A2(1, 0) = 2.0;
+  A2(2, 0) = 3.0;
+  A2(0, 1) = 4.0;
+  A2(1, 1) = 5.0;
+  A2(2, 1) = 6.0;
+  coll.add(A2);
+  Matrix A3(2, 3);
+  A3(0, 0) = 1.0;
+  A3(1, 0) = 2.0;
+  A3(0, 1) = 3.0;
+  A3(1, 1) = 4.0;
+  A3(0, 2) = 5.0;
+  A3(1, 2) = 6.0;
+  coll.add(A3);
+  for (UnsignedInteger i = 0; i < 3; ++ i)
+  {
+    const Matrix A(coll[i]);
+    fullprint << "A = " << A.__str__() << std::endl;
+    for(UnsignedInteger newRow = 1; newRow < 6; ++ newRow)
+    {
+      for(UnsignedInteger newCol = 1; newCol < 6; ++ newCol)
+      {
+        MatrixImplementation B(*A.getImplementation());
+        fullprint << "----------" << newRow << "x" << newCol << std::endl;
+        B.resize(newRow, newCol);
+        fullprint << B.__str__() << std::endl;
+      }
+    }
+  }
   return ExitCode::Success;
 }

@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationResult stores the result of a OptimizationAlgorithmImplementation
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,9 +58,11 @@ OptimizationResult * OptimizationResult::clone() const
   return new OptimizationResult(*this);
 }
 
-/* OptimalPoint accessors */
+/* Optimal point accessor */
 Point OptimizationResult::getOptimalPoint() const
 {
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw InvalidArgumentException(HERE) << "No optimal point available for multi-objective";
   return optimalPoint_;
 }
 
@@ -69,15 +71,43 @@ void OptimizationResult::setOptimalPoint(const Point & optimalPoint)
   optimalPoint_ = optimalPoint;
 }
 
-/* Optimal value accessors */
+/* Optimal value accessor */
 Point OptimizationResult::getOptimalValue() const
 {
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw InvalidArgumentException(HERE) << "No optimal value available for multi-objective";
   return optimalValue_;
 }
 
-void OptimizationResult::setOptimalValue(const Point &  optimalValue)
+void OptimizationResult::setOptimalValue(const Point & optimalValue)
 {
   optimalValue_ = optimalValue;
+}
+
+/* Final points accessor */
+Sample OptimizationResult::getFinalPoints() const
+{
+  if (!finalPoints_.getSize())
+    return Sample(1, optimalPoint_);
+  return finalPoints_;
+}
+
+void OptimizationResult::setFinalPoints(const Sample & finalPoints)
+{
+  finalPoints_ = finalPoints;
+}
+
+/* Final values accessor */
+Sample OptimizationResult::getFinalValues() const
+{
+  if (!finalValues_.getSize())
+    return Sample(1, optimalValue_);
+  return finalValues_;
+}
+
+void OptimizationResult::setFinalValues(const Sample & finalValues)
+{
+  finalValues_ = finalValues;
 }
 
 /* Evaluation number accessor */
@@ -229,6 +259,9 @@ void OptimizationResult::save(Advocate & adv) const
   adv.saveAttribute( "outputHistory_", outputHistory_ );
 
   adv.saveAttribute( "problem_", problem_ );
+  adv.saveAttribute( "finalPoints_", finalPoints_ );
+  adv.saveAttribute( "finalValues_", finalValues_ );
+  adv.saveAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -253,6 +286,12 @@ void OptimizationResult::load(Advocate & adv)
   adv.loadAttribute( "outputHistory_", outputHistory_ );
 
   adv.loadAttribute( "problem_", problem_ );
+  if (adv.hasAttribute("finalPoints_"))
+  {
+    adv.loadAttribute( "finalPoints_", finalPoints_ );
+    adv.loadAttribute( "finalValues_", finalValues_ );
+    adv.loadAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
+  }
 }
 
 /* Incremental history storage */
@@ -263,13 +302,16 @@ void OptimizationResult::store(const Point & x,
                                const Scalar residualError,
                                const Scalar constraintError)
 {
-  if (!optimalValue_.getDimension()
-    || getProblem().hasLevelFunction() // consider the last value as optimal for nearest-point algos
-    || ((getProblem().isMinimization() && y[0] < optimalValue_[0])
-    || (!getProblem().isMinimization() && y[0] > optimalValue_[0])))
+  if (getProblem().getObjective().getOutputDimension() <= 1)
   {
-    optimalPoint_ = x;
-    optimalValue_ = y;
+    if (!getOptimalValue().getDimension()
+        || getProblem().hasLevelFunction() // consider the last value as optimal for nearest-point algos
+        || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0])
+            || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0])))
+    {
+      setOptimalPoint(x);
+      setOptimalValue(y);
+    }
   }
 
   // update values
@@ -290,6 +332,8 @@ void OptimizationResult::store(const Point & x,
 
 Graph OptimizationResult::drawErrorHistory() const
 {
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "drawErrorHistory is not available for multi-objective";
   Graph result("Error history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
   result.setGrid(true);
   result.setGridColor("black");
@@ -337,6 +381,8 @@ Graph OptimizationResult::drawErrorHistory() const
 /* Draw optimal value graph */
 Graph OptimizationResult::drawOptimalValueHistory() const
 {
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "drawOptimalValueHistory is not available for multi-objective";
   Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright", 1.0);
   result.setGrid(true);
   result.setGridColor("black");
@@ -372,6 +418,8 @@ Graph OptimizationResult::drawOptimalValueHistory() const
  */
 Point OptimizationResult::computeLagrangeMultipliers(const Point & x) const
 {
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "computeLagrangeMultipliers is not available for multi-objective";
   const Scalar maximumConstraintError = ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError");
   const UnsignedInteger equalityDimension = problem_.getEqualityConstraint().getOutputDimension();
   const UnsignedInteger inequalityDimension = problem_.getInequalityConstraint().getOutputDimension();
@@ -432,6 +480,19 @@ Point OptimizationResult::computeLagrangeMultipliers(const Point & x) const
 Point OptimizationResult::computeLagrangeMultipliers() const
 {
   return computeLagrangeMultipliers(getOptimalPoint());
+}
+
+/* Pareto fronts accessor */
+void OptimizationResult::setParetoFrontsIndices(const IndicesCollection & indices)
+{
+  paretoFrontsIndices_ = indices;
+}
+
+IndicesCollection OptimizationResult::getParetoFrontsIndices() const
+{
+  if (getProblem().getObjective().getOutputDimension() <= 1)
+    throw InvalidArgumentException(HERE) << "No pareto fronts available for mono-objective";
+  return paretoFrontsIndices_;
 }
 
 END_NAMESPACE_OPENTURNS

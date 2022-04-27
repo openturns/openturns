@@ -2,7 +2,7 @@
 /**
  *  @brief IterativeMoments implements the iterative computation of centered moments
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -100,10 +100,10 @@ Point IterativeMoments::getVariance() const
 }
 
 /* Accessor to the unbiased estimator of the skewness
-   The factors used in the formula below allow to provide an unbiased 
+   The factors used in the formula below allow to provide an unbiased
    estimate the skewness.
-   Joanes, Derrick N.; Gill, Christine A. (1998), 
-   "Comparing measures of sample skewness and kurtosis", 
+   Joanes, Derrick N.; Gill, Christine A. (1998),
+   "Comparing measures of sample skewness and kurtosis",
    Journal of the Royal Statistical Society, Series D */
 Point IterativeMoments::getSkewness() const
 {
@@ -113,7 +113,7 @@ Point IterativeMoments::getSkewness() const
 
   /* Special case for a size 2 */
   if (iteration_ == 2) return Point(dimension_, 0.0);
-  
+
   Point result(dimension_);
   const Point varianceEstimator(getVariance());
   for(UnsignedInteger d = 0; d < dimension_; ++d)
@@ -124,11 +124,11 @@ Point IterativeMoments::getSkewness() const
   return result;
 }
 
-/* Accessor to the unbiased estimator of the kurtosis 
-   The factors used in the formula below allow to provide an unbiased 
+/* Accessor to the unbiased estimator of the kurtosis
+   The factors used in the formula below allow to provide an unbiased
    estimate the kurtosis.
-   Joanes, Derrick N.; Gill, Christine A. (1998), 
-   "Comparing measures of sample skewness and kurtosis", 
+   Joanes, Derrick N.; Gill, Christine A. (1998),
+   "Comparing measures of sample skewness and kurtosis",
    Journal of the Royal Statistical Society, Series D */
 Point IterativeMoments::getKurtosis() const
 {

@@ -2,7 +2,7 @@
 /**
  *  @brief Default CalibrationAlgorithmImplementation
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * @brief The class implements the concept of CalibrationAlgorithm.
  *
- * This class is abstract so it can not be instanciated. It must be derived.
+ * This class is abstract so it can not be instantiated. It must be derived.
  * @see CalibrationAlgorithm
  */
 class OT_API CalibrationAlgorithmImplementation

@@ -2,7 +2,7 @@
 /**
  *  @brief The Student distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -170,7 +170,7 @@ Point Student::getRealization() const
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return Point(1, mean_[0] + sigma_[0] * DistFunc::rStudent(nu_));
   Point value(dimension);
-  // First, a realization of independant standard normal coordinates
+  // First, a realization of independent standard normal coordinates
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = DistFunc::rNormal();
   return std::sqrt(0.5 * nu_ / DistFunc::rGamma(0.5 * nu_)) * (cholesky_ * value) + mean_;
 }
@@ -556,23 +556,17 @@ Distribution Student::getMarginal(const Indices & indices) const
   // General case
   const UnsignedInteger outputDimension = indices.getSize();
   CorrelationMatrix R(outputDimension);
-  Point sigma(outputDimension);
-  Point mean(outputDimension);
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
   // Extract the correlation matrix, the marginal standard deviations and means
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
     const UnsignedInteger index_i = indices[i];
-    sigma[i] = sigma_[index_i];
-    mean[i] = mean_[index_i];
-    for (UnsignedInteger j = 0; j <= i; ++j) R(i, j) = R_(index_i, indices[j]);
-    marginalDescription[i] = description[index_i];
+    for (UnsignedInteger j = 0; j <= i; ++ j)
+      R(i, j) = R_(index_i, indices[j]);
   }
-  Student::Implementation marginal(new Student(nu_, mean, sigma, R));
-  marginal->setDescription(marginalDescription);
+  Student::Implementation marginal(new Student(nu_, mean_.select(indices), sigma_.select(indices), R));
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
-} // getMarginal(Indices)
+}
 
 /* Compute the radial distribution CDF */
 Scalar Student::computeRadialDistributionCDF(const Scalar radius,

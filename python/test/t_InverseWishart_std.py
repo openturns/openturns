@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function, division
 import unittest as ut
 from math import pi, log, log10, floor
 
@@ -81,7 +80,7 @@ class TestInverseWishartMethods(ut.TestCase):
         def logPDF(x):
             if x <= 0.:
                 raise ValueError("math domain error")
-            return k * log(beta) - ot.SpecFunc_LogGamma(k) - (k + 1) * log(x) - beta / x
+            return k * log(beta) - ot.SpecFunc.LogGamma(k) - (k + 1) * log(x) - beta / x
         data = ((self.inverse_gamma.drawPDF()).getDrawable(0)).getData()
         i = 0
         while data[i, 0] <= 0.:
@@ -101,7 +100,7 @@ class TestInverseWishartMethods(ut.TestCase):
         """Computes the logarithm of the multi-gamma function at x"""
         logmgpx = 0.25 * p * (p - 1) * log(pi)
         for i in range(1, p + 1):
-            logmgpx = logmgpx + ot.SpecFunc_LnGamma(x + 0.5 * (1 - i))
+            logmgpx = logmgpx + ot.SpecFunc.LnGamma(x + 0.5 * (1 - i))
         return logmgpx
 
     # Test InverseWishart.computeLogPDF in the special case of diagonal matrices
@@ -120,7 +119,7 @@ class TestInverseWishartMethods(ut.TestCase):
         inverse_wishart = ot.InverseWishart(Scale, DoF)
         logdensity = inverse_wishart.computeLogPDF(X)
         logratio = - self.logmultigamma(dimension, 0.5 * DoF) \
-            + dimension * ot.SpecFunc_LnGamma(0.5 * (DoF + dimension - 1))
+            + dimension * ot.SpecFunc.LnGamma(0.5 * (DoF + dimension - 1))
         for d in range(dimension):
             inverse_gamma = ot.InverseGamma(2. / Scale[d, d], k)
             logdensity = logdensity - inverse_gamma.computeLogPDF(diagX[d, 0])
@@ -178,7 +177,7 @@ class TestInverseWishartMethods(ut.TestCase):
                 indice += 1
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.InverseWishart(ot.CovarianceMatrix(1), 5.0)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)

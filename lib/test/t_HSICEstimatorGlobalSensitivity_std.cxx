@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class HSICEstimatorGlobalSensitivity
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,7 +60,7 @@ int main(int, char *[])
 
     /* We define the covariance models for the HSIC indices. */
     /* For the input, we consider a SquaredExponential covariance model. */
-    HSICEstimator::CovarianceModelCollection covarianceList(0);
+    HSICEstimator::CovarianceModelCollection covarianceModelCollection(0);
 
     /* Input sample */
     for (UnsignedInteger i = 0; i < 3; ++i)
@@ -69,14 +69,14 @@ int main(int, char *[])
       CovarianceModel Cov;
       Cov = SquaredExponential(1);
       Cov.setScale(Xi.computeStandardDeviation());
-      covarianceList.add(Cov);
+      covarianceModelCollection.add(Cov);
     }
 
     /* Output sample with squared exponential covariance */
     CovarianceModel Cov2;
     Cov2 = SquaredExponential(1);
     Cov2.setScale(Y.computeStandardDeviation());
-    covarianceList.add(Cov2);
+    covarianceModelCollection.add(Cov2);
 
     /* We choose an estimator type :
        - unbiased: HSICUStat;
@@ -86,7 +86,7 @@ int main(int, char *[])
     HSICUStat estimatorType;
 
     /* We eventually build the HSIC object! */
-    HSICEstimatorGlobalSensitivity hsic(covarianceList, X, Y, estimatorType);
+    HSICEstimatorGlobalSensitivity hsic(covarianceModelCollection, X, Y, estimatorType);
 
     /* We get the HSIC indices */
     Point referenceHSICIndices = {0.0222838, 0.000256681, 0.00599247};
@@ -103,7 +103,7 @@ int main(int, char *[])
     hsic.setPermutationSize(b);
 
     /* We get the pvalue estimate by permutations */
-    Point referencePValuesPerm = {0, 0.306693, 0};
+    Point referencePValuesPerm = {0, 0.296703, 0.00199800};
     Point pvaluesPerm = hsic.getPValuesPermutation();
     assert_almost_equal(pvaluesPerm, referencePValuesPerm);
 

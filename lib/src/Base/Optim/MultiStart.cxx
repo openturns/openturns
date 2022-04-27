@@ -2,7 +2,7 @@
 /**
  *  @brief MultiStart optimization algorithm
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(MultiStart)
 
 static const Factory<MultiStart> Factory_MultiStart;
+static const Factory<PersistentCollection<OptimizationResult> > Factory_PersistentCollection_OptimizationResult;
 
 /* Constructor with no parameters */
 MultiStart::MultiStart()

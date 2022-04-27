@@ -2,7 +2,7 @@
 /**
  *  @brief ProcessSample Class
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -97,6 +97,24 @@ void ProcessSample::add(const Sample & values)
 {
   copyOnWrite();
   getImplementation()->add(values);
+}
+
+void ProcessSample::erase(const UnsignedInteger index)
+{
+  copyOnWrite();
+  getImplementation()->erase(index, index + 1);
+}
+
+void ProcessSample::erase(const UnsignedInteger first, const UnsignedInteger last)
+{
+  copyOnWrite();
+  getImplementation()->erase(first, last);
+}
+
+void ProcessSample::clear()
+{
+  copyOnWrite();
+  getImplementation()->clear();
 }
 
 

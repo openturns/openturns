@@ -38,7 +38,7 @@ Examples
 --------
 >>> import openturns as ot
 
-Using the class :class:`~openturns.OpenTURNSPythonFieldFunction` allows to define a persistent state between the evaluations of the function.
+Using the class :class:`~openturns.OpenTURNSPythonFieldFunction` allows one to define a persistent state between the evaluations of the function.
 
 >>> class FUNC(ot.OpenTURNSPythonFieldFunction):
 ...     def __init__(self):

@@ -6,7 +6,6 @@ Optimization using dlib
 # In this example we are going to explore optimization using OpenTURNS' `dlib <http://dlib.net/>`_ interface.
 
 # %%
-from __future__ import print_function
 import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
@@ -33,7 +32,7 @@ rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+(x2-x1^2)^2'])
 problem = ot.OptimizationProblem(rosenbrock)
 
 # %%
-# The optimization algorithm is instanciated from the problem to solve and the name of the algorithm
+# The optimization algorithm is instantiated from the problem to solve and the name of the algorithm
 algo = ot.Dlib(problem, 'cg')
 print("Dlib algorithm, type ", algo.getAlgorithmName())
 print("Maximum iteration number: ", algo.getMaximumIterationNumber())

@@ -74,7 +74,7 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import stressed_beam as stressed_beam
+    >>> from openturns.usecases import stressed_beam
     >>> # Load the use case axial stressed beam
     >>> sb = stressed_beam.AxialStressedBeam()
 

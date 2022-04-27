@@ -4,7 +4,7 @@
 Parameters
 ----------
 k : positive integer
-    Number of folds in which the sample is splitted. If not provided, default is
+    Number of folds in which the sample is split. If not provided, default is
     :math:`k = 10`.
 
 See also
@@ -26,7 +26,7 @@ This class is not usable on its own because it has sense only within the
 Returns
 -------
 k : integer
-    Number of folds in which the sample is splitted."
+    Number of folds in which the sample is split."
 
 // ---------------------------------------------------------------------
 
@@ -36,4 +36,4 @@ k : integer
 Parameters
 ----------
 k : integer
-    Number of folds in which the sample is splitted."
+    Number of folds in which the sample is split."

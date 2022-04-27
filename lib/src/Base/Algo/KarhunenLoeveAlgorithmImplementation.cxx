@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and projection
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,7 +68,7 @@ Scalar KarhunenLoeveAlgorithmImplementation::getThreshold() const
 void KarhunenLoeveAlgorithmImplementation::setThreshold(const Scalar threshold)
 {
   if (!(threshold <= 1.0 && threshold >= 0.0))
-    LOGWARN(OSS() << "threshold must be between 0.0 and 1.0 but is " << threshold);
+    throw InvalidArgumentException(HERE) << "threshold must be between 0.0 and 1.0 but is " << threshold;
 
   threshold_ = threshold;
 }

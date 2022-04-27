@@ -1,7 +1,7 @@
 %feature("docstring") OT::UnionEvent
 "Event defined as the union of several events.
 
-An occurence of one single event :math:`E_i` yields the occurence of the system event (series system):
+An occurrence of one single event :math:`E_i` yields the occurrence of the system event (series system):
 
 .. math::
 

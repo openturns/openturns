@@ -215,7 +215,7 @@ Create a sparse chaos by integration
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from openturns.usecases import ishigami_function as ishigami_function
+from openturns.usecases import ishigami_function
 import itertools
 
 
@@ -273,8 +273,8 @@ def compute_polynomial_chaos_Q2(
     polynomialchaos_result, g_function, input_distribution, n_valid=1000
 ):
     """
-    Compute the Q2 score of the polynomial chaos. 
-    
+    Compute the Q2 score of the polynomial chaos.
+
 
     Parameters
     ----------
@@ -286,7 +286,7 @@ def compute_polynomial_chaos_Q2(
         The input distribution.
     n_valid : int
         The number of simulations to compute the Q2 score.
-    
+
     Returns
     -------
     Q2 : float
@@ -312,10 +312,10 @@ def draw_polynomial_chaos_validation(
     polynomialchaos_result, g_function, input_distribution, n_valid=1000
 ):
     """
-    Validate the polynomial chaos. 
-    
+    Validate the polynomial chaos.
+
     Create the validation plot.
-    
+
 
     Parameters
     ----------
@@ -327,7 +327,7 @@ def draw_polynomial_chaos_validation(
         The input distribution.
     n_valid : int
         The number of simulations to compute the Q2 score.
-    
+
     Returns
     -------
     Q2 : float
@@ -384,9 +384,11 @@ totalDegree = 5  # Polynomial degree
 enumerate_function = multivariateBasis.getEnumerateFunction()
 strataIndex = enumerate_function.getMaximumDegreeStrataIndex(totalDegree)
 print("strataIndex = ", strataIndex)
-number_of_terms_in_basis = enumerate_function.getStrataCumulatedCardinal(strataIndex)
+number_of_terms_in_basis = enumerate_function.getStrataCumulatedCardinal(
+    strataIndex)
 print("number_of_terms_in_basis = ", number_of_terms_in_basis)
-adaptiveStrategy = ot.FixedStrategy(multivariateBasis, number_of_terms_in_basis)
+adaptiveStrategy = ot.FixedStrategy(
+    multivariateBasis, number_of_terms_in_basis)
 print(adaptiveStrategy)
 
 # %%
@@ -487,24 +489,24 @@ def compute_cleaning_PCE(
 ):
     """
     Compute a PCE using CleaningStrategy.
-    
+
     Parameters
     ----------
     maximumConsideredTerms : int
-        The maximum number of coefficients considered by the algorithm during 
+        The maximum number of coefficients considered by the algorithm during
         intermediate steps.
-        
+
     mostSignificant : int
-        The maximum number of coefficients selected by the algorithm in 
+        The maximum number of coefficients selected by the algorithm in
         the final PCE.
 
     significanceFactor : float
-        The relative part of any coefficient with respect to the maximum 
+        The relative part of any coefficient with respect to the maximum
         coefficient.
 
     verbose : bool
         If set to True, print intermediate messages.
-    
+
     Returns
     -------
     Q2 : float
@@ -579,8 +581,8 @@ score_Q2 = compute_cleaning_PCE(
 
 # %%
 #
-maximumConsideredTerms_list = list(range(1, 500, 50))  
-mostSignificant_list = list(range(1, 30, 5))  
+maximumConsideredTerms_list = list(range(1, 500, 50))
+mostSignificant_list = list(range(1, 30, 5))
 iterator = itertools.product(maximumConsideredTerms_list, mostSignificant_list)
 best_score = 0.0
 best_parameters = []

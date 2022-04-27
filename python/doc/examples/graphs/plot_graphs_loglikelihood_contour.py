@@ -99,7 +99,7 @@ view = viewer.View(graphBasic)
 # The level values are computed from the quantiles of the data, so that the contours are equally spaced. We can configure the number of levels by setting the `Contour-DefaultLevelsNumber` key in the `ResourceMap`.
 
 # %%
-ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 5)
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 5)
 logLikelihoodFunction = ot.PythonFunction(2, 1, logLikelihood)
 graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50]*2)
 graphBasic.setXTitle(r"$\mu$")

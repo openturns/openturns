@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -53,7 +52,7 @@ try:
     result = myAlgo.getResult()
     print("MonteCarlo result=", result)
 
-    # Compute sensitivity informations
+    # Compute sensitivity information
     print("mean point in event domain=", result.getMeanPointInEventDomain())
     print("importance factors=", result.getImportanceFactors())
 

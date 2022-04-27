@@ -1,5 +1,5 @@
 %feature("docstring") OT::ResourceMap
-"The ResourceMap allows to manage constants that are associated to key strings.
+"The ResourceMap allows one to manage constants that are associated to key strings.
 
 Find below the ResourceMap's content:
 

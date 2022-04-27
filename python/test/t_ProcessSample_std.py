@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
@@ -43,6 +42,14 @@ psample2 = ot.ProcessSample(3, timeSeries)
 psample2.setName("PSample2")
 print("Constructor based on size / timeSeries")
 print("psample2=", psample2)
+
+psample3 = ot.ProcessSample(8, timeSeries)
+psample3.erase(2)
+assert psample3.getSize() == 7, "wrong size"
+psample3.erase(2, 5)
+assert psample3.getSize() == 4, "wrong size"
+psample3.clear()
+assert psample3.getSize() == 0, "wrong size"
 
 # TimeSeriesCollection
 # collection = TimeSeriesCollection()

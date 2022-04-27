@@ -2,7 +2,7 @@
 /**
  *  @brief Text class for plot labels
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -82,7 +82,7 @@ Text::Text(const ComplexCollection & data,
   textSize_ = ResourceMap::GetAsScalar("Text-DefaultTextSize");
 }
 
-/* Contructor from 2 data sets */
+/* Constructor from 2 data sets */
 Text::Text(const Sample & dataX,
            const Sample & dataY,
            const Description & textAnnotations,

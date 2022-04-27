@@ -77,6 +77,8 @@
 %include ExpectationSimulationAlgorithm.i
 %include SobolSimulationResult.i
 %include SobolSimulationAlgorithm.i
+%include NAISResult.i
+%include NAIS.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i

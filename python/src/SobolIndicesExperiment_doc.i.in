@@ -24,7 +24,7 @@ Notes
 Sensitivity algorithms rely on the definition of specific designs.
 
 The :meth:`generate` method of this class produces a :class:`~openturns.Sample`
-to be supplied to the contructor of one of the :class:`~openturns.SobolIndicesAlgorithm` implementations:
+to be supplied to the constructor of one of the :class:`~openturns.SobolIndicesAlgorithm` implementations:
 
 - :class:`~openturns.SaltelliSensitivityAlgorithm`,
 - :class:`~openturns.MartinezSensitivityAlgorithm`,

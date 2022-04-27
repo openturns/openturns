@@ -16,7 +16,7 @@ import openturns.viewer as otv
 
 # %%
 # We first load the Ishigami model from the usecases module :
-from openturns.usecases import ishigami_function as ishigami_function
+from openturns.usecases import ishigami_function
 im = ishigami_function.IshigamiModel()
 
 # %%

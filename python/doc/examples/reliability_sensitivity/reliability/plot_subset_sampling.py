@@ -228,7 +228,7 @@ View(graph)
 # %%
 # Get all the input and output points that realized the event
 # -----------------------------------------------------------
-# The following lines are possible only if you have mentionned that you wanted to keep the points that realize the event with the method *algo.setKeepEventSample(True)*
+# The following lines are possible only if you have mentioned that you wanted to keep the points that realize the event with the method *algo.setKeepEventSample(True)*
 
 # %%
 inputEventSample = algo.getEventInputSample()

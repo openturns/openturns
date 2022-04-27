@@ -222,41 +222,41 @@ Notes
 -----
 Activate the history mechanism which is the trace of all the tested models and their associated information criteria.
 
-By default, the history mecanism is activated.
+By default, the history mechanism is activated.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::WhittleFactory::disableHistory
-"Desactivate the history of all the estimated models.
+"Deactivate the history of all the estimated models.
 
 Notes
 -----
-Desactivate the history mechanism which is the trace of all the tested models and their associated information criteria.
+Deactivate the history mechanism which is the trace of all the tested models and their associated information criteria.
 "
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::WhittleFactory::isHistoryEnabled
-"Check whether the history mecanism is activated.
+"Check whether the history mechanism is activated.
 
 Returns
 -------
 histMec : bool
-    Check whether the history mecanism is activated.
+    Check whether the history mechanism is activated.
 
-    By default, the history mecanism is activated.
+    By default, the history mechanism is activated.
 "
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::WhittleFactory::isHistoryEnabled
-"Check whether the history mecanism is activated.
+"Check whether the history mechanism is activated.
 
 Returns
 -------
 histMec : bool
-    Check whether the history mecanism is activated.
+    Check whether the history mechanism is activated.
 
-    By default, the history mecanism is activated.
+    By default, the history mechanism is activated.
 "
 
 // ---------------------------------------------------------------------
@@ -269,7 +269,7 @@ Clear the history of the factory.
 "
 // ---------------------------------------------------------------------
 %feature("docstring") OT::WhittleFactory::getHistory
-"Check whether the history mecanism is activated.
+"Check whether the history mechanism is activated.
 
 Returns
 -------

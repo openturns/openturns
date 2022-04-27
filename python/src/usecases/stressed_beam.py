@@ -2,7 +2,6 @@
 Use case : axial stressed beam
 ==============================
 """
-from __future__ import print_function
 import openturns as ot
 
 
@@ -46,7 +45,7 @@ class AxialStressedBeam():
 
     Examples
     --------
-    >>> from openturns.usecases import stressed_beam as stressed_beam
+    >>> from openturns.usecases import stressed_beam
     >>> # Load the axial stressed beam
     >>> sm = stressed_beam.AxialStressedBeam()
     """

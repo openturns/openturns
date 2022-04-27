@@ -6,8 +6,6 @@
 
 %include SpecFunc_doc.i
 
-%nodefaultctor SpecFunc;
-
 // available in math module
 %ignore OT::SpecFunc::IsInf;
 %ignore OT::SpecFunc::IsNaN;

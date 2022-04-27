@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,6 +70,7 @@
 #include "openturns/FisherSnedecorFactory.hxx"
 #include "openturns/Frechet.hxx"
 #include "openturns/FrechetFactory.hxx"
+#include "openturns/GalambosCopula.hxx"
 #include "openturns/Gamma.hxx"
 #include "openturns/GammaFactory.hxx"
 #include "openturns/GammaMuSigma.hxx"

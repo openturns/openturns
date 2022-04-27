@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all Mixtures
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -568,17 +568,9 @@ Distribution Mixture::getMarginal(const Indices & indices) const
     collection.add(distributionCollection_[index].getMarginal(indices));
     collection[index].setWeight(distributionCollection_[index].getWeight());
   }
-  const UnsignedInteger outputDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    marginalDescription[i] = description[index_i];
-  }
   Mixture* marginal(new Mixture(collection));
   marginal->isCopula_ = isCopula_;
-  marginal->setDescription(marginalDescription);
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 }
 

@@ -3,7 +3,7 @@
 # @brief Gives functions that help coupling against external code,
 #   .i.e: manipulate template file.
 #
-# Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+# Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 External code helpers.
 
 Provides several functions to ease wrapping of an external code:
-- replace: allows to replace a value in template file
+- replace: allows one to replace a value in template file
 - execute: run an external code
 - get: parse values from a result file
 """
@@ -151,12 +151,13 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
 
 class OTCalledProcessError(subprocess.CalledProcessError):
     def __str__(self):
-        err_msg = (':\n' + self.stderr[:200].decode()) if self.stderr is not None else ''
+        err_msg = (':\n' + self.stderr[:200].decode()
+                   ) if self.stderr is not None else ''
         return super(OTCalledProcessError, self).__str__() + err_msg
 
 
 def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
-            check=True, capture_output=False, get_stdout=False, get_stderr=False,
+            check=True, capture_output=False,
             timeout=None, env=None):
     """
     Launch an external process.
@@ -204,14 +205,6 @@ def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
     42
     """
 
-    if get_stdout:
-        warnings.warn('get_stdout is deprecated in favor of capture_output', DeprecationWarning)
-        capture_output = True
-
-    if get_stderr:
-        warnings.warn('get_stderr is deprecated in favor of capture_output', DeprecationWarning)
-        capture_output = True
-
     # split cmd if not in a shell before passing it to os.execvp()
     try:
         import posix
@@ -232,8 +225,8 @@ def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
     stdout = subprocess.PIPE if capture_output else None
     stderr = subprocess.PIPE if capture_output else None
     process = subprocess.Popen(process_args, shell=shell, cwd=cwd,
-                              executable=executable, stdout=stdout, stderr=stderr,
-                              startupinfo=startupinfo, env=env)
+                               executable=executable, stdout=stdout, stderr=stderr,
+                               startupinfo=startupinfo, env=env)
     stdout_data = None
     stderr_data = None
     try:
@@ -249,9 +242,8 @@ def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
             for child in parent.children(recursive=True):
                 child.kill()
         process.kill()
-        stdout_data, stderr_data = process.communicate()
-        raise RuntimeError('Command "' + cmd + '" times out after ' +
-                            str(timeout) + 's')
+        raise
+
     returncode = process.poll()
 
     # check return code

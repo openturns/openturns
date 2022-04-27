@@ -2,7 +2,7 @@
 /**
  *  @brief MetropolisHastingsImplementation base class
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,11 +30,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class MetropolisHastingsImplementation
- *
  * @brief MetropolisHastingsImplementation base class
- *
- * This class is abstract so it can not be instanciated. It must be derived.
  */
 class OT_API MetropolisHastingsImplementation
   : public RandomVectorImplementation
@@ -45,6 +41,10 @@ public:
 
   /** Default constructor */
   MetropolisHastingsImplementation();
+
+  /** Constructor with parameters*/
+  MetropolisHastingsImplementation(const Point & initialState,
+                                   const Indices & marginalIndices = Indices());
 
   /** Constructor with parameters*/
   MetropolisHastingsImplementation(const Distribution & targetDistribution,
@@ -87,9 +87,9 @@ public:
 
   /** Likelihood accessor */
   virtual void setLikelihood(const Distribution & conditional,
-                            const Sample & observations,
-                            const Function & linkFunction = Function(),
-                            const Sample & covariates = Sample(0, 0));
+                             const Sample & observations,
+                             const Function & linkFunction = Function(),
+                             const Sample & covariates = Sample(0, 0));
 
   /** Conditional accessor */
   Distribution getConditional() const;
@@ -134,6 +134,8 @@ public:
 protected:
   Point initialState_;
   mutable Point currentState_;
+  mutable Scalar logProbCurrentConditionedToNew_ = 0.0;
+  mutable Scalar logProbNewConditionedToCurrent_ = 0.0;
   Indices marginalIndices_;
   mutable HistoryStrategy history_;
 
@@ -149,9 +151,13 @@ protected:
   /** Propose a new point in the chain */
   virtual Point getCandidate() const;
 
+  // Set conditional probabilities of new and current state w.r.t. one another
+  void setConditionalLogProbabilities(const Scalar logProbNewConditionedToCurrent, const Scalar logProbCurrentConditionedToNew) const;
+
 private:
   // target distribution
   Distribution targetDistribution_;
+  Bool hasTargetDistribution_ = false;
 
   // ... when defined via its log-pdf
   Function targetLogPDF_;
@@ -176,7 +182,7 @@ private:
   mutable Scalar currentLogPosterior_ = 0.0;
 
   // prior log pdf
-  Scalar computeLogPDFPrior(const Point & state) const;
+  virtual Scalar computeLogPDFPrior(const Point & state) const;
 
   void setTargetDistribution(const Distribution & targetDistribution);
   void setTargetLogPDF(const Function & targetLogPDF, const Domain & support);

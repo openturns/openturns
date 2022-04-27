@@ -81,7 +81,7 @@
 # for details.
 # See python doc http://docs.python.org/reference/datamodel.html?highlight=getattribute#object.__getattribute__
 # for details on how to write such a method.
-def Sample___getattribute__(self, name):
+def __Sample_getattribute(self, name):
     """Implement attribute accesses."""
     if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getSize(), self.getDimension()),
@@ -90,10 +90,44 @@ def Sample___getattribute__(self, name):
                                                 'version': 3, 
                                                 }
     return super(Sample, self).__getattribute__(name)
-Sample.__getattribute__ = Sample___getattribute__
+Sample.__getattribute__ = __Sample_getattribute
+
+def __Sample_asDataFrame(self):
+    """
+    Convert to pandas DataFrame.
+
+    Returns
+    -------
+    df : pandas DataFrame
+        The converted data
+    """
+    from pandas import DataFrame
+    df = DataFrame.from_records(self, columns=self.getDescription())
+    return df
+Sample.asDataFrame = __Sample_asDataFrame
+
+def __Sample_BuildFromDataFrame(df):
+    """
+    Convert a pandas DataFrame to Sample.
+
+    Parameters
+    ----------
+    df : pandas DataFrame
+        The data to convert
+
+    Returns
+    -------
+    sample : :class:`~openturns.Sample`
+        The converted sample
+    """
+    sample = openturns.Sample(df.values)
+    sample.setDescription(df.columns)
+    return sample
+Sample.BuildFromDataFrame = __Sample_BuildFromDataFrame
 
 
-def Sample__repr_html_(self):
+
+def __Sample_repr_html(self):
     """Get HTML representation."""
     html = '<TABLE>'
     desc = self.getDescription()
@@ -137,7 +171,7 @@ def Sample__repr_html_(self):
     html += '</TABLE>'
     return html
 
-Sample._repr_html_ = Sample__repr_html_
+Sample._repr_html_ = __Sample_repr_html
 %}
 
 namespace OT {

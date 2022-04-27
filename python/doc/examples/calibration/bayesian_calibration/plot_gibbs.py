@@ -54,11 +54,11 @@ View(graph)
 # and :math:`X_i | Z_i \sim \mathcal{N}(\mu_{Z_i}, 1.0)`.
 #
 # Let :math:`n_0` (resp. :math:`n_1`) denote the number of indices :math:`i`
-# such that :mathl`Z_i=0` (resp. :math:`Z_i=1`).
+# such that :math:`Z_i=0` (resp. :math:`Z_i=1`).
 #
 # Conditionally to all :math:`X_i` and all :math:`Z_i`,
 # :math:`\mu_0` and :math:`\mu_1` are independent:
-# :math:`\mu_0` follows 
+# :math:`\mu_0` follows
 # :math:`\mathcal{N} \left(\sum_{Z_i=0} \frac{X_i}{0.1 + n_0}, \frac{1}{0.1 + n_0} \right)`
 # and :math:`\mu_1` follows
 # :math:`\mathcal{N} \left(\sum_{Z_i=1} \frac{X_i}{0.1 + n_1}, \frac{1}{0.1 + n_1} \right)`.
@@ -75,19 +75,22 @@ View(graph)
 # We define functions that will translate a given state of the Gibbs algorithm into the correct parameters
 # for the distributions of :math:`\mu_0`, :math:`\mu_1`, and the :math:`Z_i`.
 
+
 def nor0post(pt):
     z = np.array(pt)[2:]
-    x0 = observations[z==0]
+    x0 = observations[z == 0]
     mu0 = x0.sum() / (0.1 + len(x0))
     sigma0 = 1.0 / (0.1 + len(x0))
     return [mu0, sigma0]
 
+
 def nor1post(pt):
     z = np.array(pt)[2:]
-    x1 = observations[z==1]
+    x1 = observations[z == 1]
     mu1 = x1.sum() / (0.1 + len(x1))
     sigma1 = 1.0 / (0.1 + len(x1))
     return [mu1, sigma1]
+
 
 def zpost(pt):
     mu0 = pt[0]
@@ -98,6 +101,7 @@ def zpost(pt):
     # output must be a 1d list or array in order to create a PythonFunction
     return res.reshape(-1)
 
+
 nor0posterior = ot.PythonFunction(2 + N, 2, nor0post)
 nor1posterior = ot.PythonFunction(2 + N, 2, nor1post)
 zposterior = ot.PythonFunction(2 + N, N, zpost)
@@ -107,12 +111,15 @@ zposterior = ot.PythonFunction(2 + N, N, zpost)
 
 initialState = [0.0] * (N + 2)
 
-sampler0 = ot.RandomVectorMetropolisHastings(ot.RandomVector(ot.Normal()), initialState, [0], nor0posterior)
-sampler1 = ot.RandomVectorMetropolisHastings(ot.RandomVector(ot.Normal()), initialState, [1], nor1posterior)
+sampler0 = ot.RandomVectorMetropolisHastings(
+    ot.RandomVector(ot.Normal()), initialState, [0], nor0posterior)
+sampler1 = ot.RandomVectorMetropolisHastings(
+    ot.RandomVector(ot.Normal()), initialState, [1], nor1posterior)
 
 big_bernoulli = ot.ComposedDistribution([ot.Bernoulli()] * N)
 
-sampler2 = ot.RandomVectorMetropolisHastings(ot.RandomVector(big_bernoulli), initialState, range(2, N + 2), zposterior)
+sampler2 = ot.RandomVectorMetropolisHastings(ot.RandomVector(
+    big_bernoulli), initialState, range(2, N + 2), zposterior)
 
 gibbs = ot.Gibbs([sampler0, sampler1, sampler2])
 

@@ -1,11 +1,10 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 dim = 3
 R = ot.CorrelationMatrix(dim)
 for i in range(dim - 1):

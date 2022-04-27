@@ -199,5 +199,5 @@ batchSize : int
 
 Returns
 -------
-distibution : :class:`~openturns.Distribution`
+distribution : :class:`~openturns.Distribution`
     Distribution of the random variable."

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 from openturns.testing import assert_almost_equal
 from openturns.usecases import chaboche_model as chaboche_model

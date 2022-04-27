@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 from math import *
 
@@ -11,7 +10,7 @@ try:
 
     # Big test case for correlated components
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     dim = 4
     meanPoint = Point(dim, 1.0)
     sigma = Point(dim, 1.0)

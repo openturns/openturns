@@ -2,7 +2,7 @@
 /**
  *  @brief The Dirichlet distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -547,8 +547,6 @@ Distribution Dirichlet::getMarginal(const Indices & indices) const
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
   const UnsignedInteger outputDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
   Point thetaMarginal(outputDimension + 1);
   Scalar sumMarginal = 0.0;
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
@@ -557,7 +555,6 @@ Distribution Dirichlet::getMarginal(const Indices & indices) const
     const Scalar thetaI = theta_[index_i];
     sumMarginal += thetaI;
     thetaMarginal[i] = thetaI;
-    marginalDescription[i] = description[index_i];
   }
   thetaMarginal[outputDimension] = sumTheta_ - sumMarginal;
   Dirichlet* marginal(new Dirichlet(thetaMarginal));
@@ -575,7 +572,7 @@ Distribution Dirichlet::getMarginal(const Indices & indices) const
     marginal->integrationWeights_ = marginalIntegrationWeights_;
     marginal->isInitializedCDF_ = true;
   }
-  marginal->setDescription(marginalDescription);
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 

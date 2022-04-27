@@ -20,7 +20,6 @@
 %import model_copula_module.i
 
 /* Uncertainty/Distribution (except copulas) */
-%include DistFunc.i
 %include Arcsine.i
 %include ArcsineFactory.i
 %include ArcsineMuSigma.i
@@ -54,6 +53,7 @@
 %include FisherSnedecorFactory.i
 %include Frechet.i
 %include FrechetFactory.i
+%include GalambosCopula.i
 %include Gamma.i
 %include GammaFactory.i
 %include GammaMuSigma.i

@@ -1,12 +1,11 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.DiscreteCompoundDistribution(
     ot.Bernoulli(0.5), ot.Poisson(20.0))
 upper_bound = int(distribution.getRange().getUpperBound()[0])

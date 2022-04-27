@@ -6,7 +6,6 @@ Create a design of experiments with discrete and continuous variables
 # In this example we present how to create a design of experiments when one (or several) of the marginals are discrete.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

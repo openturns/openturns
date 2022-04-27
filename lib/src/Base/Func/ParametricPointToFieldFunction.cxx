@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements parametric functions.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -77,11 +77,7 @@ ParametricPointToFieldFunction::ParametricPointToFieldFunction (const PointToFie
   parameter_ = referencePoint;
 
   // And finally the input/output descriptions
-  const Description functionInputDescription(function_.getInputDescription());
-  Description inputDescription(0);
-  for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i)
-    inputDescription.add(functionInputDescription[inputPositions_[i]]);
-  setInputDescription(inputDescription);
+  setInputDescription(function_.getInputDescription().select(inputPositions_));
   setOutputDescription(function_.getOutputDescription());
 }
 
@@ -175,13 +171,7 @@ Point ParametricPointToFieldFunction::getParameter() const
 
 Description ParametricPointToFieldFunction::getParameterDescription() const
 {
-  // Set the relevant part of the reference point in the parameters
-  const UnsignedInteger parametersSize = parametersPositions_.getSize();
-  const Description functionInputDescription(function_.getInputDescription());
-  Description parameterDescription(parametersSize);
-  for (UnsignedInteger i = 0; i < parametersSize; ++ i)
-    parameterDescription[i] = functionInputDescription[parametersPositions_[i]];
-  return parameterDescription;
+  return function_.getInputDescription().select(parametersPositions_);
 }
 
 /* String converter */

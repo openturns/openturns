@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class HMatrixImplementation
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,24 +58,15 @@ int main(int, char *[])
     ResourceMap::SetAsUnsignedInteger("HMatrix-MaxLeafSize", 10);
 
     HMatrixFactory hmatrixFactory;
-    if (!hmatrixFactory.IsAvailable()) throw NotYetImplementedException(HERE);
 
     const UnsignedInteger n = 30;
 
-    Indices indices(0);
-    indices.add(n);
-    indices.add(n);
+    const Indices indices = {n, n};
     const IntervalMesher intervalMesher(indices);
-    const Point lowerBound(2, 0.0);
-    const Point upperBound(2, 1.0);
+    const Point lowerBound = {0.0, 0.0};
+    const Point upperBound = {1.0, 1.0};
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
-    const Sample vertices2D(mesh2D.getVertices());
-    Sample vertices(vertices2D.getSize(), 3);
-    for (UnsignedInteger i = 0; i < vertices2D.getSize(); ++i)
-    {
-      vertices[i][0] = vertices2D[i][0];
-      vertices[i][1] = vertices2D[i][1];
-    }
+    const Sample vertices(mesh2D.getVertices());
     TestHMatrixRealAssemblyFunction simpleAssembly(vertices, 0.1);
     // Symmetric HMatrix
     HMatrix hmat(hmatrixFactory.build(vertices, 1, true));
@@ -104,11 +95,6 @@ int main(int, char *[])
     Scalar diffNorm = rhsCopy.norm();
     Scalar threshold = 1.e-2;
     fullprint << "|| M X - b || / || b ||" << ((diffNorm < threshold * rhsCopyNorm) ? " < " : " > ") << threshold << std::endl;
-  }
-  catch (NotYetImplementedException & ex)
-  {
-    std::cerr << "Compiled without HMat" << std::endl;
-    return ExitCode::Success;
   }
   catch (TestFailed & ex)
   {

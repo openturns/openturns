@@ -10,15 +10,15 @@ Parameters
 ----------
 
 distX : :class:`~openturns.Distribution`, univariate
-    Independant of `distY`
+    Independent of `distY`
 
 distY : :class:`~openturns.Distribution`, univariate
-    Independant of `distX`
+    Independent of `distX`
 
 Returns
 -------
 distZ : :class:`~openturns.Distribution`, univariate
-    :math:`distZ` is the distribution of the random variable :math:`Z = XY` when :math:`(X,Y)` is a random vector with independant copula and respective marginal distributions `distX` and `distY`.
+    :math:`distZ` is the distribution of the random variable :math:`Z = XY` when :math:`(X,Y)` is a random vector with independent copula and respective marginal distributions `distX` and `distY`.
 
 
 Notes

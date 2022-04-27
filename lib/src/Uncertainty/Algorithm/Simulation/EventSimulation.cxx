@@ -3,7 +3,7 @@
  *  @brief EventSimulation is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -105,11 +105,11 @@ String EventSimulation::__repr__() const
 /* Performs the actual computation. */
 void EventSimulation::run()
 {
-  /* We want to compute the probability of occurence of the given event
+  /* We want to compute the probability of occurrence of the given event
    *  We estimate this probability by computing the empirical mean of a
    * sample of size at most outerSampling * blockSize, this sample being
-   * built by blocks of size blockSize. It allows to use efficiently the
-   * distribution of the computation as well as it allows to deal with
+   * built by blocks of size blockSize. It allows one to use efficiently the
+   * distribution of the computation as well as it allows one to deal with
    * a sample size > 2^32 by a combination of blockSize and outerSampling
    */
   // First, reset the convergence history

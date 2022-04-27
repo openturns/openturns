@@ -135,28 +135,6 @@ metaModel : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralLinearModelResult::getTransformation
-"Accessor to the normalizing transformation.
-
-Returns
--------
-transformation : :class:`~openturns.Function`
-    The transformation *T* that normalizes the input sample.
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::GeneralLinearModelResult::setTransformation
-"Set accessor to the normalizing transformation.
-
-Parameters
-----------
-transformation : :class:`~openturns.Function`
-    The transformation *T* that normalizes the input sample.
-"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::GeneralLinearModelResult::getNoise
 "Accessor to the Gaussian process.
 

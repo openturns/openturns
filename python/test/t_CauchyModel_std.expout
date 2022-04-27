@@ -1,4 +1,4 @@
-myDefautModel =  class=CauchyModel amplitude=[1] scale=[1] no spatial correlation
+myDefaultModel =  class=CauchyModel amplitude=[1] scale=[1] no spatial correlation
 myModel =  class=CauchyModel amplitude=[1] scale=[1] no spatial correlation
 spectral density matrix at f =  1.0  :  [[ (0.049409,0) ]]
 spectral density matrix at f =  10.0  :  [[ (0.000506478,0) ]]

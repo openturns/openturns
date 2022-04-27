@@ -2,7 +2,6 @@
 Use case : logistic model
 =========================
 """
-from __future__ import print_function
 import openturns as ot
 
 
@@ -44,7 +43,7 @@ class LogisticModel():
 
     Examples
     --------
-    >>> from openturns.usecases import logistic_model as logistic_model
+    >>> from openturns.usecases import logistic_model
     >>> # Load the logistic model
     >>> lm = logistic_model.LogisticModel()
     """

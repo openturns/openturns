@@ -94,7 +94,7 @@ algorithm : str
 Returns
 -------
 method : str
-    compression method (either Svd, AcaFull, AcaPartial, AcaPlus or AcaRandom."
+    compression method (either 'Svd', 'AcaFull', 'AcaPartial', 'AcaPlus' or 'AcaRandom')"
 
 // ---------------------------------------------------------------------
 
@@ -104,7 +104,27 @@ method : str
 Parameters
 ----------
 method : str
-    compression method (either Svd, AcaFull, AcaPartial, AcaPlus or AcaRandom."
+    compression method (either 'Svd', 'AcaFull', 'AcaPartial', 'AcaPlus' or 'AcaRandom')"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HMatrixParameters::getFactorizationMethod
+"Return the factorization method.
+
+Returns
+-------
+method : str
+    Factorization method (either 'LU', 'LDLt', or 'LLt')"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HMatrixParameters::setFactorizationMethod
+"Set the factorization method.
+
+Parameters
+----------
+method : str
+    Factorization method (either 'LU', 'LDLt', or 'LLt')"
 
 // ---------------------------------------------------------------------
 

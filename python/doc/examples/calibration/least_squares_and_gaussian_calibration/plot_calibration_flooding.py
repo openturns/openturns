@@ -62,7 +62,7 @@ Calibration of the flooding model
 # Analysis
 # --------
 #
-# In the description of the :ref:`flooding model<use-case-flood-model>`, we see that only one parameter 
+# In the description of the :ref:`flooding model<use-case-flood-model>`, we see that only one parameter
 # can be identified.
 # Hence, calibrating this model requires some regularization.
 # We return to this topic when analyzing the singular values of
@@ -73,7 +73,7 @@ Calibration of the flooding model
 # -------------------------
 
 # %%
-from openturns.usecases import flood_model as flood_model
+from openturns.usecases import flood_model
 from matplotlib import pylab as plt
 import openturns.viewer as viewer
 import numpy as np
@@ -268,7 +268,7 @@ print(jacobianMatrix.computeSingularValues())
 #
 # This explains why the Jacobian matrix is close to being rank-degenerate.
 #
-# Moreover, this allows to compute the actual dimensionality of the problem.
+# Moreover, this allows one to compute the actual dimensionality of the problem.
 # The algorithm we use computes the singular values in descending order.
 # Moreover, by definition, the singular values are nonnegative.
 # We see that the first singular value is close to :math:`10`
@@ -564,13 +564,13 @@ view = viewer.View(graph)
 #
 # The "GaussianNonLinearCalibration-BootstrapSize" key controls the posterior distribution estimation.
 #
-# * If "GaussianNonLinearCalibration-BootstrapSize" > 0 (by default it is equal to 100), then a bootstrap resample algorithm is used to see the dispersion of the MAP estimator. This allows to see the variability of the estimator with respect to the finite observation sample.
+# * If "GaussianNonLinearCalibration-BootstrapSize" > 0 (by default it is equal to 100), then a bootstrap resample algorithm is used to see the dispersion of the MAP estimator. This allows one to see the variability of the estimator with respect to the finite observation sample.
 # * If "GaussianNonLinearCalibration-BootstrapSize" is zero, then the Gaussian linear calibration estimator is used (i.e. the `GaussianLinearCalibration` class) at the optimum. This is called the Laplace approximation.
 #
 # We must configure the key before creating the object (otherwise changing the parameter does not change the result).
 
 # %%
-ot.ResourceMap_SetAsUnsignedInteger(
+ot.ResourceMap.SetAsUnsignedInteger(
     "GaussianNonLinearCalibration-BootstrapSize", 0)
 
 # %%

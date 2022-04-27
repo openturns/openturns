@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 from math import *
 
@@ -22,7 +21,7 @@ def cleanSymmetricTensor(inSymmetricTensor):
 
 try:
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     dim = 3
     meanPoint = Point(dim, 1.0)
     meanPoint[0] = 0.5

@@ -349,7 +349,7 @@ k : float
 
 Notes
 -----
-This method allows to compute the *exact* margin factor :math:`k` of a
+This method allows one to compute the *exact* margin factor :math:`k` of a
 pool of :math:`m` Normal populations of size :math:`n` with unknown
 means :math:`\mu_i` and unknown common variance :math:`\sigma^2`.
 Let :math:`m_i=\dfrac{1}{n}\sum_{j=1}^nX_{ij}` be the empirical mean
@@ -409,7 +409,7 @@ k : float
 
 Notes
 -----
-This method allows to compute the *exact* margin factor :math:`k` of a
+This method allows one to compute the *exact* margin factor :math:`k` of a
 Normal population of size :math:`n` with unknown
 means :math:`\mu_i` and unknown common variance :math:`\sigma^2`. It
 is equivalent to the pooled version with :math:`m=1`.
@@ -443,7 +443,7 @@ pvalue : float
 
 Notes
 -----
-This method allows to compute the *asymptotic* distribution of the
+This method allows one to compute the *asymptotic* distribution of the
 `Pearson` correlation coefficient issued from two univariate samples
 of size `n`. Basically, we want to measure how coefficient is significatly
 different from `0`. If `tail` is True, the issued value measures probability

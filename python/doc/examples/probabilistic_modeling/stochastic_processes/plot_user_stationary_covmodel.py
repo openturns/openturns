@@ -16,7 +16,6 @@ Create a stationary covariance model
 # where :math:`k`  is such that :math:`\underline{\tau}_k` is the  vertex of :math:`\mathcal{M}` the nearest to :math:`\underline{t}.`
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

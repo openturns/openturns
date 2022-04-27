@@ -23,7 +23,6 @@ Create a polynomial chaos metamodel
 # An interesting point in this example is that the output is multivariate. This is why we are going to use the `getMarginal` method in the script in order to select the output marginal that we want to manage.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

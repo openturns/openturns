@@ -2,7 +2,7 @@
 /**
  *  @brief CMinpack solver
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -94,7 +94,7 @@ void CMinpack::checkProblem(const OptimizationProblem & problem) const
 
 void CMinpack::Transform(Point & x, int n, const Interval & bounds, Point & jacfac)
 {
-  // this transformation allows to handle box constraints
+  // this transformation allows one to handle box constraints
   // http://apps.jcns.fz-juelich.de/doku/sc/lmfit:constraints
 
   // u = xmiddle + xwidth * tanh(x)
@@ -491,16 +491,6 @@ void CMinpack::save(Advocate & adv) const
 void CMinpack::load(Advocate & adv)
 {
   OptimizationAlgorithmImplementation::load(adv);
-}
-
-Bool CMinpack::IsAvailable()
-{
-  LOGWARN(OSS() << "CMinpack.IsAvailable is deprecated, use PlatformInfo.HasFeature(cminpack)");
-#ifdef OPENTURNS_HAVE_CMINPACK
-  return true;
-#else
-  return false;
-#endif
 }
 
 END_NAMESPACE_OPENTURNS

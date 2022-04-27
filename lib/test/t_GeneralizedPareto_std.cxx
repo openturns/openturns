@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class GeneralizedPareto for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate distributions with different shape parameters
+    // Instantiate distributions with different shape parameters
     Point xiValues(3);
     xiValues[0] = -0.2;
     xiValues[1] = 0.0;

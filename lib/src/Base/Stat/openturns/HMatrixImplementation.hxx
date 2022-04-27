@@ -3,7 +3,7 @@
  *  @file  HMatrixImplementation.hxx
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,6 +28,7 @@
 #include "openturns/Sample.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/CovarianceModel.hxx"
+#include "openturns/HMatrixParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -134,8 +135,10 @@ public:
   UnsignedInteger getNbColumns() const;
 
   void assemble(const HMatrixRealAssemblyFunction& f, char symmetry);
-  void assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry);
-  void factorize(const String& method);
+  void assemble(const HMatrixRealAssemblyFunction &f, const HMatrixParameters & parameters, char symmetry);
+  void assemble(const HMatrixTensorRealAssemblyFunction &f, char symmetry);
+  void assemble(const HMatrixTensorRealAssemblyFunction &f, const HMatrixParameters &parameters, char symmetry);
+  void factorize(const String &method);
 
   /** Compute this <- alpha * this */
   void scale(Scalar alpha);

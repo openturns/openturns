@@ -2,7 +2,7 @@
 /**
  *  @brief Metropolis-Hastings algorithm
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,10 +43,10 @@ public:
   RandomVectorMetropolisHastings();
 
   /** Constructor with parameters*/
-  RandomVectorMetropolisHastings(const RandomVector & source,
+  RandomVectorMetropolisHastings(const RandomVector & randomVector,
                                  const Point & initialState,
                                  const Indices & marginalIndices = Indices(),
-                                 const Function & sourceLinkFunction = Function());
+                                 const Function & linkFunction = Function());
 
   String __repr__() const override;
 
@@ -56,8 +56,8 @@ public:
   RandomVectorMetropolisHastings * clone() const override;
 
   /** RV accessor */
-  void setSource(const RandomVector & proposal);
-  RandomVector getSource() const;
+  void setRandomVector(const RandomVector & randomVector);
+  RandomVector getRandomVector() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -70,13 +70,10 @@ protected:
   Point getCandidate() const override;
 
 private:
-  RandomVector source_;
-  
-  // link between the state and the parameters of the source random vector
-  Function sourceLinkFunction_;
+  mutable RandomVector randomVector_;
 
-  // prior log pdf
-  Scalar computeLogPDFPrior(const Point & state) const;
+  // link between the state and the parameters of the source random vector
+  Function randomVectorLinkFunction_;
 
 }; /* class RandomVectorMetropolisHastings */
 

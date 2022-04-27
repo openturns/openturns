@@ -9,7 +9,7 @@ From binary packages
 
 Pip
 ---
-Install the package from `PyPI <https://pypi.org/project/openturns/>`_::
+Install x86 binary packages from `PyPI <https://pypi.org/project/openturns/>`_::
 
     pip3 install openturns
 
@@ -44,8 +44,8 @@ so when a full upgrade is needed our advice is to create a new environment from 
 Alternatively, you can download the `otconda <https://github.com/openturns/otconda>`_ bundle
 containing the library and its modules that allows for an offline installation.
 Note that pre-releases are published on conda-forge like regular releases, so
-if you want to stick to the stable version you will have to explicitely specify
-the required version, eg :code:`conda install openturns=1.16`.
+if you want to stick to the stable version you will have to explicitly specify
+the required version, eg :code:`conda install openturns=1.18`.
 
 Windows
 -------
@@ -55,6 +55,11 @@ Then just run installer and follow the instructions.
 A non-interactive installation is also possible with the command line::
 
     openturns-1.18-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
+
+macOS
+-----
+Installation options include pip and conda for x86 processors.
+For ARM processors binary packages are only provided via conda for now.
 
 Debian/Ubuntu
 -------------
@@ -66,13 +71,9 @@ We support the following Debian-based distributions:
     +-------------------------------------+----------------------------------------------------------+
     | Distribution name                   | Repository address                                       |
     +=====================================+==========================================================+
-    | Ubuntu 18.04 LTS 'Bionic Beaver'    | deb https://openturns.github.io/apt/ubuntu bionic main   |
-    +-------------------------------------+----------------------------------------------------------+
     | Ubuntu 20.04 LTS 'Focal Fossa'      | deb https://openturns.github.io/apt/ubuntu focal main    |
     +-------------------------------------+----------------------------------------------------------+
     | Ubuntu 21.10 'Impish Indri'         | deb https://openturns.github.io/apt/ubuntu impish main   |
-    +-------------------------------------+----------------------------------------------------------+
-    | Debian 10.0 'Buster'                | deb https://openturns.github.io/apt/debian buster main   |
     +-------------------------------------+----------------------------------------------------------+
     | Debian 11.0 'Bullseye'              | deb https://openturns.github.io/apt/debian bullseye main |
     +-------------------------------------+----------------------------------------------------------+

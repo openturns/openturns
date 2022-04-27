@@ -70,7 +70,7 @@ Then the notation used here is :math:`\nu{}K^k \rightarrow_{TV} t`.
    that :math:`t(A)>0`, :math:`\exists{}k\in\cN^* \quad {}K^k(x, A) > 0`
    holds.
 
-Markov Chain Monte-Carlo techniques allows to sample and integrate
+Markov Chain Monte-Carlo techniques allows one to sample and integrate
 according to a distribution :math:`t` which is only known up to a
 multiplicative constant. This situation is common in Bayesian statistics
 where the “target” distribution, the posterior one
@@ -164,14 +164,17 @@ independent sampling.
 
 .. topic:: API:
 
-    - See :class:`~openturns.RandomWalkMetropolisHastings`
+    - See :class:`~openturns.MetropolisHastings`
     - See :class:`~openturns.Gibbs`
+    - See :class:`~openturns.RandomWalkMetropolisHastings`
+    - See :class:`~openturns.IndependentMetropolisHastings`
 
 .. topic:: Examples:
 
     - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration`
     - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration_flooding`
     - See :doc:`/auto_calibration/bayesian_calibration/plot_rwmh_python_distribution`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_imh_python_distribution`
 
 .. topic:: References:
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Normal for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,7 +46,7 @@ int main(int, char *[])
   setRandomGenerator();
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     for (UnsignedInteger dim = 1; dim <= 4; dim++)
     {
       fullprint << "\n*** Case " << dim << " ***\n" << std::endl;

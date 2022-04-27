@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -9,8 +8,8 @@ RandomGenerator.SetSeed(0)
 try:
 
     # Default constructor
-    myDefautModel = UserDefinedStationaryCovarianceModel()
-    print("myDefautModel = ", myDefautModel)
+    myDefaultModel = UserDefinedStationaryCovarianceModel()
+    print("myDefaultModel = ", myDefaultModel)
 
     # Default dimension parameter to evaluate the model
     dimension = 1

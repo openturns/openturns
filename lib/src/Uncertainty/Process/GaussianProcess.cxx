@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the Gaussian process
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -128,14 +128,14 @@ void GaussianProcess::initialize() const
     if (covarianceModel_.getOutputDimension() == 1)
     {
       CovarianceAssemblyFunction simple(covarianceModel_, mesh_.getVertices());
-      covarianceHMatrix_.assemble(simple, 'L');
+      covarianceHMatrix_.assemble(simple, hmatrixParameters, 'L');
     }
     else
     {
       CovarianceBlockAssemblyFunction block(covarianceModel_, mesh_.getVertices());
-      covarianceHMatrix_.assemble(block, 'L');
+      covarianceHMatrix_.assemble(block, hmatrixParameters, 'L');
     }
-    covarianceHMatrix_.factorize("LLt");
+    covarianceHMatrix_.factorize(hmatrixParameters.getFactorizationMethod());
   } // samplingMethod_ == 1, ie hmat
   // Other sampling methods
   else
@@ -145,8 +145,8 @@ void GaussianProcess::initialize() const
     // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
     // The regularization is needed for fast decreasing covariance models
     Scalar maxEV = -1.0;
-    const Scalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
-    const Scalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
+    const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
+    const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
     Scalar cumulatedScaling = 0.0;
     Scalar scaling = startingScaling;
     while (continuationCondition)
@@ -176,8 +176,8 @@ void GaussianProcess::initialize() const
       }
     }
     if (maxEV > 0.0 && scaling >= maximalScaling * maxEV)
-      throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky, could not compute the Cholesky factor."
-                                           << " Scaling up to "  << cumulatedScaling << " was not enough";
+      throw InvalidArgumentException(HERE) << "In GaussianProcess, could not compute the Cholesky factor."
+                                           << " Scaling up to " << cumulatedScaling << " was not enough";
     if (cumulatedScaling > 0.0)
       LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
   } // else samplingMethod_ != 1

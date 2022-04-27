@@ -46,7 +46,7 @@ KSstat
 
 # %%
 def pKolmogorovPy(x):
-    y = ot.DistFunc_pKolmogorov(samplesize, x[0])
+    y = ot.DistFunc.pKolmogorov(samplesize, x[0])
     return [y]
 
 

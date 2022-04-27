@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Simulation
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,5 +48,7 @@
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/ExpectationSimulationAlgorithm.hxx"
 #include "openturns/SobolSimulationAlgorithm.hxx"
+#include "openturns/NAISResult.hxx"
+#include "openturns/NAIS.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

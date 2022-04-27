@@ -8,7 +8,6 @@ Create a Monte Carlo design of experiments
 # In this example we are going to create a MonteCarlo probabilistic design experiment.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

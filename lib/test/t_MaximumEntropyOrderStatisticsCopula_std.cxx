@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class MaximumEntropyOrderStatisticsCopula for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +53,7 @@ int main(int, char *[])
     coll.add(Triangular(3.0, 4.5, 5.0));
     coll.add(Beta(2.5, 3.5, 4.7, 5.2));
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     MaximumEntropyOrderStatisticsCopula distribution(coll);
     UnsignedInteger dim = distribution.getDimension();
     fullprint << "Distribution " << distribution << std::endl;

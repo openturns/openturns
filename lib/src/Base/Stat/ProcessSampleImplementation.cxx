@@ -2,7 +2,7 @@
 /**
  *  @brief ProcessSampleImplementation Class
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +53,7 @@ ProcessSampleImplementation::ProcessSampleImplementation(const UnsignedInteger s
     const Field & field)
   : PersistentObject()
   , mesh_(field.getMesh())
-  , data_(SampleCollection(size, field.getValues()))
+  , data_(size, field.getValues())
 {
   // Nothing to do
 }
@@ -63,7 +63,7 @@ ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
     const UnsignedInteger dimension)
   : PersistentObject()
   , mesh_(mesh)
-  , data_(SampleCollection(size, Sample(mesh.getVerticesNumber(), dimension)))
+  , data_(size, Sample(mesh.getVerticesNumber(), dimension))
 {
   // Nothing to do
 }
@@ -101,6 +101,16 @@ String ProcessSampleImplementation::__str__(const String & offset) const
   for (UnsignedInteger i = 0; i < data_.getSize(); ++i, separator = Os::GetEndOfLine()) oss << separator << offset << "field " << i << ":" << Os::GetEndOfLine() << getField(i).__str__(offset);
   oss << "]";
   return oss;
+}
+
+void ProcessSampleImplementation::erase(const UnsignedInteger first, const UnsignedInteger last)
+{
+  data_.erase(data_.begin() + first, data_.begin() + last);
+}
+
+void ProcessSampleImplementation::clear()
+{
+  data_.clear();
 }
 
 /* Partial copy constructor */

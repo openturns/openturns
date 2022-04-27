@@ -46,7 +46,6 @@ Estimate Wilks and empirical quantile
 # it corresponds to the first maximum of the sample.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import math as m
 import openturns.viewer as viewer

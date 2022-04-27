@@ -1,4 +1,4 @@
-usr/lib/libOT.so
-usr/lib/cmake/openturns/*.cmake
+usr/lib/*/libOT.so
+usr/lib/*/cmake/openturns/*.cmake
 usr/include/openturns/*.h*
 usr/include/openturns/swig

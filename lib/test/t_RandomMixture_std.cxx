@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class RandomMixture for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,7 +56,7 @@ int main(int, char *[])
     fullprint << "references=" << references << std::endl;
     for (UnsignedInteger testIndex = 0; testIndex < testCases.getSize(); ++testIndex)
     {
-      // Instanciate one distribution object
+      // Instantiate one distribution object
       RandomMixture distribution(testCases[testIndex]);
       distribution.setBlockMin(5);
       distribution.setBlockMax(20);

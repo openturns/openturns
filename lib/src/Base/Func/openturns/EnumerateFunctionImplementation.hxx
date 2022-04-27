@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,16 +55,19 @@ public:
   virtual UnsignedInteger inverse(const Indices & indices) const;
 
   /** The cardinal of the given strata */
-  virtual UnsignedInteger getStrataCardinal(const UnsignedInteger strateIndex) const;
+  virtual UnsignedInteger getStrataCardinal(const UnsignedInteger strataIndex) const;
 
   /** The cardinal of the cumulated strata above or equal to the given strate */
-  virtual UnsignedInteger getStrataCumulatedCardinal(const UnsignedInteger strateIndex) const;
+  virtual UnsignedInteger getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const;
 
   /** The index of the strata of degree max <= maximumDegree */
   virtual UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const;
 
   /** The cardinal of indices of degree max <= maximumDegree */
   virtual UnsignedInteger getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const;
+
+  /** Basis size from total degree */
+  virtual UnsignedInteger getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const;
 
   /** Dimension accessor */
   void setDimension(const UnsignedInteger dimension);

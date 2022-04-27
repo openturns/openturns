@@ -2,7 +2,6 @@
 Use case : vertical deflection of a tube
 ========================================
 """
-from __future__ import print_function
 import openturns as ot
 
 
@@ -43,7 +42,7 @@ class DeflectionTube():
 
     Examples
     --------
-    >>> from openturns.usecases import deflection_tube as deflection_tube
+    >>> from openturns.usecases import deflection_tube
     >>> # Load the deflection tube model
     >>> dt = deflection_tube.DeflectionTube()
     """

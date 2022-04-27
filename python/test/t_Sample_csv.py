@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 import os
@@ -121,5 +120,21 @@ aSample = ot.Sample.ImportFromCSVFile('sample.csv', ',')
 print('aSample description empty component=', aSample)
 aSample = ot.Sample.ImportFromTextFile('sample.csv', ',')
 print('aSample description empty component=', aSample)
+
+# check export with nan/inf
+values = ['-2.4e-08', 'nan', 'NaN', '+nan', 'inf', 'Inf', '+inf', '-inf']
+aSample = ot.Sample([[float(v)] for v in values])
+aSample.exportToCSVFile('sample.csv')
+with open('sample.csv') as f:
+    print(f.read())
+
+# check import with nan/inf
+with open('sample.csv', 'w') as f:
+    for v in values:
+        f.write(v + '\n')
+aSample = ot.Sample.ImportFromTextFile('sample.csv')
+print("aSample with nan/inf (text)=", repr(aSample))
+aSample = ot.Sample.ImportFromCSVFile('sample.csv')
+print("aSample with nan/inf  (csv)=", repr(aSample))
 
 os.remove('sample.csv')

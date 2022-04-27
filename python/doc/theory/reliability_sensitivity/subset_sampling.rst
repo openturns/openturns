@@ -181,7 +181,7 @@ parameters has been recently proposed by Proppe (2017).
 
 Fourthly, when input dimension :math:`d` is large, SS may be indirectly affected if the
 traditional MH sampler is used as it becomes inefficient in high dimension. Using the m-MH sampler introduced by Au and Beck (2001)
-allows to overcome this difficulty. As an alternative, one could
+allows one to overcome this difficulty. As an alternative, one could
 also use another variant of m-MH as proposed in Zuev and Katafygiotis
 (2011).
 

@@ -4,7 +4,7 @@
 Available constructor:
     DatabaseFunction(*inputSample, outputSample*)
 
-Allows to build a function takes a value in the output sample when presented
+Allows one to build a function takes a value in the output sample when presented
 the corresponding point in the input sample .
 
 Parameters

@@ -13,7 +13,7 @@ Sample
 
     Sample
 
-.. _parametric_distibution_factories:
+.. _parametric_distribution_factories:
 
 Building distributions from samples
 ===================================
@@ -135,13 +135,13 @@ Correlation analysis
     :toctree: _generated/
     :template: function.rst_t
 
-    CorrelationAnalysis_PearsonCorrelation
-    CorrelationAnalysis_SpearmanCorrelation
-    CorrelationAnalysis_PCC
-    CorrelationAnalysis_PRCC
-    CorrelationAnalysis_SRC
-    CorrelationAnalysis_SRRC
-    CorrelationAnalysis_SignedSRC
+    CorrelationAnalysis.PearsonCorrelation
+    CorrelationAnalysis.SpearmanCorrelation
+    CorrelationAnalysis.PCC
+    CorrelationAnalysis.PRCC
+    CorrelationAnalysis.SRC
+    CorrelationAnalysis.SRRC
+    CorrelationAnalysis.SignedSRC
 
 Sensitivity Analysis
 ====================
@@ -203,14 +203,14 @@ Goodness-of-fit metrics & tests
     :toctree: _generated/
     :template: function.rst_t
 
-    FittingTest_AIC
-    FittingTest_AICC
-    FittingTest_BIC
-    FittingTest_ChiSquared
-    FittingTest_Kolmogorov
-    FittingTest_Lilliefors
-    NormalityTest_AndersonDarlingNormal
-    NormalityTest_CramerVonMisesNormal
+    FittingTest.AIC
+    FittingTest.AICC
+    FittingTest.BIC
+    FittingTest.ChiSquared
+    FittingTest.Kolmogorov
+    FittingTest.Lilliefors
+    NormalityTest.AndersonDarlingNormal
+    NormalityTest.CramerVonMisesNormal
 
 Graphical tests
 ---------------
@@ -219,15 +219,15 @@ Graphical tests
     :toctree: _generated/
     :template: functionWithPlot.rst_t
 
-    VisualTest_DrawPairs
-    VisualTest_DrawPairsMarginals
-    VisualTest_DrawParallelCoordinates
-    VisualTest_DrawHenryLine
-    VisualTest_DrawKendallPlot
-    VisualTest_DrawLinearModel
-    VisualTest_DrawLinearModelResidual
-    VisualTest_DrawQQplot
-    VisualTest_DrawCDFplot
+    VisualTest.DrawPairs
+    VisualTest.DrawPairsMarginals
+    VisualTest.DrawParallelCoordinates
+    VisualTest.DrawHenryLine
+    VisualTest.DrawKendallPlot
+    VisualTest.DrawLinearModel
+    VisualTest.DrawLinearModelResidual
+    VisualTest.DrawQQplot
+    VisualTest.DrawCDFplot
 
 Hypothesis tests
 ----------------
@@ -236,14 +236,14 @@ Hypothesis tests
     :toctree: _generated/
     :template: function.rst_t
 
-    HypothesisTest_ChiSquared
-    HypothesisTest_FullPearson
-    HypothesisTest_FullSpearman
-    HypothesisTest_PartialPearson
-    HypothesisTest_PartialSpearman
-    HypothesisTest_Pearson
-    HypothesisTest_Spearman
-    HypothesisTest_TwoSamplesKolmogorov
+    HypothesisTest.ChiSquared
+    HypothesisTest.FullPearson
+    HypothesisTest.FullSpearman
+    HypothesisTest.PartialPearson
+    HypothesisTest.PartialSpearman
+    HypothesisTest.Pearson
+    HypothesisTest.Spearman
+    HypothesisTest.TwoSamplesKolmogorov
 
 Linear model tests
 ------------------
@@ -252,13 +252,13 @@ Linear model tests
     :toctree: _generated/
     :template: function.rst_t
 
-    LinearModelTest_LinearModelFisher
-    LinearModelTest_LinearModelResidualMean
-    LinearModelTest_LinearModelHarrisonMcCabe
-    LinearModelTest_LinearModelBreuschPagan
-    LinearModelTest_LinearModelDurbinWatson
-    LinearModelTest_FullRegression
-    LinearModelTest_PartialRegression
+    LinearModelTest.LinearModelFisher
+    LinearModelTest.LinearModelResidualMean
+    LinearModelTest.LinearModelHarrisonMcCabe
+    LinearModelTest.LinearModelBreuschPagan
+    LinearModelTest.LinearModelDurbinWatson
+    LinearModelTest.FullRegression
+    LinearModelTest.PartialRegression
 
 Model selection
 ---------------
@@ -267,11 +267,11 @@ Model selection
     :toctree: _generated/
     :template: function.rst_t
 
-    FittingTest_BestModelAIC
-    FittingTest_BestModelAICC
-    FittingTest_BestModelBIC
-    FittingTest_BestModelChiSquared
-    FittingTest_BestModelKolmogorov
-    FittingTest_BestModelLilliefors
+    FittingTest.BestModelAIC
+    FittingTest.BestModelAICC
+    FittingTest.BestModelBIC
+    FittingTest.BestModelChiSquared
+    FittingTest.BestModelKolmogorov
+    FittingTest.BestModelLilliefors
 
 

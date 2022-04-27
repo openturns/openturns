@@ -14,15 +14,14 @@ Estimate correlation coefficients
 # - SRRC: Standard Rank Regression Coefficient
 
 # %%
-from __future__ import print_function
-from openturns.usecases import ishigami_function as ishigami_function
+from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# To illustrate the usage of the method mentionned above, we define a set of X/Y data using the :ref:`Ishigami model <use-case-ishigami>`. This classical model is defined in a data class :
+# To illustrate the usage of the method mentioned above, we define a set of X/Y data using the :ref:`Ishigami model <use-case-ishigami>`. This classical model is defined in a data class :
 im = ishigami_function.IshigamiModel()
 
 # %%

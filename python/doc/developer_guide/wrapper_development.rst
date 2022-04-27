@@ -102,7 +102,7 @@ program with the help of openturns.coupling\_tools module::
 
 Some explanations of the code :
 
--  :py:meth:`~openturns.coupling_tools.replace` replace ``@E`` and ``@F`` occurence found
+-  :py:meth:`~openturns.coupling_tools.replace` replace ``@E`` and ``@F`` occurrence found
    in ``input_template.py`` file and write the result to ``infile``
    file. ``X[0]`` value will replace ``'@E'`` token and ``X[1]`` will
    replace ``'@F'`` token.

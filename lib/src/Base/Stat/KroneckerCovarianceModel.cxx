@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -179,7 +179,7 @@ Matrix KroneckerCovarianceModel::partialGradient(const Point &s, const Point &t)
 /* Is it safe to compute discretize in parallel? */
 Bool KroneckerCovarianceModel::isParallel() const
 {
-  return rho_.getImplementation()->isParallel();;
+  return rho_.getImplementation()->isParallel();
 }
 
 /* Computation of the covariance function, stationary interface

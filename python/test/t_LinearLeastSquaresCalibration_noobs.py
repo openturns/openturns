@@ -5,7 +5,6 @@ In this case, the LLSQ calibration performs as good as it can.
 Considers a case without observed inputs.
 """
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 

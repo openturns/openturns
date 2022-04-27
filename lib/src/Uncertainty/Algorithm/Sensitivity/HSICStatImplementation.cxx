@@ -3,7 +3,7 @@
 /**
  * @brief HSICStatImplementation implements the HSIC sensivity index for one marginal.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,10 +44,10 @@ HSICStatImplementation * HSICStatImplementation::clone() const
 
 /* Compute the HSIC index for one marginal*/
 Scalar HSICStatImplementation::computeHSICIndex(const Sample&,
-                                                const Sample&,
-                                                const CovarianceModel&,
-                                                const CovarianceModel&,
-                                                const SquareMatrix&) const
+    const Sample&,
+    const CovarianceModel&,
+    const CovarianceModel&,
+    const SquareMatrix&) const
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class such as HSICUStat or HSICVStat.";
 }
@@ -60,9 +60,9 @@ Bool HSICStatImplementation::isCompatibleWithConditionalAnalysis() const
 
 /* Compute the asymptotic p-value */
 Scalar HSICStatImplementation::computePValue(const Gamma&,
-                                             const UnsignedInteger,
-                                             const Scalar,
-                                             const Scalar) const
+    const UnsignedInteger,
+    const Scalar,
+    const Scalar) const
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class such as HSICUStat or HSICVStat.";
 }

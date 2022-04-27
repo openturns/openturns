@@ -2,7 +2,7 @@
 /**
  *  @brief MatrixImplementation implements the classical mathematical Matrix
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -108,6 +108,10 @@ public:
 
   /** MatrixImplementation transpose */
   MatrixImplementation transpose() const;
+
+  /** Resize */
+  using Collection<Scalar>::resize;
+  void resize(const UnsignedInteger newRowDim, const UnsignedInteger newColDim);
 
   /** MatrixImplementation reshape */
   MatrixImplementation reshape(const UnsignedInteger newRowDim,

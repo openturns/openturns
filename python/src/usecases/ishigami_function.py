@@ -2,7 +2,6 @@
 Use case : Ishigami test function
 =================================
 """
-from __future__ import print_function
 import openturns as ot
 import math as m
 
@@ -81,7 +80,7 @@ class IshigamiModel():
 
     Examples
     --------
-    >>> from openturns.usecases import ishigami_function as ishigami_function
+    >>> from openturns.usecases import ishigami_function
     >>> # Load the Ishigami model
     >>> im = ishigami_function.IshigamiModel()
     """

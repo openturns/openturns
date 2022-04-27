@@ -14,7 +14,6 @@ Create a customized distribution or copula
 # At least computeCDF should be overriden.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -140,7 +139,7 @@ class UniformNdPy(ot.PythonDistribution):
 
 
 # %%
-# Let us instanciate the distribution:
+# Let us instantiate the distribution:
 
 # %%
 distribution = ot.Distribution(UniformNdPy([5, 6], [7, 9]))

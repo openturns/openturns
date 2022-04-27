@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -350,7 +350,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
 
     if (outputDimension_ == 1)
     {
-      // The stationary property of this model allows to optimize the discretize operation
+      // The stationary property of this model allows one to optimize the discretize operation
       // over a regular time grid: the large covariance matrix is block-diagonal
       // Fill the matrix by block-diagonal
       // The main diagonal has a specific treatment as only its lower triangular part
@@ -815,12 +815,12 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const Sample & vertices
   if (outputDimension_ == 1)
   {
     CovarianceAssemblyFunction simple(*this, vertices);
-    covarianceHMatrix.assemble(simple, 'L');
+    covarianceHMatrix.assemble(simple, parameters, 'L');
   }
   else
   {
     CovarianceBlockAssemblyFunction block(*this, vertices);
-    covarianceHMatrix.assemble(block, 'L');
+    covarianceHMatrix.assemble(block, parameters, 'L');
   }
   return covarianceHMatrix;
 #else
@@ -846,12 +846,11 @@ HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Mesh 
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Sample & vertices,
     const HMatrixParameters & parameters) const
 {
-  // We suppose that covariance matrix is symmetric positive definite
-  // We do not catch InternalException
-  // Incremeant nugget factor to make matrix positive definite
-  // Maybe parameters need to be adapted.
+  // In-place operation
+  // First we assemble the matrix (discretize) --> M
+  // Second step we compute the factor
   HMatrix covarianceFactor = discretizeHMatrix(vertices, parameters);
-  covarianceFactor.factorize("LLt");
+  covarianceFactor.factorize(parameters.getFactorizationMethod());
   return covarianceFactor;
 }
 

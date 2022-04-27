@@ -4,7 +4,7 @@
  *         basis and eigenvalues of a given covariance model based on
  *         P1 Lagrange approximation.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -426,7 +426,8 @@ void KarhunenLoeveP1Algorithm::run()
     // Compute cumulatedVariance (i.e. sum of eigenvalues)
     for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
     {
-      eigenValues[i] = -eigenPairs[i].first;
+      // the eigenvalue can be close to zero but numerically negative
+      eigenValues[i] = std::max(-eigenPairs[i].first, 0.0);
       cumulatedVariance += eigenValues[i];
     }
     LOGDEBUG(OSS(false) << "eigenValues=" << eigenValues);
@@ -436,22 +437,20 @@ void KarhunenLoeveP1Algorithm::run()
     throw InternalException(HERE) << "unknown eigen-values solver: " << eigenValuesSolver;
   }
 
-  // Applying cut-off on spectrum
+  // Find the cut-off in the eigenvalues
   UnsignedInteger K = 0;
-  Scalar selectedVariance = 0.0;    // i.e. sum of eigenvalues selected after cut-off is applied
-  Point selectedEV;
-  LOGINFO("Extract the relevant eigenvalues");
-  while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance))
+  Scalar selectedVariance = 0.0; // sum of eigenvalues selected after cut-off is applied
+  do
   {
-    selectedEV.add(eigenValues[K]);
     selectedVariance += eigenValues[K];
     ++ K;
   }
-
-  LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << nev << " computed");
+  while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
+  LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
 
   // Reduce and rescale the eigenvectors
   MatrixImplementation projection(K, augmentedDimension);
+  Point selectedEV(K);
   std::copy(eigenValues.begin(), eigenValues.begin() + K, selectedEV.begin());
   Collection<Function> modes(0);
   ProcessSample modesAsProcessSample(mesh_, 0, dimension);

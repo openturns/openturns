@@ -22,8 +22,8 @@
     elif ot.{{ objname }}().__class__.__name__ == 'KernelMixture':
         kernel = ot.Uniform()
         sample = ot.Normal().getSample(5)
-        bandwith = [1.0]
-        distribution = ot.KernelMixture(kernel, bandwith, sample)
+        bandwidth = [1.0]
+        distribution = ot.KernelMixture(kernel, bandwidth, sample)
     elif ot.{{ objname }}().__class__.__name__ == 'MaximumDistribution':
         coll = [ot.Uniform(2.5, 3.5), ot.LogUniform(1.0, 1.2), ot.Triangular(2.0, 3.0, 4.0)]
         distribution = ot.MaximumDistribution(coll)

@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -73,6 +73,9 @@ public:
 
   /** The cardinal of indices of degree max <= maximumDegree */
   UnsignedInteger getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const;
+
+  /** Basis size from degree */
+  UnsignedInteger getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const;
 
   /** Dimension accessor */
   void setDimension(const UnsignedInteger dimension);

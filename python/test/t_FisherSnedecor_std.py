@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 from cmath import *
 
@@ -8,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = FisherSnedecor(5.5, 10.5)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

@@ -11,7 +11,6 @@ Test Normality
 # In this paragraph we perform a visual goodness-of-fit test for a univariate normal distribution using the Henry line test, which is the QQ plot adapted for Gaussian distributions.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -24,13 +23,13 @@ sample1 = distribution.getSample(100)
 
 # %%
 # We draw the Henry line plot and expect a good fitting :
-graph = ot.VisualTest_DrawHenryLine(sample1)
+graph = ot.VisualTest.DrawHenryLine(sample1)
 view = viewer.View(graph)
 
 # %%
 # For comparison sake e draw the Henry line plot for a Beta distribution. The result is expected to be bad.
 sample2 = ot.Beta(0.7, 0.9, 0.0, 2.0).getSample(100)
-graph = ot.VisualTest_DrawHenryLine(sample2)
+graph = ot.VisualTest.DrawHenryLine(sample2)
 view = viewer.View(graph)
 
 

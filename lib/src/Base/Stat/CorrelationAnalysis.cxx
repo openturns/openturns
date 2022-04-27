@@ -2,7 +2,7 @@
 /**
  * @brief CorrelationAnalysis implements the sensitivity analysis methods based on correlation coefficients
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,9 +25,6 @@
 #include "openturns/LinearLeastSquares.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-/* Default constructor */
-CorrelationAnalysis::CorrelationAnalysis() {}
 
 /* Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
 Point CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,

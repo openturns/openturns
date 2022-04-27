@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = Wishart(CovarianceMatrix(1), 3.0)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)

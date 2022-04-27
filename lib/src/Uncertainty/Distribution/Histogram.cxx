@@ -2,7 +2,7 @@
 /**
  *  @brief The Histogram distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -486,7 +486,7 @@ Graph Histogram::drawPDF(const UnsignedInteger pointNumber,
                          const Bool logScale) const
 {
   const UnsignedInteger lastIndex = cumulatedWidth_.getSize() - 1;
-  // Must prefix explicitely by the class name in order to avoid conflict with the methods in the upper class
+  // Must prefix explicitly by the class name in order to avoid conflict with the methods in the upper class
   return Histogram::drawPDF(first_ - 0.5 * width_[0], first_ + cumulatedWidth_[lastIndex] + 0.5 * width_[lastIndex], pointNumber, logScale);
 }
 

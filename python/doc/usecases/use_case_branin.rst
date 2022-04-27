@@ -55,15 +55,7 @@ In other words, the objective function is:
    f(x_1, x_2) = f_{Branin}(x_1, x_2) + \epsilon
 
 
-where :math:`\epsilon` is a random variable with gaussian distribution. 
-
-This time the AEI formulation is used, meaning that the objective has two outputs: the first one is the objective function value and the second one is the noise variance.
-
-Here we assume a constant noise variance: 
-
-.. math::
-   \sigma_{\epsilon} = 0.1.
-
+where :math:`\epsilon` is a Gaussian random variable with null mean and standard deviation :math:`\sigma_{\epsilon} = 0.1`.
 
 References
 ----------
@@ -85,7 +77,7 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import branin_function as branin_function
+    >>> from openturns.usecases import branin_function
     >>> # Load the Branin-Hoo test case
     >>> bm = branin_function.BraninModel()
 

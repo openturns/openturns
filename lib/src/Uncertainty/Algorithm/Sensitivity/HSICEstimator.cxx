@@ -2,7 +2,7 @@
 /**
  * @brief HSICEstimator implements the sensivity indices based on HSIC
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -85,15 +85,15 @@ Graph HSICEstimator::drawPValuesPermutation() const
 }
 
 /* Get the covariance models */
-HSICEstimatorImplementation::CovarianceModelCollection HSICEstimator::getCovarianceList() const
+HSICEstimatorImplementation::CovarianceModelCollection HSICEstimator::getCovarianceModelCollection() const
 {
-  return getImplementation()->getCovarianceList();
+  return getImplementation()->getCovarianceModelCollection();
 }
 
 /* Set the covariance models */
-void HSICEstimator::setCovarianceList(const CovarianceModelCollection & coll)
+void HSICEstimator::setCovarianceModelCollection(const CovarianceModelCollection & coll)
 {
-  getImplementation()->setCovarianceList(coll);
+  getImplementation()->setCovarianceModelCollection(coll);
 }
 
 /* Get the input sample */

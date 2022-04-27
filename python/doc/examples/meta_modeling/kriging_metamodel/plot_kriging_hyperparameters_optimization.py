@@ -69,7 +69,8 @@ I.setDescription("I")
 dim = 4  # number of inputs
 R = ot.CorrelationMatrix(dim)
 R[2, 3] = -0.2
-myCopula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
+myCopula = ot.NormalCopula(
+    ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
 myDistribution = ot.ComposedDistribution([E, F, L, I], myCopula)
 
 # %%
@@ -103,7 +104,8 @@ scale_max_factor = 4.0  # Must be > 1, tune this to match your problem
 scale_min_factor = 0.1  # Must be < 1, tune this to match your problem
 maximum_scale_bounds = scale_max_factor * x_range
 minimum_scale_bounds = scale_min_factor * x_range
-scaleOptimizationBounds = ot.Interval(minimum_scale_bounds, maximum_scale_bounds)
+scaleOptimizationBounds = ot.Interval(
+    minimum_scale_bounds, maximum_scale_bounds)
 print("scaleOptimizationBounds")
 print(scaleOptimizationBounds)
 
@@ -303,7 +305,7 @@ def printCovarianceParameterChange(covarianceModel1, covarianceModel2):
 printCovarianceParameterChange(covarianceModel, notUpdatedCovarianceModel)
 
 # %%
-# We see that the parameters did not change *at all*: disabling the optimization allows to keep a constant covariance model. In a practical algorithm, we may, for example, add a block of 10 new points before updating the parameters of the covariance model. At this point, we may reuse the previous covariance model so that the optimization starts from a better point, compared to the parameters default values. This will reduce the cost of the optimization.
+# We see that the parameters did not change *at all*: disabling the optimization allows one to keep a constant covariance model. In a practical algorithm, we may, for example, add a block of 10 new points before updating the parameters of the covariance model. At this point, we may reuse the previous covariance model so that the optimization starts from a better point, compared to the parameters default values. This will reduce the cost of the optimization.
 
 # %%
 # Configure the local optimization solver
@@ -328,7 +330,8 @@ finetune_covariance_model = result.getCovarianceModel()
 print(finetune_covariance_model)
 
 # %%
-printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model)
+printCovarianceParameterChange(
+    finetune_covariance_model, basic_covariance_model)
 
 
 # %%
@@ -347,9 +350,7 @@ Y_train = model(X_train)
 # First, we create a multivariate distribution, based on independent `Uniform` marginals which have the bounds required by the covariance model.
 
 # %%
-distributions = ot.DistributionCollection()
-for i in range(dim):
-    distributions.add(ot.Uniform(lbounds[i], ubounds[i]))
+distributions = [ot.Uniform(lbounds[i], ubounds[i]) for i in range(dim)]
 boundedDistribution = ot.ComposedDistribution(distributions)
 
 # %%
@@ -360,7 +361,8 @@ K = 25  # design size
 LHS = ot.LHSExperiment(boundedDistribution, K)
 LHS.setAlwaysShuffle(True)
 SA_profile = ot.GeometricProfile(10.0, 0.95, 20000)
-LHS_optimization_algo = ot.SimulatedAnnealingLHS(LHS, ot.SpaceFillingC2(), SA_profile)
+LHS_optimization_algo = ot.SimulatedAnnealingLHS(
+    LHS, ot.SpaceFillingC2(), SA_profile)
 LHS_optimization_algo.generate()
 LHS_design = LHS_optimization_algo.getResult()
 starting_points = LHS_design.getOptimalDesign()
@@ -396,7 +398,8 @@ finetune_covariance_model = result.getCovarianceModel()
 print(finetune_covariance_model)
 
 # %%
-printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model)
+printCovarianceParameterChange(
+    finetune_covariance_model, basic_covariance_model)
 
 # %%
 # We see that there are no changes in the estimated parameters. This shows that the first optimization of the parameters worked fine.

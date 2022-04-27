@@ -6,7 +6,6 @@ Probabilistic design of experiments
 # In this example we are going to expose the available probabilistic design of experiments generated according to a specified distribution and a specified number of points.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import math as m
 import openturns.viewer as viewer

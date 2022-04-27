@@ -4,7 +4,7 @@
  *         basis and eigenvalues of a given covariance model based on
  *         SVD decomposition of a process sample.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -310,15 +310,19 @@ void KarhunenLoeveSVDAlgorithm::run()
     eigenValues[i] = svd[i] * svd[i];
     cumulatedVariance += eigenValues[i];
   }
-  LOGINFO("Extract the relevant eigenpairs");
-  // Start at 0 if the given threshold is large (eg greater than 1)
-  UnsignedInteger K = 0;
-  const UnsignedInteger nbModesMax = std::min(eigenValues.getSize(), getNbModes());
+
   // Find the cut-off in the eigenvalues
-  while ((K < nbModesMax) && (eigenValues[K] >= threshold_ * cumulatedVariance))
+  UnsignedInteger K = 0;
+  Scalar selectedVariance = 0.0; // sum of eigenvalues selected after cut-off is applied
+  const UnsignedInteger nbModesMax = std::min(eigenValues.getSize(), getNbModes());
+  do
+  {
+    selectedVariance += eigenValues[K];
     ++ K;
-  LOGINFO(OSS() << "Selected " << K << " eigenvalues");
-  LOGINFO("Create eigenmodes values");
+  }
+  while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
+  LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
+
   // Stores the eigenmodes values in-place to avoid wasting memory
   MatrixImplementation & eigenModesValues = U;
   if (uniformVerticesWeights_) eigenModesValues *= 1.0 / std::sqrt(verticesWeights_[0]);

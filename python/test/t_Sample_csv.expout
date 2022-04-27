@@ -23,3 +23,14 @@ aSample description empty component=     [ data_0 data_1 data_2 ]
 0 : [ 1      2      3      ]
 aSample description empty component=     [ data_0 data_1 data_2 ]
 0 : [ 1      2      3      ]
+-2.4000000000000000e-08
+nan
+nan
+nan
+inf
+inf
+inf
+-inf
+
+aSample with nan/inf (text)= class=Sample name=sample.csv implementation=class=SampleImplementation name=sample.csv size=8 dimension=1 description=[data_0] data=[[-2.4e-08],[nan],[nan],[nan],[inf],[inf],[inf],[-inf]]
+aSample with nan/inf  (csv)= class=Sample name=sample.csv implementation=class=SampleImplementation name=sample.csv size=8 dimension=1 description=[data_0] data=[[-2.4e-08],[nan],[nan],[nan],[inf],[inf],[inf],[-inf]]

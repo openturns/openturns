@@ -3,7 +3,7 @@
  *  @file  HMatrixFactory.cxx
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,20 +48,6 @@ HMatrixFactory * HMatrixFactory::clone() const
 {
   return new HMatrixFactory( *this );
 }
-
-
-/** Tell whether HMat support is available */
-Bool
-HMatrixFactory::IsAvailable()
-{
-  LOGWARN(OSS() << "HMatrixFactory.IsAvailable is deprecated, use PlatformInfo.HasFeature(hmat)");
-#ifdef OPENTURNS_HAVE_HMAT
-  return true;
-#else
-  return false;
-#endif
-}
-
 
 HMatrix
 HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters)

@@ -6,8 +6,7 @@ Estimate a probability with Latin Hypercube Sampling
 # In this example we show how to use the `LHS` algorithm to estimate the probability of an event. We consider the :ref:`axial stressed beam <use-case-stressed-beam>` example.
 
 # %%
-from __future__ import print_function
-from openturns.usecases import stressed_beam as stressed_beam
+from openturns.usecases import stressed_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

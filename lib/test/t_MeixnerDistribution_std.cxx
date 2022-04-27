@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class MeixnerDistribution for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +39,7 @@ int main(int, char *[])
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumRelativeError", 1.0e-6 );
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumConstraintError", 1.0e-6 );
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumObjectiveError", 1.0e-6 );
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     MeixnerDistribution distribution(1.5, 0.5, 2.5, -0.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;

@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationAlgorithm provides capabilities to solve optimization problems
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,6 +27,7 @@
 #include "openturns/Ipopt.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
+#include "openturns/Pagmo.hxx"
 #include "openturns/PlatformInfo.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -304,7 +305,8 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
   names.add("TNC");
   if (PlatformInfo::HasFeature("nlopt"))
     names.add(NLopt::GetAlgorithmNames());
-
+  if (PlatformInfo::HasFeature("pagmo"))
+    names.add(Pagmo::GetAlgorithmNames());
   return names;
 }
 

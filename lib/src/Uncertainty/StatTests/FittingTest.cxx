@@ -2,7 +2,7 @@
 /**
  *  @brief StatTest implements statistical tests
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,12 +35,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-/* Default constructor */
-FittingTest::FittingTest()
-{
-  // Nothing to do
-}
 
 /* Best model for a given numerical sample by AIC */
 Distribution FittingTest::BestModelAIC(const Sample &sample,

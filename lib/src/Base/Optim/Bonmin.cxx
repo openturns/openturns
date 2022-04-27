@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Bonmin allows to describe a MINLP optimization algorithm
+ *  @brief Bonmin allows one to describe a MINLP optimization algorithm
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,19 +58,6 @@ Bonmin::Bonmin( OptimizationProblem & problem,
 Bonmin * Bonmin::clone() const
 {
   return new Bonmin(*this);
-}
-
-
-
-/** Bonmin static methods */
-Bool Bonmin::IsAvailable()
-{
-  LOGWARN(OSS() << "Bonmin.IsAvailable is deprecated, use PlatformInfo.HasFeature(bonmin)");
-#ifdef OPENTURNS_HAVE_BONMIN
-  return true;
-#else
-  return false;
-#endif
 }
 
 Description Bonmin::GetAlgorithmNames()

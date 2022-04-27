@@ -205,7 +205,7 @@ reducedLogLikelihood : :class:`~openturns.Function`
 Notes
 -----
 We use the same notations as in :class:`~openturns.CovarianceModel` and :class:`~openturns.GeneralLinearModelAlgorithm` : :math:`\vect{\theta}` refers to the scale parameters and
-:math:`\vect{\sigma}` the amplitude. We can consider three situtations here:
+:math:`\vect{\sigma}` the amplitude. We can consider three situations here:
 
   - Output dimension is :math:`\geq 2`. In that case, we get the **full** log-likelihood function :math:`\mathcal{L}(\vect{\theta}, \vect{\sigma})`.
 

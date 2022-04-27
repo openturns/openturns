@@ -56,7 +56,7 @@ of cases, among the :math:`N` samples of :math:`\vect{X}`, for which the event
 By the law of large numbers, we know that this estimation converges to the
 required value :math:`P_f` as the sample size :math:`N` tends to infinity.
 
-The Central Limit Theorem allows to build an asymptotic confidence interval
+The Central Limit Theorem allows one to build an asymptotic confidence interval
 using the normal limit distribution as follows:
 
 .. math::
@@ -96,7 +96,7 @@ of cases, among the :math:`N` samples of :math:`\vect{X}`, for which the event
 By the law of large numbers, we know that this estimation converges to the
 required value :math:`P_f` as the sample size :math:`N` tends to infinity.
 
-The Central Limit Theorem allows to build an asymptotic confidence interval
+The Central Limit Theorem allows one to build an asymptotic confidence interval
 using the normal limit distribution as follows:
 
 .. math::

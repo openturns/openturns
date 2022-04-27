@@ -127,7 +127,7 @@ inputSample : :class:`~openturns.Sample`
 Returns
 -------
 outputSample : :class:`~openturns.Sample`
-    Ouput sample that realized the event."
+    Output sample that realized the event."
 
 // ---------------------------------------------------------------------------
 
@@ -164,7 +164,7 @@ prob : :class:`~openturns.Point`
 %feature("docstring") OT::SubsetSampling::setMinimumProbability
 "Minimum probability accessor.
 
-Allows to stop the algorithm if the probability becomes too small.
+Allows one to stop the algorithm if the probability becomes too small.
 
 Parameters
 ----------

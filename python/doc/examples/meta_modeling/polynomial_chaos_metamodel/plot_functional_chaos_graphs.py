@@ -7,7 +7,6 @@ Polynomial chaos graphs
 # More precisely, we draw some members of the 1D polynomial family.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -23,7 +22,7 @@ def drawFamily(factory, degreeMax=5):
     titleJacobi = factory.__class__.__name__.replace(
         'Factory', '') + " polynomials"
 
-    # Create an empty graph which will be fullfilled
+    # Create an empty graph which will be fulfilled
     # with curves
     graphJacobi = ot.Graph(
         titleJacobi, "z", "polynomial values", True, "topright")

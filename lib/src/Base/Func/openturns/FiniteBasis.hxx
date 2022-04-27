@@ -2,7 +2,7 @@
 /**
  *  @brief This is an abstract class for basis
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class FiniteBasis
  *
- * Allows to use a NMF collection as a Basis, required to use chaos algo, used in TrendFactory
+ * Allows one to use a NMF collection as a Basis, required to use chaos algo, used in TrendFactory
  */
 
 class OT_API FiniteBasis

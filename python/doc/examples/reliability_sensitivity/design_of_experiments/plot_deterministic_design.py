@@ -17,7 +17,6 @@ Deterministic design of experiments
 # Functionally speaking, a design is a `Sample` that lies within the unit cube :math:`(0,1)^d` and can be scaled and moved to cover the desired box.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

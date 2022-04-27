@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -16,8 +15,8 @@ def cleanScalar(inScalar):
 try:
 
     # Default constructor
-    myDefautModel = UserDefinedSpectralModel()
-    print("myDefautModel = ", myDefautModel)
+    myDefaultModel = UserDefinedSpectralModel()
+    print("myDefaultModel = ", myDefaultModel)
 
     # Default dimension parameter to evaluate the model
     dimension = 2

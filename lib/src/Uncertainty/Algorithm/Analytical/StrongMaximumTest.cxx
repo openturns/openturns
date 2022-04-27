@@ -2,7 +2,7 @@
 /**
  *  @brief StrongMaxTest implements an algorithm to check if a given design point
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,7 +60,7 @@ StrongMaximumTest::StrongMaximumTest()
 
 /*
  * @class StrongMaximumTest
- * StrongMaximumTest allows to validate a design point
+ * StrongMaximumTest allows one to validate a design point
  */
 
 /* Standard constructor */

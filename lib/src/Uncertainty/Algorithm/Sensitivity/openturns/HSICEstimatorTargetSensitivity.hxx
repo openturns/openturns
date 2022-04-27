@@ -3,7 +3,7 @@
 /**
  * @brief HSICEstimatorTargetSensitivity implements the sensivity analysis method based on HSIC indices
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,7 +50,7 @@ public:
   HSICEstimatorTargetSensitivity();
 
   /** Constructor */
-  HSICEstimatorTargetSensitivity(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y, const HSICStat & estimatorType, const Function & filterFunction);
+  HSICEstimatorTargetSensitivity(const CovarianceModelCollection & covarianceModelCollection, const Sample & X, const Sample & Y, const HSICStat & estimatorType, const Function & filterFunction);
 
   /** Virtual constructor */
   HSICEstimatorTargetSensitivity* clone() const override;

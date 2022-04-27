@@ -4,7 +4,7 @@ Kriging: metamodel of the Branin-Hoo function
 """
 # %%
 # As a popular use case in optimization we briefly present the construction of a metamodel
-# of the Branin (also refered to as Branin-Hoo) function.
+# of the Branin (also referred to as Branin-Hoo) function.
 #
 
 # %%
@@ -12,7 +12,7 @@ from numpy import sqrt
 import openturns as ot
 import openturns.viewer as viewer
 import openturns.viewer as otv
-from openturns.usecases import branin_function as branin_function
+from openturns.usecases import branin_function
 from matplotlib import pylab as plt
 
 

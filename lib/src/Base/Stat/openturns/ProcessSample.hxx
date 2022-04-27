@@ -2,7 +2,7 @@
 /**
  *  @brief ProcessSample class
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -71,6 +71,13 @@ public:
   void add(const Field & field);
 
   void add(const Sample & sample);
+
+  /** Erase elements */
+  void erase(const UnsignedInteger index);
+  void erase(const UnsignedInteger first, const UnsignedInteger last);
+
+  /** Clear data */
+  void clear();
 
   /** Field accessor */
   void setField (const Field & field, const UnsignedInteger i);

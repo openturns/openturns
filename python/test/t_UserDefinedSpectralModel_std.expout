@@ -1,4 +1,4 @@
-myDefautModel =  frequency=RegularGrid(start=0, step=1, n=0) dimension=0 DSPCollection=[]
+myDefaultModel =  frequency=RegularGrid(start=0, step=1, n=0) dimension=0 DSPCollection=[]
 myModel= frequency=RegularGrid(start=0, step=0.4, n=5) dimension=2 DSPCollection=[[[    (0.5,0) (1,0)      ]
  [ (1,0)      (2,0)      ]],[[ (0.0683382,0) (0.136676,0)  ]
  [ (0.136676,0)  (0.273353,0)  ]],[[ (0.0190359,0) (0.0380718,0) ]

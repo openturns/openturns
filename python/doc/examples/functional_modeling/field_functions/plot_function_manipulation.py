@@ -19,7 +19,6 @@ Function manipulation
 # - to get a graphical representation
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -84,7 +83,7 @@ f.clearHistory()
 f.disableHistory()
 
 # %%
-# Enable the cache mecanism
+# Enable the cache mechanism
 f4 = ot.MemoizeFunction(func4)
 f4.enableCache()
 for i in range(10):

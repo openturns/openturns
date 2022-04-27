@@ -220,6 +220,7 @@ Refer to :ref:`copula`.
     EmpiricalBernsteinCopula
     ExtremeValueCopula
     JoeCopula
+    GalambosCopula
     MarshallOlkinCopula
     MaximumEntropyOrderStatisticsCopula
 
@@ -272,25 +273,25 @@ Low-level distribution functions
     :toctree: _generated/
     :template: function.rst_t
 
-    DistFunc_dBinomial
-    DistFunc_dHypergeometric
-    DistFunc_dNonCentralChiSquare
-    DistFunc_dNonCentralStudent
-    DistFunc_dPoisson
-    DistFunc_eZ1
-    DistFunc_kFactor
-    DistFunc_kFactorPooled
-    DistFunc_logdBinomial
-    DistFunc_logdHypergeometric
-    DistFunc_logdPoisson
-    DistFunc_pHypergeometric
-    DistFunc_pPearsonCorrelation
-    DistFunc_dNormal
-    DistFunc_pNormal
-    DistFunc_qNormal
-    DistFunc_rBinomial
-    DistFunc_rDiscrete
-    DistFunc_rHypergeometric
-    DistFunc_rNormal
-    DistFunc_rPoisson
+    DistFunc.dBinomial
+    DistFunc.dHypergeometric
+    DistFunc.dNonCentralChiSquare
+    DistFunc.dNonCentralStudent
+    DistFunc.dPoisson
+    DistFunc.eZ1
+    DistFunc.kFactor
+    DistFunc.kFactorPooled
+    DistFunc.logdBinomial
+    DistFunc.logdHypergeometric
+    DistFunc.logdPoisson
+    DistFunc.pHypergeometric
+    DistFunc.pPearsonCorrelation
+    DistFunc.dNormal
+    DistFunc.pNormal
+    DistFunc.qNormal
+    DistFunc.rBinomial
+    DistFunc.rDiscrete
+    DistFunc.rHypergeometric
+    DistFunc.rNormal
+    DistFunc.rPoisson
 

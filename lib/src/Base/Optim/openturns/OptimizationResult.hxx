@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationResult implements the result of an algorithm for solving an optimization problem
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ class OT_API OptimizationResult
   friend class OptimizationAlgorithmImplementation;
 
 public:
-
+  typedef Collection<Sample> SampleCollection;
 
   /** Default constructor */
   OptimizationResult();
@@ -54,13 +54,21 @@ public:
   /** Virtual constructor */
   OptimizationResult * clone() const override;
 
-  /** OptimalPoint accessors */
+  /** Optimal point accessor */
   void setOptimalPoint(const Point & optimalPoint);
   Point getOptimalPoint() const;
 
   /** Optimal value accessor */
   void setOptimalValue(const Point & optimalValue);
   Point getOptimalValue() const;
+
+  /** Final points accessor */
+  void setFinalPoints(const Sample & finalPoints);
+  Sample getFinalPoints() const;
+
+  /** Final values accessor */
+  void setFinalValues(const Sample & finalValues);
+  Sample getFinalValues() const;
 
   /** Evaluation number accessor */
   void setEvaluationNumber(const UnsignedInteger evaluationNumber);
@@ -121,6 +129,10 @@ public:
   /** Draw optimal value graph */
   Graph drawOptimalValueHistory() const;
 
+  /** Pareto fronts accessor */
+  void setParetoFrontsIndices(const IndicesCollection & indices);
+  IndicesCollection getParetoFrontsIndices() const;
+
 protected:
   /** Absolute error accessor */
   void setAbsoluteError(const Scalar absoluteError);
@@ -154,6 +166,12 @@ private:
   Compact inputHistory_;
   Compact outputHistory_;
   OptimizationProblem problem_;
+
+  Sample finalPoints_;
+  Sample finalValues_;
+
+  // pareto fronts indices, for multi-objective optimization
+  IndicesCollection paretoFrontsIndices_;
 
 }; // class OptimizationResult
 

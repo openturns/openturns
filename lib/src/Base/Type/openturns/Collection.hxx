@@ -2,7 +2,7 @@
 /**
  *  @brief Collection defines top-most collection strategies
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -146,8 +146,8 @@ public:
 
   /** Constructor from a range of elements */
   template <typename InputIterator>
-  Collection(const InputIterator first,
-             const InputIterator last)
+  Collection(InputIterator first,
+             InputIterator last)
     : coll__(first, last)
   {
     // Nothing to do
@@ -232,6 +232,20 @@ public:
     return false;
   }
 
+  inline
+  Collection<T> select(const Collection<UnsignedInteger> & marginalIndices) const
+  {
+    Collection<T> marginalCollection(marginalIndices.getSize());
+    for (UnsignedInteger i = 0; i < marginalIndices.getSize(); ++ i)
+    {
+      const UnsignedInteger index = marginalIndices[i];
+      if (index >= coll__.size())
+        throw OutOfBoundException(HERE) << "Selection index is out of range (" << index << ") as size=" << coll__.size();
+      marginalCollection[i] = coll__[index];
+    }
+    return marginalCollection;
+  }
+
   /* Method __getitem__() is for Python */
   inline
   T __getitem__(SignedInteger i) const
@@ -314,7 +328,7 @@ public:
     return coll__.empty();
   }
 
-  /** find returns the index of the first occurence of the value */
+  /** find returns the index of the first occurrence of the value */
   UnsignedInteger find(const T & val) const
   {
     return std::find(coll__.begin(), coll__.end(), val) - coll__.begin();
@@ -378,6 +392,11 @@ public:
   UnsignedInteger elementSize() const
   {
     return sizeof(T);
+  }
+
+  inline InternalType toStdVector() const
+  {
+    return coll__;
   }
 #endif
 

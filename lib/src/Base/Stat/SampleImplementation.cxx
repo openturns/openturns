@@ -2,7 +2,7 @@
 /**
  *  @brief The class SampleImplementation implements blank free samples
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -644,15 +644,13 @@ String SampleImplementation::storeToTemporaryFile() const
   {
     Scalar value = data_[index];
     ++index;
-    Bool isNaN = value != value;
-    if (isNaN) dataFile << '\"' << value << '\"';
+    if (SpecFunc::IsNaN(value)) dataFile << '\"' << value << '\"';
     else dataFile << value;
     for (UnsignedInteger j = 1; j < dimension_; ++j)
     {
       value = data_[index];
       ++index;
-      isNaN = value != value;
-      if (isNaN) dataFile << ' ' << '\"' << value << '\"';
+      if (SpecFunc::IsNaN(value)) dataFile << ' ' << '\"' << value << '\"';
       else dataFile << ' ' << value;
     }
     dataFile << "\n";
@@ -675,7 +673,7 @@ String SampleImplementation::streamToRFormat() const
     {
       const Scalar value = data_[index];
       index += dimension_;
-      const Bool isNaN = value != value;
+      const Bool isNaN = SpecFunc::IsNaN(value);
       oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
     }
   }
@@ -2291,13 +2289,7 @@ Pointer<SampleImplementation> SampleImplementation::getMarginal(const Indices & 
 
   // If the sample has a description, extract the marginal description
   if (!p_description_.isNull())
-  {
-    const Description description(getDescription());
-    Description marginalDescription(outputDimension);
-    for (UnsignedInteger i = 0; i < outputDimension; ++ i)
-      marginalDescription[i] = description[indices[i]];
-    marginalSample->setDescription(marginalDescription);
-  }
+    marginalSample->setDescription(getDescription().select(indices));
 
   for (UnsignedInteger i = 0; i < size_; ++i)
   {

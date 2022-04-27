@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all EmpiricalBernsteinCopulas
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -393,7 +393,7 @@ Scalar EmpiricalBernsteinCopula::computeConditionalPDF(const Scalar x,
     allConditioningAtomPDF[i] = conditioningAtomPDF;
     conditioningPDF += conditioningAtomPDF;
   }
-  // Should not occur except if underflow occured
+  // Should not occur except if underflow occurred
   if (conditioningPDF <= 0.0) return 0.0;
   // Second, the conditioned part
   Scalar conditionedPDF = 0.0;
@@ -483,7 +483,7 @@ Scalar EmpiricalBernsteinCopula::computeConditionalCDF(const Scalar x,
     allConditioningAtomPDF[i] = conditioningAtomPDF;
     conditioningPDF += conditioningAtomPDF;
   }
-  // Should not occur except if underflow occured
+  // Should not occur except if underflow occurred
   if (conditioningPDF <= 0.0) return 0.0;
   // Second, the conditioned part
   Scalar conditionedCDF = 0.0;

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 from math import sqrt
@@ -290,6 +289,9 @@ for model in coll:
     test_scalar_model(model)
 
 # 13) Isotropic covariance model
+
+myIsotropicKernel = ot.IsotropicCovarianceModel()
+test_model(myIsotropicKernel)
 
 scale = 3.5
 amplitude = 1.5

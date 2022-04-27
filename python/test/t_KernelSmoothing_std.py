@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 from math import *
 
 ot.TESTPREAMBLE()
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 dim = 2
 meanPoint = [0.5, -0.5]
 sigma = [2.0, 3.0]
@@ -174,7 +173,7 @@ print(smoothed.getSample(3))
 distribution = ot.Normal()
 kernel = ot.Normal()
 factory = ot.KernelSmoothing(kernel)
-ot.ResourceMap_SetAsScalar("KernelSmoothing-CutOffPlugin", 3.0)
+ot.ResourceMap.SetAsScalar("KernelSmoothing-CutOffPlugin", 3.0)
 ot.RandomGenerator.SetSeed(8457)
 sample = distribution.getSample(30)
 h = factory.computePluginBandwidth(sample)[0]

@@ -2,7 +2,7 @@
 /**
  *  @brief The class builds generalized linear models
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -756,7 +756,7 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
     covarianceCholeskyFactorHMatrix_.assemble(block, 'L');
   }
   // Factorize
-  covarianceCholeskyFactorHMatrix_.factorize("LLt");
+  covarianceCholeskyFactorHMatrix_.factorize(hmatrixParameters.getFactorizationMethod());
   // y corresponds to output data
   // The PersistentCollection is returned as Point with the right memory map
   Point y(outputSample_.getImplementation()->getData());

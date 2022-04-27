@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 
@@ -56,7 +55,7 @@ print("Quantile      =", quantile)
 print("Quantile (ref)=", ref.computeQuantile(0.5))
 print("CDF(quantile) =%.5f" % distribution.computeCDF(quantile))
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 R = ot.CorrelationMatrix(3)
 R[0, 1] = 0.5
 R[0, 2] = 0.25

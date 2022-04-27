@@ -2,7 +2,7 @@
 /**
  *  @brief The Dirac distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -347,20 +347,10 @@ Distribution Dirac::getMarginal(const Indices & indices) const
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
-  const UnsignedInteger outputDimension = indices.getSize();
-  Point pointMarginal(outputDimension);
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    pointMarginal[i] = point_[index_i];
-    marginalDescription[i] = description[index_i];
-  }
-  Dirac::Implementation marginal(new Dirac(pointMarginal));
-  marginal->setDescription(marginalDescription);
+  Dirac::Implementation marginal(new Dirac(point_.select(indices)));
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
-} // getMarginal(Indices)
+}
 
 /* Check if the distribution is elliptical */
 Bool Dirac::isElliptical() const

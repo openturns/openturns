@@ -2,7 +2,7 @@
 /*
  * @brief Graph implements graphic devices for plotting through R
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -301,7 +301,7 @@ String GraphImplementation::getGridColor() const
   return gridColor_;
 }
 
-/* Accesor for xTitle */
+/* Accessor for xTitle */
 String GraphImplementation::getXTitle() const
 {
   return xTitle_;
@@ -325,13 +325,13 @@ void GraphImplementation::setYTitle(const String & title)
   yTitle_ = title;
 }
 
-/* Accesor for title */
+/* Accessor for title */
 String GraphImplementation::getTitle() const
 {
   return title_;
 }
 
-/* Accesor for title */
+/* Accessor for title */
 void GraphImplementation::setTitle(const String & title)
 {
   title_ = title;

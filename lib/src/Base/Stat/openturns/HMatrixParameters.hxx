@@ -4,7 +4,7 @@
  *  @brief This file supplies support for HMat. It stores parameters used by
  *         HMat applications
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,6 +63,11 @@ public:
   String getCompressionMethod() const;
   UnsignedInteger getCompressionMethodAsUnsignedInteger() const;
 
+  /** accessor for factorization method */
+  void setFactorizationMethod(const String & factorization);
+  String getFactorizationMethod() const;
+
+
   /* String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
@@ -79,7 +84,7 @@ private:
   Scalar admissibilityFactor_;
   String clusteringAlgorithm_;
   String compressionMethod_;
-
+  String factorizationMethod_;
 };
 
 

@@ -1,125 +1,40 @@
 #!/usr/bin/make -f
 
-ifeq ($(findstring parallel=,$(DEB_BUILD_OPTIONS)),)
-	export DEB_BUILD_OPTIONS+=parallel=$(shell getconf _NPROCESSORS_ONLN)
-endif
-$(info DEB_BUILD_OPTIONS:$(origin DEB_BUILD_OPTIONS)=$(DEB_BUILD_OPTIONS))
-
-ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-	test_makeflags = -j$(NUMJOBS)
-endif
-
-cppflags := $(shell dpkg-buildflags --get CPPFLAGS)
-cflags := $(shell dpkg-buildflags --get CFLAGS) $(cppflags)
-cxxflags := $(shell dpkg-buildflags --get CXXFLAGS) $(cppflags)
-fflags := $(shell dpkg-buildflags --get FFLAGS)
-ldflags := $(shell dpkg-buildflags --get LDFLAGS)
-ldflags += -Wl,--as-needed
-
-ifeq ($(shell dpkg --print-architecture),armel)
-    cflags := $(subst -O2,-O1,$(cflags))
-    cxxflags := $(subst -O2,-O1,$(cxxflags))
-    fflags := $(subst -O2,-O1,$(fflags))
-endif
-ifeq ($(shell dpkg --print-architecture),armhf)
-    cflags := $(subst -O2,-O1,$(cflags))
-    cxxflags := $(subst -O2,-O1,$(cxxflags))
-    fflags := $(subst -O2,-O1,$(fflags))
-endif
-ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), i386 kfreebsd-i386 hurd-i386))
-    cflags += -O0 -ffloat-store
-    cxxflags += -ffloat-store
-endif
-ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), i386 amd64 ia64))
-    with_tbb := -DUSE_TBB:BOOL=ON
-else
-    with_tbb := -DUSE_TBB:BOOL=OFF
-endif
-
-# Disable NLopt_std tests on i386, it raises a roundoff-limited exception with AUGLAG_EQ algorithm
-ifeq ($(shell dpkg --print-architecture),i386)
-    test_discardflags := -E NLopt_std
-endif
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+include /usr/share/dpkg/buildflags.mk
+CFLAGS+=$(CPPFLAGS)
+CXXFLAGS+=$(CPPFLAGS)
+DPKG_EXPORT_BUILDFLAGS = 1
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 PY3VER = $(shell py3versions -d)
-PYALL = $(PY3VER)
-
 BUILD_DATE = $(shell date --utc --date="@$(SOURCE_DATE_EPOCH)" "+%a, %d %b %Y %H:%M:%S %z")
 
 %:
-ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), mips mipsel))
-	$(error This package requires more than 1GB RAM; do not build on mips/mipsel)
-endif
-	dh $@ --buildsystem=cmake --with python3 --parallel
+	dh $@ --buildsystem=cmake --with python3
 
-override_dh_auto_configure: $(PYALL:python%=cmake-configure-%) \
-
-cmake-configure-%:
+override_dh_auto_configure:
 	dh_auto_configure -Bbuild-python$* -- \
-            $(with_tbb) \
             -Dot_configure_date:STRING='$(BUILD_DATE)' \
             -DUSE_SPHINX:BOOL=OFF \
-            -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++ \
-            -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc \
-            -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
-            -DCMAKE_C_FLAGS_RELWITHDEBINFO:STRING='$(cflags)' \
-            -DCMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING='$(cxxflags)' \
-            -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
-            -DCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
-            -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
-            -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.18 \
+            -DCMAKE_INSTALL_LIBDIR:PATH="/usr/lib/$(DEB_HOST_MULTIARCH)" \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
-            -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES:STRING='-j32' \
+            -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
             -DSWIG_COMPILE_FLAGS:STRING='-O1' \
-            -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python$* \
-            -DPYTHON_INCLUDE_DIR:PATH=$$(python$*-config --includes | sed -e 's/ .*//' -e 's/^-I//') \
-            -DPYTHON_INCLUDE_DIR2:PATH=$$(python$*-config --includes | sed -e 's/ .*//' -e 's/^-I//') \
-            -DPYTHON_LIBRARY:PATH=$$(python$*-config --ldflags | sed -e 's/ .*//' -e 's/^-L//')/libpython$*.so
+            -DPYTHON_SITE_PACKAGES:PATH="lib/$(PY3VER)/site-packages"
 
-override_dh_auto_build: $(PYALL:python%=cmake-build-%)
-
-cmake-build-%:
-	$(MAKE) $(test_makeflags) -C build-python$*/lib
+override_dh_auto_build:
+	$(MAKE) -j4 -C build-python$*/lib
 	$(MAKE) -j1 -C build-python$*/python
-	$(MAKE) $(test_makeflags) -C build-python$*
+	$(MAKE) -C build-python$*
 
-override_dh_auto_install: $(PYALL:python%=cmake-install-%)
-
-cmake-install-%:
+override_dh_auto_install:
 	dh_auto_install -Bbuild-python$*
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
-	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib \
-	  CTEST_OUTPUT_ON_FAILURE=1 \
-	  $(MAKE) $(test_makeflags) -C build-python$* test ARGS="$(test_makeflags) $(test_discardflags) -R pyinstallcheck"
+	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH) \
+	  $(MAKE) -C build-python$* test ARGS="-R pyinstallcheck --output-on-failure --schedule-random -j4"
 endif
 
-override_dh_makeshlibs:
-	dh_makeshlibs -Xpyshared
-
-override_dh_strip:
-	dh_strip -plibopenturns0.19 -ppython3-openturns
-
-override_dh_python3:
-	dh_python3 -p python3-openturns
-
-override_dh_compress:
-	dh_compress -X.pdf -X.git -X.py
-
-override_dh_auto_test: $(PYALL:python%=cmake-test-%)
-
-cmake-test-%:
-	# 'make test' does not build binary tests
-#ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
-#	$(MAKE) $(test_makeflags) -C build-python$* tests
-#	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib \
-#	  CTEST_OUTPUT_ON_FAILURE=1 \
-#	  $(MAKE) -C build-python$* test ARGS="$(test_makeflags) $(test_discardflags) -R cppcheck"
-#endif
-
-get-orig-source:
-	uscan --force-download --verbose
-	mv ../openturn*.tar.[gzbz2]* ../tarballs
+override_dh_auto_test:

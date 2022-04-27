@@ -2,7 +2,7 @@
 /**
  *  @brief The class Sample implements blank free samples
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -203,7 +203,7 @@ public:
   CovarianceMatrix computeCovariance() const;
 
   /**
-   * Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
+   * Method computeStandard() gives the standard deviation of each component of the sample
    */
   Point computeStandardDeviation() const;
 

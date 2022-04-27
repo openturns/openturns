@@ -2,7 +2,7 @@
 /**
  *  @brief An interface for all implementation class of process
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -128,7 +128,7 @@ protected:
   Description description_;
 
   /** Dimension of the process */
-  UnsignedInteger ouputDimension_;
+  UnsignedInteger outputDimension_;
 
   /** The mesh over which the process is defined or discretized */
   Mesh mesh_;

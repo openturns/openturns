@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the Sobol' sequence
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -111,7 +111,7 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
 }
 
 
-/* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
+/* Generate a pseudo-random vector of independent numbers uniformly distributed over [0, 1[ */
 Point SobolSequence::generate() const
 {
   if (seed_ == 0)

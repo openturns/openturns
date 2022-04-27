@@ -276,7 +276,7 @@ graph = n.drawPDF()
 view = otv.View(graph, figure_kw={"figsize": (12, 8)})
 
 # %%
-# The `getFigure` method returns the current figure. This allows to configure it as any other Matplotlib figure. In the following example, we configure the `suptitle`.
+# The `getFigure` method returns the current figure. This allows one to configure it as any other Matplotlib figure. In the following example, we configure the `suptitle`.
 
 # %%
 fig = view.getFigure()

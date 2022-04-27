@@ -10,6 +10,8 @@
 
 %nodefaultctor ResourceMap;
 
+%ignore OT::ResourceMap_init;
+
 %include openturns/ResourceMap.hxx
 
 namespace OT {

@@ -2,7 +2,6 @@
 Use case : cantilever beam
 ==========================
 """
-from __future__ import print_function
 import openturns as ot
 
 
@@ -46,7 +45,7 @@ class CantileverBeam():
 
     Examples
     --------
-    >>> from openturns.usecases import cantilever_beam as cantilever_beam
+    >>> from openturns.usecases import cantilever_beam
     >>> # Load the cantilever beam model
     >>> cb = cantilever_beam.CantileverBeam()
     """

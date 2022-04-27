@@ -39,7 +39,7 @@ Nataf elliptical copula
     NatafEllipticalCopulaGradient
     NatafEllipticalCopulaHessian
 
-Nataf independant copula
+Nataf independent copula
 ========================
 
 .. autosummary::

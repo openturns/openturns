@@ -2,7 +2,6 @@
 Use case : the Chaboche mechanical model
 ========================================
 """
-from __future__ import print_function
 import openturns as ot
 import math as m
 
@@ -45,7 +44,7 @@ class ChabocheModel():
 
     Examples
     --------
-    >>> from openturns.usecases import chaboche_model as chaboche_model
+    >>> from openturns.usecases import chaboche_model
     >>> # Load the Chaboche model
     >>> cm = chaboche_model.ChabocheModel()
     """

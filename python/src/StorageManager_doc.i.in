@@ -137,7 +137,7 @@ object : :class:`~openturns.PersistentObject`
 label : str
     Name associate with the object to be saved.
 fromStudy : bool, optional
-    Flag telling if the object was explicitely put in the study or not. By
+    Flag telling if the object was explicitly put in the study or not. By
     default, it is equal to *False*."
 
 // ---------------------------------------------------------------------

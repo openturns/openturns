@@ -191,12 +191,9 @@ def getNewPoint(xMin, xMax, krigResult):
     xNew = ot.Point([xNew])
     return xNew
 
-
-# %%
-krigingStep = 0
-
 # %%
 # We first call `getNewPoint` to get a point to add to the design of experiments.
+
 
 # %%
 xNew = getNewPoint(xMin, xMax, krigResult)
@@ -216,9 +213,8 @@ Y.add(yNew)
 # %%
 # sphinx_gallery_thumbnail_number = 3
 krigResult = createMyBasicKriging(X, Y)
-krigingStep += 1
-myTitle = "Krigeage #%d" % (krigingStep+1)
 graph = plotMyBasicKriging(krigResult, xMin, xMax, X, Y)
+graph.setTitle("Kriging #0")
 view = viewer.View(graph)
 
 # %%
@@ -231,9 +227,8 @@ for krigingStep in range(5):
     X.add(xNew)
     Y.add(yNew)
     krigResult = createMyBasicKriging(X, Y)
-    krigingStep += 1
-    myTitle = "Krigeage #%d" % (krigingStep+1)
     graph = plotMyBasicKriging(krigResult, xMin, xMax, X, Y)
+    graph.setTitle("Kriging #%d " % (krigingStep + 1) + graph.getTitle())
     View(graph)
 
 # %%
@@ -250,3 +245,5 @@ for krigingStep in range(5):
 # * Mona Abtini. Plans prédictifs à taille fixe et séquentiels pour le krigeage (2008). Thèse de doctorat de l'Université de Lyon.
 # * Céline Scheidt. Analyse statistique d’expériences simulées : Modélisation adaptative de réponses non régulières par krigeage et plans d’expériences (2007). Thèse présentée pour obtenir le grade de Docteur de l’Université Louis Pasteur.
 # * David Ginsbourger. Sequential Design of Computer Experiments. Wiley StatsRef: Statistics Reference Online, Wiley (2018 )
+
+View.ShowAll()

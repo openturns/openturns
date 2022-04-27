@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 from math import *
 
@@ -110,7 +109,7 @@ try:
     aCopula = IndependentCopula(aCollection.getSize())
     aCopula.setName("Independent copula")
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     myDistribution = ComposedDistribution(aCollection, aCopula)
     myDistribution.setName("myDist")
 

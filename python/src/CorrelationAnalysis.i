@@ -6,6 +6,4 @@
 
 %include CorrelationAnalysis_doc.i
 
-%nodefaultctor CorrelationAnalysis;
-
 %include openturns/CorrelationAnalysis.hxx

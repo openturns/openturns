@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 dim = 2
 copula = ot.EmpiricalBernsteinCopula(ot.Normal(2).getSample(12), 3)
 print("Copula ", repr(copula))

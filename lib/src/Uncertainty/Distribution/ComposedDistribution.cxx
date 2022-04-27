@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ComposedDistributions
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -864,18 +864,8 @@ Distribution ComposedDistribution::getMarginal(const Indices & indices) const
     marginal.setDescription(Description(1, getDescription()[i]));
     return marginal;
   }
-  const Distribution marginalCopula(copula_.getMarginal(indices));
-  DistributionCollection marginalDistributions(0);
-  const Description description(getDescription());
-  Description marginalDescription(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const UnsignedInteger j = indices[i];
-    marginalDistributions.add(distributionCollection_[j]);
-    marginalDescription[i] = description[j];
-  }
-  ComposedDistribution marginal(marginalDistributions, marginalCopula);
-  marginal.setDescription(marginalDescription);
+  ComposedDistribution marginal(distributionCollection_.select(indices), copula_.getMarginal(indices));
+  marginal.setDescription(getDescription().select(indices));
   return marginal;
 }
 

@@ -22,6 +22,7 @@ Simulations methods
     PostAnalyticalImportanceSampling
     SubsetSampling
     AdaptiveDirectionalStratification
+    NAIS
 
 Wilks' method
 =============
@@ -88,3 +89,4 @@ Simulation result
     SimulationResult
     ProbabilitySimulationResult
     SubsetSamplingResult
+    NAISResult

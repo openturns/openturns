@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -94,6 +94,12 @@ UnsignedInteger EnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedInt
 UnsignedInteger EnumerateFunction::getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const
 {
   return getImplementation()->getMaximumDegreeCardinal(maximumDegree);
+}
+
+/* Basis size from degree */
+UnsignedInteger EnumerateFunction::getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const
+{
+  return getImplementation()->getBasisSizeFromTotalDegree(maximumDegree);
 }
 
 /* Dimension accessor */

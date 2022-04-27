@@ -186,6 +186,22 @@ val : collection value type
 Returns
 -------
 index : int
-    The index of the first occurence of the value,
+    The index of the first occurrence of the value,
     or the size of the container if not found.
     When several values match, only the first index is returned."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::select
+"Selection from indices.
+
+Parameters
+----------
+indices : sequence of int
+    Indices to select
+
+Returns
+-------
+coll : sequence
+    Sub-collection of values at the selection indices."
+

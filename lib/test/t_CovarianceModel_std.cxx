@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class CovarianceModel(s)
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -186,8 +186,8 @@ int main(int, char *[])
     // 1) Squared exponential model
     {
       /* Default constructor */
-      SquaredExponential myDefautModel;
-      test_model(myDefautModel);
+      SquaredExponential myDefaultModel;
+      test_model(myDefaultModel);
 
       SquaredExponential myModel(dimension);
       test_model(myModel);
@@ -196,8 +196,8 @@ int main(int, char *[])
     // 2) Generalized exponential model
     {
       /* Default constructor */
-      GeneralizedExponential myDefautModel;
-      test_model(myDefautModel);
+      GeneralizedExponential myDefaultModel;
+      test_model(myDefaultModel);
 
       GeneralizedExponential myModel(Point(dimension, 10.0), 1.5);
       test_model(myModel);
@@ -206,8 +206,8 @@ int main(int, char *[])
     // 3) Absolute exponential model
     {
       /* Default constructor */
-      AbsoluteExponential myDefautModel;
-      test_model(myDefautModel);
+      AbsoluteExponential myDefaultModel;
+      test_model(myDefaultModel);
 
       AbsoluteExponential myModel(Point(dimension, 10.0));
       test_model(myModel);
@@ -216,8 +216,8 @@ int main(int, char *[])
     // 4) Matern  model
     {
       /* Default constructor */
-      MaternModel myDefautModel;
-      test_model(myDefautModel);
+      MaternModel myDefaultModel;
+      test_model(myDefaultModel);
 
       MaternModel myModel(Point(dimension, 8.0), 2.0);
       test_model(myModel);
@@ -226,8 +226,8 @@ int main(int, char *[])
     // 5) ExponentiallyDampedCosineModel
     {
 
-      ExponentiallyDampedCosineModel myDefautModel;
-      test_model(myDefautModel);
+      ExponentiallyDampedCosineModel myDefaultModel;
+      test_model(myDefaultModel);
 
       const Point scale = {2, 2};
       const Point amplitude = {3};
@@ -245,8 +245,8 @@ int main(int, char *[])
     // 6) Spherical model
     {
 
-      SphericalModel myDefautModel;
-      test_model(myDefautModel);
+      SphericalModel myDefaultModel;
+      test_model(myDefaultModel);
 
       dimension = 2;
       SphericalModel myModel(Point(dimension, 2), Point(1, 3), 4.5);
@@ -266,11 +266,11 @@ int main(int, char *[])
 
     // 8) DiracCovarianceModel
     {
-      DiracCovarianceModel myDefautModel;
-      test_model(myDefautModel, false);
+      DiracCovarianceModel myDefaultModel;
+      test_model(myDefaultModel, false);
 
       // Should not check the partialGradient Dirac model
-      test_model(myDefautModel, false);
+      test_model(myDefaultModel, false);
 
       const Point amplitude = {1.5, 3.5};
 

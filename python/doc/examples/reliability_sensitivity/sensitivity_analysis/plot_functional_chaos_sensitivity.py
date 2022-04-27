@@ -22,7 +22,6 @@ Sobol' sensitivity indices from chaos
 # - :math:`K_w`: hydraulic conductivity of borehole (:math:`m/yr`)
 
 # %%
-from __future__ import print_function
 import openturns as ot
 from operator import itemgetter
 import openturns.viewer as viewer

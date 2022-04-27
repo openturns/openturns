@@ -114,7 +114,7 @@ graph.setLegends([""])
 view = viewer.View(graph)
 
 # %%
-# We see that the starting points are well spread accross the input domain of the function.
+# We see that the starting points are well spread across the input domain of the function.
 
 # %%
 # Solve the optimization problem

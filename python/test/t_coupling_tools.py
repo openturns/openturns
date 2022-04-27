@@ -317,7 +317,7 @@ def check_get():
     remove(result_file)
 
     # Y = ct.get(outfile="output.py", tokens=["@Y1=", "@Y2="],
-    #                       occurence=[0, 0], col=[0, 3], line=[0, 2])
+    #                       occurrence=[0, 0], col=[0, 3], line=[0, 2])
 
 
 def check_get_token_escaped():
@@ -580,7 +580,8 @@ def check_execute():
 
     # we expect a subclass of CalledProcessError with the error stream in the exception message
     try:
-        cp = ct.execute(sys.executable + ' zebuebceb745az4f801m', shell=True, capture_output=True)
+        cp = ct.execute(sys.executable + ' zebuebceb745az4f801m',
+                        shell=True, capture_output=True)
     except subprocess.CalledProcessError as exc:
         msg = str(exc)
         assert 'No such file or directory' in msg, 'wrong exception'

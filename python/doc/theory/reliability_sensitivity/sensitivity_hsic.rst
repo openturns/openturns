@@ -121,10 +121,10 @@ empirical variance. In this case, we obtain :
 
 .. math::
 
-    \kappa_i(x_i^j,x_i^k) = \exp (\theta_i (x_i^j - x_i^k)^2) 
+    \kappa_i(x_i^j,x_i^k) = \exp ( (\frac{x_i^j - x_i^k}{\theta_i})^2) 
 
-with :math:`\theta_i = 1/\sigma_i^2`, where :math:`\sigma_i^2` is the empirical 
-variance of the sample :math:`X_i`.
+with :math:`\theta_i = \sigma_i`, where :math:`\sigma_i` is the empirical 
+standard deviation of the sample :math:`X_i`.
 
 Screening with HSIC-based statistical tests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

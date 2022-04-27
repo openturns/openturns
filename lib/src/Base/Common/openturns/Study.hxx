@@ -2,7 +2,7 @@
 /**
  *  @brief Study keeps all PersistentObjects in a file
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,7 +41,7 @@ class StorageManager;
  * The study allows the user to save all its data to a structure looking like a map.
  * Tha data are copied verbatim to the study. This is not a link so future modification
  * of the original won't affect the data saved in the study. To update the data saved
- * in the study, the user has to explicitely save it again.
+ * in the study, the user has to explicitly save it again.
  * Study allows the user to retrieve previously saved objects either by their name if
  * a name was defined for the object or by their Id.
  * @see PersistentObject

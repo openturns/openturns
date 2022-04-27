@@ -1,6 +1,27 @@
 = New Features =
 
-== 1.19 release (in-progress) == #release-1.19
+== 1.20 release (in-progress) == #release-1.20
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed coupling_tools.execute get_stderr,get_stdout arguments
+ * Removed deprecated Nlopt|Ceres|Bonmin|CMinpack|Ipopt|TBB|HMatrixFactory::IsAvailable methods
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
+== 1.19rc1 release (2022-04-14) == #release-1.19rc1
 
 === Library ===
 
@@ -11,6 +32,7 @@
 
 ==== New classes ====
  * RandomVectorMetropolisHastings
+ * IndependentMetropolisHastings
  * Gibbs
  * HSICEstimatorConditionalSensitivity
  * HSICEstimatorGlobalSensitivity
@@ -20,6 +42,9 @@
  * IterativeExtrema
  * IterativeMoments
  * IterativeThresholdExceedance
+ * TensorProductExperiment
+ * NAIS
+ * Pagmo
 
 ==== API changes ====
  * Removed deprecated Hanning alias
@@ -38,13 +63,43 @@
 
 === Python module ===
  * Hide C++ getImplementation methods and add Python-specific getImplementation methods with automatic dynamic typecasting
+ * Add Sample.asDataFrame/BuildFromDataFrame pandas conversion methods
 
 === Miscellaneous ===
+ * Add Collection::select(Indices) method
+ * Parallelized SymbolicFunction evaluation (enabled from a sample size>100 with exprtk)
+ * Sample csv export: allow to set precision and format
+ * Sample csv import: handle nan/inf values
+ * Add EnumerateFunction::getBasisSizeFromTotalDegree(maximumDegree)
 
 === Bug fixes ===
+ * #1260 (RandomWalkMetropolisHastings does not handle non-symmetric proposals properly)
+ * #1263 (Static functions are implemented in C++ classes instead of namespaces)
  * #1444 (The calibration examples are unclear)
+ * #1830 (Incompatible documentation for CauchyModel)
+ * #1914 (Cobyla & NLopt should accept LeastSquaresProblem)
+ * #1921 (Adaptive Directional Stratification: the coefficient of variation of the probability is inconsistent with repeated probability results)
+ * #1922 (Adaptive Directional Stratification: the coefficient of variation cannot be used as a stopping criterion)
+ * #1926 (Examples have broken graphics)
+ * #1931 (Interface class getImplementation methods are useless in Python)
+ * #1939 (Contour curves outside graph window)
+ * #1940 (getMaximumDegreeStrataIndex has a bug with hyperbolic rule)
+ * #1943 (TriangularMatrix * Point --> ScalarCollection)
+ * #1946 (Doc search issues)
  * #1947 (The constructor of FunctionalChaosResult is undocumented)
+ * #1949 (The comparison operator of ComposedDistribution is wrong)
  * #1958 (Performance of OrthogonalUniVariatePolynomial (precision, speed))
+ * #1959 (Cobyla run causes segfault when empty ctor is used)
+ * #1993 (IsotropicCovarianceModel has no default ctor)
+ * #1994 (default GaussProductExperiment is invalid)
+ * #1997 (KLSVD spectrum cutoff error)
+ * #2012 (Cannot sample a ConditionedGaussianProcess on a mesh containing conditioning points)
+ * #2014 (Precision issue with the Python KrigingAlgorithm test)
+ * #2019 (Parametric stationary covariance models doc section needs refresh)
+ * #2020 (Problem with the UserDefined distribution)
+ * #2024 (All of the Pagmo library is interfaced even if it has been compiled with a restricted API)
+ * #2025 (The lack of Bonmin generates an error during example compilation)
+
 
 == 1.18 release (2021-11-10) == #release-1.18
 

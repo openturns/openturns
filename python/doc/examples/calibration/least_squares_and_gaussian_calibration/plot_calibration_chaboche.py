@@ -11,7 +11,7 @@ import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-from openturns.usecases import chaboche_model as chaboche_model
+from openturns.usecases import chaboche_model
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -348,7 +348,7 @@ graph.setLegendPosition("topleft")
 view = viewer.View(graph)
 
 # %%
-# The analysis of the gaussian distribution (the blue line) of the observation errors is close to the posterior distribution of the residuals (the green line). Moreover, the posterior distribution is centered. These informations indicate that the calibration performed well.
+# The analysis of the gaussian distribution (the blue line) of the observation errors is close to the posterior distribution of the residuals (the green line). Moreover, the posterior distribution is centered. These information indicate that the calibration performed well.
 
 # %%
 graph = calibrationResult.drawParameterDistributions()

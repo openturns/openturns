@@ -2,7 +2,7 @@
 /**
  *  @brief Metropolis-Hastings algorithm
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,9 +20,7 @@
  */
 
 #include "openturns/Gibbs.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ConditionalDistribution.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 

@@ -2,7 +2,7 @@
 /**
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,8 +57,10 @@ class OT_API HMatrix :
   HMatrix copy() const;
 
   void assemble(const HMatrixRealAssemblyFunction& f, char symmetry);
+  void assemble(const HMatrixRealAssemblyFunction &f, const HMatrixParameters& parameters, char symmetry);
 
   void assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry);
+  void assemble(const HMatrixTensorRealAssemblyFunction &f, const HMatrixParameters &parameters, char symmetry);
 
   void factorize(const String& method);
 

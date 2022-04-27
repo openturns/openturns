@@ -1,8 +1,9 @@
+
 //                                               -*- C++ -*-
 /**
  *  @brief The Multinomial distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -604,19 +605,8 @@ Distribution Multinomial::getMarginal(const Indices & indices) const
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  const UnsignedInteger outputDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
-  Point marginalP(outputDimension);
-  // Extract the correlation matrix, the marginal standard deviations and means
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    marginalP[i] = p_[index_i];
-    marginalDescription[i] = description[index_i];
-  }
-  Multinomial::Implementation marginal(new Multinomial(n_, marginalP));
-  marginal->setDescription(marginalDescription);
+  Multinomial::Implementation marginal(new Multinomial(n_, p_.select(indices)));
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 
@@ -705,7 +695,7 @@ void Multinomial::computeCovariance() const
   {
     const Scalar pI = p_[i];
     covariance_(i, i) = pI * (1.0 - pI) * n_;
-    // Be careful! in these computations, n_ cannot be at the begining of the formula else -n_ will underflow the UnsignedInteger range!
+    // Be careful! in these computations, n_ cannot be at the beginning of the formula else -n_ will underflow the UnsignedInteger range!
     for (UnsignedInteger j = 0; j < i; ++j) covariance_(i, j) = -pI * p_[j] * n_;
   }
   isAlreadyComputedCovariance_ = true;

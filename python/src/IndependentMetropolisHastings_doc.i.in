@@ -1,0 +1,77 @@
+%feature("docstring") OT::IndependentMetropolisHastings
+"Independent Metropolis-Hastings method.
+
+Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
+
+Available constructor:
+    IndependentMetropolisHastings(*targetDistribution, initialState, proposal, marginalIndices*)
+
+    IndependentMetropolisHastings(*targetLogPDF, support, initialState, proposal, marginalIndices*)
+
+Parameters
+----------
+targetDistribution : :class:`~openturns.Distribution`
+    Target distribution sampled
+targetLogPDF : :class:`~openturns.Function`
+    Target log-density up to an additive constant
+support : :class:`~openturns.Domain`
+    Support of the target when defined with *targetLogPDF*
+initialState : sequence of float
+    Initial state of the chain
+proposal : :class:`~openturns.Distribution`
+    Proposal distribution, independent from the current state
+marginalIndices : sequence of int, optional
+    Indices of the components to be updated.
+    If not specified, all components are updated.
+    The number of updated components must be equal to the dimension of *proposal*.
+
+Notes
+-----
+The independent Metropolis-Hastings algorithm 
+is a Markov Chain Monte-Carlo algorithm.
+It draws candidates :math:`\vect{c}^k` for the
+next state of the chain following the user-specified *proposal* distribution.
+By construction, the proposal distribution is fixed, 
+and does not depend on the current state of the chain.
+Hence, proposals should be built as approximations to the target distribution.
+Performance of the algorithm is measured by the acceptance rate (the higher the better).
+
+Examples
+--------
+>>> import openturns as ot
+>>> import math as m
+>>> ot.RandomGenerator.SetSeed(0)
+
+Sample from a target distribution defined through its log-PDF (defined up to some additive constant) and its support:
+
+>>> log_density = ot.SymbolicFunction('x', 'log(2 + sin(x)^2) - (2 + cos(3*x)^3 + sin(2*x)^3) * x')
+>>> support = ot.Interval([0.0], [2.0 * m.pi])
+>>> proposal = ot.Uniform(0.0, 2.0 * m.pi)
+>>> initialState = [3.0]
+>>> sampler = ot.IndependentMetropolisHastings(log_density, support, initialState, proposal)
+>>> sampler.setBurnIn(20)
+>>> sampler.setThinning(2)
+>>> x = sampler.getSample(10)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IndependentMetropolisHastings::getProposal
+"Get the proposal distribution.
+
+Returns
+-------
+proposal : :class:`~openturns.Distribution`
+    The distribution from which the transition kernels of the independent
+    Metropolis-Hastings algorithm is defined"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IndependentMetropolisHastings::setProposal
+"Set the proposal distribution.
+
+Parameters
+----------
+proposal : :class:`~openturns.Distribution`
+    The distribution from which the transition kernels of the independent
+    Metropolis-Hastings algorithm is defined"

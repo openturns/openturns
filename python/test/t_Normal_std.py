@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 from math import fabs
 
@@ -22,7 +21,7 @@ def cleanPoint(inPoint):
 
 
 ot.PlatformInfo.SetNumericalPrecision(5)
-# Instanciate one distribution object
+# Instantiate one distribution object
 for dim in range(1, 5):
     meanPoint = [0.0]*dim
     sigma = [1.0 + i for i in range(dim)]

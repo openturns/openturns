@@ -2,7 +2,7 @@
 /**
  *  @brief ResourceMap defines top-most resourceMap strategies
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -545,7 +545,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
           if (value.size() > 0)
           {
             mapString_[key] = value;
-            break;
+            continue;
           }
         } // String
         // Try to get a Scalar value
@@ -557,7 +557,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
             std::istringstream iss(value);
             iss >> scalarValue;
             mapScalar_[key] = scalarValue;
-            break;
+            continue;
           }
         } // Scalar
         // Try to get an UnsignedInteger value
@@ -569,7 +569,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
             std::istringstream iss(value);
             iss >> unsignedIntegerValue;
             mapUnsignedInteger_[key] = unsignedIntegerValue;
-            break;
+            continue;
           }
         } // UnsignedInteger
         // Try to get a Bool value
@@ -588,7 +588,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
               iss >> boolValue;
             }
             mapBool_[key] = boolValue;
-            break;
+            continue;
           }
         } // Bool
       } // if XML::IsElement
@@ -626,19 +626,19 @@ void ResourceMap::loadDefaultConfiguration()
 {
 #ifndef _WIN32
   addAsString("Path-TemporaryDirectory", "/tmp");
-  addAsUnsignedInteger("TBBImplementation-ThreadsNumber", sysconf(_SC_NPROCESSORS_CONF));
+  addAsUnsignedInteger("TBB-ThreadsNumber", sysconf(_SC_NPROCESSORS_CONF));
 #else
   addAsString("Path-TemporaryDirectory", "TEMP");
   UnsignedInteger numberOfProcessors = 0;
   std::istringstream iss(getenv("NUMBER_OF_PROCESSORS"));
   iss >> numberOfProcessors;
-  addAsUnsignedInteger("TBBImplementation-ThreadsNumber", numberOfProcessors);
+  addAsUnsignedInteger("TBB-ThreadsNumber", numberOfProcessors);
 #endif
   if (const char* env_num_threads = std::getenv("OPENTURNS_NUM_THREADS"))
   {
     try
     {
-      setAsUnsignedInteger("TBBImplementation-ThreadsNumber", std::stoi(env_num_threads));
+      setAsUnsignedInteger("TBB-ThreadsNumber", std::stoi(env_num_threads));
     }
     catch (const std::invalid_argument &)
     {
@@ -648,8 +648,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Cache-MaxSize", 1024);
 
   // Os parameters
-  addAsBool("Os-CreateProcess", "false");
-  addAsBool("Os-RemoveFiles", "true");
+  addAsBool("Os-CreateProcess", false);
+  addAsBool("Os-RemoveFiles", true);
   addAsUnsignedInteger("OS-DeleteTimeout", 2);
 
   // XMLStorageManager parameters
@@ -780,13 +780,112 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
 
+  // Pagmo parameters //
+  addAsString("Pagmo-UnconstrainMethod", "death penalty");
+  addAsBool("Pagmo-memory", false);
+  // gaco
+  addAsUnsignedInteger("Pagmo-gaco-ker", 63);
+  addAsScalar("Pagmo-gaco-q", 1.0);
+  addAsScalar("Pagmo-gaco-oracle", 0.0);
+  addAsScalar("Pagmo-gaco-acc", 0.01);
+  addAsUnsignedInteger("Pagmo-gaco-threshold", 1);
+  addAsUnsignedInteger("Pagmo-gaco-n_gen_mark", 7);
+  addAsUnsignedInteger("Pagmo-gaco-impstop", 100000);
+  addAsScalar("Pagmo-gaco-focus", 0.0);
+  // de
+  addAsScalar("Pagmo-de-F", 0.8);
+  addAsScalar("Pagmo-de-CR", 0.9);
+  addAsUnsignedInteger("Pagmo-de-variant", 2);
+  addAsUnsignedInteger("Pagmo-sade-variant", 2);
+  addAsUnsignedInteger("Pagmo-sade-variant_adptv", 1);
+  addAsUnsignedInteger("Pagmo-de1220-variant_adptv", 1);
+  // ihs
+  addAsScalar("Pagmo-ihs-phmcr", 0.85);
+  addAsScalar("Pagmo-ihs-ppar_min", 0.35);
+  addAsScalar("Pagmo-ihs-ppar_max", 0.99);
+  addAsScalar("Pagmo-ihs-bw_min", 1e-5);
+  addAsScalar("Pagmo-ihs-bw_max", 1.0);
+  // pso
+  addAsScalar("Pagmo-pso-omega", 0.7298);
+  addAsScalar("Pagmo-pso-eta1", 2.05);
+  addAsScalar("Pagmo-pso-eta2", 2.05);
+  addAsScalar("Pagmo-pso-max_vel", 0.5);
+  addAsUnsignedInteger("Pagmo-pso-variant", 5);
+  addAsUnsignedInteger("Pagmo-pso-neighb_type", 2);
+  addAsUnsignedInteger("Pagmo-pso-neighb_param", 4);
+  // pso_gen
+  addAsScalar("Pagmo-pso_gen-omega", 0.7298);
+  addAsScalar("Pagmo-pso_gen-eta1", 2.05);
+  addAsScalar("Pagmo-pso_gen-eta2", 2.05);
+  addAsScalar("Pagmo-pso_gen-max_vel", 0.5);
+  addAsUnsignedInteger("Pagmo-pso_gen-variant", 5);
+  addAsUnsignedInteger("Pagmo-pso_gen-neighb_type", 2);
+  addAsUnsignedInteger("Pagmo-pso_gen-neighb_param", 4);
+  // sga
+  addAsScalar("Pagmo-sga-cr", 0.9);
+  addAsScalar("Pagmo-sga-eta_c", 1.0);
+  addAsScalar("Pagmo-sga-m", 0.01);
+  addAsScalar("Pagmo-sga-param_m", 1.0);
+  addAsUnsignedInteger("Pagmo-sga-param_s", 2);
+  addAsString("Pagmo-sga-crossover", "exponential");
+  addAsString("Pagmo-sga-mutation", "polynomial");
+  addAsString("Pagmo-sga-selection", "tournament");
+  // simulated_annealing
+  addAsScalar("Pagmo-simulated_annealing-Ts", 10.0);
+  addAsScalar("Pagmo-simulated_annealing-Tf", 0.1);
+  addAsUnsignedInteger("Pagmo-simulated_annealing-n_T_adj", 10);
+  addAsUnsignedInteger("Pagmo-simulated_annealing-n_range_adj", 1);
+  addAsUnsignedInteger("Pagmo-simulated_annealing-bin_size", 20);
+  addAsScalar("Pagmo-simulated_annealing-start_range", 1.0);
+  // bee_colony
+  addAsUnsignedInteger("Pagmo-bee_colony-limit", 20);
+  // cmaes
+  addAsScalar("Pagmo-cmaes-cc", -1.0);
+  addAsScalar("Pagmo-cmaes-cs", -1.0);
+  addAsScalar("Pagmo-cmaes-c1", -1.0);
+  addAsScalar("Pagmo-cmaes-cmu", -1.0);
+  addAsScalar("Pagmo-cmaes-sigma0", 0.5);
+  // xnes
+  addAsScalar("Pagmo-xnes-eta_mu", -1.0);
+  addAsScalar("Pagmo-xnes-eta_sigma", -1.0);
+  addAsScalar("Pagmo-xnes-eta_b", -1.0);
+  addAsScalar("Pagmo-xnes-sigma0", -1.0);
+  // nsga2
+  addAsScalar("Pagmo-nsga2-cr", 0.95);
+  addAsScalar("Pagmo-nsga2-eta_c", 10.0);
+  addAsScalar("Pagmo-nsga2-m", 0.01);
+  addAsScalar("Pagmo-nsga2-eta_m", 50.0);
+  // moead
+  addAsString("Pagmo-moead-weight_generation", "grid");
+  addAsString("Pagmo-moead-decomposition", "tchebycheff");
+  addAsUnsignedInteger("Pagmo-moead-neighbours", 20);
+  addAsScalar("Pagmo-moead-CR", 1.0);
+  addAsScalar("Pagmo-moead-F", 0.5);
+  addAsScalar("Pagmo-moead-eta_m", 20.0);
+  addAsScalar("Pagmo-moead-realb", 0.9);
+  addAsUnsignedInteger("Pagmo-moead-limit", 2);
+  addAsBool("Pagmo-moead-preserve_diversity", true);
+  // mhaco
+  addAsUnsignedInteger("Pagmo-mhaco-ker", 63);
+  addAsScalar("Pagmo-mhaco-q", 1.0);
+  addAsUnsignedInteger("Pagmo-mhaco-threshold", 1);
+  addAsUnsignedInteger("Pagmo-mhaco-n_gen_mark", 7);
+  addAsScalar("Pagmo-mhaco-focus", 0.0);
+  // nspso
+  addAsScalar("Pagmo-nspso-omega", 0.6);
+  addAsScalar("Pagmo-nspso-c1", 2.0);
+  addAsScalar("Pagmo-nspso-c2", 2.0);
+  addAsScalar("Pagmo-nspso-chi", 1.0);
+  addAsScalar("Pagmo-nspso-v_coeff", 0.5);
+  addAsUnsignedInteger("Pagmo-nspso-leader_selection_range", 60);
+  addAsString("Pagmo-nspso-diversity_mechanism", "crowding distance");
+
   // Dlib optimization parameters //
   addAsScalar("Dlib-DefaultInitialTrustRegionRadius", 1.0);
   addAsScalar("Dlib-DefaultWolfeRho", 0.01);
   addAsScalar("Dlib-DefaultWolfeSigma", 0.9);
   addAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations", 100);
   addAsUnsignedInteger("Dlib-DefaultMaxSize", 10);
-
 
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
@@ -889,7 +988,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FAST-DefaultResamplingSize", 1);
 
   // HSIC parameters //
-  addAsUnsignedInteger("HSICEstimatorImplementation-PermutationSize", 100);
+  addAsUnsignedInteger("HSICEstimator-PermutationSize", 100);
 
   // RandomGenerator parameters //
   addAsUnsignedInteger("RandomGenerator-InitialSeed", 0);
@@ -1227,7 +1326,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("AnalyticalResult-MeanPointIntegrationNodesNumber", 255);
 
   // SystemFORM parameters //
-  addAsScalar("SystemFORM-MaximalScaling", 1.0e5);
+  addAsScalar("SystemFORM-MaximalScaling", 1.0e-5);
   addAsScalar("SystemFORM-StartingScaling", 1.0e-13);
 
   // MultiFORM parameters //
@@ -1274,14 +1373,14 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-2);
   addAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor", 2.0);
   addAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2);
-  addAsScalar("GeneralLinearModelAlgorithm-MaximalScaling", 1.0e5);
+  addAsScalar("GeneralLinearModelAlgorithm-MaximalScaling", 1.0e-5);
   addAsScalar("GeneralLinearModelAlgorithm-MeanEpsilon", 1.0e-12);
   addAsScalar("GeneralLinearModelAlgorithm-StartingScaling", 1.0e-13);
   addAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
   addAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
 
   // KrigingAlgorithm parameters //
-  addAsScalar("KrigingAlgorithm-MaximalScaling", 1.0e5);
+  addAsScalar("KrigingAlgorithm-MaximalScaling", 1.0e-5);
   addAsScalar("KrigingAlgorithm-StartingScaling", 1.0e-13);
   addAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK");
 
@@ -1302,7 +1401,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("WeightedExperiment-DefaultSize", 100);
 
   // GaussProductExperiment parameters //
-  addAsUnsignedInteger("GaussProductExperiment-DefaultMarginalDegree", 5);
+  addAsUnsignedInteger("GaussProductExperiment-DefaultMarginalSize", 5);
 
   // HyperbolicAnisotropicEnumerateFunction parameters //
   addAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ", 0.4);
@@ -1374,10 +1473,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("HMatrix-AdmissibilityFactor", 100.0);
   addAsScalar("HMatrix-AssemblyEpsilon", 1.0e-4);
   addAsScalar("HMatrix-LargestEigenValueRelativeError", 1.0e-1);
+  addAsScalar("HMatrix-RegularizationEpsilon", 1.0e-4);
   addAsScalar("HMatrix-RecompressionEpsilon", 1.0e-4);
   addAsScalar("HMatrix-ValidationError", 0.0);
   addAsString("HMatrix-ClusteringAlgorithm", "median");
   addAsString("HMatrix-CompressionMethod", "AcaRandom");
+  addAsString("HMatrix-FactorizationMethod", "LLt");
   addAsUnsignedInteger("HMatrix-FactorizationIterations", 10);
   addAsUnsignedInteger("HMatrix-LargestEigenValueIterations", 10);
   addAsUnsignedInteger("HMatrix-MaxLeafSize", 250);
@@ -1385,13 +1486,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("HMatrix-ValidationRerun", 0);
 
   // GaussianProcess parameters //
-  addAsScalar("GaussianProcess-MaximalScaling", 1.0e5);
+  addAsScalar("GaussianProcess-MaximalScaling", 1.0e-5);
   addAsScalar("GaussianProcess-StartingScaling", 1.0e-13);
   addAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration", 100);
 
   // SpectralGaussianProcess parameters //
   addAsScalar("SpectralGaussianProcess-StartingScaling", 1.0e-13);
-  addAsScalar("SpectralGaussianProcess-MaximalScaling", 1.0e5);
+  addAsScalar("SpectralGaussianProcess-MaximalScaling", 1.0e-5);
   addAsUnsignedInteger("SpectralGaussianProcess-CholeskyCacheSize", 16384);
 
   // WhittleFactory parameters //
@@ -1443,7 +1544,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ARMALikelihoodFactory-DefaultRhoBeg", 0.01);
   addAsScalar("ARMALikelihoodFactory-DefaultRhoEnd", 1.0e-10);
   addAsScalar("ARMALikelihoodFactory-DefaultStartingPointScale", 1.0);
-  addAsScalar("ARMALikelihoodFactory-MaximalScaling", 1.0e5);
+  addAsScalar("ARMALikelihoodFactory-MaximalScaling", 1.0e-5);
   addAsScalar("ARMALikelihoodFactory-RootEpsilon", 1.0e-6);
   addAsScalar("ARMALikelihoodFactory-StartingScaling", 1.0e-13);
   addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber", 10000);

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class KernelSmoothing for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,7 @@ int main(int, char *[])
     {
       R(i, i - 1) = 0.5;
     }
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Normal distribution(meanPoint, sigma, R);
     UnsignedInteger discretization = 300;
     Sample sample(distribution.getSample(discretization));

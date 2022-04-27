@@ -6,7 +6,6 @@ Sample manipulation
 # This example will describe the main statistical functionalities on data through the Sample object. The Sample is an output variable of interest.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 

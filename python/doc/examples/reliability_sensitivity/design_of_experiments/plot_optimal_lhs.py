@@ -6,7 +6,6 @@ Optimize an LHS design of experiments
 # This examples show how to generate optimized LHS experiments according to the different criteria.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import math as m
 import openturns.viewer as viewer

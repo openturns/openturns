@@ -130,7 +130,7 @@ n : integer, :math:`n>0`
 Returns
 -------
 omega : float
-    The pulsation used in the *integrate* method if not explicitely given."
+    The pulsation used in the *integrate* method if not explicitly given."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::FilonQuadrature::setOmega
@@ -139,7 +139,7 @@ omega : float
 Parameters
 ----------
 omega : float
-    The pulsation used in the *integrate* method if not explicitely given."
+    The pulsation used in the *integrate* method if not explicitly given."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::FilonQuadrature::getKind

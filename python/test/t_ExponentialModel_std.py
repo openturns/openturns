@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -19,8 +18,8 @@ try:
     scale = Point(inputDimension, 1.0)
 
     # Default constructor
-    myDefautModel = ExponentialModel()
-    print("myDefautModel = ", myDefautModel)
+    myDefaultModel = ExponentialModel()
+    print("myDefaultModel = ", myDefaultModel)
 
     # Second order model with parameters
     myModel = ExponentialModel(scale, amplitude)

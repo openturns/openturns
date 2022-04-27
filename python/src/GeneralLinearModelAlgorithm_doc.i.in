@@ -160,7 +160,7 @@ It is also possible to proceed as follows:
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
     - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
-    - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UnbiasedVariance', True)* allows to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{N}` is replaced by :math:`\dfrac{1}{N-p}` in the optimality condition for :math:`\sigma`.
+    - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{N}` is replaced by :math:`\dfrac{1}{N-p}` in the optimality condition for :math:`\sigma`.
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
 

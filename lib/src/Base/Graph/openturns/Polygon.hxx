@@ -2,7 +2,7 @@
 /**
  *  @brief Polygon class for polygon plots
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,12 +50,12 @@ public:
   explicit Polygon(const Sample & data,
                    const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Polygon(const Sample & dataX,
           const Sample & dataY,
           const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Polygon(const Point & dataX,
           const Point & dataY,
           const String & legend = "");

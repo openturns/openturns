@@ -2,7 +2,6 @@
 Use case : flood model
 ======================
 """
-from __future__ import print_function
 import openturns as ot
 
 
@@ -44,7 +43,7 @@ class FloodModel():
 
     Examples
     --------
-    >>> from openturns.usecases import flood_model as flood_model
+    >>> from openturns.usecases import flood_model
     >>> # Load the flood model
     >>> fm = flood_model.FloodModel()
     """

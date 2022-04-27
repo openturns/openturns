@@ -132,7 +132,7 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import flood_model as flood_model
+    >>> from openturns.usecases import flood_model
     >>> # Load the use case flood model
     >>> fm = flood_model.FloodModel()
 

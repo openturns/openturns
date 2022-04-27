@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of Graph class for EDF case number 9
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,7 +33,7 @@ int main(int, char *[])
   try
   {
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 2;
     Point meanPoint(dim, 1.0);
     meanPoint[0] = 12.0;

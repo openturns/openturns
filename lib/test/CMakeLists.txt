@@ -2,7 +2,7 @@
 #
 #  CMakeLists.txt
 #
-#  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+#  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 #  This library is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -397,6 +397,7 @@ ot_check_test (FisherSnedecor_std)
 ot_check_test (FisherSnedecorFactory_std)
 ot_check_test (Frechet_std)
 ot_check_test (FrechetFactory_std)
+ot_check_test (GalambosCopula_std)
 ot_check_test (Gamma_std)
 ot_check_test (GammaFactory_std)
 ot_check_test (GeneralizedExtremeValue_std)
@@ -584,8 +585,8 @@ if (Ceres_FOUND OR CMinpack_FOUND)
   ot_check_test (NonLinearLeastSquaresCalibration_noobs)
 endif ()
 ot_check_test (RandomWalkMetropolisHastings_std IGNOREOUT)
+ot_check_test (IndependentMetropolisHastings_std IGNOREOUT)
 ot_check_test (Gibbs_regression IGNOREOUT)
-
 
 # Classification
 ot_check_test (MixtureClassifier_std)
@@ -608,6 +609,7 @@ ot_check_test (ImportanceSamplingExperiment_std)
 ot_check_test (LHSExperiment_std)
 ot_check_test (LowDiscrepancyExperiment_std)
 ot_check_test (MonteCarloExperiment_std)
+ot_check_test (TensorProductExperiment_std IGNOREOUT)
 
 # IterativeStat
 ot_check_test (IterativeExtrema_std IGNOREOUT)
@@ -683,6 +685,7 @@ ot_check_test (Wilks_std)
 ot_check_test (SimulationSensitivityAnalysis_std)
 ot_check_test (QuadrantSampling_std)
 ot_check_test (AdaptiveDirectionalStratification_std)
+ot_check_test (NAIS_std IGNOREOUT)
 
 # StatTests
 ot_check_test (VisualTest_std)

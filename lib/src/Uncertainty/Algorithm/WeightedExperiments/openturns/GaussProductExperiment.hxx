@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level view of an monteCarloExperiment plane
+ *  @brief Abstract top-level view of an GaussProductExperiment
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,14 +48,14 @@ public:
   GaussProductExperiment();
 
   /** Parameters constructor */
-  explicit GaussProductExperiment(const Indices & marginalDegrees);
+  explicit GaussProductExperiment(const Indices & marginalSizes);
 
   /** Parameters constructor */
   explicit GaussProductExperiment(const Distribution & distribution);
 
   /** Parameters constructor */
   GaussProductExperiment(const Distribution & distribution,
-                         const Indices & marginalDegrees);
+                         const Indices & marginalSizes);
 
   /** Virtual constructor */
   GaussProductExperiment * clone() const override;
@@ -69,9 +69,9 @@ public:
   /** Sample generation */
   Sample generateWithWeights(Point & weightsOut) const override;
 
-  /** Marginal degrees accessor */
-  void setMarginalDegrees(const Indices & marginalDegrees);
-  Indices getMarginalDegrees() const;
+  /** Marginal sizes accessor */
+  void setMarginalSizes(const Indices & marginalSizes);
+  Indices getMarginalSizes() const;
 
   /** Distribution accessor */
   void setDistribution(const Distribution & distribution) override;
@@ -87,15 +87,15 @@ private:
   // Compute the tensor product nodes and weights
   void computeNodesAndWeights() const;
 
-  // Distribution and marginal degrees accessor
-  void setDistributionAndMarginalDegrees(const Distribution & distribution,
-                                         const Indices & marginalDegrees);
+  // Distribution and marginal sizes accessor
+  void setDistributionAndMarginalSizes(const Distribution & distribution,
+                                       const Indices & marginalSizes);
 
   // Marginal orthogonal univariate polynomial family collection
   OrthogonalUniVariatePolynomialFamilyPersistentCollection collection_;
 
-  // Marginal degrees
-  Indices marginalDegrees_;
+  // Marginal sizes
+  Indices marginalSizes_;
 
   // Integration nodes; weights
   mutable Sample nodes_;

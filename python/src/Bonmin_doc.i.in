@@ -141,7 +141,7 @@ algoName : :class:`~openturns.Description`
 "Accessor to algoName parameter. Sets the optimization algorithm to
 use. Possible values for algoName are B-BB, B-OA, B-QG, B-Hyb, B-Ecp, B-iFP. See
 `Bonmin's online documentation <https://www.coin-or.org/Bonmin/index.html>`_ for more details.
-Defautl is B-BB.
+Default is B-BB.
 
 Parameters
 ----------

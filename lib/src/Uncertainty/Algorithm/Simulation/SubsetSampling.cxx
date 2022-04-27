@@ -2,7 +2,7 @@
 /**
  *  @brief Subset simulation method
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -254,9 +254,6 @@ void SubsetSampling::run()
     ++ numberOfSteps_;
 
     Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
-
-    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
-      throw InternalException(HERE) << "User stopped simulation";
   }
 
   setResult(SubsetSamplingResult(getEvent(), probabilityEstimate, varianceEstimate, numberOfSteps_ * getMaximumOuterSampling(), getBlockSize(), sqrt(coefficientOfVariationSquare)));
@@ -450,6 +447,9 @@ void SubsetSampling::generatePoints(Scalar threshold)
         currentLevelSample_[i * blockSize + j] = blockSample[j];
       }
     }
+
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InternalException(HERE) << "User stopped simulation";
   }
 }
 
