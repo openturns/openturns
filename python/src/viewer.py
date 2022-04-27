@@ -520,6 +520,7 @@ class View(object):
                                           'bottomleft': 'lower left',
                                           'left': 'center left',
                                           'topleft': 'upper left',
+                                          'top': 'upper center',
                                           'topright': 'upper right',
                                           'right': 'center right',
                                           'center': 'center'}

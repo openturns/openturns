@@ -41,6 +41,7 @@
 %include RandomVectorMetropolisHastings.i
 %include RandomWalkMetropolisHastings.i
 %include IndependentMetropolisHastings.i
+%include UserDefinedMetropolisHastings.i
 %include Gibbs.i
 
 /* At last we include template definitions */

@@ -12,6 +12,7 @@
  * FieldFunctionalChaosResult
  * FieldFunctionalChaosSobolIndices
  * CorrelationAnalysis
+ * UserDefinedMetropolisHastings
 
 ==== API changes ====
  * Removed coupling_tools.execute get_stderr,get_stdout arguments

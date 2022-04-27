@@ -222,6 +222,10 @@ Bibliography
 .. [rawlings2001] Rawlings, J. O., Pantula, S. G., and Dickey, D. A.
     *Applied regression analysis: a research tool.*
     Springer Science and Business Media, 2001.
+.. [robert2015] Robert, C. P.
+    *The Metropolis-Hastings algorithm.*
+    arXiv preprint arXiv:1504.01896, 2015.
+    `pdf <https://arxiv.org/pdf/1504.01896.pdf>`__
 .. [rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__

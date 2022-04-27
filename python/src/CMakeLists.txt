@@ -776,6 +776,7 @@ ot_add_python_module(bayesian bayesian_module.i
                       RandomVectorMetropolisHastings.i RandomVectorMetropolisHastings_doc.i.in
                       RandomWalkMetropolisHastings.i RandomWalkMetropolisHastings_doc.i.in
                       IndependentMetropolisHastings.i IndependentMetropolisHastings_doc.i.in
+                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
                       Gibbs.i Gibbs_doc.i.in
                       ConditionalRandomVector.i ConditionalRandomVector_doc.i.in
                       UncertaintyBayesianTemplateDefs.i
