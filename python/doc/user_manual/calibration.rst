@@ -31,4 +31,5 @@ Bayesian updating
     RandomWalkMetropolisHastings
     IndependentMetropolisHastings
     RandomVectorMetropolisHastings
+    UserDefinedMetropolisHastings
     Gibbs
