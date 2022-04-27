@@ -238,8 +238,8 @@ def printCoefficientsTable(
         The polynomial chaos expansion.
     maximum_number_of_printed_coefficients : int
         The maximum number of printed coefficients.
-    threshold : float, stricly positive
-        If a coefficient has an absolute value striclty greater than the 
+    threshold : float, strictly positive
+        If a coefficient has an absolute value strictly greater than the 
         threshold, it is printed. 
     """
     basis = polynomialChaosResult.getOrthogonalBasis()
@@ -622,7 +622,7 @@ score_Q2 = compute_cleaning_PCE(
 #
 # If we set the `verbose` optional input argument of the   
 # `compute_cleaning_PCE` function to `True`, then intermediate messages are   
-# printed in the Terminal (but not in the Jupyter output). For each step of   
+# printed in the Terminal. For each step of   
 # the adaptivity algorithm, the code prints some of the internal parameters   
 # of the algorithm. The datastructure uses several variables that we now describe. 
 #
