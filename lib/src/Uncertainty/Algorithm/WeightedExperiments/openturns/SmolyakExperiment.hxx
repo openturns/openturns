@@ -74,6 +74,9 @@ public:
   /** Size accessor */
   UnsignedInteger getSize() const override;
 
+  // Combination technique multiindex set
+  IndicesCollection computeCombination() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -95,16 +98,13 @@ private:
   // Minimum of a multiindex
   UnsignedInteger indicesMinimum(Indices indices) const;
   
-  // Combination technique multiindex set
-  IndicesCollection computeCombination() const;
-
   // Level
   mutable UnsignedInteger level_;
 
   // Integration nodes; weights
   mutable Sample nodes_;
   mutable Point weights_;
-
+  
   bool isAlreadyComputed_;
 
 }; /* class SmolyakExperiment */

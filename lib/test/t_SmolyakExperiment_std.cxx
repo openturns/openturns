@@ -440,6 +440,39 @@ void test_7()
     
 }
 
+// Test #8 : get indices collection
+void test_8()
+{
+    Log::Show(Log::ALL);
+    OStream fullprint(std::cout);
+    fullprint << "test_8" << std::endl;
+    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+    // Marginal 0: Uniform
+    const Uniform distribution1(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment1(distribution1);  
+    experimentCollection.add(marginalExperiment1);
+    // Marginal 1: Uniform
+    const Uniform distribution2(0.0, 1.0);
+    const GaussProductExperiment marginalExperiment2(distribution2);
+    experimentCollection.add(marginalExperiment2);
+    //
+    const UnsignedInteger level = 3;
+    SmolyakExperiment experiment(experimentCollection, level);
+    const IndicesCollection indicesCollection(experiment.computeCombination());
+    fullprint << "indicesCollection = " << indicesCollection << std::endl;
+    const Collection<Indices> coll = {{2,1},{1,2},{3,1},{2,2},{1,3}};
+    const int size = indicesCollection.getSize();
+    const int dimension = 2;
+    for (int i = 0; i < size; ++i)
+    {
+      const Indices indices(coll[i]);
+      for (int j = 0; j < dimension; ++j)
+      {
+        assert_equal(indices[j], indicesCollection(i, j));
+      }
+    }
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -453,6 +486,7 @@ int main(int, char *[])
     test_5();
     test_6();
     test_7();
+    test_8();
   }
   catch (TestFailed & ex)
   {

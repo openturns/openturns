@@ -245,3 +245,13 @@ Parameters
 ----------
 experiments : list of :class:`~openturns.WeightedExperiment`
     List of the marginals of the experiment."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmolyakExperiment::computeCombination
+"Compute the indices involved in the quadrature.
+
+Returns
+-------
+indicesCollection : list of :class:`~openturns.IndicesCollection`
+    List of the multi-indices involved in Smolyak's quadrature."

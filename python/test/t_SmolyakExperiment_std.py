@@ -279,8 +279,25 @@ def testSmolyakExperiment4():
     expected_distribution = ot.BlockIndependentDistribution(collection)
     assert distribution == expected_distribution
 
+def testSmolyakExperiment5():
+    # Special case : Level = 1
+    print("testSmolyakExperiment5:")
+    ot.Log.Show(ot.Log.ALL)
+    # Generate a Smolyak Gauss-Legendre rule in 2 dimensions.
+    experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
+    experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
+    collection = [experiment1, experiment2]
+    level = 3
+    smolyak = ot.SmolyakExperiment(collection, level)
+    indicesCollection = smolyak.computeCombination()
+    print("indicesCollection = ", indicesCollection)
+    expected = [[2,1],[1,2],[3,1],[2,2],[1,3]]
+    for i in range(len(indicesCollection)):
+        assert indicesCollection[i] == expected[i]
+
 # Testing
 testSmolyakExperiment1()
 testSmolyakExperiment2()
 testSmolyakExperiment3()
 testSmolyakExperiment4()
+testSmolyakExperiment5()
