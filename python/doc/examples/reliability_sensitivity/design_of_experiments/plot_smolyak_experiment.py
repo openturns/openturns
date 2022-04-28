@@ -4,7 +4,7 @@ Plot the Smolyak quadrature
 """
 # %%
 # The goal of this example is to present different properties of Smolyak's
-# quadrature. 
+# quadrature.
 
 # %%
 import openturns as ot
@@ -12,17 +12,17 @@ import openturns.viewer as otv
 from matplotlib import pylab as plt
 
 # %%
-# In the first example, we plot the nodes different levels of 
-# Smolyak-Legendre quadrature. 
+# In the first example, we plot the nodes different levels of
+# Smolyak-Legendre quadrature.
 uniform = ot.GaussProductExperiment(ot.Uniform(-1.0, 1.0))
 collection = [uniform] * 2
 
 # %%
-# In the following loop, the level increases from 1 to 6. 
-# For each level, we create the associated Smolyak quadrature and 
-# plot the associated nodes. 
-number_of_rows=2
-number_of_columns=3
+# In the following loop, the level increases from 1 to 6.
+# For each level, we create the associated Smolyak quadrature and
+# plot the associated nodes.
+number_of_rows = 2
+number_of_columns = 3
 bounding_box = ot.Interval([-1.05] * 2, [1.05] * 2)
 grid = ot.GridLayout(number_of_rows, number_of_columns)
 for i in range(number_of_rows):
@@ -52,45 +52,47 @@ plt.tight_layout()
 plt.show()
 
 # %%
-# In the previous plot, the number of nodes is denoted by :math:`n`. 
-# We see that the number of nodes in the quadrature slowly increases 
-# when the quadrature level increases. 
+# In the previous plot, the number of nodes is denoted by :math:`n`.
+# We see that the number of nodes in the quadrature slowly increases
+# when the quadrature level increases.
 
 # %%
-# Secondly, we want to compute the number of nodes depending on the dimension 
-# and the level. 
+# Secondly, we want to compute the number of nodes depending on the dimension
+# and the level.
 
 # %%
-# Assume that the number of nodes depends on the level 
-# from the equation :math:`n_\ell^1 = O\left(2^\ell\right)`. 
-# In a fully tensorized grid, the number of nodes is  
+# Assume that the number of nodes depends on the level
+# from the equation :math:`n_\ell^1 = O\left(2^\ell\right)`.
+# In a fully tensorized grid, the number of nodes is
 # ([gerstner1998]_ page 216):
-# 
+#
 # .. math::
-# 
+#
 #     n_{\textrm{tensorisation}} = O\left(2^{\ell d}\right).
 #
 # We are going to see that Smolyak's quadrature reduces drastically that number.
-# Let :math:`m_\ell` be the number of the marginal univariate quadrature of 
-# level :math:`\ell`. 
+# Let :math:`m_\ell` be the number of the marginal univariate quadrature of
+# level :math:`\ell`.
 # The number of nodes in Smolyak's sparse grid is:
-# 
+#
 # .. math::
-# 
+#
 #     n_\ell^d = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + d - 1} m_{k_1} \cdots m_{k_d}.
 #
-# If :math:`n_\ell^1 = O\left(2^\ell\right)` therefore the number of nodes of 
+# If :math:`n_\ell^1 = O\left(2^\ell\right)` therefore the number of nodes of
 # Smolyak's quadrature is:
-# 
+#
 # .. math::
-# 
+#
 #     n_{\textrm{Smolyak}} = O\left(2^\ell \ell^{d - 1}\right).
 #
 
 level_max = 8  # Maximum level
 dimension_max = 8  # Maximum dimension
 level_list = list(range(1, 1 + level_max))
-graph = ot.Graph("Smolyak vs tensorized quadrature", r"$level$", r"$n$", True, "topleft")
+graph = ot.Graph(
+    "Smolyak vs tensorized quadrature", r"$level$", r"$n$", True, "topleft"
+)
 dimension_list = list(range(1, dimension_max, 2))
 palette = ot.Drawable().BuildDefaultPalette(len(dimension_list))
 graph_index = 0
@@ -107,7 +109,7 @@ for dimension in dimension_list:
     graph.add(curve)
     # Smolyak
     for level in level_list:
-        number_of_nodes[level - 1, 0] = 2 ** level * level ** (dimension - 1)
+        number_of_nodes[level - 1, 0] = 2**level * level ** (dimension - 1)
     curve = ot.Curve(ot.Sample.BuildFromPoint(level_list), number_of_nodes)
     curve.setLegend("")
     curve.setLineStyle("dashed")
@@ -126,10 +128,10 @@ plt.show()
 
 
 # %%
-# In the following cell, we count the number of nodes in Smolyak's quadrature 
-# using a Gauss-Legendre marginal univariate experiment. 
-# We perform a loop over the levels from 1 to 8 
-# and the dimensions from 1 to 7. 
+# In the following cell, we count the number of nodes in Smolyak's quadrature
+# using a Gauss-Legendre marginal univariate experiment.
+# We perform a loop over the levels from 1 to 8
+# and the dimensions from 1 to 7.
 
 level_max = 8  # Maximum level
 dimension_max = 8  # Maximum dimension
