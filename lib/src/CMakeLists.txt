@@ -86,8 +86,8 @@ if (BUILD_SHARED_LIBS)
 endif ()
 
 # soversion
-set_target_properties (OT PROPERTIES SOVERSION 0.20)
-set_target_properties (OT PROPERTIES VERSION 0.20.0)
+set_target_properties (OT PROPERTIES SOVERSION 0.21)
+set_target_properties (OT PROPERTIES VERSION 0.21.0)
 
 if (BISON_FOUND AND FLEX_FOUND)
   add_dependencies (OT generate_csv_lexer)
