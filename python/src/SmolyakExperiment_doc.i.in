@@ -138,9 +138,9 @@ for any :math:`\ell \geq 1` where the binomial coefficient is:
 
 .. math::
 
-    {n \choose k} = \frac{n!}{k! (n - k)!}
+    {n \choose m} = \frac{n!}{m! (n - m)!}
 
-for any integers :math:`n \geq 0` and :math:`0 \leq k \leq n`.
+for any integers :math:`n \geq 0` and :math:`0 \leq m \leq n`.
 
 **Merge duplicate nodes**
 

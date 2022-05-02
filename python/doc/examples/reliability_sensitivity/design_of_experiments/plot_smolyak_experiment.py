@@ -79,13 +79,21 @@ plt.show()
 #
 #     n_\ell^d = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + d - 1} m_{k_1} \cdots m_{k_d}.
 #
-# If :math:`n_\ell^1 = O\left(2^\ell\right)` therefore the number of nodes of
+# If :math:`n_\ell^1 = O\left(2^\ell\right)`, then the number of nodes of
 # Smolyak's quadrature is:
 #
 # .. math::
 #
 #     n_{\textrm{Smolyak}} = O\left(2^\ell \ell^{d - 1}\right).
 #
+
+# %%
+# In the following script, we plot the number of nodes versus the level, 
+# of the tensor product and Smolyak experiments, under the assumption 
+# that :math:`n_{\textrm{tensorisation}} = 2^{\ell d}` 
+# and :math:`n_{\textrm{Smolyak}} = 2^\ell \ell^{d - 1}`. 
+# In other words, we assume that the constants involved in the previous 
+# Landau equations are equal to 1.
 
 level_max = 8  # Maximum level
 dimension_max = 8  # Maximum dimension
