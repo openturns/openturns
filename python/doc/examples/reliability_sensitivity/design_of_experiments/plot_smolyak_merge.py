@@ -13,6 +13,7 @@ Merge nodes in Smolyak quadrature
 import numpy as np
 import openturns as ot
 import openturns.viewer as otv
+import matplotlib.pyplot as plt
 
 # %%
 # The following examples shows how to get the relative and absolute tolerances.
@@ -120,6 +121,7 @@ otv.View(
     figure_kw={"figsize": (4.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
+plt.tight_layout()
 
 # %%
 # We see that changing the tolerance from :math:`10^{-6}` down to :math:`10^{-20}`
@@ -155,11 +157,12 @@ palette = ot.DrawableImplementation_BuildDefaultPalette(number_of_epsilons)
 graph.setColors(palette)
 graph.setLegendPosition("topright")
 graph.setLogScale(ot.GraphImplementation.LOGXY)
-otv.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (4.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
+plt.tight_layout()
 
 # %%
 # We see that changing the tolerance from :math:`1` down to :math:`10^{-3}`
@@ -190,12 +193,14 @@ for level in level_list:
 graph = ot.Graph("Sensitivity to merge", "Level", "Size decrease", True)
 cloud = ot.Cloud(level_list, size_decrease_list)
 graph.add(cloud)
-otv.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (4.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
+plt.tight_layout()
 
+# %%
 # We see that the number of nodes is reduced when the merge algorithm is
 # enabled.
 # Moreover, the number of nodes which are duplicated increases when the

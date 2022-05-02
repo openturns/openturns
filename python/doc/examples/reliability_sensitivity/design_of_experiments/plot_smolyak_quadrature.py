@@ -247,7 +247,8 @@ def tensorizedGaussQuadrature(g_function, numberOfMarginalNodes):
 # .. math::
 #     \log(e_{abs}) = \log(c) - \alpha \log(n) + \epsilon_a
 #
-# where :math:`\epsilon_a = \log(\epsilon_m)` is the additive residual.
+# where :math:`\epsilon_a = \log(\epsilon_m)` is the additive residual 
+# in logarithmic scale.
 # This model states that the curve presenting the error depending on the
 # number of nodes is a line with slope :math:`\alpha` in a log-log plot.
 # A method with a more negative slope is favored, since it means that the
