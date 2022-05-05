@@ -30,7 +30,7 @@ option (USE_CERES                    "Use Ceres Solver for additional optimizati
 option (USE_CMINPACK                 "Use CMinpack for additional optimization algorithms"                   ON)
 option (USE_DLIB                     "Use dlib for additional optimization algorithms"                       ON)
 option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
-option (USE_IPOPT                    "Use Ipopt for MINLP problems"                                          ON)
+option (USE_IPOPT                    "Use Ipopt for nonlinear optimization"                                  ON)
 option (USE_BONMIN                   "Use Bonmin for MINLP problems"                                         ON)
 option (USE_PAGMO                    "Use Pagmo for multi-objective optimization"                            ON)
 option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"                               ON)

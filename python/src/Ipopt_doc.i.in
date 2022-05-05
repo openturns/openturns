@@ -1,5 +1,7 @@
 %feature("docstring") OT::Ipopt
-"Ipopt optimization solver `Ipopt <https://coin-or.github.io/Ipopt/>`_.
+"Ipopt nonlinear optimization solver.
+
+`Ipopt <https://coin-or.github.io/Ipopt/>`_ is a software package for large-scale nonlinear optimization.
 
 Parameters
 ----------
