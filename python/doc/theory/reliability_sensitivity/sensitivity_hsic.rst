@@ -121,7 +121,7 @@ empirical variance. In this case, we obtain :
 
 .. math::
 
-    \kappa_i(x_i^j,x_i^k) = \exp ( (\frac{x_i^j - x_i^k}{\theta_i})^2) 
+    \kappa_i(x_i^j,x_i^k) = \exp (- \frac{(x_i^j - x_i^k)^2}{2\theta_i^2}) 
 
 with :math:`\theta_i = \sigma_i`, where :math:`\sigma_i` is the empirical 
 standard deviation of the sample :math:`X_i`.
