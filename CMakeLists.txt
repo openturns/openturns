@@ -680,6 +680,12 @@ if (BUILD_PYTHON)
       endif ()
     endif ()
 
+    if (NOT DEFINED PYTHON_SITE_PACKAGES AND NOT CMAKE_CROSSCOMPILING)
+      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sysconfig, os; print(sysconfig.get_path('platlib').replace(sysconfig.get_path('data'), '').lstrip(os.path.sep))"
+                       OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+      file (TO_CMAKE_PATH "${PYTHON_SITE_PACKAGES}" PYTHON_SITE_PACKAGES)
+    endif ()
+
     if (DEFINED PYTHON_SITE_PACKAGES)
       set (OPENTURNS_PYTHON_MODULE_PATH "${PYTHON_SITE_PACKAGES}")
     else ()
