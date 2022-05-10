@@ -89,7 +89,7 @@ The second estimator is an unbiased estimator based on U-statistics:
 
 .. math::
 
-	\widehat{\mathrm{HSIC}}(X_i,Y) = \frac{1}{m(m-3)} \left[\mathrm{Tr}(\mat{\tilde{L}_i \tilde{L}}) + \frac{\mathbf{1}^{\top} \mat{\tilde{L}_i} \mathbf{1}\mathbf{1}^{\top} \mat{\tilde{L}} \mathbf{1}}{(m-1)(m-2)} - \frac{2}{m-2} \mathbf{1}^{\top} \mat{\tilde{L}_i} \mat{\tilde{L}} \mathbf{1}\right]
+	\widehat{\mathrm{HSIC}}(X_i,Y) = \frac{1}{n(n-3)} \left[\mathrm{Tr}(\mat{\tilde{L}_i \tilde{L}}) + \frac{\mathbf{1}^{\top} \mat{\tilde{L}_i} \mathbf{1}\mathbf{1}^{\top} \mat{\tilde{L}} \mathbf{1}}{(n-1)(n-2)} - \frac{2}{n-2} \mathbf{1}^{\top} \mat{\tilde{L}_i} \mat{\tilde{L}} \mathbf{1}\right]
 
 
 where :math:`\tilde{L}_{i_{j,k}}` and :math:`\tilde{L}_{j,k}` are computed as:
