@@ -7,6 +7,11 @@ set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
 # allows one to pass compile flags like -O1 to reduce memory usage
 set (SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
 
+if (NOT DEFINED PYTHON_EXTENSION_MODULE_SUFFIX AND NOT CMAKE_CROSSCOMPILING)
+  execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import importlib.machinery; print(importlib.machinery.EXTENSION_SUFFIXES[0])"
+                   OUTPUT_VARIABLE PYTHON_EXTENSION_MODULE_SUFFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif ()
+
 # generate SWIG runtime header
 execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/openturns)
 add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
@@ -78,6 +83,10 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   set_target_properties (${module_target} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 
   set_target_properties (${module_target} PROPERTIES UNITY_BUILD OFF)
+
+  if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
+    set_target_properties (${module_target} PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
+  endif ()
 
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
            DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
@@ -1021,7 +1030,9 @@ set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for th
 add_library (memoryview MODULE PythonReadOnlyBuffer.c)
 target_link_libraries_with_dynamic_lookup (memoryview ${PYTHON_LIBRARIES})
 set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
-if (WIN32 AND NOT CYGWIN)
+if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
+  set_target_properties (memoryview PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
+elseif (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
 endif ()
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
@@ -1032,8 +1043,7 @@ set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py)
 install (FILES ${EXTRA_PYTHON_FILES}
           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
        )
-set (EXTRA_DIR usecases)
-install (DIRECTORY ${EXTRA_DIR} DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
+install (DIRECTORY usecases DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
 install (FILES ${SWIGFILES} DESTINATION ${OPENTURNS_SWIG_INCLUDE_DIRS})
 
@@ -1043,13 +1053,12 @@ if (SPHINX_FOUND)
   set (OPENTURNS_PYTHON_BUILD_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/site-packages)
   execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns)
   execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/usecases)
+  get_target_property (module_suffix memoryview SUFFIX)
+  execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/memoryview${module_suffix} ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/memoryview${module_suffix})
   foreach (module ${OPENTURNS_PYTHON_MODULES})
     execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/${module}.py ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/${module}.py)
-    # FIXME: get_target_property (suffix ${SWIG_MODULE_${module}_REAL_NAME} SUFFIX)
-    execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/_${module}.so ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/_${module}.so)
+    execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/_${module}${module_suffix} ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/_${module}${module_suffix})
   endforeach ()
-  # install memoryview.so for sphinx
-  execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/memoryview.so ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/memoryview.so)
   foreach (file ${EXTRA_PYTHON_FILES})
     execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/${file} ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/${file})
   endforeach ()

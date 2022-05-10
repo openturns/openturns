@@ -21,7 +21,7 @@
 === Bug fixes ===
 
 
-== 1.19rc1 release (2022-04-14) == #release-1.19rc1
+== 1.19 release (2022-05-10) == #release-1.19
 
 === Library ===
 
@@ -75,6 +75,7 @@
 === Bug fixes ===
  * #1260 (RandomWalkMetropolisHastings does not handle non-symmetric proposals properly)
  * #1263 (Static functions are implemented in C++ classes instead of namespaces)
+ * #1334 (Multi-objective optimization)
  * #1444 (The calibration examples are unclear)
  * #1830 (Incompatible documentation for CauchyModel)
  * #1914 (Cobyla & NLopt should accept LeastSquaresProblem)
@@ -97,8 +98,9 @@
  * #2014 (Precision issue with the Python KrigingAlgorithm test)
  * #2019 (Parametric stationary covariance models doc section needs refresh)
  * #2020 (Problem with the UserDefined distribution)
- * #2024 (All of the Pagmo library is interfaced even if it has been compiled with a restricted API)
  * #2025 (The lack of Bonmin generates an error during example compilation)
+ * #2031 (Multi-objective optimization example question)
+ * #2032 (Documentation of NAIS)
 
 
 == 1.18 release (2021-11-10) == #release-1.18

@@ -260,6 +260,10 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   {
     solver = Ipopt();
   }
+  else if (PlatformInfo::HasFeature("pagmo") && Pagmo::GetAlgorithmNames().contains(solverName))
+  {
+    solver = Pagmo(solverName);
+  }
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
 

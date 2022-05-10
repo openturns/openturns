@@ -152,23 +152,17 @@ UnsignedInteger SymbolicEvaluation::getOutputDimension() const
 Evaluation SymbolicEvaluation::getMarginal(const UnsignedInteger i) const
 {
   if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
-  return new SymbolicEvaluation(inputVariablesNames_, Description(1, outputVariablesNames_[i]), Description(1, formulas_[i]));
+  return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
 Evaluation SymbolicEvaluation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
-  const UnsignedInteger size = indices.getSize();
-  Description marginalOutputVariablesNames(size);
-  Description marginalFormulas(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const UnsignedInteger j = indices[i];
-    marginalOutputVariablesNames[i] = outputVariablesNames_[j];
-    marginalFormulas[i] = formulas_[j];
-  }
-  return new SymbolicEvaluation(inputVariablesNames_, marginalOutputVariablesNames, marginalFormulas);
+  if (outputVariablesNames_.getSize() == formulas_.getSize())
+    return new SymbolicEvaluation(inputVariablesNames_, outputVariablesNames_.select(indices), formulas_.select(indices));
+  else
+    return EvaluationImplementation::getMarginal(indices);
 }
 
 /* Accessor to the input variables names */

@@ -73,7 +73,7 @@ We support the following Debian-based distributions:
     +=====================================+==========================================================+
     | Ubuntu 20.04 LTS 'Focal Fossa'      | deb https://openturns.github.io/apt/ubuntu focal main    |
     +-------------------------------------+----------------------------------------------------------+
-    | Ubuntu 21.10 'Impish Indri'         | deb https://openturns.github.io/apt/ubuntu impish main   |
+    | Ubuntu 22.04 LTS 'Jammy Jellyfish'  | deb https://openturns.github.io/apt/ubuntu jammy main    |
     +-------------------------------------+----------------------------------------------------------+
     | Debian 11.0 'Bullseye'              | deb https://openturns.github.io/apt/debian bullseye main |
     +-------------------------------------+----------------------------------------------------------+
@@ -87,10 +87,10 @@ repository address to your sources list. To do so, you may either use the
 graphical user interface of aptitude or you can edit the sources-list file
 (`/etc/apt/sources.list`).
 
-For instance, assuming you are running Ubuntu 20.04,
+For instance, assuming you are running Ubuntu 22.04,
 add the following source to your sources list::
 
-    echo deb https://openturns.github.io/apt/ubuntu focal main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb https://openturns.github.io/apt/ubuntu jammy main | sudo tee /etc/apt/sources.list.d/openturns.list
 
 .. note::
 
@@ -129,14 +129,14 @@ RPM-based distributions
 Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_35/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_36/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.3/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Mageia_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_35/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_36/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.3/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_8/repodata/repomd.xml.key
 
