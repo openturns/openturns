@@ -1,10 +1,7 @@
 %feature("docstring") OT::Bonmin
-"Base class for optimization solvers from `Bonmin <https://www.coin-or.org/Bonmin/index.html>`_ library.
+"Bonmin MINLP solver.
 
-Available constructors:
-    Bonmin(*problem*)
-    
-    Bonmin(*problem, algoName*)
+`Bonmin <https://www.coin-or.org/Bonmin/index.html>`_ is an open-source code for solving general MINLP problems.
 
 Parameters
 ----------

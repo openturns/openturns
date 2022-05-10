@@ -37,6 +37,8 @@ People
 - Guillaume Garcia
 - Ivan Dutka-Malen
 - Joseph Mure
+- Julien Floquet
+- Julien Pelamatti
 - Julien Schueller
 - Kamal Abboud
 - Kieran Delamotte

@@ -43,12 +43,12 @@ public:
   typedef OT::PersistentCollection<OT::OptimizationResult> OptimizationResultPersistentCollection;
 
   /** Default constructor */
-  Pagmo();
+  explicit Pagmo(const String & algoName = "gaco");
 
-  /** Constructor that sets starting points */
-  Pagmo(const OptimizationProblem & problem,
-        const String & algoName,
-        const Sample & startingSample);
+  /** Parameter constructor */
+  explicit Pagmo(const OptimizationProblem & problem,
+                 const String & algoName = "gaco",
+                 const Sample & startingSample = Sample());
 
   /** Virtual constructor */
   Pagmo * clone() const override;

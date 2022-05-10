@@ -234,14 +234,14 @@ CLASSNAMEINIT(Pagmo)
 static const Factory<Pagmo> Factory_Pagmo;
 
 /* Default constructor */
-Pagmo::Pagmo()
+Pagmo::Pagmo(const String & algoName)
   : OptimizationAlgorithmImplementation()
 {
-  // Nothing to do here
+  setAlgorithmName(algoName);
 }
 
 
-/* Constructor that sets starting sample */
+/* Parameters constructor */
 Pagmo::Pagmo(const OptimizationProblem & problem,
              const String & algoName,
              const Sample & startingSample)

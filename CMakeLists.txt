@@ -30,7 +30,7 @@ option (USE_CERES                    "Use Ceres Solver for additional optimizati
 option (USE_CMINPACK                 "Use CMinpack for additional optimization algorithms"                   ON)
 option (USE_DLIB                     "Use dlib for additional optimization algorithms"                       ON)
 option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
-option (USE_IPOPT                    "Use Ipopt for MINLP problems"                                          ON)
+option (USE_IPOPT                    "Use Ipopt for nonlinear optimization"                                  ON)
 option (USE_BONMIN                   "Use Bonmin for MINLP problems"                                         ON)
 option (USE_PAGMO                    "Use Pagmo for multi-objective optimization"                            ON)
 option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"                               ON)
@@ -678,6 +678,12 @@ if (BUILD_PYTHON)
         set (SPHINX_FOUND FALSE)
         message (STATUS "Disabling documentation (need numpydoc/sphinx-gallery/matplotlib/libxml2/nlopt)")
       endif ()
+    endif ()
+
+    if (NOT DEFINED PYTHON_SITE_PACKAGES AND NOT CMAKE_CROSSCOMPILING)
+      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sysconfig, os; print(sysconfig.get_path('platlib').replace(sysconfig.get_path('data'), '').lstrip(os.path.sep))"
+                       OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+      file (TO_CMAKE_PATH "${PYTHON_SITE_PACKAGES}" PYTHON_SITE_PACKAGES)
     endif ()
 
     if (DEFINED PYTHON_SITE_PACKAGES)
