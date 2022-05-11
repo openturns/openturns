@@ -214,7 +214,6 @@ struct AllElementsPredicate
 template < typename _Tp, typename _UnaryPredicate = AllElementsPredicate<_Tp>, typename _CharT = char,
            typename _Traits = std::char_traits<_CharT> >
 class OSS_iterator
-  : public std::iterator<std::output_iterator_tag, void, void, void, void>
 {
 public:
   //@{
@@ -223,6 +222,12 @@ public:
   typedef _Traits                        traits_type;
   typedef OSS                            ostream_type;
   //@}
+
+  using iterator_category = std::output_iterator_tag;
+  using value_type = void;
+  using difference_type = void;
+  using pointer = void;
+  using reference = void;
 
 private:
   ostream_type*     _M_stream;
