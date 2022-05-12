@@ -51,6 +51,7 @@ People
 - Remi Lafage
 - Romuald Conty
 - Sofiane Haddad
+- Vincent Chabridon
 - Vincent Dubourg
 
 Meetings
