@@ -41,13 +41,11 @@ HSICStat::HSICStat(const HSICStatImplementation & implementation)
 }
 
 /* Compute the HSIC index for one marginal*/
-Scalar HSICStat::computeHSICIndex(const Sample & inSample,
-                                  const Sample & outSample,
-                                  const CovarianceModel & inCovariance,
-                                  const CovarianceModel & outCovariance,
+Scalar HSICStat::computeHSICIndex(const CovarianceMatrix & CovMat1,
+                                  const CovarianceMatrix & CovMat2,
                                   const SquareMatrix & weightMatrix) const
 {
-  return getImplementation()->computeHSICIndex(inSample, outSample, inCovariance, outCovariance, weightMatrix);
+  return getImplementation()->computeHSICIndex(CovMat1, CovMat2, weightMatrix);
 }
 
 /* Is compatible with a Conditional HSIC Estimator ? */

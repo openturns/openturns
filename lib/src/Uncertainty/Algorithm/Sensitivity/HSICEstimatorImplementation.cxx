@@ -52,6 +52,8 @@ HSICEstimatorImplementation::HSICEstimatorImplementation()
   , R2HSICIndices_()
   , PValuesPermutation_()
   , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
+  , inputCovarianceMatrixCollection_()
+  , outputCovarianceMatrix_()
 {
 // Nothing
 }
@@ -75,10 +77,13 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(
   , HSIC_YY_ ()
   , R2HSICIndices_ ()
   , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
+  , inputCovarianceMatrixCollection_(CovarianceMatrixCollection(n_))
+  , outputCovarianceMatrix_ ()
 {
   if(covarianceModelCollection_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
   if(outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";
   if(inputSample_.getSize() != outputSample_.getSize()) throw InvalidDimensionException(HERE) << "Input and output samples must have the same size";
+  computeCovarianceMatrices();
 }
 
 /* Virtual constructor */
@@ -87,6 +92,17 @@ HSICEstimatorImplementation * HSICEstimatorImplementation::clone() const
   return new HSICEstimatorImplementation(*this);
 }
 
+/* Compute the covariance matrices associated to the inputs and outputs */
+void HSICEstimatorImplementation::computeCovarianceMatrices()
+{
+  for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
+  {
+	inputCovarianceMatrixCollection_[dim] = covarianceModelCollection_[dim].discretize(inputSample_.getMarginal(dim));
+  }
+  outputCovarianceMatrix_ = covarianceModelCollection_[inputDimension_].discretize(outputSample_);
+}
+
+
 /* Compute the weight matrix from the weight function */
 SquareMatrix HSICEstimatorImplementation::computeWeightMatrix(const Sample&) const
 {
@@ -94,13 +110,11 @@ SquareMatrix HSICEstimatorImplementation::computeWeightMatrix(const Sample&) con
 }
 
 /* Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
-Scalar HSICEstimatorImplementation::computeHSICIndex(const Sample & inSample,
-    const Sample & outSample,
-    const CovarianceModel & inCovariance,
-    const CovarianceModel & outCovariance,
+Scalar HSICEstimatorImplementation::computeHSICIndex(const CovarianceMatrix & covMat1,
+    const CovarianceMatrix & covMat2,
     const SquareMatrix & weightMatrix) const
 {
-  return estimatorType_.computeHSICIndex(inSample, outSample, inCovariance, outCovariance, weightMatrix);
+  return estimatorType_.computeHSICIndex(covMat1, covMat2, weightMatrix);
 }
 
 /* Compute HSIC and R2-HSIC indices */
@@ -117,11 +131,10 @@ void HSICEstimatorImplementation::computeIndices() const
   /* Loop over marginals: HSIC indices */
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
-    const Sample xdim(inputSample_.getMarginal(dim));
-    HSIC_XY_[dim] = computeHSICIndex(xdim, outputSample_, covarianceModelCollection_[dim], covarianceModelCollection_[inputDimension_], W);
-    HSIC_XX_[dim] = computeHSICIndex(xdim, xdim, covarianceModelCollection_[dim], covarianceModelCollection_[dim], W);
+    HSIC_XY_[dim] = computeHSICIndex(inputCovarianceMatrixCollection_[dim], outputCovarianceMatrix_, W);
+    HSIC_XX_[dim] = computeHSICIndex(inputCovarianceMatrixCollection_[dim],inputCovarianceMatrixCollection_[dim], W);
   }
-  HSIC_YY_[0] = computeHSICIndex(outputSample_, outputSample_, covarianceModelCollection_[inputDimension_], covarianceModelCollection_[inputDimension_], W);
+  HSIC_YY_[0] = computeHSICIndex(outputCovarianceMatrix_,outputCovarianceMatrix_, W);
 
   /* Compute R2-HSIC */
   R2HSICIndices_ = Point(inputDimension_);
@@ -154,26 +167,26 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
   PValuesPermutation_ = Point(inputDimension_);
   Collection<Sample> shuffleCollection(permutationSize_);
   Collection<SquareMatrix> weightMatrixCollection(permutationSize_);
+  CovarianceMatrixCollection shuffOutCovMatCollection(permutationSize_);
 
   for( UnsignedInteger b = 0; b < permutationSize_; ++b)
   {
     const Sample shuffledSample = shuffledCopy(outputSample_);
     shuffleCollection[b] = shuffledSample;
     weightMatrixCollection[b] = computeWeightMatrix(shuffledSample);
+    shuffOutCovMatCollection[b] = covarianceModelCollection_[inputDimension_].discretize(shuffledSample);
   }
 
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
-
-    const Sample xdim(inputSample_.getMarginal(dim));
-    const Scalar HSIC_obs = computeHSICIndex(xdim, outputSample_, covarianceModelCollection_[dim], covarianceModelCollection_[inputDimension_], Wobs);
+    const Scalar HSIC_obs = computeHSICIndex(inputCovarianceMatrixCollection_[dim], outputCovarianceMatrix_, Wobs);
     UnsignedInteger count = 0;
 
     for( UnsignedInteger b = 0; b < permutationSize_; ++b)
     {
-      const Sample Yp(shuffleCollection[b]);
       const SquareMatrix W(weightMatrixCollection[b]);
-      const Scalar HSIC_loc = computeHSICIndex(xdim, Yp, covarianceModelCollection_[dim], covarianceModelCollection_[inputDimension_], W);
+	  const CovarianceMatrix outCov(shuffOutCovMatCollection[b]);
+      const Scalar HSIC_loc = computeHSICIndex(inputCovarianceMatrixCollection_[dim], outCov, W);
       if( HSIC_loc > HSIC_obs) count += 1;
     }
 
@@ -194,23 +207,20 @@ void HSICEstimatorImplementation::computePValuesAsymptotic() const
     H(j, j) += 1.0;
   }
 
-  const CovarianceMatrix Ky(covarianceModelCollection_[inputDimension_].discretize(outputSample_));
-  const Scalar traceKy = Ky.computeTrace();
-  const Scalar sumKy = Ky.computeSumElements();
+  const Scalar traceKy = outputCovarianceMatrix_.computeTrace();
+  const Scalar sumKy = outputCovarianceMatrix_.computeSumElements();
 
   const Scalar Ey = (sumKy - traceKy) / n_ / (n_ - 1 );
-  const Matrix By = H * Ky * H;
+  const Matrix By = H * outputCovarianceMatrix_ * H;
   const Point HSICobsPt(getHSICIndices());
 
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
-    const Sample Xi(inputSample_.getMarginal(dim));
-    const CovarianceMatrix Kx(covarianceModelCollection_[dim].discretize(Xi));
-    const Scalar traceKx = Kx.computeTrace();
-    const Scalar sumKx = Kx.computeSumElements();
+    const Scalar traceKx = inputCovarianceMatrixCollection_[dim].computeTrace();
+    const Scalar sumKx = inputCovarianceMatrixCollection_[dim].computeSumElements();
     const Scalar Ex = (sumKx - traceKx) / n_ / (n_ - 1);
 
-    const Matrix Bx = H * Kx * H;
+    const Matrix Bx = H * inputCovarianceMatrixCollection_[dim] * H;
 
     /* Hadamard product then square all elements */
     SquareMatrix B(Bx.computeHadamardProduct(By).getImplementation());
@@ -354,6 +364,7 @@ void HSICEstimatorImplementation::setCovarianceModelCollection(const CovarianceM
 {
   covarianceModelCollection_ = coll ;
   resetIndices();
+  computeCovarianceMatrices();
 }
 
 /* Get the input sample */
@@ -367,6 +378,7 @@ void HSICEstimatorImplementation::setInputSample(const Sample & inputSample)
 {
   inputSample_ = inputSample;
   resetIndices();
+  computeCovarianceMatrices();
 }
 
 /* Get the output sample */
@@ -385,6 +397,7 @@ void HSICEstimatorImplementation::setOutputSample(const Sample & outputSample)
 
   outputSample_ = outputSample;
   resetIndices();
+  computeCovarianceMatrices();
 }
 
 
@@ -470,6 +483,8 @@ void HSICEstimatorImplementation::save(Advocate & adv) const
   adv.saveAttribute( "permutationSize_", permutationSize_ );
   adv.saveAttribute( "isAlreadyComputedIndices_", isAlreadyComputedIndices_ );
   adv.saveAttribute( "isAlreadyComputedPValuesPermutation_", isAlreadyComputedPValuesPermutation_ );
+  adv.saveAttribute( "inputCovarianceMatrixCollection_", inputCovarianceMatrixCollection_ );
+  adv.saveAttribute( "outputCovarianceMatrix_", outputCovarianceMatrix_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -491,6 +506,8 @@ void HSICEstimatorImplementation::load(Advocate & adv)
   adv.loadAttribute( "permutationSize_", permutationSize_ );
   adv.loadAttribute( "isAlreadyComputedIndices_", isAlreadyComputedIndices_ );
   adv.loadAttribute( "isAlreadyComputedPValuesPermutation_", isAlreadyComputedPValuesPermutation_ );
+  adv.loadAttribute( "inputCovarianceMatrixCollection_", inputCovarianceMatrixCollection_ );
+  adv.loadAttribute( "outputCovarianceMatrix_", outputCovarianceMatrix_ );
 }
 
 END_NAMESPACE_OPENTURNS

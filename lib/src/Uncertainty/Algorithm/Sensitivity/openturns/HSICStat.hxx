@@ -54,7 +54,7 @@ public:
 #endif
 
   /** Compute the HSIC index for one marginal*/
-  virtual Scalar computeHSICIndex(const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
+  virtual Scalar computeHSICIndex(const CovarianceMatrix & CovMat1, const CovarianceMatrix & CovMat2, const SquareMatrix & weightMatrix) const;
 
   /** Compute the asymptotic p-value */
   virtual Scalar computePValue(const Gamma &dist, const UnsignedInteger n, const Scalar HSIC_obs, const Scalar mHSIC) const;

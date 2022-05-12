@@ -48,6 +48,7 @@ class OT_API HSICEstimatorImplementation
 public:
 
   typedef Collection <CovarianceModel>  CovarianceModelCollection;
+  typedef Collection <CovarianceMatrix>  CovarianceMatrixCollection;
 
   /** Default constructor */
   HSICEstimatorImplementation();
@@ -125,6 +126,9 @@ protected:
   /** Reset indices to void */
   virtual void resetIndices();
 
+  /* Compute the covariance matrices associated to the inputs and outputs */
+  virtual void computeCovarianceMatrices();
+
   /** Compute p-value with permutation */
   virtual void computePValuesPermutation() const;
 
@@ -135,7 +139,7 @@ protected:
   virtual SquareMatrix computeWeightMatrix(const Sample & Y) const;
 
   /** Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
-  virtual Scalar computeHSICIndex( const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
+  virtual Scalar computeHSICIndex(const CovarianceMatrix & covMat1, const CovarianceMatrix & covMat2, const SquareMatrix & weightMatrix) const;
 
   /** Compute HSIC and R2-HSIC indices */
   virtual void computeIndices() const;
@@ -153,6 +157,8 @@ protected:
   Function weightFunction_ ;
   UnsignedInteger n_ ;
   UnsignedInteger inputDimension_ ;
+  PersistentCollection <CovarianceMatrix> inputCovarianceMatrixCollection_;
+  CovarianceMatrix outputCovarianceMatrix_;
   mutable Point HSIC_XY_ ;
   mutable Point HSIC_XX_ ;
   mutable Point HSIC_YY_ ;

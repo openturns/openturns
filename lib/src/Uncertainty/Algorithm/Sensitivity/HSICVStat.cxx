@@ -38,19 +38,11 @@ HSICVStat* HSICVStat::clone() const
 }
 
 /* Compute the HSIC index for one marginal*/
-Scalar HSICVStat::computeHSICIndex(const Sample & inSample,
-                                   const Sample & outSample,
-                                   const CovarianceModel & inCovariance,
-                                   const CovarianceModel & outCovariance,
+Scalar HSICVStat::computeHSICIndex(const CovarianceMatrix & CovMat1,
+                                   const CovarianceMatrix & CovMat2,
                                    const SquareMatrix & weightMatrix) const
 {
-  if(inSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Input Sample must be of dimension 1";
-  if(outSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Output Sample must be of dimension 1";
-  if(inCovariance.getInputDimension() != 1) throw InvalidDimensionException(HERE) << "Input covariance input dimension must be 1";
-  if(outCovariance.getInputDimension() != 1) throw InvalidDimensionException(HERE) << "Output covariance input dimension must be 1";
-  if(inCovariance.getOutputDimension() != 1) throw InvalidDimensionException(HERE) << "Input covariance output dimension must be 1";
-  if(outCovariance.getOutputDimension() != 1) throw InvalidDimensionException(HERE) << "Output covariance output dimension must be 1";
-  if(inSample.getSize() != outSample.getSize()) throw InvalidDimensionException(HERE) << "Input and Output Samples must have the same size";
+  if(CovMat1.getDimension() != CovMat2.getDimension()) throw InvalidDimensionException(HERE) << "Input and Output covariance matrices must have the same size";
 
   UnsignedInteger n = weightMatrix.getNbColumns();
 
@@ -66,10 +58,7 @@ Scalar HSICVStat::computeHSICIndex(const Sample & inSample,
   H1 = H1 - U * weightMatrix / n ;
   H2 = H2 - weightMatrix * U / n ;
 
-  const CovarianceMatrix Kv1(inCovariance.discretize(inSample));
-  const CovarianceMatrix Kv2(outCovariance.discretize(outSample));
-
-  const SquareMatrix M = weightMatrix * Kv1 * weightMatrix * H1 * Kv2 * H2 / n / n;
+  const SquareMatrix M = weightMatrix * CovMat1 * weightMatrix * H1 * CovMat2 * H2 / n / n;
   const Scalar trace = M.computeTrace();
 
   return trace;

@@ -82,6 +82,7 @@ void HSICEstimatorTargetSensitivity::setFilterFunction(const Function & filterFu
   /* apply filter */
   outputSample_ = filterFunction_(outputSample_);
   resetIndices();
+  computeCovarianceMatrices();
 }
 
 /* Reset all indices to void */

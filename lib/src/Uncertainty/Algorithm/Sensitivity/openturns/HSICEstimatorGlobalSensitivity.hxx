@@ -46,6 +46,7 @@ class OT_API HSICEstimatorGlobalSensitivity
 public:
 
   typedef Collection<CovarianceModel> CovarianceModelCollection;
+  typedef Collection <CovarianceMatrix>  CovarianceMatrixCollection;
 
   /** Default */
   HSICEstimatorGlobalSensitivity();
