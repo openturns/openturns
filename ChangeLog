@@ -45,6 +45,7 @@
  * TensorProductExperiment
  * NAIS
  * Pagmo
+ * GalambosCopula
 
 ==== API changes ====
  * Removed deprecated Hanning alias
