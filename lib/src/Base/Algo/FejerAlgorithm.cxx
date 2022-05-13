@@ -323,4 +323,22 @@ String FejerAlgorithm::__str__(const String & ) const
   return oss;
 }
 
+/* Method save() stores the object through the StorageManager */
+void FejerAlgorithm::save(Advocate & adv) const
+{
+  IntegrationAlgorithmImplementation::save(adv);
+  adv.saveAttribute("discretization_", discretization_);
+  adv.saveAttribute("nodes_", nodes_);
+  adv.saveAttribute("weights_", weights_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void FejerAlgorithm::load(Advocate & adv)
+{
+  IntegrationAlgorithmImplementation::load(adv);
+  adv.loadAttribute("discretization_", discretization_);
+  adv.loadAttribute("nodes_", nodes_);
+  adv.loadAttribute("weights_", weights_);
+}
+
 END_NAMESPACE_OPENTURNS

@@ -129,4 +129,18 @@ String IteratedQuadrature::__str__(const String & ) const
   return oss;
 }
 
+/* Method save() stores the object through the StorageManager */
+void IteratedQuadrature::save(Advocate & adv) const
+{
+  IntegrationAlgorithmImplementation::save(adv);
+  adv.saveAttribute("algorithm_", algorithm_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void IteratedQuadrature::load(Advocate & adv)
+{
+  IntegrationAlgorithmImplementation::load(adv);
+  adv.loadAttribute("algorithm_", algorithm_);
+}
+
 END_NAMESPACE_OPENTURNS
