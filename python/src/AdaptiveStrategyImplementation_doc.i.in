@@ -14,12 +14,12 @@ dimension : positive int
     Number of terms of the basis. This first usage has the same implementation
     as the second with a :class:`~openturns.FixedStrategy`. 
 adaptiveStrategyImplementation : AdaptiveStrategyImplementation
-    Adaptive strategy implementation which is a :class:`~openturns.FixedStrategy`, 
-    :class:`~openturns.SequentialStrategy` or a :class:`~openturns.CleaningStrategy`.
+    Adaptive strategy implementation which is a :class:`~openturns.FixedStrategy` 
+    or a :class:`~openturns.CleaningStrategy`.
 
 See also
 --------
-FunctionalChaosAlgorithm, FixedStrategy, SequentialStrategy, CleaningStrategy
+FunctionalChaosAlgorithm, FixedStrategy, CleaningStrategy
 
 Notes
 -----
@@ -27,10 +27,9 @@ A strategy must be chosen for the selection of the different terms of the
 multivariate basis in which the response surface by functional chaos is expressed.
 The selected terms are regrouped in the finite subset :math:`K` of :math:`\Nset`.
 
-There are three different strategies available:
+There are two different strategies available:
 
 - :class:`~openturns.FixedStrategy`,
-- :class:`~openturns.SequentialStrategy`,
 - :class:`~openturns.CleaningStrategy`.
 
 These strategies are conceived in such a way to be adapted for other orthogonal

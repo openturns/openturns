@@ -69,9 +69,6 @@ try:
     # Second, the most used (and most basic!) strategy
     listAdaptiveStrategy.append(
         FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)))
-    # Third, a slight enhancement with respect to the basic strategy
-    listAdaptiveStrategy.append(
-        SequentialStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree // 2), False))
 
     for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         adaptiveStrategy = listAdaptiveStrategy[adaptiveStrategyIndex]

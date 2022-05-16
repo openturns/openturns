@@ -49,7 +49,7 @@ SequentialStrategy::SequentialStrategy(const OrthogonalBasis & basis,
     currentVectorIndex_(0),
     verbose_(verbose)
 {
-  // Nothing to do
+  LOGWARN(OSS() << "SequentialStrategy is deprecated");
 }
 
 
