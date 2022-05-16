@@ -211,10 +211,6 @@ Bibliography
     *Design of computer experiments: Space filling and beyond.*
     Statistics and Computing 22(3): 681-701.
     `pdf <https://hal.archives-ouvertes.fr/hal-00685876/document>`__
-.. [rai2015] Rai, P. *Sparse Low Rank Approximation of Multivariate Functions -
-    Applications in Uncertainty Quantification.*, PhD thesis.
-    Ecole Centrale de Nantes, France, 2015.
-    `pdf <https://tel.archives-ouvertes.fr/tel-01143694/document>`__
 .. [rawlings2001] Rawlings, J. O., Pantula, S. G., and Dickey, D. A.
     *Applied regression analysis: a research tool.*
     Springer Science and Business Media, 2001.
