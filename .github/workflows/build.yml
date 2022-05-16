@@ -17,8 +17,9 @@ jobs:
     - run: |
         cd $HOME/work/openturns
         git clone https://github.com/jeromerobert/hmat-oss.git hmat-oss
-        cd hmat-oss/ 
-        git checkout 1.7.1 
+        cd hmat-oss/
+        git checkout 1.7.1
+        git cherry-pick 6ad59b7d
         cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
         make install -j3
     - run: |
