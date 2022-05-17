@@ -85,7 +85,9 @@ int main(int, char *[])
       Sample test = X.getMarginal(i);
       /* Set input covariance scale */
       Cov1.setScale(test.computeStandardDeviation());
-      Scalar hsicIndex = estimatorTypeV.computeHSICIndex(test, Y, Cov1, Cov2, W);
+	  CovarianceMatrix CovMat1(Cov1.discretize(test)
+	  CovarianceMatrix CovMat2(Cov2.discretize(Y)
+      Scalar hsicIndex = estimatorTypeV.computeHSICIndex(CovMat1, CovMat2, W);
       assert_almost_equal(hsicIndex, referenceV[i]);
     }
 
@@ -103,7 +105,9 @@ int main(int, char *[])
       Sample test = X.getMarginal(i);
       /* Set input covariance scale */
       Cov1.setScale(test.computeStandardDeviation());
-      Scalar hsicIndex = estimatorTypeU.computeHSICIndex(test, Y, Cov1, Cov2, W);
+	  CovarianceMatrix CovMat1(Cov1.discretize(test)
+	  CovarianceMatrix CovMat2(Cov2.discretize(Y)
+      Scalar hsicIndex = estimatorTypeV.computeHSICIndex(CovMat1, CovMat2, W);
       assert_almost_equal(hsicIndex, referenceU[i]);
     }
 
