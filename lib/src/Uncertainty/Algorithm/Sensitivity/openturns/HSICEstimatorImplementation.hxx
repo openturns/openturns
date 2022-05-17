@@ -157,8 +157,6 @@ protected:
   Function weightFunction_ ;
   UnsignedInteger n_ ;
   UnsignedInteger inputDimension_ ;
-  PersistentCollection <CovarianceMatrix> inputCovarianceMatrixCollection_;
-  CovarianceMatrix outputCovarianceMatrix_;
   mutable Point HSIC_XY_ ;
   mutable Point HSIC_XX_ ;
   mutable Point HSIC_YY_ ;
@@ -169,6 +167,8 @@ protected:
   mutable Bool isAlreadyComputedIndices_ = false ;
   mutable Bool isAlreadyComputedPValuesPermutation_ = false ;
   mutable Bool isAlreadyComputedPValuesAsymptotic_ = false ;
+  PersistentCollection <CovarianceMatrix> inputCovarianceMatrixCollection_;
+  CovarianceMatrix outputCovarianceMatrix_;
 };
 
 END_NAMESPACE_OPENTURNS
