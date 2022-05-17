@@ -51,9 +51,9 @@ HSICEstimatorImplementation::HSICEstimatorImplementation()
   , HSIC_YY_()
   , R2HSICIndices_()
   , PValuesPermutation_()
-  , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
   , inputCovarianceMatrixCollection_()
   , outputCovarianceMatrix_()
+  , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
 {
 // Nothing
 }
@@ -76,9 +76,9 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(
   , HSIC_XX_ ()
   , HSIC_YY_ ()
   , R2HSICIndices_ ()
-  , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
   , inputCovarianceMatrixCollection_(CovarianceMatrixCollection(n_))
   , outputCovarianceMatrix_ ()
+  , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
 {
   if(covarianceModelCollection_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
   if(outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";

@@ -163,12 +163,12 @@ protected:
   mutable Point R2HSICIndices_;
   mutable Point PValuesPermutation_ ;
   mutable Point PValuesAsymptotic_ ;
+  PersistentCollection <CovarianceMatrix> inputCovarianceMatrixCollection_;
+  CovarianceMatrix outputCovarianceMatrix_;
   UnsignedInteger permutationSize_ ;
   mutable Bool isAlreadyComputedIndices_ = false ;
   mutable Bool isAlreadyComputedPValuesPermutation_ = false ;
   mutable Bool isAlreadyComputedPValuesAsymptotic_ = false ;
-  PersistentCollection <CovarianceMatrix> inputCovarianceMatrixCollection_;
-  CovarianceMatrix outputCovarianceMatrix_;
 };
 
 END_NAMESPACE_OPENTURNS
