@@ -184,9 +184,7 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
 
     for( UnsignedInteger b = 0; b < permutationSize_; ++b)
     {
-      const SquareMatrix W(weightMatrixCollection[b]);
-	  const CovarianceMatrix outCov(shuffOutCovMatCollection[b]);
-      const Scalar HSIC_loc = computeHSICIndex(inputCovarianceMatrixCollection_[dim], outCov, W);
+      const Scalar HSIC_loc = computeHSICIndex(inputCovarianceMatrixCollection_[dim], shuffOutCovMatCollection[b], weightMatrixCollection[b]);
       if( HSIC_loc > HSIC_obs) count += 1;
     }
 

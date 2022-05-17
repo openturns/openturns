@@ -42,7 +42,6 @@ Scalar HSICVStat::computeHSICIndex(const CovarianceMatrix & CovMat1,
                                    const CovarianceMatrix & CovMat2,
                                    const SquareMatrix & weightMatrix) const
 {
-  if(CovMat1.getDimension() != CovMat2.getDimension()) throw InvalidDimensionException(HERE) << "Input and Output covariance matrices must have the same size";
 
   UnsignedInteger n = weightMatrix.getNbColumns();
 
