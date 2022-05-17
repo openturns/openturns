@@ -1,6 +1,6 @@
-openturns (1.19~rc1-1) experimental; urgency=medium
+openturns (1.19-1) experimental; urgency=medium
 
-  * New upstream pre-release
+  * New upstream release
   * Add pagmo dependency
   * Drop examples package
   * Dont run cxx tests

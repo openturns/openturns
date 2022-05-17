@@ -59,8 +59,8 @@ data = ot.Sample(2*front.getSize()-1, 2)
 for i in range(front.getSize()):
     data[2*i] = front[i]
     if i != front.getSize()-1:
-        data[2*i+1, 0] = front[i, 0]
-        data[2*i+1, 1] = front[i+1, 1]
+        data[2*i+1, 0] = front[i+1, 0]
+        data[2*i+1, 1] = front[i, 1]
 curve = ot.Curve(data)
 curve.setColor('blue')
 curve.setLegend(f"front {0}")
@@ -86,8 +86,8 @@ for k in range(len(fronts)):
     for i in range(front.getSize()):
         data[2*i] = front[i]
         if i != front.getSize()-1:
-            data[2*i+1, 0] = front[i, 0]
-            data[2*i+1, 1] = front[i+1, 1]
+            data[2*i+1, 0] = front[i+1, 0]
+            data[2*i+1, 1] = front[i, 1]
     curve = ot.Curve(data)
     curve.setColor(palette[k])
     curve.setLegend(f"generation {k}")

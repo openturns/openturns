@@ -582,9 +582,9 @@ def check_execute():
     try:
         cp = ct.execute(sys.executable + ' zebuebceb745az4f801m',
                         shell=True, capture_output=True)
-    except subprocess.CalledProcessError as exc:
-        msg = str(exc)
-        assert 'No such file or directory' in msg, 'wrong exception'
+        raise Exception("should throw CalledProcessError")
+    except subprocess.CalledProcessError:
+        pass
 
     print("execute ok")
 
