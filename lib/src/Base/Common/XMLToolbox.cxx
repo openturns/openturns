@@ -74,10 +74,9 @@ XMLDoc::XMLDoc(const char * buffer, int size) : doc_(0)
   if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing buffer";
 }
 
-XMLDoc::~XMLDoc() throw()
+XMLDoc::~XMLDoc()
 {
   xmlFreeDoc( doc_ );
-
 }
 
 XMLDoc & XMLDoc::operator =(const XMLDoc & other)

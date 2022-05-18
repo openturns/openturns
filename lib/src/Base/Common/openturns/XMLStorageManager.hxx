@@ -291,7 +291,7 @@ struct XMLInternalObject : public StorageManager::InternalObject
   XML::Node node_;
   XMLInternalObject() : node_(0) {}
   XMLInternalObject(XML::Node node) : node_(node) {}
-  virtual ~XMLInternalObject() throw() {}
+  virtual ~XMLInternalObject() {}
   virtual XMLInternalObject * clone() const
   {
     return new XMLInternalObject(*this);
@@ -319,7 +319,7 @@ struct XMLStorageManagerState : public StorageManager::InternalObject
   XML::Node root_;
   XML::Node current_;
   XMLStorageManagerState() : root_(0), current_(0) {}
-  virtual ~XMLStorageManagerState() throw() {}
+  virtual ~XMLStorageManagerState() {}
   virtual XMLStorageManagerState * clone() const
   {
     return new XMLStorageManagerState(*this);

@@ -159,7 +159,7 @@ void Log::initSeverityFromEnvironment()
 
 
 template<>
-MutexLockSingleton<Log>::MutexLockSingleton( Log & singleton )  throw()
+MutexLockSingleton<Log>::MutexLockSingleton(Log & singleton)
   : singleton_(singleton)
   , lock_(Log_InstanceMutex_) {}
 

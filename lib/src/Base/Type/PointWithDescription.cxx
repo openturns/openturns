@@ -80,14 +80,6 @@ PointWithDescription * PointWithDescription::clone() const
   return new PointWithDescription(*this);
 }
 
-
-/* Destructor */
-PointWithDescription::~PointWithDescription() throw()
-{
-  // Nothing to do
-}
-
-
 /* String converter */
 String PointWithDescription::__repr__() const
 {

@@ -75,7 +75,7 @@ public:
 
   struct InternalObject
   {
-    virtual ~InternalObject() throw() {}
+    virtual ~InternalObject() {}
     virtual InternalObject * clone() const
     {
       return new InternalObject(*this);

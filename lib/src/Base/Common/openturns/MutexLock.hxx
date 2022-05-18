@@ -57,7 +57,7 @@ public:
     }
   }
 
-  virtual ~MutexLock() throw()
+  virtual ~MutexLock()
   {
     int rc = pthread_mutex_unlock( &mtx_ );
     if (rc != 0)
@@ -77,7 +77,7 @@ class MutexLockSingleton
 
 public:
   // Default constructor, defined by client classes
-  MutexLockSingleton( T & singleton ) throw();
+  MutexLockSingleton(T & singleton);
   // Default copy-constructor
   MutexLockSingleton( const MutexLockSingleton<T> & other ) : singleton_(other.singleton_), lock_(other.lock_) {}
 
@@ -93,11 +93,11 @@ public:
   }
 
 #ifndef SWIG
-  T & lock() throw()
+  T & lock()
   {
     return singleton_;
   }
-  const T & lock() const throw()
+  const T & lock() const
   {
     return singleton_;
   }
