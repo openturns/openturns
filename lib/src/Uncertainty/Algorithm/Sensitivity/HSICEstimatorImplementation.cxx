@@ -83,7 +83,6 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(
   if(covarianceModelCollection_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
   if(outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";
   if(inputSample_.getSize() != outputSample_.getSize()) throw InvalidDimensionException(HERE) << "Input and output samples must have the same size";
-  computeCovarianceMatrices();
 }
 
 /* Virtual constructor */

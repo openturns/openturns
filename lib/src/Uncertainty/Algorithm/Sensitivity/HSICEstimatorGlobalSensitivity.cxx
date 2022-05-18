@@ -38,7 +38,7 @@ HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity(
   const HSICStat & estimatorType)
   : HSICEstimatorImplementation(covarianceModelCollection, X, Y, estimatorType)
 {
-  // Nothing to do
+  computeCovarianceMatrices();
 }
 
 /* Virtual constructor */

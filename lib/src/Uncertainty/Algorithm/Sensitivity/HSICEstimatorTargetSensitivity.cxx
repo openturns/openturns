@@ -42,6 +42,7 @@ HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity(
   filterFunction_ =  filterFunction;
   /* apply filter */
   outputSample_ = filterFunction_(outputSample_);
+  computeCovarianceMatrices();
 }
 
 /* Virtual constructor */

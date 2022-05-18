@@ -40,6 +40,7 @@ HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity(
 {
   if (!estimatorType_.isCompatibleWithConditionalAnalysis()) throw InvalidArgumentException(HERE) << "You must use an appropriate HSICStat object for ConditionalSensitivity";
   weightFunction_ = weightFunction;
+  computeCovarianceMatrices();
 }
 
 /* Virtual constructor */
