@@ -200,7 +200,7 @@ if (USE_TBB)
     set (TBB_LIBRARIES TBB::tbb)
   else ()
     # fallback to our macro
-    find_package (TBB)
+    find_package (TBB 2017)
   endif ()
 endif ()
 if (TBB_FOUND)
