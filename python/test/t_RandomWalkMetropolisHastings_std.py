@@ -106,3 +106,19 @@ real_504 = RWMHsampler.getRealization()
 print("With 504 observations, getRealization() produces {!r}".format(
     real_504[0]))
 ott.assert_almost_equal(real_504[0], 2.0)
+
+
+# this example throws in ot 1.19 as it tries to evaluate the likelihood outside the support of the prior
+# see MetropolisHastingsImplementation::computeLogPosterior
+obs = ot.TruncatedNormal(0.5, 0.5, 0.0, 10.0).getSample(50)
+likelihood = ot.GeneralizedPareto()
+prior = ot.ComposedDistribution(
+    [ot.LogUniform(-1.40, 4.0), ot.Normal(), ot.Normal()])
+proposals = [ot.Uniform(-prior.getMarginal(k).getStandardDeviation()[0],
+                        +prior.getMarginal(k).getStandardDeviation()[0])
+             for k in range(prior.getDimension())]
+initialState = prior.getMean()
+mh_coll = [ot.RandomWalkMetropolisHastings(prior, initialState, proposals[i], [i]) for i in range(2)]
+for mh in mh_coll: mh.setLikelihood(likelihood, obs)
+sampler = ot.Gibbs(mh_coll)
+parameters_sample = sampler.getSample(200)
