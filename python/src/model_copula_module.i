@@ -36,6 +36,7 @@
 %include AliMikhailHaqCopula.i
 %include AliMikhailHaqCopulaFactory.i
 %include IndependentCopula.i
+%include IndependentCopulaFactory.i
 %include MinCopula.i
 %include NormalCopula.i
 %include NormalCopulaFactory.i
