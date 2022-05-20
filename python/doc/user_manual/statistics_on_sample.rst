@@ -125,6 +125,7 @@ Building copulas from samples
 
     FrankCopulaFactory
     GumbelCopulaFactory
+    IndependentCopulaFactory
     NormalCopulaFactory
     PlackettCopulaFactory
 
@@ -168,11 +169,11 @@ Refer to :ref:`sensitivity_sobol`.
     SobolIndicesExperiment
 
     :template: classWithPlot.rst_t
- 
-    SobolSimulationAlgorithm 
+
+    SobolSimulationAlgorithm
     SobolSimulationResult
 
-HSIC Indices 
+HSIC Indices
 ============
 
 .. autosummary::
@@ -273,5 +274,3 @@ Model selection
     FittingTest.BestModelChiSquared
     FittingTest.BestModelKolmogorov
     FittingTest.BestModelLilliefors
-
-

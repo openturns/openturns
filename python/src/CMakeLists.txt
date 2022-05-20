@@ -558,6 +558,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       ArchimedeanCopula.i ArchimedeanCopula_doc.i.in
                       SklarCopula.i SklarCopula_doc.i.in
                       IndependentCopula.i IndependentCopula_doc.i.in
+                      IndependentCopulaFactory.i IndependentCopulaFactory_doc.i.in
                       MinCopula.i MinCopula_doc.i.in
                       NormalCopula.i NormalCopula_doc.i.in
                       NormalCopulaFactory.i NormalCopulaFactory_doc.i.in
@@ -1006,7 +1007,7 @@ ot_add_python_module(HypothesisTest hypothesistest_module.i
                     )
 ot_add_python_module(LinearModelTest linearmodeltest_module.i
                       LinearModelTest.i LinearModelTest_doc.i.in
-                    )                
+                    )
 ot_add_python_module(NormalityTest normalitytest_module.i
                       NormalityTest.i NormalityTest_doc.i.in
                     )
