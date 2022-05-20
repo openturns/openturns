@@ -1,0 +1,6 @@
+%feature("docstring") OT::IndependentCopulaFactory
+"Independent Copula factory.
+
+See also
+--------
+DistributionFactory, IndependentCopula"
