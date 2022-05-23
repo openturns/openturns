@@ -6,5 +6,5 @@ TESTPREAMBLE()
 
 factory = IndependentCopulaFactory()
 factory.build()
-factory.build(Sample())
-factory.build(Point())
+factory.build(Sample(3, 2))
+factory.build(Point(3))

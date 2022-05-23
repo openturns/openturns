@@ -48,8 +48,8 @@ public:
   Distribution build(const Sample & sample) const override;
   Distribution build(const Point & parameters) const override;
   Distribution build() const override;
-  IndependentCopula buildAsIndependentCopula(const Sample &) const;
-  IndependentCopula buildAsIndependentCopula(const Point &) const;
+  IndependentCopula buildAsIndependentCopula(const Sample & sample) const;
+  IndependentCopula buildAsIndependentCopula(const Point & parameters) const;
   IndependentCopula buildAsIndependentCopula() const;
 
 }; /* class IndependentCopulaFactory */

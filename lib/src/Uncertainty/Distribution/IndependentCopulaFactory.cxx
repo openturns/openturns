@@ -58,14 +58,14 @@ Distribution IndependentCopulaFactory::build() const
   return buildAsIndependentCopula().clone();
 }
 
-IndependentCopula IndependentCopulaFactory::buildAsIndependentCopula(const Sample &) const
+IndependentCopula IndependentCopulaFactory::buildAsIndependentCopula(const Sample & sample) const
 {
-  return buildAsIndependentCopula();
+  return IndependentCopula(sample.getDimension());
 }
 
-IndependentCopula IndependentCopulaFactory::buildAsIndependentCopula(const Point &) const
+IndependentCopula IndependentCopulaFactory::buildAsIndependentCopula(const Point & parameters) const
 {
-  return buildAsIndependentCopula();
+  return IndependentCopula(parameters.getDimension());
 }
 
 IndependentCopula IndependentCopulaFactory::buildAsIndependentCopula() const
