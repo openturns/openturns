@@ -65,7 +65,8 @@ IndependentCopula IndependentCopulaFactory::buildAsIndependentCopula(const Sampl
 
 IndependentCopula IndependentCopulaFactory::buildAsIndependentCopula(const Point & parameters) const
 {
-  return IndependentCopula(parameters.getDimension());
+  if (parameters.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: IndependentCopula does not have/need any parameter";
+  return IndependentCopula();
 }
 
 IndependentCopula IndependentCopulaFactory::buildAsIndependentCopula() const
