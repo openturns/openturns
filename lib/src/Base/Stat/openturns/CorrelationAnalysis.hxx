@@ -23,6 +23,7 @@
 #define OPENTURNS_CORRELATIONANALYSIS_HXX
 
 #include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/SymmetricTensor.hxx"
@@ -34,37 +35,69 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-namespace CorrelationAnalysis
+class OT_API CorrelationAnalysis
+  : public PersistentObject
 {
-/** Compute the Pearson correlation coefficient between the input sample and the output sample */
-OT_API Point PearsonCorrelation(const Sample & inputSample,
-                                const Sample & outputSample);
+  CLASSNAME
+public:
 
-/** Compute the Spearman correlation coefficient between the input sample and the output sample */
-OT_API Point SpearmanCorrelation(const Sample & inputSample,
-                                 const Sample & outputSample);
+  /** Default constructor */
+  CorrelationAnalysis();
 
-/** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
-OT_API Point SRC(const Sample & inputSample,
-                 const Sample & outputSample,
-                 const Bool normalize = false);
+  /** Standard constructor */
+  CorrelationAnalysis(const Sample & inputSample,
+                      const Sample & outputSample);
 
-/** Compute the signed Standard Regression Coefficients (SRC) between the input sample and the output sample */
-OT_API Point SignedSRC(const Sample & inputSample,
-                       const Sample & outputSample);
+  /** Virtual constructor */
+  CorrelationAnalysis * clone() const override;
 
-/** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
-OT_API Point PCC(const Sample & inputSample,
-                 const Sample & outputSample);
+  /** String converter */
+  String __repr__() const override;
 
-/** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
-OT_API Point SRRC(const Sample & inputSample,
-                  const Sample & outputSample,
-                  const Bool normalize = false);
+  /** Compute the Pearson correlation coefficient between the input sample and the output sample */
+  const Point computePearsonCorrelation();
 
-/** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
-OT_API Point PRCC(const Sample & inputSample,
-                  const Sample & outputSample);
+  /** Compute the Spearman correlation coefficient between the input sample and the output sample */
+  const Point computeSpearmanCorrelation();
+
+  /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
+  const Point computeSRC();
+
+  /** Compute the squared Standard Regression Coefficients (SRC) between the input sample and the output sample */
+  const Point computeSquaredSRC(const Bool normalize = false);
+
+  /** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
+  const Point computePCC();
+
+  /** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
+  const Point computeSRRC();
+
+  /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
+  const Point computePRCC();
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+
+protected:
+
+  // computePearsonCorrelation with arguments
+  const Point computePearsonCorrelation(const Sample & inputSample,
+                                        const Sample & outputSample);
+
+  // computePCC with arguments
+  const Point computePCC(const Sample & inputSample,
+                         const Sample & outputSample);
+
+  // computeSRC with arguments
+  const Point computeSRC(const Sample & inputSample,
+                         const Sample & outputSample);
+private:
+
+  Sample inputSample_;
+  Sample outputSample_;
 
 }; /* CorrelationAnalysis */
 

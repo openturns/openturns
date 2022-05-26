@@ -238,10 +238,9 @@ ot_add_python_module(statistics statistics_module.i
                       HMatrixImplementation.i HMatrixImplementation_doc.i.in
                       BaseStatisticsTemplateDefs.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i.in
-                   )
-ot_add_python_module(CorrelationAnalysis correlationanalysis_module.i
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
-                    )
+                   )
+
 ot_add_python_module(iterative_statistics iterative_statistics_module.i
                       IterativeAlgorithm.i IterativeAlgorithm_doc.i.in
                       IterativeAlgorithmImplementation.i IterativeAlgorithmImplementation_doc.i.in

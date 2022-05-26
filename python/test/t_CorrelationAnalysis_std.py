@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -23,31 +24,30 @@ randomVector = ot.RandomVector(aDistribution)
 inputSample = randomVector.getSample(sampleSize)
 outputSample = analytical(inputSample)
 
-src = ot.CorrelationAnalysis.SRC(inputSample, outputSample)
-print("src=", src)
+# Create the CorrelationAnalysis object
+corr_analysis = ot.CorrelationAnalysis(inputSample, outputSample)
 
-# Src with normalize
-src_normalize = ot.CorrelationAnalysis.SRC(inputSample, outputSample, True)
-print("src with normalize=", src_normalize)
+squared_src = corr_analysis.computeSquaredSRC()
+ott.assert_almost_equal(squared_src, [0.901238,0.105409], 1e-5, 0.0)
 
-signed_src = ot.CorrelationAnalysis.SignedSRC(inputSample, outputSample)
-print("signed src=", signed_src)
+# Squared SRC with normalize
+squared_src_normalize = corr_analysis.computeSquaredSRC(True)
+ott.assert_almost_equal(squared_src_normalize, [0.895287,0.104713], 1e-5, 0.0)
 
-srrc = ot.CorrelationAnalysis.SRRC(inputSample, outputSample)
-print("srrc=", srrc)
+src = corr_analysis.computeSRC()
+ott.assert_almost_equal(src, [0.949336,0.324667], 1e-5, 0.0)
 
-srrc_normalize = ot.CorrelationAnalysis.SRRC(inputSample, outputSample)
-print("srrc with normalize=", srrc_normalize)
+srrc = corr_analysis.computeSRRC()
+ott.assert_almost_equal(srrc, [0.946444,0.304684], 1e-5, 0.0)
 
-pcc = ot.CorrelationAnalysis.PCC(inputSample, outputSample)
-print("pcc=", pcc)
+pcc = corr_analysis.computePCC()
+ott.assert_almost_equal(pcc, [1.0, 1.0], 1e-5, 0.0)
 
-prcc = ot.CorrelationAnalysis.PRCC(inputSample, outputSample)
-print("prcc=", prcc)
+prcc = corr_analysis.computePRCC()
+ott.assert_almost_equal(prcc, [0.98879,0.905344], 1e-5, 0.0)
 
-pearson = ot.CorrelationAnalysis.PearsonCorrelation(inputSample, outputSample)
-print("pearson=", pearson)
+pearson = corr_analysis.computePearsonCorrelation()
+ott.assert_almost_equal(pearson, [0.945835,0.314431], 1e-5, 0.0)
 
-spearman = ot.CorrelationAnalysis.SpearmanCorrelation(
-    inputSample, outputSample)
-print("spearman=", spearman)
+spearman = corr_analysis.computeSpearmanCorrelation()
+ott.assert_almost_equal(spearman, [0.941684,0.289898], 1e-5, 0.0)

@@ -61,34 +61,33 @@ int main(int, char *[])
     Sample inputSample(randomVector.getSample(sampleSize));
     Sample outputSample(analytical(inputSample));
 
-    Point src(CorrelationAnalysis::SRC(inputSample, outputSample));
-    fullprint << "src=" << src.__str__() << std::endl;
+    // Create the CorrelationAnalysis object
+    CorrelationAnalysis corr_analysis(inputSample, outputSample);
 
-    // Taking into account normalize
-    Point src_normalize(CorrelationAnalysis::SRC(inputSample, outputSample, true));
-    fullprint << "src with normalize=" << src_normalize.__str__() << std::endl;
+    Point squared_src = corr_analysis.computeSquaredSRC();
+    assert_almost_equal(squared_src, Point({0.901238,0.105409}), 1e-5, 0.0);
 
-    Point signed_src(CorrelationAnalysis::SignedSRC(inputSample, outputSample));
-    fullprint << "signed src=" << signed_src.__str__() << std::endl;
+    // Squared SRC with normalize
+    Point squared_src_normalize(corr_analysis.computeSquaredSRC(true));
+    assert_almost_equal(squared_src_normalize, Point({0.895287,0.104713}), 1e-5, 0.0);
 
-    Point srrc(CorrelationAnalysis::SRRC(inputSample, outputSample));
-    fullprint << "srrc=" << srrc.__str__() << std::endl;
+    Point src(corr_analysis.computeSRC());
+    assert_almost_equal(src, Point({0.949336,0.324667}), 1e-5, 0.0);
 
-    // Taking into account normalize
-    Point srrc_normalize(CorrelationAnalysis::SRRC(inputSample, outputSample, true));
-    fullprint << "srrc with normalize=" << src_normalize.__str__() << std::endl;
+    Point srrc(corr_analysis.computeSRRC());
+    assert_almost_equal(srrc, Point({0.946444,0.304684}), 1e-5, 0.0);
 
-    Point pcc(CorrelationAnalysis::PCC(inputSample, outputSample));
-    fullprint << "pcc=" << pcc.__str__() << std::endl;
+    Point pcc(corr_analysis.computePCC());
+    assert_almost_equal(pcc, Point({1.0, 1.0}), 1e-5, 0.0);
 
-    Point prcc(CorrelationAnalysis::PRCC(inputSample, outputSample));
-    fullprint << "prcc=" << prcc.__str__() << std::endl;
+    Point prcc(corr_analysis.computePRCC());
+    assert_almost_equal(prcc, Point({0.98879,0.905344}), 1e-5, 0.0);
 
-    Point pearson(CorrelationAnalysis::PearsonCorrelation(inputSample, outputSample));
-    fullprint << "pearson=" << pearson.__str__() << std::endl;
+    Point pearson(corr_analysis.computePearsonCorrelation());
+    assert_almost_equal(pearson, Point({0.945835,0.314431}), 1e-5, 0.0);
 
-    Point spearman(CorrelationAnalysis::SpearmanCorrelation(inputSample, outputSample));
-    fullprint << "spearman=" << spearman.__str__() << std::endl;
+    Point spearman(corr_analysis.computeSpearmanCorrelation());
+    assert_almost_equal(spearman, Point({0.941684,0.289898}), 1e-5, 0.0);
 
   }
   catch (TestFailed & ex)

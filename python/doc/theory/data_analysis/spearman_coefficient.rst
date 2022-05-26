@@ -3,13 +3,7 @@
 Spearman correlation coefficient
 --------------------------------
 
-This method deals with the parametric modelling of a probability
-distribution for a random vector
-:math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It aims to measure
-a type of dependence (here a monotonous correlation) which may exist
-between two components :math:`X^i` and :math:`X^j`.
-
-The Spearman’s correlation coefficient :math:`\rho^S_{U,V}` aims to
+Spearman’s correlation coefficient :math:`\rho^S_{U,V}` aims to
 measure the strength of a monotonic relationship between two random
 variables :math:`U` and :math:`V`. It is in fact equivalent to the
 Pearson’s correlation coefficient after having transformed :math:`U` and
@@ -163,8 +157,8 @@ coefficient.
 
 .. topic:: API:
 
-    - See :class:`~openturns.CorrelationAnalysis_SpearmanCorrelation`
-    - See :py:meth:`~openturns.Sample.computeSpearmanCorrelation`
+    - See :meth:`~openturns.CorrelationAnalysis.computeSpearmanCorrelation`
+    - See :meth:`~openturns.Sample.computeSpearmanCorrelation`
 
 .. topic:: Examples:
 

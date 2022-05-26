@@ -3,13 +3,7 @@
 Pearson correlation coefficient
 -------------------------------
 
-This method deals with the parametric modelling of a probability
-distribution for a random vector
-:math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It aims to measure
-a type of dependence (here a linear correlation) which may exist between
-two components :math:`X^i` and :math:`X^j`.
-
-The Pearson’s correlation coefficient :math:`\rho_{U,V}` aims to measure
+Pearson’s correlation coefficient :math:`\rho_{U,V}` aims to measure
 the strength of a linear relationship between two random variables
 :math:`U` and :math:`V`. It is defined as follows:
 
@@ -138,8 +132,8 @@ coefficient is sometimes denoted by :math:`r`.
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.CorrelationAnalysis_PearsonCorrelation`
-    - See :py:meth:`~openturns.Sample.computePearsonCorrelation`
+    - See :meth:`~openturns.CorrelationAnalysis.computePearsonCorrelation`
+    - See :meth:`~openturns.Sample.computePearsonCorrelation`
 
 .. topic:: Examples:
 
