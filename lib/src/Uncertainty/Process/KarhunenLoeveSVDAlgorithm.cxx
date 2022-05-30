@@ -400,7 +400,7 @@ void KarhunenLoeveSVDAlgorithm::run()
   } // k
   LOGINFO("Create KL result");
   covariance_ = RankMCovarianceModel(selectedEV, modes);
-  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection);
+  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection, selectedVariance/cumulatedVariance);
 }
 
 /* Sample accessor */

@@ -22,6 +22,8 @@ OT_KarhunenLoeveResult_getModesAsProcessSample_doc
 OT_KarhunenLoeveResult_getScaledModesAsProcessSample_doc
 %feature("docstring") OT::KarhunenLoeveResult::getMesh
 OT_KarhunenLoeveResult_getMesh_doc
+%feature("docstring") OT::KarhunenLoeveResult::getSelectionRatio
+OT_KarhunenLoeveResult_getSelectionRatio_doc
 %feature("docstring") OT::KarhunenLoeveResult::getProjectionMatrix
 OT_KarhunenLoeveResult_getProjectionMatrix_doc
 %feature("docstring") OT::KarhunenLoeveResult::project

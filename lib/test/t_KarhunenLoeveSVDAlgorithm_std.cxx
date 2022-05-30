@@ -66,6 +66,7 @@ int main(int, char *[])
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
+      fullprint << "KL selection ratio=" << result.getSelectionRatio() << std::endl;
       Sample coefficients(result.project(sample));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());

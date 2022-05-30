@@ -53,7 +53,8 @@ KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation(const Covar
     const Point & eigenvalues,
     const FunctionCollection & modes,
     const ProcessSample & modesAsProcessSample,
-    const Matrix & projection)
+    const Matrix & projection,
+    const Scalar selectionRatio)
   : PersistentObject()
   , covariance_(covariance)
   , threshold_(threshold)
@@ -61,6 +62,7 @@ KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation(const Covar
   , modes_(modes)
   , modesAsProcessSample_(modesAsProcessSample)
   , projection_(projection)
+  , selectionRatio_(selectionRatio)
 {
   // Nothing to do
 }
@@ -138,6 +140,12 @@ ProcessSample KarhunenLoeveResultImplementation::getModesAsProcessSample() const
 Mesh KarhunenLoeveResultImplementation::getMesh() const
 {
   return modesAsProcessSample_.getMesh();
+}
+
+/* Selection ratio accessor */
+Scalar KarhunenLoeveResultImplementation::getSelectionRatio() const
+{
+  return selectionRatio_;
 }
 
 /* Scaled modes accessors */
@@ -292,6 +300,7 @@ void KarhunenLoeveResultImplementation::save(Advocate & adv) const
   adv.saveAttribute("modes_", modes_);
   adv.saveAttribute("modesAsProcessSample_", modesAsProcessSample_);
   adv.saveAttribute("projection_", projection_);
+  adv.saveAttribute("selectionRatio_", selectionRatio_);
 }
 
 
@@ -305,6 +314,7 @@ void KarhunenLoeveResultImplementation::load(Advocate & adv)
   adv.loadAttribute("modes_", modes_);
   adv.loadAttribute("modesAsProcessSample_", modesAsProcessSample_);
   adv.loadAttribute("projection_", projection_);
+  adv.loadAttribute("selectionRatio_", selectionRatio_);
 }
 
 

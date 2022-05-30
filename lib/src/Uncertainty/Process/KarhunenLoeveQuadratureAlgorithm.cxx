@@ -400,7 +400,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
       modes.add(DualLinearCombinationFunction(coll, aSample));
     }
   }
-  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection);
+  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection, selectedVariance/cumulatedVariance);
 }
 
 /* Domain accessor */
