@@ -125,9 +125,9 @@ Building copulas from samples
 
     FrankCopulaFactory
     GumbelCopulaFactory
+    IndependentCopulaFactory
     NormalCopulaFactory
     PlackettCopulaFactory
-    IndependentCopulaFactory
 
 Correlation analysis
 ====================
