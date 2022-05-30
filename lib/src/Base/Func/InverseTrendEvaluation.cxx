@@ -96,7 +96,7 @@ Point InverseTrendEvaluation::operator() (const Point & inP) const
   Point result(outputDimension);
   const UnsignedInteger reducedInputDimension = function_.getInputDimension();
   Point t(reducedInputDimension);
-  for (UnsignedInteger i = 0; i < reducedInputDimension; ++i) t[i] = inP[i];
+  std::copy(inP.begin(), inP.begin() + reducedInputDimension, t.begin());
   const Point z(function_(t));
   for (UnsignedInteger i = 0; i < outputDimension; ++i) result[i] = inP[i + reducedInputDimension] - z[i];
   callsNumber_.increment();
