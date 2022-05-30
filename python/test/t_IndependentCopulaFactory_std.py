@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-factory = IndependentCopulaFactory()
+factory = ot.IndependentCopulaFactory()
 factory.build()
-factory.build(Sample(3, 2))
-factory.build(Point())
+factory.build(ot.Sample(3, 2))
+factory.build(ot.Point())
