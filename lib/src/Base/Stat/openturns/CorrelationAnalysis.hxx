@@ -55,25 +55,25 @@ public:
   String __repr__() const override;
 
   /** Compute the Pearson correlation coefficient between the input sample and the output sample */
-  const Point computePearsonCorrelation();
+  Point computePearsonCorrelation() const;
 
   /** Compute the Spearman correlation coefficient between the input sample and the output sample */
-  const Point computeSpearmanCorrelation();
+  Point computeSpearmanCorrelation() const;
 
   /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
-  const Point computeSRC();
+  Point computeSRC() const;
 
   /** Compute the squared Standard Regression Coefficients (SRC) between the input sample and the output sample */
-  const Point computeSquaredSRC(const Bool normalize = false);
+  Point computeSquaredSRC(const Bool normalize = false) const;
 
   /** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
-  const Point computePCC();
+  Point computePCC() const;
 
   /** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
-  const Point computeSRRC();
+  Point computeSRRC() const;
 
   /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
-  const Point computePRCC();
+  Point computePRCC() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -84,16 +84,16 @@ public:
 protected:
 
   // computePearsonCorrelation with arguments
-  const Point computePearsonCorrelation(const Sample & inputSample,
-                                        const Sample & outputSample);
+  Point computePearsonCorrelation(const Sample & inputSample,
+                                  const Sample & outputSample) const;
 
   // computePCC with arguments
-  const Point computePCC(const Sample & inputSample,
-                         const Sample & outputSample);
+  Point computePCC(const Sample & inputSample,
+                   const Sample & outputSample) const;
 
   // computeSRC with arguments
-  const Point computeSRC(const Sample & inputSample,
-                         const Sample & outputSample);
+  Point computeSRC(const Sample & inputSample,
+                   const Sample & outputSample) const;
 private:
 
   Sample inputSample_;
