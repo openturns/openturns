@@ -68,14 +68,14 @@ String CorrelationAnalysis::__repr__() const
 }
 
 /* Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D output sample */
-const Point CorrelationAnalysis::computePearsonCorrelation()
+Point CorrelationAnalysis::computePearsonCorrelation() const
 {
   return computePearsonCorrelation(inputSample_, outputSample_);
 }
 
 // Compute the Pearson correlation coefficient with arguments
-const Point CorrelationAnalysis::computePearsonCorrelation(const Sample & inputSample,
-                                                     const Sample & outputSample)
+Point CorrelationAnalysis::computePearsonCorrelation(const Sample & inputSample,
+                                                     const Sample & outputSample) const
 {
   const UnsignedInteger dimension = inputSample.getDimension();
   Point result(dimension);
@@ -89,13 +89,13 @@ const Point CorrelationAnalysis::computePearsonCorrelation(const Sample & inputS
 }
 
 /* Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D output sample */
-const Point CorrelationAnalysis::computeSpearmanCorrelation()
+Point CorrelationAnalysis::computeSpearmanCorrelation() const
 {
   return computePearsonCorrelation(inputSample_.rank(), outputSample_.rank());
 }
 
 /* Compute the squared Standard Regression Coefficients (SRC) between the input sample and the output sample */
-const Point CorrelationAnalysis::computeSquaredSRC(const Bool normalize)
+Point CorrelationAnalysis::computeSquaredSRC(const Bool normalize) const
 {
   Point src(computeSRC());
   for (UnsignedInteger i = 0; i < src.getDimension(); ++ i) src[i] *= src[i];
@@ -105,14 +105,14 @@ const Point CorrelationAnalysis::computeSquaredSRC(const Bool normalize)
 }
 
 /* Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
-const Point CorrelationAnalysis::computeSRC()
+Point CorrelationAnalysis::computeSRC() const
 {
   return computeSRC(inputSample_, outputSample_);
 }
 
 // Compute the Standard Regression Coefficients (SRC) with arguments
-const Point CorrelationAnalysis::computeSRC(const Sample & inputSample,
-                                      const Sample & outputSample)
+Point CorrelationAnalysis::computeSRC(const Sample & inputSample,
+                                      const Sample & outputSample) const
 {
   const UnsignedInteger dimension = inputSample.getDimension();
   if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
@@ -133,14 +133,14 @@ const Point CorrelationAnalysis::computeSRC(const Sample & inputSample,
 }
 
 /* Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
-const Point CorrelationAnalysis::computePCC()
+Point CorrelationAnalysis::computePCC() const
 {
   return computePCC(inputSample_, outputSample_);
 }
 
 // Compute the Partial Correlation Coefficients (PCC) with arguments
-const Point CorrelationAnalysis::computePCC(const Sample & inputSample,
-                                      const Sample & outputSample)
+Point CorrelationAnalysis::computePCC(const Sample & inputSample,
+                                      const Sample & outputSample) const
 {
   const UnsignedInteger dimension = inputSample.getDimension();
   if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
@@ -175,13 +175,13 @@ const Point CorrelationAnalysis::computePCC(const Sample & inputSample,
 }
 
 /* Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
-const Point CorrelationAnalysis::computeSRRC()
+Point CorrelationAnalysis::computeSRRC() const
 {
   return computeSRC(inputSample_.rank(), outputSample_.rank());
 }
 
 /* Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
-const Point CorrelationAnalysis::computePRCC()
+Point CorrelationAnalysis::computePRCC() const
 {
   return computePCC(inputSample_.rank(), outputSample_.rank());
 }
