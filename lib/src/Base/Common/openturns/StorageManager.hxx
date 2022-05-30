@@ -380,6 +380,11 @@ public:
     return *this;
   }
 
+  UnsignedInteger getStudyVersion() const
+  {
+    return mgr_.getStudyVersion();
+  }
+
 private:
 
   StorageManager & mgr_;
