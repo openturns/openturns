@@ -85,6 +85,11 @@ if (POLICY CMP0066)
   cmake_policy (SET CMP0066 NEW)
 endif ()
 
+if (POLICY CMP0074)
+  # find_package() uses <PackageName>_ROOT variables
+  cmake_policy(SET CMP0074 NEW)
+endif ()
+
 if (POLICY CMP0078)
   # swig standard target names
   cmake_policy(SET CMP0078 NEW)
