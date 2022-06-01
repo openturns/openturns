@@ -371,7 +371,7 @@ void GaussianNonLinearCalibration::run()
     parameterPosterior = algo.getResult().getParameterPosterior();
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, true);
 }
 
 /* Perform a unique estimation */

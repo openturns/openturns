@@ -44,7 +44,9 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
                                      const Distribution & observationsError,
                                      const Sample & inputObservations,
                                      const Sample & outputObservations,
-                                     const Function & residualFunction)
+                                     const Function & residualFunction,
+                                     const Bool & bayesian
+                                    )
   : PersistentObject()
   , parameterPrior_(parameterPrior)
   , parameterPosterior_(parameterPosterior)
@@ -53,6 +55,7 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   , inputObservations_(inputObservations)
   , outputObservations_(outputObservations)
   , residualFunction_(residualFunction)
+  , bayesian_(bayesian)
 {
   // compute output at prior/posterior mean using the fact that model(inputObs)|p = residualFunction(p) + outputObs as the model is not available
   SampleImplementation outputAtPriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
@@ -264,10 +267,24 @@ GridLayout CalibrationResult::drawParameterDistributions() const
 
     // Now draw everything using the common range
     postPDF = getParameterPosterior().getMarginal(j).drawPDF(xMin, xMax);
-    postPDF.setLegends(Description(1, "Posterior"));
+    if (bayesian_)
+    {
+        postPDF.setLegends(Description(1, "Posterior"));
+    }
+    else
+    {
+        postPDF.setLegends(Description(1, "Calibrated"));
+    }
     postPDF.setColors(Description(1, "green"));
 
-    priorPDF.setLegends(Description(1, "Prior"));
+    if (bayesian_)
+    {
+        priorPDF.setLegends(Description(1, "Prior"));
+    }
+    else
+    {
+        priorPDF.setLegends(Description(1, "Initial"));
+    }
     priorPDF.setColors(Description(1, "red"));
     priorPDF = getParameterPrior().getMarginal(j).drawPDF(xMin, xMax);
 

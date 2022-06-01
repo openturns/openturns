@@ -293,7 +293,7 @@ void NonLinearLeastSquaresCalibration::run()
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const Function residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, false);
 }
 
 /* Perform a unique estimation */

@@ -53,7 +53,8 @@ public:
                     const Distribution & observationsError,
                     const Sample & inputObservations,
                     const Sample & outputObservations,
-                    const Function & residualFunction);
+                    const Function & residualFunction,
+                    const Bool & bayesianAnalysis);
 
   /** Virtual constructor */
   CalibrationResult * clone() const override;
@@ -132,6 +133,9 @@ private:
   /* Output at prior/posterior */
   Sample outputAtPriorMean_;
   Sample outputAtPosteriorMean_;
+
+  /* Bayesian */
+  Bool bayesian_;
 
 }; // class CalibrationResult
 
