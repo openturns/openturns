@@ -26,12 +26,12 @@ InverseSurvival= class=Point name=Unnamed dimension=3 values=[-3.05991,-6.07458,
 Survival(inverseSurvival)=0.950000
 cond. cdf=0.615836
 cond. cdf (vect)= [0.615836,0.657634,0.707868]
-cond. pdf=0.369934
+cond. pdf=0.123311
 cond. pdf (vect)= [0.123311,0.118288,0.110573]
 cond. quantile=-3.77006
 cond. quantile (vect)= [-3.77006,-1.28752,2.12927]
 cond. cdf(cond. quantile)= [0.1,0.3,0.7]
-sequential conditional PDF= [0.179079,0.37855,0.239751]
+sequential conditional PDF= [0.179079,0.126183,0.239751]
 sequential conditional CDF( [1.5,2.5,3.5] )= [0.5,0.740131,0.855175]
 sequential conditional quantile( [0.5,0.740131,0.855175] )= [1.5,2.5,3.5]
 mean= class=Point name=Unnamed dimension=3 values=[1.5,0.5,2]
