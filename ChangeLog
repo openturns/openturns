@@ -7,6 +7,7 @@
 ==== Major changes ====
 
 ==== New classes ====
+ * IndependentCopulaFactory
 
 ==== API changes ====
  * Removed coupling_tools.execute get_stderr,get_stdout arguments
