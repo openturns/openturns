@@ -1352,6 +1352,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("FunctionalChaosAlgorithm-QNorm", 0.5);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree", 10);
+  addAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize", 0);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-SmallSampleSize", 1000);
 
   // FunctionalChaosSobolIndices parameters //

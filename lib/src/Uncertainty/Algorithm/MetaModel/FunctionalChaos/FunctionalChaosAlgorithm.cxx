@@ -167,25 +167,29 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 
   const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-QNorm"));
   OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
-  const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree");
   // For small sample size, use sparse regression
   LOGINFO("In FunctionalChaosAlgorithm, select adaptive strategy");
   if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-SmallSampleSize"))
   {
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and KFold for a total degree of " << maximumTotalDegree);
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and KFold");
   } // Small sample
   else if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-LargeSampleSize"))
   {
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut()));
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and CorrectedLeaveOneOut for a total degree of " << maximumTotalDegree);
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and CorrectedLeaveOneOut");
   } // Medium sample
   else
   {
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy for a total degree of " << maximumTotalDegree);
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy");
   } // Large sample
-  const UnsignedInteger totalSize = enumerate.getBasisSizeFromTotalDegree(maximumTotalDegree);
+
+  // total basis size can be either parametrized via MaximumTotalDegree or BasisSize
+  const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree");
+  const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize");
+  const UnsignedInteger totalSize = basisSize ? basisSize : enumerate.getBasisSizeFromTotalDegree(maximumTotalDegree);
+  LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a basis size of " << totalSize);
   adaptiveStrategy_ = FixedStrategy(basis, totalSize);
 }
 

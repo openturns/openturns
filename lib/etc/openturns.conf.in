@@ -720,6 +720,7 @@
   <FunctionalChaosAlgorithm-QNorm                  value_float="0.5"             />
   <FunctionalChaosAlgorithm-LargeSampleSize        value_int="10000" />
   <FunctionalChaosAlgorithm-MaximumTotalDegree     value_int="10"    />
+  <FunctionalChaosAlgorithm-BasisSize              value_int="0"     />
   <FunctionalChaosAlgorithm-SmallSampleSize        value_int="1000"  />
 
   <!-- OT::FunctionalChaosSobolIndices parameters -->
