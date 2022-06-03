@@ -185,7 +185,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy for a total degree of " << maximumTotalDegree);
   } // Large sample
-  const UnsignedInteger totalSize = enumerate.getStrataCumulatedCardinal(maximumTotalDegree);
+  const UnsignedInteger totalSize = enumerate.getBasisSizeFromTotalDegree(maximumTotalDegree);
   adaptiveStrategy_ = FixedStrategy(basis, totalSize);
 }
 
