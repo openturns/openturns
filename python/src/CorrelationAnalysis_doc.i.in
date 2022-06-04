@@ -80,6 +80,19 @@ coef : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::CorrelationAnalysis::computeKendallTau
+"Correlation evaluation based on Kendall's :math:`\tau` coefficient.
+
+See the :class:`~openturns.Sample` :meth:`~openturns.Sample.computeKendallTau` method for details.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    Kendall's :math:`\tau` coefficients evaluated between the *outputSample*
+    and each coordinate of the *inputSample*."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::CorrelationAnalysis::computeSRC
 "Correlation evaluation based on the Standard Regression Coefficient.
 

@@ -94,6 +94,20 @@ Point CorrelationAnalysis::computeSpearmanCorrelation() const
   return computePearsonCorrelation(inputSample_.rank(), outputSample_.rank());
 }
 
+/* Compute the Kendall Tau coefficient between the component number index of the input sample and the 1D output sample */
+Point CorrelationAnalysis::computeKendallTau() const
+{
+  const UnsignedInteger dimension = inputSample_.getDimension();
+  Point result(dimension);
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+  {
+    Sample pairedSample(inputSample_.getMarginal(j));
+    pairedSample.stack(outputSample_);
+    result[j] = pairedSample.computeKendallTau()(1, 0);
+  }
+  return result;
+}
+
 /* Compute the squared Standard Regression Coefficients (SRC) between the input sample and the output sample */
 Point CorrelationAnalysis::computeSquaredSRC(const Bool normalize) const
 {

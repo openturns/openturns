@@ -60,6 +60,9 @@ public:
   /** Compute the Spearman correlation coefficient between the input sample and the output sample */
   Point computeSpearmanCorrelation() const;
 
+  /** Compute the Kendall Tau coefficient between the input sample and the output sample */
+  Point computeKendallTau() const;
+
   /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
   Point computeSRC() const;
 
