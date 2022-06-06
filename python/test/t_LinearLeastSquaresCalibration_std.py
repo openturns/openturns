@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.viewer as otv
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
@@ -22,4 +23,14 @@ for method in methods:
     print("method=", method)
     algo = ot.LinearLeastSquaresCalibration(model, x, y, candidate, method)
     algo.run()
-    print("result=", algo.getResult())
+    result = algo.getResult()
+    print("result=", result)
+    # Draw result
+    graph = result.drawParameterDistributions()
+    otv.View(graph)
+    graph = result.drawResiduals()
+    otv.View(graph)
+    graph = result.drawObservationsVsInputs()
+    otv.View(graph)
+    graph = result.drawObservationsVsPredictions()
+    otv.View(graph)

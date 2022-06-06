@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import openturns.viewer as otv
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(2)
@@ -57,15 +58,26 @@ for bootstrapSize in bootstrapSizes:
         )
     )
     algo.run()
+    result = algo.getResult()
     # To avoid discrepance between the platforms with or without CMinpack
-    print("result    (TNC)=", algo.getResult().getParameterMAP())
-    print("error=", algo.getResult().getObservationsError())
+    print("result    (TNC)=", result.getParameterMAP())
+    print("error=", result.getObservationsError())
     algo = ot.GaussianNonLinearCalibration(
         modelX, x, y, candidate, priorCovariance, globalErrorCovariance
     )
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
-    print("result (Global)=", algo.getResult().getParameterMAP())
+    result = algo.getResult()
+    print("result (Global)=", result.getParameterMAP())
+    # Draw result
+    graph = result.drawParameterDistributions()
+    otv.View(graph)
+    graph = result.drawResiduals()
+    otv.View(graph)
+    graph = result.drawObservationsVsInputs()
+    otv.View(graph)
+    graph = result.drawObservationsVsPredictions()
+    otv.View(graph)
 
 # unobserved inputs
 p_ref = [2.8, 1.2, 0.5, 2.0]
@@ -87,15 +99,15 @@ algo.run()
 result = algo.getResult()
 ot.PlatformInfo.SetNumericalPrecision(2)
 print("result (unobs.)=", result.getParameterMAP())
-print("error=", algo.getResult().getObservationsError())
+print("error=", result.getObservationsError())
 
 # test output at mean
-modelX.setParameter(algo.getResult().getParameterPrior().getMean())
+modelX.setParameter(result.getParameterPrior().getMean())
 outputAtPriorMean = modelX(x)
-ott.assert_almost_equal(algo.getResult().getOutputAtPriorMean(), outputAtPriorMean)
+ott.assert_almost_equal(result.getOutputAtPriorMean(), outputAtPriorMean)
 
-modelX.setParameter(algo.getResult().getParameterPosterior().getMean())
+modelX.setParameter(result.getParameterPosterior().getMean())
 outputAtPosteriorMean = modelX(x)
 ott.assert_almost_equal(
-    algo.getResult().getOutputAtPosteriorMean(), outputAtPosteriorMean
+    result.getOutputAtPosteriorMean(), outputAtPosteriorMean
 )

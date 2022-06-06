@@ -2,6 +2,7 @@
 
 import openturns as ot
 from openturns.testing import assert_almost_equal
+import openturns.viewer as otv
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
@@ -62,17 +63,17 @@ for method in methods:
         model, x, y, candidate, priorCovariance, errorCovariance, method
     )
     algo.run()
-    calibrationResult = algo.getResult()
+    result = algo.getResult()
 
     # Analysis of the results
     # Maximum A Posteriori estimator
-    thetaMAP = calibrationResult.getParameterMAP()
+    thetaMAP = result.getParameterMAP()
     exactTheta = ot.Point([5.69186, 0.0832132, 0.992301])
     rtol = 1.0e-2
     assert_almost_equal(thetaMAP, exactTheta, rtol)
 
     # Covariance matrix of theta
-    thetaPosterior = calibrationResult.getParameterPosterior()
+    thetaPosterior = result.getParameterPosterior()
     covarianceThetaStar = matrixToSample(thetaPosterior.getCovariance())
     exactCovarianceTheta = ot.Sample(
         [
@@ -84,7 +85,16 @@ for method in methods:
     assert_almost_equal(covarianceThetaStar, exactCovarianceTheta)
 
     # Check other fields
-    print("result=", calibrationResult)
+    print("result=", result)
+    # Draw result
+    graph = result.drawParameterDistributions()
+    otv.View(graph)
+    graph = result.drawResiduals()
+    otv.View(graph)
+    graph = result.drawObservationsVsInputs()
+    otv.View(graph)
+    graph = result.drawObservationsVsPredictions()
+    otv.View(graph)
 
     # 2. Check with global error covariance
     print("Global error covariance")
@@ -92,17 +102,17 @@ for method in methods:
         model, x, y, candidate, priorCovariance, globalErrorCovariance, method
     )
     algo.run()
-    calibrationResult = algo.getResult()
+    result = algo.getResult()
 
     # Analysis of the results
     # Maximum A Posteriori estimator
-    thetaMAP = calibrationResult.getParameterMAP()
+    thetaMAP = result.getParameterMAP()
     exactTheta = ot.Point([3.4397, 0.095908, 0.99096])
     rtol = 1.0e-2
     assert_almost_equal(thetaMAP, exactTheta, rtol)
 
     # Covariance matrix of theta
-    thetaPosterior = calibrationResult.getParameterPosterior()
+    thetaPosterior = result.getParameterPosterior()
     covarianceThetaStar = matrixToSample(thetaPosterior.getCovariance())
     exactCovarianceTheta = ot.Sample(
         [
@@ -114,4 +124,4 @@ for method in methods:
     assert_almost_equal(covarianceThetaStar, exactCovarianceTheta)
 
     # Check other fields
-    print("result=", calibrationResult)
+    print("result=", result)
