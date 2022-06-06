@@ -113,7 +113,7 @@ for epsilon in epsilon_array:
     cloud.setPointStyle(point_styles[index])
     graph.add(cloud)
     index += 1
-palette = ot.DrawableImplementation_BuildDefaultPalette(number_of_epsilons)
+palette = ot.DrawableImplementation.BuildDefaultPalette(number_of_epsilons)
 graph.setColors(palette)
 graph.setLegendPosition("topright")
 otv.View(
