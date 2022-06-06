@@ -75,7 +75,7 @@ UnsignedInteger EnumerateFunctionImplementation::getStrataCardinal(const Unsigne
   throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::getStrataCardinal";
 }
 
-/* The cardinal of the cumulated strata above or equal to the given strate */
+/* The cardinal of the cumulated strata lower or equal to the given strate */
 UnsignedInteger EnumerateFunctionImplementation::getStrataCumulatedCardinal(const UnsignedInteger) const
 {
   throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::getStrataCumulatedCardinal";
