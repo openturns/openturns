@@ -1,5 +1,5 @@
 %feature("docstring") OT::NAIS
-"Non Adaptive Importance Sampling (NAIS) algorithm.
+"Nonparametric Adaptive Importance Sampling (NAIS) algorithm.
 
 Parameters
 ----------
