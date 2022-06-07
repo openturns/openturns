@@ -34,6 +34,7 @@
 #include "openturns/LeastSquaresStrategy.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
@@ -44,6 +45,7 @@
 #include "openturns/KFold.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/DistributionTransformation.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -165,7 +167,10 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   for (UnsignedInteger i = 0; i < inputDimension; ++ i)
     polynomials[i] = StandardDistributionPolynomialFactory(getDistribution().getMarginal(i));
 
-  const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-QNorm"));
+  const Scalar qNorm = ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-QNorm");
+  EnumerateFunction enumerate;
+  if (std::abs(qNorm-1.0) <= SpecFunc::Precision) enumerate = LinearEnumerateFunction(inputDimension);
+  else enumerate = HyperbolicAnisotropicEnumerateFunction(inputDimension, qNorm);
   OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
   // For small sample size, use sparse regression
   LOGINFO("In FunctionalChaosAlgorithm, select adaptive strategy");
