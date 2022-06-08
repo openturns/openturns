@@ -94,14 +94,14 @@ Parameters
 i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated Sobol indices. :math:`d`
     is the dimension of the input variables.
-out_marginal : int
-    Output marginal
-    Default value is 0
+marginalIndex : int
+    Output marginal index.
+    Default value is 0, i.e. the first output.
 
 Returns
 -------
 s : float
-    The Sobol indice."
+    The first order Sobol index."
 
 // ---------------------------------------------------------------------
 
@@ -113,14 +113,14 @@ Parameters
 i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated total Sobol indices.
     :math:`d` is the dimension of the input variables.
-out_marginal : int
-    Output marginal
-    Default value is 0
+marginalIndex : int
+    Output marginal index.
+    Default value is 0, i.e. the first output.
 
 Returns
 -------
 s : float
-    The total Sobol indice."
+    The total Sobol index."
 
 // ---------------------------------------------------------------------
 
@@ -132,11 +132,14 @@ Parameters
 i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated grouped Sobol indices.
     :math:`d` is the dimension of the input variables.
+marginalIndex : int
+    Output marginal index.
+    Default value is 0, i.e. the first output.
 
 Returns
 -------
 s : float
-    The grouped Sobol first order indice."
+    The grouped Sobol first order index."
 
 // ---------------------------------------------------------------------
 
@@ -148,11 +151,14 @@ Parameters
 i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated grouped Sobol indices.
     :math:`d` is the dimension of the input variables.
+marginalIndex : int
+    Output marginal index.
+    Default value is 0, i.e. the first output.
 
 Returns
 -------
 s : float
-    The grouped Sobol total order indice."
+    The grouped Sobol total order index."
 
 // ---------------------------------------------------------------------
 
