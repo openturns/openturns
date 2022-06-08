@@ -2,7 +2,6 @@
 
 import openturns as ot
 import openturns.testing as ott
-import openturns.viewer as otv
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(2)
@@ -71,13 +70,9 @@ for bootstrapSize in bootstrapSizes:
     print("result (Global)=", result.getParameterMAP())
     # Draw result
     graph = result.drawParameterDistributions()
-    otv.View(graph)
     graph = result.drawResiduals()
-    otv.View(graph)
     graph = result.drawObservationsVsInputs()
-    otv.View(graph)
     graph = result.drawObservationsVsPredictions()
-    otv.View(graph)
 
 # unobserved inputs
 p_ref = [2.8, 1.2, 0.5, 2.0]

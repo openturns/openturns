@@ -2,7 +2,6 @@
 
 import openturns as ot
 from openturns.testing import assert_almost_equal
-import openturns.viewer as otv
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
@@ -88,13 +87,9 @@ for method in methods:
     print("result=", result)
     # Draw result
     graph = result.drawParameterDistributions()
-    otv.View(graph)
     graph = result.drawResiduals()
-    otv.View(graph)
     graph = result.drawObservationsVsInputs()
-    otv.View(graph)
     graph = result.drawObservationsVsPredictions()
-    otv.View(graph)
 
     # 2. Check with global error covariance
     print("Global error covariance")
