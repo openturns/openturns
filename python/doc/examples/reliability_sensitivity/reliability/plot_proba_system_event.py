@@ -77,15 +77,15 @@ Time variant system reliability problem
 # %%
 from math import sqrt
 from openturns.viewer import View
-from openturns import *
+import openturns as ot
 
 
 def buildNormal(b, t, mu_S, covariance, delta_t=1e-5):
-    sigma = CovarianceMatrix(2)
+    sigma = ot.CovarianceMatrix(2)
     sigma[0, 0] = covariance(t, t)[0, 0]
     sigma[0, 1] = covariance(t, t+delta_t)[0, 0]
     sigma[1, 1] = covariance(t+delta_t, t+delta_t)[0, 0]
-    return Normal([b*t + mu_S, b*(t+delta_t) + mu_S], sigma)
+    return ot.Normal([b*t + mu_S, b*(t+delta_t) + mu_S], sigma)
 
 
 # %%
@@ -94,25 +94,28 @@ def buildNormal(b, t, mu_S, covariance, delta_t=1e-5):
 # %%
 def buildCrossing(b, t, mu_S, covariance, R, delta_t=1e-5):
     normal = buildNormal(b, t, mu_S, covariance, delta_t)
-    # return BlockIndependentDistribution([R, normal]): only from the 1.16 version!
-    marg = [R, normal.getMarginal(0), normal.getMarginal(1)]
-    cop = ComposedCopula([IndependentCopula(1), normal.getCopula()])
-    return ComposedDistribution(marg, cop)
+    return ot.BlockIndependentDistribution([R, normal])
 
 
 # %%
 # This function evaluates the probability using the Monte Carlo sampling. It defines the intersection event :math:`\mathcal{E}_t^1 \cap \mathcal{E}_t^2`.
 
 # %%
-def computeCrossingProbability_MonteCarlo(b, t, mu_S, covariance, R, delta_t, n_block, n_iter, CoV):
+def getXEvent(b, t, mu_S, covariance, R, delta_t):
     full = buildCrossing(b, t, mu_S, covariance, R, delta_t)
-    X = RandomVector(full)
-    f1 = SymbolicFunction(["R", "X1", "X2"], ["X1 - R"])
-    e1 = ThresholdEvent(CompositeRandomVector(f1, X), Less(), 0.0)
-    f2 = SymbolicFunction(["R", "X1", "X2"], ["X2 - R"])
-    e2 = ThresholdEvent(CompositeRandomVector(f2, X), GreaterOrEqual(), 0.0)
-    event = IntersectionEvent([e1, e2])
-    algo = ProbabilitySimulationAlgorithm(event, MonteCarloExperiment())
+    X = ot.RandomVector(full)
+    f1 = ot.SymbolicFunction(["R", "X1", "X2"], ["X1 - R"])
+    e1 = ot.ThresholdEvent(ot.CompositeRandomVector(f1, X), ot.Less(), 0.0)
+    f2 = ot.SymbolicFunction(["R", "X1", "X2"], ["X2 - R"])
+    e2 = ot.ThresholdEvent(ot.CompositeRandomVector(f2, X), ot.GreaterOrEqual(), 0.0)
+    event = ot.IntersectionEvent([e1, e2])
+    return X, event
+
+
+# %%
+def computeCrossingProbability_MonteCarlo(b, t, mu_S, covariance, R, delta_t, n_block, n_iter, CoV):
+    X, event = getXEvent(b, t, mu_S, covariance, R, delta_t)
+    algo = ot.ProbabilitySimulationAlgorithm(event, ot.MonteCarloExperiment())
     algo.setBlockSize(n_block)
     algo.setMaximumOuterSampling(n_iter)
     algo.setMaximumCoefficientOfVariation(CoV)
@@ -125,15 +128,9 @@ def computeCrossingProbability_MonteCarlo(b, t, mu_S, covariance, R, delta_t, n_
 
 # %%
 def computeCrossingProbability_QMC(b, t, mu_S, covariance, R, delta_t, n_block, n_iter, CoV):
-    full = buildCrossing(b, t, mu_S, covariance, R, delta_t)
-    X = RandomVector(full)
-    f1 = SymbolicFunction(["R", "X1", "X2"], ["X1 - R"])
-    e1 = ThresholdEvent(CompositeRandomVector(f1, X), Less(), 0.0)
-    f2 = SymbolicFunction(["R", "X1", "X2"], ["X2 - R"])
-    e2 = ThresholdEvent(CompositeRandomVector(f2, X), GreaterOrEqual(), 0.0)
-    event = IntersectionEvent([e1, e2])
-    algo = ProbabilitySimulationAlgorithm(event, LowDiscrepancyExperiment(
-        SobolSequence(X.getDimension()), n_block, False))
+    X, event = getXEvent(b, t, mu_S, covariance, R, delta_t)
+    algo = ot.ProbabilitySimulationAlgorithm(event, ot.LowDiscrepancyExperiment(
+        ot.SobolSequence(X.getDimension()), n_block, False))
     algo.setBlockSize(n_block)
     algo.setMaximumOuterSampling(n_iter)
     algo.setMaximumCoefficientOfVariation(CoV)
@@ -146,14 +143,8 @@ def computeCrossingProbability_QMC(b, t, mu_S, covariance, R, delta_t, n_block, 
 
 # %%
 def computeCrossingProbability_FORM(b, t, mu_S, covariance, R, delta_t):
-    full = buildCrossing(b, t, mu_S, covariance, R, delta_t)
-    X = RandomVector(full)
-    f1 = SymbolicFunction(["R", "X1", "X2"], ["X1 - R"])
-    e1 = ThresholdEvent(CompositeRandomVector(f1, X), Less(), 0.0)
-    f2 = SymbolicFunction(["R", "X1", "X2"], ["X2 - R"])
-    e2 = ThresholdEvent(CompositeRandomVector(f2, X), GreaterOrEqual(), 0.0)
-    event = IntersectionEvent([e1, e2])
-    algo = SystemFORM(SQP(), event, X.getMean())
+    X, event = getXEvent(b, t, mu_S, covariance, R, delta_t)
+    algo = ot.SystemFORM(ot.SQP(), event, X.getMean())
     algo.run()
     return algo.getResult().getEventProbability() / delta_t
 
@@ -179,16 +170,16 @@ b = 0.01
 
 mu_R = 5.0
 sigma_R = 0.3
-R = Normal(mu_R, sigma_R)
+R = ot.Normal(mu_R, sigma_R)
 
-covariance = SquaredExponential([l/sqrt(2)], [sigma_S])
+covariance = ot.SquaredExponential([l/sqrt(2)], [sigma_S])
 
 t0 = 0.0
 t1 = 50.0
 N = 26
 
 # Get all the time steps t
-times = RegularGrid(t0, (t1 - t0) / (N - 1.0), N).getVertices()
+times = ot.RegularGrid(t0, (t1 - t0) / (N - 1.0), N).getVertices()
 
 delta_t = 1e-1
 
@@ -222,14 +213,14 @@ print('Values FORM = ', values_FORM)
 # Draw the graphs!
 
 # %%
-g = Graph()
+g = ot.Graph()
 g.setAxes(True)
 g.setGrid(True)
-c = Curve(times, [[p] for p in values_MC])
+c = ot.Curve(times, [[p] for p in values_MC])
 g.add(c)
-c = Curve(times, [[p] for p in values_QMC])
+c = ot.Curve(times, [[p] for p in values_QMC])
 g.add(c)
-c = Curve(times, [[p] for p in values_FORM])
+c = ot.Curve(times, [[p] for p in values_FORM])
 g.add(c)
 g.setLegends(["MC", "QMC", "FORM"])
 g.setColors(["red", "blue", 'black'])
