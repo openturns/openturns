@@ -2,7 +2,7 @@
 /**
  *  @brief The UserDefined distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -229,10 +229,10 @@ Scalar UserDefined::computeCDF(const Point & point) const
     const Scalar x = point[0];
     UnsignedInteger upper = size - 1;
     Scalar xUpper = points_(upper, 0);
-    if (x > xUpper - supportEpsilon_) return 1.0;
+    if (x >= xUpper - supportEpsilon_) return 1.0;
     UnsignedInteger lower = 0;
     Scalar xLower = points_(lower, 0);
-    if (x <= xLower - supportEpsilon_) return 0.0;
+    if (x < xLower - supportEpsilon_) return 0.0;
     // Use dichotomic search of the correct index
     while (upper - lower > 1)
     {

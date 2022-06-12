@@ -20,7 +20,7 @@ The objective here is to identify the trend function :math:`f_{trend}`
 from a given field of the process :math:`X` and then to remove this
 last one from the initial field. The resulting field is a realization
 of the centered process :math:`X_{c}`.
-The library also allows to define the
+The library also allows one to define the
 function :math:`f_{trend}` and to remove it from the initial field to
 get the resulting centered field.
 

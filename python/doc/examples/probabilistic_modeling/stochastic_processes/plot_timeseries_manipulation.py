@@ -16,7 +16,6 @@ Manipulate a time series
 # A time series is stored in the **TimeSeries** object that stores the regular time grid and the associated values.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

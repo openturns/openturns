@@ -2,7 +2,7 @@
 /**
  *  @brief Estimation by method of moments
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,7 +47,7 @@ MethodOfMomentsFactory::MethodOfMomentsFactory()
 
 /* Parameters constructor */
 MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution,
-                                               const Interval & optimizationBounds)
+    const Interval & optimizationBounds)
   : DistributionFactoryImplementation()
   , distribution_(distribution)
   , optimizationBounds_(optimizationBounds)

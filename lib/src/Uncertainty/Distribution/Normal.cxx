@@ -2,7 +2,7 @@
 /**
  *  @brief The Normal distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -162,9 +162,9 @@ Point Normal::getRealization() const
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return Point(1, mean_[0] + sigma_[0] * DistFunc::rNormal());
   Point value(dimension);
-  // First, a realization of independant standard coordinates
+  // First, a realization of independent standard coordinates
   for (UnsignedInteger i = 0; i < dimension; i++) value[i] = DistFunc::rNormal();
-  // Then, transform the independant standard coordinates into the needed ones */
+  // Then, transform the independent standard coordinates into the needed ones */
   if (hasIndependentCopula_)
   {
     for (UnsignedInteger i = 0; i < dimension; i++)

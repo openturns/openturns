@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -350,7 +350,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
 
     if (outputDimension_ == 1)
     {
-      // The stationary property of this model allows to optimize the discretize operation
+      // The stationary property of this model allows one to optimize the discretize operation
       // over a regular time grid: the large covariance matrix is block-diagonal
       // Fill the matrix by block-diagonal
       // The main diagonal has a specific treatment as only its lower triangular part

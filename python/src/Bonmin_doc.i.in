@@ -1,10 +1,7 @@
 %feature("docstring") OT::Bonmin
-"Base class for optimization solvers from `Bonmin <https://www.coin-or.org/Bonmin/index.html>`_ library.
+"Bonmin MINLP solver.
 
-Available constructors:
-    Bonmin(*problem*)
-    
-    Bonmin(*problem, algoName*)
+`Bonmin <https://www.coin-or.org/Bonmin/index.html>`_ is an open-source code for solving general MINLP problems.
 
 Parameters
 ----------
@@ -141,7 +138,7 @@ algoName : :class:`~openturns.Description`
 "Accessor to algoName parameter. Sets the optimization algorithm to
 use. Possible values for algoName are B-BB, B-OA, B-QG, B-Hyb, B-Ecp, B-iFP. See
 `Bonmin's online documentation <https://www.coin-or.org/Bonmin/index.html>`_ for more details.
-Defautl is B-BB.
+Default is B-BB.
 
 Parameters
 ----------

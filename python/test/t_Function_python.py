@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import sys
 
@@ -112,7 +111,7 @@ print(outSample)
 
 
 def a_grad(X):
-    # wrong but allows to verify
+    # wrong but allows one to verify
     dY = [[1.], [-1.]]
     return dY
 
@@ -124,7 +123,7 @@ print(grad)
 
 
 def a_hess(X):
-    # wrong but allows to verify
+    # wrong but allows one to verify
     d2Y = [[[0.1], [0.3]], [[0.3], [0.1]]]
     return d2Y
 

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 from math import sqrt, pi, exp, log
 
@@ -24,7 +23,7 @@ references.append(ot.Gamma(3.0, 1.0, 0.0))
 print("testCases=", testCases)
 print("references=", references)
 for testIndex in range(len(testCases)):
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = ot.RandomMixture(testCases[testIndex])
     distribution.setBlockMin(5)
     distribution.setBlockMax(20)

@@ -29,7 +29,7 @@ The algorithm is based on two nested loops:
 - the inner loop sets the number of function calls which can be parallelized; 
   this can be configured using :meth:`setBlockSize`.
 
-The algorithm allows to get the best possible performance on distributed 
+The algorithm allows one to get the best possible performance on distributed
 supercomputers and multi-core workstations. 
 For example, if the block size is equal to 100, then the sample size 
 is successively equal to 100, 200, etc... 

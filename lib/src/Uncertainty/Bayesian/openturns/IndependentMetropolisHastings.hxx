@@ -2,7 +2,7 @@
 /**
  *  @brief Metropolis-Hastings algorithm
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,16 +44,16 @@ public:
 
   /** Constructor with parameters*/
   IndependentMetropolisHastings(const Distribution & targetDistribution,
-                               const Point & initialState,
-                               const Distribution & proposal,
-                               const Indices & marginalIndices = Indices());
+                                const Point & initialState,
+                                const Distribution & proposal,
+                                const Indices & marginalIndices = Indices());
 
   /** Constructor with parameters*/
   IndependentMetropolisHastings(const Function & targetLogPDF,
-                              const Domain & support,
-                              const Point & initialState,
-                              const Distribution & proposal,
-                              const Indices & marginalIndices = Indices());
+                                const Domain & support,
+                                const Point & initialState,
+                                const Distribution & proposal,
+                                const Indices & marginalIndices = Indices());
   /** String converter */
   String __repr__() const override;
 

@@ -12,11 +12,11 @@ or from the method of moments, excepted for the bound parameters that
 are systematically modified to strictly include the extreme realizations
 of the underlying sample :math:`(x_1,\dots,x_n)`.
 
-Each estimator is detailed its corresponding :ref:`factory <parametric_distibution_factories>`.
+Each estimator is detailed its corresponding :ref:`factory <parametric_distribution_factories>`.
 
 .. topic:: API:
 
-    - See the available :ref:`parametric distribution factories <parametric_distibution_factories>`.
+    - See the available :ref:`parametric distribution factories <parametric_distribution_factories>`.
 
 .. topic:: Examples:
 

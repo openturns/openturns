@@ -9,7 +9,6 @@ Create a random design of experiments
 # Random designs of experiments can be generated from probability distributions.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 import math as m

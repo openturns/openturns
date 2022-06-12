@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Bonmin allows to describe a MINLP optimization algorithm
+ *  @brief Bonmin allows one to describe a MINLP optimization algorithm
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class Bonmin
- * Bonmin allows to solve a MINLP optimization problem, including:
+ * Bonmin allows one to solve a MINLP optimization problem, including:
  * + objective functions of continuous, discrete or binary variables
  * + multiple equality, inequality and bounds constraints
  */
@@ -50,9 +50,7 @@ public:
   Bonmin * clone() const override;
 
   /** Bonmin static methods */
-  static Bool IsAvailable();  // Check whether Bonmin support is available
   static Description GetAlgorithmNames(); // List available bonmin algorithm names
-
 
   /** Accessors to Bonmin attributes */
   void setAlgorithmName(const String & algoName);

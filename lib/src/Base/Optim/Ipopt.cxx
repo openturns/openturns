@@ -2,7 +2,7 @@
 /**
  *  @brief Ipopt optimization solver.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,20 +55,7 @@ Ipopt * Ipopt::clone() const
   return new Ipopt(*this);
 }
 
-
-
-/** Ipopt static methods */
-Bool Ipopt::IsAvailable()
-{
-  LOGWARN(OSS() << "Ipopt.IsAvailable is deprecated, use PlatformInfo.HasFeature(ipopt)");
-#ifdef OPENTURNS_HAVE_IPOPT
-  return true;
-#else
-  return false;
-#endif
-}
-
-/** Check whether this problem can be solved by this solver. */
+/* Check whether this problem can be solved by this solver. */
 void Ipopt::checkProblem(const OptimizationProblem & problem) const
 {
   // Cannot solve multi-objective problems
@@ -142,7 +129,7 @@ void Ipopt::run()
   app->Options()->PrintList(optlist);
   LOGDEBUG(optlist);
 
-  // Intialize the IpoptApplication and process the options
+  // Initialize the IpoptApplication and process the options
   ApplicationReturnStatus status = app->Initialize();
   if (status != Solve_Succeeded)
   {

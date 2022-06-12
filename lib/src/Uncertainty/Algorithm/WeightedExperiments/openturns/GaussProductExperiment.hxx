@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an GaussProductExperiment
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -89,7 +89,7 @@ private:
 
   // Distribution and marginal sizes accessor
   void setDistributionAndMarginalSizes(const Distribution & distribution,
-                                         const Indices & marginalSizes);
+                                       const Indices & marginalSizes);
 
   // Marginal orthogonal univariate polynomial family collection
   OrthogonalUniVariatePolynomialFamilyPersistentCollection collection_;

@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the gradient of an analytical function.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -240,17 +240,10 @@ Gradient SymbolicGradient::getMarginal(const UnsignedInteger i) const
 Gradient SymbolicGradient::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal gradient must be in the range [0, dim-1] and must be different";
-  const UnsignedInteger marginalDimension = indices.getSize();
-  Description marginalFormulas(marginalDimension);
-  Description marginalOutputNames(marginalDimension);
-  Description outputNames(p_evaluation_->getOutputVariablesNames());
-  Description formulas(p_evaluation_->getFormulas());
-  for (UnsignedInteger i = 0; i < marginalDimension; ++i)
-  {
-    marginalFormulas[i] = formulas[indices[i]];
-    marginalOutputNames[i] = outputNames[indices[i]];
-  }
-  return new SymbolicGradient(SymbolicEvaluation(p_evaluation_->getInputVariablesNames(), marginalOutputNames, marginalFormulas));
+  if (p_evaluation_->getOutputVariablesNames().getSize() == p_evaluation_->getFormulas().getSize())
+    return new SymbolicGradient(SymbolicEvaluation(p_evaluation_->getInputVariablesNames(), p_evaluation_->getOutputVariablesNames().select(indices), p_evaluation_->getFormulas().select(indices)));
+  else
+    return GradientImplementation::getMarginal(indices);
 }
 
 /* Method save() stores the object through the StorageManager */

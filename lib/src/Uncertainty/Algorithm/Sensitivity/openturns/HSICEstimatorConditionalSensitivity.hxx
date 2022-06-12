@@ -3,7 +3,7 @@
 /**
  * @brief HSICEstimatorConditionalSensitivity implements the sensivity analysis method based on HSIC indices
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,7 +52,7 @@ public:
   HSICEstimatorConditionalSensitivity();
 
   /** Constructor */
-  HSICEstimatorConditionalSensitivity(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y, const HSICStat & estimatorType,
+  HSICEstimatorConditionalSensitivity(const CovarianceModelCollection & covarianceModelCollection, const Sample & X, const Sample & Y, const HSICStat & estimatorType,
                                       const Function & weightFunction);
 
   /** Virtual constructor */

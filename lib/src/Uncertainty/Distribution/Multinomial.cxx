@@ -3,7 +3,7 @@
 /**
  *  @brief The Multinomial distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -695,7 +695,7 @@ void Multinomial::computeCovariance() const
   {
     const Scalar pI = p_[i];
     covariance_(i, i) = pI * (1.0 - pI) * n_;
-    // Be careful! in these computations, n_ cannot be at the begining of the formula else -n_ will underflow the UnsignedInteger range!
+    // Be careful! in these computations, n_ cannot be at the beginning of the formula else -n_ will underflow the UnsignedInteger range!
     for (UnsignedInteger j = 0; j < i; ++j) covariance_(i, j) = -pI * p_[j] * n_;
   }
   isAlreadyComputedCovariance_ = true;

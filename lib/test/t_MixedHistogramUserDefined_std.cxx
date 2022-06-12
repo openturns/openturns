@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class MixedHistogramUserDefined for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,7 +54,7 @@ int main(int, char *[])
   probabilityTable.add(0.35);
   probabilityTable.add(0.4);
   probabilityTable.add(0.45);
-  // Instanciate one distribution object
+  // Instantiate one distribution object
   MixedHistogramUserDefined distribution(ticksCollection, kind, probabilityTable);
   std::cout << "Distribution " << distribution.__repr__() << std::endl;
   std::cout << "Distribution " << distribution << std::endl;

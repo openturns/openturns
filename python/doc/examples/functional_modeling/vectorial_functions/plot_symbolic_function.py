@@ -11,7 +11,6 @@ Create a symbolic function
 # Analytical expressions of the gradient and hessian are automatically computed except if the function is not differentiable everywhere. In that case a finite difference method is used.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

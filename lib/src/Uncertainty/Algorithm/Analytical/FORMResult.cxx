@@ -2,7 +2,7 @@
 /**
  *  @brief Result implements the results obtained from the First Order Reliability Method
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -122,7 +122,7 @@ void FORMResult::computeEventProbabilitySensitivity() const
   Distribution antecedent(getLimitStateVariable().getImplementation()->getAntecedent().getDistribution());
   UnsignedInteger dimension = antecedent.getDimension();
 
-  /* Be carefull! computeCDF method takes an Point as an input argument */
+  /* Be careful! computeCDF method takes an Point as an input argument */
   /* in the standard space all marginals of the standard distribution are identical */
   /* evaluate one marginal at the reliability index : the marginal is symmetric with respect to zero */
   const Distribution standardMarginalDistribution(antecedent.getStandardDistribution().getMarginal(0));

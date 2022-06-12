@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 from math import pi
@@ -63,6 +62,3 @@ ott.assert_almost_equal(posterior_mean, mean_ref, 1e-5, 0)
 std_ref = 1.61558
 posterior_std = sample.computeStandardDeviation()[0]
 ott.assert_almost_equal(posterior_std, std_ref, 1e-5, 0)
-
-
-

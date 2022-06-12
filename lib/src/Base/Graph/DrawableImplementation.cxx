@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all Drawable
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,7 +36,7 @@ CLASSNAMEINIT(DrawableImplementation)
 
 static const Factory<DrawableImplementation> Factory_DrawableImplementation;
 
-/* default graphic paramaters */
+/* default graphic parameters */
 
 Bool DrawableImplementation::IsFirstInitialization          = true;
 
@@ -1297,7 +1297,7 @@ String DrawableImplementation::getLineStyle() const
   return lineStyle_;
 }
 
-/* Accesor for line style */
+/* Accessor for line style */
 void DrawableImplementation::setLineStyle(const String & lineStyle)
 {
   if(!IsValidLineStyle(lineStyle))  throw InvalidArgumentException(HERE) << "Given line style=" << lineStyle << " is incorrect";

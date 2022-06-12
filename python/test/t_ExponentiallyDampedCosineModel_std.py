@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -21,8 +20,8 @@ try:
     # Frequency values
     for frequency in [0.1, 0.2]:
         # Default constructor
-        myDefautModel = ExponentiallyDampedCosineModel()
-        print("myDefautModel = ", myDefautModel)
+        myDefaultModel = ExponentiallyDampedCosineModel()
+        print("myDefaultModel = ", myDefaultModel)
 
         # Second order model with parameters
         myModel = ExponentiallyDampedCosineModel(

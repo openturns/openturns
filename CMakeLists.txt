@@ -29,9 +29,9 @@ option (USE_NLOPT                    "Use NLopt for additional optimization algo
 option (USE_CERES                    "Use Ceres Solver for additional optimization algorithms"               ON)
 option (USE_CMINPACK                 "Use CMinpack for additional optimization algorithms"                   ON)
 option (USE_DLIB                     "Use dlib for additional optimization algorithms"                       ON)
-option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
-option (USE_IPOPT                    "Use Ipopt for MINLP problems"                                          ON)
+option (USE_IPOPT                    "Use Ipopt for nonlinear optimization"                                  ON)
 option (USE_BONMIN                   "Use Bonmin for MINLP problems"                                         ON)
+option (USE_PAGMO                    "Use Pagmo for multi-objective optimization"                            ON)
 option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"                               ON)
 option (USE_PRIMESIEVE               "Use primesieve for prime numbers generation"                           ON)
 option (USE_OPENMP                   "Use OpenMP to disable threading"                                       ON)
@@ -48,6 +48,11 @@ if (POLICY CMP0022)
   cmake_policy (SET CMP0022 NEW)
 endif()
 
+if (POLICY CMP0057)
+  # Support new IN_LIST if() operator
+  cmake_policy (SET CMP0057 NEW)
+endif ()
+
 if (POLICY CMP0068)
   # RPATH settings on macOS do not affect install_name
   cmake_policy (SET CMP0068 NEW)
@@ -58,36 +63,39 @@ if (POLICY CMP0093)
   cmake_policy (SET CMP0093 NEW)
 endif ()
 
-if (USE_COTIRE)
-  if (POLICY CMP0058)
-    # Ninja requires custom command byproducts to be explicit
-    cmake_policy (SET CMP0058 NEW)
-  endif()
-  include (cotire)
-  # exclude dirty third-party sources (static vars, macros, ...)
-  set (COTIRE_UNITY_SOURCE_EXCLUDE_EXTENSIONS "c;cc")
+if (POLICY CMP0058)
+  # Ninja requires custom command byproducts to be explicit
+  cmake_policy (SET CMP0058 NEW)
+endif()
+
+if(POLICY CMP0042)
+  # Set MACOSX_RPATH to ON
+  cmake_policy(SET CMP0042 NEW)
+endif()
+
+if (POLICY CMP0054)
+  cmake_policy (SET CMP0054 NEW)
 endif ()
 
+if (POLICY CMP0056)
+  cmake_policy (SET CMP0056 NEW)
+endif ()
 
-# add library with unity build support, inspired by https://github.com/onqtam/ucm
-macro (ot_add_library name)
-  if (USE_COTIRE)
-    set (orig_target ${name}_orig)
-    # add regular target with another name
-    add_library (${orig_target} ${ARGN})
-    set_target_properties (${orig_target} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
-    # set unity target name with the original name
-    set_target_properties (${orig_target} PROPERTIES COTIRE_UNITY_TARGET_NAME ${name})
-    # add unity build target
-    cotire (${orig_target})
-    set_target_properties (${name} PROPERTIES EXCLUDE_FROM_ALL 0 EXCLUDE_FROM_DEFAULT_BUILD 0)
-    set_target_properties (${name} PROPERTIES OUTPUT_NAME ${name})
-  else ()
-    add_library (${name} ${ARGN})
-  endif ()
-endmacro ()
+if (POLICY CMP0066)
+  cmake_policy (SET CMP0066 NEW)
+endif ()
 
-set (OPENTURNS_HOME_ENV_VAR OPENTURNS_HOME    )
+if (POLICY CMP0078)
+  # swig standard target names
+  cmake_policy(SET CMP0078 NEW)
+endif ()
+
+if (POLICY CMP0086)
+  # UseSWIG honors SWIG_MODULE_NAME via -module flag
+  cmake_policy(SET CMP0086 NEW)
+endif ()
+
+set (OPENTURNS_HOME_ENV_VAR OPENTURNS_HOME)
 
 if (NOT DEFINED CMAKE_INSTALL_LIBDIR)
   set (CMAKE_INSTALL_LIBDIR lib${LIB_SUFFIX})
@@ -402,6 +410,15 @@ if (USE_IPOPT)
   endif ()
 endif ()
 
+if (USE_PAGMO)
+  find_package (Pagmo CONFIG)
+  if (Pagmo_FOUND)
+    message (STATUS "Found Pagmo: ${Pagmo_DIR} (found version \"${Pagmo_VERSION}\")")
+    set (OPENTURNS_HAVE_PAGMO TRUE)
+    list (APPEND OPENTURNS_PRIVATE_LIBRARIES Pagmo::pagmo)
+  endif ()
+endif ()
+
 if (USE_OPENMP)
   find_package (OpenMP)
   if (OPENMP_FOUND)
@@ -427,28 +444,6 @@ else ()
   if ("${CMAKE_CXX_BYTE_ORDER}" STREQUAL "BIG_ENDIAN")
     set (__BIG_ENDIAN__ 1)
   endif ()
-endif ()
-
-if(POLICY CMP0042)
-  # Set MACOSX_RPATH to ON
-  cmake_policy(SET CMP0042 NEW)
-endif()
-if (POLICY CMP0054)
-  cmake_policy (SET CMP0054 NEW)
-endif ()
-if (POLICY CMP0056)
-  cmake_policy (SET CMP0056 NEW)
-endif ()
-if (POLICY CMP0066)
-  cmake_policy (SET CMP0066 NEW)
-endif ()
-if (POLICY CMP0078)
-  # swig standard target names
-  cmake_policy(SET CMP0078 NEW)
-endif ()
-if (POLICY CMP0086)
-  # UseSWIG honors SWIG_MODULE_NAME via -module flag
-  cmake_policy(SET CMP0086 NEW)
 endif ()
 
 try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
@@ -573,7 +568,7 @@ include_directories (${OPENTURNS_PRIVATE_INCLUDE_DIRS})
 
 set (CPACK_PACKAGE_NAME          openturns     )
 set (CPACK_PACKAGE_VERSION_MAJOR 1             )
-set (CPACK_PACKAGE_VERSION_MINOR 19dev)
+set (CPACK_PACKAGE_VERSION_MINOR 20dev)
 set (CPACK_PACKAGE_VERSION_PATCH               )
 set (CPACK_SOURCE_GENERATOR      "TGZ;TBZ2"    )
 set (CPACK_BINARY_STGZ    OFF CACHE BOOL "STGZ")
@@ -608,7 +603,7 @@ if (BUILD_PYTHON)
     # this name was chosen in common with pyagrum for otagrum
     set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
 
-    # ptr conversion argument to handle None correctly in swig 4.x, this just allows to pass compilation with swig 3.x
+    # ptr conversion argument to handle None correctly in swig 4.x, this just allows one to pass compilation with swig 3.x
     if (SWIG_VERSION VERSION_LESS 4)
       list (APPEND OPENTURNS_SWIG_DEFINITIONS -DSWIG_POINTER_NO_NULL=0x0)
     endif ()
@@ -632,23 +627,29 @@ if (BUILD_PYTHON)
         find_python_module (numpydoc 0.9) # v0.7 & v0.8 have bugs for citations
         find_python_module (sphinx_gallery 0.7)
         if (NOT Bonmin_FOUND)
-          set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_bonmin)")
+          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_bonmin)")
         endif ()
         if (NOT Ceres_FOUND AND NOT CMinpack_FOUND)
           set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(calibration_flooding)|(calibration_chaboche)|(calibration_deflection_tube)")
         endif ()
         if (NOT dlib_FOUND)
-          set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_dlib)")
+          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_dlib)")
+        endif ()
+        if (NOT Pagmo_FOUND)
+          set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)")
         endif ()
         if (NOT PANDAS_FOUND)
-          set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(sample_pandas)")
+          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(sample_pandas)")
         endif ()
         if (NOT HMAT_FOUND)
-          set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(kriging_cantilever_beam_hmat)")
-          set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(gaussian_process_covariance_hmat)")
+          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(kriging_cantilever_beam_hmat)")
+          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(gaussian_process_covariance_hmat)")
         endif ()
         if (NOT HDF5_FOUND)
-          set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(study_save_load)")
+          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(study_save_load)")
+        endif ()
+        if (NOT BISON_FOUND OR NOT FLEX_FOUND)
+          set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(import_export_sample_csv)")
         endif ()
       else ()
         message (STATUS "Could NOT find Sphinx executable")
@@ -657,6 +658,12 @@ if (BUILD_PYTHON)
         set (SPHINX_FOUND FALSE)
         message (STATUS "Disabling documentation (need numpydoc/sphinx-gallery/matplotlib/libxml2/nlopt)")
       endif ()
+    endif ()
+
+    if (NOT DEFINED PYTHON_SITE_PACKAGES AND NOT CMAKE_CROSSCOMPILING)
+      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sysconfig, os; print(sysconfig.get_path('platlib').replace(sysconfig.get_path('data'), '').lstrip(os.path.sep))"
+                       OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+      file (TO_CMAKE_PATH "${PYTHON_SITE_PACKAGES}" PYTHON_SITE_PACKAGES)
     endif ()
 
     if (DEFINED PYTHON_SITE_PACKAGES)

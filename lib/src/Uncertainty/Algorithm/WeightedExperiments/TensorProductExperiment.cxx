@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of a TensorProductExperiment
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -71,8 +71,8 @@ String TensorProductExperiment::__repr__() const
 {
   OSS oss;
   oss << "class=" << GetClassName()
-    << " name=" << getName()
-    << " collection=" << collection_;
+      << " name=" << getName()
+      << " collection=" << collection_;
   return oss;
 }
 

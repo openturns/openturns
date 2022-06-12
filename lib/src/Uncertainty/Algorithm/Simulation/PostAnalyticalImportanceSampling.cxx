@@ -2,7 +2,7 @@
 /**
  *  @brief PostAnalyticalImportanceSampling is an implementation of the  importance sampling Monte Carlo simulation method in standard space
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -73,14 +73,14 @@ Sample PostAnalyticalImportanceSampling::computeBlockSample()
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
     blockSample(i, 0) = 0.0;
-    // If the event has occured
+    // If the event has occurred
     if (isRealized[i])
     {
       realizedIndices.add(i);
     }
   }
   const Sample realizedInputSample(inputSample.select(realizedIndices));
-  // If the event occured, the value is p_initial(x[i]) / p_importance(x[i])
+  // If the event occurred, the value is p_initial(x[i]) / p_importance(x[i])
   const Sample p_initial(standardDistribution_.computePDF(realizedInputSample));
   const Sample p_importance(standardDistribution_.computePDF(realizedInputSample - standardSpaceDesignPoint));
 

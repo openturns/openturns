@@ -12,13 +12,14 @@ jobs:
     - uses: actions/checkout@v2
     - run: |
         brew upgrade
-        brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt r primesieve spectra
+        brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt r primesieve spectra pagmo
         pip3 install matplotlib scipy chaospy pandas dill
     - run: |
         cd $HOME/work/openturns
         git clone https://github.com/jeromerobert/hmat-oss.git hmat-oss
-        cd hmat-oss/ 
-        git checkout 1.7.1 
+        cd hmat-oss/
+        git checkout 1.7.1
+        git cherry-pick 6ad59b7d
         cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
         make install -j3
     - run: |

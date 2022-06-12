@@ -2,7 +2,7 @@
 /**
  *  @brief The class PlatformInfo gives information about the library
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -106,6 +106,12 @@ Description PlatformInfo::GetFeatures()
     Features_["cminpack"] = true;
 #else
     Features_["cminpack"] = false;
+#endif
+
+#ifdef OPENTURNS_HAVE_PAGMO
+    Features_["pagmo"] = true;
+#else
+    Features_["pagmo"] = false;
 #endif
 
 #ifdef OPENTURNS_HAVE_PRIMESIEVE

@@ -4,7 +4,7 @@
  *         the coefficients of the 3 terms recurrence relation of an
  *         orthonormal polynomial family
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -80,7 +80,7 @@ private:
       // Nothing to do
     };
 
-    // This method allows to compute <qN, qN>
+    // This method allows one to compute <qN, qN>
     Point kernelSym(const Point & point) const
     {
       const Scalar pdf = weight_.computePDF(point);
@@ -91,7 +91,7 @@ private:
       return result;
     };
 
-    // This method allows to compute <qN, qN> and <x.qN, qN>
+    // This method allows one to compute <qN, qN> and <x.qN, qN>
     Point kernelGen(const Point & point) const
     {
       const Scalar pdf = weight_.computePDF(point);

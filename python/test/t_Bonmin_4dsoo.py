@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
 """
 An optimization problem with mixed discrete input variables "4d soo".
 

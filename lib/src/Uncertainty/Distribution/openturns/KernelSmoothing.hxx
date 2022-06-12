@@ -3,7 +3,7 @@
  *  @brief This class acts like a (possibly truncated) KernelMixture factory, implementing density estimation
  *         using the kernel smoothing method. It uses Silverman's rule for product kernel.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,7 +56,7 @@ public:
   /** Virtual constructor */
   KernelSmoothing * clone() const override;
 
-  /** Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
+  /** Build a Normal kernel mixture based on the given sample. If no bandwidth has already been set, Silverman's rule is used */
   using DistributionFactoryImplementation::build;
   Distribution build(const Sample & sample) const override;
 
@@ -117,7 +117,7 @@ private:
 
   void setBandwidth(const Point & bandwidth) const;
 
-  // Bandwith of the smoothing
+  // Bandwidth of the smoothing
   mutable Point bandwidth_;
 
   // 1D kernel for kernel product

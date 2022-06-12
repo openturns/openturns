@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class EmpiricalBernsteinCopula for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,7 @@ int main(int, char *[])
   PlatformInfo::SetNumericalPrecision(5);
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 2;
     EmpiricalBernsteinCopula copula(Normal(2).getSample(12), 3);
     copula.setName("a empiricalBernstein copula");

@@ -1,9 +1,9 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class allows to compute integrals of a function over an interval
+ *  @brief This class allows one to compute integrals of a function over an interval
  *         using GaussKronrod method for 1D scalar function
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -64,7 +64,7 @@ public:
                   const Interval & interval,
                   Scalar & error) const override;
 
-  // This method allows to get the estimated integration error as a scalar
+  // This method allows one to get the estimated integration error as a scalar
   Point integrate(const Function & function,
                   const Scalar a,
                   const Scalar b,
@@ -75,7 +75,7 @@ public:
                   Point & ei) const;
 
 #endif
-  // This method allows to get the estimated integration error as a Point,
+  // This method allows one to get the estimated integration error as a Point,
   // needed by Python
   Point integrate(const Function & function,
                   const Scalar a,

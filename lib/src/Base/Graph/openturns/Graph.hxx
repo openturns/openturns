@@ -2,7 +2,7 @@
 /**
  *  @brief Graph implements graphic devices for plotting through R
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -121,7 +121,7 @@ public:
   void setGridColor(const String & color);
   String getGridColor() const;
 
-  /** Accesor for xTitle */
+  /** Accessor for xTitle */
   String getXTitle() const;
   void setXTitle(const String & title);
 
@@ -129,7 +129,7 @@ public:
   String getYTitle() const;
   void setYTitle(const String & title);
 
-  /** Accesor for title */
+  /** Accessor for title */
   String getTitle() const;
   void setTitle(const String & title);
 

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import math as m
 
@@ -184,7 +183,8 @@ except:
 
 f = ot.SymbolicFunction("x", "sqrt(x)")
 ev = f.getEvaluation()
-ev.setCheckOutput(False) # triggers copyOnWrite, ev is no longer the Evaluation of f
+# triggers copyOnWrite, ev is no longer the Evaluation of f
+ev.setCheckOutput(False)
 print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(ev([-1.0])[0]))
 
 # joe copula bug
@@ -214,3 +214,15 @@ try:
     ot.SymbolicFunction(['x09azAZ_', '(y)'], ['2*x09azAZ_'])
 except Exception:
     print('OK')
+
+# single formula / several outputs bug
+f = ot.SymbolicFunction(['x0', 'x1', 'x2', 'x3', 'x4'], ['event_1', 'event_2', 'event_3'],
+                         'event_1 := x0 + 4.0 * x1 ^ 2 + 3.0 * x2 + x3*x4; event_2 :=-7.0 * x2 - 4.0 * x3 + x4; event_3 := x0 + 2 * x1')
+assert f.getOutputDimension() == 3
+x = [1.0] * 5
+y = f(x)
+assert y == [9.0, -10.0, 3.0]
+f3 = f.getMarginal(2)
+assert f3.getOutputDimension() == 1
+y3 = f3(x)
+assert y3 == [3.0]

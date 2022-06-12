@@ -36,7 +36,6 @@ Mixture of experts
 #
 
 # %%
-from __future__ import print_function
 import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as viewer

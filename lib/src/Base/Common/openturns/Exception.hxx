@@ -2,7 +2,7 @@
 /**
  *  @brief Exception defines top-most exception strategies
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 #ifndef SWIG
 /*
- * A helper class that saves the position where it was instanciated in file.
+ * A helper class that saves the position where it was instantiated in file.
  * This class works in conjonction with the preprocessor (cpp). See HERE macro
  */
 class OT_API PointInSourceFile

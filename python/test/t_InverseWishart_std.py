@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function, division
 import unittest as ut
 from math import pi, log, log10, floor
 
@@ -178,7 +177,7 @@ class TestInverseWishartMethods(ut.TestCase):
                 indice += 1
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 distribution = ot.InverseWishart(ot.CovarianceMatrix(1), 5.0)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)

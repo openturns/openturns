@@ -3,7 +3,7 @@
  *  @brief Efficient implementation of the computation of the incomplete
  *         regularized gamma function and related functions
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -89,8 +89,8 @@ Scalar RegularizedIncompleteGammaInverse(const Scalar a,
   Scalar xr = -1.0;
   SignedInteger ierr;
   invincgam(a, (tail ? y : x), (tail ? x : y), xr, ierr);
-  if (ierr == -1) LOGWARN(OSS() << "cannot compute the RegularizedIncompleteGammaInverse funtion to full precision for a=" << a << ", x=" << x << ", tail=" << tail << " because of an overflow.");
-  if (ierr == -2) LOGWARN(OSS() << "up to 15 Newton iterations have been made to compute the RegularizedIncompleteGammaInverse funtion for a=" << a << ", x=" << x << ", tail=" << tail << ". The accuracy may be reduced.");
+  if (ierr == -1) LOGWARN(OSS() << "cannot compute the RegularizedIncompleteGammaInverse function to full precision for a=" << a << ", x=" << x << ", tail=" << tail << " because of an overflow.");
+  if (ierr == -2) LOGWARN(OSS() << "up to 15 Newton iterations have been made to compute the RegularizedIncompleteGammaInverse function for a=" << a << ", x=" << x << ", tail=" << tail << ". The accuracy may be reduced.");
   return xr;
 #endif
 }

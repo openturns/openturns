@@ -17,7 +17,7 @@ enumerateFunction : :class:`~openturns.EnumerateFunction`
 
 Notes
 -----
-TensorizedUniVariateFunctionFactory allows to create multidimensional functions as the tensor product of univariate
+TensorizedUniVariateFunctionFactory allows one to create multidimensional functions as the tensor product of univariate
 functions created by their respective factories (i.e. :class:`~openturns.UniVariateFunctionFamily`):
 
 .. math::

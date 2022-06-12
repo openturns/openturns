@@ -67,9 +67,9 @@ Bayesian calibration of the flooding model
 # Analysis
 # --------
 #
-# In the description of the :ref:`flooding model<use-case-flood-model>`, we see that only one parameter 
+# In the description of the :ref:`flooding model<use-case-flood-model>`, we see that only one parameter
 # can be identified.
-# Hence, calibrating this model requires some regularization. 
+# Hence, calibrating this model requires some regularization.
 # In this example, we use Bayesian methods as a way to regularize the model.
 
 # %%
@@ -245,8 +245,10 @@ proposal = [ot.Uniform(-5., 5.), ot.Uniform(-1., 1.), ot.Uniform(-1., 1.)]
 # ---------------------
 
 initialState = parameterPriorMean
-mh_coll = [ot.RandomWalkMetropolisHastings(prior, initialState, proposal[i], [i]) for i in range(paramDim)]
-for mh in mh_coll: mh.setLikelihood(conditional, Hobs, linkFunction, Qobs)
+mh_coll = [ot.RandomWalkMetropolisHastings(
+    prior, initialState, proposal[i], [i]) for i in range(paramDim)]
+for mh in mh_coll:
+    mh.setLikelihood(conditional, Hobs, linkFunction, Qobs)
 sampler = ot.Gibbs(mh_coll)
 
 # %%

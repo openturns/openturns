@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class InverseGamma for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Collection<InverseGamma> allDistributions(0);
     allDistributions.add(InverseGamma(2.5, 5.5));
     allDistributions.add(InverseGamma(2.5, 15.0));

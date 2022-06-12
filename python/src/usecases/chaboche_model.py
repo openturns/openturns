@@ -2,7 +2,6 @@
 Use case : the Chaboche mechanical model
 ========================================
 """
-from __future__ import print_function
 import openturns as ot
 import math as m
 

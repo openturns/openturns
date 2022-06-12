@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
+
 
 def sortNodesAndWeights(nodes, weights):
     """
@@ -35,6 +35,7 @@ def sortNodesAndWeights(nodes, weights):
     sortedNodes = nodes[indices]
     sortedWeights = weights[indices]
     return sortedNodes, sortedWeights
+
 
 def testTensorProductExperiment1():
     # Generate a tensorized Gauss-Legendre rule in 2 dimensions.
@@ -94,6 +95,7 @@ def testTensorProductExperiment1():
     expected_distribution = ot.BlockIndependentDistribution(collection)
     assert distribution == expected_distribution
 
+
 def testTensorProductExperiment2():
     # Generate a tensorized Gauss-Legendre rule in 3 dimensions.
     # Each marginal elementary experiment has 6 nodes.
@@ -112,6 +114,7 @@ def testTensorProductExperiment2():
     size = nodes.getSize()
     assert size == weights.getDimension()
     assert size == maximumMarginalLevel ** dimension
+
 
 def testTensorProductExperiment3():
     # Experiment 1 : Uniform * 2 with 3 and 2 nodes.
@@ -135,30 +138,30 @@ def testTensorProductExperiment3():
     assert weights.getSize() == 24
 
     nodesExact = [
-        [-0.77459, -0.57735, -1.0, -1.0, 0.0,],
-        [-0.77459, -0.57735, -1.0, 1.0, 0.0,],
-        [-0.77459, -0.57735, 1.0, -1.0, 0.0,],
-        [-0.77459, -0.57735, 1.0, 1.0, 0.0,],
-        [-0.77459, 0.57735, -1.0, -1.0, 0.0,],
-        [-0.77459, 0.57735, -1.0, 1.0, 0.0,],
-        [-0.77459, 0.57735, 1.0, -1.0, 0.0,],
-        [-0.77459, 0.57735, 1.0, 1.0, 0.0,],
-        [0.0, -0.57735, -1.0, -1.0, 0.0,],
-        [0.0, -0.57735, -1.0, 1.0, 0.0,],
-        [0.0, -0.57735, 1.0, -1.0, 0.0,],
-        [0.0, -0.57735, 1.0, 1.0, 0.0,],
-        [0.0, 0.57735, -1.0, -1.0, 0.0,],
-        [0.0, 0.57735, -1.0, 1.0, 0.0,],
-        [0.0, 0.57735, 1.0, -1.0, 0.0,],
-        [0.0, 0.57735, 1.0, 1.0, 0.0,],
-        [0.77459, -0.57735, -1.0, -1.0, 0.0,],
-        [0.77459, -0.57735, -1.0, 1.0, 0.0,],
-        [0.77459, -0.57735, 1.0, -1.0, 0.0,],
-        [0.77459, -0.57735, 1.0, 1.0, 0.0,],
-        [0.77459, 0.57735, -1.0, -1.0, 0.0,],
-        [0.77459, 0.57735, -1.0, 1.0, 0.0,],
-        [0.77459, 0.57735, 1.0, -1.0, 0.0,],
-        [0.77459, 0.57735, 1.0, 1.0, 0.0,],
+        [-0.77459, -0.57735, -1.0, -1.0, 0.0, ],
+        [-0.77459, -0.57735, -1.0, 1.0, 0.0, ],
+        [-0.77459, -0.57735, 1.0, -1.0, 0.0, ],
+        [-0.77459, -0.57735, 1.0, 1.0, 0.0, ],
+        [-0.77459, 0.57735, -1.0, -1.0, 0.0, ],
+        [-0.77459, 0.57735, -1.0, 1.0, 0.0, ],
+        [-0.77459, 0.57735, 1.0, -1.0, 0.0, ],
+        [-0.77459, 0.57735, 1.0, 1.0, 0.0, ],
+        [0.0, -0.57735, -1.0, -1.0, 0.0, ],
+        [0.0, -0.57735, -1.0, 1.0, 0.0, ],
+        [0.0, -0.57735, 1.0, -1.0, 0.0, ],
+        [0.0, -0.57735, 1.0, 1.0, 0.0, ],
+        [0.0, 0.57735, -1.0, -1.0, 0.0, ],
+        [0.0, 0.57735, -1.0, 1.0, 0.0, ],
+        [0.0, 0.57735, 1.0, -1.0, 0.0, ],
+        [0.0, 0.57735, 1.0, 1.0, 0.0, ],
+        [0.77459, -0.57735, -1.0, -1.0, 0.0, ],
+        [0.77459, -0.57735, -1.0, 1.0, 0.0, ],
+        [0.77459, -0.57735, 1.0, -1.0, 0.0, ],
+        [0.77459, -0.57735, 1.0, 1.0, 0.0, ],
+        [0.77459, 0.57735, -1.0, -1.0, 0.0, ],
+        [0.77459, 0.57735, -1.0, 1.0, 0.0, ],
+        [0.77459, 0.57735, 1.0, -1.0, 0.0, ],
+        [0.77459, 0.57735, 1.0, 1.0, 0.0, ],
     ]
     weightsExact = [
         0.0347222,
@@ -190,6 +193,7 @@ def testTensorProductExperiment3():
     atol = 1.e-5
     ott.assert_almost_equal(nodes, nodesExact, rtol, atol)
     ott.assert_almost_equal(weights, weightsExact, rtol, atol)
+
 
 # Testing
 testTensorProductExperiment1()

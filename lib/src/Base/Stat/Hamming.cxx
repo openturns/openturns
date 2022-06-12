@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,7 +68,7 @@ Scalar Hamming::operator()(const Scalar t) const
     return 0.0;
 
   // Classical hamming is hamming(t) = 25/46 - 21/46 * cos(2 * \pi * t)
-  // It allows to cancel the largest side-lob of the filter
+  // It allows one to cancel the largest side-lob of the filter
   // Here, it is normalized such that int_0^1 (alpha*hamming(t))^2 dt = 1
   // It leads to alpha = sqrt(4232/1691) = 1.581980134910090405941101
   // 25/46 = 0.5434782608695652173913043

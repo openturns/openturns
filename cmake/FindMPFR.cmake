@@ -10,7 +10,7 @@
 #  MPFR_LIBRARY, where to find the MPFR library.
 #
 #=============================================================================
-# Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+# Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.

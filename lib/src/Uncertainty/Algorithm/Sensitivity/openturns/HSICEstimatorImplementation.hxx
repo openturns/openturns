@@ -3,7 +3,7 @@
 /**
  * @brief HSICEstimatorImplementation implements the HSIC sensivity index
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +53,7 @@ public:
   HSICEstimatorImplementation();
 
   /** Constructor */
-  HSICEstimatorImplementation(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y, const HSICStat & estimatorType);
+  HSICEstimatorImplementation(const CovarianceModelCollection & covarianceModelCollection, const Sample & X, const Sample & Y, const HSICStat & estimatorType);
 
   /* Here is the interface that all derived class must implement */
 
@@ -67,10 +67,10 @@ public:
   UnsignedInteger getPermutationSize() const;
 
   /** Get the covariance models */
-  CovarianceModelCollection getCovarianceList() const;
+  CovarianceModelCollection getCovarianceModelCollection() const;
 
   /** Set the covariance models */
-  void setCovarianceList(const CovarianceModelCollection & coll);
+  void setCovarianceModelCollection(const CovarianceModelCollection & coll);
 
   /** Get the input sample */
   Sample getInputSample() const;
@@ -146,7 +146,7 @@ protected:
   Sample shuffledCopy(const Sample & inSample) const;
 
   /** Data */
-  PersistentCollection <CovarianceModel> covarianceList_ ;
+  PersistentCollection <CovarianceModel> covarianceModelCollection_ ;
   Sample inputSample_ ;
   Sample outputSample_ ;
   HSICStat estimatorType_;

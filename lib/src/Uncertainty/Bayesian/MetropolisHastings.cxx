@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all MetropolisHastings
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -119,9 +119,9 @@ HistoryStrategy MetropolisHastings::getHistory() const
 
 /* Likelihood accessor */
 void MetropolisHastings::setLikelihood(const Distribution & conditional,
-                                        const Sample & observations,
-                                        const Function & model,
-                                        const Sample & covariates)
+                                       const Sample & observations,
+                                       const Function & model,
+                                       const Sample & covariates)
 {
   copyOnWrite();
   getImplementation()->setLikelihood(conditional, observations, model, covariates);

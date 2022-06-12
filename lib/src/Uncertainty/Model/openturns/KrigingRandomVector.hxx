@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation class for kriging random vectors
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,7 +72,7 @@ public:
   void load(Advocate & adv) override;
 
 private:
-  /** The kriging result tht allows to build the random vector */
+  /** The kriging result that allows one to build the random vector */
   KrigingResult krigingResult_;
 
   /** The points on which we seek the realizations */

@@ -2,7 +2,7 @@
 /**
  *  @brief Ceres solver
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -69,9 +69,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-
-  /** Whether support is available */
-  static Bool IsAvailable();
 
 #ifndef SWIG
   /** Initialize logging library */

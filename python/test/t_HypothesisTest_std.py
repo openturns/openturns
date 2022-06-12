@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
@@ -27,7 +26,7 @@ try:
     discreteSample1 = ot.Poisson(0.1).getSample(size)
     discreteSample2 = ot.Geometric(0.4).getSample(size)
 
-    # ChiSquared Independance test : test if two samples (of sizes not necessarily equal) are independant ?
+    # ChiSquared Independance test : test if two samples (of sizes not necessarily equal) are independent ?
     # Care : discrete samples only
     # H0 = independent samples
     # p-value threshold : probability of the H0 reject zone : 0.10

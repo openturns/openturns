@@ -2,7 +2,7 @@
 /**
  *  @brief MatrixImplementation implements the classical mathematical MatrixImplementation
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,6 +20,7 @@
  */
 #include <cstdlib>
 #include <functional>
+#include <cstring> // std::memset
 
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/ComplexMatrixImplementation.hxx"
@@ -179,6 +180,29 @@ MatrixImplementation MatrixImplementation::transpose() const
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
       trans(j, i) = operator()(i, j);
   return trans;
+}
+
+void MatrixImplementation::resize(const UnsignedInteger newRowDim,
+                                  const UnsignedInteger newColDim)
+{
+  if (newRowDim < nbRows_)
+  {
+    for (UnsignedInteger j = 1; j < nbColumns_; ++ j)
+      std::copy(data() + j * nbRows_, data() + j * nbRows_ + newRowDim, const_cast<Scalar*>(data()) + j * newRowDim);
+    std::memset(const_cast<Scalar*>(data()) + nbColumns_ * newRowDim, 0, (nbRows_ - newRowDim + 1) * sizeof(Scalar));
+  }
+  resize(newRowDim * newColDim);
+  if (newRowDim > nbRows_)
+  {
+    const UnsignedInteger minCol = std::min(nbColumns_, newColDim);
+    for (SignedInteger j = (minCol - 1); (j >= 0); -- j)
+    {
+      std::copy(data() + j * nbRows_, data() + (j + 1) * nbRows_, const_cast<Scalar*>(data()) + j * newRowDim);
+      std::memset(const_cast<Scalar*>(data()) + j * newRowDim + nbRows_, 0, (newRowDim - nbRows_) * sizeof(Scalar));
+    }
+  }
+  nbRows_ = newRowDim;
+  nbColumns_ = newColDim;
 }
 
 /* MatrixImplementation reshape */

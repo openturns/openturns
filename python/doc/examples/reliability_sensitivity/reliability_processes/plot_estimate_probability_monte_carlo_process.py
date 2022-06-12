@@ -61,7 +61,6 @@ Estimate a process-based event probability
 # to be compared to the exact value :math:`p=0.17008` for a time grid of size :math:`N=10`.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

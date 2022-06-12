@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all distributions
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -159,7 +159,7 @@ Distribution DistributionImplementation::operator + (const DistributionImplement
     coll[0] = *this;
     coll[1] = other.clone();
     RandomMixture res(coll);
-    // Check if a simplification has occured
+    // Check if a simplification has occurred
     if ((res.getDistributionCollection().getSize() == 1) && (res.getWeights()(0, 0) == 1.0) && (res.getConstant()[0] == 0.0))
       return res.getDistributionCollection()[0];
     // No simplification
@@ -186,7 +186,7 @@ Distribution DistributionImplementation::operator + (const Scalar value) const
     coll[0] = *this;
     coll[1] = Dirac(Point(1, value));
     RandomMixture res(coll);
-    // Check if a simplification has occured
+    // Check if a simplification has occurred
     if ((res.getDistributionCollection().getSize() == 1) && (res.getWeights()(0, 0) == 1.0) && (res.getConstant()[0] == 0.0))
       return res.getDistributionCollection()[0];
     // No simplification
@@ -221,7 +221,7 @@ Distribution DistributionImplementation::operator - (const DistributionImplement
     coll[0] = *this;
     coll[1] = other.clone();
     RandomMixture res(coll, weights);
-    // Check if a simplification has occured
+    // Check if a simplification has occurred
     if ((res.getDistributionCollection().getSize() == 1) && (res.getWeights()(0, 0) == 1.0) && (res.getConstant()[0] == 0.0))
       return res.getDistributionCollection()[0];
     // No simplification
@@ -2268,10 +2268,10 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
-  // This test allows to check if one can trust the current range. If not, it means that we are here to compute the range and then we cannot rely on it!
+  // This test allows one to check if one can trust the current range. If not, it means that we are here to compute the range and then we cannot rely on it!
   Scalar lower = getRange().getLowerBound()[0];
   Scalar upper = getRange().getUpperBound()[0];
-  // This test allows to know if the range has already been computed. If not, it is the role of the computeScalarQuantile() to do it.
+  // This test allows one to know if the range has already been computed. If not, it is the role of the computeScalarQuantile() to do it.
   if (lower > upper)
   {
     LOGDEBUG("DistributionImplementation::computeScalarQuantile: look for a bracketing of the bounds of the range");

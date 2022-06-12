@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class IndependentCopula for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     //    checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 3;
     IndependentCopula copula(dim);
     fullprint << "Copula " << copula << std::endl;
@@ -58,7 +58,7 @@ int main(int, char *[])
     // Is this copula elliptical ?
     fullprint << "Elliptical = " << (copula.hasEllipticalCopula() ? "true" : "false") << std::endl;
 
-    // Is this copula independant ?
+    // Is this copula independent ?
     fullprint << "Independent = " << (copula.hasIndependentCopula() ? "true" : "false") << std::endl;
 
     // Test for realization of copula

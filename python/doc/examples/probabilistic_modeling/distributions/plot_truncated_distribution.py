@@ -19,7 +19,6 @@ Truncate a  distribution
 # Is is also possible to truncate a multivariate distribution.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

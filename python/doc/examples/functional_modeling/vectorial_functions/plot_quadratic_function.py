@@ -10,7 +10,6 @@ Create a quadratic function
 #
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class RandomWalkMetropolisHastings
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,7 +57,7 @@ int main(int, char *[])
     proposalColl.add(mean_proposal);
     proposalColl.add(std_proposal);
     ComposedDistribution instrumental(proposalColl);
-    
+
     // prior distribution
     Scalar mu0 = 25.0;
 

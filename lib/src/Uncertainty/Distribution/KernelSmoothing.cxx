@@ -2,7 +2,7 @@
 /**
  *  @brief This class acts like a KernelMixture factory, implementing a
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -182,7 +182,7 @@ Point KernelSmoothing::computePluginBandwidth(const Sample & sample) const
   // Approximate the derivatives by smoothing under the Normal assumption
   const Scalar sd = sample.computeStandardDeviation()[0];
   if (!(sd > 0.0))
-    throw NotDefinedException(HERE) << "Cannot compute the plugin bandwith when the variance is null";
+    throw NotDefinedException(HERE) << "Cannot compute the plugin bandwidth when the variance is null";
   const Scalar phi6Normal = -15.0 / (16.0 * std::sqrt(M_PI)) * std::pow(sd, -7.0);
   const Scalar phi8Normal = 105.0 / (32.0 * std::sqrt(M_PI)) * std::pow(sd, -9.0);
   const Scalar g1 = SpecFunc::IRoot(-6.0 / (std::sqrt(2.0 * M_PI) * phi6Normal * size), 7);
@@ -251,7 +251,7 @@ Point KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
   }
 }
 
-/* Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
+/* Build a Normal kernel mixture based on the given sample. If no bandwidth has already been set, Silverman's rule is used */
 Distribution KernelSmoothing::build(const Sample & sample) const
 {
   // For 1D sample, use the rule that give the best tradeoff between speed and precision
@@ -290,7 +290,7 @@ Distribution KernelSmoothing::build(const Sample & sample,
   const Bool degenerate = (degenerateIndices.getSize() > 0);
   if (degenerate)
   {
-    Point marginalBandwith;
+    Point marginalBandwidth;
     Point marginalConstant;
     Description description(sample.getDescription());
     Description degenerateDescription;
@@ -298,7 +298,7 @@ Distribution KernelSmoothing::build(const Sample & sample,
     for (UnsignedInteger j = 0; j < dimension; ++ j)
       if (xmax[j] > xmin[j])
       {
-        marginalBandwith.add(bandwidth[j]);
+        marginalBandwidth.add(bandwidth[j]);
         okDescription.add(description[j]);
       }
       else
@@ -309,7 +309,7 @@ Distribution KernelSmoothing::build(const Sample & sample,
     ComposedDistribution::DistributionCollection coll;
     const Indices okIndices(degenerateIndices.complement(dimension));
     const Sample marginalSample(sample.getMarginal(okIndices));
-    Distribution okDistribution(build(marginalSample, marginalBandwith));
+    Distribution okDistribution(build(marginalSample, marginalBandwidth));
     okDistribution.setDescription(okDescription);
     coll.add(okDistribution);
     Dirac degenerateDistribution(marginalConstant);
@@ -573,7 +573,7 @@ TruncatedDistribution KernelSmoothing::buildAsTruncatedDistribution(const Sample
 void KernelSmoothing::setBandwidth(const Point & bandwidth) const
 {
   // Check the given bandwidth
-  for (UnsignedInteger i = 0; i < bandwidth.getDimension(); i++) if (!(bandwidth[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the bandwidth must be > 0, here bandwith=" << bandwidth;
+  for (UnsignedInteger i = 0; i < bandwidth.getDimension(); i++) if (!(bandwidth[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the bandwidth must be > 0, here bandwidth=" << bandwidth;
   bandwidth_ = bandwidth;
 }
 

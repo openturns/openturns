@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 
@@ -20,7 +19,8 @@ print(mean, stddev)
 
 # with link function
 slf = ot.SymbolicFunction(['x'], ['0.0', '0.1'])
-sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState, [0], slf)
+sampler = ot.RandomVectorMetropolisHastings(
+    randomVector, initialState, [0], slf)
 x = sampler.getSample(10000)
 mean = x.computeMean()
 stddev = x.computeStandardDeviation()

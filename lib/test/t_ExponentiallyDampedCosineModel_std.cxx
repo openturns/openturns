@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ExponentiallyDampedCosineModel
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,8 +40,8 @@ int main(int, char *[])
       Scalar frequency = 0.1;
 
       /* Default constructor */
-      ExponentiallyDampedCosineModel myDefautModel;
-      fullprint << "myDefautModel = " << myDefautModel << std::endl;
+      ExponentiallyDampedCosineModel myDefaultModel;
+      fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
 
       /* Second order model with parameters */
       ExponentiallyDampedCosineModel myModel(scale, amplitude, frequency);
@@ -69,8 +69,8 @@ int main(int, char *[])
       Scalar frequency = 0.2;
 
       /* Default constructor */
-      ExponentiallyDampedCosineModel myDefautModel;
-      fullprint << "myDefautModel = " << myDefautModel << std::endl;
+      ExponentiallyDampedCosineModel myDefaultModel;
+      fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
 
       /* Second order model with parameters */
       ExponentiallyDampedCosineModel myModel(scale, amplitude, frequency);

@@ -558,7 +558,7 @@ Explicit keyword
 ~~~~~~~~~~~~~~~~
 
 Marking a single argument class constructors with the the *explicit* keyword
-allows to avoid unwanted conversions.
+allows one to avoid unwanted conversions.
 
 It is relevant for constructors that have a single-argument, and also for
 constructors that have a single mandatory argument plus optional arguments.
@@ -703,7 +703,7 @@ Constant declaration
 ~~~~~~~~~~~~~~~~~~~~
 The const keyword must be used as much as possible.
 Float constants must include the decimal separator and a at least a digit to
-explicitely distinguish them from integers.
+explicitly distinguish them from integers.
 
 Example:
 

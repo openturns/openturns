@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 from math import *
 
 ot.TESTPREAMBLE()
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 dim = 2
 meanPoint = [0.5, -0.5]
 sigma = [2.0, 3.0]

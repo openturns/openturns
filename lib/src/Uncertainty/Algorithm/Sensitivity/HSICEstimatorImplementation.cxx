@@ -3,7 +3,7 @@
 /**
  * @brief HSICEstimatorImplementation implements the HSIC sensivity indices.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,7 +40,7 @@ static const Factory<HSICEstimatorImplementation> Factory_HSICEstimatorImplement
 /* Default constructor */
 HSICEstimatorImplementation::HSICEstimatorImplementation()
   : PersistentObject()
-  , covarianceList_()
+  , covarianceModelCollection_()
   , inputSample_()
   , outputSample_()
   , estimatorType_()
@@ -53,18 +53,18 @@ HSICEstimatorImplementation::HSICEstimatorImplementation()
   , PValuesPermutation_()
   , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
 {
- // Nothing
+// Nothing
 }
 
 
 /* Constructor */
 HSICEstimatorImplementation::HSICEstimatorImplementation(
-  const CovarianceModelCollection & covarianceList
-, const Sample & X
-, const Sample & Y
-, const HSICStat & estimatorType)
+  const CovarianceModelCollection & covarianceModelCollection
+  , const Sample & X
+  , const Sample & Y
+  , const HSICStat & estimatorType)
   : PersistentObject()
-  , covarianceList_(covarianceList)
+  , covarianceModelCollection_(covarianceModelCollection)
   , inputSample_(X)
   , outputSample_(Y)
   , estimatorType_(estimatorType)
@@ -76,7 +76,7 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(
   , R2HSICIndices_ ()
   , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
 {
-  if(covarianceList_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
+  if(covarianceModelCollection_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
   if(outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";
   if(inputSample_.getSize() != outputSample_.getSize()) throw InvalidDimensionException(HERE) << "Input and output samples must have the same size";
 }
@@ -90,15 +90,15 @@ HSICEstimatorImplementation * HSICEstimatorImplementation::clone() const
 /* Compute the weight matrix from the weight function */
 SquareMatrix HSICEstimatorImplementation::computeWeightMatrix(const Sample&) const
 {
-    throw NotYetImplementedException(HERE) << "Use the class HSICEstimatorConditionalSensitivity in order to perform conditional sensitivity analysis";
+  throw NotYetImplementedException(HERE) << "Use the class HSICEstimatorConditionalSensitivity in order to perform conditional sensitivity analysis";
 }
 
 /* Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
 Scalar HSICEstimatorImplementation::computeHSICIndex(const Sample & inSample,
-                                                     const Sample & outSample,
-                                                     const CovarianceModel & inCovariance,
-                                                     const CovarianceModel & outCovariance,
-                                                     const SquareMatrix & weightMatrix) const
+    const Sample & outSample,
+    const CovarianceModel & inCovariance,
+    const CovarianceModel & outCovariance,
+    const SquareMatrix & weightMatrix) const
 {
   return estimatorType_.computeHSICIndex(inSample, outSample, inCovariance, outCovariance, weightMatrix);
 }
@@ -118,10 +118,10 @@ void HSICEstimatorImplementation::computeIndices() const
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
     const Sample xdim(inputSample_.getMarginal(dim));
-    HSIC_XY_[dim] = computeHSICIndex(xdim, outputSample_, covarianceList_[dim], covarianceList_[inputDimension_], W);
-    HSIC_XX_[dim] = computeHSICIndex(xdim, xdim, covarianceList_[dim], covarianceList_[dim], W);
+    HSIC_XY_[dim] = computeHSICIndex(xdim, outputSample_, covarianceModelCollection_[dim], covarianceModelCollection_[inputDimension_], W);
+    HSIC_XX_[dim] = computeHSICIndex(xdim, xdim, covarianceModelCollection_[dim], covarianceModelCollection_[dim], W);
   }
-  HSIC_YY_[0] = computeHSICIndex(outputSample_, outputSample_, covarianceList_[inputDimension_], covarianceList_[inputDimension_], W);
+  HSIC_YY_[0] = computeHSICIndex(outputSample_, outputSample_, covarianceModelCollection_[inputDimension_], covarianceModelCollection_[inputDimension_], W);
 
   /* Compute R2-HSIC */
   R2HSICIndices_ = Point(inputDimension_);
@@ -166,14 +166,14 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
   {
 
     const Sample xdim(inputSample_.getMarginal(dim));
-    const Scalar HSIC_obs = computeHSICIndex(xdim, outputSample_, covarianceList_[dim], covarianceList_[inputDimension_], Wobs);
+    const Scalar HSIC_obs = computeHSICIndex(xdim, outputSample_, covarianceModelCollection_[dim], covarianceModelCollection_[inputDimension_], Wobs);
     UnsignedInteger count = 0;
 
     for( UnsignedInteger b = 0; b < permutationSize_; ++b)
     {
       const Sample Yp(shuffleCollection[b]);
       const SquareMatrix W(weightMatrixCollection[b]);
-      const Scalar HSIC_loc = computeHSICIndex(xdim, Yp, covarianceList_[dim], covarianceList_[inputDimension_], W);
+      const Scalar HSIC_loc = computeHSICIndex(xdim, Yp, covarianceModelCollection_[dim], covarianceModelCollection_[inputDimension_], W);
       if( HSIC_loc > HSIC_obs) count += 1;
     }
 
@@ -194,7 +194,7 @@ void HSICEstimatorImplementation::computePValuesAsymptotic() const
     H(j, j) += 1.0;
   }
 
-  const CovarianceMatrix Ky(covarianceList_[inputDimension_].discretize(outputSample_));
+  const CovarianceMatrix Ky(covarianceModelCollection_[inputDimension_].discretize(outputSample_));
   const Scalar traceKy = Ky.computeTrace();
   const Scalar sumKy = Ky.computeSumElements();
 
@@ -205,7 +205,7 @@ void HSICEstimatorImplementation::computePValuesAsymptotic() const
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
     const Sample Xi(inputSample_.getMarginal(dim));
-    const CovarianceMatrix Kx(covarianceList_[dim].discretize(Xi));
+    const CovarianceMatrix Kx(covarianceModelCollection_[dim].discretize(Xi));
     const Scalar traceKx = Kx.computeTrace();
     const Scalar sumKx = Kx.computeSumElements();
     const Scalar Ex = (sumKx - traceKx) / n_ / (n_ - 1);
@@ -239,7 +239,7 @@ Point HSICEstimatorImplementation::getHSICIndices() const
   if(!(isAlreadyComputedIndices_))
   {
     computeIndices();
-    isAlreadyComputedIndices_ = true ; 
+    isAlreadyComputedIndices_ = true ;
   }
   return HSIC_XY_;
 }
@@ -263,7 +263,7 @@ Point HSICEstimatorImplementation::getPValuesPermutation() const
     computePValuesPermutation();
     isAlreadyComputedPValuesPermutation_ = true ;
   }
-  return PValuesPermutation_; 
+  return PValuesPermutation_;
 }
 
 /* Draw the HSIC indices */
@@ -313,11 +313,11 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, const String 
 
   Point lowerBound(2);
   lowerBound[0] = 0.9;
-  lowerBound[1] = minInd - 0.05*step;
+  lowerBound[1] = minInd - 0.05 * step;
 
   Point upperBound(2);
   upperBound[0] = values.getDimension() + 0.2 ;
-  upperBound[1] = maxInd + 0.05*step;
+  upperBound[1] = maxInd + 0.05 * step;
 
   graph.setBoundingBox(Interval(lowerBound, upperBound));
 
@@ -344,15 +344,15 @@ Graph HSICEstimatorImplementation::drawPValuesPermutation() const
 }
 
 /* Get the covariance list */
-HSICEstimatorImplementation::CovarianceModelCollection HSICEstimatorImplementation::getCovarianceList() const
+HSICEstimatorImplementation::CovarianceModelCollection HSICEstimatorImplementation::getCovarianceModelCollection() const
 {
-  return covarianceList_;
+  return covarianceModelCollection_;
 }
 
 /* Set the covariance list: dimension is input dimension + 1 */
-void HSICEstimatorImplementation::setCovarianceList(const CovarianceModelCollection & coll)
+void HSICEstimatorImplementation::setCovarianceModelCollection(const CovarianceModelCollection & coll)
 {
-  covarianceList_ = coll ;
+  covarianceModelCollection_ = coll ;
   resetIndices();
 }
 
@@ -430,7 +430,7 @@ Sample HSICEstimatorImplementation::shuffledCopy(const Sample & inSample) const
     const UnsignedInteger j = RandomGenerator::IntegerGenerate(i + 1);
     // swap i & j rows
     for (UnsignedInteger d = 0; d < sampleOut.getDimension(); ++d)
-        std::swap(sampleOut(j, d), sampleOut(i, d));
+      std::swap(sampleOut(j, d), sampleOut(i, d));
   }
   return sampleOut;
 }
@@ -455,7 +455,7 @@ void HSICEstimatorImplementation::run() const
 void HSICEstimatorImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "covarianceList_", covarianceList_ );
+  adv.saveAttribute( "covarianceModelCollection_", covarianceModelCollection_ );
   adv.saveAttribute( "inputSample_", inputSample_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "estimatorType_", estimatorType_ );
@@ -476,7 +476,7 @@ void HSICEstimatorImplementation::save(Advocate & adv) const
 void HSICEstimatorImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "covarianceList_", covarianceList_ );
+  adv.loadAttribute( "covarianceModelCollection_", covarianceModelCollection_ );
   adv.loadAttribute( "inputSample_", inputSample_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "estimatorType_", estimatorType_ );

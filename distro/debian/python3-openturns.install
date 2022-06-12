@@ -1,3 +1,4 @@
 usr/lib/python3*/*-packages/openturns/*.py
 usr/lib/python3*/*-packages/openturns/*.so
 usr/lib/python3*/*-packages/openturns-*.dist-info/*
+usr/lib/python3*/*-packages/openturns/usecases/*.py

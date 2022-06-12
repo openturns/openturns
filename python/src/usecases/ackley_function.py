@@ -2,7 +2,6 @@
 Use case : Ackley test function
 ===============================
 """
-from __future__ import print_function
 import openturns as ot
 import math as m
 

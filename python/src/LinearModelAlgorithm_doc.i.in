@@ -102,5 +102,5 @@ outputSample : :class:`~openturns.Sample`
 Returns
 -------
 result : :class:`~openturns.LinearModelResult`
-    The linear model built from numerical samples, along with other useful informations."
+    The linear model built from numerical samples, along with other useful information."
 

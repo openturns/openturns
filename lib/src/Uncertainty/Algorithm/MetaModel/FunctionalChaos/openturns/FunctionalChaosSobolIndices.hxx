@@ -2,7 +2,7 @@
 /**
  *  @brief Sensitivity analysis based on functional chaos expansion
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -89,7 +89,7 @@ public:
 
 private:
 
-  /** The functional chaos result tht allows to build the random vector */
+  /** The functional chaos result that allows one to build the random vector */
   FunctionalChaosResult functionalChaosResult_;
 
 }; /* class FunctionalChaosSobolIndices */

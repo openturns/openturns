@@ -13,7 +13,7 @@ Sample
 
     Sample
 
-.. _parametric_distibution_factories:
+.. _parametric_distribution_factories:
 
 Building distributions from samples
 ===================================

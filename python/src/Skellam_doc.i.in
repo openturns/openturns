@@ -15,7 +15,7 @@ lambda2 : float, :math:`\lambda_2 > 0`
 Notes
 -----
 The Skellan distribution takes its values in :math:`\Zset`.
-It is the distribution of :math:`(X_1 - X_2)` for :math:`(X_1, X_2)` independant
+It is the distribution of :math:`(X_1 - X_2)` for :math:`(X_1, X_2)` independent
 and respectively distributed according to Poisson(:math:`\lambda_i`).
 
 Its probability density function is defined as:

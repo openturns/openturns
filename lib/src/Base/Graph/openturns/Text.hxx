@@ -2,7 +2,7 @@
 /**
  *  @brief Text class to add text on graphs
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,14 +60,14 @@ public:
        const String & textPosition = "top",
        const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Text(const Sample & dataX,
        const Sample & dataY,
        const Description & texts,
        const String & textPosition = "top",
        const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Text(const Point & dataX,
        const Point & dataY,
        const Description & texts,

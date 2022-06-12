@@ -2,7 +2,7 @@
 /**
  *  @brief StorageManager provides an interface for different storage classes
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -107,7 +107,7 @@ public:
   /**
    * This method saves the PersistentObject onto the medium
    * @param obj The object to be saved
-   * @param fromStudy Tell if the object was explicitely put in the study or not
+   * @param fromStudy Tell if the object was explicitly put in the study or not
    */
   virtual void save(const PersistentObject & obj, const String & label, bool fromStudy = false);
 

@@ -23,7 +23,7 @@
   <Os-CreateProcess value_bool="false" />
   <Os-RemoveFiles    value_bool="true"  />
   <OS-DeleteTimeout    value_int="2"    />
-  
+
   <!-- OT::XMLStorageManager parameters -->
   <XMLStorageManager-DefaultCompressionLevel value_int="0" />
 
@@ -138,15 +138,115 @@
 
   <!-- OT::MultiStart parameters -->
   <MultiStart-KeepResults                      value_bool="true" />
-  
+
   <!-- OT::OptimizationAlgorithm parameters -->
   <OptimizationAlgorithm-DefaultLevelValue              value_float="0.0"           />
   <OptimizationAlgorithm-DefaultMaximumAbsoluteError    value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumConstraintError  value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumRelativeError    value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumResidualError    value_float="1.0e-5"        />
-  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value_int="100" />
+  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value_int="1000" />
   <OptimizationAlgorithm-DefaultMaximumIterationNumber  value_int="100" />
+
+  <!-- OT::Pagmo parameters -->
+  <Pagmo-UnconstrainMethod value_str="death penalty" />
+  <Pagmo-memory value_bool="false" />
+  <!-- gaco -->
+  <Pagmo-gaco-ker value_int="63" />
+  <Pagmo-gaco-q value_float="1.0" />
+  <Pagmo-gaco-oracle value_float="0.0" />
+  <Pagmo-gaco-acc value_float="0.01" />
+  <Pagmo-gaco-threshold value_int="1" />
+  <Pagmo-gaco-n_gen_mark value_int="7" />
+  <Pagmo-gaco-impstop value_int="100000" />
+  <Pagmo-gaco-focus value_float="0.0" />
+  <!-- de -->
+  <Pagmo-de-F value_float="0.8" />
+  <Pagmo-de-CR value_float="0.9" />
+  <Pagmo-de-variant value_int="2" />
+  <Pagmo-sade-variant value_int="2" />
+  <Pagmo-sade-variant_adptv value_int="1" />
+  <Pagmo-de1220-variant_adptv value_int="1" />
+  <!-- ihs -->
+  <Pagmo-ihs-phmcr value_float="0.85" />
+  <Pagmo-ihs-ppar_min value_float="0.35" />
+  <Pagmo-ihs-ppar_max value_float="0.99" />
+  <Pagmo-ihs-bw_min value_float="1e-5" />
+  <Pagmo-ihs-bw_max value_float="1.0" />
+  <!-- pso -->
+  <Pagmo-pso-omega value_float="0.7298" />
+  <Pagmo-pso-eta1 value_float="2.05" />
+  <Pagmo-pso-eta2 value_float="2.05" />
+  <Pagmo-pso-max_vel value_float="0.5" />
+  <Pagmo-pso-variant value_int="5" />
+  <Pagmo-pso-neighb_type value_int="2" />
+  <Pagmo-pso-neighb_param value_int="4" />
+  <!-- pso_gen -->
+  <Pagmo-pso_gen-omega value_float="0.7298" />
+  <Pagmo-pso_gen-eta1 value_float="2.05" />
+  <Pagmo-pso_gen-eta2 value_float="2.05" />
+  <Pagmo-pso_gen-max_vel value_float="0.5" />
+  <Pagmo-pso_gen-variant value_int="5" />
+  <Pagmo-pso_gen-neighb_type value_int="2" />
+  <Pagmo-pso_gen-neighb_param value_int="4" />
+  <!-- sga -->
+  <Pagmo-sga-cr value_float="0.9" />
+  <Pagmo-sga-eta_c value_float="1.0" />
+  <Pagmo-sga-m value_float="0.01" />
+  <Pagmo-sga-param_m value_float="1.0" />
+  <Pagmo-sga-param_s value_int="2" />
+  <Pagmo-sga-crossover value_str="exponential" />
+  <Pagmo-sga-mutation value_str="polynomial" />
+  <Pagmo-sga-selection value_str="tournament" />
+  <!-- simulated_annealing -->
+  <Pagmo-simulated_annealing-Ts value_float="10.0" />
+  <Pagmo-simulated_annealing-Tf value_float="0.1" />
+  <Pagmo-simulated_annealing-n_T_adj value_int="10" />
+  <Pagmo-simulated_annealing-n_range_adj value_int="1" />
+  <Pagmo-simulated_annealing-bin_size value_int="20" />
+  <Pagmo-simulated_annealing-start_range value_float="1.0" />
+  <!-- bee_colony -->
+  <Pagmo-bee_colony-limit value_int="20" />
+  <!-- cmaes -->
+  <Pagmo-cmaes-cc value_float="-1.0" />
+  <Pagmo-cmaes-cs value_float="-1.0" />
+  <Pagmo-cmaes-c1 value_float="-1.0" />
+  <Pagmo-cmaes-cmu value_float="-1.0" />
+  <Pagmo-cmaes-sigma0 value_float="0.5" />
+  <!-- xnes -->
+  <Pagmo-xnes-eta_mu value_float="-1.0" />
+  <Pagmo-xnes-eta_sigma value_float="-1.0" />
+  <Pagmo-xnes-eta_b value_float="-1.0" />
+  <Pagmo-xnes-sigma0 value_float="-1.0" />
+  <!-- nsga2 -->
+  <Pagmo-nsga2-cr value_float="0.95" />
+  <Pagmo-nsga2-eta_c value_float="10.0" />
+  <Pagmo-nsga2-m value_float="0.01" />
+  <Pagmo-nsga2-eta_m value_float="50.0" />
+  <!-- moead -->
+  <Pagmo-moead-weight_generation value_str="grid" />
+  <Pagmo-moead-decomposition value_str="tchebycheff" />
+  <Pagmo-moead-neighbours value_int="20" />
+  <Pagmo-moead-CR value_float="1.0" />
+  <Pagmo-moead-F value_float="0.5" />
+  <Pagmo-moead-eta_m value_float="20.0" />
+  <Pagmo-moead-realb value_float="0.9" />
+  <Pagmo-moead-limit value_int="2" />
+  <Pagmo-moead-preserve_diversity value_bool="true" />
+  <!-- mhaco -->
+  <Pagmo-mhaco-ker value_int="63" />
+  <Pagmo-mhaco-q value_float="1.0" />
+  <Pagmo-mhaco-threshold value_int="1" />
+  <Pagmo-mhaco-n_gen_mark value_int="7" />
+  <Pagmo-mhaco-focus value_float="0.0" />
+  <!-- nspso -->
+  <Pagmo-nspso-omega value_float="0.6" />
+  <Pagmo-nspso-c1 value_float="2.0" />
+  <Pagmo-nspso-c2 value_float="2.0" />
+  <Pagmo-nspso-chi value_float="1.0" />
+  <Pagmo-nspso-v_coeff value_float="0.5" />
+  <Pagmo-nspso-leader_selection_range value_int="60" />
+  <Pagmo-nspso-diversity_mechanism value_str="crowding distance" />
 
   <!-- OT::EfficientGlobalOptimization parameters -->
   <EfficientGlobalOptimization-DefaultAEITradeoff               value_float="1.0"           />
@@ -224,20 +324,20 @@
   <Compact-DefaultHalfMaximumSize value_int="1024" />
 
   <!-- OT::FaureSequence parameters -->
-  <FaureSequence-InitialSeed value_int="0" />
+  <FaureSequence-InitialSeed value_int="1" />
 
   <!-- OT::HaltonSequence parameters -->
   <HaltonSequence-Scrambling value_str="NONE" />
-  <HaltonSequence-InitialSeed value_int="0" />
+  <HaltonSequence-InitialSeed value_int="1" />
 
   <!-- OT::HaselgroveSequence parameters -->
-  <HaselgroveSequence-InitialSeed value_int="0" />
+  <HaselgroveSequence-InitialSeed value_int="1" />
 
   <!-- OT::LowDiscrepaancySequence parameters -->
   <LowDiscrepancySequence-ScramblingSeed value_int="0" />
 
   <!-- OT::ReverseHaltonSequence parameters -->
-  <ReverseHaltonSequence-InitialSeed value_int="0" />
+  <ReverseHaltonSequence-InitialSeed value_int="1" />
 
   <!-- OT::SobolSequence parameters -->
   <SobolSequence-InitialSeed value_int="1" />
@@ -570,7 +670,7 @@
   <SobolSimulationAlgorithm-DefaultIndexQuantileLevel   value_float="0.05"           />
   <SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon value_float="1.0e-2"         />
   <SobolSimulationAlgorithm-DefaultBlockSize            value_int="1000" />
-  <SobolSimulationAlgorithm-DefaultBatchSize            value_int="1000" />
+  <SobolSimulationAlgorithm-DefaultBatchSize            value_int="1" />
 
   <!-- OT::SimulationSensitivityAnalysis parameters -->
   <SimulationSensitivityAnalysis-DefaultSampleMargin value_int="400" />
@@ -594,7 +694,7 @@
   <AnalyticalResult-MeanPointIntegrationNodesNumber value_int="255" />
 
   <!-- OT::SystemFORM parameters -->
-  <SystemFORM-MaximalScaling  value_float="1.0e5"   />
+  <SystemFORM-MaximalScaling  value_float="1.0e-5"   />
   <SystemFORM-StartingScaling value_float="1.0e-13" />
 
   <!-- OT::MultiFORM parameters -->
@@ -612,8 +712,8 @@
 
   <!-- OT::MetaModelAlgorithm parameters -->
   <MetaModelAlgorithm-PValueThreshold         value_float="1.0e-3" />
-  <MetaModelAlgorithm-ModelSelectionCriterion value_string="BIC" />
-  <MetaModelAlgorithm-NonParametricModel      value_string="Histogram" />
+  <MetaModelAlgorithm-ModelSelectionCriterion value_str="BIC" />
+  <MetaModelAlgorithm-NonParametricModel      value_str="Histogram" />
 
   <!-- OT::FunctionalChaosAlgorithm parameters -->
   <FunctionalChaosAlgorithm-DefaultMaximumResidual value_float="1.0e-6"          />
@@ -641,14 +741,14 @@
   <GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound    value_float="1.0e-2"  />
   <GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor   value_float="2.0"     />
   <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound    value_float="1.0e2"   />
-  <GeneralLinearModelAlgorithm-MaximalScaling                   value_float="1.0e5"   />
+  <GeneralLinearModelAlgorithm-MaximalScaling                   value_float="1.0e-5"   />
   <GeneralLinearModelAlgorithm-MeanEpsilon                      value_float="1.0e-12" />
   <GeneralLinearModelAlgorithm-StartingScaling                  value_float="1.0e-13" />
   <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm     value_str="TNC"     />
   <GeneralLinearModelAlgorithm-LinearAlgebra                    value_str="LAPACK"  />
 
   <!-- OT::KrigingAlgorithm parameters -->
-  <KrigingAlgorithm-MaximalScaling  value_float="1.0e5"   />
+  <KrigingAlgorithm-MaximalScaling  value_float="1.0e-5"   />
   <KrigingAlgorithm-StartingScaling value_float="1.0e-13" />
   <KrigingAlgorithm-LinearAlgebra   value_str="LAPACK"  />
 
@@ -754,11 +854,11 @@
 
   <!-- OT::GaussianProcess parameters -->
   <GaussianProcess-StartingScaling       value_float="1.0e-13"       />
-  <GaussianProcess-MaximalScaling        value_float="1.0e5"         />
+  <GaussianProcess-MaximalScaling        value_float="1.0e-5"        />
   <GaussianProcess-GibbsMaximumIteration value_int="100" />
 
   <!-- OT::SpectralGaussianProcess parameters -->
-  <SpectralGaussianProcess-MaximalScaling    value_float="1.0e5"           />
+  <SpectralGaussianProcess-MaximalScaling    value_float="1.0e-5"          />
   <SpectralGaussianProcess-StartingScaling   value_float="1.0e-13"         />
   <SpectralGaussianProcess-CholeskyCacheSize value_int="16384" />
 
@@ -790,11 +890,11 @@
   <MetropolisHastings-DefaultThinning value_int="1" />
 
   <!-- OT::GaussianLinearCalibration parameters -->
-  <GaussianLinearCalibration-Method   value_string="QR" />
+  <GaussianLinearCalibration-Method   value_str="QR" />
 
   <!-- OT::LinearLeastSquaresCalibration parameters -->
   <LinearLeastSquaresCalibration-Regularization value_float="1e-12" />
-  <LinearLeastSquaresCalibration-Method         value_string="QR"   />
+  <LinearLeastSquaresCalibration-Method         value_str="QR"   />
 
   <!-- OT::NonLinearLeastSquaresCalibration parameters -->
   <NonLinearLeastSquaresCalibration-BootstrapSize  value_int="100" />
@@ -811,7 +911,7 @@
   <ARMALikelihoodFactory-DefaultRhoBeg             value_float="0.01"            />
   <ARMALikelihoodFactory-DefaultRhoEnd             value_float="1.0e-10"         />
   <ARMALikelihoodFactory-DefaultStartingPointScale value_float="1.0"             />
-  <ARMALikelihoodFactory-MaximalScaling            value_float="1.0e5"           />
+  <ARMALikelihoodFactory-MaximalScaling            value_float="1.0e-5"          />
   <ARMALikelihoodFactory-RootEpsilon               value_float="1.0e-6"          />
   <ARMALikelihoodFactory-StartingScaling           value_float="1.0e-13"         />
   <ARMALikelihoodFactory-DefaultMaximumEvaluationNumber             value_int="10000" />

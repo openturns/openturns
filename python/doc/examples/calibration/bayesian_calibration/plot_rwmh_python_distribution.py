@@ -215,7 +215,8 @@ support.setFiniteUpperBound([False] * 2)
 # %%
 # Sample from the posterior distribution
 
-sampler2 = ot.RandomWalkMetropolisHastings(logpdf, support, initialState, proposal)
+sampler2 = ot.RandomWalkMetropolisHastings(
+    logpdf, support, initialState, proposal)
 sampler2.setLikelihood(conditional, x)
 sample2 = sampler2.getSample(1000)
 print("Acceptance rate: %s" % (sampler2.getAcceptanceRate()))

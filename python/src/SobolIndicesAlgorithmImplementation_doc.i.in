@@ -342,7 +342,7 @@ OT_SobolIndicesAlgorithm_setConfidenceLevel_doc
 Returns
 -------
 bootstrapSize : int
-    Number of bootsrap sampling"
+    Number of bootstrap sampling"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getBootstrapSize
 OT_SobolIndicesAlgorithm_getBootstrapSize_doc
@@ -357,7 +357,7 @@ Default value is 0.
 Parameters
 ----------
 bootstrapSize : int
-    Number of bootsrap sampling"
+    Number of bootstrap sampling"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::setBootstrapSize
 OT_SobolIndicesAlgorithm_setBootstrapSize_doc
@@ -542,7 +542,7 @@ OT_SobolIndicesAlgorithm_getTotalOrderIndicesDistribution_doc
 %define OT_SobolIndicesAlgorithm_setDesign_doc
 "Sample accessor.
 
-Allows to estimate indices from a predefined Sobol design.
+Allows one to estimate indices from a predefined Sobol design.
 
 Parameters
 ----------

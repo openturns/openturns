@@ -9,7 +9,6 @@ Create an extreme value distribution
 # In this example we show how to define extreme values distributions.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pylab as plt

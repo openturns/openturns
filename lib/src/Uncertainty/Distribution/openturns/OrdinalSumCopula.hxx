@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements assembly distributions
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -166,7 +166,7 @@ private:
   /** Bounds of the ordinal sum */
   Point bounds_;
 
-  /** Lenghts of the blocks */
+  /** Lengths of the blocks */
   Point blockLengths_;
 
   /** Discrete distribution to select the component of the sum for sampling */

@@ -46,13 +46,13 @@ public:
   /** Default constructor */
   NAIS(const RandomVector & event,
        const Scalar rhoQuantile = 0.7);
-       
+
   /** Virtual constructor */
   NAIS * clone() const override;
 
   /** Get rhoQuantile */
   Scalar getRhoQuantile() const;
-  
+
   /** Set rhoQuantile */
   void setRhoQuantile(const Scalar & rhoQuantile);
 

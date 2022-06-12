@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class HSICEstimatorConditionalSensitivity
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,7 +57,7 @@ int main(int, char *[])
 
     /* We define the covariance models for the HSIC indices. */
     /* For the input, we consider a SquaredExponential covariance model. */
-    HSICEstimator::CovarianceModelCollection covarianceList(0);
+    HSICEstimator::CovarianceModelCollection covarianceModelCollection(0);
 
     /* Input sample */
     for (UnsignedInteger i = 0; i < 3; ++i)
@@ -66,14 +66,14 @@ int main(int, char *[])
       CovarianceModel Cov;
       Cov = SquaredExponential(1);
       Cov.setScale(Xi.computeStandardDeviation());
-      covarianceList.add(Cov);
+      covarianceModelCollection.add(Cov);
     }
 
     /* Output sample with squared exponential covariance */
     CovarianceModel Cov2;
     Cov2 = SquaredExponential(1);
     Cov2.setScale(Y.computeStandardDeviation());
-    covarianceList.add(Cov2);
+    covarianceModelCollection.add(Cov2);
 
     /* We choose an estimator type :
        - unbiased: HSICUStat (not available here!!);
@@ -110,7 +110,7 @@ int main(int, char *[])
     Function weight = ComposedFunction(g2, g );
 
     /* We eventually build the HSIC object! */
-    HSICEstimatorConditionalSensitivity CSA(covarianceList, X, Y, estimatorType, weight);
+    HSICEstimatorConditionalSensitivity CSA(covarianceModelCollection, X, Y, estimatorType, weight);
 
     /* We get the R2-HSIC */
     Point referenceR2HSIC = {0.0371735, 0.0052413, 0.235519};

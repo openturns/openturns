@@ -7,7 +7,7 @@ covModel : :class:`~openturns.CovarianceModel`
     The covariance model.
 s : float, :math:`\geq0`
     The minimal relative amplitude of the eigenvalues to consider in
-    the decomposition wrt the sum of the preceeding eigenvalues. The default value is 0.
+    the decomposition wrt the sum of the preceding eigenvalues. The default value is 0.
 
 Notes
 -----

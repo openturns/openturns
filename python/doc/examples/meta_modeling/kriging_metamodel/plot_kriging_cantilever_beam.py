@@ -154,7 +154,7 @@ view = viewer.View(graph)
 # We observe that the negative residuals occur with nearly the same frequency of the positive residuals: this is a first sign of good quality.
 
 # %%
-# The `drawValidation` method allows to compare the observed outputs and the metamodel outputs.
+# The `drawValidation` method allows one to compare the observed outputs and the metamodel outputs.
 
 # %%
 # sphinx_gallery_thumbnail_number = 3

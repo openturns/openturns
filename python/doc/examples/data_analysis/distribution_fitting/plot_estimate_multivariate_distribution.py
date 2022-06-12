@@ -13,7 +13,6 @@ Estimate a multivariate distribution
 #
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import math as m
 ot.Log.Show(ot.Log.NONE)

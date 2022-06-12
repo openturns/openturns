@@ -2,7 +2,7 @@
 /**
  *  @brief Metropolis-Hastings algorithm
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -71,7 +71,7 @@ protected:
 
 private:
   mutable RandomVector randomVector_;
-  
+
   // link between the state and the parameters of the source random vector
   Function randomVectorLinkFunction_;
 

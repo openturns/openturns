@@ -11,16 +11,14 @@ variance.
 Then the new point is evaluated using the original model and the metamodel is
 relearnt on the extended design of experiment.
 
-Available constructors:
-    EfficientGlobalOptimization(*problem, krigingResult*)
-
 Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
     The optimization problem to solve
-    optionally, a 2nd objective marginal can be used as noise
 krigingResult : :class:`~openturns.KrigingResult`
     The result of the meta-model on the first design of experiment
+noise : :class:`~openturns.Function`
+    Noise model used on design experiment points, and also for improvement optimization
 
 Notes
 -----
@@ -45,7 +43,7 @@ This criterion is explicited using the kriging mean and variance:
 
     \mathbb{E}\left[I(x_{new})\right] = (f_{min} - m_K(x_{new})) \Phi\left( \frac{f_{min} - m_K(x_{new})}{s_K(x_{new})} \right) + s_K(x_{new}) \phi\left( \frac{f_{min} - m_K(x_{new})}{s_K(x_{new})} \right)
 
-An observation noise variance can be provided thanks to a 2nd objective marginal.
+An optional observation noise variance can be provided:
 
 .. math:: Y_{obs} = Y(x) + \sigma_{\epsilon}(x) \epsilon
 
@@ -296,15 +294,40 @@ ei : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::EfficientGlobalOptimization::setMetamodelNoise
+"Metamodel noise model accessor.
+
+Parameters
+----------
+noiseModel : :class:`~openturns.Function`
+    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
+    design update only.
+    Of same input dimension as the objective and 1-d output."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EfficientGlobalOptimization::getMetamodelNoise
+"Metamodel noise model accessor.
+
+Returns
+-------
+noiseModel : :class:`~openturns.Function`
+    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
+    design update only.
+    Of same input dimension as the objective and 1-d output."
+
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::EfficientGlobalOptimization::setNoiseModel
 "Improvement noise model accessor.
 
 Parameters
 ----------
-noiseVariance : :class:`~openturns.Function`
-    The noise variance :math:`\sigma^2_{\epsilon}(x)` used for the AEI
+noiseModel : :class:`~openturns.Function`
+    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
     criterion optimization only.
-    Of same input dimension than the objective and 1-d output."
+    Of same input dimension as the objective and 1-d output."
 
 // ---------------------------------------------------------------------
 
@@ -313,10 +336,10 @@ noiseVariance : :class:`~openturns.Function`
 
 Returns
 -------
-noiseVariance : :class:`~openturns.Function`
-    The noise variance :math:`\sigma^2_{\epsilon}(x)` used for the AEI
+noiseModel : :class:`~openturns.Function`
+    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
     criterion optimization only.
-    Of same input dimension than the objective and 1-d output."
+    Of same input dimension as the objective and 1-d output."
 
 // ---------------------------------------------------------------------
 

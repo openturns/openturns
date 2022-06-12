@@ -2,7 +2,7 @@
 /**
  *  @brief Dlib solvers
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,6 @@ public:
   Dlib * clone() const override;
 
   /** Dlib static methods */
-  static Bool IsAvailable();  // Check whether Dlib support is available
   static Description GetAlgorithmNames(); // List available dlib search strategies
 
   /** ACCESSORS */

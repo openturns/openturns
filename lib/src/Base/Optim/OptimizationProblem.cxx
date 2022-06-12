@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationProblem implements an algorithm for finding the
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -157,6 +157,7 @@ Scalar OptimizationProblem::getLevelValue() const
 
 void OptimizationProblem::setLevelValue(Scalar levelValue)
 {
+  copyOnWrite();
   getImplementation()->setLevelValue(levelValue);
 }
 
@@ -184,20 +185,21 @@ UnsignedInteger OptimizationProblem::getDimension() const
 }
 
 /* Minimization accessor */
-void OptimizationProblem::setMinimization(Bool minimization)
+void OptimizationProblem::setMinimization(Bool minimization, UnsignedInteger marginalIndex)
 {
   copyOnWrite();
-  getImplementation()->setMinimization(minimization);
+  getImplementation()->setMinimization(minimization, marginalIndex);
 }
 
-Bool OptimizationProblem::isMinimization() const
+Bool OptimizationProblem::isMinimization(UnsignedInteger marginalIndex) const
 {
-  return getImplementation()->isMinimization();
+  return getImplementation()->isMinimization(marginalIndex);
 }
 
 /* Variables type table */
 void OptimizationProblem::setVariablesType(const Indices & variablesType)
 {
+  copyOnWrite();
   getImplementation()->setVariablesType(variablesType);
 }
 

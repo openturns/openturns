@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = NonCentralStudent(7.2, 4.8, -3.7)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

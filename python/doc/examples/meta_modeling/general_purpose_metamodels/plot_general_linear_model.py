@@ -6,7 +6,6 @@ Create a general linear model metamodel
 # In this example we are going to create a global approximation of a model response using a general linear model. We show how to use the `GeneralLinearModelAlgorithm` class, which estimates the parameters of the model.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -75,4 +74,4 @@ plt.show()
 # %%
 # We see that the metamodel is equal to the trend because it takes into account the fact that the mean of the gaussian process is zero.
 #
-# This `GeneralLinearModelAlgorithm` class is the main building block of the `KrigingAlgorithm`. This is why most basic use cases are based on the `KrigingAlgorithm` instead of the `GeneralLinearModelAlgorithm`, because this allows to condition the gaussian process.
+# This `GeneralLinearModelAlgorithm` class is the main building block of the `KrigingAlgorithm`. This is why most basic use cases are based on the `KrigingAlgorithm` instead of the `GeneralLinearModelAlgorithm`, because this allows one to condition the gaussian process.

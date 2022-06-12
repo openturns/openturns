@@ -2,7 +2,7 @@
 /**
  *  @brief MetropolisHastingsImplementation base class
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,11 +30,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class MetropolisHastingsImplementation
- *
  * @brief MetropolisHastingsImplementation base class
- *
- * This class is abstract so it can not be instanciated. It must be derived.
  */
 class OT_API MetropolisHastingsImplementation
   : public RandomVectorImplementation
@@ -91,9 +87,9 @@ public:
 
   /** Likelihood accessor */
   virtual void setLikelihood(const Distribution & conditional,
-                            const Sample & observations,
-                            const Function & linkFunction = Function(),
-                            const Sample & covariates = Sample(0, 0));
+                             const Sample & observations,
+                             const Function & linkFunction = Function(),
+                             const Sample & covariates = Sample(0, 0));
 
   /** Conditional accessor */
   Distribution getConditional() const;

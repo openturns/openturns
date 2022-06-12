@@ -42,20 +42,20 @@ Y = im.model(X)
 #
 # They are all stored in a list of :math:`d+1` covariance kernels where :math:`d` is the number of
 # input variables. The remaining one is for the output variable.
-covarianceList = []
+covarianceModelCollection = []
 
 # %%
 for i in range(3):
     Xi = X.getMarginal(i)
     inputCovariance = ot.SquaredExponential(1)
     inputCovariance.setScale(Xi.computeStandardDeviation())
-    covarianceList.append(inputCovariance)
+    covarianceModelCollection.append(inputCovariance)
 
 # %%
 # Likewise we define a covariance kernel associated to the output variable.
 outputCovariance = ot.SquaredExponential(1)
 outputCovariance.setScale(Y.computeStandardDeviation())
-covarianceList.append(outputCovariance)
+covarianceModelCollection.append(outputCovariance)
 
 # %%
 # The Global HSIC estimator
@@ -82,7 +82,8 @@ estimatorType = ot.HSICUStat()
 
 # %%
 # We now build the HSIC estimator:
-globHSIC = ot.HSICEstimatorGlobalSensitivity(covarianceList, X, Y, estimatorType)
+globHSIC = ot.HSICEstimatorGlobalSensitivity(
+    covarianceModelCollection, X, Y, estimatorType)
 
 # %%
 # We get the R2-HSIC indices:
@@ -134,7 +135,7 @@ view4 = otv.View(graph4)
 #
 # We define a filter function on the output variable for the target
 # analysis. In this example we use the function :math:`\exp{(-d/s)}` where :math:`d` is the distance
-# to a well-choosen interval.
+# to a well-chosen interval.
 
 # %%
 # We first define a critical domain: in our case that is the :math:`[5,+\infty[` interval.
@@ -164,7 +165,7 @@ estimatorType = ot.HSICUStat()
 # %%
 # and build the HSIC estimator
 targetHSIC = ot.HSICEstimatorTargetSensitivity(
-    covarianceList, X, Y, estimatorType, filterFunction
+    covarianceModelCollection, X, Y, estimatorType, filterFunction
 )
 
 # %%
@@ -220,7 +221,7 @@ estimatorType = ot.HSICVStat()
 # %%
 # We build the conditional HSIC estimator
 condHSIC = ot.HSICEstimatorConditionalSensitivity(
-    covarianceList, X, Y, estimatorType, weightFunction
+    covarianceModelCollection, X, Y, estimatorType, weightFunction
 )
 
 # %%

@@ -6,7 +6,6 @@ Use the Kolmogorov/Lilliefors test
 # In this example we are going to perform a Kolmogorov or a Lilliefors goodness-of-fit test for a 1-d continuous distribution.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 

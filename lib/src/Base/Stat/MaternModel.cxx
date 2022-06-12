@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -177,7 +177,7 @@ void MaternModel::setScale(const Point & scale)
 void MaternModel::setFullParameter(const Point & parameter)
 {
   /*
-    Care! To make the method not bogus, the size of paramter argument
+    Care! To make the method not bogus, the size of parameter argument
     should be :
      - Size of scale : inputDimension_
      - Size of amplitude : here 1

@@ -4,7 +4,6 @@ Consider a model exactly linear with respect to the parameters.
 In this case, the LLSQ calibration performs as good as it can.
 '''
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 

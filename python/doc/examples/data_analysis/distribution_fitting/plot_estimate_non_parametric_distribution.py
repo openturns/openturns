@@ -11,7 +11,6 @@ Fit a non parametric distribution
 #
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -144,7 +143,7 @@ view = viewer.View(graph)
 
 # %%
 # We observe that all the kernels produce very similar results in practice. The Uniform kernel may be seen as the worst of them all while the Epanechnikov one is said to be a good theoritical choice. In practice the standard normal kernel is a fine choice.
-# The most important aspect of kernel smoothing is the choice of the bandwith.
+# The most important aspect of kernel smoothing is the choice of the bandwidth.
 
 
 # %%

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Description for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -85,7 +85,7 @@ int main(int, char *[])
   /* Stream operator */
   fullprint << "desc1 = " << ref_desc1 << std::endl;
 
-  /* sort method and copy on write mecanism */
+  /* sort method and copy on write mechanism */
   Description desc5(3);
   desc5[0] = "c";
   desc5[1] = "b";

@@ -2,7 +2,7 @@
 /**
  *  @brief This file supplies support for multithreading
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,11 +23,6 @@
 #include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-Bool TBB::IsAvailable()
-{
-  return TBBImplementation::IsAvailable();
-}
 
 void TBB::SetThreadsNumber(const UnsignedInteger threadNumber)
 {

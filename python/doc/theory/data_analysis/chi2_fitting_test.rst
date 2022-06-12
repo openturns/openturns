@@ -8,7 +8,7 @@ random vector :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It
 seeks to verify the compatibility between a sample of data
 :math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}` and a
 candidate probability distribution previous chosen. The use of the
-:math:`\chi^2` Goodness-of-Fit test allows to answer this
+:math:`\chi^2` Goodness-of-Fit test allows one to answer this
 question in the one dimensional case :math:`n_X =1`, and with a discrete
 distribution.
 

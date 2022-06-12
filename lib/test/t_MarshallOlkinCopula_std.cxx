@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class MarshallOlkin for standard methods
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     MarshallOlkinCopula copula(0.5, 0.5);
     fullprint << "Copula " << copula << std::endl;
     std::cout << "Copula " << copula << std::endl;

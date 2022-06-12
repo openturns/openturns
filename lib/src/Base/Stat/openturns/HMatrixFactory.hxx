@@ -3,7 +3,7 @@
  *  @file  HMatrixFactory.hxx
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,9 +52,6 @@ public:
 
   /** Method to create an HMatrix object */
   HMatrix build(const Sample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters = HMatrixParameters());
-
-  /** Tell whether HMat support is available */
-  static Bool IsAvailable();
 
   /** String converter */
   String __repr__() const override;

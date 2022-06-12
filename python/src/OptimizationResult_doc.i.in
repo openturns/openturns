@@ -272,3 +272,68 @@ Returns
 -------
 graph : :class:`~openturns.Graph`
     Optimal value history graph"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setFinalPoints
+"Accessor to the final points.
+
+Parameters
+----------
+finalPoints : :class:`~openturns.Sample`
+    Final population"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getFinalPoints
+"Accessor to the final points.
+
+Returns
+-------
+finalPoints : :class:`~openturns.Sample`
+    Final population.
+    For non-evolutionary algorithms this will return the optimal point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setFinalValues
+"Accessor to the final values.
+
+Parameters
+----------
+finalValues : :class:`~openturns.Sample`
+    Values at the final points"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getFinalValues
+"Accessor to the final values.
+
+Returns
+-------
+finalValues : :class:`~openturns.Sample`
+    Values at the final points.
+    For non-evolutionary algorithms this will return the optimal value."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getParetoFrontsIndices
+"Accessor to the Pareto fronts indices in the final population.
+
+In the multi-objective case, it consists of stratas of points in the final population.
+The first front contains the best candidates according to the objectives.
+
+Returns
+-------
+indices : list of :class:`~openturns.Indices`
+    Pareto fronts indices"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setParetoFrontsIndices
+"Accessor to the Pareto fronts indices in the final population.
+
+Parameters
+----------
+indices : 2-d sequence of int
+    Pareto fronts indices"

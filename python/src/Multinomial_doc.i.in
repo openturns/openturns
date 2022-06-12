@@ -26,7 +26,7 @@ where :math:`s=\sum_{i = 1}^d x_i`.
 
 If :math:`q=1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i = N`. In this case, we recover the classical definition of the multinomial distribution.
 
-If :math:`q<1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i \leq N`. It allows to recover the binomial distribution as a special case of multinomial distribution when :math:`d=1`. 
+If :math:`q<1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i \leq N`. It allows one to recover the binomial distribution as a special case of multinomial distribution when :math:`d=1`.
 
 Its first moments are:
 

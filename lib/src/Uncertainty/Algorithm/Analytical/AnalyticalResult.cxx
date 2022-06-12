@@ -2,7 +2,7 @@
 /**
  *  @brief Result computes the results of an analytical Algorithm
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -341,7 +341,7 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
   Point isoProbabilisticGradient;
   if (setIso.getDimension() > 0) isoProbabilisticGradient = inverseIsoProbabilisticTransformation.parameterGradient(standardSpaceDesignPoint_) * (physicalGradientMatrix * Point(1, 1.0));
   /* associate to each element of Set1 the gradient value */
-  /* hasoferReliabilityIndexSensitivity is the collection Set1 + one other collection wich is Set2 */
+  /* hasoferReliabilityIndexSensitivity is the collection Set1 + one other collection which is Set2 */
   const UnsignedInteger set1Size = set1.getSize();
   const UnsignedInteger size = set1Size + (isSet2Empty ? 0 : 1);
   hasoferReliabilityIndexSensitivity_ = Sensitivity(size);

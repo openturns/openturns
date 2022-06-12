@@ -2,7 +2,7 @@
 /**
  *  @brief Ceres solver
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -540,16 +540,6 @@ void Ceres::load(Advocate & adv)
 {
   OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algoName_", algoName_);
-}
-
-Bool Ceres::IsAvailable()
-{
-  LOGWARN(OSS() << "Ceres.IsAvailable is deprecated, use PlatformInfo.HasFeature(ceres)");
-#ifdef OPENTURNS_HAVE_CERES
-  return true;
-#else
-  return false;
-#endif
 }
 
 void Ceres::Initialize()

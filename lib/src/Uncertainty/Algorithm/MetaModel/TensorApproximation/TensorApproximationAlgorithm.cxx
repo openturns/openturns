@@ -2,7 +2,7 @@
 /**
  *  @brief Tensor approximation algorithm
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -143,7 +143,7 @@ void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalInd
     Scalar & marginalResidual,
     Scalar & marginalRelativeError)
 {
-  // proxies are reused accross marginals because the basis is the same
+  // proxies are reused across marginals because the basis is the same
   const UnsignedInteger dimension = transformedInputSample_.getDimension();
   if (proxy_.getSize() == 0)
   {

@@ -2,7 +2,6 @@
 Use case : viscous free fall
 ============================
 """
-from __future__ import print_function
 import openturns as ot
 import numpy as np
 

@@ -27,7 +27,7 @@ import openturns.viewer as viewer
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We define a linear model with 5 independent Gaussian inputs and 2 ouputs.
+# We define a linear model with 5 independent Gaussian inputs and 2 outputs.
 
 inputDistribution = ot.Normal(5)
 function = ot.SymbolicFunction(['x0', 'x1', 'x2', 'x3', 'x4'],

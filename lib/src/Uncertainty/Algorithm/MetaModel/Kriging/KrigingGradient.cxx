@@ -2,7 +2,7 @@
 /**
  *  @brief The class building gaussian process regression
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -137,7 +137,7 @@ Matrix KrigingGradient::gradient(const Point & inP) const
     const Point betaBasis(beta_[i]);
     const UnsignedInteger localBasisSize = localBasis.getSize();
     // For the i-th Basis (marginal), take into account the trend
-    // We write explicitely the linear combination instead of using a LinearCombinationGradient
+    // We write explicitly the linear combination instead of using a LinearCombinationGradient
     for (UnsignedInteger j = 0; j < localBasisSize; ++j)
     {
       const Matrix gradient_bj(localBasis[j].gradient(inP) * betaBasis[j]);

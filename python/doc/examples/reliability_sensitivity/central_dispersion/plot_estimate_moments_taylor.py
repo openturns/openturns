@@ -9,7 +9,6 @@ In this example we are going to estimate mean and standard deviation of an outpu
 # ----------------
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 import numpy as np

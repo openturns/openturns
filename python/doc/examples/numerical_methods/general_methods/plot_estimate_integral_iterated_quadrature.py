@@ -11,7 +11,6 @@ Estimate an integral
 # with the iterated quadrature algorithm.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

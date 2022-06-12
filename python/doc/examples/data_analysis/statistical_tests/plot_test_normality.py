@@ -11,7 +11,6 @@ Test Normality
 # In this paragraph we perform a visual goodness-of-fit test for a univariate normal distribution using the Henry line test, which is the QQ plot adapted for Gaussian distributions.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

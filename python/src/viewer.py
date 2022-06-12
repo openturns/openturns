@@ -719,7 +719,7 @@ def PlotDesign(design, bounds=None, subdivisions=None,
 
     In addition, the function plots a grid, i.e. horizontal and vertical lines
     to see the dispersion of the points.
-    This allows to see how the sample fills the space.
+    This allows one to see how the sample fills the space.
 
     Parameters
     ----------

@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Optim
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,6 +41,7 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationResult.hxx"
+#include "openturns/Pagmo.hxx"
 #include "openturns/SQP.hxx"
 #include "openturns/TNC.hxx"
 

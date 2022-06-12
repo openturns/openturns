@@ -227,6 +227,11 @@ OT_OptimizationProblem_hasMultipleObjective_doc
 %define OT_OptimizationProblem_isMinimization_doc
 "Test whether this is a minimization or maximization problem.
 
+Parameters
+----------
+marginal_index : int, default=0
+    Index of the output marginal (for multi-objective only)
+
 Returns
 -------
 value : bool
@@ -318,8 +323,9 @@ OT_OptimizationProblem_setLevelValue_doc
 Parameters
 ----------
 minimization : bool
-    *True* if this is a minimization problem, *False* otherwise."
-
+    *True* if this is a minimization problem, *False* otherwise.
+marginal_index : int, default=0
+    Index of the output marginal (for multi-objective only)"
 %enddef
 
 %feature("docstring") OT::OptimizationProblemImplementation::setMinimization

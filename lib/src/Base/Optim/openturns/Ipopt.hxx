@@ -2,7 +2,7 @@
 /**
  *  @brief Ipopt optimization solver.
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class Ipopt
- * Ipopt allows to solve a MINLP optimization problem, including:
+ * Ipopt allows one to solve a MINLP optimization problem, including:
  * + objective functions of continuous, discrete or binary variables
  * + multiple equality, inequality and bounds constraints
  */
@@ -47,9 +47,6 @@ public:
 
   /** Virtual constructor */
   Ipopt * clone() const override;
-
-  /** Ipopt static methods */
-  static Bool IsAvailable();  // Check whether Ipopt support is available
 
   /** Performing the actual computation. */
   void run() override;

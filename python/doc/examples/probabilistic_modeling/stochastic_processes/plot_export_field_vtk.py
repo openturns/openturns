@@ -11,7 +11,6 @@ Export a field to VTK
 # It can be built from a mesh and values or as a realization of a stochastic process.
 
 # %%
-from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

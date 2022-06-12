@@ -52,7 +52,7 @@ OT_OptimizationAlgorithm_setStopCallback_doc
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::OptimizationAlgorithm::Build
-"Instanciate an optimization algorithm from name or problem.
+"Instantiate an optimization algorithm from name or problem.
 
 Parameters
 ----------

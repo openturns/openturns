@@ -26,7 +26,7 @@ FunctionalChaosAlgorithm, KrigingAlgorithm
 
 Notes
 -----
-TensorApproximationAlgorithm allows to perform a low-rank approximation in the canonical
+TensorApproximationAlgorithm allows one to perform a low-rank approximation in the canonical
 tensor format (refer to [rai2015]_ for other tensor formats and more details).
 
 The canonical tensor approximation of rank :math:`1` reads:

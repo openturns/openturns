@@ -2,7 +2,7 @@
 /**
  *  @brief Dlib solvers
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -346,16 +346,6 @@ private:
 CLASSNAMEINIT(Dlib)
 
 static const Factory<Dlib> Factory_Dlib;
-
-Bool Dlib::IsAvailable()
-{
-  LOGWARN(OSS() << "Dlib.IsAvailable is deprecated, use PlatformInfo.HasFeature(dlib)");
-#ifdef OPENTURNS_HAVE_DLIB
-  return true;
-#else
-  return false;
-#endif
-}
 
 Description Dlib::GetAlgorithmNames()
 {

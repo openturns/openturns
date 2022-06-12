@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 import math as m
@@ -31,19 +30,19 @@ Y = modelIshigami(X)
 
 # We define the covariance models for the HSIC indices.
 # For the input, we consider a SquaredExponential covariance model.
-covarianceList = ot.CovarianceModelCollection()
+covarianceModelCollection = ot.CovarianceModelCollection()
 
 # Input sample
 for i in range(3):
     Xi = X.getMarginal(i)
     Cov = ot.SquaredExponential(1)
     Cov.setScale(Xi.computeStandardDeviation())
-    covarianceList.add(Cov)
+    covarianceModelCollection.add(Cov)
 
 # Output sample with squared exponential covariance
 Cov2 = ot.SquaredExponential(1)
 Cov2.setScale(Y.computeStandardDeviation())
-covarianceList.add(Cov2)
+covarianceModelCollection.add(Cov2)
 
 # We choose an estimator type :
 #  - unbiased: HSICUStat (not available here!!);
@@ -65,7 +64,7 @@ weight = ot.ComposedFunction(g2, g)
 
 # We eventually build the HSIC object
 CSA = ot.HSICEstimatorConditionalSensitivity(
-    covarianceList, X, Y, estimatorType, weight)
+    covarianceModelCollection, X, Y, estimatorType, weight)
 
 # We get the R2-HSIC
 R2HSIC = CSA.getR2HSICIndices()
@@ -88,6 +87,9 @@ ott.assert_almost_equal(pvaluesPerm, [0.74257426, 0.94059406, 0.00000000])
 squaredExponential = ot.SymbolicFunction("x", "exp(-x^2)")
 alternateWeight = ot.ComposedFunction(squaredExponential, g)
 CSA.setWeightFunction(alternateWeight)
-ott.assert_almost_equal(CSA.getR2HSICIndices(), [0.0910527, 0.00738055, 0.166624])
-ott.assert_almost_equal(CSA.getHSICIndices(), [0.00218376, 0.000419288, 0.00898721])
-ott.assert_almost_equal(CSA.getPValuesPermutation(), [0.287129, 0.881188, 0.00000000])
+ott.assert_almost_equal(CSA.getR2HSICIndices(), [
+                        0.0910527, 0.00738055, 0.166624])
+ott.assert_almost_equal(CSA.getHSICIndices(), [
+                        0.00218376, 0.000419288, 0.00898721])
+ott.assert_almost_equal(CSA.getPValuesPermutation(), [
+                        0.287129, 0.881188, 0.00000000])

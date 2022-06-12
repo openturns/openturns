@@ -2,7 +2,7 @@
 /**
  *  @brief The Student distribution
  *
- *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -170,7 +170,7 @@ Point Student::getRealization() const
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return Point(1, mean_[0] + sigma_[0] * DistFunc::rStudent(nu_));
   Point value(dimension);
-  // First, a realization of independant standard normal coordinates
+  // First, a realization of independent standard normal coordinates
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = DistFunc::rNormal();
   return std::sqrt(0.5 * nu_ / DistFunc::rGamma(0.5 * nu_)) * (cholesky_ * value) + mean_;
 }

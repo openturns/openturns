@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     first = -1.5
     l = [1.0, 0.7, 1.2, 0.9]
     h = [0.5, 1.5, 3.5, 2.5]
