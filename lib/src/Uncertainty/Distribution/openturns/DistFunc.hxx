@@ -245,8 +245,6 @@ OT_API Scalar logpNormal(const Scalar x,
                          const Bool tail = false);
 OT_API Scalar qNormal(const Scalar p,
                       const Bool tail = false);
-OT_API Scalar qNormal(const Scalar p,
-                      const Bool tail = false);
 OT_API Point qNormal(const Point & p,
                      const Bool tail = false);
 OT_API Scalar rNormal();
