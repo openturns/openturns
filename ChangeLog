@@ -14,6 +14,7 @@
  * Removed deprecated Nlopt|Ceres|Bonmin|CMinpack|Ipopt|TBB|HMatrixFactory::IsAvailable methods
  * Deprecated SequentialStrategy
  * Deprecated TensorApproximationAlgorithm, TensorApproximationResult, CanonicalTensorEvaluation, CanonicalTensorGradient
+ * Deprecated FunctionalChaosSobolIndices.getSobolGrouped(Total)Index(int)
 
 === Documentation ===
 
