@@ -89,6 +89,8 @@ int main(int, char *[])
     Point spearman(corr_analysis.computeSpearmanCorrelation());
     assert_almost_equal(spearman, Point({0.941684,0.289898}), 1e-5, 0.0);
 
+    Point kendalltau(corr_analysis.computeKendallTau());
+    assert_almost_equal(kendalltau, Point({0.7935375375375376,0.1965765765765766}), 1e-16, 0.0);
   }
   catch (TestFailed & ex)
   {

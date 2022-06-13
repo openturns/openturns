@@ -51,3 +51,6 @@ ott.assert_almost_equal(pearson, [0.945835,0.314431], 1e-5, 0.0)
 
 spearman = corr_analysis.computeSpearmanCorrelation()
 ott.assert_almost_equal(spearman, [0.941684,0.289898], 1e-5, 0.0)
+
+kendalltau = corr_analysis.computeKendallTau()
+ott.assert_almost_equal(kendalltau, [0.7935375375375376, 0.1965765765765766], 1e-16, 0.0)
