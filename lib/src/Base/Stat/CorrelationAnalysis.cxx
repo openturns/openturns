@@ -40,14 +40,14 @@ CorrelationAnalysis::CorrelationAnalysis()
 }
 
 /* Standard constructor */
-CorrelationAnalysis::CorrelationAnalysis(const Sample & inputSample,
-                                         const Sample & outputSample)
+CorrelationAnalysis::CorrelationAnalysis(const Sample & sampleX,
+                                         const Sample & sampleY)
   : PersistentObject()
-  , inputSample_(inputSample)
-  , outputSample_(outputSample)
+  , sampleX_(sampleX)
+  , sampleY_(sampleY)
 {
-  if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  if (sampleY.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  if (sampleX.getSize() != sampleY.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
 }
 
 /* Virtual constructor */
@@ -62,27 +62,27 @@ String CorrelationAnalysis::__repr__() const
   OSS oss;
   oss << "class=" << GetClassName()
       << " name=" << getName ()
-      << " inputSample=" << inputSample_
-      << " outputSample=" << outputSample_;
+      << " sampleX=" << sampleX_
+      << " sampleY=" << sampleY_;
   return oss;
 }
 
 /* Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D output sample */
 Point CorrelationAnalysis::computePearsonCorrelation() const
 {
-  return computePearsonCorrelation(inputSample_, outputSample_);
+  return computePearsonCorrelation(sampleX_, sampleY_);
 }
 
 // Compute the Pearson correlation coefficient with arguments
-Point CorrelationAnalysis::computePearsonCorrelation(const Sample & inputSample,
-                                                     const Sample & outputSample) const
+Point CorrelationAnalysis::computePearsonCorrelation(const Sample & sampleX,
+                                                     const Sample & sampleY) const
 {
-  const UnsignedInteger dimension = inputSample.getDimension();
+  const UnsignedInteger dimension = sampleX.getDimension();
   Point result(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    Sample pairedSample(inputSample.getMarginal(j));
-    pairedSample.stack(outputSample);
+    Sample pairedSample(sampleX.getMarginal(j));
+    pairedSample.stack(sampleY);
     result[j] = pairedSample.computePearsonCorrelation()(1, 0);
   }
   return result;
@@ -91,18 +91,18 @@ Point CorrelationAnalysis::computePearsonCorrelation(const Sample & inputSample,
 /* Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D output sample */
 Point CorrelationAnalysis::computeSpearmanCorrelation() const
 {
-  return computePearsonCorrelation(inputSample_.rank(), outputSample_.rank());
+  return computePearsonCorrelation(sampleX_.rank(), sampleY_.rank());
 }
 
 /* Compute the Kendall Tau coefficient between the component number index of the input sample and the 1D output sample */
 Point CorrelationAnalysis::computeKendallTau() const
 {
-  const UnsignedInteger dimension = inputSample_.getDimension();
+  const UnsignedInteger dimension = sampleX_.getDimension();
   Point result(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    Sample pairedSample(inputSample_.getMarginal(j));
-    pairedSample.stack(outputSample_);
+    Sample pairedSample(sampleX_.getMarginal(j));
+    pairedSample.stack(sampleY_);
     result[j] = pairedSample.computeKendallTau()(1, 0);
   }
   return result;
@@ -121,27 +121,27 @@ Point CorrelationAnalysis::computeSquaredSRC(const Bool normalize) const
 /* Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
 Point CorrelationAnalysis::computeSRC() const
 {
-  return computeSRC(inputSample_, outputSample_);
+  return computeSRC(sampleX_, sampleY_);
 }
 
 // Compute the Standard Regression Coefficients (SRC) with arguments
-Point CorrelationAnalysis::computeSRC(const Sample & inputSample,
-                                      const Sample & outputSample) const
+Point CorrelationAnalysis::computeSRC(const Sample & sampleX,
+                                      const Sample & sampleY) const
 {
-  const UnsignedInteger dimension = inputSample.getDimension();
+  const UnsignedInteger dimension = sampleX.getDimension();
   if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
   // Var(X+a) = Var(X); However for numerical stability, data are centered
-  LinearLeastSquares regressionAlgorithm(inputSample - inputSample.computeMean(), outputSample);
+  LinearLeastSquares regressionAlgorithm(sampleX - sampleX.computeMean(), sampleY);
   regressionAlgorithm.run();
   // Linear coefficients
   const Point linear(*regressionAlgorithm.getLinear().getImplementation());
 
-  const Scalar stdOutput = outputSample.computeStandardDeviation()[0];
+  const Scalar stdOutput = sampleY.computeStandardDeviation()[0];
   if (!(stdOutput > 0.0))
     throw InvalidArgumentException(HERE) << "No output variance";
 
   // Compute the output variance from the regression coefficients
-  Point src(inputSample.computeStandardDeviation());
+  Point src(sampleX.computeStandardDeviation());
   for (UnsignedInteger i = 0; i < dimension; ++ i) src[i] *= linear[i] / stdOutput;
   return src;
 }
@@ -149,16 +149,16 @@ Point CorrelationAnalysis::computeSRC(const Sample & inputSample,
 /* Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
 Point CorrelationAnalysis::computePCC() const
 {
-  return computePCC(inputSample_, outputSample_);
+  return computePCC(sampleX_, sampleY_);
 }
 
 // Compute the Partial Correlation Coefficients (PCC) with arguments
-Point CorrelationAnalysis::computePCC(const Sample & inputSample,
-                                      const Sample & outputSample) const
+Point CorrelationAnalysis::computePCC(const Sample & sampleX,
+                                      const Sample & sampleY) const
 {
-  const UnsignedInteger dimension = inputSample.getDimension();
+  const UnsignedInteger dimension = sampleX.getDimension();
   if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
-  const UnsignedInteger size = inputSample.getSize();
+  const UnsignedInteger size = sampleX.getSize();
   Point pcc(dimension);
   // For each component i, perform an analysis on the truncated input sample where Xi has been removed
   Sample truncatedInput(size, dimension - 1);
@@ -168,18 +168,18 @@ Point CorrelationAnalysis::computePCC(const Sample & inputSample,
     // Build the truncated sample
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      for (UnsignedInteger j = 0; j < index; ++j) truncatedInput(i, j) = inputSample(i, j);
-      for (UnsignedInteger j = index + 1; j < dimension; ++j) truncatedInput(i, j - 1) = inputSample(i, j);
-      remainingInput(i, 0) = inputSample(i, index);
+      for (UnsignedInteger j = 0; j < index; ++j) truncatedInput(i, j) = sampleX(i, j);
+      for (UnsignedInteger j = index + 1; j < dimension; ++j) truncatedInput(i, j - 1) = sampleX(i, j);
+      remainingInput(i, 0) = sampleX(i, index);
     }
     // Build the linear models
-    LinearLeastSquares outputVersusTruncatedInput(truncatedInput, outputSample);
+    LinearLeastSquares outputVersusTruncatedInput(truncatedInput, sampleY);
     outputVersusTruncatedInput.run();
 
     LinearLeastSquares remainingVersusTruncatedInput(truncatedInput, remainingInput);
     remainingVersusTruncatedInput.run();
 
-    const Sample residualOutput(outputSample - outputVersusTruncatedInput.getMetaModel()(truncatedInput));
+    const Sample residualOutput(sampleY - outputVersusTruncatedInput.getMetaModel()(truncatedInput));
     const Sample residualRemaining(remainingInput - remainingVersusTruncatedInput.getMetaModel()(truncatedInput));
 
     // Compute the correlation between the residuals
@@ -191,29 +191,29 @@ Point CorrelationAnalysis::computePCC(const Sample & inputSample,
 /* Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
 Point CorrelationAnalysis::computeSRRC() const
 {
-  return computeSRC(inputSample_.rank(), outputSample_.rank());
+  return computeSRC(sampleX_.rank(), sampleY_.rank());
 }
 
 /* Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
 Point CorrelationAnalysis::computePRCC() const
 {
-  return computePCC(inputSample_.rank(), outputSample_.rank());
+  return computePCC(sampleX_.rank(), sampleY_.rank());
 }
 
 /* Method save() stores the object through the StorageManager */
 void CorrelationAnalysis::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute("inputSample_", inputSample_);
-  adv.saveAttribute("outputSample_", outputSample_);
+  adv.saveAttribute("sampleX_", sampleX_);
+  adv.saveAttribute("sampleY_", sampleY_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void CorrelationAnalysis::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute("inputSample_", inputSample_);
-  adv.loadAttribute("outputSample_", outputSample_);
+  adv.loadAttribute("sampleX_", sampleX_);
+  adv.loadAttribute("sampleY_", sampleY_);
 }
 
 END_NAMESPACE_OPENTURNS
