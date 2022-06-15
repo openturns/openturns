@@ -35,7 +35,7 @@ int main(int, char *[])
   try
   {
     UnsignedInteger dimension = 2;
-    UnsignedInteger sampleSize = 1000;
+    UnsignedInteger sampleSize = 100000;
 
     // we create an analytical function
     Description input(dimension);
@@ -65,32 +65,32 @@ int main(int, char *[])
     CorrelationAnalysis corr_analysis(inputSample, outputSample);
 
     Point squared_src = corr_analysis.computeSquaredSRC();
-    assert_almost_equal(squared_src, Point({0.901238,0.105409}), 1e-5, 0.0);
+    assert_almost_equal(squared_src, Point({0.9, 0.1}), 0.0, 1e-2); // theoretical value
 
     // Squared SRC with normalize
     Point squared_src_normalize(corr_analysis.computeSquaredSRC(true));
-    assert_almost_equal(squared_src_normalize, Point({0.895287,0.104713}), 1e-5, 0.0);
+    assert_almost_equal(squared_src_normalize, Point({0.9, 0.1}), 0.0, 1e-2); // theoretical value
 
     Point src(corr_analysis.computeSRC());
-    assert_almost_equal(src, Point({0.949336,0.324667}), 1e-5, 0.0);
+    assert_almost_equal(src, Point({0.9486832980505138, 0.31622776601683794}), 0.0, 1e-2); // sqrt of squared_src
 
     Point srrc(corr_analysis.computeSRRC());
-    assert_almost_equal(srrc, Point({0.946444,0.304684}), 1e-5, 0.0);
+    assert_almost_equal(srrc, Point({0.94, 0.30}), 0.0, 1e-2); // approximate value
 
     Point pcc(corr_analysis.computePCC());
-    assert_almost_equal(pcc, Point({1.0, 1.0}), 1e-5, 0.0);
+    assert_almost_equal(pcc, Point({1.0, 1.0}), 1e-5, 0.0); // theoretical value
 
     Point prcc(corr_analysis.computePRCC());
-    assert_almost_equal(prcc, Point({0.98879,0.905344}), 1e-5, 0.0);
+    assert_almost_equal(prcc, Point({0.99, 0.92}), 0.0, 1e-2); // approximate value
 
     Point pearson(corr_analysis.computePearsonCorrelation());
-    assert_almost_equal(pearson, Point({0.945835,0.314431}), 1e-5, 0.0);
+    assert_almost_equal(pearson, Point({0.95, 0.31}), 0.0, 1e-2); // approximate value
 
     Point spearman(corr_analysis.computeSpearmanCorrelation());
-    assert_almost_equal(spearman, Point({0.941684,0.289898}), 1e-5, 0.0);
+    assert_almost_equal(spearman, Point({0.94, 0.30}), 0.0, 1e-2); // approximate value
 
     Point kendalltau(corr_analysis.computeKendallTau());
-    assert_almost_equal(kendalltau, Point({0.7935375375375376,0.1965765765765766}), 1e-16, 0.0);
+    assert_almost_equal(kendalltau, Point({0.79, 0.20}), 0.0, 1e-2);
   }
   catch (TestFailed & ex)
   {
