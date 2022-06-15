@@ -57,8 +57,18 @@ public:
   /** Compute the Pearson correlation coefficient between the input sample and the output sample */
   Point computePearsonCorrelation() const;
 
+  /** @deprecated method : use computePearsonCorrelation */
+  /** Compute the Pearson correlation coefficient between the input sample and the output sample */
+  static Point PearsonCorrelation(const Sample & inputSample,
+                                  const Sample & outputSample);
+
   /** Compute the Spearman correlation coefficient between the input sample and the output sample */
   Point computeSpearmanCorrelation() const;
+
+  /** @deprecated method : use computeSpearmanCorrelation */
+  /** Compute the Spearman correlation coefficient between the input sample and the output sample */
+  static Point SpearmanCorrelation(const Sample & inputSample,
+                                   const Sample & outputSample);
 
   /** Compute the Kendall Tau coefficient between the input sample and the output sample */
   Point computeKendallTau() const;
@@ -72,11 +82,21 @@ public:
   /** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
   Point computePCC() const;
 
+  /** @deprecated method : use computePCC */
+  /** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
+  static Point PCC(const Sample & inputSample,
+                   const Sample & outputSample);
+
   /** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
   Point computeSRRC() const;
 
   /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
   Point computePRCC() const;
+
+  /** @deprecated method : use computePRCC */
+  /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
+  static Point PRCC(const Sample & inputSample,
+                    const Sample & outputSample);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

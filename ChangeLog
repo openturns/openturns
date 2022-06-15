@@ -11,6 +11,7 @@
  * FieldToPointFunctionalChaosAlgorithm
  * FieldFunctionalChaosResult
  * FieldFunctionalChaosSobolIndices
+ * CorrelationAnalysis
 
 ==== API changes ====
  * Removed coupling_tools.execute get_stderr,get_stdout arguments
@@ -18,6 +19,8 @@
  * Deprecated SequentialStrategy
  * Deprecated TensorApproximationAlgorithm, TensorApproximationResult, CanonicalTensorEvaluation, CanonicalTensorGradient
  * Deprecated FunctionalChaosSobolIndices.getSobolGrouped(Total)Index(int)
+ * Deprecated static CorrelationAnalysis::PearsonCorrelation|SpearmanCorrelation|PCC|PRCC, use the methods of the new CorrelationAnalysis class instead.
+ * Removed static CorrelationAnalysis::SRC|SRRC due to a bug: #1753.
 
 === Documentation ===
 
