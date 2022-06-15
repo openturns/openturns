@@ -64,10 +64,20 @@ the literature as the “importance factor”, because of the similarity
 between this approach to linear regression and the method of cumulative
 variance which uses the term importance factor.
 
+It is a good idea to check the quality of the :ref:`linear regression <linear_regression>`
+before estimating the SRC coefficients: if the linear regression model
+is a poor fit to the data, then the SRC coefficients are useless.
+
+Note that if there exists map :math:`g` such that :math:`Y=g(X^1, ..., X^n)`,
+then the squared SRC coefficients are equal to :ref:`Sobol' indices <sensitivity_sobol>`.
+
 Standard *Rank* Regression Coefficients (SRRC) are SRC coefficients
 computed on the ranked input variables
 :math:`r\vect{X} = \left( rX^1,\ldots,rX^{n_X} \right)`
 and the ranked output variable :math:`rY`.
+They are useful when the relationship between :math:`Y`
+and :math:`\vect{X}` is not linear (so SRC cannot be used),
+but only monotonic.
 
 .. topic:: API:
 
