@@ -129,7 +129,7 @@ Point CorrelationAnalysis::computeSRC(const Sample & sampleX,
                                       const Sample & sampleY) const
 {
   const UnsignedInteger dimension = sampleX.getDimension();
-  if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
+  //if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
   // Var(X+a) = Var(X); However for numerical stability, data are centered
   LinearLeastSquares regressionAlgorithm(sampleX - sampleX.computeMean(), sampleY);
   regressionAlgorithm.run();
@@ -157,7 +157,7 @@ Point CorrelationAnalysis::computePCC(const Sample & sampleX,
                                       const Sample & sampleY) const
 {
   const UnsignedInteger dimension = sampleX.getDimension();
-  if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
+  //if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
   const UnsignedInteger size = sampleX.getSize();
   Point pcc(dimension);
   // For each component i, perform an analysis on the truncated input sample where Xi has been removed
