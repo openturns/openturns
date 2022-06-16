@@ -1,14 +1,8 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import math as m
-import dill
-
-# ensures python code is included
-dill.settings['recurse'] = True
 
 ot.TESTPREAMBLE()
-
 
 class RVEC(ot.PythonRandomVector):
 
