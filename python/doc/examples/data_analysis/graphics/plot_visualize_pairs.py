@@ -22,7 +22,6 @@ sample = distribution.getSample(200)
 
 # %%
 # Create cloud pairs graphs
-graph = ot.Graph("Cloud pairs graph", " ", " ", True, "")
 graph = ot.VisualTest.DrawPairs(sample)
 view = viewer.View(graph)
 plt.show()
