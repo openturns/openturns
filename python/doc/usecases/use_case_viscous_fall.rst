@@ -18,7 +18,7 @@ for any :math:`t \in [0, t_{max}]` where:
     - :math:`v` is the speed :math:`[m/s]`,
     - :math:`t` is the time :math:`[s]`,
     - :math:`t_{max}` is the maximum time :math:`[s]`,
-    - :math:`g` is the gravitational acceleration :math:`[m.s^{-2}]`,
+    - :math:`g = 9.81` is the gravitational acceleration :math:`[m.s^{-2}]`,
     - :math:`m` is the mass :math:`[kg]`,
     - :math:`c` is the linear drag coefficient :math:`[kg.s^{-1}]`.
 
