@@ -1350,10 +1350,10 @@ void ResourceMap::loadDefaultConfiguration()
   // FunctionalChaosAlgorithm parameters //
   addAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6);
   addAsScalar("FunctionalChaosAlgorithm-QNorm", 0.5);
-  addAsUnsignedInteger("FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree", 10);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize", 0);
-  addAsUnsignedInteger("FunctionalChaosAlgorithm-SmallSampleSize", 1000);
+  addAsBool("FunctionalChaosAlgorithm-Sparse", false);
+  addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut");
 
   // FunctionalChaosSobolIndices parameters //
   addAsScalar("FunctionalChaosSobolIndices-VariancePartThreshold", 1.0e-2);

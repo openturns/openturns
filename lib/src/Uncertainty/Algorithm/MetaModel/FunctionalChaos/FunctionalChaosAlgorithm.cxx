@@ -172,23 +172,24 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   if (std::abs(qNorm-1.0) <= SpecFunc::Precision) enumerate = LinearEnumerateFunction(inputDimension);
   else enumerate = HyperbolicAnisotropicEnumerateFunction(inputDimension, qNorm);
   OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
-  // For small sample size, use sparse regression
-  LOGINFO("In FunctionalChaosAlgorithm, select adaptive strategy");
-  if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-SmallSampleSize"))
+
+  const Bool sparse = ResourceMap::GetAsBool("FunctionalChaosAlgorithm-Sparse");
+  if (sparse)
   {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and KFold");
-  } // Small sample
-  else if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-LargeSampleSize"))
-  {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut()));
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and CorrectedLeaveOneOut");
-  } // Medium sample
+    const String fittingAlgorithm(ResourceMap::GetAsString("FunctionalChaosAlgorithm-FittingAlgorithm"));
+    if (fittingAlgorithm == "CorrectedLeaveOneOut")
+      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut()));
+    else if (fittingAlgorithm == "KFold")
+      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
+    else
+      throw InvalidArgumentException(HERE) << "Unknown fitting algorithm: " << fittingAlgorithm;
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and " << fittingAlgorithm);
+  }
   else
   {
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy");
-  } // Large sample
+  }
 
   // total basis size can be either parametrized via MaximumTotalDegree or BasisSize
   const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree");

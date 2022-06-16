@@ -40,6 +40,7 @@ ot.ResourceMap.SetAsUnsignedInteger(
     "FittingTest-LillieforsMinimumSamplingSize", 4)
 ot.ResourceMap.SetAsUnsignedInteger(
     "FittingTest-LillieforsMaximumSamplingSize", 4)
+ot.ResourceMap.SetAsBool('FunctionalChaosAlgorithm-Sparse', True)
 algo = ot.FunctionalChaosAlgorithm(x, y)
 algo.run()
 result = algo.getResult()
