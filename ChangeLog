@@ -28,6 +28,7 @@
  * Deprecated FunctionalChaos(Function, ...) ctors
  * Deprecated FunctionalChaosResult.getComposedModel, MetaModelResult.getModel
  * Deprecated (Process)Sample::computeCenteredMoment in favor of computeCentralMoment
+ * Deprecated Distribution::getCenteredMoment in favor of getCentralMoment
 
 === Documentation ===
  * Added example galleries at the end of API doc pages

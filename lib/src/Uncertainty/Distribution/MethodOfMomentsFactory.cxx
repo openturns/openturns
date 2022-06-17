@@ -178,7 +178,7 @@ public:
     moments[0] = distribution.getMean()[0];
     for (UnsignedInteger j = 1; j < parameterDimension; ++ j)
     {
-      moments[j] = distribution.getCenteredMoment(j + 1)[0];
+      moments[j] = distribution.getCentralMoment(j + 1)[0];
     }
 
     // compute sum of deltas between centered homogenized moments

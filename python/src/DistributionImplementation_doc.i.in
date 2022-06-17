@@ -1788,22 +1788,22 @@ OT_Distribution_getCDFEpsilon_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Distribution_getCenteredMoment_doc
-"Accessor to the componentwise centered moments.
+%define OT_Distribution_getCentralMoment_doc
+"Accessor to the componentwise central moments.
 
 Parameters
 ----------
 k : int
-    The order of the centered moment.
+    The order of the central moment.
 
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise centered moment of order :math:`k`.
+    Componentwise central moment of order :math:`k`.
 
 Notes
 -----
-Centered moments are centered with respect to the first-order moment:
+Central moments are centered with respect to the first-order moment:
 
 .. math::
 
@@ -1814,8 +1814,8 @@ See Also
 --------
 getMoment"
 %enddef
-%feature("docstring") OT::DistributionImplementation::getCenteredMoment
-OT_Distribution_getCenteredMoment_doc
+%feature("docstring") OT::DistributionImplementation::getCentralMoment
+OT_Distribution_getCentralMoment_doc
 
 // ---------------------------------------------------------------------
 
@@ -1832,7 +1832,7 @@ shift : sequence of float
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise centered moment of order :math:`k`.
+    Componentwise central moment of order :math:`k`.
 
 Notes
 -----
@@ -1845,7 +1845,7 @@ The moments are centered with respect to the given shift :math:`\vect{s}`:
 
 See Also
 --------
-getMoment, getCenteredMoment"
+getMoment, getCentralMoment"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getShiftedMoment
 OT_Distribution_getShiftedMoment_doc
@@ -1904,7 +1904,7 @@ Sigma : :class:`~openturns.CovarianceMatrix`
 
 Notes
 -----
-The covariance is the second-order centered moment. It is defined as:
+The covariance is the second-order central moment. It is defined as:
 
 .. math::
 
@@ -2124,7 +2124,7 @@ k : :class:`~openturns.Point`
 
 Notes
 -----
-The kurtosis is the fourth-order centered moment standardized by the standard deviation:
+The kurtosis is the fourth-order central moment standardized by the standard deviation:
 
 .. math::
 
@@ -2495,7 +2495,7 @@ d : :class:`~openturns.Point`
 
 Notes
 -----
-The skewness is the third-order centered moment standardized by the standard deviation:
+The skewness is the third-order central moment standardized by the standard deviation:
 
 .. math::
 

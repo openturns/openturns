@@ -2771,7 +2771,7 @@ Point RandomMixture::getStandardDeviation() const
   // it looks wasteful to compute the whole covariance
   // matrix only for its diagonal, it is not so wasteful
   // as random mixtures are limited to dimension <= 3,
-  // and it is much more efficient than using getCenteredMoment()
+  // and it is much more efficient than using getCentralMoment()
   // because the covariance is a simple algebra based on
   // coefficients and atoms covariance.
   const UnsignedInteger dimension = getDimension();

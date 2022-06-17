@@ -276,7 +276,10 @@ public:
   /** Get the raw moments of the distribution */
   Point getMoment(const UnsignedInteger n) const;
 
-  /** Get the centered moments about the mean of the distribution */
+  /** Get the central moments about the mean of the distribution */
+  Point getCentralMoment(const UnsignedInteger n) const;
+  
+  /** @deprecated */
   Point getCenteredMoment(const UnsignedInteger n) const;
 
   /** Get the shifted moments of the distribution */
