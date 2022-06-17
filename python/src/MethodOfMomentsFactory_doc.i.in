@@ -123,3 +123,34 @@ Returns
 -------
 indices : :class:`~openturns.Indices`
     Indices of fixed parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MethodOfMomentsFactory::buildFromMoments
+"Build from moments.
+
+Parameters
+----------
+moments : sequence of float
+    Consists in the mean followed by consecutive central moments from order 2
+    (variance), of total size at least the distribution parameter dimension.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    Estimated distribution.
+
+Notes
+-----
+Depending on the parametric model choosed, not all moments define a valid
+distribution, so it should only used with empirical moments from the same model.
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
+>>> factory = ot.MethodOfMomentsFactory(ot.Beta())
+>>> cm = [distribution.getCentralMoment(i + 2)[0] for i in range(3)]
+>>> moments = [distribution.getMean()[0]] + cm
+>>> inf_distribution = factory.buildFromMoments(moments)"
+

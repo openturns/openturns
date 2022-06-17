@@ -98,7 +98,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   factory.setOptimizationAlgorithm(solver);
 
   // Estimate
-  const Point parameters(factory.buildParameter(sample));
+  const Point parameters(factory.build(sample).getParameter());
   TruncatedNormal result(buildAsTruncatedNormal(parameters));
   result.setDescription(sample.getDescription());
   return result;

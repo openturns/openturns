@@ -154,15 +154,12 @@ public:
     // set unknown values
     UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
     for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
-    {
       effectiveParameter[unknownParameterIndices_[j]] = parameter[j];
-    }
+
     // set known values
     UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
     for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
-    {
       effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
-    }
     Distribution distribution(distribution_);
     try
     {
@@ -177,9 +174,7 @@ public:
     Point moments(parameterDimension);
     moments[0] = distribution.getMean()[0];
     for (UnsignedInteger j = 1; j < parameterDimension; ++ j)
-    {
       moments[j] = distribution.getCentralMoment(j + 1)[0];
-    }
 
     // compute sum of deltas between centered homogenized moments
     Point result(parameterDimension);
@@ -203,7 +198,28 @@ private:
   Indices unknownParameterIndices_;
 };
 
-Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
+
+Distribution MethodOfMomentsFactory::build(const Point & parameter) const
+{
+  Distribution result(distribution_);
+  Point parameter2(parameter);
+  // set known values
+  const UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
+  for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
+  {
+    parameter2[knownParameterIndices_[j]] = knownParameterValues_[j];
+  }
+  result.setParameter(parameter2);
+  return result;
+}
+
+
+Distribution MethodOfMomentsFactory::build() const
+{
+  return build(distribution_.getParameter());
+}
+
+Distribution MethodOfMomentsFactory::build(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
@@ -218,12 +234,22 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
   Point refMoments(effectiveParameterSize);
   refMoments[0] =  sample.computeMean()[0];
   for (UnsignedInteger j = 1; j < effectiveParameterSize; ++ j)
-  {
     refMoments[j] = sample.computeCentralMoment(j + 1)[0];
-  }
+
+  Distribution result(buildFromMoments(refMoments));
+  result.setDescription(sample.getDescription());
+  return result;
+}
+
+/** Build a distribution from its moments */
+Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) const
+{
+  const UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
+  if (moments.getSize() < effectiveParameterSize)
+    throw InvalidArgumentException(HERE) << "Expected " << effectiveParameterSize << " moments to build distribution";
 
   // Define evaluation
-  MethodOfMomentsEvaluation methodOfMomentsWrapper(refMoments, distribution_, knownParameterValues_, knownParameterIndices_);
+  MethodOfMomentsEvaluation methodOfMomentsWrapper(moments, distribution_, knownParameterValues_, knownParameterIndices_);
   Function momentsObjective(methodOfMomentsWrapper.clone());
 
   // Define optimization problem
@@ -259,7 +285,15 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
 
   solver.setProblem(problem);
   solver.setVerbose(Log::HasInfo());
-  solver.run();
+  try
+  {
+    solver.run();
+  }
+  catch (const Exception & exc)
+  {
+    throw NotDefinedException(HERE) << "Cannot estimate distribution from moments: " << exc.what();
+  }
+
   Point effectiveParameter(effectiveParameterSize);
   // set unknown values
   Point parameter(solver.getResult().getOptimalPoint());
@@ -275,39 +309,10 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
   // set known values
   UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
   for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
-  {
     effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
-  }
-  return effectiveParameter;
-}
 
-
-Distribution MethodOfMomentsFactory::build(const Point & parameter) const
-{
   Distribution result(distribution_);
-  Point parameter2(parameter);
-  // set known values
-  UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
-  for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
-  {
-    parameter2[knownParameterIndices_[j]] = knownParameterValues_[j];
-  }
-  result.setParameter(parameter2);
-  return result;
-}
-
-
-Distribution MethodOfMomentsFactory::build() const
-{
-  return build(distribution_.getParameter());
-}
-
-
-Distribution MethodOfMomentsFactory::build(const Sample & sample) const
-{
-  Distribution result(distribution_);
-  result.setParameter(buildParameter(sample));
-  result.setDescription(sample.getDescription());
+  result.setParameter(effectiveParameter);
   return result;
 }
 

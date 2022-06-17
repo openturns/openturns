@@ -23,6 +23,14 @@ factory.setKnownParameter([-1.0, 1.0], [2, 3])
 inf_distribution = factory.build(sample)
 print('estimated distribution=', inf_distribution)
 
+# from moments
+distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
+factory = ot.MethodOfMomentsFactory(ot.Beta())
+cm = [distribution.getCentralMoment(i + 2)[0] for i in range(3)]
+moments = [distribution.getMean()[0]] + cm
+inf_distribution = factory.buildFromMoments(moments)
+print('estimated distribution (moments)=', inf_distribution)
+
 # with bounds
 data = [0.6852, 0.9349, 0.5884, 1.727, 1.581,
         0.3193, -0.5701, 1.623, 2.210, -0.3440, -0.1646]
