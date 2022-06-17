@@ -13,6 +13,7 @@
  * FieldFunctionalChaosSobolIndices
  * CorrelationAnalysis
  * UserDefinedMetropolisHastings
+ * QuantileMatchingFactory
 
 ==== API changes ====
  * Removed coupling_tools.execute get_stderr,get_stdout arguments

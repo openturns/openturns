@@ -26,6 +26,7 @@
 %include Poisson.i
 %include PoissonFactory.i
 %include ProductDistribution.i
+%include QuantileMatchingFactory.i
 %include RandomMixture.i
 %include Rayleigh.i
 %include RayleighFactory.i

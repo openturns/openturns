@@ -587,6 +587,14 @@
   <MethodOfMomentsFactory-MaximumRelativeError    value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumEvaluationNumber value_int="1000" />
 
+  <!-- OT::QuantileMatchingFactory parameters -->
+  <QuantileMatchingFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
+  <QuantileMatchingFactory-MaximumConstraintError  value_float="1.0e-10"        />
+  <QuantileMatchingFactory-MaximumObjectiveError   value_float="1.0e-10"        />
+  <QuantileMatchingFactory-MaximumRelativeError    value_float="1.0e-10"        />
+  <QuantileMatchingFactory-QuantileEpsilon         value_float="1.0e-2"        />
+  <QuantileMatchingFactory-MaximumEvaluationNumber value_int="1000" />
+
   <!-- OT::Student parameters -->
   <Student-MaximumCDFEpsilon              value_float="5.0e-6"             />
   <Student-MinimumCDFEpsilon              value_float="5.0e-2"             />

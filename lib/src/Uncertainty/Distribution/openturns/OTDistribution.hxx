@@ -147,6 +147,7 @@
 #include "openturns/PoissonFactory.hxx"
 #include "openturns/PosteriorDistribution.hxx"
 #include "openturns/ProductDistribution.hxx"
+#include "openturns/QuantileMatchingFactory.hxx"
 #include "openturns/RandomMixture.hxx"
 #include "openturns/RatioDistribution.hxx"
 #include "openturns/Rayleigh.hxx"

@@ -731,6 +731,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Poisson.i Poisson_doc.i.in
                       PoissonFactory.i PoissonFactory_doc.i.in
                       ProductDistribution.i ProductDistribution_doc.i.in
+                      QuantileMatchingFactory.i QuantileMatchingFactory_doc.i.in
                       RandomMixture.i RandomMixture_doc.i.in
                       Rayleigh.i Rayleigh_doc.i.in
                       RayleighFactory.i RayleighFactory_doc.i.in

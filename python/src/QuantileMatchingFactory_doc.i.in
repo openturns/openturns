@@ -1,0 +1,227 @@
+%feature("docstring") OT::QuantileMatchingFactory
+"Estimation by matching quantiles.
+
+Implements generic estimation by matching quantiles.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The distribution defining the parametric model to be adjusted to data.
+    Its parameters define the starting point of the algorithm.
+probabilities : sequence of float, optional
+    The probabilities :math:`p_i \in [0,1]` corresponding to the quantiles.
+    The default value of the list of probabilities defined as follows.
+    We define the interval :math:`[\epsilon, 1 - \epsilon]` where the value of
+    :math:`\epsilon` is defined by the `QuantileMatchingFactory-QuantileEpsilon` key of the 
+    :class:`~openturns.ResourceMap`.
+    A regular grid :math:`\{p_i\}_{i = 1, ..., K}` of probabilities is defined in the interval :math:`[\epsilon, 1 - \epsilon]`,
+    where :math:`K` is the number of parameters of the distribution.
+    The grid is defined by the equation :math:`p_i = (1 - \rho_i) \epsilon + \rho_i (1 - \epsilon)`
+    where :math:`\rho_i = \frac{i - 1}{K - 1}` for :math:`i = 1, ..., K`. 
+bounds : :class:`~openturns.Interval`, optional
+    Parameter bounds. The default bounds is an empty interval, which implies that the optimization problem is unbounded.
+
+Notes
+-----
+We consider a distribution with :math:`K` parameters. 
+Given a set of probabilities :math:`p_1, ..., p_K \in [0, 1]` 
+and a set of quantiles :math:`q_1, ..., q_K \in \Rset`, 
+we want to estimates the parameters of the distribution such that:
+
+.. math::
+
+    \Prob{X \leq q_i} = p_i
+
+for :math:`i = 1, ..., K`. If a sample is given, then the quantiles are 
+estimated from the data, which leads to the sample 
+quantiles :math:`\hat{q}_1, ..., \hat{q}_K`.
+
+The underlying optimization problem seeks to minimize the sum of slacks between the
+empirical quantiles of the sample and the quantiles of the parametric model:
+
+.. math::
+
+    \Delta = \argmin_{\vect{\theta} \in \Rset^K} \sum_{i=1}^K (\hat{q}_i - q_i)^2
+
+where :math:`K` is the number of parameters of the distribution,
+:math:`p_i` the probabilities,
+and :math:`\hat{q}_i` is the sample quantile and :math:`q_i`
+is the quantile of the parametric distribution
+at the probabilities :math:`p_1, ..., p_K`.
+
+Instead of using a sample, the `buildFromQuantiles()` method can be used if the quantiles are known. 
+This can be useful if some expert knowledge is available. 
+
+See also
+--------
+DistributionFactory
+
+Examples
+--------
+Fit a distribution with 2 parameters. 
+Hence, two quantiles are used to estimate the parameters.
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal(0.9, 1.7).getSample(10)
+>>> factory = ot.QuantileMatchingFactory(ot.Normal())
+>>> inf_distribution = factory.build(sample)
+>>> print(inf_distribution)
+Normal(mu = 0.267484, sigma = 1.32218)
+>>> print(factory.getProbabilities())
+[0.01,0.99]
+
+We see that the default value of the :math:`\epsilon` parameter is so that we consider the 1% and 99% percentile ranks.
+
+Use 5% and 95% percentile ranks:
+
+>>> probabilities = [0.05, 0.95]
+>>> factory = ot.QuantileMatchingFactory(ot.Normal(), probabilities)
+>>> inf_distribution = factory.build(sample)
+
+With parameter bounds:
+
+>>> bounds = ot.Interval([0.8, 1.6], [1.0, 1.8])
+>>> factory = ot.QuantileMatchingFactory(ot.Normal())
+>>> factory.setOptimizationBounds(bounds)
+>>> inf_distribution = factory.build(sample)
+
+An example with 4 parameters allows to see the default grid of probabilities in action.
+
+>>> # A distribution with 4 parameters
+>>> distribution = ot.Beta(2.0, 3.0, 4.0, 5.0)
+>>> sample = distribution.getSample(10)
+>>> distribution = ot.Beta()
+>>> factory = ot.QuantileMatchingFactory(distribution)
+>>> inf_distribution = factory.build(sample)
+>>> print(factory.getProbabilities())
+[0.01,0.336667,0.663333,0.99]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileMatchingFactory::setOptimizationAlgorithm
+"Accessor to the solver.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for numerical optimization of the moments."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileMatchingFactory::getOptimizationAlgorithm
+"Accessor to the solver.
+
+Returns
+-------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for numerical optimization of the moments."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileMatchingFactory::setOptimizationBounds
+"Accessor to the optimization bounds.
+
+Parameters
+----------
+bounds : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileMatchingFactory::getOptimizationBounds
+"Accessor to the optimization bounds.
+
+Returns
+-------
+bounds : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileMatchingFactory::setKnownParameter
+"Accessor to the known parameters.
+
+Parameters
+----------
+values : sequence of float
+    Values of fixed parameters.
+indices : sequence of int
+    Indices of fixed parameters.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
+>>> sample = distribution.getSample(10)
+>>> factory = ot.QuantileMatchingFactory(ot.Beta())
+>>> # set (a,b) out of (r, t, a, b)
+>>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
+>>> inf_distribution = factory.build(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileMatchingFactory::getKnownParameterValues
+"Accessor to the known parameters indices.
+
+Returns
+-------
+values : :class:`~openturns.Point`
+    Values of fixed parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileMatchingFactory::getKnownParameterIndices
+"Accessor to the known parameters indices.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Indices of fixed parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileMatchingFactory::buildFromQuantiles
+"Build from quantiles.
+
+Parameters
+----------
+quantiles : sequence of float
+    Quantiles of the distribution, matching the probabilities provided to the constructor.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    Estimated distribution.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
+>>> probabilities = [0.05, 0.25, 0.75, 0.95]
+>>> quantiles = [distribution.computeQuantile(pi)[0] for pi in probabilities] # Or from expert knowledge
+>>> factory = ot.QuantileMatchingFactory(ot.Beta(), probabilities)
+>>> inf_distribution = factory.buildFromQuantiles(quantiles)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileMatchingFactory::setProbabilities
+"Accessor to the fractiles.
+
+Parameters
+----------
+probabilities : sequence of float
+    The probabilities :math:`p_i`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileMatchingFactory::getProbabilities
+"Accessor to the probabilities.
+
+Returns
+-------
+probabilities : :class:`~openturns.Point`
+    The probabilities :math:`p_i`"
