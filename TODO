@@ -8,3 +8,4 @@ Remove FunctionalChaosAlgorithm(Function) ctors for 1.21
 Remove FunctionalChaosResult.getComposedModel, MetaModelResult.getModel and associated attributes for 1.21
 Remove (Process)Sample::computeCenteredMoment
 Remove Distribution::getCenteredMoment
+Remove IterativeMoments::getCenteredMoments

@@ -6,7 +6,7 @@ Estimate moments iteratively
 # %%
 # In this example, we use the :class:`~openturns.IterativeMoments` class
 # to compute iterative statistics.
-# This class stores centered moments up to a prescribed order iteratively.
+# This class stores central moments up to a prescribed order iteratively.
 # Then several statistics based on the moments are available depending on the
 # chosen order.
 
@@ -20,7 +20,7 @@ dim = 1
 distNormal = ot.Normal(dim)
 
 # %%
-# Then we use the centered moments up to order 4 with the
+# Then we use the central moments up to order 4 with the
 # :class:`~openturns.IterativeMoments` class by giving the order (here 4)
 # and the dimension (here 1):
 
@@ -31,7 +31,7 @@ iterMoments = ot.IterativeMoments(order, dim)
 
 # %%
 # We can now perform the simulations.
-# The :class:`~openturns.IterativeMoments` object stores the centered
+# The :class:`~openturns.IterativeMoments` object stores the central
 # moments iteratively.
 # We first increment the object with one :class:`~openturns.Point` at a time.
 # At any given step the current mean is obtained thanks to
