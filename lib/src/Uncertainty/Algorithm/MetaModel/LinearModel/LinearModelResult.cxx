@@ -211,7 +211,7 @@ Scalar LinearModelResult::getRSquared() const
   if (!hasIntercept_)
     SYY = outputSample.computeRawMoment(2)[0];
   else
-    SYY = outputSample.computeCenteredMoment(2)[0];
+    SYY = outputSample.computeCentralMoment(2)[0];
   const Scalar rSquared = 1.0 - RSS / SYY;
   return rSquared;
 }

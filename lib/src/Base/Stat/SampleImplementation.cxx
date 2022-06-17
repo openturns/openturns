@@ -1775,11 +1775,11 @@ Point SampleImplementation::computeKurtosis() const
 }
 
 /*
- * Gives the centered moment of order k of the sample (by component)
+ * Gives the central moment of order k of the sample (by component)
  */
-Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
+Point SampleImplementation::computeCentralMoment(const UnsignedInteger k) const
 {
-  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the central moments per component of an empty sample.";
 
   // Special case: order 0, return (1,...,1)
   if (k == 0) return Point(dimension_, 1.0);
@@ -1801,6 +1801,12 @@ Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
     }
   }
   return centeredMoment / size_;
+}
+
+Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
+{
+  LOGWARN(OSS() << "Sample::computeCenteredMoment is deprecated, use computeCentralMoment");
+  return computeCentralMoment(k);
 }
 
 /*

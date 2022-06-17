@@ -13,14 +13,14 @@ bounds : :class:`~openturns.Interval`, optional
 Notes
 -----
 The underlying optimization problem seeks to minimize the sum of slacks between the
-centered moments of the sample and the centered moments of the parametric model:
+central moments of the sample and the central moments of the parametric model:
 
 .. math::
 
     \Delta = \argmin_{\vect{\theta} \in \Rset^K} [ |\mu_1-m_1|/\sigma ]^2 + \sum_{i=2}^K[ (|\mu_i|^{1/i}-|m_i|^{1/i})/\sigma ]^2
 
 with :math:`K` the number of parameters of the distribution, :math:`\mu_i` and
-:math:`m_i` the centered moments of the sample and the parametric model.
+:math:`m_i` the central moments of the sample and the parametric model.
 
 See also
 --------

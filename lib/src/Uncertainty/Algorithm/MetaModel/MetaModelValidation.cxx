@@ -94,7 +94,7 @@ void MetaModelValidation::initialize() const
   const UnsignedInteger outputDimension = outputSample_.getDimension();
   q2_ = Point(outputDimension);
   const Point residualRawMoment2(residual_.computeRawMoment(2));
-  const Point sampleVariance(outputSample_.computeCenteredMoment(2));
+  const Point sampleVariance(outputSample_.computeCentralMoment(2));
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
     if (std::abs(sampleVariance[j]) == 0.0)

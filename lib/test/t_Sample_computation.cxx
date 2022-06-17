@@ -61,7 +61,7 @@ int main(int, char *[])
     fullprint << "Skewness=" << sample.computeSkewness() << std::endl;
     fullprint << "Kurtosis=" << sample.computeKurtosis() << std::endl;
     for (UnsignedInteger i = 0; i < 10; ++i)
-      fullprint << "Centered moment of order " << i << "=" << sample.computeCenteredMoment(i) << std::endl;
+      fullprint << "Centered moment of order " << i << "=" << sample.computeCentralMoment(i) << std::endl;
 
     fullprint << "Marginal 1=" << sample.getMarginal(1) << std::endl;
     Indices indices(2);

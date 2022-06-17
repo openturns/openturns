@@ -219,7 +219,7 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
   refMoments[0] =  sample.computeMean()[0];
   for (UnsignedInteger j = 1; j < effectiveParameterSize; ++ j)
   {
-    refMoments[j] = sample.computeCenteredMoment(j + 1)[0];
+    refMoments[j] = sample.computeCentralMoment(j + 1)[0];
   }
 
   // Define evaluation

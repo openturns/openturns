@@ -28,7 +28,7 @@ print("Skewness=", repr(sample.computeSkewness()))
 print("Kurtosis=", repr(sample.computeKurtosis()))
 for i in range(10):
     print("Centered moment of order ", i, "=",
-          sample.computeCenteredMoment(i))
+          sample.computeCentralMoment(i))
 print("Marginal 1=", repr(sample.getMarginal(1)))
 indices = Indices(2)
 indices[0] = 2
