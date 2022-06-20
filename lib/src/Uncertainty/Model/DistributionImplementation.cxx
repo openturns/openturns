@@ -2894,7 +2894,7 @@ Point DistributionImplementation::getMoment(const UnsignedInteger n) const
 /* Get the central moments of the distribution */
 Point DistributionImplementation::getCentralMoment(const UnsignedInteger n) const
 {
-  if (n == 0) throw InvalidArgumentException(HERE) << "Error: the central moments of order 0 are undefined.";
+  if (n == 0) return Point(dimension_, 1.0);
   if (n == 1) return Point(dimension_, 0.0);
   return getShiftedMoment(n, getMean());
 }
