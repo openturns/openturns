@@ -752,6 +752,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
+                      UniformMuSigma.i UniformMuSigma_doc.i.in
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in

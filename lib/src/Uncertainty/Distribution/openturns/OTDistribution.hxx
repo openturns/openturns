@@ -170,6 +170,7 @@
 #include "openturns/TruncatedNormalFactory.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/UniformFactory.hxx"
+#include "openturns/UniformMuSigma.hxx"
 #include "openturns/UserDefined.hxx"
 #include "openturns/UserDefinedFactory.hxx"
 #include "openturns/VonMises.hxx"
