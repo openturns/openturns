@@ -107,16 +107,16 @@ public:
 protected:
 
   // computePearsonCorrelation with arguments
-  Point computePearsonCorrelation(const Sample & sampleX,
-                                  const Sample & sampleY) const;
+  static Point ComputePearsonCorrelation(const Sample & sampleX,
+                                         const Sample & sampleY);
 
   // computePCC with arguments
-  Point computePCC(const Sample & sampleX,
-                   const Sample & sampleY) const;
+  static Point ComputePCC(const Sample & sampleX,
+                          const Sample & sampleY);
 
   // computeSRC with arguments
-  Point computeSRC(const Sample & sampleX,
-                   const Sample & sampleY) const;
+  static Point ComputeSRC(const Sample & sampleX,
+                          const Sample & sampleY);
 private:
 
   Sample sampleX_;
