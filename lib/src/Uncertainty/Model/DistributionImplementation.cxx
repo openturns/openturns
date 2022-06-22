@@ -966,7 +966,9 @@ Scalar DistributionImplementation::computeProbability(const Interval & interval)
   if (interval.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
   // Empty interval, quick check. More checks will be done in the refined algorithms
   if (interval.isEmpty()) return 0.0;
-  // Generic implementation for univariate distributions
+  // Generic implementation for discrete distributions
+  if (isDiscrete()) return computeProbabilityDiscrete(interval);
+  // Special case for continuous univariate distributions
   if (dimension_ == 1)
   {
     const Bool finiteA = interval.getFiniteLowerBound()[0] == 1;
@@ -998,8 +1000,6 @@ Scalar DistributionImplementation::computeProbability(const Interval & interval)
   }
   // Generic implementation for continuous distributions
   if (isContinuous()) return computeProbabilityContinuous(interval);
-  // Generic implementation for discrete distributions
-  if (isDiscrete())   return computeProbabilityDiscrete(interval);
   // Generic implementation for general distributions
   return computeProbabilityGeneral(interval);
 }
