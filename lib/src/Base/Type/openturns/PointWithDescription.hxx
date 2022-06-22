@@ -59,9 +59,6 @@ public:
   /** Virtual constructor */
   PointWithDescription * clone() const override;
 
-  /** Destructor */
-  virtual ~PointWithDescription() throw();
-
   /** Description Accessor */
   void setDescription(const Description & description);
   Description getDescription() const;

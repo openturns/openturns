@@ -35,7 +35,7 @@ verbose : bool
 
 See also
 --------
-AdaptiveStrategy, FixedStrategy, SequentialStrategy
+AdaptiveStrategy, FixedStrategy
 
 Notes
 -----

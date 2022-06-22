@@ -201,25 +201,6 @@ try:
     kDTree = ot.KDTree(sample)
     myStudy.add('kDTree', kDTree)
 
-    # TensorApproximationAlgorithm/Result
-    dim = 1
-    model = ot.SymbolicFunction(['x'], ['x*sin(x)'])
-    distribution = ot.ComposedDistribution([ot.Uniform()] * dim)
-    factoryCollection = [ot.FourierSeriesFactory()] * dim
-    functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
-    size = 10
-    X = distribution.getSample(size)
-    Y = model(X)
-    nk = [5] * dim
-    rank = 1
-    algo = ot.TensorApproximationAlgorithm(
-        X, Y, distribution, functionFactory, nk, rank)
-    algo.run()
-    tensorResult = algo.getResult()
-    myStudy.add('tensorResult', tensorResult)
-    tensorIn = [0.4]
-    tensorRef = tensorResult.getMetaModel()(tensorIn)
-
     # Distribution parameters
 
     # ArcsineMuSigma parameter ave
@@ -333,12 +314,6 @@ try:
     kDTree = ot.KDTree()
     myStudy.fillObject('kDTree', kDTree)
     print('kDTree = ', kDTree)
-
-    # Tensor
-    tensorResult = ot.MetaModelResult()
-    myStudy.fillObject('tensorResult', tensorResult)
-    ot.testing.assert_almost_equal(
-        tensorResult.getMetaModel()(tensorIn), tensorRef)
 
     # ArcsineMuSigma parameter loading
     ams_parameters = ot.ArcsineMuSigma()

@@ -104,6 +104,12 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const override;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+
 private:
 
   /** Compute the local GaussKronrod rule over [a, b] */

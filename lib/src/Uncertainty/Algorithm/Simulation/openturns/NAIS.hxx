@@ -78,7 +78,7 @@ private:
   Distribution initialDistribution_;
 
   // Quantile
-  Scalar rhoQuantile_;
+  Scalar rhoQuantile_ = 0.0;
 
   // Result of NAIS algorithm
   NAISResult naisResult_;

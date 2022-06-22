@@ -343,6 +343,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
 Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
+  LOGWARN(OSS() << "FunctionalChaosSobolIndices.getSobolGroupedIndex(int) is deprecated, use getSobolIndex");
   const Indices index(1, variableIndex);
   return getSobolGroupedIndex(index, marginalIndex);
 }
@@ -364,6 +365,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
 Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
+  LOGWARN(OSS() << "FunctionalChaosSobolIndices.getSobolGroupedTotalIndex(int) is deprecated, use getSobolTotalIndex");
   const Indices index(1, variableIndex);
   return getSobolGroupedTotalIndex(index, marginalIndex);
 }

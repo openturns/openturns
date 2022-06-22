@@ -23,7 +23,6 @@ Construction of the truncated multivariate orthogonal basis
     AdaptiveStrategy
     CleaningStrategy
     FixedStrategy
-    SequentialStrategy
 
 Computation of the polynomial chaos coefficients
 ================================================

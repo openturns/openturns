@@ -149,6 +149,7 @@ def test_two_outputs():
                       ot.SymbolicFunction(['x'], ['x^2'])])
     covarianceModel = ot.SquaredExponential([1.0])
     covarianceModel.setActiveParameter([])
+    covarianceModel = ot.TensorizedCovarianceModel([covarianceModel] * 2)
     algo = ot.KrigingAlgorithm(sampleX, sampleY, covarianceModel, basis)
     algo.run()
     result = algo.getResult()

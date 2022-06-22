@@ -217,10 +217,7 @@ def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
     startupinfo = None
     if hide_win and sys.platform.startswith('win'):
         startupinfo = subprocess.STARTUPINFO()
-        if hasattr(subprocess, 'STARTF_USESHOWWINDOW'):
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        else:
-            startupinfo.dwFlags |= 1
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
     stdout = subprocess.PIPE if capture_output else None
     stderr = subprocess.PIPE if capture_output else None

@@ -13,7 +13,7 @@ dimension : positive int
 
 See also
 --------
-AdaptiveStrategy, SequentialStrategy, CleaningStrategy
+AdaptiveStrategy, CleaningStrategy
 
 Notes
 -----

@@ -82,7 +82,7 @@ Catalog::~Catalog()
 
 
 template<>
-MutexLockSingleton<Catalog>::MutexLockSingleton( Catalog & singleton )  throw()
+MutexLockSingleton<Catalog>::MutexLockSingleton(Catalog & singleton)
   : singleton_(singleton)
   , lock_(Catalog_InstanceMutex_) {}
 

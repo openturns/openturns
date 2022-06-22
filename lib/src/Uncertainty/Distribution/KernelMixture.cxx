@@ -501,13 +501,12 @@ Scalar KernelMixture::computeConditionalPDF(const Scalar x,
   {
     Scalar marginalAtomPDF = 1.0;
     for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
-      marginalAtomPDF *= p_kernel_->computePDF((y[j] - sample_(i, j)) / bandwidth_[j]);
+      marginalAtomPDF *= p_kernel_->computePDF((y[j] - sample_(i, j)) * bandwidthInverse_[j]);
     marginalPDF += marginalAtomPDF;
-    jointPDF += marginalAtomPDF * p_kernel_->computePDF((x - sample_(i, conditioningDimension)) / bandwidth_[conditioningDimension]);
+    jointPDF += marginalAtomPDF * p_kernel_->computePDF((x - sample_(i, conditioningDimension)) * bandwidthInverse_[conditioningDimension]);
   }
   if (marginalPDF <= 0.0) return 0.0;
-  // No need to normalize by 1/h as it simplifies
-  return jointPDF / marginalPDF;
+  return bandwidthInverse_[conditioningDimension] * jointPDF / marginalPDF;
 }
 
 Point KernelMixture::computeSequentialConditionalPDF(const Point & x) const
@@ -529,14 +528,13 @@ Point KernelMixture::computeSequentialConditionalPDF(const Point & x) const
     // Return the result as soon as a conditional pdf is zero
     if (pdfConditioning == 0) return result;
     currentX = x[conditioningDimension];
-    currentH = bandwidth_[conditioningDimension];
     Scalar pdfConditioned = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      atomsValues[i] *= p_kernel_->computePDF((currentX - sample_(i, conditioningDimension)) / currentH);
+      atomsValues[i] *= p_kernel_->computePDF((currentX - sample_(i, conditioningDimension)) * bandwidthInverse_[conditioningDimension]);
       pdfConditioned += atomsValues[i];
     }
-    result[conditioningDimension] = pdfConditioned / pdfConditioning;
+    result[conditioningDimension] = bandwidthInverse_[conditioningDimension] * pdfConditioned / pdfConditioning;
     pdfConditioning = pdfConditioned;
   } // conditioningDimension
   return result;

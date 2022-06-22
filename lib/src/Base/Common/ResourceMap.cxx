@@ -73,7 +73,7 @@ ResourceMap_init::~ResourceMap_init()
 
 
 template<>
-MutexLockSingleton<ResourceMap>::MutexLockSingleton( ResourceMap & singleton )  throw()
+MutexLockSingleton<ResourceMap>::MutexLockSingleton(ResourceMap & singleton)
   : singleton_(singleton)
   , lock_(ResourceMap_InstanceMutex_) {}
 

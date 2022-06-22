@@ -70,9 +70,6 @@ public:
   /** Draw the bipartite graph */
   Graph draw() const;
 
-  /** Destructor */
-  ~BipartiteGraph() throw() {}
-
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
   String __repr__() const override;

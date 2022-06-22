@@ -29,6 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class SequentialStrategy
+ * @deprecated
  *
  * An implementation returning the set of polynomials in sequence
  */

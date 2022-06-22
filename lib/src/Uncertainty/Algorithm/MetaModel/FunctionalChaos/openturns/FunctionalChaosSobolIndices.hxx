@@ -69,12 +69,14 @@ public:
   /** Sobol grouped (first order) index accessor */
   Scalar getSobolGroupedIndex(const Indices & variableIndices,
                               const UnsignedInteger marginalIndex = 0) const;
+  /** @deprecated */
   Scalar getSobolGroupedIndex(const UnsignedInteger variableIndex,
                               const UnsignedInteger marginalIndex = 0) const;
 
   /** Sobol grouped total index accessor */
   Scalar getSobolGroupedTotalIndex(const Indices & variableIndices,
                                    const UnsignedInteger marginalIndex = 0) const;
+  /** @deprecated */
   Scalar getSobolGroupedTotalIndex(const UnsignedInteger variableIndex,
                                    const UnsignedInteger marginalIndex = 0) const;
 

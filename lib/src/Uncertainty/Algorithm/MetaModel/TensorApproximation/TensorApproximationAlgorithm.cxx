@@ -75,6 +75,8 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const Sample & inputS
   , maximumRadiusError_(ResourceMap::GetAsScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError"))
 {
+  LOGWARN(OSS() << "TensorApproximationAlgorithm is deprecated");
+
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
 

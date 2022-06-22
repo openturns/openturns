@@ -172,7 +172,11 @@ Scalar MetropolisHastingsImplementation::computeLogPDFPrior(const Point & state)
 
 Scalar MetropolisHastingsImplementation::computeLogPosterior(const Point & state) const
 {
-  return computeLogLikelihood(state) + computeLogPDFPrior(state);
+  Scalar logPosterior = computeLogPDFPrior(state);
+  // spare the likelihood evaluation if outside prior support
+  if (logPosterior > SpecFunc::LowestScalar)
+    logPosterior += computeLogLikelihood(state);
+  return logPosterior;
 }
 
 Point MetropolisHastingsImplementation::getRealization() const
