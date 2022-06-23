@@ -123,8 +123,8 @@ String Student::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << getClassName();
-  if (getDimension() == 1) oss << "(nu = " << nu_ << ", mu = " << getMean()[0] << ", sigma = " << getSigma()[0] << ")";
-  else oss << "(nu = " << nu_ << ", mu = " << getMean().__str__() << ", sigma = " << getSigma().__str__() << ", R = " << getCorrelation().__str__(offset) << ")";
+  if (getDimension() == 1) oss << "(nu = " << nu_ << ", mu = " << getMu() << ", sigma = " << getSigma()[0] << ")";
+  else oss << "(nu = " << nu_ << ", mu = " << mean_.__str__() << ", sigma = " << getSigma().__str__() << ", R = " << getCorrelation().__str__(offset) << ")";
   return oss;
 }
 
