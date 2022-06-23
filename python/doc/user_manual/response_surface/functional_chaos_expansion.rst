@@ -73,3 +73,14 @@ Results
     FunctionalChaosRandomVector
     FunctionalChaosResult
     FunctionalChaosSobolIndices
+
+Functional chaos on fields
+==========================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    FieldToPointFunctionalChaosAlgorithm
+    FieldFunctionalChaosResult
+    FieldFunctionalChaosSobolIndices

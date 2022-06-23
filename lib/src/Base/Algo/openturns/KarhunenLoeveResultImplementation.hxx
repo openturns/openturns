@@ -55,7 +55,8 @@ public:
                                     const Point & eigenvalues,
                                     const FunctionCollection & modes,
                                     const ProcessSample & modesAsProcessSample,
-                                    const Matrix & projection);
+                                    const Matrix & projection,
+                                    const Scalar selectionRatio);
 
   /** Virtual constructor */
   KarhunenLoeveResultImplementation * clone() const override;
@@ -87,6 +88,9 @@ public:
   /** Mesh accessor */
   Mesh getMesh() const;
 
+  /** Selection ratio accessor */
+  Scalar getSelectionRatio() const;
+
   /** Projection method */
   Point project(const Function & function) const;
   Point project(const Sample & values) const;
@@ -113,7 +117,7 @@ protected:
   CovarianceModel covariance_;
 
   /** Threshold */
-  Scalar threshold_;
+  Scalar threshold_ = 0.0;
 
   /** Eigenvalues */
   Point eigenvalues_;
@@ -126,6 +130,9 @@ protected:
 
   /** Projection matrix */
   Matrix projection_;
+
+  /** selected/cumulated variance ratio */
+  Scalar selectionRatio_ = 0.0;
 
 }; /* class KarhunenLoeveResultImplementation */
 

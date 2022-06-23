@@ -6,6 +6,8 @@ Refer to :ref:`functional_chaos`, :ref:`polynomial_least_squares`.
 Available constructors:
     FunctionalChaosAlgorithm(*inputSample, outputSample*)
 
+    FunctionalChaosAlgorithm(*inputSample, outputSample, distribution*)
+
     FunctionalChaosAlgorithm(*inputSample, outputSample, distribution, adaptiveStrategy*)
 
     FunctionalChaosAlgorithm(*inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy*)

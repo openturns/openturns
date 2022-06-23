@@ -52,7 +52,8 @@ public:
                       const Point & eigenvalues,
                       const FunctionCollection & modes,
                       const ProcessSample & modesAsProcessSample,
-                      const Matrix & projection);
+                      const Matrix & projection,
+                      const Scalar selectionRatio);
 
   /** Constructor from implementation */
   KarhunenLoeveResult(const KarhunenLoeveResultImplementation & implementation);
@@ -86,6 +87,9 @@ public:
 
   /** Mesh accessor */
   Mesh getMesh() const;
+
+  /** Selection ratio accessor */
+  Scalar getSelectionRatio() const;
 
   /** Projection method */
   Point project(const Function & function) const;

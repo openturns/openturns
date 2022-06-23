@@ -219,6 +219,19 @@ OT_KarhunenLoeveResult_getMesh_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_KarhunenLoeveResult_getSelectionRatio_doc
+"Accessor to the selection ratio.
+
+Returns
+-------
+ratio : float
+    Ratio of selected variance over cumulated variance."
+%enddef
+%feature("docstring") OT::KarhunenLoeveResultImplementation::getSelectionRatio
+OT_KarhunenLoeveResult_getSelectionRatio_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_KarhunenLoeveResult_getProjectionMatrix_doc
 "Accessor to the projection matrix.
 

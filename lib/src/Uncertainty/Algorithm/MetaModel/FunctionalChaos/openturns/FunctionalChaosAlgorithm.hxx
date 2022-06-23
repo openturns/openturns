@@ -85,6 +85,10 @@ public:
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
                            const Sample & outputSample);
+  /** Constructor */
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Sample & outputSample,
+                           const Distribution & distribution);
 
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,

@@ -1,0 +1,162 @@
+%feature("docstring") OT::FieldFunctionalChaosSobolIndices
+"Sobol indices from a functional decomposition.
+
+This class allows to perform sensitivity analysis from field chaos decomposition.
+The process decomposition is done by Karhunen-Loeve and the modes interpolation
+is performed by functional chaos:
+
+.. math::
+
+    \tilde{g}(x) = \sum_{k \in K_c} \beta_{\vect{\alpha}_k} \Psi_{\vect{\alpha}_k}(x)
+
+Let us expand the multi indices notation:
+
+.. math::
+
+    \Psi_{\vect{\alpha}}(x) = \prod_{j=1}^{K_T} P^j_{\alpha_j}(x_j)
+
+with
+
+.. math::
+
+    \vect{\alpha} \in \mathbb{N}^{K_T} = \{\underbrace{\alpha_1, \dots, \alpha_{K_1}}_{K_1},\dots,\underbrace{\alpha_{K_T-K_d}, \dots, \alpha_{K_T}}_{K_d}\}
+
+see :class:`~openturns.FunctionalChaosAlgorithm` for details.
+
+Sobol indices of the input field component :math:`j \in [1,d]` can be computed
+from the coefficients of the chaos decomposition that involve the
+matching Karhunen-Loeve coefficients.
+
+For the first order Sobol indices we sum over the multi-indices :math:`\vect{\alpha}_k`
+that are non-zero on the :math:`K_j` indices corresponding to the Karhunen-Loeve
+decomposition of j-th input and zero on the other :math:`K_T - K_j` indices (noted :math:`G_j`):
+
+.. math::
+
+    S_j = \frac{\sum_{k=1, \vect{\alpha}_k \in G_j}^{K_c} \beta_{\vect{\alpha}_k}^2}{\sum_{k=1}^{K_c} \beta_{\vect{\alpha}_k}^2}
+
+For the total order Sobol indices we sum over the multi-indices :math:`\vect{\alpha}_k`
+that are non-zero on the :math:`K_j` indices corresponding to the Karhunen-Loeve
+decomposition of the j-th input (noted :math:`GT_j`):
+
+.. math::
+
+    S_{T_j} = \frac{\sum_{k=1, \vect{\alpha}_k \in GT_j}^{K_c} \beta_{\vect{\alpha}_k}^2}{\sum_{k=1}^{K_c} \beta_{\vect{\alpha}_k}^2} 
+
+This generalizes to higher order indices.
+
+Parameters
+----------
+result : :class:`~openturns.FieldFunctionalChaosResult`
+    Result.
+
+See also
+--------
+FieldToPointFunctionalChaosAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> mesh = ot.RegularGrid(0.0, 0.1, 20)
+>>> cov = ot.KroneckerCovarianceModel(ot.MaternModel([2.0], 1.5), ot.CovarianceMatrix(4))
+>>> X = ot.GaussianProcess(cov, mesh)
+>>> x = X.getSample(500)
+>>> y = []
+>>> for xi in x:
+...     m = xi.computeMean()
+...     y.append([m[0] + m[1] + m[2] - m[3] + m[0] * m[1] - m[2] * m[3] - 0.1 * m[0] * m[1] * m[2]])
+>>> algo = ot.FieldToPointFunctionalChaosAlgorithm(x, y)
+>>> algo.setThreshold(4e-2)
+>>> # Temporarily lower the basis size for the sake of this example.
+>>> # We need to store the original size.
+>>> bs = ot.ResourceMap.GetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize')
+>>> ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', 100)
+>>> algo.run()
+>>> # The algorithm has been run with the lower basis size:
+>>> # we can now restore the original value.
+>>> ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', bs)
+>>> result = algo.getResult()
+>>> sensitivity = ot.FieldFunctionalChaosSobolIndices(result)
+>>> sobol_1 = sensitivity.getFirstOrderIndices()
+>>> sobol_t = sensitivity.getTotalOrderIndices()
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosSobolIndices::getSobolIndex
+"Get a single Sobol index.
+
+Parameters
+----------
+i : int or list of int
+    Input index
+j : int, default=0
+    Ouput index
+
+Returns
+-------
+s : float
+    Sobol index"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosSobolIndices::getSobolTotalIndex
+"Get a single Sobol index.
+
+Parameters
+----------
+i : int or list of int
+    Input index
+j : int, default=0
+    Ouput index
+
+Returns
+-------
+s : float
+    Sobol index"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosSobolIndices::getFirstOrderIndices
+"Get the first order Sobol indices.
+
+Parameters
+----------
+j : int, default=0
+    Ouput index
+
+Returns
+-------
+indices : :class:`~openturns.Point`
+    First order Sobol indices"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosSobolIndices::getTotalOrderIndices
+"Get the total order Sobol indices.
+
+Parameters
+----------
+j : int, default=0
+    Ouput index
+
+Returns
+-------
+indices : :class:`~openturns.Point`
+    Total order Sobol indices"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosSobolIndices::draw
+"Draw sensitivity indices.
+
+Parameters
+----------
+marginalIndex : int, default=0
+    Marginal index
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graph showing the first and total order indices per input."

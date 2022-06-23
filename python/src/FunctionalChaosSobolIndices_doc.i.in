@@ -56,23 +56,19 @@ Print Sobol' indices :
 
 Get first order Sobol' indices for X0:
 
->>> chaosSI.getSobolIndex(0)
-0.322659...
+>>> s0 = chaosSI.getSobolIndex(0)
 
 Get total order Sobol' indices for X0:
 
->>> chaosSI.getSobolTotalIndex(0)
-0.4744650...
+>>> st0 = chaosSI.getSobolTotalIndex(0)
 
 Get first order Sobol' indices for group [X0,X1]:
 
->>> chaosSI.getSobolGroupedIndex([0,1])
-0.78412698...
+>>> stg01 = chaosSI.getSobolGroupedIndex([0,1])
 
 Get total order Sobol' indices for group [X1,X2]:
 
->>> chaosSI.getSobolGroupedTotalIndex([1,2])
-0.6773409..."
+>>> stg12 = chaosSI.getSobolGroupedTotalIndex([1,2])"
 
 // ---------------------------------------------------------------------
 
