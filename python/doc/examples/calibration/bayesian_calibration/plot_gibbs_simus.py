@@ -90,22 +90,23 @@ Linear Regression with interval-censored observations
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 import openturns as ot
 from openturns.viewer import View
+import numpy as np
 
 ot.Log.Show(ot.Log.NONE)
-ot.RandomGenerator.SetSeed(11123)
-import numpy as np
+ot.RandomGenerator.SetSeed(1)
 
 n = 10
 delta = 0.5
 
-
-X = ot.ComposedDistribution([ot.Dirac(1.0), 10.0 * ot.Normal()]).getSample(n)
+# %%
+# Build the design matrix :math:`\mat{X}`
+X = ot.Sample([[1.0]] * n)
+X.stack(ot.Normal(0.0, 10.0).getSample(n))
 
 # %%
 # Make the precision matrix :math:`\mat{Q}` a diagonal matrix and sample
 # its diagonal coefficients from an :class:`~openturns.Exponential` distribution.
 Q = np.ones((n, 1)) + ot.Exponential().getSample(n)
-
 
 # %%
 # Choose values for the parameters :math:`\vect{\theta}` and :math:`\tau`.
@@ -123,16 +124,20 @@ Yobs_sim = np.round(Y_sim / delta) * delta
 
 # %%
 # Plot the simulated dataset.
-graph = ot.Graph("Simulated data", "$X$", "$Y^{obs}$", True, "topleft", 16)
-cloud = ot.Cloud(X[:, 1].asPoint(), Yobs_sim)
-cloud.setPointStyle("bullet")
-graph.add(cloud)
+graph = ot.Graph("Simulated data", "$X_1$", "$Y$", True, "topleft", 16)
+cloud_obs = ot.Cloud(X[:, 1].asPoint(), Yobs_sim)
+cloud_obs.setPointStyle("bullet")
+cloud_sim = ot.Cloud(X[:, 1].asPoint(), Y_sim)
+cloud_sim.setPointStyle("bullet")
 curve = ot.Curve(X[:, 1].asPoint(), mean_true)
 curve.setLineWidth(1.5)
-curve.setColor("orange")
 graph.add(curve)
-graph.setLegends(["Simulations", "Simulation mean"])
+graph.add(cloud_sim)
+graph.add(cloud_obs)
+graph.setLegends(["Trend", "$Y^{sim}$", "$Y^{obs}$"])
+graph.setColors(ot.Drawable.BuildDefaultPalette(3))
 _ = View(graph)
+
 
 # %%
 # 2. Bayesian Inference
@@ -180,13 +185,13 @@ _ = View(graph)
 # posterior distribution, justifying the use of Monte-Carlo Markov chain
 # techniques, as described hereafter.
 
-# %%
-# Upper/lower bounds on uncertain variables
-
 lower = (Yobs_sim.ravel() - delta).tolist()
 upper = (Yobs_sim.ravel() + delta).tolist()
 
-support = ot.Interval([-2] * p + [1e-4] + lower, [2] * p + [1e1] + upper)
+# Global support of the joint distribution: theta, tau, outputs
+support = ot.Interval([-2.0] * p + [1e-4] + lower, [2.0] * p + [1e1] + upper)
+
+prior = ot.ComposedDistribution([ot.Uniform(-2.0, 2.0), ot.Uniform(-2.0, 2.0), ot.Uniform(1e-4, 1e1)])
 
 # Initialize to true value
 initial_state = theta_true[:, 0].tolist() + [tau_true] + Y_sim.ravel().tolist()
@@ -312,7 +317,7 @@ def py_link_function_y(x):
 # Step 1 : Create associated :class:`~openturns.RandomVector`
 
 
-class BoxConstrainedNormal(ot.PythonDistribution):
+class BoxConstrainedNormal(ot.PythonRandomVector):
     """
     Multivariate normal distribution
     under box constraints
@@ -333,15 +338,13 @@ class BoxConstrainedNormal(ot.PythonDistribution):
         self.Sigma = Sigma
         self.r = r
         self.s = s
-
-    def getRange(self):
-        return ot.Interval(self.r, self.s)
+        self.interval = ot.Interval(r, s)
 
     def setParameter(self, parameter):
         d = self.getDimension()
         self.mu = np.array(parameter[:d])
-        self.Sigma = np.array(parameter[d : d + d * d]).reshape(d, d)
-        self.r = np.array(parameter[-2 * d : -d])
+        self.Sigma = np.array(parameter[d: d + d * d]).reshape(d, d)
+        self.r = np.array(parameter[-2 * d: -d])
         self.s = np.array(parameter[-d:])
         self.interval = ot.Interval(self.r, self.s)
 
@@ -359,8 +362,7 @@ class BoxConstrainedNormal(ot.PythonDistribution):
         return proposal
 
 
-otBoxConstrainedNormal = ot.Distribution(BoxConstrainedNormal())
-RV_theta = ot.RandomVector(otBoxConstrainedNormal)
+RV_theta = ot.RandomVector(BoxConstrainedNormal())
 
 
 # %%
@@ -420,14 +422,14 @@ def py_log_density(x):
     theta = [x[i] for i in range(p)]
     tau = x[p]
     Y = [x[p + 1 + i] for i in range(len(X))]
-    l = ot.ComposedDistribution(marginals_Y(theta, tau)).computeLogPDF(Y)
-    return [l]
+    ld = ot.ComposedDistribution(marginals_Y(theta, tau)).computeLogPDF(Y)
+    return [ld]
 
 
 # %%
 # Step 2 : define the proposal distribution
 
-proposal = ot.Normal(0.0, 1e-1)
+proposal_tau = ot.Normal(0.0, 1e-1)
 
 # %%
 # 2.3. Initialization
@@ -472,6 +474,7 @@ proposal = ot.Normal(0.0, 1e-1)
 # The optimal value of :math:`\vect{\theta}` is then given by:
 # :math:`\widehat{\vect{\theta}} = \vect{\mu}_n(\widehat\tau).`
 
+
 def mu_n(tau):
     x = ot.Point(initial_state)
     x[p] = tau
@@ -492,13 +495,17 @@ def log_cond_tau_post(tau):
 
 # %%
 # 1D optimization
-func = lambda X: [-log_cond_tau_post(X[0])]
+def func(X):
+    return [-log_cond_tau_post(X[0])]
+
+
 problem = ot.OptimizationProblem(ot.PythonFunction(1, 1, func))
 problem.setBounds(ot.Interval([1e-4], [1e4]))
 solver = ot.TNC(problem)
 solver.setStartingPoint([1.0])
 solver.run()
 tauhat = solver.getResult().getOptimalPoint()[0]
+print("tauhat =", tauhat)
 
 # inject result in initialState vector
 x = ot.Point(initial_state)
@@ -523,7 +530,7 @@ rvmh_theta = ot.RandomVectorMetropolisHastings(
 
 log_pdf_tau = ot.PythonFunction(len(x), 1, py_log_density)
 rwmh_tau = ot.RandomWalkMetropolisHastings(
-    log_pdf_tau, support, initialState, proposal, [p]
+    log_pdf_tau, support, initialState, proposal_tau, [p]
 )
 
 # Now, assemble the blocks to create a Gibbs algorithm:
@@ -541,30 +548,30 @@ tau_post = np.array(sample[:, p]).ravel()
 acc_rate = (tau_post[1:] != tau_post[:-1]).mean()
 print("Acceptance rate: %s" % acc_rate)
 
-
 # %%
 # Plot posterior distribution marginals
 
 # extract interest parameters
 post_sample = sample.getMarginal([i for i in range(p + 1)])
-post_sample.setDescription(["$\\theta_1$", "$\\theta_2$", "$\\tau$"])
+post_sample.setDescription(["$\\theta_0$", "$\\theta_1$", "$\\tau$"])
 
-ks = ot.KernelSmoothing()
-posterior = ks.build(post_sample)
-
-# Optional: change the bandwidth
-bandwidth = ks.getBandwidth()
-for k in range(len(bandwidth)):
-    bandwidth[k] = 1.0 * bandwidth[k]
-posterior = ks.build(post_sample, bandwidth)
+posterior = ot.KernelSmoothing().build(post_sample)
+posterior = ot.TruncatedDistribution(posterior, prior.getRange())
 
 grid = ot.GridLayout(1, 3)
 grid.setTitle("Bayesian inference")
 xlabs = [r"$\theta_0$", r"$\theta_1$", r"$\tau$"]
+p_true = [theta_true[0][0], theta_true[1][0], tau_true]
 for parameter_index in range(3):
     graph = posterior.getMarginal(parameter_index).drawPDF()
-    graph.setColors(ot.Drawable.BuildDefaultPalette(2))
-    graph.setLegends(["Posterior"])
+    bbox = graph.getBoundingBox()
+    bound = bbox.getUpperBound()[1]
+    prior_pdf = prior.getMarginal(parameter_index).drawPDF()
+    graph.add(prior_pdf)
+    curve_true = ot.Curve([p_true[parameter_index]] * 2, [0.0, bound])
+    graph.add(curve_true)
+    graph.setColors(ot.Drawable.BuildDefaultPalette(3))
+    graph.setLegends(["Posterior", "Prior", "True value"])
     graph.setXTitle(xlabs[parameter_index])
     grid.setGraph(0, parameter_index, graph)
 _ = View(grid)
@@ -574,9 +581,24 @@ _ = View(grid)
 # Draw pairplots of the posterior sample.
 
 # sphinx_gallery_thumbnail_number = 3
-graph = ot.Graph("Cloud pairs graph", " ", " ", True, "")
-graph = ot.VisualTest.DrawPairs(post_sample)
-_ = View(graph)
+grid = ot.VisualTest.DrawPairs(post_sample)
+
+graph = grid.getGraph(0, 0)
+pt = ot.Cloud(theta_true.T, "#2ca02c", "circle", "True value")
+graph.add(pt)
+grid.setGraph(0, 0, graph)
+
+graph = grid.getGraph(1, 0)
+pt = ot.Cloud([[theta_true[0, 0], tau_true]], "#2ca02c", "circle", "True value")
+graph.add(pt)
+grid.setGraph(1, 0, graph)
+
+graph = grid.getGraph(1, 1)
+pt = ot.Cloud([[theta_true[1, 0], tau_true]], "#2ca02c", "circle", "True value")
+graph.add(pt)
+grid.setGraph(1, 1, graph)
+
+_ = View(grid)
 
 
 View.ShowAll()
