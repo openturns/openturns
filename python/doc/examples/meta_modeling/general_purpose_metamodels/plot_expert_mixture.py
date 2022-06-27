@@ -70,13 +70,13 @@ productBasis = ot.OrthogonalProductPolynomialFactory(
     [ot.LegendreFactory()] * dimension, enumerateFunction)
 adaptiveStrategy = ot.FixedStrategy(
     productBasis, enumerateFunction.getStrataCumulatedCardinal(degree))
-projectionStrategy = ot.LeastSquaresStrategy(
-    ot.MonteCarloExperiment(samplingSize))
 
 # %%
 # Segment 1: (-1.0; 0.0)
 d1 = ot.Uniform(-1.0, 0.0)
-fc1 = ot.FunctionalChaosAlgorithm(f, d1, adaptiveStrategy, projectionStrategy)
+X1 = d1.getSample(samplingSize)
+Y1 = f(X1)
+fc1 = ot.FunctionalChaosAlgorithm(X1, Y1, d1, adaptiveStrategy)
 fc1.run()
 mm1 = fc1.getResult().getMetaModel()
 graph = mm1.draw(-1.0, -1e-6)
@@ -85,7 +85,9 @@ view = viewer.View(graph)
 # %%
 # Segment 2: (0.0, 1.0)
 d2 = ot.Uniform(0.0, 1.0)
-fc2 = ot.FunctionalChaosAlgorithm(f, d2, adaptiveStrategy, projectionStrategy)
+X2 = d2.getSample(samplingSize)
+Y2 = f(X2)
+fc2 = ot.FunctionalChaosAlgorithm(X2, Y2, d2, adaptiveStrategy)
 fc2.run()
 mm2 = fc2.getResult().getMetaModel()
 graph = mm2.draw(1e-6, 1.0)

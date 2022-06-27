@@ -77,7 +77,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "FunctionalChaosAlgorithm(Function) is deprecated");
 }
 
 /* Constructor */
@@ -132,7 +132,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
   , projectionStrategy_(LeastSquaresStrategy())
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "FunctionalChaosAlgorithm(Function) is deprecated");
 }
 
 /* Constructor */

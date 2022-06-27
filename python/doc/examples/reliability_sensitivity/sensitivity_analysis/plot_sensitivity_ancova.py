@@ -58,10 +58,10 @@ productBasis = ot.OrthogonalProductPolynomialFactory(
 adaptiveStrategy = ot.FixedStrategy(
     productBasis, enumerateFunction.getStrataCumulatedCardinal(4))
 samplingSize = 250
-projectionStrategy = ot.LeastSquaresStrategy(
-    ot.MonteCarloExperiment(samplingSize))
-algo = ot.FunctionalChaosAlgorithm(
-    model, distribution, adaptiveStrategy, projectionStrategy)
+experiment = ot.MonteCarloExperiment(distribution, samplingSize)
+X = experiment.generate()
+Y = model(X)
+algo = ot.FunctionalChaosAlgorithm(X, Y, distribution, adaptiveStrategy)
 algo.run()
 result = ot.FunctionalChaosResult(algo.getResult())
 

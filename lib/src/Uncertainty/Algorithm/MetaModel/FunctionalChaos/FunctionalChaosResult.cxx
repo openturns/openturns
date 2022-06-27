@@ -136,6 +136,7 @@ Function FunctionalChaosResult::getInverseTransformation() const
 /* Composed model accessor */
 Function FunctionalChaosResult::getComposedModel() const
 {
+  throw InvalidArgumentException(HERE) << "FunctionalChaosResult.getComposedModel is deprecated";
   return composedModel_;
 }
 

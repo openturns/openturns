@@ -78,26 +78,27 @@ print(distributionStandard)
 
 # %%
 marginalSizes = [4] * dim_input
-experiment = ot.GaussProductExperiment(distributionStandard, marginalSizes)
+experiment = ot.GaussProductExperiment(myDistribution, marginalSizes)
 
 # %%
 # We can see the size of the associated design of experiments.
 
 # %%
-experiment.generate().getSize()
+X, W = experiment.generateWithWeights()
+Y = g(X)
+X.getSize()
 
 # %%
 # The choice of the `GaussProductExperiment` rule leads to 256 evaluations of the model.
 
 # %%
-projectionStrategy = ot.IntegrationStrategy(experiment)
+projectionStrategy = ot.IntegrationStrategy()
 
 # %%
 # We can now create the functional chaos.
 
 # %%
-chaosalgo = ot.FunctionalChaosAlgorithm(
-    g, myDistribution, adaptiveStrategy, projectionStrategy)
+chaosalgo = ot.FunctionalChaosAlgorithm(X, W, Y, myDistribution, adaptiveStrategy, projectionStrategy)
 chaosalgo.run()
 
 # %%

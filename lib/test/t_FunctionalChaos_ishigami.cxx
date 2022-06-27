@@ -103,96 +103,93 @@ int main(int, char *[])
       // Create the projection strategy
       UnsignedInteger samplingSize = 250;
       Collection<ProjectionStrategy> listProjectionStrategy(0);
-      // Monte Carlo sampling
-      listProjectionStrategy.add(LeastSquaresStrategy(MonteCarloExperiment(samplingSize)));
-      // LHS sampling
-      listProjectionStrategy.add(LeastSquaresStrategy(LHSExperiment(samplingSize)));
-      // Low Discrepancy sequence
-      listProjectionStrategy.add(LeastSquaresStrategy(LowDiscrepancyExperiment(LowDiscrepancySequence(SobolSequence()), samplingSize)));
-      // The integration strategy
-      // Monte Carlo sampling
-      listProjectionStrategy.add(IntegrationStrategy(MonteCarloExperiment(samplingSize)));
-      // LHS sampling
-      listProjectionStrategy.add(IntegrationStrategy(LHSExperiment(samplingSize)));
-      // Low Discrepancy sequence
-      listProjectionStrategy.add(IntegrationStrategy(LowDiscrepancyExperiment(LowDiscrepancySequence(SobolSequence()), samplingSize)));
+      listProjectionStrategy.add(LeastSquaresStrategy());
+      listProjectionStrategy.add(IntegrationStrategy());
+
       for(UnsignedInteger projectionStrategyIndex = 0; projectionStrategyIndex < listProjectionStrategy.getSize(); ++projectionStrategyIndex)
       {
         ProjectionStrategy projectionStrategy(listProjectionStrategy[projectionStrategyIndex]);
-        // Create the polynomial chaos algorithm
-        Scalar maximumResidual = 1.0e-10;
-        FunctionalChaosAlgorithm algo(model, distribution, adaptiveStrategy, projectionStrategy);
-        algo.setMaximumResidual(maximumResidual);
-        // Reinitialize the RandomGenerator to see the effect of the sampling method only
-        RandomGenerator::SetSeed(0);
-        algo.run();
 
-        // Examine the results
-        result = algo.getResult();
-        fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
-        fullprint << algo.getAdaptiveStrategy() << std::endl;
-        fullprint << algo.getProjectionStrategy() << std::endl;
-        Point residuals(result.getResiduals());
-        fullprint << "residuals=" << std::fixed << std::setprecision(5) << residuals << std::endl;
-        Point relativeErrors(result.getRelativeErrors());
-        fullprint << "relative errors=" << std::fixed << std::setprecision(5) << relativeErrors << std::endl;
+        Collection<WeightedExperiment> listExperiment(0);
+        listExperiment.add(MonteCarloExperiment(distribution, samplingSize));
+        listExperiment.add(LHSExperiment(distribution, samplingSize));
+        listExperiment.add(LowDiscrepancyExperiment(SobolSequence(), distribution, samplingSize));
 
-        // Post-process the results
-        FunctionalChaosRandomVector vector(result);
-        Scalar mean = vector.getMean()[0];
-        fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(mean - meanTh) << std::endl;
-        Scalar variance = vector.getCovariance()(0, 0);
-        fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(variance - covTh) << std::endl;
-        FunctionalChaosSobolIndices sensitivity(result);
-        for(UnsignedInteger i = 0; i < dimension; ++i)
+        for(UnsignedInteger experimentIndex = 0; experimentIndex < listExperiment.getSize(); ++ experimentIndex)
         {
-          Scalar value = sensitivity.getSobolIndex(i);
-          fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_1[i]) << std::endl;
-        }
-        Indices indices(2);
-        UnsignedInteger k = 0;
-        for (UnsignedInteger i = 0; i < dimension; ++i)
-        {
-          indices[0] = i;
-          for (UnsignedInteger j = i + 1; j < dimension; ++j)
+          WeightedExperiment experiment(listExperiment[experimentIndex]);
+          RandomGenerator::SetSeed(0);
+          const Sample X(experiment.generate());
+          const Sample Y(model(X));
+
+          // Create the polynomial chaos algorithm
+          Scalar maximumResidual = 1.0e-10;
+          FunctionalChaosAlgorithm algo(X, Y, distribution, adaptiveStrategy, projectionStrategy);
+          algo.setMaximumResidual(maximumResidual);
+          algo.run();
+
+          // Examine the results
+          result = algo.getResult();
+          fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
+          fullprint << algo.getAdaptiveStrategy() << std::endl;
+          fullprint << algo.getProjectionStrategy() << std::endl;
+          Point residuals(result.getResiduals());
+          fullprint << "residuals=" << std::fixed << std::setprecision(5) << residuals << std::endl;
+          Point relativeErrors(result.getRelativeErrors());
+          fullprint << "relative errors=" << std::fixed << std::setprecision(5) << relativeErrors << std::endl;
+
+          // Post-process the results
+          FunctionalChaosRandomVector vector(result);
+          Scalar mean = vector.getMean()[0];
+          fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(mean - meanTh) << std::endl;
+          Scalar variance = vector.getCovariance()(0, 0);
+          fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(variance - covTh) << std::endl;
+          FunctionalChaosSobolIndices sensitivity(result);
+          for(UnsignedInteger i = 0; i < dimension; ++i)
           {
-            indices[1] = j;
-            Scalar value = sensitivity.getSobolIndex(indices);
-            fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_2[k]) << std::endl;
-            k = k + 1;
+            Scalar value = sensitivity.getSobolIndex(i);
+            fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_1[i]) << std::endl;
           }
-        }
-        indices = Indices(3);
-        indices[0] = 0;
-        indices[1] = 1;
-        indices[2] = 2;
-        Scalar value = sensitivity.getSobolIndex(indices);
-        fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_3[0]) << std::endl;
-        for (UnsignedInteger i = 0; i < dimension; ++i)
-        {
-          value = sensitivity.getSobolTotalIndex(i);
-          fullprint << "Sobol total index " << i << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i]) << std::endl;
-        }
-        indices = Indices(2);
-        k = 0;
-        for (UnsignedInteger i = 0; i < dimension; ++i)
-        {
-          indices[0] = i;
-          for (UnsignedInteger j = i + 1; j < dimension; ++j)
+          Indices indices(2);
+          UnsignedInteger k = 0;
+          for (UnsignedInteger i = 0; i < dimension; ++i)
           {
-            indices[1] = j;
-            value = sensitivity.getSobolTotalIndex(indices);
-            fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T2[k]) << std::endl;
-            k = k + 1;
+            indices[0] = i;
+            for (UnsignedInteger j = i + 1; j < dimension; ++j)
+            {
+              indices[1] = j;
+              Scalar value = sensitivity.getSobolIndex(indices);
+              fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_2[k]) << std::endl;
+              k = k + 1;
+            }
           }
+          indices = Indices(3);
+          indices.fill();
+          Scalar value = sensitivity.getSobolIndex(indices);
+          fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_3[0]) << std::endl;
+          for (UnsignedInteger i = 0; i < dimension; ++i)
+          {
+            value = sensitivity.getSobolTotalIndex(i);
+            fullprint << "Sobol total index " << i << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i]) << std::endl;
+          }
+          indices = Indices(2);
+          k = 0;
+          for (UnsignedInteger i = 0; i < dimension; ++i)
+          {
+            indices[0] = i;
+            for (UnsignedInteger j = i + 1; j < dimension; ++j)
+            {
+              indices[1] = j;
+              value = sensitivity.getSobolTotalIndex(indices);
+              fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T2[k]) << std::endl;
+              k = k + 1;
+            }
+          }
+          indices = Indices(3);
+          indices.fill();
+          value = sensitivity.getSobolTotalIndex(indices);
+          fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T3[0]) << std::endl;
         }
-        indices = Indices(3);
-        indices[0] = 0;
-        indices[1] = 1;
-        indices[2] = 2;
-        value = sensitivity.getSobolTotalIndex(indices);
-        fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T3[0]) << std::endl;
-
       }
     }
   }

@@ -50,7 +50,7 @@ public:
   /** Default constructor */
   FunctionalChaosAlgorithm();
 
-  /** Constructor */
+  /** Constructor @deprecated */
   FunctionalChaosAlgorithm(const Function & model,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy,
@@ -71,7 +71,7 @@ public:
                            const AdaptiveStrategy & adaptiveStrategy,
                            const ProjectionStrategy & projectionStrategy);
 
-  /** Constructor */
+  /** Constructor @deprecated */
   FunctionalChaosAlgorithm(const Function & model,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy);
