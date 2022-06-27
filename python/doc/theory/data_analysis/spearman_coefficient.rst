@@ -157,8 +157,8 @@ coefficient.
 
 .. topic:: API:
 
-    - See :meth:`~openturns.CorrelationAnalysis.computeSpearmanCorrelation`
-    - See :meth:`~openturns.Sample.computeSpearmanCorrelation`
+    - See :class:`CorrelationAnalysis.`:meth:`~openturns.CorrelationAnalysis.computeSpearmanCorrelation`
+    - See :class:`Sample.`:meth:`~openturns.Sample.computeSpearmanCorrelation`
 
 .. topic:: Examples:
 

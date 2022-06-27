@@ -27,6 +27,9 @@ outputSample = analytical(inputSample)
 # Create the CorrelationAnalysis object
 corr_analysis = ot.CorrelationAnalysis(inputSample, outputSample)
 
+# Because here outputSample = analyical(inputSample),
+# the theoretical squared SRC indices are equal to the Sobol indices
+# See theory/reliability_sensitivity/sensitivity_sobol.rst for the computation.
 squared_src = corr_analysis.computeSquaredSRC()
 ott.assert_almost_equal(squared_src, [0.9, 0.1], 0.0, 1e-2) # theoretical value
 

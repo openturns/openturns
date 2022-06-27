@@ -68,7 +68,7 @@ It is a good idea to check the quality of the :ref:`linear regression <linear_re
 before estimating the SRC coefficients: if the linear regression model
 is a poor fit to the data, then the SRC coefficients are useless.
 
-Note that if there exists map :math:`g` such that :math:`Y=g(X^1, ..., X^n)`,
+Note that if there exists a map :math:`g` such that :math:`Y=g(X^1, ..., X^n)`,
 then the squared SRC coefficients are equal to :ref:`Sobol' indices <sensitivity_sobol>`.
 
 Standard *Rank* Regression Coefficients (SRRC) are SRC coefficients
