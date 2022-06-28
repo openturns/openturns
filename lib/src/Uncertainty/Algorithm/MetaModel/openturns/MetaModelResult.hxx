@@ -44,7 +44,9 @@ public:
   MetaModelResult();
 
   /** Standard constructor */
-  MetaModelResult(const Function & model,
+  MetaModelResult(const Sample & inputSample,
+                  const Sample & outputSample,
+                  const Function & model,
                   const Function & metaModel,
                   const Point & residuals,
                   const Point & relativeErrors);
@@ -52,7 +54,15 @@ public:
   /** Virtual constructor */
   MetaModelResult * clone() const override;
 
-  /** Model accessor */
+  /** Sample accessor */
+  virtual void setInputSample(const Sample & sampleX);
+  virtual Sample getInputSample() const;
+
+  /** Sample accessor */
+  virtual void setOutputSample(const Sample & sampleY);
+  virtual Sample getOutputSample() const;
+
+  /** Model accessor @deprecated */
   virtual void setModel(const Function & model);
   virtual Function getModel() const;
 
@@ -78,6 +88,9 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+
+  Sample inputSample_;
+  Sample outputSample_;
 
   // The initial model
   Function model_;

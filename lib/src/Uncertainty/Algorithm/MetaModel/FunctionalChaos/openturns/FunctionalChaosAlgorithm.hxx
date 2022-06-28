@@ -119,10 +119,6 @@ public:
   /** Get the functional chaos result */
   FunctionalChaosResult getResult() const;
 
-  /** Sample accessors */
-  Sample getInputSample() const override;
-  Sample getOutputSample() const override;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

@@ -63,10 +63,6 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** Sample accessors */
-  Sample getInputSample() const override;
-  Sample getOutputSample() const override;
-
   /** Basis accessor */
   Basis getBasis() const;
 
@@ -84,13 +80,6 @@ public:
 
 
 private:
-
-  // The input data
-  Sample inputSample_;
-
-  // The associated output data
-  Sample outputSample_;
-
   /** The basis */
   Basis basis_;
 
@@ -98,7 +87,7 @@ private:
   LinearModelResult result_;
 
   /** Bool to tell if optimization has run */
-  Bool hasRun_;
+  Bool hasRun_ = false;
 
 }; /* class LinearModelAlgorithm */
 

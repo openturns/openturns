@@ -1,26 +1,18 @@
 %feature("docstring") OT::MetaModelAlgorithm
-"Base class to compute a metamodel.
-
-Available constructor:
-    MetaModelAlgorithm(*distribution, model*)
+"Base class for metamodel algorithms.
 
 Parameters
 ----------
-distribution : :class:`~openturns.Distribution`
+sampleX, sampleY : 2-d sequence of float
+    Input/output samples
+distribution : :class:`~openturns.Distribution`, optional
     Joint probability density function of the physical input vector.
-model : :class:`~openturns.Function`
-    Physical model to be approximated by a metamodel.
 
-Notes
------
-A MetaModelAlgorithm object can be used only through its derived classes:
-
-- :class:`~openturns.KrigingAlgorithm`
-
-- :class:`~openturns.FunctionalChaosAlgorithm`"
+See also
+--------
+LinearModelAlgorithm, KrigingAlgorithm, GeneralLinearModelAlgorithm, FunctionalChaosAlgorithm"
 
 // ---------------------------------------------------------------------
-
 
 %feature("docstring") OT::MetaModelAlgorithm::BuildDistribution
 "Recover the distribution, with metamodel performance in mind.

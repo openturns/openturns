@@ -49,9 +49,7 @@ static const Factory<GeneralLinearModelAlgorithm> Factory_GeneralLinearModelAlgo
 
 /* Default constructor */
 GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
-  : MetaModelAlgorithm()
-  , inputSample_(0, 1) // 1 is to be consistent with the default covariance model
-  , outputSample_(0, 1) // same
+  : MetaModelAlgorithm(Sample(0, 1), Sample(0, 1))
   , covarianceModel_()
   , reducedCovarianceModel_()
   , solver_()
@@ -77,9 +75,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Sample & outputSample,
     const CovarianceModel & covarianceModel,
     const Bool keepCholeskyFactor)
-  : MetaModelAlgorithm()
-  , inputSample_(0, 0)
-  , outputSample_(0, 0)
+  : MetaModelAlgorithm(inputSample, outputSample)
   , covarianceModel_()
   , reducedCovarianceModel_()
   , solver_()
@@ -96,10 +92,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LowestScalar)
 {
-  // Set data
-  setData(inputSample, outputSample);
-  // Build a normalization function if needed
-
   // If no basis then we suppose output sample centered
   checkYCentered(outputSample);
   // Set covariance model
@@ -114,9 +106,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const CovarianceModel & covarianceModel,
     const Basis & basis,
     const Bool keepCholeskyFactor)
-  : MetaModelAlgorithm()
-  , inputSample_()
-  , outputSample_()
+  : MetaModelAlgorithm(inputSample, outputSample)
   , covarianceModel_()
   , reducedCovarianceModel_()
   , solver_()
@@ -133,9 +123,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LowestScalar)
 {
-  // Set data
-  setData(inputSample, outputSample);
-
   // Set covariance model
   setCovarianceModel(covarianceModel);
 
@@ -163,9 +150,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const CovarianceModel & covarianceModel,
     const BasisCollection & basisCollection,
     const Bool keepCholeskyFactor)
-  : MetaModelAlgorithm()
-  , inputSample_(inputSample)
-  , outputSample_(outputSample)
+  : MetaModelAlgorithm(inputSample, outputSample)
   , covarianceModel_()
   , reducedCovarianceModel_()
   , solver_()
@@ -182,10 +167,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LowestScalar)
 {
-  // Set data
-  setData(inputSample, outputSample);
-  // Build a normalization function if needed
-
   // Set covariance model
   setCovarianceModel(covarianceModel);
 
@@ -194,18 +175,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
 
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
-}
-
-/* set sample  method */
-void GeneralLinearModelAlgorithm::setData(const Sample & inputSample,
-    const Sample & outputSample)
-{
-  // Check the sample sizes
-  if (inputSample.getSize() != outputSample.getSize())
-    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, input sample size=" << inputSample.getSize() << " does not match output sample size=" << outputSample.getSize();
-  // Set samples
-  inputSample_ = inputSample;
-  outputSample_ = outputSample;
 }
 
 /* Covariance model accessors */
@@ -841,18 +810,6 @@ String GeneralLinearModelAlgorithm::__repr__() const
 }
 
 
-Sample GeneralLinearModelAlgorithm::getInputSample() const
-{
-  return inputSample_;
-}
-
-
-Sample GeneralLinearModelAlgorithm::getOutputSample() const
-{
-  return outputSample_;
-}
-
-
 GeneralLinearModelResult GeneralLinearModelAlgorithm::getResult()
 {
   if (!hasRun_) run();
@@ -912,8 +869,6 @@ void GeneralLinearModelAlgorithm::setMethod(const UnsignedInteger method)
 void GeneralLinearModelAlgorithm::save(Advocate & adv) const
 {
   MetaModelAlgorithm::save(adv);
-  adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
   adv.saveAttribute( "reducedCovarianceModel_", reducedCovarianceModel_ );
   adv.saveAttribute( "solver_", solver_ );
@@ -932,8 +887,6 @@ void GeneralLinearModelAlgorithm::save(Advocate & adv) const
 void GeneralLinearModelAlgorithm::load(Advocate & adv)
 {
   MetaModelAlgorithm::load(adv);
-  adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "reducedCovarianceModel_", reducedCovarianceModel_ );
   adv.loadAttribute( "solver_", solver_ );

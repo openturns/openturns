@@ -70,8 +70,6 @@ public:
 
   /** Sample accessors */
   virtual Basis getBasis() const;
-  virtual Sample getInputSample() const;
-  virtual Sample getOutputSample() const;
   virtual Sample getFittedSample() const;
 
   /** Condensed formula accessor */
@@ -123,17 +121,11 @@ private:
 
   void checkIntercept();
 
-  /** input data */
-  Sample inputSample_;
-
   /** basis */
   Basis basis_;
 
   /** input data */
   Matrix design_;
-
-  /** output data */
-  Sample outputSample_;
 
   /** Intercept and trend coefficients */
   Point beta_;

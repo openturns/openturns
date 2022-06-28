@@ -56,7 +56,9 @@ public:
   FunctionalChaosResult();
 
   /** Parameter constructor */
-  FunctionalChaosResult(const Function & model,
+  FunctionalChaosResult(const Sample & inputSample,
+                        const Sample & ouputSample,
+                        const Function & model,
                         const Distribution & distribution,
                         const Function & transformation,
                         const Function & inverseTransformation,
@@ -84,7 +86,7 @@ public:
   /** InverseIsoProbabilisticTransformation accessor */
   virtual Function getInverseTransformation() const;
 
-  /** Composed model accessor */
+  /** @deprecated Composed model accessor */
   virtual Function getComposedModel() const;
 
   /** Orthogonal basis accessor */

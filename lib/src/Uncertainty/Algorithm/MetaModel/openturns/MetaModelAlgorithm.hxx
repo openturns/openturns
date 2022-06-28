@@ -47,6 +47,15 @@ public:
   MetaModelAlgorithm();
 
   /** Constructor with parameters */
+  MetaModelAlgorithm(const Sample & inputSample,
+                     const Sample & outputSample,
+                     const Distribution & distribution,
+                     const Function & model = Function());// @deprecated argument
+
+  MetaModelAlgorithm(const Sample & inputSample,
+                     const Sample & outputSample);
+
+  /** @deprecated Constructor with parameters */
   MetaModelAlgorithm(const Distribution & distribution,
                      const Function & model);
 
@@ -64,8 +73,8 @@ public:
   virtual void run();
 
   /** Sample accessors */
-  virtual Sample getInputSample() const;
-  virtual Sample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -77,6 +86,9 @@ public:
   static Distribution BuildDistribution(const Sample & inputSample);
 
 protected:
+  /** Learning sample */
+  Sample inputSample_;
+  Sample outputSample_;
 
   /** The input vector distribution */
   Distribution distribution_;

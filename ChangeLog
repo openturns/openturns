@@ -26,6 +26,7 @@
  * Inverted ctors arguments order in LinearModelAlgorithm & LinearModelStepwiseAlgorithm : first sample, then basis
  * Deprecated oldest LinearModelAlgorithm(X, basis, Y) and LinearModelStepwiseAlgorithm(X, basis, Y,...) ctors
  * Deprecated FunctionalChaos(Function, ...) ctors
+ * Deprecated FunctionalChaosResult.getComposedModel, MetaModelResult.getModel
 
 === Documentation ===
  * Added example galleries at the end of API doc pages
