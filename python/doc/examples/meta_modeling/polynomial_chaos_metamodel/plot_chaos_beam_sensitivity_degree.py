@@ -94,8 +94,7 @@ def ComputeSparseLeastSquaresChaos(
         The estimated polynomial chaos.
     """
     selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
-    projectionStrategy = ot.LeastSquaresStrategy(
-        inputTrain, outputTrain, selectionAlgorithm
+    projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm
     )
     enumfunc = multivariateBasis.getEnumerateFunction()
     P = enumfunc.getStrataCumulatedCardinal(totalDegree)

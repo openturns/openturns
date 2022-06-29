@@ -6,6 +6,8 @@ Available constructors:
 
     LeastSquaresStrategy(*weightedExp, approxAlgoImpFact*)
 
+    LeastSquaresStrategy(*approxAlgoImpFact*)
+
     LeastSquaresStrategy(*measure, approxAlgoImpFact*)
 
     LeastSquaresStrategy(*measure, weightedExp, approxAlgoImpFact*)
