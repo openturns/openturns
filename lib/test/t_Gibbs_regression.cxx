@@ -183,6 +183,28 @@ int main(int, char *[])
     assert_almost_equal(recompute[0], 1);
     assert_almost_equal(recompute[1], 0);
     assert_almost_equal(recompute[2], 1);
+    gibbs.setIsOrderRandom(true);
+    gibbs.getRealization();
+    recompute = gibbs.getRecomputeLogPosterior();
+    assert_almost_equal(recompute[0], 1);
+    assert_almost_equal(recompute[1], 1);
+    assert_almost_equal(recompute[2], 1);
+
+    // Check all blocks are called equally often under the random order option.
+    // Here there are 3 blocks:
+    // 1) a Dirac RandomVectorMetropolisHastings -- never moves
+    // 2) a Uniform RandomVectorMetropolisHastings -- always moves
+    // 3) a RandomWalkMetropolisHastings with average acceptance probability 1/2
+    // If 1) is selected or 3) is selected and the proposal is rejected, the chain does not move
+    // This happens with probability 1/3 + 1/3 * 1/2 = 1/2.
+    sample = gibbs.getSample(10000);
+    UnsignedInteger count_nomove = 0;
+    for ( UnsignedInteger j = 1; j < sample.getSize(); ++j )
+    {
+      if (sample[j] == sample[j-1]) count_nomove++;
+    }
+    const Scalar frequency_nomove = (Scalar)count_nomove / (Scalar)sample.getSize();
+    assert_almost_equal(frequency_nomove, 0.5, 0.02, 0.0);
   }
   catch (TestFailed & ex)
   {

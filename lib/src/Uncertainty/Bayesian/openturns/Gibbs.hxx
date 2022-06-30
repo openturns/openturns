@@ -45,7 +45,7 @@ public:
   Gibbs();
 
   /** Constructor with parameters*/
-  Gibbs(const MetropolisHastingsCollection & samplers);
+  Gibbs(const MetropolisHastingsCollection & samplers, const Bool isOrderRandom = false);
 
   /** String converter */
   String __repr__() const override;
@@ -57,6 +57,10 @@ public:
 
   /** Samplers accessor */
   MetropolisHastingsCollection getMetropolisHastingsCollection() const;
+
+  /** Is order random accessors */
+  void setIsOrderRandom(const Bool isOrderRandom);
+  Bool getIsOrderRandom() const;
 
   /** Burnin accessor */
   void setBurnIn(const UnsignedInteger burnIn);
@@ -86,6 +90,12 @@ public:
   HistoryStrategy getHistory() const;
 
 protected:
+  // Sequentially sample from the MH blocks
+  void computeRealizationSequential() const;
+
+  // Sample from a randomly chosen MH block
+  void computeRealizationRandomOrder() const;
+
   mutable Point currentState_;
   mutable HistoryStrategy history_;
 
@@ -95,6 +105,12 @@ private:
 
   // collection of MH samplers
   MetropolisHastingsPersistentCollection samplers_;
+
+  // are MH samplers randomly called
+  Bool isOrderRandom_;
+
+  // which MH sampler was previously called (used when isOrderRandom_ is true)
+  mutable UnsignedInteger previouslyChosenSampler_;
 
   // number of first samples discarded to reach stationary regime
   UnsignedInteger burnIn_ = 0;

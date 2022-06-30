@@ -8,13 +8,23 @@ Parameters
 samplers : sequence of :class:`~openturns.MetropolisHastings`
     List of samplers for each bloc of the chain
 
+isOrderRandom : bool, optional
+    If False (default), the samplers are sequentially called in the given order.
+    If True, one of the samplers is randomly selected to produce the next realization.
+
 Notes
 -----
 Assume we want to sample from a complicated joint distribution.
 The Gibbs algorithm is a Markov Chain Monte-Carlo algorithm
-which sequentially calls samplers
-(implemented as :class:`MetropolisHastings` objects)
-of the conditional distributions of one or several components.
+which calls samplers (implemented as :class:`MetropolisHastings` objects)
+in a predetermined sequence (by default)
+or randomly (if *isOrderRandom* is set to True).
+Each sampler samples from the conditional distributions of one or several components.
+
+Note that under the default behavior (*isOrderRandom* is False),
+all samplers are called in the specified order every time :meth:`getRealization` is called.
+By contrast, when *isOrderRandom* is True, only one sampler is called
+by :meth:`getRealization`, and this sampler is randomly chosen among all specified samplers.
 
 See Also
 --------
@@ -47,7 +57,7 @@ Examples
 >>> linkFunction = ot.ParametricFunction(fullModel, parametersSet, parametersValue)
 >>> # Calibration parameters
 >>> # Proposal distribution
->>> proposal = ot.Uniform(-1.0, 1.0)
+>>> prop = ot.Uniform(-1.0, 1.0)
 >>> # Prior distribution
 >>> sigma0 = [10.0]*chainDim
 >>> #  Covariance matrix
@@ -60,13 +70,16 @@ Examples
 >>> # Conditional distribution y~N(z, 1.0)
 >>> conditional = ot.Normal()
 >>> # Create a Gibbs sampler
->>> mh_coll = [ot.RandomWalkMetropolisHastings(prior, mu0, proposal, [i]) for i in range(chainDim)]
->>> for mh in mh_coll: mh.setLikelihood(conditional, y_obs, linkFunction, covariates)
->>> sampler = ot.Gibbs(mh_coll)
+>>> coll = [ot.RandomWalkMetropolisHastings(prior, mu0, prop, [i]) for i in range(chainDim)]
+>>> for mh in coll: mh.setLikelihood(conditional, y_obs, linkFunction, covariates)
+>>> sampler = ot.Gibbs(coll)
 >>> sampler.setBurnIn(20)
 >>> sampler.setThinning(10)
 >>> # Get a realization
->>> mu = sampler.getRealization()"
+>>> mu = sampler.getRealization()
+>>> # Create a Gibbs sampler which updates one randomly chosen component at each step
+>>> sampler2 = ot.Gibbs(coll, True)
+>>> mu2 = sampler2.getRealization()"
 
 // ---------------------------------------------------------------------
 
@@ -87,6 +100,28 @@ Returns
 -------
 samplers : sequence of :class:`MetropolisHastings`
     List of all Metropolis-Hastings samplers used in the Gibbs algorithm"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gibbs::getIsOrderRandom
+"Get whether the samplers are randomly chosen.
+
+Returns
+-------
+isOrderRandom : bool
+    If False, the samplers are sequentially called in the given order.
+    If True, one of the samplers is randomly selected to produce the next realization."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gibbs::setIsOrderRandom
+"Set whether the samplers are randomly chosen.
+
+Parameters
+----------
+isOrderRandom : bool
+    If False, the samplers are sequentially called in the given order.
+    If True, one of the samplers is randomly selected to produce the next realization."
 
 // ---------------------------------------------------------------------
 
