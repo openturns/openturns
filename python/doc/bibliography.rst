@@ -159,6 +159,9 @@ Bibliography
     `pdf <http://academicos.fciencias.unam.mx/wp-content/uploads/sites/91/2015/04/Lillifors_normality_ks.pdf>`__
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
+.. [marelli2018] S. Marelli, B. Sudret, *An active-learning algorithm that combines sparse
+   polynomial chaos expansions and bootstrap for structural reliability analysis*, Structural Safety, 2018.
+   `pdf <https://arxiv.org/pdf/1709.01589.pdf>`__
 .. [marrel2021] Marrel, A., & Chabridon, V. (2021). *Statistical developments for target and conditional sensitivity analysis: 
     application on safety studies for nuclear reactor.* Reliability Engineering & System Safety, 107711.
 .. [marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
