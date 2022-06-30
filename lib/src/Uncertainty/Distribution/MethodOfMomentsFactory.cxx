@@ -189,6 +189,8 @@ public:
       result[j] = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / (j + 1.0)) - sign * std::pow(std::abs(moments[j]), 1.0 / (j + 1.0));
     }
     const Scalar sigma2 = distribution.getCovariance()(0, 0);
+    if (!(sigma2 > 0.0))
+      return Point(getOutputDimension(), SpecFunc::MaxScalar);
     return result / sigma2;
   }
 
