@@ -193,7 +193,7 @@ Bibliography
 .. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). *Quasi-Monte Carlo 
     integration.* Journal of computational physics, 122(2), 218-230.
     `pdf <https://www.math.ucla.edu/~caflisch/Pubs/Pubs1995-1999/actaNumerica1998.pdf>`__
-.. [Muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
+.. [muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
 .. [munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,

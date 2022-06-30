@@ -572,13 +572,13 @@ score_Q2 = compute_cleaning_PCE(
 # chaos metamodel is much better: the coefficients are associated with a low   
 # polynomial degree, so that the quadrature rule estimates them with greater accuracy.
 #
-# We would like to know which combination is best. In the following loop, we   
-# consider the maximum number of considered coefficients from 1 to 500 and the   
-# number of selected coefficients from 1 to 30. In order to produce the   
-# combinations, we use the `product` function from the `itertools` module.   
-# For each combination, we compute the :math:`Q^2` score and select the   
-# combination with highest :math:`Q^2` coefficient. As shown in [Muller2016]_   
-# page 268, the computed :math:`Q^2` may be optimistic, but this is not the   
+# We would like to know which combination is best. In the following loop, we
+# consider the maximum number of considered coefficients from 1 to 500 and the
+# number of selected coefficients from 1 to 30. In order to produce the
+# combinations, we use the `product` function from the `itertools` module.
+# For each combination, we compute the :math:`Q^2` score and select the
+# combination with highest :math:`Q^2` coefficient. As shown in [muller2016]_
+# page 268, the computed :math:`Q^2` may be optimistic, but this is not the
 # point of the current example.
 
 # %%
