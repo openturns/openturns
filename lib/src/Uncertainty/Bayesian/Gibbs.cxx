@@ -79,13 +79,15 @@ UnsignedInteger Gibbs::getDimension() const
 
 Point Gibbs::getRealization() const
 {
+  const UnsignedInteger nbSamplers = samplers_.getSize();
+
   // perform burnin if necessary
   const UnsignedInteger size = getThinning() + ((samplesNumber_ < getBurnIn()) ? getBurnIn() : 0);
 
   // check the first log-posterior
   if (samplesNumber_ == 0)
   {
-    for (UnsignedInteger j = 0; j < samplers_.getSize(); ++ j)
+    for (UnsignedInteger j = 0; j < nbSamplers; ++ j)
     {
       const Scalar currentLogPosterior = samplers_[j].computeLogPosterior(samplers_[j].getImplementation()->currentState_);
       if (currentLogPosterior <= SpecFunc::LowestScalar)
@@ -96,18 +98,18 @@ Point Gibbs::getRealization() const
   // see which components will need to recompute the posterior
   if (samplesNumber_ == 0)
   {
-    Point lp(getDimension());
-    for (UnsignedInteger j = 0; j < samplers_.getSize(); ++ j)
+    Point lp(nbSamplers);
+    for (UnsignedInteger j = 0; j < nbSamplers; ++ j)
       lp[j] = samplers_[j].computeLogPosterior(samplers_[j].getImplementation()->currentState_);
-    recomputeLogPosterior_ = Indices(getDimension());
-    for (UnsignedInteger j = 0; j < samplers_.getSize(); ++ j)
-      recomputeLogPosterior_[j] = (lp[j] != lp[(j + getDimension() - 1) % getDimension()]) ? 1 : 0;
+    recomputeLogPosterior_ = Indices(nbSamplers);
+    for (UnsignedInteger j = 0; j < nbSamplers; ++ j)
+      recomputeLogPosterior_[j] = (lp[j] != lp[(j + nbSamplers - 1) % nbSamplers]) ? 1 : 0;
   }
 
   // for each new sample
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    for (UnsignedInteger j = 0; j < samplers_.getSize(); ++ j)
+    for (UnsignedInteger j = 0; j < nbSamplers; ++ j)
     {
       // get the current state from the previous sampler
       samplers_[j].getImplementation()->currentState_ = currentState_;

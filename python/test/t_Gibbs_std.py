@@ -164,3 +164,12 @@ stddev = sample.computeStandardDeviation()
 print(mean, stddev)
 ott.assert_almost_equal(mean, [-0.015835, 0.169951, 20])
 ott.assert_almost_equal(stddev, [0.956516, 1.05469, 0])
+
+# check log-pdf is recomputed by the correct blocks
+initialState = [0.5] * 4
+rvmh1 = ot.RandomVectorMetropolisHastings(ot.RandomVector(ot.Dirac([0.5] * 2)), initialState, [0,1])
+rvmh2 = ot.RandomVectorMetropolisHastings(ot.RandomVector(ot.Uniform(0.0, 1.0)), initialState, [2])
+rwmh = ot.RandomWalkMetropolisHastings(ot.SymbolicFunction(["x", "y", "z", "t"], ["1"]), ot.Interval(4), initialState, ot.Uniform(), [3])
+gibbs = ot.Gibbs([rvmh1, rvmh2, rwmh])
+gibbs.getRealization()
+assert gibbs.getRecomputeLogPosterior() == [1, 0, 1]

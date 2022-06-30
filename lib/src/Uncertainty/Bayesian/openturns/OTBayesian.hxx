@@ -31,6 +31,7 @@
 #include "openturns/GaussianNonLinearCalibration.hxx"
 #include "openturns/MetropolisHastingsImplementation.hxx"
 #include "openturns/RandomWalkMetropolisHastings.hxx"
+#include "openturns/RandomVectorMetropolisHastings.hxx"
 #include "openturns/IndependentMetropolisHastings.hxx"
 #include "openturns/Gibbs.hxx"
 

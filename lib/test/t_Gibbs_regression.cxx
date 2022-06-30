@@ -167,6 +167,22 @@ int main(int, char *[])
     std::cout << "covariance=" << x_cov << std::endl;
     std::cout << "expected covariance=" << Qn_inv << std::endl;
     assert_almost_equal(x_cov, Qn_inv, 1e-3, 2e-2);
+
+    // check log-pdf is recomputed by the correct blocks
+    const Point initialState({0.5, 0.5, 0.5, 0.5});
+    RandomVectorMetropolisHastings rvmh1(RandomVector(Dirac({0.5, 0.5})), initialState, Indices({0, 1}));
+    RandomVectorMetropolisHastings rvmh2(RandomVector(Uniform(0.0, 1.0)), initialState, Indices({2}));
+    RandomWalkMetropolisHastings rwmh(SymbolicFunction({"x", "y", "z", "t"}, {"1"}), Interval(4), initialState, Uniform(), Indices({3}));
+    Gibbs::MetropolisHastingsCollection coll2;
+    coll2.add(rvmh1);
+    coll2.add(rvmh2);
+    coll2.add(rwmh);
+    Gibbs gibbs(coll2);
+    gibbs.getRealization();
+    Indices recompute(gibbs.getRecomputeLogPosterior());
+    assert_almost_equal(recompute[0], 1);
+    assert_almost_equal(recompute[1], 0);
+    assert_almost_equal(recompute[2], 1);
   }
   catch (TestFailed & ex)
   {
