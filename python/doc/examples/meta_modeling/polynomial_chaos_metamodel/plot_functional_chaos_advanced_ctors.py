@@ -111,22 +111,17 @@ multivariateBasis = ot.OrthogonalProductPolynomialFactory(
     polyColl, enumerateFunction)
 
 # %%
-# Ask how many polynomials have total degrees equal to k=5.
-
-# %%
+# Ask how many basis terms there are in the 6-th strata.
+# In the special case of the Linear enumerate function this is also the strata with all the multi-indices of total degree 5.
 k = 5
 enumerateFunction.getStrataCardinal(k)
 
 # %%
-# Ask how many polynomials have degrees lower or equal to k=5.
-
-# %%
-enumerateFunction.getStrataCumulatedCardinal(k)
+# Ask how many basis multi-indices have total degrees lower or equal to k=5.
+enumerateFunction.getBasisSizeFromTotalDegree(k)
 
 # %%
 # Give the k-th term of the multivariate basis. To calculate its degree, add the integers.
-
-# %%
 k = 5
 enumerateFunction(k)
 
