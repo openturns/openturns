@@ -105,6 +105,14 @@ public:
   virtual void setTickLocation(const TickLocation tickLocation);
   TickLocation getTickLocation() const;
 
+  /** integer x-tick flag accessor */
+  virtual void setIntegerXTick(const Bool integerXTick);
+  Bool getIntegerXTick() const;
+
+  /** integer y-tick flag accessor */
+  virtual void setIntegerYTick(const Bool integerYTick);
+  Bool getIntegerYTick() const;
+
   /** Set log scale for x, y both or none axes */
   virtual void setLogScale(const LogScale logScale);
   LogScale getLogScale() const;
@@ -211,26 +219,30 @@ private:
   String yTitle_;
 
   /** if TRUE, displays the axes on the graphic plot. if FALSE, hides the axes */
-  Bool showAxes_;
+  Bool showAxes_ = false;
 
   /** Ticks location flag */
   TickLocation tickLocation_ = TICKXY;
 
+  /** Ticks values */
+  Bool integerXTick_ = false;
+  Bool integerYTick_ = false;
+
   /** Set the log scale for one, both or non of the axes */
-  LogScale logScale_;
+  LogScale logScale_ = NONE;
 
   /** if TRUE, displays a grid on the graphic plot. if FALSE, hides the grid */
-  Bool showGrid_;
+  Bool showGrid_ = false;
 
   /** Grid color */
-  String gridColor_;
+  String gridColor_ = "gray";
 
   /** Margins (ratio) */
-  Scalar xMargin_;
-  Scalar yMargin_;
+  Scalar xMargin_ = 0.0;
+  Scalar yMargin_ = 0.0;
 
   /** Is the bounding box automatically computed. */
-  Bool automaticBoundingBox_;
+  Bool automaticBoundingBox_ = true;
 
   /** Current bounding box */
   mutable Interval boundingBox_;

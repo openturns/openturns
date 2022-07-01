@@ -109,6 +109,14 @@ public:
   void setTickLocation(const TickLocation tickLocation);
   TickLocation getTickLocation() const;
 
+  /** integer x-tick flag accessor */
+  void setIntegerXTick(const Bool integerXTick);
+  Bool getIntegerXTick() const;
+
+  /** integer y-tick flag accessor */
+  void setIntegerYTick(const Bool integerYTick);
+  Bool getIntegerYTick() const;
+
   /** Set log scale for x, y both or none axes */
   void setLogScale(const LogScale logScale);
   LogScale getLogScale() const;

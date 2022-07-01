@@ -250,6 +250,10 @@ class View(object):
             self._ax[0].set_xticklabels([])
         if not graph.getTickLocation() & ot.GraphImplementation.TICKY:
             self._ax[0].set_yticklabels([])
+        if graph.getIntegerXTick():
+            self._ax[0].xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
+        if graph.getIntegerYTick():
+            self._ax[0].yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
 
         # set bounding box
         bb = graph.getBoundingBox()
