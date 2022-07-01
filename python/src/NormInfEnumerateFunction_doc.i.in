@@ -17,7 +17,7 @@ One defines the infinity norm of a multi-index :math:`a` by:
 
 .. math::
 
-    \| \vect{a} \|_{\infty} = max_i a_i
+    \| \vect{\alpha} \|_{\infty} = \max_{i=1} \; \alpha_i
 
 This would lead to first select the basis polynomials depending on a specific subset of input variables.
 
