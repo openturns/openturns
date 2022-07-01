@@ -2,15 +2,15 @@
 "Correlation analysis methods.
 
 Provides elementary sensitivity analysis methods
-to determine the influence of the different inputs
-over a one-dimensional output.
+to determine the influence of each component of a random vector
+over a single one-dimensional variable.
 
 Parameters
 ----------
-sampleX : 2-d list of float
-    Values taken by the random input variables.
-sampleY : 2-d list of float
-    Values of the output. Must be one-dimensional.
+firstSample : 2-d list of float
+    Values taken by a random vector.
+secondSample : 2-d list of float
+    Values taken by a single one-dimensional random variable.
 
 See also
 --------
@@ -19,10 +19,10 @@ LinearModelAlgorithm
 Examples
 --------
 >>> import openturns as ot
->>> sampleX = ot.Normal(3).getSample(100)
+>>> firstSample = ot.Normal(3).getSample(100)
 >>> model = ot.SymbolicFunction(['x', 'y', 'z'], ['x + 3 * y - 5 * z'])
->>> sampleY = model(sampleX)
->>> corr_analysis = ot.CorrelationAnalysis(sampleX, sampleY)
+>>> secondSample = model(firstSample)
+>>> corr_analysis = ot.CorrelationAnalysis(firstSample, secondSample)
 >>> print(corr_analysis.computePearsonCorrelation())
 [0.153352,0.537644,-0.760563]"
 
@@ -36,8 +36,8 @@ Refer to :ref:`ranking_pcc`.
 Returns
 -------
 coef : :class:`~openturns.Point`
-    The PCC coefficients evaluated between the *sampleY*
-    and each coordinate of the *sampleX*."
+    The PCC coefficients evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
 
 // ---------------------------------------------------------------------
 
@@ -49,8 +49,8 @@ Refer to :ref:`ranking_pcc`.
 Returns
 -------
 coef : :class:`~openturns.Point`
-    The PRCC coefficients evaluated between the *sampleY*
-    and each coordinate of the *sampleX*."
+    The PRCC coefficients evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
 
 // ---------------------------------------------------------------------
 
@@ -62,8 +62,8 @@ Refer to :ref:`pearson_coefficient`.
 Returns
 -------
 coef : :class:`~openturns.Point`
-    The Pearson coefficients evaluated between the *sampleY*
-    and each coordinate of the *sampleX*."
+    The Pearson coefficients evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
 
 // ---------------------------------------------------------------------
 
@@ -75,8 +75,8 @@ Refer to :ref:`spearman_coefficient`.
 Returns
 -------
 coef : :class:`~openturns.Point`
-    The Spearman coefficients evaluated between the *sampleY*
-    and each coordinate of the *sampleX*."
+    The Spearman coefficients evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
 
 // ---------------------------------------------------------------------
 
@@ -88,8 +88,8 @@ See the :class:`~openturns.Sample` :meth:`~openturns.Sample.computeKendallTau` m
 Returns
 -------
 coef : :class:`~openturns.Point`
-    Kendall's :math:`\tau` coefficients evaluated between the *sampleY*
-    and each coordinate of the *sampleX*."
+    Kendall's :math:`\tau` coefficients evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
 
 // ---------------------------------------------------------------------
 
@@ -101,7 +101,7 @@ Refer to :ref:`ranking_src`.
 Returns
 -------
 coef : :class:`~openturns.Point`
-    The SRC evaluated between the *sampleY* and each coordinate of the *sampleX*."
+    The SRC evaluated between the *secondSample* and each coordinate of the *firstSample*."
 
 // ---------------------------------------------------------------------
 
@@ -113,8 +113,8 @@ Refer to :ref:`ranking_src`.
 Returns
 -------
 coef : :class:`~openturns.Point`
-    The SRRC evaluated between the *sampleY*
-    and each coordinate of the *sampleX*."
+    The SRRC evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
 
 // ---------------------------------------------------------------------
 
@@ -132,5 +132,5 @@ normalize : bool
 Returns
 -------
 coef : :class:`~openturns.Point`
-    The squared SRC evaluated between the *sampleY*
-    and each coordinate of the *sampleX*."
+    The squared SRC evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."

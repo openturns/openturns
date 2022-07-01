@@ -45,8 +45,8 @@ public:
   CorrelationAnalysis();
 
   /** Standard constructor */
-  CorrelationAnalysis(const Sample & sampleX,
-                      const Sample & sampleY);
+  CorrelationAnalysis(const Sample & firstSample,
+                      const Sample & secondSample);
 
   /** Virtual constructor */
   CorrelationAnalysis * clone() const override;
@@ -107,20 +107,20 @@ public:
 protected:
 
   // computePearsonCorrelation with arguments
-  static Point ComputePearsonCorrelation(const Sample & sampleX,
-                                         const Sample & sampleY);
+  static Point ComputePearsonCorrelation(const Sample & firstSample,
+                                         const Sample & secondSample);
 
   // computePCC with arguments
-  static Point ComputePCC(const Sample & sampleX,
-                          const Sample & sampleY);
+  static Point ComputePCC(const Sample & firstSample,
+                          const Sample & secondSample);
 
   // computeSRC with arguments
-  static Point ComputeSRC(const Sample & sampleX,
-                          const Sample & sampleY);
+  static Point ComputeSRC(const Sample & firstSample,
+                          const Sample & secondSample);
 private:
 
-  Sample sampleX_;
-  Sample sampleY_;
+  Sample firstSample_;
+  Sample secondSample_;
 
 }; /* CorrelationAnalysis */
 
