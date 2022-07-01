@@ -54,6 +54,8 @@ MetaModelValidation::MetaModelValidation(const Sample & inputSample,
   if (inputSample_.getSize() != outputSample_.getSize())
     throw InvalidArgumentException(HERE) << "Input sample size (" << inputSample_.getSize() << ")"
                                          << " should match output sample size (" << outputSample_.getSize() << ")";
+  if (inputSample_.getSize() < 2)
+    throw NotDefinedException(HERE) << "Q2 computation needs at least 2 values";
   if (inputSample_.getDimension() != metaModel_.getInputDimension())
     throw InvalidArgumentException(HERE) << "Metamodel input dimension (" << metaModel_.getInputDimension() << ")"
                                          <<  " should match input sample dimension (" << inputSample_.getDimension() << ")";
@@ -90,13 +92,14 @@ void MetaModelValidation::initialize() const
   residual_ = outputSample_ - metaModel_(inputSample_);
 
   const UnsignedInteger outputDimension = outputSample_.getDimension();
-  q2_ = Point(outputDimension, -1.0);
+  q2_ = Point(outputDimension);
   const Point residualRawMoment2(residual_.computeRawMoment(2));
   const Point sampleVariance(outputSample_.computeCenteredMoment(2));
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    if (std::abs(sampleVariance[j]) > SpecFunc::ScalarEpsilon)
-      q2_[j] = 1.0 - residualRawMoment2[j] / sampleVariance[j];
+    if (std::abs(sampleVariance[j]) == 0.0)
+      throw NotDefinedException(HERE) << "Q2 cannot be computed on constant output component";
+    q2_[j] = 1.0 - residualRawMoment2[j] / sampleVariance[j];
   }
   isInitialized_ = true;
 }
