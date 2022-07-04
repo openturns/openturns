@@ -3,7 +3,6 @@
 import openturns as ot
 
 ot.TESTPREAMBLE()
-ot.RandomGenerator.SetSeed(0)
 
 # QQPlot tests
 size = 100
@@ -15,6 +14,10 @@ print("twoSamplesQQPlot = ", twoSamplesQQPlot)
 
 sampleDistributionQQPlot = ot.VisualTest.DrawQQplot(sample, normal)
 print("sampleDistributionQQPlot = ", sampleDistributionQQPlot)
+
+dist = ot.Geometric()
+qq_plot = ot.VisualTest.DrawQQplot(dist.getSample(size), dist)
+print("discrete QQPlot = ", qq_plot)
 
 # HenryLine test
 size = 100
