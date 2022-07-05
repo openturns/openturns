@@ -732,7 +732,7 @@ void Student::setParameter(const Point & parameter)
       mean[i] = parameter[2 * i + 1];
       sigma[i] = parameter[2 * i + 2];
     }
-    UnsignedInteger parameterIndex = 2 * dimension;
+    UnsignedInteger parameterIndex = 2 * dimension + 1;
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       for (UnsignedInteger j = 0; j < i; ++ j)
