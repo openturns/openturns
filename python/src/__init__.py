@@ -65,7 +65,6 @@ from .geom import *
 from .func import *
 from .SpecFunc import *
 from .statistics import *
-from .CorrelationAnalysis import *
 from .diff import *
 from .optim import *
 from .solver import *

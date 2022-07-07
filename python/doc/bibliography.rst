@@ -92,6 +92,10 @@ Bibliography
 .. [halko2011] Nathan Halko, Per-Gunnar Martisson, Yoel Shkolnisky and Mark Tygert,
     *An algorithm for the principal component analysis of large data sets*,
     `pdf <https://arxiv.org/pdf/1007.5510.pdf>`__
+.. [helton2003] Helton, J.C., and Davis, F. J.,
+    *Latin Hypercube sampling and the propagation of uncertainty analyses of complex systems*,
+    Reliability Engineering and System Safety 81, 23-69.
+    `pdf <https://web.archive.org/web/20141222122431id_/http://www.stat.unm.edu:80/~storlie/st579/articles/RESS_2003_LHS.pdf>`__
 .. [janon2014] Janon A., Klein T., Lagnoux-Renaudie A., Prieur C., *Asymptotic
     normality and efficiency of two Sobol index estimators*,
     ESAIM: Probability and Statistics, EDP Sciences, 2014, 18, pp.342-364.
@@ -116,6 +120,10 @@ Bibliography
 .. [kiureghian1998] Kiureghian A., Dakessian T., *Multiple design points in first and second-order reliability*
     Structural Safety, Volume 20, Issue 1, 1998, Pages 37-49
     `pdf <https://openturns.github.io/openturns/papers/kiureghian1998.pdf>`__
+.. [kleijnen1999] Kleijnen J. P. C., Helton J. C.,
+    *Statistical analyses of scatterplots to identify factors in large-scale simulations, 1: Review and comparison of techniques.*
+    Reliability Engineering and System Safety 65, 147-185
+    `pdf <https://www.osti.gov/servlets/purl/5004>`__
 .. [knight1966] Knight, W. R. *A Computer Method for Calculating Kendall's Tau
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.
@@ -219,9 +227,12 @@ Bibliography
     `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__
 .. [rubinstein2017] Rubinstein, R. Y., & Kroese, D. P. (2017). *Simulation and the Monte Carlo method.* John Wiley & Sons.
    `pdf <http://www.ru.ac.bd/wp-content/uploads/soites/25/2019/03/308_03_Rubinstein_Simulation-and-the-Monte-Carlo-Method-Wiley-2017.pdf>`__
-.. [saltelli1999] Saltelli, A., Tarantola, S. & Chan, K. *A quantitative, model
+.. [saltelli1999] Saltelli, A., Tarantola, S. and Chan, K. *A quantitative, model
     independent method for global sensitivity analysis of model output.*
     Technometrics, 1999, 41(1), 39-56.
+    `pdf <http://www.andreasaltelli.eu/file/repository/Saltelli_Technom.pdf>`__
+.. [saltelli2000] Saltelli, A., Chan, K. and Scott, M. *Sensitivity analysis.*
+    John Wiley and Sons publishers, Probability and statistics series, 2000.
     `pdf <http://www.andreasaltelli.eu/file/repository/Saltelli_Technom.pdf>`__
 .. [saltelli2002] Saltelli, A. *Making best use of model evaluations to compute
     sensitivity indices.* Computer Physics Communication, 2002, 145, 580-297.

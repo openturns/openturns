@@ -129,21 +129,6 @@ Building copulas from samples
     NormalCopulaFactory
     PlackettCopulaFactory
 
-Correlation analysis
-====================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: function.rst_t
-
-    CorrelationAnalysis.PearsonCorrelation
-    CorrelationAnalysis.SpearmanCorrelation
-    CorrelationAnalysis.PCC
-    CorrelationAnalysis.PRCC
-    CorrelationAnalysis.SRC
-    CorrelationAnalysis.SRRC
-    CorrelationAnalysis.SignedSRC
-
 Sensitivity Analysis
 ====================
 
@@ -153,6 +138,7 @@ Refer to :ref:`sensitivity_sobol`.
     :toctree: _generated/
     :template: class.rst_t
 
+    CorrelationAnalysis
     ANCOVA
     FAST
 
