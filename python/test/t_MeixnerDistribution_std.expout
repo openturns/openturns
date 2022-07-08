@@ -35,9 +35,6 @@ beta= [0.95]
 mean= [0.457532]
 covariance= [[ 2.99587 ]]
 parameters= [[beta : 1.5, alpha : 0.5, delta : 2.5, gamma : -0.5]]
-standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [0.638355]
-standard moment n= 2 , value= [1.739]
 Standard representative= MeixnerDistribution(beta = 1, alpha = 0.5, delta = 2.5, gamma = 0)
 alpha=0.500000
 beta=1.500000

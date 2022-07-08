@@ -180,8 +180,6 @@ OT_Distribution_getSpearmanCorrelation_doc
 OT_Distribution_getStandardDeviation_doc
 %feature("docstring") OT::Distribution::getStandardDistribution
 OT_Distribution_getStandardDistribution_doc
-%feature("docstring") OT::Distribution::getStandardMoment
-OT_Distribution_getStandardMoment_doc
 %feature("docstring") OT::Distribution::getStandardRepresentative
 OT_Distribution_getStandardRepresentative_doc
 %feature("docstring") OT::Distribution::getSupport

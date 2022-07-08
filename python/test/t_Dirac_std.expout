@@ -24,12 +24,6 @@ skewness= [0]
 kurtosis= [0]
 covariance= [[ 0 ]]
 parameters= [[point_0 : 0.7]]
-standard moment n= 0  value= [1]
-standard moment n= 1  value= [0.7]
-standard moment n= 2  value= [0.49]
-standard moment n= 3  value= [0.343]
-standard moment n= 4  value= [0.2401]
-standard moment n= 5  value= [0.16807]
 Standard representative= Dirac(point = [0.7])
 Distribution  Dirac(point = [2.3,2.3,2.3,2.3])
 Elliptical =  True
@@ -60,10 +54,4 @@ covariance= [[ 0 0 0 0 ]
  [ 0 0 0 0 ]
  [ 0 0 0 0 ]]
 parameters= [[point_0 : 2.3],[point_1 : 2.3],[point_2 : 2.3],[point_3 : 2.3]]
-standard moment n= 0  value= [1,1,1,1]
-standard moment n= 1  value= [2.3,2.3,2.3,2.3]
-standard moment n= 2  value= [5.29,5.29,5.29,5.29]
-standard moment n= 3  value= [12.167,12.167,12.167,12.167]
-standard moment n= 4  value= [27.9841,27.9841,27.9841,27.9841]
-standard moment n= 5  value= [64.3634,64.3634,64.3634,64.3634]
 Standard representative= Dirac(point = [2.3,2.3,2.3,2.3])

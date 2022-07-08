@@ -73,11 +73,6 @@ class UniformNdPy(ot.PythonDistribution):
     def getKurtosis(self):
         return [1.8] * len(self.a)
 
-    def getStandardMoment(self, n):
-        if n % 2 == 1:
-            return [0.] * len(self.a)
-        return [1. / (n + 1.)] * len(self.a)
-
     def getMoment(self, n):
         return [-0.1 * n] * len(self.a)
 

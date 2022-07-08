@@ -51,7 +51,6 @@ int main(int, char *[])
       fullprint << "parameter description=" << parameterDescription << std::endl;
       distribution.setParameter(parameter);
 
-      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
       // get weights used
       Point weights(distribution.getWeights());

@@ -63,9 +63,6 @@ skewness = distribution.getSkewness()
 print("skewness=", repr(skewness))
 kurtosis = distribution.getKurtosis()
 print("kurtosis=", repr(kurtosis))
-for i in range(6):
-    print("standard moment n=", i, " value=",
-          distribution.getStandardMoment(i))
 print("Standard representative=", distribution.getStandardRepresentative())
 
 

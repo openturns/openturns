@@ -47,12 +47,6 @@ correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 parameters= [[mu : 2, sigma : 1.5, xi : -0.15]]
-standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [-0.933041]
-standard moment n= 2 , value= [0.897471]
-standard moment n= 3 , value= [-0.885661]
-standard moment n= 4 , value= [0.893515]
-standard moment n= 5 , value= [-0.919063]
 Standard representative= WeibullMax(beta = 1, alpha = 6.66667, gamma = 0)
 mu= 2.0
 sigma= 1.5
@@ -108,12 +102,6 @@ correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 parameters= [[mu : 2, sigma : 1.5, xi : 0]]
-standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [0.577216]
-standard moment n= 2 , value= [1.97811]
-standard moment n= 3 , value= [5.44487]
-standard moment n= 4 , value= [23.5615]
-standard moment n= 5 , value= [117.839]
 Standard representative= Gumbel(beta = 1, gamma = 0)
 mu= 2.0
 sigma= 1.5
@@ -169,12 +157,6 @@ correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 parameters= [[mu : 2, sigma : 1.5, xi : 0.15]]
-standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [1.11248]
-standard moment n= 2 , value= [1.29806]
-standard moment n= 3 , value= [1.61612]
-standard moment n= 4 , value= [2.21815]
-standard moment n= 5 , value= [3.62435]
 Standard representative= Frechet(beta = 1, alpha = 6.66667, gamma = 0)
 mu= 2.0
 sigma= 1.5

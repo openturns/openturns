@@ -32,12 +32,6 @@ covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplem
 parameters= [class=PointWithDescription name=Normal dimension=2 description=[mean_0,standard_deviation_0] values=[0.5,2],class=PointWithDescription name=Normal dimension=2 description=[mean_0,standard_deviation_0] values=[1.5,2],class=PointWithDescription name=Normal dimension=2 description=[mean_0,standard_deviation_0] values=[2.5,2],class=PointWithDescription name=dependence dimension=9 description=[atom_0_R_1_0,atom_0_R_2_0,atom_0_R_2_1,atom_1_R_1_0,atom_1_R_2_0,atom_1_R_2_1,atom_2_R_1_0,atom_2_R_2_0,atom_2_R_2_1] values=[0.5,0,0.5,0.5,0,0.5,0.5,0,0.5]]
 parameter= [0.333333,0.5,2,-0.5,3,1,1,0.5,0,0.5,0.333333,1.5,2,0.5,3,2,1,0.5,0,0.5,0.333333,2.5,2,1.5,3,3,1,0.5,0,0.5]#30
 parameter description= [w_0,mean_0,standard_deviation_0,mean_1,standard_deviation_1,mean_2,standard_deviation_2,R_1_0,R_2_0,R_2_1,w_1,mean_0,standard_deviation_0,mean_1,standard_deviation_1,mean_2,standard_deviation_2,R_1_0,R_2_0,R_2_1,w_2,mean_0,standard_deviation_0,mean_1,standard_deviation_1,mean_2,standard_deviation_2,R_1_0,R_2_0,R_2_1]#30
-standard moment n= 0  value= [1,1,1]
-standard moment n= 1  value= [1.5,0.5,2]
-standard moment n= 2  value= [6.91667,9.91667,5.66667]
-standard moment n= 3  value= [24.375,14.625,18]
-standard moment n= 4  value= [132.729,294.229,63.6667]
-standard moment n= 5  value= [650.094,711.281,242]
 Standard representative= Mixture((w = 0.333333, d = Normal(mu = [0.5,-0.5,1], sigma = [2,3,1], R = [[ 1   0.5 0   ]
  [ 0.5 1   0.5 ]
  [ 0   0.5 1   ]])), (w = 0.333333, d = Normal(mu = [1.5,0.5,2], sigma = [2,3,1], R = [[ 1   0.5 0   ]

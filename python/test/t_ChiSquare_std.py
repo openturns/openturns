@@ -108,12 +108,6 @@ try:
     print("covariance=", repr(covariance))
     parameters = distribution.getParametersCollection()
     print("parameters=", repr(parameters))
-    oldPrecision = PlatformInfo.GetNumericalPrecision()
-    PlatformInfo.SetNumericalPrecision(5)
-    for i in range(6):
-        print("standard moment n=", i, " value=",
-              distribution.getStandardMoment(i))
-    PlatformInfo.SetNumericalPrecision(oldPrecision)
     print("Standard representative=", distribution.getStandardRepresentative())
 
     # Specific to this distribution

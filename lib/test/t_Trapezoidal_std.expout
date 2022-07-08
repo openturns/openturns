@@ -60,11 +60,5 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[a : 1, b : 1.2, c : 3, d : 14]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[-0.310603]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.312872]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[-0.176411]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.1781]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[-0.120255]
 Standard representative=Trapezoidal(a = -1, b = -0.969231, c = -0.692308, d = 1)
 roughness=0.101047

@@ -21,12 +21,6 @@ skewness      = [0.869365]
 kurtosis      = [6.00166]
 covariance      = [[ 4.75 ]]
 parameters      = [[a : -1, b : 2, mean_0 : 1, standard_deviation_0 : 2]]
-standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [0.5]
-standard moment n= 2 , value= [5]
-standard moment n= 3 , value= [16.25]
-standard moment n= 4 , value= [160.6]
-standard moment n= 5 , value= [983.5]
 Standard representative= ProductDistribution(Uniform(a = -1, b = 2) * Normal(mu = 1, sigma = 2))
 left= Uniform(a = -1, b = 2)
 right= Normal(mu = 1, sigma = 2)

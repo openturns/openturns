@@ -32,12 +32,6 @@ covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 spearman=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 kendall=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
-standard moment n=0, value=class=Point name=Unnamed dimension=3 values=[1,1,1]
-standard moment n=1, value=class=Point name=Unnamed dimension=3 values=[-7.93531e-68,-7.90057e-68,-7.90057e-68]
-standard moment n=2, value=class=Point name=Unnamed dimension=3 values=[3.65843e-53,3.65843e-53,3.65843e-53]
-standard moment n=3, value=class=Point name=Unnamed dimension=3 values=[1.19003e-67,1.23586e-67,1.23586e-67]
-standard moment n=4, value=class=Point name=Unnamed dimension=3 values=[1.09753e-52,1.09753e-52,1.09753e-52]
-standard moment n=5, value=class=Point name=Unnamed dimension=3 values=[1.77784e-67,1.87415e-67,1.87415e-67]
 Standard representative=MarginalDistribution(distribution=Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
 [[ 1 0 0 0 0 ]
  [ 0 1 0 0 0 ]
