@@ -8,9 +8,9 @@ import math as m
 
 ot.TESTPREAMBLE()
 
-fileName = 'pyxmlh5.xml'
+fileName = 'pyxmlh5.xml.gz'
 study = ot.Study()
-study.setStorageManager(ot.XMLH5StorageManager(fileName))
+study.setStorageManager(ot.XMLH5StorageManager(fileName, 5))
 
 point = ot.Point([123.456, 125.43, 3975.4567])
 point2 = ot.Point(3, 789.123)
@@ -48,4 +48,4 @@ assert mesh == mesh2, "wrong mesh"
 
 # cleanup
 os.remove(fileName)
-os.remove(fileName.replace(".xml", ".h5"))
+os.remove(fileName.replace(".xml.gz", ".h5"))
