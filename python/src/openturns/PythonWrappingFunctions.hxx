@@ -23,6 +23,7 @@
 #define OPENTURNS_PYTHONWRAPPINGFUNCTIONS_HXX
 
 #include <Python.h>
+#include <csignal>
 #include "openturns/OT.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -1844,6 +1845,11 @@ ScopedPyObjectPointer deepCopy(PyObject * pyObj)
   ScopedPyObjectPointer pyObjDeepCopy(PyObject_CallFunctionObjArgs(deepCopyMethod, pyObj, NULL));
   handleException();
   return pyObjDeepCopy;
+}
+
+inline void SignalHandler(int signum)
+{
+  throw InterruptionException(HERE);
 }
 
 END_NAMESPACE_OPENTURNS
