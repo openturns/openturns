@@ -2,37 +2,42 @@
 Create a polynomial chaos metamodel by integration on the cantilever beam
 =========================================================================
 """
+
 # %%
-# In this example, we create a polynomial chaos metamodel by integration on the :ref:`cantilever beam <use-case-cantilever-beam>` example.
+# In this example, we create a polynomial chaos metamodel by integration on the
+# :ref:`cantilever beam <use-case-cantilever-beam>` example.
+# We choose to evaluate the coefficients of the chaos decomposition by
+# integration using various kinds of design of experiment:
 #
-# In order to do this, we use the `GaussProductExperiment` class.
+# - Gauss product
+# - Latin hypercube sampling
+# - Quasi Monte Carlo with a Sobol' sequence
+#
+# We will compare the results obtained on each design.
 
 # %%
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+import openturns.viewer as otv
 ot.Log.Show(ot.Log.NONE)
-
 
 # %%
 # We first load the model from the usecases module :
 cb = cantilever_beam.CantileverBeam()
 
 # %%
-# In this example we consider all marginals independent. They are defined in the `CantileverBeam` data class as well as an independent distribution :
+# In this example we consider all marginals independent.
+# They are defined in the :class:`~openturns.usecases.cantilever_beam.CantileverBeam`  class:
 dist_E = cb.E
 dist_F = cb.F
 dist_L = cb.L
 dist_I = cb.I
-myDistribution = cb.independentDistribution
+distribution = cb.independentDistribution
 
 # %%
+# We load the model.
 dim_input = cb.dim  # dimension of the input
 dim_output = 1  # dimension of the output
-
-# %%
-# We load the model :
 g = cb.model
 
 # %%
@@ -40,78 +45,58 @@ g = cb.model
 # ---------------------------------------
 
 # %%
-# We create the multivariate polynomial basis by tensorization of the univariate polynomials and the default linear enumerate rule.
-
-# %%
+# We create the multivariate polynomial basis by tensorization of the
+# univariate polynomials and the default linear enumerate rule.
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(
     [dist_E, dist_F, dist_L, dist_I])
 
 # %%
-# Generate an training sample of size N with MC simulation.
-
-# %%
-N = 50  # size of the experimental design
-inputTrain = myDistribution.getSample(N)
-outputTrain = g(inputTrain)
-
-# %%
-# We select the `FixedStrategy` truncation rule, which corresponds to using the first `P` polynomials of the polynomial basis. In this case, we select `P` using the `getStrataCumulatedCardinal` method, so that all polynomials with total degree lower or equal to 5 are used.
-
-# %%
+# In this case, we select `P` using the
+# :meth:`~openturns.EnumerateFunction.getBasisSizeFromTotalDegree` method,
+# so that all polynomials with total degree lower or equal to 5 are used.
+# This will lead to the computation of 126 coefficients.
 totalDegree = 5
-enumfunc = multivariateBasis.getEnumerateFunction()
-P = enumfunc.getStrataCumulatedCardinal(totalDegree)
-adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
-adaptiveStrategy
+enum_func = multivariateBasis.getEnumerateFunction()
+P = enum_func.getBasisSizeFromTotalDegree(totalDegree)
+print(f"P={P}")
 
 # %%
-# We see that the number of polynomials is equal to 126. This will lead to the computation of 126 coefficients.
+# We select the :class:`~openturns.FixedStrategy` truncation rule, which corresponds to using
+# the first `P` polynomials of the polynomial basis.
+adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
+
+# %%
+# We begin by getting the standard measure associated with the multivariate polynomial basis.
+# We see that the range of the `Beta` distribution has been standardized into the [-1,1] interval.
+# This is the same for the `Uniform` distribution and the second `Beta` distribution.
+measure = multivariateBasis.getMeasure()
+print(f"measure={measure}")
+
+# %%
+# The choice of the :class:`~openturns.GaussProductExperiment` rule with 4 nodes
+# in each of the 4 dimensions leads to :math:`4^4=256` evaluations of the model.
+marginalSizes = [4] * dim_input
+experiment = ot.GaussProductExperiment(distribution, marginalSizes)
+print(f"N={experiment.getSize()}")
+X, W = experiment.generateWithWeights()
+Y = g(X)
 
 # %%
 # We now set the method used to compute the coefficients; we select the integration method.
-#
-# We begin by getting the standard measure associated with the multivariate polynomial basis. We see that the range of the `Beta` distribution has been standardized into the [-1,1] interval. This is the same for the `Uniform` distribution and the second `Beta` distribution.
-
-# %%
-distributionStandard = multivariateBasis.getMeasure()
-print(distributionStandard)
-
-# %%
-marginalSizes = [4] * dim_input
-experiment = ot.GaussProductExperiment(myDistribution, marginalSizes)
-
-# %%
-# We can see the size of the associated design of experiments.
-
-# %%
-X, W = experiment.generateWithWeights()
-Y = g(X)
-X.getSize()
-
-# %%
-# The choice of the `GaussProductExperiment` rule leads to 256 evaluations of the model.
-
-# %%
 projectionStrategy = ot.IntegrationStrategy()
 
 # %%
 # We can now create the functional chaos.
-
-# %%
-chaosalgo = ot.FunctionalChaosAlgorithm(X, W, Y, myDistribution, adaptiveStrategy, projectionStrategy)
-chaosalgo.run()
+algo = ot.FunctionalChaosAlgorithm(X, W, Y, distribution,
+                                   adaptiveStrategy, projectionStrategy)
+algo.run()
 
 # %%
 # Get the result
-#
+result = algo.getResult()
 
 # %%
-result = chaosalgo.getResult()
-
-# %%
-# The `getMetaModel` method returns the metamodel function.
-
-# %%
+# The :meth:`~openturns.FunctionalChaosResult.getMetaModel` method returns the metamodel function.
 metamodel = result.getMetaModel()
 
 # %%
@@ -119,56 +104,67 @@ metamodel = result.getMetaModel()
 # ----------------------
 
 # %%
-# Generate a validation sample (which is independent of the training sample).
-
-# %%
+# Generate a new validation sample (which is independent of the training sample).
 n_valid = 1000
-inputTest = myDistribution.getSample(n_valid)
-outputTest = g(inputTest)
+X_test = distribution.getSample(n_valid)
+Y_test = g(X_test)
 
 # %%
-# The `MetaModelValidation` class validates the metamodel based on a validation sample.
+# The :class:`~openturns.MetaModelValidation` class validates the metamodel
+# based on a validation sample.
+val = ot.MetaModelValidation(X_test, Y_test, metamodel)
 
 # %%
-val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-
-# %%
-# Compute the :math:`Q^2` predictivity coefficient
-
-# %%
+# Compute the :math:`Q^2` predictivity coefficient.
 Q2 = val.computePredictivityFactor()[0]
 Q2
 
 # %%
 # Plot the observed versus the predicted outputs.
-
-# %%
 graph = val.drawValidation()
-graph.setTitle("Q2=%.2f%%" % (Q2*100))
-view = viewer.View(graph)
+graph.setTitle(f"Gauss product N={experiment.getSize()} - Q2={Q2*100:.2f}")
+view = otv.View(graph)
 
 # %%
-# Sensitivity analysis
-# --------------------
+# Now repeat the same process on various designs.
+
+
+def draw_validation(experiment):
+    projectionStrategy = ot.IntegrationStrategy(experiment)
+    algo = ot.FunctionalChaosAlgorithm(
+        g, distribution, adaptiveStrategy, projectionStrategy)
+    algo.run()
+    result = algo.getResult()
+    metamodel = result.getMetaModel()
+    X_test = distribution.getSample(n_valid)
+    Y_test = g(X_test)
+    val = ot.MetaModelValidation(X_test, Y_test, metamodel)
+    Q2 = val.computePredictivityFactor()[0]
+    graph = val.drawValidation()
+    graph.setTitle(f"{experiment.__class__.__name__} - N={experiment.getSize()} - Q2={Q2*100:.2f}")
+    return graph
+
 
 # %%
-# Retrieve Sobol' sensitivity measures associated to the polynomial chaos decomposition of the model.
+# Use an LHS design.
+experiment = ot.LHSExperiment(distribution, int(1e6))
+graph = draw_validation(experiment)
+view = otv.View(graph)
 
 # %%
-chaosSI = ot.FunctionalChaosSobolIndices(result)
-print(chaosSI.summary())
+# Use a low-discrepancy experiment (Quasi-Monte Carlo).
+sequence = ot.SobolSequence()
+experiment = ot.LowDiscrepancyExperiment(sequence, distribution, int(1e5))
+graph = draw_validation(experiment)
+view = otv.View(graph)
 
-# %%
-first_order = [chaosSI.getSobolIndex(i) for i in range(dim_input)]
-total_order = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
-input_names = g.getInputDescription()
-graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(
-    input_names, first_order, total_order)
-view = viewer.View(graph)
+otv.View.ShowAll()
 
-plt.show()
 # %%
 # Conclusion
 # ----------
-#
-# We see that the coefficients are particularily well computed since the Q2 coefficient is excellent (perfect ?), even with a relatively limited amount of simulation (256 points).
+# With the Gauss product rule the coefficients are particularily well computed
+# since the Q2 coefficient is excellent, even with the relatively limited amount
+# of simulation (256 points).
+# On the other hand the LHS and low-discrepancy experiments require many more
+# points to achieve a Q2>99%.
