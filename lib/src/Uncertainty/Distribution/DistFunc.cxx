@@ -633,8 +633,8 @@ Scalar DistFunc::qGamma(const Scalar k,
                         const Scalar p,
                         const Bool tail)
 {
-  if (!tail && (p >= 1.0 - SpecFunc::ScalarEpsilon)) return SpecFunc::RegularizedIncompleteGammaInverse(k, 1.0 - SpecFunc::ScalarEpsilon, tail);
-  return SpecFunc::RegularizedIncompleteGammaInverse(k, p, tail);
+  const Scalar cp = std::min(std::max(p, SpecFunc::MinScalar), 0.5 + (0.5 - SpecFunc::ScalarEpsilon));
+  return SpecFunc::RegularizedIncompleteGammaInverse(k, cp, tail);
 }
 /* Random number generation
    We use the algorithm described in:
@@ -1614,7 +1614,6 @@ Scalar DistFunc::qStudent(const Scalar nu,
                           const Scalar p,
                           const Bool tail)
 {
-  if (!tail && (p > 1.0 - SpecFunc::ScalarEpsilon)) return StudentFunctions::StudentQuantile(nu, 1.0 - SpecFunc::ScalarEpsilon, tail);
   return StudentFunctions::StudentQuantile(nu, p, tail);
 }
 Point DistFunc::qStudent(const Scalar nu,

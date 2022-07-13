@@ -126,7 +126,8 @@ Scalar StudentQuantile(const Scalar nu,
     return (tail == (p > 0.5) ? -value : value);
   }
 #ifdef OPENTURNS_HAVE_BOOST
-  return tail ? boost::math::quantile(boost::math::complement(boost::math::students_t(nu), p)) : boost::math::quantile(boost::math::students_t(nu), p);
+  const Scalar cprob = std::min(std::max(p, std::sqrt(SpecFunc::MinScalar)), 0.5 + (0.5 - SpecFunc::ScalarEpsilon));
+  return tail ? boost::math::quantile(boost::math::complement(boost::math::students_t(nu), cprob)) : boost::math::quantile(boost::math::students_t(nu), cprob);
 #else
 #ifdef USE_NEW_ALGO
   // Central part
@@ -186,7 +187,8 @@ Scalar StudentQuantile(const Scalar nu,
   }
 #endif // USE_NEW_ALGO
   // Finally, if neither the central series nor the tail series apply, use the incomplete beta inverse function
-  const Scalar omega = std::sqrt(nu * (1.0 / SpecFunc::RegularizedIncompleteBetaInverse(0.5 * nu, 0.5, 2.0 * u) - 1.0));
+  const Scalar cu = std::max(u, SpecFunc::MinScalar);
+  const Scalar omega = std::sqrt(nu * (1.0 / SpecFunc::RegularizedIncompleteBetaInverse(0.5 * nu, 0.5, 2.0 * cu) - 1.0));
   return ((p > 0.5) == tail ? -omega : omega);
 #endif // OPENTURNS_HAVE_BOOST
 }

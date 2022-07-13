@@ -2,8 +2,10 @@ import openturns as ot
 import openturns.testing as ott
 import math as m
 
-for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
+coll = ot.DistributionFactory.GetContinuousUniVariateFactories()
+for factory in coll:
     distribution = factory.build()
+    print(distribution)
 
     # avoid flat pdfs
     if distribution.getName() == "Dirichlet":

@@ -212,8 +212,9 @@ Point Rayleigh::computeCDFGradient(const Point & point) const
 Scalar Rayleigh::computeScalarQuantile(const Scalar prob,
                                        const Bool tail) const
 {
-  if (tail) return gamma_ + beta_ * std::sqrt(-2.0 * std::log(prob));
-  return gamma_ + beta_ * std::sqrt(-2.0 * log1p(-prob));
+  const Scalar cprob = std::min(std::max(prob, SpecFunc::MinScalar), 0.5 + (0.5 - SpecFunc::ScalarEpsilon));
+  if (tail) return gamma_ + beta_ * std::sqrt(-2.0 * std::log(cprob));
+  return gamma_ + beta_ * std::sqrt(-2.0 * std::log1p(-cprob));
 }
 
 /* Compute the mean of the distribution */

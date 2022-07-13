@@ -182,18 +182,18 @@ Scalar Gumbel::computeComplementaryCDF(const Scalar u) const
 /* Compute the entropy of the distribution */
 Scalar Gumbel::computeEntropy() const
 {
-  return -std::log((1.0 / beta_)) + SpecFunc::EulerConstant + 1.0;
+  return std::log(beta_) + SpecFunc::EulerConstant + 1.0;
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Gumbel::computeCharacteristicFunction(const Scalar x) const
 {
-  return SpecFunc::Gamma(Complex(1.0, -x / (1.0 / beta_))) * std::exp(Complex(0.0, gamma_ * x));
+  return SpecFunc::Gamma(Complex(1.0, -x * beta_)) * std::exp(Complex(0.0, gamma_ * x));
 }
 
 Complex Gumbel::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return std::log(SpecFunc::Gamma(Complex(1.0, -x / (1.0 / beta_)))) + Complex(0.0, gamma_ * x);
+  return std::log(SpecFunc::Gamma(Complex(1.0, -x * beta_))) + Complex(0.0, gamma_ * x);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -228,21 +228,22 @@ Point Gumbel::computeCDFGradient(const Point & point) const
 Scalar Gumbel::computeScalarQuantile(const Scalar prob,
                                      const Bool tail) const
 {
-  if (tail) return gamma_ - std::log(-log1p(-prob)) / (1.0 / beta_);
-  return gamma_ - std::log(-std::log(prob)) / (1.0 / beta_);
+  const Scalar cprob = std::min(std::max(prob, SpecFunc::MinScalar), 0.5 + (0.5 - SpecFunc::ScalarEpsilon));
+  if (tail) return gamma_ - beta_ * std::log(-std::log1p(-cprob));
+  return gamma_ - beta_ * std::log(-std::log(cprob));
 }
 
 /* Compute the mean of the distribution */
 void Gumbel::computeMean() const
 {
-  mean_ = Point(1, gamma_ + SpecFunc::EulerConstant / (1.0 / beta_));
+  mean_ = Point(1, gamma_ + beta_ * SpecFunc::EulerConstant);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 Point Gumbel::getStandardDeviation() const
 {
-  return Point(1, SpecFunc::PI_SQRT6 / (1.0 / beta_));
+  return Point(1, beta_ * SpecFunc::PI_SQRT6);
 }
 
 /* Get the skewness of the distribution */
@@ -269,7 +270,7 @@ Distribution Gumbel::getStandardRepresentative() const
 void Gumbel::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = SpecFunc::PI2_6 / ((1.0 / beta_) * (1.0 / beta_));
+  covariance_(0, 0) = beta_ * beta_ * SpecFunc::PI2_6;
   isAlreadyComputedCovariance_ = true;
 }
 

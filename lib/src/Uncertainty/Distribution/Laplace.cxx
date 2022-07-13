@@ -199,8 +199,9 @@ Point Laplace::computeCDFGradient(const Point & point) const
 Scalar Laplace::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
-  const Scalar d = tail ? 0.5 - prob : prob - 0.5;
-  if (d < 0.0) return mu_ + log1p(2.0 * d) / lambda_;
+  const Scalar cprob = std::min(std::max(prob, SpecFunc::ScalarEpsilon), 0.5 + (0.5 - SpecFunc::ScalarEpsilon));
+  const Scalar d = tail ? 0.5 - cprob : cprob - 0.5;
+  if (d < 0.0) return mu_ + std::log1p(2.0 * d) / lambda_;
   return mu_ - log1p(-2.0 * d) / lambda_;
 }
 

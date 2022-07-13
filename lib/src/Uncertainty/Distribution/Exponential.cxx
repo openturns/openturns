@@ -221,8 +221,9 @@ Point Exponential::computeCDFGradient(const Point & point) const
 Scalar Exponential::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  if (tail) return gamma_ - std::log(prob) / lambda_;
-  return gamma_ - log1p(-prob) / lambda_;
+  const Scalar cprob = std::min(std::max(prob, SpecFunc::MinScalar), 0.5 + (0.5 - SpecFunc::ScalarEpsilon));
+  if (tail) return gamma_ - std::log(cprob) / lambda_;
+  return gamma_ - std::log1p(-cprob) / lambda_;
 }
 
 /* Compute the mean of the distribution */

@@ -187,8 +187,9 @@ Point Burr::computeCDFGradient(const Point & point) const
 Scalar Burr::computeScalarQuantile(const Scalar prob,
                                    const Bool tail) const
 {
-  if (tail) return std::exp(std::log(expm1(-std::log(prob) / k_)) / c_);
-  return std::exp(std::log(expm1(-log1p(-prob) / k_)) / c_);
+  const Scalar cprob = std::min(std::max(prob, SpecFunc::MinScalar), 0.5 + (0.5 - SpecFunc::ScalarEpsilon));
+  if (tail) return std::exp(std::log(expm1(-std::log(cprob) / k_)) / c_);
+  return std::exp(std::log(expm1(-log1p(-cprob) / k_)) / c_);
 }
 
 /* Compute the mean of the distribution */

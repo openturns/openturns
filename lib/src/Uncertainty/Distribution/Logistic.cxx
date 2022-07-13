@@ -225,8 +225,9 @@ Point Logistic::computeCDFGradient(const Point & point) const
 Scalar Logistic::computeScalarQuantile(const Scalar prob,
                                        const Bool tail) const
 {
-  if (tail) return mu_ + beta_ * std::log((1.0 - prob) / prob);
-  return mu_ + beta_ * std::log(prob / (1.0 - prob));
+  const Scalar cprob = std::min(std::max(prob, SpecFunc::MinScalar), 0.5 + (0.5 - SpecFunc::ScalarEpsilon));
+  if (tail) return mu_ + beta_ * std::log((1.0 - cprob) / cprob);
+  return mu_ + beta_ * std::log(cprob / (1.0 - cprob));
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */

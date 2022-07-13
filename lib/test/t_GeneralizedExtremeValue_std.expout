@@ -145,7 +145,7 @@ Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower boun
 beta=0.95
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-8] upper bound=class=Point name=Unnamed dimension=1 values=[7.61316] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.482513] upper bound=class=Point name=Unnamed dimension=1 values=[1251.08] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.482513] upper bound=class=Point name=Unnamed dimension=1 values=[1250.93] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
 entropy=2.06926
 entropy (MC)=2.07062

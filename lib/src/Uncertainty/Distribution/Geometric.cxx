@@ -160,8 +160,9 @@ Point Geometric::computeCDFGradient(const Point & point) const
 Scalar Geometric::computeScalarQuantile(const Scalar prob,
                                         const Bool tail) const
 {
-  if (tail) return ceil(std::log(prob) / log1p(-p_));
-  return ceil(log1p(-prob) / log1p(-p_));
+  const Scalar cprob = std::min(std::max(prob, SpecFunc::MinScalar), 0.5 + (0.5 - SpecFunc::ScalarEpsilon));
+  if (tail) return ceil(std::log(cprob) / log1p(-p_));
+  return ceil(log1p(-cprob) / log1p(-p_));
 }
 
 /* Compute the entropy of the distribution */

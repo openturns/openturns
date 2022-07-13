@@ -102,7 +102,10 @@ void Frechet::computeRange()
 Scalar Frechet::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
-  return gamma_ + beta_ * std::pow(-std::log(tail ? 1.0 - prob : prob), -1.0 / alpha_);
+  const Scalar cprob = std::min(std::max(prob, SpecFunc::MinScalar), 0.5 + (0.5 - SpecFunc::ScalarEpsilon));
+  if (tail)
+    return gamma_ + beta_ * std::pow(-std::log1p(-cprob), -1.0 / alpha_);
+  return gamma_ + beta_ * std::pow(-std::log(cprob), -1.0 / alpha_);
 }
 
 /* Get one realization of the distribution */
