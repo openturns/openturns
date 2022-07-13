@@ -24,15 +24,19 @@ InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.14928]
 Survival(inverseSurvival)=0.950000
 entropy=1.074411
 Minimum volume interval= [1, 3.73264]
+interval proba=0.95
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 1.57038} with f=
 MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4]))
 beta= [0.207966]
 Bilateral confidence interval= [1.07578, 3.85894]
+interval proba=0.95
 beta= [0.95]
 Unilateral confidence interval (lower tail)= [1, 3.73264]
+interval proba=0.95
 beta= [0.95]
 Unilateral confidence interval (upper tail)= [1.14928, 4]
+interval proba=0.95
 beta= [0.95]
 mean      = class=Point name=Unnamed dimension=1 values=[2.35526]
 mean (ref)= class=Point name=Unnamed dimension=1 values=[2.35526]
@@ -75,16 +79,20 @@ cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.16934]
 Survival(inverseSurvival)=0.950000
 entropy=1.390942
-Minimum volume interval= [1, 4.67299]
+Minimum volume interval= [1.16934, 8.8759]
+interval proba=0.95
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.62114} with f=
 MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, (13.4759) +inf[))
 beta= [0.0727201]
 Bilateral confidence interval= [1.08613, 5.12246]
+interval proba=0.95
 beta= [0.95]
 Unilateral confidence interval (lower tail)= [1, 4.67299]
+interval proba=0.95
 beta= [0.95]
 Unilateral confidence interval (upper tail)= [1.16934, 13.4759]
+interval proba=0.95
 beta= [0.95]
 mean      = class=Point name=Unnamed dimension=1 values=[2.64103]
 mean (ref)= class=Point name=Unnamed dimension=1 values=[2.64103]
@@ -127,16 +135,20 @@ cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.53617]
 Survival(inverseSurvival)=0.950000
 entropy=1.608447
-Minimum volume interval= [4, 4]
+Minimum volume interval= [-0.23257, 4.23256]
+interval proba=0.92
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.65813} with f=
 MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = ]-inf (-9.47594), 4]))
 beta= [0.0700792]
 Bilateral confidence interval= [-1.00085, 3.80883]
+interval proba=0.95
 beta= [0.95]
 Unilateral confidence interval (lower tail)= [-9.47594, 3.64324]
+interval proba=0.95
 beta= [0.95]
 Unilateral confidence interval (upper tail)= [-0.53617, 4]
+interval proba=0.95
 beta= [0.95]
 mean      = class=Point name=Unnamed dimension=1 values=[1.72929]
 mean (ref)= class=Point name=Unnamed dimension=1 values=[1.72929]
@@ -180,15 +192,19 @@ InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.14928]
 Survival(inverseSurvival)=0.950000
 entropy=1.074411
 Minimum volume interval= [1, 3.73264]
+interval proba=0.95
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 1.57038} with f=
 MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4]))
 beta= [0.207966]
 Bilateral confidence interval= [1.07578, 3.85894]
+interval proba=0.95
 beta= [0.95]
 Unilateral confidence interval (lower tail)= [1, 3.73264]
+interval proba=0.95
 beta= [0.95]
 Unilateral confidence interval (upper tail)= [1.14928, 4]
+interval proba=0.95
 beta= [0.95]
 mean      = class=Point name=Unnamed dimension=1 values=[2.35526]
 mean (ref)= class=Point name=Unnamed dimension=1 values=[2.35526]
@@ -275,15 +291,19 @@ InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.743105]
 Survival(inverseSurvival)=0.950000
 entropy=0.979345
 Minimum volume interval= [0.537171, 3.03076]
+interval proba=0.95
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.24308} with f=
 MinimumVolumeLevelSetEvaluation(TruncatedDistribution(WeibullMin(beta = 2, alpha = 3, gamma = 0), bounds = [0, (6.36519) +inf[))
 beta= [0.106131]
 Bilateral confidence interval= [0.587271, 3.09026]
+interval proba=0.95
 beta= [0.95]
 Unilateral confidence interval (lower tail)= [0, 2.88313]
+interval proba=0.95
 beta= [0.95]
 Unilateral confidence interval (upper tail)= [0.743105, 6.36519]
+interval proba=0.95
 beta= [0.95]
 mean      = class=Point name=Unnamed dimension=1 values=[1.78596]
 mean (ref)= class=Point name=Unnamed dimension=1 values=[1.78596]

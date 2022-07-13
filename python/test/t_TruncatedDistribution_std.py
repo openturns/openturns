@@ -139,26 +139,34 @@ for testCase in range(len(distribution)):
             testCase
         ].computeMinimumVolumeIntervalWithMarginalProbability(0.95)
         print("Minimum volume interval=", interval)
+        print(f"interval proba={distribution[testCase].computeProbability(interval):.2f}")
         print("threshold=", ot.Point(1, threshold))
+
         levelSet, beta = distribution[
             testCase
         ].computeMinimumVolumeLevelSetWithThreshold(0.95)
         print("Minimum volume level set=", levelSet)
         print("beta=", ot.Point(1, beta))
+
         interval, beta = distribution[
             testCase
         ].computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
         print("Bilateral confidence interval=", interval)
+        print(f"interval proba={distribution[testCase].computeProbability(interval):.2f}")
         print("beta=", ot.Point(1, beta))
+
         interval, beta = distribution[
             testCase
         ].computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
         print("Unilateral confidence interval (lower tail)=", interval)
+        print(f"interval proba={distribution[testCase].computeProbability(interval):.2f}")
         print("beta=", ot.Point(1, beta))
+
         interval, beta = distribution[
             testCase
         ].computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
         print("Unilateral confidence interval (upper tail)=", interval)
+        print(f"interval proba={distribution[testCase].computeProbability(interval):.2f}")
         print("beta=", ot.Point(1, beta))
 
     mean = distribution[testCase].getMean()
