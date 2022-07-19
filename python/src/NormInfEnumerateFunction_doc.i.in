@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-dim : integer
+dim : integer, default=1
     Dimension of the :class:`~openturns.EnumerateFunction`. *dim* must be equal
     to the dimension of the :class:`~openturns.OrthogonalBasis`.
 

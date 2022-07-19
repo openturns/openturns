@@ -63,31 +63,31 @@ String EnumerateFunction::__str__(const String & offset) const
 /* The bijective association between an integer and a set of indices */
 Indices EnumerateFunction::operator() (const UnsignedInteger index) const
 {
-  return getImplementation()->operator()( index );
+  return getImplementation()->operator()(index);
 }
 
 /* The inverse of the association */
 UnsignedInteger EnumerateFunction::inverse(const Indices & indices) const
 {
-  return getImplementation()->inverse( indices );
+  return getImplementation()->inverse(indices);
 }
 
 /* The cardinal of the given strata */
 UnsignedInteger EnumerateFunction::getStrataCardinal(const UnsignedInteger strataIndex) const
 {
-  return getImplementation()->getStrataCardinal( strataIndex );
+  return getImplementation()->getStrataCardinal(strataIndex);
 }
 
 /* The cardinal of the cumulated strata above or equal to the given strata */
 UnsignedInteger EnumerateFunction::getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const
 {
-  return getImplementation()->getStrataCumulatedCardinal( strataIndex );
+  return getImplementation()->getStrataCumulatedCardinal(strataIndex);
 }
 
 /* The index of the strata of degree max < degree */
 UnsignedInteger EnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const
 {
-  return getImplementation()->getMaximumDegreeStrataIndex( maximumDegree );
+  return getImplementation()->getMaximumDegreeStrataIndex(maximumDegree);
 }
 
 /* The cardinal of indices of degree max <= maximumDegree */
@@ -106,12 +106,24 @@ UnsignedInteger EnumerateFunction::getBasisSizeFromTotalDegree(const UnsignedInt
 void EnumerateFunction::setDimension(const UnsignedInteger dimension)
 {
   copyOnWrite();
-  getImplementation()->setDimension( dimension );
+  getImplementation()->setDimension(dimension);
 }
 
 UnsignedInteger EnumerateFunction::getDimension() const
 {
   return getImplementation()->getDimension();
+}
+
+/* Upper bound accessor */
+void EnumerateFunction::setUpperBound(const Indices & upperBound)
+{
+  copyOnWrite();
+  getImplementation()->setUpperBound(upperBound);
+}
+
+Indices EnumerateFunction::getUpperBound() const
+{
+  return getImplementation()->getUpperBound();
 }
 
 END_NAMESPACE_OPENTURNS

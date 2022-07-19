@@ -40,12 +40,8 @@ class OT_API NormInfEnumerateFunction
   CLASSNAME
 public:
 
-
-  /** Default constructor */
-  NormInfEnumerateFunction();
-
   /** Parameter constructor */
-  explicit NormInfEnumerateFunction(const UnsignedInteger dimension);
+  explicit NormInfEnumerateFunction(const UnsignedInteger dimension = 1);
 
   /** Virtual constrcutor */
   NormInfEnumerateFunction * clone() const override;
@@ -55,9 +51,6 @@ public:
 
   /** The bijective association between an integer and a set of indices */
   Indices operator() (const UnsignedInteger index) const override;
-
-  /** The inverse of the association */
-  UnsignedInteger inverse(const Indices & indices) const override;
 
   /** The cardinal of the given strata */
   UnsignedInteger getStrataCardinal(const UnsignedInteger strataIndex) const override;
@@ -74,12 +67,11 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-protected:
-
 private:
-
-  mutable UnsignedInteger index_;
+  mutable UnsignedInteger index_ = 0;
   mutable Indices multiIndices_;
+  mutable UnsignedInteger strataIndex_ = 0;
+
 } ; /* class NormInfEnumerateFunction */
 
 

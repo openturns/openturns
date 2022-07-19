@@ -68,6 +68,9 @@ public:
   /** The index of the strata of degree max <= maximumDegree */
   UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const override;
 
+  /** Upper bound accessor */
+  void setUpperBound(const Indices & upperBound) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
