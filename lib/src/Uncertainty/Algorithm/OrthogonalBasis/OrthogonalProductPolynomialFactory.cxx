@@ -30,6 +30,7 @@
 #include "openturns/ProductPolynomialHessian.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
+#include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -82,12 +83,32 @@ OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const Pol
 OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const DistributionCollection & marginals)
   : OrthogonalFunctionFactory()
 {
-  PolynomialFamilyCollection coll;
-  for (UnsignedInteger i = 0; i < marginals.getSize(); ++ i)
-    coll.add(StandardDistributionPolynomialFactory(marginals[i]));
-  *this = OrthogonalProductPolynomialFactory(coll);
+  const UnsignedInteger size = marginals.getSize();
+  PolynomialFamilyCollection coll(size);
+  Bool hasDiscrete = false;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    coll[i] = StandardDistributionPolynomialFactory(marginals[i]);
+    if (marginals[i].isDiscrete())
+      hasDiscrete = true;
+  }
+  if (hasDiscrete)
+    // this one supports bounds
+    *this = OrthogonalProductPolynomialFactory(coll, HyperbolicAnisotropicEnumerateFunction(size, 1.0));
+  else
+    *this = OrthogonalProductPolynomialFactory(coll);
 }
 
+OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const DistributionCollection & marginals,
+                                                                       const EnumerateFunction & phi)
+  : OrthogonalFunctionFactory()
+{
+  const UnsignedInteger size = marginals.getSize();
+  PolynomialFamilyCollection coll(size);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    coll[i] = StandardDistributionPolynomialFactory(marginals[i]);
+  *this = OrthogonalProductPolynomialFactory(coll, phi);
+}
 
 /* Virtual constructor */
 OrthogonalProductPolynomialFactory * OrthogonalProductPolynomialFactory::clone() const
@@ -156,11 +177,28 @@ void OrthogonalProductPolynomialFactory::buildMeasure()
 {
   const UnsignedInteger size = coll_.getSize();
   Collection<Distribution> distributions(size);
+
+  // get default upper bound
+  Indices upperBound(LinearEnumerateFunction(size).getUpperBound());
+  Bool hasDiscrete = false;
+
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     distributions[i] = coll_[i].getMeasure();
+    if (distributions[i].isDiscrete())
+    {
+      hasDiscrete = true;
+      if (distributions[i].getSupport().getSize())
+        upperBound[i] = distributions[i].getSupport().getSize() - 1;
+      else
+        throw InvalidArgumentException(HERE) << "Measure support is empty";
+    }
   }
   measure_ = ComposedDistribution(distributions);
+
+  // the enumerate function must support bounds
+  if (hasDiscrete)
+    phi_.setUpperBound(upperBound);
 }
 
 /* Nodes and weights of the multivariate polynomial associated with the marginal degrees indices[0], ...,indices[dimension] as the tensor product of the marginal orthogonal univariate polynomials, to build multivariate quadrature rules */

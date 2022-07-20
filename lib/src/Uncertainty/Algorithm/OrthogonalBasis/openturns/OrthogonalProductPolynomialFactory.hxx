@@ -60,6 +60,9 @@ public:
   /** Simplified constructor */
   explicit OrthogonalProductPolynomialFactory(const DistributionCollection & marginals);
 
+  OrthogonalProductPolynomialFactory(const DistributionCollection & marginals,
+                                     const EnumerateFunction & phi);
+
   /** Build the Function of the given index */
   using OrthogonalFunctionFactory::build;
   Function build(const UnsignedInteger index) const override;
