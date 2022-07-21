@@ -96,11 +96,11 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
   Collection<Distribution> collectionOfDistribution(numberOfSample);
   for (UnsignedInteger i = 0; i < numberOfSample ; ++i)
   {
-    const Point  mean_normal =  sample[i];
+    const Point meanNormal(sample[i]);
     
-    collectionOfDistribution[i] = Normal(mean_normal, silverman);
+    collectionOfDistribution[i] = Normal(meanNormal, silverman);
   }
-  Distribution auxiliaryDistribution = Mixture(collectionOfDistribution, weights);
+  const Mixture auxiliaryDistribution(collectionOfDistribution, weights);
 
   return auxiliaryDistribution;
 }
