@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and projection
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
 
+#include <limits>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KarhunenLoeveAlgorithmImplementation)
@@ -33,6 +35,7 @@ KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation()
   : PersistentObject()
   , covariance_()
   , threshold_(0.0)
+  , nbModes_(std::numeric_limits<UnsignedInteger>::max())
   , result_()
 {
   // Nothing to do
@@ -44,6 +47,7 @@ KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation(const
   : PersistentObject()
   , covariance_(covariance)
   , threshold_(threshold)
+  , nbModes_(std::numeric_limits<UnsignedInteger>::max())
   , result_()
 {
   // Nothing to do
@@ -63,7 +67,21 @@ Scalar KarhunenLoeveAlgorithmImplementation::getThreshold() const
 
 void KarhunenLoeveAlgorithmImplementation::setThreshold(const Scalar threshold)
 {
+  if (!(threshold <= 1.0 && threshold >= 0.0))
+    throw InvalidArgumentException(HERE) << "threshold must be between 0.0 and 1.0 but is " << threshold;
+
   threshold_ = threshold;
+}
+
+/** Number of modes accessors */
+UnsignedInteger KarhunenLoeveAlgorithmImplementation::getNbModes() const
+{
+  return nbModes_;
+}
+
+void KarhunenLoeveAlgorithmImplementation::setNbModes(const UnsignedInteger nbModes)
+{
+  nbModes_ = nbModes;
 }
 
 /* Covariance model accessors */
@@ -95,6 +113,7 @@ String KarhunenLoeveAlgorithmImplementation::__repr__() const
   return OSS(true) << "class=" << getClassName()
          << " covariance model=" << covariance_
          << " threshold=" << threshold_
+         << " nbModes=" << nbModes_
          << " result=" << result_;
 }
 
@@ -109,6 +128,7 @@ void KarhunenLoeveAlgorithmImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute("covariance_", covariance_);
   adv.saveAttribute("threshold_", threshold_);
+  adv.saveAttribute("nbModes_", nbModes_);
   adv.saveAttribute("result_", result_);
 }
 
@@ -119,6 +139,7 @@ void KarhunenLoeveAlgorithmImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("covariance_", covariance_);
   adv.loadAttribute("threshold_", threshold_);
+  adv.loadAttribute("nbModes_", nbModes_);
   adv.loadAttribute("result_", result_);
 }
 

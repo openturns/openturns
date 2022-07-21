@@ -2,7 +2,7 @@
 /**
  *  @brief P1 Lagrange interpolation between two meshes.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -171,7 +171,7 @@ void P1LagrangeInterpolation::computeProjection()
     {
       if (!inputMesh_.checkPointInSimplexWithCoordinates(outputVertices[i], simplexIndices[i], coordinates))
       {
-        throw InvalidArgumentException(HERE);
+        throw InvalidArgumentException(HERE) << "P1LagrangeInterpolation: point #" << i << " is not inside simplex";
       }
       IndicesCollection::const_iterator cit = simplices.cbegin_at(simplexIndices[i]);
       // Points are sorted to avoid memory gaps during matrix-matrix multiplication
@@ -218,8 +218,10 @@ Sample P1LagrangeInterpolation::operator()(const Sample & values) const
 void P1LagrangeInterpolation::save(Advocate & adv) const
 {
   FieldFunctionImplementation::save(adv);
-  adv.saveAttribute("enclosingSimplex_", *(enclosingSimplex_.getImplementation()->emptyClone()));
-  adv.saveAttribute("nearestNeighbour_", *(nearestNeighbour_.getImplementation()->emptyClone()));
+  EnclosingSimplexAlgorithm enclosingSimplexClone(enclosingSimplex_.getImplementation()->emptyClone());
+  NearestNeighbourAlgorithm nearestNeighbourClone(nearestNeighbour_.getImplementation()->emptyClone());
+  adv.saveAttribute("enclosingSimplex_", enclosingSimplexClone);
+  adv.saveAttribute("nearestNeighbour_", nearestNeighbourClone);
 }
 
 /* Method load() reloads the object from the StorageManager */

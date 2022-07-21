@@ -2,7 +2,7 @@
 /**
  *  @brief Top-level class for all spectral model factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,13 +51,6 @@ CovarianceModelFactory::CovarianceModelFactory(CovarianceModelFactoryImplementat
   : TypedInterfaceObject<CovarianceModelFactoryImplementation>(p_implementation)
 {
   // Nothing to do
-}
-
-
-/* Virtual constructor */
-CovarianceModelFactory * CovarianceModelFactory::clone() const
-{
-  return new CovarianceModelFactory(*this);
 }
 
 /* String converter */

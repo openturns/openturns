@@ -1,15 +1,12 @@
 %feature("docstring") OT::Laplace
 "Laplace distribution.
 
-Available constructors:
-    Laplace(*lambda=1.0, mu=0.0*)
-
 Parameters
 ----------
-lambda : float, :math:`\lambda > 0`
-    Scale parameter :math:`\lambda`.
 mu : float
-    Location parameter :math:`\mu`.
+    Mean parameter :math:`\mu`.
+lambda : float, :math:`\lambda > 0`
+    Rate parameter :math:`\lambda`.
 
 Notes
 -----
@@ -38,7 +35,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Laplace(1.0, 0.0)
+>>> distribution = ot.Laplace(0.0, 1.0)
 
 Draw a sample:
 
@@ -47,27 +44,27 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Laplace::getLambda
-"Accessor to the distribution's scale parameter :math:`\lambda`.
+"Accessor to the distribution's rate parameter :math:`\lambda`.
 
 Returns
 -------
 lambda : float
-    Scale parameter :math:`\lambda`."
+    Rate parameter :math:`\lambda`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Laplace::getMu
-"Accessor to the distribution's location parameter :math:`\mu`.
+"Accessor to the distribution's mean parameter :math:`\mu`.
 
 Returns
 -------
 mu : float
-    Location parameter :math:`\mu`."
+    Mean parameter :math:`\mu`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Laplace::setLambda
-"Accessor to the distribution's scale parameter :math:`\lambda`.
+"Accessor to the distribution's rate parameter :math:`\lambda`.
 
 Parameters
 ----------
@@ -77,9 +74,9 @@ lambda : float, :math:`\lambda > 0`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Laplace::setMu
-"Accessor to the distribution's location parameter :math:`\mu`.
+"Accessor to the distribution's mean parameter :math:`\mu`.
 
 Parameters
 ----------
 mu : float, :math:`\mu \in \Rset`
-    Location parameter :math:`\mu`."
+    Mean parameter :math:`\mu`."

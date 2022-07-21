@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,8 +34,8 @@ EnumerateFunctionImplementation::EnumerateFunctionImplementation(const UnsignedI
   : PersistentObject()
   , dimension_(dimension)
 {
-  if ( dimension == 0 )
-    throw InvalidArgumentException ( HERE ) << "Cannot build an EnumerateFunction of dimension 0.";
+  if (!(dimension > 0))
+    throw InvalidArgumentException (HERE) << "Cannot build an EnumerateFunction of dimension 0.";
 }
 
 /* Virtual constructor */
@@ -58,33 +58,40 @@ UnsignedInteger EnumerateFunctionImplementation::getMaximumDegreeCardinal(const 
 }
 
 /* Evaluation operator */
-Indices EnumerateFunctionImplementation::operator() (const UnsignedInteger ) const
+Indices EnumerateFunctionImplementation::operator() (const UnsignedInteger) const
 {
-  throw NotYetImplementedException( HERE ) << "In EnumerateFunctionImplementation::operator() (const UnsignedInteger index) const";
+  throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::operator()";
 }
 
 /* The inverse of the association */
-UnsignedInteger EnumerateFunctionImplementation::inverse(const Indices & ) const
+UnsignedInteger EnumerateFunctionImplementation::inverse(const Indices &) const
 {
-  throw NotYetImplementedException( HERE ) << "In EnumerateFunctionImplementation::inverse(const Indices & indices) const";
+  throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::inverse";
 }
 
 /* The cardinal of the given strata */
-UnsignedInteger EnumerateFunctionImplementation::getStrataCardinal(const UnsignedInteger ) const
+UnsignedInteger EnumerateFunctionImplementation::getStrataCardinal(const UnsignedInteger) const
 {
-  throw NotYetImplementedException( HERE ) << "In EnumerateFunctionImplementation::getStrataCardinal(const UnsignedInteger strateIndex) const";
+  throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::getStrataCardinal";
 }
 
-/* The cardinal of the cumulated strata above or equal to the given strate */
-UnsignedInteger EnumerateFunctionImplementation::getStrataCumulatedCardinal(const UnsignedInteger ) const
+/* The cardinal of the cumulated strata lower or equal to the given strate */
+UnsignedInteger EnumerateFunctionImplementation::getStrataCumulatedCardinal(const UnsignedInteger) const
 {
-  throw NotYetImplementedException( HERE ) << "In EnumerateFunctionImplementation::getStrataCumulatedCardinal(const UnsignedInteger strateIndex) const";
+  throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::getStrataCumulatedCardinal";
 }
 
 /* The index of the strata of degree max <= maximumDegree */
-UnsignedInteger EnumerateFunctionImplementation::getMaximumDegreeStrataIndex(const UnsignedInteger ) const
+UnsignedInteger EnumerateFunctionImplementation::getMaximumDegreeStrataIndex(const UnsignedInteger) const
 {
-  throw NotYetImplementedException( HERE ) << "In EnumerateFunctionImplementation::getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const";
+  throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::getMaximumDegreeStrataIndex";
+}
+
+/* The index of the strata of degree max <= maximumDegree */
+UnsignedInteger EnumerateFunctionImplementation::getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const
+{
+  const UnsignedInteger idx = getMaximumDegreeStrataIndex(maximumDegree);
+  return getStrataCumulatedCardinal(idx);
 }
 
 /* Dimension accessor */
@@ -101,15 +108,15 @@ UnsignedInteger EnumerateFunctionImplementation::getDimension() const
 /* Method save() stores the object through the StorageManager */
 void EnumerateFunctionImplementation::save(Advocate & adv) const
 {
-  PersistentObject::save( adv );
-  adv.saveAttribute( "dimension_", dimension_ );
+  PersistentObject::save(adv);
+  adv.saveAttribute("dimension_", dimension_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void EnumerateFunctionImplementation::load(Advocate & adv)
 {
-  PersistentObject::load( adv );
-  adv.loadAttribute( "dimension_", dimension_ );
+  PersistentObject::load(adv);
+  adv.loadAttribute("dimension_", dimension_);
 }
 
 

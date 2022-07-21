@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,16 +52,24 @@ public:
                                 const CorrelationMatrix & rho);
 
   /** Virtual copy constructor */
-  FractionalBrownianMotionModel * clone() const;
+  FractionalBrownianMotionModel * clone() const override;
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const Point & s,
-                               const Point & t) const;
+  SquareMatrix operator() (const Point & s, const Point & t) const override;
+
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point &s,
+                         const Point &t) const override;
+#ifndef SWIG
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                         const Collection<Scalar>::const_iterator &t_begin) const override;
+#endif
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,
-                                 const Point & t) const;
+                                 const Point & t) const override;
 
   /** Exponent accessor */
   void setExponentEtaRho(const Point & exponent,
@@ -77,23 +85,23 @@ public:
   CorrelationMatrix getRho() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
   /** Parameter accessor */
-  virtual void setFullParameter(const Point & parameter);
-  virtual Point getFullParameter() const;
-  virtual Description getFullParameterDescription() const;
+  void setFullParameter(const Point & parameter) override;
+  Point getFullParameter() const override;
+  Description getFullParameterDescription() const override;
 
 private:
   /** The exponent of the model */

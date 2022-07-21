@@ -8,7 +8,11 @@ coll : sequence of :class:`~openturns.CovarianceModel`
 
 Notes
 -----
-The tensorized covariance model defines a multivariate covariance model of dimension :math:`d\geq 1` from the tensorization of a given covariance models.
+The tensorized covariance model defines a multivariate covariance model of dimension :math:`d\geq 1` 
+from the tensorization of a given collection of covariance models. 
+This allows one to create a higher dimension covariance model by combining models of smaller dimensions.
+The dimension of each model in the collection does not necessarily have to be equal to 1. 
+The input dimension of each covariance model in the collection must be the same. 
 
 We consider the stochastic process :math:`X: \Omega \times\cD \mapsto \Rset^d`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
 
@@ -38,13 +42,7 @@ Create a tensorized covariance function from the tensorization of an absolute ex
 Create the each covariance models:
 
 >>> myCov1 = ot.AbsoluteExponential([3.0] * inputDimension)
->>> myCov2 = ot.SquaredExponential(inputDimension *[2.0])
-
->>> amplitude= [4.0, 2.0]
->>> scale = [1.0, 1.0]
->>> spatialCorrelation = ot.CorrelationMatrix(inputDimension)
->>> spatialCorrelation[1,0] = 0.3
->>> myCov3 = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
+>>> myCov2 = ot.SquaredExponential([2.0] * inputDimension)
 
 Define the scale of the tensorized model:
 
@@ -52,7 +50,7 @@ Define the scale of the tensorized model:
 
 Create the tensorized model:
 
->>> covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3], scale)
+>>> covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2], scale)
 
 Fix the same scale to each model:
 

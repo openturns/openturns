@@ -1,6 +1,6 @@
-jacobi= class=JacobiFactory alpha=0 beta=1.5 measure=class=Beta name=Beta dimension=1 r=2.5 t=3.5 a=-1 b=1
-jacobi= class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 r=4.5 t=8 a=-1 b=1
-jacobi= class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 r=4.5 t=8 a=-1 b=1
+jacobi= class=JacobiFactory alpha=0 beta=1.5 measure=class=Beta name=Beta dimension=1 alpha=2.5 beta=1 a=-1 b=1
+jacobi= class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 alpha=4.5 beta=3.5 a=-1 b=1
+jacobi= class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 alpha=4.5 beta=3.5 a=-1 b=1
 jacobi( 0 )= 1
 jacobi( 1 )= -0.377964 + 3.02372 * X
 jacobi( 2 )= -0.755929 - 1.51186 * X + 7.55929 * X^2

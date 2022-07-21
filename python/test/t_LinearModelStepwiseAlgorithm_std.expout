@@ -1,0 +1,176 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Forward  AIC 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0]]
+
+Coefficients:
+                                                                                                                                                                                                                      | Estimate    | Std Error   | t value     | Pr(>|t|)    |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | -475.729    | 264.247     | -1.80032    | 0.0789953   |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | 404.948     | 46.15       | 8.7746      | 4.77819e-11 |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0] | -0.0233259  | 0.00836164  | -2.78963    | 0.00789967  |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Residual standard error: 394.85 on 42 degrees of freedom
+F-statistic: 40.481 ,  p-value: 1.5959e-10
+---------------------------------
+Multiple R-squared   | 0.658433 |
+Adjusted R-squared   | 0.642168 |
+---------------------------------
+
+------------------------------------
+Normality test       | p-value     |
+------------------------------------
+Anderson-Darling     | 0.000429122 |
+Cramer-Von Mises     | 0.000431104 |
+Chi-Squared          | 0.0553713   |
+Kolmogorov-Smirnov   | 0.0481525   |
+------------------------------------
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Backward  AIC 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1]]
+
+Coefficients:
+                                                                                                                                                                                                                      | Estimate    | Std Error   | t value     | Pr(>|t|)    |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | 1505.49     | 1068.86     | 1.4085      | 0.166708    |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | -35.9433    | 20.2479     | -1.77516    | 0.0834809   |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | 293.861     | 79.6426     | 3.68975     | 0.000668289 |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | -0.438818   | 0.19081     | -2.29976    | 0.0267596   |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1] | -23.4519    | 13.2369     | -1.7717     | 0.0840622   |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Residual standard error: 394.76 on 40 degrees of freedom
+F-statistic: 20.756 ,  p-value: 2.5277e-09
+---------------------------------
+Multiple R-squared   | 0.674859 |
+Adjusted R-squared   | 0.642344 |
+---------------------------------
+
+-----------------------------------
+Normality test       | p-value    |
+-----------------------------------
+Anderson-Darling     | 0.00124009 |
+Cramer-Von Mises     | 0.00130302 |
+Chi-Squared          | 0.063153   |
+Kolmogorov-Smirnov   | 0.338063   |
+-----------------------------------
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Both  AIC 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0]]
+
+Coefficients:
+                                                                                                                                                                                                                      | Estimate    | Std Error   | t value     | Pr(>|t|)    |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | -475.729    | 264.247     | -1.80032    | 0.0789953   |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | 404.948     | 46.15       | 8.7746      | 4.77819e-11 |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0] | -0.0233259  | 0.00836164  | -2.78963    | 0.00789967  |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Residual standard error: 394.85 on 42 degrees of freedom
+F-statistic: 40.481 ,  p-value: 1.5959e-10
+---------------------------------
+Multiple R-squared   | 0.658433 |
+Adjusted R-squared   | 0.642168 |
+---------------------------------
+
+------------------------------------
+Normality test       | p-value     |
+------------------------------------
+Anderson-Darling     | 0.000429122 |
+Cramer-Von Mises     | 0.000431104 |
+Chi-Squared          | 0.0553713   |
+Kolmogorov-Smirnov   | 0.0481525   |
+------------------------------------
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Forward  BIC 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0]]
+
+Coefficients:
+                                                                                                                                                                                                                      | Estimate    | Std Error   | t value     | Pr(>|t|)    |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | -475.729    | 264.247     | -1.80032    | 0.0789953   |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | 404.948     | 46.15       | 8.7746      | 4.77819e-11 |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0] | -0.0233259  | 0.00836164  | -2.78963    | 0.00789967  |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Residual standard error: 394.85 on 42 degrees of freedom
+F-statistic: 40.481 ,  p-value: 1.5959e-10
+---------------------------------
+Multiple R-squared   | 0.658433 |
+Adjusted R-squared   | 0.642168 |
+---------------------------------
+
+------------------------------------
+Normality test       | p-value     |
+------------------------------------
+Anderson-Darling     | 0.000429122 |
+Cramer-Von Mises     | 0.000431104 |
+Chi-Squared          | 0.0553713   |
+Kolmogorov-Smirnov   | 0.0481525   |
+------------------------------------
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Backward  BIC 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0]]
+
+Coefficients:
+                                                                                                                                                                                                                      | Estimate    | Std Error   | t value     | Pr(>|t|)    |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | -506.977    | 270.285     | -1.87572    | 0.0676566   |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | 412.04      | 46.8531     | 8.79429     | 4.49232e-11 |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | -0.487098   | 0.196321    | -2.48113    | 0.0171847   |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Residual standard error: 401.08 on 42 degrees of freedom
+F-statistic: 38.587 ,  p-value: 3.0788e-10
+---------------------------------
+Multiple R-squared   | 0.647576 |
+Adjusted R-squared   | 0.630794 |
+---------------------------------
+
+-----------------------------------
+Normality test       | p-value    |
+-----------------------------------
+Anderson-Darling     | 0.00130208 |
+Cramer-Von Mises     | 0.00117207 |
+Chi-Squared          | 0.0719171  |
+Kolmogorov-Smirnov   | 0.121207   |
+-----------------------------------
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Both  BIC 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0],class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0]]
+
+Coefficients:
+                                                                                                                                                                                                                      | Estimate    | Std Error   | t value     | Pr(>|t|)    |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | -475.729    | 264.247     | -1.80032    | 0.0789953   |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0] | 404.948     | 46.15       | 8.7746      | 4.77819e-11 |
+class=ProductUniVariateFunctionEvaluation functions=[class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=0,class=MonomialFunction degree=1,class=MonomialFunction degree=0] | -0.0233259  | 0.00836164  | -2.78963    | 0.00789967  |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Residual standard error: 394.85 on 42 degrees of freedom
+F-statistic: 40.481 ,  p-value: 1.5959e-10
+---------------------------------
+Multiple R-squared   | 0.658433 |
+Adjusted R-squared   | 0.642168 |
+---------------------------------
+
+------------------------------------
+Normality test       | p-value     |
+------------------------------------
+Anderson-Darling     | 0.000429122 |
+Cramer-Von Mises     | 0.000431104 |
+Chi-Squared          | 0.0553713   |
+Kolmogorov-Smirnov   | 0.0481525   |
+------------------------------------
+

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -28,7 +27,7 @@ try:
     inPoint[1] = 2.3
     inPoint[2] = 3.4
     print("myHessian=", myHessian)
-    # Reduce the ouput precision because we use finite difference so only 5
+    # Reduce the output precision because we use finite difference so only 5
     # digits are significant
     PlatformInfo.SetNumericalPrecision(5)
     print("Value at ", inPoint, "=", myHessian.hessian(inPoint))

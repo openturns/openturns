@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Beta distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,6 +21,7 @@
 #include "openturns/BetaFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/BetaMuSigma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -62,7 +63,7 @@ Distribution BetaFactory::build() const
 Beta BetaFactory::buildAsBeta(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Beta distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
@@ -70,20 +71,11 @@ Beta BetaFactory::buildAsBeta(const Sample & sample) const
   const Scalar a = xMin - delta / (size + 2);
   const Scalar b = xMax + delta / (size + 2);
   if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution if data contains NaN or Inf";
-  if (xMin == xMax)
-  {
-    delta = std::max(std::abs(xMin), 100.0) * SpecFunc::ScalarEpsilon;
-    Beta result(1.0, 2.0, xMin - delta, xMax + delta);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
-  const Scalar mean = sample.computeMean()[0];
-  const Scalar sigma = sample.computeStandardDeviationPerComponent()[0];
-  const Scalar t = (b - mean) * (mean - a) / (sigma * sigma) - 1.0;
-  const Scalar r = t * (mean - a) / (b - a);
-  Beta result(r, t, a, b);
-  result.setDescription(sample.getDescription());
-  return result;
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Beta distribution from a constant sample.";
+
+  const Scalar mu = sample.computeMean()[0];
+  const Scalar sigma = sample.computeStandardDeviation()[0];
+  return buildAsBeta(BetaMuSigma(mu, sigma, a, b).evaluate());
 }
 
 Beta BetaFactory::buildAsBeta(const Point & parameters) const

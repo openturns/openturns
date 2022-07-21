@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of Event class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,7 +50,7 @@ int main(int, char *[])
       // The domain: [0, 1]^dim
       Interval domain(dim);
       // The event
-      Event event(Y, domain);
+      ThresholdEvent event(Y, domain);
 
       fullprint << "sample=" << event.getSample(10) << std::endl;
 
@@ -64,7 +64,7 @@ int main(int, char *[])
       // The domain: [0, 1]^dim
       Interval domain(dim);
       // The event
-      Event event(X, domain);
+      ProcessEvent event(X, domain);
 
       fullprint << "sample=" << event.getSample(10) << std::endl;
 

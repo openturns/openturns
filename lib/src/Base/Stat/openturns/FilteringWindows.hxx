@@ -3,7 +3,7 @@
  *  @brief This class is enables to build a second order model
  *  This is the interface class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,10 +56,10 @@ public:
 #endif
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** functor - evaluation of filter using () */
   Scalar operator()(const Scalar t) const;

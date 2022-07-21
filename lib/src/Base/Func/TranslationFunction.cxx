@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for the translation function
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 #include "openturns/TranslationEvaluation.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/ConstantGradient.hxx"
-#include "openturns/ConstantHessian.hxx"
+#include "openturns/NullHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +33,7 @@ CLASSNAMEINIT(TranslationFunction)
 TranslationFunction::TranslationFunction(const Point & constant)
   : Function(new TranslationEvaluation(constant),
              new ConstantGradient(IdentityMatrix(constant.getSize())),
-             new ConstantHessian(SymmetricTensor(constant.getSize(), constant.getSize())))
+             new NullHessian(constant.getSize(), constant.getSize()))
 {
   // Nothing to do
 }

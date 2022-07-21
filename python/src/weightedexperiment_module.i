@@ -46,6 +46,10 @@
 %include SimulatedAnnealingLHS.i
 %include LowDiscrepancyExperiment.i
 %include MonteCarloExperiment.i
+%include SplitterImplementation.i
+%include KFoldSplitter.i
+%include LeaveOneOutSplitter.i
+%include TensorProductExperiment.i
 
 /* At last we include template definitions */
 %include UncertaintyWeightedExperimentTemplateDefs.i

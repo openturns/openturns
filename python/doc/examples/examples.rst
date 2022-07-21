@@ -6,29 +6,90 @@ Examples
 
 This is the examples section.
 
-.. only:: nbsphinx
 
-    Basic examples
-    ==============
+.. table::
+   :widths: auto
+   :class: field-list
 
-    .. toctree::
-        :maxdepth: 1
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_data_analysis/index.rst                      |  .. image:: _static/data_analysis.png           |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_probabilistic_modeling/index.rst             |  .. image:: _static/probabilistic_modeling.png  |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_meta_modeling/index.rst                      |  .. image:: _static/meta_modeling.png           |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_reliability_sensitivity/index.rst            |  .. image:: _static/reliability_sensitivity.png |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_functional_modeling/index.rst                |  .. image:: _static/functional_modeling.png     |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_calibration/index.rst                        |  .. image:: _static/calibration.png             |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_numerical_methods/index.rst                  |  .. image:: _static/numerical_methods.png       |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_graphs/index.rst                             |  .. image:: _static/graphs.png                  |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
 
-        data_analysis/data_analysis.rst
-        probabilistic_modeling/probabilistic_modeling.rst
-        meta_modeling/meta_modeling.rst
-        reliability_sensitivity/reliability_sensitivity.rst
-        functional_modeling/functional_modeling.rst
-        numerical_methods/numerical_methods.rst
-
-    Advanced examples
-    =================
-
-    .. toctree::
-        :maxdepth: 1
-
-        axial_stressed_beam.ipynb
-        flood_model.ipynb
-        optimal_lhs.ipynb
-        ego.ipynb
 

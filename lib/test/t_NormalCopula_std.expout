@@ -12,7 +12,7 @@ oneRealization=class=Point name=Unnamed dimension=3 values=[0.560293,0.294447,0.
 oneSample=class=Sample name=a normal copula implementation=class=SampleImplementation name=a normal copula size=10 dimension=3 description=[X0,X1,X2] data=[[0.283215,0.23385,0.739488],[0.175774,0.470873,0.474457],[0.201697,0.581717,0.407644],[0.822044,0.684334,0.635931],[0.28611,0.557649,0.360772],[0.804988,0.21667,0.417567],[0.535135,0.0173161,0.207455],[0.546094,0.064576,0.899701],[0.806116,0.475671,0.781548],[0.731846,0.311895,0.178739]]
 anotherSample mean=class=Point name=Unnamed dimension=3 values=[0.499876,0.496002,0.50161]
 anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0833662,0.0198071,0.000782833,0.0198071,0.0840874,0.02066,0.000782833,0.02066,0.0826861]
-point= class=Point name=Unnamed dimension=3 values=[0.2,0.2,0.2] ddf=class=Point name=Unnamed dimension=3 values=[-0.591263,-1.77379,-0.591263] ddf (FD)=class=Point name=Unnamed dimension=3 values=[-0.591263,-1.77379,-0.591263] pdf=1.37677 cdf=0.0176157
+point= class=Point name=Unnamed dimension=3 values=[0.2,0.2,0.2] ddf=class=Point name=Unnamed dimension=3 values=[-0.591263,-1.77379,-0.591263] pdf=1.37677 cdf=0.0176157
 Survival      =0.545177
 Survival (ref)=0.545177
 Inverse survival=class=Point name=Unnamed dimension=3 values=[0.0174781,0.0174781,0.0174781]

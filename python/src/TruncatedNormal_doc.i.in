@@ -41,7 +41,7 @@ Its first moments are:
                                    - \phi(\frac{b - \mu}{\sigma})}
                                     {\Phi(\frac{b - \mu}{\sigma})
                                    - \Phi(\frac{a - \mu}{\sigma})}\sigma \\
-        \Var{X} & = & \sigma
+        \Var{X} & = & \sigma^2
                   \left[1
                     +\frac{\frac{a - \mu}{\sigma} \phi(\frac{a - \mu}{\sigma})
                          - \frac{b - \mu}{\sigma} \phi(\frac{b - \mu}{\sigma})}
@@ -53,7 +53,7 @@ Its first moments are:
                           {\Phi(\frac{b - \mu}{\sigma})
                          - \Phi(\frac{a - \mu}{\sigma})}
                       \right)^2
-                  \right]^\frac{1}{2}
+                  \right]
     \end{eqnarray*}
 
 Examples

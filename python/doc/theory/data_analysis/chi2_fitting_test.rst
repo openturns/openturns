@@ -8,7 +8,7 @@ random vector :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It
 seeks to verify the compatibility between a sample of data
 :math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}` and a
 candidate probability distribution previous chosen. The use of the
-:math:`\chi^2` Goodness-of-Fit test allows to answer this
+:math:`\chi^2` Goodness-of-Fit test allows one to answer this
 question in the one dimensional case :math:`n_X =1`, and with a discrete
 distribution.
 
@@ -16,7 +16,7 @@ Let us limit the case to :math:`n_X = 1`. Thus we denote
 :math:`\vect{X} = X^1 = X`. We also note that as we are considering
 discrete distributions i.e. those for which the possible values of
 :math:`X` belong to a discrete set :math:`\cE`, the candidate
-distribution is characterised by the probabilities
+distribution is characterized by the probabilities
 :math:`\left\{ p(x;\vect{\theta}) \right\}_{x \in \cE}`.
 
 | The chi squared test is based on the fact that if the candidate
@@ -65,7 +65,7 @@ desired by the user. Note that the higher
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/chi2_fitting_test`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_chi2_fitting_test`
 
 .. topic:: References:
 

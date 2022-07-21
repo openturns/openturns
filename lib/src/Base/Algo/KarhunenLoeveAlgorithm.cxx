@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and projection
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,6 +27,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KarhunenLoeveAlgorithm)
 
+/* Default constructor */
+KarhunenLoeveAlgorithm::KarhunenLoeveAlgorithm()
+  : TypedInterfaceObject<KarhunenLoeveAlgorithmImplementation>(new KarhunenLoeveAlgorithmImplementation)
+{
+  // Nothing to do
+}
 
 /* Constructor from implementation */
 KarhunenLoeveAlgorithm::KarhunenLoeveAlgorithm(const KarhunenLoeveAlgorithmImplementation & implementation)
@@ -52,6 +58,18 @@ void KarhunenLoeveAlgorithm::setThreshold(const Scalar threshold)
 {
   copyOnWrite();
   return getImplementation()->setThreshold(threshold);
+}
+
+/* Number of modes accessors */
+UnsignedInteger KarhunenLoeveAlgorithm::getNbModes() const
+{
+  return getImplementation()->getNbModes();
+}
+
+void KarhunenLoeveAlgorithm::setNbModes(const UnsignedInteger nbModes)
+{
+  copyOnWrite();
+  return getImplementation()->setNbModes(nbModes);
 }
 
 /* Covariance model accessor */

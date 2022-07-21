@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class MixtureClassifier for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +39,7 @@ int main(int, char *[])
     aCollection.add( Uniform(5., 7.) );
     aCollection.add( Triangular(7., 8., 9.) );
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Mixture distribution(aCollection, Point(aCollection.getSize(), 1.0));
     fullprint << "mixture=" << distribution.__str__() << std::endl;
     Classifier classifier(MixtureClassifier(distribution).clone());

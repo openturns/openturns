@@ -4,7 +4,7 @@
  *         form a numerical math evaluation implementation by using centered
  *         finite difference formula.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,11 +63,11 @@ public:
                                    const Evaluation & evaluation);
 
   /* Virtual constructor */
-  virtual CenteredFiniteDifferenceGradient * clone() const;
+  CenteredFiniteDifferenceGradient * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
 
@@ -77,7 +77,7 @@ public:
    * @param in The point where the gradient is computed
    * @result A matrix constructed with the dF_i/dx_j values (Jacobian transposed)
    */
-  virtual Matrix gradient(const Point & inP) const;
+  Matrix gradient(const Point & inP) const override;
 
 protected:
 

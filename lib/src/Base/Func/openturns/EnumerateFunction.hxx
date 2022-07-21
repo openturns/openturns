@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,26 +43,18 @@ public:
 
   typedef Pointer<EnumerateFunctionImplementation> Implementation;
 
+  /** Default constructor */
+  EnumerateFunction();
+
   /** Constructor with parameters */
   EnumerateFunction(const EnumerateFunctionImplementation & implementation);
 
   /** Constructor with parameters */
   EnumerateFunction(Implementation & p_implementation);
 
-  /** Parameter constructor */
-  explicit EnumerateFunction(const UnsignedInteger dimension = 1);
-
-  /** Parameter constructor */
-  EnumerateFunction(const UnsignedInteger dimension,
-                    const Scalar q);
-
-  /** Parameter constructor */
-  EnumerateFunction(const Point & weight,
-                    const Scalar q);
-
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** The bijective association between an integer and a set of indices */
   Indices operator() (const UnsignedInteger index) const;
@@ -81,6 +73,9 @@ public:
 
   /** The cardinal of indices of degree max <= maximumDegree */
   UnsignedInteger getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const;
+
+  /** Basis size from degree */
+  UnsignedInteger getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const;
 
   /** Dimension accessor */
   void setDimension(const UnsignedInteger dimension);

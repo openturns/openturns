@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for InverseNormal distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,7 @@
 #include "openturns/InverseNormalFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -62,10 +63,13 @@ Distribution InverseNormalFactory::build() const
 InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample of dimension different from 1";
   const Scalar mu = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mu)) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution if data contains NaN or Inf";
   Scalar lambda = -1.0;
+  const Scalar sigma = sample.computeStandardDeviation()[0];
+  if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate an InverseNormal distribution from a constant sample.";
   if (ResourceMap::GetAsString("InverseNormalFactory-Method") == "MLE")
     // Maximum likelihood estimation
   {
@@ -79,8 +83,9 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) 
     lambda = 1.0 / (sum / size - 1.0 / mu);
   }
   // Moments estimation
-  else lambda = std::pow(mu, 3) / sample.computeCovariance()(0, 0);
-  InverseNormal result(lambda, mu);
+  else
+    lambda = std::pow(mu, 3) / (sigma * sigma);
+  InverseNormal result(mu, lambda);
   result.setDescription(sample.getDescription());
   return result;
 }

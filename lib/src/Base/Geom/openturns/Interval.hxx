@@ -2,7 +2,7 @@
 /**
  *  @brief Interval is defined as the cartesian product of n 1D intervalls ]low_1, up_1]x...x]low_n,up_n]
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,7 +62,7 @@ public:
            const BoolCollection & finiteUpperBound);
 
   /** Virtual constructor method */
-  virtual Interval * clone() const;
+  Interval * clone() const override;
 
   /** Check if the interval is empty, i.e. if we have lowerBound >= upperBound for at least one component */
   Bool isEmpty() const;
@@ -71,8 +71,12 @@ public:
   Bool isNumericallyEmpty() const;
 
   /** Check if the given point is inside of the closed interval */
-  Bool contains(const Point & point) const;
+  Bool contains(const Point & point) const override;
   using DomainImplementation::contains;
+
+  /** Compute the Euclidean distance from a given point to the domain */
+  Scalar computeDistance(const Point & point) const override;
+  using DomainImplementation::computeDistance;
 
   /** Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
   Bool numericallyContains(const Point & point) const;
@@ -131,14 +135,14 @@ public:
   void setFiniteUpperBound(const BoolCollection & finiteUpperBound);
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

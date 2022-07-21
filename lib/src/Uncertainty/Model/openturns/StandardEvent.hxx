@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements an event based on a composite random vector whose
  *   antecedent has a spherical distribution
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/RandomVector.hxx"
-#include "openturns/Event.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * antecedent has a spherical distribution
  */
 class OT_API StandardEvent
-  : public Event
+  : public RandomVector
 {
   CLASSNAME
 
@@ -53,7 +52,7 @@ public:
                 const Scalar threshold);
 
   /** Constructor from Event */
-  StandardEvent(const Event & event);
+  StandardEvent(const RandomVector & event);
 
 
 protected:

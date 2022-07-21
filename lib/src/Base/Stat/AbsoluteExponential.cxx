@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,27 +31,27 @@ static const Factory<AbsoluteExponential> Factory_AbsoluteExponential;
 
 /* Constructor based on input dimension */
 AbsoluteExponential::AbsoluteExponential(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("AbsoluteExponential-DefaultTheta")), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, ResourceMap::GetAsScalar("AbsoluteExponential-DefaultTheta")), Point(1, 1.0))
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const Point & scale)
-  : StationaryCovarianceModel(scale, Point(1, 1.0))
+  : CovarianceModelImplementation(scale, Point(1, 1.0))
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const Point & scale,
     const Point & amplitude)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
+  isStationary_ = true;
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In AbsoluteExponential::AbsoluteExponential, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";
-  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
@@ -61,16 +61,16 @@ AbsoluteExponential * AbsoluteExponential::clone() const
 }
 
 /* Computation of the covariance function */
-Scalar AbsoluteExponential::computeStandardRepresentative(const Point & tau) const
+Scalar AbsoluteExponential::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar tauOverThetaNorm = tauOverTheta.norm1();
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
+  Scalar tauOverThetaNorm = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverThetaNorm += std::abs(tau[i] / scale_[i]);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-tauOverThetaNorm);
 }
 
-Scalar AbsoluteExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+Scalar AbsoluteExponential::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar tauOverThetaNorm = 0;
@@ -80,7 +80,20 @@ Scalar AbsoluteExponential::computeStandardRepresentative(const Collection<Scala
   {
     tauOverThetaNorm += std::abs(*s_it - *t_it) / scale_[i];
   }
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-tauOverThetaNorm);
+}
+
+Scalar AbsoluteExponential::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-tauOverThetaNorm);
 }
 
 /* Gradient */
@@ -89,29 +102,31 @@ Matrix AbsoluteExponential::partialGradient(const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  const Point tau(s - t);
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar norm1 = tauOverTheta.norm1();
+  Scalar norm1 = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    norm1 += std::abs(s[i] - t[i]) / scale_[i];
   // For zero norm
   // Norm1 is null if all elements are zero
   // In that case gradient is not defined
+  Matrix gradient(inputDimension_, 1);
   if (norm1 == 0.0)
   {
-    Matrix gradient(inputDimension_, 1);
     for (UnsignedInteger i = 0; i < inputDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
     return gradient;
   }
   // General case
   const Scalar value = std::exp(-norm1);
+
   // Gradient take as factor sign(tau_i) /theta_i
-  Point factor(inputDimension_);
+  Scalar gradientI = 0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)
   {
-    factor[i] = amplitude_[0] * amplitude_[0] / scale_[i];
-    if (tau[i] > 0) factor[i] *= -1.0;
+    gradientI = (amplitude_[0] * amplitude_[0]) * value / scale_[i];
+    if ((s[i] - t[i]) > 0)
+      gradientI *= -1.0;
+    gradient(i, 0) = gradientI;
   }
-  return Matrix(inputDimension_, 1, factor * value) ;
+  return gradient;
 }
 
 /* String converter */
@@ -138,13 +153,13 @@ String AbsoluteExponential::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void AbsoluteExponential::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void AbsoluteExponential::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

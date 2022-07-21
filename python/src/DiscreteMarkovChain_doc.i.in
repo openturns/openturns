@@ -92,3 +92,47 @@ Parameters
 origin : :class:`~openturns.Distribution` or :math:`int`
     The probability distribution of the origin of the Markov chain."
 
+// ---------------------------------------------------------------------
+%feature("docstring") OT::DiscreteMarkovChain::computeStationaryDistribution
+"Compute the stationary distribution of the Markov chain.
+
+Returns
+-------
+distribution : :class:`~openturns.UserDefined`
+    The stationary probability distribution of the Markov chain:
+    its probability table is the left eigenvector of the
+    transition matrix associated to the eigenvalue :math:`1`.
+
+Examples
+--------
+Compute the stationary distribution of a Markov chain:
+
+>>> import openturns as ot
+>>> timeGrid = ot.RegularGrid(0, 0.1, 10)
+>>> transitionMatrix = ot.SquareMatrix([[0.9,0.05,0.05],[0.7,0.0,0.3],[0.8,0.0,0.2]])
+>>> origin = 0
+>>> myMarkovChain = ot.DiscreteMarkovChain(origin, transitionMatrix, timeGrid)
+>>> distribution = myMarkovChain.computeStationaryDistribution()
+>>> print(distribution)
+UserDefined({x = [0], p = 0.333333}, {x = [1], p = 0.333333}, {x = [2], p = 0.333333})"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DiscreteMarkovChain::exportToDOTFile
+"Export to DOT graph.
+
+`DOT <https://en.wikipedia.org/wiki/DOT_(graph_description_language)>`_ is a graph description language.
+
+Parameters
+----------
+filename : str
+    The name of the file to be written.
+
+Notes
+-----
+The graph can be customized using the following :class:`~openturns.ResourceMap` string entries:
+
+- *DiscreteMarkovChain-DOTArcColor*
+- *DiscreteMarkovChain-DOTLayout*
+- *DiscreteMarkovChain-DOTNodeColor*
+- *DiscreteMarkovChain-DOTNodeShape*"

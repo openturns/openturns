@@ -2,7 +2,7 @@
 /**
  *  @brief A factory for building LeastSquaresMetaModelSelection objects
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,27 +48,27 @@ public:
       const FittingAlgorithm & algo = CorrectedLeaveOneOut());
 
   /** Virtual constructor */
-  virtual LeastSquaresMetaModelSelectionFactory * clone() const;
+  LeastSquaresMetaModelSelectionFactory * clone() const override;
 
   /** Accessors */
   BasisSequenceFactory getBasisSequenceFactory() const;
   FittingAlgorithm getFittingAlgorithm() const;
 
   /** Method to create new LeastSquaresMetaModelSelection objects */
-  virtual LeastSquaresMetaModelSelection * build (const Sample & x,
-      const Sample & y,
-      const Point & weight,
-      const FunctionCollection & psi,
-      const Indices & indices) const;
+  LeastSquaresMetaModelSelection * build (const Sample & x,
+                                          const Sample & y,
+                                          const Point & weight,
+                                          const FunctionCollection & psi,
+                                          const Indices & indices) const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** The algorithm that generates a family of basis */

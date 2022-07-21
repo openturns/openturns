@@ -2,7 +2,7 @@
 /**
  * @brief This class binds a Python object to an OpenTURNS' Experiment
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,7 +47,10 @@ public:
   PythonExperiment(const PythonExperiment & other);
 
   /** Virtual constructor */
-  virtual PythonExperiment * clone() const;
+  PythonExperiment * clone() const override;
+
+  /** Copy assignment operator */
+  PythonExperiment & operator=(const PythonExperiment & rhs);
 
   /** Destructor */
   virtual ~PythonExperiment();
@@ -56,20 +59,20 @@ public:
   Bool operator ==(const PythonExperiment & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset) const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /* Here is the interface that all derived class must implement */
 
   /** Numerical sample accessor */
-  virtual Sample generate() const;
+  Sample generate() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method save() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

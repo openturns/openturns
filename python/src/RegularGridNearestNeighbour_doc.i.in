@@ -1,7 +1,7 @@
 %feature("docstring") OT::RegularGridNearestNeighbour
 "Partition tree data structure.
 
-Allows to store and search points fast.
+Allows one to store and search points fast.
 
 Parameters
 ----------
@@ -42,7 +42,7 @@ Returns
 -------
 index : int
     Index of the nearest neighbour.
-indices : :class:`openturns.Indices`
+indices : :class:`~openturns.Indices`
     Index of the nearest neighbour of the given points."
 
 // ---------------------------------------------------------------------

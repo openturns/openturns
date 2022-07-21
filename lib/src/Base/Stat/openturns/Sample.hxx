@@ -2,7 +2,7 @@
 /**
  *  @brief The class Sample implements blank free samples
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,16 +49,22 @@ public:
 
   /** Factory of Sample from CSV file */
   static Sample ImportFromCSVFile(const FileName & fileName,
-                                  const String & csvSeparator = ResourceMap::GetAsString( "csv-file-separator" ));
+                                  const String & csvSeparator = ResourceMap::GetAsString( "Sample-CSVFileSeparator" ));
 
   /** Factory of Sample from Text file */
   static Sample ImportFromTextFile(const FileName & fileName,
                                    const String & separator = " ",
-                                   const UnsignedInteger skippedLines = 0);
+                                   const UnsignedInteger skippedLines = 0,
+                                   const String & numSeparator = ".");
+
+  static Sample BuildFromPoint(const Point & point);
 
   /** Export Sample into CSV file */
   void exportToCSVFile(const FileName & fileName,
-                       const String & csvSeparator = ResourceMap::GetAsString( "csv-file-separator" )) const;
+                       const String & csvSeparator = ResourceMap::GetAsString( "Sample-CSVFileSeparator" ),
+                       const String & numSeparator = ".",
+                       const UnsignedInteger precision = ResourceMap::GetAsUnsignedInteger("Sample-CSVPrecision"),
+                       const String & format = ResourceMap::Get("Sample-CSVFormat")) const;
 
   /** Export a sample as a matrix, one row by realization, in a format suitable to exchange with R. */
   String streamToRFormat() const;
@@ -126,10 +132,9 @@ public:
 
   void erase(SampleImplementation::iterator first, SampleImplementation::iterator last);
 #endif
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Scalar * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
+  /* Returns a pointer to the block of memory */
+  const Scalar * data () const;
+  UnsignedInteger elementSize () const;
 
   /** Whether the list contains the value val */
   Bool contains(const Point & val) const;
@@ -147,9 +152,9 @@ public:
    * internal state of an Sample. It is used when streaming
    * the Sample or for user information.
    */
-  String __repr__() const;
+  String __repr__() const override;
 
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Description accessor */
   void setDescription(const Description & description);
@@ -198,19 +203,14 @@ public:
   CovarianceMatrix computeCovariance() const;
 
   /**
-   * Method computeStandardDeviation() gives the standard deviation of the sample
+   * Method computeStandard() gives the standard deviation of each component of the sample
    */
-  TriangularMatrix computeStandardDeviation() const;
+  Point computeStandardDeviation() const;
 
   /**
    * Method computeVariance() gives the variance of the sample (by component)
    */
   Point computeVariance() const;
-
-  /**
-   * Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
-   */
-  Point computeStandardDeviationPerComponent() const;
 
   /**
    * Method computePearsonCorrelation() gives the Pearson correlation matrix of the sample
@@ -320,15 +320,21 @@ public:
 
   /** Sorted sample */
   Sample sort() const;
+  void sortInPlace();
 
   /** Sorted component */
   Sample sort(const UnsignedInteger index) const;
 
   /** Sorted according a component */
   Sample sortAccordingToAComponent(const UnsignedInteger index) const;
+  void sortAccordingToAComponentInPlace(const UnsignedInteger index);
 
   /* Sorted and duplicated points removed */
   Sample sortUnique() const;
+  void sortUniqueInPlace();
+
+  /** argsort */
+  Indices argsort(Bool isIncreasing = true) const;
 
   /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
   virtual String storeToTemporaryFile() const;
@@ -336,17 +342,20 @@ public:
   /** Get the i-th marginal sample */
   Sample getMarginal(const UnsignedInteger index) const;
 
-  /** Get the marginal sample corresponding to indices dimensions */
+  /** Get the marginal sample by indices */
   Sample getMarginal(const Indices & indices) const;
+
+  /** Get the marginal sample by identifiers */
+  Sample getMarginal(const Description & description) const;
 
   /** Select points in the sample */
   Sample select(const UnsignedIntegerCollection & indices) const;
 
   /** Returns a pointer to the underlying implementation object */
-  virtual ImplementationAsPersistentObject getImplementationAsPersistentObject() const;
+  ImplementationAsPersistentObject getImplementationAsPersistentObject() const override;
 
   /** Sets the pointer to the underlying implementation object */
-  virtual void setImplementationAsPersistentObject(const ImplementationAsPersistentObject & obj);
+  void setImplementationAsPersistentObject(const ImplementationAsPersistentObject & obj) override;
 
 }; /* class Sample */
 

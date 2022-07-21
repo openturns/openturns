@@ -11,27 +11,42 @@ Parameters
 model : :class:`~openturns.Function`
     The parametric function to be calibrated.
 inputObservations : 2-d sequence of float
-    The sample of input values of the model linked to the observations.
+    The sample of input observations.
+    Can have dimension 0 to specify no observations. 
 outputObservations : 2-d sequence of float
-    The sample of output values of the model linked to the observations.
+    The sample of output observations.
 candidate : sequence of float
-    The a priori value of the parameter.
+    The mean of the gaussian prior distribution of the parameter.
 parameterCovariance : 2-d sequence of float
-    The covariance of the parameter prior distribution.
+    The covariance matrix of the gaussian prior distribution of the parameter.
 errorCovariance : 2-d sequence of float
-    The covariance of the observations error.
+    The covariance matrix of the gaussian distribution of the observations error.
 methodName : str
-    The name of the least-squares method to use for the calibration. By default, equal to *SVD*. Possible values are *SVD*, *QR*, *Cholesky*.
+    The name of the least-squares method to use for the calibration.
+    By default, equal to *QR*. Possible values are *SVD*, *QR*, *Cholesky*.
+modelObservations : 2-d sequence of float
+    The sample of output values of the model.
+gradientObservations : 2-d sequence of float
+    The Jacobian matrix of the model with respect to the parameter.
 
 Notes
 -----
-GaussianLinearCalibration stands for Best Linear Unbiased Estimator. It is the minimum variance
-estimator of the parameter of a given model under the assumption that this
-parameter acts linearly in the model. The given observation error covariance
-can be either *local*, ie the same matrix applies for each observation and is of
+GaussianLinearCalibration is known as the *Best Linear Unbiased Estimator* or *BLUE*. 
+It is the minimum variance estimator of the parameter of a given model under 
+the assumption that this parameter acts linearly in the model.
+
+The given observation error covariance can be either *local*, ie the same matrix applies for each observation and is of
 dimension the output dimension of the model, or *global*, ie the matrix describes
 the full set of observation errors, in which case its dimension is the product of
 the output dimension of the model and the number of observations.
+
+The prior distribution of the parameter is a :class:`~openturns.Normal`.
+
+The posterior distribution of the parameter is :class:`~openturns.Normal`.
+
+The resulting error distribution is :class:`~openturns.Normal`
+with a zero mean and with a covariance matrix equal to the
+`errorCovariance` input argument.
 
 See also
 --------
@@ -60,7 +75,7 @@ Calibrate a nonlinear model using GaussianLinearCalibration:
 >>> algo = ot.GaussianLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance, method)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
-[0.997874,0.0938131,0.991216]"
+[8.11483,0.0770992,0.992927]"
 
 // ---------------------------------------------------------------------
 

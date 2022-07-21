@@ -1,5 +1,5 @@
-Distribution  class=Beta name=Beta dimension=1 r=2 t=5 a=-1 b=2
-Distribution  Beta(r = 2, t = 5, a = -1, b = 2)
+Distribution  class=Beta name=Beta dimension=1 alpha=2 beta=3 a=-1 b=2
+Distribution  Beta(alpha = 2, beta = 3, a = -1, b = 2)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[0.456966]
@@ -8,18 +8,18 @@ mean= class=Point name=Unnamed dimension=1 values=[0.203901]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.365788]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=Point name=Unnamed dimension=1 values=[1]
-ddf     = class=Point name=Unnamed dimension=1 values=[-0.444444]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.444444]
-log pdf=-1.216395
-pdf     =0.296296
-pdf (FD)=0.296296
-cdf=0.888889
-ccdf=0.111111
-pdf gradient     = class=Point name=Unnamed dimension=4 values=[0.353525,-0.152675,0.246914,0.197531]
-pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[0.353525,-0.152675,0.246914,0.197531]
-cdf gradient     = class=Point name=Unnamed dimension=4 values=[-0.186185,0.0973767,-0.0987654,-0.197531]
-cdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-0.186185,0.0973767,-0.0987654,-0.197531]
+Point=  class=Point name=Unnamed dimension=1 values=[1.5]
+ddf     = class=Point name=Unnamed dimension=1 values=[-0.333333]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.333333]
+log pdf=-2.379546
+pdf     =0.092593
+pdf (FD)=0.092593
+cdf=0.983796
+ccdf=0.016204
+pdf gradient     = class=Point name=Unnamed dimension=4 values=[0.083427,-0.111891,0.0864198,0.246914]
+pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[0.083427,-0.111891,0.0864198,0.246914]
+cdf gradient     = class=Point name=Unnamed dimension=4 values=[-0.0154012,0.0251751,-0.0154321,-0.0771605]
+cdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-0.0154012,0.0251751,-0.0154321,-0.0771605]
 quantile= class=Point name=Unnamed dimension=1 values=[1.25419]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.707166]
@@ -28,7 +28,7 @@ entropy=0.863706
 Minimum volume interval= [-0.868627, 1.31692]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 1.83159} with f=
-MinimumVolumeLevelSetEvaluation(Beta(r = 2, t = 5, a = -1, b = 2))
+MinimumVolumeLevelSetEvaluation(Beta(alpha = 2, beta = 3, a = -1, b = 2))
 beta= [0.160159]
 Bilateral confidence interval= [-0.797242, 1.41764]
 beta= [0.95]
@@ -41,11 +41,11 @@ standard deviation= class=Point name=Unnamed dimension=1 values=[0.6]
 skewness= class=Point name=Unnamed dimension=1 values=[0.285714]
 kurtosis= class=Point name=Unnamed dimension=1 values=[2.35714]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.36]
-parameters= [class=PointWithDescription name=X0 dimension=4 description=[r,t,a,b] values=[2,5,-1,2]]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[alpha,beta,a,b] values=[2,3,-1,2]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [-0.2]
 standard moment n= 2  value= [0.2]
 standard moment n= 3  value= [-0.0857143]
 standard moment n= 4  value= [0.0857143]
 standard moment n= 5  value= [-0.047619]
-Standard representative= Beta(r = 2, t = 5, a = -1, b = 1)
+Standard representative= Beta(alpha = 2, beta = 3, a = -1, b = 1)

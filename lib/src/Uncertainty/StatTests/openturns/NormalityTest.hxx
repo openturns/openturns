@@ -2,7 +2,7 @@
 /**
  *  @brief StatTest implements statistical tests
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,20 +32,17 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class OT_API NormalityTest
+namespace NormalityTest
 {
-public:
 
-  /** Anderson Darling normality test for normal distributions. */
-  static TestResult AndersonDarlingNormal(const Sample & sample,
-                                          const Scalar level = 0.05);
+/** Anderson Darling normality test for normal distributions. */
+OT_API TestResult AndersonDarlingNormal(const Sample & sample,
+                                        const Scalar level = 0.05);
 
-  /** Cramer Von Mises normality test for normal distributions. */
-  static TestResult CramerVonMisesNormal(const Sample & sample,
-                                         const Scalar level = 0.05);
+/** Cramer Von Mises normality test for normal distributions. */
+OT_API TestResult CramerVonMisesNormal(const Sample & sample,
+                                       const Scalar level = 0.05);
 
-private:
-  NormalityTest();
 }; /* class NormalityTest */
 
 END_NAMESPACE_OPENTURNS

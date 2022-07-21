@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of SimulationResult
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,7 +42,7 @@ ProbabilitySimulationResult::ProbabilitySimulationResult()
 }
 
 /* Standard constructor */
-ProbabilitySimulationResult::ProbabilitySimulationResult(const Event & event,
+ProbabilitySimulationResult::ProbabilitySimulationResult(const RandomVector & event,
     const Scalar probabilityEstimate,
     const Scalar varianceEstimate,
     const UnsignedInteger outerSampling,
@@ -66,12 +66,12 @@ ProbabilitySimulationResult * ProbabilitySimulationResult::clone() const
 }
 
 /* Event accessor */
-Event ProbabilitySimulationResult::getEvent() const
+RandomVector ProbabilitySimulationResult::getEvent() const
 {
   return event_;
 }
 
-void ProbabilitySimulationResult::setEvent(const Event & event)
+void ProbabilitySimulationResult::setEvent(const RandomVector & event)
 {
   event_ = event;
 }

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all Drawable
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,7 +36,7 @@ CLASSNAMEINIT(DrawableImplementation)
 
 static const Factory<DrawableImplementation> Factory_DrawableImplementation;
 
-/* default graphic paramaters */
+/* default graphic parameters */
 
 Bool DrawableImplementation::IsFirstInitialization          = true;
 
@@ -879,6 +879,9 @@ Point DrawableImplementation::ConvertFromHSVIntoRGB(const Scalar hue,
     const Scalar saturation,
     const Scalar value)
 {
+  if (!(hue >= 0.0 && hue <= 360.0)) throw InvalidArgumentException(HERE) << "Invalid hue=" << hue;
+  if (!(saturation >= 0.0 && saturation <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid saturation=" << saturation;
+  if (!(value >= 0.0 && value <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid value=" << value;
   const UnsignedInteger h = static_cast<UnsignedInteger>(hue);
   const UnsignedInteger i = static_cast<UnsignedInteger>((h % 360 + hue - h) / 60.0) % 6;
   const Scalar f = hue / 60.0 - i;
@@ -922,6 +925,73 @@ Point DrawableImplementation::ConvertFromHSVIntoRGB(const Scalar hue,
       throw InternalException(HERE) << "Error: bad Hue index=" << i << ", should be in {0,...,5}";
   }
   return redGreenBlue;
+}
+
+/* Convert a RGB triplet to HSV */
+Point DrawableImplementation::ConvertFromRGBIntoHSV(const Scalar red,
+    const Scalar green,
+    const Scalar blue)
+{
+  if (!(red >= 0.0 && red <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid red=" << red;
+  if (!(green >= 0.0 && green <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid green=" << green;
+  if (!(blue >= 0.0 && blue <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid blue=" << blue;
+  return ConvertFromRGBIntoHSV(static_cast<UnsignedInteger>(round(255 * red)),
+                               static_cast<UnsignedInteger>(round(255 * green)),
+                               static_cast<UnsignedInteger>(round(255 * blue)));
+}
+/* Convert a RGB triplet to HSV */
+Point DrawableImplementation::ConvertFromRGBIntoHSV(const UnsignedInteger red,
+    const UnsignedInteger green,
+    const UnsignedInteger blue)
+{
+  if (!(red <= 255)) throw InvalidArgumentException(HERE) << "Invalid red=" << red;
+  if (!(green <= 255)) throw InvalidArgumentException(HERE) << "Invalid green=" << green;
+  if (!(blue <= 255)) throw InvalidArgumentException(HERE) << "Invalid blue=" << blue;
+  const Scalar redScalar = red;
+  const Scalar greenScalar = green;
+  const Scalar blueScalar = blue;
+  const Scalar maxColor = std::max(std::max(redScalar, greenScalar), blueScalar);
+  const Scalar minColor = std::min(std::min(redScalar, greenScalar), blueScalar);
+  const Scalar chroma = maxColor - minColor;
+  Scalar hue, saturation, value;
+
+  if(chroma > 0)
+  {
+    if(maxColor == redScalar)
+    {
+      hue = 60.0 * ((greenScalar - blueScalar) / chroma);
+    }
+    else if(maxColor == greenScalar)
+    {
+      hue = 60.0 * ((blueScalar - redScalar) / chroma + 2.0);
+    }
+    else
+    {
+      // maxColor == blue
+      hue = 60.0 * ((redScalar - greenScalar) / chroma + 4.0);
+    }
+    if(maxColor > 0.0)
+    {
+      saturation = chroma / maxColor;
+    }
+    else
+    {
+      saturation = 0.0;
+    }
+    value = maxColor / 255.0;
+  }
+  else
+  {
+    hue = 0.0;
+    saturation = 0.0;
+    value = maxColor / 255.0;
+  }
+  if(hue < 0.0)
+  {
+    hue += 360.0;
+  }
+  const Point hsv = {hue, saturation, value};
+  return hsv;
 }
 
 /* Convert an HSV triplet to a valid hexadecimal code */
@@ -1061,7 +1131,7 @@ void DrawableImplementation::ScanColorCode(const String & key,
   rgba = Indices(4, 0);
   // First, check if the color is given in RGB format
   const UnsignedInteger keySize = key.size();
-  if (keySize == 0) throw InvalidArgumentException(HERE) << "Empty hex color";
+  if (!(keySize > 0)) throw InvalidArgumentException(HERE) << "Empty hex color";
   // Check if it is a #RRGGBB[AA] rgba
   if (key[0] != '#') throw InvalidArgumentException(HERE) << "Hex color should start with #";
   // First, check the key length:
@@ -1227,7 +1297,7 @@ String DrawableImplementation::getLineStyle() const
   return lineStyle_;
 }
 
-/* Accesor for line style */
+/* Accessor for line style */
 void DrawableImplementation::setLineStyle(const String & lineStyle)
 {
   if(!IsValidLineStyle(lineStyle))  throw InvalidArgumentException(HERE) << "Given line style=" << lineStyle << " is incorrect";
@@ -1423,11 +1493,22 @@ void DrawableImplementation::setTextPositions(const Description & )
   throw NotDefinedException(HERE) << "Error: no flag textPositions in " << getClassName();
 }
 
+Scalar DrawableImplementation::getTextSize() const
+{
+  throw NotDefinedException(HERE) << "Error: no text size in " << getClassName();
+}
+
+void DrawableImplementation::setTextSize(const Scalar /*size*/)
+{
+  throw NotDefinedException(HERE) << "Error: no text size in " << getClassName();
+}
+
+
 /* R command generating method, for plotting through R */
 String DrawableImplementation::draw() const
 {
   const UnsignedInteger size = data_.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: trying to build a Drawable with empty data";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: trying to build a Drawable with empty data";
   // Two strategies: if data is small, it is inlined, else it is passed through a file
   const UnsignedInteger dimension = data_.getDimension();
   dataFileName_ = "";
@@ -1445,11 +1526,20 @@ void DrawableImplementation::clean() const
   if (dataFileName_ != "") Os::Remove(dataFileName_);
 }
 
-/* Build default palette
-   Cycle through the hue wheel with 10 nuances and increasing darkness */
+/* Build default palette */
 Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger size)
 {
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the size must be > 0";
+  const String name(ResourceMap::GetAsString("Drawable-DefaultPaletteName"));
+  if      (name == "Tableau") return BuildTableauPalette(size);
+  else if (name == "Rainbow") return BuildRainbowPalette(size);
+  else throw InvalidArgumentException(HERE) << "Error: invalid value for palette : " << name;
+}
+
+/* Build rainbow palette
+   Cycle through the hue wheel with 10 nuances and increasing darkness */
+Description DrawableImplementation::BuildRainbowPalette(const UnsignedInteger size)
+{
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the size must be > 0, but is " << size;
   Description palette(size);
   UnsignedInteger phase(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultPalettePhase"));
   if (phase == 0) phase = 1;
@@ -1468,6 +1558,49 @@ Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger si
       palette[paletteIndex] = ConvertFromHSV(hue, 1.0, value);
       ++paletteIndex;
     }
+  }
+  return palette;
+}
+
+/* Build Tableau palette
+   Use 10 colors from Tableau palette.
+   Cycle through the hue wheel with 10 nuances and increasing darkness */
+Description DrawableImplementation::BuildTableauPalette(const UnsignedInteger size)
+{
+  const UnsignedInteger nBasePalette = 10;
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the size must be > 0, but is " << size;
+  const UnsignedInteger phase(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultPalettePhase"));
+  // Create base palette
+  Description basePalette(nBasePalette);
+  basePalette[0] = "#1F77B4";
+  basePalette[1] = "#FF7F0E";
+  basePalette[2] = "#2CA02C";
+  basePalette[3] = "#D62728";
+  basePalette[4] = "#9467BD";
+  basePalette[5] = "#8C564B";
+  basePalette[6] = "#E377C2";
+  basePalette[7] = "#7F7F7F";
+  basePalette[8] = "#BCBD22";
+  basePalette[9] = "#17BECF";
+  // Create palette
+  Description palette(size);
+  for (UnsignedInteger paletteIndex = 0; paletteIndex < size; ++paletteIndex)
+  {
+    const UnsignedInteger quotient = paletteIndex / nBasePalette;
+    const UnsignedInteger remainder = paletteIndex % nBasePalette;
+    const Scalar delta = static_cast< Scalar >(quotient) / static_cast< Scalar >(phase);
+    const Indices rgb(ConvertToRGB(basePalette[remainder]));
+    Point hsv(ConvertFromRGBIntoHSV(rgb[0], rgb[1], rgb[2]));
+    // Decrease the value of the color in the HSV space
+    hsv[2] = std::max(0.0, hsv[2] * (1.0 - delta));
+    // Convert back to RGB, then to hexa
+    const Point rgbUpdated(ConvertFromHSVIntoRGB(hsv[0], hsv[1], hsv[2]));
+    const UnsignedInteger red = static_cast<UnsignedInteger>(round(255 * rgbUpdated[0]));
+    const UnsignedInteger green = static_cast<UnsignedInteger>(round(255 * rgbUpdated[1]));
+    const UnsignedInteger blue = static_cast<UnsignedInteger>(round(255 * rgbUpdated[2]));
+    const String hexa(ConvertFromRGB(red, green, blue));
+    // Store result
+    palette[paletteIndex] = hexa;
   }
   return palette;
 }

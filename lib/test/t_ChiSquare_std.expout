@@ -19,7 +19,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[-0.220728]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.220728]
 log pdf=-1.22314
 pdf     =0.294304
 pdf (FD)=0.294304
@@ -55,12 +54,12 @@ spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplement
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[nu : 1.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.5]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[5.25]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[28.875]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[216.56]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[2057.3]
-Standard representative=ChiSquare(nu = 1.5)
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.75]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.3125]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[3.6094]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[13.535]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[64.292]
+Standard representative=Gamma(k = 0.75, lambda = 1, gamma = 0)
 nu=1.5
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.73205]
 skewness=class=Point name=Unnamed dimension=1 values=[2.3094]

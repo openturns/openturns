@@ -3,17 +3,17 @@
 The Metropolis-Hastings Algorithm
 ---------------------------------
 
-| **Markov chain.** Considering a :math:`\sigma`-algebra :math:`\cA` on
-  :math:`\Omega`, a Markov chain is a process
-  :math:`{(X_k)}_{k\in\Nset}` such that
+**Markov chain.** Considering a :math:`\sigma`-algebra :math:`\cA` on
+:math:`\Omega`, a Markov chain is a process
+:math:`{(X_k)}_{k\in\Nset}` such that
 
-  .. math::
+.. math::
 
-     \begin{aligned}
-         \forall{}(A,x_0,\ldots,x_{k-1})\in\cA\times\Omega^k
-         \quad \Prob{X_k\in A \,|\, X_0=x_0, \ldots, X_{k-1}=x_{k-1}}
-         = \Prob{X_k\in A \,|\, X_{k-1}=x_{k-1}}.
-       \end{aligned}
+   \begin{aligned}
+       \forall{}(A,x_0,\ldots,x_{k-1})\in\cA\times\Omega^k
+       \quad \Prob{X_k\in A \,|\, X_0=x_0, \ldots, X_{k-1}=x_{k-1}}
+       = \Prob{X_k\in A \,|\, X_{k-1}=x_{k-1}}.
+   \end{aligned}
 
 An example is the *random walk* for which
 :math:`X_k = X_{k-1} + \varepsilon_k` where the steps
@@ -22,10 +22,9 @@ An example is the *random walk* for which
 | **Transition kernel.** A transition kernel on :math:`(\Omega, \cA)` is
   a mapping :math:`K: (\Omega, \cA) \rightarrow [0, 1]` such that
 
--  :math:`\forall{}A\in\cA \quad K(., A)` is measurable;
+-  For all :math:`A\in\cA, \quad K(., A)` is measurable;
 
--  | :math:`\forall{}x\in\Omega \quad K(x, .)` is a probability
-     distribution on :math:`(\Omega, \cA)`.
+-  For all :math:`x\in\Omega, \quad K(x, .)` is a probability distribution on :math:`(\Omega, \cA)`.
 
 The kernel :math:`K` has density :math:`k` if
 :math:`\forall(x,A)\in\Omega\times\cA \quad K(x, A) = \displaystyle\int_A \: k(x, y) \mbox{d}y`.
@@ -71,7 +70,7 @@ Then the notation used here is :math:`\nu{}K^k \rightarrow_{TV} t`.
    that :math:`t(A)>0`, :math:`\exists{}k\in\cN^* \quad {}K^k(x, A) > 0`
    holds.
 
-Markov Chain Monte-Carlo techniques allows to sample and integrate
+Markov Chain Monte-Carlo techniques allows one to sample and integrate
 according to a distribution :math:`t` which is only known up to a
 multiplicative constant. This situation is common in Bayesian statistics
 where the “target” distribution, the posterior one
@@ -165,13 +164,19 @@ independent sampling.
 
 .. topic:: API:
 
+    - See :class:`~openturns.MetropolisHastings`
+    - See :class:`~openturns.Gibbs`
     - See :class:`~openturns.RandomWalkMetropolisHastings`
+    - See :class:`~openturns.IndependentMetropolisHastings`
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/bayesian_calibration`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration_flooding`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_rwmh_python_distribution`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_imh_python_distribution`
 
 .. topic:: References:
 
     - Robert, C.P. and Casella, G. (2004). *Monte Carlo Statistical Methods* (Second Edition), Springer.
-    - Meyn, S. and Tweedie R.L. (2009). *Markov Chains ans Stochastic Stability* (Second Edition), Cambridge University Press.
+    - Meyn, S. and Tweedie R.L. (2009). *Markov Chains and Stochastic Stability* (Second Edition), Cambridge University Press.

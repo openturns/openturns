@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,6 +39,7 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const UnsignedInteger dimen
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 /* Parameters constructor */
@@ -68,11 +69,14 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
 {
   // Check if the given models have the same input dimension
   const UnsignedInteger size = collection.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::setCollection: the collection must have a positive size, here size=0";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::setCollection: the collection must have a positive size, here size=0";
   Point amplitude(0);
   inputDimension_ = collection[0].getInputDimension();
   // Get dimension: should be the same for all elements
-  outputDimension_ = 0;
+  // Since 1.17, collection should be a list of 1d output models
+  outputDimension_ = size;
+  amplitude_ = Point(size);
+  isStationary_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger localSpatialDimension = collection[i].getInputDimension();
@@ -81,14 +85,17 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
                                            << " input dimension of element = " << localSpatialDimension << ", input dimension of the model = " << inputDimension_;
 
     const UnsignedInteger localDimension = collection[i].getOutputDimension();
-    outputDimension_ += localDimension;
-    const Point localAmplitude(collection[i].getAmplitude());
-    amplitude.add(localAmplitude);
+    if (localDimension != 1)
+      throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setCollection, collection should only contains models of output dimension = 1."
+                                           << " The output dimension of the #" << i << " element is = " << localDimension;
+    const Scalar localAmplitude = collection[i].getAmplitude()[0];
+    // Set amplitude
+    amplitude_[i] = localAmplitude;
+    if (!collection[i].isStationary())
+      isStationary_ = false;
   }
   // Set collection
   collection_ = collection;
-  // Set amplitude
-  amplitude_ = amplitude;
 }
 
 const TensorizedCovarianceModel::CovarianceModelCollection & TensorizedCovarianceModel::getCollection() const
@@ -102,27 +109,67 @@ TensorizedCovarianceModel * TensorizedCovarianceModel::clone() const
   return new TensorizedCovarianceModel(*this);
 }
 
+Scalar TensorizedCovarianceModel::computeAsScalar(const Point &s,
+    const Point &t) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1."
+                                         << "Here, output dimension = " << outputDimension_;
+  return collection_[0].computeAsScalar(s, t);
+}
+
+Scalar TensorizedCovarianceModel::computeAsScalar(const Point &tau) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1."
+                                         << "Here, output dimension = " << outputDimension_;
+  return collection_[0].computeAsScalar(tau);
+}
+
+Scalar TensorizedCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+    const Collection<Scalar>::const_iterator &t_begin) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1."
+                                         << "Here, output dimension = " << outputDimension_;
+  return collection_[0].getImplementation()->computeAsScalar(s_begin, t_begin);
+}
+Scalar TensorizedCovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  return collection_[0].getImplementation()->computeAsScalar(tau);
+}
+
 /* Computation of the covariance density function */
-CovarianceMatrix TensorizedCovarianceModel::operator() (const Point & s,
+SquareMatrix TensorizedCovarianceModel::operator() (const Point & s,
     const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  CovarianceMatrix covariance(getOutputDimension());
-  // Fill by block ==> block index
-  UnsignedInteger blockIndex = 0;
+  SquareMatrix covariance(getOutputDimension());
   const UnsignedInteger size = collection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // Compute the ith block
-    const CovarianceMatrix localCovariance = collection_[i](s, t);
-    const UnsignedInteger localDimension = collection_[i].getOutputDimension();
-    // Fill lower part of the covariance matrix
-    for (UnsignedInteger localColumn = 0; localColumn < localDimension; ++localColumn)
-      for (UnsignedInteger localRow = localColumn; localRow < localDimension; ++localRow)
-        covariance(blockIndex + localRow, blockIndex + localColumn) = localCovariance(localRow, localColumn);
-    // update blockIndex
-    blockIndex += localDimension;
+    covariance(i, i) = collection_[i].computeAsScalar(s, t);
+  }
+  return covariance;
+}
+
+/* Computation of the covariance density function */
+SquareMatrix TensorizedCovarianceModel::operator()(const Point &tau) const
+{
+  if (!isStationary())
+    return CovarianceModelImplementation::operator()(tau);
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
+  SquareMatrix covariance(getOutputDimension());
+  const UnsignedInteger size = collection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    covariance(i, i) = collection_[i].computeAsScalar(tau);
   }
   return covariance;
 }
@@ -134,37 +181,18 @@ Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
   // Gradient definition results from definition of model
   // We should pay attention to the scaling factor scale_
   Matrix gradient(inputDimension_, outputDimension_ * outputDimension_);
-  UnsignedInteger dimension = 0;
   const UnsignedInteger size = collection_.getSize();
   for(UnsignedInteger k = 0; k < size; ++k)
   {
-    const CovarianceModel localCovariance = collection_[k];
-    const UnsignedInteger localDimension = localCovariance.getOutputDimension();
-    const Matrix gradient_k = localCovariance.partialGradient(s, t);
-    // Gradient gradient_k is of size inputDimension x localDimension^2
-    for (UnsignedInteger localIndex = 0; localIndex < localDimension * localDimension; ++localIndex)
-    {
-      // Each row of the matrix gradient_k is a matrix localDimension x localDimension
-      // presented as a collection of scalar of size localDimension^2
-      // Objective is to get the corresponding localRowIndex & localColumnIndex
-      const UnsignedInteger localRowIndex = localIndex % localDimension;
-      const UnsignedInteger localColumnIndex = localIndex / localDimension;
-      // We seek the corresponding rowIndex & localIndex, if the each row of the
-      // matrix 'gradient' was a matrix of size outputDimension_ * dimension,
-      const UnsignedInteger rowIndex = dimension + localRowIndex;
-      const UnsignedInteger columnIndex = dimension + localColumnIndex;
-      // With rowIndex & columnIndex, we get the index in collection
-      // because data are presented as vector (or row matrix)
-      const UnsignedInteger index = outputDimension_ * columnIndex + rowIndex;
-      // Fill gradient matrix
-      // Same index are used for all it rows
-      for (UnsignedInteger spatialIndex = 0; spatialIndex < inputDimension_; ++spatialIndex)
-        gradient(spatialIndex, index) = gradient_k(spatialIndex, localIndex);
-    }
-    // update dimension
-    dimension += localDimension;
+    const CovarianceModel localCovariance(collection_[k]);
+    const Matrix gradient_k(localCovariance.partialGradient(s, t));
+    // Gradient gradient_k is of size inputDimension x 1
+    // operator() yields diagonal matrix ==> cov(k,k)
+    // cov(k, k) corresponds to the element of index k * dim + k
+    const UnsignedInteger columnIndex = k + outputDimension_ * k;
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+      gradient(i, columnIndex) = gradient_k(i, 0);
   }
-
   // Return gradient
   return gradient;
 }
@@ -246,9 +274,7 @@ void TensorizedCovarianceModel::setAmplitude(const Point & amplitude)
 /* Is it a stationary model ? */
 Bool TensorizedCovarianceModel::isStationary() const
 {
-  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
-    if (!collection_[i].isStationary()) return false;
-  return true;
+  return isStationary_;
 }
 
 /** Is it a diagonal covariance model ? */
@@ -258,6 +284,14 @@ Bool TensorizedCovarianceModel::isDiagonal() const
   {
     if (!collection_[i].isDiagonal()) return false;
   }
+  return true;
+}
+
+/* Is it safe to compute discretize etc in parallel? */
+Bool TensorizedCovarianceModel::isParallel() const
+{
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+    if (!collection_[i].getImplementation()->isParallel()) return false;
   return true;
 }
 
@@ -281,7 +315,7 @@ String TensorizedCovarianceModel::__str__(const String & ) const
 /* Marginal accessor */
 CovarianceModel TensorizedCovarianceModel::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= outputDimension_)
+  if (!(index < outputDimension_))
     throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
   UnsignedInteger size = collection_.getSize();
   UnsignedInteger start = 0;

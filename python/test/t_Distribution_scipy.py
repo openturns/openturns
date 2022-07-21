@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import scipy as sp
 import scipy.stats as st
@@ -28,7 +27,7 @@ for scipy_dist in [st.uniform(), st.johnsonsu(2.55, 2.25)]:
     print('mean=', distribution.getMean())
     print('mean(sampling)=', sample.computeMean())
     print('std=', distribution.getStandardDeviation())
-    print('std(sampling)=', sample.computeStandardDeviationPerComponent())
+    print('std(sampling)=', sample.computeStandardDeviation())
     print('skewness=', distribution.getSkewness())
     print('skewness(sampling)=', sample.computeSkewness())
     print('kurtosis=', distribution.getKurtosis())

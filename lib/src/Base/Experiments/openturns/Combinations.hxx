@@ -2,7 +2,7 @@
 /**
  *  @brief Combinations experiment plane
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,15 +44,15 @@ public:
                const UnsignedInteger n);
 
   /** Virtual constructor */
-  virtual Combinations * clone() const;
+  Combinations * clone() const override;
 
   /** Experiment plane generation :
    *  all the combinations of k elements amongst {0, ..., n-1}
    */
-  virtual IndicesCollection generate();
+  IndicesCollection generate() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Subset size accessor */
   void setK(const UnsignedInteger k);

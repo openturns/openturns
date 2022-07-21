@@ -1,0 +1,107 @@
+%feature("docstring") OT::MixedHistogramUserDefined
+"Mixed Histogram/UserDefined distribution.
+
+Defines a distribution with Histogram (continuous) or UserDefined (discrete) marginals,
+it is meant to be used as a specialization of the Mixture for efficient sampling.
+
+Each marginal is defined from a list of float that either define the intervals on which
+the marginal is uniform (equivalent to a :class:`~openturns.Histogram` distribution),
+or the set of points that define the support of the discrete marginal
+(equivalent to an :class:`~openturns.UserDefined` distribution).
+
+Weights are required for each combination of intervals or discrete points,
+ie for a dimension 2, with an Histogram component with 3 intervals (defined from 4 ticks) and
+a discrete component with 3 values (3 ticks), 9 probability values are required, see example below.
+
+Parameters
+----------
+ticksCollection : sequence of sequence of float
+    List of ticks for each component
+kind : sequence of int
+    Either MixedHistogramUserDefined.DISCRETE or MixedHistogramUserDefined.CONTINUOUS
+probabilityTable : sequence of float
+    List of probabilities
+
+See also
+--------
+Mixture, Histogram, UserDefined
+
+Examples
+--------
+>>> import openturns as ot
+>>> ticksCollection = [[0.0, 1.0, 3.0, 6.0], [1.0, 2.0, 3.0]]
+>>> kind = [ot.MixedHistogramUserDefined.CONTINUOUS, ot.MixedHistogramUserDefined.DISCRETE]
+>>> probabilityTable = [0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45]
+>>> distribution = ot.MixedHistogramUserDefined(ticksCollection, kind, probabilityTable)
+>>> distribution.setDescription(['A', 'B'])
+>>> sample = distribution.getSample(5)"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::MixedHistogramUserDefined::asMixture
+"Conversion as a Mixture.
+
+Returns
+-------
+mixture : :class:`~openturns.Mixture`
+    Mixture distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::MixedHistogramUserDefined::setKind
+"Kind accessor.
+
+Parameters
+----------
+kind : sequence of int
+    0=discrete, 1=continuous"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::MixedHistogramUserDefined::getKind
+"Kind accessor.
+
+Returns
+-------
+kind : sequence of int
+    0=discrete, 1=continuous"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::MixedHistogramUserDefined::setProbabilityTable
+"Probability table accessor.
+
+Parameters
+----------
+probabilityTable : sequence of float
+    List of probabilities"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::MixedHistogramUserDefined::getProbabilityTable
+"Probability table accessor.
+
+Returns
+-------
+probabilityTable : sequence of float
+    List of probabilities"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::MixedHistogramUserDefined::setTicksCollection
+"Ticks accessor.
+
+Parameters
+----------
+ticksCollection : sequence of sequence of float
+    ticksCollection"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::MixedHistogramUserDefined::getTicksCollection
+"Ticks accessor.
+
+Returns
+-------
+ticksCollection : sequence of sequence of float
+    ticksCollection"

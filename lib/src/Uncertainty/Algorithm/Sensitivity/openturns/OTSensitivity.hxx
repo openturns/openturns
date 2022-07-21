@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Sensitivity
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,5 +31,13 @@
 #include "openturns/MartinezSensitivityAlgorithm.hxx"
 #include "openturns/JansenSensitivityAlgorithm.hxx"
 #include "openturns/SobolIndicesExperiment.hxx"
-
+#include "openturns/HSICEstimatorImplementation.hxx"
+#include "openturns/HSICEstimator.hxx"
+#include "openturns/HSICEstimatorConditionalSensitivity.hxx"
+#include "openturns/HSICEstimatorTargetSensitivity.hxx"
+#include "openturns/HSICEstimatorGlobalSensitivity.hxx"
+#include "openturns/HSICStat.hxx"
+#include "openturns/HSICStatImplementation.hxx"
+#include "openturns/HSICUStat.hxx"
+#include "openturns/HSICVStat.hxx"
 #endif /* OPENTURNS_OTSENSITIVITY_HXX */

@@ -2,7 +2,7 @@
 /**
  *  @brief Class PersistentObject saves and reloads the object's internal state
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,25 +30,25 @@ CLASSNAMEINIT(PersistentObject)
 /* Method save() stores the object through the StorageManager */
 void PersistentObject::save(StorageManager & mgr, const String & label, bool fromStudy) const
 {
-  if (! mgr.isSavedObject(id_))
+  if (! mgr.isSavedObject(getId()))
   {
     Pointer<Advocate> p_adv ( mgr.registerObject(*this, fromStudy) );
     p_adv->setLabel( label );
     save(*p_adv);
     p_adv->saveObject();
-    mgr.markObjectAsSaved(id_);
+    mgr.markObjectAsSaved(getId());
   }
 }
 
 /* Method save() stores the object through the StorageManager */
 void PersistentObject::save(StorageManager & mgr, bool fromStudy) const
 {
-  if (! mgr.isSavedObject(id_))
+  if (! mgr.isSavedObject(getId()))
   {
     Pointer<Advocate> p_adv ( mgr.registerObject(*this, fromStudy) );
     save(*p_adv);
     p_adv->saveObject();
-    mgr.markObjectAsSaved(id_);
+    mgr.markObjectAsSaved(getId());
   }
 }
 
@@ -56,7 +56,7 @@ void PersistentObject::save(StorageManager & mgr, bool fromStudy) const
 void PersistentObject::save(Advocate & adv) const
 {
   adv.saveAttribute( "class", getClassName() );
-  adv.saveAttribute( "id", id_ );
+  adv.saveAttribute( "id", getId() );
   if ( hasVisibleName() )
   {
     adv.saveAttribute( "name", getName() );
@@ -66,7 +66,7 @@ void PersistentObject::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void PersistentObject::load(Advocate & adv)
 {
-  adv.loadAttribute( "id", shadowedId_);
+  adv.loadAttribute( "id", shadowedId_ );
   if ( adv.hasAttribute("name") )
   {
     String name;

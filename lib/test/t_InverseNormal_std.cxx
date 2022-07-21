@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class InverseNormal for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,7 +27,7 @@ using namespace OT::Test;
 class TestObject : public InverseNormal
 {
 public:
-  TestObject() : InverseNormal(0.5, 2.) {}
+  TestObject() : InverseNormal(2.0, 0.5) {}
   virtual ~TestObject() {}
 };
 
@@ -43,8 +43,8 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
-    InverseNormal distribution(0.5, 2.0);
+    // Instantiate one distribution object
+    InverseNormal distribution(2.0, 0.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 

@@ -2,7 +2,7 @@
 /**
  *  @brief Subset sampling result
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,7 @@ SubsetSamplingResult::SubsetSamplingResult()
 
 
 /* Constructor with parameters */
-SubsetSamplingResult::SubsetSamplingResult(const Event & event,
+SubsetSamplingResult::SubsetSamplingResult(const RandomVector & event,
     const Scalar probabilityEstimate,
     const Scalar varianceEstimate,
     const UnsignedInteger outerSampling,

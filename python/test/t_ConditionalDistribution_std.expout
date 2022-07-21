@@ -1,3 +1,5 @@
+##################################################
+method= GaussProduct
 distribution= ConditionalDistribution(X with X|Theta~ComposedDistribution(Theta), Theta=f(Y), f=[y0,y1,y2,y3]->[y0,y1,y2,y3], Y~ComposedDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
 Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
 Mean  [1.5,2.1]
@@ -6,21 +8,21 @@ Covariance  [[ 0.0833333 0         ]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
-oneRealization= [1.92068,2.49374]
+oneRealization= [1.13528,1.0937]
 oneSample=     [ X0      X1      ]
-0 : [ 1.71438 1.87896 ]
-1 : [ 1.8835  1.80748 ]
-2 : [ 1.68457 3.16374 ]
-3 : [ 1.58862 1.53788 ]
-4 : [ 1.21044 2.02765 ]
-5 : [ 1.98184 3.21605 ]
-6 : [ 1.25986 2.2968  ]
-7 : [ 1.11108 1.85243 ]
-8 : [ 1.97898 2.729   ]
-9 : [ 1.9942  1.23036 ]
-anotherSample mean= [1.50531,2.0939]
-anotherSample covariance= [[  0.0847584  -0.00089997 ]
- [ -0.00089997  0.749613   ]]
+0 : [ 1.92068 2.49374 ]
+1 : [ 1.71438 1.87896 ]
+2 : [ 1.8835  1.80748 ]
+3 : [ 1.68457 3.16374 ]
+4 : [ 1.58862 1.53788 ]
+5 : [ 1.21044 2.02765 ]
+6 : [ 1.98184 3.21605 ]
+7 : [ 1.25986 2.2968  ]
+8 : [ 1.11108 1.85243 ]
+9 : [ 1.97898 2.729   ]
+anotherSample mean= [1.50538,2.09375]
+anotherSample covariance= [[  0.0847776   -0.000929088 ]
+ [ -0.000929088  0.74965     ]]
 Zero point=  [0,0]  pdf= 0.0  cdf= 0.0
 Quantile= [1.97468,3.60341]
 CDF(quantile)= 0.95
@@ -32,84 +34,156 @@ beta= [0.974679]
 Unilateral confidence interval (upper tail)= [1.02532, 1]
 [0.293386, 1]
 beta= [0.974679]
+##################################################
+method= QMC
+distribution= ConditionalDistribution(X with X|Theta~ComposedDistribution(Theta), Theta=f(Y), f=[y0,y1,y2,y3]->[y0,y1,y2,y3], Y~ComposedDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
+Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
+Mean  [1.5,2.09997]
+Covariance  [[ 0.0833333 0         ]
+ [ 0         0.751079  ]]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [1.28994,2.70175]
+oneSample=     [ X0        X1        ]
+0 : [ 1.724     1.349     ]
+1 : [ 1.08472   3.51038   ]
+2 : [ 1.46333   2.69445   ]
+3 : [ 1.84205   2.68757   ]
+4 : [ 1.88905   2.07805   ]
+5 : [ 1.61304   0.0419325 ]
+6 : [ 1.87194   0.394497  ]
+7 : [ 1.34017   2.39098   ]
+8 : [ 1.88327   2.3063    ]
+9 : [ 1.41826   2.7288    ]
+anotherSample mean= [1.50033,2.09473]
+anotherSample covariance= [[ 0.0823686   9.04142e-05 ]
+ [ 9.04142e-05 0.756718    ]]
+Zero point=  [0,0]  pdf= 0.0  cdf= 0.0
+Quantile= [1.97468,3.60334]
+CDF(quantile)= 0.95
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[1.02532,0.293381]
+Survival(inverseSurvival)=0.950000
+Unilateral confidence interval (lower tail)= [-1, 1.97468]
+[-1, 3.60334]
+beta= [0.974679]
+Unilateral confidence interval (upper tail)= [1.02532, 1]
+[0.293381, 1]
+beta= [0.974679]
+##################################################
+method= MC
+distribution= ConditionalDistribution(X with X|Theta~ComposedDistribution(Theta), Theta=f(Y), f=[y0,y1,y2,y3]->[y0,y1,y2,y3], Y~ComposedDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
+Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
+Mean  [1.5,2.10103]
+Covariance  [[ 0.0833333 0         ]
+ [ 0         0.752585  ]]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [1.25105,2.80837]
+oneSample=     [ X0      X1      ]
+0 : [ 1.31227 1.91181 ]
+1 : [ 1.85168 1.81568 ]
+2 : [ 1.78838 2.33992 ]
+3 : [ 1.52819 3.33285 ]
+4 : [ 1.89918 2.42515 ]
+5 : [ 1.41437 3.33561 ]
+6 : [ 1.46582 2.14057 ]
+7 : [ 1.71435 2.49255 ]
+8 : [ 1.61359 3.09347 ]
+9 : [ 1.87601 1.21486 ]
+anotherSample mean= [1.49875,2.10847]
+anotherSample covariance= [[ 0.0835088 0.002056  ]
+ [ 0.002056  0.748267  ]]
+Zero point=  [0,0]  pdf= 0.0  cdf= 0.0
+Quantile= [1.97468,3.60826]
+CDF(quantile)= 0.95
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[1.02532,0.293522]
+Survival(inverseSurvival)=0.950000
+Unilateral confidence interval (lower tail)= [-1, 1.97468]
+[-1, 3.60826]
+beta= [0.974679]
+Unilateral confidence interval (upper tail)= [1.02532, 1]
+[0.293522, 1]
+beta= [0.974679]
 conditioning distribution= ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters  [[a_marginal_0 : 0, b_marginal_0 : 1],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
-Mean  [0.5]
-Covariance  [[ 2.41667 ]]
+Mean  [0.49998]
+Covariance  [[ 2.42797 ]]
 Elliptical distribution=  False
 Elliptical copula=  True
 Independent copula=  True
-oneRealization= [0.258808]
+oneRealization= [1.35735]
 oneSample=     [ X0         ]
-0 : [ -0.787032  ]
-1 : [  1.91159   ]
-2 : [  2.44972   ]
-3 : [ -1.19836   ]
-4 : [  0.197223  ]
-5 : [  0.312391  ]
-6 : [  2.00089   ]
-7 : [  0.918184  ]
-8 : [ -1.99944   ]
-9 : [  0.0459383 ]
-anotherSample mean= [0.505198]
-anotherSample covariance= [[ 2.41374 ]]
-Zero point=  [0]  pdf=0.253748  cdf=0.367604
-Quantile= [3.05046]
+0 : [  2.15156   ]
+1 : [ -0.0274854 ]
+2 : [ -0.515759  ]
+3 : [  1.33154   ]
+4 : [  3.43509   ]
+5 : [  1.21906   ]
+6 : [  2.84108   ]
+7 : [  3.32709   ]
+8 : [ -1.93128   ]
+9 : [  1.0006    ]
+anotherSample mean= [0.493427]
+anotherSample covariance= [[ 2.39148 ]]
+Zero point=  [0]  pdf=0.253294  cdf=0.368038
+Quantile= [3.05746]
 CDF(quantile)= 0.95
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.05046]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.05552]
 Survival(inverseSurvival)=0.950000
 conditioning distribution= ComposedDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters  [[n_marginal_0 : 3, p_marginal_0 : 0.5],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
 Mean  [1.5]
-Covariance  [[ 3.08333 ]]
+Covariance  [[ 3.09555 ]]
 Elliptical distribution=  False
 Elliptical copula=  True
 Independent copula=  True
-oneRealization= [0.910042]
+oneRealization= [3.73237]
 oneSample=     [ X0        ]
-0 : [  2.78593  ]
-1 : [ -1.69853  ]
-2 : [ -1.11638  ]
-3 : [  2.11779  ]
-4 : [ -1.15458  ]
-5 : [  1.89579  ]
-6 : [ -0.597512 ]
-7 : [ -1.20433  ]
-8 : [  3.98686  ]
-9 : [  0.507539 ]
-anotherSample mean= [1.49665]
-anotherSample covariance= [[ 3.16339 ]]
-Zero point=  [0]  pdf=0.156744  cdf=0.192205
-Quantile= [4.38019]
+0 : [ -0.678003 ]
+1 : [  0.129661 ]
+2 : [  3.15535  ]
+3 : [  1.10271  ]
+4 : [  0.417401 ]
+5 : [  2.75515  ]
+6 : [  2.09963  ]
+7 : [ -1.09533  ]
+8 : [  4.28327  ]
+9 : [ -2.47362  ]
+anotherSample mean= [1.50548]
+anotherSample covariance= [[ 3.0539 ]]
+Zero point=  [0]  pdf=0.156662  cdf=0.192661
+Quantile= [4.38606]
 CDF(quantile)= 0.95
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[-1.38019]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-1.38606]
 Survival(inverseSurvival)=0.950000
 conditioning distribution= ComposedDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters  [[point_0_marginal_0 : 0.5],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
 Mean  [0.5]
-Covariance  [[ 2.33333 ]]
+Covariance  [[ 2.33541 ]]
 Elliptical distribution=  False
 Elliptical copula=  True
 Independent copula=  True
-oneRealization= [2.0818]
+oneRealization= [1.58198]
 oneSample=     [ X0        ]
-0 : [ -0.580262 ]
-1 : [  0.323548 ]
-2 : [  1.44127  ]
-3 : [ -0.106124 ]
-4 : [ -0.406963 ]
-5 : [  1.88179  ]
-6 : [  3.06572  ]
-7 : [  1.8219   ]
-8 : [  0.146509 ]
-9 : [ -0.179689 ]
-anotherSample mean= [0.528289]
-anotherSample covariance= [[ 2.33981 ]]
-Zero point=  [0]  pdf=0.258535  cdf=0.364782
-Quantile= [3.00635]
+0 : [  1.62667  ]
+1 : [ -1.68229  ]
+2 : [  4.89959  ]
+3 : [  1.72367  ]
+4 : [ -1.13326  ]
+5 : [  0.177625 ]
+6 : [  1.46685  ]
+7 : [  0.59936  ]
+8 : [  1.59169  ]
+9 : [ -0.94916  ]
+anotherSample mean= [0.52044]
+anotherSample covariance= [[ 2.34821 ]]
+Zero point=  [0]  pdf=0.258471  cdf=0.364815
+Quantile= [3.00756]
 CDF(quantile)= 0.95
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.00635]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.00756]
 Survival(inverseSurvival)=0.950000

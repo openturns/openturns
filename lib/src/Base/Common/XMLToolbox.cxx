@@ -2,7 +2,7 @@
 /**
  *  @brief This file provides basic XML functionalities
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/XMLToolbox.hxx"
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>
@@ -73,10 +74,9 @@ XMLDoc::XMLDoc(const char * buffer, int size) : doc_(0)
   if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing buffer";
 }
 
-XMLDoc::~XMLDoc() throw()
+XMLDoc::~XMLDoc()
 {
   xmlFreeDoc( doc_ );
-
 }
 
 XMLDoc & XMLDoc::operator =(const XMLDoc & other)
@@ -295,7 +295,7 @@ Bool XML::ElementHasAttribute(const Node & elt, const String & name)
 {
   xmlString aName = StringToXmlString( name );
   assert(elt);
-  return xmlHasProp( elt, aName.c_str() );
+  return xmlHasProp(elt, aName.c_str()) != NULL;
 }
 
 

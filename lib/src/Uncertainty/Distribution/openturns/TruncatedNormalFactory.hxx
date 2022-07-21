@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for TruncatedNormal distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,17 +41,21 @@ public:
   TruncatedNormalFactory();
 
   /** Virtual constructor */
-  TruncatedNormalFactory * clone() const;
+  TruncatedNormalFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   TruncatedNormal buildAsTruncatedNormal(const Sample & sample) const;
   TruncatedNormal buildAsTruncatedNormal(const Point & parameters) const;
   TruncatedNormal buildAsTruncatedNormal() const;
+
+  /** Specific algorithms */
+  TruncatedNormal buildMethodOfMoments(const Sample & sample) const;
+  TruncatedNormal buildMethodOfLikelihoodMaximization(const Sample & sample) const;
 
 }; /* class TruncatedNormalFactory */
 

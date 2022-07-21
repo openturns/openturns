@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief LeastSquaresProblem allows to describe an optimization problem
+ *  @brief LeastSquaresProblem allows one to describe an optimization problem
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -267,15 +267,20 @@ void LeastSquaresProblem::setResidualFunction(const Function & residualFunction)
   // r = ||(f)||^2/2
   const UnsignedInteger residualSize = residualFunction.getOutputDimension();
   residualFunction_ = residualFunction;
-  const Function halfSquaredNorm(LeastSquaresProblemFunctions::HalfSquaredNormEvaluation(residualSize).clone(), LeastSquaresProblemFunctions::HalfSquaredNormGradient(residualSize).clone(), LeastSquaresProblemFunctions::HalfSquaredNormHessian(residualSize).clone());
+  const Function halfSquaredNorm(LeastSquaresProblemFunctions::HalfSquaredNormEvaluation(residualSize).clone(),
+                                 LeastSquaresProblemFunctions::HalfSquaredNormGradient(residualSize).clone(), LeastSquaresProblemFunctions::HalfSquaredNormHessian(residualSize).clone()
+                                );
   objective_ = ComposedFunction(halfSquaredNorm, residualFunction);
   dimension_ = residualFunction.getInputDimension();
+
+  setVariablesType(Indices(dimension_, CONTINUOUS));
 }
 
 Bool LeastSquaresProblem::hasResidualFunction() const
 {
   return true;
 }
+
 
 /* String converter */
 String LeastSquaresProblem::__repr__() const

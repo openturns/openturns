@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ComposedDistributions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,7 @@
 #include "openturns/IndependentCopula.hxx"
 #include "openturns/NormalCopula.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -100,7 +100,7 @@ Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
 {
   if (this == &other) return true;
   // The copula...
-  if (!(hasIndependentCopula() && other.hasIndependentCopula())) return false;
+  if (hasIndependentCopula() != other.hasIndependentCopula()) return false;
   if (!(copula_ == other.getCopula())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)
@@ -167,7 +167,7 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
 {
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
-  if ((getDimension() != 0) && (size != getDimension())) throw InvalidArgumentException(HERE) << "The distribution collection must have a size equal to the distribution dimension";
+  if ((getDimension() != 0) && (size != getDimension())) throw InvalidArgumentException(HERE) << "The distribution collection must have a size equal to the copula dimension";
   Description description(size);
   Point lowerBound(size);
   Point upperBound(size);
@@ -288,11 +288,11 @@ struct ComposedDistributionComputeSamplePolicy
     , dimension_(distributionCollection.getSize())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       for (UnsignedInteger j = 0; j < dimension_; ++j)
-        output_(i, j) = distributionCollection_[j].computeQuantile(input_(i, j))[0];
+        output_(i, j) = distributionCollection_[j].computeScalarQuantile(input_(i, j));
   }
 
 }; /* end struct ComposedDistributionComputeSamplePolicy */
@@ -329,7 +329,7 @@ Sample ComposedDistribution::getSampleParallel(const UnsignedInteger size) const
   const Sample copulaSample(copula_.getSample(size));
   Sample result(size, dimension);
   const ComposedDistributionComputeSamplePolicy policy( copulaSample, result, distributionCollection_ );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
@@ -404,6 +404,34 @@ Scalar ComposedDistribution::computePDF(const Point & point) const
   return copula_.computePDF(uPoint) * productPDF;
 }
 
+/* Get the logarithm of the PDF of the ComposedDistribution */
+Scalar ComposedDistribution::computeLogPDF(const Point & point) const
+{
+  /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+
+  // Special case for dimension 1, to boost performances
+  if (dimension == 1) return distributionCollection_[0].computeLogPDF(point);
+  Scalar sumLogPDF = 0.0;
+  // Special case for the independent case, to boost performances
+  if (hasIndependentCopula())
+  {
+    for (UnsignedInteger i = 0; i < dimension; ++i) sumLogPDF += distributionCollection_[i].computeLogPDF(point[i]);
+    return sumLogPDF;
+  }
+  // General case
+  Point uPoint(dimension);
+  Point component(1);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    component[0] = point[i];
+    uPoint[i] = distributionCollection_[i].computeCDF(component);
+    sumLogPDF += distributionCollection_[i].computeLogPDF(component);
+  }
+  return copula_.computeLogPDF(uPoint) + sumLogPDF;
+}
+
 /* Get the CDF of the ComposedDistribution */
 Scalar ComposedDistribution::computeCDF(const Point & point) const
 {
@@ -458,7 +486,7 @@ Scalar ComposedDistribution::computeProbability(const Interval & interval) const
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
   // If the interval is empty
-  if (interval.isNumericallyEmpty()) return 0.0;
+  if (interval.isEmpty()) return 0.0;
   const Point lower(interval.getLowerBound());
   const Point upper(interval.getUpperBound());
   const Interval::BoolCollection finiteLower(interval.getFiniteLowerBound());
@@ -551,19 +579,19 @@ Point ComposedDistribution::computeSequentialConditionalPDF(const Point & x) con
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional PDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
   if (hasIndependentCopula())
-    {
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = distributionCollection_[i].computePDF(x[i]);
-    }
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = distributionCollection_[i].computePDF(x[i]);
+  }
   else
-    {
-      Point u(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	u[i] = distributionCollection_[i].computeCDF(x[i]);
-      const Point copulaPDF(copula_.computeSequentialConditionalPDF(u));
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = distributionCollection_[i].computePDF(x[i]) * copulaPDF[i];
-    }
+  {
+    Point u(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      u[i] = distributionCollection_[i].computeCDF(x[i]);
+    const Point copulaPDF(copula_.computeSequentialConditionalPDF(u));
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = distributionCollection_[i].computePDF(x[i]) * copulaPDF[i];
+  }
   return result;
 }
 
@@ -612,16 +640,16 @@ Point ComposedDistribution::computeSequentialConditionalQuantile(const Point & q
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
   if (hasIndependentCopula())
-    {
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = distributionCollection_[i].computeScalarQuantile(q[i]);
-    }
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = distributionCollection_[i].computeScalarQuantile(q[i]);
+  }
   else
-    {
-      const Point copulaQuantile(copula_.computeSequentialConditionalQuantile(q));
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = distributionCollection_[i].computeScalarQuantile(copulaQuantile[i]);
-    }
+  {
+    const Point copulaQuantile(copula_.computeSequentialConditionalQuantile(q));
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = distributionCollection_[i].computeScalarQuantile(copulaQuantile[i]);
+  }
   return result;
 }
 
@@ -818,28 +846,26 @@ Point ComposedDistribution::getKurtosis() const
 Distribution ComposedDistribution::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
-  ComposedDistribution::Implementation marginal(distributionCollection_[i].getImplementation()->clone());
-  marginal->setDescription(Description(1, getDescription()[i]));
+  Distribution marginal(distributionCollection_[i]);
+  marginal.setDescription(Description(1, getDescription()[i]));
   return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Distribution ComposedDistribution::getMarginal(const Indices & indices) const
 {
-  // This call will check that indices are correct
-  const Copula marginalCopula(copula_.getMarginal(indices));
-  DistributionCollection marginalDistributions(0);
+  const UnsignedInteger dimension = getDimension();
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = indices.getSize();
-  const Description description(getDescription());
-  Description marginalDescription(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  if (size == 1)
   {
-    const UnsignedInteger j = indices[i];
-    marginalDistributions.add(distributionCollection_[j]);
-    marginalDescription[i] = description[j];
+    const UnsignedInteger i = indices[0];
+    Distribution marginal(distributionCollection_[i]);
+    marginal.setDescription(Description(1, getDescription()[i]));
+    return marginal;
   }
-  ComposedDistribution::Implementation marginal(new ComposedDistribution(marginalDistributions, marginalCopula));
-  marginal->setDescription(marginalDescription);
+  ComposedDistribution marginal(distributionCollection_.select(indices), copula_.getMarginal(indices));
+  marginal.setDescription(getDescription().select(indices));
   return marginal;
 }
 

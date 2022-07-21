@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation class for composite random vectors
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,52 +52,52 @@ public:
 
 
   /** Virtual constructor */
-  virtual CompositeRandomVector * clone() const;
+  CompositeRandomVector * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 
 
   /** Is the underlying random vector composite ? */
-  Bool isComposite() const;
+  Bool isComposite() const override;
 
 
   /* Here is the interface that all derived class must implement */
 
   /** Dimension accessor */
-  UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Realization accessor */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Numerical sample accessor */
-  Sample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the random vector corresponding to the i-th marginal component */
-  RandomVector getMarginal(const UnsignedInteger i) const;
+  RandomVector getMarginal(const UnsignedInteger i) const override;
 
   /** Get the marginal random vector corresponding to indices components */
-  RandomVector getMarginal(const Indices & indices) const;
+  RandomVector getMarginal(const Indices & indices) const override;
 
   /** Antecedent accessor */
-  RandomVector getAntecedent() const;
+  RandomVector getAntecedent() const override;
 
   /** Function accessor */
-  Function getFunction() const;
+  Function getFunction() const override;
 
   /** Parameters value accessor */
-  virtual Point getParameter() const;
-  virtual void setParameter(const Point & parameters);
+  Point getParameter() const override;
+  void setParameter(const Point & parameters) override;
 
   /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** The function the vector is the output */

@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir WeightedExperiments
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,5 +41,9 @@
 #include "openturns/MonteCarloExperiment.hxx"
 #include "openturns/WeightedExperiment.hxx"
 #include "openturns/WeightedExperimentImplementation.hxx"
+#include "openturns/SplitterImplementation.hxx"
+#include "openturns/KFoldSplitter.hxx"
+#include "openturns/LeaveOneOutSplitter.hxx"
+#include "openturns/TensorProductExperiment.hxx"
 
 #endif /* OPENTURNS_OTWEIGHTEDEXPERIMENTS_HXX */

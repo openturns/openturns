@@ -2,7 +2,7 @@
 /**
  *  @brief LHSResult
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,10 +38,11 @@ CLASSNAMEINIT(LHSResult)
 /* Default constructor */
 LHSResult::LHSResult()
   : PersistentObject()
+  , restart_(0)
   , optimalIndex_(0)
   , criteria_(Sample(0, 4))
 {
-  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
 }
 
 /* Default constructor */
@@ -52,7 +53,7 @@ LHSResult::LHSResult(const SpaceFilling & spaceFilling, UnsignedInteger restart)
   , optimalIndex_(0)
   , criteria_(Sample(0, 4))
 {
-  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
 }
 
 LHSResult * LHSResult::clone() const
@@ -76,11 +77,7 @@ void LHSResult::add(const Sample & optimalDesign, Scalar criterion,
     optimalIndex_ = criteria_.getSize();
     optimalCriterion_ = criterion;
   }
-  Point criteria(4);
-  criteria[0] = criterion;
-  criteria[1] = C2;
-  criteria[2] = PhiP;
-  criteria[3] = MinDist;
+  Point criteria = {criterion, C2, PhiP, MinDist};
 
   criteria_.add(criteria);
   collDesigns_.add(optimalDesign);
@@ -96,6 +93,8 @@ UnsignedInteger LHSResult::getNumberOfRestarts() const
 /** Attributes for getting elements of result */
 Sample LHSResult::getOptimalDesign() const
 {
+  if (!collDesigns_.getSize())
+    throw InternalException(HERE) << "No design stored!";
   return collDesigns_[optimalIndex_];
 }
 
@@ -108,6 +107,8 @@ Sample LHSResult::getOptimalDesign(UnsignedInteger restart) const
 
 Scalar LHSResult::getOptimalValue() const
 {
+  if (!criteria_.getSize())
+    throw InternalException(HERE) << "No design stored!";
   return criteria_(optimalIndex_, 0);
 }
 
@@ -120,6 +121,8 @@ Scalar LHSResult::getOptimalValue(UnsignedInteger restart) const
 
 Sample LHSResult::getAlgoHistory() const
 {
+  if (!criteria_.getSize())
+    throw InternalException(HERE) << "No design stored!";
   return collAlgoHistory_[optimalIndex_];
 }
 
@@ -132,6 +135,8 @@ Sample LHSResult::getAlgoHistory(UnsignedInteger restart) const
 
 Scalar LHSResult::getC2() const
 {
+  if (!criteria_.getSize())
+    throw InternalException(HERE) << "No design stored!";
   return criteria_(optimalIndex_, 1);
 }
 
@@ -144,6 +149,8 @@ Scalar LHSResult::getC2(UnsignedInteger restart) const
 
 Scalar LHSResult::getPhiP() const
 {
+  if (!criteria_.getSize())
+    throw InternalException(HERE) << "No design stored!";
   return criteria_(optimalIndex_, 2);
 }
 
@@ -156,6 +163,8 @@ Scalar LHSResult::getPhiP(UnsignedInteger restart) const
 
 Scalar LHSResult::getMinDist() const
 {
+  if (!criteria_.getSize())
+    throw InternalException(HERE) << "No design stored!";
   return criteria_(optimalIndex_, 3);
 }
 
@@ -168,6 +177,8 @@ Scalar LHSResult::getMinDist(UnsignedInteger restart) const
 
 UnsignedInteger LHSResult::findDescription(const char *text) const
 {
+  if (!collAlgoHistory_.getSize())
+    throw InternalException(HERE) << "No design stored!";
   Description description(collAlgoHistory_[0].getDescription());
   for (UnsignedInteger i = 0; i < description.getSize(); ++i)
   {
@@ -193,6 +204,8 @@ Graph LHSResult::drawCurveData(const Sample & data, const String & title) const
 
 Graph LHSResult::drawHistoryCriterion(const String & title) const
 {
+  if (!collAlgoHistory_.getSize())
+    throw InternalException(HERE) << "No design stored!";
   String drawTitle(title);
   if (drawTitle.empty())
   {
@@ -222,6 +235,8 @@ Graph LHSResult::drawHistoryCriterion(UnsignedInteger restart, const String & ti
 
 Graph LHSResult::drawHistoryTemperature(const String & title) const
 {
+  if (!collAlgoHistory_.getSize())
+    throw InternalException(HERE) << "No design stored!";
   String drawTitle(title);
   if (drawTitle.empty()) drawTitle = "Temperature history of optimal design";
   return drawHistoryTemperature(optimalIndex_, drawTitle);
@@ -245,6 +260,8 @@ Graph LHSResult::drawHistoryTemperature(UnsignedInteger restart, const String & 
 
 Graph LHSResult::drawHistoryProbability(const String & title) const
 {
+  if (!collAlgoHistory_.getSize())
+    throw InternalException(HERE) << "No design stored!";
   String drawTitle(title);
   if (drawTitle.empty()) drawTitle = "Probability history of optimal design";
   return drawHistoryProbability(optimalIndex_, drawTitle);
@@ -265,11 +282,9 @@ Graph LHSResult::drawHistoryProbability(UnsignedInteger restart, const String & 
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data(i, 0) = i;
-    data(i, 1) = collAlgoHistory_[restart][i][idx - 1];
+    data(i, 1) = collAlgoHistory_[restart](i, idx - 1);
   }
-  Description description(2);
-  description[0] = "Iterations";
-  description[1] = "Probability";
+  Description description = {"Iterations", "Probability"};
   data.setDescription(description);
 
   String drawTitle(title);

@@ -2,7 +2,7 @@
 /**
  *  @brief A class that implements a normal copula
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,7 +33,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,10 +43,11 @@ static const Factory<NormalCopula> Factory_NormalCopula;
 
 /* Default constructor */
 NormalCopula::NormalCopula(const UnsignedInteger dim)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , correlation_(dim)
   , normal_(dim)
 {
+  isCopula_ = true;
   setName("NormalCopula");
   // The range is generic for all the copulas
   setDimension(dim);
@@ -55,10 +56,11 @@ NormalCopula::NormalCopula(const UnsignedInteger dim)
 
 /* Default constructor */
 NormalCopula::NormalCopula(const CorrelationMatrix & correlation)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , correlation_(correlation)
   , normal_(Point(correlation.getNbRows(), 0.0), Point(correlation.getNbRows(), 1.0), correlation)
 {
+  isCopula_ = true;
   setName("NormalCopula");
   // The range is generic for all the copulas
   setDimension(correlation.getNbRows());
@@ -128,7 +130,7 @@ struct NormalCopulaComputeSamplePolicy
     , dimension_(input.getDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -156,11 +158,11 @@ Sample NormalCopula::getSampleParallel(const UnsignedInteger size) const
     const Sample normalSample(normal_.getSample(size));
     Sample result(size, dimension);
     const NormalCopulaComputeSamplePolicy policy( normalSample, result );
-    TBB::ParallelFor( 0, size, policy );
+    TBBImplementation::ParallelFor( 0, size, policy );
     result.setName(getName());
     result.setDescription(getDescription());
     return result;
-  } // Nonindependente copula
+  } // Non independent copula
 }
 
 Sample NormalCopula::getSample(const UnsignedInteger size) const
@@ -188,8 +190,7 @@ Point NormalCopula::computeDDF(const Point & point) const
   {
     const Scalar xi = DistFunc::qNormal(point[i]);
     x[i] = xi;
-    // .398942280401432677939946059934 = 1 / sqrt(2.pi)
-    const Scalar pdfI = 0.398942280401432677939946059934 * std::exp(-0.5 * xi * xi);
+    const Scalar pdfI = DistFunc::dNormal(xi);
     marginalPDF[i] = pdfI;
     marginalPDFProduct *= pdfI;
   }
@@ -219,15 +220,15 @@ Scalar NormalCopula::computePDF(const Point & point) const
   // and the PDF of the associated generic normal using the specific form of
   // the standard normal PDF
   Point normalPoint(dimension);
-  Scalar value = 0.0;
+  Scalar value = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar yi = DistFunc::qNormal(point[i]);
     normalPoint[i] = yi;
-    value += yi * yi;
+    // Prod_i phi(yi), phi being the univariate standard gaussian
+    // density function
+    value *= DistFunc::dNormal(yi);
   }
-  // 0.398942280401432677939946059934 = 1 / sqrt(2.pi)
-  value = std::pow(0.398942280401432677939946059934, static_cast<int>(dimension)) * std::exp(-0.5 * value);
   return normal_.computePDF(normalPoint) / value;
 }
 
@@ -302,7 +303,7 @@ Scalar NormalCopula::computeProbability(const Interval & interval) const
   // Reduce the given interval to the support of the distribution, which is the nD unit cube
   const Interval intersect(interval.intersect(Interval(dimension)));
   // If the intersection is empty
-  if (intersect.isNumericallyEmpty()) return 0.0;
+  if (intersect.isEmpty()) return 0.0;
   const Point lowerBoundIntersect(intersect.getLowerBound());
   const Point upperBoundIntersect(intersect.getUpperBound());
   Point lowerBound(dimension);
@@ -398,7 +399,7 @@ Point NormalCopula::computeCDFGradient(const Point & point) const
    The conditional normal copula is the copula of this conditional normal distribution
 */
 Scalar NormalCopula::computeConditionalPDF(const Scalar x,
-                                     const Point & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -418,6 +419,41 @@ Scalar NormalCopula::computeConditionalPDF(const Scalar x,
   return std::exp(-0.5 * (u * u - z * z)) / sigmaRos;
 }
 
+Point NormalCopula::computeConditionalPDF(const Point & x,
+    const Sample & y) const
+{
+  const UnsignedInteger conditioningDimension = y.getDimension();
+  if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning sample of dimension greater or equal to the distribution dimension.";
+  const UnsignedInteger size = x.getSize();
+  if (y.getSize() != x.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning sample of size different from the argument size.";
+  // Special case for no conditioning or independent copula
+  if ((conditioningDimension == 0) || (hasIndependentCopula()))
+  {
+    Point result(size, 1.0);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      if (x[i]  < 0.0) result[i] = 0.0;
+      if (x[i] >= 1.0) result[i] = 0.0;
+    }
+    return result;
+  }
+  // General case
+  const TriangularMatrix inverseCholesky(normal_.getInverseCholesky());
+  const Scalar sigmaRos = 1.0 / inverseCholesky(conditioningDimension, conditioningDimension);
+  MatrixImplementation row(1, conditioningDimension);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) row(0, i) = inverseCholesky(conditioningDimension, i);
+  const MatrixImplementation qY(conditioningDimension, size, DistFunc::qNormal(y.getImplementation()->getData()));
+  const MatrixImplementation meanRos(row.genProd(qY));
+  Point result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar z = DistFunc::qNormal(x[i]);
+    const Scalar u = z / sigmaRos + meanRos[i];
+    result[i] = std::exp(-0.5 * (u * u - z * z)) / sigmaRos;
+  }
+  return result;
+}
+
 Point NormalCopula::computeSequentialConditionalPDF(const Point & x) const
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional PDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
@@ -426,19 +462,19 @@ Point NormalCopula::computeSequentialConditionalPDF(const Point & x) const
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       result[i] = (x[i] >= 0.0 && x[i] < 1.0 ? 1.0 : 0.0);
   else
-    {
-      const TriangularMatrix inverseCholesky(normal_.getInverseCholesky());
-      const Point z(DistFunc::qNormal(x));
-      const Point u(inverseCholesky * z);
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = std::exp(-0.5 * (u[i] * u[i] - z[i] * z[i])) * inverseCholesky(i ,i);
-    }
+  {
+    const TriangularMatrix inverseCholesky(normal_.getInverseCholesky());
+    const Point z(DistFunc::qNormal(x));
+    const Point u(inverseCholesky * z);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = std::exp(-0.5 * (u[i] * u[i] - z[i] * z[i])) * inverseCholesky(i, i);
+  }
   return result;
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar NormalCopula::computeConditionalCDF(const Scalar x,
-                                     const Point & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -459,12 +495,12 @@ Point NormalCopula::computeSequentialConditionalCDF(const Point & x) const
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional CDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
   if (hasIndependentCopula())
-    {
-      Point result(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = (x[i] <= 0.0 ? 0.0 : (x[i] >= 1.0 ? 1.0 : x[i]));
-      return result;
-    }
+  {
+    Point result(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = (x[i] <= 0.0 ? 0.0 : (x[i] >= 1.0 ? 1.0 : x[i]));
+    return result;
+  }
   return DistFunc::pNormal(normal_.getInverseCholesky() * DistFunc::qNormal(x));
 }
 
@@ -650,7 +686,7 @@ CorrelationMatrix NormalCopula::GetCorrelationFromKendallCorrelation(const Corre
 /* Method save() stores the object through the StorageManager */
 void NormalCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "correlation_", correlation_ );
   adv.saveAttribute( "covariance_duplicate", covariance_ );
   adv.saveAttribute( "normal_", normal_ );
@@ -662,7 +698,7 @@ void NormalCopula::save(Advocate & adv) const
 void NormalCopula::load(Advocate & adv)
 {
   // The range is generic for all the copulas
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "correlation_", correlation_ );
   adv.loadAttribute( "covariance_duplicate", covariance_ );
   adv.loadAttribute( "normal_", normal_ );

@@ -2,7 +2,7 @@
 /**
  *  @brief Space filling criterion based on centered L2-discrepancy
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,17 +41,17 @@ public:
   SpaceFillingC2();
 
   /** Virtual constructor method */
-  SpaceFillingC2 * clone() const;
+  SpaceFillingC2 * clone() const override;
 
   /** Evaluate criterion on a sample */
-  Scalar evaluate(const Sample& sample) const;
+  Scalar evaluate(const Sample & sample) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Compute criterion when performing an elementary perturbation */
   Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,
-                    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
+                    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const override;
 
 private:
 

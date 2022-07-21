@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 from math import *
 
@@ -38,7 +37,10 @@ y = model(x)
 
 # To reduce the time needed by the test
 ot.ResourceMap.SetAsUnsignedInteger(
-    "FittingTest-KolmogorovTestSamplingSize", 4)
+    "FittingTest-LillieforsMinimumSamplingSize", 4)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "FittingTest-LillieforsMaximumSamplingSize", 4)
+ot.ResourceMap.SetAsBool('FunctionalChaosAlgorithm-Sparse', True)
 algo = ot.FunctionalChaosAlgorithm(x, y)
 algo.run()
 result = algo.getResult()

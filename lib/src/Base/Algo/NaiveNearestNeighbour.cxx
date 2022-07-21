@@ -2,7 +2,7 @@
 /**
  *  @brief Brute force algorithm for nearest-neighbour lookup
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -247,7 +247,7 @@ UnsignedInteger NaiveNearestNeighbour::query(const Point & x) const
 /* Get the indices of the k nearest neighbours of the given point */
 Indices NaiveNearestNeighbour::queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const
 {
-  if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
+  if (!(k <= points_.getSize())) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours (" << k << ") than points (" << points_.getSize() << ") in the database!";
   Indices result(k);
   // If we need as many neighbours as points in the sample, just return all the possible indices
   if (k == points_.getSize() && !sorted)

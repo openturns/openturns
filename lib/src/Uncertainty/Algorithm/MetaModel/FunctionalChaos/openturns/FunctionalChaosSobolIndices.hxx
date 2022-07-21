@@ -2,7 +2,7 @@
 /**
  *  @brief Sensitivity analysis based on functional chaos expansion
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,10 +44,10 @@ public:
   explicit FunctionalChaosSobolIndices(const FunctionalChaosResult & functionalChaosResult);
 
   /** Virtual constructor */
-  virtual FunctionalChaosSobolIndices * clone() const;
+  FunctionalChaosSobolIndices * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Summary table */
   String summary() const;
@@ -66,24 +66,32 @@ public:
   Scalar getSobolTotalIndex(const UnsignedInteger variableIndex,
                             const UnsignedInteger marginalIndex = 0) const;
 
-  /** Sobol grouped index accessor */
+  /** Sobol grouped (first order) index accessor */
   Scalar getSobolGroupedIndex(const Indices & variableIndices,
                               const UnsignedInteger marginalIndex = 0) const;
+  /** @deprecated */
   Scalar getSobolGroupedIndex(const UnsignedInteger variableIndex,
                               const UnsignedInteger marginalIndex = 0) const;
+
+  /** Sobol grouped total index accessor */
+  Scalar getSobolGroupedTotalIndex(const Indices & variableIndices,
+                                   const UnsignedInteger marginalIndex = 0) const;
+  /** @deprecated */
+  Scalar getSobolGroupedTotalIndex(const UnsignedInteger variableIndex,
+                                   const UnsignedInteger marginalIndex = 0) const;
 
   /** Functional chaos result accessor */
   FunctionalChaosResult getFunctionalChaosResult() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
-  /** The functional chaos result tht allows to build the random vector */
+  /** The functional chaos result that allows one to build the random vector */
   FunctionalChaosResult functionalChaosResult_;
 
 }; /* class FunctionalChaosSobolIndices */

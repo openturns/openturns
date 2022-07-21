@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Bernoulli distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,18 +40,18 @@ public:
   BernoulliFactory();
 
   /** Virtual constructor */
-  virtual BernoulliFactory * clone() const;
+  BernoulliFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   Bernoulli buildAsBernoulli(const Sample & sample) const;
   Bernoulli buildAsBernoulli(const Point & parameters) const;
   Bernoulli buildAsBernoulli() const;
 
-  DistributionFactoryResult buildEstimator(const Sample & sample) const;
+  DistributionFactoryResult buildEstimator(const Sample & sample) const override;
 
 }; /* class BernoulliFactory */
 

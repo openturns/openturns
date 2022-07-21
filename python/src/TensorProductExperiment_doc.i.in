@@ -1,0 +1,172 @@
+%feature("docstring") OT::TensorProductExperiment
+"Tensor product experiment.
+
+Parameters
+----------
+experiments : list of :class:`~openturns.WeightedExperiment`
+    List of :math:`n` marginal experiments of the tensor product experiment. 
+    Each marginal experiment can have arbitrary dimension.
+
+Notes
+-----
+The tensor product design of experiments (DOE) is based on a collection 
+of marginal multidimensional elementary designs of experiments. 
+It is anisotropic in the sense that each marginal DOE does not necessarily 
+have the same size. Using more points in one component may be useful if we 
+want to get more accurate results in that particular direction. 
+
+Furthermore, each marginal DOE does not necessarily have a dimension 
+equal to 1. In this sense, this is a generalization of a classical 
+tensor product DOE. 
+
+Let :math:`\mathcal{X} \subset \mathbb{R}^{d_x}` be the integration domain 
+and let :math:`g : \mathcal{X} \rightarrow \mathbb{R}^{d_y}` be an integrable 
+function. 
+Let :math:`f : \mathcal{X} \rightarrow \mathbb{R}` be a probability density 
+function. The tensor product experiment produces an approximation of the 
+integral :
+
+.. math::
+
+    \int_{\mathcal{X}} g(\boldsymbol{x}) f(\boldsymbol{x}) d\boldsymbol{x} 
+    \approx \sum_{i = 1}^{s_t} w_i g\left(\boldsymbol{x}_i\right)
+
+where :math:`s_t \in \mathbb{N}` is the size of the tensor product 
+design of experiments, :math:`w_1, ..., w_{s_t} \in \mathbb{R}` are the 
+weights and :math:`\boldsymbol{x}_1, ..., \boldsymbol{x}_{s_t} \in \mathbb{R}^{d_x}` 
+are the nodes. 
+
+Let :math:`n_e \in \mathbb{N}` be the number of marginal DOEs. 
+For each marginal DOE index :math:`j = 1, ..., n_e`, 
+let :math:`s_j \in \mathbb{N}` be its size, representing the number of 
+nodes in the marginal DOE, and
+let :math:`d_j \in \mathbb{N}` be 
+the dimension of the :math:`j`-th marginal DOE. 
+Let :math:`\left\{ Q_{s_j}^{(d_j)} \right\}_{j = 1, ..., n_e}` be the 
+collection of marginal DOEs.
+The dimension of the tensor product experiment is equal to the sum of the 
+dimensions of the marginal DOEs:
+
+.. math::
+
+    d_x = \sum_{j = 1}^{n_e} d_j.
+
+The size of the tensor product experiment is equal to the product of the 
+marginal DOE sizes:
+
+.. math::
+
+    s_t = \prod_{j = 1}^{n_e} s_j.
+
+Let :math:`\boldsymbol{k} = \left(k_1, ..., k_{n_e}\right) \in (\mathbb{N}^\star)^{n_e}`  
+be a multi-index where :math:`\mathbb{N}^\star = \{1, 2, ..., \}` is 
+the set of positive integers. For any marginal DOE :math:`j = 1,..., n_e`, 
+let :math:`\left\{w_{s_j, k_j} \right\}_{k_j = 1, ..., s_j}` be its 
+weights and let :math:`\left\{ \boldsymbol{x}_{s_j, k_j} \in \mathbb{R}^{d_j} \right\}_{k_j = 1, ..., s_j}` 
+be its nodes. 
+
+The tensor product quadrature is ([gerstner1998]_ page 214):
+
+.. math::
+
+    Q^{(d_x)}_{s_t} = Q_{s_1}^{(d_1)} \otimes \cdots \otimes Q_{s_{n_e}}^{(d_{n_e})}
+
+where:
+
+.. math::
+
+    Q_{s_1}^{(d_1)} \otimes \cdots \otimes Q_{s_{n_e}}^{(d_{n_e})} (g) 
+    = \sum_{k_1 = 1}^{s_1} \cdots \sum_{k_{n_e} = 1}^{s_{n_e}} 
+    w_{s_1, k_1} \cdots w_{s_{n_e}, k_{n_e}}  
+    g\left(\boldsymbol{x}_{s_1, k_1}, \ldots, \boldsymbol{x}_{s_{n_e}, k_{n_e}}\right).
+
+For any multi-index :math:`\boldsymbol{k} = (k_1, ..., k_{n_e}) \in (\mathbb{N}^\star)^{n_e}`, 
+we write 
+
+.. math::
+
+    \boldsymbol{k} \leq \left(s_1, ..., s_{n_e}\right)
+
+if and only if :math:`k_j \leq s_j` for :math:`j = 1, ..., n_e`. 
+This means that each component of the multi-index is less than or equal to its 
+corresponding marginal size.
+The set of multi-indices such that :math:`\boldsymbol{k} \leq \left(s_1, ..., s_{n_e}\right)` 
+is produced using all possible combinations of the indices with 
+the :class:`~openturns.Tuples` class.
+
+The tensor product experiment is:
+
+.. math::
+
+    Q_{s_1}^{(d_1)} \otimes \cdots \otimes Q_{s_{n_e}}^{(d_{n_e})} (g) 
+    = \sum_{\boldsymbol{k} \leq \left(s_1, ..., s_{n_e}\right)}  
+    w_{\boldsymbol{k}} g\left(\boldsymbol{x}_{\boldsymbol{k}}\right),
+
+where each weight is equal to the product of the marginal elementary weights:
+
+.. math::
+
+    w_{\boldsymbol{k}} = \prod_{j = 1}^{n_e} w_{s_j, k_j} \in \mathbb{R}
+
+and each node is equal to the agregation of the marginal elementary nodes:
+
+.. math::
+
+    \boldsymbol{x}_{\boldsymbol{k}}
+    = \left(\boldsymbol{x}_{s_1, k_1}, \ldots, \boldsymbol{x}_{s_{n_e}, k_{n_e}}\right) \in \mathbb{R}^{d_x}.
+
+
+See also
+--------
+WeightedExperiment, GaussProductExperiment
+
+Examples
+--------
+In the following example, we tensorize two Gauss-Legendre 
+quadratures, using 3 nodes in the first dimension and 5 nodes in the second.
+
+>>> import openturns as ot
+>>> experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [3])
+>>> experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [5])
+>>> collection = [experiment1, experiment2]
+>>> multivariate_experiment = ot.TensorProductExperiment(collection)
+>>> nodes, weights = multivariate_experiment.generateWithWeights()
+
+Marginal DOEs do not necessarily have dimension 1. 
+In the following example, we tensorize two DOEs, where the 
+first one has dimension 2, and the second one has dimension 3.
+
+>>> # Experiment 1 : Uniform * 2 with 3 and 2 nodes.
+>>> marginal_sizes_1 = [3, 2]
+>>> dimension_1 = len(marginal_sizes_1)
+>>> distribution_1 = ot.ComposedDistribution([ot.Uniform()] * dimension_1)
+>>> experiment_1 = ot.GaussProductExperiment(distribution_1, marginal_sizes_1)
+>>> # Experiment 2 : Normal * 3 with 2, 2 and 1 nodes.
+>>> marginal_sizes_2 = [2, 2, 1]
+>>> dimension_2 = len(marginal_sizes_2)
+>>> distribution_2 = ot.ComposedDistribution([ot.Normal()] * dimension_2)
+>>> experiment_2 = ot.GaussProductExperiment(distribution_2, marginal_sizes_2)
+>>> # Tensor product
+>>> collection = [experiment_1, experiment_2]
+>>> multivariate_experiment = ot.TensorProductExperiment(collection)
+>>> nodes, weights = multivariate_experiment.generateWithWeights()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorProductExperiment::getWeightedExperimentCollection
+"Get the marginals of the experiment.
+
+Returns
+-------
+coll : list of :class:`~openturns.WeightedExperiment`
+    List of the marginals of the experiment."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorProductExperiment::setWeightedExperimentCollection
+"Set the marginals of the experiment.
+
+Parameters
+----------
+coll : list of :class:`~openturns.WeightedExperiment`
+    List of the marginals of the experiment."

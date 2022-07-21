@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 from math import *
 
@@ -36,7 +35,7 @@ try:
 
     dim = aCollection.getSize()
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = ComposedDistribution(aCollection, IndependentCopula(dim))
     # Test for sampling
     size = 10000

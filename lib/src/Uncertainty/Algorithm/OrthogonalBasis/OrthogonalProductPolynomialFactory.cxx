@@ -2,7 +2,7 @@
 /**
  *  @brief This is the orthogonal polynomial basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +29,7 @@
 #include "openturns/ProductPolynomialGradient.hxx"
 #include "openturns/ProductPolynomialHessian.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -59,7 +60,7 @@ OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory()
 OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const PolynomialFamilyCollection & coll)
   : OrthogonalFunctionFactory()
   , coll_(coll)
-  , phi_(coll.getSize())
+  , phi_(LinearEnumerateFunction(coll.getSize()))
 {
   buildMeasure();
 }

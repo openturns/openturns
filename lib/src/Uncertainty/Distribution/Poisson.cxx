@@ -2,7 +2,7 @@
 /**
  *  @brief The Poisson distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -114,7 +114,7 @@ Scalar Poisson::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar k = point[0];
-  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return -SpecFunc::LogMaxScalar;
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return SpecFunc::LowestScalar;
   return DistFunc::logdPoisson(lambda_, static_cast<UnsignedInteger>(round(k)));
 }
 

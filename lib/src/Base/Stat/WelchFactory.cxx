@@ -2,7 +2,7 @@
 /**
  *  @brief Top-level class for all spectral model factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -100,7 +100,7 @@ UnsignedInteger WelchFactory::getBlockNumber() const
 
 void WelchFactory::setBlockNumber(const UnsignedInteger blockNumber)
 {
-  if (blockNumber < 1) throw InvalidArgumentException(HERE) << "Error: the number of blocks should be at least 1";
+  if (!(blockNumber >= 1)) throw InvalidArgumentException(HERE) << "Error: the number of blocks should be at least 1";
   blockNumber_ = blockNumber;
 }
 
@@ -112,7 +112,7 @@ Scalar WelchFactory::getOverlap() const
 
 void WelchFactory::setOverlap(const Scalar overlap)
 {
-  if ((overlap < 0.0) || (overlap > 0.5)) throw InvalidArgumentException(HERE) << "Error: the overlap must be in [0, 0.5], here overlap=" << overlap;
+  if (!(overlap >= 0.0 && overlap <= 0.5)) throw InvalidArgumentException(HERE) << "Error: the overlap must be in [0, 0.5], here overlap=" << overlap;
   overlap_ = overlap;
 }
 

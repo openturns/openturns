@@ -3,7 +3,7 @@
  *  @brief EventSimulation is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,10 +21,15 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EventSimulation.hxx"
+#include "openturns/ThresholdEvent.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/Less.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/IdentityFunction.hxx"
+#include "openturns/CompositeRandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,7 +44,7 @@ static const Factory<EventSimulation> Factory_EventSimulation;
 /** For save/load mechanism */
 EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
-  , event_()
+  , event_(ThresholdEvent(CompositeRandomVector(IdentityFunction(1), RandomVector(Uniform())), Less(), 0.0))
   , result_()
 {
   setVerbose(verbose);
@@ -47,7 +52,7 @@ EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & con
 }
 
 /* Constructor with parameters */
-EventSimulation::EventSimulation(const Event & event,
+EventSimulation::EventSimulation(const RandomVector & event,
                                  const Bool verbose,
                                  const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
@@ -56,6 +61,8 @@ EventSimulation::EventSimulation(const Event & event,
 {
   setVerbose(verbose);
   convergenceStrategy_ = convergenceStrategy;
+  if (!event.isEvent())
+    throw InvalidArgumentException(HERE) << "Not an event";
 }
 
 /* Virtual constructor */
@@ -65,7 +72,7 @@ EventSimulation * EventSimulation::clone() const
 }
 
 /*  Event accessor */
-Event EventSimulation::getEvent() const
+RandomVector EventSimulation::getEvent() const
 {
   return event_;
 }
@@ -98,11 +105,11 @@ String EventSimulation::__repr__() const
 /* Performs the actual computation. */
 void EventSimulation::run()
 {
-  /* We want to compute the probability of occurence of the given event
+  /* We want to compute the probability of occurrence of the given event
    *  We estimate this probability by computing the empirical mean of a
    * sample of size at most outerSampling * blockSize, this sample being
-   * built by blocks of size blockSize. It allows to use efficiently the
-   * distribution of the computation as well as it allows to deal with
+   * built by blocks of size blockSize. It allows one to use efficiently the
+   * distribution of the computation as well as it allows one to deal with
    * a sample size > 2^32 by a combination of blockSize and outerSampling
    */
   // First, reset the convergence history

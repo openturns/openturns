@@ -1,15 +1,12 @@
 %feature("docstring") OT::InverseNormal
 "Inverse normal distribution.
 
-Available constructors:
-    InverseNormal(*lambda=1.0, mu=1.0*)
-
 Parameters
 ----------
-lambda : float, :math:`\lambda > 0`
-    Scale parameter :math:`\lambda`.
 mu : float, :math:`\mu > 0`
-    Location (mean) parameter :math:`\mu`.
+    Mean parameter :math:`\mu`.
+lambda : float, :math:`\lambda > 0`
+    Rate parameter :math:`\lambda`.
 
 Notes
 -----
@@ -47,31 +44,32 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::InverseNormal::getLambda
-"Accessor to the distribution's scale parameter.
+"Accessor to the distribution's rate parameter.
 
 Returns
 -------
 lambda : float
-    Scale parameter :math:`\lambda`."
+    Rate parameter :math:`\lambda`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::InverseNormal::getMu
-"Accessor to the distribution's location (mean) parameter.
+"Accessor to the distribution's mean parameter.
 
 Returns
 -------
 mu : float
-    Location (mean) parameter :math:`\mu`."
+    Mean parameter :math:`\mu`."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::InverseNormal::setLambdaMu
+%feature("docstring") OT::InverseNormal::setMuLambda
 "Accessor to the distribution's parameters.
 
 Parameters
 ----------
-lambda : float, :math:`\lambda > 0`
-    Scale parameter :math:`\lambda`.
 mu : float, :math:`\mu > 0`
-    Location (mean) parameter :math:`\mu`."
+    Mean parameter :math:`\mu`.
+lambda : float, :math:`\lambda > 0`
+    Rate parameter :math:`\lambda`."
+

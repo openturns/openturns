@@ -2,7 +2,7 @@
 /**
  *  @brief XMLStorageManager provides an interface for different storage classes
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,8 @@
 
 #include <iostream>              // for std::ostream
 #include <stack>                 // for std::stack
+#include <algorithm>             // for std::find
+#include "openturns/XMLToolbox.hxx"
 #include "openturns/OTprivate.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/StorageManager.hxx"
@@ -43,21 +45,6 @@ class PersistentObject;
 /* Forward declaration of XMLStorageManagerState */
 struct XMLStorageManagerState;
 
-class OT_API VersionList
-{
-  std::vector<UnsignedInteger> versions_;
-public:
-  VersionList() : versions_()
-  {
-    versions_.push_back(1);
-  }
-
-  Bool contains(UnsignedInteger v) const
-  {
-    return find(versions_.begin(), versions_.end(), v) != versions_.end();
-  }
-};
-
 /**
  * @class XMLStorageManager
  * @brief Implements a storage manager that drives a XML file
@@ -70,9 +57,6 @@ class OT_API XMLStorageManager
 {
   CLASSNAME
 
-
-
-  static const VersionList SupportedVersions;
 
 public:
 
@@ -91,10 +75,10 @@ public:
   /**
    * Virtual constructor
    */
-  virtual XMLStorageManager * clone() const;
+  XMLStorageManager * clone() const override;
 
   /** @copydoc StorageManager::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Get the name of the file containing the study */
   String getFileName() const;
@@ -105,36 +89,42 @@ public:
   /**
    * This method saves the PersistentObject onto the medium
    */
-  virtual void save(const PersistentObject & obj, const String & label, bool fromStudy = false);
+  void save(const PersistentObject & obj, const String & label, bool fromStudy = false) override;
 
   /**
    * This method reloads the PersistentObject from the medium
    */
-  virtual void load(Study & study);
+  void load(Study & study) override;
 
 
 
   /** Do some administrative tasks before saving/reloading
    * @internal
    */
-  virtual void initialize(const SaveAction caller);
-  virtual void initialize(const LoadAction caller);
+  void initialize(const SaveAction caller) override;
+  void initialize(const LoadAction caller) override;
 
   /** Do some administrative tasks after saving/reloading
    * @internal
    */
-  virtual void finalize(const SaveAction caller);
-  virtual void finalize(const LoadAction caller);
+  void finalize(const SaveAction caller) override;
+  void finalize(const LoadAction caller) override;
 
   /** Read and create the internal representation
    * @internal
    */
-  virtual void read();
+  void read() override;
+
+  /** Set/Check which storage manager is being used
+   * @internal
+   */
+  virtual void setStorageManager();
+  virtual void checkStorageManager();
 
   /** Write the internal representation
    * @internal
    */
-  virtual void write();
+  void write() override;
 
 
 
@@ -142,93 +132,98 @@ public:
   /* Create a new empty object that will gather all saved information
    * @internal
    */
-  virtual Pointer<InternalObject> createObject(const String & tag) const;
+  Pointer<InternalObject> createObject(const String & tag) const override;
 
   /* Append an internal object to the collection of saved ones
    * @internal
    */
-  virtual void appendObject(Pointer<InternalObject> & p_obj);
+  void appendObject(Pointer<InternalObject> & p_obj) override;
 
   /* Set the visibility attribute of the object
    * @internal
    */
-  virtual void setVisibility(Pointer<InternalObject> & p_obj, Bool visible);
+  void setVisibility(Pointer<InternalObject> & p_obj, Bool visible) override;
 
   /* Set the label associated with the object
    * @internal
    */
-  virtual void setLabel(Pointer<InternalObject> & p_obj, const String & label);
+  void setLabel(Pointer<InternalObject> & p_obj, const String & label) override;
 
   /* Returns true if the internal object has an attribute
    */
-  virtual Bool hasAttribute(Pointer<InternalObject> & p_obj, const String & name);
+  Bool hasAttribute(Pointer<InternalObject> & p_obj, const String & name) override;
 
   /* Add an attribute to an internal object
    * @internal
    */
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger value);
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool value) override;
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger value) override;
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Unsigned64BitsInteger value);
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Unsigned64BitsInteger value) override;
 #endif
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Complex value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const String & value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const InterfaceObject & value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const PersistentObject & value);
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar value) override;
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Complex value) override;
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const String & value) override;
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const InterfaceObject & value) override;
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const PersistentObject & value) override;
 
   /* Add an indexed value to an internal object
    * @internal
    */
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value);
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value) override;
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger value);
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger value) override;
 #endif
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Complex value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const String & value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const InterfaceObject & value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const PersistentObject & value);
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Complex value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const String & value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const InterfaceObject & value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const PersistentObject & value) override;
 
   /* Read an attribute
    * @internal
    */
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger & value);
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool & value) override;
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger & value) override;
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Unsigned64BitsInteger & value);
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Unsigned64BitsInteger & value) override;
 #endif
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Complex & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, String & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name,  InterfaceObject & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, PersistentObject & value);
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar & value) override;
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Complex & value) override;
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, String & value) override;
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name,  InterfaceObject & value) override;
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, PersistentObject & value) override;
 
   /* Read an indexed value
    * @internal
    */
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger & value);
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger & value) override;
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger & value);
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger & value) override;
 #endif
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Complex & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, String & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, InterfaceObject & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, PersistentObject & value);
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Complex & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, String & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, InterfaceObject & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, PersistentObject & value) override;
 #endif
 
 
 protected:
 
   /** Query the manager if the version is correct */
-  virtual Bool canManageVersion(UnsignedInteger version) const;
+  Bool canManageVersion(UnsignedInteger version) const override;
 
   /** Return the current state of the storage manager (for those having one) */
-  virtual const StorageManager::InternalObject & getState() const;
+  const StorageManager::InternalObject & getState() const override;
 
+  /** The internal state of the manager */
+  Pointer<XMLStorageManagerState> p_state_;
+
+  /** The internal document */
+  Pointer<XMLDoc> p_document_;
 
 
 private:
@@ -244,12 +239,6 @@ private:
   /** The file we read from/write to */
   FileName fileName_;
 
-  /** The internal state of the manager */
-  Pointer<XMLStorageManagerState> p_state_;
-
-  /** The internal document */
-  Pointer<XMLDoc> p_document_;
-
   /** Methods to read DOM elements */
   XMLReadObject readDOMElement();
 
@@ -257,6 +246,104 @@ private:
   UnsignedInteger compressionLevel_;
 
 }; /* class XMLStorageManager */
+
+#ifndef SWIG
+/************ Tags ************/
+
+#define DEFINE_TAG(name,value)                                          \
+  static const char name ## Tag[] = value;                              \
+  struct name ## _tag { static inline const char * Get() { return name ## Tag ; } }
+
+namespace XML_STMGR
+{
+DEFINE_TAG( root,             "openturns-study"   );
+DEFINE_TAG( bool,             "bool"              );
+DEFINE_TAG( unsignedlong,     "unsignedlong"      );
+DEFINE_TAG( numericalscalar,  "numericalscalar"   );
+DEFINE_TAG( numericalcomplex, "numericalcomplex"  );
+DEFINE_TAG( real,             "real"              );
+DEFINE_TAG( imag,             "imag"              );
+DEFINE_TAG( string,           "string"            );
+DEFINE_TAG( object,           "object"            );
+} // namespace XML_STMGR
+
+/************ Attributes ************/
+
+#define DEFINE_ATTRIBUTE(name,value)                                    \
+  static const char name ## Attribute[] = value;                        \
+  struct name ## _attribute { static inline const char * Get() { return name ## Attribute ; } }
+
+namespace XML_STMGR
+{
+DEFINE_ATTRIBUTE( StudyVisible, "StudyVisible"  );
+DEFINE_ATTRIBUTE( StudyLabel,   "StudyLabel"    );
+DEFINE_ATTRIBUTE( version,      "version"       );
+DEFINE_ATTRIBUTE( class,        "class"         );
+DEFINE_ATTRIBUTE( id,           "id"            );
+DEFINE_ATTRIBUTE( name,         "name"          );
+DEFINE_ATTRIBUTE( index,        "index"         );
+DEFINE_ATTRIBUTE( member,       "member"        );
+DEFINE_ATTRIBUTE( manager,      "manager"       );
+} // namespace XML_STMGR
+
+struct XMLInternalObject : public StorageManager::InternalObject
+{
+  XML::Node node_;
+  XMLInternalObject() : node_(0) {}
+  XMLInternalObject(XML::Node node) : node_(node) {}
+  virtual ~XMLInternalObject() {}
+  virtual XMLInternalObject * clone() const
+  {
+    return new XMLInternalObject(*this);
+  }
+  virtual void first()
+  {
+    node_ = XML::GetFirstChild( node_ );
+  }
+  virtual void next()
+  {
+    node_ = XML::GetNextNode( node_ );
+  }
+  virtual String __repr__() const
+  {
+    return OSS() << "XMLInternalObject { node = <" << node_ << ">}";
+  }
+  virtual String __str__(const String & ) const
+  {
+    return __repr__();
+  }
+};
+
+struct XMLStorageManagerState : public StorageManager::InternalObject
+{
+  XML::Node root_;
+  XML::Node current_;
+  XMLStorageManagerState() : root_(0), current_(0) {}
+  virtual ~XMLStorageManagerState() {}
+  virtual XMLStorageManagerState * clone() const
+  {
+    return new XMLStorageManagerState(*this);
+  }
+  virtual void first()
+  {
+    current_ = XML::GetFirstChild( current_ );
+  }
+  virtual void next()
+  {
+    current_ = XML::GetNextNode( current_ );
+  }
+  virtual String __repr__() const
+  {
+    return OSS(true) << "XMLStorageManagerState { root = <" << root_
+           << ">, current_ = <" << current_ << ">}";
+  }
+  virtual String __str__(const String & ) const
+  {
+    return __repr__();
+  }
+};
+
+#endif // SWIG
 
 END_NAMESPACE_OPENTURNS
 

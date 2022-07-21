@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and projection
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,6 +40,9 @@ public:
 
   typedef TypedInterfaceObject<KarhunenLoeveAlgorithmImplementation>::Implementation Implementation;
 
+  /** Default constructor */
+  KarhunenLoeveAlgorithm();
+
   /** Constructor from implementation */
   KarhunenLoeveAlgorithm(const KarhunenLoeveAlgorithmImplementation & implementation);
 
@@ -50,6 +53,10 @@ public:
   Scalar getThreshold() const;
   void setThreshold(const Scalar threshold);
 
+  /** Number of modes accessors */
+  UnsignedInteger getNbModes() const;
+  void setNbModes(const UnsignedInteger nbModes);
+
   /** Covariance model accessors */
   CovarianceModel getCovarianceModel() const;
   void setCovarianceModel(const CovarianceModel & covariance);
@@ -58,8 +65,8 @@ public:
   KarhunenLoeveResult getResult() const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Compute the decomposition */
   void run();

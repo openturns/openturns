@@ -4,7 +4,7 @@
  *         form a numerical math evaluation implementation by using centered
  *         finite difference formula.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,17 +62,17 @@ public:
   virtual Bool operator ==(const FiniteDifferenceGradient & other) const;
 
   /** String converter */
-  virtual String  __repr__() const;
+  String  __repr__() const override;
 
   /** Accessor for input point dimension
    * @return The size of the point passed to the gradient method
    */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension
    * @return The size of the point returned by the function whose gradient is computed
    */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Accessor for the epsilon */
   virtual Point getEpsilon() const;
@@ -85,21 +85,21 @@ public:
   virtual FiniteDifferenceStep getFiniteDifferenceStep() const;
 
   /* Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /* Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Virtual Constructor */
-  virtual FiniteDifferenceGradient * clone() const;
+  FiniteDifferenceGradient * clone() const override;
 
   /** This method computes the gradient at some point
    * @param in The point where the gradient is computed
    * @result A matrix constructed with the dF_i/dx_j values (Jacobian transposed)
    */
-  virtual Matrix gradient(const Point & inP) const;
+  Matrix gradient(const Point & inP) const override;
 
 protected:
   Evaluation evaluation_;

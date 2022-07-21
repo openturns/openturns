@@ -118,8 +118,6 @@ for more details.
 +------------------------------------------------------------+-------+
 | Ceres-sparse_linear_algebra_library_type                   | str   |
 +------------------------------------------------------------+-------+
-| Ceres-num_linear_solver_threads                            | int   |
-+------------------------------------------------------------+-------+
 | Ceres-use_explicit_schur_complement                        | bool  |
 +------------------------------------------------------------+-------+
 | Ceres-use_postordering                                     | bool  |
@@ -222,24 +220,27 @@ Solve a least-squares problem:
 >>> dim = 2
 >>> residualFunction = ot.SymbolicFunction(['x0', 'x1'], ['10*(x1-x0^2)', '1-x0'])
 >>> problem = ot.LeastSquaresProblem(residualFunction)
->>> algo = ot.Ceres(problem, 'LEVENBERG_MARQUARDT')
->>> algo.setStartingPoint([0.0] * dim)
->>> algo.run()
->>> result = algo.getResult()
->>> x_star = result.getOptimalPoint()
->>> y_star = result.getOptimalValue()
+>>> problem.setBounds(ot.Interval([-3.0] * dim, [5.0] * dim))
+>>> ot.ResourceMap.AddAsScalar('Ceres-gradient_tolerance', 1e-5)  # doctest: +SKIP
+>>> algo = ot.Ceres(problem, 'LEVENBERG_MARQUARDT')  # doctest: +SKIP
+>>> algo.setStartingPoint([0.0] * dim)  # doctest: +SKIP
+>>> algo.run()  # doctest: +SKIP
+>>> result = algo.getResult()  # doctest: +SKIP
+>>> x_star = result.getOptimalPoint()  # doctest: +SKIP
+>>> y_star = result.getOptimalValue()  # doctest: +SKIP
 
 Or, solve a general optimization problem:
 
 >>> dim = 4
 >>> linear = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], ['(x1-1)^2+(x2-2)^2+(x3-3)^2+(x4-4)^2'])
 >>> problem = ot.OptimizationProblem(linear)
->>> algo = ot.Ceres(problem, 'BFGS')
->>> algo.setStartingPoint([0.0] * 4)
->>> algo.run()
->>> result = algo.getResult()
->>> x_star = result.getOptimalPoint()
->>> y_star = result.getOptimalValue()"
+>>> ot.ResourceMap.AddAsScalar('Ceres-gradient_tolerance', 1e-5)  # doctest: +SKIP
+>>> algo = ot.Ceres(problem, 'BFGS')  # doctest: +SKIP
+>>> algo.setStartingPoint([0.0] * 4)  # doctest: +SKIP
+>>> algo.run()  # doctest: +SKIP
+>>> result = algo.getResult()  # doctest: +SKIP
+>>> x_star = result.getOptimalPoint()  # doctest: +SKIP
+>>> y_star = result.getOptimalValue()  # doctest: +SKIP"
 
 // ---------------------------------------------------------------------
 
@@ -281,13 +282,4 @@ Examples
 >>> print(ot.Ceres.GetAlgorithmNames())
 [LEVENBERG_MARQUARDT,DOGLEG,STEEPEST_DESCENT,NONLINEAR_CONJUGATE_GRADIENT,LBFGS,BFGS]"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Ceres::IsAvailable
-"Ask whether Ceres support is available.
-
-Returns
--------
-available : bool
-    Whether Ceres support is available."
 

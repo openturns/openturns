@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Gamma distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,19 +62,14 @@ Distribution GammaFactory::build() const
 Gamma GammaFactory::buildAsGamma(const Sample & sample) const
 {
   UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gamma distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
   const Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mu = sample.computeMean()[0];
-  const Scalar sigma = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar sigma = sample.computeStandardDeviation()[0];
   if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution if data contains NaN or Inf";
-  if (sigma == 0.0)
-  {
-    Gamma result(SpecFunc::MaxScalar / SpecFunc::LogMaxScalar, 1.0, gamma);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
+  if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Gamma distribution from a constant sample.";
   Scalar lambda = (mu - gamma) / sigma;
   const Scalar k = lambda * lambda;
   lambda /= sigma;

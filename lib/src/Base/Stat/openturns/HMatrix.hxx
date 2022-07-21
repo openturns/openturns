@@ -2,7 +2,7 @@
 /**
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,8 +57,10 @@ class OT_API HMatrix :
   HMatrix copy() const;
 
   void assemble(const HMatrixRealAssemblyFunction& f, char symmetry);
+  void assemble(const HMatrixRealAssemblyFunction &f, const HMatrixParameters& parameters, char symmetry);
 
   void assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry);
+  void assemble(const HMatrixTensorRealAssemblyFunction &f, const HMatrixParameters &parameters, char symmetry);
 
   void factorize(const String& method);
 
@@ -79,6 +81,9 @@ class OT_API HMatrix :
 
   /** Get the diagonal */
   Point getDiagonal() const;
+
+  /** Bump the diagonal by an additive factor alpha */
+  void addIdentity(Scalar alpha);
 
   /** Solve system op(A)*X = b */
   Point solve(const Point& b, Bool trans = false) const;
@@ -102,10 +107,10 @@ class OT_API HMatrix :
   void dump(const String & name) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Comparison operators */
   Bool operator == (const HMatrix & rhs) const;

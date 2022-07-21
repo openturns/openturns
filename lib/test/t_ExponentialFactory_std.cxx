@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Exponential for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,13 +54,6 @@ int main(int, char *[])
     fullprint << "Default exponential=" << estimatedExponential << std::endl;
     estimatedExponential = factory.buildAsExponential(distribution.getParameter());
     fullprint << "Exponential from parameters=" << estimatedExponential << std::endl;
-    // Test for constant sample
-    sample = Sample(size, Point(1, 0.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = Sample(size, Point(1, 1.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {

@@ -1,17 +1,14 @@
 %feature("docstring") OT::Gamma
 "Gamma distribution.
 
-Available constructors:
-    Gamma(*k=1.0, lambda=1.0, gamma=0.0*)
-
 Parameters
 ----------
 k : float
-    shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
+    Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
 lambda : float
-    scale parameter :math:`\lambda > 0` with :math:`\lambda = (\mu - \gamma) / \sigma^2`.
+    Rate parameter :math:`\lambda > 0` with :math:`\lambda = (\mu - \gamma) / \sigma^2`.
 gamma : float, optional
-    Shift parameter :math:`\gamma`.
+    Location parameter :math:`\gamma`.
 
 Notes
 -----
@@ -33,7 +30,7 @@ Its first moments are:
 
     \begin{eqnarray*}
         \Expect{X} & = & \frac{k}{\lambda} + \gamma \\
-        \Var{X} & = & \frac{\sqrt{k}}{\lambda}
+        \Var{X} & = & \frac{k}{\lambda^2}
     \end{eqnarray*}
 
 
@@ -75,22 +72,22 @@ k : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Gamma::getLambda
-"Accessor to the distribution's scale parameter :math:`\lambda`.
+"Accessor to the distribution's rate parameter :math:`\lambda`.
 
 Returns
 -------
 lambda : float
-    Scale parameter :math:`\lambda`."
+    Rate parameter :math:`\lambda`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Gamma::getGamma
-"Accessor to the distribution's shift parameter :math:`\gamma`.
+"Accessor to the distribution's location parameter :math:`\gamma`.
 
 Returns
 -------
 gamma : float
-    Shift parameter :math:`\gamma`."
+    Location parameter :math:`\gamma`."
 
 // ---------------------------------------------------------------------
 
@@ -125,36 +122,36 @@ k : float, :math:`k > 0`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Gamma::setLambda
-"Accessor to the distribution's scale parameter :math:`\lambda`.
+"Accessor to the distribution's rate parameter :math:`\lambda`.
 
 Parameters
 ----------
 lambda : float, :math:`\lambda > 0`
-    Scale parameter :math:`\lambda`."
+    Rate parameter :math:`\lambda`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Gamma::setKLambda
 "Set the distribution's parameters.
 
-For scale parameter :math:`\lambda` and shape parameter :math:`k`.
+For rate parameter :math:`\lambda` and shape parameter :math:`k`.
 
 Parameters
 ----------
 k : float, :math:`k > 0`
     Shape parameter :math:`k`.
 lambda : float, :math:`\lambda > 0`
-    Scale parameter :math:`\lambda`."
+    Rate parameter :math:`\lambda`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Gamma::setGamma
-"Accessor to the distribution's shift parameter :math:`\gamma`.
+"Accessor to the distribution's location parameter :math:`\gamma`.
 
 Parameters
 ----------
 gamma : float, :math:`\gamma \in \Rset`
-    Shift parameter :math:`\gamma`."
+    Location parameter :math:`\gamma`."
 
 // ---------------------------------------------------------------------
 

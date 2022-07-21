@@ -18,14 +18,14 @@ namespace OT {
   canConvert< _PyObject_, OT::PointToFieldFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__PointToFieldFunction, 0 ))) {
-      OT::PointToFieldFunction * p_nmf = reinterpret_cast< OT::PointToFieldFunction * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__PointToFieldFunction, SWIG_POINTER_NO_NULL))) {
+      OT::PointToFieldFunction * p_nmf = reinterpret_cast< OT::PointToFieldFunction * >(ptr);
       return p_nmf != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__PointToFieldFunctionImplementation, 0 ))) {
-      OT::PointToFieldFunctionImplementation * p_impl = reinterpret_cast< OT::PointToFieldFunctionImplementation * >( ptr );
+    } else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__PointToFieldFunctionImplementation, SWIG_POINTER_NO_NULL))) {
+      OT::PointToFieldFunctionImplementation * p_impl = reinterpret_cast< OT::PointToFieldFunctionImplementation * >(ptr);
       return p_impl != NULL;
     } else {
-      return PyCallable_Check( pyObj );
+      return PyCallable_Check(pyObj);
     }
   }
 
@@ -35,13 +35,13 @@ namespace OT {
   convert< _PyObject_, OT::PointToFieldFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__PointToFieldFunction, 0 ) ) ) {
-      OT::PointToFieldFunction * p_nmf = reinterpret_cast< OT::PointToFieldFunction * >( ptr );
+    if ( SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__PointToFieldFunction, SWIG_POINTER_NO_NULL))) {
+      OT::PointToFieldFunction * p_nmf = reinterpret_cast< OT::PointToFieldFunction * >(ptr);
       return *p_nmf;
-    } else if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__PointToFieldFunctionImplementation, 0 ) ) ) {
-      OT::PointToFieldFunctionImplementation * p_impl = reinterpret_cast< OT::PointToFieldFunctionImplementation * >( ptr );
+    } else if ( SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__PointToFieldFunctionImplementation, SWIG_POINTER_NO_NULL))) {
+      OT::PointToFieldFunctionImplementation * p_impl = reinterpret_cast< OT::PointToFieldFunctionImplementation * >(ptr);
       return *p_impl;
-    } else if (!PyCallable_Check( pyObj )) {
+    } else if (!PyCallable_Check(pyObj)) {
       throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a PointToFieldFunction";
     }
     OT::PointToFieldFunction pythonFunction(new OT::PythonPointToFieldFunction(pyObj));
@@ -175,7 +175,7 @@ class OpenTURNSPythonPointToFieldFunction(object):
         return Y
 
     def _exec(self, X):
-        raise RuntimeError('You must define a method _exec(X) -> Y, where X is a Point object and Y a Field objects')
+        raise RuntimeError('You must define a method _exec(X) -> Y, where X is a Point object and Y a Field object')
 
     def _exec_sample(self, X):
         res = ProcessSample(self.getOutputMesh(), 0, self.getOutputDimension())
@@ -224,9 +224,8 @@ class PythonPointToFieldFunction(PointToFieldFunction):
         if func is None:
             raise RuntimeError('func not provided.')
         instance = OpenTURNSPythonPointToFieldFunction(inputDim, outputMesh, outputDim)
-        import collections
         if func is not None:
-            if not isinstance(func, collections.Callable):
+            if not callable(func):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
         return PointToFieldFunction(instance)

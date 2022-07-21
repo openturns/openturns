@@ -2,7 +2,7 @@
 /**
  *  @brief TriangularMatrix implements the classical mathematical triangluar matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -152,6 +152,7 @@ Scalar & TriangularMatrix::operator() (const UnsignedInteger i,
   if (!isLowerTriangular() && (i > j))
     throw InvalidArgumentException(HERE) << "Error; The triangular matrix is upper. "
                                          << "The indices are not valid" ;
+  copyOnWrite();
   return  (*getImplementation())(i, j) ;
 }
 
@@ -230,7 +231,7 @@ TriangularMatrix::ScalarCollection TriangularMatrix::operator * (const ScalarCol
 }
 
 /* Multiplication with a Point (must have consistent dimensions) */
-TriangularMatrix::ScalarCollection TriangularMatrix::operator * (const Point & pt) const
+Point TriangularMatrix::operator * (const Point & pt) const
 {
   char uplo(isLowerTriangular() ? 'L' : 'U');
   return getImplementation()->triangularVectProd(pt, uplo) ;

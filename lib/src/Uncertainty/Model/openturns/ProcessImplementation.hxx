@@ -2,7 +2,7 @@
 /**
  *  @brief An interface for all implementation class of process
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,11 +54,11 @@ public:
   ProcessImplementation();
 
   /** Virtual constructor */
-  virtual ProcessImplementation * clone() const;
+  ProcessImplementation * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Here is the interface that all derived class must implement */
 
@@ -114,10 +114,10 @@ public:
   virtual Description getDescription() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -128,7 +128,7 @@ protected:
   Description description_;
 
   /** Dimension of the process */
-  UnsignedInteger ouputDimension_;
+  UnsignedInteger outputDimension_;
 
   /** The mesh over which the process is defined or discretized */
   Mesh mesh_;

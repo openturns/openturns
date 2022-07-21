@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Student distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,17 +40,17 @@ public:
   StudentFactory();
 
   /** Virtual constructor */
-  virtual StudentFactory * clone() const;
+  StudentFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameter) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameter) const override;
+  Distribution build() const override;
 
   using DistributionFactoryImplementation::buildEstimator;
-  DistributionFactoryResult buildEstimator(const Sample & sample) const;
+  DistributionFactoryResult buildEstimator(const Sample & sample) const override;
 
   Student buildAsStudent(const Sample & sample) const;
   Student buildAsStudent(const Point & parameter) const;

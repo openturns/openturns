@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements indicator functions.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,7 @@
 #define OPENTURNS_INDICATORFUNCTION_HXX
 
 #include "openturns/Function.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/Matrix.hxx"
-#include "openturns/SymmetricTensor.hxx"
+#include "openturns/Domain.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,16 +40,14 @@ public:
   IndicatorFunction();
 
   /** Parameter constructor */
-  IndicatorFunction(const Function & function,
-                    const ComparisonOperator & comparisonOperator,
-                    const Scalar threshold);
+  IndicatorFunction(const Domain & domain);
 
   /** Comparison operator */
   Bool operator ==(const IndicatorFunction & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 }; /* class QuadraticFunction */
 

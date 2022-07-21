@@ -1,0 +1,129 @@
+%feature("docstring") OT::LeastSquaresDistributionFactory
+"Least squares factory.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The distribution defining the parametric model :math:`p_{\vect{\theta}}` to be adjusted to data.
+
+Notes
+-----
+Implements generic least-squares estimation.
+
+Let us denote :math:`(\vect{x}_1, \dots, \vect{x}_n)` the sample, :math:`p_{\vect{\theta}}`
+the particular distribution of probability density function we want to fit to the sample,
+and :math:`\vect{\theta} \in \Theta \in \Rset^p` its the parameter vector.
+
+
+The parameters :math:`\vect{\theta}` are numerically optimized so as the
+parametric :math:`CDF_{\vect{\theta}}` gets close enough to the empirical :math:`\hat{CDF}`:
+
+.. math::
+
+    \min_{\vect{\theta} \in \Rset} \sum_{i=1}^{n} \left( CDF_{\vect{\theta}}(\vect{x}_i) - \hat{CDF}(\vect{x}_i) \right) ^2
+
+See also
+--------
+DistributionFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal(0.9, 1.7)
+>>> sample = distribution.getSample(10)
+>>> factory = ot.LeastSquaresDistributionFactory(ot.Normal())
+>>> inf_distribution = factory.build(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresDistributionFactory::setOptimizationAlgorithm
+"Accessor to the solver.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresDistributionFactory::getOptimizationAlgorithm
+"Accessor to the solver.
+
+Returns
+-------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresDistributionFactory::setOptimizationBounds
+"Accessor to the optimization bounds.
+
+Parameters
+----------
+problem : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresDistributionFactory::getOptimizationBounds
+"Accessor to the optimization bounds.
+
+Returns
+-------
+problem : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresDistributionFactory::setOptimizationInequalityConstraint
+"Accessor to the optimization inequality constraint.
+
+Parameters
+----------
+inequalityConstraint : :class:`~openturns.Function`
+    The inequality constraint used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresDistributionFactory::setKnownParameter
+"Accessor to the known parameters.
+
+Parameters
+----------
+values : sequence of float
+    Values of fixed parameters.
+indices : sequence of int
+    Indices of fixed parameters.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Beta(2.3, 4.5, -1.0, 1.0)
+>>> sample = distribution.getSample(10)
+>>> factory = ot.LeastSquaresDistributionFactory(ot.Beta())
+>>> # set (a,b) out of (r, t, a, b)
+>>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
+>>> inf_distribution = factory.build(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresDistributionFactory::getKnownParameterValues
+"Accessor to the known parameters indices.
+
+Returns
+-------
+values : :class:`~openturns.Point`
+    Values of fixed parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresDistributionFactory::getKnownParameterIndices
+"Accessor to the known parameters indices.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Indices of fixed parameters."

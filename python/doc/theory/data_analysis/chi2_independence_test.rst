@@ -74,7 +74,7 @@ test of contingency.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/independence_test`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_test_independence`
 
 
 .. topic:: References:

@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the Halton sequence
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,8 @@
 #ifndef OPENTURNS_HALTONSEQUENCE_HXX
 #define OPENTURNS_HALTONSEQUENCE_HXX
 
+#include "openturns/IndicesCollection.hxx"
+#include "openturns/ResourceMap.hxx"
 #include "openturns/LowDiscrepancySequenceImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -37,27 +39,35 @@ class OT_API HaltonSequence :
 public:
 
   /** Constructor with parameters */
-  explicit HaltonSequence(const UnsignedInteger dimension = 1);
+  explicit HaltonSequence(const UnsignedInteger dimension = 1,
+                          const String & scrambling = ResourceMap::GetAsString("HaltonSequence-Scrambling"));
 
   /** Virtual constructor */
-  virtual HaltonSequence * clone() const;
+  HaltonSequence * clone() const override;
 
   /** Initialize the sequence */
-  void initialize(const UnsignedInteger dimension);
+  void initialize(const UnsignedInteger dimension) override;
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
-  Point generate() const;
+  Point generate() const override;
+
+  /** Permutations accessor */
+  Collection<Indices> getPermutations() const;
+
+  /** Scrambling accessor */
+  void setScrambling(const String & scrambling);
+  String getScrambling() const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
@@ -66,6 +76,12 @@ private:
 
   /** Current seed into the sequence */
   mutable Unsigned64BitsInteger seed_;
+
+  /** Permutation used for scrambling */
+  PersistentCollection<Indices> permutations_;
+
+  /** Scrambling method */
+  String scrambling_;
 
 }; /* class HaltonSequence */
 

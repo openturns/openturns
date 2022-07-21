@@ -9,7 +9,7 @@ oneSample first=class=Point name=Unnamed dimension=3 values=[0.0325028,0.347057,
 mean=class=Point name=Unnamed dimension=3 values=[0.503596,0.496822,0.501632]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0830104,0.000288954,0.000906179,0.000288954,0.0846323,2.63752e-05,0.000906179,2.63752e-05,0.0837848]
 Point= class=Point name=Unnamed dimension=3 values=[0.6,0.6,0.6]
-point= class=Point name=Unnamed dimension=3 values=[0.6,0.6,0.6] ddf=class=Point name=Unnamed dimension=3 values=[0,0,0] ddf (FD)=class=Point name=Unnamed dimension=3 values=[0,0,0] pdf=1 cdf=0.216
+point= class=Point name=Unnamed dimension=3 values=[0.6,0.6,0.6] ddf=class=Point name=Unnamed dimension=3 values=[0,0,0] pdf=1 cdf=0.216
 Survival      =0.064
 Survival (ref)=0.064
 Inverse survival=class=Point name=Unnamed dimension=3 values=[0.0169524,0.0169524,0.0169524]

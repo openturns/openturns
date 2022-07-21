@@ -2,12 +2,12 @@ Testing class GeneralizedExtremeValue
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=-0.5 actual distribution=class=RandomMixture name=RandomMixture distribution collection=[class=Weibull name=Weibull dimension=1 alpha=3 beta=2 gamma=-5] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-1] constant=class=Point name=Unnamed dimension=1 values=[0]
+class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=-0.5 actual distribution=class=WeibullMax name=WeibullMax dimension=1 beta=3 alpha=2 gamma=5
 streamObject(const T & anObject)
-class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=-0.5 actual distribution=class=RandomMixture name=RandomMixture distribution collection=[class=Weibull name=Weibull dimension=1 alpha=3 beta=2 gamma=-5] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-1] constant=class=Point name=Unnamed dimension=1 values=[0]
+class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=-0.5 actual distribution=class=WeibullMax name=WeibullMax dimension=1 beta=3 alpha=2 gamma=5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=-0.15 actual distribution=class=RandomMixture name=RandomMixture distribution collection=[class=Weibull name=Weibull dimension=1 alpha=10 beta=6.66667 gamma=-12] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-1] constant=class=Point name=Unnamed dimension=1 values=[0]
+Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=-0.15 actual distribution=class=WeibullMax name=WeibullMax dimension=1 beta=10 alpha=6.66667 gamma=12
 Distribution GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)
 Elliptical = false
 Continuous = true
@@ -19,7 +19,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[0.108952]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[0.108952]
 log pdf=-1.75315
 pdf     =0.173227
 pdf (FD)=0.173227
@@ -28,9 +27,9 @@ ccdf=0.848592
 survival=0.848592
 Inverse survival=class=Point name=Unnamed dimension=1 values=[0.211041]
 Survival(inverse survival)=0.95
-pdf gradient     =class=Point name=Unnamed dimension=3 values=[0.102525,0.0113265,0.108952]
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.108952,-0.0428497,0.0749046]
 pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.108952,-0.0428497,0.0749046]
-cdf gradient     =class=Point name=Unnamed dimension=3 values=[0.19055,-0.027242,0.173227]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.173227,0.115485,-0.0559084]
 cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.173227,0.115485,-0.0559084]
 quantile=class=Point name=Unnamed dimension=1 values=[5.59515]
 cdf(quantile)=0.95
@@ -56,17 +55,17 @@ spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplement
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[mu : 2, sigma : 1.5, xi : -0.15]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[2.66959]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[9.81725]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[42.4963]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[209.086]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[1135.1]
-Standard representative=class=RandomMixture name=RandomMixture distribution collection=[class=Weibull name=Weibull dimension=1 alpha=10 beta=6.66667 gamma=-12] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-1] constant=class=Point name=Unnamed dimension=1 values=[0]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[-0.933041]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.897471]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[-0.885661]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.893515]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[-0.919063]
+Standard representative=class=WeibullMax name=WeibullMax dimension=1 beta=1 alpha=6.66667 gamma=0
 mu=2
 sigma=1.5
 xi=-0.15
-Actual distribution=class=RandomMixture name=RandomMixture distribution collection=[class=Weibull name=Weibull dimension=1 alpha=10 beta=6.66667 gamma=-12] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-1] constant=class=Point name=Unnamed dimension=1 values=[0]
-Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=0 actual distribution=class=Gumbel name=Gumbel dimension=1 alpha=0.666667 beta=2
+Actual distribution=class=WeibullMax name=WeibullMax dimension=1 beta=10 alpha=6.66667 gamma=12
+Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=0 actual distribution=class=Gumbel name=Gumbel dimension=1 beta=1.5 gamma=2
 Distribution GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)
 Elliptical = false
 Continuous = true
@@ -78,7 +77,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[0.116989]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[0.116989]
 log pdf=-1.68653
 pdf     =0.18516
 pdf (FD)=0.18516
@@ -87,9 +85,9 @@ ccdf=0.857403
 survival=0.857403
 Inverse survival=class=Point name=Unnamed dimension=1 values=[0.354217]
 Survival(inverse survival)=0.95
-pdf gradient     =class=Point name=Unnamed dimension=2 values=[0.102258,-0.116989]
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.116989,-0.0454479,0.0844441]
 pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.116989,-0.0454479,0.0844441]
-cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.277741,-0.18516]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.18516,0.12344,-0.0617202]
 cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.18516,0.12344,-0.0617202]
 quantile=class=Point name=Unnamed dimension=1 values=[6.45529]
 cdf(quantile)=0.95
@@ -120,12 +118,12 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.97811]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[5.44487]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[23.5615]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[117.839]
-Standard representative=class=Gumbel name=Gumbel dimension=1 alpha=1 beta=0
+Standard representative=class=Gumbel name=Gumbel dimension=1 beta=1 gamma=0
 mu=2
 sigma=1.5
 xi=0
-Actual distribution=class=Gumbel name=Gumbel dimension=1 alpha=0.666667 beta=2
-Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=0.15 actual distribution=class=Frechet name=Frechet dimension=1 alpha=6.66667 beta=10 gamma=-8
+Actual distribution=class=Gumbel name=Gumbel dimension=1 beta=1.5 gamma=2
+Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=0.15 actual distribution=class=Frechet name=Frechet dimension=1 beta=10 alpha=6.66667 gamma=-8
 Distribution GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)
 Elliptical = false
 Continuous = true
@@ -137,7 +135,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[0.127801]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[0.127801]
 log pdf=-1.6163
 pdf     =0.198632
 pdf (FD)=0.198632
@@ -146,9 +143,9 @@ ccdf=0.867158
 survival=0.867158
 Inverse survival=class=Point name=Unnamed dimension=1 values=[0.482513]
 Survival(inverse survival)=0.95
-pdf gradient     =class=Point name=Unnamed dimension=3 values=[0.00847762,-0.134884,-0.127801]
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.127801,-0.0472207,0.095424]
 pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.127801,-0.0472207,0.095424]
-cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.0282528,-0.178769,-0.198632]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.198632,0.132422,-0.0685353]
 cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.198632,0.132422,-0.0685353]
 quantile=class=Point name=Unnamed dimension=1 values=[7.61316]
 cdf(quantile)=0.95
@@ -179,8 +176,8 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.29806]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[1.61612]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[2.21815]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[3.62435]
-Standard representative=class=Frechet name=Frechet dimension=1 alpha=6.66667 beta=1 gamma=0
+Standard representative=class=Frechet name=Frechet dimension=1 beta=1 alpha=6.66667 gamma=0
 mu=2
 sigma=1.5
 xi=0.15
-Actual distribution=class=Frechet name=Frechet dimension=1 alpha=6.66667 beta=10 gamma=-8
+Actual distribution=class=Frechet name=Frechet dimension=1 beta=10 alpha=6.66667 gamma=-8

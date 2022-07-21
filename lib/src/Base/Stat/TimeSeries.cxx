@@ -2,7 +2,7 @@
 /**
  *  @brief The class TimeSeries implements values indexed by time
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -128,8 +128,8 @@ TimeSeries & TimeSeries::add(const Point & point)
 /* Appends a sample to the collection */
 TimeSeries & TimeSeries::add(const Sample & sample)
 {
-  if ((n_ > 0) && (sample.getDimension() != getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getOutputDimension() << ", got dimension=" << sample.getDimension();
-  if (sample.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension greater than 0";
+  if (!(n_ == 0 || sample.getDimension() == getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getOutputDimension() << ", got dimension=" << sample.getDimension();
+  if (!(sample.getDimension() > 0)) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension greater than 0";
   const UnsignedInteger size = sample.getSize();
   if (size == 0) return *this;
   // Update the vertices

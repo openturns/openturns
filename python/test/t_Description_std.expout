@@ -16,6 +16,8 @@ desc6[2] =  S3
 desc6[1:3] =  [S2,S3]
 desc6[:] =  [S1,S2,S3,S4,S5]
 desc6 =  [S1,88,99,S4,S5]
+sequence indexing read: [H4,H2,H2,H9]
+sequence indexing write: [H0,H1,T,H3,T,H5,H6,H7,H8,T]#10
 desc7 =  [forunicode,r2,n3]
 True
 False

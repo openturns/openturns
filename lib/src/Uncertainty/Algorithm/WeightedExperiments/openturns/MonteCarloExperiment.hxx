@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an monteCarloExperiment plane
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,15 +50,15 @@ public:
                        const UnsignedInteger size);
 
   /** Virtual constructor */
-  virtual MonteCarloExperiment * clone() const;
+  MonteCarloExperiment * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  Sample generateWithWeights(Point & weightsOut) const;
+  Sample generateWithWeights(Point & weightsOut) const override;
 
 protected:
 

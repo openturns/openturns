@@ -2,13 +2,13 @@ Testing class Rayleigh
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=Rayleigh name=Rayleigh dimension=1 sigma=2.5 gamma=-0.5
+class=Rayleigh name=Rayleigh dimension=1 beta=2.5 gamma=-0.5
 streamObject(const T & anObject)
-class=Rayleigh name=Rayleigh dimension=1 sigma=2.5 gamma=-0.5
+class=Rayleigh name=Rayleigh dimension=1 beta=2.5 gamma=-0.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=Rayleigh name=Rayleigh dimension=1 sigma=2.5 gamma=-0.5
-Distribution Rayleigh(sigma = 2.5, gamma = -0.5)
+Distribution class=Rayleigh name=Rayleigh dimension=1 beta=2.5 gamma=-0.5
+Distribution Rayleigh(beta = 2.5, gamma = -0.5)
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[1.90372]
@@ -19,7 +19,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[0.0855317]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[0.0855317]
 log pdf=-1.60712
 pdf     =0.200465
 pdf (FD)=0.200465
@@ -38,7 +37,7 @@ quantile=class=Point name=Unnamed dimension=1 values=[5.61937]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.223821] upper bound=class=Point name=Unnamed dimension=1 values=[5.75046] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Rayleigh(sigma = 2.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Rayleigh(sigma = 2.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Rayleigh(sigma = 2.5, gamma = -0.5)) level=3.12539
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Rayleigh(beta = 2.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Rayleigh(beta = 2.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Rayleigh(beta = 2.5, gamma = -0.5)) level=3.12539
 beta=0.0439198
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.062559] upper bound=class=Point name=Unnamed dimension=1 values=[6.29051] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -53,16 +52,16 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[sigma : 2.5, gamma : -0.5]]
+parameters=[[beta : 2.5, gamma : -0.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.25331]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[2]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[3.75994]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[8]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[18.7997]
-Standard representative=Rayleigh(sigma = 1, gamma = 0)
+Standard representative=Rayleigh(beta = 1, gamma = 0)
 gamma=-0.5
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.63784]
 skewness=class=Point name=Unnamed dimension=1 values=[0.631111]
 kurtosis=class=Point name=Unnamed dimension=1 values=[3.24509]
-sigma=2.5
+beta=2.5

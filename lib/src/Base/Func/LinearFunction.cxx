@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all linear functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 #include "openturns/LinearFunction.hxx"
 #include "openturns/LinearEvaluation.hxx"
 #include "openturns/ConstantGradient.hxx"
-#include "openturns/ConstantHessian.hxx"
+#include "openturns/NullHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +33,7 @@ LinearFunction::LinearFunction(const Point & center,
                                const Matrix & linear)
   : Function(new LinearEvaluation(center, constant, linear.transpose()),
              new ConstantGradient(linear.transpose()),
-             new ConstantHessian(SymmetricTensor(center.getDimension(), constant.getDimension())))
+             new NullHessian(center.getDimension(), constant.getDimension()))
 {
   // Nothing to do
 }

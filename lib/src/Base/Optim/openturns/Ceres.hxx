@@ -2,7 +2,7 @@
 /**
  *  @brief Ceres solver
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,10 +47,10 @@ public:
                  const String & algoName = "LEVENBERG_MARQUARDT");
 
   /** Virtual constructor */
-  virtual Ceres * clone() const;
+  Ceres * clone() const override;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-  void run();
+  void run() override;
 
   /** Algorithm names accessor */
   static Description GetAlgorithmNames();
@@ -59,22 +59,25 @@ public:
   String getAlgorithmName() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
-  static Bool IsAvailable();
+#ifndef SWIG
+  /** Initialize logging library */
+  static void Initialize();
+#endif
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  virtual void checkProblem(const OptimizationProblem & problem) const;
+  void checkProblem(const OptimizationProblem & problem) const override;
 
   String algoName_;
 

@@ -2,7 +2,7 @@
 /**
  *  @brief This is the natural basis associated to a multivariate distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,6 +27,7 @@
 #include "openturns/AdaptiveStieltjesAlgorithm.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/SoizeGhanemFactorEvaluation.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,7 +39,7 @@ static const Factory<SoizeGhanemFactory> Factory_SoizeGhanemFactory;
 SoizeGhanemFactory::SoizeGhanemFactory()
   : OrthogonalFunctionFactory()
   , productPolynomial_()
-  , phi_(1)
+  , phi_(LinearEnumerateFunction(1))
   , hasIndependentCopula_(measure_.hasIndependentCopula())
 {
   buildProductPolynomialAndAdaptation(false);
@@ -50,7 +51,7 @@ SoizeGhanemFactory::SoizeGhanemFactory(const Distribution & measure,
                                        const Bool useCopula)
   : OrthogonalFunctionFactory(measure)
   , productPolynomial_()
-  , phi_(measure.getDimension())
+  , phi_(LinearEnumerateFunction(measure.getDimension()))
   , hasIndependentCopula_(measure.hasIndependentCopula())
 {
   buildProductPolynomialAndAdaptation(useCopula);

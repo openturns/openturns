@@ -1,13 +1,10 @@
 %feature("docstring") OT::FarlieGumbelMorgensternCopula
 "FarlieGumbelMorgenstern copula.
 
-Available constructor:
-    FarlieGumbelMorgensternCopula(*theta=1.0*)
-
 Parameters
 ----------
-theta : float, :math:`-1 \leq \theta \leq 1`
-    Parameter :math:`\theta`.
+theta : float
+    Parameter :math:`\theta`, :math:`-1 \leq \theta \leq 1`. Default is :math:`\theta=0.5`.
 
 Notes
 -----
@@ -21,7 +18,7 @@ for :math:`(u_1, u_2) \in [0, 1]^2`
 
 See also
 --------
-Copula
+Distribution
 
 Examples
 --------

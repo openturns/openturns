@@ -2,7 +2,7 @@
 /**
  *  @brief XMLStorageManager provides an interface for different storage classes
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,18 +29,9 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/XMLToolbox.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/SpecFunc.hxx"
-
-#ifndef WIN32
-#ifndef SWIG
-#ifndef XML_SUPPORTED
-#error "XML support is mandatory. Check configuration."
-#endif
-#endif
-#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,117 +40,19 @@ BEGIN_NAMESPACE_OPENTURNS
 #if defined OPENTURNS_HAVE_LIBXML2
 
 
-/************ Tags ************/
-
-#define DEFINE_TAG(name,value)                                          \
-  static const char name ## Tag[] = value;                              \
-  struct name ## _tag { static inline const char * Get() { return name ## Tag ; } }
-
-namespace XML_STMGR
-{
-DEFINE_TAG( root,   "openturns-study"   );
-DEFINE_TAG( bool,   "bool"              );
-DEFINE_TAG( unsignedlong,   "unsignedlong"      );
-DEFINE_TAG( numericalscalar,   "numericalscalar"   );
-DEFINE_TAG( numericalcomplex,   "numericalcomplex"  );
-DEFINE_TAG( real,   "real"              );
-DEFINE_TAG( imag,   "imag"              );
-DEFINE_TAG( string,   "string"            );
-DEFINE_TAG( object,   "object"            );
-} // namespace XML_STMGR
-
-/************ Attributes ************/
-
-#define DEFINE_ATTRIBUTE(name,value)                                    \
-  static const char name ## Attribute[] = value;                        \
-  struct name ## _attribute { static inline const char * Get() { return name ## Attribute ; } }
-
-namespace XML_STMGR
-{
-DEFINE_ATTRIBUTE( StudyVisible, "StudyVisible"  );
-DEFINE_ATTRIBUTE( StudyLabel, "StudyLabel"    );
-DEFINE_ATTRIBUTE( version, "version"       );
-DEFINE_ATTRIBUTE( class, "class"         );
-DEFINE_ATTRIBUTE( id, "id"            );
-DEFINE_ATTRIBUTE( name, "name"          );
-DEFINE_ATTRIBUTE( index, "index"         );
-DEFINE_ATTRIBUTE( member, "member"        );
-} // namespace XML_STMGR
-
-
-
-struct XMLInternalObject : public StorageManager::InternalObject
-{
-  XML::Node node_;
-  XMLInternalObject() : node_(0) {}
-  XMLInternalObject(XML::Node node) : node_(node) {}
-  virtual ~XMLInternalObject() throw() {}
-  virtual XMLInternalObject * clone() const
-  {
-    return new XMLInternalObject(*this);
-  }
-  virtual void first()
-  {
-    node_ = XML::GetFirstChild( node_ );
-  }
-  virtual void next()
-  {
-    node_ = XML::GetNextNode( node_ );
-  }
-  virtual String __repr__() const
-  {
-    return OSS() << "XMLInternalObject { node = <" << node_ << ">}";
-  }
-  virtual String __str__(const String & ) const
-  {
-    return __repr__();
-  }
-};
-
-struct XMLStorageManagerState : public StorageManager::InternalObject
-{
-  XML::Node root_;
-  XML::Node current_;
-  XMLStorageManagerState() : root_(0), current_(0) {}
-  virtual ~XMLStorageManagerState() throw() {}
-  virtual XMLStorageManagerState * clone() const
-  {
-    return new XMLStorageManagerState(*this);
-  }
-  virtual void first()
-  {
-    current_ = XML::GetFirstChild( current_ );
-  }
-  virtual void next()
-  {
-    current_ = XML::GetNextNode( current_ );
-  }
-  virtual String __repr__() const
-  {
-    return OSS(true) << "XMLStorageManagerState { root = <" << root_
-           << ">, current_ = <" << current_ << ">}";
-  }
-  virtual String __str__(const String & ) const
-  {
-    return __repr__();
-  }
-};
-
-
 
 
 const int XMLStorageManager::Precision_ = 17;
 
 CLASSNAMEINIT(XMLStorageManager)
-const VersionList XMLStorageManager::SupportedVersions;
 
 /* Default constructor */
 XMLStorageManager::XMLStorageManager(const FileName & filename,
                                      const UnsignedInteger compressionLevel)
-  : StorageManager(1),
-    fileName_(filename),
+  : StorageManager(OPENTURNS_VERSION),
     p_state_(new XMLStorageManagerState),
     p_document_(),
+    fileName_(filename),
     compressionLevel_(std::min(compressionLevel, 9UL))
 {
   // Nothing to do
@@ -206,7 +99,8 @@ const StorageManager::InternalObject & XMLStorageManager::getState() const
 /* Query the manager if the version is correct */
 Bool XMLStorageManager::canManageVersion(UnsignedInteger version) const
 {
-  return XMLStorageManager::SupportedVersions.contains(version);
+  // backward compatibility
+  return (version <= getDefaultStudyVersion());
 }
 
 
@@ -223,7 +117,24 @@ void XMLStorageManager::initialize(const SaveAction )
   p_state_->root_ = XML::NewNode( XML_STMGR::root_tag::Get() );
   XML::SetAttribute(p_state_->root_, XML_STMGR::version_attribute::Get(), oss);
   XML::SetRootNode(*p_document_, p_state_->root_);
+  setStorageManager();
 }
+
+
+void XMLStorageManager::setStorageManager()
+{
+  XML::SetAttribute(p_state_->root_, XML_STMGR::manager_attribute::Get(), "XMLStorageManager");
+}
+
+
+void XMLStorageManager::checkStorageManager()
+{
+  if (XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get()) !=
+      "XMLStorageManager")
+    throw StudyFileParsingException(HERE) << XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get())
+                                          << " is used in study file. XMLStorageManager is expected";
+}
+
 
 /* Do some administrative tasks before saving/reloading */
 void XMLStorageManager::initialize(const LoadAction )
@@ -260,6 +171,9 @@ void XMLStorageManager::read()
   std::istringstream iss (stul);
   iss >> version;
   setStudyVersion(version);
+  if (!XML::ElementHasAttribute( p_state_->root_, XML_STMGR::manager_attribute::Get()))
+    setStorageManager();
+  checkStorageManager();
 }
 
 /* Write the internal representation */
@@ -305,17 +219,17 @@ void XMLStorageManager::load(Study & study)
   {
     p_state_->current_ = node;
     try
+    {
+      XMLReadObject ro = readDOMElement();
+      if (ro.p_obj_)
       {
-	XMLReadObject ro = readDOMElement();
-	if (ro.p_obj_)
-	  {
-	    study.add( ro.label_, *(ro.p_obj_) );
-	  }
+        study.add( ro.label_, *(ro.p_obj_) );
       }
+    }
     catch (InternalException & ex)
-      {
-	LOGINFO(OSS() << ex);
-      }
+    {
+      LOGINFO(OSS() << ex);
+    }
     node = XML::GetNextNode(node);
   }
 }
@@ -336,15 +250,15 @@ XMLStorageManager::XMLReadObject XMLStorageManager::readDOMElement()
       ro.label_      = XML::GetAttributeByName(p_state_->current_, XML_STMGR::StudyLabel_attribute::Get());
       ro.visibility_ = XML::GetAttributeByName(p_state_->current_, XML_STMGR::StudyVisible_attribute::Get());
       try
-	{
-	  ro.p_obj_      = Catalog::Get(className).build(*this);
-	  if (! ro.visibility_.empty())
-	    ro.p_obj_->setVisibility(ro.visibility_ == "true");
-	}
+      {
+        ro.p_obj_      = Catalog::Get(className).build(*this);
+        if (! ro.visibility_.empty())
+          ro.p_obj_->setVisibility(ro.visibility_ == "true");
+      }
       catch(...)
-	{
-	  throw InternalException(HERE) << "Error trying to load " << ro.label_ << ", skipped.";
-	}
+      {
+        throw InternalException(HERE) << "Error trying to load " << ro.label_ << ", skipped.";
+      }
     }
   }
 
@@ -642,7 +556,8 @@ void IndexedValueReader(TAG tag,
   {
     UnsignedInteger idx = 0;
     fromStringConverter( XML::GetAttributeByName(node, XML_STMGR::index_attribute::Get()), idx );
-    state.next();
+    // Necessary, -though counter-intuitive- otherwise the XMLH5StoManSta::next can be called
+    state.XMLStorageManagerState::next();
     if (idx == index)
     {
       fromNodeConverter<TAG, _Tp>( node, value );
@@ -1003,7 +918,16 @@ Bool XMLStorageManager::hasAttribute(Pointer<InternalObject> & p_obj, const Stri
   XMLStorageManagerState & state = dynamic_cast<XMLStorageManagerState &>(*p_obj);
   XML::Node node = state.current_;
   assert(node);
-  return XML::ElementHasAttribute( node, name );
+  // check simple attributes
+  if (XML::ElementHasAttribute(node, name)) return true;
+  // check object attributes
+  node = XML::GetFirstChild(node);
+  while (node)
+  {
+    if (XML::GetAttributeByName(node, XML_STMGR::member_attribute::Get()) == name) return true;
+    node = XML::GetNextNode(node);
+  }
+  return false;
 }
 
 

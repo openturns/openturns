@@ -2,7 +2,7 @@
 /**
  *  @brief Text class to add text on graphs
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,14 +60,14 @@ public:
        const String & textPosition = "top",
        const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Text(const Sample & dataX,
        const Sample & dataY,
        const Description & texts,
        const String & textPosition = "top",
        const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Text(const Point & dataX,
        const Point & dataY,
        const Description & texts,
@@ -77,37 +77,44 @@ public:
   static Bool IsValidTextPosition(String textPosition);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Draw method */
-  String draw() const;
+  String draw() const override;
 
   /** Clone method */
-  virtual Text * clone() const;
+  Text * clone() const override;
 
   /** Accessors to text */
-  Description getTextAnnotations() const;
-  void setTextAnnotations(const Description & textAnnotations);
+  Description getTextAnnotations() const override;
+  void setTextAnnotations(const Description & textAnnotations) override;
 
   /** Accessors to text position */
-  Description getTextPositions() const;
-  void setTextPositions(const Description & textPositions);
+  Description getTextPositions() const override;
+  void setTextPositions(const Description & textPositions) override;
+
+  /** Accessors to text size */
+  Scalar getTextSize() const override;
+  void setTextSize(const Scalar size) override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Check for data validity */
-  virtual void checkData(const Sample & data) const;
+  void checkData(const Sample & data) const override;
 
   /** Labels */
   Description textAnnotations_;
 
   /** Text position  */
   Description textPositions_;
+
+  /** Text size */
+  Scalar textSize_;
 
 private:
 

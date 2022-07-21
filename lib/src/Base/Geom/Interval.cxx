@@ -2,7 +2,7 @@
 /**
  *  @brief Interval is defined as the cartesian product of n 1D intervalls ]low_1, up_1]x...x]low_n,up_n]
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -177,6 +177,32 @@ Bool Interval::contains(const Point & point) const
   return true;
 }
 
+/* Compute the Euclidean distance from a given point to the domain */
+Scalar Interval::computeDistance(const Point & point) const
+{
+  const UnsignedInteger pointDimension = point.getDimension();
+  const UnsignedInteger intervalDimension = getDimension();
+
+  if (pointDimension != intervalDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << pointDimension << ", got dimension=" << intervalDimension;
+
+  if (isEmpty()) return SpecFunc::MaxScalar;
+
+  Point lowerBound = getLowerBound();
+  Point upperBound = getUpperBound();
+  BoolCollection finiteLowerBound = getFiniteLowerBound();
+  BoolCollection finiteUpperBound = getFiniteUpperBound();
+
+  Scalar squaredDistance = 0.0;
+
+  for (UnsignedInteger i = 0; i < intervalDimension; ++i)
+  {
+    if (finiteLowerBound[i] && point[i] < lowerBound[i]) squaredDistance += (lowerBound[i] - point[i]) * (lowerBound[i] - point[i]);
+    else if (finiteUpperBound[i] && point[i] > upperBound[i]) squaredDistance += (point[i] - upperBound[i]) * (point[i] - upperBound[i]);
+  }
+
+  return sqrt(squaredDistance);
+}
+
 /* Compute the numerical volume of the interval */
 Scalar Interval::getVolume() const
 {
@@ -244,7 +270,7 @@ Interval Interval::getMarginal(const Indices & indices) const
 
 Interval Interval::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= getDimension()) throw InvalidArgumentException(HERE) << "Marginal index cannot exceed dimension";
+  if (!(index < getDimension())) throw InvalidArgumentException(HERE) << "Marginal index cannot exceed dimension, here index=" << index << " and dimension=" << getDimension();
   return Interval(Point(1, lowerBound_[index]),
                   Point(1, upperBound_[index]),
                   Interval::BoolCollection(1, finiteLowerBound_[index]),
@@ -390,7 +416,7 @@ void Interval::setLowerBound(const Point & lowerBound)
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
     if (SpecFunc::IsInf(lowerBound[i]))
     {
-      lowerBound_[i] = (lowerBound[i] > 0.0 ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar);
+      lowerBound_[i] = (lowerBound[i] > 0.0 ? SpecFunc::MaxScalar : SpecFunc::LowestScalar);
       finiteLowerBound_[i] = false;
     }
 }
@@ -408,7 +434,7 @@ void Interval::setUpperBound(const Point & upperBound)
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
     if (SpecFunc::IsInf(upperBound[i]))
     {
-      upperBound_[i] = (upperBound[i] > 0.0 ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar);
+      upperBound_[i] = (upperBound[i] > 0.0 ? SpecFunc::MaxScalar : SpecFunc::LowestScalar);
       finiteUpperBound_[i] = false;
     }
 }

@@ -2,7 +2,7 @@
 /**
  *  @brief The abstract class InterfaceObject defines the GetImplementation method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,10 +48,10 @@ public:
   typedef Pointer<PersistentObject>   ImplementationAsPersistentObject;
 
   /** @copydoc Object::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** @copydoc Object::__str__() const */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Returns a pointer to the underlying implementation object viewed as a PersistentObject
    * @internal

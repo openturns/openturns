@@ -42,7 +42,7 @@ Importance factors from FORM method
   space, where :math:`\vect{x}^* = T^{-1}(\vect{u}^*)`. We note
   :math:`\beta_{HL}` the Hasofer-Lind reliability index:
   :math:`\beta_{HL} = ||\vect{u}^{*}||`.
-| When the :math:`\bdU`-space is normal, the litterature proposes to
+| When the :math:`\bdU`-space is normal, the literature proposes to
   calculate the importance factor :math:`\alpha_i^2` of the variable
   :math:`X_i` as the square of the co-factors of the design point in the
   :math:`\bdU`-space :
@@ -65,7 +65,7 @@ Importance factors from FORM method
    the limit state function in the :math:`\bdU`-space depends on the
    isoprobabilistic transformation and in particular on the order of the
    variables :math:`X_i` within the random vector :math:`\vect{X}`.
-   Thus, changing this order has an impact on the localisation of the
+   Thus, changing this order has an impact on the localization of the
    design point in the :math:`\bdU`-space and, consequently, on the
    importance factors ... (see [lebrun2009c]_ to compare
    the different isoprobabilistic transformations).
@@ -74,7 +74,7 @@ Importance factors from FORM method
   which may be defined in the elliptical space of the iso-probabilistic
   transformation, where the marginal distributions are all elliptical,
   with cumulative distribution function noted :math:`E`, and not yet
-  decorrelated.
+  uncorrelated.
 
   .. math::
 
@@ -99,7 +99,7 @@ The importance factor :math:`\alpha_i^2` writes:
 This definition still guarantees the relation:
 :math:`\Sigma_i \alpha_i^2 = 1`.
 
-Here, the event considered is explicited directly from the limit state
+Here, the event considered is established directly from the limit state
 function :math:`g(\vect{X}\,,\,\vect{d})`: this is the classical
 structural reliability formulation.
 However, if the event is a threshold exceedance, it is useful to
@@ -127,7 +127,7 @@ threshold rather than to its variance.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/estimate_probability_form`
+    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_form`
 
 
 .. topic:: References:

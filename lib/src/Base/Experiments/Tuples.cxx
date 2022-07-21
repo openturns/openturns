@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the tuples experiment plane
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ Tuples * Tuples::clone() const
 /* Experiment plane generation :
  *  all the tuples taking values in {0,...,bounds[0]-1}x...x{0,...,bounds[n-1]-1}
  */
-IndicesCollection Tuples::generate()
+IndicesCollection Tuples::generate() const
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = bounds_.getSize();

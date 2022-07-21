@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Gumbel for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    Gumbel distribution(2.0, 2.5);
+    Gumbel distribution(0.5, 2.5);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     GumbelFactory factory;

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # OpenTURNS documentation build configuration file, created by
 # sphinx-quickstart on Wed Mar 12 14:11:36 2014.
 #
@@ -15,8 +13,13 @@
 import sys
 import os
 import subprocess
-from distutils.version import LooseVersion
+try:
+    from pkg_resources import parse_version as LooseVersion
+except ImportError:
+    from distutils.version import LooseVersion
 import sphinx
+import sphinx_gallery
+from sphinx_gallery.sorting import ExplicitOrder
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -36,7 +39,7 @@ extensions = []
 
 extensions.append('sphinx.ext.autodoc')
 
-if LooseVersion(sphinx.__version__) >= '1.8':
+if LooseVersion(sphinx.__version__) >= LooseVersion('1.8'):
     autodoc_default_options = {'members': None, 'inherited-members': None, 'exclude-members': 'thisown'}
 else:
     autodoc_default_flags =  ['members', 'inherited-members']
@@ -49,15 +52,6 @@ extensions.append('execforresourcemap_directive')
 extensions.append('numpydoc')
 numpydoc_show_class_members = True
 numpydoc_class_members_toctree = False
-
-if '@NBSPHINX_FOUND@' == 'TRUE':
-    extensions.append('nbsphinx')
-    nbsphinx_execute = 'never'
-    # dont add .txt suffix to notebook
-    html_sourcelink_suffix = ''
-    tags.add('nbsphinx')
-
-    extensions.append('IPython.sphinxext.ipython_console_highlighting')
 
 extensions.append('sphinx.ext.doctest')
 
@@ -85,6 +79,52 @@ except ImportError:
 
 extensions.append('matplotlib.sphinxext.plot_directive')
 
+extensions.append('sphinx_gallery.gen_gallery')
+sphinx_gallery_conf = {
+
+     'examples_dirs': ['examples/data_analysis','examples/probabilistic_modeling','examples/meta_modeling','examples/reliability_sensitivity','examples/functional_modeling','examples/calibration','examples/numerical_methods','examples/graphs',], # path to example scripts
+     'gallery_dirs': ['auto_data_analysis','auto_probabilistic_modeling','auto_meta_modeling','auto_reliability_sensitivity','auto_functional_modeling','auto_calibration','auto_numerical_methods','auto_graphs',], # path to where to save gallery gen. output
+
+
+     'filename_pattern': '/plot_',
+     'ignore_pattern': '/(external_program)|(__init__.py)|(use_case_)@SPHINX_GALLERY_IGNORE_PATTERN@',
+
+
+     'subsection_order': ExplicitOrder(['examples/data_analysis/manage_data_and_samples',
+                                        'examples/data_analysis/sample_analysis',
+                                        'examples/data_analysis/distribution_fitting',
+                                        'examples/data_analysis/statistical_tests',
+                                        'examples/data_analysis/estimate_dependency_and_copulas',
+                                        'examples/data_analysis/estimate_stochastic_processes',
+                                        'examples/data_analysis/graphics',
+                                        'examples/probabilistic_modeling/distributions',
+                                        'examples/probabilistic_modeling/copulas',
+                                        'examples/probabilistic_modeling/random_vectors',
+                                        'examples/probabilistic_modeling/stochastic_processes',
+                                        'examples/meta_modeling/general_purpose_metamodels',
+                                        'examples/meta_modeling/polynomial_chaos_metamodel',
+                                        'examples/meta_modeling/kriging_metamodel',
+                                        'examples/meta_modeling/low_rank_tensors_metamodel',
+                                        'examples/meta_modeling/fields_metamodels',
+                                        'examples/reliability_sensitivity/central_dispersion',
+                                        'examples/reliability_sensitivity/reliability',
+                                        'examples/reliability_sensitivity/reliability_processes',
+                                        'examples/reliability_sensitivity/sensitivity_analysis',
+                                        'examples/reliability_sensitivity/design_of_experiments',
+                                        'examples/functional_modeling/vectorial_functions',
+                                        'examples/functional_modeling/field_functions',
+                                        'examples/functional_modeling/link_to_an_external_code',
+                                        'examples/calibration/least_squares_and_gaussian_calibration',
+                                        'examples/calibration/bayesian_calibration',
+                                        'examples/numerical_methods/general_methods',
+                                        'examples/numerical_methods/optimization',
+                                        'examples/numerical_methods/iterative_statistics',
+                                        'examples/graphs',]),
+     'show_signature': False,
+
+}
+
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -99,16 +139,16 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'OpenTURNS'
-copyright = u'2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca'
+copyright = u'2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '@OPENTURNS_VERSION_MAJOR@.@OPENTURNS_VERSION_MINOR@'
+version = '@CPACK_PACKAGE_VERSION_MAJOR@.@CPACK_PACKAGE_VERSION_MINOR@'
 # The full version, including alpha/beta/rc tags.
-release = '@OPENTURNS_VERSION@'
+release = '@PACKAGE_VERSION@'
 
 # The language for content autogenerated by Sphinx. Refer to documentation
 # for a list of supported languages.
@@ -183,6 +223,15 @@ html_favicon = 'themes/openturns/static/favicon.ico'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_css_files = [
+    'css/custom.css',
+]
+
+html_js_files = [
+    'js/mysearchtools.js',
+]
+
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied

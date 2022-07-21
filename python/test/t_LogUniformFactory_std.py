@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -27,9 +26,6 @@ try:
     estimatedLogUniform = factory.buildAsLogUniform(
         distribution.getParameter())
     print("LogUniform from parameters=", estimatedLogUniform)
-    sample = [[1.0]] * size
-    estimatedDistribution = factory.build(sample)
-    print("Estimated distribution=", repr(estimatedDistribution))
 
 except:
     import sys

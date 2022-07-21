@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -32,6 +31,8 @@ try:
     print("evect=", evect)
     print("evect=")
     print(evect.__str__())
+    maxModule = matrix1.computeLargestEigenValueModule(10, 1e-2)
+    print("max |ev|=%.6g" % maxModule)
 
     # Check the high dimension determinant computation
     matrix2 = SquareMatrix(3)

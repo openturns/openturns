@@ -72,16 +72,23 @@ Continuous parametric distributions
     NormalGamma
 
     :template: Distribution.rst_t
+    Pareto
     Rayleigh
     Rice
     SmoothedUniform
+    SquaredNormal
     Student
     Trapezoidal
     Triangular
     TruncatedNormal
     Uniform
     VonMises
-    Weibull
+
+    :template: classWithPlot.rst_t
+    WeibullMin
+    WeibullMax
+
+    :template: Distribution.rst_t
     Wishart
 
 Discrete parametric distributions
@@ -119,11 +126,12 @@ Parametrized distributions
     ArcsineMuSigma
     BetaMuSigma
     GammaMuSigma
+    GumbelLambdaGamma
     GumbelMuSigma
-    GumbelAB
     LogNormalMuSigma
     LogNormalMuSigmaOverMu
-    WeibullMuSigma
+    WeibullMaxMuSigma
+    WeibullMinMuSigma
 
 Pseudo-random numbers generator
 ===============================
@@ -144,7 +152,8 @@ Combining and transforming distributions
 
     BayesDistribution
 
-    :template: Distribution.rst_t
+    :template: DistributionHighDimension.rst_t
+    BlockIndependentDistribution
     ComposedDistribution
 
     :template: classWithPlot.rst_t
@@ -153,6 +162,7 @@ Combining and transforming distributions
     :template: Distribution.rst_t
     ConditionalDistribution
     CumulativeDistributionNetwork
+    DiscreteCompoundDistribution
     MaximumDistribution
 
     :template: classWithPlot.rst_t
@@ -162,6 +172,7 @@ Combining and transforming distributions
     :toctree: _generated/
     :template: class.rst_t
 
+    MixedHistogramUserDefined
     OrderStatisticsMarginalChecker
     PosteriorDistribution
 
@@ -193,7 +204,6 @@ Refer to :ref:`copula`.
     :toctree: _generated/
     :template: class.rst_t
 
-    Copula
     ArchimedeanCopula
 
 .. autosummary::
@@ -206,8 +216,12 @@ Refer to :ref:`copula`.
     FrankCopula
     GumbelCopula
     IndependentCopula
+    PlackettCopula
     EmpiricalBernsteinCopula
     ExtremeValueCopula
+    JoeCopula
+    GalambosCopula
+    MarshallOlkinCopula
     MaximumEntropyOrderStatisticsCopula
 
     :template: class.rst_t
@@ -222,7 +236,7 @@ Combining and transforming copulas
 
 .. autosummary::
     :toctree: _generated/
-    :template: classWithPlot.rst_t
+    :template: DistributionHighDimension.rst_t
 
     ComposedCopula
 
@@ -240,9 +254,9 @@ Random vectors
     :template: class.rst_t
 
     RandomVector
-    PythonRandomVector
 
     :template: classWithPlot.rst_t
+    PythonRandomVector
     CompositeRandomVector
     ConditionalRandomVector
 
@@ -259,19 +273,25 @@ Low-level distribution functions
     :toctree: _generated/
     :template: function.rst_t
 
-    DistFunc_dBinomial
-    DistFunc_dHypergeometric
-    DistFunc_dPoisson
-    DistFunc_logdBinomial
-    DistFunc_logdHypergeometric
-    DistFunc_logdPoisson
-    DistFunc_pHypergeometric
-    DistFunc_pNormal
-    DistFunc_qNormal
-    DistFunc_rBinomial
-    DistFunc_rHypergeometric
-    DistFunc_rNormal
-    DistFunc_rPoisson
-    DistFunc_kFactor
-    DistFunc_kFactorPooled
+    DistFunc.dBinomial
+    DistFunc.dHypergeometric
+    DistFunc.dNonCentralChiSquare
+    DistFunc.dNonCentralStudent
+    DistFunc.dPoisson
+    DistFunc.eZ1
+    DistFunc.kFactor
+    DistFunc.kFactorPooled
+    DistFunc.logdBinomial
+    DistFunc.logdHypergeometric
+    DistFunc.logdPoisson
+    DistFunc.pHypergeometric
+    DistFunc.pPearsonCorrelation
+    DistFunc.dNormal
+    DistFunc.pNormal
+    DistFunc.qNormal
+    DistFunc.rBinomial
+    DistFunc.rDiscrete
+    DistFunc.rHypergeometric
+    DistFunc.rNormal
+    DistFunc.rPoisson
 

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import math as m
 
@@ -205,6 +204,8 @@ try:
 except:
     print(f, ", f([-1]) not defined")
 
-ot.ResourceMap.SetAsBool("SymbolicParser-CheckResult", False)
 f = ot.SymbolicFunction("x", "sqrt(x)")
-print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(f([-1.0])[0]))
+ev = f.getEvaluation()
+# triggers copyOnWrite, ev is no longer the Evaluation of f
+ev.setCheckOutput(False)
+print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(ev([-1.0])[0]))

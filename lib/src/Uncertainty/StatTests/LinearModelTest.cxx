@@ -2,7 +2,7 @@
 /**
  *  @brief StatTest implements statistical tests
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,10 +42,6 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-LinearModelTest::LinearModelTest()
-{
-}
-
 /*  */
 TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,
@@ -58,30 +54,53 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
   // As we rely on a linear model result, we should be very generic
   // Instead of using input dimension, one should use parameter size
-  const UnsignedInteger df = linearModelResult.getDegreesOfFreedom();
+  const SignedInteger dof = linearModelResult.getDegreesOfFreedom();
+  if (dof <= 0)
+    throw InvalidArgumentException(HERE) << "Cannot perform linear model test when DOF is null";
 
   // Regression coefficient
   const Function fHat(linearModelResult.getMetaModel());
-  const Sample yHat(fHat(firstSample)); 
+  const Sample yHat(fHat(firstSample));
   const Sample residualSample(secondSample - yHat);
-  
+
   // For the Fisher test, we need both Sum of Squared Explained (SSE)
   // and the Sum of Squared Residuals
 
-  const Scalar sumSquaredExplained = (yHat - secondSample.computeMean()).computeRawMoment(2)[0] * firstSample.getSize() ;
-  const Scalar sumSquaredResiduals = residualSample.computeRawMoment(2)[0] * firstSample.getSize() ;
-
-
+  // Get the number of parameter p
+  const UnsignedInteger p = linearModelResult.getCoefficients().getSize();
+  // Check if there is an intercept
+  const Bool hasIntercept = linearModelResult.hasIntercept();
+  // Degrees of freedom (model)
+  UnsignedInteger dofModel = p;
+  // Correction of dofModel if intercept
+  if ((hasIntercept) && (p == 1))
+    throw NotDefinedException(HERE) << "Only intercept in the basis. Fisher Test is not defined is such a case.";
+  // Correction of dofModel if intercept
+  if (hasIntercept)
+    dofModel -= 1;
   // The statistical test checks the nullity of the regression linear model coefficients
   // H0 : Beta_i = 0
   // H1 : Beta_i < 0 or Beta_i > 0
+  // Degrees of freedom (noise)
+  // Sum of Squared Errors (SSE) or Sum of Squared Residuals (SSR/RSS)
+  const Scalar SSR = residualSample.computeRawMoment(2)[0] * size;
+  // Sum of Squared Total (SST) = n * var(Y) or n * E(Y^2) depending on intercept
+  Scalar SST = 1.0;
+  if (hasIntercept)
+    SST = secondSample.computeCenteredMoment(2)[0] * size;
+  else
+    SST = secondSample.computeRawMoment(2)[0] * size;
+  // Sum of Squared Model (SSM) = SST - SSE
+  const Scalar SSM = SST - SSR;
+  // Define the statistic
+  // numerator = MSM := SSM/DFM
+  const Scalar numerator = SSM / dofModel;
+  // denominator =  MSE = SSE/DO
+  const Scalar denominator = SSR / dof;
   // The statistics follows a Fisher distribution
-  const Scalar numerator = sumSquaredExplained / (size - df - 1);
-  const Scalar denomerator = sumSquaredResiduals / df;
-
-  const Scalar statistic = numerator / denomerator;
+  const Scalar statistic = numerator / denominator;
   Log::Debug(OSS() << "F-statistic = " << statistic);
-  const Scalar pValue =  FisherSnedecor(size - df - 1, df).computeComplementaryCDF(statistic);
+  const Scalar pValue = FisherSnedecor(dofModel, dof).computeComplementaryCDF(statistic);
   return TestResult("Fisher", pValue > level, pValue, level, statistic);
 }
 
@@ -117,12 +136,14 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
   // As we rely on a linear model result, we should be very generic
   // Instead of using input dimension, one should use parameter size
-  const UnsignedInteger df = linearModelResult.getDegreesOfFreedom();
+  const SignedInteger dof = linearModelResult.getDegreesOfFreedom();
+  if (dof <= 0)
+    throw InvalidArgumentException(HERE) << "Cannot perform linear model test when DOF is null";
   // Residuals
   const Sample residualSample(linearModelResult.getSampleResiduals());
   // Compute mean & standard deviation
   const Scalar mean = residualSample.computeMean()[0];
-  const Scalar std = residualSample.computeStandardDeviationPerComponent()[0];
+  const Scalar std = residualSample.computeStandardDeviation()[0];
   // The statistical test checks whether the mean is 0 or not
   // H0 : mu = 0
   // H1 : mu < 0 or mu > 0
@@ -130,7 +151,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   // The statistics follows a Student distribution
   const Scalar statistic = std::abs(mean) * std::sqrt(size * 1.0) / std;
   Log::Debug(OSS() << "t-statistic = " << statistic);
-  const Scalar pValue =  2.0 * DistFunc::pStudent(df, statistic, true);
+  const Scalar pValue = 2.0 * DistFunc::pStudent(dof, statistic, true);
   return TestResult("ResidualMean", pValue > level, pValue, level, statistic);
 }
 
@@ -187,7 +208,7 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   for(UnsignedInteger i = 0; i < simulationSize; ++i)
   {
     const Sample sample(Normal().getSample(residualSize));
-    const Sample standardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
+    const Sample standardSample((sample - sample.computeMean()) / sample.computeStandardDeviation());
     Scalar sumSelectResidualsSimulation = 0;
     for (UnsignedInteger j = 0; j < breakIndex; ++ j)
     {
@@ -297,7 +318,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   if (residualSize < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
 
   const Function fHat(linearModelResult.getMetaModel());
-  const Sample yHat(fHat(firstSample)); 
+  const Sample yHat(fHat(firstSample));
   const Sample residuals(secondSample - yHat);
 
 
@@ -344,7 +365,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
     for(UnsignedInteger i = 0; i < residualSize - 2; ++i)
     {
       AX(i + 1, j) = -X(i, j) + 2 * X(i + 1, j) - X(i + 2, j);
-    } 
+    }
   }
 
   // Normal approximation of the dw statistic

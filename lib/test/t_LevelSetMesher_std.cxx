@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class LevelSetMesher for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -69,7 +69,7 @@ int main(int, char *[])
     // Manual bounding box
     Mesh mesh3D = mesher3D.build(levelSet3D, Interval(Point(3, -10.0), Point(3, 10.0)));
     fullprint << "mesh3D=" << mesh3D << std::endl;
-    mesh3D.draw().draw("manual.png");
+    //mesh3D.draw().draw("manual.png");
   }
   catch (TestFailed & ex)
   {

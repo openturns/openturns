@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation returning the set of polynomials in sequence
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class SequentialStrategy
+ * @deprecated
  *
  * An implementation returning the set of polynomials in sequence
  */
@@ -48,24 +49,24 @@ public:
                      const Bool verbose = false);
 
   /** Virtual constructor */
-  virtual SequentialStrategy * clone() const;
+  SequentialStrategy * clone() const override;
 
   /** Compute initial basis for the approximation */
-  void computeInitialBasis();
+  void computeInitialBasis() override;
 
   /** Update the basis for the next iteration of approximation */
   void updateBasis(const Point & alpha_k,
                    const Scalar residual,
-                   const Scalar relativeError);
+                   const Scalar relativeError) override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   // Index of the next vector to be generated

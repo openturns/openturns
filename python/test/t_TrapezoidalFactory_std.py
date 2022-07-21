@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
@@ -29,9 +28,8 @@ estimatedTrapezoidal = factory.buildAsTrapezoidal()
 print("Default trapezoidal=", estimatedTrapezoidal)
 estimatedTrapezoidal = factory.buildAsTrapezoidal(distribution.getParameter())
 print("Trapezoidal from parameters=", estimatedTrapezoidal)
-sample = [[0.0]] * size
-estimatedDistribution = factory.build(sample)
-print("Estimated distribution=", repr(estimatedDistribution))
-sample = [[1.0]] * size
-estimatedDistribution = factory.build(sample)
-print("Estimated distribution=", repr(estimatedDistribution))
+
+# cobyla freeze bug
+ot.RandomGenerator.SetSeed(10)
+dist = factory.build(ot.Uniform().getSample(100))
+print('ok')

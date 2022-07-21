@@ -2,7 +2,7 @@
 /**
  *  @brief P1 Lagrange piecewise linear function.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 #include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Description.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Os.hxx"
 
@@ -54,6 +54,8 @@ P1LagrangeEvaluation::P1LagrangeEvaluation(const Field & field)
 /* Parameters constructor */
 P1LagrangeEvaluation::P1LagrangeEvaluation(const ProcessSample & sample)
   : EvaluationImplementation()
+  , nearestNeighbour_(sample.getMesh().getVertices())
+  , enclosingSimplex_(sample.getMesh().getVertices(), sample.getMesh().getSimplices())
 {
   const Mesh mesh(sample.getMesh());
   const UnsignedInteger length = mesh.getVerticesNumber();
@@ -141,7 +143,7 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
     for(IndicesCollection::const_iterator vertexIt = simplices.cbegin_at(i), vertexGuard = simplices.cend_at(i); vertexIt != vertexGuard; ++vertexIt)
     {
       const UnsignedInteger vertexIndex = (*vertexIt);
-      if (vertexIndex >= nrVertices) throw InvalidArgumentException(HERE) << "Error: found a vertex index of " << vertexIndex;
+      if (!(vertexIndex < nrVertices)) throw InvalidArgumentException(HERE) << "Error: found a vertex index of " << vertexIndex << " for a total vertex number of " << nrVertices;
       seenVertices[vertexIndex] = 1;
     }
   }
@@ -149,7 +151,7 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
   for (UnsignedInteger i = 0; i < nrVertices; ++i)
     if (seenVertices[i] == 0)
       pendingVertices.add(i);
-  if (pendingVertices.getSize() > 0)
+  if (pendingVertices.getSize() != 0)
   {
     LOGWARN(OSS() << "There are " << pendingVertices.getSize() << " pending vertices. Check the simplices of the mesh");
     LOGDEBUG(OSS() << "The pending vertices indices are " << pendingVertices);
@@ -228,7 +230,7 @@ public:
     // Nothing to do
   }
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       output_[i] = lagrange_.evaluate(input_[i]);
@@ -271,7 +273,7 @@ Sample P1LagrangeEvaluation::operator()( const Sample & inS ) const
   else
   {
     const P1LagrangeEvaluationComputeSamplePolicy policy( inS, result, *this );
-    TBB::ParallelFor( 0, size, policy );
+    TBBImplementation::ParallelFor( 0, size, policy );
   } // The input sample is different from
   callsNumber_.fetchAndAdd(size);
   return result;

@@ -2,7 +2,7 @@
 /**
  * @brief Proxy class for EvaluationImplementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -194,6 +194,34 @@ Evaluation EvaluationProxy::getMarginal(const Indices & indices) const
 UnsignedInteger EvaluationProxy::getCallsNumber() const
 {
   return evaluation_.getCallsNumber();
+}
+
+/* Linearity accessors */
+Bool EvaluationProxy::isLinear() const
+{
+  return evaluation_.isLinear();
+}
+
+Bool EvaluationProxy::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return evaluation_.isLinearlyDependent(index);
+}
+
+/* Is it safe to call in parallel? */
+Bool EvaluationProxy::isParallel() const
+{
+  return evaluation_.getImplementation()->isParallel();
+}
+
+/* Invalid values check accessor */
+void EvaluationProxy::setCheckOutput(const Bool checkOutput)
+{
+  evaluation_.setCheckOutput(checkOutput);
+}
+
+Bool EvaluationProxy::getCheckOutput() const
+{
+  return evaluation_.getCheckOutput();
 }
 
 

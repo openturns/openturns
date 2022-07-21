@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Type
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,6 +32,7 @@
 #include "openturns/IndicesCollection.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/MatrixImplementation.hxx"
+#include "openturns/SparseMatrix.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PointWithDescription.hxx"

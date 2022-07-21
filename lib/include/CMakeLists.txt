@@ -1,27 +1,22 @@
 #                                               -*- cmake -*-
 
-if (CMAKE_Fortran_COMPILER_WORKS)
-  # workaround for bug #0014358
-  if (CMAKE_VERSION VERSION_LESS 2.8.13 AND NOT DEFINED FortranCInterface_EXE)
-    set (FortranCInterface_EXE ${CMAKE_BINARY_DIR}/CMakeFiles/FortranCInterface/FortranCInterface${CMAKE_EXECUTABLE_SUFFIX})
-  endif ()
-
-  include (FortranCInterface)
-  FortranCInterface_HEADER (FortranCInterface.h)
-endif ()
-
 ot_add_current_dir_to_include_dirs ()
 ot_add_build_dir_to_include_dirs (${CMAKE_CURRENT_BINARY_DIR})
 
+string (REGEX REPLACE "(dev|rc[0-9])" "" _VERSION_MINOR "${CPACK_PACKAGE_VERSION_MINOR}")
+math (EXPR OPENTURNS_VERSION_NR "100000 * ${CPACK_PACKAGE_VERSION_MAJOR} + 100 * ${_VERSION_MINOR}")
+if (CPACK_PACKAGE_VERSION_PATCH)
+  math (EXPR OPENTURNS_VERSION_NR "${OPENTURNS_VERSION_NR} + ${CPACK_PACKAGE_VERSION_PATCH}")
+endif ()
+
+
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/OTconfig.h.in
-                 ${CMAKE_CURRENT_BINARY_DIR}/openturns/OTconfig.h
-                @ONLY
-              )
+                ${CMAKE_CURRENT_BINARY_DIR}/openturns/OTconfig.h
+                @ONLY)
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/installed-OTconfig.h.in
-                 ${CMAKE_CURRENT_BINARY_DIR}/openturns/installed-OTconfig.h
-                @ONLY
-              )
+                ${CMAKE_CURRENT_BINARY_DIR}/openturns/installed-OTconfig.h
+                @ONLY)
 
 if (NOT ot_configure_date)
   if (UNIX)
@@ -53,11 +48,12 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/OTconfigure_args.hxx.in
                 @ONLY
              )
 
-install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
+# with in-source build, installed-OTconfig.h must overwrite the internal openturns/OTconfig.h
 install (FILES ${CMAKE_CURRENT_BINARY_DIR}/openturns/installed-OTconfig.h
           DESTINATION ${OPENTURNS_INCLUDE_PATH}/openturns
           RENAME OTconfig.h
        )
+install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
 
 if (MSVC OR WINTEL)
     install (FILES pthread_win32/pthread.h

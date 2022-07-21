@@ -3,7 +3,7 @@
  *  @brief  This class provides a naive implementation of search
  *  of neighbours.  It is only meant for debugging purpose.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,15 +47,15 @@ public:
   explicit EnclosingSimplexMonotonic1D(const Sample & vertices);
 
   /** Virtual copy constructor */
-  virtual EnclosingSimplexMonotonic1D * clone() const;
+  EnclosingSimplexMonotonic1D * clone() const override;
 #ifndef SWIG
-  virtual EnclosingSimplexMonotonic1D * emptyClone() const;
+  EnclosingSimplexMonotonic1D * emptyClone() const override;
 #endif
 
-  void setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices);
+  void setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices) override;
 
   /** Get the index of the enclosing simlex of the given point */
-  virtual UnsignedInteger query(const Point & x) const;
+  UnsignedInteger query(const Point & x) const override;
   using EnclosingSimplexAlgorithmImplementation::query;
 
   /** Get the index of the enclosing simplex of the given scalar */
@@ -65,10 +65,10 @@ public:
   Indices queryScalar(const Point & values) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 private:
 

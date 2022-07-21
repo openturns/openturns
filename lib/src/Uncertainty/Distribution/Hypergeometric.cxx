@@ -2,7 +2,7 @@
 /**
  *  @brief The Hypergeometric distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,6 @@ Hypergeometric::Hypergeometric()
   // We set the dimension of the Hypergeometric distribution
   setDimension( 1 );
   computeProbabilities();
-  DistFunc::rDiscrete(probabilities_, base_, alias_);
   computeRange();
 }
 
@@ -131,7 +130,7 @@ Scalar Hypergeometric::computeLogPDF(const Point & point) const
 
   const Scalar k = point[0];
   // Check if the given point can be converted into an UnsignedInteger in a reasonable way
-  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return -SpecFunc::LogMaxScalar;
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return SpecFunc::LowestScalar;
   return DistFunc::logdHypergeometric(n_, k_, m_, static_cast<UnsignedInteger>(round(k)));
 }
 
@@ -372,6 +371,8 @@ Scalar Hypergeometric::computeScalarQuantile(const Scalar prob,
   LOGDEBUG(OSS() << "in Hypergeometric::computeScalarQuantile, prob=" << prob << ", tail=" << tail);
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
+  if (a == b)
+    return a;
   if (prob <= 0.0) return (tail ? b : a);
   if (prob >= 1.0) return (tail ? a : b);
   Scalar quantile = (a + b) / 2;

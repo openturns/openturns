@@ -16,7 +16,7 @@ nu : float, :math:`\nu > 0`
 Notes
 -----
 :math:`X` follows an Inverse ChiSquare distribution of parameter :math:`\nu` means that :math:`\dfrac{1}{X}` follows the :math:`\chi^2(\nu)` distribution, with :math:`\nu>0`.
-The Inverse ChiSquare distribution parametered by :math:`\nu` is exactly the :math:`InverseGamma(\dfrac{\nu}{2}, 2)` distribution.
+The Inverse ChiSquare distribution parametered by :math:`\nu` is exactly the :math:`InverseGamma(2, \dfrac{\nu}{2})` distribution.
 
 Its probability density function is defined as:
 

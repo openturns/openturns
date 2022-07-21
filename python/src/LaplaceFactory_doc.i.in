@@ -18,5 +18,29 @@ See also
 --------
 DistributionFactory, Laplace"
 
+// ---------------------------------------------------------------------
 
+%define OT_DistributionFactory_buildAsLaplace_doc
+"Build the Laplace distribution.
+
+**Available usages**:
+
+    buildAsLaplace(*sample*)
+
+    buildAsLaplace(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Laplace`
+    The built distribution."
+%enddef
+%feature("docstring") OT::LaplaceFactory::buildAsLaplace
+OT_DistributionFactory_buildAsLaplace_doc
 

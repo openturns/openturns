@@ -2,7 +2,7 @@
 /**
  *  @brief DirectionalSampling is an implementation of the directional sampling Montex Carlo simulation method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,20 +43,20 @@ public:
   typedef Collection<Scalar> ScalarCollection;
   typedef Distribution::Implementation            Implementation;
 
-  /** for save/load mecanism */
+  /** for save/load mechanism */
   DirectionalSampling();
 
   /** Constructor with parameters */
-  explicit DirectionalSampling(const Event & event);
+  explicit DirectionalSampling(const RandomVector & event);
 
   /** Constructor with parameters */
-  DirectionalSampling(const Event & event,
+  DirectionalSampling(const RandomVector & event,
                       const RootStrategy & rootStrategy,
                       const SamplingStrategy & samplingStrategy);
 
 
   /** Virtual constructor */
-  virtual DirectionalSampling * clone() const;
+  DirectionalSampling * clone() const override;
 
   /** Root strategy accessor */
   void setRootStrategy(const RootStrategy & rootStrategy);
@@ -67,18 +67,18 @@ public:
   SamplingStrategy getSamplingStrategy() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
   /** Compute the block sample and the points that realized the event */
-  Sample computeBlockSample();
+  Sample computeBlockSample() override;
 
   /** Compute the contribution of a direction to the probability given the roots of the performance function along the direction */
   Scalar computeContribution(const ScalarCollection & roots);

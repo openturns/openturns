@@ -2,13 +2,13 @@ Testing class Beta
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=Beta name=Beta dimension=1 r=2 t=5 a=-1 b=2
+class=Beta name=Beta dimension=1 alpha=2 beta=3 a=-1 b=2
 streamObject(const T & anObject)
-class=Beta name=Beta dimension=1 r=2 t=5 a=-1 b=2
+class=Beta name=Beta dimension=1 alpha=2 beta=3 a=-1 b=2
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=Beta name=Beta dimension=1 r=2 t=5 a=-1 b=2
-Distribution Beta(r = 2, t = 5, a = -1, b = 2)
+Distribution class=Beta name=Beta dimension=1 alpha=2 beta=3 a=-1 b=2
+Distribution Beta(alpha = 2, beta = 3, a = -1, b = 2)
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[0.456966]
@@ -17,30 +17,29 @@ mean=class=Point name=Unnamed dimension=1 values=[0.203901]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.365788]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=Point name=Unnamed dimension=1 values=[1]
-ddf     =class=Point name=Unnamed dimension=1 values=[-0.444444]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.444444]
-log pdf=-1.2164
-pdf     =0.296296
-pdf (FD)=0.296296
-cdf=0.888889
-ccdf=0.111111
-survival=0.111111
+Point= class=Point name=Unnamed dimension=1 values=[1.5]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.333333]
+log pdf=-2.37955
+pdf     =0.0925926
+pdf (FD)=0.0925926
+cdf=0.983796
+ccdf=0.0162037
+survival=0.0162037
 Inverse survival=class=Point name=Unnamed dimension=1 values=[-0.707166]
 Survival(inverse survival)=0.95
 quantile=class=Point name=Unnamed dimension=1 values=[1.25419]
 cdf(quantile)=0.95
 quantile (tail)=class=Point name=Unnamed dimension=1 values=[-0.707166]
 cdf (tail)=0.95
-characteristic function=(0.817458,0.156352)
-log characteristic function=(-0.183591,0.188983)
-pdf gradient     =class=Point name=Unnamed dimension=4 values=[0.353525,-0.152675,0.246914,0.197531]
-pdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[0.353525,-0.152675,0.246914,0.197531]
-cdf gradient     =class=Point name=Unnamed dimension=4 values=[-0.186185,0.0973767,-0.0987654,-0.197531]
-cdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[-0.186185,0.0973767,-0.0987654,-0.197531]
+characteristic function=(0.63259,0.167709)
+log characteristic function=(-0.42397,0.259153)
+pdf gradient     =class=Point name=Unnamed dimension=4 values=[0.083427,-0.111891,0.0864198,0.246914]
+pdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[0.083427,-0.111891,0.0864198,0.246914]
+cdf gradient     =class=Point name=Unnamed dimension=4 values=[-0.0154012,0.0251751,-0.0154321,-0.0771605]
+cdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[-0.0154012,0.0251751,-0.0154321,-0.0771605]
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.868627] upper bound=class=Point name=Unnamed dimension=1 values=[1.31692] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Beta(r = 2, t = 5, a = -1, b = 2)) gradientImplementation=MinimumVolumeLevelSetGradient(Beta(r = 2, t = 5, a = -1, b = 2)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Beta(r = 2, t = 5, a = -1, b = 2)) level=1.83159
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Beta(alpha = 2, beta = 3, a = -1, b = 2)) gradientImplementation=MinimumVolumeLevelSetGradient(Beta(alpha = 2, beta = 3, a = -1, b = 2)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Beta(alpha = 2, beta = 3, a = -1, b = 2)) level=1.83159
 beta=0.160159
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.797242] upper bound=class=Point name=Unnamed dimension=1 values=[1.41764] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -58,11 +57,11 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[r : 2, t : 5, a : -1, b : 2]]
+parameters=[[alpha : 2, beta : 3, a : -1, b : 2]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[-0.2]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.2]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[-0.0857143]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.0857143]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[-0.047619]
-Standard representative=Beta(r = 2, t = 5, a = -1, b = 1)
+Standard representative=Beta(alpha = 2, beta = 3, a = -1, b = 1)

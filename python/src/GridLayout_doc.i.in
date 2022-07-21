@@ -1,0 +1,146 @@
+%feature("docstring") OT::GridLayout
+"Organize subgraphs in a grid.
+
+Parameters
+----------
+nb_rows : int
+    Number of grid rows
+nb_cols : int
+    Number of grid columns
+
+Examples
+--------
+>>> import openturns as ot
+>>> grid = ot.GridLayout(2, 3)
+>>> for j in range(grid.getNbColumns()):
+...    beta = 1.0 + j
+...    grid.setGraph(0, j, ot.Gumbel(beta, 0.0).drawPDF())
+...    grid.setGraph(1, j, ot.Gumbel(beta, 0.0).drawCDF())"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::getNbRows
+"Row count accessor (grid layout only).
+
+Returns
+-------
+nb_rows : int
+    Number of grid rows."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::getNbColumns
+"Column count accessor (grid layout only).
+
+Returns
+-------
+nb_rows : int
+    Number of grid columns."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::getGraph
+"Subgraph accessor (grid layout only).
+
+Parameters
+----------
+i : int
+    Row index
+j : int
+    Column index
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Subgraph at (i, j)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::setGraph
+"Subgraph accessor (grid layout only).
+
+Parameters
+----------
+i : int
+    Row index
+j : int
+    Column index
+graph : :class:`~openturns.Graph`
+    Subgraph at (i, j)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::setTitle
+"Accessor to the title.
+
+Parameters
+----------
+title : str
+    Graph title."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::getTitle
+"Accessor to the title.
+
+Returns
+-------
+title : str
+    Graph title."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::setLegendPosition
+"Accessor to the legend's position of the subgraphs.
+
+Parameters
+----------
+position : str
+    Legend's position used for the subgraphs contained inside the Graph."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::setAxes
+"Accessor to the indication of axes' presence on the Graph.
+
+Parameters
+----------
+axes : bool
+    *True* to draw the axes, *False* to hide the axes."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::getGraphCollection
+"Accessor to the collection of graphs.
+
+Returns
+-------
+coll : :class:`~openturns.Collection` of :class:`~openturns.Graph`
+    The graphs stored into the :class:`~openturns.GridLayout`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::setGraphCollection
+"Accessor to the collection of graphs.
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.Graph`
+    The graphs to store into the :class:`~openturns.GridLayout`. The collection must have at most :math:`nbRows\times nbColumns` elements."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::setLayout
+"Accessor to the layout.
+
+Parameters
+----------
+nbRows : int
+    The new number of rows.
+nbColumns : int
+    The new number of columns.
+
+Notes
+-----
+If the new layout contains fewer graphs than the old layout, the remaining graphs are removed from the layout."

@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for MeixnerDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,7 +62,7 @@ Distribution MeixnerDistributionFactory::build() const
 MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const Sample & sample) const
 {
   UnsignedInteger size = sample.getSize();
-  if (size < 4) throw InvalidArgumentException(HERE) << "Error: cannot build a MeixnerDistribution distribution from a sample of size less than 4.";
+  if (size < 4) throw InvalidArgumentException(HERE) << "Error: cannot build a MeixnerDistribution distribution from a sample of size < 4";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a MeixnerDistribution distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar gamma1 = sample.computeSkewness()[0];
   const Scalar gamma2 = sample.computeKurtosis()[0];

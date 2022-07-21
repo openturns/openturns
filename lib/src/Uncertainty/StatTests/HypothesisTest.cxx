@@ -2,7 +2,7 @@
 /**
  *  @brief StatTest implements statistical tests
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,10 +33,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-HypothesisTest::HypothesisTest()
-{
-}
-
 
 /* Independence test between 2 scalar scalar samples for discrete distributions
  * The samples here are issued from discrete distributions. Thus there is a transformation
@@ -50,12 +46,12 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the ChiSquared test can be performed only between two 1D samples.";
   const UnsignedInteger size = firstSample.getSize();
   if (secondSample.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the ChiSquared test can be performed only between two samples of same size.";
-  
+
   // Ensure that more than 80 % of classes contain at least nMin points
   const UnsignedInteger nMin = ResourceMap::GetAsUnsignedInteger("FittingTest-ChiSquaredMinimumBinCount");
-  if (size < 2 * nMin) 
-      throw InvalidArgumentException(HERE) << "Error: ChiSquared test cannot be used with a sample size smaller than " << 2 * nMin 
-      << ". Reduce the value of \"FittingTest-ChiSquaredMinimumBinCount below " << size / 2 << " if you really want to use this test.";
+  if (size < 2 * nMin)
+    throw InvalidArgumentException(HERE) << "Error: ChiSquared test cannot be used with a sample size smaller than " << 2 * nMin
+                                         << ". Reduce the value of \"FittingTest-ChiSquaredMinimumBinCount below " << size / 2 << " if you really want to use this test.";
 
   // Derive unique values and frequencies for each 1D sample
   // first sample --> table
@@ -70,7 +66,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   Point binX(0);
   const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   UnsignedInteger cumulatedPoints = 0;
-  ticksX.add(tableX(0 ,0) - epsilon * (1.0 + std::abs(tableX(0, 0))));
+  ticksX.add(tableX(0, 0) - epsilon * (1.0 + std::abs(tableX(0, 0))));
 
   for (UnsignedInteger i = 0; i < tableX.getSize(); ++i)
   {
@@ -94,8 +90,8 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   }
   if (binNumberX < 2)
     throw InvalidArgumentException(HERE) << "Error: the adjusted bin number=" << binNumberX << " must be at least equal to 2.";
-    
- 
+
+
   // second sample table
   const UserDefined discreteYDistribution(secondSample);
   const Sample tableY(discreteYDistribution.getSupport());
@@ -107,7 +103,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   Point ticksY(0);
   Point binY(0);
   cumulatedPoints = 0;
-  ticksY.add(tableY(0 ,0) - epsilon * (1.0 + std::abs(tableY(0, 0))));
+  ticksY.add(tableY(0, 0) - epsilon * (1.0 + std::abs(tableY(0, 0))));
   for (UnsignedInteger i = 0; i < tableY.getSize(); ++i)
   {
     cumulatedPoints += (frequenciesY[i] + epsilon) * size;
@@ -131,7 +127,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   if (binNumberY < 2)
     throw InvalidArgumentException(HERE) << "Error: the adjusted bin number=" << binNumberY << " must be at least equal to 2.";
 
-  // Now we define the table with elements E_{i,j} where E[i,j] counts the occurence of the element [xi, yj]
+  // Now we define the table with elements E_{i,j} where E[i,j] counts the occurrence of the element [xi, yj]
   // Bivariate sample
   Sample data(firstSample);
   data.stack(secondSample);
@@ -144,8 +140,8 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
 
   for (UnsignedInteger k = 0; k < table.getSize(); ++k)
   {
-    const Scalar xi = table(k , 0);
-    const Scalar yj = table(k , 1);
+    const Scalar xi = table(k, 0);
+    const Scalar yj = table(k, 1);
     Bool condition = true;
     UnsignedInteger indexI = 0;
     while (condition)
@@ -153,7 +149,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
       indexI++;
       condition = (xi > ticksX[indexI]) && (indexI < binNumberX);
     }
-    // 
+    //
     condition = true;
     indexI--;
     UnsignedInteger indexJ = 0;
@@ -178,12 +174,12 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   {
     for (UnsignedInteger j = 0; j < binNumberY; ++j)
     {
-     theoretical = binX[i] * binY[j] / size;
-     squaredSum += std::pow( pointsInClasses[index]  - theoretical, 2) / theoretical;
-     index++;
+      theoretical = binX[i] * binY[j] / size;
+      squaredSum += std::pow( pointsInClasses[index]  - theoretical, 2) / theoretical;
+      index++;
     }
   }
-  const UnsignedInteger df = (binNumberX - 1)*(binNumberY -1);
+  const UnsignedInteger df = (binNumberX - 1) * (binNumberY - 1);
   const Scalar pValue =  DistFunc::pGamma(0.5 * df, 0.5 * squaredSum, true);
   Log::Debug ( OSS() << "In ChiSquared independence test : df = " << df << ", statistic = " << squaredSum << ", pValue = " << pValue );
   return TestResult("ChiSquared", pValue > level, pValue, level, squaredSum);
@@ -205,9 +201,9 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
   // statistic value
   Scalar statistic;
   if ((rho <= -1.0 + SpecFunc::Precision) || (rho >=  1.0 - SpecFunc::Precision))
-     statistic = SpecFunc::MaxScalar;
+    statistic = SpecFunc::MaxScalar;
   else
-     statistic = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
+    statistic = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
   // Here we check if rho is significantly different from 0
   const Scalar pValue = 2.0 * DistFunc::pPearsonCorrelation(size, rho, true);
   return TestResult("Pearson", pValue > level, pValue, level, statistic);
@@ -215,8 +211,8 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
 
 /* Two-sample Kolmogorov–Smirnov test */
 TestResult HypothesisTest::TwoSamplesKolmogorov(const Sample & sample1,
-                                                const Sample & sample2,
-                                                const Scalar level)
+    const Sample & sample2,
+    const Scalar level)
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
   if ((sample1.getDimension() != 1) || (sample2.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D samples";
@@ -274,9 +270,9 @@ TestResult HypothesisTest::Spearman(const Sample & firstSample,
   // statistic value
   Scalar statistic;
   if ((rho <= -1.0 + SpecFunc::Precision) || (rho >=  1.0 - SpecFunc::Precision))
-     statistic = SpecFunc::MaxScalar;
+    statistic = SpecFunc::MaxScalar;
   else
-     statistic = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
+    statistic = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
   // Here we check if rho is significantly different from 0
   const Scalar pValue = 2.0 * DistFunc::pSpearmanCorrelation(size, std::abs(rho), true, ties);
   return TestResult("Spearman", pValue > level, pValue, level, statistic);
@@ -288,7 +284,7 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const Sample
     const Indices & selection,
     const Scalar level)
 {
-  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Pearson test can be performed only with an 1-d ouput sample.";
+  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Pearson test can be performed only with an 1-d output sample.";
   if (!selection.check(firstSample.getDimension())) throw InvalidArgumentException(HERE) << "Error: invalid selection, repeated indices or values out of bound";
   const UnsignedInteger size = selection.getSize();
   TestResultCollection results(size);
@@ -303,7 +299,7 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialSpearman(const Sampl
     const Indices & selection,
     const Scalar level)
 {
-  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Spearman test can be performed only with an 1-d ouput sample.";
+  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Spearman test can be performed only with an 1-d output sample.";
   if (!selection.check(firstSample.getDimension())) throw InvalidArgumentException(HERE) << "Error: invalid selection, repeated indices or values out of bound";
   const UnsignedInteger size = selection.getSize();
   TestResultCollection results(size);

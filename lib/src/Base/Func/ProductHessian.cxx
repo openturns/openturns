@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the composition between numerical math hessians
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,8 +45,8 @@ ProductHessian::ProductHessian(const Evaluation & leftEvaluation,
     rightHessian_(rightHessian)
 {
   // Check the compatibility of the evaluations
-  if (leftEvaluation_.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the left function must have an output dimension equal to 1.";
-  if (leftEvaluation_.getInputDimension() != rightEvaluation_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the two functions must have the same input dimension.";
+  if (leftEvaluation_.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the left function must have an output dimension equal to 1, not " << leftEvaluation_.getOutputDimension();
+  if (leftEvaluation_.getInputDimension() != rightEvaluation_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the two functions must have the same input dimension, but left=" << leftEvaluation_.getInputDimension() << " and right=" << rightEvaluation_.getInputDimension();
 
   // Check the compatibility of the gradients
   if ((leftGradient_.getInputDimension()  != rightGradient_.getInputDimension()) ||

@@ -1,0 +1,6 @@
+distribution= class=PlackettCopula name=PlackettCopula dimension=2 theta=1.5
+Estimated distribution= class=PlackettCopula name=PlackettCopula dimension=2 theta=1.42321
+PlackettCopula          = PlackettCopula(theta = 1.5)
+Estimated plackettCopula= PlackettCopula(theta = 1.42321)
+Default plackettCopula= PlackettCopula(theta = 2)
+PlackettCopula from parameters= PlackettCopula(theta = 1.5)

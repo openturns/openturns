@@ -2,7 +2,7 @@
 /**
  *  @brief The class building chaos expansions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,22 +34,18 @@
 #include "openturns/LeastSquaresStrategy.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
-#include "openturns/KernelSmoothing.hxx"
-#include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/UserDefined.hxx"
-#include "openturns/DistributionFactory.hxx"
-#include "openturns/ComposedDistribution.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/LeastSquaresMetaModelSelectionFactory.hxx"
 #include "openturns/LARS.hxx"
 #include "openturns/KFold.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
-#include "openturns/FittingTest.hxx"
 #include "openturns/DistributionTransformation.hxx"
-#include "openturns/HypothesisTest.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -153,98 +149,62 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
 }
 
-Distribution FunctionalChaosAlgorithm::BuildDistribution(const Sample & inputSample)
+
+/* Constructor */
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
+    const Distribution & distribution)
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
+  , adaptiveStrategy_()
+  , projectionStrategy_()
+  , maximumResidual_(ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual"))
 {
-  // Recover the distribution, taking into account that we look for performance
-  // so we avoid to rebuild expensive distributions as much as possible
+  // Check sample size
+  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
+
   const UnsignedInteger inputDimension = inputSample.getDimension();
-  // For the dependence structure, we use the Spearman independence test to decide between an independent and a Normal copula.
-  Bool isIndependent = true;
-  for (UnsignedInteger j = 0; j < inputDimension && isIndependent; ++ j)
+  Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
+  for (UnsignedInteger i = 0; i < inputDimension; ++ i)
+    polynomials[i] = StandardDistributionPolynomialFactory(getDistribution().getMarginal(i));
+
+  const Scalar qNorm = ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-QNorm");
+  EnumerateFunction enumerate;
+  if (std::abs(qNorm-1.0) <= SpecFunc::Precision) enumerate = LinearEnumerateFunction(inputDimension);
+  else enumerate = HyperbolicAnisotropicEnumerateFunction(inputDimension, qNorm);
+  OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
+
+  const Bool sparse = ResourceMap::GetAsBool("FunctionalChaosAlgorithm-Sparse");
+  if (sparse)
   {
-    const Sample marginalJ = inputSample.getMarginal(j);
-    for (UnsignedInteger i = j + 1; i < inputDimension && isIndependent; ++ i)
-    {
-      TestResult testResult(HypothesisTest::Spearman(inputSample.getMarginal(i), marginalJ));
-      isIndependent = isIndependent && testResult.getBinaryQualityMeasure();
-    }
+    const String fittingAlgorithm(ResourceMap::GetAsString("FunctionalChaosAlgorithm-FittingAlgorithm"));
+    if (fittingAlgorithm == "CorrectedLeaveOneOut")
+      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut()));
+    else if (fittingAlgorithm == "KFold")
+      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
+    else
+      throw InvalidArgumentException(HERE) << "Unknown fitting algorithm: " << fittingAlgorithm;
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and " << fittingAlgorithm);
   }
-  Collection< Distribution > marginals(inputDimension);
-  // The strategy for the marginals is to find the best continuous 1-d parametric model else fallback to a kernel smoothing
-  KernelSmoothing ks;
-  Collection< DistributionFactory > factories(DistributionFactory::GetContinuousUniVariateFactories());
-  const Description inputDescription(inputSample.getDescription());
-  for (UnsignedInteger i = 0; i < inputDimension; ++i)
+  else
   {
-    TestResult bestResult;
-    // Here we remove the duplicate entries in the marginal sample as we are suppose to have a continuous distribution. The duplicates are mostly due to truncation in the file export.
-    const Sample marginalSample(inputSample.getMarginal(i).sortUnique());
-    Collection<Distribution> possibleDistributions(0);
-    for (UnsignedInteger j = 0; j < factories.getSize(); ++j)
-      try
-      {
-        possibleDistributions.add(factories[j].build(marginalSample));
-      }
-      catch (...)
-      {
-        // Just skip the factories incompatible with the current marginal sample
-      }
-    const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, possibleDistributions, bestResult));
-    // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
-    if (bestResult.getPValue() >= ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
-    else marginals[i] = ks.build(marginalSample);
-    marginals[i].setDescription(Description(1, inputDescription[i]));
+    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy");
   }
 
-  ComposedDistribution distribution(marginals);
-  if (!isIndependent)
-    distribution.setCopula(NormalCopulaFactory().build(inputSample));
-  return distribution;
+  // total basis size can be either parametrized via MaximumTotalDegree or BasisSize
+  const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree");
+  const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize");
+  const UnsignedInteger totalSize = basisSize ? basisSize : enumerate.getBasisSizeFromTotalDegree(maximumTotalDegree);
+  LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a basis size of " << totalSize);
+  adaptiveStrategy_ = FixedStrategy(basis, totalSize);
 }
-
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample)
-  : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample))
-  , adaptiveStrategy_()
-  , projectionStrategy_()
-  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  : FunctionalChaosAlgorithm(inputSample, outputSample, BuildDistribution(inputSample))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
-  // Recover the distribution
-  LOGINFO("In FunctionalChaosAlgorithm, identify marginal distribution");
-  setDistribution(BuildDistribution(inputSample));
-  const UnsignedInteger inputDimension = inputSample.getDimension();
-  Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
-  for (UnsignedInteger i = 0; i < inputDimension; ++ i)
-  {
-    polynomials[i] = StandardDistributionPolynomialFactory(getDistribution().getMarginal(i));
-  }
-
-  const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-QNorm" ));
-  OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
-  const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree" );
-  // For small sample size, use sparse regression
-  LOGINFO("In FunctionalChaosAlgorithm, select adaptive strategy");
-  if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-SmallSampleSize" ))
-  {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and KFold for a total degree of " << maximumTotalDegree);
-  } // Small sample
-  else if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-LargeSampleSize" ))
-  {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut()));
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and CorrectedLeaveOneOut for a total degree of " << maximumTotalDegree);
-  } // Medium sample
-  else
-  {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy for a total degree of " << maximumTotalDegree);
-  } // Large sample
-  const UnsignedInteger totalSize = enumerate.getStrataCumulatedCardinal(maximumTotalDegree);
-  adaptiveStrategy_ = FixedStrategy(basis, totalSize);
+  // Nothing to do
 }
 
 /* Constructor */
@@ -330,13 +290,17 @@ void FunctionalChaosAlgorithm::run()
   inverseTransformation_ = transformation.inverse();
 
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
-  LOGINFO("Transform the input sample in the measure space if needed");
   const Bool noTransformation = (measure == distribution_);
   if (noTransformation) composedModel_ = model_;
   else composedModel_ = ComposedFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
   const Sample initialInputSample(projectionStrategy_.getInputSample());
-  if (databaseProjection && !noTransformation) projectionStrategy_.setInputSample(transformation_(initialInputSample));
+  if (databaseProjection && !noTransformation)
+  {
+    LOGINFO("Transform the input sample in the measure space");
+    const Sample transformedSample(transformation_(initialInputSample));
+    projectionStrategy_.setInputSample(transformedSample);
+  }
   // Second, compute the results for each marginal output and merge
   // these marginal results.
   // As all the components have been projected using the same basis,
@@ -347,6 +311,7 @@ void FunctionalChaosAlgorithm::run()
   Point residuals(outputDimension);
   Point relativeErrors(outputDimension);
   std::map<UnsignedInteger, Point> coefficientsMap;
+  const Scalar smallCoefficient = ResourceMap::GetAsScalar("DualLinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
   {
     LOGINFO(OSS() << "Work on output marginal " << outputIndex << " over " << outputDimension - 1);
@@ -363,7 +328,7 @@ void FunctionalChaosAlgorithm::run()
       // Deal only with non-zero coefficients
       const Scalar marginalAlpha_kj = marginalAlpha_k[j];
       // To avoid -0.0
-      if (std::abs(marginalAlpha_kj) != 0.0)
+      if (std::abs(marginalAlpha_kj) > smallCoefficient)
       {
         // Current index in the decomposition of the current marginal output
         const UnsignedInteger index = marginalIndices[j];

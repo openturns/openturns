@@ -2,7 +2,7 @@
 /**
  *  @brief A math expression parser
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -71,6 +71,7 @@ SymbolicParser::SymbolicParser(const Description & outputVariablesNames)
   if (name == "MuParser")
     throw NotYetImplementedException(HERE) << "MuParser does not support explicit output variables, use ExprTk instead.";
 #endif
+  (void) outputVariablesNames;
   throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
 }
 
@@ -118,5 +119,16 @@ Sample SymbolicParser::operator() (const Sample & inS) const
   return getImplementation()->operator()(inS);
 }
 
+/* Invalid values check accessor */
+void SymbolicParser::setCheckOutput(const Bool checkOutput)
+{
+  copyOnWrite();
+  getImplementation()->setCheckOutput(checkOutput);
+}
+
+Bool SymbolicParser::getCheckOutput() const
+{
+  return getImplementation()->getCheckOutput();
+}
 
 END_NAMESPACE_OPENTURNS

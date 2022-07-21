@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NearestPointChecker checks wether the nearest point found is really the nearestpoint
+ *  @brief NearestPointChecker checks whether the nearest point found is really the nearestpoint
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class NearestPointChecker
- *  checks wether the nearest point found is really the nearestpoint
+ *  checks whether the nearest point found is really the nearestpoint
  *
  */
 
@@ -54,7 +54,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual NearestPointChecker * clone() const;
+  NearestPointChecker * clone() const override;
 
   /** levelFunction  accessor */
   void setLevelFunction(const Function & levelFunction);
@@ -87,10 +87,10 @@ public:
   const Sample & getSample() const;
 
   /** Performs the actual test */
-  void  run();
+  void run();
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 private:
 

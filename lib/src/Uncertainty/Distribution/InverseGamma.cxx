@@ -2,7 +2,7 @@
 /**
  *  @brief The InverseGamma distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,8 +35,8 @@ static const Factory<InverseGamma> Factory_InverseGamma;
 /* Default constructor */
 InverseGamma::InverseGamma()
   : ContinuousDistribution()
-  , k_(1.0)
   , lambda_(1.0)
+  , k_(1.0)
   , normalizationFactor_(0.0)
 {
   setName("InverseGamma");
@@ -45,11 +45,11 @@ InverseGamma::InverseGamma()
 }
 
 /* Parameters constructor */
-InverseGamma::InverseGamma(const Scalar k,
-                           const Scalar lambda)
+InverseGamma::InverseGamma(const Scalar lambda,
+                           const Scalar k)
   : ContinuousDistribution()
-  , k_(0.0)
   , lambda_(0.0)
+  , k_(0.0)
   , normalizationFactor_(0.0)
 {
   setName("InverseGamma");
@@ -77,15 +77,15 @@ String InverseGamma::__repr__() const
   oss << "class=" << InverseGamma::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " k=" << k_
-      << " lambda=" << lambda_;
+      << " lambda=" << lambda_
+      << " k=" << k_;
   return oss;
 }
 
 String InverseGamma::__str__(const String & ) const
 {
   OSS oss;
-  oss << getClassName() << "(k = " << k_ << ", lambda = " << lambda_ << ")";
+  oss << getClassName() << "(lambda = " << lambda_ << ", k = " << k_ << ")";
   return oss;
 }
 
@@ -211,7 +211,7 @@ Scalar InverseGamma::computeLogPDF(const Point & point) const
 
   // From textbook, we have log(PDF(x)) =  log(lambda)-log(Gamma(k))-(k+1)*log(lambda*x)-1/(lambda*x)
   const Scalar u = lambda_ * point[0];
-  if (u <= 0.0) return SpecFunc::LogMinScalar;
+  if (u <= 0.0) return SpecFunc::LowestScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - (k-1)*log(k)-(k+1)*log(lambda*x)-1/(lambda*x)
   if (k_ >= 6.9707081224932495879) return normalizationFactor_ - (k_ + 1.0) * std::log(k_ * u) - 1.0 / u;
@@ -265,8 +265,8 @@ Point InverseGamma::computePDFGradient(const Point & point) const
   const Scalar x = point[0];
   if (x <= 0.0) return pdfGradient;
   const Scalar pdf = computePDF(point);
-  pdfGradient[0] = -(std::log(lambda_) + std::log(x) + SpecFunc::DiGamma(k_)) * pdf;
-  pdfGradient[1] = (1.0 / (lambda_ * x) - k_) * pdf / lambda_;
+  pdfGradient[0] = (1.0 / (lambda_ * x) - k_) * pdf / lambda_;
+  pdfGradient[1] = -(std::log(lambda_) + std::log(x) + SpecFunc::DiGamma(k_)) * pdf;
   return pdfGradient;
 }
 
@@ -281,8 +281,8 @@ Point InverseGamma::computeCDFGradient(const Point & point) const
   const Scalar lambdaXInverse = 1.0 / (lambda_ * x);
   const Scalar pdf = computePDF(x);
   const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
-  cdfGradient[0] = (DistFunc::pGamma(k_ + eps, lambdaXInverse, true) - DistFunc::pGamma(k_ - eps, lambdaXInverse, true)) / (2.0 * eps);
-  cdfGradient[1] = pdf * x / lambda_;
+  cdfGradient[0] = pdf * x / lambda_;
+  cdfGradient[1] = (DistFunc::pGamma(k_ + eps, lambdaXInverse, true) - DistFunc::pGamma(k_ - eps, lambdaXInverse, true)) / (2.0 * eps);
   return cdfGradient;
 }
 
@@ -348,8 +348,8 @@ void InverseGamma::computeCovariance() const
 Point InverseGamma::getParameter() const
 {
   Point point(2);
-  point[0] = k_;
-  point[1] = lambda_;
+  point[0] = lambda_;
+  point[1] = k_;
   return point;
 }
 
@@ -365,8 +365,8 @@ void InverseGamma::setParameter(const Point & parameter)
 Description InverseGamma::getParameterDescription() const
 {
   Description description(2);
-  description[0] = "k";
-  description[1] = "lambda";
+  description[0] = "lambda";
+  description[1] = "k";
   return description;
 }
 
@@ -374,8 +374,8 @@ Description InverseGamma::getParameterDescription() const
 void InverseGamma::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "k_", k_ );
   adv.saveAttribute( "lambda_", lambda_ );
+  adv.saveAttribute( "k_", k_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
 }
 
@@ -383,8 +383,8 @@ void InverseGamma::save(Advocate & adv) const
 void InverseGamma::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "k_", k_ );
   adv.loadAttribute( "lambda_", lambda_ );
+  adv.loadAttribute( "k_", k_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
   computeRange();
 }

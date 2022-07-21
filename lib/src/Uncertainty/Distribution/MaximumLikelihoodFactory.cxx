@@ -2,7 +2,7 @@
 /**
  *  @brief Maximum likelihood estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,8 +28,6 @@
 #include "openturns/Log.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/MethodBoundEvaluation.hxx"
-#include "openturns/Normal.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
@@ -57,6 +55,9 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory(const Distribution & distribu
   // Initialize optimization solver parameter using the ResourceMap
   String solverName(ResourceMap::GetAsString("MaximumLikelihoodFactory-DefaultOptimizationAlgorithm"));
   solver_ = OptimizationAlgorithm::Build(solverName);
+  TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
+  if (tnc)
+    tnc->setIgnoreFailure(true);
   solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
@@ -164,13 +165,13 @@ public:
     }
     catch (Exception &)
     {
-      return Point(1, SpecFunc::LogMinScalar);
+      return Point(1, SpecFunc::LowestScalar);
     }
     // Take into account the mean over sample
     // Parallelization (evaluation over a sample) is handled by distribution_
     const Sample logPdfSample = distribution.computeLogPDF(sample_);
     const Scalar logPdf = logPdfSample.computeMean()[0];
-    result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LogMinScalar;
+    result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LowestScalar;
     return Point(1, result);
   }
 
@@ -283,17 +284,16 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
     throw InvalidArgumentException(HERE) << "Error: known values size must match indices";
 
-  // Define NumericalMathEvaluation using the LogLikelihoodEvaluation wrapper
+  // Define evaluation
   LogLikelihoodEvaluation logLikelihoodWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   Function logLikelihood(logLikelihoodWrapper.clone());
-  // Define NumericalMathGradient using the LogLikelihoodEvaluation wrapper
+  // Define gradient
   LogLikelihoodGradient logLikelihoodGradientWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   logLikelihood.setGradient(logLikelihoodGradientWrapper.clone());
 
   // Define optimization problem
-  OptimizationProblem problem;
+  OptimizationProblem problem(logLikelihood);
   problem.setMinimization(false);
-  problem.setObjective(logLikelihood);
   problem.setBounds(optimizationBounds_);
   problem.setInequalityConstraint(optimizationInequalityConstraint_);
 
@@ -313,6 +313,7 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
     solver.setStartingPoint(parameter);
   }
   solver.setProblem(problem);
+  solver.setVerbose(Log::HasInfo());
   solver.run();
 
   Point effectiveParameter(effectiveParameterSize);
@@ -337,12 +338,32 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
 }
 
 
+Distribution MaximumLikelihoodFactory::build(const Point & parameter) const
+{
+  Distribution result(distribution_);
+  // set known values
+  Point parameter2(parameter);
+  UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
+  for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
+  {
+    parameter2[knownParameterIndices_[j]] = knownParameterValues_[j];
+  }
+  result.setParameter(parameter2);
+  return result;
+}
+
+
+Distribution MaximumLikelihoodFactory::build() const
+{
+  return build(distribution_.getParameter());
+}
+
 Distribution MaximumLikelihoodFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));
   result.setDescription(sample.getDescription());
-  return result.getImplementation();
+  return result;
 }
 
 

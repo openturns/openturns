@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class EmpiricalBernsteinCopula for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,11 +28,10 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  setRandomGenerator();
-
+  PlatformInfo::SetNumericalPrecision(5);
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 2;
     EmpiricalBernsteinCopula copula(Normal(2).getSample(12), 3);
     copula.setName("a empiricalBernstein copula");
@@ -74,7 +73,6 @@ int main(int, char *[])
     Scalar pointCDF = copula.computeCDF( point );
     fullprint << "point= " << point
               << " ddf=" << pointDDF.__str__()
-              << " ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point).__str__()
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;
@@ -106,7 +104,7 @@ int main(int, char *[])
 
     // Covariance and correlation
     UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
-    PlatformInfo::SetNumericalPrecision(4);
+    PlatformInfo::SetNumericalPrecision(3);
     CovarianceMatrix covariance = copula.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
     CorrelationMatrix correlation = copula.getCorrelation();
@@ -119,7 +117,7 @@ int main(int, char *[])
     // Extract the marginals
     for (UnsignedInteger i = 0; i < dim; i++)
     {
-      Copula margin(copula.getMarginal(i));
+      Distribution margin(copula.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;
       fullprint << "margin PDF=" << margin.computePDF(Point(1, 0.25)) << std::endl;
       fullprint << "margin CDF=" << margin.computeCDF(Point(1, 0.25)) << std::endl;
@@ -132,7 +130,7 @@ int main(int, char *[])
     indices[0] = 1;
     indices[1] = 0;
     fullprint << "indices=" << indices << std::endl;
-    Copula margins(copula.getMarginal(indices));
+    Distribution margins(copula.getMarginal(indices));
     fullprint << "margins=" << margins << std::endl;
     fullprint << "margins PDF=" << margins.computePDF(Point(2, 0.25)) << std::endl;
     fullprint << "margins CDF=" << margins.computeCDF(Point(2, 0.25)) << std::endl;
@@ -140,6 +138,10 @@ int main(int, char *[])
     fullprint << "margins quantile=" << quantile << std::endl;
     fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
+
+    // Test entropy computation in higher dimension
+    EmpiricalBernsteinCopula copula6D(Normal(6).getSample(8), 4);
+    fullprint << "Entropy in higher dimension=" << copula6D.computeEntropy() << std::endl;
   }
   catch (TestFailed & ex)
   {

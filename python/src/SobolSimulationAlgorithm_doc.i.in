@@ -24,20 +24,24 @@ The algorithm can operate on a multivariate model :math:`f`, in this case it ope
 
 Several estimators are available (Saltelli, Jansen, ...).
 
-The algorithms stops when, on all components, first and total order indices haved been estimated with enough precision or the first order indices are
-*separable* from the total order indices:
+Let us denote by :math:`n_X` the number of input variables. 
+For any :math:`j=1,...,n_X`, let us denote by :math:`\Phi_j^F` (resp. :math:`\Phi_j^T`) the cumulated distribution 
+function of the gaussian asymptotic distribution of the estimator 
+of the Sobol' first (resp. total) order indice.
+Let :math:`\alpha\in[0,1]` be the level of the confidence interval and :math:`\epsilon\in(0,1]` the 
+length of this confidence interval. 
+The algorithms stops when, on all components, first and total order indices haved been 
+estimated with enough precision.
+
+The precision is said to be sufficient if the length of the :math:`\alpha`-level confidence interval 
+is smaller than :math:`\epsilon`:
 
 .. math::
 
-    \forall{j}
+    (\Phi_j^F)^{-1}(1-\alpha/2) - (\Phi_j^F)^{-1}(\alpha/2) \leq \epsilon \textrm{ and } 
+    (\Phi_j^T)^{-1}(1-\alpha/2) - (\Phi_j^T)^{-1}(\alpha/2) \leq \epsilon
 
-    \Phi^{F}_j(1-\alpha)-\Phi^{F}_j(\alpha) \leq \epsilon \cap \Phi^{T}_j(1-\alpha)-\Phi^{T}_j(\alpha) \leq \epsilon
-
-    or
-
-    \Phi^{T}_j(\alpha) \ge \Phi^{F}_j(1-\alpha)
-
-
+for all :math:`j=1,...,n_X`.
 
 See also
 --------
@@ -195,5 +199,5 @@ batchSize : int
 
 Returns
 -------
-distibution : :class:`~openturns.Distribution`
+distribution : :class:`~openturns.Distribution`
     Distribution of the random variable."

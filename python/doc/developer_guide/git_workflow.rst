@@ -17,8 +17,8 @@ Here are the steps required to propose a modification with git:
 
 2. Register on `GitHub <https://github.com>`_ and add a new ssh key in https://github.com/settings/ssh::
 
-    ssh-keygen -f ~/.ssh/id_rsa-github
-    cat ~/.ssh/id_rsa-github.pub
+    ssh-keygen -t ed25519 -C "johndoe@example.com"
+    cat ~/.ssh/id_ed25519.pub
 
 
 3. Fork the library repository https://github.com/openturns/openturns and clone it via ssh::
@@ -41,7 +41,10 @@ Here are the steps required to propose a modification with git:
     git commit
 
 To write a nice commit message, keep a short commit title (less than 50 characters),
-leave a blank line, then add a mor detailed description.
+leave a blank line, then add a more detailed description.
+If the commit fixes an issue, add `Closes #NNN` to the message body that 
+way it will be closed automatically on merge.
+Also update the ChangeLog file accordingly.
 
 6. Push the new branch to your personal repository::
 

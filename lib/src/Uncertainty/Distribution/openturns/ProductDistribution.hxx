@@ -2,7 +2,7 @@
 /**
  *  @brief The ProductDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,9 @@
 
 #include "openturns/ContinuousDistribution.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/GaussKronrod.hxx"
 #include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -48,24 +51,25 @@ public:
   /** Comparison operator */
   Bool operator ==(const ProductDistribution & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual ProductDistribution * clone() const;
+  ProductDistribution * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Scalar scalar) const override;
+  Scalar computePDF(const Point & point) const override;
 private:
   Scalar computePDFQ1(const Scalar x,
                       const Scalar a,
@@ -90,7 +94,8 @@ private:
 public:
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Scalar scalar) const override;
+  Scalar computeCDF(const Point & point) const override;
 private:
   Scalar computeCDFQ1(const Scalar x,
                       const Scalar a,
@@ -115,29 +120,29 @@ private:
 public:
 
   /** Get the probability content of an interval */
-  Scalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Get the raw moments of the distribution */
-  Point getMoment(const UnsignedInteger n) const;
+  Point getMoment(const UnsignedInteger n) const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Check if the distribution is elliptical */
-  Bool isElliptical() const;
+  Bool isElliptical() const override;
 
   /* Interface specific to ProductDistribution */
 
@@ -150,140 +155,43 @@ public:
   Distribution getRight() const;
 
   /** Tell if the distribution is continuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
   /** Check if the distribution is discrete */
-  Bool isDiscrete() const;
+  Bool isDiscrete() const override;
 
   /** Tell if the distribution is integer valued */
-  Bool isIntegral() const;
+  Bool isIntegral() const override;
 
   /** Get the PDF singularities inside of the range - 1D only */
-  Point getSingularities() const;
+  Point getSingularities() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
 
 private:
 
-  // Structure used to wrap the kernel of the integral defining the PDF of the product
-  struct PDFKernelWrapper
-  {
-    const Distribution left_;
-    const Distribution right_;
-    const Scalar x_;
-    const Bool isZero_;
-    const Scalar pdf0_;
-
-    PDFKernelWrapper(const Distribution & left,
-                     const Distribution & right,
-                     const Scalar x):
-      left_(left), right_(right), x_(x), isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")), pdf0_(isZero_ ? right.computePDF(0.0) : 0.0) {};
-
-    Point eval(const Point & point) const
-    {
-      const Scalar value = left_.computePDF(point);
-      if (value == 0.0) return Point(1, 0.0);
-      const Scalar u = point[0];
-      const Scalar absU = std::abs(u);
-      // x_ == 0
-      if (isZero_)
-      {
-        if (pdf0_ == 0.0) return Point(1, 0.0);
-        if (absU == 0.0) return Point(1, SpecFunc::MaxScalar);
-        return Point(1, value * pdf0_ / absU);
-      }
-      // x_ != 0
-      if (absU == 0.0)
-      {
-        const Scalar epsilon = 1e-7;
-        return Point(1, value * 0.5 * (right_.computePDF(x_ / epsilon) + right_.computePDF(-x_ / epsilon)) / epsilon);
-      }
-      return Point(1, value * right_.computePDF(x_ / u) / absU);
-    };
-  }; // struct PDFKernelWrapper
-
-  // Structure used to wrap the kernel of the integral defining the CDF of the product
-  struct CDFKernelWrapper
-  {
-    const Distribution left_;
-    const Distribution right_;
-    const Scalar x_;
-    const Bool isZero_;
-    const Scalar cdf0_;
-    const Scalar ccdf0_;
-
-    CDFKernelWrapper(const Distribution & left,
-                     const Distribution & right,
-                     const Scalar x):
-      left_(left), right_(right), x_(x), isZero_(std::abs(x) == 0.0), cdf0_(isZero_ ? right.computeCDF(0.0) : 0.0), ccdf0_(isZero_ ? right.computeComplementaryCDF(0.0) : 0.0) {};
-
-    Point eval(const Point & point) const
-    {
-      const Scalar value = left_.computePDF(point);
-      if (value == 0.0) return Point(1, 0.0);
-      // x_ == 0
-      if (isZero_) return Point(1, value * cdf0_);
-      const Scalar u = point[0];
-      if (u == 0.0) return Point(1, x_ < 0.0 ? 0.0 : value);
-      return Point(1, value * right_.computeCDF(x_ / u));
-    };
-
-    Point evalComplementary(const Point & point) const
-    {
-      const Scalar value = left_.computePDF(point);
-      if (value == 0.0) return Point(1, 0.0);
-      // x_ == 0
-      if (isZero_) return Point(1, value * ccdf0_);
-      const Scalar u = point[0];
-      if (u == 0.0) return Point(1, x_ < 0.0 ? 0.0 : value);
-      return Point(1, value * right_.computeComplementaryCDF(x_ / u));
-    };
-
-  }; // struct CDFKernelWrapper
-
-  // Structure used to wrap the kernel of the integral defining the product
-  struct CFKernelWrapper
-  {
-    const Distribution left_;
-    const Distribution right_;
-    const Scalar x_;
-
-    CFKernelWrapper(const Distribution & left,
-                    const Distribution & right,
-                    const Scalar x):
-      left_(left), right_(right), x_(x) {};
-
-    Point eval(const Point & point) const
-    {
-      Point value(2);
-      const Scalar u = point[0];
-      const Complex phi(right_.computeCharacteristicFunction(u * x_));
-      const Scalar pdf = left_.computePDF(point);
-      value[0] = pdf * phi.real();
-      value[1] = pdf * phi.imag();
-      return value;
-    };
-  }; // struct CFKernelWrapper
-
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** The main parameter set of the distribution */
-  Distribution left_;
-  Distribution right_;
+  Pointer<DistributionImplementation> p_left_;
+  Pointer<DistributionImplementation> p_right_;
+
+  /** Integration algorithm */
+  GaussKronrod algo_;
 
 }; /* class ProductDistribution */
 

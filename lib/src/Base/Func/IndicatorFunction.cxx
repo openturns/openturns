@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements indicator functions.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,12 +35,10 @@ IndicatorFunction::IndicatorFunction ()
 
 
 /* Parameter constructor */
-IndicatorFunction::IndicatorFunction (const Function & function,
-                                      const ComparisonOperator & comparisonOperator,
-                                      const Scalar threshold)
+IndicatorFunction::IndicatorFunction (const Domain & domain)
   : Function()
 {
-  const Pointer<IndicatorEvaluation> p_evaluation = new IndicatorEvaluation(function.getEvaluation(), comparisonOperator, threshold);
+  const Pointer<IndicatorEvaluation> p_evaluation = new IndicatorEvaluation(domain);
   setEvaluation(Evaluation(p_evaluation));
   setGradient(NoGradient().clone());
   setHessian(NoHessian().clone());

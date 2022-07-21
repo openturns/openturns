@@ -1,11 +1,10 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import math as m
 import openturns.testing
 
-# ot.Log.Show(ot.Log.INFO)
+ot.Log.Show(ot.Log.NONE)
 ot.TBB.Disable()
 
 
@@ -15,10 +14,12 @@ ot.TBB.Disable()
 dim = 2
 
 # model
-branin = ot.SymbolicFunction(
-    ['x1', 'x2'], ['((x2-(5.1/(4*pi_^2))*x1^2+5*x1/pi_-6)^2+10*(1-1/8*pi_)*cos(x1)+10-54.8104)/51.9496', '0.96'])
+formula = '((x2-(5.1/(4*pi_^2))*x1^2+5*x1/pi_-6)^2+10*(1-1/8*pi_)*cos(x1)+10-54.8104)/51.9496'
+branin = ot.SymbolicFunction(['x1', 'x2'], [formula])
 transfo = ot.SymbolicFunction(['u1', 'u2'], ['15*u1-5', '15*u2'])
 model = ot.ComposedFunction(branin, transfo)
+noiseModel = ot.SymbolicFunction(
+    ['x1', 'x2'], ['0.96'])  # assume constant noise var
 
 # problem
 problem = ot.OptimizationProblem()
@@ -29,8 +30,7 @@ problem.setBounds(bounds)
 # design
 experiment = ot.Box([1, 1])
 inputSample = experiment.generate()
-modelEval = model(inputSample)
-outputSample = modelEval.getMarginal(0)
+outputSample = model(inputSample)
 
 
 # first kriging model
@@ -38,14 +38,12 @@ covarianceModel = ot.SquaredExponential([0.3007, 0.2483], [0.981959])
 basis = ot.ConstantBasisFactory(dim).build()
 kriging = ot.KrigingAlgorithm(
     inputSample, outputSample, covarianceModel, basis)
-noise = [x[1] for x in modelEval]
+noise = [x[0] for x in noiseModel(inputSample)]
 kriging.setNoise(noise)
 kriging.run()
 
 # algo
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
-algo.setNoiseModel(ot.SymbolicFunction(
-    ['x1', 'x2'], ['0.96']))  # assume constant noise var
+algo = ot.EfficientGlobalOptimization(problem, kriging.getResult(), noiseModel)
 algo.setMaximumEvaluationNumber(20)
 algo.setImprovementFactor(
     0.05)  # stop whe improvement is < a% the current optimum
@@ -53,11 +51,11 @@ algo.setAEITradeoff(0.66744898)
 algo.run()
 result = algo.getResult()
 # print('1st pass result=', result)
-# print('iteration=', result.getEvaluationNumber())
-assert result.getEvaluationNumber(
-) > 3 and result.getEvaluationNumber() < 15, 'Too few/much iterations'
-# print(result.getInputSample())
-# print(result.getOutputSample())
+print('iteration=', result.getIterationNumber())
+assert result.getIterationNumber(
+) > 3 and result.getIterationNumber() < 15, 'Too few/much iterations'
+print(result.getInputSample())
+print(result.getOutputSample())
 
 # openturns.testing.assert_almost_equal(result.getOptimalPoint(), [0.5, 0.0], 1e-5, 1e-5)
 # openturns.testing.assert_almost_equal(result.getOptimalValue(),
@@ -66,7 +64,8 @@ assert result.getEvaluationNumber(
 # local refinement eventhough the model is noisy (we still want to check
 # we're not too far from optimum)
 problem.setObjective(model.getMarginal(0))
-algo2 = ot.NLopt(problem, 'LD_LBFGS')
+algo2 = ot.TNC(problem)
+# we have to use getFinalPoints as our objective function is 2-d
 algo2.setStartingPoint(result.getOptimalPoint())
 algo2.run()
 result = algo2.getResult()
@@ -142,14 +141,14 @@ algo.run()
 result = algo.getResult()
 
 # print('1st pass result=', result)
-assert result.getEvaluationNumber(
-) > 0 and result.getEvaluationNumber() < 16, 'Too few/much iterations'
-# print('iteration=', result.getEvaluationNumber())
-# print(result.getInputSample())
-# print(result.getOutputSample())
+assert result.getIterationNumber(
+) > 0 and result.getIterationNumber() < 16, 'Too few/much iterations'
+print('iteration=', result.getIterationNumber())
+print(result.getInputSample())
+print(result.getOutputSample())
 
 # local refinement
-algo2 = ot.NLopt(problem, 'LD_LBFGS')
+algo2 = ot.TNC(problem)
 algo2.setStartingPoint(result.getOptimalPoint())
 algo2.run()
 result = algo2.getResult()
@@ -157,10 +156,9 @@ result = algo2.getResult()
 openturns.testing.assert_almost_equal(
     result.getOptimalPoint(), [0.0] * dim, 1e-7, 1e-5)
 openturns.testing.assert_almost_equal(
-    result.getOptimalValue(), [0.0], 1e-15, 1e-5)
+    result.getOptimalValue(), [0.0], 1e-15, 2.4e-5)
 # ei = algo.getExpectedImprovement()
 # print(ei)
-print('OK')
 
 
 # Cobyla out of bound test
@@ -184,3 +182,5 @@ algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
 algo.setMaximumEvaluationNumber(2)
 algo.run()
 result = algo.getResult()
+
+print('OK')

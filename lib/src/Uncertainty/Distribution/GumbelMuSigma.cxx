@@ -2,7 +2,7 @@
 /**
  *  @brief Gumbel distribution with mu and sigma as parameters
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -76,17 +76,17 @@ Distribution GumbelMuSigma::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix GumbelMuSigma::gradient() const
 {
-  const Scalar dalphadmu = 0.0;
-  const Scalar dalphadsigma = -SpecFunc::PI_SQRT6 / (sigma_ * sigma_);
-  const Scalar dbetadmu = 1.0;
-  const Scalar dbetadsigma = -SpecFunc::EULERSQRT6_PI;
+  const Scalar dbetadmu = 0.0;
+  const Scalar dbetadsigma = 1.0 / SpecFunc::PI_SQRT6;
+  const Scalar dgammadmu = 1.0;
+  const Scalar dgammadsigma = -SpecFunc::EULERSQRT6_PI;
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(2));
-  nativeParametersGradient(0, 0) = dalphadmu;
-  nativeParametersGradient(1, 0) = dalphadsigma;
+  Matrix nativeParametersGradient(IdentityMatrix(2));
+  nativeParametersGradient(0, 0) = dbetadmu;
+  nativeParametersGradient(1, 0) = dbetadsigma;
 
-  nativeParametersGradient(0, 1) = dbetadmu;
-  nativeParametersGradient(1, 1) = dbetadsigma;
+  nativeParametersGradient(0, 1) = dgammadmu;
+  nativeParametersGradient(1, 1) = dgammadsigma;
 
   return nativeParametersGradient;
 }
@@ -101,12 +101,12 @@ Point GumbelMuSigma::operator () (const Point & inP) const
 
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 
-  const Scalar alpha = SpecFunc::PI_SQRT6 / sigma;
-  const Scalar beta = mu - SpecFunc::EULERSQRT6_PI * sigma;
+  const Scalar beta = sigma / SpecFunc::PI_SQRT6;
+  const Scalar gamma = mu - SpecFunc::EULERSQRT6_PI * sigma;
 
   Point nativeParameters(2);
-  nativeParameters[0] = alpha;
-  nativeParameters[1] = beta;
+  nativeParameters[0] = beta;
+  nativeParameters[1] = gamma;
 
   return nativeParameters;
 }
@@ -115,13 +115,13 @@ Point GumbelMuSigma::operator () (const Point & inP) const
 Point GumbelMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const Scalar alpha = inP[0];
-  const Scalar beta = inP[1];
+  const Scalar beta = inP[0];
+  const Scalar gamma = inP[1];
 
-  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
 
-  const Scalar mu = beta + SpecFunc::EulerConstant / alpha;
-  const Scalar sigma = SpecFunc::PI_SQRT6 / alpha;
+  const Scalar mu = gamma + beta * SpecFunc::EulerConstant;
+  const Scalar sigma = beta * SpecFunc::PI_SQRT6;
 
   Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;

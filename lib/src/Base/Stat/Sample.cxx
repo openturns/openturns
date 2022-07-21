@@ -2,7 +2,7 @@
 /**
  *  @brief The class Sample implements blank free samples
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,19 +38,30 @@ Sample Sample::ImportFromCSVFile(const FileName & fileName,
 /* Factory of Sample from Text file */
 Sample Sample::ImportFromTextFile(const FileName & fileName,
                                   const String & separator,
-                                  const UnsignedInteger skippedLines)
+                                  const UnsignedInteger skippedLines,
+                                  const String & numSeparator)
 {
-  Sample sample(SampleImplementation::BuildFromTextFile(fileName, separator, skippedLines));
+  Sample sample(SampleImplementation::BuildFromTextFile(fileName, separator, skippedLines, numSeparator));
+  return sample;
+}
+
+Sample Sample::BuildFromPoint(const Point &point)
+{
+  const UnsignedInteger size = point.getDimension();
+  Sample sample(size, 1);
+  sample.getImplementation()->setData(point);
   return sample;
 }
 
 /* Save to CSV file */
 void Sample::exportToCSVFile(const FileName & filename,
-                             const String & csvSeparator) const
+                             const String & csvSeparator,
+                             const String & numSeparator,
+                             const UnsignedInteger precision,
+                             const String & format) const
 {
-  getImplementation()->exportToCSVFile(filename, csvSeparator);
+  getImplementation()->exportToCSVFile(filename, csvSeparator, numSeparator, precision, format);
 }
-
 
 /* Store a sample in a temporary text file, one realization by line. Returns the file name. */
 String Sample::storeToTemporaryFile() const
@@ -183,22 +194,22 @@ const Scalar & Sample::operator () (const UnsignedInteger i,
 
 NSI_point Sample::at (const UnsignedInteger index)
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   copyOnWrite();
   return (*getImplementation())[index];
 }
 
 NSI_const_point Sample::at (const UnsignedInteger index) const
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   return (*getImplementation())[index];
 }
 
 Scalar & Sample::at (const UnsignedInteger i,
                      const UnsignedInteger j)
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
-  if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
+  if (!(j < getDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
   copyOnWrite();
   return (*getImplementation())(i, j);
 }
@@ -206,19 +217,19 @@ Scalar & Sample::at (const UnsignedInteger i,
 const Scalar & Sample::at (const UnsignedInteger i,
                            const UnsignedInteger j) const
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
-  if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
+  if (!(j < getDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
   return (*getImplementation())(i, j);
 }
 
-const Scalar * Sample::__baseaddress__ () const
+const Scalar * Sample::data() const
 {
-  return getImplementation()->__baseaddress__();
+  return getImplementation()->data();
 }
 
-UnsignedInteger Sample::__elementsize__ () const
+UnsignedInteger Sample::elementSize() const
 {
-  return getImplementation()->__elementsize__();
+  return getImplementation()->elementSize();
 }
 
 /* Whether the list contains the value val */
@@ -226,8 +237,6 @@ Bool Sample::contains(const Point & val) const
 {
   return getImplementation()->contains(val);
 }
-
-
 
 /* String converter */
 String Sample::__repr__() const
@@ -288,7 +297,7 @@ Point Sample::getMin() const
 /* Method add() appends an element to the collection */
 void Sample::add(const Point & point)
 {
-  if ( (getSize() > 0) && (getDimension() != point.getDimension()) )
+  if (!(getSize() == 0 || getDimension() == point.getDimension()))
     throw InvalidArgumentException(HERE)
         << "Point has invalid dimension (dim=" << point.getDimension()
         << ") for sample (dim=" << getDimension() << ")";
@@ -300,7 +309,7 @@ void Sample::add(const Point & point)
 /* Method add() appends another sample to the collection */
 void Sample::add(const Sample & sample)
 {
-  if ( (getSize() > 0) && (getDimension() != sample.getDimension()) )
+  if (!(getSize() == 0 || getDimension() == sample.getDimension()))
     throw InvalidArgumentException(HERE)
         << "Sample has invalid dimension (dim=" << sample.getDimension()
         << ") for sample (dim=" << getDimension() << ")";
@@ -361,7 +370,7 @@ Sample Sample::split(const UnsignedInteger index)
   UnsignedInteger theSize = getSize();
 
   // We first check that the index is in the sample's range
-  if (index > theSize) throw OutOfBoundException(HERE) << "Index over size. Index=" << index << " size=" << theSize;
+  if (!(index <= theSize)) throw OutOfBoundException(HERE) << "Index over size. Index=" << index << " size=" << theSize;
   // Quick check for easy cases
   if (index == theSize) return Sample(0, getDimension());
   if (index >= theSize / 2)   // Strategy 1.
@@ -424,17 +433,9 @@ CovarianceMatrix Sample::computeCovariance() const
 /*
  * Method computeStandardDeviation() gives the standard deviation of the sample
  */
-TriangularMatrix Sample::computeStandardDeviation() const
+Point Sample::computeStandardDeviation() const
 {
   return getImplementation()->computeStandardDeviation();
-}
-
-/*
- * Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
- */
-Point Sample::computeStandardDeviationPerComponent() const
-{
-  return getImplementation()->computeStandardDeviationPerComponent();
 }
 
 /*
@@ -720,6 +721,12 @@ Sample Sample::sort() const
   return getImplementation()->sort();
 }
 
+void Sample::sortInPlace()
+{
+  copyOnWrite();
+  getImplementation()->sortInPlace();
+}
+
 /* Sorted component */
 Sample Sample::sort(const UnsignedInteger index) const
 {
@@ -732,10 +739,27 @@ Sample Sample::sortAccordingToAComponent(const UnsignedInteger index) const
   return getImplementation()->sortAccordingToAComponent(index);
 }
 
+void Sample::sortAccordingToAComponentInPlace(const UnsignedInteger index)
+{
+  copyOnWrite();
+  getImplementation()->sortAccordingToAComponentInPlace(index);
+}
+
 /* Sort and remove duplicated points */
 Sample Sample::sortUnique() const
 {
   return getImplementation()->sortUnique();
+}
+
+void Sample::sortUniqueInPlace()
+{
+  copyOnWrite();
+  getImplementation()->sortUniqueInPlace();
+}
+
+Indices Sample::argsort(Bool isIncreasing) const
+{
+  return getImplementation()->argsort(isIncreasing);
 }
 
 /* Get the i-th marginal sample */
@@ -744,10 +768,16 @@ Sample Sample::getMarginal(const UnsignedInteger index) const
   return getImplementation()->getMarginal(index);
 }
 
-/* Get the marginal sample corresponding to indices dimensions */
+/* Get the marginal sample by indices */
 Sample Sample::getMarginal(const Indices & indices) const
 {
   return getImplementation()->getMarginal(indices);
+}
+
+/* Get the marginal sample by identifiers */
+Sample Sample::getMarginal(const Description & description) const
+{
+  return getImplementation()->getMarginal(description);
 }
 
 /* Select points as a sample */

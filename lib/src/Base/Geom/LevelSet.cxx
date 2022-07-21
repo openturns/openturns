@@ -2,7 +2,7 @@
 /**
  *  @brief LevelSet is defined as the set of points such that f(x_1,...,x_n) <= level
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -183,6 +183,17 @@ void LevelSet::setFunction(const Function & function)
 {
   if (function.getInputDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given function has an input dimension=" << function.getInputDimension() << " incompatible with the levelSet dimension=" << dimension_;
   function_ = function;
+}
+
+/* Operator accessor */
+ComparisonOperator LevelSet::getOperator() const
+{
+  return operator_;
+}
+
+void LevelSet::setOperator(const ComparisonOperator & op)
+{
+  operator_ = op;
 }
 
 /* Level accessor */

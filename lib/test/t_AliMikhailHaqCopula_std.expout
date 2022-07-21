@@ -10,7 +10,7 @@ oneRealization=class=Point name=Unnamed dimension=2 values=[0.976434,0.806922]
 oneSample=class=Sample name=a aliMikhailHaq copula implementation=class=SampleImplementation name=a aliMikhailHaq copula size=10 dimension=2 description=[X0,X1] data=[[0.084502,0.261852],[0.0111884,0.476681],[0.462462,0.236299],[0.587674,0.13328],[0.908026,0.838293],[0.00398058,0.449778],[0.373997,0.25967],[0.0134696,0.47819],[0.768466,0.216182],[0.663918,0.0913715]]
 anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.497404,0.504601]
 anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0826296,0.0156204,0.0156204,0.0826746]
-point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-0.860562,-0.860562] ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.860562,-0.860562] pdf=1.20853 cdf=0.0588235
+point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-0.860562,-0.860562] pdf=1.20853 cdf=0.0588235
 Survival      =0.658824
 Survival (ref)=0.658824
 Inverse survival=class=Point name=Unnamed dimension=2 values=[0.025625,0.025625]
@@ -19,8 +19,8 @@ Quantile=class=Point name=Unnamed dimension=2 values=[0.689898,0.689898]
 CDF(quantile)=0.5
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126791,0.0126791] upper bound=class=Point name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.974642
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(AliMikhailHaqCopula(theta = 0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) level=0.339586
-beta=0.712065
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(AliMikhailHaqCopula(theta = 0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) level=0.336066
+beta=0.714576
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126791,0.0126791] upper bound=class=Point name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974642
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.974521,0.974521] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -35,16 +35,16 @@ margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.568102]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.703242]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.761047]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.762006]
 indices=[1,0]
 margins=class=AliMikhailHaqCopula name=a aliMikhailHaq copula dimension=2 theta=0.5
 margins PDF=1.13619
 margins CDF=0.0869565
 margins quantile=class=Point name=Unnamed dimension=2 values=[0.974521,0.974521]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[0.68799,0.135676]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.852602,0.976162]

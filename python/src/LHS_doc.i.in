@@ -6,7 +6,7 @@ Available constructors:
 
 Parameters
 ----------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Event we are computing the probability of.
 
 Notes
@@ -65,8 +65,8 @@ Examples
 >>> vect = ot.RandomVector(myDistribution)
 >>> # We create a composite random vector
 >>> output = ot.CompositeRandomVector(myFunction, vect)
->>> # We create an Event from this RandomVector
->>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> # We create an event from this RandomVector
+>>> myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
 >>> # We create a LHS algorithm
 >>> myAlgo = ot.LHS(myEvent)
 >>> myAlgo.setMaximumOuterSampling(150)

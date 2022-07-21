@@ -2,7 +2,7 @@
 /**
  * @brief Top-level class for all distribution factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,6 +56,8 @@
 #include "openturns/NegativeBinomialFactory.hxx"
 #include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/NormalFactory.hxx"
+#include "openturns/ParetoFactory.hxx"
+#include "openturns/PlackettCopulaFactory.hxx"
 #include "openturns/PoissonFactory.hxx"
 #include "openturns/RayleighFactory.hxx"
 #include "openturns/RiceFactory.hxx"
@@ -66,7 +68,9 @@
 #include "openturns/TruncatedNormalFactory.hxx"
 #include "openturns/UniformFactory.hxx"
 #include "openturns/UserDefinedFactory.hxx"
-#include "openturns/WeibullFactory.hxx"
+#include "openturns/VonMisesFactory.hxx"
+#include "openturns/WeibullMaxFactory.hxx"
+#include "openturns/WeibullMinFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -96,6 +100,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(LogUniformFactory());
   collection.add(MeixnerDistributionFactory());
   collection.add(NormalFactory());
+  collection.add(ParetoFactory());
   collection.add(RayleighFactory());
   collection.add(RiceFactory());
   collection.add(StudentFactory());
@@ -103,7 +108,9 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(TriangularFactory());
   collection.add(TruncatedNormalFactory());
   collection.add(UniformFactory());
-  collection.add(WeibullFactory());
+  collection.add(VonMisesFactory());
+  collection.add(WeibullMaxFactory());
+  collection.add(WeibullMinFactory());
   return collection;
 }
 
@@ -119,6 +126,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(GumbelCopulaFactory());
   collection.add(NormalCopulaFactory());
   collection.add(NormalFactory());
+  collection.add(PlackettCopulaFactory());
   collection.add(StudentFactory());
   return collection;
 }
@@ -171,6 +179,13 @@ DistributionFactory::DistributionFactory(const UnsignedInteger bootstrapSize)
 /* Parameter constructor */
 DistributionFactory::DistributionFactory(const DistributionFactoryImplementation & factory)
   : TypedInterfaceObject<DistributionFactoryImplementation>(factory.clone())
+{
+  // Nothing to do
+}
+
+/* Constructor from implementation pointer */
+DistributionFactory::DistributionFactory(DistributionFactoryImplementation * p_implementation)
+  : TypedInterfaceObject<DistributionFactoryImplementation>(p_implementation)
 {
   // Nothing to do
 }

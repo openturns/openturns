@@ -6,15 +6,173 @@ Available constructor:
 
 Notes
 -----
-The bandwidth is the AMISE-optimal one: 
 
-.. math::
+The range is :math:`[min(data), max(data)]`. 
 
-    h = \displaystyle \frac{(24\sqrt{\pi})^{1/3} \sigma_n}{n^{1/3}}
+See the `computeBandwidth` method for the bandwidth selection. 
 
-where :math:`\sigma_n^2` is the non biaised variance of the data.
-The range is :math:`[min(data), max(data)]`
+Examples
+--------
+Create an histogram:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(50)
+>>> histogram = ot.HistogramFactory().build(sample)
+
+Create an histogram from a number of bins:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(50)
+>>> binNumber = 10
+>>> histogram = ot.HistogramFactory().build(sample, binNumber)
+
+Create an histogram from a bandwidth:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(50)
+>>> bandwidth = 0.5
+>>> histogram = ot.HistogramFactory().build(sample, bandwidth)
+
+Create an histogram from a first value and widths:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal().getSample(50)
+>>> first = -4
+>>> width = ot.Point(7, 1.)
+>>> histogram = ot.HistogramFactory().build(sample, first, width)
+
+Compute bandwidth with default robust estimator:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal().getSample(50)
+>>> factory = ot.HistogramFactory()
+>>> factory.computeBandwidth(sample)
+0.8207...
+
+Compute bandwidth with optimal estimator:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal().getSample(50)
+>>> factory = ot.HistogramFactory()
+>>> factory.computeBandwidth(sample, False)
+0.9175...
 
 See also
 --------
 DistributionFactory, Histogram"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::HistogramFactory::buildAsHistogram
+"Estimate the distribution as native distribution.
+
+If the sample is constant, the range of the histogram would be zero. 
+In this case, the range is set to be a factor of the `Distribution-DefaultCDFEpsilon` 
+key of the :class:`~openturns.ResourceMap`. 
+
+**Available usages**:
+
+    build(*sample*)
+
+    build(*sample*, *binNumber*)
+
+    build(*sample*, *bandwidth*)
+
+    build(*sample*, *first*, *width*)
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+binNumber : int
+    The number of classes. 
+bandwidth : float
+    The width of each class. 
+first : float
+    The lower bound of the first class. 
+width : 1-d sequence of float
+    The widths of the classes. 
+
+Returns
+-------
+distribution : :class:`~openturns.Histogram`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::HistogramFactory::computeBandwidth
+"Compute the bandwidth.
+
+The bandwidth of the histogram is based on the asymptotic mean integrated squared 
+error (AMISE). 
+
+When `useQuantile` is `True` (the default), the bandwidth is based on the 
+quantiles of the sample.
+For any :math:`\alpha\in(0,1]`, let :math:`q_n(\alpha)` be the empirical quantile 
+at level :math:`\alpha` of the sample. 
+Let :math:`Q_1` and :math:`Q_3` be the first and last quartiles of the 
+sample: 
+
+.. math::
+
+    \begin{aligned}
+    Q_3 = q_n(0.75), \qquad Q_1 = q_n(0.25),
+    \end{aligned}
+
+and let :math:`IQR` be the inter-quartiles range:
+
+.. math::
+
+    \begin{aligned}
+    IQR = Q_3 - Q_1.
+    \end{aligned}
+
+In this case, the bandwidth is the robust estimator of the AMISE-optimal bandwidth,
+known as Freedman and Diaconis rule [freedman1981]_:
+
+.. math::
+
+    \begin{aligned}
+    h = \frac{IQR}{2\Phi^{-1}(0.75)} \left(\frac{24 \sqrt{\pi}}{n}\right)^{\frac{1}{3}}
+    \end{aligned}
+
+where :math:`\Phi^{-1}` is the quantile function of the gaussian standard 
+distribution. 
+The expression :math:`\frac{IQR}{2\Phi^{-1}(0.75)}` is the normalized inter-quartile range 
+and is equal to the standard deviation of the gaussian distribution. 
+The normalized inter-quartile range is a robust estimator of the scale of the 
+distribution (see [wand1994]_, page 60). 
+
+When `useQuantile` is `False`, the bandwidth is the AMISE-optimal one, 
+known as Scott's rule: 
+
+.. math::
+
+    \begin{aligned}
+    h = \sigma_n \left(\frac{24 \sqrt{\pi}}{n}\right)^{\frac{1}{3}}
+    \end{aligned}
+
+where :math:`\sigma_n^2` is the unbiaised variance of the data. 
+This estimator is optimal for the gaussian distribution (see [scott1992]_). 
+In this case, the AMISE is :math:`O(n^{-2/3})`. 
+
+
+If the bandwidth is computed as zero (for example, if the sample is constant), 
+then the `Distribution-DefaultQuantileEpsilon` key 
+of the :class:`~openturns.ResourceMap` is used instead. 
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+bandwidth : float
+    The estimated bandwidth
+useQuantile : bool, optional (default=`True`)
+    If `True`, then use the robust bandwidth estimator based on Freedman and Diaconis rule. 
+    Otherwise, use the optimal bandwidth estimator based on Scott's rule."

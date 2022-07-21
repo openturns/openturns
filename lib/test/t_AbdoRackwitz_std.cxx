@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class AbdoRackwitz for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,7 +63,7 @@ int main(int, char *[])
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
     fullprint << "result = " << printPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers = " << printPoint(myAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "multipliers = " << printPoint(myAlgorithm.getResult().computeLagrangeMultipliers(), 4) << std::endl;
 
   }
   catch (TestFailed & ex)

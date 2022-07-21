@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for the gradient of composed functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,9 +40,13 @@ ComposedGradient::ComposedGradient(const Gradient & leftGradient,
 {
   // We check that the dimensions of the input parameters are compatible
   // First, check the compatibility between the right function and the right gradient
-  if ((rightFunction.getInputDimension() != rightGradient.getInputDimension()) || (rightFunction.getOutputDimension() != rightGradient.getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the right function and the right gradient have incompatible input or output dimensions.";
+  if (rightFunction.getInputDimension() != rightGradient.getInputDimension())
+    throw InvalidArgumentException(HERE) << "Error: the right function has input dimension " << rightFunction.getInputDimension() << " while the right gradient has input dimension " << rightGradient.getInputDimension();
+  if (rightFunction.getOutputDimension() != rightGradient.getOutputDimension())
+    throw InvalidArgumentException(HERE) << "Error: the right function has output dimension " << rightFunction.getOutputDimension() << " while the right gradient has output dimension " << rightGradient.getOutputDimension();
   // Second, check the left gradient and the right function
-  if (leftGradient.getInputDimension() != rightFunction.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the left gradient and the right function have incompatible input or output dimensions.";
+  if (leftGradient.getInputDimension() != rightFunction.getOutputDimension())
+    throw InvalidArgumentException(HERE) << "Error: the left gradient has input dimension " << leftGradient.getInputDimension() << " while the right function has output dimension " << rightFunction.getOutputDimension();
 }
 
 /* Virtual constructor */

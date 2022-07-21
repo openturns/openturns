@@ -2,7 +2,7 @@
 /**
  *  @brief Cholesky decomposition based LS solver
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -176,7 +176,7 @@ void CholeskyMethod::update(const Indices & addedIndices,
   {
     Indices newBasis(conservedIndices);
     newBasis.add(addedIndices);
-    if (removedIndices.getSize() > 0) throw NotYetImplementedException(HERE) << " in CholeskyMethod::update removedIndices.getSize() > 0";
+    if (!(removedIndices.getSize() == 0)) throw NotYetImplementedException(HERE) << " in CholeskyMethod::update removedIndices.getSize() is not 0";
 
     // Update decomposition
     if (addedIndices.getSize() > 0)

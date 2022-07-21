@@ -10,7 +10,7 @@ Available constructor:
 
 Parameters
 ----------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     The event we are computing the probability of, must be composite.
 experiment : :class:`~openturns.WeightedExperiment`
     Sequential experiment
@@ -56,7 +56,7 @@ of cases, among the :math:`N` samples of :math:`\vect{X}`, for which the event
 By the law of large numbers, we know that this estimation converges to the
 required value :math:`P_f` as the sample size :math:`N` tends to infinity.
 
-The Central Limit Theorem allows to build an asymptotic confidence interval
+The Central Limit Theorem allows one to build an asymptotic confidence interval
 using the normal limit distribution as follows:
 
 .. math::
@@ -96,7 +96,7 @@ of cases, among the :math:`N` samples of :math:`\vect{X}`, for which the event
 By the law of large numbers, we know that this estimation converges to the
 required value :math:`P_f` as the sample size :math:`N` tends to infinity.
 
-The Central Limit Theorem allows to build an asymptotic confidence interval
+The Central Limit Theorem allows one to build an asymptotic confidence interval
 using the normal limit distribution as follows:
 
 .. math::
@@ -144,43 +144,46 @@ Estimate a probability by Monte Carlo
 >>> # We create a composite random vector
 >>> output = ot.CompositeRandomVector(myFunction, vect)
 >>> # We create an Event from this RandomVector
->>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> event = ot.ThresholdEvent(output, ot.Less(), -3.0)
 >>> # We create a Monte Carlo algorithm
 >>> experiment = ot.MonteCarloExperiment()
->>> myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
->>> myAlgo.setMaximumOuterSampling(150)
->>> myAlgo.setBlockSize(4)
->>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
+>>> algo.setMaximumOuterSampling(150)
+>>> algo.setBlockSize(4)
+>>> algo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
->>> myAlgo.run()
->>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+>>> algo.run()
+>>> print('Probability estimate=%.6f' % algo.getResult().getProbabilityEstimate())
 Probability estimate=0.140000
 
 Estimate a probability by Importance Sampling
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> myImportance = ot.Normal([49.969, 1.84194, 10.4454, 4.66776], [1.0]*4, ot.IdentityMatrix(4))
->>> experiment = ot.ImportanceSamplingExperiment(myImportance)
->>> myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
->>> myAlgo.setMaximumOuterSampling(150)
->>> myAlgo.setBlockSize(4)
->>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> # assume we obtained a design point from FORM
+>>> standardSpaceDesignPoint = [-0.0310363,0.841879,0.445462,-0.332318]
+>>> standardEvent = ot.StandardEvent(event)
+>>> importanceDensity = ot.Normal(standardSpaceDesignPoint, ot.CovarianceMatrix(4))
+>>> experiment = ot.ImportanceSamplingExperiment(importanceDensity)
+>>> algo = ot.ProbabilitySimulationAlgorithm(standardEvent, experiment)
+>>> algo.setMaximumOuterSampling(150)
+>>> algo.setBlockSize(4)
+>>> algo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
->>> myAlgo.run()
->>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
-Probability estimate=0.153314
+>>> algo.run()
+>>> print('Probability estimate=%.6f' % algo.getResult().getProbabilityEstimate())
+Probability estimate=0.153315
 
 Estimate a probability by Quasi Monte Carlo
 
 >>> ot.RandomGenerator.SetSeed(0)
 >>> experiment = ot.LowDiscrepancyExperiment()
->>> myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
->>> myAlgo.setMaximumOuterSampling(150)
->>> myAlgo.setBlockSize(4)
->>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
+>>> algo.setMaximumOuterSampling(150)
+>>> algo.setBlockSize(4)
+>>> algo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
->>> myAlgo.run()
->>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+>>> algo.run()
+>>> print('Probability estimate=%.6f' % algo.getResult().getProbabilityEstimate())
 Probability estimate=0.141667
 
 Estimate a probability by Randomized Quasi Monte Carlo
@@ -188,13 +191,13 @@ Estimate a probability by Randomized Quasi Monte Carlo
 >>> ot.RandomGenerator.SetSeed(0)
 >>> experiment = ot.LowDiscrepancyExperiment()
 >>> experiment.setRandomize(True)
->>> myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
->>> myAlgo.setMaximumOuterSampling(150)
->>> myAlgo.setBlockSize(4)
->>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
+>>> algo.setMaximumOuterSampling(150)
+>>> algo.setBlockSize(4)
+>>> algo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
->>> myAlgo.run()
->>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+>>> algo.run()
+>>> print('Probability estimate=%.6f' % algo.getResult().getProbabilityEstimate())
 Probability estimate=0.160000
 
 Estimate a probability by Randomized LHS
@@ -202,13 +205,13 @@ Estimate a probability by Randomized LHS
 >>> ot.RandomGenerator.SetSeed(0)
 >>> experiment = ot.LHSExperiment()
 >>> experiment.setAlwaysShuffle(True)
->>> myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
->>> myAlgo.setMaximumOuterSampling(150)
->>> myAlgo.setBlockSize(4)
->>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
+>>> algo.setMaximumOuterSampling(150)
+>>> algo.setBlockSize(4)
+>>> algo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
->>> myAlgo.run()
->>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+>>> algo.run()
+>>> print('Probability estimate=%.6f' % algo.getResult().getProbabilityEstimate())
 Probability estimate=0.140000"
 
 

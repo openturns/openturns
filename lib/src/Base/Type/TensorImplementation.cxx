@@ -2,7 +2,7 @@
 /**
  *  @brief TensorImplementation implements the Tensor classes
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -132,7 +132,7 @@ Scalar & TensorImplementation::operator() (const UnsignedInteger i,
     const UnsignedInteger j,
     const UnsignedInteger k)
 {
-  if ((i >= nbRows_) || (j >= nbColumns_) || (k >= nbSheets_)) throw InvalidDimensionException(HERE);
+  if (!(i < nbRows_ && j < nbColumns_ && k < nbSheets_)) throw InvalidDimensionException(HERE);
 
   return (*this)[this->convertPosition(i, j, k)];
 }
@@ -143,7 +143,7 @@ const Scalar & TensorImplementation::operator() (const UnsignedInteger i,
     const UnsignedInteger j,
     const UnsignedInteger k)  const
 {
-  if ((i >= nbRows_) || (j >= nbColumns_) || (k >= nbSheets_)) throw InvalidDimensionException(HERE);
+  if (!(i < nbRows_ && j < nbColumns_ && k < nbSheets_)) throw InvalidDimensionException(HERE);
 
   return (*this)[this->convertPosition(i, j, k)];
 }
@@ -151,7 +151,7 @@ const Scalar & TensorImplementation::operator() (const UnsignedInteger i,
 /* getSheet returns the sheet specified by its sheet number k */
 Matrix TensorImplementation::getSheet(const UnsignedInteger k) const
 {
-  if (k >= nbSheets_) throw InvalidDimensionException(HERE);
+  if (!(k < nbSheets_)) throw InvalidDimensionException(HERE);
 
   MatrixImplementation sheet(nbRows_, nbColumns_);
   const UnsignedInteger shift = convertPosition(0, 0, k);
@@ -163,7 +163,7 @@ Matrix TensorImplementation::getSheet(const UnsignedInteger k) const
 void TensorImplementation::setSheet(const UnsignedInteger k,
                                     const Matrix & m)
 {
-  if (k >= nbSheets_) throw InvalidDimensionException(HERE);
+  if (!(k < nbSheets_)) throw InvalidDimensionException(HERE);
   if (m.getNbRows() != nbRows_) throw InvalidDimensionException(HERE);
   if (m.getNbColumns() != nbColumns_) throw InvalidDimensionException(HERE);
   std::copy(m.getImplementation()->begin(), m.getImplementation()->end(), begin() + convertPosition(0, 0, k));
@@ -249,22 +249,9 @@ void TensorImplementation::load(Advocate & adv)
   adv.loadAttribute("nbSheets_", nbSheets_);
 }
 
-
-const Scalar* TensorImplementation::__baseaddress__() const
+UnsignedInteger TensorImplementation::stride(const UnsignedInteger dim) const
 {
-  return &(*this)[0];
-}
-
-
-UnsignedInteger TensorImplementation::__elementsize__() const
-{
-  return sizeof(Scalar);
-}
-
-
-UnsignedInteger TensorImplementation::__stride__(UnsignedInteger dim) const
-{
-  UnsignedInteger stride = __elementsize__();
+  UnsignedInteger stride = elementSize();
   if (dim > 0)
     stride *= nbRows_;
   if (dim > 1)

@@ -1,0 +1,94 @@
+%feature("docstring") OT::UnionEvent
+"Event defined as the union of several events.
+
+An occurrence of one single event :math:`E_i` yields the occurrence of the system event (series system):
+
+.. math::
+
+    E_{sys} = \bigcup_{i=1}^N E_i
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.RandomVector`
+    Collection of events
+
+See also
+--------
+Event
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 2
+>>> X = ot.RandomVector(ot.Normal(dim))
+>>> f1 = ot.SymbolicFunction(['x1', 'x2'], ['x1'])
+>>> f2 = ot.SymbolicFunction(['x1', 'x2'], ['x2'])
+>>> Y1 = ot.CompositeRandomVector(f1, X)
+>>> Y2 = ot.CompositeRandomVector(f2, X)
+>>> e1 = ot.ThresholdEvent(Y1, ot.Less(), 0.0)
+>>> e2 = ot.ThresholdEvent(Y2, ot.Greater(), 0.0)
+>>> event = ot.UnionEvent([e1, e2])
+
+Then it can be used for sampling (or with simulation algorithms):
+
+>>> p = event.getSample(1000).computeMean()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UnionEvent::getDomain
+"Get the domain.
+
+Returns
+-------
+domain : :class:`~openturns.Domain`
+    Composed domain."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UnionEvent::getAntecedent
+"Accessor to the antecedent random vector.
+
+Returns
+-------
+antecedent : :class:`~openturns.RandomVector`
+    Defined as the root cause."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UnionEvent::getFunction
+"Accessor to the function.
+
+Returns
+-------
+function : :class:`~openturns.Function`
+    Composed function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UnionEvent::setEventCollection
+"Accessor to sub events.
+
+Parameters
+----------
+events : sequence of :class:`~openturns.RandomVector`
+    List of sub events."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UnionEvent::getEventCollection
+"Accessor to sub events.
+
+Returns
+-------
+events : :class:`~openturns.RandomVectorCollection`
+    List of sub events."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UnionEvent::getComposedEvent
+"Accessor to the composed event.
+
+Returns
+-------
+composed : :class:`~openturns.RandomVector`
+    Composed event."

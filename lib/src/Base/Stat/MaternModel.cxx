@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,11 +31,11 @@ static const Factory<MaternModel> Factory_MaternModel;
 
 /* Default constructor */
 MaternModel::MaternModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, ResourceMap::GetAsScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
   , nu_(ResourceMap::GetAsScalar("MaternModel-DefaultNu"))
   , sqrt2nuOverTheta_(Point(inputDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsScalar("MaternModel-DefaultTheta") ))
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
   // Compute the normalization factor
   computeLogNormalizationFactor();
   // Compute useful scaling factor
@@ -45,11 +45,11 @@ MaternModel::MaternModel(const UnsignedInteger inputDimension)
 /** Parameters constructor */
 MaternModel::MaternModel(const Point & scale,
                          const Scalar nu)
-  : StationaryCovarianceModel(scale, Point(1, 1.0))
+  : CovarianceModelImplementation(scale, Point(1, 1.0))
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
   setNu(nu);
 }
 
@@ -57,14 +57,14 @@ MaternModel::MaternModel(const Point & scale,
 MaternModel::MaternModel(const Point & scale,
                          const Point & amplitude,
                          const Scalar nu)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
+  isStationary_ = true;
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";
-  definesComputeStandardRepresentative_ = true;
   setNu(nu);
 }
 
@@ -87,20 +87,21 @@ MaternModel * MaternModel::clone() const
 }
 
 /* Computation of the covariance  function */
-Scalar MaternModel::computeStandardRepresentative(const Point & tau) const
+Scalar MaternModel::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   Point scaledTau(inputDimension_);
   for(UnsignedInteger i = 0; i < inputDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
   const Scalar scaledPoint = scaledTau.norm();
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return 1.0 + nuggetFactor_;
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
   else
-    return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
-Scalar MaternModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                                    const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar scaledPoint = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
@@ -111,10 +112,25 @@ Scalar MaternModel::computeStandardRepresentative(const Collection<Scalar>::cons
     scaledPoint += dx * dx;
   }
   scaledPoint = sqrt(scaledPoint);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return 1.0 + nuggetFactor_;
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
   else
-    return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+}
+
+Scalar MaternModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  const Scalar scaledPoint = std::abs(tau * sqrt2nuOverTheta_[0]);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  if (scaledPoint <= SpecFunc::ScalarEpsilon)
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+  else
+    return outputCovariance(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
 /* Gradient */
@@ -132,7 +148,7 @@ Matrix MaternModel::partialGradient(const Point & s,
   if (norm2 == 0.0)
   {
     // Infinite gradient for nu < 1/2
-    if (nu_ < 0.5) return Matrix(inputDimension_, 1, Point(inputDimension_, -SpecFunc::MaxScalar));
+    if (nu_ < 0.5) return Matrix(inputDimension_, 1, Point(inputDimension_, SpecFunc::LowestScalar));
     // Non-zero gradient for nu = 1/2
     if (nu_ == 0.5)
     {
@@ -153,7 +169,7 @@ Matrix MaternModel::partialGradient(const Point & s,
 void MaternModel::setScale(const Point & scale)
 {
   // First set scale
-  StationaryCovarianceModel::setScale(scale);
+  CovarianceModelImplementation::setScale(scale);
   // Update scaling factor
   computeSqrt2nuOverTheta();
 }
@@ -161,7 +177,7 @@ void MaternModel::setScale(const Point & scale)
 void MaternModel::setFullParameter(const Point & parameter)
 {
   /*
-    Care! To make the method not bogus, the size of paramter argument
+    Care! To make the method not bogus, the size of parameter argument
     should be :
      - Size of scale : inputDimension_
      - Size of amplitude : here 1
@@ -173,7 +189,7 @@ void MaternModel::setFullParameter(const Point & parameter)
   */
   // Check the size
   const UnsignedInteger totalSize = inputDimension_ + outputDimension_  + 1;
-  if (parameter.getSize() < totalSize)
+  if (!(parameter.getSize() >= totalSize))
     throw InvalidArgumentException(HERE) << "In MaternModel::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;
   // First set the generic parameter using CovarianceModelImplementation::setFullParameter
@@ -248,7 +264,7 @@ void MaternModel::setNu(const Scalar nu)
 /* Method save() stores the object through the StorageManager */
 void MaternModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute("nu_", nu_);
   adv.saveAttribute("logNormalizationFactor_", logNormalizationFactor_);
   adv.saveAttribute("sqrt2nuOverTheta_", sqrt2nuOverTheta_);
@@ -257,7 +273,7 @@ void MaternModel::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MaternModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute("nu_", nu_);
   adv.loadAttribute("logNormalizationFactor_", logNormalizationFactor_);
   adv.loadAttribute("sqrt2nuOverTheta_", sqrt2nuOverTheta_);

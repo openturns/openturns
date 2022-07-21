@@ -63,9 +63,9 @@ Examples
 >>> # Intersection between levelSet1 and levelSet2
 >>> intersection = levelSet1.intersect(levelSet2)
 >>> # Tests
->>> print(intersection.contains([1.0]))
+>>> print([1.0] in intersection)
 False
->>> print(intersection.contains([0.25]))
+>>> print([0.25] in intersection)
 True"
 
 // ---------------------------------------------------------------------
@@ -97,9 +97,9 @@ Examples
 >>> # Union between levelSet1 and levelSet2
 >>> join = levelSet1.join(levelSet2)
 >>> # Tests
->>> print(join.contains([0.5]))
+>>> print([0.5] in join)
 False
->>> print(join.contains([0.25]))
+>>> print([0.25] in join)
 True"
 
 // ---------------------------------------------------------------------
@@ -138,6 +138,26 @@ Examples
 >>> levelSet = ot.LevelSet()
 >>> function = ot.SymbolicFunction(['x'], ['3*x-1'])
 >>> levelSet.setFunction(function)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::getOperator
+"Operator accessor.
+
+Returns
+-------
+op : :class:`~openturns.ComparisonOperator`
+    Comparison operator against the level."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::setOperator
+"Operator accessor.
+
+Parameters
+----------
+op : :class:`~openturns.ComparisonOperator`
+    Comparison operator against the level."
 
 // ---------------------------------------------------------------------
 
@@ -181,7 +201,7 @@ Examples
 Parameters
 ----------
 bound : sequence of floats
-    Lower bound of the bounding box of the level set. It allows to clip the level set."
+    Lower bound of the bounding box of the level set. It allows one to clip the level set."
 
 // ---------------------------------------------------------------------
 
@@ -191,7 +211,7 @@ bound : sequence of floats
 Parameters
 ----------
 bound : sequence of floats
-    Upper bound of the bounding box of the level set. It allows to clip the level set."
+    Upper bound of the bounding box of the level set. It allows one to clip the level set."
 
 // ---------------------------------------------------------------------
 
@@ -201,7 +221,7 @@ bound : sequence of floats
 Returns
 -------
 bound : :class:`~openturns.Point`
-    Lower bound of the bounding box of the level set. It allows to clip the level set."
+    Lower bound of the bounding box of the level set. It allows one to clip the level set."
 
 // ---------------------------------------------------------------------
 
@@ -211,4 +231,4 @@ bound : :class:`~openturns.Point`
 Returns
 -------
 bound : :class:`~openturns.Point`
-    Upper bound of the bounding box of the level set. It allows to clip the level set."
+    Upper bound of the bounding box of the level set. It allows one to clip the level set."

@@ -48,7 +48,6 @@
 %include TimeSeries.i 
 %include ProcessSampleImplementation.i
 %include ProcessSample.i
-%include SpecFunc.i
 %include EvaluationImplementation.i
 %include Evaluation.i
 %include GradientImplementation.i
@@ -89,12 +88,14 @@
 %include PointToFieldFunctionImplementation.i
 %include PointToFieldFunction.i
 %include ParametricPointToFieldFunction.i
+%include VertexValuePointToFieldFunction.i
 %include FieldToFieldConnection.i
 %include FieldToPointConnection.i
 %include PointToFieldConnection.i
 %include PointToPointEvaluation.i
 %include PointToPointConnection.i
 %include IndicatorFunction.i
+%include DistanceToDomainFunction.i
 %include ValueFunction.i
 %include VertexValueFunction.i
 %include DualLinearCombinationEvaluation.i
@@ -120,6 +121,7 @@
 %include DatabaseFunction.i
 %include DatabaseEvaluation.i
 %include IndicatorEvaluation.i
+%include DistanceToDomainEvaluation.i
 %include ProductPolynomialEvaluation.i
 %include ParametricEvaluation.i
 %include ParametricGradient.i
@@ -149,6 +151,10 @@
 %include ConstantBasisFactory.i
 %include LinearBasisFactory.i
 %include QuadraticBasisFactory.i
+%include NullHessian.i
+%include MarginalEvaluation.i
+%include MarginalGradient.i
+%include MarginalHessian.i
 
 /* At last we include template definitions */
 %include BaseFuncTemplateDefs.i

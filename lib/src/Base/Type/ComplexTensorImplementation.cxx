@@ -2,7 +2,7 @@
 /**
  *  @brief ComplexTensorImplementation implements the Tensor classes
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -64,7 +64,6 @@ ComplexTensorImplementation::ComplexTensorImplementation(const UnsignedInteger r
 {
   const UnsignedInteger tensorSize = std::min(rowDim * colDim * sheetDim, elementsValues.getSize());
   std::copy(elementsValues.begin(), elementsValues.begin() + tensorSize, begin());
-  // memcpy(&(*this)[0], &elementsValues[0], tensorSize * sizeof(Complex));
 }
 
 
@@ -133,7 +132,7 @@ Complex & ComplexTensorImplementation::operator() (const UnsignedInteger i,
     const UnsignedInteger j,
     const UnsignedInteger k)
 {
-  if ((i >= nbRows_) || (j >= nbColumns_) || (k >= nbSheets_)) throw InvalidDimensionException(HERE);
+  if (!(i < nbRows_ && j < nbColumns_ && k < nbSheets_)) throw InvalidDimensionException(HERE);
 
   return (*this)[this->convertPosition(i, j, k)];
 }
@@ -144,7 +143,7 @@ const Complex & ComplexTensorImplementation::operator() (const UnsignedInteger i
     const UnsignedInteger j,
     const UnsignedInteger k)  const
 {
-  if ((i >= nbRows_) || (j >= nbColumns_) || (k >= nbSheets_)) throw InvalidDimensionException(HERE);
+  if (!(i < nbRows_ && j < nbColumns_ && k < nbSheets_)) throw InvalidDimensionException(HERE);
 
   return (*this)[this->convertPosition(i, j, k)];
 }
@@ -152,12 +151,11 @@ const Complex & ComplexTensorImplementation::operator() (const UnsignedInteger i
 /* getSheet returns the sheet specified by its sheet number k */
 ComplexMatrix ComplexTensorImplementation::getSheet(const UnsignedInteger k) const
 {
-  if (k >= nbSheets_) throw InvalidDimensionException(HERE);
+  if (!(k < nbSheets_)) throw InvalidDimensionException(HERE);
 
   ComplexMatrixImplementation sheet(nbRows_, nbColumns_);
   const UnsignedInteger shift = convertPosition(0, 0, k);
   std::copy(begin() + shift, begin() + shift + nbRows_ * nbColumns_, sheet.begin());
-  // memcpy( &sheet[0], &(*this)[this->convertPosition(0, 0, k)], nbRows_ * nbColumns_ * sizeof(Complex) );
   return sheet;
 }
 
@@ -165,11 +163,10 @@ ComplexMatrix ComplexTensorImplementation::getSheet(const UnsignedInteger k) con
 void ComplexTensorImplementation::setSheet(const UnsignedInteger k,
     const ComplexMatrix & m)
 {
-  if (k >= nbSheets_) throw InvalidDimensionException(HERE);
+  if (!(k < nbSheets_)) throw InvalidDimensionException(HERE);
   if (m.getNbRows() != nbRows_) throw InvalidDimensionException(HERE);
   if (m.getNbColumns() != nbColumns_) throw InvalidDimensionException(HERE);
   std::copy(m.getImplementation()->begin(), m.getImplementation()->end(), begin() + convertPosition(0, 0, k));
-  // memcpy( &(*this)[this->convertPosition(0, 0, k)], &m.getImplementation()->operator[](0), nbRows_ * nbColumns_ * sizeof(Complex) );
 }
 
 /* getSheetSym returns the hermitian sheet specified by its sheet number k */
@@ -252,22 +249,9 @@ void ComplexTensorImplementation::load(Advocate & adv)
   adv.loadAttribute("nbSheets_", nbSheets_);
 }
 
-
-const Complex* ComplexTensorImplementation::__baseaddress__() const
+UnsignedInteger ComplexTensorImplementation::stride(const UnsignedInteger dim) const
 {
-  return &(*this)[0];
-}
-
-
-UnsignedInteger ComplexTensorImplementation::__elementsize__() const
-{
-  return sizeof(Complex);
-}
-
-
-UnsignedInteger ComplexTensorImplementation::__stride__(UnsignedInteger dim) const
-{
-  UnsignedInteger stride = __elementsize__();
+  UnsignedInteger stride = elementSize();
   if (dim > 0)
     stride *= nbRows_;
   if (dim > 1)

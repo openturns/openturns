@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -19,7 +18,7 @@ try:
         "MeixnerDistribution-MaximumConstraintError", 1.0e-6)
     ResourceMap.SetAsScalar(
         "MeixnerDistribution-MaximumObjectiveError", 1.0e-6)
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = MeixnerDistribution(1.5, 0.5, 2.5, -0.5)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
@@ -120,8 +119,8 @@ try:
     print("beta=%.6f" % beta)
     delta = distribution.getDelta()
     print("delta=%.6f" % delta)
-    mu = distribution.getMu()
-    print("mu=%.6f" % mu)
+    gamma = distribution.getGamma()
+    print("gamma=%.6f" % gamma)
     standardDeviation = distribution.getStandardDeviation()
     print("standard deviation=", standardDeviation)
     skewness = distribution.getSkewness()

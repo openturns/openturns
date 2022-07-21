@@ -4,6 +4,8 @@
 #include "openturns/HMatrixImplementation.hxx"
 %}
 
+%ignore OT::HMatrixImplementation::operator=(const HMatrixImplementation &);
+
 %include HMatrixImplementation_doc.i
 
 %include openturns/HMatrixImplementation.hxx

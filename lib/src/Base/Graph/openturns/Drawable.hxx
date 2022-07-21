@@ -2,7 +2,7 @@
 /**
  *  @brief Drawable implements graphic devices for plotting through R
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,9 +44,13 @@ public:
   /** Default constructor */
   Drawable(const DrawableImplementation & implementation);
 
+#ifndef SWIG
+  /** Constructor from implementation pointer */
+  Drawable(DrawableImplementation * p_implementation);
+#endif
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface */
 
@@ -128,6 +132,10 @@ public:
   Description getTextPositions() const;
   void setTextPositions(const Description & textPositions);
 
+  /** Accessor for the text size */
+  Scalar getTextSize() const;
+  void setTextSize(const Scalar size);
+
   /** Accessor for data */
   Sample getData() const;
 
@@ -183,10 +191,23 @@ public:
                                 const Scalar blue,
                                 const Scalar alpha);
 
-  /** Convert an HSV triplet into an RGB triplet */
+  /** Convert an HSV triplet into an RGB triplet where
+  0.0<=hue<=360.0, 0.0<=saturation<=1.0, 0.0<=value<=1.0 */
   static Point ConvertFromHSVIntoRGB(const Scalar hue,
                                      const Scalar saturation,
                                      const Scalar value);
+
+  /* Convert a RGB triplet to HSV where
+  0<=red<=255, 0<=green<=255, 0<=blue<=255 */
+  static Point ConvertFromRGBIntoHSV(const UnsignedInteger red,
+                                     const UnsignedInteger green,
+                                     const UnsignedInteger blue);
+
+  /* Convert a RGB triplet to HSV where
+  0.0<=red<=1.0, 0.0<=green<=1.0, 0.0<=blue<=1.0 */
+  static Point ConvertFromRGBIntoHSV(const Scalar red,
+                                     const Scalar green,
+                                     const Scalar blue);
 
   /** Convert an HSV triplet to a valid hexadecimal code */
   static String ConvertFromHSV(const Scalar hue,
@@ -201,6 +222,12 @@ public:
 
   /** Build default palette */
   static Description BuildDefaultPalette(const UnsignedInteger size);
+
+  /** Build rainbow palette */
+  static Description BuildRainbowPalette(const UnsignedInteger size);
+
+  /** Build tableu palette */
+  static Description BuildTableauPalette(const UnsignedInteger size);
 
 }; /* class Drawable */
 

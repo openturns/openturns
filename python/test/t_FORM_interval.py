@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 # Tests
@@ -13,7 +12,7 @@ ot.ResourceMap.SetAsScalar(
 ot.ResourceMap.SetAsScalar(
     'SimulationAlgorithm-DefaultMaximumStandardDeviation', 0.0)
 ot.ResourceMap.SetAsScalar(
-    'RootStrategyImplementation-DefaultStepSize', 0.1)
+    'RootStrategy-DefaultStepSize', 0.1)
 
 algorithms = ['MonteCarlo',
               'LHS',
@@ -53,7 +52,7 @@ for domain in intervals:
     outDim = domain.getDimension()
     f = ot.SymbolicFunction(inVars, inVars[0:outDim])
     Y = ot.CompositeRandomVector(f, X)
-    event = ot.Event(Y, domain)
+    event = ot.ThresholdEvent(Y, domain)
 
     ot.RandomGenerator.SetSeed(0)
     # algo = getattr(openturns, algoName)(event)

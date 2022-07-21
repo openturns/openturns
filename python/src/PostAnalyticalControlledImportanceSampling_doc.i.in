@@ -23,7 +23,7 @@ Examples
 >>> distribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> X = ot.RandomVector(distribution)
 >>> Y = ot.CompositeRandomVector(f, X)
->>> event = ot.Event(Y, ot.Less(), -3.0)
+>>> event = ot.ThresholdEvent(Y, ot.Less(), -3.0)
 >>> solver = ot.AbdoRackwitz()
 >>> analytical = ot.FORM(solver, event, [50.0, 1.0, 10.0, 5.0])
 >>> analytical.run()

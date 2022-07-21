@@ -1,0 +1,140 @@
+%feature("docstring") OT::MinimumVolumeClassifier
+"Classifier define by a minimum volume level set.
+
+Parameters
+----------
+mixtDist : :class:`~openturns.Distribution`
+    A distribution.
+alpha : sequence of float, unique and sorted
+    Confidence levels
+
+See also
+--------
+Classifier
+
+Notes
+-----
+This implements a mixture classifier which is a particular classifier based on
+a minimum volume confidence domain.
+
+The minimum volume confidence domain :math:`A^*_{\alpha_i}` is the set of minimum volume and which measure is at least :math:`\alpha_i`. It is defined by:
+
+.. math::
+
+    A^*_{\alpha_i} = \argmin_{A \in \Rset^d\, | \, \mu(A) \geq \alpha_i} \lambda(A)
+
+
+where :math:`\lambda` is the Lebesgue measure on :math:`\Rset^d`. Under some general conditions on :math:`\mu` (for example, no flat regions), the set  :math:`A^*_{\alpha_i}` is unique and realises the minimum: :math:`\mu(A^*_{\alpha_i}) = \alpha`. We show that :math:`A^*_{\alpha_i}` writes:
+
+.. math::
+
+    A^*_{\alpha_i} = \{ \vect{x} \in \Rset^d \, | \, p(\vect{x}) \geq p_{\alpha_i} \}
+
+The classifier proposes 2 classes. The rule to assign a point :math:`\vect{x}`
+to a class *k* is defined as follows: :math:`k = \argmin_i \text{with} p(\vect{x}) > p_{\alpha_i}`
+
+The grade of :math:`\vect{x}` with respect to the class *k* is :math:`log p(\vect{x})`
+if :math:`\vect{x}` belongs to class *k* else :math:`- log p(\vect{x})`.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> R2 = ot.CorrelationMatrix(2)
+>>> dists = [ot.Normal([-1.0, 2.0], [1.0]*2, R2), ot.Normal([1.0, -2.0], [1.5]*2, R2)]
+>>> mixture = ot.Mixture(dists)
+>>> sample = mixture.getSample(1000)
+>>> distribution = ot.KernelSmoothing().build(sample)
+>>> algo = ot.MinimumVolumeClassifier(distribution, [0.8])
+>>> algo.classify(distribution.getMean())
+0
+>>> algo.classify([100.0]*2)
+1
+>>> sample = distribution.getSample(100)
+>>> graph = algo.drawSample(sample, [0, 1])"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::getDistribution
+"Accessor to the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::getThreshold
+"Accessor to the threshold.
+
+Returns
+-------
+threshold : :class:`~openturns.Point`
+    The values :math:`p_{\alpha_i}` of the density function defining the frontier of the domain."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::drawContour
+"Draw distribution contours.
+
+Parameters
+----------
+alpha : sequence of float
+    Confidence levels
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The value of the density function defining the frontier of the domain."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::drawSample
+"Draw classified sample.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    A sample to classifiy.
+classes : sequence of int
+    Classes to select
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The value of the density function defining the frontier of the domain."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::drawContourAndSample
+"Draw distribution contour and classified sample.
+
+Parameters
+----------
+alpha : sequence of float
+    Confidence levels
+sample : :class:`~openturns.Sample`
+    A sample to classifiy.
+classes : sequence of int
+    Classes to select
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The value of the density function defining the frontier of the domain."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::getLevelSet
+"LevelSet accessor.
+
+Parameters
+----------
+i : int
+    Index
+
+Returns
+-------
+levelset : :class:`~openturns.LevelSet`
+    The levelset defining the domain."

@@ -2,7 +2,7 @@
 /**
  * @brief Class for identity evaluation.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@ IdentityEvaluation::IdentityEvaluation(const UnsignedInteger dimension)
   , dimension_(dimension)
 {
   /* Check if the dimension of the constant term is compatible with the linear term */
-  if (dimension_ == 0) throw InvalidDimensionException(HERE) << "Error: cannot build an identity evaluation of dimension 0";
+  if (!(dimension_ > 0)) throw InvalidDimensionException(HERE) << "Error: cannot build an identity evaluation of dimension 0";
   setInputDescription(Description::BuildDefault(dimension, "x"));
   setOutputDescription(Description::BuildDefault(dimension, "y"));
 }
@@ -97,6 +97,20 @@ UnsignedInteger IdentityEvaluation::getInputDimension() const
 UnsignedInteger IdentityEvaluation::getOutputDimension() const
 {
   return dimension_;
+}
+
+/* Linearity accessors */
+Bool IdentityEvaluation::isLinear() const
+{
+  return true;
+}
+
+Bool IdentityEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  if (!(index <= getInputDimension()))
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
+
+  return true;
 }
 
 /* Method save() stores the object through the StorageManager */

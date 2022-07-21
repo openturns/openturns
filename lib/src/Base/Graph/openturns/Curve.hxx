@@ -2,7 +2,7 @@
 /**
  *  @brief Curve class for curve plots
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,12 +49,12 @@ public:
   explicit Curve(const Sample & data,
                  const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Curve(const Sample & dataX,
         const Sample & dataY,
         const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Curve(const Point & dataX,
         const Point & dataY,
         const String & legend = "");
@@ -67,23 +67,23 @@ public:
         const String & legend = "");
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Draw method */
-  String draw() const;
+  String draw() const override;
 
   /** Clone method */
-  virtual Curve * clone() const;
+  Curve * clone() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const Sample & data) const;
+  void checkData(const Sample & data) const override;
 
 private:
 

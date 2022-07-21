@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,8 +47,8 @@ UserDefinedSpectralModel::UserDefinedSpectralModel(const RegularGrid & frequency
   const UnsignedInteger N = frequencyGrid.getN();
   if (N != spectralFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: Frequency grid and spectral functions have different sizes";
-  if (frequencyGrid.getStart() < 0.0)
-    throw InvalidArgumentException(HERE) << "Error: The frequency grid must contains only nonnegative values";
+  if (!(frequencyGrid.getStart() >= 0.0))
+    throw InvalidArgumentException(HERE) << "Error: The frequency grid must contain only nonnegative values";
   setFrequencyGrid(frequencyGrid);
   DSPCollection_ = HermitianMatrixCollection(N);
   // put the first element

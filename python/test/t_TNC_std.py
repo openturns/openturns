@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import math as m
 
@@ -42,7 +41,7 @@ print('algo=', algo)
 algo.run()
 result = algo.getResult()
 print('result=', printPoint(result.getOptimalPoint(), 4))
-print('multipliers=', printPoint(result.getLagrangeMultipliers(), 4))
+print('multipliers=', printPoint(result.computeLagrangeMultipliers(), 4))
 
 problem.setMinimization(False)
 algo.setProblem(problem)
@@ -50,7 +49,7 @@ print('algo=', algo)
 algo.run()
 result = algo.getResult()
 print('result=', printPoint(result.getOptimalPoint(), 4))
-print('multipliers=', printPoint(result.getLagrangeMultipliers(), 4))
+print('multipliers=', printPoint(result.computeLagrangeMultipliers(), 4))
 
 # non-linear
 levelFunction = ot.SymbolicFunction(
@@ -81,7 +80,7 @@ print('algo=', algo)
 algo.run()
 result = algo.getResult()
 print('result=', printPoint(result.getOptimalPoint(), 4))
-print('multipliers=', printPoint(result.getLagrangeMultipliers(), 4))
+print('multipliers=', printPoint(result.computeLagrangeMultipliers(), 4))
 
 problem.setMinimization(False)
 algo.setProblem(problem)
@@ -90,4 +89,4 @@ algo.setStartingPoint(startingPointNearMaximizationCorner)
 algo.run()
 result = algo.getResult()
 print('result=', printPoint(result.getOptimalPoint(), 4))
-print('multipliers=', printPoint(result.getLagrangeMultipliers(), 4))
+print('multipliers=', printPoint(result.computeLagrangeMultipliers(), 4))

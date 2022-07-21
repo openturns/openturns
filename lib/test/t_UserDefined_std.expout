@@ -2,12 +2,13 @@ Distribution class=UserDefined name=UserDefined dimension=1 points=class=Sample 
 Distribution UserDefined({x = [1], p = 0.1875}, {x = [2], p = 0.0625}, {x = [3], p = 0.75})
 Elliptical = false
 Continuous = false
+Independent copula = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[3]
-oneSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 description=[v0] data=[[3],[1],[3],[3],[1],[3],[3],[3],[2],[3]]
+oneSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 description=[v0] data=[[1],[3],[3],[1],[3],[3],[1],[3],[3],[3]]
 point= class=Point name=Unnamed dimension=1 values=[2] pdf=0.0625 cdf=0.25
 Quantile=class=Point name=Unnamed dimension=1 values=[3]
 entropy=0.702919
-entropy (MC)=0.703554
+entropy (MC)=0.703557
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[2.5625]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[7.1875]
@@ -17,6 +18,7 @@ standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[184.438]
 Standard representative=UserDefined({x = [1], p = 0.1875}, {x = [2], p = 0.0625}, {x = [3], p = 0.75})
 Multivariate UserDefined=class=UserDefined name=Unnamed dimension=3 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=40 dimension=3 data=[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[10.1,10.2,10.3],[10.1,10.2,10.3],[10.1,10.2,10.3],[20.1,20.2,20.3]] probabilities=class=Point name=Unnamed dimension=40 values=[0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025]
 Multivariate UserDefined=class=UserDefined name=Unnamed dimension=3 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=3 data=[[0,0,0],[10.1,10.2,10.3],[20.1,20.2,20.3]] probabilities=class=Point name=Unnamed dimension=3 values=[0.9,0.075,0.025]
+Independent copula = false
 entropy=0.381316
 entropy (MC)=0.381574
 Marginal 0=class=UserDefined name=UserDefined dimension=1 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=1 data=[[0],[10.1],[20.1]] probabilities=class=Point name=Unnamed dimension=3 values=[0.9,0.075,0.025]

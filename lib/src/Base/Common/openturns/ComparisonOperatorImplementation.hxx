@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ComparisonOperatorImplementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * @brief The class implements the concept of comparison operator defined in ComparisonOperator.
  *
- * This class is abstract so it can not be instanciated. It must be derived.
+ * This class is abstract so it can not be instantiated. It must be derived.
  * @see ComparisonOperator
  */
 class OT_API ComparisonOperatorImplementation
@@ -44,23 +44,23 @@ public:
   ComparisonOperatorImplementation();
 
   /* String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 
   /* Here is the interface that all derived class must implement */
 
   /* Virtual constructor */
-  virtual ComparisonOperatorImplementation * clone() const;
+  ComparisonOperatorImplementation * clone() const override;
 
   /** @copydoc ComparisonOperator::operator()() const */
   virtual Bool operator() (const Scalar a,
                            const Scalar b) const;
 
   /* Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /* Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 }; /* class ComparisonOperatorImplementation */
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The MaximumDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -152,7 +152,7 @@ Scalar MaximumDistribution::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   if ((point[0] <= getRange().getLowerBound()[0]) || (point[0] >= getRange().getUpperBound()[0])) return 0.0;
   // Special case for identical independent variables
-  if (allSame_) return distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<Scalar>(variablesNumber_) - 1.0);
+  if (allSame_) return variablesNumber_ * distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<Scalar>(variablesNumber_) - 1.0);
   // General case
   if (!distribution_.hasIndependentCopula()) DistributionImplementation::computePDF(point);
   // Special treatment of the independent copula case
@@ -164,16 +164,13 @@ Scalar MaximumDistribution::computePDF(const Point & point) const
   {
     marginals[i] = distribution_.getMarginal(i);
     const Scalar cdf = marginals[i].computeCDF(point);
-    if ((cdf == 0) || (cdf == 1.0)) return 0.0;
+    if (cdf == 0) return 0.0;
     marginalCDF[i] = cdf;
     product *= cdf;
   }
   Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Scalar pdfI = marginals[i].computePDF(point);
-    if (pdfI > 0.0) sum += pdfI / marginalCDF[i];
-  }
+    sum += marginals[i].computePDF(point) / marginalCDF[i];
   return sum * product;
 }
 

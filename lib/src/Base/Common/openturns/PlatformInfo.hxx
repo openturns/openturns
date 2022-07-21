@@ -2,7 +2,7 @@
 /**
  *  @brief The class PlatformInfo gives information about the library
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,9 @@
 #ifndef OPENTURNS_PLATFORMINFO_HXX
 #define OPENTURNS_PLATFORMINFO_HXX
 
+#include <map>
 #include "openturns/OTprivate.hxx"
+#include "openturns/Description.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,9 +47,6 @@ public:
   /** Return the version number of OpenTURNS */
   static String GetVersion();
 
-  /** Return the name of the package OpenTURNS was built from */
-  static String GetName();
-
   /** Return the revision of the versioning system this version corresponds to (broken for the moment) */
   static String GetRevision();
 
@@ -65,13 +64,15 @@ public:
    */
   static void SetNumericalPrecision(SignedInteger precision);
 
-  /** Set two digit exponent format */
-  static void SetTwoDigitExponent(const Bool enable = true);
+  /** Features accessor */
+  static Description GetFeatures();
+  static Bool HasFeature(const String & feature);
 
 private:
 
   PlatformInfo();
 
+  static std::map<String, Bool> Features_;
 
 }; /* class PlatformInfo */
 

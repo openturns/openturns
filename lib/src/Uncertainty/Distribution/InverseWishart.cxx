@@ -2,7 +2,7 @@
 /**
  *  @brief The InverseWishart distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -154,7 +154,7 @@ Scalar InverseWishart::computePDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const Scalar logPDF = computeLogPDF(m);
-  const Scalar pdf = (logPDF == -SpecFunc::LogMaxScalar) ? 0.0 : std::exp(logPDF);
+  const Scalar pdf = std::exp(logPDF);
   return pdf;
 }
 
@@ -162,7 +162,7 @@ Scalar InverseWishart::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const Scalar logPDF = computeLogPDF(point);
-  const Scalar pdf = (logPDF == -SpecFunc::LogMaxScalar) ? 0.0 : std::exp(logPDF);
+  const Scalar pdf = std::exp(logPDF);
   return pdf;
 }
 
@@ -205,7 +205,7 @@ Scalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
   }
   catch (...)
   {
-    return -SpecFunc::LogMaxScalar;
+    return SpecFunc::LowestScalar;
   }
 }
 
@@ -327,7 +327,7 @@ Description InverseWishart::getParameterDescription() const
   {
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      description[index] = (OSS() << "v_" << i << "_" << j);
+      description[index] = (OSS() << "V_" << i << "_" << j);
     }
   }
   description[index] = "nu";

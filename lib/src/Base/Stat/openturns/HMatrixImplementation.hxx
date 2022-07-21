@@ -3,7 +3,7 @@
  *  @file  HMatrixImplementation.hxx
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,6 +28,7 @@
 #include "openturns/Sample.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/CovarianceModel.hxx"
+#include "openturns/HMatrixParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -119,7 +120,10 @@ public:
   HMatrixImplementation(const HMatrixImplementation& other);
 
   /** Virtual copy constructor */
-  virtual HMatrixImplementation * clone() const;
+  HMatrixImplementation * clone() const override;
+
+  /** Copy assignment operator */
+  HMatrixImplementation& operator=(const HMatrixImplementation& rhs);
 
   // Destructor
   virtual ~HMatrixImplementation();
@@ -131,8 +135,10 @@ public:
   UnsignedInteger getNbColumns() const;
 
   void assemble(const HMatrixRealAssemblyFunction& f, char symmetry);
-  void assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry);
-  void factorize(const String& method);
+  void assemble(const HMatrixRealAssemblyFunction &f, const HMatrixParameters & parameters, char symmetry);
+  void assemble(const HMatrixTensorRealAssemblyFunction &f, char symmetry);
+  void assemble(const HMatrixTensorRealAssemblyFunction &f, const HMatrixParameters &parameters, char symmetry);
+  void factorize(const String &method);
 
   /** Compute this <- alpha * this */
   void scale(Scalar alpha);
@@ -143,8 +149,15 @@ public:
   /** Compute this <- alpha op(A) * p(B) + beta * this */
   void gemm(char transA, char transB, Scalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, Scalar beta);
 
+private:
+  /** Compute an approximation of the maximum eigenvalue */
+  Scalar computeApproximateLargestEigenValue(const Scalar epsilon = ResourceMap::GetAsScalar("HMatrix-LargestEigenValueRelativeError"));
+
+public:
   /** Transpose matrix */
   void transpose();
+
+  void addIdentity(Scalar alpha);
 
   /** Get the Frobenius norm */
   Scalar norm() const;
@@ -173,18 +186,15 @@ public:
   /** Dump HMatrix onto file */
   void dump(const String & name) const;
 
-  /** Change HMatrix settings */
-  Bool setKey(const String & name, const String & value);
+  /** String converter */
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-
-  /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 private:
   // DO NOT USE
-  void * hmatInterface_;
+  std::shared_ptr<void> hmatInterface_;
   Pointer<HMatrixClusterTree> hmatClusterTree_;
   void * hmat_;
 
@@ -197,18 +207,16 @@ private:
 class OT_API CovarianceAssemblyFunction : public HMatrixRealAssemblyFunction
 {
 public:
-  CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon);
+  CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices);
 
   Scalar operator()(UnsignedInteger i, UnsignedInteger j) const;
 
 private:
   const CovarianceModel covarianceModel_;
-  Bool definesComputeStandardRepresentative_;
   const Sample vertices_;
   const Collection<Scalar>::const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;
   const UnsignedInteger covarianceDimension_;
-  const double epsilon_;
 };
 
 // Second implementation, by using HMatrixTensorRealAssemblyFunction
@@ -217,18 +225,15 @@ private:
 class OT_API CovarianceBlockAssemblyFunction : public HMatrixTensorRealAssemblyFunction
 {
 public:
-  CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon);
+  CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices);
 
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const;
 
 private:
   const CovarianceModel covarianceModel_;
-  Bool definesComputeStandardRepresentative_;
   const Sample vertices_;
   const Collection<Scalar>::const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;
-  const double epsilon_;
-  CovarianceMatrix epsilonId_;
 };
 
 END_NAMESPACE_OPENTURNS

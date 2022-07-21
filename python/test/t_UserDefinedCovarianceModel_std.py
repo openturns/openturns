@@ -1,14 +1,13 @@
 #! /usr/bin/env python
 
-from __future__ import print_function, division
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 # Default constructor
-myDefautModel = UserDefinedCovarianceModel()
-print("myDefautModel = ", myDefautModel)
+myDefaultModel = UserDefinedCovarianceModel()
+print("myDefaultModel = ", myDefaultModel)
 
 # Default dimension parameter to evaluate the model
 dimension = 1

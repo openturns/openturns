@@ -2,7 +2,7 @@
 /**
  *  @brief This class enables to build a covariance model
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,22 +59,25 @@ public:
   virtual UnsignedInteger getOutputDimension() const;
 
   /** Compute the covariance function */
-  virtual CovarianceMatrix operator() (const Scalar s,
-                                       const Scalar t) const;
+  virtual SquareMatrix operator() (const Scalar s,
+                                   const Scalar t) const;
 
-  virtual CovarianceMatrix operator() (const Point & s,
-                                       const Point & t) const;
-
-  // compute standard representative computes the term \rho(s, t)
-  virtual Scalar computeStandardRepresentative(const Point & s,
-      const Point & t) const;
+  virtual SquareMatrix operator() (const Point & s,
+                                   const Point & t) const;
 
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;
 
-  virtual CovarianceMatrix operator() (const Scalar tau) const;
+  virtual Scalar computeAsScalar(const Point &tau) const;
 
-  virtual CovarianceMatrix operator() (const Point & tau) const;
+  virtual Scalar computeAsScalar(const Scalar s,
+                                 const Scalar t) const;
+
+  virtual Scalar computeAsScalar(const Scalar tau) const;
+
+  virtual SquareMatrix operator()(const Scalar tau) const;
+
+  virtual SquareMatrix operator() (const Point & tau) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,
@@ -88,8 +91,15 @@ public:
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
   virtual CovarianceMatrix discretize(const Sample & vertices) const;
-  virtual Sample discretizeRow(const Sample & vertices,
+  virtual Sample discretizeRow(const Sample &vertices,
                                const UnsignedInteger p) const;
+
+  virtual Matrix computeCrossCovariance(const Sample &firstSample,
+                                        const Sample &secondSample) const;
+  virtual Matrix computeCrossCovariance(const Sample &sample,
+                                        const Point &point) const;
+  virtual Matrix computeCrossCovariance(const Point &point,
+                                        const Sample &sample) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
   virtual TriangularMatrix discretizeAndFactorize(const RegularGrid & timeGrid) const;
@@ -98,24 +108,18 @@ public:
 
   /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
   virtual HMatrix discretizeHMatrix(const RegularGrid & timeGrid,
-                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeHMatrix(const Mesh & mesh,
-                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeHMatrix(const Sample & vertices,
-                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
   virtual HMatrix discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const Mesh & mesh,
-      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const Sample & vertices,
-      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
 
 
@@ -166,10 +170,10 @@ public:
                      const Bool correlationFlag = false) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Marginal accessor */
   CovarianceModel getMarginal(const UnsignedInteger index) const;

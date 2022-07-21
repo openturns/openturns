@@ -2,7 +2,7 @@
 /**
  *  @brief The Dirac distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,31 +36,31 @@ Dirac::Dirac()
   : DiscreteDistribution()
   , point_(1, 0.0)
 {
-  setName( "Dirac" );
+  setName("Dirac");
   // We set the dimension of the Dirac distribution
-  setDimension( 1 );
+  setDimension(1);
   computeRange();
 }
 
 /* Parameters constructor */
 Dirac::Dirac(const Scalar p)
   : DiscreteDistribution()
-  , point_(1, p)
 {
-  setName( "Dirac" );
+  setName("Dirac");
   // We set the dimension of the Dirac distribution
-  setDimension( 1 );
+  setDimension(1);
+  setPoint(Point(1, p));
   computeRange();
 }
 
 /* Parameters constructor */
 Dirac::Dirac(const Point & point)
   : DiscreteDistribution()
-  , point_(point)
 {
   setName( "Dirac" );
   // We set the dimension of the Dirac distribution
-  setDimension( point.getDimension() );
+  setDimension(point.getDimension());
+  setPoint(point);
   computeRange();
 }
 
@@ -237,7 +237,7 @@ Point Dirac::getStandardMoment(const UnsignedInteger n) const
 /* Compute the covariance of the distribution */
 void Dirac::computeCovariance() const
 {
-  covariance_ = CovarianceMatrix(getDimension());
+  covariance_ = SquareMatrix(getDimension()).getImplementation();
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -306,6 +306,11 @@ Description Dirac::getParameterDescription() const
 /* Point accessor */
 void Dirac::setPoint(const Point & point)
 {
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Expected a point of dimension " << dimension;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    if (!SpecFunc::IsNormal(point[i])) throw InvalidArgumentException(HERE) << "Cannot build a Dirac from nan/inf values";
   point_ = point;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -342,20 +347,10 @@ Distribution Dirac::getMarginal(const Indices & indices) const
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
-  const UnsignedInteger outputDimension = indices.getSize();
-  Point pointMarginal(outputDimension);
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    pointMarginal[i] = point_[index_i];
-    marginalDescription[i] = description[index_i];
-  }
-  Dirac::Implementation marginal(new Dirac(pointMarginal));
-  marginal->setDescription(marginalDescription);
+  Dirac::Implementation marginal(new Dirac(point_.select(indices)));
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
-} // getMarginal(Indices)
+}
 
 /* Check if the distribution is elliptical */
 Bool Dirac::isElliptical() const

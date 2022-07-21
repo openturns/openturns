@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Base
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,5 +34,6 @@
 #include "openturns/OTStat.hxx"
 #include "openturns/OTType.hxx"
 #include "openturns/OTAlgo.hxx"
+#include "openturns/OTIterativeStat.hxx"
 
 #endif /* OPENTURNS_OTBASE_HXX */

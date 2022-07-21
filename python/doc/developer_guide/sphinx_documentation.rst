@@ -29,9 +29,6 @@ matplotlib.sphinxext.plot_directive
     code blocks featured in the pages of this documentation, especially in the
     :ref:`examples section <examples>`.
 
-nbsphinx
-    The `nbsphinx <https://nbsphinx.readthedocs.io/>`_ allows to
-    include Jupyter notebooks as examples.
 
 .. _contribute_docstrings:
 
@@ -55,8 +52,6 @@ included in :file:`Arcsine.i` using a `%include Arcsine_doc.i`.
     The :file:`.in` suffix disappeared because the docstring files are
     preprocessed by CMake in order to escape LaTeX backslashes for SWIG and
     Python.
-
-.. warning::
 
     Note also that the use of double quotes (`"`) in docstrings is forbidden.
     This is because SWIG uses them to delimit the docstrings.

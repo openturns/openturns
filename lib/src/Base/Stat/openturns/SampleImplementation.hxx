@@ -2,7 +2,7 @@
 /**
  *  @brief The class SampleImplementation implements blank free samples
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,7 +58,7 @@ public:
 public:
   NSI_point(SampleImplementation * p_nsi,
             const UnsignedInteger index);
-
+  NSI_point(const NSI_point & other);
   NSI_point & operator = (const NSI_point & rhs);
 
   template <typename POINT>
@@ -476,12 +476,13 @@ public:
 
   /** Factory of SampleImplementation from CSV file */
   static SampleImplementation BuildFromCSVFile(const FileName & fileName,
-      const String & csvSeparator = ResourceMap::GetAsString( "csv-file-separator" ));
+      const String & csvSeparator = ResourceMap::GetAsString( "Sample-CSVFileSeparator" ));
 
   /** Factory of SampleImplementation from Text file */
   static SampleImplementation BuildFromTextFile(const FileName & fileName,
       const String & separator = " ",
-      const UnsignedInteger skippedLines = 0);
+      const UnsignedInteger skippedLines = 0,
+      const String & numSeparator = ".");
 
   /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
   String storeToTemporaryFile() const;
@@ -583,19 +584,13 @@ public:
   void swap_points(const UnsignedInteger a, const UnsignedInteger b);
   void swap_range_points(const UnsignedInteger fa, const UnsignedInteger ta, const UnsignedInteger fb);
 #endif
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Scalar * __baseaddress__ () const
-  {
-    return (data_.getSize() > 0) ? &data_[0] : 0;
-  }
-  UnsignedInteger __elementsize__ () const
-  {
-    return sizeof(Scalar);
-  }
+
+  /** Low-level data access */
+  const Scalar * data() const;
+  UnsignedInteger elementSize() const;
 
   /** Virtual constructor */
-  virtual SampleImplementation * clone() const;
+  SampleImplementation * clone() const override;
 
   /** Description Accessor */
   void setDescription(const Description & description);
@@ -607,8 +602,8 @@ public:
    * internal state of an SampleImplementation. It is used when streaming
    * the SampleImplementation or for user information.
    */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   inline Bool __eq__(const SampleImplementation & rhs) const
   {
@@ -651,14 +646,9 @@ public:
   virtual CovarianceMatrix computeCovariance() const;
 
   /**
-   * Gives the standard deviation of the sample, i.e. the square-root of the covariance matrix.
-   */
-  TriangularMatrix computeStandardDeviation() const;
-
-  /**
    * Gives the standard deviation of each component of the sample
    */
-  virtual Point computeStandardDeviationPerComponent() const;
+  virtual Point computeStandardDeviation() const;
 
   /**
    * Gives the Pearson correlation matrix of the sample
@@ -715,13 +705,13 @@ public:
    * Gives the quantile per component of the sample
    */
   virtual Point computeQuantilePerComponent(const Scalar prob) const;
-  virtual SampleImplementation computeQuantilePerComponent(const Point & prob) const;
+  virtual Pointer<SampleImplementation> computeQuantilePerComponent(const Point & prob) const;
 
   /**
    * Gives the N-dimension quantile of the sample
    */
   Point computeQuantile(const Scalar prob) const;
-  SampleImplementation computeQuantile(const Point & prob) const;
+  Pointer<SampleImplementation> computeQuantile(const Point & prob) const;
 
   /**
    * Get the empirical CDF of the sample
@@ -736,31 +726,40 @@ public:
   virtual Point getMin() const;
 
   /** Ranked sample */
-  SampleImplementation rank() const;
+  Pointer<SampleImplementation> rank() const;
 
   /** Ranked component */
-  SampleImplementation rank(const UnsignedInteger index) const;
+  Pointer<SampleImplementation> rank(const UnsignedInteger index) const;
 
   /** Sorted sample */
-  SampleImplementation sort() const;
+  Pointer<SampleImplementation> sort() const;
+  void sortInPlace();
 
   /** Sorted component */
-  SampleImplementation sort(const UnsignedInteger index) const;
+  Pointer<SampleImplementation> sort(const UnsignedInteger index) const;
 
   /** Sorted component */
-  SampleImplementation sortAccordingToAComponent(const UnsignedInteger index) const;
+  Pointer<SampleImplementation> sortAccordingToAComponent(const UnsignedInteger index) const;
+  void sortAccordingToAComponentInPlace(const UnsignedInteger index);
 
   /* Sorted and duplicated points removed */
-  SampleImplementation sortUnique() const;
+  Pointer<SampleImplementation> sortUnique() const;
+  void sortUniqueInPlace();
+
+  /** argsort */
+  Indices argsort(Bool isIncreasing = true) const;
 
   /** Get the i-th marginal sample */
-  SampleImplementation getMarginal(const UnsignedInteger index) const;
+  Pointer<SampleImplementation> getMarginal(const UnsignedInteger index) const;
 
-  /** Get the marginal sample corresponding to indices dimensions */
-  SampleImplementation getMarginal(const Indices & indices) const;
+  /** Get the marginal sample by indices */
+  Pointer<SampleImplementation> getMarginal(const Indices & indices) const;
+
+  /** Get the marginal sample by identifiers */
+  Pointer<SampleImplementation> getMarginal(const Description & description) const;
 
   /** Select points in the sample */
-  SampleImplementation select(const UnsignedIntegerCollection & indices) const;
+  Pointer<SampleImplementation> select(const UnsignedIntegerCollection & indices) const;
 
   /**
    * Translate realizations in-place
@@ -796,13 +795,16 @@ public:
 
   /** Save to CSV file */
   void exportToCSVFile(const FileName & filename,
-                       const String & csvSeparator = ResourceMap::GetAsString( "csv-file-separator" )) const;
+                       const String & csvSeparator = ResourceMap::GetAsString("Sample-CSVFileSeparator"),
+                       const String & numSeparator = ".",
+                       const UnsignedInteger precision = ResourceMap::GetAsUnsignedInteger("Sample-CSVPrecision"),
+                       const String & format = ResourceMap::Get("Sample-CSVFormat")) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 private:

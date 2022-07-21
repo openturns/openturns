@@ -2,7 +2,7 @@
 /**
  *  @brief Estimation by method of moments
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,32 +39,40 @@ public:
   MethodOfMomentsFactory();
 
   /** Parameters constructor */
-  MethodOfMomentsFactory(const Distribution & distribution);
+  explicit MethodOfMomentsFactory(const Distribution & distribution,
+                                  const Interval & optimizationBounds = Interval());
 
   /** Virtual constructor */
-  virtual MethodOfMomentsFactory * clone() const;
+  MethodOfMomentsFactory * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   using DistributionFactoryImplementation::build;
 
   /* Here is the interface that all derived class must implement */
   /** Build a distribution based on a sample */
-  virtual Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample) const override;
 
   /** Build a distribution based on a set of parameters */
-  virtual Point buildParameter(const Sample & sample) const;
+  Distribution build(const Point & parameter) const override;
+
+  /** Build a distribution using its default constructor */
+  Distribution build() const override;
+
+  /** Build a distribution based on a set of parameters */
+  Point buildParameter(const Sample & sample) const;
 
   /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
-  void setOptimizationProblem(const OptimizationProblem & problem);
-  OptimizationProblem getOptimizationProblem() const;
+  /** Accessor to optimization bounds */
+  void setOptimizationBounds(const Interval & optimizationBounds);
+  Interval getOptimizationBounds() const;
 
   /** Accessor to known parameter */
   void setKnownParameter(const Point & values, const Indices & positions);
@@ -72,10 +80,10 @@ public:
   Indices getKnownParameterIndices() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /* The underlying distribution */
@@ -83,7 +91,9 @@ protected:
 
   /* Solver & optimization problem for log-likelihood maximization */
   OptimizationAlgorithm solver_;
-  OptimizationProblem problem_;
+
+  /* Bounds used for parameter optimization */
+  Interval optimizationBounds_;
 
   /* Known parameter */
   Point knownParameterValues_;

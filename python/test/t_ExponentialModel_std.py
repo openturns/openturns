@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -19,8 +18,8 @@ try:
     scale = Point(inputDimension, 1.0)
 
     # Default constructor
-    myDefautModel = ExponentialModel()
-    print("myDefautModel = ", myDefautModel)
+    myDefaultModel = ExponentialModel()
+    print("myDefaultModel = ", myDefaultModel)
 
     # Second order model with parameters
     myModel = ExponentialModel(scale, amplitude)
@@ -51,11 +50,6 @@ try:
         amplitude[index] = (index + 1) / (defaultDimension * defaultDimension)
         if index > 0:
             spatialCorrelation[index, index - 1] = 1.0 / (index * index)
-
-    # check the cast
-    mySecondOrderModel = StationaryCovarianceModel(
-        ExponentialModel(scale, amplitude, spatialCorrelation))
-    print("mySecondOrderModel = ", mySecondOrderModel)
 
     # Second order model  - dimension 10
     myHighModel = ExponentialModel(
@@ -88,6 +82,9 @@ try:
     p = model.getParameter()
     print(p)
 
+    # draw bug
+    ExponentialModel().draw()
+    print('ok')
 except:
     import sys
     print("t_ExponentialModel_std.py", sys.exc_info()[0], sys.exc_info()[1])

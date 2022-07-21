@@ -3,7 +3,7 @@
  *  @brief The class MutexLock manages the lock/unlock of Pthread mutexes
  *         This file is intended to be only include in .cxx files (avoid .hxx)
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,7 +57,7 @@ public:
     }
   }
 
-  virtual ~MutexLock() throw()
+  virtual ~MutexLock()
   {
     int rc = pthread_mutex_unlock( &mtx_ );
     if (rc != 0)
@@ -77,7 +77,7 @@ class MutexLockSingleton
 
 public:
   // Default constructor, defined by client classes
-  MutexLockSingleton( T & singleton ) throw();
+  MutexLockSingleton(T & singleton);
   // Default copy-constructor
   MutexLockSingleton( const MutexLockSingleton<T> & other ) : singleton_(other.singleton_), lock_(other.lock_) {}
 
@@ -93,11 +93,11 @@ public:
   }
 
 #ifndef SWIG
-  T & lock() throw()
+  T & lock()
   {
     return singleton_;
   }
-  const T & lock() const throw()
+  const T & lock() const
   {
     return singleton_;
   }

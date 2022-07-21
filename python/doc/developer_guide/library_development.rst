@@ -1,11 +1,11 @@
 Library development
 ===================
 
-This section provides informations on how to develop within the
+This section provides information on how to develop within the
 perimeter of the library and it’s documentation.
 
 If you are willing to contribute the actual development of the library, please
-consider reading our coding guidelines and contact us on the developer's mailing list.
+consider reading our coding guidelines and contact us through the website.
 
 
 Install a development version
@@ -31,7 +31,7 @@ Or, you can pick up a stable version tarball:
 
 ::
 
-    curl -L https://github.com/openturns/openturns/archive/v1.12.tar.gz | tar xz
+    curl -L https://github.com/openturns/openturns/archive/v1.15.tar.gz | tar xz
     cd openturns-1.12
 
 Build openturns
@@ -193,7 +193,7 @@ Second, add your class to the Python interface
        designPoint : float sequence
            Design point in the standard space resulting from the optimization
            algorithm.
-       limitStateVariable : :class:`~openturns.Event`
+       limitStateVariable : :class:`~openturns.RandomVector`
            Event of which the probability is calculated.
        isInFailureSpace : bool
            Indicates whether the origin of the standard space is in the failure space.
@@ -290,7 +290,7 @@ by the following template:
     #
     #  CMakeLists.txt
     #
-    #  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+    #  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
     #
     #  This library is free software: you can redistribute it and/or modify
     #  it under the terms of the GNU Lesser General Public License as published by
@@ -358,7 +358,7 @@ Namespace
 ~~~~~~~~~
 
 All the classes of the library are accessible within a single namespace
-named OT and aliased as OpenTURNS. It allows to insulate these classes
+named OT and aliased as OpenTURNS. It allows one to insulate these classes
 from classes from another project that could share the same name. Macros
 are provided to enclose your code in the namespace as follow:
 

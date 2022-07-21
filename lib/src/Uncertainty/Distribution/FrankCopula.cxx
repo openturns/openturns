@@ -2,7 +2,7 @@
 /**
  *  @brief The FrankCopula distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -209,6 +209,24 @@ void FrankCopula::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
+/* Get the Spearman correlation of the distribution
+We use the formula given here:
+https://stats.stackexchange.com/questions/458372/what-is-the-spearmans-rho-for-frank-clayton-gumbel-and-fgm-copulas
+*/
+CorrelationMatrix FrankCopula::getSpearmanCorrelation() const
+{
+  CorrelationMatrix rho(2);
+  const Scalar t = std::abs(theta_);
+  const Scalar theta2 = theta_ * theta_;
+  if (t < 1.0e-3)
+  {
+    rho(1, 0) = theta_ * (1.0 / 6.0 + theta2 * (-1.0 / 450.0 + theta2 / 23520.0));
+    return rho;
+  }
+  rho(1, 0) = 1.0 - 12.0 / theta_ * (SpecFunc::Debye(theta_, 1) - SpecFunc::Debye(theta_, 2));
+  return rho;
+}
+
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix FrankCopula::getKendallTau() const
 {
@@ -371,7 +389,11 @@ Bool FrankCopula::hasIndependentCopula() const
 /* Theta accessor */
 void FrankCopula::setTheta(const Scalar theta)
 {
-  theta_ = theta;
+  if (theta != theta_)
+  {
+    theta_ = theta;
+    isAlreadyComputedCovariance_ = false;
+  }
 }
 
 /* Theta accessor */

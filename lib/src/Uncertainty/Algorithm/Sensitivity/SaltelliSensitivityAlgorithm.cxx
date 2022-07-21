@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for Saltelli sensitivity algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,7 +68,7 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const WeightedExperim
 Sample SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample,
     Sample & VTi) const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
   Sample varianceI(outputDimension, inputDimension);
@@ -102,7 +102,7 @@ Sample SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample,
 
 void SaltelliSensitivityAlgorithm::computeAsymptoticDistribution() const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
 
   // psi

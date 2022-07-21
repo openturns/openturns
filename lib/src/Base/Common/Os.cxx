@@ -2,7 +2,7 @@
 /**
  *  @brief This class provides operating system specific variables
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@
 #endif
 
 #include <fcntl.h>
-#ifndef WIN32
+#ifndef _WIN32
 #include <ftw.h>       // for stat(2)
 #endif
 
@@ -56,7 +56,7 @@
 # if !defined(S_ISREG)
 #  define S_ISREG(mode) (((mode) & S_IFREG) != 0)
 # endif
-#elif defined(WIN32)
+#elif defined(_WIN32)
 # define MKDIR(p, mode)  mkdir(p)
 #else
 # define MKDIR(p, mode)  mkdir(p, mode)
@@ -66,7 +66,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 const char * Os::GetDirectorySeparator()
 {
-#ifndef WIN32
+#ifndef _WIN32
   return "/";
 #else
   return "\\";
@@ -75,7 +75,7 @@ const char * Os::GetDirectorySeparator()
 
 const char * Os::GetDirectoryListSeparator()
 {
-#ifndef WIN32
+#ifndef _WIN32
   return ":";
 #else
   return ";";
@@ -84,16 +84,12 @@ const char * Os::GetDirectoryListSeparator()
 
 const char * Os::GetEndOfLine()
 {
-#ifndef __MINGW32__
   return "\n";
-#else
-  return "\r\n";
-#endif
 }
 
 String Os::GetDeleteCommandOutput()
 {
-#ifndef WIN32
+#ifndef _WIN32
   return " > /dev/null 2>&1";
 #else
   return " > NUL";
@@ -105,8 +101,8 @@ int Os::ExecuteCommand(const String & command)
 {
   int rc = -1;
   LOGINFO( OSS() << "Execute command=" << command );
-#ifdef WIN32
-  if ( ResourceMap::GetAsBool("Os-create-process"))
+#ifdef _WIN32
+  if ( ResourceMap::GetAsBool("Os-CreateProcess"))
   {
     // Startup information
     STARTUPINFO si;
@@ -227,7 +223,7 @@ int Os::MakeDirectory(const String & path)
   return 0;
 }
 
-#ifndef WIN32
+#ifndef _WIN32
 static int deleteRegularFileOrDirectory(const char * path,
                                         const struct stat *,
                                         int typeflag,
@@ -267,7 +263,7 @@ int Os::DeleteDirectory(const String & path)
   if (path == "/" || path == ".") return 1;
 
   const char * directory = path.c_str();
-#ifdef WIN32
+#ifdef _WIN32
   if ( ((strlen( directory ) == 3) && (directory[1] == ':') && (directory[2] == '\\' || directory[2] == '/')) ||
        ((strlen( directory ) == 2) && (directory[1] == ':')) )
   {
@@ -278,19 +274,19 @@ int Os::DeleteDirectory(const String & path)
 
   int rc = 0;
 
-#ifndef WIN32
+#ifndef _WIN32
 
   rc = nftw(directory, deleteRegularFileOrDirectory, 20, FTW_DEPTH);
 
 #else /* WIN32 */
 
-  UnsignedInteger countdown = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
-  String rmdirCmd("rmdir /Q /S \"" + path + "\"");
+  UnsignedInteger countdown = ResourceMap::GetAsUnsignedInteger("OS-DeleteTimeout");
+  const String rmdirCmd("rmdir /Q /S \"" + path + "\"" + " > NUL 2>&1");
   Bool directoryExists = true;
 
   do
   {
-    rc = system((rmdirCmd + " > NUL 2>&1").c_str());
+    rc = system(rmdirCmd.c_str());
 
     // check if directory still there (rmdir dos command always return 0)
     directoryExists = IsDirectory(path);

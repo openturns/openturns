@@ -149,7 +149,7 @@ If the trend is not estimated, the collection is empty.
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingResult::getConditionalMean
-"Compute the expected mean of the Gaussian process on a point or a sample of points.
+"Compute the conditional mean of the Gaussian process on a point or a sample of points.
 
 Available usages:
     getConditionalMean(x)
@@ -185,7 +185,7 @@ condMean : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingResult::getConditionalCovariance
-"Compute the expected covariance of the Gaussian process on a point (or several points).
+"Compute the conditional covariance of the Gaussian process on a point (or several points).
 
 Available usages:
     getConditionalCovariance(x)
@@ -195,9 +195,9 @@ Available usages:
 Parameters
 ----------
 x : sequence of float
-    The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
+    The point :math:`\vect{x}` where the conditional covariance of the output has to be evaluated.
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional mean of the output has to be evaluated (*M* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional covariance of the output has to be evaluated (*M* can be equal to 1).
 
 Returns
 -------
@@ -219,6 +219,106 @@ condCov : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::KrigingResult::getConditionalMarginalCovariance
+"Compute the conditional covariance of the Gaussian process on a point (or several points).
+
+
+Available usages:
+    getConditionalMarginalCovariance(x)
+
+    getConditionalMarginalCovariance(sampleX)
+
+Parameters
+----------
+x : sequence of float
+    The point :math:`\vect{x}` where the conditional marginal covariance of the output has to be evaluated.
+sampleX : 2-d sequence of float
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional marginal covariance of the output has to be evaluated (*M* can be equal to 1).
+
+Returns
+-------
+condCov : :class:`~openturns.CovarianceMatrix`
+    The conditional covariance :math:`\Cov{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
+
+condCov : :class:`~openturns.CovarianceMatrixCollection`
+    The collection of conditional covariance matrices :math:`\Cov{\vect{Y}(\omega, \vect{\xi})\, | \,  \cC}` at
+    each point of the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
+
+Notes
+-----
+In case input parameter is a of type :class:`~openturns.Sample`, each element of the collection corresponds to the conditional
+covariance with respect to the input learning set (pointwise evaluation of the getConditionalCovariance)."
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getConditionalMarginalVariance
+"Compute the conditional variance of the Gaussian process on a point (or several points).
+
+
+Available usages:
+    getConditionalMarginalVariance(x, marginalIndex)
+
+    getConditionalMarginalVariance(sampleX, marginalIndex)
+
+    getConditionalMarginalVariance(x, marginalIndices)
+
+    getConditionalMarginalVariance(sampleX, marginalIndices)
+
+Parameters
+----------
+x : sequence of float
+    The point :math:`\vect{x}` where the conditional variance of the output has to be evaluated.
+sampleX : 2-d sequence of float
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional variance of the output has to be evaluated (*M* can be equal to 1).
+marginalIndex : int
+    Marginal of interest (for multiple outputs).
+    Default value is 0
+marginalIndices : sequence of int
+    Marginals of interest (for multiple outputs).
+
+Returns
+-------
+var : float
+      Variance of interest.
+      float if one point (x) and one marginal of interest (x, marginalIndex)
+
+varPoint : sequence of float
+    The marginal variances
+
+
+Notes
+-----
+In case of fourth usage, the sequence of float is given as the concatenation of marginal variances 
+for each point in sampleX."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::operator()
+"Compute the conditional Gaussian distribution on a new point / sample conditionally to the observed paths.
+
+Available usages:
+    KrigingResult(pt)
+
+    KrigingResult(sampleX)
+
+Parameters
+----------
+pt : sequence of float
+    The point :math:`\vect{x}` where the conditional distribution of the output has to be evaluated.
+sampleX : 2-d sequence of float
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional distribution of the output has to be evaluated (*M* can be equal to 1).
+
+Returns
+-------
+condDist : :class:`~openturns.Normal`
+    The conditional Gaussian distribution.
+
+Notes
+-----
+The conditional distribution :math:`\cN(\Expect{\vect{Y}}, \Cov{\vect{Y}})` has respectively conditional mean and covariance functions 
+implemented in :meth:`getConditionalMean` (respectively :meth:`getConditionalCovariance`)."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::KrigingResult::getMetaModel
 "Accessor to the metamodel.
 
@@ -227,26 +327,6 @@ Returns
 metaModel : :class:`~openturns.Function`
     The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
 "
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KrigingResult::setTransformation
-"Accessor to the normalizing transformation.
-
-Parameters
-----------
-transformation : :class:`~openturns.Function`
-    The transformation *T* that normalizes the input sample."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KrigingResult::getTransformation
-"Accessor to the normalizing transformation.
-
-Returns
--------
-transformation : :class:`~openturns.Function`
-    The transformation *T* that normalizes the input sample."
 
 // ---------------------------------------------------------------------
 

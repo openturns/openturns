@@ -1,7 +1,8 @@
 Taylor variance decomposition
 -----------------------------
 
-| The quadratic cumul is a probabilistic approach designed to propagate
+| The Taylor variance decomposition (also referred as quadratic cumul method
+  or perturbation method) is a probabilistic approach designed to propagate
   the uncertainties of the input variables :math:`\uX` through the model
   :math:`h` towards the output variables :math:`\uY`. It enables to
   access the central dispersion (expectation and variance) of the output
@@ -71,7 +72,7 @@ where:
 | **Case** :math:`n_Y>1`
 
 
-| The quadratic cumul approach can be developed at different orders
+| The perturbation approach can be developed at different orders
   from the Taylor decomposition of the random vector :math:`\uY`. As
   :math:`\uY=h(\uX)`, the Taylor decomposition around :math:`\ux = \muX`
   at the second order yields to:
@@ -146,5 +147,5 @@ order strictly greater than 2 of the pdf.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/estimate_moments_taylor`
+    - See :doc:`/auto_reliability_sensitivity/central_dispersion/plot_estimate_moments_taylor`
 

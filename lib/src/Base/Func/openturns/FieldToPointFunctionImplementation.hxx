@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for field to point function implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/ProcessSample.hxx"
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,14 +52,14 @@ public:
                                      const UnsignedInteger outputDimension);
 
   /** Virtual constructor */
-  virtual FieldToPointFunctionImplementation * clone() const;
+  FieldToPointFunctionImplementation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const FieldToPointFunctionImplementation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   virtual Point operator() (const Sample & inFld) const;
@@ -92,10 +92,10 @@ public:
   virtual UnsignedInteger getCallsNumber() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Input mesh */

@@ -3,7 +3,7 @@
  *  @brief  This class provides fast point location.
  *  This is the interface class.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -119,6 +119,7 @@ IndicesCollection EnclosingSimplexAlgorithm::getSimplices() const
 
 void EnclosingSimplexAlgorithm::setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices)
 {
+  copyOnWrite();
   getImplementation()->setVerticesAndSimplices(vertices, simplices);
 }
 

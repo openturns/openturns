@@ -172,3 +172,36 @@ Examples
 >>> x.resize(4)
 >>> print(x)
 [4,0,0,0]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::find
+"Find the index of a given value.
+
+Parameters
+----------
+val : collection value type
+    The value to find
+
+Returns
+-------
+index : int
+    The index of the first occurrence of the value,
+    or the size of the container if not found.
+    When several values match, only the first index is returned."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::select
+"Selection from indices.
+
+Parameters
+----------
+indices : sequence of int
+    Indices to select
+
+Returns
+-------
+coll : sequence
+    Sub-collection of values at the selection indices."
+

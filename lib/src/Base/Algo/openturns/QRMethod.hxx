@@ -2,7 +2,7 @@
 /**
  *  @brief QR-decomposition based LS solver
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,36 +52,36 @@ public:
   explicit QRMethod(const Matrix & matrix);
 
   /** Virtual constructor */
-  virtual QRMethod * clone() const;
+  QRMethod * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Solve least-squares problem, ie x=\argmin |D(Mx-b)|^2 */
-  Point solve(const Point & rhs);
-  Point solveNormal(const Point & rhs);
+  Point solve(const Point & rhs) override;
+  Point solveNormal(const Point & rhs) override;
 
-  CovarianceMatrix getGramInverse() const;
+  CovarianceMatrix getGramInverse() const override;
 
-  Point getGramInverseDiag() const;
-  Point getHDiag() const;
-  SymmetricMatrix getH() const;
+  Point getGramInverseDiag() const override;
+  Point getHDiag() const override;
+  SymmetricMatrix getH() const override;
 
-  Scalar getGramInverseTrace() const;
+  Scalar getGramInverseTrace() const override;
 
   /** Update */
   void update(const Indices & addedIndices,
               const Indices & conservedIndices,
               const Indices & removedIndices,
-              const Bool row = false);
+              const Bool row = false) override;
 
-  void trashDecomposition();
+  void trashDecomposition() override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

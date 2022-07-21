@@ -2,7 +2,7 @@
 /**
  *  @brief This is a nD function build as a product of n 1D function
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,6 +21,7 @@
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -102,7 +103,7 @@ struct ProductUniVariateFunctionEvaluationComputeSamplePolicy
     // Nothing to do
   }
 
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> & r) const
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
     {
@@ -122,7 +123,7 @@ Sample ProductUniVariateFunctionEvaluation::operator() (const Sample & inS) cons
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getOutputDimension());
   const ProductUniVariateFunctionEvaluationComputeSamplePolicy policy( inS, result, functions_ );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());
   callsNumber_.fetchAndAdd(size);
   return result;

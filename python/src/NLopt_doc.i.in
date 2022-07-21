@@ -29,6 +29,12 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | GD_MLSL_LDS                | first derivative  | bounds required             |
 +----------------------------+-------------------+-----------------------------+
+| GD_STOGO (optional)        | first derivative  | bounds required             |
++----------------------------+-------------------+-----------------------------+
+| GD_STOGO_RAND (optional)   | first derivative  | bounds required             |
++----------------------------+-------------------+-----------------------------+
+| GN_AGS (optional)          | no derivative     | bounds required, inequality |
++----------------------------+-------------------+-----------------------------+
 | GN_CRS2_LM                 | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
 | GN_DIRECT                  | no derivative     | bounds required             |
@@ -41,17 +47,17 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | GN_DIRECT_L_RAND_NOSCAL    | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GN_ESCH                    | no derivative     | bounds                      |
+| GN_ESCH                    | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GN_ISRES                   | no derivative     | all, bounds required        |
+| GN_ISRES                   | no derivative     | bounds required, all        |
 +----------------------------+-------------------+-----------------------------+
 | GN_MLSL                    | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GN_MLSL_LDS                | no derivative     | bounds                      |
+| GN_MLSL_LDS                | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GN_ORIG_DIRECT             | no derivative     | inequality, bounds required |
+| GN_ORIG_DIRECT             | no derivative     | bounds required, inequality |
 +----------------------------+-------------------+-----------------------------+
-| GN_ORIG_DIRECT_L           | no derivative     | inequality, bounds required |
+| GN_ORIG_DIRECT_L           | no derivative     | bounds required, inequality |
 +----------------------------+-------------------+-----------------------------+
 | G_MLSL                     | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
@@ -64,8 +70,6 @@ Here are some properties of the different algorithms:
 | LD_CCSAQ                   | first derivative  | bounds, inequality          |
 +----------------------------+-------------------+-----------------------------+
 | LD_LBFGS                   | first derivative  | bounds                      |
-+----------------------------+-------------------+-----------------------------+
-| LD_LBFGS_NOCEDAL           | first derivative  | bounds                      |
 +----------------------------+-------------------+-----------------------------+
 | LD_MMA                     | first derivative  | bounds, inequality          |
 +----------------------------+-------------------+-----------------------------+
@@ -102,6 +106,9 @@ Here are some properties of the different algorithms:
 | LN_SBPLX                   | no derivative     | bounds                      |
 +----------------------------+-------------------+-----------------------------+
 
+Availability of algorithms marked as optional may vary depending on the NLopt version
+or compilation options used.
+
 See also
 --------
 AbdoRackwitz, Cobyla, SQP, TNC
@@ -113,14 +120,14 @@ Examples
 >>> bounds = ot.Interval([-3.0] * dim, [5.0] * dim)
 >>> linear = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], ['x1+2*x2-3*x3+4*x4'])
 >>> problem = ot.OptimizationProblem(linear, ot.Function(), ot.Function(), bounds)
->>> print(ot.NLopt.GetAlgorithmNames())
+>>> print(ot.NLopt.GetAlgorithmNames())  # doctest: +SKIP
 [AUGLAG,AUGLAG_EQ,GD_MLSL,GD_MLSL_LDS,...
->>> algo = ot.NLopt(problem, 'LD_MMA')
->>> algo.setStartingPoint([0.0] * 4)
->>> algo.run()
->>> result = algo.getResult()
->>> x_star = result.getOptimalPoint()
->>> y_star = result.getOptimalValue()"
+>>> algo = ot.NLopt(problem, 'LD_MMA')  # doctest: +SKIP
+>>> algo.setStartingPoint([0.0] * 4)  # doctest: +SKIP
+>>> algo.run()  # doctest: +SKIP
+>>> result = algo.getResult()  # doctest: +SKIP
+>>> x_star = result.getOptimalPoint()  # doctest: +SKIP
+>>> y_star = result.getOptimalValue()  # doctest: +SKIP"
 
 // ---------------------------------------------------------------------
 
@@ -195,8 +202,8 @@ names : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.NLopt.GetAlgorithmNames())
-[AUGLAG,AUGLAG_EQ,GD_MLSL,GD_MLSL_LDS,GN_CRS2_LM,GN_DIRECT,GN_DIRECT_L,GN_DIRECT_L_NOSCAL,GN_DIRECT_L_RAND,GN_DIRECT_L_RAND_NOSCAL,GN_DIRECT_NOSCAL,GN_ESCH,GN_ISRES,GN_MLSL,GN_MLSL_LDS,GN_ORIG_DIRECT,GN_ORIG_DIRECT_L,G_MLSL,G_MLSL_LDS,LD_AUGLAG,LD_AUGLAG_EQ,LD_CCSAQ,LD_LBFGS,LD_LBFGS_NOCEDAL,LD_MMA,LD_SLSQP,LD_TNEWTON,LD_TNEWTON_PRECOND,LD_TNEWTON_PRECOND_RESTART,LD_TNEWTON_RESTART,LD_VAR1,LD_VAR2,LN_AUGLAG,LN_AUGLAG_EQ,LN_BOBYQA,LN_COBYLA,LN_NELDERMEAD,LN_NEWUOA,LN_NEWUOA_BOUND,LN_PRAXIS,LN_SBPLX]#41"
+>>> print(ot.NLopt.GetAlgorithmNames())  # doctest: +SKIP
+[AUGLAG,AUGLAG_EQ,GD_MLSL,..."
 
 // ---------------------------------------------------------------------
 
@@ -207,13 +214,3 @@ Parameters
 ----------
 seed : int
     The RNG seed."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::NLopt::IsAvailable
-"Ask whether NLopt support is available.
-
-Returns
--------
-available : bool
-    Whether NLopt support is available."

@@ -2,7 +2,7 @@
 /**
  *  @brief The linear model analysis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +29,7 @@
 #include "openturns/Normal.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/FittingTest.hxx"
+#include "openturns/VisualTest.hxx"
 #include "openturns/FisherSnedecor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -49,7 +50,9 @@ LinearModelAnalysis::LinearModelAnalysis(const LinearModelResult & linearModelRe
   : PersistentObject()
   , linearModelResult_(linearModelResult)
 {
-  // Nothing to do
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  if (dof <= 0)
+    throw InvalidArgumentException(HERE) << "Cannot perform linear model analysis when DOF is null";
 }
 
 /* Virtual constructor */
@@ -72,12 +75,14 @@ String LinearModelAnalysis::__repr__() const
 String LinearModelAnalysis::__str__(const String & offset) const
 {
   const Point estimates(linearModelResult_.getCoefficients());
+  const UnsignedInteger basisSize = estimates.getSize();
+  const Bool hasIntercept = linearModelResult_.hasIntercept();
   const Point standardErrors(linearModelResult_.getCoefficientsStandardErrors());
   const Point tscores(getCoefficientsTScores());
   const Point pValues(getCoefficientsPValues());
   const Description names(linearModelResult_.getCoefficientsNames());
   const Scalar sigma2 = linearModelResult_.getSampleResiduals().computeRawMoment(2)[0];
-  const UnsignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
   const UnsignedInteger n = linearModelResult_.getSampleResiduals().getSize();
   const String separator(" | ");
   const String separatorEndLine(" |");
@@ -104,7 +109,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
 
   oss << offset << linearModelResult_.getFormula() ;
   oss << offset << "\n\nCoefficients:\n"  ;
-  oss << offset << String( twidth , ' ' ) << separator;
+  oss << offset << String( twidth, ' ' ) << separator;
   st = "Estimate";
   oss << offset << st << String( lwidth - st.size(), ' ') << separator;
   st = "Std Error";
@@ -113,7 +118,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
   oss << offset << st << String( lwidth - st.size(), ' ') << separator;
   st = "Pr(>|t|)";
   oss << offset << st << String( lwidth - st.size(), ' ') << separatorEndLine;
-  oss << offset << "\n" <<  String( awidth , '-' ) << "\n";
+  oss << offset << "\n" <<  String( awidth, '-' ) << "\n";
   for (UnsignedInteger i = 0; i < pValues.getSize(); ++i)
   {
     st = names[i];
@@ -128,8 +133,12 @@ String LinearModelAnalysis::__str__(const String & offset) const
     oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
     oss << "\n";
   }
-  oss << offset << String( awidth , '-' ) << "\n\n";
+  oss << offset << String( awidth, '-' ) << "\n\n";
   oss << offset << "Residual standard error: " <<  std::sqrt(sigma2 * n / dof)  << " on " << dof << " degrees of freedom\n";
+
+  // In case of only intercept in the basis, no more print
+  if ((basisSize == 1) && (hasIntercept))
+    return oss;
   oss << offset << "F-statistic: " << getFisherScore() << " , " << " p-value: " <<  getFisherPValue() << "\n";
 
   //  R-squared & Adjusted R-squared tests
@@ -142,7 +151,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
   st = OSS() << test2;
   lwidth = std::max( lwidth, st.size() );
   awidth = twidth + 2 * separator.size() + lwidth - 1;
-  oss << offset << String( awidth , '-' ) << "\n";
+  oss << offset << String( awidth, '-' ) << "\n";
   st = "Multiple R-squared";
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
   st = OSS() << test1;
@@ -152,10 +161,10 @@ String LinearModelAnalysis::__str__(const String & offset) const
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
   st = OSS() << test2;
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
-  oss << "\n" << offset << String( awidth , '-' ) << "\n";
+  oss << "\n" << offset << String( awidth, '-' ) << "\n";
 
   // normality tests
-  lwidth = 0;
+  lwidth = 7; // width of "p-value"
   twidth = 20;
   const Scalar normalitytest1(getNormalityTestResultAndersonDarling().getPValue());
   const Scalar normalitytest2(getNormalityTestResultChiSquared().getPValue());
@@ -170,12 +179,12 @@ String LinearModelAnalysis::__str__(const String & offset) const
   st = OSS() << normalitytest4;
   lwidth = std::max( lwidth, st.size() );
   awidth = twidth + 2 * separator.size() + lwidth - 1;
-  oss << "\n" << offset << String( awidth , '-' ) << "\n";
+  oss << "\n" << offset << String( awidth, '-' ) << "\n";
   st = "Normality test";
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
   st = "p-value";
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
-  oss << "\n" <<  String( awidth , '-' ) << "\n";
+  oss << "\n" <<  String( awidth, '-' ) << "\n";
   st = "Anderson-Darling";
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
   st = OSS() << normalitytest1;
@@ -195,7 +204,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
   st = OSS() << normalitytest3;
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
-  oss << "\n" <<  String( awidth , '-' ) << "\n";
+  oss << "\n" <<  String( awidth, '-' ) << "\n";
   return oss;
 }
 
@@ -253,25 +262,58 @@ Scalar LinearModelAnalysis::getFisherScore() const
 {
   // Get residuals and output samples
   const Sample residuals(linearModelResult_.getSampleResiduals());
-  const Sample outputSample = (getLinearModelResult().getOutputSample());
+  const Sample outputSample(getLinearModelResult().getOutputSample());
   const UnsignedInteger size = residuals.getSize();
   // Get the number of parameter p
   const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
-  // Define RSS and SYY
-  const Scalar RSS = residuals.computeRawMoment(2)[0] * size;
-  const Scalar SYY = outputSample.computeCenteredMoment(2)[0] * size;
-  const Scalar fStatistic = ((SYY - RSS) / (p - 1)) / (RSS / (size - p));
+  // Check if there is an intercept
+  const Bool hasIntercept = linearModelResult_.hasIntercept();
+  // Degrees of freedom (model)
+  UnsignedInteger dofModel = p;
+
+  // Correction of dofModel if intercept
+  if ((hasIntercept) && (p == 1))
+    throw NotDefinedException(HERE) << "Only intercept in the basis. Fisher Test is not defined is such a case.";
+  // Correction of dofModel if intercept
+  if (hasIntercept)
+    dofModel -= 1;
+  // Degrees of freedom (noise)
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  // Sum of Squared Errors (SSE) or Sum of Squared Residuals (SSR/RSS)
+  const Scalar SSR = residuals.computeRawMoment(2)[0] * size;
+  // Sum of Squared Total (SST) = n * var(Y) or n * E(Y^2) depending on intercept
+  Scalar SST = 1.0;
+  if (hasIntercept)
+    SST = outputSample.computeCenteredMoment(2)[0] * size;
+  else
+    SST = outputSample.computeRawMoment(2)[0] * size;
+  // Sum of Squared Model (SSM) = SST - SSE
+  const Scalar SSM = SST - SSR;
+  // Define the statistic
+  // numerator = MSM := SSM/DFM
+  const Scalar numerator = SSM / dofModel;
+  // denominator =  MSE = SSE/DO
+  const Scalar denominator = SSR / dof;
+  const Scalar fStatistic = numerator / denominator;
   return fStatistic;
 }
 
 Scalar LinearModelAnalysis::getFisherPValue() const
 {
-  // size and number of parameters
-  const UnsignedInteger size = linearModelResult_.getSampleResiduals().getSize();
   // Get the number of parameter p
   const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
+  // Degrees of freedom (model)
+  UnsignedInteger dofModel = p;
+  const Bool hasIntercept = linearModelResult_.hasIntercept();
+  // Correction of dofModel if intercept
+  if ((hasIntercept) && (p == 1))
+    throw NotDefinedException(HERE) << "Only intercept in the basis. Fisher Test is not defined is such a case.";
+  if (hasIntercept)
+    dofModel -= 1;
+  // Degrees of freedom
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
   const Scalar FStatistic = getFisherScore();
-  return FisherSnedecor(p - 1, size - 1).computeComplementaryCDF(FStatistic);
+  return FisherSnedecor(dofModel, dof).computeComplementaryCDF(FStatistic);
 }
 
 /* Kolmogorov-Smirnov normality test */
@@ -296,7 +338,7 @@ TestResult LinearModelAnalysis::getNormalityTestResultChiSquared() const
 {
   // Using OT::FittingTest::ChiSquared
   const Sample residuals(linearModelResult_.getSampleResiduals());
-  const Normal normalDistribution(residuals.computeMean()[0], residuals.computeStandardDeviation()(0, 0));
+  const Normal normalDistribution(residuals.computeMean()[0], residuals.computeStandardDeviation()[0]);
   return FittingTest::ChiSquared(residuals, normalDistribution);
 }
 
@@ -316,10 +358,10 @@ Graph LinearModelAnalysis::drawModelVsFitted() const
   const Sample residuals(linearModelResult_.getSampleResiduals());
 
   const UnsignedInteger size(fitted.getSize());
-  
+
   Sample dataFull(outputData);
   dataFull.stack(fitted);
-  
+
   // The graph object
   Graph graph("Model vs Fitted", "Model", "Fitted values", true, "topright");
 
@@ -466,69 +508,48 @@ Graph LinearModelAnalysis::drawScaleLocation() const
 Graph LinearModelAnalysis::drawQQplot() const
 {
   const Sample stdResiduals(linearModelResult_.getStandardizedResiduals());
-  const UnsignedInteger size(stdResiduals.getSize());
-  const Normal distribution(1); // Standard normal distribution
-  const Sample sortedSample(stdResiduals.sort(0));
-  Sample dataFull(size, 2);
-  const Scalar step = 1.0 / size;
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    dataFull(i, 0) = distribution.computeQuantile((i + 0.5) * step)[0];
-    dataFull(i, 1) = sortedSample(i,0);
-  }
-  Graph graph("Normal Q-Q", "Theoretical Quantiles", "Std. residuals", true, "topright");
-  Cloud cloud(dataFull, "black", "fcircle");
-  graph.add(cloud);
+  Graph graph(VisualTest::DrawQQplot(stdResiduals, Normal(0.0, 1.0)));
+  graph.setTitle("Normal Q-Q");
+  graph.setXTitle("Std. residuals");
+  graph.setYTitle("Theoretical Quantiles");
 
   // Add point identifiers for worst standardized residuals
   UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
   if (identifiers > 0)
   {
+    const UnsignedInteger size = stdResiduals.getSize();
     if (identifiers > size)
       identifiers = size;
+    const Sample sortedSample(stdResiduals.sort(0));
+
+    const Sample dataFull(graph.getDrawable(1).getData());
     Description annotations(size);
     Sample dataWithIndex1(size, 2);
     Sample dataWithIndex2(size, 2);
-    for(UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      dataWithIndex1(i, 0) = std::abs(dataFull(i, 1));
+      dataWithIndex1(i, 0) = std::abs(sortedSample(i, 0));
       dataWithIndex1(i, 1) = i;
       dataWithIndex2(i, 0) = std::abs(stdResiduals(i, 0));
       dataWithIndex2(i, 1) = i;
-
     }
     const Sample sortedData1(dataWithIndex1.sortAccordingToAComponent(0));
     const Sample sortedData2(dataWithIndex2.sortAccordingToAComponent(0));
     Description positions(size, "top");
-    for(UnsignedInteger i = 0; i < identifiers; ++i)
+    for (UnsignedInteger i = 0; i < identifiers; ++i)
     {
       const UnsignedInteger index1 = sortedData1(size - 1 - i, 1);
       const UnsignedInteger index2 = sortedData2(size - 1 - i, 1);
       annotations[index1] = (OSS() << index2 + 1);
-      positions[index1] = dataFull(index1, 1) < 0.0 ? "top" : "bottom";
+      positions[index1] = dataFull(index1, 0) < 0.0 ? "top" : "bottom";
     }
     Text text(dataFull, annotations, "bottom");
     text.setColor("red");
     text.setTextPositions(positions);
     graph.add(text);
   }
-  // add line to a normal QQ plot which passes through the first and third quartiles
-  Sample diagonal(2, 2);
-  Point point(2);
-  const UnsignedInteger id1Q = 0.25 * size - 0.5;
-  const UnsignedInteger id3Q = 0.75 * size - 0.5;
-  Scalar delta = dataFull(id3Q, 0) - dataFull(id1Q, 0);
-  // If quantiles are too close, bisectrice takes into account the min/max values
-  if (!(delta > 0) && !(delta < 0))
-    delta = dataFull(size - 1, 0) - dataFull(0, 0);
-  point[0] = (dataFull(id3Q, 1) - dataFull(id1Q, 1)) / delta;
-  point[1] = dataFull(id3Q, 1) - point[0] * dataFull(id3Q, 0);
-  diagonal(0, 0) = dataFull(0, 0);
-  diagonal(0, 1) = dataFull(0, 0) * point[0] + point[1];
-  diagonal(1, 0) = dataFull(size - 1, 0);
-  diagonal(1, 1) = dataFull(size - 1, 0) * point[0] + point[1];
-  Curve curve(diagonal, "red", "dashed", 2);
-  graph.add(curve);
+  // Disable legend
+  graph.setLegendPosition("");
   return graph;
 }
 

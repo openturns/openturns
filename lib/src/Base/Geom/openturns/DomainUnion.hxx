@@ -2,7 +2,7 @@
 /**
  *  @brief DomainUnion represents the union of two Domain
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,13 +48,17 @@ public:
   DomainUnion(const Domain & left, const Domain & right);
 
   /** Virtual constructor method */
-  virtual DomainUnion * clone() const;
+  DomainUnion * clone() const override;
 
   /** Check if the given point is inside this domain */
-  Bool contains(const Point & point) const;
+  Bool contains(const Point & point) const override;
 
   /** Check if the given points are inside this domain */
-  BoolCollection contains(const Sample & sample) const;
+  BoolCollection contains(const Sample & sample) const override;
+
+  /** Compute the Euclidean distance from a given point to the domain */
+  Scalar computeDistance(const Point & point) const override;
+  using DomainImplementation::computeDistance;
 
   /** Comparison operator */
   Bool operator == (const DomainUnion & other) const;
@@ -63,14 +67,14 @@ public:
   using DomainImplementation::operator !=;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

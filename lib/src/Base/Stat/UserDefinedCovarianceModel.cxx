@@ -3,7 +3,7 @@
  * @brief This class builds a spectral model using a frequency grid and a spectral function
  *  given as a collection of Covariance Matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,10 +25,6 @@
 #include "openturns/NearestNeighbourAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-TEMPLATE_CLASSNAMEINIT(PersistentCollection< CovarianceMatrix >)
-
-static const Factory<PersistentCollection<CovarianceMatrix> > Factory_PersistentCollection_CovarianceMatrix;
 
 CLASSNAMEINIT(UserDefinedCovarianceModel)
 
@@ -68,10 +64,47 @@ UserDefinedCovarianceModel * UserDefinedCovarianceModel::clone() const
   return new UserDefinedCovarianceModel(*this);
 }
 
+Scalar UserDefinedCovarianceModel::computeAsScalar(const Point &s,
+    const Point &t) const
+{
+  if (s.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : UserDefinedCovarianceModel::computeAsScalar(s, t) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
+  const UnsignedInteger N = p_mesh_->getVerticesNumber();
+  if (N == 1)
+    return covariance_(0, 0);
+
+  const UnsignedInteger i = nearestNeighbour_.query(s);
+  const UnsignedInteger j = nearestNeighbour_.query(t);
+  SquareMatrix result(outputDimension_);
+  return covariance_(i, j);
+}
+
+Scalar UserDefinedCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+    const Collection<Scalar>::const_iterator &t_begin) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "Error : UserDefinedCovarianceModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  Point s(inputDimension_);
+  Point t(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    s[i] = *s_it;
+    t[i] = *t_it;
+  }
+  return computeAsScalar(s, t);
+}
 
 /* Computation of the covariance density function */
-CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
-    const Point & t) const
+SquareMatrix UserDefinedCovarianceModel::operator()(const Point &s,
+    const Point &t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
@@ -84,12 +117,12 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
   return operator()(nearestNeighbour_.query(s), nearestNeighbour_.query(t));
 }
 
-CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
+SquareMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
     const UnsignedInteger j) const
 {
   const UnsignedInteger sShift = i * outputDimension_;
   const UnsignedInteger tShift = j * outputDimension_;
-  CovarianceMatrix result(outputDimension_);
+  SquareMatrix result(outputDimension_);
   for (UnsignedInteger k = 0; k < outputDimension_; ++k)
     for (UnsignedInteger l = 0; l < outputDimension_; ++l)
       result(l, k) = covariance_(sShift + l, tShift + k);
@@ -120,7 +153,7 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices)
     for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
     {
       const UnsignedInteger columnBase = columnIndex * outputDimension_;
-      const CovarianceMatrix localCovarianceMatrix(operator()(nearestIndex[rowIndex], nearestIndex[columnIndex]));
+      const SquareMatrix localCovarianceMatrix(operator()(nearestIndex[rowIndex], nearestIndex[columnIndex]));
       // We fill the covariance matrix using the previous local one
       // The full local covariance matrix has to be copied as it is
       // not copied on a symmetric position

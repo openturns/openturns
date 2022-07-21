@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ExpertMixture for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,7 @@ int main(int, char *[])
     mean[0] = 1.0;
     aCollection.add( Normal(mean, Point(2, 1.0), R) );
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Mixture distribution(aCollection, Point(aCollection.getSize(), 1.0));
 
     // Create a mixture classifier

@@ -2,7 +2,7 @@
 /**
  *  @brief LHS is an implementation of the hit or miss Monte Carlo simulation method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,7 +46,7 @@ LHS::LHS()
 }
 
 /* Constructor with parameters */
-LHS::LHS(const Event & event)
+LHS::LHS(const RandomVector & event)
   : EventSimulation(event)
   , dimension_(event.getImplementation()->getAntecedent().getDimension())
   , blockIndex_(0)

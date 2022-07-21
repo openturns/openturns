@@ -2,7 +2,7 @@
 /**
  *  @brief The PosteriorDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,30 +49,30 @@ public:
   /** Comparison operator */
   Bool operator ==(const PosteriorDistribution & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual PosteriorDistribution * clone() const;
+  PosteriorDistribution * clone() const override;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const override;
   using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const PointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection) override;
 
 
   /* Interface specific to PosteriorDistribution */
@@ -89,19 +89,19 @@ public:
   Scalar getLogNormalizationFactor() const;
 
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
   /** Compute the likelihood of the observations */
@@ -116,13 +116,13 @@ protected:
 private:
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** The underlying conditional distribution */
   ConditionalDistribution conditionalDistribution_;

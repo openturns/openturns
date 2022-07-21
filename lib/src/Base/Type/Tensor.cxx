@@ -2,7 +2,7 @@
 /**
  *  @brief Tensor implements the classical mathematical tensor
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -190,19 +190,19 @@ Bool Tensor::operator == (const Tensor & rhs) const
   return (*(lhs.getImplementation()) == *(rhs.getImplementation()) );
 }
 
-const Scalar* Tensor::__baseaddress__() const
+const Scalar* Tensor::data() const
 {
-  return getImplementation()->__baseaddress__();
+  return getImplementation()->data();
 }
 
-UnsignedInteger Tensor::__elementsize__() const
+UnsignedInteger Tensor::elementSize() const
 {
-  return getImplementation()->__elementsize__();
+  return getImplementation()->elementSize();
 }
 
-UnsignedInteger Tensor::__stride__(UnsignedInteger dim) const
+UnsignedInteger Tensor::stride(UnsignedInteger dim) const
 {
-  return getImplementation()->__stride__(dim);
+  return getImplementation()->stride(dim);
 }
 
 

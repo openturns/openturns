@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -42,7 +41,7 @@ try:
     collection3D.add(mixture)
     collection3D.add(Uniform(0, 1))
     collection3D.add(Uniform(0, 1))
-    #/ Set weights
+    # / Set weights
     weights = Matrix(
         [[1.0, -0.05, 1.0, -0.5], [0.5, 1.0, -0.05, 0.3], [-0.5, -0.1, 1.2, -0.8]])
     # Defining RandomMixture

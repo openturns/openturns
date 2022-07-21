@@ -2,7 +2,7 @@
 /**
  * @brief PythonFieldToPointFunction implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,7 @@
  *
  */
 #include <Python.h>
-#include "openturns/swig_runtime.hxx"
+#include "openturns/swigpyrun.h"
 
 #include "openturns/PythonFieldToPointFunction.hxx"
 #include "openturns/OSS.hxx"
@@ -114,6 +114,19 @@ PythonFieldToPointFunction::PythonFieldToPointFunction(const PythonFieldToPointF
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
+}
+
+/* Copy assignment operator */
+PythonFieldToPointFunction & PythonFieldToPointFunction::operator=(const PythonFieldToPointFunction & rhs)
+{
+  if (this != &rhs)
+  {
+    FieldToPointFunctionImplementation::operator=(rhs);
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF(pyObj_);
+  }
+  return *this;
 }
 
 /* Destructor */

@@ -2,7 +2,7 @@
 /**
  *  @brief ParametricEvaluation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,6 +19,9 @@
  *
  */
 #include "openturns/ParametricEvaluation.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
+#include "openturns/FiniteDifferenceStep.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -51,7 +54,7 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
   const UnsignedInteger inputDimension = function.getInputDimension();
   const UnsignedInteger setDimension = set.getSize();
   // Check if the given parameters positions are compatible with the input dimension of the function
-  if (inputDimension < setDimension) throw InvalidArgumentException(HERE) << "Error: the size of the " << (parametersSet ? "parameters" : "input") << " positions=" << setDimension << " is greater than the input dimension=" << inputDimension << " of the function.";
+  if (!(inputDimension >= setDimension)) throw InvalidArgumentException(HERE) << "Error: the size of the " << (parametersSet ? "parameters" : "input") << " positions=" << setDimension << " is greater than the input dimension=" << inputDimension << " of the function.";
   // Check if the given indices are valid
   if (!set.check(inputDimension)) throw InvalidArgumentException(HERE) << "Error: the given set of positions contain either duplicate positions or positions greater than the input dimension of the function.";
   // Deduce the input position from the input dimension of the function and the parameters positions
@@ -78,18 +81,10 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
   // Check if the given reference point has a dimension compatible with the function
   if (referencePoint.getDimension() != parametersSize) throw InvalidArgumentException(HERE) << "Error: the given reference point dimension=" << referencePoint.getDimension() << " does not match the parameters size=" << parametersSize;
   // Set the relevant part of the reference point in the parameters
-  const Description functionInputDescription(function.getInputDescription());
-  Description parameterDescription(parametersSize);
-  for (UnsignedInteger i = 0; i < parametersSize; ++ i)
-  {
-    parameterDescription[i] = functionInputDescription[parametersPositions_[i]];
-  }
   parameter_ = referencePoint;
-  parameterDescription_ = parameterDescription;
+  parameterDescription_ = function.getInputDescription().select(parametersPositions_);
   // And finally the input/output descriptions
-  Description inputDescription(0);
-  for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) inputDescription.add(functionInputDescription[inputPositions_[i]]);
-  setInputDescription(inputDescription);
+  setInputDescription(function.getInputDescription().select(inputPositions_));
   setOutputDescription(function_.getOutputDescription());
 }
 
@@ -140,6 +135,42 @@ Matrix ParametricEvaluation::parameterGradient(const Point & inP) const
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger pointDimension = inP.getDimension();
   if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - inputDimension << ", got dimension=" << pointDimension;
+  // Special case if the gradient of the underlying function is based on finite differences
+  {
+    const CenteredFiniteDifferenceGradient * p_gradient = dynamic_cast<const CenteredFiniteDifferenceGradient *>(function_.getGradient().getImplementation().get());
+    if (p_gradient)
+    {
+      // Retrieve the full gradient parameters
+      FiniteDifferenceStep step(p_gradient->getFiniteDifferenceStep());
+      const Point fullEpsilon(step.getEpsilon());
+      // Build the step restricted to the parameter set of the function
+      Point reducedEpsilon(parametersDimension);
+      for (UnsignedInteger i = 0; i < parametersDimension; ++i)
+        reducedEpsilon[i] = fullEpsilon[parametersPositions_[i]];
+      // Update the step
+      step.setEpsilon(reducedEpsilon);
+      const CenteredFiniteDifferenceGradient reducedGradient(step, ParametricEvaluation(function_, inputPositions_, inP));
+      return reducedGradient.gradient(parameter_);
+    }
+  }
+  // Second try: NonCenteredFiniteDifferenceGradient
+  {
+    const NonCenteredFiniteDifferenceGradient * p_gradient = dynamic_cast<const NonCenteredFiniteDifferenceGradient *>(function_.getGradient().getImplementation().get());
+    if (p_gradient)
+    {
+      // Retrieve the full gradient parameters
+      FiniteDifferenceStep step(p_gradient->getFiniteDifferenceStep());
+      const Point fullEpsilon(step.getEpsilon());
+      // Build the step restricted to the parameter set of the function
+      Point reducedEpsilon(parametersDimension);
+      for (UnsignedInteger i = 0; i < parametersDimension; ++i)
+        reducedEpsilon[i] = fullEpsilon[parametersPositions_[i]];
+      // Update the step
+      step.setEpsilon(reducedEpsilon);
+      const NonCenteredFiniteDifferenceGradient reducedGradient(step, ParametricEvaluation(function_, inputPositions_, inP));
+      return reducedGradient.gradient(parameter_);
+    }
+  }
   Point x(inputDimension);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[parametersPositions_[i]] = parameter_[i];
   for (UnsignedInteger i = 0; i < pointDimension; ++i) x[inputPositions_[i]] = inP[i];
@@ -196,6 +227,22 @@ UnsignedInteger ParametricEvaluation::getParameterDimension() const
 UnsignedInteger ParametricEvaluation::getOutputDimension() const
 {
   return function_.getOutputDimension();
+}
+
+/* Linearity accessors */
+Bool ParametricEvaluation::isLinear() const
+{
+  return function_.isLinear();
+}
+
+Bool ParametricEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return function_.isLinearlyDependent(inputPositions_[index]);
+}
+
+Bool ParametricEvaluation::isParallel() const
+{
+  return function_.getImplementation()->isParallel();
 }
 
 /* String converter */

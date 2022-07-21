@@ -2,7 +2,7 @@
 /**
  *  @brief The class CovarianceMatrix implements blank free samples
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,6 +41,13 @@ CovarianceMatrix::CovarianceMatrix(const Implementation & i)
 /* Constructor with implementation */
 CovarianceMatrix::CovarianceMatrix(const MatrixImplementation & i)
   : SymmetricMatrix(i)
+{
+  // Nothing to do
+}
+
+/* Constructor from SymmetricMatrix */
+CovarianceMatrix::CovarianceMatrix(const SymmetricMatrix & sym)
+  : SymmetricMatrix(sym)
 {
   // Nothing to do
 }

@@ -13,7 +13,9 @@ Reliability algorithms
 
      Analytical
      FORM
+     MultiFORM
      SORM
+     SystemFORM
 
 Reliability results
 ===================
@@ -25,17 +27,21 @@ Reliability results
     AnalyticalResult
     FORMResult
     SORMResult
+    MultiFORMResult
 
-Event
-=====
+Events
+======
 
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
 
-    Event
     StandardEvent
-    EventProcess
+    ProcessEvent
+    DomainEvent
+    ThresholdEvent
+    IntersectionEvent
+    UnionEvent
 
 Design point validation
 =======================

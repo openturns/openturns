@@ -1,14 +1,14 @@
 d= RandomMixture(Dirac(point = [5.8]))
 d= RandomMixture(5 + Exponential(lambda = 1, gamma = 0))
-d= RandomMixture(11 + 2 * Gumbel(alpha = 1, beta = 0) + 1.5 * Logistic(alpha = 0, beta = 1) + 4.5 * Weibull(alpha = 1, beta = 1, gamma = 0) + 4 * Frechet(alpha = 4, beta = 1, gamma = 0))
-d= RandomMixture(2.5 * Logistic(alpha = 0, beta = 1) + Normal(mu = 8.5, sigma = 5))
+d= RandomMixture(11 + 2 * Gumbel(beta = 1, gamma = 0) + 1.5 * Logistic(mu = 0, beta = 1) + 4.5 * WeibullMin(beta = 1, alpha = 1, gamma = 0) + 4 * Frechet(beta = 1, alpha = 4, gamma = 0))
+d= RandomMixture(2.5 * Logistic(mu = 0, beta = 1) + Normal(mu = 8.5, sigma = 5))
 d= RandomMixture(6.5 + Gamma(k = 3, lambda = 0.5, gamma = 0) + Gamma(k = 8, lambda = 1, gamma = 0) + Exponential(lambda = 2, gamma = 0))
 d= RandomMixture(Triangular(a = 0, m = 1, b = 2) + Trapezoidal(a = -1, b = 3, c = 14, d = 18) + Uniform(a = 10, b = 14))
 d= RandomMixture(2 + 2 * Binomial(n = 4, p = 0.1) + Binomial(n = 5, p = 0.5) + 1.5 * Bernoulli(p = 0.5) + 4 * Binomial(n = 6, p = 0.5))
 d= RandomMixture(2 + Poisson(lambda = 7) + 2 * Poisson(lambda = 12) + 3 * Poisson(lambda = 6))
-d= RandomMixture(Logistic(alpha = 0, beta = 1) + Mixture((w = 0.25, d = RandomMixture(Uniform(a = -1, b = 5))), (w = 0.5, d = RandomMixture(Uniform(a = 1, b = 7))), (w = 0.25, d = RandomMixture(Uniform(a = 3, b = 9)))))
+d= RandomMixture(Logistic(mu = 0, beta = 1) + Mixture((w = 0.25, d = RandomMixture(Uniform(a = -1, b = 5))), (w = 0.5, d = RandomMixture(Uniform(a = 1, b = 7))), (w = 0.25, d = RandomMixture(Uniform(a = 3, b = 9)))))
 d= RandomMixture(Mixture((w = 0.25, d = RandomMixture(Uniform(a = -1, b = 5))), (w = 0.5, d = RandomMixture(Uniform(a = 1, b = 7))), (w = 0.25, d = RandomMixture(Uniform(a = 3, b = 9)))) + Bernoulli(p = 0.1))
-d= RandomMixture(Mixture((w = 0.9, d = RandomMixture(Logistic(alpha = 0, beta = 1))), (w = 0.1, d = RandomMixture(2 + Logistic(alpha = 0, beta = 1)))) + Mixture((w = 0.25, d = RandomMixture(Uniform(a = -2, b = 6))), (w = 0.5, d = RandomMixture(Uniform(a = 1, b = 9))), (w = 0.25, d = RandomMixture(Uniform(a = 4, b = 12)))))
+d= RandomMixture(Mixture((w = 0.9, d = RandomMixture(Logistic(mu = 0, beta = 1))), (w = 0.1, d = RandomMixture(2 + Logistic(mu = 0, beta = 1)))) + Mixture((w = 0.25, d = RandomMixture(Uniform(a = -2, b = 6))), (w = 0.5, d = RandomMixture(Uniform(a = 1, b = 9))), (w = 0.25, d = RandomMixture(Uniform(a = 4, b = 12)))))
 
 
 d= RandomMixture(2 + 4 * Geometric(p = 0.5) + 3 * Poisson(lambda = 1) + Binomial(n = 2, p = 0.1) + 2 * Binomial(n = 3, p = 0.5))

@@ -1,16 +1,14 @@
-Distribution          =class=Beta name=Beta dimension=1 r=0.2 t=0.6 a=-1 b=2
-Estimated distribution=class=Beta name=Beta dimension=1 r=0.200853 t=0.599159 a=-1.0003 b=2.0003
-Distribution          =class=Beta name=Beta dimension=1 r=0.5 t=1.3 a=-1 b=2
-Estimated distribution=class=Beta name=Beta dimension=1 r=0.491052 t=1.25244 a=-1.0003 b=2.0003
-Distribution          =class=Beta name=Beta dimension=1 r=0.5 t=2.3 a=-1 b=2
-Estimated distribution=class=Beta name=Beta dimension=1 r=0.501163 t=2.296 a=-1.0003 b=1.98677
-Distribution          =class=Beta name=Beta dimension=1 r=1.5 t=4.3 a=-1 b=2
-Estimated distribution=class=Beta name=Beta dimension=1 r=1.4323 t=3.95184 a=-0.99573 b=1.87415
-Default distribution=class=Beta name=Beta dimension=1 r=2 t=4 a=-1 b=1
-Distribution from parameters=class=Beta name=Beta dimension=1 r=1.5 t=4.3 a=-1 b=2
-Beta          =class=Beta name=Beta dimension=1 r=1.5 t=4.3 a=-1 b=2
-Estimated Beta=class=Beta name=Beta dimension=1 r=1.4323 t=3.95184 a=-0.99573 b=1.87415
-Default Beta=class=Beta name=Beta dimension=1 r=2 t=4 a=-1 b=1
-Beta from parameters=class=Beta name=Beta dimension=1 r=1.5 t=4.3 a=-1 b=2
-Estimated distribution=class=Beta name=Beta dimension=1 r=1 t=2 a=-2.22045e-14 b=2.22045e-14
-Estimated distribution=class=Beta name=Beta dimension=1 r=1 t=2 a=1 b=1
+Distribution          =class=Beta name=Beta dimension=1 alpha=0.2 beta=0.4 a=-1 b=2
+Estimated distribution=class=Beta name=Beta dimension=1 alpha=0.200853 beta=0.398306 a=-1.0003 b=2.0003
+Distribution          =class=Beta name=Beta dimension=1 alpha=0.5 beta=0.8 a=-1 b=2
+Estimated distribution=class=Beta name=Beta dimension=1 alpha=0.491052 beta=0.761384 a=-1.0003 b=2.0003
+Distribution          =class=Beta name=Beta dimension=1 alpha=0.5 beta=1.8 a=-1 b=2
+Estimated distribution=class=Beta name=Beta dimension=1 alpha=0.501163 beta=1.79483 a=-1.0003 b=1.98677
+Distribution          =class=Beta name=Beta dimension=1 alpha=1.5 beta=2.8 a=-1 b=2
+Estimated distribution=class=Beta name=Beta dimension=1 alpha=1.4323 beta=2.51954 a=-0.99573 b=1.87415
+Default distribution=class=Beta name=Beta dimension=1 alpha=2 beta=2 a=-1 b=1
+Distribution from parameters=class=Beta name=Beta dimension=1 alpha=1.5 beta=2.8 a=-1 b=2
+Beta          =class=Beta name=Beta dimension=1 alpha=1.5 beta=2.8 a=-1 b=2
+Estimated Beta=class=Beta name=Beta dimension=1 alpha=1.4323 beta=2.51954 a=-0.99573 b=1.87415
+Default Beta=class=Beta name=Beta dimension=1 alpha=2 beta=2 a=-1 b=1
+Beta from parameters=class=Beta name=Beta dimension=1 alpha=1.5 beta=2.8 a=-1 b=2

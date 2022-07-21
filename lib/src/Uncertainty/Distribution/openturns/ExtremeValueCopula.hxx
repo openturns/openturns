@@ -2,7 +2,7 @@
 /**
  *  @brief The ExtremeValueCopula distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The ExtremeValueCopula distribution.
  */
 class OT_API ExtremeValueCopula
-  : public CopulaImplementation
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -45,43 +45,43 @@ public:
   /** Comparison operator */
   Bool operator ==(const ExtremeValueCopula & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /* Interface inherited from Distribution */
   /** Virtual constructor */
-  virtual ExtremeValueCopula * clone() const;
+  ExtremeValueCopula * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using CopulaImplementation::computePDF;
-  Scalar computePDF(const Point & point) const;
+  using DistributionImplementation::computePDF;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the log PDF of the distribution */
-  using CopulaImplementation::computeLogPDF;
-  Scalar computeLogPDF(const Point & point) const;
+  using DistributionImplementation::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using CopulaImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  using DistributionImplementation::computeCDF;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalCDF;
-  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
+  using DistributionImplementation::computeConditionalCDF;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalQuantile;
-  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
+  using DistributionImplementation::computeConditionalQuantile;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
   /* Interface specific to ExtremeValueCopula */
 
@@ -91,10 +91,10 @@ public:
   Function getPickandFunction() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -102,8 +102,7 @@ protected:
 private:
 
   /** The Pickand function */
-  Function
-  pickandFunction_;
+  Function pickandFunction_;
 
 }; /* class ExtremeValueCopula */
 

@@ -2,7 +2,7 @@
 /**
  *  @brief GraphImplementation implements graphic devices for plotting through R
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,6 +47,7 @@ public:
 
   enum Format { PNG = 1, EPS = 2, FIG = 4, PDF = 8, ALL = 255 };
   enum LogScale { NONE = 0, LOGX, LOGY, LOGXY };
+  enum TickLocation { TICKNONE, TICKX, TICKY, TICKXY };
 
   /** Default constructor */
   explicit GraphImplementation(const String & title = "");
@@ -61,10 +62,10 @@ public:
                       const LogScale logScale = NONE);
 
   /** Virtual constructor */
-  virtual GraphImplementation * clone() const;
+  GraphImplementation * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Adds a drawable instance to the collection of drawables contained in GraphImplementation */
   void add(const Drawable & aDrawable);
@@ -97,43 +98,35 @@ public:
   void setLegends(const Description & legends);
 
   /** Hide or show x and y axes */
-  void setAxes(const Bool showAxes);
-
-  /** Accessor for showAxes_ */
+  virtual void setAxes(const Bool showAxes);
   Bool getAxes() const;
 
-  /** Set log scale for x, y both or none axes */
-  void setLogScale(const LogScale logScale);
+  /** Ticks location flag accessor */
+  virtual void setTickLocation(const TickLocation tickLocation);
+  TickLocation getTickLocation() const;
 
-  /** Accessor for logScale_ */
+  /** Set log scale for x, y both or none axes */
+  virtual void setLogScale(const LogScale logScale);
   LogScale getLogScale() const;
 
   /** Hide or show grid */
-  void setGrid(const Bool showGrid);
-
-  /** Accessor for showGrid_ */
+  virtual void setGrid(const Bool showGrid);
   Bool getGrid() const;
 
   /** Grid color accessor */
-  void setGridColor(const String & color);
+  virtual void setGridColor(const String & color);
   String getGridColor() const;
 
-  /** Accesor for xTitle */
-  String getXTitle() const;
-
   /** Accessor for xTitle */
+  String getXTitle() const;
   void setXTitle(const String & title);
 
   /** Accessor for yTitle */
   String getYTitle() const;
-
-  /** Accessor for yTitle */
   void setYTitle(const String & title);
 
-  /** Accesor for title */
-  String getTitle() const;
-
-  /** Accesor for title */
+  /** Accessor for title */
+  virtual String getTitle() const;
   void setTitle(const String & title);
 
   /** The method that generates the graphic files */
@@ -149,39 +142,33 @@ public:
   void clean();
 
   /** Margin accessor */
-  void setXMargin(const Scalar xMargin);
-  void setYMargin(const Scalar yMargin);
+  virtual void setXMargin(const Scalar xMargin);
+  virtual void setYMargin(const Scalar yMargin);
 
   /** Get the bounding box of the whole plot */
-  Interval getBoundingBox() const;
-
-  /** Set the bounding box of the whole plot */
-  void setBoundingBox(const Interval & boundingBox);
+  virtual Interval getBoundingBox() const;
+  virtual void setBoundingBox(const Interval & boundingBox);
 
   /** Automatic bounding box accessor */
-  Bool getAutomaticBoundingBox() const;
-  void setAutomaticBoundingBox(const Bool automaticBoundingBox);
+  virtual Bool getAutomaticBoundingBox() const;
+  virtual void setAutomaticBoundingBox(const Bool automaticBoundingBox);
 
-  /** Get the legend position */
+  /** Legend position accessor */
+  virtual void setLegendPosition(const String & position);
   String getLegendPosition() const;
-
-  /** Set the legend position */
-  void setLegendPosition(const String & position);
 
   /** Get the legend font size */
   Scalar getLegendFontSize() const;
-
-  /** Set the legend font size */
   void setLegendFontSize(const Scalar legendFontSize);
 
   /** Check for legend position validity */
   static Bool IsValidLegendPosition(const String & position);
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Gives all the valid legend positions */
   static Description GetValidLegendPositions();
@@ -208,7 +195,7 @@ private:
   /** Make R core command */
   String makeRCoreCommand() const;
 
-  /** GraphImplementationic main title */
+  /** main title */
   String title_;
 
   /** Legend position */
@@ -225,6 +212,9 @@ private:
 
   /** if TRUE, displays the axes on the graphic plot. if FALSE, hides the axes */
   Bool showAxes_;
+
+  /** Ticks location flag */
+  TickLocation tickLocation_ = TICKXY;
 
   /** Set the log scale for one, both or non of the axes */
   LogScale logScale_;

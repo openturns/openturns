@@ -2,7 +2,7 @@
 /**
  *  @brief The UserDefined distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -137,7 +137,10 @@ Point UserDefined::getRealization() const
   // Efficient algorithm for uniform weights
   if (hasUniformWeights_) index = RandomGenerator::IntegerGenerate(size);
   // Alias method for nonuniform weights
-  else index = DistFunc::rDiscrete(base_, alias_);
+  else
+  {
+    index = base_.getSize() ? DistFunc::rDiscrete(base_, alias_) : DistFunc::rDiscrete(probabilities_, base_, alias_);
+  }
   return points_[index];
 }
 
@@ -148,12 +151,17 @@ Sample UserDefined::getSample(const UnsignedInteger size) const
   Indices indices;
   // Efficient algorithm for uniform weights
   if (hasUniformWeights_)
-    {
-      Collection<UnsignedInteger> values(RandomGenerator::IntegerGenerate(size, supportSize));
-      indices = Indices(values.begin(), values.end());
-    }
+  {
+    Collection<UnsignedInteger> values(RandomGenerator::IntegerGenerate(size, supportSize));
+    indices = Indices(values.begin(), values.end());
+  }
   // Alias method for nonuniform weights
-  else indices = DistFunc::rDiscrete(base_, alias_, size);
+  else
+  {
+    if (!base_.getSize())
+      (void) DistFunc::rDiscrete(probabilities_, base_, alias_);
+    indices = DistFunc::rDiscrete(base_, alias_, size);
+  }
   return points_.select(indices);
 }
 
@@ -221,10 +229,10 @@ Scalar UserDefined::computeCDF(const Point & point) const
     const Scalar x = point[0];
     UnsignedInteger upper = size - 1;
     Scalar xUpper = points_(upper, 0);
-    if (x > xUpper - supportEpsilon_) return 1.0;
+    if (x >= xUpper - supportEpsilon_) return 1.0;
     UnsignedInteger lower = 0;
     Scalar xLower = points_(lower, 0);
-    if (x <= xLower - supportEpsilon_) return 0.0;
+    if (x < xLower - supportEpsilon_) return 0.0;
     // Use dichotomic search of the correct index
     while (upper - lower > 1)
     {
@@ -265,13 +273,14 @@ Point UserDefined::computePDFGradient(const Point & point) const
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   const UnsignedInteger size = points_.getSize();
-  Point pdfGradient(size, 0.0);
+  const UnsignedInteger dimension = getDimension();
+  Point pdfGradient((dimension + 1) * size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if ((point - points_[i]).norm() < supportEpsilon_)
     {
       pdfGradient[i] = 1.0;
-      return pdfGradient;
+      break;
     }
   }
   return pdfGradient;
@@ -285,7 +294,7 @@ Point UserDefined::computeCDFGradient(const Point & point) const
 
   const UnsignedInteger size = points_.getSize();
   const UnsignedInteger dimension = getDimension();
-  Point cdfGradient(size, 0.0);
+  Point cdfGradient((dimension + 1) * size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Point x(points_[i]);
@@ -458,6 +467,25 @@ Description UserDefined::getParameterDescription() const
   return description;
 }
 
+void UserDefined::setParameter(const Point & parameter)
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = points_.getSize();
+  if (parameter.getSize() != (dimension + 1) * size)
+    throw InvalidArgumentException(HERE) << "Expected " << (dimension + 1) * size << " parameters";
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < size; ++ j)
+    {
+      points_(j, i) = parameter[i * size + j];
+    }
+  }
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    probabilities_[i] = parameter[dimension * size + i];
+  }
+  setData(points_, probabilities_);
+}
 
 /* Get the i-th marginal distribution */
 Distribution UserDefined::getMarginal(const UnsignedInteger i) const
@@ -480,16 +508,8 @@ Distribution UserDefined::getMarginal(const Indices & indices) const
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  const UnsignedInteger outputDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    marginalDescription[i] = description[index_i];
-  }
   UserDefined::Implementation marginal(new UserDefined(points_.getMarginal(indices), probabilities_));
-  marginal->setDescription(marginalDescription);
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 
@@ -548,12 +568,13 @@ void UserDefined::setData(const Sample & sample,
   }
   // We augment slightly the last cumulative probability, which should be equal to 1.0 but we enforce a value > 1.0.
   cumulativeProbabilities_[size - 1] = 1.0 + 2.0 * supportEpsilon_;
-  // Initialize the alias method if the weigths are not uniform
-  if (!hasUniformWeights_) (void) DistFunc::rDiscrete(probabilities_, base_, alias_);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
   computeRange();
+  // trigger reset of alias method
+  base_.clear();
+  alias_.clear();
 }
 
 
@@ -706,7 +727,7 @@ Bool UserDefined::hasEllipticalCopula() const
 /* Tell if the distribution has independent copula */
 Bool UserDefined::hasIndependentCopula() const
 {
-  return points_.getSize() == 1;
+  return (dimension_ == 1) || (points_.getSize() == 1);
 }
 
 
@@ -728,7 +749,6 @@ void UserDefined::load(Advocate & adv)
   adv.loadAttribute( "probabilities_", probabilities_ );
   adv.loadAttribute( "cumulativeProbabilities_", cumulativeProbabilities_ );
   adv.loadAttribute( "hasUniformWeights_", hasUniformWeights_ );
-  if (!hasUniformWeights_) (void) DistFunc::rDiscrete(probabilities_, base_, alias_);
   computeRange();
 }
 

@@ -29,8 +29,6 @@
 %include ContinuousDistribution.i
 %include EllipticalDistribution.i
 %include DiscreteDistribution.i
-%include CopulaImplementation.i
-%include Copula.i
 %include ArchimedeanCopula.i
 %include SklarCopula.i
 
@@ -38,6 +36,7 @@
 %include AliMikhailHaqCopula.i
 %include AliMikhailHaqCopulaFactory.i
 %include IndependentCopula.i
+%include IndependentCopulaFactory.i
 %include MinCopula.i
 %include NormalCopula.i
 %include NormalCopulaFactory.i
@@ -49,10 +48,14 @@
 %include ClaytonCopulaFactory.i
 %include GumbelCopula.i
 %include GumbelCopulaFactory.i
+%include BlockIndependentDistribution.i
 %include ComposedDistribution.i
 %include CumulativeDistributionNetwork.i
 %include ComposedCopula.i
+%include MarshallOlkinCopula.i
 %include OrdinalSumCopula.i
+%include PlackettCopula.i
+%include PlackettCopulaFactory.i
 
 /* At last we include template definitions */
 %include UncertaintyModelCopulaTemplateDefs.i

@@ -2,7 +2,7 @@
 /**
  *  @brief The LogNormal distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,8 +39,7 @@ LogNormal::LogNormal()
   , muLog_(0.0)
   , sigmaLog_(0.0)
   , gamma_(0.0)
-    // 1 / SQRT(2Pi)
-  , normalizationFactor_(0.39894228040143267794)
+  , normalizationFactor_(SpecFunc::ISQRT2PI) // 1 / SQRT(2Pi)
   , H_(0)
   , hermiteNodes_(0)
   , hermiteWeights_(0)
@@ -68,7 +67,7 @@ LogNormal::LogNormal(const Scalar muLog,
 {
   setName("LogNormal");
   setMuLogSigmaLog(muLog, sigmaLog);
-  normalizationFactor_ = 1.0 / (sigmaLog_ * std::sqrt(2.0 * M_PI));
+  normalizationFactor_ = 1.0 / (sigmaLog_ * SpecFunc::SQRT2PI);
   setDimension(1);
 }
 
@@ -159,7 +158,7 @@ Scalar LogNormal::computeLogPDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
-  if (x <= 0.0) return SpecFunc::LogMinScalar;
+  if (x <= 0.0) return SpecFunc::LowestScalar;
   Scalar logX = (std::log(x) - muLog_) / sigmaLog_;
   return std::log(normalizationFactor_) - 0.5 * logX * logX - std::log(x);
 }

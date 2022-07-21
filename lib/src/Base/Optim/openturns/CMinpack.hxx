@@ -2,7 +2,7 @@
 /**
  *  @brief CMinpack solver
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,28 +42,26 @@ public:
   explicit CMinpack(const OptimizationProblem & problem);
 
   /** Virtual constructor */
-  virtual CMinpack * clone() const;
+  CMinpack * clone() const override;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-  void run();
+  void run() override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
-
-  static Bool IsAvailable();
+  void load(Advocate & adv) override;
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  virtual void checkProblem(const OptimizationProblem & problem) const;
+  void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
   static int ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, Scalar *fvec, Scalar *fjac, int ldfjac, int iflag);

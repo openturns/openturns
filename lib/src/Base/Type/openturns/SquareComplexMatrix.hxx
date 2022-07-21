@@ -2,7 +2,7 @@
 /**
  *  @brief SquareComplexMatrix implements the classical mathematical square matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -71,7 +71,7 @@ public:
   SquareComplexMatrix(const HermitianMatrix & hermitian);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Get the dimension of the matrix */
   UnsignedInteger getDimension() const;
@@ -103,13 +103,13 @@ public:
   SquareComplexMatrix power(const UnsignedInteger n) const;
 
   /** Multiplication with a Point (must have consistent dimensions) */
-  ComplexCollection operator * (const ComplexCollection & p) const;
+  ComplexCollection operator * (const ComplexCollection & p) const override;
 
   /** Multiplication with a Point (must have consistent dimensions) */
-  ComplexCollection operator * (const ScalarCollection & p) const;
+  ComplexCollection operator * (const ScalarCollection & p) const override;
 
   /** Multiplication with a Point (must have consistent dimensions) */
-  ComplexCollection operator * (const Point & p) const;
+  ComplexCollection operator * (const Point & p) const override;
 
   /** Multiplication with a Complex */
   SquareComplexMatrix operator * (const Complex s) const;

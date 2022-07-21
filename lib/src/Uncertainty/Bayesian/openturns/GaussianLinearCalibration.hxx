@@ -2,7 +2,7 @@
 /**
  *  @brief GaussianLinearCalibration algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,27 +48,27 @@ public:
 
   /** Parameter constructor */
   GaussianLinearCalibration(const Function & model,
-       const Sample & inputObservations,
-       const Sample & outputObservations,
-       const Point & candidate,
-       const CovarianceMatrix & parameterCovariance,
-       const CovarianceMatrix & errorCovariance,
-       const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
+                            const Sample & inputObservations,
+                            const Sample & outputObservations,
+                            const Point & candidate,
+                            const CovarianceMatrix & parameterCovariance,
+                            const CovarianceMatrix & errorCovariance,
+                            const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
 
   /** Parameter constructor */
   GaussianLinearCalibration(const Sample & modelObservations,
-       const Matrix & gradientObservations,
-       const Sample & outputObservations,
-       const Point & candidate,
-       const CovarianceMatrix & parameterCovariance,
-       const CovarianceMatrix & errorCovariance,
-       const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
+                            const Matrix & gradientObservations,
+                            const Sample & outputObservations,
+                            const Point & candidate,
+                            const CovarianceMatrix & parameterCovariance,
+                            const CovarianceMatrix & errorCovariance,
+                            const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. Must be overloaded by the actual calibration algorithm */
-  virtual void run();
+  void run() override;
 
   /** Model observations accessor */
   Sample getModelObservations() const;
@@ -94,13 +94,13 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual GaussianLinearCalibration * clone() const;
+  GaussianLinearCalibration * clone() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /* The model observations */
@@ -111,10 +111,10 @@ private:
 
   /* The error covariance */
   CovarianceMatrix errorCovariance_;
-  
+
   /* Flag to tell if the error covariance is for the whole observations */
   Bool globalErrorCovariance_;
-  
+
   /* The least squares method name */
   String methodName_;
 

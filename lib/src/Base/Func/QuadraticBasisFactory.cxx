@@ -2,7 +2,7 @@
 /**
  *  @brief Quadratic canonical basis factory
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -66,12 +66,12 @@ Basis QuadraticBasisFactory::build() const
   }
 
   // square terms
-  for ( UnsignedInteger i = 0; i < inputDimension_; ++ i )
+  for (UnsignedInteger i = 0; i < inputDimension_; ++ i)
   {
-    for ( UnsignedInteger j = i; j < inputDimension_; ++ j )
+    for (UnsignedInteger j = 0; j <= i; ++ j)
     {
       SymmetricTensor quadratic(inputDimension_, 1);
-      quadratic(i, j, 0) = 1.0;
+      quadratic(i, j, 0) = (i == j) ? 2.0 : 1.0;
       Point center(inputDimension_, 0.0);
       Point constant(1, 0.0);
       Matrix linear(inputDimension_, 1);

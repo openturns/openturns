@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the ReverseHalton' sequence
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,8 +29,8 @@ CLASSNAMEINIT(ReverseHaltonSequence)
 static const Factory<ReverseHaltonSequence> Factory_ReverseHaltonSequence;
 
 /* Constructor with parameters */
-ReverseHaltonSequence::ReverseHaltonSequence(const UnsignedInteger dimension) :
-  LowDiscrepancySequenceImplementation(dimension)
+ReverseHaltonSequence::ReverseHaltonSequence(const UnsignedInteger dimension)
+  : LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
 }
@@ -46,13 +46,12 @@ ReverseHaltonSequence * ReverseHaltonSequence::clone() const
 /* Initialize the sequence */
 void ReverseHaltonSequence::initialize(const UnsignedInteger dimension)
 {
-  if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
-  dimension_ = dimension;
-  base_ = ComputeFirstPrimeNumbers(dimension);
+  LowDiscrepancySequenceImplementation::initialize(dimension);
+  base_ = GetFirstPrimeNumbers(dimension_);
   seed_ = ResourceMap::GetAsUnsignedInteger( "ReverseHaltonSequence-InitialSeed" );
 }
 
-/* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[
+/* Generate a pseudo-random vector of independent numbers uniformly distributed over [0, 1[
    See Bart Vandewoestyne, Ronald Cools, "Good permutations for deterministic scrambled Halton sequences in terms of L2-discrepancy", Journal of Computational and Applied Mathematics, 189, 341-361 (2006) */
 Point ReverseHaltonSequence::generate() const
 {
@@ -84,7 +83,6 @@ String ReverseHaltonSequence::__repr__() const
 {
   OSS oss;
   oss << "class=" << ReverseHaltonSequence::GetClassName()
-      << " derived from " << LowDiscrepancySequenceImplementation::__repr__()
       << " base=" << base_
       << " seed=" << seed_;
   return oss;
@@ -102,7 +100,6 @@ void ReverseHaltonSequence::save(Advocate & adv) const
 void ReverseHaltonSequence::load(Advocate & adv)
 {
   LowDiscrepancySequenceImplementation::load(adv);
-  initialize(dimension_);
   adv.loadAttribute( "base_", base_);
   adv.loadAttribute( "seed_", seed_);
 }

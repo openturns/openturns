@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 dist1 = ot.Normal(1.0, 0.5)
@@ -137,6 +136,13 @@ result = dist1 / dist2
 print('dist1/dist2:', result)
 # graph = result.drawPDF()
 
+result = 3/dist1**2
+print('3/dist1^2:', result)
+graph = result.drawPDF()
+
+result = (3/dist1)**2
+print('(3/dist1)^2:', result)
+graph = result.drawPDF()
 
 result = ot.LogNormal() * ot.LogNormal()
 print('logn*logn:', result)
@@ -155,17 +161,17 @@ print('logn*logu:', result)
 graph = result.drawPDF()
 
 # For ticket #917
-result = ot.Weibull() + ot.Exponential()
-print('Weibull+Exponential:', result)
+result = ot.WeibullMin() + ot.Exponential()
+print('WeibullMin+Exponential:', result)
 print('result.CDF(1.0)=%.6f' % result.computeCDF(1.0))
-result = -1.0 * ot.Weibull() + ot.Exponential()
-print('-Weibull+Exponential:', result)
+result = -1.0 * ot.WeibullMin() + ot.Exponential()
+print('-WeibullMin+Exponential:', result)
 print('result.CDF(1.0)=%.6f' % result.computeCDF(1.0))
-result = ot.Weibull() - ot.Exponential()
-print('Weibull-Exponential:', result)
+result = ot.WeibullMin() - ot.Exponential()
+print('WeibullMin-Exponential:', result)
 print('result.CDF(1.0)=%.6f' % result.computeCDF(1.0))
-result = -1.0 * ot.Weibull() - ot.Exponential()
-print('-Weibull-Exponential:', result)
+result = -1.0 * ot.WeibullMin() - ot.Exponential()
+print('-WeibullMin-Exponential:', result)
 print('result.CDF(-1.0)=%.6f' % result.computeCDF(-1.0))
 
 # 2-d
@@ -178,3 +184,14 @@ print(ot.Normal(2) - 3.0)
 x = ot.Normal(7.0, 2.0)
 print(-x)
 
+# simplification of sum
+x = -ot.Exponential() - ot.Exponential()
+print(x)
+
+# take into account the weight and the constant in simplification
+x = 2*(-ot.Exponential() - ot.Exponential())
+print(x)
+x = 2*(-ot.Exponential() - ot.Exponential()) + 1.0
+print(x)
+x = ot.Poisson(5.0) + 1.0
+print(x)

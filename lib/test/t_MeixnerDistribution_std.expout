@@ -1,5 +1,5 @@
-Distribution class=MeixnerDistribution name=MeixnerDistribution dimension=1 alpha=1.5 beta=0.5 delta=2.5 mu=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171
-Distribution MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)
+Distribution class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1.5 alpha=0.5 delta=2.5 gamma=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171
+Distribution MeixnerDistribution(beta = 1.5, alpha = 0.5, delta = 2.5, gamma = -0.5)
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[2.06954]
@@ -23,7 +23,7 @@ quantile=class=Point name=Unnamed dimension=1 values=[3.39477]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-2.90577] upper bound=class=Point name=Unnamed dimension=1 values=[3.94843] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)) level=3.50547
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(MeixnerDistribution(beta = 1.5, alpha = 0.5, delta = 2.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(MeixnerDistribution(beta = 1.5, alpha = 0.5, delta = 2.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(MeixnerDistribution(beta = 1.5, alpha = 0.5, delta = 2.5, gamma = -0.5)) level=3.50547
 beta=0.0300325
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-2.80555] upper bound=class=Point name=Unnamed dimension=1 values=[4.06095] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -38,12 +38,12 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[alpha : 1.5, beta : 0.5, mu : 2.5,  : -0.5]]
+parameters=[[beta : 1.5, alpha : 0.5, delta : 2.5, gamma : -0.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.638355]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.739]
-Standard representative=MeixnerDistribution(alpha = 1, beta = 0.5, delta = 2.5, mu = 0)
-mu=-0.5
+Standard representative=MeixnerDistribution(beta = 1, alpha = 0.5, delta = 2.5, gamma = 0)
+gamma=-0.5
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.73086]
 skewness=class=Point name=Unnamed dimension=1 values=[0.221285]
 kurtosis=class=Point name=Unnamed dimension=1 values=[3.44897]

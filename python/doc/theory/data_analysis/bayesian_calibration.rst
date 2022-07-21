@@ -36,7 +36,7 @@ For the sake of clarity, lower case letters are used for both random
 variables and realizations in the following (the notation does not
 distinguish the two anymore), as usual in the bayesian literature.
 
-In fact, the bayesian procedure which is implemented allows to infer
+In fact, the bayesian procedure which is implemented allows one to infer
 some unknown parameters :math:`\vect{\theta}\in\Rset^{d_\theta}` from
 some data :math:`\mat{y} = (\vect{y}^1, \ldots, \vect{y}^n)` as soon as
 the conditional distribution of each :math:`\vect{y}^i` given
@@ -143,11 +143,15 @@ Monte-Carlo Markov-Chain (MCMC) methods. See :ref:`metropolis_hastings`.
 .. topic:: API:
 
     - See :class:`~openturns.RandomWalkMetropolisHastings`
-
+    - See :class:`~openturns.Gibbs`
+    - See :class:`~openturns.RandomVectorMetropolisHastings`
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/bayesian_calibration`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration_flooding`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_rwmh_python_distribution`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_gibbs`
 
 .. topic:: References:
 

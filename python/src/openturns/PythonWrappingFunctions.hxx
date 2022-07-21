@@ -2,7 +2,7 @@
 /**
  * @brief This file provides functions to ease Python wrapping
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -157,12 +157,7 @@ inline
 int
 isAPython< _PyInt_ >(PyObject * pyObj)
 {
-  // PyInt type is deprecated
-#if PY_MAJOR_VERSION >= 3
   return PyLong_Check(pyObj);
-#else
-  return PyInt_Check(pyObj) || PyLong_Check(pyObj);
-#endif
 }
 
 template <>
@@ -316,11 +311,7 @@ inline
 int
 isAPython< _PyBytes_ >(PyObject * pyObj)
 {
-#if PY_MAJOR_VERSION >= 3
   return PyBytes_Check(pyObj);
-#else
-  return PyString_Check(pyObj);
-#endif
 }
 
 template <>
@@ -336,11 +327,7 @@ inline
 String
 convert< _PyBytes_, String >(PyObject * pyObj)
 {
-#if PY_MAJOR_VERSION >= 3
   return PyBytes_AsString(pyObj);
-#else
-  return PyString_AsString(pyObj);
-#endif
 }
 
 template <>
@@ -348,11 +335,7 @@ inline
 PyObject *
 convert< String, _PyBytes_ >(String s)
 {
-#if PY_MAJOR_VERSION >= 3
   return PyBytes_FromString(s.data());
-#else
-  return PyString_FromString(s.data());
-#endif
 }
 
 
@@ -402,11 +385,7 @@ inline
 int
 isAPython< _PyString_ >(PyObject * pyObj)
 {
-#if PY_MAJOR_VERSION >= 3
   return PyUnicode_Check(pyObj);
-#else
-  return PyString_Check(pyObj) || PyUnicode_Check(pyObj);
-#endif
 }
 
 template <>
@@ -429,18 +408,7 @@ String
 convert< _PyString_, String >(PyObject * pyObj)
 {
   String result;
-#if PY_MAJOR_VERSION >= 3
   result = convert< _PyUnicode_, String >(pyObj);
-#else
-  if(isAPython<_PyBytes_>(pyObj))
-  {
-    result = convert<_PyBytes_, String>(pyObj);
-  }
-  else if (isAPython<_PyUnicode_>(pyObj))
-  {
-    result = convert<_PyUnicode_, String>(pyObj);
-  }
-#endif
   return result;
 }
 
@@ -449,11 +417,7 @@ inline
 PyObject *
 convert< String, _PyString_ >(String s)
 {
-#if PY_MAJOR_VERSION >= 3
   return convert<String, _PyUnicode_>(s);
-#else
-  return convert<String, _PyBytes_>(s);
-#endif
 }
 
 
@@ -803,7 +767,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
-          std::copy(data, data + size * dimension, (Scalar *)sample.__baseaddress__());
+          std::copy(data, data + size * dimension, (Scalar *)sample.data());
         }
         else
         {
@@ -849,8 +813,10 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
       }
       return sample;
     }
+    else if (shape.getSize() == 1)
+      throw InvalidArgumentException(HERE) << "Invalid array dimension 1 is ambiguous, please set the dimension explicitly";
     else
-      throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize();
+      throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize() << " is greater than 2";
   }
   check<_PySequence_>(pyObj);
   ScopedPyObjectPointer newPyObj(PySequence_Fast(pyObj, ""));
@@ -885,6 +851,20 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
   }
   return sample;
 }
+
+
+template <>
+inline
+PyObject *
+convert< Sample, _PySequence_ >(Sample sample)
+{
+  const UnsignedInteger size = sample.getSize();
+  PyObject * pyObj = PyTuple_New(size);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    PyTuple_SetItem(pyObj, i, convert< Point, _PySequence_ >(sample[i]));
+  return pyObj;
+}
+
 
 template <>
 struct traitsPythonType< Collection< UnsignedInteger > >
@@ -1737,24 +1717,17 @@ convert< _PySequence_, WhittleFactoryState >(PyObject *)
 }
 
 
-// PySliceObject type is deprecated
-#if PY_VERSION_HEX >= 0x03020000
-inline PyObject* SliceCast(PyObject* pyObj)
-{
-  return pyObj;
-}
-#else
-inline PySliceObject* SliceCast(PyObject* pyObj)
-{
-  return (PySliceObject*)pyObj;
-}
-#endif
-
-
 inline
 void pickleSave(Advocate & adv, PyObject * pyObj, const String attributName = "pyInstance_")
 {
-  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("pickle")); // new reference
+  // try to use dill
+  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill")); // new reference
+  if (pickleModule.get() == NULL)
+  {
+    // fallback to pickle
+    PyErr_Clear();
+    pickleModule = PyImport_ImportModule("pickle"); // new reference
+  }
   assert(pickleModule.get());
 
   PyObject * pickleDict = PyModule_GetDict(pickleModule.get());
@@ -1815,7 +1788,14 @@ void pickleLoad(Advocate & adv, PyObject * & pyObj, const String attributName = 
   handleException();
   assert(rawDump.get());
 
-  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("pickle")); // new reference
+  // try to use dill
+  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill")); // new reference
+  if (pickleModule.get() == NULL)
+  {
+    // fallback to pickle
+    PyErr_Clear();
+    pickleModule = PyImport_ImportModule("pickle"); // new reference
+  }
   assert(pickleModule.get());
 
   PyObject * pickleDict = PyModule_GetDict(pickleModule.get());

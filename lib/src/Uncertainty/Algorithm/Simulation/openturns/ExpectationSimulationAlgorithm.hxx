@@ -2,7 +2,7 @@
 /**
  *  @brief Simulation algorithm to estimate an expectation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,7 @@ public:
   explicit ExpectationSimulationAlgorithm(const RandomVector & randomVector);
 
   /** Virtual constructor */
-  virtual ExpectationSimulationAlgorithm * clone() const;
+  ExpectationSimulationAlgorithm * clone() const override;
 
   /** RandomVector accessor */
   RandomVector getRandomVector() const;
@@ -66,20 +66,20 @@ public:
   Point getMaximumStandardDeviationPerComponent() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. */
-  virtual void run();
+  void run() override;
 
   /** Draw the probability convergence at the given level */
   Graph drawExpectationConvergence(const UnsignedInteger marginalIndex = 0,
                                    const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   // compute criterion on a quantity

@@ -2,7 +2,7 @@
 /**
  *  @brief Nearest neighbour index search on a RegularGrid
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,22 +49,22 @@ public:
   explicit RegularGridNearestNeighbour(const Sample & vertices);
 
   /** Virtual constructor */
-  virtual RegularGridNearestNeighbour * clone() const;
+  RegularGridNearestNeighbour * clone() const override;
 
 #ifndef SWIG
   /** Virtual default constructor */
-  virtual RegularGridNearestNeighbour * emptyClone() const;
+  RegularGridNearestNeighbour * emptyClone() const override;
 #endif
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Sample accessor */
-  virtual Sample getSample() const;
-  virtual void setSample(const Sample & sample);
+  Sample getSample() const override;
+  void setSample(const Sample & sample) override;
 
   /** Get the index of the nearest neighbour of the given point */
-  UnsignedInteger query(const Point & x) const;
+  UnsignedInteger query(const Point & x) const override;
   using NearestNeighbourAlgorithmImplementation::query;
 
   /** Get the index of the nearest neighbour of the given scalar */
@@ -74,16 +74,16 @@ public:
   Indices queryScalar(const Point & x) const;
 
   /** Get the indices of the k nearest neighbours of the given point */
-  Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const;
+  Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const override;
 
   /** Get the indices of the k nearest neighbours of the given scalar */
   Indices queryScalarK(const Scalar x, const UnsignedInteger k, const Bool sorted  = false) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** The data organized by the tree */

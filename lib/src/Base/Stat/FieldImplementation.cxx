@@ -3,7 +3,7 @@
  *  @brief The class FieldImplementation implements values indexed by
  *  the vertices of a Mesh
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,6 +36,7 @@
 #include "openturns/Os.hxx"
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -162,22 +163,22 @@ const Scalar & FieldImplementation::operator () (const UnsignedInteger i,
 
 NSI_point FieldImplementation::at (const UnsignedInteger index)
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   isAlreadyComputedInputMean_ = false;
   return (*this)[index];
 }
 
 NSI_const_point FieldImplementation::at (const UnsignedInteger index) const
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   return (*this)[index];
 }
 
 Scalar & FieldImplementation::at (const UnsignedInteger i,
                                   const UnsignedInteger j)
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j >= getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
+  if (!(j < getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
   isAlreadyComputedInputMean_ = false;
   return values_(i, j);
 }
@@ -185,8 +186,8 @@ Scalar & FieldImplementation::at (const UnsignedInteger i,
 const Scalar & FieldImplementation::at (const UnsignedInteger i,
                                         const UnsignedInteger j) const
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j >= getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
+  if (!(j < getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
   return values_(i, j);
 }
 
@@ -264,10 +265,10 @@ struct FieldInputMeanFunctor
   FieldInputMeanFunctor(const Point & volumes, const FieldImplementation & field)
     : volumes_(volumes), field_(field), accumulator_(field.getOutputDimension(), 0.0) {}
 
-  FieldInputMeanFunctor(const FieldInputMeanFunctor & other, TBB::Split)
+  FieldInputMeanFunctor(const FieldInputMeanFunctor & other, TBBImplementation::Split)
     : volumes_(other.volumes_), field_(other.field_), accumulator_(other.field_.getOutputDimension(), 0.0) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     const UnsignedInteger meshDimension = field_.getInputDimension();
     const UnsignedInteger dimension = field_.getOutputDimension();
@@ -292,9 +293,9 @@ void FieldImplementation::computeInputMean() const
 {
   const Point simplicesVolume(mesh_.computeSimplicesVolume());
   const Scalar totalVolume(simplicesVolume.norm1());
-  if (totalVolume == 0.0) throw InternalException(HERE) << "Error: cannot compute the input mean of a field supported by a mesh of zero volume.";
+  if (!(totalVolume > 0.0)) throw InternalException(HERE) << "Error: cannot compute the input mean of a field supported by a mesh of zero volume.";
   FieldInputMeanFunctor functor( simplicesVolume, *this );
-  TBB::ParallelReduce( 0, mesh_.getSimplicesNumber(), functor );
+  TBBImplementation::ParallelReduce( 0, mesh_.getSimplicesNumber(), functor );
   inputMean_ = functor.accumulator_ / totalVolume;
   isAlreadyComputedInputMean_ = true;
 }
@@ -312,6 +313,17 @@ Point FieldImplementation::getOutputMean() const
 {
   if (!mesh_.isRegular() || (mesh_.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the temporal mean is defined only when the mesh is regular and of dimension 1.";
   return values_.computeMean();
+}
+
+/* l2 norm */
+Scalar FieldImplementation::norm() const
+{
+  const UnsignedInteger size = values_.getSize();
+  const Point w(mesh_.computeWeights());
+  Scalar normSquare = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    normSquare += w[i] * Point(values_[i]).normSquare();
+  return std::sqrt(normSquare);
 }
 
 Sample FieldImplementation::getValues() const
@@ -405,15 +417,24 @@ Graph FieldImplementation::draw() const
     const Sample vertices(mesh_.getVertices());
     const Point xMin(vertices.getMin());
     const Point xMax(vertices.getMax());
-    const Scalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsScalar("Field-ArrowRatio");
-    const Scalar rho = ResourceMap::GetAsScalar("Field-ArrowScaling");
+    // To take into account the user-defined scaling factor
+    const Bool automaticScaling = ResourceMap::GetAsBool("Field-AutomaticScaling");
+    Scalar rho = ResourceMap::GetAsScalar("Field-ArrowScaling");
+    // To take into account the domain size in the scaling
+    const Scalar scaling = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]);
+    if (automaticScaling) rho *= 2.0 * scaling;
+    const Scalar delta = scaling * ResourceMap::GetAsScalar("Field-ArrowRatio");
     const UnsignedInteger size = values_.getSize();
+    // To take into account the field values in the scaling
     Sample normValues(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i)
       normValues(i, 0) = Point(values_[i]).norm();
     Scalar normMin = normValues.getMin()[0];
     Scalar normMax = normValues.getMax()[0];
     if (normMax == normMin) normMax = normMin + 1.0;
+    if (automaticScaling) rho /= normMax;
+    // To take into account the vertices number
+    if (automaticScaling) rho /= std::sqrt(static_cast<Scalar>(vertices.getSize()));
     const UnsignedInteger levelsNumber = ResourceMap::GetAsUnsignedInteger("Field-LevelNumber");
     Description palette(levelsNumber);
     for (UnsignedInteger i = 0; i < levelsNumber; ++i)
@@ -463,12 +484,12 @@ Graph FieldImplementation::draw() const
 Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
                                         const Bool interpolate) const
 {
-  if (index >= getOutputDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
+  if (!(index < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
   const UnsignedInteger meshDimension = getInputDimension();
-  if (meshDimension > 2) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
+  if (!(meshDimension <= 2)) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
   const Sample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
-  Graph graph(title, description_[0], "Values", true, "topright");
+  Graph graph(title, description_[0], description_[index + 1], true, "topright");
   if (meshDimension == 1)
   {
     // Discretization of the x axis
@@ -507,9 +528,9 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         UnsignedInteger i0 = currentSimplex[0];
         UnsignedInteger i1 = currentSimplex[1];
         UnsignedInteger i2 = currentSimplex[2];
-        Scalar v0 = marginalValues[i0][0];
-        Scalar v1 = marginalValues[i1][0];
-        Scalar v2 = marginalValues[i2][0];
+        Scalar v0 = marginalValues(i0, 0);
+        Scalar v1 = marginalValues(i1, 0);
+        Scalar v2 = marginalValues(i2, 0);
         // Sort the vertices such that v0 <= v1 <= v2
         if (v0 > v1)
         {
@@ -588,7 +609,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
           data.add(mesh_.getVertex(simplex[0]));
           data.add(mesh_.getVertex(simplex[1]));
           data.add(mesh_.getVertex(simplex[2]));
-          const Scalar meanValue = (marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0;
+          const Scalar meanValue = (marginalValues(simplex[0], 0) + marginalValues(simplex[1], 0) + marginalValues(simplex[2], 0)) / 3.0;
           const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (meanValue - minValue) / (maxValue - minValue)))]);
           colors.add(color);
         }

@@ -2,7 +2,7 @@
 /**
  *  @brief The ChiSquare distribution, ie the Gamma(nu/2,1/2) distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -160,7 +160,7 @@ Scalar ChiSquare::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LogMinScalar;
+  if (x <= 0.0) return SpecFunc::LowestScalar;
   return normalizationFactor_ + (0.5 * nu_ - 1) * std::log(x) - 0.5 * x;
 }
 
@@ -271,7 +271,13 @@ void ChiSquare::computeCovariance() const
 /* Get the moments of the standardized distribution */
 Point ChiSquare::getStandardMoment(const UnsignedInteger n) const
 {
-  return Point(1, std::exp(n * M_LN2 + SpecFunc::LnGamma(n + 0.5 * nu_) - SpecFunc::LnGamma(0.5 * nu_)));
+  return Point(1, std::exp(SpecFunc::LnGamma(n + 0.5 * nu_) - SpecFunc::LnGamma(0.5 * nu_)));
+}
+
+/* Get the standard representative in the parametric family, associated with the standard moments */
+Distribution ChiSquare::getStandardRepresentative() const
+{
+  return Gamma(0.5 * nu_, 1.0, 0.0);
 }
 
 /* Parameters value accessor */

@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
 
 ot.RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     graph = ot.BipartiteGraph([[0, 1], [0, 1]])
     distribution = ot.CumulativeDistributionNetwork([ot.Normal(2)] * 2, graph)
     print("Distribution ", repr(distribution))
@@ -109,7 +108,7 @@ try:
     print(distribution.getMarginal([0, 1]))
     X = atom_ref.getSample(10000)
     error = (ref.computeCDF(X) - distribution.getMarginal(
-        [0, 1]).computeCDF(X)).computeStandardDeviationPerComponent()
+        [0, 1]).computeCDF(X)).computeStandardDeviation()
     ott.assert_almost_equal(error[0], 0.0)
 
     # test getMarginal with full indices

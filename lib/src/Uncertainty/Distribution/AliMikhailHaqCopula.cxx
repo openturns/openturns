@@ -2,7 +2,7 @@
 /**
  *  @brief The AliMikhailHaqCopula distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -219,30 +219,30 @@ CorrelationMatrix AliMikhailHaqCopula::getSpearmanCorrelation() const
   CorrelationMatrix rho(2);
   const Scalar t = std::abs(theta_);
   if (t < 7.0e-16)
-    {
-      rho(1, 0) = theta_ / 3.0;
-      return rho;
-    }
+  {
+    rho(1, 0) = theta_ / 3.0;
+    return rho;
+  }
   if (t < 1.0e-04)
-    {
-      rho(1, 0) = theta_ / 3.0 * (1.0 + theta_ / 4.0);
-      return rho;
-    }
+  {
+    rho(1, 0) = theta_ / 3.0 * (1.0 + theta_ / 4.0);
+    return rho;
+  }
   if (t < 0.002)
-    {
-      rho(1, 0) = theta_ * (1.0 / 3.0 + theta_ * (1.0 / 12.0 + theta_ * 3.0 / 100.0));
-      return rho;
-    }
+  {
+    rho(1, 0) = theta_ * (1.0 / 3.0 + theta_ * (1.0 / 12.0 + theta_ * 3.0 / 100.0));
+    return rho;
+  }
   if (t < 0.007)
-    {
-      rho(1, 0) = theta_ * (1.0 / 3.0 + theta_ * (1.0 / 12.0 + theta_ * (3.0 / 100.0 + theta_ / 75.0)));
-      return rho;
-    }
+  {
+    rho(1, 0) = theta_ * (1.0 / 3.0 + theta_ * (1.0 / 12.0 + theta_ * (3.0 / 100.0 + theta_ / 75.0)));
+    return rho;
+  }
   if (t < 0.016)
-    {
-      rho(1, 0) = theta_ * (1.0 / 3.0 + theta_ * (1.0 / 12.0 + theta_ * (3.0 / 100.0 + theta_ * (1.0 / 75.0 + theta_ / 147.0))));
-      return rho;
-    }
+  {
+    rho(1, 0) = theta_ * (1.0 / 3.0 + theta_ * (1.0 / 12.0 + theta_ * (3.0 / 100.0 + theta_ * (1.0 / 75.0 + theta_ / 147.0))));
+    return rho;
+  }
   rho(1, 0) = 3.0 / theta_ * (4.0 * (1.0 + 1.0 / theta_) * SpecFunc::DiLog(theta_) - (theta_ < 1.0 ? 8.0 * (1.0 / theta_ - 1.0) * log1p(-theta_) : 0.0) - (theta_ + 12.0));
   return rho;
 }
@@ -372,7 +372,11 @@ Bool AliMikhailHaqCopula::hasIndependentCopula() const
 void AliMikhailHaqCopula::setTheta(const Scalar theta)
 {
   if ((theta <= -1.0) || (theta >= 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be in (-1, 1), here theta=" << theta;
-  theta_ = theta;
+  if (theta != theta_)
+  {
+    theta_ = theta;
+    isAlreadyComputedCovariance_ = false;
+  }
 }
 
 /* Theta accessor */

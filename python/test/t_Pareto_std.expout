@@ -1,0 +1,52 @@
+Distribution  class=Pareto name=Pareto dimension=1 beta=7.5 alpha=5 gamma=-7
+Distribution  Pareto(beta = 7.5, alpha=5, gamma=-7)
+Elliptical =  False
+Continuous =  True
+oneRealization= class=Point name=Unnamed dimension=1 values=[2.14939]
+oneSample first= class=Point name=Unnamed dimension=1 values=[4.51542]  last= class=Point name=Unnamed dimension=1 values=[1.37695]
+mean= class=Point name=Unnamed dimension=1 values=[2.40131]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.61066]
+skewness= class=Point name=Unnamed dimension=1 values=[3.54775]
+kurtosis= class=Point name=Unnamed dimension=1 values=[27.2028]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[1]
+range=  [0.5, (10126.8) +inf[
+ddf     = class=Point name=Unnamed dimension=1 values=[-0.339467]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.339467]
+pdf     = 0.452622771263
+pdf (FD)= 0.452622771
+cdf= 0.275803565979
+pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.301749,0.0613129,0.339467]
+pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[0.301749,0.0613129,0.339467]
+cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.482798,0.0467386,-0.452623]
+cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.482798,0.0467386,-0.452623]
+quantile= class=Point name=Unnamed dimension=1 values=[6.65423]
+cdf(quantile)= 0.95
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.577336]
+Survival(inverseSurvival)=0.950000
+entropy=1.605465
+Minimum volume interval= [0.5, 6.65423]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 4.00034} with f=
+MinimumVolumeLevelSetEvaluation(Pareto(beta = 7.5, alpha=5, gamma=-7))
+beta= [0.0183093]
+Bilateral confidence interval= [0.538073, 8.68459]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0.5, 6.65423]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.577336, 10126.8]
+beta= [0.95]
+mean= class=Point name=Unnamed dimension=1 values=[2.375]
+standard deviation= class=Point name=Unnamed dimension=1 values=[2.42061]
+skewness= class=Point name=Unnamed dimension=1 values=[4.64758]
+kurtosis= class=Point name=Unnamed dimension=1 values=[73.8]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.85938]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[beta,alpha,gamma] values=[7.5,5,-7]]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [1.25]
+standard moment n= 2  value= [4.16667]
+standard moment n= 3  value= [31.25]
+standard moment n= 4  value= [625]
+NotDefinedException : Error: the standard moments are defined up to order 5 and n=5
+Standard representative= Pareto(beta = 1, alpha=5, gamma=0)

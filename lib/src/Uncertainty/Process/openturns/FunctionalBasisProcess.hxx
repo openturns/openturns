@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the FunctionalBasisProcess process
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,32 +59,32 @@ public:
                          const Mesh & mesh);
 
   /** Virtual constructor */
-  virtual FunctionalBasisProcess * clone() const;
+  FunctionalBasisProcess * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offsett = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Is the underlying stationary ? */
-  Bool isStationary() const;
+  Bool isStationary() const override;
 
   /** Is the underlying a Gaussian process ? */
-  Bool isNormal() const;
+  Bool isNormal() const override;
 
   /** Discrete realization accessor */
-  virtual Field getRealization() const;
+  Field getRealization() const override;
 
   /** Continuous realization accessor */
-  virtual Function getContinuousRealization() const;
+  Function getContinuousRealization() const override;
 
   /** Continuation of the last realization on a given number of steps */
   using ProcessImplementation::getFuture;
-  TimeSeries getFuture(const UnsignedInteger stepNumber) const;
+  TimeSeries getFuture(const UnsignedInteger stepNumber) const override;
 
   /** Get the marginal process corresponding to indices components */
-  Process getMarginal(const Indices & indices) const;
+  Process getMarginal(const Indices & indices) const override;
 
   /** Distribution accessor */
   Distribution getDistribution() const;
@@ -99,13 +99,13 @@ public:
   void setBasis(const FunctionCollection & basis);
 
   /** Covariance model accessor */
-  CovarianceModel getCovarianceModel() const;
+  CovarianceModel getCovarianceModel() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

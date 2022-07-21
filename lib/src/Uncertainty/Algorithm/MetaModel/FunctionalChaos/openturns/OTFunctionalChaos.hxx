@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir FunctionalChaos
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,5 +34,8 @@
 #include "openturns/ProjectionStrategy.hxx"
 #include "openturns/ProjectionStrategyImplementation.hxx"
 #include "openturns/SequentialStrategy.hxx"
+#include "openturns/FieldFunctionalChaosResult.hxx"
+#include "openturns/FieldToPointFunctionalChaosAlgorithm.hxx"
+#include "openturns/FieldFunctionalChaosSobolIndices.hxx"
 
 #endif /* OPENTURNS_OTFUNCTIONALCHAOS_HXX */

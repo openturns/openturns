@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -112,8 +112,7 @@ public:
   Point optimizeLogLikelihood() const
   {
     // Define optimization problem
-    OptimizationProblem problem;
-    problem.setObjective(getLogLikelihoodFunction());
+    OptimizationProblem problem(getLogLikelihoodFunction());
     problem.setMinimization(false);
     solver_.setProblem(problem);
     solver_.setStartingPoint(Point(1, 1.0));
@@ -187,11 +186,10 @@ public:
   Point optimizeLogLikelihood() const
   {
     // Define optimization problem
-    OptimizationProblem problem;
     Function objectiveFunction(getLogLikelihoodFunction());
     MemoizeFunction objectiveMemoizeFunction(objectiveFunction, Full());
     objectiveMemoizeFunction.enableCache();
-    problem.setObjective(objectiveMemoizeFunction);
+    OptimizationProblem problem(objectiveMemoizeFunction);
     problem.setMinimization(false);
     solver_.setProblem(problem);
     solver_.setStartingPoint(Point(1, 1.0));
@@ -212,7 +210,7 @@ BoxCoxFactory::BoxCoxFactory()
   const Scalar rhoBeg = ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoBeg");
   dynamic_cast<Cobyla*>(solver_.getImplementation().get())->setRhoBeg(rhoBeg);
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoEnd"));
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultMaxFun"));
+  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultMaximumEvaluationNumber"));
 }
 
 /* Virtual constructor */

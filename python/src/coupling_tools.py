@@ -3,7 +3,7 @@
 # @brief Gives functions that help coupling against external code,
 #   .i.e: manipulate template file.
 #
-# Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+# Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 External code helpers.
 
 Provides several functions to ease wrapping of an external code:
-- replace: allows to replace a value in template file
+- replace: allows one to replace a value in template file
 - execute: run an external code
 - get: parse values from a result file
 """
@@ -35,6 +35,7 @@ import os
 import shlex
 import subprocess
 import sys
+import warnings
 
 debug = False
 default_encoding = sys.getdefaultencoding()
@@ -42,9 +43,6 @@ default_encoding = sys.getdefaultencoding()
 
 def check_param(obj, obj_type):
     """Assert obj as type obj_type."""
-    # int casts into long ; long is deprecated
-    if (obj_type == int) and (sys.version_info[0] < 3):
-        obj_type = long
 
     try:
         obj_type(obj)
@@ -88,12 +86,12 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
 
     Examples
     --------
-    >>> import openturns.coupling_tools as otct
+    >>> import openturns.coupling_tools as ct
     >>> # write a template file
     >>> with open('prgm.dat.in', 'w') as f:
     ...     count = f.write('E=@E_VAR F=-PF-')
     >>> # replace tokens from template
-    >>> otct.replace('prgm.dat.in', 'prgm.dat',
+    >>> ct.replace('prgm.dat.in', 'prgm.dat',
     ...     tokens=["@E_VAR", '-PF-'], values=[1.4, '5'])
     >>> # display file
     >>> with open('prgm.dat', 'r') as f:
@@ -151,9 +149,16 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
         shutil.move(outfile, infile)
 
 
-def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
-            check_exit_code=True, get_stdout=False, get_stderr=False,
-            timeout=None):
+class OTCalledProcessError(subprocess.CalledProcessError):
+    def __str__(self):
+        err_msg = (':\n' + self.stderr[:200].decode()
+                   ) if self.stderr is not None else ''
+        return super(OTCalledProcessError, self).__str__() + err_msg
+
+
+def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
+            check=True, capture_output=False,
+            timeout=None, env=None):
     """
     Launch an external process.
 
@@ -161,34 +166,29 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     ----------
     cmd : str
         Command line to execute, e.g.: "echo 42"
-    workdir : str
+    cwd : str
         Current directory of the executed command.
-    is_shell : bool, default=False
+    shell : bool, default=False
         If set to True, the command is started in a shell (bash).
-    shell_exe : str, default=False
+    executable : str, default=False
         path to the shell. e.g. /bin/zsh.
     hide_win : str, default=True
         Hide cmd.exe popup on windows platform.
-    check_exit_code : bool, default=True
-        If set to True: raise a RuntimeError exception if return code
-        of process != 0
-    get_stdout : bool, default=False
-        Whether the standard output of the command is returned
-    get_stderr : bool, default=False
-        Whether the standard error of the command is returned
+    check : bool, default=True
+        If set to True: raise RuntimeError if return code of process != 0
+    capture_output : bool, default=False
+        Whether the output/error streams will be captured
     timeout : int
         Process timeout (Python >=3.3 only)
         On timeout and if psutil is available the children of the process
         are killed before the process itself
+    env : dict, default=None
+        Environment variables mapping for the new process
 
     Returns
     -------
-    ret : int
-        The exit code of the command
-    stdout_data : str
-        The stdout data if get_stdout parameter is set
-    stderr_data : str
-        The stderr data if get_stderr parameter is set
+    cp : subprocess.CompletedProcess
+        Process state info
 
     Raises
     ------
@@ -197,63 +197,57 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
 
     Examples
     --------
-    >>> import openturns.coupling_tools as otct
-    >>> ret, stdout = otct.execute('echo 42', get_stdout=True, is_shell=True)
-    >>> ret
+    >>> import openturns.coupling_tools as ct
+    >>> cp = ct.execute('echo 42', capture_output=True, shell=True)
+    >>> cp.returncode
     0
-    >>> int(stdout)
+    >>> int(cp.stdout)
     42
     """
+
     # split cmd if not in a shell before passing it to os.execvp()
-    process_args = cmd if is_shell else shlex.split(cmd)
+    try:
+        import posix
+        posix = True
+    except ImportError:
+        posix = False
+    process_args = cmd if shell else shlex.split(cmd, posix=posix)
 
     # override startupinfo to hide windows console
     startupinfo = None
     if hide_win and sys.platform.startswith('win'):
         startupinfo = subprocess.STARTUPINFO()
-        if hasattr(subprocess, 'STARTF_USESHOWWINDOW'):
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        else:
-            startupinfo.dwFlags |= 1
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
-    stdout = subprocess.PIPE if get_stdout else None
-    stderr = subprocess.PIPE if get_stderr else None
-    proc = subprocess.Popen(process_args, shell=is_shell, cwd=workdir,
-                            executable=shell_exe, stdout=stdout, stderr=stderr,
-                            startupinfo=startupinfo)
-    if sys.version_info >= (3, 3,):
+    stdout = subprocess.PIPE if capture_output else None
+    stderr = subprocess.PIPE if capture_output else None
+    process = subprocess.Popen(process_args, shell=shell, cwd=cwd,
+                               executable=executable, stdout=stdout, stderr=stderr,
+                               startupinfo=startupinfo, env=env)
+    stdout_data = None
+    stderr_data = None
+    try:
+        stdout_data, stderr_data = process.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        # kill children is psutil is available
         try:
-            stdout_data, stderr_data = proc.communicate(timeout=timeout)
-        except subprocess.TimeoutExpired:
-            # kill children is psutil is available
-            try:
-                import psutil
-            except ImportError:
-                pass
-            else:
-                parent = psutil.Process(proc.pid)
-                for child in parent.children(recursive=True):
-                    child.kill()
-            proc.kill()
-            stdout_data, stderr_data = proc.communicate()
-            raise RuntimeError('Command "' + cmd + '" times out after ' +
-                               str(timeout) + 's')
-    else:
-        stdout_data, stderr_data = proc.communicate()
-    ret = proc.poll()
+            import psutil
+        except ImportError:
+            pass
+        else:
+            parent = psutil.Process(process.pid)
+            for child in parent.children(recursive=True):
+                child.kill()
+        process.kill()
+        raise
+
+    returncode = process.poll()
 
     # check return code
-    if check_exit_code and ret != 0:
-        raise RuntimeError(
-            'Command "' + cmd + '" returned exit code ' + str(ret))
+    if check and returncode:
+        raise OTCalledProcessError(returncode, cmd, stdout_data, stderr_data)
 
-    if get_stdout and get_stderr:
-        return ret, stdout_data, stderr_data
-    elif get_stdout:
-        return ret, stdout_data
-    elif get_stderr:
-        return ret, stderr_data
-    return ret
+    return subprocess.CompletedProcess(cmd, returncode, stdout=stdout_data, stderr=stderr_data)
 
 
 def get_regex(filename, patterns, encoding=default_encoding):
@@ -287,14 +281,15 @@ def get_regex(filename, patterns, encoding=default_encoding):
 
     Examples
     --------
-    >>> import openturns.coupling_tools as otct
+    >>> import openturns.coupling_tools as ct
     >>> # write an output file
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('@E=-9.5E3')
     >>> # parse file with regex
-    >>> otct.get_regex('results.out', patterns=['@E=(\R)'])
+    >>> ct.get_regex('results.out', patterns=[r'@E=(\R)'])
     [-9500.0]
     """
+
     if not isinstance(patterns, list) or len(patterns) == 0:
         raise AssertionError("error: patterns parameter badly set!")
 
@@ -303,10 +298,10 @@ def get_regex(filename, patterns, encoding=default_encoding):
     re_patterns = []
     for pattern in patterns:
         # OT-like shortcuts
-        pattern = pattern.replace('\R',
-                                  '[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?')
-        pattern = pattern.replace('\I',
-                                  '[+-]? *\d+')
+        pattern = pattern.replace(r'\R',
+                                  r'[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?')
+        pattern = pattern.replace(r'\I',
+                                  r'[+-]? *\d+')
 
         re_patterns.append(re.compile(pattern))
 
@@ -401,7 +396,7 @@ def read_line(handle, seek=0, encoding=default_encoding):
     return line
 
 
-def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_encoding):
+def get_line_col(filename, skip_line=0, skip_col=0, col_sep=None, seek=0, encoding=default_encoding):
     """
     Get a value at specific line/columns coordinates.
 
@@ -418,6 +413,9 @@ def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_enc
         Number of columns skipped from the beginning or end of the line.
         If skip_col < 0: count col backward from the end of the line.
         Default: 0: no column skipped
+    col_sep : str
+        Column separator
+        Default: None: whitespace separator, see str.split
     seek : int, default=0
         if > 0, consider the file starts at pos seek.
         if < 0, consider the file ends at pos -seek (and NOT (end-(-seek))!).
@@ -433,10 +431,10 @@ def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_enc
 
     Examples
     --------
-    >>> import openturns.coupling_tools as otct
+    >>> import openturns.coupling_tools as ct
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('1.1 1.2 1.3 1.4')
-    >>> otct.get_line_col(filename='results.out', skip_col=2)
+    >>> ct.get_line_col(filename='results.out', skip_col=2)
     1.3
     """
     check_param(filename, str)
@@ -501,7 +499,7 @@ def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_enc
     # get the good col
     if skip_col != 0:
         try:
-            line_found = line_found.split()[skip_col]
+            line_found = line_found.split(col_sep)[skip_col]
         except:
             raise EOFError('error: value not found on this line: (' +
                            line_found + ')!')
@@ -512,7 +510,7 @@ def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_enc
     return result
 
 
-def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encoding=default_encoding):
+def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, col_sep=None, encoding=default_encoding):
     """
     Get a value from a file using a delimiter and/or offsets.
 
@@ -548,6 +546,9 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
         If skip_col < 0: count col backward from the end of the line or from
         the token.
         Default: 0: no column skipped
+    col_sep : str
+        Column separator
+        Default: None: whitespace separator, see str.split
     encoding : str
         File encoding
         see http://docs.python.org/2/library/codecs.html#codec-base-classes
@@ -568,24 +569,24 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
     --------
     using a single token
 
-    >>> import openturns.coupling_tools as otct
+    >>> import openturns.coupling_tools as ct
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('Y1=2.0, Y2=-6.6E56')
-    >>> otct.get_value('results.out', token='Y1=')
+    >>> ct.get_value('results.out', token='Y1=')
     2.0
 
     using token and skip_tokens
 
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('Y1=2.6 Y1=6.0 # temperature 2')
-    >>> otct.get_value('results.out', token='Y1=', skip_token=1)
+    >>> ct.get_value('results.out', token='Y1=', skip_token=1)
     6.0
 
     using column & line
 
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('1.1 1.2 1.3 1.4')
-    >>> otct.get_value(filename='results.out', skip_col=2)
+    >>> ct.get_value(filename='results.out', skip_col=2)
     1.3
     """
     if debug:
@@ -607,7 +608,8 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
 
     result = None
     if not token:
-        result = get_line_col(filename, skip_line, skip_col, encoding=encoding)
+        result = get_line_col(filename, skip_line, skip_col,
+                              col_sep=col_sep, encoding=encoding)
     else:
         handle = open(filename, 'rb')
 
@@ -676,7 +678,7 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
                 seek_pos = token_pos[1]
             handle.close()
             result = get_line_col(
-                filename, skip_line, skip_col, seek_pos, encoding=encoding)
+                filename, skip_line, skip_col, col_sep=col_sep, seek=seek_pos, encoding=encoding)
 
     return result
 
@@ -723,10 +725,10 @@ def get(filename, tokens=None, skip_tokens=None, skip_lines=None, skip_cols=None
     --------
     using tokens
 
-    >>> import openturns.coupling_tools as otct
+    >>> import openturns.coupling_tools as ct
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('Y1=2.0, Y2=-6.6E2')
-    >>> otct.get(filename='results.out', tokens=['Y1=', 'Y2='])
+    >>> ct.get(filename='results.out', tokens=['Y1=', 'Y2='])
     [2.0, -660.0]
     """
     # test parameters and determine the number of value to return

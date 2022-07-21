@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the Sobol' sequence
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,8 +38,8 @@ const Scalar          SobolSequence::Epsilon                  = 1.0 / power2(Max
 #include "SobolSequenceDirections.hxx"
 
 /* Constructor with parameters */
-SobolSequence::SobolSequence(const UnsignedInteger dimension) :
-  LowDiscrepancySequenceImplementation(dimension)
+SobolSequence::SobolSequence(const UnsignedInteger dimension)
+  : LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
 }
@@ -55,9 +55,9 @@ SobolSequence * SobolSequence::clone() const
 /* Initialize the sequence */
 void SobolSequence::initialize(const UnsignedInteger dimension)
 {
-  if((dimension == 0) || (dimension > MaximumNumberOfDimension))
-    throw InvalidDimensionException(HERE) << "Dimension must be in range [0-" << MaximumNumberOfDimension << "], here dimension=" << dimension << ".";
-  dimension_ = dimension;
+  LowDiscrepancySequenceImplementation::initialize(dimension);
+  if(!(dimension <= MaximumDimension))
+    throw InvalidDimensionException(HERE) << "Dimension must be in range [0-" << MaximumDimension << "], here dimension=" << dimension << ".";
   // copy initial direction numbers
   base_ = Unsigned64BitsIntegerCollection(dimension_ * MaximumBase2Logarithm, 0);
 
@@ -111,9 +111,14 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
 }
 
 
-/* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
+/* Generate a pseudo-random vector of independent numbers uniformly distributed over [0, 1[ */
 Point SobolSequence::generate() const
 {
+  if (seed_ == 0)
+  {
+    ++seed_;
+    return Point(dimension_);
+  }
   // initialize a point with values 2^-MaximumBase2Logarithm
   Point sequencePoint(dimension_, Epsilon);
 
@@ -140,7 +145,6 @@ String SobolSequence::__repr__() const
 {
   OSS oss;
   oss << "class=" << SobolSequence::GetClassName()
-      << " derived from " << LowDiscrepancySequenceImplementation::__repr__()
       << " coefficients=" << coefficients_
       << " seed=" << seed_;
   return oss;
@@ -157,6 +161,7 @@ Unsigned64BitsInteger SobolSequence::power2(const UnsignedInteger n)
 /* returns the position of the lowest '0' in the binary representation of an integer */
 UnsignedInteger SobolSequence::computePositionOfLowest0Bit(const Unsigned64BitsInteger number)
 {
+  if (number == 0) return 0;
   UnsignedInteger base2Logarithm = 0;
   while((number & power2(base2Logarithm)) && (base2Logarithm <= MaximumBase2Logarithm))
   {
@@ -169,6 +174,7 @@ UnsignedInteger SobolSequence::computePositionOfLowest0Bit(const Unsigned64BitsI
 void SobolSequence::save(Advocate & adv) const
 {
   LowDiscrepancySequenceImplementation::save(adv);
+  adv.saveAttribute( "base_", base_);
   adv.saveAttribute( "seed_", seed_);
   adv.saveAttribute( "coefficients_", coefficients_);
 }
@@ -178,7 +184,7 @@ void SobolSequence::save(Advocate & adv) const
 void SobolSequence::load(Advocate & adv)
 {
   LowDiscrepancySequenceImplementation::load(adv);
-  initialize(dimension_);
+  adv.loadAttribute( "base_", base_);
   adv.loadAttribute( "seed_", seed_);
   adv.loadAttribute( "coefficients_", coefficients_);
 }

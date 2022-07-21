@@ -2,7 +2,7 @@
 /**
  *  @brief VisualTest implements statistical tests
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,23 +22,14 @@
 #include "openturns/VisualTest.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
-#include "openturns/Staircase.hxx"
-#include "openturns/LinearBasisFactory.hxx"
-#include "openturns/Interval.hxx"
-#include "openturns/Indices.hxx"
-#include "openturns/Description.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/UserDefined.hxx"
-#include "openturns/SpecFunc.hxx"
-#include "openturns/HistogramFactory.hxx"
-#include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/NormalFactory.hxx"
+#include "openturns/HistogramFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-VisualTest::VisualTest()
-{
-}
 
 /* Draw the QQplot of the two Samples when its dimension is 1 */
 Graph VisualTest::DrawQQplot(const Sample & sample1,
@@ -60,17 +51,17 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   else if (pointNumber < 1000) cloudQQplot.setPointStyle("bullet");
   else cloudQQplot.setPointStyle("dot");
   Graph graphQQplot("Two sample QQ-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
-  // First, the bisectrice
+  // First, the bisector
   Sample diagonal(2, 2);
   Point point(2);
   diagonal(0, 0) = data(0, 0);
   diagonal(0, 1) = data(0, 0);
   diagonal(1, 0) = data(pointNumber - 1, 0);
   diagonal(1, 1) = data(pointNumber - 1, 0);
-  Curve bisectrice(diagonal, "Test line");
-  bisectrice.setColor("red");
-  bisectrice.setLineStyle("dashed");
-  graphQQplot.add(bisectrice);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graphQQplot.add(bisector);
   // Then the QQ plot
   graphQQplot.add(cloudQQplot);
   return graphQQplot;
@@ -96,17 +87,17 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   else if (size < 1000) cloudQQplot.setPointStyle("bullet");
   else cloudQQplot.setPointStyle("dot");
   Graph graphQQplot("Sample versus model QQ-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
-  // First, the bisectrice
+  // First, the bisector
   Sample diagonal(2, 2);
   Point point(2);
   diagonal(0, 0) = data(0, 0);
   diagonal(0, 1) = data(0, 0);
   diagonal(1, 0) = data(size - 1, 0);
   diagonal(1, 1) = data(size - 1, 0);
-  Curve bisectrice(diagonal, "Test line");
-  bisectrice.setColor("red");
-  bisectrice.setLineStyle("dashed");
-  graphQQplot.add(bisectrice);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graphQQplot.add(bisector);
   // Then the QQ plot
   graphQQplot.add(cloudQQplot);
   return graphQQplot;
@@ -114,7 +105,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
 
 /* Draw the CDFplot of the two Samples when its dimension is 1 */
 Graph VisualTest::DrawCDFplot(const Sample & sample1,
-                             const Sample & sample2)
+                              const Sample & sample2)
 {
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample2.getDimension();
@@ -127,14 +118,14 @@ Graph VisualTest::DrawCDFplot(const Sample & sample1,
   else if (pointNumber < 1000) cloudCDFplot.setPointStyle("bullet");
   else cloudCDFplot.setPointStyle("dot");
   Graph graphCDFplot("Two sample CDF-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
-  // First, the bisectrice
+  // First, the bisector
   Sample diagonal(2, 2);
   diagonal(1, 0) = 1.0;
   diagonal(1, 1) = 1.0;
-  Curve bisectrice(diagonal, "Test line");
-  bisectrice.setColor("red");
-  bisectrice.setLineStyle("dashed");
-  graphCDFplot.add(bisectrice);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graphCDFplot.add(bisector);
   // Then the CDF plot
   graphCDFplot.add(cloudCDFplot);
   return graphCDFplot;
@@ -142,7 +133,7 @@ Graph VisualTest::DrawCDFplot(const Sample & sample1,
 
 /* Draw the CDFplot of one Sample and one Distribution when its dimension is 1 */
 Graph VisualTest::DrawCDFplot(const Sample & sample,
-                             const Distribution & dist)
+                              const Distribution & dist)
 {
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample.getDimension();
   if (dist.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << dist.getDimension();
@@ -155,14 +146,14 @@ Graph VisualTest::DrawCDFplot(const Sample & sample,
   else if (pointNumber < 1000) cloudCDFplot.setPointStyle("bullet");
   else cloudCDFplot.setPointStyle("dot");
   Graph graphCDFplot("Sample versus model CDF-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
-  // First, the bisectrice
+  // First, the bisector
   Sample diagonal(2, 2);
   diagonal(1, 0) = 1.0;
   diagonal(1, 1) = 1.0;
-  Curve bisectrice(diagonal, "Test line");
-  bisectrice.setColor("red");
-  bisectrice.setLineStyle("dashed");
-  graphCDFplot.add(bisectrice);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graphCDFplot.add(bisector);
   // Then the CDF plot
   graphCDFplot.add(cloudCDFplot);
   return graphCDFplot;
@@ -200,13 +191,12 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
   graphHenry.add(henryLine);
 
   // Then, the data
-  const Normal standard_normal(0.0, 1.0);
   Sample data(size, 2);
   const Scalar step = 1.0 / size;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data(i, 0) = sortedSample(i, 0);
-    data(i, 1) = standard_normal.computeQuantile((i + 0.5) * step)[0];
+    data(i, 1) = DistFunc::qNormal((i + 0.5) * step);
   }
   Cloud dataCloud(data, "Data");
   graphHenry.add(dataCloud);
@@ -215,54 +205,110 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
 }
 
 
-/* Draw the visual test for the LinearModel when its dimension is 1 */
-Graph VisualTest::DrawLinearModel(const Sample & sample1,
-                                  const Sample & sample2,
-                                  const LinearModelResult & linearModelResult)
+/* Draw 2-d projections of a multivariate sample */
+GridLayout VisualTest::DrawPairs(const Sample & sample)
 {
-  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
-  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
+  const UnsignedInteger dimension = sample.getDimension();
+  if (dimension < 2)
+    throw InvalidDimensionException(HERE) << "Can only draw clouds from a multivariate sample";
+  GridLayout grid(dimension - 1, dimension - 1);
+  const Description description(sample.getDescription());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      const Indices indices = {j, i};
+      const Cloud cloud(sample.getMarginal(indices), ResourceMap::GetAsString("Drawable-DefaultColor"), ResourceMap::GetAsString("Drawable-DefaultPointStyle"));
+      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+      graph.add(cloud);
+      int location = GraphImplementation::TICKNONE;
+      if (i == dimension - 1)
+        location |= GraphImplementation::TICKX;
+      if (j == 0)
+        location |= GraphImplementation::TICKY;
+      graph.setTickLocation(static_cast<GraphImplementation::TickLocation>(location));
+      grid.setGraph(i - 1, j, graph);
+    }
+  }
+  return grid;
+}
+
+
+/* Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
+GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribution & distribution)
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (dimension < 2)
+    throw InvalidDimensionException(HERE) << "Can only draw clouds from a multivariate sample";
+  if (distribution.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Distribution dimension does not match the sample dimension";
+  GridLayout grid(dimension, dimension);
+  const Description description(sample.getDescription());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    Graph pdfGraph(distribution.getMarginal(i).drawPDF());
+    pdfGraph.setLegends(Description(1));
+    pdfGraph.setYTitle(i == 0 ? sample.getDescription()[i] : "");
+    pdfGraph.setXTitle(i == dimension - 1 ? sample.getDescription()[i] : "");
+    grid.setGraph(i, i, pdfGraph);
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      const Indices indices = {j, i};
+      const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
+      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+      graph.add(cloud);
+      grid.setGraph(i, j, graph);
+    }
+  }
+  return grid;
+}
+
+
+/* Draw the visual test for a 1D LinearModel */
+Graph VisualTest::DrawLinearModel(const Sample & sample1, const Sample & sample2, const LinearModelResult & linearModelResult)
+{
+  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here input dimension=" << sample1.getDimension();
+  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  if (linearModelResult.getCoefficients().getSize() != 2)
-    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample y(fHat(sample1));
-  
-  OSS oss;
-  oss << sample1.getName() << " LinearModel visualTest";
+
   const UnsignedInteger size = sample1.getSize();
   Sample sample2D(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Point point(2);
-    point[0] = sample1(i, 0);
-    point[1] = y(i, 0);
+    const Point point = {sample1(i, 0), y(i, 0)};
     sample2D[i] = point;
   }
   Curve curveLinearModelTest(sample2D.sortAccordingToAComponent(0));
-  curveLinearModelTest.setLegend(oss);
+  curveLinearModelTest.setLegend("regression");
+  curveLinearModelTest.setColor("red");
   Cloud cloudLinearModelTest(sample1, sample2);
-  cloudLinearModelTest.setColor("red");
   cloudLinearModelTest.setPointStyle("fsquare");
-  cloudLinearModelTest.setLegend("Original Sample");
+  cloudLinearModelTest.setLegend("sample");
 
-  Graph graphLinearModelTest("original sample versus Linear Model one", "x", "y", true, "topright");
+  Graph graphLinearModelTest("Linear model visual test", sample1.getDescription()[0], sample2.getDescription()[0], true, "topright");
   graphLinearModelTest.add(cloudLinearModelTest);
   graphLinearModelTest.add(curveLinearModelTest);
   return graphLinearModelTest;
 }
 
-/* Draw the visual test for the LinearModel residuals */
-Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
-    const Sample & sample2,
-    const LinearModelResult & linearModelResult)
+/* Draw the visual test for a 1D LinearModel using the training Samples **/
+Graph VisualTest::DrawLinearModel(const LinearModelResult & linearModelResult)
 {
-  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
-  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
+  const Sample & sample1 = linearModelResult.getInputSample();
+  const Sample & sample2 = linearModelResult.getOutputSample();
+  return VisualTest::DrawLinearModel(sample1, sample2, linearModelResult);
+}
+
+/* Draw the visual test for a 1D LinearModel's residuals */
+Graph VisualTest::DrawLinearModelResidual(const Sample & sample1, const Sample & sample2, const LinearModelResult & linearModelResult)
+{
+  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here input dimension=" << sample1.getDimension();
+  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel residual visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  if (linearModelResult.getCoefficients().getSize() != 2) throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(sample1));
   const Sample y(sample2 - yHat);
@@ -276,21 +322,29 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
   }
 
   OSS oss;
-  oss << sample1.getName() << " LinearModel residual Test";
+  oss << sample1.getDescription()[0] << " LinearModel residual Test";
   const Cloud cloudLinearModelRTest(data, "red", "fsquare", oss);
 
-  Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "redidual(i-1)", "residual(i)", true, "topright");
+  Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "residual(i-1)", "residual(i)", true, "topright");
   graphLinearModelRTest.add(cloudLinearModelRTest);
   return graphLinearModelRTest;
 }
 
-/* Draw the CobWeb visual test */
-Graph VisualTest::DrawCobWeb(const Sample & inputSample,
-                             const Sample & outputSample,
-                             const Scalar minValue,
-                             const Scalar maxValue,
-                             const String & color,
-                             const Bool quantileScale)
+/* Draw the visual test for a 1D LinearModel's residuals using the training Samples */
+Graph VisualTest::DrawLinearModelResidual(const LinearModelResult & linearModelResult)
+{
+  const Sample sample1(linearModelResult.getInputSample());
+  const Sample sample2(linearModelResult.getOutputSample());
+  return VisualTest::DrawLinearModelResidual(sample1, sample2, linearModelResult);
+}
+
+/* Draw the parallel coordinates visual test */
+Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
+    const Sample & outputSample,
+    const Scalar minValue,
+    const Scalar maxValue,
+    const String & color,
+    const Bool quantileScale)
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the input sample is empty.";
@@ -351,7 +405,6 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
   for (UnsignedInteger i = 0; i < inputDimension + 1; ++i)
   {
     Sample data(2, 2);
-    Point point(2);
     data(0, 0) = i;
     data(1, 0) = i;
     data(1, 1) = size;
@@ -371,6 +424,73 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
   }
   cobWeb.setGrid(false);
   return cobWeb;
+}
+
+/* Compute the Kendall plot empirical statistic associated with a bidimensional sample */
+static Sample ComputeKendallPlotEmpiricalStatistics(const Sample & sample)
+{
+  const UnsignedInteger size = sample.getSize();
+  Sample result(size, 1);
+  const Scalar scalarSize = static_cast<Scalar>(size - 1);
+  /* To ease reading and implementation, we have a full double
+     loop for i & j variables from 0 to size
+     It is also possible to reduce costs by a factor 2 by completing
+     sequentially (not practice for maintenance and similar performance as current
+     implementation)
+
+     for (UnsignedInteger i = 0; i < size; ++i)
+     {
+       const Scalar uI = sample(i, 0);
+        const Scalar vI = sample(i, 1);
+       UnsignedInteger cardinalIJ = 0;
+       for (UnsignedInteger j = 0; j < i; ++j)
+       {
+         const Scalar uJ = sample(j, 0);
+         const Scalar vJ = sample(j, 1);
+         cardinalIJ = (uJ <= uI) && (vJ <= vI);
+         result(i, 0) += cardinalIJ;
+         cardinalIJ = (uI <= uJ) && (vI <= vJ);
+         result(j, 0) += cardinalIJ;
+       }
+     }
+     for (UnsignedInteger i = 0; i < size; ++i) result(i, 0) /= scalarSize;
+  */
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar uI = sample(i, 0);
+    const Scalar vI = sample(i, 1);
+    UnsignedInteger cardinal = 0;
+    for (UnsignedInteger j = 0; j < i; ++j)
+    {
+      const Scalar uJ = sample(j, 0);
+      const Scalar vJ = sample(j, 1);
+      cardinal += (uJ <= uI) && (vJ <= vI);
+    }
+    for (UnsignedInteger j = i + 1; j < size; ++j)
+    {
+      const Scalar uJ = sample(j, 0);
+      const Scalar vJ = sample(j, 1);
+      cardinal += (uJ <= uI) && (vJ <= vI);
+    }
+    result(i, 0) = cardinal / scalarSize;
+  }
+
+  return result.sort(0);
+}
+
+/* Compute the Kendall plot theoretical statistic associated with a bidimensional copula */
+static Sample ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
+    const UnsignedInteger size)
+{
+  if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger( "VisualTest-KendallPlot-MonteCarloSize" );
+  Sample result(size, 1);
+  for (UnsignedInteger i = 0; i < maximumIteration; ++i)
+  {
+    const Sample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(copula.getSample(size)));
+    for (UnsignedInteger j = 0; j < size; ++j) result(j, 0) = (result(j, 0) * i + empiricalStatistics(j, 0)) / (i + 1);
+  }
+  return result;
 }
 
 /* Draw the Kendall plot to assess a copula for a bidimensional sample */
@@ -419,47 +539,6 @@ Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
   // Draw the Kendall curve
   graph.add(Curve(firstEmpiricalStatistics, secondEmpiricalStatistics));
   return graph;
-}
-
-/* Compute the Kendall plot empirical statistic associated with a bidimensional sample */
-Sample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Sample & sample)
-{
-  const UnsignedInteger size = sample.getSize();
-  Sample result(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Point pointI(sample[i]);
-    const Scalar uI = pointI[0];
-    const Scalar vI = pointI[1];
-    UnsignedInteger cardinal = 0;
-    for (UnsignedInteger j = 0; j < i; ++j)
-    {
-      const Point pointJ(sample[j]);
-      cardinal += (pointJ[0] <= uI) && (pointJ[1] <= vI);
-    }
-    for (UnsignedInteger j = i + 1; j < size; ++j)
-    {
-      const Point pointJ(sample[j]);
-      cardinal += (pointJ[0] <= uI) && (pointJ[1] <= vI);
-    }
-    result[i] = Point(1, cardinal / static_cast<Scalar>(size - 1));
-  }
-  return result.sort(0);
-}
-
-/* Compute the Kendall plot theoretical statistic associated with a bidimensional copula */
-Sample VisualTest::ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
-    const UnsignedInteger size)
-{
-  if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
-  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger( "VisualTest-KendallPlot-MonteCarloSize" );
-  Sample result(size, 1);
-  for (UnsignedInteger i = 0; i < maximumIteration; ++i)
-  {
-    const Sample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(copula.getSample(size)));
-    for (UnsignedInteger j = 0; j < size; ++j) result[j] = (result[j] * i + empiricalStatistics[j]) / (i + 1);
-  }
-  return result;
 }
 
 END_NAMESPACE_OPENTURNS

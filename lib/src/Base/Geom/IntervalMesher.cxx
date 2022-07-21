@@ -2,7 +2,7 @@
 /**
  *  @brief Meshing algorithm for intervals
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,7 @@ IntervalMesher::IntervalMesher(const Indices & discretization)
 {
   // Check if the discretization is valid
   for (UnsignedInteger i = 0; i < discretization.getSize(); ++i)
-    if (discretization[i] == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive discretization, got " << discretization;
+    if (!(discretization[i] > 0)) throw InvalidArgumentException(HERE) << "Error: expected a positive discretization, got " << discretization;
 }
 
 /* Virtual constructor */
@@ -73,7 +73,7 @@ void IntervalMesher::setDiscretization(const Indices & discretization)
 {
   // At least one slice per dimension
   for (UnsignedInteger i = 0; i < discretization.getSize(); ++i)
-    if (discretization_[i] == 0) throw InvalidArgumentException(HERE) << "Error: expected positive values for the discretization, here discretization[" << i << "]=" << discretization[i];
+    if (!(discretization_[i] > 0)) throw InvalidArgumentException(HERE) << "Error: expected positive values for the discretization, here discretization[" << i << "]=" << discretization[i];
   discretization_ = discretization;
 }
 
@@ -192,6 +192,10 @@ Mesh IntervalMesher::build(const Interval & interval,
   } // dimension == 2
   if (dimension == 3)
   {
+    // FIXME: https://github.com/openturns/openturns/issues/1670
+    if (diamond)
+      throw NotYetImplementedException(HERE) << "In IntervalMesher::build with 3-d/diamond=true";
+
     const UnsignedInteger m = discretization_[0];
     const UnsignedInteger n = discretization_[1];
     const UnsignedInteger p = discretization_[2];

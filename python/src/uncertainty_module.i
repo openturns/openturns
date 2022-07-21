@@ -25,10 +25,6 @@
 %import dist_bundle1_module.i
 %import dist_bundle2_module.i
 
-/* FIXME: Wrong place in Base/Stat */
-/* Base/Stat */
-%include CorrelationAnalysis.i
-
 /* Uncertainty/Algorithm/Experiment */
 %import weightedexperiment_module.i
 
@@ -69,6 +65,17 @@
 /* Uncertainty/Process*/
 %import model_process_module.i
 %import UncertaintyProcessTemplateDefs.i 
+
+/* Uncertainty/Algorithm/Sensitivity */
+%include HSICStatImplementation.i
+%include HSICStat.i
+%include HSICUStat.i
+%include HSICVStat.i
+%include HSICEstimatorImplementation.i
+%include HSICEstimator.i
+%include HSICEstimatorConditionalSensitivity.i
+%include HSICEstimatorGlobalSensitivity.i
+%include HSICEstimatorTargetSensitivity.i
 
 /* At last we include template definitions */
 %include UncertaintyTemplateDefs.i

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ProcessSample for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,7 +40,7 @@ int main(int, char *[])
     Sample sample(size, dimension);
     for (UnsignedInteger i = 0; i < size; ++i)
       for (UnsignedInteger j = 0; j < dimension; ++j)
-        sample[i][j] = i + j + 1;
+        sample(i, j) = i + j + 1;
 
     // TimeGrid
     RegularGrid timeGrid(0.0, 1.0 / (size - 1.0), size);

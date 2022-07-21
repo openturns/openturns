@@ -2,7 +2,7 @@
 /**
  *  @brief This class is a Function with history of input and output.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,10 @@
 #include "openturns/MemoizeFunction.hxx"
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/NoGradient.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/NoHessian.hxx"
+#include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -46,6 +49,22 @@ MemoizeFunction::MemoizeFunction (const Function & function, const HistoryStrate
 {
   setUseDefaultGradientImplementation(function.getUseDefaultGradientImplementation());
   setUseDefaultHessianImplementation(function.getUseDefaultHessianImplementation());
+  // Modify the evaluation in the gradient and the hessian if they are based on finite difference
+  // First try: CenteredFiniteDifferenceGradient
+  {
+    const CenteredFiniteDifferenceGradient * p_gradient = dynamic_cast<const CenteredFiniteDifferenceGradient *>(getGradient().getImplementation().get());
+    if (p_gradient) setGradient(CenteredFiniteDifferenceGradient(p_gradient->getFiniteDifferenceStep(), getEvaluation()));
+  }
+  // Second try: NonCenteredFiniteDifferenceGradient
+  {
+    const NonCenteredFiniteDifferenceGradient * p_gradient = dynamic_cast<const NonCenteredFiniteDifferenceGradient *>(getGradient().getImplementation().get());
+    if (p_gradient) setGradient(NonCenteredFiniteDifferenceGradient(p_gradient->getFiniteDifferenceStep(), getEvaluation()));
+  }
+  // Third try: CenteredFiniteDifferenceHessian
+  {
+    const CenteredFiniteDifferenceHessian * p_hessian = dynamic_cast<const CenteredFiniteDifferenceHessian *>(getHessian().getImplementation().get());
+    if (p_hessian) setHessian(CenteredFiniteDifferenceHessian(p_hessian->getFiniteDifferenceStep(), getEvaluation()));
+  }
 }
 
 

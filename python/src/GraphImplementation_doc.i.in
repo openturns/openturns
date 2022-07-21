@@ -123,7 +123,8 @@ listColors : sequence of str
     the number of Drawables, the last colors of the list are ignored.
 
     The *listColors* argument can be the result of the static method
-    :meth:`~openturns.Drawable.BuildDefaultPalette` of the Drawable object."
+    :meth:`~openturns.Drawable.BuildDefaultPalette` 
+    or :meth:`~openturns.Drawable.BuildTableauPalette` of the Drawable object."
 %enddef
 %feature("docstring") OT::GraphImplementation::setColors
 OT_Graph_setColors_doc
@@ -321,6 +322,40 @@ axes : bool
 %enddef
 %feature("docstring") OT::GraphImplementation::setAxes
 OT_Graph_setAxes_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setTickLocation_doc
+"Accessor to the ticks location flag.
+
+Parameters
+----------
+loc : int
+    Indicates the ticks location:
+
+    - ot.GraphImplementation.TICKNONE: no ticks,
+
+    - ot.GraphImplementation.TICKX: horizontal ticks,
+
+    - ot.GraphImplementation.TICKY: vertical ticks,
+
+    - ot.GraphImplementation.TICKXY: horizontal and vertical ticks."
+%enddef
+%feature("docstring") OT::GraphImplementation::setTickLocation
+OT_Graph_setTickLocation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getTickLocation_doc
+"Accessor to the ticks location flag.
+
+Parameters
+----------
+loc : int
+    Indicates the ticks location."
+%enddef
+%feature("docstring") OT::GraphImplementation::getTickLocation
+OT_Graph_getTickLocation_doc
 
 // ---------------------------------------------------------------------
 
@@ -751,3 +786,4 @@ index : int
 %enddef
 %feature("docstring") OT::GraphImplementation::erase
 OT_Graph_erase_doc
+

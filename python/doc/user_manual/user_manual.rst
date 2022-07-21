@@ -28,3 +28,4 @@ This section details classes, functions included in the Python bindings.
     threshold_probability_simulation_algorithms
     transformations
     configuration
+    usecases

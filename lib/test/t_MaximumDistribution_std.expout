@@ -1,0 +1,169 @@
+Distribution class=MaximumDistribution name=MaximumDistribution distribution=class=Normal name=Normal dimension=5 mean=class=Point name=Unnamed dimension=5 values=[0,0,0,0,0] sigma=class=Point name=Unnamed dimension=5 values=[1,1,1,1,1] correlationMatrix=class=CorrelationMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1]
+Distribution MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]))
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[1.20548]
+oneSample first=class=Point name=Unnamed dimension=1 values=[1.43725] last=class=Point name=Unnamed dimension=1 values=[0.884963]
+mean=class=Point name=Unnamed dimension=1 values=[1.16745]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.448379]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.0911751]
+log pdf=-0.500516
+pdf     =0.606218
+cdf=0.42157
+ccdf=0.57843
+survival=0.57843
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.123843]
+Survival(inverse survival)=0.95
+quantile=class=Point name=Unnamed dimension=1 values=[2.31868]
+cdf(quantile)=0.95
+quantile (tail)=class=Point name=Unnamed dimension=1 values=[0.123843]
+cdf (tail)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.112778] upper bound=class=Point name=Unnamed dimension=1 values=[2.50221] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]))) gradientImplementation=MinimumVolumeLevelSetGradient(MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]))) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]))) level=2.46478
+beta=0.0850272
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.0547313] upper bound=class=Point name=Unnamed dimension=1 values=[2.57233] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-7.65063] upper bound=class=Point name=Unnamed dimension=1 values=[2.31868] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.123843] upper bound=class=Point name=Unnamed dimension=1 values=[7.65063] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+mean=class=Point name=Unnamed dimension=1 values=[1.16296]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.66898]
+skewness=class=Point name=Unnamed dimension=1 values=[0.302571]
+kurtosis=class=Point name=Unnamed dimension=1 values=[3.20079]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.447534]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.16296]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.80002]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[3.22488]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[6.5234]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[14.539]
+Standard representative=MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]))
+Distribution class=MaximumDistribution name=MaximumDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.813356]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.764471] last=class=Point name=Unnamed dimension=1 values=[1.04927]
+mean=class=Point name=Unnamed dimension=1 values=[1.16838]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.449251]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.0911751]
+log pdf=-0.500516
+pdf     =0.606218
+cdf=0.42157
+ccdf=0.57843
+survival=0.57843
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.123843]
+Survival(inverse survival)=0.95
+quantile=class=Point name=Unnamed dimension=1 values=[2.31868]
+cdf(quantile)=0.95
+quantile (tail)=class=Point name=Unnamed dimension=1 values=[0.123843]
+cdf (tail)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.112778] upper bound=class=Point name=Unnamed dimension=1 values=[2.50221] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))) gradientImplementation=MinimumVolumeLevelSetGradient(MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))) level=2.46478
+beta=0.0850272
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.0547313] upper bound=class=Point name=Unnamed dimension=1 values=[2.57233] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-7.65063] upper bound=class=Point name=Unnamed dimension=1 values=[2.31868] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.123843] upper bound=class=Point name=Unnamed dimension=1 values=[7.65063] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+mean=class=Point name=Unnamed dimension=1 values=[1.16296]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.66898]
+skewness=class=Point name=Unnamed dimension=1 values=[0.302571]
+kurtosis=class=Point name=Unnamed dimension=1 values=[3.20079]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.447534]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.16296]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.80002]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[3.22488]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[6.5234]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[14.539]
+Standard representative=MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
+Distribution class=MaximumDistribution name=MaximumDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.813356]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.764471] last=class=Point name=Unnamed dimension=1 values=[1.04927]
+mean=class=Point name=Unnamed dimension=1 values=[1.16838]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.449251]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.0911751]
+log pdf=-0.500516
+pdf     =0.606218
+cdf=0.42157
+ccdf=0.57843
+survival=0.57843
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.123843]
+Survival(inverse survival)=0.95
+quantile=class=Point name=Unnamed dimension=1 values=[2.31868]
+cdf(quantile)=0.95
+quantile (tail)=class=Point name=Unnamed dimension=1 values=[0.123843]
+cdf (tail)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.112778] upper bound=class=Point name=Unnamed dimension=1 values=[2.50221] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))) gradientImplementation=MinimumVolumeLevelSetGradient(MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))) level=2.46478
+beta=0.0850272
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.0547313] upper bound=class=Point name=Unnamed dimension=1 values=[2.57233] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-7.65063] upper bound=class=Point name=Unnamed dimension=1 values=[2.31868] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.123843] upper bound=class=Point name=Unnamed dimension=1 values=[7.65063] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+mean=class=Point name=Unnamed dimension=1 values=[1.16296]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.66898]
+skewness=class=Point name=Unnamed dimension=1 values=[0.302571]
+kurtosis=class=Point name=Unnamed dimension=1 values=[3.20079]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.447534]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.16296]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.80002]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[3.22488]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[6.5234]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[14.539]
+Standard representative=MaximumDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))

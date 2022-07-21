@@ -2,7 +2,7 @@
 /**
  *  @brief Estimation by method of moments
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,10 +27,10 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/TNC.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Matrix.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/LeastSquaresProblem.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,11 +46,17 @@ MethodOfMomentsFactory::MethodOfMomentsFactory()
 }
 
 /* Parameters constructor */
-MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution)
+MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution,
+    const Interval & optimizationBounds)
   : DistributionFactoryImplementation()
   , distribution_(distribution)
-  , solver_(new TNC())
+  , optimizationBounds_(optimizationBounds)
 {
+  LeastSquaresProblem problem(SymbolicFunction("x", "x^2"));
+  if (optimizationBounds.getDimension())
+    problem.setBounds(Interval(1));
+  solver_ = OptimizationAlgorithm::Build(problem);
+
   // Initialize optimization solver parameter using the ResourceMap
   solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumAbsoluteError"));
@@ -121,7 +127,7 @@ public:
 
   UnsignedInteger getOutputDimension() const
   {
-    return 1;
+    return distribution_.getParameterDimension();
   }
 
   Description getInputDescription() const
@@ -131,7 +137,7 @@ public:
 
   Description getOutputDescription() const
   {
-    return Description(1, "lh");
+    return Description(getOutputDimension(), "r");
   }
 
   Description getDescription() const
@@ -164,7 +170,7 @@ public:
     }
     catch (Exception &)
     {
-      return Point(1, SpecFunc::MaxScalar);
+      return Point(getOutputDimension(), SpecFunc::MaxScalar);
     }
 
     // compute moments of conditioned distribution
@@ -176,15 +182,14 @@ public:
     }
 
     // compute sum of deltas between centered homogenized moments
-    Scalar result = 0.0;
+    Point result(parameterDimension);
     for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
     {
       const Scalar sign = moments[j] < 0.0 ? -1.0 : 1.0;
-      const Scalar slack = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / (j + 1.0)) - sign * std::pow(std::abs(moments[j]), 1.0 / (j + 1.0));
-      result += slack * slack;
+      result[j] = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / (j + 1.0)) - sign * std::pow(std::abs(moments[j]), 1.0 / (j + 1.0));
     }
     const Scalar sigma2 = distribution.getCovariance()(0, 0);
-    return Point(1, result / sigma2);
+    return result / sigma2;
   }
 
 private:
@@ -215,13 +220,13 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
     refMoments[j] = sample.computeCenteredMoment(j + 1)[0];
   }
 
-  // Define NumericalMathEvaluation using the MethodOfMomentsEvaluation wrapper
+  // Define evaluation
   MethodOfMomentsEvaluation methodOfMomentsWrapper(refMoments, distribution_, knownParameterValues_, knownParameterIndices_);
   Function momentsObjective(methodOfMomentsWrapper.clone());
 
-  // Define optimisation problem
-  OptimizationProblem problem(problem_);
-  problem.setObjective(momentsObjective);
+  // Define optimization problem
+  LeastSquaresProblem problem(momentsObjective);
+  problem.setBounds(optimizationBounds_);
   OptimizationAlgorithm solver(solver_);
   if (solver.getStartingPoint().getDimension() != momentsObjective.getInputDimension())
   {
@@ -238,6 +243,7 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
     solver.setStartingPoint(parameter);
   }
   solver.setProblem(problem);
+  solver.setVerbose(Log::HasInfo());
   solver.run();
   Point effectiveParameter(effectiveParameterSize);
   // set unknown values
@@ -261,23 +267,33 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
 }
 
 
+Distribution MethodOfMomentsFactory::build(const Point & parameter) const
+{
+  Distribution result(distribution_);
+  Point parameter2(parameter);
+  // set known values
+  UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
+  for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
+  {
+    parameter2[knownParameterIndices_[j]] = knownParameterValues_[j];
+  }
+  result.setParameter(parameter2);
+  return result;
+}
+
+
+Distribution MethodOfMomentsFactory::build() const
+{
+  return build(distribution_.getParameter());
+}
+
+
 Distribution MethodOfMomentsFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));
   result.setDescription(sample.getDescription());
-  return result.getImplementation();
-}
-
-
-void MethodOfMomentsFactory::setOptimizationProblem(const OptimizationProblem& problem)
-{
-  problem_ = problem;
-}
-
-OptimizationProblem MethodOfMomentsFactory::getOptimizationProblem() const
-{
-  return problem_;
+  return result;
 }
 
 void MethodOfMomentsFactory::setOptimizationAlgorithm(const OptimizationAlgorithm& solver)
@@ -290,11 +306,22 @@ OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationAlgorithm() const
   return solver_;
 }
 
+/* Accessor to optimization bounds */
+void MethodOfMomentsFactory::setOptimizationBounds(const Interval & optimizationBounds)
+{
+  optimizationBounds_ = optimizationBounds;
+}
+
+Interval MethodOfMomentsFactory::getOptimizationBounds() const
+{
+  return optimizationBounds_;
+}
 
 void MethodOfMomentsFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
+  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
+    throw InvalidArgumentException(HERE) << "Indices and values size must match";
   knownParameterValues_ = values;
   knownParameterIndices_ = indices;
 }
@@ -316,6 +343,7 @@ void MethodOfMomentsFactory::save(Advocate & adv) const
   DistributionFactoryImplementation::save(adv);
   adv.saveAttribute("knownParameterValues_", knownParameterValues_);
   adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
+  adv.saveAttribute("optimizationBounds_", optimizationBounds_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -324,6 +352,7 @@ void MethodOfMomentsFactory::load(Advocate & adv)
   DistributionFactoryImplementation::load(adv);
   adv.loadAttribute("knownParameterValues_", knownParameterValues_);
   adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
+  adv.loadAttribute("optimizationBounds_", optimizationBounds_);
 }
 
 END_NAMESPACE_OPENTURNS

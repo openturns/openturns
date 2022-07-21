@@ -4,19 +4,24 @@
 Available constructors:
     Study()
 
-    Study(*fileName*)
+    Study(*fileName, compressionLevel*)
 
 Parameters
 ----------
 fileName : str
-    Name of the file used by the underlying storage manager, a :class:`~openturns.XMLStorageManager` in this case.
+    Name of the file used by the underlying storage manager,
+    a :class:`~openturns.XMLStorageManager` in this case.
+compressionLevel : int
+    Compression level of the resulting XML file, in the range 0,...,9 (0=no compression, 9=best compression).
+    The compression is done only if the XML lib has been compiled with zlib support.
+    The default value is given by 'XMLStorageManager-DefaultCompressionLevel' in :class:`~openturns.ResourceMap`.
 
 Notes
 -----
 The study allows the user to save all its data to a structure looking like a
 map. The data are copied verbatim to the study. This is not a link, so future
 modification of the original won't affect the data saved in the study. To
-update the data saved in the study, the user has to explicitely save it again.
+update the data saved in the study, the user has to explicitly save it again.
 Study allows the user to retrieve previously saved objects either by their name
 if a name was defined for the object or by their Id.
 
@@ -29,6 +34,12 @@ Create a Study object:
 >>> myStudy = ot.Study()
 >>> myStudy.setStorageManager(ot.XMLStorageManager('myStudy.xml'))
 >>> myStudy2 = ot.Study('myStudy2.xml')
+>>> myStudy3 = ot.Study('myStudy2.xml.gz', 5)
+
+If HDF5 format dependencies are satisfied:
+
+>>> myStudy4 = ot.Study()  # doctest: +SKIP
+>>> myStudy4.setStorageManager(ot.XMLH5StorageManager('myStudy.xml'))  # doctest: +SKIP
 
 Add PersistentObjects to the study:
 
@@ -39,7 +50,7 @@ Add PersistentObjects to the study:
 >>> point[2] = 12.0
 >>> myStudy.add('point', point)
 >>> # a simulation result:
->>> simulationResult = ot.ProbabilitySimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
+>>> simulationResult = ot.ProbabilitySimulationResult(ot.ThresholdEvent(), 0.5, 0.01, 150, 4)
 >>> myStudy.add('simulationResult', simulationResult)
 
 Get objects from the study:

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Normal with wrong arguments
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ int main(int, char *[])
     try
     {
 
-      // Instanciate one distribution object
+      // Instantiate one distribution object
       Point meanPoint(1);
       meanPoint[0] = 1.0;
       Point sigma(1);

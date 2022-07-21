@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import openturns.testing
 import os
@@ -10,7 +9,7 @@ import math as m
 ot.TESTPREAMBLE()
 
 try:
-    fileName = 'myStudy.xml'
+    fileName = 'myStudySaveLoad.xml'
 
     # Create a Study Object by name
     myStudy = ot.Study(fileName)
@@ -27,7 +26,21 @@ try:
     # Create a Study Object with compression
     myStudy = ot.Study()
     compressionLevel = 5
-    myStudy.setStorageManager(ot.XMLStorageManager(fileName, compressionLevel))
+    myStudy.setStorageManager(ot.XMLStorageManager(
+        fileName + ".gz", compressionLevel))
+    point = ot.Point(2, 1.0)
+    myStudy.add("point", point)
+    myStudy.save()
+    myStudy2 = ot.Study(fileName + ".gz")
+    myStudy2.load()
+    point2 = ot.Point()
+    myStudy2.fillObject("point", point2)
+    # cleanup
+    os.remove(fileName + ".gz")
+
+    # Create a Study Object with compression, direct way
+    compressionLevel = 5
+    myStudy = ot.Study(fileName, compressionLevel)
     point = ot.Point(2, 1.0)
     myStudy.add("point", point)
     myStudy.save()
@@ -96,7 +109,7 @@ try:
 
     # Create a Simulation::Result
     simulationResult = ot.ProbabilitySimulationResult(
-        ot.Event(), 0.5, 0.01, 150, 4)
+        ot.ThresholdEvent(), 0.5, 0.01, 150, 4)
     myStudy.add('simulationResult', simulationResult)
 
     cNameList = [
@@ -104,10 +117,11 @@ try:
     for cName in cNameList:
         otClass = getattr(ot, cName)
         instance = otClass()
+        print('--', cName, instance)
         myStudy.add(cName, instance)
 
     # Create a Beta distribution
-    beta = ot.Beta(3.0, 5.0, -1.0, 4.0)
+    beta = ot.Beta(3.0, 2.0, -1.0, 4.0)
     myStudy.add('beta', beta)
 
     # Create an analytical Function
@@ -150,7 +164,7 @@ try:
     input3.setName('input')
     output3 = ot.CompositeRandomVector(model, input3)
     output3.setName('output')
-    event = ot.Event(output3, ot.Greater(), 1.0)
+    event = ot.ThresholdEvent(output3, ot.Greater(), 1.0)
     event.setName('failureEvent')
     designPoint = ot.Point(2, 0.0)
     designPoint[0] = 1.0
@@ -164,10 +178,10 @@ try:
     sormResult = ot.SORMResult([1.0] * 2, event, False)
     sormResult.setName('sormResult')
     sormResult.getEventProbabilityBreitung()
-    sormResult.getEventProbabilityHohenBichler()
+    sormResult.getEventProbabilityHohenbichler()
     sormResult.getEventProbabilityTvedt()
     sormResult.getGeneralisedReliabilityIndexBreitung()
-    sormResult.getGeneralisedReliabilityIndexHohenBichler()
+    sormResult.getGeneralisedReliabilityIndexHohenbichler()
     sormResult.getGeneralisedReliabilityIndexTvedt()
     myStudy.add('sormResult', sormResult)
 
@@ -187,25 +201,6 @@ try:
     kDTree = ot.KDTree(sample)
     myStudy.add('kDTree', kDTree)
 
-    # TensorApproximationAlgorithm/Result
-    dim = 1
-    model = ot.SymbolicFunction(['x'], ['x*sin(x)'])
-    distribution = ot.ComposedDistribution([ot.Uniform()] * dim)
-    factoryCollection = [ot.FourierSeriesFactory()] * dim
-    functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
-    size = 10
-    X = distribution.getSample(size)
-    Y = model(X)
-    nk = [5] * dim
-    rank = 1
-    algo = ot.TensorApproximationAlgorithm(
-        X, Y, distribution, functionFactory, nk, rank)
-    algo.run()
-    tensorResult = algo.getResult()
-    myStudy.add('tensorResult', tensorResult)
-    tensorIn = [0.4]
-    tensorRef = tensorResult.getMetaModel()(tensorIn)
-
     # Distribution parameters
 
     # ArcsineMuSigma parameter ave
@@ -217,9 +212,6 @@ try:
     # GammaMuSigma parameter save
     gmms_parameters = ot.GammaMuSigma(1.5, 2.5, -0.5)
     myStudy.add('gmms_parameters', gmms_parameters)
-    # GumbelAB parameter save
-    gab_parameters = ot.GumbelAB(-0.5, 0.5)
-    myStudy.add('gab_parameters', gab_parameters)
     # GumbelMuSigma parameter save
     gms_parameters = ot.GumbelMuSigma(1.5, 1.3)
     myStudy.add('gms_parameters', gms_parameters)
@@ -229,8 +221,8 @@ try:
     # LogNormalMuSigmaOverMu parameter save
     lnmsm_parameters = ot.LogNormalMuSigmaOverMu(0.63, 5.24, -0.5)
     myStudy.add('lnmsm_parameters', lnmsm_parameters)
-    # WeibullMuSigma parameter save
-    wms_parameters = ot.WeibullMuSigma(1.3, 1.23, -0.5)
+    # WeibullMinMuSigma parameter save
+    wms_parameters = ot.WeibullMinMuSigma(1.3, 1.23, -0.5)
     myStudy.add('wms_parameters', wms_parameters)
 
     # MemoizeFunction
@@ -285,6 +277,7 @@ try:
         instance = otClass()
         saved = repr(instance)
         myStudy.fillObject(cName, instance)
+        print('--', cName, instance)
         loaded = repr(instance)
         if saved != loaded:
             print('saved=', saved)
@@ -322,12 +315,6 @@ try:
     myStudy.fillObject('kDTree', kDTree)
     print('kDTree = ', kDTree)
 
-    # Tensor
-    tensorResult = ot.MetaModelResult()
-    myStudy.fillObject('tensorResult', tensorResult)
-    ot.testing.assert_almost_equal(
-        tensorResult.getMetaModel()(tensorIn), tensorRef)
-
     # ArcsineMuSigma parameter loading
     ams_parameters = ot.ArcsineMuSigma()
     myStudy.fillObject('ams_parameters', ams_parameters)
@@ -337,9 +324,6 @@ try:
     # GammaMuSigma parameter loading
     gmms_parameters = ot.GammaMuSigma()
     myStudy.fillObject('gmms_parameters', gmms_parameters)
-    # GumbelAB parameter loading
-    gab_parameters = ot.GumbelAB()
-    myStudy.fillObject('gab_parameters', gab_parameters)
     # GumbelMuSigma parameter loading
     gms_parameters = ot.GumbelMuSigma()
     myStudy.fillObject('gms_parameters', gms_parameters)
@@ -349,8 +333,8 @@ try:
     # LogNormalMuSigmaOverMu parameter loading
     lnmsm_parameters = ot.LogNormalMuSigmaOverMu()
     myStudy.fillObject('lnmsm_parameters', lnmsm_parameters)
-    # WeibullMuSigma parameter loading
-    wms_parameters = ot.WeibullMuSigma()
+    # WeibullMinMuSigma parameter loading
+    wms_parameters = ot.WeibullMinMuSigma()
     myStudy.fillObject('wms_parameters', wms_parameters)
 
     # cleanup

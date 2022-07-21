@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    allDistributions = [InverseGamma(5.5, 2.5), InverseGamma(15.0, 2.5)]
+    allDistributions = [InverseGamma(2.5, 5.5), InverseGamma(2.5, 15.0)]
     for n in range(len(allDistributions)):
         distribution = allDistributions[n]
         print("Distribution ", distribution)
@@ -40,7 +39,7 @@ try:
 
         # Define a point
         point = Point(
-            distribution.getDimension(), 2.0 / (distribution.getK() * distribution.getLambda()))
+            distribution.getDimension(), 2.0 / (distribution.getLambda() * distribution.getK()))
         print("Point= ", point)
 
         # Show PDF and CDF of point
@@ -69,18 +68,18 @@ try:
         PDFgr = distribution.computePDFGradient(point)
         print("pdf gradient     =", PDFgr)
         PDFgrFD = Point(2)
-        PDFgrFD[0] = (InverseGamma(distribution.getK() + eps, distribution.getLambda()).computePDF(point) -
-                      InverseGamma(distribution.getK() - eps, distribution.getLambda()).computePDF(point)) / (2.0 * eps)
-        PDFgrFD[1] = (InverseGamma(distribution.getK(), distribution.getLambda() + eps).computePDF(point) -
-                      InverseGamma(distribution.getK(), distribution.getLambda() - eps).computePDF(point)) / (2.0 * eps)
+        PDFgrFD[0] = (InverseGamma(distribution.getLambda() + eps, distribution.getK()).computePDF(point) -
+                      InverseGamma(distribution.getLambda() - eps, distribution.getK()).computePDF(point)) / (2.0 * eps)
+        PDFgrFD[1] = (InverseGamma(distribution.getLambda(), distribution.getK() + eps).computePDF(point) -
+                      InverseGamma(distribution.getLambda(), distribution.getK() - eps).computePDF(point)) / (2.0 * eps)
         print("pdf gradient (FD)=", PDFgrFD)
         CDFgr = distribution.computeCDFGradient(point)
         print("cdf gradient     =", CDFgr)
         CDFgrFD = Point(2)
-        CDFgrFD[0] = (InverseGamma(distribution.getK() + eps, distribution.getLambda()).computeCDF(point) -
-                      InverseGamma(distribution.getK() - eps, distribution.getLambda()).computeCDF(point)) / (2.0 * eps)
-        CDFgrFD[1] = (InverseGamma(distribution.getK(), distribution.getLambda() + eps).computeCDF(point) -
-                      InverseGamma(distribution.getK(), distribution.getLambda() - eps).computeCDF(point)) / (2.0 * eps)
+        CDFgrFD[0] = (InverseGamma(distribution.getLambda() + eps, distribution.getK()).computeCDF(point) -
+                      InverseGamma(distribution.getLambda() - eps, distribution.getK()).computeCDF(point)) / (2.0 * eps)
+        CDFgrFD[1] = (InverseGamma(distribution.getLambda(), distribution.getK() + eps).computeCDF(point) -
+                      InverseGamma(distribution.getLambda(), distribution.getK() - eps).computeCDF(point)) / (2.0 * eps)
         print("cdf gradient (FD)=", CDFgrFD)
         quantile = distribution.computeQuantile(0.95)
         print("quantile=", quantile)

@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    distribution = Laplace(2.5, -1.3)
+    distribution = Laplace(-1.3, 2.5)
     size = 10000
     sample = distribution.getSample(size)
     factory = LaplaceFactory()

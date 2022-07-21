@@ -6,5 +6,3 @@ Uniform          =class=Uniform name=Uniform dimension=1 a=1 b=2.5
 Estimated uniform=class=Uniform name=Uniform dimension=1 a=1.00009 b=2.49999
 Default uniform=class=Uniform name=Uniform dimension=1 a=-1 b=1
 Uniform from parameters=class=Uniform name=Uniform dimension=1 a=1 b=2.5
-Estimated distribution=class=Uniform name=Uniform dimension=1 a=-2.22045e-15 b=2.22045e-15
-Estimated distribution=class=Uniform name=Uniform dimension=1 a=1 b=1

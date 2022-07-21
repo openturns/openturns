@@ -19,8 +19,7 @@ def flooding(X):
 
 
 myFunction = ot.PythonFunction(4, 1, flooding)
-myParam = ot.GumbelAB(1013.0, 558.0)
-Q = ot.ParametrizedDistribution(myParam)
+Q = ot.Gumbel(558.0, 1013.0)
 Q = ot.TruncatedDistribution(Q, 0.0, ot.SpecFunc.MaxScalar)
 Ks = ot.Normal(30.0, 7.5)
 Ks = ot.TruncatedDistribution(Ks, 0.0, ot.SpecFunc.MaxScalar)

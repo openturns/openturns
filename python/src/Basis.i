@@ -7,13 +7,14 @@
 
 %include BaseFuncCollection.i
 
-%typemap(in) const BasisCollection & {
-  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+%typemap(in) const BasisCollection & (OT::Pointer<OT::Collection<OT::Basis> > temp) {
+  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     // From interface class, ok
   }
   else {
     try {
-      $1 = OT::buildCollectionFromPySequence< OT::Basis >( $input );
+      temp = OT::buildCollectionFromPySequence< OT::Basis >($input);
+      $1 = temp.get();
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Basis");
     }
@@ -21,8 +22,8 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const BasisCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< OT::Basis >( $input );
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
+    || OT::canConvertCollectionObjectFromPySequence< OT::Basis >($input);
 }
 
 
@@ -43,7 +44,7 @@ OTTypedInterfaceObjectHelper(Basis)
 
 OT::Collection<OT::Function> (PyObject * pyObj)
 {
-  return OT::buildCollectionFromPySequence<OT::Function>( pyObj );
+  return OT::buildCollectionFromPySequence<OT::Function>(pyObj);
 }
 
 

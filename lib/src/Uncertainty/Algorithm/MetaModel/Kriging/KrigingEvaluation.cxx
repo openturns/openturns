@@ -2,7 +2,7 @@
 /**
  *  @brief The class building gaussian process regression
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,6 +21,7 @@
 
 #include "openturns/KrigingEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -56,9 +57,6 @@ KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
   {
     if (basis.getSize() != covarianceModel.getOutputDimension())
       throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, output sample dimension (" << covarianceModel.getOutputDimension()  << ") does not match multi-basis dimension (" << basis_.getSize() << ")";
-    // Total basis size = sum of all sizes
-    UnsignedInteger basisCollectionTotalSize = 0;
-    for (UnsignedInteger i = 0; i < basis.getSize(); ++i) basisCollectionTotalSize += basis[i].getSize();
   }
   if (covarianceModel.getInputDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the input dimension=" << covarianceModel.getInputDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getOutputDimension();
@@ -99,12 +97,6 @@ String KrigingEvaluation::__str__(const String & ) const
   return OSS(false) << GetClassName();
 }
 
-/* Test for actual implementation */
-Bool KrigingEvaluation::isActualImplementation() const
-{
-  return true;
-}
-
 // Helper for the parallel version of the point-based evaluation operator
 struct KrigingEvaluationPointFunctor
 {
@@ -120,13 +112,13 @@ struct KrigingEvaluationPointFunctor
   {}
 
   KrigingEvaluationPointFunctor(const KrigingEvaluationPointFunctor & other,
-                                TBB::Split)
+                                TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(other.evaluation_.getOutputDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -141,14 +133,60 @@ struct KrigingEvaluationPointFunctor
 
 }; // struct KrigingEvaluationPointFunctor
 
+struct KrigingEvaluationPointFunctor1D
+{
+  const Point & input_;
+  const KrigingEvaluation & evaluation_;
+  Scalar accumulator_;
+
+  KrigingEvaluationPointFunctor1D(const Point & input,
+                                  const KrigingEvaluation & evaluation)
+    : input_(input)
+    , evaluation_(evaluation)
+    , accumulator_(0.0)
+  {}
+
+  KrigingEvaluationPointFunctor1D(const KrigingEvaluationPointFunctor1D & other,
+                                  TBBImplementation::Split)
+    : input_(other.input_)
+    , evaluation_(other.evaluation_)
+    , accumulator_(0.0)
+  {}
+
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      accumulator_ += evaluation_.covarianceModel_.getImplementation()->computeAsScalar(input_.begin(), evaluation_.inputSample_.getImplementation()->data_begin() + i * input_.getDimension()) * evaluation_.gamma_(i, 0);
+    }
+  } // operator()
+
+  inline void join(const KrigingEvaluationPointFunctor1D & other)
+  {
+    accumulator_ += other.accumulator_;
+  }
+
+}; // struct KrigingEvaluationPointFunctor1D
+
 /* Operator () */
 Point KrigingEvaluation::operator()(const Point & inP) const
 {
   const UnsignedInteger trainingSize = inputSample_.getSize();
+  const UnsignedInteger dimension = getOutputDimension();
+  Point value(dimension);
   // Evaluate the kernel part in parallel
-  KrigingEvaluationPointFunctor functor( inP, *this );
-  TBB::ParallelReduce( 0, trainingSize, functor );
-  Point value(functor.accumulator_);
+  if (dimension == 1)
+  {
+    KrigingEvaluationPointFunctor1D functor( inP, *this );
+    TBBImplementation::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
+    value[0] = functor.accumulator_;
+  }
+  else
+  {
+    KrigingEvaluationPointFunctor functor( inP, *this );
+    TBBImplementation::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
+    value = functor.accumulator_;
+  }
   // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension
   for (UnsignedInteger i = 0; i < basis_.getSize(); ++i)
@@ -181,25 +219,53 @@ struct KrigingEvaluationSampleFunctor
     , trainingSize_(evaluation.inputSample_.getSize())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
-    const UnsignedInteger start = r.begin();
     const UnsignedInteger dimension = evaluation_.getOutputDimension();
-    const UnsignedInteger size = r.end() - start;
     Matrix R(dimension, trainingSize_ * dimension);
-    for (UnsignedInteger i = 0; i != size; ++i)
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
     {
       for (UnsignedInteger j = 0; j < trainingSize_; ++j)
       {
-        const CovarianceMatrix localCovariance(evaluation_.covarianceModel_(input_[start + i], evaluation_.inputSample_[j]));
+        const SquareMatrix localCovariance(evaluation_.covarianceModel_(input_[i], evaluation_.inputSample_[j]));
         for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++ columnIndex)
           for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++ rowIndex)
             R(rowIndex, columnIndex + j * dimension) = localCovariance(rowIndex, columnIndex);
       }
-      output_[start + i] = R * evaluation_.gamma_.getImplementation()->getData();
+      const Point RGamma(R * evaluation_.gamma_.getImplementation()->getData());
+      for (UnsignedInteger j = 0; j < dimension; ++j)  output_(i, j) = RGamma[j];
     }
   } // operator()
 }; // struct KrigingEvaluationSampleFunctor
+
+struct KrigingEvaluationSampleFunctor1D
+{
+  const Sample & input_;
+  Sample & output_;
+  const KrigingEvaluation & evaluation_;
+  UnsignedInteger trainingSize_;
+
+  KrigingEvaluationSampleFunctor1D(const Sample & input,
+                                   Sample & output,
+                                   const KrigingEvaluation & evaluation)
+    : input_(input)
+    , output_(output)
+    , evaluation_(evaluation)
+    , trainingSize_(evaluation.inputSample_.getSize())
+  {
+    // Nothing to do
+  }
+
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
+  {
+    const UnsignedInteger inputDimension = input_.getDimension();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      for (UnsignedInteger j = 0; j < trainingSize_; ++j)
+        output_(i, 0) += evaluation_.covarianceModel_.getImplementation()->computeAsScalar(input_.getImplementation()->data_begin() + i * inputDimension, evaluation_.inputSample_.getImplementation()->data_begin() + j * inputDimension) * evaluation_.gamma_(j, 0);
+    } // i
+  } // operator()
+}; // struct KrigingEvaluationSampleFunctor1D
 
 Sample KrigingEvaluation::operator()(const Sample & inS) const
 {
@@ -208,8 +274,16 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
   const UnsignedInteger dimension = getOutputDimension();
 
   Sample result(size, dimension);
-  const KrigingEvaluationSampleFunctor functor( inS, result, *this );
-  TBB::ParallelFor( 0, size, functor );
+  if (dimension == 1)
+  {
+    const KrigingEvaluationSampleFunctor1D functor( inS, result, *this);
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+  }
+  else
+  {
+    const KrigingEvaluationSampleFunctor functor( inS, result, *this );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+  }
 
   // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension

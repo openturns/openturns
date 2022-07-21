@@ -2,7 +2,7 @@
 /**
  *  @brief This class is enables to estimate parameters of the BoxCox model
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,13 +52,13 @@ public:
   BoxCoxFactory();
 
   /** Virtual copy constructor */
-  BoxCoxFactory * clone() const;
+  BoxCoxFactory * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Build the factory from data by estimating the best \lambda which maximizes the log-likelihood function */
   BoxCoxTransform build(const Field & timeSeries) const;
@@ -102,7 +102,7 @@ public:
 protected:
 
   /** Optimization solver */
-  OptimizationAlgorithm  solver_;
+  OptimizationAlgorithm solver_;
 
   void checkGLMData(const Sample & inputSample,
                     const Sample & outputSample,

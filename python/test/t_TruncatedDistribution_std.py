@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import math as m
 
@@ -12,6 +11,7 @@ def cleanPoint(inPoint):
             inPoint[i] = 0.0
     return inPoint
 
+
 def cleanCovariance(inCovariance):
     dim = inCovariance.getDimension()
     for j in range(dim):
@@ -21,7 +21,7 @@ def cleanCovariance(inCovariance):
     return inCovariance
 
 
-# Instanciate one distribution object
+# Instantiate one distribution object
 referenceDistribution = [ot.TruncatedNormal(2.0, 1.5, 1.0, 4.0),
                          ot.TruncatedNormal(2.0, 1.5, 1.0, 200.0),
                          ot.TruncatedNormal(2.0, 1.5, -200.0, 4.0),
@@ -47,7 +47,7 @@ truncatedKS = ot.TruncatedDistribution(
 distribution.append(truncatedKS)
 referenceDistribution.append(ks)  # N/A
 # Add a non-truncated example
-weibull = ot.Weibull(2.0, 3.0)
+weibull = ot.WeibullMin(2.0, 3.0)
 distribution.append(ot.TruncatedDistribution(weibull))
 referenceDistribution.append(weibull)
 ot.RandomGenerator.SetSeed(0)
@@ -184,8 +184,8 @@ for testCase in range(len(distribution)):
           testCase].getStandardRepresentative())
 # Check simplification
 candidates = [ot.Normal(1.0, 2.0), ot.Uniform(1.0, 2.0), ot.Exponential(1.0, 2.0),
-              ot.TruncatedDistribution(ot.Weibull(), 1.5, 7.8),
-              ot.Beta(1.5, 7.8, -1.0, 2.0)]
+              ot.TruncatedDistribution(ot.WeibullMin(), 1.5, 7.8),
+              ot.Beta(1.5, 6.3, -1.0, 2.0)]
 intervals = [ot.Interval(-1.0, 4.0), ot.Interval(0.2, 2.4), ot.Interval(2.5, 65.0),
              ot.Interval(2.5, 6.0), ot.Interval(-2.5, 6.0)]
 for i in range(len(candidates)):
@@ -197,3 +197,16 @@ truncated = ot.TruncatedDistribution()
 truncated.setDistribution(ot.Normal(20.0, 7.5))
 truncated.setBounds(ot.Interval([0], [80], [True], [False]))
 print('after setbounds q@0.9=', truncated.computeQuantile(0.9))
+# Test for issue #1190
+dist = ot.Normal(6.3E-19, 2.1E-19)
+dist = ot.TruncatedDistribution(dist, 4.2E-19, ot.TruncatedDistribution.LOWER)
+
+# non-finite bound bug
+bounds = ot.Interval([-2, -3], [2, 3.0], [True, False], [True, True])
+dist = ot.TruncatedDistribution(ot.Normal(2), bounds)
+print('proba=%.6f' % dist.computeCDF([3.0, -3.0]))
+
+# relative range wrt quantile epsilon issue
+unif = ot.Uniform(0.0, 1e12)
+trunc = ot.TruncatedDistribution(unif, 0.25, 2.0)
+print('q@0.1=', trunc.computeQuantile(0.1))

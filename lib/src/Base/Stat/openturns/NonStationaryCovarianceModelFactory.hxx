@@ -2,7 +2,7 @@
 /**
  *  @brief Top-level class for all spectral model factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,17 +40,17 @@ public:
   NonStationaryCovarianceModelFactory();
 
   /** Virtual constructor */
-  virtual NonStationaryCovarianceModelFactory * clone() const;
+  NonStationaryCovarianceModelFactory * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Build a a spectral model based on a sample */
   using CovarianceModelFactoryImplementation::build;
-  CovarianceModel build(const ProcessSample & sample) const;
+  CovarianceModel build(const ProcessSample & sample) const override;
   CovarianceModel build(const ProcessSample & sample, const Bool isCentered) const;
 
   UserDefinedCovarianceModel buildAsUserDefinedCovarianceModel(const ProcessSample & sample,
@@ -60,10 +60,10 @@ public:
       const Bool isCentered = false) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 }; /* class NonStationaryCovarianceModelFactory */

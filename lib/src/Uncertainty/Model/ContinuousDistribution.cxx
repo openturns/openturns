@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for Continuous distributions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,28 +59,6 @@ String ContinuousDistribution::__repr__() const
   return oss;
 }
 
-/* Get the DDF of the distribution */
-Point ContinuousDistribution::computeDDF(const Point & point) const
-{
-  const UnsignedInteger dimension = getDimension();
-  Point ddf(dimension);
-  const Scalar h = std::pow(pdfEpsilon_, 1.0 / 3.0);
-  LOGINFO(OSS() << "h=" << h);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    Point left(point);
-    left[i] += h;
-    Point right(point);
-    right[i] -= h;
-    const Scalar denom = left[i] - right[i];
-    const Scalar pdfLeft = computePDF(left);
-    const Scalar pdfRight = computePDF(right);
-    ddf[i] = (pdfLeft - pdfRight) / denom;
-    LOGINFO(OSS() << "left=" << left << ", right=" << right << ", pdfLeft=" << pdfLeft << ", pdfRight=" << pdfRight);
-  }
-  return ddf;
-}
-
 /* Get the PDF of the distribution */
 Scalar ContinuousDistribution::computePDF(const Point & ) const
 {
@@ -90,43 +68,6 @@ Scalar ContinuousDistribution::computePDF(const Point & ) const
 /* Get the CDF of the distribution */
 Scalar ContinuousDistribution::computeCDF(const Point & point) const
 {
-  const UnsignedInteger dimension = getDimension();
-  const Point lowerBounds(getRange().getLowerBound());
-  const Point upperBounds(getRange().getUpperBound());
-  // Indices of the components to take into account in the computation
-  Indices toKeep(0);
-  Point reducedPoint(0);
-  for (UnsignedInteger k = 0; k < dimension; ++ k)
-  {
-    const Scalar xK = point[k];
-    // Early exit if one component is less than its corresponding range lower bound
-    if (xK <= lowerBounds[k]) return 0.0;
-    // Keep only the indices for which xK is less than its corresponding range upper bound
-    // Marginalize the others
-    if (xK < upperBounds[k])
-    {
-      toKeep.add(k);
-      reducedPoint.add(xK);
-    }
-  } // k
-  // The point has all its components greater than the corresponding range upper bound
-  if (toKeep.getSize() == 0)
-  {
-    return 1.0;
-  }
-  // The point has some components greater than the corresponding range upper bound
-  if (toKeep.getSize() != dimension)
-  {
-    // Try to reduce the dimension
-    try
-    {
-      return getMarginal(toKeep).computeCDF(reducedPoint);
-    }
-    catch (...)
-    {
-      // Fallback on the default algorithm if the getMarginal() method is not implemented
-    }
-  }
   const Interval interval(getRange().getLowerBound(), point);
   LOGINFO(OSS() << "In ContinuousDistribution::computeCDF, using computeProbabilityContinuous(), interval=" << interval.__str__());
   return computeProbabilityContinuous(interval);

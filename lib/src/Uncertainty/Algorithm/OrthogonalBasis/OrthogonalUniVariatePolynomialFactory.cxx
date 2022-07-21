@@ -2,7 +2,7 @@
 /**
  *  @brief This an abstract class for 1D polynomial factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,7 +40,7 @@ OrthogonalUniVariatePolynomialFactory::OrthogonalUniVariatePolynomialFactory()
   : PersistentObject()
   , measure_()
   , coefficientsCache_(0)
-  , recurrenceCoefficientsCache_(0)
+  , recurrenceCoefficientsCache_(0, 3)
   , polynomialsCache_(0)
 {
   // Nothing to do. The derived class will have to call initializeCaches().
@@ -52,10 +52,11 @@ OrthogonalUniVariatePolynomialFactory::OrthogonalUniVariatePolynomialFactory(con
   : PersistentObject()
   , measure_(measure)
   , coefficientsCache_(0)
-  , recurrenceCoefficientsCache_(0)
+  , recurrenceCoefficientsCache_(0, 3)
   , polynomialsCache_(0)
 {
-  // Nothing to do. The derived class will have to call initializeCaches().
+  // The derived class will have to call initializeCaches().
+  if (measure.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error, expected a distribution of dimension 1, got dimension=" << measure.getDimension();
 }
 
 
@@ -80,10 +81,7 @@ OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFactory::build(cons
   const UnsignedInteger cacheSize = polynomialsCache_.getSize();
   if (degree < cacheSize) return polynomialsCache_[degree];
   for (UnsignedInteger i = cacheSize; i <= degree; ++i)
-  {
-    CoefficientsCollection rec(buildRecurrenceCoefficientsCollection(i));
-    polynomialsCache_.add(OrthogonalUniVariatePolynomial(rec, buildCoefficients(i)));
-  };
+    polynomialsCache_.add(OrthogonalUniVariatePolynomial(buildRecurrenceCoefficientsCollection(i), buildCoefficients(i)));
   return polynomialsCache_[degree];
 }
 
@@ -127,9 +125,9 @@ OrthogonalUniVariatePolynomialFactory::Coefficients OrthogonalUniVariatePolynomi
 }
 
 /* Build the 3 terms recurrence coefficients up to the needed degree */
-OrthogonalUniVariatePolynomialFactory::CoefficientsCollection OrthogonalUniVariatePolynomialFactory::buildRecurrenceCoefficientsCollection(const UnsignedInteger degree) const
+Sample OrthogonalUniVariatePolynomialFactory::buildRecurrenceCoefficientsCollection(const UnsignedInteger degree) const
 {
-  CoefficientsCollection recurrenceCoefficients(degree);
+  Sample recurrenceCoefficients(degree, 3);
   for (UnsignedInteger i = 0; i < degree; ++i) recurrenceCoefficients[i] = getRecurrenceCoefficients(i);
   return recurrenceCoefficients;
 }

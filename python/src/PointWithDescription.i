@@ -50,9 +50,10 @@ namespace OT {
 %include PointWithDescription_doc.i
 
 %rename(PointWithDescription_operator___eq__) OT::operator ==(const PointWithDescription & lhs, const PointWithDescription & rhs);
+%ignore OT::PointWithDescription::PointWithDescription(std::initializer_list<Scalar> initList);
 
 %include openturns/PointWithDescription.hxx
-namespace OT{  
+namespace OT{
 
 %extend PointWithDescription {
 

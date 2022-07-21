@@ -62,9 +62,9 @@ ax.spines['left'].set_position(('data', 0))
 
 # Add labels
 plt.xticks([-0.1] + list(range(4)) + [3.2])
-ax.set_xticklabels(('', '$0$', '$1$', '$3$', '$6$'), fontsize=20)
+ax.set_xticklabels(('', '$0$', '$1$', '$3$', '$6$', ''), fontsize=20)
 plt.yticks([-0.1] + list(range(4)) + [3.2])
-ax.set_yticklabels(('', '', '$2$', '$5$', '$9$'), fontsize=20)
+ax.set_yticklabels(('', '', '$2$', '$5$', '$9$', ''), fontsize=20)
 
 # Show the figure
 plt.show()

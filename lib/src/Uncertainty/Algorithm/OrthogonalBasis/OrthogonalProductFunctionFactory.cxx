@@ -2,7 +2,7 @@
 /**
  *  @brief This is the orthogonal function basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,6 +28,7 @@
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 #include "openturns/ProductUniVariateFunctionGradient.hxx"
 #include "openturns/ProductUniVariateFunctionHessian.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,7 +58,7 @@ OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory()
 OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory(const FunctionFamilyCollection & coll)
   : OrthogonalFunctionFactory()
 {
-  buildTensorizedFunctionFactory(coll, EnumerateFunction(coll.getSize()) );
+  buildTensorizedFunctionFactory(coll, LinearEnumerateFunction(coll.getSize()) );
   buildMeasure(coll);
 }
 

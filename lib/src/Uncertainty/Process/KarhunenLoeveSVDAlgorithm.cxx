@@ -4,7 +4,7 @@
  *         basis and eigenvalues of a given covariance model based on
  *         SVD decomposition of a process sample.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -310,13 +310,19 @@ void KarhunenLoeveSVDAlgorithm::run()
     eigenValues[i] = svd[i] * svd[i];
     cumulatedVariance += eigenValues[i];
   }
-  LOGINFO("Extract the relevant eigenpairs");
-  // Start at 0 if the given threshold is large (eg greater than 1)
-  UnsignedInteger K = 0;
+
   // Find the cut-off in the eigenvalues
-  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
-  LOGINFO(OSS() << "Selected " << K << " eigenvalues");
-  LOGINFO("Create eigenmodes values");
+  UnsignedInteger K = 0;
+  Scalar selectedVariance = 0.0; // sum of eigenvalues selected after cut-off is applied
+  const UnsignedInteger nbModesMax = std::min(eigenValues.getSize(), getNbModes());
+  do
+  {
+    selectedVariance += eigenValues[K];
+    ++ K;
+  }
+  while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
+  LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
+
   // Stores the eigenmodes values in-place to avoid wasting memory
   MatrixImplementation & eigenModesValues = U;
   if (uniformVerticesWeights_) eigenModesValues *= 1.0 / std::sqrt(verticesWeights_[0]);
@@ -394,7 +400,7 @@ void KarhunenLoeveSVDAlgorithm::run()
   } // k
   LOGINFO("Create KL result");
   covariance_ = RankMCovarianceModel(selectedEV, modes);
-  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection);
+  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection, selectedVariance/cumulatedVariance);
 }
 
 /* Sample accessor */
@@ -414,6 +420,7 @@ void KarhunenLoeveSVDAlgorithm::setVerticesWeights(const Point & verticesWeights
   const UnsignedInteger verticesNumber = sample_.getMesh().getVerticesNumber();
   if (!(verticesWeights.getSize() == verticesNumber)) throw InvalidArgumentException(HERE) << "Error: expected vertices weights of dimension=" << verticesNumber << ", got dimension=" << verticesWeights.getSize();
   const Scalar weight0 = verticesWeights[0];
+  uniformVerticesWeights_ = true;
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
   {
     if (!(verticesWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive vertices weights, here weights[" << i << "]=" << verticesWeights[i];
@@ -434,6 +441,7 @@ void KarhunenLoeveSVDAlgorithm::setSampleWeights(const Point & sampleWeights)
   if (!(sampleWeights.getSize() == sampleSize)) throw InvalidArgumentException(HERE) << "Error: expected sample weights of dimension=" << sampleSize << ", got dimension=" << sampleWeights.getSize();
   const Scalar weight0 = sampleWeights[0];
   Scalar weightSum = 0.0;
+  uniformSampleWeights_ = true;
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
     if (!(sampleWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive sample weights, here weights[" << i << "]=" << sampleWeights[i];

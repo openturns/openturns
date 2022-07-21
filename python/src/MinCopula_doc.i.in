@@ -6,8 +6,8 @@ Available constructor:
 
 Parameters
 ----------
-n : int, :math:`n \geq 1`
-    Dimension of the copula.
+n : int
+    Dimension of the copula, :math:`n \geq 1`. Default is :math:`n=2`.
 
 Notes
 -----
@@ -21,7 +21,7 @@ for :math:`u_i \in [0, 1]`
 
 See also
 --------
-Copula
+Distribution
 
 Examples
 --------

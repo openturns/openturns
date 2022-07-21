@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the combinations experiment plane
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,7 +55,7 @@ Combinations * Combinations::clone() const
 /* Experiment plane generation :
  *  all the combinations of k elements amongst {0, ..., n-1}
  */
-IndicesCollection Combinations::generate()
+IndicesCollection Combinations::generate() const
 {
   /* Quick return for trivial cases */
   if (k_ > n_) return IndicesCollection(0, k_);

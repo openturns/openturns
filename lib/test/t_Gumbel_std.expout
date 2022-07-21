@@ -2,13 +2,13 @@ Testing class Gumbel
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=Gumbel name=Gumbel dimension=1 alpha=2 beta=-0.5
+class=Gumbel name=Gumbel dimension=1 beta=0.5 gamma=-0.5
 streamObject(const T & anObject)
-class=Gumbel name=Gumbel dimension=1 alpha=2 beta=-0.5
+class=Gumbel name=Gumbel dimension=1 beta=0.5 gamma=-0.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=Gumbel name=Gumbel dimension=1 alpha=2 beta=-0.5
-Distribution Gumbel(alpha = 2, beta = -0.5)
+Distribution class=Gumbel name=Gumbel dimension=1 beta=0.5 gamma=-0.5
+Distribution Gumbel(beta = 0.5, gamma = -0.5)
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[-0.114155]
@@ -17,7 +17,6 @@ mean=class=Point name=Unnamed dimension=1 values=[-0.20325]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.416712]
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[-0.180043]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.180043]
 log pdf=-2.35664
 pdf     =0.094738
 pdf (FD)=0.094738
@@ -26,17 +25,17 @@ ccdf=0.048568
 survival=0.048568
 Inverse survival=class=Point name=Unnamed dimension=1 values=[-1.04859]
 Survival(inverse survival)=0.95
-pdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.0876629,0.180043]
-pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.0876629,0.180043]
-cdf gradient     =class=Point name=Unnamed dimension=2 values=[0.0710535,-0.094738]
-cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.0710535,-0.094738]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[0.350652,0.180043]
+pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.350652,0.180043]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.284214,-0.094738]
+cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.284214,-0.094738]
 characteristic function=(0.799265,-0.209152)
 log characteristic function=(-0.190945,-0.255942)
 quantile=class=Point name=Unnamed dimension=1 values=[0.985098]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.28067] upper bound=class=Point name=Unnamed dimension=1 values=[1.08074] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Gumbel(alpha = 2, beta = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Gumbel(alpha = 2, beta = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Gumbel(alpha = 2, beta = -0.5)) level=2.51069
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Gumbel(beta = 0.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Gumbel(beta = 0.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Gumbel(beta = 0.5, gamma = -0.5)) level=2.51069
 beta=0.0812123
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.15266] upper bound=class=Point name=Unnamed dimension=1 values=[1.33812] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -54,11 +53,11 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[alpha : 2, beta : -0.5]]
+parameters=[[beta : 0.5, gamma : -0.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.577216]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.97811]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[5.44487]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[23.5615]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[117.839]
-Standard representative=Gumbel(alpha = 1, beta = 0)
+Standard representative=Gumbel(beta = 1, gamma = 0)

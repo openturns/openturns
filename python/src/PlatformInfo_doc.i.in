@@ -5,6 +5,26 @@ No constructor, only static methods are available."
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::PlatformInfo::GetDate
+"Accessor to the build date.
+
+Returns
+-------
+date : str
+    Build date."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetInstallationDirectory
+"Accessor to the install prefix.
+
+Returns
+-------
+prefix : str
+    Installation prefix."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::PlatformInfo::GetVersion
 "Accessor to the version string.
 
@@ -31,7 +51,7 @@ revision : str
 Parameters
 ----------
 precision : int
-    String ouput numerical precision."
+    String output numerical precision."
 
 // ---------------------------------------------------------------------
 
@@ -41,16 +61,31 @@ precision : int
 Returns
 -------
 precision : int
-    String ouput numerical precision."
+    String output numerical precision."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::PlatformInfo::SetTwoDigitExponent
-"Use two digits for exponent format.
+%feature("docstring") OT::PlatformInfo::GetFeatures
+"Accessor to the features list.
 
-For testing purposes with pre 2015 MSVC compilers.
+Returns
+-------
+features : :class:`~openturns.Description`
+    Features list."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::HasFeature
+"Test a feature's availability.
 
 Parameters
 ----------
-enable : bool, default=True
-    Whether to switch to two digits exponent."
+feature : str
+    The desired feature, often associated to a software dependency,
+    e.g. 'libxml2' to test whether XML serialization is available.
+    Call :meth:`GetFeatures` for the possible feature values.
+
+Returns
+-------
+has_feature : bool
+    Whether the designated feature is available."

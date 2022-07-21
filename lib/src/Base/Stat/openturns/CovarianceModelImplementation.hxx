@@ -2,7 +2,7 @@
 /**
  *  @brief This class enables to build a covariance model
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -65,30 +65,25 @@ public:
                                 const CovarianceMatrix & outputCovariance);
 
   /** Virtual copy constructor */
-  virtual CovarianceModelImplementation * clone() const;
+  CovarianceModelImplementation * clone() const override;
 
   /** Dimensions accessors */
   virtual UnsignedInteger getInputDimension() const;
   virtual UnsignedInteger getOutputDimension() const;
 
   /** Compute the covariance function */
-  virtual CovarianceMatrix operator() (const Scalar s,
-                                       const Scalar t) const;
-  virtual CovarianceMatrix operator() (const Point & s,
-                                       const Point & t) const;
-
-  // compute standard representative computes the term \rho(s, t)
-  virtual Scalar computeStandardRepresentative(const Point & s,
-      const Point & t) const;
-
-#ifndef SWIG
-  virtual Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-      const Collection<Scalar>::const_iterator & t_begin) const;
-#endif
+  virtual SquareMatrix operator() (const Scalar s, const Scalar t) const;
+  virtual SquareMatrix operator() (const Point & s, const Point & t) const;
 
   // Special case for 1D model
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;
+  virtual Scalar computeAsScalar(const Point &tau) const;
+
+  // Special case for 1D input /output  model
+  virtual Scalar computeAsScalar(const Scalar s,
+                                 const Scalar t) const;
+  virtual Scalar computeAsScalar(const Scalar tau) const;
 
 #ifndef SWIG
   // Special case for 1D model
@@ -96,8 +91,8 @@ public:
                                  const Collection<Scalar>::const_iterator & t_begin) const;
 #endif
 
-  virtual CovarianceMatrix operator() (const Scalar tau) const;
-  virtual CovarianceMatrix operator() (const Point & tau) const;
+  virtual SquareMatrix operator() (const Scalar tau) const;
+  virtual SquareMatrix operator() (const Point & tau) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,
@@ -114,6 +109,13 @@ public:
   virtual CovarianceMatrix discretize(const Sample & vertices) const;
   virtual Sample discretizeRow(const Sample & vertices,
                                const UnsignedInteger p) const;
+  virtual Matrix computeCrossCovariance(const Sample &firstSample,
+                                        const Sample &secondSample) const;
+
+  virtual Matrix computeCrossCovariance(const Sample &sample,
+                                        const Point &point) const;
+  virtual Matrix computeCrossCovariance(const Point &point,
+                                        const Sample &sample) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
   virtual TriangularMatrix discretizeAndFactorize(const RegularGrid & timeGrid) const;
@@ -122,24 +124,18 @@ public:
 
   /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
   virtual HMatrix discretizeHMatrix(const RegularGrid & timeGrid,
-                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeHMatrix(const Mesh & mesh,
-                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeHMatrix(const Sample & vertices,
-                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
   virtual HMatrix discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const Mesh & mesh,
-      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const Sample & vertices,
-      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
 
   /** Is it a stationary covariance model ? */
@@ -147,6 +143,9 @@ public:
 
   /** Is it a diagonal covariance model ? */
   virtual Bool isDiagonal() const;
+
+  /** Is it safe to compute discretize etc in parallel? */
+  virtual Bool isParallel() const;
 
   /** Amplitude accessors */
   virtual Point getAmplitude() const;
@@ -179,10 +178,10 @@ public:
   virtual Description getFullParameterDescription() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Marginal accessor */
   virtual CovarianceModel getMarginal(const UnsignedInteger index) const;
@@ -200,10 +199,10 @@ public:
                      const Bool correlationFlag = false) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -231,11 +230,11 @@ protected:
   /** Cholesky factor of covariance matrix of the output dependence structure */
   mutable TriangularMatrix outputCovarianceCholeskyFactor_;
 
-  /** Flag to tell if computeStandardRepresentative() method is defined */
-  Bool definesComputeStandardRepresentative_;
-
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;
+
+  /** Flag to tell if the model is stationary */
+  Bool isStationary_;
 
   /** Nugget factor */
   Scalar nuggetFactor_;

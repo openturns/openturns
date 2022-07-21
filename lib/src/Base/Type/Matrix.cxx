@@ -2,7 +2,7 @@
 /**
  *  @brief Matrix implements the classical mathematical matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -138,13 +138,13 @@ Matrix Matrix::transpose() const
 
 /* Matrix reshape */
 Matrix Matrix::reshape(const UnsignedInteger newRowDim,
-		       const UnsignedInteger newColDim) const
+                       const UnsignedInteger newColDim) const
 {
   return Implementation(getImplementation()->reshape(newRowDim, newColDim).clone());
 }
 
 void Matrix::reshapeInPlace(const UnsignedInteger newRowDim,
-			    const UnsignedInteger newColDim)
+                            const UnsignedInteger newColDim)
 {
   copyOnWrite();
   getImplementation()->reshapeInPlace(newRowDim, newColDim);
@@ -285,21 +285,54 @@ Bool Matrix::operator == (const Matrix & rhs) const
 }
 
 
-const Scalar* Matrix::__baseaddress__() const
+const Scalar* Matrix::data() const
 {
-  return getImplementation()->__baseaddress__();
+  return getImplementation()->data();
 }
 
 
-UnsignedInteger Matrix::__elementsize__() const
+UnsignedInteger Matrix::elementSize() const
 {
-  return getImplementation()->__elementsize__();
+  return getImplementation()->elementSize();
 }
 
 
-UnsignedInteger Matrix::__stride__(UnsignedInteger dim) const
+UnsignedInteger Matrix::stride(const UnsignedInteger dim) const
 {
-  return getImplementation()->__stride__(dim);
+  return getImplementation()->stride(dim);
 }
+
+/** Hadamard product aka elementwise product */
+Matrix Matrix::computeHadamardProduct(const Matrix &other) const
+{
+  return Implementation(getImplementation())->computeHadamardProduct(*(other.getImplementation()));
+}
+
+/** Extract a diagonal */
+Matrix Matrix::getDiagonal(const SignedInteger k) const
+{
+  return getImplementation()->getDiagonal(k);
+}
+
+/** Fill a diagonal */
+void Matrix::setDiagonal(const Point &diag, const SignedInteger k)
+{
+  copyOnWrite();
+  getImplementation()->setDiagonal(diag, k);
+}
+
+/** Sum all coefficients */
+Scalar Matrix::computeSumElements() const
+{
+  return getImplementation()->computeSumElements();
+}
+
+/** All elements are squared */
+void Matrix::squareElements()
+{
+  copyOnWrite();
+  getImplementation()->squareElements();
+}
+
 
 END_NAMESPACE_OPENTURNS

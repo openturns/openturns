@@ -13,7 +13,7 @@ Sample
 
     Sample
 
-.. _parametric_distibution_factories:
+.. _parametric_distribution_factories:
 
 Building distributions from samples
 ===================================
@@ -40,19 +40,27 @@ Building distributions from samples
     FisherSnedecorFactory
     FrechetFactory
     GammaFactory
+    GeneralizedExtremeValueFactory
     GeneralizedParetoFactory
     GeometricFactory
     GumbelFactory
     HistogramFactory
     InverseNormalFactory
 
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     KernelSmoothing
 
     :template: DistributionFactory.rst_t
 
     LaplaceFactory
+
+    :template: class.rst_t
+
+    LeastSquaresDistributionFactory
+
+    :template: DistributionFactory.rst_t
+
     LogisticFactory
     LogNormalFactory
     LogUniformFactory
@@ -74,6 +82,7 @@ Building distributions from samples
     MultinomialFactory
     NegativeBinomialFactory
     NormalFactory
+    ParetoFactory
     PoissonFactory
     RayleighFactory
 
@@ -90,7 +99,9 @@ Building distributions from samples
     TruncatedNormalFactory
     UniformFactory
     UserDefinedFactory
-    WeibullFactory
+    VonMisesFactory
+    WeibullMinFactory
+    WeibullMaxFactory
 
 Building copulas from samples
 =============================
@@ -114,22 +125,9 @@ Building copulas from samples
 
     FrankCopulaFactory
     GumbelCopulaFactory
+    IndependentCopulaFactory
     NormalCopulaFactory
-
-Correlation analysis
-====================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: function.rst_t
-
-    CorrelationAnalysis_PearsonCorrelation
-    CorrelationAnalysis_SpearmanCorrelation
-    CorrelationAnalysis_PCC
-    CorrelationAnalysis_PRCC
-    CorrelationAnalysis_SRC
-    CorrelationAnalysis_SRRC
-    CorrelationAnalysis_SignedSRC
+    PlackettCopulaFactory
 
 Sensitivity Analysis
 ====================
@@ -140,6 +138,7 @@ Refer to :ref:`sensitivity_sobol`.
     :toctree: _generated/
     :template: class.rst_t
 
+    CorrelationAnalysis
     ANCOVA
     FAST
 
@@ -154,8 +153,26 @@ Refer to :ref:`sensitivity_sobol`.
     :template: class.rst_t
 
     SobolIndicesExperiment
+
+    :template: classWithPlot.rst_t
+
     SobolSimulationAlgorithm
     SobolSimulationResult
+
+HSIC Indices
+============
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    HSICStat
+    HSICUStat
+    HSICVStat
+    HSICEstimator
+    HSICEstimatorConditionalSensitivity
+    HSICEstimatorGlobalSensitivity
+    HSICEstimatorTargetSensitivity
 
 Statistical tests
 =================
@@ -173,11 +190,14 @@ Goodness-of-fit metrics & tests
     :toctree: _generated/
     :template: function.rst_t
 
-    FittingTest_BIC
-    FittingTest_ChiSquared
-    FittingTest_Kolmogorov
-    NormalityTest_AndersonDarlingNormal
-    NormalityTest_CramerVonMisesNormal
+    FittingTest.AIC
+    FittingTest.AICC
+    FittingTest.BIC
+    FittingTest.ChiSquared
+    FittingTest.Kolmogorov
+    FittingTest.Lilliefors
+    NormalityTest.AndersonDarlingNormal
+    NormalityTest.CramerVonMisesNormal
 
 Graphical tests
 ---------------
@@ -186,13 +206,15 @@ Graphical tests
     :toctree: _generated/
     :template: functionWithPlot.rst_t
 
-    VisualTest_DrawCobWeb
-    VisualTest_DrawHenryLine
-    VisualTest_DrawKendallPlot
-    VisualTest_DrawLinearModel
-    VisualTest_DrawLinearModelResidual
-    VisualTest_DrawQQplot
-    VisualTest_DrawCDFplot
+    VisualTest.DrawPairs
+    VisualTest.DrawPairsMarginals
+    VisualTest.DrawParallelCoordinates
+    VisualTest.DrawHenryLine
+    VisualTest.DrawKendallPlot
+    VisualTest.DrawLinearModel
+    VisualTest.DrawLinearModelResidual
+    VisualTest.DrawQQplot
+    VisualTest.DrawCDFplot
 
 Hypothesis tests
 ----------------
@@ -201,14 +223,14 @@ Hypothesis tests
     :toctree: _generated/
     :template: function.rst_t
 
-    HypothesisTest_ChiSquared
-    HypothesisTest_FullPearson
-    HypothesisTest_FullSpearman
-    HypothesisTest_PartialPearson
-    HypothesisTest_PartialSpearman
-    HypothesisTest_Pearson
-    HypothesisTest_Spearman
-    HypothesisTest_TwoSamplesKolmogorov
+    HypothesisTest.ChiSquared
+    HypothesisTest.FullPearson
+    HypothesisTest.FullSpearman
+    HypothesisTest.PartialPearson
+    HypothesisTest.PartialSpearman
+    HypothesisTest.Pearson
+    HypothesisTest.Spearman
+    HypothesisTest.TwoSamplesKolmogorov
 
 Linear model tests
 ------------------
@@ -217,13 +239,13 @@ Linear model tests
     :toctree: _generated/
     :template: function.rst_t
 
-    LinearModelTest_LinearModelFisher
-    LinearModelTest_LinearModelResidualMean
-    LinearModelTest_LinearModelHarrisonMcCabe
-    LinearModelTest_LinearModelBreuschPagan
-    LinearModelTest_LinearModelDurbinWatson
-    LinearModelTest_FullRegression
-    LinearModelTest_PartialRegression
+    LinearModelTest.LinearModelFisher
+    LinearModelTest.LinearModelResidualMean
+    LinearModelTest.LinearModelHarrisonMcCabe
+    LinearModelTest.LinearModelBreuschPagan
+    LinearModelTest.LinearModelDurbinWatson
+    LinearModelTest.FullRegression
+    LinearModelTest.PartialRegression
 
 Model selection
 ---------------
@@ -232,8 +254,9 @@ Model selection
     :toctree: _generated/
     :template: function.rst_t
 
-    FittingTest_BestModelBIC
-    FittingTest_BestModelChiSquared
-    FittingTest_BestModelKolmogorov
-
-
+    FittingTest.BestModelAIC
+    FittingTest.BestModelAICC
+    FittingTest.BestModelBIC
+    FittingTest.BestModelChiSquared
+    FittingTest.BestModelKolmogorov
+    FittingTest.BestModelLilliefors

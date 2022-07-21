@@ -8,7 +8,7 @@ threshold = 0.001
 model = ot.AbsoluteExponential([1.0])
 algo = ot.KarhunenLoeveP1Algorithm(mesh, model, threshold)
 algo.run()
-ev = algo.getResult().getEigenValues()
+ev = algo.getResult().getEigenvalues()
 modes = algo.getResult().getScaledModesAsProcessSample()
 g = modes.drawMarginal(0)
 g.setXTitle("$t$")

@@ -2,7 +2,7 @@
 /**
  *  @brief The Arcsine distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -137,7 +137,7 @@ Scalar Arcsine::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if ((x <= a_) || (x >= b_)) return SpecFunc::LogMinScalar;
+  if ((x <= a_) || (x >= b_)) return - SpecFunc::MaxScalar;
   return -std::log(M_PI) - 0.5 * (std::log(b_ - x) + std::log(x - a_));
 }
 
@@ -283,10 +283,7 @@ void Arcsine::computeCovariance() const
 
 Point Arcsine::getParameter() const
 {
-  Point point(2);
-  point[0] = a_;
-  point[1] = b_;
-  return point;
+  return {a_, b_};
 }
 
 void Arcsine::setParameter(const Point & parameter)
@@ -299,10 +296,7 @@ void Arcsine::setParameter(const Point & parameter)
 
 Description Arcsine::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "a";
-  description[1] = "b";
-  return description;
+  return {"a", "b"};
 }
 
 /* Check if the distribution is elliptical */

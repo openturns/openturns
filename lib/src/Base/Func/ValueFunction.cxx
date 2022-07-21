@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all spatial functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -108,7 +108,7 @@ Sample ValueFunction::operator() (const Sample & inFld) const
 /* Get the i-th marginal function */
 ValueFunction::Implementation ValueFunction::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return new ValueFunction(function_.getMarginal(i), getInputMesh());
 }
 

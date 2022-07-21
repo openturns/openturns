@@ -2,7 +2,7 @@
 /**
  *  @brief Regression from a data sample upon a particular basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,6 +27,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ApproximationAlgorithm)
 
+/* Default constructor */
+ApproximationAlgorithm::ApproximationAlgorithm()
+  : TypedInterfaceObject<ApproximationAlgorithmImplementation>(new ApproximationAlgorithmImplementation)
+{
+  // Nothing to do
+}
 
 /* Constructor from implementation */
 ApproximationAlgorithm::ApproximationAlgorithm(const ApproximationAlgorithmImplementation & implementation)

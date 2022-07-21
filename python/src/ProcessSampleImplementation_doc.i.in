@@ -4,6 +4,8 @@
 Available constructors:
     ProcessSample(*mesh, K, d*)
 
+    ProcessSample(*mesh, coll*)
+
     ProcessSample(*K, field*)
 
 Parameters
@@ -16,6 +18,8 @@ d : int
     Dimension  of the values of the field.
 field : :class:`~openturns.Field`
     One field.
+coll : sequence of :class:`~openturns.Sample`
+    List of field values.
 
 Notes
 -----
@@ -82,6 +86,41 @@ OT_ProcessSample_add_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_ProcessSample_getField_doc
+"Field accessor.
+
+Parameters
+----------
+i : int
+    Field index
+
+Returns
+-------
+field : :class:`~openturns.Field`
+    i-th field in the sample.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::getField
+OT_ProcessSample_getField_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_setField_doc
+"Field accessor.
+
+Parameters
+----------
+i : int
+    Field index
+field : :class:`~openturns.Field`
+    i-th field in the sample.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::setField
+OT_ProcessSample_setField_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_ProcessSample_computeMean_doc
 "Compute the mean field of the collection of fields.
 
@@ -89,7 +128,7 @@ Returns
 -------
 mean : :class:`~openturns.Field`
     The mean field has the same dimension `d` and the same mesh as the fields
-    contained in the collection. At each vertex of the mesh, we calculate
+    contained in the collection. At each vertex of the mesh, we compute
     the mean of the values at this vertex of the `K` fields contained
     in the process sample:
 
@@ -144,8 +183,28 @@ OT_ProcessSample_computeTemporalMean_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_ProcessSample_computeStandardDeviation_doc
+"Compute the standard deviation field of the collection of fields.
+
+Returns
+-------
+stddev : :class:`~openturns.Field`
+    The standard deviation field has the same dimension `d` and the same mesh
+    as the fields contained in the collection.
+    At each vertex of the mesh, we compute the standard deviation of the
+    values at this vertex of the `K` fields contained in the process sample:
+
+    .. math::
+
+        \forall i \in [0,N-1], \quad \sqrt{\dfrac{1}{K-1} \sum_{k=1}^K (\vect{x}_i^k - \hat{\mu}_i)^2}"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeStandardDeviation
+OT_ProcessSample_computeStandardDeviation_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_ProcessSample_computeQuantilePerComponent_doc
-"Compute the temporal mean of the values of the fields.
+"Compute the quantile field of the collection of fields.
 
 Parameters
 ----------
@@ -156,12 +215,195 @@ Returns
 -------
 quantile : :class:`~openturns.Field` or :class:`~openturns.ProcessSample`
     This field has the same size and the same dimension as the fields
-    of the collection. At each vertex of the mesh, we estimate the
-    component-wise quantile of order `p`, using the empirical quantile.
+    of the collection. At each vertex of the mesh, we compute the
+    component-wise empirical quantile of order `p`.
 "
 %enddef
 %feature("docstring") OT::ProcessSampleImplementation::computeQuantilePerComponent
 OT_ProcessSample_computeQuantilePerComponent_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_computeRange_doc
+"Compute the range field of the collection of fields.
+
+Returns
+-------
+range : :class:`~openturns.Field`
+    This field has the same size and the same dimension as the fields
+    of the collection. At each vertex of the mesh, we compute the
+    component-wise range, i.e. the difference between the largest and
+    the lowest value in the field collection.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeRange
+OT_ProcessSample_computeRange_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_computeMedian_doc
+"Compute the median field of the collection of fields.
+
+Returns
+-------
+median : :class:`~openturns.Field`
+    This field has the same size and the same dimension as the fields
+    of the collection. At each vertex of the mesh, we compute the
+    component-wise empirical median. It is the same as
+    `computeQuantilePerComponent(0.5)`.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeMedian
+OT_ProcessSample_computeMedian_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_computeVariance_doc
+"Compute the variance field of the collection of fields.
+
+Returns
+-------
+variance : :class:`~openturns.Field`
+    The variance field has the same dimension `d` and the same mesh
+    as the fields contained in the collection.
+    At each vertex of the mesh, we compute the variance of the
+    values at this vertex of the `K` fields contained in the process sample.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeStandardDeviation
+OT_ProcessSample_computeVariance_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_computeSkewness_doc
+"Compute the skewness field of the collection of fields.
+
+Returns
+-------
+skewness : :class:`~openturns.Field`
+    The squewness field has the same dimension `d` and the same mesh
+    as the fields contained in the collection.
+    At each vertex of the mesh, we compute the skewness of the
+    values at this vertex of the `K` fields contained in the process sample.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeSkewness
+OT_ProcessSample_computeSkewness_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_computeKurtosis_doc
+"Compute the kurtosis field of the collection of fields.
+
+Returns
+-------
+kurtosis : :class:`~openturns.Field`
+    The squewness field has the same dimension `d` and the same mesh
+    as the fields contained in the collection.
+    At each vertex of the mesh, we compute the kurtosis of the
+    values at this vertex of the `K` fields contained in the process sample.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeKurtosis
+OT_ProcessSample_computeKurtosis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_getMin_doc
+"Compute the min field of the collection of fields.
+
+Returns
+-------
+min : :class:`~openturns.Field`
+    This field has the same size and the same dimension as the fields
+    of the collection. At each vertex of the mesh, we compute the
+    component-wise minimum.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::getMin
+OT_ProcessSample_getMin_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_getMax_doc
+"Compute the max field of the collection of fields.
+
+Returns
+-------
+max : :class:`~openturns.Field`
+    This field has the same size and the same dimension as the fields
+    of the collection. At each vertex of the mesh, we compute the
+    component-wise maximum.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::getMax
+OT_ProcessSample_getMax_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_computeCenteredMoment_doc
+"Compute the centered moment field of the collection of fields.
+
+Parameters
+----------
+k : int
+    Order of the moment.
+
+Returns
+-------
+moment : :class:`~openturns.Field`
+    This field has the same size and the same dimension as the fields
+    of the collection. At each vertex of the mesh, we compute the
+    component-wise centered moment of order `n`.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeCenteredMoment
+OT_ProcessSample_computeCenteredMoment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_computeRawMoment_doc
+"Compute the raw moment field of the collection of fields.
+
+Parameters
+----------
+k : int
+    Order of the moment.
+
+Returns
+-------
+moment : :class:`~openturns.Field`
+    This field has the same size and the same dimension as the fields
+    of the collection. At each vertex of the mesh, we compute the
+    component-wise raw moment of order `n`.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeRawMoment
+OT_ProcessSample_computeRawMoment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_computeEmpiricalCDF_doc
+"Compute the empirical CDF field of the collection of fields.
+
+Parameters
+----------
+point : sequence of float
+    The point at which all the marginal CDF are computed. Its dimension
+    must match the process sample dimension.
+tail : bool (optional, default=False)
+    Flag to if it is the CDF or the complementary CDF which is computed.
+
+Returns
+-------
+cdf : :class:`~openturns.Field`
+    This field is scalar and has the same size as the process sample.
+    At each vertex of the mesh, we compute the component-wise empirical
+    CDF at the given point.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeEmpiricalCDF
+OT_ProcessSample_computeEmpiricalCDF_doc
 
 // ---------------------------------------------------------------------
 
@@ -259,3 +501,102 @@ graph : :class:`~openturns.Graph`
 %enddef
 %feature("docstring") OT::ProcessSampleImplementation::drawMarginal
 OT_ProcessSample_drawMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_draw_doc
+"Draw the whole field.
+
+Parameters
+----------
+interpolate : bool (optional, default=True)
+    Whether to draw interpolated values.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    The graph of the whole field using the `interpolate` method.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::draw
+OT_ProcessSample_draw_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_drawMarginalCorrelation_doc
+"Draw correlation between 2 marginals.
+
+This is only available on a 1-d mesh.
+
+Parameters
+----------
+i, j : int, :math:`i, j < d`
+    Marginal indices.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph of the correlation between 2 marginals.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::drawMarginalCorrelation
+OT_ProcessSample_drawMarginalCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_drawCorrelation_doc
+"Draw correlation between all marginals.
+
+This is only available on a 1-d mesh.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    The graph of the correlation between all marginals.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::drawCorrelation
+OT_ProcessSample_drawCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_getSampleAtVertex_doc
+"Extract sample at specific vertex of the mesh.
+
+Parameters
+----------
+index : int, :math:`index < N`
+    Node index in the mesh.
+
+Returns
+-------
+sample_at_i : :class:`Sample`
+    The sample of all values of the trajectories at the desired node.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::getSampleAtVertex
+OT_ProcessSample_getSampleAtVertex_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_erase_doc
+"Erase point(s) at or between index(es) (in-place).
+
+Parameters
+----------
+f : int, :math:`0 \leq f < m`
+    The index of the first point to erase.
+l : int, :math:`f < l \leq m`, optional
+    The index after the last point to erase.
+    Default uses `l = f + 1` and only removes `sample[f]`."
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::erase
+OT_ProcessSample_erase_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_clear_doc
+"Erase all field values."
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::clear
+OT_ProcessSample_clear_doc

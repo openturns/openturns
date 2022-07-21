@@ -26,6 +26,7 @@ Non-parametric
     :template: classWithPlot.rst_t
 
     MixtureClassifier
+    MinimumVolumeClassifier
 
     :template: class.rst_t
 
@@ -36,6 +37,5 @@ Non-parametric
     functional_chaos_expansion
     glm
     kriging
-    low_rank_approximation
     lm
 

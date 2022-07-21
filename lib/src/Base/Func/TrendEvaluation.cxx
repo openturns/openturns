@@ -2,7 +2,7 @@
 /**
  *  @brief Class for a Box cox implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -96,7 +96,7 @@ Point TrendEvaluation::operator() (const Point & inP) const
   Point result(outputDimension);
   const UnsignedInteger reducedInputDimension = function_.getInputDimension();
   Point t(reducedInputDimension);
-  for (UnsignedInteger i = 0; i < reducedInputDimension; ++i) t[i] = inP[i];
+  std::copy(inP.begin(), inP.begin() + reducedInputDimension, t.begin());
   const Point z(function_(t));
   for (UnsignedInteger i = 0; i < outputDimension; ++i) result[i] = inP[i + reducedInputDimension] + z[i];
   callsNumber_.increment();

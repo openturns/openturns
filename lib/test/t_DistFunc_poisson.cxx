@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class DistFunc for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,59 +31,59 @@ int main(int, char *[])
   setRandomGenerator();
 
   try
+  {
+    // Poisson related functions
     {
-      // Poisson related functions
+      // dPoisson
+      Scalar lambdaMin = 0.2;
+      Scalar lambdaMax = 5.0;
+      UnsignedInteger n1 = 5;
+      UnsignedInteger kMax = 10;
+      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        // dPoisson
-        Scalar lambdaMin = 0.2;
-        Scalar lambdaMax = 5.0;
-        UnsignedInteger n1 = 5;
-        UnsignedInteger kMax = 10;
-        for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
-          {
-            Scalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
-            for (UnsignedInteger k = 0; k < kMax; ++k)
-              {
-                fullprint << "dPoisson(" << lambda << ", " << k << ")=" << DistFunc::dPoisson(lambda, k) << std::endl;
-              }
-          }
-      } // dPoisson
+        Scalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
+        for (UnsignedInteger k = 0; k < kMax; ++k)
+        {
+          fullprint << "dPoisson(" << lambda << ", " << k << ")=" << DistFunc::dPoisson(lambda, k) << std::endl;
+        }
+      }
+    } // dPoisson
+    {
+      // logdPoisson
+      Scalar lambdaMin = 0.2;
+      Scalar lambdaMax = 5.0;
+      UnsignedInteger n1 = 5;
+      UnsignedInteger kMax = 10;
+      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        // logdPoisson
-        Scalar lambdaMin = 0.2;
-        Scalar lambdaMax = 5.0;
-        UnsignedInteger n1 = 5;
-        UnsignedInteger kMax = 10;
-        for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
-          {
-            Scalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
-            for (UnsignedInteger k = 0; k < kMax; ++k)
-              {
-                fullprint << "logdPoisson(" << lambda << ", " << k << ")=" << DistFunc::logdPoisson(lambda, k) << std::endl;
-              }
-          }
-      } // logdPoisson
+        Scalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
+        for (UnsignedInteger k = 0; k < kMax; ++k)
+        {
+          fullprint << "logdPoisson(" << lambda << ", " << k << ")=" << DistFunc::logdPoisson(lambda, k) << std::endl;
+        }
+      }
+    } // logdPoisson
+    {
+      // rPoisson
+      Scalar lambdaMin = 0.2;
+      Scalar lambdaMax = 5.0;
+      UnsignedInteger n1 = 5;
+      UnsignedInteger nR = 5;
+      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        // rPoisson
-        Scalar lambdaMin = 0.2;
-        Scalar lambdaMax = 5.0;
-        UnsignedInteger n1 = 5;
-        UnsignedInteger nR = 5;
-        for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
-          {
-            Scalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
-            for (UnsignedInteger iR = 0; iR < nR; ++iR)
-              {
-                fullprint << "rPoisson(" << lambda << ")=" << DistFunc::rPoisson(lambda) << std::endl;
-              }
-          }
-      } // rPoisson
-    }
+        Scalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
+        for (UnsignedInteger iR = 0; iR < nR; ++iR)
+        {
+          fullprint << "rPoisson(" << lambda << ")=" << DistFunc::rPoisson(lambda) << std::endl;
+        }
+      }
+    } // rPoisson
+  }
   catch (TestFailed & ex)
-    {
-      std::cerr << ex << std::endl;
-      return ExitCode::Error;
-    }
+  {
+    std::cerr << ex << std::endl;
+    return ExitCode::Error;
+  }
 
 
   return ExitCode::Success;

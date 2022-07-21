@@ -79,7 +79,7 @@ Several classical techniques exist:
    search the smallest integer :math:`k` such that
    :math:`u\leq\sum_{i=0}^kp_i`, where :math:`p_i=\Prob{X=i}`.
 
--  The stable distribution method (archimedean copulas): to be detailed.
+-  The stable distribution method (Archimedean copulas): to be detailed.
 
 -  The conditional CDF inversion (general copula or general multivariate
    distributions): this method is a general procedure to sample a
@@ -197,7 +197,7 @@ The techniques implemented in each distribution are:
    - large truncation interval: rejection
 - Uniform: Transformation.
 - UserDefined: Sequential search.
-- Weibull: CDF inversion.
+- WeibullMin: CDF inversion.
 - Zipf-Mandelbrot: Bisection search.
 
 
@@ -207,7 +207,7 @@ The techniques implemented in each distribution are:
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/probabilistic_modeling/distribution_manipulation`
+    - See :doc:`/auto_probabilistic_modeling/distributions/plot_distribution_manipulation`
 
 .. topic:: References:
 

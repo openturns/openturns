@@ -5,10 +5,10 @@ Covariance class=Matrix implementation=class=MatrixImplementation name=Unnamed r
 Elliptical distribution= false
 Elliptical copula= false
 Independent copula= false
-oneRealization=class=Point name=Unnamed dimension=2 values=[1.92068,2.49374]
-oneSample=class=Sample name=ConditionalDistribution implementation=class=SampleImplementation name=ConditionalDistribution size=10 dimension=2 description=[X0,X1] data=[[1.71438,1.87896],[1.8835,1.80748],[1.68457,3.16374],[1.58862,1.53788],[1.21044,2.02765],[1.98184,3.21605],[1.25986,2.2968],[1.11108,1.85243],[1.97898,2.729],[1.9942,1.23036]]
-anotherSample mean=class=Point name=Unnamed dimension=2 values=[1.50531,2.0939]
-anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0847584,-0.00089997,-0.00089997,0.749613]
+oneRealization=class=Point name=Unnamed dimension=2 values=[1.13528,1.0937]
+oneSample=class=Sample name=ConditionalDistribution implementation=class=SampleImplementation name=ConditionalDistribution size=10 dimension=2 description=[X0,X1] data=[[1.92068,2.49374],[1.71438,1.87896],[1.8835,1.80748],[1.68457,3.16374],[1.58862,1.53788],[1.21044,2.02765],[1.98184,3.21605],[1.25986,2.2968],[1.11108,1.85243],[1.97898,2.729]]
+anotherSample mean=class=Point name=Unnamed dimension=2 values=[1.50538,2.09375]
+anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0847776,-0.000929088,-0.000929088,0.74965]
 Zero point= class=Point name=Unnamed dimension=2 values=[0,0] pdf=0 cdf=0
 Quantile=class=Point name=Unnamed dimension=2 values=[1.97468,3.60341]
 CDF(quantile)=0.95
@@ -21,10 +21,10 @@ Covariance class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 Elliptical distribution= false
 Elliptical copula= true
 Independent copula= true
-oneRealization=class=Point name=Unnamed dimension=1 values=[1.95381]
-oneSample=class=Sample name=ConditionalDistribution implementation=class=SampleImplementation name=ConditionalDistribution size=10 dimension=1 description=[X0] data=[[1.43698],[1.31895],[2.05226],[-1.44045],[2.03224],[0.258808],[-0.787032],[1.91159],[2.44972],[-1.19836]]
-anotherSample mean=class=Point name=Unnamed dimension=1 values=[0.503588]
-anotherSample covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.4106]
+oneRealization=class=Point name=Unnamed dimension=1 values=[-0.21251]
+oneSample=class=Sample name=ConditionalDistribution implementation=class=SampleImplementation name=ConditionalDistribution size=10 dimension=1 description=[X0] data=[[1.04021],[-0.768799],[-0.0327311],[1.95381],[1.43698],[1.31895],[2.05226],[-1.44045],[2.03224],[0.258808]]
+anotherSample mean=class=Point name=Unnamed dimension=1 values=[0.503649]
+anotherSample covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.41134]
 Zero point= class=Point name=Unnamed dimension=1 values=[0] pdf=0.253748 cdf=0.367604
 Quantile=class=Point name=Unnamed dimension=1 values=[3.05046]
 CDF(quantile)=0.95
@@ -32,7 +32,7 @@ margin=class=ConditionalDistribution name=ConditionalDistribution dimension=1 co
 margin PDF=0.253748
 margin CDF=0.367604
 margin quantile=class=Point name=Unnamed dimension=1 values=[3.05046]
-margin realization=class=Point name=Unnamed dimension=1 values=[4.0308]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.141979]
 conditioning distribution=ComposedDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution class=ConditionalDistribution name=ConditionalDistribution dimension=1 conditioned distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] conditioning distribution=class=ComposedDistribution name=ComposedDistribution dimension=2 copula=class=IndependentCopula name=IndependentCopula dimension=2 marginal[0]=class=Binomial name=Binomial dimension=1 n=3 p=0.5 marginal[1]=class=Uniform name=Uniform dimension=1 a=1 b=2 link function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[y0,y1,y0,y1] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[y0,y1] outputVariablesNames=[y0,y1] formulas=[y0,y1] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[y0,y1] outputVariablesNames=[y0,y1] formulas=[y0,y1] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[y0,y1] outputVariablesNames=[y0,y1] formulas=[y0,y1]
 Distribution ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
@@ -42,10 +42,10 @@ Covariance class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 Elliptical distribution= false
 Elliptical copula= true
 Independent copula= true
-oneRealization=class=Point name=Unnamed dimension=1 values=[5.81408]
-oneSample=class=Sample name=ConditionalDistribution implementation=class=SampleImplementation name=ConditionalDistribution size=10 dimension=1 description=[X0] data=[[2.47839],[3.09905],[4.94457],[-0.310612],[0.910042],[2.78593],[-1.69853],[-1.11638],[2.11779],[-1.15458]]
-anotherSample mean=class=Point name=Unnamed dimension=1 values=[1.49671]
-anotherSample covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.16387]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.106685]
+oneSample=class=Sample name=ConditionalDistribution implementation=class=SampleImplementation name=ConditionalDistribution size=10 dimension=1 description=[X0] data=[[1.52532],[3.2931],[4.70326],[2.99546],[5.81408],[2.47839],[3.09905],[4.94457],[-0.310612],[0.910042]]
+anotherSample mean=class=Point name=Unnamed dimension=1 values=[1.49603]
+anotherSample covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.16539]
 Zero point= class=Point name=Unnamed dimension=1 values=[0] pdf=0.156744 cdf=0.192205
 Quantile=class=Point name=Unnamed dimension=1 values=[4.38019]
 CDF(quantile)=0.95
@@ -53,7 +53,7 @@ margin=class=ConditionalDistribution name=ConditionalDistribution dimension=1 co
 margin PDF=0.156744
 margin CDF=0.192205
 margin quantile=class=Point name=Unnamed dimension=1 values=[4.38019]
-margin realization=class=Point name=Unnamed dimension=1 values=[2.60717]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.843042]
 conditioning distribution=ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution class=ConditionalDistribution name=ConditionalDistribution dimension=1 conditioned distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] conditioning distribution=class=ComposedDistribution name=ComposedDistribution dimension=2 copula=class=IndependentCopula name=IndependentCopula dimension=2 marginal[0]=class=Dirac name=Dirac dimension=1 point=class=Point name=Unnamed dimension=1 values=[0] marginal[1]=class=Uniform name=Uniform dimension=1 a=1 b=2 link function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[y0,y1,y0,y1] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[y0,y1] outputVariablesNames=[y0,y1] formulas=[y0,y1] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[y0,y1] outputVariablesNames=[y0,y1] formulas=[y0,y1] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[y0,y1] outputVariablesNames=[y0,y1] formulas=[y0,y1]
 Distribution ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
@@ -63,10 +63,10 @@ Covariance class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 Elliptical distribution= false
 Elliptical copula= true
 Independent copula= true
-oneRealization=class=Point name=Unnamed dimension=1 values=[-0.00807902]
-oneSample=class=Sample name=ConditionalDistribution implementation=class=SampleImplementation name=ConditionalDistribution size=10 dimension=1 description=[X0] data=[[-1.82229],[1.09384],[-0.774039],[0.0710982],[-1.06118],[-2.8539],[0.411551],[0.138048],[3.71088],[-0.906963]]
-anotherSample mean=class=Point name=Unnamed dimension=1 values=[0.0287655]
-anotherSample covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.34064]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.190984]
+oneSample=class=Sample name=ConditionalDistribution implementation=class=SampleImplementation name=ConditionalDistribution size=10 dimension=1 description=[X0] data=[[-0.217096],[-1.35136],[-1.30765],[0.789252],[1.43663],[0.580832],[-1.41361],[0.000383335],[-0.00807902],[-1.82229]]
+anotherSample mean=class=Point name=Unnamed dimension=1 values=[0.0285016]
+anotherSample covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.34231]
 Zero point= class=Point name=Unnamed dimension=1 values=[0] pdf=0.276526 cdf=0.5
 Quantile=class=Point name=Unnamed dimension=1 values=[2.50635]
 CDF(quantile)=0.95
@@ -74,4 +74,4 @@ margin=class=ConditionalDistribution name=ConditionalDistribution dimension=1 co
 margin PDF=0.276526
 margin CDF=0.5
 margin quantile=class=Point name=Unnamed dimension=1 values=[2.50635]
-margin realization=class=Point name=Unnamed dimension=1 values=[-0.261659]
+margin realization=class=Point name=Unnamed dimension=1 values=[-0.479683]

@@ -1,13 +1,10 @@
 %feature("docstring") OT::ExtremeValueCopula
 "ExtremeValue copula.
 
-Available constructor:
-    ExtremeValueCopula(*pickandFunction*)
-
 Parameters
 ----------
 pickandFunction : :class:`~openturns.Function`
-    Parameter :math:`A`, the Pickand function defining the extreme value copula. By default, it is the constant function equal to 1.
+    Parameter :math:`A`, the Pickand function defining the extreme value copula. Default is the constant function equal to 1.
 
 Notes
 -----
@@ -23,7 +20,7 @@ Where :math:`A` is a convex function satisfying :math:`A(0)=A(1)=1`, :math:`\max
 
 See also
 --------
-Copula
+Distribution
 
 Examples
 --------

@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a linear model estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,9 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DatabaseFunction.hxx"
 #include "openturns/OSS.hxx"
+#include "openturns/MatrixImplementation.hxx"
+#include "openturns/SampleImplementation.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -64,16 +67,18 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
   , leverages_(leverages)
   , cookDistances_(cookDistances)
   , sigma2_(sigma2)
+  , hasIntercept_(false)
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In LinearModelResult::LinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
-  // Check DoF > 0
-  UnsignedInteger degreesOfFreedom = getDegreesOfFreedom();
-  if(!(degreesOfFreedom > 0))
-    throw InvalidArgumentException(HERE) << "Degrees of freedom is less or equal than 0. Data size = " << outputSample.getSize()
+  // Check DoF >= 0
+  const SignedInteger degreesOfFreedom = getDegreesOfFreedom();
+  if (degreesOfFreedom < 0)
+    throw InvalidArgumentException(HERE) << "Degrees of freedom is less than 0. Data size = " << outputSample.getSize()
                                          << ", basis size = " << beta_.getSize()
                                          << ", degrees of freedom = " << degreesOfFreedom;
+  checkIntercept();
 }
 
 /* Virtual constructor */
@@ -82,11 +87,44 @@ LinearModelResult * LinearModelResult::clone() const
   return new LinearModelResult(*this);
 }
 
+void LinearModelResult::checkIntercept()
+{
+  // Check the presence of intercept in the design
+  // As we might set any arbitrary basis, there is no notion of formula
+  // TODO : add attribute intercept_ in LinearModelAlgorithm
+  //  We check if there is a constant column (std = 0)
+  const UnsignedInteger size = design_.getNbRows();
+  const UnsignedInteger p = design_.getNbColumns();
+  MatrixImplementation design(*design_.getImplementation());
+  SampleImplementation sample(size, 1);
+  Bool cont = true;
+  UnsignedInteger j = 0;
+  while((j < p) && cont)
+  {
+    const Point column(design.getColumn(j));
+    sample.setData(column);
+    const Scalar min = sample.getMin()[0];
+    const Scalar max = sample.getMax()[0];
+    if (min == max)
+    {
+      cont = false;
+      hasIntercept_ = true;
+    }
+    j++;
+  }
+}
+
+Bool LinearModelResult::hasIntercept() const
+{
+  return hasIntercept_;
+}
 
 /* String converter */
 String LinearModelResult::__repr__() const
 {
-  return OSS(true) << "class=" << getClassName();
+  return OSS(true) << "class=" << getClassName()
+         << " beta=" << beta_
+         << " formula=" << condensedFormula_;
 }
 
 Basis LinearModelResult::getBasis() const
@@ -136,7 +174,7 @@ Sample LinearModelResult::getSampleResiduals() const
 }
 
 /* Number of degrees of freedom */
-UnsignedInteger LinearModelResult::getDegreesOfFreedom() const
+SignedInteger LinearModelResult::getDegreesOfFreedom() const
 {
   const UnsignedInteger size = inputSample_.getSize();
   const UnsignedInteger basisSize = beta_.getSize();
@@ -147,6 +185,9 @@ UnsignedInteger LinearModelResult::getDegreesOfFreedom() const
 Normal LinearModelResult::getNoiseDistribution() const
 {
   // Gaussian output
+  const SignedInteger dof = getDegreesOfFreedom();
+  if (dof <= 0)
+    throw NotDefinedException(HERE) << "The noise variance is undefined when DOF is null";
   return Normal(0, std::sqrt(sigma2_));
 }
 
@@ -173,12 +214,19 @@ Point LinearModelResult::getCookDistances() const
 /* R-squared test */
 Scalar LinearModelResult::getRSquared() const
 {
-  // Get residuals and output samples
+  // Get residuals and RSS
   const Sample residuals(getSampleResiduals());
-  const Sample outputSample(getOutputSample());
-  // Define RSS and SYY
   const Scalar RSS = residuals.computeRawMoment(2)[0];
-  const Scalar SYY = outputSample.computeCenteredMoment(2)[0];
+  // get outputSample and SYY
+  // See https://stats.stackexchange.com/questions/26176/removal-of-statistically-significant-intercept-term-increases-r2-in-linear-mo
+  // In case there is no intercept convention for R^2 is to have the ration between sum of squared predicted over sum of squared real
+  // values.
+  const Sample outputSample(getOutputSample());
+  Scalar SYY = 1.0;
+  if (!hasIntercept_)
+    SYY = outputSample.computeRawMoment(2)[0];
+  else
+    SYY = outputSample.computeCenteredMoment(2)[0];
   const Scalar rSquared = 1.0 - RSS / SYY;
   return rSquared;
 }
@@ -186,10 +234,17 @@ Scalar LinearModelResult::getRSquared() const
 /* Adjusted R-squared test */
 Scalar LinearModelResult::getAdjustedRSquared() const
 {
-  const UnsignedInteger dof = getDegreesOfFreedom();
+  const SignedInteger dof = getDegreesOfFreedom();
+  if (dof <= 0)
+    throw NotDefinedException(HERE) << "The adjusted R2 is undefined with a null DOF";
   const UnsignedInteger size = getSampleResiduals().getSize();
   const Scalar R2  = getRSquared();
-  return 1.0 - (1.0 - R2) * (size - 1) / dof;
+  Scalar aR2 = (1.0 - R2);
+  if (hasIntercept_)
+    aR2 *= size - 1;
+  else
+    aR2 *= size;
+  return 1 - aR2 / dof;
 }
 
 Point LinearModelResult::getCoefficientsStandardErrors() const

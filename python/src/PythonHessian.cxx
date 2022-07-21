@@ -2,7 +2,7 @@
 /**
  * @brief PythonHessian implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -74,6 +74,19 @@ PythonHessian::PythonHessian(const PythonHessian & other)
   Py_XINCREF(pyObj_);
 }
 
+/* Copy assignment operator */
+PythonHessian & PythonHessian::operator=(const PythonHessian & rhs)
+{
+  if (this != &rhs)
+  {
+    HessianImplementation::operator=(rhs);
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF(pyObj_);
+  }
+  return *this;
+}
+
 /* Destructor */
 PythonHessian::~PythonHessian()
 {
@@ -104,13 +117,6 @@ String PythonHessian::__str__(const String & ) const
       << " name=" << getName();
   return oss;
 }
-
-/* Test for actual implementation */
-Bool PythonHessian::isActualImplementation() const
-{
-  return true;
-}
-
 
 
 /* Here is the interface that all derived class must implement */

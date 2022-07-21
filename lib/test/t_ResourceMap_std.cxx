@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ResourceMap for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,18 @@ int main(int, char *[])
   // Create a ResourceMap Object
   fullprint << ResourceMap::GetInstance() << std::endl;
 
-  fullprint << "Extract from ResourceMap : R-executable-command -> " << ResourceMap::GetAsString("R-executable-command") << std::endl;
+  fullprint << "Extract from ResourceMap: R-executable-command -> " << ResourceMap::GetAsString("Graph-RExecutableCommand") << std::endl;
+
+  // Create string key
+  fullprint << "Create key: dummy_key" << std::endl;
+  ResourceMap::AddAsString("dummy_key", "A temporary key, to be removed");
+  fullprint << ResourceMap::GetInstance() << std::endl;
+
+  // Remove key
+  fullprint << "Remove key: dummy_key" << std::endl;
+  ResourceMap::RemoveKey("dummy_key");
+  fullprint << ResourceMap::GetInstance() << std::endl;
+
 
   return ExitCode::Success;
 }

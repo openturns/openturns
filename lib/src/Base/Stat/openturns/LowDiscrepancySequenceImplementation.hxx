@@ -4,7 +4,7 @@
  *  simulation algorithms. It delegates to its children the effective
  *  history strategy.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,9 +48,9 @@ public:
   explicit LowDiscrepancySequenceImplementation(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor */
-  virtual LowDiscrepancySequenceImplementation * clone() const;
+  LowDiscrepancySequenceImplementation * clone() const override;
 
-  /** initialize the sequence */
+  /** Initialize the sequence */
   virtual void initialize(const UnsignedInteger dimension);
 
   /** Dimension accessor */
@@ -65,14 +65,18 @@ public:
   /** Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
   static Scalar ComputeStarDiscrepancy(const Sample & sample);
 
+  /** Scrambling state accessor */
+  void setScramblingState(const UnsignedInteger state);
+  Unsigned64BitsInteger getScramblingState() const;
+
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** Compute the local discrepancy of a sample, given a multidimensionnal interval */
@@ -83,18 +87,27 @@ protected:
   typedef Collection<Unsigned64BitsInteger>                           Unsigned64BitsIntegerCollection;
   typedef PersistentCollection<Unsigned64BitsInteger>                 Unsigned64BitsIntegerPersistentCollection;
 
-  /** Get the needed prime numbers */
-  static Unsigned64BitsIntegerCollection GetPrimeNumbers(const Indices & indices);
+  /* Implement a linear congruential pseudo-random numbers generator for internal
+     use within the low discrepancy sequences, based on a 2^64 modulus */
+  Unsigned64BitsInteger LCGgenerate() const
+  {
+    // No need to take the 2^64 modulus here as it is implicit in
+    // the 64 bits arithmetic
+    LCGState_ = 2862933555777941757 * LCGState_ + 3037000493;
+    return LCGState_;
+  }
 
   /** Compute the n first prime numbers */
-  static Unsigned64BitsIntegerCollection ComputeFirstPrimeNumbers(const UnsignedInteger n);
+  static Unsigned64BitsIntegerCollection GetFirstPrimeNumbers(const UnsignedInteger n);
 
   /** Compute the least prime number greater or equal to n */
-  static Unsigned64BitsInteger ComputeNextPrimeNumber(const UnsignedInteger n);
+  static Unsigned64BitsInteger GetNextPrimeNumber(const UnsignedInteger n);
 
   /** Dimension parameter */
   UnsignedInteger dimension_;
 
+  /** LCG State */
+  mutable Unsigned64BitsInteger LCGState_;
 } ; /* class LowDiscrepancySequenceImplementation */
 
 END_NAMESPACE_OPENTURNS

@@ -2,7 +2,7 @@
 /**
  *  @brief Find the roots in a given direction according to the Proban
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,14 +52,14 @@ public:
 
 
   /** Virtual constructor */
-  virtual SafeAndSlow * clone() const;
+  SafeAndSlow * clone() const override;
 
   /** Solve gives all the roots found applying the root strategy */
   ScalarCollection solve(const Function & function,
-                         const Scalar value);
+                         const Scalar value) override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 private:
 

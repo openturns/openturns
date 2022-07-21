@@ -10,7 +10,7 @@ oneRealization=class=Point name=Unnamed dimension=3 values=[0.352258,0.352258,0.
 oneSample=class=Sample name=a min copula implementation=class=SampleImplementation name=a min copula size=10 dimension=3 description=[X0,X1,X2] data=[[0.129332,0.129332,0.129332],[0.131425,0.131425,0.131425],[0.677201,0.677201,0.677201],[0.812301,0.812301,0.812301],[0.542115,0.542115,0.542115],[0.673293,0.673293,0.673293],[0.856216,0.856216,0.856216],[0.730478,0.730478,0.730478],[0.306434,0.306434,0.306434],[0.44735,0.44735,0.44735]]
 anotherSample mean=class=Point name=Unnamed dimension=3 values=[0.504479,0.504479,0.504479]
 anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0828058,0.0828058,0.0828058,0.0828058,0.0828058,0.0828058,0.0828058,0.0828058,0.0828058]
-point= class=Point name=Unnamed dimension=3 values=[0.2,0.2,0.2] ddf=class=Point name=Unnamed dimension=3 values=[0,0,0] ddf (FD)=class=Point name=Unnamed dimension=3 values=[0,0,0] pdf=0.2 cdf=0.2
+point= class=Point name=Unnamed dimension=3 values=[0.2,0.2,0.2] pdf=0.2 cdf=0.2
 Survival      =0.8
 Survival (ref)=0.8
 Inverse survival=class=Point name=Unnamed dimension=3 values=[0.05,0.05,0.05]

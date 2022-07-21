@@ -4,7 +4,7 @@
  *  using a maximization of the likelihood function. We use here some articles of J.A.Mauricio (http://www.ucm.es/info/ecocuan/jam/)
  *  to use an efficient method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -415,9 +415,10 @@ void ARMALikelihoodFactory::initializeCobylaSolverParameter()
   if (cobyla == NULL) throw InternalException(HERE);
 
   cobyla->setRhoBeg(ResourceMap::GetAsScalar("ARMALikelihoodFactory-DefaultRhoBeg"));
+  cobyla->setIgnoreFailure(true);
 
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("ARMALikelihoodFactory-DefaultRhoEnd"));
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun"));
+  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber"));
 }
 
 /* Optimization solver accessor */
@@ -537,10 +538,6 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   // Currently the implementation of the factory bases on m estimations of univariate models, m is the dimension of the
   // above time series
 
-  // Define Optimization problem (Maximization)
-  OptimizationProblem problem;
-  problem.setMinimization(false);
-
   // Checking the size of time series
   if (timeSeries.getSize() < currentG_)
     throw InvalidArgumentException(HERE) << "Error : expected time series of size greater than " << currentG_;
@@ -611,7 +608,8 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   nbInequalityConstraint_ = m;
   inputDimension_ = n;
   // Define Objective and Constraint functions for Optimization problem
-  problem.setObjective(getLogLikelihoodFunction());
+  OptimizationProblem problem(getLogLikelihoodFunction());
+  problem.setMinimization(false);
   problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
   solver_.setProblem(problem);
   solver_.setStartingPoint(beta);

@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationResult stores the result of a OptimizationAlgorithmImplementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,22 +32,6 @@ static const Factory<OptimizationResult> Factory_OptimizationResult;
 /* Default constructor */
 OptimizationResult::OptimizationResult()
   : PersistentObject()
-  , optimalPoint_(0)
-  , optimalValue_(0)
-  , evaluationNumber_(0)
-  , iterationNumber_(0)
-  , absoluteError_(-1.0)
-  , relativeError_(-1.0)
-  , residualError_(-1.0)
-  , constraintError_(-1.0)
-  , lagrangeMultipliers_(0)
-  , absoluteErrorHistory_()
-  , relativeErrorHistory_()
-  , residualErrorHistory_()
-  , constraintErrorHistory_()
-  , inputHistory_()
-  , outputHistory_()
-  , problem_()
 {
   absoluteErrorHistory_.setDimension(1);
   relativeErrorHistory_.setDimension(1);
@@ -56,65 +40,16 @@ OptimizationResult::OptimizationResult()
 }
 
 /* Default constructor */
-OptimizationResult::OptimizationResult(const UnsignedInteger inputDimension, const UnsignedInteger outputDimension)
+OptimizationResult::OptimizationResult(const OptimizationProblem & problem)
   : PersistentObject()
-  , optimalPoint_(0)
-  , optimalValue_(0)
-  , iterationNumber_(0)
-  , absoluteError_(-1.0)
-  , relativeError_(-1.0)
-  , residualError_(-1.0)
-  , constraintError_(-1.0)
-  , lagrangeMultipliers_(0)
-  , absoluteErrorHistory_()
-  , relativeErrorHistory_()
-  , residualErrorHistory_()
-  , constraintErrorHistory_()
-  , inputHistory_()
-  , outputHistory_()
-  , problem_()
-{
-  absoluteErrorHistory_.setDimension(1);
-  relativeErrorHistory_.setDimension(1);
-  residualErrorHistory_.setDimension(1);
-  constraintErrorHistory_.setDimension(1);
-  inputHistory_.setDimension(inputDimension);
-  outputHistory_.setDimension(outputDimension);
-}
-
-/* Standard constructor */
-OptimizationResult::OptimizationResult(const Point & optimalPoint,
-                                       const Point &  optimalValue,
-                                       const UnsignedInteger evaluationNumber,
-                                       const Scalar absoluteError,
-                                       const Scalar relativeError,
-                                       const Scalar residualError,
-                                       const Scalar constraintError,
-                                       const OptimizationProblem & problem)
-  : PersistentObject()
-  , optimalPoint_(optimalPoint)
-  , optimalValue_(optimalValue)
-  , evaluationNumber_(evaluationNumber)
-  , iterationNumber_(0)
-  , absoluteError_(absoluteError)
-  , relativeError_(relativeError)
-  , residualError_(residualError)
-  , constraintError_(constraintError)
-  , lagrangeMultipliers_(0)
-  , absoluteErrorHistory_()
-  , relativeErrorHistory_()
-  , residualErrorHistory_()
-  , constraintErrorHistory_()
-  , inputHistory_()
-  , outputHistory_()
   , problem_(problem)
 {
   absoluteErrorHistory_.setDimension(1);
   relativeErrorHistory_.setDimension(1);
   residualErrorHistory_.setDimension(1);
   constraintErrorHistory_.setDimension(1);
-  inputHistory_.setDimension(optimalPoint.getDimension());
-  outputHistory_.setDimension(optimalValue.getDimension());
+  inputHistory_.setDimension(problem.getObjective().getInputDimension());
+  outputHistory_.setDimension(problem.getObjective().getOutputDimension());
 }
 
 /* Virtual constructor */
@@ -123,9 +58,11 @@ OptimizationResult * OptimizationResult::clone() const
   return new OptimizationResult(*this);
 }
 
-/* OptimalPoint accessors */
+/* Optimal point accessor */
 Point OptimizationResult::getOptimalPoint() const
 {
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw InvalidArgumentException(HERE) << "No optimal point available for multi-objective";
   return optimalPoint_;
 }
 
@@ -134,15 +71,43 @@ void OptimizationResult::setOptimalPoint(const Point & optimalPoint)
   optimalPoint_ = optimalPoint;
 }
 
-/* Optimal value accessors */
+/* Optimal value accessor */
 Point OptimizationResult::getOptimalValue() const
 {
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw InvalidArgumentException(HERE) << "No optimal value available for multi-objective";
   return optimalValue_;
 }
 
-void OptimizationResult::setOptimalValue(const Point &  optimalValue)
+void OptimizationResult::setOptimalValue(const Point & optimalValue)
 {
   optimalValue_ = optimalValue;
+}
+
+/* Final points accessor */
+Sample OptimizationResult::getFinalPoints() const
+{
+  if (!finalPoints_.getSize())
+    return Sample(1, optimalPoint_);
+  return finalPoints_;
+}
+
+void OptimizationResult::setFinalPoints(const Sample & finalPoints)
+{
+  finalPoints_ = finalPoints;
+}
+
+/* Final values accessor */
+Sample OptimizationResult::getFinalValues() const
+{
+  if (!finalValues_.getSize())
+    return Sample(1, optimalValue_);
+  return finalValues_;
+}
+
+void OptimizationResult::setFinalValues(const Sample & finalValues)
+{
+  finalValues_ = finalValues;
 }
 
 /* Evaluation number accessor */
@@ -255,17 +220,6 @@ OptimizationProblem OptimizationResult::getProblem() const
   return problem_;
 }
 
-/* Lagrange multipliers accessor */
-void OptimizationResult::setLagrangeMultipliers(const Point & lagrangeMultipliers)
-{
-  lagrangeMultipliers_ = lagrangeMultipliers;
-}
-
-Point OptimizationResult::getLagrangeMultipliers() const
-{
-  return lagrangeMultipliers_;
-}
-
 /* String converter */
 String OptimizationResult::__repr__() const
 {
@@ -279,7 +233,6 @@ String OptimizationResult::__repr__() const
       << " relativeError=" << getRelativeError()
       << " residualError=" << getResidualError()
       << " constraintError=" << getConstraintError()
-      << " lagrangeMultipliers=" << lagrangeMultipliers_
       << " problem=" << problem_;
   return oss;
 }
@@ -296,7 +249,6 @@ void OptimizationResult::save(Advocate & adv) const
   adv.saveAttribute( "relativeError_", relativeError_ );
   adv.saveAttribute( "residualError_", residualError_ );
   adv.saveAttribute( "constraintError_", constraintError_ );
-  adv.saveAttribute( "lagrangeMultipliers_", lagrangeMultipliers_ );
 
   adv.saveAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
   adv.saveAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
@@ -307,6 +259,9 @@ void OptimizationResult::save(Advocate & adv) const
   adv.saveAttribute( "outputHistory_", outputHistory_ );
 
   adv.saveAttribute( "problem_", problem_ );
+  adv.saveAttribute( "finalPoints_", finalPoints_ );
+  adv.saveAttribute( "finalValues_", finalValues_ );
+  adv.saveAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -321,7 +276,6 @@ void OptimizationResult::load(Advocate & adv)
   adv.loadAttribute( "relativeError_", relativeError_ );
   adv.loadAttribute( "residualError_", residualError_ );
   adv.loadAttribute( "constraintError_", constraintError_ );
-  adv.loadAttribute( "lagrangeMultipliers_", lagrangeMultipliers_ );
 
   adv.loadAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
   adv.loadAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
@@ -332,6 +286,12 @@ void OptimizationResult::load(Advocate & adv)
   adv.loadAttribute( "outputHistory_", outputHistory_ );
 
   adv.loadAttribute( "problem_", problem_ );
+  if (adv.hasAttribute("finalPoints_"))
+  {
+    adv.loadAttribute( "finalPoints_", finalPoints_ );
+    adv.loadAttribute( "finalValues_", finalValues_ );
+    adv.loadAttribute( "paretoFrontsIndices_", paretoFrontsIndices_ );
+  }
 }
 
 /* Incremental history storage */
@@ -342,9 +302,17 @@ void OptimizationResult::store(const Point & x,
                                const Scalar residualError,
                                const Scalar constraintError)
 {
-  // assume the last point stored is the optimum
-  optimalPoint_ = x;
-  optimalValue_ = y;
+  if (getProblem().getObjective().getOutputDimension() <= 1)
+  {
+    if (!getOptimalValue().getDimension()
+        || getProblem().hasLevelFunction() // consider the last value as optimal for nearest-point algos
+        || ((getProblem().isMinimization() && y[0] < getOptimalValue()[0])
+            || (!getProblem().isMinimization() && y[0] > getOptimalValue()[0])))
+    {
+      setOptimalPoint(x);
+      setOptimalValue(y);
+    }
+  }
 
   // update values
   absoluteError_ = absoluteError;
@@ -364,7 +332,9 @@ void OptimizationResult::store(const Point & x,
 
 Graph OptimizationResult::drawErrorHistory() const
 {
-  Graph result("Error history", "Iteration number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "drawErrorHistory is not available for multi-objective";
+  Graph result("Error history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
   result.setGrid(true);
   result.setGridColor("black");
 // create a sample with the iteration number to be plotted as x data
@@ -411,10 +381,12 @@ Graph OptimizationResult::drawErrorHistory() const
 /* Draw optimal value graph */
 Graph OptimizationResult::drawOptimalValueHistory() const
 {
-  Graph result("Optimal value history", "Iteration number", "Optimal value", true, "topright", 1.0);
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "drawOptimalValueHistory is not available for multi-objective";
+  Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright", 1.0);
   result.setGrid(true);
   result.setGridColor("black");
-  Sample data(getOutputSample());
+  Sample data(getOutputSample().getMarginal(0));
   const UnsignedInteger size = data.getSize();
   const Bool minimization = problem_.isMinimization();
   for (UnsignedInteger i = 1; i < size; ++ i)
@@ -433,6 +405,95 @@ Graph OptimizationResult::drawOptimalValueHistory() const
   return result;
 }
 
+/* Computes the Lagrange multipliers associated with the constraints as a post-processing of the optimal point. */
+/* L(x, l_eq, l_lower_bound, l_upper_bound, l_ineq) = J(x) + l_eq * C_eq(x) + l_lower_bound * (x-lb)^+ + l_upper_bound * (ub-x)^+ + l_ineq * C_ineq^+(x)
+   d/dx(L = d/dx(J) + l_eq * d/dx(C_eq) + l_lower_bound * d/dx(x-lb)^+ + l_upper_bound * d/dx(ub - x)^+ + l_ineq * d/dx(C_ineq^+)
+
+   The Lagrange multipliers are stored as [l_eq, l_lower_bounds, l_upper_bounds, l_ineq], where:
+   * l_eq is of dimension 0 if no equality constraint, else of dimension the number of scalar equality constraints
+   * l_lower_bounds and l_upper_bounds are of dimension 0 if no bound constraint, else of dimension dim(x) for both of them
+   * l_ineq is of dimension 0 if no inequality constraint, else of dimension the number of scalar inequality constraints
+
+   so if there is no constraint of any kind, the Lagrange multipliers are of dimension 0.
+ */
+Point OptimizationResult::computeLagrangeMultipliers(const Point & x) const
+{
+  if (getProblem().getObjective().getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "computeLagrangeMultipliers is not available for multi-objective";
+  const Scalar maximumConstraintError = ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError");
+  const UnsignedInteger equalityDimension = problem_.getEqualityConstraint().getOutputDimension();
+  const UnsignedInteger inequalityDimension = problem_.getInequalityConstraint().getOutputDimension();
+  const UnsignedInteger boundDimension = problem_.getBounds().getDimension();
+  // If no constraint
+  if (equalityDimension + inequalityDimension + boundDimension == 0) return Point(0);
+  // Here we have to compute the Lagrange multipliers as the solution of a linear problem with rhs=[d/dx(C_eq) | d/dx(x-lb)^+ | d/dx(ub - x)^+ | d/dx(C_ineq^+)] and lhs=-d/dx(J)
+  const UnsignedInteger inputDimension = x.getDimension();
+  // Get the lhs as a Point
+  const Point lhs(Point(*problem_.getObjective().gradient(x).getImplementation()) * (-1.0));
+  // In order to ease the construction of the rhs matrix, we use its internal storage representation as a Point in column-major storage.
+  Point rhs(0);
+  // First, the equality constraints. Each scalar equality constraint gives a column in the rhs
+  if (equalityDimension > 0)
+    rhs.add(*problem_.getEqualityConstraint().gradient(x).getImplementation());
+  // Second, the bounds
+  if (boundDimension > 0)
+  {
+    // First the lower bounds
+    const Point lowerBounds(problem_.getBounds().getLowerBound());
+    for (UnsignedInteger i = 0; i < boundDimension; ++i)
+    {
+      Point boundGradient(inputDimension);
+      // Check if the current lower bound is active up to the tolerance
+      if (std::abs(x[i] - lowerBounds[i]) <= maximumConstraintError)
+        boundGradient[i] = 1.0;
+      rhs.add(boundGradient);
+    } // Lower bounds
+    // Second the upper bounds
+    const Point upperBounds(problem_.getBounds().getUpperBound());
+    for (UnsignedInteger i = 0; i < boundDimension; ++i)
+    {
+      Point boundGradient(inputDimension);
+      // Check if the current lower bound is active up to the tolerance
+      if (std::abs(upperBounds[i] - x[i]) <= maximumConstraintError)
+        boundGradient[i] = -1.0;
+      rhs.add(boundGradient);
+    } // Upper bounds
+  } // boundDimension > 0
+  // Third, the inequality constraints
+  if (inequalityDimension > 0)
+  {
+    Point inequality(problem_.getInequalityConstraint()(x));
+    Matrix gradientInequality(problem_.getInequalityConstraint().gradient(x));
+    for (UnsignedInteger i = 0; i < inequalityDimension; ++i)
+    {
+      // Check if the current inequality constraint is active up to the tolerance
+      if (std::abs(inequality[i]) <= maximumConstraintError)
+        rhs.add(*gradientInequality.getColumn(i).getImplementation());
+      else
+        rhs.add(Point(inputDimension));
+    }
+  } // Inequality constraints
+  return Matrix(inputDimension, rhs.getDimension() / inputDimension, rhs).solveLinearSystem(lhs, false);
+}
+
+
+Point OptimizationResult::computeLagrangeMultipliers() const
+{
+  return computeLagrangeMultipliers(getOptimalPoint());
+}
+
+/* Pareto fronts accessor */
+void OptimizationResult::setParetoFrontsIndices(const IndicesCollection & indices)
+{
+  paretoFrontsIndices_ = indices;
+}
+
+IndicesCollection OptimizationResult::getParetoFrontsIndices() const
+{
+  if (getProblem().getObjective().getOutputDimension() <= 1)
+    throw InvalidArgumentException(HERE) << "No pareto fronts available for mono-objective";
+  return paretoFrontsIndices_;
+}
 
 END_NAMESPACE_OPENTURNS
 

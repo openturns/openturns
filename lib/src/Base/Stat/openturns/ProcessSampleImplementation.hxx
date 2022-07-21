@@ -2,7 +2,7 @@
 /**
  *  @brief ProcessSampleImplementation class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,7 @@
 #define OPENTURNS_PROCESSSAMPLEIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
+#include "openturns/GridLayout.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
@@ -57,27 +57,38 @@ public:
                               const UnsignedInteger size,
                               const UnsignedInteger dimension);
 
+  ProcessSampleImplementation(const Mesh & mesh,
+                              const SampleCollection & collection);
+
   /** Partial copy constructor */
   void add(const Field & field);
 
   void add(const Sample & sample);
 
+  /** Erase range of elements */
+  void erase(const UnsignedInteger first, const UnsignedInteger last);
+
+  /** Clear data */
+  void clear();
+
+  /** Field accessor */
+  void setField (const Field & field, const UnsignedInteger i);
+  Field getField (const UnsignedInteger i) const;
+
 #ifndef SWIG
 
   /** Operators accessors */
-  void setField (const Field & field, const UnsignedInteger i);
-  Field getField (const UnsignedInteger i) const;
   Sample & operator[] (const UnsignedInteger i);
   const Sample & operator[] (const UnsignedInteger i) const;
 
 #endif
 
   /** Virtual constructor */
-  virtual ProcessSampleImplementation * clone() const;
+  ProcessSampleImplementation * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Time grid accessors */
   RegularGrid getTimeGrid() const;
@@ -100,7 +111,42 @@ public:
   /** Spatial mean accessor */
   Sample computeSpatialMean() const;
 
-  /**  Method computeQuantilePerComponent() gives the quantile per component of the sample */
+  /** Standard deviation accessor */
+  Field computeStandardDeviation() const;
+
+  /** Gives the range of the sample (by component) */
+  Field computeRange() const;
+
+  /** Gives the median of the sample (by component) */
+  Field computeMedian() const;
+
+  /** Gives the variance of the sample (by component) */
+  Field computeVariance() const;
+
+  /** Gives the skewness of the sample (by component) */
+  Field computeSkewness() const;
+
+  /** Gives the kurtosis of the sample (by component) */
+  Field computeKurtosis() const;
+
+  /** Gives the centered moment of order k of the sample (by component) */
+  Field computeCenteredMoment(const UnsignedInteger k) const;
+
+  /** Gives the raw moment of order k of the sample (by component) */
+  Field computeRawMoment(const UnsignedInteger k) const;
+
+  /** Get the empirical CDF of the sample */
+  Field computeEmpiricalCDF(const Point & point,
+                            const Bool tail = false) const;
+
+  /** Maximum accessor */
+  Field getMax() const;
+
+  /** Minimum accessor */
+  Field getMin() const;
+
+  /** Method computeQuantilePerComponent() gives the quantile per component of the sample */
+
   Field computeQuantilePerComponent(const Scalar prob) const;
   ProcessSampleImplementation computeQuantilePerComponent(const Point & prob) const;
 
@@ -110,18 +156,34 @@ public:
   /** Get the marginal sample corresponding to indices dimensions */
   ProcessSampleImplementation getMarginal(const Indices & indices) const;
 
-  /** Draw a marginal of the timeSerie */
+  /** Draw a marginal */
   Graph drawMarginal(const UnsignedInteger index = 0,
                      const Bool interpolate = true) const;
 
+  /** Draw all marginals */
+  GridLayout draw(const Bool interpolate = true) const;
+
+  /** Draw correlation between 2 marginals */
+  Graph drawMarginalCorrelation(const UnsignedInteger i,
+                                const UnsignedInteger j) const;
+
+  /** Draw correlation between all marginals */
+  GridLayout drawCorrelation() const;
+
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
+
+  /** Translate realizations in-place */
+  ProcessSampleImplementation & operator += (const Sample & translation);
+  ProcessSampleImplementation & operator -= (const Sample & translation);
+
+  /** Extract the sample of values at the given vertex index */
+  Sample getSampleAtVertex(const UnsignedInteger index) const;
 
 private:
-
   /** Mesh on which the ProcessSampleImplementation focuses */
   Mesh mesh_;
 

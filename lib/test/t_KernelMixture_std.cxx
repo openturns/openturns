@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class KernelMixture for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +53,7 @@ int main(int, char *[])
     aCollection.add( Normal(meanPoint, sigma, IdentityMatrix(dimension)) );
     sample.add(meanPoint);
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Normal kernel;
     KernelMixture distribution(kernel, sigma, sample);
     fullprint << "Distribution " << distribution << std::endl;
@@ -87,8 +87,6 @@ int main(int, char *[])
     Point DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (ref)=" << distributionRef.computeDDF( point ) << std::endl;
-    Point ddfFD(distribution.ContinuousDistribution::computeDDF(point));
-    fullprint << "ddf (FD)=" << ddfFD << std::endl;
     Scalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );

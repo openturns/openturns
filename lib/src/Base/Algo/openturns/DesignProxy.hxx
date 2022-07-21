@@ -2,7 +2,7 @@
 /**
  *  @brief Design matrix cached evaluation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,10 +54,10 @@ public:
   explicit DesignProxy(const Matrix & matrix);
 
   /** Virtual constructor */
-  virtual DesignProxy * clone() const;
+  DesignProxy * clone() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Accessors */
   Sample getInputSample() const;

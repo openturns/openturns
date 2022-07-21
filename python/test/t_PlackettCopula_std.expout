@@ -1,0 +1,50 @@
+Copula  class=PlackettCopula name=PlackettCopula dimension=2 theta=2.5
+Copula  PlackettCopula(theta = 2.5)
+Mean  class=Point name=Unnamed dimension=2 values=[0.5,0.5]
+Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.297132,0.297132,0.0833333]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= class=Point name=Unnamed dimension=2 values=[0.629877,0.890899]
+oneSample= class=Sample name=PlackettCopula implementation=class=SampleImplementation name=PlackettCopula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.0189468],[0.347057,0.953447],[0.92068,0.682848],[0.0632061,0.161408],[0.714382,0.483563],[0.373767,0.674185],[0.883503,0.461871],[0.92851,0.905126],[0.684575,0.855359],[0.359802,0.933253]]
+anotherSample mean= class=Point name=Unnamed dimension=2 values=[0.502777,0.500791]
+anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0254847,0.0254847,0.083478]
+Point =  class=Point name=Unnamed dimension=2 values=[0.2,0.2]  pdf=1.348397  cdf=0.066667
+Quantile= class=Point name=Unnamed dimension=2 values=[0.674166,0.674166]
+CDF(quantile)=0.500000
+Quantile= class=Point name=Unnamed dimension=2 values=[0.169284,0.169284]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.0257723,0.0257723]
+Survival(inverseSurvival)=0.950000
+entropy=-0.046751
+Minimum volume interval= [0.0127281, 0.987272]
+[0.0127281, 0.987272]
+threshold= [0.974544]
+Minimum volume level set= {x | f(x) <= 0.527111} with f=
+MinimumVolumeLevelSetEvaluation(PlackettCopula(theta = 2.5))
+beta= [0.590308]
+Bilateral confidence interval= [0.0127281, 0.987272]
+[0.0127281, 0.987272]
+beta= [0.974544]
+Unilateral confidence interval (lower tail)= [0, 0.974228]
+[0, 0.974228]
+beta= [0.974228]
+Unilateral confidence interval (upper tail)= [0.0257723, 1]
+[0.0257723, 1]
+beta= [0.974228]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.185475]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.219923]
+indices= [1,0]
+margins= class=PlackettCopula name=PlackettCopula dimension=2 theta=2.5
+margins PDF=1.261019
+margins CDF=0.097421
+margins quantile= class=Point name=Unnamed dimension=2 values=[0.974228,0.974228]
+margins CDF(qantile)=0.950000
+margins realization= class=Point name=Unnamed dimension=2 values=[0.0964744,0.485452]

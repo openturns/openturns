@@ -1,0 +1,54 @@
+%feature("docstring") OT::WeibullMaxFactory
+"WeibullMax factory.
+
+See also
+--------
+DistributionFactory, WeibullMax
+
+Notes
+-----
+Note that if :math:`X` follows a WeibullMax :math:`(\beta, \alpha, \gamma)` distribution, then  :math:`(-X)`follows a WeibullMin :math:`(\beta, \alpha, -\gamma)` distribution."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::WeibullMaxFactory::build
+"Estimate the distribution using the default strategy.
+
+
+**Available usages**:
+
+    build(*sample*)
+
+    build(*param*)
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+param : Collection of  :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The estimated distribution
+
+Notes
+-----
+Note that if :math:`X` follows a WeibullMax :math:`(\beta, \alpha, \gamma)` distribution, then  :math:`(-X)`follows a WeibullMin :math:`(\beta, \alpha, -\gamma)` distribution.
+The sample is transformed into its opposite and a WeibullMin :math:`(\beta, \alpha, \gamma)` is fitted on it. We return the WeibullMax :math:`(\beta, \alpha, -\gamma)` distribution.
+We use the default strategy of  :class:`~openturns.WeibullMinFactory`."
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::WeibullMaxFactory::buildAsWeibullMax
+"Estimate the distribution as native distribution.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.WeibullMax`
+    The estimated distribution"

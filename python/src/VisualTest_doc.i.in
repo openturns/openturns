@@ -136,13 +136,13 @@ Examples
 Generate a random sample from a Normal distribution:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Weibull(2.0, 0.5)
+>>> distribution = ot.WeibullMin(2.0, 0.5)
 >>> sample = distribution.getSample(30)
 >>> sample.setDescription(['Sample'])
 
 Draw a QQ-plot against a given (inferred) distribution:
 
->>> tested_distribution = ot.WeibullFactory().build(sample)
+>>> tested_distribution = ot.WeibullMinFactory().build(sample)
 >>> QQ_plot = ot.VisualTest.DrawQQplot(sample, tested_distribution)
 >>> View(QQ_plot).show()
 
@@ -209,13 +209,13 @@ Examples
 Generate a random sample from a Normal distribution:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Weibull(2.0, 0.5)
+>>> distribution = ot.WeibullMin(2.0, 0.5)
 >>> sample = distribution.getSample(30)
 >>> sample.setDescription(['Sample'])
 
 Draw a CDF-plot against a given (inferred) distribution:
 
->>> tested_distribution = ot.WeibullFactory().build(sample)
+>>> tested_distribution = ot.WeibullMinFactory().build(sample)
 >>> CDF_plot = ot.VisualTest.DrawCDFplot(sample, tested_distribution)
 >>> View(CDF_plot).show()
 
@@ -228,11 +228,8 @@ Draw a two-sample CDF-plot:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::VisualTest::DrawCobWeb
-"Draw a Cobweb plot.
-
-Available usages:
-    VisualTest.DrawCobWeb(*inputSample, outputSample, min, max, color, quantileScale=True*)
+%feature("docstring") OT::VisualTest::DrawParallelCoordinates
+"Draw a parallel coordinates plot.
 
 Parameters
 ----------
@@ -296,10 +293,10 @@ Generate a random sample from a Normal distribution:
 >>> model = ot.SymbolicFunction(['X0', 'X1'], formula)
 >>> outputSample = model(inputSample)
 
-Draw a Cobweb plot:
+Draw a parallel plot:
 
->>> cobweb = ot.VisualTest.DrawCobWeb(inputSample, outputSample, 1.0, 2.0, 'red', False)
->>> View(cobweb).show()"
+>>> parplot = ot.VisualTest.DrawParallelCoordinates(inputSample, outputSample, 1.0, 2.0, 'red', False)
+>>> View(parplot).show()"
 
 // ---------------------------------------------------------------------
 
@@ -343,12 +340,14 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VisualTest::DrawLinearModel
-"Draw a linear model plot.
+"Plot a 1D linear model.
 
 Parameters
 ----------
-sample1, sample2 : 2-d sequence of float
-    Samples to draw.
+inputSample, outputSample : 2-d sequence of float (optional)
+    X and Y coordinates of the points the test is to be performed on.
+    If *inputSample* and *outputSample* were the training samples
+    of the linear model, there is no need to supply them (see example below).
 linearModelResult : :class:`~openturns.LinearModelResult`
     Linear model to plot.
 
@@ -366,26 +365,39 @@ Examples
 >>> R = ot.CorrelationMatrix(dimension)
 >>> R[0, 1] = 0.8
 >>> distribution = ot.Normal([3.0] * dimension, [2.0]* dimension, R)
->>> size = 100
+>>> size = 200
 >>> sample2D = distribution.getSample(size)
 >>> firstSample = ot.Sample(size, 1)
 >>> secondSample = ot.Sample(size, 1)
 >>> for i in range(size):
 ...     firstSample[i] = ot.Point(1, sample2D[i, 0])
 ...     secondSample[i] = ot.Point(1, sample2D[i, 1])
->>> lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
->>> drawLinearModelVTest = ot.VisualTest.DrawLinearModel(firstSample, secondSample, lmtest)
->>> View(drawLinearModelVTest).show()"
+>>> # Generate training Samples
+>>> inputTrainSample = firstSample[0:size//2]
+>>> outputTrainSample = secondSample[0:size//2]
+>>> # Generate test Samples
+>>> inputTestSample = firstSample[size//2:]
+>>> outputTestSample = secondSample[size//2:]
+>>> # Define and get the result of the linear model
+>>> lmtest = ot.LinearModelAlgorithm(inputTrainSample, outputTrainSample).getResult()
+>>> # Visual test on the training samples: no need to supply them again
+>>> drawLinearModelVTest = ot.VisualTest.DrawLinearModel(lmtest)
+>>> View(drawLinearModelVTest).show()
+>>> # Visual test on the test samples
+>>> drawLinearModelVTest2 = ot.VisualTest.DrawLinearModel(inputTestSample, outputTestSample, lmtest)
+>>> View(drawLinearModelVTest2).show()"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VisualTest::DrawLinearModelResidual
-"Draw a linear model residual plot.
+"Plot a 1D linear model's residuals.
 
 Parameters
 ----------
-sample1, sample2 : 2-d sequence of float
-    Samples to draw.
+inputSample, outputSample : 2-d sequence of float, optional
+    X and Y coordinates of the points the test is to be performed on.
+    If *inputSample* and *outputSample* were the training samples
+    of the linear model, there is no need to supply them (see example below).
 linearModelResult : :class:`~openturns.LinearModelResult`
     Linear model to plot.
 
@@ -403,13 +415,90 @@ Examples
 >>> R = ot.CorrelationMatrix(dimension)
 >>> R[0, 1] = 0.8
 >>> distribution = ot.Normal([3.0] * dimension, [2.0]* dimension, R)
->>> size = 100
+>>> size = 200
 >>> sample2D = distribution.getSample(size)
 >>> firstSample = ot.Sample(size, 1)
 >>> secondSample = ot.Sample(size, 1)
 >>> for i in range(size):
 ...     firstSample[i] = ot.Point(1, sample2D[i, 0])
 ...     secondSample[i] = ot.Point(1, sample2D[i, 1])
->>> lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
->>> drawLinearModelVTest = ot.VisualTest.DrawLinearModelResidual(firstSample, secondSample, lmtest)
->>> View(drawLinearModelVTest).show()"
+>>> # Generate training Samples
+>>> inputTrainSample = firstSample[0:size//2]
+>>> outputTrainSample = secondSample[0:size//2]
+>>> # Generate test Samples
+>>> inputTestSample = firstSample[size//2:]
+>>> outputTestSample = secondSample[size//2:]
+>>> # Define and get the result of the linear model
+>>> lmtest = ot.LinearModelAlgorithm(inputTrainSample, outputTrainSample).getResult()
+>>> # Visual test on the training samples: no need to supply them again
+>>> drawLinearModelVTest = ot.VisualTest.DrawLinearModelResidual(lmtest)
+>>> View(drawLinearModelVTest).show()
+>>> # Visual test on the test samples
+>>> drawLinearModelVTest2 = ot.VisualTest.DrawLinearModelResidual(inputTestSample, outputTestSample, lmtest)
+>>> View(drawLinearModelVTest2).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawPairs
+"Draw 2-d projections of a multivariate sample.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Samples to draw.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Notes
+-----
+The point style and the color are given by 'Drawable-DefaultPointStyle' and 'Drawable-DefaultColor' keys in :class:`~openturns.ResourceMap`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> R = ot.CorrelationMatrix(dim)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dim, [2.0]* dim, R)
+>>> size = 100
+>>> sample = distribution.getSample(size)
+>>> clouds = ot.VisualTest.DrawPairs(sample)
+>>> View(clouds).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawPairsMarginals
+"Draw 2-d projections of a multivariate sample plus marginals.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Samples to draw.
+distribution : :class:`~openturns.Distribution`
+    Distribution from which marginals are drawn
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> R = ot.CorrelationMatrix(dim)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dim, [2.0]* dim, R)
+>>> size = 100
+>>> sample = distribution.getSample(size)
+>>> distribution = ot.ComposedDistribution([ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(dim)])
+>>> clouds = ot.VisualTest.DrawPairsMarginals(sample, distribution)
+>>> View(clouds).show()"
+

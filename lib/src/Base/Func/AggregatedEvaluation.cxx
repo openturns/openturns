@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of an aggregation of functions from R^n to R^p_1,...,R^n to R^p_k
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -128,17 +128,17 @@ void AggregatedEvaluation::setFunctionsCollection(const FunctionCollection & fun
 {
   const UnsignedInteger size = functionsCollection.getSize();
   // Check for empty functions collection
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function from an empty collection of functions.";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function from an empty collection of functions.";
   // Check for coherent input and output dimensions of the functions
   UnsignedInteger inputDimension = functionsCollection[0].getInputDimension();
   outputDimension_ = functionsCollection[0].getOutputDimension();
   Description description(functionsCollection[0].getDescription());
-  if (outputDimension_ == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
+  if (!(outputDimension_ > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    if (functionsCollection[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given functions have incompatible input dimension.";
+    if (functionsCollection[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the function with index " << i << "has input dimension " << functionsCollection[i].getInputDimension() << ", whereas the function with index 0 has input dimension " << inputDimension;
     const UnsignedInteger atomOutputDimension = functionsCollection[i].getOutputDimension();
-    if (atomOutputDimension == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
+    if (!(atomOutputDimension > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
     outputDimension_ += atomOutputDimension;
     const Description outputDescription(functionsCollection[i].getOutputDescription());
     for (UnsignedInteger j = 0; j < atomOutputDimension; ++j)
@@ -268,6 +268,35 @@ Description AggregatedEvaluation::getParameterDescription() const
     description.add(functionsCollection_[i].getParameterDescription());
   }
   return description;
+}
+
+/* Linearity accessors */
+Bool AggregatedEvaluation::isLinear() const
+{
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
+    if (!functionsCollection_[i].isLinear())
+      return false;
+
+  return true;
+}
+
+Bool AggregatedEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
+    if (!functionsCollection_[i].isLinearlyDependent(index))
+      return false;
+
+  return true;
+}
+
+/* Is it safe to call in parallel? */
+Bool AggregatedEvaluation::isParallel() const
+{
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
+    if (!functionsCollection_[i].getImplementation()->isParallel())
+      return false;
+
+  return true;
 }
 
 /* Method save() stores the object through the StorageManager */

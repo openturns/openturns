@@ -1,13 +1,18 @@
 Algo=class=GaussKronrod, maximum sub intervals=100, maximum error=1e-12, rule=class=GaussKronrodRule, pair=G3K7)
-value=-0.590348, ref=-0.590348, true error below bound? true, estimated error below bound? true
+value    (general)=-0.590348, ref=-0.590348, true error below bound? true, estimated error below bound? true
+value (univariate)=-0.590348, ref=-0.590348, true error below bound? true
 Algo=class=GaussKronrod, maximum sub intervals=100, maximum error=1e-12, rule=class=GaussKronrodRule, pair=G7K15)
-value=-0.590348, ref=-0.590348, true error below bound? true, estimated error below bound? true
+value    (general)=-0.590348, ref=-0.590348, true error below bound? true, estimated error below bound? true
+value (univariate)=-0.590348, ref=-0.590348, true error below bound? true
 Algo=class=GaussKronrod, maximum sub intervals=100, maximum error=1e-12, rule=class=GaussKronrodRule, pair=G11K23)
-value=-0.590348, ref=-0.590348, true error below bound? true, estimated error below bound? true
+value    (general)=-0.590348, ref=-0.590348, true error below bound? true, estimated error below bound? true
+value (univariate)=-0.590348, ref=-0.590348, true error below bound? true
 Algo=class=GaussKronrod, maximum sub intervals=100, maximum error=1e-12, rule=class=GaussKronrodRule, pair=G15K31)
-value=-0.590348, ref=-0.590348, true error below bound? true, estimated error below bound? true
+value    (general)=-0.590348, ref=-0.590348, true error below bound? true, estimated error below bound? true
+value (univariate)=-0.590348, ref=-0.590348, true error below bound? true
 Algo=class=GaussKronrod, maximum sub intervals=100, maximum error=1e-12, rule=class=GaussKronrodRule, pair=G25K51)
-value=-0.590348, ref=-0.590348, true error below bound? true, estimated error below bound? false
+value    (general)=-0.590348, ref=-0.590348, true error below bound? true, estimated error below bound? false
+value (univariate)=-0.590348, ref=-0.590348, true error below bound? true
 Algo=class=GaussKronrod, maximum sub intervals=100, maximum error=1e-12, rule=class=GaussKronrodRule, pair=G3K7)
 value=4.59035, ref=4.59035, true error below bound? true, estimated error below bound? true
 Algo=class=GaussKronrod, maximum sub intervals=100, maximum error=1e-12, rule=class=GaussKronrodRule, pair=G7K15)

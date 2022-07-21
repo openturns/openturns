@@ -10,9 +10,9 @@ The parameters are estimated by likelihood maximization. The starting point is o
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle\Hat{\alpha} =\frac{\pi}{\Hat{\sigma}_y\sqrt{6}} \\
-      \displaystyle\Hat{\beta} =\exp\left\{\bar{y}_n-\frac{\gamma\sqrt{6}}{\pi}\Hat{\sigma}_y\right\} \\
-      \displaystyle\Hat{\gamma} =x_{(1)} - \frac{|x_{(1)}|}{n+2}
+      \displaystyle\Hat{\alpha} & = & \frac{\pi}{\Hat{\sigma}_y\sqrt{6}} \\
+      \displaystyle\Hat{\beta} & = & \exp\left\{\bar{y}_n-\frac{\gamma\sqrt{6}}{\pi}\Hat{\sigma}_y\right\} \\
+      \displaystyle\Hat{\gamma} & = & x_{(1)} - \frac{|x_{(1)}|}{n+2}
     \end{eqnarray*}
 
 with :math:`\gamma \simeq 0.57721` as Euler's constant (not to be confused with the location parameter of the Frechet distribution!), :math:`x_{(1)}=\min_{i=1,\dots,n}x_i` and :math:`y_i=x_i-\Hat{\gamma}`.
@@ -21,5 +21,29 @@ See also
 --------
 DistributionFactory, Frechet"
 
+// ---------------------------------------------------------------------
 
+%define OT_DistributionFactory_buildAsFrechet_doc
+"Build the Frechet distribution.
+
+**Available usages**:
+
+    buildAsFrechet(*sample*)
+
+    buildAsFrechet(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Frechet`
+    The built distribution."
+%enddef
+%feature("docstring") OT::FrechetFactory::buildAsFrechet
+OT_DistributionFactory_buildAsFrechet_doc
 

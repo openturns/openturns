@@ -2,7 +2,7 @@
 /**
  *  @brief Top-level class for all spectral model factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -96,7 +96,7 @@ CovarianceMatrix NonStationaryCovarianceModelFactory::buildAsCovarianceMatrix(co
   {
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      std::copy(&sample[i].getImplementation()->operator()(0, 0), &sample[i].getImplementation()->operator()(0, 0) + fullDimension, designBegin);
+      std::copy(sample[i].data(), sample[i].data() + fullDimension, designBegin);
       designBegin += fullDimension;
     }
   } // isCentered
@@ -106,7 +106,7 @@ CovarianceMatrix NonStationaryCovarianceModelFactory::buildAsCovarianceMatrix(co
     Point point(fullDimension);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      std::copy(&sample[i].getImplementation()->operator()(0, 0), &sample[i].getImplementation()->operator()(0, 0) + fullDimension, &point[0]);
+      std::copy(sample[i].data(), sample[i].data() + fullDimension, &point[0]);
       point -= mean;
       std::copy(point.begin(), point.end(), designBegin);
       designBegin += fullDimension;

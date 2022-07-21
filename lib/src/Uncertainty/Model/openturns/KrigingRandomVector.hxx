@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation class for kriging random vectors
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,30 +49,30 @@ public:
                       const Sample & sample);
 
   /** Virtual constructor */
-  virtual KrigingRandomVector * clone() const;
+  KrigingRandomVector * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Get a realization of the process */
   using UsualRandomVector::getRealization;
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get realizations of the process */
   using UsualRandomVector::getSample;
-  Sample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Kriging result accessor */
   KrigingResult getKrigingResult() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
-  /** The kriging result tht allows to build the random vector */
+  /** The kriging result that allows one to build the random vector */
   KrigingResult krigingResult_;
 
   /** The points on which we seek the realizations */

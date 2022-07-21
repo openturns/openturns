@@ -2,7 +2,7 @@
 /**
  *  @brief Interface for finite difference steps
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,7 +47,7 @@ public:
   FiniteDifferenceStep(const Implementation & p_implementation);
 #endif
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Epsilon accessor */
   void setEpsilon(const Point & epsilon);

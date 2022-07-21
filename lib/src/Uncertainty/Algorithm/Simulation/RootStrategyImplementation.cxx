@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -128,7 +128,7 @@ void RootStrategyImplementation::setOriginValue(const Scalar originValue)
 
 /* We have to store the value of the performance function at the origin for two reasons:
    + to save computations, as this value will be reused for each direction
-   + to check if the origin is in the failure space or not, wich change the meaning of the roots
+   + to check if the origin is in the failure space or not, which change the meaning of the roots
 */
 Scalar RootStrategyImplementation::getOriginValue() const
 {

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class GeneralizedExtremeValue for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Collection<GeneralizedExtremeValue> all_cases(0);
     all_cases.add(GeneralizedExtremeValue(2.0, 1.5, -0.15));
     all_cases.add(GeneralizedExtremeValue(2.0, 1.5,  0.0));
@@ -85,7 +85,6 @@ int main(int, char *[])
       Scalar eps = 1e-5;
       Point DDF = distribution.computeDDF( point );
       fullprint << "ddf     =" << DDF << std::endl;
-      fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
       Scalar LPDF = distribution.computeLogPDF( point );
       fullprint << "log pdf=" << LPDF << std::endl;
       Scalar PDF = distribution.computePDF( point );

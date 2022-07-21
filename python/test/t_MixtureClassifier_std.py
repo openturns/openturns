@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -13,7 +12,7 @@ try:
     aCollection.add(Uniform(5., 7.))
     aCollection.add(Triangular(7., 8., 9.))
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Mixture(
         aCollection, Point(aCollection.getSize(), 1.0))
     print("mixture=",  distribution)

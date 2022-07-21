@@ -16,6 +16,10 @@
 #include "openturns/OTOptim.hxx"
 %}
 
+%init %{
+OT::Ceres::Initialize();
+%}
+
 %include typemaps.i
 %include OTtypes.i
 %include OTexceptions.i
@@ -55,15 +59,17 @@
 %include NearestPointCheckerResult.i
 %include NearestPointChecker.i
 %include AbdoRackwitz.i
+%include Bonmin.i
 %include Ceres.i
 %include CMinpack.i
 %include Cobyla.i
 %include Dlib.i
+%include Ipopt.i
 %include TNC.i
 %include SQP.i
 %include MultiStart.i
 %include NLopt.i
-%include OPTpp.i
+%include Pagmo.i
 
 /* Base/Geom */
 %import geom_module.i

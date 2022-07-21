@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Poisson distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,7 +61,7 @@ Distribution PoissonFactory::build() const
 
 Poisson PoissonFactory::buildAsPoisson(const Sample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Poisson distribution from an empty sample";
+  if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Poisson distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Poisson distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   // Check if all the components of the sample are integers > 0
   const UnsignedInteger size = sample.getSize();

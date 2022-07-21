@@ -3,7 +3,7 @@
  *  @brief The class that implements the composition between numerical
  *        math functions implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,7 +58,7 @@ Bool ComposedEvaluation::operator ==(const ComposedEvaluation & ) const
 /* Get the i-th marginal function */
 Evaluation ComposedEvaluation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << "and outputDimension=" << getOutputDimension();
   return new ComposedEvaluation(leftFunction_.getMarginal(i), rightFunction_);
 }
 
@@ -93,7 +93,7 @@ String ComposedEvaluation::__str__(const String & offset) const
 /* Operator () */
 Point ComposedEvaluation::operator() (const Point & inP) const
 {
-  if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
+  if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension" << inP.getDimension() << ", expected " << getInputDimension();
   callsNumber_.increment();
   const Point rightValue(rightFunction_.operator()(inP));
   const Point leftValue(leftFunction_.operator()(rightValue));
@@ -192,5 +192,23 @@ Evaluation ComposedEvaluation::getRightEvaluation() const
 {
   return rightFunction_;
 }
+
+/* Linearity accessors */
+Bool ComposedEvaluation::isLinear() const
+{
+  return leftFunction_.isLinear() && rightFunction_.isLinear();
+}
+
+Bool ComposedEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return leftFunction_.isLinearlyDependent(index) && rightFunction_.isLinearlyDependent(index);
+}
+
+/* Is it safe to call in parallel? */
+Bool ComposedEvaluation::isParallel() const
+{
+  return leftFunction_.getImplementation()->isParallel() && rightFunction_.getImplementation()->isParallel();
+}
+
 
 END_NAMESPACE_OPENTURNS

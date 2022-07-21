@@ -2,7 +2,7 @@
 /**
  *  @brief Classification algorithm base type
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ClassifierImplementation.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -84,7 +84,7 @@ struct ClassifyPolicy
     , p_classifier_(p_classifier)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i] = p_classifier_->classify(input_[i]);
   }
@@ -92,29 +92,13 @@ struct ClassifyPolicy
 }; /* end struct ClassifyPolicy */
 
 
-Indices ClassifierImplementation::classifyParallel(const Sample & inS) const
+Indices ClassifierImplementation::classify(const Sample & inS) const
 {
   const UnsignedInteger size = inS.getSize();
   Indices result(size);
   const ClassifyPolicy policy(inS, result, this);
-  TBB::ParallelFor(0, size, policy);
+  TBBImplementation::ParallelForIf(isParallel_, 0, size, policy);
   return result;
-}
-
-Indices ClassifierImplementation::classifySequential(const Sample & inS) const
-{
-  const UnsignedInteger size = inS.getSize();
-  Indices prediction(size);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    prediction[i] = classify(inS[i]);
-  return prediction;
-}
-
-Indices ClassifierImplementation::classify(const Sample & inS) const
-{
-  if (isParallel_)
-    return classifyParallel(inS);
-  return classifySequential(inS);
 }
 
 /* Grade a point */
@@ -141,7 +125,7 @@ struct GradePolicy
     , p_classifier_(p_classifier)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i] = p_classifier_->grade(input_[i], classes_[i]);
   }
@@ -156,7 +140,7 @@ Point ClassifierImplementation::gradeParallel(const Sample & inS,
   const UnsignedInteger size = inS.getSize();
   Point result(size);
   const GradePolicy policy(inS, hClass, result, this);
-  TBB::ParallelFor(0, size, policy);
+  TBBImplementation::ParallelFor(0, size, policy);
   return result;
 }
 

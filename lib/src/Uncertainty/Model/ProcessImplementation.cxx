@@ -2,7 +2,7 @@
 /**
  *  @brief An interface for all implementation class of process
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,7 @@ static const Factory<ProcessImplementation> Factory_ProcessImplementation;
 ProcessImplementation::ProcessImplementation()
   : PersistentObject()
   , description_()
-  , ouputDimension_(1)
+  , outputDimension_(1)
   , mesh_(RegularGrid(0.0, 1.0, 1))
 {
   // Nothing to do
@@ -54,7 +54,7 @@ String ProcessImplementation::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << ProcessImplementation::GetClassName()
-      << " ouputDimension=" << ouputDimension_
+      << " outputDimension=" << outputDimension_
       << " description=" << description_
       << " mesh=" << mesh_;
   return oss;
@@ -65,7 +65,7 @@ String ProcessImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << "class=" << ProcessImplementation::GetClassName()
-      << " ouputDimension=" << ouputDimension_
+      << " outputDimension=" << outputDimension_
       << " description=" << description_.__str__(offset)
       << " mesh=" << mesh_.__str__(offset);
   return oss;
@@ -79,12 +79,12 @@ UnsignedInteger ProcessImplementation::getInputDimension() const
 
 UnsignedInteger ProcessImplementation::getOutputDimension() const
 {
-  return ouputDimension_;
+  return outputDimension_;
 }
 
-void ProcessImplementation::setOutputDimension(const UnsignedInteger ouputDimension)
+void ProcessImplementation::setOutputDimension(const UnsignedInteger outputDimension)
 {
-  ouputDimension_ = ouputDimension;
+  outputDimension_ = outputDimension;
 }
 
 /* Description accessor */
@@ -217,7 +217,7 @@ Process ProcessImplementation::getMarginal(const Indices & indices) const
 void ProcessImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "ouputDimension_", ouputDimension_ );
+  adv.saveAttribute( "outputDimension_", outputDimension_ );
   adv.saveAttribute( "description_", description_ );
   adv.saveAttribute( "mesh_", mesh_ );
 }
@@ -226,7 +226,7 @@ void ProcessImplementation::save(Advocate & adv) const
 void ProcessImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "ouputDimension_", ouputDimension_ );
+  adv.loadAttribute( "outputDimension_", outputDimension_ );
   adv.loadAttribute( "description_", description_ );
   adv.loadAttribute( "mesh_", mesh_ );
 }

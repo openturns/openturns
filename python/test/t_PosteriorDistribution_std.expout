@@ -21,7 +21,7 @@ Covariance  [[ 0.0677337 0.0116648 ]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
-oneRealization= [0.684575,2]
+oneRealization= [0.714382,1.75489]
 Zero point=  [0.0, 0.0]  pdf= 0.0  cdf= 0.0
 Quantile= [0.974679,1.97468]
 margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations = 
@@ -33,7 +33,7 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(conditional dist
 4 : [ -2.77208  ]), indices=[0])
 margin CDF= [0]
 margin quantile= [0.95]
-margin realization= [0.359802]
+margin realization= [0.373767]
 margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations = 
     [ X0        ]
 0 : [  1.4123   ]
@@ -43,27 +43,27 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(conditional dist
 4 : [ -2.77208  ]), indices=[1])
 margin CDF= [0]
 margin quantile= [1.95]
-margin realization= [1.49168]
+margin realization= [1.78061]
 conditioning distribution= ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations = 
     [ X0        ]
-0 : [ -3.43509  ]
-1 : [ -1.92433  ]
-2 : [ -1.96767  ]
-3 : [ -0.136176 ]
-4 : [  1.49369  ])
+0 : [  1.216    ]
+1 : [  1.18973  ]
+2 : [ -0.705788 ]
+3 : [  0.391527 ]
+4 : [ -3.43509  ])
 Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations = 
     [ X0        ]
-0 : [ -3.43509  ]
-1 : [ -1.92433  ]
-2 : [ -1.96767  ]
-3 : [ -0.136176 ]
-4 : [  1.49369  ])
+0 : [  1.216    ]
+1 : [  1.18973  ]
+2 : [ -0.705788 ]
+3 : [  0.391527 ]
+4 : [ -3.43509  ])
 range= [0, 0]
 [1, 2]
-Mean  [0,1.79822]
+Mean  [0,1.23679]
 Covariance  [[ 0        0        ]
- [ 0        0.057971 ]]
+ [ 0        0.151918 ]]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
@@ -72,21 +72,21 @@ Zero point=  [0.0, 0.0]  pdf= 0.0  cdf= 0.0
 Quantile= [0,1.95]
 margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations = 
     [ X0        ]
-0 : [ -3.43509  ]
-1 : [ -1.92433  ]
-2 : [ -1.96767  ]
-3 : [ -0.136176 ]
-4 : [  1.49369  ]), indices=[0])
+0 : [  1.216    ]
+1 : [  1.18973  ]
+2 : [ -0.705788 ]
+3 : [  0.391527 ]
+4 : [ -3.43509  ]), indices=[0])
 margin CDF= [1]
 margin quantile= [0]
 margin realization= [0]
 margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations = 
     [ X0        ]
-0 : [ -3.43509  ]
-1 : [ -1.92433  ]
-2 : [ -1.96767  ]
-3 : [ -0.136176 ]
-4 : [  1.49369  ]), indices=[1])
+0 : [  1.216    ]
+1 : [  1.18973  ]
+2 : [ -0.705788 ]
+3 : [  0.391527 ]
+4 : [ -3.43509  ]), indices=[1])
 margin CDF= [0]
 margin quantile= [1.95]
 margin realization= [2]

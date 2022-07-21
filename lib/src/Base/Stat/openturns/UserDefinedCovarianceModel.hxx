@@ -4,7 +4,7 @@
  *         function given as a collection of Covariance Matrix or a global
  *         covariance matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,8 +24,6 @@
 #define OPENTURNS_USERDEFINEDCOVARIANCEMODEL_HXX
 
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/PersistentCollection.hxx"
-#include "openturns/Collection.hxx"
 #include "openturns/RegularGrid.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/NearestNeighbourAlgorithm.hxx"
@@ -44,8 +42,6 @@ class OT_API UserDefinedCovarianceModel
 
 public:
 
-  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
-
   /** Default constructor */
   UserDefinedCovarianceModel();
 
@@ -54,23 +50,32 @@ public:
                              const CovarianceMatrix & covariance);
 
   /** Virtual copy constructor */
-  virtual UserDefinedCovarianceModel * clone() const;
+  UserDefinedCovarianceModel * clone() const override;
+
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point & s,
+                         const Point & t) const override;
+#ifndef SWIG
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                         const Collection<Scalar>::const_iterator &t_begin) const override;
+#endif
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const Point & s,
-                               const Point & t) const;
+  SquareMatrix operator() (const Point & s, const Point & t) const override;
+
 private:
-  CovarianceMatrix operator() (const UnsignedInteger i,
-                               const UnsignedInteger j) const;
+  SquareMatrix operator() (const UnsignedInteger i, const UnsignedInteger j) const;
+
 public:
 
   /** Discretize the covariance function on a given TimeGrid/Mesh */
   using CovarianceModelImplementation::discretize;
-  virtual CovarianceMatrix discretize(const Sample & vertices) const;
-  virtual Sample discretizeRow(const Sample & vertices,
-                               const UnsignedInteger p) const;
-  virtual TriangularMatrix discretizeAndFactorize(const Sample & vertices) const;
+  CovarianceMatrix discretize(const Sample & vertices) const override;
+  Sample discretizeRow(const Sample & vertices,
+                       const UnsignedInteger p) const override;
+  TriangularMatrix discretizeAndFactorize(const Sample & vertices) const override;
 
   /** Mesh accessor */
   Mesh getMesh() const;
@@ -79,20 +84,20 @@ public:
   RegularGrid getTimeGrid() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
-  /** Collection of covariance functions */
+  /** Covariance matrix of the native discretization */
   CovarianceMatrix covariance_;
 
   /** Mesh of the native discretization */

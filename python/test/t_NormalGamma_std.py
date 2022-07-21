@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = NormalGamma(1.0, 2.0, 3.0, 4.0)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

@@ -3,7 +3,7 @@
  *  @brief ProbabilitySimulationAlgorithm is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,7 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Bool verbos
 }
 
 /* Constructor with parameters */
-ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & event,
+ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
     const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
   : EventSimulation(event, verbose, convergenceStrategy)
@@ -55,14 +55,14 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & eve
 }
 
 /* Constructor with parameters */
-ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & event,
+ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
     const WeightedExperiment & experiment,
     const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
   : EventSimulation(event, verbose, convergenceStrategy)
   , isExperimentProvided_(true)
 {
-  if (!getEvent().isComposite()) throw InvalidArgumentException(HERE) << "ProbabilitySimulationAlgorithm requires a composite event";
+  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "ProbabilitySimulationAlgorithm requires a composite event";
   setExperiment(experiment);
 }
 

@@ -2,7 +2,7 @@
 /**
  *  @brief Sensitivity analysis based on functional chaos expansion
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -233,8 +233,7 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variableIndice
 Scalar FunctionalChaosSobolIndices::getSobolIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
-  Indices index(1);
-  index[0] = variableIndex;
+  const Indices index(1, variableIndex);
   return getSobolIndex(index, marginalIndex);
 }
 
@@ -290,12 +289,11 @@ Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & variableI
 Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
-  Indices index(1);
-  index[0] = variableIndex;
+  const Indices index(1, variableIndex);
   return getSobolTotalIndex(index, marginalIndex);
 }
 
-/* Sobol grouped index accessor */
+/* Sobol grouped (first order) index accessor */
 Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
 {
@@ -341,13 +339,35 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
   else return 0.0;
 }
 
-/* Sobol index accessor */
+/* Sobol (first order) index accessor */
 Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
-  Indices index(1);
-  index[0] = variableIndex;
+  LOGWARN(OSS() << "FunctionalChaosSobolIndices.getSobolGroupedIndex(int) is deprecated, use getSobolIndex");
+  const Indices index(1, variableIndex);
   return getSobolGroupedIndex(index, marginalIndex);
+}
+
+/* Sobol grouped total index accessor */
+Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & variableIndices,
+    const UnsignedInteger marginalIndex) const
+{
+  // Compute the complementary indice
+  const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
+  if (!variableIndices.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
+  const Indices complementaryVariableIndices = variableIndices.complement(inputDimension);
+  // Compute total index from complementary first index
+  const Scalar complementaryFirstIndex = getSobolGroupedIndex(complementaryVariableIndices, marginalIndex);
+  const Scalar groupTotalIndex = 1.0 - complementaryFirstIndex;
+  return groupTotalIndex;
+}
+/* Sobol total index accessor */
+Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const UnsignedInteger variableIndex,
+    const UnsignedInteger marginalIndex) const
+{
+  LOGWARN(OSS() << "FunctionalChaosSobolIndices.getSobolGroupedTotalIndex(int) is deprecated, use getSobolTotalIndex");
+  const Indices index(1, variableIndex);
+  return getSobolGroupedTotalIndex(index, marginalIndex);
 }
 
 /* Functional chaos result accessor */

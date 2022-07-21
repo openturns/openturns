@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationAlgorithm provides capabilities to solve optimization problems
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -106,20 +106,21 @@ public:
   typedef Bool (*StopCallback)(void * state);
   void setStopCallback(StopCallback callBack, void * state = 0);
 
-  /** Build an instance from its name */
+  /** Build an instance from name */
   static OptimizationAlgorithm Build(const String & solverName);
+
+  /** Build an instance from problem */
+  static OptimizationAlgorithm Build(const OptimizationProblem & problem);
 
   /** Get all optimization algorithm names */
   static Description GetAlgorithmNames();
-
-  /** Get least-squares optimization algorithm names */
-  static Description GetLeastSquaresAlgorithmNames();
+  static Description GetAlgorithmNames(const OptimizationProblem & problem);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 } ; /* class OptimizationAlgorithm */
 

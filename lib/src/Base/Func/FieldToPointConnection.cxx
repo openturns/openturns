@@ -4,7 +4,7 @@
  *        and a field to point function or between a field to point function
  *        and a field function
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,7 +68,7 @@ FieldToPointConnection::FieldToPointConnection(const FieldToPointFunction & fiel
   , fieldToPointFunction_(fieldToPointFunction)
 {
   // Check if the dimensions of the point to field and field to point functions are compatible
-  if (fieldToPointFunction_.getInputMesh().getDimension() != fieldFunction_.getOutputDimension()) throw InvalidArgumentException(HERE) << "The input dimension=" << fieldToPointFunction_.getInputDimension() << " of the field to point function must be equal to the output dimension=" << fieldFunction_.getOutputDimension() << " of the field function to compose them";
+  if (fieldToPointFunction_.getInputDimension() != fieldFunction_.getOutputDimension()) throw InvalidArgumentException(HERE) << "The input dimension=" << fieldToPointFunction_.getInputDimension() << " of the field to point function must be equal to the output dimension=" << fieldFunction_.getOutputDimension() << " of the field function to compose them";
   setInputDescription(fieldFunction_.getInputDescription());
   setOutputDescription(fieldToPointFunction_.getOutputDescription());
 }
@@ -89,7 +89,7 @@ Bool FieldToPointConnection::operator ==(const FieldToPointConnection & other) c
 /* Get the i-th marginal function */
 FieldToPointConnection::Implementation FieldToPointConnection::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 

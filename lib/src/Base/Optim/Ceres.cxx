@@ -2,7 +2,7 @@
 /**
  *  @brief Ceres solver
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 #ifdef OPENTURNS_HAVE_CERES
-  #include <ceres/ceres.h>
+#include <ceres/ceres.h>
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -86,14 +86,20 @@ void Ceres::checkProblem(const OptimizationProblem & problem) const
   if (problem.hasLevelFunction())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support nearest-point problems";
 
-  if (problem.hasBounds() && !problem.hasResidualFunction())
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support bound constraints for general optimization";
+  if (problem.hasBounds() && (algoName_ != "LEVENBERG_MARQUARDT" && algoName_ != "DOGLEG"))
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " line search algorithms do not support bound constraints";
+
+  if (!problem.hasResidualFunction() && (algoName_ == "LEVENBERG_MARQUARDT" || algoName_ == "DOGLEG"))
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " trust-region algorithms do not support general optimization";
 
   if (problem.hasInequalityConstraint())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support inequality constraints";
 
   if (problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support equality constraints";
+
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
 }
 
 #ifdef OPENTURNS_HAVE_CERES
@@ -105,13 +111,13 @@ public:
     , algorithm_(algorithm)
   {
     const OptimizationProblem problem(algorithm_.getProblem());
-    *mutable_parameter_block_sizes() = std::vector<ceres::int32>(1, problem.getDimension()); 
+    *mutable_parameter_block_sizes() = std::vector<int32_t>(1, problem.getDimension());
     set_num_residuals(problem.getResidualFunction().getOutputDimension());
   }
 
-  virtual bool Evaluate(double const* const* parameters,
-                        double* residuals,
-                        double** jacobians) const
+  bool Evaluate(double const* const* parameters,
+                double* residuals,
+                double** jacobians) const override
   {
     const OptimizationProblem problem(algorithm_.getProblem());
     const UnsignedInteger n = problem.getDimension();
@@ -130,7 +136,7 @@ public:
     if (jacobians)
     {
       const Matrix gradient(problem.getResidualFunction().gradient(inP));
-      std::copy(&gradient(0, 0), &gradient(n-1, m-1)+1, jacobians[0]);
+      std::copy(gradient.data(), gradient.data() + m * n, jacobians[0]);
     }
     return true;
   }
@@ -147,14 +153,14 @@ public:
     : ceres::FirstOrderFunction()
     , algorithm_(algorithm) {}
 
-  virtual int NumParameters() const
+  int NumParameters() const override
   {
     return algorithm_.getProblem().getDimension();
   }
 
-  virtual bool Evaluate(const double * const x,
-                        double * cost,
-                        double * jacobian) const
+  bool Evaluate(const double * const x,
+                double * cost,
+                double * jacobian) const override
   {
     const OptimizationProblem problem(algorithm_.getProblem());
     const UnsignedInteger n = problem.getDimension();
@@ -167,11 +173,15 @@ public:
     algorithm_.evaluationInputHistory_.add(inP);
     algorithm_.evaluationOutputHistory_.add(outP);
 
+    // update result
+    algorithm_.result_.setEvaluationNumber(algorithm_.evaluationInputHistory_.getSize());
+    algorithm_.result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
+
     // gradient
     if (jacobian)
     {
       const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
-      std::copy(&gradient(0, 0), &gradient(n-1, 0)+1, jacobian);
+      std::copy(gradient.data(), gradient.data() + n, jacobian);
     }
     return true;
   }
@@ -199,7 +209,7 @@ public:
   }
 
 protected:
-  Ceres & algorithm_;
+  const Ceres & algorithm_;
 };
 
 #endif
@@ -217,6 +227,7 @@ void Ceres::run()
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  result_ = OptimizationResult(getProblem());
 
   double optimalValue = 0.0;
   UnsignedInteger iterationNumber = 0;
@@ -239,8 +250,8 @@ void Ceres::run()
       Point upperBound(bounds.getUpperBound());
       for (UnsignedInteger i = 0; i < dimension; ++ i)
       {
-        if (finiteLowerBound[i]) problem.SetParameterLowerBound(&x[0], i, lowerBound[i]);
-        if (finiteUpperBound[i]) problem.SetParameterUpperBound(&x[0], i, upperBound[i]);
+        if (finiteLowerBound[i]) problem.SetParameterLowerBound(&(*x.begin()), i, lowerBound[i]);
+        if (finiteUpperBound[i]) problem.SetParameterUpperBound(&(*x.begin()), i, upperBound[i]);
       }
     }
 
@@ -328,8 +339,6 @@ void Ceres::run()
       throw InvalidArgumentException(HERE) << "Invalid value for dense_linear_algebra_library_type";
     if (ResourceMap::HasKey("Ceres-sparse_linear_algebra_library_type") && !ceres::StringToSparseLinearAlgebraLibraryType(ResourceMap::Get("Ceres-sparse_linear_algebra_library_type"), &options.sparse_linear_algebra_library_type))
       throw InvalidArgumentException(HERE) << "Invalid value for sparse_linear_algebra_library_type";
-    if (ResourceMap::HasKey("Ceres-num_linear_solver_threads"))
-      options.num_linear_solver_threads = ResourceMap::GetAsUnsignedInteger("Ceres-num_linear_solver_threads");
     if (ResourceMap::HasKey("Ceres-use_explicit_schur_complement"))
       options.use_explicit_schur_complement = ResourceMap::GetAsBool("Ceres-use_explicit_schur_complement");
     if (ResourceMap::HasKey("Ceres-use_postordering"))
@@ -337,9 +346,9 @@ void Ceres::run()
     if (ResourceMap::HasKey("Ceres-dynamic_sparsity"))
       options.dynamic_sparsity = ResourceMap::GetAsBool("Ceres-dynamic_sparsity");
     if (ResourceMap::HasKey("Ceres-min_linear_solver_iterations"))
-        options.min_linear_solver_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-min_linear_solver_iterations");
+      options.min_linear_solver_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-min_linear_solver_iterations");
     if (ResourceMap::HasKey("Ceres-max_linear_solver_iterations"))
-        options.max_linear_solver_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-max_linear_solver_iterations");
+      options.max_linear_solver_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-max_linear_solver_iterations");
     if (ResourceMap::HasKey("Ceres-eta"))
       options.eta = ResourceMap::GetAsScalar("Ceres-eta");
     if (ResourceMap::HasKey("Ceres-jacobi_scaling"))
@@ -349,6 +358,7 @@ void Ceres::run()
     if (ResourceMap::HasKey("Ceres-inner_iteration_tolerance"))
       options.inner_iteration_tolerance = ResourceMap::GetAsScalar("Ceres-inner_iteration_tolerance");
     // logging_type: https://github.com/ceres-solver/ceres-solver/issues/470
+    options.logging_type = ceres::SILENT;
     if (ResourceMap::HasKey("Ceres-minimizer_progress_to_stdout"))
       options.minimizer_progress_to_stdout = ResourceMap::GetAsBool("Ceres-minimizer_progress_to_stdout");
     // trust_region_problem_dump_directory/trust_region_problem_dump_format_type: https://github.com/ceres-solver/ceres-solver/issues/470
@@ -361,11 +371,14 @@ void Ceres::run()
     if (ResourceMap::HasKey("Ceres-update_state_every_iteration"))
       options.update_state_every_iteration = ResourceMap::GetAsBool("Ceres-update_state_every_iteration");
 
-    options.callbacks.push_back(new IterationCallbackInterface(*this));
+    Pointer<IterationCallbackInterface> p_iterationCallbackInterface = new IterationCallbackInterface(*this);
+    options.callbacks.push_back(p_iterationCallbackInterface.get());
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
     LOGINFO(OSS() << summary.BriefReport());
-    if (summary.termination_type != ceres::CONVERGENCE)
+    if (summary.termination_type == ceres::FAILURE)
+      throw InternalException(HERE) << "Ceres terminated with failure.";
+    else if (summary.termination_type != ceres::CONVERGENCE)
       LOGWARN(OSS() << "Ceres terminated with " << ceres::TerminationTypeToString(summary.termination_type));
 
     optimalValue = summary.final_cost;
@@ -379,7 +392,7 @@ void Ceres::run()
     ceres::GradientProblemSolver::Options options;
     // check that algoName is a line search method
     if (!ceres::StringToLineSearchDirectionType(algoName_, &options.line_search_direction_type))
-      LOGWARN("Unconstrained optimization only allows line search methods, using default line search");
+      throw InvalidArgumentException(HERE) << "Unconstrained optimization only allows line search methods";
 
     options.max_num_iterations = getMaximumIterationNumber();
     options.function_tolerance = getMaximumResidualError();
@@ -424,10 +437,12 @@ void Ceres::run()
     if (ResourceMap::HasKey("Ceres-parameter_tolerance"))
       options.parameter_tolerance = ResourceMap::GetAsScalar("Ceres-parameter_tolerance");
     // logging_type: https://github.com/ceres-solver/ceres-solver/issues/470
+    options.logging_type = ceres::SILENT;
     if (ResourceMap::HasKey("Ceres-minimizer_progress_to_stdout"))
       options.minimizer_progress_to_stdout = ResourceMap::GetAsBool("Ceres-minimizer_progress_to_stdout");
 
-    options.callbacks.push_back(new IterationCallbackInterface(*this));
+    Pointer<IterationCallbackInterface> p_iterationCallbackInterface = new IterationCallbackInterface(*this);
+    options.callbacks.push_back(p_iterationCallbackInterface.get());
     ceres::GradientProblemSolver::Summary summary;
     ceres::GradientProblem problem(new FirstOrderFunctionInterface(*this));
     ceres::Solve(options, problem, &x[0], &summary);
@@ -440,8 +455,7 @@ void Ceres::run()
     iterationNumber = summary.iterations.size();
   }
 
-  OptimizationResult result(dimension, 1);
-  result.setProblem(getProblem());
+  OptimizationResult result(getProblem());
 
   const UnsignedInteger size = evaluationInputHistory_.getSize();
 
@@ -481,7 +495,6 @@ void Ceres::run()
   result.setIterationNumber(iterationNumber);
   result.setOptimalPoint(x);
   result.setOptimalValue(Point(1, optimalValue));
-  result.setLagrangeMultipliers(computeLagrangeMultipliers(x));
   setResult(result);
 #else
   throw NotYetImplementedException(HERE) << "No Ceres support";
@@ -529,12 +542,10 @@ void Ceres::load(Advocate & adv)
   adv.loadAttribute("algoName_", algoName_);
 }
 
-Bool Ceres::IsAvailable()
+void Ceres::Initialize()
 {
 #ifdef OPENTURNS_HAVE_CERES
-  return true;
-#else
-  return false;
+  google::InitGoogleLogging("openturns");
 #endif
 }
 

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 from math import *
 
@@ -9,7 +8,7 @@ TESTPREAMBLE()
 try:
 
     # Create a Sobol' sequence of maximum dimension
-    sequence = SobolSequence(SobolSequence.MaximumNumberOfDimension)
+    sequence = SobolSequence(SobolSequence.MaximumDimension)
     print(sequence)
 
     # Create a numerical sample of the sequence

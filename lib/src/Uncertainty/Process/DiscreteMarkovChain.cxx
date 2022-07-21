@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements a discrete Markov chain process
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,11 +22,10 @@
 #include <iostream>
 #include "openturns/DiscreteMarkovChain.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/UserDefined.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/ResourceMap.hxx"
+#include "openturns/SquareComplexMatrix.hxx"
 #include "openturns/DistFunc.hxx"
 
 
@@ -49,7 +48,7 @@ DiscreteMarkovChain::DiscreteMarkovChain()
 
 /* Standard constructors */
 DiscreteMarkovChain::DiscreteMarkovChain(const Distribution & origin,
-                       const SquareMatrix & transitionMatrix)
+    const SquareMatrix & transitionMatrix)
   : ProcessImplementation()
   , origin_(origin)
   , transitionMatrix_(transitionMatrix.transpose())
@@ -57,20 +56,20 @@ DiscreteMarkovChain::DiscreteMarkovChain(const Distribution & origin,
 {
   // Set the dimension of the process
   setOutputDimension(1);
-  
+
   // Set the transition matrix of the process
   setTransitionMatrix(transitionMatrix);
-  
+
   // Set the origin of the process
   setOrigin(origin);
-  
+
   // Set the currentState of the process
   currentState_ = origin.getRealization()[0];
 }
 
 DiscreteMarkovChain::DiscreteMarkovChain(const Distribution & origin,
-                       const SquareMatrix & transitionMatrix,
-                       const RegularGrid & timeGrid)
+    const SquareMatrix & transitionMatrix,
+    const RegularGrid & timeGrid)
   : ProcessImplementation()
   , origin_(origin)
   , transitionMatrix_(transitionMatrix.transpose())
@@ -78,13 +77,13 @@ DiscreteMarkovChain::DiscreteMarkovChain(const Distribution & origin,
 {
   // Set the dimension of the process
   setOutputDimension(1);
-  
+
   // Set the transition matrix of the process
   setTransitionMatrix(transitionMatrix);
-  
+
   // Set the origin of the process
   setOrigin(origin);
-  
+
   // Set the currentState of the process
   currentState_ = origin.getRealization()[0];
 
@@ -94,7 +93,7 @@ DiscreteMarkovChain::DiscreteMarkovChain(const Distribution & origin,
 
 /* Constructors with fixed origin */
 DiscreteMarkovChain::DiscreteMarkovChain(const UnsignedInteger origin,
-                       const SquareMatrix & transitionMatrix)
+    const SquareMatrix & transitionMatrix)
   : ProcessImplementation()
   , origin_(Dirac(origin))
   , transitionMatrix_(transitionMatrix.transpose())
@@ -102,20 +101,20 @@ DiscreteMarkovChain::DiscreteMarkovChain(const UnsignedInteger origin,
 {
   // Set the dimension of the process
   setOutputDimension(1);
-  
+
   // Set the transition matrix of the process
   setTransitionMatrix(transitionMatrix);
-  
+
   // Set the origin of the process
   setOrigin(Dirac(origin));
-  
+
   // Set the currentState of the process
   currentState_ = origin;
 }
 
 DiscreteMarkovChain::DiscreteMarkovChain(const UnsignedInteger origin,
-                       const SquareMatrix & transitionMatrix,
-                       const RegularGrid & timeGrid)
+    const SquareMatrix & transitionMatrix,
+    const RegularGrid & timeGrid)
   : ProcessImplementation()
   , origin_(Dirac(origin))
   , transitionMatrix_(transitionMatrix.transpose())
@@ -123,10 +122,10 @@ DiscreteMarkovChain::DiscreteMarkovChain(const UnsignedInteger origin,
 {
   // Set the dimension of the process
   setOutputDimension(1);
-  
+
   // Set the transition matrix of the process
   setTransitionMatrix(transitionMatrix);
-  
+
   // Set the origin of the process
   setOrigin(Dirac(origin));
 
@@ -155,7 +154,7 @@ String DiscreteMarkovChain::__str__(const String & offset) const
 {
   OSS oss;
   oss << "DiscreteMarkovChain(origin=" << origin_.__str__(offset)
-      << ", transition=" << PersistentCollection<Scalar>(*transitionMatrix_.transpose().getImplementation()).__str__(offset) 
+      << ", transition=" << PersistentCollection<Scalar>(*transitionMatrix_.transpose().getImplementation()).__str__(offset)
       << ")";
   return oss;
 }
@@ -174,8 +173,8 @@ Field DiscreteMarkovChain::getRealization() const
   {
     /* Definition of the weights */
     Point weights(dimension, 0.0);
-    std::copy(&transitionMatrix_(0,currentState_), &transitionMatrix_(0,currentState_)+dimension, weights.begin());
-        
+    std::copy(&transitionMatrix_(0, currentState_), &transitionMatrix_(0, currentState_) + dimension, weights.begin());
+
     /* Get a realization of the distribution */
     data(i, 0) = DistFunc::rDiscrete(weights);
     currentState_ = data(i, 0);
@@ -190,7 +189,7 @@ TimeSeries DiscreteMarkovChain::getFuture(const UnsignedInteger stepNumber) cons
   RegularGrid timeGrid(getTimeGrid());
 
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
-  
+
   // TimeGrid associated with the possible future
   const Scalar timeStep = RegularGrid(mesh_).getStep();
   const RegularGrid futurTimeGrid(RegularGrid(mesh_).getEnd(), timeStep, stepNumber);
@@ -199,15 +198,15 @@ TimeSeries DiscreteMarkovChain::getFuture(const UnsignedInteger stepNumber) cons
   // Loop on mesh points
   const UnsignedInteger dimension = transitionMatrix_.getNbColumns();
   UnsignedInteger previous = currentState_;
-  
+
   Sample data(size, 1);
   data(0, 0) = previous;
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     // Definition of the distribution
     Point weights(dimension, 0.0);
-    std::copy(&transitionMatrix_(0,previous), &transitionMatrix_(0,previous)+dimension, weights.begin());
-    
+    std::copy(&transitionMatrix_(0, previous), &transitionMatrix_(0, previous) + dimension, weights.begin());
+
     /* Get a realization of the distribution */
     data(i, 0) = DistFunc::rDiscrete(weights);
     previous = data(i, 0);
@@ -223,34 +222,34 @@ SquareMatrix DiscreteMarkovChain::getTransitionMatrix() const
 }
 
 void DiscreteMarkovChain::setTransitionMatrix(const SquareMatrix & transitionMatrix)
-{ 
+{
   // For memory access purposes, transition matrix is stored transposed
   const SquareMatrix transitionTransposed(transitionMatrix.transpose());
-    
+
   // Check transition matrix dimension consistency with current state
-  if (transitionTransposed.getNbColumns() <= currentState_) 
+  if (transitionTransposed.getNbColumns() <= currentState_)
   {
-    LOGWARN(OSS()<< "Warning: the given transition matrix has a dimension = " << transitionTransposed.getNbColumns() << " incompatible with the current state = " << currentState_<<". Current state is set to 0.");
+    LOGWARN(OSS() << "Warning: the given transition matrix has a dimension = " << transitionTransposed.getNbColumns() << " incompatible with the current state = " << currentState_ << ". Current state is set to 0.");
     currentState_ = 0;
   }
-    
+
   // Check transition matrix dimension consistency with origin
-  if (transitionTransposed.getNbColumns() <= origin_.getRange().getUpperBound()[0]) 
+  if (transitionTransposed.getNbColumns() <= origin_.getRange().getUpperBound()[0])
   {
-    LOGWARN(OSS()<< "Warning: the given transition matrix has a dimension = " << transitionTransposed.getNbColumns() << " incompatible with the origin distribution. Origin distribution is set to Dirac(0).");
+    LOGWARN(OSS() << "Warning: the given transition matrix has a dimension = " << transitionTransposed.getNbColumns() << " incompatible with the origin distribution. Origin distribution is set to Dirac(0).");
     setOrigin(0);
-    }
-    
-    // Check if transition matrix is stochastic
-    const Point ones(transitionTransposed.getNbColumns(), 1.0);
-    const Point sums(transitionMatrix * ones);
-    for (UnsignedInteger i = 0; i < transitionMatrix.getNbRows(); ++i)
-    {
-        if (std::abs(sums[i] - 1.0) > ResourceMap::GetAsScalar("DiscreteMarkovChain-ProbabilitySumPrecision")) throw InvalidArgumentException(HERE) << "Error: the given transition matrix is not stochastic. Sum of line " << i+1 << " is equal to " << sums[i];
-    }
-    
-    // Set transitionMatrix_ attribute
-    transitionMatrix_ = transitionTransposed;
+  }
+
+  // Check if transition matrix is stochastic
+  const Point ones(transitionTransposed.getNbColumns(), 1.0);
+  const Point sums(transitionMatrix * ones);
+  for (UnsignedInteger i = 0; i < transitionMatrix.getNbRows(); ++i)
+  {
+    if (!(std::abs(sums[i] - 1.0) < ResourceMap::GetAsScalar("DiscreteMarkovChain-ProbabilitySumPrecision"))) throw InvalidArgumentException(HERE) << "Error: the given transition matrix is not stochastic. Sum of line " << i + 1 << " is equal to " << sums[i];
+  }
+
+  // Set transitionMatrix_ attribute
+  transitionMatrix_ = transitionTransposed;
 }
 
 /* Origin accessors */
@@ -263,15 +262,15 @@ void DiscreteMarkovChain::setOrigin(const Distribution & origin)
 {
   // Check if distribution is 1D
   if (origin.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given origin distribution must be 1D.";
-  
+
   // Check integral
   if (!origin.isIntegral()) throw InvalidArgumentException(HERE) << "Error: the given origin distribution must be integer-valued.";
-  
+
   // Check support consistence with transition matrix dimension
   const Interval support(origin.getRange());
-  const Bool flb = support.getFiniteLowerBound()[0];
+  const Bool flb = support.getFiniteLowerBound()[0] > 0;
   const Scalar lb(support.getLowerBound()[0]);
-  const Bool fub = support.getFiniteUpperBound()[0];
+  const Bool fub = support.getFiniteUpperBound()[0] > 0;
   const Scalar ub(support.getUpperBound()[0]);
 
   if (!flb || lb < 0.0) throw InvalidArgumentException(HERE) << "Error: the given origin distribution support must be positive.";
@@ -279,7 +278,7 @@ void DiscreteMarkovChain::setOrigin(const Distribution & origin)
 
   origin_ = origin;
 }
-  
+
 
 void DiscreteMarkovChain::setOrigin(const UnsignedInteger origin)
 {
@@ -292,6 +291,51 @@ void DiscreteMarkovChain::setMesh(const Mesh & mesh)
 {
   if(!mesh.isRegular()) throw InvalidArgumentException(HERE) << "Error: the mesh must be regular.";
   ProcessImplementation::setMesh(mesh);
+}
+
+/* Stationary distribution computation */
+UserDefined DiscreteMarkovChain::computeStationaryDistribution() const
+{
+  const UnsignedInteger dimension = transitionMatrix_.getDimension();
+  SquareComplexMatrix eigenvectors;
+  const SquareMatrix::ComplexCollection eigenvalues(transitionMatrix_.transpose().computeEV(eigenvectors));
+  // Find the largest eigenvalue, exactly equal to one in theory
+  Scalar largestEV = eigenvalues[0].real();
+  UnsignedInteger indexMax = 0;
+  for (UnsignedInteger i = 1; i < dimension; ++i)
+    if (!(eigenvalues[i].real() < largestEV))
+    {
+      largestEV = eigenvalues[i].real();
+      indexMax = i;
+    }
+  // Now extract the corresponding eigenvector. We know that it can be chosen with positive components and a L1 norm equal to 1, and it is the probability table of the stationary distribution. There is no need to normalize it as it is done in the UserDefined distribution.
+  Sample support(dimension, 1);
+  Point probabilities(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    support(i, 0) = i;
+    probabilities[i] = std::abs(eigenvectors(i, indexMax).real());
+  }
+  return UserDefined(support, probabilities);
+}
+
+/* DOT export */
+void DiscreteMarkovChain::exportToDOTFile(const FileName & filename) const
+{
+  std::ofstream dotFile(filename.c_str());
+  if (dotFile.fail())
+    throw FileOpenException(HERE) << "Could not open file " << filename;
+  dotFile.imbue(std::locale("C"));
+  dotFile << "digraph " << getName() << " {\n";
+  dotFile << "layout=" << ResourceMap::Get("DiscreteMarkovChain-DOTLayout") << "\n";
+  dotFile << "node[shape=" << ResourceMap::Get("DiscreteMarkovChain-DOTNodeShape") << ", color=" << ResourceMap::Get("DiscreteMarkovChain-DOTNodeColor") << "]\n";
+  const String arcOptions((ResourceMap::Get("DiscreteMarkovChain-DOTArcColor") != "black") ? String(OSS() << ", color=" << ResourceMap::Get("DiscreteMarkovChain-DOTArcColor")) : "");
+  for (UnsignedInteger j = 0; j < transitionMatrix_.getNbRows(); ++ j)
+    for (UnsignedInteger i = 0; i < transitionMatrix_.getNbRows(); ++ i)
+      if (transitionMatrix_(i, j) > 0.0)
+        dotFile << j << "->" << i << " [label=" << transitionMatrix_(i, j) << arcOptions << "]\n";
+  dotFile << "}\n";
+  dotFile.close();
 }
 
 /* Method save() stores the object through the StorageManager */

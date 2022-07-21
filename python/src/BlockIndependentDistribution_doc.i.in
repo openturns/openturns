@@ -1,0 +1,56 @@
+%feature("docstring") OT::BlockIndependentDistribution
+"Merge of a collection of independent distributions.
+
+Parameters
+----------
+distributions : list of :class:`~openturns.Distribution`.
+    The distributions of the independent blocks.
+
+Notes
+-----
+Let's :math:`X_1\, \dots, X_K`:math:`K` independent random vectors of respective dimension :math:`n_i \geq 1` and cumulative distribution functions :math:`F_1,\dots, F_K`. The :class:`~openturns.BlockIndependentDistribution` is the distribution of the random vector :math:`X` of dimension :math:`d = n_1 + \dots + n_K` of cumulative distribution function :math:`F` defined by:
+
+.. math::
+
+    F(x_1, \dots, x_K) = F_1(x_1) \dots F_K(x_K)
+
+where :math:`x_i\in\Rset^{n_1},\dots,x_K\in\Rset^{n_K}`.
+
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> R = ot.CorrelationMatrix(2)
+>>> R[0, 1] = 0.5
+>>> d1 =  ot.ComposedDistribution([ot.Uniform(), ot.Triangular(1.0, 2.0, 3.0)], NormalCopula(R))
+>>> d2 = ot.Normal(2)
+>>> collection = [d1, d2]
+>>> dist = ot.BlockIndependentDistribution(collection)
+
+Get a sample:
+
+>>> sample = dist.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BlockIndependentDistribution::getDistributionCollection
+"Accessor to the list of the distributions.
+
+Returns
+-------
+distributions : list of distributions
+    The collection of the distributions to be merged."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BlockIndependentDistribution::setDistributionCollection
+"Accessor to the list of the codistributionspulas.
+
+Parameters
+----------
+distributions : list of distributions
+    The collection of distributions to be merged."
+
+

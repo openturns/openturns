@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements numerical math functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,10 +62,10 @@ public:
   Bool operator ==(const Evaluation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Description Accessor, i.e. the names of the input and output parameters */
   virtual void setDescription(const Description & description);
@@ -115,13 +115,21 @@ public:
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;
 
+  /** Linearity accessors */
+  Bool isLinear() const;
+  Bool isLinearlyDependent(const UnsignedInteger index) const;
+
+  /** Invalid values check accessor */
+  void setCheckOutput(const Bool checkOutput);
+  Bool getCheckOutput() const;
+
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,
                      const UnsignedInteger outputMarginal,
                      const Point & centralPoint,
                      const Scalar xMin,
                      const Scalar xMax,
-                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
+                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the given 1D marginal output as a function of the given 2D marginal input around the given central point */
@@ -131,19 +139,19 @@ public:
                      const Point & centralPoint,
                      const Point & xMin,
                      const Point & xMax,
-                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
+                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the output of the function with respect to its input when the input and output dimensions are 1 */
   virtual Graph draw(const Scalar xMin,
                      const Scalar xMax,
-                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
+                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
   virtual Graph draw(const Point & xMin,
                      const Point & xMax,
-                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
+                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
 }; /* class Evaluation */

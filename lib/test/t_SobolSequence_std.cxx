@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the Sobol' sequence
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ int main(int, char *[])
   try
   {
     // Create a Sobol' sequence of maximum dimension
-    SobolSequence sequence(SobolSequence::MaximumNumberOfDimension);
+    SobolSequence sequence(SobolSequence::MaximumDimension);
     fullprint << sequence << std::endl;
 
     // Create a numerical sample of the sequence

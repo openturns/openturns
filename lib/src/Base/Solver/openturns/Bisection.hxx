@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation class of the scalar nonlinear solver based on
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,19 +45,19 @@ public:
 
 
   /** Virtual constructor */
-  virtual Bisection * clone() const;
+  Bisection * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the bisection method */
   using SolverImplementation::solve;
-  Scalar solve(const Function & function,
+  Scalar solve(const UniVariateFunction & function,
                const Scalar value,
                const Scalar infPoint,
                const Scalar supPoint,
                const Scalar infValue,
-               const Scalar supValue) const;
+               const Scalar supValue) const override;
 
 private:
 

@@ -1,5 +1,5 @@
 PythonRandomVector -> ['R', 'S'] #2
-myRV= class=RandomVector implementation=class=PythonRandomVectorImplementation name=RVEC description=[R,S]
+myRV= class=RandomVector implementation=class=PythonRandomVector name=RVEC description=[R,S]
 dimension= 2
 realization= [0.629877,2.88281]
 sample= 0 : [ 0.135276  2.0325    ]
@@ -10,3 +10,13 @@ sample= 0 : [ 0.135276  2.0325    ]
 mean= [0.5,2.5]
 covariance= [[ 0.0833333 0         ]
  [ 0         0.0833333 ]]
+isEvent= False
+description= [offset]
+new parameter= [10.5]
+new mean= [0.5,11]
+new realization= [0.373767,11.2373]
+new sample= 0 : [  0.883503 10.795    ]
+1 : [  0.92851  11.3208   ]
+2 : [  0.684575 11.328    ]
+3 : [  0.359802 11.4547   ]
+4 : [  0.588615 10.682    ]

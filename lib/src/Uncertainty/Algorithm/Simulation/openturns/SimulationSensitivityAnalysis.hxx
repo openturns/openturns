@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of SimulationResult
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,12 +23,11 @@
 
 #include <cmath>
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/ComparisonOperator.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Graph.hxx"
-#include "openturns/Event.hxx"
+#include "openturns/RandomVector.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
 
@@ -44,27 +43,24 @@ class OT_API SimulationSensitivityAnalysis
 
   CLASSNAME
 public:
-
   typedef Function IsoProbabilisticTransformation;
 
   /** Default constructor */
   SimulationSensitivityAnalysis();
 
   /** Standard constructor */
-  SimulationSensitivityAnalysis(const Sample & inputSample,
-                                const Sample & outputSample,
-                                const IsoProbabilisticTransformation & transformation,
-                                const ComparisonOperator & comparisonOperator,
-                                const Scalar threshold);
+  SimulationSensitivityAnalysis(const RandomVector & event,
+                                const Sample & inputSample,
+                                const Sample & outputSample);
 
   /** Standard constructor */
-  explicit SimulationSensitivityAnalysis(const Event & event);
+  explicit SimulationSensitivityAnalysis(const RandomVector & event);
 
   /** Standard constructor */
   explicit SimulationSensitivityAnalysis(const ProbabilitySimulationResult & result);
 
   /** Virtual constructor */
-  virtual SimulationSensitivityAnalysis * clone() const;
+  SimulationSensitivityAnalysis * clone() const override;
 
   /** Mean point in event domain computation */
   Point computeMeanPointInEventDomain() const;
@@ -74,12 +70,13 @@ public:
   PointWithDescription computeImportanceFactors() const;
   PointWithDescription computeImportanceFactors(const Scalar threshold) const;
 
+  PointWithDescription computeEventProbabilitySensitivity() const;
 public:
 
   /** Importance factors drawing */
   Graph drawImportanceFactors() const;
   Graph drawImportanceFactorsRange(const Bool probabilityScale = true,
-                                   const Scalar lower = -SpecFunc::MaxScalar,
+                                   const Scalar lower = SpecFunc::LowestScalar,
                                    const Scalar upper = SpecFunc::MaxScalar) const;
 
   /** Input sample accessors */
@@ -90,23 +87,21 @@ public:
 
   /** Threshold accessors */
   Scalar getThreshold() const;
-  void setThreshold(const Scalar threshold);
 
   /** Iso-probabilistic transformation accessor */
   IsoProbabilisticTransformation getTransformation() const;
 
   /** Comparison operator accessors */
   ComparisonOperator getComparisonOperator() const;
-  void setComparisonOperator(const ComparisonOperator & comparisonOperator);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -116,14 +111,8 @@ protected:
   /* Associated output sample */
   Sample outputSample_;
 
-  /* Iso probabilistic transformation associated with the input sample distribution */
-  IsoProbabilisticTransformation transformation_;
-
-  /* Comparison operator defining the event we are interested in */
-  ComparisonOperator comparisonOperator_;
-
-  /* Main threshold of interest */
-  Scalar threshold_;
+  /* Event */
+  RandomVector event_;
 
 }; // class SimulationSensitivityAnalysis
 

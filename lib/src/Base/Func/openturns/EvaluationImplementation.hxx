@@ -2,7 +2,7 @@
 /**
  * @brief Abstract top-level class for all numerical math function implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@
 #include "openturns/Pointer.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/Graph.hxx"
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,14 +57,14 @@ public:
   EvaluationImplementation();
 
   /** Virtual constructor */
-  virtual EvaluationImplementation * clone() const;
+  EvaluationImplementation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const EvaluationImplementation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Description Accessor, i.e. the names of the input and output parameters */
@@ -120,7 +120,18 @@ public:
   virtual void setParameterDescription(const Description & description);
 
   /** Get the number of calls to operator() */
-  UnsignedInteger getCallsNumber() const;
+  virtual UnsignedInteger getCallsNumber() const;
+
+  /** Linearity accessors */
+  virtual Bool isLinear() const;
+  virtual Bool isLinearlyDependent(const UnsignedInteger index) const;
+
+  /** Is it safe to call in parallel? */
+  virtual Bool isParallel() const;
+
+  /** Invalid values check accessor */
+  virtual void setCheckOutput(const Bool checkOutput);
+  virtual Bool getCheckOutput() const;
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,
@@ -128,7 +139,7 @@ public:
                      const Point & centralPoint,
                      const Scalar xMin,
                      const Scalar xMax,
-                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
+                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the given 1D marginal output as a function of the given 2D marginal input around the given central point */
@@ -138,26 +149,26 @@ public:
                      const Point & centralPoint,
                      const Point & xMin,
                      const Point & xMax,
-                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
+                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the output of the function with respect to its input when the input and output dimensions are 1 */
   virtual Graph draw(const Scalar xMin,
                      const Scalar xMax,
-                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
+                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
   virtual Graph draw(const Point & xMin,
                      const Point & xMax,
-                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
+                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
@@ -170,6 +181,9 @@ protected:
 
   /** The description of the parameters */
   Description parameterDescription_;
+
+  /** Whether to check the output for invalid values */
+  Bool checkOutput_ = true;
 
 private:
 

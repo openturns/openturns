@@ -2,7 +2,7 @@
 /**
  *  @brief DomainImplementation is defined as a domain of \mathbb{R}^d
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,6 +70,21 @@ DomainImplementation::BoolCollection DomainImplementation::contains(const Sample
   BoolCollection result(sample.getSize());
   for(UnsignedInteger i = 0; i < sample.getSize(); ++i)
     result[i] = contains(sample[i]);
+  return result;
+}
+
+/* Compute the Euclidean distance from a given point to the domain */
+Scalar DomainImplementation::computeDistance(const Point & ) const
+{
+  throw NotYetImplementedException(HERE) << "Sorry, " << getClassName() << "::computeDistance(Point) is not yet implemented.";
+}
+
+/* Compute the Euclidean distance from given points to the domain */
+Sample DomainImplementation::computeDistance(const Sample & sample) const
+{
+  Sample result(sample.getSize(), 1);
+  for(UnsignedInteger i = 0; i < sample.getSize(); ++i)
+    result(i, 0) = computeDistance(sample[i]);
   return result;
 }
 

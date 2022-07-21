@@ -142,8 +142,8 @@ It follows that:
 
     - See :class:`~openturns.StationaryCovarianceModelFactory`
     - See :class:`~openturns.WelchFactory`
-    - See :class:`~openturns.Hanning`
+    - See :class:`~openturns.Hann`
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/estimate_stationary_covariance_model`
+    - See :doc:`/auto_data_analysis/estimate_stochastic_processes/plot_estimate_stationary_covariance_model`

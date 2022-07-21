@@ -6,6 +6,17 @@ RGBA colors (0.1, 0.2, 0.3, 0.4)=#1a334d66
 HSV colors (215.0, 0.2, 0.3)=#3d444d
 HSVA colors (215.0, 0.2, 0.3, 0.4)=#3d444d66
 HSV (215.0, 0.2, 0.3) to RGB=class=Point name=Unnamed dimension=3 values=[0.24,0.265,0.3]
+RGB (44, 160, 72) to HSV=class=Point name=Unnamed dimension=3 values=[134.483,0.725,0.627451]
+RGB (44, 72, 160) to HSV=class=Point name=Unnamed dimension=3 values=[225.517,0.725,0.627451]
+RGB (160, 44, 72) to HSV=class=Point name=Unnamed dimension=3 values=[345.517,0.725,0.627451]
+RGB (44.0/255.0, 160.0/255.0, 72.0/255.0) to HSV=class=Point name=Unnamed dimension=3 values=[134.483,0.725,0.627451]
+RGB (44.0/255.0, 72.0/255.0, 160.0/255.0) to HSV=class=Point name=Unnamed dimension=3 values=[225.517,0.725,0.627451]
+RGB (160.0/255.0, 44.0/255.0, 72.0/255.0) to HSV=class=Point name=Unnamed dimension=3 values=[345.517,0.725,0.627451]
 Line styles=[blank,solid,dashed,dotted,dotdash,longdash,twodash]
 Point styles=[bullet,circle,diamond,dot,fcircle,fdiamond,fsquare,ftriangleup,none,plus,square,star,times,triangledown,triangleup]
 Fill styles=[solid,shaded]
+BuildDefaultPalette=[#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7f7f7f,#bcbd22,#17becf]
+BuildRainbowPalette=[#ff0000,#ff8b00,#e8ff00,#5dff00,#00ff2e,#00ffb9,#00b9ff,#002eff,#5d00ff,#e800ff]
+BuildTableauPalette=[#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7f7f7f,#bcbd22,#17becf]
+BuildDefaultPalette=[#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7f7f7f,#bcbd22,#17becf,#1c6da5,#ea740d,#289328,#c42425,#885ead,#804f45,#d06db2,#747474,#acad1f,#15aebe]
+BuildTableauPalette=[#1f77b4,#ff7f0e,#2ca02c,#d62728,#9467bd,#8c564b,#e377c2,#7f7f7f,#bcbd22,#17becf,#1c6da5,#ea740d,#289328,#c42425,#885ead,#804f45,#d06db2,#747474,#acad1f,#15aebe]

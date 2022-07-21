@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
-# Instanciate one distribution object
-distribution = ot.Frechet(6.0, 1.5, -1.0)
+# Instantiate one distribution object
+distribution = ot.Frechet(1.5, 6.0, -1.0)
 print("Distribution ", distribution)
 
 # Is this distribution elliptical ?
@@ -59,22 +58,22 @@ print("log characteristic function=(%.6g, %.6g)" % (LCF.real, LCF.imag))
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", PDFgr)
 PDFgrFD = ot.Point(3)
-PDFgrFD[0] = (ot.Frechet(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computePDF(point) -
-              ot.Frechet(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computePDF(point)) / (2.0 * eps)
-PDFgrFD[1] = (ot.Frechet(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
-              ot.Frechet(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps)
-PDFgrFD[2] = (ot.Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
-              ot.Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps)
+PDFgrFD[0] = (ot.Frechet(distribution.getBeta() + eps, distribution.getAlpha(), distribution.getGamma()).computePDF(point) -
+              ot.Frechet(distribution.getBeta() - eps, distribution.getAlpha(), distribution.getGamma()).computePDF(point)) / (2.0 * eps)
+PDFgrFD[1] = (ot.Frechet(distribution.getBeta(), distribution.getAlpha() + eps, distribution.getGamma()).computePDF(point) -
+              ot.Frechet(distribution.getBeta(), distribution.getAlpha() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps)
+PDFgrFD[2] = (ot.Frechet(distribution.getBeta(), distribution.getAlpha(), distribution.getGamma() + eps).computePDF(point) -
+              ot.Frechet(distribution.getBeta(), distribution.getAlpha(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps)
 print("pdf gradient (FD)=", PDFgrFD)
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", CDFgr)
 CDFgrFD = ot.Point(3)
-CDFgrFD[0] = (ot.Frechet(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point) -
-              ot.Frechet(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
-CDFgrFD[1] = (ot.Frechet(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
-              ot.Frechet(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
-CDFgrFD[2] = (ot.Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
-              ot.Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps)
+CDFgrFD[0] = (ot.Frechet(distribution.getBeta() + eps, distribution.getAlpha(), distribution.getGamma()).computeCDF(point) -
+              ot.Frechet(distribution.getBeta() - eps, distribution.getAlpha(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
+CDFgrFD[1] = (ot.Frechet(distribution.getBeta(), distribution.getAlpha() + eps, distribution.getGamma()).computeCDF(point) -
+              ot.Frechet(distribution.getBeta(), distribution.getAlpha() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
+CDFgrFD[2] = (ot.Frechet(distribution.getBeta(), distribution.getAlpha(), distribution.getGamma() + eps).computeCDF(point) -
+              ot.Frechet(distribution.getBeta(), distribution.getAlpha(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps)
 print("cdf gradient (FD)=", CDFgrFD)
 quantile = distribution.computeQuantile(0.95)
 print("quantile=", quantile)

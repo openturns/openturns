@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all RandomMixtures
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,8 +45,7 @@
 #include "openturns/Poisson.hxx"
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/FFT.hxx"
-#include "openturns/GaussKronrod.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/Os.hxx"
@@ -76,6 +75,10 @@ RandomMixture::RandomMixture()
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -86,6 +89,7 @@ RandomMixture::RandomMixture()
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   setDimension(1);
@@ -107,6 +111,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -117,6 +125,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   setDimension(1);
@@ -142,6 +151,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -152,6 +165,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   setDimension(1);
@@ -169,7 +183,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 /* Parameter constructor - nD */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
                              const Matrix & weights,
-                             const Point constant)
+                             const Point & constant)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(constant)
@@ -178,6 +192,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -188,6 +206,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   if (constant.getSize() > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
@@ -215,6 +234,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -225,6 +248,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   const UnsignedInteger dimension = weights.getNbRows();
@@ -240,7 +264,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 /* Parameter constructor - nD */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
                              const Sample & weights,
-                             const Point constant)
+                             const Point & constant)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(constant)
@@ -249,6 +273,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -259,6 +287,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   const UnsignedInteger dimension = constant.getSize();
@@ -281,6 +310,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -291,6 +324,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   const UnsignedInteger dimension = weights.getDimension();
@@ -324,7 +358,7 @@ void RandomMixture::computeRange()
     }
     setRange(Interval(Point(1, c + w * b), Point(1, c + w * a), bFinite, aFinite));
     return;
-  }
+  } // dimension == 1 && size == 1
   Interval::BoolCollection finiteLowerBound(dimension);
   Interval::BoolCollection finiteUpperBound(dimension);
   Point lowerBound(getDimension());
@@ -338,7 +372,7 @@ void RandomMixture::computeRange()
     upperBound[j] = range.getUpperBound()[0];
     finiteLowerBound[j] = range.getFiniteLowerBound()[0];
     finiteUpperBound[j] = range.getFiniteUpperBound()[0];
-  }
+  } // j
   const Interval range(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
   if (size <= dimension)
   {
@@ -350,21 +384,25 @@ void RandomMixture::computeRange()
     const Point m(1, getPositionIndicator());
     const Point s(1, getDispersionIndicator());
     setRange(range.intersect(Interval(m - s * beta_, m + s * beta_)));
+    return;
   } // dimension == 1
   else
   {
     Point m(constant_);
-    Point s(getDimension(), 0.0);
+    Point s(getDimension());
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       for(UnsignedInteger i = 0; i < size; ++i)
       {
-        m[j] += weights_(j, i) * distributionCollection_[i].getPositionIndicator();
-        s[j] += std::pow(weights_(j, i) * distributionCollection_[i].getDispersionIndicator(), 2.0);
+        const Scalar mI = distributionCollection_[i].getPositionIndicator();
+        m[j] += weights_(j, i) * mI;
+        const Scalar sI = distributionCollection_[i].getDispersionIndicator();
+        s[j] += std::pow(weights_(j, i) * sI, 2.0);
       }
     }
     for (UnsignedInteger j = 0; j < dimension; ++j) s[j] = std::sqrt(s[j]);
     setRange(range.intersect(Interval(m - s * beta_, m + s * beta_)));
+    return;
   } // dimension > 1
 }
 
@@ -443,7 +481,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a RandomMixture based on an empty distribution collection.";
   // No simplification in the analytical case
   const UnsignedInteger dimension = getDimension();
-  if ((size == dimension) && !simplifyAtoms)
+  if (size == dimension && !simplifyAtoms)
   {
     isAnalytical_ = true;
     if (dimension == 1)
@@ -457,7 +495,10 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
       inverseWeights_ = weights_.solveLinearSystem(IdentityMatrix(dimension));
       detWeightsInverse_ = inverseWeights_.getImplementation().get()->computeDeterminant();
     }
-    setParallel(coll[0].getImplementation()->isParallel());
+    Bool isParallel = coll[0].getImplementation()->isParallel();
+    for (UnsignedInteger i = 1; i < dimension; ++i)
+      isParallel = isParallel && coll[i].getImplementation()->isParallel();
+    setParallel(isParallel);
     distributionCollection_ = coll;
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
@@ -856,7 +897,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
             for (UnsignedInteger index = 1; index < newAggregatedSupportSize; ++index)
             {
               // If the current point is equal to the last one aggregate the probabilities
-              if (newAggregatedSupportAndProbabilities[index][0] == aggregatedSupport(k, 0))
+              if (newAggregatedSupportAndProbabilities(index, 0) == aggregatedSupport(k, 0))
               {
                 aggregatedProbabilities[k] += newAggregatedSupportAndProbabilities(index, 1);
               } // current point equals to the previous one
@@ -948,18 +989,24 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
     constant_[0] = 0.0;
   }
 
-  // We cannot use parallelism if we have more than one atom due to the characteristic function cache
-  if (distributionCollection_.getSize() > 1) setParallel(false);
-  else setParallel(distributionCollection_[0].getImplementation()->isParallel());
+  // We cannot use parallelism if we have more than two atoms due to the characteristic function cache
+  if (distributionCollection_.getSize() == 1) setParallel(distributionCollection_[0].getImplementation()->isParallel());
+  else if (distributionCollection_.getSize() == 2) setParallel(distributionCollection_[0].getImplementation()->isParallel() && distributionCollection_[1].getImplementation()->isParallel());
+  else setParallel(false);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
-  computeMean();
-  computeCovariance();
-  computePositionIndicator();
-  computeDispersionIndicator();
+  // Need to precompute Mean, Covariance, PositionIndicator, DispersionIndicator, ReferenceBandwidth, EquivalentNormal only if at least two atoms
+  // Compute the range first, as it is needed for the reference bandwidth
   computeRange();
-  computeReferenceBandwidth();
-  computeEquivalentNormal();
+  if ((dimension > 1) || (distributionCollection_.getSize() > 1))
+  {
+    computeMean();
+    computeCovariance();
+    (void) getPositionIndicator();
+    (void) getDispersionIndicator();
+    computeReferenceBandwidth();
+    computeEquivalentNormal();
+  }
   // In 1D case, collection's size might change
   // When reducing collection to 1, computations become faster
   if (distributionCollection_.getSize() == dimension)
@@ -989,7 +1036,7 @@ Point RandomMixture::getConstant() const
 }
 
 /* Distribution collection accessor */
-const DistributionCollection & RandomMixture::getDistributionCollection() const
+DistributionCollection RandomMixture::getDistributionCollection() const
 {
   return distributionCollection_;
 }
@@ -1052,53 +1099,132 @@ Point RandomMixture::computeDDF(const Point & point) const
   return DistributionImplementation::computeDDF(point);
 }
 
-/* Wrapper for the convolution in the 1D case with 2 atoms */
-struct RandomMixture2AtomsWrapper
+/* Integration kernels for the convolution in the 1D case with 2 continuous atoms */
+namespace
 {
-  RandomMixture2AtomsWrapper(const Scalar alpha1,
-                             const Scalar alpha2,
-                             const Distribution & atom1,
-                             const Distribution & atom2,
-                             const Scalar z0)
-    : alpha1_(alpha1)
+// Class used to wrap the kernel of the integral defining the PDF of the convolution
+class PDFKernelRandomMixture: public UniVariateFunctionImplementation
+{
+public:
+  PDFKernelRandomMixture(const Scalar alpha1,
+                         const Scalar alpha2,
+                         const Pointer<DistributionImplementation> & p_atom1,
+                         const Pointer<DistributionImplementation> & p_atom2,
+                         const Scalar z0)
+    : UniVariateFunctionImplementation()
+    , alpha1_(alpha1)
     , alpha2_(alpha2)
-    , atom1_(atom1)
-    , atom2_(atom2)
+    , p_atom1_(p_atom1)
+    , p_atom2_(p_atom2)
     , z0_(z0)
   {
     // Nothing to do
+  };
+
+  PDFKernelRandomMixture * clone() const
+  {
+    return new PDFKernelRandomMixture(*this);
   }
+
   // Z = alpha0 + alpha1 X1 + alpha2 X2
-  Point convolutionPDFKernel(const Point & point) const
+  Scalar operator() (const Scalar u) const
   {
-    const Scalar t = point[0];
-    const Scalar pdf = atom1_.computePDF(t);
-    if (pdf == 0.0) return Point(1, 0.0);
-    return Point(1, pdf * atom2_.computePDF((z0_ - alpha1_ * t) / alpha2_));
+    const Scalar pdf = p_atom1_->computePDF(u);
+    if (pdf == 0.0) return 0.0;
+    return pdf * p_atom2_->computePDF((z0_ - alpha1_ * u) / alpha2_);
   }
 
-  Point convolutionCDFKernel(const Point & point) const
-  {
-    const Scalar t = point[0];
-    const Scalar pdf = atom1_.computePDF(t);
-    if (pdf == 0.0) return Point(1, 0.0);
-    return Point(1, pdf * atom2_.computeCDF((z0_ - alpha1_ * t) / alpha2_));
-  }
-
-  Point convolutionComplementaryCDFKernel(const Point & point) const
-  {
-    const Scalar t = point[0];
-    const Scalar pdf = atom1_.computePDF(t);
-    if (pdf == 0.0) return Point(1, 0.0);
-    return Point(1, pdf * atom2_.computeComplementaryCDF((z0_ - alpha1_ * t) / alpha2_));
-  }
-
+private:
   const Scalar alpha1_;
   const Scalar alpha2_;
-  const Distribution & atom1_;
-  const Distribution & atom2_;
+  const Pointer<DistributionImplementation> p_atom1_;
+  const Pointer<DistributionImplementation> p_atom2_;
   const Scalar z0_;
-};
+
+}; // class PDFKernelRandomMixture
+
+// Class used to wrap the kernel of the integral defining the CDF of the convolution
+class CDFKernelRandomMixture: public UniVariateFunctionImplementation
+{
+public:
+  CDFKernelRandomMixture(const Scalar alpha1,
+                         const Scalar alpha2,
+                         const Pointer<DistributionImplementation> & p_atom1,
+                         const Pointer<DistributionImplementation> & p_atom2,
+                         const Scalar z0)
+    : UniVariateFunctionImplementation()
+    , alpha1_(alpha1)
+    , alpha2_(alpha2)
+    , p_atom1_(p_atom1)
+    , p_atom2_(p_atom2)
+    , z0_(z0)
+  {
+    // Nothing to do
+  };
+
+  CDFKernelRandomMixture * clone() const
+  {
+    return new CDFKernelRandomMixture(*this);
+  }
+
+  // Z = alpha0 + alpha1 X1 + alpha2 X2
+  Scalar operator() (const Scalar u) const
+  {
+    const Scalar pdf = p_atom1_->computePDF(u);
+    if (pdf == 0.0) return 0.0;
+    return pdf * p_atom2_->computeCDF((z0_ - alpha1_ * u) / alpha2_);
+  }
+
+private:
+  const Scalar alpha1_;
+  const Scalar alpha2_;
+  const Pointer<DistributionImplementation> p_atom1_;
+  const Pointer<DistributionImplementation> p_atom2_;
+  const Scalar z0_;
+
+}; // class CDFKernelRandomMixture
+
+// Class used to wrap the kernel of the integral defining the complementary CDF of the convolution
+class ComplementaryCDFKernelRandomMixture: public UniVariateFunctionImplementation
+{
+public:
+  ComplementaryCDFKernelRandomMixture(const Scalar alpha1,
+                                      const Scalar alpha2,
+                                      const Pointer<DistributionImplementation> & p_atom1,
+                                      const Pointer<DistributionImplementation> & p_atom2,
+                                      const Scalar z0)
+    : UniVariateFunctionImplementation()
+    , alpha1_(alpha1)
+    , alpha2_(alpha2)
+    , p_atom1_(p_atom1)
+    , p_atom2_(p_atom2)
+    , z0_(z0)
+  {
+    // Nothing to do
+  };
+
+  ComplementaryCDFKernelRandomMixture * clone() const
+  {
+    return new ComplementaryCDFKernelRandomMixture(*this);
+  }
+
+  // Z = alpha0 + alpha1 X1 + alpha2 X2
+  Scalar operator() (const Scalar u) const
+  {
+    const Scalar pdf = p_atom1_->computePDF(u);
+    if (pdf == 0.0) return 0.0;
+    return pdf * p_atom2_->computeComplementaryCDF((z0_ - alpha1_ * u) / alpha2_);
+  }
+
+private:
+  const Scalar alpha1_;
+  const Scalar alpha2_;
+  const Pointer<DistributionImplementation> p_atom1_;
+  const Pointer<DistributionImplementation> p_atom2_;
+  const Scalar z0_;
+
+}; // class ComplementaryCDFKernelRandomMixture
+} // namespace
 
 /* Get the PDF of the RandomMixture. It uses the Poisson inversion formula as described in the reference:
    "Abate, J. and Whitt, W. (1992). The Fourier-series method for inverting
@@ -1173,10 +1299,8 @@ Scalar RandomMixture::computePDF(const Point & point) const
       lower = std::max(a, uc);
       upper = std::min(b, ud);
     }
-    GaussKronrod algo;
-    const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
-    const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, Point, Point>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionPDFKernel, 1, 1));
-    return algo.integrate(convolutionKernel, Interval(lower, upper))[0] / std::abs(alpha2);
+    const PDFKernelRandomMixture convolutionKernel(alpha1, alpha2, distributionCollection_[0].getImplementation(), distributionCollection_[1].getImplementation(), z0);
+    return algo_.integrate(convolutionKernel, lower, upper) / std::abs(alpha2);
   }
 
   LOGDEBUG(OSS() << "Equivalent normal=" << equivalentNormal_);
@@ -1300,7 +1424,7 @@ struct EquivalentNormalPDFSumPolicy
     , output_(output)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     UnsignedInteger fakeLevelMax = 0;
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -1379,14 +1503,14 @@ Sample RandomMixture::computePDF(const Point & xMin,
 
   Collection<Scalar> output(size);
   const  EquivalentNormalPDFSumPolicy policyGrid(*this, grid, two_b_sigma, levelMax, output);
-  TBB::ParallelFor( 0, size, policyGrid);
+  TBBImplementation::ParallelFor( 0, size, policyGrid);
 
   result.getImplementation()->setData(output);
 
   // Methods below will call computeDeltaCharacteristicFunction() on different threads
-  // if using TBB, which in turn calls equivalentNormal_.computeCharacteristicFunction()
+  // if using TBBImplementation, which in turn calls equivalentNormal_.computeCharacteristicFunction()
   // and then equivalentNormal_.getCovariance().  But covariance is lazily evaluated.
-  // We must ensure that it is computed before entering TBB multithreaded section.
+  // We must ensure that it is computed before entering TBBImplementation multithreaded section.
   (void) equivalentNormal_.getCovariance();
 
   switch(dimension_)
@@ -1422,7 +1546,7 @@ struct AddPDFOn1DGridPolicy
     , output_(output)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     Point x(1);
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -1454,7 +1578,7 @@ void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const Point & h,
   Collection<Complex> yk(N);
   // 1) compute \Sigma_+
   const  AddPDFOn1DGridPolicy policyGridPP(*this, xPlus, yk);
-  TBB::ParallelFor( 0, N, policyGridPP);
+  TBBImplementation::ParallelFor( 0, N, policyGridPP);
   for (UnsignedInteger j = 0; j < N; ++j)
     yk[j] *= fx[j];
 
@@ -1498,7 +1622,7 @@ struct AddPDFOn2DGridPolicy
     , output_(output)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     Point x(2);
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -1550,7 +1674,7 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
   ComplexMatrix yk(Nx, Ny);
   // 1) compute \Sigma_++
   const  AddPDFOn2DGridPolicy policyGridPP(*this, xPlus, yPlus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny, policyGridPP);
+  TBBImplementation::ParallelFor( 0, Nx * Ny, policyGridPP);
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk(i, j) *= fx[i] * fy[j];
@@ -1569,7 +1693,7 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
 
   // 3) compute \Sigma_+-
   const  AddPDFOn2DGridPolicy policyGridPM(*this, xPlus, yMinus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny, policyGridPM);
+  TBBImplementation::ParallelFor( 0, Nx * Ny, policyGridPM);
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk(i, j) *= fx[i] * std::conj(fy[Ny - 1 - j]);
@@ -1671,7 +1795,7 @@ struct AddPDFOn3DGridPolicy
     , output_(output)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     Point x(3);
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -1739,7 +1863,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   }
   ComplexTensor yk(Nx, Ny, Nz);
   const  AddPDFOn3DGridPolicy policyGridPPP(*this, xPlus, yPlus, zPlus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny * Nz, policyGridPPP);
+  TBBImplementation::ParallelFor( 0, Nx * Ny * Nz, policyGridPPP);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1761,7 +1885,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
 
   // 3) compute \Sigma_++-
   const  AddPDFOn3DGridPolicy policyGridPPM(*this, xPlus, yPlus, zMinus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny * Nz, policyGridPPM);
+  TBBImplementation::ParallelFor( 0, Nx * Ny * Nz, policyGridPPM);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1787,7 +1911,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
 
   // 5) compute \Sigma_+-+
   const  AddPDFOn3DGridPolicy policyGridPMP(*this, xPlus, yMinus, zPlus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny * Nz, policyGridPMP);
+  TBBImplementation::ParallelFor( 0, Nx * Ny * Nz, policyGridPMP);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1813,7 +1937,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
 
   // 7) compute \Sigma_+--
   const  AddPDFOn3DGridPolicy policyGridPMM(*this, xPlus, yMinus, zMinus, *(yk.getImplementation().get()));
-  TBB::ParallelFor( 0, Nx * Ny * Nz, policyGridPMM);
+  TBBImplementation::ParallelFor( 0, Nx * Ny * Nz, policyGridPMM);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -2137,8 +2261,6 @@ Scalar RandomMixture::computeCDF(const Point & point) const
     const Scalar z0 = x - constant_[0];
     const Scalar alpha1 = weights_(0, 0);
     const Scalar alpha2 = weights_(0, 1);
-    const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
-    GaussKronrod algo;
     // Get the bounds of the atoms
     const Scalar a = distributionCollection_[0].getRange().getLowerBound()[0];
     const Scalar b = distributionCollection_[0].getRange().getUpperBound()[0];
@@ -2148,7 +2270,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
     if (alpha2 > 0.0)
     {
       // F(z) = \int_R F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1
-      const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, Point, Point>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionCDFKernel, 1, 1));
+      const CDFKernelRandomMixture convolutionKernel(alpha1, alpha2, distributionCollection_[0].getImplementation(), distributionCollection_[1].getImplementation(), z0);
       // bounds:
       // x1 >= a otherwise p_X1 == 0
       // x1 <= b otherwise p_X1 == 0
@@ -2163,7 +2285,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
         const Scalar lower = std::max(a, alpha);
         const Scalar upper = std::min(b, beta);
         Scalar cdf = 0.0;
-        if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+        if (lower < upper) cdf = algo_.integrate(convolutionKernel, lower, upper);
         // Take into account a possible missing tail:
         // \int_a^alpha F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = F_X1(alpha)
         if (lower > a) cdf += distributionCollection_[0].computeCDF(alpha);
@@ -2177,14 +2299,14 @@ Scalar RandomMixture::computeCDF(const Point & point) const
       const Scalar lower = std::max(a, alpha);
       const Scalar upper = std::min(b, beta);
       Scalar cdf = 0.0;
-      if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+      if (lower < upper) cdf = algo_.integrate(convolutionKernel, lower, upper);
       // Take into account a possible missing tail:
       // \int_beta^b F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = Fbar_X1(beta)
       if (upper < b) cdf += distributionCollection_[0].computeComplementaryCDF(beta);
       return cdf;
     } // alpha2 > 0
     // F(z) = \int_R Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1
-    const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, Point, Point>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionComplementaryCDFKernel, 1, 1));
+    const ComplementaryCDFKernelRandomMixture convolutionKernel(alpha1, alpha2, distributionCollection_[0].getImplementation(), distributionCollection_[1].getImplementation(), z0);
     // bounds:
     // x1 >= a otherwise p_X1 == 0
     // x1 <= b otherwise p_X1 == 0
@@ -2199,7 +2321,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
       const Scalar lower = std::max(a, alpha);
       const Scalar upper = std::min(b, beta);
       Scalar cdf = 0.0;
-      if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+      if (lower < upper) cdf = algo_.integrate(convolutionKernel, lower, upper);
       // Take into account a possible missing tail:
       // \int_beta^b Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = Fbar_X1(beta)
       if (lower > a) cdf += distributionCollection_[0].computeCDF(alpha);
@@ -2213,7 +2335,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
     const Scalar lower = std::max(a, alpha);
     const Scalar upper = std::min(b, beta);
     Scalar cdf = 0.0;
-    if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+    if (lower < upper) cdf = algo_.integrate(convolutionKernel, lower, upper);
     // Take into account a possible missing tail:
     // \int_a^alpha Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = F_X1(alpha)
     if (upper < b) cdf += distributionCollection_[0].computeComplementaryCDF(beta);
@@ -2281,7 +2403,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
-  if (interval.isNumericallyEmpty()) return 0.0;
+  if (interval.isEmpty()) return 0.0;
   // Use direct convolution for two continuous atoms of dimension 1
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
   {
@@ -2293,32 +2415,17 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   }
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" )))
   {
-    const Scalar oldPDFPrecision = pdfPrecision_;
     pdfPrecision_ = std::pow(SpecFunc::ScalarEpsilon, 2.0 / (3.0 * dimension_));
     const UnsignedInteger n1 = ResourceMap::GetAsUnsignedInteger("RandomMixture-MarginalIntegrationNodesNumber");
     const UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("RandomMixture-MaximumIntegrationNodesNumber");
     const UnsignedInteger n2 = static_cast<UnsignedInteger>(round(std::pow(N, 1.0 / dimension_)));
     const UnsignedInteger marginalSize = SpecFunc::NextPowerOfTwo(std::min(n1, n2));
     setIntegrationNodesNumber(marginalSize);
-    const Scalar probability = DistributionImplementation::computeProbability(interval);
-    pdfPrecision_ = oldPDFPrecision;
-    return probability;
-#ifdef TRAPEZE
-    // For now, use a simple mid-point rule
-    const Point xMin(interval.getLowerBound());
-    const Point xMax(interval.getUpperBound());
-    Sample gridX;
-    const Indices discretization(dimension, marginalSize);
-    const Sample samplePDF(computePDF(xMin, xMax, discretization, gridX));
-    // Compute the elementary volume
-    const UnsignedInteger otherCornerIndex = static_cast<UnsignedInteger>(round((std::pow(marginalSize, dimension) - 1) / (marginalSize - 1)));
-    const Interval elementaryInterval(gridX[0], gridX[otherCornerIndex]);
-    const Scalar elementaryVolume = elementaryInterval.getVolume();
-    Scalar cdf = 0.0;
-    for (UnsignedInteger i = 0; i < gridX.getSize(); ++i)
-      if (interval.contains(gridX[i])) cdf += samplePDF(i, 0) * elementaryVolume;
-    return cdf;
-#endif
+    if (isContinuous()) return computeProbabilityContinuous(interval);
+    // Generic implementation for discrete distributions
+    if (isDiscrete())   return computeProbabilityDiscrete(interval);
+    // Generic implementation for general distributions
+    return computeProbabilityGeneral(interval);
   }
   // Special case for combination containing only one contributor
   if (isAnalytical_ && (dimension_ == 1))
@@ -2332,7 +2439,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   } // isAnalytical
   const Interval clippedInterval(getRange().intersect(interval));
   // Quick return if there is no mass in the clipped interval
-  if (clippedInterval.isNumericallyEmpty()) return 0.0;
+  if (clippedInterval.isEmpty()) return 0.0;
   const Bool finiteLowerBound = clippedInterval.getFiniteLowerBound()[0] == 1;
   const Bool finiteUpperBound = clippedInterval.getFiniteUpperBound()[0] == 1;
   // Quick return for integral over the whole real line
@@ -2392,7 +2499,7 @@ Sample RandomMixture::computeQuantile(const Scalar qMin,
 Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions"; 
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
 
   // Special case for random mixture with only 1 atom: Y = alpha * X + beta
   // find Yq such that P(Y < Yq) = q
@@ -2762,9 +2869,16 @@ Point RandomMixture::getParameter() const
 void RandomMixture::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != getParameter().getSize()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
-  const Scalar w = getWeight();
-  *this = RandomMixture(distributionCollection_, weights_, constant_);
-  setWeight(w);
+  const UnsignedInteger size = distributionCollection_.getSize();
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Point localParameter(distributionCollection_[i].getParameter());
+    std::copy(parameter.begin() + shift, parameter.begin() + shift + localParameter.getSize(), localParameter.begin());
+    shift += localParameter.getSize();
+    distributionCollection_[i].setParameter(localParameter);
+  }
+  setDistributionCollectionAndWeights(distributionCollection_, weights_, false);
 } // setParameter
 
 /* Parameters value and description accessor */
@@ -2801,7 +2915,12 @@ void RandomMixture::computePositionIndicator() const
     positionIndicator_ = constant_[0];
     const UnsignedInteger size = distributionCollection_.getSize();
     // Assume an additive behaviour of the position indicator. It is true for the mean value, and almost true for the median of moderatly skewed distributions
-    for(UnsignedInteger i = 0; i < size; ++i) positionIndicator_ += weights_(0, i) * distributionCollection_[i].getPositionIndicator();
+    for(UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Scalar wi = weights_(0, i);
+      const Scalar mi = distributionCollection_[i].getPositionIndicator();
+      positionIndicator_ += wi * mi;
+    }
     isAlreadyComputedPositionIndicator_ = true;
   }
 }
@@ -2822,7 +2941,12 @@ void RandomMixture::computeDispersionIndicator() const
     dispersionIndicator_ = 0.0;
     const UnsignedInteger size = distributionCollection_.getSize();
     // Assume a quadratic additive behaviour of the dispersion indicator. It is true for the standard deviation value, and almost true for the interquartile of moderatly skewed distributions
-    for(UnsignedInteger i = 0; i < size; ++i) dispersionIndicator_ += std::pow(weights_(0, i) * distributionCollection_[i].getDispersionIndicator(), 2.0);
+    for(UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Scalar wi = weights_(0, i);
+      const Scalar si = distributionCollection_[i].getDispersionIndicator();
+      dispersionIndicator_ += std::pow(wi * si, 2.0);
+    }
     dispersionIndicator_ = std::sqrt(dispersionIndicator_);
     isAlreadyComputedDispersionIndicator_ = true;
   }
@@ -2928,9 +3052,11 @@ void RandomMixture::computeReferenceBandwidth()
 {
   referenceBandwidth_ = Point(getDimension(), 0.0);
   Bool isFinite = true;
+  const Point a(getRange().getLowerBound());
+  const Point b(getRange().getUpperBound());
   for (UnsignedInteger k = 0; k < getDimension(); ++k)
   {
-    referenceBandwidth_[k] = 2.0 * M_PI / (getRange().getUpperBound()[k] - getRange().getLowerBound()[k]);
+    referenceBandwidth_[k] = 2.0 * M_PI / (b[k] - a[k]);
     isFinite &= (getRange().getFiniteLowerBound()[k] && getRange().getFiniteUpperBound()[k]);
   }
   // Shrink a little bit the bandwidth if the range is finite
@@ -2952,7 +3078,13 @@ void RandomMixture::computeReferenceBandwidth()
    the same standard deviation */
 void RandomMixture::computeEquivalentNormal()
 {
-  if (distributionCollection_.getSize() > 0) equivalentNormal_ = Normal(getMean(), getCovariance());
+  if (distributionCollection_.getSize() > 0)
+  {
+    // If dimension > 1 use the first and second moments
+    if (dimension_ > 1) equivalentNormal_ = Normal(getMean(), getCovariance());
+    // Otherwise use more general parameters
+    else equivalentNormal_ = Normal(getPositionIndicator(), getDispersionIndicator());
+  }
   else equivalentNormal_ = Normal();
 }
 
@@ -3150,19 +3282,14 @@ Distribution RandomMixture::getMarginal(const Indices & indices) const
   const UnsignedInteger outputDimension = indices.getSize();
   const UnsignedInteger size = distributionCollection_.getSize();
   Matrix marginalWeights(outputDimension, size);
-  Point marginalConstant(outputDimension);
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
     const UnsignedInteger index_i = indices[i];
-    marginalConstant[i] = constant_[index_i];
     const Matrix row(weights_.getRow(index_i));
     for (UnsignedInteger j = 0; j < outputDimension; ++j) marginalWeights(i, j) = row(0, j);
-    marginalDescription[i] = description[index_i];
   }
-  RandomMixture::Implementation marginal(new RandomMixture(distributionCollection_, marginalWeights, marginalConstant));
-  marginal->setDescription(marginalDescription);
+  RandomMixture::Implementation marginal(new RandomMixture(distributionCollection_, marginalWeights, constant_.select(indices)));
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 

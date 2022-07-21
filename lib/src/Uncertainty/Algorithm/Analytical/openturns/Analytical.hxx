@@ -2,7 +2,7 @@
 /**
  *  @brief Analytical implements an algorithm to find the design point
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,7 @@
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/Event.hxx"
+#include "openturns/RandomVector.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
@@ -55,12 +55,12 @@ public:
 
   /** Constructor with parameters */
   Analytical(const OptimizationAlgorithm & solver,
-             const Event & compositeEvent,
+             const RandomVector & compositeEvent,
              const Point & physicalStartingPoint);
 
 
   /** Virtual constructor */
-  virtual Analytical * clone() const;
+  Analytical * clone() const override;
 
   /** Physical starting point accessor */
   Point getPhysicalStartingPoint() const;
@@ -69,10 +69,10 @@ public:
   void setPhysicalStartingPoint(const Point & physicalStartingPoint);
 
   /** Event accessor */
-  Event getEvent() const;
+  RandomVector getEvent() const;
 
   /** Event accessor */
-  void setEvent(const Event & event);
+  virtual void setEvent(const RandomVector & event);
 
   /** OptimizationAlgorithm accessor */
   OptimizationAlgorithm getNearestPointAlgorithm() const;
@@ -84,16 +84,16 @@ public:
   virtual AnalyticalResult getAnalyticalResult() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. */
   virtual void run();
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -105,7 +105,7 @@ protected:
 private:
 
   OptimizationAlgorithm nearestPointAlgorithm_;
-  Event event_;
+  RandomVector event_;
   Point physicalStartingPoint_;
   AnalyticalResult result_;
 

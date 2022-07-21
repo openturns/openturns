@@ -2,7 +2,7 @@
 /**
  *  @brief The Burr distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published bydistributiolib
@@ -138,7 +138,7 @@ Scalar Burr::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LogMinScalar;
+  if (x <= 0.0) return SpecFunc::LowestScalar;
   const Scalar logX = std::log(x);
   return std::log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1p(std::exp(c_ * logX));
 }

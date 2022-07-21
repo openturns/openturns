@@ -1,8 +1,8 @@
-Distribution          =class=Gumbel name=Gumbel dimension=1 alpha=2 beta=2.5
-Estimated distribution=class=Gumbel name=Gumbel dimension=1 alpha=1.98682 beta=2.50626
-Default distribution=class=Gumbel name=Gumbel dimension=1 alpha=1 beta=0
-Distribution from parameters=class=Gumbel name=Gumbel dimension=1 alpha=2 beta=2.5
-Gumbel          =class=Gumbel name=Gumbel dimension=1 alpha=2 beta=2.5
-Estimated gumbel=class=Gumbel name=Gumbel dimension=1 alpha=1.98682 beta=2.50626
-Default gumbel=class=Gumbel name=Gumbel dimension=1 alpha=1 beta=0
-Gumbel from parameters=class=Gumbel name=Gumbel dimension=1 alpha=2 beta=2.5
+Distribution          =class=Gumbel name=Gumbel dimension=1 beta=0.5 gamma=2.5
+Estimated distribution=class=Gumbel name=Gumbel dimension=1 beta=0.503317 gamma=2.50626
+Default distribution=class=Gumbel name=Gumbel dimension=1 beta=1 gamma=0
+Distribution from parameters=class=Gumbel name=Gumbel dimension=1 beta=0.5 gamma=2.5
+Gumbel          =class=Gumbel name=Gumbel dimension=1 beta=0.5 gamma=2.5
+Estimated gumbel=class=Gumbel name=Gumbel dimension=1 beta=0.503317 gamma=2.50626
+Default gumbel=class=Gumbel name=Gumbel dimension=1 beta=1 gamma=0
+Gumbel from parameters=class=Gumbel name=Gumbel dimension=1 beta=0.5 gamma=2.5

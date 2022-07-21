@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for metamodel validation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,11 +21,9 @@
 #ifndef OPENTURNS_METAMODELVALIDATION_HXX
 #define OPENTURNS_METAMODELVALIDATION_HXX
 
-#include "openturns/Point.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/Graph.hxx"
+#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,17 +50,17 @@ public:
                       const Function & metaModel);
 
   /** Virtual constructor */
-  virtual MetaModelValidation * clone() const;
+  MetaModelValidation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Sample accessors */
   virtual Sample getInputSample() const;
   virtual Sample getOutputSample() const;
 
   /** Compute predictivity factor */
-  Scalar computePredictivityFactor() const;
+  Point computePredictivityFactor() const;
 
   /** Get residual sample */
   Sample getResidualSample() const;
@@ -71,13 +69,13 @@ public:
   Distribution getResidualDistribution(const Bool smooth = true) const;
 
   /** Draw model vs metamodel validation graph */
-  Graph drawValidation() const;
+  GridLayout drawValidation() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -93,13 +91,13 @@ protected:
   Function metaModel_;
 
   /** Boolean argument */
-  mutable Bool isInitialized_;
+  mutable Bool isInitialized_ = false;
 
   /** Residual sample */
   mutable Sample residual_;
 
   /** Q2 arguments  */
-  mutable Scalar q2_;
+  mutable Point q2_;
 
 private:
 

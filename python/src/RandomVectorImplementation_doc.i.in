@@ -27,7 +27,7 @@ OT_RandomVector_doc
 Returns
 -------
 domain : :class:`~openturns.Domain`
-    Domain failure used to define the :class:`~openturns.Event`."
+    Domain failure used to define the :class:`~openturns.RandomVector`."
 
 // ---------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ domain : :class:`~openturns.Domain`
 Returns
 -------
 process : :class:`~openturns.Process`
-    Stochastic process used to define the :class:`~openturns.Event`."
+    Stochastic process used to define the :class:`~openturns.RandomVector`."
 
 // ---------------------------------------------------------------------
 
@@ -236,7 +236,7 @@ OT_RandomVector_getSample_doc
 Returns
 -------
 operator : :class:`~openturns.ComparisonOperator`
-    Comparaison operator used to define the :class:`~openturns.Event`."
+    Comparaison operator used to define the :class:`~openturns.RandomVector`."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getOperator
 OT_RandomVector_getOperator_doc
@@ -249,7 +249,7 @@ OT_RandomVector_getOperator_doc
 Returns
 -------
 threshold : float
-    Threshold of the :class:`~openturns.Event`."
+    Threshold of the :class:`~openturns.RandomVector`."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getThreshold
 OT_RandomVector_getThreshold_doc
@@ -376,3 +376,52 @@ description : :class:`~openturns.Description`
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getParameterDescription
 OT_RandomVector_getParameterDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_isEvent_doc
+"Whether the random vector is an event.
+
+Returns
+-------
+isEvent : bool
+    Whether it takes it values in {0, 1}."
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::isEvent
+OT_RandomVector_isEvent_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_intersect_doc
+"Intersection of two events.
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    A composite event
+
+Returns
+-------
+event : :class:`~openturns.RandomVector`
+    Intersection event"
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::intersect
+OT_RandomVector_intersect_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_join_doc
+"Union of two events.
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    A composite event
+
+Returns
+-------
+event : :class:`~openturns.RandomVector`
+    Union event"
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::join
+OT_RandomVector_join_doc

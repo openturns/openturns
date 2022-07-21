@@ -1,0 +1,113 @@
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorTargetSensitivity
+"Implement a HSIC estimator for target analysis.
+
+Parameters
+----------
+covarianceModelCollection : list of :class:`~openturns.CovarianceModel`
+    List of all covariance kernels. The :math:`d` first kernels are linked to the input 
+    and the last one is for the output.
+
+X : 2-d sequence of float
+    The input sample used for the HSIC analysis of dimension :math:`d`.
+
+Y : 2-d sequence of float
+    The output sample used for the HSIC analysis of dimension 1.
+
+estimatorType : :class:`~openturns.HSICStat`
+    An estimator for internal computations.
+
+filterFunction : :class:`~openturns.Function`
+    A filter function used for the output.
+
+See also
+--------
+:class:`~openturns.HSICEstimatorConditionalSensitivity`, :class:`~openturns.HSICEstimatorGlobalSensitivity`
+
+Examples
+--------
+>>> import openturns as ot
+>>> from math import pi
+
+Generate input and output samples.
+
+>>> # 3d input distribution with an independent copula
+>>> distX = ot.ComposedDistribution([ot.Uniform(-pi, pi)] * 3)
+>>> X = distX.getSample(100) # get a sample
+>>>
+>>> # Apply the Ishigami model.
+>>> inputs = ['X1', 'X2', 'X3']
+>>> formula = ['sin(X1) + 5.0 * (sin(X2))^2 + 0.1 * X3^4 * sin(X1)']
+>>> modelIshigami = ot.SymbolicFunction(inputs, formula)
+>>> Y = modelIshigami(X) # Y = modelIshigami(X)
+
+Define covariance kernels for the model inputs.
+Put them in a list.
+
+>>> covarianceModelCollection = []
+>>> for i in range(3):
+...     Xi = X.getMarginal(i)
+...     Cov = ot.SquaredExponential(1)
+...     Cov.setScale(Xi.computeStandardDeviation())
+...     covarianceModelCollection.append(Cov)
+
+Append the list with the covariance kernel for the model output.
+
+>>> covarianceModelCollection.append(ot.SquaredExponential(Y.computeStandardDeviation()))
+
+Choose the statistic that will be used to estimate the HSIC indices.
+
+>>> estimatorType = ot.HSICUStat() # could be HSICVStat instead
+
+Define a filter function to apply to the model output.
+
+>>> filter = ot.IndicatorFunction(ot.Interval(5, float('inf')))
+
+Build and use the HSIC estimator for target sensitivity analysis.
+
+>>> hsic = ot.HSICEstimatorTargetSensitivity(covarianceModelCollection, X, Y, estimatorType, filter)
+>>> print(hsic.getR2HSICIndices())
+[0.184124,-0.00585434,0.0339537]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorTargetSensitivity::getPValuesAsymptotic
+"Get the p-values estimated with an asymptotic formula.
+
+Returns
+-------
+pval : :class:`~openturns.Point`
+    The p-values obtained with an asymptotic formula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorTargetSensitivity::getFilterFunction
+"Get the filter function used.
+
+Returns
+-------
+filterFunction : :class:`~openturns.Function`
+    The filter function used for the target estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorTargetSensitivity::setFilterFunction
+"Set the filter function.
+
+Parameters
+----------
+filterFunction : :class:`~openturns.Function`
+    The filter function used for the target estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorTargetSensitivity::drawPValuesAsymptotic
+"Draw the p-values obtained with an asymptotic formula.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph of all p-values obtained with an asymptotic formula."
+
+// ---------------------------------------------------------------------

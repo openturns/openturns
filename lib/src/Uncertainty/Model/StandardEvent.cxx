@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements an event based on a composite random vector whose
  *  antecedent has a spherical distribution
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,6 +27,10 @@
 #include "openturns/Pointer.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/CovarianceMatrix.hxx"
+#include "openturns/Less.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/IdentityFunction.hxx"
+#include "openturns/ThresholdEventImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +41,7 @@ CLASSNAMEINIT(StandardEvent)
 
 /* Default constructor */
 StandardEvent::StandardEvent()
-  : Event()
+  : RandomVector(new ThresholdEventImplementation(CompositeRandomVector(IdentityFunction(1), RandomVector(Normal())), Less(), 0.0))
 {
   // Nothing to do
 }
@@ -46,7 +50,7 @@ StandardEvent::StandardEvent()
 StandardEvent::StandardEvent(const RandomVector & antecedent,
                              const ComparisonOperator & op,
                              const Scalar threshold)
-  : Event(antecedent, op, threshold)
+  : RandomVector(new ThresholdEventImplementation(antecedent, op, threshold))
 {
   // StandardEvent can only be constructed from composite random vector whose antecedent has a spherical distribution. As we cannot check it, we just check that the distribution is elliptical
   if (!antecedent.getAntecedent().getDistribution().isElliptical()) throw InvalidArgumentException(HERE) << "Error: StandardEvent can only be constructed from composite random vectors whose antecedent is standard spherical, here the distribution is " << antecedent.getImplementation()->getAntecedent().getDistribution().getImplementation()->__str__();
@@ -60,8 +64,8 @@ StandardEvent::StandardEvent(const RandomVector & antecedent,
 }
 
 /* Constructor from an Event */
-StandardEvent::StandardEvent(const Event & event)
-  : Event(event)
+StandardEvent::StandardEvent(const RandomVector & event)
+  : RandomVector()
 {
   // Get the isoprobabilistic inverse transformation from the antecedent distribution
   const Distribution distribution(event.getImplementation()->getAntecedent().getDistribution());

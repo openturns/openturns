@@ -2,7 +2,7 @@
 /*
  * @brief The parser definition in order to read CSV files
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 
 /* This parser is based on RFC 4180 from www.ietf.org */
 
-%pure-parser
+%define api.pure
 %parse-param {OT::CSVParserState & theState}
 %parse-param {yyscan_t yyscanner}
 %parse-param {FILE * theFile}
@@ -73,18 +73,19 @@ int yyerror                   (OT::CSVParserState & theState, yyscan_t yyscanner
 int csvget_lineno             (yyscan_t yyscanner);
 
 
-std::string ToString(double val)
+static std::string ToString(double val)
 {
   std::ostringstream oss;
   oss << val;
   return oss.str();
 }
 
-void clearPoint(OT::CSVParserState & theState, yyscan_t /*yyscanner*/)
+static void ClearPoint(OT::CSVParserState & theState, yyscan_t /*yyscanner*/)
 {
   theState.point = OT::Point();
 }
-void printPoint(OT::CSVParserState & theState, yyscan_t yyscanner, OT::SampleImplementation &impl, OT::UnsignedInteger & theDimension)
+
+static void PrintPoint(OT::CSVParserState & theState, yyscan_t yyscanner, OT::SampleImplementation &impl, OT::UnsignedInteger & theDimension)
 {
   LOGDEBUG(OT::OSS() << "file " << theState.theFileName << " line " << csvget_lineno(yyscanner) << ": point=" << theState.point.__repr__());
 
@@ -95,11 +96,12 @@ void printPoint(OT::CSVParserState & theState, yyscan_t yyscanner, OT::SampleImp
 }
 
 
-void clearHeader(OT::CSVParserState & theState, yyscan_t /*yyscanner*/)
+static void ClearHeader(OT::CSVParserState & theState, yyscan_t /*yyscanner*/)
 {
   theState.Header = OT::Description();
 }
-void printHeader(OT::CSVParserState & theState, yyscan_t yyscanner, OT::SampleImplementation &impl, OT::UnsignedInteger & theDimension)
+
+static void PrintHeader(OT::CSVParserState & theState, yyscan_t yyscanner, OT::SampleImplementation &impl, OT::UnsignedInteger & theDimension)
 {
   LOGDEBUG(OT::OSS() << "file " << theState.theFileName << " line " << csvget_lineno(yyscanner) << ": Header=" << theState.Header.__repr__());
 
@@ -122,9 +124,9 @@ recordSet: Record
 	|  recordSet CRLF Record 
 	;
 
-Record: { clearHeader(theState,yyscanner); clearPoint(theState,yyscanner); theState.errors = false; }
+Record: { ClearHeader(theState,yyscanner); ClearPoint(theState,yyscanner); theState.errors = false; }
 	record
-        { if (!theState.errors) { printHeader(theState,yyscanner,impl,theDimension); printPoint(theState,yyscanner,impl,theDimension); } } ;
+        { if (!theState.errors) { PrintHeader(theState,yyscanner,impl,theDimension); PrintPoint(theState,yyscanner,impl,theDimension); } } ;
 
 record:   spacedField
 	| record COMMA spacedField

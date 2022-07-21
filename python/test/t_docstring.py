@@ -1,10 +1,8 @@
 #! /usr/bin/env python
 
-import openturns as ot
 import sys
 import os
 import shutil
-from glob import glob
 from tempfile import mkdtemp
 import doctest
 

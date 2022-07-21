@@ -2,7 +2,7 @@
 /**
  *  @brief Domain is the interface of DomainImplementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,11 +52,17 @@ public:
   /** Check if the closed domain contains given points */
   virtual BoolCollection contains(const Sample & sample) const;
 
+  /** Compute the Euclidean distance from a given point to the domain */
+  virtual Scalar computeDistance(const Point & point) const;
+
+  /** Compute the Euclidean distance from given points to the domain */
+  virtual Sample computeDistance(const Sample & sample) const;
+
   /** Dimension accessors */
   virtual UnsignedInteger getDimension() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
 }; /* class Domain */
 

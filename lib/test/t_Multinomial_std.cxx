@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Multinomial for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,11 +43,11 @@ int main(int, char *[])
     checkClassWithClassName<TestObject>();
 
     {
-      // Instanciate one distribution object
+      // Instantiate one distribution object
       Multinomial distribution;
     }
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Multinomial distribution(5, Point(3, 0.25));
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
@@ -95,10 +95,10 @@ int main(int, char *[])
     Point lower(distribution.getDimension());
     Point upper(distribution.getDimension());
     for (UnsignedInteger i = 0; i < distribution.getDimension(); ++i)
-      {
-	lower[i] = i;
-	upper[i] = i + 1.0;
-      }
+    {
+      lower[i] = i;
+      upper[i] = i + 1.0;
+    }
     interval = Interval(lower, upper);
     fullprint << "probability(" << interval.__str__() << ")=" << distribution.computeProbability(interval) << std::endl;
     fullprint << "entropy=" << distribution.computeEntropy() << std::endl;

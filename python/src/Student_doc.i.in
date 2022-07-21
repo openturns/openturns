@@ -4,7 +4,7 @@
 Available constructors:
     Student(*nu=3.0, d=1*)
 
-    Student(*nu, mu, sigma=1.0*)
+    Student(*nu, mu, sigma*)
 
     Student(*nu, mu, sigma, R*)
 
@@ -12,24 +12,28 @@ Parameters
 ----------
 d : int, :math:`d \geq 1`
     Dimension.
+
 nu : float, :math:`\nu > 0`
     Generalised number degrees of freedom.
-mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`, optional
+
+mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`
     If :math:`\nu > 1`: mean.
 
     If :math:`\nu = 1`: location parameter.
 
     Default is :math:`\vect{\mu} = (0, \dots, 0) \in \Rset^d`.
-sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`, optional
+
+sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`
     Scale parameter.
 
-    Default is :math:`\vect{\sigma} = (1, \dots, 1) \in \Rset^d`.
-R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in \Rset^d \times \Rset^d`, optional
+    Default is :math:`\vect{\sigma} = (1, \dots, 1) \in \Rset^{*d}_+`.
+
+R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\Rset)`
     If :math:`\nu > 2`: correlation matrix.
 
     If :math:`\nu \leq 2`: generalized correlation matrix.
 
-    Default is :math:`\mat{R} = I_d \in \Rset^d \times \Rset^d`.
+    By default the identity matrix.
 
 Notes
 -----
@@ -44,14 +48,15 @@ Its probability density function is defined as:
              \left(1 + \frac{\vect{z} ^ t \mat{R} ^ {-1} \vect{z}}{\nu}
              \right) ^ {-\frac{\nu + d}{2}}, \quad x \in \Rset
 
-with :math:`\nu > 0, d \geq 1, \mat{R} \in \Rset^d \times \Rset^d,
-\sigma_k > 0, k=1, \dots, d` .
-
+with :math:`\nu > 0, d \geq 1, \mat{R} \in  \cM_{d \times d}(\Rset),
+\sigma_k > 0, k=1, \dots, d` , and
 where :math:`\vect{z}=\mat{\Delta}^{-1}\left(\vect{x}-\vect{\mu}\right)`, 
 :math:`\mat{\Delta} = \mat{\mathrm{diag}}(\vect{\sigma})` and :math:`\Gamma`
 denotes Euler's Gamma function :class:`~openturns.SpecFunc_Gamma`.
 
-Its first moments are:
+The matrix :math:`\mat{R}` is symmetric positive definite.
+
+The first moments of the distribution are:
 
 .. math::
     :nowrap:
@@ -68,11 +73,42 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Student(5.0, -0.5, 2.0)
+>>> distribution = ot.Student(3.0, -0.5, 2.0)
 
 Draw a sample:
 
->>> sample = distribution.getSample(5)"
+>>> sample = distribution.getSample(5)
+
+Create a multivariate Student distribution with constant :math:`\sigma` and identity correlation matrix:
+
+>>> dimension = 5
+>>> nu = 3.0
+>>> mu = ot.Point(dimension)
+>>> sigma = ot.Point(dimension, 0.1)
+>>> R = ot.CorrelationMatrix(dimension)
+>>> distribution = ot.Student(nu, mu, sigma, R)
+>>> print('distribution=', distribution)
+distribution= Student(nu = 3, mu = [0,0,0,0,0], sigma = [0.1,0.1,0.1,0.1,0.1], R = 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]])
+
+Create a multivariate Student distribution with a different :math:`\sigma` parameter and a different correlation matrix:
+
+>>> sigma = [1.5, 0.4, 1.0, 2.5, 1.0]
+>>> R = ot.CorrelationMatrix(dimension)
+>>> R[0, 2] = -0.5
+>>> R[3, 4] = -0.2
+>>> distribution = ot.Student(nu, mu, sigma, R)
+>>> print('distribution=', distribution)
+distribution= Student(nu = 3, mu = [0,0,0,0,0], sigma = [1.5,0.4,1,2.5,1], R = 5x5
+[[  1    0   -0.5  0    0   ]
+ [  0    1    0    0    0   ]
+ [ -0.5  0    1    0    0   ]
+ [  0    0    0    1   -0.2 ]
+ [  0    0    0   -0.2  1   ]])"
 
 // ---------------------------------------------------------------------
 

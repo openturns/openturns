@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class CumulativeDistributionNetwork for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,7 +42,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     BipartiteGraph graph(2, 2);
     graph(0, 0) = 0;
     graph(0, 1) = 1;
@@ -79,7 +79,6 @@ int main(int, char *[])
     fullprint << std::setprecision(5) << "log pdf=" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );
     fullprint << std::setprecision(5) << "pdf     =" << PDF << std::endl;
-    fullprint << std::setprecision(5) << "pdf (FD)=" << distribution.DistributionImplementation::computePDF(point) << std::endl;
     Scalar CDF = distribution.computeCDF( point );
     fullprint << std::setprecision(5) << "cdf=" << CDF << std::endl;
     Scalar CCDF = distribution.computeComplementaryCDF( point );

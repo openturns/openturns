@@ -1,4 +1,4 @@
-Copula  MaximumEntropyOrderStatisticsCopula(collection = [Trapezoidal(a = -2, b = -1.1, c = -1, d = 1),LogUniform(aLog = 1, bLog = 1.2),Triangular(a = 3, m = 4.5, b = 5),Beta(r = 2.5, t = 6, a = 4.7, b = 5.2)])
+Copula  MaximumEntropyOrderStatisticsCopula(collection = [Trapezoidal(a = -2, b = -1.1, c = -1, d = 1),LogUniform(aLog = 1, bLog = 1.2),Triangular(a = 3, m = 4.5, b = 5),Beta(alpha = 2.5, beta = 3.5, a = 4.7, b = 5.2)])
 Elliptical copula=  False
 Elliptical copula=  False
 Independent copula=  False
@@ -7,7 +7,7 @@ oneSample first= class=Point name=Unnamed dimension=4 values=[0.347057,0.969423,
 mean= class=Point name=Unnamed dimension=4 values=[0.499014,0.499206,0.5056,0.499316]
 covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.0849644,-0.000136295,0.000187446,7.82855e-05,-0.000136295,0.0831311,0.00100951,-1.89497e-05,0.000187446,0.00100951,0.0847861,0.00446144,7.82855e-05,-1.89497e-05,0.00446144,0.0831515]
 Point=  [0.35,0.15,0.02,0.33]
-ddf     = class=Point name=Unnamed dimension=4 values=[0.318639,0.227512,-1.13455,-0.276473]
+ddf     = class=Point name=Unnamed dimension=4 values=[0,0.227512,-1.13455,-0.276473]
 log pdf=-0.450551
 pdf     =0.637277
 condPDF     =19.425306
@@ -24,7 +24,7 @@ kurtosis= class=Point name=Unnamed dimension=4 values=[1.8,1.8,1.8,1.8]
 covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.0833333,0,0,0,0,0.0833333,0.00140456,0,0,0.00140456,0.0833333,0.00407363,0,0,0.00407363,0.0833333]
 correlation= class=CorrelationMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.0168547,0,0,0.0168547,1,0.0488836,0,0,0.0488836,1]
 spearman= class=CorrelationMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.0168547,0,0,0.0168547,1,0.0488836,0,0,0.0488836,1]
-parameters= [class=PointWithDescription name=X0 dimension=4 description=[a_marginal_0,b_marginal_0,c_marginal_0,d_marginal_0] values=[-2,-1.1,-1,1],class=PointWithDescription name=X1 dimension=2 description=[aLog_marginal_1,bLog_marginal_1] values=[1,1.2],class=PointWithDescription name=X2 dimension=3 description=[a_marginal_2,m_marginal_2,b_marginal_2] values=[3,4.5,5],class=PointWithDescription name=X3 dimension=4 description=[r_marginal_3,t_marginal_3,a_marginal_3,b_marginal_3] values=[2.5,6,4.7,5.2]]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[a_marginal_0,b_marginal_0,c_marginal_0,d_marginal_0] values=[-2,-1.1,-1,1],class=PointWithDescription name=X1 dimension=2 description=[aLog_marginal_1,bLog_marginal_1] values=[1,1.2],class=PointWithDescription name=X2 dimension=3 description=[a_marginal_2,m_marginal_2,b_marginal_2] values=[3,4.5,5],class=PointWithDescription name=X3 dimension=4 description=[alpha_marginal_3,beta_marginal_3,a_marginal_3,b_marginal_3] values=[2.5,3.5,4.7,5.2]]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.350000

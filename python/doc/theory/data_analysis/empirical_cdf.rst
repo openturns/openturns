@@ -7,7 +7,7 @@ The empirical cumulative distribution function provides a graphical
 representation of the probability distribution of a random vector
 without implying any prior assumption concerning the form of this
 distribution. It concerns a non-parametric approach which enables the
-description of complex behaviour not necessarily detected with
+description of complex behavior not necessarily detected with
 parametric approaches.
 
 Therefore, using general notation, this means that we are looking for an
@@ -110,7 +110,7 @@ distribution function.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/visualize_empirical_cdf`
+    - See :doc:`/auto_data_analysis/sample_analysis/plot_visualize_empirical_cdf`
 
 
 .. topic:: References:

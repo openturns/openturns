@@ -2,7 +2,7 @@
 /**
  *  @brief CalibrationResult implements the result of an algorithm for solving a calibration problem
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,9 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,12 +48,15 @@ public:
 
   /** Standard constructor */
   CalibrationResult(const Distribution & parameterPrior,
-		    const Distribution & parameterPosterior,
-		    const Point & parameterMAP,
-		    const Distribution & observationsError);
+                    const Distribution & parameterPosterior,
+                    const Point & parameterMAP,
+                    const Distribution & observationsError,
+                    const Sample & inputObservations,
+                    const Sample & outputObservations,
+                    const Function & residualFunction);
 
   /** Virtual constructor */
-  virtual CalibrationResult * clone() const;
+  CalibrationResult * clone() const override;
 
   /** Parameter prior distribution accessors */
   void setParameterPrior(const Distribution & parameterPrior);
@@ -68,14 +74,37 @@ public:
   void setParameterMAP(const Point & parameterMAP);
   Point getParameterMAP() const;
 
+  /** Input observations accessors */
+  void setInputObservations(const Sample & inputObservations);
+  Sample getInputObservations() const;
+
+  /** Output observations accessors */
+  void setOutputObservations(const Sample & outputObservations);
+  Sample getOutputObservations() const;
+
+  /** Residual function accessors */
+  void setResidualFunction(const Function & residualFunction);
+  Function getResidualFunction() const;
+
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
+
+  /** Output at prior/posterior accessor */
+  void setOutputAtPriorAndPosteriorMean(const Sample & outputAtPriorMean, const Sample & outputAtPosteriorMean);
+  Sample getOutputAtPriorMean() const;
+  Sample getOutputAtPosteriorMean() const;
+
+  /** Graphic analysis */
+  GridLayout drawParameterDistributions() const;
+  GridLayout drawResiduals() const;
+  GridLayout drawObservationsVsInputs() const;
+  GridLayout drawObservationsVsPredictions() const;
 
 private:
 
@@ -90,7 +119,20 @@ private:
 
   /* Observations error distribution */
   Distribution observationsError_;
-  
+
+  /* Input observations */
+  Sample inputObservations_;
+
+  /* Output observations */
+  Sample outputObservations_;
+
+  /* Residual function */
+  Function residualFunction_;
+
+  /* Output at prior/posterior */
+  Sample outputAtPriorMean_;
+  Sample outputAtPosteriorMean_;
+
 }; // class CalibrationResult
 
 

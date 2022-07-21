@@ -2,7 +2,7 @@
 /**
  *  @brief Tuples experiment plane
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,15 +43,15 @@ public:
   explicit Tuples(const Indices & bounds);
 
   /** Virtual constructor */
-  virtual Tuples * clone() const;
+  Tuples * clone() const override;
 
   /** Experiment plane generation :
    *  all the tuples taking values in {0,...,bounds[0]-1}x...x{0,...,bounds[n-1]-1}
    */
-  virtual IndicesCollection generate();
+  IndicesCollection generate() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Bounds accessor */
   void setBounds(const Indices & bounds);

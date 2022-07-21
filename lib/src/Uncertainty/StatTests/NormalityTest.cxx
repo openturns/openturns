@@ -2,7 +2,7 @@
 /**
  *  @brief StatTest implements statistical tests
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,10 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-NormalityTest::NormalityTest()
-{
-}
-
 
 /* Anderson Darling normality test for normal distributions. */
 TestResult NormalityTest::AndersonDarlingNormal(const Sample & sample,
@@ -40,7 +36,7 @@ TestResult NormalityTest::AndersonDarlingNormal(const Sample & sample,
   if (sample.getSize() < 8) throw InvalidArgumentException(HERE) << "Error: cannot perform an Anderson Darling normality test with sample of size < 8.";
   Sample sortedSample(sample.sort(0));
   Scalar mean = sortedSample.computeMean()[0];
-  Scalar sd = sortedSample.computeStandardDeviationPerComponent()[0];
+  Scalar sd = sortedSample.computeStandardDeviation()[0];
   const UnsignedInteger size = sample.getSize();
   Scalar testStatistic = 0.0;
   UnsignedInteger effectiveIndex = 0;
@@ -91,7 +87,7 @@ TestResult NormalityTest::CramerVonMisesNormal(const Sample & sample,
   if (sample.getSize() < 8) throw InvalidArgumentException(HERE) << "Error: cannot perform a Cramer Von-Mises normality test with sample of size < 8.";
   Sample sortedSample(sample.sort(0));
   Scalar mean = sortedSample.computeMean()[0];
-  Scalar sd = sortedSample.computeStandardDeviationPerComponent()[0];
+  Scalar sd = sortedSample.computeStandardDeviation()[0];
   const UnsignedInteger size = sample.getSize();
   Scalar testStatistic = 1.0 / (12.0 * size);
   for (UnsignedInteger i = 0; i < size; ++i)

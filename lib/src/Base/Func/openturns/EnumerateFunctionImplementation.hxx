@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,10 +43,10 @@ public:
   explicit EnumerateFunctionImplementation(const UnsignedInteger dimension = 1);
 
   /** Virtual constrcutor */
-  virtual EnumerateFunctionImplementation * clone() const;
+  EnumerateFunctionImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** The bijective association between an integer and a set of indices */
   virtual Indices operator() (const UnsignedInteger index) const;
@@ -55,10 +55,10 @@ public:
   virtual UnsignedInteger inverse(const Indices & indices) const;
 
   /** The cardinal of the given strata */
-  virtual UnsignedInteger getStrataCardinal(const UnsignedInteger strateIndex) const;
+  virtual UnsignedInteger getStrataCardinal(const UnsignedInteger strataIndex) const;
 
   /** The cardinal of the cumulated strata above or equal to the given strate */
-  virtual UnsignedInteger getStrataCumulatedCardinal(const UnsignedInteger strateIndex) const;
+  virtual UnsignedInteger getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const;
 
   /** The index of the strata of degree max <= maximumDegree */
   virtual UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const;
@@ -66,15 +66,18 @@ public:
   /** The cardinal of indices of degree max <= maximumDegree */
   virtual UnsignedInteger getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const;
 
+  /** Basis size from total degree */
+  virtual UnsignedInteger getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const;
+
   /** Dimension accessor */
   void setDimension(const UnsignedInteger dimension);
   UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

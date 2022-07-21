@@ -2,7 +2,7 @@
 /**
  * @brief PythonFieldToPointFunction declaration
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,10 @@ public:
   PythonFieldToPointFunction(const PythonFieldToPointFunction & other);
 
   /** Virtual constructor */
-  virtual PythonFieldToPointFunction * clone() const;
+  PythonFieldToPointFunction * clone() const override;
+
+  /** Copy assignment operator */
+  PythonFieldToPointFunction & operator=(const PythonFieldToPointFunction & rhs);
 
   /** Destructor */
   virtual ~PythonFieldToPointFunction();
@@ -54,26 +57,26 @@ public:
   Bool operator ==(const PythonFieldToPointFunction & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset) const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual Point operator() (const Sample & inF) const;
+  Point operator() (const Sample & inF) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method save() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

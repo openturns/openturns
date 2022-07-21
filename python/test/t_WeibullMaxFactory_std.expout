@@ -1,0 +1,7 @@
+distribution= class=WeibullMax name=WeibullMax dimension=1 beta=1 alpha=2.5 gamma=-1
+Estimated distribution= class=WeibullMax name=WeibullMax dimension=1 beta=1.00413 alpha=2.49013 gamma=-1.00105
+Default distribution= WeibullMax(beta = 1, alpha = 1, gamma = 0)
+Distribution from parameters= WeibullMax(beta = 1, alpha = 2.5, gamma = -1)
+Estimated weibull= WeibullMax(beta = 1.00413, alpha = 2.49013, gamma = -1.00105)
+Default weibull= WeibullMax(beta = 1, alpha = 1, gamma = 0)
+WeibullMax from parameters= WeibullMax(beta = 1, alpha = 2.5, gamma = -1)

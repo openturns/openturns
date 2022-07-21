@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements all random vectors
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,9 +20,9 @@
  */
 #include "openturns/RandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
-#include "openturns/EventRandomVector.hxx"
-#include "openturns/EventDomain.hxx"
-#include "openturns/EventProcess.hxx"
+#include "openturns/ThresholdEvent.hxx"
+#include "openturns/DomainEvent.hxx"
+#include "openturns/ProcessEvent.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/Domain.hxx"
 #include "openturns/Less.hxx"
@@ -156,19 +156,19 @@ RandomVector RandomVector::getMarginal(const Indices & indices) const
   return getImplementation()->getMarginal(indices);
 }
 
-/* This method allows to access the antecedent RandomVector in case of a composite RandomVector */
+/* This method allows one to access the antecedent RandomVector in case of a composite RandomVector */
 RandomVector RandomVector::getAntecedent() const
 {
   return getImplementation()->getAntecedent();
 }
 
-/* This method allows to access the Function in case of a composite RandomVector */
+/* This method allows one to access the Function in case of a composite RandomVector */
 Function RandomVector::getFunction() const
 {
   return getImplementation()->getFunction();
 }
 
-/* This method allows to access the Distribution in case of a usual RandomVector */
+/* This method allows one to access the Distribution in case of a usual RandomVector */
 Distribution RandomVector::getDistribution() const
 {
   return getImplementation()->getDistribution();
@@ -205,6 +205,117 @@ void RandomVector::setParameter(const Point & parameter)
 Description RandomVector::getParameterDescription() const
 {
   return getImplementation()->getParameterDescription();
+}
+
+Bool RandomVector::isEvent() const
+{
+  return getImplementation()->isEvent();
+}
+
+
+RandomVector RandomVector::intersect(const RandomVector & other)
+{
+  if (&other == this)
+    return *this;
+
+  if (!isComposite() || !other.isComposite())
+    throw InvalidArgumentException(HERE) << "Events must be composite";
+
+  if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
+    throw NotYetImplementedException(HERE) << "Root cause not found";
+
+  LevelSet d1;
+  try
+  {
+    // ThresholdEvent
+    d1 = LevelSet(getFunction(), getOperator(), getThreshold());
+  }
+  catch (NotYetImplementedException &)
+  {
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
+    if (!eventDomain)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
+    if (!levelSet)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    d1 = *levelSet;
+  }
+
+  LevelSet d2;
+  try
+  {
+    // ThresholdEvent
+    d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
+  }
+  catch (NotYetImplementedException &)
+  {
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
+    if (!eventDomain)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
+    if (!levelSet)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    d2 = *levelSet;
+  }
+
+  LevelSet d3(d1.intersect(d2));
+  CompositeRandomVector composite(d3.getFunction(), getAntecedent());
+  return ThresholdEvent(composite, d3.getOperator(), d3.getLevel());
+}
+
+
+RandomVector RandomVector::join(const RandomVector & other)
+{
+  if (&other == this)
+    return *this;
+
+  if (!isComposite() || !other.isComposite())
+    throw InvalidArgumentException(HERE) << "Events must be composite";
+
+  if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
+    throw NotYetImplementedException(HERE) << "Root cause not found";
+
+  LevelSet d1;
+  try
+  {
+    // ThresholdEvent
+    d1 = LevelSet(getFunction(), getOperator(), getThreshold());
+  }
+  catch (NotYetImplementedException &)
+  {
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
+    if (!eventDomain)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
+    if (!levelSet)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    d1 = *levelSet;
+  }
+
+  LevelSet d2;
+  try
+  {
+    // ThresholdEvent
+    d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
+  }
+  catch (NotYetImplementedException &)
+  {
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
+    if (!eventDomain)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
+    if (!levelSet)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    d2 = *levelSet;
+  }
+
+  LevelSet d3(d1.join(d2));
+  CompositeRandomVector composite(d3.getFunction(), getAntecedent());
+  return ThresholdEvent(composite, d3.getOperator(), d3.getLevel());
 }
 
 END_NAMESPACE_OPENTURNS

@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Binomial(15, 0.7)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
@@ -69,7 +68,8 @@ try:
     # Confidence interval
     alpha = 0.05
     bounds = distribution.computeBilateralConfidenceInterval(1-alpha)
-    print("%.2f%% bilateral confidence interval" % ((1-alpha)*100), " =", bounds)
+    print("%.2f%% bilateral confidence interval" %
+          ((1-alpha)*100), " =", bounds)
 
 except:
     import sys

@@ -2,7 +2,7 @@
 /**
  *  @brief The RatioDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,24 +48,24 @@ public:
   /** Comparison operator */
   Bool operator ==(const RatioDistribution & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual RatioDistribution * clone() const;
+  RatioDistribution * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 private:
   Scalar computePDFQ1(const Scalar x,
                       const Scalar a,
@@ -89,14 +89,14 @@ private:
                       const Scalar d) const;
 public:
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /* Interface specific to RatioDistribution */
 
@@ -109,19 +109,19 @@ public:
   Distribution getRight() const;
 
   /** Tell if the distribution is continuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
   /** Check if the distribution is discrete */
-  Bool isDiscrete() const;
+  Bool isDiscrete() const override;
 
   /** Tell if the distribution is integer valued */
-  Bool isIntegral() const;
+  Bool isIntegral() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
@@ -187,13 +187,13 @@ private:
   }; // struct CFKernelWrapper
 
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** The main parameter set of the distribution */
   Distribution left_;

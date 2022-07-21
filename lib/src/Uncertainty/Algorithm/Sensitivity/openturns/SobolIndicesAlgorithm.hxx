@@ -2,7 +2,7 @@
 /**
  *  @brief SobolIndicesAlgorithm provides capabilities for sensitivity algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -114,14 +114,16 @@ public:
 
   static Graph DrawSobolIndices(const Description & inputDescription,
                                 const Point & firstOrderIndices,
-                                const Point & secondOrderIndices);
+                                const Point & secondOrderIndices,
+                                const Interval & firstOrderConfidenceInterval = Interval(),
+                                const Interval & totalOrderConfidenceInterval = Interval());
 
   static Graph DrawCorrelationCoefficients(const Point & values,
-                                           const Description & names,
-                                           const String & title);
+      const Description & names,
+      const String & title);
 
   static Graph DrawCorrelationCoefficients(const PointWithDescription & correlationCoefficients,
-                                           const String & title);
+      const String & title);
 
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;
@@ -135,10 +137,10 @@ public:
                  const UnsignedInteger size);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 } ; /* class SobolIndicesAlgorithm */
 

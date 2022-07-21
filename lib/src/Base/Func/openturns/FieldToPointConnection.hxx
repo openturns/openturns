@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the field to point connection
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,39 +51,39 @@ public:
                          const FieldFunction & fieldFunction);
 
   /** Virtual constructor */
-  virtual FieldToPointConnection * clone() const;
+  FieldToPointConnection * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const FieldToPointConnection & other) const;
 
   /** Operator () */
   using FieldToPointFunctionImplementation::operator();
-  Point operator() (const Sample & inF) const;
+  Point operator() (const Sample & inF) const override;
 
-  Sample operator() (const ProcessSample & inS) const;
+  Sample operator() (const ProcessSample & inS) const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Implementation getMarginal(const UnsignedInteger i) const override;
 
   /** Get the function corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Implementation getMarginal(const Indices & indices) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Composed implementation accessor */
   FieldFunction getFieldFunction() const;

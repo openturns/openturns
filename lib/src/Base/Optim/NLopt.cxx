@@ -2,7 +2,7 @@
 /**
  *  @brief NLopt solver
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,10 +49,11 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["GN_DIRECT_L_RAND_NOSCAL"] = nlopt::GN_DIRECT_L_RAND_NOSCAL;
   AlgorithmNames_["GN_ORIG_DIRECT"] = nlopt::GN_ORIG_DIRECT;
   AlgorithmNames_["GN_ORIG_DIRECT_L"] = nlopt::GN_ORIG_DIRECT_L;
-  // TODO: add stogo
-//   AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
-//   AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
-  AlgorithmNames_["LD_LBFGS_NOCEDAL"] = nlopt::LD_LBFGS_NOCEDAL;
+#ifdef OPENTURNS_NLOPT_HAVE_STOGO
+  AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
+  AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
+#endif
+  // LD_LBFGS_NOCEDAL is not wired
   AlgorithmNames_["LD_LBFGS"] = nlopt::LD_LBFGS;
   AlgorithmNames_["LN_PRAXIS"] = nlopt::LN_PRAXIS;
   AlgorithmNames_["LD_VAR1"] = nlopt::LD_VAR1;
@@ -85,6 +86,9 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["LD_SLSQP"] = nlopt::LD_SLSQP;
   AlgorithmNames_["LD_CCSAQ"] = nlopt::LD_CCSAQ;
   AlgorithmNames_["GN_ESCH"] = nlopt::GN_ESCH;
+#ifdef OPENTURNS_NLOPT_HAVE_AGS
+  AlgorithmNames_["GN_AGS"] = nlopt::GN_AGS;
+#endif
 #else
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
@@ -115,6 +119,7 @@ void NLopt::SetSeed(const UnsignedInteger seed)
 #ifdef OPENTURNS_HAVE_NLOPT
   nlopt::srand(seed);
 #else
+  (void)seed;
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
 }
@@ -147,10 +152,23 @@ NLopt * NLopt::clone() const
 /* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void NLopt::checkProblem(const OptimizationProblem & problem) const
 {
-#ifdef OPENTURNS_HAVE_NLOPT
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support multi-objective optimization";
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
 
+  if (getAlgorithmName()[0] == 'G')
+  {
+    if (!problem.hasBounds())
+      throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " global algorithm requires bounds";
+    else
+    {
+      Interval finiteBounds(problem.getBounds().getLowerBound(), problem.getBounds().getUpperBound());
+      if (problem.getBounds() != finiteBounds)
+        throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " global algorithm requires finite bounds";
+    }
+  }
+#ifdef OPENTURNS_HAVE_NLOPT
   const UnsignedInteger dimension = problem.getDimension();
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(getAlgorithmName()));
   nlopt::opt opt(algo, dimension);
@@ -159,7 +177,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
   {
     try
     {
-      opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, 0);
+      opt.add_inequality_constraint(nlopt::func(), 0);
     }
     catch (std::invalid_argument &)
     {
@@ -171,7 +189,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
   {
     try
     {
-      opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, 0);
+      opt.add_equality_constraint(nlopt::func(), 0);
     }
     catch (std::invalid_argument &)
     {
@@ -183,14 +201,6 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 #endif
 }
 
-// Struct to store class ptr and marginal index as well
-struct MarginalData
-{
-  MarginalData(NLopt * p_algo, const UnsignedInteger marginalIndex)
-    : p_algo_(p_algo), marginalIndex_(marginalIndex) {}
-  NLopt * p_algo_;
-  int marginalIndex_;
-};
 
 /* Performs the actual computation by calling the NLopt library
  */
@@ -209,6 +219,7 @@ void NLopt::run()
   evaluationOutputHistory_ = Sample(0, 1);
   equalityConstraintHistory_ = Sample(0, getProblem().getEqualityConstraint().getOutputDimension());
   inequalityConstraintHistory_ = Sample(0, getProblem().getInequalityConstraint().getOutputDimension());
+  result_ = OptimizationResult(getProblem());
 
   nlopt::opt opt(algo, dimension);
 
@@ -233,51 +244,35 @@ void NLopt::run()
       throw InvalidArgumentException(HERE) << "Starting point is not inside bounds x=" << startingPoint.__str__() << " bounds=" << bounds;
     Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
     Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
-    Point lowerBound(bounds.getLowerBound());
-    Point upperBound(bounds.getUpperBound());
-    std::vector<double> lb(dimension, 0.0);
-    std::vector<double> ub(dimension, 0.0);
-    std::copy(lowerBound.begin(), lowerBound.end(), lb.begin());
-    std::copy(upperBound.begin(), upperBound.end(), ub.begin());
+    std::vector<double> lb(bounds.getLowerBound().toStdVector());
+    std::vector<double> ub(bounds.getUpperBound().toStdVector());
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      if (!finiteLowerBound[i]) lb[i] = -SpecFunc::MaxScalar;
+      if (!finiteLowerBound[i]) lb[i] = SpecFunc::LowestScalar;
       if (!finiteUpperBound[i]) ub[i] =  SpecFunc::MaxScalar;
     }
     opt.set_lower_bounds(lb);
     opt.set_upper_bounds(ub);
   }
 
-  Collection<Pointer<MarginalData> > inequalityData;
   if (getProblem().hasInequalityConstraint())
   {
     const UnsignedInteger inequalityDimension = getProblem().getInequalityConstraint().getOutputDimension();
-    inequalityData.resize(inequalityDimension);
-    for (UnsignedInteger i = 0; i < inequalityDimension; ++ i)
-    {
-      inequalityData[i] = Pointer<MarginalData>(new MarginalData(this, i));
-      opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, inequalityData[i].get(), getMaximumConstraintError());
-    }
+    const std::vector<double> tol(inequalityDimension, getMaximumConstraintError());
+    opt.add_inequality_mconstraint(NLopt::ComputeInequalityConstraint, this, tol);
   }
 
-  Collection<Pointer<MarginalData> > equalityData;
   if (getProblem().hasEqualityConstraint())
   {
     const UnsignedInteger equalityDimension = getProblem().getEqualityConstraint().getOutputDimension();
-    equalityData.resize(equalityDimension);
-    for (UnsignedInteger i = 0; i < equalityDimension; ++ i)
-    {
-      equalityData[i] = Pointer<MarginalData>(new MarginalData(this, i));
-      opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, equalityData[i].get(), getMaximumConstraintError());
-    }
+    const std::vector<double> tol(equalityDimension, getMaximumConstraintError());
+    opt.add_equality_mconstraint(NLopt::ComputeEqualityConstraint, this, tol);
   }
 
   if (initialStep_.getDimension() > 0)
   {
     if (initialStep_.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid dx point dimension, expected " << dimension;
-    std::vector<double> dx(dimension, 0.0);
-    std::copy(initialStep_.begin(), initialStep_.end(), dx.begin());
-    opt.set_default_initial_step(dx);
+    opt.set_default_initial_step(initialStep_.toStdVector());
   }
 
   // some algorithms require a local solver (AUGLAG, MLSL)
@@ -305,15 +300,12 @@ void NLopt::run()
     {
       Point localInitialStep(p_localSolver_->getInitialStep());
       if (localInitialStep.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid local dx point dimension, expected " << dimension;
-      std::vector<double> local_dx(dimension, 0.0);
-      std::copy(localInitialStep.begin(), localInitialStep.end(), local_dx.begin());
-      local_opt.set_default_initial_step(local_dx);
+      local_opt.set_default_initial_step(localInitialStep.toStdVector());
     }
     opt.set_local_optimizer(local_opt);
   }
 
-  std::vector<double> x(dimension, 0.0);
-  std::copy(startingPoint.begin(), startingPoint.end(), x.begin());
+  std::vector<double> x(startingPoint.toStdVector());
   double optimalValue = 0.0;
 
   try
@@ -339,10 +331,8 @@ void NLopt::run()
   }
   p_opt_ = 0;
 
-  Point optimizer(dimension);
-  std::copy(x.begin(), x.end(), optimizer.begin());
-  OptimizationResult result(dimension, 1);
-  result.setProblem(getProblem());
+  Point optimizer(x.begin(), x.end());
+  OptimizationResult result(getProblem());
 
   const UnsignedInteger size = evaluationInputHistory_.getSize();
 
@@ -398,9 +388,9 @@ void NLopt::run()
   result.setEvaluationNumber(size);
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));
-  result.setLagrangeMultipliers(computeLagrangeMultipliers(optimizer));
   setResult(result);
 #else
+  (void) p_opt_;
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
 }
@@ -485,8 +475,7 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
 {
   NLopt *algorithm = static_cast<NLopt *>(f_data);
   const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  Point inP(dimension);
-  std::copy(x.begin(), x.end(), inP.begin());
+  Point inP(x.begin(), x.end());
 
   // evaluation
   Point outP(algorithm->getProblem().getObjective()(inP));
@@ -494,6 +483,10 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inP);
   algorithm->evaluationOutputHistory_.add(outP);
+
+  // update result
+  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
   // gradient
   if (!grad.empty())
@@ -530,68 +523,48 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
   return outP[0];
 }
 
-double NLopt::ComputeInequalityConstraint(const std::vector< double >& x, std::vector< double >& grad, void* f_data)
+void NLopt::ComputeInequalityConstraint(unsigned m, double * result, unsigned n, const double * x, double * grad, void * f_data)
 {
-  MarginalData * mData = static_cast<MarginalData *>(f_data);
-  NLopt *algorithm = mData->p_algo_;
-  const UnsignedInteger marginalIndex = mData->marginalIndex_;
-  const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  Point inP(dimension);
-  std::copy(x.begin(), x.end(), inP.begin());
+  NLopt *algorithm = static_cast<NLopt *>(f_data);
+  Point inP(n);
+  std::copy(x, x + n, inP.begin());
 
   // evaluation
   Point outP(algorithm->getProblem().getInequalityConstraint()(inP));
   algorithm->inequalityConstraintHistory_.add(outP);
 
+  // nlopt solves h(x)<=0
+  outP *= -1.0;
+  std::copy(outP.begin(), outP.end(), result);
+
   // gradient
-  if (!grad.empty())
+  if (grad)
   {
     Matrix gradient(algorithm->getProblem().getInequalityConstraint().gradient(inP));
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      // nlopt solves h(x)<=0
-      grad[i] = -gradient(i, marginalIndex);
-    }
+    // nlopt solves h(x)<=0
+    gradient = gradient * -1.0;
+    std::copy(gradient.data(), gradient.data() + m * n, grad);
   }
-
-  // nlopt solves h(x)<=0
-  return -outP[marginalIndex];
 }
 
 
-double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vector< double >& grad, void* f_data)
+void NLopt::ComputeEqualityConstraint(unsigned m, double * result, unsigned n, const double * x, double * grad, void * f_data)
 {
-  MarginalData * mData = static_cast<MarginalData *>(f_data);
-  NLopt *algorithm = mData->p_algo_;
-  const UnsignedInteger marginalIndex = mData->marginalIndex_;
-  const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  Point inP(dimension);
-  std::copy(x.begin(), x.end(), inP.begin());
+  NLopt *algorithm = static_cast<NLopt *>(f_data);
+  Point inP(n);
+  std::copy(x, x + n, inP.begin());
 
   // evaluation
   Point outP(algorithm->getProblem().getEqualityConstraint()(inP));
   algorithm->equalityConstraintHistory_.add(outP);
+  std::copy(outP.begin(), outP.end(), result);
 
   // gradient
-  if (!grad.empty())
+  if (grad)
   {
     Matrix gradient(algorithm->getProblem().getEqualityConstraint().gradient(inP));
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      grad[i] = gradient(i, marginalIndex);
-    }
+    std::copy(gradient.data(), gradient.data() + m * n, grad);
   }
-  return outP[marginalIndex];
-}
-
-
-Bool NLopt::IsAvailable()
-{
-#ifdef OPENTURNS_HAVE_NLOPT
-  return true;
-#else
-  return false;
-#endif
 }
 
 END_NAMESPACE_OPENTURNS

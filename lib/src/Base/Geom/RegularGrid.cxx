@@ -2,7 +2,7 @@
 /**
  *  @brief The class RegularGrid implements an equaly spaced set of real values
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -73,10 +73,10 @@ RegularGrid::RegularGrid(const Mesh & mesh)
   , n_(0)
 {
   // Check if the given mesh can be upgraded to a RegularGrid
-  if (mesh.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the mesh must be of dimension 1 to be converted into a RegularGrid.";
+  if (mesh.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the mesh must be of dimension 1 to be converted into a RegularGrid, here dimension=" << mesh.getDimension();
   if (!mesh.isRegular()) throw InvalidArgumentException(HERE) << "Error: the mesh must be regular to be converted into a RegularGrid.";
   n_ = mesh.getVerticesNumber();
-  if (n_ == 0) throw InvalidArgumentException(HERE) << "Error: the mesh must contains at least one vertex to be converted into a RegularGrid.";
+  if (!(n_ > 0)) throw InvalidArgumentException(HERE) << "Error: the mesh must contains at least one vertex to be converted into a RegularGrid.";
   start_ = mesh.getVertices()(0, 0);
   if (n_ > 1) step_ = (mesh.getVertices()(n_ - 1, 0) - start_) / (n_ - 1);
   vertices_.setDescription(Description(1, "t"));
@@ -128,7 +128,7 @@ UnsignedInteger RegularGrid::getN() const
 
 Scalar RegularGrid::getValue(const UnsignedInteger i) const
 {
-  if (i >= n_) throw OutOfBoundException(HERE) << "Error: the given index i=" << i << " must be less than the number of ticks n=" << n_;
+  if (!(i < n_)) throw OutOfBoundException(HERE) << "Error: the given index i=" << i << " must be less than the number of ticks n=" << n_;
   return vertices_(i, 0);
 }
 

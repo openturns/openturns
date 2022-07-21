@@ -2,7 +2,7 @@
 /**
  *  @brief The class Field implements samples indexed by a position
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -106,22 +106,22 @@ const Scalar & Field::operator () (const UnsignedInteger i,
 
 NSI_point Field::at (const UnsignedInteger index)
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   copyOnWrite();
   return (*getImplementation())[index];
 }
 
 NSI_const_point Field::at (const UnsignedInteger index) const
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   return (*getImplementation())[index];
 }
 
 Scalar & Field::at (const UnsignedInteger i,
                     const UnsignedInteger j)
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j > getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
+  if (!(j <= getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
   copyOnWrite();
   return (*getImplementation())(i, j);
 }
@@ -129,8 +129,8 @@ Scalar & Field::at (const UnsignedInteger i,
 const Scalar & Field::at (const UnsignedInteger i,
                           const UnsignedInteger j) const
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j > getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
+  if (!(j <= getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
   return (*getImplementation())(i, j);
 }
 
@@ -239,6 +239,12 @@ Mesh Field::asDeformedMesh(const Indices & verticesPadding,
 Point Field::getInputMean() const
 {
   return getImplementation()->getInputMean();
+}
+
+/* l2 norm */
+Scalar Field::norm() const
+{
+  return getImplementation()->norm();
 }
 
 /* Draw a marginal of the field */

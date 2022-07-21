@@ -36,3 +36,27 @@ n= 17 k= 2 binom= 136
 n= 17 k= 0 binom= 1
 n= 17 k= 7 binom= 19448
 n= 17 k= 3 binom= 680
+x= -2.0 n= 0 ipow= 1.0
+x= -2.0 n= 1 ipow= -2.0
+x= -2.0 n= 2 ipow= 4.0
+x= -1.0 n= 0 ipow= 1.0
+x= -1.0 n= 1 ipow= -1.0
+x= -1.0 n= 2 ipow= 1.0
+x= 0.0 n= 0 ipow= 1.0
+x= 0.0 n= 1 ipow= 0.0
+x= 0.0 n= 2 ipow= 0.0
+x= 1.0 n= 0 ipow= 1.0
+x= 1.0 n= 1 ipow= 1.0
+x= 1.0 n= 2 ipow= 1.0
+x= 2.0 n= 0 ipow= 1.0
+x= 2.0 n= 1 ipow= 2.0
+x= 2.0 n= 2 ipow= 4.0
+x= -4.0 n= 1 iroot= -4.0
+x= 4.0 n= 1 iroot= 4.0
+x= 4.0 n= 2 iroot= 2.0
+x= 9.0 n= 1 iroot= 9.0
+x= 9.0 n= 2 iroot= 3.0
+ibeta(2.0, 0.0, 0.95)= 0.0
+ibeta(0.0, 1.0, 0.95)= 1.0
+ibeta(2.0, 0.0, 0.95, tail)= 1.0
+ibeta(0.0, 1.0, 0.95, tail)= 0.0

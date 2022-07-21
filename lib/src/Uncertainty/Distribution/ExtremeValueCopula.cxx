@@ -2,7 +2,7 @@
 /**
  *  @brief The ExtremeValueCopula distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,9 +35,10 @@ static const Factory<ExtremeValueCopula> Factory_ExtremeValueCopula;
 
 /* Default constructor */
 ExtremeValueCopula::ExtremeValueCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , pickandFunction_(SymbolicFunction("t", "1.0"))
 {
+  isCopula_ = true;
   setName( "ExtremeValueCopula" );
   // We set the dimension of the ExtremeValueCopula distribution
   setDimension( 2 );
@@ -48,9 +49,10 @@ ExtremeValueCopula::ExtremeValueCopula()
 
 /* Parameters constructor */
 ExtremeValueCopula::ExtremeValueCopula(const Function & pickandFunction)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , pickandFunction_(pickandFunction)
 {
+  isCopula_ = true;
   setName( "ExtremeValueCopula" );
   // We set the dimension of the ExtremeValueCopula distribution
   setDimension( 2 );
@@ -143,18 +145,18 @@ Scalar ExtremeValueCopula::computeLogPDF(const Point & point) const
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
-    return -SpecFunc::LogMaxScalar;
+    return SpecFunc::LowestScalar;
   }
   const Scalar logU = std::log(u);
   const Scalar logV = std::log(v);
   const Scalar logUV = logU + logV;
   const Point ratio(1, logV / logUV);
   const Scalar A = pickandFunction_(ratio)[0];
-  if (!SpecFunc::IsNormal(A)) return -SpecFunc::LogMaxScalar;
+  if (!SpecFunc::IsNormal(A)) return SpecFunc::LowestScalar;
   const Scalar dA = pickandFunction_.gradient(ratio)(0, 0);
-  if (!SpecFunc::IsNormal(dA)) return -SpecFunc::LogMaxScalar;
+  if (!SpecFunc::IsNormal(dA)) return SpecFunc::LowestScalar;
   const Scalar d2A = pickandFunction_.hessian(ratio)(0, 0, 0);
-  if (!SpecFunc::IsNormal(d2A)) return -SpecFunc::LogMaxScalar;
+  if (!SpecFunc::IsNormal(d2A)) return SpecFunc::LowestScalar;
   return logUV * A - 2.0 * std::log(-logUV) - logUV + std::log((A * logUV - dA * logV) * (logU * dA + logUV * A) - d2A * logU * ratio[0]);
 }
 
@@ -317,6 +319,8 @@ void ExtremeValueCopula::setPickandFunction(const Function & pickandFunction,
     } // i
   } // check
   pickandFunction_ = pickandFunction;
+  isAlreadyComputedCovariance_ = false;
+  setParallel(pickandFunction_.getImplementation()->isParallel());
 }
 
 /* Pickand function accessor */
@@ -328,14 +332,14 @@ Function ExtremeValueCopula::getPickandFunction() const
 /* Method save() stores the object through the StorageManager */
 void ExtremeValueCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "pickandFunction_", pickandFunction_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ExtremeValueCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "pickandFunction_", pickandFunction_ );
   computeRange();
 }

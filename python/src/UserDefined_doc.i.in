@@ -9,10 +9,10 @@ Available constructors:
 Parameters
 ----------
 points : 2-d sequence of float
-    `n` lists of `d` points :math:`x_{ij}, i = 1, \ldots, n, j = 1, \ldots, d`.
+    List of :math:`n` points of dimension :math:`d` :math:`\vect{x}_i`, :math:`i = 1, \ldots, n`.
 weights : sequence of float
-    List of `n` weights :math:`p_i, i = 1, \ldots, n`.
-    If not :math:`\sum_1^n  p_i = 1.0`, the weights are normalized.
+    List of :math:`n` weights :math:`p_i`, :math:`i = 1, \ldots, n`.
+    If :math:`\sum_{i=1}^n p_i \neq 1`, the weights are normalized.
 
 Notes
 -----
@@ -20,36 +20,36 @@ Its probability density function is defined as:
 
 .. math::
 
-    \Prob{X = x_{ij}} = p_i, \quad i = 1,\ldots,n
+    \Prob{\vect{X} = \vect{x}_i} = p_i, \quad i = 1,\ldots,n.
 
-where :math:`j =1, \ldots, d`, `d` the distribution's dimension and
-`n` the size of the multivariate d-dimensional distribution.
-
-Its first moments are:
+Its first moment is:
 
 .. math::
-    :nowrap:
 
-    \begin{eqnarray*}
-        \Expect{X_j} & = & \Tr{(\sum_{i=1}^n x_i p_i)}\\
-        \Var{X_j} & = & \Expect{X_j} - (\Expect{X_j})^2
-    \end{eqnarray*}
+    \Expect{X} = \sum_{i=1}^n p_i \vect{x}_i.
 
-with :math:`j =1, \ldots, d` and `d` the distribution's dimension.
-
-The sampling is done using the *alias* method as described in [devroye1986]_, Chapter 3. It has an optimal space complexity of :math:`\cO(n)` and runtime CPU complexity of :math:`\cO(1)`, see :class:`~openturns.DistFunc.rDiscrete`.
+Sampling is done using the *alias* method as described in [devroye1986]_, Chapter 3. It has an optimal space complexity of :math:`\cO(n)` and runtime CPU complexity of :math:`\cO(1)`, see :meth:`~openturns.DistFunc_rDiscrete`.
 
 Examples
 --------
-Create a distribution:
+Create a 1d-distribution:
 
 >>> import openturns as ot
+>>> points = ot.Sample([[1.0], [2.0], [3.0]])
+>>> weights = ot.Point([0.4, 0.5, 1.0])
+>>> my_distribution = ot.UserDefined(points, weights)
+>>> print(my_distribution)
+UserDefined({x = [1], p = 0.210526}, {x = [2], p = 0.263158}, {x = [3], p = 0.526316})
+
+Create a 3d-distribution:
+
 >>> points = ot.Sample(4, 3)
 >>> for i in range(4):
 ...     for j in range(3):
 ...         points[i, j] = 10 * (i + 1) + 0.1 * (j + 1)
-
->>> distribution = ot.UserDefined(points, [0.3,0.2,0.25,0.25])"
+>>> distribution = ot.UserDefined(points, [0.3,0.2,0.25,0.25])
+>>> print(distribution)
+UserDefined({x = [10.1,10.2,10.3], p = 0.3}, {x = [20.1,20.2,20.3], p = 0.2}, {x = [30.1,30.2,30.3], p = 0.25}, {x = [40.1,40.2,40.3], p = 0.25})"
 
 // ---------------------------------------------------------------------
 
@@ -93,14 +93,11 @@ and adding their weights.
 
 Notes
 -----
-The :math:`\varepsilon` has a default value stored in the ResourceMap: to
-change the default value the new value :math:`1.3e-3`, use the command:
-
->>> import openturns as ot
->>> ot.ResourceMap.SetAsScalar('DiscreteDistribution-SupportEpsilon', 1e-3)
+The :math:`\varepsilon` has a default value associated to the
+:class:`~openturns.ResourceMap` key *DiscreteDistribution-SupportEpsilon*.
 
 The method is always used for any univariate distributions and for upper
 dimensions, it is only used when the number of points defining the support is
-less than a limit specified in the ResourceMap in the key
-'UserDefined-SmallSize'. By default, the size limit is equal to :math:`1e4`.
+less than a limit specified by the :class:`~openturns.ResourceMap` key
+*UserDefined-SmallSize*. By default, the size limit is equal to :math:`1e4`.
 "

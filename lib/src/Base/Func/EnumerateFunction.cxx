@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,6 +28,13 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(EnumerateFunction)
 
+/* Default constructor */
+EnumerateFunction::EnumerateFunction()
+  : TypedInterfaceObject<EnumerateFunctionImplementation>(new LinearEnumerateFunction(1))
+{
+  // Nothing to do
+}
+
 /* Constructor with parameters */
 EnumerateFunction::EnumerateFunction(const EnumerateFunctionImplementation & implementation)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(implementation.clone())
@@ -38,29 +45,6 @@ EnumerateFunction::EnumerateFunction(const EnumerateFunctionImplementation & imp
 /* Constructor with parameters */
 EnumerateFunction::EnumerateFunction(Implementation & p_implementation)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(p_implementation)
-{
-  // Nothing to do
-}
-
-/* Parameter constructor */
-EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension)
-  : TypedInterfaceObject<EnumerateFunctionImplementation>(new LinearEnumerateFunction(dimension))
-{
-  // Nothing to do
-}
-
-/* Parameter constructor */
-EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension,
-                                     const Scalar q)
-  : TypedInterfaceObject<EnumerateFunctionImplementation>(new HyperbolicAnisotropicEnumerateFunction(dimension, q))
-{
-  // Nothing to do
-}
-
-/* Parameter constructor */
-EnumerateFunction::EnumerateFunction(const Point & weight,
-                                     const Scalar q)
-  : TypedInterfaceObject<EnumerateFunctionImplementation>(new HyperbolicAnisotropicEnumerateFunction(weight, q))
 {
   // Nothing to do
 }
@@ -110,6 +94,12 @@ UnsignedInteger EnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedInt
 UnsignedInteger EnumerateFunction::getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const
 {
   return getImplementation()->getMaximumDegreeCardinal(maximumDegree);
+}
+
+/* Basis size from degree */
+UnsignedInteger EnumerateFunction::getBasisSizeFromTotalDegree(const UnsignedInteger maximumDegree) const
+{
+  return getImplementation()->getBasisSizeFromTotalDegree(maximumDegree);
 }
 
 /* Dimension accessor */

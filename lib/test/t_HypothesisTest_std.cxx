@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Test
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,7 +49,7 @@ int main(int, char *[])
   Sample discreteSample1(Poisson(0.1).getSample(size));
   Sample discreteSample2(Geometric(0.4).getSample(size));
 
-  // ChiSquared Independance test : test if two samples (of sizes not necessarily equal) are independant ?
+  // ChiSquared Independance test : test if two samples (of sizes not necessarily equal) are independent ?
   // Care : discrete samples only
   // H0 = independent samples
   // p-value threshold : probability of the H0 reject zone : 0.10

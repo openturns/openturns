@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -34,7 +33,7 @@ try:
     output = CompositeRandomVector(myFunction, vect)
 
     # We create an Event from this RandomVector */
-    myEvent = Event(output, Less(), -3)
+    myEvent = ThresholdEvent(output, Less(), -3)
 
 # TEST ONE : directional sampling from an event (slow and safe strategy by default)
     # We create a Directional Sampling algorithm */
@@ -74,7 +73,7 @@ try:
 
     for X in [X1, X2]:
         vector = CompositeRandomVector(myFunction, X)
-        event = Event(vector, GreaterOrEqual(), 0.0)
+        event = ThresholdEvent(vector, GreaterOrEqual(), 0.0)
 
         print('X:', X.getDistribution())
 

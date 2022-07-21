@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the evaluation of an analytical function.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OTconfig.hxx"
+#include "Ev3/expression.h"
+#include "Ev3/parser.h"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -149,24 +151,18 @@ UnsignedInteger SymbolicEvaluation::getOutputDimension() const
 /* Get the i-th marginal function */
 Evaluation SymbolicEvaluation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
-  return new SymbolicEvaluation(inputVariablesNames_, Description(1, outputVariablesNames_[i]), Description(1, formulas_[i]));
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
+  return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
 Evaluation SymbolicEvaluation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
-  const UnsignedInteger size = indices.getSize();
-  Description marginalOutputVariablesNames(size);
-  Description marginalFormulas(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const UnsignedInteger j = indices[i];
-    marginalOutputVariablesNames[i] = outputVariablesNames_[j];
-    marginalFormulas[i] = formulas_[j];
-  }
-  return new SymbolicEvaluation(inputVariablesNames_, marginalOutputVariablesNames, marginalFormulas);
+  if (outputVariablesNames_.getSize() == formulas_.getSize())
+    return new SymbolicEvaluation(inputVariablesNames_, outputVariablesNames_.select(indices), formulas_.select(indices));
+  else
+    return EvaluationImplementation::getMarginal(indices);
 }
 
 /* Accessor to the input variables names */
@@ -185,6 +181,99 @@ Description SymbolicEvaluation::getOutputVariablesNames() const
 Description SymbolicEvaluation::getFormulas() const
 {
   return formulas_;
+}
+
+/* Linearity accessors */
+Bool SymbolicEvaluation::isLinear() const
+{
+  const UnsignedInteger inputSize = inputVariablesNames_.getSize();
+  const UnsignedInteger outputSize = outputVariablesNames_.getSize();
+
+  // SymbolicEvaluation is linear if all its marginals are
+  for (UnsignedInteger columnIndex = 0; columnIndex < outputSize; ++columnIndex)
+  {
+    // Parse the current formula with Ev3
+    int nerr(0);
+    Ev3::ExpressionParser ev3Parser;
+
+    // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
+    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex)
+      ev3Parser.SetVariableID(inputVariablesNames_[inputVariableIndex],
+                              inputVariableIndex);
+
+    Ev3::Expression ev3Expression;
+
+    try
+    {
+      ev3Expression = ev3Parser.Parse(formulas_[columnIndex].c_str(), nerr);
+    }
+    catch (Ev3::ErrBase & exc)
+    {
+      throw InternalException(HERE) << exc.description_;
+    }
+
+    if (nerr != 0)
+      return false;
+
+    if (!ev3Expression->IsLinear())
+      return false;
+  }
+
+  return true;
+}
+
+Bool SymbolicEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  const UnsignedInteger inputSize = inputVariablesNames_.getSize();
+  const UnsignedInteger outputSize = outputVariablesNames_.getSize();
+
+  // Check index consistency
+  if (!(index < inputSize))
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << inputSize << ")";
+
+  // Function depends linearly on variable i if all its marginals do
+  for (UnsignedInteger columnIndex = 0; columnIndex < outputSize; ++columnIndex)
+  {
+    // Parse the current formula with Ev3
+    int nerr(0);
+    Ev3::ExpressionParser ev3Parser;
+
+    // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
+    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(inputVariablesNames_[inputVariableIndex],
+          inputVariableIndex);
+    Ev3::Expression ev3Expression;
+
+    try
+    {
+      ev3Expression = ev3Parser.Parse(formulas_[columnIndex].c_str(), nerr);
+    }
+    catch (Ev3::ErrBase & exc)
+    {
+      throw InternalException(HERE) << exc.description_;
+    }
+
+    if (nerr != 0)
+      return false;
+
+    if (ev3Expression->DependsLinearlyOnVariable(index) == 0)
+      return false;
+  }
+
+  return true;
+}
+
+/* Is it safe to call in parallel? */
+Bool SymbolicEvaluation::isParallel() const
+{
+  // neither Exprtk nor muParser are thread-safe
+  return false;
+}
+
+/* Invalid values check accessor */
+void SymbolicEvaluation::setCheckOutput(const Bool checkOutput)
+{
+  EvaluationImplementation::setCheckOutput(checkOutput);
+  parser_.setCheckOutput(checkOutput);
 }
 
 /* Method save() stores the object through the StorageManager */

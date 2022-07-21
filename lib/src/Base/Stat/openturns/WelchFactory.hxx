@@ -2,7 +2,7 @@
 /**
  *  @brief Top-level class for all spectral model factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,13 +46,13 @@ public:
                const Scalar overlap = 0.5);
 
   /** Virtual constructor */
-  virtual WelchFactory * clone() const;
+  WelchFactory * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** FilteringWindows accessor */
   FilteringWindows getFilteringWindows() const;
@@ -67,10 +67,10 @@ public:
   void setOverlap(const Scalar overlap);
 
   /** Build a spectral model based on a sample */
-  SpectralModel build(const ProcessSample & sample) const;
+  SpectralModel build(const ProcessSample & sample) const override;
 
   /** Build a spectral model based on a Field */
-  SpectralModel build(const Field & timeSerie) const;
+  SpectralModel build(const Field & timeSerie) const override;
 
   /** Build a spectral model based on a sample */
   UserDefinedSpectralModel buildAsUserDefinedSpectralModel(const ProcessSample & sample) const;
@@ -79,10 +79,10 @@ public:
   UserDefinedSpectralModel buildAsUserDefinedSpectralModel(const Field & timeSeries) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

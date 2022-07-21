@@ -1,15 +1,12 @@
 %feature("docstring") OT::Exponential
 "Exponential distribution.
 
-Available constructors:
-    Exponential(*lambda=1.0, gamma=0.0*)
-
 Parameters
 ----------
 lambda : float, :math:`\lambda > 0`
-    Failure rate parameter.
+    Rate parameter.
 gamma : float, optional
-    Shift parameter :math:`\gamma`.
+    Location parameter :math:`\gamma`.
 
 Notes
 -----
@@ -46,17 +43,17 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Exponential::getLambda
-"Accessor to the failure rate parameter.
+"Accessor to the rate parameter.
 
 Returns
 -------
 lambda : float
-    Failure rate parameter."
+    Rate parameter."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Exponential::getGamma
-"Accessor to the shift parameter.
+"Accessor to the location parameter.
 
 Returns
 -------
@@ -66,7 +63,7 @@ gamma : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Exponential::setLambda
-"Accessor to the failure rate parameter.
+"Accessor to the rate parameter.
 
 Parameters
 ----------
@@ -76,7 +73,7 @@ lambda : float, :math:`\lambda > 0`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Exponential::setGamma
-"Accessor to the shift parameter.
+"Accessor to the location parameter.
 
 Parameters
 ----------

@@ -2,7 +2,7 @@
 /**
  *  @brief ComplexMatrix implements the classical mathematical matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -331,21 +331,21 @@ Bool ComplexMatrix::operator == (const ComplexMatrix & rhs) const
 }
 
 
-const Complex* ComplexMatrix::__baseaddress__() const
+const Complex* ComplexMatrix::data() const
 {
-  return getImplementation()->__baseaddress__();
+  return getImplementation()->data();
 }
 
 
-UnsignedInteger ComplexMatrix::__elementsize__() const
+UnsignedInteger ComplexMatrix::elementSize() const
 {
-  return getImplementation()->__elementsize__();
+  return getImplementation()->elementSize();
 }
 
 
-UnsignedInteger ComplexMatrix::__stride__(UnsignedInteger dim) const
+UnsignedInteger ComplexMatrix::stride(const UnsignedInteger dim) const
 {
-  return getImplementation()->__stride__(dim);
+  return getImplementation()->stride(dim);
 }
 
 

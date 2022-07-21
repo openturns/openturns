@@ -1,0 +1,3 @@
+result=probabilityEstimate=2.973447e-03 varianceEstimate=8.815098e-08 standard deviation=2.97e-04 coefficient of variation=9.99e-02 confidenceLength(0.95)=1.16e-03 outerSampling=33631 blockSize=1
+result=probabilityEstimate=2.891727e-03 varianceEstimate=5.917181e-08 standard deviation=2.43e-04 coefficient of variation=8.41e-02 confidenceLength(0.95)=9.54e-04 outerSampling=991 blockSize=1
+callsNumber=24331

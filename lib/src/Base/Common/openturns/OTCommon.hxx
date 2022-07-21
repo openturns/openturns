@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Common
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,8 +22,7 @@
 #ifndef OPENTURNS_OTCOMMON_HXX
 #define OPENTURNS_OTCOMMON_HXX
 
-#include "openturns/AtomicFunctions.hxx"
-//#include "BinaryStorageManager.hxx"
+#include "openturns/AtomicInt.hxx"
 #include "openturns/Catalog.hxx"
 #include "openturns/ComparisonOperator.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
@@ -36,7 +35,6 @@
 #include "openturns/Less.hxx"
 #include "openturns/LessOrEqual.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/Memory.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Object.hxx"
@@ -46,7 +44,6 @@
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/SharedPointer.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/Study.hxx"
 #include "openturns/TypedCollectionInterfaceObject.hxx"
@@ -54,6 +51,9 @@
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_LIBXML2
 #include "openturns/XMLStorageManager.hxx"
+#endif
+#ifdef OPENTURNS_HAVE_HDF5
+#include "openturns/XMLH5StorageManager.hxx"
 #endif
 
 #endif /* OPENTURNS_OTCOMMON_HXX */

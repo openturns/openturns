@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,9 +21,10 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/HMatrixFactory.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,7 +35,7 @@ static const Factory<DiracCovarianceModel> Factory_DiracCovarianceModel;
 class DiracAssemblyFunction : public HMatrixTensorRealAssemblyFunction
 {
 private:
-  const CovarianceMatrix covarianceMatrix_;
+  const SquareMatrix covarianceMatrix_;
 
 public:
   DiracAssemblyFunction(const DiracCovarianceModel & covarianceModel)
@@ -48,25 +49,26 @@ public:
   {
     if (i == j)
     {
-      memcpy( &localValues->getImplementation()->operator[](0), &covarianceMatrix_.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
+      std::copy(&covarianceMatrix_.getImplementation()->operator[](0), &covarianceMatrix_.getImplementation()->operator[](0) + dimension_ * dimension_, &localValues->getImplementation()->operator[](0));
     }
   }
 };
 
 /* Default constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , covarianceFactor_()
 {
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
-  activeParameter_.fill();
+  activeParameter_.fill(inputDimension_);
+  isStationary_ = true;
 }
 
 /* Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const Point & amplitude)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , covarianceFactor_()
 {
   outputDimension_ = amplitude.getDimension();
@@ -74,14 +76,15 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
 
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
-  activeParameter_.fill();
+  activeParameter_.fill(inputDimension_);
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const Point & amplitude,
     const CorrelationMatrix & correlation)
-  : StationaryCovarianceModel(Point(inputDimension, 1.0), Point(amplitude.getDimension(), 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, 1.0), Point(amplitude.getDimension(), 1.0))
   , covarianceFactor_()
 {
   outputDimension_ = amplitude.getDimension();
@@ -92,13 +95,14 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
 
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
-  activeParameter_.fill();
+  activeParameter_.fill(inputDimension_);
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const CovarianceMatrix & covariance)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
 {
   outputDimension_ = covariance.getDimension();
   amplitude_ = Point(outputDimension_);
@@ -116,12 +120,13 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
 
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
-  activeParameter_.fill();
+  activeParameter_.fill(inputDimension_);
+  isStationary_ = true;
 }
 
 void DiracCovarianceModel::computeCovariance()
 {
-  // Method that helps to compute outputCovariance_ attribut (for tau=0)
+  // Method that helps to compute outputCovariance_ (for tau=0)
   // after setAmplitude, setOutputCorrelation
   outputCovariance_ = CovarianceMatrix(outputDimension_);
   for(UnsignedInteger j = 0; j < outputDimension_; ++j) outputCovariance_(j, j) = amplitude_[j] * amplitude_[j] * (1.0 + nuggetFactor_);
@@ -142,7 +147,7 @@ DiracCovarianceModel * DiracCovarianceModel::clone() const
 }
 
 /* Computation of the covariance density function */
-CovarianceMatrix DiracCovarianceModel::operator() (const Point & tau) const
+SquareMatrix DiracCovarianceModel::operator() (const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::operator(), the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
   // If tau.norm1 is zero we compute the covariance matrix
@@ -150,7 +155,52 @@ CovarianceMatrix DiracCovarianceModel::operator() (const Point & tau) const
   if (tau.norm() == 0)
     return outputCovariance_;
   else
-    return CovarianceMatrix(SquareMatrix(outputDimension_).getImplementation());
+    return SquareMatrix(outputDimension_).getImplementation();
+}
+
+Scalar DiracCovarianceModel::computeAsScalar(const Point &tau) const
+{
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : DiracCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
+  if (tau.norm() == 0)
+    return outputCovariance_(0, 0);
+  else
+    return 0.0;
+}
+
+Scalar DiracCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+    const Collection<Scalar>::const_iterator &t_begin) const
+{
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : DiracCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
+  Scalar tauNorm = 0;
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    const Scalar dx = (*s_it - *t_it) / scale_[i];
+    tauNorm += dx * dx;
+  }
+  tauNorm = sqrt(tauNorm);
+  if (tauNorm == 0)
+    return outputCovariance_(0, 0);
+  else
+    return 0.0;
+}
+
+Scalar DiracCovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  if (std::abs(tau) <= SpecFunc::ScalarEpsilon)
+    return outputCovariance_(0, 0);
+  else
+    return 0.0;
 }
 
 // The following structure helps to compute the full covariance matrix
@@ -170,7 +220,7 @@ struct DiracCovarianceModelDiscretizePolicy
     , dimension_(model.getOutputDimension())
   {}
 
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> & r) const
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
   {
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
@@ -188,7 +238,7 @@ CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
 
-  if (vertices.getSize() == 0)
+  if (!(vertices.getSize() > 0))
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a size 0";
 
   const UnsignedInteger size = vertices.getSize();
@@ -197,7 +247,7 @@ CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
 
   const DiracCovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
   // The loop is over the lower block-triangular part
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
 
   return covarianceMatrix;
 }
@@ -219,7 +269,7 @@ struct DiracCovarianceModelDiscretizeAndFactorizePolicy
     , dimension_(model.getOutputDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
@@ -237,7 +287,7 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
 
-  if (vertices.getSize() == 0)
+  if (!(vertices.getSize() > 0))
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a size 0";
 
   const UnsignedInteger size = vertices.getSize();
@@ -246,7 +296,7 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
 
   const DiracCovarianceModelDiscretizeAndFactorizePolicy policy( vertices, covarianceFactor, *this );
   // The loop is over the lower block-triangular part
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
 
   return covarianceFactor;
 }
@@ -257,9 +307,9 @@ Sample DiracCovarianceModel::discretizeRow(const Sample & vertices,
   if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretizeRow, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
-  if (vertices.getSize() == 0)
+  if (!(vertices.getSize() > 0))
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretizeRow, the given sample has a size 0";
-  if (p >= vertices.getSize())
+  if (!(p < vertices.getSize()))
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretizeRow, the index p should be lower or equal to " << vertices.getSize() - 1
                                          << ", here, p=" << p;
 
@@ -269,6 +319,13 @@ Sample DiracCovarianceModel::discretizeRow(const Sample & vertices,
     for(UnsignedInteger i = j; i < outputDimension_; ++i)
       result(p * outputDimension_ + i, j) = outputCovariance_(i, j);
   return result;
+}
+
+// discretize with use of HMatrix
+HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
+    const HMatrixParameters & parameters) const
+{
+  return discretizeHMatrix(vertices, nuggetFactor_, parameters);
 }
 
 // discretize with use of HMatrix
@@ -290,6 +347,9 @@ HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
   outputCovariance_ = CovarianceMatrix(oldCovariance);
   return covarianceHMatrix;
 #else
+  (void)vertices;
+  (void)nuggetFactor;
+  (void)parameters;
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
 #endif
 }
@@ -308,19 +368,29 @@ Matrix DiracCovarianceModel::partialGradient(const Point & s,
 /* Parameters accessor */
 void DiracCovarianceModel::setFullParameter(const Point & parameters)
 {
-  if (parameters.getDimension() != outputDimension_)
-    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setParameter, parameters should be of size " << outputDimension_ << ", here, parameters dimension = " << parameters.getDimension();
-  setAmplitude(parameters);
+  if (parameters.getDimension() != inputDimension_ + outputDimension_)
+    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setParameter, parameters should be of size " << inputDimension_ + outputDimension_ << ", here, parameters dimension = " << parameters.getDimension();
+  Point scale(inputDimension_);
+  std::copy(parameters.begin(), parameters.begin() + inputDimension_, scale.begin());
+  setScale(scale);
+  Point amplitude(outputDimension_);
+  std::copy(parameters.begin() + inputDimension_, parameters.end(), amplitude.begin());
+  setAmplitude(amplitude);
 }
 
 Point DiracCovarianceModel::getFullParameter() const
 {
-  return getAmplitude();
+  Point parameter(inputDimension_ + outputDimension_);
+  std::copy(scale_.begin(), scale_.end(), parameter.begin());
+  std::copy(amplitude_.begin(), amplitude_.end(), parameter.begin() + inputDimension_);
+  return parameter;
 }
 
 Description DiracCovarianceModel::getFullParameterDescription() const
 {
   Description description(0);
+  for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+    description.add(OSS() << "scale_" << j);
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
     description.add(OSS() << "amplitude_" << j);
   return description;
@@ -343,7 +413,7 @@ void DiracCovarianceModel::setAmplitude(const Point & amplitude)
   // Check positivity of amplitude
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
   {
-    if (amplitude[i] <= 0)
+    if (!(amplitude[i] > 0))
       throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude should be stricly positive but the #" << i << " component equals " << amplitude[i];
   }
   amplitude_ = amplitude;
@@ -364,6 +434,7 @@ String DiracCovarianceModel::__repr__() const
 {
   OSS oss;
   oss << "class=" << DiracCovarianceModel::GetClassName()
+      << ", scale=" << scale_
       << ", amplitude=" << amplitude_
       << ", spatialCorrelation=" << outputCorrelation_;
   return oss;
@@ -382,14 +453,14 @@ String DiracCovarianceModel::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void DiracCovarianceModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute("covarianceFactor_", covarianceFactor_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void DiracCovarianceModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute("covarianceFactor_", covarianceFactor_);
 }
 

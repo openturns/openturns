@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Test
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@ int main(int, char *[])
   Collection<Distribution> discreteDistributionCollection;
   Collection<Distribution> distributionCollection;
 
-  Beta beta(2.0, 3.0, 0.0, 1.0);
+  Beta beta(2.0, 1.0, 0.0, 1.0);
   distributionCollection.add(beta);
   continuousDistributionCollection.add(beta);
 
@@ -62,7 +62,7 @@ int main(int, char *[])
   distributionCollection.add(truncatednormal);
   continuousDistributionCollection.add(truncatednormal);
 
-  Student student(10.0, 10.0);
+  Student student(10.0, 10.0, 1.0);
   distributionCollection.add(student);
   continuousDistributionCollection.add(student);
 
@@ -74,7 +74,7 @@ int main(int, char *[])
   distributionCollection.add(uniform);
   continuousDistributionCollection.add(uniform);
 
-  Weibull weibull(1.0, 1.0, 2.0);
+  WeibullMin weibull(1.0, 1.0, 2.0);
   distributionCollection.add(weibull);
   continuousDistributionCollection.add(weibull);
 
@@ -131,8 +131,12 @@ int main(int, char *[])
   Sample aSample(Uniform(-1.5, 2.5).getSample(size));
   TestResult bestResult;
   Scalar bestBIC = -1.0;
+  Scalar bestAIC = -1.0;
+  Scalar bestAICc = -1.0;
   fullprint << "best model BIC=" << FittingTest::BestModelBIC(aSample, factoryCollection, bestBIC) << std::endl;
-  fullprint << "best model Kolmogorov=" << FittingTest::BestModelKolmogorov(aSample, factoryCollection, bestResult) << std::endl;
+  fullprint << "best model Kolmogorov=" << FittingTest::BestModelLilliefors(aSample, factoryCollection, bestResult) << std::endl;
+  fullprint << "best model AIC=" << FittingTest::BestModelAIC(aSample, factoryCollection, bestAIC) << std::endl;
+  fullprint << "best model AICC=" << FittingTest::BestModelAICC(aSample, factoryCollection, bestAICc) << std::endl;
 
   SquareMatrix resultBIC(distributionNumber);
   for (UnsignedInteger i = 0; i < distributionNumber; i++)
@@ -160,14 +164,14 @@ int main(int, char *[])
     for (UnsignedInteger j = 0; j < discreteDistributionNumber; j++)
     {
       try
-	{
-	  const Scalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.05, 0).getPValue();
-	  resultChiSquared(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
-	}
+      {
+        const Scalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.05, 0).getPValue();
+        resultChiSquared(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
+      }
       catch (...)
-	{
-	  fullprint << "Sample=" << discreteSampleCollection[i] << " is not compatible with distribution=" << discreteDistributionCollection[j] << std::endl;
-	}
+      {
+        fullprint << "Sample=" << discreteSampleCollection[i] << " is not compatible with distribution=" << discreteDistributionCollection[j] << std::endl;
+      }
     }
   }
   fullprint << "resultChiSquared=" << resultChiSquared << std::endl;

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Mixture for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,6 @@ using namespace OT::Test;
 
 int main(int, char *[])
 {
-  ResourceMap::SetAsBool("Distribution-parallel", true);
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
@@ -85,7 +84,7 @@ int main(int, char *[])
     meanPoint += Point(dimension, 1.0);
     aCollection.add( Normal(meanPoint, sigma, R) );
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Mixture distribution(aCollection, Point(aCollection.getSize(), 2.0));
     fullprint << "Distribution " << distribution << std::endl;
     distribution = Mixture(aCollection);

@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for Martinez sensitivity algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -73,7 +73,7 @@ MartinezSensitivityAlgorithm * MartinezSensitivityAlgorithm::clone() const
 Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
     Sample & VTi) const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
   Sample varianceI(outputDimension, inputDimension);
@@ -83,7 +83,7 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
   // Reference sample yA
   Sample yA(sample, 0, size);
   const Point muA(yA.computeMean());
-  const Point sigmaA(yA.computeStandardDeviationPerComponent());
+  const Point sigmaA(yA.computeStandardDeviation());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
     if (!(sigmaA[j] > 0.0))
       throw InvalidArgumentException(HERE) << "Null output sample variance";
@@ -93,7 +93,7 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
   // Reference sample yB
   Sample yB(sample, size, 2 * size);
   const Point muB(yB.computeMean());
-  const Point sigmaB(yB.computeStandardDeviationPerComponent());
+  const Point sigmaB(yB.computeStandardDeviation());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
     if (!(sigmaB[j] > 0.0))
       throw InvalidArgumentException(HERE) << "Null output sample variance";
@@ -106,7 +106,7 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
   {
     Sample yE(sample, (2 + p) * size, (3 + p) * size);
     const Point muE(yE.computeMean());
-    const Point sigmaE(yE.computeStandardDeviationPerComponent());
+    const Point sigmaE(yE.computeStandardDeviation());
     for (UnsignedInteger j = 0; j < outputDimension; ++ j)
       if (!(sigmaE[j] > 0.0))
         throw InvalidArgumentException(HERE) << "Null output sample variance";
@@ -142,7 +142,7 @@ String MartinezSensitivityAlgorithm::__repr__() const
 
 void MartinezSensitivityAlgorithm::computeAsymptoticDistribution() const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
 
   // psi

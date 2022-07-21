@@ -2,7 +2,7 @@
 /**
  *  @brief This class implements the fourth order fixed-step Runge-Kutta ODE integrator
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,26 +43,26 @@ public:
   explicit RungeKutta(const Function & transitionFunction);
 
   /** Virtual constructor */
-  virtual RungeKutta * clone() const;
+  RungeKutta * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Solve the ODE */
   using ODESolverImplementation::solve;
 
   Sample solve(const Point & initialState,
-               const Point & timeGrid) const;
+               const Point & timeGrid) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** Perform one step of the RungeKutta method */
-  Point computeStep(Function & transitionFunction,
+  Point computeStep(Pointer<EvaluationImplementation> & transitionFunction,
                     const Scalar t,
                     const Point & state,
                     const Scalar h) const;

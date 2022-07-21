@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -56,8 +55,6 @@ try:
     print("P1*P2=", P1 * P2)
 
     # Multiplication of two polynomials using FFT
-    ResourceMap.SetAsUnsignedInteger(
-        "UniVariatePolynomialImplementation-LargeDegree", 0)
     print("P1*P2=", P1 * P2)
 
 except:

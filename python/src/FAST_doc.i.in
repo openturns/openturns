@@ -97,10 +97,10 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> formulaIshigami = ['sin(pi_*X1)+7*sin(pi_*X2)*sin(pi_*X2)+0.1*((pi_*X3)*(pi_*X3)*(pi_*X3)*(pi_*X3))*sin(pi_*X1)']
->>> modelIshigami = ot.SymbolicFunction(['X1', 'X2', 'X3'], formulaIshigami)
->>> distributions = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
->>> sensitivityAnalysis = ot.FAST(modelIshigami, distributions, 101)
+>>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
+>>> model = ot.SymbolicFunction(['X1', 'X2', 'X3'], formula)
+>>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
+>>> sensitivityAnalysis = ot.FAST(model, distribution, 101)
 >>> print(sensitivityAnalysis.getFirstOrderIndices())
 [0.311097,0.441786,0.000396837]"
 
@@ -164,7 +164,7 @@ fft : a :class:`~openturns.FFT`
 Returns
 -------
 k : positive int
-    Size of each block the sample is splitted into, this allows to save space
+    Size of each block the sample is split into, this allows one to save space
     while allowing multithreading, when available we recommend to use
     the number of available CPUs, set by default to 1."
 
@@ -176,6 +176,6 @@ k : positive int
 Parameters
 ----------
 k : positive int
-    Size of each block the sample is splitted into, this allows to save space
+    Size of each block the sample is split into, this allows one to save space
     while allowing multithreading, when available we recommend to use
     the number of available CPUs, set by default to :math:`1`."

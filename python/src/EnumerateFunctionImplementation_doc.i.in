@@ -1,73 +1,55 @@
 %define OT_EnumerateFunction_doc
 "Enumerate function.
 
-Available constructors:
-    EnumerateFunction(*dim=1*)
-
-    EnumerateFunction(*dim, q*)
-
-    EnumerateFunction(*weight, q*)
-
-Parameters
-----------
-dim : positive int
-    If *dim* is the only argument mentioned, it is used to create
-    a :class:`~openturns.LinearEnumerateFunction` object of dimension *dim*.
-    If *q* is also mentioned, it is used to create
-    a :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` object of
-    dimension *dim* and parameter *q*.
-q : float
-    The q-quasi-norm parameter used to create a
-    :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` object.
-weight : sequence of float
-    The weights of the indices in each dimension used to create a
-    :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` object.
-
 Notes
 -----
 *EnumerateFunction* represents a bijection from :math:`\Nset` to
 :math:`\Nset^{dim}`. This bijection is based on a particular procedure of
 enumerating the set of multi-indices. It begins from the multi-index
-:math:`\{0,0,\dots,0\}`.
+:math:`(0, 0, \dots, 0)`.
 
-We associate a multi-index :math:`\{j_{p1}, j_{p2},\dots, j_{pdim}\}` for every
-integer :math:`i_p` in :math:`\Nset`:
+For every integer :math:`i_p` in :math:`\Nset`, 
+we associate a multi-index :math:`\phi(i_p) = (j_{p1}, j_{p2},\dots, j_{pdim}) \in {\Nset}^{\textrm{dim}}`. 
 
-For more details, let us consider any :math:`i_p, i_q \in \Nset`:
-
-if :math:`|i_p-i_q|\leq 1` then
-:math:`|\sum_{k=1}^{dim} (j_{pk}- j_{qk})| \leq 1`. This proposition provides a
-necessary but unsufficient condition for the construction of the bijection.
-Another assumption was done indicating the way of iteration.
-Below an example showing this assumption.
-
-Example for :math:`dim=2`:
+Let :math:`i_p, i_q \in \Nset` be any pair of indices. 
+If :math:`|i_p-i_q|\leq 1` then
 
 .. math::
 
-    phi(0) &= [0 ~ 0] \\
-    phi(1) &= [1 ~ 0] \\
-    phi(2) &= [0 ~ 1] \\
-    phi(3) &= [2 ~ 0] \\
-    phi(4) &= [1 ~ 1] \\
-    phi(5) &= [0 ~ 2] \\
-    phi(6) &= [3 ~ 0]
+    |\sum_{k=1}^{\textrm{dim}} (j_{pk} - j_{qk})| \leq 1.
+    
+This provides a necessary but insufficient condition 
+for the construction of the bijection: 
+a supplementary hypothesis must be made. 
+
+For example, consider the dimension :math:`\textrm{dim}=2`. 
+The following mapping is an enumerate function:
+
+.. math::
+
+    \phi(0) &= (0, \; 0) \\
+    \phi(1) &= (1, \; 0) \\
+    \phi(2) &= (0, \; 1) \\
+    \phi(3) &= (2, \; 0) \\
+    \phi(4) &= (1, \; 1) \\
+    \phi(5) &= (0, \; 2) \\
+    \phi(6) &= (3, \; 0)
 
 For the functional expansion (respectively polynomial chaos expansion), the
 multi-index :math:`\vect{i_p}` represents the collection of degrees of the
-selected orthogonal functions (respectively orthogonal polynomials). In fact,
-after the selection of the type of orthogonal functions (respectively
+selected orthogonal functions (respectively orthogonal polynomials). 
+More precisely, after the selection of the type of orthogonal functions (respectively
 orthogonal polynomials) for the construction of the orthogonal basis, the
 *EnumerateFunction* characterizes the term of the basis by providing the
 degrees of the univariate functions (respectively univariate polynomials).
 
-In order to know the degree of the :math:`k^{th}` polynomial of the
-multivariate basis, it is enough to sum all the integers given in the list.
+The total degree of the :math:`k^{th}` polynomial of the
+multivariate basis is equal to the sum of all the integers given in the list.
 
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in range(6):
 ...     print(enumerateFunction(i))
 [0,0]
@@ -75,7 +57,11 @@ Examples
 [0,1]
 [2,0]
 [1,1]
-[0,2]"
+[0,2]
+
+See Also
+--------
+LinearEnumerateFunction, HyperbolicEnumerateFunction"
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation
 OT_EnumerateFunction_doc
@@ -96,12 +82,12 @@ OT_EnumerateFunction_getDimension_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getMaximumDegreeCardinal_doc
-"Get the cardinal of indices of degree inferior or equal to a given value.
+"Get the cardinal of indices of degree lower or equal to a given value.
 
 Parameters
 ----------
 maximumDegree : int
-    Number of polynoms of the basis.
+    Degree.
 
 Returns
 -------
@@ -111,7 +97,7 @@ cardinal : int
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in range(6):
 ...     indices = enumerateFunction(i)
 ...     degree = sum(indices)
@@ -131,7 +117,7 @@ OT_EnumerateFunction_getMaximumDegreeCardinal_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getMaximumDegreeStrataIndex_doc
-"Get the index of the strata of degree inferior to a given value.
+"Get the largest index of the strata of degree lower or equal to a given value.
 
 Parameters
 ----------
@@ -141,12 +127,12 @@ maximumDegree : int
 Returns
 -------
 index : int
-    Index of the strata of degree :math:`max \leq maximumDegree`.
+    Index of the last strata of degree :math:`max \leq maximumDegree`.
 
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in [1, 2]:
 ...     indices = enumerateFunction(i)
 ...     strataIndex = sum(indices) + 1
@@ -180,7 +166,7 @@ cardinal : int
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in [3, 4, 5]:
 ...     indices = enumerateFunction(i)
 ...     degree = sum(indices)
@@ -197,7 +183,7 @@ OT_EnumerateFunction_getStrataCardinal_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getStrataCumulatedCardinal_doc
-"Get the cardinal of the cumulated strata above or equal to the given strata.
+"Get the cardinal of the cumulated strata lower or equal to the given strata.
 
 Parameters
 ----------
@@ -208,15 +194,15 @@ strataIndex : int
 Returns
 -------
 cardinal : int
-    Number of members of the basis associated to the strates inferior or equal
+    Number of members of the basis associated to the strata of index lower or equal
     to *strataIndex*. In the context of product of polynomial basis, this is
-    the number of polynomials of the basis which total degree is inferior or
+    the number of polynomials of the basis which total degree is lower or
     equal to *strataIndex*.
 
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in range(6):
 ...     indices = enumerateFunction(i)
 ...     degree = sum(indices)
@@ -251,7 +237,7 @@ antecedent : int
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in range(6):
 ...     print(str(i)+' '+str(enumerateFunction(i)))
 0 [0,0]
@@ -280,3 +266,25 @@ dim : int, :math:`dim \geq 0`
 OT_EnumerateFunction_setDimension_doc
 
 // ---------------------------------------------------------------------
+
+%define OT_EnumerateFunction_getBasisSizeFromTotalDegree_doc
+"Get the basis size corresponding to a total degree.
+
+Parameters
+----------
+maximumDegree : int
+    Degree.
+
+Returns
+-------
+size : int
+    Number of members of the basis of degree :math:`max \leq maximumDegree`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ef = ot.LinearEnumerateFunction(2)
+>>> size = ef.getBasisSizeFromTotalDegree(3)"
+%enddef
+%feature("docstring") OT::EnumerateFunctionImplementation::getBasisSizeFromTotalDegree
+OT_EnumerateFunction_getBasisSizeFromTotalDegree_doc

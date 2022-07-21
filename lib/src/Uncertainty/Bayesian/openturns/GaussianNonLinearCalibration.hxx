@@ -2,7 +2,7 @@
 /**
  *  @brief GaussianNonLinearCalibration algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,9 +32,9 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class THREEDVAR
+ * @class GaussianNonLinearCalibration
  *
- * @brief The class implements the 3D-VAR calibration
+ * @brief The class implements the Gaussian non-linear calibration
  *
  */
 class OT_API GaussianNonLinearCalibration
@@ -48,26 +48,26 @@ public:
 
   /** Parameter constructor */
   GaussianNonLinearCalibration(const Function & model,
-	    const Sample & inputObservations,
-	    const Sample & outputObservations,
-	    const Point & candidate,
-	    const CovarianceMatrix & parameterCovariance,
-	    const CovarianceMatrix & errorCovariance);
+                               const Sample & inputObservations,
+                               const Sample & outputObservations,
+                               const Point & candidate,
+                               const CovarianceMatrix & parameterCovariance,
+                               const CovarianceMatrix & errorCovariance);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. Must be overloaded by the actual calibration algorithm */
-  virtual void run();
+  void run() override;
   Point run(const Sample & inputObservations,
-	    const Sample & outputObservations,
-	    const Point & candidate,
-	    const TriangularMatrix & parameterInverseCholesky,
-	    const TriangularMatrix & errorInverseCholesky);
+            const Sample & outputObservations,
+            const Point & candidate,
+            const TriangularMatrix & parameterInverseCholesky,
+            const TriangularMatrix & errorInverseCholesky);
 
   /** Algorithm accessor */
-  OptimizationAlgorithm getAlgorithm() const;
-  void setAlgorithm(const OptimizationAlgorithm & algorithm);
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm);
 
   /** Candidate accessor */
   Point getCandidate() const;
@@ -88,21 +88,15 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual GaussianNonLinearCalibration * clone() const;
+  GaussianNonLinearCalibration * clone() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
-
-  /* Model to calibrate */
-  Function model_;
-
-  /* The input observations */
-  Sample inputObservations_;
 
   /* The optimization algorithm */
   OptimizationAlgorithm algorithm_;
@@ -115,8 +109,8 @@ private:
 
   /* Flag to tell if the error covariance is for the whole observations */
   Bool globalErrorCovariance_;
-  
-}; /* class THREEDVAR */
+
+}; /* class GaussianNonLinearCalibration */
 
 
 END_NAMESPACE_OPENTURNS

@@ -2,7 +2,7 @@
 /**
  *  @brief The Rice distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,29 +36,29 @@ static const Factory<Rice> Factory_Rice;
 /* Default constructor */
 Rice::Rice()
   : ContinuousDistribution()
-  , sigma_(-1.0)
+  , beta_(-1.0)
   , nu_(-1.0)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
   setName("Rice");
   setNu(0.0);
-  setSigma(1.0);
+  setBeta(1.0);
   setDimension(1);
   computeRange();
 }
 
 /* Parameters constructor */
-Rice::Rice(const Scalar sigma,
+Rice::Rice(const Scalar beta,
            const Scalar nu)
   : ContinuousDistribution()
-  , sigma_(0.0)
+  , beta_(0.0)
   , nu_(nu)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
   setName("Rice");
   setNu(nu);
   // This call sets also the range
-  setSigma(sigma);
+  setBeta(beta);
   setDimension(1);
 }
 
@@ -66,7 +66,7 @@ Rice::Rice(const Scalar sigma,
 Bool Rice::operator ==(const Rice & other) const
 {
   if (this == &other) return true;
-  return (sigma_ == other.sigma_) && (nu_ == other.nu_);
+  return (beta_ == other.beta_) && (nu_ == other.nu_);
 }
 
 Bool Rice::equals(const DistributionImplementation & other) const
@@ -82,7 +82,7 @@ String Rice::__repr__() const
   oss << "class=" << Rice::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " sigma=" << sigma_
+      << " beta=" << beta_
       << " nu=" << nu_;
   return oss;
 }
@@ -90,7 +90,7 @@ String Rice::__repr__() const
 String Rice::__str__(const String & ) const
 {
   OSS oss;
-  oss << getClassName() << "(sigma = " << sigma_ << ", nu = " << nu_ << ")";
+  oss << getClassName() << "(beta = " << beta_ << ", nu = " << nu_ << ")";
   return oss;
 }
 
@@ -114,8 +114,8 @@ void Rice::computeRange()
 /* Get one realization of the distribution */
 Point Rice::getRealization() const
 {
-  const Scalar x = sigma_ * DistFunc::rNormal() + nu_;
-  const Scalar y = sigma_ * DistFunc::rNormal();
+  const Scalar x = beta_ * DistFunc::rNormal() + nu_;
+  const Scalar y = beta_ * DistFunc::rNormal();
   return Point(1.0, std::sqrt(x * x + y * y));
 }
 
@@ -127,9 +127,9 @@ Scalar Rice::computePDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
-  const Scalar xScaled = x / sigma_;
-  const Scalar nuScaled = nu_ / sigma_;
-  return xScaled / sigma_ * std::exp(-0.5 * (xScaled * xScaled + nuScaled * nuScaled) + SpecFunc::LogBesselI0(xScaled * nuScaled));
+  const Scalar xScaled = x / beta_;
+  const Scalar nuScaled = nu_ / beta_;
+  return xScaled / beta_ * std::exp(-0.5 * (xScaled * xScaled + nuScaled * nuScaled) + SpecFunc::LogBesselI0(xScaled * nuScaled));
 }
 
 
@@ -139,10 +139,10 @@ Scalar Rice::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LogMinScalar;
-  const Scalar xScaled = x / sigma_;
-  const Scalar nuScaled = nu_ / sigma_;
-  return std::log(xScaled / sigma_) - 0.5 * (xScaled * xScaled + nuScaled * nuScaled) + SpecFunc::LogBesselI0(xScaled * nuScaled);
+  if (x <= 0.0) return SpecFunc::LowestScalar;
+  const Scalar xScaled = x / beta_;
+  const Scalar nuScaled = nu_ / beta_;
+  return std::log(xScaled / beta_) - 0.5 * (xScaled * xScaled + nuScaled * nuScaled) + SpecFunc::LogBesselI0(xScaled * nuScaled);
 }
 
 
@@ -152,8 +152,8 @@ Scalar Rice::computeCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   if (point[0] <= 0.0) return 0.0;
-  const Scalar lambda = std::pow(nu_ / sigma_, 2);
-  const Scalar y = std::pow(point[0] / sigma_, 2);
+  const Scalar lambda = std::pow(nu_ / beta_, 2);
+  const Scalar y = std::pow(point[0] / beta_, 2);
   return DistFunc::pNonCentralChiSquare(2, lambda, y, false, pdfEpsilon_, maximumIteration_);
 }
 
@@ -162,8 +162,8 @@ Scalar Rice::computeComplementaryCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   if (point[0] <= 0.0) return 1.0;
-  const Scalar lambda = std::pow(nu_ / sigma_, 2);
-  const Scalar y = std::pow(point[0] / sigma_, 2);
+  const Scalar lambda = std::pow(nu_ / beta_, 2);
+  const Scalar y = std::pow(point[0] / beta_, 2);
   return DistFunc::pNonCentralChiSquare(2, lambda, y, true, pdfEpsilon_, maximumIteration_);
 }
 
@@ -171,8 +171,8 @@ Scalar Rice::computeComplementaryCDF(const Point & point) const
 void Rice::computeMean() const
 {
   //1.253314137315500251207882 = sqrt(pi/2)
-  const Scalar x = -0.5 * std::pow(nu_ / sigma_, 2);
-  mean_ = Point(1, sigma_ * 1.253314137315500251207882 * SpecFunc::HyperGeom_1_1(-0.5, 1, x));
+  const Scalar x = -0.5 * std::pow(nu_ / beta_, 2);
+  mean_ = Point(1, beta_ * 1.253314137315500251207882 * SpecFunc::HyperGeom_1_1(-0.5, 1, x));
 }
 
 /* Get the standard deviation of the distribution */
@@ -186,8 +186,8 @@ Point Rice::getStandardDeviation() const
 Point Rice::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return Point(1, 1.0);
-  const Scalar sigma2 = sigma_ * sigma_;
-  return Point(1, std::pow(2.0 * sigma2, 0.5 * n) * SpecFunc::Gamma(1.0 + 0.5 * n) * SpecFunc::HyperGeom_1_1(-0.5 * n, 1.0, -0.5 * nu_ * nu_ / sigma2));
+  const Scalar beta2 = beta_ * beta_;
+  return Point(1, std::pow(2.0 * beta2, 0.5 * n) * SpecFunc::Gamma(1.0 + 0.5 * n) * SpecFunc::HyperGeom_1_1(-0.5 * n, 1.0, -0.5 * nu_ * nu_ / beta2));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -203,7 +203,7 @@ void Rice::computeCovariance() const
   covariance_ = CovarianceMatrix(1);
   Scalar covariance = 0.0;
   const Scalar mu = getMean()[0];
-  covariance = 2.0 * sigma_ * sigma_ + (nu_ - mu) * (nu_ + mu);
+  covariance = 2.0 * beta_ * beta_ + (nu_ - mu) * (nu_ + mu);
   covariance_(0, 0) = covariance;
   isAlreadyComputedCovariance_ = true;
 }
@@ -211,10 +211,7 @@ void Rice::computeCovariance() const
 /* Parameters value accessor */
 Point Rice::getParameter() const
 {
-  Point point(2);
-  point[0] = sigma_;
-  point[1] = nu_;
-  return point;
+  return {beta_, nu_};
 }
 
 void Rice::setParameter(const Point & parameter)
@@ -228,28 +225,25 @@ void Rice::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Rice::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "sigma";
-  description[1] = "nu";
-  return description;
+  return {"beta", "nu"};
 }
 
-/* Sigma accessor */
-void Rice::setSigma(const Scalar sigma)
+/* Beta accessor */
+void Rice::setBeta(const Scalar beta)
 {
-  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
-  if (sigma != sigma_)
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
+  if (beta != beta_)
   {
-    sigma_ = sigma;
+    beta_ = beta;
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
   }
 }
 
-Scalar Rice::getSigma() const
+Scalar Rice::getBeta() const
 {
-  return sigma_;
+  return beta_;
 }
 
 /* Nu accessor */
@@ -285,7 +279,7 @@ UnsignedInteger Rice::getMaximumIteration() const
 void Rice::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "sigma_", sigma_ );
+  adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "nu_", nu_ );
   adv.saveAttribute( "maximumIteration_", maximumIteration_ );
 }
@@ -294,7 +288,10 @@ void Rice::save(Advocate & adv) const
 void Rice::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "sigma_", sigma_ );
+  if (adv.hasAttribute("sigma_")) // old parameters
+    adv.loadAttribute( "sigma_", beta_ );
+  else
+    adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "maximumIteration_", maximumIteration_ );
   computeRange();

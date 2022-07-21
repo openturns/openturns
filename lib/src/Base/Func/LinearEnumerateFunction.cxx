@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -124,7 +124,7 @@ UnsignedInteger LinearEnumerateFunction::inverse(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = indices.getSize();
-  if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension.";
+  if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension, here size=" << size << " and dimension=" << dimension;
   // Quick return for dimension == 1 case
   if (size == 1) return indices[0];
   UnsignedInteger totalDegree = 0;

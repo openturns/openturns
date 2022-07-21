@@ -2,7 +2,7 @@
 /**
  *  @brief SpaceFillingPhiP
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,7 +33,7 @@ static const Factory<SpaceFillingPhiP> Factory_SpaceFillingPhiP;
 
 
 /* Default constructor */
-SpaceFillingPhiP::SpaceFillingPhiP(UnsignedInteger p)
+SpaceFillingPhiP::SpaceFillingPhiP(const UnsignedInteger p)
   : SpaceFillingImplementation(true),
     p_(p)
 {

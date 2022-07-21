@@ -3,7 +3,7 @@
  *  @file  HMatrixFactory.cxx
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,19 +49,6 @@ HMatrixFactory * HMatrixFactory::clone() const
   return new HMatrixFactory( *this );
 }
 
-
-/** Tell whether HMat support is available */
-Bool
-HMatrixFactory::IsAvailable()
-{
-#ifdef OPENTURNS_HAVE_HMAT
-  return true;
-#else
-  return false;
-#endif
-}
-
-
 HMatrix
 HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters)
 {
@@ -79,11 +66,8 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
     hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
 
   hmat_get_parameters(&settings);
-  settings.compressionMethod = parameters.getCompressionMethodAsUnsignedInteger();
-  settings.assemblyEpsilon = parameters.getAssemblyEpsilon();
-  settings.recompressionEpsilon = parameters.getRecompressionEpsilon();
-  settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
 
+  settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
   settings.validationErrorThreshold = ResourceMap::GetAsScalar("HMatrix-ValidationError");
   settings.validateCompression = settings.validationErrorThreshold > 0;
   settings.validationReRun = ResourceMap::GetAsUnsignedInteger("HMatrix-ValidationRerun");
@@ -102,7 +86,7 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      memcpy(points + i * inputDimension * outputDimension + j * inputDimension, &sample(i, 0), inputDimension * sizeof(double));
+      std::copy(&sample(i, 0), &sample(i, 0) + inputDimension, points + i * inputDimension * outputDimension + j * inputDimension);
   }
 
   hmat_clustering_algorithm_t* algo;

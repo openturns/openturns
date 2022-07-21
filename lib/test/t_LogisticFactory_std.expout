@@ -1,8 +1,8 @@
-Distribution          =class=Logistic name=Logistic dimension=1 alpha=2 beta=2.5
-Estimated distribution=class=Logistic name=Logistic dimension=1 alpha=2.04612 beta=2.51522
-Default distribution=class=Logistic name=Logistic dimension=1 alpha=0 beta=1
-Distribution from parameters=class=Logistic name=Logistic dimension=1 alpha=2 beta=2.5
-Logistic          =class=Logistic name=Logistic dimension=1 alpha=2 beta=2.5
-Estimated logistic=class=Logistic name=Logistic dimension=1 alpha=2.04612 beta=2.51522
-Default logistic=class=Logistic name=Logistic dimension=1 alpha=0 beta=1
-Logistic from parameters=class=Logistic name=Logistic dimension=1 alpha=2 beta=2.5
+Distribution          =class=Logistic name=Logistic dimension=1 mu=2 beta=2.5
+Estimated distribution=class=Logistic name=Logistic dimension=1 mu=2.04612 beta=2.51522
+Default distribution=class=Logistic name=Logistic dimension=1 mu=0 beta=1
+Distribution from parameters=class=Logistic name=Logistic dimension=1 mu=2 beta=2.5
+Logistic          =class=Logistic name=Logistic dimension=1 mu=2 beta=2.5
+Estimated logistic=class=Logistic name=Logistic dimension=1 mu=2.04612 beta=2.51522
+Default logistic=class=Logistic name=Logistic dimension=1 mu=0 beta=1
+Logistic from parameters=class=Logistic name=Logistic dimension=1 mu=2 beta=2.5

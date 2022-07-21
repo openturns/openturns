@@ -1,22 +1,84 @@
-openturns (1.13~rc1-1) experimental; urgency=low
+openturns (1.19-1) experimental; urgency=medium
 
-  [ Julien Schueller ]
+  * New upstream release
+  * Add pagmo dependency
+  * Drop examples package
+  * Dont run cxx tests
 
-  * New upstream pre-release.
-  * debian/control: drop r-other-rot, openturns-validation
-  * python-openturns: include dist-info files
-  * debian/control: remove unneeded libopenturns-dev dependencies
-  * debian/control: require libcminpack-dev
+ -- Julien Schueller <schueller@phimeca.com>  Tue, 12 Apr 2022 14:19:33 +0200
 
- -- Denis Barbier <barbier@debian.org>  Tue, 23 Apr 2018 18:14:47 +0200
+openturns (1.18-1) experimental; urgency=medium
 
-openturns (1.12-1) experimental; urgency=low
+  * New upstream version 1.18
+  * Providing a gbp.conf file to ease the use of git-buildpackage with 'debian'
+    as master branch
+  * Refreshing patches
+  * Raising Standards version to 4.6.0:
+    - Removing obsolete get-orig-source target
+    - Using https version of copyright format URL in d/copyright
+    - Rules-Requires-Root: no
+  * Providing debian/upstream/metadata with Repository information
+  * Bumping SONAME to libot0.19, new binary package
+  * Removing X-Python*-Version fields from d/control (Closes: #1003818)
+  * Reworking (build-)dependencies in debian/control:
+    - Depending on debhelper-compat 13, dropping debian/compat
+    - Reordering dependencies in d/control for readability concerns
+    - Adding (optional) build-dependencies
+    - Removing dependency on python for stopt-examples (gets python3 through
+      python3-openturns) (Closes: #948602)
+    - Removing build-dependencies on g++ and quilt
+    - Making the openturns-examples package, now Architecture: all, easily
+      binNMUable with appropriate dependency versions
+    - Revising the list of dependencies of the -dev package
+    - Removing unnecessary versioned dependencies and information related on
+      too old packages in d/control
+  * Removing files related to former binary packages in debian/
+  * Installing the (now unversioned) configuration file in its own package
+    openturns-common, as it should accompany the versioned library package
+  * Adding myself as uploader
+  * Removing README.Debian with 12-year-old, now useless information
+  * Refreshing d/copyright
+  * Installing the C++ libraries in /usr/lib/triplet and the Python files in
+    /usr/lib/python3*
+  * Reworking debian/rules:
+    - Not fiddling with DEB_BUILD_OPTIONS in d/rules
+    - Adopting the same compiler flags on all architectures
+    - Always using tbb
+    - Hardening using /usr/share/dpkg/buildflags.mk
+    - Attempting to build on mips and mipsel
+    - Removing --parallel option
+    - Skipping useless variables passed to CMake
+    - Passing previously deactivated tests again
+    - Adding the lib now installed in usr/lib/triplet for the Python tests,
+      and removing this add for the C++ ones
+    - Removing CMake variables and rules overrides that we don't need in d/rules
+    - Letting the environment define the parallelism setting for the tests
+  * Refreshing the lists of files to install (or to omit, in
+    debian/not-installed)
+  * Adding a comment to explain the current Lintian override concerning the
+    name of the shared lib package
+  * Adding a Lintian override for not providing symbols
+  * Correcting spelling errors raised by Lintian in the source
+  * Positioning Debian Python policy-compliant shebangs in installed examples
+  * Raising tolerance in a test failing by a short margin on some computers
+  * Skipping the install of *.pyc files
+  * Updating homepage address and upstream-contact field
+  * Trim trailing whitespace.
+  * Fix day-of-week for changelog entries 1.10~rc1-1, 1.8-1, 1.6~rc1-1.
 
-  [ Julien Schueller ]
+ -- Pierre Gruet <pgt@debian.org>  Fri, 08 Apr 2022 10:32:40 +0200
 
-  * New upstream release.
+openturns (1.14-1) unstable; urgency=medium
 
- -- Denis Barbier <barbier@debian.org>  Tue, 02 Oct 2018 10:14:47 +0200
+  * Team upload.
+  * Drop python2 support; Closes: #937214
+  * New upstream release; Closes: #902513
+  * Import packaging from upstream, inclusing rename to libopenturns0.15 and
+    drop of R bindings
+  * debian/watch
+    - point to github
+
+ -- Sandro Tosi <morph@debian.org>  Thu, 26 Dec 2019 01:40:15 -0500
 
 openturns (1.11-2) experimental; urgency=medium
 
@@ -101,7 +163,7 @@ openturns (1.10~rc1-1) experimental; urgency=low
 
   * New upstream pre-release.
 
- -- Denis Barbier <barbier@debian.org>  Mon, 11 Oct 2017 18:14:47 +0200
+ -- Denis Barbier <barbier@debian.org>  Wed, 11 Oct 2017 18:14:47 +0200
 
 openturns (1.9-5) unstable; urgency=medium
 
@@ -162,7 +224,7 @@ openturns (1.8-1) experimental; urgency=low
   [ Julien Schueller ]
   * New upstream release.
 
- -- Denis Barbier <barbier@debian.org>  Thu, 16 Nov 2016 18:14:47 +0100
+ -- Denis Barbier <barbier@debian.org>  Wed, 16 Nov 2016 18:14:47 +0100
 
 openturns (1.8~rc2-1) experimental; urgency=low
 
@@ -224,7 +286,7 @@ openturns (1.6~rc1-1) experimental; urgency=low
   [ Julien Schueller ]
   * New upstream pre-release.
 
- -- Denis Barbier <barbier@debian.org>  Mon, 16 Jun 2015 16:34:47 +0100
+ -- Denis Barbier <barbier@debian.org>  Tue, 16 Jun 2015 16:34:47 +0100
 
 openturns (1.5-7) unstable; urgency=medium
 
@@ -939,4 +1001,3 @@ openturns (0.12.1-1) unstable; urgency=low
   * Initial release (Closes: #490907)
 
  -- Christophe Prud'homme <prudhomm@debian.org>  Sun, 06 Jul 2008 21:39:33 +0200
-

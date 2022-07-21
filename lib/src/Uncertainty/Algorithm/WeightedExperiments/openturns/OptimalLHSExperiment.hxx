@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract class for algorithms generating optimized LHS
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ public:
   OptimalLHSExperiment(const LHSExperiment & lhs, const SpaceFilling & spaceFilling);
 
   /** Virtual constructor method */
-  OptimalLHSExperiment * clone() const;
+  OptimalLHSExperiment * clone() const override;
 
   /** Attributes for LHSExperiment */
   LHSExperiment getLHS() const;
@@ -63,13 +63,13 @@ public:
   virtual LHSResult getResult() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   void setLHS(const LHSExperiment & lhs);

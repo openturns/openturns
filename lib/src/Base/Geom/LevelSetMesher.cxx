@@ -2,7 +2,7 @@
 /**
  *  @brief Meshing algorithm for levelSets
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,7 +55,7 @@ LevelSetMesher::LevelSetMesher(const Indices & discretization,
 {
   // Check if the discretization is valid
   for (UnsignedInteger i = 0; i < discretization.getSize(); ++i)
-    if (discretization[i] == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive discretization, got " << discretization;
+    if (!(discretization[i] > 0)) throw InvalidArgumentException(HERE) << "Error: expected a positive discretization, got " << discretization;
 }
 
 /* Virtual constructor */
@@ -96,7 +96,7 @@ void LevelSetMesher::setDiscretization(const Indices & discretization)
 {
   // At least one slice per dimension
   for (UnsignedInteger i = 0; i < discretization.getSize(); ++i)
-    if (discretization_[i] == 0) throw InvalidArgumentException(HERE) << "Error: expected positive values for the discretization, here discretization[" << i << "]=" << discretization[i];
+    if (!(discretization_[i] > 0)) throw InvalidArgumentException(HERE) << "Error: expected positive values for the discretization, here discretization[" << i << "]=" << discretization[i];
   discretization_ = discretization;
 }
 
@@ -112,7 +112,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
 {
   const UnsignedInteger dimension = levelSet.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
-  if (dimension > 3) throw NotYetImplementedException(HERE) << "In LevelSetMesher::build(const LevelSet & levelSet, const Bool project) const";
+  if (!(dimension <= 3)) throw NotYetImplementedException(HERE) << "In LevelSetMesher::build(const LevelSet & levelSet, const Bool project) const";
   return build(levelSet, Interval(levelSet.getLowerBound(), levelSet.getUpperBound()), project);
 }
 
@@ -122,7 +122,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
 {
   const UnsignedInteger dimension = levelSet.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
-  if (dimension > 3) throw NotYetImplementedException(HERE) << "In LevelSetMesher::build(const LevelSet & levelSet, const Interval & boundingBox, const Bool project) const";
+  if (!(dimension <= 3)) throw NotYetImplementedException(HERE) << "In LevelSetMesher::build(const LevelSet & levelSet, const Interval & boundingBox, const Bool project) const";
   if (boundingBox.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the bounding box is of dimension=" << boundingBox.getDimension() << ", expected dimension=" << dimension;
   // First, mesh the bounding box
   const Mesh boundingMesh(IntervalMesher(discretization_).build(boundingBox));
@@ -134,6 +134,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   const Function function(levelSet.getFunction());
   const Point values(function(boundingVertices).asPoint());
   const Scalar level = levelSet.getLevel();
+  const ComparisonOperator comparison(levelSet.getOperator());
   Indices goodSimplices(0);
   Sample goodVertices(0, dimension);
   // Flags for the vertices to keep
@@ -158,7 +159,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
     for (UnsignedInteger j = 0; j <= dimension; ++j)
     {
       const UnsignedInteger globalVertexIndex = boundingSimplices(i, j);
-      if (values[globalVertexIndex] <= level)
+      if (comparison(values[globalVertexIndex], level))
       {
         ++numGood;
         ++flagGoodVertices[globalVertexIndex];
@@ -184,7 +185,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
         Scalar centerValue = 0.0;
         // First pass: compute the center of the good points
         for (UnsignedInteger j = 0; j <= dimension; ++j)
-          if (localValues[j] <= level)
+          if (comparison(localValues[j], level))
           {
             center += localVertices[j];
             centerValue += localValues[j];
@@ -197,7 +198,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
         {
           const UnsignedInteger globalVertexIndex = boundingSimplices(i, j);
           // If the vertex has to be moved
-          if ((flagGoodVertices[globalVertexIndex] == 0) && (localValues[j] > level))
+          if ((flagGoodVertices[globalVertexIndex] == 0) && (!comparison(localValues[j], level)))
           {
             // C(v*) [inside], M(level) [on], B(v) [outside]
             // (M-C)/(B-C) = (level-v*)/(v-v*) = a

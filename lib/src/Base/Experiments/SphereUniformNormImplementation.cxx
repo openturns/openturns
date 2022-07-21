@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of a generic grid iterator.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,7 +36,7 @@ public:
   SphereUniformNorm1D(const Point & step, const Bool symmetric)
     : SphereUniformNormImplementation(step, symmetric)
   {
-    if (step.getDimension() != 1) throw InvalidDimensionException(HERE) << "Expected a point of dimension 1";
+    if (step.getDimension() != 1) throw InvalidDimensionException(HERE) << "Expected a point of dimension 1, but dimension=" << step.getDimension();
     stepX_ = step[0];
   }
 
@@ -88,7 +88,7 @@ public:
     : SphereUniformNormImplementation(step, symmetric)
   {
     // nothing to do
-    if (step.getDimension() != 2) throw InvalidDimensionException(HERE) << "Expected a point of dimension 2";
+    if (step.getDimension() != 2) throw InvalidDimensionException(HERE) << "Expected a point of dimension 2, but dimension=" << step.getDimension();
     stepX_ = step[0];
     stepY_ = step[1];
   }
@@ -154,7 +154,7 @@ public:
         std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
       }
     }
-    if (iterator != size) throw InternalException(HERE) << "Error in SphereUniformNorm2D::getPoints";
+    if (iterator != size) throw InternalException(HERE) << "Error in SphereUniformNorm2D::getPoints. Final value of iterator should be equal to size, but iterator=" << iterator << " and size=" << size;
     return points;
   }
 
@@ -191,7 +191,7 @@ public:
     : SphereUniformNormImplementation(step, symmetric)
   {
     // nothing to do
-    if (step.getDimension() != 3) throw InvalidDimensionException(HERE) << "Expected a point of dimension 3";
+    if (step.getDimension() != 3) throw InvalidDimensionException(HERE) << "Expected a point of dimension 3, but dimension=" << step.getDimension();
     stepX_ = step[0];
     stepY_ = step[1];
     stepZ_ = step[2];
@@ -295,7 +295,7 @@ public:
         }
       }
     } // else not symmetric
-    if (iterator != size) throw InternalException(HERE) << "Error in SphereUniformNorm3D::getPoints";
+    if (iterator != size) throw InternalException(HERE) << "Error in SphereUniformNorm3D::getPoints. Final value of iterator should be equal to size, but iterator=" << iterator << " and size=" << size;
     return points;
   }
 

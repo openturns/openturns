@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements analytical functions.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -141,6 +141,12 @@ String SymbolicFunction::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
+/* Accessor to the formulas */
+Description SymbolicFunction::getFormulas() const
+{
+  return dynamic_cast<SymbolicEvaluation*>(getEvaluation().getImplementation().get())->getFormulas();
+}
+
 /* Initialization of the documentation */
 void SymbolicFunction::InitializeDocumentation()
 {
@@ -198,7 +204,7 @@ void SymbolicFunction::InitializeDocumentation()
 
   // Third, the operators
   ValidOperators_.setName("Valid operators");
-  ValidOperators_.add("= -> assignement, can only be applied to variable names (priority -1)");
+  ValidOperators_.add("= -> assignment, can only be applied to variable names (priority -1)");
   ValidOperators_.add("&& -> logical and (priority 1)");
   ValidOperators_.add("|| -> logical or (priority 1)");
   ValidOperators_.add("^^ -> logical xor (priority 1)");

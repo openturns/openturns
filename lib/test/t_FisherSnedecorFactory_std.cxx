@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class FisherSnedecor for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,6 +54,24 @@ int main(int, char *[])
     fullprint << "Default fisherSnedecor=" << estimatedFisherSnedecor << std::endl;
     estimatedFisherSnedecor = factory.buildAsFisherSnedecor(distribution.getParameter());
     fullprint << "FisherSnedecor from parameters=" << estimatedFisherSnedecor << std::endl;
+    // buildMethodOfMoments
+    estimatedFisherSnedecor = factory.buildMethodOfMoments(sample);
+    fullprint << "Estimated from moments=" << estimatedFisherSnedecor << std::endl;
+    const Scalar sample_mu = sample.computeMean()[0];
+    const Scalar sample_sigma2 = sample.computeCovariance()(0, 0);
+    const Scalar computed_mu = estimatedFisherSnedecor.getMean()[0];
+    const Scalar computed_sigma2 = estimatedFisherSnedecor.getCovariance()(0, 0);
+    assert_almost_equal(sample_mu, computed_mu, 1e-15, 1e-15);
+    assert_almost_equal(sample_sigma2, computed_sigma2, 1e-15, 1e-15);
+    // buildMethodOfLikelihoodMaximization
+    estimatedFisherSnedecor = factory.buildMethodOfLikelihoodMaximization(sample);
+    fullprint << "Estimated from likelihoodMaximization=" << estimatedFisherSnedecor << std::endl;
+    const Scalar exact_d1 = distribution.getD1();
+    const Scalar exact_d2 = distribution.getD2();
+    const Scalar computed_d1 = estimatedFisherSnedecor.getD1();
+    const Scalar computed_d2 = estimatedFisherSnedecor.getD2();
+    assert_almost_equal(computed_d1, exact_d1, 0.0, 20.0 / sqrt(size));
+    assert_almost_equal(computed_d2, exact_d2, 0.0, 20.0 / sqrt(size));
   }
   catch (TestFailed & ex)
   {

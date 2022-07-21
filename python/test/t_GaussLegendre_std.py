@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 import math
 
@@ -12,12 +11,13 @@ try:
     a = -2.5
     b = 4.5
     # Default parameters
-    algo = GaussKronrod()
+    algo = GaussLegendre()
     print("Algo=", algo)
     # High-level interface
-    value = algo.integrate(f, Interval(a, b))[0]
+    value, adaptedNodes = algo.integrateWithNodes(f, Interval(a, b))
     ref = math.cos(a) - math.cos(b)
-    print("value=%.6f" % value, ", ref=%.6f" % ref)
+    print("value=%.6f" %
+          value[0], ", ref=%.6f" % ref, ", adaptedNodes=", adaptedNodes)
     # Low-level interface
     algo = GaussLegendre([20])
     value, adaptedNodes = algo.integrateWithNodes(f, Interval(a, b))

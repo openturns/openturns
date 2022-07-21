@@ -13,6 +13,9 @@ Graphical object
 
     Graph
 
+    :template: classWithPlot.rst_t
+    GridLayout
+
 Drawable objects
 ================
 
@@ -30,11 +33,10 @@ Drawable objects
     Cloud
     Contour
     Curve
-    Staircase
-    Pairs
     Pie
     Polygon
     PolygonArray
+    Staircase
     Text
 
 Graphical visualisation object
@@ -42,9 +44,10 @@ Graphical visualisation object
 
 .. autosummary::
     :toctree: _generated/
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     viewer.View
 
-    :template: function.rst_t
+    :template: functionWithPlot.rst_t
     viewer.PlotDesign
+

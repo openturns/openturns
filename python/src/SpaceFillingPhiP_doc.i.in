@@ -3,8 +3,8 @@
 
 Parameters
 ----------
-p : int
-    Parameter for parametrizing the criterion 
+p : int (default=50)
+    Parameter for parametrizing the criterion
 
 Notes
 -----

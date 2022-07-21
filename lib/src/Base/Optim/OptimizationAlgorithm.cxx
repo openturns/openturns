@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationAlgorithm provides capabilities to solve optimization problems
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,13 +19,16 @@
  *
  */
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/Bonmin.hxx"
 #include "openturns/Ceres.hxx"
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/Dlib.hxx"
+#include "openturns/Ipopt.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
-#include "openturns/OPTpp.hxx"
+#include "openturns/Pagmo.hxx"
+#include "openturns/PlatformInfo.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -225,11 +228,11 @@ void OptimizationAlgorithm::setStopCallback(StopCallback callBack, void * state)
 OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
 {
   OptimizationAlgorithm solver;
-  if (Ceres::IsAvailable() && Ceres::GetAlgorithmNames().contains(solverName))
+  if (PlatformInfo::HasFeature("ceres") && Ceres::GetAlgorithmNames().contains(solverName))
   {
     solver = Ceres(solverName);
   }
-  else if (CMinpack::IsAvailable() && (solverName == "CMinpack"))
+  else if (PlatformInfo::HasFeature("cminpack") && (solverName == "CMinpack"))
   {
     solver = CMinpack();
   }
@@ -241,49 +244,97 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   {
     solver = TNC();
   }
-  else if (NLopt::IsAvailable() && NLopt::GetAlgorithmNames().contains(solverName))
+  else if (PlatformInfo::HasFeature("nlopt") && NLopt::GetAlgorithmNames().contains(solverName))
   {
     solver = NLopt(solverName);
   }
-  else if (OPTpp::IsAvailable() && OPTpp::GetAlgorithmNames().contains(solverName))
-  {
-    solver = OPTpp(solverName);
-  }
-  else if (Dlib::IsAvailable() && Dlib::GetAlgorithmNames().contains(solverName))
+  else if (PlatformInfo::HasFeature("dlib") && Dlib::GetAlgorithmNames().contains(solverName))
   {
     solver = Dlib(solverName);
   }
+  else if (PlatformInfo::HasFeature("bonmin") && Bonmin::GetAlgorithmNames().contains(solverName))
+  {
+    solver = Bonmin(solverName);
+  }
+  else if (PlatformInfo::HasFeature("ipopt") && solverName == "Ipopt")
+  {
+    solver = Ipopt();
+  }
+  else if (PlatformInfo::HasFeature("pagmo") && Pagmo::GetAlgorithmNames().contains(solverName))
+  {
+    solver = Pagmo(solverName);
+  }
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
+
   return solver;
+}
+
+
+OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & problem)
+{
+  // return the first algorithm that accepts the problem
+  Description names(GetAlgorithmNames());
+  for (UnsignedInteger i = 0; i < names.getSize(); ++ i)
+  {
+    OptimizationAlgorithm algorithm(Build(names[i]));
+    try
+    {
+      algorithm.setProblem(problem);
+      return algorithm;
+    }
+    catch (InvalidArgumentException &)
+    {
+      // try next algorithm
+    }
+  }
+  throw NotYetImplementedException(HERE) << "No optimization algorithm available for this problem";
 }
 
 
 Description OptimizationAlgorithm::GetAlgorithmNames()
 {
   Description names;
-  if (Ceres::IsAvailable())
+  if (PlatformInfo::HasFeature("bonmin"))
+    names.add(Bonmin::GetAlgorithmNames());
+  if (PlatformInfo::HasFeature("ipopt"))
+    names.add("Ipopt");
+  if (PlatformInfo::HasFeature("ceres"))
     names.add(Ceres::GetAlgorithmNames());
-  if (CMinpack::IsAvailable())
+  if (PlatformInfo::HasFeature("cminpack"))
     names.add("CMinpack");
   names.add("Cobyla");
+  if (PlatformInfo::HasFeature("dlib"))
+    names.add(Dlib::GetAlgorithmNames());
   names.add("TNC");
-  if (NLopt::IsAvailable())
+  if (PlatformInfo::HasFeature("nlopt"))
     names.add(NLopt::GetAlgorithmNames());
-  if (OPTpp::IsAvailable())
-    names.add(OPTpp::GetAlgorithmNames());
+  if (PlatformInfo::HasFeature("pagmo"))
+    names.add(Pagmo::GetAlgorithmNames());
   return names;
 }
 
 
-Description OptimizationAlgorithm::GetLeastSquaresAlgorithmNames()
+Description OptimizationAlgorithm::GetAlgorithmNames(const OptimizationProblem & problem)
 {
-  Description names;
-  if (CMinpack::IsAvailable())
-    names.add("CMinpack");
-  if (Ceres::IsAvailable())
-    names.add(Ceres::GetAlgorithmNames());
-  return names;
+  // return the first algorithm that accepts the problem
+  Description names(GetAlgorithmNames());
+  Description result;
+  for (UnsignedInteger i = 0; i < names.getSize(); ++ i)
+  {
+    OptimizationAlgorithm algorithm(Build(names[i]));
+    try
+    {
+      algorithm.setProblem(problem);
+      result.add(names[i]);
+    }
+    catch (InvalidArgumentException &)
+    {
+      // try next algorithm
+    }
+  }
+  return result;
 }
+
 
 END_NAMESPACE_OPENTURNS

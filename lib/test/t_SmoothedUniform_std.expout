@@ -19,7 +19,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[0]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.237539]
 log pdf=-0.867507
 pdf     =0.419997
 pdf (FD)=0.419997
@@ -38,8 +37,8 @@ quantile=class=Point name=Unnamed dimension=1 values=[1.74644]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.951173] upper bound=class=Point name=Unnamed dimension=1 values=[1.95117] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(SmoothedUniform(a = -0.5, b = 1.5, sigma = 0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(SmoothedUniform(a = -0.5, b = 1.5, sigma = 0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(SmoothedUniform(a = -0.5, b = 1.5, sigma = 0.5)) level=4.15266
-beta=0.0157226
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(SmoothedUniform(a = -0.5, b = 1.5, sigma = 0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(SmoothedUniform(a = -0.5, b = 1.5, sigma = 0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(SmoothedUniform(a = -0.5, b = 1.5, sigma = 0.5)) level=4.15236
+beta=0.0157272
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.951173] upper bound=class=Point name=Unnamed dimension=1 values=[1.95117] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-4.32531] upper bound=class=Point name=Unnamed dimension=1 values=[1.74644] finite lower bound=[1] finite upper bound=[1]
@@ -54,7 +53,7 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[Uniform_a : -0.5, Uniform_b : 1.5, Normal_mean_0 : 0, Normal_standard_deviation_0 : 0.5]]
+parameters=[[a : -0.5, b : 1.5, sigma : 0.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.333333]

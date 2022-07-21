@@ -2,7 +2,7 @@
 /**
  *  @brief Least Angle Regression Algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -78,7 +78,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
 
   const UnsignedInteger sampleSize = x.getSize();
 
-  if (sampleSize == 0) throw InvalidArgumentException( HERE ) << "Output sample cannot be empty.";
+  if (!(sampleSize > 0)) throw InvalidArgumentException( HERE ) << "Output sample cannot be empty.";
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
 //   if (x.getDimension() != psi.getDimension()) throw InvalidArgumentException( HERE ) << "Sample dimension (" << x.getDimension() << ") does not match basis dimension (" << psi.getDimension() << ").";
@@ -152,7 +152,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
     if (getVerbose()) LOGINFO( OSS() << "Solved normal equation.");
 
     // normalization coefficient
-    Scalar cNorm = 1.0 / sqrt(dot(sC, ga1));
+    Scalar cNorm = 1.0 / sqrt(sC.dot(ga1));
 
     // descent direction
     const Point descentDirectionAk(cNorm * ga1);

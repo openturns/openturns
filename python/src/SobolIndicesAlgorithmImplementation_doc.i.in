@@ -4,160 +4,195 @@ Sensitivity analysis.
 
 Notes
 -----
-This method is concerned with analyzing the influence the random vector
-:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` has on a random variable
-:math:`Y^k` which is being studied for uncertainty (see also [sobol1993]_).
+This method analyzes the influence of each component of an input random vector
+:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` on an output random vector
+:math:`\vect{Y} = \left( Y^1, \ldots, Y^{n_Y} \right)` by computing Sobol' indices (see [sobol1993]_).
+It computes, for every output random variable :math:`Y^k` (:math:`1 \leqslant k \leqslant n_Y`),
+the part of its variance due to each input component :math:`X^i` (:math:`1 \leqslant i \leqslant n_X`) of :math:`\vect{X}`.
 
-Here we attempt to evaluate the part of variance of :math:`Y^k` due to the different components :math:`X^i`.
+Let :math:`\vect{g}` be the physical model such as :math:`\vect{Y}=\vect{g}(\vect{X})`. Let us first consider the case where :math:`n_Y=1`.
+In that case, we denote :math:`\vect{Y}` by :math:`Y`.
+Let us write the variance of :math:`Y` as a function of :math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)`. 
+For any subset :math:`I \subseteq \{1, \ldots, n_X\}`, define :math:`\vect{X}_I = \left( X^i \right)_{i \in I}`.
 
-We denote G the physical model such as :math:`\vect{Y}=G(\vect{X})`. Let us consider first the case where :math:`\vect{Y}` is of dimension 1.
-
-The objective here is to develop the variability of the random variable :math:`\vect{Y}` as function of :math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)`. Using the Hoeffding decomposition, we got:
-
-.. math::
-
-   \Var{\vect{Y}} = \sum_{i=1}^{n_X} V_i + \sum_{i<j} V_{i,j} + \sum_{i<k<j} V_{i,j,k} + \cdots + V_{1,2,..,n_X}
-
-where :
-
-:math:`V_i = \Var{\Expect{ Y \vert X_i}}` and :math:`V_{i,j} = \Var{\Expect{ Y \vert X_i, X_j}} - V_i - V_j`. Using the previous decomposition, it follows that sensitivity indices are defined as follow:
-
+Using the Hoeffding decomposition, we get:
 
 .. math::
 
-   \begin{array}{ccc}
-    S_i & = & \frac{V_i}{\Var{\vect{Y}}} \\
-    S_{i,j} & = & \frac{V_{i,j}}{\Var{\vect{Y}}}
-   \end{array}
+   \Var{Y} = \sum_{ I \subseteq \{1, \ldots, n_X\} } V_I
 
-:math:`(S_i)` are the first order sensitivity indices and measure the impact of :math:`X_i` in the variance :math:`\Var{\vect{Y}}`,
-:math:`(S_{i,j})` are the second order sensitivity indices and measure the impact of the interaction of :math:`X_i` and :math:`X_j` in the variance :math:`\Var{\vect{Y}}`.
-
-When :math:`n_X >> 1`, we use total sensitivity indices :math:`ST_i`, which is defined as the sum of all indices that count the i-th variable:
+where:
 
 .. math::
 
-    ST_i =  1 - \frac{V_{-i}}{\Var{\vect{Y}}} = \frac{VT_i}{\Var{\vect{Y}}}, \forall\ i\in(1,2,...,n_X)
+    V_I = \Var{ \sum_{J \subseteq I} (-1)^{ |I| - |J| } \Expect{ Y \vert \mat{X}_J} }.
 
-where :math:`V_{-i}` is the part of variance of :math:`\Var{\vect{Y}}` that do not countain the i-th variable.
-
-|
-
-In practice, to estimate these quantities, Sobol proposes to use numerical methods that rely on the two independent realizations of the random vector :math:`\vect{X}`.
-If we consider `A` and `B` two independent samples (of size `n`) of the previous random vector:
+For the sake of conciseness, for any integers :math:`1 \leqslant i, j \leqslant n_X`,
+define :math:`V_i = V_{\{i\}}` and :math:`V_{i,j} = V_{\{i,j\}}`. We have:
 
 .. math::
 
-   A = \left(
+    V_i     & = \Var{ \Expect{Y \vert X_i} } \\
+    V_{i,j} & = \Var{ \Expect{ Y \vert X_i, X_j}  - \Expect{Y \vert X_i} - \Expect{Y \vert X_j} } \\
+            & = \Var{ \Expect{ Y \vert X_i, X_j} } - V_i - V_j
+
+for :math:`i=1,\ldots,n_X`.
+
+First and second order Sobol' indices are defined as follows:
+
+.. math::
+
+    S_i     & = \frac{V_i}{\Var{Y}} \\
+    S_{i,j} & = \frac{V_{i,j}}{\Var{Y}}
+
+for :math:`i, j = 1,\ldots,n_X`.
+
+The first order Sobol' index :math:`S_i` measures the part of the variance of :math:`Y` explained by :math:`X_i` alone.
+The second order Sobol' index :math:`S_{i,j}`  measures the part of the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
+
+For any :math:`i=1,\ldots,n_X`, let us define
+
+.. math::
+
+    VT_i   & = \sum_{I \ni i} V_I \\
+    V_{-i} & = \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_{n_X}} }.
+
+Total order Sobol' indices are defined as follows:
+
+.. math::
+
+    ST_i = \frac{VT_i}{\Var{Y}} = 1 - \frac{V_{-i}}{\Var{Y}}
+
+for :math:`i=1,\ldots,n_X`.
+
+The total order Sobol' index :math:`ST_i` quantifies the part of the variance of :math:`Y` that is due to the effect of :math:`X_i`
+and its interactions with all the other input variables.
+It can also be viewed as the part of the variance of :math:`Y` that cannot be explained without :math:`X_i`.
+
+In practice, to estimate these quantities,
+Sobol' proposes to use numerical methods that rely on two independent realizations of the random vector :math:`\vect{X}`.
+Let :math:`\mat{A}` and :math:`\mat{B}` be two independent samples (of size :math:`N`) of :math:`\vect{X}` :
+
+.. math::
+
+   \mat{A} = \left(
    \begin{array}{cccc}
    a_{1,1} & a_{1,2} & \cdots & a_{1, n_X} \\
    a_{2,1} & a_{2,2} & \cdots & a_{2, n_X} \\
    \vdots  & \vdots  & \ddots  & \vdots \\
-   a_{n,1} & a_{1,2} & \cdots & a_{n, n_X}
+   a_{N,1} & a_{1,2} & \cdots & a_{N, n_X}
    \end{array}
-   \right), \  B = \left(
+   \right), \  \mat{B} = \left(
    \begin{array}{cccc}
    b_{1,1} & b_{1,2} & \cdots & b_{1, n_X} \\
    b_{2,1} & b_{2,2} & \cdots & b_{2, n_X} \\
    \vdots  & \vdots  & \vdots  & \vdots \\
-   b_{n,1} & b_{1,2} & \cdots & b_{n, n_X}
+   b_{N,1} & b_{1,2} & \cdots & b_{N, n_X}
    \end{array}
    \right)
 
+Each line is a realization of the random vector :math:`\vect{X}`. 
 
-Each line is a realization of the random vector. The purpose is to mix these two samples to get an estimate of the sensitivities.
-
-`Sobol` method require respectively :math:`C^i` and :math:`D^{i,j}` sample designs for the evaluation of first order (respectively second order) sensitivity indices. These are defined as hereafter:
-
-.. math::
-
-   C^i = \left(
-   \begin{array}{cccccc}
-   b_{1,1} & b_{1,2} & \cdots & a_{1,i} & \cdots & b_{1, n_X} \\
-   b_{2,1} & b_{2,2} & \cdots & a_{2,i} & \cdots & b_{2, n_X} \\
-   \vdots  & \vdots  &        & \vdots  & \ddots  & \vdots \\
-   b_{n,1} & b_{1,2} & \cdots & a_{n,i} & \cdots & b_{n, n_X}
-   \end{array}
-   \right), \ D^{i,j} = \left(
-   \begin{array}{cccccccc}
-   b_{1,1} & b_{1,2} & \cdots & a_{1,i} & \cdots & a_{1,j} & \cdots & b_{1, n_X} \\
-   b_{2,1} & b_{2,2} & \cdots & a_{2,i} & \cdots & a_{2,j} & \cdots & b_{2, n_X} \\
-   \vdots  & \vdots  &        & \vdots  &        & \vdots  & \ddots & \vdots \\
-   b_{n,1} & b_{n,2} & \cdots & a_{n,i} & \cdots & a_{n,j} & \cdots & b_{n, n_X} \\
-   \end{array}
-   \right)
-
-It follows that :math:`V_{i}` and :math:`V_{i,j}` terms are defined as follow:
+We are now going to mix these two samples to get an estimate of the sensitivity indices.
 
 .. math::
 
-   \begin{array}{ccc}
-    V_i & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k) G(C_k) - G_0^2 \\
-    V_{i,j} & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k) G(D_k) - V_i - V_j - G_0^2 \\
-    G_0 & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k)
-   \end{array}
-
-The implemented second order indices use this formula.
-
-The major methods (`Saltelli`, `Jansen`, `Mauntz-Kucherenko`, `Martinez`) use the :math:`E^i` matrix to compute the indices (first order and total order). This matrix is defined as follows:
-
-.. math::
-
-   E^i = \left(
+   \mat{E}^i = \left(
    \begin{array}{cccccc}
    a_{1,1} & a_{1,2} & \cdots & b_{1,i} & \cdots & a_{1, n_X} \\
    a_{2,1} & a_{2,2} & \cdots & b_{2,i} & \cdots & a_{2, n_X} \\
    \vdots  & \vdots  &        & \vdots  & \ddots & \vdots \\
-   a_{n,1} & a_{1,2} & \cdots & b_{n,i} & \cdots & a_{n, n_X}
+   a_{N,1} & a_{1,2} & \cdots & b_{N,i} & \cdots & a_{N, n_X}
+   \end{array}
+   \right),
+   \mat{C}^i = \left(
+   \begin{array}{cccccc}
+   b_{1,1} & b_{1,2} & \cdots & a_{1,i} & \cdots & b_{1, n_X} \\
+   b_{2,1} & b_{2,2} & \cdots & a_{2,i} & \cdots & b_{2, n_X} \\
+   \vdots  & \vdots  &        & \vdots  & \ddots  & \vdots \\
+   b_{N,1} & b_{1,2} & \cdots & a_{N,i} & \cdots & b_{N, n_X}
    \end{array}
    \right)
 
-The formulas for the evaluation of the indices are given in each class documentation:
-  - :class:`~openturns.SaltelliSensitivityAlgorithm` for the `Saltelli` method,
-  - :class:`~openturns.JansenSensitivityAlgorithm` for the `Jansen` method,
-  - :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
-  - :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method
-
-For multivariate outputs (see [gamboa2013]_), aggregate indices can be computed thanks to the `getAggregatedFirstOrderIndices` and `getAggregatedTotalOrderIndices`. Such indices write as follow:
-
+For the sake of stability, computations will be performed with centered output.
+Let :math:`\overline{\vect{g}}` be the mean of the combined samples 
+:math:`\vect{g}(\mat{A})` and :math:`\vect{g}(\mat{B})`.
+Let :math:`\tilde{\vect{g}}` be the empirically centered function defined,
+for any :math:`\vect{x} \in \Rset^{n_X}`, by:
 
 .. math::
 
-   \begin{array}{ccc}
-    S_i & = & \frac{ \sum_{k=1}^{q} V_{i}^{(k)} }{ \sum_{k=1}^{q} \Var{Y_k} }  \\
-    S_{i,j} & = & \frac{ \sum_{k=1}^{q} V_{i,j}^{(k)} }{ \sum_{k=1}^{q} \Var{Y_k} }  \\
-    ST_i & = & \frac{ \sum_{k=1}^{q} VT_{i}^{(k)} }{ \sum_{k=1}^{q} \Var{Y_k} }
-   \end{array}
+   \tilde{\vect{g}}(\vect{x}) = \vect{g}(\vect{x}) - \overline{\vect{g}}.
 
-Aggregated second order indices have not been implemented.
+To estimate the total variance :math:`\Var{Y}`,
+we use the :meth:`~openturns.Sample.computeVariance` method of the :class:`~openturns.Sample` :math:`\tilde{g}(\mat{A})`.
+
+Several estimators of :math:`V_i`, :math:`VT_i` and :math:`V_{-i}` are provided by the :class:`SobolIndicesAlgorithm` implementations:
+
+- :class:`~openturns.SaltelliSensitivityAlgorithm` for the `Saltelli` method,
+- :class:`~openturns.JansenSensitivityAlgorithm` for the `Jansen` method,
+- :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
+- :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method.
+
+Specific formulas for :math:`\hat{V}_i`, :math:`\widehat{VT}_i` and :math:`\hat{V}_{-i}` are given in the corresponding documentation pages.
+
+The estimator :math:`\hat{V}_{i,j}` of :math:`V_{i,j}` is the same for all these classes:
+
+.. math::
+
+    \hat{V}_{i,j} = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{g}(\vect{E}_k^i) \tilde{g}(\vect{C}_k^j) - \frac{1}{N} \sum_{k=1}^{N} \tilde{g}(\vect{A}_k) \tilde{g}(\vect{B}_k) - \hat{V}_i - \hat{V}_j.
+
+Notice that the value of the second order conditional variance depends on the estimators :math:`\hat{V}_i` and :math:`\hat{V}_j` which are method-dependent. This implies that the value of the second order indices may depend on the specific Sobol' estimator we use. 
+
+For multivariate outputs i.e. when :math:`n_Y>1`, we compute the Sobol' indices with respect to each output variable. 
+In this case, the methods :meth:`getFirstOrderIndices` and 
+:meth:`getTotalOrderIndices` return the Sobol' indices of the first output, 
+but the index of the output can be specified as input argument.
+Moreover, the indices can be aggregated [gamboa2013]_. 
+Let :math:`V_i^{(k)}` be the (first order) variance of the conditional expectation of the k-th output :math:`Y^{(k)}`:
+
+.. math::
+
+    V_i^{(k)} & = \Var{ \Expect{Y^{(k)} \vert X_i} }
+
+for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
+Similarily, let :math:`VT_i^{(k)}` be the total variance of the conditional expectation of :math:`Y^{(k)}` for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`. 
+
+The indices can be aggregated with the following formulas:
+
+.. math::
+
+    S_i^{(a)}  & =  \frac{ \sum_{k=1}^{n_Y} V_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }  \\
+    ST_i^{(a)} & =  \frac{ \sum_{k=1}^{n_Y} VT_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }
+
+for :math:`i=1,\ldots,n_X`.
+
+Aggregated indices can be retrieved with the :meth:`getAggregatedFirstOrderIndices` 
+and :meth:`getAggregatedTotalOrderIndices` methods. 
 
 |
 
-Note finally that the distribution of indices can be computed for first
-and total order thanks to the :meth:`getFirstOrderIndicesDistribution` and
+Notice that the distribution of the estimators of the first
+and total order indices can be estimated
+thanks to the :meth:`getFirstOrderIndicesDistribution` and
 :meth:`getTotalOrderIndicesDistribution` methods.
+This is done either through bootstrapping or using an asymptotic estimator.
+The :class:`~openturns.ResourceMap` key `SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution`
+stores a boolean that decides the default behavior,
+but it can be overridden by the method :meth:`setUseAsymptoticDistribution`.
 
-This can be done either by bootstrap or using an asymptotic estimator,
-this behavior can be changed using :meth:`setUseAsymptoticDistribution`.
-Its value in initialized by the
-`SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution` resourcemap key.
-
-For the bootstrap method the size is set by :meth:`setBootstrapSize`
-values and initialized by `SobolIndicesAlgorithm-DefaultBootstrapSize` resourcemap key.
-
-The asymptotic estimator of the variance are computed using the [janon2014]_
-delta method, in the technical report [pmfre01116]_.
-
-The corresponding confidence interval is also provided using
+Corresponding confidence intervals are provided by the methods
 :meth:`getFirstOrderIndicesInterval` and :meth:`getTotalOrderIndicesInterval`.
-The confidence level is set by `setConfidenceLevel`
-and is initialized by the `SobolIndicesAlgorithm-DefaultConfidenceLevel` resourcemap key.
+Their confidence level can be adjusted with :meth:`setConfidenceLevel`.
+The default confidence level is stored in the :class:`~openturns.ResourceMap`
+and can be accessed with the `SobolIndicesAlgorithm-DefaultConfidenceLevel` key.
 
-Also note that for numerical stability reasons the outputs are centered before indices estimation:
+Indices estimates can be slightly outside of [0,1] if the estimator has not converged.
+For the same reason some first order indices estimates can be greater than the corresponding total order indices estimates.
 
-.. math::
-
-    Y_k = Y_k - \Eset(Y_k)
+The asymptotic estimator of the distribution requires an asymptotic estimate
+of its variance, which is computed using the [janon2014]_
+delta method, as expained in the technical report [pmfre01116]_.
 "
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation
@@ -171,7 +206,7 @@ OT_SobolIndicesAlgorithm_doc
 Parameters
 ----------
 i : int, optional
-    Index of the marginal of the function, equals to :math:`0` by default.
+    Index of the output marginal of the function, equal to :math:`0` by default.
 
 Returns
 -------
@@ -248,7 +283,7 @@ OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
 Parameters
 ----------
 i : int, optional
-    Index of the marginal of the function, equals to :math:`0` by default.
+    Index of the output marginal of the function, equal to :math:`0` by default.
 
 Returns
 -------
@@ -307,7 +342,7 @@ OT_SobolIndicesAlgorithm_setConfidenceLevel_doc
 Returns
 -------
 bootstrapSize : int
-    Number of bootsrap sampling"
+    Number of bootstrap sampling"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getBootstrapSize
 OT_SobolIndicesAlgorithm_getBootstrapSize_doc
@@ -322,7 +357,7 @@ Default value is 0.
 Parameters
 ----------
 bootstrapSize : int
-    Number of bootsrap sampling"
+    Number of bootstrap sampling"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::setBootstrapSize
 OT_SobolIndicesAlgorithm_setBootstrapSize_doc
@@ -346,7 +381,7 @@ marginalIndex: int
 
 Returns
 -------
-Graph : :class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     A graph containing the aggregated first and total order indices.
 
 Notes
@@ -383,7 +418,7 @@ title : str
 
 Returns
 -------
-Graph : :class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     A graph containing a :class:`~openturns.Cloud` and a :class:`~openturns.Text` 
     of the correlation coefficients."
 %enddef
@@ -415,7 +450,7 @@ title : str
 
 Returns
 -------
-Graph : :class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     A graph containing a :class:`~openturns.Pie` of the importance factors of
     the variables."
 %enddef
@@ -435,10 +470,14 @@ firstOrderIndices : sequence of float
     First order indices values
 totalOrderIndices : sequence of float
     Total order indices values
+fo_ci : :class:`~openturns.Interval`, optional
+    First order indices confidence interval
+to_ci : :class:`~openturns.Interval`, optional
+    Total order indices confidence interval
 
 Returns
 -------
-Graph : :class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     For each variable, draws first and total indices"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::DrawSobolIndices
@@ -503,6 +542,8 @@ OT_SobolIndicesAlgorithm_getTotalOrderIndicesDistribution_doc
 %define OT_SobolIndicesAlgorithm_setDesign_doc
 "Sample accessor.
 
+Allows one to estimate indices from a predefined Sobol design.
+
 Parameters
 ----------
 inputDesign : :class:`~openturns.Sample`
@@ -512,7 +553,8 @@ outputDesign : :class:`~openturns.Sample`
     Design for the evaluation of sensitivity indices, obtained as the evaluation
     of a Function (model) on the previous inputDesign
 N : int
-    Size of samples to generate"
+    Base size of the Sobol design"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::setDesign
 OT_SobolIndicesAlgorithm_setDesign_doc
+

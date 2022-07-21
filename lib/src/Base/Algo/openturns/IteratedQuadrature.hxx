@@ -1,9 +1,9 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class allows to compute integrals of a function over a
+ *  @brief This class allows one to compute integrals of a function over a
  *         domain defined by functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,15 +50,15 @@ public:
   IteratedQuadrature(const IntegrationAlgorithm & algorithm);
 
   /** Virtual copy constructor */
-  virtual IteratedQuadrature * clone() const;
+  IteratedQuadrature * clone() const override;
 
   /** Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
    */
   using IntegrationAlgorithmImplementation::integrate;
   Point integrate(const Function & function,
-                  const Interval & interval) const;
+                  const Interval & interval) const override;
 
-  // This method allows to get the estimated integration error as a scalar
+  // This method allows one to get the estimated integration error as a scalar
   Point integrate(const Function & function,
                   const Scalar a,
                   const Scalar b,
@@ -67,11 +67,16 @@ public:
                   const Bool check = true) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
 private:
 
   // Class to compute in a recursive way a multidimensional integral
@@ -92,7 +97,7 @@ private:
       // Nothing to do
     }
 
-    Point operator()(const Point & point) const
+    Point operator()(const Point & point) const override
     {
       // Create the arguments of the local integration problem
       const Indices index(1, 0);
@@ -113,7 +118,7 @@ private:
       return value;
     }
 
-    Sample operator()(const Sample & sample) const
+    Sample operator()(const Sample & sample) const override
     {
       const UnsignedInteger sampleSize = sample.getSize();
       const UnsignedInteger outputDimension = function_.getOutputDimension();
@@ -143,27 +148,27 @@ private:
       return result;
     }
 
-    PartialFunctionWrapper * clone() const
+    PartialFunctionWrapper * clone() const override
     {
       return new PartialFunctionWrapper(*this);
     }
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return 1;
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return function_.getOutputDimension();
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return Description(1, "t");
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return function_.getOutputDescription();
     }

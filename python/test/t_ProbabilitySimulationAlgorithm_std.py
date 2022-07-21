@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import sys
 import openturns as ot
 
@@ -42,7 +41,7 @@ vect = ot.RandomVector(myDistribution)
 output = ot.CompositeRandomVector(myFunction, vect)
 
 # We create an Event from this RandomVector
-myEvent = ot.Event(output, ot.Less(), -3.0)
+myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
 
 # Monte Carlo
 experiments = [ot.MonteCarloExperiment()]
@@ -80,7 +79,8 @@ for experiment in experiments:
 
     # Stream out the result
     print('algo result=', myAlgo.getResult())
-    print('probability distribution=', myAlgo.getResult().getProbabilityDistribution())
+    print('probability distribution=',
+          myAlgo.getResult().getProbabilityDistribution())
 
     # Use the standard deviation as a stoping rule
     experiment = ot.MonteCarloExperiment()
@@ -99,7 +99,8 @@ for experiment in experiments:
 
     # Stream out the result
     print('algo result=', myAlgo.getResult())
-    print('probability distribution=', myAlgo.getResult().getProbabilityDistribution())
+    print('probability distribution=',
+          myAlgo.getResult().getProbabilityDistribution())
 
 print('-' * 32)
 ot.RandomGenerator.SetSeed(0)
@@ -111,18 +112,19 @@ Xvector = ot.RandomVector(distribution)
 f = ot.SymbolicFunction(['x0', 'x1'], ['x0+x1'])
 Yvector = ot.CompositeRandomVector(f, Xvector)
 s = 1.0
-event1 = ot.Event(Yvector, ot.Greater(), s)
+event1 = ot.ThresholdEvent(Yvector, ot.Greater(), s)
 description.add('composite vector/domain event')
-domain1D = ot.LevelSet(ot.SymbolicFunction(['x0'], ['sin(x0)']), ot.LessOrEqual(), -0.5)
-event2 = ot.Event(Yvector, domain1D)
+domain1D = ot.LevelSet(ot.SymbolicFunction(
+    ['x0'], ['sin(x0)']), ot.LessOrEqual(), -0.5)
+event2 = ot.DomainEvent(Yvector, domain1D)
 description.add('composite vector/interval event')
 interval = ot.Interval(0.5, 1.5)
-event3 = ot.Event(Yvector, interval)
+event3 = ot.ThresholdEvent(Yvector, interval)
 description.add('process/domain event')
 Xprocess = ot.WhiteNoise(distribution, ot.RegularGrid(0.0, 0.1, 10))
 domain2D = ot.LevelSet(
     ot.SymbolicFunction(['x0', 'x1'], ['(x0-1)^2+x1^2']), ot.LessOrEqual(), 1.0)
-event4 = ot.Event(Xprocess, domain2D)
+event4 = ot.ProcessEvent(Xprocess, domain2D)
 all_events = [event1, event2, event3, event4]
 for i, event in enumerate(all_events):
     print(description[i])
@@ -136,4 +138,5 @@ for i, event in enumerate(all_events):
     myAlgo.setMaximumCoefficientOfVariation(0.1)
     myAlgo.run()
     print('MonteCarlo result=', myAlgo.getResult())
-    print('probability distribution=', myAlgo.getResult().getProbabilityDistribution())
+    print('probability distribution=',
+          myAlgo.getResult().getProbabilityDistribution())

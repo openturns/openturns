@@ -1,4 +1,4 @@
-Distribution  InverseGamma(k = 5.5, lambda = 2.5)
+Distribution  InverseGamma(lambda = 2.5, k = 5.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= [0.0599153]
@@ -18,10 +18,10 @@ ccdf= 0.0954394676229
 survival= 0.0954394676229
 characteristic function=(0.999937, 0.0129291)
 log characteristic function=(2.03228e-05, 0.0129292)
-pdf gradient     = [-1.31286,-2.40895]
-pdf gradient (FD)= [-1.31286,-2.40895]
-cdf gradient     = [0.082705,0.127416]
-cdf gradient (FD)= [0.082705,0.127416]
+pdf gradient     = [-2.40895,-1.31286]
+pdf gradient (FD)= [-2.40895,-1.31286]
+cdf gradient     = [0.127416,0.082705]
+cdf gradient (FD)= [0.127416,0.082705]
 quantile= [0.174871]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.0406605]
@@ -30,7 +30,7 @@ entropy=-1.930582
 Minimum volume interval= [0.0280966, 0.177562]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 34.4467} with f=
-MinimumVolumeLevelSetEvaluation(InverseGamma(k = 5.5, lambda = 2.5))
+MinimumVolumeLevelSetEvaluation(InverseGamma(lambda = 2.5, k = 5.5))
 beta= [1.09642e-15]
 Bilateral confidence interval= [0.0364963, 0.209657]
 beta= [0.95]
@@ -43,18 +43,18 @@ covariance= [[ 0.0022575 ]]
 correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
-parameters= [[k : 5.5, lambda : 2.5]]
+parameters= [[lambda : 2.5, k : 5.5]]
 standard moment n= 0 , value= [1]
 standard moment n= 1 , value= [0.222222]
 standard moment n= 2 , value= [0.0634921]
 standard moment n= 3 , value= [0.0253968]
 standard moment n= 4 , value= [0.0169312]
 standard moment n= 5 , value= [0.0338624]
-Standard representative= InverseGamma(k = 5.5, lambda = 1)
+Standard representative= InverseGamma(lambda = 5.5, k = 1)
 standard deviation= [0.0475131]
 skewness= [2.99333]
 kurtosis= [29.4]
-Distribution  InverseGamma(k = 15, lambda = 2.5)
+Distribution  InverseGamma(lambda = 2.5, k = 15)
 Elliptical =  False
 Continuous =  True
 oneRealization= [0.0272144]
@@ -74,10 +74,10 @@ ccdf= 0.0102604279123
 survival= 0.0102604279123
 characteristic function=(0.999999, 0.00152381)
 log characteristic function=(-8.93075e-08, 0.00152381)
-pdf gradient     = [-1.04829,-4.76897]
-pdf gradient (FD)= [-1.04829,-4.76897]
-cdf gradient     = [0.00792151,0.0339127]
-cdf gradient (FD)= [0.00792151,0.0339127]
+pdf gradient     = [-4.76897,-1.04829]
+pdf gradient (FD)= [-4.76897,-1.04829]
+cdf gradient     = [0.0339127,0.00792151]
+cdf gradient (FD)= [0.0339127,0.00792151]
 quantile= [0.0432604]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.0182761]
@@ -86,7 +86,7 @@ entropy=-3.514616
 Minimum volume interval= [0.0154445, 0.0443646]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= -1.89324} with f=
-MinimumVolumeLevelSetEvaluation(InverseGamma(k = 15, lambda = 2.5))
+MinimumVolumeLevelSetEvaluation(InverseGamma(lambda = 2.5, k = 15))
 beta= [6.64087]
 Bilateral confidence interval= [0.0170288, 0.0476452]
 beta= [0.95]
@@ -99,14 +99,14 @@ covariance= [[ 6.27943e-05 ]]
 correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
-parameters= [[k : 15, lambda : 2.5]]
+parameters= [[lambda : 2.5, k : 15]]
 standard moment n= 0 , value= [1]
 standard moment n= 1 , value= [0.0714286]
 standard moment n= 2 , value= [0.00549451]
 standard moment n= 3 , value= [0.000457875]
 standard moment n= 4 , value= [4.1625e-05]
 standard moment n= 5 , value= [4.1625e-06]
-Standard representative= InverseGamma(k = 15, lambda = 1)
+Standard representative= InverseGamma(lambda = 15, k = 1)
 standard deviation= [0.00792429]
 skewness= [1.20185]
 kurtosis= [5.90909]

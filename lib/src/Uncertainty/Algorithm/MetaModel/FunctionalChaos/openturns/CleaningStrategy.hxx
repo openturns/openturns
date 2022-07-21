@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation returning the set of polynomials in sequence
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,18 +55,18 @@ public:
                    const Bool verbose = false);
 
   /** Virtual constructor */
-  virtual CleaningStrategy * clone() const;
+  CleaningStrategy * clone() const override;
 
   /** Compute initial basis for the approximation */
-  void computeInitialBasis();
+  void computeInitialBasis() override;
 
   /** Update the basis for the next iteration of approximation */
   void updateBasis(const Point & alpha_k,
                    const Scalar residual,
-                   const Scalar relativeError);
+                   const Scalar relativeError) override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Current vector index accessor */
   UnsignedInteger getCurrentVectorIndex() const;
@@ -84,16 +84,16 @@ public:
   void setVerbose(const Bool verbose);
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   // Index of the next vector to be generated
   UnsignedInteger currentVectorIndex_;
 
-  // Maximum size of the curent basis
+  // Maximum size of the current basis
   UnsignedInteger maximumSize_;
 
   // Relative significance factor of a vector

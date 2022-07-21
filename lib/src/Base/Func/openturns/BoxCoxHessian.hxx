@@ -2,7 +2,7 @@
 /**
  *  @brief Class for Box Cox function implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,27 +55,27 @@ public:
 #endif
 
   /** Virtual constructor */
-  virtual BoxCoxHessian * clone() const;
+  BoxCoxHessian * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const BoxCoxHessian & other) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Hessian evaluation method */
   using HessianImplementation::hessian;
-  SymmetricTensor hessian(const Point & inP) const;
+  SymmetricTensor hessian(const Point & inP) const override;
 
   /** Accessor for evaluation */
   Evaluation getEvaluation() const;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Accessor for the lambda point */
   Point getLambda() const;
@@ -84,10 +84,10 @@ public:
   Point getShift() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** The underlying evaluation */

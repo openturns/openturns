@@ -1,17 +1,12 @@
 %feature("docstring") OT::ValueFunction
 "Function mapping a field to a field.
 
-Available constructors:
-    ValueFunction(*spatialDim=1*)
-
-    ValueFunction(*g, spatialDim=1*)
-
 Parameters
 ----------
 g : :class:`~openturns.Function`
     Function :math:`g: \Rset^d \rightarrow \Rset^{d'}`.
-spatialDim : int, :math:`\geq 1`
-    Dimension :math:`n` of the domain :math:`\cD`. 
+mesh : :class:`~openturns.Mesh`
+    The mesh of the domain :math:`\cD`.
 
 Notes
 -----

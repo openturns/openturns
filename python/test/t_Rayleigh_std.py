@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Rayleigh(2.5, -0.5)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
@@ -62,18 +61,18 @@ try:
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", repr(PDFgr))
     PDFgrFD = Point(2)
-    PDFgrFD[0] = (Rayleigh(distribution.getSigma() + eps, distribution.getGamma()).computePDF(point) -
-                  Rayleigh(distribution.getSigma() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[1] = (Rayleigh(distribution.getSigma(), distribution.getGamma() + eps).computePDF(point) -
-                  Rayleigh(distribution.getSigma(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[0] = (Rayleigh(distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
+                  Rayleigh(distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[1] = (Rayleigh(distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
+                  Rayleigh(distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", repr(CDFgr))
     CDFgrFD = Point(2)
-    CDFgrFD[0] = (Rayleigh(distribution.getSigma() + eps, distribution.getGamma()).computeCDF(point) -
-                  Rayleigh(distribution.getSigma() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[1] = (Rayleigh(distribution.getSigma(), distribution.getGamma() + eps).computeCDF(point) -
-                  Rayleigh(distribution.getSigma(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[0] = (Rayleigh(distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
+                  Rayleigh(distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[1] = (Rayleigh(distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
+                  Rayleigh(distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps)
     print("cdf gradient (FD)=", repr(CDFgrFD))
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", repr(quantile))
@@ -127,8 +126,8 @@ try:
     print("skewness=", repr(skewness))
     kurtosis = distribution.getKurtosis()
     print("kurtosis=", repr(kurtosis))
-    sigma = distribution.getSigma()
-    print("sigma=", sigma)
+    beta = distribution.getBeta()
+    print("beta=", beta)
 
 except:
     import sys

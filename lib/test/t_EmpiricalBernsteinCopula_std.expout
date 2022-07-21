@@ -1,98 +1,99 @@
-Copula class=EmpiricalBernsteinCopula name=a empiricalBernstein copula dimension=2 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=2 description=[X0,X1] data=[[0.833333,0.166667],[0.583333,0.916667],[0.166667,0.583333],[0.666667,1],[0.916667,0.833333],[0.5,0.5],[0.0833333,0.0833333],[0.25,0.416667],[1,0.333333],[0.416667,0.666667],[0.75,0.75],[0.333333,0.25]] binNumber=3
-Copula EmpiricalBernsteinCopula( copulaSample=     [ X0        X1        ]
- 0 : [ 0.833333  0.166667  ]
- 1 : [ 0.583333  0.916667  ]
- 2 : [ 0.166667  0.583333  ]
- 3 : [ 0.666667  1         ]
- 4 : [ 0.916667  0.833333  ]
- 5 : [ 0.5       0.5       ]
- 6 : [ 0.0833333 0.0833333 ]
- 7 : [ 0.25      0.416667  ]
- 8 : [ 1         0.333333  ]
- 9 : [ 0.416667  0.666667  ]
-10 : [ 0.75      0.75      ]
-11 : [ 0.333333  0.25      ] binNumber=3)
+Copula class=EmpiricalBernsteinCopula name=a empiricalBernstein copula dimension=2 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=2 description=[X0,X1] data=[[0.83333,0.16667],[0.58333,0.91667],[0.16667,0.58333],[0.66667,1],[0.91667,0.83333],[0.5,0.5],[0.083333,0.083333],[0.25,0.41667],[1,0.33333],[0.41667,0.66667],[0.75,0.75],[0.33333,0.25]] binNumber=3
+Copula EmpiricalBernsteinCopula( copulaSample=     [ X0       X1       ]
+ 0 : [ 0.83333  0.16667  ]
+ 1 : [ 0.58333  0.91667  ]
+ 2 : [ 0.16667  0.58333  ]
+ 3 : [ 0.66667  1        ]
+ 4 : [ 0.91667  0.83333  ]
+ 5 : [ 0.5      0.5      ]
+ 6 : [ 0.083333 0.083333 ]
+ 7 : [ 0.25     0.41667  ]
+ 8 : [ 1        0.33333  ]
+ 9 : [ 0.41667  0.66667  ]
+10 : [ 0.75     0.75     ]
+11 : [ 0.33333  0.25     ] binNumber=3)
 entropy=-0.0190259
 entropy (MC)=-0.0191996
 Mean class=Point name=Unnamed dimension=2 values=[0.5,0.5]
 Elliptical distribution= false
 Elliptical copula= false
 Independent copula= false
-oneRealization=class=Point name=Unnamed dimension=2 values=[0.178332,0.931747]
-oneSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=2 description=[X0,X1] data=[[0.53629,0.924819],[0.987974,0.634998],[0.954583,0.0236448],[0.0115511,0.233689],[0.381558,0.313065],[0.349841,0.933705],[0.648805,0.62688],[0.894093,0.86119],[0.988186,0.568698],[0.211512,0.676591]]
-anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.503702,0.496977]
-anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845317,0.0119565,0.0119565,0.0845599]
-point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=[-1.248,0.312] ddf (FD)=[-1.248,0.312] pdf=1.1352 cdf=0.050752
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.17833,0.93175]
+oneSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=2 description=[X0,X1] data=[[0.53629,0.92482],[0.98797,0.635],[0.95458,0.023645],[0.011551,0.23369],[0.38156,0.31306],[0.34984,0.9337],[0.64881,0.62688],[0.89409,0.86119],[0.98819,0.5687],[0.21151,0.67659]]
+anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.5037,0.49698]
+anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.084532,0.011956,0.011956,0.08456]
+point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=[-1.248,0.312] pdf=1.1352 cdf=0.050752
 Survival      =0.650752
 Survival (ref)=0.650752
-Inverse survival=class=Point name=Unnamed dimension=2 values=[0.0254747,0.0254747]
+Inverse survival=class=Point name=Unnamed dimension=2 values=[0.025475,0.025475]
 Survival(inverse survival)=0.95
-Quantile=class=Point name=Unnamed dimension=2 values=[0.694453,0.694453]
+Quantile=class=Point name=Unnamed dimension=2 values=[0.69445,0.69445]
 CDF(quantile)=0.5
-Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126794,0.0126794] upper bound=class=Point name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
+Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.012679,0.012679] upper bound=class=Point name=Unnamed dimension=2 values=[0.98732,0.98732] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.974641
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(EmpiricalBernsteinCopula( copulaSample=     [ X0        X1        ]
- 0 : [ 0.833333  0.166667  ]
- 1 : [ 0.583333  0.916667  ]
- 2 : [ 0.166667  0.583333  ]
- 3 : [ 0.666667  1         ]
- 4 : [ 0.916667  0.833333  ]
- 5 : [ 0.5       0.5       ]
- 6 : [ 0.0833333 0.0833333 ]
- 7 : [ 0.25      0.416667  ]
- 8 : [ 1         0.333333  ]
- 9 : [ 0.416667  0.666667  ]
-10 : [ 0.75      0.75      ]
-11 : [ 0.333333  0.25      ] binNumber=3)) gradientImplementation=MinimumVolumeLevelSetGradient(EmpiricalBernsteinCopula( copulaSample=     [ X0        X1        ]
- 0 : [ 0.833333  0.166667  ]
- 1 : [ 0.583333  0.916667  ]
- 2 : [ 0.166667  0.583333  ]
- 3 : [ 0.666667  1         ]
- 4 : [ 0.916667  0.833333  ]
- 5 : [ 0.5       0.5       ]
- 6 : [ 0.0833333 0.0833333 ]
- 7 : [ 0.25      0.416667  ]
- 8 : [ 1         0.333333  ]
- 9 : [ 0.416667  0.666667  ]
-10 : [ 0.75      0.75      ]
-11 : [ 0.333333  0.25      ] binNumber=3)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(EmpiricalBernsteinCopula( copulaSample=     [ X0        X1        ]
- 0 : [ 0.833333  0.166667  ]
- 1 : [ 0.583333  0.916667  ]
- 2 : [ 0.166667  0.583333  ]
- 3 : [ 0.666667  1         ]
- 4 : [ 0.916667  0.833333  ]
- 5 : [ 0.5       0.5       ]
- 6 : [ 0.0833333 0.0833333 ]
- 7 : [ 0.25      0.416667  ]
- 8 : [ 1         0.333333  ]
- 9 : [ 0.416667  0.666667  ]
-10 : [ 0.75      0.75      ]
-11 : [ 0.333333  0.25      ] binNumber=3)) level=0.231283
-beta=0.793515
-Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126794,0.0126794] upper bound=class=Point name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(EmpiricalBernsteinCopula( copulaSample=     [ X0       X1       ]
+ 0 : [ 0.83333  0.16667  ]
+ 1 : [ 0.58333  0.91667  ]
+ 2 : [ 0.16667  0.58333  ]
+ 3 : [ 0.66667  1        ]
+ 4 : [ 0.91667  0.83333  ]
+ 5 : [ 0.5      0.5      ]
+ 6 : [ 0.083333 0.083333 ]
+ 7 : [ 0.25     0.41667  ]
+ 8 : [ 1        0.33333  ]
+ 9 : [ 0.41667  0.66667  ]
+10 : [ 0.75     0.75     ]
+11 : [ 0.33333  0.25     ] binNumber=3)) gradientImplementation=MinimumVolumeLevelSetGradient(EmpiricalBernsteinCopula( copulaSample=     [ X0       X1       ]
+ 0 : [ 0.83333  0.16667  ]
+ 1 : [ 0.58333  0.91667  ]
+ 2 : [ 0.16667  0.58333  ]
+ 3 : [ 0.66667  1        ]
+ 4 : [ 0.91667  0.83333  ]
+ 5 : [ 0.5      0.5      ]
+ 6 : [ 0.083333 0.083333 ]
+ 7 : [ 0.25     0.41667  ]
+ 8 : [ 1        0.33333  ]
+ 9 : [ 0.41667  0.66667  ]
+10 : [ 0.75     0.75     ]
+11 : [ 0.33333  0.25     ] binNumber=3)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(EmpiricalBernsteinCopula( copulaSample=     [ X0       X1       ]
+ 0 : [ 0.83333  0.16667  ]
+ 1 : [ 0.58333  0.91667  ]
+ 2 : [ 0.16667  0.58333  ]
+ 3 : [ 0.66667  1        ]
+ 4 : [ 0.91667  0.83333  ]
+ 5 : [ 0.5      0.5      ]
+ 6 : [ 0.083333 0.083333 ]
+ 7 : [ 0.25     0.41667  ]
+ 8 : [ 1        0.33333  ]
+ 9 : [ 0.41667  0.66667  ]
+10 : [ 0.75     0.75     ]
+11 : [ 0.33333  0.25     ] binNumber=3)) level=0.23045
+beta=0.794177
+Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.012679,0.012679] upper bound=class=Point name=Unnamed dimension=2 values=[0.98732,0.98732] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974641
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.974525,0.974525] finite lower bound=[1,1] finite upper bound=[1,1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.97453,0.97453] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974525
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0254747,0.0254747] upper bound=class=Point name=Unnamed dimension=2 values=[1,1] finite lower bound=[1,1] finite upper bound=[1,1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.025475,0.025475] upper bound=class=Point name=Unnamed dimension=2 values=[1,1] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974525
-covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.08333,0.01042,0.01042,0.08333]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833,0.0104,0.0104,0.0833]
 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.125,0.125,1]
 spearman=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.125,0.125,1]
-kendall=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.2712,0.2712,1]
-margin=class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=1 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=1 description=[X0] data=[[0.833333],[0.583333],[0.166667],[0.666667],[0.916667],[0.5],[0.0833333],[0.25],[1],[0.416667],[0.75],[0.333333]] binNumber=3
+kendall=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.271,0.271,1]
+margin=class=Uniform name=Uniform dimension=1 a=0 b=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.960577]
-margin=class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=1 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=1 description=[X1] data=[[0.166667],[0.916667],[0.583333],[1],[0.833333],[0.5],[0.0833333],[0.416667],[0.333333],[0.666667],[0.75],[0.25]] binNumber=3
+margin realization=class=Point name=Unnamed dimension=1 values=[0.96712]
+margin=class=Uniform name=Uniform dimension=1 a=0 b=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.0182254]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.36733]
 indices=[1,0]
-margins=class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=2 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=2 description=[X1,X0] data=[[0.166667,0.833333],[0.916667,0.583333],[0.583333,0.166667],[1,0.666667],[0.833333,0.916667],[0.5,0.5],[0.0833333,0.0833333],[0.416667,0.25],[0.333333,1],[0.666667,0.416667],[0.75,0.75],[0.25,0.333333]] binNumber=3
+margins=class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=2 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=2 description=[X1,X0] data=[[0.16667,0.83333],[0.91667,0.58333],[0.58333,0.16667],[1,0.66667],[0.83333,0.91667],[0.5,0.5],[0.083333,0.083333],[0.41667,0.25],[0.33333,1],[0.66667,0.41667],[0.75,0.75],[0.25,0.33333]] binNumber=3
 margins PDF=1.0957
 margins CDF=0.0767822
-margins quantile=class=Point name=Unnamed dimension=2 values=[0.974525,0.974525]
+margins quantile=class=Point name=Unnamed dimension=2 values=[0.97453,0.97453]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[0.944591,0.804734]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.87591,0.44947]
+Entropy in higher dimension=-0.912186

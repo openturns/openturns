@@ -10,7 +10,7 @@
 #  CMINPACK_LIBRARY, where to find the CMINPACK library.
 #
 #=============================================================================
-# Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+# Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.
@@ -27,7 +27,7 @@ find_path (CMINPACK_INCLUDE_DIR cminpack.h
 )
 
 find_library (CMINPACK_LIBRARY
-  NAMES cminpack
+  NAMES cminpack cminpack_s
 )
 
 set (CMINPACK_LIBRARIES ${CMINPACK_LIBRARY})

@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Burr distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -107,11 +107,14 @@ Distribution BurrFactory::build() const
 Burr BurrFactory::buildAsBurr(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Burr distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
   if (!(sample.getMin()[0] > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution based on a sample with nonpositive values.";
   BurrFactoryParameterConstraint constraint(sample);
+  const Scalar sigma = sample.computeStandardDeviation()[0];
+  if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution if data contains NaN or Inf";
+  if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Burr distribution from a constant sample.";
   const Function f(bindMethod<BurrFactoryParameterConstraint, Point, Point>(constraint, &BurrFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval
   Scalar a = 1.0;

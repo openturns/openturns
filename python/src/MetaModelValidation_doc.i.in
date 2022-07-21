@@ -3,9 +3,6 @@
 
 Refer to :ref:`cross_validation`.
 
-Available constructor:
-    MetaModelValidation(*inputValidationSample, outputValidationSample, metaModel*)
-
 Parameters
 ----------
 inputValidationSample, outputValidationSample : 2-d sequence of float
@@ -78,7 +75,7 @@ outputSample : :class:`~openturns.Sample`
 
 Returns
 -------
-q2 : float
+q2 : :class:`~openturns.Point`
     The predictivity factor
 
 Notes
@@ -86,7 +83,7 @@ Notes
 The predictivity factor :math:`Q_2` is given by :
 
 .. math::
-    Q_2 = 1 - \frac{\sum_{l=1}^{N} (Y_{l} -\hat{f}(X_l))^2}{Var(Y)}"
+    Q_2 = 1 - \frac{\sum_{l=1}^{N} (Y_{l} -\hat{f}(X_l))^2}{N \cdot Var(Y)}"
 
 // ---------------------------------------------------------------------
 
@@ -134,5 +131,5 @@ The residual distribution is built thanks to :class:`~openturns.KernelSmoothing`
 
 Returns
 -------
-graph : :class:`~openturns.Graph`
+graph : :class:`~openturns.GridLayout`
     The visual validation graph."

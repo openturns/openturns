@@ -92,10 +92,10 @@ distribution (Hermite):
 X
 -0.707107 + 0.707107 * X^2
 
-Build an orthonormal polynomial factory for the Weibull distribution with
+Build an orthonormal polynomial factory for the WeibullMin distribution with
 the default orthonormalization algorithm:
 
->>> polynomial_factory = ot.StandardDistributionPolynomialFactory(ot.Weibull())
+>>> polynomial_factory = ot.StandardDistributionPolynomialFactory(ot.WeibullMin())
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
@@ -105,7 +105,7 @@ the default orthonormalization algorithm:
 Build an orthonormal polynomial factory for the log-normal distribution with
 Chebychev's othonormalization algorithm:
 
->>> algorithm = ot.AdaptiveStieltjesAlgorithm(ot.Weibull())
+>>> algorithm = ot.AdaptiveStieltjesAlgorithm(ot.WeibullMin())
 >>> polynomial_factory = ot.StandardDistributionPolynomialFactory(algorithm)
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))

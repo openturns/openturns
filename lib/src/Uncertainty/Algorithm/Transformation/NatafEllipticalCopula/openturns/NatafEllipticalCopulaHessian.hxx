@@ -2,7 +2,7 @@
 /**
  *  @brief Class for the Nataf transformation evaluation for elliptical
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,25 +52,25 @@ public:
 
 
   /** Virtual constructor */
-  virtual NatafEllipticalCopulaHessian * clone() const;
+  NatafEllipticalCopulaHessian * clone() const override;
 
   /** Hessian */
-  SymmetricTensor hessian(const Point & inP) const;
+  SymmetricTensor hessian(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

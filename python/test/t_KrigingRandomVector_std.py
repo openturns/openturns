@@ -1,44 +1,43 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
-from openturns import *
-from openturns.testing import *
+import openturns as ot
+import openturns.testing as ott
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-PlatformInfo.SetNumericalPrecision(3)
+ot.PlatformInfo.SetNumericalPrecision(3)
 # Kriging use case
 inputDimension = 2
 
 # Learning data
 levels = [8., 5.]
-box = Box(levels)
+box = ot.Box(levels)
 inputSample = box.generate()
 # Scale each direction
 inputSample *= 10
 
 
-model = SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
+model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
 outputSample = model(inputSample)
 
 # Validation data
 sampleSize = 10
-inputValidSample = ComposedDistribution(
-    2 * [Uniform(0, 10.0)]).getSample(sampleSize)
+inputValidSample = ot.ComposedDistribution(
+    2 * [ot.Uniform(0, 10.0)]).getSample(sampleSize)
 outputValidSample = model(inputValidSample)
 
 # 2) Definition of exponential model
 # The parameters have been calibrated using TNC optimization
 # and AbsoluteExponential models
-covarianceModel = SquaredExponential([1.988, 0.924], [3.153])
+covarianceModel = ot.SquaredExponential([7.63, 2.11], [7.38])
 
 # 3) Basis definition
-basisCollection = BasisCollection(
-    1, ConstantBasisFactory(inputDimension).build())
+basis = ot.ConstantBasisFactory(inputDimension).build()
 
-# Kriring algorithm
-algo = KrigingAlgorithm(inputSample, outputSample,
-                        covarianceModel, basisCollection)
+# Kriging algorithm
+algo = ot.KrigingAlgorithm(inputSample, outputSample,
+                           covarianceModel, basis)
+algo.setOptimizeParameters(False)  # do not optimize hyper-parameters
 algo.run()
 result = algo.getResult()
 # Get meta model
@@ -48,7 +47,7 @@ outData = metaModel(inputValidSample)
 
 # 4) Errors
 # Interpolation
-assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5)
+ott.assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5)
 
 
 # 5) Kriging variance is 0 on learning points
@@ -56,12 +55,12 @@ var = result.getConditionalCovariance(inputSample)
 
 # assert_almost_equal could not be applied to matrices
 # application to Point
-covariancePoint = Point(var.getImplementation())
-theoricalVariance = Point(covariancePoint.getSize(), 0.0)
-assert_almost_equal(covariancePoint, theoricalVariance, 1e-6, 1e-6)
+covariancePoint = ot.Point(var.getImplementation())
+trueVariance = ot.Point(covariancePoint.getSize(), 0.0)
+ott.assert_almost_equal(covariancePoint, trueVariance, 1e-6, 1e-6)
 
 # Random vector evaluation
-rvector = KrigingRandomVector(result, inputValidSample[0])
+rvector = ot.KrigingRandomVector(result, inputValidSample[0])
 
 # Realization of the random vector
 realization = rvector.getRealization()

@@ -10,7 +10,7 @@ It seeks to verify the compatibility between a sample of data
 :math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}`
 and a candidate probability distribution previously chosen.
 
-The Kolmogorov-Smirnov Goodness-of-Fit test allows to answer this question in
+The Kolmogorov-Smirnov Goodness-of-Fit test allows one to answer this question in
 the one dimensional case :math:`n_X =1`, and with a continuous distribution.
 
 Let us limit the case to :math:`n_X = 1`.
@@ -126,7 +126,7 @@ This method is also referred to in the literature as Kolmogorov's Test.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/kolmogorov_test`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_kolmogorov_test`
 
 .. topic:: References:
 
@@ -136,3 +136,10 @@ This method is also referred to in the literature as Kolmogorov's Test.
     - [dagostino1986]_
     - [sprent2001]_
     - [bhattacharyya1997]_
+    - [Lilliefors1967]_
+    - [Keutelian1991]_
+    - [AbdiMolinSalkind2007]_
+    - [AbdiMolin1998]_
+    - [ScottStewart2011]_
+    - [NikitinTchirina2007]_
+

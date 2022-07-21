@@ -2,7 +2,7 @@
 /**
  *  @brief EfficientGlobalOptimization or EGO algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,16 +46,17 @@ public:
 
   /** Constructor with parameters */
   EfficientGlobalOptimization(const OptimizationProblem & problem,
-                              const KrigingResult & krigingResult);
+                              const KrigingResult & krigingResult,
+                              const Function & noise = Function());
 
   /** Virtual constructor */
-  virtual EfficientGlobalOptimization * clone() const;
+  EfficientGlobalOptimization * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. */
-  void run();
+  void run() override;
 
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
@@ -84,6 +85,10 @@ public:
   void setAEITradeoff(const Scalar c);
   Scalar getAEITradeoff() const;
 
+  /** Metamodel noise function accessor */
+  void setMetamodelNoise(const Function & metaModelNoise);
+  Function getMetamodelNoise() const;
+
   /** Improvement noise function accessor */
   void setNoiseModel(const Function & noiseModel);
   Function getNoiseModel() const;
@@ -91,16 +96,19 @@ public:
   /** Expected improvement function */
   Sample getExpectedImprovement() const;
 
+  /** Kriging result accessor (especially useful after run() has been called) */
+  KrigingResult getKrigingResult() const;
+
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
   /** Check whether this problem can be solved by this solver. */
-  void checkProblem(const OptimizationProblem & problem) const;
+  void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
   KrigingResult krigingResult_;
@@ -127,8 +135,10 @@ private:
   // AEI tradeoff constant u(x)=mk(x)+c*sk(x)
   Scalar aeiTradeoff_;
 
+  // noise model called at design points
+  Function metamodelNoise_;
+
   // optional noise model for improvement optimization only
-  // for the metamodel noise the 2nd marginal of the objective is used
   Function noiseModel_;
 
   mutable Sample expectedImprovement_;

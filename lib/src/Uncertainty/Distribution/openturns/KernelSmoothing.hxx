@@ -3,7 +3,7 @@
  *  @brief This class acts like a (possibly truncated) KernelMixture factory, implementing density estimation
  *         using the kernel smoothing method. It uses Silverman's rule for product kernel.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,36 +42,32 @@ class OT_API KernelSmoothing
   CLASSNAME
 public:
 
-  enum BoundingOption { NONE=0, LOWER, UPPER, BOTH };
+  enum BoundingOption { NONE = 0, LOWER, UPPER, BOTH };
 
   /** Default constructor */
   KernelSmoothing();
 
   /** Parameter constructor */
   explicit KernelSmoothing(const Distribution & kernel,
-                           const Bool bined = true,
+                           const Bool binned = true,
                            const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("KernelSmoothing-BinNumber"),
-			   const Bool boundaryCorrection = false);
+                           const Bool boundaryCorrection = false);
 
   /** Virtual constructor */
-  virtual KernelSmoothing * clone() const;
+  KernelSmoothing * clone() const override;
 
-  /** Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
+  /** Build a Normal kernel mixture based on the given sample. If no bandwidth has already been set, Silverman's rule is used */
   using DistributionFactoryImplementation::build;
-  virtual Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample) const override;
 
   /** Build a (possibly truncated) kernel mixture based on the given sample and bandwidth */
-  virtual Distribution build(const Sample & sample,
-                             const Point & bandwidth) const;
+  Distribution build(const Sample & sample, const Point & bandwidth) const;
 
-  virtual KernelMixture buildAsKernelMixture(const Sample & sample,
-      const Point & bandwidth) const;
+  KernelMixture buildAsKernelMixture(const Sample & sample, const Point & bandwidth) const;
 
-  virtual Mixture buildAsMixture(const Sample & sample,
-                                 const Point & bandwidth) const;
+  Mixture buildAsMixture(const Sample & sample, const Point & bandwidth) const;
 
-  virtual TruncatedDistribution buildAsTruncatedDistribution(const Sample & sample,
-      const Point & bandwidth) const;
+  TruncatedDistribution buildAsTruncatedDistribution(const Sample & sample, const Point & bandwidth) const;
 
   /** Bandwidth accessor */
   Point getBandwidth() const;
@@ -112,23 +108,23 @@ public:
   Point computeMixedBandwidth(const Sample & sample) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
   void setBandwidth(const Point & bandwidth) const;
 
-  // Bandwith of the smoothing
+  // Bandwidth of the smoothing
   mutable Point bandwidth_;
 
   // 1D kernel for kernel product
   Distribution kernel_;
 
-  // Flag to tell if we compute a bined version of the estimator
-  Bool bined_;
+  // Flag to tell if we compute a binned version of the estimator
+  Bool binned_;
 
   // Number of bins in each dimension
   UnsignedInteger binNumber_;
@@ -141,7 +137,7 @@ private:
   Bool automaticLowerBound_;
   Scalar upperBound_;
   Bool automaticUpperBound_;
-  
+
 }; /* class KernelSmoothing */
 
 

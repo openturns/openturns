@@ -2,7 +2,7 @@
 /**
  *  @brief A class that implements an independent copula
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,8 +41,9 @@ static const Factory<IndependentCopula> Factory_IndependentCopula;
 
 /* Default constructor */
 IndependentCopula::IndependentCopula(const UnsignedInteger dimension)
-  : CopulaImplementation()
+  : DistributionImplementation()
 {
+  isCopula_ = true;
   setName( "IndependentCopula" );
   setDimension(dimension);
   computeRange();
@@ -109,7 +110,7 @@ Scalar IndependentCopula::computeProbability(const Interval & interval) const
   // Reduce the given interval to the support of the distribution, which is the nD unit cube
   const Interval intersect(interval.intersect(Interval(dimension)));
   // If the intersection is empty
-  if (intersect.isNumericallyEmpty()) return 0.0;
+  if (intersect.isEmpty()) return 0.0;
   const Point lower(intersect.getLowerBound());
   const Point upper(intersect.getUpperBound());
   Scalar value = 1.0;
@@ -339,13 +340,13 @@ Description IndependentCopula::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void IndependentCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void IndependentCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   computeRange();
 }
 

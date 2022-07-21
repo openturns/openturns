@@ -2,7 +2,7 @@
 /**
  *  @brief SquareMatrix implements the classical mathematical square matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -206,6 +206,16 @@ SquareMatrix::ComplexCollection SquareMatrix::computeEV(SquareComplexMatrix & v,
     const Bool keepIntact)
 {
   return getImplementation()->computeEVSquare(*(v.getImplementation()), keepIntact);
+}
+
+/* Compute the largest eigenvalue module using power iterations */
+Scalar SquareMatrix::computeLargestEigenValueModule(const UnsignedInteger maximumIterations,
+    const Scalar epsilon) const
+{
+  Scalar maximumModule = 0.0;
+  const Bool found = getImplementation()->computeLargestEigenValueModuleSquare(maximumModule, maximumIterations, epsilon);
+  if (!found) throw InternalException(HERE) << "Could not reached a precision=" << epsilon << " using " << maximumIterations << " iterations. The approximation obtained is " << maximumModule;
+  return maximumModule;
 }
 
 /* Check if the matrix is diagonal */

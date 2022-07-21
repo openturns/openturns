@@ -2,7 +2,7 @@
 /**
  *  @brief KDTree structure to speed-up queries on large samples
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -338,7 +338,7 @@ void KDTree::insert(UnsignedInteger & inode,
                     const UnsignedInteger index,
                     const UnsignedInteger activeDimension)
 {
-  if (index >= points_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected an index less than " << points_.getSize() << ", got " << index;
+  if (!(index < points_.getSize())) throw InvalidArgumentException(HERE) << "Error: expected an index less than " << points_.getSize() << ", got " << index;
   // We are on a leaf
   if (inode == 0)
   {
@@ -355,6 +355,8 @@ void KDTree::insert(UnsignedInteger & inode,
 /* Get the index of the nearest neighbour of the given point */
 UnsignedInteger KDTree::query(const Point & x) const
 {
+  if (!points_.getSize())
+    throw InvalidArgumentException(HERE) << "Cannot query KDTree with no points";
   if (points_.getSize() == 1) return 0;
   Scalar smallestDistance = SpecFunc::MaxScalar;
   Point lowerBoundingBox(boundingBox_.getLowerBound());
@@ -369,7 +371,7 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const UnsignedInteger inode,
     Point & upperBoundingBox,
     const UnsignedInteger activeDimension) const
 {
-  if (inode == 0) throw NotDefinedException(HERE) << "Error: cannot find a nearest neighbour in an empty tree";
+  if (!(inode > 0)) throw NotDefinedException(HERE) << "Error: cannot find a nearest neighbour in an empty tree";
   // Set delta = x[activeDimension] - points_(tree_[3*inode], activeDimension)
   // sameSide = tree_(inode,  0) if delta < 0, tree_[3*inode+2] else
   // oppositeSide = tree_[3*inode+2] if delta < 0, tree_(inode,  0) else

@@ -2,7 +2,7 @@
 /**
  *  @brief The CompositeDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -66,7 +66,7 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   , values_(0)
   , probabilities_(0)
   , increasing_(0)
-  , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
+  , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon") * (antecedent.getRange().getUpperBound()[0] - antecedent.getRange().getLowerBound()[0]), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
 {
   // We don't know if the function is thread-safe and it could be called in parallel in computePDF()
   setParallel(false);
@@ -87,7 +87,7 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   , values_(values)
   , probabilities_(0)
   , increasing_(0)
-  , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
+  , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon") * (antecedent.getRange().getUpperBound()[0] - antecedent.getRange().getLowerBound()[0]), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
 {
   // We don't know if the function is thread-safe and it could be called in parallel in computePDF()
   setParallel(false);

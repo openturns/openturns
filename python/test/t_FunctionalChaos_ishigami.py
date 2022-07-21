@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 from math import *
 
@@ -58,9 +57,6 @@ try:
     # Second, the most used (and most basic!) strategy
     listAdaptiveStrategy.append(
         FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)))
-    # Third, a slight enhancement with respect to the basic strategy
-    listAdaptiveStrategy.append(
-        SequentialStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree // 2), False))
 
     for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         adaptiveStrategy = listAdaptiveStrategy[adaptiveStrategyIndex]
@@ -173,6 +169,13 @@ try:
             value = sensitivity.getSobolGroupedIndex(indices)
             print("Sobol grouped index ", indices, "=%.8f" %
                   value, "absolute error=%.10f" % fabs(value - sob_3[0]))
+            indices = Indices(3)
+            indices[0] = 0
+            indices[1] = 1
+            indices[2] = 2
+            value = sensitivity.getSobolGroupedTotalIndex(indices)
+            print("Sobol grouped total index ", indices, "=%.8f" %
+                  value, "absolute error=%.10f" % fabs(value - 1.))
 
 except:
     import sys

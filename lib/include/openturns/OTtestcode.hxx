@@ -2,7 +2,7 @@
 /**
  *  @brief The header file that declares exit codes for tests
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,9 +32,12 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/OStream.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/Matrix.hxx"
 #include "openturns/PlatformInfo.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/TBB.hxx"
 
-#define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); }
+#define TESTPREAMBLE { OT::TBB::Enable(); }
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -184,7 +187,7 @@ void showClassName()
 /**
  * @fn checkConstructorAndDestructor()
  *
- * Try to instanciate an object and delete it. This method tests the
+ * Try to instantiate an object and delete it. This method tests the
  * default constructor and the destructor ot the class.
  */
 template <class T>
@@ -201,7 +204,7 @@ void checkConstructorAndDestructor()
 /**
  * @fn checkCopyConstructor()
  *
- * Try to instanciate an object and copy-construct it.
+ * Try to instantiate an object and copy-construct it.
  */
 template <class T>
 void checkCopyConstructor()
@@ -212,7 +215,7 @@ void checkCopyConstructor()
   // Call the default constructor
   T anObject;
 
-  // Call the copy-contructor
+  // Call the copy-constructor
   T anCopiedObject( anObject );
 }
 
@@ -293,38 +296,97 @@ void checkClassWithClassName()
 }
 
 
-inline void assert_almost_equal(Scalar a, Scalar b, Scalar rtol = 1.0e-5, Scalar atol = 1.0e-8)
+inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
-  if (std::abs(a - b) > atol + rtol * std::abs(b) )
+  if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b))
+    throw TestFailed(OSS() << "Value a: " << a << " or b: " << b << " are invalid " << errMsg);
+  if (std::abs(a - b) > atol + rtol * std::abs(b))
   {
-    throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b);
+    throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);
   }
 }
 
-
-inline void assert_almost_equal(const Point & a, const Point & b, Scalar rtol = 1.0e-5, Scalar atol = 1.0e-8)
+inline void assert_almost_equal(const Indices &a, const Indices &b, const String errMsg = "")
 {
+  if (a.getSize() != b.getSize())
+    throw InvalidArgumentException(HERE) << "A and B must have the same size " << a.getSize() << " vs " << b.getSize();
+  const UnsignedInteger size = a.getSize();
+  for (UnsignedInteger j = 0; j < size; ++j)
+  {
+    assert_almost_equal(a[j], b[j], 0, 0, errMsg);
+  }
+}
+
+inline void assert_almost_equal(const Point & a, const Point & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  if (a.getDimension() != b.getDimension())
+    throw InvalidArgumentException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
   const UnsignedInteger dimension = a.getDimension();
-  for (UnsignedInteger j = 0; j < dimension; ++ j )
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    assert_almost_equal(a[j], b[j], rtol, atol);
+    assert_almost_equal(a[j], b[j], rtol, atol, errMsg);
   }
 }
 
 
-inline void assert_almost_equal(const Sample & a, const Sample & b, Scalar rtol = 1.0e-5, Scalar atol = 1.0e-8)
+inline void assert_almost_equal(const Sample & a, const Sample & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
+  if (a.getSize() != b.getSize())
+    throw InvalidArgumentException(HERE) << "A and B must have the same size " << a.getSize() << " vs " << b.getSize();
+  if (a.getDimension() != b.getDimension())
+    throw InvalidArgumentException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
   const UnsignedInteger size = a.getSize();
   const UnsignedInteger dimension = a.getDimension();
-  for ( UnsignedInteger i = 0; i < size; ++ i )
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    for (UnsignedInteger j = 0; j < dimension; ++ j )
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      assert_almost_equal(a[i][j], b[i][j], rtol, atol);
+      assert_almost_equal(a(i, j), b(i, j), rtol, atol, errMsg);
     }
   }
 }
 
+inline void assert_almost_equal(const Matrix &a, const Matrix &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  if (a.getNbRows() != b.getNbRows())
+    throw InvalidArgumentException(HERE) << "A and B must have the same row number " << a.getNbRows() << " vs " << b.getNbRows();
+  if (a.getNbColumns() != b.getNbColumns())
+    throw InvalidArgumentException(HERE) << "A and B must have the same column number " << a.getNbColumns() << " vs " << b.getNbColumns();
+  const UnsignedInteger rows = a.getNbRows();
+  const UnsignedInteger columns = a.getNbColumns();
+
+  for (UnsignedInteger j = 0; j < columns; ++ j)
+  {
+    for (UnsignedInteger i = 0; i < rows; ++ i)
+    {
+      assert_almost_equal(a(i, j), b(i, j), rtol, atol, errMsg);
+    }
+  }
+}
+
+inline void assert_almost_equal(const SymmetricMatrix &a, const SymmetricMatrix &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  if (a.getDimension() != b.getDimension())
+    throw InvalidArgumentException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
+  const UnsignedInteger dimension = a.getDimension();
+
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+  {
+    for (UnsignedInteger i = j; i < dimension; ++i)
+    {
+      assert_almost_equal(a(i, j), b(i, j), rtol, atol, errMsg);
+    }
+  }
+}
+
+template <typename T>
+void assert_equal(const T & a, const T & b, const String errMsg = "")
+{
+  if (a != b)
+  {
+    throw TestFailed(OSS() << "Value " << a << " is not equal to " << b << " " << errMsg);
+  }
+}
 
 } /* namespace Test */
 

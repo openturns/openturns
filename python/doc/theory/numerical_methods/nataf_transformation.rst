@@ -56,7 +56,7 @@ where :math:`\mat{D}` is the diagonal matrix
 :math:`\mat{\diag{\sigma_i}}` with :math:`\sigma_i=\sqrt{\Sigma_{ii}}`
 and :math:`R_{ij}=\frac{\Sigma_{ij}}{\sqrt{\Sigma_{ii}\Sigma_{jj}}}`.
 
-With a specific choice of normalisation for :math:`\psi`, in the case
+With a specific choice of normalization for :math:`\psi`, in the case
 of finite second moment, the covariance matrix of :math:`\vect{X}` is
 :math:`\mat{\Sigma}` and :math:`\mat{R}` is then its linear
 correlation matrix. The matrix :math:`\mat{R}` is always well-defined,

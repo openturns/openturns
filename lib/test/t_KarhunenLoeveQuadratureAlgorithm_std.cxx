@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class KarhunenLoeveQuadratureAlgorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,12 +43,12 @@ int main(int, char *[])
       functions[index] = basis.build(index);
     LHSExperiment experiment(basis.getMeasure(), 100);
     Bool mustScale = false;
-    Scalar threshold = 0.0001;
+    Scalar threshold = 1e-4;
     AbsoluteExponential model(Point(dim, 1.0));
     KarhunenLoeveQuadratureAlgorithm algo(domain, domain, model, experiment, functions, mustScale, threshold);
     algo.run();
     KarhunenLoeveResult result(algo.getResult());
-    Point lambda(result.getEigenValues());
+    Point lambda(result.getEigenvalues());
     ProcessSample KLModes(result.getModesAsProcessSample());
     fullprint << "KL modes=" << KLModes << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -66,7 +66,29 @@ int main(int, char *[])
       algo = KarhunenLoeveQuadratureAlgorithm(domain, domain, model, marginalDegree, threshold);
       algo.run();
       result = algo.getResult();
-      lambda = result.getEigenValues();
+      lambda = result.getEigenvalues();
+      KLModes = result.getModesAsProcessSample();
+      // Due to symmetry many results can have a sign switch depending on the CPU/compiler/BLAS used
+      // fullprint << "KL modes=" << KLModes << std::endl;
+      fullprint << "KL eigenvalues=" << lambda << std::endl;
+      coefficients = result.project(sample);
+      // fullprint << "KL coefficients=" << coefficients << std::endl;
+      KLFunctions = result.getModes();
+      // fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
+      Function lifted(result.lift(coefficients[0]));
+      // fullprint << "KL lift=" << lifted.__str__() << std::endl;
+      Field liftedAsField(result.liftAsField(coefficients[0]));
+      // fullprint << "KL lift as field=" << liftedAsField << std::endl;
+    }
+    // Now using Legendre/Gauss quadrature + trunk
+    {
+      UnsignedInteger marginalDegree = 5;
+      threshold = 0.0;
+      algo = KarhunenLoeveQuadratureAlgorithm(domain, domain, model, marginalDegree, threshold);
+      algo.setNbModes(3);
+      algo.run();
+      result = algo.getResult();
+      lambda = result.getEigenvalues();
       KLModes = result.getModesAsProcessSample();
       // Due to symmetry many results can have a sign switch depending on the CPU/compiler/BLAS used
       // fullprint << "KL modes=" << KLModes << std::endl;

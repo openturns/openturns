@@ -2,7 +2,7 @@
 /**
  *  @brief Results of distribution estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ public:
                             const Distribution & parameterDistribution);
 
   /** Virtual constructor */
-  virtual DistributionFactoryResult * clone() const;
+  DistributionFactoryResult * clone() const override;
 
   /** Accessor to the estimated distribution */
   void setDistribution(const Distribution & distribution);
@@ -54,13 +54,13 @@ public:
   Distribution getParameterDistribution() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

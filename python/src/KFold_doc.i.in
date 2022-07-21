@@ -1,15 +1,10 @@
 %feature("docstring") OT::KFold
 "K-fold.
 
-Available constructors:
-    KFold()
-
-    KFold(*k*)
-
 Parameters
 ----------
 k : positive integer
-    Number of folds in which the sample is splitted. If not provided, default is
+    Number of folds in which the sample is split. If not provided, default is
     :math:`k = 10`.
 
 See also
@@ -20,7 +15,7 @@ Notes
 -----
 KFold inherits from :class:`~openturns.FittingAlgorithm`.
 
-This class is not usable because it has sense only whithin the
+This class is not usable on its own because it has sense only within the
 :class:`~openturns.FunctionalChaosAlgorithm`."
 
 // ---------------------------------------------------------------------
@@ -31,7 +26,7 @@ This class is not usable because it has sense only whithin the
 Returns
 -------
 k : integer
-    Number of folds in which the sample is splitted."
+    Number of folds in which the sample is split."
 
 // ---------------------------------------------------------------------
 
@@ -41,4 +36,4 @@ k : integer
 Parameters
 ----------
 k : integer
-    Number of folds in which the sample is splitted."
+    Number of folds in which the sample is split."

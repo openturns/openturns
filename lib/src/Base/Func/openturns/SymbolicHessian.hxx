@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the Hessian of analytical functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ public:
   SymbolicHessian();
 
   /** Default constructor */
-  SymbolicHessian(const SymbolicEvaluation & evaluation);
+  explicit SymbolicHessian(const SymbolicEvaluation & evaluation);
 
 #ifndef SWIG
   /** Parameters constructor */
@@ -51,18 +51,18 @@ public:
 #endif
 
   /** Virtual constructor */
-  virtual SymbolicHessian * clone() const;
+  SymbolicHessian * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const SymbolicHessian & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   using HessianImplementation::hessian;
-  SymmetricTensor hessian(const Point & inP) const;
+  SymmetricTensor hessian(const Point & inP) const override;
 
   /** Accessor to a specific formula */
   String getFormula(const UnsignedInteger i,
@@ -70,22 +70,22 @@ public:
                     const UnsignedInteger k) const;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Get the i-th marginal function */
-  Hessian getMarginal(const UnsignedInteger i) const;
+  Hessian getMarginal(const UnsignedInteger i) const override;
 
   /** Get the function corresponding to indices components */
-  Hessian getMarginal(const Indices & indices) const;
+  Hessian getMarginal(const Indices & indices) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

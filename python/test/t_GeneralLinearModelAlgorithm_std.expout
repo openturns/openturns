@@ -7,7 +7,12 @@ trend (dirac, optimized)= [[-0.1109,1.015]]
 
 
 covariance (dirac, not optimized)= DiracCovarianceModel(t)=[[ 1 ]] * t==[0]
-trend (dirac, not optimized)= [[6.892,2.373]]
+trend (dirac, not optimized)= [[-0.1109,1.015]]
+===================================================
+
+
+covariance (dirac, not optimized)= DiracCovarianceModel(t)=[[ 1 ]] * t==[0]
+trend (dirac, not optimized)= [[-0.1109,1.015]]
 ===================================================
 
 

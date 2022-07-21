@@ -2,7 +2,7 @@
 /**
  *  @brief The Epanechnikov distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/Beta.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -88,35 +89,44 @@ Point Epanechnikov::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-Scalar Epanechnikov::computePDF(const Point & point) const
+Scalar Epanechnikov::computePDF(const Scalar x) const
 {
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  const Scalar x = point[0];
   if ((x <= -1.0) || (x > 1.0)) return 0.0;
   return 0.75 * (1.0 + x) * (1.0 - x);
 }
 
-
-/* Get the CDF of the distribution */
-Scalar Epanechnikov::computeCDF(const Point & point) const
+Scalar Epanechnikov::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computePDF(point[0]);
+}
 
-  const Scalar x = point[0];
+
+/* Get the CDF of the distribution */
+Scalar Epanechnikov::computeCDF(const Scalar x) const
+{
   if (x <= -1.0) return 0.0;
   if (x >= 1.0) return 1.0;
   return 0.5 + x * (0.75 - 0.25 * x * x);
 }
 
-Scalar Epanechnikov::computeComplementaryCDF(const Point & point) const
+Scalar Epanechnikov::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computeCDF(point[0]);
+}
 
-  const Scalar x = point[0];
+Scalar Epanechnikov::computeComplementaryCDF(const Scalar x) const
+{
   if (x <= -1.0) return 1.0;
   if (x > 1.0) return 0.0;
   return 0.5 - x * (0.75 - 0.25 * x * x);
+}
+
+Scalar Epanechnikov::computeComplementaryCDF(const Point & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computeComplementaryCDF(point[0]);
 }
 
 /** Get the PDFGradient of the distribution */
@@ -188,6 +198,12 @@ Point Epanechnikov::getStandardMoment(const UnsignedInteger n) const
 {
   if (n % 2 == 1) return Point(1, 0.0);
   return Point(1, 3.0 / (3.0 + n * (4.0 + n)));
+}
+
+/* Get the standard representative in the parametric family, associated with the standard moments */
+Distribution Epanechnikov::getStandardRepresentative() const
+{
+  return new Beta(2.0, 2.0, -1.0, 1.0);
 }
 
 /* Compute the covariance of the distribution */

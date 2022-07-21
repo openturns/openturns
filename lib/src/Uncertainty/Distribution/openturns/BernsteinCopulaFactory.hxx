@@ -3,7 +3,7 @@
  *  @brief This class implements a non parametric density estimator for copulas
  *         based on the Bernstein copula approximation of the empirical copula
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,13 +46,13 @@ public:
   BernsteinCopulaFactory();
 
   /** Virtual constructor */
-  virtual BernsteinCopulaFactory * clone() const;
+  BernsteinCopulaFactory * clone() const override;
 
   /** Build a Bernstein copula based on the given sample. The bin number is computed according to the inverse power rule */
   using DistributionFactoryImplementation::build;
-  virtual Distribution build() const;
+  Distribution build() const override;
 
-  virtual Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample) const override;
 
   virtual Distribution build(const Sample & sample,
                              const String & method,
@@ -84,13 +84,12 @@ public:
       const Function & f,
       const Scalar alpha = ResourceMap::GetAsScalar("BernsteinCopulaFactory-alpha"));
 
+private:
   /** Build all the learning/validation partitions of the given sample */
   static void BuildCrossValidationSamples(const Sample & sample,
                                           const UnsignedInteger kFraction,
                                           Collection<Sample> & learningCollection,
                                           Collection<Sample> & validationCollection);
-
-private:
 
   /** Find the best bin number using an exhaustive search between two bounds given throug ResourceMap, or between 1 and size/2 if the bounds are in reverse order */
   static UnsignedInteger FindBestBinNumberSequential(const Function & mObjective,

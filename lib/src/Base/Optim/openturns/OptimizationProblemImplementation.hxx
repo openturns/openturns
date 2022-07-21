@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationProblemImplementation allows to describe an optimization problem
+ *  @brief OptimizationProblemImplementation allows one to describe an optimization problem
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class OptimizationProblemImplementation
- * OptimizationProblemImplementation allows to describe an optimization problem
+ * OptimizationProblemImplementation allows one to describe an optimization problem
  */
 
 class OT_API OptimizationProblemImplementation
@@ -40,6 +40,17 @@ class OT_API OptimizationProblemImplementation
   CLASSNAME
 
 public:
+
+  /** enum and typedef declarations */
+  typedef Collection<UnsignedInteger>           BoolCollection;
+  typedef PersistentCollection<UnsignedInteger> BoolPersistentCollection;
+
+  enum VariableType
+  {
+    CONTINUOUS,
+    BINARY,
+    INTEGER
+  };
 
   /** Default constructor */
   OptimizationProblemImplementation();
@@ -54,7 +65,7 @@ public:
                                     const Interval & bounds);
 
   /** Virtual constructor */
-  virtual OptimizationProblemImplementation * clone() const;
+  OptimizationProblemImplementation * clone() const override;
 
   /** Objective functions accessor */
   Function getObjective() const;
@@ -94,17 +105,22 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Minimization accessor */
-  void setMinimization(Bool minimization);
-  Bool isMinimization() const;
+  void setMinimization(Bool minimization, UnsignedInteger marginalIndex = 0);
+  Bool isMinimization(UnsignedInteger marginalIndex = 0) const;
+
+  /** Variable types accessors */
+  void setVariablesType(const Indices & variableType);
+  Indices getVariablesType() const;
+  Bool isContinuous() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   // The objective function
@@ -119,11 +135,15 @@ protected:
   // The bounds
   Interval bounds_;
 
-  // Minimization problem
-  Bool minimization_;
+  // Minimization flags
+  BoolPersistentCollection minimizationCollection_;
 
   // The dimension of the search space
-  UnsignedInteger dimension_;
+  UnsignedInteger dimension_ = 0;
+
+  // The type of the variables
+  Indices variablesType_;
+
 } ; /* class OptimizationProblemImplementation */
 
 

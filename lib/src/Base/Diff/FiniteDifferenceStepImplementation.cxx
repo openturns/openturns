@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of finite difference step
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,7 +57,7 @@ void FiniteDifferenceStepImplementation::setEpsilon(const Point & epsilon)
   const UnsignedInteger dimension = epsilon.getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    if (epsilon[i] < SpecFunc::MinScalar ) throw InvalidArgumentException(HERE) << "Null epsilon for component " << i;
+    if (!(epsilon[i] >= SpecFunc::MinScalar)) throw InvalidArgumentException(HERE) << "Null epsilon for component " << i;
   }
   epsilon_ = epsilon;
 }

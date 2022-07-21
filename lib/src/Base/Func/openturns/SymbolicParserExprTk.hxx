@@ -2,7 +2,7 @@
 /**
  *  @brief A math expression parser
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,7 @@ class SymbolicParserExprTk
 {
 
   CLASSNAME
-
+  friend struct SymbolicParserExprTkPolicy;
 public:
   /** Default constructor */
   SymbolicParserExprTk();
@@ -47,24 +47,34 @@ public:
   explicit SymbolicParserExprTk(const Description & outputVariablesNames);
 
   /** Virtual copy constructor */
-  virtual SymbolicParserExprTk * clone() const;
+  SymbolicParserExprTk * clone() const override;
 
-  Point operator()(const Point & inP) const;
-  Sample operator()(const Sample & inS) const;
+  Point operator()(const Point & inP) const override;
+  Sample operator()(const Sample & inS) const override;
 
   /* Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /* Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   void initialize() const;
 
+  typedef Collection< Pointer< exprtk::expression<Scalar> > > ExpressionCollection;
+  ExpressionCollection allocateExpressions(Point & stack) const;
+
+  // expression for single evaluation
   mutable Collection< Pointer< exprtk::expression<Scalar> > > expressions_;
-  mutable Point inputStack_;
+  mutable Point stack_;
+
+  // one expression per thread for batch evaluation
+  mutable Collection<ExpressionCollection> threadExpressions_;
+  mutable Collection<Point> threadStack_;
+
   Description outputVariablesNames_;
 
+  UnsignedInteger smallSize_ = 0;
 };
 
 END_NAMESPACE_OPENTURNS

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for Discrete distributions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,41 +42,40 @@ public:
   /** Default constructor */
   DiscreteDistribution();
 
-
   /** Virtual constructor */
-  virtual DiscreteDistribution * clone() const;
+  DiscreteDistribution * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const DiscreteDistribution & other) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
-  virtual Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
   virtual Scalar computePDF(const Indices & point) const;
 
   /* Methods inherited from upper classes */
 
   /** Tell if the distribution is continuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
   /** Tell if the distribution is discrete */
-  Bool isDiscrete() const;
+  Bool isDiscrete() const override;
 
   /** Tell if the distribution is integer valued */
-  Bool isIntegral() const;
+  Bool isIntegral() const override;
 
   /** Support tolerance accessor */
   void setSupportEpsilon(const Scalar epsilon);
   Scalar getSupportEpsilon() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Tolerance to say if a point is in the support of the distribution */

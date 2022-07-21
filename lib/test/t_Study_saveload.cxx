@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Study for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -90,6 +90,21 @@ int main(int, char *[])
       Os::Remove(fileName);
     }
 
+    // Create a Study Object by giving its name and compression level
+    {
+      Study study(fileName, 5);
+      Point point(2, 1.0);
+      study.add("point", point);
+      study.save();
+      Study study2(fileName);
+      study2.load();
+      Point point2;
+      study2.fillObject("point", point2);
+
+      // cleanup
+      Os::Remove(fileName);
+    }
+
     // Create a Study Object
     Study study;
     study.setStorageManager(XMLStorageManager(fileName));
@@ -150,7 +165,7 @@ int main(int, char *[])
     // Add a Staircase
     Staircase staircase;
     {
-      // Instanciate one distribution object
+      // Instantiate one distribution object
       UnsignedInteger dim = 1;
       Point meanPoint(dim, 1.0);
       meanPoint[0] = 0.5;
@@ -159,7 +174,7 @@ int main(int, char *[])
       CorrelationMatrix R = IdentityMatrix(dim);
       Normal distribution1(meanPoint, sigma, R);
 
-      // Instanciate another distribution object
+      // Instantiate another distribution object
       meanPoint[0] = -1.5;
       sigma[0] = 4.0;
       Normal distribution2(meanPoint, sigma, R);
@@ -201,14 +216,14 @@ int main(int, char *[])
     study.add("staircase", staircase);
 
     // Create a Simulation::Result
-    ProbabilitySimulationResult simulationResult(Event(), 0.5, 0.01, 150, 4);
+    ProbabilitySimulationResult simulationResult(ThresholdEvent(), 0.5, 0.01, 150, 4);
     simulationResult.setName("probabilitySimulationResult");
     study.add("probabilitySimulationResult", simulationResult);
 
     Arcsine arcsine(5.2, 11.6);
     study.add("arcsine", arcsine);
 
-    Beta beta(3.0, 5.0, -1.0, 4.0);
+    Beta beta(3.0, 2.0, -1.0, 4.0);
     study.add("beta", beta);
 
     Chi chi(1.5);
@@ -244,14 +259,14 @@ int main(int, char *[])
     IndependentCopula independentCopula(5);
     study.add("independentCopula", independentCopula);
 
-    InverseNormal inverseNormal(0.5, 2.0);
+    InverseNormal inverseNormal(2.0, 0.5);
     study.add("inverseNormal", inverseNormal);
 
     KernelSmoothing kernelSmoothing;
     kernelSmoothing.build(independentCopula.getSample(20));
     study.add("kernelSmoothing", kernelSmoothing);
 
-    Laplace laplace(1.0 / 1.5, 0.5);
+    Laplace laplace(0.5, 1.0 / 1.5);
     study.add("laplace", laplace);
 
     Logistic logistic(0.5, 1.5);
@@ -299,9 +314,9 @@ int main(int, char *[])
     UserDefined userDefined(x, p);
     study.add("userDefined", userDefined);
 
-    // Create a Weibull distribution
-    Weibull weibull(2.0, 1.5, -0.5);
-    study.add("weibull", weibull);
+    // Create a WeibullMin distribution
+    WeibullMin weibull(2.0, 1.5, -0.5);
+    study.add("weibullMin", weibull);
 
     // Create a NormalCopula distribution
     CorrelationMatrix R(3);
@@ -340,17 +355,14 @@ int main(int, char *[])
     study.add("analytical", analytical);
 
     // Create an Event Object
-    Event event;
+    ThresholdEvent event;
     {
-      Point point(3);
-      point[0] = 101;
-      point[1] = 202;
-      point[2] = 303;
-      ConstantRandomVector vect(point);
+      const Point mu = {101, 202, 303};
+      RandomVector vect(Normal(mu, Point(3, 1e-6), CorrelationMatrix(3)));
       CompositeRandomVector output(analytical.getMarginal(0), vect);
-      event = Event (output, Less(), 50);
+      event = ThresholdEvent(output, Less(), 50);
     }
-    study.add("event", event);
+    study.add("randomVector", event);
 
     // Create a StandardEvent Object
     StandardEvent standardEvent(event);
@@ -445,7 +457,7 @@ int main(int, char *[])
       input3.setName("input");
       CompositeRandomVector output3(model, input3);
       output3.setName("output");
-      Event event(output3, Greater(), 1.0);
+      ThresholdEvent event(output3, Greater(), 1.0);
       event.setName("failureEvent");
       Point designPoint(2, 0.0);
       designPoint[0] = 1.0;
@@ -459,10 +471,10 @@ int main(int, char *[])
       sormResult = SORMResult (Point(2, 1.0), event, false);
       sormResult.setName("sormResult");
       sormResult.getEventProbabilityBreitung();
-      sormResult.getEventProbabilityHohenBichler();
+      sormResult.getEventProbabilityHohenbichler();
       sormResult.getEventProbabilityTvedt();
       sormResult.getGeneralisedReliabilityIndexBreitung();
-      sormResult.getGeneralisedReliabilityIndexHohenBichler();
+      sormResult.getGeneralisedReliabilityIndexHohenbichler();
       sormResult.getGeneralisedReliabilityIndexTvedt();
     }
     study.add("formResult", formResult);
@@ -684,8 +696,8 @@ int main(int, char *[])
     }
     study.add("domain", domain);
 
-    // Create an EventDomain
-    EventDomain eventDomain;
+    // Create an DomainEvent
+    DomainEvent eventDomain;
     {
       UnsignedInteger dim = 2;
       Normal distribution(dim);
@@ -695,21 +707,21 @@ int main(int, char *[])
       SymbolicFunction model(inVars, inVars);
       CompositeRandomVector Y(model, X);
       Interval domain(dim);
-      eventDomain = EventDomain(Y, domain);
+      eventDomain = DomainEvent(Y, domain);
     }
-    study.add("eventDomain", eventDomain);
+    study.add("domainEvent", eventDomain);
 
-    // Create an EventProcess
-    EventProcess eventProcess;
+    // Create an ProcessEvent
+    ProcessEvent eventProcess;
     {
       UnsignedInteger dim = 2;
       Normal distribution(dim);
 
       WhiteNoise X(distribution);
       Interval domain(dim);
-      eventProcess = EventProcess(X, domain);
+      eventProcess = ProcessEvent(X, domain);
     }
-    study.add("eventProcess", eventProcess);
+    study.add("processEvent", eventProcess);
 
     // Create a ConstantStep
     ConstantStep constantStep;
@@ -934,7 +946,7 @@ int main(int, char *[])
       RegularGrid timeGrid(0.0, 0.1, size);
       {
         const UnsignedInteger collectionSize = size * (size + 1) / 2;
-        UserDefinedCovarianceModel::CovarianceMatrixCollection covarianceCollection(collectionSize);
+        UserDefinedStationaryCovarianceModel::SquareMatrixCollection covarianceCollection(collectionSize);
         CovarianceMatrix covariance(size);
         UnsignedInteger k = 0;
         for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
@@ -951,7 +963,7 @@ int main(int, char *[])
         userDefinedCovarianceModel = UserDefinedCovarianceModel(timeGrid, covariance);
       }
       {
-        UserDefinedStationaryCovarianceModel::CovarianceMatrixCollection covarianceCollection(size);
+        UserDefinedStationaryCovarianceModel::SquareMatrixCollection covarianceCollection(size);
         for (UnsignedInteger i = 0; i < size; ++i)
         {
           const Scalar t = timeGrid.getValue(i);
@@ -1014,7 +1026,7 @@ int main(int, char *[])
     compare<OptimizationAlgorithm >( tnc, study2, "tnc" );
 
     // Model
-    compare<Event >( event, study2 );
+    //compare<RandomVector >( event, study2 );
     compare<StandardEvent >( standardEvent, study2 );
 
     // Distribution
@@ -1050,7 +1062,7 @@ int main(int, char *[])
     compare<TruncatedNormal>(truncatedNormal, study2 );
     compare<Uniform >( uniform, study2 );
     compare<UserDefined>(userDefined, study2 );
-    compare<Weibull>(weibull, study2 );
+    compare<WeibullMin>(weibull, study2 );
 
     // Simulation
     compare<ProbabilitySimulationAlgorithm>(monteCarlo, study2 );
@@ -1079,8 +1091,8 @@ int main(int, char *[])
     compare<SpectralGaussianProcess >( spectralGaussianProcess, study2 );
     compare<GaussianProcess >( gaussianProcess, study2 );
     compare<Domain >( domain, study2 );
-    compare<EventDomain >( eventDomain, study2 );
-    compare<EventProcess >( eventProcess, study2 );
+    compare<DomainEvent >( eventDomain, study2 );
+    compare<ProcessEvent >( eventProcess, study2 );
     compare<ConstantStep >( constantStep, study2 );
     compare<BlendedStep >( blendedStep, study2 );
     compare<FunctionalBasisProcess >( functionalBasisProcess, study2 );

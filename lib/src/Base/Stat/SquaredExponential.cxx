@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,27 +31,27 @@ static const Factory<SquaredExponential> Factory_SquaredExponential;
 
 /* Default constructor */
 SquaredExponential::SquaredExponential(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("SquaredExponential-DefaultTheta")), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, ResourceMap::GetAsScalar("SquaredExponential-DefaultTheta")), Point(1, 1.0))
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 SquaredExponential::SquaredExponential(const Point & scale)
-  : StationaryCovarianceModel(scale, Point(1, 1.0))
+  : CovarianceModelImplementation(scale, Point(1, 1.0))
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 SquaredExponential::SquaredExponential(const Point & scale,
                                        const Point & amplitude)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
+  isStationary_ = true;
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In SquaredExponential::SquaredExponential, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";
-  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
@@ -61,16 +61,20 @@ SquaredExponential * SquaredExponential::clone() const
 }
 
 /* Computation of the covariance function */
-Scalar SquaredExponential::computeStandardRepresentative(const Point & tau) const
+Scalar SquaredExponential::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar tauOverTheta2 = tauOverTheta.normSquare();
-  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
+  Scalar tauOverTheta2 = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    tauOverTheta2 += dx * dx;
+  }
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-0.5 * tauOverTheta2);
 }
 
-Scalar SquaredExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+Scalar SquaredExponential::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar tauOverTheta2 = 0;
@@ -81,7 +85,20 @@ Scalar SquaredExponential::computeStandardRepresentative(const Collection<Scalar
     const Scalar dx = (*s_it - *t_it) / scale_[i];
     tauOverTheta2 += dx * dx;
   }
-  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-0.5 * tauOverTheta2);
+}
+
+Scalar SquaredExponential::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar tauOverTheta2 = tau * tau / (scale_[0]  * scale_[0]);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-0.5 * tauOverTheta2);
 }
 
 /* Gradient */
@@ -127,13 +144,13 @@ String SquaredExponential::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void SquaredExponential::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SquaredExponential::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

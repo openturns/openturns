@@ -2,7 +2,7 @@
 /**
  *  @brief Canonical tensor representation and evaluation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,8 @@
 #include "openturns/OrthogonalUniVariateFunctionFamily.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/UniVariateFunction.hxx"
+#include "openturns/UniVariateFunctionEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,7 +37,9 @@ public:
   typedef Collection<OrthogonalUniVariateFunctionFamily>           FunctionFamilyCollection;
   typedef PersistentCollection<OrthogonalUniVariateFunctionFamily> FunctionFamilyPersistentCollection;
   typedef Collection<Function>                                     FunctionCollection;
-  typedef PersistentCollection<Function>                           FunctionPersistentCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
+  typedef Collection<UniVariateFunction> UniVariateFunctionCollection;
+  typedef PersistentCollection<UniVariateFunction> UniVariateFunctionPersistentCollection;
 
   CanonicalTensorEvaluation();
 
@@ -44,14 +48,14 @@ public:
                             const UnsignedInteger rank = 1);
 
   /** Virtual constructor */
-  virtual CanonicalTensorEvaluation * clone() const;
+  CanonicalTensorEvaluation * clone() const override;
 
   /** Evaluation operator */
-  virtual Point operator() (const Point & point) const;
+  Point operator() (const Point & point) const override;
 
   /** Dimension accessor */
-  virtual UnsignedInteger getInputDimension() const;
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getInputDimension() const override;
+  UnsignedInteger getOutputDimension() const override;
 
   Indices getDegrees() const;
 
@@ -68,14 +72,14 @@ public:
   CanonicalTensorEvaluation getMarginalRank(const UnsignedInteger i) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   // subbasis sizes
@@ -86,6 +90,9 @@ protected:
 
   PersistentCollection<FunctionPersistentCollection> basis_;
 
+  // Attribute is used internally for the evaluation of operator
+  // It avoids creation of useless Points
+  UniVariateFunctionPersistentCollection univariateBasis_;
 };
 
 

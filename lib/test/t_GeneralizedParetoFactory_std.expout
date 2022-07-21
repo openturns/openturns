@@ -1,16 +1,16 @@
-Distribution          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=-0.75
-Estimated distribution=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.431 xi=-0.7464
-GeneralizedPareto          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=-0.75
-Estimated generalizedPareto=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.431 xi=-0.7464
-Distribution          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0
-Estimated distribution=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.498 xi=0.01582
-GeneralizedPareto          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0
-Estimated generalizedPareto=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.498 xi=0.01582
-Distribution          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0.75
-Estimated distribution=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.592 xi=0.7697
-GeneralizedPareto          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0.75
-Estimated generalizedPareto=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.592 xi=0.7697
-Default distribution=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1 xi=0
-Distribution from parameters=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0.75
-Default generalizedPareto=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1 xi=0
-GeneralizedPareto from parameters=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0.75
+Distribution          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=-0.75 u=0.5
+Estimated distribution=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.431 xi=-0.7464 u=0.5002
+GeneralizedPareto          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=-0.75 u=0.5
+Estimated generalizedPareto=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.431 xi=-0.7464 u=0.5002
+Distribution          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0 u=0.5
+Estimated distribution=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.498 xi=0.01582 u=0.5002
+GeneralizedPareto          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0 u=0.5
+Estimated generalizedPareto=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.498 xi=0.01582 u=0.5002
+Distribution          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0.75 u=0.5
+Estimated distribution=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.592 xi=0.7697 u=0.5
+GeneralizedPareto          =class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0.75 u=0.5
+Estimated generalizedPareto=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.592 xi=0.7697 u=0.5
+Default distribution=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1 xi=0 u=0
+Distribution from parameters=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0.75 u=0.5
+Default generalizedPareto=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1 xi=0 u=0
+GeneralizedPareto from parameters=class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=2.5 xi=0.75 u=0.5

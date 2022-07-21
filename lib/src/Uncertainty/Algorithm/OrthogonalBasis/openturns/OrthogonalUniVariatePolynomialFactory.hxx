@@ -2,7 +2,7 @@
 /**
  *  @brief This an abstract class for 1D polynomial factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,16 +55,16 @@ public:
   explicit OrthogonalUniVariatePolynomialFactory(const Distribution & measure);
 
   /** Virtual constructor */
-  virtual OrthogonalUniVariatePolynomialFactory * clone() const;
+  OrthogonalUniVariatePolynomialFactory * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** The method to get the polynomial of any degree. */
   OrthogonalUniVariatePolynomial build(const UnsignedInteger degree) const;
 
   /** Build the 3 terms recurrence coefficients up to the needed degree */
-  CoefficientsCollection buildRecurrenceCoefficientsCollection(const UnsignedInteger degree) const;
+  Sample buildRecurrenceCoefficientsCollection(const UnsignedInteger degree) const;
 
   /** Build the coefficients of the polynomial of the needed degree */
   Coefficients buildCoefficients(const UnsignedInteger degree) const;
@@ -80,10 +80,10 @@ public:
   Distribution getMeasure() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
   /** Calculate the coefficients of recurrence a0, a1, a2 such that
@@ -107,7 +107,7 @@ protected:
   mutable CoefficientsPersistentCollection coefficientsCache_;
 
   /** A cache to save already computed recurrence coefficients */
-  mutable CoefficientsPersistentCollection recurrenceCoefficientsCache_;
+  mutable Sample recurrenceCoefficientsCache_;
 
   /** A cache to save already computed polynomials */
   mutable OrthogonalUniVariatePolynomialCollection polynomialsCache_;

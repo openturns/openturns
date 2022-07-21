@@ -26,21 +26,20 @@ parametersSet : bool
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.SymbolicFunction(ot.Description.BuildDefault(4, 'x'),
-...                              ['x0', 'x0 + x1', 'x0 + x2 + x3'])
+>>> f = ot.SymbolicFunction(['x', 'y', 'z'], ['x+y', 'x*z+y'])
+>>> print(f)
+[x,y,z]->[x+y,x*z+y]
 
-Then create another function by setting x1=4 and x3=10:
+Then create another function by setting x=2 and y=3:
 
->>> g = ot.ParametricFunction(f, [3, 1], [10, 4])
+>>> g=ot.ParametricFunction(f, [0,1], [2,3])
+>>> print(g)
+ParametricEvaluation([x,y,z]->[x+y,x*z+y], parameters positions=[0,1], parameters=[x : 2, y : 3], input positions=[2])
+
+Or by setting z=4 using the complementary set flag:
+
+>>> g = ot.ParametricFunction(f, [0,1], [4], False)
 >>> print(g.getInputDescription())
-[x0,x2]
->>> print(g((1, 2)))
-[1,5,13]
-
-Or by setting x0=6 and x2=5 using the complementary set flag:
-
->>> g = ot.ParametricFunction(f, [3, 1], [6, 5], False)
->>> print(g.getInputDescription())
-[x3,x1]
->>> print(g((1, 2)))
-[6,8,12]"
+[x,y]
+>>> print(g)
+ParametricEvaluation([x,y,z]->[x+y,x*z+y], parameters positions=[2], parameters=[z : 4], input positions=[0,1])"

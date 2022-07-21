@@ -1,0 +1,148 @@
+%feature("docstring") OT::WeibullMinFactory
+"WeibullMin factory.
+
+See also
+--------
+DistributionFactory, WeibullMin
+
+Notes
+-----
+Several estimators to build a WeibullMin distribution from a scalar sample
+are proposed.
+
+**Moments based estimator:**
+
+Lets denote:
+
+- :math:`\displaystyle \overline{x}_n = \frac{1}{n} \sum_{i=1}^n x_i` the empirical
+  mean of the sample, 
+- :math:`\displaystyle s_n^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \overline{x}_n)^2`
+  its empirical variance
+
+The estimator :math:`(\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n)` of
+:math:`(\beta, \alpha, \gamma)` is defined by :
+
+.. math::
+    :label: weibullMin_moment
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \Hat{\gamma}_n & = & (1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}
+    \end{eqnarray*}
+
+    \begin{eqnarray*}
+       \overline{x}_n & = & \hat{\beta}_n \,\Gamma\left(1 + \frac{1}{\hat{\alpha}_n}\right)
+                       +  \hat{\gamma}_n \\
+        s_n^2 & = & \hat{\beta}_n^2 \left( \Gamma \left( 1 + \frac{2}{\hat{\alpha}_n} \right) -
+                     \Gamma^2 \left( 1 + \frac{1}{\hat{\alpha}_n} \right) \right)
+    \end{eqnarray*}
+
+
+**Maximum likelihood based estimator:**
+
+The following sums are defined by:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        S_0 &=&  \sum_{i=1}^n \frac{1}{x_i - \gamma} \\
+        S_1 &=&  \sum_{i=1}^n \log (x_i - \gamma) \\
+        S_2 &=&  \sum_{i=1}^n (x_i - \gamma)^{\alpha} \log (x_i - \gamma) \\
+        S_3 &=&  \sum_{i=1}^n (x_i - \gamma)^{\alpha}\\
+        S_4 &=&  \sum_{i=1}^n (x_i - \gamma)^{\alpha-1}
+    \end{eqnarray*}
+
+
+The Maximum Likelihood estimator of :math:`(\beta, \alpha, \gamma)` is 
+defined by :math:`(\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n)` verifying:
+
+.. math::
+    :label: wm_mll_estimator
+    :nowrap:
+
+    \begin{eqnarray*}
+        S_3(\hat{\alpha}_n,\hat{\gamma}_n) - n\hat{\beta}_n^{\hat{\alpha}_n} =  0 \\
+        \hat{\alpha}_n \left[S_0(\hat{\gamma}_n) - n\dfrac{S_4(\hat{\alpha}_n,\hat{\gamma}_n)}{S_3(\hat{\alpha}_n,\hat{\gamma}_n)} \right] - S_0(\hat{\gamma}_n) = 0 \\
+        S_0(\hat{\gamma}_n)(S_3(\hat{\alpha}_n,\hat{\gamma}_n)(n+S_1(\hat{\gamma}_n))-nS_2(\hat{\alpha}_n,\hat{\gamma}_n))-n^2S_4(\hat{\alpha}_n,\hat{\gamma}_n) = 0
+    \end{eqnarray*}
+"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::WeibullMinFactory::buildMethodOfLikelihoodMaximization
+"Method of likelihood maximization.
+
+Refer to :class:`~openturns.MaximumLikelihoodFactory`.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.WeibullMin`
+    The estimated distribution
+
+Notes
+-----
+The maximisation of the likelihood is initialized with the value of the estimator calculated with the method of moments.
+"
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::WeibullMinFactory::buildMethodOfMoments
+"Method of moments estimator.
+
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.WeibullMin`
+    The estimated distribution"
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::WeibullMinFactory::buildAsWeibullMin
+"Estimate the distribution as native distribution.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.WeibullMin`
+    The estimated distribution"
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::WeibullMinFactory::build
+"Estimate the distribution using the default strategy.
+
+
+**Available usages**:
+
+    build(*sample*)
+
+    build(*param*)
+
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The estimated distribution
+
+Notes
+-----
+The default strategy is using the maximum likelihood estimators."

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import math as m
 
@@ -252,22 +251,37 @@ copula = myDist.getCopula()
 # Test computePDF over a sample (ticket #899)
 res = copula.computePDF([[0.5] * 2] * 10)
 
-st = ot.Study()
-fileName = 'PyDIST.xml'
-st.setStorageManager(ot.XMLStorageManager(fileName))
+# Test a discrete distribution
 
-st.add("myDist", myDist)
-st.save()
 
-print('saved dist=', myDist)
+class PoissonPy(ot.PythonDistribution):
 
-dist = ot.Distribution()
+    def __init__(self, lamb):
+        super(PoissonPy, self).__init__(1)
+        if lamb <= 0.0:
+            raise ValueError('Expected a positive lambda')
+        self.poisson_ = ot.Poisson(lamb)
 
-st = ot.Study()
-st.setStorageManager(ot.XMLStorageManager(fileName))
+    def getRange(self):
+        return self.poisson_.getRange()
 
-st.load()
+    def computeCDF(self, X):
+        return self.poisson_.computeCDF(X)
 
-st.fillObject("myDist", dist)
-print('loaded dist=', dist)
-os.remove(fileName)
+    def computePDF(self, X):
+        return self.poisson_.computeCDF(X)
+
+    def isDiscrete(self):
+        return True
+
+    def getSupport(self, interval):
+        return self.poisson_.getSupport(interval)
+
+    def isIntegral(self):
+        return True
+
+
+dist = ot.Distribution(PoissonPy(2.5))
+print("Is discrete?", dist.isDiscrete())
+print("Is integral?", dist.isIntegral())
+print("pdf graph=", dist.drawPDF())

@@ -3,7 +3,7 @@
  *  @brief This class is enables to build a spectral model using its spectral density function
  *  This is the interface class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,7 +60,7 @@ public:
 
 
   /** Virtual copy constructor */
-  virtual SpectralModelImplementation * clone() const;
+  SpectralModelImplementation * clone() const override;
 
   /** Dimension accessor */
   UnsignedInteger getOutputDimension() const;
@@ -86,16 +86,16 @@ public:
   virtual CorrelationMatrix getOutputCorrelation() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,

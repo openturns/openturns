@@ -2,7 +2,7 @@
 /**
  *  @brief The KPermutationsDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -116,7 +116,7 @@ Point KPermutationsDistribution::getRealization() const
   buffer.fill();
   for (UnsignedInteger i = 0; i < k_; ++i)
   {
-    UnsignedInteger index = i + RandomGenerator::IntegerGenerate(n_ - i);
+    const UnsignedInteger index = i + RandomGenerator::IntegerGenerate(n_ - i);
     realization[i] = buffer[index];
     buffer[index] = buffer[i];
   }
@@ -132,19 +132,19 @@ Scalar KPermutationsDistribution::computeLogPDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar k = point[i];
-    if ((k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return SpecFunc::LogMinScalar;
+    if ((k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return SpecFunc::LowestScalar;
     const UnsignedInteger ik = static_cast< UnsignedInteger > (round(k));
-    if (std::abs(k - ik) > supportEpsilon_) return -SpecFunc::LogMaxScalar;
+    if (std::abs(k - ik) > supportEpsilon_) return SpecFunc::LowestScalar;
     x[i] = ik;
   }
-  if (!x.check(n_)) return 0.0;
+  if (!x.check(n_)) return SpecFunc::LowestScalar;
   return logPDFValue_;
 }
 
 Scalar KPermutationsDistribution::computePDF(const Point & point) const
 {
   const Scalar logPDF = computeLogPDF(point);
-  if (logPDF == -SpecFunc::LogMaxScalar) return 0.0;
+  if (logPDF == SpecFunc::LowestScalar) return 0.0;
   return std::exp(logPDF);
 }
 
@@ -222,17 +222,10 @@ Distribution KPermutationsDistribution::getMarginal(const Indices & indices) con
   if (dimension == 1) return clone();
   // General case
   const UnsignedInteger outputDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    marginalDescription[i] = description[index_i];
-  }
   KPermutationsDistribution::Implementation marginal(new KPermutationsDistribution(outputDimension, n_));
-  marginal->setDescription(marginalDescription);
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
-} // getMarginal(Indices)
+}
 
 /* Get the support of a discrete distribution that intersect a given interval */
 Sample KPermutationsDistribution::getSupport(const Interval & interval) const
@@ -285,11 +278,9 @@ KPermutationsDistribution::PointWithDescriptionCollection KPermutationsDistribut
   if (dimension > 1)
   {
     PointWithDescription point(2);
-    Description description(2);
+    Description description = {"k", "n"};
     point[0] = k_;
-    description[0] = "k";
     point[1] = n_;
-    description[1] = "n";
     point.setDescription(description);
     point.setName("dependence");
     parameters[dimension] = point;

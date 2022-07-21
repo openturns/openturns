@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class OrdinalSumCopula for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,10 +32,10 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     CorrelationMatrix R(2);
     R(0, 1) = 0.5;
-    OrdinalSumCopula::CopulaCollection collection(3);
+    OrdinalSumCopula::DistributionCollection collection(3);
     collection[0] = FrankCopula(3.0);
     collection[1] = NormalCopula(R);
     collection[2] = ClaytonCopula(2.0);
@@ -82,7 +82,6 @@ int main(int, char *[])
     Point DDF = copula.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     Point ddfFD(dim);
-    fullprint << "ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point) << std::endl;
     Scalar PDF = copula.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
     Scalar CDF = copula.computeCDF( point );
@@ -135,7 +134,7 @@ int main(int, char *[])
     OrdinalSumCopula::PointWithDescriptionCollection parameters = copula.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     Scalar x = 0.6;
-    Point y(dim-1, 0.2);
+    Point y(dim - 1, 0.2);
     fullprint << "conditional PDF=" << copula.computeConditionalPDF(x, y) << std::endl;
     fullprint << "conditional CDF=" << copula.computeConditionalCDF(x, y) << std::endl;
     fullprint << "conditional quantile=" << copula.computeConditionalQuantile(x, y) << std::endl;

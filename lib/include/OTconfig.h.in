@@ -21,7 +21,16 @@
 /* Define if you have bison parser generator. */
 #cmakedefine OPENTURNS_HAVE_BISON
 
-/* Define to 1 if you have flex lexical analyser generator. */
+/* Define if you have the `ipopt` library. */
+#cmakedefine OPENTURNS_HAVE_IPOPT
+
+//* Define if you have the `bonmin` library. */
+#cmakedefine OPENTURNS_HAVE_BONMIN
+
+//* Define if you have the `pagmo` library. */
+#cmakedefine OPENTURNS_HAVE_PAGMO
+
+//* Define to 1 if you have flex lexical analyser generator. */
 #cmakedefine OPENTURNS_HAVE_FLEX
 
 /* Define to 1 if you have the <dirent.h> header file. */
@@ -30,7 +39,7 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #cmakedefine OPENTURNS_HAVE_DLFCN_H
 
-/* Define to 1 if you have the `dladr` function. */
+/* Define to 1 if you have the `dladdr` function. */
 #cmakedefine OPENTURNS_HAVE_DLADDR
 
 /* Define to 1 if you have the `dlib` library. */
@@ -38,6 +47,9 @@
 
 /* Define to 1 if you have the `dlib` with global optimization support. */
 #cmakedefine OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
+
+/* Define to 1 if you have 'spectra' library */
+#cmakedefine OPENTURNS_HAVE_SPECTRA
 
 /* Define to 1 if you have the <libgen.h> header file. */
 #cmakedefine OPENTURNS_HAVE_LIBGEN_H
@@ -47,6 +59,9 @@
 
 /* Support for regular expression library */
 #cmakedefine OPENTURNS_HAVE_LIBXML2
+
+/* Support for HDF5 */
+#cmakedefine OPENTURNS_HAVE_HDF5
 
 /* Define to 1 if you have the <memory.h> header file. */
 #cmakedefine OPENTURNS_HAVE_MEMORY_H
@@ -70,6 +85,12 @@
 /* Define to 1 if you have the NLopt library. */
 #cmakedefine OPENTURNS_HAVE_NLOPT
 
+/* Define to 1 if NLopt has STOGO. */
+#cmakedefine OPENTURNS_NLOPT_HAVE_STOGO
+
+/* Define to 1 if NLopt has AGS. */
+#cmakedefine OPENTURNS_NLOPT_HAVE_AGS
+
 /* Define to 1 if you have the OPT++ library. */
 #cmakedefine OPENTURNS_HAVE_OPTPP
 
@@ -78,6 +99,12 @@
 
 /* Define to 1 if you have the CMinpack library. */
 #cmakedefine OPENTURNS_HAVE_CMINPACK
+
+/* Define to 1 if you have the OpenMP specification. */
+#cmakedefine OPENTURNS_HAVE_OPENMP
+
+/* Define to 1 if you have the openblas library. */
+#cmakedefine OPENTURNS_HAVE_OPENBLAS
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #cmakedefine OPENTURNS_HAVE_STDLIB_H
@@ -92,9 +119,6 @@
 #cmakedefine OPENTURNS_HAVE_TBB
 #cmakedefine OPENTURNS_TBB_NO_IMPLICIT_LINKAGE
 
-/* Define to 1 if you have the <tbb/tbb.h> header file. */
-#cmakedefine OPENTURNS_HAVE_TBB_TBB_H
-
 /* Define to 1 if you have the <unistd.h> header file. */
 #cmakedefine OPENTURNS_HAVE_UNISTD_H
 
@@ -106,6 +130,15 @@
 
 /* Define to 1 if the system has Boost libraries. */
 #cmakedefine OPENTURNS_HAVE_BOOST
+
+/* Define to 1 if the system has MPFR libraries. */
+#cmakedefine OPENTURNS_HAVE_MPFR
+
+/* Define to 1 if the system has MPC libraries. */
+#cmakedefine OPENTURNS_HAVE_MPC
+
+/* Define to 1 if the system has PRIMESIEVE libraries. */
+#cmakedefine OPENTURNS_HAVE_PRIMESIEVE
 
 /* Define to the full path where OpenTURNS is installed */
 #define INSTALL_PATH "@NATIVE_INSTALL_PATH@"
@@ -155,6 +188,8 @@
 /* Version number of package */
 #define VERSION "@PACKAGE_VERSION@"
 
+#define OPENTURNS_VERSION @OPENTURNS_VERSION_NR@
+
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */
 #cmakedefine YYTEXT_POINTER
@@ -172,10 +207,12 @@
 #cmakedefine size_t
 
 /* Define to 1 if big endian system */
+#ifndef __BIG_ENDIAN__
 #cmakedefine __BIG_ENDIAN__
+#endif
 
 /* Define to 1 if UnsignedInteger and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
 
-/* Define to 1 if built-in functions for atomic memory access are available */
-#cmakedefine OPENTURNS_HAVE_SYNC_BUILTINS
+/* Define to 1 if std::regex is implemented */
+#cmakedefine OPENTURNS_HAVE_STD_REGEX

@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and by-products
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveResultImplementation.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/Point.hxx"
+#include "openturns/Cloud.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
@@ -53,7 +53,8 @@ KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation(const Covar
     const Point & eigenvalues,
     const FunctionCollection & modes,
     const ProcessSample & modesAsProcessSample,
-    const Matrix & projection)
+    const Matrix & projection,
+    const Scalar selectionRatio)
   : PersistentObject()
   , covariance_(covariance)
   , threshold_(threshold)
@@ -61,6 +62,7 @@ KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation(const Covar
   , modes_(modes)
   , modesAsProcessSample_(modesAsProcessSample)
   , projection_(projection)
+  , selectionRatio_(selectionRatio)
 {
   // Nothing to do
 }
@@ -84,9 +86,43 @@ CovarianceModel KarhunenLoeveResultImplementation::getCovarianceModel() const
 }
 
 /* Eigenvalues accessor */
-Point KarhunenLoeveResultImplementation::getEigenValues() const
+Point KarhunenLoeveResultImplementation::getEigenvalues() const
 {
   return eigenvalues_;
+}
+
+Graph KarhunenLoeveResultImplementation::drawEigenvalues() const
+{
+  Graph graph("Karhunen-Loeve eigenvalues", "Index", "Eigenvalue", true, "topright");
+  const UnsignedInteger K = eigenvalues_.getSize();
+  Point indices(K);
+  for (UnsignedInteger i = 0; i < K; ++ i)
+    indices[i] = i;
+  Cloud cloud(indices, eigenvalues_);
+  graph.add(cloud);
+  graph.setGrid(true);
+  return graph;
+}
+
+Graph KarhunenLoeveResultImplementation::drawCumulatedEigenvaluesRemainder() const
+{
+  Graph graph("Karhunen-Loeve eigenvalues", "Index", "Cumulated eigenvalue normalized remainder", true, "topright");
+  const UnsignedInteger K = eigenvalues_.getSize();
+  Point indices(K);
+  for (UnsignedInteger i = 0; i < K; ++ i)
+    indices[i] = i;
+  Point eigenCumSum(eigenvalues_);
+  for (UnsignedInteger i = 1; i < K; ++ i)
+    eigenCumSum[i] += eigenCumSum[i - 1];
+  if (K > 1)
+  {
+    eigenCumSum /= eigenCumSum[K - 1];
+    eigenCumSum[K - 1] = eigenCumSum[K - 2];// avoids log(0) in log scale
+  }
+  Cloud cloud(indices, Point(K, 1) - eigenCumSum);
+  graph.add(cloud);
+  graph.setGrid(true);
+  return graph;
 }
 
 /* Modes accessors */
@@ -106,12 +142,18 @@ Mesh KarhunenLoeveResultImplementation::getMesh() const
   return modesAsProcessSample_.getMesh();
 }
 
+/* Selection ratio accessor */
+Scalar KarhunenLoeveResultImplementation::getSelectionRatio() const
+{
+  return selectionRatio_;
+}
+
 /* Scaled modes accessors */
 KarhunenLoeveResultImplementation::FunctionCollection KarhunenLoeveResultImplementation::getScaledModes() const
 {
   Collection<Function> scaledModes(modes_.getSize());
   if (modes_.getSize() == 0) return scaledModes;
-  const UnsignedInteger dimension = modes_[0].getInputDimension();
+  const UnsignedInteger dimension = modes_[0].getOutputDimension();
   const Point zero(dimension);
   const IdentityMatrix id(dimension);
   for (UnsignedInteger i = 0; i < scaledModes.getSize(); ++i)
@@ -157,11 +199,15 @@ Point KarhunenLoeveResultImplementation::project(const Function & function) cons
 
 Point KarhunenLoeveResultImplementation::project(const Sample & values) const
 {
+  if (values.getDimension() != modesAsProcessSample_.getDimension())
+    throw InvalidDimensionException(HERE) << "Expected values of dimension " << modesAsProcessSample_.getDimension() << " got " << values.getDimension();
   return projection_ * values.getImplementation()->getData();
 }
 
 Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
 {
+  if (sample.getDimension() != modesAsProcessSample_.getDimension())
+    throw InvalidDimensionException(HERE) << "Expected values of dimension " << modesAsProcessSample_.getDimension() << " got " << sample.getDimension();
   const UnsignedInteger size = sample.getSize();
   if (!(size != 0)) return Sample();
   const Mesh mesh(modesAsProcessSample_.getMesh());
@@ -199,6 +245,8 @@ Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) 
 Function KarhunenLoeveResultImplementation::lift(const Point & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
+  if (coefficients.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Expected coefficients of dimension " << dimension << " got " << coefficients.getDimension();
   Point scaledCoefficients(dimension);
   Collection<Function> functions(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -212,6 +260,8 @@ Function KarhunenLoeveResultImplementation::lift(const Point & coefficients) con
 Sample KarhunenLoeveResultImplementation::liftAsSample(const Point & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
+  if (coefficients.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Expected coefficients of dimension " << dimension << " got " << coefficients.getDimension();
   Sample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());
   for (UnsignedInteger i = 0; i < dimension; ++i)
     values += modesAsProcessSample_[i] * (std::sqrt(eigenvalues_[i]) * coefficients[i]);
@@ -250,6 +300,7 @@ void KarhunenLoeveResultImplementation::save(Advocate & adv) const
   adv.saveAttribute("modes_", modes_);
   adv.saveAttribute("modesAsProcessSample_", modesAsProcessSample_);
   adv.saveAttribute("projection_", projection_);
+  adv.saveAttribute("selectionRatio_", selectionRatio_);
 }
 
 
@@ -263,6 +314,7 @@ void KarhunenLoeveResultImplementation::load(Advocate & adv)
   adv.loadAttribute("modes_", modes_);
   adv.loadAttribute("modesAsProcessSample_", modesAsProcessSample_);
   adv.loadAttribute("projection_", projection_);
+  adv.loadAttribute("selectionRatio_", selectionRatio_);
 }
 
 

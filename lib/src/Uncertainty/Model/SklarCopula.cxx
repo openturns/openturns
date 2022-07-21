@@ -2,7 +2,7 @@
 /**
  *  @brief The SklarCopula distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,10 +41,11 @@ static const Factory<SklarCopula> Factory_SklarCopula;
 
 /* Default constructor */
 SklarCopula::SklarCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , distribution_()
   , marginalCollection_()
 {
+  isCopula_ = true;
   setName( "SklarCopula" );
   setDimension( 1 );
   computeRange();
@@ -52,10 +53,11 @@ SklarCopula::SklarCopula()
 
 /* Parameters constructor */
 SklarCopula::SklarCopula(const Distribution & distribution)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , distribution_(distribution)
   , marginalCollection_(distribution.getDimension())
 {
+  isCopula_ = true;
   setName( "SklarCopula" );
   // Manage parallelism
   setParallel(distribution.getImplementation()->isParallel());
@@ -200,7 +202,7 @@ Scalar SklarCopula::computeProbability(const Interval & interval) const
   // Reduce the given interval to the support of the distribution, which is the nD unit cube
   const Interval intersect(interval.intersect(Interval(dimension)));
   // If the intersection is empty
-  if (intersect.isNumericallyEmpty()) return 0.0;
+  if (intersect.isEmpty()) return 0.0;
   const Point lowerBoundIntersect(intersect.getLowerBound());
   const Point upperBoundIntersect(intersect.getUpperBound());
   // Early exit for the 1D case (Uniform(0,1) distribution)
@@ -429,13 +431,13 @@ CorrelationMatrix SklarCopula::getKendallTau() const
 /* Compute the covariance of the copula */
 void SklarCopula::computeCovariance() const
 {
-  DistributionImplementation::computeCovariance();
+  DistributionImplementation::computeCovarianceContinuous();
 }
 
 /* Method save() stores the object through the StorageManager */
 void SklarCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
   adv.saveAttribute( "marginalCollection_", marginalCollection_ );
 }
@@ -443,7 +445,7 @@ void SklarCopula::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SklarCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "distribution_", distribution_ );
   adv.loadAttribute( "marginalCollection_", marginalCollection_ );
   computeRange();

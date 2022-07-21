@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the composition between numerical math hessians
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,28 +50,28 @@ public:
 
 
   /** Virtual constructor */
-  virtual ComposedHessian * clone() const;
+  ComposedHessian * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const ComposedHessian & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method hessian() returns the symmetric tensor of the function at point */
-  SymmetricTensor hessian(const Point & inP) const;
+  SymmetricTensor hessian(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

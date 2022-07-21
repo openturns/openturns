@@ -2,7 +2,7 @@
 /**
  *  @brief The NormalGamma distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,11 +46,7 @@ NormalGamma::NormalGamma()
   , beta_(1.0)
   , logNormalization_(0.0)
 {
-  Point parameter(4);
-  parameter[0] = mu_;
-  parameter[1] = kappa_;
-  parameter[2] = alpha_;
-  parameter[3] = beta_;
+  const Point parameter = {mu_, kappa_, alpha_, beta_};
   setParameter(parameter);
 }
 
@@ -74,19 +70,10 @@ NormalGamma::NormalGamma(const Scalar mu,
   // the values (mu, kappa) must be part of the parameter. As they are not parameter of the conditioning
   // distribution they have to be parameter of the link function
   setName("NormalGamma");
-  Description inVars(3);
-  inVars[0] = "y";
-  inVars[1] = "mu";
-  inVars[2] = "kappa";
-  Description formulas(2);
-  formulas[0] = "mu";
-  formulas[1] = "1.0 / sqrt(kappa * y)";
-  Indices indices(2);
-  indices[0] = 1;
-  indices[1] = 2;
-  Point values(2);
-  values[0] = mu_;
-  values[1] = kappa_;
+  const Description inVars = {"y", "mu", "kappa"};
+  Description formulas = {"mu", "1.0 / sqrt(kappa * y)"};
+  Indices indices = {1, 2};
+  Point values = {mu_, kappa_};
   const ParametricFunction link(SymbolicFunction(inVars, formulas), indices, values);
   setConditionedAndConditioningDistributionsAndLinkFunction(Normal(), Gamma(alpha_, beta_), link);
   computeRange();
@@ -131,9 +118,7 @@ void NormalGamma::computeLogNormalization()
 /* Compute the mean of the distribution */
 void NormalGamma::computeMean() const
 {
-  mean_ = Point(2);
-  mean_[0] = mu_;
-  mean_[1] = alpha_ / beta_;
+  mean_ = {mu_, alpha_ / beta_};
   isAlreadyComputedMean_ = true;
 }
 
@@ -153,7 +138,7 @@ Scalar NormalGamma::computePDF(const Point & point) const
   if (point.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=2, here dimension=" << point.getDimension();
 
   const Scalar logPDF = computeLogPDF(point);
-  if (logPDF == -SpecFunc::LogMaxScalar) return 0.0;
+  if (logPDF == SpecFunc::LowestScalar) return 0.0;
   return std::exp(logPDF);
 }
 
@@ -165,7 +150,7 @@ Scalar NormalGamma::computeLogPDF(const Point & point) const
   const Scalar y = point[1];
   const Scalar a = getRange().getLowerBound()[1];
   const Scalar b = getRange().getUpperBound()[1];
-  if ((y <= a) || (y >= b)) return -SpecFunc::LogMaxScalar;
+  if ((y <= a) || (y >= b)) return SpecFunc::LowestScalar;
   const Scalar x = point[0] - mu_;
   return logNormalization_ + (alpha_ - 0.5) * std::log(y) - 0.5 * y * (kappa_ * x * x + 2.0 * beta_) + 0.5 * std::log(kappa_ / (2.0 * M_PI));
 }
@@ -282,7 +267,7 @@ Scalar NormalGamma::computeCDF(const Point & point) const
     return DistFunc::pGamma(alpha_, beta_ * y);
   }
   // Here the integration wrt x is given in closed form
-  const Function integrand(NormalGammaFunctions::KernelProbability(-SpecFunc::MaxScalar, x, kappa_, alpha_, beta_, logNormalization_, 0));
+  const Function integrand(NormalGammaFunctions::KernelProbability(SpecFunc::LowestScalar, x, kappa_, alpha_, beta_, logNormalization_, 0));
   // Integrate over the interval (-inf, y] of the conditioning Gamma distribution
   const Scalar cdf = GaussKronrod().integrate(integrand, Interval(a, std::min(y, b)))[0];
   return cdf;
@@ -320,7 +305,7 @@ Scalar NormalGamma::computeProbability(const Interval & interval) const
 
   const Interval reducedInterval(interval.intersect(getRange()));
   // If the interval is empty
-  if (reducedInterval.isNumericallyEmpty()) return 0.0;
+  if (reducedInterval.isEmpty()) return 0.0;
 
   // If the interval is the range
   if (reducedInterval == getRange()) return 1.0;
@@ -345,13 +330,8 @@ Scalar NormalGamma::computeEntropy() const
 /* Parameters value and description accessor */
 Point NormalGamma::getParameter() const
 {
-  Point point(4);
-  point[0] = mu_;
-  point[1] = kappa_;
-  point[2] = alpha_;
-  point[3] = beta_;
-  return point;
-} // getParameter
+  return {mu_, kappa_, alpha_, beta_};
+}
 
 void NormalGamma::setParameter(const Point & parameter)
 {
@@ -359,18 +339,13 @@ void NormalGamma::setParameter(const Point & parameter)
   const Scalar w = getWeight();
   *this = NormalGamma(parameter[0], parameter[1], parameter[2], parameter[3]);
   setWeight(w);
-} // setParameter
+}
 
 /* Parameters value and description accessor */
 Description NormalGamma::getParameterDescription() const
 {
-  Description description(4);
-  description[0] = "mu";
-  description[1] = "kappa";
-  description[2] = "alpha";
-  description[3] = "beta";
-  return description;
-} // getParameterDescription
+  return {"mu", "kappa", "alpha", "beta"};
+}
 
 /* String converter */
 String NormalGamma::__repr__() const

@@ -73,16 +73,18 @@
 %include GaussKronrodRule.i
 %include GaussKronrod.i
 %include GaussLegendre.i
-%include Fejer1.i
+%include FejerAlgorithm.i
 %include IteratedQuadrature.i
 %include ExpertMixture.i
 %include KarhunenLoeveResultImplementation.i
 %include KarhunenLoeveResult.i
+%include KarhunenLoeveReduction.i
 %include KarhunenLoeveAlgorithmImplementation.i
 %include KarhunenLoeveAlgorithm.i
 %include KarhunenLoeveP1Algorithm.i
 %include KarhunenLoeveProjection.i
 %include KarhunenLoeveLifting.i
+%include KarhunenLoeveValidation.i
 
 /* At last we include template definitions */
 %include BaseAlgoTemplateDefs.i

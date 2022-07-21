@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all drawables
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,8 +55,8 @@ public:
                                   const String & legend = "");
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Comparison operator */
   Bool operator == (const DrawableImplementation & other) const;
@@ -142,6 +142,10 @@ public:
   virtual Description getTextPositions() const;
   virtual void setTextPositions(const Description & textPositions);
 
+  /** Accessor for the text size */
+  virtual Scalar getTextSize() const;
+  virtual void setTextSize(const Scalar size);
+
   /** Bounding box accessor */
   virtual Interval getBoundingBox() const;
 
@@ -152,7 +156,7 @@ public:
   virtual void clean() const;
 
   /** Clone method */
-  virtual DrawableImplementation * clone() const;
+  DrawableImplementation * clone() const override;
 
   /** Give the colors name */
   static Description GetValidColors();
@@ -202,6 +206,16 @@ public:
                                      const Scalar saturation,
                                      const Scalar value);
 
+  /* Convert a RGB triplet to HSV */
+  static Point ConvertFromRGBIntoHSV(const UnsignedInteger red,
+                                     const UnsignedInteger green,
+                                     const UnsignedInteger blue);
+
+  /* Convert a RGB triplet to HSV */
+  static Point ConvertFromRGBIntoHSV(const Scalar red,
+                                     const Scalar green,
+                                     const Scalar blue);
+
   /** Convert an HSV triplet to a valid hexadecimal code */
   static String ConvertFromHSV(const Scalar hue,
                                const Scalar saturation,
@@ -216,11 +230,17 @@ public:
   /** Build default palette */
   static Description BuildDefaultPalette(const UnsignedInteger size);
 
+  /** Build rainbow palette */
+  static Description BuildRainbowPalette(const UnsignedInteger size);
+
+  /** Build tableau palette */
+  static Description BuildTableauPalette(const UnsignedInteger size);
+
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   static Bool IsFirstInitialization;

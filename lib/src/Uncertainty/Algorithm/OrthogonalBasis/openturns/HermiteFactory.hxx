@@ -2,7 +2,7 @@
 /**
  *  @brief Hermite polynomial factory
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,20 +44,20 @@ public:
   HermiteFactory();
 
   /** Virtual constructor */
-  virtual HermiteFactory * clone() const;
+  HermiteFactory * clone() const override;
 
   /** Calculate the coefficients of recurrence a0n, a1n, a2n such that
       Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
-  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
+  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

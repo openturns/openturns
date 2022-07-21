@@ -1,0 +1,68 @@
+Testing class WeibullMax
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=WeibullMax name=WeibullMax dimension=1 beta=2 alpha=1.5 gamma=-0.5
+streamObject(const T & anObject)
+class=WeibullMax name=WeibullMax dimension=1 beta=2 alpha=1.5 gamma=-0.5
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=WeibullMax name=WeibullMax dimension=1 beta=2 alpha=1.5 gamma=-0.5
+Distribution WeibullMax(beta = 2, alpha = 1.5, gamma = -0.5)
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[-2.49188]
+oneSample first=class=Point name=Unnamed dimension=1 values=[-3.82534] last=class=Point name=Unnamed dimension=1 values=[-1.84729]
+mean=class=Point name=Unnamed dimension=1 values=[-2.32223]
+variance=class=Point name=Unnamed dimension=1 values=[1.52908]
+skewness=class=Point name=Unnamed dimension=1 values=[-1.00676]
+kurtosis=class=Point name=Unnamed dimension=1 values=[4.03435]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.52908]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+range= class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-20.7578] upper bound=class=Point name=Unnamed dimension=1 values=[-0.5] finite lower bound=[0] finite upper bound=[1]
+Point= class=Point name=Unnamed dimension=1 values=[-1]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.206835]
+ddf (FD)=-0.206835
+log pdf=-1.10583
+pdf     =0.330936
+pdf (FD)=0.330936
+cdf=0.882497
+ccdf=0.117503
+survival=0.117503
+Inverse survival=class=Point name=Unnamed dimension=1 values=[-4.65622]
+Survival(inverse survival)=0.95
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.217177,-0.180804,0.206835]
+pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.217177,-0.180804,0.206835]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[0.0827341,0.152925,-0.330936]
+cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[0.0827341,0.152925,-0.330936]
+quantile=class=Point name=Unnamed dimension=1 values=[-0.776103]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-4.66304] upper bound=class=Point name=Unnamed dimension=1 values=[-0.510263] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(WeibullMax(beta = 2, alpha = 1.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(WeibullMax(beta = 2, alpha = 1.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(WeibullMax(beta = 2, alpha = 1.5, gamma = -0.5)) level=2.92424
+beta=0.0537054
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-5.27485] upper bound=class=Point name=Unnamed dimension=1 values=[-0.672444] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-20.7578] upper bound=class=Point name=Unnamed dimension=1 values=[-0.776103] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-4.65622] upper bound=class=Point name=Unnamed dimension=1 values=[-0.5] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+entropy=1.48009
+entropy (MC)=1.47994
+mean=class=Point name=Unnamed dimension=1 values=[-2.30549]
+standard deviation=class=Point name=Unnamed dimension=1 values=[1.22587]
+skewness=class=Point name=Unnamed dimension=1 values=[-1.07199]
+kurtosis=class=Point name=Unnamed dimension=1 values=[4.3904]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.50276]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[beta : 2, alpha : 1.5, gamma : -0.5]]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.902745]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.19064]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[2]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[4.0122]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[9.26053]
+Standard representative=WeibullMax(beta = 1, alpha = 1.5, gamma = 0)

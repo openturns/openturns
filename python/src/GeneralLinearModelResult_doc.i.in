@@ -1,12 +1,6 @@
 %feature("docstring") OT::GeneralLinearModelResult
 "General linear model result.
 
-Available constructors:
-    GeneralLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel, optimalLogLikelihood*)
-
-    GeneralLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel, covarianceCholeskyFactor, covarianceHMatrix, optimalLogLikelihood*)
-
-
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.Sample`
@@ -24,10 +18,6 @@ trendCoefficients : collection of :class:`~openturns.Point`
    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance function of the Gaussian process with its optimized parameters.
-covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
-    The Cholesky factor :math:`\mat{L}` of :math:`\mat{C}`.
-covarianceHMatrix :  :class:`~openturns.HMatrix`
-    The *hmat* implementation of :math:`\mat{L}`.
 optimalLogLikelihood : float
     The maximum log-likelihood corresponding to the model.
 
@@ -141,28 +131,6 @@ Returns
 -------
 metaModel : :class:`~openturns.Function`
     The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:'metaModel'.
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::GeneralLinearModelResult::getTransformation
-"Accessor to the normalizing transformation.
-
-Returns
--------
-transformation : :class:`~openturns.Function`
-    The transformation *T* that normalizes the input sample.
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::GeneralLinearModelResult::setTransformation
-"Set accessor to the normalizing transformation.
-
-Parameters
-----------
-transformation : :class:`~openturns.Function`
-    The transformation *T* that normalizes the input sample.
 "
 
 // ---------------------------------------------------------------------

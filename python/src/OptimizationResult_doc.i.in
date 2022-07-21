@@ -3,27 +3,10 @@
 
 Returned by optimization solvers, see :class:`~openturns.OptimizationAlgorithm`.
 
-Available constructors:
-    OptimizationResult(*optimalPoint, optimalValue, evaluationNumber, absoluteError, relativeError, residualError, constraintError*)
-
 Parameters
 ----------
-optimalPoint : sequence of float
-    Optimal point.
-optimalValue : sequence of float
-    Value at optimal point.
-evaluationNumber : int
-    Number of evaluations.
-absoluteError : float
-    Parameters for this solver.
-relativeError : float
-    Relative error.
-residualError : float
-    Residual error.
-constraintError : float
-    Constraint error.
 problem : :class:`~openturns.OptimizationProblem`
-    Associated problem."
+    Problem being solved."
 
 // ---------------------------------------------------------------------
 
@@ -33,7 +16,7 @@ problem : :class:`~openturns.OptimizationProblem`
 Returns
 -------
 absoluteError : float
-    Absolute error, defined by :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` where :math:`\vect{x}_{n+1}` and :math:`\vect{x}_n` are two consecutive approximations of the optimum."
+    Absolute error of the input point :math:`\vect{x}`, defined by :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` where :math:`\vect{x}_{n+1}` and :math:`\vect{x}_n` are two consecutive approximations of the optimum."
 
 // ---------------------------------------------------------------------
 
@@ -113,7 +96,7 @@ iterationNumber : int
 Returns
 -------
 relativeError : float
-    Relative error, defined by :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}` if :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, else :math:`\epsilon^r_n=-1`."
+    Relative error of the input point :math:`\vect{x}`. If :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, then the relative error is :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}` where :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` is the absolute error. Otherwise, the relative error is :math:`\epsilon^r_n=-1`."
 
 // ---------------------------------------------------------------------
 
@@ -167,33 +150,48 @@ optimalPoint : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationResult::setLagrangeMultipliers
-"Accessor to the Lagrange multipliers.
+%feature("docstring") OT::OptimizationResult::computeLagrangeMultipliers
+"Compute the Lagrange multipliers.
 
 Parameters
 ----------
-multipliers : :class:`~openturns.Point`
-    Lagrange multipliers.
-
-Notes
------
-See :class:`~openturns.OptimizationAlgorithm` for the details on how the multipliers are defined and stored in the result.
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::OptimizationResult::getLagrangeMultipliers
-"Accessor to the Lagrange multipliers.
+x : sequence of float, optional
+    Location where the multipliers are computed
+    If not provided, the optimal point is used
 
 Returns
 -------
-multipliers : :class:`~openturns.Point`
-    Lagrange multipliers.
+lagrangeMultiplier : sequence of float
+    Lagrange multipliers of the problem at point x.
+    It needs an extra call to the objective function gradient unless it can be
+    computed during the optimization (AbdoRackwitz or SQP).
 
 Notes
 -----
-See :class:`~openturns.OptimizationAlgorithm` for the details on how the multipliers are defined and stored in the result.
-"
+The Lagrange multipliers :math:`\vect{\lambda}` are associated with the following Lagrangian formulation of the optimization problem:
+
+.. math::
+
+    \cL(\vect{x}, \vect{\lambda}_{eq}, \vect{\lambda}_{\ell}, \vect{\lambda}_{u}, \vect{\lambda}_{ineq}) = J(\vect{x}) + \Tr{\vect{\lambda}}_{eq} g(\vect{x}) + \Tr{\vect{\lambda}}_{\ell} (\vect{x}-\vect{\ell})^{+} + \Tr{\vect{\lambda}}_{u} (\vect{u}-\vect{x})^{+} + \Tr{\vect{\lambda}}_{ineq}  h^{+}(\vect{x})
+
+where :math:`\vect{\alpha}^{+}=(\max(0,\alpha_1),\hdots,\max(0,\alpha_n))`.
+
+The Lagrange multipliers are stored as :math:`(\vect{\lambda}_{eq}, \vect{\lambda}_{\ell}, \vect{\lambda}_{u}, \vect{\lambda}_{ineq})`, where:
+    - :math:`\vect{\lambda}_{eq}` is of dimension 0 if there is no equality
+      constraint, else of dimension the dimension of :math:`g(\vect{x})` ie the number of scalar equality constraints
+    - :math:`\vect{\lambda}_{\ell}` and :math:`\vect{\lambda}_{u}` are of dimension 0 if there is no bound constraint, else of dimension of :math:`\vect{x}`
+    - :math:`\vect{\lambda}_{eq}` is of dimension 0 if there is no inequality constraint, else of dimension the dimension of :math:`h(\vect{x})` ie the number of scalar inequality constraints
+
+The vector :math:`\vect{\lambda}` is solution of the following linear system:
+
+.. math::
+
+    \Tr{\vect{\lambda}}_{eq}\left[\dfrac{\partial g}{\partial\vect{x}}(\vect{x})\right]+
+    \Tr{\vect{\lambda}}_{\ell}\left[\dfrac{\partial (\vect{x}-\vect{\ell})^{+}}{\partial\vect{x}}(\vect{x})\right]+
+    \Tr{\vect{\lambda}}_{u}\left[\dfrac{\partial (\vect{u}-\vect{x})^{+}}{\partial\vect{x}}(\vect{x})\right]+
+    \Tr{\vect{\lambda}}_{ineq}\left[\dfrac{\partial h}{\partial\vect{x}}(\vect{x})\right]=-\dfrac{\partial J}{\partial\vect{x}}(\vect{x})
+
+If there is no constraint of any kind, :math:`\vect{\lambda}` is of dimension 0, as well as if no constraint is active."
 
 // ---------------------------------------------------------------------
 
@@ -274,3 +272,68 @@ Returns
 -------
 graph : :class:`~openturns.Graph`
     Optimal value history graph"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setFinalPoints
+"Accessor to the final points.
+
+Parameters
+----------
+finalPoints : :class:`~openturns.Sample`
+    Final population"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getFinalPoints
+"Accessor to the final points.
+
+Returns
+-------
+finalPoints : :class:`~openturns.Sample`
+    Final population.
+    For non-evolutionary algorithms this will return the optimal point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setFinalValues
+"Accessor to the final values.
+
+Parameters
+----------
+finalValues : :class:`~openturns.Sample`
+    Values at the final points"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getFinalValues
+"Accessor to the final values.
+
+Returns
+-------
+finalValues : :class:`~openturns.Sample`
+    Values at the final points.
+    For non-evolutionary algorithms this will return the optimal value."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getParetoFrontsIndices
+"Accessor to the Pareto fronts indices in the final population.
+
+In the multi-objective case, it consists of stratas of points in the final population.
+The first front contains the best candidates according to the objectives.
+
+Returns
+-------
+indices : list of :class:`~openturns.Indices`
+    Pareto fronts indices"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setParetoFrontsIndices
+"Accessor to the Pareto fronts indices in the final population.
+
+Parameters
+----------
+indices : 2-d sequence of int
+    Pareto fronts indices"

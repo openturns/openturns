@@ -2,7 +2,7 @@
 /**
  *  @brief The class building gaussian process regression
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,9 +60,6 @@ KrigingGradient::KrigingGradient(const BasisCollection & basis,
   {
     if (basis.getSize() != covarianceModel.getOutputDimension())
       throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, output sample dimension (" << covarianceModel.getOutputDimension()  << ") does not match multi-basis dimension (" << basis_.getSize() << ")";
-    // Total basis size = sum of all sizes
-    UnsignedInteger basisCollectionTotalSize = 0;
-    for (UnsignedInteger i = 0; i < basis.getSize(); ++i) basisCollectionTotalSize += basis[i].getSize();
   }
   if (covarianceModel.getInputDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the input dimension=" << covarianceModel.getInputDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getOutputDimension();
@@ -97,12 +94,6 @@ String KrigingGradient::__repr__() const
 String KrigingGradient::__str__(const String & ) const
 {
   return OSS(false) << GetClassName();
-}
-
-/* Test for actual implementation */
-Bool KrigingGradient::isActualImplementation() const
-{
-  return true;
 }
 
 Matrix KrigingGradient::gradient(const Point & inP) const
@@ -146,7 +137,7 @@ Matrix KrigingGradient::gradient(const Point & inP) const
     const Point betaBasis(beta_[i]);
     const UnsignedInteger localBasisSize = localBasis.getSize();
     // For the i-th Basis (marginal), take into account the trend
-    // We write explicitely the linear combination instead of using a LinearCombinationGradient
+    // We write explicitly the linear combination instead of using a LinearCombinationGradient
     for (UnsignedInteger j = 0; j < localBasisSize; ++j)
     {
       const Matrix gradient_bj(localBasis[j].gradient(inP) * betaBasis[j]);

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import os
 import openturns as ot
 
@@ -37,6 +36,7 @@ print('value[4, 0]=%.6g' % field[4, 0])
 print('nearest[2]=', field.getValueAtIndex(tree.query(field[2])))
 print('mesh=', field.getMesh())
 print('input mean=', field.getInputMean())
+print('norm=%.6g' % field.norm())
 print('deformed=', field.asDeformedMesh())
 print('description=', field.getDescription())
 

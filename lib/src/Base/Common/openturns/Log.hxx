@@ -2,7 +2,7 @@
 /**
  *  @brief Log records all user information to a file or tty
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 #include <fstream>
 #include <map>
 #include "openturns/OTprivate.hxx"
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 #include "openturns/TTY.hxx"
 #include "openturns/MutexLock.hxx"
 

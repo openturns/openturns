@@ -2,7 +2,7 @@
 /**
  *  @brief Class for the InverseNataf transformation evaluation for independent
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include "openturns/InverseNatafIndependentCopulaGradient.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -79,8 +80,7 @@ Matrix InverseNatafIndependentCopulaGradient::gradient(const Point & inP) const
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     const Scalar x = inP[i];
-    // 0.3989422804014326779399462 = 1/sqrt(2*Pi)
-    result(i, i) = 0.3989422804014326779399462 * exp(-0.5 * x * x);
+    result(i, i) = DistFunc::dNormal(x);
   }
   return result;
 }

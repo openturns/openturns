@@ -4,9 +4,33 @@
 Gathers the results of a :class:`~openturns.SobolSimulationAlgorithm`
 algorithm.
 
+Parameters
+----------
+fo_dist : :class:`~openturns.Distribution`
+    The random vector to study.
+to_dist : :class:`~openturns.Distribution`
+    The function to study.
+outer_sampling : int
+    The number of iterations.
+block_size : int
+    The batch size.
+
 See also
 --------
-SobolSimulationAlgorithm"
+SobolSimulationAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> fo_dist = ot.Normal([0.154081,0.872087,0.0122877,0.0433801], [0.00982468,0.0302524,0.00911937,0.00926643], ot.CorrelationMatrix(4))
+>>> to_dist = ot.Normal([0.16743,0.795477,0.0124454,0.045178], [0.0068919,0.00950876,0.00204324,0.0038844], ot.CorrelationMatrix(4))
+>>> result = ot.SobolSimulationResult(fo_dist, to_dist, 250, 100)
+>>> fo = result.getFirstOrderIndicesEstimate()
+>>> to = result.getTotalOrderIndicesEstimate()
+>>> fo_dist = result.getFirstOrderIndicesDistribution()
+>>> to_dist = result.getTotalOrderIndicesDistribution()
+>>> graph = result.draw()"
 
 // ---------------------------------------------------------------------
 
@@ -67,3 +91,19 @@ Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
     Distribution of the total order indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationResult::draw
+"Draw sensitivity indices.
+
+Parameters
+----------
+confidence_level : float, default=0.95
+    Confidence level for intervals
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graph containing the aggregated first and total order indices."
+

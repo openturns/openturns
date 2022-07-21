@@ -3,7 +3,7 @@
  *  @brief  This class provides fast search of neighbours.
  *  This is an abstract class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ public:
   NearestNeighbourAlgorithmImplementation();
 
   /** Virtual copy constructor */
-  virtual NearestNeighbourAlgorithmImplementation * clone() const;
+  NearestNeighbourAlgorithmImplementation * clone() const override;
 
 #ifndef SWIG
   /** Default virtual constructor */
@@ -64,10 +64,10 @@ public:
   virtual Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted = false) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 } ; /* class NearestNeighbourAlgorithmImplementation */
 

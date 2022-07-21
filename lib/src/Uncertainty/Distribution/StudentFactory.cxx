@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Student distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -86,7 +86,7 @@ struct StudentFactoryReducedLogLikelihood
   {
     const Scalar nu = parameter[0];
     const Scalar factor = 1.0 - 2.0 / nu;
-    if (factor <= 0.0) return Point(1, -SpecFunc::LogMaxScalar);
+    if (factor <= 0.0) return Point(1, SpecFunc::LowestScalar);
     const Point sigma(stdev_ * std::sqrt(factor));
     return Student(nu, mu_, sigma, R_).computeLogPDF(sample_).computeMean();
   }
@@ -100,9 +100,9 @@ struct StudentFactoryReducedLogLikelihood
 
 Student StudentFactory::buildAsStudent(const Sample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from an empty sample";
+  if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from a sample of size < 2";
   const Point mu(sample.computeMean());
-  const Point stdev(sample.computeStandardDeviationPerComponent());
+  const Point stdev(sample.computeStandardDeviation());
   // The relation between Kendall's tau and shape matrix is universal among the elliptical copulas. Use the method in NormalCopula.
   const CorrelationMatrix R(NormalCopula::GetCorrelationFromKendallCorrelation(sample.computeKendallTau()));
 
@@ -115,6 +115,7 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
   problem.setMinimization(false);
   TNC solver(problem);
   solver.setStartingPoint((bounds.getLowerBound() + bounds.getUpperBound()) * 0.5);
+  solver.setVerbose(Log::HasInfo());
   solver.run();
   const Scalar nu = solver.getResult().getOptimalPoint()[0];
   const Point sigma(stdev * std::sqrt(1.0 - 2.0 / nu));

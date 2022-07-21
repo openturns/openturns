@@ -2,13 +2,13 @@ Testing class Frechet
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=Frechet name=Frechet dimension=1 alpha=6 beta=1.5 gamma=-1
+class=Frechet name=Frechet dimension=1 beta=1.5 alpha=6 gamma=-1
 streamObject(const T & anObject)
-class=Frechet name=Frechet dimension=1 alpha=6 beta=1.5 gamma=-1
+class=Frechet name=Frechet dimension=1 beta=1.5 alpha=6 gamma=-1
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=Frechet name=Frechet dimension=1 alpha=6 beta=1.5 gamma=-1
-Distribution Frechet(alpha = 6, beta = 1.5, gamma = -1)
+Distribution class=Frechet name=Frechet dimension=1 beta=1.5 alpha=6 gamma=-1
+Distribution Frechet(beta = 1.5, alpha = 6, gamma = -1)
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[0.705878]
@@ -19,7 +19,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[-1.32548]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-1.32548]
 log pdf=-0.805459
 pdf     =0.446883
 pdf (FD)=0.446883
@@ -30,15 +29,15 @@ Inverse survival=class=Point name=Unnamed dimension=1 values=[0.249321]
 Survival(inverse survival)=0.95
 characteristic function=(0.72659,0.574653)
 log characteristic function=(-0.0764829,0.669162)
-pdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.0311988,1.46939,1.32548]
-pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.0311988,1.46939,1.32548]
-cdf gradient     =class=Point name=Unnamed dimension=3 values=[0.0428534,-0.595844,-0.446883]
-cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[0.0428534,-0.595844,-0.446883]
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[1.46939,-0.0311988,1.32548]
+pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[1.46939,-0.0311988,1.32548]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.595844,0.0428534,-0.446883]
+cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.595844,0.0428534,-0.446883]
 quantile=class=Point name=Unnamed dimension=1 values=[1.46083]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.125077] upper bound=class=Point name=Unnamed dimension=1 values=[1.49279] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Frechet(alpha = 6, beta = 1.5, gamma = -1)) gradientImplementation=MinimumVolumeLevelSetGradient(Frechet(alpha = 6, beta = 1.5, gamma = -1)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Frechet(alpha = 6, beta = 1.5, gamma = -1)) level=2.21675
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Frechet(beta = 1.5, alpha = 6, gamma = -1)) gradientImplementation=MinimumVolumeLevelSetGradient(Frechet(beta = 1.5, alpha = 6, gamma = -1)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Frechet(beta = 1.5, alpha = 6, gamma = -1)) level=2.21675
 beta=0.108963
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.206726] upper bound=class=Point name=Unnamed dimension=1 values=[1.76813] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -56,11 +55,11 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[alpha : 6, beta : 1.5, gamma : -1]]
+parameters=[[beta : 1.5, alpha : 6, gamma : -1]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.12879]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.35412]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[1.77245]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[2.67894]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[5.56632]
-Standard representative=Frechet(alpha = 6, beta = 1, gamma = 0)
+Standard representative=Frechet(beta = 1, alpha = 6, gamma = 0)

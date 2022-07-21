@@ -6,25 +6,45 @@ Parameters
 model : :class:`~openturns.Function`
     The parametric function to be calibrated.
 inputObservations : 2-d sequence of float
-    The sample of input values of the model linked to the observations.
+    The sample of input observations.
+    Can have dimension 0 to specify no observations.
 outputObservations : 2-d sequence of float
-    The sample of output values of the model linked to the observations.
+    The sample of output observations.
 candidate : sequence of float
-    The a priori value of the parameter.
+    The mean of the gaussian prior distribution of the parameter.
 parameterCovariance : 2-d sequence of float
-    The covariance of the parameter prior distribution.
+    The covariance matrix of the gaussian prior distribution of the parameter.
 errorCovariance : 2-d sequence of float
-    The covariance of the observations error.
+    The covariance matrix of the gaussian distribution of the observations error.
 
 Notes
 -----
 GaussianNonLinearCalibration is the minimum variance estimator of the parameter of a given model
 under the assumption that this parameter is dispersed according to a known
-covariance matrix. The given observation error covariance can be either *local*,
+covariance matrix. 
+This algorithm is also known as *3DVAR*. 
+
+The given observation error covariance can be either *local*,
 ie the same matrix applies for each observation and is of dimension the output
 dimension of the model, or *global*, ie the matrix describes the full set of
 observation errors, in which case its dimension is the product of the output
 dimension of the model and the number of observations.
+
+The prior distribution of the parameter is a :class:`~openturns.Normal`.  
+
+The posterior distribution of the parameter is :class:`~openturns.Normal`. 
+By default, the posterior distribution is evaluated based on a linear approximation 
+of the model at the optimum. 
+This corresponds to using the :class:`~openturns.GaussianLinearCalibration` at the optimum,
+and is named *Laplace approximation* in the bayesian context.
+However, if the key `GaussianNonLinearCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap`
+is set to a nonzero positive integer, then a bootstrap resampling of the observations
+is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing`
+of the sample of boostrap optimum parameters.
+
+The resulting error distribution is :class:`~openturns.Normal`
+with a zero mean and with a covariance matrix equal to the
+`errorCovariance` input argument.
 
 See also
 --------
@@ -52,7 +72,7 @@ Calibrate a nonlinear model using 3DVAR:
 >>> algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
-[2.70532,1.21251,0.499001]"
+[2.705...,1.212...,0.499...]"
 
 // ---------------------------------------------------------------------
 
@@ -116,7 +136,7 @@ flag : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianNonLinearCalibration::getAlgorithm
+%feature("docstring") OT::GaussianNonLinearCalibration::getOptimizationAlgorithm
 "Accessor to the optimization algorithm used for the computation.
 
 Returns
@@ -126,7 +146,7 @@ algo : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianNonLinearCalibration::setAlgorithm
+%feature("docstring") OT::GaussianNonLinearCalibration::setOptimizationAlgorithm
 "Accessor to the optimization algorithm used for the computation.
 
 Parameters

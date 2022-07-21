@@ -8,7 +8,7 @@ oneRealization=class=Point name=Unnamed dimension=2 values=[0.629877,0.840792]
 oneSample=class=Sample name=an extreme value copula implementation=class=SampleImplementation name=an extreme value copula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.0154791],[0.347057,0.867276],[0.92068,0.849891],[0.0632061,0.106293],[0.714382,0.534288],[0.373767,0.595993],[0.883503,0.659838],[0.92851,0.951152],[0.684575,0.822944],[0.359802,0.840971]]
 anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.502777,0.502285]
 anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0503034,0.0503034,0.0840158]
-point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-1.46688,-1.46688] ddf (FD)=class=Point name=Unnamed dimension=2 values=[-1.46688,-1.46688] pdf=1.60513 cdf=0.0894427
+point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-1.46688,-1.46688] pdf=1.60513 cdf=0.0894427
 Survival      =0.689443
 Survival (ref)=0.689443
 Inverse survival=class=Point name=Unnamed dimension=2 values=[0.027249,0.027249]

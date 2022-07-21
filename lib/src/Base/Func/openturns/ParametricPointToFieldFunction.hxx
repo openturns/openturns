@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements parametric Point To Field functions.
  *
- *  Copyright 2015-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,7 +40,7 @@ public:
                                   const Point & referencePoint);
 
   /** Virtual constructor */
-  virtual ParametricPointToFieldFunction * clone() const;
+  ParametricPointToFieldFunction * clone() const override;
 
   /** Parameters positions accessor */
   Indices getParametersPositions() const;
@@ -55,21 +55,21 @@ public:
   void setParameter(const Point & parameter);
   Point getParameter() const;
 
-  virtual Sample operator() (const Point & point) const;
-  virtual ProcessSample operator() (const Sample & inS) const;
+  Sample operator() (const Point & point) const override;
+  ProcessSample operator() (const Sample & inS) const override;
 
   /** Dimension accessor */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   Description getParameterDescription() const;

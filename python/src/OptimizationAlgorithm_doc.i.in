@@ -2,8 +2,6 @@
 
 %feature("docstring") OT::OptimizationAlgorithm
 OT_OptimizationAlgorithm_doc
-%feature("docstring") OT::OptimizationAlgorithm::computeLagrangeMultipliers
-OT_OptimizationAlgorithm_computeLagrangeMultipliers_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumAbsoluteError
 OT_OptimizationAlgorithm_getMaximumAbsoluteError_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumConstraintError
@@ -54,30 +52,25 @@ OT_OptimizationAlgorithm_setStopCallback_doc
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::OptimizationAlgorithm::Build
-"Instanciate an optimization algorithm from its name.
+"Instantiate an optimization algorithm from name or problem.
 
 Parameters
 ----------
-name : str
-    Name of the algorithm.
-    Use `TNC`, `Cobyla` or one of the :class:`~openturns.NLopt` solver names."
+name : str or :class:`~openturns.OptimizationProblem`
+    Name of the algorithm or problem to solve.
+    For example `TNC`, `Cobyla` or one of the :class:`~openturns.NLopt` solver names."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::OptimizationAlgorithm::GetAlgorithmNames
 "Get the list of available solver names.
 
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`, optional
+    Problem to solve.
+
 Returns
 -------
 names : :class:`~openturns.Description`
     List of available solver names."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
-"Get the list of available least-squares solver names.
-
-Returns
--------
-names : :class:`~openturns.Description`
-    List of available least-squares solver names."

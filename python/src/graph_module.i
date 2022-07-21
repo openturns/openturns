@@ -33,7 +33,7 @@
 %include Cloud.i
 %include Contour.i
 %include Curve.i
-%include Pairs.i
+%include GridLayout.i
 %include Pie.i
 %include Polygon.i
 %include PolygonArray.i

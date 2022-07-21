@@ -2,7 +2,7 @@
 /**
  *  @brief This class build a stationary covariance model using a time grid and a collection of covariance matrices
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_USERDEFINEDSTATIONARYCOVARIANCEMODEL_HXX
 #define OPENTURNS_USERDEFINEDSTATIONARYCOVARIANCEMODEL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/RegularGrid.hxx"
@@ -34,54 +34,62 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API UserDefinedStationaryCovarianceModel
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
 
 public:
 
-  typedef PersistentCollection<CovarianceMatrix>          CovarianceMatrixPersistentCollection;
-  typedef Collection<CovarianceMatrix>                    CovarianceMatrixCollection;
+  typedef PersistentCollection<SquareMatrix>      SquareMatrixPersistentCollection;
+  typedef Collection<SquareMatrix>                SquareMatrixCollection;
 
-  /** Default onstructor */
+  /** Default constructor */
   UserDefinedStationaryCovarianceModel();
 
-  /** Standard onstructor */
+  /** Standard constructor */
   UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
-                                       const CovarianceMatrixCollection & covarianceCollection);
+                                       const SquareMatrixCollection & covarianceCollection);
 
   /** Virtual copy constructor */
-  virtual UserDefinedStationaryCovarianceModel * clone() const;
+  UserDefinedStationaryCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const Point & tau) const;
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point &tau) const override;
+#ifndef SWIG
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                         const Collection<Scalar>::const_iterator &t_begin) const override;
+#endif
+
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::operator();
+  SquareMatrix operator() (const Point & tau) const override;
 
   /** Time grid/mesh accessor */
   RegularGrid getTimeGrid() const;
 
   /** Discretize the covariance function on a given TimeGrid */
-  using StationaryCovarianceModel::discretize;
-  CovarianceMatrix discretize(const Mesh & mesh) const;
-  CovarianceMatrix discretize(const Sample & vertices) const;
+  using CovarianceModelImplementation::discretize;
+  CovarianceMatrix discretize(const Mesh & mesh) const override;
+  CovarianceMatrix discretize(const Sample & vertices) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
   /** Collection of covariance functions */
-  CovarianceMatrixPersistentCollection covarianceCollection_;
+  SquareMatrixPersistentCollection covarianceCollection_;
 
   /** Mesh of evaluation */
   RegularGrid mesh_;

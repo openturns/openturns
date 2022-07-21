@@ -1,0 +1,90 @@
+%feature("docstring") OT::MultiFORM
+"FORM approximation with multiple design points.
+
+This algorithm searches for several design points by restarting the nearest-point search.
+For each design point we add a `bulge` function that penalizes the limit-state G around it:
+
+.. math::
+
+    G_m(u) = G(u) + \sum_{i=1}^m B_i(u)
+
+The bulge function can be chosed as:
+
+.. math::
+
+    B_i(u) = s_i (r_i^2 - \|u - u_i^{\ast}\|^2)^2
+
+Once these points are found a :ref:`form_approximation` is computed with each
+point and the probability of interest is computed as a series system
+probability: the union of the approximated events:
+
+.. math::
+
+    P(E_{sys}) = P(\bigcup_{i=1}^N E_i) = 1 - \Phi_k (\vect{\beta}; \vect{\vect{\rho}})
+
+Beware, as with the regular FORM method the search can fail,
+or the enumeration of design can be not incomplete.
+
+More details can be found in [kiureghian1998]_.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    Optimization algorithm used to research the design point.
+event : :class:`~openturns.RandomVector`
+    Failure event
+physicalStartingPoint : sequence of float
+    Starting point of the optimization algorithm, declared in the physical
+    space.
+
+See also
+--------
+FORM, MultiFORMResult
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 2
+>>> f = ot.SymbolicFunction(['x0', 'x1'], ['5.0-x1-0.5*(x0-0.1)^2'])
+>>> dist = ot.Normal(dim)
+>>> X = ot.RandomVector(dist)
+>>> Y = ot.CompositeRandomVector(f, X)
+>>> event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
+>>> solver = ot.Cobyla()
+>>> starting_pt = dist.getMean()
+>>> algo = ot.MultiFORM(solver, event, starting_pt)
+>>> algo.run()
+>>> result = algo.getResult()
+>>> n_design_pts = len(result.getFORMResultCollection())
+>>> pf = result.getEventProbability()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiFORM::getResult
+"Accessor to the result.
+
+Returns
+-------
+result : :class:`~openturns.MultiFORMResult`
+    Contains the global result as well as the sub FORM results."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiFORM::setMaximumDesignPointsNumber
+"Accessor to the maximum number of design points.
+
+Parameters
+----------
+max_dp : int
+    Maximum number of design points"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiFORM::getMaximumDesignPointsNumber
+"Accessor to the maximum number of design points.
+
+Returns
+-------
+max_dp : int
+    Maximum number of design points"
+

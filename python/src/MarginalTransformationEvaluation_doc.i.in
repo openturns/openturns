@@ -11,7 +11,7 @@ Available constructors:
 
 Parameters
 ----------
-distCol : :class:`~openturns.DistributionCollection`
+distCol : sequence of :class:`~openturns.Distribution`
     A collection of distributions.
 direction : integer
     Flag for the direction of the transformation, either integer or 
@@ -21,7 +21,7 @@ direction : integer
 standardMarginal : :class:`~openturns.Distribution`
     Target distribution marginal
     Default is Uniform(0, 1)
-outputDistCol : :class:`~openturns.DistributionCollection`
+outputDistCol : sequence of :class:`~openturns.Distribution`
     A collection of distributions.
 
 Notes
@@ -65,7 +65,7 @@ Examples
 >>> margTransEvalInverse = ot.MarginalTransformationEvaluation(distCol, 1)
 >>> print(margTransEvalInverse([0.84, 0.86]))
 [0.994458,2.94562]
->>> outputDistCol = [ot.Weibull(), ot.Exponential()]
+>>> outputDistCol = [ot.WeibullMin(), ot.Exponential()]
 >>> margTransEvalComposed = ot.MarginalTransformationEvaluation(distCol, outputDistCol)
 >>> print(margTransEvalComposed([1, 3]))
 [1.84102,1.99533]

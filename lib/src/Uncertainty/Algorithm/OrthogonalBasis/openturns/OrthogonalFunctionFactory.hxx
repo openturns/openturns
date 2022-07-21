@@ -2,7 +2,7 @@
 /**
  *  @brief This is an abstract class for orthogonal basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,10 +48,10 @@ public:
   OrthogonalFunctionFactory(const Distribution & measure);
 
   /** Build the Function of the given index */
-  virtual Function build(const UnsignedInteger index) const;
+  Function build(const UnsignedInteger index) const override;
 
   /** Build the Function of the given multi-indices */
-  virtual Function build(const Indices & indices) const;
+  Function build(const Indices & indices) const;
 
   /** Return the measure upon which the basis is orthogonal */
   virtual Distribution getMeasure() const;
@@ -60,18 +60,18 @@ public:
   virtual EnumerateFunction getEnumerateFunction() const;
 
   /** Virtual constructor */
-  virtual OrthogonalFunctionFactory * clone() const;
+  OrthogonalFunctionFactory * clone() const override;
 
-  virtual Bool isOrthogonal() const;
+  Bool isOrthogonal() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

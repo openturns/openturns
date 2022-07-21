@@ -2,7 +2,7 @@
 /**
  *  @brief FORMResult implements the First Order Reliability Method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,14 +40,14 @@ public:
 
   /** Standard constructor */
   FORMResult(const Point & standardSpaceDesignPoint,
-             const Event & limitStateVariable,
+             const RandomVector & limitStateVariable,
              const Bool isStandardPointOriginInFailureSpace);
 
   /* Default constructor */
   FORMResult();
 
   /** Virtual constructor */
-  virtual FORMResult * clone() const;
+  FORMResult * clone() const override;
 
   /** EventProbability accessor */
   Scalar getEventProbability() const;
@@ -62,13 +62,13 @@ public:
   GraphCollection drawEventProbabilitySensitivity(Scalar width = ResourceMap::GetAsScalar("AnalyticalResult-DefaultWidth")) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

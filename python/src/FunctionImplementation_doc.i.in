@@ -87,7 +87,7 @@ Create a *Function* from another *Function*
 and by using a comparison operator:
 
 >>> analytical = ot.SymbolicFunction(['x0','x1'], ['x0 + x1'])
->>> indicator = ot.IndicatorFunction(analytical, ot.Less(), 0.0)
+>>> indicator = ot.IndicatorFunction(ot.LevelSet(analytical, ot.Less(), 0.0))
 >>> print(indicator([2, 3]))
 [0]
 >>> print(indicator([2, -3]))
@@ -264,7 +264,7 @@ OT_Function_getMarginal_doc
 Returns
 -------
 function : :class:`~openturns.FunctionImplementation`
-    The evaluation, gradient and hessian function.
+    A copy of the evaluation, gradient and hessian functions.
 
 Examples
 --------
@@ -759,3 +759,34 @@ gradient : :class:`~openturns.Matrix`
 %enddef
 %feature("docstring") OT::FunctionImplementation::parameterGradient
 OT_Function_parameterGradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_isLinear_doc
+"Accessor to the linearity of the function.
+
+Returns
+-------
+linear : bool
+    *True* if the function is linear, *False* otherwise."
+%enddef
+%feature("docstring") OT::FunctionImplementation::isLinear
+OT_Function_isLinear_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_isLinearlyDependent_doc
+"Accessor to the linearity of the function with regard to a specific variable.
+
+Parameters
+----------
+index : int
+    The index of the variable with regard to which linearity is evaluated.
+
+Returns
+-------
+linear : bool
+    *True* if the function is linearly dependent on the specified variable, *False* otherwise."
+%enddef
+%feature("docstring") OT::FunctionImplementation::isLinearlyDependent
+OT_Function_isLinearlyDependent_doc

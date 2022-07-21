@@ -2,7 +2,7 @@
 /**
  * @brief Python module to wrap Point and Sample without copy
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,6 +19,7 @@
  *
  */
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <stdlib.h>
 #include <string.h>
@@ -51,7 +52,7 @@ Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
   PyObject * ownObj = NULL;
   Py_ssize_t shapeLength;
   Py_ssize_t bufferLength;
-  int i;
+  Py_ssize_t i;
   char own;
   double * data = NULL;
 
@@ -87,7 +88,7 @@ Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
 
   self->bufferview.own = own;
   self->bufferview.itemsize = sizeof(double);
-  self->bufferview.ndim = shapeLength;
+  self->bufferview.ndim = (int)shapeLength;
   if (shapeLength == 0)
   {
     /* Is this really useful?  Maybe we should return -1 */
@@ -153,13 +154,7 @@ Buffer_repr(Buffer * self)
   sprintf(s, "<read-only buffer at %p shape=(%s)>", self->bufferview.data, r);
   free(r);
 
-#if PY_VERSION_HEX >= 0x03010000
   result = PyUnicode_DecodeUTF8(s, (Py_ssize_t) strlen(s), "surrogateescape");
-#elif PY_VERSION_HEX >= 0x03000000
-  result = PyUnicode_FromStringAndSize(s, (Py_ssize_t) strlen(s));
-#else
-  result = PyString_FromStringAndSize(s, (Py_ssize_t) strlen(s));
-#endif
   free(s);
   return result;
 }
@@ -180,6 +175,7 @@ Buffer_iter(PyObject *obj)
 static int
 Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
 {
+  (void)flags;
   Buffer* self = (Buffer*)obj;
   if (view == NULL) {
     PyErr_SetString(PyExc_ValueError, "NULL view in getbuffer");
@@ -191,7 +187,7 @@ Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
   view->len = self->bufferview.length * self->bufferview.itemsize;
   view->readonly = 1;
   view->itemsize = self->bufferview.itemsize;
-  view->format = "d";
+  view->format = (char *)"d";
   view->ndim = self->bufferview.ndim;
   view->shape = self->bufferview.shape;
   view->strides = self->bufferview.strides;
@@ -202,61 +198,14 @@ Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
   return 0;
 }
 
-#if PY_VERSION_HEX < 0x03000000
-
-static Py_ssize_t
-Buffer_getreadbuffer(PyObject *obj, Py_ssize_t segment, void **ptrptr)
-{
-  Buffer* self = (Buffer*)obj;
-  if (segment != 0)
-  {
-    PyErr_SetString(PyExc_ValueError, "invalid segment");
-    return -1;
-  }
-  *ptrptr = self->bufferview.data;
-  return self->bufferview.length * self->bufferview.itemsize;
-}
-
-static Py_ssize_t
-Buffer_getsegcount(PyObject *obj, Py_ssize_t *lenp)
-{
-  Buffer* self = (Buffer*)obj;
-  if (lenp)
-  {
-    *lenp = self->bufferview.length * self->bufferview.itemsize;
-  }
-  return 1;
-}
-
-static Py_ssize_t
-Buffer_getcharbuffer(PyObject *obj, Py_ssize_t segment, char **ptrptr)
-{
-  Buffer* self = (Buffer*)obj;
-  if (segment != 0)
-  {
-    PyErr_SetString(PyExc_ValueError, "invalid segment");
-    return -1;
-  }
-  *ptrptr = (void*) self->bufferview.data;
-  return self->bufferview.length * self->bufferview.itemsize;
-}
-
-#endif
-
 static PyBufferProcs Buffer_as_buffer = {
-#if PY_VERSION_HEX < 0x03000000
-  (readbufferproc)    Buffer_getreadbuffer,
-  (writebufferproc)   0,
-  (segcountproc)      Buffer_getsegcount,
-  (charbufferproc)    Buffer_getcharbuffer,
-#endif
   (getbufferproc)     Buffer_getbuffer,
   (releasebufferproc) 0
 };
 
 /* Forward declaration.
    This method is defined after Buffer_item because it does the opposite job. */
-static PyObject * Buffer_augment(PyObject *obj);
+static PyObject * Buffer_augment(PyObject *obj, PyObject *args);
 
 
 /* This routine is used for pickling; it must return a tuple with 2 to 5 arguments:
@@ -293,11 +242,7 @@ Buffer_reduce(PyObject *obj, PyObject *args)
   for(i = 0; i < self->bufferview.ndim; ++i)
     PyTuple_SET_ITEM(strideTuple, i, PyLong_FromSsize_t(self->bufferview.strides[i]));
 
-#if PY_VERSION_HEX >= 0x03000000
   rawObj = PyBytes_FromStringAndSize((const char*)self->bufferview.data, self->bufferview.itemsize * self->bufferview.length);
-#else
-  rawObj = PyString_FromStringAndSize((const char*)self->bufferview.data, self->bufferview.itemsize * self->bufferview.length);
-#endif
 
   return Py_BuildValue("O(n)(NNN)",
              /* We use Buffer type to build its own instance */
@@ -315,7 +260,7 @@ Buffer_setstate(PyObject *obj, PyObject *args)
   PyObject * shapeObj = NULL;
   PyObject * strideObj = NULL;
   char * rawData;
-  long length = 0;
+  Py_ssize_t length = 0;
   Py_ssize_t shapeLength;
   Py_ssize_t strideLength;
   int i;
@@ -339,7 +284,7 @@ Buffer_setstate(PyObject *obj, PyObject *args)
   {
     return NULL;
   }
-  self->bufferview.ndim = shapeLength;
+  self->bufferview.ndim = (int)shapeLength;
   for(i = 0; i < shapeLength; ++i)
   {
     self->bufferview.shape[i] = PyLong_AsLong(PyTuple_GET_ITEM(shapeObj, i));
@@ -367,53 +312,19 @@ static const char Buffer_doc[] =                                          \
 "or converted into a Sample or a numpy array.";
 
 static PyTypeObject BufferType = {
-#if PY_VERSION_HEX >= 0x03000000
     PyVarObject_HEAD_INIT(NULL, 0)
-#else
-    PyObject_HEAD_INIT(NULL)
-    0,                            /* ob_size */
-#endif
-    "openturns.memoryview.Buffer",/* tp_name */
-    sizeof(Buffer),               /* tp_basicsize */
-    0,                            /* tp_itemsize */
-    (destructor)Buffer_dealloc,   /* tp_dealloc */
-    0,                            /* tp_print */
-    0,                            /* tp_getattr */
-    0,                            /* tp_setattr */
-    0,                            /* tp_reserved */
-    (reprfunc) Buffer_repr,       /* tp_repr */
-    0,                            /* tp_as_number */
-    &Buffer_as_sequence,          /* tp_as_sequence */
-    0,                            /* tp_as_mapping */
-    0,                            /* tp_hash  */
-    0,                            /* tp_call */
-    (reprfunc) Buffer_repr,       /* tp_str */
-    0,                            /* tp_getattro */
-    0,                            /* tp_setattro */
-    &Buffer_as_buffer,            /* tp_as_buffer */
-/* In Python 2.7, PyBuffer_Check() checks whether Py_TPFLAGS_HAVE_NEWBUFFER is set, so it must be
-   defined; Python 3 direcly checks tp_as_buffer.getbufferproc != NULL and removed most flags */
-#if PY_VERSION_HEX >= 0x03000000
-    Py_TPFLAGS_DEFAULT,           /* tp_flags */
-#else
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_NEWBUFFER, /* tp_flags */
-#endif
-    Buffer_doc,                   /* tp_doc */
-    0,                            /* tp_traverse */
-    0,                            /* tp_clear */
-    0,                            /* tp_richcompare */
-    0,                            /* tp_weaklistoffset */
-    (getiterfunc) Buffer_iter,    /* tp_iter */
-    0,                            /* tp_iternext */
-    Buffer_methods,               /* tp_methods */
-    0,                            /* tp_members */
-    0,                            /* tp_getset */
-    0,                            /* tp_base */
-    0,                            /* tp_dict */
-    0,                            /* tp_descr_get */
-    0,                            /* tp_descr_set */
-    0,                            /* tp_dictoffset */
-    (initproc)Buffer_init         /* tp_init */
+    .tp_name = "openturns.memoryview.Buffer",
+    .tp_basicsize = sizeof(Buffer),
+    .tp_dealloc = (destructor)Buffer_dealloc,
+    .tp_repr = (reprfunc) Buffer_repr,
+    .tp_as_sequence = &Buffer_as_sequence,
+    .tp_str = (reprfunc) Buffer_repr,
+    .tp_as_buffer = &Buffer_as_buffer,
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_doc = Buffer_doc,
+    .tp_iter = (getiterfunc) Buffer_iter,
+    .tp_methods = Buffer_methods,
+    .tp_init = (initproc)Buffer_init,
 };
 
 static Py_ssize_t
@@ -465,8 +376,9 @@ Buffer_item(PyObject *obj, Py_ssize_t index)
 }
 
 static PyObject *
-Buffer_augment(PyObject *obj)
+Buffer_augment(PyObject *obj, PyObject *args)
 {
+  (void)args;
   int j;
   Buffer* self = (Buffer*)obj;
   PyObject * newView;
@@ -505,16 +417,14 @@ Buffer_augment(PyObject *obj)
 }
 
 static PySequenceMethods Buffer_as_sequence = {
-    (lenfunc)Buffer_length,                 /*sq_length*/
-    (binaryfunc)NULL,                       /*sq_concat*/
-    (ssizeargfunc)NULL,                     /*sq_repeat*/
-    (ssizeargfunc)Buffer_item,              /*sq_item*/
-    (ssizessizeargfunc)NULL,                /*sq_slice*/
-    (ssizeobjargproc)NULL,                  /*sq_ass_item*/
-    (ssizessizeobjargproc)NULL,             /*sq_ass_slice*/
-    (objobjproc)NULL,                       /*sq_contains*/
-    (binaryfunc) NULL,                      /*sq_inplace_concat*/
-    (ssizeargfunc)NULL,                     /*sq_inplace_repeat*/
+    .sq_length = (lenfunc)Buffer_length,
+    .sq_concat = (binaryfunc)NULL,
+    .sq_repeat = (ssizeargfunc)NULL,
+    .sq_item = (ssizeargfunc)Buffer_item,
+    .sq_ass_item = (ssizeobjargproc)NULL,
+    .sq_contains = (objobjproc)NULL,
+    .sq_inplace_concat = (binaryfunc) NULL,
+    .sq_inplace_repeat = (ssizeargfunc)NULL,
 };
 
 
@@ -530,17 +440,11 @@ struct module_state {
 };
 
 
-#if PY_MAJOR_VERSION >= 3
 #define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
-#else
-#define GETSTATE(m) (&_state)
-static struct module_state _state;
-#endif
-
-#if PY_MAJOR_VERSION >= 3
 
 static PyObject *
-error_out(PyObject *m) {
+error_out(PyObject *m, PyObject *args) {
+    (void)args;
     struct module_state *st = GETSTATE(m);
     PyErr_SetString(st->error, "something bad happened");
     return NULL;
@@ -562,29 +466,24 @@ static int memoryview_clear(PyObject *m) {
 }
 
 static struct PyModuleDef openturns_memoryview_module = {
-  PyModuleDef_HEAD_INIT,
-  openturns_memoryview_module_name,
-  Buffer_doc,
-  sizeof(struct module_state),
-  memoryview_methods,
-  NULL,
-  memoryview_traverse,
-  memoryview_clear,
-  NULL
+    .m_base = PyModuleDef_HEAD_INIT,
+    .m_name = openturns_memoryview_module_name,
+    .m_doc = Buffer_doc,
+    .m_size = sizeof(struct module_state),
+    .m_methods = memoryview_methods,
+    .m_slots = NULL,
+    .m_traverse = memoryview_traverse,
+    .m_clear = memoryview_clear,
+    .m_free = NULL,
 };
 
 #define INITERROR return NULL
 
 PyMODINIT_FUNC
-PyInit_memoryview(void)
-
-#else
-
-#define INITERROR return
+PyInit_memoryview(void);
 
 PyMODINIT_FUNC
-initmemoryview(void)
-#endif
+PyInit_memoryview(void)
 {
   PyObject *module;
   struct module_state *st;
@@ -593,11 +492,7 @@ initmemoryview(void)
   if (PyType_Ready(&BufferType) < 0)
       INITERROR;
 
-#if PY_MAJOR_VERSION >= 3
   module = PyModule_Create(&openturns_memoryview_module);
-#else
-  module = Py_InitModule(openturns_memoryview_module_name, NULL);
-#endif
 
   if (module == NULL)
       INITERROR;
@@ -612,7 +507,5 @@ initmemoryview(void)
   Py_INCREF(&BufferType);
   PyModule_AddObject(module, "Buffer", (PyObject *)&BufferType);
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }

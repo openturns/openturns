@@ -1,0 +1,51 @@
+%feature("docstring") OT::GeneralizedExtremeValueFactory
+"GeneralizedExtremeValue factory.
+
+Returns the best model among the Frechet, Gumbel and Weibull estimates
+according to the BIC criterion.
+
+See also
+--------
+DistributionFactory, GeneralizedExtremeValue, FrechetFactory, GumbelFactory, WeibullMaxFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::build
+" Estimate the distribution using the default strategy.
+
+**Available usages**:
+
+    build(*sample*)
+
+    build(*param*)
+
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    Data.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.GeneralizedExtremeValueFactory`
+    The estimated distribution
+
+Notes
+-----
+The default strategy is trying to fit the three models :class:`~openturns.Frechet`, :class:`~openturns.Gumbel` and :class:`~openturns.WeibullMax`. Then the three models are classified w.r.t. the BIC criterion. The best one is returned."
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildAsGeneralizedExtremeValueFactory
+"Estimate the distribution as native distribution.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.GeneralizedExtremeValueFactory`
+    The estimated distribution"

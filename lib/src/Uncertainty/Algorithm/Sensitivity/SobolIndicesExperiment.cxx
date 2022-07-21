@@ -2,7 +2,7 @@
 /**
  *  @brief @brief Experiment to compute Sobol' indices
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -81,13 +81,13 @@ SobolIndicesExperiment::SobolIndicesExperiment(const Distribution & distribution
   } // LHS
   else if (ResourceMap::GetAsString("SobolIndicesExperiment-SamplingMethod") == "QMC")
   {
-    if (dimension <= SobolSequence::MaximumNumberOfDimension)
+    if (dimension <= SobolSequence::MaximumDimension)
     {
       method = 2;
     } // QMC
     else
     {
-      LOGWARN(OSS() << "Can use Sobol sequence in SobolIndicesExperiment only for dimension not greater than " << SobolSequence::MaximumNumberOfDimension << ", here dimension=" << dimension << ". Using LHS instead.");
+      LOGWARN(OSS() << "Can use Sobol sequence in SobolIndicesExperiment only for dimension not greater than " << SobolSequence::MaximumDimension << ", here dimension=" << dimension << ". Using LHS instead.");
       method = 1;
     } // QMC->LHS
   } // QMC
@@ -178,10 +178,11 @@ Sample SobolIndicesExperiment::generateWithWeights(Point & weights) const
   const UnsignedInteger dimension = distribution.getDimension();
   ComposedDistribution::DistributionCollection marginals(2 * dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      marginals[i] = distribution.getMarginal(i);
-      marginals[dimension + i] = marginals[i];
-    }
+  {
+    marginals[i] = distribution.getMarginal(i);
+    marginals[dimension + i] = marginals[i];
+    marginals[dimension + i].setDescription(Description(1, marginals[i].getDescription()[0] + "_2"));
+  }
   const ComposedDistribution doubleDistribution(marginals);
   // Generate a 2xdim sample of needed size
   WeightedExperiment doubleExperiment(experiment_);

@@ -2,7 +2,7 @@
 /**
  *  @brief The class Pointer implements a shared pointer strategy
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,14 +22,15 @@
 #define OPENTURNS_POINTER_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/SharedPointer.hxx"
+
+#include <memory> // for std::shared_ptr
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class Pointer
  * @brief Implements a shared pointer strategy
- * @see SharedPointer
  * @see InterfaceObject
  * @tparam T The class to point to
  * @tparam IMPL The class used to actually implement the shared pointer
@@ -40,36 +41,23 @@ BEGIN_NAMESPACE_OPENTURNS
  * MUST deep-copy it (copy-on-write strategy).
  */
 
-#ifdef SWIG
-template <class T>
-#else
 template < class T,
-           template <class> class IMPL = SharedPointer >
-#endif
-
+           template <class> class IMPL = std::shared_ptr >
 class Pointer
 {
 
-
-#ifdef SWIG
-  template <class Y> friend class Pointer;
-#else
   template <class Y, template <class> class I> friend class Pointer;
-#endif
 
 public:
   /**
    * Pointer_type gives access to the shared pointer
    * implementation type
    */
-#ifdef SWIG
-  typedef SharedPointer<T> pointer_type;
-#else
+
   typedef IMPL<T> pointer_type;
-#endif
 
   /**
-   * The actual shared pointer is \em ptr_
+   * The actual shared pointer
    */
   pointer_type ptr_;
 
@@ -136,7 +124,8 @@ public:
   template <class Base>
   Pointer & assign(const Pointer<Base> & ref)
   {
-    ptr_.assign(ref.ptr_);
+    pointer_type ptr(std::dynamic_pointer_cast<T>(ref.ptr_));
+    ptr_.swap(ptr);
     return *this;
   }
 
@@ -173,7 +162,6 @@ public:
     return *ptr_;
   }
 
-#ifndef SWIG
   /**
    * Operator -> dereferences the const shared pointer and gives
    * access to the underlying object
@@ -182,7 +170,6 @@ public:
   {
     return ptr_.get();
   }
-#endif
 
   /**
    * Operator * dereferences the shared pointer and gives

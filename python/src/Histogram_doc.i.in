@@ -9,15 +9,17 @@ Available constructors:
 Parameters
 ----------
 first : float
-    Lower bound.
+    Lower bound of the range.
 width : positive sequence of float
-    :math:`w_i` is the width of the class :math:`i`.
+    :math:`w_i` is the width of the class :math:`i` for :math:`1 \leq i \leq n`.
 height : positive sequence of float
-    :math:`h_i` is the density of the class :math:`i`.
+    :math:`h_i` is the density of the class :math:`i` for :math:`1 \leq i \leq n`.
+    The :math:`h_i` are automatically normalized such that :math:`\sum_{i=1}^n h_iw_i=1`.
 ticks : increasing sequence of float
-    :math:`t_0` is the lower bound of the first class and :math:`t_i` is the upper bound of the class :math:`i`.
+    :math:`t_0` is the lower bound of the first class and :math:`t_i` is the upper bound of the class :math:`i` for :math:`1 \leq i \leq n`
 frequencies : positive sequence of float
-    :math:`f_i` is the probability of the class :math:`i`.
+    :math:`f_i` is the probability of the class :math:`i` for :math:`1 \leq i \leq n`.
+    The :math:`f_i` are automatically normalized such that :math:`\sum_{i=1}^n f_i=1`.
 
 Notes
 -----
@@ -25,9 +27,10 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = \sum_{i=1}^{n}h_i\;\boldsymbol{1}_{[t_{i-1},x_i]}(x)
+    f_X(x) = \sum_{i=1}^{n}h_i\;\boldsymbol{1}_{[x_{i-1},x_i]}(x)
 
-The values :math:`h_i` are normalized such that :math:`\sum_i^n h_iw_i=1`.
+where the class :math:`i` is :math:`[x_{i-1},x_i]` and :math:`w_i = x_i - x_{i-1}`.
+The values :math:`h_i` are such that :math:`\sum_{i=1}^n h_iw_i=1`.
 The relation between the two parameterizations are:
 
 .. math::
@@ -35,7 +38,7 @@ The relation between the two parameterizations are:
 
     \begin{eqnarray*}
         first & = & t_0 \\
-        w_i & = & t_i - t_{i-1} \\
+        w_i & = & x_i - x_{i-1} \\
         h_i & = & f_i / w_i
     \end{eqnarray*}
 
@@ -45,9 +48,9 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \frac{1}{2 \sum_{i=1}^n h_i\,w_i}
+        \Expect{X} & = & \frac{1}{2}
                          \sum_{i=1}^n h_i\,w_i (x_{i+1} + x_i)\\
-        \Var{X} & = & \frac{1}{3 \sum_{i=1}^n h_i\,w_i}
+        \Var{X} & = & \frac{1}{3}
                       \sum_{i=1}^n h_i\,w_i (x_{i+1}^2 + x_i\,x_{i+1} + x_i^2)
     \end{eqnarray*}
 

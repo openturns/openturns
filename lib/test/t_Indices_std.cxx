@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Indices for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,6 +41,13 @@ int main(int, char *[])
     fullprint << "indices after transformation=" << indices << std::endl;
     fullprint << "are indices valid with bound=" << size << "? " << (indices.check(size) ? "true" : "false") << std::endl;
     fullprint << "complement wrt 7=" << indices.complement(7) << std::endl;
+
+    // braced-init-list
+    Indices indices2 = {1, 2, 3};
+    fullprint << "indices2=" << indices2 << std::endl;
+    // copy-list-initialization
+    indices2 = {4, 5};
+    fullprint << "indices2=" << indices2 << std::endl;
   }
   catch (TestFailed & ex)
   {

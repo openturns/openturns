@@ -2,7 +2,7 @@
 /**
  *  @brief IndicesCollectionImplementation stores a Collection of Indices contiguously.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,11 +61,11 @@ public:
 #endif
 
   /** Virtual constructor */
-  virtual IndicesCollectionImplementation * clone() const;
+  IndicesCollectionImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Number of Indices */
   virtual UnsignedInteger getSize() const;
@@ -92,10 +92,10 @@ public:
 #endif
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   String toString(Bool full) const;

@@ -2,7 +2,7 @@
 /**
  *  @brief This is an abstract class for basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,7 +56,7 @@ FiniteBasis * FiniteBasis::clone() const
 /* Build the Function of the given index */
 Function FiniteBasis::build(const UnsignedInteger index) const
 {
-  if (index >= collection_.getSize()) throw InvalidArgumentException(HERE) << "Cannot build " << index << "-th term";
+  if (!(index < collection_.getSize())) throw InvalidArgumentException(HERE) << "Cannot build " << index << "-th term";
   return collection_[index];
 }
 

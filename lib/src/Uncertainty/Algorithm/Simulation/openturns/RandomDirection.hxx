@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,13 +48,13 @@ public:
 
 
   /** Virtual constructor */
-  virtual RandomDirection * clone() const;
+  RandomDirection * clone() const override;
 
   /** Generate a set of directions */
-  Sample generate() const;
+  Sample generate() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 } ; /* class RandomDirection */
 

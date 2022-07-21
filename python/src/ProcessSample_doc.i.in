@@ -10,6 +10,8 @@ OT_ProcessSample_computeMean_doc
 OT_ProcessSample_computeSpatialMean_doc
 %feature("docstring") OT::ProcessSample::computeTemporalMean
 OT_ProcessSample_computeTemporalMean_doc
+%feature("docstring") OT::ProcessSample::computeStandardDeviation
+OT_ProcessSample_computeStandardDeviation_doc
 %feature("docstring") OT::ProcessSample::computeQuantilePerComponent
 OT_ProcessSample_computeQuantilePerComponent_doc
 %feature("docstring") OT::ProcessSample::getSize
@@ -24,3 +26,39 @@ OT_ProcessSample_getDimension_doc
 OT_ProcessSample_getMarginal_doc
 %feature("docstring") OT::ProcessSample::drawMarginal
 OT_ProcessSample_drawMarginal_doc
+%feature("docstring") OT::ProcessSample::draw
+OT_ProcessSample_draw_doc
+%feature("docstring") OT::ProcessSample::drawCorrelation
+OT_ProcessSample_drawCorrelation_doc
+%feature("docstring") OT::ProcessSample::drawMarginalCorrelation
+OT_ProcessSample_drawMarginalCorrelation_doc
+%feature("docstring") OT::ProcessSample::getField
+OT_ProcessSample_getField_doc
+%feature("docstring") OT::ProcessSample::setField
+OT_ProcessSample_setField_doc
+%feature("docstring") OT::ProcessSample::computeRange
+OT_ProcessSample_computeRange_doc
+%feature("docstring") OT::ProcessSample::computeMedian
+OT_ProcessSample_computeMedian_doc
+%feature("docstring") OT::ProcessSample::computeVariance
+OT_ProcessSample_computeVariance_doc
+%feature("docstring") OT::ProcessSample::computeSkewness
+OT_ProcessSample_computeSkewness_doc
+%feature("docstring") OT::ProcessSample::computeKurtosis
+OT_ProcessSample_computeKurtosis_doc
+%feature("docstring") OT::ProcessSample::computeCenteredMoment
+OT_ProcessSample_computeCenteredMoment_doc
+%feature("docstring") OT::ProcessSample::computeRawMoment
+OT_ProcessSample_computeRawMoment_doc
+%feature("docstring") OT::ProcessSample::computeEmpiricalCDF
+OT_ProcessSample_computeEmpiricalCDF_doc
+%feature("docstring") OT::ProcessSample::getMax
+OT_ProcessSample_getMax_doc
+%feature("docstring") OT::ProcessSample::getMin
+OT_ProcessSample_getMin_doc
+%feature("docstring") OT::ProcessSample::getSampleAtVertex
+OT_ProcessSample_getSampleAtVertex_doc
+%feature("docstring") OT::ProcessSample::erase
+OT_ProcessSample_erase_doc
+%feature("docstring") OT::ProcessSample::clear
+OT_ProcessSample_clear_doc

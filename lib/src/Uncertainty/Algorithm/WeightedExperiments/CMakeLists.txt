@@ -2,7 +2,7 @@
 #
 #  CMakeLists.txt
 #
-#  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+#  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 #  This library is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -44,6 +44,10 @@ ot_add_source_file (TemperatureProfileImplementation.cxx)
 ot_add_source_file (TemperatureProfile.cxx)
 ot_add_source_file (LHSExperiment.cxx)
 ot_add_source_file (LowDiscrepancyExperiment.cxx)
+ot_add_source_file (SplitterImplementation.cxx)
+ot_add_source_file (KFoldSplitter.cxx)
+ot_add_source_file (LeaveOneOutSplitter.cxx)
+ot_add_source_file (TensorProductExperiment.cxx)
 
 
 ot_install_header_file (OTWeightedExperiments.hxx)
@@ -69,4 +73,7 @@ ot_install_header_file (TemperatureProfileImplementation.hxx)
 ot_install_header_file (TemperatureProfile.hxx)
 ot_install_header_file (LHSExperiment.hxx)
 ot_install_header_file (LowDiscrepancyExperiment.hxx)
-
+ot_install_header_file (SplitterImplementation.hxx)
+ot_install_header_file (KFoldSplitter.hxx)
+ot_install_header_file (LeaveOneOutSplitter.hxx)
+ot_install_header_file (TensorProductExperiment.hxx)

@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     allDistributions = [Student(6.5, -0.5, 2.0)]
     dim = 2
     R = CorrelationMatrix(dim)
@@ -60,7 +59,7 @@ try:
 
         # Show PDF and CDF of point
         eps = 1e-5
-        
+
         # derivative of PDF with regards its arguments
         DDF = distribution.computeDDF(point)
         print("ddf     =", repr(DDF))
@@ -68,7 +67,7 @@ try:
         if dim == 1:
             print("ddf (FD)=", repr(Point(1, (distribution.computePDF(
                 point + Point(1, eps)) - distribution.computePDF(point + Point(1, -eps))) / (2.0 * eps))))
-        
+
         # PDF value
         LPDF = distribution.computeLogPDF(point)
         print("log pdf=%.6f" % LPDF)
@@ -167,12 +166,15 @@ try:
     y = [0.2]*(dim-1)
     print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
     print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
-    print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
+    print("conditional quantile=%.6f" %
+          distribution.computeConditionalQuantile(x, y))
     pt = Point([i + 1.5 for i in range(dim)])
-    print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point))
+    print("sequential conditional PDF=",
+          distribution.computeSequentialConditionalPDF(point))
     resCDF = distribution.computeSequentialConditionalCDF(pt)
     print("sequential conditional CDF(", pt, ")=", resCDF)
-    print("sequential conditional quantile(", resCDF, ")=", distribution.computeSequentialConditionalQuantile(resCDF))
+    print("sequential conditional quantile(", resCDF, ")=",
+          distribution.computeSequentialConditionalQuantile(resCDF))
 
 except:
     import sys

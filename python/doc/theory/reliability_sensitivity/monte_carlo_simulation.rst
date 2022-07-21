@@ -32,7 +32,7 @@ for which the event :math:`\cD_f` occurs.
 By the law of large numbers, we know that this estimation converges to the
 required value :math:`P_f` as the sample size *N* tends to infinity.
 
-The Central Limit Theorem allows to build an asymptotic confidence interval
+The Central Limit Theorem allows one to build an asymptotic confidence interval
 using the normal limit distribution as follows:
 
 .. math::
@@ -104,7 +104,7 @@ The method is also referred to as Direct sampling, Crude Monte Carlo method, Cla
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/estimate_probability_monte_carlo`
+    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_monte_carlo`
 
 .. topic:: References:
 

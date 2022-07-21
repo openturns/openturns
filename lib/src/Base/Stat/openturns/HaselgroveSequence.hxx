@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the Haselgrove sequence
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,24 +43,24 @@ public:
   explicit HaselgroveSequence(const Point & base);
 
   /** Virtual constructor */
-  virtual HaselgroveSequence * clone() const;
+  HaselgroveSequence * clone() const override;
 
   /** Initialize the sequence */
-  void initialize(const UnsignedInteger dimension);
+  void initialize(const UnsignedInteger dimension) override;
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
-  Point generate() const;
+  Point generate() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

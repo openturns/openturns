@@ -1,0 +1,78 @@
+%feature("docstring") OT::SystemFORM
+"Approximation algorithm for system events based on FORM.
+
+Each event :math:`E_i` is represented by its reliability index :math:`\beta_i`
+and the hyperplane defined by the :math:`\vect{\alpha_i}` normal coefficients obtained via
+a preliminary FORM approximation.
+
+For an union (series systems) the probability writes:
+
+.. math::
+
+    P(E_{sys}) = P(\bigcup_{i=1}^N E_i) = 1 - \Phi_k (\vect{\beta}; \vect{\vect{\rho}})
+
+where :math:`\vect{\vect{\rho}}_{i,j} = \vect{\alpha_i}^T\vect{\alpha_j}`
+
+For an intersection (parallel system) the probability writes:
+
+.. math::
+
+    P(\bigcap_{i=1}^N E_i) = \Phi_k (-\vect{\beta}; \vect{\vect{\rho}})
+
+In practice the event has to be defined under its disjonctive normal form
+(union of intersections).
+Each probability of intersection region is computed using the previous formula,
+then the Poincare formula is used to combine each union:
+
+.. math::
+
+    P(E_{sys}) = P(\bigcup_{i=1}^N E_i) = \sum_{i=1}^N P(E_i) - \sum_{i < j} P(E_i \cap E_j) + \dots + (-1)^N P(E_1 \cap E_2 \cap \dots \cap E_N)
+
+More details can be found in [lemaire2009]_, at the chapter *Reliability of systems*.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    Optimization algorithm used to research the design point.
+event : :class:`~openturns.RandomVector`
+    Failure system event, in disjunctive normal form
+    (either a union of intersections, or a single intersection)
+physicalStartingPoint : sequence of float
+    Starting point of the optimization algorithm, declared in the physical
+    space.
+
+Notes
+-----
+As a leaf event may appear several times in the system event tree, and as a
+FORM calculus is run for each unique leaf event, there may be less items in the
+FORM results collection (returned by :meth:`~openturns.MultiFORMResult.getFORMResultCollection`) than leaf events.
+
+See also
+--------
+FORM, MultiFORMResult
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 2
+>>> X = ot.RandomVector(ot.Normal(dim))
+>>> e1 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(['x1', 'x2'], ['(x1+2*x2)^2']), X), ot.Greater(), 5.0)
+>>> e2 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(['x1', 'x2'], ['(x2+3*x1)^2']), X), ot.Greater(), 5.0)
+>>> event = ot.IntersectionEvent([e1, e2])
+>>> solver = ot.AbdoRackwitz()
+>>> starting_pt = [0.1] * dim
+>>> algo = ot.SystemFORM(solver, event, starting_pt)
+>>> algo.run()
+>>> result = algo.getResult()
+>>> form_results = result.getFORMResultCollection()
+>>> pf = result.getEventProbability()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SystemFORM::getResult
+"Accessor to the result.
+
+Returns
+-------
+result : :class:`~openturns.MultiFORMResult`
+    Contains the global result as well as the sub FORM results."

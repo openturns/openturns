@@ -2,7 +2,7 @@
 /**
  *  @brief This class implements the fourth order fixed-step Runge-Kutta ODE integrator
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -67,7 +67,8 @@ Sample RungeKutta::solve(const Point & initialState,
   Scalar t = timeGrid[0];
   Point state(initialState);
   result[0] = state;
-  Function transitionFunction(transitionFunction_);
+  // Use a pointer to avoid many copies through setParameter
+  Pointer<EvaluationImplementation> transitionFunction = transitionFunction_.getEvaluation().getImplementation()->clone();
   for (UnsignedInteger i = 1; i < steps; ++i)
   {
     const Scalar newT = timeGrid[i];
@@ -81,21 +82,21 @@ Sample RungeKutta::solve(const Point & initialState,
 }
 
 /* Perform one step of the RungeKutta method */
-Point RungeKutta::computeStep(Function & transitionFunction,
+Point RungeKutta::computeStep(Pointer<EvaluationImplementation> & transitionFunction,
                               const Scalar t,
                               const Point & state,
                               const Scalar h) const
 {
   Point parameter(1, t);
-  transitionFunction.setParameter(parameter);
-  const Point k1(transitionFunction(state));
+  transitionFunction->setParameter(parameter);
+  const Point k1(transitionFunction->operator()(state));
   parameter[0] = t + 0.5 * h;
-  transitionFunction.setParameter(parameter);
-  const Point k2(transitionFunction(state + k1 * (0.5 * h)));
-  const Point k3(transitionFunction(state + k2 * (0.5 * h)));
+  transitionFunction->setParameter(parameter);
+  const Point k2(transitionFunction->operator()(state + k1 * (0.5 * h)));
+  const Point k3(transitionFunction->operator()(state + k2 * (0.5 * h)));
   parameter[0] = t + h;
-  transitionFunction.setParameter(parameter);
-  const Point k4(transitionFunction(state + k3 * h));
+  transitionFunction->setParameter(parameter);
+  const Point k4(transitionFunction->operator()(state + k3 * h));
   return (k1 + k2 * 2.0 + k3 * 2.0 + k4) * (1.0 / 6.0);
 }
 

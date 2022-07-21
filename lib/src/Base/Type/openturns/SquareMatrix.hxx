@@ -2,7 +2,7 @@
 /**
  *  @brief SquareMatrix implements the classical mathematical square matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -79,7 +79,7 @@ public:
   SquareMatrix(const SymmetricMatrix & symmetric);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Get the dimension of the matrix */
   UnsignedInteger getDimension() const;
@@ -139,6 +139,9 @@ public:
   ComplexCollection computeEigenValues(const Bool keepIntact = true);
   ComplexCollection computeEV(SquareComplexMatrix & vOut,
                               const Bool keepIntact = true);
+  /** Compute the largest eigenvalue module using power iterations */
+  virtual Scalar computeLargestEigenValueModule(const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
+      const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const;
 
   /** Check if it is diagonal */
   Bool isDiagonal() const;

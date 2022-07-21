@@ -6,18 +6,13 @@ import sys
 
 try:
 
-    # use non-interactive backend
-    import matplotlib
-    if len(sys.argv) == 1:
-        matplotlib.use('Agg')
-
     from openturns.viewer import View
     import openturns as ot
 
     # Curve
     graph = ot.Normal().drawCDF()
     # graph.draw('curve1.png')
-    view = View(graph, pixelsize=(800, 600), plot_kwargs={'color': 'blue'})
+    view = View(graph, pixelsize=(800, 600), plot_kw={'color': 'blue'})
     # view.save('curve1.png')
     view.show()
 
@@ -56,8 +51,10 @@ try:
     distribution = ot.Normal(
         ot.Point(dimension, 3.0), ot.Point(dimension, 2.0), R)
     size = 100
-    sample1 = ot.Normal([3.0] * dimension, [2.0] * dimension, R).getSample(size)
-    sample2 = ot.Normal([2.0] * dimension, [3.0] * dimension, R).getSample(size // 2)
+    sample1 = ot.Normal([3.0] * dimension, [2.0] *
+                        dimension, R).getSample(size)
+    sample2 = ot.Normal([2.0] * dimension, [3.0] *
+                        dimension, R).getSample(size // 2)
     cloud1 = ot.Cloud(sample1, "blue", "fsquare", "Sample1 Cloud")
     cloud2 = ot.Cloud(sample2, "red", "fsquare", "Sample2 Cloud")
     graph = ot.Graph("two samples clouds", "x1", "x2", True, "topright")
@@ -115,10 +112,10 @@ try:
         expression += 'cos(' + str(i + 1) + '*' + inputVar[i] + ')'
     model = ot.SymbolicFunction(inputVar, [expression])
     outputSample = model(inputSample)
-    graph = ot.VisualTest.DrawCobWeb(
+    graph = ot.VisualTest.DrawParallelCoordinates(
         inputSample, outputSample, 2.5, 3.0, 'red', False)
     # graph.draw('curve6.png')
-    view = View(graph, legend_kwargs={'loc': 'lower center'})
+    view = View(graph, legend_kw={'loc': 'lower center'})
     # view.save('curve6.png')
     view.show()
 
@@ -138,26 +135,6 @@ try:
     # view.save('curve8.png')
     view.show()
 
-    # Pairs
-    dim = 5
-    meanPoint = ot.Point(dim, 0.0)
-    sigma = ot.Point(dim, 1.0)
-    R = ot.CorrelationMatrix(dim)
-    for i in range(dim):
-        meanPoint[i] = (i + 1) * dim
-    distribution = ot.Normal(meanPoint, sigma, R)
-    size = 1000
-    sample = distribution.getSample(size)
-    graph = ot.Graph('Pairs', ' ', ' ', True, 'topright')
-    labels = list(['x' + str(i) for i in range(dim)])
-    myPairs = ot.Pairs(sample, 'Pairs example',
-                       labels, 'green', 'bullet')
-    graph.add(myPairs)
-    # graph.draw('curve9.png')
-    view = View(graph)
-    # view.save('curve9.png')
-    view.show()
-
     # Convergence graph curve
     aCollection = []
     aCollection.append(ot.LogNormalFactory().build(
@@ -168,7 +145,7 @@ try:
     LimitState = ot.SymbolicFunction(
         ('R', 'F'), ('R-F/(pi_*100.0)',))
     G = ot.CompositeRandomVector(LimitState, vect)
-    myEvent = ot.Event(G, ot.Less(), 0.0)
+    myEvent = ot.ThresholdEvent(G, ot.Less(), 0.0)
     experiment = ot.MonteCarloExperiment()
     myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
     myAlgo.setMaximumCoefficientOfVariation(0.05)
@@ -238,7 +215,7 @@ try:
     distribution = ot.Normal(mean, sigma, R)
     vect = ot.RandomVector(distribution)
     output = ot.CompositeRandomVector(f, vect)
-    event = ot.Event(output, ot.Less(), -3.0)
+    event = ot.ThresholdEvent(output, ot.Less(), -3.0)
     solver = ot.Cobyla()
     solver.setMaximumEvaluationNumber(400)
     solver.setMaximumAbsoluteError(1.0e-10)
@@ -258,10 +235,24 @@ try:
     view = View(graph)
     view.ShowAll(block=True)
 
+    # GridLayout
+    grid = ot.GridLayout(2, 3)
+    palette = ot.Drawable.BuildDefaultPalette(10)
+    for j in range(grid.getNbColumns()):
+        alpha = 1.0 + j
+        pdf_curve = ot.WeibullMin(1.0, alpha, 0.0).drawPDF()
+        cdf_curve = ot.WeibullMin(1.0, alpha, 0.0).drawCDF()
+        pdf_curve.setColors([palette[j]])
+        cdf_curve.setColors([palette[j]])
+        pdf_curve.setLegends(['alpha={}'.format(alpha)])
+        cdf_curve.setLegends(['alpha={}'.format(alpha)])
+        grid.setGraph(0, j, pdf_curve)
+        grid.setGraph(1, j, cdf_curve)
+    view = View(grid)
+
     # Square axes
     graph = ot.ClaytonCopula(5.0).drawPDF()
     view = View(graph, square_axes=True)
-    view.ShowAll(block=True)
 
     # Show axes as prescribed by getAxes()
     graph = ot.Normal().drawPDF()
@@ -272,6 +263,23 @@ try:
     # test _repr_png_
     png = graph._repr_png_()
     assert(b'PNG' in png[:10])
+
+    # BuildDefaultPalette, BuildTableauPalette
+    ncurves = 5
+    graph = ot.Graph("BuildPalette", "X", "Y", True, "topright")
+    n = 20
+    x = ot.Sample([[i] for i in range(n)])
+    for i in range(ncurves):
+        y = ot.Normal().getSample(n)
+        curve = ot.Curve(x, y)
+        curve.setLegend("Curve #%d" % (i))
+        graph.add(curve)
+    palette = ot.Drawable.BuildDefaultPalette(ncurves)
+    graph.setColors(palette)
+    view = View(graph)
+    palette = ot.Drawable.BuildTableauPalette(ncurves)
+    graph.setColors(palette)
+    view = View(graph)
 
 except:
     traceback.print_exc()

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -22,6 +21,7 @@ try:
           repr(estimatedDistribution))
     estimatedDistribution = factory.build(sample, 2)
     print("Estimated distribution (moments)=", repr(estimatedDistribution))
+    print("Estimated distribution (least squares)=", factory.build(sample, 3))
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(

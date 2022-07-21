@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Histogram distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,27 +40,33 @@ public:
   HistogramFactory();
 
   /** Virtual constructor */
-  virtual HistogramFactory * clone() const;
+  HistogramFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample) const override;
   Distribution build(const Sample & sample,
                      const Scalar bandwidth) const;
   Distribution build(const Sample & sample,
                      const UnsignedInteger binNumber) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample,
+                     const Scalar first,
+                     const Point & width) const;
+  Distribution build() const override;
   Histogram buildAsHistogram(const Sample & sample) const;
   Histogram buildAsHistogram(const Sample & sample,
                              const Scalar bandwidth) const;
   Histogram buildAsHistogram(const Sample & sample,
                              const UnsignedInteger binNumber) const;
+  Histogram buildAsHistogram(const Sample & sample,
+                             const Scalar first,
+                             const Point & width) const;
   Histogram buildAsHistogram() const;
 
   /** Compute the bandwidth according to Silverman's rule */
-  Scalar computeSilvermanBandwidth(const Sample & sample,
-                                   const Bool useQuantile = true) const;
+  Scalar computeBandwidth(const Sample & sample,
+                          const Bool useQuantile = true) const;
 
 }; /* class HistogramFactory */
 

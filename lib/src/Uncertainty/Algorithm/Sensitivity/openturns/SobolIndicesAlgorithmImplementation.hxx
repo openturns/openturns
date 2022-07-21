@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for sobol indices algorithms
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,7 +63,7 @@ public:
                                       const Function & model,
                                       const Bool computeSecondOrder = false);
   /** Virtual constructor */
-  virtual SobolIndicesAlgorithmImplementation * clone() const;
+  SobolIndicesAlgorithmImplementation * clone() const override;
 
   /** First order indices accessor */
   virtual Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
@@ -103,16 +103,16 @@ public:
   Distribution getTotalOrderIndicesDistribution() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   static Graph DrawImportanceFactors(const PointWithDescription & importanceFactors,
                                      const String & title);
@@ -123,14 +123,16 @@ public:
 
   static Graph DrawSobolIndices(const Description & inputDescription,
                                 const Point & firstOrderIndices,
-                                const Point & secondOrderIndices);
+                                const Point & secondOrderIndices,
+                                const Interval & firstOrderConfidenceInterval = Interval(),
+                                const Interval & totalOrderConfidenceInterval = Interval());
 
   static Graph DrawCorrelationCoefficients(const Point & values,
-                                           const Description & names,
-                                           const String & title);
+      const Description & names,
+      const String & title);
 
   static Graph DrawCorrelationCoefficients(const PointWithDescription & correlationCoefficients,
-                                           const String & title);
+      const String & title);
 
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;
@@ -190,11 +192,11 @@ protected:
                                   const UnsignedInteger indexY);
 
   /** Designs : input & output designs */
-  Sample inputDesign_;
+  Description inputDescription_;
   Sample outputDesign_;
 
   /** Simulation size */
-  UnsignedInteger size_;
+  UnsignedInteger size_ = 0;
 
   /** Number of Bootstrap sampling size */
   UnsignedInteger bootstrapSize_;
@@ -227,7 +229,7 @@ protected:
   mutable Distribution totalOrderIndiceDistribution_;
 
   /** Whether the indices distribution is computed already */
-  mutable Bool alreadyComputedIndicesDistribution_;
+  mutable Bool alreadyComputedIndicesDistribution_ = false;
 
   /** Whether to use bootstrap or asymptotic distribution */
   Bool useAsymptoticDistribution_;

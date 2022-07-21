@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class StandardDistributionPolynomialFactory for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,7 +41,7 @@ int main(int, char *[])
   {
     const UnsignedInteger iMax = 5;
     Collection<Distribution> distributionCollection;
-    distributionCollection.add(Laplace(1.0, 0.0));
+    distributionCollection.add(Laplace(0.0, 1.0));
     distributionCollection.add(Logistic(0.0, 1.0));
     distributionCollection.add(Normal(0.0, 1.0));
     distributionCollection.add(Normal(1.0, 1.0));
@@ -50,10 +50,10 @@ int main(int, char *[])
     distributionCollection.add(Triangular(-1.0, 0.3, 1.0));
     distributionCollection.add(Uniform(-1.0, 1.0));
     distributionCollection.add(Uniform(-1.0, 3.0));
-    distributionCollection.add(Weibull(1.0, 3.0));
-    distributionCollection.add(Beta(1.0, 3.0, -1.0, 1.0));
-    distributionCollection.add(Beta(0.5, 1.0, -1.0, 1.0));
-    distributionCollection.add(Beta(0.5, 1.0, -2.0, 3.0));
+    distributionCollection.add(WeibullMin(1.0, 3.0));
+    distributionCollection.add(Beta(1.0, 2.0, -1.0, 1.0));
+    distributionCollection.add(Beta(0.5, 0.5, -1.0, 1.0));
+    distributionCollection.add(Beta(0.5, 0.5, -2.0, 3.0));
     distributionCollection.add(Gamma(1.0, 3.0));
     distributionCollection.add(Arcsine());
     for (UnsignedInteger n = 0; n < distributionCollection.getSize(); ++n)

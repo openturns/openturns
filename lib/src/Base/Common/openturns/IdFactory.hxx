@@ -2,7 +2,7 @@
 /**
  *  @brief The class IdFactory builds unique Ids for all Objects
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 
 #include <iostream>              // for std::ostream
 #include "openturns/OTprivate.hxx"
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 #include "openturns/OStream.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

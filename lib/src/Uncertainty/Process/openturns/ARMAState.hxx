@@ -2,7 +2,7 @@
 /**
  *  @brief ARMAState class enables to set a State before a simulation
  * of an ARMA process and / or t get the State
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,11 +48,11 @@ public:
             const Sample & epsilon);
 
   /** Virtual constructor */
-  virtual ARMAState * clone() const;
+  ARMAState * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Data X accessor */
   Sample getX() const;
@@ -66,10 +66,10 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

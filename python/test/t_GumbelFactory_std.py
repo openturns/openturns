@@ -1,9 +1,8 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
-distribution = ot.Gumbel(2.0, 2.5)
+distribution = ot.Gumbel(0.5, 2.5)
 size = 10000
 sample = distribution.getSample(size)
 factory = ot.GumbelFactory()
@@ -24,8 +23,8 @@ print('Default typed distribution        =', defaultTypedDistribution)
 typedFromParameterDistribution = factory.buildAsGumbel(
     distribution.getParameter())
 print('Typed distribution from parameters=', typedFromParameterDistribution)
-result = factory.buildEstimator(sample, ot.GumbelAB())
+result = factory.buildEstimator(sample, ot.GumbelMuSigma())
 estimatedDistribution = result.getDistribution()
-print('Estimated distribution (AB)       =', repr(estimatedDistribution))
+print('Estimated distribution (mu/sigma)       =', repr(estimatedDistribution))
 parameterDistribution = result.getParameterDistribution()
-print('Parameter distribution (AB)       =', parameterDistribution)
+print('Parameter distribution (mu/sigma)       =', parameterDistribution)

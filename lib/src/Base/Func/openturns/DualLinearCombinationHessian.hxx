@@ -2,7 +2,7 @@
 /**
  *  @brief The hessian part of functional linear combination of vectors
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,25 +51,25 @@ public:
 #endif
 
   /** Virtual constructor */
-  virtual DualLinearCombinationHessian * clone() const;
+  DualLinearCombinationHessian * clone() const override;
 
   /** Hessian method */
-  SymmetricTensor hessian(const Point & inP) const;
+  SymmetricTensor hessian(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

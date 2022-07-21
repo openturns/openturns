@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of KrigingAlgorithm class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,14 +62,15 @@ int main(int, char *[])
       Sample Y2(model(X2));
 
       Basis basis(ConstantBasisFactory(dimension).build());
-      SquaredExponential covarianceModel(Point(1, 1e-05), Point(1, 4.11749));
+      SquaredExponential covarianceModel(Point(1, 1e-02), Point(1, 4.50736));
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
+
+      // set sensible optimization bounds and estimate hyperparameters
+      algo.setOptimizationBounds(Interval(X.getMin(), X.getMax()));
       algo.run();
 
       // perform an evaluation
       KrigingResult result(algo.getResult());
-      std::cout << "X=" << X << std::endl;
-      std::cout << "f(X)=" << Y << std::endl;
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 
@@ -83,8 +84,20 @@ int main(int, char *[])
       CovarianceMatrix covMatrix(result.getConditionalCovariance(X));
 
       // Validation of the covariance ==> should be null on the learning set
-      assert_almost_equal(Point(*covMatrix.getImplementation()), Point(sampleSize * sampleSize), 8.95e-7, 8.95e-7);
+      assert_almost_equal(covMatrix, SquareMatrix(sampleSize), 0.0, 1e-13);
 
+      // Covariance per marginal & extract variance component
+      Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
+
+      for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
+        assert_almost_equal(coll[k](0, 0), 0.0, 1e-14, 1e-13);
+
+      // Validation of marginal variance
+      const Sample marginalVariance(result.getConditionalMarginalVariance(X));
+      assert_almost_equal(marginalVariance, Sample(sampleSize, 1), 1e-14, 1e-13);
+
+      // Prediction accuracy
+      assert_almost_equal(Y2, result.getMetaModel()(X2), 0.3, 0.0);
     }
 
     {
@@ -128,9 +141,6 @@ int main(int, char *[])
 
       // perform an evaluation
       KrigingResult result(algo.getResult());
-      std::cout << "X=" << X << std::endl;
-      std::cout << "f(X)=" << Y << std::endl;
-      std::cout << "covariance parameter=" << result.getCovarianceModel().getParameter() << std::endl;
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 
@@ -139,8 +149,6 @@ int main(int, char *[])
 
       Point relativeErrorRef(1, 1.48e-11);
       assert_almost_equal(result.getRelativeErrors(), relativeErrorRef, 1e-3, 1e-5);
-
-      std::cout << "df(X0)=" << model.gradient(X[1]) << std::endl;
 
       Function metaModel(result.getMetaModel());
       // Get the gradient computed by metamodel
@@ -153,10 +161,31 @@ int main(int, char *[])
       Matrix gradientKrigingFD(metaModel.gradient(X[1]));
 
       // Validation of the gradient
-      std::cout << "d^f(X0) & d^f(X0) FD similar ?" <<  std::endl;
-      assert_almost_equal(Point(*gradientKriging.getImplementation()), Point(*gradientKrigingFD.getImplementation()), 1e-3, 1e-3);
-      std::cout << "d^f(X0) & d^f(X0) FD are similar." <<  std::endl;
+      assert_almost_equal(gradientKriging, gradientKrigingFD, 1e-3, 1e-3);
 
+      // Covariance per marginal & extract variance component
+      Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
+
+      for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
+        assert_almost_equal(coll[k](0, 0), 0.0, 1e-13, 1e-13);
+
+      // Validation of marginal variance
+      const Sample marginalVariance(result.getConditionalMarginalVariance(X));
+      assert_almost_equal(marginalVariance, Sample(sampleSize, 1), 1e-13, 1e-13);
+    }
+
+    {
+      // fix https: //github.com/openturns/openturns/issues/1861
+      RandomGenerator::SetSeed(0);
+      SymbolicFunction rho("tau", "exp(-abs(tau))*cos(2*pi_*abs(tau))");
+      const Point scale = {1.0};
+      StationaryFunctionalCovarianceModel model(scale, scale, rho);
+      const Sample x(Normal(0, 1.0).getSample(20));
+      const Sample y(x + Normal(0, 0.1).getSample(20));
+      KrigingAlgorithm algo(x, y, model, LinearBasisFactory().build());
+      algo.run();
+      KrigingResult result(algo.getResult());
+      assert_almost_equal(result.getConditionalMarginalVariance(x), Sample(x.getSize(), 1), 1e-16, 1e-16);
     }
 
   }

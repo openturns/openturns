@@ -39,7 +39,7 @@ Nataf elliptical copula
     NatafEllipticalCopulaGradient
     NatafEllipticalCopulaHessian
 
-Nataf independant copula
+Nataf independent copula
 ========================
 
 .. autosummary::
@@ -66,5 +66,13 @@ Nataf elliptical distribution
     NatafEllipticalDistributionEvaluation
     NatafEllipticalDistributionGradient
     NatafEllipticalDistributionHessian
+
+Rosenblatt transformation
+=========================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
     InverseRosenblattEvaluation
     RosenblattEvaluation

@@ -2,7 +2,7 @@
 /**
  *  @brief This is the interface class for orthogonal polynomial factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,8 +48,13 @@ public:
   /** Constructor from implementation */
   OrthogonalUniVariatePolynomialFamily(const OrthogonalUniVariatePolynomialFactory & implementation);
 
+#ifndef SWIG
+  /** Constructor from implementation */
+  OrthogonalUniVariatePolynomialFamily(OrthogonalUniVariatePolynomialFactory * p_implementation);
+#endif
+
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** The method to get the polynomial of any degree. */
   OrthogonalUniVariatePolynomial build(const UnsignedInteger degree) const;

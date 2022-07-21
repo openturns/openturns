@@ -2,7 +2,7 @@
 /**
  *  @brief The GumbelCopula distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,6 +36,7 @@ GumbelCopula::GumbelCopula()
   : ArchimedeanCopula()
   , theta_(2.0)
 {
+  isCopula_ = true;
   setName( "GumbelCopula" );
   // We set the dimension of the GumbelCopula distribution
   setDimension( 2 );
@@ -47,6 +48,7 @@ GumbelCopula::GumbelCopula(const Scalar theta)
   : ArchimedeanCopula()
   , theta_(0.0)
 {
+  isCopula_ = true;
   setName( "GumbelCopula" );
   // We set the dimension of the GumbelCopula distribution
   setDimension( 2 );
@@ -292,12 +294,6 @@ Scalar GumbelCopula::computeConditionalQuantile(const Scalar q, const Point & y)
   return std::exp(-std::pow(std::exp(theta_ * (std::log(factor) / (theta_ - 1.0) - SpecFunc::LambertW(std::pow(factor, inverseThetaMinusOne) * inverseThetaMinusOne))) - minusLogUPowTheta, 1.0 / theta_));
 }
 
-/* Compute the covariance of the distribution */
-void GumbelCopula::computeCovariance() const
-{
-  CopulaImplementation::computeCovariance();
-}
-
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix GumbelCopula::getKendallTau() const
 {
@@ -364,7 +360,11 @@ Bool GumbelCopula::hasIndependentCopula() const
 void GumbelCopula::setTheta(const Scalar theta)
 {
   if (!(theta >= 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be greater or equal to 1";
-  theta_ = theta;
+  if (theta != theta_)
+  {
+    theta_ = theta;
+    isAlreadyComputedCovariance_ = false;
+  }
 }
 
 /* Theta accessor */

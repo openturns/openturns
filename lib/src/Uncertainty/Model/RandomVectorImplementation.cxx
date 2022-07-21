@@ -2,7 +2,7 @@
 /**
  *  @brief An interface for all implementation class of random vectors
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -177,6 +177,11 @@ void RandomVectorImplementation::setParameter(const Point & )
 Description RandomVectorImplementation::getParameterDescription() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getParameterDescription";
+}
+
+Bool RandomVectorImplementation::isEvent() const
+{
+  return false;
 }
 
 /* Method save() stores the object through the StorageManager */

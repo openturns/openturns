@@ -11,70 +11,286 @@ X : :class:`~openturns.RandomVector`
 
 Notes
 -----
-The algorithm can operate on a multivariate random vector :math:`\vect{X}`.
+Let :math:`\vect{X}\in\Rset^{n_X}` be a random vector. 
+This algorithm estimates :math:`\Expect{\vect{X}}` using the smallest possible sample 
+size which satisfies pre-defined stopping rules. 
+It increases the sample size :math:`n` incrementally until a stopping criterion is met. 
+Hence, both the mean and the variance must be finite. 
+For example, consider the Student distribution with :math:`\nu` degrees of freedom. 
+If :math:`\nu=1` (where the expectation is undefined) 
+or :math:`\nu=2` (where the variance is undefined), 
+then the algorithm cannot succeed. 
+
+The algorithm is based on two nested loops:
+
+- the outer loop sets the number of iterations of the algorithm; 
+  this can be configured using :meth:`setMaximumOuterSampling`,
+
+- the inner loop sets the number of function calls which can be parallelized; 
+  this can be configured using :meth:`setBlockSize`.
+
+The algorithm allows one to get the best possible performance on distributed
+supercomputers and multi-core workstations. 
+For example, if the block size is equal to 100, then the sample size 
+is successively equal to 100, 200, etc... 
+Each block of evaluation of the outputs can be parallelized, which may improve the performance of the algorithm.
+We suggest to set the block size as a multiple of the number of cores. 
+
+The algorithm stops either when the maximum number of outer iterations is reached or when the target precision is met. 
+The latter stopping criterion is based on either the coefficient of variation of the 
+sample mean (relative criterion) or the standard deviation of the sample 
+mean (absolute criterion). 
+
+We consider :math:`\vect{n}` independent realizations :math:`\vect{x}^{(1)}`, 
+..., :math:`\vect{x}^{(n)}\in\Rset^{n_X}` of the random vector :math:`\vect{X}`. 
+We estimate :math:`\Expect{\vect{X}}` with the sample mean:
+
+.. math::
+
+    \overline{\vect{x}} = \frac{1}{n} \sum_{j=1}^n \vect{x}^{(j)}.
+
+We estimate :math:`\Var{X_i}` for :math:`i = 1, \ldots, n_X` 
+with the unbiased sample variance:
+
+.. math::
+
+    \hat{\sigma}^2_i = \frac{1}{n - 1} \sum_{j=1}^n \left(x^{(j)}_i - \overline{x}_i\right)^2.
+
+for :math:`i = 1, \ldots, n_X`.
+
+The expected value of the sample mean is:
+
+.. math::
+
+    \Expect{\overline{X}_i} = \Expect{X_i}
+
+and, since the observations are independent, the variance of the sample mean is:
+
+.. math::
+
+    \Var{\overline{X}_i} = \frac{\Var{X_i}}{n}.
+
+for :math:`i = 1, \ldots, n_X`, since the observations are independent.
+
+Moreover, we can estimate the standard deviation of the sample mean with:
+
+.. math::
+
+    \hat{\sigma}\left(\overline{X}_i\right) = \frac{\hat{\sigma}_i}{\sqrt{n}}
+
+for :math:`i = 1, \ldots, n_X`.
+
+If the expectation :math:`\Expect{X_i}` is nonzero, the coefficient of variation of the sample mean is:
+
+.. math::
+
+    CV\left(\overline{X}_i\right) = \frac{\sqrt{\Var{\overline{X}_i}}}{\left|\Expect{\overline{X}_i}\right|} = \frac{\sqrt{\Var{X_i}}/\sqrt{n}}{\left|\Expect{X_i}\right|}
+
+for :math:`i = 1, \ldots, n_X`.
+
+We can estimate it with
+
+.. math::
+
+    \widehat{CV}\left(\overline{X}_i\right) = \frac{\hat{\sigma}_i/\sqrt{n}}{\left|\overline{x}_i\right|}
+
+for :math:`i = 1, \ldots, n_X`.
+
+When the sample size :math:`n` increases, the sample standard deviation and the sample coefficient of variation decrease to zero at the Monte-Carlo rate of :math:`1/\sqrt{n}`. 
 
 There are 3 mathematical stopping criteria available:
 
-- through an operator on the coefficient of variation
-- through an operator on the standard deviation
-- on the maximum standard deviation per component
+- through an operator on the componentwise coefficients of variation (by default),
+- through an operator on the componentwise standard deviations,
+- on the maximum standard deviation per component.
 
-The criterion on the coefficient of variation is defined using either:
+A low coefficient of variation guarantees relative accuracy, while a low standard deviation guarantees absolute accuracy. 
 
-  - The maximum: :math:`\max_i \frac{\sigma_i}{|\mu_i|} \leq \max_{cov}`
-  - The norm-1: :math:`\frac{1}{d} \sum_1^{d} \frac{\sigma_i}{|\mu_i|} \leq \max_{cov}`
-  - The norm-2: :math:`\sqrt{\frac{1}{d} \sum_1^{d} \left(\frac{\sigma_i}{|\mu_i|}\right)^2} \leq \max_{cov}`
+If the chosen condition is found to be true, the algorithm stops.
 
-  The type of operator on the coefficient of variation is set using :meth:`setCoefficientOfVariationCriterionType`.
+Let :math:`n_X` be the dimension of the random vector :math:`\vect{X}`. 
+Let :math:`\max_{cov}\in\Rset` be the maximum coefficient of variation. 
+The criterion on the componentwise coefficients of variation is defined using either:
 
-  The default type is set by the `ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType`
-  :class:`~openturns.ResourceMap` key.
+- the maximum (by default):
 
-  The threshold :math:`\max_{cov}` can be set using :meth:`setMaximumCoefficientOfVariation`.
+.. math::
 
-The criterion on the standard deviation is defined using either:
+    \max_{i=1,\ldots,n_X} \frac{\hat{\sigma}_i / \sqrt{n}}{|\overline{x}_i|} \leq \max_{cov},
 
-  - The maximum: :math:`\max_i \sigma_i \leq \max_{\sigma}`
-  - The norm-1: :math:`\frac{1}{d} \sum_1^{d} |\sigma_i| \leq \max_{\sigma}`
-  - The norm-2: :math:`\sqrt{\frac{1}{d} \sum_1^{d} \sigma_i^2} \leq \max_{\sigma}`
+- the norm-1:
 
-  The type of operator on the coefficient of variation can be set using :meth:`setStandardDeviationCriterionType`.
+.. math::
 
-  The default type is set by the `ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType`
-  :class:`~openturns.ResourceMap` key.
+    \sum_{i=1}^{n_X} \frac{\hat{\sigma}_i / \sqrt{n}}{|\overline{x}_i|} \leq \max_{cov},
 
-  The threshold :math:`\max_{\sigma}` can be set using :meth:`setMaximumStandardDeviation`.
+- the norm-2:
 
-The criterion on the maximum deviation per component is defined by :math:`\sigma_i \leq \max_{\sigma_i}`
+.. math::
 
-  The thresholds :math:`\max_{\sigma_i}` can be set using :meth:`setMaximumStandardDeviationPerComponent`.
+    \sqrt{\sum_{i=1}^{n_X} \left(\frac{\hat{\sigma}_i / \sqrt{n}}{|\overline{x}_i|}\right)^2} \leq \max_{cov},
 
-  By default this criterion is disabled.
+- or disabled.
 
+The type of operator on the coefficient of variation is set using :meth:`setCoefficientOfVariationCriterionType`.
+
+The default type is set by the `ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType` key of the :class:`~openturns.ResourceMap`.
+
+The threshold :math:`\max_{cov}` can be set using :meth:`setMaximumCoefficientOfVariation`.
+
+Let :math:`\max_{\sigma}\in\Rset` be the maximum value of the standard deviation. 
+The criterion on the componentwise standard deviations is defined using either:
+
+- the maximum (by default): 
+
+.. math::
+
+    \max_{i=1,\ldots,n_X} \hat{\sigma}_i / \sqrt{n} \leq \max_{\sigma},
+
+- the norm-1: 
+
+.. math::
+
+    \sum_{i=1}^{n_X} \left|\hat{\sigma}_i / \sqrt{n}\right| \leq \max_{\sigma},
+
+- the norm-2: 
+
+.. math::
+
+    \sqrt{\sum_{i=1}^{n_X} \left(\hat{\sigma}_i / \sqrt{n} \right)^2} \leq \max_{\sigma},
+
+- or disabled. 
+
+The type of operator on the coefficient of variation can be set using :meth:`setStandardDeviationCriterionType`.
+
+The default type is set by the `ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType` key of the :class:`~openturns.ResourceMap`.
+
+The threshold :math:`\max_{\sigma}` can be set using :meth:`setMaximumStandardDeviation`.
+
+Let :math:`\max_{\sigma_1}, \ldots, \max_{\sigma_{n_X}}` be the 
+componentwise maximum standard deviations. 
+The criterion on the maximum deviation per component is defined by:
+
+.. math::
+
+    \sigma_i \leq \max_{\sigma_i}
+
+for :math:`i = 1, \ldots, n_X`.
+
+The threshold vector :math:`\max_{\sigma_i}` can be set using :meth:`setMaximumStandardDeviationPerComponent`.
+
+By default this criterion is disabled.
+
+The default values of the parameters are based on the 
+following keys of the :class:`~openturns.ResourceMap`:
+
+- `SimulationAlgorithm-DefaultMaximumOuterSampling`,
+- `SimulationAlgorithm-DefaultMaximumCoefficientOfVariation`,
+- `SimulationAlgorithm-DefaultMaximumStandardDeviation`.
+
+In general, criteria based on coefficients of variation (C.O.V.) should be used because
+they guarantee a relative accuracy on the estimate of the mean.
+However, we may happen to estimate an expected value equal to zero
+(perhaps for teaching or research purposes).
+The default value of `SimulationAlgorithm-DefaultMaximumStandardDeviation` is
+:math:`0`, which means that standard deviation-based criteria are disabled by default
+(in order to let C.O.V.-based criteria be used by default).
+If the expected value of :math:`\vect{X}` is zero,
+the algorithm is likely to reach the maximum number of outer iterations.
+If this happens, please configure the maximum standard deviation
+in order to match the scale of the random variable at hand.
 
 See also
 --------
-ExpectationSimulationResult
+ExpectationSimulationResult, SimulationAlgorithm
 
 Examples
 --------
+
+In the following example, we perform at most :math:`8 \times 10000 = 80000` evaluations 
+of the model. 
+However, the algorithm may stop earlier if the coefficient of variation 
+of the sample mean falls below the threshold. 
+
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # Create a composite random vector
 >>> model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
->>> distribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
+>>> distribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0] * 4, ot.IdentityMatrix(4))
 >>> vect = ot.RandomVector(distribution)
 >>> X = ot.CompositeRandomVector(model, vect)
+>>> algo = ot.ExpectationSimulationAlgorithm(X)
+>>> algo.setMaximumOuterSampling(10000)
+>>> algo.setBlockSize(8)  # The number of cores we usually have.
+>>> algo.setMaximumCoefficientOfVariation(0.01)  # 1% C.O.V.
+>>> algo.run()
+>>> result = algo.getResult()
+>>> expectation = result.getExpectationEstimate()
+>>> print(expectation)
+[-1.41067]
+
+The following statement retrieves the asymptotically Gaussian distribution 
+of the sample mean. 
+This may be useful for users who want to compute a confidence interval of 
+the sample mean. 
+>>> expectationDistribution = result.getExpectationDistribution()
+
+The following code prints the outer sample (i.e. the number of outer iterations 
+of the algorithm) and the sample size. 
+We see that the algorithm stops based on the accuracy criterion. 
+
+>>> outer_sampling = result.getOuterSampling()
+>>> print('outer_sampling=', outer_sampling)
+outer_sampling= 1662
+>>> block_size = result.getBlockSize()
+>>> sample_size = outer_sampling * block_size
+>>> print('sample_size=', sample_size)
+sample_size= 13296
+
+In the following example, we disable the coefficient of variation criterion. 
+Therefore, the only remaining criterion is based on the number of iterations. 
+
 >>> algo = ot.ExpectationSimulationAlgorithm(X)
 >>> algo.setMaximumOuterSampling(1000)
 >>> algo.setBlockSize(1)
 >>> algo.setCoefficientOfVariationCriterionType('NONE')
 >>> algo.run()
 >>> result = algo.getResult()
+>>> outer_sampling = result.getOuterSampling()
+>>> print('outer_sampling=', outer_sampling)
+outer_sampling= 1000
+
+In the following example, we compute the mean of a dimension 4 random vector. 
+We use a standard deviation-based stopping criterion with a different threshold for every component. 
+We must disable the coefficient of variation-based stopping criterion, otherwise,
+in this example, it will trigger first.
+The comparison with the exact mean is satisfactory, given the relatively 
+small sample size.
+
+>>> from openturns.usecases import cantilever_beam
+>>> cb = cantilever_beam.CantileverBeam()
+>>> sigma = cb.distribution.getStandardDeviation()
+>>> print('sigma=', sigma)
+sigma= [1.73582e+09,30,0.0288675,7.10585e-09]
+>>> componentwise_max_sigma = sigma / 32.0
+>>> print('componentwise_max_sigma=', componentwise_max_sigma)
+componentwise_max_sigma= [5.42445e+07,0.9375,0.00090211,2.22058e-10]
+>>> X = ot.RandomVector(cb.distribution)
+>>> algo = ot.ExpectationSimulationAlgorithm(X)
+>>> algo.setMaximumOuterSampling(1000)
+>>> algo.setBlockSize(8)
+>>> algo.setCoefficientOfVariationCriterionType('NONE')
+>>> algo.setMaximumStandardDeviationPerComponent(componentwise_max_sigma)
+>>> algo.run()
+>>> result = algo.getResult()
 >>> expectation = result.getExpectationEstimate()
 >>> print(expectation)
-[-1.39543]
->>> expectationDistribution = result.getExpectationDistribution()"
+[6.7125e+10,298.637,2.55074,1.45427e-07]
+>>> print(cb.distribution.getMean())
+[6.70455e+10,300,2.55,1.45385e-07]
+>>> outer_sampling = result.getOuterSampling()
+>>> print('outer_sampling=', outer_sampling)
+outer_sampling= 126"
 
 // ---------------------------------------------------------------------
 

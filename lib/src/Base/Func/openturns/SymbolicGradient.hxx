@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the gradient of an analytical function.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,7 @@ public:
   SymbolicGradient();
 
   /** Default constructor */
-  SymbolicGradient(const SymbolicEvaluation & evaluation);
+  explicit SymbolicGradient(const SymbolicEvaluation & evaluation);
 
 #ifndef SWIG
   /** Parameters constructor */
@@ -52,40 +52,40 @@ public:
 #endif
 
   /** Virtual constructor */
-  virtual SymbolicGradient * clone() const;
+  SymbolicGradient * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const SymbolicGradient & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   using GradientImplementation::gradient;
-  Matrix gradient(const Point & inP) const;
+  Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Accessor to a specific formula */
   String getFormula(const UnsignedInteger i,
                     const UnsignedInteger j) const;
 
   /** Get the i-th marginal function */
-  Gradient getMarginal(const UnsignedInteger i) const;
+  Gradient getMarginal(const UnsignedInteger i) const override;
 
   /** Get the function corresponding to indices components */
-  Gradient getMarginal(const Indices & indices) const;
+  Gradient getMarginal(const Indices & indices) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

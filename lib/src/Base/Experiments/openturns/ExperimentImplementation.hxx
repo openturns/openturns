@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an experiment plane
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,10 +46,10 @@ public:
   ExperimentImplementation();
 
   /** Virtual constructor */
-  virtual ExperimentImplementation * clone() const;
+  ExperimentImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 

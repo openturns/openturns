@@ -2,7 +2,7 @@
 /**
  *  @brief Factorial experiment plane
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,13 +52,13 @@ public:
             const Point & levels);
 
   /** Virtual constructor */
-  virtual Factorial * clone() const;
+  Factorial * clone() const override;
 
   /** Experiment plane generation */
-  virtual Sample generate() const;
+  Sample generate() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
 }; /* class Factorial */
 

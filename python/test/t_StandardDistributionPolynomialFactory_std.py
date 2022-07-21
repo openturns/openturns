@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
@@ -16,7 +15,7 @@ def clean(polynomial):
 
 
 iMax = 5
-distributionCollection = [ot.Laplace(1.0, 0.0),
+distributionCollection = [ot.Laplace(0.0, 1.0),
                           ot.Logistic(0.0, 1.0),
                           ot.Normal(0.0, 1.0),
                           ot.Normal(1.0, 1.0),
@@ -25,10 +24,10 @@ distributionCollection = [ot.Laplace(1.0, 0.0),
                           ot.Triangular(-1.0, 0.3, 1.0),
                           ot.Uniform(-1.0, 1.0),
                           ot.Uniform(-1.0, 3.0),
-                          ot.Weibull(1.0, 3.0),
-                          ot.Beta(1.0, 3.0, -1.0, 1.0),
-                          ot.Beta(0.5, 1.0, -1.0, 1.0),
-                          ot.Beta(0.5, 1.0, -2.0, 3.0),
+                          ot.WeibullMin(1.0, 3.0),
+                          ot.Beta(1.0, 2.0, -1.0, 1.0),
+                          ot.Beta(0.5, 0.5, -1.0, 1.0),
+                          ot.Beta(0.5, 0.5, -2.0, 3.0),
                           ot.Gamma(1.0, 3.0),
                           ot.Arcsine()]
 for n in range(len(distributionCollection)):

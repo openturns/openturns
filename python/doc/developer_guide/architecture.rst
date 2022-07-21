@@ -44,15 +44,15 @@ Overview
 This chapter will describe the general design of and a few design models
 that are widely used within the platform.
 
-The core of the platform is a C++ library made of about 500
+The core of the platform is a C++ library made of about 800
 classes of various size.
 
 The main user interface is a python module, automatically generated from
 the C++ library using the wrapping software SWIG.
 It allows for a usage through python scripts of any level of complexity.
 
-The library relies on relatively few dependencies, (Lapack, R, TBB,
-LibXml2), and most of them are optional.
+The library relies on few mandatory dependencies (LAPACK),
+the other being optional.
 
 Several GUIs have already been built on top of the C++ library or the
 Python module.
@@ -165,11 +165,11 @@ example this list:
 +--------------------+-------------------+
 | **Distribution**   | **Version**       |
 +====================+===================+
-| Debian             | 8 “Jessie”        |
+| Debian             | 9 “Stretch”       |
 +--------------------+-------------------+
-| Ubuntu             | 14.04 “Trusty”    |
+| Ubuntu             | 18.04 “Bionic”    |
 +--------------------+-------------------+
-| Windows            | 7                 |
+| Windows            | 10                |
 +--------------------+-------------------+
 
 The primary development platform is Linux, and is known to work on
@@ -179,70 +179,111 @@ The Windows version is obtained by cross-compilation using MinGW-w64.
 
 .. _dependencies:
 
-Dependencies
-~~~~~~~~~~~~
+External dependencies
+~~~~~~~~~~~~~~~~~~~~~
 
 The tools chosen for the development of the platform are:
 
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| **Category**                          | **Name**                                                  | **Version**       |
-+=======================================+===========================================================+===================+
-| Configuration                         | `CMake <https://cmake.org/>`_                             | 2.8.8             |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| C/C++ compiler                        | `GCC <https://gcc.gnu.org/>`_                             | 3.3.5             |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Linear algebra                        | `BLAS <http://www.netlib.org/blas/>`_                     | 3.0               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Linear algebra                        | `LAPACK <http://www.netlib.org/lapack/>`_                 | 3.0               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Linear algebra (optional)             | `HMat <https://github.com/jeromerobert/hmat-oss>`_        | 1.2               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Analytical parser (optional)          | `muParser <http://muparser.beltoforion.de/>`_             | 2.2.3             |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Special functions (optional)          | `Boost <http://www.boost.org/>`_                          | 1.46              |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Optimization (optional)               | `NLopt <http://ab-initio.mit.edu/nlopt>`_                 | 2.4               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Optimization (optional)               | `OPT++ <https://software.sandia.gov/opt++/>`_             | 2.4               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Optimization (optional)               | `CMinpack <http://devernay.free.fr/hacks/cminpack/>`_     | 1.3               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Optimization (optional)               | `Ceres Solver <http://ceres-solver.org>`_                 | 1.11              |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Optimization (optional)               | `Dlib <http://dlib.net/>`_                                | 18.18             |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| CSV parser (optional)                 | flex                                                      | 2.5.33            |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| CSV parser (optional)                 | bison                                                     | 2.4               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| XML support (optional)                | `LibXml2 <http://xmlsoft.org/>`_                          | 2.6.27            |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Multithreading (optional)             | `TBB <http://www.threadingbuildingblocks.org/>`_          | 2                 |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Python support                        | `Python <http://www.python.org/>`_                        | 2.6               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Plotting library (optional)           | `Matplotlib <http://matplotlib.org/>`_                    | 1.1               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| C++/Python wrapper                    | `SWIG <http://www.swig.org/>`_                            | 2.0.9             |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Statistics library (optional)         | R                                                         | 2.0.1             |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Version control                       | `Git <https://git-scm.com/>`_                             | 2.5               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| ReSt to HTML (optional for doc)       | `Sphinx <http://sphinx-doc.org/>`_                        | 1.1               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `Numpydoc <https://github.com/numpy/numpydoc/>`_          | 0.4               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `nbsphinx <http://nbsphinx.rtfd.io/>`_                    | N/A               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| Python notebook  (optional for doc)   | `IPython <https://ipython.org/>`_                         | N/A               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
-| psutil  (optional for coupling)       | `psutil <https://github.com/giampaolo/psutil/>`_          | N/A               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| **Category**                          | **Name**                                                                        | **Version**       |
++=======================================+=================================================================================+===================+
+| Configuration                         | `CMake <https://cmake.org/>`_                                                   | 3.2               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| C/C++ compiler (C99/C++11)            | `GCC <https://gcc.gnu.org/>`_                                                   | 4.8               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Linear algebra                        | `BLAS <http://www.netlib.org/blas/>`_                                           | 3.0               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Linear algebra                        | `LAPACK <http://www.netlib.org/lapack/>`_                                       | 3.0               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Linear algebra (optional)             | `HMat <https://github.com/jeromerobert/hmat-oss>`_                              | 1.7               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Linear algebra (optional)             | `Spectra <https://spectralib.org/>`_                                            | 1.0.0             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Legacy analytical parser (optional)   | `muParser <https://beltoforion.de/en/muparser/>`_                               | 2.2.3             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Prime numbers (optional)              | `primesieve <https://primesieve.org/>`_                                         | 7.5               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Special functions (optional)          | `Boost <http://www.boost.org/>`_                                                | 1.46              |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Special functions (optional)          | `MPFR <https://www.mpfr.org/>`_                                                 | 4.0.0             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Special functions (optional)          | `MPC <http://www.multiprecision.org/mpc>`_                                      | 1.1.0             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Optimization (optional)               | `NLopt <http://ab-initio.mit.edu/nlopt>`_                                       | 2.4               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Optimization (optional)               | `CMinpack <http://devernay.free.fr/hacks/cminpack/>`_                           | 1.3               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Optimization (optional)               | `Ceres Solver <http://ceres-solver.org>`_                                       | 1.11              |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Optimization (optional)               | `Dlib <http://dlib.net/>`_                                                      | 18.18             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Optimization (optional)               | `Bonmin <https://projects.coin-or.org/Bonmin>`_                                 | 1.8.7             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Optimization (optional)               | `Ipopt <https://coin-or.github.io/Ipopt/>`_                                     | 3.11.9            |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Optimization (optional)               | `Pagmo <https://esa.github.io/pagmo2/>`_                                        | 2.12.0            |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| CSV parser (optional)                 | `Flex <https://github.com/westes/flex>`_                                        | 2.5.33            |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| CSV parser (optional)                 | `Bison <https://www.gnu.org/software/bison/>`_                                  | 2.4               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| XML support (optional)                | `LibXml2 <http://xmlsoft.org/>`_                                                | 2.6.27            |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| HDF5 support (optional)               | `hdf5 <https://github.com/HDFGroup/hdf5>`_                                      | 1.10              |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Multithreading (optional)             | `TBB <http://www.threadingbuildingblocks.org/>`_                                | 2017              |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Python support                        | `Python <http://www.python.org/>`_                                              | 3.5               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Plotting library (optional)           | `Matplotlib <http://matplotlib.org/>`_                                          | 1.3.1             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Legacy plotting (optional)            | `R <https://www.r-project.org/>`_                                               | 2.0.1             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| C++/Python wrapper                    | `SWIG <http://www.swig.org/>`_                                                  | 3.0.0             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Version control                       | `Git <https://git-scm.com/>`_                                                   | 2.5               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| ReSt to HTML (optional for doc)       | `Sphinx <http://sphinx-doc.org/>`_                                              | 1.1               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Sphinx extension (optional for doc)   | `Numpydoc <https://github.com/numpy/numpydoc/>`_                                | 0.9.0             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Sphinx extension (optional for doc)   | `Sphinx-Gallery <https://sphinx-gallery.github.io/stable/index.html>`_          | 0.7               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| dill (optional for serialization)     | `dill <https://github.com/uqfoundation/dill/>`_                                 | N/A               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| psutil (optional for coupling)        | `psutil <https://github.com/giampaolo/psutil/>`_                                | N/A               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 
 The versions given here are only meant as indications of minimum version and newer ones
 may be used.
 
+
+Internal dependencies
+~~~~~~~~~~~~~~~~~~~~~
+
+We would like to acknowledge the following codes that are included into the library:
+
++---------------------------------------+---------------------------------------------------------------------------------+
+| Optimization                          | `COBYLA <https://www.zhangzk.net/software.html>`_                               |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Mersenne twister RNG                  | `DSFMT <http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/>`_                |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Differenciation                       | `Ev3 <http://www.lix.polytechnique.fr/~liberti/academic.html>`_                 |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Symbolic parser                       | `ExprTk <https://www.partow.net/programming/exprtk/index.html>`_                |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Faddeeva function                     | `Fadeeva <http://ab-initio.mit.edu/Faddeeva>`_                                  |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Kendall Tau                           | `Kendall <https://afni.nimh.nih.gov/pub/dist/src/ktaub.c>`_                     |
++---------------------------------------+---------------------------------------------------------------------------------+
+| FFT                                   | `KissFFT <https://github.com/mborgerding/kissfft>`_                             |
++---------------------------------------+---------------------------------------------------------------------------------+
+| KS distribution                       | `KolmogorovSmirnovDist <https://www.jstatsoft.org/article/view/v039i11>`_       |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Poisson inverse CDF                   | `poissinv <http://people.maths.ox.ac.uk/gilesm/codes/poissinv/>`_               |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Optimization                          | `TNC <http://js2007.free.fr/code/index.html#TNC>`_                              |
++---------------------------------------+---------------------------------------------------------------------------------+
 
 Compilation infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -275,9 +316,8 @@ Each pull-request on the GitHub code repository triggers continuous integration
 jobs for the different target platforms to be run on several free
 continuous integration services:
 
-- CircleCI (https://circleci.com/) for Linux
-- Travis (https://travis-ci.org/) for macOS
-- AppVeyor (https://www.appveyor.com/) for Windows
+- CircleCI (https://circleci.com/) for Linux/MinGW
+- Github Actions (https://github.com/actions) for macOS/Windows
 
 Each of these jobs checks that the library can be successfully compiled and
 that all unit tests pass. All jobs passing is one of the necessary conditions
@@ -361,7 +401,7 @@ A and whose reference (or pointer) is returned by a static method
 .. figure:: Figures/modeling_notions/singleton.png
    :alt: Singleton structure.
 
-It is a very common pattern that allows to find and share an object
+It is a very common pattern that allows one to find and share an object
 (which must remain unique) in different portions of code. Examples of
 such objects include shared hardware resources (standard output, error,
 log, etc.), but also internal functions that cannot or must not be
@@ -371,7 +411,7 @@ ResourceMap and IdFactory follow this pattern.
 Factory pattern
 ~~~~~~~~~~~~~~~
 
-This pattern allows to define a unique interface for the creation of
+This pattern allows one to define a unique interface for the creation of
 objects belonging to a class hierarchy without knowing in advance their
 exact type. Figure [fig:factory] illustrates this pattern. The creation
 of the concrete object (ClassA or ClassB) is delegated to a sub-class

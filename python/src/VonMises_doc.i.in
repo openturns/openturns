@@ -1,13 +1,10 @@
 %feature("docstring") OT::VonMises
 "von Mises distribution.
 
-Available constructors:
-    VonMises(*mu=0.0, kappa=1.0*)
-
 Parameters
 ----------
 mu : float
-    Location parameter
+    Mean parameter
 kappa : float, :math:`\kappa > 0`
     Concentration parameter
 
@@ -41,7 +38,7 @@ Draw a sample:
 Returns
 -------
 mu : float
-    Location parameter."
+    Mean parameter."
 
 // ---------------------------------------------------------------------
 
@@ -51,7 +48,7 @@ mu : float
 Parameters
 ----------
 mu : float
-    Location parameter."
+    Mean parameter."
 
 // ---------------------------------------------------------------------
 

@@ -1,12 +1,12 @@
-Distribution                      = class=Gumbel name=Gumbel dimension=1 alpha=2 beta=2.5
-Estimated distribution            = class=Gumbel name=Gumbel dimension=1 alpha=1.98682 beta=2.50626
-Parameter distribution            = Normal(mu = [1.98704,2.50636], sigma = [0.0198687,0.00503881], R = [[  1         -0.0307802 ]
- [ -0.0307802  1         ]])
-Default distribution              = Gumbel(alpha = 1, beta = 0)
-Distribution from parameters      = Gumbel(alpha = 2, beta = 2.5)
-Typed estimated distribution      = Gumbel(alpha = 1.98682, beta = 2.50626)
-Default typed distribution        = Gumbel(alpha = 1, beta = 0)
-Typed distribution from parameters= Gumbel(alpha = 2, beta = 2.5)
-Estimated distribution (AB)       = class=ParametrizedDistribution parameters=class=GumbelAB name=Unnamed a=2.50626 b=0.503317 distribution=class=Gumbel name=Gumbel dimension=1 alpha=1.98682 beta=2.50626
-Parameter distribution (AB)       = Normal(mu = [2.50626,0.503317], sigma = [0.00499641,0.0778421], R = [[ 1        0.124345 ]
- [ 0.124345 1        ]])
+Distribution                      = class=Gumbel name=Gumbel dimension=1 beta=0.5 gamma=2.5
+Estimated distribution            = class=Gumbel name=Gumbel dimension=1 beta=0.503317 gamma=2.50626
+Parameter distribution            = Normal(mu = [0.503311,2.50636], sigma = [0.00505364,0.00503881], R = [[ 1        0.030322 ]
+ [ 0.030322 1        ]])
+Default distribution              = Gumbel(beta = 1, gamma = 0)
+Distribution from parameters      = Gumbel(beta = 0.5, gamma = 2.5)
+Typed estimated distribution      = Gumbel(beta = 0.503317, gamma = 2.50626)
+Default typed distribution        = Gumbel(beta = 1, gamma = 0)
+Typed distribution from parameters= Gumbel(beta = 0.5, gamma = 2.5)
+Estimated distribution (mu/sigma)       = class=ParametrizedDistribution parameters=class=GumbelMuSigma name=Unnamed mu=2.79678 sigma=0.645529 distribution=class=Gumbel name=Gumbel dimension=1 beta=0.503317 gamma=2.50626
+Parameter distribution (mu/sigma)       = Normal(mu = [2.79678,0.645529], sigma = [0.00499641,0.00423748], R = [[  1        -0.416125 ]
+ [ -0.416125  1        ]])

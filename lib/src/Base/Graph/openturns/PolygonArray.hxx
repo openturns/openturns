@@ -2,7 +2,7 @@
 /**
  *  @brief PolygonArray class for array of polygons plots
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,18 +60,18 @@ public:
                const String & legend = "");
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Draw method */
-  String draw() const;
+  String draw() const override;
 
   /** Clone method */
-  virtual PolygonArray * clone() const;
+  PolygonArray * clone() const override;
 
 
   /** Palette of the edge/face of the polygons */
-  void setPalette(const Description & palette);
-  Description getPalette() const;
+  void setPalette(const Description & palette) override;
+  Description getPalette() const override;
 
   /** Coordinates and vertices number of the vertices of the polygons */
   void setCoordinatesAndVerticesNumber(const Sample & coordinates,
@@ -84,17 +84,17 @@ public:
   UnsignedInteger getVerticesNumber() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Remove all the temporary files */
-  void clean() const;
+  void clean() const override;
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const Sample & data) const;
+  void checkData(const Sample & data) const override;
 
 private:
 

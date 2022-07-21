@@ -3,7 +3,7 @@
  *  @brief This class implements a non parametric density estimator for copulas
  *         based on the Bernstein copula approximation of the empirical copula
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,7 @@
 #include "openturns/BernsteinCopulaFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/KFoldSplitter.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -63,19 +64,25 @@ void BernsteinCopulaFactory::BuildCrossValidationSamples(const Sample & sample,
   if (kFraction < 2) throw InvalidArgumentException(HERE) << "Error: the fraction number must be greater or equal to 2, here kFraction=" << kFraction;
   const UnsignedInteger size = sample.getSize();
   if (kFraction >= size) throw InvalidArgumentException(HERE) << "Error: the fraction number must be less than the sample size, here kFraction=" << kFraction << " and sample size=" << size;
-  const UnsignedInteger dimension = sample.getDimension();
+
   // Create the samples
   validationCollection = Collection<Sample>(0);
   learningCollection = Collection<Sample>(0);
+  KFoldSplitter splitter(size, kFraction);
   for (UnsignedInteger k = 0; k < kFraction; ++k)
   {
     // Select the points
-    Sample validationSample(0, dimension);
-    Sample learningSample(0, dimension);
-    for (UnsignedInteger j = 0; j < size; ++j)
-      if ((j % kFraction) == k) validationSample.add(sample[j]);
-      else learningSample.add(sample[j]);
+    Indices indices2;
+    Indices indices1(splitter.generate(indices2));
+    Sample validationSample(sample.select(indices2));
+    Sample learningSample(sample.select(indices1));
+
+    // No need to rank the validation sample as it is supposed to
+    // be distributed according to an unknown copula
     validationCollection.add(validationSample);
+    // Rank the learning sample as it is mandatory for the creation of an
+    // EmpiricalBernsteinCopula (hence the name: empirical)
+    learningSample = (learningSample.rank() + 1.0) / learningSample.getSize();
     learningCollection.add(learningSample);
   } // k
 }
@@ -111,12 +118,16 @@ public:
 
   Scalar computeLogLikelihood(const UnsignedInteger m) const
   {
+    LOGINFO(OSS() << "In computeLogLikelihood, m=" << m);
+    if (m == 1) return 0.0;
     Scalar result = 0.0;
     for (UnsignedInteger k = 0; k < kFraction_; ++k)
     {
       const Sample learning(learningSamples_[k]);
       const Sample validation(validationSamples_[k]);
-      const EmpiricalBernsteinCopula copula(learning, m, false);
+      LOGINFO("Build copula");
+      const EmpiricalBernsteinCopula copula(learning, m, true);
+      LOGINFO("Compute log-PDF");
       result -= copula.computeLogPDF(validation).computeMean()[0];
     } // k
     return result / kFraction_;
@@ -287,7 +298,7 @@ UnsignedInteger BernsteinCopulaFactory::ComputeLogLikelihoodBinNumber(const Samp
     BuildCrossValidationSamples(sample, kFraction, learningCollection, validationCollection);
   else
   {
-    learningCollection.add(sample);
+    learningCollection.add((sample.rank() + 1.0) / sample.getSize());
     validationCollection.add(sample);
   }
   UnsignedInteger mMin = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-MinM");
@@ -349,14 +360,21 @@ EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula
     const String & method,
     const Function & objective) const
 {
+  const UnsignedInteger minM = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-MinM");
+  const UnsignedInteger maxM = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-MaxM");
   UnsignedInteger m = 0;
-  if (method == "AMISE")
-    m = ComputeAMISEBinNumber(sample);
-  else if (method == "LogLikelihood")
-    m = ComputeLogLikelihoodBinNumber(sample, ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-kFraction"));
-  else if (method == "PenalizedCsiszarDivergence")
-    m = ComputePenalizedCsiszarDivergenceBinNumber(sample, objective, ResourceMap::GetAsScalar("BernsteinCopulaFactory-alpha"));
-  else throw InvalidArgumentException(HERE) << "Error: the given method=" << method << " is not valid.";
+  if (minM == maxM)
+    m = minM;
+  else
+  {
+    if (method == "AMISE")
+      m = ComputeAMISEBinNumber(sample);
+    else if (method == "LogLikelihood")
+      m = ComputeLogLikelihoodBinNumber(sample, ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-kFraction"));
+    else if (method == "PenalizedCsiszarDivergence")
+      m = ComputePenalizedCsiszarDivergenceBinNumber(sample, objective, ResourceMap::GetAsScalar("BernsteinCopulaFactory-alpha"));
+    else throw InvalidArgumentException(HERE) << "Error: the given method=" << method << " is not valid.";
+  }
   LOGINFO(OSS() << "m=" << m);
   return EmpiricalBernsteinCopula(sample, m);
 }

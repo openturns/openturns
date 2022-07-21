@@ -76,7 +76,7 @@ where :math:`\overline{x}^i` denotes the empirical mean of the sample
 Thus, :math:`0 \leq R^2 \leq 1`. A value close to 1 indicates a good fit
 of the linear model, whereas a value close to 0 indicates that the
 linear model does not provide a relevant forecast. A statistical test
-allows to detect significant values of :math:`R^2`. Again, a
+allows one to detect significant values of :math:`R^2`. Again, a
 :math:`p`-value is provided: the higher the :math:`p`-value, the more
 significant the coefficient of determination.
 
@@ -102,7 +102,7 @@ relationships, as in the following simple example where
     # Fit this linear model
     regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult()
     # Test the linear model fitting
-    graph = ot.VisualTest.DrawLinearModel(sampleX, sampleY, regressionModel)
+    graph = ot.VisualTest.DrawLinearModel(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
     graph.setDrawable(cloud, 0)
@@ -135,7 +135,7 @@ regression coefficients :math:`a_j`.
     sampleX.setName('X')
     # same as good test
     regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult()
-    graph = ot.VisualTest.DrawLinearModel(sampleX, sampleY, regressionModel)
+    graph = ot.VisualTest.DrawLinearModel(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
     graph.setDrawable(cloud, 0)
@@ -163,7 +163,7 @@ characteristics of the residuals do not depend on the value of
 to 0 and the standard deviation should be constant. Thus, plotting the
 residuals versus these variables can fruitful.
 
-In the following example, the behaviour of the residuals is
+In the following example, the behavior of the residuals is
 satisfactory: no particular trend can be detected neither in the mean
 nor in he standard deviation.
 
@@ -184,7 +184,7 @@ nor in he standard deviation.
     sampleX.setName('X')
     #create a linear model
     regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult()
-    graph = ot.VisualTest.DrawLinearModelResidual(sampleX, sampleY, regressionModel)
+    graph = ot.VisualTest.DrawLinearModelResidual(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
     graph.setDrawable(cloud, 0)
@@ -193,7 +193,7 @@ nor in he standard deviation.
     View(graph)
 
 
-The next example illustrates a less favourable situation: the mean value
+The next example illustrates a less favorable situation: the mean value
 of the residuals seems to be close to 0 but the standard deviation tends
 to increase with :math:`X`. In such a situation, the linear model should
 be abandoned, or at least used very cautiously.
@@ -215,7 +215,7 @@ be abandoned, or at least used very cautiously.
     sampleX.setName('X')
     # same as good test
     regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult()
-    graph = ot.VisualTest.DrawLinearModelResidual(sampleX, sampleY, regressionModel)
+    graph = ot.VisualTest.DrawLinearModelResidual(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
     graph.setDrawable(cloud, 0)
@@ -231,13 +231,13 @@ be abandoned, or at least used very cautiously.
     - See :py:func:`~openturns.VisualTest_DrawLinearModelResidual` to draw the residual
     - See :py:func:`~openturns.LinearModelTest_LinearModelFisher` to assess the nullity of the coefficients
     - See :py:func:`~openturns.LinearModelTest_LinearModelResidualMean` to assess the mean residual
-    - See :py:func:`~openturns.LinearModelTest_LinearModelHarrisonMcCabe` to assess the homoskedasticity of the residual
-    - See :py:func:`~openturns.LinearModelTest_LinearModelBreuschPagan` to assess the homoskedasticity of the residual
+    - See :py:func:`~openturns.LinearModelTest_LinearModelHarrisonMcCabe` to assess the homoscedasticity of the residual
+    - See :py:func:`~openturns.LinearModelTest_LinearModelBreuschPagan` to assess the homoscedasticity of the residual
     - See :py:func:`~openturns.LinearModelTest_LinearModelDurbinWatson` to assess the autocorrelation of the residual
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/linear_regression`
+    - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_linear_regression`
 
 .. topic:: References:
 

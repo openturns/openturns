@@ -223,3 +223,5 @@ bvh= class=BoundingVolumeHierarchy binNumber=3 strategy=Mean
 94 is outside
 95 is outside
 98 is outside
+0
+1

@@ -11,11 +11,11 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> limitState = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3.*E*I)'])
->>> # Enable the history mecanism in order to use the getImportanceFactors method
+>>> # Enable the history mechanism in order to use the getImportanceFactors method
 >>> limitState = ot.MemoizeFunction(limitState)
 >>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> output = ot.CompositeRandomVector(limitState, ot.RandomVector(myDistribution))
->>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
 >>> myLHS = ot.LHS(myEvent)
 >>> myLHS.run()
 >>> SimulationLHSResult = myLHS.getResult()
@@ -58,7 +58,7 @@ OT_SimulationResult_setBlockSize_doc
 
 Parameters
 ----------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Event we want to evaluate the probability."
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult::setEvent
@@ -71,7 +71,7 @@ OT_SimulationResult_setEvent_doc
 
 Returns
 -------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Event we want to evaluate the probability."
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult::getEvent
@@ -103,7 +103,7 @@ with :math:`T` the iso-probabilistic transformation and the mean point
 :math:`\vect{X}^*_{event} = \displaystyle \frac{1}{n} \sum_{i=1}^{n} \vect{X}_i 1_{event}(\vect{X}_i)`.
 
 .. warning::
-    This notion is only available if the history mecanism of the model is
+    This notion is only available if the history mechanism of the model is
     activated (see :class:`~openturns.MemoizeFunction`).
 
 See also
@@ -127,7 +127,7 @@ meanPoint : :class:`~openturns.Point`
 Notes
 -----
 .. warning::
-    This notion is only available if the history mecanism of the model is
+    This notion is only available if the history mechanism of the model is
     activated (see :class:`~openturns.MemoizeFunction`)."
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult::getMeanPointInEventDomain

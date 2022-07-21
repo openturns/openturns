@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of SimulationResult
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,7 @@
 #define OPENTURNS_PROBABILITYSIMULATIONRESULT_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Event.hxx"
+#include "openturns/RandomVector.hxx"
 #include "openturns/SimulationResult.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PointWithDescription.hxx"
@@ -47,18 +47,18 @@ public:
   ProbabilitySimulationResult();
 
   /** Standard constructor */
-  ProbabilitySimulationResult(const Event & event,
+  ProbabilitySimulationResult(const RandomVector & event,
                               const Scalar probabilityEstimate,
                               const Scalar varianceEstimate,
                               const UnsignedInteger outerSampling,
                               const UnsignedInteger blockSize);
 
   /** Virtual constructor */
-  virtual ProbabilitySimulationResult * clone() const;
+  ProbabilitySimulationResult * clone() const override;
 
   /** Event accessor */
-  Event getEvent() const;
-  void setEvent(const Event & event);
+  RandomVector getEvent() const;
+  void setEvent(const RandomVector & event);
 
   /** Probability estimate accessor */
   Scalar getProbabilityEstimate() const;
@@ -90,18 +90,18 @@ public:
   virtual Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
   /* The event we are interested in */
-  Event event_;
+  RandomVector event_;
   Scalar probabilityEstimate_;
   Scalar varianceEstimate_;
 

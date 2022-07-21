@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,16 +50,15 @@ public:
                        const Basis & basis);
 
   /** Virtual copy constructor */
-  RankMCovarianceModel * clone() const;
+  RankMCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const Point & s,
-                               const Point & t) const;
+  SquareMatrix operator() (const Point & s, const Point & t) const override;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,
-                                 const Point & t) const;
+                                 const Point & t) const override;
 
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;
@@ -71,19 +70,19 @@ public:
 
   /** Specific discretization method */
   using CovarianceModelImplementation::discretize;
-  CovarianceMatrix discretize(const Sample & vertices) const;
+  CovarianceMatrix discretize(const Sample & vertices) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   void setBasis(const Basis & basis);

@@ -1,0 +1,246 @@
+%feature("docstring") OT::Pagmo
+"Pagmo algorithms.
+
+This class exposes bio-inspired and evolutionary global optimization algorithms
+from the `Pagmo <https://esa.github.io/pagmo2/>`_ library.
+These algorithms start from an initial population and make it evolve to obtain
+a final population after a defined number of generations (by :meth:`setGenerationNumber`).
+A few of these algorithms allow for multi-objective optimization, and in that
+case the result is not the best point among the final population but a set of
+dominant points: a pareto front.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve
+algoName : str, default='gaco'
+    Identifier of the optimization method to use.
+startingSample : 2-d sequence of float, optional
+    Initial population
+
+Notes
+-----
+Starting points provided through the *startingSample* parameter should be
+within the bounds of the :class:`~openturns.OptimizationProblem`, but this is not enforced.
+
+Pagmo provides the following global `heuristics <https://esa.github.io/pagmo2/overview.html#list-of-algorithms>`_:
+
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| Algorithm           | Description                                     | Multi-objective | MINLP | Batch |
++=====================+=================================================+=================+=======+=======+
+| gaco                | Extended Ant Colony Optimization                | no              | yes   | yes   |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| de                  | Differential Evolution                          | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| sade                | Self-adaptive DE (jDE and iDE)                  | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| de1220              | Self-adaptive DE (de_1220 aka pDE)              | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| gwo                 | Grey wolf optimizer                             | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| ihs                 | Improved Harmony Search                         | no              | yes   | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| pso                 | Particle Swarm Optimization                     | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| pso_gen             | Particle Swarm Optimization Generational        | no              | no    | yes   |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| sea                 | (N+1)-ES Simple Evolutionary Algorithm          | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| sga                 | Simple Genetic Algorithm                        | no              | yes   | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| simulated_annealing | Corana’s Simulated Annealing                    | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| bee_colony          | Artificial Bee Colony                           | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| cmaes               | Covariance Matrix Adaptation Evo. Strategy      | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| xnes                | Exponential Evolution Strategies                | no              | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| nsga2               | Non-dominated Sorting GA                        | yes             | yes   | yes   |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| moead               | Multi-objective EA vith Decomposition           | yes             | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| mhaco               | Multi-objective Hypervolume-based ACO           | yes             | yes   | yes   |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| nspso               | Non-dominated Sorting PSO                       | yes             | no    | yes   |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+
+Only gaco and ihs natively support constraints, but for the other algorithms
+constraints are emulated through penalization.
+Some algorithms support batch evaluation, except when constraints are emulated,
+see :meth:`setBlockSize`.
+Default parameters are available in the :class:`~openturns.ResourceMap` for
+each algorithm, refer to the correspondings keys in the Pagmo `documentation <https://esa.github.io/pagmo2/>`_.
+
+Examples
+--------
+Define an optimization problem to find the minimum of the Rosenbrock function:
+
+>>> import openturns as ot
+>>> dim = 2
+>>> rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> bounds = ot.Interval([-5.0] * dim, [5.0] * dim)
+>>> problem = ot.OptimizationProblem(rosenbrock)
+>>> problem.setBounds(bounds)
+
+Sample the initial population inside a box:
+
+>>> uniform = ot.ComposedDistribution([ot.Uniform(-2.0, 2.0)] * dim)
+>>> ot.RandomGenerator.SetSeed(0)
+>>> init_pop = uniform.getSample(5)
+
+Run GACO on our problem:
+
+>>> algo = ot.Pagmo(problem, 'gaco', init_pop)
+>>> algo.setGenerationNumber(5)
+>>> algo.run() # doctest: +SKIP
+>>> result = algo.getResult() # doctest: +SKIP
+>>> x_star = result.getOptimalPoint() # doctest: +SKIP
+>>> y_star = result.getOptimalValue() # doctest: +SKIP
+
+Get the final population:
+
+>>> final_pop_x = result.getFinalPoints() # doctest: +SKIP
+>>> final_pop_y = result.getFinalValues() # doctest: +SKIP
+
+Define a multi-objective problem:
+
+>>> dim = 2
+>>> model = ot.SymbolicFunction(['x', 'y'], ['x^2+y^2*(1-x)^3', '-x^2'])
+>>> bounds = ot.Interval([-2.0] * dim, [3.0] * dim)
+>>> problem = ot.OptimizationProblem(model)
+>>> problem.setBounds(bounds)
+
+Sample the initial population inside a box:
+
+>>> uniform = ot.ComposedDistribution([ot.Uniform(-2.0, 3.0)] * dim)
+>>> ot.RandomGenerator.SetSeed(0)
+>>> init_pop = uniform.getSample(5)
+
+Run NSGA2 on our problem:
+
+>>> algo = ot.Pagmo(problem, 'nsga2', init_pop)
+>>> algo.setGenerationNumber(5)
+>>> algo.run() # doctest: +SKIP
+>>> result = algo.getResult() # doctest: +SKIP
+>>> final_pop_x = result.getFinalPoints() # doctest: +SKIP
+>>> final_pop_y = result.getFinalValues() # doctest: +SKIP
+
+Get the best front points and values:
+
+>>> front0 = result.getParetoFrontsIndices()[0] # doctest: +SKIP
+>>> front0_x = final_pop_x.select(front0) # doctest: +SKIP
+>>> front0_y = final_pop_y.select(front0) # doctest: +SKIP
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::getStartingSample
+"Accessor to the sample of starting points.
+
+Returns
+-------
+startingSample : :class:`~openturns.Sample`
+    The initial population.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::setStartingSample
+"Accessor to the sample of starting points.
+
+Parameters
+----------
+startingSample : 2-d sequence of float
+    The initial population."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::setGenerationNumber
+"Generation number accessor.
+
+Parameters
+----------
+gen : int
+    Number of generations to evolve.
+    Ignored for the simulated_annealing algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::getGenerationNumber
+"Generation number accessor.
+
+Returns
+-------
+gen : int
+    Number of generations to evolve."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::setSeed
+"Random generator seed accessor.
+
+Parameters
+----------
+seed : int
+    Seed."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::getSeed
+"Random generator seed accessor.
+
+Returns
+-------
+seed : int
+    Seed."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::setBlockSize
+"Block size accessor.
+
+Parameters
+----------
+blockSize : int
+    Batch evaluation granularity."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::getBlockSize
+"Block size accessor.
+
+Returns
+-------
+blockSize : int
+    Batch evaluation granularity."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::GetAlgorithmNames
+"Accessor to the list of algorithm names provided.
+
+Returns
+-------
+names : :class:`~openturns.Description`
+    List of algorithm names provided, according to its naming convention."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::setAlgorithmName
+"Accessor to the algorithm name.
+
+Parameters
+----------
+algoName : str
+    The identifier of the algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::getAlgorithmName
+"Accessor to the algorithm name.
+
+Returns
+-------
+algoName : str
+    The identifier of the algorithm."

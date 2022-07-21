@@ -2,7 +2,7 @@
 /**
  *  @brief StorageManager provides an interface for different storage classes
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -75,7 +75,7 @@ public:
 
   struct InternalObject
   {
-    virtual ~InternalObject() throw() {}
+    virtual ~InternalObject() {}
     virtual InternalObject * clone() const
     {
       return new InternalObject(*this);
@@ -93,13 +93,6 @@ public:
 
   /**
    * Default constructor
-   *
-   * The default constructor allows the object to be
-   * stored in STL containers like vector or map.
-   * It takes an optional argument interpreted as the
-   * name of the object in a user point of view. This
-   * name is never used in another way than for user
-   * information. This name has no meaning to the platform.
    */
   explicit StorageManager(UnsignedInteger defaultVersion = 1);
 
@@ -109,12 +102,12 @@ public:
   virtual StorageManager * clone() const;
 
   /** @copydoc Object::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /**
    * This method saves the PersistentObject onto the medium
    * @param obj The object to be saved
-   * @param fromStudy Tell if the object was explicitely put in the study or not
+   * @param fromStudy Tell if the object was explicitly put in the study or not
    */
   virtual void save(const PersistentObject & obj, const String & label, bool fromStudy = false);
 
@@ -387,6 +380,11 @@ public:
     return *this;
   }
 
+  UnsignedInteger getStudyVersion() const
+  {
+    return mgr_.getStudyVersion();
+  }
+
 private:
 
   StorageManager & mgr_;
@@ -433,6 +431,14 @@ public:
 
   explicit AdvocateIterator(Advocate & advocate) : advocate_(advocate), index_(0), first_(true) {}
 
+  AdvocateIterator(const AdvocateIterator & other)
+    : advocate_(other.advocate_)
+    , index_(other.index_)
+    , first_(other.first_)
+  {
+    // Nothing to do
+  }
+
   AdvocateIterator &
   operator = (const _Tp & value)
   {
@@ -442,13 +448,16 @@ public:
   }
 
   AdvocateIterator &
-  operator = (const AdvocateIterator & other )
+  operator = (const AdvocateIterator & other)
   {
-    // Copy-assignment does not make sense on different advocate_
-    if (&advocate_ != &other.advocate_)
-      throw InternalException(HERE) << "Wrong advocates in copy assignment. Report bug";
-    index_ = other.index_;
-    first_ = other.first_;
+    if (*this != other)
+    {
+      // Copy-assignment does not make sense on different advocate_
+      if (&advocate_ != &other.advocate_)
+        throw InternalException(HERE) << "Wrong advocates in copy assignment. Report bug";
+      index_ = other.index_;
+      first_ = other.first_;
+    }
     return *this;
   }
 

@@ -2,7 +2,7 @@
 /**
  *  @brief Class for the InverseNataf transformation evaluation for independent
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,23 +41,23 @@ public:
   explicit InverseNatafIndependentCopulaEvaluation(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor */
-  virtual InverseNatafIndependentCopulaEvaluation * clone() const;
+  InverseNatafIndependentCopulaEvaluation * clone() const override;
 
   /** Evaluation */
-  Point operator () (const Point & inP) const;
+  Point operator () (const Point & inP) const override;
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const Point & inP) const;
+  Matrix parameterGradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset) const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 protected:
 

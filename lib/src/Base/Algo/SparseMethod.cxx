@@ -2,7 +2,7 @@
 /**
  *  @brief Sparse approximation LS solver
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,6 @@
 #include "openturns/SparseMethod.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -111,13 +110,13 @@ Point SparseMethod::solve(const Point & rhs)
     }
     else
     {
-      if (error > alpha * minimumError)
+      if (!(error <= alpha * minimumError))
       {
         LOGINFO(OSS() << "Error=" << error << " larger than " << alpha << "*" << minimumError << "=" << alpha * minimumError);
         break;
       }
     }
-    if (minimumError < errorThreshold)
+    if (!(minimumError >= errorThreshold))
     {
       LOGINFO(OSS() << "Minimum error=" << minimumError << " smaller than threshold=" << errorThreshold);
       break;

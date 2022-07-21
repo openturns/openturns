@@ -2,7 +2,7 @@
 /**
  *  @brief Cloud class for cloud plots
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,12 +53,12 @@ public:
   explicit Cloud(const ComplexCollection & data,
                  const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Cloud(const Sample & dataX,
         const Sample & dataY,
         const String & legend = "");
 
-  /** Contructor from 2 data sets */
+  /** Constructor from 2 data sets */
   Cloud(const Point & dataX,
         const Point & dataY,
         const String & legend = "");
@@ -70,24 +70,24 @@ public:
         const String & legend = "");
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Draw method */
-  String draw() const;
+  String draw() const override;
 
   /** Clone method */
-  virtual Cloud * clone() const;
+  Cloud * clone() const override;
 
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Check for data validity */
-  virtual void checkData(const Sample & data) const;
+  void checkData(const Sample & data) const override;
 
 }; /* class Cloud */
 

@@ -277,6 +277,7 @@ h1 {
     font-size: 2.4em;
     font-weight: 300;
     color: #7B0C16;
+    line-height: 1;
 }
 
 h2 {

@@ -8,6 +8,7 @@ evect=class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixIm
 evect=
 [[ (-0.986041,0) (-0.388911,0) ]
  [  (0.166501,0) (-0.921275,0) ]]
+max |ev|=12.8441
 matrix2=
 [[  1    2    3   ]
  [ -1.5  2.5 -3.5 ]

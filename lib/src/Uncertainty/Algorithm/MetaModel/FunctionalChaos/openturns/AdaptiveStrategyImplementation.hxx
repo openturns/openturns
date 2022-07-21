@@ -2,7 +2,7 @@
 /**
  *  @brief This is a abstract class for adaptive strategy implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,7 +62,7 @@ public:
                                  const UnsignedInteger maximumDimension);
 
   /** Virtual constructor */
-  virtual AdaptiveStrategyImplementation * clone() const;
+  AdaptiveStrategyImplementation * clone() const override;
 
 
   /** Maximum dimension accessor */
@@ -78,7 +78,7 @@ public:
                            const Scalar relativeError);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Basis accessor */
   OrthogonalBasis getBasis() const;
@@ -87,10 +87,10 @@ public:
   FunctionCollection getPsi() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

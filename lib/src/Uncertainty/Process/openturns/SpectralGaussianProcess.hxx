@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the SpectralGaussianProcess process
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,16 +60,16 @@ public:
                           const UnsignedInteger nFrequency);
 
   /** Virtual constructor */
-  virtual SpectralGaussianProcess * clone() const;
+  SpectralGaussianProcess * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter  - pretty print */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Realization accessor */
-  Field getRealization() const;
+  Field getRealization() const override;
 
   /** Frequency grid accessor, covering both the negative and the positive axes */
   RegularGrid getFrequencyGrid() const;
@@ -87,26 +87,26 @@ public:
   SpectralModel getSpectralModel() const;
 
   /** Set TimeGrid */
-  void setTimeGrid(const RegularGrid & timeGrid);
+  void setTimeGrid(const RegularGrid & timeGrid) override;
 
   /** FFT algorithm accessors */
   FFT getFFTAlgorithm() const;
   void setFFTAlgorithm(const FFT & fft);
 
   /** Check if the process is stationary */
-  Bool isStationary() const;
+  Bool isStationary() const override;
 
   /** Check if the process is Normal */
-  Bool isNormal() const;
+  Bool isNormal() const override;
 
   /** Adapt a time grid in order to have a power of two time stamps. Both the starting point and the end point are preserved. */
   static RegularGrid AdaptGrid(const RegularGrid & grid);
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

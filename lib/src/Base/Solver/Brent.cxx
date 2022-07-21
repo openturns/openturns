@@ -3,7 +3,7 @@
  *  @brief Implementation class of the scalar nonlinear solver based on
  *         the Brent mixed bisection/linear/inverse quadratic interpolation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,14 +61,13 @@ String Brent::__repr__() const
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the Brent method */
-Scalar Brent::solve(const Function & function,
+Scalar Brent::solve(const UniVariateFunction & function,
                     const Scalar value,
                     const Scalar infPoint,
                     const Scalar supPoint,
                     const Scalar infValue,
                     const Scalar supValue) const
 {
-  if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: Brent's method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
   UnsignedInteger usedFunctionEvaluation = 0;
   const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
@@ -78,7 +77,7 @@ Scalar Brent::solve(const Function & function,
   volatile Scalar b = supPoint;
   Scalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
-  if (!(fA * fB <= 0.0)) throw InternalException(HERE) << "Error: Brent method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
+  if ((fA <= 0.0) == (fB <= 0.0)) throw InternalException(HERE) << "Error: Brent method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   volatile Scalar c = a;
   Scalar fC = fA;
   // Main loop
@@ -98,13 +97,13 @@ Scalar Brent::solve(const Function & function,
       fC = fA;
     }
     // Current error on the root
-    const Scalar error = 2.0 * getRelativeError() * std::abs(b) + 0.5 * getAbsoluteError();
+    const Scalar error = getRelativeError() * std::abs(b) + getAbsoluteError();
 
     // Bisection step
     Scalar newDelta = 0.5 * (c - b);
 
     // If the current approximation of the root is good enough, return it
-    if ((std::abs(newDelta) <= error) || (std::abs(fB) <= getResidualError())) break;
+    if (std::abs(newDelta) <= error) break;
 
     // Try an interpolation if the last improvement was large enough
     if ((std::abs(oldDelta) >= error)  && (std::abs(fA) > std::abs(fB)))
@@ -151,10 +150,12 @@ Scalar Brent::solve(const Function & function,
     // If all the evaluation budget has been spent, return the approximation
     if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
     // New evaluation
-    fB = function(Point(1, b))[0] - value;
+    fB = function(b) - value;
     ++usedFunctionEvaluation;
+    // If the current approximation of the root is good enough, return it
+    if (std::abs(fB) <= getResidualError()) break;
     // Enforce that the root is within [b, c]
-    if (fB * fC > 0.0)
+    if ((fB < 0.0) == (fC < 0.0))
     {
       c = a;
       fC = fA;

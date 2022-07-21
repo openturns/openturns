@@ -40,7 +40,7 @@ Examples
 >>> simplices = [[0, 1, 2], [1, 2, 3]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
 >>> difference = ot.DomainDifference(interval2d, mesh2d)
->>> difference.contains([0.2, 0.1])
+>>> [0.2, 0.1] in difference
 False
->>> difference.contains([0.1, 0.2])
+>>> [0.1, 0.2] in difference
 True"

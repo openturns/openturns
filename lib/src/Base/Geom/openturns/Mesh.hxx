@@ -2,7 +2,7 @@
 /**
  *  @brief Mesh is defined as a collection of n-D vertices and simplices
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,10 +52,11 @@ public:
 
   /** Parameters constructor */
   Mesh(const Sample & vertices,
-       const IndicesCollection & simplices);
+       const IndicesCollection & simplices,
+       const Bool checkMeshValidity = ResourceMap::GetAsBool("Mesh-CheckValidity"));
 
   /** Virtual constructor method */
-  virtual Mesh * clone() const;
+  Mesh * clone() const override;
 
   /** Get the numerical volume of the domain */
   Scalar getVolume() const;
@@ -67,7 +68,8 @@ public:
   /** Get the dimension */
   UnsignedInteger getDimension() const;
 
-  /** Get the description of the vertices */
+  /** Description accessor */
+  void setDescription(const Description & description);
   Description getDescription() const;
 
   /** Get the number of vertices */
@@ -150,14 +152,14 @@ public:
                const Scalar rho) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** FreeFem mesh import */
   static Mesh ImportFromMSHFile(const String & fileName);
@@ -179,6 +181,10 @@ protected:
   // An n-D mesh is a set of vertices with a topology described by a set of simplices
   // Spatial dimension
   UnsignedInteger dimension_;
+
+  // Mesh might be already checked (user provide the information)
+  // or we might need to check it for drawing for example.
+  mutable Bool hasBeenChecked_;
 
   // The vertices
   Sample vertices_;

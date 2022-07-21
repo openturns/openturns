@@ -89,7 +89,7 @@ chaos.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/sensitivity_ancova`
+    - See :doc:`/auto_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_ancova`
 
 
 .. topic:: References:

@@ -2,7 +2,7 @@
 /**
  *  @brief Meshing algorithm for levelSets
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,17 +46,17 @@ public:
                           const OptimizationAlgorithm & solver = AbdoRackwitz());
 
   /** Virtual constructor */
-  virtual LevelSetMesher * clone() const;
+  LevelSetMesher * clone() const override;
 
   /** Discretization accessors */
   void setDiscretization(const Indices & discretization);
   Indices getDiscretization() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Optimization solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);

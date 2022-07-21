@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the AggregatedProcess process
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,55 +50,55 @@ public:
   AggregatedProcess(const ProcessCollection & coll);
 
   /** Virtual constructor */
-  AggregatedProcess * clone() const;
+  AggregatedProcess * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter  - pretty print */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Realization accessor */
-  Field getRealization() const;
+  Field getRealization() const override;
 
   /** Continuous realization accessor */
-  Function getContinuousRealization() const;
+  Function getContinuousRealization() const override;
 
   /** Continuation of the last realization on a given number of steps */
   using ProcessImplementation::getFuture;
-  TimeSeries getFuture(const UnsignedInteger stepNumber) const;
+  TimeSeries getFuture(const UnsignedInteger stepNumber) const override;
 
   /** Get the process corresponding to the i-th marginal component */
-  Process getMarginal(const UnsignedInteger i) const;
+  Process getMarginal(const UnsignedInteger i) const override;
 
   /** Get the process corresponding to indices components */
-  Process getMarginal(const Indices & indices) const;
+  Process getMarginal(const Indices & indices) const override;
 
   /** Process collection accessor */
   void setProcessCollection(const ProcessCollection & coll);
   ProcessCollection getProcessCollection() const;
 
   /** Mesh accessor */
-  void setMesh(const Mesh & mesh);
-  void setTimeGrid(const RegularGrid & timeGrid);
+  void setMesh(const Mesh & mesh) override;
+  void setTimeGrid(const RegularGrid & timeGrid) override;
 
   /** Is the underlying gaussian process ? */
-  virtual Bool isNormal() const;
+  Bool isNormal() const override;
 
   /** Is the underlying a stationary process ? */
-  virtual Bool isStationary() const;
+  Bool isStationary() const override;
 
   /** Covariance model accessor */
-  CovarianceModel getCovarianceModel() const;
+  CovarianceModel getCovarianceModel() const override;
 
   /** Trend accessor */
-  TrendTransform getTrend() const;
+  TrendTransform getTrend() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Binomial for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Binomial distribution(15, 0.7);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
@@ -126,8 +126,8 @@ int main(int, char *[])
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     Scalar alpha = 0.05;
-    Interval bounds(distribution.computeBilateralConfidenceInterval(1-alpha));
-    fullprint << (1-alpha)*100 << "% bilateral confidence interval = " << bounds.__str__() << std::endl;
+    Interval bounds(distribution.computeBilateralConfidenceInterval(1 - alpha));
+    fullprint << (1 - alpha) * 100 << "% bilateral confidence interval = " << bounds.__str__() << std::endl;
 
   }
   catch (TestFailed & ex)

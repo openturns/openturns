@@ -2,7 +2,7 @@
 /**
  *  @brief FORM implements the First Order Reliability Method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,12 +47,12 @@ public:
 
   /** Constructor with parameters */
   FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-       const Event & event,
+       const RandomVector & event,
        const Point & physicalStartingPoint);
 
 
   /** Virtual constructor */
-  virtual FORM * clone() const;
+  FORM * clone() const override;
 
   /** Result accessor */
   FORMResult getResult() const;
@@ -61,16 +61,16 @@ public:
   void setResult(const FORMResult & formResult);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Function that computes the design point by re-using the Analytical::run() and creates a FORM::Result */
-  void run();
+  void run() override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

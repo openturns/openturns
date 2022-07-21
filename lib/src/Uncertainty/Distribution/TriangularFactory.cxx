@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Triangular distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -67,17 +67,12 @@ Triangular TriangularFactory::buildAsTriangular(const Sample & sample) const
 
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
+  const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Triangular distribution from a constant sample.";
   Scalar delta = xMax - xMin;
   const Scalar a = xMin - delta / (size + 2);
   const Scalar b = xMax + delta / (size + 2);
-  if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Triangular distribution if data contains NaN or Inf";
-  if (xMin == xMax)
-  {
-    delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
-    Triangular result(xMin - delta, xMin, xMax + delta);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
   const Scalar m = 3.0 * sample.computeMean()[0] - a - b;
   Triangular result(a, m, b);
   result.setDescription(sample.getDescription());

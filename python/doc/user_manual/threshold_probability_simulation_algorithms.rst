@@ -21,7 +21,8 @@ Simulations methods
     PostAnalyticalControlledImportanceSampling
     PostAnalyticalImportanceSampling
     SubsetSampling
-    AdaptiveDirectionalSampling
+    AdaptiveDirectionalStratification
+    NAIS
 
 Wilks' method
 =============
@@ -72,6 +73,8 @@ Non linear solvers
     :template: class.rst_t
 
     Solver
+
+    :template: Solver.rst_t
     Bisection
     Brent
     Secant
@@ -86,3 +89,4 @@ Simulation result
     SimulationResult
     ProbabilitySimulationResult
     SubsetSamplingResult
+    NAISResult

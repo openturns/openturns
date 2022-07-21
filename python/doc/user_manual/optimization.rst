@@ -29,14 +29,16 @@ Optimization solvers
     :template: class.rst_t
 
     AbdoRackwitz
+    Bonmin
     Ceres
     CMinpack
     Cobyla
     Dlib
     EfficientGlobalOptimization
+    Ipopt
     MultiStart
     NLopt
-    OPTpp
+    Pagmo
     SQP
     TNC
 

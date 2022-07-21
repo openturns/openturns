@@ -46,7 +46,7 @@ and the process :math:`X`.
 
 The library enables to directly convert the function
 :math:`f_{trend}` into the vertex-value function :math:`f_{temp}` thanks
-to the *TrendTranform* object which maps :math:`f_{trend}` into the
+to the *TrendTransform* object which maps :math:`f_{trend}` into the
 vertex-value function :math:`f_{temp}`.
 
 Then, the process :math:`Y` is built with the object
@@ -94,6 +94,6 @@ defined by:
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/probabilistic_modeling/add_trend`
-    - See :doc:`/examples/probabilistic_modeling/trend_transform`
-    - See :doc:`/examples/probabilistic_modeling/box_cox_transform`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_add_trend`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_trend_transform`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_box_cox_transform`

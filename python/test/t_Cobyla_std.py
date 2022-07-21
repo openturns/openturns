@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import math as m
 
@@ -36,7 +35,7 @@ algo.run()
 result = algo.getResult()
 print('x^=', printPoint(result.getOptimalPoint(), 4))
 print('f(x^)=', printPoint(result.getOptimalValue(), 4))
-print('lambda^=', printPoint(result.getLagrangeMultipliers(), 4))
+print('lambda^=', printPoint(result.computeLagrangeMultipliers(), 4))
 
 # non-linear
 levelFunction = ot.SymbolicFunction(
@@ -53,7 +52,7 @@ algo.run()
 result = algo.getResult()
 print('x^=', printPoint(result.getOptimalPoint(), 4))
 print('f(x^)=', printPoint(result.getOptimalValue(), 4))
-print('lambda^=', printPoint(result.getLagrangeMultipliers(), 4))
+print('lambda^=', printPoint(result.computeLagrangeMultipliers(), 4))
 
 # bounds
 linear = ot.SymbolicFunction(
@@ -77,4 +76,11 @@ for minimization in [True, False]:
     result = algo.getResult()
     print('x^=', printPoint(result.getOptimalPoint(), 4))
     print('f(x^)=', printPoint(result.getOptimalValue(), 4))
-    print('lambda^=', printPoint(result.getLagrangeMultipliers(), 4))
+    print('lambda^=', printPoint(result.computeLagrangeMultipliers(), 4))
+
+# empty problem
+algo = ot.Cobyla()
+try:
+    algo.run()
+except:
+    print('OK')

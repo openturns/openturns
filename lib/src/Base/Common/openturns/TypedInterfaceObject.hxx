@@ -2,7 +2,7 @@
 /**
  *  @brief TypedInterfaceObject implements InterfaceObject for a specific class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,14 +46,22 @@ public:
   TypedInterfaceObject(const Implementation & impl) : p_implementation_(impl) {}
 
   /** Returns a pointer to the underlying implementation object */
+#ifndef SWIG
   inline Implementation & getImplementation()
   {
     return p_implementation_;
   }
+
   inline const Implementation & getImplementation() const
   {
     return p_implementation_;
   }
+#else
+  inline Implementation getImplementation() const
+  {
+    return p_implementation_;
+  }
+#endif
 
 #ifndef SWIG
   /** Copy-on-write checker

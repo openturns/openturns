@@ -1,0 +1,54 @@
+%feature("docstring") OT::MultiFORMResult
+"Multiple FORM result.
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.FORMResult`
+    Collection of FORM results
+
+See also
+--------
+SystemFORM"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiFORMResult::setEventProbability
+"Accessor to the failure probability :math:`P_f`.
+
+Parameters
+----------
+probability : positive float
+    The FORM failure probability :math:`P_f`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiFORMResult::getEventProbability
+"Accessor to the failure probability :math:`P_f`.
+
+Returns
+-------
+probability : positive float
+    The FORM failure probability :math:`P_f`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiFORMResult::getGeneralisedReliabilityIndex
+"Accessor to the Generalised Reliability Index.
+
+Returns
+-------
+index : float
+    Generalised reliability index :math:`\beta_g` from the FORM failure
+    probability is equal to :math:`\pm` the Hasofer reliability index
+    :math:`\beta_{HL}` according to the fact the standard space center
+    fulfills the event or not."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiFORMResult::getFORMResultCollection
+"Accessor to the FORM results.
+
+Returns
+-------
+form_coll : collection of :class:`~openturns.FORMResult`
+    Results of each sub FORM calculus."

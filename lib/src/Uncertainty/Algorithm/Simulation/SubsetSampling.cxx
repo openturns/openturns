@@ -2,7 +2,7 @@
 /**
  *  @brief Subset simulation method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,6 +45,7 @@ SubsetSampling::SubsetSampling()
   , iSubset_(false)
   , betaMin_(0.0)
   , keepEventSample_(false)
+  , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
   , numberOfSteps_(0)
   , seedNumber_(0)
 {
@@ -52,7 +53,7 @@ SubsetSampling::SubsetSampling()
 
 
 /* Constructor with parameters */
-SubsetSampling::SubsetSampling(const Event & event,
+SubsetSampling::SubsetSampling(const RandomVector & event,
                                const Scalar proposalRange,
                                const Scalar conditionalProbability)
   : EventSimulation(event)
@@ -61,10 +62,11 @@ SubsetSampling::SubsetSampling(const Event & event,
   , iSubset_(false)
   , betaMin_(ResourceMap::GetAsScalar("SubsetSampling-DefaultBetaMin"))
   , keepEventSample_(false)
+  , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
   , numberOfSteps_(0)
   , seedNumber_(0)
 {
-  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
+  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// overide simulation default outersampling
   UnsignedInteger outputDimension = event.getFunction().getOutputDimension();
   if (outputDimension > 1)
@@ -83,7 +85,7 @@ SubsetSampling * SubsetSampling::clone() const
 void SubsetSampling::run()
 {
   // First, initialize some parameters
-  convergenceStrategy_.clear();
+  convergenceStrategy_.setDimension(2);
   numberOfSteps_ = 0;
   thresholdPerStep_.clear();
   gammaPerStep_.clear();
@@ -96,6 +98,7 @@ void SubsetSampling::run()
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
   const UnsignedInteger N = maximumOuterSampling * blockSize;
+  const Scalar epsilon = ResourceMap::GetAsScalar("SpecFunc-Precision");
 
   if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
     Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
@@ -109,6 +112,7 @@ void SubsetSampling::run()
 
   Scalar currentCoVsquare = 0.0;
   Scalar varianceEstimate = 0.0;
+  Scalar previousVariance = 0.0;
   Scalar coefficientOfVariationSquare = 0.0;
 
   // allocate input/output samples
@@ -148,6 +152,9 @@ void SubsetSampling::run()
       currentPointSample_[i * blockSize + j] = inputSample[j];
       currentLevelSample_[i * blockSize + j] = blockSample[j];
     }
+
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InternalException(HERE) << "User stopped simulation";
   }
   ++ numberOfSteps_;
 
@@ -163,7 +170,10 @@ void SubsetSampling::run()
   thresholdPerStep_.add(currentThreshold);
 
   // compute monte carlo probability estimate
-  Scalar probabilityEstimate = computeProbability(1.0, currentThreshold);
+  Scalar probabilityEstimate = computeProbabilityVariance(1.0, currentThreshold, varianceEstimate);
+
+  // cannot determine next subset domain if no variance
+  stop = stop || (std::abs(varianceEstimate) < epsilon);
 
   if (iSubset_)
   {
@@ -187,6 +197,7 @@ void SubsetSampling::run()
   probabilityEstimatePerStep_.add(probabilityEstimate);
   coefficientOfVariationPerStep_.add(coefficientOfVariationSquare);
 
+  Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   // as long as the conditional failure domain do not overlap the global one
   while (!stop)
   {
@@ -207,10 +218,19 @@ void SubsetSampling::run()
     {
       currentThreshold = getEvent().getThreshold();
     }
-    thresholdPerStep_.add(currentThreshold);
 
     // compute probability estimate on the current sample and group seeds at the beginning of the work sample
-    Scalar currentProbabilityEstimate = computeProbability(probabilityEstimate, currentThreshold);
+    previousVariance = varianceEstimate;
+    Scalar currentProbabilityEstimate = computeProbabilityVariance(probabilityEstimate, currentThreshold, varianceEstimate);
+
+    // new points are all in the failure domain because the new threshold is too close to the global threshold, the last step was the previous step
+    if (std::abs(varianceEstimate) < epsilon)
+    {
+      varianceEstimate = previousVariance;
+      break;
+    }
+
+    thresholdPerStep_.add(currentThreshold);
 
     // update coefficient of variation
     Scalar gamma = computeVarianceGamma(currentProbabilityEstimate, currentThreshold);
@@ -225,13 +245,15 @@ void SubsetSampling::run()
     coefficientOfVariationPerStep_.add(sqrt(coefficientOfVariationSquare));
 
     // stop if the number of subset steps is too high, else results are not numerically defined anymore
-    if (std::abs(pow(probabilityEstimate, 2.)) < SpecFunc::MinScalar)
-      throw NotDefinedException(HERE) << "Probability estimate too low: " << probabilityEstimate;
+    if (probabilityEstimate < minimumProbability_)
+      throw NotDefinedException(HERE) << "Probability estimate too small: " << probabilityEstimate;
 
     // compute variance estimate
-    varianceEstimate = coefficientOfVariationSquare * pow(probabilityEstimate, 2.);
+    varianceEstimate = coefficientOfVariationSquare * pow(probabilityEstimate, 2.0);
 
     ++ numberOfSteps_;
+
+    Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   }
 
   setResult(SubsetSamplingResult(getEvent(), probabilityEstimate, varianceEstimate, numberOfSteps_ * getMaximumOuterSampling(), getBlockSize(), sqrt(coefficientOfVariationSquare)));
@@ -245,7 +267,7 @@ void SubsetSampling::run()
     {
       if (getEvent().getOperator()(currentLevelSample_(i, 0), getEvent().getThreshold()))
       {
-        eventInputSample_.add(standardEvent_.getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(currentPointSample_[i]));
+        eventInputSample_.add(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(currentPointSample_[i]));
         eventOutputSample_.add(currentLevelSample_[i]);
       }
     }
@@ -268,20 +290,20 @@ Sample SubsetSampling::computeBlockSample()
 Scalar SubsetSampling::computeThreshold()
 {
   // compute the quantile according to the event operator
-  Scalar ratio = getEvent().getOperator()(1.0, 2.0) ?  conditionalProbability_ : 1.0 - conditionalProbability_;
+  const Scalar ratio = getEvent().getOperator()(1.0, 2.0) ?  conditionalProbability_ : 1.0 - conditionalProbability_;
 
-  Scalar currentThreshold = currentLevelSample_.computeQuantile(ratio)[0];
+  const Scalar currentThreshold = currentLevelSample_.computeQuantile(ratio)[0];
 
   return currentThreshold;
 }
 
 
-Scalar SubsetSampling::computeProbability(Scalar probabilityEstimateFactor, Scalar threshold)
+Scalar SubsetSampling::computeProbabilityVariance(Scalar probabilityEstimateFactor, Scalar threshold, Scalar & varianceEstimate)
 {
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
   Scalar probabilityEstimate = 0.0;
-  Scalar varianceEstimate = 0.0;
+  varianceEstimate = 0.0;
 
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
@@ -301,20 +323,14 @@ Scalar SubsetSampling::computeProbability(Scalar probabilityEstimateFactor, Scal
 
     // update global mean and variance
     varianceEstimate = (varianceBlock + (size - 1.0) * varianceEstimate) / size + (1.0 - 1.0 / size) * (probabilityEstimate - meanBlock) * (probabilityEstimate - meanBlock) / size;
-    probabilityEstimate = (meanBlock + (size - 1.0) * probabilityEstimate) / size;
+    probabilityEstimate = std::min(1.0, (meanBlock + (size - 1.0) * probabilityEstimate) / size);
 
     // store convergence at each block
-    Point convergencePoint(2);
-    convergencePoint[0] = probabilityEstimate * probabilityEstimateFactor;
-    convergencePoint[1] = varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size;
-    convergenceStrategy_.store(convergencePoint);
+    const Point convPt = {probabilityEstimate * probabilityEstimateFactor,
+                          varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size
+                         };
+    convergenceStrategy_.store(convPt);
   }
-
-  // cannot determine next subset domain if no variance
-  const Scalar epsilon = ResourceMap::GetAsScalar("SpecFunc-Precision");
-  if (std::abs(varianceEstimate) < epsilon)
-    throw NotDefinedException(HERE) << "Null output variance";
-
   return probabilityEstimate;
 }
 
@@ -408,7 +424,7 @@ void SubsetSampling::generatePoints(Scalar threshold)
       for (UnsignedInteger k = 0; k < dimension_; ++ k)
       {
         // compute ratio
-        Scalar ratio = exp(0.5 * (oldPoint[k] * oldPoint[k] - newPoint[k] * newPoint[k]));
+        const Scalar ratio = exp(0.5 * (oldPoint[k] * oldPoint[k] - newPoint[k] * newPoint[k]));
 
         // accept new point with probability ratio
         if (ratio < uniform[k])
@@ -431,6 +447,9 @@ void SubsetSampling::generatePoints(Scalar threshold)
         currentLevelSample_[i * blockSize + j] = blockSample[j];
       }
     }
+
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InternalException(HERE) << "User stopped simulation";
   }
 }
 
@@ -451,7 +470,7 @@ Scalar SubsetSampling::getProposalRange() const
 /* Ratio accessor */
 void SubsetSampling::setConditionalProbability(Scalar conditionalProbability)
 {
-  if ((conditionalProbability <= 0.0) || (conditionalProbability >= 1.0)) throw InvalidArgumentException(HERE) << "Probability should be in (0, 1)";
+  if (!(conditionalProbability > 0.0) || !(conditionalProbability < 1.0)) throw InvalidArgumentException(HERE) << "Probability should be in (0, 1)";
   conditionalProbability_ = conditionalProbability;
 }
 
@@ -462,7 +481,21 @@ Scalar SubsetSampling::getConditionalProbability() const
 }
 
 
-UnsignedInteger SubsetSampling::getNumberOfSteps()
+void SubsetSampling::setMinimumProbability(const Scalar minimumProbability)
+{
+  if (!(minimumProbability > 0.0) || !(minimumProbability < 1.0))
+    throw InvalidArgumentException(HERE) << "Minimum probability should be in (0, 1)";
+  minimumProbability_ = minimumProbability;
+}
+
+
+Scalar SubsetSampling::getMinimumProbability() const
+{
+  return minimumProbability_;
+}
+
+
+UnsignedInteger SubsetSampling::getStepsNumber()
 {
   return numberOfSteps_;
 }
@@ -544,6 +577,7 @@ void SubsetSampling::save(Advocate & adv) const
   adv.saveAttribute("iSubset_", iSubset_);
   adv.saveAttribute("betaMin_", betaMin_);
   adv.saveAttribute("keepEventSample_", keepEventSample_);
+  adv.saveAttribute("minimumProbability_", minimumProbability_);
 
   adv.saveAttribute("numberOfSteps_", numberOfSteps_);
   adv.saveAttribute("thresholdPerStep_", thresholdPerStep_);
@@ -559,9 +593,10 @@ void SubsetSampling::load(Advocate & adv)
   EventSimulation::load(adv);
   adv.loadAttribute("proposalRange_", proposalRange_);
   adv.loadAttribute("conditionalProbability_", conditionalProbability_);
-  adv.loadAttribute("keepEventSample_", keepEventSample_);
   adv.loadAttribute("iSubset_", iSubset_);
   adv.loadAttribute("betaMin_", betaMin_);
+  adv.loadAttribute("keepEventSample_", keepEventSample_);
+  adv.loadAttribute("minimumProbability_", minimumProbability_);
 
   adv.loadAttribute("numberOfSteps_", numberOfSteps_);
   adv.loadAttribute("thresholdPerStep_", thresholdPerStep_);

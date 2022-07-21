@@ -2,7 +2,7 @@
 /*
  * @brief Graph implements graphic devices for plotting through R
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,6 +30,7 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Pie.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -186,14 +187,14 @@ void GraphImplementation::setDrawables(const DrawableCollection & drawableCollec
 /* Individual drawable accessor */
 Drawable GraphImplementation::getDrawable(const UnsignedInteger index) const
 {
-  if (index >= drawablesCollection_.getSize()) throw InvalidRangeException(HERE) << "Error: trying to get a drawable at position " << index << " from a collection of size " << drawablesCollection_.getSize();
+  if (!(index < drawablesCollection_.getSize())) throw InvalidRangeException(HERE) << "Error: trying to get a drawable at position " << index << " from a collection of size " << drawablesCollection_.getSize();
   return drawablesCollection_[index];
 }
 
 void GraphImplementation::setDrawable(const Drawable & drawable,
                                       const UnsignedInteger index)
 {
-  if (index >= drawablesCollection_.getSize()) throw InvalidRangeException(HERE) << "Error: trying to set a drawable at position " << index << " into a collection of size " << drawablesCollection_.getSize();
+  if (!(index < drawablesCollection_.getSize())) throw InvalidRangeException(HERE) << "Error: trying to set a drawable at position " << index << " into a collection of size " << drawablesCollection_.getSize();
   drawablesCollection_[index] = drawable;
 }
 
@@ -250,6 +251,17 @@ Bool GraphImplementation::getAxes() const
   return showAxes_;
 }
 
+/* Ticks location flag accessor */
+void GraphImplementation::setTickLocation(const TickLocation tickLocation)
+{
+  tickLocation_ = tickLocation;
+}
+
+GraphImplementation::TickLocation GraphImplementation::getTickLocation() const
+{
+  return tickLocation_;
+}
+
 /* Set log scale for x, y both or none axes */
 void GraphImplementation::setLogScale(const LogScale logScale)
 {
@@ -289,7 +301,7 @@ String GraphImplementation::getGridColor() const
   return gridColor_;
 }
 
-/* Accesor for xTitle */
+/* Accessor for xTitle */
 String GraphImplementation::getXTitle() const
 {
   return xTitle_;
@@ -313,13 +325,13 @@ void GraphImplementation::setYTitle(const String & title)
   yTitle_ = title;
 }
 
-/* Accesor for title */
+/* Accessor for title */
 String GraphImplementation::getTitle() const
 {
   return title_;
 }
 
-/* Accesor for title */
+/* Accessor for title */
 void GraphImplementation::setTitle(const String & title)
 {
   title_ = title;
@@ -557,7 +569,7 @@ void GraphImplementation::draw(const String & file,
   cmdFile.close();
 
   //execute R and load R script in temporary file
-  const String RExecutable(ResourceMap::GetAsString("R-executable-command"));
+  const String RExecutable(ResourceMap::GetAsString("Graph-RExecutableCommand"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << "" << RExecutable << "" << " --no-save --silent < \"" << temporaryFileName << "\"" << Os::GetDeleteCommandOutput();
   else throw NotYetImplementedException(HERE) << "In GraphImplementation::draw(): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
@@ -603,7 +615,7 @@ Interval GraphImplementation::getBoundingBox() const
 /* Set the bounding box of the whole plot */
 void GraphImplementation::setBoundingBox(const Interval & boundingBox)
 {
-  if (boundingBox.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given bounding box must have a dimension equal to 2";
+  if (boundingBox.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given bounding box must have a dimension equal to 2, but dimension=" << boundingBox.getDimension();
   boundingBox_ = boundingBox;
   automaticBoundingBox_ = false;
 }
@@ -625,7 +637,7 @@ void GraphImplementation::computeBoundingBox() const
   const UnsignedInteger size = drawablesCollection_.getSize();
 
   // First exceptional case: no drawable, we default to default bounding box
-  if (size == 0)
+  if (!(size > 0))
   {
     LOGINFO("Warning: cannot compute the bounding box of a graph with no drawable, switch to [0,1]x[0,1] default bounding box");
     boundingBox_ = Interval(2);
@@ -722,7 +734,7 @@ Scalar GraphImplementation::getLegendFontSize() const
 /* Set the legend font size */
 void GraphImplementation::setLegendFontSize(const Scalar legendFontSize)
 {
-  if(legendFontSize <= 0.0) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid";
+  if(!(legendFontSize > 0.0)) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid";
 
   legendFontSize_ = legendFontSize;
 }
@@ -745,6 +757,7 @@ void GraphImplementation::save(Advocate & adv) const
   adv.saveAttribute( "xTitle_", xTitle_ );
   adv.saveAttribute( "yTitle_", yTitle_ );
   adv.saveAttribute( "showAxes_", showAxes_ );
+  adv.saveAttribute( "tickLocation_", static_cast<UnsignedInteger>(tickLocation_) );
   adv.saveAttribute( "logScale_", static_cast<UnsignedInteger>(logScale_) );
   adv.saveAttribute( "showGrid_", showGrid_ );
   adv.saveAttribute( "gridColor_", gridColor_ );
@@ -765,6 +778,9 @@ void GraphImplementation::load(Advocate & adv)
   adv.loadAttribute( "xTitle_", xTitle_ );
   adv.loadAttribute( "yTitle_", yTitle_ );
   adv.loadAttribute( "showAxes_", showAxes_ );
+  UnsignedInteger tickLocation = 0;
+  adv.loadAttribute( "tickLocation_", tickLocation );
+  tickLocation_ = static_cast<TickLocation>(tickLocation);
   UnsignedInteger logScale = 0;
   adv.loadAttribute( "logScale_", logScale );
   logScale_ = static_cast<LogScale>(logScale);
@@ -776,7 +792,5 @@ void GraphImplementation::load(Advocate & adv)
   adv.loadAttribute( "boundingBox_", boundingBox_ );
   adv.loadAttribute( "drawablesCollection_", drawablesCollection_ );
 }
-
-
 
 END_NAMESPACE_OPENTURNS

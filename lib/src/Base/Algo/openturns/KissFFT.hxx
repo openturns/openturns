@@ -3,7 +3,7 @@
  *  @brief This class is enables to build an exponential covariance
  *  model, a second order model's implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,59 +45,59 @@ public:
   KissFFT();
 
   /** Virtual copy constructor */
-  KissFFT * clone() const;
+  KissFFT * clone() const override;
 
   /** FFT transformation on complex */
-  ComplexCollection transform(const ComplexCollection & collection) const;
+  ComplexCollection transform(const ComplexCollection & collection) const override;
 
   /** FFT transformation  with application on a block-part of the collection */
   ComplexCollection transform(const ComplexCollection & collection,
                               const UnsignedInteger first,
-                              const UnsignedInteger size) const;
+                              const UnsignedInteger size) const override;
 
   /** FFT inverse transformation */
-  ComplexCollection inverseTransform(const ComplexCollection & collection) const;
+  ComplexCollection inverseTransform(const ComplexCollection & collection) const override;
 
   /** FFT inverse transformation with application on a block-part of the collection */
   ComplexCollection inverseTransform(const ComplexCollection & collection,
                                      const UnsignedInteger first,
-                                     const UnsignedInteger size) const;
+                                     const UnsignedInteger size) const override;
 
   /** FFT 2D transformation on complex */
-  ComplexMatrix transform2D(const ComplexMatrix & complexMatrix) const;
+  ComplexMatrix transform2D(const ComplexMatrix & complexMatrix) const override;
 
   /** FFT 2D transformation on real matrix */
-  ComplexMatrix transform2D(const Matrix & matrix) const;
+  ComplexMatrix transform2D(const Matrix & matrix) const override;
 
   /** FFT 2D transformation on sample */
-  ComplexMatrix transform2D(const Sample & sample) const;
+  ComplexMatrix transform2D(const Sample & sample) const override;
 
   /** IFFT 2D transformation on complex */
-  ComplexMatrix inverseTransform2D(const ComplexMatrix & complexMatrix) const;
+  ComplexMatrix inverseTransform2D(const ComplexMatrix & complexMatrix) const override;
 
   /** IFFT 2D transformation on real matrix */
-  ComplexMatrix inverseTransform2D(const Matrix & matrix) const;
+  ComplexMatrix inverseTransform2D(const Matrix & matrix) const override;
 
   /** IFFT 2D transformation on sample */
-  ComplexMatrix inverseTransform2D(const Sample & sample) const;
+  ComplexMatrix inverseTransform2D(const Sample & sample) const override;
 
   /** FFT 3D transformation */
-  ComplexTensor transform3D(const ComplexTensor & tensor) const;
+  ComplexTensor transform3D(const ComplexTensor & tensor) const override;
 
   /** FFT 3D transformation on real data */
-  ComplexTensor transform3D(const Tensor & tensor) const;
+  ComplexTensor transform3D(const Tensor & tensor) const override;
 
   /** IFFT 3D transformation */
-  ComplexTensor inverseTransform3D(const ComplexTensor & tensor) const;
+  ComplexTensor inverseTransform3D(const ComplexTensor & tensor) const override;
 
   /** IFFT 3D transformation */
-  ComplexTensor inverseTransform3D(const Tensor & tensor) const;
+  ComplexTensor inverseTransform3D(const Tensor & tensor) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 private:
 

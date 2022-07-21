@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class BernsteinCopulaFactory for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,7 @@ int main(int, char *[])
   setRandomGenerator();
   try
   {
-    Collection<Copula> coll;
+    Collection<Distribution> coll;
     coll.add(GumbelCopula(3.0));
     coll.add(ClaytonCopula(3.0));
     coll.add(FrankCopula(3.0));
@@ -39,7 +39,7 @@ int main(int, char *[])
     UnsignedInteger size = 100;
     for (UnsignedInteger i = 0; i < coll.getSize(); ++i)
     {
-      Copula ref_copula(coll[i]);
+      Distribution ref_copula(coll[i]);
       fullprint << "Reference copula " << ref_copula.__str__() << std::endl;
       Sample sample(ref_copula.getSample(size));
       // Default method: log-likelihood

@@ -2,7 +2,7 @@
 /**
  *  @brief TaylorExpansionMoments implements Taylor expansion for moments estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,17 +50,17 @@ public:
 
 
   /** Default constructor */
-  TaylorExpansionMoments() {};
+  TaylorExpansionMoments();
 
   /** Constructor with parameters */
   explicit TaylorExpansionMoments(const RandomVector & limitStateVariable);
 
 
   /** Virtual constructor */
-  virtual TaylorExpansionMoments * clone() const;
+  TaylorExpansionMoments * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** limitStateVariable accessor */
   RandomVector getLimitStateVariable() const;
@@ -90,10 +90,10 @@ public:
   Graph drawImportanceFactors() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

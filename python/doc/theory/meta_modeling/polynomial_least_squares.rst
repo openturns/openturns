@@ -100,7 +100,7 @@ Least squares polynomial response surface
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/meta_modeling/functional_chaos`
+    - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
 
 
 .. topic:: References:

@@ -8,21 +8,20 @@
 %include BaseFuncCollection.i
 
 OTTypedInterfaceObjectHelper(Function)
-//OTTypedCollectionInterfaceObjectHelper(Function)
 
 
-
-%typemap(in) const FunctionCollection & {
+%typemap(in) const FunctionCollection & (OT::Pointer<OT::Collection<OT::Function> > temp) {
   void * ptr = 0;
-  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     // From interface class, ok
-  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, SWIG_TypeQuery("OT::Basis *"), 0))) {
+  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, SWIG_TypeQuery("OT::Basis *"), SWIG_POINTER_NO_NULL))) {
     // From Implementation*
-    OT::Basis * p_impl = reinterpret_cast< OT::Basis * >( ptr );
+    OT::Basis * p_impl = reinterpret_cast< OT::Basis * >(ptr);
     $1 = new OT::Collection<OT::Function>(*p_impl);
   } else {
     try {
-      $1 = OT::buildCollectionFromPySequence< OT::Function >( $input );
+      temp = OT::buildCollectionFromPySequence< OT::Function >($input);
+      $1 = temp.get();
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Function");
     }
@@ -30,9 +29,9 @@ OTTypedInterfaceObjectHelper(Function)
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const FunctionCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< OT::Function >( $input )
-    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIG_TypeQuery("OT::Basis *"), 0));
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
+    || OT::canConvertCollectionObjectFromPySequence< OT::Function >($input)
+    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIG_TypeQuery("OT::Basis *"), SWIG_POINTER_NO_NULL));
 }
 
 %apply const FunctionCollection & { const OT::Collection<OT::Function> & };
@@ -135,25 +134,31 @@ class OpenTURNSPythonFunction(object):
         self.__descOut = ['y' + str(i) for i in range(p)]
 
     def setInputDescription(self, descIn):
+        """Input description accessor."""
         if (len(descIn) != self.__n):
             raise ValueError('Input description size does NOT match input dimension')
         self.__descIn = descIn
 
     def getInputDescription(self):
+        """Input description accessor."""
         return self.__descIn
 
     def setOutputDescription(self, descOut):
+        """Output description accessor."""
         if (len(descOut) != self.__p):
             raise ValueError('Output description size does NOT match output dimension')
         self.__descOut = descOut
 
     def getOutputDescription(self):
+        """Output description accessor."""
         return self.__descOut
 
     def getInputDimension(self):
+        """Input dimension accessor."""
         return self.__n
 
     def getOutputDimension(self):
+        """Output dimension accessor."""
         return self.__p
 
     def __str__(self):
@@ -302,25 +307,34 @@ class PythonFunction(Function):
     hessian : a callable python object, optional
         Returns the hessian as a 3-d sequence of float.
         Default is None (uses finite-difference).
-    n_cpus : integer
+    n_cpus : int, default=None
         Number of cpus on which func should be distributed using multiprocessing.
         If -1, it uses all the cpus available. If 1, it does nothing.
-        Default is None.
+        Note that you should enforce the multiprocessing guidelines to enable this option, see
+        https://docs.python.org/3/library/multiprocessing.html#multiprocessing-programming
+        For example on Windows, the entry point of your program should be
+        protected using the `if __name__== '__main__'` idiom.
     copy : bool, optional
         If True, input sample is converted into a Python 2-d sequence before calling
         func_sample.  Otherwise, it is passed directy to func_sample.
         Default is False.
-
-    You must provide at least func or func_sample arguments.  For efficiency
-    reasons, these functions do not receive a :class:`~openturns.Point` or
-    :class:`~openturns.Sample` as arguments, but a proxy object which gives
-    access to internal object data.  This object supports indexing, but nothing
-    more.  It must be wrapped into anoter object, for instance
-    :class:`~openturns.Point` in func and :class:`~openturns.Sample` in
-    func_sample, or in a Numpy array, for vectorized operations.
+    functionLinearity : bool, optional
+        Indicates if the function is linear.
+        Default is False.
+    variablesLinearity : list of bool, optional
+        Indicates for each input variable if the function is linear with regard to this variable.
+        Default is [False]*inputDim
 
     Notes
     -----
+    You must provide at least func or func_sample arguments. For efficiency
+    reasons, these functions do not receive a :class:`~openturns.Point` or
+    :class:`~openturns.Sample` as arguments, but a proxy object which gives
+    access to internal object data. This object supports indexing, but nothing
+    more. It must be wrapped into another object, for instance
+    :class:`~openturns.Point` in func and :class:`~openturns.Sample` in
+    func_sample, or in a Numpy array, for vectorized operations.
+
     Note that if PythonFunction is distributed (n_cpus > 1), the traceback of a raised
     exception by a func call is lost due to the way multiprocessing dispatches
     and handles func calls. This can be solved by temporarily deactivating
@@ -369,13 +383,12 @@ class PythonFunction(Function):
     [[  3 ]
      [ -1 ]]
     """
-    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False):
+    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False, functionLinearity=None, variablesLinearity=None):
         if func is None and func_sample is None:
             raise RuntimeError('no func nor func_sample given.')
         instance = OpenTURNSPythonFunction(n, p)
         if copy:
             instance._discard_openturns_memoryview = True
-        import collections
 
         if n_cpus is not None:
             if not isinstance(n_cpus, int):
@@ -387,7 +400,7 @@ class PythonFunction(Function):
                 n_cpus = None
 
         if func is not None:
-            if not isinstance(func, collections.Callable):
+            if not callable(func):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
         else:
@@ -407,12 +420,19 @@ class PythonFunction(Function):
                 instance._has_exec_sample = True
 
         if gradient is not None:
-            if not isinstance(gradient, collections.Callable):
+            if not callable(gradient):
                 raise RuntimeError('gradient argument is not callable.')
             instance._gradient = gradient
         if hessian is not None:
-            if not isinstance(hessian, collections.Callable):
+            if not callable(hessian):
                 raise RuntimeError('hessian argument is not callable.')
             instance._hessian = hessian 
+            
+        if functionLinearity is not None:
+            instance.isLinear = functionLinearity
+            
+        if variablesLinearity is not None:
+            instance.isVariableLinear = variablesLinearity
+                          
         return Function(instance)
 %}

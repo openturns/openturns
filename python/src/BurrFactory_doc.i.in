@@ -13,6 +13,10 @@ Available constructor:
 where :math:`\displaystyle SR = \displaystyle \sum_{i=1}^n \frac{ \log(x_i)}{1+x_i^c}`
 and :math:`\displaystyle SSR = \displaystyle \sum_{i=1}^n \frac{ x_i^c\log(x_i)}{1+x_i^c}`
 
+The resolution of this equation can be tuned through
+`BurrFactory-RelativePrecision`, `BurrFactory-ResidualPrecision`,
+`BurrFactory-MaximumIteration` in :class:`~openturns.ResourceMap`
+
 Then
 
 .. math::
@@ -23,5 +27,29 @@ See also
 --------
 DistributionFactory, Burr"
 
+// ---------------------------------------------------------------------
 
+%define OT_DistributionFactory_buildAsBurr_doc
+"Build the Burr distribution.
+
+**Available usages**:
+
+    buildAsBurr(*sample*)
+
+    buildAsBurr(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Burr`
+    The built distribution."
+%enddef
+%feature("docstring") OT::BurrFactory::buildAsBurr
+OT_DistributionFactory_buildAsBurr_doc
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Normal for large dimension vector
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,7 +33,7 @@ int main(int, char *[])
   try
   {
     // Big test case for correlated components
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 4;
     Point meanPoint(dim, 1.0);
     Point sigma(dim, 1.0);

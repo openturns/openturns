@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of MonteCarlo class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -158,7 +158,7 @@ int main(int, char *[])
     {
       polynomialCollection[i] = LegendreFactory();
     }
-    EnumerateFunction enumerateFunction(inputDimension);
+    LinearEnumerateFunction enumerateFunction(inputDimension);
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
     // Create the adaptive strategy

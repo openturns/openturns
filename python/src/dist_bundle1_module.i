@@ -20,7 +20,6 @@
 %import model_copula_module.i
 
 /* Uncertainty/Distribution (except copulas) */
-%include DistFunc.i
 %include Arcsine.i
 %include ArcsineFactory.i
 %include ArcsineMuSigma.i
@@ -44,25 +43,34 @@
 %include DiracFactory.i
 %include Dirichlet.i
 %include DirichletFactory.i
+%include DiscreteCompoundDistribution.i
 %include Epanechnikov.i
 %include Exponential.i
 %include ExponentialFactory.i
 %include ExtremeValueCopula.i
+%include JoeCopula.i
 %include FisherSnedecor.i
 %include FisherSnedecorFactory.i
 %include Frechet.i
 %include FrechetFactory.i
+%include GalambosCopula.i
 %include Gamma.i
 %include GammaFactory.i
 %include GammaMuSigma.i
-%include GeneralizedExtremeValue.i
+%include Pareto.i
+%include ParetoFactory.i
 %include GeneralizedPareto.i
 %include GeneralizedParetoFactory.i
 %include Geometric.i
 %include GeometricFactory.i
 %include Gumbel.i
+%include WeibullMax.i
+%include WeibullMaxFactory.i
+%include WeibullMaxMuSigma.i
+%include GeneralizedExtremeValue.i
+%include GeneralizedExtremeValueFactory.i
 %include GumbelFactory.i
-%include GumbelAB.i
+%include GumbelLambdaGamma.i
 %include GumbelMuSigma.i
 
 /* At last we include template definitions */

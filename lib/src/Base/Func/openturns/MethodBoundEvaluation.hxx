@@ -2,7 +2,7 @@
 /**
  * @brief This class gives a implementation for object's methods so they can be used in Functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,6 @@
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/FunctionImplementation.hxx"
-#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -127,21 +126,21 @@ public:
 
 
   /** Virtual constructor */
-  virtual MethodBoundEvaluation * clone() const
+  MethodBoundEvaluation * clone() const override
   {
     return new MethodBoundEvaluation(*this);
   }
 
 
   /** Comparison operator */
-  Bool operator ==(const MethodBoundEvaluation & other) const
+  Bool operator ==(const MethodBoundEvaluation & /*other*/) const
   {
     return true;
   }
 
 
   /** String converter */
-  virtual String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "class=MethodBoundEvaluation name=" << getName();
@@ -152,23 +151,28 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual Point operator() (const Point & inP) const
+  Point operator() (const Point & inP) const override
   {
-    Point result(ReturnTypeAdapter<ReturnType_>::toPoint( ( obj_.*method_ ) ( ArgumentTypeAdapter<ArgumentType_>::fromPoint( inP ) ) ));
+    Point result(ReturnTypeAdapter<ReturnType_>::toPoint( ( obj_.*method_ ) (ArgumentTypeAdapter<ArgumentType_>::fromPoint(inP))));
     callsNumber_.increment();
     return result;
   }
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return inputDimension_;
   }
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return outputDimension_;
+  }
+
+  Bool isParallel() const override
+  {
+    return false;
   }
 
 
@@ -203,9 +207,9 @@ FunctionImplementation
 bindMethod (const EvaluableObject & obj,
             typename MethodBoundEvaluation<EvaluableObject, ReturnType_, ArgumentType_>::EvaluationMethod method,
             const UnsignedInteger inputDimension,
-            const UnsignedInteger outputDimension )
+            const UnsignedInteger outputDimension)
 {
-  return FunctionImplementation( new MethodBoundEvaluation<EvaluableObject, ReturnType_, ArgumentType_>( obj, method, inputDimension, outputDimension ) );
+  return FunctionImplementation(new MethodBoundEvaluation<EvaluableObject, ReturnType_, ArgumentType_>(obj, method, inputDimension, outputDimension));
 }
 
 

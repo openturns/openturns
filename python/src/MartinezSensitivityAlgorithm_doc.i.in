@@ -11,8 +11,9 @@ Available constructors:
 Parameters
 ----------
 inputDesign : :class:`~openturns.Sample`
-    Design for the evaluation of sensitivity indices, obtained
-    thanks to the SobolIndicesAlgorithmImplementation.Generate method
+    Design for the evaluation of sensitivity indices, obtained with the
+    :class:`~openturns.SobolIndicesExperiment`:code:`.`:meth:`~openturns.SobolIndicesExperiment.generate`
+    method
 outputDesign : :class:`~openturns.Sample`
     Design for the evaluation of sensitivity indices, obtained as the evaluation
     of a Function (model) on the previous inputDesign
@@ -29,42 +30,38 @@ computeSecondOrder : bool
 
 Notes
 -----
-This class is concerned with analyzing the influence the random vector
-:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` has on a random variable
-:math:`Y^k` which is being studied for uncertainty, by using the [martinez2011]_
-method for the evaluation of both first and total order indices.
+This class analyzes the influence of each component of a random vector
+:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` on a random vector
+:math:`\vect{Y} = \left( Y^1, \ldots, Y^{n_Y} \right)` by computing Sobol' indices (see also [sobol1993]_).
 
-These last ones are respectively given as follows:
+The [martinez2011]_ method is used to estimate both first
+and total order indices.
+
+The class constructor ``MartinezSensitivityAlgorithm(inputDesign, outputDesign, N)``
+requires a specific structure for the ``outputDesign``, and therefore for the  ``inputDesign``.
+The latter should be generated using :class:`~openturns.SobolIndicesExperiment`
+(see example below). Otherwise, results will be **worthless**.
+
+Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.
+
+The estimators of the first and total order Sobol' indices used by this class are respectively:
 
 .. math::
 
    \begin{array}{ccc}
-   \hat{S_i} & = & \rho_n(G(B), G(E^i)) \\
-   \hat{ST_i} & = & 1 - \rho_n(G(A), G(E^i)) \\
+   \hat{S}_i & = & \rho_n(\tilde{\vect{g}}(\mat{B}), \tilde{\vect{g}}(\mat{E}^i)) \\
+   \widehat{ST}_i & = & 1 - \rho_n(\tilde{\vect{g}}(\mat{A}), \tilde{\vect{g}}(\mat{E}^i)) \\
    \end{array}
 
 where :math:`\rho_n` is the empirical correlation defined by:
 
 .. math::
 
-   \rho_n(X, Y) = \frac{\Cov{X,Y}}{\sqrt{\Var{X} \Var{Y}}}
+   \rho_n(\vect{Z}, \vect{Z}') = 
+   \frac{\sum_{k=1}^N \vect{Z}_k \vect{Z}_k'}
+   {\sqrt{\sum_{k=1}^N \vect{Z}_k^2} \sqrt{\sum_{k=1}^N \left( \vect{Z}_k' \right)^2}}
 
-
-The variance of the estimator is computed using:
-
-.. math::
-
-    \begin{array}{ccc}
-    U_i = \left(\left(\textsuperscript{c}Y_i^B \textsuperscript{c}Y_i^E \right), \left(\textsuperscript{c}Y_i^B\right)^2, \left(\textsuperscript{c}Y_i^E \right)^2 \right)^T \\
-    \Psi_i(x, y, z) = \frac{x}{\sqrt{y\times z}}
-    \end{array}
-
-.. math::
-
-    \begin{array}{ccc}
-    U_{-i} = \left(\textsuperscript{c}Y_i^A \textsuperscript{c}Y_i^E, \left(\textsuperscript{c}Y_i^A\right)^2, \left(\textsuperscript{c}Y_i^E\right)^2 \right)^T \\
-    \Psi_{-i}(x, y, z) = 1 - \frac{x}{\sqrt{y\times z}}
-    \end{array}
+and :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
 
 See also
 --------
@@ -72,19 +69,22 @@ SobolIndicesAlgorithm
 
 Examples
 --------
+
+Estimate first and total order Sobol' indices:
+
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)*sin(pi_*X2)+' + \
-...    '0.1*((pi_*X3)*(pi_*X3)*(pi_*X3)*(pi_*X3))*sin(pi_*X1)']
+>>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
 >>> model = ot.SymbolicFunction(['X1', 'X2', 'X3'], formula)
->>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3, \
-...                                         ot.IndependentCopula(3))
+>>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
 >>> # Define designs to pre-compute
->>> size = 100
->>> inputDesign = ot.SobolIndicesExperiment(distribution, size, True).generate()
+>>> size = 10000
+>>> inputDesign = ot.SobolIndicesExperiment(distribution, size).generate()
 >>> outputDesign = model(inputDesign)
 >>> # sensitivity analysis algorithm
 >>> sensitivityAnalysis = ot.MartinezSensitivityAlgorithm(inputDesign, outputDesign, size)
 >>> print(sensitivityAnalysis.getFirstOrderIndices())
-[0.30449,0.448506,-0.0711394]"
+[0.308902,0.459187,0.00683867]
+>>> print(sensitivityAnalysis.getTotalOrderIndices())
+[0.567786,0.430754,0.244293]"
 

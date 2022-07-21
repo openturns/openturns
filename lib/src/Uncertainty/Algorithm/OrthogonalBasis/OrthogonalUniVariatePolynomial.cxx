@@ -2,7 +2,7 @@
 /**
  *  @brief This is a 1D polynomial
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,17 +36,17 @@ static const Factory<OrthogonalUniVariatePolynomial> Factory_OrthogonalUniVariat
 
 /* Default constructor */
 OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial()
-  : UniVariatePolynomialImplementation(),
-    recurrenceCoefficients_(0)
+  : UniVariatePolynomialImplementation()
+  , recurrenceCoefficients_(0)
 {
   coefficients_ = Coefficients(1, 1.0);
 }
 
 
 /* Constructor from recurrence coefficients */
-OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const CoefficientsCollection & recurrenceCoefficients)
-  : UniVariatePolynomialImplementation(),
-    recurrenceCoefficients_(recurrenceCoefficients)
+OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const Sample & recurrenceCoefficients)
+  : UniVariatePolynomialImplementation()
+  , recurrenceCoefficients_(recurrenceCoefficients.getImplementation()->getData())
 {
   // Build the coefficients using the recurrence coefficients
   coefficients_ = Coefficients(buildCoefficients(recurrenceCoefficients.getSize()));
@@ -54,10 +54,10 @@ OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const Coefficient
 
 
 /* Constructor from recurrence coefficients and coefficients */
-OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const CoefficientsCollection & recurrenceCoefficients,
+OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const Sample & recurrenceCoefficients,
     const Coefficients & coefficients)
-  : UniVariatePolynomialImplementation(),
-    recurrenceCoefficients_(recurrenceCoefficients)
+  : UniVariatePolynomialImplementation()
+  , recurrenceCoefficients_(recurrenceCoefficients.getImplementation()->getData())
 {
   // Set the value of the coefficients, stored in the upper class
   coefficients_ = coefficients;
@@ -73,23 +73,28 @@ OrthogonalUniVariatePolynomial::Coefficients OrthogonalUniVariatePolynomial::bui
   Coefficients coefficientsN(n + 1);
   Coefficients coefficientsNMinus1(buildCoefficients(n - 1));
   // Leading term
-  const Coefficients aN(recurrenceCoefficients_[n - 1]);
-  coefficientsN[n] = aN[0] * coefficientsNMinus1[n - 1];
+  UnsignedInteger index = 3 * n - 3;
+  const Scalar aN0 = recurrenceCoefficients_[index];
+  ++index;
+  const Scalar aN1 = recurrenceCoefficients_[index];
+  ++index;
+  const Scalar aN2 = recurrenceCoefficients_[index];
+  coefficientsN[n] = aN0 * coefficientsNMinus1[n - 1];
   // Constant term, case n = 1
-  coefficientsN[0] = aN[1] * coefficientsNMinus1[0];
+  coefficientsN[0] = aN1 * coefficientsNMinus1[0];
   if (n == 1) return coefficientsN;
   // Constant term, case n >= 2
   Coefficients coefficientsNMinus2(buildCoefficients(n - 2));
-  coefficientsN[0] += aN[2] * coefficientsNMinus2[0];
+  coefficientsN[0] += aN2 * coefficientsNMinus2[0];
   // Leading term
-  coefficientsN[n] = aN[0] * coefficientsNMinus1[n - 1];
+  coefficientsN[n] = aN0 * coefficientsNMinus1[n - 1];
   // Second leading term
-  coefficientsN[n - 1] = aN[0] * coefficientsNMinus1[n - 2] + aN[1] * coefficientsNMinus1[n - 1];
+  coefficientsN[n - 1] = aN0 * coefficientsNMinus1[n - 2] + aN1 * coefficientsNMinus1[n - 1];
   // Constant term
-  coefficientsN[0] = aN[1] * coefficientsNMinus1[0] + aN[2] * coefficientsNMinus2[0];
+  coefficientsN[0] = aN1 * coefficientsNMinus1[0] + aN2 * coefficientsNMinus2[0];
   // Remaining terms
   for (UnsignedInteger i = 1; i < n - 1; ++i)
-    coefficientsN[i] = aN[0] * coefficientsNMinus1[i - 1] + aN[1] * coefficientsNMinus1[i] + aN[2] * coefficientsNMinus2[i];
+    coefficientsN[i] = aN0 * coefficientsNMinus1[i - 1] + aN1 * coefficientsNMinus1[i] + aN2 * coefficientsNMinus2[i];
   return coefficientsN;
 }
 
@@ -108,31 +113,44 @@ Scalar OrthogonalUniVariatePolynomial::operator() (const Scalar x) const
   Scalar uN = 1.0;
   // Special case: degree == 0, constant unitary polynomial
   if (size == 0) return uN;
-  Coefficients aN(recurrenceCoefficients_[size - 1]);
-  Scalar uNMinus1 = aN[0] * x + aN[1];
+  UnsignedInteger index = size - 1;
+  const Scalar aN2 = recurrenceCoefficients_[index];
+  --index;
+  const Scalar aN1 = recurrenceCoefficients_[index];
+  --index;
+  const Scalar aN0 = recurrenceCoefficients_[index];
+  Scalar uNMinus1 = aN0 * x + aN1;
   // Special case: degree == 1, affine polynomial
-  if (size == 1) return uNMinus1;
+  if (size == 3) return uNMinus1;
+  Scalar aN2uN = aN2 * uN;
   Scalar uNMinus2 = 0.0;
   // General case, use Clenshaw's algorithm for a stable evaluation of the polynomial
   // The summation must be done in reverse order to get the best stability
   // The three terms recurrence relation is:
   // Pn+1(x) = (a0[n] * x + a1[n]) * Pn(x) + a2[n] * Pn-1(x)
   // with P-1 = 0, P0 = 1
-  for (UnsignedInteger n = size - 1; n > 0; --n)
+  Scalar aNMinus12, aNMinus11, aNMinus10;
+  while (index > 0)
   {
-    const Coefficients aNMinus1(recurrenceCoefficients_[n - 1]);
-    uNMinus2 = (aNMinus1[0] * x + aNMinus1[1]) * uNMinus1 + aN[2] * uN;
-    uN = uNMinus1;
+    --index;
+    aNMinus12 = recurrenceCoefficients_[index];
+    --index;
+    aNMinus11 = recurrenceCoefficients_[index];
+    --index;
+    aNMinus10 = recurrenceCoefficients_[index];
+    uNMinus2 = (aNMinus10 * x + aNMinus11) * uNMinus1 + aN2uN;
+    aN2uN = aNMinus12 * uNMinus1;
     uNMinus1 = uNMinus2;
-    aN = aNMinus1;
   }
   return uNMinus2;
 }
 
 
-OrthogonalUniVariatePolynomial::CoefficientsCollection OrthogonalUniVariatePolynomial::getRecurrenceCoefficients() const
+Sample OrthogonalUniVariatePolynomial::getRecurrenceCoefficients() const
 {
-  return recurrenceCoefficients_;
+  SampleImplementation result(recurrenceCoefficients_.getSize() / 3, 3);
+  result.setData(recurrenceCoefficients_);
+  return result;
 }
 
 
@@ -151,15 +169,25 @@ OrthogonalUniVariatePolynomial::ComplexCollection OrthogonalUniVariatePolynomial
   int ljobz(1);
   Point d(n);
   Point e(n - 1);
-  Coefficients recurrenceCoefficientsI(recurrenceCoefficients_[0]);
-  Scalar alphaPrec = recurrenceCoefficientsI[0];
-  d[0] = -recurrenceCoefficientsI[1] / alphaPrec;
+  UnsignedInteger index = 0;
+  Scalar a0 = recurrenceCoefficients_[index];
+  ++index;
+  Scalar a1 = recurrenceCoefficients_[index];
+  ++index;
+  Scalar a2;
+  Scalar alphaPrec = a0;
+  d[0] = -a1 / a0;
   for (UnsignedInteger i = 1; i < n; ++i)
   {
-    recurrenceCoefficientsI = recurrenceCoefficients_[i];
-    d[i]     = -recurrenceCoefficientsI[1] / recurrenceCoefficientsI[0];
-    e[i - 1] = sqrt(-recurrenceCoefficientsI[2] / (recurrenceCoefficientsI[0] * alphaPrec));
-    alphaPrec = recurrenceCoefficientsI[0];
+    ++index;
+    a0 = recurrenceCoefficients_[index];
+    ++index;
+    a1 = recurrenceCoefficients_[index];
+    ++index;
+    a2 = recurrenceCoefficients_[index];
+    d[i]     = -a1 / a0;
+    e[i - 1] = sqrt(-a2 / (a0 * alphaPrec));
+    alphaPrec = a0;
   }
   int ldz(n);
   SquareMatrix z(n);
@@ -183,7 +211,20 @@ void OrthogonalUniVariatePolynomial::save(Advocate & adv) const
 void OrthogonalUniVariatePolynomial::load(Advocate & adv)
 {
   UniVariatePolynomialImplementation::load(adv);
-  adv.loadAttribute( "recurrenceCoefficients_", recurrenceCoefficients_ );
+  // recurrenceCoefficients_ changed type from PersistentCollection<Coefficients> to Sample in 1.19
+  // without backward compatibility, see https://github.com/openturns/openturns/pull/1961
+  if (adv.getStudyVersion() >= 102000)
+    adv.loadAttribute("recurrenceCoefficients_", recurrenceCoefficients_);
+  else
+  {
+    PersistentCollection<Coefficients> coefficientsColl;
+    adv.loadAttribute("recurrenceCoefficients_", coefficientsColl);
+    const UnsignedInteger size = coefficientsColl.getSize();
+    recurrenceCoefficients_ = PersistentCollection<Scalar>(3 * size);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      for (UnsignedInteger j = 0; j < 3; ++j)
+        recurrenceCoefficients_[3 * i + j] = coefficientsColl[i][j];
+  }
 }
 
 

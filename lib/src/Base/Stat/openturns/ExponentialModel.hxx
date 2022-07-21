@@ -3,7 +3,7 @@
  *  @brief This class is enables to build an exponential covariance
  *  model, a second order model's implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 #define OPENTURNS_EXPONENTIALMODEL_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Mesh.hxx"
@@ -37,7 +37,7 @@ class RegularGrid;
  */
 
 class OT_API ExponentialModel
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -63,35 +63,40 @@ public:
                    const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
-  virtual ExponentialModel * clone() const;
+  ExponentialModel * clone() const override;
 
-  /** Computation of the covariance function, stationary interface */
-  using StationaryCovarianceModel::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const;
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::operator();
+  SquareMatrix operator()(const Point &tau) const override;
+
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point &tau) const override;
 #ifndef SWIG
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const;
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                         const Collection<Scalar>::const_iterator &t_begin) const override;
 #endif
+  Scalar computeAsScalar(const Scalar tau) const override;
 
   /** Gradient */
-  using StationaryCovarianceModel::partialGradient;
-  Matrix partialGradient(const Point & s, const Point & t) const;
+  using CovarianceModelImplementation::partialGradient;
+  Matrix partialGradient(const Point & s, const Point & t) const override;
 
   /** Discretize the covariance function on a given TimeGrid */
-  using StationaryCovarianceModel::discretize;
-  CovarianceMatrix discretize(const RegularGrid & regularGrid) const;
+  using CovarianceModelImplementation::discretize;
+  CovarianceMatrix discretize(const RegularGrid & regularGrid) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private :
 

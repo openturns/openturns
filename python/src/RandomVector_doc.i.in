@@ -38,3 +38,9 @@ OT_RandomVector_setParameter_doc
 OT_RandomVector_getParameter_doc
 %feature("docstring") OT::RandomVector::getParameterDescription
 OT_RandomVector_getParameterDescription_doc
+%feature("docstring") OT::RandomVector::isEvent
+OT_RandomVector_isEvent_doc
+%feature("docstring") OT::RandomVector::intersect
+OT_RandomVector_intersect_doc
+%feature("docstring") OT::RandomVector::join
+OT_RandomVector_join_doc

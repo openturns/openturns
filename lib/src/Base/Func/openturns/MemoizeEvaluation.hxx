@@ -2,7 +2,7 @@
 /**
  * @brief Class for identity evaluation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,8 +42,8 @@ class OT_API MemoizeEvaluation
   CLASSNAME
 public:
 
-  typedef PersistentCollection<Scalar>               CacheKeyType;
-  typedef PersistentCollection<Scalar>               CacheValueType;
+  typedef PersistentCollection<Scalar>                        CacheKeyType;
+  typedef PersistentCollection<Scalar>                        CacheValueType;
   typedef Cache<CacheKeyType, CacheValueType>                 CacheType;
   typedef Pointer<CacheType>                                  CacheImplementation;
 
@@ -54,7 +54,7 @@ public:
   explicit MemoizeEvaluation(const Evaluation & evaluation, const HistoryStrategy & historyStrategy = Full());
 
   /** Virtual constructor */
-  virtual MemoizeEvaluation * clone() const;
+  MemoizeEvaluation * clone() const override;
 
   /** Function implementation accessors */
   void setEvaluation(const Evaluation & evaluation);
@@ -64,19 +64,19 @@ public:
   Bool operator ==(const MemoizeEvaluation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual Point operator() (const Point & inPoint) const;
+  Point operator() (const Point & inPoint) const override;
 
   /** Operator () */
-  virtual Sample operator() (const Sample & inSample) const;
+  Sample operator() (const Sample & inSample) const override;
 
   /** Get the evaluation corresponding to indices components */
-  virtual Evaluation getMarginal(const Indices & indices) const;
+  Evaluation getMarginal(const Indices & indices) const override;
   using EvaluationImplementation::getMarginal;
 
   /** Enable or disable the internal cache */
@@ -124,15 +124,18 @@ public:
   /** Retrieve the history of the output values */
   Sample getOutputHistory() const;
 
+  /** Is it safe to call in parallel? */
+  Bool isParallel() const override;
+
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
-  /** An history mechanism that allows to remember all the input/output associations including duplicate calls */
+  /** An history mechanism that allows one to remember all the input/output associations including duplicate calls */
   mutable HistoryStrategy inputStrategy_;
   mutable HistoryStrategy outputStrategy_;
 

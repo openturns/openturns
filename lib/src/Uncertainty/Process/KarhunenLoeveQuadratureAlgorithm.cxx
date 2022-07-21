@@ -4,7 +4,7 @@
  *         basis and eigenvalues of a given covariance model based on
  *         quadrature approximation.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,7 @@
 #include "openturns/Uniform.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/GaussProductExperiment.hxx"
-#include "openturns/EnumerateFunction.hxx"
+#include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/LegendreFactory.hxx"
@@ -106,7 +106,7 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
 
   // Here we have to use the double/double version of std::pow to make VC++ happy. Grrr.
   const UnsignedInteger basisSize = static_cast<UnsignedInteger>(std::floor(0.5 + std::pow(1.0 * marginalDegree, 1.0 * dimension)));
-  const Basis basis(OrthogonalProductPolynomialFactory(Collection<OrthogonalUniVariatePolynomialFamily>(dimension, LegendreFactory()), EnumerateFunction(dimension, SpecFunc::MaxScalar)));
+  const Basis basis(OrthogonalProductPolynomialFactory(Collection<OrthogonalUniVariatePolynomialFamily>(dimension, LegendreFactory()), HyperbolicAnisotropicEnumerateFunction(dimension, SpecFunc::MaxScalar)));
   for(UnsignedInteger i = 0; i < basisSize; ++i)
   {
     basis_.add(basis.build(i));
@@ -314,7 +314,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   LOGINFO("Solve the standard eigenvalues problem");
   Point eigenValues(C.computeEV(eigenVectors, false));
   const UnsignedInteger augmentedDimension = eigenVectors.getDimension();
-  // Transform the eigenvectors to the generalizd ones
+  // Transform the eigenvectors to the generalized ones
   // Last time we need cholesky, so we can overwrite it by eigenVectors
   LOGINFO("Get the generalized eigenvectors");
   eigenVectors = choleskyBlock.transpose().solveLinearSystem(eigenVectors, false).getImplementation();
@@ -327,16 +327,24 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   Scalar cumulatedVariance = 0.0;
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
-    eigenValues[i] = -eigenPairs[i].first;
+    // the eigenvalue can be close to zero but numerically negative
+    eigenValues[i] = std::max(-eigenPairs[i].first, 0.0);
     cumulatedVariance += eigenValues[i];
   }
   LOGDEBUG(OSS(false) << "eigenValues=" << eigenValues);
-  LOGINFO("Extract the relevant eigenpairs");
-  // Start at 0 if the given threshold is large (eg greater than 1)
-  UnsignedInteger K = 0;
+
   // Find the cut-off in the eigenvalues
-  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
-  LOGINFO(OSS() << "Selected " << K << " eigenvalues");
+  UnsignedInteger K = 0;
+  Scalar selectedVariance = 0.0; // sum of eigenvalues selected after cut-off is applied
+  const UnsignedInteger nbModesMax = std::min(eigenValues.getSize(), getNbModes());
+  do
+  {
+    selectedVariance += eigenValues[K];
+    ++ K;
+  }
+  while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
+  LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
+
   // Reduce and rescale the eigenvectors
   MatrixImplementation projection(K, nodesNumber * dimension);
   Point selectedEV(K);
@@ -392,7 +400,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
       modes.add(DualLinearCombinationFunction(coll, aSample));
     }
   }
-  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection);
+  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection, selectedVariance/cumulatedVariance);
 }
 
 /* Domain accessor */

@@ -21,7 +21,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.5]
 ddf     =class=Point name=Unnamed dimension=1 values=[-0.176033]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.176033]
 log pdf=-1.0439
 pdf     =0.35207
 pdf (FD)=0.35207
@@ -114,7 +113,6 @@ mean=class=Point name=Unnamed dimension=2 values=[-0.00303261,0.0232072]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1.00407,1.01388,1.01388,4.10035]
 Point= class=Point name=Unnamed dimension=2 values=[0.5,0.5]
 ddf     =class=Point name=Unnamed dimension=2 values=[-0.0405455,0]
-ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.0405455,0]
 log pdf=-2.5122
 pdf     =0.081091
 cdf=0.48677
@@ -123,9 +121,9 @@ Inverse survival=class=Point name=Unnamed dimension=2 values=[-1.91633,-3.83266]
 Survival(inverse survival)=0.95
 characteristic function=(0.41686,0)
 log characteristic function=(-0.875,0)
-pdf gradient     =class=Point name=Unnamed dimension=4 values=[0.0405455,0,-0.0608183,-0.0405455]
+pdf gradient     =class=Point name=Unnamed dimension=5 values=[0.0405455,0,-0.0608183,-0.0405455,0.0540607]
 pdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[0.0405455,0,-0.0608183,-0.0405455]
-cdf gradient     =class=Point name=Unnamed dimension=4 values=[0,0,0,0]
+cdf gradient     =class=Point name=Unnamed dimension=5 values=[-0.176033,-0.0880163,-0.12905,-0.0322625,0.162182]
 quantile=class=Point name=Unnamed dimension=2 values=[1.916,3.833]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-2.21213,-4.42426] upper bound=class=Point name=Unnamed dimension=2 values=[2.21213,4.42426] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -133,8 +131,8 @@ threshold=0.97304
 Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[Marginal 1,Marginal 2,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]])) gradientImplementation=MinimumVolumeLevelSetGradient(Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]])) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
- [ 0.5 1   ]])) level=4.83361
-beta=0.0079577
+ [ 0.5 1   ]])) level=5.38292
+beta=0.0045944
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-2.21213,-4.42426] upper bound=class=Point name=Unnamed dimension=2 values=[2.21213,4.42426] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.97304
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-7.65063,-15.3013] upper bound=class=Point name=Unnamed dimension=2 values=[1.91633,3.83266] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -221,7 +219,6 @@ mean=class=Point name=Unnamed dimension=3 values=[-0.000853476,0.00793713,0.0069
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.994158,1.00338,0.0219978,1.00338,4.02393,3.09495,0.0219978,3.09495,9.24621]
 Point= class=Point name=Unnamed dimension=3 values=[0.5,0.5,0.5]
 ddf     =class=Point name=Unnamed dimension=3 values=[-0.00754529,0.0010779,-0.0010779]
-ddf (FD)=class=Point name=Unnamed dimension=3 values=[-0.00754529,0.0010779,-0.0010779]
 log pdf=-4.3478
 pdf     =0.012935
 cdf=0.32981
@@ -230,9 +227,9 @@ Inverse survival=class=Point name=Unnamed dimension=3 values=[-2.07982,-4.15964,
 Survival(inverse survival)=0.95
 characteristic function=(0.063928,0)
 log characteristic function=(-2.75,0)
-pdf gradient     =class=Point name=Unnamed dimension=6 values=[0.00754529,-0.0010779,0.0010779,-0.00916214,-0.00673687,-0.00413195]
+pdf gradient     =class=Point name=Unnamed dimension=9 values=[0.00754529,-0.0010779,0.0010779,-0.00916214,-0.00673687,-0.00413195,0.0116772,-0.00458107,0.0123958]
 pdf gradient (FD)=class=Point name=Unnamed dimension=6 values=[0.00754529,-0.0010779,0.0010779,-0.00916214,-0.00673687,-0.00413195]
-cdf gradient     =class=Point name=Unnamed dimension=6 values=[0,0,0,0,0,0]
+cdf gradient     =class=Point name=Unnamed dimension=9 values=[-0.133608,-0.0668041,-0.0575624,-0.0143906,-0.0635446,-0.0105908,0.094207,0.0627608,0.121528]
 quantile=class=Point name=Unnamed dimension=3 values=[2.08,4.16,6.239]
 cdf(quantile)=0.95
 entropy=5.702
@@ -321,18 +318,15 @@ mean=class=Point name=Unnamed dimension=4 values=[0.0138666,0.0180498,0.0221654,
 covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.970503,0.951581,-0.0277311,-0.0130839,0.951581,3.89801,2.90873,-0.0330447,-0.0277311,2.90873,8.89229,5.93811,-0.0130839,-0.0330447,5.93811,15.6673]
 Point= class=Point name=Unnamed dimension=4 values=[0.5,0.5,0.5,0.5]
 ddf     =class=Point name=Unnamed dimension=4 values=[-0.000951889,0.000135984,-0.000135984,0]
-ddf (FD)=class=Point name=Unnamed dimension=4 values=[-0.000951889,0.000135984,-0.000135984,0]
 log pdf=-6.4181
 pdf     =0.0016318
 cdf=0.22145
 survival=0.067873
 Inverse survival=class=Point name=Unnamed dimension=4 values=[-2.1934,-4.38679,-6.58019,-8.77359]
-Survival(inverse survival)=0.95
 characteristic function=(0.0019305,0)
 log characteristic function=(-6.25,0)
-pdf gradient     =class=Point name=Unnamed dimension=8 values=[0.000951889,-0.000135984,0.000135984,0,-0.00115586,-0.000849901,-0.000521272,-0.000407952]
+pdf gradient     =class=Point name=Unnamed dimension=14 values=[0.000951889,-0.000135984,0.000135984,0,-0.00115586,-0.000849901,-0.000521272,-0.000407952,0.00179952,-0.00106747,0.0025429,0.000652724,-0.00130545,0.00195817]
 pdf gradient (FD)=class=Point name=Unnamed dimension=8 values=[0.000951889,-0.000135984,0.000135984,0,-0.00115586,-0.000849901,-0.000521272,-0.000407952]
-cdf gradient     =class=Point name=Unnamed dimension=8 values=[0,0,0,0,0,0,0,0]
 quantile=class=Point name=Unnamed dimension=4 values=[2.193,4.387,6.58,8.774]
 cdf(quantile)=0.95
 entropy=8.2722

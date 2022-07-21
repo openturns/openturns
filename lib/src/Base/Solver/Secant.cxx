@@ -3,7 +3,7 @@
  *  @brief Implementation class of the scalar nonlinear solver based on
  *         a mixed bisection/secant scheme
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,14 +68,13 @@ String Secant::__repr__() const
    C     DEC., 1984, P. 473.
    see http://www.netlib.org/toms/626
 */
-Scalar Secant::solve(const Function & function,
+Scalar Secant::solve(const UniVariateFunction & function,
                      const Scalar value,
                      const Scalar infPoint,
                      const Scalar supPoint,
                      const Scalar infValue,
                      const Scalar supValue) const
 {
-  if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: the secant method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
   UnsignedInteger usedFunctionEvaluation = 0;
   const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
@@ -85,7 +84,7 @@ Scalar Secant::solve(const Function & function,
   Scalar b = supPoint;
   Scalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
-  if (!(fA * fB <= 0.0)) throw InternalException(HERE) << "Error: Secant  method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
+  if (!((fA <= 0.0) != (fB <= 0.0))) throw InternalException(HERE) << "Error: Secant  method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   // p will store the previous approximation
   Scalar c = a;
   Scalar fC = fA;
@@ -97,7 +96,7 @@ Scalar Secant::solve(const Function & function,
   for (;;)
   {
     const Scalar h = 0.5 * (b + c);
-    const Scalar error = 0.5 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError();
+    const Scalar error = getRelativeError() * std::abs(c) + getAbsoluteError();
     const Scalar delta = std::abs(h - b);
     if (delta < error)
     {
@@ -134,7 +133,7 @@ Scalar Secant::solve(const Function & function,
       // Step adjustment to avoid spurious fixed point
       if (std::abs(e - s) < error) e = s + ((g - s) > 0.0 ? (error) : (-error));
       // If the secant step is not within the current bracketing interval
-      if ((e - h) * (s - e) < 0.0) b = h;
+      if ((e - h < 0.0) != (s - e < 0.0)) b = h;
       else b = e;
     }
     // Else we do a bisection
@@ -145,9 +144,9 @@ Scalar Secant::solve(const Function & function,
     // If all the evaluation budget has been spent, return the approximation
     if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
     // New evaluation
-    fB = function(Point(1, b))[0] - value;
+    fB = function(b) - value;
     ++usedFunctionEvaluation;
-    if (fG * fB < 0.0)
+    if ((fG < 0.0) != (fB < 0.0))
     {
       c = g;
       fC = fG;

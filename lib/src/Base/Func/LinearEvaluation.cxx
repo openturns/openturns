@@ -5,7 +5,7 @@
  *        dim(x) numerical point, linear a dim(x) by dim(y) matrix
  *        and  <linear, x - c> means Transpose(linear).(x - c)
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -142,6 +142,20 @@ UnsignedInteger LinearEvaluation::getInputDimension() const
 UnsignedInteger LinearEvaluation::getOutputDimension() const
 {
   return constant_.getDimension();
+}
+
+/* Linearity accessors */
+Bool LinearEvaluation::isLinear() const
+{
+  return true;
+}
+
+Bool LinearEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  if (!(index <= getInputDimension()))
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
+
+  return true;
 }
 
 /* Method save() stores the object through the StorageManager */

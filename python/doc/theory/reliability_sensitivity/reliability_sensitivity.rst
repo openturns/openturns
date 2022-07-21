@@ -28,18 +28,14 @@ Sensitivity analysis
     :maxdepth: 1
 
     taylor_importance_factors
-    ranking_pearson
-    ranking_spearman
     ranking_src
-    ranking_srrc
     ranking_pcc
-    ranking_prcc
     sensitivity_sobol
     sensitivity_ancova
     sensitivity_fast
     importance_form
     sensitivity_form
-
+    sensitivity_hsic
 
 Probability of exceeding a threshold
 ------------------------------------
@@ -66,3 +62,4 @@ Sampling methods
     directional_simulation
     lhs_simulation
     qmc_simulation
+    subset_sampling

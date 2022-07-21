@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NearestPointProblem allows to describe an optimization problem
+ *  @brief NearestPointProblem allows one to describe an optimization problem
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -76,6 +76,7 @@ void NearestPointProblem::setLevelFunction(const Function & levelFunction)
   const SymmetricTensor quadratic(dimension_, 1, *(identity.getImplementation().get()));
   objective_ = QuadraticFunction(center, constant, linear, quadratic);
   setNearestPointConstraints();
+  setVariablesType(Indices(dimension_, CONTINUOUS));
 }
 
 Bool NearestPointProblem::hasLevelFunction() const
@@ -114,6 +115,7 @@ void NearestPointProblem::clearLevelFunction()
   }
   levelValue_ = 0.0;
 }
+
 
 /* String converter */
 String NearestPointProblem::__repr__() const

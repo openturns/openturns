@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NearestPointProblem allows to describe an optimization problem
+ *  @brief NearestPointProblem allows one to describe an optimization problem
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class NearestPointProblem
- * NearestPointProblem allows to describe an optimization problem
+ * NearestPointProblem allows one to describe an optimization problem
  */
 
 class OT_API NearestPointProblem
@@ -46,25 +46,25 @@ public:
                       Scalar levelValue);
 
   /** Virtual constructor */
-  virtual NearestPointProblem * clone() const;
+  NearestPointProblem * clone() const override;
 
   /** Level function accessor */
-  Function getLevelFunction() const;
-  void setLevelFunction(const Function & levelFunction);
-  Bool hasLevelFunction() const;
+  Function getLevelFunction() const override;
+  void setLevelFunction(const Function & levelFunction) override;
+  Bool hasLevelFunction() const override;
 
   /** Level value accessor */
-  Scalar getLevelValue() const;
-  void setLevelValue(Scalar levelValue);
+  Scalar getLevelValue() const override;
+  void setLevelValue(Scalar levelValue) override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   void clearLevelFunction();

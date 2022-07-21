@@ -2,7 +2,7 @@
 /**
  *  @brief The Geometric distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -167,7 +167,7 @@ Scalar Geometric::computeScalarQuantile(const Scalar prob,
 /* Compute the entropy of the distribution */
 Scalar Geometric::computeEntropy() const
 {
-  if (p_ == 0.0) return SpecFunc::LogMaxScalar;
+  if (p_ == 0.0) return SpecFunc::MaxScalar;
   if (p_ == 1.0) return 0.0;
   return log1p(-p_) * (1.0 - 1.0 / p_) - std::log(p_);
 }

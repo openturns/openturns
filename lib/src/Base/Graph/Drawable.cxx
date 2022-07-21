@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all Drawable
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,6 +35,13 @@ Drawable::Drawable():
 /* Default constructor */
 Drawable::Drawable(const DrawableImplementation & implementation):
   TypedInterfaceObject<DrawableImplementation>(implementation.clone())
+{
+  // Nothing to do
+}
+
+/* Constructor from implementation pointer */
+Drawable::Drawable(DrawableImplementation * p_implementation)
+  : TypedInterfaceObject<DrawableImplementation>(p_implementation)
 {
   // Nothing to do
 }
@@ -294,6 +301,18 @@ void Drawable::setTextPositions(const Description & textPositions)
   getImplementation()->setTextPositions(textPositions);
 }
 
+/* Accessor for font size */
+Scalar Drawable::getTextSize() const
+{
+  return getImplementation()->getTextSize();
+}
+
+void Drawable::setTextSize(const Scalar size)
+{
+  copyOnWrite();
+  getImplementation()->setTextSize(size);
+}
+
 /* Accessor for data */
 Sample Drawable::getData() const
 {
@@ -402,6 +421,22 @@ Point Drawable::ConvertFromHSVIntoRGB(const Scalar hue,
   return DrawableImplementation::ConvertFromHSVIntoRGB(hue, saturation, value);
 }
 
+/* Convert an RGB triplet into an HSV triplet */
+Point Drawable::ConvertFromRGBIntoHSV(const UnsignedInteger red,
+                                      const UnsignedInteger green,
+                                      const UnsignedInteger blue)
+{
+  return DrawableImplementation::ConvertFromRGBIntoHSV(red, green, blue);
+}
+
+/* Convert an RGB triplet into an HSV triplet */
+Point Drawable::ConvertFromRGBIntoHSV(const Scalar red,
+                                      const Scalar green,
+                                      const Scalar blue)
+{
+  return DrawableImplementation::ConvertFromRGBIntoHSV(red, green, blue);
+}
+
 /* Convert an HSV triplet to a valid hexadecimal code */
 String Drawable::ConvertFromHSV(const Scalar hue,
                                 const Scalar saturation,
@@ -419,11 +454,24 @@ String Drawable::ConvertFromHSVA(const Scalar hue,
   return DrawableImplementation::ConvertFromHSVA(hue, saturation, value, alpha);
 }
 
-/* Build default palette
-   Cycle through the hue wheel with 10 nuances and increasing darkness */
+/* Build default palette */
 Description Drawable::BuildDefaultPalette(const UnsignedInteger size)
 {
   return DrawableImplementation::BuildDefaultPalette(size);
+}
+
+/* Build rainbow palette
+   Cycle through the hue wheel with 10 nuances and increasing darkness */
+Description Drawable::BuildRainbowPalette(const UnsignedInteger size)
+{
+  return DrawableImplementation::BuildRainbowPalette(size);
+}
+
+/* Build tableau palette
+   Use 10 colors from Tableau palette. */
+Description Drawable::BuildTableauPalette(const UnsignedInteger size)
+{
+  return DrawableImplementation::BuildTableauPalette(size);
 }
 
 END_NAMESPACE_OPENTURNS

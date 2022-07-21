@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ExponentialModel
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,8 +45,8 @@ int main(int, char *[])
 
 
     /* Default constructor */
-    ExponentialModel myDefautModel;
-    fullprint << "myDefautModel = " << myDefautModel << std::endl;
+    ExponentialModel myDefaultModel;
+    fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
 
     /* Second order model with parameters */
     ExponentialModel myModel(scale, amplitude);
@@ -78,9 +78,6 @@ int main(int, char *[])
       if (index > 0) spatialCorrelation(index, index - 1) = 1.0 / index;
     }
     fullprint << "spatialCorrelation=" << spatialCorrelation << std::endl;
-    /* checking the cast*/
-    StationaryCovarianceModel mySecondOrderModel(ExponentialModel(scale, amplitude, spatialCorrelation));
-    fullprint << "mySecondOrderModel = " << mySecondOrderModel << std::endl;
 
     /* Second order model - high dimension */
     ExponentialModel myHighModel(scale, amplitude, spatialCorrelation);

@@ -16,9 +16,9 @@ Examples
 >>> import openturns as ot
 >>> interval = (ot.Interval([1], [2], [False], [True]))
 >>> complement = ot.DomainComplement(interval)
->>> complement.contains([5])
+>>> [5] in complement
 True
->>> complement.contains([1.5])
+>>> [1.5] in complement
 False"
 
 // ---------------------------------------------------------------------

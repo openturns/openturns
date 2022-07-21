@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Gamma for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Collection<Gamma> allDistributions(0);
     allDistributions.add(Gamma(1.5, 2.5, -0.5));
     allDistributions.add(Gamma(15.0, 2.5));
@@ -84,7 +84,6 @@ int main(int, char *[])
       Scalar eps = 1e-5;
       Point DDF = distribution.computeDDF( point );
       fullprint << "ddf     =" << DDF << std::endl;
-      fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
       Scalar LPDF = distribution.computeLogPDF( point );
       fullprint << "log pdf=" << LPDF << std::endl;
       Scalar PDF = distribution.computePDF( point );

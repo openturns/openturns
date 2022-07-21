@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import sys
 import openturns as ot
 import openturns.testing as ott
@@ -69,6 +68,9 @@ toDist = result.getTotalOrderIndicesDistribution()
 print(toDist)
 convergenceGraph = algo.drawFirstOrderIndexConvergence()
 convergenceGraph = algo.drawTotalOrderIndexConvergence()
+graph = result.draw()
+print(graph)
+
 
 #from openturns.viewer import View
 # View(convergenceGraph).ShowAll()

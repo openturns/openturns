@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,10 +34,9 @@ static const Factory<GaussKronrodRule> Factory_GaussKronrodRule;
 
 /* Constructor without parameters */
 GaussKronrodRule::GaussKronrodRule()
-  : PersistentObject()
+  : GaussKronrodRule(G11K23)
 {
-  // Select the high order rule
-  *this = GaussKronrodRule(G11K23);
+  // Nothing to do
 }
 
 /* Parameters constructor */
@@ -364,6 +363,34 @@ String GaussKronrodRule::__str__(const String & ) const
   oss << GaussKronrodRule::GetClassName()
       << "(pair=G" << order_ << "K" << 2 * order_ + 1 << ")";
   return oss;
+}
+
+/* Method save() stores the object through the StorageManager */
+void GaussKronrodRule::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute("pair_", (UnsignedInteger)pair_);
+  adv.saveAttribute("order_", order_);
+  adv.saveAttribute("zeroGaussWeight_", zeroGaussWeight_);
+  adv.saveAttribute("otherGaussWeights_", otherGaussWeights_);
+  adv.saveAttribute("otherKronrodNodes_", otherKronrodNodes_);
+  adv.saveAttribute("zeroKronrodWeight_", zeroKronrodWeight_);
+  adv.saveAttribute("otherKronrodWeights_", otherKronrodWeights_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void GaussKronrodRule::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  UnsignedInteger pair = 0;
+  adv.loadAttribute("pair_", pair);
+  pair_ = (GaussKronrodPair)pair;
+  adv.loadAttribute("order_", order_);
+  adv.loadAttribute("zeroGaussWeight_", zeroGaussWeight_);
+  adv.loadAttribute("otherGaussWeights_", otherGaussWeights_);
+  adv.loadAttribute("otherKronrodNodes_", otherKronrodNodes_);
+  adv.loadAttribute("zeroKronrodWeight_", zeroKronrodWeight_);
+  adv.loadAttribute("otherKronrodWeights_", otherKronrodWeights_);
 }
 
 END_NAMESPACE_OPENTURNS

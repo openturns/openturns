@@ -2,11 +2,11 @@ Distribution  class=NormalGamma name=NormalGamma mu=1 kappa=2 alpha=3 beta=4
 Distribution  NormalGamma(mu=1, kappa=2, alpha=3, beta=4)
 Elliptical =  False
 Continuous =  True
-oneRealization= [0.585399,0.531984]
-oneSample first= [0.701018,1.23836]  last= [0.0712576,0.72601]
-mean= [0.987979,0.752358]
-covariance= [[ 0.978146   0.00891788 ]
- [ 0.00891788 0.191922   ]]
+oneRealization= [0.52143,0.947065]
+oneSample first= [-0.149655,1.80011]  last= [1.22109,0.934319]
+mean= [0.988408,0.752078]
+covariance= [[ 0.979077  0.0089155 ]
+ [ 0.0089155 0.191922  ]]
 Point=  [1.5, 1.5]
 ddf     = [-0.127136,-0.218956]
 log pdf=-2.467966
@@ -26,9 +26,9 @@ entropy=1.765404
 Minimum volume interval= [-1.80326, 3.80326]
 [0.0390431, 2.00954]
 threshold=0.986085
-Minimum volume level set= {x | f(x) <= 3.73169} with f=
+Minimum volume level set= {x | f(x) <= 3.69414} with f=
 MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4))
-beta=0.023952
+beta=0.024869
 Bilateral confidence interval= [-1.77733, 3.77733]
 [0.0966867, 2.20341]
 beta=0.985531

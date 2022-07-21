@@ -289,7 +289,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Interval::intersect
-"Get the intersection with an other interval.
+"Get the intersection with another interval.
 
 Parameters
 ----------

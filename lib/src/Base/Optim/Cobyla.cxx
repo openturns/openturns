@@ -2,7 +2,7 @@
 /**
  *  @brief Cobyla is an actual implementation for OptimizationAlgorithmImplementation using the cobyla library
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,6 +35,7 @@ static const Factory<Cobyla> Factory_Cobyla;
 Cobyla::Cobyla()
   : OptimizationAlgorithmImplementation()
   , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
+  , ignoreFailure_(false)
 {
   // Nothing to do
 }
@@ -42,6 +43,7 @@ Cobyla::Cobyla()
 Cobyla::Cobyla(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
+  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -50,6 +52,7 @@ Cobyla::Cobyla(const OptimizationProblem & problem,
                const Scalar rhoBeg)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(rhoBeg)
+  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -66,6 +69,11 @@ void Cobyla::checkProblem(const OptimizationProblem & problem) const
 {
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
+  if (problem.hasResidualFunction())
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support least-square problems";
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
+
 }
 
 /* Performs the actual computation by calling the Cobyla algorithm
@@ -79,6 +87,8 @@ void Cobyla::run()
   Point x(getStartingPoint());
   if (x.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
+  if (dimension == 0)
+    throw InvalidArgumentException(HERE) << "Dimension of the problem is zero";
 
   if (getProblem().hasBounds())
   {
@@ -103,6 +113,7 @@ void Cobyla::run()
   evaluationOutputHistory_ = Sample(0, 1);
   equalityConstraintHistory_ = Sample(0, getProblem().getEqualityConstraint().getOutputDimension());
   inequalityConstraintHistory_ = Sample(0, getProblem().getInequalityConstraint().getOutputDimension());
+  result_ = OptimizationResult(getProblem());
 
   /*
    * cobyla : minimize a function subject to constraints
@@ -123,12 +134,17 @@ void Cobyla::run()
    * extern int cobyla(int n, int m, double *x, double rhobeg, double rhoend,
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
-  int returnCode = ot_cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
-
-  result_ = OptimizationResult(dimension);
-  result_.setProblem(getProblem());
+  int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
+  if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
+  {
+    if (ignoreFailure_)
+      LOGWARN(OSS() << "Warning! The Cobyla algorithm failed. The error message is " << cobyla_rc_string[returnCode - COBYLA_MINRC]);
+    else
+      throw InternalException(HERE) << "Solving problem by cobyla method failed (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
+  }
 
   // Update the result
+  result_ = OptimizationResult(getProblem());
   UnsignedInteger size = evaluationInputHistory_.getSize();
 
   Scalar absoluteError = -1.0;
@@ -185,19 +201,6 @@ void Cobyla::run()
   result_.setOptimalValue(evaluationOutputHistory_[optimalIndex]);
 
   result_.setEvaluationNumber(maxFun);
-  result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
-
-  // check the convergence criteria
-  const Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
-
-  if (returnCode != 0)
-  {
-    LOGWARN(OSS() << "Warning! The Cobyla algorithm failed to converge. The error message is " << cobyla_rc_string[returnCode - COBYLA_MINRC]);
-  }
-  else if ( ! convergence )
-  {
-    LOGWARN(OSS() << "Warning! The Cobyla algorithm could not enforce the convergence criteria");
-  }
 }
 
 /* RhoBeg accessor */
@@ -253,15 +256,41 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   Point inP(n);
   std::copy(x, x + n, inP.begin());
 
-  Point outP(problem.getObjective().operator()(inP));
-  // cobyla freezes when dealing with MaxScalar
-  if (std::abs(outP[0]) == SpecFunc::MaxScalar) outP[0] /= 1.0e3;
-  *f = problem.isMinimization() ? outP[0] : -outP[0];
+  const UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
+  const UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
+  Point constraintValue(nbIneqConst + 2 * nbEqConst, -1.0);
+  static const Scalar cobylaMaxScalar(1.0e-6 * SpecFunc::MaxScalar);
+
+  Point outP;
+  try
+  {
+    for (UnsignedInteger i = 0; i < inP.getDimension(); ++ i)
+      if (!SpecFunc::IsNormal(inP[i]))
+        throw InvalidArgumentException(HERE) << "Cobyla got a nan input value";
+
+    outP = problem.getObjective().operator()(inP);
+
+    if (!SpecFunc::IsNormal(outP[0]))
+      throw InvalidArgumentException(HERE) << "Cobyla got a nan output value";
+
+    // cobyla freezes when dealing with SpecFunc::MaxScalar
+    if (outP[0] > cobylaMaxScalar) outP[0] = cobylaMaxScalar;
+    if (outP[0] < -cobylaMaxScalar) outP[0] = -cobylaMaxScalar;
+    *f = problem.isMinimization() ? outP[0] : -outP[0];
+  }
+  catch (...)
+  {
+    LOGWARN(OSS() << "Cobyla went to an abnormal point=" << inP.__str__());
+
+    // penalize it
+    *f = problem.isMinimization() ? cobylaMaxScalar : cobylaMaxScalar;
+    std::copy(constraintValue.begin(), constraintValue.end(), con);
+
+    // exit gracefully
+    return 1;
+  }
 
   UnsignedInteger shift = 0;
-  UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
-  UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
-  Point constraintValue(nbIneqConst + 2 * nbEqConst);
 
   /* Compute the inequality constraints at inP */
   if (problem.hasInequalityConstraint())
@@ -301,6 +330,11 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inP);
   algorithm->evaluationOutputHistory_.add(outP);
+
+  // update result
+  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
+
   int returnValue = 0;
   if (algorithm->progressCallback_.first)
   {
@@ -318,6 +352,16 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     }
   }
   return returnValue;
+}
+
+void Cobyla::setIgnoreFailure(const Bool ignoreFailure)
+{
+  ignoreFailure_ = ignoreFailure;
+}
+
+Bool Cobyla::getIgnoreFailure() const
+{
+  return ignoreFailure_;
 }
 
 END_NAMESPACE_OPENTURNS

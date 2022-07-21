@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all point to field function implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -91,7 +91,7 @@ String PointToFieldFunctionImplementation::__str__(const String & ) const
 /* Get the i-th marginal function */
 PointToFieldFunction PointToFieldFunctionImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
@@ -144,7 +144,7 @@ ProcessSample PointToFieldFunctionImplementation::operator() (const Sample & inS
 {
   if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given sample has a size of 0.";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the given sample has null size.";
   ProcessSample outSample(getOutputMesh(), size, getOutputDimension());
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls

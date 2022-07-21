@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/ExponentialModel.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Os.hxx"
 
@@ -35,34 +35,34 @@ static const Factory<ExponentialModel> Factory_ExponentialModel;
 
 /* Constructor from input dimension */
 ExponentialModel::ExponentialModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Standard constructor with scale and amplitude parameters parameters */
 ExponentialModel::ExponentialModel(const Point & scale,
                                    const Point & amplitude)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
 ExponentialModel::ExponentialModel(const Point & scale,
                                    const Point & amplitude,
                                    const CorrelationMatrix & spatialCorrelation)
-  : StationaryCovarianceModel(scale, amplitude, spatialCorrelation)
+  : CovarianceModelImplementation(scale, amplitude, spatialCorrelation)
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Standard constructor with scale and spatial covariance parameters parameters */
 ExponentialModel::ExponentialModel(const Point & scale,
                                    const CovarianceMatrix & spatialCovariance)
-  : StationaryCovarianceModel(scale, spatialCovariance)
+  : CovarianceModelImplementation(scale, spatialCovariance)
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /* Virtual constructor */
@@ -71,26 +71,60 @@ ExponentialModel * ExponentialModel::clone() const
   return new ExponentialModel(*this);
 }
 
+SquareMatrix ExponentialModel::operator()(const Point &tau) const
+{
+  // L2 norm of tau / scale
+  Scalar tauOverThetaNorm = 0.0;
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    tauOverThetaNorm += dx * dx;
+  }
+  tauOverThetaNorm = sqrt(tauOverThetaNorm);
+  // Return value
+  Scalar factor = 1.0;
+  if (tauOverThetaNorm == 0.0)
+    factor = 1.0 + nuggetFactor_;
+  else
+    factor = exp(-tauOverThetaNorm);
+  SquareMatrix output(outputCovariance_);
+  output.getImplementation()->symmetrize();
+  return output * factor;
+}
 
 /* Computation of the covariance function, stationary interface
  * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * exp(-|tau / scale|)
  * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
  */
-Scalar ExponentialModel::computeStandardRepresentative(const Point & tau) const
+Scalar ExponentialModel::computeAsScalar(const Point &tau) const
 {
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In ExponentialModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
-  // Absolute value of tau / scale
-  Point tauOverTheta(getInputDimension());
-  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar tauOverThetaNorm = tauOverTheta.norm();
+
+  // L2 norm of tau / scale
+  Scalar tauOverThetaNorm = 0.0;
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    tauOverThetaNorm += dx * dx;
+  }
+  tauOverThetaNorm = sqrt(tauOverThetaNorm);
   // Return value
-  return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
+  return (tauOverThetaNorm == 0.0 ? amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_) : amplitude_[0] * amplitude_[0] * exp(-tauOverThetaNorm));
 }
 
-Scalar ExponentialModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+/* Computation of the covariance function, stationary interface
+ * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * exp(-|tau / scale|)
+ * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
+ */
+Scalar ExponentialModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
   Scalar tauOverThetaNorm = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
   Collection<Scalar>::const_iterator t_it = t_begin;
@@ -100,49 +134,50 @@ Scalar ExponentialModel::computeStandardRepresentative(const Collection<Scalar>:
     tauOverThetaNorm += dx * dx;
   }
   tauOverThetaNorm = sqrt(tauOverThetaNorm);
-  return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
+  return (tauOverThetaNorm == 0.0 ? amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_) : amplitude_[0] * amplitude_[0] * exp(-tauOverThetaNorm));
 }
 
+Scalar ExponentialModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
+  // Return value
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return (tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-tauOverThetaNorm));
+}
 
 /** Gradient */
 Matrix ExponentialModel::partialGradient(const Point & s,
     const Point & t) const
 {
-  /* Computation of the gradient
-   * dC_{i,j}(tau)/dtau_k = C_{i,j} * (-\frac{1}{2 * scale_i} -\frac{1}{2 * scale_j}) * factor, with factor = tau_k / absTau
-    Note that if spatial dimension is 1, factor = sgn(tau_k)
-   */
+  // Computation of the gradient
   if (s.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
   if (t.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();
-  const Point tau(s - t);
-  const Scalar absTau = tau.norm();
-  Point tauOverTheta(getInputDimension());
-  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar absTauOverTheta = tauOverTheta.norm();
 
-  // TODO check
-  if (absTau == 0)
-    throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the points t and s are equal. Covariance model has no derivate for that case.";
-  // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'dot',
-  // i.e. dC/dk= Sigma_{i,j} * drho/dk
-  CovarianceMatrix covariance(operator()(tau));
-  // symmetrize if not diagonal
-  if (!isDiagonal_) covariance.getImplementation()->symmetrize();
-  Point covariancePoint(*covariance.getImplementation());
-  // Compute the gradient part (gradient of rho)
-  Point factor(getInputDimension());
+  Scalar norm = 0.0;
+  Scalar dx = 0.0;
   for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
   {
-    if ((getInputDimension() == 1.0) && (tau[i] < 0))  factor[i] = 1.0 / scale_[i] ;
-    else if ((getInputDimension() == 1.0) && (tau[i] > 0))  factor[i] = -1.0 / scale_[i];
-    // General case
-    else factor[i] = -1.0 * tau[i] / (absTauOverTheta * scale_[i] * scale_[i]);
+    dx = (s[i] - t[i]) / scale_[i];
+    norm += dx * dx;
   }
+  if (norm == 0)
+    throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the points t and s are equal. Covariance model has no derivate for that case.";
+  norm = std::sqrt(norm);
+  // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'kroneker',
+  SquareMatrix covariance(outputCovariance_);
+  covariance.getImplementation()->symmetrize();
+  Point covariancePoint(*covariance.getImplementation());
   // Finally assemble the final matrix
+  const Scalar value = -std::exp(-norm) / norm;
   Matrix gradient(getInputDimension(), covariancePoint.getDimension());
   for (UnsignedInteger j = 0; j < covariancePoint.getDimension(); ++ j)
     for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
-      gradient(i, j) = covariancePoint[j] * factor[i];
+      gradient(i, j) = covariancePoint[j] * (s[i] - t[i]) / (scale_[i] * scale_[i]) * value;
   return gradient;
 }
 
@@ -155,12 +190,12 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
 
   CovarianceMatrix cov(fullSize);
 
-  // The stationary property of this model allows to optimize the discretization
+  // The stationary property of this model allows one to optimize the discretization
   // over a regular time grid: the large covariance matrix is block-diagonal
   // Fill the matrix by block-diagonal
   // The main diagonal has a specific treatment as only its lower triangular part
   // has to be copied
-  const CovarianceMatrix covTau0( operator()( 0.0 ) );
+  const SquareMatrix covTau0( operator()( 0.0 ) );
 
   // Loop over the main diagonal block
   for (UnsignedInteger block = 0; block < size; ++block)
@@ -182,7 +217,7 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
   // Loop over the remaining diagonal blocks
   for (UnsignedInteger diag = 1; diag < size; ++diag)
   {
-    const CovarianceMatrix covTau( operator()( diag * timeStep ) );
+    const SquareMatrix covTau( operator()( diag * timeStep ) );
 
     // Loop over the main block diagonal
     for (UnsignedInteger block = 0; block < size - diag; ++block)
@@ -238,13 +273,13 @@ String ExponentialModel::__str__(const String & offset) const
 
 void ExponentialModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ExponentialModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -2,7 +2,7 @@
 /**
  *  @brief  This class implements Bounding Volume Hierarchy (BVH) to speed-up point location.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,28 +49,28 @@ public:
                           const String strategy = ResourceMap::GetAsString("BoundingVolumeHierarchy-Strategy"));
 
   /** Virtual copy constructor */
-  virtual BoundingVolumeHierarchy * clone() const;
+  BoundingVolumeHierarchy * clone() const override;
 #ifndef SWIG
-  virtual BoundingVolumeHierarchy * emptyClone() const;
+  BoundingVolumeHierarchy * emptyClone() const override;
 #endif
 
-  void setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices);
+  void setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices) override;
 
   /** Get the index of the enclosing simlex of the given point */
-  virtual UnsignedInteger query(const Point & x) const;
+  UnsignedInteger query(const Point & x) const override;
   using EnclosingSimplexAlgorithmImplementation::query;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   struct Node

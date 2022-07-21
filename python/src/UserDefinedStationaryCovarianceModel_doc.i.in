@@ -4,57 +4,56 @@
 Parameters
 ----------
 mesh : :class:`~openturns.RegularGrid`
-    Time grid of size :math:`N` associated with the process.
-sample : :class:`~openturns.CovarianceMatrixCollection`
-    A collection of *N* covariance matrices.
+    Time grid of size :math:`N` associated with the process. Negative vertices are ignored.
+sample : :class:`~openturns.SquareMatrixCollection`
+    A collection of :math:`N` :class:`~openturns.SquareMatrix` objects with the same dimension.
 
 Notes
 -----
-The covariance model is built as follows.
+The covariance model is built as follows. Let :math:`d` be the dimension of the square matrices.
 
-We consider a process :math:`X: \Omega \times\cD \mapsto \Rset^d` with :math:`\cD \in \Rset^n`. 
+We consider a process :math:`X: \Omega \times \Rset \mapsto \Rset^d`.
 
-We note :math:`(\vect{t}_0,\dots, \vect{t}_{N-1})` the vertices of :math:`\cM \in \cD` and :math:`(\mat{C}_{k})_{0 \leq  k \leq N-1}` where :math:`\mat{C}_{k} \in \cS_d^+(\Rset)` the collection of covariance matrices fixed by the User.
+We note :math:`(t_0,\dots, t_{N-1})` the vertices of :math:`\cM \subset \Rset` and :math:`(\mat{C}_{k})_{0 \leq  k \leq N-1}` the collection of square matrices provided by the user.
 
-Then we build a stationary covariance function :math:`C^{stat}` which is a  piecewise constant function defined on :math:`\cD \times \cD` by:
+The class builds a stationary covariance function :math:`C^{stat}` as a piecewise constant function defined on :math:`\Rset` by:
 
 .. math::
 
-    \forall \vect{\tau} \in \cD, \, \quad C^{stat}(\vect{\tau}) =  \mat{C}_k
+    \forall \tau \in \Rset, \, \quad C^{stat}(\tau) =  \mat{C}_k
 
 
-where *k* is such that :math:`\vect{t}_k` is the  vertex of :math:`\cM` the nearest to :math:`\vect{\tau}`.
+where :math:`k` is such that :math:`t_k` is the vertex of :math:`\cM` closest to :math:`|\tau|`.
 
 Examples
 --------
-Create a mesh:
+Create a time grid:
 
 >>> import openturns as ot
->>> # Create the time grid
 >>> t0 = 0.0
 >>> dt = 0.5
 >>> N = int((20.0 - t0)/ dt)
 >>> myShiftMesh =  ot.RegularGrid(t0, dt, N)
 
-Create the stationary covariance function:
+Create a stationary covariance function:
 
 >>> def gamma(tau):
 ...     return 1.0 / (1.0 + tau * tau)
 
-Create the collection of N covariance matrices:
+Create a collection of :math:`N` covariance values contained in 1x1 symmetric matrices:
 
->>> myCovarianceCollection = ot.CovarianceMatrixCollection()
+>>> myCovarianceCollection = ot.SquareMatrixCollection()
 >>> for k in range(N):
 ...     t = myShiftMesh.getValue(k)
-...     matrix = ot.CovarianceMatrix(1)
+...     matrix = ot.SquareMatrix(1)
 ...     matrix[0, 0] = gamma(t)
 ...     myCovarianceCollection.add(matrix)
 
-Create the User defined stationary covariance model:
+Create the user-defined stationary covariance model:
 
->>> myCovarianceModel = ot.UserDefinedStationaryCovarianceModel(myShiftMesh,myCovarianceCollection)
+>>> myCovarianceModel = ot.UserDefinedStationaryCovarianceModel(myShiftMesh, myCovarianceCollection)
 
-Compute the covariance function at the vertex tau:
+Compute the covariance function at a specific vertex tau:
 
 >>> tau = 1.5
 >>> myCovModelMatrix = myCovarianceModel(tau)

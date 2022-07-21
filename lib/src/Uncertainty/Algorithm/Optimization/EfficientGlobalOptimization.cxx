@@ -2,7 +2,7 @@
 /**
  *  @brief EfficientGlobalOptimization or EGO algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/ComposedDistribution.hxx"
@@ -49,7 +50,8 @@ EfficientGlobalOptimization::EfficientGlobalOptimization()
 
 /* Constructor with parameters */
 EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProblem & problem,
-    const KrigingResult & krigingResult)
+    const KrigingResult & krigingResult,
+    const Function & noise)
   : OptimizationAlgorithmImplementation(problem)
   , krigingResult_(krigingResult)
   , solver_(new Cobyla)
@@ -63,6 +65,11 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
 {
   checkProblem(problem);
   if (krigingResult_.getMetaModel().getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Metamodel must be 1-d";
+  if (noise.getEvaluation().getImplementation()->isActualImplementation())
+  {
+    setMetamodelNoise(noise);
+    setNoiseModel(noise);
+  }
 }
 
 
@@ -88,11 +95,11 @@ public:
   {
     const Scalar mx = metaModelResult_.getConditionalMean(x)[0];
     const Scalar fmMk = optimalValue_ - mx;
-    const Scalar sk2 = metaModelResult_.getConditionalCovariance(x)(0, 0);
+    const Scalar sk2 = metaModelResult_.getConditionalMarginalVariance(x);
     const Scalar sk = sqrt(sk2);
-    if (!SpecFunc::IsNormal(sk)) return Point(1, -SpecFunc::MaxScalar);
+    if (!SpecFunc::IsNormal(sk)) return Point(1, SpecFunc::LowestScalar);
     const Scalar ratio = fmMk / sk;
-    Scalar ei = fmMk * normal_.computeCDF(ratio) + sk * normal_.computePDF(ratio);
+    Scalar ei = fmMk * DistFunc::pNormal(ratio) + sk * DistFunc::dNormal(ratio);
     if (noiseModel_.getOutputDimension() == 1) // if provided
     {
       const Scalar noiseVariance = noiseModel_(x)[0];
@@ -132,7 +139,6 @@ public:
   }
 
 protected:
-  Normal normal_;
   Scalar optimalValue_;
   KrigingResult metaModelResult_;
   Function noiseModel_;
@@ -150,27 +156,22 @@ void EfficientGlobalOptimization::run()
   Sample outputSample(krigingResult_.getOutputSample());
   UnsignedInteger size = inputSample.getSize();
   Point noise(size);
-  const Bool hasNoise = model.getOutputDimension() == 2;
+  const Bool hasNoise = metamodelNoise_.getEvaluation().getImplementation()->isActualImplementation();
   if (hasNoise)
   {
-    // always use 2nd marginal to evaluate noise at initial design and new points
-    Sample noiseSample(model.getMarginal(1)(inputSample));
+    Sample noiseSample(metamodelNoise_(inputSample));
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
       noise[i] = noiseSample(i, 0);
       if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
     }
-
-    // use noise model for criterion optimization if provided, else fallback to objective 2nd marginal
-    if (noiseModel_.getOutputDimension() != 1)
-      noiseModel_ = model.getMarginal(1);
   }
   UnsignedInteger evaluationNumber = 0;
   Bool exitLoop = false;
 
   // select the best feasible point
   Point optimizer;
-  Scalar optimalValue = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  Scalar optimalValue = problem.isMinimization() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
   Point optimizerPrev; // previous optimizer
   Scalar optimalValuePrev = optimalValue;// previous optimal value
   for (UnsignedInteger index = 0; index < size; ++ index)
@@ -183,7 +184,7 @@ void EfficientGlobalOptimization::run()
         optimalValuePrev = optimalValue;
 
         optimizer = inputSample[index];
-        optimalValue = outputSample[index][0];
+        optimalValue = outputSample(index, 0);
       }
   }
 
@@ -225,37 +226,26 @@ void EfficientGlobalOptimization::run()
     }
   }
 
-  OptimizationResult result(dimension);
-  result.setProblem(getProblem());
+  OptimizationResult result(getProblem());
+
+  UnsignedInteger iterationNumber = 0;
+  // use the provided kriging result at first iteration
+  KrigingResult metaModelResult(krigingResult_);
 
   while ((!exitLoop) && (evaluationNumber < getMaximumEvaluationNumber()))
   {
-    // use the provided kriging result at first iteration
-    KrigingResult metaModelResult(krigingResult_);
-    if (evaluationNumber > 0)
-    {
-      KrigingAlgorithm algo(inputSample, outputSample, krigingResult_.getCovarianceModel(), krigingResult_.getBasisCollection());
-      LOGINFO(OSS() << "Rebuilding kriging ...");
-      algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
-      if (hasNoise)
-        algo.setNoise(noise);
-      algo.run();
-      LOGINFO(OSS() << "Rebuilding kriging - done");
-      metaModelResult = algo.getResult();
-    }
-
     Scalar optimalValueSubstitute = optimalValue;
     if (hasNoise)
     {
       // with noisy objective we dont have access to the real current optimal value
       // so consider a quantile of the kriging prediction: argmin_xi mk(xi) + c * sk(xi)
-      optimalValueSubstitute = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
-      const Point mx(metaModelResult.getConditionalMean(inputSample));
+      optimalValueSubstitute = problem.isMinimization() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
+      const Sample mx(metaModelResult.getConditionalMean(inputSample));
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
         const Point x(inputSample[i]);
-        const Scalar sk2 = metaModelResult.getConditionalCovariance(x)(0, 0);
-        const Scalar u = mx[i] + aeiTradeoff_ * sqrt(sk2);
+        const Scalar sk2 = metaModelResult.getConditionalMarginalVariance(x);
+        const Scalar u = mx(i, 0) + aeiTradeoff_ * sqrt(sk2);
         if ((problem.isMinimization() && (u < optimalValueSubstitute))
             || (!problem.isMinimization() && (u > optimalValueSubstitute)))
         {
@@ -296,13 +286,20 @@ void EfficientGlobalOptimization::run()
     }
 
     // build improvement criterion optimization problem
-    OptimizationProblem maximizeImprovement;
-    maximizeImprovement.setObjective(improvementObjective);
+    OptimizationProblem maximizeImprovement(improvementObjective);
     maximizeImprovement.setMinimization(false);
     if (problem.hasBounds())
       maximizeImprovement.setBounds(problem.getBounds());
     solver_.setProblem(maximizeImprovement);
-    solver_.setStartingPoint(optimizer);
+    try
+    {
+      // If the solver is single start, we can use its setStartingPoint method
+      solver_.setStartingPoint(optimizer);
+    }
+    catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+    {
+      // Nothing to do if setStartingPoint is not defined
+    }
     solver_.run();
     const OptimizationResult improvementResult(solver_.getResult());
 
@@ -311,9 +308,8 @@ void EfficientGlobalOptimization::run()
     expectedImprovement_.add(improvementValue);
 
     const Point newPoint(improvementResult.getOptimalPoint());
-    const Point newOutput(model(newPoint));
+    const Point newValue(model(newPoint));
     ++ evaluationNumber;
-    const Point newValue(Point(1, newOutput[0]));// noise can be provided on the 2nd marginal
 
     LOGINFO(OSS() << "New point x=" << newPoint << " f(x)=" << newValue << " evaluations=" << evaluationNumber);
 
@@ -379,9 +375,12 @@ void EfficientGlobalOptimization::run()
 
     if (hasNoise)
     {
-      if (!(newOutput[1] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
-      noise.add(newOutput[1]);
+      const Point newNoise(metamodelNoise_(newPoint));
+      if (!(newNoise[0] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
+      noise.add(newNoise[0]);
     }
+
+    ++ iterationNumber;
 
     // callbacks
     if (progressCallback_.first)
@@ -397,10 +396,25 @@ void EfficientGlobalOptimization::run()
         LOGWARN(OSS() << "EGO was stopped by user");
       }
     }
-  }
+
+    if (evaluationNumber > 0)
+    {
+      KrigingAlgorithm algo(inputSample, outputSample, metaModelResult.getCovarianceModel(), metaModelResult.getBasisCollection());
+      LOGINFO(OSS() << "Rebuilding kriging ...");
+      algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
+      if (hasNoise)
+        algo.setNoise(noise);
+      algo.run();
+      LOGINFO(OSS() << "Rebuilding kriging - done");
+      metaModelResult = algo.getResult();
+    }
+  } // while
+
+  krigingResult_ = metaModelResult; // update krigingResult_ to take new points into account
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));
   result.setEvaluationNumber(evaluationNumber);
+  result.setIterationNumber(iterationNumber);
   setResult(result);
 }
 
@@ -420,10 +434,12 @@ String EfficientGlobalOptimization::__repr__() const
 /* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void EfficientGlobalOptimization::checkProblem(const OptimizationProblem & problem) const
 {
-  if (problem.getObjective().getOutputDimension() > 2) // 2nd marginal can be used as noise
+  if (problem.getObjective().getOutputDimension() > 1)
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
   if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " does not support constraints";
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support non continuous problems";
 }
 
 
@@ -513,7 +529,21 @@ Scalar EfficientGlobalOptimization::getAEITradeoff() const
   return aeiTradeoff_;
 }
 
+/* metamodel noise accessor */
+void EfficientGlobalOptimization::setMetamodelNoise(const Function & noiseModel)
+{
+  const UnsignedInteger dimension = getProblem().getDimension();
+  if (noiseModel.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Noise model must be of dimension " << dimension;
+  if (noiseModel.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Noise model must be 1-d";
+  metamodelNoise_ = noiseModel;
+}
 
+Function EfficientGlobalOptimization::getMetamodelNoise() const
+{
+  return metamodelNoise_;
+}
+
+/* optimization noise accessor */
 void EfficientGlobalOptimization::setNoiseModel(const Function & noiseModel)
 {
   const UnsignedInteger dimension = getProblem().getDimension();
@@ -526,6 +556,14 @@ Function EfficientGlobalOptimization::getNoiseModel() const
 {
   return noiseModel_;
 }
+
+
+/* Kriging result accessor (especially useful after run() has been called) */
+KrigingResult EfficientGlobalOptimization::getKrigingResult() const
+{
+  return krigingResult_;
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void EfficientGlobalOptimization::save(Advocate & adv) const

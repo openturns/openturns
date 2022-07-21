@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ComparisonOperator
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,7 +61,7 @@ public:
   Bool compare(const Scalar a,
                const Scalar b) const;
 
-  String __repr__() const;
+  String __repr__() const override;
 }; /* class ComparisonOperator */
 
 

@@ -2,7 +2,7 @@
 /**
  *  @brief ProcessSample Class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,6 +47,12 @@ ProcessSample::ProcessSample(const Mesh & mesh,
   // Nothing to do
 }
 
+ProcessSample::ProcessSample(const Mesh & mesh,
+                             const SampleCollection & collection)
+  : TypedInterfaceObject<ProcessSampleImplementation>(new ProcessSampleImplementation(mesh, collection))
+{
+  // Nothing to do
+}
 
 /* Parameters constructor */
 ProcessSample::ProcessSample(const ProcessSampleImplementation & implementation)
@@ -91,6 +97,24 @@ void ProcessSample::add(const Sample & values)
 {
   copyOnWrite();
   getImplementation()->add(values);
+}
+
+void ProcessSample::erase(const UnsignedInteger index)
+{
+  copyOnWrite();
+  getImplementation()->erase(index, index + 1);
+}
+
+void ProcessSample::erase(const UnsignedInteger first, const UnsignedInteger last)
+{
+  copyOnWrite();
+  getImplementation()->erase(first, last);
+}
+
+void ProcessSample::clear()
+{
+  copyOnWrite();
+  getImplementation()->clear();
 }
 
 
@@ -142,6 +166,7 @@ UnsignedInteger ProcessSample::getSize() const
   return getImplementation()->getSize();
 }
 
+/* Mean accessor */
 Field ProcessSample::computeMean() const
 {
   return getImplementation()->computeMean();
@@ -159,9 +184,74 @@ Sample ProcessSample::computeSpatialMean() const
   return getImplementation()->computeSpatialMean();
 }
 
-/*
- * Method computeQuantilePerComponent() gives the quantile per component of the sample
- */
+/* Standard deviation accessor */
+Field ProcessSample::computeStandardDeviation() const
+{
+  return getImplementation()->computeStandardDeviation();
+}
+
+/* Gives the range of the sample (by component) */
+Field ProcessSample::computeRange() const
+{
+  return getImplementation()->computeRange();
+}
+
+/* Gives the median of the sample (by component) */
+Field ProcessSample::computeMedian() const
+{
+  return getImplementation()->computeMedian();
+}
+
+/* Gives the variance of the sample (by component) */
+Field ProcessSample::computeVariance() const
+{
+  return getImplementation()->computeVariance();
+}
+
+/* Gives the skewness of the sample (by component) */
+Field ProcessSample::computeSkewness() const
+{
+  return getImplementation()->computeSkewness();
+}
+
+/* Gives the kurtosis of the sample (by component) */
+Field ProcessSample::computeKurtosis() const
+{
+  return getImplementation()->computeKurtosis();
+}
+
+/* Gives the centered moment of order k of the sample (by component) */
+Field ProcessSample::computeCenteredMoment(const UnsignedInteger k) const
+{
+  return getImplementation()->computeCenteredMoment(k);
+}
+
+/* Gives the raw moment of order k of the sample (by component) */
+Field ProcessSample::computeRawMoment(const UnsignedInteger k) const
+{
+  return getImplementation()->computeRawMoment(k);
+}
+
+/* Get the empirical CDF of the sample */
+Field ProcessSample::computeEmpiricalCDF(const Point & point,
+    const Bool tail) const
+{
+  return getImplementation()->computeEmpiricalCDF(point, tail);
+}
+
+/* Maximum accessor */
+Field ProcessSample::getMax() const
+{
+  return getImplementation()->getMax();
+}
+
+/* Minimum accessor */
+Field ProcessSample::getMin() const
+{
+  return getImplementation()->getMin();
+}
+
+/* Method computeQuantilePerComponent() gives the quantile per component of the sample */
 Field ProcessSample::computeQuantilePerComponent(const Scalar prob) const
 {
   return getImplementation()->computeQuantilePerComponent(prob);
@@ -184,12 +274,49 @@ ProcessSample ProcessSample::getMarginal(const Indices & indices) const
   return getImplementation()->getMarginal(indices);
 }
 
-/* Draw a marginal of the ProcessSample, ie the collection of all the Field marginals */
+/* Draw a marginal */
 Graph ProcessSample::drawMarginal(const UnsignedInteger index,
                                   const Bool interpolate) const
 {
   return getImplementation()->drawMarginal(index, interpolate);
 }
 
+/* Draw all marginals */
+GridLayout ProcessSample::draw(const Bool interpolate) const
+{
+  return getImplementation()->draw(interpolate);
+}
+
+/* Draw correlation between 2 marginals */
+Graph ProcessSample::drawMarginalCorrelation(const UnsignedInteger i,
+    const UnsignedInteger j) const
+{
+  return getImplementation()->drawMarginalCorrelation(i, j);
+}
+
+/* Draw correlation between all marginals */
+GridLayout ProcessSample::drawCorrelation() const
+{
+  return getImplementation()->drawCorrelation();
+}
+
+ProcessSample & ProcessSample::operator += (const Sample & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator +=(translation);
+  return *this;
+}
+
+ProcessSample & ProcessSample::operator -= (const Sample & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator -=(translation);
+  return *this;
+}
+
+Sample ProcessSample::getSampleAtVertex(const UnsignedInteger index) const
+{
+  return getImplementation()->getSampleAtVertex(index);
+}
 
 END_NAMESPACE_OPENTURNS

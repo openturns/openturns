@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Laplace distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,14 +59,14 @@ Distribution LaplaceFactory::build() const
 
 Laplace LaplaceFactory::buildAsLaplace(const Sample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Laplace distribution from an empty sample";
+  if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Laplace distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Laplace distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const UnsignedInteger size = sample.getSize();
   const Scalar mu = sample.computeMedian()[0];
   Scalar tau = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i) tau += std::abs(sample(i, 0) - mu);
   if (tau == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Laplace distribution with infinite lambda.";
-  Laplace result(size / tau, mu);
+  Laplace result(mu, size / tau);
   result.setDescription(sample.getDescription());
   return result;
 }

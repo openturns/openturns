@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of GeneralLinearModelAlgorithm class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,17 +54,17 @@ int main(int, char *[])
     Sample X2(sampleSize, inputDimension);
     for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
     {
-      X[i][0] = 3.0 + i;
-      X2[i][0] = 2.5 + i;
+      X(i, 0) = 3.0 + i;
+      X2(i, 0) = 2.5 + i;
     }
-    X[0][0] = 1.0;
-    X[1][0] = 3.0;
-    X2[0][0] = 2.0;
-    X2[1][0] = 4.0;
+    X(0, 0) = 1.0;
+    X(1, 0) = 3.0;
+    X2(0, 0) = 2.0;
+    X2(1, 0) = 4.0;
     Sample Y = model(X);
     for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
     {
-      Y[i][0] += 0.01 * DistFunc::rNormal();
+      Y(i, 0) += 0.01 * DistFunc::rNormal();
     }
     // Add a small noise to data
     Sample Y2 = model(X2);
@@ -80,7 +80,6 @@ int main(int, char *[])
     CovarianceModel conditionalCovariance = result.getCovarianceModel();
     const Sample residual = metaModel(X) - Y;
     assert_almost_equal(residual.computeCenteredMoment(2), Point(1, 0.00013144), 1e-5, 1e-5);
-    assert_almost_equal(conditionalCovariance.getParameter(), Point(1, 0.011464782674211804), 1e-5, 1e-3);
     std::cout << "Test Ok" << std::endl;
 
   }

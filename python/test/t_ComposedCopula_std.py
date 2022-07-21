@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     R = CorrelationMatrix(3)
     R[0, 1] = 0.5
     R[0, 2] = 0.25
@@ -109,13 +108,15 @@ try:
     y = [0.2]*(dim-1)
     print("conditional PDF=%.6f" % copula.computeConditionalPDF(x, y))
     print("conditional CDF=%.6f" % copula.computeConditionalCDF(x, y))
-    print("conditional quantile=%.6f" % copula.computeConditionalQuantile(x, y))
+    print("conditional quantile=%.6f" %
+          copula.computeConditionalQuantile(x, y))
     pt = Point([0.1 * i + 0.05 for i in range(dim)])
-    print("sequential conditional PDF=", copula.computeSequentialConditionalPDF(point))
+    print("sequential conditional PDF=",
+          copula.computeSequentialConditionalPDF(point))
     resCDF = copula.computeSequentialConditionalCDF(pt)
     print("sequential conditional CDF(", pt, ")=", resCDF)
-    print("sequential conditional quantile(", resCDF, ")=", copula.computeSequentialConditionalQuantile(resCDF))
-
+    print("sequential conditional quantile(", resCDF, ")=",
+          copula.computeSequentialConditionalQuantile(resCDF))
 
     # Specific to this copula
 
@@ -152,12 +153,15 @@ try:
     y = [0.2]*(dim-1)
     print("conditional PDF=%.6f" % copula.computeConditionalPDF(x, y))
     print("conditional CDF=%.6f" % copula.computeConditionalCDF(x, y))
-    print("conditional quantile=%.6f" % copula.computeConditionalQuantile(x, y))
+    print("conditional quantile=%.6f" %
+          copula.computeConditionalQuantile(x, y))
     pt = Point([0.1 * i + 0.05 for i in range(dim)])
-    print("sequential conditional PDF=", copula.computeSequentialConditionalPDF(pt))
+    print("sequential conditional PDF=",
+          copula.computeSequentialConditionalPDF(pt))
     resCDF = copula.computeSequentialConditionalCDF(pt)
     print("sequential conditional CDF(", pt, ")=", resCDF)
-    print("sequential conditional quantile(", resCDF, ")=", copula.computeSequentialConditionalQuantile(resCDF))
+    print("sequential conditional quantile(", resCDF, ")=",
+          copula.computeSequentialConditionalQuantile(resCDF))
     # Special case, independent copula
     collection[0] = SklarCopula(Normal(2))
     collection[1] = IndependentCopula(2)
@@ -170,12 +174,15 @@ try:
     y = [0.2]*(dim-1)
     print("conditional PDF=%.6f" % copula.computeConditionalPDF(x, y))
     print("conditional CDF=%.6f" % copula.computeConditionalCDF(x, y))
-    print("conditional quantile=%.6f" % copula.computeConditionalQuantile(x, y))
+    print("conditional quantile=%.6f" %
+          copula.computeConditionalQuantile(x, y))
     pt = Point([0.1 * i + 0.05 for i in range(dim)])
-    print("sequential conditional PDF=", copula.computeSequentialConditionalPDF(pt))
+    print("sequential conditional PDF=",
+          copula.computeSequentialConditionalPDF(pt))
     resCDF = copula.computeSequentialConditionalCDF(pt)
     print("sequential conditional CDF(", pt, ")=", resCDF)
-    print("sequential conditional quantile(", resCDF, ")=", copula.computeSequentialConditionalQuantile(resCDF))
+    print("sequential conditional quantile(", resCDF, ")=",
+          copula.computeSequentialConditionalQuantile(resCDF))
     # Special case, single contributor
     collection = [SklarCopula(Student(
         3.0, Point(2, 1.0), Point(2, 3.0), CorrelationMatrix(2)))]
@@ -187,22 +194,15 @@ try:
     y = [0.2]*(dim-1)
     print("conditional PDF=%.6f" % copula.computeConditionalPDF(x, y))
     print("conditional CDF=%.6f" % copula.computeConditionalCDF(x, y))
-    print("conditional quantile=%.6f" % copula.computeConditionalQuantile(x, y))
+    print("conditional quantile=%.6f" %
+          copula.computeConditionalQuantile(x, y))
     pt = Point([0.1 * i + 0.05 for i in range(dim)])
-    print("sequential conditional PDF=", copula.computeSequentialConditionalPDF(pt))
+    print("sequential conditional PDF=",
+          copula.computeSequentialConditionalPDF(pt))
     resCDF = copula.computeSequentialConditionalCDF(pt)
     print("sequential conditional CDF(", pt, ")=", resCDF)
-    print("sequential conditional quantile(", resCDF, ")=", copula.computeSequentialConditionalQuantile(resCDF))
-
-    # test CopulaCollection
-    copulas = CopulaCollection(
-        [FrankCopula(3.0), NormalCopula(R), ClaytonCopula(2.0)])
-    test_distribution = ComposedDistribution([Normal(), Normal()])
-    sample_size = 10
-    sample = test_distribution.getSample(sample_size)
-    myEstimatedDist = KernelSmoothing().build(sample)
-    sklarCopula = myEstimatedDist.getCopula()
-    copulas.add(sklarCopula)
+    print("sequential conditional quantile(", resCDF, ")=",
+          copula.computeSequentialConditionalQuantile(resCDF))
 
     # test ComposedCopula.getMarginal in reverse
     copula = ComposedCopula([IndependentCopula(2), NormalCopula(2)])

@@ -1,17 +1,21 @@
 %feature("docstring") OT::NormalCopulaFactory
 "Normal Copula factory.
 
-Available constructor:
-    NormalCopulaFactory()
-
 We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
 
-The correlation matrix :math:`\mat{R}` is estimated by:
+The correlation matrix :math:`\mat{R}_n` is first estimated using Kendall's tau by:
 
 .. math::
 
-    R_{ij} = sin(\frac{\pi}{2}\Hat{\tau}_{n,ij})_{\strut}
+    R_{n,ij} = \sin\left(\frac{\pi}{2}\Hat{\tau}_{n,ij}\right)_{\strut}
 
+and if it fails, using Spearman's correlation:
+
+.. math::
+
+    R_{n,ij} = 2\sin\left(\frac{\pi}{6}\Hat{\rho}_{n,ij}\right)_{\strut}
+
+    
 See also
 --------
 DistributionFactory, NormalCopula"

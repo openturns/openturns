@@ -2,7 +2,7 @@
 /**
  *  @brief Sampling in standard space quadrants
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -169,7 +169,7 @@ void QuadrantSampling::updateRotation()
       // fk -= SUM <ek, fi> fi
       for (UnsignedInteger i = 0; i < k; ++ i)
       {
-        f[k] -= dot(f[k], f[i]) * f[i];
+        f[k] -= Point(f[k]).dot(f[i]) * f[i];
       }
       // fk = fk / ||fk||
       f[k] /= Point(f[k]).norm();

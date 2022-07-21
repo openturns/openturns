@@ -3,7 +3,7 @@
  *  @brief Field to point function allowing to perform the projection of a
  *         field over a Karhunen-Loeve basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,11 +40,11 @@ KarhunenLoeveProjection::KarhunenLoeveProjection()
 
 /* Parameter constructor */
 KarhunenLoeveProjection::KarhunenLoeveProjection(const KarhunenLoeveResult & result)
-  : FieldToPointFunctionImplementation(result.getMesh(), result.getModesAsProcessSample().getDimension(), result.getEigenValues().getSize())
+  : FieldToPointFunctionImplementation(result.getMesh(), result.getModesAsProcessSample().getDimension(), result.getEigenvalues().getSize())
   , result_(result)
 {
   // Set the description
-  const UnsignedInteger size = result_.getEigenValues().getSize();
+  const UnsignedInteger size = result_.getEigenvalues().getSize();
   if (size == 0) setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
   else setInputDescription(result_.getModesAsProcessSample()[0].getDescription());
   setOutputDescription(Description::BuildDefault(getOutputDimension(), "xi"));
@@ -83,7 +83,7 @@ String KarhunenLoeveProjection::__str__(const String & ) const
 /* Get the i-th marginal function */
 KarhunenLoeveProjection::Implementation KarhunenLoeveProjection::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << "and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 

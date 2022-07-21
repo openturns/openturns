@@ -358,3 +358,25 @@ Examples
 >>> x = ot.Point([1.0, 2.0, 3.0])
 >>> print(x.normalizeSquare())
 [0.0714286,0.285714,0.642857]"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::dot
+"Compute the scalar product.
+
+Parameters
+----------
+point : sequence of float
+    Scalar product second argument
+
+Returns
+-------
+dot : float
+    Scalar product
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> prod = x.dot([4, 5, 6])"

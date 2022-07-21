@@ -2,7 +2,7 @@
 /**
  *  @brief Point implements the classical mathematical point
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,7 +36,7 @@ static const Factory<Point> Factory_Point;
 
 /* Default constructor */
 Point::Point()
-  : PersistentCollection<Scalar>() //,
+  : InternalType() //,
     // p_description_()
 {
   // Nothing to do
@@ -45,7 +45,7 @@ Point::Point()
 /* Constructor with size */
 Point::Point(const UnsignedInteger size,
              const Scalar value)
-  : PersistentCollection<Scalar>(size, value)
+  : InternalType(size, value)
 {
   // Nothing to do
 }
@@ -53,11 +53,16 @@ Point::Point(const UnsignedInteger size,
 
 /* Constructor from a collection */
 Point::Point(const Collection<Scalar> & coll)
-  : PersistentCollection<Scalar>(coll)
+  : InternalType(coll)
 {
   // Nothing to do
 }
 
+Point::Point(std::initializer_list<Scalar> initList)
+  : InternalType(initList)
+{
+  // Nothing to do
+}
 
 /* Virtual constructor */
 Point * Point::clone() const
@@ -65,15 +70,6 @@ Point * Point::clone() const
   return new Point(*this);
 }
 
-void Point::setDescription(const Description & )
-{
-  // Nothing to do
-}
-
-Description Point::getDescription() const
-{
-  return Description( getDimension() );
-}
 
 /* Set small elements to zero */
 Point Point::clean(const Scalar threshold) const
@@ -235,6 +231,14 @@ Point operator - (const Point & lhs, const Point & rhs)
 }
 
 
+/* Unary minus operator */
+Point operator - (const Point & lhs)
+{
+  double alpha = -1.0;
+  Point result(lhs * alpha);
+  return result;
+}
+
 
 /* In-place subtraction operator */
 Point & Point::operator -=(const Point & other)
@@ -296,7 +300,7 @@ Point & Point::operator *=(const Scalar scalar)
 Point operator /(const Point & point,
                  const Scalar scalar)
 {
-  if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
+  if (!(scalar > 0.0 || scalar < 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = point.getDimension();
   double alpha = 1.0 / scalar;
   Point result(point);
@@ -309,7 +313,7 @@ Point operator /(const Point & point,
 /*  In-place division operator */
 Point & Point::operator /=(const Scalar scalar)
 {
-  if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
+  if (!(scalar > 0.0 || scalar < 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = getDimension();
   double alpha = 1.0 / scalar;
   int one = 1;
@@ -320,10 +324,9 @@ Point & Point::operator /=(const Scalar scalar)
 
 
 /* Dot product operator */
-Scalar dot(const Point & lhs,
-           const Point & rhs)
+Scalar Point::dot(const Point & rhs) const
 {
-  int n = lhs.getDimension();
+  int n = getDimension();
   if (n != (int)rhs.getDimension())
     throw InvalidArgumentException(HERE)
         << "Points of different dimensions cannot be added (LHS dimension = "
@@ -333,7 +336,7 @@ Scalar dot(const Point & lhs,
 
   int one = 1;
   if (n > 0)
-    return ddot_(&n, const_cast<double*>(&lhs[0]), &one, const_cast<double*>(&rhs[0]), &one);
+    return ddot_(&n, const_cast<double*>(&(*this)[0]), &one, const_cast<double*>(&rhs[0]), &one);
   else
     return 0.0;
 }
@@ -392,7 +395,7 @@ Scalar Point::normInf() const
 /*  Norm^2 */
 Scalar Point::normSquare() const
 {
-  return dot(*this, *this);
+  return dot(*this);
 }
 
 
@@ -400,7 +403,7 @@ Scalar Point::normSquare() const
 Point Point::normalize() const
 {
   const Scalar theNorm = norm();
-  if (theNorm == 0.0) throw InternalException(HERE) << "Error: cannot normalize a null vector";
+  if (!(theNorm > 0.0)) throw InternalException(HERE) << "Error: cannot normalize a null vector";
   return (*this) / theNorm;
 }
 
@@ -408,7 +411,7 @@ Point Point::normalize() const
 Point Point::normalizeSquare() const
 {
   const Scalar theNormSquare = normSquare();
-  if (theNormSquare == 0.0) throw InternalException(HERE) << "Error: cannot square normalize a null vector";
+  if (!(theNormSquare > 0.0)) throw InternalException(HERE) << "Error: cannot square normalize a null vector";
   Point result(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i) result[i] = pow((*this)[i], 2) / theNormSquare;
   return result;
@@ -417,14 +420,14 @@ Point Point::normalizeSquare() const
 /* Method save() stores the object through the StorageManager */
 void Point::save(Advocate & adv) const
 {
-  PersistentCollection<Scalar>::save(adv);
+  InternalType::save(adv);
 }
 
 
 /* Method load() reloads the object from the StorageManager */
 void Point::load(Advocate & adv)
 {
-  PersistentCollection<Scalar>::load(adv);
+  InternalType::load(adv);
 }
 
 

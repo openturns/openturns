@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of MonteCarlo class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,7 +59,7 @@ int main(int, char *[])
     CompositeRandomVector output(fh, vect);
 
     /* We create an Event from this RandomVector */
-    Event myEvent(output, Less(), -3.0);
+    ThresholdEvent myEvent(output, Less(), -3.0);
 
     /* We create a Monte Carlo algorithm */
     MonteCarloExperiment experiment;
@@ -76,7 +76,7 @@ int main(int, char *[])
     ProbabilitySimulationResult result(myAlgo.getResult());
     fullprint << "MonteCarlo result=" << result << std::endl;
 
-    /* Compute sensitivity informations */
+    /* Compute sensitivity information */
     fullprint << "mean point in event domain=" << result.getMeanPointInEventDomain() << std::endl;
     fullprint << "importance factors=" << result.getImportanceFactors() << std::endl;
 

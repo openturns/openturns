@@ -2,7 +2,7 @@
 /**
  *  @brief The class IdFactory builds unique Ids for all Objects
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,8 +30,8 @@ BEGIN_NAMESPACE_OPENTURNS
 /* Id accessor */
 Id IdFactory::BuildId()
 {
-  static AtomicInt IdFactory_NextId;
-  return IdFactory_NextId.fetchAndAdd( 1 );
+  static AtomicInt IdFactory_NextId = 1;
+  return IdFactory_NextId.fetchAndAdd(1);
 }
 
 END_NAMESPACE_OPENTURNS

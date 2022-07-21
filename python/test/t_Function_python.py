@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
-from openturns import *
+import openturns as ot
 import sys
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
 
-class FUNC(OpenTURNSPythonFunction):
+class FUNC(ot.OpenTURNSPythonFunction):
 
     def __init__(self):
         super(FUNC, self).__init__(2, 1)
@@ -30,15 +29,15 @@ print((F(((10, 5), (6, 7)))))
 
 
 # Instance creation
-myFunc = Function(F)
+myFunc = ot.Function(F)
 
 # Copy constructor
-newFunc = Function(myFunc)
+newFunc = ot.Function(myFunc)
 
 print(('myFunc input dimension= ' + str(myFunc.getInputDimension())))
 print(('myFunc output dimension= ' + str(myFunc.getOutputDimension())))
 
-inPt = Point(2, 2.)
+inPt = ot.Point(2, 2.)
 print((repr(inPt)))
 
 outPt = myFunc(inPt)
@@ -47,9 +46,9 @@ print((repr(outPt)))
 outPt = myFunc((10., 11.))
 print((repr(outPt)))
 
-inSample = Sample(10, 2)
+inSample = ot.Sample(10, 2)
 for i in range(10):
-    inSample[i] = Point((i, i))
+    inSample[i] = ot.Point((i, i))
 print((repr(inSample)))
 
 outSample = myFunc(inSample)
@@ -77,64 +76,66 @@ def a_exec_sample(Xs):
 a_sample = ((100., 100.), (101., 101.), (102., 102.))
 
 print('exec')
-myFunc = PythonFunction(2, 1, a_exec)
+myFunc = ot.PythonFunction(2, 1, a_exec)
 outSample = myFunc(a_sample)
 print(outSample)
 
 print('exec + exec_sample')
-myFunc = PythonFunction(2, 1, a_exec, a_exec_sample)
+myFunc = ot.PythonFunction(2, 1, a_exec, a_exec_sample)
 outSample = myFunc(a_sample)
 print(outSample)
 
 print('exec_sample only on a point')
-myFunc = PythonFunction(2, 1, func_sample=a_exec_sample)
+myFunc = ot.PythonFunction(2, 1, func_sample=a_exec_sample)
 outSample = myFunc([100., 100.])
 print(outSample)
 
 print('exec_sample only on a sample')
-myFunc = PythonFunction(2, 1, func_sample=a_exec_sample)
+myFunc = ot.PythonFunction(2, 1, func_sample=a_exec_sample)
 outSample = myFunc(a_sample)
 print(outSample)
 
+# multiprocessing spawn method on win (& osx for py>38) duplicates the output
+cpus = -1 if sys.platform.startswith('linux') else None
 print('distributed exec only on a point')
-myFunc = PythonFunction(
-    2, 1, a_exec, n_cpus=None if sys.platform.startswith('win') else -1)
+myFunc = ot.PythonFunction(
+    2, 1, a_exec, n_cpus=cpus)
 outSample = myFunc([100., 100.])
 print(outSample)
 
 print('distributed exec only on a sample')
-myFunc = PythonFunction(
-    2, 1, a_exec, n_cpus=None if sys.platform.startswith('win') else -1)
+myFunc = ot.PythonFunction(
+    2, 1, a_exec, n_cpus=cpus)
 outSample = myFunc(a_sample)
 print(outSample)
 
 
 def a_grad(X):
-    # wrong but allows to verify
+    # wrong but allows one to verify
     dY = [[1.], [-1.]]
     return dY
 
 
 print('gradient')
-myFunc = PythonFunction(2, 1, a_exec, gradient=a_grad)
+myFunc = ot.PythonFunction(2, 1, a_exec, gradient=a_grad)
 grad = myFunc.gradient([100., 100.])
 print(grad)
 
 
 def a_hess(X):
-    # wrong but allows to verify
+    # wrong but allows one to verify
     d2Y = [[[0.1], [0.3]], [[0.3], [0.1]]]
     return d2Y
 
 
 print('hessian')
-myFunc = PythonFunction(2, 1, a_exec, hessian=a_hess)
+myFunc = ot.PythonFunction(2, 1, a_exec, hessian=a_hess)
 hess = myFunc.hessian([100., 100.])
 print(hess)
 
 print('no func')
 try:
-    myFunc = PythonFunction(2, 1)
+    myFunc = ot.PythonFunction(2, 1)
     outSample = myFunc(a_sample)
 except:
     # must raise exception
@@ -153,9 +154,9 @@ def a_exec(X):
 
 
 for n in range(2):
-    myFunc = PythonFunction(1, 1, a_exec)
+    myFunc = ot.PythonFunction(1, 1, a_exec)
     try:
-        X = Point(1, n)
+        X = ot.Point(1, n)
         myFunc(X)
     except Exception as exc:
         # print exc
@@ -167,10 +168,15 @@ def a_exec(X):
     return [X[0] + X[1]]
 
 
-myFunc = PythonFunction(2, 1, a_exec)
+myFunc = ot.PythonFunction(2, 1, a_exec)
 print('index check: ', end='')
 try:
     myFunc([5, 6])
     print('fail')
 except RuntimeError:
     print('ok')
+
+f = ot.PythonFunction(0, 3, lambda x: [42.0]*3)
+x = []
+y = f(x)
+print('y=', y)

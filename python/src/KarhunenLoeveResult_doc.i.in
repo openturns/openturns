@@ -6,8 +6,12 @@ OT_KarhunenLoeveResult_doc
 OT_KarhunenLoeveResult_getThreshold_doc
 %feature("docstring") OT::KarhunenLoeveResult::getCovarianceModel
 OT_KarhunenLoeveResult_getCovarianceModel_doc
-%feature("docstring") OT::KarhunenLoeveResult::getEigenValues
-OT_KarhunenLoeveResult_getEigenValues_doc
+%feature("docstring") OT::KarhunenLoeveResult::getEigenvalues
+OT_KarhunenLoeveResult_getEigenvalues_doc
+%feature("docstring") OT::KarhunenLoeveResult::drawEigenvalues
+OT_KarhunenLoeveResult_drawEigenvalues_doc
+%feature("docstring") OT::KarhunenLoeveResult::drawCumulatedEigenvaluesRemainder
+OT_KarhunenLoeveResult_drawCumulatedEigenvaluesRemainder_doc
 %feature("docstring") OT::KarhunenLoeveResult::getModes
 OT_KarhunenLoeveResult_getModes_doc
 %feature("docstring") OT::KarhunenLoeveResult::getScaledModes
@@ -18,6 +22,8 @@ OT_KarhunenLoeveResult_getModesAsProcessSample_doc
 OT_KarhunenLoeveResult_getScaledModesAsProcessSample_doc
 %feature("docstring") OT::KarhunenLoeveResult::getMesh
 OT_KarhunenLoeveResult_getMesh_doc
+%feature("docstring") OT::KarhunenLoeveResult::getSelectionRatio
+OT_KarhunenLoeveResult_getSelectionRatio_doc
 %feature("docstring") OT::KarhunenLoeveResult::getProjectionMatrix
 OT_KarhunenLoeveResult_getProjectionMatrix_doc
 %feature("docstring") OT::KarhunenLoeveResult::project

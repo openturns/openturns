@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for metamodel validation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,6 +25,9 @@
 #include "openturns/HistogramFactory.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/BernsteinCopulaFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,12 +38,6 @@ static const Factory<MetaModelValidation> Factory_MetaModelValidation;
 /* Default constructor */
 MetaModelValidation::MetaModelValidation()
   : PersistentObject()
-  , inputSample_()
-  , outputSample_()
-  , metaModel_()
-  , isInitialized_(false)
-  , residual_()
-  , q2_()
 {
   // Nothing to do
 }
@@ -53,25 +50,16 @@ MetaModelValidation::MetaModelValidation(const Sample & inputSample,
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , metaModel_(metaModel)
-  , isInitialized_(false)
-  , residual_()
-  , q2_()
 {
   if (inputSample_.getSize() != outputSample_.getSize())
-    throw InvalidArgumentException(HERE) << "Input & output samples have different size."
-                                         << " Input size = " << inputSample_.getSize()
-                                         << ", output size = " << outputSample_.getSize();
-  if (outputSample_.getDimension() != 1)
-    throw InvalidArgumentException(HERE) << "Output sample should be of dimension 1";
-
+    throw InvalidArgumentException(HERE) << "Input sample size (" << inputSample_.getSize() << ")"
+                                         << " should match output sample size (" << outputSample_.getSize() << ")";
   if (inputSample_.getDimension() != metaModel_.getInputDimension())
-    throw InvalidArgumentException(HERE) << "Input sample have different size from metamodel."
-                                         << " Input sample dimension = " << inputSample_.getDimension()
-                                         << ", metamodel input dimension = " << metaModel_.getInputDimension();
-
-  if (metaModel_.getOutputDimension() != 1)
-    throw InvalidArgumentException(HERE) << "Metamodel output dimension should be 1. Here, dim = " << metaModel_.getOutputDimension();
-
+    throw InvalidArgumentException(HERE) << "Metamodel input dimension (" << metaModel_.getInputDimension() << ")"
+                                         <<  " should match input sample dimension (" << inputSample_.getDimension() << ")";
+  if (outputSample_.getDimension() != metaModel_.getOutputDimension())
+    throw InvalidArgumentException(HERE) << "Metamodel output dimension (" << metaModel_.getOutputDimension() << ")"
+                                         <<  " should match output sample dimension (" << outputSample_.getDimension() << ")";
 }
 
 /* Virtual constructor */
@@ -100,7 +88,16 @@ void MetaModelValidation::initialize() const
   // From this, it derives also the predictive factor i.e. 1 - RSS/SS,
   // RSS = Residual Sum of Squares, SS = Sum of Squares
   residual_ = outputSample_ - metaModel_(inputSample_);
-  q2_ = 1.0 - residual_.computeRawMoment(2)[0] / outputSample_.computeCenteredMoment(2)[0];
+
+  const UnsignedInteger outputDimension = outputSample_.getDimension();
+  q2_ = Point(outputDimension, -1.0);
+  const Point residualRawMoment2(residual_.computeRawMoment(2));
+  const Point sampleVariance(outputSample_.computeCenteredMoment(2));
+  for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+  {
+    if (std::abs(sampleVariance[j]) > SpecFunc::ScalarEpsilon)
+      q2_[j] = 1.0 - residualRawMoment2[j] / sampleVariance[j];
+  }
   isInitialized_ = true;
 }
 
@@ -114,7 +111,7 @@ Sample MetaModelValidation::getOutputSample() const
   return outputSample_;
 }
 
-Scalar MetaModelValidation::computePredictivityFactor() const
+Point MetaModelValidation::computePredictivityFactor() const
 {
   if (!isInitialized_) initialize();
   return q2_;
@@ -133,28 +130,48 @@ Distribution MetaModelValidation::getResidualDistribution(const Bool smooth) con
   if (!isInitialized_) initialize();
   if (!smooth)
   {
-    return HistogramFactory().build(residual_);
+    const UnsignedInteger dimension = residual_.getDimension();
+    ComposedDistribution::DistributionCollection coll(dimension);
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+      coll[j] = HistogramFactory().build(residual_.getMarginal(j));
+    // Estimate a copula only if dimension>1
+    if (dimension > 1)
+      return ComposedDistribution(coll, BernsteinCopulaFactory().build(residual_));
+    return coll[0];
   }
   return KernelSmoothing().build(residual_);
 }
 
 /* Draw model vs metamodel validation graph */
-Graph MetaModelValidation::drawValidation() const
+GridLayout MetaModelValidation::drawValidation() const
 {
   // Build the first drawable
+  const UnsignedInteger outputDimension = outputSample_.getDimension();
   const Sample yhat = metaModel_(inputSample_);
-  Curve curve(outputSample_, outputSample_);
-  curve.setColor("blue");
-  curve.setLegend("Model");
-  Cloud cloud(outputSample_, yhat);
-  // set color
-  cloud.setColor("red");
-  cloud.setLegend("MetaModel");
-  Graph graph("Metamodel validation", "model", "metamodel", true, "bottomright");
-  // Add drawables
-  graph.add(curve);
-  graph.add(cloud);
-  return graph;
+  Point minS(outputSample_.getMin());
+  Point maxS(outputSample_.getMax());
+  GridLayout grid(1, outputDimension);
+  for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+  {
+    Graph graph("", OSS() << "model " << j, j == 0 ? "metamodel" : "", true);
+
+    // diagonal
+    Sample diagonalPoints(2, 2);
+    diagonalPoints[0] = Point(2, minS[j]);
+    diagonalPoints[1] = Point(2, maxS[j]);
+    Curve diagonal(diagonalPoints);
+    diagonal.setColor("red");
+    graph.add(diagonal);
+
+    // points
+    Cloud cloud(outputSample_.getMarginal(j), yhat.getMarginal(j));
+    cloud.setColor("blue");
+    graph.add(cloud);
+
+    grid.setGraph(0, j, graph);
+  }
+  grid.setTitle(OSS() << "Metamodel validation - n = " << outputSample_.getSize());
+  return grid;
 }
 
 /* Method save() stores the object through the StorageManager */

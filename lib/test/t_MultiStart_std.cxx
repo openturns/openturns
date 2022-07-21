@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class NLopt for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,18 +24,6 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printPoint(const Point & point, const UnsignedInteger digits)
-{
-  OSS oss;
-  oss << "[";
-  Scalar eps = pow(0.1, 1.0 * digits);
-  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
-  {
-    oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
-  }
-  oss << "]";
-  return oss;
-}
 
 int main(int, char *[])
 {
@@ -64,19 +52,33 @@ int main(int, char *[])
     solver.setStartingPoint(startingPoint);
 
     // run locally
-    OptimizationAlgorithm algo = solver;
-    algo.run();
-    OptimizationResult result(algo.getResult());
-    fullprint << "local search x*=" << result.getOptimalPoint() << " f(x*)=" << result.getOptimalValue() << std::endl;
+    solver.run();
+    OptimizationResult result(solver.getResult());
+    const Point localOptimalPoint = {0.296446, 0.320196};
+    Scalar localOptimalValue = -0.0649359;
+    assert_almost_equal(result.getOptimalPoint(), localOptimalPoint, 1e-5, 0.0);
+    assert_almost_equal(result.getOptimalValue()[0], localOptimalValue, 1e-5, 0.0);
+
 
     // multistart
     Normal distribution(dim);
-    LHSExperiment experiment(distribution, 20);
-    Sample startingPoints(experiment.generate());
-    algo = MultiStart(solver, startingPoints);
+    const UnsignedInteger size = 20;
+    LHSExperiment experiment(distribution, size);
+    Sample startingSample(experiment.generate());
+    MultiStart algo(solver, startingSample);
+    algo.setMaximumEvaluationNumber(100);
     algo.run();
     result = algo.getResult();
-    fullprint << "multistart x*=" << result.getOptimalPoint() << " f(x*)=" << result.getOptimalValue() << std::endl;
+    const Point trueOptimalPoint = {0.228279, -1.62553};
+    Scalar trueOptimalValue = -6.55113;
+    assert_almost_equal(result.getOptimalPoint(), trueOptimalPoint, 1e-5, 0.0);
+    assert_almost_equal(result.getOptimalValue()[0], trueOptimalValue, 1e-5, 0.0);
+    fullprint << "intermediate results=" << algo.getResultCollection() << std::endl;
+    // Deactivate intermediate results history
+    algo = MultiStart(solver, startingSample);
+    algo.setKeepResults(false);
+    algo.run();
+    fullprint << "intermediate results=" << algo.getResultCollection() << std::endl;
   }
   catch (TestFailed & ex)
   {

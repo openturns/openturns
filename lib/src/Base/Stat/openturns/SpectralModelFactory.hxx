@@ -2,7 +2,7 @@
 /**
  *  @brief Top-level class for all spectral model factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,9 +52,6 @@ public:
   SpectralModelFactory(SpectralModelFactoryImplementation * p_implementation);
 #endif
 
-  /** Virtual constructor */
-  virtual  SpectralModelFactory * clone() const;
-
   /** FFT algorithm accessor */
   FFT getFFTAlgorithm() const;
 
@@ -62,11 +59,11 @@ public:
   void setFFTAlgorithm(FFT & fft);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
 
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /* Here is the interface that all derived class must implement */
   /** Build a a spectral model based on a sample */

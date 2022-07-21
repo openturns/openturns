@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ExtremeValueCopula for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 2;
     ExtremeValueCopula copula(SymbolicFunction("t", "(t-0.5)^2+0.75"));
     copula.setName("an extreme value copula");
@@ -74,7 +74,6 @@ int main(int, char *[])
     Scalar pointCDF = copula.computeCDF( point );
     fullprint << "point= " << point
               << " ddf=" << pointDDF
-              << " ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point)
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;
@@ -122,7 +121,7 @@ int main(int, char *[])
     // Extract the marginals
     for (UnsignedInteger i = 0; i < dim; i++)
     {
-      Copula margin(copula.getMarginal(i));
+      Distribution margin(copula.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;
       fullprint << "margin PDF=" << margin.computePDF(Point(1, 0.25)) << std::endl;
       fullprint << "margin CDF=" << margin.computeCDF(Point(1, 0.25)) << std::endl;
@@ -135,7 +134,7 @@ int main(int, char *[])
     indices[0] = 1;
     indices[1] = 0;
     fullprint << "indices=" << indices << std::endl;
-    Copula margins(copula.getMarginal(indices));
+    Distribution margins(copula.getMarginal(indices));
     fullprint << "margins=" << margins << std::endl;
     fullprint << "margins PDF=" << margins.computePDF(Point(2, 0.25)) << std::endl;
     fullprint << "margins CDF=" << margins.computeCDF(Point(2, 0.25)) << std::endl;

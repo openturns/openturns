@@ -2,7 +2,7 @@
 /**
  *  @brief Tensor implements the classical mathematical tensor
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -77,10 +77,10 @@ public:
   Tensor clean(const Scalar & threshold) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 #ifndef SWIG
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
@@ -117,11 +117,10 @@ public:
   /** Empty returns true if there is no element in the tensor */
   Bool isEmpty() const;
 
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Scalar * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
-  UnsignedInteger __stride__ (UnsignedInteger dim) const;
+  /** Low-level data access */
+  const Scalar * data() const;
+  UnsignedInteger elementSize() const;
+  UnsignedInteger stride(UnsignedInteger dim) const;
 
 protected:
 

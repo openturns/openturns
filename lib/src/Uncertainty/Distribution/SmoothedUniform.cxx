@@ -2,7 +2,7 @@
 /**
  *  @brief The SmoothedUniform distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -157,8 +157,8 @@ Scalar SmoothedUniform::computeCDF(const Point & point) const
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
-  const Scalar phiAX = SpecFunc::ISQRT2PI * std::exp(-0.5 * ax * ax);
-  const Scalar phiBX = SpecFunc::ISQRT2PI * std::exp(-0.5 * bx * bx);
+  const Scalar phiAX = DistFunc::dNormal(ax);
+  const Scalar phiBX = DistFunc::dNormal(bx);
   const Scalar expPart = phiAX - phiBX;
   const Scalar PhiAX = DistFunc::pNormal(ax);
   const Scalar PhiBX = DistFunc::pNormal(bx);
@@ -174,9 +174,9 @@ Scalar SmoothedUniform::computeComplementaryCDF(const Point & point) const
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
-  const Scalar phiAX = std::exp(-0.5 * ax * ax);
-  const Scalar phiBX = std::exp(-0.5 * bx * bx);
-  const Scalar expPart = SpecFunc::ISQRT2PI * (phiAX - phiBX);
+  const Scalar phiAX = DistFunc::dNormal(ax);
+  const Scalar phiBX = DistFunc::dNormal(bx);
+  const Scalar expPart = phiAX - phiBX;
   const Scalar PhiAX = DistFunc::pNormal(ax);
   const Scalar PhiBX = DistFunc::pNormal(bx);
   const Scalar phiPart = PhiAX * ax - PhiBX * bx;
@@ -207,8 +207,8 @@ Point SmoothedUniform::computePDFGradient(const Point & point) const
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
-  const Scalar phiAX = SpecFunc::ISQRT2PI * std::exp(-0.5 * ax * ax);
-  const Scalar phiBX = SpecFunc::ISQRT2PI * std::exp(-0.5 * bx * bx);
+  const Scalar phiAX = DistFunc::dNormal(ax);
+  const Scalar phiBX = DistFunc::dNormal(bx);
   const Scalar PhiAX = DistFunc::pNormal(ax);
   const Scalar PhiBX = DistFunc::pNormal(bx);
   Point pdfGradient(3, 0.0);
@@ -227,8 +227,8 @@ Point SmoothedUniform::computeCDFGradient(const Point & point) const
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
-  const Scalar phiAX = SpecFunc::ISQRT2PI * std::exp(-0.5 * ax * ax);
-  const Scalar phiBX = SpecFunc::ISQRT2PI * std::exp(-0.5 * bx * bx);
+  const Scalar phiAX = DistFunc::dNormal(ax);
+  const Scalar phiBX = DistFunc::dNormal(bx);
   const Scalar PhiAX = DistFunc::pNormal(ax);
   const Scalar PhiBX = DistFunc::pNormal(bx);
   Point cdfGradient(3, 0.0);
@@ -256,8 +256,8 @@ Scalar SmoothedUniform::computeScalarQuantile(const Scalar prob,
   {
     const Scalar ax = (a_ - x) / sigma_;
     const Scalar bx = (b_ - x) / sigma_;
-    const Scalar phiAX = SpecFunc::ISQRT2PI * std::exp(-0.5 * ax * ax);
-    const Scalar phiBX = SpecFunc::ISQRT2PI * std::exp(-0.5 * bx * bx);
+    const Scalar phiAX = DistFunc::dNormal(ax);
+    const Scalar phiBX = DistFunc::dNormal(bx);
     const Scalar PhiBX = DistFunc::pNormal(bx);
     const Scalar PhiAX = DistFunc::pNormal(ax);
     const Scalar pdf = (PhiBX - PhiAX) / ba;
@@ -349,6 +349,20 @@ Description SmoothedUniform::getParameterDescription() const
   description[1] = "b";
   description[2] = "sigma";
   return description;
+}
+
+SmoothedUniform::PointWithDescriptionCollection SmoothedUniform::getParametersCollection() const
+{
+  PointWithDescription parameter(getParameter());
+  parameter.setDescription(getParameterDescription());
+  parameter.setName(getName());
+  return PointWithDescriptionCollection(1, parameter);
+}
+
+void SmoothedUniform::setParametersCollection(const PointCollection & parametersCollection)
+{
+  if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Parameters must be of size 1";
+  setParameter(parametersCollection[0]);
 }
 
 /* A accessor */

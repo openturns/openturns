@@ -1,5 +1,5 @@
-Distribution  class=Gumbel name=Gumbel dimension=1 alpha=2 beta=-0.5
-Distribution  Gumbel(alpha = 2, beta = -0.5)
+Distribution  class=Gumbel name=Gumbel dimension=1 beta=0.5 gamma=-0.5
+Distribution  Gumbel(beta = 0.5, gamma = -0.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[-0.114155]
@@ -14,10 +14,10 @@ pdf     =0.094738
 pdf (FD)=0.094738
 cdf=0.951432
 ccdf=0.048568
-pdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.0876629,0.180043]
-pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.0876629,0.180043]
-cdf gradient     = class=Point name=Unnamed dimension=2 values=[0.0710535,-0.094738]
-cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[0.0710535,-0.094738]
+pdf gradient     = class=Point name=Unnamed dimension=2 values=[0.350652,0.180043]
+pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[0.350652,0.180043]
+cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.284214,-0.094738]
+cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.284214,-0.094738]
 quantile= class=Point name=Unnamed dimension=1 values=[0.985098]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-1.04859]
@@ -26,7 +26,7 @@ entropy=0.884068
 Minimum volume interval= [-1.28067, 1.08074]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.51069} with f=
-MinimumVolumeLevelSetEvaluation(Gumbel(alpha = 2, beta = -0.5))
+MinimumVolumeLevelSetEvaluation(Gumbel(beta = 0.5, gamma = -0.5))
 beta= [0.0812123]
 Bilateral confidence interval= [-1.15266, 1.33812]
 beta= [0.95]
@@ -39,11 +39,11 @@ standard deviation= class=Point name=Unnamed dimension=1 values=[0.641275]
 skewness= class=Point name=Unnamed dimension=1 values=[1.13955]
 kurtosis= class=Point name=Unnamed dimension=1 values=[5.4]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.411234]
-parameters= [class=PointWithDescription name=X0 dimension=2 description=[alpha,beta] values=[2,-0.5]]
+parameters= [class=PointWithDescription name=X0 dimension=2 description=[beta,gamma] values=[0.5,-0.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [0.577216]
 standard moment n= 2  value= [1.97811]
 standard moment n= 3  value= [5.44487]
 standard moment n= 4  value= [23.5615]
 standard moment n= 5  value= [117.839]
-Standard representative= Gumbel(alpha = 1, beta = 0)
+Standard representative= Gumbel(beta = 1, gamma = 0)

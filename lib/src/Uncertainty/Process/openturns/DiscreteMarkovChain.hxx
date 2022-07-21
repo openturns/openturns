@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements a discrete Markov chain process
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,6 +27,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/UserDefined.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -48,34 +49,34 @@ public:
 
   /** Standard constructors */
   DiscreteMarkovChain(const Distribution & origin,
-             const SquareMatrix & transition);
+                      const SquareMatrix & transition);
 
   DiscreteMarkovChain(const Distribution & origin,
-             const SquareMatrix & transition,
-             const RegularGrid & timeGrid);
+                      const SquareMatrix & transition,
+                      const RegularGrid & timeGrid);
 
   /** Constructors with fixed origin */
   DiscreteMarkovChain(const UnsignedInteger origin,
-             const SquareMatrix & transition);
+                      const SquareMatrix & transition);
 
   DiscreteMarkovChain(const UnsignedInteger origin,
-             const SquareMatrix & transition,
-             const RegularGrid & timeGrid);
-  
+                      const SquareMatrix & transition,
+                      const RegularGrid & timeGrid);
+
   /** Virtual constructor */
-  virtual DiscreteMarkovChain * clone() const;
+  DiscreteMarkovChain * clone() const override;
 
   /** String converters */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Realization accessor */
-  Field getRealization() const;
+  Field getRealization() const override;
 
   /** Continuation of the last realization on a given number of steps  */
-  using ProcessImplementation::getFuture;                                   
-  TimeSeries getFuture(const UnsignedInteger stepNumber) const;
+  using ProcessImplementation::getFuture;
+  TimeSeries getFuture(const UnsignedInteger stepNumber) const override;
 
   /** Transition matrix accessors */
   SquareMatrix getTransitionMatrix() const;
@@ -85,15 +86,21 @@ public:
   Distribution getOrigin() const;
   void setOrigin(const Distribution & origin);
   void setOrigin(const UnsignedInteger origin);
-  
+
   /** Mesh accessors */
-  void setMesh(const Mesh & mesh);
-  
+  void setMesh(const Mesh & mesh) override;
+
+  /** Stationary distribution computation */
+  UserDefined computeStationaryDistribution() const;
+
+  /** DOT export */
+  void exportToDOTFile(const FileName & filename) const;
+
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
@@ -101,7 +108,7 @@ private:
   Distribution origin_;
 
   /** The transition matr
-ix of the chain */
+  ix of the chain */
   SquareMatrix transitionMatrix_ ;
 
   /** The current position of the chain */

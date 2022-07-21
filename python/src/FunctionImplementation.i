@@ -15,5 +15,7 @@
 %ignore OT::FunctionImplementation::getUseDefaultHessianImplementation;
 %ignore OT::FunctionImplementation::setUseDefaultHessianImplementation;
 
+%ignore OT::FunctionImplementation::isParallel;
+
 %include openturns/FunctionImplementation.hxx
 namespace OT { %extend FunctionImplementation { FunctionImplementation(const FunctionImplementation & other) { return new OT::FunctionImplementation(other); } } }

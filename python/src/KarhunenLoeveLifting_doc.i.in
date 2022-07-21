@@ -1,5 +1,5 @@
 %feature("docstring") OT::KarhunenLoeveLifting
-"Function dedicated to the lift of Karhunen Loeve coefficients into a field.
+"Function dedicated to the lift of Karhunen-Loeve coefficients into a field.
 
 Parameters
 ----------
@@ -8,11 +8,11 @@ KLResult : :class:`~openturns.KarhunenLoeveResult`
 
 Notes
 -----
-The class :class:`~openturns.KarhunenLoeveLifting` is a specific function  :class:`~openturns.PointToFieldFunction` dedicated to the lift of Karhunen Loeve coefficients into a field.
+The class :class:`~openturns.KarhunenLoeveLifting` is a specific function  :class:`~openturns.PointToFieldFunction` dedicated to the lift of Karhunen-Loeve coefficients into a field.
 
 See the documentation of :class:`~openturns.KarhunenLoeveResult` to get information on the lift function.
 
-The function acts on a vector of coefficients (:class:`~openturns.Point`) to create a field associated to the Karhunen Loeve mesh (:class:`~openturns.Mesh`)."
+The function acts on a vector of coefficients (:class:`~openturns.Point`) to create a field associated to the Karhunen-Loeve mesh (:class:`~openturns.Mesh`)."
 
 // ---------------------------------------------------------------------
 

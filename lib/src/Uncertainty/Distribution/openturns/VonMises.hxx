@@ -2,7 +2,7 @@
 /**
  *  @brief The VonMises distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,44 +48,44 @@ public:
   using DistributionImplementation::operator ==;
   Bool operator ==(const VonMises & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual VonMises * clone() const;
+  VonMises * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the DDF of the distribution */
   using ContinuousDistribution::computeDDF;
-  Point computeDDF(const Point & point) const;
+  Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
   using ContinuousDistribution::computeLogPDF;
-  Scalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const override;
 
   /** Compute the entropy of the distribution */
-  Scalar computeEntropy() const;
+  Scalar computeEntropy() const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Check if the distribution is elliptical */
-  Bool isElliptical() const;
+  Bool isElliptical() const override;
 
   /* Interface specific to VonMises */
 
@@ -105,10 +105,10 @@ public:
   Scalar getCircularVariance() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
@@ -117,7 +117,7 @@ protected:
 private:
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** Update the derivative attributes */
   void update();

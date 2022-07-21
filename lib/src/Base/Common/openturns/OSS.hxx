@@ -2,7 +2,7 @@
 /**
  *  @brief The class OSS streams out objects
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -202,7 +202,7 @@ public:
 }; /* class OSS */
 
 template <typename _Tp>
-struct AllElementsPredicate : public std::unary_function<_Tp, Bool>
+struct AllElementsPredicate
 {
   Bool
   operator()(const _Tp&) const
@@ -214,7 +214,6 @@ struct AllElementsPredicate : public std::unary_function<_Tp, Bool>
 template < typename _Tp, typename _UnaryPredicate = AllElementsPredicate<_Tp>, typename _CharT = char,
            typename _Traits = std::char_traits<_CharT> >
 class OSS_iterator
-  : public std::iterator<std::output_iterator_tag, void, void, void, void>
 {
 public:
   //@{
@@ -223,6 +222,12 @@ public:
   typedef _Traits                        traits_type;
   typedef OSS                            ostream_type;
   //@}
+
+  using iterator_category = std::output_iterator_tag;
+  using value_type = void;
+  using difference_type = void;
+  using pointer = void;
+  using reference = void;
 
 private:
   ostream_type*     _M_stream;

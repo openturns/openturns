@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -12,7 +11,7 @@ try:
     discreteDistributionCollection = DistributionCollection()
     distributionCollection = DistributionCollection()
 
-    beta = Beta(2., 3., 0., 1.)
+    beta = Beta(2., 1., 0., 1.)
     distributionCollection.add(beta)
     continuousDistributionCollection.add(beta)
 
@@ -40,7 +39,7 @@ try:
     distributionCollection.add(truncatednormal)
     continuousDistributionCollection.add(truncatednormal)
 
-    student = Student(10., 10.)
+    student = Student(10., 10., 1.)
     distributionCollection.add(student)
     continuousDistributionCollection.add(student)
 
@@ -52,7 +51,7 @@ try:
     distributionCollection.add(uniform)
     continuousDistributionCollection.add(uniform)
 
-    weibull = Weibull(1., 1., 2.)
+    weibull = WeibullMin(1., 1., 2.)
     distributionCollection.add(weibull)
     continuousDistributionCollection.add(weibull)
 

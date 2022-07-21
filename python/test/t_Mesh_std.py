@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import math as m
 
@@ -29,7 +28,7 @@ print("simplices=", mesh1D.getSimplices())
 print("volume=", "%.3f" % mesh1D.getVolume())
 print("simplices volume=", mesh1D.computeSimplicesVolume())
 p = [1.3]
-print("is p=", p, " in mesh? ", mesh1Ddomain.contains(p))
+print("is p=", p, " in mesh? ", p in mesh1Ddomain)
 point = [1.8]
 print("Nearest index(", point, ")=", tree.query(point))
 simplex = enclosingSimplex.query(point)
@@ -101,3 +100,20 @@ rotation[2, 2] = 1.0
 time_grid = ot.RegularGrid(0.0, 0.2, 40963)
 mesh = ot.Mesh(time_grid)
 print(mesh.isRegular())
+
+# numerical limit testcase
+m1 = ot.IntervalMesher([1]*2).build(ot.Interval([0.0]*2, [1.0]*2))
+simplex = 0
+point = [0.8, 0.2]
+found, coordinates = m1.checkPointInSimplexWithCoordinates(point, simplex)
+assert found, "not inside"
+
+# Fix https://github.com/openturns/openturns/issues/1547
+# We force the checking
+try:
+    vertices = [[2.1], [2.8], [3.5], [4.2], [4.9], [5.6], [6.3], [7.0]]
+    simplices = [[3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]]
+    mesh = ot.Mesh(vertices, simplices, True)
+    weights = mesh.computeWeights()
+except Exception:
+    print('ok')

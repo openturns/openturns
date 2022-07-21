@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class UserDefinedStationaryCovarianceModel
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,8 +35,8 @@ int main(int, char *[])
   {
 
     /* Default constructor */
-    UserDefinedStationaryCovarianceModel myDefautModel;
-    fullprint << "myDefautModel = " << myDefautModel << std::endl;
+    UserDefinedStationaryCovarianceModel myDefaultModel;
+    fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
 
     // Default dimension parameter to evaluate the model
     const UnsignedInteger dimension = 1;
@@ -63,7 +63,7 @@ int main(int, char *[])
 
     UnsignedInteger size = 20;
     RegularGrid timeGrid(0.0, 0.1, size);
-    UserDefinedStationaryCovarianceModel::CovarianceMatrixCollection covarianceCollection(size);
+    UserDefinedStationaryCovarianceModel::SquareMatrixCollection covarianceCollection(size);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Scalar t = timeGrid.getValue(i);

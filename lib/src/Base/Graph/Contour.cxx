@@ -2,7 +2,7 @@
 /**
  *  @brief Contour class for contourchart plots
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,8 +50,8 @@ Contour::Contour(const UnsignedInteger dimX,
   , labels_(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" ))
   , drawLabels_(true)
 {
-  if (dimX < 2) throw InvalidArgumentException(HERE) << "Error: the x dimension must be greater or equal to 2";
-  if (dimY < 2) throw InvalidArgumentException(HERE) << "Error: the y dimension must be greater or equal to 2";
+  if (!(dimX >= 2)) throw InvalidArgumentException(HERE) << "Error: the x dimension must be greater or equal to 2, but is " << dimX;
+  if (!(dimY >= 2)) throw InvalidArgumentException(HERE) << "Error: the y dimension must be greater or equal to 2, but is " << dimY;
   if (dimX * dimY != data.getSize()) throw InvalidArgumentException(HERE) << "Error: the given dimensions are not compatible with the data";
   // Check data validity
   setData(data);
@@ -133,7 +133,7 @@ Point Contour::getLevels() const
 void Contour::setLevels(const Point & levels)
 {
   levels_ = levels;
-  if (levels.getDimension() != labels_.getSize()) buildDefaultLabels();
+  buildDefaultLabels();
 }
 
 /* Accessor for labels */

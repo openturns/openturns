@@ -1,0 +1,86 @@
+%define OT_IsotropicCovarianceModel_doc
+"Isotropic covariance kernel.
+
+IsotropicCovarianceModel(*oneDimensionalKernel, inputDimension*)
+
+Parameters
+----------
+oneDimensionalKernel : :class:`~openturns.CovarianceModel`
+    This kernel must be stationary.
+    Its input and output dimensions must be 1.
+inputDimension : int, :math:`n > 0`
+    Dimension :math:`n` of the input points taken by the isotropic covariance model.
+
+Notes
+-----
+Let :math:`k` be a stationary :class:`~openturns.CovarianceModel` with both input and output dimension equal to 1: :math:`k : \Rset \rightarrow \Rset`.
+
+For any positive integer :math:`n`, the corresponding :class:`~openturns.IsotropicCovarianceModel` with *inputDimension* equal to  :math:`n` is defined as the function :math:`K : \Rset^n \rightarrow \Rset` such that for any :math:`\vect{\tau} \in \Rset^n`:
+
+.. math::
+
+    K(\vect{\tau}) = k \left( \| \vect{\tau} \| \right)
+
+Usually, the one-dimensional covariance kernel :math:`k` depends on parameters (scale, amplitude, ...).
+The corresponding isotropic covariance kernel :math:`K` has the same parameters.
+
+Examples
+--------
+
+Create a 2-dimensional isotropic covariance kernel from a one-dimensional squared exponential covariance kernel.
+
+>>> import openturns as ot
+>>> inputDimension = 2
+
+The parameters of the isotropic covariance kernel are those of the one-dimensional kernel.
+
+>>> se = ot.SquaredExponential([0.5], [2.5])
+>>> iso = ot.IsotropicCovarianceModel(se, inputDimension)
+
+Alternatively, parameters can be defined after construction.
+
+>>> iso = ot.IsotropicCovarianceModel(ot.SquaredExponential(), inputDimension)
+>>> iso.setScale([0.5])
+>>> iso.setAmplitude([2.5])
+
+A copy of the underlying one-dimensional kernel can be retrieved.
+
+>>> kernel = iso.getKernel()
+
+An isotropic covariance kernel can also be directly created using a multi-dimensional covariance model.
+We only need to set all scale values to the same number.
+
+>>> alteriso = ot.SquaredExponential([0.5] * inputDimension, [2.5])
+>>> print(iso([0.7, 1.5]))
+[[ 0.0260583 ]]
+>>> print(alteriso([0.7, 1.5]))
+[[ 0.0260583 ]]
+
+The difference is that, in case parameters need to be optimized, the class :class:`~openturns.IsotropicCovarianceModel`
+enforces isotropy because it naturally only uses one scale parameter.
+
+>>> print(iso.getScale())
+[0.5]
+>>> print(alteriso.getScale())
+[0.5,0.5]
+
+See also :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_isotropic`.
+"
+
+%enddef
+%feature("docstring") OT::IsotropicCovarianceModel
+OT_IsotropicCovarianceModel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_IsotropicCovarianceModel_getKernel_doc
+"Get the underlying one-dimensional covariance kernel.
+
+Returns
+-------
+kernel : :class:`~openturns.CovarianceModel`
+    A copy of the covariance kernel with input dimension 1 from which the isotropic kernel is built."
+%enddef
+%feature("docstring") OT::IsotropicCovarianceModel::getKernel
+OT_IsotropicCovarianceModel_getKernel_doc
+

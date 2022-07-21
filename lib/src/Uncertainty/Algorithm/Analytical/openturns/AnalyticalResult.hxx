@@ -2,7 +2,7 @@
 /**
  *  @brief AnalyticalResult implements an algorithm to find the design point
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,8 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PointWithDescription.hxx"
-#include "openturns/Collection.hxx"
-#include "openturns/Event.hxx"
+#include "openturns/RandomVector.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -52,14 +51,14 @@ public:
 
   /** Standard constructor */
   AnalyticalResult(const Point & standardSpaceDesignPoint,
-                   const Event & limitStateVariable,
+                   const RandomVector & limitStateVariable,
                    const Bool isStandardPointOriginInFailureSpace);
 
   /* Default constructor (required by SWIG :-<) */
   AnalyticalResult();
 
   /** Virtual constructor */
-  virtual AnalyticalResult * clone() const;
+  AnalyticalResult * clone() const override;
 
   /** StandardSpaceDesignPoint accessor */
   Point getStandardSpaceDesignPoint() const;
@@ -71,7 +70,7 @@ public:
   Point getPhysicalSpaceDesignPoint() const;
 
   /** LimitStateVariable accessor */
-  Event getLimitStateVariable() const;
+  RandomVector getLimitStateVariable() const;
 
   /** IsStandardPointOriginInFailureSpace  accessor */
   Bool getIsStandardPointOriginInFailureSpace() const;
@@ -103,13 +102,13 @@ public:
   GraphCollection drawHasoferReliabilityIndexSensitivity(Scalar width = ResourceMap::GetAsScalar( "AnalyticalResult-DefaultWidth" )) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -154,7 +153,7 @@ private:
 
   Point    standardSpaceDesignPoint_;
   mutable Point    physicalSpaceDesignPoint_;
-  Event             limitStateVariable_;
+  RandomVector limitStateVariable_;
   Bool isStandardPointOriginInFailureSpace_;
   mutable Scalar hasoferReliabilityIndex_;
   mutable PointWithDescription importanceFactors_;
@@ -166,7 +165,6 @@ private:
   mutable Bool isAlreadyComputedClassicalImportanceFactors_;
   mutable Bool isAlreadyComputedPhysicalImportanceFactors_;
   mutable Bool isAlreadyComputedHasoferReliabilityIndexSensitivity_;
-  mutable Bool isAlreadyComputedMeanPointInStandardEventDomain_;
   OptimizationResult optimizationResult_;
 }; // class AnalyticalResult
 END_NAMESPACE_OPENTURNS

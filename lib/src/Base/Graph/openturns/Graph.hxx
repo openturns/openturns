@@ -2,7 +2,7 @@
 /**
  *  @brief Graph implements graphic devices for plotting through R
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,6 +47,7 @@ public:
   typedef GraphImplementation::DrawableCollection       DrawableCollection;
   typedef GraphImplementation::Format                   Format;
   typedef GraphImplementation::LogScale                 LogScale;
+  typedef GraphImplementation::TickLocation             TickLocation;
 
   /** Default constructor */
   explicit Graph(const String & title = "");
@@ -65,10 +66,10 @@ public:
 
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Adds a drawable instance to the collection of drawables contained in Graph */
   void add(const Drawable & aDrawable);
@@ -102,42 +103,34 @@ public:
 
   /** Hide or show x and y axes */
   void setAxes(const Bool showAxes);
-
-  /** Accessor for showAxes_ */
   Bool getAxes() const;
+
+  /** Ticks location flag accessor */
+  void setTickLocation(const TickLocation tickLocation);
+  TickLocation getTickLocation() const;
 
   /** Set log scale for x, y both or none axes */
   void setLogScale(const LogScale logScale);
-
-  /** Accessor for logScale_ */
   LogScale getLogScale() const;
 
   /** Hide or show grid */
   void setGrid(const Bool showGrid);
-
-  /** Accessor for showGrid_ */
   Bool getGrid() const;
 
   /** Grid color accessors */
   void setGridColor(const String & color);
   String getGridColor() const;
 
-  /** Accesor for xTitle */
-  String getXTitle() const;
-
   /** Accessor for xTitle */
+  String getXTitle() const;
   void setXTitle(const String & title);
 
   /** Accessor for yTitle */
   String getYTitle() const;
-
-  /** Accessor for yTitle */
   void setYTitle(const String & title);
 
-  /** Accesor for title */
+  /** Accessor for title */
   String getTitle() const;
-
-  /** Accesor for title */
   void setTitle(const String & title);
 
   /** The method that generates the graphic files */
@@ -158,8 +151,6 @@ public:
 
   /** Get the bounding box of the whole plot */
   Interval getBoundingBox() const;
-
-  /** Set the bounding box of the whole plot */
   void setBoundingBox(const Interval & boundingBox);
 
   /** Automatic bounding box accessor */
@@ -168,14 +159,10 @@ public:
 
   /** Get the legend position */
   String getLegendPosition() const;
-
-  /** Set the legend position */
   void setLegendPosition(const String & position);
 
   /** Get the legend font size */
   Scalar getLegendFontSize() const;
-
-  /** Set the legend font size */
   void setLegendFontSize(const Scalar legendFontSize);
 
   /** Check for legend position validity */

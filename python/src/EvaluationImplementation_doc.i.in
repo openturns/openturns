@@ -373,3 +373,60 @@ Returns
 -------
 is_impl : bool
     Whether the implementation is valid."
+
+// ---------------------------------------------------------------------
+
+%define OT_Evaluation_isLinear_doc
+"Accessor to the linearity of the evaluation.
+
+Returns
+-------
+linear : bool
+    *True* if the evaluation is linear, *False* otherwise."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::isLinear
+OT_Evaluation_isLinear_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Evaluation_isLinearlyDependent_doc
+"Accessor to the linearity of the evaluation with regard to a specific variable.
+
+Parameters
+----------
+index : int
+    The index of the variable with regard to which linearity is evaluated.
+
+Returns
+-------
+linear : bool
+    *True* if the evaluation is linearly dependent on the specified variable, *False* otherwise."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::isLinearlyDependent
+OT_Evaluation_isLinearlyDependent_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Evaluation_setCheckOutput_doc
+"Accessor to the output verification flag.
+
+Parameters
+----------
+check_output : bool
+    Whether to check return values for nan or inf."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::setCheckOutput
+OT_Evaluation_setCheckOutput_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Evaluation_getCheckOutput_doc
+"Accessor to the output verification flag.
+
+Returns
+-------
+check_output : bool
+    Whether to check return values for nan or inf."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getCheckOutput
+OT_Evaluation_getCheckOutput_doc

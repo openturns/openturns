@@ -48,22 +48,22 @@
 %include HaltonSequence.i 
 %include HaselgroveSequence.i 
 %include ReverseHaltonSequence.i 
-%include CorrelationAnalysis.i 
 %include FilteringWindowsImplementation.i
 %include FilteringWindows.i
 %include Hamming.i
-%include Hanning.i
+%include Hann.i
 %include FFTImplementation.i
 %include FFT.i
 %include SpectralModelImplementation.i
 %include SpectralModel.i
 %include CovarianceModelImplementation.i
 %include CovarianceModel.i
-%include StationaryCovarianceModel.i
+%include StationaryFunctionalCovarianceModel.i
 %include SpectralModelFactoryImplementation.i
 %include SpectralModelFactory.i 
 %include UserDefinedSpectralModel.i
 %include WelchFactory.i
+%include KroneckerCovarianceModel.i
 %include ExponentialModel.i
 %include ExponentiallyDampedCosineModel.i
 %include SphericalModel.i
@@ -86,6 +86,8 @@
 %include HMatrixFactory.i
 %include HMatrixImplementation.i
 %include HMatrix.i
+%include IsotropicCovarianceModel.i
+%include CorrelationAnalysis.i
 
 /* At last we include template definitions */
 %include BaseStatisticsTemplateDefs.i

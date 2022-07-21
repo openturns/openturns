@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Test
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,7 +62,7 @@ int main(int, char *[])
   distributionCollection.add(truncatednormal);
   continuousDistributionCollection.add(truncatednormal);
 
-  Student student(4., 10.);
+  Student student(4., 10., 1.);
   distributionCollection.add(student);
   continuousDistributionCollection.add(student);
 
@@ -74,7 +74,7 @@ int main(int, char *[])
   distributionCollection.add(uniform);
   continuousDistributionCollection.add(uniform);
 
-  Weibull weibull(1., 1., 2.);
+  WeibullMin weibull(1., 1., 2.);
   distributionCollection.add(weibull);
   continuousDistributionCollection.add(weibull);
 

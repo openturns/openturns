@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level view of an monteCarloExperiment plane
+ *  @brief Abstract top-level view of an GaussProductExperiment
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,54 +48,54 @@ public:
   GaussProductExperiment();
 
   /** Parameters constructor */
-  explicit GaussProductExperiment(const Indices & marginalDegrees);
+  explicit GaussProductExperiment(const Indices & marginalSizes);
 
   /** Parameters constructor */
   explicit GaussProductExperiment(const Distribution & distribution);
 
   /** Parameters constructor */
   GaussProductExperiment(const Distribution & distribution,
-                         const Indices & marginalDegrees);
+                         const Indices & marginalSizes);
 
   /** Virtual constructor */
-  virtual GaussProductExperiment * clone() const;
+  GaussProductExperiment * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Uniform weights ? */
-  virtual Bool hasUniformWeights() const;
+  Bool hasUniformWeights() const override;
 
   /** Sample generation */
-  Sample generateWithWeights(Point & weightsOut) const;
+  Sample generateWithWeights(Point & weightsOut) const override;
 
-  /** Marginal degrees accessor */
-  void setMarginalDegrees(const Indices & marginalDegrees);
-  Indices getMarginalDegrees() const;
+  /** Marginal sizes accessor */
+  void setMarginalSizes(const Indices & marginalSizes);
+  Indices getMarginalSizes() const;
 
   /** Distribution accessor */
-  void setDistribution(const Distribution & distribution);
+  void setDistribution(const Distribution & distribution) override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 protected:
 
 private:
   // Compute the tensor product nodes and weights
   void computeNodesAndWeights() const;
 
-  // Distribution and marginal degrees accessor
-  void setDistributionAndMarginalDegrees(const Distribution & distribution,
-                                         const Indices & marginalDegrees);
+  // Distribution and marginal sizes accessor
+  void setDistributionAndMarginalSizes(const Distribution & distribution,
+                                       const Indices & marginalSizes);
 
   // Marginal orthogonal univariate polynomial family collection
   OrthogonalUniVariatePolynomialFamilyPersistentCollection collection_;
 
-  // Marginal degrees
-  Indices marginalDegrees_;
+  // Marginal sizes
+  Indices marginalSizes_;
 
   // Integration nodes; weights
   mutable Sample nodes_;

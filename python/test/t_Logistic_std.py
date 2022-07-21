@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Logistic(-0.5, 1.5)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
@@ -75,20 +74,20 @@ try:
     print("pdf gradient     =", repr(PDFgr))
     # by the finite difference technique
     PDFgrFD = Point(2)
-    PDFgrFD[0] = (Logistic(distribution.getAlpha() + eps, distribution.getBeta()).computePDF(point) -
-                  Logistic(distribution.getAlpha() - eps, distribution.getBeta()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[1] = (Logistic(distribution.getAlpha(), distribution.getBeta() + eps).computePDF(point) -
-                  Logistic(distribution.getAlpha(), distribution.getBeta() - eps).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[0] = (Logistic(distribution.getMu() + eps, distribution.getBeta()).computePDF(point) -
+                  Logistic(distribution.getMu() - eps, distribution.getBeta()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[1] = (Logistic(distribution.getMu(), distribution.getBeta() + eps).computePDF(point) -
+                  Logistic(distribution.getMu(), distribution.getBeta() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
 
     # derivative of the PDF with regards the parameters of the distribution
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", repr(CDFgr))
     CDFgrFD = Point(2)
-    CDFgrFD[0] = (Logistic(distribution.getAlpha() + eps, distribution.getBeta()).computeCDF(point) -
-                  Logistic(distribution.getAlpha() - eps, distribution.getBeta()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[1] = (Logistic(distribution.getAlpha(), distribution.getBeta() + eps).computeCDF(point) -
-                  Logistic(distribution.getAlpha(), distribution.getBeta() - eps).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[0] = (Logistic(distribution.getMu() + eps, distribution.getBeta()).computeCDF(point) -
+                  Logistic(distribution.getMu() - eps, distribution.getBeta()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[1] = (Logistic(distribution.getMu(), distribution.getBeta() + eps).computeCDF(point) -
+                  Logistic(distribution.getMu(), distribution.getBeta() - eps).computeCDF(point)) / (2.0 * eps)
     print("cdf gradient (FD)=",  repr(CDFgrFD))
 
     # quantile
@@ -149,7 +148,7 @@ try:
     # newDistribution = Logistic(distribution)
     # distribution.setMu(mu)
     # distribution.setSigma(sigma)
-    # print "alpha from (mu, sigma)=%.6f" % newDistribution.getAlpha()
+    # print "alpha from (mu, sigma)=%.6f" % newDistribution.getMu()
     # print "beta from (mu, sigma)=%.6f" % newDistribution.getBeta()
 
 except:

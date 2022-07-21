@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -57,7 +56,7 @@ try:
     output2 = CompositeRandomVector(myFunction, vect2)
 
     # We create an Event from this RandomVector */
-    myEvent = Event(output2, Less(), 1.0)
+    myEvent = ThresholdEvent(output2, Less(), 1.0)
 
     # Create a StandardEvent based on this Event */
     stdEvent = StandardEvent(myEvent)

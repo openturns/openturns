@@ -8,7 +8,7 @@ random vector :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It
 seeks to verify the compatibility between a sample of data
 :math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}` and a
 candidate probability distribution previous chosen.
-The use of graphical tools allows to answer this question in the one
+The use of graphical tools allows one to answer this question in the one
 dimensional case :math:`n_X =1`, and with a continuous distribution.
 The QQ-plot, and henry line tests are defined in the case to
 :math:`n_X = 1`. Thus we denote :math:`\vect{X} = X^1 = X`. The first
@@ -173,7 +173,7 @@ In this example the test validates the hypothesis of a gaussian distribution.
     View(graph)
 
 In this second example, the hypothesis of a gaussian distribution seems
-far less relevant because of the behaviour for small values of
+far less relevant because of the behavior for small values of
 :math:`X`.
 
 **Kendall plot**
@@ -213,7 +213,7 @@ independent and follow :math:`Uniform(0,1)` distributions.
 | Equation :eq:`Wi` is evaluated with the Monte Carlo
   sampling method : it generates :math:`n` samples of size
   :math:`N` from the bivariate copula :math:`C`, in order to have
-  :math:`n` realisations of the statistics
+  :math:`n` realizations of the statistics
   :math:`H_{(i)},\forall 1 \leq i \leq N` and have an estimation of
   :math:`W_i = E[H_{(i)}], \forall i \leq N`.
 
@@ -271,9 +271,9 @@ This way of doing is more efficient.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/qqplot_graph`
-    - See :doc:`/examples/data_analysis/henry_line_graph`
-    - See :doc:`/examples/data_analysis/kendallplot_test`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_qqplot_graph`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_test_normality`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_test_copula`
 
 .. topic:: References:
 

@@ -5,13 +5,12 @@ Elliptical distribution= false
 Continuous = true
 Elliptical = false
 Independent = false
-oneRealization=class=Point name=Unnamed dimension=2 values=[0.642995,0.249576]
-oneSample first=class=Point name=Unnamed dimension=2 values=[0.81213,0.885594] last=class=Point name=Unnamed dimension=2 values=[0.506679,0.611576]
-mean=class=Point name=Unnamed dimension=2 values=[0.502612,0.50223]
-covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.082459,0.076198,0.076198,0.08287]
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.251363,0.277809]
+oneSample first=class=Point name=Unnamed dimension=2 values=[0.207289,0.30774] last=class=Point name=Unnamed dimension=2 values=[0.506679,0.611576]
+mean=class=Point name=Unnamed dimension=2 values=[0.502599,0.50222]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.08245,0.076185,0.076185,0.082852]
 Point= class=Point name=Unnamed dimension=2 values=[0.6,0.6]
 ddf     =class=Point name=Unnamed dimension=2 values=[0.25786,0.25786]
-ddf (FD)=class=Point name=Unnamed dimension=2 values=[5.86093,5.86093]
 pdf     =2.92442
 cdf=0.543575
 Survival      =0.343575
@@ -25,8 +24,8 @@ threshold=0.679332
 Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))) gradientImplementation=MinimumVolumeLevelSetGradient(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
- [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))) level=-0.20884
-beta=1.23225
+ [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))) level=-0.21629
+beta=1.24146
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.160334,0.160334] upper bound=class=Point name=Unnamed dimension=2 values=[0.839666,0.839666] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.679332
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.971607,0.971607] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -34,7 +33,7 @@ beta=0.971607
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0299408,0.0299408] upper bound=class=Point name=Unnamed dimension=2 values=[1,1] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.970059
 entropy=-1.25325
-entropy (MC)=-1.25315
+entropy (MC)=-1.2534
 mean=class=Point name=Unnamed dimension=2 values=[0.5,0.5]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.083333,0.076861,0.076861,0.083333]
 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.92233,0.92233,1]

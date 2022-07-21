@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class MeixnerDistribution for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +39,7 @@ int main(int, char *[])
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumRelativeError", 1.0e-6 );
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumConstraintError", 1.0e-6 );
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumObjectiveError", 1.0e-6 );
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     MeixnerDistribution distribution(1.5, 0.5, 2.5, -0.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
@@ -126,8 +126,8 @@ int main(int, char *[])
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
 
     // Specific to this distribution
-    Scalar mu = distribution.getMu();
-    fullprint << "mu=" << mu << std::endl;
+    Scalar gamma = distribution.getGamma();
+    fullprint << "gamma=" << gamma << std::endl;
     Point standardDeviation = distribution.getStandardDeviation();
     fullprint << "standard deviation=" << standardDeviation << std::endl;
     Point skewness = distribution.getSkewness();

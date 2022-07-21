@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -19,33 +18,31 @@ try:
     scale = [1.0]
 
     # Frequency values
-    frequency = 0.1
+    for frequency in [0.1, 0.2]:
+        # Default constructor
+        myDefaultModel = ExponentiallyDampedCosineModel()
+        print("myDefaultModel = ", myDefaultModel)
 
-    # Default constructor
-    myDefautModel = ExponentiallyDampedCosineModel()
-    print("myDefautModel = ", myDefautModel)
+        # Second order model with parameters
+        myModel = ExponentiallyDampedCosineModel(
+            scale, amplitude, frequency)
+        print("myModel = ", myModel)
 
-    # Second order model with parameters
-    myModel = ExponentiallyDampedCosineModel(
-        scale, amplitude, frequency)
-    print("myModel = ", myModel)
+        timeValueOne = 1.
+        print("covariance matrix at t = ", timeValueOne,
+              " : ", myModel(timeValueOne))
+        print("covariance matrix at t = ", -1.0 * timeValueOne,
+              " : ", myModel(-1.0 * timeValueOne))
 
-    timeValueOne = 1.
-    print("covariance matrix at t = ", timeValueOne,
-          " : ", myModel(timeValueOne))
-    print("covariance matrix at t = ", -1.0 * timeValueOne,
-          " : ", myModel(-1.0 * timeValueOne))
+        # Evaluation at time higher to check the decrease of the
+        # exponentiallyDampedCosine values
+        timeValueHigh = 15.
+        print("covariance matrix at t = ", timeValueHigh,
+              " : ", myModel(timeValueHigh).__str__())
 
-    # Evaluation at time higher to check the decrease of the
-    # exponentiallyDampedCosine values
-    timeValueHigh = 15.
-    print("covariance matrix at t = ", timeValueHigh,
-          " : ", myModel(timeValueHigh).__str__())
-
-    timeGrid = RegularGrid(0.0, 1.0 / 3.0, 4)
-    print("discretized covariance over the time grid=",
-          timeGrid, "is=", myModel.discretize(timeGrid))
-
+        timeGrid = RegularGrid(0.0, 1.0 / 3.0, 4)
+        print("discretized covariance over the time grid=",
+              timeGrid, "is=", myModel.discretize(timeGrid))
 except:
     import sys
     print("t_ExponentiallyDampedCosineModel_std.py",

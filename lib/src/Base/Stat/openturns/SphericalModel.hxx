@@ -1,9 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class is enables to build an exponential covariance
- *  model, a second order model's implementation
+ *  @brief This class is enables to build a spherical covariance model
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +22,7 @@
 #define OPENTURNS_SPHERICALMODEL_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Mesh.hxx"
@@ -37,7 +36,7 @@ class RegularGrid;
  */
 
 class OT_API SphericalModel
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -54,46 +53,39 @@ public:
                  const Scalar radius = 1);
 
   /** Virtual copy constructor */
-  virtual SphericalModel * clone() const;
+  SphericalModel * clone() const override;
 
   /** Computation of the covariance function, stationary interface */
-  using StationaryCovarianceModel::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const;
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point & tau) const override;
 #ifndef SWIG
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const;
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                         const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
-
-  using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const Point & tau) const;
-  Scalar computeAsScalar(const Point & tau) const;
-
-  /** Discretize the covariance function on a given TimeGrid */
-  using StationaryCovarianceModel::discretize;
-  CovarianceMatrix discretize(const RegularGrid & regularGrid) const;
+  Scalar computeAsScalar(const Scalar tau) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Radius accessor */
   Scalar getRadius() const;
   void setRadius(const Scalar radius);
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
   /** Parameter accessor */
-  virtual void setFullParameter(const Point & parameter);
-  virtual Point getFullParameter() const;
-  virtual Description getFullParameterDescription() const;
+  void setFullParameter(const Point & parameter) override;
+  Point getFullParameter() const override;
+  Description getFullParameterDescription() const override;
 
 private :
 

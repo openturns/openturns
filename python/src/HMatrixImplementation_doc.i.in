@@ -125,10 +125,18 @@ OT_HMatrix_transpose_doc
 %define OT_HMatrix_assemble_doc
 "Assemble matrix.
 
+Available usages:
+    
+    assemble(f, symmetry)
+
+    assemble(f, parameters, symmetry)
+
 Parameters
 ----------
 f : :class:`~openturns.HMatrixRealAssemblyFunction` or :class:`~openturns.HMatrixTensorRealAssemblyFunction`
     Assembly function.
+parameters : :class:`~openturns.HMatrixParameters`
+    Parameters used within HMatrix 
 symmetry : str
     Symmetry flag, either N or L"
 %enddef
@@ -175,7 +183,16 @@ OT_HMatrix_assembleTensor_doc
 Parameters
 ----------
 method : str
-    Factorization method, either one of: LDLt, LLt or LU"
+    Factorization method, either one of: LDLt, LLt or LU
+
+Notes
+-----
+The factorization embeds an automatic regularization procedure based
+on an approximation of the largest eigenvalue module. Its computation
+is done using a power iteration, controlled by the
+'HMatrix-LargestEigenValueRelatveError' and
+'HMatrix-LargestEigenValueIterations' keys in the :class:`~openturns.ResourceMap`.
+"
 %enddef
 %feature("docstring") OT::HMatrixImplementation::factorize
 OT_HMatrix_factorize_doc
@@ -205,6 +222,19 @@ diag : :class:`~openturns.Point`
 %enddef
 %feature("docstring") OT::HMatrixImplementation::getDiagonal
 OT_HMatrix_getDiagonal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_addIdentity_doc
+"Add alpha*Identity to the Matrix.
+
+Parameters
+----------
+alpha : float
+    Coefficient."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::addIdentity
+OT_HMatrix_addIdentity_doc
 
 // ---------------------------------------------------------------------
 
@@ -321,9 +351,9 @@ transB : str
     Whether to use B or B^t: either N or T.
 alpha : float
     Coefficient
-a : :class:`~openturns.HMatrix`
+A : :class:`~openturns.HMatrix`
     Multiplied matrix A.
-b : :class:`~openturns.HMatrix`
+B : :class:`~openturns.HMatrix`
     Multiplied matrix B.    
 beta : float
     Coefficient."

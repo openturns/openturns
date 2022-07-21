@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class WhittleFactory
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,6 @@ int main(int, char *[])
 
   try
   {
-    ResourceMap::SetAsUnsignedInteger("WhittleFactory-DefaultMaxFun", 2000);
     /* Reduce the precision output as the estimation is based on a lazy optimizer */
     PlatformInfo::SetNumericalPrecision(4);
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class MaximumEntropyOrderStatisticsCopula for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,13 +44,16 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
+    // Force the use of the approximation to avoid timeout
+    ResourceMap::SetAsBool("MaximumEntropyOrderStatisticsDistribution-UseApproximation", true);
+
     ComposedDistribution::DistributionCollection coll;
     coll.add(Trapezoidal(-2.0, -1.1, -1.0, 1.0));
     coll.add(LogUniform(1.0, 1.2));
     coll.add(Triangular(3.0, 4.5, 5.0));
-    coll.add(Beta(2.5, 6.0, 4.7, 5.2));
+    coll.add(Beta(2.5, 3.5, 4.7, 5.2));
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     MaximumEntropyOrderStatisticsCopula distribution(coll);
     UnsignedInteger dim = distribution.getDimension();
     fullprint << "Distribution " << distribution << std::endl;
@@ -86,7 +89,6 @@ int main(int, char *[])
 //     Scalar eps(1e-5);
     Point DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
-//     fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
     Scalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );

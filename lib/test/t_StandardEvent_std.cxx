@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of StandardEvent class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -79,7 +79,7 @@ int main(int, char *[])
     CompositeRandomVector output2(myFunction, vect2);
 
     /* We create an Event from this RandomVector */
-    Event myEvent(output2, Less(), 1.0);
+    ThresholdEvent myEvent(output2, Less(), 1.0);
 
     /* Create a StandardEvent based on this Event */
     StandardEvent stdEvent(myEvent);

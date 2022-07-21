@@ -3,7 +3,7 @@
  *  @brief Efficient implementation of the computation of the incomplete
  *         regularized beta function and related functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,6 +26,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 #ifdef OPENTURNS_HAVE_BOOST
+#define BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
 #include <boost/math/special_functions/beta.hpp>
 #endif
 
@@ -59,8 +60,8 @@ Scalar RegularizedIncompleteBeta(const Scalar a,
                                  const Scalar x,
                                  const Bool tail)
 {
-  if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
-  if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be nonnegative, here a=" << a;
+  if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be nonnegative, here b=" << b;
   if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x <= 0.0) return (tail ? 1.0 : 0.0);
   if (x >= 1.0) return (tail ? 0.0 : 1.0);
@@ -162,11 +163,13 @@ Scalar RegularizedIncompleteBetaP(const Scalar a,
                                   const Scalar b,
                                   const Scalar x)
 {
-  if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
-  if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be nonnegative, here a=" << a;
+  if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be nonnegative, here b=" << b;
   if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x <= 0.0) return 0.0;
   if (x >= 1.0) return 1.0;
+  if (a == 0.0) return 1.0;
+  if (b == 0.0) return 0.0;
   if (x * (a + b + 2) < a + 1.0) return RegularizedIncompleteBetaContinuedFraction(a, b, x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / a;
   return 1.0 - RegularizedIncompleteBetaContinuedFraction(b, a, 1.0 - x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / b;
 }
@@ -175,11 +178,13 @@ Scalar RegularizedIncompleteBetaQ(const Scalar a,
                                   const Scalar b,
                                   const Scalar x)
 {
-  if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
-  if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be nonnegative, here a=" << a;
+  if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be nonnegative, here b=" << b;
   if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x >= 1.0) return 0.0;
   if (x <= 0.0) return 1.0;
+  if (a == 0.0) return 0.0;
+  if (b == 0.0) return 1.0;
   if (x * (a + b + 2) < a + 1.0) return 1.0 - RegularizedIncompleteBetaContinuedFraction(a, b, x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / a;
   return RegularizedIncompleteBetaContinuedFraction(b, a, 1.0 - x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / b;
 }
@@ -415,8 +420,8 @@ Scalar RegularizedIncompleteBetaContinuedFraction(const Scalar a,
     const Scalar b,
     const Scalar x)
 {
-  if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
-  if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be nonnegative, here a=" << a;
+  if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be nonnegative, here b=" << b;
   if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x <= 0.0) return 1.0;
   const Scalar epsilon = SpecFunc::Precision * SpecFunc::Precision;

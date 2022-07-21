@@ -8,3 +8,4 @@
 
 %include openturns/RandomWalkMetropolisHastings.hxx
 namespace OT { %extend RandomWalkMetropolisHastings { RandomWalkMetropolisHastings(const RandomWalkMetropolisHastings & other) { return new OT::RandomWalkMetropolisHastings(other); } } }
+

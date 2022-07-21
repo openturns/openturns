@@ -14,20 +14,25 @@
 %include std_vector.i
 
 /* Base/Common */
-%include Memory.i
 %include TBB.i
 %include Object.i
 %include PersistentObject.i
-%include SharedPointer.i
 %include Pointer.i
 %include InterfaceObject.i
 %include TypedInterfaceObject.i
 %include TypedCollectionInterfaceObject.i
 %include Study.i
 %include StorageManager.i
-//%include BinaryStorageManager.i
 #ifdef OPENTURNS_HAVE_LIBXML2
 %include XMLStorageManager.i
+#endif
+#if defined(OPENTURNS_HAVE_HDF5) && defined(OPENTURNS_HAVE_LIBXML2)
+%include XMLH5StorageManager.i
+#else
+%pythoncode %{
+class XMLH5StorageManager(object):
+    pass
+%}
 #endif
 %include TTY.i
 %include Log.i
@@ -41,7 +46,6 @@
 %include GreaterOrEqual.i
 %include Less.i
 %include LessOrEqual.i
-%include PlatformInfo.i
 
 /* At last we include template definitions */
 %include BaseCommonTemplateDefs.i

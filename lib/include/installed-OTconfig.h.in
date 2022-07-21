@@ -1,7 +1,7 @@
 /**
  *  @brief The header file that contains macros needed by other installed header files
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,20 +18,18 @@
  *
  */
 
-/* Support for regular expression library */
-#cmakedefine OPENTURNS_HAVE_LIBXML2
+//  OPENTURNS_VERSION % 100 is the patch level
+//  OPENTURNS_VERSION / 100 % 1000 is the minor version
+//  OPENTURNS_VERSION / 100000 is the major version
+#define OPENTURNS_VERSION @OPENTURNS_VERSION_NR@
+
+#define OPENTURNS_VERSION_STR "@PACKAGE_VERSION@"
 
 /* Define to 1 if you have the <pthread.h> header file. */
 #cmakedefine OPENTURNS_HAVE_PTHREAD_H
 
-/* Support for TBB library */
-#cmakedefine OPENTURNS_HAVE_TBB
-
 /* Define to 1 if UnsignedLong and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-
-/* Define to 1 if built-in functions for atomic memory access are available */
-#cmakedefine OPENTURNS_HAVE_SYNC_BUILTINS
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "@PACKAGE_NAME@"

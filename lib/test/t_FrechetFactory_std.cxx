@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Frechet for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    Frechet distribution(2.0, 2.5, -1.5);
+    Frechet distribution(2.5, 2.0, -1.5);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     FrechetFactory factory;
@@ -53,6 +53,20 @@ int main(int, char *[])
     fullprint << "Default frechet=" << estimatedFrechet << std::endl;
     estimatedFrechet = factory.buildAsFrechet(distribution.getParameter());
     fullprint << "Frechet from parameters=" << estimatedFrechet << std::endl;
+
+    // More involved test: the sample distribution does not fit the factory
+
+    // The distributions used :
+    Frechet myFrechet(1.0, 1.0, 0.0);
+    Gumbel myGumbel(1.0, 3.0);
+    // We build our mixture sample of size 2*1000=2000.
+    Sample mixtureSample(myFrechet.getSample(1000));
+    Sample sampleGumbel(myGumbel.getSample(1000));
+    mixtureSample.add(sampleGumbel);
+    // Build on the mixture sample
+    estimatedFrechet = factory.buildAsFrechet(mixtureSample);
+    fullprint << "Estimated dist from mixture sample=" << estimatedFrechet << std::endl;
+
   }
   catch (TestFailed & ex)
   {

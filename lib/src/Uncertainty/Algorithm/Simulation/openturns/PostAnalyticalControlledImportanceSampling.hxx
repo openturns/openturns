@@ -2,7 +2,7 @@
 /**
  *  @brief PostAnalyticalControlledImportanceSampling is an implementation of the importance sampling Montex Carlo simulation method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,20 +37,20 @@ class OT_API PostAnalyticalControlledImportanceSampling :
 
   CLASSNAME
 public:
-  /** for save/load mecanism */
+  /** for save/load mechanism */
   PostAnalyticalControlledImportanceSampling();
 
   /** Constructor with parameters */
   explicit PostAnalyticalControlledImportanceSampling(const AnalyticalResult & AnalyticalResult);
 
   /** Virtual constructor */
-  virtual PostAnalyticalControlledImportanceSampling * clone() const;
+  PostAnalyticalControlledImportanceSampling * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Compute the block sample */
-  Sample computeBlockSample();
+  Sample computeBlockSample() override;
 
 } ; /* class PostAnalyticalControlledImportanceSampling */
 

@@ -1,7 +1,14 @@
-myDefautModel = class=ExponentiallyDampedCosineModel scale=class=Point name=Unnamed dimension=1 values=[1] amplitude=class=Point name=Unnamed dimension=1 values=[1] frequency=1
+myDefaultModel = class=ExponentiallyDampedCosineModel scale=class=Point name=Unnamed dimension=1 values=[1] amplitude=class=Point name=Unnamed dimension=1 values=[1] frequency=1
 myModel = class=ExponentiallyDampedCosineModel scale=class=Point name=Unnamed dimension=1 values=[1] amplitude=class=Point name=Unnamed dimension=1 values=[1] frequency=0.1
-covariance matrix at t = 1 : class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.367879]
-covariance matrix at t = -1 : class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.367879]
-covariance matrix at t = 4 : class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0183156]
+covariance matrix at t = 1 : class=SquareMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.297621]
+covariance matrix at t = -1 : class=SquareMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.297621]
+covariance matrix at t = 4 : class=SquareMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-0.0148177]
 discretized covariance over the time grid=class=RegularGrid name=Unnamed start=0 step=0.333333 n=4 is
-class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,-0.358266,-0.256709,0.367879,-0.358266,1,-0.358266,-0.256709,-0.256709,-0.358266,1,-0.358266,0.367879,-0.256709,-0.358266,1]
+class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0.700873,0.46903,0.297621,0.700873,1,0.700873,0.46903,0.46903,0.700873,1,0.700873,0.297621,0.46903,0.700873,1]
+myDefaultModel = class=ExponentiallyDampedCosineModel scale=class=Point name=Unnamed dimension=1 values=[1] amplitude=class=Point name=Unnamed dimension=1 values=[1] frequency=1
+myModel = class=ExponentiallyDampedCosineModel scale=class=Point name=Unnamed dimension=1 values=[1] amplitude=class=Point name=Unnamed dimension=1 values=[1] frequency=0.2
+covariance matrix at t = 1 : class=SquareMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.113681]
+covariance matrix at t = -1 : class=SquareMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.113681]
+covariance matrix at t = 4 : class=SquareMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00565984]
+discretized covariance over the time grid=class=RegularGrid name=Unnamed start=0 step=0.333333 n=4 is
+class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0.654584,0.343543,0.113681,0.654584,1,0.654584,0.343543,0.343543,0.654584,1,0.654584,0.113681,0.343543,0.654584,1]

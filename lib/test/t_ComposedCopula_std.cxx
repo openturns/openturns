@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ComposedCopula for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,11 +32,11 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     CorrelationMatrix R(3);
     R(0, 1) = 0.5;
     R(0, 2) = 0.25;
-    ComposedCopula::CopulaCollection collection(3);
+    ComposedCopula::DistributionCollection collection(3);
     collection[0] = FrankCopula(3.0);
     collection[1] = NormalCopula(R);
     collection[2] = ClaytonCopula(2.0);
@@ -79,7 +79,7 @@ int main(int, char *[])
     Point DDF = copula.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     Point ddfFD(copula.getDimension());
-    fullprint << "ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point) << std::endl;
+    fullprint << "ddf (FD)=" << copula.DistributionImplementation::computeDDF(point) << std::endl;
     Scalar PDF = copula.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
     Scalar CDF = copula.computeCDF( point );
@@ -155,7 +155,7 @@ int main(int, char *[])
     indices[3] = 5;
     indices[4] = 6;
     fullprint << "indices=" << indices << std::endl;
-    Copula margins(copula.getMarginal(indices));
+    Distribution margins(copula.getMarginal(indices));
     fullprint << "margins=" << margins << std::endl;
     fullprint << "margins PDF=" << margins.computePDF(point) << std::endl;
     fullprint << "margins CDF=" << margins.computeCDF(point) << std::endl;
@@ -177,7 +177,7 @@ int main(int, char *[])
     copula = ComposedCopula(collection);
     fullprint << "isoprobabilistic transformation (independent)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     {
-      UnsignedInteger dim = copula.getDimension();
+      dim = copula.getDimension();
       Scalar x = 0.6;
       Point y(dim - 1, 0.2);
       fullprint << "conditional PDF=" << copula.computeConditionalPDF(x, y) << std::endl;
@@ -191,12 +191,12 @@ int main(int, char *[])
       fullprint << "sequential conditional quantile(" << resCDF << ")=" << copula.computeSequentialConditionalQuantile(resCDF) << std::endl;
     }
     // Special case, single contributor
-    collection = Collection<Copula>(1);
+    collection = Collection<Distribution>(1);
     collection[0] = SklarCopula(Student(3.0, Point(2, 1.0), Point(2, 3.0), CorrelationMatrix(2)));
     copula = ComposedCopula(collection);
     fullprint << "isoprobabilistic transformation (single contributor)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     {
-      UnsignedInteger dim = copula.getDimension();
+      dim = copula.getDimension();
       Scalar x = 0.6;
       Point y(dim - 1, 0.2);
       fullprint << "conditional PDF=" << copula.computeConditionalPDF(x, y) << std::endl;

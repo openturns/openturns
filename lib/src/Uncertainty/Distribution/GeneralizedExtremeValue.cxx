@@ -2,7 +2,7 @@
 /**
  *  @brief The GeneralizedExtremeValue distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,12 +19,9 @@
  *
  */
 #include "openturns/GeneralizedExtremeValue.hxx"
-#include "openturns/Weibull.hxx"
-#include "openturns/Frechet.hxx"
-#include "openturns/Gumbel.hxx"
-#include "openturns/RandomMixture.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,6 +49,16 @@ GeneralizedExtremeValue::GeneralizedExtremeValue(const Scalar mu,
 {
   setName("GeneralizedExtremeValue");
   setMuSigmaXi(mu, sigma, xi);
+  setDimension(1);
+  computeRange();
+}
+
+/* Parameters constructor to use when the two bounds are finite */
+GeneralizedExtremeValue::GeneralizedExtremeValue(const Distribution & distribution)
+  : ContinuousDistribution()
+{
+  setName("GeneralizedExtremeValue");
+  setActualDistribution(distribution);
   setDimension(1);
   computeRange();
 }
@@ -163,13 +170,105 @@ Complex GeneralizedExtremeValue::computeLogCharacteristicFunction(const Scalar x
 /* Get the PDFGradient of the distribution */
 Point GeneralizedExtremeValue::computePDFGradient(const Point & point) const
 {
-  return actualDistribution_.computePDFGradient(point);
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const Scalar x = point[0];
+  Point result(3);
+  // From Maple...
+  if (xi_ == 0.0)
+  {
+    const Scalar t2 = 1.0 / sigma_;
+    const Scalar t4 = std::exp(t2 * (mu_ + x));
+    const Scalar t7 = std::exp(2.0 * mu_ * t2);
+    const Scalar t11 = std::exp(t2 * (-x + mu_));
+    const Scalar t16 = std::exp(-t2 * (t11 * sigma_ + 2.0 * x));
+    const Scalar t18 = sigma_ * sigma_;
+    const Scalar t21 = mu_ * t4;
+    const Scalar t23 = x * t4;
+    const Scalar t24 = mu_ * t7;
+    const Scalar t29 = 1.0 / (t18 * sigma_);
+    const Scalar t31 = mu_ * mu_;
+    const Scalar t39 = x * x;
+    result[0] = t16 * (t4 - t7) / t18;
+    result[1] = -t29 * t16 * (t4 * sigma_ + t7 * x + t21 - t23 - t24);
+    result[2] = 0.5 * t29 * t16 * (-2.0 * t21 * x + 2.0 * t21 * sigma_ - 2.0 * t23 * sigma_ + 2.0 * t24 * x + t31 * t4 - t31 * t7 + t39 * t4 - t39 * t7);
+  } // xi_ == 0.0
+  // From Maple...
+  else
+  {
+    const Scalar t1 = 1 / xi_;
+    const Scalar t2 = std::pow(sigma_, t1);
+    const Scalar t3 = x - mu_;
+    const Scalar t4 = xi_ * t3;
+    const Scalar t5 = t4 + sigma_;
+    const Scalar t6 = std::pow(t5, -t1);
+    const Scalar t8 = std::exp(-t6 * t2);
+    const Scalar t9 = 1.0 + xi_;
+    const Scalar t14 = std::pow(t5, (t1 * (-1.0 - 2.0 * xi_)));
+    const Scalar t17 = std::pow(sigma_, 2.0 * t1);
+    const Scalar t19 = std::pow(t5, -2.0 * t1 * t9);
+    const Scalar t25 = std::pow(sigma_, t1 * (2.0 - xi_));
+    const Scalar t29 = std::pow(t5, -t1 * t9);
+    const Scalar t35 = std::pow(sigma_, t1 * (1.0 - xi_));
+    const Scalar t40 = std::pow(sigma_, t1 * t9);
+    const Scalar t42 = t2 * t4 + t40;
+    const Scalar t43 = std::log(t5);
+    const Scalar t45 = std::log(sigma_);
+    const Scalar t49 = t3 * (t45 + 1.0);
+    const Scalar t52 = t5 * t5;
+    const Scalar t55 = 2.0 + xi_;
+    const Scalar t57 = std::pow(sigma_, t1 * t55);
+    const Scalar t67 = std::pow(t5, -t1 * t55);
+    const Scalar t69 = xi_ * xi_;
+    result[0] = (t14 * t2 * t9 - t17 * t19) * t8;
+    result[1] = t8 * (-t19 * t3 * t25 + t35 * (t14 * t3 * t9 - t29));
+    result[2] = t8 * (t29 * t52 * (-t2 * t49 * xi_ - t40 * t45 + t42 * t43) - t67 * (t43 * (t17 * t4 + t57) - t57 * t45 - t49 * t17 * xi_) * t52 - t3 * t42 * t69 * t6) / (t69 * t52 * t5);
+  } // xi_ != 0.0
+  return result;
 }
 
 /* Get the CDFGradient of the distribution */
 Point GeneralizedExtremeValue::computeCDFGradient(const Point & point) const
 {
-  return actualDistribution_.computeCDFGradient(point);
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const Scalar x = point[0];
+  Point result(3);
+  // From Maple...
+  if (xi_ == 0.0)
+  {
+    const Scalar t1 = 1.0 / sigma_;
+    const Scalar t2 = -x + mu_;
+    const Scalar t4 = std::exp(t2 * t1);
+    const Scalar t8 = std::exp(-t1 * (t4 * sigma_ - mu_ + x));
+    const Scalar t11 = sigma_ * sigma_;
+    const Scalar t12 = 1.0 / t11;
+    const Scalar t14 = mu_ * mu_;
+    const Scalar t17 = x * x;
+    result[0] = -t8 * t1;
+    result[1] = t12 * t2 * t8;
+    result[2] = -0.5 * t12 * (-2.0 * mu_ * x + t14 + t17) * t8;
+  } // xi_ == 0.0
+  // From Maple...
+  else
+  {
+    const Scalar t1 = 1.0 / xi_;
+    const Scalar t2 = std::pow(sigma_, t1);
+    const Scalar t3 = x - mu_;
+    const Scalar t4 = t3 * xi_;
+    const Scalar t5 = t4 + sigma_;
+    const Scalar t8 = std::pow(t5, t1 * (-1.0 - xi_));
+    const Scalar t10 = std::pow(t5, -t1);
+    const Scalar t12 = std::exp(-t10 * t2);
+    const Scalar t16 = std::pow(sigma_, t1 * (1.0 - xi_));
+    const Scalar t23 = std::log(t5);
+    const Scalar t25 = std::log(sigma_);
+    const Scalar t29 = xi_ * xi_;
+    result[0] = -t12 * t2 * t8;
+    result[1] = -t12 * t3 * t16 * t8;
+    result[2] = (t23 * (-t3 * xi_ - sigma_) + t25 * t5 + t4) * t2 * t8 * t12 / t29;
+  } // xi_ != 0.0
+  return result;
 }
 
 /* Get the quantile of the distribution */
@@ -286,30 +385,30 @@ void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
   mu_ = mu;
   sigma_ = sigma;
   xi_ = xi;
-  // Now build the actual Frechet/Gumbel/Weibull distribution
+  // Now build the actual Frechet/Gumbel/WeibullMax distribution
   const Scalar xiEpsilon = ResourceMap::GetAsScalar("GeneralizedExtremeValue-XiThreshold");
-  // Weibull case
+  // WeibullMax case
   if (xi_ < -xiEpsilon)
   {
-    const Scalar alpha = -sigma / xi;
-    const Scalar beta = -1.0 / xi;
-    const Scalar gamma = sigma / xi - mu;
-    actualDistribution_ = Weibull(alpha, beta, gamma) * (-1.0);
+    const Scalar beta = -sigma / xi;
+    const Scalar alpha = -1.0 / xi;
+    const Scalar gamma = mu - sigma / xi;
+    actualDistribution_ = WeibullMax(beta, alpha, gamma);
   }
   // Frechet case
   else if (xi_ > xiEpsilon)
   {
-    const Scalar alpha = 1.0 / xi;
     const Scalar beta = sigma / xi;
+    const Scalar alpha = 1.0 / xi;
     const Scalar gamma = mu - sigma / xi;
-    actualDistribution_ = Frechet(alpha, beta, gamma);
+    actualDistribution_ = Frechet(beta, alpha, gamma);
   }
   // Gumbel case
   else
   {
-    const Scalar alpha = 1.0 / sigma;
-    const Scalar beta = mu;
-    actualDistribution_ = Gumbel(alpha, beta);
+    const Scalar beta = sigma;
+    const Scalar gamma = mu;
+    actualDistribution_ = Gumbel(beta, gamma);
   }
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -325,8 +424,8 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
     // If it worked create the actual distribution
     if (p_gumbel)
     {
-      mu_ = p_gumbel->getBeta();
-      sigma_ = 1.0 / p_gumbel->getAlpha();
+      mu_ = p_gumbel->getGamma();
+      sigma_ = p_gumbel->getBeta();
       xi_ = 0.0;
       actualDistribution_ = Gumbel(*p_gumbel);
       isAlreadyComputedMean_ = false;
@@ -358,48 +457,59 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
   {
     // Nothing to do
   }
-  // Try to cast the given distribution into a RandomMixture
-  // with a Weibull atom with negative coefficient
+  // Try to cast the given distribution into a WeibullMax
   try
   {
-    const RandomMixture* p_mixture = dynamic_cast<const RandomMixture*>(distribution.getImplementation().get());
-    // If it worked try to catch the atom into a Weibull distribution
-    if (p_mixture)
+    const WeibullMax* p_weibull = dynamic_cast<const WeibullMax*>(distribution.getImplementation().get());
+    if (p_weibull)
     {
-      // First, the easy checks:
-      // + its diension is 1
-      // + there is only one atom
-      // + its weight is negative
-      if ((p_mixture->getDimension() == 1) &&
-          (p_mixture->getDistributionCollection().getSize() == 1) &&
-          (p_mixture->getWeights()(0, 0) < 0.0))
-      {
-        // Try to catch the unique atom into a Weibull distribution
-        const Weibull* p_weibull = dynamic_cast<const Weibull*>(p_mixture->getDistributionCollection()[0].getImplementation().get());
-        if (p_weibull)
-        {
-          const Scalar constant = p_mixture->getConstant()[0];
-          const Scalar weight = p_mixture->getWeights()(0, 0);
-          xi_ = -1.0 / p_weibull->getBeta();
-          sigma_ = -(weight * p_weibull->getAlpha()) * xi_;
-          mu_ = constant + sigma_ / xi_ - p_weibull->getGamma() * weight;
-          actualDistribution_ = RandomMixture(*p_mixture);
-          isAlreadyComputedMean_ = false;
-          isAlreadyComputedCovariance_ = false;
-          return;
-        } // p_weibull
-      } // mixture basic check
-    } // p_mixture
+      xi_ = -1.0 / p_weibull->getAlpha();
+      sigma_ = -p_weibull->getBeta() * xi_;
+      mu_ = p_weibull->getGamma() - p_weibull->getBeta();
+      actualDistribution_ = WeibullMax(*p_weibull);
+      isAlreadyComputedMean_ = false;
+      isAlreadyComputedCovariance_ = false;
+      return;
+    } // p_weibull
   }
   catch (...)
   {
-    throw InvalidArgumentException(HERE) << "Error: the distribution " << distribution << " cannot be used to define a GeneralizedExtremeValue distribution.";
+    // Nothing to do
   }
+  throw InvalidArgumentException(HERE) << "Error: the distribution " << distribution << " cannot be used to define a GeneralizedExtremeValue distribution.";
 }
 
 Distribution GeneralizedExtremeValue::getActualDistribution() const
 {
   return actualDistribution_;
+}
+
+/* Actual distribution converter */
+Frechet GeneralizedExtremeValue::asFrechet() const
+{
+  const Frechet* p_frechet = dynamic_cast<const Frechet*>(actualDistribution_.getImplementation().get());
+  if (p_frechet)
+    return Frechet(*p_frechet);
+  else
+    throw InvalidArgumentException(HERE) << "Cannot convert to Frechet";
+}
+
+WeibullMax GeneralizedExtremeValue::asWeibullMax() const
+{
+  const WeibullMax* p_weibull = dynamic_cast<const WeibullMax*>(actualDistribution_.getImplementation().get());
+  if (p_weibull)
+    return WeibullMax(*p_weibull);
+  else
+    throw InvalidArgumentException(HERE) << "Cannot convert to WeibullMax";
+}
+
+Gumbel GeneralizedExtremeValue::asGumbel() const
+{
+  const Gumbel* p_gumbel = dynamic_cast<const Gumbel*>(actualDistribution_.getImplementation().get());
+  if (p_gumbel)
+    return Gumbel(*p_gumbel);
+  else
+    throw InvalidArgumentException(HERE) << "Cannot convert to Gumbel";
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -424,4 +534,3 @@ void GeneralizedExtremeValue::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
-

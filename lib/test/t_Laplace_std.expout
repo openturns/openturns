@@ -2,13 +2,13 @@ Testing class Laplace
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=Laplace name=Laplace dimension=1 lambda=1.5 mu=0.5
+class=Laplace name=Laplace dimension=1 mu=0.5 lambda=1.5
 streamObject(const T & anObject)
-class=Laplace name=Laplace dimension=1 lambda=1.5 mu=0.5
+class=Laplace name=Laplace dimension=1 mu=0.5 lambda=1.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=Laplace name=Laplace dimension=1 lambda=0.666667 mu=0.5
-Distribution Laplace(lambda = 0.666667, mu = 0.5)
+Distribution class=Laplace name=Laplace dimension=1 mu=0.5 lambda=0.666667
+Distribution Laplace(mu = 0.5, lambda = 0.666667)
 Elliptical = true
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[0.951157]
@@ -19,7 +19,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[-0.159229]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.159229]
 log pdf=-1.43195
 pdf     =0.238844
 pdf (FD)=0.238844
@@ -30,15 +29,15 @@ Inverse survival=class=Point name=Unnamed dimension=1 values=[-2.95388]
 Survival(inverse survival)=0.95
 characteristic function=(0.270025,0.147516)
 log characteristic function=(-1.17865,0.5)
-pdf gradient     =class=Point name=Unnamed dimension=2 values=[0.238844,0.159229]
-pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.238844,0.159229]
-cdf gradient     =class=Point name=Unnamed dimension=2 values=[0.179133,-0.238844]
-cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.179133,-0.238844]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[0.159229,0.238844]
+pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.159229,0.238844]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.238844,0.179133]
+cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.238844,0.179133]
 quantile=class=Point name=Unnamed dimension=1 values=[3.95388]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-3.9936] upper bound=class=Point name=Unnamed dimension=1 values=[4.9936] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Laplace(lambda = 0.666667, mu = 0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Laplace(lambda = 0.666667, mu = 0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Laplace(lambda = 0.666667, mu = 0.5)) level=4.09434
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Laplace(mu = 0.5, lambda = 0.666667)) gradientImplementation=MinimumVolumeLevelSetGradient(Laplace(mu = 0.5, lambda = 0.666667)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Laplace(mu = 0.5, lambda = 0.666667)) level=4.09434
 beta=0.0166667
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-3.9936] upper bound=class=Point name=Unnamed dimension=1 values=[4.9936] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -53,14 +52,14 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[lambda : 0.666667, mu : 0.5]]
+parameters=[[mu : 0.5, lambda : 0.666667]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[2]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[24]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0]
-Standard representative=Laplace(lambda = 1, mu = 0)
+Standard representative=Laplace(mu = 0, lambda = 1)
 lambda=0.666667
 mu=0.5
 standard deviation=class=Point name=Unnamed dimension=1 values=[2.12132]

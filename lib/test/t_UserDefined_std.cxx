@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class UserDefined for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Sample x(4, 1);
     x[0][0] = 1.0;
     x[1][0] = 2.0;
@@ -51,6 +51,9 @@ int main(int, char *[])
 
     // Is this distribution continuous ?
     fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
+
+    // Has the distribution an independent copula ?
+    fullprint << "Independent copula = " << (distribution.hasIndependentCopula() ? "true" : "false") << std::endl;
 
     // Test for realization of distribution
     Point oneRealization = distribution.getRealization();
@@ -95,6 +98,9 @@ int main(int, char *[])
     fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
     multivariateUserDefined.compactSupport();
     fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
+    // Has the distribution an independent copula ?
+    fullprint << "Independent copula = " << (multivariateUserDefined.hasIndependentCopula() ? "true" : "false") << std::endl;
+
     fullprint << "entropy=" << multivariateUserDefined.computeEntropy() << std::endl;
     fullprint << "entropy (MC)=" << -multivariateUserDefined.computeLogPDF(multivariateUserDefined.getSample(1000000)).computeMean()[0] << std::endl;
     fullprint << "Marginal 0=" << Distribution(multivariateUserDefined.getMarginal(0)) << std::endl;

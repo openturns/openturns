@@ -1,6 +1,6 @@
 P=class=OrthogonalUniVariatePolynomial coefficients=class=Point name=Unnamed dimension=1 values=[1]
 P(1.2)=1
-Recurrence coefficients=[[1.1,2.2,3.3],[0.111,0.222,0.333],[0.01111,0.02222,0.03333]]
+Recurrence coefficients=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=3 data=[[1.1,2.2,3.3],[0.111,0.222,0.333],[0.01111,0.02222,0.03333]]
 Q=class=OrthogonalUniVariatePolynomial coefficients=class=Point name=Unnamed dimension=4 values=[0.0915775,0.056641,0.00813919,0.00135653]
 Q(1.2)=0.173611
 as an UniVariatePolynomial, Q(1.2)=0.173611

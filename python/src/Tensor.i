@@ -9,6 +9,10 @@
 %template(TensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::TensorImplementation>;
 %apply const ScalarCollection & { const OT::Tensor::ScalarCollection & };
 
+%rename(__baseaddress__) OT::Tensor::data;
+%rename(__elementsize__) OT::Tensor::elementSize;
+%rename(__stride__) OT::Tensor::stride;
+
 %define OTTensorAccessors(baseType, elementType, pythonElementType)
 
 PyObject * __getitem__(PyObject * args) const {
@@ -112,7 +116,7 @@ def Tensor___getattribute__(self, name):
     if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getNbRows(), self.getNbColumns(), self.getNbSheets()),
                                                 'typestr': "|f" + str(self.__elementsize__()),
-                                                'data': (int(self.__baseaddress__()), True),
+                                                'data': (int(self.__baseaddress__() or 1), True),
                                                 'strides': (self.__stride__(0), self.__stride__(1), self.__stride__(2)),
                                                 'version': 3,
                                                 }
@@ -120,7 +124,7 @@ def Tensor___getattribute__(self, name):
 Tensor.__getattribute__ = Tensor___getattribute__
 %}
 
-namespace OT {  
+namespace OT {
 
 %extend Tensor {
 

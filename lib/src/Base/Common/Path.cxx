@@ -2,7 +2,7 @@
 /**
  *  @brief This class provides all the treatments for wrapper file manipulation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 #include <cstdlib>                // for getenv
 #include <cstring>                // for strcpy
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <fstream>                // for ofstream
 #include "openturns/OTwindows.h"            // for GetTempFileName, GetModuleFileName
 #ifdef _MSC_VER
@@ -226,7 +226,7 @@ Path::DirectoryList Path::GetConfigDirectoryList()
   if (otHome)
   {
     directory = String(otHome);
-#ifndef WIN32
+#ifndef _WIN32
     directory += "/etc";
     directory += PrefixConfigSubdirectory_;
 #endif
@@ -268,7 +268,7 @@ FileName Path::FindFileByNameInDirectoryList(const FileName & name,
   // and it did not need to be searched in the directory list
   // so we return it as is.
   if (name[0] == '/') return name;
-#ifdef WIN32
+#ifdef _WIN32
   if ((name.size() > 1) && (name[1] == ':')) return name;
 #endif
 
@@ -303,51 +303,37 @@ FileName Path::FindFileByNameInDirectoryList(const FileName & name,
 } /* end findFileByNameInDirectoryList */
 
 
-#ifdef WIN32
-
 /*
- * Convert slash to antislash.
- * ex: if filename = C:/windows/temp, return C:/windows/temp
- */
-void Path::AntislashFileName(FileName & filename)
-{
-  for (UnsignedInteger i = 0; i < filename.size(); ++ i)
-    if (filename.at(i) == '/')
-      filename.at(i) = '\\';
-}
-
-/*
- * add windows backslash to filename (e.g. for compatibility with R)
+ * escape backslash in filename
  * ex: if filename = C:\windows\temp, return C:\\windows\\temp
  */
-void Path::DoubleslashFileName(FileName & filename)
+void Path::EscapeBackslash(FileName & filename)
 {
-  String::size_type loc = filename.find(Os::GetDirectorySeparator());
+  String backslash("\\");
+  String::size_type loc = filename.find(backslash);
   while(loc != String::npos)
   {
     // "\" at the last pos
     if(loc == filename.size() - 1)
     {
-      filename.insert(loc, Os::GetDirectorySeparator());
+      filename.insert(loc, backslash);
       break;
     }
     // "\" in the middle
-    if(filename.at(loc + 1) != Os::GetDirectorySeparator()[0])
-      filename.insert(loc, Os::GetDirectorySeparator());
+    if(filename.at(loc + 1) != backslash[0])
+      filename.insert(loc, backslash);
     // else: no "\", or "\\" in the middle
-    loc = filename.find(Os::GetDirectorySeparator(), loc + 2);
+    loc = filename.find(backslash, loc + 2);
   }
 }
-
-#endif
 
 
 FileName Path::GetTemporaryDirectory()
 {
   FileName tempDirectory;
 
-  String tempStr(ResourceMap::GetAsString("temporary-directory"));
-#ifndef WIN32
+  String tempStr(ResourceMap::GetAsString("Path-TemporaryDirectory"));
+#ifndef _WIN32
   tempDirectory = tempStr;
 #else
   const char * tempEnv = getenv(tempStr.c_str());
@@ -367,11 +353,11 @@ FileName Path::GetTemporaryDirectory()
 }
 
 
-/* Build a temporary file name given a pattern */
-FileName Path::BuildTemporaryFileName(const FileName & pattern)
+/* Build a temporary file name given a prefix */
+FileName Path::BuildTemporaryFileName(const FileName & prefix)
 {
 #ifndef _WIN32
-  String fullPattern(GetTemporaryDirectory() + String(Os::GetDirectorySeparator()) + pattern);
+  const String fullPattern(GetTemporaryDirectory() + String(Os::GetDirectorySeparator()) + prefix + String("_XXXXXX"));
   char * temporaryFileName = strdup(fullPattern.c_str());
   int fileDescriptor(mkstemp(temporaryFileName));
   close(fileDescriptor);
@@ -382,7 +368,7 @@ FileName Path::BuildTemporaryFileName(const FileName & pattern)
   // get uniq name
   char temporaryFileName[MAX_PATH];
   GetTempFileName(GetTemporaryDirectory().c_str(), // directory for tmp files
-                  TEXT(pattern.c_str()), // temp file name prefix
+                  TEXT(prefix.c_str()), // temp file name prefix
                   0,                     // create unique name
                   temporaryFileName);    // buffer for name
   // check temporary filename
@@ -390,7 +376,7 @@ FileName Path::BuildTemporaryFileName(const FileName & pattern)
     LOGERROR(OSS() << "Temporary file name " << temporaryFileName << " does NOT exists. Check your temporary directory.");
   // add "/" to the directory
   String slashedTemporaryFileName(temporaryFileName);
-  DoubleslashFileName(slashedTemporaryFileName);
+  EscapeBackslash(slashedTemporaryFileName);
   return slashedTemporaryFileName;
 #endif
 }
@@ -401,7 +387,7 @@ String Path::CreateTemporaryDirectory (const FileName & directoryPrefix)
 {
   if (directoryPrefix.size() == 0) throw InvalidArgumentException(HERE) << "No prefix defined to create temporary directory";
 
-#ifndef WIN32
+#ifndef _WIN32
   String tempDir(GetTemporaryDirectory());
   tempDir += Os::GetDirectorySeparator();
   tempDir += directoryPrefix;
@@ -418,7 +404,7 @@ String Path::CreateTemporaryDirectory (const FileName & directoryPrefix)
   int ret = 0;
   for (int retry = 10000; retry >= 0; --retry)
   {
-    ret = GetTempFileName(GetTemporaryDirectory().c_str(),       // directory for tmp files
+    ret = GetTempFileName(GetTemporaryDirectory().c_str(),             // directory for tmp files
                           TEXT((directoryPrefix + "abc").c_str()),     // temp file name prefix (only 3 characters are used)
                           0,                                           // create unique name
                           temporaryDirName);                           // buffer for name
@@ -443,16 +429,6 @@ String Path::CreateTemporaryDirectory (const FileName & directoryPrefix)
 
   return finalTempDirName;
 }
-
-
-/* Delete a temporary directory.
- */
-void Path::DeleteTemporaryDirectory (const FileName & directoryName)
-{
-  if (Os::DeleteDirectory(directoryName))
-    LOGWARN(OSS() << "Can't remove temporary directory  " << directoryName);
-}
-
 
 
 END_NAMESPACE_OPENTURNS

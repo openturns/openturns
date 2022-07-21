@@ -1,5 +1,5 @@
-Distribution  class=Rice name=Rice dimension=1 sigma=5 nu=4
-Distribution  Rice(sigma = 5, nu = 4)
+Distribution  class=Rice name=Rice dimension=1 beta=5 nu=4
+Distribution  Rice(beta = 5, nu = 4)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[9.46867]
@@ -12,8 +12,10 @@ Point=  class=Point name=Unnamed dimension=1 values=[1]
 pdf     = 0.0286533178617
 pdf (FD)= 0.028653318
 cdf= 0.0144246216851
+pdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.00771071,-0.00449313]
 pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.00771071,-0.00449313]
-cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.00390269,-0.00470084]
+cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.00390269,-0.00228496]
+cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.00390269,-0.00228496]
 quantile= class=Point name=Unnamed dimension=1 values=[13.9273]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.87781]
@@ -22,7 +24,7 @@ entropy=2.680547
 Minimum volume interval= [0.68836, 14.2519]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 3.91877} with f=
-MinimumVolumeLevelSetEvaluation(Rice(sigma = 5, nu = 4))
+MinimumVolumeLevelSetEvaluation(Rice(beta = 5, nu = 4))
 beta= [0.0198656]
 Bilateral confidence interval= [1.31981, 15.3859]
 beta= [0.95]
@@ -32,16 +34,15 @@ Unilateral confidence interval (upper tail)= [1.87781, 63]
 beta= [0.95]
 mean= class=Point name=Unnamed dimension=1 values=[7.23115]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.7104]
-parameters= [class=PointWithDescription name=X0 dimension=2 description=[sigma,nu] values=[5,4]]
+parameters= [class=PointWithDescription name=X0 dimension=2 description=[beta,nu] values=[5,4]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [7.23115]
 standard moment n= 2  value= [66]
 standard moment n= 3  value= [704.457]
 standard moment n= 4  value= [8456]
 standard moment n= 5  value= [111488]
-Standard representative= Rice(sigma = 5, nu = 4)
+Standard representative= Rice(beta = 5, nu = 4)
 nu= 4.0
 standard deviation= class=Point name=Unnamed dimension=1 values=[3.70276]
 skewness= class=Point name=Unnamed dimension=1 values=[0.569607]
 kurtosis= class=Point name=Unnamed dimension=1 values=[3.10633]
-sigma= 5.0

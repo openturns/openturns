@@ -1,8 +1,8 @@
-distribution= class=Rice name=Rice dimension=1 sigma=0.5 nu=1.5
-Estimated distribution= class=Rice name=Rice dimension=1 sigma=0.498532 nu=1.50235
-Distribution from parameters= Rice(sigma = 0.5, nu = 1.5)
-Default distribution= Rice(sigma = 1, nu = 0)
-Rice          = Rice(sigma = 0.5, nu = 1.5)
-Estimated rice= Rice(sigma = 0.498532, nu = 1.50235)
-Rice from parameters= Rice(sigma = 0.5, nu = 1.5)
-Default rice= Rice(sigma = 1, nu = 0)
+distribution= class=Rice name=Rice dimension=1 beta=0.5 nu=1.5
+Estimated distribution= class=Rice name=Rice dimension=1 beta=0.498532 nu=1.50235
+Distribution from parameters= Rice(beta = 0.5, nu = 1.5)
+Default distribution= Rice(beta = 1, nu = 0)
+Rice          = Rice(beta = 0.5, nu = 1.5)
+Estimated rice= Rice(beta = 0.498532, nu = 1.50235)
+Rice from parameters= Rice(beta = 0.5, nu = 1.5)
+Default rice= Rice(beta = 1, nu = 0)

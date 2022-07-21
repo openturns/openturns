@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation of projection strategy as a leastSquares
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,36 +45,36 @@ public:
   typedef ProjectionStrategyImplementation::FunctionCollection FunctionCollection;
 
   /** Default constructor */
-  explicit LeastSquaresStrategy(const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+  explicit LeastSquaresStrategy(const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   /** Parameter constructor */
   explicit LeastSquaresStrategy(const Distribution & measure,
-                                const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+                                const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   /** Parameter constructor */
   explicit LeastSquaresStrategy(const WeightedExperiment & weightedExperiment,
-                                const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+                                const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   /** Parameter constructor */
   LeastSquaresStrategy(const Distribution & measure,
                        const WeightedExperiment & weightedExperiment,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   /** Parameter constructor */
   LeastSquaresStrategy(const Sample & inputSample,
                        const Point & weights,
                        const Sample & outputSample,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   LeastSquaresStrategy(const Sample & inputSample,
                        const Sample & outputSample,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   /** Virtual constructor */
-  virtual LeastSquaresStrategy * clone() const;
+  LeastSquaresStrategy * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   void computeCoefficients(const Function & function,
@@ -83,13 +83,13 @@ public:
                            const Indices & addedRanks,
                            const Indices & conservedRanks,
                            const Indices & removedRanks,
-                           const UnsignedInteger marginalIndex = 0);
+                           const UnsignedInteger marginalIndex = 0) override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

@@ -1,2 +1,2 @@
-sample=class=Sample name=EventRandomVector sample implementation=class=SampleImplementation name=EventRandomVector sample size=10 dimension=1 description=[y0] data=[[0],[0],[0],[0],[1],[0],[0],[0],[0],[0]]
+sample=class=Sample name=ThresholdEventImplementation sample implementation=class=SampleImplementation name=ThresholdEventImplementation sample size=10 dimension=1 description=[y0] data=[[0],[0],[0],[0],[1],[0],[0],[0],[0],[0]]
 sample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 description=[Unnamed in Unnamed] data=[[1],[0],[0],[0],[0],[0],[0],[0],[0],[1]]

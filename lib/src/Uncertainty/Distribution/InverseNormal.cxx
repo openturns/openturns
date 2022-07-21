@@ -2,7 +2,7 @@
 /**
  *  @brief The InverseNormal distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,8 +34,8 @@ static const Factory<InverseNormal> Factory_InverseNormal;
 /* Default constructor */
 InverseNormal::InverseNormal()
   : ContinuousDistribution()
-  , lambda_(1.0)
   , mu_(1.0)
+  , lambda_(1.0)
 {
   setName( "InverseNormal" );
   setDimension( 1 );
@@ -43,15 +43,15 @@ InverseNormal::InverseNormal()
 }
 
 /* Parameters constructor */
-InverseNormal::InverseNormal(const Scalar lambda,
-                             const Scalar mu)
+InverseNormal::InverseNormal(const Scalar mu,
+                             const Scalar lambda)
   : ContinuousDistribution()
-  , lambda_(0.0)
   , mu_(0.0)
+  , lambda_(0.0)
 {
   setName( "InverseNormal" );
   // This call set also the range
-  setLambdaMu(lambda, mu);
+  setMuLambda(mu, lambda);
   setDimension( 1 );
 }
 
@@ -75,15 +75,15 @@ String InverseNormal::__repr__() const
   oss << "class=" << InverseNormal::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " lambda=" << lambda_
-      << " mu=" << mu_;
+      << " mu=" << mu_
+      << " lambda=" << lambda_;
   return oss;
 }
 
 String InverseNormal::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << getClassName() << "(lambda = " << lambda_ << ", mu = " << mu_ << ")";
+  oss << getClassName() << "(mu = " << mu_ << ", lambda = " << lambda_ << ")";
   return oss;
 }
 
@@ -122,7 +122,7 @@ Scalar InverseNormal::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LogMinScalar;
+  if (x <= 0.0) return SpecFunc::LowestScalar;
   return 0.5 * ( std::log(lambda_) - std::log(2.0 * M_PI * x * x * x)) - lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_);
 }
 
@@ -229,8 +229,8 @@ Point InverseNormal::getStandardMoment(const UnsignedInteger n) const
 
 /* Interface specific to InverseNormal */
 
-void InverseNormal::setLambdaMu(const Scalar lambda,
-                                const Scalar mu)
+void InverseNormal::setMuLambda(const Scalar mu,
+                                const Scalar lambda)
 {
   if ( (lambda <= 0.0) || (mu <= 0.0) ) throw InvalidArgumentException(HERE) << "lambda and mu MUST be positive";
   if ((lambda_ != lambda) || (mu_ != mu))
@@ -260,8 +260,8 @@ Scalar InverseNormal::getMu() const
 Point InverseNormal::getParameter() const
 {
   Point point(2);
-  point[0] = lambda_;
-  point[1] = mu_;
+  point[0] = mu_;
+  point[1] = lambda_;
   return point;
 }
 
@@ -276,9 +276,7 @@ void InverseNormal::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description InverseNormal::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "lambda";
-  description[1] = "mu";
+  Description description = {"mu", "lambda"};
   return description;
 }
 
@@ -286,16 +284,16 @@ Description InverseNormal::getParameterDescription() const
 void InverseNormal::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "lambda_", lambda_ );
   adv.saveAttribute( "mu_", mu_ );
+  adv.saveAttribute( "lambda_", lambda_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseNormal::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "lambda_", lambda_ );
   adv.loadAttribute( "mu_", mu_ );
+  adv.loadAttribute( "lambda_", lambda_ );
   computeRange();
 }
 

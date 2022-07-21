@@ -14,7 +14,7 @@ comparisonOperator : :class:`~openturns.ComparisonOperator`
     Comparison operator used to compare *antecedent* with *threshold*.
 threshold : float
     *threshold* we want to compare to *antecedent*.
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Physical event associated with the standard event to be created.
 
 Notes
@@ -39,18 +39,19 @@ One way to evaluate the probability content :math:`P_f` of the event :math:`\cD_
 is to use an isoprobabilistic transformation to move from the physical space
 to a standard normal space (U-space) where distributions are spherical
 (invariant by rotation by definition), with zero mean, unit variance and unit
-correlation matrix. The usual isoprobabilistic transformations are the
-Generalized Nataf transformation and the Rosenblatt one.
+correlation matrix. The usual isoprobabilistic transformations are the 
+Generalized Nataf transformation and Rosenblatt transformation.
 
-In that new U-space, the event has the new expression defined
-from the transformed limit state function of the model
-:math:`G : \cD_f = \{\vect{U} \in \Rset^n \, | \, G(\vect{U}\,,\,\vect{d}) \le 0\}`
-and its boundary :
-:math:`\{\vect{U} \in \Rset^n \, | \,G(\vect{U}\,,\,\vect{d}) = 0\}`.
+In that new U-space, the event can be expressed in terms of 
+the transformed limit state function of the model :math:`g`
+
+.. math::
+
+    \cD_f = \{\vect{U} \in \Rset^n \, | \, g(\vect{U}\,,\,\vect{d}) \le 0\}
 
 See also
 --------
-Analytical, SORM, FORM, SORMResult, FORMResult, StrongMaximumTest
+Analytical, SORM, FORM, SORMResult, FORMResult, StrongMaximumTest, ImportanceSamplingExperiment
 
 Examples
 --------
@@ -66,5 +67,5 @@ A StandardEvent created from a limit state function :
 
 A StandardEvent based on an event :
 
->>> myEvent = ot.Event(output, ot.Less(), 1.0)
+>>> myEvent = ot.ThresholdEvent(output, ot.Less(), 1.0)
 >>> myStandardEvent = ot.StandardEvent(myEvent)"

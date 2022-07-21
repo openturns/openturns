@@ -2,7 +2,7 @@
 /**
  *  @brief The Dirichlet distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -134,7 +134,6 @@ Scalar Dirichlet::computePDF(const Point & point) const
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const Scalar logPDF = computeLogPDF(point);
-  if (logPDF == SpecFunc::LogMinScalar) return 0.0;
   return std::exp(logPDF);
 }
 
@@ -147,10 +146,10 @@ Scalar Dirichlet::computeLogPDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar xI = point[i];
-    if (xI <= 0.0) return SpecFunc::LogMinScalar;
+    if (xI <= 0.0) return SpecFunc::LowestScalar;
     sum += xI;
   }
-  if (sum >= 1.0) return SpecFunc::LogMinScalar;
+  if (sum >= 1.0) return SpecFunc::LowestScalar;
   Scalar logPDF = normalizationFactor_ + (theta_[dimension] - 1.0) * log1p(-sum);
   for (UnsignedInteger i = 0; i < dimension; ++i) logPDF += (theta_[i] - 1.0) * std::log(point[i]);
   return logPDF;
@@ -314,10 +313,10 @@ Scalar Dirichlet::computeConditionalPDF(const Scalar x,
   Scalar sumThetaConditioning = 0.0;
   Scalar sumY = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    {
-      sumThetaConditioning += theta_[i];
-      sumY += y[i];
-    }
+  {
+    sumThetaConditioning += theta_[i];
+    sumY += y[i];
+  }
   if (sumY <= 0.0 || sumY >= 1.0) return 0.0;
   s -= sumThetaConditioning;
   const Scalar z = x / (1.0 - sumY);
@@ -335,14 +334,14 @@ Point Dirichlet::computeSequentialConditionalPDF(const Point & x) const
   Scalar z = x[0];
   result[0] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z));
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
-    {
-      sumY += x[conditioningDimension - 1];
-      if (sumY <= 0.0 || sumY >= 1.0) return result;
-      s -= r;
-      r = theta_[conditioningDimension];
-      z = x[conditioningDimension] / (1.0 - sumY);
-      result[conditioningDimension] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
-    }
+  {
+    sumY += x[conditioningDimension - 1];
+    if (sumY <= 0.0 || sumY >= 1.0) return result;
+    s -= r;
+    r = theta_[conditioningDimension];
+    z = x[conditioningDimension] / (1.0 - sumY);
+    result[conditioningDimension] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
+  }
   return result;
 }
 
@@ -358,10 +357,10 @@ Scalar Dirichlet::computeConditionalCDF(const Scalar x,
   Scalar sumThetaConditioning = 0.0;
   Scalar sumY = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    {
-      sumThetaConditioning += theta_[i];
-      sumY += y[i];
-    }
+  {
+    sumThetaConditioning += theta_[i];
+    sumY += y[i];
+  }
   if (sumY <= 0.0) return 0.0;
   if (sumY >= 1.0) return 1.0;
   s -= sumThetaConditioning;
@@ -379,14 +378,14 @@ Point Dirichlet::computeSequentialConditionalCDF(const Point & x) const
   Scalar z = x[0];
   result[0] = DistFunc::pBeta(r, s, z);
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
-    {
-      sumY += x[conditioningDimension - 1];
-      if (sumY <= 0.0 || sumY >= 1.0) return result;
-      s -= r;
-      r = theta_[conditioningDimension];
-      z = x[conditioningDimension] / (1.0 - sumY);
-      result[conditioningDimension] = DistFunc::pBeta(r, s, z);
-    }
+  {
+    sumY += x[conditioningDimension - 1];
+    if (sumY <= 0.0 || sumY >= 1.0) return result;
+    s -= r;
+    r = theta_[conditioningDimension];
+    z = x[conditioningDimension] / (1.0 - sumY);
+    result[conditioningDimension] = DistFunc::pBeta(r, s, z);
+  }
   return result;
 }
 
@@ -400,10 +399,10 @@ Scalar Dirichlet::computeConditionalQuantile(const Scalar q,
   Scalar sumThetaConditioning = 0.0;
   Scalar sumY = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    {
-      sumThetaConditioning += theta_[i];
-      sumY += y[i];
-    }
+  {
+    sumThetaConditioning += theta_[i];
+    sumY += y[i];
+  }
   const Scalar r = theta_[conditioningDimension];
   const Scalar s = sumTheta_ - sumThetaConditioning - r;
   return (1.0 - sumY) * DistFunc::qBeta(r, s, q);
@@ -419,13 +418,13 @@ Point Dirichlet::computeSequentialConditionalQuantile(const Point & q) const
   Scalar s = sumTheta_ - r;
   result[0] = DistFunc::qBeta(r, s, q[0]);
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
-    {
-      sumY += result[conditioningDimension - 1];
-      if (sumY <= 0.0 || sumY >= 1.0) return result;
-      s -= r;
-      r = theta_[conditioningDimension];
-      result[conditioningDimension] = (1.0 - sumY) * DistFunc::qBeta(r, s, q[conditioningDimension]);
-    }
+  {
+    sumY += result[conditioningDimension - 1];
+    if (sumY <= 0.0 || sumY >= 1.0) return result;
+    s -= r;
+    r = theta_[conditioningDimension];
+    result[conditioningDimension] = (1.0 - sumY) * DistFunc::qBeta(r, s, q[conditioningDimension]);
+  }
   return result;
 }
 
@@ -548,8 +547,6 @@ Distribution Dirichlet::getMarginal(const Indices & indices) const
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
   const UnsignedInteger outputDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
   Point thetaMarginal(outputDimension + 1);
   Scalar sumMarginal = 0.0;
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
@@ -558,7 +555,6 @@ Distribution Dirichlet::getMarginal(const Indices & indices) const
     const Scalar thetaI = theta_[index_i];
     sumMarginal += thetaI;
     thetaMarginal[i] = thetaI;
-    marginalDescription[i] = description[index_i];
   }
   thetaMarginal[outputDimension] = sumTheta_ - sumMarginal;
   Dirichlet* marginal(new Dirichlet(thetaMarginal));
@@ -576,7 +572,7 @@ Distribution Dirichlet::getMarginal(const Indices & indices) const
     marginal->integrationWeights_ = marginalIntegrationWeights_;
     marginal->isInitializedCDF_ = true;
   }
-  marginal->setDescription(marginalDescription);
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 

@@ -11,6 +11,10 @@
 %apply const ScalarCollection & { const OT::ComplexMatrix::ScalarCollection & };
 %apply const ComplexCollection & { const OT::ComplexMatrix::ComplexCollection & };
 
+%rename(__baseaddress__) OT::ComplexMatrix::data;
+%rename(__elementsize__) OT::ComplexMatrix::elementSize;
+%rename(__stride__) OT::ComplexMatrix::stride;
+
 %include openturns/ComplexMatrix.hxx
 
 %pythoncode %{
@@ -25,7 +29,7 @@ def ComplexMatrix___getattribute__(self, name):
     if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getNbRows(), self.getNbColumns()),
                                                 'typestr': "|c" + str(self.__elementsize__()),
-                                                'data': (int(self.__baseaddress__()), True),
+                                                'data': (int(self.__baseaddress__() or 1), True),
                                                 'strides': (self.__stride__(0), self.__stride__(1)),
                                                 'version': 3,
                                                 }
@@ -37,7 +41,7 @@ ComplexMatrix.__getattribute__ = ComplexMatrix___getattribute__
 %define OTComplexMatrixGetAccessors()
   OTMatrixGetAccessor(ComplexMatrix, Complex, _PyComplex_)
   OTMatrixSetAccessor(ComplexMatrix, Complex, _PyComplex_)
-%enddef    
+%enddef
 
 namespace OT {
 

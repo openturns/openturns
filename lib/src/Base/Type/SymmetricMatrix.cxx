@@ -2,7 +2,7 @@
 /**
  *  @brief SymmetricMatrix implements the classical mathematical symmetric matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,11 +51,22 @@ SymmetricMatrix::SymmetricMatrix(const MatrixImplementation & i)
 }
 
 /* Copy constructor, added to solve glitches with inheritance */
-SymmetricMatrix::SymmetricMatrix(const SymmetricMatrix & s)
-  : SquareMatrix(static_cast<const SquareMatrix &>(s))
+SymmetricMatrix::SymmetricMatrix(const SymmetricMatrix & other)
+  : SquareMatrix(static_cast<const SquareMatrix &>(other))
   , hasBeenSymmetrized_(false)
 {
   // Nothing to do
+}
+
+/* Assignment operator */
+SymmetricMatrix & SymmetricMatrix::operator=(const SymmetricMatrix & rhs)
+{
+  if (this != &rhs)
+  {
+    SquareMatrix::operator=(rhs);
+    hasBeenSymmetrized_ = rhs.hasBeenSymmetrized_;
+  }
+  return *this;
 }
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
@@ -274,6 +285,16 @@ Point SymmetricMatrix::computeEV(SquareMatrix & v,
   return getImplementation()->computeEVSym(*(v.getImplementation()), keepIntact);
 }
 
+/* Compute the largest eigenvalue module using power iterations, symmetric matrix */
+Scalar SymmetricMatrix::computeLargestEigenValueModule(const UnsignedInteger maximumIterations,
+    const Scalar epsilon) const
+{
+  Scalar maximumModule = 0.0;
+  const Bool found = getImplementation()->computeLargestEigenValueModuleSym(maximumModule, maximumIterations, epsilon);
+  if (!found) throw InternalException(HERE) << "Could not reached a precision=" << epsilon << " using " << maximumIterations << " iterations. The approximation obtained is " << maximumModule;
+  return maximumModule;
+}
+
 /* Comparison operator */
 Bool SymmetricMatrix::operator == (const Matrix & rhs) const
 {
@@ -288,5 +309,13 @@ Bool SymmetricMatrix::operator == (const Matrix & rhs) const
       if ((*this)(i, j) != rhs(i, j)) return false;
   return true;
 }
+
+/** Sum all coefficients */
+Scalar SymmetricMatrix::computeSumElements() const
+{
+  checkSymmetry();
+  return getImplementation()->computeSumElements();
+}
+
 
 END_NAMESPACE_OPENTURNS

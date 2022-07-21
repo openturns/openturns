@@ -108,7 +108,7 @@ estimators are obtained analytically:
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/maximumlikelihood_estimator`
+    - See :doc:`/auto_data_analysis/distribution_fitting/plot_maximumlikelihood_estimator`
 
 .. topic:: References:
 

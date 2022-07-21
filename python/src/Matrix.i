@@ -17,6 +17,9 @@
 
 %ignore OT::Matrix::getRow;
 %ignore OT::Matrix::getColumn;
+%rename(__baseaddress__) OT::Matrix::data;
+%rename(__elementsize__) OT::Matrix::elementSize;
+%rename(__stride__) OT::Matrix::stride;
 
 %template(MatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::MatrixImplementation>;
 %apply const ScalarCollection & { const OT::Matrix::ScalarCollection & };
@@ -30,9 +33,12 @@ PyObject * __getitem__(PyObject * args) const {
   Py_ssize_t slicelength1 = 0;
 
   // case #0: [slice] => Matrix
-  if ( PySlice_Check( args ) )
+  if (PySlice_Check(args))
   { 
-    PySlice_GetIndicesEx( OT::SliceCast( args ), self->getNbRows(), &start1, &stop1, &step1, &slicelength1 );
+    if (PySlice_Unpack(args, &start1, &stop1, &step1) < 0)
+      throw OT::InvalidArgumentException(HERE) << "Matrix.__getitem__: PySlice_Unpack failed";
+    slicelength1 = PySlice_AdjustIndices(self->getNbRows(), &start1, &stop1, step1);
+
     OT::baseType result(slicelength1, self->getNbColumns());
     for( OT::UnsignedInteger j = 0; j < self->getNbColumns(); ++ j )
     {
@@ -59,9 +65,11 @@ PyObject * __getitem__(PyObject * args) const {
   if (!PyArg_ParseTuple(args,(char *)"OO:" #baseType "___getitem__",&obj1,&obj2)) SWIG_fail;
 
   // convert first list argument 
-  if ( PySlice_Check( obj1 ) )
+  if (PySlice_Check(obj1))
   { 
-    PySlice_GetIndicesEx( OT::SliceCast( obj1 ), self->getNbRows(), &start1, &stop1, &step1, &slicelength1 );
+    if (PySlice_Unpack(obj1, &start1, &stop1, &step1) < 0)
+      throw OT::InvalidArgumentException(HERE) << "Matrix.__getitem__: PySlice_Unpack failed";
+    slicelength1 = PySlice_AdjustIndices(self->getNbRows(), &start1, &stop1, step1);
   }
   else
   {
@@ -78,9 +86,11 @@ PyObject * __getitem__(PyObject * args) const {
   }
 
   // convert second list argument
-  if ( PySlice_Check( obj2 ) )
+  if (PySlice_Check(obj2))
   {
-    PySlice_GetIndicesEx( OT::SliceCast( obj2 ), self->getNbColumns(), &start2, &stop2, &step2, &slicelength2 );
+    if (PySlice_Unpack(obj2, &start2, &stop2, &step2) < 0)
+      throw OT::InvalidArgumentException(HERE) << "Matrix.__getitem__: PySlice_Unpack failed";
+    slicelength2 = PySlice_AdjustIndices(self->getNbColumns(), &start2, &stop2, step2);
   }
   else
   {
@@ -157,13 +167,16 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   Py_ssize_t slicelength1 = 0;
 
   // case #0: [slice] <= baseType
-  if ( PySlice_Check( args ) )
+  if (PySlice_Check(args))
   {
-    PySlice_GetIndicesEx( OT::SliceCast( args ), self->getNbRows(), &start1, &stop1, &step1, &slicelength1 );
+    if (PySlice_Unpack(args, &start1, &stop1, &step1) < 0)
+      throw OT::InvalidArgumentException(HERE) << "Matrix.__setitem__: PySlice_Unpack failed";
+    slicelength1 = PySlice_AdjustIndices(self->getNbRows(), &start1, &stop1, step1);
+
     OT::baseType temp2 ;
     OT::baseType *val2 = 0 ;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::" #baseType " *"), 0))) {
-      temp2 = OT::convert< OT::_PySequence_, OT::baseType >( valObj );
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_NO_NULL))) {
+      temp2 = OT::convert< OT::_PySequence_, OT::baseType >(valObj);
       val2 = &temp2;
     }
     assert( val2 );
@@ -192,9 +205,11 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   if (!PyArg_ParseTuple(args,(char *)"OO:" #baseType "___getitem__",&obj1,&obj2)) SWIG_fail;
 
   // convert first list argument 
-  if ( PySlice_Check( obj1 ) )
+  if (PySlice_Check(obj1))
   { 
-    PySlice_GetIndicesEx( OT::SliceCast( obj1 ), self->getNbRows(), &start1, &stop1, &step1, &slicelength1 );
+    if (PySlice_Unpack(obj1, &start1, &stop1, &step1) < 0)
+      throw OT::InvalidArgumentException(HERE) << "Matrix.__setitem__: PySlice_Unpack failed";
+    slicelength1 = PySlice_AdjustIndices(self->getNbRows(), &start1, &stop1, step1);
   }
   else
   {
@@ -211,9 +226,11 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   }
 
   // convert second list argument
-  if ( PySlice_Check( obj2 ) )
+  if (PySlice_Check(obj2))
   {
-    PySlice_GetIndicesEx( OT::SliceCast( obj2 ), self->getNbColumns(), &start2, &stop2, &step2, &slicelength2 );
+    if (PySlice_Unpack(obj2, &start2, &stop2, &step2) < 0)
+      throw OT::InvalidArgumentException(HERE) << "Matrix.__setitem__: PySlice_Unpack failed";
+    slicelength2 = PySlice_AdjustIndices(self->getNbColumns(), &start2, &stop2, step2);
   }
   else
   {
@@ -238,7 +255,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
       // case #1: [slice/slice] <= baseType
       OT::baseType temp2 ;
       OT::baseType *val2 = 0 ;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::" #baseType " *"), 0))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_NO_NULL))) {
         temp2 = OT::convert<OT::_PySequence_,OT::baseType>( valObj );
         val2 = &temp2;
       }
@@ -255,7 +272,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
       // case #2: [slice/index] <= baseType
       OT::baseType temp2 ;
       OT::baseType *val2 = 0 ;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::" #baseType " *"), 0))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_NO_NULL))) {
         temp2 = OT::convert<OT::_PySequence_,OT::baseType>( valObj );
         val2 = &temp2;
       }
@@ -268,12 +285,12 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   }
   else
   {
-    if ( PySlice_Check( obj2 ) )
+    if (PySlice_Check(obj2))
     {
       // case #3: [index/slice] <= baseType
       OT::baseType temp2 ;
       OT::baseType *val2 = 0 ;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::" #baseType " *"), 0))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_NO_NULL))) {
         temp2 = OT::convert<OT::_PySequence_,OT::baseType>( valObj );
         val2 = &temp2;
       }
@@ -315,7 +332,7 @@ def Matrix___getattribute__(self, name):
     if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getNbRows(), self.getNbColumns()),
                                                 'typestr': "|f" + str(self.__elementsize__()),
-                                                'data': (int(self.__baseaddress__()), True),
+                                                'data': (int(self.__baseaddress__() or 1), True),
                                                 'strides': (self.__stride__(0), self.__stride__(1)),
                                                 'version': 3,
                                                 }
@@ -339,6 +356,8 @@ namespace OT {
 #if SWIG_VERSION < 0x030011
   Matrix __truediv__(const Scalar s) { return (*self) / s; }
 #endif
+
+  Matrix __neg__() { return -1.0 * (*self); }
 
 } // Matrix
 } // OT

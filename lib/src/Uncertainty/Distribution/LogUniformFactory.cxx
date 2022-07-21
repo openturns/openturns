@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for LogUniform distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,21 +62,18 @@ Distribution LogUniformFactory::build() const
 LogUniform LogUniformFactory::buildAsLogUniform(const Sample & sample) const
 {
   const Scalar size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a LogUniform distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogUniform distribution from a constant sample.";
   const Scalar a = xMin - std::abs(xMin) / (2.0 + size);
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from a sample that contains non positive values.";
   Scalar aLog = std::log(a);
-  const Scalar xMax = sample.getMax()[0];
   const Scalar b = xMax + std::abs(xMax) / (2.0 + size);
   Scalar bLog = std::log(b);
-  if (!SpecFunc::IsNormal(aLog) || !SpecFunc::IsNormal(bLog)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
-  if (xMin == xMax)
-  {
-    aLog *= 1.0 - SpecFunc::ScalarEpsilon;
-    bLog *= 1.0 + SpecFunc::ScalarEpsilon;
-  }
   LogUniform result(aLog, bLog);
   result.setDescription(sample.getDescription());
   return result;

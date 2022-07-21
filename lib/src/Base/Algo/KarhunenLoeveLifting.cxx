@@ -3,7 +3,7 @@
  *  @brief Field to point function allowing to perform the lifting of a
  *         point into a field using a Karhunen-Loeve basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,11 +40,11 @@ KarhunenLoeveLifting::KarhunenLoeveLifting()
 
 /* Parameter constructor */
 KarhunenLoeveLifting::KarhunenLoeveLifting(const KarhunenLoeveResult & result)
-  : PointToFieldFunctionImplementation(result.getEigenValues().getSize(), result.getMesh(), result.getModesAsProcessSample().getDimension())
+  : PointToFieldFunctionImplementation(result.getEigenvalues().getSize(), result.getMesh(), result.getModesAsProcessSample().getDimension())
   , result_(result)
 {
   // Set the description
-  const UnsignedInteger size = result_.getEigenValues().getSize();
+  const UnsignedInteger size = result_.getEigenvalues().getSize();
   if (size == 0) setOutputDescription(Description::BuildDefault(getOutputDimension(), "x"));
   else setOutputDescription(result_.getModesAsProcessSample()[0].getDescription());
   setInputDescription(Description::BuildDefault(getInputDimension(), "xi"));
@@ -83,7 +83,7 @@ String KarhunenLoeveLifting::__str__(const String & ) const
 /* Get the i-th marginal function */
 PointToFieldFunction KarhunenLoeveLifting::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << "and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 

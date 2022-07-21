@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all distributions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -339,11 +339,6 @@ CorrelationMatrix Distribution::getCorrelation() const
   return getImplementation()->getCorrelation();
 }
 
-CorrelationMatrix Distribution::getLinearCorrelation() const
-{
-  return getImplementation()->getLinearCorrelation();
-}
-
 CorrelationMatrix Distribution::getPearsonCorrelation() const
 {
   return getImplementation()->getPearsonCorrelation();
@@ -377,6 +372,16 @@ Point Distribution::getRealization() const
 Sample Distribution::getSample(const UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);
+}
+
+Sample Distribution::getSampleByInversion(const UnsignedInteger size) const
+{
+  return getImplementation()->getSampleByInversion(size);
+}
+
+Sample Distribution::getSampleByQMC(const UnsignedInteger size) const
+{
+  return getImplementation()->getSampleByQMC(size);
 }
 
 /* Get the DDF of the distribution */
@@ -710,12 +715,6 @@ Sample Distribution::computeQuantile(const Scalar qMin,
                                      const Bool tail) const
 {
   return getImplementation()->computeQuantile(qMin, qMax, pointNumber, tail);
-}
-
-/* Get the implementation of the distribution */
-Distribution::Implementation Distribution::getImplementation() const
-{
-  return p_implementation_;
 }
 
 /* Check if the distribution is elliptical */

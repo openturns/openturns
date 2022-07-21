@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from __future__ import print_function, division
 import openturns as ot
 
 #
@@ -31,7 +30,7 @@ vect = ot.RandomVector(myDistribution)
 
 output = ot.CompositeRandomVector(limitState, vect)
 
-myEvent = ot.Event(output, ot.Less(), 0.0)
+myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 
 #
 # Computation

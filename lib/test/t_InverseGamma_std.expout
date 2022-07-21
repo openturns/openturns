@@ -2,13 +2,13 @@ Testing class InverseGamma
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=InverseGamma name=InverseGamma dimension=1 k=1.5 lambda=2.5
+class=InverseGamma name=InverseGamma dimension=1 lambda=2.5 k=1.5
 streamObject(const T & anObject)
-class=InverseGamma name=InverseGamma dimension=1 k=1.5 lambda=2.5
+class=InverseGamma name=InverseGamma dimension=1 lambda=2.5 k=1.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=InverseGamma name=InverseGamma dimension=1 k=5.5 lambda=2.5
-Distribution InverseGamma(k = 5.5, lambda = 2.5)
+Distribution class=InverseGamma name=InverseGamma dimension=1 lambda=2.5 k=5.5
+Distribution InverseGamma(lambda = 2.5, k = 5.5)
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[0.0599153]
@@ -19,7 +19,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.145455]
 ddf     =class=Point name=Unnamed dimension=1 values=[-56.4599]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-56.4599]
 log pdf=0.783883
 pdf     =2.18996
 pdf (FD)=2.18996
@@ -30,15 +29,15 @@ Inverse survival=class=Point name=Unnamed dimension=1 values=[0.0406605]
 Survival(inverse survival)=0.95
 characteristic function=(0.999937,0.0129291)
 log characteristic function=(2.03228e-05,0.0129292)
-pdf gradient     =class=Point name=Unnamed dimension=2 values=[-1.31286,-2.40895]
-pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-1.31286,-2.40895]
-cdf gradient     =class=Point name=Unnamed dimension=2 values=[0.082705,0.127416]
-cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.082705,0.127416]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[-2.40895,-1.31286]
+pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-2.40895,-1.31286]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[0.127416,0.082705]
+cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.127416,0.082705]
 quantile=class=Point name=Unnamed dimension=1 values=[0.174871]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0280966] upper bound=class=Point name=Unnamed dimension=1 values=[0.177562] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(InverseGamma(k = 5.5, lambda = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(InverseGamma(k = 5.5, lambda = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(InverseGamma(k = 5.5, lambda = 2.5)) level=34.4467
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(InverseGamma(lambda = 2.5, k = 5.5)) gradientImplementation=MinimumVolumeLevelSetGradient(InverseGamma(lambda = 2.5, k = 5.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(InverseGamma(lambda = 2.5, k = 5.5)) level=34.4467
 beta=1.09642e-15
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0364963] upper bound=class=Point name=Unnamed dimension=1 values=[0.209657] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -53,19 +52,19 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[k : 5.5, lambda : 2.5]]
+parameters=[[lambda : 2.5, k : 5.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.222222]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.0634921]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0.0253968]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.0169312]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0.0338624]
-Standard representative=InverseGamma(k = 5.5, lambda = 1)
+Standard representative=InverseGamma(lambda = 5.5, k = 1)
 standard deviation=class=Point name=Unnamed dimension=1 values=[0.0475131]
 skewness=class=Point name=Unnamed dimension=1 values=[2.99333]
 kurtosis=class=Point name=Unnamed dimension=1 values=[29.4]
-Distribution class=InverseGamma name=InverseGamma dimension=1 k=15 lambda=2.5
-Distribution InverseGamma(k = 15, lambda = 2.5)
+Distribution class=InverseGamma name=InverseGamma dimension=1 lambda=2.5 k=15
+Distribution InverseGamma(lambda = 2.5, k = 15)
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[0.0384087]
@@ -76,7 +75,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.0533333]
 ddf     =class=Point name=Unnamed dimension=1 values=[-253.351]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-253.352]
 log pdf=0.463518
 pdf     =1.58966
 pdf (FD)=1.58966
@@ -87,15 +85,15 @@ Inverse survival=class=Point name=Unnamed dimension=1 values=[0.0182761]
 Survival(inverse survival)=0.95
 characteristic function=(0.999999,0.00152381)
 log characteristic function=(-8.93075e-08,0.00152381)
-pdf gradient     =class=Point name=Unnamed dimension=2 values=[-1.04829,-4.76897]
-pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-1.04829,-4.76897]
-cdf gradient     =class=Point name=Unnamed dimension=2 values=[0.00792151,0.0339127]
-cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.00792151,0.0339127]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[-4.76897,-1.04829]
+pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-4.76897,-1.04829]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[0.0339127,0.00792151]
+cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.0339127,0.00792151]
 quantile=class=Point name=Unnamed dimension=1 values=[0.0432604]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0154445] upper bound=class=Point name=Unnamed dimension=1 values=[0.0443646] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(InverseGamma(k = 15, lambda = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(InverseGamma(k = 15, lambda = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(InverseGamma(k = 15, lambda = 2.5)) level=-1.89324
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(InverseGamma(lambda = 2.5, k = 15)) gradientImplementation=MinimumVolumeLevelSetGradient(InverseGamma(lambda = 2.5, k = 15)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(InverseGamma(lambda = 2.5, k = 15)) level=-1.89324
 beta=6.64087
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0170288] upper bound=class=Point name=Unnamed dimension=1 values=[0.0476452] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -110,14 +108,14 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[k : 15, lambda : 2.5]]
+parameters=[[lambda : 2.5, k : 15]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.0714286]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.00549451]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0.000457875]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[4.1625e-05]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[4.1625e-06]
-Standard representative=InverseGamma(k = 15, lambda = 1)
+Standard representative=InverseGamma(lambda = 15, k = 1)
 standard deviation=class=Point name=Unnamed dimension=1 values=[0.00792429]
 skewness=class=Point name=Unnamed dimension=1 values=[1.20185]
 kurtosis=class=Point name=Unnamed dimension=1 values=[5.90909]

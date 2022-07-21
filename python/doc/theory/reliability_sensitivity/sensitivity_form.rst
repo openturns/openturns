@@ -21,7 +21,7 @@ Sensitivity Factors from FORM method
 
 | In this context, the probability :math:`P_f` can often be
   efficiently estimated by FORM or SORM approximations.
-| The FORM importance factors offer a way to analyse the sensitivity of
+| The FORM importance factors offer a way to analyze the sensitivity of
   the probability the realization of the event with respect to the
   parameters of the probability distribution of :math:`\vect{X}`.
 
@@ -74,7 +74,7 @@ a particular threshold rather than to its variance.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/estimate_probability_form`
+    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_form`
 
 
 .. topic:: References:

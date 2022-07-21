@@ -1,67 +1,88 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
 
-class RVEC(PythonRandomVector):
+class RVEC(ot.PythonRandomVector):
 
     def __init__(self):
         super(RVEC, self).__init__(2)
         self.setDescription(['R', 'S'])
+        self._offset = 2.0
 
     def getRealization(self):
-        X = [RandomGenerator.Generate(), 2 + RandomGenerator.Generate()]
+        X = [ot.RandomGenerator.Generate(), self._offset +
+             ot.RandomGenerator.Generate()]
         return X
 
     def getSample(self, size):
         X = []
         for i in range(size):
             X.append(
-                [RandomGenerator.Generate(), 2 + RandomGenerator.Generate()])
+                [ot.RandomGenerator.Generate(), self._offset + ot.RandomGenerator.Generate()])
         return X
 
     def getMean(self):
-        return [0.5, 2.5]
+        return [0.5, self._offset + 0.5]
 
     def getCovariance(self):
         return [[0.0833333, 0.], [0., 0.0833333]]
+
+    def isEvent(self):
+        return False
+
+    def setParameter(self, offset_point):
+        self._offset = offset_point[0]
+
+    def getParameter(self):
+        return [self._offset]
+
+    def getParameterDescription(self):
+        return ["offset"]
 
 
 R = RVEC()
 print(R)
 
-try:
-    # Instance creation
-    myRV = RandomVector(R)
-    print("myRV=", repr(myRV))
 
-    # Copy constructor
-    newRV = RandomVector(myRV)
+# Instance creation
+myRV = ot.RandomVector(R)
+print("myRV=", repr(myRV))
 
-    # Dimension
-    dim = myRV.getDimension()
-    print('dimension=', dim)
+# Copy constructor
+newRV = ot.RandomVector(myRV)
 
-    # Realization
-    X = myRV.getRealization()
-    print('realization=', X)
+# Dimension
+dim = myRV.getDimension()
+print('dimension=', dim)
 
-    # Sample
-    X = myRV.getSample(5)
-    print('sample=', X)
+# Realization
+X = myRV.getRealization()
+print('realization=', X)
 
-    # Mean
-    mean = myRV.getMean()
-    print('mean=', mean)
+# Sample
+X = myRV.getSample(5)
+print('sample=', X)
 
-    # Covariance
-    covariance = myRV.getCovariance()
-    print('covariance=', covariance)
+# Mean
+mean = myRV.getMean()
+print('mean=', mean)
 
-except:
-    import sys
-    print("t_RandomVector_python.py", sys.exc_info()[0], sys.exc_info()[1])
+# Covariance
+covariance = myRV.getCovariance()
+print('covariance=', covariance)
+
+isEvent = myRV.isEvent()
+print('isEvent=', isEvent)
+
+# Parameter description
+print('description=', myRV.getParameterDescription())
+
+# Parameter
+myRV.setParameter([10.5])
+print('new parameter=', myRV.getParameter())
+print('new mean=', myRV.getMean())
+print('new realization=', myRV.getRealization())
+print('new sample=', myRV.getSample(5))

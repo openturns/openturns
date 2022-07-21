@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Laplace for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,7 +27,7 @@ using namespace OT::Test;
 class TestObject : public Laplace
 {
 public:
-  TestObject() : Laplace(1.5, 0.5) {}
+  TestObject() : Laplace(0.5, 1.5) {}
   virtual ~TestObject() {}
 };
 
@@ -43,8 +43,8 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
-    Laplace distribution(1.0 / 1.5, 0.5);
+    // Instantiate one distribution object
+    Laplace distribution(0.5, 1.0 / 1.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -79,7 +79,6 @@ int main(int, char *[])
     Scalar eps = 1e-5;
     Point DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
-    fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
     Scalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );
@@ -101,18 +100,18 @@ int main(int, char *[])
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     Point PDFgrFD(2);
-    PDFgrFD[0] = (Laplace(distribution.getLambda() + eps, distribution.getMu()).computePDF(point) -
-                  Laplace(distribution.getLambda() - eps, distribution.getMu()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[1] = (Laplace(distribution.getLambda(), distribution.getMu() + eps).computePDF(point) -
-                  Laplace(distribution.getLambda(), distribution.getMu() - eps).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[0] = (Laplace(distribution.getMu() + eps, distribution.getLambda()).computePDF(point) -
+                  Laplace(distribution.getMu() - eps, distribution.getLambda()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (Laplace(distribution.getMu(), distribution.getLambda() + eps).computePDF(point) -
+                  Laplace(distribution.getMu(), distribution.getLambda() - eps).computePDF(point)) / (2.0 * eps);
     fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
     Point CDFgrFD(2);
-    CDFgrFD[0] = (Laplace(distribution.getLambda() + eps, distribution.getMu()).computeCDF(point) -
-                  Laplace(distribution.getLambda() - eps, distribution.getMu()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[1] = (Laplace(distribution.getLambda(), distribution.getMu() + eps).computeCDF(point) -
-                  Laplace(distribution.getLambda(), distribution.getMu() - eps).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[0] = (Laplace(distribution.getMu() + eps, distribution.getLambda()).computeCDF(point) -
+                  Laplace(distribution.getMu() - eps, distribution.getLambda()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (Laplace(distribution.getMu(), distribution.getLambda() + eps).computeCDF(point) -
+                  Laplace(distribution.getMu(), distribution.getLambda() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;

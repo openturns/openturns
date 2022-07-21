@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of SORM class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -71,7 +71,7 @@ int main(int, char *[])
     CompositeRandomVector output(myFunction, vect);
 
     /* We create an Event from this RandomVector */
-    Event myEvent(output, Less(), -3.0);
+    ThresholdEvent myEvent(output, Less(), -3.0);
 
     /* We create a NearestPoint algorithm */
     AbdoRackwitz myAbdoRackwitz;
@@ -96,8 +96,8 @@ int main(int, char *[])
     UnsignedInteger digits = 4;
     fullprint << "Breitung event probability=" << result.getEventProbabilityBreitung() << std::endl;
     fullprint << "Breitung generalized reliability index=" << std::setprecision(digits) << result.getGeneralisedReliabilityIndexBreitung() << std::endl;
-    fullprint << "HohenBichler event probability=" << std::setprecision(digits) << result.getEventProbabilityHohenBichler() << std::endl;
-    fullprint << "HohenBichler generalized reliability index=" << std::setprecision(digits) << result.getGeneralisedReliabilityIndexHohenBichler() << std::endl;
+    fullprint << "Hohenbichler event probability=" << std::setprecision(digits) << result.getEventProbabilityHohenbichler() << std::endl;
+    fullprint << "Hohenbichler generalized reliability index=" << std::setprecision(digits) << result.getGeneralisedReliabilityIndexHohenbichler() << std::endl;
     fullprint << "Tvedt event probability=" << std::setprecision(digits) << result.getEventProbabilityTvedt() << std::endl;
     fullprint << "Tvedt generalized reliability index=" << std::setprecision(digits) << result.getGeneralisedReliabilityIndexTvedt() << std::endl;
     fullprint << "sorted curvatures=" << printPoint(result.getSortedCurvatures(), digits) << std::endl;

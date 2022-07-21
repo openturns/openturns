@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
@@ -18,18 +17,16 @@ sigma = [3.0] * dim
 distribution = ot.Normal(mean, sigma, R)
 
 sample = distribution.getSample(size)
-sampleX = ot.Sample(size, dim - 1)
-sampleY = ot.Sample(size, 1)
-for i in range(size):
-    sampleY[i, 0] = sample[i, 0]
-    for j in range(dim - 1):
-        sampleX[i, j] = sample[i, j + 1]
+sampleX = sample.getMarginal(range(1, dim))
+sampleY = sample.getMarginal(0)
 
 sampleZ = ot.Sample(size, 1)
 for i in range(size):
-    sampleZ[i, 0] = sampleY[i, 0] * sampleY[i, 0]
-print("LinearModelFisher pvalue=%1.2f"%ot.LinearModelTest.LinearModelFisher(sampleY, sampleZ).getPValue())
-print("LinearModelResidualMean pvalue=%1.2f"%ot.LinearModelTest.LinearModelResidualMean(sampleY, sampleZ).getPValue())
+    sampleZ[i, 0] = sampleY[i, 0]**2
+print("LinearModelFisher pvalue=%1.2g" %
+      ot.LinearModelTest.LinearModelFisher(sampleY, sampleZ).getPValue())
+print("LinearModelResidualMean pvalue=%1.2g" %
+      ot.LinearModelTest.LinearModelResidualMean(sampleY, sampleZ).getPValue())
 
 # Durbin Watson
 ot.RandomGenerator.SetSeed(5415)
@@ -37,8 +34,8 @@ eps = ot.Normal(0, 20)
 f = ot.SymbolicFunction('x', '5+2*x+x^2-0.1*x^3')
 N = 15
 x = ot.Sample([[0], [1.42857], [2.85714], [4.28571], [5.71429], [7.14286],
-                [8.57143], [10], [11.4286], [12.8571], [14.2857], [15.7143],
-                [17.1429], [18.5714], [20]])
+               [8.57143], [10], [11.4286], [12.8571], [14.2857], [15.7143],
+               [17.1429], [18.5714], [20]])
 y = f(x) + eps.getSample(N)
 linmodel = ot.LinearModelAlgorithm(x, y).getResult().getCoefficients()
 dwTest = ot.LinearModelTest.LinearModelDurbinWatson(x, y)
@@ -80,5 +77,5 @@ print('PartialRegressionXY=', ot.LinearModelTest.PartialRegression(
 
 print('FullRegressionXZ=', ot.LinearModelTest.FullRegression(
     sampleX, sampleY, 0.10))
-#print('FullRegressionZZ=', ot.LinearModelTest.FullRegression(
-    #sampleZ, sampleZ, 0.10))
+# print('FullRegressionZZ=', ot.LinearModelTest.FullRegression(
+# sampleZ, sampleZ, 0.10))

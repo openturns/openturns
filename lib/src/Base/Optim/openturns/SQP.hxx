@@ -3,7 +3,7 @@
  *  @brief SQP is an actual implementation for
  *         OptimizationAlgorithm using the SQP algorithm.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,10 +57,10 @@ public:
       const Scalar smooth);
 
   /** Virtual constructor */
-  virtual SQP * clone() const;
+  SQP * clone() const override;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-  void run();
+  void run() override;
 
   /** Tau accessor */
   Scalar getTau() const;
@@ -75,17 +75,17 @@ public:
   void setSmooth(const Scalar tau);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  void checkProblem(const OptimizationProblem & problem) const;
+  void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
 

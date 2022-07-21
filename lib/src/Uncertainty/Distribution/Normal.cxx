@@ -2,7 +2,7 @@
 /**
  *  @brief The Normal distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/MatrixImplementation.hxx"
-#include "openturns/IdentityMatrix.hxx"
 #include "openturns/NormalCopula.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/RandomGenerator.hxx"
@@ -90,10 +89,17 @@ Normal::Normal(const Point & mean,
 }
 
 Normal::Normal(const Point & mean,
+               const Point & sigma)
+  : Normal(mean, sigma, CorrelationMatrix(mean.getDimension()))
+{
+  // Nothing to do
+}
+
+Normal::Normal(const Point & mean,
                const CovarianceMatrix & C)
   : EllipticalDistribution(mean
                            , Point(mean.getDimension(), 1.0)
-                           , IdentityMatrix(mean.getDimension())
+                           , CorrelationMatrix(mean.getDimension())
                            , 1.0)
   , logNormalizationFactor_((-1.0 * mean.getDimension()) * SpecFunc::LOGSQRT2PI)
   , hasIndependentCopula_(false)
@@ -156,9 +162,9 @@ Point Normal::getRealization() const
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return Point(1, mean_[0] + sigma_[0] * DistFunc::rNormal());
   Point value(dimension);
-  // First, a realization of independant standard coordinates
+  // First, a realization of independent standard coordinates
   for (UnsignedInteger i = 0; i < dimension; i++) value[i] = DistFunc::rNormal();
-  // Then, transform the independant standard coordinates into the needed ones */
+  // Then, transform the independent standard coordinates into the needed ones */
   if (hasIndependentCopula_)
   {
     for (UnsignedInteger i = 0; i < dimension; i++)
@@ -176,10 +182,15 @@ Sample Normal::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger dimension = getDimension();
   Sample result(size, dimension);
-  for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < dimension; ++j) result(i, j) = DistFunc::rNormal();
-  if (hasIndependentCopula_) result *= sigma_;
-  else result = cholesky_.getImplementation()->genSampleProd(result, true, false, 'R');
+  if (dimension == 1)
+    result.getImplementation()->setData(sigma_[0] * DistFunc::rNormal(size));
+  else
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
+      for (UnsignedInteger j = 0; j < dimension; ++j) result(i, j) = DistFunc::rNormal();
+    if (hasIndependentCopula_) result *= sigma_;
+    else result = cholesky_.getImplementation()->genSampleProd(result, true, false, 'R');
+  }
   result += mean_;
   result.setName(getName());
   result.setDescription(getDescription());
@@ -211,13 +222,34 @@ Scalar Normal::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) 
   return 0.25 * std::exp(logNormalizationFactor_ - 0.5 * betaSquare);
 }
 
+/* Get the PDF of the distribution */
+Scalar Normal::computePDF(const Scalar x) const
+{
+  const Scalar y = (x - mean_[0]) / sigma_[0];
+  return DistFunc::dNormal(y) / sigma_[0];
+}
+
+Scalar Normal::computePDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  // Special case for dimension 1
+  if (dimension == 1) return computePDF(point[0]);
+  return EllipticalDistribution::computePDF(point);
+}
+
 /* Get the CDF of the distribution */
+Scalar Normal::computeCDF(const Scalar x) const
+{
+  return DistFunc::pNormal((x - mean_[0]) / sigma_[0]);
+}
+
 Scalar Normal::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
   // Special case for dimension 1
-  if (dimension == 1) return DistFunc::pNormal((point[0] - mean_[0]) / sigma_[0]);
+  if (dimension == 1) return computeCDF(point[0]);
   // Normalize the point to use the standard form of the multivariate normal distribution
   Point u(normalize(point));
   /* Special treatment for independent components */
@@ -312,7 +344,7 @@ Scalar Normal::computeCDF(const Point & point) const
     // Parallel evalusation of the PDF
     const Sample allPDF(computePDF(allNodes));
     // Some black magic to use BLAS on the internal representation of samples
-    const Scalar probability = dot(allWeights, allPDF.getImplementation()->getData());
+    const Scalar probability = allWeights.dot(allPDF.getImplementation()->getData());
     return probability;
   }
   // For very large dimension, use a MonteCarlo algorithm
@@ -322,31 +354,20 @@ Scalar Normal::computeCDF(const Point & point) const
   Scalar value = 0.0;
   Scalar variance = 0.0;
   Scalar a99 = DistFunc::qNormal(0.995);
-  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" );
+  const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" );
+  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) / blockSize;
   Scalar precision = 0.0;
   for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
   {
-    Scalar valueBlock = 0.0;
-    Scalar varianceBlock = 0.0;
-    for (UnsignedInteger indexSample = 0; indexSample < ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ); ++indexSample)
-    {
-      Bool inside = true;
-      Point realization(getRealization());
-      // Check if the realization is in the integration domain
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-      {
-        inside = realization[i] <= point[i];
-        if (!inside) break;
-      }
-      // ind value is 1.0 if the realization is inside of the integration domain, 0.0 else.
-      Scalar ind = inside;
-      Scalar norm = 1.0 / (indexSample + 1.0);
-      varianceBlock = (varianceBlock * indexSample + (1.0 - norm) * (valueBlock - ind) * (valueBlock - ind)) * norm;
-      valueBlock = (valueBlock * indexSample + ind) * norm;
-    }
-    Scalar norm = 1.0 / (indexOuter + 1.0);
+    const Sample sample(getSample(blockSize));
+    LOGDEBUG(OSS(false) << "indexOuter=" << indexOuter << ", point=" << point << ", sample=" << sample);
+    const Scalar valueBlock = sample.computeEmpiricalCDF(point);
+    const Scalar varianceBlock = valueBlock * (1.0 - valueBlock) / blockSize;
+    LOGDEBUG(OSS(false) << "valueBlock=" << valueBlock << ", varianceBlock=" << varianceBlock);
+    const Scalar norm = 1.0 / (indexOuter + 1.0);
     variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
     value = (value * indexOuter + valueBlock) * norm;
+    LOGDEBUG(OSS(false) << "value=" << value << ", variance=" << variance);
     // Quick return for value = 1
     if ((value >= 1.0 - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
     precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
@@ -357,6 +378,27 @@ Scalar Normal::computeCDF(const Point & point) const
   RandomGenerator::SetState(initialState);
   return value;
 } // computeCDF
+
+Sample Normal::computeCDF(const Sample & sample) const
+{
+  if (dimension_ <= ResourceMap::GetAsUnsignedInteger("Normal-SmallDimension"))
+    return DistributionImplementation::computeCDFParallel(sample);
+  return DistributionImplementation::computeCDFSequential(sample);
+}
+
+Scalar Normal::computeComplementaryCDF(const Scalar x) const
+{
+  return DistFunc::pNormal((x - mean_[0]) / sigma_[0], true);
+}
+
+Scalar Normal::computeComplementaryCDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  // Special case for dimension 1
+  if (dimension == 1) return computeComplementaryCDF(point[0]);
+  return EllipticalDistribution::computeComplementaryCDF(point);
+} // computeComplementaryCDF
 
 /* Compute the entropy of the distribution */
 Scalar Normal::computeEntropy() const
@@ -385,13 +427,13 @@ Complex Normal::computeLogCharacteristicFunction(const Scalar x) const
 Complex Normal::computeLogCharacteristicFunction(const Point & x) const
 {
   if (x.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << x.getDimension();
-  return Complex(-0.5 * dot(x, getCovariance() * x), dot(x, mean_));
+  return Complex(-0.5 * x.dot(getCovariance() * x), x.dot(mean_));
 }
 
 /* Compute the probability content of an interval */
 Scalar Normal::computeProbability(const Interval & interval) const
 {
-  if (interval.isNumericallyEmpty()) return 0.0;
+  if (interval.isEmpty()) return 0.0;
   const UnsignedInteger dimension = getDimension();
   // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the ContinuousDistribution upper class for dimension = 1
   if (dimension == 1) return DistributionImplementation::computeProbability(interval);
@@ -473,7 +515,8 @@ Point Normal::computeCDFGradient(const Point & point) const
     gradientCDF[1] = -pdf * (point[0] - mean_[0]) / sigma_[0];
     return gradientCDF;
   }
-  // To be implemented
+  else
+    gradientCDF = EllipticalDistribution::computeCDFGradient(point);
   return gradientCDF;
 }
 
@@ -500,10 +543,12 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
-    {
-      const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
-      return SpecFunc::ISQRT2PI * std::exp(-z * z) / sigma_[conditioningDimension];
-    }
+  {
+    const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
+    // Interest is to compute \sqrt{\frac{1}{2 \pi}} exp(-z*z)
+    // With x = \sqrt{2} z, we use the Gaussian density function
+    return DistFunc::dNormal(z * std::sqrt(2.0)) / sigma_[conditioningDimension];
+  }
   // General case
   Scalar meanRos = 0.0;
   const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
@@ -513,7 +558,7 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
   }
   meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
   const Scalar z = (x - meanRos) / sigmaRos;
-  return SpecFunc::ISQRT2PI * std::exp(-0.5 * z * z) / sigmaRos;
+  return DistFunc::dNormal(z) / sigmaRos;
 }
 
 Point Normal::computeSequentialConditionalPDF(const Point & x) const
@@ -522,16 +567,16 @@ Point Normal::computeSequentialConditionalPDF(const Point & x) const
   Point result(dimension_);
   if (hasIndependentCopula())
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      {
-	const Scalar u = (x[i] - mean_[i]) / sigma_[i];
-	result[i] = std::exp(-0.5 * u * u) * SpecFunc::ISQRT2PI / sigma_[i];
-      }
-  else
     {
-      const Point u(inverseCholesky_ * (x - mean_));
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = std::exp(-0.5 * u[i] * u[i]) * SpecFunc::ISQRT2PI * inverseCholesky_(i ,i);
+      const Scalar u = (x[i] - mean_[i]) / sigma_[i];
+      result[i] = DistFunc::dNormal(u) / sigma_[i];
     }
+  else
+  {
+    const Point u(inverseCholesky_ * (x - mean_));
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = DistFunc::dNormal(u[i]) * inverseCholesky_(i, i);
+  }
   return result;
 }
 
@@ -559,12 +604,12 @@ Point Normal::computeSequentialConditionalCDF(const Point & x) const
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional CDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
   if (hasIndependentCopula())
-    {
-      Point result(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = DistFunc::pNormal((x[i] - mean_[i]) / sigma_[i]);
-      return result;
-    }
+  {
+    Point result(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = DistFunc::pNormal((x[i] - mean_[i]) / sigma_[i]);
+    return result;
+  }
   return DistFunc::pNormal(inverseCholesky_ * (x - mean_));
 }
 
@@ -592,12 +637,12 @@ Point Normal::computeSequentialConditionalQuantile(const Point & q) const
 {
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;
   if (hasIndependentCopula())
-    {
-      Point result(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = mean_[i] + sigma_[i] * DistFunc::qNormal(q[i]);
-      return result;
-    }
+  {
+    Point result(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = mean_[i] + sigma_[i] * DistFunc::qNormal(q[i]);
+    return result;
+  }
   return mean_ + cholesky_ * DistFunc::qNormal(q);
 }
 
@@ -629,8 +674,6 @@ Distribution Normal::getMarginal(const Indices & indices) const
   CorrelationMatrix R(outputDimension);
   Point sigma(outputDimension);
   Point mean(outputDimension);
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
   // Extract the correlation matrix, the marginal standard deviations and means
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
@@ -641,10 +684,9 @@ Distribution Normal::getMarginal(const Indices & indices) const
     {
       R(i, j) = R_(index_i, indices[j]);
     }
-    marginalDescription[i] = description[index_i];
   }
   Normal::Implementation marginal(new Normal(mean, sigma, R));
-  marginal->setDescription(marginalDescription);
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 
@@ -667,14 +709,29 @@ Point Normal::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Normal::getStandardRepresentative() const
 {
-  return new Normal(0.0, 1.0);
+  return Normal(0.0, 1.0);
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar Normal::getRoughness() const
 {
   // 0.2820947917738781434740398 = 1 / (2 * sqrt(Pi))
-  return 0.2820947917738781434740398 / getSigma()[0];
+  if (dimension_ == 1)
+    return 0.2820947917738781434740398 / getSigma()[0];
+
+  Scalar roughness = 1.0;
+  if (hasIndependentCopula())
+  {
+    for (UnsignedInteger d = 0; d < dimension_; ++d)
+      roughness *= 0.2820947917738781434740398 / getSigma()[d];
+    return roughness;
+  }
+  else
+  {
+    for (UnsignedInteger d = 0; d < dimension_; ++d)
+      roughness *= 0.2820947917738781434740398 / cholesky_(d, d);
+  }
+  return roughness;
 }
 
 /* Get the kurtosis of the distribution */

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
@@ -26,19 +25,17 @@ try:
     estimatedHistogram = factory.buildAsHistogram(sample, 15)
     print("Histogram          =", distribution)
     print("Estimated histogram=", estimatedHistogram)
+    first = -2.
+    width = ot.Point(5, 1.)
+    estimatedHistogram = factory.buildAsHistogram(sample, first, width)
+    print("Estimated histogram=", estimatedHistogram)
     estimatedHistogram = factory.buildAsHistogram()
     print("Default histogram=", estimatedHistogram)
-    sample = [[0.0]] * size
-    estimatedDistribution = factory.build(sample)
-    print("Estimated distribution=", repr(estimatedDistribution))
-    sample = [[1.0]] * size
-    estimatedDistribution = factory.build(sample)
-    print("Estimated distribution=", repr(estimatedDistribution))
 
     sample = ot.ChiSquare(0.0120637).getSample(32)
     for useQuantile in [True, False]:
-        print('silverman useQuantile=', useQuantile, ot.Point(
-            1, ot.HistogramFactory().computeSilvermanBandwidth(sample, useQuantile)))
+        print('useQuantile=', useQuantile, ot.Point(
+            1, ot.HistogramFactory().computeBandwidth(sample, useQuantile)))
 except:
     import sys
     print("t_HistogramFactory_std.py", sys.exc_info()[0], sys.exc_info()[1])

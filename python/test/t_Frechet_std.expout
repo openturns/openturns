@@ -1,4 +1,4 @@
-Distribution  Frechet(alpha = 6, beta = 1.5, gamma = -1)
+Distribution  Frechet(beta = 1.5, alpha = 6, gamma = -1)
 Elliptical =  False
 Continuous =  True
 oneRealization= [0.705878]
@@ -17,10 +17,10 @@ ccdf= 0.163039595133
 survival= 0.163039595133
 characteristic function=(0.72659, 0.574653)
 log characteristic function=(-0.0764829, 0.669162)
-pdf gradient     = [-0.0311988,1.46939,1.32548]
-pdf gradient (FD)= [-0.0311988,1.46939,1.32548]
-cdf gradient     = [0.0428534,-0.595844,-0.446883]
-cdf gradient (FD)= [0.0428534,-0.595844,-0.446883]
+pdf gradient     = [1.46939,-0.0311988,1.32548]
+pdf gradient (FD)= [1.46939,-0.0311988,1.32548]
+cdf gradient     = [-0.595844,0.0428534,-0.446883]
+cdf gradient (FD)= [-0.595844,0.0428534,-0.446883]
 quantile= [1.46083]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.249321]
@@ -29,7 +29,7 @@ entropy=0.287124
 Minimum volume interval= [0.125077, 1.49279]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.21675} with f=
-MinimumVolumeLevelSetEvaluation(Frechet(alpha = 6, beta = 1.5, gamma = -1))
+MinimumVolumeLevelSetEvaluation(Frechet(beta = 1.5, alpha = 6, gamma = -1))
 beta= [0.108963]
 Bilateral confidence interval= [0.206726, 1.76813]
 beta= [0.95]
@@ -43,11 +43,11 @@ covariance= [[ 0.179905 ]]
 correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
-parameters= [[alpha : 6, beta : 1.5, gamma : -1]]
+parameters= [[beta : 1.5, alpha : 6, gamma : -1]]
 standard moment n= 0 , value= [1]
 standard moment n= 1 , value= [1.12879]
 standard moment n= 2 , value= [1.35412]
 standard moment n= 3 , value= [1.77245]
 standard moment n= 4 , value= [2.67894]
 standard moment n= 5 , value= [5.56632]
-Standard representative= Frechet(alpha = 6, beta = 1, gamma = 0)
+Standard representative= Frechet(beta = 1, alpha = 6, gamma = 0)

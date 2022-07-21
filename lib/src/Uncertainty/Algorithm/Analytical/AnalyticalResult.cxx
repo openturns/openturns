@@ -2,7 +2,7 @@
 /**
  *  @brief Result computes the results of an analytical Algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,8 +28,7 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/BarPlot.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/CompositeRandomVector.hxx"
-#include "openturns/ConstantRandomVector.hxx"
+#include "openturns/ThresholdEvent.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -50,16 +49,16 @@ static const Factory<AnalyticalResult> Factory_AnalyticalResult;
  * @brief  Standard constructor
  */
 AnalyticalResult::AnalyticalResult(const Point & standardSpaceDesignPoint,
-                                   const Event & limitStateVariable,
+                                   const RandomVector & limitStateVariable,
                                    const Bool isStandardPointOriginInFailureSpace):
   PersistentObject(),
-  standardSpaceDesignPoint_(standardSpaceDesignPoint.getDimension()),
-  physicalSpaceDesignPoint_(standardSpaceDesignPoint.getDimension()),
+  standardSpaceDesignPoint_(0),
+  physicalSpaceDesignPoint_(0),
   limitStateVariable_(limitStateVariable),
   isStandardPointOriginInFailureSpace_(isStandardPointOriginInFailureSpace),
   hasoferReliabilityIndex_(0.0),
-  importanceFactors_(standardSpaceDesignPoint.getDimension()),
-  classicalImportanceFactors_(standardSpaceDesignPoint.getDimension()),
+  importanceFactors_(0),
+  classicalImportanceFactors_(0),
   hasoferReliabilityIndexSensitivity_(0),
   isAlreadyComputedImportanceFactors_(false),
   isAlreadyComputedClassicalImportanceFactors_(false),
@@ -76,9 +75,7 @@ AnalyticalResult::AnalyticalResult():
   standardSpaceDesignPoint_(0),
   physicalSpaceDesignPoint_(0),
   // Fake event based on a fake 1D composite random vector, which requires a fake 1D Function
-  limitStateVariable_(RandomVector(CompositeRandomVector(SymbolicFunction(Description(0), Description(1)),
-                                   ConstantRandomVector(Point(0)))),
-                      Less(), 0.0),
+  limitStateVariable_(ThresholdEvent()),
   isStandardPointOriginInFailureSpace_(false),
   hasoferReliabilityIndex_(0.0),
   importanceFactors_(0),
@@ -138,7 +135,7 @@ Point AnalyticalResult::getPhysicalSpaceDesignPoint() const
 }
 
 /* LimitStateVariable accessor */
-Event AnalyticalResult::getLimitStateVariable() const
+RandomVector AnalyticalResult::getLimitStateVariable() const
 {
   return limitStateVariable_;
 }
@@ -208,7 +205,7 @@ void AnalyticalResult::computeClassicalImportanceFactors() const
 
 void AnalyticalResult::computePhysicalImportanceFactors() const
 {
-  const Event myEvent(getLimitStateVariable());
+  const RandomVector myEvent(getLimitStateVariable());
   const StandardEvent mystandardEvent(myEvent);
   const Scalar sign = myEvent.getOperator().compare(0., 1.) ? 1.0 : -1.0;
   const Point currentStandardGradient(mystandardEvent.getImplementation()->getFunction().gradient(getStandardSpaceDesignPoint()) * Point(1, 1.0));
@@ -250,13 +247,12 @@ void AnalyticalResult::computeMeanPointInStandardEventDomain() const
   }
   while (sum > quantileEpsilon * scaling);
   meanPointInStandardEventDomain_ = standardSpaceDesignPoint_ * (scaling / hasoferReliabilityIndex_);
-  isAlreadyComputedMeanPointInStandardEventDomain_ = true;
 }
 
 /* Mean point conditioned to the event realization accessor */
 Point AnalyticalResult::getMeanPointInStandardEventDomain() const
 {
-  if (!isAlreadyComputedMeanPointInStandardEventDomain_) computeMeanPointInStandardEventDomain();
+  if (!meanPointInStandardEventDomain_.getSize()) computeMeanPointInStandardEventDomain();
   return meanPointInStandardEventDomain_;
 }
 
@@ -345,7 +341,7 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
   Point isoProbabilisticGradient;
   if (setIso.getDimension() > 0) isoProbabilisticGradient = inverseIsoProbabilisticTransformation.parameterGradient(standardSpaceDesignPoint_) * (physicalGradientMatrix * Point(1, 1.0));
   /* associate to each element of Set1 the gradient value */
-  /* hasoferReliabilityIndexSensitivity is the collection Set1 + one other collection wich is Set2 */
+  /* hasoferReliabilityIndexSensitivity is the collection Set1 + one other collection which is Set2 */
   const UnsignedInteger set1Size = set1.getSize();
   const UnsignedInteger size = set1Size + (isSet2Empty ? 0 : 1);
   hasoferReliabilityIndexSensitivity_ = Sensitivity(size);
@@ -443,8 +439,8 @@ Graph AnalyticalResult::drawSensitivity(const Sensitivity & sensitivity,
     const UnsignedInteger dataSize = data.getSize();
     for (UnsignedInteger sensitivityIndex = 0; sensitivityIndex < dataSize; ++sensitivityIndex)
     {
-      data[sensitivityIndex][0] = width;
-      data[sensitivityIndex][1] = sensitivity[collectionIndex][sensitivityIndex];
+      data(sensitivityIndex, 0) = width;
+      data(sensitivityIndex, 1) = sensitivity[collectionIndex][sensitivityIndex];
     }
     // Add the barplot to the graph
     OSS oss;
@@ -505,6 +501,7 @@ void AnalyticalResult::save(Advocate & adv) const
   adv.saveAttribute( "classicalImportanceFactors_", classicalImportanceFactors_ );
   adv.saveAttribute( "physicalImportanceFactors_", physicalImportanceFactors_ );
   adv.saveAttribute( "hasoferReliabilityIndexSensitivity_", sensitivity );
+  adv.saveAttribute( "meanPointInStandardEventDomain_", meanPointInStandardEventDomain_);
   adv.saveAttribute( "isAlreadyComputedImportanceFactors_", isAlreadyComputedImportanceFactors_ );
   adv.saveAttribute( "isAlreadyComputedClassicalImportanceFactors_", isAlreadyComputedClassicalImportanceFactors_ );
   adv.saveAttribute( "isAlreadyComputedPhysicalImportanceFactors_", isAlreadyComputedPhysicalImportanceFactors_ );
@@ -525,6 +522,7 @@ void AnalyticalResult::load(Advocate & adv)
   adv.loadAttribute( "importanceFactors_", importanceFactors_ );
   adv.loadAttribute( "classicalImportanceFactors_", classicalImportanceFactors_ );
   adv.loadAttribute( "hasoferReliabilityIndexSensitivity_", sensitivity );
+  adv.loadAttribute( "meanPointInStandardEventDomain_", meanPointInStandardEventDomain_);
   adv.loadAttribute( "isAlreadyComputedImportanceFactors_", isAlreadyComputedImportanceFactors_ );
   adv.loadAttribute( "isAlreadyComputedClassicalImportanceFactors_", isAlreadyComputedClassicalImportanceFactors_ );
   adv.loadAttribute( "isAlreadyComputedHasoferReliabilityIndexSensitivity_", isAlreadyComputedHasoferReliabilityIndexSensitivity_ );

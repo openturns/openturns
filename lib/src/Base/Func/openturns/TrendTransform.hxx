@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all numerical math function implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,14 +56,14 @@ public:
   TrendTransform(const EvaluationImplementation & evaluation, const Mesh & mesh);
 
   /** Virtual constructor */
-  virtual TrendTransform * clone() const;
+  TrendTransform * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const TrendTransform & other) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Inverse accessor */
   InverseTrendTransform getInverse() const;
@@ -72,10 +72,10 @@ public:
   Function getTrendFunction() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 }; /* class TrendTransform */
 

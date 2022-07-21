@@ -60,24 +60,27 @@
 %include FunctionalChaosResult.i
 %include FunctionalChaosAlgorithm.i
 %include FunctionalChaosSobolIndices.i
+%include FieldFunctionalChaosResult.i
+%include FieldToPointFunctionalChaosAlgorithm.i
+%include FieldFunctionalChaosSobolIndices.i
 %include MetaModelValidation.i
 %include GeneralLinearModelResult.i
 %include GeneralLinearModelAlgorithm.i
 %include KrigingAlgorithm.i
+%include LinearModelStepwiseAlgorithm.i
 %include LinearModelAlgorithm.i
 %include LinearModelAnalysis.i
-%include LinearModelTest.i
-%include VisualTest.i
 
 /* Uncertainty/Model */
 %include RandomVector.i
 %include CompositeRandomVector.i
-%include EventRandomVector.i
-%include EventDomain.i
-%include EventProcess.i
+%include ThresholdEvent.i
+%include DomainEvent.i
+%include ProcessEvent.i
 %include ConditionalRandomVector.i
-%include Event.i
 %include StandardEvent.i
+%include IntersectionEvent.i
+%include UnionEvent.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosRandomVector.i

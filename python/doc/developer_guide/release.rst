@@ -8,7 +8,7 @@ Release process
 
 2. Reindent sources (utils/reindent.sh)
 
-3. Goto version number X.Yrc1 (utils/setVersionNumber.sh)
+3. Increment version number X.Yrc1 (utils/setVersionNumber.sh) and soversion (lib/src/CMakeLists.txt)
 
 4. Increment rpm package number (distro/rpm)
 
@@ -21,7 +21,7 @@ Release process
 
 6. Build new packages on `OBS <https://build.opensuse.org/project/monitor/science:openturns>`_
 
-7. Upload debian packages to openturns.org
+7. Upload debian packages using `scripts <https://github.com/openturns/build-deb/>`_
 
 8. Merge release branch and tag new version
 
@@ -31,10 +31,12 @@ Release process
 
 11. Update conda packages `recipe <https://github.com/conda-forge/openturns-feedstock>`_
 
-12. Update conda modules packages `recipes <https://github.com/conda-forge?utf8=%E2%9C%93&q=ot&type=&language=>`_
+12. Update conda modules packages `recipes <https://github.com/conda-forge?q=ot>`_
 
 13. Update `otconda <https://github.com/openturns/otconda>`_ bundle
 
 14. Update `wheels <https://github.com/openturns/build-wheels>`_
 
 15. Set version X.Y+1, new changelog in master
+
+16. Drop deprecated methods listed in TODO file

@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the Faure' sequence
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,8 +29,8 @@ CLASSNAMEINIT(FaureSequence)
 static const Factory<FaureSequence> Factory_FaureSequence;
 
 /* Constructor with parameters */
-FaureSequence::FaureSequence(const UnsignedInteger dimension) :
-  LowDiscrepancySequenceImplementation(dimension)
+FaureSequence::FaureSequence(const UnsignedInteger dimension)
+  : LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
 }
@@ -46,9 +46,8 @@ FaureSequence * FaureSequence::clone() const
 /* Initialize the sequence */
 void FaureSequence::initialize(const UnsignedInteger dimension)
 {
-  if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
-  dimension_ = dimension;
-  modulus_ = ComputeNextPrimeNumber(dimension);
+  LowDiscrepancySequenceImplementation::initialize(dimension);
+  modulus_ = GetNextPrimeNumber(dimension_);
   modulusInverse_ = 1.0 / modulus_;
   // Initialize the seed at a value large enough to avoid some of the correlation problems
   seed_ = ResourceMap::GetAsUnsignedInteger("FaureSequence-InitialSeed");
@@ -65,7 +64,7 @@ void FaureSequence::initialize(const UnsignedInteger dimension)
   computeInitialBinomialCoefficients();
 }
 
-/* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
+/* Generate a pseudo-random vector of independent numbers uniformly distributed over [0, 1[ */
 Point FaureSequence::generate() const
 {
   Point realization(dimension_);
@@ -126,7 +125,6 @@ String FaureSequence::__repr__() const
 {
   OSS oss;
   oss << "class=" << FaureSequence::GetClassName()
-      << " derived from " << LowDiscrepancySequenceImplementation::__repr__()
       << " modulus=" << modulus_
       << " seed=" << seed_;
   return oss;
@@ -192,7 +190,6 @@ void FaureSequence::save(Advocate & adv) const
 void FaureSequence::load(Advocate & adv)
 {
   LowDiscrepancySequenceImplementation::load(adv);
-  initialize(dimension_);
   adv.loadAttribute( "coefficients_", coefficients_);
   adv.loadAttribute( "modulus_", modulus_);
   adv.loadAttribute( "modulusInverse_", modulusInverse_);

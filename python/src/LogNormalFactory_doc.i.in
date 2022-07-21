@@ -91,7 +91,7 @@ The Maximum Likelihood estimator of :math:`(\mu_{l}, \sigma_{l}, \gamma)` is
 defined by:
 
 .. math::
-    :label: mll_estimator
+    :label: ln_mll_estimator
 
     \hat{\mu}_{l,n} &= \frac{S_1(\hat{\gamma})}{n} \\
     \hat{\sigma}_{l,n}^2 &= \frac{S_2(\hat{\gamma})}{n} - \hat{\mu}_{l,n}^2
@@ -99,11 +99,44 @@ defined by:
 Thus, :math:`\hat{\gamma}_n` satisfies the relation:
 
 .. math::
-    :label: mll_relation
-    
+    :label: ln_mll_relation
+
     S_0 (\gamma) \left(S_2(\gamma) - S_1(\gamma) \left( 1 + \frac{S_1(\gamma)}{n} \right) \right) + n S_3(\gamma) = 0
 
-under the constraint :math:`\gamma \leq \min x_i`."
+under the constraint :math:`\gamma \leq \min x_i`.
+
+**Least squares method estimator:**
+
+The parameter :math:`\gamma` is numerically optimized by non-linear least-squares:
+
+.. math::
+
+    \min{\gamma} \norm{\Phi^{-1}(\hat{F}_n(x_i)) - (a_1 \log(x_i - \gamma) + a_0)}_2^2
+
+where :math:`a_0, a_1` are computed from linear least-squares at each optimization evaluation.
+
+When :math:`\gamma` is known and the :math:`x_i` follow a Log-Normal distribution then
+we use linear least-squares to solve the relation:
+
+.. math::
+  :label: least_squares_estimator_lognormal
+
+    \Phi^{-1}(\hat{F}_n(x_i)) = a_1 \log(x_i - \gamma) + a_0
+
+And the remaining parameters are estimated with:
+
+.. math::
+
+    \hat{\sigma}_l &= \frac{1}{a_1}\\
+    \hat{\mu}_l &= -a_0 \hat{\sigma}_l
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.LogNormal(1.5, 2.5, -1.5).getSample(1000)
+>>> estimated = ot.LogNormalFactory().build(sample)"
 
 // ---------------------------------------------------------------------
 
@@ -125,12 +158,20 @@ Parameters
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
 method : integer
-    An integer ranges from 0 to 2 corresponding to a specific estimator method:
+    An integer corresponding to a specific estimator method:
+
     - 0 : Local likelihood maximum estimator
     - 1 : Modified moment estimator
-    - 2 : method of moment estimator.
+    - 2 : Method of moment estimator
+    - 3 : Least squares method.
+
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The built distribution.
 
 Notes
 -----
@@ -144,13 +185,13 @@ See the *buildAsLogNormal* method.
 
 **Available usages**:
 
-    build()
+    buildAsLogNormal()
 
-    build(*sample*)
+    buildAsLogNormal(*sample*)
 
-    build(*sample, method*)
+    buildAsLogNormal(*sample, method*)
 
-    build(*param*)
+    buildAsLogNormal(*param*)
 
 Parameters
 ----------
@@ -158,11 +199,19 @@ sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
 method : integer
     An integer ranges from 0 to 2 corresponding to a specific estimator method:
-    - 0 : Local likelihood maximum estimator
+    - 0 : Local likelihood maximum estimator (default)
     - 1 : Modified moment estimator
-    - 2 : method of moment estimator.
+    - 2 : Method of moment estimator
+    - 3 : Least squares method.
+
+    The default value is from the :class:`~openturns.ResourceMap` key `LogNormalFactory-EstimationMethod`. 
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution.
 
 Notes
 -----
@@ -172,7 +221,7 @@ In the second usage, the parameters are evaluated according the following strate
 
 - It first uses the local likelihood maximum based estimator. 
 - It uses the modified moments based estimator if the resolution of
-  :eq:`mll_relation` is not possible.
+  :eq:`ln_mll_relation` is not possible.
 - It uses the moments based estimator, which are always defined, if
   the resolution of :eq:`omega_modified_moment_relation` is not possible.
 
@@ -188,7 +237,12 @@ In the fourth usage, a :class:`~openturns.LogNormal` distribution corresponding 
 Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
-    The sample from which the distribution parameters are estimated."
+    The sample from which the distribution parameters are estimated.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."
 
 // ---------------------------------------------------------------------
 
@@ -198,7 +252,12 @@ sample : 2-d sequence of float, of dimension 1
 Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
-    The sample from which the distribution parameters are estimated."
+    The sample from which the distribution parameters are estimated.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."
 
 // ---------------------------------------------------------------------
 
@@ -208,4 +267,26 @@ sample : 2-d sequence of float, of dimension 1
 Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
-    The sample from which the distribution parameters are estimated."
+    The sample from which the distribution parameters are estimated.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogNormalFactory::buildMethodOfLeastSquares
+"Build the distribution based on the least-squares estimator.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+gamma : float, optional
+    The :math:`\gamma` parameter estimate
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."

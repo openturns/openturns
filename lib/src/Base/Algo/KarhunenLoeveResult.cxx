@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and projection
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,8 +41,9 @@ KarhunenLoeveResult::KarhunenLoeveResult(const CovarianceModel & covariance,
     const Point & eigenvalues,
     const FunctionCollection & modes,
     const ProcessSample & modesAsProcessSample,
-    const Matrix & projection)
-  : TypedInterfaceObject<KarhunenLoeveResultImplementation>( new KarhunenLoeveResultImplementation(covariance, threshold, eigenvalues, modes, modesAsProcessSample, projection) )
+    const Matrix & projection,
+    const Scalar selectionRatio)
+  : TypedInterfaceObject<KarhunenLoeveResultImplementation>(new KarhunenLoeveResultImplementation(covariance, threshold, eigenvalues, modes, modesAsProcessSample, projection, selectionRatio))
 {
   // Nothing to do
 }
@@ -74,9 +75,20 @@ CovarianceModel KarhunenLoeveResult::getCovarianceModel() const
 }
 
 /* Eigenvalues accessor */
-Point KarhunenLoeveResult::getEigenValues() const
+Point KarhunenLoeveResult::getEigenvalues() const
 {
-  return getImplementation()->getEigenValues();
+  return getImplementation()->getEigenvalues();
+}
+
+/* Draw eigen values */
+Graph KarhunenLoeveResult::drawEigenvalues() const
+{
+  return getImplementation()->drawEigenvalues();
+}
+
+Graph KarhunenLoeveResult::drawCumulatedEigenvaluesRemainder() const
+{
+  return getImplementation()->drawCumulatedEigenvaluesRemainder();
 }
 
 /* Modes accessors */
@@ -111,6 +123,12 @@ Matrix KarhunenLoeveResult::getProjectionMatrix() const
 Mesh KarhunenLoeveResult::getMesh() const
 {
   return getImplementation()->getMesh();
+}
+
+/* Selection ratio accessor */
+Scalar KarhunenLoeveResult::getSelectionRatio() const
+{
+  return getImplementation()->getSelectionRatio();
 }
 
 /* Projection method */

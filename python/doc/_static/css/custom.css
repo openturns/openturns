@@ -1,0 +1,27 @@
+img.padimg {
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+
+li.hide {
+  display: none !important;
+}
+
+li.show {
+  display: list-item !important;
+}
+
+div.sphx-glr-clear {
+    clear: left;
+}
+
+/* hide the top link */
+div.sphx-glr-download-link-note {
+  height: 0px;
+  visibility: hidden;
+}
+
+/* Remove big whitespace to solve #1642 */
+pre, div[class*="highlight-"] {
+  clear: left;
+}

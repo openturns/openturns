@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Logistic for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Logistic distribution(-0.5, 1.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
@@ -79,7 +79,6 @@ int main(int, char *[])
     Scalar eps = 1e-5;
     Point DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
-    fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
     Scalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );
@@ -101,18 +100,18 @@ int main(int, char *[])
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     Point PDFgrFD(2);
-    PDFgrFD[0] = (Logistic(distribution.getAlpha() + eps, distribution.getBeta()).computePDF(point) -
-                  Logistic(distribution.getAlpha() - eps, distribution.getBeta()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[1] = (Logistic(distribution.getAlpha(), distribution.getBeta() + eps).computePDF(point) -
-                  Logistic(distribution.getAlpha(), distribution.getBeta() - eps).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[0] = (Logistic(distribution.getMu() + eps, distribution.getBeta()).computePDF(point) -
+                  Logistic(distribution.getMu() - eps, distribution.getBeta()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (Logistic(distribution.getMu(), distribution.getBeta() + eps).computePDF(point) -
+                  Logistic(distribution.getMu(), distribution.getBeta() - eps).computePDF(point)) / (2.0 * eps);
     fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
     Point CDFgrFD(2);
-    CDFgrFD[0] = (Logistic(distribution.getAlpha() + eps, distribution.getBeta()).computeCDF(point) -
-                  Logistic(distribution.getAlpha() - eps, distribution.getBeta()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[1] = (Logistic(distribution.getAlpha(), distribution.getBeta() + eps).computeCDF(point) -
-                  Logistic(distribution.getAlpha(), distribution.getBeta() - eps).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[0] = (Logistic(distribution.getMu() + eps, distribution.getBeta()).computeCDF(point) -
+                  Logistic(distribution.getMu() - eps, distribution.getBeta()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (Logistic(distribution.getMu(), distribution.getBeta() + eps).computeCDF(point) -
+                  Logistic(distribution.getMu(), distribution.getBeta() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;

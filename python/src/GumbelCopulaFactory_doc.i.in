@@ -1,9 +1,6 @@
 %feature("docstring") OT::GumbelCopulaFactory
 "Gumbel Copula factory.
 
-Available constructor:
-    GumbelCopulaFactory()
-
 We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
 
 We use the following estimator:

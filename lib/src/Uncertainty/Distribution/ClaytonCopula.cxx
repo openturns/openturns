@@ -2,7 +2,7 @@
 /**
  *  @brief The ClaytonCopula distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -162,7 +162,7 @@ Point ClaytonCopula::computeDDF(const Point & point) const
   // W case (Frechet lower bound)
   if (theta_ == -1.0)
   {
-    if (u == 1.0 - v) return Point(2, -SpecFunc::MaxScalar);
+    if (u == 1.0 - v) return Point(2, SpecFunc::LowestScalar);
     return Point(2, 0.0);
   }
   Point ddf(2);
@@ -310,12 +310,6 @@ Scalar ClaytonCopula::computeCDF(const Point & point) const
   else factor = expm1(theta_ * std::log(u / v)) - expm1(theta_ * std::log(u));
   if (factor <= -1.0) return 0.0;
   return u * std::exp(-(log1p(factor)) / theta_);
-}
-
-/* Compute the covariance of the distribution */
-void ClaytonCopula::computeCovariance() const
-{
-  CopulaImplementation::computeCovariance();
 }
 
 /* Get the Kendall concordance of the distribution */
@@ -494,7 +488,11 @@ Description ClaytonCopula::getParameterDescription() const
 void ClaytonCopula::setTheta(const Scalar theta)
 {
   if (theta < -1.0) throw InvalidArgumentException(HERE) << "Theta MUST be greater or equal to -1";
-  theta_ = theta;
+  if (theta != theta_)
+  {
+    theta_ = theta;
+    isAlreadyComputedCovariance_ = false;
+  }
 }
 
 /* Theta accessor */

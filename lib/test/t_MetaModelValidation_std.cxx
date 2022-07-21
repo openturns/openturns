@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of FunctionalChaosAlgoritm class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -71,7 +71,7 @@ int main(int, char *[])
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension, LegendreFactory());
 
-    EnumerateFunction enumerateFunction(dimension);
+    LinearEnumerateFunction enumerateFunction(dimension);
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
     // Create the adaptive strategy
@@ -108,14 +108,14 @@ int main(int, char *[])
     Basis basis(QuadraticBasisFactory(dimension).build());
     // model computed
     Point scale(3);
-    scale[0] = 1.933;
-    scale[1] = 1.18;
-    scale[2] = 1.644;
-    Point amplitude(1, 10.85);
+    scale[0] = 3.52;
+    scale[1] = 2.15;
+    scale[2] = 2.99;
+    Point amplitude(1, 11.41);
     CovarianceModel covarianceModel = GeneralizedExponential(scale, amplitude, 2.0);
 
 
-    KrigingAlgorithm algo2(inputSample, outputSample, covarianceModel, basis, true);
+    KrigingAlgorithm algo2(inputSample, outputSample, covarianceModel, basis);
     algo2.setOptimizeParameters(false);
     algo2.run();
 

@@ -2,7 +2,7 @@
 /**
  *  @brief Class for a constant numerical math gradient implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -96,7 +96,7 @@ Matrix ConstantGradient::getConstant() const
 /* Operator () */
 Matrix ConstantGradient::gradient(const Point & inP) const
 {
-  if (inP.getDimension() != constant_.getNbRows()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  if (inP.getDimension() != constant_.getNbRows()) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inP.getDimension() << ", expected " << constant_.getNbRows();
   callsNumber_.increment();
   return constant_;
 }

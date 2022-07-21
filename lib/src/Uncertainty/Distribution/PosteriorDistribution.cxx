@@ -2,7 +2,7 @@
 /**
  *  @brief The PosteriorDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,6 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/Os.hxx"
 
@@ -165,7 +164,6 @@ void PosteriorDistribution::setConditionalDistribution(const ConditionalDistribu
   const UnsignedInteger size = observations_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
     logNormalizationFactor_ += conditionalDistribution_.computeLogPDF(observations_[i]);
-  if (logNormalizationFactor_ == SpecFunc::LogMinScalar) throw InvalidArgumentException(HERE) << "Error: the normalization factor is null with the given conditional distribution and observations.";
   computeRange();
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -204,12 +202,38 @@ void PosteriorDistribution::computeRange()
   setRange(conditionalDistribution_.conditioningDistribution_.getRange());
 }
 
+class PosteriorDistributionLikelihoodEvaluation : public EvaluationImplementation
+{
+public:
+  PosteriorDistributionLikelihoodEvaluation(const PosteriorDistribution & distribution) : EvaluationImplementation(), distribution_(distribution) {}
+  PosteriorDistributionLikelihoodEvaluation * clone() const override
+  {
+    return new PosteriorDistributionLikelihoodEvaluation(*this);
+  }
+  UnsignedInteger getInputDimension() const override
+  {
+    return distribution_.getDimension();
+  }
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator()(const Point & inP) const override
+  {
+    return distribution_.computeLikelihood(inP);
+  }
+
+private:
+  const PosteriorDistribution & distribution_;
+};
+
 /* Compute the mean of the distribution */
 void PosteriorDistribution::computeMean() const
 {
   Description inputDescription(Description::BuildDefault(getDimension(), "x"));
   const SymbolicFunction meanFunction(inputDescription, inputDescription);
-  const Function likelihood(bindMethod<PosteriorDistribution, Point, Point>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
+  const Function likelihood(PosteriorDistributionLikelihoodEvaluation(*this));
   mean_ = conditionalDistribution_.computeExpectation(likelihood * meanFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_);
   isAlreadyComputedMean_ = true;
 }
@@ -258,7 +282,7 @@ void PosteriorDistribution::computeCovariance() const
     }
   }
   const SymbolicFunction covarianceFunction(inputDescription, formulas);
-  const Function likelihood(bindMethod<PosteriorDistribution, Point, Point>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
+  const Function likelihood(PosteriorDistributionLikelihoodEvaluation(*this));
   const Point result(conditionalDistribution_.computeExpectation(likelihood * covarianceFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_));
   index = 0;
   for (UnsignedInteger i = 0; i < dimension; ++i)

@@ -2,7 +2,7 @@
 /**
  *  @brief TaylorExpansionMoments implements Taylor expansion for moments estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,6 +42,20 @@ static const Factory<TaylorExpansionMoments> Factory_TaylorExpansionMoments;
  Y=G(X) by computing the Taylor approximation of G
 */
 
+TaylorExpansionMoments::TaylorExpansionMoments()
+  : PersistentObject(),
+    limitStateVariable_(CompositeRandomVector()),
+    isAlreadyComputedValue_(false),
+    isAlreadyComputedGradient_(false),
+    isAlreadyComputedHessian_(false),
+    isAlreadyComputedMeanFirstOrder_(false),
+    isAlreadyComputedMeanSecondOrder_(false),
+    isAlreadyComputedCovariance_(false),
+    isAlreadyComputedImportanceFactors_(false)
+{
+  // Nothing to to do
+}
+
 /* Constructor with parameters */
 TaylorExpansionMoments::TaylorExpansionMoments(const RandomVector & limitStateVariable)
   : PersistentObject(),
@@ -64,7 +78,7 @@ TaylorExpansionMoments::TaylorExpansionMoments(const RandomVector & limitStateVa
     importanceFactors_(0)
 {
   /* Check if the given random vector is a composite random vector, which is mandatory */
-  if (!limitStateVariable.isComposite()) throw InvalidArgumentException(HERE) << "Quadratic cumul algorithm requires a composite random vector as an input";
+  if (!limitStateVariable.isComposite()) throw InvalidArgumentException(HERE) << "Taylor algorithm requires a composite random vector as an input";
   /** Check if the given composite random vector is based on a function with a gradient implementation */
   if (!limitStateVariable.getImplementation()->getFunction().getGradient().getImplementation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Quadratic cumul algorithm requires a composite random vector based on a function with an actual gradient implementation";
   /** Check if the given composite random vector is based on a function with a gradient implementation */

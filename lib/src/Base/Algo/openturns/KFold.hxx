@@ -2,7 +2,7 @@
 /**
  *  @brief K-Fold cross validation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,32 +46,32 @@ public:
                  const Bool useNormal = false);
 
   /** Virtual constructor */
-  virtual KFold * clone() const;
+  KFold * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Perform cross-validation */
-  virtual Scalar run(const Sample & x,
-                     const Sample & y,
-                     const Point & weight,
-                     const FunctionCollection & basis,
-                     const Indices & indices) const;
+  Scalar run(const Sample & x,
+             const Sample & y,
+             const Point & weight,
+             const FunctionCollection & basis,
+             const Indices & indices) const override;
 #ifndef SWIG
-  virtual Scalar run(const Sample & y,
-                     const Point & weight,
-                     const Indices & indices,
-                     const DesignProxy & proxy) const;
+  Scalar run(const Sample & y,
+             const Point & weight,
+             const Indices & indices,
+             const DesignProxy & proxy) const override;
 
-  virtual Scalar run(LeastSquaresMethod & method,
-                     const Sample & y) const;
+  Scalar run(LeastSquaresMethod & method,
+             const Sample & y) const override;
 #endif
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** K accessor */
   void setK(const UnsignedInteger p);

@@ -2,7 +2,7 @@
 /**
  *  @brief OrderStatisticsMarginalChecker class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -78,7 +78,7 @@ void OrderStatisticsMarginalChecker::check() const
     if (aIm1 > aI) throw InvalidArgumentException(HERE) << "margins are not compatible: the lower bound of margin " << i - 1 << " is greater than the lower bound of margin " << i;
     // check that b_{i-1} <= b_i
     const Scalar bI = collection_[i].getRange().getUpperBound()[0];
-    if (bIm1 > bI) throw InvalidArgumentException(HERE) << "margins are not compatible: the lower bound of margin " << i - 1 << " is greater than the lower bound of margin " << i;
+    if (bIm1 > bI) throw InvalidArgumentException(HERE) << "margins are not compatible: the upper bound of margin " << i - 1 << " is greater than the upper bound of margin " << i;
     aIm1 = aI;
     bIm1 = bI;
   }
@@ -99,9 +99,6 @@ void OrderStatisticsMarginalChecker::check() const
   }
   // Third test, find the minimum of F_i - F_{i+1}
 
-  // Initilalyse Optimization problem
-  OptimizationProblem problem;
-
   const FiniteDifferenceStep step(BlendedStep(Point(1, std::pow(SpecFunc::ScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::ScalarEpsilon)));
   for (UnsignedInteger i = 1; i < size; ++ i)
   {
@@ -111,15 +108,16 @@ void OrderStatisticsMarginalChecker::check() const
 
     for (UnsignedInteger k = 0; k < quantileIteration; ++ k)
     {
-      const Scalar xMin = quantiles[i - 1][k];
+      const Scalar xMin = quantiles(i - 1, k);
       const Scalar xMax = quantiles(i, k);
       const Scalar xMiddle = 0.5 * (xMin + xMax);
 
       // Define Optimization problem
-      problem.setObjective(f);
+      OptimizationProblem problem(f);
       problem.setBounds(Interval(xMin, xMax));
       solver_.setStartingPoint(Point(1, xMiddle));
       solver_.setProblem(problem);
+      solver_.setVerbose(Log::HasInfo());
       solver_.run();
       const Point minimizer(solver_.getResult().getOptimalPoint());
       const Scalar minValue = solver_.getResult().getOptimalValue()[0];

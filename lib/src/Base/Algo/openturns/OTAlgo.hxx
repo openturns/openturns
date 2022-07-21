@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Algo
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,7 +57,7 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/GaussKronrodRule.hxx"
 #include "openturns/GaussLegendre.hxx"
-#include "openturns/Fejer1.hxx"
+#include "openturns/FejerAlgorithm.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/DesignProxy.hxx"
 #include "openturns/LeastSquaresMethodImplementation.hxx"
@@ -66,6 +66,7 @@
 #include "openturns/QRMethod.hxx"
 #include "openturns/SVDMethod.hxx"
 #include "openturns/SparseMethod.hxx"
+#include "openturns/KarhunenLoeveReduction.hxx"
 #include "openturns/KarhunenLoeveResultImplementation.hxx"
 #include "openturns/KarhunenLoeveResult.hxx"
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
@@ -73,6 +74,7 @@
 #include "openturns/KarhunenLoeveP1Algorithm.hxx"
 #include "openturns/KarhunenLoeveProjection.hxx"
 #include "openturns/KarhunenLoeveLifting.hxx"
+#include "openturns/KarhunenLoeveValidation.hxx"
 #include "openturns/P1LagrangeInterpolation.hxx"
 
 #endif /* OPENTURNS_OTALGO_HXX */

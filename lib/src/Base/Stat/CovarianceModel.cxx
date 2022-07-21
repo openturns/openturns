@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,22 +72,14 @@ UnsignedInteger CovarianceModel::getOutputDimension() const
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix CovarianceModel::operator() (const Scalar s,
-    const Scalar t) const
+SquareMatrix CovarianceModel::operator() (const Scalar s, const Scalar t) const
 {
   return getImplementation()->operator() (s, t);
 }
 
-CovarianceMatrix CovarianceModel::operator() (const Point & s,
-    const Point & t) const
+SquareMatrix CovarianceModel::operator() (const Point & s, const Point & t) const
 {
   return getImplementation()->operator() (s, t);
-}
-
-Scalar CovarianceModel::computeStandardRepresentative(const Point & s,
-    const Point & t) const
-{
-  return getImplementation()->computeStandardRepresentative(s, t);
 }
 
 Scalar CovarianceModel::computeAsScalar (const Point & s,
@@ -96,12 +88,28 @@ Scalar CovarianceModel::computeAsScalar (const Point & s,
   return getImplementation()->computeAsScalar(s, t);
 }
 
-CovarianceMatrix CovarianceModel::operator() (const Scalar tau) const
+Scalar CovarianceModel::computeAsScalar(const Point &tau) const
+{
+  return getImplementation()->computeAsScalar(tau);
+}
+
+Scalar CovarianceModel::computeAsScalar(const Scalar s,
+                                        const Scalar t) const
+{
+  return getImplementation()->computeAsScalar(s, t);
+}
+
+Scalar CovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  return getImplementation()->computeAsScalar(tau);
+}
+
+SquareMatrix CovarianceModel::operator() (const Scalar tau) const
 {
   return getImplementation()->operator() (tau);
 }
 
-CovarianceMatrix CovarianceModel::operator() (const Point & tau) const
+SquareMatrix CovarianceModel::operator() (const Point & tau) const
 {
   return getImplementation()->operator() (tau);
 }
@@ -142,6 +150,24 @@ Sample CovarianceModel::discretizeRow(const Sample & vertices,
   return getImplementation()->discretizeRow(vertices, p);
 }
 
+Matrix CovarianceModel::computeCrossCovariance(const Sample &firstSample,
+    const Sample &secondSample) const
+{
+  return getImplementation()->computeCrossCovariance(firstSample, secondSample);
+}
+
+Matrix CovarianceModel::computeCrossCovariance(const Sample &sample,
+    const Point &point) const
+{
+  return getImplementation()->computeCrossCovariance(sample, point);
+}
+
+Matrix CovarianceModel::computeCrossCovariance(const Point &point,
+    const Sample &sample) const
+{
+  return getImplementation()->computeCrossCovariance(point, sample);
+}
+
 /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
 TriangularMatrix CovarianceModel::discretizeAndFactorize(const RegularGrid & timeGrid) const
 {
@@ -161,46 +187,40 @@ TriangularMatrix CovarianceModel::discretizeAndFactorize(const Sample & vertices
 
 /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModel::discretizeHMatrix(const RegularGrid & timeGrid,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeHMatrix(timeGrid, nuggetFactor, parameters);
+  return getImplementation()->discretizeHMatrix(timeGrid, parameters);
 }
 
 HMatrix CovarianceModel::discretizeHMatrix(const Mesh & mesh,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeHMatrix(mesh, nuggetFactor, parameters);
+  return getImplementation()->discretizeHMatrix(mesh, parameters);
 }
 
 HMatrix CovarianceModel::discretizeHMatrix(const Sample & vertices,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeHMatrix(vertices, nuggetFactor, parameters);
+  return getImplementation()->discretizeHMatrix(vertices, parameters);
 }
 
 /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeAndFactorizeHMatrix(timeGrid, nuggetFactor, parameters);
+  return getImplementation()->discretizeAndFactorizeHMatrix(timeGrid, parameters);
 }
 
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Mesh & mesh,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeAndFactorizeHMatrix(mesh, nuggetFactor, parameters);
+  return getImplementation()->discretizeAndFactorizeHMatrix(mesh, parameters);
 }
 
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Sample & vertices,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeAndFactorizeHMatrix(vertices, nuggetFactor, parameters);
+  return getImplementation()->discretizeAndFactorizeHMatrix(vertices, parameters);
 }
 
 /* Amplitude accessor */
@@ -284,6 +304,7 @@ Indices CovarianceModel::getActiveParameter() const
 /* setter for the full parameter */
 void CovarianceModel::setFullParameter(const Point & parameter)
 {
+  copyOnWrite();
   getImplementation()->setFullParameter(parameter);
 }
 

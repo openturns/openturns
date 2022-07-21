@@ -2,7 +2,7 @@
 /**
  *  @brief Subset simulation method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,12 +36,12 @@ public:
   SubsetSampling();
 
   /** Constructor with parameters */
-  SubsetSampling(const Event & event,
+  SubsetSampling(const RandomVector & event,
                  const Scalar proposalRange = ResourceMap::GetAsScalar("SubsetSampling-DefaultProposalRange"),
                  const Scalar conditionalProbability = ResourceMap::GetAsScalar("SubsetSampling-DefaultConditionalProbability"));
 
   /** Virtual constructor */
-  virtual SubsetSampling * clone() const;
+  SubsetSampling * clone() const override;
 
   /** The range of the uniform proposal pdf */
   void setProposalRange(Scalar proposalRange);
@@ -51,8 +51,12 @@ public:
   void setConditionalProbability(Scalar conditionalProbability);
   Scalar getConditionalProbability() const;
 
+  /** Accessor to the minimum probability */
+  void setMinimumProbability(const Scalar minimumProbability);
+  Scalar getMinimumProbability() const;
+
   /** Accessor to the achieved number of steps */
-  UnsignedInteger getNumberOfSteps();
+  UnsignedInteger getStepsNumber();
 
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;
@@ -72,26 +76,26 @@ public:
   void setBetaMin(Scalar betaMin);
 
   /** Performs the actual computation. */
-  void run();
+  void run() override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** Compute the block sample */
-  Sample computeBlockSample();
+  Sample computeBlockSample() override;
 
   /** Compute the new threshold corresponding to the target failure probability */
   Scalar computeThreshold();
 
   /** compute probability estimate on the current sample */
-  Scalar computeProbability(Scalar probabilityEstimate, Scalar threshold);
+  Scalar computeProbabilityVariance(Scalar probabilityEstimate, Scalar threshold, Scalar & varianceEstimate);
 
   /** Sort new seeds */
   void initializeSeed(Scalar threshold);
@@ -108,6 +112,7 @@ private:
   Bool iSubset_;// conditional pre-sampling
   Scalar betaMin_;// pre-sampling hypersphere exclusion radius
   Bool keepEventSample_;// do we keep the event sample ?
+  Scalar minimumProbability_;// limit on the smallest probability
 
   // some results
   UnsignedInteger numberOfSteps_;// number of subset steps

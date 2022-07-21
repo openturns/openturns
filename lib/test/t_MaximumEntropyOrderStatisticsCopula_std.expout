@@ -7,7 +7,7 @@ streamObject(const T & anObject)
 class=MaximumEntropyOrderStatisticsCopula name=MaximumEntropyOrderStatisticsCopula dimension=2 distribution=class=MaximumEntropyOrderStatisticsDistribution name=MaximumEntropyOrderStatisticsDistribution dimension=2 collection=[class=Uniform name=Uniform dimension=1 a=-1 b=0.5,class=Uniform name=Uniform dimension=1 a=-0.5 b=1]
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=MaximumEntropyOrderStatisticsCopula name=MaximumEntropyOrderStatisticsCopula dimension=4 distribution=class=MaximumEntropyOrderStatisticsDistribution name=MaximumEntropyOrderStatisticsDistribution dimension=4 collection=[class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1.1 c=-1 d=1 h=0.6452,class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=1.2 a=2.718 b=3.32,class=Triangular name=Triangular dimension=1 a=3 m=4.5 b=5,class=Beta name=Beta dimension=1 r=2.5 t=6 a=4.7 b=5.2]
+Distribution class=MaximumEntropyOrderStatisticsCopula name=MaximumEntropyOrderStatisticsCopula dimension=4 distribution=class=MaximumEntropyOrderStatisticsDistribution name=MaximumEntropyOrderStatisticsDistribution dimension=4 collection=[class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1.1 c=-1 d=1 h=0.6452,class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=1.2 a=2.718 b=3.32,class=Triangular name=Triangular dimension=1 a=3 m=4.5 b=5,class=Beta name=Beta dimension=1 alpha=2.5 beta=3.5 a=4.7 b=5.2]
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=4 values=[0.6299,0.8828,0.1515,0.03023]
@@ -17,7 +17,7 @@ covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImpleme
 skewness=class=Point name=Unnamed dimension=4 values=[0.001185,0.00776,-0.01776,-0.004281]
 kurtosis=class=Point name=Unnamed dimension=4 values=[1.788,1.802,1.784,1.81]
 Point= class=Point name=Unnamed dimension=4 values=[0.35,0.15,0.02,0.33]
-ddf     =class=Point name=Unnamed dimension=4 values=[0.3186,0.2275,-1.135,-0.2765]
+ddf     =class=Point name=Unnamed dimension=4 values=[0,0.2275,-1.135,-0.2765]
 log pdf=-0.450551
 pdf     =0.637277
 cdf=0.000481551
@@ -33,7 +33,7 @@ kurtosis=class=Point name=Unnamed dimension=4 values=[1.8,1.8,1.8,1.8]
 covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.08333,0,0,0,0,0.08333,0.001405,0,0,0.001405,0.08333,0.004074,0,0,0.004074,0.08333]
 correlation=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.01685,0,0,0.01685,1,0.04888,0,0,0.04888,1]
 spearman=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.01685,0,0,0.01685,1,0.04888,0,0,0.04888,1]
-parameters=[[a_marginal_0 : -2, b_marginal_0 : -1.1, c_marginal_0 : -1, d_marginal_0 : 1],[aLog_marginal_1 : 1, bLog_marginal_1 : 1.2],[a_marginal_2 : 3, m_marginal_2 : 4.5, b_marginal_2 : 5],[r_marginal_3 : 2.5, t_marginal_3 : 6, a_marginal_3 : 4.7, b_marginal_3 : 5.2]]
+parameters=[[a_marginal_0 : -2, b_marginal_0 : -1.1, c_marginal_0 : -1, d_marginal_0 : 1],[aLog_marginal_1 : 1, bLog_marginal_1 : 1.2],[a_marginal_2 : 3, m_marginal_2 : 4.5, b_marginal_2 : 5],[alpha_marginal_3 : 2.5, beta_marginal_3 : 3.5, a_marginal_3 : 4.7, b_marginal_3 : 5.2]]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.35

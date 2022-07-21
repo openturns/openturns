@@ -2,7 +2,7 @@
 /**
  *  @brief Class PersistentObject saves and reloads the object's internal state
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -66,7 +66,7 @@ public:
    */
   PersistentObject()
     : p_name_(),
-      id_(IdFactory::BuildId()),
+      id_(0),
       shadowedId_(id_),
       studyVisible_(true)
   {}
@@ -74,7 +74,7 @@ public:
   /** Copy constructor */
   PersistentObject(const PersistentObject & other)
     : p_name_(other.p_name_),
-      id_(IdFactory::BuildId()),
+      id_(0),
       shadowedId_(other.shadowedId_),
       studyVisible_(other.studyVisible_)
   {}
@@ -138,18 +138,17 @@ public:
   }
 
   /* String converter */
-  inline virtual
-  String __repr__() const
+  inline
+  String __repr__() const override
   {
     return OSS() << "class=" << getClassName() << " name=" << getName();
   }
 
   /* String converter */
-  inline virtual
-  String __str__(const String & offset = "") const
+  inline
+  String __str__(const String & offset = "") const override
   {
-    (void)offset;
-    return __repr__();
+    return OSS() << offset << __repr__();
   }
 
 
@@ -160,6 +159,8 @@ public:
   inline
   Id getId() const
   {
+    if (!id_)
+      id_ = IdFactory::BuildId();
     return id_;
   }
 
@@ -175,6 +176,8 @@ public:
   inline
   Id getShadowedId() const
   {
+    if (!shadowedId_)
+      shadowedId_ = getId();
     return shadowedId_;
   }
 
@@ -283,7 +286,7 @@ private:
    * because it allows the chaining of objects even if they are
    * relocated.
    */
-  const Id id_;
+  mutable Id id_;
 
   /**
    * The shadowed id is used when object is reloaded. The object gets
@@ -295,7 +298,7 @@ private:
    * is never seen except by the object factory.
    * @internal
    */
-  Id shadowedId_;
+  mutable Id shadowedId_;
 
   /**
    * This flag is used by the Study to know if the object should be displayed

@@ -2,7 +2,7 @@
 /**
  *  @brief Class for Inverse Box Cox function
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,25 +53,25 @@ public:
                           const Point & shift);
 
   /** Virtual constructor */
-  virtual InverseBoxCoxEvaluation * clone() const;
+  InverseBoxCoxEvaluation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const InverseBoxCoxEvaluation & other) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   using EvaluationImplementation::operator();
-  Point operator() (const Point & inP) const;
-  Sample operator() (const Sample & inS) const;
+  Point operator() (const Point & inP) const override;
+  Sample operator() (const Sample & inS) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Accessor for the lambda point */
   Point getLambda() const;
@@ -80,10 +80,10 @@ public:
   Point getShift() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

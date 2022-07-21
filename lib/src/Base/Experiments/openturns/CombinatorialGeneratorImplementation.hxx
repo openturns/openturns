@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an combinatorialGenerator plane
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,15 +47,15 @@ public:
   CombinatorialGeneratorImplementation();
 
   /** Virtual constructor */
-  virtual CombinatorialGeneratorImplementation * clone() const;
+  CombinatorialGeneratorImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  virtual IndicesCollection generate();
+  virtual IndicesCollection generate() const;
 
 protected:
 

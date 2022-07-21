@@ -2,7 +2,7 @@
 /**
  * @brief This class binds a Python object to an OpenTURNS' Distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,7 @@
  *
  */
 #include <Python.h>
-#include "openturns/swig_runtime.hxx"
+#include "openturns/swigpyrun.h"
 
 #include "openturns/PythonDistribution.hxx"
 #include "openturns/OSS.hxx"
@@ -54,9 +54,7 @@ PythonDistribution::PythonDistribution(PyObject * pyObject)
   // Python memory management is not thread-safe
   setParallel(false);
 
-  Py_XINCREF( pyObj_ );
-
-  if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("computeCDF") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a computeCDF() method.";
+  Py_XINCREF(pyObj_);
 
   // Set the name of the object as its Python classname
   ScopedPyObjectPointer cls(PyObject_GetAttrString ( pyObj_,
@@ -72,9 +70,11 @@ PythonDistribution::PythonDistribution(PyObject * pyObject)
                             const_cast<char *>( "()" ) ));
   setDimension(checkAndConvert< _PyInt_, UnsignedInteger >( dim.get() ));
 
-  if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("computeCDF") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a computeCDF() method.";
+  if (!PyObject_HasAttrString(pyObj_, const_cast<char *>("computeCDF")))
+    throw InvalidArgumentException(HERE) << "Error: the given object does not have a computeCDF() method.";
 
-  if ((getDimension() > 1) && !PyObject_HasAttrString( pyObj_, const_cast<char *>("getRange") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a getRange() method.";
+  if ((getDimension() > 1) && !PyObject_HasAttrString(pyObj_, const_cast<char *>("getRange")))
+    throw InvalidArgumentException(HERE) << "Error: the given object does not have a getRange() method.";
 
   computeRange();
 }
@@ -92,13 +92,26 @@ PythonDistribution::PythonDistribution(const PythonDistribution & other)
 {
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
-  Py_XINCREF( pyObj_ );
+  Py_XINCREF(pyObj_);
+}
+
+/* Copy assignment operator */
+PythonDistribution & PythonDistribution::operator=(const PythonDistribution & rhs)
+{
+  if (this != &rhs)
+  {
+    DistributionImplementation::operator=(rhs);
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF(pyObj_);
+  }
+  return *this;
 }
 
 /* Destructor */
 PythonDistribution::~PythonDistribution()
 {
-  Py_XDECREF( pyObj_ );
+  Py_XDECREF(pyObj_);
 }
 
 /* Comparison operator */
@@ -686,6 +699,27 @@ Bool PythonDistribution::isContinuous() const
 }
 
 
+Bool PythonDistribution::isDiscrete() const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isDiscrete") ) )
+  {
+    ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
+                                     const_cast<char *>( "isDiscrete" ),
+                                     const_cast<char *>( "()" ) ));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+    Bool result = convert< _PyBool_, Bool >(callResult.get());
+    return result;
+  }
+  else
+  {
+    return DistributionImplementation::isDiscrete();
+  }
+}
+
+
 /* Check if the distribution is integral */
 Bool PythonDistribution::isIntegral() const
 {
@@ -794,7 +828,7 @@ Distribution PythonDistribution::getMarginal(const UnsignedInteger i) const
 /* Method save() stores the object through the StorageManager */
 void PythonDistribution::save(Advocate & adv) const
 {
-  DistributionImplementation::save( adv );
+  DistributionImplementation::save(adv);
 
   pickleSave(adv, pyObj_);
 }
@@ -803,7 +837,7 @@ void PythonDistribution::save(Advocate & adv) const
 /* Method save() reloads the object from the StorageManager */
 void PythonDistribution::load(Advocate & adv)
 {
-  DistributionImplementation::load( adv );
+  DistributionImplementation::load(adv);
 
   pickleLoad(adv, pyObj_);
 }
@@ -893,6 +927,27 @@ void PythonDistribution::computeRange()
   else
   {
     DistributionImplementation::computeRange();
+  }
+}
+
+/* Get the support of a discrete distribution that intersect a given interval */
+Sample PythonDistribution::getSupport(const Interval & interval) const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getSupport")))
+  {
+    ScopedPyObjectPointer methodName(convert< String, _PyString_ >("getSupport"));
+    ScopedPyObjectPointer pyInterval(SWIG_NewPointerObj(new Interval(interval), SWIG_TypeQuery("OT::Interval *"), SWIG_POINTER_OWN));
+    ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs(pyObj_, methodName.get(), pyInterval.get(), NULL));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+    Sample result(convert< _PySequence_, Sample >(callResult.get()));
+    return result;
+  }
+  else
+  {
+    return DistributionImplementation::getSupport(interval);
   }
 }
 

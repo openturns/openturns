@@ -8,12 +8,27 @@ Calibration
     :toctree: _generated/
     :template: class.rst_t
 
-    GaussianLinearCalibration
     LinearLeastSquaresCalibration
     NonLinearLeastSquaresCalibration
-    MCMC
-    RandomWalkMetropolisHastings
+    GaussianLinearCalibration
     GaussianNonLinearCalibration
     CalibrationAlgorithm
+
+.. autosummary::
+    :toctree: _generated/
+    :template: classWithPlot.rst_t
+
     CalibrationResult
-    CalibrationStrategy
+
+Bayesian updating
+-----------------
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    MetropolisHastings
+    RandomWalkMetropolisHastings
+    IndependentMetropolisHastings
+    RandomVectorMetropolisHastings
+    Gibbs

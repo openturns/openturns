@@ -2,7 +2,7 @@
 /**
  *  @brief Class for the Nataf transformationEvaluation evaluation for elliptical
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -65,28 +65,28 @@ public:
                                    const Bool simplify = ResourceMap::GetAsBool("MarginalTransformationEvaluation-Simplify"));
 
   /** Virtual constructor */
-  virtual MarginalTransformationEvaluation * clone() const;
+  MarginalTransformationEvaluation * clone() const override;
 
   /** Evaluation */
   using EvaluationImplementation::operator();
-  Point operator () (const Point & inP) const;
+  Point operator () (const Point & inP) const override;
 
   /** Gradient according to the marginal parameters */
-  Matrix parameterGradient(const Point & inP) const;
+  Matrix parameterGradient(const Point & inP) const override;
 
   /** Parameters value accessor */
-  virtual void setParameter(const Point & parameter);
-  virtual Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
-  virtual void setParameterDescription(const Description & description);
+  Description getParameterDescription() const override;
+  void setParameterDescription(const Description & description) override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Input distribution collection accessor */
   void setInputDistributionCollection(const DistributionCollection & inputDistributionCollection);
@@ -103,14 +103,14 @@ public:
   Collection<Function> getExpressions() const;
 
   /** String converter */
-  String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

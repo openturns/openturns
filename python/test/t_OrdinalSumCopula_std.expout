@@ -4,11 +4,11 @@ Elliptical distribution=  False
 Continuous =  True
 Elliptical =  False
 Independent =  False
-oneRealization= [0.642995,0.249576]
-oneSample first= [0.81213,0.885594]  last= [0.506679,0.611576]
-mean= [0.502612,0.50223]
-covariance= [[ 0.082459 0.076198 ]
- [ 0.076198 0.08287  ]]
+oneRealization= [0.251363,0.277809]
+oneSample first= [0.207289,0.30774]  last= [0.506679,0.611576]
+mean= [0.502599,0.50222]
+covariance= [[ 0.08245  0.076185 ]
+ [ 0.076185 0.082852 ]]
 Point=  [0.6, 0.6]
 ddf     = [0.25786,0.25786]
 pdf     =2.92442
@@ -22,10 +22,10 @@ CDF(quantile)= 0.5
 Minimum volume interval= [0.160334, 0.839666]
 [0.160334, 0.839666]
 threshold=0.67933
-Minimum volume level set= {x | f(x) <= -0.20884} with f=
+Minimum volume level set= {x | f(x) <= -0.21629} with f=
 MinimumVolumeLevelSetEvaluation(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2)))
-beta=1.23225
+beta=1.24146
 Bilateral confidence interval= [0.160334, 0.839666]
 [0.160334, 0.839666]
 beta=0.67933
@@ -36,7 +36,7 @@ Unilateral confidence interval (upper tail)= [0.0299408, 1]
 [0.0299408, 1]
 beta=0.97006
 entropy=-1.25325
-entropy (MC)=-1.25315
+entropy (MC)=-1.25340
 mean= [0.5,0.5]
 covariance= [[ 0.083333 0.076861 ]
  [ 0.076861 0.083333 ]]

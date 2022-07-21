@@ -2,7 +2,7 @@
 /**
  * @brief This class binds a Python object to an OpenTURNS' RandomVector
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ PythonExperiment::PythonExperiment(PyObject * pyObject)
 {
   if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("generate") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a generate() method.";
 
-  Py_XINCREF( pyObj_ );
+  Py_XINCREF(pyObj_);
 
   // Set the name of the object as its Python classname
   ScopedPyObjectPointer cls(PyObject_GetAttrString ( pyObj_,
@@ -76,6 +76,19 @@ PythonExperiment::PythonExperiment(const PythonExperiment & other)
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
+}
+
+/* Copy assignment operator */
+PythonExperiment & PythonExperiment::operator=(const PythonExperiment & rhs)
+{
+  if (this != &rhs)
+  {
+    ExperimentImplementation::operator=(rhs);
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF(pyObj_);
+  }
+  return *this;
 }
 
 /* Destructor */

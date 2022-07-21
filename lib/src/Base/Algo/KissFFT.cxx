@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 #include "openturns/KissFFT.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "kissfft.hh"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,7 +44,7 @@ struct FFTPolicy
     , fftSize_(fftSize)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -164,14 +164,14 @@ ComplexMatrix KissFFT::fft2D(const ComplexMatrix & complexMatrix, const Bool isI
   ComplexCollection output(rows * columns);
   KISSFFTScalar fftRows(rows, isIFFT);
   const  FFTPolicy policyRows(*(complexMatrix.getImplementation().get()), output, fftRows, rows);
-  TBB::ParallelFor( 0, columns, policyRows);
+  TBBImplementation::ParallelFor( 0, columns, policyRows);
   ComplexCollection transposedData(rows * columns);
   for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
     for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
       transposedData[columnIndex + rowIndex * columns] = output[rowIndex + rows * columnIndex];
   KISSFFTScalar fftColumns(columns, isIFFT);
   const  FFTPolicy policyColumns(transposedData, output, fftColumns, columns);
-  TBB::ParallelFor( 0, rows, policyColumns );
+  TBBImplementation::ParallelFor( 0, rows, policyColumns );
   ComplexMatrix result(rows, columns);
   Complex factor(1.0);
   if (isIFFT) factor /= (rows * columns);
@@ -277,7 +277,7 @@ ComplexTensor KissFFT::fft3D(const ComplexTensor & tensor, const Bool isIFFT) co
   }
   KISSFFTScalar fft(sheets, isIFFT);
   const FFTPolicy policy(input, output, fft, sheets);
-  TBB::ParallelFor( 0, rows * columns, policy );
+  TBBImplementation::ParallelFor( 0, rows * columns, policy );
   index = 0;
   Complex factor(1.0);
   if (isIFFT) factor /= sheets;

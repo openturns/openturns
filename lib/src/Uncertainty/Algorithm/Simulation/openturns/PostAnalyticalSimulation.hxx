@@ -3,7 +3,7 @@
  *  @brief PostAnalyticalSimulation is a generic view of postAnalyticalSimulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,14 +42,14 @@ class OT_API PostAnalyticalSimulation
 
   CLASSNAME
 public:
-  /** for save/load mecanism */
+  /** for save/load mechanism */
   PostAnalyticalSimulation();
 
   /** Constructor with parameters */
   explicit PostAnalyticalSimulation(const AnalyticalResult & analyticalResult);
 
   /** Virtual constructor */
-  virtual PostAnalyticalSimulation * clone() const;
+  PostAnalyticalSimulation * clone() const override;
 
   /** Event accessor */
   AnalyticalResult getAnalyticalResult() const;
@@ -58,13 +58,13 @@ public:
   Scalar getControlProbability() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

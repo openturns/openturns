@@ -2,7 +2,7 @@
 /**
  *  @brief IndicesCollectionImplementation stores a Collection of Indices contiguously.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -138,25 +138,25 @@ UnsignedInteger IndicesCollectionImplementation::getSize() const
 
 IndicesCollectionImplementation::iterator IndicesCollectionImplementation::begin_at(const UnsignedInteger index)
 {
-  if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
+  if (!(index < size_)) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index];
 }
 
 IndicesCollectionImplementation::iterator IndicesCollectionImplementation::end_at(const UnsignedInteger index)
 {
-  if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
+  if (!(index < size_)) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index + 1];
 }
 
 IndicesCollectionImplementation::const_iterator IndicesCollectionImplementation::cbegin_at(const UnsignedInteger index) const
 {
-  if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
+  if (!(index < size_)) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index];
 }
 
 IndicesCollectionImplementation::const_iterator IndicesCollectionImplementation::cend_at(const UnsignedInteger index) const
 {
-  if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
+  if (!(index < size_)) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index + 1];
 }
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The KPermutationsDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,52 +49,52 @@ public:
   /** Comparison operator */
   Bool operator ==(const KPermutationsDistribution & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual KPermutationsDistribution * clone() const;
+  KPermutationsDistribution * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
   using DiscreteDistribution::computeLogPDF;
-  Scalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Get the quantile of the distribution */
   using DiscreteDistribution::computeQuantile;
   Point computeQuantile(const Scalar prob,
                         const Bool tail,
-                        Scalar & marginalProb) const;
+                        Scalar & marginalProb) const override;
 
   /** Get the i-th marginal distribution */
   using DiscreteDistribution::getMarginal;
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  Sample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const override;
 
   /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const override;
 
   /* Interface specific to KPermutationsDistribution */
 
@@ -113,10 +113,10 @@ private:
 
 public:
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -124,17 +124,16 @@ protected:
 private:
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** Quantile computation for dimension=1 */
-  Scalar computeScalarQuantile(const Scalar prob,
-                               const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** Size of the permutations */
   UnsignedInteger k_;

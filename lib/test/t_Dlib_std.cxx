@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Dlib for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,7 @@ int main()
   OStream fullprint(std::cout);
 
   try
-  {    
+  {
     /** Rosenbrock function creation */
     Description input(2);
     input[0] = "x";
@@ -39,7 +39,7 @@ int main()
     Description formula(1);
     formula[0] = "(1-x)^2 + 100*(y-x^2)^2";
     SymbolicFunction rosenbrock(input, formula);
-    
+
     /** Starting point definition */
     Point start(2);
     start[0] = 3;
@@ -47,59 +47,59 @@ int main()
     fullprint << "Starting point = " << start.__str__() << std::endl;
 
     /** Creation of OptimizationProblem */
-      // Without bounds
+    // Without bounds
     OptimizationProblem unboundedProblem( rosenbrock,
                                           Function(),
                                           Function(),
                                           Interval() );
-    
-      // With bounds including optimal point */
-    Point lower(2,-5.0);
-    Point upper(2,5.0);
-    Interval notConstrainingBounds(lower,upper);
+
+    // With bounds including optimal point */
+    Point lower(2, -5.0);
+    Point upper(2, 5.0);
+    Interval notConstrainingBounds(lower, upper);
     OptimizationProblem notConstrainingBoundsProblem( rosenbrock,
-                                                      Function(),
-                                                      Function(),
-                                                      notConstrainingBounds);
-    
-      // With bounds not including optimal point */
+        Function(),
+        Function(),
+        notConstrainingBounds);
+
+    // With bounds not including optimal point */
     lower[0] =  0.0;
     lower[1] = -2.0;
     upper[0] =  5.0;
     upper[1] =  0.5;
-    Interval constrainingBounds(lower,upper);
+    Interval constrainingBounds(lower, upper);
     OptimizationProblem constrainingBoundsProblem(rosenbrock,
-                                                  Function(),
-                                                  Function(),
-                                                  constrainingBounds);
-    
-  /** REFERENCE POINTS **/
-  Point unboundedRefPoint(2, 1.0);
-  Point boundedRefPoint(2);
-  boundedRefPoint[0] = 0.70856;
-  boundedRefPoint[1] = 0.5;
-    
-  /** PRINTING TESTS **/
-    Dlib printCg(unboundedProblem,"CG");
-    printCg.setStartingPoint(start);    
+        Function(),
+        Function(),
+        constrainingBounds);
+
+    /** REFERENCE POINTS **/
+    Point unboundedRefPoint(2, 1.0);
+    Point boundedRefPoint(2);
+    boundedRefPoint[0] = 0.70856;
+    boundedRefPoint[1] = 0.5;
+
+    /** PRINTING TESTS **/
+    Dlib printCg(unboundedProblem, "cg");
+    printCg.setStartingPoint(start);
     printCg.setMaximumEvaluationNumber(100);
     printCg.setMaximumIterationNumber(100);
 
     fullprint << printCg << std::endl;
-    
-// ============================================================================================================================= //    
-    
-  /** TESTS WITH CG METHOD **/
-    
+
+// ============================================================================================================================= //
+
+    /** TESTS WITH CG METHOD **/
+
     fullprint << std::endl << "TESTS WITH CG ALGORITHM: " << std::endl << std::endl;
-    
+
     // Without bounds
-    Dlib unboundedCg(unboundedProblem,"CG");
+    Dlib unboundedCg(unboundedProblem, "cg");
     unboundedCg.setStartingPoint(start);
     unboundedCg.setMaximumEvaluationNumber(1000000);
-    unboundedCg.setMaximumIterationNumber(100000);  
+    unboundedCg.setMaximumIterationNumber(100000);
     unboundedCg.run();
-    
+
     fullprint << "*** Unbounded CG run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << unboundedCg.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << unboundedCg.getResult().getEvaluationNumber() << std::endl;
@@ -109,14 +109,14 @@ int main()
     fullprint << "      -- Relative error = " << unboundedCg.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << unboundedCg.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << unboundedCg.getResult().getConstraintError() << std::endl << std::endl;
-    
+
     // With not constraining bounds
-    Dlib notConstrainingBoundsCg(notConstrainingBoundsProblem,"CG");
+    Dlib notConstrainingBoundsCg(notConstrainingBoundsProblem, "cg");
     notConstrainingBoundsCg.setStartingPoint(start);
     notConstrainingBoundsCg.setMaximumEvaluationNumber(1000000);
-    notConstrainingBoundsCg.setMaximumIterationNumber(100000);  
+    notConstrainingBoundsCg.setMaximumIterationNumber(100000);
     notConstrainingBoundsCg.run();
-    
+
     fullprint << "*** Bounded (optimum included) CG run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << notConstrainingBoundsCg.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << notConstrainingBoundsCg.getResult().getEvaluationNumber() << std::endl;
@@ -126,15 +126,15 @@ int main()
     fullprint << "      -- Relative error = " << notConstrainingBoundsCg.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << notConstrainingBoundsCg.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << notConstrainingBoundsCg.getResult().getConstraintError() << std::endl << std::endl;
-    
-    
+
+
     // With constraining bounds
-    Dlib constrainingBoundsCg(constrainingBoundsProblem,"CG");
+    Dlib constrainingBoundsCg(constrainingBoundsProblem, "cg");
     constrainingBoundsCg.setStartingPoint(start);
     constrainingBoundsCg.setMaximumEvaluationNumber(1000000);
-    constrainingBoundsCg.setMaximumIterationNumber(100000);  
+    constrainingBoundsCg.setMaximumIterationNumber(100000);
     constrainingBoundsCg.run();
-    
+
     fullprint << "*** Bounded (optimum not included) CG run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << constrainingBoundsCg.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << constrainingBoundsCg.getResult().getEvaluationNumber() << std::endl;
@@ -144,20 +144,20 @@ int main()
     fullprint << "      -- Relative error = " << constrainingBoundsCg.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << constrainingBoundsCg.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << constrainingBoundsCg.getResult().getConstraintError() << std::endl << std::endl;
-    
-// ============================================================================================================================= //    
-  
+
+// ============================================================================================================================= //
+
     /** TESTS WITH BFGS METHOD **/
-    
+
     fullprint << std::endl << "TESTS WITH BFGS ALGORITHM: " << std::endl << std::endl;
-    
+
     // Without bounds
-    Dlib unboundedBfgs(unboundedProblem,"BFGS");
+    Dlib unboundedBfgs(unboundedProblem, "bfgs");
     unboundedBfgs.setStartingPoint(start);
     unboundedBfgs.setMaximumEvaluationNumber(1000000);
-    unboundedBfgs.setMaximumIterationNumber(100000);  
+    unboundedBfgs.setMaximumIterationNumber(100000);
     unboundedBfgs.run();
-    
+
     fullprint << "*** Unbounded BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << unboundedBfgs.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << unboundedBfgs.getResult().getEvaluationNumber() << std::endl;
@@ -167,14 +167,14 @@ int main()
     fullprint << "      -- Relative error = " << unboundedBfgs.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << unboundedBfgs.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << unboundedBfgs.getResult().getConstraintError() << std::endl << std::endl;
-    
+
     // With not constraining bounds
-    Dlib notConstrainingBoundsBfgs(notConstrainingBoundsProblem,"BFGS");
+    Dlib notConstrainingBoundsBfgs(notConstrainingBoundsProblem, "bfgs");
     notConstrainingBoundsBfgs.setStartingPoint(start);
     notConstrainingBoundsBfgs.setMaximumEvaluationNumber(1000000);
-    notConstrainingBoundsBfgs.setMaximumIterationNumber(100000);  
+    notConstrainingBoundsBfgs.setMaximumIterationNumber(100000);
     notConstrainingBoundsBfgs.run();
-    
+
     fullprint << "*** Bounded (optimum included) BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << notConstrainingBoundsBfgs.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << notConstrainingBoundsBfgs.getResult().getEvaluationNumber() << std::endl;
@@ -184,14 +184,14 @@ int main()
     fullprint << "      -- Relative error = " << notConstrainingBoundsBfgs.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << notConstrainingBoundsBfgs.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << notConstrainingBoundsBfgs.getResult().getConstraintError() << std::endl << std::endl;
-    
+
     // With constraining bounds
-    Dlib constrainingBoundsBfgs(constrainingBoundsProblem,"BFGS");
+    Dlib constrainingBoundsBfgs(constrainingBoundsProblem, "bfgs");
     constrainingBoundsBfgs.setStartingPoint(start);
     constrainingBoundsBfgs.setMaximumEvaluationNumber(1000000);
-    constrainingBoundsBfgs.setMaximumIterationNumber(100000);  
+    constrainingBoundsBfgs.setMaximumIterationNumber(100000);
     constrainingBoundsBfgs.run();
-    
+
     fullprint << "*** Bounded (optimum not included) BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << constrainingBoundsBfgs.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << constrainingBoundsBfgs.getResult().getEvaluationNumber() << std::endl;
@@ -200,21 +200,21 @@ int main()
     fullprint << "      -- Absolute error = " << constrainingBoundsBfgs.getResult().getAbsoluteError() << std::endl;
     fullprint << "      -- Relative error = " << constrainingBoundsBfgs.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << constrainingBoundsBfgs.getResult().getResidualError() << std::endl;
-    fullprint << "      -- Constraint error = " << constrainingBoundsBfgs.getResult().getConstraintError() << std::endl << std::endl;    
-    
-// ============================================================================================================================= //    
-  
+    fullprint << "      -- Constraint error = " << constrainingBoundsBfgs.getResult().getConstraintError() << std::endl << std::endl;
+
+// ============================================================================================================================= //
+
     /** TESTS WITH L-BFGS METHOD **/
-    
+
     fullprint << std::endl << "TESTS WITH L-BFGS ALGORITHM: " << std::endl << std::endl;
-    
+
     // Without bounds
-    Dlib unboundedLbfgs(unboundedProblem,"LBFGS");
+    Dlib unboundedLbfgs(unboundedProblem, "lbfgs");
     unboundedLbfgs.setStartingPoint(start);
     unboundedLbfgs.setMaximumEvaluationNumber(1000000);
-    unboundedLbfgs.setMaximumIterationNumber(100000);  
+    unboundedLbfgs.setMaximumIterationNumber(100000);
     unboundedLbfgs.run();
-    
+
     fullprint << "*** Unbounded L-BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << unboundedLbfgs.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << unboundedLbfgs.getResult().getEvaluationNumber() << std::endl;
@@ -224,14 +224,14 @@ int main()
     fullprint << "      -- Relative error = " << unboundedLbfgs.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << unboundedLbfgs.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << unboundedLbfgs.getResult().getConstraintError() << std::endl << std::endl;
-    
+
     // With not constraining bounds
-    Dlib notConstrainingBoundsLbfgs(notConstrainingBoundsProblem,"LBFGS");
+    Dlib notConstrainingBoundsLbfgs(notConstrainingBoundsProblem, "lbfgs");
     notConstrainingBoundsLbfgs.setStartingPoint(start);
     notConstrainingBoundsLbfgs.setMaximumEvaluationNumber(1000000);
-    notConstrainingBoundsLbfgs.setMaximumIterationNumber(100000);  
+    notConstrainingBoundsLbfgs.setMaximumIterationNumber(100000);
     notConstrainingBoundsLbfgs.run();
-    
+
     fullprint << "*** Bounded (optimum included) L-BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << notConstrainingBoundsLbfgs.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << notConstrainingBoundsLbfgs.getResult().getEvaluationNumber() << std::endl;
@@ -241,14 +241,14 @@ int main()
     fullprint << "      -- Relative error = " << notConstrainingBoundsLbfgs.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << notConstrainingBoundsLbfgs.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << notConstrainingBoundsLbfgs.getResult().getConstraintError() << std::endl << std::endl;
-    
+
     // With constraining bounds
-    Dlib constrainingBoundsLbfgs(constrainingBoundsProblem,"LBFGS");
+    Dlib constrainingBoundsLbfgs(constrainingBoundsProblem, "lbfgs");
     constrainingBoundsLbfgs.setStartingPoint(start);
     constrainingBoundsLbfgs.setMaximumEvaluationNumber(1000000);
-    constrainingBoundsLbfgs.setMaximumIterationNumber(100000);  
+    constrainingBoundsLbfgs.setMaximumIterationNumber(100000);
     constrainingBoundsLbfgs.run();
-    
+
     fullprint << "*** Bounded (optimum not included) L-BFGS run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << constrainingBoundsLbfgs.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << constrainingBoundsLbfgs.getResult().getEvaluationNumber() << std::endl;
@@ -257,21 +257,21 @@ int main()
     fullprint << "      -- Absolute error = " << constrainingBoundsLbfgs.getResult().getAbsoluteError() << std::endl;
     fullprint << "      -- Relative error = " << constrainingBoundsLbfgs.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << constrainingBoundsLbfgs.getResult().getResidualError() << std::endl;
-    fullprint << "      -- Constraint error = " << constrainingBoundsLbfgs.getResult().getConstraintError() << std::endl << std::endl;      
-   
-// ============================================================================================================================= //    
-  
+    fullprint << "      -- Constraint error = " << constrainingBoundsLbfgs.getResult().getConstraintError() << std::endl << std::endl;
+
+// ============================================================================================================================= //
+
     /** TESTS WITH NEWTON METHOD **/
-    
+
     fullprint << std::endl << "TESTS WITH NEWTON ALGORITHM: " << std::endl << std::endl;
-    
+
     // Without bounds
-    Dlib unboundedNewton(unboundedProblem,"Newton");
+    Dlib unboundedNewton(unboundedProblem, "newton");
     unboundedNewton.setStartingPoint(start);
     unboundedNewton.setMaximumEvaluationNumber(1000000);
-    unboundedNewton.setMaximumIterationNumber(100000);  
+    unboundedNewton.setMaximumIterationNumber(100000);
     unboundedNewton.run();
-    
+
     fullprint << "*** Unbounded Newton run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << unboundedNewton.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << unboundedNewton.getResult().getEvaluationNumber() << std::endl;
@@ -281,14 +281,14 @@ int main()
     fullprint << "      -- Relative error = " << unboundedNewton.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << unboundedNewton.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << unboundedNewton.getResult().getConstraintError() << std::endl << std::endl;
-    
+
     // With not constraining bounds
-    Dlib notConstrainingBoundsNewton(notConstrainingBoundsProblem,"Newton");
+    Dlib notConstrainingBoundsNewton(notConstrainingBoundsProblem, "newton");
     notConstrainingBoundsNewton.setStartingPoint(start);
     notConstrainingBoundsNewton.setMaximumEvaluationNumber(1000000);
-    notConstrainingBoundsNewton.setMaximumIterationNumber(100000);  
+    notConstrainingBoundsNewton.setMaximumIterationNumber(100000);
     notConstrainingBoundsNewton.run();
-    
+
     fullprint << "*** Bounded (optimum included) Newton run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << notConstrainingBoundsNewton.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << notConstrainingBoundsNewton.getResult().getEvaluationNumber() << std::endl;
@@ -298,14 +298,14 @@ int main()
     fullprint << "      -- Relative error = " << notConstrainingBoundsNewton.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << notConstrainingBoundsNewton.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << notConstrainingBoundsNewton.getResult().getConstraintError() << std::endl << std::endl;
-    
+
     // With constraining bounds
-    Dlib constrainingBoundsNewton(constrainingBoundsProblem,"Newton");
+    Dlib constrainingBoundsNewton(constrainingBoundsProblem, "newton");
     constrainingBoundsNewton.setStartingPoint(start);
     constrainingBoundsNewton.setMaximumEvaluationNumber(1000000);
-    constrainingBoundsNewton.setMaximumIterationNumber(100000);  
+    constrainingBoundsNewton.setMaximumIterationNumber(100000);
     constrainingBoundsNewton.run();
-    
+
     fullprint << "*** Bounded (optimum not included) Newton run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << constrainingBoundsNewton.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << constrainingBoundsNewton.getResult().getEvaluationNumber() << std::endl;
@@ -316,19 +316,19 @@ int main()
     fullprint << "      -- Residual error = " << constrainingBoundsNewton.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << constrainingBoundsNewton.getResult().getConstraintError() << std::endl << std::endl;
 
- // ============================================================================================================================= //    
+// ============================================================================================================================= //
 
     /** TESTS WITH TRUST REGION METHOD **/
-    
+
     fullprint << std::endl << "TESTS WITH TRUST REGION ALGORITHM: " << std::endl << std::endl;
-    
+
     // Without bounds
-    Dlib unboundedTR(unboundedProblem,"TrustRegion");
-    unboundedTR.setStartingPoint(start);    
+    Dlib unboundedTR(unboundedProblem, "trust_region");
+    unboundedTR.setStartingPoint(start);
     unboundedTR.setMaximumEvaluationNumber(10000);
     unboundedTR.setMaximumIterationNumber(1000);
     unboundedTR.run();
-    
+
     fullprint << "*** Unbounded TrustRegion run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << unboundedTR.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << unboundedTR.getResult().getEvaluationNumber() << std::endl;
@@ -338,8 +338,8 @@ int main()
     fullprint << "      -- Relative error = " << unboundedTR.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << unboundedTR.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << unboundedTR.getResult().getConstraintError() << std::endl << std::endl;
-    
-// ============================================================================================================================= //    
+
+// ============================================================================================================================= //
 
     /** PREPARE TESTS WITH LSQ METHODS **/
 
@@ -356,36 +356,36 @@ int main()
     residualFormula[2] = "a*(5)+b - 7";
     residualFormula[3] = "a*(7)+b - 10";
     residualFormula[4] = "a*(9)+b - 15";
-    SymbolicFunction residual(params, residualFormula); 
+    SymbolicFunction residual(params, residualFormula);
 
     /** Creation of OptimizationProblem */
     LeastSquaresProblem lsqProblem(residual);
-    
+
     /** Creation of Dlib algorithms **/
-    Dlib lsqAlgorithm(lsqProblem,"LSQ");
-    Dlib lsqlmAlgorithm(lsqProblem,"LSQLM");
-    
+    Dlib lsqAlgorithm(lsqProblem, "least_squares");
+    Dlib lsqlmAlgorithm(lsqProblem, "least_squares_lm");
+
     /** Creation of reference point **/
     Point lsqRefPoint(2);
     lsqRefPoint[0] = 1.518;
     lsqRefPoint[1] = 0.305;
-    
-// ============================================================================================================================= //    
+
+// ============================================================================================================================= //
 
     /** TESTS WITH LSQ METHOD **/
-    
+
     // Printing
     fullprint << std::endl << "TESTS WITH LSQ ALGORITHM: " << std::endl << std::endl;
-        
+
     // Without bounds
     lsqAlgorithm.setStartingPoint(start);
     lsqAlgorithm.setMaximumEvaluationNumber(10000);
     lsqAlgorithm.setMaximumIterationNumber(100);
-    
+
     fullprint << lsqAlgorithm << std::endl << std::endl;
-        
+
     lsqAlgorithm.run();
-    
+
     fullprint << "*** LSQ run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << lsqAlgorithm.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << lsqAlgorithm.getResult().getEvaluationNumber() << std::endl;
@@ -395,19 +395,19 @@ int main()
     fullprint << "      -- Relative error = " << lsqAlgorithm.getResult().getRelativeError() << std::endl;
     fullprint << "      -- Residual error = " << lsqAlgorithm.getResult().getResidualError() << std::endl;
     fullprint << "      -- Constraint error = " << lsqAlgorithm.getResult().getConstraintError() << std::endl << std::endl;
-    
-// ============================================================================================================================= //    
+
+// ============================================================================================================================= //
 
     /** TESTS WITH LSQLM METHOD **/
-    
+
     fullprint << std::endl << "TESTS WITH LSQLM ALGORITHM: " << std::endl << std::endl;
-        
+
     // Without bounds
     lsqlmAlgorithm.setStartingPoint(start);
     lsqlmAlgorithm.setMaximumEvaluationNumber(10000);
-    lsqlmAlgorithm.setMaximumIterationNumber(1000);  
+    lsqlmAlgorithm.setMaximumIterationNumber(1000);
     lsqlmAlgorithm.run();
-    
+
     fullprint << "*** LSQLM run completed:" << std::endl;
     fullprint << "      -- Iteration number = " << lsqlmAlgorithm.getResult().getIterationNumber() << std::endl;
     fullprint << "      -- Evaluation number = " << lsqlmAlgorithm.getResult().getEvaluationNumber() << std::endl;
@@ -419,7 +419,7 @@ int main()
     fullprint << "      -- Constraint error = " << lsqlmAlgorithm.getResult().getConstraintError() << std::endl << std::endl;
 
 // Check results
-    
+
     assert_almost_equal(unboundedCg.getResult().getOptimalPoint(), unboundedRefPoint, 0.05);
     assert_almost_equal(notConstrainingBoundsCg.getResult().getOptimalPoint(), unboundedRefPoint, 0.05);
     assert_almost_equal(constrainingBoundsCg.getResult().getOptimalPoint(), boundedRefPoint, 0.05);
@@ -439,7 +439,7 @@ int main()
     assert_almost_equal(unboundedTR.getResult().getOptimalPoint(), unboundedRefPoint, 0.5);
 
     assert_almost_equal(lsqAlgorithm.getResult().getOptimalPoint(), lsqRefPoint, 0.05);
-    assert_almost_equal(lsqlmAlgorithm.getResult().getOptimalPoint(), lsqRefPoint, 0.05);   
+    assert_almost_equal(lsqlmAlgorithm.getResult().getOptimalPoint(), lsqRefPoint, 0.05);
 
   }
   catch (TestFailed & ex)

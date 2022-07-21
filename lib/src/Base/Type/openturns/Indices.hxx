@@ -2,7 +2,7 @@
 /**
  *  @brief Set of indices defined as a Collection of UnsignedInteger class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,6 +59,13 @@ public:
     // Nothing to do
   }
 
+  /** Initializer list constructor */
+  Indices(std::initializer_list<UnsignedInteger> initList)
+    : InternalType(initList)
+  {
+    // Nothing to do
+  }
+
   /** Constructor from a range of elements */
   template <typename InputIterator>
   Indices(const InputIterator first,
@@ -67,9 +74,6 @@ public:
   {
     // Nothing to do
   }
-
-  /** Destructor */
-  ~Indices() throw() {}
 
   /** Check that no value is repeated and no value exceed the given bound */
   Bool check(const UnsignedInteger bound) const;
@@ -86,10 +90,10 @@ public:
 
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** @copydoc Object::__str__() const */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 #endif
 
 }; /* class Indices */

@@ -8,7 +8,12 @@ coll : sequence of :class:`~openturns.CovarianceModel`
 
 Notes
 -----
-The *product* covariance function is a covariance function with dimension :math:`d=1`. It defines a covariance model from the given collection as follows.
+The *product* covariance function is a covariance function with 
+dimension :math:`d=1`. 
+This allows one to create a higher input dimension covariance model
+by combining models of smaller input dimensions. 
+The input dimension of each model in the collection does not necessarily have to be equal to 1. 
+It defines a covariance model from the given collection as follows.
 
 We consider the scalar stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
 

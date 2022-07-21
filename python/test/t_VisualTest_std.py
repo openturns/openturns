@@ -1,91 +1,90 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
+ot.RandomGenerator.SetSeed(0)
 
-try:
-    # QQPlot tests
-    size = 100
-    normal = Normal(1)
-    sample = normal.getSample(size)
-    sample2 = Gamma(3.0, 4.0, 0.0).getSample(size)
-    twoSamplesQQPlot = VisualTest.DrawQQplot(sample, sample2)
-    print("twoSamplesQQPlot = ", twoSamplesQQPlot)
+# QQPlot tests
+size = 100
+normal = ot.Normal(1)
+sample = normal.getSample(size)
+sample2 = ot.Gamma(3.0, 4.0, 0.0).getSample(size)
+twoSamplesQQPlot = ot.VisualTest.DrawQQplot(sample, sample2)
+print("twoSamplesQQPlot = ", twoSamplesQQPlot)
 
-    sampleDistributionQQPlot = VisualTest.DrawQQplot(sample, normal)
-    print("sampleDistributionQQPlot = ", sampleDistributionQQPlot)
+sampleDistributionQQPlot = ot.VisualTest.DrawQQplot(sample, normal)
+print("sampleDistributionQQPlot = ", sampleDistributionQQPlot)
 
-    # HenryLine test
-    size = 100
-    normal = Normal(1)
-    sample = normal.getSample(size)
-    henryPlot = VisualTest.DrawHenryLine(sample)
-    print("HenryPlot = ", henryPlot)
+# HenryLine test
+size = 100
+normal = ot.Normal(1)
+sample = normal.getSample(size)
+henryPlot = ot.VisualTest.DrawHenryLine(sample)
+print("HenryPlot = ", henryPlot)
 
-    # LinearModel tests
-    dimension = 2
-    R = CorrelationMatrix(dimension)
-    R[0, 1] = 0.8
-    distribution = Normal(
-        Point(dimension, 3.0), Point(dimension, 2.0), R)
-    size = 100
-    sample2D = distribution.getSample(size)
-    firstSample = Sample(size, 1)
-    secondSample = Sample(size, 1)
-    for i in range(size):
-        firstSample[i] = Point(1, sample2D[i, 0])
-        secondSample[i] = Point(1, sample2D[i, 1])
+# LinearModel tests
+dimension = 2
+R = ot.CorrelationMatrix(dimension)
+R[0, 1] = 0.8
+distribution = ot.Normal(
+    ot.Point(dimension, 3.0), ot.Point(dimension, 2.0), R)
+size = 100
+sample2D = distribution.getSample(size)
+firstSample = ot.Sample(size, 1)
+secondSample = ot.Sample(size, 1)
+for i in range(size):
+    firstSample[i] = ot.Point(1, sample2D[i, 0])
+    secondSample[i] = ot.Point(1, sample2D[i, 1])
 
-    lmtest = LinearModelAlgorithm(firstSample, secondSample).getResult()
-    drawLinearModelVTest = VisualTest.DrawLinearModel(
-        firstSample, secondSample, lmtest)
-    print("LinearModelV = ", drawLinearModelVTest)
+lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
+drawLinearModelVTest = ot.VisualTest.DrawLinearModel(lmtest)
+print("LinearModelV = ", drawLinearModelVTest)
 
-    drawLinearModelResidualTest = VisualTest.DrawLinearModelResidual(
-        firstSample, secondSample, lmtest)
-    print("LinearModelR = ", drawLinearModelResidualTest)
+drawLinearModelResidualTest = ot.VisualTest.DrawLinearModelResidual(lmtest)
+print("LinearModelR = ", drawLinearModelResidualTest)
 
-    # CobWeb tests
-    size = 100
-    inputDimension = 6
-    inputSample = Normal(inputDimension).getSample(size)
-    inputVar = Description(inputDimension)
-    for i in range(inputDimension):
-        inputVar[i] = "X" + str(i)
-    formula = Description(1)
-    expression = ""
-    for i in range(inputDimension):
-        if i > 0:
-            expression += "+"
-        expression += "cos(" + str(i + 1) + "*" + inputVar[i] + ")"
-    formula[0] = expression
-    model = SymbolicFunction(inputVar, formula)
-    outputSample = model(inputSample)
-    cobwebValue = VisualTest.DrawCobWeb(
-        inputSample, outputSample, 2.5, 3.0, "red", False)
-    print("cobwebValue = ", cobwebValue)
+# CobWeb tests
+size = 100
+inputDimension = 6
+inputSample = ot.Normal(inputDimension).getSample(size)
+inputVar = ["X" + str(i) for i in range(inputDimension)]
+formula = ot.Description(1)
+expression = ""
+for i in range(inputDimension):
+    if i > 0:
+        expression += "+"
+    expression += "cos(" + str(i + 1) + "*" + inputVar[i] + ")"
+formula[0] = expression
+model = ot.SymbolicFunction(inputVar, formula)
+outputSample = model(inputSample)
+cobwebValue = ot.VisualTest.DrawParallelCoordinates(
+    inputSample, outputSample, 2.5, 3.0, "red", False)
+print("cobwebValue = ", cobwebValue)
 
-    cobwebQuantile = VisualTest.DrawCobWeb(
-        inputSample, outputSample, 0.7, 0.9, "red", False)
-    print("cobwebQuantile = ", cobwebQuantile)
+cobwebQuantile = ot.VisualTest.DrawParallelCoordinates(
+    inputSample, outputSample, 0.7, 0.9, "red", False)
+print("cobwebQuantile = ", cobwebQuantile)
 
-    # KendallPlot tests
-    size = 100
-    copula1 = FrankCopula(1.5)
-    copula2 = GumbelCopula(4.5)
-    sample1 = copula1.getSample(size)
-    sample1.setName("data 1")
-    sample2 = copula2.getSample(size)
-    sample2.setName("data 2")
-    kendallPlot1 = VisualTest.DrawKendallPlot(sample1, copula2)
-    print("KendallPlot1 = ", kendallPlot1)
+# KendallPlot tests
+size = 100
+copula1 = ot.FrankCopula(1.5)
+copula2 = ot.GumbelCopula(4.5)
+sample1 = copula1.getSample(size)
+sample1.setName("data 1")
+sample2 = copula2.getSample(size)
+sample2.setName("data 2")
+kendallPlot1 = ot.VisualTest.DrawKendallPlot(sample1, copula2)
+print("KendallPlot1 = ", kendallPlot1)
 
-    kendallPlot2 = VisualTest.DrawKendallPlot(sample2, sample1)
-    print("KendallPlot2 = ", kendallPlot2)
+kendallPlot2 = ot.VisualTest.DrawKendallPlot(sample2, sample1)
+print("KendallPlot2 = ", kendallPlot2)
 
-except:
-    import sys
-    print("t_VisualTest_std.py", sys.exc_info()[0], sys.exc_info()[1])
+# Clouds
+sample = ot.Normal(4).getSample(200)
+clouds = ot.VisualTest.DrawPairs(sample)
+print("Clouds = ", clouds)
+distribution = ot.ComposedDistribution(
+    [ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(4)])
+cloudsMarginals = ot.VisualTest.DrawPairsMarginals(sample, distribution)
+print("CloudsMarginals = ", cloudsMarginals)

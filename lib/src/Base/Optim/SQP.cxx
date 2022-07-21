@@ -3,7 +3,7 @@
  *  @brief SQP is an actual implementation for
  *         OptimizationAlgorithmImplementation using the SQP algorithm.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,6 @@ SQP::SQP()
   , omega_(ResourceMap::GetAsScalar("SQP-DefaultOmega"))
   , smooth_(ResourceMap::GetAsScalar("SQP-DefaultSmooth"))
 {
-  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("SQP-DefaultMaximumEvaluationNumber"));
   initialize();
 }
 
@@ -53,7 +52,6 @@ SQP::SQP(const OptimizationProblem & problem)
   , omega_(ResourceMap::GetAsScalar("SQP-DefaultOmega"))
   , smooth_(ResourceMap::GetAsScalar("SQP-DefaultSmooth"))
 {
-  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("SQP-DefaultMaximumEvaluationNumber"));
   initialize();
   checkProblem(problem);
 }
@@ -67,7 +65,6 @@ SQP::SQP (const OptimizationProblem & problem,
   , omega_(omega)
   , smooth_(smooth)
 {
-  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("SQP-DefaultMaximumEvaluationNumber"));
   initialize();
   checkProblem(problem);
 }
@@ -87,6 +84,9 @@ void SQP::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
   if (problem.hasBounds())
     throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " cannot solve bound-constrained optimization problems";
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support non continuous problems";
+
 }
 
 void SQP::initialize()
@@ -109,7 +109,7 @@ Scalar SQP::computeLineSearch()
   /* Min bound for step */
   const Scalar minStep = getMaximumAbsoluteError() / currentDirection_.norm();
   /* Minimum decrease for the penalized objective function */
-  const Scalar levelIncrement = omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_);
+  const Scalar levelIncrement = omega_ * currentDirection_.dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_);
   /* Initialization of the line search */
   /* We start with step=1 */
   Scalar step = 1.0;
@@ -173,8 +173,7 @@ void SQP::run()
   UnsignedInteger evaluationNumber = levelFunction.getEvaluationCallsNumber() - initialEvaluationNumber;
 
   // reset result
-  result_ = OptimizationResult(dimension);
-  result_.setProblem(getProblem());
+  result_ = OptimizationResult(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
   while ((!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) && (evaluationNumber <= getMaximumEvaluationNumber()))
@@ -188,7 +187,7 @@ void SQP::run()
     const Scalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */
 
-    if (normGradientSquared == 0)
+    if (!(normGradientSquared > 0))
     {
       throw InternalException(HERE) << "Error in Abdo SQP algorithm: the gradient of the level function is zero at point u=" << currentPoint_;
     }
@@ -251,7 +250,6 @@ void SQP::run()
     result_.setEvaluationNumber(evaluationNumber);
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
-    result_.setLagrangeMultipliers(Point(1, currentLambda_));
 
     LOGINFO(getResult().__repr__());
 

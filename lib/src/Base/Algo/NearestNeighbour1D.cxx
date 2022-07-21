@@ -2,7 +2,7 @@
 /**
  *  @brief Nearest neighbour index search on a 1D Sample
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,7 +72,7 @@ NearestNeighbour1D * NearestNeighbour1D::emptyClone() const
 
 void NearestNeighbour1D::setSample(const Sample & points)
 {
-  if (!(points.getSize() == 0 || points.getDimension() == 1)) throw InvalidArgumentException(HERE) << "Error: Sample must be either empty or of dimension 1";
+  if (!(points.getSize() == 0 || points.getDimension() == 1)) throw InvalidArgumentException(HERE) << "Error: Sample must be either empty or of dimension 1 but has size " << points.getSize() << " and dimension " << points.getDimension();
   if (points == points_) return;
 
   points_ = points;
@@ -182,7 +182,7 @@ Indices NearestNeighbour1D::queryK(const Point & x, const UnsignedInteger k, con
 Indices NearestNeighbour1D::queryScalarK(const Scalar x, const UnsignedInteger k, const Bool sorted) const
 {
   const UnsignedInteger size = points_.getSize();
-  if (k > size) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the sample!";
+  if (!(k <= size)) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours (" << k << ") than points (" << size << ") in the sample!";
   Indices result(k);
   // If we need as many neighbours as points in the sample, just return all the possible indices
   if (k == size && !sorted)

@@ -2,7 +2,7 @@
 /**
  *  @brief Description is a collection of string for human usage
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,6 +51,9 @@ public:
   /** Constructor from a collection */
   Description(const Collection<String> & coll);
 
+  /** Initializer list constructor */
+  Description(std::initializer_list<String> initList);
+
   /** Check if the content is blank */
   Bool isBlank() const;
 
@@ -59,10 +62,10 @@ public:
 
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** @copydoc Object::__str__() const */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 #endif
 
   void sort();

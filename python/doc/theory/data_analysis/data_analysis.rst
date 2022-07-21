@@ -23,9 +23,18 @@ Estimation of a parametric model
     empirical_cdf
     kernel_smoothing
     maximum_likelihood
-    bayesian_calibration
-    metropolis_hastings
     parametric_estimation
+
+Calibration
+-----------
+
+.. toctree::
+    :maxdepth: 1
+
+    bayesian_calibration
+    code_calibration
+    gaussian_calibration
+    metropolis_hastings
 
 Analysis of the goodness of fit of a parametric model
 -----------------------------------------------------
@@ -38,6 +47,7 @@ Analysis of the goodness of fit of a parametric model
     kolmogorov_test
     cramer_vonmises_test
     anderson_darling_test
+    aic
     bic
 
 Detection and quantification of dependencies

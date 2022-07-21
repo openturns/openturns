@@ -1,95 +1,124 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
-from openturns import *
+import openturns as ot
+import openturns.testing as ott
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
-
-try:
-
-    # this analitycal example is taken from "Bayesian Modeling Using WinBUGS" - Ioannis Ntzoufras
-    # 1.5.3: Inference for the mean or normal data with known variance
-
-    # Variable of interest: Y=N(mu, sigma)
-    # Prior for mu: Normal(mu0, sigma0), sigma is known
-    # Posterior for mu: E(mu|y)=w*y_mean+(1-w)*mu0, and Var(mu|y)=w*(sigmay^2)/n
-    # => weighted average of the prior an the sample mean
-    # with w = n*sigma0^2 / (n*sigma0^2 + sigma^2)
-
-    # Log::Show(Log::ALL)
-    # observations
-    size = 10
-    realDist = Normal(31., 1.2)
-
-    data = realDist.getSample(size)
-
-    # calibration parameters
-    calibrationColl = [CalibrationStrategy()] * 2
-
-    # proposal distribution
-    proposalColl = DistributionCollection()
-    mean_proposal = Uniform(-2.0, 2.0)
-    std_proposal = Uniform(-2.0, 2.0)
-    proposalColl.add(mean_proposal)
-    proposalColl.add(std_proposal)
-
-    # prior distribution
-    mu0 = 25.
-
-    sigma0s = [0.1, 1.0]
-    # sigma0s.append(2.0)
-
-    # play with the variance of the prior:
-    # if the prior variance is low (information concernig the mu parameter is strong)
-    # then the posterior mean will be equal to the prior mean
-    # if large, the the posterior distribution is equivalent to the
-    # distribution of the sample mean
-    for i in range(len(sigma0s)):
-
-        sigma0 = sigma0s[i]
-        mean_prior = Normal(mu0, sigma0)
-        std_prior = Dirac(2.0)  # standard dev is known
-        prior = ComposedDistribution([mean_prior, std_prior])
-
-        # choose the initial state within the prior
-        initialState = prior.getRealization()
-
-        # conditional distribution
-        conditional = Normal()
-
-        # create a metropolis-hastings sampler
-        sampler = RandomWalkMetropolisHastings(
-            prior, conditional, data, initialState, proposalColl)
-        sampler.setVerbose(True)
-        sampler.setThinning(2)
-        sampler.setBurnIn(500)
-        sampler.setCalibrationStrategyPerComponent(calibrationColl)
-        realization = sampler.getRealization()
-
-        sigmay = ConditionalDistribution(
-            Normal(), prior).getStandardDeviation()[0]
-        w = size * sigma0 ** 2. / (size * sigma0 ** 2. + sigmay ** 2.0)
-
-        print("prior variance= %.12g" % (sigma0 ** 2.))
-        print("  realization=", realization)
-
-        print("  w= %.12g" % w)
-
-        # the posterior for mu is analytical
-        print("  expected posterior ~N( %.12g" % (w * data.computeMean()
-                                                  [0] + (1. - w) * mu0), ",  %.12g" % ((w * sigmay ** 2.0 / size) ** 0.5), ")")
-
-        # try to generate a sample
-        sample = sampler.getSample(50)
-
-        print("  obtained posterior ~N( %.12g" % sample.computeMean()[
-              0], ",  %.12g" % sample.computeStandardDeviationPerComponent()[0], ")")
-
-        print("  acceptance rate=", sampler.getAcceptanceRate())
+ot.TESTPREAMBLE()
 
 
-except:
-    import sys
-    import traceback
-    traceback.print_exc(file=sys.stdout)
+# dummy run without likelihood
+mu = 5000.0
+prior = ot.Normal(mu, 1.0)
+initialState = [0.0]
+instrumental = ot.Normal(0.0, 5.0)
+sampler = ot.RandomWalkMetropolisHastings(prior, initialState, instrumental)
+sampler.setBurnIn(1000)
+s1 = sampler.getSample(50)
+ott.assert_almost_equal(s1.computeMean()[0], mu, 1e-2, 1e3)
+
+data = ot.Sample([[53, 1],
+                  [57, 1],
+                  [58, 1],
+                  [63, 1],
+                  [66, 0],
+                  [67, 0],
+                  [67, 0],
+                  [67, 0],
+                  [68, 0],
+                  [69, 0],
+                  [70, 0],
+                  [70, 0],
+                  [70, 1],
+                  [70, 1],
+                  [72, 0],
+                  [73, 0],
+                  [75, 0],
+                  [75, 1],
+                  [76, 0],
+                  [76, 0],
+                  [78, 0],
+                  [79, 0],
+                  [81, 0]])
+
+data.setDescription(['Temp. (°F)', 'Failure'])
+print(data)
+
+
+fun = ot.SymbolicFunction(["alpha", "beta", "x"], [
+                          "exp(alpha + beta * x) / (1 + exp(alpha + beta * x))"])
+linkFunction = ot.ParametricFunction(fun, [2], [0.0])
+instrumental = ot.Normal([0.0] * 2, [0.5, 0.05], ot.IdentityMatrix(2))
+
+target = ot.ComposedDistribution([ot.Uniform(-100.0, 100.0)] * 2)
+rwmh = ot.RandomWalkMetropolisHastings(target, [0.0]*2, instrumental)
+conditional = ot.Bernoulli()
+observations = data[:, 1]
+covariates = data[:, 0]
+rwmh.setLikelihood(conditional, observations, linkFunction, covariates)
+
+# try to generate a sample
+sample = rwmh.getSample(10000)
+mu = sample.computeMean()
+sigma = sample.computeStandardDeviation()
+print('mu=', mu, 'sigma=', sigma)
+ott.assert_almost_equal(mu, [14.8747, -0.230384])
+ott.assert_almost_equal(sigma, [7.3662, 0.108103])
+
+print('acceptance rate=', rwmh.getAcceptanceRate())
+ott.assert_almost_equal(rwmh.getAcceptanceRate(), 0.1999)
+
+# from 1532
+fullModel = ot.SymbolicFunction(['x', 'theta'], ['theta', '1.0'])
+model = ot.ParametricFunction(fullModel, [0], [1.0])
+prior = ot.Normal(0.0, 1.0)
+prior.setDescription(['theta'])
+instrumental = ot.Normal(0.0, 1.0)
+thetaTrue = [2.0]
+# We choose the most favorable initial state: the true parameter value.
+initialState = thetaTrue
+conditional = ot.Normal()  # the log-likelihood is Gaussian
+# 503 observations: OK
+obsSize = 503
+ot.RandomGenerator.SetSeed(0)
+y_obs = ot.Normal(thetaTrue[0], 1.0).getSample(obsSize)
+x_obs = y_obs
+RWMHsampler = ot.RandomWalkMetropolisHastings(
+    prior, initialState, instrumental)
+RWMHsampler.setLikelihood(conditional, y_obs, model, x_obs)
+print("Log-likelihood of thetaTrue = {!r}".format(
+    RWMHsampler.computeLogLikelihood(thetaTrue)))
+real_503 = RWMHsampler.getRealization()
+print("With 503 observations, getRealization() produces {!r}".format(
+    real_503[0]))
+ott.assert_almost_equal(real_503[0], 2.0)
+# 504 observations: not OK
+obsSize = 504
+ot.RandomGenerator.SetSeed(0)
+y_obs = ot.Normal(thetaTrue[0], 1.0).getSample(obsSize)
+x_obs = y_obs
+RWMHsampler = ot.RandomWalkMetropolisHastings(
+    prior, initialState, instrumental)
+RWMHsampler.setLikelihood(conditional, y_obs, model, x_obs)
+print("Log-likelihood of thetaTrue = {!r}".format(
+    RWMHsampler.computeLogLikelihood(thetaTrue)))
+# produces an error with current master branch
+real_504 = RWMHsampler.getRealization()
+print("With 504 observations, getRealization() produces {!r}".format(
+    real_504[0]))
+ott.assert_almost_equal(real_504[0], 2.0)
+
+
+# this example throws in ot 1.19 as it tries to evaluate the likelihood outside the support of the prior
+# see MetropolisHastingsImplementation::computeLogPosterior
+obs = ot.TruncatedNormal(0.5, 0.5, 0.0, 10.0).getSample(50)
+likelihood = ot.GeneralizedPareto()
+prior = ot.ComposedDistribution(
+    [ot.LogUniform(-1.40, 4.0), ot.Normal(), ot.Normal()])
+proposals = [ot.Uniform(-prior.getMarginal(k).getStandardDeviation()[0],
+                        +prior.getMarginal(k).getStandardDeviation()[0])
+             for k in range(prior.getDimension())]
+initialState = prior.getMean()
+mh_coll = [ot.RandomWalkMetropolisHastings(prior, initialState, proposals[i], [i]) for i in range(2)]
+for mh in mh_coll: mh.setLikelihood(likelihood, obs)
+sampler = ot.Gibbs(mh_coll)
+parameters_sample = sampler.getSample(200)

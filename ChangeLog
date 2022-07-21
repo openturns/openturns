@@ -1,16 +1,505 @@
 = New Features =
 
-== 1.14 release (in progress) == #release-1.14
+== 1.20 release (in-progress) == #release-1.20
 
 === Library ===
 
 ==== Major changes ====
- * Add dlib solvers
+
+==== New classes ====
+ * IndependentCopulaFactory
+ * FieldToPointFunctionalChaosAlgorithm
+ * FieldFunctionalChaosResult
+ * FieldFunctionalChaosSobolIndices
+ * CorrelationAnalysis
+
+==== API changes ====
+ * Removed coupling_tools.execute get_stderr,get_stdout arguments
+ * Removed deprecated Nlopt|Ceres|Bonmin|CMinpack|Ipopt|TBB|HMatrixFactory::IsAvailable methods
+ * Deprecated SequentialStrategy
+ * Deprecated TensorApproximationAlgorithm, TensorApproximationResult, CanonicalTensorEvaluation, CanonicalTensorGradient
+ * Deprecated FunctionalChaosSobolIndices.getSobolGrouped(Total)Index(int)
+ * Deprecated static CorrelationAnalysis::PearsonCorrelation|SpearmanCorrelation|PCC|PRCC, use the methods of the new CorrelationAnalysis class instead.
+ * Removed static CorrelationAnalysis::SRC|SRRC due to a bug: #1753.
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
+== 1.19 release (2022-05-10) == #release-1.19
+
+=== Library ===
+
+==== Major changes ====
+ * HSIC sensitivity indices
+ * RandomWalkMetropolisHastings now updates all components at a time, previously updated componentwise
+ * Iterative statistics
+
+==== New classes ====
+ * RandomVectorMetropolisHastings
+ * IndependentMetropolisHastings
+ * Gibbs
+ * HSICEstimatorConditionalSensitivity
+ * HSICEstimatorGlobalSensitivity
+ * HSICEstimatorTargetSensitivity
+ * HSICUStat
+ * HSICVStat
+ * IterativeExtrema
+ * IterativeMoments
+ * IterativeThresholdExceedance
+ * TensorProductExperiment
+ * NAIS
+ * Pagmo
+ * GalambosCopula
+
+==== API changes ====
+ * Removed deprecated Hanning alias
+ * Removed deprecated AdaptiveDirectionalSampling alias
+ * Removed deprecated VisualTest::DrawCobWeb method
+ * Removed deprecated shims module
+ * Removed deprecated TBB.SetNumberOfThreads/GetNumberOfThreads
+ * Removed deprecated MultiFORM.setMaximumNumberOfDesignPoints/getMaximumNumberOfDesignPoints
+ * Removed deprecated SubsetSampling.getNumberOfSteps
+ * coupling_tools.execute: deprecated get_stderr,get_stdout for capture_output, returns CompletedProcess
+ * Deprecated Nlopt|Ceres|Bonmin|CMinpack|Ipopt|TBB|HMatrixFactory::IsAvailable in favor of PlatformInfo::HasFeature, see also GetFeatures
+ * RandomWalkMetropolisHastings API breaks to split the likelihood definition
+ * Deprecated CalibrationStrategy class
+
+=== Documentation ===
+
+=== Python module ===
+ * Hide C++ getImplementation methods and add Python-specific getImplementation methods with automatic dynamic typecasting
+ * Add Sample.asDataFrame/BuildFromDataFrame pandas conversion methods
+
+=== Miscellaneous ===
+ * Add Collection::select(Indices) method
+ * Parallelized SymbolicFunction evaluation (enabled from a sample size>100 with exprtk)
+ * Sample csv export: allow to set precision and format
+ * Sample csv import: handle nan/inf values
+ * Add EnumerateFunction::getBasisSizeFromTotalDegree(maximumDegree)
+
+=== Bug fixes ===
+ * #1260 (RandomWalkMetropolisHastings does not handle non-symmetric proposals properly)
+ * #1263 (Static functions are implemented in C++ classes instead of namespaces)
+ * #1334 (Multi-objective optimization)
+ * #1444 (The calibration examples are unclear)
+ * #1830 (Incompatible documentation for CauchyModel)
+ * #1914 (Cobyla & NLopt should accept LeastSquaresProblem)
+ * #1921 (Adaptive Directional Stratification: the coefficient of variation of the probability is inconsistent with repeated probability results)
+ * #1922 (Adaptive Directional Stratification: the coefficient of variation cannot be used as a stopping criterion)
+ * #1926 (Examples have broken graphics)
+ * #1931 (Interface class getImplementation methods are useless in Python)
+ * #1939 (Contour curves outside graph window)
+ * #1940 (getMaximumDegreeStrataIndex has a bug with hyperbolic rule)
+ * #1943 (TriangularMatrix * Point --> ScalarCollection)
+ * #1946 (Doc search issues)
+ * #1947 (The constructor of FunctionalChaosResult is undocumented)
+ * #1949 (The comparison operator of ComposedDistribution is wrong)
+ * #1958 (Performance of OrthogonalUniVariatePolynomial (precision, speed))
+ * #1959 (Cobyla run causes segfault when empty ctor is used)
+ * #1993 (IsotropicCovarianceModel has no default ctor)
+ * #1994 (default GaussProductExperiment is invalid)
+ * #1997 (KLSVD spectrum cutoff error)
+ * #2012 (Cannot sample a ConditionedGaussianProcess on a mesh containing conditioning points)
+ * #2014 (Precision issue with the Python KrigingAlgorithm test)
+ * #2019 (Parametric stationary covariance models doc section needs refresh)
+ * #2020 (Problem with the UserDefined distribution)
+ * #2025 (The lack of Bonmin generates an error during example compilation)
+ * #2031 (Multi-objective optimization example question)
+ * #2032 (Documentation of NAIS)
+
+
+== 1.18 release (2021-11-10) == #release-1.18
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+ * DistanceToDomainFunction
+
+==== API changes ====
+ * Removed deprecated MultiStart::setStartingPoints/getStartingPoints
+ * Removed deprecated KarhunenLoeveResult::getEigenValues
+ * Removed deprecated coupling_tools.execute is_shell/workdir/shell_exe/check_exit_code arguments
+ * RandomVector::get/setParameter and getParameterDescription available to PythonRandomVector
+ * Implemented CovarianceModel::computeCrossCovariance
+ * Deprecated Hanning in favor of Hann
+ * Deprecated AdaptiveDirectionalSampling in favor of AdaptiveDirectionalStratification
+ * Deprecated VisualTest::DrawCobWeb in favor of DrawParallelCoordinates
+ * IndicatorFunction constructor takes a Domain as input
+ * Intervals and DomainUnions get new method computeDistanceToDomain(Point or Sample)
+ * Renamed some ResourceMap keys: cache-max-size>Cache-MaxSize, parallel-threads>TBB-ThreadsNumber
+ * Deprecated TBB.SetNumberOfThreads/GetNumberOfThreads
+ * Deprecated MultiFORM.setMaximumNumberOfDesignPoints/getMaximumNumberOfDesignPoints
+ * Deprecated SubsetSampling.getNumberOfSteps
+ * Normal and Student distributions: no need to specify the R parameter if it is the identity matrix
+ * KrigingResult::getConditionalMean and getConditionalMarginalVariance yield Samples instead of Points when applied to Samples
+ * Deprecated shims module
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+ * #1840 (HMatrixFactory leaks)
+ * #1842 (libOT.so.0.0.0 doesn't have a SONAME)
+ * #1843 (Ali-Mikhail-Haq copula parameter value)
+ * #1844 (MaximumDistribution::computePDF is wrong when all the marginals are equal and independent)
+ * #1845 (MemoizeFunction does not propagate to finite difference gradient&hessian)
+ * #1847 (ParametricFunction require unnecessary function evaluations)
+ * #1854 (Sample indexing does not work on np.int64 type)
+ * #1856 (Speed up Normal computeSurvivalFunction)
+ * #1857 (ProductCovarianceModel fails when constructed with DiracCovarianceModel)
+ * #1858 (Normal::computeCDF(sample) crash for large dimensions)
+ * #1861 (Still some instabilities in Kriging with ot.StationaryFunctionalCovarianceModel)
+ * #1864 (FORM - IMPORTANCE FACTOR)
+ * #1868 (Not compatible with hmat-oss-1.7.1: no member named 'compressionMethod' in 'hmat_settings_t')
+ * #1870 (TruncatedDistribution fails to compute quantiles)
+ * #1874 (ProcessSample.getSampleAtVertex() may be useful as a public method)
+ * #1877 (How to model singular multivariate distributions?)
+ * #1878 (Rename Hanning filtering window)
+ * #1879 (Adaptive Directional Sampling Algorithm: the drawProbabilityConvergence graph may be wrong)
+ * #1880 (Adaptive Directional Sampling: some enhancements proposed)
+ * #1882 (Is Distribution::getLinearCorrelation useful ?)
+ * #1883 (Strange behavior of FORM ?)
+ * #1884 (setDesign can lead to wrong Sobol' indices)
+ * #1891 (Correlation of Halton sequence at high dimensions)
+ * #1911 (DirectionalSampling freezes python if not correctly initialized)
+ * #1912 (splitter: missing doc)
+ * #1915 (computePDFGradient(const Sample &) should rely on computePDFGradient(const Point &) in DistributionImplementation)
+ * #1918 (PythonDistribution does not allow to overload the isDiscrete() method)
+
+
+== 1.17 release (2021-05-12) == #release-1.17
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+ * VertexValuePointToFieldFunction
+ * KarhunenLoeveReduction
+ * KarhunenLoeveValidation
+ * IsotropicCovarianceModel
+ * KroneckerCovarianceModel
+ * VonMisesFactory
+ * KFoldSplitter, LeaveOneOutSplitter
+
+==== API changes ====
+ * Removed deprecated Pairs alias
+ * Removed deprecated SORMResult::getEventProbabilityHohenBichler/getGeneralisedReliabilityIndexHohenBichler
+ * Removed deprecated OptimizationResult::getLagrangeMultipliers, OptimizationAlgorithm::computeLagrangeMultipliers
+ * Removed deprecated FittingTest::Kolmogorov, FittingTest::BestModelKolmogorov (DistributionFactory argument only)
+ * Deprecated Sample::computeStandardDeviationPerComponent, use computeStandardDeviation
+ * Deprecated KarhunenLoeveResult::getEigenValues, use getEigenvalues
+ * Removed StationaryCovarianceModel
+ * CovarianceModel.computeAsScalar allows scalars
+ * Swapped SimulatedAnnealingLHS constructor SpaceFilling/TemperatureProfile arguments
+ * Added EfficientGlobalOptimization::getKrigingResult, gets the updated version of the KrigingResult passed to the constructor
+ * Deprecated MultiStart::setStartingPoints/getStartingPoints, use MultiStart::setStartingSample/getStartingSample instead
+ * MultiStart::setStartingPoint/getStartingPoint throws (previously did nothing)
+
+=== Documentation ===
+ * Fixed example and plot of Kolmogorov statistics.
+ * Added a new example showing how to combine RandomWalkMetropolisHastings and PythonDistribution
+
+=== Python module ===
+ * Serialize Python wrapper objects using dill (PythonDistribution, PythonFunction ...)
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+ * #1010 (The doc for ExpectationSimulationAlgorithm is confusing)
+ * #1052 (The Dirichlet and Normal distributions only have 1D graphics in the doc)
+ * #1224 (The examples in the doc of the DomainEvent class are unclear)
+ * #1229 (Better encapsulation of optional 3rd-party headers)
+ * #1240 (There is no theory documentation for ExpectationSimulationAlgorithm)
+ * #1257 (Cannot create a SimulatedAnnealingLHS without specifying the temperature profile)
+ * #1287 (The constructors of KernelSmoothing have no doc)
+ * #1418 (The Contour example does not present the second constructor)
+ * #1425 (There is no method to create a train / test pair)
+ * #1431 (The figure for LHSExperiment is not accurate)
+ * #1459 (There is no example which shows how to set a column of a Sample)
+ * #1497 (There is no example to create a multivariate Normal distribution)
+ * #1506 (The Brent class has no example)
+ * #1570 (Wrong formula for MauntzKucherenkoSensitivityAlgorithm)
+ * #1650 (There is no example of a parametric StationaryFunctionalCovarianceModel)
+ * #1656 (The help page of ExpectationSimulationAlgorithm is unclear)
+ * #1661 (XMLH5StorageManager does not store IndicesCollection into HDF5 files)
+ * #1662 (Operator() of a CovarianceModel with multidimensional output should yield object of type SquareMatrix)
+ * #1680 (QuadraticBasisFactory multiplies cross products by 2)
+ * #1710 (Misleading y labels in VisualTest.DrawPairsMarginals())
+ * #1713 (The doc of the ResourceMap does not match the content of the ResourceMap)
+ * #1714 (The log-PDF of the Pareto is wrong)
+ * #1721 (The `draw` method of `SobolSimulationAlgorithm` does not reuse the descriptions)
+ * #1723 (There is no interesting example of the ExprTk feature of SymbolicFunction)
+ * #1725 (The BetaFactory help page has wrong equations)
+ * #1729 (LinearModelAnalysis sometimes fail)
+ * #1731 (The Extreme value example may be improved)
+ * #1737 (Low rank tensor doc issues)
+ * #1742 (The example which shows how to set the figure size is wrong.)
+ * #1751 (DrawCorrelationCoefficients has a wrong Text height)
+ * #1752 (Error while estimating the reduced log-likelihood when using a StationaryFunctionalCovarianceModel)
+ * #1758 (The LinearModelStepwiseAlgorithm has no example)
+ * #1759 (Kriging model with StationaryFunctionalCovarianceModel might provide bad results)
+ * #1768 (Bug in ExponentiallyDampedCosineModel & SphericalModel)
+ * #1771 (GridLayout hides the titles in the graph)
+ * #1772 (MinimumVolumeClassifier cannot draw 1D samples)
+ * #1774 (ExponentialModel::partialGradient is wrong)
+ * #1775 (ExponentialModel does not account correlation with Covariance ctor)
+ * #1776 (Typo in the Branin use case implementation)
+ * #1781 (The link_to_an_external_code example has small bugs)
+ * #1784 (The drawPDF method of Histogram sometimes fail)
+ * #1787 (CovarianceMatrix from SymmetricMatrix raises InvalidArgumentException)
+ * #1790 (LinearModelResult.getFormula() method is not updated by Stepwise regression)
+ * #1794 (Some doc examples seem to behave with new infrastructure)
+ * #1796 (VonMisesFactory is missing)
+ * #1803 (The API example of Experiment has a format issue)
+ * #1805 (Brent's implementation has a stability issue)
+ * #1807 (Beta::computeCharacteristicFunction is wrong if the lower bound is not zero)
+ * #1815 (1.16 fails with dlib-cpp-19.22)
+ * #1818 (Problem with wilksNumber)
+ * #1820 (Incoherent results in LinearModelAnalysis)
+ * #1835 (RegularizedIncompleteBeta returns nan)
+ * #1836 (Hypergeometric results differ without boost)
+ * #1837 (Poor performance when using pickle on OT objects)
+
+
+== 1.16 release (2020-11-16) == #release-1.16
+
+=== Library ===
+
+==== Major changes ====
+ * Drop normalization in KrigingAlgorithm
+ * Drop normalization & transformation handling in GeneralLinearModelAlgorithm
+ * XML/H5 storage (hdf5 library)
+ * C++11 requirement
+
+==== New classes ====
+ * BlockIndependentDistribution
+ * FejerAlgorithm
+ * GridLayout
+ * MinimumVolumeClassifier
+ * StationaryFunctionalCovarianceModel
+ * XMLH5StorageManager
+
+==== API changes ====
+ * Removed deprecated Weibull, WeibullFactory, WeibullMuSigma classes
+ * Removed deprecated GumbelAB class
+ * Removed deprecated Event class
+ * Removed deprecated EnumerateFunction constructors
+ * Removed various deprecated distribution accessors
+ * Deprecated Pairs class, see VisualTest.DrawPairs
+ * Deprecated SORMResult::getEventProbabilityHohenBichler, use SORMResult::getEventProbabilityHohenbichler instead
+ * Deprecated SORMResult::getGeneralisedReliabilityIndexHohenBichler, use SORMResult::getGeneralisedReliabilityIndexHohenbichler instead
+ * Renamed SobolSequence::MaximumNumberOfDimension as SobolSequence::MaximumDimension
+ * Added VisualTest::DrawLinearModel(linearModelResult), useful if the test is performed on the training samples
+ * Added VisualTest::DrawLinearModelResidual(linearModelResult), useful if the test is performed on the training samples
+ * Deprecated OptimizationResult::getLagrangeMultipliers
+ * Moved OptimizationAlgorithm::computeLagrangeMultipliers to OptimizationResult
+ * Added AIC & BestModelAIC static methods in FittingTest
+ * Added AICC & BestModelAICC static methods in FittingTest
+ * Moved BuildDistribution from FunctionalChaosAlgorithm to MetaModelAlgorithm
+ * Added Drawable::BuildRainbowPalette(size)
+ * Added Drawable::BuildTableauPalette(size), which is now the default palette.
+ * Added Drawable::ConvertFromRGBIntoHSV
+ * Added FittingTest::Lilliefors, BestModelLilliefors
+ * Deprecated FittingTest::BestModelKolmogorov(Sample, DistributionFactoryCollection, TestResult), use BestModelLilliefors
+ * Deprecated FittingTest::Kolmogorov(Sample, DistributionFactory, TestResult, level), use Lilliefors
+ * MetamodelValidation: now computePredictivityFactor returns Point, drawValidation return GridLayout
+ * Deprecated coupling_tools.execute is_shell/workdir/shell_exe/check_exit_code arguments
+
+=== Documentation ===
+ * Sphinx-gallery used to render examples
+
+==== API documentation ====
+ * Clarified SobolIndicesExperiment page, notations now consistent with SobolIndicesAlgorithm page
+ * Clarified SobolIndicesAlgorithm and (Saltellli|Martinez|MauntzKucherenko|Jansen)SensitivityAlgorithm pages, corrected formulas
+ * Documented how to turn warnings off or write them on a file
+
+=== Python module ===
+ * Renamed Viewer *_kwargs arguments to *_kw (matplotlib convention)
+ * Add ProcessSample Field accessors
+
+=== Miscellaneous ===
+ * Do not compute Lagrange multipliers by default during an optimization
+ * Add ResourceMap::FindKeys
+ * Allow computeLogPDF methods to output values lower than SpecFunc::LogMinScalar
+
+=== Bug fixes ===
+ * #1001 (Add method SobolSimulationResult::draw)
+ * #1259 (The diagonal of a scatter plot matrix should have the histograms)
+ * #1267 (Some CSV files cannot be imported)
+ * #1377 (The `setKnownParameter` method is not compatible with `buildEstimator`)
+ * #1407 (GeneralLinearModelAlgorithm mishandles user-specified scale parameter when normalize is True)
+ * #1415 (The BuildDistribution static method should not use the KS-test)
+ * #1421 (UserDefinedStationaryCovarianceModel doc suggests input dimension can be >1)
+ * #1436 (The style of the curves is unpleasing to my eyes)
+ * #1447 (Highly inaccurate result in reliability model when using subset of RandomVector)
+ * #1465 (The Sample constructor based on a list and an integer should not exist)
+ * #1470 (setNbModes is sometimes ignored)
+ * #1474 (optimization defaults)
+ * #1507 (Leak in Collection typemaps)
+ * #1510 (ot.Ceres('LEVENBERG_MARQUARDT') and ot.Ceres('DOGLEG') do not handle bound constraints)
+ * #1515 (KernelSmoothing build failure)
+ * #1520 (The NLopt test is dubious)
+ * #1521 (Basis of MonomialFunction)
+ * #1529 (The error of the NonLinearLeastSquaresCalibration and GaussianNonLinearCalibration are different)
+ * #1540 (SubsetSampling: incorrect event sample)
+ * #1547 (Mesh does not check the simplices indices)
+ * #1549 (Doc of evaluation operator of KrigingResult)
+ * #1553 (Optimization algorithms ignore MaxEvaluationNumber parameter in SORM)
+ * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)
+ * #1558 (Example estimate_multivariate_normal: FittingTest::BestModelBIC fails to compute the BIC)
+ * #1564 (Set a Point makes ot crash)
+ * #1567 (The API doc of SobolIndicesExperiment has a format issue)
+ * #1573 (LinearModelAnalysis::drawQQPlot line is not the first bisector)
+ * #1578 (Option to suppressing and/or save warnings?)
+ * #1581 (LinearModelAlgorithm run() fails to parse Sample description)
+ * #1586 (Documentation: description error in the API for the FittingTest_BestModelKolmogorov and FittingTest_BestModelChiSquaredclasses)
+ * #1590 (The equation of the Fejer quadrature rule is triplicated)
+ * #1592 (SubsetSampling returns an error if Pf=1)
+ * #1594 (LinearLeastSquaresCalibration and CalibrationResult)
+ * #1599 (FieldToPointConnection-BlockSize is missing)
+ * #1603 (FieldToPointConnection generates an invalid exception)
+ * #1605 (MaximumLikelihoodFactory cannot be used with FittingTest.Kolmogorov)
+ * #1624 (The graphs_loglikelihood_contour example has a bug)
+ * #1642 (Big white space at the beginning of examples)
+ * #1643 (Problem in MaximumDistribution PDF)
+ * #1647 (MCMC::computeLogLikelihood does not compute the log-likelihood)
+ * #1651 (Cobyla freezes in 0T1.16rc1)
+ * #1658 (TimeSeries accessor)
+ * #1660 (Cannot extract continuous modes from KLResult when dimension>1)
+ * #1668 (LevelSetMesher does not take into account the comparison operator)
+
+
+== 1.15 release (2020-05-25) == #release-1.15
+
+=== Library ===
+
+==== Major changes ====
+ * New EV solver for KarhunenLoeveP1Algorithm (Spectra), with sparse matrix and HMatrix support
+ * Enable HMat AcaRandom compression method
+
+==== New classes ====
+ * Ipopt optimization solver
+
+==== Documentation ====
+
+==== API changes ====
+ * Removed deprecated OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
+ * Removed deprecated GaussianNonLinearCalibration,NonLinearLeastSquaresCalibration::set,getAlgorithm
+ * Removed deprecated MethodOfMomentsFactory::set,getOptimizationProblem
+ * ResourceMap::Set* methods no longer add new keys, the new Add* methods must be used instead
+ * Removed OPTpp
+ * Renamed HistogramFactory::computeSilvermanBandwidth into HistogramFactory::computeBandwidth.
+
+=== Python module ===
+ * ProcessSample __getitem__ returns Sample instead of Field
+ * Implement list indexing
+
+=== Miscellaneous ===
+ * Add Sample::getMarginal(Description)
+ * Fixed TBB performance when used together with OpenBLAS
+
+=== Bug fixes ===
+ * #1124 (DistributionFactory::buildAsXXX methods not documented)
+ * #1213 (The legend of the graphics in MetaModelValidation is wrong)
+ * #1222 (There is no kriging example based on HMAT)
+ * #1331 (FittingTest_BestModelBIC sometimes fail)
+ * #1335 (The return of the unsafe ResourceMap)
+ * #1337 (The rDiscrete function has no help page)
+ * #1349 (Problem in the graph of Histogram)
+ * #1351 (Text has a zero size)
+ * #1354 (The doc of GeneralizedParetoFactory does not reflect the implementation)
+ * #1371 (Memory leak in ot.TruncatedDistribution)
+ * #1372 (wrap MultiStart::OptimizationResultCollection)
+ * #1374 (The setKnownParameter of the factories are not documented enough)
+ * #1376 (The View class has no example)
+ * #1378 (Kriging-related covariance model weirdness)
+ * #1383 (The ExprTk engine for SymbolicFunction does not document the "var" keyword)
+ * #1384 (The ExprTk engine is not case-sensitive)
+ * #1388 (Kolmogorov fails on a PythonDistribution)
+ * #1390 (The doc for the `computeQuantile` method does not describe the optional `tail` argument)
+ * #1393 (SobolSimulationAlgorithm should be simpler)
+ * #1395 (Indexing Sample improvement)
+ * #1403 (Python import otagrum throws an error)
+ * #1404 (Bug in KrigingAlgorithm+hmat-oss)
+ * #1405 (Most of the simulation algorithms for rare event fail on a coronavirus example)
+ * #1416 (MethodOfMomentsFactory has no setOptimizationBounds method)
+ * #1419 (BoundingVolumeHierarchy segaults/hangs)
+ * #1423 (The computeSilvermanBandwidth of the HistogramFactory has no help)
+ * #1432 (Expected improvement-based EfficientGlobalOptimization stopping criterion could be improved)
+ * #1437 (OrderStatisticsMarginalChecker bound message)
+ * #1438 (Normal distribution: computeComplementaryCDF)
+ * #1443 (Not all distributions have a getRoughness() method)
+ * #1448 (Memory consumption leads to crash)
+ * #1449 (P1LagrangeInterpolation sometimes fails)
+ * #1455 (GLM::setCovarianceModel could lead to unexpected behavior of parameter optimization in KrigingAlgorithm)
+ * #1456 (truncation of distribution)
+ * #1461 (ComparisonOperator().getImplementation().getClassName() segfault)
+ * #1471 (The graphics of KarhunenLoeveQuadratureAlgorithm has no axes)
+ * #1485 (The Normal().getRoughness() method is wrong)
+ * #1495 (Wrong formula for Expected Improvement evaluation)
+
+== 1.14 release (2019-11-13) == #release-1.14
+
+=== Library ===
+
+==== IMPORTANT: Distributions parametrization changes ====
+ * New argument ordering in Frechet ctor: scale(beta), shape(alpha), location(gamma) (swapped alpha and beta)
+ * New parametrization in Gumbel: scale(beta), position(gamma) (beta=1/alpha for first argument)
+ * New parametrization in Beta: shape(alpha), shape(beta), location(a), location(b) (beta=t-r for second argument)
+ * New parametrization in InverseGamma: rate(lambda), shape(k) (swapped arguments)
+ * New parametrization in InverseNormal: location(mu), rate(lambda) (swapped arguments)
+ * New parametrization in Laplace: mean(mu), rate(lambda) (swapped arguments)
+ => One can use "import openturns.shims as ot" to maintain compatibility with older scripts
+
+==== Major changes ====
+ * New optimization solvers (Dlib, Bonmin for mixed integer optimization problems)
+ * New distributions (SquaredNormal, WeibullMax, Pareto, DiscreteCompoundDistribution, MixedHistogramUserDefined)
+ * New estimators (ParetoFactory, GeneralizedExtremeValueFactory, LeastSquaresDistributionFactory, PlackettCopulaFactory)
+ * New copulas (JoeCopula, MarshallOlkinCopula, PlackettCopula)
+ * Linear model learner (LinearModelStepwiseAlgorithm)
+ * System events (IntersectionEvent, UnionEvent, SystemFORM, MultiFORM)
 
 ==== New classes ====
  * Dlib
+ * SquaredNormal
+ * NullHessian
+ * GumbelLambdaGamma
+ * LogNormalMuErrorFactor
+ * WeibullMax
+ * WeibullMaxFactory
+ * WeibullMaxMuSigma
+ * GeneralizedExtremeValueFactory
+ * Pareto
+ * LeastSquaresDistributionFactory
+ * ParetoFactory
+ * DiscreteCompoundDistribution
+ * Bonmin
+ * IntersectionEvent
+ * UnionEvent
+ * SystemFORM
+ * MultiFORM
+ * JoeCopula
+ * MarginalEvaluation/Gradient/Hessian
+ * MarshallOlkinCopula
+ * LinearModelStepwiseAlgorithm
+ * MixedHistogramUserDefined
+ * PlackettCopula
+ * PlackettCopulaFactory
 
 ==== API changes ====
+ * FittingTest methods to return fitted distributions with factory as argument
  * Removed deprecated specific RandomVector constructors
  * Removed deprecated HypothesisTest::Smirnov
  * Removed deprecated FittingTest::TwoSamplesKolmogorov
@@ -19,16 +508,55 @@
  * Removed deprecated OptimizationProblem(levelFunction, levelValue) ctor
  * Removed deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
  * Removed deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
+ * Moved dot to Point::dot
+ * Deprecated Weibull in favor of WeibullMin
+ * Deprecated WeibullMuSigma in favor of WeibullMinMuSigma
+ * Deprecated WeibullFactory in favor of WeibullMinFactory, buildAsWeibull
+ * Deprecated GumbelAB
+ * Deprecated GaussianNonLinearCalibration,NonLinearLeastSquaresCalibration::set,getAlgorithm
+ * Added getConditionalMarginalCovariance method to KrigingResult
+ * Added getConditionalMarginalVariance method to KrigingResult
+ * Deprecated OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
+ * Added linearity features to Function
+ * Added 'removeKey' method to ResourceMap
+ * Removed Copula class
+ * Deprecated Event class, use ThresholdEvent/ProcessEvent/DomainEvent classes
+ * Deprecated EnumerateFunction constructors
+ * Added a minimum probability accessor to SubsetSampling
+ * Added a UniVariateFunction interface to solvers and integration algorithms
 
 === Python module ===
+ * Add Domain.__contains__ operator
 
 === Miscellaneous ===
+ * Add GeneralizedPareto location parameter
+ * Add getSobolGroupedTotalIndex method for FunctionalChaosSobolIndices for the indice of a group of variables
 
 === Bug fixes ===
- * https://github.com/openturns/openturns/milestone/4?closed=1
+ * #997 (Adding minimum volume set examples)
+ * #1004 (The doc for SobolSimulationAlgorithm has issues)
+ * #1006 (Text drawable does not handle size)
+ * #1130 (Inconsistency in FittingTest)
+ * #1160 (2-d GaussianProcess realization graph regression)
+ * #1169 (Missing key in ResourceMap)
+ * #1173 (There is no dot product example)
+ * #1185 (Bug with Normal.computeMinimumLevelSet method)
+ * #1190 (computeProbability clamped by Domain-SmallVolume)
+ * #1197 (Doc error: TrendTransform)
+ * #1198 (Doc error: ValueFunction)
+ * #1202 (Sample::sort & Sample::sortAccordingToAComponent only return new Samples)
+ * #1204 (sortAccordingToAComponent does not check its inputs arguments)
+ * #1209 (LinearModelStepwiseAlgorithm from otlm does not exist in OT)
+ * #1216 (The CalibrationResult doc does not match the code)
+ * #1247 (KrigingAlgorithm could not compute amplitude analytically with ProductCovarianceModel )
+ * #1264 (ProductCovarianceModel ignore active parameters of its 1d marginals)
+ * #1282 (The dlib example fails)
+ * #1283 (LogNormalFactory::buildMethodOfLeastSquares has no doc)
+ * #1289 (The help page of PythonFunction has formatting issues)
+ * #1303 (Rosenblatt transformation segfault)
 
 
-== 1.13rc1 release (2019-04-26) == #release-1.13rc1
+== 1.13 release (2019-06-06) == #release-1.13
 
 === Library ===
 
@@ -37,7 +565,6 @@
  * Improved a lot the performace of all the Rosenblatt related computations
  * Added elementary calibration capabilities
  * Added CMinpack, Ceres Solver least-squares solvers
- * Add dlib solvers
 
 ==== New classes ====
  * ParametricPointToFieldFunction
@@ -63,6 +590,7 @@
  * FittingTest::BestModelBIC returns the Distribution and the BIC value
  * Deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
  * Add statistic attribute and accessor to the TestResult class
+ * Deprecated Point::getDescription,setDescription
 
 === Python module ===
 
@@ -96,14 +624,23 @@
  * #1051 (The default value of computeSecondOrder in SobolIndicesExperiment should be False)
  * #1054 (Optimization algorithms ignore MaxEvaluationNumber parameter)
  * #1057 (FittingTest.BestModelBIC to return bic value)
+ * #1058 (GEV problem)
  * #1064 (The summary of a FunctionalChaosSobolIndices fails with more than 14 dimensions)
  * #1071 (Event cannot be created from a RandomVector)
  * #1078 (KrigingAlgorithm documentation still references "inputTransformation")
+ * #1080 (Brent, Secant, Bissection documentation)
+ * #1085 (GPD documentation)
  * #1090 (PythonFunction can make OT crash)
  * #1092 (The parameterGradient of a ParametricFunction can loss accuracy)
  * #1099 (PythonDistribution does not work with ConditionalDistribution)
  * #1111 (Function::draw() does not take the scale parameter properly into account)
  * #1112 (Several bugs in Multinomial)
+ * #1119 (The parameter description is not taken into account in CalibrationResult)
+ * #1129 (Segmentation fault with RandomMixture)
+ * #1139 (CopulaImplementation should derive from DistributionImplementation)
+ * #1143 (The ResourceMap is not correctly formatted in help pages)
+ * #1148 (Fails to find cminpack)
+ * #1155 (The description of Points can be set, but get is empty)
 
 == 1.12 release (2018-11-08) == #release-1.12
 
@@ -914,7 +1451,7 @@
  * LinearBasisFactory
  * QuadraticBasisFactory
 
-==== New classes ==== 
+==== New classes ====
  * Skellam
  * SkellamFactory
  * MeixnerDistribution
@@ -923,7 +1460,7 @@
  * GaussKronrodRule
  * TriangularMatrix
  * QuadraticNumericalMathFunction
- 
+
 ==== API changes ====
  * Removed framework field in generic wrapper
  * Added the getVerticesNumber(), getSimplicesNumber() and getClosestVertexIndex() methods to the Mesh class.
@@ -952,12 +1489,12 @@
  * Removed deprecated method Drawable::set|getLegendName
  * Removed deprecated method Pie::Pie(NumericalSample), Pie::Pie(NumericalSample, Description, NumericalPoint)
  * Deprecated method NumericalPoint::norm2 in favor of normSquare, normalize2 in favor of normalizeSquare
- 
+
 === Python module ===
  * Added NumericalSample::_repr_html_ for html representation in IPython
  * Allow to reuse figure/axes instances from matplotlib viewer
  * PythonFunction now prints the complete traceback
- 
+
 === Miscellaneous ===
  * Improved numerical stability of InverseNormal
  * Preserve history state in the marginal function.
@@ -965,7 +1502,7 @@
  * Added a new simplification rule to the MarginalTransformationEvaluation for the case where the input and output distributions are linked by an affine transformation.
  * Propagated the use of potential parallel evaluations of the computeDDF(), computePDF() and computeCDF() methods in many places, which greatly improves the performance of many algorithms.
  * Allowed for non-continuous prior distributions in the MCMC class.
-  
+
 === Bug fixes ===
  * #442 (OT r1.0 Box Cox is only for Time Series Not for Linear Model)
  * #506 (There are unit tests which fail on Windows with OT 1.0)
@@ -1011,13 +1548,13 @@
  * Tuples
  * CombinatorialGenerator
  * Combinations
- 
-==== New classes ==== 
+
+==== New classes ====
  * PiecewiseEvaluationImplementation
  * GeneralizedPareto
  * GeneralizedParetoFactory
  * RungeKutta
- 
+
 ==== API changes ====
  * Switched from getLegendName() and setLegendName() to getLegend() and setLegend() in the drawables.
  * Extended the add() method of the Collection class to append a collection to a given collection;
@@ -1028,7 +1565,7 @@
  * Removed deprecated method Distribution::computeCharacteristicFunction(NumericalScalar x, Bool logScale)
  * Removed deprecated method Distribution::computeGeneratingFunction(NumericalComplex z, Bool logScale)
  * Removed deprecated method Distribution::computeCDF(x, tail)
- 
+
 ==== Python module ====
  * The distributed python wrapper is now shipped separately
  * No more need for base class casts
@@ -1040,7 +1577,7 @@
  * Added a binning capability to the KernelSmoothing class. It greatly improves its performance for large samples (300x faster for 10^6 points and above)
  * Changed the definition of the sample skewness and kurtosis. Now, we use the unbiased estimators for normal populations.
  * Changed back to the first (thinest) definition of hyperbolic stratas. Added a function to control the number of terms per degree.
- 
+
 ==== Bug fixes ====
  * #411 (Long time to instanciate a NumericaMathFunction (analytical function))
  * #586 (The Pie graphics could be easily improved.)
@@ -1065,7 +1602,7 @@
  * #637 (The docstring of coupling_tools is not up-to-date.)
  * #638 (libopenturns-dev should bring libxml2-dev)
 
- 
+
 == 1.1 release == #release-1.1
 
 === Library ===
@@ -1087,7 +1624,7 @@ New bayesian updating classes:
  * Sampler
  * CalibrationStrategy
  * PosteriorRandomVector
- 
+
 New distributions:
  * AliMikhailHaqCopula
  * AliMikhailHaqCopulaFactory
@@ -1124,7 +1661,7 @@ New classes:
  * Added a draw() method to the NumericalMathFunction class.
  * Changed the return type of the build() method for all the DistributionImplementationFactory related classes. Now, it returns a smart pointer on a DistributionImplementation rather than a C++ pointer. It closes the memory leak mentioned in ticket #545.
  * Changed the return type of the getMarginal() method of the DistributionImplementation, RandomVectorImplementation and ProcessImplementation related classes. Now, it returns smart pointers instead of C++ pointers to avoid memory leak.
-    
+
 === Python module ===
  * DistributedPythonFunction: new python wrapper module, which allows to launch a function
  to several nodes and cores in parallel
@@ -1134,7 +1671,7 @@ New classes:
  * Added NumericalSample, NumericalPoint, Description, Indice slicing
  * Added automatic python conversion to BoolCollection
  * Allowed use of wrapper data enums using their corresponding xml tags
- 
+
 === Miscellaneous ===
  * Added NumericalMathFunction::clearCache
  * CMake: MinGW build support
@@ -1188,7 +1725,7 @@ New classes:
  * #586 (The Pie graphics could be easily improved.)
  * #587 (Cannot save a NumericalMathFunction if built from a NumericalMathEvaluationImplementation)
  * #592 (View and Show)
- 
+
 == 1.0 release == #release-1.0
 
 ==== Library ====
@@ -1426,7 +1963,7 @@ Enhancement of existing classes:
    * Generic wrapper (no compilation required anymore)
  * NumericalSample
    * Use of TBB library for multithreading
-   * New imlementation allowing storage up to 8Gb 
+   * New imlementation allowing storage up to 8Gb
    * Added clear() method to erase all content
    * Added merge() method to merge two instances
    * New accessors
@@ -1447,7 +1984,7 @@ Enhancement of existing classes:
   * CobWeb plot
   * Copula fitting test (Kendall plot)
   * Cloud from complex numbers
-  
+
 
 Methods:
  * Added a constructor based on two input/output NumericalSamples to the NumericalMathFunction allowing to use the FunctionalChaos provided a sample.
@@ -1464,7 +2001,7 @@ Moved classes:
 
 ==== Bug fixes ====
 Fixes:
- * Fixed Mixture distribution 
+ * Fixed Mixture distribution
 
 === Python module ===
 ==== Enhancements ====

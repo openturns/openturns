@@ -3,7 +3,7 @@
  *  @brief AbdoRackwitz is an actual implementation for
  *         OptimizationAlgorithmImplementation using the AbdoRackwitz algorithm.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,6 @@ AbdoRackwitz::AbdoRackwitz()
   , omega_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultOmega"))
   , smooth_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultSmooth"))
 {
-  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber"));
   initialize();
 }
 
@@ -50,7 +49,6 @@ AbdoRackwitz::AbdoRackwitz (const OptimizationProblem & problem,
   , omega_(omega)
   , smooth_(smooth)
 {
-  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber"));
   initialize();
   checkProblem(problem);
 }
@@ -62,7 +60,6 @@ AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
   , omega_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultOmega"))
   , smooth_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultSmooth"))
 {
-  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber"));
   initialize();
   checkProblem(problem);
 }
@@ -89,6 +86,9 @@ void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization ";
   if (problem.hasBounds())
     throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " cannot solve bound-constrained optimization problems";
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support non continuous problems";
+
 }
 
 /* Line search for globalization of the algorithm */
@@ -104,7 +104,7 @@ Scalar AbdoRackwitz::computeLineSearch()
   /* Min bound for step */
   const Scalar minStep = getMaximumAbsoluteError() / currentDirection_.norm();
   /* Minimum decrease for the penalized objective function */
-  const Scalar levelIncrement = omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_);
+  const Scalar levelIncrement = omega_ * currentDirection_.dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_);
   /* Initialization of the line search */
   /* We start with step=1 */
   Scalar step = 1.0;
@@ -155,8 +155,7 @@ void AbdoRackwitz::run()
   UnsignedInteger evaluationNumber = levelFunction.getEvaluationCallsNumber() - initialEvaluationNumber;
 
   // reset result
-  result_ = OptimizationResult(currentPoint_.getDimension());
-  result_.setProblem(getProblem());
+  result_ = OptimizationResult(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
   while ((!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) && (evaluationNumber <= getMaximumEvaluationNumber()))
@@ -170,12 +169,12 @@ void AbdoRackwitz::run()
     /* Compute the current Lagrange multiplier */
     const Scalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */
-    if (normGradientSquared == 0)
+    if (!(normGradientSquared > 0))
     {
       throw InternalException(HERE) << "Error in Abdo Rackwitz algorithm: the gradient of the level function is zero at point u=" << currentPoint_;
     }
     /* Lambda = (G - <Grad(G), u>) / ||Grad(G)||^2 */
-    currentLambda_ = (currentLevelValue_ - levelValue - dot(currentGradient_, currentPoint_)) / normGradientSquared;
+    currentLambda_ = (currentLevelValue_ - levelValue - currentGradient_.dot(currentPoint_)) / normGradientSquared;
     /* Compute the current direction Du = -Lambda Grad(G) - u */
     /* Be careful! currentGradient_ is an n by 1 matrix, we must multiply it by a 1 by 1
      * vector in order to get an n dimensional equivalente vector
@@ -206,7 +205,6 @@ void AbdoRackwitz::run()
     result_.setEvaluationNumber(evaluationNumber);
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
-    result_.setLagrangeMultipliers(Point(1, currentLambda_));
 
     LOGINFO(getResult().__repr__());
 

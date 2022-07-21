@@ -9,9 +9,6 @@ Users interact with OpenTURNS through Python script.
 To launch OpenTURNS, type "import openturns" in a Python console. 
 No environment variable need to be set.
 
-  - examples
-Python examples can be found in <python prefix>\Lib\site-packages\openturns\examples directory.
-
 
 2. developers
 

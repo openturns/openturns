@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Normal for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,12 +49,9 @@ int main(int, char *[])
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     NormalFactory factory;
-    CovarianceMatrix covariance;
-    // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build(distribution.getParameter());
@@ -72,6 +69,13 @@ int main(int, char *[])
     fullprint << "Estimated distribution= " << result.getDistribution() << std::endl;
     fullprint << "Parameter distribution= " << result.getParameterDistribution() << std::endl;
 
+    // Robust estimation
+    {
+      factory = NormalFactory(true);
+      estimatedDistribution = factory.build(sample);
+      fullprint << "Distribution          =" << distribution << std::endl;
+      fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {

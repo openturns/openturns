@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all field to point function implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -90,7 +90,7 @@ String FieldToPointFunctionImplementation::__str__(const String & ) const
 /* Get the i-th marginal function */
 FieldToPointFunctionImplementation::Implementation FieldToPointFunctionImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 
@@ -138,7 +138,7 @@ Sample FieldToPointFunctionImplementation::operator() (const ProcessSample & inP
   if (inPS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inPS.getDimension();
   if (inPS.getMesh().getDimension() != getInputMesh().getDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid mesh dimension. Expect a mesh dimension " << getInputMesh().getDimension() << ", got " << inPS.getMesh().getDimension();
   const UnsignedInteger size = inPS.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given process sample has a size of 0.";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the given process sample has a size of 0.";
   Sample outSample(inPS.getSize(), getOutputDimension());
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls

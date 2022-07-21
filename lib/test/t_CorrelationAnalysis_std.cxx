@@ -2,7 +2,7 @@
 /**
  *  @brief Test file fo the correlation coefficients computation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,7 @@ int main(int, char *[])
   try
   {
     UnsignedInteger dimension = 2;
-    UnsignedInteger sampleSize = 1000;
+    UnsignedInteger sampleSize = 100000;
 
     // we create an analytical function
     Description input(dimension);
@@ -61,35 +61,36 @@ int main(int, char *[])
     Sample inputSample(randomVector.getSample(sampleSize));
     Sample outputSample(analytical(inputSample));
 
-    Point src(CorrelationAnalysis::SRC(inputSample, outputSample));
-    fullprint << "src=" << src.__str__() << std::endl;
+    // Create the CorrelationAnalysis object
+    CorrelationAnalysis corr_analysis(inputSample, outputSample);
 
-    // Taking into account normalize
-    Point src_normalize(CorrelationAnalysis::SRC(inputSample, outputSample, true));
-    fullprint << "src with normalize=" << src_normalize.__str__() << std::endl;
+    Point squared_src = corr_analysis.computeSquaredSRC();
+    assert_almost_equal(squared_src, Point({0.9, 0.1}), 0.0, 1e-2); // theoretical value
 
-    Point signed_src(CorrelationAnalysis::SignedSRC(inputSample, outputSample));
-    fullprint << "signed src=" << signed_src.__str__() << std::endl;
+    // Squared SRC with normalize
+    Point squared_src_normalize(corr_analysis.computeSquaredSRC(true));
+    assert_almost_equal(squared_src_normalize, Point({0.9, 0.1}), 0.0, 1e-2); // theoretical value
 
-    Point srrc(CorrelationAnalysis::SRRC(inputSample, outputSample));
-    fullprint << "srrc=" << srrc.__str__() << std::endl;
+    Point src(corr_analysis.computeSRC());
+    assert_almost_equal(src, Point({0.9486832980505138, 0.31622776601683794}), 0.0, 1e-2); // sqrt of squared_src
 
-    // Taking into account normalize
-    Point srrc_normalize(CorrelationAnalysis::SRRC(inputSample, outputSample, true));
-    fullprint << "srrc with normalize=" << src_normalize.__str__() << std::endl;
+    Point srrc(corr_analysis.computeSRRC());
+    assert_almost_equal(srrc, Point({0.94, 0.30}), 0.0, 1e-2); // approximate value
 
-    Point pcc(CorrelationAnalysis::PCC(inputSample, outputSample));
-    fullprint << "pcc=" << pcc.__str__() << std::endl;
+    Point pcc(corr_analysis.computePCC());
+    assert_almost_equal(pcc, Point({1.0, 1.0}), 1e-5, 0.0); // theoretical value
 
-    Point prcc(CorrelationAnalysis::PRCC(inputSample, outputSample));
-    fullprint << "prcc=" << prcc.__str__() << std::endl;
+    Point prcc(corr_analysis.computePRCC());
+    assert_almost_equal(prcc, Point({0.99, 0.92}), 0.0, 1e-2); // approximate value
 
-    Point pearson(CorrelationAnalysis::PearsonCorrelation(inputSample, outputSample));
-    fullprint << "pearson=" << pearson.__str__() << std::endl;
+    Point pearson(corr_analysis.computePearsonCorrelation());
+    assert_almost_equal(pearson, Point({0.95, 0.31}), 0.0, 1e-2); // approximate value
 
-    Point spearman(CorrelationAnalysis::SpearmanCorrelation(inputSample, outputSample));
-    fullprint << "spearman=" << spearman.__str__() << std::endl;
+    Point spearman(corr_analysis.computeSpearmanCorrelation());
+    assert_almost_equal(spearman, Point({0.94, 0.30}), 0.0, 1e-2); // approximate value
 
+    Point kendalltau(corr_analysis.computeKendallTau());
+    assert_almost_equal(kendalltau, Point({0.79, 0.20}), 0.0, 1e-2);
   }
   catch (TestFailed & ex)
   {

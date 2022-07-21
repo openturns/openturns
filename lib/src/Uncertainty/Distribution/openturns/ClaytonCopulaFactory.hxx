@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for ClaytonCopula distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,14 +40,14 @@ public:
   ClaytonCopulaFactory();
 
   /** Virtual constructor */
-  virtual ClaytonCopulaFactory * clone() const;
+  ClaytonCopulaFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   ClaytonCopula buildAsClaytonCopula(const Sample & sample) const;
   ClaytonCopula buildAsClaytonCopula(const Point & parameters) const;
   ClaytonCopula buildAsClaytonCopula() const;

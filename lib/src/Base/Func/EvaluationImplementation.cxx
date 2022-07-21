@@ -2,7 +2,7 @@
 /**
  * @brief Abstract top-level class for all evaluation implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,20 +22,12 @@
 #include <iterator>
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/ComposedEvaluation.hxx"
 #include "openturns/OTconfig.hxx"
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-#include "openturns/SymbolicEvaluation.hxx"
-#else
-#include "openturns/LinearEvaluation.hxx"
-#endif
-#include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
-#include "openturns/Indices.hxx"
 #include "openturns/Box.hxx"
-#include "openturns/Evaluation.hxx"
+#include "openturns/MarginalEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -175,7 +167,7 @@ Matrix EvaluationImplementation::parameterGradient(const Point & inP) const
   const UnsignedInteger parameterDimension = parameter.getDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
 
-  const Scalar epsilon = ResourceMap::GetAsScalar("NumericalMathEvaluation-ParameterEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("Evaluation-ParameterEpsilon");
 
   Sample inS(parameterDimension + 1, parameter);
   for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
@@ -251,43 +243,18 @@ UnsignedInteger EvaluationImplementation::getParameterDimension() const
 /* Get the i-th marginal function */
 Evaluation EvaluationImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
 Evaluation EvaluationImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  // We build an analytical function that extract the needed component
-  // If X1,...,XN are the descriptions of the input of this function, it is a function from R^n to R^p
-  // with formula Yk = Xindices[k] for k=1,...,p
-  // Build non-ambigous names for the inputs. We cannot simply use the output description, as it must be valid muParser identifiers
-  const UnsignedInteger inputDimension = getOutputDimension();
-  const UnsignedInteger outputDimension = indices.getSize();
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  Description input(inputDimension);
-  for (UnsignedInteger index = 0; index < inputDimension; ++index)
-    input[index] = OSS() << "x" << index;
-  // Extract the components
-  Description output(outputDimension);
-  Description formulas(outputDimension);
-  Description currentOutputDescription(getOutputDescription());
-  for (UnsignedInteger index = 0; index < outputDimension; ++index)
-  {
-    output[index] = currentOutputDescription[indices[index]];
-    formulas[index] = input[indices[index]];
-  }
-  const SymbolicEvaluation left(input, output, formulas);
-#else
-  Point center(inputDimension);
-  Matrix linear(inputDimension, outputDimension);
-  for ( UnsignedInteger index = 0; index < outputDimension; ++ index )
-    linear(indices[index], index) = 1.0;
-  Point constant(outputDimension);
-  const LinearEvaluation left(center, constant, linear);
-#endif
-  return new ComposedEvaluation(left.clone(), clone());
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal evaluation must be in the range [0, outputDimension-1] and must be different";
+  Indices full(getOutputDimension());
+  full.fill();
+  if (indices == full) return clone();
+  return new MarginalEvaluation(clone(), indices);
 }
 
 /* Get the number of calls to operator() */
@@ -296,6 +263,37 @@ UnsignedInteger EvaluationImplementation::getCallsNumber() const
   return callsNumber_.get();
 }
 
+/* Linearity accessors */
+Bool EvaluationImplementation::isLinear() const
+{
+  return false;
+}
+
+Bool EvaluationImplementation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  // Check dimension consistency
+  if (!(index <= getInputDimension()))
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
+
+  return false;
+}
+
+/* Is it safe to call in parallel? */
+Bool EvaluationImplementation::isParallel() const
+{
+  return true;
+}
+
+/* Invalid values check accessor */
+void EvaluationImplementation::setCheckOutput(const Bool checkOutput)
+{
+  checkOutput_ = checkOutput;
+}
+
+Bool EvaluationImplementation::getCheckOutput() const
+{
+  return checkOutput_;
+}
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
@@ -306,11 +304,11 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
                                      const UnsignedInteger pointNumber,
                                      const GraphImplementation::LogScale scale) const
 {
-  if (getInputDimension() < 1) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1";
-  if (inputMarginal >= getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
-  if (outputMarginal >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
+  if (!(getInputDimension() >= 1)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1, here inputDimension=" << getInputDimension();
+  if (!(inputMarginal < getInputDimension())) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
+  if (!(outputMarginal < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
   const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
-  if (useLogX && ((xMin <= 0.0) || (xMax <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
+  if (useLogX && (!(xMin > 0.0 && xMax > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
   if (centralPoint.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a central point of dimension=" << getInputDimension() << ", got dimension=" << centralPoint.getDimension();
   Sample inputData(pointNumber, centralPoint);
   if (useLogX)
@@ -350,13 +348,13 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
                                      const Indices & pointNumber,
                                      const GraphImplementation::LogScale scale) const
 {
-  if (getInputDimension() < 2) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
-  if ((xMin.getDimension() != 2) || (xMax.getDimension() != 2) || (pointNumber.getSize() != 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
-  if ((pointNumber[0] <= 2) || (pointNumber[1] <= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  if (!(getInputDimension() >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
+  if (!(xMin.getDimension() == 2 && xMax.getDimension() == 2 && pointNumber.getSize() == 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
+  if (!(pointNumber[0] > 2 && pointNumber[1] > 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
-  if (useLogX && ((xMin[0] <= 0.0) || (xMax[0] <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the first argument.";
+  if (useLogX && (!(xMin[0] > 0.0 && xMax[0] > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the first argument.";
   const Bool useLogY = (scale == GraphImplementation::LOGY || scale == GraphImplementation::LOGXY);
-  if (useLogY && ((xMin[1] <= 0.0) || (xMax[1] <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the second argument.";
+  if (useLogY && (!(xMin[1] > 0.0 && xMax[1] > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the second argument.";
   if (centralPoint.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a central point of dimension=" << getInputDimension() << ", got dimension=" << centralPoint.getDimension();
   // Discretization of the first component
   const UnsignedInteger nX = pointNumber[0];
@@ -465,6 +463,7 @@ void EvaluationImplementation::save(Advocate & adv) const
   adv.saveAttribute( "outputDescription_", outputDescription_ );
   adv.saveAttribute( "parameter_", parameter_ );
   adv.saveAttribute( "parameterDescription_", parameterDescription_ );
+  adv.saveAttribute( "checkOutput_", checkOutput_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -478,6 +477,7 @@ void EvaluationImplementation::load(Advocate & adv)
   adv.loadAttribute( "outputDescription_", outputDescription_ );
   adv.loadAttribute( "parameter_", parameter_ );
   adv.loadAttribute( "parameterDescription_", parameterDescription_ );
+  adv.loadAttribute( "checkOutput_", checkOutput_ );
 }
 
 END_NAMESPACE_OPENTURNS

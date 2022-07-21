@@ -2,7 +2,7 @@
 /**
  *  @brief First order polynomial response surface by Taylor expansion
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,10 +53,10 @@ public:
 
 
   /** Virtual constructor */
-  virtual LinearTaylor * clone() const;
+  LinearTaylor * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Response surface computation */
   void run();
@@ -77,10 +77,10 @@ public:
   Function getMetaModel() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 protected:
 
 private:

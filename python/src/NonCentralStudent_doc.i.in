@@ -1,9 +1,6 @@
 %feature("docstring") OT::NonCentralStudent
 "NonCentralStudent distribution.
 
-Available constructors:
-    NonCentralStudent(*nu=5.0, delta=0.0, gamma=0.0*)
-
 Parameters
 ----------
 nu : float, :math:`\nu > 0`
@@ -11,7 +8,7 @@ nu : float, :math:`\nu > 0`
 delta : float
     Non-centrality parameter :math:`\delta`.
 gamma : float
-    Shift parameter :math:`\gamma`.
+    Position parameter :math:`\gamma`.
 
 Notes
 -----
@@ -83,12 +80,12 @@ delta : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NonCentralStudent::getGamma
-"Accessor to the distribution's shift from the origin.
+"Accessor to the distribution's position from the origin.
 
 Returns
 -------
 gamma : float
-    Shift parameter :math:`\gamma`."
+    Position parameter :math:`\gamma`."
 
 // ---------------------------------------------------------------------
 
@@ -112,9 +109,9 @@ delta : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NonCentralStudent::setGamma
-"Accessor to the distribution's shift from the origin.
+"Accessor to the distribution's position from the origin.
 
 Parameters
 ----------
 gamma : float
-    Shift parameter :math:`\gamma`."
+    Position parameter :math:`\gamma`."

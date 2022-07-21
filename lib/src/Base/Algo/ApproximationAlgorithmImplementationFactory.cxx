@@ -2,7 +2,7 @@
 /**
  *  @brief A factory for building ApproximationAlgorithmImplementation objects
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
  */
 
 #include "openturns/ApproximationAlgorithmImplementationFactory.hxx"
-#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 
@@ -63,7 +62,6 @@ ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFacto
     const Indices & ) const
 {
   throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::build(const Sample & x, const Sample & y, const Point & weight, const FunctionCollection & psi, const Indices & indices) const";
-  // return new PenalizedLeastSquaresAlgorithm( x, y, weight, psi );
 }
 
 String ApproximationAlgorithmImplementationFactory::__repr__() const

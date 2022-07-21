@@ -2,7 +2,7 @@
 /**
  *  @brief Maximum likelihood estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,22 +42,28 @@ public:
   MaximumLikelihoodFactory(const Distribution & distribution);
 
   /** Virtual constructor */
-  virtual MaximumLikelihoodFactory * clone() const;
+  MaximumLikelihoodFactory * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   using DistributionFactoryImplementation::build;
 
   /* Here is the interface that all derived class must implement */
   /** Build a distribution based on a sample */
-  virtual Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample) const override;
 
   /** Build a distribution based on a set of parameters */
-  virtual Point buildParameter(const Sample & sample) const;
+  Distribution build(const Point & parameters) const override;
+
+  /** Build a distribution using its default constructor */
+  Distribution build() const override;
+
+  /** Build a distribution based on a set of parameters */
+  Point buildParameter(const Sample & sample) const;
 
   /** Optimization solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
@@ -76,10 +82,10 @@ public:
   Indices getKnownParameterIndices() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /* The underlying distribution */

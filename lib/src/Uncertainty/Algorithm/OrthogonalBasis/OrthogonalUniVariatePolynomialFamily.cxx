@@ -2,7 +2,7 @@
 /**
  *  @brief This is the interface class for orthogonal polynomial factories
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,6 +44,12 @@ OrthogonalUniVariatePolynomialFamily::OrthogonalUniVariatePolynomialFamily(const
   // Nothing to do
 }
 
+/* Constructor from implementation pointer */
+OrthogonalUniVariatePolynomialFamily::OrthogonalUniVariatePolynomialFamily(OrthogonalUniVariatePolynomialFactory * p_implementation)
+  : TypedInterfaceObject<OrthogonalUniVariatePolynomialFactory>(p_implementation)
+{
+  // Nothing to do
+}
 
 /* The method to get the polynomial of any degree */
 OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFamily::build(const UnsignedInteger degree) const

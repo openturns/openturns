@@ -1,14 +1,13 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
-    distribution = Laplace(1.5, 0.5)
+    # Instantiate one distribution object
+    distribution = Laplace(0.5, 1.5)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 
@@ -62,18 +61,18 @@ try:
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", repr(PDFgr))
     PDFgrFD = Point(2)
-    PDFgrFD[0] = (Laplace(distribution.getLambda() + eps, distribution.getMu()).computePDF(point) -
-                  Laplace(distribution.getLambda() - eps, distribution.getMu()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[1] = (Laplace(distribution.getLambda(), distribution.getMu() + eps).computePDF(point) -
-                  Laplace(distribution.getLambda(), distribution.getMu() - eps).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[0] = (Laplace(distribution.getMu() + eps, distribution.getLambda()).computePDF(point) -
+                  Laplace(distribution.getMu() - eps, distribution.getLambda()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[1] = (Laplace(distribution.getMu(), distribution.getLambda() + eps).computePDF(point) -
+                  Laplace(distribution.getMu(), distribution.getLambda() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", repr(CDFgr))
     CDFgrFD = Point(2)
-    CDFgrFD[0] = (Laplace(distribution.getLambda() + eps, distribution.getMu()).computeCDF(point) -
-                  Laplace(distribution.getLambda() - eps, distribution.getMu()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[1] = (Laplace(distribution.getLambda(), distribution.getMu() + eps).computeCDF(point) -
-                  Laplace(distribution.getLambda(), distribution.getMu() - eps).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[0] = (Laplace(distribution.getMu() + eps, distribution.getLambda()).computeCDF(point) -
+                  Laplace(distribution.getMu() - eps, distribution.getLambda()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[1] = (Laplace(distribution.getMu(), distribution.getLambda() + eps).computeCDF(point) -
+                  Laplace(distribution.getMu(), distribution.getLambda() - eps).computeCDF(point)) / (2.0 * eps)
     print("cdf gradient (FD)=", repr(CDFgrFD))
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", repr(quantile))

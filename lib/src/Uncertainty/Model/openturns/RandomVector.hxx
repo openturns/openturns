@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements all random vectors
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,10 +58,10 @@ public:
   explicit RandomVector(const Distribution & distribution);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Description Accessor */
   void setDescription(const Description & description);
@@ -91,13 +91,13 @@ public:
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;
 
-  /** This method allows to access the antecedent RandomVector in case of a composite RandomVector */
+  /** This method allows one to access the antecedent RandomVector in case of a composite RandomVector */
   RandomVector getAntecedent() const;
 
-  /** This method allows to access the Function in case of a composite RandomVector */
+  /** This method allows one to access the Function in case of a composite RandomVector */
   Function getFunction() const;
 
-  /** This method allows to access the Distribution in case of a usual RandomVector */
+  /** This method allows one to access the Distribution in case of a usual RandomVector */
   Distribution getDistribution() const;
 
   /** Operator accessor */
@@ -115,6 +115,13 @@ public:
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
+
+  /** Whether it is an event */
+  Bool isEvent() const;
+
+  /** Intersection operator */
+  RandomVector intersect(const RandomVector & other);
+  RandomVector join(const RandomVector & other);
 
 protected:
 

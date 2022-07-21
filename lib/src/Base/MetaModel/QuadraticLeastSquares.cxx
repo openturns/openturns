@@ -2,7 +2,7 @@
 /**
  *  @brief Second order polynomial response surface by least square
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@ static const Factory<QuadraticLeastSquares> Factory_QuadraticLeastSquares;
 
 /* Default constructor */
 QuadraticLeastSquares::QuadraticLeastSquares()
-: PersistentObject()
+  : PersistentObject()
 {
   // Nothing to do
 }

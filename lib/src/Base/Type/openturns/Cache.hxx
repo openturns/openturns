@@ -2,7 +2,7 @@
 /**
  *  @brief Cache holds the already computed points to speed up calculations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -98,7 +98,7 @@ public:
   inline
   Cache() : PersistentObject(),
     enabled_(true),
-    maxSize_(ResourceMap::GetAsUnsignedInteger("cache-max-size")),
+    maxSize_(ResourceMap::GetAsUnsignedInteger("Cache-MaxSize")),
     hits_(0),
     keys_(),
     points_()
@@ -118,7 +118,6 @@ public:
     // Nothing to do
   }
 
-#ifdef SWIG
   Cache(const Cache & other) : PersistentObject(other),
     enabled_(other.enabled_),
     maxSize_(other.maxSize_),
@@ -132,8 +131,6 @@ public:
       points_.insert(std::make_pair(key, std::make_pair(other.points_[key].first, keys_.begin())));
     }
   }
-
-#endif
 
   /** Virtual constructor */
   inline virtual Cache * clone() const

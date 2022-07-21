@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of GeneralLinearModelAlgorithm class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,7 +42,7 @@ int main(int, char *[])
 
     Sample X(sampleSize, inputDimension);
     for (UnsignedInteger i = 0; i < sampleSize; ++ i)
-      X[i][0] = 3.0 + (8.0 * i) / sampleSize;
+      X(i, 0) = 3.0 + (8.0 * i) / sampleSize;
     Sample Y = model(X);
 
     // Add a small noise to data
@@ -51,25 +51,25 @@ int main(int, char *[])
     Basis basis = LinearBasisFactory(inputDimension).build();
     // Case of a misspecified covariance model
     DiracCovarianceModel covarianceModel(inputDimension);
-    fullprint << "===================================================\n" << std::endl;
     GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
     algo.run();
 
     GeneralLinearModelResult result = algo.getResult();
-    fullprint << "\ncovariance (dirac, optimized)=" << result.getCovarianceModel() << std::endl;
-    fullprint << "trend (dirac, optimized)=" << result.getTrendCoefficients() << std::endl;
-    fullprint << "===================================================\n" << std::endl;
+    Point ref = {0.1957};
+    assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
+    ref = {-0.1109, 1.015};
+    assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
     // Now without estimating covariance parameters
     basis = LinearBasisFactory(inputDimension).build();
     covarianceModel = DiracCovarianceModel(inputDimension);
-    algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, true, true);
+    algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, true);
     algo.setOptimizeParameters(false);
     algo.run();
     result = algo.getResult();
-    fullprint << "\ncovariance (dirac, not optimized)=" << result.getCovarianceModel() << std::endl;
-    fullprint << "trend (dirac, not optimized)=" << result.getTrendCoefficients() << std::endl;
-    fullprint << "===================================================\n" << std::endl;
-
+    ref = {1.0};
+    assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
+    ref = {-0.1109, 1.015};
+    assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
     // Case of a well specified covariance model
     // Test the optimization when the amplitude is deduced analytically from the scale
     {
@@ -77,26 +77,27 @@ int main(int, char *[])
       algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      fullprint << "\ncovariance (reduced, unbiased)=" << result.getCovarianceModel() << std::endl;
-      fullprint << "trend (reduced, unbiased)=" << result.getTrendCoefficients() << std::endl;
-      fullprint << "===================================================\n" << std::endl;
+      ref = {0.1328, 0.1956};
+      assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
+      ref = {-0.1034, 1.014};
+      assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
       ResourceMap::SetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", false);
       algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      fullprint << "\ncovariance (reduced, biased)=" << result.getCovarianceModel() << std::endl;
-      fullprint << "trend (reduced, biased)=" << result.getTrendCoefficients() << std::endl;
-      fullprint << "===================================================\n" << std::endl;
+      ref = {0.1328, 0.1907};
+      assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
+      ref = {-0.1034, 1.014};
+      assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
       ResourceMap::SetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", false);
       algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      fullprint << "\ncovariance (full optim)=" << result.getCovarianceModel() << std::endl;
-      fullprint << "trend (full optim)=" << result.getTrendCoefficients() << std::endl;
-      fullprint << "===================================================\n" << std::endl;
+      ref = {0.01, 0.1908};
+      assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-2, 1e-2);
+      ref = {-0.111, 1.015};
+      assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
     }
-    std::cout << "Test Ok" << std::endl;
-
   }
   catch (TestFailed & ex)
   {

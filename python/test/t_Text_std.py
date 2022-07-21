@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     dim = 2
     meanPoint = Point(dim, 1.0)
     meanPoint[0] = 0.5
@@ -51,6 +50,7 @@ try:
     myText = Text(sample, labels)
     myText.setColor("red")
     myText.setTextPositions(position)
+    myText.setTextSize(1.0)
 
     myGraph.add(myText)
     myGraph.draw("Graph_Text_a_OT.png")

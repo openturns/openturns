@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all numerical math hessian implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,29 +47,29 @@ public:
   NoHessian();
 
   /** Virtual constructor */
-  virtual NoHessian * clone() const;
+  NoHessian * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const NoHessian & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Test for actual implementation */
-  virtual Bool isActualImplementation() const;
+  Bool isActualImplementation() const override;
 
 
 
   /* Here is the interface that all derived class must implement */
 
   /** Hessian method */
-  virtual SymmetricTensor hessian(const Point & inP) const;
+  SymmetricTensor hessian(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Method save() stores the object through the StorageManager
    *  The inherited method is sufficient as we do not have any

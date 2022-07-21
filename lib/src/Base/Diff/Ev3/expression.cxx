@@ -1,12 +1,23 @@
-/**********************************************************************
- * Author:      Leo Liberti                                            *
- * Name:        expression.cxx                                         *
- * Source:      GNU C++                                                *
- * Purpose:     symbolic expression (base classes and functionality)   *
- * History:     010517 0.0 work started                                *
- * License:    (C) Leo Liberti, all rights reserved. Code published under the
-               Common Public License.
-***********************************************************************/
+//                                               -*- C++ -*-
+/**
+ *  @brief symbolic expression (base classes and functionality)
+ *
+ *  Copyright (C) 2008-2010 Leo Liberti
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 #include <string>
 #include <sstream>
@@ -15,23 +26,7 @@
 #include <cassert>
 #include <iomanip>
 
-#ifdef _MSC_VER
-#include <boost/math/special_functions.hpp>
-#endif
-
 #include "expression.h"
-
-#ifdef _MSC_VER
-using namespace boost::math;
-
-//because of 'deprecated' warnings
-#define j0(x) _j0(x)
-#define j1(x) _j1(x)
-#define y0(x) _y0(x)
-#define y1(x) _y1(x)
-#define i0(x) _i0(x)
-#define i1(x) _i1(x)
-#endif
 
 namespace Ev3
 {
@@ -688,6 +683,26 @@ int BasicExpression::DependsLinearlyOnVariable(Int vi) const
       {
         return 2;
       }
+    }
+    else if (GetOpType() == PRODUCT)
+    {
+      int nbBranchesDependingOnVariable = 0;
+      for(i = 0; i < GetSize(); i++)
+      {
+        d = GetNode(i)->DependsLinearlyOnVariable(vi);
+        if (d == 0)
+          return 0;
+
+        if (d == 1)
+          ++nbBranchesDependingOnVariable;
+      }
+
+      if (nbBranchesDependingOnVariable == 0)
+        return 2;
+      else if (nbBranchesDependingOnVariable == 1)
+        return 1;
+      else
+        return 0;
     }
     else
     {
@@ -4862,10 +4877,19 @@ Expression DiffNoSimplify(const Expression& ac, Int vi)
               // numeric exponent != 0,1,2
               ret = Diff(a->GetNode(0), vi); // f'
               tmp = a->GetCopyOfNode(0);     // f
+              const double coeff = tmp->GetCoeff();
               tmp = tmp ^ a->GetCopyOfNode(1);  // f^c
-              tmp->GetNode(1)->ConsolidateValue();
-              tmp->SetCoeff(tmp->GetCoeff() * tmp->GetNode(1)->GetValue());//cf^c
-              tmp->GetNode(1)->SetValue(tmp->GetNode(1)->GetValue() - 1); //cf^(c-1)
+              if (tmp->GetOpType() == VAR)
+              {
+                tmp->SetCoeff(tmp->GetExponent() * std::pow(coeff, tmp->GetExponent() - 1.0)); // cf^c
+                tmp->SetExponent(tmp->GetExponent() - 1); // cf^(c-1)
+              }
+              else
+              {
+                tmp->GetNode(1)->ConsolidateValue();
+                tmp->SetCoeff(tmp->GetCoeff() * tmp->GetNode(1)->GetValue());//cf^c
+                tmp->GetNode(1)->SetValue(tmp->GetNode(1)->GetValue() - 1); //cf^(c-1)
+              }
               // can dispense from using copy here - Diff returns copies anyway.
               // when temporary is deleted, its subnodes are not automatically
               // deleted unless their reference counter is zero - which won't be.

@@ -1,0 +1,106 @@
+%feature("docstring") OT::JoeCopula
+"Joe copula.
+
+Parameters
+----------
+theta : float
+    Parameter :math:`\theta > 0`. Default is :math:`\theta=0.5`.
+psi1 : float
+    Parameter :math:`\psi_1 \in [0, 1]`. Default is :math:`\psi_1=0.5`.
+psi2 : float
+    Parameter :math:`\psi_2 \in [0, 1]`. Default is :math:`\psi_2=0.5`.
+
+Notes
+-----
+The Joe copula is a bivariate copula defined by:
+
+.. math::
+
+    C(u_1, u_2) = \exp\left[\log(u_1u_2)A\left(\dfrac{\log u_2}{\log u_1u_2}\right)\right]
+
+for :math:`(u_1, u_2) \in [0, 1]^2`
+
+Where :math:`A` is the following Pickand function 
+:math:`t \in [0,1]`, :math:`A(t) = 1 - [ (\psi_1 (1-t))^{-1/ \theta} + (\psi_2 t)^{-1/ \theta} ]^{- \theta}`
+
+See also
+--------
+ExtremeValueCopula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.JoeCopula(0.5)
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JoeCopula::getTheta
+"Get the Joe copula parameter :math:`\theta`.
+
+Returns
+-------
+theta : float
+    The scalar parameter :math:`\theta > 0`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JoeCopula::setTheta
+"Set the Joe copula parameter :math:`\theta`.
+
+Parameters
+----------
+theta : float
+    The scalar parameter :math:`\theta > 0`.
+"
+
+// ---------------------------------------------------------------------
+
+
+%feature("docstring") OT::JoeCopula::getPsi1
+"Get the Joe copula parameter :math:`\psi_1`.
+
+Returns
+-------
+psi1 : float
+    The scalar parameter :math:`\psi_1 \in [0, 1]`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JoeCopula::setPsi1
+"Set the Joe copula parameter :math:`\psi_1`.
+
+Parameters
+----------
+psi1 : float
+    The scalar parameter :math:`\psi_1 \in [0, 1]`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JoeCopula::getPsi2
+"Get the Joe copula parameter :math:`\psi_2`.
+
+Returns
+-------
+psi2 : float
+    The scalar parameter :math:`\psi_2 \in [0, 1]`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JoeCopula::setPsi2
+"Set the Joe copula parameter :math:`\psi_2`.
+
+Parameters
+----------
+psi2 : float
+    The scalar parameter :math:`\psi_2 \in [0, 1]`.
+"

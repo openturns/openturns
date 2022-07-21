@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for UserDefined distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,15 +40,15 @@ public:
   UserDefinedFactory();
 
   /** Virtual constructor */
-  virtual UserDefinedFactory * clone() const;
+  UserDefinedFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample) const override;
   Distribution build(const Sample & sample,
                      const Scalar epsilon) const;
-  Distribution build() const;
+  Distribution build() const override;
   UserDefined buildAsUserDefined(const Sample & sample,
                                  const Scalar epsilon = 0.0) const;
   UserDefined buildAsUserDefined() const;

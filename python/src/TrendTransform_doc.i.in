@@ -5,6 +5,8 @@ Parameters
 ----------
 myTrendFunc : :class:`~openturns.Function`
     The trend function :math:`f_{trend}` of a process.
+myMesh : :class:`~openturns.Mesh`
+    The mesh on which :math:`f_{trend}` is applied.
 
 Notes
 -----

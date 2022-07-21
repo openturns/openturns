@@ -2,7 +2,7 @@
 /**
  *  @brief The class IdentityMatrix implements identity matrices
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,7 +48,7 @@ public:
 
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** IdentityMatrix transpose */
   IdentityMatrix transpose () const;
@@ -92,10 +92,10 @@ public:
                   const Bool keepIntact = true);
 
   /** Check if the matrix is SPD */
-  virtual Bool isPositiveDefinite() const;
+  Bool isPositiveDefinite() const override;
 
   /** Build the Cholesky factorization of the matrix */
-  TriangularMatrix computeCholesky(const Bool keepIntact = true);
+  TriangularMatrix computeCholesky(const Bool keepIntact = true) override;
 
   /** Compute singular values */
   Point computeSingularValues(const Bool keepIntact = true);

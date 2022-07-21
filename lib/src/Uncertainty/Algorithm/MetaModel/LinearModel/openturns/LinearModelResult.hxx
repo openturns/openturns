@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a linear model estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,10 +63,10 @@ public:
                     const Scalar sigma2);
 
   /** Virtual constructor */
-  virtual LinearModelResult * clone() const;
+  LinearModelResult * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Sample accessors */
   virtual Basis getBasis() const;
@@ -94,7 +94,7 @@ public:
   virtual Sample getStandardizedResiduals() const;
 
   /** Number of degrees of freedom */
-  virtual UnsignedInteger getDegreesOfFreedom() const;
+  virtual SignedInteger getDegreesOfFreedom() const;
 
   /** Leverages accessor */
   virtual Point getLeverages() const;
@@ -105,6 +105,8 @@ public:
   /** Cook distance accessor */
   virtual Point getCookDistances() const;
 
+  Bool hasIntercept() const;
+
   /** R-squared */
   Scalar getRSquared() const;
 
@@ -112,12 +114,14 @@ public:
   Scalar getAdjustedRSquared() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
+
+  void checkIntercept();
 
   /** input data */
   Sample inputSample_;
@@ -157,6 +161,9 @@ private:
 
   /** Sigma2 */
   Scalar sigma2_;
+
+  /** hasIntercept */
+  Bool hasIntercept_;
 
 }; /* class LinearModelResult */
 

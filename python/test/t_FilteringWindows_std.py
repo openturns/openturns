@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -8,8 +7,8 @@ RandomGenerator.SetSeed(0)
 
 try:
 
-    # Hanning filter
-    myHanningFilter = Hanning()
+    # Hann filter
+    myHanningFilter = Hann()
     print("myHanningFilter = ", myHanningFilter)
 
     # Hamming filter
@@ -24,7 +23,7 @@ try:
 
     for i in range(steps + 1):
         t = tMin + i * tStep
-        print('t = %g Hanning = %g Hamming = %g' %
+        print('t = %g Hann = %g Hamming = %g' %
               (t, myHanningFilter(t), myHammingFilter(t)))
 
 

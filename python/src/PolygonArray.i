@@ -16,8 +16,8 @@ namespace OT {
   canConvert< _PyObject_, OT::Polygon >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Polygon *"), 0 ))) {
-      OT::Polygon * p_it = reinterpret_cast< OT::Polygon * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Polygon *"), SWIG_POINTER_NO_NULL))) {
+      OT::Polygon * p_it = reinterpret_cast< OT::Polygon * >(ptr);
       return p_it != NULL;
     }
     return false;
@@ -29,8 +29,8 @@ namespace OT {
   convert< _PyObject_, OT::Polygon >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Polygon *"), 0))) {
-      OT::Polygon * p_it = reinterpret_cast< OT::Polygon * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Polygon *"), SWIG_POINTER_NO_NULL))) {
+      OT::Polygon * p_it = reinterpret_cast< OT::Polygon * >(ptr);
       return *p_it;
     }
     else {
@@ -43,12 +43,13 @@ namespace OT {
 
 %template(PolygonCollection) OT::Collection<OT::Polygon>;
 
-%typemap(in) const PolygonCollection & {
-  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+%typemap(in) const PolygonCollection & (OT::Pointer<OT::Collection<OT::Polygon> > temp) {
+  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     // From interface class, ok
   } else {
     try {
-      $1 = OT::buildCollectionFromPySequence< OT::Polygon >( $input );
+      temp = OT::buildCollectionFromPySequence< OT::Polygon >($input);
+      $1 = temp.get();
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Polygon");
     }
@@ -56,8 +57,8 @@ namespace OT {
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const PolygonCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< OT::Polygon >( $input );
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
+    || OT::canConvertCollectionObjectFromPySequence< OT::Polygon >($input);
 }
 
 %apply const PolygonCollection & { const OT::PolygonArray::PolygonCollection & };

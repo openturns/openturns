@@ -1,13 +1,10 @@
 %feature("docstring") OT::FrankCopula
 "Frank copula.
 
-Available constructor:
-    FrankCopula(*theta=2.0*)
-
 Parameters
 ----------
 theta : float
-    Parameter :math:`\theta`, :math:`\theta \in \Rset`.
+    Parameter :math:`\theta`, :math:`\theta \in \Rset`. Default is :math:`\theta=2`.
 
 Notes
 -----

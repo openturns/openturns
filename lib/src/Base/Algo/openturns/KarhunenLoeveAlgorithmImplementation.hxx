@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and projection
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +39,6 @@ class OT_API KarhunenLoeveAlgorithmImplementation
 
 public:
 
-
   /** Default constructor */
   KarhunenLoeveAlgorithmImplementation();
 
@@ -48,11 +47,15 @@ public:
       const Scalar threshold = 0.0);
 
   /** Virtual constructor */
-  virtual KarhunenLoeveAlgorithmImplementation * clone() const;
+  KarhunenLoeveAlgorithmImplementation * clone() const override;
 
   /** Threshold accessors */
   Scalar getThreshold() const;
   void setThreshold(const Scalar threshold);
+
+  /** Number of modes accessors */
+  UnsignedInteger getNbModes() const;
+  void setNbModes(const UnsignedInteger nbModes);
 
   /** Covariance model accessors */
   virtual CovarianceModel getCovarianceModel() const;
@@ -65,21 +68,26 @@ public:
   KarhunenLoeveResult getResult() const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Covariance model */
   CovarianceModel covariance_;
 
-  /** Threshold */
+  /** Number of eigenvalues management
+   *  The number of modes computed by 'run' method can be defined:
+   *  - by specifing the threshold of spectrum cut-off
+   *  - by specifying the number of modes to compute */
   Scalar threshold_;
+  UnsignedInteger nbModes_;
+
 
   /** Result */
   KarhunenLoeveResult result_;

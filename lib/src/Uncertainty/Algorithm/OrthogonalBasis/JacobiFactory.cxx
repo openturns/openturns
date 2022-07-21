@@ -2,7 +2,7 @@
 /**
  *  @brief Jacobi polynomial factory
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ JacobiFactory::JacobiFactory()
 JacobiFactory::JacobiFactory(const Scalar alpha,
                              const Scalar beta,
                              const ParameterSet parameterization)
-  : OrthogonalUniVariatePolynomialFactory((parameterization == ANALYSIS ? Beta(beta + 1.0, alpha + beta + 2.0, -1.0, 1.0) : Beta(alpha, beta, -1.0, 1.0)))
+  : OrthogonalUniVariatePolynomialFactory((parameterization == ANALYSIS ? Beta(beta + 1.0, alpha + 1.0, -1.0, 1.0) : Beta(alpha, beta - alpha, -1.0, 1.0)))
   , alpha_(0.0)
   , beta_(0.0)
 {

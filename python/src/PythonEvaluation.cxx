@@ -2,7 +2,7 @@
 /**
  * @brief PythonEvaluation implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -108,8 +108,6 @@ PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
 /* Virtual constructor */
 PythonEvaluation * PythonEvaluation::clone() const
 {
-  Py_XINCREF(pyObj_);
-  Py_XINCREF(pyBufferClass_);
   return new PythonEvaluation(*this);
 }
 
@@ -117,6 +115,9 @@ PythonEvaluation * PythonEvaluation::clone() const
 PythonEvaluation::PythonEvaluation(const PythonEvaluation & other)
   : EvaluationImplementation(other)
   , pyObj_()
+  , pyObj_has_exec_(other.pyObj_has_exec_)
+  , pyObj_has_exec_sample_(other.pyObj_has_exec_sample_)
+  , pyObj_discard_openturns_memoryview_(other.pyObj_discard_openturns_memoryview_)
   , pyBufferClass_()
 {
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
@@ -126,6 +127,28 @@ PythonEvaluation::PythonEvaluation(const PythonEvaluation & other)
   pyBufferClass_ = pyBufferClone.get();
   Py_XINCREF(pyObj_);
   Py_XINCREF(pyBufferClass_);
+}
+
+
+/* Copy assignment operator */
+PythonEvaluation& PythonEvaluation::operator=(const PythonEvaluation & rhs)
+{
+  if (this != &rhs)
+  {
+    EvaluationImplementation::operator=(rhs);
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+
+    pyObj_has_exec_ = rhs.pyObj_has_exec_;
+    pyObj_has_exec_sample_ = rhs.pyObj_has_exec_sample_;
+    pyObj_discard_openturns_memoryview_ = rhs.pyObj_discard_openturns_memoryview_;
+
+    ScopedPyObjectPointer pyBufferClone(deepCopy(rhs.pyBufferClass_));
+    pyBufferClass_ = pyBufferClone.get();
+    Py_XINCREF(pyObj_);
+    Py_XINCREF(pyBufferClass_);
+  }
+  return *this;
 }
 
 /* Destructor */
@@ -161,13 +184,6 @@ String PythonEvaluation::__str__(const String & ) const
   return oss;
 }
 
-/* Test for actual implementation */
-Bool PythonEvaluation::isActualImplementation() const
-{
-  return true;
-}
-
-
 
 /* Here is the interface that all derived class must implement */
 
@@ -201,7 +217,7 @@ Point PythonEvaluation::operator() (const Point & inP) const
     //    openturns.memoryview.Buffer((int(&inP[0]), False), (inP.getSize(),))
     // First argument
     ScopedPyObjectPointer ptrTuple(PyTuple_New(2));
-    PyTuple_SetItem(ptrTuple.get(), 0, PyLong_FromVoidPtr(static_cast<void *>(const_cast<double*>(&inP[0]))));
+    PyTuple_SetItem(ptrTuple.get(), 0, PyLong_FromVoidPtr(static_cast<void *>(const_cast<double*>(inP.data()))));
     PyTuple_SetItem(ptrTuple.get(), 1, PyBool_FromLong(0));  // We do not own memory
 
     // Second argument
@@ -209,7 +225,8 @@ Point PythonEvaluation::operator() (const Point & inP) const
     PyTuple_SetItem(shapeTuple.get(), 0, convert< UnsignedInteger, _PyInt_ > (inP.getSize()));
 
     // Call openturns.memoryview.Buffer() to create a read-only buffer
-    ScopedPyObjectPointer readOnlyBufferObj(PyObject_CallObject(pyBufferClass_, Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get())));
+    ScopedPyObjectPointer bufferArgs(Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get()));
+    ScopedPyObjectPointer readOnlyBufferObj(PyObject_CallObject(pyBufferClass_, bufferArgs.get()));
 
     // Pass this buffer to _exec function if it has been defined by user, otherwise call _exec_sample(Buffer.augment())[0]
     // If both pyObj_has_exec_ and pyObj_has_exec_sample_ are false, this is not a PythonFunction but a Function(OpenTURNSPythonFunction).
@@ -299,10 +316,10 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
     else
     {
       // Wrap inS into a memoryview.Buffer object:
-      //    openturns.memoryview.Buffer((int(inS.__baseaddress__()), False), (inS.getSize(), inS.getDimension()))
+      //    openturns.memoryview.Buffer((int(inS.data()), False), (inS.getSize(), inS.getDimension()))
       // First argument
       ScopedPyObjectPointer ptrTuple(PyTuple_New(2));
-      PyTuple_SetItem(ptrTuple.get(), 0, PyLong_FromVoidPtr(static_cast<void *>(const_cast<Scalar*>(inS.__baseaddress__()))));
+      PyTuple_SetItem(ptrTuple.get(), 0, PyLong_FromVoidPtr(static_cast<void *>(const_cast<Scalar*>(inS.data()))));
       PyTuple_SetItem(ptrTuple.get(), 1, PyBool_FromLong(0));  // We do not own memory
 
       // Second argument
@@ -311,7 +328,8 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
       PyTuple_SetItem(shapeTuple.get(), 1, convert< UnsignedInteger, _PyInt_ > (inDim));
 
       // Call openturns.memoryview.Buffer() to create a read-only buffer
-      ScopedPyObjectPointer readOnlyBufferObj(PyObject_CallObject(pyBufferClass_, Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get())));
+      ScopedPyObjectPointer bufferArgs(Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get()));
+      ScopedPyObjectPointer readOnlyBufferObj(PyObject_CallObject(pyBufferClass_, bufferArgs.get()));
 
       // Pass this buffer to _exec_sample function if it has been defined by user, otherwise loop on Buffer on call _exec
       // If both pyObj_has_exec_ and pyObj_has_exec_sample_ are false, this is not a PythonFunction but a Function(OpenTURNSPythonFunction).
@@ -412,6 +430,48 @@ UnsignedInteger PythonEvaluation::getOutputDimension() const
   return dim;
 }
 
+/* Linearity accessors */
+Bool PythonEvaluation::isLinear() const
+{
+  if (PyObject_HasAttrString(pyObj_, "isLinear"))
+  {
+    ScopedPyObjectPointer result( PyObject_CallMethod (pyObj_,
+                                  const_cast<char *>("isLinear"),
+                                  const_cast<char *>("()")));
+
+    const Bool isLinear = convert< _PyBool_, Bool >(result.get());
+    return isLinear;
+  }
+  else
+    return false;
+}
+
+Bool PythonEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  // Check index consistency
+  if (index > getInputDimension())
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
+
+  if (PyObject_HasAttrString(pyObj_, "isVariableLinear"))
+  {
+    ScopedPyObjectPointer methodName(convert< String, _PyString_ >("isVariableLinear"));
+    ScopedPyObjectPointer indexArg(convert< UnsignedInteger, _PyInt_ >( index ));
+    ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
+                                     methodName.get(),
+                                     indexArg.get(), NULL));
+
+    const Bool varLinear = convert< _PyBool_, Bool >(callResult.get());
+    return varLinear;
+  }
+  else
+    return false;
+}
+
+/* Is it safe to call in parallel? */
+Bool PythonEvaluation::isParallel() const
+{
+  return false;
+}
 
 /* Method save() stores the object through the StorageManager */
 void PythonEvaluation::save(Advocate & adv) const

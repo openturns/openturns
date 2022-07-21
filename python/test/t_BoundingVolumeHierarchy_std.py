@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 from math import exp, log
 
@@ -47,3 +46,9 @@ for dim in [1, 2, 3]:
             if not found:
                 print("Wrong simplex found for", test[
                       i], "(index=", index, simplices[index], "barycentric coordinates=", coordinates)
+
+# segfault with 1 simplex
+mesh = ot.Mesh([[0.0, 0.0], [1.0, 0.0], [0.5, 1.0]], [[0, 1, 2]])
+bvh = ot.BoundingVolumeHierarchy(mesh.getVertices(), mesh.getSimplices())
+print(bvh.query([0.125, 0.2]))
+print(bvh.query([0.125, 0.3]))

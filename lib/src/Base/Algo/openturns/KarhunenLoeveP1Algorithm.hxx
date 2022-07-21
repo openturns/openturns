@@ -4,7 +4,7 @@
  *         basis and eigenvalues of a given covariance model based on
  *         P1 Lagrange approximation.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,35 +42,36 @@ public:
   /** Default constructor without parameters */
   KarhunenLoeveP1Algorithm();
 
-  /** Default constructor without parameters */
-  KarhunenLoeveP1Algorithm(const Mesh & mesh,
-                           const CovarianceModel & covariance,
-                           const Scalar threshold = 0.0);
+  /** Constructor with parameters */
+  KarhunenLoeveP1Algorithm( const Mesh & mesh,
+                            const CovarianceModel & covariance,
+                            const Scalar threshold = 0.0
+                          );
 
   /** Virtual copy constructor */
-  virtual KarhunenLoeveP1Algorithm * clone() const;
+  KarhunenLoeveP1Algorithm * clone() const override;
 
   /** Solve the Fredholm eigenvalues problem:
    * find (\phi_k, \lambda_k) such that
    * \int_{D} C(s,t)\phi_k(s)ds=\lambda_k\phi_k(t)
    * where C is a given covariance model, using P1 approximation
    */
-  void run();
+  void run() override;
 
   /** Mesh accessor */
   Mesh getMesh() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** Underlying mesh */

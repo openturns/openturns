@@ -2,7 +2,7 @@
 /**
  *  @brief SpaceFillingPhiP
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,26 +39,26 @@ class OT_API SpaceFillingPhiP
 
 public:
   /** Default constructor */
-  explicit SpaceFillingPhiP(UnsignedInteger p = 50);
+  explicit SpaceFillingPhiP(const UnsignedInteger p = 50);
 
   /** Virtual constructor method */
-  SpaceFillingPhiP * clone() const;
+  SpaceFillingPhiP * clone() const override;
 
   /** Evaluate criterion on a sample */
-  Scalar evaluate(const Sample& sample) const;
+  Scalar evaluate(const Sample& sample) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Compute criterion when performing an elementary perturbation */
   Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,
-                    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
+                    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const override;
 
 private:
   UnsignedInteger p_;

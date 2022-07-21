@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all space filling criteria implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,10 +57,10 @@ Scalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, Scalar,
 {
   // Default method uses O(N*N) computations
   // Swap coordinates
-  std::swap(oldDesign[row1][column], oldDesign[row2][column]);
+  std::swap(oldDesign(row1, column), oldDesign(row2, column));
   const Scalar criterion = evaluate(oldDesign);
   // Swap coordinates to restore original sample
-  std::swap(oldDesign[row1][column], oldDesign[row2][column]);
+  std::swap(oldDesign(row1, column), oldDesign(row2, column));
   // Return criterion
   return criterion;
 }

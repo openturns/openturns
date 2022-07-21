@@ -6,6 +6,8 @@
 
 %include TBB_doc.i
 
+%ignore OT::TBBContext;
+
 %ignore OT::TBB::Split;
 %ignore OT::TBB_init;
 

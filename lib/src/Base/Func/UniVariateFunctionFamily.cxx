@@ -2,7 +2,7 @@
 /**
  *  @brief This is the interface class for  function factories
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,6 @@
 #include "openturns/UniVariateFunctionFamily.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/FourierSeriesFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,6 +43,12 @@ UniVariateFunctionFamily::UniVariateFunctionFamily(const UniVariateFunctionFacto
   // Nothing to do
 }
 
+/* Constructor from implementation pointer */
+UniVariateFunctionFamily::UniVariateFunctionFamily(UniVariateFunctionFactory * p_implementation)
+  : TypedInterfaceObject<UniVariateFunctionFactory>(p_implementation)
+{
+  // Nothing to do
+}
 
 /* The method to get the function of any order */
 UniVariateFunction UniVariateFunctionFamily::build(const UnsignedInteger order) const

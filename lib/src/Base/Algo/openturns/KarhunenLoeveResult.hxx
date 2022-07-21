@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and projection
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,7 +52,8 @@ public:
                       const Point & eigenvalues,
                       const FunctionCollection & modes,
                       const ProcessSample & modesAsProcessSample,
-                      const Matrix & projection);
+                      const Matrix & projection,
+                      const Scalar selectionRatio);
 
   /** Constructor from implementation */
   KarhunenLoeveResult(const KarhunenLoeveResultImplementation & implementation);
@@ -67,7 +68,11 @@ public:
   CovarianceModel getCovarianceModel() const;
 
   /** Eigenvalues accessor */
-  Point getEigenValues() const;
+  Point getEigenvalues() const;
+
+  /** Draw eigen values */
+  Graph drawEigenvalues() const;
+  Graph drawCumulatedEigenvaluesRemainder() const;
 
   /** Modes accessors */
   FunctionCollection getModes() const;
@@ -83,6 +88,9 @@ public:
   /** Mesh accessor */
   Mesh getMesh() const;
 
+  /** Selection ratio accessor */
+  Scalar getSelectionRatio() const;
+
   /** Projection method */
   Point project(const Function & function) const;
   Point project(const Sample & values) const;
@@ -95,8 +103,8 @@ public:
   Sample liftAsSample(const Point & coefficients) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 }; /* class KarhunenLoeveResult */
 

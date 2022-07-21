@@ -2,7 +2,7 @@
 /**
  *  @brief SymmetricMatrix implements the classical mathematical symmetric matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,8 +55,13 @@ public:
   /** Constructor with implementation */
   SymmetricMatrix(const MatrixImplementation & i);
 
+#ifndef SWIG
   /** Copy constructor, added to solve glitches with inheritance */
-  SymmetricMatrix(const SymmetricMatrix & s);
+  SymmetricMatrix(const SymmetricMatrix & other);
+
+  /** Assignment operator */
+  SymmetricMatrix& operator=(const SymmetricMatrix & rhs);
+#endif
 
   /** Constructor with size (dim, which is the same for nbRows_ and nbColumns_) */
   explicit SymmetricMatrix(const UnsignedInteger dim);
@@ -87,8 +92,8 @@ public:
   const Matrix getColumn(const UnsignedInteger columnIndex) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
@@ -149,9 +154,15 @@ public:
   Point computeEigenValues(const Bool keepIntact = true);
   Point computeEV(SquareMatrix & vOut,
                   const Bool keepIntact = true);
+  /** Compute the largest eigenvalue module using power iterations */
+  Scalar computeLargestEigenValueModule(const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
+                                        const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const override;
 
   /** Comparison operators */
   Bool operator == (const Matrix & rhs) const;
+
+  /** Sum all coefficients */
+  Scalar computeSumElements() const override;
 
 protected:
 

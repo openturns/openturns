@@ -3,7 +3,7 @@
  *  @brief This class is enables to build an exponential covariance
  *  model, a second order model's implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,22 +44,22 @@ public:
   Hamming();
 
   /** Virtual copy constructor */
-  virtual Hamming * clone() const;
+  Hamming * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Evaluation method  */
-  Scalar operator()(const Scalar t) const;
+  Scalar operator()(const Scalar t) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 } ; /* class Hamming */
 

@@ -2,7 +2,7 @@
 /**
  *  @brief ParametricEvaluation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,16 +49,16 @@ public:
                        const Bool parametersSet = true);
 
   /** Virtual constructor method */
-  ParametricEvaluation * clone() const;
+  ParametricEvaluation * clone() const override;
 
   /** Evaluation operator */
   using EvaluationImplementation::operator();
-  Point operator() (const Point & point) const;
+  Point operator() (const Point & point) const override;
 
-  Sample operator() (const Sample & inS) const;
+  Sample operator() (const Sample & inS) const override;
 
   /** Gradient according to the marginal parameters */
- Matrix parameterGradient(const Point & inP) const;
+  Matrix parameterGradient(const Point & inP) const override;
 
   /** Parameters positions accessor */
   Indices getParametersPositions() const;
@@ -70,22 +70,29 @@ public:
   Function getFunction() const;
 
   /** Dimension accessor */
-  UnsignedInteger getInputDimension() const;
-  UnsignedInteger getParameterDimension() const;
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getInputDimension() const override;
+  UnsignedInteger getParameterDimension() const override;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Parameters accessor */
-  void setParameter(const Point & parameters);
+  void setParameter(const Point & parameters) override;
+
+  /** Linearity accessors */
+  Bool isLinear() const override;
+  Bool isLinearlyDependent(const UnsignedInteger index) const override;
+
+  /** Is it safe to call in parallel? */
+  Bool isParallel() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

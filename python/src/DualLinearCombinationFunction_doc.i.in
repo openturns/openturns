@@ -1,7 +1,7 @@
 %feature("docstring") OT::DualLinearCombinationFunction
 "Linear combination of functions with vectorial weights.
 
-Allows to create a function which is the linear combination
+Allows one to create a function which is the linear combination
 of scalar functions with vectorial weights.
 
 :math:`functionCollection  = (f_1, \hdots, f_N)`

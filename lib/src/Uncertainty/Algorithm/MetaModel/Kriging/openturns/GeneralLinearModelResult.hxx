@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a linear model estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -66,25 +66,12 @@ public:
                            const CovarianceModel & covarianceModel,
                            const Scalar optimalLogLikelihood);
 
-  /** Parameter constructor with Cholesky factor (Lapack)*/
-  GeneralLinearModelResult(const Sample & inputData,
-                           const Sample & outputData,
-                           const Function & metaModel,
-                           const Point & residuals,
-                           const Point & relativeErrors,
-                           const BasisCollection & basis,
-                           const PointCollection & trendCoefficients,
-                           const CovarianceModel & covarianceModel,
-                           const Scalar optimalLogLikelihood,
-                           const TriangularMatrix & covarianceCholeskyFactor,
-                           const HMatrix & covarianceHMatrix);
-
   /** Virtual constructor */
-  GeneralLinearModelResult * clone() const;
+  GeneralLinearModelResult * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Trend basis accessor */
   BasisCollection getBasisCollection() const;
@@ -95,10 +82,6 @@ public:
   /** Conditional covariance models accessor */
   CovarianceModel getCovarianceModel() const;
 
-  /** Transformation accessor */
-  Function getTransformation() const;
-  void setTransformation(const Function & transformation);
-
   /** process accessor */
   Process getNoise() const;
 
@@ -106,38 +89,35 @@ public:
   Scalar getOptimalLogLikelihood() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
 
   // KrigingAlgorithm::run could ask for the Cholesky factor
   friend class KrigingAlgorithm;
+
+  // GeneralLinearModelAlgorithm::run could set the Cholesky factor
+  friend class GeneralLinearModelAlgorithm;
+
+  /** Accessor to the Cholesky factor*/
+  void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
+                         const HMatrix & covarianceHMatrix);
+
   /** Method that returns the covariance factor - lapack */
   TriangularMatrix getCholeskyFactor() const;
 
   /** Method that returns the covariance factor - hmat */
   HMatrix getHMatCholeskyFactor() const;
 
-  // Return input sample transformed
-  Sample getInputTransformedSample() const;
 
 private:
 
   /** inputData should be keeped*/
   Sample inputData_;
-
-  /** input transformed data: store data*/
-  Sample inputTransformedData_;
-
-  /** inputTransformation ==> iso-probabilistic transformation */
-  Function inputTransformation_;
-
-  /** Boolean transformation */
-  Bool hasTransformation_;
 
   /** The trend basis */
   BasisPersistentCollection basis_;

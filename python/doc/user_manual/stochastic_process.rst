@@ -37,18 +37,22 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     ExponentiallyDampedCosineModel
     FractionalBrownianMotionModel
     GeneralizedExponential
+
+    :template: class.rst_t
+    IsotropicCovarianceModel
+    KroneckerCovarianceModel
+
+    :template: CovarianceModel.rst_t
     MaternModel
     ProductCovarianceModel
     RankMCovarianceModel
     SphericalModel
     SquaredExponential
     TensorizedCovarianceModel
+    StationaryFunctionalCovarianceModel
 
     :template: classWithPlot.rst_t
     UserDefinedCovarianceModel
-
-    :template: class.rst_t
-    StationaryCovarianceModel
 
     :template: classWithPlot.rst_t
     UserDefinedStationaryCovarianceModel
@@ -77,7 +81,7 @@ Spectral information
 
     :template: FilteringWindow.rst_t
 
-    Hanning
+    Hann
     Hamming
 
 Gaussian process
@@ -170,7 +174,7 @@ Check hypothesis on time series
 
     DickeyFullerTest
 
-Karhunen Loeve decomposition
+Karhunen-Loeve decomposition
 ============================
 
 .. autosummary::
@@ -183,6 +187,8 @@ Karhunen Loeve decomposition
     KarhunenLoeveP1Algorithm
     KarhunenLoeveQuadratureAlgorithm
     KarhunenLoeveSVDAlgorithm
+    KarhunenLoeveReduction
+    KarhunenLoeveValidation
 
     :template: class.rst_t
     KarhunenLoeveResult

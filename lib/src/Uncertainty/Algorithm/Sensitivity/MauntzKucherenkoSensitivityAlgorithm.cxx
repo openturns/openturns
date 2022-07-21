@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for Mauntz-Kucherenko sensitivity algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -74,7 +74,7 @@ MauntzKucherenkoSensitivityAlgorithm * MauntzKucherenkoSensitivityAlgorithm::clo
 Sample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sample,
     Sample & VTi) const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
   Sample varianceI(outputDimension, inputDimension);
@@ -87,6 +87,7 @@ Sample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sampl
 
   // Compute crossMean
   const Point yADotyB(computeSumDotSamples(sample, size_, 0,  size_));
+  const Point yADotyA(computeSumDotSamples(sample, size_, 0, 0));
   // main loop
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
@@ -100,10 +101,7 @@ Sample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sampl
       for (UnsignedInteger q = 0; q < outputDimension; ++q)
       {
         varianceI(q, p) =  (yEDotyB[q] - yADotyB[q]) / (size - 1.0);
-        // Vti = Var - V_{-i}
-        // \sum_{k} yA[k] * yA[k] - yA[k]*yE[k]
-        // yA[k] * yA[k]  = sigma_a^2 + muA^2
-        VTi(q, p) = referenceVariance_[q] + (size * muA[q] *  muA[q] - yEDotyA[q]) / (size - 1.0);
+        VTi(q, p) = (yADotyA[q] - yEDotyA[q]) / (size - 1.0);
       }
     }
   }
@@ -112,7 +110,7 @@ Sample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sampl
 
 void MauntzKucherenkoSensitivityAlgorithm::computeAsymptoticDistribution() const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
 
   // psi

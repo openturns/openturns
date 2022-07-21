@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class UserDefinedSpectralModel
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,8 +54,8 @@ int main(int, char *[])
   {
 
     /* Default constructor */
-    UserDefinedSpectralModel myDefautModel;
-    fullprint << "myDefautModel = " << myDefautModel << std::endl;
+    UserDefinedSpectralModel myDefaultModel;
+    fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
 
     /* Default dimension parameter to evaluate the model */
     const UnsignedInteger dimension = 2;

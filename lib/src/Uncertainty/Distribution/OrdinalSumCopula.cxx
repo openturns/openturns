@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all OrdinalSumCopulas
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,12 +34,13 @@ static const Factory<OrdinalSumCopula> Factory_OrdinalSumCopula;
 
 /* Default constructor */
 OrdinalSumCopula::OrdinalSumCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , copulaCollection_(2, IndependentCopula(2))
   , bounds_(1, 0.5)
   , blockLengths_(2, 0.5)
   , blockDistribution_()
 {
+  isCopula_ = true;
   setName("OrdinalSumCopula");
   setDimension(2);
   Sample support(2, 1);
@@ -50,14 +51,15 @@ OrdinalSumCopula::OrdinalSumCopula()
 }
 
 /* Default constructor */
-OrdinalSumCopula::OrdinalSumCopula(const CopulaCollection & coll,
+OrdinalSumCopula::OrdinalSumCopula(const DistributionCollection & coll,
                                    const Point & bounds)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , copulaCollection_(0)
   , bounds_(0)
   , blockLengths_(0)
   , blockDistribution_()
 {
+  isCopula_ = true;
   setName("OrdinalSumCopula");
   // We assign the copula collection through the accessor in order to compute the ordinalSum copula dimension
   setCopulaCollection(coll);
@@ -113,7 +115,7 @@ String OrdinalSumCopula::__str__(const String & ) const
 }
 
 /* Copula collection accessor */
-void OrdinalSumCopula::setCopulaCollection(const CopulaCollection & coll)
+void OrdinalSumCopula::setCopulaCollection(const DistributionCollection & coll)
 {
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
@@ -124,6 +126,8 @@ void OrdinalSumCopula::setCopulaCollection(const CopulaCollection & coll)
   Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
+    if (!coll[i].isCopula())
+      throw InvalidArgumentException(HERE) << "Element " << i << " is not a copula";
     if (coll[i].getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected copulas of dimension=" << dimension << " but copula " << i << " has dimension=" << coll[i].getDimension();
     parallel = parallel && coll[i].getImplementation()->isParallel();
   }
@@ -137,7 +141,7 @@ void OrdinalSumCopula::setCopulaCollection(const CopulaCollection & coll)
 
 
 /* Distribution collection accessor */
-const OrdinalSumCopula::CopulaCollection & OrdinalSumCopula::getCopulaCollection() const
+OrdinalSumCopula::DistributionCollection OrdinalSumCopula::getCopulaCollection() const
 {
   return copulaCollection_;
 }
@@ -158,7 +162,7 @@ void OrdinalSumCopula::setBounds(const Point & bounds)
   Sample support(0, 1);
   blockLengths_ = Point(0);
   Scalar lastBound = 0.0;
-  CopulaCollection coll(0);
+  DistributionCollection coll(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar currentBound = bounds[i];
@@ -412,19 +416,19 @@ Point OrdinalSumCopula::computeCDFGradient(const Point & point) const
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const
 {
-  return CopulaImplementation::computeConditionalPDF(x, y);
+  return DistributionImplementation::computeConditionalPDF(x, y);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar OrdinalSumCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
-  return CopulaImplementation::computeConditionalCDF(x, y);
+  return DistributionImplementation::computeConditionalCDF(x, y);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 Scalar OrdinalSumCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
-  return CopulaImplementation::computeConditionalQuantile(q, y);
+  return DistributionImplementation::computeConditionalQuantile(q, y);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -433,7 +437,7 @@ Distribution OrdinalSumCopula::getMarginal(const Indices & indices) const
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = copulaCollection_.getSize();
-  CopulaCollection coll(size);
+  DistributionCollection coll(size);
   for (UnsignedInteger i = 0; i < size; ++i) coll[i] = copulaCollection_[i].getMarginal(indices);
   return new OrdinalSumCopula(coll, bounds_);
 }
@@ -554,19 +558,19 @@ Bool OrdinalSumCopula::hasIndependentCopula() const
 /* Get the isoprobabilist transformation */
 OrdinalSumCopula::IsoProbabilisticTransformation OrdinalSumCopula::getIsoProbabilisticTransformation() const
 {
-  return CopulaImplementation::getIsoProbabilisticTransformation();
+  return DistributionImplementation::getIsoProbabilisticTransformation();
 }
 
 /* Get the inverse isoprobabilist transformation */
 OrdinalSumCopula::InverseIsoProbabilisticTransformation OrdinalSumCopula::getInverseIsoProbabilisticTransformation() const
 {
-  return CopulaImplementation::getInverseIsoProbabilisticTransformation();
+  return DistributionImplementation::getInverseIsoProbabilisticTransformation();
 }
 
 /* Method save() stores the object through the StorageManager */
 void OrdinalSumCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "copulaCollection_", copulaCollection_ );
   adv.saveAttribute( "bounds_", bounds_ );
   adv.saveAttribute( "blockLengths_", blockLengths_ );
@@ -576,7 +580,7 @@ void OrdinalSumCopula::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void OrdinalSumCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "copulaCollection_", copulaCollection_ );
   adv.loadAttribute( "bounds_", bounds_ );
   adv.loadAttribute( "blockLengths_", blockLengths_ );

@@ -2,7 +2,7 @@
 /**
  *  @brief Tensor approximation algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -75,6 +75,8 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const Sample & inputS
   , maximumRadiusError_(ResourceMap::GetAsScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError"))
 {
+  LOGWARN(OSS() << "TensorApproximationAlgorithm is deprecated");
+
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
 
@@ -143,7 +145,7 @@ void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalInd
     Scalar & marginalResidual,
     Scalar & marginalRelativeError)
 {
-  // proxies are reused accross marginals because the basis is the same
+  // proxies are reused across marginals because the basis is the same
   const UnsignedInteger dimension = transformedInputSample_.getDimension();
   if (proxy_.getSize() == 0)
   {
@@ -185,6 +187,7 @@ void TensorApproximationAlgorithm::greedyRankOne (const Sample & x,
   const UnsignedInteger dimension = x.getDimension();
   for (UnsignedInteger i = 0; i < maxRank_; ++ i)
   {
+    LOGINFO(OSS() << "Working on rank=" << i + 1 << " over " << maxRank_);
     tensor.setRank(i + 1);
 
     // initialize tensor coefficients on last rank
@@ -264,7 +267,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
     const Scalar oldRadius = tensor.getCoefficients(i, 0).norm();
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      Log::Info(OSS() << " j=" << j << "/" << dimension);
+      Log::Info(OSS() << " j=" << j << "(j varies from 0 to " << dimension - 1 << ")");
       const UnsignedInteger basisSize = tensor.getCoefficients(i, j).getSize();
       Indices full(basisSize);
       full.fill();
@@ -274,7 +277,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
       {
         for (UnsignedInteger j2 = 0; j2 < dimension; ++ j2)
         {
-          if (j2 != j) w[p] *= V[j2][p];
+          if (j2 != j) w[p] *= V(j2, p);
         }
       }
 
@@ -313,11 +316,11 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
         f[p] *= V(j, p);
       }
     }
-    Scalar currentRadius = dot(f, yFlat) / f.normSquare();
+    Scalar currentRadius = f.dot(yFlat) / f.normSquare();
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       Point coefficients(tensor.getCoefficients(i, j));
-      coefficients = tensor.getCoefficients(i, j);
+      //coefficients = tensor.getCoefficients(i, j);
       const Scalar norm = coefficients.norm();
       currentRadius *= norm;
       coefficients /= norm;
@@ -391,12 +394,10 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
     // normalize coefficients
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      Scalar radius_i = 1.0;
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
         Point coefficients(tensor.getCoefficients(i, j));
         const Scalar norm = coefficients.norm();
-        radius_i *= norm;
         coefficients /= norm;
         tensor.setCoefficients(i, j, coefficients);
       }
@@ -481,7 +482,7 @@ void TensorApproximationAlgorithm::rankMComponent (const Sample & x,
       Scalar wi = 1.0;
       for (UnsignedInteger j2 = 0; j2 < dimension; ++ j2)
       {
-        if (j2 != j) wi *= V[i][j2][p];
+        if (j2 != j) wi *= V[i](j2, p);
       }
       w[p] += wi;
     }

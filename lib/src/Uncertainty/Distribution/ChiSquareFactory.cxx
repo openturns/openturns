@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for ChiSquare distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,6 +20,7 @@
  */
 #include "openturns/ChiSquareFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -68,6 +69,10 @@ ChiSquare ChiSquareFactory::buildAsChiSquare(const Sample & sample) const
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a ChiSquare distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a ChiSquare distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a ChiSquare distribution if data contains NaN or Inf";
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a ChiSquare distribution from a constant sample.";
   ChiSquare result(mean);
   result.setDescription(sample.getDescription());
   return result;

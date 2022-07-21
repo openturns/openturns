@@ -2,7 +2,7 @@
 /**
  *  @brief The Skellam distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,73 +48,72 @@ public:
   /** Comparison operator */
   Bool operator ==(const Skellam & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual Skellam * clone() const;
+  Skellam * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Get the PDFGradient of the distribution */
   using DiscreteDistribution::computePDFGradient;
-  Point computePDFGradient(const Point & point) const;
+  Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDFGradient of the distribution */
   using DiscreteDistribution::computeCDFGradient;
-  Point computeCDFGradient(const Point & point) const;
+  Point computeCDFGradient(const Point & point) const override;
 
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
-  Complex computeLogCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const override;
+  Complex computeLogCharacteristicFunction(const Scalar x) const override;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
-  Complex computeGeneratingFunction(const Complex & z) const;
-  Complex computeLogGeneratingFunction(const Complex & z) const;
+  Complex computeGeneratingFunction(const Complex & z) const override;
+  Complex computeLogGeneratingFunction(const Complex & z) const override;
 
   /** Get the quantile of the distribution */
-  Scalar computeScalarQuantile(const Scalar prob,
-                               const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  Sample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const override;
 
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Check if the distribution is elliptical */
-  Bool isElliptical() const;
+  Bool isElliptical() const override;
 
   /* Interface specific to Skellam */
 
@@ -135,20 +134,20 @@ public:
   UnsignedInteger getMaximumIteration() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
 private:
 
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** The Lambda1 of the Skellam distribution */
   Scalar lambda1_;

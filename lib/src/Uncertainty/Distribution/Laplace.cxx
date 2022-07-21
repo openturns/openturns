@@ -2,7 +2,7 @@
 /**
  *  @brief The Laplace distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,8 +34,8 @@ static const Factory<Laplace> Factory_Laplace;
 /* Default constructor */
 Laplace::Laplace()
   : ContinuousDistribution()
-  , lambda_(1.0)
   , mu_(0.0)
+  , lambda_(1.0)
 {
   setName( "Laplace" );
   setDimension( 1 );
@@ -43,11 +43,11 @@ Laplace::Laplace()
 }
 
 /* Parameters constructor */
-Laplace::Laplace(const Scalar lambda,
-                 const Scalar mu)
+Laplace::Laplace(const Scalar mu,
+                 const Scalar lambda)
   : ContinuousDistribution()
-  , lambda_(lambda)
   , mu_(mu)
+  , lambda_(lambda)
 {
   setName( "Laplace" );
   // We set the dimension of the Laplace distribution
@@ -78,15 +78,15 @@ String Laplace::__repr__() const
   oss << "class=" << Laplace::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " lambda=" << lambda_
-      << " mu=" << mu_;
+      << " mu=" << mu_
+      << " lambda=" << lambda_;
   return oss;
 }
 
 String Laplace::__str__(const String & ) const
 {
   OSS oss;
-  oss << getClassName() << "(lambda = " << lambda_ << ", mu = " << mu_ << ")";
+  oss << getClassName() << "(mu = " << mu_ << ", lambda = " << lambda_ << ")";
   return oss;
 }
 
@@ -177,8 +177,8 @@ Point Laplace::computePDFGradient(const Point & point) const
   Point pdfGradient(2, 0.0);
   const Scalar factor = std::abs(point[0] - mu_) * lambda_;
   const Scalar expFactor = std::exp(-factor);
-  pdfGradient[0] = 0.5 * expFactor * (1.0 - factor);
-  pdfGradient[1] = (point[0] > mu_ ? 0.5 * lambda_ * lambda_ * expFactor : -0.5 * lambda_ * lambda_ * expFactor);
+  pdfGradient[0] = (point[0] > mu_ ? 0.5 * lambda_ * lambda_ * expFactor : -0.5 * lambda_ * lambda_ * expFactor);
+  pdfGradient[1] = 0.5 * expFactor * (1.0 - factor);
   return pdfGradient;
 }
 
@@ -190,8 +190,8 @@ Point Laplace::computeCDFGradient(const Point & point) const
   Point cdfGradient(2, 0.0);
   const Scalar factor = std::abs(point[0] - mu_) * lambda_;
   const Scalar expFactor = std::exp(-factor);
-  cdfGradient[0] = 0.5 * factor / lambda_ * expFactor;
-  cdfGradient[1] = -0.5 * lambda_ * expFactor;
+  cdfGradient[0] = -0.5 * lambda_ * expFactor;
+  cdfGradient[1] = 0.5 * factor / lambda_ * expFactor;
   return cdfGradient;
 }
 
@@ -239,7 +239,7 @@ Point Laplace::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Laplace::getStandardRepresentative() const
 {
-  return new Laplace(1.0, 0.0);
+  return new Laplace(0.0, 1.0);
 }
 
 /* Compute the covariance of the distribution */
@@ -254,8 +254,8 @@ void Laplace::computeCovariance() const
 Point Laplace::getParameter() const
 {
   Point point(2);
-  point[0] = lambda_;
-  point[1] = mu_;
+  point[0] = mu_;
+  point[1] = lambda_;
   return point;
 }
 
@@ -271,8 +271,8 @@ void Laplace::setParameter(const Point & parameter)
 Description Laplace::getParameterDescription() const
 {
   Description description(2);
-  description[0] = "lambda";
-  description[1] = "mu";
+  description[0] = "mu";
+  description[1] = "lambda";
   return description;
 }
 
@@ -330,16 +330,16 @@ Point Laplace::getSingularities() const
 void Laplace::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "lambda_", lambda_ );
   adv.saveAttribute( "mu_", mu_ );
+  adv.saveAttribute( "lambda_", lambda_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Laplace::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "lambda_", lambda_ );
   adv.loadAttribute( "mu_", mu_ );
+  adv.loadAttribute( "lambda_", lambda_ );
   computeRange();
 }
 

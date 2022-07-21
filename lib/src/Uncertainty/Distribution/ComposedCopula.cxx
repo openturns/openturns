@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ComposedCopulas
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,30 +36,29 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Copula>)
-static const Factory<PersistentCollection<Copula> > Factory_PersistentCollection_Copula;
-
 CLASSNAMEINIT(ComposedCopula)
 
 static const Factory<ComposedCopula> Factory_ComposedCopula;
 
 /* Default constructor */
 ComposedCopula::ComposedCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , copulaCollection_(0)
   , isIndependent_(false)
 {
+  isCopula_ = true;
   setName("ComposedCopula");
-  CopulaCollection coll(1, IndependentCopula(2));
+  DistributionCollection coll(1, IndependentCopula(2));
   setCopulaCollection(coll);
 }
 
 /* Default constructor */
-ComposedCopula::ComposedCopula(const CopulaCollection & coll)
-  : CopulaImplementation()
+ComposedCopula::ComposedCopula(const DistributionCollection & coll)
+  : DistributionImplementation()
   , copulaCollection_()
   , isIndependent_(false)
 {
+  isCopula_ = true;
   setName("ComposedCopula");
   // We assign the copula collection through the accessor in order to compute the composed copula dimension
   setCopulaCollection(coll);
@@ -105,7 +104,7 @@ String ComposedCopula::__str__(const String & ) const
 }
 
 /* Copula collection accessor */
-void ComposedCopula::setCopulaCollection(const CopulaCollection & coll)
+void ComposedCopula::setCopulaCollection(const DistributionCollection & coll)
 {
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
@@ -118,6 +117,8 @@ void ComposedCopula::setCopulaCollection(const CopulaCollection & coll)
   bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
+    if (!coll[i].isCopula())
+      throw InvalidArgumentException(HERE) << "Element " << i << " is not a copula";
     const UnsignedInteger copulaDimension = coll[i].getDimension();
     dimension += copulaDimension;
     const Description copulaDescription(coll[i].getDescription());
@@ -144,7 +145,7 @@ void ComposedCopula::setCopulaCollection(const CopulaCollection & coll)
 
 
 /* Distribution collection accessor */
-const ComposedCopula::CopulaCollection & ComposedCopula::getCopulaCollection() const
+ComposedCopula::DistributionCollection ComposedCopula::getCopulaCollection() const
 {
   return copulaCollection_;
 }
@@ -175,6 +176,30 @@ Point ComposedCopula::getRealization() const
   return result;
 }
 
+Sample ComposedCopula::getSample(const UnsignedInteger size) const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger collectionSize = copulaCollection_.getSize();
+  Sample result(size, dimension);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < collectionSize; ++i)
+  {
+    const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
+    // Using parallel getSample
+    const Sample sample(copulaCollection_[i].getSample(size));
+    for (UnsignedInteger k = 0; k < size; ++k)
+    {
+      for (UnsignedInteger j = 0; j < copulaDimension; ++j)
+      {
+        result(k, j + shift) = sample(k, j);
+      }
+    }
+    shift += copulaDimension;
+  }
+  result.setDescription(getDescription());
+  return result;
+}
+
 /* Get the DDF of the ComposedCopula */
 Point ComposedCopula::computeDDF(const Point & point) const
 {
@@ -192,7 +217,7 @@ Point ComposedCopula::computeDDF(const Point & point) const
   {
     // If one component is outside of the support, the PDF is null
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return Point(dimension);
-    const Copula copula(copulaCollection_[i]);
+    const Distribution copula(copulaCollection_[i]);
     const UnsignedInteger copulaDimension = copula.getDimension();
     Point component(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
@@ -258,7 +283,7 @@ Scalar ComposedCopula::computeLogPDF(const Point & point) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // If one component is outside of the support, the PDF is null
-    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return -SpecFunc::LogMaxScalar;
+    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return SpecFunc::LowestScalar;
     const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
     Point component(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
@@ -310,14 +335,14 @@ Scalar ComposedCopula::computeProbability(const Interval & interval) const
   // Reduce the given interval to the support of the distribution, which is the nD unit cube
   const Interval intersect(interval.intersect(Interval(dimension)));
   // If the intersection is empty
-  if (intersect.isNumericallyEmpty()) return 0.0;
+  if (intersect.isEmpty()) return 0.0;
   const Point lowerIntersect(intersect.getLowerBound());
   const Point upperIntersect(intersect.getUpperBound());
   const UnsignedInteger size = copulaCollection_.getSize();
   Scalar value = 1.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Copula copula(copulaCollection_[i]);
+    const Distribution copula(copulaCollection_[i]);
     const UnsignedInteger copulaDimension = copula.getDimension();
     Point lower(copulaDimension);
     Point upper(copulaDimension);
@@ -450,21 +475,21 @@ Point ComposedCopula::computeSequentialConditionalPDF(const Point & x) const
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       result[i] = ((x[i] >= 0.0 && x[i] < 1.0) ? 1.0 : 0.0);
   else
+  {
+    const UnsignedInteger size = copulaCollection_.getSize();
+    UnsignedInteger start = 0;
+    UnsignedInteger stop = 0;
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const UnsignedInteger size = copulaCollection_.getSize();
-      UnsignedInteger start = 0;
-      UnsignedInteger stop = 0;
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
-	  Point localX(localDimension);
-	  stop += localDimension;
-	  std::copy(x.begin() + start, x.begin() + stop, localX.begin());
-	  const Point localResult(copulaCollection_[i].computeSequentialConditionalPDF(localX));
-	  std::copy(localResult.begin(), localResult.end(), result.begin() + start);
-	  start = stop;
-	} // i
-    } // else
+      const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
+      Point localX(localDimension);
+      stop += localDimension;
+      std::copy(x.begin() + start, x.begin() + stop, localX.begin());
+      const Point localResult(copulaCollection_[i].computeSequentialConditionalPDF(localX));
+      std::copy(localResult.begin(), localResult.end(), result.begin() + start);
+      start = stop;
+    } // i
+  } // else
   return result;
 }
 
@@ -472,7 +497,7 @@ Point ComposedCopula::computeSequentialConditionalPDF(const Point & x) const
 Scalar ComposedCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
-  if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return std::min(1.0, std::max(0.0, x));
   // General case
@@ -498,21 +523,21 @@ Point ComposedCopula::computeSequentialConditionalCDF(const Point & x) const
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       result[i] = (x[i] < 0.0 ? 0.0 : x[i] > 1.0 ? 1.0 : x[i]);
   else
+  {
+    const UnsignedInteger size = copulaCollection_.getSize();
+    UnsignedInteger start = 0;
+    UnsignedInteger stop = 0;
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const UnsignedInteger size = copulaCollection_.getSize();
-      UnsignedInteger start = 0;
-      UnsignedInteger stop = 0;
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
-	  Point localX(localDimension);
-	  stop += localDimension;
-	  std::copy(x.begin() + start, x.begin() + stop, localX.begin());
-	  const Point localResult(copulaCollection_[i].computeSequentialConditionalCDF(localX));
-	  std::copy(localResult.begin(), localResult.end(), result.begin() + start);
-	  start = stop;
-	} // i
-    } // else
+      const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
+      Point localX(localDimension);
+      stop += localDimension;
+      std::copy(x.begin() + start, x.begin() + stop, localX.begin());
+      const Point localResult(copulaCollection_[i].computeSequentialConditionalCDF(localX));
+      std::copy(localResult.begin(), localResult.end(), result.begin() + start);
+      start = stop;
+    } // i
+  } // else
   return result;
 }
 
@@ -552,21 +577,21 @@ Point ComposedCopula::computeSequentialConditionalQuantile(const Point & q) cons
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       result[i] = (q[i] < 0.0 ? 0.0 : q[i] > 1.0 ? 1.0 : q[i]);
   else
+  {
+    const UnsignedInteger size = copulaCollection_.getSize();
+    UnsignedInteger start = 0;
+    UnsignedInteger stop = 0;
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const UnsignedInteger size = copulaCollection_.getSize();
-      UnsignedInteger start = 0;
-      UnsignedInteger stop = 0;
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
-	  Point localQ(localDimension);
-	  stop += localDimension;
-	  std::copy(q.begin() + start, q.begin() + stop, localQ.begin());
-	  const Point localResult(copulaCollection_[i].computeSequentialConditionalQuantile(localQ));
-	  std::copy(localResult.begin(), localResult.end(), result.begin() + start);
-	  start = stop;
-	} // i
-    } // else
+      const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
+      Point localQ(localDimension);
+      stop += localDimension;
+      std::copy(q.begin() + start, q.begin() + stop, localQ.begin());
+      const Point localResult(copulaCollection_[i].computeSequentialConditionalQuantile(localQ));
+      std::copy(localResult.begin(), localResult.end(), result.begin() + start);
+      start = stop;
+    } // i
+  } // else
   return result;
 }
 
@@ -576,7 +601,7 @@ Distribution ComposedCopula::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
-  CopulaCollection marginalCopulas;
+  DistributionCollection marginalCopulas;
   const UnsignedInteger indicesSize = indices.getSize();
   const UnsignedInteger size = copulaCollection_.getSize();
 
@@ -793,7 +818,7 @@ Scalar ComposedCopula::computeEntropy() const
 /* Method save() stores the object through the StorageManager */
 void ComposedCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "copulaCollection_", copulaCollection_ );
   adv.saveAttribute( "isIndependent_", isIndependent_ );
 }
@@ -801,7 +826,7 @@ void ComposedCopula::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ComposedCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "copulaCollection_", copulaCollection_ );
   adv.loadAttribute( "isIndependent_", isIndependent_ );
   computeRange();

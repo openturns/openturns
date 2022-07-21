@@ -3,8 +3,8 @@
 
 Parameters
 ----------
-collDist : :class:`~openturns.Distribution`,
-    The collection of distributions wich compose the linear combination.
+collDist : sequence of :class:`~openturns.Distribution`,
+    The collection of distributions which compose the linear combination.
 weights : sequence of float, optional
     A sequence with each component :math:`\geq 0`, of dimension equal to the
     size of *collDist*. The collection of weights applied to the collection of
@@ -39,7 +39,7 @@ Create a *Mixture*:
 Returns
 -------
 collDist : :class:`~openturns.Distribution`,
-    The collection of distributions wich compose the linear combination."
+    The collection of distributions which compose the linear combination."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::Mixture::setDistributionCollection
@@ -48,7 +48,7 @@ collDist : :class:`~openturns.Distribution`,
 Parameters
 ----------
 collDist : :class:`~openturns.Distribution`,
-    The collection of distributions wich compose the linear combination."
+    The collection of distributions which compose the linear combination."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::Mixture::getWeights

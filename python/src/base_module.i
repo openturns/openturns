@@ -5,7 +5,7 @@
 //%feature("autodoc","1");
 
 %pythoncode %{
-from openturns.common import PlatformInfo
+from openturns.typ import PlatformInfo
 def TESTPREAMBLE():
     """
     TESTPREAMBLE handles command-line arguments.
@@ -17,7 +17,6 @@ def TESTPREAMBLE():
     if '--version' in sys.argv:
         print(sys.argv[0] + ' ' + PlatformInfo.GetVersion())
         sys.exit(0)
-    PlatformInfo.SetTwoDigitExponent()
 %}
 
 %{
@@ -41,6 +40,10 @@ def TESTPREAMBLE():
 /* Base/Stat */
 %import statistics_module.i
 %import BaseStatisticsTemplateDefs.i
+
+/* Base/IterativeStat */
+%import iterative_statistics_module.i
+%import BaseIterativeStatisticsTemplateDefs.i
 
 /* Base/Graph */
 %import graph_module.i

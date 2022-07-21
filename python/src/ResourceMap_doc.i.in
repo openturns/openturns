@@ -1,5 +1,5 @@
 %feature("docstring") OT::ResourceMap
-"The ResourceMap allows to manage constants that are associated to key strings.
+"The ResourceMap allows one to manage constants that are associated to key strings.
 
 Find below the ResourceMap's content:
 
@@ -13,7 +13,7 @@ Get some keys:
 >>> for key in ot.ResourceMap.GetKeys()[:4]:
 ...     print(key)
 ARMA-MeanEpsilon
-ARMALikelihoodFactory-DefaultMaxFun
+ARMALikelihoodFactory-DefaultMaximumEvaluationNumber
 ARMALikelihoodFactory-DefaultRhoBeg
 ARMALikelihoodFactory-DefaultRhoEnd"
 
@@ -45,7 +45,7 @@ Examples
 
 Parameters
 ----------
-key : str
+key : str, possible values are 'str','int','float' or 'bool'
     An identifier associated to the parameter.
 
 Returns
@@ -62,7 +62,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ResourceMap::Set
-"Access a parameter.
+"Access an existing parameter.
 
 Parameters
 ----------
@@ -70,7 +70,7 @@ key : str
     An identifier associated to the parameter.
 value : str
     The value associated to that key. If the key already exists as a *float*,
-    an *unsigned int* or a *bool*, the given string is converted into the
+    an *int* or a *bool*, the given string is converted into the
     corresponding type.
 
 Examples
@@ -102,7 +102,7 @@ True"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ResourceMap::SetAsBool
-"Access a boolean parameter.
+"Set an existing boolean parameter.
 
 Parameters
 ----------
@@ -110,7 +110,7 @@ key : str
     An identifier associated to the parameter.
 value : bool
     The value associated to that key. The key is added to the bool map even if
-    it already exists in another map (float, unsigned int or string).
+    it already exists in another map (float, int or str).
 
 Examples
 --------
@@ -119,8 +119,27 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::ResourceMap::AddAsBool
+"Add a new boolean parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+value : bool
+    The value associated to that key. The key is added to the bool map even if
+    it already exists in another map (float, int or str).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.AddAsBool('MaximumEntropyOrderStatisticsDistribution-CheckMarginals2', True)
+>>> ot.ResourceMap.RemoveKey('MaximumEntropyOrderStatisticsDistribution-CheckMarginals2')"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::ResourceMap::SetAsScalar
-"Access a floating-point parameter.
+"Set an existing floating-point parameter.
 
 Parameters
 ----------
@@ -128,12 +147,31 @@ key : str
     An identifier associated to the parameter.
 value : float
     The value associated to that key. The key is added to the float map even if
-    it already exists in another map (string, unsigned int or bool).
+    it already exists in another map (str, int or bool).
 
 Examples
 --------
 >>> import openturns as ot
 >>> ot.ResourceMap.SetAsScalar('SQP-DefaultTau', 0.5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::AddAsScalar
+"Add a new floating-point parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+value : float
+    The value associated to that key. The key is added to the float map even if
+    it already exists in another map (str, int or bool).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.AddAsScalar('SQP-DefaultTau2', 0.5)
+>>> ot.ResourceMap.RemoveKey('SQP-DefaultTau2')"
 
 // ---------------------------------------------------------------------
 
@@ -159,7 +197,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ResourceMap::SetAsString
-"Access a parameter.
+"Set an existing string parameter.
 
 Parameters
 ----------
@@ -167,7 +205,7 @@ key : str
     An identifier associated to the parameter.
 value : str
     The value associated to that key. The key is added to the string map even if
-    it already exists in another map (float, unsigned int or bool).
+    it already exists in another map (float, int or bool).
 
 Examples
 --------
@@ -176,8 +214,27 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::ResourceMap::AddAsString
+"Add a new string parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+value : str
+    The value associated to that key. The key is added to the string map even if
+    it already exists in another map (float, int or bool).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.AddAsString('View-ImageFormat2', 'png')
+>>> ot.ResourceMap.RemoveKey('View-ImageFormat2')"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::ResourceMap::GetAsString
-"Access a parameter.
+"Access a string parameter.
 
 Parameters
 ----------
@@ -198,20 +255,39 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ResourceMap::SetAsUnsignedInteger
-"Access an integer parameter.
+"Set an existing integer parameter.
 
 Parameters
 ----------
 key : str
     An identifier associated to the parameter.
 value : int
-    The value associated to that key. The key is added to the unsigned integer
-    map even if it already exists in another map (float, string or bool).
+    The value associated to that key. The key is added to the integer
+    map even if it already exists in another map (float, str or bool).
 
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.SetAsUnsignedInteger('MCMC-DefaultBurnIn', 0)"
+>>> ot.ResourceMap.SetAsUnsignedInteger('MetropolisHastings-DefaultBurnIn', 0)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::AddAsUnsignedInteger
+"Add a new integer parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+value : int
+    The value associated to that key. The key is added to the integer
+    map even if it already exists in another map (float, str or bool).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.AddAsUnsignedInteger('MetropolisHastings-DefaultBurnIn2', 0)
+>>> ot.ResourceMap.RemoveKey('MetropolisHastings-DefaultBurnIn2')"
 
 // ---------------------------------------------------------------------
 
@@ -231,7 +307,7 @@ value : int
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.GetAsUnsignedInteger('MCMC-DefaultBurnIn')
+>>> ot.ResourceMap.GetAsUnsignedInteger('MetropolisHastings-DefaultBurnIn')
 0..."
 
 // ---------------------------------------------------------------------
@@ -282,7 +358,7 @@ size : positive int
 Returns
 -------
 size : positive int
-    The number of *unsigned integer* constants defined in the ResourceMap."
+    The number of *int* constants defined in the ResourceMap."
 
 // ---------------------------------------------------------------------
 
@@ -332,7 +408,7 @@ keys : tuple of str
 Returns
 -------
 keys : tuple of str
-    The list of *unsigned integer* identifiers."
+    The list of *int* identifiers."
 
 // ---------------------------------------------------------------------
 
@@ -348,3 +424,47 @@ Returns
 -------
 has_key : bool
     Whether an entry with that key exists."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::Reload
+"Reload the configuration.
+
+Reverts the values of the default keys and erases new keys."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::RemoveKey
+"Remove an entry.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.AddAsString('dummy_key', 'key_to_be_removed')
+>>> ot.ResourceMap.RemoveKey('dummy_key')"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::FindKeys
+"Find keys matching a pattern.
+
+Parameters
+----------
+substr : str
+    A pattern to search.
+
+Returns
+-------
+value : sequence of str
+    The keys matching the pattern.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.FindKeys('Multinomial')
+('Multinomial-eta', 'Multinomial-smallA')"

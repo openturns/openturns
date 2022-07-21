@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all hessian implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,15 +20,7 @@
  */
 #include "openturns/HessianImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Matrix.hxx"
-#include "openturns/OTconfig.hxx"
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-#include "openturns/SymbolicEvaluation.hxx"
-#else
-#include "openturns/LinearEvaluation.hxx"
-#endif
-#include "openturns/ConstantGradient.hxx"
-#include "openturns/ConstantHessian.hxx"
+#include "openturns/MarginalHessian.hxx"
 #include "openturns/ComposedHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -115,45 +107,21 @@ void HessianImplementation::setParameter(const Point & parameter)
   parameter_ = parameter;
 }
 
-
 /* Get the i-th marginal function */
 Hessian HessianImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
 Hessian HessianImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  // Here we use the linear algebra representation of the marginal extraction operation in order to extract the marginal hessian.
-  // The chain rule gives:
-  // D2(Af) = AD2(f) in our case, instead of D2(gof) = D(Dg(f)Df) = (D2g(f)Df)Df + Dg(f)D2f, so we don't need f as in our case Dg(f) = A is a constant, and we don't need D(f) as D2g(f) = 0.
-  // As we don't have access to f and Df here but only to D2f, we build an arbitrary cheap evaluation with the proper dimension in order to reuse the
-  // generic implementation of the chain rule for the hessians. We choose to build a null function using an analytical function.
-  // Fake f
-  const UnsignedInteger inputDimension = getInputDimension();
-  const UnsignedInteger outputDimension = getOutputDimension();
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  const SymbolicEvaluation right(Description::BuildDefault(inputDimension, "x"), Description::BuildDefault(outputDimension, "y"), Description(outputDimension, "0.0"));
-#else
-  Point center(inputDimension);
-  Matrix linear(inputDimension, outputDimension);
-  Point constant(outputDimension);
-  const LinearEvaluation right(center, constant, linear);
-#endif
-  // Fake DF
-  const ConstantGradient rightGradient(Matrix(inputDimension, outputDimension));
-  // Dg = A
-  const UnsignedInteger marginalOutputDimension = indices.getSize();
-  Matrix gradientExtraction(outputDimension, marginalOutputDimension);
-  for (UnsignedInteger i = 0; i < marginalOutputDimension; ++i)
-    gradientExtraction(indices[i], i) = 1.0;
-  const ConstantGradient leftGradient(gradientExtraction);
-  // D2g = 0
-  const ConstantHessian leftHessian(SymmetricTensor(outputDimension, marginalOutputDimension));
-  return new ComposedHessian(leftGradient.clone(), leftHessian.clone(), right.clone(), rightGradient.clone(), clone());
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal hessian must be in the range [0, outputDimension-1] and must be different";
+  Indices full(getOutputDimension());
+  full.fill();
+  if (indices == full) return clone();
+  return new MarginalHessian(clone(), indices);
 }
 
 /* Method save() stores the object through the StorageManager */

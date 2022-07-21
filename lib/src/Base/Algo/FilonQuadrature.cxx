@@ -2,7 +2,7 @@
 /**
  *  @brief Implement the Filon quadrature for oscilatory integrands
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,7 +52,7 @@ FilonQuadrature::FilonQuadrature(const UnsignedInteger n,
   , kind_(kind)
 {
   // Check the maximum number of sub-intervals
-  if (n == 0) throw InvalidArgumentException(HERE) << "Error: the discretization must be at least 1, here n=" << n;
+  if (!(n > 0)) throw InvalidArgumentException(HERE) << "Error: the discretization must be at least 1, here n=" << n;
 }
 
 /* Virtual constructor */
@@ -160,7 +160,7 @@ UnsignedInteger FilonQuadrature::getN() const
 
 void FilonQuadrature::setN(const UnsignedInteger n)
 {
-  if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be at least 1.";
+  if (!(n > 0)) throw InvalidArgumentException(HERE) << "Error: n must be at least 1, here n=" << n;
   n_ = n;
 }
 
@@ -207,6 +207,24 @@ String FilonQuadrature::__str__(const String & ) const
       << ", kernel=" << (kind_ == 0 ? "cos(omega*x)" : (kind_ == 1 ? "sin(omega*x)" : "exp(I*omega*x)"))
       << ")";
   return oss;
+}
+
+/* Method save() stores the object through the StorageManager */
+void FilonQuadrature::save(Advocate & adv) const
+{
+  IntegrationAlgorithmImplementation::save(adv);
+  adv.saveAttribute("n_", n_);
+  adv.saveAttribute("omega_", omega_);
+  adv.saveAttribute("kind_", kind_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void FilonQuadrature::load(Advocate & adv)
+{
+  IntegrationAlgorithmImplementation::load(adv);
+  adv.loadAttribute("n_", n_);
+  adv.loadAttribute("omega_", omega_);
+  adv.loadAttribute("kind_", kind_);
 }
 
 END_NAMESPACE_OPENTURNS

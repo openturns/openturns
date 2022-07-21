@@ -2,7 +2,7 @@
 /**
  *  @brief PolygonArray class for polygonArray plots
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,7 +54,7 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
     palette_ = Description(size);
     // The first polygon gives the number of vertices
     verticesNumber_ = polygons[0].getData().getSize();
-    if (verticesNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: cannot have polygons with less than 2 vertices.";
+    if (!(verticesNumber_ >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot have polygons with less than 2 vertices, here there are " << verticesNumber_ << " vertices.";
     data_ = Sample(size * verticesNumber_, 2);
     UnsignedInteger index = 0;
     for (UnsignedInteger i = 0; i < size; ++i)
@@ -71,7 +71,7 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
   } // size > 0
 }
 
-/* Contructor from 2 data sets */
+/* Constructor from 2 data sets */
 PolygonArray::PolygonArray(const Sample & coordinates,
                            const UnsignedInteger verticesNumber,
                            const Description & palette,
@@ -180,7 +180,7 @@ Description PolygonArray::getPalette() const
 void PolygonArray::setCoordinatesAndVerticesNumber(const Sample & coordinates,
     const UnsignedInteger verticesNumber)
 {
-  if (verticesNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot have polygons with less than 2 vertices.";
+  if (!(verticesNumber >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot have polygons with less than 2 vertices, here there are " << verticesNumber << " vertices.";
   if (coordinates.getSize() % verticesNumber != 0) throw InvalidArgumentException(HERE) << "Error: the coordinates size=" << coordinates.getSize() << " is not compatible with the vertices number=" << verticesNumber;
   setData(coordinates);
   verticesNumber_ = verticesNumber;

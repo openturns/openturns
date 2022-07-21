@@ -2,7 +2,7 @@
 /**
  *  @brief StatTest implements statistical tests
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,7 +47,7 @@ public:
                             const Bool verbose = true);
 
   /** Virtual constructor */
-  virtual DickeyFullerTest * clone() const;
+  DickeyFullerTest * clone() const override;
 
   /** Test H0: there is a unit root in a drift and linear trend model */
   TestResult testUnitRootInDriftAndLinearTrendModel(const Scalar level = 0.05);
@@ -78,10 +78,10 @@ public:
   Bool getVerbose() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

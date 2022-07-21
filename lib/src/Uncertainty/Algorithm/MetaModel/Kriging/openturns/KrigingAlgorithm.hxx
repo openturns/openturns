@@ -2,7 +2,7 @@
 /**
  *  @brief The class building gaussian process regression
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,28 +54,26 @@ public:
   KrigingAlgorithm (const Sample & inputSample,
                     const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
-                    const Basis & basis,
-                    const Bool normalize = true);
+                    const Basis & basis);
 
   /** Constructor */
   KrigingAlgorithm (const Sample & inputSample,
                     const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
-                    const BasisCollection & basisCollection,
-                    const Bool normalize = true);
+                    const BasisCollection & basisCollection);
 
   /** Virtual constructor */
-  KrigingAlgorithm * clone() const;
+  KrigingAlgorithm * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Perform regression */
-  void run();
+  void run() override;
 
   /** Sample accessors */
-  Sample getInputSample() const;
-  Sample getOutputSample() const;
+  Sample getInputSample() const override;
+  Sample getOutputSample() const override;
 
   /** result accessor */
   KrigingResult getResult();
@@ -99,11 +97,15 @@ public:
   void setNoise(const Point & noise);
   Point getNoise() const;
 
+  /** Linear algebra method */
+  void setMethod(const String & method);
+  String getMethod() const;
+
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
@@ -117,7 +119,6 @@ private:
   Sample inputSample_;
   // The associated output data
   Sample outputSample_;
-  Bool normalize_;
   // The covariance model parametric family
   CovarianceModel covarianceModel_;
   // Underlying algo used for the evaluation of parameters

@@ -3,7 +3,7 @@
  *  @brief  This class provides fast point location.
  *  This is an abstract class.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -126,7 +126,7 @@ UnsignedInteger EnclosingSimplexAlgorithmImplementation::query(const Point & ) c
   throw NotYetImplementedException(HERE) << "In EnclosingSimplexAlgorithmImplementation::query(const Point & x) const";
 }
 
-/* TBB policy to speed-up query over a sample */
+/* TBBImplementation policy to speed-up query over a sample */
 struct EnclosingSimplexAlgorithmImplementationQueryPolicy
 {
   const Sample & points_;
@@ -141,7 +141,7 @@ struct EnclosingSimplexAlgorithmImplementationQueryPolicy
     , algorithm_(algorithm)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) indices_[i] = algorithm_.query(points_[i]);
   }
@@ -155,7 +155,7 @@ Indices EnclosingSimplexAlgorithmImplementation::query(const Sample & sample) co
   Indices result(size);
   if (size == 0) return result;
   const EnclosingSimplexAlgorithmImplementationQueryPolicy policy( sample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -283,9 +283,7 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
   // Exit if point is outside simplex bounding box
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if(point[i] < lowerBoundingBoxSimplices_(index, i))
-      return false;
-    if(point[i] > upperBoundingBoxSimplices_(index, i))
+    if (!(point[i] >= lowerBoundingBoxSimplices_(index, i) && point[i] <= upperBoundingBoxSimplices_(index, i)))
       return false;
   }
 
@@ -302,7 +300,7 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
     v[i] = point[i];
   const Point coordinates(simplexMatrix.solveLinearSystem(v, false));
   for (UnsignedInteger i = 0; i <= dimension; ++i)
-    if ((coordinates[i] < 0.0) || (coordinates[i] > 1.0))
+    if (!(coordinates[i] >= 0.0 && coordinates[i] <= 1.0))
       return false;
   return true;
 }

@@ -42,12 +42,27 @@ If basis is not specified, the underlying model is :
 
     \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
 
-The coefficients :math:`a_i` are evaluated using a least squares method. Default
- method is `QR`. User might choose also `SVD` or `Cholesky` (usefull if basis
- is orthogonal) and large dataset.
+The coefficients :math:`a_i` are evaluated using a least squares method.
+Default method is `QR`. User might also choose `SVD` or `Cholesky` (useful
+if basis is orthogonal) and large dataset.
 
-The evaluation of the coefficients is completed by some usefull parameters that could
-help the diagnostic of the linearity."
+The evaluation of the coefficients is completed by some useful parameters that could
+help the diagnostic of the linearity.
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Normal()
+>>> func = ot.SymbolicFunction(['x1','x2', 'x3'], ['x1 + x2 + sin(x2 * 2 * pi_)/5 + 1e-3 * x3^2'])
+>>> dimension = 3
+>>> distribution = ot.ComposedDistribution([ot.Normal()]*dimension)
+>>> input_sample = distribution.getSample(20)
+>>> output_sample = func(input_sample)
+>>> algo = ot.LinearModelAlgorithm(input_sample, output_sample)
+>>> algo.run()
+>>> result = ot.LinearModelResult(algo.getResult())
+
+"
 
 // ---------------------------------------------------------------------
 
@@ -87,5 +102,5 @@ outputSample : :class:`~openturns.Sample`
 Returns
 -------
 result : :class:`~openturns.LinearModelResult`
-    The linear model built from numerical samples, along with other useful informations."
+    The linear model built from numerical samples, along with other useful information."
 

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ref = ot.SymbolicFunction("x", "sin(x)")

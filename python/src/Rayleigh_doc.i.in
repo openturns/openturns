@@ -1,13 +1,10 @@
 %feature("docstring") OT::Rayleigh
 "Rayleigh distribution.
 
-Available constructors:
-    Rayleigh(*sigma=1.0, gamma=0.*)
-
 Parameters
 ----------
-sigma : float, :math:`\sigma > 0`
-    Scale parameter :math:`\sigma`.
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`.
 gamma : float
     Location parameter :math:`\gamma`.
 
@@ -17,8 +14,8 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = \frac{(x - \gamma)} {\sigma^2}
-             \exp \left(-\frac{(x - \gamma)^2}{2\sigma^2}\right)
+    f_X(x) = \frac{(x - \gamma)} {\beta^2}
+             \exp \left(-\frac{(x - \gamma)^2}{2\beta^2}\right)
              \quad x \in [\gamma,+\infty[
 
 Its first moments are:
@@ -27,8 +24,8 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \sigma sqrt{\frac{\pi}{2}} + \gamma \\
-        \Var{X} & = & \frac{4 - \pi}{2} \sigma^2
+        \Expect{X} & = & \beta \sqrt{\frac{\pi}{2}} + \gamma \\
+        \Var{X} & = & \frac{4 - \pi}{2} \beta^2
     \end{eqnarray*}
 
 Examples
@@ -45,12 +42,12 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Rayleigh::getSigma
-"Accessor to the distribution's scale parameter :math:`\sigma`.
+"Accessor to the distribution's scale parameter :math:`\beta`.
 
 Returns
 -------
-sigma : float
-    Scale parameter :math:`\sigma`."
+beta : float
+    Scale parameter :math:`\beta`."
 
 // ---------------------------------------------------------------------
 
@@ -65,12 +62,12 @@ gamma : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Rayleigh::setSigma
-"Accessor to the distribution's scale parameter :math:`\sigma`.
+"Accessor to the distribution's scale parameter :math:`\beta`.
 
 Parameters
 ----------
-sigma : float, :math:`\sigma > 0`
-    Scale parameter :math:`\sigma`."
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`."
 
 // ---------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all function implementations
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -267,7 +267,6 @@ Field FunctionImplementation::operator() (const Field & inField) const
 /* Method gradient() returns the Jacobian transposed matrix of the function at point */
 Matrix FunctionImplementation::gradient(const Point & inP) const
 {
-  if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
   // Here we must catch the exceptions raised by functions with no gradient
   try
   {
@@ -278,7 +277,7 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
     // Fallback on non-centered finite difference gradient
     try
     {
-      LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP);
+      LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP.__str__());
       const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_);
       return gradientFD.gradient(inP);
     }
@@ -303,7 +302,7 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
     // Fallback on non-centered finite difference gradient
     try
     {
-      LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP);
+      LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP.__str__());
       const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), evaluation_);
       return hessianFD.hessian(inP);
     }
@@ -335,7 +334,7 @@ UnsignedInteger FunctionImplementation::getOutputDimension() const
 /* Get the i-th marginal function */
 Function FunctionImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 
@@ -343,6 +342,9 @@ Function FunctionImplementation::getMarginal(const UnsignedInteger i) const
 Function FunctionImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
+  Indices full(getOutputDimension());
+  full.fill();
+  if (indices == full) return clone();
   return new FunctionImplementation(evaluation_.getMarginal(indices), gradient_.getMarginal(indices), hessian_.getMarginal(indices));
 }
 
@@ -367,6 +369,23 @@ UnsignedInteger FunctionImplementation::getGradientCallsNumber() const
 UnsignedInteger FunctionImplementation::getHessianCallsNumber() const
 {
   return hessian_.getCallsNumber();
+}
+
+/** Linearity accessors */
+Bool FunctionImplementation::isLinear() const
+{
+  return evaluation_.isLinear();
+}
+
+Bool FunctionImplementation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return evaluation_.isLinearlyDependent(index);
+}
+
+/* Is it safe to call in parallel? */
+Bool FunctionImplementation::isParallel() const
+{
+  return evaluation_.getImplementation()->isParallel();
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */

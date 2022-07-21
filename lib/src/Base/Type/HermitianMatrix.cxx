@@ -2,7 +2,7 @@
 /**
  *  @brief HermitianMatrix implements the classical mathematical hermitian matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,6 +63,17 @@ HermitianMatrix::HermitianMatrix(const HermitianMatrix & h)
   // Nothing to do
 }
 
+/* Assignment operator */
+HermitianMatrix & HermitianMatrix::operator=(const HermitianMatrix & rhs)
+{
+  if (this != &rhs)
+  {
+    SquareComplexMatrix::operator=(rhs);
+    hasBeenHermitianized_ = rhs.hasBeenHermitianized_;
+  }
+  return *this;
+}
+
 /* String converter */
 String HermitianMatrix::__repr__() const
 {
@@ -87,7 +98,7 @@ UnsignedInteger HermitianMatrix::getDimension() const
 HermitianMatrix HermitianMatrix::transpose () const
 {
   // Quick return for empty or scalar HermitianMatrix
-  if (getDimension() <= 1) return (*this);
+  if (!(getDimension() > 1)) return (*this);
   return Implementation(getImplementation()->transposeHerm().clone());
 }
 
@@ -95,7 +106,7 @@ HermitianMatrix HermitianMatrix::transpose () const
 HermitianMatrix HermitianMatrix::conjugate () const
 {
   // Quick return for empty or scalar HermitianMatrix
-  if (getDimension() <= 1) return (*this);
+  if (!(getDimension() > 1)) return (*this);
   return Implementation(getImplementation()->conjugateHerm().clone());
 }
 
@@ -133,7 +144,7 @@ void HermitianMatrix::checkHermitian() const
 Complex & HermitianMatrix::operator () (const UnsignedInteger i,
                                         const UnsignedInteger j)
 {
-  if (i < j) throw InvalidArgumentException(HERE) << "Error: only the lower triangle of an Hermitian matrix can be filled directly.";
+  if (!(i >= j)) throw InvalidArgumentException(HERE) << "Error: only the lower triangle of an Hermitian matrix can be filled directly.";
   copyOnWrite();
   hasBeenHermitianized_ = false;
 

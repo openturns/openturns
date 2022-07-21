@@ -14,10 +14,10 @@ N = 40
 dt = (t1 - t0) / (N - 1)
 myMesh = ot.RegularGrid(t0, dt, N)
 
-myCovarianceCollection = ot.CovarianceMatrixCollection()
+myCovarianceCollection = ot.SquareMatrixCollection()
 for k in range(N):
     t = myMesh.getValue(k)
-    matrix = ot.CovarianceMatrix(1)
+    matrix = ot.SquareMatrix(1)
     matrix[0, 0] = C(t)
     myCovarianceCollection.add(matrix)
 

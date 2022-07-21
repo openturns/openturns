@@ -2,7 +2,7 @@
 /**
  *  @brief Graph implements graphic devices for plotting through R
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -160,6 +160,18 @@ Bool Graph::getAxes() const
   return getImplementation()->getAxes();
 }
 
+/* Ticks location flag accessor */
+void Graph::setTickLocation(const TickLocation tickLocation)
+{
+  copyOnWrite();
+  getImplementation()->setTickLocation(tickLocation);
+}
+
+Graph::TickLocation Graph::getTickLocation() const
+{
+  return getImplementation()->getTickLocation();
+}
+
 /* Set log scale for x, y both or none axes */
 void Graph::setLogScale(const LogScale logScale)
 {
@@ -199,7 +211,7 @@ String Graph::getGridColor() const
   return getImplementation()->getGridColor();
 }
 
-/* Accesor for xTitle */
+/* Accessor for xTitle */
 String Graph::getXTitle() const
 {
   return getImplementation()->getXTitle();
@@ -225,13 +237,13 @@ void Graph::setYTitle(const String & title)
   getImplementation()->setYTitle(title);
 }
 
-/* Accesor for title */
+/* Accessor for title */
 String Graph::getTitle() const
 {
   return getImplementation()->getTitle();
 }
 
-/* Accesor for title */
+/* Accessor for title */
 void Graph::setTitle(const String & title)
 {
   copyOnWrite();
@@ -331,7 +343,5 @@ Description Graph::GetValidLegendPositions()
 {
   return GraphImplementation::GetValidLegendPositions();
 }
-
-
 
 END_NAMESPACE_OPENTURNS

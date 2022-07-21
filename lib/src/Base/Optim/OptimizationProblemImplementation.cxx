@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationProblemImplementation allows to describe an optimization problem
+ *  @brief OptimizationProblemImplementation allows one to describe an optimization problem
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,12 +37,7 @@ static const Factory<OptimizationProblemImplementation> Factory_OptimizationProb
 /* Default constructor */
 OptimizationProblemImplementation::OptimizationProblemImplementation()
   : PersistentObject()
-  , objective_()
-  , equalityConstraint_()
-  , inequalityConstraint_()
-  , bounds_()
-  , minimization_(true)
-  , dimension_(0)
+  , minimizationCollection_(1, true)
 {
   // Nothing to do
 }
@@ -50,28 +45,34 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
 OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & objective)
   : PersistentObject()
   , objective_(objective)
-  , minimization_(true)
+  , minimizationCollection_(objective.getOutputDimension(), true)
   , dimension_(objective.getInputDimension())
+  , variablesType_(dimension_, CONTINUOUS)
 {
-  // nothing to do
+  // Nothing to do
 }
 
 /*
  * @brief General multi-objective equality, inequality and bound constraints
  */
-OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & objective,
+OptimizationProblemImplementation::OptimizationProblemImplementation( const Function & objective,
     const Function & equalityConstraint,
     const Function & inequalityConstraint,
     const Interval & bounds)
   : PersistentObject()
   , objective_(objective)
-  , minimization_(true)
+  , minimizationCollection_(objective.getOutputDimension(), true)
   , dimension_(objective.getInputDimension())
+  , variablesType_(Indices(dimension_, CONTINUOUS))
 {
+  // Set constraints
   setEqualityConstraint(equalityConstraint);
   setInequalityConstraint(inequalityConstraint);
+
+  // Set bounds
   setBounds(bounds);
 }
+
 
 /* Virtual constructor */
 OptimizationProblemImplementation * OptimizationProblemImplementation::clone() const
@@ -89,18 +90,28 @@ void OptimizationProblemImplementation::setObjective(const Function & objective)
 {
   if (objective.getInputDimension() != objective_.getInputDimension())
   {
-    // clear constraints, bounds
+    LOGWARN(OSS() << "Clearing constraints, bounds and variables types");
+    // Clear constraints
     if (equalityConstraint_.getEvaluation().getImplementation()->isActualImplementation() || inequalityConstraint_.getEvaluation().getImplementation()->isActualImplementation())
     {
-      LOGWARN(OSS() << "Clearing constraints and bounds");
       equalityConstraint_ = Function();
       inequalityConstraint_ = Function();
     }
+
+    // Clear bounds
     bounds_ = Interval(0);
+
+    // Clear variables types
+    variablesType_ = Indices(dimension_, CONTINUOUS);
+
   }
   objective_ = objective;
+
   // Update dimension_ member accordingly
   dimension_ = objective.getInputDimension();
+
+  // Update variablesType_ member accordingly
+  variablesType_ = Indices(dimension_, CONTINUOUS);
 }
 
 Bool OptimizationProblemImplementation::hasMultipleObjective() const
@@ -116,7 +127,8 @@ Function OptimizationProblemImplementation::getEqualityConstraint() const
 
 void OptimizationProblemImplementation::setEqualityConstraint(const Function & equalityConstraint)
 {
-  if ((equalityConstraint.getInputDimension() > 0) && (equalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given equality constraints have an input dimension=" << equalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+  if (!(equalityConstraint.getInputDimension() == 0 || equalityConstraint.getInputDimension() == dimension_))
+    throw InvalidArgumentException(HERE) << "Error: the given equality constraints have an input dimension=" << equalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
   equalityConstraint_ = equalityConstraint;
 }
@@ -134,7 +146,7 @@ Function OptimizationProblemImplementation::getInequalityConstraint() const
 
 void OptimizationProblemImplementation::setInequalityConstraint(const Function & inequalityConstraint)
 {
-  if ((inequalityConstraint.getInputDimension() > 0) && (inequalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+  if (!(inequalityConstraint.getInputDimension() == 0 || inequalityConstraint.getInputDimension() == dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
   inequalityConstraint_ = inequalityConstraint;
 }
@@ -152,7 +164,7 @@ Interval OptimizationProblemImplementation::getBounds() const
 
 void OptimizationProblemImplementation::setBounds(const Interval & bounds)
 {
-  if ((bounds.getDimension() > 0) && (bounds.getDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given bounds are of dimension=" << bounds.getDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+  if (!(bounds.getDimension() == 0 || bounds.getDimension() == dimension_)) throw InvalidArgumentException(HERE) << "Error: the given bounds are of dimension=" << bounds.getDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
   bounds_ = bounds;
 }
@@ -165,12 +177,12 @@ Bool OptimizationProblemImplementation::hasBounds() const
 /* Level function accessor */
 Function OptimizationProblemImplementation::getLevelFunction() const
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLevelFunction";
 }
 
-void OptimizationProblemImplementation::setLevelFunction(const Function & levelFunction)
+void OptimizationProblemImplementation::setLevelFunction(const Function & /*levelFunction*/)
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setLevelFunction";
 }
 
 Bool OptimizationProblemImplementation::hasLevelFunction() const
@@ -180,12 +192,12 @@ Bool OptimizationProblemImplementation::hasLevelFunction() const
 
 Function OptimizationProblemImplementation::getResidualFunction() const
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getResidualFunction";
 }
 
-void OptimizationProblemImplementation::setResidualFunction(const Function & residualFunction)
+void OptimizationProblemImplementation::setResidualFunction(const Function & /*residualFunction*/)
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setResidualFunction";
 }
 
 Bool OptimizationProblemImplementation::hasResidualFunction() const
@@ -196,12 +208,12 @@ Bool OptimizationProblemImplementation::hasResidualFunction() const
 /* Level value accessor */
 Scalar OptimizationProblemImplementation::getLevelValue() const
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLevelValue";
 }
 
-void OptimizationProblemImplementation::setLevelValue(Scalar levelValue)
+void OptimizationProblemImplementation::setLevelValue(Scalar /*levelValue*/)
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setLevelValue";
 }
 
 /* Dimension accessor */
@@ -211,14 +223,43 @@ UnsignedInteger OptimizationProblemImplementation::getDimension() const
 }
 
 /* Minimization accessor */
-void OptimizationProblemImplementation::setMinimization(Bool minimization)
+void OptimizationProblemImplementation::setMinimization(Bool minimization, UnsignedInteger marginalIndex)
 {
-  minimization_ = minimization;
+  if (marginalIndex >= objective_.getOutputDimension())
+    throw InvalidDimensionException(HERE) << "marginal index (" << marginalIndex << ") cannot exceed objective dimension (" << objective_.getOutputDimension();
+  minimizationCollection_[marginalIndex] = minimization;
 }
 
-Bool OptimizationProblemImplementation::isMinimization() const
+Bool OptimizationProblemImplementation::isMinimization(UnsignedInteger marginalIndex) const
 {
-  return minimization_;
+  if (marginalIndex >= objective_.getOutputDimension())
+    throw InvalidDimensionException(HERE) << "marginal index (" << marginalIndex << ") cannot exceed objective dimension (" << objective_.getOutputDimension();
+  return minimizationCollection_[marginalIndex];
+}
+
+// Variables type table
+void OptimizationProblemImplementation::setVariablesType(const Indices & variablesType)
+{
+  if (variablesType.getSize() != getDimension())
+    throw InvalidDimensionException(HERE) << "variables type table dimension is invalid (" << variablesType.getSize() << ", expected " << getDimension();
+
+  variablesType_ = variablesType;
+}
+
+Indices OptimizationProblemImplementation::getVariablesType() const
+{
+  return variablesType_;
+}
+
+bool OptimizationProblemImplementation::isContinuous() const
+{
+  if (dimension_ == 0)
+    return true;
+
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    if (variablesType_[i] != CONTINUOUS) return false;
+
+  return true;
 }
 
 /* String converter */
@@ -229,9 +270,12 @@ String OptimizationProblemImplementation::__repr__() const
   oss << " objective=" << objective_
       << " equality constraint=" << (hasEqualityConstraint() ? equalityConstraint_.__repr__() : "none")
       << " inequality constraint=" << (hasInequalityConstraint() ? inequalityConstraint_.__repr__() : "none");
-  oss << " bounds=" << (hasBounds() ? bounds_.__repr__() : "none")
-      << " minimization=" << minimization_
-      << " dimension=" << dimension_;
+  oss << " bounds=" << (hasBounds() ? bounds_.__repr__() : "none");
+  if (minimizationCollection_.getSize() == 1)
+    oss << " minimization=" << (minimizationCollection_[0] ? true : false);
+  else
+    oss << " minimization=" << minimizationCollection_;
+  oss << " dimension=" << dimension_;
   return oss;
 }
 
@@ -243,7 +287,7 @@ void OptimizationProblemImplementation::save(Advocate & adv) const
   adv.saveAttribute( "equalityConstraint_", equalityConstraint_ );
   adv.saveAttribute( "inequalityConstraint_", inequalityConstraint_ );
   adv.saveAttribute( "bounds_", bounds_ );
-  adv.saveAttribute( "minimization_", minimization_ );
+  adv.saveAttribute( "minimizationCollection_", minimizationCollection_ );
   adv.saveAttribute( "dimension_", dimension_ );
 }
 
@@ -255,7 +299,14 @@ void OptimizationProblemImplementation::load(Advocate & adv)
   adv.loadAttribute( "equalityConstraint_", equalityConstraint_ );
   adv.loadAttribute( "inequalityConstraint_", inequalityConstraint_ );
   adv.loadAttribute( "bounds_", bounds_ );
-  adv.loadAttribute( "minimization_", minimization_ );
+  if (adv.hasAttribute("minimizationCollection_"))
+    adv.loadAttribute("minimizationCollection_", minimizationCollection_);
+  else
+  {
+    Bool minimization = true;
+    adv.loadAttribute("minimization_", minimization);
+    minimizationCollection_ = BoolCollection(1, minimization);
+  }
   adv.loadAttribute( "dimension_", dimension_ );
 }
 

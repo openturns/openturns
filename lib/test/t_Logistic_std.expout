@@ -2,13 +2,13 @@ Testing class Logistic
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=Logistic name=Logistic dimension=1 alpha=-0.5 beta=1.5
+class=Logistic name=Logistic dimension=1 mu=-0.5 beta=1.5
 streamObject(const T & anObject)
-class=Logistic name=Logistic dimension=1 alpha=-0.5 beta=1.5
+class=Logistic name=Logistic dimension=1 mu=-0.5 beta=1.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=Logistic name=Logistic dimension=1 alpha=-0.5 beta=1.5
-Distribution Logistic(alpha = -0.5, beta = 1.5)
+Distribution class=Logistic name=Logistic dimension=1 mu=-0.5 beta=1.5
+Distribution Logistic(mu = -0.5, beta = 1.5)
 Elliptical = true
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[0.297531]
@@ -19,7 +19,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[-0.0403812]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.0403812]
 log pdf=-2.03199
 pdf     =0.131075
 pdf (FD)=0.131075
@@ -38,7 +37,7 @@ quantile=class=Point name=Unnamed dimension=1 values=[3.91666]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-5.99534] upper bound=class=Point name=Unnamed dimension=1 values=[4.99534] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Logistic(alpha = -0.5, beta = 1.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Logistic(alpha = -0.5, beta = 1.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Logistic(alpha = -0.5, beta = 1.5)) level=4.11966
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Logistic(mu = -0.5, beta = 1.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Logistic(mu = -0.5, beta = 1.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Logistic(mu = -0.5, beta = 1.5)) level=4.11966
 beta=0.01625
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-5.99534] upper bound=class=Point name=Unnamed dimension=1 values=[4.99534] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -56,11 +55,11 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[alpha : -0.5, beta : 1.5]]
+parameters=[[mu : -0.5, beta : 1.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[3.28987]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[45.4576]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0]
-Standard representative=Logistic(alpha = 0, beta = 1)
+Standard representative=Logistic(mu = 0, beta = 1)

@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Frechet distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,12 +63,14 @@ Distribution FrechetFactory::build() const
 Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
 {
   const Scalar size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Frechet distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Frechet distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Frechet distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
   Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Frechet distribution if data contains NaN or Inf";
   // If the minimum value is zero then one of the shifted values will be zero, leading to an undefined logarithm. The small perturbation is harmless as it is just a matter of getting a reasonable starting point for a further MLE.
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogUniform distribution from a constant sample.";
   // In any case, if the given sample is pathological (lots of zeros, a few positive values) a Frechet distribution is not a plausible candidate.
   if (gamma == 0.0) gamma -= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   // Convert the translated sample in logarithmic scale, in order for the new sample to be distributed according to the Gumbel distribution
@@ -77,8 +79,8 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
     logSample(i, 0) = std::log(sample(i, 0) - gamma);
   // Estimate the associated Gumbel
   const Gumbel associatedGumbel(GumbelFactory().buildAsGumbel(logSample));
-  const Scalar alphaGumbel = associatedGumbel.getAlpha();
-  const Scalar betaGumbel = associatedGumbel.getBeta();
+  const Scalar alphaGumbel = 1.0 / associatedGumbel.getBeta();
+  const Scalar betaGumbel = associatedGumbel.getGamma();
   // Now get the parameter estimate of the Frechet distribution
   const Scalar alphaFrechet = alphaGumbel;
   const Scalar betaFrechet = std::exp(betaGumbel);
@@ -86,24 +88,15 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   Frechet model;
   MaximumLikelihoodFactory mleFactory(model);
   OptimizationAlgorithm algo(mleFactory.getOptimizationAlgorithm());
-  Point startingPoint(3);
-  startingPoint[0] = alphaFrechet;
-  startingPoint[1] = betaFrechet;
-  startingPoint[2] = gamma;
+  const Point startingPoint = {betaFrechet, alphaFrechet, gamma};
   algo.setStartingPoint(startingPoint);
   mleFactory.setOptimizationAlgorithm(algo);
-  const Scalar margin(std::max(1.0, ResourceMap::GetAsScalar("FrechetFactory-BoundMargin")));
-  Point lower(3);
-  lower[0] = alphaFrechet / margin;
-  lower[1] = betaFrechet / margin;
-  lower[2] = gamma - margin * std::abs(gamma);
-  Point upper(3);
-  upper[0] = margin * alphaFrechet;
-  upper[1] = margin * betaFrechet;
-  upper[2] = gamma + margin * std::abs(gamma);
+  const Scalar margin = std::max(1.0, ResourceMap::GetAsScalar("FrechetFactory-BoundMargin"));
+  const Point lower = {betaFrechet / margin, alphaFrechet / margin, gamma - margin * std::abs(gamma)};
+  const Point upper = {margin * betaFrechet,  margin * alphaFrechet, gamma + margin * std::abs(gamma)};
   mleFactory.setOptimizationBounds(Interval(lower, upper));
   const Point parameters(mleFactory.buildParameter(sample));
-  return Frechet(parameters[0], parameters[1], parameters[2]);
+  return buildAsFrechet(parameters);
 }
 
 Frechet FrechetFactory::buildAsFrechet(const Point & parameters) const

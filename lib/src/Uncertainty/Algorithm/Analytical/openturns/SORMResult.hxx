@@ -2,7 +2,7 @@
 /**
  *  @brief SORMResult implements the First Order Reliability Method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,6 @@
 #define OPENTURNS_SORMResult_HXX
 
 #include "openturns/AnalyticalResult.hxx"
-#include "openturns/Event.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Distribution.hxx"
 
@@ -41,20 +40,20 @@ public:
 
   /** Standard constructor */
   SORMResult(const Point & standardSpaceDesignPoint,
-             const Event & limitStateVariable,
+             const RandomVector & limitStateVariable,
              const Bool isStandardPointOriginInFailureSpace);
 
   /* Default constructor (required by SWIG :-<) */
   SORMResult();
 
   /** Virtual constructor */
-  virtual SORMResult * clone() const;
+  SORMResult * clone() const override;
 
   /** EventProbabilityBreitung accessor */
   Scalar getEventProbabilityBreitung() const;
 
-  /** EventProbabilityHohenBichler accessor */
-  Scalar getEventProbabilityHohenBichler() const;
+  /** EventProbabilityHohenbichler accessor */
+  Scalar getEventProbabilityHohenbichler() const;
 
   /** EventProbabilityTvedt accessor */
   Scalar getEventProbabilityTvedt() const;
@@ -62,8 +61,8 @@ public:
   /** GeneralisedReliabilityIndexBreitung accessor */
   Scalar getGeneralisedReliabilityIndexBreitung() const;
 
-  /** GeneralisedReliabilityIndexHohenBichler accessor */
-  Scalar getGeneralisedReliabilityIndexHohenBichler() const;
+  /** GeneralisedReliabilityIndexHohenbichler accessor */
+  Scalar getGeneralisedReliabilityIndexHohenbichler() const;
 
   /** GeneralisedReliabilityIndexTvedt accessor */
   Scalar getGeneralisedReliabilityIndexTvedt() const;
@@ -72,16 +71,16 @@ public:
   Point getSortedCurvatures() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
@@ -95,10 +94,10 @@ private:
   mutable Point sortedCurvatures_;
   mutable Bool isAlreadyComputedSortedCurvatures_;
   mutable Scalar eventProbabilityBreitung_;
-  mutable Scalar eventProbabilityHohenBichler_;
+  mutable Scalar eventProbabilityHohenbichler_;
   mutable Scalar eventProbabilityTvedt_;
   mutable Scalar generalisedReliabilityIndexBreitung_;
-  mutable Scalar generalisedReliabilityIndexHohenBichler_;
+  mutable Scalar generalisedReliabilityIndexHohenbichler_;
   mutable Scalar generalisedReliabilityIndexTvedt_;
   Distribution standardDistribution_;
   Distribution standardMarginal_;

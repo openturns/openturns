@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the CompositeProcess process
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,23 +48,23 @@ public:
                    const Process & antecedent);
 
   /** Virtual constructor */
-  virtual CompositeProcess * clone() const;
+  CompositeProcess * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter  - pretty print */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Is the underlying a composite process ? */
-  Bool isComposite() const;
+  Bool isComposite() const override;
 
   /** Realization accessor */
-  virtual Field getRealization() const;
+  Field getRealization() const override;
 
   /** Continuation of the last realization on a given number of steps */
   using ProcessImplementation::getFuture;
-  TimeSeries getFuture(const UnsignedInteger stepNumber) const;
+  TimeSeries getFuture(const UnsignedInteger stepNumber) const override;
 
   /** Antecedent accessor */
   Process getAntecedent() const;
@@ -73,13 +73,13 @@ public:
   FieldFunction getFunction() const;
 
   /** Get the marginal random vector corresponding to indices components */
-  Process getMarginal(const Indices & indices) const;
+  Process getMarginal(const Indices & indices) const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

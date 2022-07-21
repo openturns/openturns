@@ -16,6 +16,10 @@ OT_OptimizationProblem_getLevelFunction_doc
 OT_OptimizationProblem_getLevelValue_doc
 %feature("docstring") OT::OptimizationProblem::getObjective
 OT_OptimizationProblem_getObjective_doc
+%feature("docstring") OT::OptimizationProblem::getVariablesType
+OT_OptimizationProblem_getVariablesType_doc
+%feature("docstring") OT::OptimizationProblem::isContinuous
+OT_OptimizationProblem_isContinuous_doc
 
 %feature("docstring") OT::OptimizationProblem::hasBounds
 OT_OptimizationProblem_hasBounds_doc
@@ -50,3 +54,5 @@ OT_OptimizationProblem_setResidualFunction_doc
 OT_OptimizationProblem_getResidualFunction_doc
 %feature("docstring") OT::OptimizationProblem::hasResidualFunction
 OT_OptimizationProblem_hasResidualFunction_doc
+%feature("docstring") OT::OptimizationProblem::setVariablesType
+OT_OptimizationProblem_setVariablesType_doc

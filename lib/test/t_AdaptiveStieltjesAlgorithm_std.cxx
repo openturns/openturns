@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class AdaptiveStieltjesAlgorithm for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,7 +57,7 @@ int main(int, char *[])
     }
     {
       // Non-centered case
-      Beta distribution(0.5, 3.0, -1.0, 1.0);
+      Beta distribution(0.5, 2.5, -1.0, 1.0);
       JacobiFactory algo0(-0.5, 1.5);
       AdaptiveStieltjesAlgorithm algo1(distribution);
       fullprint << algo1 << std::endl;

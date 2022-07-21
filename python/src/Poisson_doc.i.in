@@ -17,7 +17,7 @@ Its probability density function is defined as:
 
     \Prob{X = k} = \frac{\lambda^k}{k!}\;e^{-\lambda}, \,  k \in \Nset
 
-It is evaluated using  Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_, see :class:`~openturns.DistFunc.dPoisson`.
+It is evaluated using  Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_, see :meth:`~openturns.DistFunc_dPoisson`.
 
 Its first moments are:
 
@@ -26,10 +26,10 @@ Its first moments are:
 
     \begin{eqnarray*}
         \Expect{X} & = & \lambda \\
-        \Var{X} & = & sqrt{\lambda}
+        \Var{X} & = & \sqrt{\lambda}
     \end{eqnarray*}
 
-The sampling is done using the rejection algorithm described in [devroye1986]_ and [stadlober1990]_, see :class:`~openturns.DistFunc.rPoisson`.
+The sampling is done using the rejection algorithm described in [devroye1986]_ and [stadlober1990]_, see :meth:`~openturns.DistFunc_rPoisson`.
     
 Examples
 --------

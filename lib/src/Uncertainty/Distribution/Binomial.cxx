@@ -2,7 +2,7 @@
 /**
  *  @brief The Binomial distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -119,7 +119,7 @@ Scalar Binomial::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar k = point[0];
-  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return -SpecFunc::LogMaxScalar;
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return SpecFunc::LowestScalar;
   return DistFunc::logdBinomial(n_, p_, static_cast<UnsignedInteger>(round(k)));
 }
 
@@ -219,10 +219,7 @@ Sample Binomial::getSupport(const Interval & interval) const
 /* Parameters value accessor */
 Point Binomial::getParameter() const
 {
-  Point point(2);
-  point[0] = n_;
-  point[1] = p_;
-  return point;
+  return {static_cast<Scalar>(n_), p_};
 }
 
 void Binomial::setParameter(const Point & parameter)
@@ -236,10 +233,7 @@ void Binomial::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Binomial::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "n";
-  description[1] = "p";
-  return description;
+  return {"n", "p"};
 }
 
 /* Check if the distribution is elliptical */

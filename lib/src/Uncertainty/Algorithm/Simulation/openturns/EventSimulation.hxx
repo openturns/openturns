@@ -3,7 +3,7 @@
  *  @brief EventSimulation is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,7 +28,7 @@
 #include "openturns/Last.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
-#include "openturns/Event.hxx"
+#include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,33 +44,33 @@ class OT_API EventSimulation
 public:
 
   /** Constructor with parameters */
-  explicit EventSimulation(const Event & event,
+  explicit EventSimulation(const RandomVector & event,
                            const Bool verbose = true,
                            const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
-  virtual EventSimulation * clone() const;
+  EventSimulation * clone() const override;
 
   /** Event accessor */
-  Event getEvent() const;
+  RandomVector getEvent() const;
 
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. */
-  virtual void run();
+  void run() override;
 
   /** Draw the probability convergence at the given level */
   Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -87,7 +87,7 @@ protected:
   friend class Factory<EventSimulation>;
 
   // The event we are computing the probability of
-  Event event_;
+  RandomVector event_;
 
   // Result of the simulation
   ProbabilitySimulationResult result_;

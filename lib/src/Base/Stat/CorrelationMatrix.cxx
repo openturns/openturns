@@ -2,7 +2,7 @@
 /**
  *  @brief The class CorrelationMatrix implements correlation matrices
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,6 +42,13 @@ CorrelationMatrix::CorrelationMatrix(const Implementation & i)
 /* Constructor with implementation */
 CorrelationMatrix::CorrelationMatrix(const MatrixImplementation & i)
   : CovarianceMatrix(i)
+{
+  // Nothing to do
+}
+
+/* Constructor from SymmetricMatrix */
+CorrelationMatrix::CorrelationMatrix(const SymmetricMatrix & sym)
+  : CovarianceMatrix(sym)
 {
   // Nothing to do
 }

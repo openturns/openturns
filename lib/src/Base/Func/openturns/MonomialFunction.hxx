@@ -2,7 +2,7 @@
 /**
  *  @brief Monomial function implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,29 +45,29 @@ public:
   explicit MonomialFunction();
 
   /** Standard constructor */
-  MonomialFunction(const UnsignedInteger degree);
+  explicit MonomialFunction(const UnsignedInteger degree);
 
   /** Virtual constructor */
-  virtual MonomialFunction * clone() const;
+  MonomialFunction * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** UniVariateFunctionImplementation are evaluated as functors */
-  Scalar operator() (const Scalar x) const;
+  Scalar operator() (const Scalar x) const override;
 
   /** UniVariateFunctionImplementation gradient */
-  Scalar gradient(const Scalar x) const;
+  Scalar gradient(const Scalar x) const override;
 
   /** UniVariateFunctionImplementation hessian */
-  Scalar hessian(const Scalar x) const;
+  Scalar hessian(const Scalar x) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

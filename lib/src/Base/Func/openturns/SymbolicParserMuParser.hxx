@@ -2,7 +2,7 @@
 /**
  *  @brief A math expression parser
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,23 +34,31 @@ class SymbolicParserMuParser
 {
 
   CLASSNAME
-
+  friend struct SymbolicParserMuParserPolicy;
 public:
   /** Default constructor */
   SymbolicParserMuParser();
 
   /** Virtual copy constructor */
-  virtual SymbolicParserMuParser * clone() const;
+  SymbolicParserMuParser * clone() const override;
 
-  Point operator()(const Point & inP) const;
-  Sample operator()(const Sample & inS) const;
+  Point operator()(const Point & inP) const override;
+  Sample operator()(const Sample & inS) const override;
 
 private:
   void initialize() const;
 
-  mutable Collection<Pointer<MuParser> > parsers_;
-  mutable Point inputStack_;
+  Collection<Pointer<MuParser > > allocateExpressions(Point & stack) const;
 
+  mutable Collection<Pointer<MuParser> > expressions_;
+  mutable Point stack_;
+
+  // one expression per thread for batch evaluation
+  typedef Collection< Pointer< MuParser > > ExpressionCollection;
+  mutable Collection<ExpressionCollection> threadExpressions_;
+  mutable Collection<Point> threadStack_;
+
+  UnsignedInteger smallSize_ = 0;
 };
 
 END_NAMESPACE_OPENTURNS

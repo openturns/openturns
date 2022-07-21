@@ -1,8 +1,9 @@
-Distribution          =class=Frechet name=Frechet dimension=1 alpha=2 beta=2.5 gamma=-1.5
-Estimated distribution=class=Frechet name=Frechet dimension=1 alpha=1.9596 beta=2.48708 gamma=-1.47832
-Default distribution=class=Frechet name=Frechet dimension=1 alpha=1 beta=1 gamma=0
-Distribution from parameters=class=Frechet name=Frechet dimension=1 alpha=2 beta=2.5 gamma=-1.5
-Frechet          =class=Frechet name=Frechet dimension=1 alpha=2 beta=2.5 gamma=-1.5
-Estimated frechet=class=Frechet name=Frechet dimension=1 alpha=1.9596 beta=2.48708 gamma=-1.47832
-Default frechet=class=Frechet name=Frechet dimension=1 alpha=1 beta=1 gamma=0
-Frechet from parameters=class=Frechet name=Frechet dimension=1 alpha=2 beta=2.5 gamma=-1.5
+Distribution          =class=Frechet name=Frechet dimension=1 beta=2.5 alpha=2 gamma=-1.5
+Estimated distribution=class=Frechet name=Frechet dimension=1 beta=2.48707 alpha=1.95959 gamma=-1.47831
+Default distribution=class=Frechet name=Frechet dimension=1 beta=1 alpha=1 gamma=0
+Distribution from parameters=class=Frechet name=Frechet dimension=1 beta=2.5 alpha=2 gamma=-1.5
+Frechet          =class=Frechet name=Frechet dimension=1 beta=2.5 alpha=2 gamma=-1.5
+Estimated frechet=class=Frechet name=Frechet dimension=1 beta=2.48707 alpha=1.95959 gamma=-1.47831
+Default frechet=class=Frechet name=Frechet dimension=1 beta=1 alpha=1 gamma=0
+Frechet from parameters=class=Frechet name=Frechet dimension=1 beta=2.5 alpha=2 gamma=-1.5
+Estimated dist from mixture sample=class=Frechet name=Frechet dimension=1 beta=2.57426 alpha=1.71402 gamma=-0.833636

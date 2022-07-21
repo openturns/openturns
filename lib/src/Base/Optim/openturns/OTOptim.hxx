@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Optim
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,9 +23,11 @@
 #define OPENTURNS_OTOPTIM_HXX
 
 #include "openturns/AbdoRackwitz.hxx"
+#include "openturns/Bonmin.hxx"
 #include "openturns/Ceres.hxx"
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
+#include "openturns/Ipopt.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/NearestPointCheckerResult.hxx"
 #include "openturns/NearestPointChecker.hxx"
@@ -39,7 +41,7 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationResult.hxx"
-#include "openturns/OPTpp.hxx"
+#include "openturns/Pagmo.hxx"
 #include "openturns/SQP.hxx"
 #include "openturns/TNC.hxx"
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Bayesian
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,12 +26,12 @@
 #include "openturns/CalibrationAlgorithm.hxx"
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
 #include "openturns/CalibrationResult.hxx"
-#include "openturns/CalibrationStrategy.hxx"
-#include "openturns/CalibrationStrategyImplementation.hxx"
 #include "openturns/LinearLeastSquaresCalibration.hxx"
-#include "openturns/MCMC.hxx"
 #include "openturns/NonLinearLeastSquaresCalibration.hxx"
-#include "openturns/RandomWalkMetropolisHastings.hxx"
 #include "openturns/GaussianNonLinearCalibration.hxx"
+#include "openturns/MetropolisHastingsImplementation.hxx"
+#include "openturns/RandomWalkMetropolisHastings.hxx"
+#include "openturns/IndependentMetropolisHastings.hxx"
+#include "openturns/Gibbs.hxx"
 
 #endif /* OPENTURNS_OTBAYESIAN_HXX */

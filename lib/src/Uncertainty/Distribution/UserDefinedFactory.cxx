@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for UserDefined distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,6 +20,7 @@
  */
 #include "openturns/UserDefinedFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -64,7 +65,9 @@ UserDefined UserDefinedFactory::buildAsUserDefined(const Sample & sample,
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution from an empty sample";
-  const Scalar p = 1.0 / Scalar(size);
+  const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an UserDefined distribution if data contains NaN or Inf";
+  const Scalar p = 1.0 / size;
   UserDefined result(sample, Point(size, p));
   result.compactSupport(epsilon);
   result.setDescription(sample.getDescription());

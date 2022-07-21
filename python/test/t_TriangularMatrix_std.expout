@@ -23,7 +23,7 @@ test : matrix multiplication method
 prod =  class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,3,25]
 test : multiplication with a numerical point method
 pt =  class=Point name=Unnamed dimension=2 values=[1,2]
-ptResult =  [1,11]
+ptResult =  class=Point name=Unnamed dimension=2 values=[1,11]
 test : multiplication and division by a numerical scalar methods
 scalprod =  class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,9,0,12]
 scaldiv1 =  class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,1,0,1.33333]

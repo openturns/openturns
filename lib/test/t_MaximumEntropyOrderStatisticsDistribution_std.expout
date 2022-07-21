@@ -7,7 +7,7 @@ streamObject(const T & anObject)
 class=MaximumEntropyOrderStatisticsDistribution name=MaximumEntropyOrderStatisticsDistribution dimension=2 collection=[class=Uniform name=Uniform dimension=1 a=-1 b=0.5,class=Uniform name=Uniform dimension=1 a=-0.5 b=1]
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=MaximumEntropyOrderStatisticsDistribution name=MaximumEntropyOrderStatisticsDistribution dimension=4 collection=[class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1.1 c=-1 d=1 h=0.6452,class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=1.2 a=2.718 b=3.32,class=Triangular name=Triangular dimension=1 a=3 m=4.5 b=5,class=Beta name=Beta dimension=1 r=2.5 t=6 a=4.7 b=5.2]
+Distribution class=MaximumEntropyOrderStatisticsDistribution name=MaximumEntropyOrderStatisticsDistribution dimension=4 collection=[class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1.1 c=-1 d=1 h=0.6452,class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=1.2 a=2.718 b=3.32,class=Triangular name=Triangular dimension=1 a=3 m=4.5 b=5,class=Beta name=Beta dimension=1 alpha=2.5 beta=3.5 a=4.7 b=5.2]
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=4 values=[-0.5148,3.243,3.674,4.751]
@@ -33,7 +33,7 @@ kurtosis=class=Point name=Unnamed dimension=4 values=[2.398,1.805,2.4,2.4]
 covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.3933,0,0,0,0,0.03016,0.001766,0,0,0.001766,0.1806,0.001888,0,0,0.001888,0.008681]
 correlation=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.02392,0,0,0.02392,1,0.04769,0,0,0.04769,1]
 spearman=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.01685,0,0,0.01685,1,0.04888,0,0,0.04888,1]
-parameters=[[a_marginal_0 : -2, b_marginal_0 : -1.1, c_marginal_0 : -1, d_marginal_0 : 1],[aLog_marginal_1 : 1, bLog_marginal_1 : 1.2],[a_marginal_2 : 3, m_marginal_2 : 4.5, b_marginal_2 : 5],[r_marginal_3 : 2.5, t_marginal_3 : 6, a_marginal_3 : 4.7, b_marginal_3 : 5.2]]
+parameters=[[a_marginal_0 : -2, b_marginal_0 : -1.1, c_marginal_0 : -1, d_marginal_0 : 1],[aLog_marginal_1 : 1, bLog_marginal_1 : 1.2],[a_marginal_2 : 3, m_marginal_2 : 4.5, b_marginal_2 : 5],[alpha_marginal_3 : 2.5, beta_marginal_3 : 3.5, a_marginal_3 : 4.7, b_marginal_3 : 5.2]]
 margin=class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1.1 c=-1 d=1 h=0.6452
 margin PDF=0.322581
 margin CDF=0.83871
@@ -52,7 +52,7 @@ margin CDF=0.48
 margin quantile=class=Point name=Unnamed dimension=1 values=[4.776]
 margin realization=class=Point name=Unnamed dimension=1 values=[4.12]
 margin range=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[3] upper bound=class=Point name=Unnamed dimension=1 values=[5] finite lower bound=[1] finite upper bound=[1]
-margin=class=Beta name=Beta dimension=1 r=2.5 t=6 a=4.7 b=5.2
+margin=class=Beta name=Beta dimension=1 alpha=2.5 beta=3.5 a=4.7 b=5.2
 margin PDF=2.55491
 margin CDF=0.819685
 margin quantile=class=Point name=Unnamed dimension=1 values=[5.07]

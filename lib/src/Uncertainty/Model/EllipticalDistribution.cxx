@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for elliptical distributions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,8 +68,6 @@ EllipticalDistribution::EllipticalDistribution(const Point & mean,
         << "Arguments have incompatible dimensions: R dimension=" << dimension
         << " sigma dimension=" << sigma.getDimension()
         << " mean dimension=" << mean.getDimension();
-  // We check that the given correlation matrix is definite positive
-  if ( !R_.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
   // We check that the marginal standard deviations are > 0
   for(UnsignedInteger i = 0; i < dimension; ++i)
     if (!(sigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
@@ -152,7 +150,7 @@ Scalar EllipticalDistribution::computeDensityGenerator(const Scalar ) const
 Scalar EllipticalDistribution::computeLogDensityGenerator(const Scalar betaSquare) const
 {
   const Scalar densityGenerator = computeDensityGenerator(betaSquare);
-  if (densityGenerator == 0.0) return SpecFunc::LogMinScalar;
+  if (densityGenerator == 0.0) return SpecFunc::LowestScalar;
   return std::log(densityGenerator);
 }
 
@@ -327,7 +325,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       const Scalar iLx = (point[0] - mean_[0]) / sigma_[0];
       const Scalar betaSquare = iLx * iLx;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
     }
     break;
@@ -348,7 +346,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       }
       const Scalar betaSquare = iLx * iLx + iLy * iLy;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
     }
     break;
@@ -372,7 +370,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       }
       const Scalar betaSquare = iLx * iLx + iLy * iLy + iLz * iLz;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
     }
     break;
@@ -380,7 +378,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       const Point iLx(inverseCholesky_ * (point - mean_));
       const Scalar betaSquare = iLx.normSquare();
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
   }
 }
@@ -394,10 +392,10 @@ Point EllipticalDistribution::computePDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   const Point u(normalize(point));
   const Point iRu(inverseR_ * u);
-  const Scalar betaSquare = dot(u, iRu);
+  const Scalar betaSquare = u.dot(iRu);
   const Scalar phi = computeDensityGenerator(betaSquare);
   const Scalar phiDerivative = computeDensityGeneratorDerivative(betaSquare);
-  Point pdfGradient(2 * dimension);
+  Point pdfGradient(2 * dimension + (dimension > 1 ? ((dimension - 1)*dimension) / 2 : 0));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     Scalar iSigma = 1.0 / sigma_[i];
@@ -405,6 +403,21 @@ Point EllipticalDistribution::computePDFGradient(const Point & point) const
     pdfGradient[i] = -2.0 * normalizationFactor_ * phiDerivative * iRu[i] * iSigma;
     // dPDF / dsigma_i
     pdfGradient[dimension + i] = pdfGradient[i] * u[i] - normalizationFactor_ * phi * iSigma;
+  }
+  if (getDimension() > 1)
+  {
+    // use non-centered finite difference for correlation parameters
+    const Scalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 0.5);
+    const Scalar centerPDF = computePDF(point);
+    Implementation cloneDistribution(clone());
+    for (UnsignedInteger i = 2 * dimension; i < pdfGradient.getSize(); ++i)
+    {
+      Point newParameters(getParameter());
+      newParameters[i] += eps;
+      cloneDistribution->setParameter(newParameters);
+      const Scalar rightPDF = cloneDistribution->computePDF(point);
+      pdfGradient[i] = (rightPDF - centerPDF) / eps;
+    }
   }
   return pdfGradient;
 }
@@ -427,14 +440,22 @@ LevelSet EllipticalDistribution::computeMinimumVolumeLevelSetWithThreshold(const
   if (getDimension() == 1) return DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
   RadialCDFWrapper radialWrapper(this);
   const Distribution standard(getStandardDistribution());
-  Point point(getDimension());
+  // First compute the log normalization factor between the distribution and its standard representative. It is made of two normalization factors:
+  // 1) The elliptical one, taking into account the covariance matrix. This coefficient is equal to one for standard representatives.
+  // 2) The specific one, taking into account the specific parameters (eg Normal vs Student)
+  // This last coefficient is embedded into computeLogDensityGenerator.
+  Scalar logThreshold = std::log(normalizationFactor_) + computeLogDensityGenerator(0) - standard.computeLogPDF(Point(dimension_));
+  // Then compute the log-pdf iso-value of the level-set
   const Scalar xMax = standard.getRange().getUpperBound().norm();
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
+  Point point(dimension_);
   point[0] = solver.solve(radialWrapper, prob, 0.0, xMax, 0.0, 1.0);
+  logThreshold += standard.computeLogPDF(point);
+  // Compute the pdf threshold
+  threshold = std::exp(logThreshold);
+  // Finally, build the level set
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
-  const Scalar logThreshold = standard.computeLogPDF(point);
-  threshold = std::exp(logThreshold);
   return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), -logThreshold);
 }
 
@@ -444,26 +465,53 @@ void EllipticalDistribution::update()
   const UnsignedInteger dimension = getDimension();
   if (dimension > 1)
   {
-    // Build the shape matrix
+    // Compute the shape matrix
     shape_ = R_;
     for (UnsignedInteger i = 0; i < dimension; ++i)
       for (UnsignedInteger j = 0; j <= i; ++j)
         shape_(i, j) *= sigma_[i] * sigma_[j];
-    // Compute its Cholesky factor
-    cholesky_ = shape_.computeCholesky();
-
+    // Try to compute the Cholesky factor of the shape matrix
+    try
+    {
+      cholesky_ = shape_.computeCholesky();
+    }
+    // In the case where the matrix is not numerically SPD, try a unique regularization loop
+    // as it should succeed (otherwise the covariance matrix is truly non SPD)
+    // Here we use a generic exception as different exceptions may be thrown
+    catch(const Exception &)
+    {
+      Scalar largestEV = 0.0;
+      (void) shape_.getImplementation()->computeLargestEigenValueModuleSym(largestEV, 10, 1e-2);
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+        R_(i, i) += largestEV * SpecFunc::Precision;
+      // This time throw if the decomposition fails
+      try
+      {
+        cholesky_ = R_.computeCholesky();
+      }
+      catch (const Exception &)
+      {
+        throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
+      } // Second decomposition
+    } // First decomposition
     inverseCholesky_ = cholesky_.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
-
     // Inverse the correlation matrix R = D^(-1).L.L'.D^(-1)
     // R^(-1) = D.L^(-1).L^(-1)'.D
     inverseR_ = SymmetricMatrix(dimension);
     const SquareMatrix inverseShape(inverseCholesky_.transpose() * inverseCholesky_);
     for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      const Scalar sigmaI = std::max(SpecFunc::Precision, sigma_[i]);
       for (UnsignedInteger j = 0; j <= i; ++j)
-        inverseR_(i, j) = sigma_[i] * inverseShape(i, j) * sigma_[j];
+      {
+        const Scalar sigmaJ = std::max(SpecFunc::Precision, sigma_[j]);
+        const Scalar sigmaIJ = sigmaI * sigmaJ;
+        inverseR_(i, j) = inverseShape(i, j) * sigmaIJ;
+      } // j
+    } // i
     normalizationFactor_ = 1.0;
     for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky_(i, i);
-  }
+  } // dimension > 1
   else  // dimension 1
   {
     if (shape_.getDimension() == 0)  // First time we enter here, set matrix sizes
@@ -477,7 +525,7 @@ void EllipticalDistribution::update()
     cholesky_(0, 0) = sigma_[0];
     inverseCholesky_(0, 0) = 1.0 / sigma_[0];
     normalizationFactor_ = 1.0 / sigma_[0];
-  }
+  } // dimension == 1
   isAlreadyComputedMean_ = true;
 }
 

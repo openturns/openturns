@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,7 @@
 #ifndef OPENTURNS_MATERNMODEL_HXX
 #define OPENTURNS_MATERNMODEL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API MaternModel
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -48,46 +48,47 @@ public:
               const Scalar nu);
 
   /** Virtual copy constructor */
-  MaternModel * clone() const;
+  MaternModel * clone() const override;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const;
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point & tau) const override;
 #ifndef SWIG
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const;
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                         const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
 
+  Scalar computeAsScalar(const Scalar tau) const override;
+
   /** Gradient */
-  virtual Matrix partialGradient(const Point & s,
-                                 const Point & t) const;
+  Matrix partialGradient(const Point & s, const Point & t) const override;
 
   // Reimplement the setScale method
-  using StationaryCovarianceModel::setScale;
-  void setScale(const Point & scale);
+  using CovarianceModelImplementation::setScale;
+  void setScale(const Point & scale) override;
 
   /** Nu accessor */
   Scalar getNu() const;
   void setNu(const Scalar nu);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
   /** Parameter accessor */
-  virtual void setFullParameter(const Point & parameter);
-  virtual Point getFullParameter() const;
-  virtual Description getFullParameterDescription() const;
+  void setFullParameter(const Point & parameter) override;
+  Point getFullParameter() const override;
+  Description getFullParameterDescription() const override;
 
 private:
 

@@ -2,7 +2,7 @@
 /**
  *  @brief This is an abstract class for basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,11 +54,11 @@ public:
   virtual FunctionCollection getSubBasis(const Indices & indices) const;
 
   /** Virtual constructor */
-  virtual BasisImplementation * clone() const;
+  BasisImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-//   virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+//   String __str__(const String & offset = "") const override;
 
   /** Dimension accessor */
   virtual UnsignedInteger getDimension() const;
@@ -73,10 +73,10 @@ public:
   virtual void add(const Function & elt);
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

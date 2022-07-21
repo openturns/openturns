@@ -2,7 +2,7 @@
 /**
  *  @brief NLopt solver
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,10 +45,10 @@ public:
                  const String & algoName = "LD_SLSQP");
 
   /** Virtual constructor */
-  virtual NLopt * clone() const;
+  NLopt * clone() const override;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-  void run();
+  void run() override;
 
   /** NLopt algorithm names accessor */
   static Description GetAlgorithmNames();
@@ -68,22 +68,20 @@ public:
   static void SetSeed(const UnsignedInteger seed);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
-
-  static Bool IsAvailable();
+  void load(Advocate & adv) override;
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  virtual void checkProblem(const OptimizationProblem & problem) const;
+  void checkProblem(const OptimizationProblem & problem) const override;
 
   String algoName_;
 
@@ -107,10 +105,10 @@ private:
   static double ComputeObjective(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
 
   /** Compute the inequality constraint of the optimization problem */
-  static double ComputeInequalityConstraint(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
+  static void ComputeInequalityConstraint(unsigned m, double * result, unsigned n, const double * x, double * grad, void * f_data);
 
   /** Compute the equality constraint of the optimization problem */
-  static double ComputeEqualityConstraint(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
+  static void ComputeEqualityConstraint(unsigned m, double * result, unsigned n, const double * x, double * grad, void * f_data);
 
   /// temporary, used to track input/outputs
   Sample evaluationInputHistory_;

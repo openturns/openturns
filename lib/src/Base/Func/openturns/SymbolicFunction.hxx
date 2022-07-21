@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements symbolic functions.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,10 +56,13 @@ public:
                     const String & formula);
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
-  /** Static methods for documentation of analytical fnctions */
+  /** Accessor to the formulas */
+  Description getFormulas() const;
+
+  /** Static methods for documentation of analytical fonctions */
   static Description GetValidParsers();
   static Description GetValidConstants();
   static Description GetValidFunctions();

@@ -6,6 +6,8 @@ Refer to :ref:`functional_chaos`, :ref:`polynomial_least_squares`.
 Available constructors:
     FunctionalChaosAlgorithm(*inputSample, outputSample*)
 
+    FunctionalChaosAlgorithm(*inputSample, outputSample, distribution*)
+
     FunctionalChaosAlgorithm(*inputSample, outputSample, distribution, adaptiveStrategy*)
 
     FunctionalChaosAlgorithm(*inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy*)
@@ -122,8 +124,8 @@ for more details.
 strategy must be chosen for the selection of the different terms of the
 multivariate basis. The selected terms are gathered in the subset *K*.
 
-For more details on the possible strategies, see :class:`~openturns.FixedStrategy`,
-:class:`~openturns.SequentialStrategy` and :class:`~openturns.CleaningStrategy`.
+For more details on the possible strategies, see :class:`~openturns.FixedStrategy`
+and :class:`~openturns.CleaningStrategy`.
 
 **Step 3 -  Evaluation strategy of the coefficients**: a
 strategy must be chosen for the estimation of te coefficients :math:`\alpha_k`. 
@@ -204,8 +206,7 @@ Test it:
 >>> print(model(X))
 [0.239713]
 >>> print(metamodel(X))
-[0.239514]
-"
+[0.239514]"
 
 // ---------------------------------------------------------------------
 
@@ -286,22 +287,3 @@ strategy : :class:`~openturns.ProjectionStrategy`
     Strategy to estimate the coefficients :math:`\alpha_k`."
 
 // ---------------------------------------------------------------------
-
-%feature("docstring") OT::FunctionalChaosAlgorithm::BuildDistribution
-"Recover the distribution, with metamodel performance in mind.
-
-For each marginal, find the best 1-d continuous parametric model,
-else fallback to the use of :class:`~openturns.KernelSmoothing`.
-For the copula, the Spearman independance test is used on each component pair
-to decide whether an independent copula can be used,
-else use a :class:`~openturns.NormalCopula`.
-
-Parameters
-----------
-sample : :class:`~openturns.Sample`
-    Input sample.
-
-Returns
--------
-distribution : :class:`~openturns.Distribution`
-    Input distribution."

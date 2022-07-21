@@ -2,7 +2,7 @@
 /**
  *  @brief Matrix implements the classical mathematical matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -91,8 +91,8 @@ public:
   virtual Matrix clean(const Scalar threshold) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
@@ -117,10 +117,10 @@ public:
 
   /** Matrix reshape */
   Matrix reshape(const UnsignedInteger newRowDim,
-		 const UnsignedInteger newColDim) const;
+                 const UnsignedInteger newColDim) const;
   void reshapeInPlace(const UnsignedInteger newRowDim,
-		      const UnsignedInteger newColDim);
-  
+                      const UnsignedInteger newColDim);
+
   /** Row extraction */
   const Matrix getRow(const UnsignedInteger rowIndex) const;
   /** Column extration */
@@ -179,11 +179,25 @@ public:
   /** Empty returns true if there is no element in the matrix */
   Bool isEmpty() const;
 
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Scalar * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
-  UnsignedInteger __stride__ (UnsignedInteger dim) const;
+  /** Low-level data access */
+  const Scalar * data () const;
+  UnsignedInteger elementSize() const;
+  UnsignedInteger stride(const UnsignedInteger dim) const;
+
+  /** Extract diagonal */
+  Matrix getDiagonal(const SignedInteger k = 0) const;
+
+  /** Fill diagonal with values */
+  void setDiagonal(const Point &diag, const SignedInteger k = 0);
+
+  /** Hadamard product aka elementwise product */
+  Matrix computeHadamardProduct(const Matrix &other) const;
+
+  /** Sum all coefficients */
+  virtual Scalar computeSumElements() const;
+
+  /** All elements are squared */
+  void squareElements();
 
 }; /* class Matrix */
 

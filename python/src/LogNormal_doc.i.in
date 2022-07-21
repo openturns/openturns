@@ -1,17 +1,14 @@
 %feature("docstring") OT::LogNormal
 "Lognormal distribution.
 
-Available constructors:
-    LogNormal(*muLog=0.0, sigmaLog=1.0, gamma=0.0*)
-
 Parameters
 ----------
 muLog : float
-    location parameter :math:`\mu_\ell`, the expectation of the logarithm of the log-normal random variable.
+    Location parameter :math:`\mu_\ell`, the expectation of the logarithm of the log-normal random variable.
 sigmaLog : float, :math:`\sigma_\ell > 0`
-    scale parameter :math:`\sigma_\ell`, the standard deviation of the logarithm of the log-normal random variable.
+    Scale parameter :math:`\sigma_\ell`, the standard deviation of the logarithm of the log-normal random variable.
 gamma : float, optional
-    Shift parameter :math:`\gamma < \mu`.
+    Location parameter :math:`\gamma < \mu`.
 
 Notes
 -----
@@ -82,12 +79,12 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LogNormal::getGamma
-"Accessor to the distribution's shift parameter :math:`\gamma`.
+"Accessor to the distribution's location parameter :math:`\gamma`.
 
 Returns
 -------
 gamma : float
-    Shift parameter :math:`\gamma`."
+    Location parameter :math:`\gamma`."
 
 // ---------------------------------------------------------------------
 
@@ -142,12 +139,12 @@ cov : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LogNormal::setGamma
-"Accessor to the distribution's shift parameter :math:`\gamma`.
+"Accessor to the distribution's location parameter :math:`\gamma`.
 
 Parameters
 ----------
 gamma : float, :math:`\gamma < \mu`
-    Shift parameter :math:`\gamma`."
+    Location parameter :math:`\gamma`."
 
 // ---------------------------------------------------------------------
 

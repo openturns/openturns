@@ -2,7 +2,7 @@
 /**
  *  @brief The Wishart distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -153,16 +153,14 @@ Scalar Wishart::computePDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const Scalar logPDF = computeLogPDF(m);
-  const Scalar pdf = (logPDF == -SpecFunc::LogMaxScalar ? 0.0 : std::exp(logPDF));
-  return pdf;
+  return std::exp(logPDF);
 }
 
 Scalar Wishart::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const Scalar logPDF = computeLogPDF(point);
-  const Scalar pdf = (logPDF == -SpecFunc::LogMaxScalar) ? 0.0 : std::exp(logPDF);
-  return pdf;
+  return std::exp(logPDF);
 }
 
 Scalar Wishart::computeLogPDF(const Point & point) const
@@ -204,7 +202,7 @@ Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
   }
   catch (...)
   {
-    return -SpecFunc::LogMaxScalar;
+    return SpecFunc::LowestScalar;
   }
 }
 
@@ -281,7 +279,7 @@ Wishart::PointWithDescriptionCollection Wishart::getParametersCollection() const
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
       point[index] = V(i, j);
-      description[index] = String(OSS() << "v_" << i << "_" << j);
+      description[index] = String(OSS() << "V_" << i << "_" << j);
       ++index;
     }
   point[index] = nu_;

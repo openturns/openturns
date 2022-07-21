@@ -1,0 +1,93 @@
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorConditionalSensitivity
+"Implement a HSIC estimator for conditional analysis.
+
+Parameters
+----------
+covarianceModelCollection : list of :class:`~openturns.CovarianceModel`
+    List of all covariance kernels. The :math:`d` first kernels are linked to the input 
+    and the last one is for the output.
+
+X : 2-d sequence of float
+    The input sample used for the HSIC analysis of dimension :math:`d`.
+
+Y : 2-d sequence of float
+    The output sample used for the HSIC analysis of dimension 1.
+
+weightFunction : :class:`~openturns.Function`
+    A weight function used for the inputs.
+
+See also
+--------
+:class:`~openturns.HSICEstimatorGlobalSensitivity`, :class:`~openturns.HSICEstimatorTargetSensitivity`
+
+Notes
+-----
+Conditional sensitivity analysis relies on the :class:`~openturns.HSICVStat` estimator.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from math import pi
+
+Generate input and output samples.
+
+>>> # 3d input distribution with an independent copula
+>>> distX = ot.ComposedDistribution([ot.Uniform(-pi, pi)] * 3)
+>>> X = distX.getSample(100) # get a sample
+>>>
+>>> # Apply the Ishigami model.
+>>> inputs = ['X1', 'X2', 'X3']
+>>> formula = ['sin(X1) + 5.0 * (sin(X2))^2 + 0.1 * X3^4 * sin(X1)']
+>>> modelIshigami = ot.SymbolicFunction(inputs, formula)
+>>> Y = modelIshigami(X) # Y = modelIshigami(X)
+
+Define covariance kernels for the model inputs.
+Put them in a list.
+
+>>> covarianceModelCollection = []
+>>> for i in range(3):
+...     Xi = X.getMarginal(i)
+...     Cov = ot.SquaredExponential(1)
+...     Cov.setScale(Xi.computeStandardDeviation())
+...     covarianceModelCollection.append(Cov)
+
+Append the list with the covariance kernel for the model output.
+
+>>> covarianceModelCollection.append(ot.SquaredExponential(Y.computeStandardDeviation()))
+
+To perform sensititivity analysis under the condition that the output belongs or is near a domain,
+define a weight function based on the distance to this domain.
+
+>>> dist = ot.DistanceToDomainFunction(ot.Interval(5, float('inf')))
+>>> func = ot.SymbolicFunction('x', 'exp(-0.5 * x)')
+>>> weight = ot.ComposedFunction(func, dist)
+
+Build and use the HSIC estimator for conditional sensitivity analysis.
+
+>>> hsic = ot.HSICEstimatorConditionalSensitivity(covarianceModelCollection, X, Y, weight)
+>>> print(hsic.getR2HSICIndices())
+[0.280788,0.00600014,0.0577616]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorConditionalSensitivity::getWeightFunction
+"Get the weight function used.
+
+Returns
+-------
+weightFunction : :class:`~openturns.Function`
+    The weight function used for the conditional estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorConditionalSensitivity::setWeightFunction
+"Set the weight function.
+
+Parameters
+----------
+weightFunction : :class:`~openturns.Function`
+    The weight function used for the conditional estimator."
+
+// ---------------------------------------------------------------------

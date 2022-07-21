@@ -251,6 +251,26 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::DistFunc::dNormal
+"PDF of an unit-variance centered Normal distribution.
+
+Parameters
+----------
+x : float or sequence of floats
+    Location
+
+Returns
+-------
+pdf : float or sequence of floats
+
+Examples
+--------
+>>> import openturns as ot
+>>> pdf = ot.DistFunc.dNormal(3.0)
+>>> pdf = ot.DistFunc.dNormal([-3, -2, 2, 3])"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::DistFunc::pNormal
 "CDF of an unit-variance centered Normal distribution.
 
@@ -329,7 +349,7 @@ k : float
 
 Notes
 -----
-This method allows to compute the *exact* margin factor :math:`k` of a
+This method allows one to compute the *exact* margin factor :math:`k` of a
 pool of :math:`m` Normal populations of size :math:`n` with unknown
 means :math:`\mu_i` and unknown common variance :math:`\sigma^2`.
 Let :math:`m_i=\dfrac{1}{n}\sum_{j=1}^nX_{ij}` be the empirical mean
@@ -360,7 +380,7 @@ of freedom and :math:`R(x;p)` the solution of:
 
 .. math::
     \Phi(x + R) - \Phi(x - R) = p
-    
+
 Examples
 --------
 >>> import openturns as ot
@@ -389,7 +409,7 @@ k : float
 
 Notes
 -----
-This method allows to compute the *exact* margin factor :math:`k` of a
+This method allows one to compute the *exact* margin factor :math:`k` of a
 Normal population of size :math:`n` with unknown
 means :math:`\mu_i` and unknown common variance :math:`\sigma^2`. It
 is equivalent to the pooled version with :math:`m=1`.
@@ -423,7 +443,7 @@ pvalue : float
 
 Notes
 -----
-This method allows to compute the *asymptotic* distribution of the
+This method allows one to compute the *asymptotic* distribution of the
 `Pearson` correlation coefficient issued from two univariate samples
 of size `n`. Basically, we want to measure how coefficient is significatly
 different from `0`. If `tail` is True, the issued value measures probability
@@ -476,8 +496,8 @@ k : int
 
 Returns
 -------
-logp : float
-    The natural logarithm of the probability to get :math:`k` successes.
+p : float
+    The probability to get :math:`k` successes.
 
 Notes
 -----
@@ -489,6 +509,8 @@ Examples
 --------
 >>> import openturns as ot
 >>> p = ot.DistFunc.dPoisson(5.0, 2)"
+
+// ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::rPoisson
 "Realization of a Poisson distribution.
@@ -519,4 +541,47 @@ Examples
 >>> r = ot.DistFunc.rPoisson(5.0)
 >>> r = ot.DistFunc.rPoisson(5.0, 10)"
 
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::DistFunc::dNonCentralChiSquare
+"Probability function of a NonCentralChiSquare distribution.
+
+Parameters
+----------
+nu : float
+lambda : float
+x : float
+precision : float, optional
+maximum_iteration : int, optional
+
+Returns
+-------
+p : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dNonCentralStudent
+"Probability function of a NonCentralStudent distribution.
+
+Parameters
+----------
+nu : float
+delta : float
+x : float
+
+Returns
+-------
+p : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::eZ1
+"Expectation of the min of n independent standard normal random variables.
+
+Parameters
+----------
+n : int
+
+Returns
+-------
+mu : float"

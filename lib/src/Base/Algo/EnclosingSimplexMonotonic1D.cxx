@@ -2,7 +2,7 @@
 /**
  *  @brief  This class provides a point location algorithm on monotonic 1D meshes
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -113,9 +113,9 @@ UnsignedInteger EnclosingSimplexMonotonic1D::queryScalar(const Scalar x) const
 {
   const UnsignedInteger size = vertices_.getSize();
   const UnsignedInteger notFound = simplices_.getSize();
-  if (increasing_ && (x < vertices_(0, 0) || x > vertices_(size - 1, 0)))
+  if (increasing_ && !(x >= vertices_(0, 0) && x <= vertices_(size - 1, 0)))
     return notFound;
-  if (!increasing_ && (x < vertices_(size - 1, 0) || x > vertices_(0, 0)))
+  if (!increasing_ && !(x >= vertices_(size - 1, 0) && x <= vertices_(0, 0)))
     return notFound;
   UnsignedInteger iMin = 0;
   UnsignedInteger iMax = size - 1;

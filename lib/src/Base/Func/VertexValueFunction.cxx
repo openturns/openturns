@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all temporal functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,7 +40,7 @@ VertexValueFunction::VertexValueFunction()
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const Function & function,
     const Mesh & mesh)
-  : FieldFunctionImplementation(mesh, function.getInputDimension() - mesh.getDimension(), mesh, function.getOutputDimension())
+  : FieldFunctionImplementation(mesh, std::max(static_cast<SignedInteger>(function.getInputDimension()) - static_cast<SignedInteger>(mesh.getDimension()), static_cast<SignedInteger>(0)), mesh, function.getOutputDimension())
   , function_(function)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
@@ -55,7 +55,7 @@ VertexValueFunction::VertexValueFunction(const Function & function,
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const Evaluation & evaluation,
     const Mesh & mesh)
-  : FieldFunctionImplementation(mesh, evaluation.getInputDimension() - mesh.getDimension(), mesh, evaluation.getOutputDimension())
+  : FieldFunctionImplementation(mesh, std::max(static_cast<SignedInteger>(evaluation.getInputDimension()) - static_cast<SignedInteger>(mesh.getDimension()), static_cast<SignedInteger>(0)), mesh, evaluation.getOutputDimension())
   , function_(evaluation)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
@@ -70,7 +70,7 @@ VertexValueFunction::VertexValueFunction(const Evaluation & evaluation,
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const EvaluationImplementation & evaluation,
     const Mesh & mesh)
-  : FieldFunctionImplementation(mesh, evaluation.getInputDimension() - mesh.getDimension(), mesh, evaluation.getOutputDimension())
+  : FieldFunctionImplementation(mesh, std::max(static_cast<SignedInteger>(evaluation.getInputDimension()) - static_cast<SignedInteger>(mesh.getDimension()), static_cast<SignedInteger>(0)), mesh, evaluation.getOutputDimension())
   , function_(evaluation)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
@@ -122,7 +122,7 @@ Sample VertexValueFunction::operator() (const Sample & inFld) const
 /* Get the i-th marginal function */
 VertexValueFunction::Implementation VertexValueFunction::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return new VertexValueFunction(function_.getMarginal(i), getInputMesh());
 }
 

@@ -248,9 +248,9 @@ cdf=0.872574
 ccdf=0.127426
 cdf (ref)=0.870849
 pdf gradient      = class=Point name=Unnamed dimension=9 values=[0.039548,0.0628233,0.039548,0.0628233,0.0844037,0.0197498,0.0197498,-0.00302873,-0.00302873]
-pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[0.0251622,0.0251622,0.0209685,0.0209685]
+pdf gradient (ref)= class=Point name=Unnamed dimension=5 values=[0.0251622,0.0251622,0.0209685,0.0209685,0.0377433]
 cdf gradient      = class=Point name=Unnamed dimension=9 values=[-0.07807,-0.146682,-0.07807,-0.146682,0,-0.0324012,-0.0324012,-0.0704505,-0.0704505]
-cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[0,0,0,0]
+cdf gradient (ref)= class=Point name=Unnamed dimension=5 values=[-0.120865,-0.181297,-0.120865,-0.181297,0]
 quantile= class=Point name=Unnamed dimension=2 values=[1.75438,1.75438]
 quantile= class=Point name=Unnamed dimension=2 values=[1.95451,1.95451]
 cdf(quantile)=0.950000
@@ -279,7 +279,7 @@ standard moment n= 3  value= [0]
 standard moment n= 4  value= [3]
 standard moment n= 5  value= [0]
 Standard representative= Normal(mu = 0, sigma = 1)
-Distribution  TruncatedDistribution(Weibull(alpha = 2, beta = 3, gamma = 0), bounds = [0, (6.36519) +inf[)
+Distribution  TruncatedDistribution(WeibullMin(beta = 2, alpha = 3, gamma = 0), bounds = [0, (6.36519) +inf[)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[1.89179]
@@ -307,7 +307,7 @@ entropy=0.979345
 Minimum volume interval= [0.537171, 3.03076]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.24308} with f=
-MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Weibull(alpha = 2, beta = 3, gamma = 0), bounds = [0, (6.36519) +inf[))
+MinimumVolumeLevelSetEvaluation(TruncatedDistribution(WeibullMin(beta = 2, alpha = 3, gamma = 0), bounds = [0, (6.36519) +inf[))
 beta= [0.106131]
 Bilateral confidence interval= [0.587271, 3.09026]
 beta= [0.95]
@@ -325,21 +325,23 @@ kurtosis      = class=Point name=Unnamed dimension=1 values=[2.72946]
 kurtosis (ref)= class=Point name=Unnamed dimension=1 values=[2.72946]
 covariance      = class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.421332]
 covariance (ref)= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.421332]
-parameters      = [class=PointWithDescription name=X0 dimension=4 description=[alpha,beta,gamma,lowerBound] values=[2,3,0,0]]
-parameters (ref)= [class=PointWithDescription name=X0 dimension=3 description=[alpha,beta,gamma] values=[2,3,0]]
+parameters      = [class=PointWithDescription name=X0 dimension=4 description=[beta,alpha,gamma,lowerBound] values=[2,3,0,0]]
+parameters (ref)= [class=PointWithDescription name=X0 dimension=3 description=[beta,alpha,gamma] values=[2,3,0]]
 parameter       = class=Point name=Unnamed dimension=4 values=[2,3,0,0]
-parameter desc  = [alpha,beta,gamma,lowerBound]
-marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Weibull name=Weibull dimension=1 alpha=2 beta=3 gamma=0 bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[6.36519] finite lower bound=[1] finite upper bound=[0] thresholdRealization=0.5
+parameter desc  = [beta,alpha,gamma,lowerBound]
+marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=WeibullMin name=WeibullMin dimension=1 beta=2 alpha=3 gamma=0 bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[6.36519] finite lower bound=[1] finite upper bound=[0] thresholdRealization=0.5
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [0.89298]
 standard moment n= 2  value= [0.902745]
 standard moment n= 3  value= [1]
 standard moment n= 4  value= [1.19064]
 standard moment n= 5  value= [1.50458]
-Standard representative= Weibull(alpha = 1, beta = 3, gamma = 0)
+Standard representative= WeibullMin(beta = 1, alpha = 3, gamma = 0)
 d= TruncatedDistribution(Normal(mu = 1, sigma = 2), bounds = [-1, 4]) simplified= TruncatedNormal(mu = 1, sigma = 2, a = -1, b = 4)
 d= TruncatedDistribution(Uniform(a = 1, b = 2), bounds = [0.2, 2.4]) simplified= Uniform(a = 1, b = 2)
 d= TruncatedDistribution(Exponential(lambda = 1, gamma = 2), bounds = [2.5, 65]) simplified= Exponential(lambda = 1, gamma = 2.5)
-d= TruncatedDistribution(TruncatedDistribution(Weibull(alpha = 1, beta = 1, gamma = 0), bounds = [1.5, 7.8]), bounds = [2.5, 6]) simplified= TruncatedDistribution(Weibull(alpha = 1, beta = 1, gamma = 0), bounds = [2.5, 6])
-d= TruncatedDistribution(Beta(r = 1.5, t = 7.8, a = -1, b = 2), bounds = [-2.5, 6]) simplified= Beta(r = 1.5, t = 7.8, a = -1, b = 2)
+d= TruncatedDistribution(TruncatedDistribution(WeibullMin(beta = 1, alpha = 1, gamma = 0), bounds = [1.5, 7.8]), bounds = [2.5, 6]) simplified= TruncatedDistribution(WeibullMin(beta = 1, alpha = 1, gamma = 0), bounds = [2.5, 6])
+d= TruncatedDistribution(Beta(alpha = 1.5, beta = 6.3, a = -1, b = 2), bounds = [-2.5, 6]) simplified= Beta(alpha = 1.5, beta = 6.3, a = -1, b = 2)
 after setbounds q@0.9= [29.628]
+proba=0.001382
+q@0.1= [0.425]

@@ -54,7 +54,7 @@ samples.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/smirnov_test`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_smirnov_test`
 
 .. topic:: References:
 

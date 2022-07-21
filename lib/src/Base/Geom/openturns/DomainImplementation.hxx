@@ -2,7 +2,7 @@
 /**
  *  @brief DomainImplementation is defined as a domain of \mathbb{R}^d
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,7 @@ public:
   explicit DomainImplementation(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor method */
-  virtual DomainImplementation * clone() const;
+  DomainImplementation * clone() const override;
 
   /** Check if the closed domain contains a given point */
   virtual Bool contains(const Point & point) const;
@@ -53,18 +53,24 @@ public:
   /** Check if the closed domain contains given points */
   virtual BoolCollection contains(const Sample & sample) const;
 
+  /** Compute the Euclidean distance from a given point to the domain */
+  virtual Scalar computeDistance(const Point & point) const;
+
+  /** Compute the Euclidean distance from given points to the domain */
+  virtual Sample computeDistance(const Sample & sample) const;
+
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Dimension accessors */
   UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** The dimension of the DomainImplementation */

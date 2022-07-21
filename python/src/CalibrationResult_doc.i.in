@@ -13,6 +13,31 @@ parameterMap : sequence of float
     The maximum a posteriori estimate of the parameter.
 observationsError : :class:`~openturns.Distribution`
     The distribution of the observations error.
+inputObservations : :class:`~openturns.Sample`
+    The sample of input observations.
+outputObservations : :class:`~openturns.Sample`
+    The sample of output observations.
+residualFunction : :class:`~openturns.Function`
+    The residual function.
+
+Notes
+-----
+The residual function returns `model(inputObservations) - outputObservations`.
+
+Examples
+--------
+>>> import openturns as ot
+
+# assume we obtained a result from CalibrationAlgorithm
+
+>>> result = ot.CalibrationResult()
+>>> pmap = result.getParameterMAP()
+>>> prior = result.getParameterPrior()
+>>> posterior = result.getParameterPosterior()
+>>> graph1 = result.drawParameterDistributions()  # doctest: +SKIP
+>>> graph2 = result.drawResiduals()  # doctest: +SKIP
+>>> graph3 = result.drawObservationsVsInputs()  # doctest: +SKIP
+>>> graph4 = result.drawObservationsVsPredictions()  # doctest: +SKIP
 "
 
 // ---------------------------------------------------------------------
@@ -94,4 +119,166 @@ Parameters
 ----------
 parameterPosterior : sequence of float
     The maximum a posteriori parameter estimate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getInputObservations
+"Accessor to the input observations.
+
+Returns
+-------
+inputObservations : :class:`~openturns.Sample`
+    The sample of input observations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setInputObservations
+"Accessor to the input observations.
+
+Parameters
+----------
+inputObservations : :class:`~openturns.Sample`
+    The sample of input observations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getOutputObservations
+"Accessor to the output observations.
+
+Returns
+-------
+outputObservations : :class:`~openturns.Sample`
+    The sample of output observations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setOutputObservations
+"Accessor to the output observations.
+
+Parameters
+----------
+outputObservations : :class:`~openturns.Sample`
+    The sample of output observations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getResidualFunction
+"Accessor to the residual function.
+
+Returns
+-------
+residualFunction : :class:`~openturns.Function`
+    The residual function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setResidualFunction
+"Accessor to the residual function.
+
+Parameters
+----------
+residualFunction : :class:`~openturns.Function`
+    The residual function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setOutputAtPriorAndPosteriorMean
+"Accessor to the output at prior/posterior mean.
+
+Parameters
+----------
+outputAtPrior : :class:`~openturns.Sample`
+    The sample of output at prior mean.
+outputAtPosterior : :class:`~openturns.Sample`
+    The sample of output at posterior mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getOutputAtPriorMean
+"Accessor to the output observations.
+
+Returns
+-------
+outputAtPrior : :class:`~openturns.Sample`
+    Output at prior mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getOutputAtPosteriorMean
+"Accessor to the output observations.
+
+Returns
+-------
+outputAtPosterior : :class:`~openturns.Sample`
+    Output at posterior mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::drawParameterDistributions
+"Draw parameter prior/posterior.
+
+Plots the prior and posterior distribution of the calibrated parameter theta.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Graph.
+
+Examples
+--------
+>>> import openturns as ot
+>>> result = ot.CalibrationResult()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::drawResiduals
+"Draw residuals.
+
+Plot the distribution of the residuals and the distribution of the observation errors.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Graph.
+
+Examples
+--------
+>>> import openturns as ot
+>>> result = ot.CalibrationResult()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::drawObservationsVsInputs
+"Draw observations/inputs.
+
+Plot the observed output of the model depending on the observed input before
+and after calibration.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Graph.
+
+Examples
+--------
+>>> import openturns as ot
+>>> result = ot.CalibrationResult()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::drawObservationsVsPredictions
+"Draw observations/predictions.
+
+Plots the output of the model depending on the output observations before and
+after calibration.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Graph.
+
+Examples
+--------
+>>> import openturns as ot
+>>> result = ot.CalibrationResult()"
 

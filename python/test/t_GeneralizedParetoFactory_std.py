@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -12,7 +11,7 @@ try:
     covariance = CovarianceMatrix(2)
     factory = GeneralizedParetoFactory()
     for i in range(3):
-        distribution = GeneralizedPareto(2.5, xi[i])
+        distribution = GeneralizedPareto(2.5, xi[i], 0.5)
         sample = distribution.getSample(size)
         # Distribution estimatedDistribution(factory.build(sample, covariance))
         estimatedDistribution = factory.build(sample)

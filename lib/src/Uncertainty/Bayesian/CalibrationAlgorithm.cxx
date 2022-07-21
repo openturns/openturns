@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all CalibrationAlgorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,15 +29,6 @@ CLASSNAMEINIT(CalibrationAlgorithm)
 /* Default constructor */
 CalibrationAlgorithm::CalibrationAlgorithm()
   : TypedInterfaceObject<CalibrationAlgorithmImplementation>(new CalibrationAlgorithmImplementation)
-{
-  // Nothing to do
-}
-
-
-/* Constructor with parameters */
-CalibrationAlgorithm::CalibrationAlgorithm(const Sample & outputObservations,
-		       const Distribution & parameterPrior)
-  : TypedInterfaceObject<CalibrationAlgorithmImplementation>(new CalibrationAlgorithmImplementation(outputObservations, parameterPrior))
 {
   // Nothing to do
 }
@@ -75,7 +66,7 @@ void CalibrationAlgorithm::setResult(const CalibrationResult & result)
 
 CalibrationResult CalibrationAlgorithm::getResult() const
 {
-  return getImplementation()->getResult();  
+  return getImplementation()->getResult();
 }
 
 

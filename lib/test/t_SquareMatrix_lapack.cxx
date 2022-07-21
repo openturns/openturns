@@ -2,7 +2,7 @@
 /**
  *  @brief The test file for the Lapack based methods of the SquareMatrix class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,6 +61,8 @@ int main(int, char *[])
     fullprint << "ev=" << ev << std::endl;
     fullprint << "evect=" << evect << std::endl;
     fullprint << "evect=\n" << evect.__str__() << std::endl;
+    Scalar maxModule = matrix1.computeLargestEigenValueModule(10, 1e-2);
+    fullprint << "max |ev|=" << maxModule << std::endl;
 
     // Check the high dimension determinant computation
     SquareMatrix matrix2(3);

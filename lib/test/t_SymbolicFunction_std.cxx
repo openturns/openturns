@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Function for analytical
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -338,8 +338,8 @@ int main(int, char *[])
     }
     // Disable check for exceptional values
     {
-      ResourceMap::SetAsBool("SymbolicParser-CheckResult", false);
       SymbolicFunction f("x", "sqrt(x)");
+      f.getEvaluation().getImplementation()->setCheckOutput(false);
       fullprint << "Trying to evaluate f=" << f.__str__() << " at x=-1.0" << std::endl;
       Point x(1, -1.0);
       fullprint << "Result is normal? " << SpecFunc::IsNormal(f(x)[0]) << std::endl;

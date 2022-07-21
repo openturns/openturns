@@ -2,7 +2,7 @@
 /**
  *  @brief The class Object is the top-most class of OpenTURNS
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,8 +32,8 @@
 #define CLASSNAME                               \
   public:                                       \
   /** Class name accessor */                    \
-  static  OT::String GetClassName();            \
-  virtual OT::String getClassName() const;      \
+  static OT::String GetClassName();            \
+  OT::String getClassName() const override;      \
 
 /** Define GetClassName() and getClassName() for Object-like classes */
 
@@ -62,7 +62,8 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API Object
 {
-  CLASSNAME
+  static OT::String GetClassName();
+  virtual OT::String getClassName() const;
 public:
 
   /** Destructor */

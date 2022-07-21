@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,6 +56,8 @@ Sample SamplingStrategyImplementation::generate() const
 /* Generate a uniform random unit vector */
 Point SamplingStrategyImplementation::getUniformUnitVectorRealization(const UnsignedInteger dimension) const
 {
+  if (dimension == 0)
+    throw InvalidArgumentException(HERE) << "Cannot run a 0-d SamplingStrategy.";
   Point direction(dimension);
   Scalar norm = 0.0;
   do

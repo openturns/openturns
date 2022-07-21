@@ -72,7 +72,7 @@ where :math:`q_{1-\alpha /2}` is the :math:`1-\alpha / 2` quantile from
 the standard distribution :math:`\cN(0,1)`.
 
 This method could also be found under the name “Strategic Sampling”,
-“Ponderated Sampling” or “Biased Sampling” (even if this estimator is
+“Weighted Sampling” or “Biased Sampling” (even if this estimator is
 not biased as it gives exactly the same result).
 
 
@@ -84,7 +84,7 @@ not biased as it gives exactly the same result).
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/estimate_probability_importance_sampling`
+    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_importance_sampling`
 
 
 .. topic:: References:

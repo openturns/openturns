@@ -2,7 +2,7 @@
 /**
  *  @brief Simulation algorithm to estimate Sobol indices
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -237,18 +237,24 @@ void SobolSimulationAlgorithm::run()
       }
     }
 
+    Distribution firstOrderIndicesDistribution;
     if (allNormalFO)
-      result_.setFirstOrderIndicesDistribution(Normal(meanFO, stddevFO, CorrelationMatrix(dimension)));
+      firstOrderIndicesDistribution = Normal(meanFO, stddevFO, CorrelationMatrix(dimension));
     else
-      result_.setFirstOrderIndicesDistribution(ComposedDistribution(marginalsFO));
+      firstOrderIndicesDistribution = ComposedDistribution(marginalsFO);
+    firstOrderIndicesDistribution.setDescription(distribution_.getDescription());
+    result_.setFirstOrderIndicesDistribution(firstOrderIndicesDistribution);
 
+    Distribution totalOrderIndicesDistribution;
     if (allNormalTO)
-      result_.setTotalOrderIndicesDistribution(Normal(meanTO, stddevTO, CorrelationMatrix(dimension)));
+      totalOrderIndicesDistribution = Normal(meanTO, stddevTO, CorrelationMatrix(dimension));
     else
-      result_.setTotalOrderIndicesDistribution(ComposedDistribution(marginalsTO));
+      totalOrderIndicesDistribution = ComposedDistribution(marginalsTO);
+    totalOrderIndicesDistribution.setDescription(distribution_.getDescription());
+    result_.setTotalOrderIndicesDistribution(totalOrderIndicesDistribution);
 
     result_.setOuterSampling(outerSampling);
-    LOGINFO(OSS() << "SobolSimulationAlgorithm::run: FO=" << result_.getFirstOrderIndicesDistribution());
+    LOGINFO(OSS() << "SobolSimulationAlgorithm::run: FO=" << firstOrderIndicesDistribution);
 
     // Display the result at each outer sample
     if (getVerbose()) LOGINFO(result_.__repr__());
@@ -256,19 +262,16 @@ void SobolSimulationAlgorithm::run()
     Bool converged = true;
     for (UnsignedInteger j = 0; (j < dimension) && converged; ++ j)
     {
-      const Distribution distFO(result_.getFirstOrderIndicesDistribution().getMarginal(j));
-      const Distribution distTO(result_.getTotalOrderIndicesDistribution().getMarginal(j));
-
-      // check if F and T indices are separable
-      const Bool separable = false; //distFO.computeScalarQuantile(indexQuantileLevel_, true) <= distTO.computeScalarQuantile(indexQuantileLevel_);
+      const Distribution distFO(firstOrderIndicesDistribution.getMarginal(j));
+      const Distribution distTO(totalOrderIndicesDistribution.getMarginal(j));
 
       // or, check if F and T confidence lengths are small enough
       const Scalar foConfidenceLength = distFO.computeScalarQuantile(indexQuantileLevel_ * 0.5, true) - distFO.computeScalarQuantile(indexQuantileLevel_ * 0.5);
       const Scalar toConfidenceLength = distTO.computeScalarQuantile(indexQuantileLevel_ * 0.5, true) - distTO.computeScalarQuantile(indexQuantileLevel_ * 0.5);
       const Bool tight = (foConfidenceLength <= indexQuantileEpsilon_) && (toConfidenceLength <= indexQuantileEpsilon_);
 
-      // all indices must be either 'separable' or 'tight'
-      if (!(separable || tight))
+      // all indices must 'tight'
+      if (!tight)
         converged = false;
     }
     if (!stop && converged)

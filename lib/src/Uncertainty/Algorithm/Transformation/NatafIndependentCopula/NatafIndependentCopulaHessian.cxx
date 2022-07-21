@@ -2,7 +2,7 @@
 /**
  *  @brief Class for the Nataf transformation evaluation for independent
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include "openturns/NatafIndependentCopulaHessian.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -87,7 +88,7 @@ SymmetricTensor NatafIndependentCopulaHessian::hessian(const Point & inP) const
     // factor = 1/Normal(0,1).computePDF(q)
     // 6.283185307179586476925286 = 2Pi
     // quantileSecondDerivative = -Normal(0,1).computeDDF(q) / (Normal(0,1).computePDF(q))^3 = q / (Normal(0,1).computePDF(q))^2
-    result(i, i, i) = 6.283185307179586476925286 * q * exp(q * q);
+    result(i, i, i) = SpecFunc::TWOPI * q * exp(q * q);
   }
   return result;
 }

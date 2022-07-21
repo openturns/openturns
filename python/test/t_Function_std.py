@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
@@ -20,10 +19,3 @@ print("myFunc output parameter(s) and marginal(s)=")
 for i in range(myFunc.getOutputDimension()):
     print(myFunc.getOutputDescription()[i])
     print("Marginal function", i, "=", repr(myFunc.getMarginal(i)))
-
-try:
-    print(ot.Function() == None)
-except TypeError:
-    # swig<4
-    print(False)
-

@@ -1,19 +1,16 @@
 %feature("docstring") OT::Beta
 "Beta distribution.
 
-Available constructors:
-    Beta(*r=2.0, t=4.0, a=-1.0, b=1.0*)
-
 Parameters
 ----------
-r : float
-    shape parameter :math:`r > 0` with :math:`r = t * (\mu - a) / (b - a)`.
-t : float
-    shape parameter :math:`t > r` with :math:`t = (b - \mu) * (\mu - a) / \sigma^2 - 1`.
+alpha : float
+    Shape parameter :math:`\alpha > 0`
+beta : float
+    Shape parameter :math:`\beta > 0`
 a : float
-    Lower bound.
+    Lower bound
 b : float, :math:`b > a`
-    Upper bound.
+    Upper bound
 
 Notes
 -----
@@ -21,11 +18,11 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = \frac{(x - a)^{r - 1} (b - x)^{t - r - 1}}
-                  {(b - a)^{t - 1} {\rm B}(r, t - r)},
+    f_X(x) = \frac{(x - a)^{\alpha - 1} (b - x)^{\beta - 1}}
+                  {(b - a)^{\alpha + \beta - 1} {\rm B}(\alpha, \beta)},
                   \quad x \in [a, b]
 
-with :math:`r < t` and :math:`a < b` and where :math:`\rm B` denotes
+with :math:`\alpha, \beta > 0` and :math:`a < b` and where :math:`\rm B` denotes
 Euler's beta function :class:`~openturns.SpecFunc_Beta`.
 
 Its first moments are:
@@ -34,23 +31,23 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & a + \frac{(b - a)\,r}{t} \\
-        \Var{X} & = & \left(\frac{b - a}{t}\right)^2 \frac{r\,(t - r)}{t + 1}
+        \Expect{X} & = & a + (b - a)\frac{\alpha}{\alpha + \beta} \\
+        \Var{X} & = & (b - a)^2 \frac{\alpha \beta}{(\alpha + \beta)^2(\alpha + \beta + 1)}
     \end{eqnarray*}
 
 
 It is possible to create a Beta distribution from the alternative parametrization :math:`(\mu, \sigma, a, b)`: see  :class:`~openturns.BetaMuSigma`. In that case, all the results are presented in that new parametrization.
 
-In order to use the alternative  parametrization :math:`(\mu, \sigma, a, b)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(r, t, a, b)`.
+In order to use the alternative  parametrization :math:`(\mu, \sigma, a, b)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\alpha, \beta, a, b)`.
 
 Examples
 --------
-Create a distribution from its native parameters :math:`(r, t, a, b)`:
+Create a distribution from its native parameters :math:`(\alpha, \beta, a, b)`:
 
 >>> import openturns as ot
 >>> myDist = ot.Beta(1.0, 2.0, 1.0, 5.0)
 
-Create a it from the alternative parametrization :math:`(\mu, \sigma, a, b)`:
+Create it from the alternative parametrization :math:`(\mu, \sigma, a, b)`:
 
 >>> myDist2 = ot.Beta()
 >>> myDist2.setParameter(ot.BetaMuSigma()([3.0, 1.15, 1.0, 5.0]))
@@ -66,23 +63,23 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Beta::getR
-"Accessor to the distribution's shape parameter :math:`r`.
+%feature("docstring") OT::Beta::getAlpha
+"Accessor to the distribution's shape parameter :math:`\alpha`.
 
 Returns
 -------
-r : float
-    Shape parameter :math:`r`."
+alpha : float
+    Shape parameter :math:`\alpha`."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Beta::getT
-"Accessor to the distribution's shape parameter :math:`t`.
+%feature("docstring") OT::Beta::getBeta
+"Accessor to the distribution's shape parameter :math:`\beta`.
 
 Returns
 -------
-t : float
-    Shape parameter :math:`t`."
+beta : float
+    Shape parameter :math:`\beta`."
 
 // ---------------------------------------------------------------------
 
@@ -126,23 +123,23 @@ sigma : float, :math:`\sigma > 0`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Beta::setR
-"Accessor to the distribution's shape parameter :math:`r`.
+%feature("docstring") OT::Beta::setAlpha
+"Accessor to the distribution's shape parameter :math:`\alpha`.
 
 Parameters
 ----------
-r : float, :math:`r > 0`
-    Shape parameter :math:`r`."
+alpha : float, :math:`\alpha > 0`
+    Shape parameter :math:`\alpha`."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Beta::setT
-"Accessor to the distribution's shape parameter :math:`t`.
+%feature("docstring") OT::Beta::setBeta
+"Accessor to the distribution's shape parameter :math:`\beta`.
 
 Parameters
 ----------
-t : float, :math:`t > r`
-    Shape parameter :math:`t`."
+beta : float, :math:`\beta > 0`
+    Shape parameter :math:`\beta`."
 
 // ---------------------------------------------------------------------
 

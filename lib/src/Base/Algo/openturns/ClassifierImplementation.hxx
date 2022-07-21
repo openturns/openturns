@@ -2,7 +2,7 @@
 /**
  *  @brief Classification algorithm base type
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,18 +45,13 @@ public:
                            const Indices & outClasses);
 
   /** Virtual constructor */
-  virtual ClassifierImplementation * clone() const;
+  ClassifierImplementation * clone() const override;
 
   virtual UnsignedInteger getNumberOfClasses() const;
 
   /** Associate a point with a class */
   virtual UnsignedInteger classify(const Point & inP) const;
   virtual Indices classify(const Sample & inS) const;
-
-protected:
-  virtual Indices classifyParallel(const Sample & inS) const;
-  virtual Indices classifySequential(const Sample & inS) const;
-public:
 
   /** Grade a point as if it were associated to a class */
   virtual Scalar grade(const Point & inP,
@@ -72,8 +67,8 @@ protected:
 public:
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Verbosity accessor */
   void setVerbose(const Bool verbose);
@@ -87,10 +82,10 @@ public:
   Bool isParallel() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

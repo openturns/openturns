@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class HMatrixImplementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,8 +40,8 @@ public:
 
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* result) const
   {
-    CovarianceMatrix localResult(covarianceModel_( vertices_[i] - vertices_[j] ));
-    memcpy( &result->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
+    SquareMatrix localResult(covarianceModel_( vertices_[i] - vertices_[j] ));
+    std::copy(&localResult.getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0) + dimension_ * dimension_, &result->getImplementation()->operator[](0));
   }
 };
 
@@ -58,28 +58,24 @@ int main(int, char *[])
     ResourceMap::SetAsUnsignedInteger("HMatrix-MaxLeafSize", 10);
 
     HMatrixFactory hmatrixFactory;
-    if (!hmatrixFactory.IsAvailable()) throw NotYetImplementedException(HERE);
 
     const UnsignedInteger n = 20;
 
-    Indices indices(0);
-    indices.add(n);
-    indices.add(n);
+    const Indices indices = {n, n};
     const IntervalMesher intervalMesher(indices);
-    const Point lowerBound(2, 0.0);
-    const Point upperBound(2, 1.0);
+    const Point lowerBound = {0.0, 0.0};
+    const Point upperBound = {1.0, 1.0};
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
     const Sample vertices2D(mesh2D.getVertices());
     Sample vertices(vertices2D.getSize(), 3);
     for (UnsignedInteger i = 0; i < vertices2D.getSize(); ++i)
     {
-      vertices[i][0] = vertices2D[i][0];
-      vertices[i][1] = vertices2D[i][1];
+      vertices(i, 0) = vertices2D(i, 0);
+      vertices(i, 1) = vertices2D(i, 1);
     }
-    Point xMin(vertices.getMin());
-    Point xMax(vertices.getMax());
-    Point scale(3, 0.1);
-    CovarianceModel covarianceModel(ExponentialModel(scale, Point(3, 1.0)));
+    const Point scale = {0.1, 0.1, 0.1};
+    const Point amplitude = {1.0, 1.0, 1.0};
+    CovarianceModel covarianceModel(ExponentialModel(scale, amplitude));
 
     TestHMatrixTensorRealAssemblyFunction blockAssembly(covarianceModel, vertices);
     // Non-symmetric HMatrix
@@ -89,7 +85,7 @@ int main(int, char *[])
     hmat.factorize("LU");
 
     Point rhs(covarianceModel.getOutputDimension() * vertices.getSize());
-    CovarianceMatrix local(covarianceModel.getOutputDimension());
+    SquareMatrix local(covarianceModel.getOutputDimension());
     for (UnsignedInteger i = 0; i < vertices.getSize(); ++i)
     {
       blockAssembly.compute(i, 0, &local);
@@ -118,13 +114,8 @@ int main(int, char *[])
       }
     }
     Scalar diffNorm = rhsCopy.norm();
-    Scalar threshold = 1.e-4;
+    Scalar threshold = 5.e-3;
     fullprint << "|| M X - b || / || b ||" << ((diffNorm < threshold * rhsCopyNorm) ? " < " : " > ") << threshold << std::endl;
-  }
-  catch (NotYetImplementedException & ex)
-  {
-    std::cerr << "Compiled without HMat" << std::endl;
-    return ExitCode::Success;
   }
   catch (TestFailed & ex)
   {

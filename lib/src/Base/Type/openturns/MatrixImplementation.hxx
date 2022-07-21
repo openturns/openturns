@@ -2,7 +2,7 @@
 /**
  *  @brief MatrixImplementation implements the classical mathematical Matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -82,11 +82,11 @@ public:
                        const ScalarCollection & elementsValues);
 
   /** Virtual constructor */
-  virtual MatrixImplementation * clone() const;
+  MatrixImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () gives access to the elements of the MatrixImplementation (to modify these elements) */
   /** The element of the MatrixImplementation is designated by its row number i and its column number j */
@@ -109,12 +109,16 @@ public:
   /** MatrixImplementation transpose */
   MatrixImplementation transpose() const;
 
+  /** Resize */
+  using Collection<Scalar>::resize;
+  void resize(const UnsignedInteger newRowDim, const UnsignedInteger newColDim);
+
   /** MatrixImplementation reshape */
   MatrixImplementation reshape(const UnsignedInteger newRowDim,
-			       const UnsignedInteger newColDim) const;
+                               const UnsignedInteger newColDim) const;
   void reshapeInPlace(const UnsignedInteger newRowDim,
-		      const UnsignedInteger newColDim);
-  
+                      const UnsignedInteger newColDim);
+
 
   /** Row extraction */
   const MatrixImplementation getRow(const UnsignedInteger rowIndex) const;
@@ -158,12 +162,14 @@ public:
   Point symVectProd (const Point & pt) const;
 
   /** Using triangular matrix */
+#ifndef SWIG
   ScalarCollection triangularVectProd (const ScalarCollection & pt,
                                        const char side = 'L',
                                        const Bool transpose = false) const;
-  ScalarCollection triangularVectProd (const Point & pt,
-                                       const char side = 'L',
-                                       const Bool transpose = false) const;
+#endif
+  Point triangularVectProd (const Point & pt,
+                            const char side = 'L',
+                            const Bool transpose = false) const;
 
   /** Multiplication with a Scalar */
   MatrixImplementation operator * (const Scalar s) const;
@@ -241,6 +247,13 @@ public:
   Point computeEigenValuesSym(const Bool keepIntact = true);
   Point computeEVSym(MatrixImplementation & vOut,
                      const Bool keepIntact = true);
+  /** Compute the largest eigenvalue module using power iterations */
+  Bool computeLargestEigenValueModuleSquare(Scalar & maximumModule,
+      const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
+      const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const;
+  Bool computeLargestEigenValueModuleSym(Scalar & maximumModule,
+                                         const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
+                                         const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const;
 
   /** Compute singular values */
   Point computeSingularValues(const Bool keepIntact = true);
@@ -300,16 +313,28 @@ public:
   Bool isTriangular(Bool lower = true) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Scalar * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
-  UnsignedInteger __stride__ (UnsignedInteger dim) const;
+  /** Low-level data access */
+  UnsignedInteger stride(const UnsignedInteger dim) const;
+
+  /** Extract diagonal */
+  MatrixImplementation getDiagonal(const SignedInteger k = 0) const;
+
+  /** Fill diagonal with values */
+  void setDiagonal(const Point &diag, const SignedInteger k = 0);
+
+  /** Hadamard product aka elementwise product */
+  MatrixImplementation computeHadamardProduct(const MatrixImplementation &other) const;
+
+  /** Sum all coefficients */
+  virtual Scalar computeSumElements() const;
+
+  /** All elements are squared */
+  void squareElements();
 
 protected:
 

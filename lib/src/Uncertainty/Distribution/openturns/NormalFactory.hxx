@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Normal distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,23 +37,27 @@ class OT_API NormalFactory
 public:
 
   /** Default constructor */
-  NormalFactory();
+  explicit NormalFactory(const Bool robust = false);
 
   /** Virtual constructor */
-  virtual NormalFactory * clone() const;
+  NormalFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   Normal buildAsNormal(const Sample & sample) const;
   Normal buildAsNormal(const Point & parameters) const;
   Normal buildAsNormal() const;
 
-  DistributionFactoryResult buildEstimator(const Sample & sample) const;
+  DistributionFactoryResult buildEstimator(const Sample & sample) const override;
 
+private:
+
+  /** Flag to select between robust/nonrobust estimators */
+  Bool robust_;
 }; /* class NormalFactory */
 
 

@@ -2,7 +2,7 @@
 /**
  *  @brief This is the interface class for  function factories
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,8 +46,13 @@ public:
   /** Constructor from implementation */
   UniVariateFunctionFamily(const UniVariateFunctionFactory & implementation);
 
+#ifndef SWIG
+  /** Constructor from implementation pointer */
+  UniVariateFunctionFamily(UniVariateFunctionFactory * p_implementation);
+#endif
+
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** The method to get the function of any order. */
   UniVariateFunction build(const UnsignedInteger order) const;

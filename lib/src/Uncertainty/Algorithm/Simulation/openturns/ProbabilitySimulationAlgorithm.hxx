@@ -3,7 +3,7 @@
  *  @brief ProbabilitySimulationAlgorithm is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,39 +41,39 @@ public:
                                  const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
-  ProbabilitySimulationAlgorithm(const Event & event,
+  ProbabilitySimulationAlgorithm(const RandomVector & event,
                                  const Bool verbose = true,
                                  const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
-  ProbabilitySimulationAlgorithm(const Event & event,
+  ProbabilitySimulationAlgorithm(const RandomVector & event,
                                  const WeightedExperiment & experiment,
                                  const Bool verbose = true,
                                  const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
-  virtual ProbabilitySimulationAlgorithm * clone() const;
+  ProbabilitySimulationAlgorithm * clone() const override;
 
   /** Experiment accessor */
   WeightedExperiment getExperiment() const;
   void setExperiment(const WeightedExperiment & experiment);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Block size accessor */
-  virtual void setBlockSize(const UnsignedInteger blockSize);
+  void setBlockSize(const UnsignedInteger blockSize) override;
 
 protected:
 
   /** Compute the block sample and the points that realized the event */
-  virtual Sample computeBlockSample();
+  Sample computeBlockSample() override;
   Sample computeBlockSampleComposite();
 
   // The experiment type

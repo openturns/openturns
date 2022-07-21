@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all Mixtures
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,9 @@
 #include "openturns/Mixture.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,8 +36,11 @@ static const Factory<Mixture> Factory_Mixture;
 /* Default constructor */
 Mixture::Mixture()
   : DistributionImplementation()
-  , distributionCollection_(1)
-  , weightsDistribution_(UserDefined())
+  , distributionCollection_()
+  , base_()
+  , alias_()
+  , uniformWeights_(true)
+  , p_()
   , pdfApproximationCDF_()
   , cdfApproximation_()
   , pdfApproximationCCDF_()
@@ -52,7 +57,10 @@ Mixture::Mixture()
 Mixture::Mixture(const DistributionCollection & coll)
   : DistributionImplementation()
   , distributionCollection_()
-  , weightsDistribution_()
+  , base_()
+  , alias_()
+  , uniformWeights_(true)
+  , p_()
   , pdfApproximationCDF_()
   , cdfApproximation_()
   , pdfApproximationCCDF_()
@@ -66,16 +74,6 @@ Mixture::Mixture(const DistributionCollection & coll)
   // the setDistributionCollection() method that do it for us.
   // This call set also the range.
   setDistributionCollection( coll );
-  if ((getDimension() == 1) && (coll.getSize() >= ResourceMap::GetAsUnsignedInteger("Mixture-SmallSize")) && (coll.getSize() < ResourceMap::GetAsUnsignedInteger("Mixture-LargeSize")))
-  {
-    // Here we use the implementation provided by the DistributionImplementation class instead of the ContinuousDistribution class in order to use both the PDF and the CDF
-    Collection<PiecewiseHermiteEvaluation> interpolation(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("Mixture-PDFCDFDiscretization")));
-    pdfApproximationCDF_ = interpolation[0];
-    cdfApproximation_ = interpolation[1];
-    pdfApproximationCCDF_ = interpolation[2];
-    ccdfApproximation_ = interpolation[3];
-    useApproximatePDFCDF_ = true;
-  }
 }
 
 /* Parameters constructor */
@@ -83,7 +81,10 @@ Mixture::Mixture(const DistributionCollection & coll,
                  const Point & weights)
   : DistributionImplementation()
   , distributionCollection_()
-  , weightsDistribution_()
+  , base_()
+  , alias_()
+  , uniformWeights_(true)
+  , p_()
   , pdfApproximationCDF_()
   , cdfApproximation_()
   , pdfApproximationCCDF_()
@@ -98,16 +99,6 @@ Mixture::Mixture(const DistributionCollection & coll,
   // the setDistributionCollection() method that do it for us.
   // This call set also the range.
   setDistributionCollectionWithWeights( coll, weights );
-  if ((getDimension() == 1) && (coll.getSize() >= ResourceMap::GetAsUnsignedInteger("Mixture-SmallSize")) && (coll.getSize() < ResourceMap::GetAsUnsignedInteger("Mixture-LargeSize")))
-  {
-    // Here we use the implementation provided by the DistributionImplementation class instead of the ContinuousDistribution class in order to use both the PDF and the CDF
-    Collection<PiecewiseHermiteEvaluation> interpolation(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("Mixture-PDFCDFDiscretization")));
-    pdfApproximationCDF_ = interpolation[0];
-    cdfApproximation_ = interpolation[1];
-    pdfApproximationCCDF_ = interpolation[2];
-    ccdfApproximation_ = interpolation[3];
-    useApproximatePDFCDF_ = true;
-  }
 }
 
 /* Comparison operator */
@@ -131,7 +122,8 @@ String Mixture::__repr__() const
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " distributionCollection=" << distributionCollection_
-      << " weightsDistribution=" << weightsDistribution_;
+      << " base=" << base_
+      << " alias=" << alias_;
   return oss;
 }
 
@@ -174,18 +166,6 @@ void Mixture::computeRange()
   for (UnsignedInteger i = 1; i < size; ++i) range = range.join(distributionCollection_[i].getRange());
   setRange(range);
 }
-
-/* Weights distribution accessor */
-void Mixture::setWeightsDistribution(const UserDefined & weightsDistribution)
-{
-  weightsDistribution_ = weightsDistribution;
-}
-
-UserDefined Mixture::getWeightsDistribution() const
-{
-  return weightsDistribution_;
-}
-
 
 /* Distribution collection accessor */
 void Mixture::setDistributionCollection(const DistributionCollection & coll)
@@ -248,23 +228,37 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
 
   // We set the member with the collection passed as argument and we renormalize it in place
   Sample x(size, 1);
-  Point p(size);
+  p_ = Point(size);
   Bool parallel = true;
+  uniformWeights_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar normalizedWeight = distributionCollection_[i].getWeight() / weightSum;
     distributionCollection_[i].setWeight(normalizedWeight);
     x(i, 0) = i;
-    p[i] = normalizedWeight;
+    p_[i] = normalizedWeight;
     parallel = parallel && distributionCollection_[i].getImplementation()->isParallel();
+    uniformWeights_ = uniformWeights_ && ((std::abs(p_[i] - p_[0]) < SpecFunc::Precision));
   } /* end for */
   setParallel(parallel);
-  setWeightsDistribution(UserDefined(x, p));
+  // To force initialization at the first call to getRealization()
+  base_ = Point(0);
+  alias_ = Indices(0);
   setDimension(dimension);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
   computeRange();
+  if ((getDimension() == 1) && (coll.getSize() >= ResourceMap::GetAsUnsignedInteger("Mixture-SmallSize")) && (coll.getSize() < ResourceMap::GetAsUnsignedInteger("Mixture-LargeSize")))
+  {
+    // Here we use the implementation provided by the DistributionImplementation class instead of the ContinuousDistribution class in order to use both the PDF and the CDF
+    Collection<PiecewiseHermiteEvaluation> interpolation(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("Mixture-PDFCDFDiscretization")));
+    pdfApproximationCDF_ = interpolation[0];
+    cdfApproximation_ = interpolation[1];
+    pdfApproximationCCDF_ = interpolation[2];
+    ccdfApproximation_ = interpolation[3];
+    useApproximatePDFCDF_ = true;
+  }
 }
 
 
@@ -285,7 +279,7 @@ Mixture * Mixture::clone() const
 Point Mixture::getRealization() const
 {
   // Select the atom following the weightsDistribution
-  const UnsignedInteger index = static_cast<UnsignedInteger>(round(weightsDistribution_.getRealization()[0]));
+  const UnsignedInteger index = (uniformWeights_ ? RandomGenerator::IntegerGenerate(distributionCollection_.getSize()) : (base_.getSize() ? DistFunc::rDiscrete(base_, alias_) : DistFunc::rDiscrete(p_, base_, alias_)));
   return distributionCollection_[index].getRealization();
 }
 
@@ -357,7 +351,7 @@ Scalar Mixture::computeProbability(const Interval & interval) const
 
   const Interval reducedInterval(interval.intersect(getRange()));
   // If the interval is empty
-  if (reducedInterval.isNumericallyEmpty()) return 0.0;
+  if (reducedInterval.isEmpty()) return 0.0;
 
   // If the interval is the range
   if (reducedInterval == getRange()) return 1.0;
@@ -385,7 +379,8 @@ Point Mixture::computePDFGradient(const Point & point) const
 
   Point pdfGradientValue;
   const UnsignedInteger size = distributionCollection_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i) pdfGradientValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computePDFGradient(point);
+  for(UnsignedInteger i = 0; i < size; ++i)
+    pdfGradientValue.add(distributionCollection_[i].getWeight() * distributionCollection_[i].computePDFGradient(point));
   return pdfGradientValue;
 }
 
@@ -395,9 +390,10 @@ Point Mixture::computeCDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  Point cdfGradientValue(getDimension(), 0.0);
+  Point cdfGradientValue;
   const UnsignedInteger size = distributionCollection_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i) cdfGradientValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeCDFGradient(point);
+  for(UnsignedInteger i = 0; i < size; ++i)
+    cdfGradientValue.add(distributionCollection_[i].getWeight() * distributionCollection_[i].computeCDFGradient(point));
   return cdfGradientValue;
 }
 
@@ -572,17 +568,9 @@ Distribution Mixture::getMarginal(const Indices & indices) const
     collection.add(distributionCollection_[index].getMarginal(indices));
     collection[index].setWeight(distributionCollection_[index].getWeight());
   }
-  const UnsignedInteger outputDimension = indices.getSize();
-  Description description(getDescription());
-  Description marginalDescription(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger index_i = indices[i];
-    marginalDescription[i] = description[index_i];
-  }
   Mixture* marginal(new Mixture(collection));
   marginal->isCopula_ = isCopula_;
-  marginal->setDescription(marginalDescription);
+  marginal->setDescription(getDescription().select(indices));
   return marginal;
 }
 
@@ -839,7 +827,8 @@ void Mixture::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
   adv.saveAttribute( "distributionCollection_", distributionCollection_ );
-  adv.saveAttribute( "weightsDistribution_", weightsDistribution_ );
+  adv.saveAttribute( "uniformWeights_", uniformWeights_ );
+  adv.saveAttribute( "p_", p_ );
   adv.saveAttribute( "pdfApproximationCDF_", pdfApproximationCDF_ );
   adv.saveAttribute( "cdfApproximation_", cdfApproximation_ );
   adv.saveAttribute( "pdfApproximationCCDF_", pdfApproximationCCDF_ );
@@ -852,14 +841,15 @@ void Mixture::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
   adv.loadAttribute( "distributionCollection_", distributionCollection_ );
-  adv.loadAttribute( "weightsDistribution_", weightsDistribution_ );
+  adv.loadAttribute( "uniformWeights_", uniformWeights_ );
+  adv.loadAttribute( "p_", p_ );
   adv.loadAttribute( "pdfApproximationCDF_", pdfApproximationCDF_ );
   adv.loadAttribute( "cdfApproximation_", cdfApproximation_ );
   adv.loadAttribute( "pdfApproximationCCDF_", pdfApproximationCCDF_ );
   adv.loadAttribute( "ccdfApproximation_", ccdfApproximation_ );
   adv.loadAttribute( "useApproximatePDFCDF_", useApproximatePDFCDF_ );
   // To compute the range
-  setDistributionCollection(DistributionCollection(distributionCollection_));
+  setDistributionCollectionWithWeights(DistributionCollection(distributionCollection_), p_);
 }
 
 END_NAMESPACE_OPENTURNS

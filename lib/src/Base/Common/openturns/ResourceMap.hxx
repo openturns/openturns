@@ -2,7 +2,7 @@
 /**
  *  @brief ResourceMap defines a resource catalog
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,9 +60,15 @@ public:
   /** Set a value in the maps */
   static void Set(const String & key, const String & value);
   static void SetAsString(const String & key, const String & value);
-  static void SetAsBool(const String & key, Bool value);
-  static void SetAsUnsignedInteger(const String & key, UnsignedInteger value);
-  static void SetAsScalar(const String & key, Scalar value);
+  static void SetAsBool(const String & key, const Bool value);
+  static void SetAsUnsignedInteger(const String & key, const UnsignedInteger value);
+  static void SetAsScalar(const String & key, const Scalar value);
+
+  /** Add a value in the maps */
+  static void AddAsString(const String & key, const String & value);
+  static void AddAsBool(const String & key, const Bool value);
+  static void AddAsUnsignedInteger(const String & key, const UnsignedInteger value);
+  static void AddAsScalar(const String & key, const Scalar value);
 
   /** Get the total size of the maps */
   static UnsignedInteger GetSize();
@@ -81,7 +87,16 @@ public:
   /** Is the specific key present ? */
   static Bool HasKey(const String & key);
 
-  /** @copydoc Object::__repr__() const */
+  /** Remove a key */
+  static void RemoveKey(const String & key);
+
+  /** Reload configuration */
+  static void Reload();
+
+  /** Get the list of keys associated to a class */
+  static std::vector<String> FindKeys(const String & substr);
+
+  /** String representation */
   String __repr__() const;
 
 protected:
@@ -187,22 +202,49 @@ protected:
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as a boolean
    */
-  void setAsBool(const String & key, Bool value);
+  void setAsBool(const String & key, const Bool value);
 
   /** Method for setting information into the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as an integer
    */
-  void setAsUnsignedInteger(const String & key, UnsignedInteger value);
+  void setAsUnsignedInteger(const String & key, const UnsignedInteger value);
 
   /** Method for setting information into the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as a double
    */
-  void setAsScalar(const String & key, Scalar value);
+  void setAsScalar(const String & key, const Scalar value);
+
+  /** Method for adding information into the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @param value The value written to a string
+   */
+  void addAsString(const String & key, const String & value);
+
+  /** Method for adding information into the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @param value The value as a boolean
+   */
+  void addAsBool(const String & key, const Bool value);
+
+  /** Method for adding information into the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @param value The value as an integer
+   */
+  void addAsUnsignedInteger(const String & key, const UnsignedInteger value);
+
+  /** Method for adding information into the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @param value The value as a double
+   */
+  void addAsScalar(const String & key, const Scalar value);
 
   /** Is the specific key present ? */
   Bool hasKey(const String & key) const;
+
+  /** Remove a key from the resource map */
+  void removeKey(const String & key);
 
   /** Update the ResourceMap with information from the configuration file */
   void readConfigurationFile(const FileName & configurationFile);
@@ -216,6 +258,11 @@ protected:
   /** Load the configuration defined at installation time */
   void loadDefaultConfiguration();
 
+  /** Reload configuration */
+  void reload();
+
+  /** Get the list of keys associated to a class */
+  std::vector<String> findKeys(const String & substr);
 private:
 
   /** Default constructor */

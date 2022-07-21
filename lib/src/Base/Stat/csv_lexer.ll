@@ -2,7 +2,7 @@
 /*
  * @brief The lexer definition in order to read CSV files
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,12 +36,18 @@
 %option prefix="csv"
 %option noyywrap
 %option nounput
+%option noinput
+%option never-interactive
 
 digit     [0-9]
 sign      [+-]
 integer   {digit}+
 exponent  [eE]{sign}?{integer}
 real      {sign}?({integer}("."({integer})?)?|"."{integer}){exponent}?
+
+nan       {sign}?[nN][aA][nN]
+inf       [+]?[iI][nN][fF]
+neg_inf   -[iI][nN][fF]
 
 string    [[:alnum:]!#\$%&'()\*\+\-\./\:\<=\>\?@\[\\\]\^_`\{\|\}~]*
 
@@ -50,6 +56,12 @@ space     [ \t]
 %%
 
 {real} { yylval_param->real = atof(yytext); return(REAL); }
+
+{nan}       { yylval_param->real = NAN; return(REAL); }
+
+{inf}       { yylval_param->real = INFINITY; return(REAL); }
+
+{neg_inf}   { yylval_param->real = -INFINITY; return(REAL); }
 
 {string}    { yylval_param->st = yytext; return(STRING); }
 

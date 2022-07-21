@@ -27,8 +27,10 @@ flags : int
 
 Examples
 --------
+Turn warnings off:
+
 >>> import openturns as ot
->>> ot.Log.Show(ot.Log.DEFAULT)"
+>>> ot.Log.Show(ot.Log.NONE)"
 
 // ---------------------------------------------------------------------
 
@@ -123,7 +125,14 @@ repeat : bool
 Parameters
 ----------
 file_name : str
-    Log file name"
+    Log file name
+
+Examples
+--------
+Write warnings in a file:
+
+>>> import openturns as ot
+>>> ot.Log.SetFile('Warnings.log')"
 
 // ---------------------------------------------------------------------
 

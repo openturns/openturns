@@ -36,7 +36,7 @@ Notes
 
 A :class:`~openturns.FieldFunction` is usually defined by three numbers,
 the input dimension, and dimensions of input and output fields.
-Before evaluating a :class:`openturns.Field`, classes check that its
+Before evaluating a :class:`~openturns.Field`, classes check that its
 dimensions are the ones which had been declared.
 
 This class is special because it can deal with fields of any dimension,

@@ -10,7 +10,7 @@ oneRealization=class=Point name=Unnamed dimension=2 values=[0.976434,0.827543]
 oneSample=class=Sample name=a farlieGumbelMorgenstern copula implementation=class=SampleImplementation name=a farlieGumbelMorgenstern copula size=10 dimension=2 description=[X0,X1] data=[[0.084502,0.263863],[0.0111884,0.470051],[0.462462,0.22218],[0.587674,0.125421],[0.908026,0.853521],[0.00398058,0.446955],[0.373997,0.244501],[0.0134696,0.471166],[0.768466,0.224426],[0.663918,0.0878354]]
 anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.497404,0.504402]
 anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0826296,0.0190135,0.0190135,0.0826259]
-point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-0.84,-0.84] ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.84,-0.84] pdf=1.252 cdf=0.05792
+point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-0.84,-0.84] pdf=1.252 cdf=0.05792
 Survival      =0.65792
 Survival (ref)=0.65792
 Inverse survival=class=Point name=Unnamed dimension=2 values=[0.0255431,0.0255431]
@@ -19,8 +19,8 @@ Quantile=class=Point name=Unnamed dimension=2 values=[0.683555,0.683555]
 CDF(quantile)=0.5
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126603,0.0126603] upper bound=class=Point name=Unnamed dimension=2 values=[0.98734,0.98734] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.974679
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7) gradientImplementation=MinimumVolumeLevelSetGradient(class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7) level=0.392805
-beta=0.675161
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7) gradientImplementation=MinimumVolumeLevelSetGradient(class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7) level=0.385455
+beta=0.680141
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126603,0.0126603] upper bound=class=Point name=Unnamed dimension=2 values=[0.98734,0.98734] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974679
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.974457,0.974457] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -35,16 +35,16 @@ margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.568102]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.703242]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.761047]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.762006]
 indices=[1,0]
 margins=class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7
 margins PDF=1.175
 margins CDF=0.0871094
 margins quantile=class=Point name=Unnamed dimension=2 values=[0.974457,0.974457]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[0.68799,0.133342]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.852602,0.978371]

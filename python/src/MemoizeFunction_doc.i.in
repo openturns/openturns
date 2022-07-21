@@ -1,12 +1,10 @@
 %feature("docstring") OT::MemoizeFunction
-"Function which keep tracks of input and output.
+"Function which keeps tracks of input and output.
 
 When this function is evaluated, it calls the
 :class:`~openturns.Function` passed as argument, and store
 input and output :class:`~openturns.Sample`.
-
-Available constructors:
-    MemoizeFunction(*function, historyStrategy*)
+It also has a caching behavior, enabled by default.
 
 Parameters
 ----------
@@ -24,6 +22,7 @@ to retrieve this history from a :class:`~openturns.Function` object which
 is in fact a :class:`~openturns.MemoizeFunction`.
 Thus, if you create a :class:`~openturns.MemoizeFunction` from an unknown
 :class:`~openturns.Function`, it is better to call :meth:`clearHistory`.
+The cache size is initialized by the value of the :class:`~openturns.ResourceMap` `Cache-MaxSize` entry.
 
 See also
 --------
@@ -78,38 +77,38 @@ Returns
 -------
 isCacheEnabled : bool
     Flag telling whether the cache mechanism is enabled.
-    It is disabled by default."
+    It is enabled by default."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MemoizeFunction::getCacheHits
-"Accessor to the number of computations saved thanks to the cache mecanism.
+"Accessor to the number of computations saved thanks to the cache mechanism.
 
 Returns
 -------
 cacheHits : int
     Integer that counts the number of computations saved thanks to the cache
-    mecanism."
+    mechanism."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MemoizeFunction::getCacheInput
-"Accessor to all the input numerical points stored in the cache mecanism.
+"Accessor to all the input numerical points stored in the cache mechanism.
 
 Returns
 -------
 cacheInput : :class:`~openturns.Sample`
-    All the input numerical points stored in the cache mecanism."
+    All the input numerical points stored in the cache mechanism."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MemoizeFunction::getCacheOutput
-"Accessor to all the output numerical points stored in the cache mecanism.
+"Accessor to all the output numerical points stored in the cache mechanism.
 
 Returns
 -------
 cacheInput : :class:`~openturns.Sample`
-    All the output numerical points stored in the cache mecanism."
+    All the output numerical points stored in the cache mechanism."
 
 // ---------------------------------------------------------------------
 

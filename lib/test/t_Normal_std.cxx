@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Normal for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,7 +46,7 @@ int main(int, char *[])
   setRandomGenerator();
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     for (UnsignedInteger dim = 1; dim <= 4; dim++)
     {
       fullprint << "\n*** Case " << dim << " ***\n" << std::endl;
@@ -112,8 +112,6 @@ int main(int, char *[])
       Scalar eps = 1e-4;
       Point DDF = distribution.computeDDF( point );
       fullprint << "ddf     =" << clean(DDF) << std::endl;
-      Point ddfFD(distribution.ContinuousDistribution::computeDDF(point));
-      fullprint << "ddf (FD)=" << clean(ddfFD) << std::endl;
       Scalar LPDF = distribution.computeLogPDF( point );
       fullprint << "log pdf=" << LPDF << std::endl;
       Scalar PDF = distribution.computePDF( point );
@@ -133,7 +131,10 @@ int main(int, char *[])
       fullprint << "survival=" << Survival << std::endl;
       Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
       fullprint << "Inverse survival=" << InverseSurvival << std::endl;
-      fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
+      if (dim <= 3)
+      {
+        fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
+      }
       Complex CF = distribution.computeCharacteristicFunction( point );
       fullprint << "characteristic function=" << CF << std::endl;
       Complex LCF = distribution.computeLogCharacteristicFunction( point );
@@ -160,8 +161,11 @@ int main(int, char *[])
         sigma[i] += eps;
       }
       fullprint << "pdf gradient (FD)=" << clean(PDFgrFD) << std::endl;
-      Point CDFgr = distribution.computeCDFGradient( point );
-      fullprint << "cdf gradient     =" << CDFgr << std::endl;
+      if (dim <= 3)
+      {
+        Point CDFgr = distribution.computeCDFGradient( point );
+        fullprint << "cdf gradient     =" << CDFgr << std::endl;
+      }
       Point quantile = distribution.computeQuantile( 0.95 );
       int oldPrecision = PlatformInfo::GetNumericalPrecision();
       PlatformInfo::SetNumericalPrecision( 4 );
@@ -223,7 +227,7 @@ int main(int, char *[])
       Scalar radius = 2.0;
       fullprint << "Radial CDF(" << radius << ")=" << distribution.computeRadialDistributionCDF(radius) << std::endl;
       Scalar x = 0.6;
-      Point y(dim-1, 0.2);
+      Point y(dim - 1, 0.2);
       Point pt(dim);
       for (UnsignedInteger i = 0; i < dim; ++i) pt[i] = 1.0 * i + 1.5;
       fullprint << "conditional PDF=" << distribution.computeConditionalPDF(x, y) << std::endl;

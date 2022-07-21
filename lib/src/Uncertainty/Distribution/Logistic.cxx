@@ -2,7 +2,7 @@
 /**
  *  @brief The Logistic distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@ static const Factory<Logistic> Factory_Logistic;
 /* Default constructor */
 Logistic::Logistic()
   : ContinuousDistribution()
-  , alpha_(0.0)
+  , mu_(0.0)
   , beta_(1.0)
 {
   setName( "Logistic" );
@@ -43,10 +43,10 @@ Logistic::Logistic()
 }
 
 /* Parameters constructor */
-Logistic::Logistic(const Scalar alpha,
+Logistic::Logistic(const Scalar mu,
                    const Scalar beta)
   : ContinuousDistribution()
-  , alpha_(alpha)
+  , mu_(mu)
   , beta_(0.0)
 {
   setName( "Logistic" );
@@ -59,7 +59,7 @@ Logistic::Logistic(const Scalar alpha,
 Bool Logistic::operator ==(const Logistic & other) const
 {
   if (this == &other) return true;
-  return (alpha_ == other.alpha_) && (beta_ == other.beta_);
+  return (mu_ == other.mu_) && (beta_ == other.beta_);
 }
 
 Bool Logistic::equals(const DistributionImplementation & other) const
@@ -75,7 +75,7 @@ String Logistic::__repr__() const
   oss << "class=" << Logistic::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " alpha=" << alpha_
+      << " mu=" << mu_
       << " beta=" << beta_;
   return oss;
 }
@@ -83,7 +83,7 @@ String Logistic::__repr__() const
 String Logistic::__str__(const String & ) const
 {
   OSS oss;
-  oss << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ")";
+  oss << getClassName() << "(mu = " << mu_ << ", beta = " << beta_ << ")";
   return oss;
 }
 
@@ -97,7 +97,7 @@ Logistic * Logistic::clone() const
 Point Logistic::getRealization() const
 {
   Scalar prob = RandomGenerator::Generate();
-  return Point(1, alpha_ + beta_ * std::log(prob / (1.0 - prob)));
+  return Point(1, mu_ + beta_ * std::log(prob / (1.0 - prob)));
 }
 
 
@@ -106,7 +106,7 @@ Point Logistic::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  Scalar expX = std::exp((point[0] - alpha_) / beta_);
+  Scalar expX = std::exp((point[0] - mu_) / beta_);
   Scalar betaExpX = beta_ * (1.0 + expX);
   return Point(1, beta_ * expX * (1.0 - expX) / (betaExpX * betaExpX * betaExpX));
 }
@@ -116,7 +116,7 @@ Point Logistic::computeDDF(const Point & point) const
 Scalar Logistic::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const Scalar z = (point[0] - alpha_) / beta_;
+  const Scalar z = (point[0] - mu_) / beta_;
   if (z > 12.38075336)
   {
     const Scalar expMZ = std::exp(-z);
@@ -135,7 +135,7 @@ Scalar Logistic::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar z = (point[0] - alpha_) / beta_;
+  const Scalar z = (point[0] - mu_) / beta_;
   if (z > 12.38075336) return -z + log1p(-2.0 * std::exp(-z)) - std::log(beta_);
   if (z < -12.38075336) return z + log1p(-2.0 * std::exp(z)) - std::log(beta_);
   return -z - std::log(beta_) - 2.0 * log1p(std::exp(-z));
@@ -146,7 +146,7 @@ Scalar Logistic::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar z = (point[0] - alpha_) / beta_;
+  const Scalar z = (point[0] - mu_) / beta_;
   if (z > 12.01454911)
   {
     const Scalar expMZ = std::exp(-z);
@@ -164,7 +164,7 @@ Scalar Logistic::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar z = (point[0] - alpha_) / beta_;
+  const Scalar z = (point[0] - mu_) / beta_;
   if (z > 12.01454911)
   {
     const Scalar expMZ = std::exp(-z);
@@ -188,19 +188,19 @@ Scalar Logistic::computeEntropy() const
 Complex Logistic::computeCharacteristicFunction(const Scalar x) const
 {
   const Scalar piBetaU = M_PI * beta_ * x;
-  return std::exp(Complex(0.0, x * alpha_)) * piBetaU / std::sinh(piBetaU);
+  return std::exp(Complex(0.0, x * mu_)) * piBetaU / std::sinh(piBetaU);
 }
 
 Complex Logistic::computeLogCharacteristicFunction(const Scalar x) const
 {
   const Scalar piBetaU = M_PI * beta_ * x;
-  return Complex(0.0, x * alpha_) + std::log(piBetaU) - std::log(std::sinh(piBetaU));
+  return Complex(0.0, x * mu_) + std::log(piBetaU) - std::log(std::sinh(piBetaU));
 }
 
 /* Get the PDFGradient of the distribution */
 Point Logistic::computePDFGradient(const Point & point) const
 {
-  Scalar x = (point[0] - alpha_) / beta_;
+  Scalar x = (point[0] - mu_) / beta_;
   Scalar expX = std::exp(x);
   Scalar betaExpX = beta_ * (1.0 + expX);
   Point pdfGradient(2);
@@ -212,7 +212,7 @@ Point Logistic::computePDFGradient(const Point & point) const
 /* Get the CDFGradient of the distribution */
 Point Logistic::computeCDFGradient(const Point & point) const
 {
-  Scalar x = (point[0] - alpha_) / beta_;
+  Scalar x = (point[0] - mu_) / beta_;
   Scalar expX = std::exp(x);
   Scalar betaExpX = beta_ * (1.0 + expX);
   Point cdfGradient(2);
@@ -225,8 +225,8 @@ Point Logistic::computeCDFGradient(const Point & point) const
 Scalar Logistic::computeScalarQuantile(const Scalar prob,
                                        const Bool tail) const
 {
-  if (tail) return alpha_ + beta_ * std::log((1.0 - prob) / prob);
-  return alpha_ + beta_ * std::log(prob / (1.0 - prob));
+  if (tail) return mu_ + beta_ * std::log((1.0 - prob) / prob);
+  return mu_ + beta_ * std::log(prob / (1.0 - prob));
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
@@ -239,7 +239,7 @@ Scalar Logistic::getRoughness() const
 /* Compute the mean of the distribution */
 void Logistic::computeMean() const
 {
-  mean_ = Point(1, alpha_);
+  mean_ = Point(1, mu_);
   isAlreadyComputedMean_ = true;
 }
 
@@ -312,7 +312,7 @@ Distribution Logistic::getStandardRepresentative() const
 Point Logistic::getParameter() const
 {
   Point point(2);
-  point[0] = alpha_;
+  point[0] = mu_;
   point[1] = beta_;
   return point;
 }
@@ -329,7 +329,7 @@ void Logistic::setParameter(const Point & parameter)
 Description Logistic::getParameterDescription() const
 {
   Description description(2);
-  description[0] = "alpha";
+  description[0] = "mu";
   description[1] = "beta";
   return description;
 }
@@ -341,22 +341,21 @@ Bool Logistic::isElliptical() const
 }
 
 /* Alpha accessor */
-void Logistic::setAlpha(const Scalar alpha)
+void Logistic::setMu(const Scalar mu)
 {
-  if (alpha != alpha_)
+  if (mu != mu_)
   {
-    alpha_ = alpha;
+    mu_ = mu;
     isAlreadyComputedMean_ = false;
     // The covariancedoes not depend on alpha
     computeRange();
   }
 }
 
-Scalar Logistic::getAlpha() const
+Scalar Logistic::getMu() const
 {
-  return alpha_;
+  return mu_;
 }
-
 
 /* Beta accessor */
 void Logistic::setBeta(const Scalar beta)
@@ -380,7 +379,7 @@ Scalar Logistic::getBeta() const
 void Logistic::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "alpha_", alpha_ );
+  adv.saveAttribute( "mu_", mu_ );
   adv.saveAttribute( "beta_", beta_ );
 }
 
@@ -388,7 +387,10 @@ void Logistic::save(Advocate & adv) const
 void Logistic::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "alpha_", alpha_ );
+  if (adv.hasAttribute("alpha_")) // old name
+    adv.loadAttribute( "alpha_", mu_ );
+  else
+    adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "beta_", beta_ );
   computeRange();
 }

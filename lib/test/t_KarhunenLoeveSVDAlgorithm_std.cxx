@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class KarhunenLoeveSVDAlgorithm
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,10 +42,31 @@ int main(int, char *[])
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
+      Sample coefficients(result.project(sample));
+      fullprint << "KL coefficients=" << coefficients << std::endl;
+      Basis KLFunctions(result.getModes());
+      fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
+      fullprint << "KL lift=" << result.lift(coefficients[0]).__str__() << std::endl;
+      fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
+    }
+    {
+      // 1D mesh, 1D covariance, uniform weight, automatic centering, more samples
+      // than vertices + trunk
+      AbsoluteExponential cov1D(Point(1, 1.0));
+      ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(16));
+      KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
+      algo.setNbModes(5);// out of 10
+      algo.run();
+      KarhunenLoeveResult result(algo.getResult());
+      Point lambda(result.getEigenvalues());
+      ProcessSample KLModes(result.getModesAsProcessSample());
+      fullprint << "KL modes=" << KLModes << std::endl;
+      fullprint << "KL eigenvalues=" << lambda << std::endl;
+      fullprint << "KL selection ratio=" << result.getSelectionRatio() << std::endl;
       Sample coefficients(result.project(sample));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
@@ -60,7 +81,7 @@ int main(int, char *[])
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -78,7 +99,7 @@ int main(int, char *[])
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0, true);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -97,7 +118,7 @@ int main(int, char *[])
       KarhunenLoeveSVDAlgorithm algo(sample, weights, 0.0, true);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -121,7 +142,7 @@ int main(int, char *[])
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;

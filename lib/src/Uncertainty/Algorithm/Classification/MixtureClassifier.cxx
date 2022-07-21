@@ -2,7 +2,7 @@
 /**
  *  @brief Associate to a given point its class index
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -84,7 +84,7 @@ UnsignedInteger MixtureClassifier::classify(const Point& inP) const
   return bestClass;
 }
 
-Indices MixtureClassifier::classifySequential(const Sample & inS) const
+Indices MixtureClassifier::classify(const Sample & inS) const
 {
   const UnsignedInteger mixtureSize = mixture_.getDistributionCollection().getSize();
   const UnsignedInteger size = inS.getSize();
@@ -101,7 +101,7 @@ Indices MixtureClassifier::classifySequential(const Sample & inS) const
   // Now grade the points
   // The outer loop is on the classes and the inner loop on the point to
   // benefit from data locality
-  Point bestGrades(size, -SpecFunc::MaxScalar);
+  Point bestGrades(size, SpecFunc::LowestScalar);
   Indices bestClasses(size);
   for (UnsignedInteger classIndex = 0; classIndex < mixtureSize; ++classIndex)
   {

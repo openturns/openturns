@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class DistFunc for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,10 +48,10 @@ int main(int, char *[])
         for (UnsignedInteger iX = 0; iX < nX; ++iX)
         {
           Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
-	  grid[iX] = x;
+          grid[iX] = x;
           fullprint << "pStudent(" << nu << ", " << x << ")=" << DistFunc::pStudent(nu, x) << ", complementary=" << DistFunc::pStudent(nu, x, true) << std::endl;
         }
-	fullprint << "pStudent(" << nu << ", " << grid << ")=" << DistFunc::pStudent(nu, grid) << std::endl;
+        fullprint << "pStudent(" << nu << ", " << grid << ")=" << DistFunc::pStudent(nu, grid) << std::endl;
       }
       // Second, the general case: medium real nu
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
@@ -60,10 +60,10 @@ int main(int, char *[])
         for (UnsignedInteger iX = 0; iX < nX; ++iX)
         {
           Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
-	  grid[iX] = x;
+          grid[iX] = x;
           fullprint << "pStudent(" << nu << ", " << x << ")=" << DistFunc::pStudent(nu, x) << ", complementary=" << DistFunc::pStudent(nu, x, true) << std::endl;
         }
-	fullprint << "pStudent(" << nu << ", " << grid << ")=" << DistFunc::pStudent(nu, grid) << std::endl;
+        fullprint << "pStudent(" << nu << ", " << grid << ")=" << DistFunc::pStudent(nu, grid) << std::endl;
       }
       // Third, the extreme case: large real nu
       Scalar logNuMin = 9.0;
@@ -74,10 +74,10 @@ int main(int, char *[])
         for (UnsignedInteger iX = 0; iX < nX; ++iX)
         {
           Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
-	  grid[iX] = x;
+          grid[iX] = x;
           fullprint << "pStudent(" << nu << ", " << x << ")=" << DistFunc::pStudent(nu, x) << ", complementary=" << DistFunc::pStudent(nu, x, true) << std::endl;
         }
-	fullprint << "pStudent(" << nu << ", " << grid << ")=" << DistFunc::pStudent(nu, grid) << std::endl;
+        fullprint << "pStudent(" << nu << ", " << grid << ")=" << DistFunc::pStudent(nu, grid) << std::endl;
       }
     } // pStudent
     {
@@ -95,22 +95,22 @@ int main(int, char *[])
         for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
         {
           Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
-	  grid[iQ] = q;
+          grid[iQ] = q;
           fullprint << "qStudent(" << nu << ", " << q << ")=" << DistFunc::qStudent(nu, q) << ", complementary=" << DistFunc::qStudent(nu, q, true) << std::endl;
         }
-	fullprint << "qStudent(" << nu << ", " << grid << ")=" << DistFunc::qStudent(nu, grid) << std::endl;
+        fullprint << "qStudent(" << nu << ", " << grid << ")=" << DistFunc::qStudent(nu, grid) << std::endl;
       }
       // Second, the general case: medium real nu
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
         Scalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
-	for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
+        for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
         {
           Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
-	  grid[iQ] = q;
+          grid[iQ] = q;
           fullprint << "qStudent(" << nu << ", " << q << ")=" << DistFunc::qStudent(nu, q) << ", complementary=" << DistFunc::qStudent(nu, q, true) << std::endl;
         }
-	fullprint << "qStudent(" << nu << ", " << grid << ")=" << DistFunc::qStudent(nu, grid) << std::endl;
+        fullprint << "qStudent(" << nu << ", " << grid << ")=" << DistFunc::qStudent(nu, grid) << std::endl;
       }
       // Third, the extreme case: large real nu
       Scalar logNuMin = 9.0;
@@ -121,10 +121,10 @@ int main(int, char *[])
         for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
         {
           Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
-	  grid[iQ] = q;
+          grid[iQ] = q;
           fullprint << "qStudent(" << nu << ", " << q << ")=" << DistFunc::qStudent(nu, q) << ", complementary=" << DistFunc::qStudent(nu, q, true) << std::endl;
         }
-	fullprint << "qStudent(" << nu << ", " << grid << ")=" << DistFunc::qStudent(nu, grid) << std::endl;
+        fullprint << "qStudent(" << nu << ", " << grid << ")=" << DistFunc::qStudent(nu, grid) << std::endl;
       }
     } // qStudent
     {

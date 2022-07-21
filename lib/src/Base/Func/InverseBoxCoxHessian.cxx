@@ -2,7 +2,7 @@
 /**
  *  @brief Class for a Box cox implementation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,6 @@
 
 #include "openturns/InverseBoxCoxHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -97,7 +96,7 @@ SymmetricTensor InverseBoxCoxHessian::hessian(const Point & inP) const
   for (UnsignedInteger index = 0; index < dimension; ++index)
   {
     const Scalar x = inP[index] + getShift()[index];
-    if (x <= 0.0)
+    if (!(x > 0.0))
       throw InvalidArgumentException(HERE) << "Can not apply the Box Cox hessian function to a negative shifted value x=" << x;
 
     // Applying the Box-Cox function

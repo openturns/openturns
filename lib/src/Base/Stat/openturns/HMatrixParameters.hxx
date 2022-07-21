@@ -4,7 +4,7 @@
  *  @brief This file supplies support for HMat. It stores parameters used by
  *         HMat applications
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,7 +40,7 @@ public:
   HMatrixParameters();
 
   /** Virtual copy constructor */
-  virtual HMatrixParameters * clone() const;
+  HMatrixParameters * clone() const override;
 
   /** accessor for assembly epsilon */
   void setAssemblyEpsilon(const Scalar assemblyEpsilon);
@@ -63,15 +63,20 @@ public:
   String getCompressionMethod() const;
   UnsignedInteger getCompressionMethodAsUnsignedInteger() const;
 
+  /** accessor for factorization method */
+  void setFactorizationMethod(const String & factorization);
+  String getFactorizationMethod() const;
+
+
   /* String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   Scalar assemblyEpsilon_;
@@ -79,7 +84,7 @@ private:
   Scalar admissibilityFactor_;
   String clusteringAlgorithm_;
   String compressionMethod_;
-
+  String factorizationMethod_;
 };
 
 

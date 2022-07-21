@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 from math import *
@@ -28,8 +27,8 @@ TESTPREAMBLE()
 
 try:
 
-        # We create a numerical math function
-        # Analytical construction
+    # We create a numerical math function
+    # Analytical construction
     inputFunc = Description(2)
     inputFunc[0] = "x0"
     inputFunc[1] = "x1"
@@ -78,7 +77,7 @@ try:
         output.setDescription(outputDescription)
 
         # We create an Event from this RandomVector
-        myEvent = Event(output, Greater(), 0.0)
+        myEvent = ThresholdEvent(output, Greater(), 0.0)
 
         # We create a NearestPoint algorithm
         myCobyla = Cobyla()

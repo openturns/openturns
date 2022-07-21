@@ -13,7 +13,7 @@ observations : 2-d sequence of float
 
 See also
 --------
-ConditionalDistribution, MCMC
+ConditionalDistribution, MetropolisHastingsImplementation
 
 Examples
 --------

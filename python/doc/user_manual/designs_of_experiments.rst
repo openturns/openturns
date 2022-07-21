@@ -68,8 +68,19 @@ Deterministic weighted experiments
     FixedExperiment
     GaussProductExperiment
     LowDiscrepancyExperiment
+    TensorProductExperiment
 
 .. _low_discrepancy_sequence_api:
+
+Sample splitting
+================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    KFoldSplitter
+    LeaveOneOutSplitter
 
 Low Discrepancy Sequences
 =========================

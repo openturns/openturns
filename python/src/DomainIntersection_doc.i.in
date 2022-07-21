@@ -40,7 +40,7 @@ Examples
 >>> simplices = [[0, 1, 2], [1, 2, 3]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
 >>> intersection = ot.DomainIntersection(interval2d, mesh2d)
->>> intersection.contains([0.2, 0.1])
+>>> [0.2, 0.1] in intersection
 True
->>> intersection.contains([0.1, 0.2])
+>>> [0.1, 0.2] in intersection
 False"

@@ -2,7 +2,7 @@
 /**
  *  @brief DomainUnion represents the union of two Domain
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -91,6 +91,16 @@ DomainUnion::BoolCollection DomainUnion::contains(const Sample & sample) const
   for(UnsignedInteger i = 0; i < rightResult.getSize(); ++i)
     result[notInLeft[i]] = rightResult[i];
   return result;
+}
+
+/* Compute the Euclidean distance from a given point to the domain */
+Scalar DomainUnion::computeDistance(const Point & point) const
+{
+  const Scalar distanceLeft = left_.computeDistance(point);
+  if (distanceLeft == 0.0) return 0.0;
+  const Scalar distanceRight = right_.computeDistance(point);
+
+  return std::min(distanceLeft, distanceRight);
 }
 
 Bool DomainUnion::operator == (const DomainUnion & other) const

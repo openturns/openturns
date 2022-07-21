@@ -2,7 +2,7 @@
 /**
  *  @brief Metropolis-Hastings algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,7 @@
 #define OPENTURNS_RANDOMWALKMETROPOLISHASTINGS_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/MCMC.hxx"
-#include "openturns/CalibrationStrategy.hxx"
-#include "openturns/Interval.hxx"
+#include "openturns/MetropolisHastingsImplementation.hxx"
 #include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -36,77 +34,81 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 class OT_API RandomWalkMetropolisHastings
-  : public MCMC
+  : public MetropolisHastingsImplementation
 {
   CLASSNAME
 public:
-  typedef Collection<Distribution> DistributionCollection;
-  typedef PersistentCollection<Distribution> DistributionPersistentCollection;
-  typedef Collection<CalibrationStrategy> CalibrationStrategyCollection;
-  typedef PersistentCollection<CalibrationStrategy> CalibrationStrategyPersistentCollection;
 
   /** Default constructor */
   RandomWalkMetropolisHastings();
 
   /** Constructor with parameters*/
-  RandomWalkMetropolisHastings(const Distribution & prior,
-                               const Distribution & conditional,
-                               const Sample & observations,
+  RandomWalkMetropolisHastings(const Distribution & targetDistribution,
                                const Point & initialState,
-                               const DistributionCollection & proposal);
+                               const Distribution & proposal,
+                               const Indices & marginalIndices = Indices());
 
   /** Constructor with parameters*/
-  RandomWalkMetropolisHastings(const Distribution & prior,
-                               const Distribution & conditional,
-                               const Function & model,
-                               const Sample & parameters,
-                               const Sample & observations,
+  RandomWalkMetropolisHastings(const Function & targetLogPDF,
+                               const Domain & support,
                                const Point & initialState,
-                               const DistributionCollection & proposal);
-
+                               const Distribution & proposal,
+                               const Indices & marginalIndices = Indices());
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual RandomWalkMetropolisHastings * clone() const;
+  RandomWalkMetropolisHastings * clone() const override;
 
-  /** Get a realization */
-  virtual Point getRealization() const;
+  /** Intrumental accessor */
+  void setProposal(const Distribution & proposal);
+  Distribution getProposal() const;
 
-  /** Calibration strategy accessor */
-  void setCalibrationStrategy(const CalibrationStrategy & calibrationStrategy);
-  void setCalibrationStrategyPerComponent(const CalibrationStrategyCollection & calibrationStrategy);
-  CalibrationStrategyCollection getCalibrationStrategyPerComponent() const;
+  /** Adaptation range accessor */
+  void setAdaptationRange(const Interval & range);
+  Interval getAdaptationRange() const;
 
-  /** Proposal accessor */
-  void setProposal(const DistributionCollection & proposal);
-  DistributionCollection getProposal() const;
+  /** Adaptation expansion factor accessor */
+  void setAdaptationExpansionFactor(const Scalar expansionFactor);
+  Scalar getAdaptationExpansionFactor() const;
 
-  /** Acceptance rate accessor*/
-  Point getAcceptanceRate() const;
+  /** Adaptation shrink factor accessor */
+  void setAdaptationShrinkFactor(const Scalar shrinkFactor);
+  Scalar getAdaptationShrinkFactor() const;
+
+  /** Adaptation period accessor */
+  void setAdaptationPeriod(const UnsignedInteger period);
+  UnsignedInteger getAdaptationPeriod() const;
+
+  /** Adaptation factor accessor */
+  Scalar getAdaptationFactor() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
+
+protected:
+  /** Propose a new point in the chain */
+  Point getCandidate() const override;
 
 private:
-  /// proposal densities of the markov chain
-  DistributionPersistentCollection proposal_;
+  // proposal densities of the markov chain
+  Distribution proposal_;
+  Bool isProposalSymmetric_ = false;
 
-  /// how to calibrate the each chain component
-  CalibrationStrategyPersistentCollection calibrationStrategy_;
+  // update factor
+  mutable Scalar adaptationFactor_ = 1.0;
 
-  /// number of samples
-  mutable UnsignedInteger samplesNumber_;
+  // adaptation parameters
+  Interval adaptationRange_;
+  Scalar adaptationExpansionFactor_ = 0.0;
+  Scalar adaptationShrinkFactor_ = 0.0;
+  UnsignedInteger adaptationPeriod_ = 0;
 
-  /// number of samples accepted
-  mutable Indices acceptedNumber_;
-
-  mutable Scalar currentLogLikelihood_;
 }; /* class RandomWalkMetropolisHastings */
 
 

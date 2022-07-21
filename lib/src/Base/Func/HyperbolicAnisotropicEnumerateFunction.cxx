@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -170,17 +170,18 @@ UnsignedInteger HyperbolicAnisotropicEnumerateFunction::inverse(const Indices & 
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = indices.getSize();
-  if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension.";
+  if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension, here size=" << size << " and dimension=" << dimension;
   UnsignedInteger result = 0;
-  while ((cache_[result] != indices) && (result < cache_.getSize())) ++ result;
+  while ((result < cache_.getSize()) && (cache_[result] != indices)) ++result;
   if (result == cache_.getSize())
   {
     do
     {
-      operator()(result);
-      ++ result;
+      (void) operator()(result);
+      ++result;
     }
-    while (cache_[result] != indices);
+    while (cache_[result - 1] != indices);
+    return result - 1;
   }
   return result;
 }
@@ -229,7 +230,7 @@ UnsignedInteger HyperbolicAnisotropicEnumerateFunction::getMaximumDegreeStrataIn
 /* Q accessor */
 void HyperbolicAnisotropicEnumerateFunction::setQ(const Scalar q)
 {
-  if (!(q > 0.0)) throw InvalidRangeException( HERE ) << "q parameter should be positive";
+  if (!(q > 0.0)) throw InvalidRangeException( HERE ) << "q parameter should be positive, but q=" << q;
   q_ = q;
 }
 
@@ -245,9 +246,9 @@ void HyperbolicAnisotropicEnumerateFunction::setWeight(const Point & weight)
 {
   for (UnsignedInteger i = 0; i < getDimension(); ++ i)
   {
-    if (weight[i] < 0.0)
+    if (!(weight[i] >= 0.0))
     {
-      throw InvalidRangeException( HERE ) << "Anisotropic weights should not be negative.";
+      throw InvalidRangeException( HERE ) << "Anisotropic weights should not be negative, but the weight of index " << i << " is " << weight[i];
     }
   }
   weight_ = weight;

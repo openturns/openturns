@@ -2,7 +2,7 @@
 /**
  *  @brief Subset sampling result
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,7 @@ public:
   SubsetSamplingResult();
 
   /** Constructor with parameters */
-  SubsetSamplingResult(const Event & event,
+  SubsetSamplingResult(const RandomVector & event,
                        const Scalar probabilityEstimate,
                        const Scalar varianceEstimate,
                        const UnsignedInteger outerSampling,
@@ -43,19 +43,19 @@ public:
                        const Scalar coefficientOfVariation = 0.0);
 
   /** Virtual constructor */
-  virtual SubsetSamplingResult * clone() const;
+  SubsetSamplingResult * clone() const override;
 
   /** Coefficient of variation estimate accessor */
-  virtual Scalar getCoefficientOfVariation() const;
+  Scalar getCoefficientOfVariation() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   Scalar coefficientOfVariation_;

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 from math import *
 
@@ -9,7 +8,7 @@ TESTPREAMBLE()
 try:
     # Log.Show( Log.Flags() | Log.INFO )
 
-      # Problem parameters
+    # Problem parameters
     dimension = 8
 
     # Create the Ishigami function

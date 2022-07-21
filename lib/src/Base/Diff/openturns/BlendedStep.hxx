@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of BlendedStep
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,21 +49,21 @@ public:
               const Point & eta);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual BlendedStep * clone() const;
+  BlendedStep * clone() const override;
 
   /** Compute step */
-  virtual Point operator()(const Point & inP) const;
+  Point operator()(const Point & inP) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Eta accessor */
   void setEta(const Point & eta);

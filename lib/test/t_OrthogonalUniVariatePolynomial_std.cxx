@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class OrthogonalUniVariatePolynomial for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,19 +38,16 @@ int main(int, char *[])
     fullprint << "P(" << point << ")=" << P(point) << std::endl;
 
     // Construction from a collection of recurrence coefficients
-    OrthogonalUniVariatePolynomial::CoefficientsCollection recurrenceCoefficients(3);
-    recurrenceCoefficients[0] = OrthogonalUniVariatePolynomial::Coefficients(3);
-    recurrenceCoefficients[0][0] = 1.1;
-    recurrenceCoefficients[0][1] = 2.2;
-    recurrenceCoefficients[0][2] = 3.3;
-    recurrenceCoefficients[1] = OrthogonalUniVariatePolynomial::Coefficients(3);
-    recurrenceCoefficients[1][0] = 0.111;
-    recurrenceCoefficients[1][1] = 0.222;
-    recurrenceCoefficients[1][2] = 0.333;
-    recurrenceCoefficients[2] = OrthogonalUniVariatePolynomial::Coefficients(3);
-    recurrenceCoefficients[2][0] = 0.01111;
-    recurrenceCoefficients[2][1] = 0.02222;
-    recurrenceCoefficients[2][2] = 0.03333;
+    Sample recurrenceCoefficients(3, 3);
+    recurrenceCoefficients(0, 0) = 1.1;
+    recurrenceCoefficients(0, 1) = 2.2;
+    recurrenceCoefficients(0, 2) = 3.3;
+    recurrenceCoefficients(1, 0) = 0.111;
+    recurrenceCoefficients(1, 1) = 0.222;
+    recurrenceCoefficients(1, 2) = 0.333;
+    recurrenceCoefficients(2, 0) = 0.01111;
+    recurrenceCoefficients(2, 1) = 0.02222;
+    recurrenceCoefficients(2, 2) = 0.03333;
     fullprint << "Recurrence coefficients=" << recurrenceCoefficients << std::endl;
     OrthogonalUniVariatePolynomial Q(recurrenceCoefficients);
     fullprint << "Q=" << Q << std::endl;

@@ -2,7 +2,7 @@
 /**
  *  @brief LinearModelAlgorithm implements the linear model
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,6 +25,7 @@
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/LinearBasisFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -59,19 +60,29 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   inputSample_ = inputSample;
   outputSample_ = outputSample;
 
-  #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-    Collection<Function> functions;
-    const Description inputDescription(inputSample_.getDescription());
-    functions.add(SymbolicFunction(inputSample_.getDescription(), Description(1, "1")));
-    for(UnsignedInteger i = 0; i < inputSample_.getDimension(); ++i)
-    {
-      functions.add(SymbolicFunction(inputDescription, Description(1, inputDescription[i])));
-    }
-    basis_ = Basis(functions);
-  #else
-    basis_ = LinearBasisFactory(inputSample_.getDimension()).build();
-  #endif
-
+  const UnsignedInteger inputDimension = inputSample_.getDimension();
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
+  Collection<Function> functions;
+  Description inputDescription(inputSample_.getDescription());
+  try
+  {
+    // the sample description may contain invalid variable names
+    const SymbolicFunction constant(inputDescription, Description(1, "1"));
+  }
+  catch (InvalidArgumentException &)
+  {
+    // fallback to default variable names
+    inputDescription = Description::BuildDefault(inputDimension, "X");
+  }
+  functions.add(SymbolicFunction(inputDescription, Description(1, "1")));
+  for(UnsignedInteger i = 0; i < inputDimension; ++i)
+  {
+    functions.add(SymbolicFunction(inputDescription, Description(1, inputDescription[i])));
+  }
+  basis_ = Basis(functions);
+#else
+  basis_ = LinearBasisFactory(inputDimension).build();
+#endif
 }
 
 
@@ -113,8 +124,8 @@ void LinearModelAlgorithm::run()
 
   const UnsignedInteger size = inputSample_.getSize();
   const UnsignedInteger basisSize = basis_.getSize();
-  if(!(size - basisSize > 0))
-    throw InvalidArgumentException(HERE) << "Number of basis elements is great or equals the sample size. Data size = " << outputSample_.getSize()
+  if (basisSize > size)
+    throw InvalidArgumentException(HERE) << "Number of basis elements is greater than sample size. Data size = " << outputSample_.getSize()
                                          << ", basis size = " << basisSize;
 
   // No particular strategy : using the full basis
@@ -153,9 +164,8 @@ void LinearModelAlgorithm::run()
   // Residual sample
   const Sample residualSample(outputSample_ - metaModel(inputSample_));
 
-  // Sigma2 
-
-  const Scalar sigma2 = size * residualSample.computeRawMoment(2)[0] / (size - basisSize);
+  // noise variance
+  const Scalar sigma2 = (basisSize >= size) ? 0.0 : size * residualSample.computeRawMoment(2)[0] / (size - basisSize);
 
   Sample standardizedResiduals(size, 1);
 

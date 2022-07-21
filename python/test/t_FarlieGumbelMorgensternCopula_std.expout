@@ -30,9 +30,9 @@ entropy=-0.028119
 Minimum volume interval= [0.0126603, 0.98734]
 [0.0126603, 0.98734]
 threshold= [0.974679]
-Minimum volume level set= {x | f(x) <= 0.392683} with f=
+Minimum volume level set= {x | f(x) <= 0.402105} with f=
 MinimumVolumeLevelSetEvaluation(class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7)
-beta= [0.675243]
+beta= [0.66891]
 Bilateral confidence interval= [0.0126603, 0.98734]
 [0.0126603, 0.98734]
 beta= [0.974679]
@@ -46,16 +46,16 @@ margin= IndependentCopula(dimension = 1)
 margin PDF= 1.0
 margin CDF= 0.25
 margin quantile= [0.95]
-margin realization= [0.782625]
+margin realization= [0.185475]
 margin= IndependentCopula(dimension = 1)
 margin PDF= 1.0
 margin CDF= 0.25
 margin quantile= [0.95]
-margin realization= [0.132158]
+margin realization= [0.219923]
 indices= [1,0]
 margins= class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7
 margins PDF= 1.175
 margins CDF= 0.087109375
 margins quantile= [0.974457,0.974457]
 margins CDF(quantile)= 0.95
-margins realization= [0.454536,0.464089]
+margins realization= [0.0964744,0.524604]

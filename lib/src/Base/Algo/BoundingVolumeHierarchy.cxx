@@ -2,7 +2,7 @@
 /**
  *  @brief  This class implements Bounding Volume Hierarchy (BVH) to speed-up point location.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,8 +40,8 @@ static const Factory<BoundingVolumeHierarchy> Factory_BoundingVolumeHierarchy;
 BoundingVolumeHierarchy::BoundingVolumeHierarchy()
   : EnclosingSimplexAlgorithmImplementation()
   , p_root_(0)
-  , binNumber_(0)
-  , strategy_()
+  , binNumber_(ResourceMap::GetAsUnsignedInteger("BoundingVolumeHierarchy-BinNumber"))
+  , strategy_(ResourceMap::GetAsString("BoundingVolumeHierarchy-Strategy"))
   , sortedSimplices_(0)
   , centerBoundingBoxSimplices_()
 {
@@ -82,7 +82,7 @@ void BoundingVolumeHierarchy::setVerticesAndSimplices(const Sample & vertices, c
   EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices(vertices, simplices);
 
   const UnsignedInteger nrSimplices = simplices_.getSize();
-  if (nrSimplices <= 1) return;
+  if (!nrSimplices) return;
 
   const UnsignedInteger dimension = vertices_.getDimension();
   for (UnsignedInteger i = 0; i < nrSimplices; ++i)
@@ -256,7 +256,7 @@ inline Bool is_point_inside_bounds(const Point & point, const Point & lowerBound
 {
   for(UnsignedInteger i = 0; i < point.getSize(); ++i)
   {
-    if (point[i] < lowerBounds[i] || point[i] > upperBounds[i])
+    if (!(point[i] >= lowerBounds[i] && point[i] <= upperBounds[i]))
       return false;
   }
   return true;
@@ -269,8 +269,11 @@ UnsignedInteger BoundingVolumeHierarchy::query(const Point & point) const
   if (point.getDimension() != vertices_.getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << vertices_.getDimension() << ", got dimension=" << point.getDimension();
 
   // First, check against the bounding box
-  const UnsignedInteger notFound = simplices_.getSize();
-  if (notFound == 0) return notFound;
+  const UnsignedInteger size = simplices_.getSize();
+  const UnsignedInteger notFound = size;
+
+  if (!size) return notFound;
+
   if (!boundingBox_.contains(point)) return notFound;
 
   const UnsignedInteger dimension = point.getDimension();
@@ -290,7 +293,7 @@ UnsignedInteger BoundingVolumeHierarchy::query(const Point & point) const
         // Sort simplices according to their distance to point[activeDimension]
         // in order to (hopefully) check less simplices
         if (current->nrSimplices_ > pairDistanceSimplex.size())
-          pairDistanceSimplex.reserve(current->nrSimplices_);
+          pairDistanceSimplex.resize(current->nrSimplices_);
         for(UnsignedInteger i = 0; i < current->nrSimplices_; ++i)
         {
           const UnsignedInteger simplexIndex = sortedSimplices_[(current->offset_ + i)];

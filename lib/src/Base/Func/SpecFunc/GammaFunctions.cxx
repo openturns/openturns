@@ -3,7 +3,7 @@
  *  @brief Efficient implementation of the computation of the incomplete
  *         regularized gamma function and related functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,9 +25,10 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/incgam.hxx"
 #ifdef OPENTURNS_HAVE_BOOST
 #include <boost/math/special_functions/gamma.hpp>
+#else
+#include "openturns/incgam.hxx"
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -75,14 +76,21 @@ Scalar RegularizedIncompleteGammaInverse(const Scalar a,
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
 #ifdef OPENTURNS_HAVE_BOOST
-  return (tail ? boost::math::gamma_q_inv(a, x) : boost::math::gamma_p_inv(a, x));
+  try
+  {
+    return (tail ? boost::math::gamma_q_inv(a, x) : boost::math::gamma_p_inv(a, x));
+  }
+  catch (boost::math::evaluation_error & ex)
+  {
+    throw InvalidArgumentException(HERE) << ex.what();
+  }
 #else
   const Scalar y = 0.5 + (0.5 - x);
   Scalar xr = -1.0;
   SignedInteger ierr;
   invincgam(a, (tail ? y : x), (tail ? x : y), xr, ierr);
-  if (ierr == -1) LOGWARN(OSS() << "cannot compute the RegularizedIncompleteGammaInverse funtion to full precision for a=" << a << ", x=" << x << ", tail=" << tail << " because of an overflow.");
-  if (ierr == -2) LOGWARN(OSS() << "up to 15 Newton iterations have been made to compute the RegularizedIncompleteGammaInverse funtion for a=" << a << ", x=" << x << ", tail=" << tail << ". The accuracy may be reduced.");
+  if (ierr == -1) LOGWARN(OSS() << "cannot compute the RegularizedIncompleteGammaInverse function to full precision for a=" << a << ", x=" << x << ", tail=" << tail << " because of an overflow.");
+  if (ierr == -2) LOGWARN(OSS() << "up to 15 Newton iterations have been made to compute the RegularizedIncompleteGammaInverse function for a=" << a << ", x=" << x << ", tail=" << tail << ". The accuracy may be reduced.");
   return xr;
 #endif
 }

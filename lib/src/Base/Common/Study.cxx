@@ -2,7 +2,7 @@
 /**
  *  @brief Study keeps all PersistentObjects in a file
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,11 +49,12 @@ Study::Study()
 /*
  * Parameter constructor
  */
-Study::Study(const FileName & fileName)
+Study::Study(const FileName & fileName,
+             const UnsignedInteger compressionLevel)
   : map_(),
     labelMap_(),
 #if defined OPENTURNS_HAVE_LIBXML2
-    p_storageManager_(new XMLStorageManager(fileName))
+    p_storageManager_(new XMLStorageManager(fileName, compressionLevel))
 #else
     p_storageManager_(new StorageManager)
 #endif /* OPENTURNS_HAVE_LIBXML2 */
@@ -61,6 +62,8 @@ Study::Study(const FileName & fileName)
 #if defined OPENTURNS_HAVE_LIBXML2
   p_storageManager_->setStudy(this);
 #else
+  (void)fileName;
+  (void)compressionLevel;
   throw NotYetImplementedException(HERE) << "Error: no XML support for Study";
 #endif /* OPENTURNS_HAVE_LIBXML2 */
 }

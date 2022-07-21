@@ -2,7 +2,7 @@
 
 %{
 #include "openturns/RandomVector.hxx"
-#include "openturns/PythonRandomVectorImplementation.hxx"
+#include "openturns/PythonRandomVector.hxx"
 %}
 
 %include RandomVector_doc.i
@@ -73,9 +73,54 @@ class PythonRandomVector(object):
     [[ 0.0833333 0         ]
      [ 0         0.0833333 ]]
 
+    Random vectors can admit parameters.
+
+    In the following example, we define a `RandomVector`
+    to sample from a normal multivariate normal distribution
+    truncated to a ball.
+    We implement the `setParameter` method to define the ball's center.
+
+    >>> class NormalTruncatedToBall(ot.PythonRandomVector):
+    ...    def __init__(self, dim, max_dist):
+    ...        super().__init__(dim)
+    ...        self._center = ot.Point(dim)
+    ...        self._normal = ot.Normal(dim)
+    ...        self._max_dist = max_dist
+    ...        self.setParameter(ot.Point(dim))
+    ...
+    ...    def getRealization(self):
+    ...        dist = ot.SpecFunc.MaxScalar
+    ...        while dist>self._max_dist:
+    ...            candidate = self._normal.getRealization()
+    ...            dist = (candidate - self._center).norm()
+    ...        return candidate
+    ...
+    ...    def setParameter(self, center): # the parameter influences sampling
+    ...        self._center = center
+    ...
+    ...    def getParameter(self): # implemented for the sake of consistency
+    ...        return self._center
+    ...
+    ...    def getParameterDescription(self): # optional
+    ...        return ["center_{}".format(i) for i in range(self.getDimension())]
+
+    Define an instance of this `RandomVector` and set the parameter:
+
+    >>> myRV = ot.RandomVector(NormalTruncatedToBall(2, 1.5))
+    >>> myRV.setParameter([1.3, 0.6])
+
+    Get a sample and plot it:
+
+    >>> sample = myRV.getSample(100)
+    >>> graph = ot.Graph("Sample from a PythonRandomVector", "", "", True, '')
+    >>> cloud = ot.Cloud(sample)
+    >>> graph.add(cloud)
+    >>> from openturns.viewer import View
+    >>> view = View(graph)
+
     """
     def __init__(self, dim=0):
-        # Warning: these names are used in PythonRandomVectorImplementation class. Synchronize the files if changed
+        # Warning: these names are used in PythonRandomVector class. Synchronize the files if changed
         self.__dim = dim
         self.__desc = ['x' + str(i) for i in range(dim)]
 
@@ -121,39 +166,6 @@ class PythonRandomVector(object):
         """
         return self.__desc
 
-    def getRealization(self):
-        """
-        Get a realization of the random vector.
-
-        Returns
-        -------
-        realization : :class:`~openturns.Point`
-            Sequence of values randomly determined from the RandomVector definition.
-        """
-        raise RuntimeError('You must define a method getRealization() -> X, where X is a Point')
-
-    def getMean(self):
-        """
-        Get the mean.
-
-        Returns
-        -------
-        mean : :class:`~openturns.Point`
-            Mean of the RandomVector.
-        """
-        raise RuntimeError('You must define a method mean -> X, where X is a Point')
-
-    def getCovariance(self):
-        """
-        Get the covariance.
-
-        Returns
-        -------
-        covariance : :class:`~openturns.CovarianceMatrix`
-            Covariance of the RandomVector.
-        """
-        raise RuntimeError('You must define a method var -> M, where M is a CovarianceMatrix')
-
 %}
 
 OTTypedInterfaceObjectHelper(RandomVector)
@@ -168,7 +180,7 @@ RandomVector(const RandomVector & other)
 
 RandomVector(PyObject * pyObj)
 {
-  return new OT::RandomVector( new OT::PythonRandomVectorImplementation(pyObj) );
+  return new OT::RandomVector( new OT::PythonRandomVector(pyObj) );
 } 
 
 } // class RandomVector

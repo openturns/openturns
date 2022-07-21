@@ -1,7 +1,7 @@
 %feature("docstring") OT::CompositeRandomVector
 "Random Vector obtained by applying a function.
 
-Allows to define the random variable :math:`Y=f(X)` from a function :math:`f`
+Allows one to define the random variable :math:`Y=f(X)` from a function :math:`f`
 and another random variable :math:`X`.
 
 Parameters

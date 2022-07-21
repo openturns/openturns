@@ -2,7 +2,7 @@
 /**
  *  @brief This class is a Function with history of input and output.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,22 +49,22 @@ public:
   explicit MemoizeFunction(const Function & function, const HistoryStrategy & historyStrategy = Full());
 
   /** Virtual copy constructor */
-  virtual MemoizeFunction * clone() const;
+  MemoizeFunction * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Function implementation accessors */
-  void setEvaluation(const Evaluation & evaluation);
+  void setEvaluation(const Evaluation & evaluation) override;
 
   /** Comparison operator */
   Bool operator ==(const MemoizeFunction & other) const;
 
   /** Operator () */
-  virtual Point operator() (const Point & inPoint) const;
+  Point operator() (const Point & inPoint) const override;
 
   /** Operator () */
-  virtual Sample operator() (const Sample & inSample) const;
+  Sample operator() (const Sample & inSample) const override;
 
   /** @brief Enable the internal cache
    *

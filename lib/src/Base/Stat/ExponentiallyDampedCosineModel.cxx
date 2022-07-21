@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,22 +35,22 @@ static const Factory<ExponentiallyDampedCosineModel> Factory_ExponentiallyDamped
 
 /* Constructor from input dimension */
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , frequency_(1.0)
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Standard constructor with amplitude and scale parameters */
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const Point & scale,
     const Point & amplitude,
     const Scalar frequency)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
   , frequency_(0.0)
 {
+  isStationary_ = true;
   if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
   setFrequency(frequency);
-  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
@@ -62,9 +62,9 @@ ExponentiallyDampedCosineModel * ExponentiallyDampedCosineModel::clone() const
 /* Computation of the covariance function, stationary interface
  * C_{0,0}(tau) = amplitude_ * exp(-|tau / scale_|) * cos(2 * pi * frequency_ * |tau / scale|)
  */
-CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const Point & tau) const
+SquareMatrix ExponentiallyDampedCosineModel::operator() (const Point & tau) const
 {
-  CovarianceMatrix covarianceMatrix(outputDimension_);
+  SquareMatrix covarianceMatrix(outputDimension_, outputDimension_);
 
   covarianceMatrix(0, 0) = computeAsScalar(tau);
   return covarianceMatrix;
@@ -72,23 +72,22 @@ CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const Point & tau) 
 
 Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Point & tau) const
 {
-  return amplitude_[0] * computeStandardRepresentative(tau);
-}
-
-Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point & tau) const
-{
   if (tau.getDimension() != inputDimension_)
-    throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeStandardRepresentative: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-
-  const Scalar absTau = tauOverTheta.norm();
-  if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
-  return exp(-absTau) * cos(2.0 * M_PI * absTau);
+    throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeAsScalar: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
+  Scalar absTau = 0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    absTau += dx * dx;
+  }
+  absTau = sqrt(absTau);
+  if (absTau <= SpecFunc::ScalarEpsilon)
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
+  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * frequency_ * absTau);
 }
 
-Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   Scalar absTau = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
@@ -99,31 +98,22 @@ Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Colle
     absTau += dx * dx;
   }
   absTau = sqrt(absTau);
-  if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
-  return exp(-absTau) * cos(2.0 * M_PI * absTau);
+  if (absTau <= SpecFunc::ScalarEpsilon)
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
+  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * frequency_ * absTau);
 }
 
-/* Discretize the covariance function on a given TimeGrid */
-CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & timeGrid) const
+Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Scalar tau) const
 {
-  const UnsignedInteger size = timeGrid.getN();
-  const UnsignedInteger fullSize = size * outputDimension_;
-  const Scalar timeStep = timeGrid.getStep();
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
 
-  CovarianceMatrix cov(fullSize);
-
-  // The stationary property of this model allows to optimize the discretization
-  // over a regular time grid: the large covariance matrix is block-diagonal
-  // Fill the matrix by block-diagonal
-  // The main diagonal has a specific treatment as only its lower triangular part
-  // has to be copied
-  for (UnsignedInteger diag = 0; diag < size; ++diag)
-  {
-    const Scalar covTau = computeAsScalar(Point(1, diag * timeStep));
-    for (UnsignedInteger i = 0; i < size - diag; ++i) cov(i, i + diag) = covTau;
-  }
-
-  return cov;
+  const Scalar absTau = std::abs(tau / scale_[0]);
+  if (absTau <= SpecFunc::ScalarEpsilon)
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
+  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * frequency_ * absTau);
 }
 
 /* String converter */
@@ -188,14 +178,14 @@ Description ExponentiallyDampedCosineModel::getFullParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void ExponentiallyDampedCosineModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute( "frequency_", frequency_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ExponentiallyDampedCosineModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute( "frequency_", frequency_);
 }
 

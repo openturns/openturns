@@ -60,65 +60,106 @@ UnsignedInteger __len__() const
   return self->getSize();
 }
 
-Scalar __getitem__(PyObject * args) const {
+PyObject * __getitem__(PyObject * args) const {
 
-          OT::UnsignedInteger arg2 ;
-          OT::UnsignedInteger arg3 ;
-          unsigned long val2 ;
-          int ecode2 = 0 ;
-          unsigned long val3 ;
-          int ecode3 = 0 ;
-          PyObject * obj1 = 0 ;
-          PyObject * obj2 = 0 ;
+  if (!PyTuple_Check(args))
+  {
+    if (PyObject_HasAttrString(args, "__int__"))
+    {
+      // case 0.3: [numpy.int64] => Point
+      OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(args, const_cast<char *>("__int__"), const_cast<char *>("()")));
+      if (intValue.isNull())
+        OT::handleException();
+      long index = PyInt_AsLong(intValue.get());
+      if (index < 0)
+        index += self->getSize();
+      if (index < 0)
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
+      OT::Point result(self->at(index));
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN | 0);
+    }
+  }
 
-          if (!PyArg_ParseTuple(args,(char *)"OO:Field___getitem__",&obj1,&obj2)) SWIG_fail;
+  OT::UnsignedInteger arg2;
+  OT::UnsignedInteger arg3;
+  unsigned long val2;
+  int ecode2 = 0;
+  unsigned long val3;
+  int ecode3 = 0;
+  PyObject * obj1 = 0;
+  PyObject * obj2 = 0;
 
-          ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
-          if (!SWIG_IsOK(ecode2)) {
-            SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Field___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
-          }
-          arg2 = static_cast< OT::UnsignedInteger >(val2);
+  if (!PyArg_ParseTuple(args,(char *)"OO:Field___getitem__",&obj1,&obj2)) SWIG_fail;
 
+  if (OT::isAPython< OT::_PyInt_ >(obj1))
+  {
+    ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Field___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
+    }
+    arg2 = static_cast< OT::UnsignedInteger >(val2);
 
-          ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
-          if (!SWIG_IsOK(ecode3)) {
-            SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Field___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
-          }
-          arg3 = static_cast< OT::UnsignedInteger >(val3);
-
-          return (*self).at(arg2, arg3);
+    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    {
+      ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+      if (!SWIG_IsOK(ecode3)) {
+        SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Field___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
+      }
+      arg3 = static_cast< OT::UnsignedInteger >(val3);
+      return OT::convert< OT::Scalar, OT::_PyFloat_>(self->at(arg2, arg3));
+    }
+  }
+  else
+    SWIG_exception(SWIG_TypeError, "Field.__getitem__ expects int, slice or sequence arguments");
 fail:
-          return 0.;
+  return NULL;
 }
 
 
+void __setitem__(PyObject * args, PyObject * valObj) {
 
-void __setitem__(PyObject * args, Scalar val) {
+  if (!PyTuple_Check(args))
+  {
+    if (PyObject_HasAttrString(args, "__int__"))
+    {
+      // case 0.3: [numpy.int64] => Point
+      OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(args, const_cast<char *>("__int__"), const_cast<char *>("()")));
+      if (intValue.isNull())
+        OT::handleException();
+      long index = PyInt_AsLong(intValue.get());
+      if (index < 0)
+        index += self->getSize();
+      if (index < 0)
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "].";
+      self->at(index) = OT::convert<OT::_PySequence_, OT::Point>(valObj);
+      return;
+    }
+  }
 
-          OT::UnsignedInteger arg2 ;
-          OT::UnsignedInteger arg3 ;
-          unsigned long val2 ;
-          int ecode2 = 0 ;
-          unsigned long val3 ;
-          int ecode3 = 0 ;
-          PyObject * obj1 = 0 ;
-          PyObject * obj2 = 0 ;
+  OT::UnsignedInteger arg2;
+  OT::UnsignedInteger arg3;
+  unsigned long val2;
+  int ecode2 = 0;
+  unsigned long val3;
+  int ecode3 = 0;
+  PyObject * obj1 = 0;
+  PyObject * obj2 = 0;
 
-          if (!PyArg_ParseTuple(args,(char *)"OO:Field___setitem__",&obj1,&obj2)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:Field___setitem__",&obj1,&obj2)) SWIG_fail;
 
-          ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
-          if (!SWIG_IsOK(ecode2)) {
-            SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Field___setitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
-          }
-          arg2 = static_cast< OT::UnsignedInteger >(val2);
-          ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
-          if (!SWIG_IsOK(ecode3)) {
-            SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Field___setitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
-          }
-          arg3 = static_cast< OT::UnsignedInteger >(val3);
-          (*self).at(arg2, arg3) = val;
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Field___setitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
+  }
+  arg2 = static_cast< OT::UnsignedInteger >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Field___setitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
+  }
+  arg3 = static_cast< OT::UnsignedInteger >(val3);
+  self->at(arg2, arg3) = OT::checkAndConvert<OT::_PyFloat_, OT::Scalar>(valObj);
 fail:
-          return;
+  return;
 }
 
 } // Field

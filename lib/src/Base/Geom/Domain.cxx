@@ -2,7 +2,7 @@
 /**
  *  @brief Domain is the interface of DomainImplementation.cxx
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,6 +57,18 @@ Bool Domain::contains(const Point & point) const
 Domain::BoolCollection Domain::contains(const Sample & sample) const
 {
   return getImplementation()->contains(sample);
+}
+
+/* Compute the Euclidean distance from a given point to the domain */
+Scalar Domain::computeDistance(const Point & point) const
+{
+  return getImplementation()->computeDistance(point);
+}
+
+/* Compute the Euclidean distance from given points to the domain */
+Sample Domain::computeDistance(const Sample & sample) const
+{
+  return getImplementation()->computeDistance(sample);
 }
 
 String Domain::__repr__() const

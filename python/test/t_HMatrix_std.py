@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 import math as m
 
@@ -56,8 +55,8 @@ hmat.factorize('LU')
 print('rows=', hmat.getNbRows())
 print('columns=', hmat.getNbColumns())
 print('norm=', ot.Point(1, hmat.norm()))
-if hmatRef.norm() < 1e-10:
-    print('norm(A-LLt) < 1e-10')
+if hmatRef.norm() < 1.e-3:
+    print('norm(A-LLt) < 1e-3')
 else:
     print('norm(A-LLt) =', hmatRef.norm())
 print('diagonal=', hmat.getDiagonal())
@@ -95,8 +94,8 @@ hmatRef = ot.HMatrix(hmat)
 hmat.factorize('LLt')
 normL = hmat.norm()
 hmatRef.gemm('N', 'T', -1.0, hmat, hmat, 1.0)
-if hmatRef.norm() < 1e-10:
-    print('norm(A-LLt) < 1e-10')
+if hmatRef.norm() < 1e-3:
+    print('norm(A-LLt) < 1e-3')
 else:
     print('norm(A-LLt) =', hmatRef.norm())
 

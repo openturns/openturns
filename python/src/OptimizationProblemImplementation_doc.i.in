@@ -27,10 +27,6 @@ inequality : :class:`~openturns.Function`
     Inequality constraints.
 bounds : :class:`~openturns.Interval`
     Bounds.
-level : :class:`~openturns.Function`
-    Level function.
-value : float
-    Level value.
 
 Examples
 --------
@@ -39,14 +35,7 @@ Define an optimization problem to find the minimum of the Rosenbrock function:
 
 >>> import openturns as ot
 >>> rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
->>> problem = ot.OptimizationProblem(rosenbrock)
-
-Define an optimization problem to find the point with minimum norm which satisfies :math:`x1+2*x2-3*x3+4*x4=3`.
-
->>> import openturns as ot
->>> levelFunction = ot.SymbolicFunction(
-...     ['x1', 'x2', 'x3', 'x4'], ['x1+2*x2-3*x3+4*x4'])
->>> problem = ot.NearestPointProblem(levelFunction, 3.0)"
+>>> problem = ot.OptimizationProblem(rosenbrock)"
 
 %enddef
 
@@ -238,6 +227,11 @@ OT_OptimizationProblem_hasMultipleObjective_doc
 %define OT_OptimizationProblem_isMinimization_doc
 "Test whether this is a minimization or maximization problem.
 
+Parameters
+----------
+marginal_index : int, default=0
+    Index of the output marginal (for multi-objective only)
+
 Returns
 -------
 value : bool
@@ -329,8 +323,9 @@ OT_OptimizationProblem_setLevelValue_doc
 Parameters
 ----------
 minimization : bool
-    *True* if this is a minimization problem, *False* otherwise."
-
+    *True* if this is a minimization problem, *False* otherwise.
+marginal_index : int, default=0
+    Index of the output marginal (for multi-objective only)"
 %enddef
 
 %feature("docstring") OT::OptimizationProblemImplementation::setMinimization
@@ -396,3 +391,59 @@ residualFunction : :class:`~openturns.Function`
 
 %feature("docstring") OT::OptimizationProblemImplementation::setResidualFunction
 OT_OptimizationProblem_setLevelFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_setVariablesType_doc
+"Accessor to the variables type.
+
+Parameters
+----------
+variablesType : :class:`~openturns.Indices`
+    Types of the variables.
+    
+Notes
+-----
+Possible values for each variable are `ot.OptimizationProblemImplementation.CONTINUOUS`, `ot.OptimizationProblemImplementation.INTEGER` and `ot.OptimizationProblemImplementation.BINARY`."
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::setVariablesType
+OT_OptimizationProblem_setVariablesType_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getVariablesType_doc
+"Accessor to the variables type.
+
+Returns
+-------
+variablesType : :class:`~openturns.Indices`
+    Types of the variables.
+    
+Notes
+-----
+Possible values for each variable are `ot.OptimizationProblemImplementation.CONTINUOUS`, `ot.OptimizationProblemImplementation.INTEGER` and ot.OptimizationProblemImplementation.`BINARY`."
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::getVariablesType
+OT_OptimizationProblem_getVariablesType_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_isContinuous_doc
+"Check if the problem is continuous.
+
+Returns
+-------
+isContinuous : bool
+    Returns True if all variables are continuous."
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::isContinuous
+OT_OptimizationProblem_isContinuous_doc
+
+
+
+
+
+

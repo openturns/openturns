@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,10 +20,10 @@
 #ifndef OPENTURNS_PRODUCTCOVARIANCEMODEL_HXX
 #define OPENTURNS_PRODUCTCOVARIANCEMODEL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,56 +49,63 @@ public:
   explicit ProductCovarianceModel(const CovarianceModelCollection & collection);
 
   /** Virtual copy constructor */
-  ProductCovarianceModel * clone() const;
+  ProductCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
-  using CovarianceModelImplementation::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & s,
-                                       const Point & t) const;
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point &tau) const override;
 #ifndef SWIG
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const;
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                         const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
+  Scalar computeAsScalar(const Scalar tau) const override;
 
   /** Gradient */
-  virtual Matrix partialGradient(const Point & s,
-                                 const Point & t) const;
+  Matrix partialGradient(const Point & s,
+                         const Point & t) const override;
 
   /** Collection accessor */
   const CovarianceModelCollection & getCollection() const;
 
   /** Marginal accessor */
-  virtual CovarianceModel getMarginal(const UnsignedInteger index) const;
+  CovarianceModel getMarginal(const UnsignedInteger index) const override;
 
   /** Scale accessor */
-  void setScale(const Point & scale);
+  void setScale(const Point & scale) override;
 
   /** Is it a stationary covariance model ? */
-  virtual Bool isStationary() const;
+  Bool isStationary() const override;
+
+  /** Is it safe to compute discretize etc in parallel? */
+  Bool isParallel() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
+
+  /** Parameter accessor */
+  void setFullParameter(const Point & parameter) override;
+  Point getFullParameter() const override;
+  Description getFullParameterDescription() const override;
+  void setActiveParameter(const Indices & active) override;
 
 protected:
   void setCollection(const CovarianceModelCollection & collection);
 
-  /** Parameter accessor */
-  virtual void setFullParameter(const Point & parameter);
-  virtual Point getFullParameter() const;
-  virtual Description getFullParameterDescription() const;
-
 private:
   /** The collection of marginal models */
   CovarianceModelPersistentCollection collection_;
+
+  /** Handle extra parameters of the marginal models */
+  Indices extraParameterNumber_;
 
 } ; /* class ProductCovarianceModel */
 

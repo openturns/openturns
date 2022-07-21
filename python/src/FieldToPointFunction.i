@@ -18,11 +18,11 @@ namespace OT {
   canConvert< _PyObject_, OT::FieldToPointFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunction, 0 ))) {
-      OT::FieldToPointFunction * p_nmf = reinterpret_cast< OT::FieldToPointFunction * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunction, SWIG_POINTER_NO_NULL))) {
+      OT::FieldToPointFunction * p_nmf = reinterpret_cast< OT::FieldToPointFunction * >(ptr);
       return p_nmf != NULL;
     } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunctionImplementation, 0 ))) {
-      OT::FieldToPointFunctionImplementation * p_impl = reinterpret_cast< OT::FieldToPointFunctionImplementation * >( ptr );
+      OT::FieldToPointFunctionImplementation * p_impl = reinterpret_cast< OT::FieldToPointFunctionImplementation * >(ptr);
       return p_impl != NULL;
     } else {
       return PyCallable_Check( pyObj );
@@ -35,13 +35,13 @@ namespace OT {
   convert< _PyObject_, OT::FieldToPointFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunction, 0 ) ) ) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunction, SWIG_POINTER_NO_NULL))) {
       OT::FieldToPointFunction * p_nmf = reinterpret_cast< OT::FieldToPointFunction * >( ptr );
       return *p_nmf;
-    } else if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunctionImplementation, 0 ) ) ) {
-      OT::FieldToPointFunctionImplementation * p_impl = reinterpret_cast< OT::FieldToPointFunctionImplementation * >( ptr );
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunctionImplementation, 0))) {
+      OT::FieldToPointFunctionImplementation * p_impl = reinterpret_cast< OT::FieldToPointFunctionImplementation * >(ptr);
       return *p_impl;
-    } else if (!PyCallable_Check( pyObj )) {
+    } else if (!PyCallable_Check(pyObj)) {
       throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a FieldToPointFunction";
     }
     OT::FieldToPointFunction pythonFunction(new OT::PythonFieldToPointFunction(pyObj));
@@ -210,9 +210,8 @@ class PythonFieldToPointFunction(FieldToPointFunction):
         if func is None:
             raise RuntimeError('func not provided.')
         instance = OpenTURNSPythonFieldToPointFunction(inputMesh, inputDim, outputDim)
-        import collections
         if func is not None:
-            if not isinstance(func, collections.Callable):
+            if not callable(func):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
         return FieldToPointFunction(instance)

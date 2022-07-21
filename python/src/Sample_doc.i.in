@@ -13,7 +13,7 @@ Parameters
 size : int, :math:`m > 0`, optional
     The sample size.
     Default creates an empty sample with dimension 1.
-dimension : int, :math:`n > 0`, optional
+dimension : int, :math:`n \geq 0`, optional
     The real vectors dimension.
     Default creates an empty sample with dimension 1.
 point : :class:`~openturns.Point` or flat (1d) array, list or tuple of floats, optional
@@ -81,6 +81,31 @@ experiments
 1 : [ 2 3 ]
 2 : [ 4 5 ]"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Sample::BuildFromPoint
+"Static method for building a sample from a sequence of float.
+
+Parameters
+----------
+data : 1d array-like
+    Data.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    Sample generated from sequence
+
+Examples
+--------
+>>> import openturns as ot
+>>> n = 20
+>>> x = ot.Sample.BuildFromPoint(range(n))
+>>> data = [2.0, 2.0, 1.0, 1.0, 2.0, 3.0, 1.0, 2.0, 2.0, 1.0]
+>>> sample = ot.Sample.BuildFromPoint(data)"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Sample::ImportFromCSVFile
 "Static method for building a sample from a CSV file.
 
@@ -102,6 +127,8 @@ Notes
 The file may or may not contain a header line (columns spanned with strings
 delimited with quotes). If it does contain such a header line, it will be
 used for setting the sample description using :py:meth:`setDescription`.
+
+The implementation follows the RFC 4180: https://tools.ietf.org/html/rfc4180.
 
 See Also
 --------
@@ -137,6 +164,9 @@ separator : str
 skipped_lines : int
     Number of lines skipped.
     Default is 0.
+numSeparator : str
+    Decimal separator.
+    Default is dot.
 
 Returns
 -------
@@ -173,15 +203,17 @@ And load it back
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::add
-"Append a vector (in-place).
+"Append a sample (in-place).
 
 Parameters
 ----------
-point : sequence of float
-    The point to append.
+point or sample : sequence or 2-d sequence of float
+    The point(s) to append.
 
 Examples
 --------
+Append an existing sample with a single point.
+
 >>> import openturns as ot
 >>> sample = ot.Sample(3, 2)
 >>> sample.add([1.0, 2.0])
@@ -189,7 +221,58 @@ Examples
 0 : [ 0 0 ]
 1 : [ 0 0 ]
 2 : [ 0 0 ]
-3 : [ 1 2 ]"
+3 : [ 1 2 ]
+
+Append an existing sample with another sample.
+
+>>> sample.add(ot.Sample(2, [2.0, 1.0]))
+>>> print(sample)
+0 : [ 0 0 ]
+1 : [ 0 0 ]
+2 : [ 0 0 ]
+3 : [ 1 2 ]
+4 : [ 2 1 ]
+5 : [ 2 1 ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Sample::argsort
+"Returns indices of sorted sample.
+
+The algorithm sorts the points in the sample in the lexicographic order. 
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    The indices which sorts the sample.
+isIncreasing : bool, optional
+    If `True`, sort in increasing order.
+    If `False`, sort in decreasing order.
+    Default is `True`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.Sample(
+...     [[-1.0, 1.0, 0.0], [-1.0, 1.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, -1.0]]
+... )
+>>> print(sample)
+0 : [ -1  1  0 ]
+1 : [ -1  1  1 ]
+2 : [ -1  0  1 ]
+3 : [ -1  0 -1 ]
+>>> indices = sample.argsort()
+>>> print(indices)
+[3,2,0,1]
+>>> print(sample[indices])
+    [ v0 v1 v2 ]
+0 : [ -1  0 -1 ]
+1 : [ -1  0  1 ]
+2 : [ -1  1  0 ]
+3 : [ -1  1  1 ]
+>>> indices = sample.argsort(False)
+>>> print(indices)
+[1,0,2,3]"
 
 // ---------------------------------------------------------------------
 
@@ -466,7 +549,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::computeQuantile
-"Estimate the quantile of the **joint** distribution underlying the sample.
+"Estimate the quantile of the joint distribution underlying the sample.
 
 Parameters
 ----------
@@ -476,7 +559,7 @@ p : float, :math:`0 \leq p \leq 1`, or sequence of float
 Returns
 -------
 quantile : :class:`~openturns.Point` or :class:`~openturns.Sample`
-    Quantile of the joint distribution at probability level :math:`p`,
+    Quantile of the **joint** distribution at probability level :math:`p`,
     estimated from the sample.
 
 Raises
@@ -653,34 +736,6 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::computeStandardDeviation
-"Compute the Cholesky factor of the covariance matrix.
-
-Estimated from the sample.
-
-Returns
--------
-L : :class:`~openturns.TriangularMatrix`
-    Lower (left) Cholesky factor of the covariance matrix estimated from the
-    sample.
-
-Raises
-------
-RuntimeError : If the estimated covariance matrix is not positive definite. In
-    this case, you might want to estimate the covariance and manually shrink
-    negative eigenvalues.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> sample = ot.Normal(2).getSample(30)
->>> print(sample.computeStandardDeviation())
-[[ 0.972976  0         ]
- [ 0.0187161 0.950198  ]]"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Sample::computeStandardDeviationPerComponent
 "Estimate the componentwise standard deviations.
 
 Returns
@@ -702,7 +757,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal(2).getSample(30)
->>> print(sample.computeStandardDeviationPerComponent())
+>>> print(sample.computeStandardDeviation())
 [0.972976,0.950382]"
 
 // ---------------------------------------------------------------------
@@ -750,10 +805,6 @@ f : int, :math:`0 \leq f < m`
 l : int, :math:`f < l \leq m`, optional
     The index after the last point to erase.
     Default uses `l = f + 1` and only removes `sample[f]`.
-Returns
--------
-erased_sample : :class:`~openturns.Sample`
-    Erased sample `[sample[:i_start:], sample[i_stop::]]`.
 
 Examples
 --------
@@ -783,6 +834,19 @@ file_name : str
 separator : str
     Separating string.
     Default uses `csv-file-separator` from the :class:`~openturns.ResourceMap`.
+numSeparator : str, default='.'
+    Decimal separator.
+precision : int
+    Numerical precision
+    Default takes `Sample-CSVPrecision` entry from :class:`~openturns.ResourceMap`.
+format : str
+    Floating-point formatting, one of:
+
+    - scientific: exponent notation
+    - fixed: constant number of digits
+    - defaultfloat: variable number of digits
+
+    Default takes `Sample-CSVFormat` entry from :class:`~openturns.ResourceMap`.
 
 Notes
 -----
@@ -856,8 +920,9 @@ n : int
 
 Parameters
 ----------
-indices : int or sequence of int, :math:`0 \leq i < n`
-    The index(es) of the wanted marginal(s).
+indices : int, sequence of int, :math:`0 \leq i < n` or sequence of str
+    The identifiers of the wanted marginal(s).
+    When the description contains duplicate labels, the first marginal is picked up.
 
 Returns
 -------
@@ -966,11 +1031,18 @@ getDescription"
 %feature("docstring") OT::Sample::sort
 "Sort the sample.
 
+The ordering is based on the comparison operator of the :class:`~openturns.Point`. 
+Hence, the `sort` method orders the points in the sample 
+according to lexicographic order. 
+
 Parameters
 ----------
 marginal_index : int, :math:`0 \leq i < n`, optional
-    The component to sort.
-    Default sorts the whole sample.
+    The index of the component to sort.
+    Default sorts the whole sample, i.e. the returned sorted sample has 
+    the same dimension as the input sample.
+    If `marginal_index` is provided, then the returned sorted sample has dimension 1: 
+    the corresponding marginal sample is sorted and returned.
 
 Returns
 -------
@@ -988,6 +1060,55 @@ Examples
 1 : [ -0.438266  1.20548  ]
 2 : [ -2.18139   0.350042 ]
 >>> print(sample.sort())
+    [ X0        X1        ]
+0 : [ -2.18139   0.350042 ]
+1 : [ -0.438266  1.20548  ]
+2 : [  0.608202 -1.26617  ]
+>>> print(sample.sort(1))
+0 : [ -1.26617  ]
+1 : [  0.350042 ]
+2 : [  1.20548  ]
+
+In the following sample, the first component of all points is equal to -1, 
+which creates a tie where the other components must be used to make 
+a difference in the comparison. 
+The algorithm sorts the points taking into account all the components in the 
+points. 
+This shows that the algorithm uses lexicographic ordering, since using only 
+the first component would leave the sample unchanged.
+
+>>> import openturns as ot
+>>> sample = ot.Sample(
+...     [[-1.0, 1.0, 1.0], [-1.0, 1.0, 0.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, -1.0]]
+... )
+>>> print(sample)
+0 : [ -1  1  1 ]
+1 : [ -1  1  0 ]
+2 : [ -1  0  1 ]
+3 : [ -1  0 -1 ]
+>>> print(sample.sort())
+0 : [ -1  0 -1 ]
+1 : [ -1  0  1 ]
+2 : [ -1  1  0 ]
+3 : [ -1  1  1 ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Sample::sortInPlace
+"Sort the sample in place.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal(2).getSample(3)
+>>> print(sample)
+    [ X0        X1        ]
+0 : [  0.608202 -1.26617  ]
+1 : [ -0.438266  1.20548  ]
+2 : [ -2.18139   0.350042 ]
+>>> sample.sortInPlace()
+>>> print(sample)
     [ X0        X1        ]
 0 : [ -2.18139   0.350042 ]
 1 : [ -0.438266  1.20548  ]
@@ -1019,6 +1140,33 @@ Examples
 1 : [ -0.438266  1.20548  ]
 2 : [ -2.18139   0.350042 ]
 >>> print(sample.sortAccordingToAComponent(0))
+    [ X0        X1        ]
+0 : [ -2.18139   0.350042 ]
+1 : [ -0.438266  1.20548  ]
+2 : [  0.608202 -1.26617  ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Sample::sortAccordingToAComponentInPlace
+"Sort the sample in place according to the given component.
+
+Parameters
+----------
+marginal_index : int, :math:`0 \leq i < n`
+    The component to use for sorting the sample.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal(2).getSample(3)
+>>> print(sample)
+    [ X0        X1        ]
+0 : [  0.608202 -1.26617  ]
+1 : [ -0.438266  1.20548  ]
+2 : [ -2.18139   0.350042 ]
+>>> sample.sortAccordingToAComponentInPlace(0)
+>>> print(sample)
     [ X0        X1        ]
 0 : [ -2.18139   0.350042 ]
 1 : [ -0.438266  1.20548  ]
@@ -1075,7 +1223,7 @@ index : int, :math:`0 \leq i < m`
 Returns
 -------
 remainder_sample : :class:`~openturns.Sample`
-    The remainder sample (everyting that comes after the truncation index).
+    The remainder sample (everything that comes after the truncation index).
 
 Examples
 --------
@@ -1164,7 +1312,6 @@ Examples
 %feature("docstring") OT::Sample::clear
 "Erase all values."
 
-
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::sortUnique
@@ -1189,3 +1336,22 @@ Examples
 1 : [ 1 1 0 ]
 2 : [ 3 0 3 ]"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Sample::sortUniqueInPlace
+"Sort the sample in place and remove duplicate points.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.Sample([[3, 0, 3], [1, 1, 0], [0, 2, 2], [1, 1, 0]])
+>>> print(sample)
+0 : [ 3 0 3 ]
+1 : [ 1 1 0 ]
+2 : [ 0 2 2 ]
+3 : [ 1 1 0 ]
+>>> sample.sortUniqueInPlace()
+>>> print(sample)
+0 : [ 0 2 2 ]
+1 : [ 1 1 0 ]
+2 : [ 3 0 3 ]"

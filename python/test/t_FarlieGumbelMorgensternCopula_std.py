@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 from math import *
 
@@ -8,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     dim = 2
     copula = FarlieGumbelMorgensternCopula(0.7)
     copula.setName("a farlieGumbelMorgenstern copula")

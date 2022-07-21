@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
 from math import *
 
@@ -29,6 +28,16 @@ try:
     # print('basis =', basis)
     # basis[0:2] = basis[1:3]
     # print('basis =', basis)
+
+    try:
+        degree = 2
+        Poly = []
+        Factory = ot.MonomialFunctionFactory()
+        for i in range(degree+1):
+            Poly.append(Factory.build(i))
+        Basis = ot.Basis(Poly)
+    except RuntimeError:
+        print('ok')
 except:
     import sys
     print("t_Basis_std.py", sys.exc_info()[0], sys.exc_info()[1])

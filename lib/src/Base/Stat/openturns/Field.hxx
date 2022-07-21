@@ -2,7 +2,7 @@
 /**
  *  @brief The class Field implements samples indexed by time
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -100,9 +100,9 @@ public:
    * internal state of an Field. It is used when streaming
    * the Field or for user information.
    */
-  String __repr__() const;
+  String __repr__() const override;
 
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Size accessor */
   UnsignedInteger getSize() const;
@@ -121,6 +121,9 @@ public:
 
   /** Compute the spatial mean of the field */
   Point getInputMean() const;
+
+  /** l2 norm */
+  Scalar norm() const;
 
   /** Draw a marginal of the field */
   Graph drawMarginal(const UnsignedInteger index = 0,

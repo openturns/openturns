@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 from math import *
@@ -54,7 +53,7 @@ try:
     output = CompositeRandomVector(myFunction, vect)
 
     # We create an Event from this RandomVector
-    myEvent = Event(output, Less(), -1.5)
+    myEvent = ThresholdEvent(output, Less(), -1.5)
 
     # We create a NearestPoint algorithm
     myAbdoRackwitz = AbdoRackwitz()
@@ -81,10 +80,10 @@ try:
           result.getEventProbabilityBreitung())
     print("Breitung generalized reliability index=%.6f" %
           result.getGeneralisedReliabilityIndexBreitung())
-    print("HohenBichler event probability=%.6f" %
-          result.getEventProbabilityHohenBichler())
-    print("HohenBichler generalized reliability index=%.6f" %
-          result.getGeneralisedReliabilityIndexHohenBichler())
+    print("Hohenbichler event probability=%.6f" %
+          result.getEventProbabilityHohenbichler())
+    print("Hohenbichler generalized reliability index=%.6f" %
+          result.getGeneralisedReliabilityIndexHohenbichler())
     print("Tvedt event probability=%.6f" % result.getEventProbabilityTvedt())
     print("Tvedt generalized reliability index=%.6f" %
           result.getGeneralisedReliabilityIndexTvedt())

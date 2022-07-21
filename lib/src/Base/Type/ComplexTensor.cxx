@@ -2,7 +2,7 @@
 /**
  *  @brief ComplexTensor implements the classical mathematical tensor
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -190,19 +190,19 @@ Bool ComplexTensor::operator == (const ComplexTensor & rhs) const
   return (*(lhs.getImplementation()) == *(rhs.getImplementation()) );
 }
 
-const Complex* ComplexTensor::__baseaddress__() const
+const Complex* ComplexTensor::data() const
 {
-  return getImplementation()->__baseaddress__();
+  return getImplementation()->data();
 }
 
-UnsignedInteger ComplexTensor::__elementsize__() const
+UnsignedInteger ComplexTensor::elementSize() const
 {
-  return getImplementation()->__elementsize__();
+  return getImplementation()->elementSize();
 }
 
-UnsignedInteger ComplexTensor::__stride__(UnsignedInteger dim) const
+UnsignedInteger ComplexTensor::stride(const UnsignedInteger dim) const
 {
-  return getImplementation()->__stride__(dim);
+  return getImplementation()->stride(dim);
 }
 
 

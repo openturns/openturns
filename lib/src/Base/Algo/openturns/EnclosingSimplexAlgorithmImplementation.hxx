@@ -3,7 +3,7 @@
  *  @brief  This class provides fast point location.
  *  This is an abstract class.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,7 +49,7 @@ public:
   EnclosingSimplexAlgorithmImplementation(const Sample & vertices, const IndicesCollection & simplices);
 
   /** Virtual copy constructor */
-  virtual EnclosingSimplexAlgorithmImplementation * clone() const;
+  EnclosingSimplexAlgorithmImplementation * clone() const override;
 
 #ifndef SWIG
   virtual EnclosingSimplexAlgorithmImplementation * emptyClone() const;
@@ -62,7 +62,7 @@ public:
   IndicesCollection getSimplices() const;
 
   // Called by constructor
-  void setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices);
+  virtual void setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices);
 
   /** Get the index of the enclosing simlex of the given point */
   virtual UnsignedInteger query(const Point & x) const;
@@ -71,16 +71,16 @@ public:
   virtual Indices query(const Sample & sample) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   // Check if the given point is in the given simplex.

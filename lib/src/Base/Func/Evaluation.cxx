@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements numerical math functions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -197,6 +197,28 @@ UnsignedInteger Evaluation::getCallsNumber() const
   return getImplementation()->getCallsNumber();
 }
 
+/* Linearity accessors */
+Bool Evaluation::isLinear() const
+{
+  return getImplementation()->isLinear();
+}
+
+Bool Evaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return getImplementation()->isLinearlyDependent(index);
+}
+
+/* Invalid values check accessor */
+void Evaluation::setCheckOutput(const Bool checkOutput)
+{
+  copyOnWrite();
+  getImplementation()->setCheckOutput(checkOutput);
+}
+
+Bool Evaluation::getCheckOutput() const
+{
+  return getImplementation()->getCheckOutput();
+}
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph Evaluation::draw(const UnsignedInteger inputMarginal,

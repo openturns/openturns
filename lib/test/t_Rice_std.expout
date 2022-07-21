@@ -2,13 +2,13 @@ Testing class Rice
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=Rice name=Rice dimension=1 sigma=5 nu=4
+class=Rice name=Rice dimension=1 beta=5 nu=4
 streamObject(const T & anObject)
-class=Rice name=Rice dimension=1 sigma=5 nu=4
+class=Rice name=Rice dimension=1 beta=5 nu=4
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=Rice name=Rice dimension=1 sigma=5 nu=4
-Distribution Rice(sigma = 5, nu = 4)
+Distribution class=Rice name=Rice dimension=1 beta=5 nu=4
+Distribution Rice(beta = 5, nu = 4)
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[9.46867]
@@ -34,7 +34,7 @@ quantile=class=Point name=Unnamed dimension=1 values=[13.9273]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.68836] upper bound=class=Point name=Unnamed dimension=1 values=[14.2519] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Rice(sigma = 5, nu = 4)) gradientImplementation=MinimumVolumeLevelSetGradient(Rice(sigma = 5, nu = 4)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Rice(sigma = 5, nu = 4)) level=3.91877
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Rice(beta = 5, nu = 4)) gradientImplementation=MinimumVolumeLevelSetGradient(Rice(beta = 5, nu = 4)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Rice(beta = 5, nu = 4)) level=3.91877
 beta=0.0198656
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.31981] upper bound=class=Point name=Unnamed dimension=1 values=[15.3859] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -49,14 +49,14 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[sigma : 5, nu : 4]]
+parameters=[[beta : 5, nu : 4]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[7.23115]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[66]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[704.457]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[8456]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[111488]
-Standard representative=Rice(sigma = 5, nu = 4)
+Standard representative=Rice(beta = 5, nu = 4)
 nu=4
 standard deviation=class=Point name=Unnamed dimension=1 values=[3.70276]
 skewness=class=Point name=Unnamed dimension=1 values=[0.569607]

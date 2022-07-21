@@ -2,7 +2,7 @@
 /**
  *  @brief StrongMaxTest implements an algorithm to check if a given design point
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class StrongMaximumTest
- * StrongMaximumTest allows to validate a design point
+ * StrongMaximumTest allows one to validate a design point
  */
 class OT_API StrongMaximumTest :
   public PersistentObject
@@ -60,7 +60,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual StrongMaximumTest * clone() const;
+  StrongMaximumTest * clone() const override;
 
   /** standardSpaceDesignPoint accessor */
   Point getStandardSpaceDesignPoint() const;
@@ -114,13 +114,13 @@ public:
   Sample getFarDesignPointViolatingEventValues() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

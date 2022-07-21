@@ -2,7 +2,7 @@
 /**
  *  @brief This is the orthogonal polynomial basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,29 +62,29 @@ public:
 
   /** Build the Function of the given index */
   using OrthogonalFunctionFactory::build;
-  Function build(const UnsignedInteger index) const;
+  Function build(const UnsignedInteger index) const override;
 
   /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
-  EnumerateFunction getEnumerateFunction() const;
+  EnumerateFunction getEnumerateFunction() const override;
 
   /** Return the collection of univariate orthogonal polynomial families */
   PolynomialFamilyCollection getPolynomialFamilyCollection() const;
 
   /** Virtual constructor */
-  virtual OrthogonalProductPolynomialFactory * clone() const;
+  OrthogonalProductPolynomialFactory * clone() const override;
 
   /** Nodes and weights of the multivariate polynomial associated with the marginal degrees indices[0], ...,indices[dimension] as the tensor product of the marginal orthogonal univariate polynomials, to build multivariate quadrature rules */
   Sample getNodesAndWeights(const Indices & degrees,
                             Point & weightsOut) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

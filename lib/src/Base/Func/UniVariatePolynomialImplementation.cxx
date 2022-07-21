@@ -2,7 +2,7 @@
 /**
  *  @brief This is a 1D polynomial
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -287,7 +287,7 @@ UnsignedInteger UniVariatePolynomialImplementation::getDegree() const
 UniVariatePolynomialImplementation::ComplexCollection UniVariatePolynomialImplementation::getRoots() const
 {
   const UnsignedInteger degree = getDegree();
-  if (degree == 0) throw NotDefinedException(HERE) << "Error: cannot compute the roots of a constant polynomial.";
+  if (!(degree > 0)) throw NotDefinedException(HERE) << "Error: cannot compute the roots of a constant polynomial.";
   const Scalar scale = -1.0 / coefficients_[degree];
   SquareMatrix m(degree);
   m(0, degree - 1) = coefficients_[0] * scale;

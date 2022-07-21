@@ -2,7 +2,7 @@
 /**
  *  @brief This is the tensorized function basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,14 +52,14 @@ public:
   TensorizedUniVariateFunctionFactory();
 
   /** Constructor */
-  TensorizedUniVariateFunctionFactory(const FunctionFamilyCollection & coll);
+  explicit TensorizedUniVariateFunctionFactory(const FunctionFamilyCollection & coll);
 
   /** Constructor */
   TensorizedUniVariateFunctionFactory(const FunctionFamilyCollection & coll,
                                       const EnumerateFunction & phi);
 
   /** Build the Function of the given index */
-  Function build(const UnsignedInteger index) const;
+  Function build(const UnsignedInteger index) const override;
 
   /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;
@@ -72,16 +72,16 @@ public:
   void setFunctionFamilyCollection(const FunctionFamilyCollection & coll);
 
   /** Virtual constructor */
-  virtual TensorizedUniVariateFunctionFactory * clone() const;
+  TensorizedUniVariateFunctionFactory * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

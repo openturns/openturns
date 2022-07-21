@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -8,7 +7,7 @@ RandomGenerator.SetSeed(0)
 
 try:
 
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = Multinomial(5, Point(3, 0.25))
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
@@ -47,7 +46,8 @@ try:
     print("pdf     =%.6f" % PDF)
     CDF = distribution.computeCDF(point)
     print("cdf=%.5f" % CDF)
-    proba = distribution.computeProbability(Interval([i for i in range(distribution.getDimension())], [i+1.0 for i in range(distribution.getDimension())]))
+    proba = distribution.computeProbability(Interval([i for i in range(
+        distribution.getDimension())], [i+1.0 for i in range(distribution.getDimension())]))
     print("probability=%.5f" % proba)
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", repr(quantile))

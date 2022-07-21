@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class RandomMixture for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,7 +56,7 @@ int main(int, char *[])
     fullprint << "references=" << references << std::endl;
     for (UnsignedInteger testIndex = 0; testIndex < testCases.getSize(); ++testIndex)
     {
-      // Instanciate one distribution object
+      // Instantiate one distribution object
       RandomMixture distribution(testCases[testIndex]);
       distribution.setBlockMin(5);
       distribution.setBlockMax(20);
@@ -94,9 +94,12 @@ int main(int, char *[])
 
       // Show PDF and CDF of point
       Scalar eps = 1e-5;
+      UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
+      PlatformInfo::SetNumericalPrecision(5);
       Point DDF = distribution.computeDDF(point);
       fullprint << "ddf      =" << DDF << std::endl;
       fullprint << "ddf (ref)=" << distributionReference.computeDDF(point) << std::endl;
+      PlatformInfo::SetNumericalPrecision(oldPrecision);
       Scalar PDF = distribution.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
       fullprint << "pdf  (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;
@@ -334,9 +337,9 @@ int main(int, char *[])
     grid3D *= dist_3D.getStandardDeviation();
     // translating
     grid3D += dist_3D.getMean();
-    for (UnsignedInteger index = 0; index < grid3D.getSize()/4; ++ index)
+    for (UnsignedInteger index = 0; index < grid3D.getSize() / 4; ++ index)
     {
-      const Point point(grid3D[4*index]);
+      const Point point(grid3D[4 * index]);
       const Scalar PDF = dist_3D.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
     }
@@ -377,6 +380,11 @@ int main(int, char *[])
       fullprint << "sum=" << sum << std::endl;
       fullprint << "CDF=" << sum.computeCDF(2.0) << std::endl;
       fullprint << "quantile=" << sum.computeQuantile(0.2) << std::endl;
+    }
+    // For ticket 1129
+    {
+      distribution = RandomMixture(Collection<Distribution>(200, Uniform()));
+      fullprint << "CDF(0)=" << distribution.computeCDF(0.0) << std::endl;
     }
   }
   catch (TestFailed & ex)

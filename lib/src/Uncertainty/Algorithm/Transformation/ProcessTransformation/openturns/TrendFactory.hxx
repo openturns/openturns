@@ -2,7 +2,7 @@
 /**
  *  @brief This class is enables to estimate trend
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,23 +59,23 @@ public:
   void setFittingAlgorithm(const FittingAlgorithm & fittingAlgorithm);
 
   /** Virtual copy constructor */
-  virtual TrendFactory * clone() const;
+  TrendFactory * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Build the factory from data  */
   TrendTransform build(const Field & field,
                        const Basis & basis) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 private:

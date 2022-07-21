@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the RandomWalk process
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -127,9 +127,9 @@ TimeSeries RandomWalk::getFuture(const UnsignedInteger stepNumber) const
 {
   /* TimeGrid of the process */
   RegularGrid timeGrid(getTimeGrid());
-  
+
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
-  
+
   /* TimeGrid associated with the possible future */
   const Scalar timeStep = RegularGrid(mesh_).getStep();
   const RegularGrid futurTimeGrid(RegularGrid(mesh_).getEnd(), timeStep, stepNumber);

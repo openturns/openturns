@@ -2,7 +2,7 @@
 /**
  *  @brief Exception defines top-most exception strategies
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -78,7 +78,11 @@ String Exception::__repr__() const throw()
 /* Point accessor */
 const char * Exception::where() const throw()
 {
-  return point_.str().c_str();
+  const String whereStr(point_.str());
+  const UnsignedInteger size = whereStr.size();
+  char *buffer = new char[size + 1];
+  std::copy(&whereStr[0], &whereStr[0] + size + 1, buffer);
+  return buffer;
 }
 
 

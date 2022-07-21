@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of FunctionalChaosAlgoritm class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -80,7 +80,7 @@ int main(int, char *[])
     polynomialCollection[1] = LegendreFactory();
     polynomialCollection[2] = LegendreFactory();
 
-    EnumerateFunction enumerateFunction(dimension);
+    LinearEnumerateFunction enumerateFunction(dimension);
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
     // Create the adaptive strategy
@@ -94,8 +94,6 @@ int main(int, char *[])
     listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold, false));
     // Second, the most used (and most basic!) strategy
     listAdaptiveStrategy.add(FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)));
-    // Third, a slight enhancement with respect to the basic strategy
-    listAdaptiveStrategy.add(SequentialStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree / 2), false));
     // Create the result object here in order to test the save/load mechanism outside of the double loop
     FunctionalChaosResult result;
 

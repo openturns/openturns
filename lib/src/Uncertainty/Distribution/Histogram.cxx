@@ -2,7 +2,7 @@
 /**
  *  @brief The Histogram distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,6 +26,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -224,16 +225,14 @@ Complex Histogram::computeCharacteristicFunction(const Scalar x) const
 Point Histogram::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  throw NotYetImplementedException(HERE) << "In Histogram::computePDFGradient(const Point & point) const";
+  return ContinuousDistribution::computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
 Point Histogram::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  throw NotYetImplementedException(HERE) << "In Histogram::computeCDFGradient(const Point & point) const";
+  return ContinuousDistribution::computeCDFGradient(point);
 }
 
 /* Get the quantile of the distribution */
@@ -329,6 +328,7 @@ Point Histogram::getStandardMoment(const UnsignedInteger n) const
 Distribution Histogram::getStandardRepresentative() const
 {
   const UnsignedInteger size = width_.getSize();
+  if (size == 1) return Uniform(-1.0, 1.0);
   // No need to transform an histogram if its range is already [-1.0, 1.0]
   if (first_ == -1.0 && std::abs(cumulatedWidth_[size - 1] - 2.0) <= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) return clone();
   const Scalar first = -1.0;
@@ -486,7 +486,7 @@ Graph Histogram::drawPDF(const UnsignedInteger pointNumber,
                          const Bool logScale) const
 {
   const UnsignedInteger lastIndex = cumulatedWidth_.getSize() - 1;
-  // Must prefix explicitely by the class name in order to avoid conflict with the methods in the upper class
+  // Must prefix explicitly by the class name in order to avoid conflict with the methods in the upper class
   return Histogram::drawPDF(first_ - 0.5 * width_[0], first_ + cumulatedWidth_[lastIndex] + 0.5 * width_[lastIndex], pointNumber, logScale);
 }
 
@@ -497,7 +497,7 @@ Graph Histogram::drawPDF(const Scalar xMin,
                          const Bool logScale) const
 {
   if (logScale) throw NotYetImplementedException(HERE) << "in Histogram::drawPDF with logScale=true";
-  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const String xName(getDescription()[0]);
   Graph graphPDF(title, xName, "PDF", true, "topright");
@@ -563,7 +563,7 @@ Graph Histogram::drawPDF(const Scalar xMin,
   }
   // Central part of the graph
   Scalar startX = first_;
-  if (indexLeft + shiftFull > 0) startX += cumulatedWidth_[indexLeft + shiftFull];
+  if (shiftFull > 0) startX += cumulatedWidth_[indexLeft];
   for (UnsignedInteger i = indexLeft + shiftFull; i < indexRight; ++i)
   {
     Sample data(4, 2);

@@ -1,0 +1,36 @@
+Copula  class=JoeCopula name=JoeCopula dimension=2 theta=0.5 psi1=0.5 psi2=0.5
+Copula  JoeCopula(theta = 0.5, psi1 = 0.5, psi2 = 0.5)
+Mean  class=Point name=Unnamed dimension=2 values=[0.5,0.5]
+Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.0302653,0.0302653,0.0833333]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= class=Point name=Unnamed dimension=2 values=[0.629877,0.831498]
+oneSample= class=Sample name=JoeCopula implementation=class=SampleImplementation name=JoeCopula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.0205915],[0.347057,0.940066],[0.92068,0.810616],[0.0632061,0.146789],[0.714382,0.512555],[0.373767,0.620606],[0.883503,0.526959],[0.92851,0.936626],[0.684575,0.803419],[0.359802,0.91252]]
+anotherSample mean= class=Point name=Unnamed dimension=2 values=[0.502777,0.501465]
+anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0311981,0.0311981,0.08395]
+Point =  class=Point name=Unnamed dimension=2 values=[0.2,0.2]  pdf=1.488226  cdf=0.070662
+Quantile= class=Point name=Unnamed dimension=2 values=[0.656393,0.656393]
+CDF(quantile)=0.500000
+Quantile= class=Point name=Unnamed dimension=2 values=[0.162105,0.162105]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.0262476,0.0262476]
+Survival(inverseSurvival)=0.950000
+entropy=-0.125300
+CDF(x|y)=0.66002
+Quantile(p|y)=0.6
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.56939]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.0571768]
+margins= class=MarginalDistribution name=MarginalDistribution dimension=2 distribution=class=JoeCopula name=JoeCopula dimension=2 theta=0.5 psi1=0.5 psi2=0.5 indices=[1,0]
+margins PDF=1.418621
+margins CDF=0.102033
+margins quantile= class=Point name=Unnamed dimension=2 values=[0.969326,0.969326]
+margins CDF(qantile)=0.950000
+margins realization= class=Point name=Unnamed dimension=2 values=[0.924058,0.243714]

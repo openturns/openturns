@@ -2,7 +2,7 @@
 /**
  *  @brief Set of indices defined as a Collection of UnsignedInteger class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,7 +30,7 @@ static const Factory<Indices> Factory_Indices;
 /* Check that no value is repeated and no value exceeds the given bound */
 Bool Indices::check(const UnsignedInteger bound) const
 {
-  if (getSize() == 0) return true;
+  if (!(getSize() > 0)) return true;
   // Check if the values are all different
   Indices copy(*this);
   std::sort(copy.begin(), copy.end());
@@ -45,7 +45,7 @@ Bool Indices::check(const UnsignedInteger bound) const
 Bool Indices::isIncreasing() const
 {
   const UnsignedInteger size = getSize();
-  if (size <= 1) return true;
+  if (!(size > 1)) return true;
   for (UnsignedInteger i = 1; i < size; ++i)
     if (operator[](i) < operator[](i - 1)) return false;
   return true;
@@ -68,8 +68,8 @@ void Indices::fill(const UnsignedInteger initialValue,
 Indices Indices::complement(const UnsignedInteger n) const
 {
   // Check if the values are in the given bound
-  const UnsignedInteger maxIndex = *max_element(begin(), end());
-  if (maxIndex >= n) throw InvalidArgumentException(HERE) << "Error: the given bound=" << n << " must be greater than the maximum index=" << maxIndex;
+  const UnsignedInteger maxIndex = isEmpty() ? 0 : *max_element(begin(), end());
+  if (!(maxIndex < n)) throw InvalidArgumentException(HERE) << "Error: the given bound=" << n << " must be greater than the maximum index=" << maxIndex;
   Indices flags(n, 1);
   for (UnsignedInteger i = 0; i < getSize(); ++i)
     flags[(*this)[i]] = 0;

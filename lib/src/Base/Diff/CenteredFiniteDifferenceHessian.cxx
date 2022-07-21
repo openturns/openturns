@@ -4,7 +4,7 @@
  *         form a numerical math evaluation implementation by using centered
  *         finite difference formula.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -97,8 +97,8 @@ String CenteredFiniteDifferenceHessian::__str__(const String & ) const
 SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = inP.getDimension();
-  Point step(finiteDifferenceStep_.operator()(inP));
-  if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  const Point step(finiteDifferenceStep_.operator()(inP));
+  if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inputDimension << ", should be " << step.getDimension();
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim^2+1 points. */
   Sample gridPoints(2 * inputDimension * inputDimension + 1, inP);
   UnsignedInteger index = 1;
@@ -128,13 +128,13 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) cons
     ++index;
   } // For i
   /* Evaluate the evaluation */
-  Sample gridValues(evaluation_.operator()(gridPoints));
+  const Sample gridValues(evaluation_.operator()(gridPoints));
   /* Get the center value */
-  Point center(gridValues[0]);
+  const Point center(gridValues[0]);
   /* Compute the hessian */
-  UnsignedInteger outputDimension = evaluation_.getOutputDimension();
+  const UnsignedInteger outputDimension = evaluation_.getOutputDimension();
   SymmetricTensor result(inputDimension, outputDimension);
-  UnsignedInteger diagonalOffset = 1 + 2 * inputDimension * (inputDimension - 1);
+  const UnsignedInteger diagonalOffset = 1 + 2 * inputDimension * (inputDimension - 1);
   Scalar scale = -1.0;
   UnsignedInteger offDiagonalOffset = 1;
   for (UnsignedInteger i = 0; i < inputDimension; ++i)

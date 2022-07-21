@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
@@ -26,7 +25,7 @@ try:
 # Create a a copula
     aCopula = IndependentCopula(dimension)
 
-# Instanciate one distribution object
+# Instantiate one distribution object
     distribution = ComposedDistribution(aCollection, aCopula)
     print("Distribution created.")
 

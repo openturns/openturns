@@ -2,7 +2,7 @@
 /**
  *  @brief The class building chaos expansions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ ExpertMixture::ExpertMixture(const FunctionCollection & experts,
   , supervised_(supervised)
 {
   // Check if there is at least one expert
-  if (experts.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an ExpertMixture with no expert!";
+  if (!(experts.getSize() > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an ExpertMixture with no expert!";
   // Check that the experts and the classifier are compatible
   if (supervised_)
   {
@@ -138,7 +138,7 @@ Point ExpertMixture::evaluateSupervised(const Point & inP) const
   Point mixedPoint(inP);
   Point bestValue(getOutputDimension());
   mixedPoint.add(bestValue);// z=(x, f(x))
-  Scalar bestGrade = -SpecFunc::MaxScalar;
+  Scalar bestGrade = SpecFunc::LowestScalar;
   for (UnsignedInteger classIndex = 0; classIndex < size; ++ classIndex)
   {
     // Build the point z for each other class and grade it according to the classifier
@@ -165,7 +165,7 @@ Point ExpertMixture::evaluateNonSupervised(const Point & inP) const
   const UnsignedInteger size = experts_.getSize();
   UnsignedInteger bestClass = 0;
   // Build the point z for the first class and grade it according to the classifier
-  Scalar bestGrade = -SpecFunc::MaxScalar;
+  Scalar bestGrade = SpecFunc::LowestScalar;
   for (UnsignedInteger classIndex = 0; classIndex < size; ++ classIndex)
   {
     // Build the point z for each other class and grade it according to the classifier
@@ -199,7 +199,7 @@ Sample ExpertMixture::evaluateSupervised(const Sample & inS) const
   const UnsignedInteger outputDimension = getOutputDimension();
   Sample bestValues(size, outputDimension);
   const UnsignedInteger expertSize = experts_.getSize();
-  Point bestGrades(size, -SpecFunc::MaxScalar);
+  Point bestGrades(size, SpecFunc::LowestScalar);
   for (UnsignedInteger classIndex = 0; classIndex < expertSize; ++ classIndex)
   {
     // Build the point z for each other class and grade it according to the classifier
@@ -227,7 +227,7 @@ Sample ExpertMixture::evaluateNonSupervised(const Sample & inS) const
   const UnsignedInteger size = inS.getSize();
   const UnsignedInteger outputDimension = getOutputDimension();
   const UnsignedInteger expertSize = experts_.getSize();
-  Point bestGrades(size, -SpecFunc::MaxScalar);
+  Point bestGrades(size, SpecFunc::LowestScalar);
   Indices bestClasses(size);
   for (UnsignedInteger classIndex = 0; classIndex < expertSize; ++ classIndex)
   {

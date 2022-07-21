@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Sample of big size
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ int main(int, char *[])
         // We should NEVER go here
         throw TestFailed("Exception NOT thrown");
       }
-      catch (OutOfBoundException & ex)
+      catch (OutOfBoundException &)
       {
         // Nothing to do
       }
@@ -78,7 +78,7 @@ int main(int, char *[])
         // We should NEVER go here
         throw TestFailed("Exception NOT thrown");
       }
-      catch (OutOfBoundException & ex)
+      catch (OutOfBoundException &)
       {
         // Nothing to do
       }

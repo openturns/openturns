@@ -2,7 +2,7 @@
 /**
  *  @brief SORM implements the Second Order Reliability Method
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,7 +42,7 @@ SORM::SORM()
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
 SORM::SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-           const Event & event,
+           const RandomVector & event,
            const Point & physicalStartingPoint):
   Analytical(nearestPointAlgorithm, event, physicalStartingPoint),
   sormResult_()

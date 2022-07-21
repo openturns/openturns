@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all Less
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ String Less::__repr__() const
 
 String Less::__str__(const String & offset) const
 {
-  return "<";
+  return OSS() << offset << "<";
 }
 
 /* Here is the interface that all derived class must implement */

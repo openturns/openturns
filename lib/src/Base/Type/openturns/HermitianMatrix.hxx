@@ -2,7 +2,7 @@
 /**
  *  @brief HermitianMatrix implements the classical mathematical hermitian matrix
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -64,12 +64,17 @@ public:
   /** Constructor with implementation */
   HermitianMatrix(const Implementation & i);
 
+#ifndef SWIG
   /** Copy constructor, added to solve glitches with inheritance */
-  HermitianMatrix(const HermitianMatrix & h);
+  HermitianMatrix(const HermitianMatrix & other);
+
+  /** Assignment operator */
+  HermitianMatrix & operator=(const HermitianMatrix & rhs);
+#endif
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Get the dimension of the matrix */
@@ -140,7 +145,7 @@ public:
   SquareComplexMatrix operator * (const SquareMatrix & m) const;
 
   /** Real Matrix multiplications (must have consistent dimensions) */
-  ComplexMatrix operator * (const Matrix & m) const;
+  ComplexMatrix operator * (const Matrix & m) const override;
 
   /** Real SymmetricMatrix multiplications  */
   SquareComplexMatrix operator * (const SymmetricMatrix & m) const;
@@ -149,13 +154,13 @@ public:
   HermitianMatrix operator * (const IdentityMatrix & m) const;
 
   /** Multiplication with a NumericaComplexCollection (must have consistent dimensions) */
-  ComplexCollection operator * (const ComplexCollection & p) const;
+  ComplexCollection operator * (const ComplexCollection & p) const override;
 
   /** Multiplication with a NumericaScalarCollection (must have consistent dimensions) */
-  ComplexCollection operator * (const ScalarCollection & p) const;
+  ComplexCollection operator * (const ScalarCollection & p) const override;
 
   /** Multiplication with a Point (must have consistent dimensions) */
-  ComplexCollection operator * (const Point & p) const;
+  ComplexCollection operator * (const Point & p) const override;
 
 #ifndef _MSC_VER
   using SquareComplexMatrix::operator *;

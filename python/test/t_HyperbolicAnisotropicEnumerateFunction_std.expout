@@ -1,5 +1,7 @@
 Default q : 0.4 
 
+inverse([0,0,0,0,0])= 0
+inverse([2,0,0,0,0])= 3
 First 10 values for dimension 1
 index= 0 [0]
 index= 1 [1]
@@ -300,3 +302,63 @@ index= 24 [0,0,0,6]
 And first 5 strata cardinals : [1, 4, 4, 4, 4]
 Cardinals per degree= [1, 5, 9, 13, 17] 
 
+dim 1 degree 0 max_degree_strata_index 0
+degree 0 size 1
+dim 1 degree 1 max_degree_strata_index 1
+degree 1 size 2
+dim 1 degree 2 max_degree_strata_index 2
+degree 2 size 3
+dim 1 degree 3 max_degree_strata_index 3
+degree 3 size 4
+dim 1 degree 4 max_degree_strata_index 4
+degree 4 size 5
+dim 1 degree 5 max_degree_strata_index 5
+degree 5 size 6
+dim 1 degree 6 max_degree_strata_index 6
+degree 6 size 7
+dim 1 degree 7 max_degree_strata_index 7
+degree 7 size 8
+dim 1 degree 8 max_degree_strata_index 8
+degree 8 size 9
+dim 1 degree 9 max_degree_strata_index 9
+degree 9 size 10
+dim 2 degree 0 max_degree_strata_index 0
+degree 0 size 1
+dim 2 degree 1 max_degree_strata_index 1
+degree 1 size 3
+dim 2 degree 2 max_degree_strata_index 3
+degree 2 size 6
+dim 2 degree 3 max_degree_strata_index 5
+degree 3 size 10
+dim 2 degree 4 max_degree_strata_index 8
+degree 4 size 15
+dim 2 degree 5 max_degree_strata_index 11
+degree 5 size 21
+dim 2 degree 6 max_degree_strata_index 13
+degree 6 size 25
+dim 2 degree 7 max_degree_strata_index 17
+degree 7 size 32
+dim 2 degree 8 max_degree_strata_index 21
+degree 8 size 40
+dim 2 degree 9 max_degree_strata_index 26
+degree 9 size 49
+dim 3 degree 0 max_degree_strata_index 0
+degree 0 size 1
+dim 3 degree 1 max_degree_strata_index 1
+degree 1 size 4
+dim 3 degree 2 max_degree_strata_index 3
+degree 2 size 10
+dim 3 degree 3 max_degree_strata_index 6
+degree 3 size 20
+dim 3 degree 4 max_degree_strata_index 9
+degree 4 size 32
+dim 3 degree 5 max_degree_strata_index 13
+degree 5 size 50
+dim 3 degree 6 max_degree_strata_index 17
+degree 6 size 65
+dim 3 degree 7 max_degree_strata_index 24
+degree 7 size 93
+dim 3 degree 8 max_degree_strata_index 30
+degree 8 size 123
+dim 3 degree 9 max_degree_strata_index 38
+degree 9 size 156

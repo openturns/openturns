@@ -2,7 +2,7 @@
 /**
  *  @brief PointWithDescription extends the classical mathematical point with a description of the coordinates
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -65,20 +65,20 @@ PointWithDescription::PointWithDescription(const Pointer<Point> & p_base)
 }
 
 
+/* Constructor from a collection */
+PointWithDescription::PointWithDescription(std::initializer_list<Scalar> initList)
+  : Point(initList)
+  , description_(initList.size())
+{
+  // Nothing to do
+}
+
 
 /* Virtual constructor */
 PointWithDescription * PointWithDescription::clone() const
 {
   return new PointWithDescription(*this);
 }
-
-
-/* Destructor */
-PointWithDescription::~PointWithDescription() throw()
-{
-  // Nothing to do
-}
-
 
 /* String converter */
 String PointWithDescription::__repr__() const

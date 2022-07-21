@@ -12,44 +12,64 @@
 namespace OT{ %extend Object { Object(const Object & other) { return new OT::Object(other); } } }
 
 %pythoncode %{
-import os
-
 def Object___getstate__(self):
-
+    import tempfile
+    import os
     state = dict()
     study = Study()
-    filename = Path.BuildTemporaryFileName('xmlfileXXXXXX')
 
     # assume xml support
-    # should use BinaryStorageManager
-    with open(filename, 'rb+') as infile:
-        study.setStorageManager(XMLStorageManager(filename)) 
-        study.add('instance', self)
-        study.save()
-        infile.seek(0)
-        state['xmldata'] = infile.read()
-
-    os.remove(filename)
+    infile = tempfile.NamedTemporaryFile(delete=False, suffix='.xml')
+    try:
+        study.setStorageManager(XMLH5StorageManager(infile.name))
+        state['format'] = 'xmlh5'
+    except:
+        study.setStorageManager(XMLStorageManager(infile.name))
+        state['format'] = 'xml'
+    study.add('instance', self)
+    study.save()
+    infile.seek(0)
+    state['xmldata'] = infile.read()
+    infile.close()
+    os.remove(infile.name)
+    if state['format'] == 'xmlh5':
+        h5filename = infile.name.replace('.xml', '.h5')
+        try:
+            with open(h5filename, 'rb') as h5file:
+                state['h5data'] = h5file.read()
+            os.remove(h5filename)
+        except FileNotFoundError:
+            pass # no h5 data
     return state
 
 Object.__getstate__ = Object___getstate__
 
 def Object___setstate__(self, state):
+    import tempfile
+    import os
 
     # call ctor to initialize underlying cxx obj
-    # as it is instanciated from object.__new__
+    # as it is instantiated from object.__new__
     self.__init__()
 
     study = Study()
-    filename = Path.BuildTemporaryFileName('xmlfileXXXXXX')
-    with open(filename, 'rb+') as outfile:
-        outfile.write(state['xmldata'])
-        outfile.seek(0)
-        study.setStorageManager(XMLStorageManager(filename)) 
-        study.load()
-
+    outfile = tempfile.NamedTemporaryFile(delete=False, suffix='.xml')
+    outfile.write(state['xmldata'])
+    outfile.seek(0)
+    if 'h5data' in state:
+        h5filename = outfile.name.replace('.xml', '.h5')
+        with open(h5filename, 'wb') as h5file:
+            h5file.write(state['h5data'])
+    if state.get('format', 'xml') == 'xmlh5':
+        study.setStorageManager(XMLH5StorageManager(outfile.name))
+    else:
+        study.setStorageManager(XMLStorageManager(outfile.name))
+    study.load()
+    outfile.close()
+    os.remove(outfile.name)
+    if 'h5data' in state:
+        os.remove(h5filename)
     study.fillObject('instance', self)
-    os.remove(filename)
 
 Object.__setstate__ = Object___setstate__
 

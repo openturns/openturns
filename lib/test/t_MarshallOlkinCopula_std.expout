@@ -1,0 +1,17 @@
+Copula class=MarshallOlkinCopula name=MarshallOlkinCopula dimension=2 alpha=0.5 beta=0.5
+Copula MarshallOlkinCopula(alpha = 0.5, beta = 0.5)
+Dimension
+isContinuous
+hasIndependentCopula
+getKendallTau
+getSpearmanCorrelation
+getRealization
+getSample
+computeMean
+computeCovariance
+Sample Kendall's tau vs copula
+Sample Kendall's tau vs copula
+Special case alpha=0
+Special case beta=0
+Special case alpha=beta=1
+Special case alpha=beta=0

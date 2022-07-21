@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for non elliptical distributions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,7 @@
 #define OPENTURNS_ARCHIMEDEANCOPULA_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/CopulaImplementation.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * without being reconstructed or built in any way.
  */
 class OT_API ArchimedeanCopula
-  : public CopulaImplementation
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -46,32 +46,31 @@ public:
   /** Default constructor */
   ArchimedeanCopula();
 
-
   /** Virtual constructor */
-  virtual ArchimedeanCopula * clone() const;
+  ArchimedeanCopula * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const ArchimedeanCopula & other) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Get the PDF of the archimedean copula */
-  using CopulaImplementation::computePDF;
-  Scalar computePDF(const Point & point) const;
+  using DistributionImplementation::computePDF;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the archimedean copula */
-  using CopulaImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const;
-  using CopulaImplementation::computeComplementaryCDF;
-  Scalar computeComplementaryCDF(const Point & point) const;
+  using DistributionImplementation::computeCDF;
+  Scalar computeCDF(const Point & point) const override;
+  using DistributionImplementation::computeComplementaryCDF;
+  Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Get the probability content of an interval */
-  Scalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   Scalar computeConditionalPDF(const Scalar x,
-                               const Point & y) const;
+                               const Point & y) const override;
 
   /** Compute the archimedean generator of the archimedean copula, i.e.
    *  the function phi such that the CDF of the copula can
@@ -89,14 +88,14 @@ public:
   virtual Scalar computeArchimedeanGeneratorSecondDerivative(const Scalar t) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  using CopulaImplementation::getMarginal;
-  Distribution getMarginal(const Indices & indices) const;
+  using DistributionImplementation::getMarginal;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Tell if the distribution has elliptical copula */
-  Bool hasEllipticalCopula() const;
+  Bool hasEllipticalCopula() const override;
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
 protected:
 

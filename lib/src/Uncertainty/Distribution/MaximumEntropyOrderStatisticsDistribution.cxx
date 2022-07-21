@@ -2,7 +2,7 @@
 /**
  *  @brief The maximum entropy order statistics distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -213,7 +213,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeExponentialFactor(const
   if (y < x)
   {
     const Scalar value = computeExponentialFactor(k, y, x);
-    if (value == 0.0) return SpecFunc::LogMinScalar;
+    if (value == 0.0) return SpecFunc::MaxScalar;
     return 1.0 / value;
   }
   // Generic part, no approximation here
@@ -270,7 +270,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const UnsignedIn
   const Scalar a = distributionCollection_[k].getRange().getLowerBound()[0];
   if (y <= a) return 0.0;
   const Scalar b = distributionCollection_[k].getRange().getUpperBound()[0];
-  if (y >= b) return SpecFunc::LogMaxScalar;
+  if (y >= b) return SpecFunc::MaxScalar;
   const Scalar beta = distributionCollection_[k - 1].getRange().getUpperBound()[0];
   if (x >= beta)
   {
@@ -280,7 +280,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const UnsignedIn
   if (useApproximation_)
   {
     const Scalar exponentialFactor = computeExponentialFactor(k, x, y);
-    if (exponentialFactor == 0.0) return SpecFunc::LogMaxScalar;
+    if (exponentialFactor == 0.0) return SpecFunc::MaxScalar;
     return -std::log(exponentialFactor);
   }
   const MaximumEntropyOrderStatisticsDistributionWrapper phiKWrapper(*this, k - 1, k, a);
@@ -463,8 +463,8 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const Point & po
 
   // Early exit if the point is not in the support
   for (UnsignedInteger k = 1; k < dimension; ++ k)
-    if (point[k - 1] > point[k]) return SpecFunc::LogMinScalar;
-  if (!getRange().numericallyContains(point)) return SpecFunc::LogMinScalar;
+    if (point[k - 1] > point[k]) return SpecFunc::LowestScalar;
+  if (!getRange().numericallyContains(point)) return SpecFunc::LowestScalar;
 
   // Early exit for the independent case
   if (hasIndependentCopula())
@@ -896,15 +896,11 @@ MaximumEntropyOrderStatisticsDistribution MaximumEntropyOrderStatisticsDistribut
   // Here we know that if the size is equal to the dimension, the indices are [0,...,dimension-1]
   if (size == dimension) return *this;
   // This call will check that indices are correct
-  DistributionCollection marginalDistributions(size);
-  Description marginalDescription(size);
-  const Description description(getDescription());
+  DistributionCollection marginalDistributions(distributionCollection_.select(indices));
   Collection<PiecewiseHermiteEvaluation> marginalExponentialFactorApproximation(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger j = indices[i];
-    marginalDistributions[i] = distributionCollection_[j];
-    marginalDescription[i] = description[j];
     if (useApproximation_ && (i > 0))
     {
       const UnsignedInteger jPrec = indices[i - 1];
@@ -917,7 +913,7 @@ MaximumEntropyOrderStatisticsDistribution MaximumEntropyOrderStatisticsDistribut
   }
   OrderStatisticsMarginalChecker checker(marginalDistributions);
   const Indices marginalPartition(checker.buildPartition());
-  MaximumEntropyOrderStatisticsDistribution marginal(marginalDistributions, marginalPartition, useApproximation_, marginalExponentialFactorApproximation, marginalDescription);
+  MaximumEntropyOrderStatisticsDistribution marginal(marginalDistributions, marginalPartition, useApproximation_, marginalExponentialFactorApproximation, getDescription().select(indices));
   return marginal;
 }
 
@@ -934,7 +930,6 @@ void MaximumEntropyOrderStatisticsDistribution::setDistributionCollection(const 
 
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
-  if ((getDimension() != 0) && (size != getDimension())) throw InvalidArgumentException(HERE) << "The distribution collection must have a size equal to the distribution dimension";
   Description description(size);
   Point lowerBound(size);
   Point upperBound(size);

@@ -105,7 +105,7 @@ Polynomial chaos basis
   dealing with independent random variables, one gets
   :math:`K(\underline{x})=1` and each basis element may be recast as in
   :eq:`3.010six`. Determining :math:`K(\underline{x})` is usually
-  computionally expensive though, hence an alternative strategy for
+  computationally expensive though, hence an alternative strategy for
   specific types of input random vectors.
 
 | If :math:`\vect{X}` has an elliptical copula instead of an independent
@@ -138,7 +138,7 @@ strictly equivalent to:
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/meta_modeling/functional_chaos`
+    - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
 
 
 .. topic:: References:

@@ -1,0 +1,115 @@
+%feature("docstring") OT::StationaryFunctionalCovarianceModel
+"Stationary functional covariance function.
+
+Defines a stationary covariance model with one-dimensional output
+from a custom correlation function.
+
+Parameters
+----------
+scale : sequence of floats
+    Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+    The size of :math:`\vect{\theta}` is the input dimension.
+amplitude : sequence of positive floats
+    Amplitude  :math:`\vect{\sigma}\in \Rset^d`.
+    Must be of size equal to 1.
+    By default, equal to :math:`[1]`.
+rho : :class:`~openturns.Function`
+    Correlation function :math:`\rho(\tau)`, must have 1-d output
+    No check is made that this is actually a correlation function
+    so the resulting discretized matrix can have negative eigenvalues if you're not careful enough
+
+Notes
+-----
+The functional covariance function is a stationary covariance function with output dimension :math:`d=1`.
+
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+
+The functional covariance function is defined by:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \sigma^2 \rho\left(\frac{\vect{s} - \vect{t}}{\vect{\theta}}\right), \quad \forall (\vect{s}, \vect{t}) \in \cD
+
+where :math:`\rho(\tau)` is the provided correlation function.
+
+See Also
+--------
+CovarianceModel
+
+Examples
+--------
+Create a :class:`~openturns.CovarianceModel` defined by a damped cosine correlation function as follows:
+
+.. math::
+
+    \rho(\tau) = e^{-\tau}\cos \left( 2\pi\tau \right)
+
+>>> import openturns as ot
+>>> rho = ot.SymbolicFunction(['tau'], ['exp(-tau)*cos(2*pi_*tau)'])
+>>> covModel = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
+>>> tau = [0.1]
+>>> print(covModel(tau))
+[[ 0.732029 ]]
+
+If the correlation function has hyperparameters, we must turn it into a :class:`~openturns.ParametricFunction`.
+In the example below, we illustrate this by introducing a power parameter :math:`n` to the dampening function:
+
+.. math::
+
+    \rho(\tau) &= e^{-\tau}\left(\cos \left( 2\pi\tau \right)\right)^n \\
+               &= e^{-\tau}e^{n\times \ln\left(\cos \left( 2\pi\tau \right)\right)}
+
+>>> rho_param = ot.SymbolicFunction(['tau','n'], ['exp(-tau)*exp(n * log(cos(2*pi_*tau)))'])
+>>> rho = ot.ParametricFunction(rho_param, [1], [2.0])
+>>> covModel = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
+
+The full list of parameters for this :class:`~openturns.CovarianceModel` contains the parameter :math:`n`:
+
+>>> covModel.getFullParameterDescription()
+[scale_0,amplitude_0,n]
+
+However, only the scale and amplitude parameters are active by default:
+
+>>> # Get the list of all active parameters
+>>> print(covModel.getParameterDescription())
+[scale_0,amplitude_0]
+
+Active parameters of a :class:`~openturns.CovarianceModel` are those that must be estimated.
+Let us make all parameters active, including :math:`n`.
+The :meth:`setActiveParameter` method takes a list of integers as input:
+each integer is understood as the index of a parameter in the list yielded by :meth:`getFullParameterDescription`.
+Here parameter #0 is `scale_0`, parameter #1 is `amplitude_0` and parameter #2 is :math:`n`.
+
+>>> covModel.setActiveParameter([0, 1, 2])
+
+We can check that all parameters are now active:
+
+>>> print(covModel.getParameterDescription())
+[scale_0,amplitude_0,n]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StationaryFunctionalCovarianceModel::setRho
+"Correlation function accessor.
+
+Parameters
+----------
+rho : :class:`~openturns.Function`
+    Correlation function :math:`\rho(\tau)`, must have 1-d output
+    No check is made that this is actually a correlation function
+    so the resulting discretized matrix can have negative eigenvalues if you're not careful enough
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StationaryFunctionalCovarianceModel::getRho
+"Correlation function accessor.
+
+Returns
+-------
+rho : :class:`~openturns.Function`
+    Correlation function :math:`\rho(\tau)`, must have 1-d output
+    No check is made that this is actually a correlation function
+    so the resulting discretized matrix can have negative eigenvalues if you're not careful enough
+"
+

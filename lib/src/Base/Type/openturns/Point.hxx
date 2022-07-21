@@ -2,7 +2,7 @@
 /**
  *  @brief Point implements the classical mathematical point
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,16 +55,20 @@ public:
   /** Constructor from a collection */
   Point(const Collection<Scalar> & coll);
 
-  /** Virtual constructor */
-  virtual Point * clone() const;
+  /** Initializer list constructor */
+  Point(std::initializer_list<Scalar> initList);
 
-  /** Description Accessor */
-  virtual void setDescription(const Description & description);
-  virtual Description getDescription() const;
+  /** Constructor from a range of elements */
+  template <typename InputIterator>
+  Point(InputIterator first, InputIterator last)
+    : InternalType(first, last) {}
+
+  /** Virtual constructor */
+  Point * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Set small elements to zero */
   Point clean(const Scalar threshold) const;
@@ -102,10 +106,10 @@ public:
 
 #ifndef SWIG
   /** Erase the elements between first and last */
-  iterator erase(const iterator first, const iterator last);
+  iterator erase(const iterator first, const iterator last) override;
 
   /** Erase the element pointed by position */
-  iterator erase(iterator position);
+  iterator erase(iterator position) override;
 
   /** Erase the element pointed by position */
   iterator erase(UnsignedInteger position);
@@ -141,11 +145,14 @@ public:
   /** Square normalize the vector */
   Point normalizeSquare() const;
 
+  /** Dot product operator */
+  Scalar dot(const Point & rhs) const;
+
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
@@ -184,11 +191,10 @@ OT_API Point operator + (const Point & lhs,
 OT_API Point operator - (const Point & lhs,
                          const Point & rhs);
 
-#endif
+/** Unary minus operator */
+OT_API Point operator - (const Point & lhs);
 
-/** Dot product operator */
-OT_API Scalar dot(const Point & lhs,
-                  const Point & rhs);
+#endif
 
 
 

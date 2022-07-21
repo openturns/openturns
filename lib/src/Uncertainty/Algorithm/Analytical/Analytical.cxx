@@ -2,7 +2,7 @@
 /**
  *  @brief Analytical implements an algorithm to find the design point
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,7 @@ static const Factory<Analytical> Factory_Analytical;
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
 Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
-                       const Event & event,
+                       const RandomVector & event,
                        const Point & physicalStartingPoint)
   : PersistentObject(),
     nearestPointAlgorithm_(nearestPointAlgorithm),
@@ -43,10 +43,11 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
     physicalStartingPoint_(physicalStartingPoint)
 {
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
-  if (physicalStartingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Starting point dimension (" << physicalStartingPoint.getDimension() << ") does not match event dimension (" << dimension << ").";
+  if (physicalStartingPoint.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Starting point dimension (" << physicalStartingPoint.getDimension() << ") does not match event dimension (" << dimension << ").";
+  if (!event_.getImplementation()->getAntecedent().getDistribution().isContinuous())
+    throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
   result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_), event, true);
-  /* set the level function of the algorithm */
-  nearestPointAlgorithm_.setProblem(NearestPointProblem(event.getImplementation()->getFunction(), event.getThreshold()));
 }
 
 
@@ -69,16 +70,15 @@ void Analytical::setPhysicalStartingPoint(const Point & physicalStartingPoint)
 }
 
 /* Event accessor */
-Event Analytical::getEvent() const
+RandomVector Analytical::getEvent() const
 {
   return event_;
 }
 
 /* Event accessor */
-void Analytical::setEvent(const Event & event)
+void Analytical::setEvent(const RandomVector & event)
 {
-  event_ =  event;
-  nearestPointAlgorithm_.setProblem(NearestPointProblem(event_.getImplementation()->getFunction(), event_.getThreshold()));
+  event_ = event;
 }
 
 /* OptimizationAlgorithm accessor */

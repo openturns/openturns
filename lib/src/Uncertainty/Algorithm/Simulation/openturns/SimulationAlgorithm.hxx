@@ -2,7 +2,7 @@
 /**
  *  @brief EventSimulation algorithms base class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,7 +41,7 @@ public:
   SimulationAlgorithm();
 
   /** Virtual constructor */
-  virtual SimulationAlgorithm * clone() const;
+  SimulationAlgorithm * clone() const override;
 
   /** Maximum sample size accessor */
   void setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling);
@@ -64,7 +64,7 @@ public:
   Bool getVerbose() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. */
   virtual void run();
@@ -74,10 +74,10 @@ public:
   HistoryStrategy getConvergenceStrategy() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);

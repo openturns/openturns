@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class DiracCovarianceModel
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,7 +50,7 @@ int main(int, char *[])
   try
   {
 
-    PlatformInfo::SetNumericalPrecision(4);
+    PlatformInfo::SetNumericalPrecision(3);
 
     ResourceMap::SetAsUnsignedInteger("HMatrix-MaxLeafSize", 6);
 
@@ -59,8 +59,8 @@ int main(int, char *[])
     // Dimension
     const UnsignedInteger dimension = 2;
 
-    DiracCovarianceModel myDefautModel;
-    fullprint << "myDefautModel = " << myDefautModel << std::endl;
+    DiracCovarianceModel myDefaultModel;
+    fullprint << "myDefaultModel = " << myDefaultModel << std::endl;
     // Amplitude of dimension 2
     Point amplitude(dimension);
     for (UnsignedInteger k = 0; k < dimension; ++k) amplitude[k] = 1.5 + 2.0 * k;
@@ -83,16 +83,18 @@ int main(int, char *[])
     Box box(levels);
     const Sample vertices = box.generate();
     const Scalar nuggetFactor = ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor");
+    myModel1.setNuggetFactor(nuggetFactor);
+    myModel2.setNuggetFactor(nuggetFactor);
     const HMatrixParameters parameters;
 
     fullprint << "Discretization on a grid of vertices" << std::endl;
-    fullprint << "Discretization of myModel1 = " << hmatrix__str__(myModel1.discretizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
-    fullprint << "Discretization of myModel2 = " << hmatrix__str__(myModel2.discretizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
+    fullprint << "Discretization of myModel1 = " << hmatrix__str__(myModel1.discretizeHMatrix(vertices, parameters)) << std::endl;
+    fullprint << "Discretization of myModel2 = " << hmatrix__str__(myModel2.discretizeHMatrix(vertices, parameters)) << std::endl;
 
     // Evaluation of the Cholesky factor
     fullprint << "Discretization & factorization on a grid of vertices" << std::endl;
-    fullprint << "Discretization & factorization of myModel1 = " <<  hmatrix__str__(myModel1.discretizeAndFactorizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
-    fullprint << "Discretization  & factorizationof myModel2 = " <<  hmatrix__str__(myModel2.discretizeAndFactorizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
+    fullprint << "Discretization & factorization of myModel1 = " <<  hmatrix__str__(myModel1.discretizeAndFactorizeHMatrix(vertices, parameters)) << std::endl;
+    fullprint << "Discretization  & factorizationof myModel2 = " <<  hmatrix__str__(myModel2.discretizeAndFactorizeHMatrix(vertices, parameters)) << std::endl;
 
   }
   catch (TestFailed & ex)

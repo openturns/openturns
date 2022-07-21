@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class DistFunc for standard methods
  *
- *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,72 +38,72 @@ int main(int, char *[])
       UnsignedInteger nMin = 2;
       UnsignedInteger nMax = 12;
       for (UnsignedInteger n = nMin; n <= nMax; ++n)
-	{
-	  for (UnsignedInteger k = 1; k < n; ++k)
-	    {
-	      for (UnsignedInteger m = 1; m < n; ++m)
-		{
-		  for (UnsignedInteger x = (k + m > n ? k + m - n : 0); x <= std::min(k, m); ++x)
-		    {
-		      fullprint << "dHypergeometric(" << n << ", " << k << ", " << m << ", " << x << ")=" << DistFunc::dHypergeometric(n, k, m, x) << std::endl;
-		    } // x
-		} // m
-	    } // k
-	} // n
+      {
+        for (UnsignedInteger k = 1; k < n; ++k)
+        {
+          for (UnsignedInteger m = 1; m < n; ++m)
+          {
+            for (UnsignedInteger x = (k + m > n ? k + m - n : 0); x <= std::min(k, m); ++x)
+            {
+              fullprint << "dHypergeometric(" << n << ", " << k << ", " << m << ", " << x << ")=" << DistFunc::dHypergeometric(n, k, m, x) << std::endl;
+            } // x
+          } // m
+        } // k
+      } // n
     } // dHypergeometric
     {
       // logdHypergeometric
       UnsignedInteger nMin = 2;
       UnsignedInteger nMax = 12;
       for (UnsignedInteger n = nMin; n <= nMax; ++n)
-	{
-	  for (UnsignedInteger k = 1; k < n; ++k)
-	    {
-	      for (UnsignedInteger m = 1; m < n; ++m)
-		{
-		  for (UnsignedInteger x = (k + m > n ? k + m - n : 0); x <= std::min(k, m); ++x)
-		    {
-		      fullprint << "logdHypergeometric(" << n << ", " << k << ", " << m << ", " << x << ")=" << DistFunc::logdHypergeometric(n, k, m, x) << std::endl;
-		    } // x
-		} // m
-	    } // k
-	} // n
+      {
+        for (UnsignedInteger k = 1; k < n; ++k)
+        {
+          for (UnsignedInteger m = 1; m < n; ++m)
+          {
+            for (UnsignedInteger x = (k + m > n ? k + m - n : 0); x <= std::min(k, m); ++x)
+            {
+              fullprint << "logdHypergeometric(" << n << ", " << k << ", " << m << ", " << x << ")=" << DistFunc::logdHypergeometric(n, k, m, x) << std::endl;
+            } // x
+          } // m
+        } // k
+      } // n
     } // logdHypergeometric
     {
       // pHypergeometric
       UnsignedInteger nMin = 2;
       UnsignedInteger nMax = 12;
       for (UnsignedInteger n = nMin; n <= nMax; ++n)
-	{
-	  for (UnsignedInteger k = 1; k < n; ++k)
-	    {
-	      for (UnsignedInteger m = 1; m < n; ++m)
-		{
-		  for (UnsignedInteger x = (k + m > n ? k + m - n : 0); x <= std::min(k, m); ++x)
-		    {
-		      fullprint << "pHypergeometric(" << n << ", " << k << ", " << m << ", " << x << ")=" << DistFunc::pHypergeometric(n, k, m, x) << std::endl;
-		    } // x
-		} // m
-	    } // k
-	} // n
+      {
+        for (UnsignedInteger k = 1; k < n; ++k)
+        {
+          for (UnsignedInteger m = 1; m < n; ++m)
+          {
+            for (UnsignedInteger x = (k + m > n ? k + m - n : 0); x <= std::min(k, m); ++x)
+            {
+              fullprint << "pHypergeometric(" << n << ", " << k << ", " << m << ", " << x << ")=" << DistFunc::pHypergeometric(n, k, m, x) << std::endl;
+            } // x
+          } // m
+        } // k
+      } // n
     } // pHypergeometric
     {
       // rHypergeometric
       UnsignedInteger nMin = 2;
       UnsignedInteger nMax = 12;
       for (UnsignedInteger n = nMin; n <= nMax; ++n)
-	{
-	  for (UnsignedInteger k = 1; k < n; ++k)
-	    {
-	      for (UnsignedInteger m = 1; m < n; ++m)
-		{
-		  for (UnsignedInteger x = (k + m > n ? k + m - n : 0); x <= std::min(k, m); ++x)
-		    {
-		      fullprint << "rHypergeometric(" << n << ", " << k << ", " << m << ")=" << DistFunc::rHypergeometric(n, k, m) << std::endl;
-		    } // rng
-		} // m
-	    } // k
-	} // n
+      {
+        for (UnsignedInteger k = 1; k < n; ++k)
+        {
+          for (UnsignedInteger m = 1; m < n; ++m)
+          {
+            for (UnsignedInteger x = (k + m > n ? k + m - n : 0); x <= std::min(k, m); ++x)
+            {
+              fullprint << "rHypergeometric(" << n << ", " << k << ", " << m << ")=" << DistFunc::rHypergeometric(n, k, m) << std::endl;
+            } // rng
+          } // m
+        } // k
+      } // n
     } // rHypergeometric
   }
   catch (TestFailed & ex)

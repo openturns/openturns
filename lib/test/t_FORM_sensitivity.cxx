@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of FORM class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -89,7 +89,7 @@ int main(int, char *[])
       output.setDescription(outputDescription);
 
       /* We create an Event from this RandomVector */
-      Event myEvent(output, Greater(), 0.0);
+      ThresholdEvent myEvent(output, Greater(), 0.0);
 
       /* We create a NearestPoint algorithm */
       Cobyla myCobyla;

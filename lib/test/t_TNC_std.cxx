@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Tnc for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -66,7 +66,7 @@ int main(int, char *[])
     solver.run();
 
     fullprint << "minimizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-    fullprint << "multipliers = " << printPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "multipliers = " << printPoint(solver.getResult().computeLagrangeMultipliers(), 4) << std::endl;
 
     // Define Optimization Problem : maximization
     problem.setMinimization(false);
@@ -74,7 +74,7 @@ int main(int, char *[])
     solver.run();
 
     fullprint << "maximizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-    fullprint << "multipliers = " << printPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "multipliers = " << printPoint(solver.getResult().computeLagrangeMultipliers(), 4) << std::endl;
 
   }
   catch (TestFailed & ex)
@@ -118,7 +118,7 @@ int main(int, char *[])
       solver.setStartingPoint(startingPointNearMinimizationCorner);
       solver.run();
       fullprint << "minimizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-      fullprint << "multipliers = " << printPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
+      fullprint << "multipliers = " << printPoint(solver.getResult().computeLagrangeMultipliers(), 4) << std::endl;
     }
     {
       // Define Optimization Problem : maximization
@@ -127,7 +127,7 @@ int main(int, char *[])
       solver.setStartingPoint(startingPointNearMaximizationCorner);
       solver.run();
       fullprint << "maximizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-      fullprint << "multipliers = " << printPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
+      fullprint << "multipliers = " << printPoint(solver.getResult().computeLagrangeMultipliers(), 4) << std::endl;
     }
   }
   catch (TestFailed & ex)

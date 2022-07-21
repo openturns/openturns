@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class LeastSquaresMethod for the standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,7 +52,7 @@ int main(int, char *[])
     methods[1] = "SVD";
     methods[2] = "Cholesky";
 
-    Point hFromH(dimension);
+    Point hFromH(size);
 
     for (UnsignedInteger k = 0; k < 3; ++k)
     {
@@ -73,10 +73,10 @@ int main(int, char *[])
       // Get the Diagonal of H matrix and compare it to the getHDiag
       // Second method is already validated
       // Note also that H^n = H so we could add this test
-      for (UnsignedInteger k = 0; k < dimension; ++ k) hFromH[k] = H(k, k);
+      for (UnsignedInteger k2 = 0; k2 < size; ++ k2) hFromH[k2] = H(k2, k2);
       assert_almost_equal(hFromH,  algo.getHDiag(), 1e-15, 1e-15);
       SquareMatrix H2(H * H);
-      assert_almost_equal(*H2.getImplementation(),  *H.getImplementation(), 1e-15, 1e-15);
+      assert_almost_equal(H2, H, 1e-15, 1e-15);
 
     }
     Matrix design(proxy.computeDesign(indices));
@@ -99,10 +99,10 @@ int main(int, char *[])
       // Get the Diagonal of H matrix and compare it to the getHDiag
       // Second method is already validated
       // Note also that H^n = H so we could add this test
-      for (UnsignedInteger k = 0; k < dimension; ++ k) hFromH[k] = H(k, k);
+      for (UnsignedInteger k2 = 0; k2 < size; ++ k2) hFromH[k2] = H(k2, k2);
       assert_almost_equal(hFromH,  algo.getHDiag(), 1e-15, 1e-15);
       SquareMatrix H2(H * H);
-      assert_almost_equal(*H2.getImplementation(),  *H.getImplementation(), 1e-15, 1e-15);
+      assert_almost_equal(H2,  H, 1e-15, 1e-15);
 
     }
 

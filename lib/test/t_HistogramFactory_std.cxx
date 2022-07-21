@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Histogram for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,7 +52,7 @@ int main(int, char *[])
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    fullprint << "Silverman bandwidth=" << factory.computeSilvermanBandwidth(sample) << std::endl;
+    fullprint << "Bandwidth=" << factory.computeBandwidth(sample) << std::endl;
     {
       Histogram estimatedHistogram(factory.buildAsHistogram(sample));
       fullprint << "Histogram          =" << distribution << std::endl;
@@ -70,13 +70,18 @@ int main(int, char *[])
     }
     Histogram estimatedHistogram(factory.buildAsHistogram());
     fullprint << "Default histogram=" << estimatedHistogram << std::endl;
-    // Test for constant sample
-    sample = Sample(size, Point(1, 0.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = Sample(size, Point(1, 1.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+
+    // Build from first and width
+    // 1. Create a Sample
+    Sample newsample(Normal().getSample(100));
+    // 2. Set the parameters first and width
+    Scalar first = newsample.getMin()[0];
+    UnsignedInteger binNumber = 10;
+    Scalar binwidth = 1.;
+    Point width = Point(binNumber, binwidth);
+    // 3. Create a new histogram from first and width
+    Distribution newDistribution(factory.build(newsample, first, width));
+    fullprint << "New histogram=" << newDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {

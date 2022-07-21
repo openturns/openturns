@@ -3,7 +3,7 @@
 /**
  *  @brief A math expression parser
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,9 +20,11 @@
  *
  */
 
+#include <regex>
+
 #include "openturns/SymbolicParserImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-
+#include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,9 +35,6 @@ static const Factory<SymbolicParserImplementation> Factory_SymbolicParserImpleme
 /* Default constructor */
 SymbolicParserImplementation::SymbolicParserImplementation()
   : PersistentObject()
-  , inputVariablesNames_()
-  , formulas_()
-  , checkResult_(ResourceMap::GetAsBool("SymbolicParser-CheckResult"))
 {
   // Nothing to do
 }
@@ -54,6 +53,25 @@ Description SymbolicParserImplementation::getVariables() const
 
 void SymbolicParserImplementation::setVariables(const Description & inputVariablesNames)
 {
+  const UnsignedInteger size = inputVariablesNames.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const String varName(inputVariablesNames[i]);
+#ifdef OPENTURNS_HAVE_STD_REGEX
+    if (!std::regex_match(inputVariablesNames[i], std::regex("[a-zA-Z][0-9a-zA-Z_]*")))
+      throw InvalidArgumentException(HERE) << "Invalid input variable: " << varName;
+#else
+    Bool isValid = (varName.size() >= 1) && isalpha(varName[0]);
+    for (UnsignedInteger j = 1; j < varName.size(); ++ j)
+      if (!(isalnum(varName[j]) || (varName[j] == '_')))
+      {
+        isValid = false;
+        break;
+      }
+    if (!isValid)
+      throw InvalidArgumentException(HERE) << "Invalid input variable: " << varName;
+#endif
+  }
   inputVariablesNames_ = inputVariablesNames;
 }
 
@@ -84,13 +102,24 @@ Sample SymbolicParserImplementation::operator()(const Sample & inS) const
   return result;
 }
 
+/* Invalid values check accessor */
+void SymbolicParserImplementation::setCheckOutput(const Bool checkOutput)
+{
+  checkOutput_ = checkOutput;
+}
+
+Bool SymbolicParserImplementation::getCheckOutput() const
+{
+  return checkOutput_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void SymbolicParserImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.saveAttribute( "formulas_", formulas_ );
-  adv.saveAttribute( "checkResult_", checkResult_ );
+  adv.saveAttribute( "checkOutput_", checkOutput_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -99,7 +128,10 @@ void SymbolicParserImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.loadAttribute( "formulas_", formulas_ );
-  adv.loadAttribute( "checkResult_", checkResult_ );
+  if (adv.hasAttribute("checkResult_"))
+    adv.loadAttribute( "checkResult_", checkOutput_ );
+  else
+    adv.loadAttribute( "checkOutput_", checkOutput_ );
 }
 
 

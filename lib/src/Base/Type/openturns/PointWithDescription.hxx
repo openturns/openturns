@@ -2,7 +2,7 @@
 /**
  *  @brief PointWithDescription extends the classical mathematical point with a description of the coordinates
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,26 +53,26 @@ public:
   /** Constructor from a base class */
   PointWithDescription(const Pointer<Point> & p_base);
 
-  /** Virtual constructor */
-  virtual PointWithDescription * clone() const;
+  /** Initializer list constructor */
+  PointWithDescription(std::initializer_list<Scalar> initList);
 
-  /** Destructor */
-  virtual ~PointWithDescription() throw();
+  /** Virtual constructor */
+  PointWithDescription * clone() const override;
 
   /** Description Accessor */
   void setDescription(const Description & description);
   Description getDescription() const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

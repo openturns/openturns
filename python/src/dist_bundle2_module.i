@@ -34,10 +34,12 @@
 %include KernelMixture.i
 %include Laplace.i
 %include LaplaceFactory.i
+%include LeastSquaresDistributionFactory.i
 %include Logistic.i
 %include LogisticFactory.i
 %include LogNormal.i
 %include LogNormalFactory.i
+%include LogNormalMuErrorFactor.i
 %include LogNormalMuSigma.i
 %include LogNormalMuSigmaOverMu.i
 %include LogUniform.i
@@ -51,6 +53,7 @@
 %include MeixnerDistributionFactory.i
 %include MethodOfMomentsFactory.i
 %include Mixture.i
+%include MixedHistogramUserDefined.i
 %include TruncatedDistribution.i
 /* Must be after TruncatedDistribution */
 %include KernelSmoothing.i

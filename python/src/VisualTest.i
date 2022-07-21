@@ -6,7 +6,6 @@
 
 %include VisualTest_doc.i
 
-%nodefaultctor VisualTest;
-
 %include openturns/VisualTest.hxx
+
 

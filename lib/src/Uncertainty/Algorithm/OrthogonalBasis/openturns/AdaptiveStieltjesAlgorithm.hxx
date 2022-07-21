@@ -4,7 +4,7 @@
  *         the coefficients of the 3 terms recurrence relation of an
  *         orthonormal polynomial family
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,8 +27,6 @@
 
 #include "openturns/OrthonormalizationAlgorithmImplementation.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
-#include "openturns/Collection.hxx"
-#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,30 +41,28 @@ class OT_API AdaptiveStieltjesAlgorithm
 {
   CLASSNAME
 public:
-  typedef Collection<Coefficients>           CoefficientsCollection;
-  typedef PersistentCollection<Coefficients> CoefficientsPersistentCollection;
 
   /** Default constructor */
   AdaptiveStieltjesAlgorithm();
 
   /** Parameter constructor */
-  AdaptiveStieltjesAlgorithm(const Distribution & measure);
+  explicit AdaptiveStieltjesAlgorithm(const Distribution & measure);
 
   /** Virtual constructor */
-  virtual AdaptiveStieltjesAlgorithm * clone() const;
+  AdaptiveStieltjesAlgorithm * clone() const override;
 
   /** Calculate the coefficients of recurrence a0, a1, a2 such that
       Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
-  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
+  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
@@ -84,7 +80,7 @@ private:
       // Nothing to do
     };
 
-    // This method allows to compute <qN, qN>
+    // This method allows one to compute <qN, qN>
     Point kernelSym(const Point & point) const
     {
       const Scalar pdf = weight_.computePDF(point);
@@ -95,7 +91,7 @@ private:
       return result;
     };
 
-    // This method allows to compute <qN, qN> and <x.qN, qN>
+    // This method allows one to compute <qN, qN> and <x.qN, qN>
     Point kernelGen(const Point & point) const
     {
       const Scalar pdf = weight_.computePDF(point);
@@ -113,7 +109,7 @@ private:
   }; // struct DotProductWrapper
 
   /** Cache to store the recurrence coefficients */
-  mutable CoefficientsPersistentCollection monicRecurrenceCoefficients_;
+  mutable Sample monicRecurrenceCoefficients_;
 
   /** Cache to store the squared norm of the monic orthogonal polynomials */
   mutable Point monicSquaredNorms_;

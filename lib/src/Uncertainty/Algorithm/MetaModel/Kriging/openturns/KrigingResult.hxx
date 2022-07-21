@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a kriging estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,6 +51,7 @@ public:
   typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
+  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
 
   /** Default constructor */
   KrigingResult();
@@ -80,11 +81,11 @@ public:
                 const HMatrix & covarianceHMatrix);
 
   /** Virtual constructor */
-  virtual KrigingResult * clone() const;
+  KrigingResult * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Design accessors */
   virtual Sample getInputSample() const;
@@ -102,12 +103,8 @@ public:
   /** Process coefficients accessor */
   virtual Sample getCovarianceCoefficients() const;
 
-  /** Transformation accessor */
-  virtual Function getTransformation() const;
-  virtual void setTransformation(const Function & transformation);
-
   /** Compute mean of new points conditionnaly to observations */
-  virtual Point getConditionalMean(const Sample & xi) const;
+  virtual Sample getConditionalMean(const Sample & xi) const;
 
   /** Compute mean of new points conditionnaly to observations */
   virtual Point getConditionalMean(const Point & xi) const;
@@ -118,6 +115,26 @@ public:
   /** Compute covariance matrix conditionnaly to observations*/
   virtual CovarianceMatrix getConditionalCovariance(const Point & xi) const;
 
+  /** Compute covariance matrices conditionnaly to observations (1 cov / point)*/
+  virtual CovarianceMatrixCollection getConditionalMarginalCovariance(const Sample & xi) const;
+
+  /** Compute covariance matrix conditionnaly to observations (1 cov of size outdimension)*/
+  virtual CovarianceMatrix getConditionalMarginalCovariance(const Point & xi) const;
+
+  /** Compute marginal variance conditionnaly to observations (1 cov of size outdimension)*/
+  virtual Scalar getConditionalMarginalVariance(const Point & point,
+      const UnsignedInteger marginalIndex = 0) const;
+
+  /** Compute marginal variance conditionnaly to observations (1 cov / point)*/
+  virtual Sample getConditionalMarginalVariance(const Sample & xi,
+      const UnsignedInteger marginalIndex = 0) const;
+
+  virtual Point getConditionalMarginalVariance(const Point & point,
+      const Indices & indices) const;
+
+  virtual Sample getConditionalMarginalVariance(const Sample & xi,
+      const Indices & indices) const;
+
   /** Compute joint normal distribution conditionnaly to observations*/
   virtual Normal operator()(const Sample & xi) const;
 
@@ -125,36 +142,23 @@ public:
   virtual Normal operator()(const Point & xi) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
 
   /** Compute cross matrix method ==> not necessary square matrix  */
-  Matrix getCrossMatrix(const Sample & x) const;
   void computeF() const;
+  void computePhi() const;
 
 private:
 
-  // Structure for evaluation of crossCovariance
-  friend struct KrigingResultCrossCovarianceFunctor;
-
-  /** inputData should be keeped*/
+  /** input/output samples */
   Sample inputSample_;
-
-  /** input transformed data: store data*/
-  Sample inputTransformedSample_;
-
   Sample outputSample_;
-
-  /** inputTransformation ==> iso-probabilistic transformation */
-  Function inputTransformation_;
-
-  /** Boolean transformation */
-  Bool hasTransformation_;
 
   /** The trend basis */
   BasisPersistentCollection basis_;
@@ -167,9 +171,6 @@ private:
 
   /** The covariance coefficients */
   Sample covarianceCoefficients_;
-
-  /** Boolean for cholesky. The factor is not mandatory (see KrigingAlgorithm) */
-  Bool hasCholeskyFactor_;
 
   /** Cholesky factor  */
   mutable TriangularMatrix covarianceCholeskyFactor_;

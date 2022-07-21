@@ -1,12 +1,16 @@
 # norootforbuild
-%{?__python2: %global __python %{__python2}}
+%{?__python3: %global __python %{__python3}}
+%if 0%{?suse_version}
+%global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")
+%else
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
+%endif
 
 %define __cmake %{_bindir}/cmake
 %define _cmake_lib_suffix64 -DLIB_SUFFIX=64
 %define cmake \
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
-CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; \
+CXXFLAGS="${CXXFLAGS:-%optflags} -fno-lto" ; export CXXFLAGS ; \
 FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 %__cmake \\\
 -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \\\
@@ -16,7 +20,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.13rc1
+Version:        1.19
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -24,28 +28,38 @@ License:        LGPLv3+
 URL:            http://www.openturns.org
 Source0:        http://downloads.sourceforge.net/openturns/openturns/openturns-%{version}.tar.bz2
 Source1:        %{name}-rpmlintrc
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake, bison, flex, swig
-BuildRequires:  muParser-devel
 BuildRequires:  libxml2-devel
-BuildRequires:  boost-devel
-BuildRequires:  nlopt-devel
-%if 0%{?fedora_version}
-BuildRequires:  cminpack-devel
-BuildRequires:  ceres-solver-devel
+%if ! 0%{?centos_version}
+BuildRequires:  hdf5-devel
 %endif
-#BuildRequires:  hmat-oss-devel
+BuildRequires:  boost-devel
 %if 0%{?suse_version}
-BuildRequires:  lapack
+BuildRequires:  mpc-devel
+%else
+BuildRequires:  libmpc-devel
+%endif
+BuildRequires:  nlopt-devel
+BuildRequires:  tbb-devel
+%if 0%{?fedora_version} || 0%{?mageia}
+BuildRequires:  pagmo-devel
+%endif
+BuildRequires:  python3-devel
+BuildRequires:  hmat-oss-devel
+BuildRequires:  spectra-devel
+BuildRequires:  cminpack-devel
+%if 0%{?fedora_version}
+BuildRequires:  ceres-solver-devel
+BuildRequires:  coin-or-Ipopt-devel
+%if 0%{?fedora_version} >= 35
+BuildRequires:  coin-or-Bonmin-devel
+%endif
+BuildRequires:  dlib-devel, pkgconfig(x11), pkgconfig(libpng), pkgconfig(libjpeg), pkgconfig(sqlite3)
+BuildRequires:  flexiblas-devel
+BuildRequires:  primesieve-devel
 %else
 BuildRequires:  lapack-devel
 %endif
-%if 0%{?suse_version}
-BuildRequires:  gcc-fortran
-%else
-BuildRequires:  gcc-gfortran
-%endif
-BuildRequires:  python-devel
 
 %description
 OpenTURNS Uncertainty treatment library
@@ -53,22 +67,6 @@ OpenTURNS Uncertainty treatment library
 %package libs
 Summary:        Uncertainty treatment library
 Group:          Development/Libraries/C and C++
-%if ! 0%{?mageia}
-Requires:       muParser
-Requires:       lapack
-%else
-Requires:       lib64muparser2
-Requires:       liblapack
-%endif
-Requires:       libxml2
-%if ! 0%{?suse_version}
-Requires:       nlopt
-%endif
-%if 0%{?fedora_version}
-Requires:       cminpack
-Requires:       ceres-solver
-%endif
-#Requires:       libhmat-oss1
 
 %description libs
 Uncertainty treatment library binaries 
@@ -77,28 +75,22 @@ Uncertainty treatment library binaries
 Summary:        OpenTURNS development files
 Group:          Development/Libraries/C and C++
 Requires:       %{name}-libs = %{version}
-Requires:       libxml2-devel
-%if ! 0%{?suse_version}
-Requires:       lapack-devel
-%endif
+Requires:       hmat-oss-devel
 
 %description devel
 Development files for OpenTURNS uncertainty library
 
-%package examples
-Summary:        OpenTURNS examples
-Group:          Productivity/Scientific/Math
-
-%description examples
-OpenTURNS python examples
-
-%package -n python-%{name}
+%package -n python3-%{name}
 Summary:        Uncertainty treatment library
 Group:          Productivity/Scientific/Math
-Requires:       python
+Requires:       python3
 Requires:       %{name}-libs = %{version}
+%if ! 0%{?centos_version}
+Requires:       python3-dill
+Requires:       python3-psutil
+%endif
 
-%description -n python-%{name}
+%description -n python3-%{name}
 Python textual interface to OpenTURNS uncertainty library
 
 %prep
@@ -107,24 +99,18 @@ Python textual interface to OpenTURNS uncertainty library
 %build
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
-       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j16" \
-       -DPYTHON_EXECUTABLE=%{__python} \
+       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
        -DSWIG_COMPILE_FLAGS="-O1" \
        -DOPENTURNS_SYSCONFIG_PATH=/etc .
 make %{?_smp_mflags} OT
 make
 
 %install
-rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 rm -r %{buildroot}%{_datadir}/%{name}/doc
 
 %check
-make tests %{?_smp_mflags}
-LD_LIBRARY_PATH=%{buildroot}%{_libdir} ctest --output-on-failure %{?_smp_mflags}
-
-%clean
-rm -rf %{buildroot}
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=2 ctest --output-on-failure %{?_smp_mflags} -E cppcheck --timeout 1000 --schedule-random
 
 %post libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
@@ -136,7 +122,7 @@ rm -rf %{buildroot}
 %config %{_sysconfdir}/%{name}/%{name}.conf
 %{_libdir}/*.so.*
 %dir %{_datadir}/%{name}
-%{_datadir}/gdb/auto-load%{_libdir}/libOT*-gdb.py*
+%{_datadir}/gdb/
 
 %files devel
 %defattr(-,root,root,-)
@@ -146,16 +132,30 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/cmake/
 
-%files examples
-%defattr(-,root,root,-)
-%{_datadir}/%{name}/examples/
-
-%files -n python-%{name}
+%files -n python3-%{name}
 %defattr(-,root,root,-)
 %{python_sitearch}/%{name}/
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Tue Apr 12 2022 Julien Schueller <schueller at phimeca dot com> 1.19-1
+- New upstream release
+
+* Fri Oct 15 2021 Julien Schueller <schueller at phimeca dot com> 1.18-1
+- New upstream release
+
+* Mon Apr 19 2021 Julien Schueller <schueller at phimeca dot com> 1.17-1
+- New upstream release
+
+* Mon Oct 19 2020 Julien Schueller <schueller at phimeca dot com> 1.16-1
+- New upstream release
+
+* Mon Apr 6 2020 Julien Schueller <schueller at phimeca dot com> 1.15-1
+- New upstream release
+
+* Tue Nov 12 2019 Julien Schueller <schueller at phimeca dot com> 1.14-1
+- New upstream release
+
 * Tue Apr 23 2019 Julien Schueller <schueller at phimeca dot com> 1.13-1
 - New upstream release
 
@@ -165,7 +165,7 @@ rm -rf %{buildroot}
 * Mon Apr 9 2018 Julien Schueller <schueller at phimeca dot com> 1.11-1
 - New upstream release
 
-* Mon Oct 11 2017 Julien Schueller <schueller at phimeca dot com> 1.10-1
+* Wed Oct 11 2017 Julien Schueller <schueller at phimeca dot com> 1.10-1
 - New upstream release
 
 * Mon Apr 3 2017 Julien Schueller <schueller at phimeca dot com> 1.9-1

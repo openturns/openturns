@@ -14,7 +14,9 @@ Its probability density function is defined as:
 
     f_U(u) = \prod\limits_{k=2}^d \frac{\exp\left(-\int_{\partial_{k-1}^{-1}(u_{k-1})}^{\partial_k^{-1}(u_k)} \phi_k(s)\di{s}\right)}{\partial_{k-1}(\partial_k^{-1}(u_k))-u_k} \mathbf{1}_{F_1^{-1}(u_1) \leq \dots \leq F_d^{-1}(u_d)}
 
-             \text{with } \partial_k(t) = F_k(G^{-1}(t)) \text{ and } G(t) = \frac{1}{t} \sum\limits_{k=1}^d F_k(t)
+    \text{with } \partial_k(t) = F_k(G^{-1}(t)) \text{ and } G(t) = \frac{1}{t} \sum\limits_{k=1}^d F_k(t)
+
+This class is implemented as a :class:`~openturns.SklarCopula` of the underlying :class:`~openturns.MaximumEntropyOrderStatisticsDistribution`. See the documentation of these classes for the numerical details.
 
 Examples
 --------

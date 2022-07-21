@@ -15,7 +15,7 @@
 #  TBB_ROOT_DIR - root dir (ex. /usr/local)
 
 #=============================================================================
-# Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+# Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.
@@ -27,20 +27,17 @@
 # (To distributed this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-# set TBB_INCLUDE_DIR
-find_path (TBB_INCLUDE_DIR
-  NAMES
-    tbb/tbb.h
-  DOC
-    "TBB include directory"
-)
+find_path (TBB_INCLUDE_DIR NAMES tbb/tbb.h DOC "TBB include directory")
 
-# set TBB_INCLUDE_DIRS
 set (TBB_INCLUDE_DIRS ${TBB_INCLUDE_DIR})
 
 # version
-set (_VERSION_FILE ${TBB_INCLUDE_DIR}/tbb/tbb_stddef.h)
-if (EXISTS ${_VERSION_FILE})
+if (EXISTS ${TBB_INCLUDE_DIR}/oneapi/tbb/version.h)
+  set (_VERSION_FILE ${TBB_INCLUDE_DIR}/oneapi/tbb/version.h)
+elseif (EXISTS ${TBB_INCLUDE_DIR}/tbb/tbb_stddef.h)
+  set (_VERSION_FILE ${TBB_INCLUDE_DIR}/tbb/tbb_stddef.h)
+endif ()
+if (DEFINED _VERSION_FILE)
   file (STRINGS ${_VERSION_FILE} _VERSION_MAJOR_STRING REGEX ".*define[ ]+TBB_VERSION_MAJOR[ ]+[0-9]+.*")
   file (STRINGS ${_VERSION_FILE} _VERSION_MINOR_STRING REGEX ".*define[ ]+TBB_VERSION_MINOR[ ]+[0-9]+.*")
   if (_VERSION_MAJOR_STRING AND _VERSION_MINOR_STRING)
@@ -70,15 +67,8 @@ if (TBB_FIND_VERSION AND TBB_VERSION_STRING)
 endif ()
 
 
-# set TBB_LIBRARY
-find_library (TBB_LIBRARY
-  NAMES
-    tbb
-  DOC
-    "TBB library location"
-)
+find_library (TBB_LIBRARY NAMES tbb DOC "TBB library location")
 
-# set TBB_LIBRARIES
 set (TBB_LIBRARIES ${TBB_LIBRARY})
 
 # root dir

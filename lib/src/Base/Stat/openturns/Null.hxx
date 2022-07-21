@@ -4,7 +4,7 @@
  *  simulation algorithms. It delegates to its children the effective
  *  history strategy.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,14 +47,14 @@ public:
   Null();
 
   /** Virtual constructor */
-  virtual Null * clone() const;
+  Null * clone() const override;
 
   /** Store the point according to the strategy */
-  void store(const Point & point);
-  void store(const Sample & sample);
+  void store(const Point & point) override;
+  void store(const Sample & sample) override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 protected:
 

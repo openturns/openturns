@@ -2,7 +2,7 @@
 /**
  *  @brief ODE solver base class
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,7 +42,7 @@ ODESolverImplementation::ODESolverImplementation(const Function & transitionFunc
   , transitionFunction_(transitionFunction)
 {
   if (transitionFunction.getParameter().getDimension() != 1)
-    throw InvalidArgumentException(HERE) << "The function must have one parameter";
+    throw InvalidArgumentException(HERE) << "The function must have one parameter, but has " << transitionFunction.getParameter().getDimension() << " parameters.";
 }
 
 /* Virtual constructor */

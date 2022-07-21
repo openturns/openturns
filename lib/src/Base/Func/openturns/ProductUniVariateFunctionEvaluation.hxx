@@ -2,7 +2,7 @@
 /**
  *  @brief This is a nD function build as a product of n 1D function
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,31 +48,30 @@ public:
   typedef PersistentCollection<UniVariateFunction> UniVariateFunctionPersistentCollection;
 
   /** Constructor */
-  ProductUniVariateFunctionEvaluation(const UniVariateFunctionCollection & coll);
+  explicit ProductUniVariateFunctionEvaluation(const UniVariateFunctionCollection & coll);
 
   /** Virtual constructor */
-  virtual ProductUniVariateFunctionEvaluation * clone() const;
+  ProductUniVariateFunctionEvaluation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
-  virtual Point operator() (const Point & inP) const;
-  virtual Sample operator() (const Sample & inS) const;
+  Point operator() (const Point & inP) const override;
+  Sample operator() (const Sample & inS) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
-
+  void load(Advocate & adv) override;
 
 
 protected:

@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Func
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,6 +57,7 @@
 #include "openturns/PointToFieldFunction.hxx"
 #include "openturns/PointToFieldFunctionImplementation.hxx"
 #include "openturns/ParametricPointToFieldFunction.hxx"
+#include "openturns/VertexValuePointToFieldFunction.hxx"
 #include "openturns/PointToPointEvaluation.hxx"
 #include "openturns/FieldToFieldConnection.hxx"
 #include "openturns/FieldToPointConnection.hxx"
@@ -70,6 +71,7 @@
 #include "openturns/NormInfEnumerateFunction.hxx"
 #include "openturns/ExpertMixture.hxx"
 #include "openturns/IndicatorEvaluation.hxx"
+#include "openturns/DistanceToDomainEvaluation.hxx"
 #include "openturns/LARS.hxx"
 #include "openturns/LinearCombinationEvaluation.hxx"
 #include "openturns/LinearCombinationGradient.hxx"
@@ -81,6 +83,7 @@
 #include "openturns/TranslationEvaluation.hxx"
 #include "openturns/TranslationFunction.hxx"
 #include "openturns/IndicatorFunction.hxx"
+#include "openturns/DistanceToDomainFunction.hxx"
 #include "openturns/QuadraticFunction.hxx"
 #include "openturns/LinearGradient.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
@@ -148,5 +151,9 @@
 #include "openturns/EvaluationProxy.hxx"
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/MemoizeFunction.hxx"
+#include "openturns/NullHessian.hxx"
+#include "openturns/MarginalEvaluation.hxx"
+#include "openturns/MarginalGradient.hxx"
+#include "openturns/MarginalHessian.hxx"
 
 #endif /* OPENTURNS_OTFUNC_HXX */

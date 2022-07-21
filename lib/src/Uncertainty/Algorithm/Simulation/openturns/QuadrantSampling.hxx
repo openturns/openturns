@@ -2,7 +2,7 @@
 /**
  *  @brief Sampling in standard space quadrants
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,10 +44,10 @@ public:
                             const Point & quadrantOrientation = Point());
 
   /** Virtual constructor */
-  virtual QuadrantSampling * clone() const;
+  QuadrantSampling * clone() const override;
 
   /** Generate a set of directions */
-  virtual Sample generate() const;
+  Sample generate() const override;
 
   /** Quadrant index accessor */
   void setQuadrantIndex(const UnsignedInteger quadrantIndex);
@@ -62,7 +62,7 @@ public:
   Indices getStrataIndices() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 protected:
   /** Update rotation parameters */

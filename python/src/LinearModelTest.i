@@ -6,6 +6,4 @@
 
 %include LinearModelTest_doc.i
 
-%nodefaultctor LinearModelTest;
-
 %include openturns/LinearModelTest.hxx

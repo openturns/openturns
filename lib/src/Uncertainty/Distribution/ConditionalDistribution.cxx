@@ -2,7 +2,7 @@
 /**
  *  @brief The ConditionalDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,11 @@
 #include "openturns/Dirac.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/Box.hxx"
+#include "openturns/WeightedExperiment.hxx"
 #include "openturns/GaussProductExperiment.hxx"
+#include "openturns/LowDiscrepancyExperiment.hxx"
+#include "openturns/MonteCarloExperiment.hxx"
+#include "openturns/SobolSequence.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/SymbolicFunction.hxx"
@@ -274,11 +278,20 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
   if (continuousDimension > 0)
   {
     const ComposedDistribution measure(Collection< Distribution >(continuousDimension, Uniform()));
-    const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MaximumIntegrationNodesNumber" ), 1.0 / continuousDimension)));
+    // Create the DOE for continuous integration
+    const String method(ResourceMap::GetAsString("ConditionalDistribution-ContinuousDiscretizationMethod"));
+    const UnsignedInteger maximumIntegrationNumber = ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MaximumIntegrationNodesNumber" );
+    // All these quantities are needed for the upper class allgorithms even if locally they are only useful for GaussProduct
+    const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(maximumIntegrationNumber, 1.0 / continuousDimension)));
     const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MarginalIntegrationNodesNumber" );
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of integration nodes=" << std::pow(candidateNumber, 1.0 * continuousDimension) << ". It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"ConditionalDistribution-MaximumIntegrationNodesNumber\" or decrease the ResourceMap key \"ConditionalDistribution-MarginalIntegrationNodesNumber\"");
-
-    GaussProductExperiment experiment(measure, Indices(continuousDimension, std::min(maximumNumber, candidateNumber)));
+    WeightedExperiment experiment;
+    if (method == "GaussProduct")
+      experiment = GaussProductExperiment(measure, Indices(continuousDimension, std::min(maximumNumber, candidateNumber)));
+    else if (method == "QMC")
+      experiment = LowDiscrepancyExperiment(SobolSequence(), measure, maximumIntegrationNumber);
+    else
+      experiment = MonteCarloExperiment(measure, maximumIntegrationNumber);
     continuousNodes_ = experiment.generateWithWeights(continuousWeights_);
     // Also adapt the integration nodes number in the upper class
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
@@ -319,7 +332,11 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
   {
     Collection< Distribution > atoms(1, conditionedDistribution);
     atoms[0].setParameter(diracValues_);
+    // Hide warnings
+    Log::Severity oldSeverity = Log::Flags();
+    Log::Show(oldSeverity & ~Log::WARN);
     setDistributionCollection(atoms);
+    Log::Show(oldSeverity & ~Log::WARN);
     return;
   }
   // First case: only Dirac and stochastic discrete marginals with at least one stochastic discrete marginal
@@ -352,7 +369,11 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       ++atomIndex;
     } // Discrete measure
     // Now, update the underlying Mixture
+    // Hide warnings
+    Log::Severity oldSeverity = Log::Flags();
+    Log::Show(oldSeverity & ~Log::WARN);
     setDistributionCollection(atoms);
+    Log::Show(oldSeverity & ~Log::WARN);
     return;
   } // No continuous marginal
   // Second case: only Dirac and continuous marginals with at least one continuous marginal
@@ -386,7 +407,11 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       ++atomIndex;
     } // Continuous measure
     // Now, update the underlying Mixture
+    // Hide warnings
+    Log::Severity oldSeverity = Log::Flags();
+    Log::Show(oldSeverity & ~Log::WARN);
     setDistributionCollection(atoms);
+    Log::Show(oldSeverity & ~Log::WARN);
     return;
   } // No discrete marginal
   // Third case: Dirac, stochastic discrete and continuous marginal distributions with at least one stochastic discrete marginal and one continuous marginal
@@ -426,7 +451,11 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
     ++atomIndex;
   }
   // Now, update the underlying Mixture
+  // Hide warnings
+  Log::Severity oldSeverity = Log::Flags();
+  Log::Show(oldSeverity & ~Log::WARN);
   setDistributionCollection(atoms);
+  Log::Show(oldSeverity & ~Log::WARN);
 }
 
 /* Compute the expectation of f(\theta)1_{\theta\leq \theta^*} with respect to the prior distribution of \theta */
@@ -555,7 +584,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
   {
     Point currentTheta(theta);
     // Get the discrete values
-    Bool rejectNode;
+    Bool rejectNode = false;
     for (UnsignedInteger j = 0; j < discreteDimension; ++j)
     {
       const Scalar value = discreteNodes_(i, j);

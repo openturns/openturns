@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for archimedean copulas
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,8 +31,9 @@ CLASSNAMEINIT(ArchimedeanCopula)
 
 /* Default constructor */
 ArchimedeanCopula::ArchimedeanCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
 {
+  isCopula_ = true;
   setDimension(2);
 }
 
@@ -45,15 +46,7 @@ ArchimedeanCopula * ArchimedeanCopula::clone() const
 /* Comparison operator */
 Bool ArchimedeanCopula::operator ==(const ArchimedeanCopula & other) const
 {
-  Bool sameObject = false;
-
-  if (this != &other)   // Other is NOT me, so I have to realize the comparison
-  {
-    // sameObject = ...
-  }
-  else sameObject = true;
-
-  return sameObject;
+  return (this == &other);
 }
 
 /* String converter */
@@ -94,7 +87,7 @@ Scalar ArchimedeanCopula::computeProbability(const Interval & interval) const
 {
   Interval intersect(interval.intersect(Interval(2)));
   // Empty interval
-  if (intersect.isNumericallyEmpty()) return 0.0;
+  if (intersect.isEmpty()) return 0.0;
   Point lowerBound(intersect.getLowerBound());
   Point upperBound(intersect.getUpperBound());
   Scalar uuCDF = computeCDF(upperBound);

@@ -2,7 +2,7 @@
 /**
  *  @brief TNC is an actual implementation for OptimizationAlgorithmImplementation using the TNC library
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,6 +19,7 @@
  *
  */
 #include <cmath> // For HUGE_VAL
+#include <cstring> // std::memset
 
 #include "openturns/TNC.hxx"
 #include "algotnc.h"
@@ -27,6 +28,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,6 +49,7 @@ TNC::TNC()
   , fmin_(ResourceMap::GetAsScalar("TNC-DefaultFmin"))
   , rescale_(ResourceMap::GetAsScalar("TNC-DefaultRescale"))
   , p_nfeval_(0)
+  , ignoreFailure_(false)
 {
   // Nothing to do
 }
@@ -61,6 +64,7 @@ TNC::TNC(const OptimizationProblem & problem)
   , fmin_(ResourceMap::GetAsScalar("TNC-DefaultFmin"))
   , rescale_(ResourceMap::GetAsScalar("TNC-DefaultRescale"))
   , p_nfeval_(0)
+  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -85,6 +89,7 @@ TNC::TNC (const OptimizationProblem & problem,
   , fmin_(fmin)
   , rescale_(rescale)
   , p_nfeval_(0)
+  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -102,6 +107,9 @@ void TNC::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
   if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " does not support constraints";
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support non continuous problems";
+
 }
 
 /* Performs the actual computation by calling the TNC algorithm */
@@ -112,6 +120,8 @@ void TNC::run()
   Point x(getStartingPoint());
   if (x.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
+  if (dimension == 0)
+    throw InvalidArgumentException(HERE) << "Dimension of the problem is zero";
 
   Interval bounds(getProblem().getBounds());
   if (!getProblem().hasBounds())
@@ -144,6 +154,7 @@ void TNC::run()
   // clear history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  result_ = OptimizationResult(getProblem());
 
   Scalar f = -1.0;
 
@@ -202,13 +213,19 @@ void TNC::run()
    *
    */
 
-  int returnCode = tnc((int)dimension, &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
+  int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
+
+  if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
+  {
+    if (ignoreFailure_)
+      LOGWARN(OSS() << "Warning! TNC algorithm failed. The error message is " << tnc_rc_string[returnCode - TNC_MINRC]);
+    else
+      throw InternalException(HERE) << "Solving problem by TNC method failed (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
+  }
   p_nfeval_ = 0;
 
-  result_ = OptimizationResult(dimension);
-  result_.setProblem(getProblem());
-
   // Update the result
+  result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = evaluationInputHistory_.getSize();
 
   Scalar absoluteError = -1.0;
@@ -248,19 +265,6 @@ void TNC::run()
   result_.setOptimalPoint(x);
   const Scalar sign = getProblem().isMinimization() ? 1.0 : -1.0;
   result_.setOptimalValue(Point(1, sign * f));
-  result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
-
-  // check the convergence criteria
-  const Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
-
-  if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED))
-  {
-    LOGWARN(OSS() << "Warning! TNC algorithm failed to converge. The error message is " << tnc_rc_string[returnCode - TNC_MINRC]);
-  }
-  else if ( ! convergence )
-  {
-    LOGWARN(OSS() << "Warning! The TNC algorithm could not enforce the convergence criteria");
-  }
 }
 
 /* Scale accessor */
@@ -410,26 +414,45 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   std::copy(x, x + dimension, inP.begin());
   const OptimizationProblem problem(algorithm->getProblem());
 
-  /* Evaluate the objective function at inP */
-  const Point outP(problem.getObjective().operator()(inP));
-  *f = problem.isMinimization() ? outP[0] : -outP[0];
-
-  Point objectiveGradient;
+  // Evaluate the objective function
+  Point outP;
   try
   {
+    for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
+      if (!SpecFunc::IsNormal(inP[i]))
+        throw InvalidArgumentException(HERE) << "TNC got a nan input value";
+
+    outP = problem.getObjective().operator()(inP);
+
+    if (!SpecFunc::IsNormal(outP[0]))
+      throw InvalidArgumentException(HERE) << "TNC got a nan output value";
+
+    *f = problem.isMinimization() ? outP[0] : -outP[0];
+
     // Here we take the sign into account and convert the result into a Point in one shot
     const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
-      /* Convert the gradient into the output format */
-    std::copy(&gradient(0, 0), &gradient(0, 0) + dimension, g);
+    /* Convert the gradient into the output format */
+    std::copy(gradient.data(), gradient.data() + dimension, g);
   }
   catch (...)
   {
+    LOGWARN(OSS() << "TNC went to an abnormal point=" << inP.__str__());
+
+    // penalize it
+    *f = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+    std::memset(g, 0, dimension);
+
+    // exit gracefully
     return 1;
   }
 
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inP);
   algorithm->evaluationOutputHistory_.add(outP);
+
+  // update result
+  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
   // callbacks
   if (algorithm->progressCallback_.first)
@@ -448,6 +471,16 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
       throw InternalException(HERE) << "Null p_nfeval";
   }
   return 0;
+}
+
+void TNC::setIgnoreFailure(const Bool ignoreFailure)
+{
+  ignoreFailure_ = ignoreFailure;
+}
+
+Bool TNC::getIgnoreFailure() const
+{
+  return ignoreFailure_;
 }
 
 END_NAMESPACE_OPENTURNS

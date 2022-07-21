@@ -2,7 +2,7 @@
 /**
  *  @brief LevelSet is defined as the set of points such that f(x_1,...,x_n) <= level
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,13 +50,13 @@ public:
                     const Scalar level = 0.0);
 
   /** Virtual constructor method */
-  virtual LevelSet * clone() const;
+  LevelSet * clone() const override;
 
   /** Check if the given point is inside of the closed levelSet */
-  Bool contains(const Point & point) const;
+  Bool contains(const Point & point) const override;
 
   /** Check if the given points are inside of the closed levelSet */
-  BoolCollection contains(const Sample & sample) const;
+  BoolCollection contains(const Sample & sample) const override;
   using DomainImplementation::contains;
 
   /** Returns the levelSet equals to the intersection between the levelSet and another one */
@@ -72,6 +72,10 @@ public:
   Function getFunction() const;
   void setFunction(const Function & function);
 
+  /** Operator accessor */
+  ComparisonOperator getOperator() const;
+  void setOperator(const ComparisonOperator & op);
+
   /** Level accessor */
   Scalar getLevel() const;
   void setLevel(const Scalar level);
@@ -85,14 +89,14 @@ public:
   Point getUpperBound() const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

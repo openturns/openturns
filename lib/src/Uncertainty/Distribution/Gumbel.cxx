@@ -2,7 +2,7 @@
 /**
  *  @brief The Gumbel distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,8 +34,8 @@ static const Factory<Gumbel> Factory_Gumbel;
 /* Default constructor */
 Gumbel::Gumbel()
   : ContinuousDistribution()
-  , alpha_(1.0)
-  , beta_(0.0)
+  , beta_(1.0)
+  , gamma_(0.0)
 {
   setName( "Gumbel" );
   setDimension( 1 );
@@ -43,14 +43,14 @@ Gumbel::Gumbel()
 }
 
 /* Parameters constructor */
-Gumbel::Gumbel(const Scalar alpha,
-               const Scalar beta)
+Gumbel::Gumbel(const Scalar beta,
+               const Scalar gamma)
   : ContinuousDistribution()
-  , alpha_(0.0)
-  , beta_(beta)
+  , beta_(0.0)
+  , gamma_(gamma)
 {
   setName("Gumbel");
-  setAlpha(alpha);
+  setBeta(beta);
   setDimension( 1 );
 }
 
@@ -58,7 +58,7 @@ Gumbel::Gumbel(const Scalar alpha,
 Bool Gumbel::operator ==(const Gumbel & other) const
 {
   if (this == &other) return true;
-  return (alpha_ == other.alpha_) && (beta_ == other.beta_);
+  return (beta_ == other.beta_) && (gamma_ == other.gamma_);
 }
 
 Bool Gumbel::equals(const DistributionImplementation & other) const
@@ -74,15 +74,15 @@ String Gumbel::__repr__() const
   oss << "class=" << Gumbel::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " alpha=" << alpha_
-      << " beta=" << beta_;
+      << " beta=" << beta_
+      << " gamma=" << gamma_;
   return oss;
 }
 
 String Gumbel::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ")";
+  oss << getClassName() << "(beta = " << beta_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 
@@ -95,7 +95,7 @@ Gumbel * Gumbel::clone() const
 /* Get one realization of the distribution */
 Point Gumbel::getRealization() const
 {
-  return Point(1, beta_ - std::log(-std::log(RandomGenerator::Generate())) / alpha_);
+  return Point(1, gamma_ - beta_ * std::log(-std::log(RandomGenerator::Generate())));
 }
 
 
@@ -105,8 +105,8 @@ Point Gumbel::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar expX = std::exp(-alpha_ * (point[0] - beta_));
-  return Point(1, alpha_ * alpha_ * (expX - 1.0) * expX * std::exp(-expX));
+  const Scalar expX = std::exp(-(1.0 / beta_) * (point[0] - gamma_));
+  return Point(1, (1.0 / beta_) * (1.0 / beta_) * (expX - 1.0) * expX * std::exp(-expX));
 }
 
 
@@ -115,16 +115,26 @@ Scalar Gumbel::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar expX = std::exp(-alpha_ * (point[0] - beta_));
-  return alpha_ * expX * std::exp(-expX);
+  return computePDF(point[0]);
+}
+
+Scalar Gumbel::computePDF(const Scalar u) const
+{
+  const Scalar expX = std::exp(-(1.0 / beta_) * (u - gamma_));
+  return (1.0 / beta_) * expX * std::exp(-expX);
 }
 
 Scalar Gumbel::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar X = -alpha_ * (point[0] - beta_);
-  return std::log(alpha_) + X - std::exp(X);
+  return computeLogPDF(point[0]);
+}
+
+Scalar Gumbel::computeLogPDF(const Scalar u) const
+{
+  const Scalar X = -(1.0 / beta_) * (u - gamma_);
+  return std::log((1.0 / beta_)) + X - std::exp(X);
 }
 
 
@@ -133,7 +143,12 @@ Scalar Gumbel::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = -alpha_ * (point[0] - beta_);
+  return computeCDF(point[0]);
+}
+
+Scalar Gumbel::computeCDF(const Scalar u) const
+{
+  const Scalar x = -(1.0 / beta_) * (u - gamma_);
   const Scalar expX = std::exp(x);
   return std::exp(-expX);
 }
@@ -142,7 +157,12 @@ Scalar Gumbel::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = -alpha_ * (point[0] - beta_);
+  return computeComplementaryCDF(point[0]);
+}
+
+Scalar Gumbel::computeComplementaryCDF(const Scalar u) const
+{
+  const Scalar x = -(1.0 / beta_) * (u - gamma_);
   const Scalar expX = std::exp(x);
   // -2.419227917539996841 = numerical bound for which the approximation has a relative error less than 1e-16
   if (x < -2.419227917539996841)
@@ -162,18 +182,18 @@ Scalar Gumbel::computeComplementaryCDF(const Point & point) const
 /* Compute the entropy of the distribution */
 Scalar Gumbel::computeEntropy() const
 {
-  return -std::log(alpha_) + SpecFunc::EulerConstant + 1.0;
+  return -std::log((1.0 / beta_)) + SpecFunc::EulerConstant + 1.0;
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Gumbel::computeCharacteristicFunction(const Scalar x) const
 {
-  return SpecFunc::Gamma(Complex(1.0, -x / alpha_)) * std::exp(Complex(0.0, beta_ * x));
+  return SpecFunc::Gamma(Complex(1.0, -x / (1.0 / beta_))) * std::exp(Complex(0.0, gamma_ * x));
 }
 
 Complex Gumbel::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return std::log(SpecFunc::Gamma(Complex(1.0, -x / alpha_))) + Complex(0.0, beta_ * x);
+  return std::log(SpecFunc::Gamma(Complex(1.0, -x / (1.0 / beta_)))) + Complex(0.0, gamma_ * x);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -181,12 +201,12 @@ Point Gumbel::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0] - beta_;
-  const Scalar expX = std::exp(-alpha_ * x);
-  const Scalar pdf = alpha_ * expX * std::exp(-expX);
+  const Scalar x = point[0] - gamma_;
+  const Scalar expX = std::exp(-x / beta_);
+  const Scalar pdf = (1.0 / beta_) * expX * std::exp(-expX);
   Point pdfGradient(2);
-  pdfGradient[0] = (1.0 / alpha_ - x * (1.0 - expX)) * pdf;
-  pdfGradient[1] = alpha_ * (1.0 - expX) * pdf;
+  pdfGradient[0] = (x * (1.0 - expX) - beta_) * std::exp((-beta_ * expX - x) / beta_) / (beta_ * beta_ * beta_);
+  pdfGradient[1] = (1.0 / beta_) * (1.0 - expX) * pdf;
   return pdfGradient;
 }
 
@@ -195,12 +215,12 @@ Point Gumbel::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0] - beta_;
-  const Scalar expX = std::exp(-alpha_ * x);
+  const Scalar x = point[0] - gamma_;
+  const Scalar expX = std::exp(-x / beta_);
   const Scalar cdf = std::exp(-expX);
   Point cdfGradient(2);
-  cdfGradient[0] = x * expX * cdf;
-  cdfGradient[1] = -alpha_ * expX * cdf;
+  cdfGradient[0] = -x * expX * std::exp(-expX) / (beta_ * beta_);
+  cdfGradient[1] = -(1.0 / beta_) * expX * cdf;
   return cdfGradient;
 }
 
@@ -208,21 +228,21 @@ Point Gumbel::computeCDFGradient(const Point & point) const
 Scalar Gumbel::computeScalarQuantile(const Scalar prob,
                                      const Bool tail) const
 {
-  if (tail) return beta_ - std::log(-log1p(-prob)) / alpha_;
-  return beta_ - std::log(-std::log(prob)) / alpha_;
+  if (tail) return gamma_ - std::log(-log1p(-prob)) / (1.0 / beta_);
+  return gamma_ - std::log(-std::log(prob)) / (1.0 / beta_);
 }
 
 /* Compute the mean of the distribution */
 void Gumbel::computeMean() const
 {
-  mean_ = Point(1, beta_ + SpecFunc::EulerConstant / alpha_);
+  mean_ = Point(1, gamma_ + SpecFunc::EulerConstant / (1.0 / beta_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 Point Gumbel::getStandardDeviation() const
 {
-  return Point(1, SpecFunc::PI_SQRT6 / alpha_);
+  return Point(1, SpecFunc::PI_SQRT6 / (1.0 / beta_));
 }
 
 /* Get the skewness of the distribution */
@@ -249,17 +269,14 @@ Distribution Gumbel::getStandardRepresentative() const
 void Gumbel::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = SpecFunc::PI2_6 / (alpha_ * alpha_);
+  covariance_(0, 0) = SpecFunc::PI2_6 / ((1.0 / beta_) * (1.0 / beta_));
   isAlreadyComputedCovariance_ = true;
 }
 
 /* Parameters value accessor */
 Point Gumbel::getParameter() const
 {
-  Point point(2);
-  point[0] = alpha_;
-  point[1] = beta_;
-  return point;
+  return {beta_, gamma_};
 }
 
 void Gumbel::setParameter(const Point & parameter)
@@ -273,39 +290,18 @@ void Gumbel::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Gumbel::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "alpha";
-  description[1] = "beta";
-  return description;
+  return {"beta", "gamma"};
 }
-
-/* Alpha accessor */
-void Gumbel::setAlpha(const Scalar alpha)
-{
-  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
-  if (alpha != alpha_)
-  {
-    alpha_ = alpha;
-    isAlreadyComputedMean_ = false;
-    isAlreadyComputedCovariance_ = false;
-    computeRange();
-  }
-}
-
-Scalar Gumbel::getAlpha() const
-{
-  return alpha_;
-}
-
 
 /* M accessor */
 void Gumbel::setBeta(const Scalar beta)
 {
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
   if (beta != beta_)
   {
     beta_ = beta;
     isAlreadyComputedMean_ = false;
-    // The covariance does not depend on beta
+    isAlreadyComputedCovariance_ = false;
     computeRange();
   }
 }
@@ -315,20 +311,49 @@ Scalar Gumbel::getBeta() const
   return beta_;
 }
 
+void Gumbel::setGamma(const Scalar gamma)
+{
+  if (gamma != gamma_)
+  {
+    gamma_ = gamma;
+    isAlreadyComputedMean_ = false;
+    // The covariance does not depend on gamma
+    computeRange();
+  }
+}
+
+Scalar Gumbel::getGamma() const
+{
+  return gamma_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void Gumbel::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "beta_", beta_ );
+  adv.saveAttribute( "gamma_", gamma_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Gumbel::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "alpha_", alpha_ );
-  adv.loadAttribute( "beta_", beta_ );
+  if (adv.hasAttribute("alpha_"))
+  {
+    LOGINFO("in Gumbel::load, using old parametrization");
+    Scalar alpha = 0.0;
+    Scalar beta = 0.0;
+    adv.loadAttribute( "alpha_", alpha );
+    adv.loadAttribute( "beta_", beta );
+    beta_ = 1.0 / alpha;
+    gamma_ = beta;
+  }
+  else
+  {
+    adv.loadAttribute( "beta_", beta_ );
+    adv.loadAttribute( "gamma_", gamma_ );
+  }
   computeRange();
 }
 

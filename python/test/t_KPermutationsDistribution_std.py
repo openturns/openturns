@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
+    # Instantiate one distribution object
     distribution = KPermutationsDistribution(5, 12)
     print("Distribution ", distribution)
 
@@ -33,7 +32,7 @@ try:
 
     # Show PDF and CDF of point
     LPDF = distribution.computeLogPDF(point)
-    print("log pdf=", LPDF)
+    print("log pdf=%.5e" % LPDF)
     PDF = distribution.computePDF(point)
     print("pdf     =", PDF)
     CDF = distribution.computeCDF(point)

@@ -2,7 +2,7 @@
 /**
  *  @brief LogNormal distribution with mu and sigma as parameters
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -96,7 +96,7 @@ Matrix LogNormalMuSigma::gradient() const
   const Scalar dmulogdsigma = -sigmalog * dsigmalogdsigma;
   const Scalar dmulogdgamma = -dmulogdmu;
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(3));
+  Matrix nativeParametersGradient(IdentityMatrix(3));
   nativeParametersGradient(0, 0) = dmulogdmu;
   nativeParametersGradient(1, 0) = dmulogdsigma;
   nativeParametersGradient(2, 0) = dmulogdgamma;

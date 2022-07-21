@@ -3,7 +3,7 @@
  *  @brief Wilks is a generic view of Wilks methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,8 +23,11 @@
 #include "openturns/Wilks.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/DistFunc.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,6 +48,47 @@ Wilks::Wilks(const RandomVector & vector)
   vector_ = vector;
 }
 
+namespace
+{
+class WilksEvaluation: public EvaluationImplementation
+{
+public:
+  WilksEvaluation(const Scalar quantileLevel,
+                  const UnsignedInteger marginIndex)
+    : EvaluationImplementation()
+    , quantileLevel_(quantileLevel)
+    , marginIndex_(marginIndex)
+  {
+    // Nothing to do
+  }
+
+  WilksEvaluation * clone() const
+  {
+    return new WilksEvaluation(*this);
+  }
+
+  Point operator() (const Point & point) const
+  {
+    if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension 1, got dimension=" << point.getDimension();
+    return Point(1, DistFunc::pBeta(marginIndex_ + 1, point[0] - marginIndex_, 1.0 - quantileLevel_));
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return 1;
+  }
+
+private:
+  const Scalar quantileLevel_;
+  const UnsignedInteger marginIndex_;
+}; // class WilksEvaluation
+}; // Anonymous namespace
+
 /* Sample size computation */
 UnsignedInteger Wilks::ComputeSampleSize(const Scalar quantileLevel,
     const Scalar confidenceLevel,
@@ -52,31 +96,40 @@ UnsignedInteger Wilks::ComputeSampleSize(const Scalar quantileLevel,
 {
   if ((quantileLevel <= 0.0) || (quantileLevel >= 1.0)) throw InvalidArgumentException(HERE) << "Error: quantile level must be in ]0, 1[, here quantile level=" << quantileLevel;
   if ((confidenceLevel <= 0.0) || (confidenceLevel >= 1.0)) throw InvalidArgumentException(HERE) << "Error: confidence level must be in ]0, 1[, here confidence level=" << confidenceLevel;
-  // Initial guess based on asymptotic normality of the empirical quantile
-  Scalar x = DistFunc::qNormal(confidenceLevel);
-  Scalar x2 = x * x;
-  UnsignedInteger n = (UnsignedInteger)(ceil((quantileLevel * x2 + 2.0 * marginIndex + sqrt(quantileLevel * x2 * (quantileLevel * x2 + 4.0 * marginIndex))) / (2.0 * (1.0 - quantileLevel))));
-  // Initialize cQuantileLevel to cQuantileLevel[i] = Binomial(n, n - marginIndex + i) * quantileLevel ^ (n - marginIndex + i) * (1 - quantileLevel) ^ (marginIndex - i)
-  // For i = marginIndex, cQuantileLevel[i] = quantileLevel ^ n
-  Point cQuantileLevel(marginIndex + 1, pow(quantileLevel, static_cast<int>(n)));
-  // Descending recursion n! / (m - i)! / (n - m + i)! = n! / (m - (i - 1))! / (n - m + (i - 1))! * (m - (i - 1)) / (n - m + i)
-  // -> Binomial(n, n - m + i - 1) = Binomial(n, n - m + i) * (n - m + i) / (m - i)
-  for (UnsignedInteger i = marginIndex; i > 0; --i) cQuantileLevel[i - 1] = cQuantileLevel[i] * (1.0 - quantileLevel) / quantileLevel * (n - marginIndex + i) / (marginIndex - i + 1.0);
-  Scalar cumulQuantileLevel = -1.0;
-  do
+  // Here we have to find the minimal value of N such that
+  // 1-\sum_{i=N-r}^N Binomial(i, N)\alpha^i(1-\alpha)^{N-i}>=\beta
+  // where:
+  //   \alpha = quantileLevel
+  //   \beta  = confidenceLevel
+  //   r      = marginIndex
+  // It rewrites F_{N,alpha}(N-r-1)>=beta where F_{N,alpha} is the CDF of the
+  // Binomial(N, alpha) ditribution.
+  // Easy case: marginIndex=0, the quantile bound is given by the largest upper statistics. The equation to solve is N=\min{n|1-\alpha^n>=\beta}
+  const Function wilksConstraint(WilksEvaluation(quantileLevel, marginIndex).clone());
+  Scalar nApprox = 0.0;
+  if (marginIndex == 0)
+    nApprox = std::log1p(-confidenceLevel) / std::log(quantileLevel);
+  else
   {
-    cumulQuantileLevel = 0.0;
-    ++n;
-    // Update the terms in the sum
-    // Binomial(n + 1, n + 1 - m + j) * quantileLevel ^ (n + 1 - m + j) * (1 - quantileLevel) ^ (m - j)= Binomial(n, n - m + j) * quantileLevel ^ (n - m + j) * (1 - quantileLevel) ^ (m - j) * quantileLevel * (n + 1) / (n + 1 - m + j)
-    for (UnsignedInteger j = 0; j <= marginIndex; ++j)
-    {
-      cQuantileLevel[j] *= (n * quantileLevel) / (n - marginIndex + j);
-      cumulQuantileLevel += cQuantileLevel[j];
-    }
-  }
-  while (cumulQuantileLevel > 1.0 - confidenceLevel);
-  return n;
+    // Search for the minimal sample size
+    // First, search for an upper bound
+    // Here we use the relation F_{N,alpha}(N - r - 1) = pBeta(N - k, k + 1, 1 - alpha)
+    // where k = N - r - 1
+    // We compute a reasonable guess for n using a Normal approximation:
+    // n*alpha+q_beta*sqrt(n*alpha*(1-alpha))=n-r:
+    const Scalar aBeta = DistFunc::qNormal(confidenceLevel);
+    UnsignedInteger nMax = static_cast<UnsignedInteger>((marginIndex + 0.5 * (quantileLevel * aBeta * aBeta + std::abs(aBeta) * std::sqrt(quantileLevel * (4.0 * marginIndex + quantileLevel * aBeta * aBeta)))) / (1.0 - quantileLevel));
+    // This loop must end as wilksConstraint->1 when n->inf
+    while (wilksConstraint(Point(1, nMax))[0] < confidenceLevel)
+      // At the beginning of the loop nMax is >= 1 so it increases strictly
+      nMax += nMax;
+    nApprox = Brent().solve(wilksConstraint, confidenceLevel, marginIndex, nMax);
+  } // marginIndex > 0
+  // Here, nApprox can be very close to an integer (in the sense of: the value of the constraint evaluated at the nearest integer is very close to confidenceLevel), in which case the correct answer is round(nApprox), or the answer is the next integer value
+  const UnsignedInteger nInf = static_cast<UnsignedInteger>(std::round(std::max(1.0 * marginIndex, nApprox)));
+  const Scalar constraintInf = wilksConstraint(Point(1, nInf))[0];
+  if (std::abs(constraintInf - confidenceLevel) < std::sqrt(SpecFunc::Precision)) return nInf;
+  return static_cast<UnsignedInteger>(std::ceil(nApprox));
 }
 
 /* Estimate an upper bound of the quantile of the random vector for the given quantile level and confidence level, using the marginIndex upper statistics */

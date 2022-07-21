@@ -3,7 +3,7 @@
  *  @brief This class implements the multivariate distribution based on a
  *         bipartite graph and a collection of distributions
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -99,7 +99,7 @@ void CumulativeDistributionNetwork::computeRange()
   const UnsignedInteger size = distributionCollection_.getSize();
   if (size == 0) return;
   const UnsignedInteger dim = getDimension();
-  const Point infiniteLowerBounds(dim, -SpecFunc::MaxScalar);
+  const Point infiniteLowerBounds(dim, SpecFunc::LowestScalar);
   const Point infiniteUpperBounds(dim,  SpecFunc::MaxScalar);
   const Interval::BoolCollection infiniteLowerBoundsFlags(dim, false);
   const Interval::BoolCollection infiniteUpperBoundsFlags(dim, false);

@@ -1,28 +1,26 @@
 %feature("docstring") OT::Gumbel
 "Gumbel distribution.
 
-Available constructors:
-    Gumbel(*alpha=1.0, beta=0.0*)
-
 Parameters
 ----------
-alpha : float
-    scale parameter :math:`\alpha > 0`.
 beta : float
-    location parameter :math:`\beta`.
+    scale parameter :math:`\beta > 0`.
+gamma : float
+    position parameter :math:`\gamma`.
 
 Notes
 -----
-Its probability density function is defined as:
+Its cumulative and probability density functions are defined as:
 
 .. math::
+    :nowrap:
 
-    f_X(x) = \alpha
-             \exp\left[- \alpha (x - \beta)
-                       - \exp\left(- \alpha (x - \beta)\right)\right],
-             \quad x \in \Rset
+    \begin{eqnarray*}
+        F_X(x) & = & \exp \left( -  \exp \left( -\dfrac{x-\gamma}{\beta} \right) \right), \quad x \in \Rset \\
+        f_X(x) & = & \dfrac{1}{\beta} \exp \left(- \dfrac{x-\gamma}{\beta} - \exp \left(- \dfrac{x-\gamma}{\beta} \right) \right), \quad x \in \Rset
+    \end{eqnarray*}
 
-with :math:`\alpha > 0` and :math:`\beta \in \Rset`.
+with :math:`\beta > 0` and :math:`\gamma \in \Rset`.
 
 Its first moments are:
 
@@ -30,42 +28,42 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \beta + \frac{\gamma}{\alpha} \\
-        \Var{X} & = & \frac{\pi^2}{6 \alpha^2}
+        \Expect{X} & = & \gamma + \gamma_e \beta \\
+        \Var{X} & = & \frac{1}{6} \pi^2 \beta^2
     \end{eqnarray*}
 
-where :math:`\gamma` is the Euler-Mascheroni constant.
+where :math:`\gamma_e` is the Euler-Mascheroni constant.
 
 
-It is possible to create a Gumbel distribution from the alternative parametrizations :math:`(\mu, \sigma)`: see  :class:`~openturns.GumbelMuSigma` or :math:`(a,b)`: see  :class:`~openturns.GumbelAB`. In that case, all the results are presented in that new parametrization.
+It is possible to create a Gumbel distribution from the alternative parametrizations :math:`(\mu, \sigma)`: see  :class:`~openturns.GumbelMuSigma` or :math:`(\lambda,\gamma)`: see  :class:`~openturns.GumbelLambdaGamma`. In that case, all the results are presented in that new parametrization.
 
-In order to use the alternative  parametrization only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\alpha, \beta)`.
+In order to use the alternative  parametrization only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\beta, \gamma)`.
 
 Examples
 --------
-Create a distribution in its native parameters :math:`(\alpha, \beta)`:
+Create a distribution in its native parameters :math:`(\beta, \gamma)`:
 
 >>> import openturns as ot
 >>> myDist = ot.Gumbel(1.0, 0.0)
 
-Create a it with the alternative parametrization :math:`(\mu, \sigma)`:
+Create it from the alternative parametrization :math:`(\mu, \sigma)`:
 
 >>> myDist2 = ot.Gumbel()
 >>> myDist2.setParameter(ot.GumbelMuSigma()([0.58, 1.28]))
 
-Create a it with the alternative parametrization :math:`(a,b)`:
+Create it from the alternative parametrization :math:`(\lambda, \gamma)`:
 
 >>> myDist3 = ot.Gumbel()
->>> myDist3.setParameter(ot.GumbelAB()([0.0, 1.0]))
+>>> myDist3.setParameter(ot.GumbelLambdaGamma()([1.0, 1.0]))
 
 Create it from :math:`(\mu, \sigma)` and keep that parametrization for the remaining study: 
 
 >>> myParam = ot.GumbelMuSigma(0.58, 1.28)
 >>> myDist4 = ot.ParametrizedDistribution(myParam)
 
-Create it from :math:`(a,b)` and keep that parametrization for the remaining study: 
+Create it from :math:`(\lambda, \gamma)` and keep that parametrization for the remaining study: 
 
->>> myParam = ot.GumbelAB(0.0, 1.0)
+>>> myParam = ot.GumbelLambdaGamma(1.0, 1.0)
 >>> myDist5 = ot.ParametrizedDistribution(myParam)
 
 Draw a sample:
@@ -74,23 +72,23 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Gumbel::getAlpha
-"Accessor to the distribution's scale parameter :math:`\alpha`.
+%feature("docstring") OT::Gumbel::getGamma
+"Accessor to the distribution's position parameter :math:`\gamma`.
 
 Returns
 -------
-alpha : float
-    Scale parameter :math:`\alpha`."
+gamma : float
+    Scale parameter :math:`\gamma`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Gumbel::getBeta
-"Accessor to the distribution's location parameter :math:`\beta`.
+"Accessor to the distribution's scale parameter :math:`\beta`.
 
 Returns
 -------
 beta : float
-    Location parameter :math:`\beta`."
+    Scale parameter :math:`\beta`."
 
 // ---------------------------------------------------------------------
 
@@ -109,18 +107,18 @@ mu : float
 
 Returns
 -------
-sigma : float, :math:`\sigma > 0`
+sigma : float
     Standard deviation."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Gumbel::setAlpha
-"Accessor to the distribution's scale parameter :math:`\alpha`.
+%feature("docstring") OT::Gumbel::setGamma
+"Accessor to the distribution's position parameter :math:`\gamma`.
 
 Parameters
 ----------
-alpha : float, :math:`\alpha > 0`
-    Scale parameter :math:`\alpha`."
+gamma : float, :math:`\beta \in \Rset`
+    Scale parameter :math:`\gamma`."
 
 // ---------------------------------------------------------------------
 
@@ -129,8 +127,8 @@ alpha : float, :math:`\alpha > 0`
 
 Parameters
 ----------
-beta : float, :math:`\beta \in \Rset`
-    Location parameter :math:`\beta`."
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`."
 
 // ---------------------------------------------------------------------
 

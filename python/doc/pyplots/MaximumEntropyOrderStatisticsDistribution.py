@@ -2,7 +2,7 @@ import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
-myDist = [ot.Beta(1.5, 3.2, 0.0, 1.0),  ot.Beta(2.0, 4.3, 0.5, 1.2)]
+myDist = [ot.Beta(1.5, 1.7, 0.0, 1.0),  ot.Beta(2.0, 2.3, 0.5, 1.2)]
 myOrderStatDist = ot.MaximumEntropyOrderStatisticsDistribution(myDist)
 myOrderStatDist.setDescription(['$x_1$', '$x_2$'])
 graphPDF = myOrderStatDist.drawPDF()

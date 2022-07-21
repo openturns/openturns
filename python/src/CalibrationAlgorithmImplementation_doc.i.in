@@ -17,6 +17,34 @@ OT_CalibrationAlgorithm_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CalibrationAlgorithm_getModel_doc
+"Accessor to the model to be fitted.
+
+Returns
+-------
+data : :class:`~openturns.Function`
+    The model to be fitted."
+
+%enddef
+%feature("docstring") OT::CalibrationAlgorithmImplementation::getModel
+OT_CalibrationAlgorithm_getModel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CalibrationAlgorithm_getInputObservations_doc
+"Accessor to the input data to be fitted.
+
+Returns
+-------
+data : :class:`~openturns.Sample`
+    The input data to be fitted."
+
+%enddef
+%feature("docstring") OT::CalibrationAlgorithmImplementation::getInputObservations
+OT_CalibrationAlgorithm_getInputObservations_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CalibrationAlgorithm_getOutputObservations_doc
 "Accessor to the output data to be fitted.
 

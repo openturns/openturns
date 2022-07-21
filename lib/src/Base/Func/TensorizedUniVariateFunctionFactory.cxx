@@ -2,7 +2,7 @@
 /**
  *  @brief This is the tensorized function basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,6 +27,7 @@
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 #include "openturns/ProductUniVariateFunctionGradient.hxx"
 #include "openturns/ProductUniVariateFunctionHessian.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,7 +58,7 @@ TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory()
 TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory(const FunctionFamilyCollection & coll)
   : BasisImplementation()
   , coll_(coll)
-  , phi_(coll.getSize())
+  , phi_(LinearEnumerateFunction(coll.getSize()))
 {
   // Nothing to do
 }
@@ -70,7 +71,7 @@ TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory(const F
     coll_(coll),
     phi_(phi)
 {
-  if (coll.getSize() != phi.getDimension()) throw InvalidArgumentException(HERE) << "Error: the enumerate function must have a dimension equal to the collection size";
+  if (coll.getSize() != phi.getDimension()) throw InvalidArgumentException(HERE) << "Error: the enumerate function must have a dimension equal to the collection size, here dimension=" << phi.getDimension() << " and collection size=" << coll.getSize();
 }
 
 
@@ -99,7 +100,7 @@ void TensorizedUniVariateFunctionFactory::setFunctionFamilyCollection(const Func
   coll_ = coll;
   if (coll.getSize() != phi_.getDimension())
   {
-    setEnumerateFunction(EnumerateFunction(coll.getSize()));
+    setEnumerateFunction(LinearEnumerateFunction(coll.getSize()));
   }
 }
 

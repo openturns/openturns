@@ -1,14 +1,13 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Instanciate one distribution object
-    distribution = Gumbel(2.0, -0.5)
+    # Instantiate one distribution object
+    distribution = Gumbel(0.5, -0.5)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 
@@ -60,10 +59,10 @@ try:
     print("pdf gradient     =", repr(PDFgr))
     # by the finite difference technique
     PDFgrFD = Point(2)
-    PDFgrFD[0] = (Gumbel(distribution.getAlpha() + eps, distribution.getBeta()).computePDF(point)
-                  - Gumbel(distribution.getAlpha() - eps, distribution.getBeta()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[1] = (Gumbel(distribution.getAlpha(), distribution.getBeta() + eps).computePDF(point)
-                  - Gumbel(distribution.getAlpha(), distribution.getBeta() - eps).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[0] = (Gumbel(distribution.getBeta() + eps, distribution.getGamma()).computePDF(point)
+                  - Gumbel(distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[1] = (Gumbel(distribution.getBeta(), distribution.getGamma() + eps).computePDF(point)
+                  - Gumbel(distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
 
     # derivative of the PDF with regards the parameters of the distribution
@@ -71,10 +70,10 @@ try:
     print("cdf gradient     =", repr(CDFgr))
     # by the finite difference technique
     CDFgrFD = Point(2)
-    CDFgrFD[0] = (Gumbel(distribution.getAlpha() + eps, distribution.getBeta()).computeCDF(point)
-                  - Gumbel(distribution.getAlpha() - eps, distribution.getBeta()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[1] = (Gumbel(distribution.getAlpha(), distribution.getBeta() + eps).computeCDF(point)
-                  - Gumbel(distribution.getAlpha(), distribution.getBeta() - eps).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[0] = (Gumbel(distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point)
+                  - Gumbel(distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[1] = (Gumbel(distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point)
+                  - Gumbel(distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps)
     print("cdf gradient (FD)=", repr(CDFgrFD))
 
     # quantile

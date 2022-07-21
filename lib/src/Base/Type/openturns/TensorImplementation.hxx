@@ -2,7 +2,7 @@
 /**
  *  @brief TensorImplementation implements the Tensor classes
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -71,14 +71,14 @@ public:
 
 
   /** Virtual constructor */
-  virtual TensorImplementation * clone() const;
+  TensorImplementation * clone() const override;
 
   /** Set small elements to zero */
   TensorImplementation clean(const Scalar threshold) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
@@ -127,16 +127,13 @@ public:
   Bool isEmpty() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Scalar * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
-  UnsignedInteger __stride__ (UnsignedInteger dim) const;
+  /** Low-level data access */
+  UnsignedInteger stride(const UnsignedInteger dim) const;
 
 protected:
 

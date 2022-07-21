@@ -2,7 +2,7 @@
 /**
  *  @brief MultiStart optimization algorithm
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,7 @@
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Experiment.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,46 +45,65 @@ public:
   /** Default constructor */
   MultiStart();
 
-  /** Constructor with parameters */
+  /** Constructor that sets starting points */
   MultiStart(const OptimizationAlgorithm & solver,
-             const Sample & startingPoints);
+             const Sample & startingSample);
 
   /** Virtual constructor */
-  virtual MultiStart * clone() const;
+  MultiStart * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. */
-  void run();
+  void run() override;
 
   /** Problem accessor */
-  virtual void setProblem(const OptimizationProblem & problem);
+  void setProblem(const OptimizationProblem & problem) override;
 
-  /** Solver accessor */
+  /** Accessor to the underlying solver */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
-  void setStartingPoints(const Sample & sample);
-  Sample getStartingPoints() const;
+  /** Useless inherited method: throw */
+  void setStartingPoint(const Point & point) override;
+
+  /** Starting points accessor */
+  void setStartingSample(const Sample & startingSample);
+  Sample getStartingSample() const;
+
+  /** Useless inherited method: throw */
+  Point getStartingPoint() const override;
+
+  /** Flag for results management accessors */
+  Bool getKeepResults() const;
+  void setKeepResults(const Bool keepResults);
 
   OptimizationResultCollection getResultCollection() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
-  /** Check whether this problem can be solved by this solver. */
-  void checkProblem(const OptimizationProblem & problem) const;
+  /** Check that the solver is compatible with MultiStart */
+  void checkSolver(const OptimizationAlgorithm &) const;
+
+  /** Check whether this problem can be solved by this solver */
+  void checkProblem(const OptimizationProblem & problem) const override;
+
+  /** Check that the optimization problem is consistent with the starting sample */
+  void checkStartingSampleConsistentWithOptimizationProblem(const Sample & startingSample, const OptimizationProblem & problem) const;
 
 private:
   OptimizationAlgorithm solver_;
-  Sample startingPoints_;
+  Sample startingSample_;
 
+  /** Flag to tell if the collection of optimization results have to be kept */
+  Bool keepResults_;
   OptimizationResultPersistentCollection resultCollection_;
 
 } ; /* class MultiStart */

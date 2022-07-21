@@ -10,7 +10,7 @@
 #  MODULE_VERSION_STRING - module version, if available through __version__
 #
 #=============================================================================
-# Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+# Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.
@@ -69,6 +69,10 @@ macro (find_python_module module)
       endif ()
     endif ()
 
+    # https://gitlab.kitware.com/cmake/cmake/-/issues/21505
+    if (CMAKE_VERSION VERSION_EQUAL 3.19.1)
+      set (CMAKE_FIND_PACKAGE_NAME "${module}")
+    endif ()
     find_package_handle_standard_args (${module} REQUIRED_VARS ${module_upper}_LOCATION
                                         ${module}_FIND_OPTIONAL
                                         _${module_upper}_VERSION_MATCH

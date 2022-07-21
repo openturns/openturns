@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class VisualTest
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -69,10 +69,10 @@ int main(int, char *[])
     }
 
     LinearModelResult lmtest(LinearModelAlgorithm(firstSample, secondSample).getResult());
-    Graph drawLinearModelVTest(VisualTest::DrawLinearModel(firstSample, secondSample, lmtest));
+    Graph drawLinearModelVTest(VisualTest::DrawLinearModel(lmtest));
     fullprint << "LinearModelV = " << drawLinearModelVTest << std::endl;
 
-    Graph drawLinearModelResidualTest(VisualTest::DrawLinearModelResidual(firstSample, secondSample, lmtest));
+    Graph drawLinearModelResidualTest(VisualTest::DrawLinearModelResidual(lmtest));
     fullprint << "LinearModelR = " << drawLinearModelResidualTest << std::endl;
   }
 
@@ -89,9 +89,9 @@ int main(int, char *[])
     formula[0] = oss;
     SymbolicFunction model(inputVar, formula);
     Sample outputSample(model(inputSample));
-    Graph cobwebValue(VisualTest::DrawCobWeb(inputSample, outputSample, 2.5, 3.0, "red", false));
+    Graph cobwebValue(VisualTest::DrawParallelCoordinates(inputSample, outputSample, 2.5, 3.0, "red", false));
     fullprint << "cobwebValue = " << cobwebValue << std::endl;
-    Graph cobwebQuantile(VisualTest::DrawCobWeb(inputSample, outputSample, 0.7, 0.9, "red", false));
+    Graph cobwebQuantile(VisualTest::DrawParallelCoordinates(inputSample, outputSample, 0.7, 0.9, "red", false));
     fullprint << "cobwebQuantile = " << cobwebQuantile << std::endl;
   }
 

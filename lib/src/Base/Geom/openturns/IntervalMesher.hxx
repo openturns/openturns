@@ -2,7 +2,7 @@
 /**
  *  @brief Meshing algorithm for intervals
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,17 +43,17 @@ public:
   explicit IntervalMesher(const Indices & discretization);
 
   /** Virtual constructor */
-  virtual IntervalMesher * clone() const;
+  IntervalMesher * clone() const override;
 
   /** Discretization accessors */
   void setDiscretization(const Indices & discretization);
   Indices getDiscretization() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /* Here is the interface that all derived class must implement */
   virtual Mesh build(const Interval & interval,

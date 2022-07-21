@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class RandomWalkMetropolisHastings
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,6 @@
 using namespace OT;
 using namespace OT::Test;
 typedef ComposedDistribution::DistributionCollection DistributionCollection;
-typedef RandomWalkMetropolisHastings::CalibrationStrategyCollection CalibrationStrategyCollection;
 
 int main(int, char *[])
 {
@@ -51,15 +50,13 @@ int main(int, char *[])
 
     Sample data(realDist.getSample(size));
 
-    // calibration parameters
-    CalibrationStrategyCollection calibrationColl(2);
-
-    // proposal distribution
+    // instrumental distribution
     DistributionCollection proposalColl;
     Uniform mean_proposal(-2.0, 2.0);
     Uniform std_proposal(-2.0, 2.0);
     proposalColl.add(mean_proposal);
     proposalColl.add(std_proposal);
+    ComposedDistribution instrumental(proposalColl);
 
     // prior distribution
     Scalar mu0 = 25.0;
@@ -70,6 +67,8 @@ int main(int, char *[])
     //sigma0s.add(2.0);
 
 
+    const Point mean_ref = {24.9529, 26.884};
+    const Point stddev_ref = {1.79439e-14, 1.79439e-14};
     // play with the variance of the prior:
     // if the prior variance is low (information concerning the mu parameter is strong)
     // then the posterior mean will be equal to the prior mean
@@ -92,11 +91,11 @@ int main(int, char *[])
       Distribution conditional = Normal();
 
       // create a metropolis-hastings sampler
-      RandomWalkMetropolisHastings sampler(prior, conditional, data, initialState, proposalColl);
+      RandomWalkMetropolisHastings sampler(prior, initialState, instrumental);
+      sampler.setLikelihood(conditional, data);
       sampler.setVerbose(true);
       sampler.setThinning(2);
       sampler.setBurnIn(500);
-      sampler.setCalibrationStrategyPerComponent(calibrationColl);
 
       Scalar sigmay = ConditionalDistribution(Normal(), prior).getStandardDeviation()[0];
       Scalar w = size * pow(sigma0, 2.) / (size * pow(sigma0, 2.) + pow(sigmay, 2.0));
@@ -114,8 +113,9 @@ int main(int, char *[])
       // try to generate a sample
       Sample sample(sampler.getSample(50));
 
-      std::cout << "  obtained posterior ~N(" << sample.computeMean()[0] << ", " << sample.computeStandardDeviationPerComponent()[0] << ")" << std::endl;
-
+      std::cout << "  obtained posterior ~N(" << sample.computeMean()[0] << ", " << sample.computeStandardDeviation()[0] << ")" << std::endl;
+      assert_almost_equal(sample.computeMean()[0], mean_ref[i]);
+      assert_almost_equal(sample.computeStandardDeviation()[0], stddev_ref[i]);
       std::cout << "  acceptance rate=" << sampler.getAcceptanceRate() << std::endl;
     }
 

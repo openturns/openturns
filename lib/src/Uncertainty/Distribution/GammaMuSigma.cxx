@@ -2,7 +2,7 @@
 /**
  *  @brief Gamma distribution with mu and sigma as parameters
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -91,7 +91,7 @@ Matrix GammaMuSigma::gradient() const
   const Scalar dlambdadsigma = -2.0 * (mu - gamma) / (sigma * sigma * sigma);
   const Scalar dlambdadgamma = -dlambdadmu;
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(3));
+  Matrix nativeParametersGradient(IdentityMatrix(3));
   nativeParametersGradient(0, 0) = dkdmu;
   nativeParametersGradient(1, 0) = dkdsigma;
   nativeParametersGradient(2, 0) = dkdgamma;
