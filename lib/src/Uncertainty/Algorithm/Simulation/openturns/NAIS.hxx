@@ -45,7 +45,7 @@ public:
 
   /** Default constructor */
   NAIS(const RandomVector & event,
-       const Scalar rhoQuantile = 0.7);
+       const Scalar rhoQuantile = 0.25);
 
   /** Virtual constructor */
   NAIS * clone() const override;
