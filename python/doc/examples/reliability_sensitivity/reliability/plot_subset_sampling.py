@@ -108,7 +108,7 @@ print('Confidence length (0.95) = ', result.getConfidenceLength())
 # which enables to build the confidence interval:
 
 # %%
-print('Confidence intervalle (0.95) = [', proba -
+print('Confidence interval (0.95) = [', proba -
       length95/2, ', ', proba + length95/2, ']')
 
 # %%
