@@ -44,7 +44,7 @@ public:
   NAIS();
 
   /** Default constructor */
-  NAIS(const RandomVector & event,
+explicit  NAIS(const RandomVector & event,
        const Scalar rhoQuantile = 0.25);
 
   /** Virtual constructor */
