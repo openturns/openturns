@@ -2,7 +2,7 @@
 
 import openturns as ot
 from openturns.testing import assert_almost_equal
-from openturns.usecases import wingweight_function as wingweight_function
+from openturns.usecases import wingweight_function
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
