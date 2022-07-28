@@ -113,7 +113,7 @@ view = viewer.View(graph)
 
 # %%
 chaosSI = ot.FunctionalChaosSobolIndices(result)
-print(chaosSI.summary())
+print(chaosSI)
 
 # %%
 # Let us analyse the results of this global sensitivity analysis.

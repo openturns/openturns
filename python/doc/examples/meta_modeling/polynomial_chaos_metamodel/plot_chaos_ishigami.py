@@ -136,7 +136,7 @@ view = viewer.View(graph)
 
 # %%
 chaosSI = ot.FunctionalChaosSobolIndices(result)
-print(chaosSI.summary())
+print(chaosSI)
 
 # %%
 # We notice the a coefficient with marginal degree equal to 6 has a significant impact on the output variance. Hence, we cannot get a satisfactory polynomial chaos with total degree less that 6.

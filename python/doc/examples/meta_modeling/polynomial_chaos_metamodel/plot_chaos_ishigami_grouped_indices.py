@@ -59,7 +59,7 @@ metamodel = result.getMetaModel()
 
 # %%
 chaosSI = ot.FunctionalChaosSobolIndices(result)
-print(chaosSI.summary())
+print(chaosSI)
 
 # %%
 # We compute the first order indice of the group [0,1].
@@ -80,7 +80,7 @@ chaosSI.getSobolGroupedIndex([0, 1])
 0.279938 + 0.190322 + 0.130033 + 0.12058 + 0.0250262
 
 # %%
-# The difference between the previous sum and the output of `getSobolGroupedIndex` is lower than 0.01, which is the threshold used by the `summary` method.
+# The difference between the previous sum and the output of `getSobolGroupedIndex` is lower than 0.01, which is the threshold used by the `__str__` method.
 
 # %%
 # We compute the total order indice of the group [1,2].
