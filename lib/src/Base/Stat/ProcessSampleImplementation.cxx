@@ -523,6 +523,9 @@ ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerCompo
 /* Extract the sample of values at the given vertex index */
 Sample ProcessSampleImplementation::getSampleAtVertex(const UnsignedInteger index) const
 {
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  if (index >= verticesNumber)
+    throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than vertices number (" << verticesNumber << ")";
   const UnsignedInteger size = getSize();
   const UnsignedInteger dimension = getDimension();
   Sample result(size, dimension);
