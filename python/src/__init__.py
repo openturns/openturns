@@ -43,20 +43,6 @@ OPENTURNS_HOME                        --- Custom installation path
 OPENTURNS_CONFIG_PATH                 --- Path to configuration file
 OPENTURNS_LOG_SEVERITY                --- Log severity flag, for example "ALL"
 """
-import sys
-
-# SWIG-related: check if interactive mode
-if not hasattr(sys, 'ps1'):
-    try:
-        # ipython does not define ps1
-        __IPYTHON__
-    except:
-        # Reset the default Crtl-C behavior
-        import signal
-        try:
-            signal.signal(signal.SIGINT, signal.SIG_DFL)
-        except ValueError:
-            pass
 
 from .common import *
 from .typ import *

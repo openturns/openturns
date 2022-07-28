@@ -254,11 +254,11 @@ NEW_EXCEPTION( XMLException );
 NEW_EXCEPTION( XMLParserException );
 
 /**
- * @class DynamicLibraryException
- * @brief Raised when a dynamic library can not be loaded or when a symbol can not be found in it
+ * @class InterruptionException
+ * @brief Raised on interrupt (SIGINT)
  * @internal
  */
-NEW_EXCEPTION( DynamicLibraryException );
+NEW_EXCEPTION( InterruptionException );
 
 /**
  * @class NotSymmetricDefinitePositiveException

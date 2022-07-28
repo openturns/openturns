@@ -2578,32 +2578,6 @@ OT_Distribution_getStandardDistribution_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Distribution_getStandardMoment_doc
-"Accessor to the componentwise standard moments.
-
-Parameters
-----------
-k : int
-    The order of the standard moment.
-
-Returns
--------
-m : :class:`~openturns.Point`
-    Componentwise standard moment of order :math:`k`.
-
-Notes
------
-Standard moments are the raw moments of the standard representative of the parametric family of distributions.
-
-See Also
---------
-getStandardRepresentative"
-%enddef
-%feature("docstring") OT::DistributionImplementation::getStandardMoment
-OT_Distribution_getStandardMoment_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Distribution_getStandardRepresentative_doc
 "Accessor to the standard representative distribution in the parametric family.
 

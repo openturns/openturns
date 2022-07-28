@@ -77,9 +77,6 @@ covariance = distribution.getCovariance()
 print("covariance=", covariance)
 parameters = distribution.getParametersCollection()
 print("parameters=", parameters)
-for i in range(6):
-    print("standard moment n=", i, ", value=",
-          distribution.getStandardMoment(i))
 print("Standard representative=", distribution.getStandardRepresentative())
 
 # should not hang when the range is [0] (dirac)

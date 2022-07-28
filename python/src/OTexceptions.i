@@ -19,30 +19,33 @@ namespace std {
 %include exception.i
 
 %exception {
-  try {
+  std::signal(SIGINT, OT::SignalHandler);
+  try
+  {
     $action
   }
-  catch (OT::InvalidArgumentException & ex) {
+  catch (const OT::InvalidArgumentException & ex) {
     SWIG_exception(SWIG_TypeError,ex.__repr__().c_str());
   }
-  catch (OT::OutOfBoundException & ex) {
-    SWIG_exception(SWIG_IndexError,ex.__repr__().c_str());
+  catch (const OT::OutOfBoundException & ex) {
+    SWIG_exception(SWIG_IndexError, ex.__repr__().c_str());
   }
-  catch (OT::Exception & ex) {
-    SWIG_exception(SWIG_RuntimeError,ex.__repr__().c_str());
+  catch (const OT::InterruptionException & ex) {
+    SWIG_exception(SWIG_RuntimeError, "Interruption in $decl");
   }
-  catch (std::range_error & ex) {
-    SWIG_exception(SWIG_IndexError,ex.what());
+  catch (const OT::Exception & ex) {
+    SWIG_exception(SWIG_RuntimeError, ex.__repr__().c_str());
   }
-  catch (std::out_of_range & ex) {
-    SWIG_exception(SWIG_IndexError,ex.what());
+  catch (const std::range_error & ex) {
+    SWIG_exception(SWIG_IndexError, ex.what());
   }
-  catch (std::logic_error & ex) { // IDM : Glut Debian Squeeze with libstdc++ 4.4.5
-    SWIG_exception(SWIG_IndexError,ex.what());
+  catch (const std::out_of_range & ex) {
+    SWIG_exception(SWIG_IndexError, ex.what());
   }
-  catch (std::exception & ex) {
-    SWIG_exception(SWIG_RuntimeError,ex.what());
+  catch (const std::logic_error & ex) {
+    SWIG_exception(SWIG_IndexError, ex.what());
+  }
+  catch (const std::exception & ex) {
+    SWIG_exception(SWIG_RuntimeError, ex.what());
   }
 }
-
-

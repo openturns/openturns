@@ -45,12 +45,6 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[point_0 : 0.7]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.7]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.49]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0.343]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.2401]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0.16807]
 Standard representative=Dirac(point = [0.7])
 Distribution class=Dirac name=Dirac dimension=4 point=class=Point name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
 Distribution Dirac(point = [2.3,2.3,2.3,2.3])
@@ -82,10 +76,4 @@ correlation=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 kendall=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 parameters=[[point_0 : 2.3],[point_1 : 2.3],[point_2 : 2.3],[point_3 : 2.3]]
-standard moment n=0, value=class=Point name=Unnamed dimension=4 values=[1,1,1,1]
-standard moment n=1, value=class=Point name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
-standard moment n=2, value=class=Point name=Unnamed dimension=4 values=[5.29,5.29,5.29,5.29]
-standard moment n=3, value=class=Point name=Unnamed dimension=4 values=[12.167,12.167,12.167,12.167]
-standard moment n=4, value=class=Point name=Unnamed dimension=4 values=[27.9841,27.9841,27.9841,27.9841]
-standard moment n=5, value=class=Point name=Unnamed dimension=4 values=[64.3634,64.3634,64.3634,64.3634]
 Standard representative=Dirac(point = [2.3,2.3,2.3,2.3])

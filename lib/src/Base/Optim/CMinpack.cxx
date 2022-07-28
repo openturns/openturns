@@ -395,13 +395,13 @@ void CMinpack::run()
       LOGINFO("The maximum number of function evaluations is exceeded.");
       break;
     case 6:
-      throw InvalidArgumentException(HERE) << "ftol is too small";
+      throw InvalidArgumentException(HERE) << "CMinpack: ftol is too small";
     case 7:
-      throw InvalidArgumentException(HERE) << "xtol is too small";
+      throw InvalidArgumentException(HERE) << "CMinpack: xtol is too small";
     case 8:
-      throw InvalidArgumentException(HERE) << "gtol is too small";
+      throw InvalidArgumentException(HERE) << "CMinpack: gtol is too small";
     default:
-      throw NotYetImplementedException(HERE) << "Unknown status code:" << info;
+      throw NotYetImplementedException(HERE) << "CMinpack: unknown status code:" << info;
   }
 
   Point optimizer(dimension);
