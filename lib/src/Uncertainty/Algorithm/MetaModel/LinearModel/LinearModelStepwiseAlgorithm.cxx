@@ -394,6 +394,13 @@ void LinearModelStepwiseAlgorithm::run()
   const Sample fx(f(inputSample_));
   LOGDEBUG(OSS() << "Total number of columns=" << fx.getDimension());
 
+  // check for null basis term
+  const Point mean = fx.computeMean();
+  const Point stddev = fx.computeStandardDeviation();
+  for (UnsignedInteger i = 0; i < fx.getDimension(); ++ i)
+    if (!(stddev[i] > 0.0) && (mean[i] == 0.0))
+      throw InvalidArgumentException(HERE) << "Null basis term at index " << i;
+
   {
     // Reduce scope of Xt
     const Matrix Xt(fx.getDimension(), size, fx.getImplementation()->getData());
