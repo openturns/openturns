@@ -45,7 +45,7 @@ public:
 
   /** Default constructor */
 explicit  NAIS(const RandomVector & event,
-       const Scalar rhoQuantile = 0.25);
+       const Scalar rhoQuantile = ResourceMap::GetAsScalar("NAIS-DefaultrhoQuantile"));
 
   /** Virtual constructor */
   NAIS * clone() const override;

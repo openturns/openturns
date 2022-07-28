@@ -1317,6 +1317,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SubsetSampling-DefaultProposalRange", 2.0);
   addAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling", 10000);
 
+  // NAIS parameters //
+  addAsScalar("NAIS-DefaultrhoQuantile", 0.25);
+  
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);
 
