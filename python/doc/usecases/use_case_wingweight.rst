@@ -18,7 +18,7 @@ the airfoil thickness to chord ratio, the ultimate load factor, the flight desig
 The function is defined as follows :
 
 .. math::
-   g(S_{w},W_{fw},A, \Lambda, q, l, t_c, N_z, W_{dg}, W_p) = 0.036 S_w^{0.758} W_{fw}^0.0035\left(\frac{A}{\cos^2(\Lambda)}\right)^{0.6} q^{0.006} l^{0.04} \left(\frac{100 t_c}{\cos(\Lambda)}\right)^{-0.3}(N_z W_{dg})^{0.49}+S_w W_p
+   g(S_{w},W_{fw},A, \Lambda, q, l, t_c, N_z, W_{dg}, W_p) = 0.036 S_w^{0.758} {W_{fw}}^{0.0035}\left(\frac{A}{\cos^2(\Lambda)}\right)^{0.6} q^{0.006} l^{0.04} \left(\frac{100 t_c}{\cos(\Lambda)}\right)^{-0.3}(N_z W_{dg})^{0.49}+S_w W_p
 
 with:
 
@@ -91,4 +91,3 @@ Examples based on this use case
    :hidden:
  
    /auto_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_wingweight
-
