@@ -4,7 +4,6 @@ Use case : FireSatellite test function
 """
 import openturns as ot
 import math as m
-import numpy as np
 
 class FireSatelliteModel():
     """
@@ -276,7 +275,7 @@ class FireSatelliteModel():
         :inputs: dictionary of inputs of the Power discipline 
 		
         """
-        theta           = np.deg2rad(inputs['theta'])
+        theta           = m.pi/180*inputs['theta']
         Fs              = inputs['Fs']
         P_ACS           = inputs['P_ACS']
         P_other         = inputs['P_other']
@@ -300,7 +299,7 @@ class FireSatelliteModel():
         Ptot = P_ACS + P_other
         
         #power production capability at beginning of life
-        P_BOL = eta*Fs*Id*np.cos(theta)
+        P_BOL = eta*Fs*Id*m.cos(theta)
         
         #power production capability at end of life
         P_EOL = P_BOL*(1-epsilon_deg)**(LT)
@@ -326,21 +325,21 @@ class FireSatelliteModel():
         A_sa = P_sa/P_EOL
           
         #Determination of moment of inertia
-        L = np.sqrt(A_sa*r_lw/n_sa)
-        W = np.sqrt(A_sa/(r_lw*n_sa))
+        L = m.sqrt(A_sa*r_lw/n_sa)
+        W = m.sqrt(A_sa/(r_lw*n_sa))
         m_sa = 2*rho_sa*L*W*t
         I_saX = m_sa*(1/12*(L**2+t**2)+(D+L/2)**2)
         I_saY = m_sa/12*(t**2+W**2)
         I_saZ = m_sa*(1/12*(L**2+W**2)+(D+L/2)**2)        
         
         #total moment of inertia
-        I_tot = np.array([I_saX,I_saY,I_saZ])-np.array([I_bodyX,I_bodyY,I_bodyZ])
+        I_tot =ot.Sample([[I_saX-I_bodyX],[I_saY-I_bodyY],[I_saZ-I_bodyZ]])
         #Minimal inertia
-        I_min = np.min(I_tot)
+        I_min = I_tot.getMin()[0]
         #Maximal inertia        
-        I_max = np.max(I_tot)
+        I_max = I_tot.getMax()[0]
 
-        outputs                    = {}	        
+        outputs          = {}	        
         outputs['Imax']  = I_max
         outputs['Imin']  = I_min
         outputs['A_sa']  = A_sa
@@ -362,14 +361,14 @@ class FireSatelliteModel():
         H  = inputs['H']
         
         # satellite velocity
-        v = np.sqrt(mu/(RE+H))
+        v = m.sqrt(mu/(RE+H))
         # orbit period
-        delta_t_orbit = 2*np.pi*(RE+H)/v
+        delta_t_orbit = 2*m.pi*(RE+H)/v
         # maximum eclipse time
-        delta_t_eclipse = delta_t_orbit/np.pi*np.arcsin(RE/(RE+H))
+        delta_t_eclipse = delta_t_orbit/m.pi*m.asin(RE/(RE+H))
         #maximum slewing angle
-        theta_slew = np.arctan(np.sin(phi_target/RE)/
-                               (1-np.cos(phi_target/RE)+H/RE))
+        theta_slew = m.atan(m.sin(phi_target/RE)/
+                               (1-m.cos(phi_target/RE)+H/RE))
 			
 
         outputs                    = {}				   
@@ -407,7 +406,7 @@ class FireSatelliteModel():
         Imax             = inputs['Imax']
         Imin             = inputs['Imin']
         H                = inputs['H']
-        theta            = np.deg2rad(inputs['theta'])
+        theta            = m.pi/180.*inputs['theta']
         L_sp             = inputs['L_sp']
         Fs               = inputs['Fs']
         q                = inputs['q']
@@ -420,10 +419,10 @@ class FireSatelliteModel():
         tau_slew = 4*theta_slew*Imax/delta_theta_slew**2
             
         #torque due to gravity gradients
-        tau_g = 3*mu/(2*RE+H)**3*np.abs(Imax-Imin)*np.sin(2*theta)
+        tau_g = 3*mu/(2*RE+H)**3*abs(Imax-Imin)*m.sin(2*theta)
         
         #torque due to solar radiation
-        tau_sp = L_sp*Fs/c*As*(1+q)*np.cos(i)
+        tau_sp = L_sp*Fs/c*As*(1+q)*m.cos(i)
         
         #torque due to magnetic fiel interactions
         tau_m = 2*M*R_D/(RE+H)**3
@@ -432,10 +431,10 @@ class FireSatelliteModel():
         tau_alpha = 0.5*rho*L_alpha*C_d*A*v**2
         
         #total disturbance torque
-        tau_dist = np.sqrt(tau_sp**2+tau_m**2+tau_g**2+tau_alpha**2)
+        tau_dist = m.sqrt(tau_sp**2+tau_m**2+tau_g**2+tau_alpha**2)
         
         #total torque
-        tau_tot = np.max([tau_dist,tau_slew])
+        tau_tot = ot.Sample([[tau_dist],[tau_slew]]).getMax()[0]
         
         #attitude power control
         P_ACS = tau_tot * omega_max+n*Phold
@@ -464,7 +463,7 @@ class FireSatelliteModel():
         Lalpha  = x[7]
         Cd      = x[8]
 		
-        tolP_ACS = np.inf
+        tolP_ACS = 1e10
         
         # run of orbit discipline
         inputs_orbit      = {}
@@ -508,7 +507,7 @@ class FireSatelliteModel():
             inputs_attitude['L_alpha']    = Lalpha
             
             outputs_attitude = self.attitudeControl(inputs_attitude)
-            tolP_ACS =  np.abs(inputs_power['P_ACS']- outputs_attitude['P_ACS'])
+            tolP_ACS =  abs(inputs_power['P_ACS']- outputs_attitude['P_ACS'])
             
             itFPI += 1
         	
