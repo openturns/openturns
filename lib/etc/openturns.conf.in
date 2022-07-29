@@ -689,7 +689,7 @@
   <DirectionalSampling-MeanContributionIntegrationNodesNumber value_int="255" />
 
   <!-- OT::NAIS parameters -->
-  <NAIS-DefaultrhoQuantile value_float="0.25" />
+  <NAIS-DefaultRhoQuantile value_float="0.25" />
 
   <!-- OT::AdaptiveDirectionalStratification parameters -->
   <AdaptiveDirectionalStratification-DefaultGamma                          value_float="0.5"         />
