@@ -189,10 +189,10 @@ class FireSatelliteModel():
         self.omega_max = 6000.
         
         # Number of reaction wheels that could be active
-        self.n = 3
+        self.n = int(3)
         
         # Slewing time period
-        self.delta_theta_slew = 760
+        self.delta_theta_slew = 760.
         
         # Area reflecting radiation
         self.As = 13.85
@@ -213,7 +213,7 @@ class FireSatelliteModel():
         self.Phold = 20.
         
         # Earth gravity constant
-        self.mu = 398600.4418e9
+        self.mu = 3.98600e14
         
         # Inherent degradation of array
         self.Id = 0.77
@@ -222,7 +222,7 @@ class FireSatelliteModel():
         self.t = 0.005
         
         # Number of solar arrays
-        self.n_sa = 3
+        self.n_sa = int(3)
         
         # Degradation in power production capability
         self.epsilon_deg = 0.0375
@@ -250,10 +250,7 @@ class FireSatelliteModel():
         
         # Power efficiency
         self.eta = 0.22
-        
-        # Earth gravity constant
-        self.mu = 398600.4418e9
-        
+
         # Target diameter
         self.phi_target = 235000.
         
@@ -265,7 +262,7 @@ class FireSatelliteModel():
         
         
         # Fixed Point Iteration maximum iteration
-        self.maxFPIIter = 50
+        self.maxFPIIter = int(50)
         
 	
     def power(self,inputs):
@@ -333,7 +330,7 @@ class FireSatelliteModel():
         I_saZ = m_sa*(1/12*(L**2+W**2)+(D+L/2)**2)        
         
         #total moment of inertia
-        I_tot =ot.Sample([[I_saX-I_bodyX],[I_saY-I_bodyY],[I_saZ-I_bodyZ]])
+        I_tot =ot.Sample([[I_saX+I_bodyX],[I_saY+I_bodyY],[I_saZ+I_bodyZ]])
         #Minimal inertia
         I_min = I_tot.getMin()[0]
         #Maximal inertia        

@@ -203,8 +203,8 @@ with :math:`I_{tot} = I_{sa} + I_{body}` the total moment of inertia in the thre
 .. math::
     I_{saZ} = m_{sa} \left( \frac{1}{12} (L^2+W^2) + (D+\frac{L}{2})^2 \right)
 
-with :math:`L = \sqrt{\frac{A_{sa} r_{tw}}{m_{sa}}}` the length of the solar array,
-:math:`W = \sqrt{\frac{A_{sa}}{r_{tw}m_{sa}}}` the width of the solar array, and
+with :math:`L = \sqrt{\frac{A_{sa} r_{tw}}{n_{sa}}}` the length of the solar array,
+:math:`W = \sqrt{\frac{A_{sa}}{r_{tw}n_{sa}}}` the width of the solar array, and
 :math:`m_{sa} = 2\rho_{sa}L W t` the mass of the solar array.
    
 Two tunings parameters are present : 
@@ -219,6 +219,9 @@ References
 
 
 * Sankararaman, S., Mahadevan, S. (2012). Likelihood-based approach to multidisciplinary analysis under uncertainty. Journal of Mechanical Design, 134(3):031008
+
+
+* Zaman, K. (2012). Modeling and management of epistemic uncetainty for multidisciplinary system analysis and design, PhD thesis, Vanderbilt University, USA
 
 
 Load the use case
