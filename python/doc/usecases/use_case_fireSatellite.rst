@@ -3,10 +3,17 @@
 The Fire Satellite model
 ========================
 
-The fire satellite model is a multidisciplinary test case that involves 3 disciplines: Power, Orbit and Attitude \& control. This usecase has been firstly proposed by Wertz et al. The model deals with the design of a realistic satellite, the goal of which is to detect and monitor forest fires from Earth's orbit, through the use of optical sensors. Three disciplines are needed to design this satellite. The orbit discipline is responsible of computing the orbit period, the satellite velocity, the maximal slewing angle and the eclipse period. The power discipline is used to estimate the total power of the system and the area of the solar arrays. Finally, the attitude \& control discipline computes the total torque of the satellite and the power required for the attitude control system.
+The fire satellite model is a multidisciplinary test case that involves 3 disciplines: Power, Orbit and Attitude \& control. This usecase has been firstly proposed by Wertz et al. The model deals with the design of a realistic satellite which goals are to detect and monitor forest fires from Earth's orbit, through the use of optical sensors. Three disciplines are needed to design this satellite. The orbit discipline is responsible of computing the orbit period, the satellite velocity, the maximal slewing angle and the eclipse period. The power discipline is used to estimate the total power of the system and the area of the solar arrays. Finally, the attitude \& control discipline computes the total torque of the satellite and the power required for the attitude control system.
 These disciplines exchange several coupling variables. The multidisciplinary analysis that is used to compute the converged values of the coupling variables is performed through a Fixed Point Iteration algorithm.
 
-This test case is composed of nine random variables:
+
+.. figure:: ../_static/firesatellite.png
+    :align: center 
+    :alt: use case geometry
+    :width: 50%
+    
+    
+This test case is composed of nine aleatory variables:
 
 - :math:`H \sim\mathcal{N}(18e6, 1e6)`, the altitude (m)
 
@@ -29,7 +36,7 @@ This test case is composed of nine random variables:
 
 The three outputs of interest are :
 
-- :math:`\tau_{torque}`, the total torque of the satellite (N.m)
+- :math:`\tau_{torque}`, the total torque of the satellite (m)
 
 - :math:`P_{tot}`, the total power of the satellite (W)
 
@@ -37,7 +44,7 @@ The three outputs of interest are :
 
 
 
-Different deterministic quantities are also present :
+Different deterministic quantities also present :
 
 - :math:`c` :  the speed of light, 2.9979e8 m/s 
 
@@ -91,12 +98,7 @@ Different deterministic quantities are also present :
 
 We assume that the input variables are independent.
 
-.. figure:: ../_static/firesatellite.png
-    :align: center 
-    :alt: use case geometry
-    :width: 50%
-    
-The following figures depicts the interaction between the disciplines.    
+The following figure depicts the interaction between the disciplines.    
 
 .. figure:: ../_static/N2firesat.png
     :align: center 
@@ -157,7 +159,7 @@ The attitude control power :math:`P_{ACS}` is finally defined by
 .. math::
     P_{ACS} = \tau_{tot}\omega_{max} + n P_{hold}
 
-The power discipline has 16 inputs and computes the total solar array size and total power as,
+The power discipline has 16 inputs and computes the total solar array size and total power by,
 
 .. math::
     P_{tot} = P_{ACS} + P_{other}
