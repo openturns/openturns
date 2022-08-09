@@ -284,15 +284,13 @@ Sample GaussianProcess::getRealizationGibbs() const
     {
       const UnsignedInteger index = static_cast< UnsignedInteger >(permutation[i]);
       LOGDEBUG(OSS() << "Gibbs sampler - update " << i << " -> component " << index << " over " << size - 1);
-      // Here we work on the normalized covariance, ie the correlation
+      // Here we implement equation (6) of Arroyo, Daisy & Emery, Xavier (2020) with rho=0 and J={j}
       Sample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
-      diagonal[index] = covarianceRow[index][0];
-      const Point delta(1, (DistFunc::rNormal() - values(index, 0)) / diagonal[index]);
+      diagonal[index] = covarianceRow(index, 0);
+      const Point delta(1, (std::sqrt(diagonal[index]) * DistFunc::rNormal() - values(index, 0)) / diagonal[index]);
       values += covarianceRow * delta;
     }
   }
-  // We have to rescale the realization
-  for (UnsignedInteger i = 0; i < size; ++i) values[i] *= diagonal[i];
   return values;
 }
 

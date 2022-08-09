@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
-
+import openturns.testing as ott
 
 # Default dimension parameter to evaluate the model
 inputDimension = 1
@@ -58,3 +58,20 @@ cov = ot.ExponentialModel([2.0] * inputDimension, [1.0, 2.0, 3.0])
 model = ot.GaussianProcess(cov, myTimeGrid)
 print('model=', model)
 print('marginal=', model.getMarginal([0, 2]))
+
+# FIX #2121
+ot.RandomGenerator.SetSeed(0)
+standard_deviation = 10.0
+mesh = ot.Mesh([[0.0]]) # singleton
+cov_matrix = ot.CovarianceMatrix(1, [standard_deviation**2]) # associated "covariance matrix"
+covModel = ot.UserDefinedCovarianceModel(mesh, cov_matrix)
+
+# Create the "Gaussian Process" discretized on a singleton
+myProcess = ot.GaussianProcess(covModel, mesh)
+myProcess.setSamplingMethod(ot.GaussianProcess.GIBBS)
+size = 1000
+sample = ot.Sample(size, 1)
+for i in range(size):
+    sample[i] = myProcess.getRealization().getValues()[0]
+
+ott.assert_almost_equal(sample.computeStandardDeviation()[0], 10.2016)
