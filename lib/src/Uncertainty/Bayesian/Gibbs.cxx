@@ -41,10 +41,9 @@ Gibbs::Gibbs()
 
 
 /* Parameters constructor */
-Gibbs::Gibbs(const MetropolisHastingsCollection & samplers, const Bool isOrderRandom)
+Gibbs::Gibbs(const MetropolisHastingsCollection & samplers)
   : RandomVectorImplementation()
   , samplers_(samplers)
-  , isOrderRandom_(isOrderRandom)
   , previouslyChosenSampler_(samplers.getSize()) // no sampler has that index
 {
   if (!samplers.getSize())
@@ -57,6 +56,7 @@ Gibbs::Gibbs(const MetropolisHastingsCollection & samplers, const Bool isOrderRa
       throw InvalidArgumentException(HERE) << "Sampler dimension is not compatible";
   }
   setDescription(samplers_[0].getImplementation()->getDescription());
+  setUpdatingMethod(UpdatingMethod(ResourceMap::GetAsUnsignedInteger("Gibbs-DefaultUpdatingMethod")));
 }
 
 
@@ -67,7 +67,7 @@ String Gibbs::__repr__() const
          << " name=" << getName()
          << " derived from " << RandomVectorImplementation::__repr__()
          << " samplers=" << samplers_
-         << " isOrderRandom=" << isOrderRandom_;
+         << " updatingMethod=" << updatingMethod_;
 }
 
 
@@ -82,7 +82,7 @@ UnsignedInteger Gibbs::getDimension() const
 }
 
 // Sequentially sample from the MH blocks
-void Gibbs::computeRealizationSequential() const
+void Gibbs::computeRealizationDeterministicUpdating() const
 {
     for (UnsignedInteger j = 0; j < samplers_.getSize(); ++ j)
     {
@@ -99,7 +99,7 @@ void Gibbs::computeRealizationSequential() const
 }
 
 // Sample from a randomly chosen MH block
-void Gibbs::computeRealizationRandomOrder() const
+void Gibbs::computeRealizationRandomUpdating() const
 {
   // randomly choose the sampler
   const UnsignedInteger chosenSampler = RandomGenerator::IntegerGenerate(samplers_.getSize());
@@ -143,13 +143,19 @@ Point Gibbs::getRealization() const
   // see which components will need to recompute the posterior
   if (samplesNumber_ == 0)
   {
-    Point lp(nbSamplers);
+    Point samplersLogPosteriors(nbSamplers);
     for (UnsignedInteger j = 0; j < nbSamplers; ++ j)
-      lp[j] = samplers_[j].computeLogPosterior(samplers_[j].getImplementation()->currentState_);
+      samplersLogPosteriors[j] = samplers_[j].computeLogPosterior(samplers_[j].getImplementation()->currentState_);
     recomputeLogPosterior_ = Indices(nbSamplers);
-    for (UnsignedInteger j = 0; j < nbSamplers; ++ j)
-      recomputeLogPosterior_[j] = (lp[j] != lp[(j + nbSamplers - 1) % nbSamplers]) ? 1 : 0;
-    if (isOrderRandom_) // if one of the blocks needs to recompute the log posterior, then all do
+
+    // For each sampler, check if it needs to recompute the log-posterior:
+    // if it shares the same log-posterior as the previous sampler, it does not.
+    // For the first sampler, the "previous" sampler is the last.
+    recomputeLogPosterior_[0] = (samplersLogPosteriors[0] == samplersLogPosteriors[nbSamplers - 1]) ? 0 : 1;
+    for (UnsignedInteger j = 1; j < nbSamplers; ++ j)
+      recomputeLogPosterior_[j] = (samplersLogPosteriors[j] == samplersLogPosteriors[j - 1]) ? 0 : 1;
+
+    if (updatingMethod_ == RANDOM_UPDATING) // if one of the blocks needs to recompute the log posterior, then all do
     {
       Bool recompute = false;
       for (UnsignedInteger j = 0; j < nbSamplers; ++j)
@@ -159,20 +165,23 @@ Point Gibbs::getRealization() const
         for (UnsignedInteger j = 0; j < nbSamplers; ++j)
             recomputeLogPosterior_[j] = true;
       }
-    } // random order  
+    } // random updating
 }
 
   // for each new sample
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    if (isOrderRandom_)
+    switch (updatingMethod_)
     {
-      computeRealizationRandomOrder();
-    }
-    else
-    {
-      computeRealizationSequential();
-    }
+      case DETERMINISTIC_UPDATING:
+        computeRealizationDeterministicUpdating();
+        break;
+      case RANDOM_UPDATING:
+        computeRealizationRandomUpdating();
+        break;
+      default:
+        throw InvalidArgumentException(HERE) << "Error: invalid updating method, must be DETERMINISTIC_UPDATING or RANDOM_UPDATING, here updatingMethod_=" << updatingMethod_;
+    } /* end switch */
   }
   samplesNumber_ += size;
 
@@ -189,19 +198,21 @@ Gibbs::MetropolisHastingsCollection Gibbs::getMetropolisHastingsCollection() con
 }
 
 /* Is order random accessors */
-void Gibbs::setIsOrderRandom(const Bool isOrderRandom)
+void Gibbs::setUpdatingMethod(const UpdatingMethod updatingMethod)
 {
-  if (isOrderRandom != isOrderRandom_) // reset
+  if (updatingMethod > 1)
+    throw InvalidArgumentException(HERE) << "Updating method should be 0 (DETERMINISTIC_UPDATING) or 1 (RANDOM_UPDATING)";
+  if (updatingMethod != updatingMethod_) // reset
   {
     samplesNumber_ = 0;
     previouslyChosenSampler_ = samplers_.getSize(); // no sampler has that index
+    updatingMethod_ = updatingMethod;
   }
-  isOrderRandom_ = isOrderRandom;
 }
 
-Bool Gibbs::getIsOrderRandom() const
+Gibbs::UpdatingMethod Gibbs::getUpdatingMethod() const
 {
-  return isOrderRandom_;
+  return static_cast<UpdatingMethod>(updatingMethod_);
 }
 
 void Gibbs::setBurnIn(const UnsignedInteger burnIn)
@@ -250,7 +261,7 @@ void Gibbs::save(Advocate & adv) const
 {
   RandomVectorImplementation::save(adv);
   adv.saveAttribute("samplers_", samplers_);
-  adv.saveAttribute("isOrderRandom_", isOrderRandom_);
+  adv.saveAttribute("updatingMethod_", updatingMethod_);
   adv.saveAttribute("previouslyChosenSampler_", previouslyChosenSampler_);
   adv.saveAttribute("currentState_", currentState_);
   adv.saveAttribute("burnIn_", burnIn_);
@@ -262,7 +273,7 @@ void Gibbs::load(Advocate & adv)
 {
   RandomVectorImplementation::load(adv);
   adv.loadAttribute("samplers_", samplers_);
-  adv.loadAttribute("isOrderRandom_", isOrderRandom_);
+  adv.loadAttribute("updatingMethod_", updatingMethod_);
   adv.loadAttribute("previouslyChosenSampler_", previouslyChosenSampler_);
   adv.loadAttribute("currentState_", currentState_);
   adv.loadAttribute("burnIn_", burnIn_);

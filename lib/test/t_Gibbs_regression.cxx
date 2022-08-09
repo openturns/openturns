@@ -183,7 +183,7 @@ int main(int, char *[])
     assert_almost_equal(recompute[0], 1);
     assert_almost_equal(recompute[1], 0);
     assert_almost_equal(recompute[2], 1);
-    gibbs.setIsOrderRandom(true);
+    gibbs.setUpdatingMethod(Gibbs::UpdatingMethod::RANDOM_UPDATING);
     gibbs.getRealization();
     recompute = gibbs.getRecomputeLogPosterior();
     assert_almost_equal(recompute[0], 1);

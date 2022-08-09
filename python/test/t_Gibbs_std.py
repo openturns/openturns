@@ -202,7 +202,7 @@ rwmh = ot.RandomWalkMetropolisHastings(
 gibbs = ot.Gibbs([rvmh1, rvmh2, rwmh])
 gibbs.getRealization()
 assert gibbs.getRecomputeLogPosterior() == [1, 0, 1]
-gibbs.setIsOrderRandom(True)
+gibbs.setUpdatingMethod(ot.Gibbs.RANDOM_UPDATING)
 gibbs.getRealization()
 assert gibbs.getRecomputeLogPosterior() == [1, 1, 1]
 

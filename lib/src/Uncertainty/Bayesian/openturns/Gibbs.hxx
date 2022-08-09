@@ -45,7 +45,7 @@ public:
   Gibbs();
 
   /** Constructor with parameters*/
-  Gibbs(const MetropolisHastingsCollection & samplers, const Bool isOrderRandom = false);
+  Gibbs(const MetropolisHastingsCollection & samplers);
 
   /** String converter */
   String __repr__() const override;
@@ -57,10 +57,6 @@ public:
 
   /** Samplers accessor */
   MetropolisHastingsCollection getMetropolisHastingsCollection() const;
-
-  /** Is order random accessors */
-  void setIsOrderRandom(const Bool isOrderRandom);
-  Bool getIsOrderRandom() const;
 
   /** Burnin accessor */
   void setBurnIn(const UnsignedInteger burnIn);
@@ -79,6 +75,11 @@ public:
   /** Dimension accessor */
   UnsignedInteger getDimension() const override;
 
+  /** Sampling method accessors */
+  enum UpdatingMethod { DETERMINISTIC_UPDATING, RANDOM_UPDATING };
+  void setUpdatingMethod(const UpdatingMethod updatingMethod);
+  UpdatingMethod getUpdatingMethod() const;
+
   /** Propose a new point in the chain */
   Point getRealization() const override;
 
@@ -91,10 +92,10 @@ public:
 
 protected:
   // Sequentially sample from the MH blocks
-  void computeRealizationSequential() const;
+  void computeRealizationDeterministicUpdating() const;
 
   // Sample from a randomly chosen MH block
-  void computeRealizationRandomOrder() const;
+  void computeRealizationRandomUpdating() const;
 
   mutable Point currentState_;
   mutable HistoryStrategy history_;
@@ -106,11 +107,11 @@ private:
   // collection of MH samplers
   MetropolisHastingsPersistentCollection samplers_;
 
-  // are MH samplers randomly called
-  Bool isOrderRandom_;
+  // sampling method: determines in which order the MH samplers are called
+  UnsignedInteger updatingMethod_ = 0;
 
-  // which MH sampler was previously called (used when isOrderRandom_ is true)
-  mutable UnsignedInteger previouslyChosenSampler_;
+  // which MH sampler was previously called (used when updatingMethod_ is RANDOM_UPDATING)
+  mutable UnsignedInteger previouslyChosenSampler_ = 0;
 
   // number of first samples discarded to reach stationary regime
   UnsignedInteger burnIn_ = 0;

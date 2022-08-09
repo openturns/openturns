@@ -485,6 +485,9 @@
   <GeneralizedParetoFactory-MaximumRelativeError    value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumEvaluationNumber value_int="1000" />
   <GeneralizedParetoFactory-SmallSize               value_int="20"   />
+
+  <!-- OT::Gibbs parameters -->
+  <Gibbs-DefaultUpdatingMethod       value_int="0"     />
   
   <!-- OT::InverseNormalFactory parameters -->
   <InverseNormalFactory-Method value_str="MLE" />
