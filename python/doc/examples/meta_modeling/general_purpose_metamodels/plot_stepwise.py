@@ -124,7 +124,7 @@ minimalIndices = [0]
 direction = ot.LinearModelStepwiseAlgorithm.FORWARD
 penalty = 2.0
 algo_forward = ot.LinearModelStepwiseAlgorithm(
-    input_sample, basis, output_sample, minimalIndices, direction)
+    input_sample, output_sample, basis, minimalIndices, direction)
 algo_forward.setPenalty(penalty)
 algo_forward.run()
 result_forward = algo_forward.getResult()
@@ -154,7 +154,7 @@ minimalIndices = [0]
 direction = ot.LinearModelStepwiseAlgorithm.BACKWARD
 penalty = np.log(n)
 algo_backward = ot.LinearModelStepwiseAlgorithm(
-    input_sample, basis, output_sample, minimalIndices, direction)
+    input_sample, output_sample, basis, minimalIndices, direction)
 algo_backward.setPenalty(penalty)
 algo_backward.run()
 result_backward = algo_backward.getResult()
@@ -179,7 +179,7 @@ startIndices = [0, 2, 3]
 penalty = np.log(n)
 direction = ot.LinearModelStepwiseAlgorithm.BOTH
 algo_both = ot.LinearModelStepwiseAlgorithm(
-    input_sample, basis, output_sample, minimalIndices, direction, startIndices)
+    input_sample, output_sample, basis, minimalIndices, direction, startIndices)
 algo_both.setPenalty(penalty)
 algo_both.run()
 result_both = algo_both.getResult()
@@ -197,7 +197,7 @@ startIndices = [0, 1]
 penalty = np.log(n)
 direction = ot.LinearModelStepwiseAlgorithm.BOTH
 algo_both = ot.LinearModelStepwiseAlgorithm(
-    input_sample, basis, output_sample, minimalIndices, direction, startIndices)
+    input_sample, output_sample, basis, minimalIndices, direction, startIndices)
 algo_both.setPenalty(penalty)
 algo_both.run()
 result_both = algo_both.getResult()
@@ -247,7 +247,7 @@ BIC = []
 AIC = []
 for iterations in range(1, 6):
     algo_forward = ot.LinearModelStepwiseAlgorithm(
-        input_sample, basis, output_sample, minimalIndices, direction)
+        input_sample, output_sample, basis, minimalIndices, direction)
     algo_forward.setPenalty(penalty)
     algo_forward.setMaximumIterationNumber(iterations)
     algo_forward.run()

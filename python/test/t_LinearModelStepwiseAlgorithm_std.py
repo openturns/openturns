@@ -99,7 +99,7 @@ for k in [penalty_AIC, penalty_BIC]:
     if k == penalty_BIC:
         IC = " BIC "
     for direction in [ot.LinearModelStepwiseAlgorithm.FORWARD, ot.LinearModelStepwiseAlgorithm.BACKWARD, ot.LinearModelStepwiseAlgorithm.BOTH]:
-        algo = ot.LinearModelStepwiseAlgorithm(X, basis, Y, i_min, direction,
+        algo = ot.LinearModelStepwiseAlgorithm(X, Y, basis, i_min, direction,
                                                i_0 if direction == ot.LinearModelStepwiseAlgorithm.BOTH else [])
         algo.setPenalty(k)
         algo.setMaximumIterationNumber(maxiteration)
