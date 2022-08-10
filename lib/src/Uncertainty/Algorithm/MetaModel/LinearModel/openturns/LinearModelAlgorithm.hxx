@@ -48,13 +48,17 @@ public:
                        const Sample & outputSample);
 
   /** Parameters constructor */
-  LinearModelAlgorithm(const Sample & inputSample,
-                       const Basis & basis,
-                       const Sample & outputSample);
+  LinearModelAlgorithm(const Sample &inputSample,
+                       const Sample &outputSample,
+                       const Basis &basis);
+
+  /** Oldest constructor (for compatibility) */
+  LinearModelAlgorithm(const Sample &inputSample,
+                       const Basis &basis,
+                       const Sample &outputSample);
 
   /** Virtual constructor */
-  LinearModelAlgorithm * clone() const override;
-
+  LinearModelAlgorithm *clone() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -84,11 +88,11 @@ private:
   // The input data
   Sample inputSample_;
 
-  /** The basis */
-  Basis basis_;
-
   // The associated output data
   Sample outputSample_;
+
+  /** The basis */
+  Basis basis_;
 
   /** Result */
   LinearModelResult result_;
