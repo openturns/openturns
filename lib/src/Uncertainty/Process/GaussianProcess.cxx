@@ -227,6 +227,16 @@ void GaussianProcess::setTimeGrid(const RegularGrid & timeGrid)
   setMesh(timeGrid);
 }
 
+GaussianProcess::SamplingMethod GaussianProcess::getSamplingMethod() const
+{
+  if (samplingMethod_ == 1)
+    return SamplingMethod::HMAT;
+  else if (samplingMethod_ == 2)
+    return SamplingMethod::GIBBS;
+  else
+    return SamplingMethod::CHOLESKY;
+}
+
 /** Set sampling method accessor */
 void GaussianProcess::setSamplingMethod(const SamplingMethod samplingMethod)
 {

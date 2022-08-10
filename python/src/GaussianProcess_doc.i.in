@@ -34,21 +34,20 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> # Default dimension parameter to evaluate the model
->>> defaultDimension = 1
 >>> # Amplitude values
->>> amplitude = [1.0]*defaultDimension
+>>> amplitude = [1.0]
 >>> # Scale values
->>> scale = [1.0]*defaultDimension
+>>> scale = [1.0]
 >>> # Second order model with parameters
->>> myModel = ot.AbsoluteExponential(scale, amplitude)
+>>> covarianceModel = ot.AbsoluteExponential(scale, amplitude)
 >>> # Time grid
 >>> tmin = 0.0
 >>> step = 0.1
 >>> n = 11
->>> myTimeGrid = ot.RegularGrid(tmin, step, n)
+>>> meshGrid = ot.RegularGrid(tmin, step, n)
 >>> size = 100
->>> myProcess = ot.GaussianProcess(myModel, myTimeGrid)"
+>>> myProcess = ot.GaussianProcess(covarianceModel, meshGrid)
+>>> myProcess.setSamplingMethod(myProcess.CHOLESKY)"
 
 // ---------------------------------------------------------------------
 
@@ -82,16 +81,39 @@ isTrendStationary : bool
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::GaussianProcess::getSamplingMethod
+"Get the used method for getRealization.
+
+Returns
+-------
+samplingMethod : int
+    Used method for sampling.
+
+Notes
+-----
+
+Available parameters are :
+
+  * 0 (GaussianProcess.CHOLESKY) : Cholesky factor sampling (default method)
+
+  * 1 (GaussianProcess.HMAT) : H-Matrix method (if H-Mat available)
+
+  * 2 (GaussianProcess.GIBBS) : Gibbs method (in dimension 1 only)
+
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::GaussianProcess::setSamplingMethod
 "Set the used method for getRealization.
 
 Available parameters are :
 
-  * 0 : Cholesky factor sampling (default method)
+  * 0 (GaussianProcess.CHOLESKY) : Cholesky factor sampling (default method)
 
-  * 1 : H-Matrix method (if H-Mat available)
+  * 1 (GaussianProcess.HMAT) : H-Matrix method (if H-Mat available)
 
-  * 2 : Gibbs method (in dimension 1 only)
+  * 2 (GaussianProcess.GIBBS) : Gibbs method (in dimension 1 only)
 
 Parameters
 ----------
