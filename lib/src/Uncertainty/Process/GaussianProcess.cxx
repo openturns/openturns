@@ -241,9 +241,8 @@ GaussianProcess::SamplingMethod GaussianProcess::getSamplingMethod() const
 void GaussianProcess::setSamplingMethod(const SamplingMethod samplingMethod)
 {
   if (samplingMethod > 2)
-    throw InvalidArgumentException(HERE) << "Sampling method should be 0 (Cholesky), 1 (H-Matrix implementation) or 2 (Gibbs, available only in dimension 1)";
-  if ((samplingMethod == SamplingMethod::GIBBS) && getOutputDimension() != 1)
-    throw InvalidArgumentException(HERE) << "Sampling method Gibbs is available only in dimension 1 ";
+    throw InvalidArgumentException(HERE) << "Sampling method should be 0 (Cholesky), 1 (H-Matrix implementation) or 2 (Gibbs)";
+
   // Set the sampling method
   if (samplingMethod != samplingMethod_)
   {
@@ -280,28 +279,35 @@ Field GaussianProcess::getRealization() const
 Sample GaussianProcess::getRealizationGibbs() const
 {
   const Sample vertices(getMesh().getVertices());
+  const UnsignedInteger outputDimension = getOutputDimension();
   const UnsignedInteger size = vertices.getSize();
+  const UnsignedInteger fullSize = size * outputDimension;
   const UnsignedInteger nMax = std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration"));
 
-  Sample values(size, 1);
-  Point diagonal(size);
-  const KPermutationsDistribution permutationDistribution(size, size);
+  Sample values(fullSize, 1);
+  Point diagonal(fullSize);
+  const KPermutationsDistribution permutationDistribution(fullSize, fullSize);
   for (UnsignedInteger n = 0; n < nMax; ++n)
   {
     LOGINFO(OSS() << "Gibbs sampler - start iteration " << n + 1 << " over " << nMax);
     const Point permutation(permutationDistribution.getRealization());
-    for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < fullSize; ++i)
     {
       const UnsignedInteger index = static_cast< UnsignedInteger >(permutation[i]);
-      LOGDEBUG(OSS() << "Gibbs sampler - update " << i << " -> component " << index << " over " << size - 1);
-      // Here we implement equation (6) of Arroyo, Daisy & Emery, Xavier (2020) with rho=0 and J={j}
-      Sample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
+      LOGDEBUG(OSS() << "Gibbs sampler - update " << i << " -> component " << index << " over " << fullSize - 1);
+      // Here we implement equation (6) of Arroyo and Emery (2020) with rho=0 and J={j}
+      const Sample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
       diagonal[index] = covarianceRow(index, 0);
       const Point delta(1, (std::sqrt(diagonal[index]) * DistFunc::rNormal() - values(index, 0)) / diagonal[index]);
       values += covarianceRow * delta;
     }
   }
-  return values;
+  // for output dim > 1 we need to reshape data
+  if (outputDimension == 1) return values;
+  Sample outputValues(size, outputDimension);
+  const Point rawData(values.getImplementation()->getData());
+  outputValues.getImplementation()->setData(rawData);
+  return outputValues;
 }
 
 Sample GaussianProcess::getRealizationCholesky() const

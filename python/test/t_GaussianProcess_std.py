@@ -75,3 +75,50 @@ for i in range(size):
     sample[i] = myProcess.getRealization().getValues()[0]
 
 ott.assert_almost_equal(sample.computeStandardDeviation()[0], 10.2016)
+
+# Multivariate outputs
+ot.RandomGenerator.SetSeed(1)
+inputDimension = 1
+outputDimension = 2
+
+size = 1000
+ot.ResourceMap.SetAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration", 1000)
+# Amplitude values
+amplitude = [2.0, 3.0]
+# Scale values
+scale = [1.0] * inputDimension
+
+myCovModel = ot.ExponentialModel(scale, amplitude)
+
+myProcess4 = ot.GaussianProcess(myCovModel, myTimeGrid)
+print("myProcess4 = ", myProcess4)
+print("is stationary? ", myProcess4.isStationary())
+myProcess4.setSamplingMethod(ot.GaussianProcess.CHOLESKY)
+sample = myProcess4.getSample(size)
+print("mean over ", size, " realizations = ",
+      sample.computeMean())
+print("variance over ", size, " realizations = ",
+      sample.computeVariance())
+myProcess4.setSamplingMethod(ot.GaussianProcess.GIBBS)
+sample = myProcess4.getSample(size)
+print("mean over ", size, " realizations = ",
+      sample.computeMean())
+print("variance over ", size, " realizations = ",
+      sample.computeVariance())
+
+trend5 = ot.TrendTransform(ot.SymbolicFunction(["t"], ["sin(pi_ / 2 * t)", "2 * sin(pi_ / 2 * t)"]), myTimeGrid)
+myProcess5 = ot.GaussianProcess(trend5, myCovModel, myTimeGrid)
+print("myProcess5 = ", myProcess5)
+print("is stationary? ", myProcess5.isStationary())
+myProcess5.setSamplingMethod(ot.GaussianProcess.CHOLESKY)
+sample = myProcess5.getSample(size)
+print("mean over ", size, " realizations = ",
+      sample.computeMean())
+print("variance over ", size, " realizations = ",
+      sample.computeVariance())
+myProcess5.setSamplingMethod(ot.GaussianProcess.GIBBS)
+sample = myProcess5.getSample(size)
+print("mean over ", size, " realizations = ",
+      sample.computeMean())
+print("variance over ", size, " realizations = ",
+      sample.computeVariance())
