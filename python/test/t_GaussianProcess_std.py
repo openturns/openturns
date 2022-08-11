@@ -74,7 +74,7 @@ sample = ot.Sample(size, 1)
 for i in range(size):
     sample[i] = myProcess.getRealization().getValues()[0]
 
-ott.assert_almost_equal(sample.computeStandardDeviation()[0], 10.2016)
+ott.assert_almost_equal(sample.computeStandardDeviation()[0], 10.0676)
 
 # Multivariate outputs
 ot.RandomGenerator.SetSeed(1)

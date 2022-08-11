@@ -229,12 +229,8 @@ void GaussianProcess::setTimeGrid(const RegularGrid & timeGrid)
 
 GaussianProcess::SamplingMethod GaussianProcess::getSamplingMethod() const
 {
-  if (samplingMethod_ == 1)
-    return SamplingMethod::HMAT;
-  else if (samplingMethod_ == 2)
-    return SamplingMethod::GIBBS;
-  else
-    return SamplingMethod::CHOLESKY;
+  const GaussianProcess::SamplingMethod output = static_cast<GaussianProcess::SamplingMethod>(samplingMethod_);
+  return output;
 }
 
 /** Set sampling method accessor */
@@ -285,20 +281,19 @@ Sample GaussianProcess::getRealizationGibbs() const
   const UnsignedInteger nMax = std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration"));
 
   Sample values(fullSize, 1);
-  Point diagonal(fullSize);
   const KPermutationsDistribution permutationDistribution(fullSize, fullSize);
+  const Sample permutationSample(permutationDistribution.getSample(nMax));
   for (UnsignedInteger n = 0; n < nMax; ++n)
   {
     LOGINFO(OSS() << "Gibbs sampler - start iteration " << n + 1 << " over " << nMax);
-    const Point permutation(permutationDistribution.getRealization());
     for (UnsignedInteger i = 0; i < fullSize; ++i)
     {
-      const UnsignedInteger index = static_cast< UnsignedInteger >(permutation[i]);
+      const UnsignedInteger index = static_cast< UnsignedInteger >(permutationSample(n, i));
       LOGDEBUG(OSS() << "Gibbs sampler - update " << i << " -> component " << index << " over " << fullSize - 1);
       // Here we implement equation (6) of Arroyo and Emery (2020) with rho=0 and J={j}
       const Sample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
-      diagonal[index] = covarianceRow(index, 0);
-      const Point delta(1, (std::sqrt(diagonal[index]) * DistFunc::rNormal() - values(index, 0)) / diagonal[index]);
+      const Scalar diagonalIndex = covarianceRow(index, 0);
+      const Point delta(1, (std::sqrt(diagonalIndex) * DistFunc::rNormal() - values(index, 0)) / diagonalIndex);
       values += covarianceRow * delta;
     }
   }
