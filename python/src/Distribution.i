@@ -140,8 +140,8 @@ class SciPyDistribution(PythonDistribution):
     """
     def __init__(self, dist):
         super(SciPyDistribution, self).__init__(1)
-        if dist.__class__.__name__ != 'rv_frozen':
-            raise TypeError('Argument is not a scipy distribution')
+        if dist.__class__.__name__ not in ('rv_frozen', 'rv_continuous_frozen', 'rv_histogram'):
+            raise TypeError('Argument is not a continuous scipy 1D distribution')
         self._dist = dist
 
         # compute range
@@ -171,6 +171,8 @@ class SciPyDistribution(PythonDistribution):
         return rvs.reshape(size, 1)
 
     def computePDF(self, X):
+        # before 1.9, all 1d dist have a pdf method
+        # since 1.9, pdf for continuous, pmf for discrete
         pdf = self._dist.pdf(X[0])
         return pdf
 
@@ -198,6 +200,9 @@ class SciPyDistribution(PythonDistribution):
     def getMoment(self, n):
         moment = self._dist.moment(n)
         return [moment]
+
+    def isContinuous(self):
+        return True
 
     def computeScalarQuantile(self, p, tail=False):
         q = self._dist.ppf(1.0 - p if tail else p)

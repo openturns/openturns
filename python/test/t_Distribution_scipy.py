@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 import openturns as ot
-import scipy as sp
 import scipy.stats as st
+import numpy as np
 
 for scipy_dist in [st.uniform(), st.johnsonsu(2.55, 2.25)]:
-    sp.random.seed(42)
+    np.random.seed(42)
 
     # create an openturns distribution
     py_dist = ot.SciPyDistribution(scipy_dist)
