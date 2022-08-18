@@ -4,10 +4,10 @@ Model a singular multivariate distribution
 """
 
 # %%
-# From time to time we need to model singular nD distributions
+# From time to time we need to model singular :math:`n_D` distributions
 # (e.g. the joint distribution of KL coefficients for curves resulting from the transport of a low dimensional random vector).
-# A way to do that is to use an EmpiricalBernsteinCopula with a bin number equal to the sample size
-# (also called the empirical beta copula in this case)
+# A way to do that is to use an :class:`~openturns.EmpiricalBernsteinCopula` with a bin number equal to the sample size
+# (also called the empirical beta copula in this case).
 
 import openturns as ot
 import openturns.viewer as viewer
