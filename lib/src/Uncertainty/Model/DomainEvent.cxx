@@ -97,6 +97,12 @@ Point DomainEvent::getRealization() const
   return Point(1, domain_.contains(CompositeRandomVector::getRealization()));
 }
 
+/* Fixed value accessor */
+Point DomainEvent::getFixedValue() const
+{
+  return Point(1, domain_.contains(CompositeRandomVector::getFixedValue()));
+}
+
 /* Numerical sample accessor */
 Sample DomainEvent::getSample(const UnsignedInteger size) const
 {

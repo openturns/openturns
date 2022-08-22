@@ -89,6 +89,12 @@ Point CompositeRandomVector::getRealization() const
   return function_(antecedent_.getRealization());
 }
 
+/* Realization accessor */
+Point CompositeRandomVector::getFixedValue() const
+{
+  return function_(antecedent_.getFixedValue());
+}
+
 /* Numerical sample accessor */
 Sample CompositeRandomVector::getSample(const UnsignedInteger size) const
 {

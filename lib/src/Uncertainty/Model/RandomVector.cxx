@@ -126,6 +126,12 @@ Point RandomVector::getRealization() const
   return getImplementation()->getRealization();
 }
 
+/* Fixed value accessor */
+Point RandomVector::getFixedValue() const
+{
+  return getImplementation()->getFixedValue();
+}
+
 /* Numerical sample accessor */
 Sample RandomVector::getSample(UnsignedInteger size) const
 {

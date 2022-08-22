@@ -64,8 +64,8 @@ public:
   /** Realization accessor */
   Point getRealization() const override;
 
-  /** Sample accessor */
-  Sample getSample(const UnsignedInteger size) const override;
+  /** Fixed value accessor */
+  Point getFixedValue() const override;
 
   /** Whether it is an event */
   Bool isEvent() const override;
@@ -102,7 +102,7 @@ private:
   RandomVectorPersistentCollection eventCollection_;
 
   /** The antecedent is defined here as the root cause */
-  RandomVector antecedent_;
+  mutable RandomVector antecedent_;
 
   RandomVector composedEvent_;
 

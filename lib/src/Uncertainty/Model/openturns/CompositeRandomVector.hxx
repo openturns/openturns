@@ -71,6 +71,9 @@ public:
   /** Realization accessor */
   Point getRealization() const override;
 
+  /** Fixed value accessor */
+  Point getFixedValue() const override;
+
   /** Numerical sample accessor */
   Sample getSample(const UnsignedInteger size) const override;
 

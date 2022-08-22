@@ -76,6 +76,9 @@ public:
   /** Realization accessor */
   Point getRealization() const;
 
+  /** Fixed value accessor */
+  Point getFixedValue() const;
+
   /** Numerical sample accessor */
   Sample getSample(const UnsignedInteger size) const;
 

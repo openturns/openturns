@@ -33,6 +33,7 @@ static const Factory<RandomVectorImplementation> Factory_RandomVectorImplementat
 RandomVectorImplementation::RandomVectorImplementation()
   : PersistentObject()
   , description_()
+  , fixedValue_()
 {
   // Nothing to do
 }
@@ -87,6 +88,17 @@ UnsignedInteger RandomVectorImplementation::getDimension() const
 Point RandomVectorImplementation::getRealization() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getRealization() const";
+}
+
+/* Fixed value accessor */
+Point RandomVectorImplementation::getFixedValue() const
+{
+  return fixedValue_;
+}
+
+void RandomVectorImplementation::setFixedValue(const Point & fixedValue)
+{
+  fixedValue_ = fixedValue;
 }
 
 /* Numerical sample accessor */

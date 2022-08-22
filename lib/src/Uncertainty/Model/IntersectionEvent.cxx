@@ -136,7 +136,7 @@ void IntersectionEvent::setEventCollection(const RandomVectorCollection & collec
       // ThresholdEvent
       if (collection[i].getAntecedent().getImplementation()->getId() != rootCauseId)
         throw NotYetImplementedException(HERE) << "Root cause not found";
-      composedEvent_ = composedEvent_.intersect(collection[i]);
+      //composedEvent_ = composedEvent_.intersect(collection[i]);
     }
   }
   eventCollection_ = collection;
@@ -146,7 +146,32 @@ void IntersectionEvent::setEventCollection(const RandomVectorCollection & collec
 /* Realization accessor */
 Point IntersectionEvent::getRealization() const
 {
-  return composedEvent_.getRealization();
+  antecedent_.getImplementation()->setFixedValue(antecedent_.getRealization());
+  Point realization(1);
+  for (UnsignedInteger i = 0; i < eventCollection_.getSize(); ++ i)
+  {
+    if (eventCollection_[i].getFixedValue()[0] == 0.0)
+    {
+      return realization;
+    }
+  }
+  realization[0] = 1.0;
+  return realization;
+}
+
+/* Fixed value accessor */
+Point IntersectionEvent::getFixedValue() const
+{
+  Point realization(1);
+  for (UnsignedInteger i = 0; i < eventCollection_.getSize(); ++ i)
+  {
+    if (eventCollection_[i].getFixedValue()[0] == 0.0)
+    {
+      return realization;
+    }
+  }
+  realization[0] = 1.0;
+  return realization;
 }
 
 /* Sample accessor */
