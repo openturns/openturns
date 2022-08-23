@@ -146,26 +146,17 @@ void UnionEvent::setEventCollection(const RandomVectorCollection & collection)
 /* Realization accessor */
 Point UnionEvent::getRealization() const
 {
-  antecedent_.getImplementation()->setFixedValue(antecedent_.getRealization());
-  Point realization(1);
-  for (UnsignedInteger i = 0; i < eventCollection_.getSize(); ++ i)
-  {
-    if (eventCollection_[i].getFixedValue()[0] == 1.0)
-    {
-      realization[0] = 1.0;
-      return realization;
-    }
-  }
-  return realization;
+  return getFixedValue(antecedent_.getRealization());
 }
 
 /* Fixed value accessor */
-Point UnionEvent::getFixedValue() const
+Point UnionEvent::getFixedValue(const Point & fixedValue) const
 {
+  LOGINFO(OSS() << "antecedent value = " << fixedValue);
   Point realization(1);
   for (UnsignedInteger i = 0; i < eventCollection_.getSize(); ++ i)
   {
-    if (eventCollection_[i].getFixedValue()[0] == 1.0)
+    if (eventCollection_[i].getFixedValue(fixedValue)[0] == 1.0)
     {
       realization[0] = 1.0;
       return realization;

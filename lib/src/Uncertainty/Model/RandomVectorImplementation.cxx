@@ -33,7 +33,6 @@ static const Factory<RandomVectorImplementation> Factory_RandomVectorImplementat
 RandomVectorImplementation::RandomVectorImplementation()
   : PersistentObject()
   , description_()
-  , fixedValue_()
 {
   // Nothing to do
 }
@@ -91,14 +90,9 @@ Point RandomVectorImplementation::getRealization() const
 }
 
 /* Fixed value accessor */
-Point RandomVectorImplementation::getFixedValue() const
+Point RandomVectorImplementation::getFixedValue(const Point & fixedValue) const
 {
-  return fixedValue_;
-}
-
-void RandomVectorImplementation::setFixedValue(const Point & fixedValue)
-{
-  fixedValue_ = fixedValue;
+  return fixedValue;
 }
 
 /* Numerical sample accessor */

@@ -98,9 +98,9 @@ Point DomainEvent::getRealization() const
 }
 
 /* Fixed value accessor */
-Point DomainEvent::getFixedValue() const
+Point DomainEvent::getFixedValue(const Point & fixedValue) const
 {
-  return Point(1, domain_.contains(CompositeRandomVector::getFixedValue()));
+  return Point(1, domain_.contains(CompositeRandomVector::getFixedValue(fixedValue)));
 }
 
 /* Numerical sample accessor */

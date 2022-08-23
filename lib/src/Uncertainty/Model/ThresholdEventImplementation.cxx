@@ -199,9 +199,9 @@ Point ThresholdEventImplementation::getRealization() const
   return Point(1, operator_(CompositeRandomVector::getRealization()[0], threshold_));
 }
 
-Point ThresholdEventImplementation::getFixedValue() const
+Point ThresholdEventImplementation::getFixedValue(const Point & fixedValue) const
 {
-  return Point(1, operator_(CompositeRandomVector::getFixedValue()[0], threshold_));
+  return Point(1, operator_(CompositeRandomVector::getFixedValue(fixedValue)[0], threshold_));
 }
 
 /* Numerical sample accessor */

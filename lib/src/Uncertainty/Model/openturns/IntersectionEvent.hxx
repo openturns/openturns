@@ -65,7 +65,7 @@ public:
   Point getRealization() const override;
 
   /** Fixed value accessor */
-  Point getFixedValue() const override;
+  Point getFixedValue(const Point & fixedValue) const override;
 
   /** Whether it is an event */
   Bool isEvent() const override;
@@ -102,7 +102,7 @@ private:
   RandomVectorPersistentCollection eventCollection_;
 
   /** The antecedent is defined here as the root cause */
-  mutable RandomVector antecedent_;
+  RandomVector antecedent_;
 
   RandomVector composedEvent_;
 

@@ -47,8 +47,6 @@ class OT_API RandomVectorImplementation
   : public PersistentObject
 {
   CLASSNAME
-  friend class UnionEvent;
-  friend class IntersectionEvent;
 
 public:
 
@@ -76,7 +74,7 @@ public:
   virtual Point getRealization() const;
 
   /** Fixed value accessor */
-  virtual Point getFixedValue() const;
+  virtual Point getFixedValue(const Point & fixedValue) const;
 
   /** Numerical sample accessor */
   virtual Sample getSample(const UnsignedInteger size) const;
@@ -136,16 +134,10 @@ public:
 
 protected:
 
-  /** Fixed value accessor */
-  void setFixedValue(const Point & fixedValue);
-
 private:
 
   /** Description of each component */
   Description description_;
-
-  /** Fixed value */
-  Point fixedValue_;
 
 }; /* class RandomVectorImplementation */
 
