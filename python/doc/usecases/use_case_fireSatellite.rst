@@ -34,7 +34,7 @@ This test case is composed of nine random variables:
 - :math:`C_d \sim\mathcal{N}(1,0.3)`, the drag coefficient (-)
 
 
-The three outputs of interest are :
+The three outputs of interest are:
 
 - :math:`\tau_{torque}`, the total torque of the satellite (N.m)
 
@@ -44,7 +44,7 @@ The three outputs of interest are :
 
 
 
-Different deterministic quantities are also present :
+Different deterministic quantities are also present:
 
 - :math:`c` :  the speed of light, 2.9979e8 m/s 
 
@@ -223,7 +223,7 @@ References
 * Sankararaman, S., Mahadevan, S. (2012). Likelihood-based approach to multidisciplinary analysis under uncertainty. Journal of Mechanical Design, 134(3):031008
 
 
-* Zaman, K. (2012). Modeling and management of epistemic uncetainty for multidisciplinary system analysis and design, PhD thesis, Vanderbilt University, USA
+* Zaman, K. (2012). Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design, PhD thesis, Vanderbilt University, USA
 
 
 Load the use case
@@ -233,8 +233,8 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import fireSatelitte_function
-    >>> m = fireSatelitte_function.FireSatelliteModel()
+    >>> from openturns.usecases import fireSatellite_function
+    >>> m = fireSatellite_function.FireSatelliteModel()
     >>> # Load the Fire satellite use case (with 3 outputs: total torque, total power and solar array area)
     >>> model = m.model()
     >>> # Load the Fire satellite use case with total torque as output

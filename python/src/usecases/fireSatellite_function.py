@@ -9,11 +9,10 @@ class FireSatelliteModel():
     """
     Data class for the Fire Satellite.
 
-
-	Attributes
-	----------
+    Attributes
+    ----------
 	
-	dim : The dimension of the problem
+    dim : The dimension of the problem
           dim = 9
 
     H : Altitude (m), `Normal` distribution
