@@ -23,8 +23,6 @@ Example of sensitivity analyses on the wing weight model
 # -----------------------
 #
 # We load the model from the usecases module.
-# 
-# For a quick reminder, this usecase is a ten dimensional model, with the following inputs:
 #
 #
 import openturns as ot
@@ -197,9 +195,10 @@ pearson_correlation = corr_analysis.computePearsonCorrelation()
 print(pearson_correlation)
 
 # %%
+title_pearson_graph = "Pearson correlation coefficients - Wing weight"
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(pearson_correlation,
                                                              inputNames,
-                                                             "Pearson correlation coefficients - Wing weight")
+                                                             title_pearson_graph)
 view = otv.View(graph)
 
 # %%
@@ -212,9 +211,10 @@ spearman_correlation = corr_analysis.computeSpearmanCorrelation()
 print(spearman_correlation)
 
 # %%
+title_spearman_graph = "Spearman correlation coefficients - Wing weight"
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(spearman_correlation,
                                                              inputNames,
-                                                             "Spearman correlation coefficients - Wing weight")
+                                                             title_spearman_graph)
 view = otv.View(graph)
 plt.show()
 
