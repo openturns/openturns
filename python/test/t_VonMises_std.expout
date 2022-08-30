@@ -46,12 +46,6 @@ correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 parameters= [[mu : -0.5, kappa : 1.5]]
-standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [-0.5]
-standard moment n= 2 , value= [1.34073]
-standard moment n= 3 , value= [-1.7611]
-standard moment n= 4 , value= [5.79766]
-standard moment n= 5 , value= [-11.6423]
 Standard representative= VonMises(mu = -0.5, kappa=1.5)
 Circular mean= -0.5
 Circular variance= 0.403866761169

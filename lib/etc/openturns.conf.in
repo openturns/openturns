@@ -688,6 +688,9 @@
   <!-- OT::DirectionalSampling parameters -->
   <DirectionalSampling-MeanContributionIntegrationNodesNumber value_int="255" />
 
+  <!-- OT::NAIS parameters -->
+  <NAIS-DefaultRhoQuantile value_float="0.25" />
+
   <!-- OT::AdaptiveDirectionalStratification parameters -->
   <AdaptiveDirectionalStratification-DefaultGamma                          value_float="0.5"         />
   <AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension value_int="3" />

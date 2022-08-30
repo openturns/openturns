@@ -106,7 +106,7 @@ int main(int, char *[])
   rc |= check< OutOfBoundException >();
   rc |= check< XMLException >();
   rc |= check< XMLParserException >();
-  rc |= check< DynamicLibraryException >();
+  rc |= check< InterruptionException >();
   rc |= check< NotSymmetricDefinitePositiveException >();
   rc |= check< InvalidRangeException >();
   rc |= check< NotDefinedException >();

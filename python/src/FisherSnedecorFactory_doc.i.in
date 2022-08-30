@@ -61,7 +61,7 @@ are estimated from a sample.
 >>> size = 10000
 >>> distribution = ot.FisherSnedecor(4.5, 8.4)
 >>> sample = distribution.getSample(size)
->>> factory = ot.TruncatedNormalFactory()
+>>> factory = ot.FisherSnedecorFactory()
 >>> estimated = factory.build(sample)
 >>> estimated = factory.buildMethodOfMoments(sample)
 >>> estimated = factory.buildMethodOfLikelihoodMaximization(sample)"

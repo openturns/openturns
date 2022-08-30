@@ -131,7 +131,6 @@ int main(int, char *[])
       fullprint << "spearman=" << spearman << std::endl;
       CovarianceMatrix kendall = distribution.getKendallTau();
       fullprint << "kendall=" << kendall << std::endl;
-      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     }
   }

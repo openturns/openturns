@@ -256,7 +256,7 @@ Notes
 -----
 Let's suppose a model :math:`f: \Rset^n \mapsto \Rset`, where
 :math:`f(\vect{X})=Y`.
-The Cobweb graph enables to visualize all the combinations of the input
+The parallel coordinates graph enables to visualize all the combinations of the input
 variables which lead to a specific range of the output variable.
 
 Each column represents one component :math:`X_i` of the input vector

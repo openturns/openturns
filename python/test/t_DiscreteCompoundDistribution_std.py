@@ -54,8 +54,5 @@ kurtosis = distribution.getKurtosis()
 print("kurtosis=", repr(kurtosis))
 covariance = distribution.getCovariance()
 print("covariance=", repr(covariance))
-for i in range(6):
-    print("standard moment n=", i, " value=",
-          distribution.getStandardMoment(i))
 print("Standard representative=", distribution.getStandardRepresentative())
 #print("probabilities=", distribution.getProbabilities())

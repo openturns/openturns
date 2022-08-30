@@ -3336,6 +3336,7 @@ Point DistributionImplementation::getGaussNodesAndWeights(Point & weights) const
 /* Get the moments of the standardized distribution */
 Point DistributionImplementation::getStandardMoment(const UnsignedInteger n) const
 {
+  LOGWARN(OSS() << "getStandardMoment is deprecated");
   return getStandardRepresentative().getMoment(n);
 }
 

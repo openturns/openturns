@@ -156,7 +156,6 @@ int main(int, char *[])
       fullprint << "kendall=" << kendall << std::endl;
       GeneralizedExtremeValue::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
-      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative() << std::endl;
       fullprint << "mu=" << distribution.getMu() << std::endl;
       fullprint << "sigma=" << distribution.getSigma() << std::endl;

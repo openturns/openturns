@@ -92,11 +92,11 @@ Notes
 The grade of :math:`\vect{x}` with respect to the class *k* is
 :math:`log w_k p_k ( \vect{x} )`.
 
-In the first usage, it returns a real that grades *inputPoint* with respect to
-the class *k*. The greatest, the best.
+In the first usage, it returns a real value that grades *inputPoint* with respect to
+the class *k*. The larger, the better.
 
-In the second usage, it returns an :class:`~openturns.Indices` that collects the
-grades of the :math:`i^{th}` point of *inputSample* with respect to the
+In the second usage, it returns a :class:`~openturns.Point` that collects the
+grades of the :math:`i^{th}` element of *inputSample* with respect to the
 :math:`i^{th}` class of *classList*."
 
 // ---------------------------------------------------------------------

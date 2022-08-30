@@ -189,6 +189,8 @@ public:
       result[j] = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / (j + 1.0)) - sign * std::pow(std::abs(moments[j]), 1.0 / (j + 1.0));
     }
     const Scalar sigma2 = distribution.getCovariance()(0, 0);
+    if (!(sigma2 > 0.0))
+      return Point(getOutputDimension(), SpecFunc::MaxScalar);
     return result / sigma2;
   }
 
@@ -242,6 +244,19 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
     }
     solver.setStartingPoint(parameter);
   }
+  // clip starting point
+  if (optimizationBounds_.getDimension() && !optimizationBounds_.contains(solver.getStartingPoint()))
+  {
+    Point startingPoint(solver.getStartingPoint());
+    const Point lb(optimizationBounds_.getLowerBound());
+    const Point ub(optimizationBounds_.getUpperBound());
+    for (UnsignedInteger j = 0; j < startingPoint.getDimension(); ++ j)
+    {
+      startingPoint[j] = std::min(startingPoint[j], ub[j]);
+      startingPoint[j] = std::max(startingPoint[j], lb[j]);
+    }
+  }
+
   solver.setProblem(problem);
   solver.setVerbose(Log::HasInfo());
   solver.run();

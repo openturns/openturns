@@ -33,8 +33,10 @@ class XMLH5StorageManagerImplementation
 {
 public:
 
-  explicit XMLH5StorageManagerImplementation(const FileName & h5FileName)
+  explicit XMLH5StorageManagerImplementation(const FileName & h5FileName,
+                                             const UnsignedInteger compressionLevel = 0)
     : h5FileName_(h5FileName)
+    , compressionLevel_(compressionLevel)
   {}
 
   template <class CPP_Type>
@@ -62,7 +64,8 @@ private:
   FileName h5FileName_;
   std::vector<Scalar> valBuf_Scalar_;
   std::vector<UnsignedInteger> valBuf_UnsignedInteger_;
-  OT::Bool isFirstDS_ = true;
+  Bool isFirstDS_ = true;
+  UnsignedInteger compressionLevel_ = 0;
 };
 
 
@@ -161,6 +164,10 @@ void XMLH5StorageManagerImplementation::writeToH5(const String & dataSetName)
       dsp = H5::DataSpace(1, dims, maxdims);
     //Propagate dataspace properties to dataset
     prop.setChunk(1, dims);
+
+    // enable compression
+    prop.setDeflate(compressionLevel_);
+
     //Create new dataset and write it
     H5::DataSet dset(h5File.createDataSet(dataSetName, getDataType<CPP_Type>(), dsp, prop));
     dset.write(getBuffer<CPP_Type>().data(), getDataType<CPP_Type>());
@@ -240,7 +247,21 @@ XMLH5StorageManager::XMLH5StorageManager(const FileName & filename,
   : XMLStorageManager(filename, compressionLevel)
 {
   p_state_ = new XMLH5StorageManagerState;
-  p_implementation_ = new XMLH5StorageManagerImplementation(filename.substr(0, filename.find_last_of('.')) + ".h5");
+  FileName filenameH5(filename);
+  if (filenameH5.size() > 3)
+  {
+    const String extension(filenameH5.substr(filenameH5.size() - 3));
+    if (extension == ".gz")
+      filenameH5 = filenameH5.substr(0, filenameH5.size() - 3);
+  }
+  if (filenameH5.size() > 4)
+  {
+    const String extension(filenameH5.substr(filenameH5.size() - 4));
+    if (extension == ".xml")
+      filenameH5 = filenameH5.substr(0, filenameH5.size() - 4);
+  }
+  filenameH5 += ".h5";
+  p_implementation_ = new XMLH5StorageManagerImplementation(filenameH5, compressionLevel);
 }
 
 /*

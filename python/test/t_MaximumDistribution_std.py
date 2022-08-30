@@ -110,9 +110,6 @@ for distribution in coll:
     print("spearman=", spearman)
     kendall = distribution.getKendallTau()
     print("kendall=", kendall)
-    for i in range(6):
-        print("standard moment n=", i, ", value=",
-              distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
 # Issue #1643
 coll = [Uniform(), Normal()]
