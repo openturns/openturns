@@ -21,7 +21,7 @@ Non parametric Adaptive Importance Sampling (NAIS)
 #
 # .. math::
 #   \begin{align*}
-#   X \sim  \mathcal{N}(\mu = [0, 0], \sigma = [1,1], cov = I_2)
+#   X \sim  \mathcal{N}(\mu = [0, 0], \sigma = [1,1], corr = I_2)
 #   \end{align*}
 #
 # We want to evaluate the probability:
@@ -48,7 +48,7 @@ import math
 # Create the input random vector :math:`X`:
 
 # %%
-X = ot.RandomVector(ot.Normal([0.]*2, [1]*2, ot.IdentityMatrix(2)))
+X = ot.RandomVector(ot.Normal(2))
 
 # %%
 # Create the function :math:`g` from a PythonFunction:
