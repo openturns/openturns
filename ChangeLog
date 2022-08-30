@@ -23,6 +23,8 @@
  * Deprecated static CorrelationAnalysis::PearsonCorrelation|SpearmanCorrelation|PCC|PRCC, use the methods of the new CorrelationAnalysis class instead.
  * Removed static CorrelationAnalysis::SRC|SRRC due to a bug: #1753.
  * Deprecated Distribution::getStandardMoment
+ * Inverted ctors arguments order in LinearModelAlgorithm & LinearModelStepwiseAlgorithm : first sample, then basis
+ * Deprecated oldest LinearModelAlgorithm(X, basis, Y) and LinearModelStepwiseAlgorithm(X, basis, Y,...) ctors
 
 === Documentation ===
 
@@ -31,6 +33,10 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #2097 (LinearModelStepwiseAlgorithm ctor order)
+ * #2121 (GaussianProcess Gibbs sampling method issues)
+ * #2123 (MixtureClassifier 'grade' method does not work with a Sample input)
+ * #2125 (SciPyDistribution __init__ failure with scipy 1.9.0)
 
 
 == 1.19 release (2022-05-10) == #release-1.19
@@ -114,10 +120,6 @@
  * #2025 (The lack of Bonmin generates an error during example compilation)
  * #2031 (Multi-objective optimization example question)
  * #2032 (Documentation of NAIS)
- * #2097 (LinearModelStepwiseAlgorithm ctor order)
- * #2121 (GaussianProcess Gibbs sampling method issues)
- * #2123 (MixtureClassifier 'grade' method does not work with a Sample input)
- * #2125 (SciPyDistribution __init__ failure with scipy 1.9.0)
 
 == 1.18 release (2021-11-10) == #release-1.18
 

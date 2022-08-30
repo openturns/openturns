@@ -3,3 +3,4 @@ Remove TensorApproximationAlgorithm, TensorApproximationResult, CanonicalTensorE
 Remove FunctionalChaosSobolIndices.getSobolGrouped(Total)Index(int) for 1.21
 Drop deprecated static CorrelationAnalysis::PearsonCorrelation|SpearmanCorrelation|PCC|PRCC
 Remove Distribution.getStandardMoment
+Drop deprecated LinearModelAlgorithm | LinearModelStepwiseAlgorithm ctors for 1.21
