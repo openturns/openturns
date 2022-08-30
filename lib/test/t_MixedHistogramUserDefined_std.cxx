@@ -105,7 +105,6 @@ int main(int, char *[])
   std::cout << "skewness=" << skewness << std::endl;
   Point kurtosis = distribution.getKurtosis();
   std::cout << "kurtosis=" << kurtosis << std::endl;
-  for (UnsignedInteger i = 0; i < 6; ++i) std::cout << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
   std::cout << "Standard representative=" << distribution.getStandardRepresentative() << std::endl;
   return 0;
 }

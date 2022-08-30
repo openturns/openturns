@@ -125,9 +125,6 @@ for distribution in [Gamma(1.5, 2.5, -0.5), Gamma(15.0, 2.5)]:
     print("kendall=", kendall)
     parameters = distribution.getParametersCollection()
     print("parameters=", parameters)
-    for i in range(6):
-        print("standard moment n=", i, ", value=",
-              distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
 
     standardDeviation = distribution.getStandardDeviation()

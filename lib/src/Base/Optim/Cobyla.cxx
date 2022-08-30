@@ -278,9 +278,9 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     if (outP[0] < -cobylaMaxScalar) outP[0] = -cobylaMaxScalar;
     *f = problem.isMinimization() ? outP[0] : -outP[0];
   }
-  catch (...)
+  catch (const std::exception & exc)
   {
-    LOGWARN(OSS() << "Cobyla went to an abnormal point=" << inP.__str__());
+    LOGWARN(OSS() << "Cobyla went to an abnormal point x=" << inP.__str__() << " y=" << outP.__str__() << " msg=" << exc.what());
 
     // penalize it
     *f = problem.isMinimization() ? cobylaMaxScalar : cobylaMaxScalar;

@@ -123,7 +123,6 @@ int main(int, char *[])
     fullprint << "kendall=" << kendall << std::endl;
     Binomial::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
-    for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     Scalar alpha = 0.05;
     Interval bounds(distribution.computeBilateralConfidenceInterval(1 - alpha));

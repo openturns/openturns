@@ -177,9 +177,6 @@ for testCase in range(len(distribution)):
     print('parameter desc  =',
           repr(distribution[testCase].getParameterDescription()))
     print('marginal 0      =', repr(distribution[testCase].getMarginal(0)))
-    for i in range(6):
-        print('standard moment n=', i, ' value=',
-              referenceDistribution[testCase].getStandardMoment(i))
     print('Standard representative=', referenceDistribution[
           testCase].getStandardRepresentative())
 # Check simplification

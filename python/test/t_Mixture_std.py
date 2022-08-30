@@ -176,9 +176,6 @@ print("parameter=", parameter)
 parameterDescription = distribution.getParameterDescription()
 print("parameter description=", parameterDescription)
 distribution.setParameter(parameter)
-for i in range(6):
-    print("standard moment n=", i, " value=",
-          distribution.getStandardMoment(i))
 print("Standard representative=", distribution.getStandardRepresentative())
 
 # Constructor with separate weights. Also check small weights removal

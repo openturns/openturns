@@ -38,12 +38,6 @@ beta= [0.95]
 mean= class=Point name=Unnamed dimension=1 values=[1.04605]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.40578]
 parameters= [class=PointWithDescription name=X0 dimension=1 description=[nu] values=[1.5]]
-standard moment n= 0  value= [1]
-standard moment n= 1  value= [1.04605]
-standard moment n= 2  value= [1.5]
-standard moment n= 3  value= [2.61512]
-standard moment n= 4  value= [5.25]
-standard moment n= 5  value= [11.7681]
 Standard representative= Chi(nu = 1.5)
 nu= 1.5
 standard deviation= class=Point name=Unnamed dimension=1 values=[0.637009]

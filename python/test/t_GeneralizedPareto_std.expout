@@ -39,12 +39,6 @@ skewness= class=Point name=Unnamed dimension=1 values=[1.18322]
 kurtosis= class=Point name=Unnamed dimension=1 values=[4.2]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.11607]
 parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,location] values=[1.5,-0.2,0.5]]
-standard moment n= 0  value= [1]
-standard moment n= 1  value= [0.833333]
-standard moment n= 2  value= [1.19048]
-standard moment n= 3  value= [2.23214]
-standard moment n= 4  value= [4.96032]
-standard moment n= 5  value= [12.4008]
 Standard representative= GeneralizedPareto(sigma = 1, xi=-0.2, u=0)
 Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0 u=0.5
 Distribution  GeneralizedPareto(sigma = 1.5, xi=0, u=0.5)
@@ -87,12 +81,6 @@ skewness= class=Point name=Unnamed dimension=1 values=[2]
 kurtosis= class=Point name=Unnamed dimension=1 values=[9]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.25]
 parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,location] values=[1.5,0,0.5]]
-standard moment n= 0  value= [1]
-standard moment n= 1  value= [1]
-standard moment n= 2  value= [2]
-standard moment n= 3  value= [6]
-standard moment n= 4  value= [24]
-standard moment n= 5  value= [120]
 Standard representative= GeneralizedPareto(sigma = 1, xi=0, u=0)
 Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0.2 u=0.5
 Distribution  GeneralizedPareto(sigma = 1.5, xi=0.2, u=0.5)
@@ -136,10 +124,4 @@ skewness= class=Point name=Unnamed dimension=1 values=[4.64758]
 kurtosis= class=Point name=Unnamed dimension=1 values=[73.8]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.85938]
 parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,location] values=[1.5,0.2,0.5]]
-standard moment n= 0  value= [1]
-standard moment n= 1  value= [1.25]
-standard moment n= 2  value= [4.16667]
-standard moment n= 3  value= [31.25]
-standard moment n= 4  value= [625]
-NotDefinedException : Error: the standard moments are defined up to order 5 and n=5
 Standard representative= GeneralizedPareto(sigma = 1, xi=0.2, u=0)

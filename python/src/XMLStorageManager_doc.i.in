@@ -1,24 +1,16 @@
 %feature("docstring") OT::XMLStorageManager
 "Storage manager that drives a XML file.
 
-Available constructors:
-    XMLStorageManager(*filename*)
-
-    XMLStorageManager(*filename, compressionLevel*)
+This class allows to read and write objects from an XML file.
 
 Parameters
 ----------
 fileName : str
     Name of the file containing the study.
-compressionLevel : int
+compressionLevel : int, optional
     Compression level of the resulting XML file, in the range 0,...,9 (0=no compression, 9=best compression).
     The compression is done only if the XML lib has been compiled with zlib support.
     The default value is given by 'XMLStorageManager-DefaultCompressionLevel' in :class:`~openturns.ResourceMap`.
-
-Notes
------
-*XMLStorageManager* enables to read and write OPENTURNS' objects from a XML
-file.
 
 See also
 --------

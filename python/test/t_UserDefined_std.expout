@@ -8,12 +8,6 @@ oneSample=Ok class=Sample name=Unnamed implementation=class=SampleImplementation
 point=  class=Point name=Unnamed dimension=1 values=[2]  pdf= 0.0625  cdf= 0.25
 Quantile= class=Point name=Unnamed dimension=1 values=[3]
 entropy=0.702919
-standard moment n= 0  value= [1]
-standard moment n= 1  value= [2.5625]
-standard moment n= 2  value= [7.1875]
-standard moment n= 3  value= [20.9375]
-standard moment n= 4  value= [61.9375]
-standard moment n= 5  value= [184.438]
 Standard representative= UserDefined({x = [1], p = 0.1875}, {x = [2], p = 0.0625}, {x = [3], p = 0.75})
 parameter= [1,2,3,0.1875,0.0625,0.75]
 parameterDescription= [X^0_0,X^0_1,X^0_2,probabilities_0,probabilities_1,probabilities_2]
