@@ -54,12 +54,6 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[nu : 6.5, mean_0 : -0.5, standard_deviation_0 : 5]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.44444]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[11.2667]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0]
 Standard representative=Student(nu = 6.5, mu = 0, sigma = 1)
 density generator=0.2245
 pdf via density generator=0.0729299

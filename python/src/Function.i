@@ -383,10 +383,10 @@ class PythonFunction(Function):
     [[  3 ]
      [ -1 ]]
     """
-    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False, functionLinearity=None, variablesLinearity=None):
+    def __new__(self, inputDim, outputDim, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False, functionLinearity=None, variablesLinearity=None):
         if func is None and func_sample is None:
             raise RuntimeError('no func nor func_sample given.')
-        instance = OpenTURNSPythonFunction(n, p)
+        instance = OpenTURNSPythonFunction(inputDim, outputDim)
         if copy:
             instance._discard_openturns_memoryview = True
 

@@ -20,10 +20,4 @@ cdf(quantile)=0.95
 standard deviation=[1.78139,0.711805]
 skewness=[0.278086,-0.754198]
 kurtosis=[1.81163,2.29778]
-standard moment n=0, value=[1,1]
-standard moment n=1, value=[-0.133333,2.4]
-standard moment n=2, value=[0.37037,6.26667]
-standard moment n=3, value=[-0.0851852,17.2]
-standard moment n=4, value=[0.232099,48.6667]
-standard moment n=5, value=[-0.0622771,140.4]
 Standard representative=MixedHistogramUserDefined(ticksCollection = [[0,1,3,6],[1,2,3]], kind = [1,0], probabilityTable = [0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45])

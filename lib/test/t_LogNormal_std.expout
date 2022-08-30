@@ -57,10 +57,4 @@ spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplement
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[muLog : -1, sigmaLog : 1.5, gamma : -0.5]]
 parameters=[[muLog : -1, sigmaLog : 1.5, gamma : -0.5]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.13315]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[12.1825]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[1242.65]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[1.2026e+06]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[1.10423e+10]
 Standard representative=LogNormal(muLog = -1, sigmaLog = 1.5, gamma = 0)

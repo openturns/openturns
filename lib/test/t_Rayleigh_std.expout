@@ -53,12 +53,6 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[beta : 2.5, gamma : -0.5]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.25331]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[2]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[3.75994]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[8]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[18.7997]
 Standard representative=Rayleigh(beta = 1, gamma = 0)
 gamma=-0.5
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.63784]

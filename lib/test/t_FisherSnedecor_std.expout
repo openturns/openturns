@@ -58,10 +58,4 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[d1 : 5.5, d2 : 10.5]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.23529]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[2.7211]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[10.9669]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[96.309]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[4964.29]
 Standard representative=FisherSnedecor(d1 = 5.5, d2 = 10.5)

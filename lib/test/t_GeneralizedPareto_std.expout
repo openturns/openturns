@@ -44,12 +44,6 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[sigma : 1.5, xi : -0.2, location : 0.5]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.833333]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.19048]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[2.23214]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[4.96032]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[12.4008]
 Standard representative=GeneralizedPareto(sigma = 1, xi=-0.2, u=0)
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.05644]
 skewness=class=Point name=Unnamed dimension=1 values=[1.18322]
@@ -102,12 +96,6 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[sigma : 1.5, xi : 0, location : 0.5]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[2]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[6]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[24]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[120]
 Standard representative=GeneralizedPareto(sigma = 1, xi=0, u=0)
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.5]
 skewness=class=Point name=Unnamed dimension=1 values=[2]
@@ -160,12 +148,6 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[sigma : 1.5, xi : 0.2, location : 0.5]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.25]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[4.16667]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[31.25]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[625]
-NotDefinedException : Error: the standard moments are defined up to order 5 and n=5
 Standard representative=GeneralizedPareto(sigma = 1, xi=0.2, u=0)
 standard deviation=class=Point name=Unnamed dimension=1 values=[2.42061]
 skewness=class=Point name=Unnamed dimension=1 values=[4.64758]

@@ -144,18 +144,6 @@ int main(int, char *[])
       fullprint << "kendall=" << kendall << std::endl;
       GeneralizedPareto::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
-      for (UnsignedInteger i = 0; i < 6; ++i)
-      {
-        try
-        {
-          Point value(distribution.getStandardMoment(i));
-          fullprint << "standard moment n=" << i << ", value=" << value << std::endl;
-        }
-        catch (NotDefinedException & ex)
-        {
-          fullprint << ex << std::endl;
-        }
-      }
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
 
       // Specific to this distribution

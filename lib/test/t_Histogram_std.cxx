@@ -187,7 +187,6 @@ int main(int, char *[])
     fullprint << "kendall=" << kendall << std::endl;
     Histogram::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
-    for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
 
     UnsignedInteger testSize = 0;

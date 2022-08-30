@@ -269,8 +269,8 @@ Point HSICEstimatorImplementation::getPValuesPermutation() const
 /* Draw the HSIC indices */
 Graph HSICEstimatorImplementation::drawValues(const Point &values, const String &title) const
 {
-
-  if (values.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw cloud based on empty data.";
+  if (values.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Values size does not match input dimension";
   Graph graph(title, "Input marginal number", "", true, "");
 
   /* Define cloud */
@@ -296,13 +296,7 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, const String 
     data(k, 1) = values[k];
   }
 
-  Description names(values.getDimension());
-  for(UnsignedInteger i = 0; i < values.getDimension(); ++i)
-  {
-    OSS oss;
-    oss << "X" << i + 1;
-    names[i] = String(oss);
-  }
+  const Description names(inputSample_.getDescription());
 
   Text text(data, names, "right");
   text.setColor("black");

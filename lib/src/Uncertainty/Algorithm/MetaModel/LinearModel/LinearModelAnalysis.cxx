@@ -517,12 +517,11 @@ Graph LinearModelAnalysis::drawQQplot() const
   UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
   if (identifiers > 0)
   {
-    const UnsignedInteger size = stdResiduals.getSize();
+    const Sample dataFull(graph.getDrawable(1).getData());
+    const Sample sortedSample(stdResiduals.sort(0));
+    const UnsignedInteger size = dataFull.getSize();//size(dataFull) may be < size(sortedSample)
     if (identifiers > size)
       identifiers = size;
-    const Sample sortedSample(stdResiduals.sort(0));
-
-    const Sample dataFull(graph.getDrawable(1).getData());
     Description annotations(size);
     Sample dataWithIndex1(size, 2);
     Sample dataWithIndex2(size, 2);

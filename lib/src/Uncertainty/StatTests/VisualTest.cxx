@@ -53,7 +53,6 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   Graph graphQQplot("Two sample QQ-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
-  Point point(2);
   diagonal(0, 0) = data(0, 0);
   diagonal(0, 1) = data(0, 0);
   diagonal(1, 0) = data(pointNumber - 1, 0);
@@ -73,14 +72,15 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
 {
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << sample.getDimension();
   if (dist.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << dist.getDimension();
-  const UnsignedInteger size = sample.getSize();
-  const Sample sortedSample(sample.sort(0));
+  const Sample sortedSample(sample.sortUnique());
+  if (!(sortedSample.getSize() >= 2)) throw InvalidArgumentException(HERE) << "Sample must have at least 2 distinct points";
+  const UnsignedInteger size = sortedSample.getSize() - 1;// avoids last point with p=1
   Sample data(size, 2);
-  const Scalar step = 1.0 / size;
-  for (UnsignedInteger i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     data(i, 0) = sortedSample(i, 0);
-    data(i, 1) = dist.computeQuantile((i + 0.5) * step)[0];
+    const Scalar p = sample.computeEmpiricalCDF(sortedSample[i]);
+    data(i, 1) = dist.computeQuantile(p)[0];
   }
   Cloud cloudQQplot(data, "Data");
   if (size < 100) cloudQQplot.setPointStyle("fcircle");
@@ -89,7 +89,6 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   Graph graphQQplot("Sample versus model QQ-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
-  Point point(2);
   diagonal(0, 0) = data(0, 0);
   diagonal(0, 1) = data(0, 0);
   diagonal(1, 0) = data(size - 1, 0);
