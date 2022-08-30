@@ -2,17 +2,9 @@
 Example of sensitivity analyses on the wing weight model
 =========================================================
 """
-import openturns as ot
-import openturns.viewer as otv
-from openturns.usecases.wingweight_function import WingWeightModel
-from matplotlib import pylab as plt
-import numpy as np
-ot.Log.Show(ot.Log.NONE)
-
 # %%
 #
-# This example is a brief overview of the use of main sensitivity analysis techniques and how to call them.
-# In this example, the following sensitivity classes are used:
+# This example is a brief overview of the use of the most usual sensitivity analysis techniques and how to call them:
 #
 # - PCC: Partial Correlation Coefficients
 # - PRCC: Partial Rank Correlation Coefficients 
@@ -24,7 +16,7 @@ ot.Log.Show(ot.Log.NONE)
 # - Sobol' indices
 # - HSIC : Hilbert-Schmidt Independence Criterion
 #
-# We present the methods on the :ref:`WingWeight function<use-case-wingweight>`.
+# We present the methods on the :ref:`WingWeight function<use-case-wingweight>` and use the same notations.
 
 # %%
 # Definition of the model
@@ -34,16 +26,13 @@ ot.Log.Show(ot.Log.NONE)
 # 
 # For a quick reminder, this usecase is a ten dimensional model, with the following inputs:
 #
-# - :math:`S_w`: Wing area (ft^2), defined according to :math:`\mathcal{U}(150, 200)`
-# - :math:`W_{fw}`: Weight of fuel in the wing (lb), defined according to :math:`\mathcal{U}(220, 300)`
-# - :math:`A`: Aspect ratio (-), defined according to :math:`\mathcal{U}(6, 10)`
-# - :math:`\Lambda`: Quarter chord sweep (deg), defined according to :math:`\mathcal{U}(-10, 10)`
-# - :math:`q`: Dynamic pressure at cruise (lb/ft^2), defined according to :math:`\mathcal{U}(16, 45)`
-# - :math:`l`: Taper ratio (-), defined according to :math:`\mathcal{U}(0.5, 1)`
-# - :math:`t_c`: Airfoil thickness to chord ratio (-), defined according to :math:`\mathcal{U}(0.08, 0.18)`
-# - :math:`N_z`: Ultimate load factor (-), defined according to :math:`\mathcal{U}(2.5, 6)`
-# - :math:`W_{dg}`: Flight design gross weight (lb), defined according to :math:`\mathcal{U}(1700, 2500)`
-# - :math:`W_p`: Paint weight (lb/ft^2), defined according to :math:`\mathcal{U}(0.025, 0.08)`
+#
+import openturns as ot
+import openturns.viewer as otv
+from openturns.usecases.wingweight_function import WingWeightModel
+from matplotlib import pylab as plt
+import numpy as np
+ot.Log.Show(ot.Log.NONE)
 m = WingWeightModel()
 
 # %%
@@ -54,7 +43,6 @@ m = WingWeightModel()
 # For each 2D cross cut, the other variables are fixed to the input distribution mean values.
 # This graph allows to have a first idea of the variations of the function in pair of dimensions.
 # The colors of each contour plot are comparable. The number of contour levels are related to the amount of variation of the function in the corresponding coordinates.
-
 fig = plt.figure(figsize=(12, 12))
 lowerBound = m.distributionX.getRange().getLowerBound()
 upperBound = m.distributionX.getRange().getUpperBound()
@@ -85,7 +73,6 @@ for i in range(m.dim):
         data = crossCutFunction(inputData)
         meshZ = np.array(data).reshape(nX+2,nY+2)
         levels = [(150 + 3*i) for i in range(101)]
-        graph = ot.Graph()
         
         # Creation of the contour        
         index = 1 + i * m.dim + j
@@ -119,14 +106,14 @@ outputDesign = m.model(inputDesign)
 
 # %%
 # Let's estimate the PCC, PRCC, SRC, SRRC, Pearson and Spearman coefficients, display and analyze them.
-# We create a `CorrelationAnalysis` model.
+# We create a :class:`~openturns.CorrelationAnalysis` model.
 
 corr_analysis = ot.CorrelationAnalysis(inputDesign, outputDesign)
 
 # %%
 # PCC coefficients
 # ----------------
-# We compute here `PCC` coefficients using the `CorrelationAnalysis`.
+# We compute here PCC coefficients using the :class:`~openturns.CorrelationAnalysis`.
 
 # %%
 pcc_indices = corr_analysis.computePCC()
@@ -143,7 +130,7 @@ view = otv.View(graph)
 # %%
 # PRCC coefficients
 # -----------------
-# We compute here `PRCC` coefficients using the `CorrelationAnalysis`.
+# We compute here PRCC coefficients using the :class:`~openturns.CorrelationAnalysis`.
 
 # %%
 prcc_indices = corr_analysis.computePRCC()
@@ -157,7 +144,7 @@ view = otv.View(graph)
 # %%
 # SRC coefficients
 # -------------------
-# We compute here `SRC` coefficients using the `CorrelationAnalysis`.
+# We compute here SRC coefficients using the :class:`~openturns.CorrelationAnalysis`.
 
 # %%
 src_indices = corr_analysis.computeSRC()
@@ -176,7 +163,7 @@ squared_src_indices = corr_analysis.computeSquaredSRC(True)
 print(squared_src_indices)
 
 # %%
-# And its associated graph:
+# And their associated graph:
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
@@ -189,7 +176,7 @@ view = otv.View(graph)
 # %%
 # SRRC coefficients
 # --------------------
-# We compute here `SRRC` coefficients using the `CorrelationAnalysis`.
+# We compute here SRRC coefficients using the :class:`~openturns.CorrelationAnalysis`.
 
 # %%
 srrc_indices = corr_analysis.computeSRRC()
@@ -203,7 +190,7 @@ view = otv.View(graph)
 # %%
 # Pearson coefficients
 # -----------------------
-# We compute here the Pearson :math:`\rho` coefficients using the `CorrelationAnalysis`.
+# We compute here the Pearson :math:`\rho` coefficients using the :class:`~openturns.CorrelationAnalysis`.
 
 # %%
 pearson_correlation = corr_analysis.computePearsonCorrelation()
@@ -218,7 +205,7 @@ view = otv.View(graph)
 # %%
 # Spearman coefficients
 # -----------------------
-# We compute here the Spearman :math:`\rho_s` coefficients using the `CorrelationAnalysis`.
+# We compute here the Spearman :math:`\rho_s` coefficients using the :class:`~openturns.CorrelationAnalysis`.
 
 # %%
 spearman_correlation = corr_analysis.computeSpearmanCorrelation()
@@ -233,7 +220,7 @@ plt.show()
 
 # %%
 #
-# The different computed correlation estimators show that the variables :math:`S_w, A, N_z, t_c` seem to be the most correlated with the wing weight.
+# The different computed correlation estimators show that the variables :math:`S_w, A, N_z, t_c` seem to be the most correlated with the wing weight in absolute value.
 # Pearson and Spearman coefficients do not reveal any linear nor monotonic correlation as no coefficients are equal to +/- 1.
 # Coefficients about :math:`t_c` are negative revealing a negative correlation with the wing weight, that is consistent with the model expression.
 
@@ -241,7 +228,7 @@ plt.show()
 # %%
 # Taylor expansion importance factors
 # -----------------------------------
-# We compute here the Taylor expansion importance factors using `TaylorExpansionMoments`.
+# We compute here the Taylor expansion importance factors using :class:`~openturns.TaylorExpansionMoments`.
 
 # %%
 
@@ -295,7 +282,7 @@ inputDesignSobol.getSize()
 outputDesignSobol = m.model(inputDesignSobol)
 
 # %%
-# We estimate the Sobol' indices with the `SaltelliSensitivityAlgorithm`.
+# We estimate the Sobol' indices with the :class:`~openturns.SaltelliSensitivityAlgorithm`.
 
 # %%
 sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(
@@ -366,7 +353,7 @@ print(result.getResiduals())
 print(result.getRelativeErrors())
 
 # %%
-# The relative errors are very low that indicate the good accuracy of the PCE model.
+# The relative errors are very low: this indicates that the PCE model has good accuracy.
 
 # %%
 # Then, we exploit the surrogate model to compute the Sobol' indices.
