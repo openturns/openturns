@@ -33,6 +33,7 @@ Examples
 Fit a distribution on data thanks to the kernel smoothing technique:
 
 >>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Gamma(6.0, 1.0).getSample(100)
 >>> ks = ot.KernelSmoothing()
 >>> fittedDist = ks.build(sample)
@@ -46,7 +47,7 @@ Get the bandwidth:
 
 >>> bandwidth = ks.getBandwidth()
 >>> print(bandwidth)
-[1.03374]
+[0.862207]
 
 The bandwidth was guessed by the :meth:`build` method.
 It could also have been provided by the user.
