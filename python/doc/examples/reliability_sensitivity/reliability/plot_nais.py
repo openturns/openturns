@@ -28,7 +28,7 @@ Non parametric Adaptive Importance Sampling (NAIS)
 #
 # .. math::
 #   \begin{align*}
-#   p = \mathbb{P} \{ g(X) \leq 0 \}
+#   p = \mathbb{P} \( g(X) \leq 0 \)
 #   \end{align*}
 #
 
@@ -51,12 +51,12 @@ import math
 X = ot.RandomVector(ot.Normal(2))
 
 # %%
-# Create the function :math:`g` from a PythonFunction:
+# Create the function :math:`g` from a :class:`~openturns.PythonFunction`:
 
 # %%
 def fourBranch(x):
     x1 = x[0]
-    x2  = x[1]
+    x2 = x[1]
     
     g1 = 5+0.1*(x1-x2)**2-(x1+x2)/math.sqrt(2)
     g2 = 5+0.1*(x1-x2)**2+(x1+x2)/math.sqrt(2)
@@ -72,15 +72,14 @@ print('function g: ', g)
 # Draw the function :math:`g` to help to understand the shape of the limit state function:
 
 # %%
-graph = g.draw([-8]*2,[8]*2,[100]*2)
-graph.setTitle('Four Branch function')
-graph.setXTitle('x1')
-graph.setYTitle('x2')
-view = View(graph,legend_kw={'bbox_to_anchor':(1,1),'loc':'upper left'})
-view.getFigure().tight_layout()
+graph = ot.Graph('Four Branch function','x1','x2',True,'topright')
+drawfunction = g.draw([-8]*2,[8]*2,[100]*2)
+graph.add(drawfunction)
+view = View(graph)
+
 
 # %%
-# In order to be able to get the NAIS samples used in the algorithm, it is necessary to transform the *PythonFunction* into a *MemoizeFunction*:
+# In order to be able to get the NAIS samples used in the algorithm, it is necessary to transform the :class:`~openturns.PythonFunction` into a :class:`~openturns.MemoizeFunction`:
 
 # %%
 g = ot.MemoizeFunction(g)
@@ -101,7 +100,7 @@ myEvent = ot.ThresholdEvent(Y, ot.Less(), threshold)
 
 # %%
 # Evaluate the probability with the NAIS technique
-# -----------------------------------------------------------
+# ------------------------------------------------
 
 # %%
 rhoQuantile = 0.1
@@ -136,9 +135,9 @@ print('Confidence interval (0.95) = [', proba -
 
 # %%
 # Draw the NAIS samples used by the algorithm
-# ---------------------------------------------
+# -------------------------------------------
 #
-# The following manipulations are possible only if you have created a *MemoizeFunction* that enables to store all the inputs and outputs of the function :math:`g`.
+# The following manipulations are possible only if you have created a :class:`~openturns.MemoizeFunction` that enables to store all the inputs and outputs of the function :math:`g`.
 #
 # Get all the inputs and outputs where :math:`g` were evaluated:
 
@@ -163,7 +162,7 @@ Ns =  int(nTotal / N)
 print('Number of steps = ', Ns)
 
 # %%
-# Now, we can split the initial sample into NAIS samples of size :math:`Ns`:
+# Now, we can split the initial sample into :class:`~openturns.NAIS` samples of size :math:`Ns`:
 
 # %%
 listNAISSamples = list()
@@ -185,13 +184,8 @@ levels.add(threshold)
 # The following graph draws each NAIS sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
-graph = ot.Graph()
-graph.setAxes(True)
+graph = ot.Graph('NAIS samples','x1','x2',True,'bottomleft')
 graph.setGrid(True)
-graph.setTitle('NAIS samples')
-graph.setXTitle(r'$x_1$')
-graph.setYTitle(r'$x_2$')
-graph.setLegendPosition('bottomleft')
 
 # %%
 # Add all the NAIS samples:
@@ -199,7 +193,6 @@ graph.setLegendPosition('bottomleft')
 # %%
 for i in range(Ns):
     cloud = ot.Cloud(listNAISSamples[i])
-    # cloud.setPointStyle("dot")
     graph.add(cloud)
 col = ot.Drawable().BuildDefaultPalette(Ns)
 graph.setColors(col)
@@ -219,7 +212,7 @@ for i in range(levels.getSize()):
     graph.add(dr)
 
 # %%
-View(graph)
+view = View(graph)
 
 # %%
 # Draw the frontiers only
@@ -228,8 +221,7 @@ View(graph)
 # The following graph enables to understand the progression of the algorithm from the mean value of the initial distribution to the limit state function:
 
 # %%
-graph = ot.Graph()
-graph.setAxes(True)
+graph = ot.Graph('NAIS thresholds','x1','x2',True,'bottomleft')
 graph.setGrid(True)
 dr = gIsoLines.getDrawable(0)
 for i in range(levels.getSize()):
@@ -240,9 +232,6 @@ for i in range(levels.getSize()):
     graph.add(dr)
 
 graph.setColors(col)
-graph.setLegendPosition('bottomleft')
-graph.setTitle('NAIS thresholds')
-graph.setXTitle(r'$x_1$')
-graph.setYTitle(r'$x_2$')
 
-View(graph)
+
+view = View(graph)
