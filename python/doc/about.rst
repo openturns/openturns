@@ -43,6 +43,8 @@ People
 - Julien Schueller
 - Kamal Abboud
 - Kieran Delamotte
+- Loic Brevault
+- Mathieu Balesdent
 - Mathieu Couplet
 - Mathieu Lapointe
 - Mathieu Souchaud
