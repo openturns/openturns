@@ -12,108 +12,132 @@ class FireSatelliteModel():
     Attributes
     ----------
 	
-    dim : The dimension of the problem
+    dim : Dimension of the problem
           dim = 9
 
-    H : Altitude (m), `Normal` distribution
+    H : Altitude (m), :class:`~openturns.Normal` distribution
          First marginal, ot.Normal(18e6,1e6)
 
-    Pother : Power other than ACS (W), `Normal` distribution
+    Pother : Power other than ACS (W), :class:`~openturns.Normal` distribution
          Second marginal, ot.Normal(1000.,50.)
 
-    Fs : Average solar flux (W/m^2), `Normal` distribution
+    Fs : Average solar flux (W/m^2), :class:`~openturns.Normal` distribution
          Third marginal, ot.Normal(1400.,20.)
 
-    theta : Deviation of moment axis (deg), `Normal` distribution
+    theta : Deviation of moment axis (deg), :class:`~openturns.Normal` distribution
          Fourth marginal, ot.Normal(15.,1.)
 
-    Lsp : Moment arm for radiation torque (m), `Normal` distribution
+    Lsp : Moment arm for radiation torque (m), :class:`~openturns.Normal` distribution
          Fifth marginal, ot.Normal(2.,0.4)
 
-    q : Reflectance factor (-), `Normal` distribution
+    q : Reflectance factor (-), :class:`~openturns.Normal` distribution
          Sixth marginal, ot.Normal(0.5,1.)
 		 
-    RD : Residual dipole of spacecraft (A.m^2), `Normal` distribution
+    RD : Residual dipole of spacecraft (A.m^2), :class:`~openturns.Normal` distribution
          Seventh marginal, ot.Normal(5.,1.)
 		 
-    Lalpha : Moment arm for aerodynamic torque (m), `Normal` distribution
+    Lalpha : Moment arm for aerodynamic torque (m), :class:`~openturns.Normal` distribution
          Eighth marginal, ot.Normal(2.,0.4)
 		 
-    Cd : Drag coefficient (-), `Normal` distribution
+    Cd : Drag coefficient (-), :class:`~openturns.Normal` distribution
          Nineth marginal, ot.Normal(1.,0.3)
 
 
-    distributionX : `ComposedDistribution`
+    distributionX : :class:`~openturns.ComposedDistribution`
                     The joint distribution of the input parameters.
 
-    model : `PythonFunction`
+    model : :class:`~openturns.PythonFunction`
                The Fire Satellite model with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables. This function retrieves three outputs : the total torque, the total power and the area of solar array 
 			   
-    modelTotalTorque : `PythonFunction`
+    modelTotalTorque : :class:`~openturns.PythonFunction`
                The Fire Satellite model retrieving only the  Total Torque as output, with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables.
 			   
-    modelTotalPower : `PythonFunction`
+    modelTotalPower : :class:`~openturns.PythonFunction`
                The Fire Satellite model retrieving only the  Total Power as output, with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables. This function retrieves three outputs : the total torque, the total power and the area of solar array 
 			   
-    modelSolarArrayArea : `PythonFunction`
+    modelSolarArrayArea : :class:`~openturns.PythonFunction`
                The Fire Satellite model retrieving only the  Solar Array Area as output, with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables. This function retrieves three outputs : the total torque, the total power and the area of solar array 
 			   
-	Deterministic quantities
-	------------------------
-
-    c : Speed of light, 2.9979e8 m/s 
+    c : Speed of light, constant
+        c = 2.9979e8 m/s
 	
-    omega_max : Maximum rotational velocity of reaction wheel, 6000 rpm
+    omega_max : Maximum rotational velocity of reaction wheel, constant
+        omega_max = 6000 rpm
         
-    n : Number of reaction wheels that could be active, 3
+    n : Number of reaction wheels that could be active, constant
+        n = 3
         
-    delta_theta_slew : Slewing time period, 760 s
+    delta_theta_slew : Slewing time period, constant
+        delta_theta_slew = 760 s
         
-    As : Area reflecting radiation, 13.85 m^2
+    As : Area reflecting radiation, constant
+        As =  13.85 m^2
         
-    i : Sun incidence angle, 0 deg
+    i : Sun incidence angle, constant
+        i = 0 deg
         
-    M :  Magnetic moment of earth, 7.96e15 A.m^2
+    M :  Magnetic moment of earth, constant
+        M =  7.96e15 A.m^2
         
-    rho : Atmospheric density, 5.1480e-11 kg/m^3
+    rho : Atmospheric density, constant
+        rho =  5.1480e-11 kg/m^3
         
-    A : Cross-sectional in flight direction, 13.85 m^2
+    A : Cross-sectional in flight direction, constant
+        A =  13.85 m^2
         
-    Phold : Holding power, 20 W
+    Phold : Holding power, constant
+        Phold = 20 W
         
-    mu :  Earth gravity constant, 398600.4418e9 m^3/s^2
+    mu :  Earth gravity constant
+        mu =  398600.4418e9 m^3/s^2
         
-    Id : Inherent degradation of array, 0.77
+    Id : Inherent degradation of array, constant
+        Id = 0.77
         
-    t : Thickness of solar panels, 0.005 m
+    t : Thickness of solar panels, constant
+        t =  0.005 m
         
-    n_sa : Number of solar arrays, 3
+    n_sa : Number of solar arrays, constant
+        n_sa = 3
         
-    epsilon_deg : Degradation in power production capability, 0.0375 percent per year
-	
-	LT : Lifetime of spacecraft, 15 years
+    epsilon_deg : Degradation in power production capability, constant
+        epsilon_deg = 0.0375 percent per year
         
-    r_lw : Length to width ratio of solar array, 3
+    LT : Lifetime of spacecraft, constant
+	    LT = 15 years
+        
+    r_lw : Length to width ratio of solar array, constant
+        r_lw =  3
 
-    D : Distance between panels, 2 m
+    D : Distance between panels, constant
+        D = 2 m
     
-    I_bodyX : Inertia of body, X axis, 6200 kg.m^2
+    I_bodyX : Inertia of body, X axis, constant
+        I_bodyX = 6200 kg.m^2
 
-    I_bodyY : Inertia of body, Y axis, 6200 kg.m^2
+    I_bodyY : Inertia of body, Y axis, constant
+        I_bodyY =  6200 kg.m^2
 	
-    I_bodyZ : Inertia of body, Z axis, 4700 kg.m^2
+    I_bodyZ : Inertia of body, Z axis, constant
+        I_bodyZ =  4700 kg.m^2
  
-    rho_sa : Average mass density to arrays, 700 kg.m^3
+    rho_sa : Average mass density to arrays, constant
+        rho_sa =  700 kg.m^3
         
-    eta :  Power efficiency, 0.22
+    eta :  Power efficiency, constant
+        eta =  0.22
 
-    phi_target : Target diameter, 235000 m
+    phi_target : Target diameter, constant
+        phi_target = 235000 m
 		
-    RE : Earth radius, 6378140 m
+    RE : Earth radius, constant
+        RE = 6378140 m  
     
-    tolFPI : Tolerance on Fixed Point Iteration used in the multidisciplinary analysis, 1e-3
+    tolFPI : Tolerance on Fixed Point Iteration used in the multidisciplinary analysis
+        tolFPI = 1e-3  (deterministic)
 
-    maxFPIIter : Maximum number of iterations of Fixed Point Iteration used in the multidisciplinary analysis, 50
+    maxFPIIter : Maximum number of iterations of Fixed Point Iteration used in the multidisciplinary analysis
+        maxFPIIter = 50  (deterministic)
     
 	
 	
