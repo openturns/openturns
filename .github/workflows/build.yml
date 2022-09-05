@@ -31,8 +31,8 @@ jobs:
         -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function -Wno-missing-field-initializers" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
         make install -j3
-        make tests -j3
-        ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
+        #make tests -j3
+        ctest -R pyinstall -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
 
   windows:
     runs-on: windows-latest
