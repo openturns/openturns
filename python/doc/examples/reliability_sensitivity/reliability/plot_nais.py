@@ -28,7 +28,7 @@ Non parametric Adaptive Importance Sampling (NAIS)
 #
 # .. math::
 #   \begin{align*}
-#   p = \mathbb{P} \( g(X) \leq 0 \)
+#   p = \mathbb{P} ( g(X) \leq 0 )
 #   \end{align*}
 #
 
