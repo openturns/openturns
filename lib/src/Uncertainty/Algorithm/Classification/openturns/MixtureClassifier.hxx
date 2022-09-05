@@ -58,7 +58,8 @@ public:
 public:
 
   /** Grade a point as if it were associated to a class */
-  Scalar grade(const Point & inP, const UnsignedInteger outC) const override;
+  using ClassifierImplementation::grade;
+  Scalar grade(const Point &inP, const UnsignedInteger outC) const override;
 
   /** Mixture accessors */
   Mixture getMixture() const;

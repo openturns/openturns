@@ -54,15 +54,15 @@ LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm()
 
 /* Parameters constructor */
 LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample & inputSample,
-    const Basis & basis,
     const Sample & outputSample,
+    const Basis & basis,
     const Indices & minimalIndices,
     const Direction direction,
     const Indices & startIndices)
   : PersistentObject()
   , inputSample_(inputSample)
-  , basis_(basis)
   , outputSample_(outputSample)
+  , basis_(basis)
   , direction_(direction)
   , penalty_(ResourceMap::GetAsScalar("LinearModelStepwiseAlgorithm-Penalty"))
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("LinearModelStepwiseAlgorithm-MaximumIterationNumber"))
@@ -78,6 +78,18 @@ LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample & inputS
     throw InvalidArgumentException(HERE) << "Invalid direction value";
   if (startIndices.getSize() && (direction != BOTH))
     throw InvalidArgumentException(HERE) << "Can only specify startIndices in BOTH mode";
+}
+
+/** Oldest constructor (for compatibility) */
+LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample &inputSample,
+     const Basis &basis,
+     const Sample &outputSample,
+     const Indices &minimalIndices,
+     const Direction direction,
+     const Indices &startIndices)
+  : LinearModelStepwiseAlgorithm(inputSample, outputSample, basis, minimalIndices, direction, startIndices)
+{
+  LOGWARN(OSS() << "LinearModelStepwiseAlgorithm(inputSample, basis, outputSample, minimalIndices, direction, startIndices) is deprecated");
 }
 
 /* Virtual constructor */
@@ -616,9 +628,9 @@ void LinearModelStepwiseAlgorithm::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
-  adv.saveAttribute( "direction_", static_cast<UnsignedInteger>(direction_) );
+  adv.saveAttribute("basis_", basis_);
+  adv.saveAttribute("direction_", static_cast<UnsignedInteger>(direction_));
   adv.saveAttribute( "penalty_", penalty_ );
   adv.saveAttribute( "maximumIterationNumber_", maximumIterationNumber_ );
   adv.saveAttribute( "minimalIndices_", minimalIndices_ );
@@ -639,8 +651,8 @@ void LinearModelStepwiseAlgorithm::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
+  adv.loadAttribute("basis_", basis_);
   UnsignedInteger direction = 0;
   adv.loadAttribute( "direction_", direction );
   direction_ = static_cast<Direction>(direction);

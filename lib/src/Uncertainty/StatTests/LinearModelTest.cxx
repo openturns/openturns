@@ -270,7 +270,7 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   }
 
   /* Build a linear model on the squared residuals */
-  LinearModelAlgorithm algo(firstSample, linearModelResult.getBasis(), w);
+  LinearModelAlgorithm algo(firstSample, w, linearModelResult.getBasis());
   const LinearModelResult result(algo.getResult());
   /* Predicted values of the squared residuals*/
   const Sample wPredicted(result.getFittedSample());

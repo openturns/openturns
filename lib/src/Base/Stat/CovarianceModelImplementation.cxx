@@ -719,24 +719,25 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
 
 struct CovarianceModelScalarDiscretizeRowPolicy
 {
-  const Sample & input_;
+  const SampleImplementation & input_;
   const Point p_;
-  Sample & output_;
+  SampleImplementation & output_;
   const CovarianceModelImplementation & model_;
 
   CovarianceModelScalarDiscretizeRowPolicy(const Sample & input,
-      const UnsignedInteger p,
+      const UnsignedInteger index,
       Sample & output,
       const CovarianceModelImplementation & model)
-    : input_(input)
-    , p_(input[p])
-    , output_(output)
+    : input_(*input.getImplementation())
+    , p_(input[index])
+    , output_(*output.getImplementation())
     , model_(model)
   {}
 
   inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = model_.computeAsScalar(p_, input_[i]);
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      output_(i, 0) = model_.computeAsScalar(p_.begin(), input_.data_begin() + (i * model_.getInputDimension()));
   }
 
 }; /* end struct CovarianceModelScalarDiscretizeRowPolicy */

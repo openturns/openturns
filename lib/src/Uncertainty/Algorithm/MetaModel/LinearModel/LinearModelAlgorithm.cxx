@@ -88,8 +88,8 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
 
 /* Parameters constructor */
 LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
-    const Basis & basis,
-    const Sample & outputSample)
+    const Sample & outputSample,
+    const Basis & basis)
   : MetaModelAlgorithm()
   , inputSample_(0, 0)
   , outputSample_(0, 0)
@@ -108,6 +108,14 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   basis_ = basis;
 }
 
+/** Oldest constructor (for compatibility) */
+LinearModelAlgorithm::LinearModelAlgorithm(const Sample &inputSample,
+                                           const Basis &basis,
+                                           const Sample &outputSample)
+  : LinearModelAlgorithm(inputSample, outputSample, basis)
+{
+  LOGWARN(OSS() << "LinearModelAlgorithm(inputSample, basis, outpuSample) is deprecated");
+}
 
 /* Virtual constructor */
 LinearModelAlgorithm * LinearModelAlgorithm::clone() const
@@ -236,9 +244,9 @@ void LinearModelAlgorithm::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
-  adv.saveAttribute( "result_", result_ );
+  adv.saveAttribute("basis_", basis_);
+  adv.saveAttribute("result_", result_);
   adv.saveAttribute( "hasRun_", hasRun_ );
 }
 
@@ -247,9 +255,9 @@ void LinearModelAlgorithm::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
-  adv.loadAttribute( "result_", result_ );
+  adv.loadAttribute("basis_", basis_);
+  adv.loadAttribute("result_", result_);
   adv.loadAttribute( "hasRun_", hasRun_ );
 }
 
