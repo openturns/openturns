@@ -111,8 +111,6 @@ algo = ot.NAIS(myEvent,rhoQuantile)
 
 # %%
 algo.run()
-
-# %%
 result = algo.getResult()
 proba = result.getProbabilityEstimate()
 print('Proba NAIS = ',  proba)
