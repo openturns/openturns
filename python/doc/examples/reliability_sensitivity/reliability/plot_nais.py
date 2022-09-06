@@ -42,7 +42,7 @@ import math
 
 # %%
 # Create the probabilistic model :math:`Y = g(\vect{X})`
-# -----------------------------------------------
+# ------------------------------------------------------
 
 # %%
 # Create the input random vector :math:`\vect{X}`:
