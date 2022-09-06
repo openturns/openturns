@@ -10,7 +10,7 @@ Non parametric Adaptive Importance Sampling (NAIS)
 #
 # .. math::
 #   \begin{align*}
-#   g(X) = \min \begin{pmatrix}5+0.1(x_1-x_2)^2-\frac{(x_1+x_2)}{\sqrt{2}}\\
+#   g(\vect{X}) = \min \begin{pmatrix}5+0.1(x_1-x_2)^2-\frac{(x_1+x_2)}{\sqrt{2}}\\
 #   5+0.1(x_1-x_2)^2+\frac{(x_1+x_2)}{\sqrt{2}}\\
 #   (x_1-x_2)+ \frac{9}{\sqrt{2}}\\
 #   (x_2-x_1)+ \frac{9}{\sqrt{2}}
@@ -41,11 +41,11 @@ from openturns.viewer import View
 import math
 
 # %%
-# Create the probabilistic model :math:`Y = g(X)`
+# Create the probabilistic model :math:`Y = g(\vect{X})`
 # -----------------------------------------------
 
 # %%
-# Create the input random vector :math:`X`:
+# Create the input random vector :math:`\vect{X}`:
 
 # %%
 X = ot.RandomVector(ot.Normal(2))
@@ -84,13 +84,13 @@ view = View(graph)
 g = ot.MemoizeFunction(g)
 
 # %%
-# Create the output random vector :math:`Y = g(X)`:
+# Create the output random vector :math:`Y = g(\vect{X})`:
 
 # %%
 Y = ot.CompositeRandomVector(g, X)
 
 # %%
-# Create the event :math:`\{ Y = g(X) \leq 0 \}`
+# Create the event :math:`\{ Y = g(\vect{X}) \leq 0 \}`
 # ----------------------------------------------
 
 # %%
