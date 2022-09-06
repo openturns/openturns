@@ -152,7 +152,7 @@ N = algo.getMaximumOuterSampling()*algo.getBlockSize()
 print('Size of each subset = ', N)
 
 # %%
-# You can get the number :math:`Ns` of steps with:
+# You can get the number :math:`N_s` of steps with:
 
 # %%
 Ns =  int(nTotal / N)
