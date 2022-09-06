@@ -66,7 +66,6 @@ def fourBranch(x):
     return [min((g1,g2,g3,g4))]
 
 g = ot.PythonFunction(2,1,fourBranch)
-print('function g: ', g)
 
 # %%
 # Draw the function :math:`g` to help to understand the shape of the limit state function:
