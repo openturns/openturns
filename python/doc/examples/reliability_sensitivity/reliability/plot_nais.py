@@ -207,8 +207,6 @@ for i in range(levels.getSize()):
     dr.setLineWidth(3)
     dr.setColor(col[i])
     graph.add(dr)
-
-# %%
 view = View(graph)
 
 # %%
