@@ -31,41 +31,41 @@ class WingWeightModel():
     dim : The dimension of the problem
           dim = 10
 
-    Sw : Wing area (ft^2), `Uniform` distribution
+    Sw : Wing area (ft^2), :class:`~openturns.Uniform` distribution
          First marginal, ot.Uniform(150, 200)
 
-    Wfw : Weight of fuel in the wing (lb), `Uniform` distribution
+    Wfw : Weight of fuel in the wing (lb), :class:`~openturns.Uniform` distribution
          Second marginal, ot.Uniform(220, 300) 
 
-    A : Aspect ratio (-), `Uniform` distribution
+    A : Aspect ratio (-), :class:`~openturns.Uniform` distribution
         Third marginal, ot.Uniform(6, 10)
 		 
-    Lambda : Quarter chord sweep (deg), `Uniform` distribution
+    Lambda : Quarter chord sweep (deg), :class:`~openturns.Uniform` distribution
          Fourth marginal, ot.Uniform(-10, 10)
          
-    q : Dynamic pressure at cruise (lb/ft^2), `Uniform` distribution
+    q : Dynamic pressure at cruise (lb/ft^2), :class:`~openturns.Uniform` distribution
          Fifth marginal, ot.Uniform(16, 45 )
 
-    l : Taper ratio (-), `Uniform` distribution
+    l : Taper ratio (-), :class:`~openturns.Uniform` distribution
          Sixth marginal, ot.Uniform(0.5, 1)
 		 
-    tc : Airfoil thickness to chord ratio (-), `Uniform` distribution
+    tc : Airfoil thickness to chord ratio (-), :class:`~openturns.Uniform` distribution
          Seventh marginal, ot.Uniform(0.08, 0.18)
 		 
-    Nz : Ultimate load factor (-), `Uniform` distribution
+    Nz : Ultimate load factor (-), :class:`~openturns.Uniform` distribution
          Eighth marginal, ot.Uniform(2.5, 6)
 		 
-    Wdg : Flight design gross weight (lb), `Uniform` distribution
+    Wdg : Flight design gross weight (lb), :class:`~openturns.Uniform` distribution
          Nineth marginal, ot.Uniform(1700, 2500)
 
-    Wp : Paint weight (lb/ft^2), `Uniform` distribution
+    Wp : Paint weight (lb/ft^2), :class:`~openturns.Uniform` distribution
          Tenth marginal, ot.Uniform(0.025, 0.08)
 
 
-    distributionX : `ComposedDistribution`
+    distributionX : :class:`~openturns.ComposedDistribution`
                     The joint distribution of the input parameters.
 
-    model : `PythonFunction`
+    model : :class:`~openturns.PythonFunction`
                The Wing weight model with Sw, Wfw, A, Lambda, q, l, tc, Nz, Wdg and Wp as variables.
 
     Examples
