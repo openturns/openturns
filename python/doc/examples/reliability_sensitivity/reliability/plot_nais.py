@@ -106,7 +106,7 @@ rhoQuantile = 0.1
 algo = ot.NAIS(myEvent,rhoQuantile)
 
 # %%
-# Now you can run the algorithm
+# Now you can run the algorithm.
 
 # %%
 algo.run()
