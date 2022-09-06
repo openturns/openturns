@@ -17,7 +17,7 @@ Non parametric Adaptive Importance Sampling (NAIS)
 #   \end{pmatrix}
 #   \end{align*}
 #
-# and the input random vector :math:`\vect{X} = (X_1, X_2)` which follows a Normal distribution with independent components, and identical marginals with zero mean and unit variance:
+# and the input random vector :math:`\vect{X} = (X_1, X_2)` which follows the standard 2-dimensional Normal distribution:
 #
 # .. math::
 #   \begin{align*}
