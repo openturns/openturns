@@ -21,14 +21,14 @@ Non parametric Adaptive Importance Sampling (NAIS)
 #
 # .. math::
 #   \begin{align*}
-#   X \sim  \mathcal{N}(\mu = [0, 0], \sigma = [1,1], corr = I_2)
+#   \vect{X} \sim  \mathcal{N}(\mu = [0, 0], \sigma = [1,1], corr = \mat{I}_2)
 #   \end{align*}
 #
 # We want to evaluate the probability:
 #
 # .. math::
 #   \begin{align*}
-#   p = \mathbb{P} ( g(X) \leq 0 )
+#   p = \mathbb{P} ( g(\vect{X}) \leq 0 )
 #   \end{align*}
 #
 
