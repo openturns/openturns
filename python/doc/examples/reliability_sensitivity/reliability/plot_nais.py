@@ -159,7 +159,7 @@ Ns =  int(nTotal / N)
 print('Number of steps = ', Ns)
 
 # %%
-# Now, we can split the initial sample into :class:`~openturns.NAIS` samples of size :math:`Ns`:
+# Now, we can split the initial sample into NAIS samples of size :math:`N_s`:
 
 # %%
 listNAISSamples = list()
