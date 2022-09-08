@@ -1,30 +1,37 @@
 distribution= class=PythonDistribution name=SciPyDistribution
-realization= [0.37454]
-sample=     [ v0       ]
-0 : [ 0.950714 ]
-1 : [ 0.731994 ]
-2 : [ 0.598658 ]
-3 : [ 0.156019 ]
-4 : [ 0.155995 ]
-pdf= 1
-cdf= 0.6
-quantile= [0.6]
-quantile (tail)= [0.4]
-scalar quantile=0.6
-scalar quantile (tail)=0.4
-mean= [0.5]
-mean(sampling)= [0.494159]
-std= [0.288675]
-std(sampling)= [0.28763]
+continuous? True
+discrete? False
+integral? False
+realization= [0.49816]
+sample=     [ v0        ]
+0 : [  2.80286  ]
+1 : [  1.92798  ]
+2 : [  1.39463  ]
+3 : [ -0.375925 ]
+4 : [ -0.376022 ]
+pdf@0.1= 0.25
+pdf= 0.25
+cdf= 0.25
+quantile= [0]
+quantile (tail)= [2]
+scalar quantile=0
+scalar quantile (tail)=2
+mean= [1]
+mean(sampling)= [0.976638]
+std= [1.1547]
+std(sampling)= [1.15052]
 skewness= [0]
 skewness(sampling)= [0.0248807]
 kurtosis= [1.8]
 kurtosis(sampling)= [1.81085]
-range= [0, 1]
-parameter= []
-parameter= []
-parameterDesc= []
+range= [-1, 3]
+parameter= [-1,4]
+parameter= [3.5,4]
+parameterDesc= [parameter1,parameter2]
 distribution= class=PythonDistribution name=SciPyDistribution
+continuous? True
+discrete? False
+integral? False
 realization= [-1.65058]
 sample=     [ v0        ]
 0 : [ -0.409878 ]
@@ -32,12 +39,13 @@ sample=     [ v0        ]
 2 : [ -1.20987  ]
 3 : [ -2.3312   ]
 4 : [ -2.33131  ]
-pdf= 0.000502634
-cdf= 0.999936
-quantile= [0.6]
-quantile (tail)= [-8.49004]
-scalar quantile=0.6
-scalar quantile (tail)=-8.49004
+pdf@0.1= 0.0190201
+pdf= 0.034761
+cdf= 0.994614
+quantile= [-7.89492e-16]
+quantile (tail)= [-4.77177]
+scalar quantile=-7.89492e-16
+scalar quantile (tail)=-4.77177
 mean= [-1.53652]
 mean(sampling)= [-1.55154]
 std= [0.870537]
@@ -50,3 +58,88 @@ range= ]-inf (-46.5418), (4.77335) +inf[
 parameter= [2.55,2.25]
 parameter= [3.5,2.25]
 parameterDesc= [parameter1,parameter2]
+distribution= class=PythonDistribution name=SciPyDistribution
+continuous? False
+discrete? True
+integral? True
+realization= [4]
+sample=     [ v0 ]
+0 : [ 8  ]
+1 : [ 6  ]
+2 : [ 5  ]
+3 : [ 3  ]
+4 : [ 3  ]
+pdf@0.1= 0
+pdf= 0.000976562
+cdf= 0.000976562
+quantile= [0]
+quantile (tail)= [9]
+scalar quantile=0
+scalar quantile (tail)=9
+mean= [5]
+mean(sampling)= [4.9684]
+std= [1.58114]
+std(sampling)= [1.57081]
+skewness= [0]
+skewness(sampling)= [-0.00105239]
+kurtosis= [2.8]
+kurtosis(sampling)= [2.8062]
+range= [0, 10]
+support=  0 : [  0 ]
+ 1 : [  1 ]
+ 2 : [  2 ]
+ 3 : [  3 ]
+ 4 : [  4 ]
+ 5 : [  5 ]
+ 6 : [  6 ]
+ 7 : [  7 ]
+ 8 : [  8 ]
+ 9 : [  9 ]
+10 : [ 10 ]
+parameter= [10,0.5]
+parameter= [3.5,0.5]
+parameterDesc= [parameter1,parameter2]
+distribution= class=PythonDistribution name=SciPyDistribution
+continuous? False
+discrete? True
+integral? True
+realization= [0]
+sample=     [ v0 ]
+0 : [ 2  ]
+1 : [ 0  ]
+2 : [ 0  ]
+3 : [ 0  ]
+4 : [ 1  ]
+pdf@0.1= 0
+pdf= 0.548812
+cdf= 0.548812
+quantile= [0]
+quantile (tail)= [0]
+scalar quantile=0
+scalar quantile (tail)=0
+mean= [0.6]
+mean(sampling)= [0.5893]
+std= [0.774597]
+std(sampling)= [0.765169]
+skewness= [1.29099]
+skewness(sampling)= [1.29299]
+kurtosis= [4.66667]
+kurtosis(sampling)= [4.62228]
+range= [0, (13) +inf[
+support=  0 : [  0 ]
+ 1 : [  1 ]
+ 2 : [  2 ]
+ 3 : [  3 ]
+ 4 : [  4 ]
+ 5 : [  5 ]
+ 6 : [  6 ]
+ 7 : [  7 ]
+ 8 : [  8 ]
+ 9 : [  9 ]
+10 : [ 10 ]
+11 : [ 11 ]
+12 : [ 12 ]
+13 : [ 13 ]
+parameter= [0.6]
+parameter= [3.5]
+parameterDesc= [parameter1]
