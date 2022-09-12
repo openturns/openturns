@@ -21,86 +21,86 @@ These disciplines exchange several coupling variables. The multidisciplinary ana
     
 This test case is composed of nine random variables:
 
-- :math:`H \sim\mathcal{N}(18e6, 1e6)`, the altitude (m)
+- :math:`H \sim\mathcal{N}(18e6, 1e6)`: the altitude (m)
 
-- :math:`P_{other} \sim\mathcal{N}(1000, 50)`, the power other than attitude control system (W)
+- :math:`P_{other} \sim\mathcal{N}(1000, 50)`: the power other than attitude control system (W)
 
-- :math:`F_{s} \sim\mathcal{N}(1400, 20)`, the average solar flux (W/m2)
+- :math:`F_{s} \sim\mathcal{N}(1400, 20)`: the average solar flux (W/m2)
 
-- :math:`\theta \sim\mathcal{N}(15, 1)`, the deviation of moment axis (deg)
+- :math:`\theta \sim\mathcal{N}(15, 1)`: the deviation of moment axis (deg)
 
-- :math:`L_{sp} \sim\mathcal{N}(2, 0.4)`, the moment arm for radiation torque (m)
+- :math:`L_{sp} \sim\mathcal{N}(2, 0.4)`: the moment arm for radiation torque (m)
 
-- :math:`q \sim\mathcal{N}(0.5, 1)`, the reflectance factor (-)
+- :math:`q \sim\mathcal{N}(0.5, 1)`: the reflectance factor (-)
 
-- :math:`R_D \sim\mathcal{N}(5,1)`, the residual dipole of spacecraft (A.m2)
+- :math:`R_D \sim\mathcal{N}(5,1)`: the residual dipole of spacecraft (A.m2)
 
-- :math:`L_\alpha \sim\mathcal{N}(2,0.4)`, the moment arm for aerodynamic torque (m)
+- :math:`L_\alpha \sim\mathcal{N}(2,0.4)`: the moment arm for aerodynamic torque (m)
 
-- :math:`C_d \sim\mathcal{N}(1,0.3)`, the drag coefficient (-)
+- :math:`C_d \sim\mathcal{N}(1,0.3)`: the drag coefficient (-)
 
 
 The three outputs of interest are:
 
-- :math:`\tau_{torque}`, the total torque of the satellite (N.m)
+- :math:`\tau_{torque}`: the total torque of the satellite (N.m)
 
-- :math:`P_{tot}`, the total power of the satellite (W)
+- :math:`P_{tot}`: the total power of the satellite (W)
 
-- :math:`A_{sa}`, the area of the solar array (m2)
+- :math:`A_{sa}`: the area of the solar array (m2)
 
 
 
 Different deterministic quantities are also present:
 
-- :math:`c` :  the speed of light, 2.9979e8 m/s 
+- :math:`c`:  the speed of light, 2.9979e8 m/s 
 
-- :math:`\omega_{max}` : the maximum rotational velocity of reaction wheel, 6000 rpm
+- :math:`\omega_{max}`: the maximum rotational velocity of reaction wheel, 6000 rpm
 
-- :math:`n` : the number of reaction wheels that could be active, 3
+- :math:`n`: the number of reaction wheels that could be active, 3
 
-- :math:`\delta_{\theta_{slew}}` : the slewing time period, 760 s
+- :math:`\delta_{\theta_{slew}}`: the slewing time period, 760 s
 
-- :math:`A_s` : the area reflecting radiation, 13.85 m2
+- :math:`A_s`: the area reflecting radiation, 13.85 m2
 
-- :math:`i` : the sun incidence angle, 0 deg
+- :math:`i`: the sun incidence angle, 0 deg
 
-- :math:`M` :  the magnetic moment of earth, 7.96e15 A.m2
+- :math:`M`:  the magnetic moment of earth, 7.96e15 A.m2
 
-- :math:`\rho` : the atmospheric density, 5.1480e-11 kg/m3
+- :math:`\rho`: the atmospheric density, 5.1480e-11 kg/m3
 
-- :math:`A` : the cross-sectional in flight direction, 13.85 m2
+- :math:`A`: the cross-sectional in flight direction, 13.85 m2
 
-- :math:`P_{hold}` : the holding power, 20 W
+- :math:`P_{hold}`: the holding power, 20 W
 
-- :math:`\mu` :  the Earth gravity constant, 398600.4418e9 m3/s2
+- :math:`\mu`:  the Earth gravity constant, 398600.4418e9 m3/s2
 
-- :math:`Id` : the inherent degradation of array, 0.77
+- :math:`Id`: the inherent degradation of array, 0.77
 
-- :math:`t` : the thickness of solar panels, 0.005 m
+- :math:`t`: the thickness of solar panels, 0.005 m
 
-- :math:`n_{sa}` : the number of solar arrays, 3
+- :math:`n_{sa}`: the number of solar arrays, 3
 
-- :math:`\epsilon_{deg}` : the degradation in power production capability, 0.0375 percent per year
+- :math:`\epsilon_{deg}`: the degradation in power production capability, 0.0375 percent per year
 
-- :math:`LT` : the lifetime of spacecraft, 15 years
+- :math:`LT`: the lifetime of spacecraft, 15 years
 
-- :math:`r_{lw}` : the length to width ratio of solar array, 3
+- :math:`r_{lw}`: the length to width ratio of solar array, 3
 
-- :math:`D` : the distance between panels, 2 m
+- :math:`D`: the distance between panels, 2 m
 
-- :math:`I_{bodyX}` : the inertia of body, X axis, 6200 kg.m2
+- :math:`I_{bodyX}`: the inertia of body, X axis, 6200 kg.m2
 
-- :math:`I_{bodyY}` : the inertia of body, Y axis, 6200 kg.m2
+- :math:`I_{bodyY}`: the inertia of body, Y axis, 6200 kg.m2
 
-- :math:`I_{bodyZ}` : the inertia of body, Z axis, 4700 kg.m2
+- :math:`I_{bodyZ}`: the inertia of body, Z axis, 4700 kg.m2
 
-- :math:`\rho_{sa}` : the average mass density to arrays, 700 kg.m3
+- :math:`\rho_{sa}`: the average mass density to arrays, 700 kg.m3
 
-- :math:`\eta` :  the power efficiency, 0.22
+- :math:`\eta`:  the power efficiency, 0.22
 
-- :math:`\phi_{target}` : the target diameter, 235000 m
+- :math:`\phi_{target}`: the target diameter, 235000 m
 
-- :math:`R_E` : the Earth radius, 6378140 m
+- :math:`R_E`: the Earth radius, 6378140 m
 
 We assume that the input variables are independent.
 
@@ -217,8 +217,8 @@ with :math:`L = \sqrt{\frac{A_{sa} r_{tw}}{n_{sa}}}` the length of the solar arr
    
 Two tunings parameters are present : 
 
-- :math:`tolFPI` : the tolerance on the fixed point iteration algorithm used in the multidisciplinary analysis, 1e-3
-- :math:`maxFPIIter` : the maximum number of iterations of the fixed point iteration algorithm used in the multidisciplinary analysis, 50
+- :math:`tolFPI`: the tolerance on the fixed point iteration algorithm used in the multidisciplinary analysis, 1e-3
+- :math:`maxFPIIter`: the maximum number of iterations of the fixed point iteration algorithm used in the multidisciplinary analysis, 50
 
 References
 ----------
