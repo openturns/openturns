@@ -82,7 +82,6 @@ public:
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const override;
-  Complex computeLogCharacteristicFunction(const Scalar x) const override;
 
   /** Get the PDFGradient of the Triangular distribution */
   using ContinuousDistribution::computePDFGradient;

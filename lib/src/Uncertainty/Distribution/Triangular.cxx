@@ -22,6 +22,7 @@
 #include "openturns/Triangular.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -161,20 +162,18 @@ Scalar Triangular::computeCDF(const Point & point) const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Triangular::computeCharacteristicFunction(const Scalar x) const
 {
+  if (std::abs(x) < pdfEpsilon_) return 1.0;
   if (std::abs(x) < 1.0e-8) return Complex(1.0, (a_ + b_ + m_) * x / 3.0);
   const Scalar ba = b_ - a_;
   const Scalar bm = b_ - m_;
   const Scalar ma = m_ - a_;
-  return 2.0 / (x * x) * (-std::exp(Complex(0.0, a_ * x)) / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - std::exp(Complex(0.0, b_ * x)) / (ba * bm));
-}
-
-Complex Triangular::computeLogCharacteristicFunction(const Scalar x) const
-{
-  if (std::abs(x) < pdfEpsilon_) return 0.0;
-  const Scalar ba = b_ - a_;
-  const Scalar bm = b_ - m_;
-  const Scalar ma = m_ - a_;
-  return  M_LN2 - 2.0 * std::log(std::abs(x)) + std::log(-std::exp(Complex(0.0, a_ * x)) / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - std::exp(Complex(0.0, b_ * x)) / (ba * bm));
+  const Scalar epsilon = SpecFunc::Precision * ba;
+  const Scalar twoOverX2 = 2.0 / (x * x);
+  const Complex expIAX = std::exp(Complex(0.0, a_ * x));
+  const Complex expIBX = std::exp(Complex(0.0, b_ * x));
+  if (ma < epsilon) return twoOverX2 * (expIAX * Complex(1.0 / ba,  x) - expIBX / ba) / ba;
+  if (bm < epsilon) return twoOverX2 * (expIBX * Complex(1.0 / ba, -x) - expIAX / ba) / ba;
+  return twoOverX2 * (-expIAX / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - expIBX / (ba * bm));
 }
 
 /* Get the PDFGradient of the distribution */
