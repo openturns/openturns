@@ -268,11 +268,5 @@ Examples based on this use case
  .. figure:: /auto_meta_modeling/kriging_metamodel/images/thumb/sphx_glr_plot_kriging_multioutput_firesatellite_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_meta_modeling_kriging_metamodel_plot_kriging_multioutput_firesatellite.py`
-
-.. toctree::
-   :hidden:
-
-   /auto_meta_modeling/kriging_metamodel/plot_kriging_multioutput_firesatellite
-   
+     :ref:`sphx_glr_auto_meta_modeling_kriging_metamodel_plot_kriging_multioutput_firesatellite.py`  
 
