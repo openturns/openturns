@@ -18,7 +18,7 @@ Example of multi output Kriging on the fire satellite model
 # - :math:`L_{sp} \sim\mathcal{N}(2, 0.4)`, the moment arm for radiation torque (m)
 # - :math:`q \sim\mathcal{N}(0.5, 1)`, the reflectance factor (-)
 # - :math:`R_D \sim\mathcal{N}(5,1)`, the residual dipole of spacecraft (A.m2)
-# - math:`L_\alpha \sim\mathcal{N}(2,0.4)`, the moment arm for aerodynamic torque (m)
+# - :math:`L_\alpha \sim\mathcal{N}(2,0.4)`, the moment arm for aerodynamic torque (m)
 # - :math:`C_d \sim\mathcal{N}(1,0.3)`, the drag coefficient (-)
 #
 # The three outputs of interest are :
