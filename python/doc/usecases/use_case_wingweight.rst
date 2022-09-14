@@ -15,7 +15,7 @@ the airfoil thickness to chord ratio, the ultimate load factor, the flight desig
     :width: 50%
 
 
-The function is defined as follows :
+The function is defined as follows:
 
 .. math::
    g(S_{w},W_{fw},A, \Lambda, q, l, t_c, N_z, W_{dg}, W_p) = 0.036 S_w^{0.758} {W_{fw}}^{0.0035}\left(\frac{A}{\cos^2(\Lambda)}\right)^{0.6} q^{0.006} l^{0.04} \left(\frac{100 t_c}{\cos(\Lambda)}\right)^{-0.3}(N_z W_{dg})^{0.49}+S_w W_p
@@ -49,14 +49,14 @@ References
 
 * Forrester, A., Sobester, A., & Keane, A. (2008). Engineering design via surrogate modelling: a practical guide. Wiley.
 
-* Moon, H., Dean, A. M., & Santner, T. J. (2012). Two-stage sensitivity-based group screening in computer experiments. Technometrics, 54(4), 376-387
+* Moon, H., Dean, A. M., & Santner, T. J. (2012). Two-stage sensitivity-based group screening in computer experiments. Technometrics, 54(4), 376-387.
 
 * Raymer D.P. (2018). Aircraft Design: a conceptual approach. American Institute of Aeronautics and Astronautics.
 
 Load the use case
 -----------------
 
-We can load this model from the use cases module as follows :
+We can load this model from the use cases module as follows:
 
 .. code-block:: python
 
