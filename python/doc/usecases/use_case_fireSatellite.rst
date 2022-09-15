@@ -223,13 +223,11 @@ Two tunings parameters are present :
 References
 ----------
 
-* Wertz, J. and Larson, W. (1999) Space Mission Analysis and Design, Microcosm, Inc. Torrance, CA.
+* [wertz1999]_
 
+* [sankararaman2012]_
 
-* Sankararaman, S., Mahadevan, S. (2012). Likelihood-based approach to multidisciplinary analysis under uncertainty. Journal of Mechanical Design, 134(3):031008
-
-
-* Zaman, K. (2012). Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design, PhD thesis, Vanderbilt University, USA
+* [zaman2012]_
 
 
 Load the use case
