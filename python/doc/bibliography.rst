@@ -237,9 +237,8 @@ Bibliography
 .. [saltelli2002] Saltelli, A. *Making best use of model evaluations to compute
     sensitivity indices.* Computer Physics Communication, 2002, 145, 580-297.
     `pdf <http://www.andreasaltelli.eu/file/repository/Making_best_use.pdf>`__
-.. [sankararaman2012] Sankararaman, S. and Mahadevan, S. 
-    *Likelihood-based approach to multidisciplinary analysis under uncertainty.*
-    Journal of Mechanical Design, 134(3):031008, 2012
+.. [sankararaman2012] Sankararaman, S. and Mahadevan, S. *Likelihood-based approach to multidisciplinary analysis under uncertainty.* 
+    Journal of Mechanical Design, 134(3):031008, 2012.
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
     Statistique*, Technip
 .. [scott1992] David W. Scott (1992). *Multivariate density estimation*,
