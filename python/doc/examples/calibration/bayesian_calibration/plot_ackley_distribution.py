@@ -17,6 +17,7 @@ of the Metropolis-Hastings algorithm.
 # In the following we call it the "Ackley distribution".
 
 import openturns as ot
+import openturns.experimental as otexp
 from openturns.viewer import View
 from openturns.usecases import ackley_function
 from numpy import exp, format_float_scientific
@@ -137,7 +138,7 @@ class ConditionalAckley(ot.OpenTURNSPythonFunction):
 # %%
 # The 2 components of the state of the Markov chain will be updated
 # one after the other, not simultaneously.
-# We define 2 :class:`~openturns.UserDefinedMetropolisHastings` algorithms
+# We define 2 :class:`~openturns.experimental.UserDefinedMetropolisHastings` algorithms
 # encapsulated within a :class:`~openturns.Gibbs` algorithm,
 # so we need 2 link functions, each corresponding to one of the marginals
 # of the Ackley distribution.
@@ -243,10 +244,10 @@ initialState = [0.1] * 2
 # We can finally define the two Metropolis-Hastings algorithms
 # and the Gibbs algorithm which encapsulates them.
 
-gmh_0 = ot.UserDefinedMetropolisHastings(
+gmh_0 = otexp.UserDefinedMetropolisHastings(
     ackley_logpdf, support, initialState, proposal, link_function_0, [0]
 )
-gmh_1 = ot.UserDefinedMetropolisHastings(
+gmh_1 = otexp.UserDefinedMetropolisHastings(
     ackley_logpdf, support, initialState, proposal, link_function_1, [1]
 )
 gibbs = ot.Gibbs([gmh_0, gmh_1])

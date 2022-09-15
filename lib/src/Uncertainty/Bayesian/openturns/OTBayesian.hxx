@@ -33,5 +33,6 @@
 #include "openturns/RandomWalkMetropolisHastings.hxx"
 #include "openturns/IndependentMetropolisHastings.hxx"
 #include "openturns/Gibbs.hxx"
+#include "openturns/RandomVectorMetropolisHastings.hxx"
 
 #endif /* OPENTURNS_OTBAYESIAN_HXX */
