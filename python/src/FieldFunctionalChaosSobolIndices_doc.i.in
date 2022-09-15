@@ -57,6 +57,7 @@ FieldToPointFunctionalChaosAlgorithm
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> mesh = ot.RegularGrid(0.0, 0.1, 20)
 >>> cov = ot.KroneckerCovarianceModel(ot.MaternModel([2.0], 1.5), ot.CovarianceMatrix(4))
@@ -66,7 +67,7 @@ Examples
 >>> for xi in x:
 ...     m = xi.computeMean()
 ...     y.append([m[0] + m[1] + m[2] - m[3] + m[0] * m[1] - m[2] * m[3] - 0.1 * m[0] * m[1] * m[2]])
->>> algo = ot.FieldToPointFunctionalChaosAlgorithm(x, y)
+>>> algo = otexp.FieldToPointFunctionalChaosAlgorithm(x, y)
 >>> algo.setThreshold(4e-2)
 >>> # Temporarily lower the basis size for the sake of this example.
 >>> # We need to store the original size.
@@ -77,7 +78,7 @@ Examples
 >>> # we can now restore the original value.
 >>> ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', bs)
 >>> result = algo.getResult()
->>> sensitivity = ot.FieldFunctionalChaosSobolIndices(result)
+>>> sensitivity = otexp.FieldFunctionalChaosSobolIndices(result)
 >>> sobol_1 = sensitivity.getFirstOrderIndices()
 >>> sobol_t = sensitivity.getTotalOrderIndices()
 "

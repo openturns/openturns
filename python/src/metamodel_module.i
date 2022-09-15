@@ -60,9 +60,6 @@
 %include FunctionalChaosResult.i
 %include FunctionalChaosAlgorithm.i
 %include FunctionalChaosSobolIndices.i
-%include FieldFunctionalChaosResult.i
-%include FieldToPointFunctionalChaosAlgorithm.i
-%include FieldFunctionalChaosSobolIndices.i
 %include MetaModelValidation.i
 %include GeneralLinearModelResult.i
 %include GeneralLinearModelAlgorithm.i

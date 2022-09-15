@@ -67,6 +67,7 @@ For :math:`k=1,2,...`:
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> import math as m
 >>> ot.RandomGenerator.SetSeed(0)
 
@@ -94,7 +95,7 @@ but moved according to the derivative of the target log-density.
 ...     mean = x[0] + h / 2 * derivative_log_density
 ...     return [mean, std_deviation]
 >>> link = ot.PythonFunction(1, 2, python_link)
->>> mala = ot.UserDefinedMetropolisHastings(log_density, support, initialState, proposal, link)
+>>> mala = otexp.UserDefinedMetropolisHastings(log_density, support, initialState, proposal, link)
 >>> x = mala.getSample(10)"
 
 

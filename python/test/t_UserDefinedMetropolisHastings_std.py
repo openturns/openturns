@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.testing as ott
 import math as m
 
@@ -30,7 +31,7 @@ def python_link(x):
     mean = x[0] + h / 2 * derivative_log_density
     return [mean, std_deviation]
 link = ot.PythonFunction(1, 2, python_link)
-mala = ot.UserDefinedMetropolisHastings(log_density, support, initialState, proposal, link)
+mala = otexp.UserDefinedMetropolisHastings(log_density, support, initialState, proposal, link)
 
 # %%
 # Get a sample

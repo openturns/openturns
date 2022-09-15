@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -50,7 +51,7 @@ x = X.getSample(N)
 y = f(x)
 
 # run algo
-algo = ot.FieldToPointFunctionalChaosAlgorithm(x, y)
+algo = otexp.FieldToPointFunctionalChaosAlgorithm(x, y)
 ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', N)
 ot.ResourceMap.SetAsBool('FunctionalChaosAlgorithm-Sparse', True)
 algo.setThreshold(4e-2)
@@ -66,7 +67,7 @@ ratios = [res.getSelectionRatio() for res in kl_results]
 print(f"ratios={ratios}")
 
 # retrieve Sobol indices
-sensitivity = ot.FieldFunctionalChaosSobolIndices(result)
+sensitivity = otexp.FieldFunctionalChaosSobolIndices(result)
 sobol_0 = sensitivity.getFirstOrderIndices()
 sobol_0t = sensitivity.getTotalOrderIndices()
 print(f"first order={sobol_0}")
@@ -87,7 +88,7 @@ algo.run()
 result = algo.getResult()
 
 # retrieve Sobol indices
-sensitivity = ot.FieldFunctionalChaosSobolIndices(result)
+sensitivity = otexp.FieldFunctionalChaosSobolIndices(result)
 sobol_0 = sensitivity.getFirstOrderIndices()
 sobol_0t = sensitivity.getTotalOrderIndices()
 print(f"first order={sobol_0}")
