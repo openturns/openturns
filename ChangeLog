@@ -27,6 +27,7 @@
  * Deprecated oldest LinearModelAlgorithm(X, basis, Y) and LinearModelStepwiseAlgorithm(X, basis, Y,...) ctors
 
 === Documentation ===
+ * Added example galleries at the end of API doc pages
 
 === Python module ===
 

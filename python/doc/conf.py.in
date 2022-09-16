@@ -122,6 +122,16 @@ sphinx_gallery_conf = {
                                         'examples/graphs',]),
      'show_signature': False,
 
+    # directory where function/class granular galleries are stored
+    'backreferences_dir'  : 'gen_modules/backreferences',
+
+    # Modules for which function/class level galleries are created.
+    'doc_module'          : ('openturns'),
+
+    # objects to exclude from implicit backreferences. The default option
+    # is an empty set, i.e. exclude nothing.
+    'exclude_implicit_doc': {},
+
 }
 
 
