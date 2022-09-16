@@ -10,3 +10,5 @@
    {% endblock %}
 
 
+.. minigallery:: {{module}}.{{objname}}
+   :add-heading: Examples using the class
