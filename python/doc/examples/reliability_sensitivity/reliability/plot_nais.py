@@ -227,6 +227,4 @@ for i in range(levels.getSize()):
     graph.add(dr)
 
 graph.setColors(col)
-
-
 view = View(graph)
