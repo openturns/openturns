@@ -167,6 +167,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LowestScalar)
 {
+  LOGWARN(OSS() << "GeneralLinearModelAlgorithm(inputSample, outpuSample, covarianceModel, basisCollection, keepCholeskyFactor) is deprecated");
   // Set covariance model
   setCovarianceModel(covarianceModel);
 
