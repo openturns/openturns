@@ -91,6 +91,7 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
+  LOGWARN(OSS() << "KrigingAlgorithm(inputSample, outpuSample, covarianceModel, basisCollection) is deprecated");
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
   setMethod(ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra"));
 }

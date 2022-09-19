@@ -9,3 +9,4 @@ Remove FunctionalChaosResult.getComposedModel, MetaModelResult.getModel and asso
 Remove (Process)Sample::computeCenteredMoment
 Remove Distribution::getCenteredMoment
 Remove IterativeMoments::getCenteredMoments
+Drop deprecated GeneralLinearModelAlgorithm | KrigingAlgorithm ctors for 1.21
