@@ -57,7 +57,7 @@ ot_pyinstallcheck_test (ishigami_function IGNOREOUT)
 ot_pyinstallcheck_test (logistic_model IGNOREOUT)
 ot_pyinstallcheck_test (stressed_beam IGNOREOUT)
 ot_pyinstallcheck_test (fireSatellite_function IGNOREOUT)
-ot_pyinstallcheck_test (wingweight_function IGNOREOUT
+ot_pyinstallcheck_test (wingweight_function IGNOREOUT)
 if (NUMPY_FOUND)
   ot_pyinstallcheck_test (viscous_free_fall IGNOREOUT)
 endif()
