@@ -18,7 +18,7 @@ Estimate Sobol indices on a field to point function
 # This involves these steps:
 #
 # - Generate some input/output data matching the application :math:`h`
-# - Run the :class:`~openturns.FieldToPointFunctionalChaosAlgorithm` class
+# - Run the :class:`~openturns.experimental.FieldToPointFunctionalChaosAlgorithm` class
 # - Validate the Karhunen-Loeve decompositions of the inputs
 # - Validate the chaos metamodel between the KL coefficients and the outputs
 # - Retrieve the Sobol' indices from :class:`~openturns.FieldFunctionalChaosSobolIndices`
@@ -26,6 +26,7 @@ Estimate Sobol indices on a field to point function
 
 # %%
 import openturns as ot
+import openturns.experimental as otexp
 from openturns.viewer import View
 
 # %%
@@ -74,7 +75,7 @@ y = f(x)
 # %%
 # Run the field-vector algorithm that performs KL-decomposition of the inputs
 # and chaos learning between the KL coefficients and the ouput vectors
-algo = ot.FieldToPointFunctionalChaosAlgorithm(x, y)
+algo = otexp.FieldToPointFunctionalChaosAlgorithm(x, y)
 # 1. KL parameters
 algo.setCenteredSample(False)  # our input sample is not centered (default)
 algo.setThreshold(4e-2)  # we expect to explain 96% of variance
@@ -169,7 +170,7 @@ print(f'y0={y0} y0^={y0hat}')
 # %%
 # Retrieve the first order Sobol' indices
 # The preponderant variables are x2, x4 whereas x1, x3 have a low influence on the output
-sensitivity = ot.FieldFunctionalChaosSobolIndices(result)
+sensitivity = otexp.FieldFunctionalChaosSobolIndices(result)
 sobol_0 = sensitivity.getFirstOrderIndices()
 print(f"first order={sobol_0}")
 

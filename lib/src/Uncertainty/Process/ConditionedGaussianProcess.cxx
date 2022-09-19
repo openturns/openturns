@@ -103,17 +103,18 @@ void ConditionedGaussianProcess::initialize()
   // a zero cross: a null row and a null column which cross at a zero diagonal element.
   // The trick is to replace this value by the maximum marginal variance, then to
   // remember to set to zero the value at the corresponding index during the sampling phase
+  const UnsignedInteger dimension = covarianceMatrix.getDimension();
   Scalar maximumVariance = 0.0;
-  for (UnsignedInteger i = 0; i < covarianceMatrix.getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
     maximumVariance = std::max(maximumVariance, covarianceMatrix(i, i));
   const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
   const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
   const Scalar epsilon = maximumVariance * startingScaling;
-  for (UnsignedInteger i = 0; i < covarianceMatrix.getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
     if (covarianceMatrix(i, i) <= epsilon)
     {
       // Enforce a strict zero cross
-      for (UnsignedInteger j = 0; j < i; ++j)
+      for (UnsignedInteger j = 0; j < dimension; ++j)
         covarianceMatrix(i, j) = 0.0;
       // Then put the maximum variance on the diagonal.
       // In theory any positive number should work but

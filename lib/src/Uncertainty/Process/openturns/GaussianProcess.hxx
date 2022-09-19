@@ -69,6 +69,7 @@ public:
 
   /** Set sampling method accessor */
   enum SamplingMethod { CHOLESKY, HMAT, GIBBS };
+  SamplingMethod getSamplingMethod() const;
   void setSamplingMethod(const SamplingMethod samplingMethod);
 
   /** Realization accessor */

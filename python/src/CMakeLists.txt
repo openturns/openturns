@@ -893,9 +893,6 @@ ot_add_python_module(metamodel metamodel_module.i
                       UnionEvent.i UnionEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
-                      FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
-                      FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in
-                      FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
                       TensorApproximationResult.i TensorApproximationResult_doc.i.in
                       TensorApproximationAlgorithm.i TensorApproximationAlgorithm_doc.i.in
@@ -1026,6 +1023,12 @@ ot_add_python_module(uncertainty uncertainty_module.i
 ot_add_python_module(testing testing_module.i
                     )
 
+ot_add_python_module(experimental experimental_module.i
+                     FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
+                     FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in
+                     FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
+                     UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
+                    )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
 
