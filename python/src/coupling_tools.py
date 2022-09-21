@@ -35,7 +35,6 @@ import os
 import shlex
 import subprocess
 import sys
-import warnings
 
 debug = False
 default_encoding = sys.getdefaultencoding()
@@ -46,10 +45,16 @@ def check_param(obj, obj_type):
 
     try:
         obj_type(obj)
-    except:
-        raise AssertionError("error: parameter (" +
-                             str(type(obj)) + ": " + str(obj) +
-                             ") must be of " + str(obj_type) + "!")
+    except Exception:
+        raise AssertionError(
+            "error: parameter ("
+            + str(type(obj))
+            + ": "
+            + str(obj)
+            + ") must be of "
+            + str(obj_type)
+            + "!"
+        )
 
 
 def replace(infile, outfile, tokens, values, formats=None, encoding=default_encoding):
@@ -107,15 +112,15 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
         if len(values) != len(formats):
             raise AssertionError("Error: values size is != formats size!")
     else:
-        formats = ['{0}'] * len(values)
+        formats = ["{0}"] * len(values)
 
     inplace = False
     if (outfile is None) or (infile == outfile):
         inplace = True
         outfile = infile + ".temporary_outfile"
 
-    infile_handle = open(infile, 'rb')
-    outfile_handle = open(outfile, 'wb')
+    infile_handle = open(infile, "rb")
+    outfile_handle = open(outfile, "wb")
 
     regex_tokens = []
     found_tokens = []
@@ -130,8 +135,7 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
             found = regex_token.search(line)
             while found is not None:
                 found_tokens[i] = True
-                line = line.replace(
-                    found.group(0), formats[i].format(values[i]))
+                line = line.replace(found.group(0), formats[i].format(values[i]))
                 found = regex_token.search(line)
             i += 1
 
@@ -151,14 +155,23 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
 
 class OTCalledProcessError(subprocess.CalledProcessError):
     def __str__(self):
-        err_msg = (':\n' + self.stderr[:200].decode()
-                   ) if self.stderr is not None else ''
+        err_msg = (
+            (":\n" + self.stderr[:200].decode()) if self.stderr is not None else ""
+        )
         return super(OTCalledProcessError, self).__str__() + err_msg
 
 
-def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
-            check=True, capture_output=False,
-            timeout=None, env=None):
+def execute(
+    cmd,
+    cwd=None,
+    shell=False,
+    executable=None,
+    hide_win=True,
+    check=True,
+    capture_output=False,
+    timeout=None,
+    env=None,
+):
     """
     Launch an external process.
 
@@ -206,24 +219,27 @@ def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
     """
 
     # split cmd if not in a shell before passing it to os.execvp()
-    try:
-        import posix
-        posix = True
-    except ImportError:
-        posix = False
+    posix = os.name == "posix"
     process_args = cmd if shell else shlex.split(cmd, posix=posix)
 
     # override startupinfo to hide windows console
     startupinfo = None
-    if hide_win and sys.platform.startswith('win'):
+    if hide_win and sys.platform.startswith("win"):
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
     stdout = subprocess.PIPE if capture_output else None
     stderr = subprocess.PIPE if capture_output else None
-    process = subprocess.Popen(process_args, shell=shell, cwd=cwd,
-                               executable=executable, stdout=stdout, stderr=stderr,
-                               startupinfo=startupinfo, env=env)
+    process = subprocess.Popen(
+        process_args,
+        shell=shell,
+        cwd=cwd,
+        executable=executable,
+        stdout=stdout,
+        stderr=stderr,
+        startupinfo=startupinfo,
+        env=env,
+    )
     stdout_data = None
     stderr_data = None
     try:
@@ -247,7 +263,9 @@ def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
     if check and returncode:
         raise OTCalledProcessError(returncode, cmd, stdout_data, stderr_data)
 
-    return subprocess.CompletedProcess(cmd, returncode, stdout=stdout_data, stderr=stderr_data)
+    return subprocess.CompletedProcess(
+        cmd, returncode, stdout=stdout_data, stderr=stderr_data
+    )
 
 
 def get_regex(filename, patterns, encoding=default_encoding):
@@ -286,7 +304,7 @@ def get_regex(filename, patterns, encoding=default_encoding):
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('@E=-9.5E3')
     >>> # parse file with regex
-    >>> ct.get_regex('results.out', patterns=[r'@E=(\R)'])
+    >>> ct.get_regex('results.out', patterns=[r"(\\R)"])
     [-9500.0]
     """
 
@@ -298,14 +316,14 @@ def get_regex(filename, patterns, encoding=default_encoding):
     re_patterns = []
     for pattern in patterns:
         # OT-like shortcuts
-        pattern = pattern.replace(r'\R',
-                                  r'[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?')
-        pattern = pattern.replace(r'\I',
-                                  r'[+-]? *\d+')
+        pattern = pattern.replace(
+            r"\R", r"[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?"
+        )
+        pattern = pattern.replace(r"\I", r"[+-]? *\d+")
 
         re_patterns.append(re.compile(pattern))
 
-    file_handle = open(filename, 'rb')
+    file_handle = open(filename, "rb")
 
     for line in file_handle:
         line = line.decode(encoding)
@@ -320,7 +338,7 @@ def get_regex(filename, patterns, encoding=default_encoding):
 
     for result, pattern in zip(results, patterns):
         if result is None:
-            raise EOFError('error: no pattern (' + pattern + ') found!')
+            raise EOFError("error: no pattern (" + pattern + ") found!")
 
     return results
 
@@ -339,23 +357,19 @@ def get_real_from_line(line):
     value : float or int
         Found value. Raise an exception if nothing found.
     """
-    result = None
-    # print "token=" + str(token) + ', skip_token=' + str(skip_token) + ','\
-    #        'skip_line=' + str(skip_line) + ', skip_col=' + str(skip_col)
 
     # \S*: spaces are allowed at the beginning of the real
-    real_regex = '\s*[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?'
-    # real_regex = '[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?'
+    real_regex = r"\s*[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?"
     re_real = re.compile(real_regex)
 
     # get the value
     match = re_real.match(line)
     if match:
-        result = float(line[match.start():match.end()])
-
-    if result is None:
-        raise EOFError('error: real not found at the beginning of this line: '
-                       '(' + line + ')!')
+        result = float(line[match.start(): match.end()])
+    else:
+        raise EOFError(
+            "error: real not found at the beginning of this line: " "(" + line + ")!"
+        )
 
     return result
 
@@ -373,30 +387,32 @@ def read_line(handle, seek=0, encoding=default_encoding):
     """
     line = handle.readline().decode(encoding)
 
-    if seek < 0 and line != '':
+    if seek < 0 and line != "":
         if handle.tell() > -seek:
             if debug:
-                sys.stderr.write('line before cut ->' + line + '<-\n')
+                sys.stderr.write("line before cut ->" + line + "<-\n")
 
             # cut the end of the line
-            line = line[:len(line) - (handle.tell() + seek)]
+            line = line[: len(line) - (handle.tell() + seek)]
             # after cut, if the line is empty, add a \n to behave like
             # readline() python function
-            if line == '':
-                line = '\n'
+            if line == "":
+                line = "\n"
             # any further read will return ''
             handle.seek(0, os.SEEK_END)
 
             if debug:
-                sys.stderr.write('line after cut ->' + line + '<-\n')
+                sys.stderr.write("line after cut ->" + line + "<-\n")
 
     if debug:
-        sys.stderr.write('read_line: ->' + line + '<-\n')
+        sys.stderr.write("read_line: ->" + line + "<-\n")
 
     return line
 
 
-def get_line_col(filename, skip_line=0, skip_col=0, col_sep=None, seek=0, encoding=default_encoding):
+def get_line_col(
+    filename, skip_line=0, skip_col=0, col_sep=None, seek=0, encoding=default_encoding
+):
     """
     Get a value at specific line/columns coordinates.
 
@@ -442,13 +458,20 @@ def get_line_col(filename, skip_line=0, skip_col=0, col_sep=None, seek=0, encodi
     check_param(skip_col, int)
     check_param(seek, int)
 
-    handle = open(filename, 'rb')
+    handle = open(filename, "rb")
     if seek > 0:
         handle.seek(seek)
 
     if debug:
-        sys.stderr.write('get_line_col(skip_line=' + str(skip_line) +
-                         ', skip_col=' + str(skip_col) + ', seek=' + str(seek) + ')\n')
+        sys.stderr.write(
+            "get_line_col(skip_line="
+            + str(skip_line)
+            + ", skip_col="
+            + str(skip_col)
+            + ", seek="
+            + str(seek)
+            + ")\n"
+        )
 
     # skip line backward
     if skip_line < 0:
@@ -461,7 +484,7 @@ def get_line_col(filename, skip_line=0, skip_col=0, col_sep=None, seek=0, encodi
         # build lines cache
         previous_pos = handle.tell()
         line = read_line(handle, seek, encoding)
-        while line != '':
+        while line != "":
             # append to cache
             lines_cache.append(previous_pos)
             if len(lines_cache) > lines_cache_size:
@@ -471,26 +494,26 @@ def get_line_col(filename, skip_line=0, skip_col=0, col_sep=None, seek=0, encodi
 
             line = read_line(handle, seek, encoding)
             if debug:
-                sys.stderr.write('lines_cache: ' + str(lines_cache) + '\n')
+                sys.stderr.write("lines_cache: " + str(lines_cache) + "\n")
 
         if len(lines_cache) < lines_cache_size:
-            err_msg = 'error: the file has less than ' + str(lines_cache_size) +\
-                      ' lines!'
+            err_msg = (
+                "error: the file has less than " + str(lines_cache_size) + " lines!"
+            )
             handle.close()
             raise EOFError(err_msg)
         else:
             handle.seek(lines_cache[0])
             line_found = read_line(handle, seek, encoding)
             if debug:
-                sys.stderr.write('line found: ->' + line_found + '<-\n')
+                sys.stderr.write("line found: ->" + line_found + "<-\n")
     # skip line forward
     else:
         while skip_line >= 0:
             line = read_line(handle, seek, encoding)
-            if skip_line > 0 and line == '':
+            if skip_line > 0 and line == "":
                 handle.close()
-                raise EOFError(
-                    'error: the file has less lines than "skip_line"!')
+                raise EOFError('error: the file has less lines than "skip_line"!')
             skip_line -= 1
         line_found = line
 
@@ -500,9 +523,8 @@ def get_line_col(filename, skip_line=0, skip_col=0, col_sep=None, seek=0, encodi
     if skip_col != 0:
         try:
             line_found = line_found.split(col_sep)[skip_col]
-        except:
-            raise EOFError('error: value not found on this line: (' +
-                           line_found + ')!')
+        except Exception:
+            raise EOFError("error: value not found on this line: (" + line_found + ")!")
 
     # get the value
     result = get_real_from_line(line_found)
@@ -510,7 +532,15 @@ def get_line_col(filename, skip_line=0, skip_col=0, col_sep=None, seek=0, encodi
     return result
 
 
-def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, col_sep=None, encoding=default_encoding):
+def get_value(
+    filename,
+    token=None,
+    skip_token=0,
+    skip_line=0,
+    skip_col=0,
+    col_sep=None,
+    encoding=default_encoding,
+):
     """
     Get a value from a file using a delimiter and/or offsets.
 
@@ -590,28 +620,37 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, col_s
     1.3
     """
     if debug:
-        sys.stderr.write("get_value(token=" + str(token) +
-                         ', skip_token=' + str(skip_token) +
-                         ', skip_line=' + str(skip_line) +
-                         ', skip_col=' + str(skip_col) + ')\n')
+        sys.stderr.write(
+            "get_value(token="
+            + str(token)
+            + ", skip_token="
+            + str(skip_token)
+            + ", skip_line="
+            + str(skip_line)
+            + ", skip_col="
+            + str(skip_col)
+            + ")\n"
+        )
 
     # check parameters
     check_param(filename, str)
     if token is not None:
         check_param(token, str)
     elif skip_token != 0:
-        raise AssertionError("error: skip_token parameter needs token "
-                             "parameter to be set!")
+        raise AssertionError(
+            "error: skip_token parameter needs token " "parameter to be set!"
+        )
     check_param(skip_token, int)
     check_param(skip_line, int)
     check_param(skip_col, int)
 
     result = None
     if not token:
-        result = get_line_col(filename, skip_line, skip_col,
-                              col_sep=col_sep, encoding=encoding)
+        result = get_line_col(
+            filename, skip_line, skip_col, col_sep=col_sep, encoding=encoding
+        )
     else:
-        handle = open(filename, 'rb')
+        handle = open(filename, "rb")
 
         re_token = re.compile(token)
 
@@ -626,23 +665,25 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, col_s
             token_pos_cache = []
 
         line = handle.readline().decode(encoding)
-        while line != '':
+        while line != "":
             for token_match in re_token.finditer(line):
                 if skip_token > 0:
                     # token found but it's not the good one
                     skip_token -= 1
                 elif skip_token == 0:
                     # token found
-                    token_pos = [line_pos + token_match.start(),
-                                 line_pos + token_match.end()]
+                    token_pos = [
+                        line_pos + token_match.start(),
+                        line_pos + token_match.end(),
+                    ]
                     if debug:
-                        sys.stderr.write(
-                            'skip_token == 0, line: ' + line + '\n')
+                        sys.stderr.write("skip_token == 0, line: " + line + "\n")
                     break
                 else:
                     # token wanted in revert order: we first cache them all
-                    token_pos_cache.append([line_pos + token_match.start(),
-                                            line_pos + token_match.end()])
+                    token_pos_cache.append(
+                        [line_pos + token_match.start(), line_pos + token_match.end()]
+                    )
 
             if skip_token >= 0 and token_pos is not None:
                 # token found
@@ -657,14 +698,14 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, col_s
 
         if token_pos is None:
             handle.close()
-            raise EOFError('error: no token (' + token + ') was found!')
+            raise EOFError("error: no token (" + token + ") was found!")
 
         if skip_line == 0 and skip_col == 0:
             # get the real right after the token
             handle.seek(token_pos[1])
             line = handle.readline().decode(encoding)
             if debug:
-                sys.stderr.write('first token, line_found: ' + line + '\n')
+                sys.stderr.write("first token, line_found: " + line + "\n")
             result = get_real_from_line(line)
             handle.close()  # fixme: no multiple close?
         else:
@@ -678,12 +719,25 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, col_s
                 seek_pos = token_pos[1]
             handle.close()
             result = get_line_col(
-                filename, skip_line, skip_col, col_sep=col_sep, seek=seek_pos, encoding=encoding)
+                filename,
+                skip_line,
+                skip_col,
+                col_sep=col_sep,
+                seek=seek_pos,
+                encoding=encoding,
+            )
 
     return result
 
 
-def get(filename, tokens=None, skip_tokens=None, skip_lines=None, skip_cols=None, encoding=default_encoding):
+def get(
+    filename,
+    tokens=None,
+    skip_tokens=None,
+    skip_lines=None,
+    skip_cols=None,
+    encoding=default_encoding,
+):
     """
     Get several values from a file using delimiters and/or offsets.
 
@@ -772,11 +826,13 @@ def get(filename, tokens=None, skip_tokens=None, skip_lines=None, skip_cols=None
 
     # possible optimization: get values in one pass
     for n in range(nb_values):
-        results[n] = get_value(filename,
-                               tokens[n],
-                               skip_tokens[n],
-                               skip_lines[n],
-                               skip_cols[n],
-                               encoding=encoding)
+        results[n] = get_value(
+            filename,
+            tokens[n],
+            skip_tokens[n],
+            skip_lines[n],
+            skip_cols[n],
+            encoding=encoding,
+        )
 
     return results
