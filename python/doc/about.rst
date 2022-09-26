@@ -26,6 +26,7 @@ reliability analysis.
 - 2019: (1.13, 1.14) Calibration, new optimization algorithms, system events
 - 2020: (1.15, 1.16) hmat AcaRandom compression, Spectra iterative SVD, examples gallery, C++11, XML/H5 storage
 - 2021: (1.17, 1.18) Karhunen-Loeve validation, new covariance models
+- 2022: (1.19, 1.20) HSIC indices, iterative statistics, field chaos/sensitivity
 
 People
 ------
@@ -58,7 +59,7 @@ Meetings
 --------
 Each year a users day event is planned at the beginning of the summer allowing users to
 exchange on their use of the library and keep up with the new features.
-The 2019 edition is held at EDF Lab Saclay (France) on the 7th of June.
+The 2022 edition was held at EDF Lab Saclay (France) on the 10th of June.
 
 Citing OpenTURNS
 ----------------
