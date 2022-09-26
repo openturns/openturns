@@ -11,8 +11,9 @@ limitStateVariable : :class:`~openturns.RandomVector`
 
 Notes
 -----
-Assuming that :math:`\uX` has its two first moments finite and that :math:`h` is sufficiently regular, the Taylor expansion method is used to approximate the mean and variance of a random variable :math:`\uY = h(\uX)` with respect to the mean and variance of the input random vector 
-:math:`\uX`.
+Assuming that :math:`\uX` has its two first moments finite and that :math:`h` is sufficiently regular, 
+the Taylor expansion method is used to approximate the mean and variance of a random variable :math:`\uY = h(\uX)` 
+with respect to the mean and variance of the input random vector :math:`\uX`.
 
 We note:
 
