@@ -1,21 +1,14 @@
 %feature("docstring") OT::GeneralizedPareto
 "Generalized Pareto distribution.
 
-Available constructors:
-    GeneralizedPareto(*sigma=1.0, xi=0.0, u=0.0*)
-
-    GeneralizedPareto(*pareto*)
-
 Parameters
 ----------
 sigma : float, :math:`\sigma > 0`
     Scale parameter :math:`\sigma`.
 xi : float
     Shape parameter :math:`\xi`.
-u : float
+u : float, default=0.0
     Location parameter :math:`u`.
-pareto : :class:`~openturns.Pareto`
-    Pareto distribution.
 
 Notes
 -----
