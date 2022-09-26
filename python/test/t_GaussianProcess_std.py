@@ -29,14 +29,14 @@ print("is stationary? ", myProcess1.isStationary())
 myProcess1.setSamplingMethod(ot.GaussianProcess.CHOLESKY)
 print("mean over ", size, " realizations = ",
       myProcess1.getSample(size).computeMean())
-myProcess1.setSamplingMethod(ot.GaussianProcess.GIBBS)
+myProcess1.setSamplingMethod(ot.GaussianProcess.GALLIGAOGIBBS)
 print("mean over ", size, " realizations = ",
       myProcess1.getSample(size).computeMean())
 
 # With constant trend
 trend = ot.TrendTransform(ot.SymbolicFunction("t", "4.0"), myTimeGrid)
 myProcess2 = ot.GaussianProcess(trend, myCovModel, myTimeGrid)
-myProcess2.setSamplingMethod(ot.GaussianProcess.GIBBS)
+myProcess2.setSamplingMethod(ot.GaussianProcess.GALLIGAOGIBBS)
 print("myProcess2 = ", myProcess2)
 print("is stationary? ", myProcess2.isStationary())
 print("mean over ", size, " realizations= ",
@@ -50,7 +50,7 @@ print("is stationary? ", myProcess3.isStationary())
 myProcess3.setSamplingMethod(ot.GaussianProcess.CHOLESKY)
 print("mean over ", size, " realizations = ",
       myProcess3.getSample(size).computeMean())
-myProcess3.setSamplingMethod(ot.GaussianProcess.GIBBS)
+myProcess3.setSamplingMethod(ot.GaussianProcess.GALLIGAOGIBBS)
 print("mean over ", size, " realizations = ",
       myProcess3.getSample(size).computeMean())
 
@@ -68,7 +68,7 @@ covModel = ot.UserDefinedCovarianceModel(mesh, cov_matrix)
 
 # Create the "Gaussian Process" discretized on a singleton
 myProcess = ot.GaussianProcess(covModel, mesh)
-myProcess.setSamplingMethod(ot.GaussianProcess.GIBBS)
+myProcess.setSamplingMethod(ot.GaussianProcess.GALLIGAOGIBBS)
 size = 1000
 sample = ot.Sample(size, 1)
 for i in range(size):
@@ -99,7 +99,7 @@ print("mean over ", size, " realizations = ",
       sample.computeMean())
 print("variance over ", size, " realizations = ",
       sample.computeVariance())
-myProcess4.setSamplingMethod(ot.GaussianProcess.GIBBS)
+myProcess4.setSamplingMethod(ot.GaussianProcess.GALLIGAOGIBBS)
 sample = myProcess4.getSample(size)
 print("mean over ", size, " realizations = ",
       sample.computeMean())
@@ -116,7 +116,7 @@ print("mean over ", size, " realizations = ",
       sample.computeMean())
 print("variance over ", size, " realizations = ",
       sample.computeVariance())
-myProcess5.setSamplingMethod(ot.GaussianProcess.GIBBS)
+myProcess5.setSamplingMethod(ot.GaussianProcess.GALLIGAOGIBBS)
 sample = myProcess5.getSample(size)
 print("mean over ", size, " realizations = ",
       sample.computeMean())
