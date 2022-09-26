@@ -50,7 +50,9 @@ FunctionalChaosResult::FunctionalChaosResult()
 
 
 /* Default constructor */
-FunctionalChaosResult::FunctionalChaosResult(const Function & model,
+FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
+                                             const Sample & outputSample,
+    const Function & model,
     const Distribution & distribution,
     const Function & transformation,
     const Function & inverseTransformation,
@@ -61,7 +63,7 @@ FunctionalChaosResult::FunctionalChaosResult(const Function & model,
     const FunctionCollection & Psi_k,
     const Point & residuals,
     const Point & relativeErrors)
-  : MetaModelResult(model, Function(), residuals, relativeErrors)
+  : MetaModelResult(inputSample, outputSample, model, Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)
@@ -80,7 +82,6 @@ FunctionalChaosResult::FunctionalChaosResult(const Function & model,
     metaModel_ = ComposedFunction(composedMetaModel_, transformation);
 }
 
-
 /* Virtual constructor */
 FunctionalChaosResult * FunctionalChaosResult::clone() const
 {
@@ -96,7 +97,6 @@ String FunctionalChaosResult::__repr__() const
          << " distribution=" << distribution_
          << " transformation=" << transformation_
          << " inverseTransformation=" << inverseTransformation_
-         << " composedModel=" << composedModel_
          << " orthogonalBasis=" << orthogonalBasis_
          << " indices=" << I_
          << " coefficients=" << alpha_k_
@@ -136,6 +136,7 @@ Function FunctionalChaosResult::getInverseTransformation() const
 /* Composed model accessor */
 Function FunctionalChaosResult::getComposedModel() const
 {
+  LOGWARN(OSS() << "FunctionalChaosResult.getComposedModel is deprecated");
   return composedModel_;
 }
 
@@ -176,7 +177,6 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "distribution_", distribution_ );
   adv.saveAttribute( "transformation_", transformation_ );
   adv.saveAttribute( "inverseTransformation_", inverseTransformation_ );
-  adv.saveAttribute( "composedModel_", composedModel_ );
   adv.saveAttribute( "orthogonalBasis_", orthogonalBasis_ );
   adv.saveAttribute( "I_", I_ );
   adv.saveAttribute( "alpha_k_", alpha_k_ );
@@ -192,7 +192,6 @@ void FunctionalChaosResult::load(Advocate & adv)
   adv.loadAttribute( "distribution_", distribution_ );
   adv.loadAttribute( "transformation_", transformation_ );
   adv.loadAttribute( "inverseTransformation_", inverseTransformation_ );
-  adv.loadAttribute( "composedModel_", composedModel_ );
   adv.loadAttribute( "orthogonalBasis_", orthogonalBasis_ );
   adv.loadAttribute( "I_", I_ );
   adv.loadAttribute( "alpha_k_", alpha_k_ );

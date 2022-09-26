@@ -36,10 +36,6 @@ static const Factory<LinearModelAlgorithm> Factory_LinearModelAlgorithm;
 /* Default constructor */
 LinearModelAlgorithm::LinearModelAlgorithm()
   : MetaModelAlgorithm()
-  , inputSample_(0, 0)
-  , outputSample_(0, 0)
-  , result_()
-  , hasRun_(false)
 {
   // Nothing to do
 }
@@ -47,18 +43,11 @@ LinearModelAlgorithm::LinearModelAlgorithm()
 /* Parameters constructor */
 LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
     const Sample & outputSample)
-  : MetaModelAlgorithm()
-  , inputSample_(0, 0)
-  , outputSample_(0, 0)
-  , result_()
-  , hasRun_(false)
+  : MetaModelAlgorithm(inputSample, outputSample)
 {
   // Check the sample sizes
   if (inputSample.getSize() != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In LinearModelAlgorithm::LinearModelAlgorithm, input sample size (" << inputSample.getSize() << ") does not match output sample size (" << outputSample.getSize() << ").";
-  // Set samples
-  inputSample_ = inputSample;
-  outputSample_ = outputSample;
 
   const UnsignedInteger inputDimension = inputSample_.getDimension();
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
@@ -90,21 +79,10 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
 LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Basis & basis)
-  : MetaModelAlgorithm()
-  , inputSample_(0, 0)
-  , outputSample_(0, 0)
-  , result_()
-  , hasRun_(false)
+  : MetaModelAlgorithm(inputSample, outputSample)
 {
   if (outputSample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "LinearModelAlgorithm can only handle and 1-d output sample.";
-
-  // Check the sample sizes
-  if (inputSample.getSize() != outputSample.getSize())
-    throw InvalidArgumentException(HERE) << "In LinearModelAlgorithm::LinearModelAlgorithm, input sample size (" << inputSample.getSize() << ") does not match output sample size (" << outputSample.getSize() << ").";
-  // Set samples
-  inputSample_ = inputSample;
-  outputSample_ = outputSample;
   basis_ = basis;
 }
 
@@ -214,21 +192,9 @@ String LinearModelAlgorithm::__repr__() const
 }
 
 
-Sample LinearModelAlgorithm::getInputSample() const
-{
-  return inputSample_;
-}
-
-
 Basis LinearModelAlgorithm::getBasis() const
 {
   return basis_;
-}
-
-
-Sample LinearModelAlgorithm::getOutputSample() const
-{
-  return outputSample_;
 }
 
 
@@ -243,8 +209,6 @@ LinearModelResult LinearModelAlgorithm::getResult()
 void LinearModelAlgorithm::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute("basis_", basis_);
   adv.saveAttribute("result_", result_);
   adv.saveAttribute( "hasRun_", hasRun_ );
@@ -254,8 +218,6 @@ void LinearModelAlgorithm::save(Advocate & adv) const
 void LinearModelAlgorithm::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute("basis_", basis_);
   adv.loadAttribute("result_", result_);
   adv.loadAttribute( "hasRun_", hasRun_ );

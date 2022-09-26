@@ -178,19 +178,20 @@ int main(int, char *[])
       AdaptiveStrategy adaptiveStrategy(listAdaptiveStrategy[adaptiveStrategyIndex]);
       // Create the projection strategy
       UnsignedInteger samplingSize = 250;
-      Collection<ProjectionStrategy> listProjectionStrategy(0);
+      Collection<WeightedExperiment> listExperiment(0);
       // LHS experiment
-      listProjectionStrategy.add(LeastSquaresStrategy(LHSExperiment(samplingSize)));
-      for(UnsignedInteger projectionStrategyIndex = 0; projectionStrategyIndex < listProjectionStrategy.getSize(); ++projectionStrategyIndex)
+      listExperiment.add(LHSExperiment(distribution, samplingSize));
+      for(UnsignedInteger experimentIndex = 0; experimentIndex < listExperiment.getSize(); ++ experimentIndex)
       {
-        ProjectionStrategy projectionStrategy(listProjectionStrategy[projectionStrategyIndex]);
+        const WeightedExperiment experiment(listExperiment[experimentIndex]);
+        RandomGenerator::SetSeed(0);
+        const Sample X(experiment.generate());
+        const Sample Y(model(X));
         // Create the polynomial chaos algorithm
         Scalar maximumResidual = 1.0e-10;
-        FunctionalChaosAlgorithm algo(model, distribution, adaptiveStrategy, projectionStrategy);
+        ProjectionStrategy projectionStrategy{LeastSquaresStrategy()};
+        FunctionalChaosAlgorithm algo(X, Y, distribution, adaptiveStrategy, projectionStrategy);
         algo.setMaximumResidual(maximumResidual);
-        // Reinitialize the RandomGenerator to see the effect of the sampling method only
-        RandomGenerator::SetSeed(0);
-
         algo.run();
 
         // Examine the results

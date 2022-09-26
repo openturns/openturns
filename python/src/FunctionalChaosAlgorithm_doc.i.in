@@ -12,10 +12,6 @@ Available constructors:
 
     FunctionalChaosAlgorithm(*inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy*)
 
-    FunctionalChaosAlgorithm(*model, distribution, adaptiveStrategy*)
-
-    FunctionalChaosAlgorithm(*model, distribution, adaptiveStrategy, projectionStrategy*)
-
     FunctionalChaosAlgorithm(*inputSample, weights, outputSample, distribution, adaptiveStrategy*)
 
     FunctionalChaosAlgorithm(*inputSample, weights, outputSample, distribution, adaptiveStrategy, projectionStrategy*)
@@ -24,8 +20,6 @@ Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
     Sample of the input - output random vectors
-model : :class:`~openturns.Function`
-    Model :math:`g` such as :math:`\vect{Y} = g(\vect{X})`.
 distribution : :class:`~openturns.Distribution`
     Distribution of the random vector :math:`\vect{X}`
 adaptiveStrategy : :class:`~openturns.AdaptiveStrategy`
@@ -186,12 +180,14 @@ We keep all the polynomials of degree <= 4 (which corresponds to the 5 first one
 Define the evaluation strategy of the  coefficients:
 
 >>> samplingSize = 50
->>> experiment = ot.MonteCarloExperiment(samplingSize)
->>> projectionStrategy = ot.LeastSquaresStrategy(experiment)
+>>> experiment = ot.MonteCarloExperiment(distribution, samplingSize)
+>>> X = experiment.generate()
+>>> Y = model(X)
+>>> projectionStrategy = ot.LeastSquaresStrategy()
 
-Create the Functional Chaos Algorithm:
+Create the chaos algorithm:
 
->>> algo = ot.FunctionalChaosAlgorithm(model, distribution, adaptiveStrategy,
+>>> algo = ot.FunctionalChaosAlgorithm(X, Y, distribution, adaptiveStrategy,
 ...                                    projectionStrategy)
 >>> algo.run()
 

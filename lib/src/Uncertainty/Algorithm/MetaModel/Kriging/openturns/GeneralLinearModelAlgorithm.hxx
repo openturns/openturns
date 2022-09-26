@@ -80,10 +80,6 @@ public:
   /** Perform regression */
   void run() override;
 
-  /** Sample accessors */
-  Sample getInputSample() const override;
-  Sample getOutputSample() const override;
-
   /** result accessor */
   GeneralLinearModelResult getResult();
 
@@ -209,10 +205,6 @@ private:
     GeneralLinearModelAlgorithm & algorithm_;
   }; // ReducedLogLikelihoodEvaluation
 
-  /** set sample  method */
-  void setData(const Sample & inputSample,
-               const Sample & outputSample);
-
   /** Covariance model accessor */
   void setCovarianceModel(const CovarianceModel & covarianceModel);
   CovarianceModel getCovarianceModel() const;
@@ -223,12 +215,6 @@ private:
 
   /** check that sample is centered to precison eps */
   void checkYCentered(const Sample & Y);
-
-  // The input data
-  Sample inputSample_;
-
-  // The associated output data
-  Sample outputSample_;
 
   // The covariance model parametric familly
   CovarianceModel covarianceModel_;

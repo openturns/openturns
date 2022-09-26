@@ -59,7 +59,7 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
                                    const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis)
-  : MetaModelAlgorithm()
+  : MetaModelAlgorithm(inputSample, outputSample)
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , covarianceModel_()
@@ -80,7 +80,7 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
                                    const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection)
-  : MetaModelAlgorithm()
+  : MetaModelAlgorithm(inputSample, outputSample)
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , covarianceModel_(covarianceModel)
@@ -174,18 +174,6 @@ String KrigingAlgorithm::__repr__() const
 }
 
 
-Sample KrigingAlgorithm::getInputSample() const
-{
-  return inputSample_;
-}
-
-
-Sample KrigingAlgorithm::getOutputSample() const
-{
-  return outputSample_;
-}
-
-
 KrigingResult KrigingAlgorithm::getResult()
 {
   return result_;
@@ -261,8 +249,6 @@ void KrigingAlgorithm::setMethod(const String & method)
 void KrigingAlgorithm::save(Advocate & adv) const
 {
   MetaModelAlgorithm::save(adv);
-  adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
   adv.saveAttribute( "result_", result_ );
   adv.saveAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );
@@ -273,8 +259,6 @@ void KrigingAlgorithm::save(Advocate & adv) const
 void KrigingAlgorithm::load(Advocate & adv)
 {
   MetaModelAlgorithm::load(adv);
-  adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "result_", result_ );
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );

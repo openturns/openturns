@@ -5,10 +5,10 @@ Returned by functional chaos algorithms, see :class:`~openturns.FunctionalChaosA
 
 Parameters
 ----------
-model : :class:`~openturns.Function`
-    The physical model, that maps the physical input 
-    :math:`\vect{X} \in \mathbb{R}^{n_X}` to the output 
-    :math:`\vect{Y} \in \mathbb{R}^{n_Y}`.
+sampleX : 2-d sequence of float
+    Input sample of :math:`\vect{X} \in \mathbb{R}^{n_X}`.
+sampleY : 2-d sequence of float
+    Output sample of :math:`\vect{Y} \in \mathbb{R}^{n_Y}`.
 distribution : :class:`~openturns.Distribution`
     Distribution of the random vector :math:`\vect{X}`
 transformation : :class:`~openturns.Function`
@@ -17,10 +17,6 @@ transformation : :class:`~openturns.Function`
 inverseTransformation : :class:`~openturns.Function`
     The function that maps standardized input :math:`\vect{\xi}` to the 
     the physical input :math:`\vect{X}`.
-composedModel : :class:`~openturns.Function`
-    The functional chaos expansion model, that maps the standardized input 
-    :math:`\vect{\xi}` to the predicted output :math:`\vect{Y}`. 
-    This is the composition of the `model` and the `inverseTransformation`. 
 orthogonalBasis : :class:`~openturns.OrthogonalBasis`
     The multivariate orthogonal basis.
 indices : sequence of `int`
@@ -103,16 +99,6 @@ Returns
 -------
 metamodel : :class:`~openturns.Function`
     :math:`\tilde{g} = \sum_{k \in K} \vect{\alpha}_k \Psi_k \circ T`."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::FunctionalChaosResult::getComposedModel
-"Get the composed model.
-
-Returns
--------
-composedModel : :class:`~openturns.Function`
-    :math:`f = g\circ T^{-1}`."
 
 // ---------------------------------------------------------------------
 

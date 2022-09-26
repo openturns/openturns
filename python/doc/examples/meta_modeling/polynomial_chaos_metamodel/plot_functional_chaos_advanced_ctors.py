@@ -176,8 +176,8 @@ truncatureBasisStrategy_2 = ot.CleaningStrategy(
 
 # %%
 sampleSize = 100
-evaluationCoeffStrategy = ot.LeastSquaresStrategy(
-    ot.MonteCarloExperiment(sampleSize))
+evaluationCoeffStrategy = ot.LeastSquaresStrategy()
+experiment = ot.MonteCarloExperiment(distribution, sampleSize)
 
 # %%
 # You can specify the approximation algorithm. This is the algorithm that generates a sequence of basis using Least Angle Regression.
@@ -193,16 +193,20 @@ fittingAlgorithm = ot.CorrectedLeaveOneOut()
 # Finally the metamodel selection algorithm embbeded in LeastSquaresStrategy
 approximationAlgorithm = ot.LeastSquaresMetaModelSelectionFactory(
     basisSequenceFactory, fittingAlgorithm)
-evaluationCoeffStrategy_2 = ot.LeastSquaresStrategy(
-    ot.MonteCarloExperiment(sampleSize), approximationAlgorithm)
+evaluationCoeffStrategy_2 = ot.LeastSquaresStrategy(approximationAlgorithm)
+experiment_2 = experiment
 
 # %%
 # Try integration.
+marginalSizes = [2] * inputDimension
+evaluationCoeffStrategy_3 = ot.IntegrationStrategy()
+experiment_3 = ot.GaussProductExperiment(distribution, marginalSizes)
 
 # %%
-marginalSizes = [2] * inputDimension
-evaluationCoeffStrategy_3 = ot.IntegrationStrategy(
-    ot.GaussProductExperiment(distributionStandard, marginalSizes))
+# Evaluate design of experiments.
+# For the Gauss product we need to specify the non-uniform weights.
+X, W = experiment.generateWithWeights()
+Y = model(X)
 
 # %%
 # STEP 4: Creation of the Functional Chaos Algorithm
@@ -217,4 +221,4 @@ evaluationCoeffStrategy_3 = ot.IntegrationStrategy(
 
 # %%
 polynomialChaosAlgorithm = ot.FunctionalChaosAlgorithm(
-    model, distribution, truncatureBasisStrategy, evaluationCoeffStrategy)
+    X, W, Y, distribution, truncatureBasisStrategy, evaluationCoeffStrategy)

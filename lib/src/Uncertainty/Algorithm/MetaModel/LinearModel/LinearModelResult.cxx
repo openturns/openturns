@@ -53,11 +53,9 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Point & leverages,
                                      const Point & cookDistances,
                                      const Scalar sigma2)
-  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, Point(1, 0.0), Point(1, 0.0))
-  , inputSample_(inputSample)
+  : MetaModelResult(inputSample, outputSample, DatabaseFunction(inputSample, outputSample), metaModel, Point(1, 0.0), Point(1, 0.0))
   , basis_(basis)
   , design_(design)
-  , outputSample_(outputSample)
   , beta_(trendCoefficients)
   , condensedFormula_(formula)
   , coefficientsNames_(coefficientsNames)
@@ -130,19 +128,6 @@ String LinearModelResult::__repr__() const
 Basis LinearModelResult::getBasis() const
 {
   return basis_;
-}
-
-/* Input sample accessor */
-Sample LinearModelResult::getInputSample() const
-{
-  return inputSample_;
-}
-
-
-/* Output sample accessor */
-Sample LinearModelResult::getOutputSample() const
-{
-  return outputSample_;
 }
 
 /* Fitted sample accessor */
@@ -264,10 +249,8 @@ Point LinearModelResult::getCoefficientsStandardErrors() const
 void LinearModelResult::save(Advocate & adv) const
 {
   MetaModelResult::save(adv);
-  adv.saveAttribute( "inputSample_", inputSample_ );
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "design_", design_ );
-  adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "condensedFormula_", condensedFormula_ );
   adv.saveAttribute( "coefficientsNames_", coefficientsNames_ );
@@ -284,10 +267,8 @@ void LinearModelResult::save(Advocate & adv) const
 void LinearModelResult::load(Advocate & adv)
 {
   MetaModelResult::load(adv);
-  adv.loadAttribute( "inputSample_", inputSample_ );
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "design_", design_ );
-  adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "condensedFormula_", condensedFormula_ );
   adv.loadAttribute( "coefficientsNames_", coefficientsNames_ );

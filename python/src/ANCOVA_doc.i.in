@@ -3,9 +3,6 @@
 
 Refer to :ref:`sensitivity_ancova`.
 
-Available constructor:
-    ANCOVA(*functionalChaosResult, correlatedInput*)
-
 Parameters
 ----------
 functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
@@ -110,8 +107,10 @@ Examples
 >>> # Functional chaos computation
 >>> productBasis = ot.OrthogonalProductPolynomialFactory([ot.HermiteFactory()] * 2, ot.LinearEnumerateFunction(2))
 >>> adaptiveStrategy = ot.FixedStrategy(productBasis, 15)
->>> projectionStrategy = ot.LeastSquaresStrategy(ot.MonteCarloExperiment(100))
->>> algo = ot.FunctionalChaosAlgorithm(model, distribution, adaptiveStrategy, projectionStrategy)
+>>> experiment = ot.MonteCarloExperiment(distribution, 100)
+>>> X = experiment.generate()
+>>> Y = model(X)
+>>> algo = ot.FunctionalChaosAlgorithm(X, Y, distribution, adaptiveStrategy)
 >>> algo.run()
 >>> ancovaResult = ot.ANCOVA(algo.getResult(), sample)
 >>> indices = ancovaResult.getIndices()

@@ -26,7 +26,7 @@
 #include "openturns/FunctionImplementation.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NormalCopulaFactory.hxx"
+#include "openturns/DatabaseFunction.hxx"
 #include "openturns/ConstantBasisFactory.hxx"
 #include "openturns/DistributionFactory.hxx"
 #include "openturns/ComposedDistribution.hxx"
@@ -66,9 +66,7 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const Sample & inputS
     const OrthogonalProductFunctionFactory & basisFactory,
     const Indices & degrees,
     const UnsignedInteger maxRank)
-  : MetaModelAlgorithm(distribution, Function(FunctionImplementation(new DatabaseEvaluation(inputSample, outputSample))))
-  , inputSample_(inputSample)
-  , outputSample_(outputSample)
+  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
   , maxRank_(maxRank)
   , basisFactory_(basisFactory)
   , maximumAlternatingLeastSquaresIteration_(ResourceMap::GetAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration"))
@@ -76,9 +74,6 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const Sample & inputS
   , maximumResidualError_(ResourceMap::GetAsScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError"))
 {
   LOGWARN(OSS() << "TensorApproximationAlgorithm is deprecated");
-
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
 
   FunctionFamilyCollection functionFamilies(basisFactory.getFunctionFamilyCollection());
 
@@ -137,7 +132,7 @@ void TensorApproximationAlgorithm::run()
     runMarginal(outputIndex, residuals[outputIndex], relativeErrors[outputIndex]);
   }
   // Build the result
-  result_ = TensorApproximationResult(distribution_, transformation_, inverseTransformation_, composedModel_, tensor_, residuals, relativeErrors);
+  result_ = TensorApproximationResult(distribution_, transformation_, inverseTransformation_, Function(), tensor_, residuals, relativeErrors);
 }
 
 /* Marginal computation */
@@ -520,18 +515,6 @@ TensorApproximationResult TensorApproximationAlgorithm::getResult() const
   return result_;
 }
 
-
-Sample TensorApproximationAlgorithm::getInputSample() const
-{
-  return inputSample_;
-}
-
-
-Sample TensorApproximationAlgorithm::getOutputSample() const
-{
-  return outputSample_;
-}
-
 /* Max ALS iteration accessor */
 void TensorApproximationAlgorithm::setMaximumAlternatingLeastSquaresIteration(const UnsignedInteger maximumAlternatingLeastSquaresIteration)
 {
@@ -569,8 +552,6 @@ Scalar TensorApproximationAlgorithm::getMaximumResidualError() const
 void TensorApproximationAlgorithm::save(Advocate & adv) const
 {
   MetaModelAlgorithm::save(adv);
-  adv.saveAttribute("inputSample_", inputSample_);
-  adv.saveAttribute("outputSample_", outputSample_);
   adv.saveAttribute("maxRank_", maxRank_);
   adv.saveAttribute("maximumAlternatingLeastSquaresIteration_", maximumAlternatingLeastSquaresIteration_);
   adv.saveAttribute("maximumRadiusError_", maximumRadiusError_);
@@ -583,8 +564,6 @@ void TensorApproximationAlgorithm::save(Advocate & adv) const
 void TensorApproximationAlgorithm::load(Advocate & adv)
 {
   MetaModelAlgorithm::load(adv);
-  adv.loadAttribute("inputSample_", inputSample_);
-  adv.loadAttribute("outputSample_", outputSample_);
   adv.loadAttribute("maxRank_", maxRank_);
   adv.loadAttribute("maximumAlternatingLeastSquaresIteration_", maximumAlternatingLeastSquaresIteration_);
   adv.loadAttribute("maximumRadiusError_", maximumRadiusError_);

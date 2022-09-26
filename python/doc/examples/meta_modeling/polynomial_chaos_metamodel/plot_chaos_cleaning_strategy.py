@@ -408,8 +408,10 @@ print(standard_distribution)
 marginal_number_of_nodes = 6
 dim_input = im.model.getInputDimension()
 marginalDegrees = [marginal_number_of_nodes] * dim_input
-experiment = ot.GaussProductExperiment(standard_distribution, marginalDegrees)
-print("Sample size = ", experiment.generate().getSize())
+experiment = ot.GaussProductExperiment(im.distributionX, marginalDegrees)
+X, W = experiment.generateWithWeights()
+Y = im.model(X)
+print("Sample size = ", X.getSize())
 
 # %%
 #
@@ -420,9 +422,9 @@ print("Sample size = ", experiment.generate().getSize())
 # using integration.
 
 # %%
-projectionStrategy = ot.IntegrationStrategy(experiment)
+projectionStrategy = ot.IntegrationStrategy()
 chaosalgo = ot.FunctionalChaosAlgorithm(
-    im.model, im.distributionX, adaptiveStrategy, projectionStrategy
+    X, W, Y, im.distributionX, adaptiveStrategy, projectionStrategy
 )
 chaosalgo.run()
 result = chaosalgo.getResult()
@@ -520,7 +522,7 @@ def compute_cleaning_PCE(
         True,
     )
     chaosalgo = ot.FunctionalChaosAlgorithm(
-        im.model, im.distributionX, adaptiveStrategy, projectionStrategy
+        X, W, Y, im.distributionX, adaptiveStrategy, projectionStrategy
     )
     chaosalgo.run()
     result = chaosalgo.getResult()

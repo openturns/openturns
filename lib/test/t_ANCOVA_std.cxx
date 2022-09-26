@@ -84,11 +84,13 @@ int main(int, char *[])
 
     // Projection strategy
     UnsignedInteger samplingSize = 250;
-    MonteCarloExperiment experiment(samplingSize);
-    LeastSquaresStrategy projectionStrategy(experiment);
+    MonteCarloExperiment experiment(distribution, samplingSize);
+    LeastSquaresStrategy projectionStrategy;
 
     // Polynomial chaos algorithm
-    FunctionalChaosAlgorithm algo(model, distribution, adaptiveStrategy, projectionStrategy);
+    const Sample X(experiment.generate());
+    const Sample Y(model(X));
+    FunctionalChaosAlgorithm algo(X, Y, distribution, adaptiveStrategy, projectionStrategy);
     RandomGenerator::SetSeed(0);
     algo.run();
 

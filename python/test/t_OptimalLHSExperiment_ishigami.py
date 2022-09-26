@@ -59,8 +59,7 @@ adaptive_strategy = ot.FixedStrategy(orthogonal_basis, basis_size)
 fitting_algorithm = ot.KFold()
 approximation_algorithm = ot.LeastSquaresMetaModelSelectionFactory(
     ot.LARS(), fitting_algorithm)
-projection_strategy = ot.LeastSquaresStrategy(
-    input_database, output_database, approximation_algorithm)
+projection_strategy = ot.LeastSquaresStrategy(approximation_algorithm)
 print('Surrogate model...')
 distribution_ishigami = ot.ComposedDistribution(
     dimension * [ot.Uniform(-pi, pi)])

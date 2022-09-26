@@ -95,8 +95,7 @@ chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(
     [im.X1, im.X2, im.X3])
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
-projectionStrategy = ot.LeastSquaresStrategy(
-    inputTrain, outputTrain, selectionAlgorithm)
+projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
 totalDegree = 8
 enumfunc = multivariateBasis.getEnumerateFunction()
 P = enumfunc.getStrataCumulatedCardinal(totalDegree)
