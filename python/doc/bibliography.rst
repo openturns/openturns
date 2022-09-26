@@ -241,6 +241,8 @@ Bibliography
 .. [saltelli2002] Saltelli, A. *Making best use of model evaluations to compute
     sensitivity indices.* Computer Physics Communication, 2002, 145, 580-297.
     `pdf <http://www.andreasaltelli.eu/file/repository/Making_best_use.pdf>`__
+.. [sankararaman2012] Sankararaman, S. and Mahadevan, S. *Likelihood-based approach to multidisciplinary analysis under uncertainty.* 
+    Journal of Mechanical Design, 134(3):031008, 2012.
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
     Statistique*, Technip
 .. [scott1992] David W. Scott (1992). *Multivariate density estimation*,
@@ -275,3 +277,7 @@ Bibliography
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.   
+.. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
+    Microcosm, Inc. Torrance, CA.,1999.
+.. [zaman2012] Zaman, K. *Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design.* 
+    PhD thesis, Vanderbilt University, USA, 2012
