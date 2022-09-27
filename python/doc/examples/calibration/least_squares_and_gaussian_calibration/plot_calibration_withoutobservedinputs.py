@@ -167,7 +167,7 @@ plt.show()
 # Still, we notice a small discrepancy between the true mode and the model 
 # after calibration, but this discrepancy is very small.
 # Since the model is linear with respect to the parameters :math:`a`, :math:`b`, :math:`c`, 
-# therefore the LinearLeastSquares method performs well. 
-# If the modal was non linear w.r.t. :math:`a`, :math:`b`, :math:`c`, therefore the linear least 
+# the LinearLeastSquares method performs well. 
+# If the model were non linear w.r.t. :math:`a`, :math:`b`, :math:`c`, then the linear least 
 # squares method would not work that well and the parameters would be estimated 
 # with less accuracy.
