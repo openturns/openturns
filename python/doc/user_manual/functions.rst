@@ -209,6 +209,7 @@ as Python functions.
     SpecFunc.BinomialCoefficient
     SpecFunc.BitCount
     SpecFunc.Cbrt
+    SpecFunc.Clip01
     SpecFunc.Dawson
     SpecFunc.Debye
     SpecFunc.DiGamma

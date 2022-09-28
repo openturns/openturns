@@ -748,7 +748,7 @@ Scalar DistributionImplementation::computeSurvivalFunction(const Point & point) 
     sign = -sign;
   }
   // Due to roundoff, the value can be slightly outside of [0,1]
-  return std::min(1.0, std::max(0.0, value));
+  return SpecFunc::Clip01(value);
 }
 
 Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar prob) const

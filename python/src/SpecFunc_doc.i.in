@@ -1200,3 +1200,24 @@ Returns
 -------
 result : float"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Clip01
+"Clip a value on [0, 1].
+
+Parameters
+----------
+p : float
+    Value to clip
+tail : bool, default=False
+    Whether to return 1-p or not.
+
+Returns
+-------
+clip : float
+    Clipped value.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.SpecFunc.clipProbability(1.01)"
