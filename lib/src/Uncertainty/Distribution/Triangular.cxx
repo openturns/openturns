@@ -181,6 +181,7 @@ Point Triangular::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
+  if ((m_ == a_) || (m_ == b_)) throw NotDefinedException(HERE) << "Error: cannot compute the PDF gradient of a Triangular distribution when m=a or m=b, here m=" << m_ << ", a=" << a_ << " and b=" << b_;
   const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return Point(1, 0.0);
   Point pdfGradient(3);
@@ -208,6 +209,7 @@ Point Triangular::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
+  if ((m_ == a_) || (m_ == b_)) throw NotDefinedException(HERE) << "Error: cannot compute the CDF gradient of a Triangular distribution when m=a or m=b, here m=" << m_ << ", a=" << a_ << " and b=" << b_;
   const Scalar x = point[0];
   if ((x < a_) || (x > b_)) return Point(1, 0.0);
   Point cdfGradient(3);
