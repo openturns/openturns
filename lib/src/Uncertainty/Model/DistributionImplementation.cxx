@@ -748,7 +748,7 @@ Scalar DistributionImplementation::computeSurvivalFunction(const Point & point) 
     sign = -sign;
   }
   // Due to roundoff, the value can be slightly outside of [0,1]
-  return std::min(1.0, std::max(0.0, value));
+  return SpecFunc::Clip01(value);
 }
 
 Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar prob) const
@@ -1058,7 +1058,7 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
   else
     probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
 
-  return std::min(1.0, std::max(0.0, probability));
+  return SpecFunc::Clip01(probability);
 }
 
 /* Generic implementation for 1D continuous distribution by integration of the PDF */
@@ -1093,7 +1093,7 @@ Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a
     // Last contribution
     probability += GaussKronrod().integrate(pdfWrapper, lower, b, error, ai, bi, fi, ei)[0];
   } // else
-  return std::min(1.0, std::max(0.0, probability));
+  return SpecFunc::Clip01(probability);
 }
 
 /* Generic implementation for discrete distributions */
@@ -2137,7 +2137,7 @@ Scalar DistributionImplementation::computeConditionalCDF(const Scalar x,
   p_conditionalPDFWrapper->setParameter(y);
   GaussKronrod algo;
   const Scalar value = algo.integrate(UniVariateFunction(p_conditionalPDFWrapper), xMin, x);
-  return std::min(1.0, std::max(0.0, value / pdfConditioning));
+  return SpecFunc::Clip01(value / pdfConditioning);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -2217,7 +2217,7 @@ Point DistributionImplementation::computeConditionalCDF(const Point & x,
         // Numerical integration with respect to x
         p_conditionalPDFWrapper->setParameter(y[i]);
         const Scalar value(algo.integrate(UniVariateFunction(p_conditionalPDFWrapper), xMin, x[i]));
-        result[i] = std::min(1.0, std::max(0.0, value / pdfConditioning(i, 0)));
+        result[i] = SpecFunc::Clip01(value / pdfConditioning(i, 0));
       } // xMin < x < xMax
     } // pdfConditioning(i, 0) > 0
   return result;

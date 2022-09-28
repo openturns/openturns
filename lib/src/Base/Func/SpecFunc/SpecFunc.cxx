@@ -1369,4 +1369,12 @@ Scalar SpecFunc::AccurateSum(const Point & v)
 #endif
 }
 
+Scalar SpecFunc::Clip01(const Scalar proba, const Bool tail)
+{
+  Scalar prob = proba;
+  if (!(prob >= 0.0)) prob = 0.0;
+  if (!(prob <= 1.0)) prob = 1.0;
+  return tail ? 0.5 + (0.5 - prob) : prob;
+}
+
 END_NAMESPACE_OPENTURNS

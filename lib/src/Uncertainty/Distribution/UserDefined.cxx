@@ -564,7 +564,7 @@ void UserDefined::setData(const Sample & sample,
     Point x(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++j) x[j] = weightedData(i, j);
     points_[i] = x;
-    probabilities_[i] = std::max(0.0, std::min(1.0, weightedData(i, dimension)));
+    probabilities_[i] = SpecFunc::Clip01(weightedData(i, dimension));
   }
   // We augment slightly the last cumulative probability, which should be equal to 1.0 but we enforce a value > 1.0.
   cumulativeProbabilities_[size - 1] = 1.0 + 2.0 * supportEpsilon_;
@@ -707,13 +707,13 @@ void UserDefined::compactSupport(const Scalar epsilon)
     else
     {
       compactX.add(Point(1, lastLocation));
-      compactP.add(std::max(0.0, std::min(1.0, lastWeight)));
+      compactP.add(SpecFunc::Clip01(lastWeight));
       lastLocation = currentLocation;
       lastWeight = currentWeight;
     }
   }
   compactX.add(Point(1, lastLocation));
-  compactP.add(std::max(0.0, std::min(1.0, lastWeight)));
+  compactP.add(SpecFunc::Clip01(lastWeight));
   setData(compactX, compactP);
 }
 

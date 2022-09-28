@@ -114,7 +114,7 @@ Scalar MinCopula::computeCDF(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  return std::max(0.0, std::min(1.0, *std::min_element(point.begin(), point.end())));
+  return SpecFunc::Clip01(*std::min_element(point.begin(), point.end()));
 } // computeCDF
 
 /* Compute the survival function */

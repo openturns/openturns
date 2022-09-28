@@ -20,7 +20,7 @@
  */
 #include "openturns/SklarCopula.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/MarginalTransformationEvaluation.hxx"
 #include "openturns/MarginalTransformationGradient.hxx"
 #include "openturns/MarginalTransformationHessian.hxx"
@@ -286,7 +286,7 @@ Scalar SklarCopula::computeConditionalCDF(const Scalar x,
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return std::min(1.0, std::max(0.0, x));
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(x);
   // General case
   Point u(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(y[i])[0];

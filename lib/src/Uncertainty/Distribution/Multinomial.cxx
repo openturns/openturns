@@ -406,7 +406,7 @@ Scalar Multinomial::computeCDF(const Point & point) const
     sign = -sign;
   }
   // Due to round-off errors, the computed CDF can be slightly below 0 or over 1.
-  return std::max(0.0, std::min(1.0, value * normalizationCDF_));
+  return SpecFunc::Clip01(value * normalizationCDF_);
 }
 
 /* Compute the probability content of an interval */
@@ -487,7 +487,7 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
     if (nA % 2 == 0) value += delta;
     else value -= delta;
   }
-  return std::min(1.0, std::max(0.0, value));
+  return SpecFunc::Clip01(value);
 }
 
 /* Get the survival function of the distribution */

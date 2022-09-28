@@ -23,7 +23,7 @@
 
 #include "openturns/Normal3DCDF.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/Point.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -143,7 +143,7 @@ Scalar Normal3DCDF(const Scalar x1,
   if (x3 >= NORMAL3DCDF_PLUS_INF) return DistFunc::pNormal2D(x1, x2, rho12);
   // Here, we have to do some work!
   // Probability of the negative orthant
-  if (std::abs(x1) + std::abs(x2) + std::abs(x3) < NORMAL3DCDF_EPS) return std::max(0.0, std::min(1.0, 0.125 * (1.0 + 2.0 * (std::asin(rho12) + std::asin(rho13) + std::asin(rho23)) / M_PI)));
+  if (std::abs(x1) + std::abs(x2) + std::abs(x3) < NORMAL3DCDF_EPS) return SpecFunc::Clip01(0.125 * (1.0 + 2.0 * (std::asin(rho12) + std::asin(rho13) + std::asin(rho23)) / M_PI));
   Scalar h1 = x1;
   Scalar h2 = x2;
   Scalar h3 = x3;
@@ -169,11 +169,11 @@ Scalar Normal3DCDF(const Scalar x1,
   if (std::abs(r13) + std::abs(r23) < NORMAL3DCDF_EPS) return DistFunc::pNormal(h3) * DistFunc::pNormal2D(h1, h2, r12);
   if (std::abs(r12) + std::abs(r23) < NORMAL3DCDF_EPS) return DistFunc::pNormal(h2) * DistFunc::pNormal2D(h1, h3, r13);
   if (1.0 - r23 < NORMAL3DCDF_EPS) return DistFunc::pNormal2D(h1, std::min(h2, h3), r12);
-  if ((r23 + 1.0 < NORMAL3DCDF_EPS) &&  (h2 > -h3)) return std::max(0.0, std::min(1.0, DistFunc::pNormal2D(h1, h2, r12) - DistFunc::pNormal2D(h1, -h3, r12)));
+  if ((r23 + 1.0 < NORMAL3DCDF_EPS) &&  (h2 > -h3)) return SpecFunc::Clip01(DistFunc::pNormal2D(h1, h2, r12) - DistFunc::pNormal2D(h1, -h3, r12));
   // At last, the general case
   const Scalar a12 = std::asin(r12);
   const Scalar a13 = std::asin(r13);
-  return std::max(0.0, std::min(1.0, adonet(h1, h2, h3, r23, a12, a13) / (2.0 * M_PI) + DistFunc::pNormal(h1) * DistFunc::pNormal2D(h2, h3, r23)));
+  return SpecFunc::Clip01(adonet(h1, h2, h3, r23, a12, a13) / (2.0 * M_PI) + DistFunc::pNormal(h1) * DistFunc::pNormal2D(h2, h3, r23));
 }
 
 /*
