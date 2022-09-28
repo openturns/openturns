@@ -1,0 +1,208 @@
+%feature("docstring") OT::GaussianProcessFitterResult
+"Gaussian process fitter result.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Parameters
+----------
+inputSample, outputSample : :class:`~openturns.Sample`
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^{\inputDim}` and :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}\in \Rset^{\outputDim}`.
+metaModel : :class:`~openturns.Function`
+    The meta model: :math:`\tilde{\cM}: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined in :eq:metaModelGPF.
+residuals : :class:`~openturns.Point`
+    The residual errors.
+relativeErrors : :class:`~openturns.Point`
+    The relative errors.
+regressionMatrix : :class:`~openturns.Matrix`
+    The regression matrix, e.g the evaluation of the basis function
+    upon the input design sample.
+basis :  :class:`~openturns.Basis`
+    Functional basis of size :math:`b` : :math:`(\varphi^l: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim})` for each :math:`l \in [1, b]`.
+    Its size should be equal to zero if the trend is not estimated.
+trendCoef : sequence of float
+    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^{\outputDim})` stored as a Point.
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Covariance function of the Gaussian process with its optimized parameters.
+optimalLogLikelihood : float
+    The maximum log-likelihood corresponding to the model.
+linAlgMethod : int
+    The used linear algebra method to fit the model:
+
+    - otexp.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
+
+    - otexp.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
+
+Notes
+-----
+The structure is usually created by the method `run` of a :class:`~openturns.experimental.GaussianProcessFitter`, and obtained thanks to the `getResult()` method.
+
+The meta model :math:`\tilde{\cM}: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` is defined by:
+
+.. math::
+    :label: metaModelGPF
+
+    \tilde{\cM}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1(\vect{x}) \\
+        \dots  \\
+        \mu_p(\vect{x}) 
+       \end{array}
+     \right)
+
+where :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \alpha_j^\ell \varphi_j^\ell(\vect{x})` and
+:math:`\varphi_j^\ell: \Rset^{\inputDim} \rightarrow \Rset` are the trend functions
+(the :math:`\ell-th` marginal of :math:`\varphi(x)`).
+
+
+.. math::
+    :label: metaModelWithTGPF
+
+    \tilde{\cM}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1\circ T(\vect{x}) \\
+        \dots  \\
+        \mu_p\circ T(\vect{x}) 
+       \end{array}
+     \right)
+
+Examples
+--------
+Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> g = ot.SymbolicFunction(['x'],  ['x * sin(x)'])
+>>> sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0]]
+>>> sampleY = g(sampleX)
+
+Create the algorithm:
+
+>>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
+>>> covarianceModel = ot.GeneralizedExponential([2.0], 2.0)
+>>> algo = otexp.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
+>>> algo.run()
+
+Get the result:
+
+>>> result = algo.getResult()
+
+Get the meta model:
+
+>>> metaModel = result.getMetaModel()
+>>> graph = metaModel.draw(0.0, 7.0)
+>>> cloud = ot.Cloud(sampleX, sampleY)
+>>> cloud.setPointStyle('fcircle')
+>>> graph = ot.Graph()
+>>> graph.add(cloud)
+>>> graph.add(g.draw(0.0, 7.0))
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getBasis
+"Accessor to the basis.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    Functional basis of size :math:`b` : :math:`(\varphi^\ell: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim})` 
+    for each :math:`l \in [1, b]`.
+
+Notes
+-----
+If the trend is not estimated, the basis is empty. "
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getCovarianceModel
+"Accessor to the covariance model.
+
+Returns
+-------
+covModel : :class:`~openturns.CovarianceModel`
+    The covariance model of the Gaussian process *W*.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussianProcessFitterResult::getLinearAlgebraMethod
+"Accessor to the used linear algebra method to fit.
+
+Returns
+-------
+linAlgMethod : int
+    The used linear algebra method to fit the model:
+
+    - otexp.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
+
+    - otexp.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getMetaModel
+"Accessor to the metamodel.
+
+Returns
+-------
+metaModel : :class:`~openturns.Function`
+    The meta model :math:`\tilde{\cM}: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined in :eq:'metaModelGPF'.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getNoise
+"Accessor to the Gaussian process.
+
+Returns
+-------
+process : :class:`~openturns.Process`
+    Returns the Gaussian process :math:`W` with the optimized parameters.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getOptimalLogLikelihood
+"Accessor to the optimal log-likelihood of the model.
+
+Returns
+-------
+optimalLogLikelihood : float
+    The value of the log-likelihood corresponding to the model.
+"
+
+// ---------------------------------------------------------------------    
+
+%feature("docstring") OT::GaussianProcessFitterResult::getRegressionMatrix
+"Accessor to the regression matrix.
+
+Returns
+-------
+process : :class:`~openturns.Matrix`
+    Returns the regression matrix.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getTrendCoefficients
+"Accessor to the trend coefficients.
+
+Returns
+-------
+trendCoef : sequence of float
+    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^{\outputDim})` as a :class:`~openturns.Point`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getTrendFunction
+"Accessor to the trend function.
+
+Returns
+-------
+trendFunc : :class:`~openturns.Function`
+    The trend function.
+"
+// ---------------------------------------------------------------------
