@@ -1118,6 +1118,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
 
+  // Gibbs parameters //
+  addAsUnsignedInteger("Gibbs-DefaultUpdatingMethod", 0);
+
   // InverseNormalFactory parameters //
   addAsString("InverseNormalFactory-Method", "MLE");
 

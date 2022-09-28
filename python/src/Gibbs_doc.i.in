@@ -12,9 +12,12 @@ Notes
 -----
 Assume we want to sample from a complicated joint distribution.
 The Gibbs algorithm is a Markov Chain Monte-Carlo algorithm
-which sequentially calls samplers
-(implemented as :class:`MetropolisHastings` objects)
-of the conditional distributions of one or several components.
+which calls samplers (implemented as :class:`~openturns.MetropolisHastings` objects)
+in a predetermined sequence (by default)
+or randomly: see :meth:`setUpdatingMethod` to manually choose the behavior,
+and note the default behavior can be changed by setting the
+`Gibbs-DefaultUpdatingMethod` :class:`~openturns.ResourceMap` key.
+Each sampler samples from the conditional distributions of one or several components.
 
 See Also
 --------
@@ -47,7 +50,7 @@ Examples
 >>> linkFunction = ot.ParametricFunction(fullModel, parametersSet, parametersValue)
 >>> # Calibration parameters
 >>> # Proposal distribution
->>> proposal = ot.Uniform(-1.0, 1.0)
+>>> prop = ot.Uniform(-1.0, 1.0)
 >>> # Prior distribution
 >>> sigma0 = [10.0]*chainDim
 >>> #  Covariance matrix
@@ -60,13 +63,17 @@ Examples
 >>> # Conditional distribution y~N(z, 1.0)
 >>> conditional = ot.Normal()
 >>> # Create a Gibbs sampler
->>> mh_coll = [ot.RandomWalkMetropolisHastings(prior, mu0, proposal, [i]) for i in range(chainDim)]
->>> for mh in mh_coll: mh.setLikelihood(conditional, y_obs, linkFunction, covariates)
->>> sampler = ot.Gibbs(mh_coll)
+>>> coll = [ot.RandomWalkMetropolisHastings(prior, mu0, prop, [i]) for i in range(chainDim)]
+>>> for mh in coll: mh.setLikelihood(conditional, y_obs, linkFunction, covariates)
+>>> sampler = ot.Gibbs(coll)
 >>> sampler.setBurnIn(20)
 >>> sampler.setThinning(10)
 >>> # Get a realization
->>> mu = sampler.getRealization()"
+>>> mu = sampler.getRealization()
+>>> # Create a Gibbs sampler which updates one randomly chosen component at each step
+>>> sampler2 = ot.Gibbs(coll)
+>>> sampler2.setUpdatingMethod(ot.Gibbs.RANDOM_UPDATING)
+>>> mu2 = sampler2.getRealization()"
 
 // ---------------------------------------------------------------------
 
@@ -87,6 +94,45 @@ Returns
 -------
 samplers : sequence of :class:`MetropolisHastings`
     List of all Metropolis-Hastings samplers used in the Gibbs algorithm"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gibbs::getUpdatingMethod
+"Get how the order of the samplers is determined.
+
+Available values are:
+
+  * 0 (Gibbs.DETERMINISTIC_UPDATING): the samplers are sequentially called in the given order.
+
+  * 1 (Gibbs.RANDOM_UPDATING): one of the samplers is randomly selected to produce the next realization.
+
+Refer to the :meth:`setUpdatingMethod` documentation for details.
+
+Returns
+-------
+updatingMethod : int
+    See above for the possible values and their meaning."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gibbs::setUpdatingMethod
+"Set how the order of the samplers is determined.
+
+Available values are:
+
+  * 0 (Gibbs.DETERMINISTIC_UPDATING): the samplers are sequentially called in the given order.
+
+  * 1 (Gibbs.RANDOM_UPDATING): one of the samplers is randomly selected to produce the next realization.
+
+Note that under DETERMINISTIC_UPDATING,
+all samplers are called in the specified order every time :meth:`getRealization` is called.
+By contrast, under RANDOM_UPDATING, only one sampler is called
+by :meth:`getRealization`, and this sampler is randomly chosen among all specified samplers.
+
+Parameters
+----------
+updatingMethod : int
+    See above for the possible values and their meaning."
 
 // ---------------------------------------------------------------------
 
