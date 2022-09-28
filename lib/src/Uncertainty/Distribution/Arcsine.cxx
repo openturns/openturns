@@ -212,8 +212,7 @@ Point Arcsine::computeCDFGradient(const Point & point) const
 Scalar Arcsine::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
-  const Scalar proba = tail ? 1.0 - prob : prob;
-  const Scalar quantile = 0.5 * (b_ - a_) * std::sin(M_PI * (proba - 0.5)) + 0.5 * (a_ + b_);
+  const Scalar quantile = 0.5 * (b_ - a_) * std::sin(M_PI * (SpecFunc::Clip01(prob, tail) - 0.5)) + 0.5 * (a_ + b_);
   return quantile;
 }
 

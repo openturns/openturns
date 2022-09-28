@@ -596,8 +596,7 @@ Scalar UserDefined::computeScalarQuantile(const Scalar prob,
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   UnsignedInteger index = 0;
-  const Scalar cprob = std::min(std::max(prob, 0.0), 1.0);
-  const Scalar p = tail ? 1.0 - cprob : cprob;
+  const Scalar p = SpecFunc::Clip01(prob, tail);
   while (cumulativeProbabilities_[index] < p) ++index;
   return points_(index, 0);
 }

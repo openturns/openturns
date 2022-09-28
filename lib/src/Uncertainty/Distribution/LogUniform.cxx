@@ -207,8 +207,8 @@ Point LogUniform::computeCDFGradient(const Point & point) const
 Scalar LogUniform::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  if (tail) return std::exp(bLog_ - prob * (bLog_ - aLog_));
-  return std::exp(aLog_ + prob * (bLog_ - aLog_));
+  if (tail) return std::exp(bLog_ - SpecFunc::Clip01(prob) * (bLog_ - aLog_));
+  return std::exp(aLog_ + SpecFunc::Clip01(prob) * (bLog_ - aLog_));
 }
 
 /* Compute the mean of the distribution */

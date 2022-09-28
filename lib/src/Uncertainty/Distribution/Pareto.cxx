@@ -218,9 +218,8 @@ Point Pareto::computeCDFGradient(const Point & point) const
 Scalar Pareto::computeScalarQuantile(const Scalar prob,
                                      const Bool tail) const
 {
-  const Scalar q = tail ? prob : 0.5 + (0.5 - prob);
-  const Scalar cq = std::max(q, SpecFunc::MinScalar);
-  return gamma_ + beta_ / std::pow(cq, 1.0 / alpha_);
+  const Scalar q = std::max(SpecFunc::Clip01(prob, !tail), SpecFunc::ScalarEpsilon);
+  return gamma_ + beta_ / std::pow(q, 1.0 / alpha_);
 }
 
 /* Compute the mean of the distribution */

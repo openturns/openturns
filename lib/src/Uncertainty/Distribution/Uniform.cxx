@@ -24,7 +24,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/Distribution.hxx"
-
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -241,8 +241,8 @@ Point Uniform::computeCDFGradient(const Point & point) const
 Scalar Uniform::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
-  if (tail) return b_ - prob * (b_ - a_);
-  return a_ + prob * (b_ - a_);
+  if (tail) return b_ - SpecFunc::Clip01(prob) * (b_ - a_);
+  return a_ + SpecFunc::Clip01(prob) * (b_ - a_);
 }
 
 /* Compute the entropy of the distribution */

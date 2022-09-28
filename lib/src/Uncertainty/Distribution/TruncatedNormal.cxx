@@ -440,8 +440,8 @@ Scalar TruncatedNormal::computeScalarQuantile(const Scalar prob,
 {
   if (PhiANorm_ >= PhiBNorm_)
     return DistributionImplementation::computeScalarQuantile(prob, tail);
-  if (tail) return mu_ + sigma_ * DistFunc::qNormal(PhiBNorm_ - prob / normalizationFactor_);
-  return mu_ + sigma_ * DistFunc::qNormal(PhiANorm_ + prob / normalizationFactor_);
+  if (tail) return mu_ + sigma_ * DistFunc::qNormal(PhiBNorm_ - SpecFunc::Clip01(prob) / normalizationFactor_);
+  return mu_ + sigma_ * DistFunc::qNormal(PhiANorm_ + SpecFunc::Clip01(prob) / normalizationFactor_);
 }
 
 /* Compute the mean of the distribution */

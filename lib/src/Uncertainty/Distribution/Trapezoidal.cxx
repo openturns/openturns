@@ -292,7 +292,7 @@ Scalar Trapezoidal::computeScalarQuantile(const Scalar prob,
 {
   const Scalar c1 = 0.5 * (b_ - a_) * h_;
   const Scalar c2 = c1 + (c_ - b_) * h_;
-  const Scalar q = tail ? 1.0 - prob : prob;
+  const Scalar q = SpecFunc::Clip01(prob, tail);
   // q in (0, c1)
   if (q <= c1) return a_ + std::sqrt(2.0 * (b_ - a_) * q / h_);
   // q in (c1, c2)

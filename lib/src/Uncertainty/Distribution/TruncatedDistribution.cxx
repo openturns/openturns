@@ -416,8 +416,7 @@ Scalar TruncatedDistribution::computeScalarQuantile(const Scalar prob,
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
 
-  if (tail) return distribution_.computeQuantile(cdfUpperBound_ - prob * (cdfUpperBound_ - cdfLowerBound_))[0];
-  return distribution_.computeQuantile(cdfLowerBound_ + prob * (cdfUpperBound_ - cdfLowerBound_))[0];
+  return distribution_.computeQuantile(cdfLowerBound_ + SpecFunc::Clip01(prob, tail) * (cdfUpperBound_ - cdfLowerBound_))[0];
 }
 
 /* Parameters value accessor */

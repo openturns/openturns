@@ -24,6 +24,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -235,9 +236,10 @@ Point Triangular::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-Scalar Triangular::computeScalarQuantile(const Scalar prob,
+Scalar Triangular::computeScalarQuantile(const Scalar proba,
     const Bool tail) const
 {
+  const Scalar prob = SpecFunc::Clip01(proba);
   const Scalar ma = m_ - a_;
   const Scalar ba = b_ - a_;
   const Scalar bm = b_ - m_;

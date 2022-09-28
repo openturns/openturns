@@ -1220,4 +1220,4 @@ clip : float
 Examples
 --------
 >>> import openturns as ot
->>> p = ot.SpecFunc.clipProbability(1.01)"
+>>> p = ot.SpecFunc.Clip01(1.01)"
