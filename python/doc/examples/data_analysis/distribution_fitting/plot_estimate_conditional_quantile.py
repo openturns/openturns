@@ -109,7 +109,7 @@ graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 
 # %%
-# In this case the Q_2 quantile is constant because of the independance of the marginals.
+# In this case the :math:`Q_2` quantile is constant because of the independance of the marginals.
 #
 
 # %%
