@@ -41,9 +41,9 @@ MarginalEvaluation::MarginalEvaluation()
 /* Default constructor */
 MarginalEvaluation::MarginalEvaluation(const EvaluationImplementation & evaluation,
                                        const Indices & indices)
-  : EvaluationImplementation()
+  : MarginalEvaluation(evaluation.clone(), indices)
 {
-  *this = MarginalEvaluation(evaluation.clone(), indices);
+  // Nothing to do
 }
 
 /* Default constructor */
