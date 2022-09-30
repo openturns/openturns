@@ -24,11 +24,11 @@ with:
 
 - :math:`S_w \sim\mathcal{U}(150, 200)`, the wing area (ft^2)
 
-- :math:`W_fw \sim\mathcal{U}(220, 300)`,  the weight of fuel in the wing (lb)
+- :math:`W_{fw} \sim\mathcal{U}(220, 300)`,  the weight of fuel in the wing (lb)
 		 
 - :math:`A : \sim\mathcal{U}(6, 10)`, the aspect ratio (-)
 		 
-- :math:`Lambda : \sim\mathcal{U}(-10, 10)`, the quarter-chord sweep angle (deg)
+- :math:`\Lambda : \sim\mathcal{U}(-10, 10)`, the quarter-chord sweep angle (deg)
 		 
 - :math:`q : \sim\mathcal{U}(16, 45)`, the dynamic pressure at cruise (lb/ft^2)
 
