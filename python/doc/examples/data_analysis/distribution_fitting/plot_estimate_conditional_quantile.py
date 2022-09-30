@@ -187,7 +187,7 @@ yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 # %%
 cxy_app = ot.Curve(x, yapp)
 cxy_ex = ot.Curve(x, yex)
-graph = ot.Graph('90% quantile of $X_1 | X_2=x_2$',
+graph = ot.Graph('90% quantile of $X_2 | X_1=x_1$',
                  '$x_1$', '$Q_2(x_1)$', True, '')
 graph.add(cxy_app)
 graph.add(cxy_ex)
