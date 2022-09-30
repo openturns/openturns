@@ -341,8 +341,8 @@ OT_ProcessSample_getMax_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_ProcessSample_computeCenteredMoment_doc
-"Compute the centered moment field of the collection of fields.
+%define OT_ProcessSample_computeCentralMoment_doc
+"Compute the central moment field of the collection of fields.
 
 Parameters
 ----------
@@ -354,11 +354,11 @@ Returns
 moment : :class:`~openturns.Field`
     This field has the same size and the same dimension as the fields
     of the collection. At each vertex of the mesh, we compute the
-    component-wise centered moment of order `n`.
+    component-wise central moment of order `n`.
 "
 %enddef
-%feature("docstring") OT::ProcessSampleImplementation::computeCenteredMoment
-OT_ProcessSample_computeCenteredMoment_doc
+%feature("docstring") OT::ProcessSampleImplementation::computeCentralMoment
+OT_ProcessSample_computeCentralMoment_doc
 
 // ---------------------------------------------------------------------
 

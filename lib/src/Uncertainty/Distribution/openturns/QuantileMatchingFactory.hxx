@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Maximum likelihood estimation
+ *  @brief Estimation by matching quantiles
  *
  *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_MAXIMUMLIKELIHOODFACTORY_HXX
-#define OPENTURNS_MAXIMUMLIKELIHOODFACTORY_HXX
+#ifndef OPENTURNS_QUANTILEMATCHINGFACTORY_HXX
+#define OPENTURNS_QUANTILEMATCHINGFACTORY_HXX
 
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/DistributionFactory.hxx"
@@ -28,21 +28,23 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class MaximumLikelihoodFactory
+ * @class QuantileMatchingFactory
  */
-class OT_API MaximumLikelihoodFactory
+class OT_API QuantileMatchingFactory
   : public DistributionFactoryImplementation
 {
   CLASSNAME
 public:
   /** Default constructor */
-  MaximumLikelihoodFactory();
+  QuantileMatchingFactory();
 
   /** Parameters constructor */
-  explicit MaximumLikelihoodFactory(const Distribution & distribution);
+  explicit QuantileMatchingFactory(const Distribution & distribution,
+                                   const Point & probabilities = Point(),
+                                   const Interval & optimizationBounds = Interval());
 
   /** Virtual constructor */
-  MaximumLikelihoodFactory * clone() const override;
+  QuantileMatchingFactory * clone() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -53,19 +55,20 @@ public:
   using DistributionFactoryImplementation::build;
 
   /* Here is the interface that all derived class must implement */
+
   /** Build a distribution based on a sample */
   Distribution build(const Sample & sample) const override;
 
   /** Build a distribution based on a set of parameters */
-  Distribution build(const Point & parameters) const override;
+  Distribution build(const Point & parameter) const override;
 
   /** Build a distribution using its default constructor */
   Distribution build() const override;
 
-  /** Build a distribution based on a set of parameters */
-  Point buildParameter(const Sample & sample) const;
+  /** Build a distribution from its quantiles */
+  Distribution buildFromQuantiles(const Point & quantiles) const;
 
-  /** Optimization solver accessor */
+  /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
@@ -73,13 +76,14 @@ public:
   void setOptimizationBounds(const Interval & optimizationBounds);
   Interval getOptimizationBounds() const;
 
-  /** Accessor to inequality constraint */
-  void setOptimizationInequalityConstraint(const Function & optimizationInequalityConstraint);
-
   /** Accessor to known parameter */
   void setKnownParameter(const Point & values, const Indices & positions);
   Point getKnownParameterValues() const;
   Indices getKnownParameterIndices() const;
+
+  /** Accessor to fractiles */
+  void setProbabilities(const Point & probabilities);
+  Point getProbabilities() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -90,23 +94,22 @@ public:
 protected:
   /* The underlying distribution */
   Distribution distribution_;
+  /* The list of probabilities */
+  Point probabilities_;
 
   /* Solver & optimization problem for log-likelihood maximization */
   OptimizationAlgorithm solver_;
 
-  // Bounds used for parameter optimization
+  /* Bounds used for parameter optimization */
   Interval optimizationBounds_;
-
-  // Inequality constraint used for parameter optimization
-  Function optimizationInequalityConstraint_;
 
   /* Known parameter */
   Point knownParameterValues_;
   Indices knownParameterIndices_;
 
-}; /* class MaximumLikelihoodFactory */
+}; /* class QuantileMatchingFactory */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_MAXIMUMLIKELIHOODFACTORY_HXX */
+#endif /* OPENTURNS_QUANTILEMATCHINGFACTORY_HXX */

@@ -966,7 +966,9 @@ Scalar DistributionImplementation::computeProbability(const Interval & interval)
   if (interval.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
   // Empty interval, quick check. More checks will be done in the refined algorithms
   if (interval.isEmpty()) return 0.0;
-  // Generic implementation for univariate distributions
+  // Generic implementation for discrete distributions
+  if (isDiscrete()) return computeProbabilityDiscrete(interval);
+  // Special case for continuous univariate distributions
   if (dimension_ == 1)
   {
     const Bool finiteA = interval.getFiniteLowerBound()[0] == 1;
@@ -998,8 +1000,6 @@ Scalar DistributionImplementation::computeProbability(const Interval & interval)
   }
   // Generic implementation for continuous distributions
   if (isContinuous()) return computeProbabilityContinuous(interval);
-  // Generic implementation for discrete distributions
-  if (isDiscrete())   return computeProbabilityDiscrete(interval);
   // Generic implementation for general distributions
   return computeProbabilityGeneral(interval);
 }
@@ -2852,7 +2852,7 @@ Point DistributionImplementation::getStandardDeviation() const
     return result;
   }
   // ... or compute only the marginal variances.
-  const Point variance(getCenteredMoment(2));
+  const Point variance(getCentralMoment(2));
   Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = std::sqrt(variance[i]);
   return result;
@@ -2863,8 +2863,8 @@ Point DistributionImplementation::getSkewness() const
 {
   if (isCopula())
     return Point(getDimension(), 0.0);
-  const Point variance(getCenteredMoment(2));
-  const Point thirdMoment(getCenteredMoment(3));
+  const Point variance(getCentralMoment(2));
+  const Point thirdMoment(getCentralMoment(3));
   Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = thirdMoment[i] / std::pow(variance[i], 1.5);
   return result;
@@ -2877,8 +2877,8 @@ Point DistributionImplementation::getKurtosis() const
     // 1.8 = 9/5
     return Point(getDimension(), 1.8);
 
-  const Point variance(getCenteredMoment(2));
-  const Point fourthMoment(getCenteredMoment(4));
+  const Point variance(getCentralMoment(2));
+  const Point fourthMoment(getCentralMoment(4));
   Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = fourthMoment[i] / std::pow(variance[i], 2.0);
   return result;
@@ -2891,12 +2891,18 @@ Point DistributionImplementation::getMoment(const UnsignedInteger n) const
   return getShiftedMoment(n, Point(dimension_, 0.0));
 }
 
-/* Get the centered moments of the distribution */
-Point DistributionImplementation::getCenteredMoment(const UnsignedInteger n) const
+/* Get the central moments of the distribution */
+Point DistributionImplementation::getCentralMoment(const UnsignedInteger n) const
 {
-  if (n == 0) throw InvalidArgumentException(HERE) << "Error: the centered moments of order 0 are undefined.";
+  if (n == 0) return Point(dimension_, 1.0);
   if (n == 1) return Point(dimension_, 0.0);
   return getShiftedMoment(n, getMean());
+}
+
+Point DistributionImplementation::getCenteredMoment(const UnsignedInteger n) const
+{
+  LOGWARN(OSS() << "Distribution::getCenteredMoment is deprecated, use getCentralMoment");
+  return getCentralMoment(n);
 }
 
 /* Compute the covariance of the distribution */
@@ -2982,7 +2988,7 @@ void DistributionImplementation::computeCovarianceContinuous() const
   covariance_ = CovarianceMatrix(dimension_);
   // First the diagonal terms, which are the marginal covariances
   // Marginal covariances
-  const Point variance(getCenteredMoment(2));
+  const Point variance(getCentralMoment(2));
   for (UnsignedInteger component = 0; component < dimension_; ++component) covariance_(component, component) = variance[component];
   // Off-diagonal terms if the copula is not the independent copula
   if (!hasIndependentCopula())
@@ -3030,7 +3036,7 @@ void DistributionImplementation::computeCovarianceDiscrete() const
   covariance_ = CovarianceMatrix(dimension_);
   // First the diagonal terms, which are the marginal covariances
   // Marginal covariances
-  const Point variance(getCenteredMoment(2));
+  const Point variance(getCentralMoment(2));
   for(UnsignedInteger component = 0; component < dimension_; ++component) covariance_(component, component) = variance[component];
   // Off-diagonal terms if the copula is not the independent copula
   if (!hasIndependentCopula())

@@ -284,7 +284,7 @@ Scalar LinearModelAnalysis::getFisherScore() const
   // Sum of Squared Total (SST) = n * var(Y) or n * E(Y^2) depending on intercept
   Scalar SST = 1.0;
   if (hasIntercept)
-    SST = outputSample.computeCenteredMoment(2)[0] * size;
+    SST = outputSample.computeCentralMoment(2)[0] * size;
   else
     SST = outputSample.computeRawMoment(2)[0] * size;
   // Sum of Squared Model (SSM) = SST - SSE

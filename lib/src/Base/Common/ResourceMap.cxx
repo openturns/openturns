@@ -1219,6 +1219,14 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("MethodOfMomentsFactory-MaximumRelativeError", 1.0e-10);
   addAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber", 1000);
 
+  // QuantileMatchingFactory parameters //
+  addAsScalar("QuantileMatchingFactory-MaximumAbsoluteError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-MaximumConstraintError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-MaximumObjectiveError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-MaximumRelativeError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-QuantileEpsilon", 1.0e-2);
+  addAsUnsignedInteger("QuantileMatchingFactory-MaximumEvaluationNumber", 1000);
+
   // Student parameters //
   addAsScalar("Student-MaximumCDFEpsilon", 5.0e-6);
   addAsScalar("Student-MinimumCDFEpsilon", 5.0e-2);

@@ -276,7 +276,8 @@ private:
 Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
-  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
+  if (sample.getDimension() != distribution_.getDimension())
+    throw InvalidArgumentException(HERE) << "Sample dimension must match distribution dimension, here sample dimension=" << sample.getDimension() << " while distribution dimension=" << distribution_.getDimension();
 
   UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
   if (!knownParameterIndices_.check(effectiveParameterSize))

@@ -76,7 +76,7 @@ class UniformNdPy(ot.PythonDistribution):
     def getMoment(self, n):
         return [-0.1 * n] * len(self.a)
 
-    def getCenteredMoment(self, n):
+    def getCentralMoment(self, n):
         return [0.] * len(self.a)
 
     def computeCharacteristicFunction(self, x):

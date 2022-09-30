@@ -26,6 +26,7 @@
 %include Poisson.i
 %include PoissonFactory.i
 %include ProductDistribution.i
+%include QuantileMatchingFactory.i
 %include RandomMixture.i
 %include Rayleigh.i
 %include RayleighFactory.i
@@ -45,6 +46,7 @@
 %include TruncatedNormalFactory.i
 %include Uniform.i
 %include UniformFactory.i
+%include UniformMuSigma.i
 %include UserDefined.i
 %include UserDefinedFactory.i
 %include VonMises.i

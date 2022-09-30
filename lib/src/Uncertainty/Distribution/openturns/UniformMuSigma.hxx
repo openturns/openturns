@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Beta distribution with mu and sigma as parameters
+ *  @brief Uniform distribution with mu and sigma as parameters
  *
  *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,18 +18,18 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_BETAMUSIGMA_HXX
-#define OPENTURNS_BETAMUSIGMA_HXX
+#ifndef OPENTURNS_UNIFORMMUSIGMA_HXX
+#define OPENTURNS_UNIFORMMUSIGMA_HXX
 
 #include "openturns/DistributionParametersImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class BetaMuSigma
+ * @class UniformMuSigma
  *
  */
-class OT_API BetaMuSigma
+class OT_API UniformMuSigma
   : public DistributionParametersImplementation
 {
 
@@ -37,16 +37,16 @@ class OT_API BetaMuSigma
 public:
 
   /** Default constructor */
-  BetaMuSigma();
+  UniformMuSigma();
 
   /** Constructor with parameters */
-  BetaMuSigma(const Scalar mu, const Scalar sigma, const Scalar a = 0., const Scalar b = 1.);
+  UniformMuSigma(const Scalar mu, const Scalar sigma);
 
   /** Virtual constructor */
-  BetaMuSigma * clone() const override;
+  UniformMuSigma * clone() const override;
 
   /** Comparison operator */
-  Bool operator ==(const BetaMuSigma & other) const;
+  Bool operator ==(const UniformMuSigma & other) const;
 
   /** Build a distribution based on a set of native parameters */
   Distribution getDistribution() const override;
@@ -64,9 +64,6 @@ public:
   Point getValues() const override;
   Description getDescription() const override;
 
-  /** Check if the distribution is elliptical */
-  Bool isElliptical() const;
-
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
@@ -81,11 +78,9 @@ private:
   /** The main parameter set of the distribution */
   Scalar mu_;
   Scalar sigma_;
-  Scalar a_;
-  Scalar b_;
-}; /* class BetaMuSigma */
+}; /* class UniformMuSigma */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_BETAMUSIGMA_HXX */
+#endif /* OPENTURNS_UNIFORMMUSIGMA_HXX */

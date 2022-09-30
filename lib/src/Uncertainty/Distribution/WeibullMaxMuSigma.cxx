@@ -90,6 +90,8 @@ Matrix WeibullMaxMuSigma::gradient() const
   Matrix nativeParametersGradient(WeibullMinMuSigma(-mu_, sigma_, -gamma_).gradient());
   nativeParametersGradient(0, 0) *= -1.0;//dbeta/dmu
   nativeParametersGradient(0, 1) *= -1.0;//dalpha/dmu
+  nativeParametersGradient(2, 0) *= -1.0;//dbeta/dgamma
+  nativeParametersGradient(2, 1) *= -1.0;//dalpha/dgamma
   return nativeParametersGradient;
 }
 

@@ -508,8 +508,13 @@ Point Sample::computeKurtosis() const
 }
 
 /*
- * Gives the centered moment of order k of the sample (by component)
+ * Gives the central moment of order k of the sample (by component)
  */
+Point Sample::computeCentralMoment(const UnsignedInteger k) const
+{
+  return getImplementation()->computeCentralMoment(k);
+}
+
 Point Sample::computeCenteredMoment(const UnsignedInteger k) const
 {
   return getImplementation()->computeCenteredMoment(k);

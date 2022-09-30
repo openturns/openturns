@@ -303,6 +303,11 @@ Point Distribution::getMoment(const UnsignedInteger n) const
 }
 
 /* Get the centered moments about the mean of the distribution */
+Point Distribution::getCentralMoment(const UnsignedInteger n) const
+{
+  return getImplementation()->getCentralMoment(n);
+}
+
 Point Distribution::getCenteredMoment(const UnsignedInteger n) const
 {
   return getImplementation()->getCenteredMoment(n);

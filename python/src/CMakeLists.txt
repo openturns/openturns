@@ -731,6 +731,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Poisson.i Poisson_doc.i.in
                       PoissonFactory.i PoissonFactory_doc.i.in
                       ProductDistribution.i ProductDistribution_doc.i.in
+                      QuantileMatchingFactory.i QuantileMatchingFactory_doc.i.in
                       RandomMixture.i RandomMixture_doc.i.in
                       Rayleigh.i Rayleigh_doc.i.in
                       RayleighFactory.i RayleighFactory_doc.i.in
@@ -751,6 +752,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
+                      UniformMuSigma.i UniformMuSigma_doc.i.in
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in

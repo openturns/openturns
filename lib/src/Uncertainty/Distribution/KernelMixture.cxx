@@ -682,7 +682,7 @@ Point KernelMixture::getStandardDeviation() const
   const UnsignedInteger dimension = getDimension();
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
   const Scalar sigmaKernel = p_kernel_->getStandardDeviation()[0];
-  Point result(sample_.computeCenteredMoment(2));
+  Point result(sample_.computeCentralMoment(2));
   for (UnsignedInteger i = 0; i < dimension; ++i)
     result[i] = std::sqrt(result[i] + std::pow(bandwidth_[i] * sigmaKernel, 2));
   return result;
@@ -700,7 +700,7 @@ Point KernelMixture::getSkewness() const
   const Scalar skewnessKernel = p_kernel_->getSkewness()[0];
   // Standard deviation of the KernelMixture
   const Point sigma(getStandardDeviation());
-  Point result(sample_.computeCenteredMoment(3));
+  Point result(sample_.computeCentralMoment(3));
   for (UnsignedInteger i = 0; i < dimension; ++i)
     result[i] = (result[i] + std::pow(bandwidth_[i] * sigmaKernel, 3) * skewnessKernel) / std::pow(sigma[i], 3);
   return result;
@@ -717,10 +717,10 @@ Point KernelMixture::getKurtosis() const
   // We know that the kernel is 1D, so its skewness is actually a scalar
   const Scalar kurtosisKernel = p_kernel_->getKurtosis()[0];
   // Standard deviation of the sample
-  const Point varSample(sample_.computeCenteredMoment(2));
+  const Point varSample(sample_.computeCentralMoment(2));
   // Standard deviation of the KernelMixture
   const Point sigma(getStandardDeviation());
-  Point result(sample_.computeCenteredMoment(4));
+  Point result(sample_.computeCentralMoment(4));
   for (UnsignedInteger i = 0; i < dimension; ++i)
     result[i] = (result[i] + std::pow(bandwidth_[i] * sigmaKernel, 4) * kurtosisKernel + 6.0 * varSample[i] * std::pow(bandwidth_[i] * sigmaKernel, 2)) / std::pow(sigma[i], 4);
   return result;

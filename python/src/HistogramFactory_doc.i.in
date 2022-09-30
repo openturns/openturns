@@ -176,3 +176,45 @@ bandwidth : float
 useQuantile : bool, optional (default=`True`)
     If `True`, then use the robust bandwidth estimator based on Freedman and Diaconis rule. 
     Otherwise, use the optimal bandwidth estimator based on Scott's rule."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HistogramFactory::buildFromQuantiles
+"Build from quantiles.
+
+We consider an histogram distribution with :math:`K` bins. 
+Given a set of probabilities :math:`p_1, ..., p_K \in [0, 1]` 
+and a set of quantiles :math:`q_1, ..., q_K \in \Rset`, 
+we compute the parameters of the distribution such that:
+
+.. math::
+
+    \Prob{X \leq q_i} = p_i
+
+for :math:`i = 1, ..., K`.
+ 
+Parameters
+----------
+lowerBound : float
+    Lower bound
+probabilities : sequence of float
+    The probabilities
+quantiles : sequence of float
+    Quantiles of the desired distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Histogram`
+    Estimated distribution.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ref_dist = ot.Normal()
+>>> lowerBound = -3.0
+>>> N = 10
+>>> probabilities = [(i+1) / N for i in range(N)]
+>>> quantiles = [ref_dist.computeQuantile(pi)[0] for pi in probabilities]
+>>> factory = ot.HistogramFactory()
+>>> dist = factory.buildFromQuantiles(lowerBound, probabilities, quantiles)
+"
