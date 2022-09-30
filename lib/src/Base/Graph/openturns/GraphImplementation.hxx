@@ -137,16 +137,16 @@ public:
   virtual String getTitle() const;
   void setTitle(const String & title);
 
-  /** The method that generates the graphic files */
+  /** @deprecated The method that generates the graphic files */
   void draw(const String & file,
             const Scalar width = ResourceMap::GetAsUnsignedInteger("Graph-DefaultWidth"),
             const Scalar height = ResourceMap::GetAsUnsignedInteger("Graph-DefaultHeight"),
             SignedInteger format = ALL);
 
-  /** Get the R command corresponding to the graph */
+  /** @deprecated Get the R command corresponding to the graph */
   String getRCommand() const;
 
-  /** Clean temporary files */
+  /** @deprecated Clean temporary files */
   void clean();
 
   /** Margin accessor */

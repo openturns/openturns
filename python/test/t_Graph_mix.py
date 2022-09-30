@@ -98,7 +98,6 @@ try:
     myGraph.add(myCloud)
     myGraph.add(myLine)
     myGraph.add(myPie)
-    myGraph.draw("Graph_mix_OT.png")
 
     # Set new colors
     myGraph.setColors(["red", "green", "#120345"])

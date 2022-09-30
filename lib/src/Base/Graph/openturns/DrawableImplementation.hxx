@@ -149,10 +149,10 @@ public:
   /** Bounding box accessor */
   virtual Interval getBoundingBox() const;
 
-  /** R command generating method, for plotting through R */
+  /** @deprecated R command generating method, for plotting through R */
   virtual String draw() const;
 
-  /** Clean all the temporary data created by draw() method */
+  /** @deprecated Clean all the temporary data created by draw() method */
   virtual void clean() const;
 
   /** Clone method */

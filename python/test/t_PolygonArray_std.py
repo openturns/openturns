@@ -16,4 +16,3 @@ for i in range(size):
 
 graph = ot.Graph('An array of polygons', 'x', 'y', True, '')
 graph.add(ot.PolygonArray(array))
-graph.draw('polygon_array.png')

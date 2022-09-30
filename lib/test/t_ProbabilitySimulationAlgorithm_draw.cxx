@@ -78,7 +78,6 @@ int main(int, char *[])
     fullprint << "MonteCarlo result=" << result << std::endl;
     /* Draw the convergence graph */
     Graph convergenceGraph(myAlgo.drawProbabilityConvergence());
-    convergenceGraph.draw("convergenceMonteCarlo.png");
   }
   catch (TestFailed & ex)
   {

@@ -178,7 +178,6 @@ int main(int, char *[])
     colors[0] = "red";
     colors[1] = "green";
     graph.setColors(colors);
-    //     graph.draw("validation");
     // Test for the projection
     Collection<DistributionFactory> collFactories(0);
     collFactories.add(UniformFactory());

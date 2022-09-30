@@ -96,29 +96,23 @@ try:
 
     # Graph 1 : Importance Factors graph
     importanceFactorsGraph = result.drawImportanceFactors()
-    importanceFactorsGraph.draw("ImportanceFactorsDrawingFORM.png")
 
     # Graph 2 : Hasofer Reliability Index Sensitivity Graphs graph
     reliabilityIndexSensitivityGraphs = result.drawHasoferReliabilityIndexSensitivity(
     )
     graph2a = reliabilityIndexSensitivityGraphs[0]
-    graph2a.draw("HasoferReliabilityIndexMarginalSensitivityDrawing.png")
 
     graph2b = reliabilityIndexSensitivityGraphs[1]
-    graph2b.draw("HasoferReliabilityIndexOtherSensitivityDrawing.png")
 
     # Graph 3 : FORM Event Probability Sensitivity Graphs graph
     eventProbabilitySensitivityGraphs = result.drawEventProbabilitySensitivity(
     )
     graph3a = eventProbabilitySensitivityGraphs[0]
-    graph3a.draw("EventProbabilityIndexMarginalSensitivityDrawing.png")
 
     graph3b = eventProbabilitySensitivityGraphs[1]
-    graph3b.draw("EventProbabilityIndexOtherSensitivityDrawing.png")
 
     # Graph 4 : Convergence history
     graph4 = result.getOptimizationResult().drawErrorHistory()
-    graph4.draw("ConvergenceHistory.png")
 
 except:
     import sys

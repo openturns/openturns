@@ -104,10 +104,6 @@ OT_Drawable_setTextSize_doc
 OT_Drawable_getPattern_doc
 %feature("docstring") OT::Drawable::setPattern
 OT_Drawable_setPattern_doc
-%feature("docstring") OT::Drawable::draw
-OT_Drawable_draw_doc
-%feature("docstring") OT::Drawable::clean
-OT_Drawable_clean_doc
 %feature("docstring") OT::Drawable::ConvertFromHSV
 OT_Drawable_ConvertFromHSV_doc
 %feature("docstring") OT::Drawable::ConvertFromHSVA
