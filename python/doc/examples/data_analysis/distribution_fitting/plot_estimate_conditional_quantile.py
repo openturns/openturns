@@ -188,7 +188,7 @@ yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 cxy_app = ot.Curve(x, yapp)
 cxy_ex = ot.Curve(x, yex)
 graph = ot.Graph('90% quantile of $X_1 | X_2=x_2$',
-                 '$x_2$', '$Q_1(x_2)$', True, '')
+                 '$x_1$', '$Q_2(x_1)$', True, '')
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
