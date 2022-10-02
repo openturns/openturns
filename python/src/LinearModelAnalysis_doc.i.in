@@ -113,7 +113,7 @@ The Chi-Square test is a goodness of fit test which objective is to check the
 normality assumption (null hypothesis) of residuals (and thus the model).
 
 Usually, Chi-Square test applies for discrete distributions. Here we rely on
-the :class:`~openturns.FittingTest_ChiSquared` to check the normality.
+the :meth:`~openturns.FittingTest.ChiSquared` to check the normality.
 "
 
 // ---------------------------------------------------------------------

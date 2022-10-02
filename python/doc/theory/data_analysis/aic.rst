@@ -61,10 +61,10 @@ One might notice that the extra term penalty vanishes for
 
 .. topic:: API:
 
-    - See :class:`~openturns.FittingTest_AIC`
-    - See :class:`~openturns.FittingTest_AICC`
-    - See :class:`~openturns.FittingTest_BestModelAIC`
-    - See :class:`~openturns.FittingTest_BestModelAICC`
+    - See :py:meth:`~openturns.FittingTest.AIC`
+    - See :py:meth:`~openturns.FittingTest.AICC`
+    - See :py:meth:`~openturns.FittingTest.BestModelAIC`
+    - See :py:meth:`~openturns.FittingTest.BestModelAICC`
 
 .. topic:: Examples:
 
