@@ -32,7 +32,7 @@ with:
 		 
 - :math:`q : \sim\mathcal{U}(16, 45)`, the dynamic pressure at cruise (lb/ft^2)
 
-- :math:` \ell : \sim\mathcal{U}(0.5, 1)`, the taper ratio (-)
+- :math:`\ell : \sim\mathcal{U}(0.5, 1)`, the taper ratio (-)
 		 
 - :math:`t_c : \sim\mathcal{U}(0.08, 0.18)`, the airfoil thickness to chord ratio (-)
 		 
