@@ -621,7 +621,7 @@ Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & 
   const Scalar descriptionMargin = 1.6 * (dimension - 1.0) / (dimension + 2.0);
   upperBound[0] = dimension + descriptionMargin;
   graph.setBoundingBox(Interval(lowerBound, upperBound));
-
+  graph.setIntegerXTick(true);
   graph.setLegendPosition("topright");
   return graph;
 }
@@ -830,8 +830,8 @@ Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Poi
   else
     upperBound[1] = 0.1;
 
+  graph.setIntegerXTick(true);
   graph.setBoundingBox(Interval(lowerBound, upperBound));
-
   return graph;
 }
 

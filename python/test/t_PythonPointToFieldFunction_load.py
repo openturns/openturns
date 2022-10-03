@@ -14,6 +14,8 @@ study.load()
 study.fillObject('f', f)
 
 x = [4, 5]
-print(f(x))
+y = f(x)
+print(y[0])
+assert y[0] == [5.0], "wrong y value"
 
 os.remove('pyp2ff.xml')

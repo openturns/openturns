@@ -172,6 +172,30 @@ Graph::TickLocation Graph::getTickLocation() const
   return getImplementation()->getTickLocation();
 }
 
+/* integer X-ticks flag accessor */
+void Graph::setIntegerXTick(const Bool integerXTick)
+{
+  copyOnWrite();
+  getImplementation()->setIntegerXTick(integerXTick);
+}
+
+Bool Graph::getIntegerXTick() const
+{
+  return getImplementation()->getIntegerXTick();
+}
+
+/* integer Y-ticks flag accessor */
+void Graph::setIntegerYTick(const Bool integerYTick)
+{
+  copyOnWrite();
+  getImplementation()->setIntegerYTick(integerYTick);
+}
+
+Bool Graph::getIntegerYTick() const
+{
+  return getImplementation()->getIntegerYTick();
+}
+
 /* Set log scale for x, y both or none axes */
 void Graph::setLogScale(const LogScale logScale)
 {

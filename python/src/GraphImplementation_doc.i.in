@@ -349,13 +349,65 @@ OT_Graph_setTickLocation_doc
 %define OT_Graph_getTickLocation_doc
 "Accessor to the ticks location flag.
 
-Parameters
-----------
+Returns
+-------
 loc : int
     Indicates the ticks location."
 %enddef
 %feature("docstring") OT::GraphImplementation::getTickLocation
 OT_Graph_getTickLocation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setIntegerXTick_doc
+"Accessor to the integer x-axis ticks flag.
+
+Parameters
+----------
+integerXTick : bool
+    Whether to draw only integer ticks on the x-axis."
+%enddef
+%feature("docstring") OT::GraphImplementation::setIntegerXTick
+OT_Graph_setIntegerXTick_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getIntegerXTick_doc
+"Accessor to the integer x-axis ticks flag.
+
+Returns
+-------
+integerXTick : bool
+    Whether to draw only integer ticks on the x-axis."
+%enddef
+%feature("docstring") OT::GraphImplementation::getIntegerXTick
+OT_Graph_getIntegerXTick_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setIntegerYTick_doc
+"Accessor to the integer y-axis ticks flag.
+
+Parameters
+----------
+integerYTick : bool
+    Whether to draw only integer ticks on the y-axis."
+%enddef
+%feature("docstring") OT::GraphImplementation::setIntegerYTick
+OT_Graph_setIntegerYTick_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getIntegerYTick_doc
+"Accessor to the integer y-axis ticks flag.
+
+Returns
+-------
+integerYTick : bool
+    Whether to draw only integer ticks on the y-axis."
+%enddef
+%feature("docstring") OT::GraphImplementation::getIntegerYTick
+OT_Graph_getIntegerYTick_doc
 
 // ---------------------------------------------------------------------
 
@@ -581,38 +633,6 @@ path : str
 %enddef
 %feature("docstring") OT::GraphImplementation::getPath
 OT_Graph_getPath_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Graph_getBitmap_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::GraphImplementation::getBitmap
-OT_Graph_getBitmap_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Graph_getPostscript_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::GraphImplementation::getPostscript
-OT_Graph_getPostscript_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Graph_getVectorial_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::GraphImplementation::getVectorial
-OT_Graph_getVectorial_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Graph_getPDF_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::GraphImplementation::getPDF
-OT_Graph_getPDF_doc
 
 // ---------------------------------------------------------------------
 
