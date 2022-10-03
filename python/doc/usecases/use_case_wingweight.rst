@@ -18,7 +18,7 @@ the airfoil thickness to chord ratio, the ultimate load factor, the flight desig
 The function is defined as follows:
 
 .. math::
-   g(S_{w},W_{fw},A, \Lambda, q, l, t_c, N_z, W_{dg}, W_p) = 0.036 S_w^{0.758} {W_{fw}}^{0.0035}\left(\frac{A}{\cos^2(\Lambda)}\right)^{0.6} q^{0.006} l^{0.04} \left(\frac{100 t_c}{\cos(\Lambda)}\right)^{-0.3}(N_z W_{dg})^{0.49}+S_w W_p
+   g(S_{w},W_{fw},A, \Lambda, q, \ell, t_c, N_z, W_{dg}, W_p) = 0.036 S_w^{0.758} {W_{fw}}^{0.0035}\left(\frac{A}{\cos^2(\Lambda)}\right)^{0.6} q^{0.006}  \ell^{0.04} \left(\frac{100 t_c}{\cos(\Lambda)}\right)^{-0.3}(N_z W_{dg})^{0.49}+S_w W_p
 
 with:
 
@@ -32,7 +32,7 @@ with:
 		 
 - :math:`q : \sim\mathcal{U}(16, 45)`, the dynamic pressure at cruise (lb/ft^2)
 
-- :math:`l : \sim\mathcal{U}(0.5, 1)`, the taper ratio (-)
+- :math:` \ell : \sim\mathcal{U}(0.5, 1)`, the taper ratio (-)
 		 
 - :math:`t_c : \sim\mathcal{U}(0.08, 0.18)`, the airfoil thickness to chord ratio (-)
 		 
