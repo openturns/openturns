@@ -740,8 +740,6 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
   Point data(dimension);
   /* Normalization */
   for (UnsignedInteger i = 0; i < dimension; ++i) data[i] = values[i] / l1Norm;
-  /* we build the pie */
-  Pie importanceFactorsPie(data);
 
   /* build labels and colors for the pie */
   Description palette(dimension);
@@ -761,9 +759,8 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
     oss << 100.0 * data[i] << "%";
     labels[i] = oss;
   }
-  /* we complete the pie */
-  importanceFactorsPie.setLabels(labels);
-  importanceFactorsPie.buildDefaultPalette();
+  /* we build the pie */
+  Pie importanceFactorsPie(data, labels);
   /* we build the graph with a title */
   Graph importanceFactorsGraph(title);
   /* we embed the pie into the graph */
