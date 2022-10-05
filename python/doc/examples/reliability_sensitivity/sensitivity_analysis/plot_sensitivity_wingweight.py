@@ -370,7 +370,7 @@ view = otv.View(graph)
 
 # %%
 # We then estimate the HSIC indices using a data-driven approach.
-sizeHSIC = 500
+sizeHSIC = 250
 inputDesignHSIC = m.distributionX.getSample(sizeHSIC)
 outputDesignHSIC = m.model(inputDesignHSIC)
 
