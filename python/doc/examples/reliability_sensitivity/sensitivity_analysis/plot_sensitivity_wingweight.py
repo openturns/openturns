@@ -331,7 +331,7 @@ view = otv.View(graph)
 
 # %%
 # Now, we estimate the Sobol' indices using Polynomial Chaos Expansion.
-# We create a Functional Chaos Expansion using basic tunings.
+# We create a Functional Chaos Expansion.
 sizePCE = 800
 inputDesignPCE = m.distributionX.getSample(sizePCE)
 outputDesignPCE = m.model(inputDesignPCE)
@@ -369,9 +369,10 @@ view = otv.View(graph)
 # ------------
 
 # %%
-# We then estimate the HSIC indices using a data-driven approach by exploiting the design of experiments used to train the PCE model.
-inputDesignHSIC = inputDesignPCE
-outputDesignHSIC = outputDesignPCE
+# We then estimate the HSIC indices using a data-driven approach.
+sizeHSIC = 500
+inputDesignHSIC = m.distributionX.getSample(sizeHSIC)
+outputDesignHSIC = m.model(inputDesignHSIC)
 
 covarianceModelCollection = []
 
