@@ -65,54 +65,21 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm()
   // Nothing to do
 }
 
+
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
-    const Sample & outputSample,
-    const Distribution & distribution,
-    const AdaptiveStrategy & adaptiveStrategy,
-    const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(inputSample, outputSample, distribution)
-  , adaptiveStrategy_(adaptiveStrategy)
-  , projectionStrategy_(projectionStrategy)
-  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+    const Sample & outputSample)
+  : FunctionalChaosAlgorithm(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
 {
-  // Overwrite the content of the projection strategy with the given data
-  projectionStrategy_.setMeasure(distribution);
-  projectionStrategy_.setExperiment(FixedExperiment(inputSample));
-  projectionStrategy_.setWeights(Point(inputSample.getSize(), 1.0 / inputSample.getSize()));
-  projectionStrategy_.setInputSample(inputSample);
-  projectionStrategy_.setOutputSample(outputSample);
+  // Nothing to do
 }
+
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Point & weights,
-    const Sample & outputSample,
-    const Distribution & distribution,
-    const AdaptiveStrategy & adaptiveStrategy,
-    const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(inputSample, outputSample, distribution)
-  , adaptiveStrategy_(adaptiveStrategy)
-  , projectionStrategy_(projectionStrategy)
-  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
-{
-  // Overwrite the content of the projection strategy with the given data
-  projectionStrategy_.setMeasure(distribution);
-  projectionStrategy_.setExperiment(FixedExperiment(inputSample));
-  projectionStrategy_.setWeights(weights);
-  projectionStrategy_.setInputSample(inputSample);
-  projectionStrategy_.setOutputSample(outputSample);
-}
-
-/* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
-    const Sample & outputSample,
-    const Distribution & distribution,
-    const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(inputSample, outputSample, distribution)
-  , adaptiveStrategy_(adaptiveStrategy)
-  , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
-  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+    const Sample & outputSample)
+  : FunctionalChaosAlgorithm(inputSample, weights, outputSample, BuildDistribution(inputSample))
 {
   // Nothing to do
 }
@@ -122,7 +89,20 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution)
-  : MetaModelAlgorithm(inputSample, outputSample, distribution)
+  : FunctionalChaosAlgorithm(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample, distribution)
+{
+  // Nothing to do
+}
+
+
+/* Constructor */
+/* This one is big as it implements the automatic choice of
+   AdaptiveStrategy/ProjectionStrategy based on ResourceMap keys */
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Point & weights,
+    const Sample & outputSample,
+    const Distribution & distribution)
+  : MetaModelAlgorithm(inputSample, weights, outputSample, distribution)
   , adaptiveStrategy_()
   , projectionStrategy_()
   , maximumResidual_(ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual"))
@@ -143,16 +123,16 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   {
     const String fittingAlgorithm(ResourceMap::GetAsString("FunctionalChaosAlgorithm-FittingAlgorithm"));
     if (fittingAlgorithm == "CorrectedLeaveOneOut")
-      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut()));
+      projectionStrategy_ = LeastSquaresStrategy(inputSample, weights, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut()));
     else if (fittingAlgorithm == "KFold")
-      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
+      projectionStrategy_ = LeastSquaresStrategy(inputSample, weights, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
     else
       throw InvalidArgumentException(HERE) << "Unknown fitting algorithm: " << fittingAlgorithm;
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and " << fittingAlgorithm);
   }
   else
   {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
+    projectionStrategy_ = LeastSquaresStrategy(inputSample, weights, outputSample);
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy");
   }
 
@@ -164,10 +144,43 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   adaptiveStrategy_ = FixedStrategy(basis, totalSize);
 }
 
+
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
-    const Sample & outputSample)
-  : FunctionalChaosAlgorithm(inputSample, outputSample, BuildDistribution(inputSample))
+    const Sample & outputSample,
+    const Distribution & distribution,
+    const AdaptiveStrategy & adaptiveStrategy)
+  : FunctionalChaosAlgorithm(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample, distribution, adaptiveStrategy)
+{
+  // Nothing to do
+}
+
+
+/* Constructor */
+/* This one forces the use of a basic LeastSquaresStrategy. Maybe we should
+implement the same logic as when both the AdaptiveStrategy and ProjectionStrategy
+are deduced from ResourceMap keys. */
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Point & weights,
+    const Sample & outputSample,
+    const Distribution & distribution,
+    const AdaptiveStrategy & adaptiveStrategy)
+  : MetaModelAlgorithm(inputSample, weights, outputSample, distribution)
+  , adaptiveStrategy_(adaptiveStrategy)
+  , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+{
+  // Nothing to do
+}
+
+
+/* Constructor */
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
+    const Distribution & distribution,
+    const AdaptiveStrategy & adaptiveStrategy,
+    const ProjectionStrategy & projectionStrategy)
+  : FunctionalChaosAlgorithm(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample, distribution, adaptiveStrategy, projectionStrategy)
 {
   // Nothing to do
 }
@@ -177,13 +190,19 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Point & weights,
     const Sample & outputSample,
     const Distribution & distribution,
-    const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(inputSample, outputSample, distribution)
+    const AdaptiveStrategy & adaptiveStrategy,
+    const ProjectionStrategy & projectionStrategy)
+  : MetaModelAlgorithm(inputSample, weights, outputSample, distribution)
   , adaptiveStrategy_(adaptiveStrategy)
-  , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
+  , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Nothing to do
+  // Overwrite the content of the projection strategy with the given data
+  projectionStrategy_.setMeasure(distribution);
+  projectionStrategy_.setExperiment(FixedExperiment(inputSample));
+  projectionStrategy_.setWeights(weights);
+  projectionStrategy_.setInputSample(inputSample);
+  projectionStrategy_.setOutputSample(outputSample);
 }
 
 
@@ -388,4 +407,3 @@ void FunctionalChaosAlgorithm::load(Advocate & adv)
 
 
 END_NAMESPACE_OPENTURNS
-

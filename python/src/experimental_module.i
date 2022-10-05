@@ -43,6 +43,8 @@
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
+%include LeastSquaresExpansion.i
+%include IntegrationExpansion.i
 
 // duplicate helpers
 OTTypedInterfaceObjectHelper(WeightedExperiment)

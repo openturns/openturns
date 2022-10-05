@@ -1,0 +1,101 @@
+%feature("docstring") OT::LeastSquaresExpansion
+"L2 approximation on an orthonormal basis using least-squares and a fixed basis.
+
+Available constructors:
+    LeastSquaresExpansion(*inputSample, outputSample, distribution*)
+
+    LeastSquaresExpansion(*inputSample, weights, outputSample, distribution*)
+
+    LeastSquaresExpansion(*inputSample, outputSample, distribution, basis, basisSize, methodName*)
+
+    LeastSquaresExpansion(*inputSample, weights, outputSample, distribution, basis, basisSize, methodName*)
+
+Parameters
+----------
+inputSample : 2-d sequence of float of size :math:`n>0`
+    Input sample.
+weight : sequence of float of size :math:`n>0`, optional
+    Input weights. By default, a uniform weight equals to :math:`1/n` is used.
+outputSample : 2-d sequence of floats of size :math:`n>0`
+    Output sample.
+distribution : :class:`~openturns.Distribution`
+    The distribution associated to the weighted sample *(inputSample, weights)*
+basis : :class:`~openturns.OrthogonalBasis`, optional
+    The orthonormal basis of the vector space on which the approximation is built.
+    By default, a basis is built using an hyperbolic enumerate function
+    :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` associated to the
+    :math:`q-` norm specified by the `FunctionalChaosAlgorithm-QNorm` key in
+    :class:`~openturns.ResourceMap`.
+    The basis is obtained through a tensorization of the univariate orthonormal
+    polynomial bases associated to each marginal distributions of *distribution*.
+basisSize : int, optional
+    The size of the basis on which the approximation is built. If not given, it is
+    given by the `FunctionalChaosAlgorithm-BasisSize` key in
+    :class:`~openturns.ResourceMap` if this value is positive, or as the cardinal
+    of the set of basis functions up to a degree given by the
+    `FunctionalChaosAlgorithm-MaximumTotalDegree` key in
+    :class:`~openturns.ResourceMap`.
+methodName : str, optional
+    The decomposition method used to solve the least-squares problem, of
+    type :class:`~openturns.LeastSquaresMethod`. If not given, it is given by the
+    `LeastSquaresExpansion-DecompositionMethod` key in
+    :class:`~openturns.ResourceMap`.
+
+See also
+--------
+IntegrationExpansion, FunctionalChaosAlgorithm, LeastSquaresMethod
+
+Examples
+--------
+Solves a functional linear least squares approximation using residual minimization with QR method:
+
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> g = ot.SymbolicFunction('x', 'sin(x)')
+>>> distribution = ot.Uniform(-2.0, 2.0)
+>>> inSample = distribution.getSample(10)
+>>> outSample = g(inSample)
+>>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()])
+>>> basisSize = 5
+>>> algo = otexp.LeastSquaresExpansion(inSample, outSample, distribution, basis, basisSize, 'QR')
+>>> algo.run()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresExpansion::getActiveFunctions
+"Accessor to the active functions in the basis.
+
+Returns
+-------
+activeFunctions : sequence of `int`
+    The indices of the functions used for the approximation in the basis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresExpansion::setActiveFunctions
+"Accessor to the active functions in the basis.
+
+Parameters
+----------
+activeFunctions : sequence of `int`
+    The indices of the functions used for the approximation in the basis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresExpansion::getSelectedPoints
+"Accessor to the points to use in the learning database.
+
+Returns
+-------
+selectedPoints : sequence of `int`
+    The indices of the points to use in the database."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresExpansion::setSelectedPoints
+"Accessor to the points to use in the learning database.
+
+Parameters
+----------
+selectedPoints : sequence of `int`
+    The indices of the points to use in the database."
