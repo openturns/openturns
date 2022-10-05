@@ -56,3 +56,103 @@ skewness= class=Point name=Unnamed dimension=1 values=[-0.305441]
 kurtosis= class=Point name=Unnamed dimension=1 values=[2.4]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.388889]
 parameters= [class=PointWithDescription name=X0 dimension=3 description=[a,m,b] values=[-0.5,1.5,2.5]]
+Distribution  Triangular(a = -0.5, m = -0.5, b = 2.5)
+Elliptical =  False
+Continuous =  True
+oneRealization= class=Point name=Unnamed dimension=1 values=[-0.148747]
+oneSample first= class=Point name=Unnamed dimension=1 values=[0.507172]  last= class=Point name=Unnamed dimension=1 values=[-0.0108557]
+mean= class=Point name=Unnamed dimension=1 values=[0.502493]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.500093]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[1]
+ddf     = class=Point name=Unnamed dimension=1 values=[-0.222222]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.222222]
+log pdf=-1.098612
+pdf     =0.333333
+pdf (FD)=0.333333
+cdf=0.750000
+ccdf=0.250000
+characteristic function= (0.692667287389+0.345522222881j)
+quantile= class=Point name=Unnamed dimension=1 values=[-0.0980762]
+cdf(quantile)=0.250000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.424038]
+Survival(inverseSurvival)=0.950000
+entropy=0.905465
+Minimum volume interval= [-0.5, 1.82918]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 1.90333} with f=
+MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = -0.5, b = 2.5))
+beta= [0.149071]
+Bilateral confidence interval= [-0.462263, 2.02566]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-0.5, 1.82918]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [-0.424038, 2.5]
+beta= [0.95]
+Point=  class=Point name=Unnamed dimension=1 values=[2]
+ddf     = class=Point name=Unnamed dimension=1 values=[-0.222222]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.222222]
+log pdf=-2.197225
+pdf     =0.111111
+pdf (FD)=0.111111
+cdf=0.972222
+ccdf=0.027778
+quantile= class=Point name=Unnamed dimension=1 values=[1.82918]
+cdf(quantile)=0.950000
+mean= class=Point name=Unnamed dimension=1 values=[0.5]
+standard deviation= class=Point name=Unnamed dimension=1 values=[0.707107]
+skewness= class=Point name=Unnamed dimension=1 values=[0.565685]
+kurtosis= class=Point name=Unnamed dimension=1 values=[2.4]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.5]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[a,m,b] values=[-0.5,-0.5,2.5]]
+Distribution  Triangular(a = -0.5, m = 2.5, b = 2.5)
+Elliptical =  False
+Continuous =  True
+oneRealization= class=Point name=Unnamed dimension=1 values=[1.41468]
+oneSample first= class=Point name=Unnamed dimension=1 values=[0.277073]  last= class=Point name=Unnamed dimension=1 values=[2.34658]
+mean= class=Point name=Unnamed dimension=1 values=[1.50017]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.501895]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[1]
+ddf     = class=Point name=Unnamed dimension=1 values=[0.222222]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.222222]
+log pdf=-1.098612
+pdf     =0.333333
+pdf (FD)=0.333333
+cdf=0.250000
+ccdf=0.750000
+characteristic function= (0.0259311677499+0.773628562078j)
+quantile= class=Point name=Unnamed dimension=1 values=[1]
+cdf(quantile)=0.250000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.17082]
+Survival(inverseSurvival)=0.950000
+entropy=0.905465
+Minimum volume interval= [2.5, 2.5]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 1.90333} with f=
+MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = 2.5, b = 2.5))
+beta= [0.149071]
+Bilateral confidence interval= [-0.0256584, 2.46226]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-0.5, 2.42404]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.17082, 2.5]
+beta= [0.95]
+Point=  class=Point name=Unnamed dimension=1 values=[2]
+ddf     = class=Point name=Unnamed dimension=1 values=[0.222222]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.222222]
+log pdf=-0.587787
+pdf     =0.555556
+pdf (FD)=0.555556
+cdf=0.694444
+ccdf=0.305556
+quantile= class=Point name=Unnamed dimension=1 values=[2.42404]
+cdf(quantile)=0.950000
+mean= class=Point name=Unnamed dimension=1 values=[1.5]
+standard deviation= class=Point name=Unnamed dimension=1 values=[0.707107]
+skewness= class=Point name=Unnamed dimension=1 values=[-0.565685]
+kurtosis= class=Point name=Unnamed dimension=1 values=[2.4]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.5]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[a,m,b] values=[-0.5,2.5,2.5]]
