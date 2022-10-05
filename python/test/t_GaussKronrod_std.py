@@ -35,7 +35,6 @@ try:
         # lower = Cloud(ai, Point(ai.getDimension()))
         # lower.setColor("magenta")
         # g.add(lower)
-        # g.draw("Smooth_function_adaptation_" + str(i))
 
     # Second, a piecewise smooth function
     f = SymbolicFunction("x", "abs(sin(x))")
@@ -67,7 +66,6 @@ try:
         # lower = Cloud(ai, Point(ai.getDimension()))
         # lower.setColor("magenta")
         # g.add(lower)
-        # g.draw("Nonsmooth_function_adaptation_" + str(i))
 except:
     import sys
     print("t_GaussKronrod_std.py", sys.exc_info()[0], sys.exc_info()[1])

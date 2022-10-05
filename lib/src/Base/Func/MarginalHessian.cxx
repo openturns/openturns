@@ -41,9 +41,9 @@ MarginalHessian::MarginalHessian()
 /* Parameter constructor */
 MarginalHessian::MarginalHessian(const HessianImplementation & hessian,
                                  const Indices & indices)
-  : HessianImplementation()
+  : MarginalHessian(hessian.clone(), indices)
 {
-  *this = MarginalHessian(hessian.clone(), indices);
+  // Nothing to do
 }
 
 /* Parameters constructor */

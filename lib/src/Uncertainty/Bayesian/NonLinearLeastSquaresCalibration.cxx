@@ -57,11 +57,11 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
 {
   // Check the input
-  const UnsignedInteger inputDimension = inputObservations.getDimension();
+  const UnsignedInteger inputDimension = inputObservations_.getDimension();
   if (model.getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << inputDimension << ", got input dimension=" << model.getInputDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
-  const UnsignedInteger size = inputObservations.getSize();
+  const UnsignedInteger size = outputObservations.getSize();
   if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
 
   // Now the automatic selection of the algorithm

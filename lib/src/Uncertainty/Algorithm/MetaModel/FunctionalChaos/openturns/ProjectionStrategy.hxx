@@ -38,6 +38,11 @@ class OT_API ProjectionStrategy
   : public TypedInterfaceObject<ProjectionStrategyImplementation>
 {
   CLASSNAME
+
+  // Make the FunctionalChaosAlgorithm class a friend of the ProjectionStrategyImplementation class
+  // as this last class is in charge of managing data that are part of the FunctionalChaosAlgorithm
+  // state
+  friend class FunctionalChaosAlgorithm;
 public:
 
   typedef ProjectionStrategyImplementation::FunctionCollection FunctionCollection;
@@ -79,6 +84,13 @@ public:
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);
   virtual WeightedExperiment getExperiment() const;
 
+  /** String converter */
+  String __repr__() const override;
+
+  /** String converter */
+  String __str__(const String & offset = "") const override;
+
+protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   void computeCoefficients(const Function & function,
                            const FunctionCollection & basis,
@@ -87,15 +99,6 @@ public:
                            const Indices & conservedRanks,
                            const Indices & removedRanks,
                            const UnsignedInteger marginalIndex = 0);
-
-  /** String converter */
-  String __repr__() const override;
-
-  /** String converter */
-  String __str__(const String & offset = "") const override;
-
-protected:
-
 private:
 
 } ; /* class ProjectionStrategy */

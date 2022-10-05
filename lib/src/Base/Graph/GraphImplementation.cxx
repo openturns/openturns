@@ -529,6 +529,8 @@ void GraphImplementation::draw(const String & file,
                                const Scalar height,
                                SignedInteger drawingFormat)
 {
+  LOGWARN(OSS() << "Graph.draw is deprecated");
+
   // Override format base on extension
   size_t pos = file.find_last_of(".");
   Bool matchedExtension = false;

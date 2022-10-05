@@ -227,13 +227,13 @@ be abandoned, or at least used very cautiously.
 
     - See :class:`~openturns.LinearModelAlgorithm` to build a linear model
     - See :class:`~openturns.LinearModelResult` for the associated results
-    - See :py:func:`~openturns.VisualTest_DrawLinearModel` to draw a linear model
-    - See :py:func:`~openturns.VisualTest_DrawLinearModelResidual` to draw the residual
-    - See :py:func:`~openturns.LinearModelTest_LinearModelFisher` to assess the nullity of the coefficients
-    - See :py:func:`~openturns.LinearModelTest_LinearModelResidualMean` to assess the mean residual
-    - See :py:func:`~openturns.LinearModelTest_LinearModelHarrisonMcCabe` to assess the homoscedasticity of the residual
-    - See :py:func:`~openturns.LinearModelTest_LinearModelBreuschPagan` to assess the homoscedasticity of the residual
-    - See :py:func:`~openturns.LinearModelTest_LinearModelDurbinWatson` to assess the autocorrelation of the residual
+    - See :py:func:`~openturns.VisualTest.DrawLinearModel` to draw a linear model
+    - See :py:func:`~openturns.VisualTest.DrawLinearModelResidual` to draw the residual
+    - See :py:func:`~openturns.LinearModelTest.LinearModelFisher` to assess the nullity of the coefficients
+    - See :py:func:`~openturns.LinearModelTest.LinearModelResidualMean` to assess the mean residual
+    - See :py:func:`~openturns.LinearModelTest.LinearModelHarrisonMcCabe` to assess the homoscedasticity of the residual
+    - See :py:func:`~openturns.LinearModelTest.LinearModelBreuschPagan` to assess the homoscedasticity of the residual
+    - See :py:func:`~openturns.LinearModelTest.LinearModelDurbinWatson` to assess the autocorrelation of the residual
 
 .. topic:: Examples:
 

@@ -86,12 +86,9 @@ sampleNoise = observationOutputNoise.getSample(size)
 outputObservations = outputStress + sampleNoise
 
 # %%
-# Now is the important part of this script : there are no input observations. 
-# This is why we create a sample with size equal to 5 and dimension equal to 0. 
-# Even if the calibration model has no input observations, observed inputs 
-# are required by the current programming interface and this is why we have to 
-# create this object. 
-inputObservations = ot.Sample(size, 0)  # Trick
+# Now is the important part of this script: there are no input observations.
+# This is why we create a sample of dimension equal to 0.
+inputObservations = ot.Sample(0, 0)
 
 # %%
 # We are now ready to perform the calibration.

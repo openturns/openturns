@@ -54,7 +54,6 @@ print("Final criteria: C2=%f, PhiP=%f" % (result.getC2(), result.getPhiP()))
 
 # Criterion graph ==> Graph object
 criterionGraph = result.drawHistoryCriterion()
-# criterionGraph.draw("MC_C2_Criterion")
 
 # 2) LHS with PhiP optimization (=mindist optim)
 optimalLHSAlgorithm = ot.MonteCarloLHS(lhs, N, spaceFillingPhiP)
@@ -67,7 +66,6 @@ print("Final criteria: C2=%f, PhiP=%f" % (result.getC2(), result.getPhiP()))
 
 # Graph of criterion
 criterionGraph = result.drawHistoryCriterion()
-# criterionGraph.draw("MC_PhiP_Criterion")
 
 # --------------------------------------------------#
 # ------------- Simulated annealing  ------------- #
@@ -97,11 +95,8 @@ print("Final criteria: C2=%f, PhiP=%f" % (result.getC2(), result.getPhiP()))
 # Criteria drawing
 # SA algorithms returns also Probability & temperature
 criterionGraph = result.drawHistoryCriterion()
-# criterionGraph.draw("SA_Geom_C2_Criterion")
 probaGraph = result.drawHistoryProbability()
-# probaGraph.draw("SA_Geom_C2_Proba")
 tempGraph = result.drawHistoryTemperature()
-# tempGraph.draw("SA_Geom_C2_Temperature")
 
 # 4) Simulated Annealing LHS with geometric temperature, PhiP optimization
 optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
@@ -119,11 +114,8 @@ print("Final criteria: C2=%f, PhiP=%f" % (result.getC2(), result.getPhiP()))
 
 # Criteria drawing
 criterionGraph = result.drawHistoryCriterion()
-# criterionGraph.draw("SA_Geom_PhiP_Criterion")
 probaGraph = result.drawHistoryProbability()
-# probaGraph.draw("SA_Geom_PhiP_Proba")
 tempGraph = result.drawHistoryTemperature()
-# tempGraph.draw("SA_Geom_PhiP_Temperature")
 
 # Linear profil
 linearProfile = ot.LinearProfile(T0, iMax)
@@ -144,11 +136,8 @@ print("Final criteria: C2=%f, PhiP=%f" % (result.getC2(), result.getPhiP()))
 
 # Criteria drawing
 criterionGraph = result.drawHistoryCriterion()
-# criterionGraph.draw("SA_Lin_C2_Criterion")
 probaGraph = result.drawHistoryProbability()
-# probaGraph.draw("SA_Lin_C2_Proba")
 tempGraph = result.drawHistoryTemperature()
-# tempGraph.draw("SA_Lin_C2_Temperature")
 
 # 6) Simulated Annealing LHS with linear temperature, PhiP optimization
 optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
@@ -166,11 +155,8 @@ print("Final criteria: C2=%f, PhiP=%f" % (result.getC2(), result.getPhiP()))
 
 # Criteria drawing
 criterionGraph = result.drawHistoryCriterion()
-# criterionGraph.draw("SA_Lin_PhiP_Criterion")
 probaGraph = result.drawHistoryProbability()
-# probaGraph.draw("SA_Lin_PhiP_Proba")
 tempGraph = result.drawHistoryTemperature()
-# tempGraph.draw("SA_Lin_PhiP_Temperature")
 
 # 7) Simulated Annealing LHS with linear temperature, Phi optimization and nStart > 1
 #  Result is a collection of LHSResult
@@ -190,8 +176,5 @@ for i in range(nStart):
 
     # decreasing criterion
     criterionGraph = result.drawHistoryCriterion(i)
-    # criterionGraph.draw("SA_Lin_PhiP_Criterion_MultiRestart_%d"%(i+1))
     probaGraph = result.drawHistoryProbability(i)
-    # probaGraph.draw("SA_Lin_PhiP_Proba_MultiRestart_%d"%(i+1))
     tempGraph = result.drawHistoryTemperature(i)
-    # tempGraph.draw("SA_Lin_PhiP_Temperature_MultiRestart_%d"%(i+1))

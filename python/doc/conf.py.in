@@ -32,6 +32,9 @@ sys.path.insert(0, '@OPENTURNS_PYTHON_BUILD_MODULE_PATH@')
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
 
+# Create table of contents entries for domain objects
+toc_object_entries = False
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.

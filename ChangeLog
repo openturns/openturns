@@ -33,6 +33,8 @@
  * Deprecated Distribution::getCenteredMoment in favor of getCentralMoment
  * Deprecated IterativeMoments::getCenteredMoments in favor of getCentralMoments
  * Deprecated GeneralLinearModelAlgorithm | KrigingAlgorithm ctors using collection of basis
+ * Deprecated Drawable.draw|clean & Graph.draw|clean|getRCommand methods for legacy R graphs
+ * Deprecated GaussianProcess.GIBBS in favor of GaussianProcess.GALLIGAOGIBBS
 
 === Documentation ===
  * Added example galleries at the end of API doc pages

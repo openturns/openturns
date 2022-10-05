@@ -127,8 +127,6 @@ int main(int, char *[])
     Scalar pointCDFAtHalf = copula.computeCDF( half );
     assert_almost_equal(pointCDFAtHalf, 0.3535533905932738, rtol);
 
-    // copula.drawCDF().draw("pdf.png");
-
     // Special cases
 
     // Special case alpha=0

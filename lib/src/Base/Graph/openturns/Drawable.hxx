@@ -139,13 +139,13 @@ public:
   /** Accessor for data */
   Sample getData() const;
 
-  /** Generate R commands for plotting the graphic */
+  /** @deprecated Generate R commands for plotting the graphic */
   String draw() const;
 
   /** Get R point code from key */
   UnsignedInteger getPointCode(const String key) const;
 
-  /** Clean all the temporary data created by draw() method */
+  /** @deprecated Clean all the temporary data created by draw() method */
   void clean() const;
 
   /** Give the colors name */
