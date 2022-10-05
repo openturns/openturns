@@ -297,3 +297,30 @@ Examples
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation::getBasisSizeFromTotalDegree
 OT_EnumerateFunction_getBasisSizeFromTotalDegree_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_EnumerateFunction_setUpperBound_doc
+"Accessor to the upper bound.
+
+Parameters
+----------
+ub : sequence of int
+    Upper bound of the indices (inclusive)."
+%enddef
+%feature("docstring") OT::EnumerateFunctionImplementation::setUpperBound
+OT_EnumerateFunction_setUpperBound_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_EnumerateFunction_getUpperBound_doc
+"Accessor to the upper bound.
+
+Returns
+-------
+ub : sequence of int
+    Upper bound of the indices (inclusive)."
+%enddef
+%feature("docstring") OT::EnumerateFunctionImplementation::getUpperBound
+OT_EnumerateFunction_getUpperBound_doc

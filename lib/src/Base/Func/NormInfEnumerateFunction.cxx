@@ -32,20 +32,9 @@ CLASSNAMEINIT(NormInfEnumerateFunction)
 static const Factory<NormInfEnumerateFunction> Factory_NormInfEnumerateFunction;
 
 
-
-/* Default constructor */
-NormInfEnumerateFunction::NormInfEnumerateFunction()
-  : EnumerateFunctionImplementation()
-  , index_(0)
-  , multiIndices_(getDimension())
-{
-  // Nothing to do
-}
-
 /* Parameter constructor */
 NormInfEnumerateFunction::NormInfEnumerateFunction(const UnsignedInteger dimension)
   : EnumerateFunctionImplementation(dimension)
-  , index_(0)
   , multiIndices_(getDimension())
 {
   // Nothing to do
@@ -70,24 +59,20 @@ String NormInfEnumerateFunction::__repr__() const
 Indices NormInfEnumerateFunction::operator() (const UnsignedInteger index) const
 {
   const UnsignedInteger dimension = getDimension();
-  const UnsignedInteger strataIndex = std::pow(1.0 * index, 1.0 / dimension);
-  const UnsignedInteger cumulatedCardinal = std::pow(1.0 * strataIndex, 1.0 * dimension);
 
-  // reuse the previous state if next index is an unit increment and we dont change strata
-  if ((index != (index_ + 1))
-      || (index == cumulatedCardinal))
+  // reuse the previous state if next index is an unit increment
+  if (index != (index_ + 1))
   {
-    // restart at beginning of the strata
-    index_ = cumulatedCardinal;
     multiIndices_ = Indices(dimension);
-    multiIndices_[0] = strataIndex;
+    index_ = 0;
+    strataIndex_ = 0;
   }
 
   while (index_ < index)
   {
     // find direction that can be incremented
     UnsignedInteger i = 0;
-    while (multiIndices_[i] == strataIndex)
+    while ((i < dimension) && (multiIndices_[i] == std::min(upperBound_[i], strataIndex_)))
     {
       ++ i;
     }
@@ -98,6 +83,13 @@ Indices NormInfEnumerateFunction::operator() (const UnsignedInteger index) const
       multiIndices_[j] = 0;
     }
 
+    // no more direction to update, go to next strata
+    if (i == dimension)
+    {
+      ++ strataIndex_;
+      continue;
+    }
+
     // increment direction
     ++ multiIndices_[i];
 
@@ -105,7 +97,7 @@ Indices NormInfEnumerateFunction::operator() (const UnsignedInteger index) const
     // ie it exist j such as c[j]=strataIndex
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      if (multiIndices_[j] == strataIndex)
+      if (multiIndices_[j] == strataIndex_)
       {
         ++ index_;
         break;
@@ -116,30 +108,16 @@ Indices NormInfEnumerateFunction::operator() (const UnsignedInteger index) const
 }
 
 
-UnsignedInteger NormInfEnumerateFunction::inverse(const Indices & indices) const
-{
-  const UnsignedInteger dimension = getDimension();
-  const UnsignedInteger size = indices.getSize();
-  if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension, here size=" << size << " and dimension=" << dimension;
-
-  // start from the beginning of the strata
-  UnsignedInteger strataIndex = 0;
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
-    strataIndex = std::max(strataIndex, indices[i]);
-  UnsignedInteger index = strataIndex > 0 ? std::pow(1.0 * strataIndex - 1, 1.0 * dimension) : 0;
-  while (operator()(index) != indices)
-  {
-    ++ index;
-  }
-  return index;
-}
-
-
 /* The cardinal of the given strata
  * = strataIndex^dimension-(strataIndex-1)^dimension
  */
 UnsignedInteger NormInfEnumerateFunction::getStrataCardinal(const UnsignedInteger strataIndex) const
 {
+  const UnsignedInteger dimension = getDimension();
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+    if (strataIndex > upperBound_[j])
+      throw NotYetImplementedException(HERE) << "in NormInfEnumerateFunction::getStrataCardinal";
+
   if (strataIndex > 0)
     return getStrataCumulatedCardinal(strataIndex) - getStrataCumulatedCardinal(strataIndex - 1);
   else
@@ -152,6 +130,10 @@ UnsignedInteger NormInfEnumerateFunction::getStrataCardinal(const UnsignedIntege
 UnsignedInteger NormInfEnumerateFunction::getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const
 {
   const UnsignedInteger dimension = getDimension();
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+    if (strataIndex > upperBound_[j])
+      throw NotYetImplementedException(HERE) << "in NormInfEnumerateFunction::getStrataCumulatedCardinal";
+
   return std::pow(1.0 * strataIndex, 1.0 * dimension);
 }
 

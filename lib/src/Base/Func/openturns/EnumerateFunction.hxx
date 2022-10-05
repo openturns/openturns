@@ -81,6 +81,10 @@ public:
   void setDimension(const UnsignedInteger dimension);
   UnsignedInteger getDimension() const;
 
+  /** Upper bound accessor */
+  void setUpperBound(const Indices & upperBound);
+  Indices getUpperBound() const;
+
 protected:
 
 private:
