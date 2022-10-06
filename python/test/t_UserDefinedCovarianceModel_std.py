@@ -1,12 +1,11 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
 # Default constructor
-myDefaultModel = UserDefinedCovarianceModel()
+myDefaultModel = ot.UserDefinedCovarianceModel()
 print("myDefaultModel = ", myDefaultModel)
 
 # Default dimension parameter to evaluate the model
@@ -14,23 +13,23 @@ dimension = 1
 inputDimension = 1
 
 # Amplitude values
-amplitude = Point(dimension)
+amplitude = ot.Point(dimension)
 # Scale values
-scale = Point(dimension)
+scale = ot.Point(dimension)
 # Spatial correlation
-spatialCorrelation = CorrelationMatrix(dimension)
+spatialCorrelation = ot.CorrelationMatrix(dimension)
 for index in range(dimension):
     # constant amplitude
     amplitude[index] = 2.0
     scale[index] = (index + 1.0) / dimension
 
 # Sample an ExponentialModel
-referenceModel = ExponentialModel(
+referenceModel = ot.ExponentialModel(
     scale, amplitude, spatialCorrelation)
 
 size = 20
-timeGrid = RegularGrid(0.0, 0.1, size)
-covariance = CovarianceMatrix(size)
+timeGrid = ot.RegularGrid(0.0, 0.1, size)
+covariance = ot.CovarianceMatrix(size)
 
 for i in range(timeGrid.getN()):
     t = timeGrid.getValue(i)
@@ -38,9 +37,9 @@ for i in range(timeGrid.getN()):
         s = timeGrid.getValue(j)
         covariance[i, j] = referenceModel.computeAsScalar([t], [s])
 # Create a UserDefinedCovarianceModel
-myModel = UserDefinedCovarianceModel(timeGrid, covariance)
+myModel = ot.UserDefinedCovarianceModel(timeGrid, covariance)
 print("myModel=", myModel)
-myModel2 = UserDefinedCovarianceModel(
+myModel2 = ot.UserDefinedCovarianceModel(
     timeGrid, referenceModel.discretize(timeGrid))
 print("myModel2=", myModel2)
 

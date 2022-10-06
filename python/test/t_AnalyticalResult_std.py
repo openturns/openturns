@@ -1,11 +1,9 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
+import math as m
 
-from math import *
-
-TESTPREAMBLE()
-
+ot.TESTPREAMBLE()
 
 def printPoint(point, digits):
     oss = "["
@@ -15,8 +13,8 @@ def printPoint(point, digits):
             sep = ""
         else:
             sep = ","
-        if fabs(point[i]) < eps:
-            oss += sep + '%.6f' % fabs(point[i])
+        if m.fabs(point[i]) < eps:
+            oss += sep + '%.6f' % m.fabs(point[i])
         else:
             oss += sep + '%.6f' % point[i]
         sep = ","
@@ -24,54 +22,51 @@ def printPoint(point, digits):
     return oss
 
 
-try:
-    # We create a numerical math function
-    myFunction = SymbolicFunction(
-        ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
-    dim = myFunction.getInputDimension()
-    # We create a normal distribution point of dimension 1
-    mean = Point(dim, 0.0)
-    mean[0] = 50.0  # E
-    mean[1] = 1.0  # F
-    mean[2] = 10.0  # L
-    mean[3] = 5.0  # I
-    sigma = Point(dim, 1.0)
-    R = IdentityMatrix(dim)
-    myDistribution = Normal(mean, sigma, R)
+# We create a numerical math function
+myFunction = ot.SymbolicFunction(
+    ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
-    # We create a 'usual' RandomVector from the Distribution
-    vect = RandomVector(myDistribution)
+dim = myFunction.getInputDimension()
+# We create a normal distribution point of dimension 1
+mean = ot.Point(dim, 0.0)
+mean[0] = 50.0  # E
+mean[1] = 1.0  # F
+mean[2] = 10.0  # L
+mean[3] = 5.0  # I
+sigma = ot.Point(dim, 1.0)
+R = ot.IdentityMatrix(dim)
+myDistribution = ot.Normal(mean, sigma, R)
 
-    # We create a composite random vector
-    output = CompositeRandomVector(myFunction, vect)
+# We create a 'usual' RandomVector from the Distribution
+vect = ot.RandomVector(myDistribution)
 
-    # We create an Event from this RandomVector
-    myEvent = ThresholdEvent(output, Less(), -3.0)
+# We create a composite random vector
+output = ot.CompositeRandomVector(myFunction, vect)
 
-    # We create an AnalyticalResult based on fictive results
-    result = AnalyticalResult(sigma, myEvent, False)
+# We create an Event from this RandomVector
+myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
 
-    print("result=", result)
+# We create an AnalyticalResult based on fictive results
+result = ot.AnalyticalResult(sigma, myEvent, False)
 
-    digits = 5
-    print("standard space design point=", printPoint(
-        result.getStandardSpaceDesignPoint(), digits))
-    print("physical space design point=", printPoint(
-        result.getPhysicalSpaceDesignPoint(), digits))
-    print("is standard point origin in failure space? ",
-          result.getIsStandardPointOriginInFailureSpace())
-    print("importance factors=", printPoint(
-        result.getImportanceFactors(), digits))
-    print("importance factors(classical)=", printPoint(
-        result.getImportanceFactors(AnalyticalResult.CLASSICAL), digits))
-    print("importance factors(physical) =", printPoint(
-        result.getImportanceFactors(AnalyticalResult.PHYSICAL), digits))
-    print("Hasofer reliability index=%.5f" %
-          result.getHasoferReliabilityIndex())
-    print("graph importance factors=", result.drawImportanceFactors())
-    print("graph sensitivity=",
-          result.drawHasoferReliabilityIndexSensitivity())
-except:
-    import sys
-    print("t_AnalyticalResult_std.py", sys.exc_info()[0], sys.exc_info()[1])
+print("result=", result)
+
+digits = 5
+print("standard space design point=", printPoint(
+    result.getStandardSpaceDesignPoint(), digits))
+print("physical space design point=", printPoint(
+    result.getPhysicalSpaceDesignPoint(), digits))
+print("is standard point origin in failure space? ",
+      result.getIsStandardPointOriginInFailureSpace())
+print("importance factors=", printPoint(
+    result.getImportanceFactors(), digits))
+print("importance factors(classical)=", printPoint(
+    result.getImportanceFactors(ot.AnalyticalResult.CLASSICAL), digits))
+print("importance factors(physical) =", printPoint(
+    result.getImportanceFactors(ot.AnalyticalResult.PHYSICAL), digits))
+print("Hasofer reliability index=%.5f" %
+      result.getHasoferReliabilityIndex())
+print("graph importance factors=", result.drawImportanceFactors())
+print("graph sensitivity=",
+      result.drawHasoferReliabilityIndexSensitivity())

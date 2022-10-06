@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
 # Default constructor
-desc1 = Description()
+desc1 = ot.Description()
 ref_desc1 = desc1
 
 # Check method add()
@@ -22,7 +22,7 @@ print("desc1[0] = ", val1)
 print("desc1[1] = ", val2)
 
 # Constructor with size */
-desc2 = Description(2)
+desc2 = ot.Description(2)
 ref_desc2 = desc2
 
 # Check operator[] methods
@@ -47,11 +47,11 @@ print("desc3[1] = ", val2)
 print("desc1 = ", repr(ref_desc1))
 
 # Construction from sequence
-desc4 = Description(("A", "B", "C"))
+desc4 = ot.Description(("A", "B", "C"))
 print("desc4 = ", repr(desc4))
 
 l = ["U", "I", "O", "P"]
-desc5 = Description(l)
+desc5 = ot.Description(l)
 print("desc5 = ", repr(desc5))
 
 sz = len(desc5)
@@ -61,7 +61,7 @@ for x in desc5:
     i += 1
 
 # slicing
-desc6 = Description(('S1', 'S2', 'S3', 'S4', 'S5'))
+desc6 = ot.Description(('S1', 'S2', 'S3', 'S4', 'S5'))
 print('desc6[2] = ', desc6[2])
 print('desc6[1:3] = ', desc6[1:3])
 print('desc6[:] = ', desc6[:])
@@ -69,19 +69,19 @@ desc6[1:3] = ('88', '99')
 print('desc6 = ', desc6)
 
 # sequence indexing
-desc = Description.BuildDefault(10, "H")
+desc = ot.Description.BuildDefault(10, "H")
 print("sequence indexing read:", desc[(4, 2, 2, -1)])
 desc[(4, 2, 2, -1)] = ['T']*4
 print("sequence indexing write:", desc)
 
 # unicode support
-desc7 = Description(['forunicode', 'n2', 'n3'])
+desc7 = ot.Description(['forunicode', 'n2', 'n3'])
 desc7[1] = 'r2'
 print('desc7 = ', desc7)
 
 # comparison
-a = Description(['n2', 'n3'])
+a = ot.Description(['n2', 'n3'])
 print(a == a)
-print(a == Description(['n2', 'NN']))
+print(a == ot.Description(['n2', 'NN']))
 print(a != a)
-print(a != Description(['n2', 'NN']))
+print(a != ot.Description(['n2', 'NN']))

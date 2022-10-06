@@ -1,9 +1,8 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
 # First constructor: distribution of the maximum of the components
 # of a random vector given its joint distribution
@@ -11,9 +10,9 @@ RandomGenerator.SetSeed(0)
 # random variables given their distributions
 # Third constructor: distribution of the maximum of independent
 # identically distributed random variables
-coll = [MaximumDistribution(Normal(5)),
-        MaximumDistribution([Normal()]*5),
-        MaximumDistribution(Normal(), 5)]
+coll = [ot.MaximumDistribution(ot.Normal(5)),
+        ot.MaximumDistribution([ot.Normal()]*5),
+        ot.MaximumDistribution(ot.Normal(), 5)]
 for distribution in coll:
     print("Distribution ", distribution)
 
@@ -33,11 +32,11 @@ for distribution in coll:
     print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
     print("mean=", oneSample.computeMean())
     print("covariance=", oneSample.computeCovariance())
-    RandomGenerator.SetSeed(0)
+    ot.RandomGenerator.SetSeed(0)
     size = 100
     for i in range(2):
         msg = ''
-        if FittingTest.Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure():
+        if ot.FittingTest.Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure():
             msg = "accepted"
         else:
             msg = "rejected"
@@ -112,6 +111,6 @@ for distribution in coll:
     print("kendall=", kendall)
     print("Standard representative=", distribution.getStandardRepresentative())
 # Issue #1643
-coll = [Uniform(), Normal()]
-distribution = MaximumDistribution(coll)
+coll = [ot.Uniform(), ot.Normal()]
+distribution = ot.MaximumDistribution(coll)
 print("%.5g" % distribution.computePDF([1.1]))

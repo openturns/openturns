@@ -1,22 +1,21 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
 
-distribution = Arcsine(1., 2.5)
+distribution = ot.Arcsine(1., 2.5)
 size = 10000
 sample = distribution.getSample(size)
-factory = ArcsineFactory()
+factory = ot.ArcsineFactory()
 estimatedDistribution = factory.build(sample)
 print("distribution=", repr(distribution))
 print("Estimated distribution=", repr(estimatedDistribution))
 
 # non-regression for #572
-mydist = ArcsineFactory().build(distribution.getSample(10))
-myde = MonteCarloExperiment(mydist, 10)
+mydist = ot.ArcsineFactory().build(distribution.getSample(10))
+myde = ot.MonteCarloExperiment(mydist, 10)
 estimatedDistribution = factory.build()
 print("Default distribution=", estimatedDistribution)
 estimatedDistribution = factory.build(

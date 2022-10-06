@@ -3,7 +3,6 @@
 import openturns as ot
 from openturns.testing import assert_almost_equal
 from openturns.usecases import cantilever_beam as cantilever_beam
-from math import pi
 
 
 ot.TESTPREAMBLE()

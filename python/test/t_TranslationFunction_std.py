@@ -1,14 +1,14 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
 inputDimension = 3
 
-myFunction = TranslationFunction([2.0, 3.0, -4.0])
+myFunction = ot.TranslationFunction([2.0, 3.0, -4.0])
 myFunction.setName("translationFunction")
-inPoint = Point(inputDimension)
+inPoint = ot.Point(inputDimension)
 inPoint[0] = 7.0
 inPoint[1] = 8.0
 inPoint[2] = 9.0

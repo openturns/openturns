@@ -1,24 +1,16 @@
 #! /usr/bin/env python
 
-from openturns import *
-from math import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
-try:
+dim = 2
+transformation = ot.InverseNatafIndependentCopulaEvaluation(dim)
+print("transformation=", repr(transformation))
+point = ot.Point(dim, 0.75)
+print("transformation(", point, ")=", repr(transformation(point)))
+print("transformation parameters gradient=", repr(
+    transformation.parameterGradient(point)))
+print("input dimension=", transformation.getInputDimension())
+print("output dimension=", transformation.getOutputDimension())
 
-    dim = 2
-    transformation = InverseNatafIndependentCopulaEvaluation(dim)
-    print("transformation=", repr(transformation))
-    point = Point(dim, 0.75)
-    print("transformation(", point, ")=", repr(transformation(point)))
-    print("transformation parameters gradient=", repr(
-        transformation.parameterGradient(point)))
-    print("input dimension=", transformation.getInputDimension())
-    print("output dimension=", transformation.getOutputDimension())
-
-except:
-    import sys
-    print("t_InverseNatafIndependentCopulaEvaluation_std.py",
-          sys.exc_info()[0], sys.exc_info()[1])

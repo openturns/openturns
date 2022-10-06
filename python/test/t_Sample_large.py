@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
 # We create an empty Sample
-sample = Sample(0, 2)
+sample = ot.Sample(0, 2)
 sample.setName("EmptySample")
 print("sample=", repr(sample))
 
@@ -20,12 +20,12 @@ except:
     pass
 
 # We create an small Sample
-sample = Sample(1, 2)
+sample = ot.Sample(1, 2)
 sample.setName("SmallSample")
 print("sample=", repr(sample))
 
 # We access the element of the sample
-p = Point(sample[0])
+p = ot.Point(sample[0])
 print("p=", repr(p))
 try:
     # We try to access past the last element of the point
@@ -37,7 +37,7 @@ except:
     pass
 
 # We create a big Sample
-sample = Sample(1000000, 2)
+sample = ot.Sample(1000000, 2)
 sample.setName("BigSample")
 
 # We populate the sample

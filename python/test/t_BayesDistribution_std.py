@@ -1,19 +1,19 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-conditionedDistribution = Normal()
-conditioningDistribution = ComposedDistribution([Uniform(0.0, 1.0),
-                                                 Uniform(1.0, 2.0)])
-distribution = BayesDistribution(
+conditionedDistribution = ot.Normal()
+conditioningDistribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0),
+                                                    ot.Uniform(1.0, 2.0)])
+distribution = ot.BayesDistribution(
     conditionedDistribution, conditioningDistribution)
 dim = distribution.getDimension()
 print("Distribution ", distribution)
 print("Parameters ", distribution.getParametersCollection())
 print("Mean ", distribution.getMean())
-print("Covariance ", SquareMatrix(distribution.getCovariance()).clean(1.0e-6))
+print("Covariance ", ot.SquareMatrix(distribution.getCovariance()).clean(1.0e-6))
 # Is this distribution an elliptical distribution?
 print("Elliptical distribution= ", distribution.isElliptical())
 

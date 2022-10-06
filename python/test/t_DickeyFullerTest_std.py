@@ -2,6 +2,8 @@
 
 import openturns as ot
 
+ot.TESTPREAMBLE()
+
 size = 100
 
 # ARMA parameters

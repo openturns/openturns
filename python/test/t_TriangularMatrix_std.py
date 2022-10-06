@@ -1,129 +1,124 @@
 #! /usr/bin/env python
 
-from openturns import *
-from math import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-try:
-    # DEFAULT CONSTRUCTOR AND STRING CONVERTER
-    print("test : default constructor and string converter")
 
-    # Default constructor
-    triangularMatrix0 = TriangularMatrix()
+# DEFAULT CONSTRUCTOR AND STRING CONVERTER
+print("test : default constructor and string converter")
 
-    # String converter
-    print("triangularMatrix0 = ", repr(triangularMatrix0))
+# Default constructor
+triangularMatrix0 = ot.TriangularMatrix()
 
-    # CONSTRUCTOR WITH SIZE, OPERATOR() AND STRING CONVERTER
-    print("test : constructor with size, operator() and string converter")
+# String converter
+print("triangularMatrix0 = ", repr(triangularMatrix0))
 
-    # Constructor with size
-    triangularMatrix1 = TriangularMatrix(2)
+# CONSTRUCTOR WITH SIZE, OPERATOR() AND STRING CONVERTER
+print("test : constructor with size, operator() and string converter")
 
-    # Check operator() methods
-    triangularMatrix1[0, 0] = 1.
-    triangularMatrix1[1, 0] = 3.
-    triangularMatrix1[1, 1] = 4.
+# Constructor with size
+triangularMatrix1 = ot.TriangularMatrix(2)
 
-    # String converter
-    print("triangularMatrix1 = ", repr(triangularMatrix1))
+# Check operator() methods
+triangularMatrix1[0, 0] = 1.
+triangularMatrix1[1, 0] = 3.
+triangularMatrix1[1, 1] = 4.
 
-    # COPY CONSTRUCTOR AND STRING CONVERTER
-    print("test : copy constructor and string converter")
+# String converter
+print("triangularMatrix1 = ", repr(triangularMatrix1))
 
-    # Copy constructor
-    triangularMatrix2 = TriangularMatrix(triangularMatrix1)
+# COPY CONSTRUCTOR AND STRING CONVERTER
+print("test : copy constructor and string converter")
 
-    # String converter
-    print("triangularMatrix2 = ", repr(triangularMatrix2))
+# Copy constructor
+triangularMatrix2 = ot.TriangularMatrix(triangularMatrix1)
 
-    # GET DIMENSIONS METHODS
-    print("test : get dimensions methods")
+# String converter
+print("triangularMatrix2 = ", repr(triangularMatrix2))
 
-    # Get dimension methods
-    print("triangularMatrix1's nbRows = ", triangularMatrix1.getNbRows())
-    print("triangularMatrix1's nbColumns = ", triangularMatrix1.getNbColumns())
-    print("isLower? ", triangularMatrix1.isLowerTriangular())
+# GET DIMENSIONS METHODS
+print("test : get dimensions methods")
 
-    # TRANSPOSE AND CONJUGATE METHOD
-    print("test  : transpose and conjugate methods")
+# Get dimension methods
+print("triangularMatrix1's nbRows = ", triangularMatrix1.getNbRows())
+print("triangularMatrix1's nbColumns = ", triangularMatrix1.getNbColumns())
+print("isLower? ", triangularMatrix1.isLowerTriangular())
 
-    print("triangularMatrix1 transpose = ",
-          repr(triangularMatrix1.transpose()))
-    print("is transpose Lower? ",
-          triangularMatrix1.transpose().isLowerTriangular())
+# TRANSPOSE AND CONJUGATE METHOD
+print("test  : transpose and conjugate methods")
 
-    triangularMatrix4 = triangularMatrix1.transpose()
+print("triangularMatrix1 transpose = ",
+      repr(triangularMatrix1.transpose()))
+print("is transpose Lower? ",
+      triangularMatrix1.transpose().isLowerTriangular())
 
-    print("triangularMatrix1 conjugate and transpose = ",
-          repr(triangularMatrix4))
-    print("is conjugate Lower? ", triangularMatrix4.isLowerTriangular())
+triangularMatrix4 = triangularMatrix1.transpose()
 
-    #  ADDITION METHOD
-    print("test : addition method")
+print("triangularMatrix1 conjugate and transpose = ",
+      repr(triangularMatrix4))
+print("is conjugate Lower? ", triangularMatrix4.isLowerTriangular())
 
-    # Check addition method : we check the operator and the symmetry of the
-    # operator, thus testing the comparison operator
-    sum1 = triangularMatrix1 + triangularMatrix4
-    sum2 = triangularMatrix4 + triangularMatrix1
-    print("sum1 = ", repr(sum1))
-    print("sum2 = ", repr(sum2))
-    print("sum1 equals sum2 = ", sum1 == sum2)
+#  ADDITION METHOD
+print("test : addition method")
 
-    # SUBTRACTION METHOD
-    print("test : subtraction method")
+# Check addition method : we check the operator and the symmetry of the
+# operator, thus testing the comparison operator
+sum1 = triangularMatrix1 + triangularMatrix4
+sum2 = triangularMatrix4 + triangularMatrix1
+print("sum1 = ", repr(sum1))
+print("sum2 = ", repr(sum2))
+print("sum1 equals sum2 = ", sum1 == sum2)
 
-    # Check subtraction method
-    diff = triangularMatrix1 - triangularMatrix4
-    print("diff = ", repr(diff))
+# SUBTRACTION METHOD
+print("test : subtraction method")
 
-    #  MATRIX MULTIPLICATION METHOD
-    print("test : matrix multiplication method")
+# Check subtraction method
+diff = triangularMatrix1 - triangularMatrix4
+print("diff = ", repr(diff))
 
-    # Check multiplication method
-    prod = triangularMatrix1 * triangularMatrix4
-    print("prod = ", repr(prod))
+#  MATRIX MULTIPLICATION METHOD
+print("test : matrix multiplication method")
 
-    # MULTIPLICATION WITH A NUMERICAL POINT METHOD
-    print("test : multiplication with a numerical point method")
+# Check multiplication method
+prod = triangularMatrix1 * triangularMatrix4
+print("prod = ", repr(prod))
 
-    # Create the numerical point
-    pt = Point()
-    pt.add(1.)
-    pt.add(2.)
-    print("pt = ", repr(pt))
+# MULTIPLICATION WITH A NUMERICAL POINT METHOD
+print("test : multiplication with a numerical point method")
 
-    # Check the product method
-    ptResult = triangularMatrix1 * pt
-    print("ptResult = ", repr(ptResult))
+# Create the numerical point
+pt = ot.Point()
+pt.add(1.)
+pt.add(2.)
+print("pt = ", repr(pt))
 
-    # MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS
-    print("test : multiplication and division by a numerical scalar methods")
+# Check the product method
+ptResult = triangularMatrix1 * pt
+print("ptResult = ", repr(ptResult))
 
-    # Check the multiplication method
-    s = 3.
-    scalprod = triangularMatrix1 * s
+# MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS
+print("test : multiplication and division by a numerical scalar methods")
 
-    print("scalprod = ", repr(scalprod))
+# Check the multiplication method
+s = 3.
+scalprod = triangularMatrix1 * s
 
-    # Check the division method
-    scaldiv1 = triangularMatrix1 / s
-    scaldiv2 = triangularMatrix1 / s
-    print("scaldiv1 = ", repr(scaldiv1))
-    print("scaldiv2 = ", repr(scaldiv2))
-    print("scaldiv1 equals scaldiv2 = ", (scaldiv1 == scaldiv2))
+print("scalprod = ", repr(scalprod))
 
-    # ISEMPTY METHOD
-    print("test : isEmpty method")
+# Check the division method
+scaldiv1 = triangularMatrix1 / s
+scaldiv2 = triangularMatrix1 / s
+print("scaldiv1 = ", repr(scaldiv1))
+print("scaldiv2 = ", repr(scaldiv2))
+print("scaldiv1 equals scaldiv2 = ", (scaldiv1 == scaldiv2))
 
-    # Check method isEmpty
-    triangularMatrix5 = TriangularMatrix()
-    triangularMatrix6 = TriangularMatrix()
-    print("triangularMatrix0 is empty = ", triangularMatrix0.isEmpty())
-    print("triangularMatrix1 is empty = ", triangularMatrix1.isEmpty())
-    print("triangularMatrix5 is empty = ", triangularMatrix5.isEmpty())
+# ISEMPTY METHOD
+print("test : isEmpty method")
 
-except:
-    import sys
-    print("t_TriangularMatrix_std.py", sys.exc_info()[0], sys.exc_info()[1])
+# Check method isEmpty
+triangularMatrix5 = ot.TriangularMatrix()
+triangularMatrix6 = ot.TriangularMatrix()
+print("triangularMatrix0 is empty = ", triangularMatrix0.isEmpty())
+print("triangularMatrix1 is empty = ", triangularMatrix1.isEmpty())
+print("triangularMatrix5 is empty = ", triangularMatrix5.isEmpty())

@@ -1,15 +1,14 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
 dimension = 5
 indices = [2, 0, 1]
-fullDistribution = ComposedDistribution([Normal(), Uniform(), Exponential(
-), WeibullMin()], ComposedCopula([GumbelCopula(), ClaytonCopula()]))
-distribution = MarginalDistribution(fullDistribution, indices)
+fullDistribution = ot.ComposedDistribution([ot.Normal(), ot.Uniform(), ot.Exponential(
+), ot.WeibullMin()], ot.ComposedCopula([ot.GumbelCopula(), ot.ClaytonCopula()]))
+distribution = ot.MarginalDistribution(fullDistribution, indices)
 
 print('Distribution ', repr(distribution))
 print('Distribution ', distribution)
@@ -33,7 +32,7 @@ print('covariance=', oneSample.computeCovariance())
 if (distribution.getDimension() == 1):
     size = 100
     for i in range(2):
-        print('Kolmogorov test for the generator, sample size=', size, ' is ', FittingTest.Kolmogorov(
+        print('Kolmogorov test for the generator, sample size=', size, ' is ', ot.FittingTest.Kolmogorov(
             distribution.getSample(size), distribution).getBinaryQualityMeasure())
         size *= 10
 
@@ -62,17 +61,17 @@ print('quantile (tail)=', quantileTail)
 CDFTail = distribution.computeComplementaryCDF(quantileTail)
 print('cdf (tail)=', CDFTail)
 # Get 95% survival function
-inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
+inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
 print("Survival(inverseSurvival)=%.6f" %
       distribution.computeSurvivalFunction(inverseSurvival))
 print("entropy=%.6f" % distribution.computeEntropy())
 # Confidence regions
-threshold = Point()
+threshold = ot.Point()
 print("Minimum volume interval=",
       distribution.computeMinimumVolumeInterval(0.95, threshold))
 print("threshold=", threshold)
-beta = Point()
+beta = ot.Point()
 levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
 print("Minimum volume level set=", levelSet)
 print("beta=", beta)

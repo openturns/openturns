@@ -2,6 +2,8 @@
 
 import openturns as ot
 
+ot.TESTPREAMBLE()
+
 basisSize = 3
 sampleSize = 3
 

@@ -2,6 +2,8 @@
 
 import openturns as ot
 
+ot.TESTPREAMBLE()
+
 # Database construction
 dimension = 2
 

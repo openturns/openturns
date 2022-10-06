@@ -1,25 +1,25 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 import sys
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-mesh = RegularGrid(0.0, 0.1, 11)
+mesh = ot.RegularGrid(0.0, 0.1, 11)
 
 
-class FUNC(OpenTURNSPythonPointToFieldFunction):
+class FUNC(ot.OpenTURNSPythonPointToFieldFunction):
 
     def __init__(self):
         super(FUNC, self).__init__(2, mesh, 2)
         self.setInputDescription(['R', 'S'])
         self.setOutputDescription(['T', 'U'])
-        self.mesh_ = RegularGrid(0.0, 0.1, 11)
+        self.mesh_ = ot.RegularGrid(0.0, 0.1, 11)
 
     def _exec(self, X):
         size = self.mesh_.getVerticesNumber()
-        values = [Point(X) * i for i in range(size)]
-        Y = Field(self.mesh_, values)
+        values = [ot.Point(X) * i for i in range(size)]
+        Y = ot.Field(self.mesh_, values)
         return Y
 
 
@@ -33,15 +33,15 @@ print((F(((10.0, 5.0), (6.0, 7.0)))))
 
 
 # Instance creation
-myFunc = PointToFieldFunction(F)
+myFunc = ot.PointToFieldFunction(F)
 
 # Copy constructor
-newFunc = PointToFieldFunction(myFunc)
+newFunc = ot.PointToFieldFunction(myFunc)
 
 print(('myFunc input dimension= ' + str(myFunc.getInputDimension())))
 print(('myFunc output dimension= ' + str(myFunc.getOutputDimension())))
 
-inPt = Point(2, 2.0)
+inPt = ot.Point(2, 2.0)
 print((repr(inPt)))
 
 outPt = myFunc(inPt)
@@ -50,9 +50,9 @@ print((repr(outPt)))
 outPt = myFunc((10.0, 11.0))
 print((repr(outPt)))
 
-inSample = Sample(10, 2)
+inSample = ot.Sample(10, 2)
 for i in range(10):
-    inSample[i] = Point((i, i))
+    inSample[i] = ot.Point((i, i))
 print((repr(inSample)))
 
 outSample = myFunc(inSample)

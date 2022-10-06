@@ -1,32 +1,24 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
-try:
+# Hann filter
+myHanningFilter = ot.Hann()
+print("myHanningFilter = ", myHanningFilter)
 
-    # Hann filter
-    myHanningFilter = Hann()
-    print("myHanningFilter = ", myHanningFilter)
+# Hamming filter
+myHammingFilter = ot.Hamming()
+print("myHammingFilter = ",  myHammingFilter)
 
-    # Hamming filter
-    myHammingFilter = Hamming()
-    print("myHammingFilter = ",  myHammingFilter)
+# Evaluation of values between t=0 and t=1 using a step = 0.01
+steps = 100
+tMin = 0.0
+tMax = 1.0
+tStep = (tMax - tMin) / steps
 
-    # Evaluation of values between t=0 and t=1 using a step = 0.01
-    steps = 100
-    tMin = 0.0
-    tMax = 1.0
-    tStep = (tMax - tMin) / steps
-
-    for i in range(steps + 1):
-        t = tMin + i * tStep
-        print('t = %g Hann = %g Hamming = %g' %
-              (t, myHanningFilter(t), myHammingFilter(t)))
-
-
-except:
-    import sys
-    print("t_FilteringWindows_std.py", sys.exc_info()[0], sys.exc_info()[1])
+for i in range(steps + 1):
+    t = tMin + i * tStep
+    print('t = %g Hann = %g Hamming = %g' %
+          (t, myHanningFilter(t), myHammingFilter(t)))

@@ -1,24 +1,20 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-try:
-    # Create an intance
-    myFunc = FieldToPointFunction()
+# Create an intance
+myFunc = ot.FieldToPointFunction()
 
-    print("myFunc=", myFunc)
-    # Get the input and output description
-    print("myFunc input description=", myFunc.getInputDescription())
-    print("myFunc output description=", myFunc.getOutputDescription())
-    # Get the spatial, input and output dimension
-    print("myFunc input dimension=", myFunc.getInputMesh().getDimension())
-    print("myFunc input dimension=", myFunc.getInputDimension())
-    print("myFunc output dimension=", myFunc.getOutputDimension())
-    # Get the number of calls
-    print("called ", myFunc.getCallsNumber(), " times")
+print("myFunc=", myFunc)
+# Get the input and output description
+print("myFunc input description=", myFunc.getInputDescription())
+print("myFunc output description=", myFunc.getOutputDescription())
+# Get the spatial, input and output dimension
+print("myFunc input dimension=", myFunc.getInputMesh().getDimension())
+print("myFunc input dimension=", myFunc.getInputDimension())
+print("myFunc output dimension=", myFunc.getOutputDimension())
+# Get the number of calls
+print("called ", myFunc.getCallsNumber(), " times")
 
-except:
-    import sys
-    print("t_FieldToPointFunction.py", sys.exc_info()[0], sys.exc_info()[1])

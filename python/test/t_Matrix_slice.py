@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-from openturns import *
-
+import openturns as ot
 
 # We create an empty Matrix
 N = 10
 d = 5
 
-matrices = [Matrix(N, d), ComplexMatrix(N, d)]
+matrices = [ot.Matrix(N, d), ot.ComplexMatrix(N, d)]
 for matrix in matrices:
 
     # We populate the empty sample with numerous data
