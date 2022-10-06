@@ -271,6 +271,25 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::DistFunc::logdNormal
+"log-PDF of an unit-variance centered Normal distribution.
+
+Parameters
+----------
+x : float
+    Location
+
+Returns
+-------
+logPdf : float
+
+Examples
+--------
+>>> import openturns as ot
+>>> pdf = ot.DistFunc.logdNormal(3.0)"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::DistFunc::pNormal
 "CDF of an unit-variance centered Normal distribution.
 
@@ -289,6 +308,27 @@ Examples
 --------
 >>> import openturns as ot
 >>> cdf = ot.DistFunc.pNormal(0.9)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::logpNormal
+"log-CDF of an unit-variance centered Normal distribution.
+
+Parameters
+----------
+x : float
+    Location
+tail : bool, default=False
+    Tail flag
+
+Returns
+-------
+logCdf : float
+
+Examples
+--------
+>>> import openturns as ot
+>>> logCdf = ot.DistFunc.logpNormal(0.9)"
 
 // ---------------------------------------------------------------------
 

@@ -241,6 +241,8 @@ OT_API Scalar pNormal3D(const Scalar x1,
                         const Scalar rho13,
                         const Scalar rho23,
                         const Bool tail = false);
+OT_API Scalar logpNormal(const Scalar x,
+                         const Bool tail = false);
 OT_API Scalar qNormal(const Scalar p,
                       const Bool tail = false);
 OT_API Point qNormal(const Point & p,
@@ -250,6 +252,7 @@ OT_API Point rNormal(const UnsignedInteger size);
 
 OT_API Scalar dNormal(const Scalar x);
 OT_API Point dNormal(const Point &x);
+OT_API Scalar logdNormal(const Scalar x);
 
 // For Poisson distribution
 OT_API Scalar logdPoisson(const Scalar lambda,
