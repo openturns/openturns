@@ -29,6 +29,9 @@ matplotlib.sphinxext.plot_directive
     code blocks featured in the pages of this documentation, especially in the
     :ref:`examples section <examples>`.
 
+sphinx_gallery.gen_gallery
+    The `gen_gallery <https://sphinx-gallery.github.io/stable/gen_modules/sphinx_gallery.gen_gallery.html>`_
+    extension from Sphinx-Gallery is used to generate pages from the examples directory.
 
 .. _contribute_docstrings:
 
@@ -125,8 +128,8 @@ SWIG header file::
     OT_Distribution_doc
     ...
 
-Integration to the building suite
----------------------------------
+Integration to the build system
+-------------------------------
 
 The separate docstring SWIG header files are included in the SWIG header files
 of the `openturns repos <https://github.com/openturns>`_, so this does
@@ -146,3 +149,46 @@ SPHINX_FLAGS
 All these targets depend on the rst files located in the sources 
 (:file:`$OT_SOURCE_DIR/python/doc/*.rst`).
 
+Example gallery
+---------------
+
+Example pages are generated from Python scripts in the examples directory
+(:file:`$OT_SOURCE_DIR/python/doc/examples/*.py`).
+
+Each page allows to display notebook-like code or text cells.
+Each cell is delimited by a specific marker and the text cells are written in
+rst format, for example::
+
+    # %%
+    # First cell (text) in *rst* format inside comments
+    # Some formula :math:`\lambda = 4`
+
+    # %%
+    import openturns as ot
+    print("Second cell (code)")
+    dist = ot.Normal()
+
+Output cells are rendered at compilation time, so the script must
+not be too long to run.
+
+Figures are automatically generated from the matplotlib handles,
+for example using the openturns.viewer module::
+
+    # %%
+    from openturns.viewer import View
+    graph = dist.drawPDF()
+    view = View(graph)
+
+Note that sphinx runs the examples in the same Python process so you might want
+to reset the random generator at the beginning of your example for consistent
+results::
+
+    # %%
+    import openturns as ot
+    ot.RandomGenerator.SetSeed(0)
+
+The special variable `sphinx_gallery_thumbnail_number <https://sphinx-gallery.github.io/stable/configuration.html#choosing-thumbnail>`_
+can be used to determine which figure is used as thumbnail in the examples gallery::
+
+    # %%
+    # sphinx_gallery_thumbnail_number = 3

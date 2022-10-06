@@ -73,7 +73,7 @@ print(result.getRelativeErrors())
 # %%
 # Quick summary of sensitivity analysis
 sensitivityAnalysis = ot.FunctionalChaosSobolIndices(result)
-print(sensitivityAnalysis.summary())
+print(sensitivityAnalysis)
 
 # %%
 # draw Sobol' indices

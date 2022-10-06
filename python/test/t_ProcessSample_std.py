@@ -127,3 +127,10 @@ print('quantile at level', q, '=',
 print('empirical CDF at', x, '=', processSample.computeEmpiricalCDF(x).getValues())
 print('complementary empirical CDF at', x, '=',
       processSample.computeEmpiricalCDF(x, True).getValues())
+
+n = mesh.getVerticesNumber()
+try:
+    s = processSample.getSampleAtVertex(n)
+    assert False, "should not go there"
+except:
+    pass

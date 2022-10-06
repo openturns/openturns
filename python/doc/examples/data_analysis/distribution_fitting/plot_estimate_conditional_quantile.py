@@ -4,12 +4,12 @@ Estimate a conditional quantile
 """
 # sphinx_gallery_thumbnail_number = 8
 # %%
-# From a multivariate data sample we estimate its distribution with kernel smoothing. Here we present a bivariate distribution  X= (X1, X2). We use the `computeConditionalQuantile` method to estimate the 90% quantile :math:`Q_1` of the conditional variable :math:`X1|X2` :
+# From a multivariate data sample, we estimate a distribution with kernel smoothing. Here we present a bivariate distribution  :math:`X= (X_1, X_2)`. We use the `computeConditionalQuantile` method to estimate the 90% quantile :math:`Q_1` of the conditional variable :math:`X_2|X_1` :
 #
 # .. math::
-#    Q_1 : x_2 \mapsto q_{0.9}(X_1|X_2=x_2)
+#    Q_2 : x_1 \mapsto q_{0.9}(X_2|X_1=x_1)
 #
-# We then draw the curve :math:`Q_1 : x_2 \mapsto Q_1(x_2)`. We first start with independent normals then we consider dependent marginals with a Clayton copula.
+# We then draw the curve :math:`Q_2 : x_1 \mapsto Q_2(x_1)`. We first start with independent normals then we consider dependent marginals with a Clayton copula.
 #
 
 # %%
@@ -76,7 +76,7 @@ view = viewer.View(graph)
 
 
 # %%
-# We can compute the conditional quantile of :math:`X_1 | X_2` with the `computeConditionalQuantile` method and draw it after.
+# We can compute the conditional quantile of :math:`X_2 | X_1` with the `computeConditionalQuantile` method and draw it after.
 #
 
 # %%
@@ -99,17 +99,17 @@ yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 # %%
 cxy_app = ot.Curve(x, yapp)
 cxy_ex = ot.Curve(x, yex)
-graph = ot.Graph('90% quantile of $X_1 | X_2=x_2$',
-                 '$x_2$', '$Q_1(x_2)$', True, '')
+graph = ot.Graph('90% quantile of $X_2 | X_1=x_1$',
+                 '$x_1$', '$Q_2(x_1)$', True, '')
 graph.add(cxy_app)
 graph.add(cxy_ex)
-graph.setLegends(["$Q_1$ kernel smoothing", "$Q_1$ exact"])
+graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
 graph.setLegendPosition('bottomright')
 graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 
 # %%
-# In this case the Q_1 quantile is constant because of the independance of the marginals.
+# In this case the :math:`Q_2` quantile is constant because of the independance of the marginals.
 #
 
 # %%
@@ -164,7 +164,7 @@ view = viewer.View(graph)
 
 
 # %%
-# We can compute the conditional quantile of :math:`X_1 | X_2` with the `computeConditionalQuantile` method and draw it after.
+# We can compute the conditional quantile of :math:`X_2 | X_1=x1` with the `computeConditionalQuantile` method and draw it after.
 #
 
 # %%
@@ -187,11 +187,11 @@ yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 # %%
 cxy_app = ot.Curve(x, yapp)
 cxy_ex = ot.Curve(x, yex)
-graph = ot.Graph('90% quantile of $X_1 | X_2=x_2$',
-                 '$x_2$', '$Q_1(x_2)$', True, '')
+graph = ot.Graph('90% quantile of $X_2 | X_1=x_1$',
+                 '$x_1$', '$Q_2(x_1)$', True, '')
 graph.add(cxy_app)
 graph.add(cxy_ex)
-graph.setLegends(["$Q_1$ kernel smoothing", "$Q_1$ exact"])
+graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
 graph.setLegendPosition('bottomright')
 graph.setColors(["red", "blue"])
 view = viewer.View(graph)

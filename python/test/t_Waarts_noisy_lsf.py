@@ -29,7 +29,7 @@ try:
 
     EtatLimite = Function(inputFunction, outputFunction, formulas)
 
-    d * dimim = EtatLimite.getInputDimension()
+    dim = EtatLimite.getInputDimension()
     print(dim)
 
     #

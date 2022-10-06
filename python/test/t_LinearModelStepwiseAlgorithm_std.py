@@ -113,3 +113,21 @@ for k in [penalty_AIC, penalty_BIC]:
             print(" Both " + IC)
         print("{0:~^60s}".format(""))
         print(algo_result)
+
+dist = ot.ComposedDistribution([ot.Uniform(0., 10.)]*2)
+f = ot.SymbolicFunction(['x1', 'x2'], ["0.5*x1 + x2+ 7"])
+X = ot.LHSExperiment(dist, 10).generate()
+X = ot.MonteCarloExperiment(dist, 10).generate()
+Y = f(X)
+i_min = [0]
+coll = []
+coll.append(ot.SymbolicFunction(['x1', 'x2'], ["x1"]))
+coll.append(ot.SymbolicFunction(['x1', 'x2'], ["0"]))
+coll.append(ot.SymbolicFunction(['x1', 'x2'], ["x2"]))
+basis = ot.Basis(coll)
+algo = ot.LinearModelStepwiseAlgorithm(X, basis, Y, i_min)
+try:
+    algo.run()
+    assert False, "should not go here"
+except:
+    pass

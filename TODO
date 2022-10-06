@@ -12,3 +12,4 @@ Remove IterativeMoments::getCenteredMoments
 Drop deprecated GeneralLinearModelAlgorithm | KrigingAlgorithm ctors for 1.21
 Drop deprecated Drawable.draw|clean & Graph.draw|clean|getRCommand|makeR*|GetExtensionMap methods
 Drop deprecated GaussianProcess.GIBBS
+Remove FunctionalChaosSobolIndices::summary

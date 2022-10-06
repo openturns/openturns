@@ -5,7 +5,9 @@ Optimization using bonmin
 # %%
 
 # %%
-# In this example we are going to explore mixed-integer non linear problems optimization using OpenTURNS' `bonmin <https://www.coin-or.org/Bonmin/index.html>`_ interface.
+# In this example we are going to explore mixed-integer non linear problems
+# optimization using the `bonmin <https://www.coin-or.org/Bonmin/index.html>`_
+# interface.
 # %%
 import openturns as ot
 ot.Log.Show(ot.Log.NONE)
@@ -16,13 +18,15 @@ for algo in ot.Bonmin.GetAlgorithmNames():
     print(algo)
 
 # %%
-# Details and references on bonmin algorithms are available `here <https://projects.coin-or.org/Bonmin>`_ .
+# Details and references on bonmin algorithms are available
+# `here <https://projects.coin-or.org/Bonmin>`_ .
 
 # %%
 # Setting up and solving a simple problem
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# The following example will demonstrate the use of bonmin "BB" algorithm to solve the following problem:
+# The following example will demonstrate the use of bonmin "BB" algorithm to
+# solve the following problem:
 #
 # .. math::
 #    \min - x_0 - x_1 - x_2
@@ -39,9 +43,12 @@ for algo in ot.Bonmin.GetAlgorithmNames():
 #    x_3 \in \mathbb{N}
 #    \end{array}
 #
-# The theoretical minimum is reached for :math:`x = [1,1,0.5,0]`. At this point, the objective function value is :math:`-2.5`
+# The theoretical minimum is reached for :math:`x = [1,1,0.5,0]`.
+# At this point, the objective function value is :math:`-2.5`
 #
-# N.B.: OpenTURNS requires equality and inequality constraints to be stated as :math:`g(x) = 0` and :math:`h(x) \geq 0`, respectively. Thus the inequalities above will have to be restated to match this requirement:
+# N.B.: OpenTURNS requires equality and inequality constraints to be stated as
+# :math:`g(x) = 0` and :math:`h(x) \geq 0`, respectively. Thus the inequalities
+# above will have to be restated to match this requirement:
 #
 # .. math::
 #    \begin{array}{l}
@@ -64,11 +71,14 @@ bounds = ot.Interval([0, 0, 0, 0], [1, 1e99, 1e99, 5], [
 #    No equality constraint -> nothing to do
 #    Inequality constraints:
 h = ot.SymbolicFunction(['x0', 'x1', 'x2', 'x3'], [
-                        '-(x1-0.5)^2 - (x2-0.5)^2 + 0.25', 'x1 - x0', '-x0 - x2 - x3 + 2'])
+                        '-(x1-0.5)^2 - (x2-0.5)^2 + 0.25',
+                        'x1 - x0', '-x0 - x2 - x3 + 2'])
 
 # Definition of variables types
-variablesType = [ot.OptimizationProblemImplementation.BINARY, ot.OptimizationProblemImplementation.CONTINUOUS,
-                 ot.OptimizationProblemImplementation.CONTINUOUS, ot.OptimizationProblemImplementation.INTEGER]
+CONTINUOUS = ot.OptimizationProblemImplementation.CONTINUOUS
+BINARY = ot.OptimizationProblemImplementation.BINARY
+INTEGER = ot.OptimizationProblemImplementation.INTEGER
+variablesType = [BINARY, CONTINUOUS, CONTINUOUS, INTEGER]
 
 # Setting up Bonmin problem
 problem = ot.OptimizationProblem(objectiveFunction)
@@ -90,6 +100,6 @@ bonminAlgorithm.run()
 
 # Retrieving the results
 result = bonminAlgorithm.getResult()
-print(" -- Optimal point = " + result.getOptimalPoint().__str__())
-print(" -- Optimal value = " + result.getOptimalValue().__str__())
-print(" -- Evaluation number = " + result.getInputSample().getSize().__str__())
+print(" -- Optimal point = " + str(result.getOptimalPoint()))
+print(" -- Optimal value = " + str(result.getOptimalValue()))
+print(" -- Evaluation number = " + str(result.getInputSample().getSize()))

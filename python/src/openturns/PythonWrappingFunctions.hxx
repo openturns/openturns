@@ -1847,7 +1847,7 @@ ScopedPyObjectPointer deepCopy(PyObject * pyObj)
   return pyObjDeepCopy;
 }
 
-inline void SignalHandler(int signum)
+inline void SignalHandler(int /*signum*/)
 {
   throw InterruptionException(HERE);
 }

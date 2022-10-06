@@ -46,4 +46,4 @@ algo.run()
 result = algo.getResult()
 sensitivity = ot.FunctionalChaosSobolIndices(result)
 
-print(sensitivity.summary())
+print(sensitivity)

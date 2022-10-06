@@ -82,6 +82,7 @@ Distribution __rtruediv__(Scalar s) { return self->inverse() * s; }
 
 %pythoncode %{
 from openturns.typ import Interval
+import math
 
 class PythonDistribution(object):
     """
@@ -140,27 +141,33 @@ class SciPyDistribution(PythonDistribution):
     """
     def __init__(self, dist):
         super(SciPyDistribution, self).__init__(1)
-        if dist.__class__.__name__ not in ('rv_frozen', 'rv_continuous_frozen', 'rv_histogram'):
-            raise TypeError('Argument is not a continuous scipy 1D distribution')
+        if dist.__class__.__name__ not in ('rv_frozen', 'rv_continuous_frozen', 'rv_histogram', 'rv_discrete_frozen'):
+            raise TypeError('Argument is not a scipy 1D distribution')
         self._dist = dist
 
         # compute range
         from openturns import ResourceMap
         cdf_epsilon = ResourceMap.GetAsScalar('Distribution-DefaultCDFEpsilon')
-        lb = dist.ppf(0.0)
-        ub = dist.ppf(1.0)
+        lb, ub = dist.support()
         flb = lb != float('-inf')
         fub = ub != float('+inf')
         if not flb:
             lb = dist.ppf(cdf_epsilon)
         if not fub:
-            ub = dist.ppf(1.0 - cdf_epsilon)
+            ub = dist.ppf(0.5 + (0.5 - cdf_epsilon))
         self.__range = Interval([lb], [ub])
         self.__range.setFiniteLowerBound([int(flb)])
         self.__range.setFiniteUpperBound([int(fub)])
 
     def getRange(self):
         return self.__range
+
+    def getSupport(self, interval):
+        # assume discrete distributions are integral
+        intersection = self.getRange().intersect(interval)
+        kMin = math.ceil(intersection.getLowerBound()[0])
+        kMax = math.floor(intersection.getUpperBound()[0])
+        return [[k] for k in range(kMin, kMax + 1)]
 
     def getRealization(self):
         rvs = self._dist.rvs()
@@ -171,9 +178,15 @@ class SciPyDistribution(PythonDistribution):
         return rvs.reshape(size, 1)
 
     def computePDF(self, X):
-        # before 1.9, all 1d dist have a pdf method
-        # since 1.9, pdf for continuous, pmf for discrete
-        pdf = self._dist.pdf(X[0])
+        x0 = float(X[0])
+        if self.isContinuous():
+            pdf = self._dist.pdf(x0)
+        else:
+            if x0.is_integer():
+                pdf = self._dist.pmf(x0)
+            else:
+                # newer scipy pmf is a continuous function
+                pdf = 0.0
         return pdf
 
     def computeCDF(self, X):
@@ -202,7 +215,14 @@ class SciPyDistribution(PythonDistribution):
         return [moment]
 
     def isContinuous(self):
-        return True
+        return hasattr(self._dist.dist, 'pdf')
+
+    def isDiscrete(self):
+        return not self.isContinuous()
+
+    def isIntegral(self):
+        # assume discrete distributions are integral
+        return self.isDiscrete()
 
     def computeScalarQuantile(self, p, tail=False):
         q = self._dist.ppf(1.0 - p if tail else p)

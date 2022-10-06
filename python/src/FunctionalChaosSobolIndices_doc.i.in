@@ -155,13 +155,3 @@ Returns
 -------
 s : float
     The grouped Sobol total order index."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::FunctionalChaosSobolIndices::summary
-"Summary accessor.
-
-Returns
--------
-summary : str
-    A text summary of the sensitivity analysis to be shown in a console."
