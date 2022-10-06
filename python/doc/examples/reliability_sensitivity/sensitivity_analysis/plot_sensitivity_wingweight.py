@@ -331,21 +331,13 @@ view = otv.View(graph)
 
 # %%
 # Now, we estimate the Sobol' indices using Polynomial Chaos Expansion.
-# We first create a Functional Chaos Expansion.
-sizePCE = 200
+# We create a Functional Chaos Expansion.
+sizePCE = 800
 inputDesignPCE = m.distributionX.getSample(sizePCE)
 outputDesignPCE = m.model(inputDesignPCE)
 
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    [m.distributionX.getMarginal(i) for i in range(m.dim)])
-selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
-projectionStrategy = ot.LeastSquaresStrategy(inputDesignPCE, outputDesignPCE, selectionAlgorithm)
-totalDegree = 4
-enumfunc = multivariateBasis.getEnumerateFunction()
-P = enumfunc.getStrataCumulatedCardinal(totalDegree)
-adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
 algo = ot.FunctionalChaosAlgorithm(
-    inputDesignPCE, outputDesignPCE, m.distributionX, adaptiveStrategy, projectionStrategy)
+    inputDesignPCE, outputDesignPCE, m.distributionX)
 
 algo.run()
 result = algo.getResult()
@@ -353,9 +345,7 @@ print(result.getResiduals())
 print(result.getRelativeErrors())
 
 # %%
-# The relative errors are very low: this indicates that the PCE model has good accuracy.
-
-# %%
+# The relative errors are low : this indicates that the PCE model has good accuracy.
 # Then, we exploit the surrogate model to compute the Sobol' indices.
 sensitivityAnalysis = ot.FunctionalChaosSobolIndices(result)
 print(sensitivityAnalysis.summary())
@@ -370,7 +360,9 @@ view = otv.View(graph)
 # %%
 #
 # The Sobol' indices confirm the previous analyses, in terms of ranking of the most influent variables. We also see that five variables have a quasi null total Sobol' indices, that indicates almost no influence on the wing weight.
-# There is no discrepancy between first order and total Sobol' indices, that indicates no or very low interaction between the variables in the variance of the output.
+# There is no discrepancy between first order and total Sobol' indices, that indicates no or very low interaction between the variables in the variance of the output. 
+# As the most important variables act only through decoupled first degree contributions, the hypothesis of a linear dependence between the input variables and the weight is legitimate.
+# This explains why both squared SRC and Taylor give the exact same results even if the first one is based on a :math:`\mathcal{L}^2` linear approximation and the second one is based on a linear expansion around the mean value of the input variables.
 
 
 # %%
@@ -378,9 +370,10 @@ view = otv.View(graph)
 # ------------
 
 # %%
-# We then estimate the HSIC indices using a data-driven approach by exploiting the design of experiments used to train the PCE model.
-inputDesignHSIC = inputDesignPCE
-outputDesignHSIC = outputDesignPCE
+# We then estimate the HSIC indices using a data-driven approach.
+sizeHSIC = 250
+inputDesignHSIC = m.distributionX.getSample(sizeHSIC)
+outputDesignHSIC = m.model(inputDesignHSIC)
 
 covarianceModelCollection = []
 
