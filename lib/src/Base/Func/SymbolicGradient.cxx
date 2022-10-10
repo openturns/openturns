@@ -155,7 +155,7 @@ void SymbolicGradient::initialize() const
     {
       ev3Expression = ev3Parser.Parse(p_evaluation_->formulas_[columnIndex].c_str(), nerr);
     }
-    catch (Ev3::ErrBase & exc)
+    catch (const Ev3::ErrBase & exc)
     {
       throw InternalException(HERE) << exc.description_;
     }

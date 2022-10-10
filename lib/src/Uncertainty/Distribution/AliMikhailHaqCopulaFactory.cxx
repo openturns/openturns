@@ -120,7 +120,7 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
     copula.setParameter(parameters);
     return copula;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula from the given parameters";
   }

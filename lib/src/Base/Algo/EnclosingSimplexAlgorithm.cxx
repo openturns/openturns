@@ -69,7 +69,7 @@ EnclosingSimplexAlgorithm::EnclosingSimplexAlgorithm(const Sample & vertices, co
           // It will throw if vertices are not sorted.
           p_implementation_ = new EnclosingSimplexMonotonic1D(vertices);
         }
-        catch(InvalidArgumentException &)
+        catch (const InvalidArgumentException &)
         {}
       }
     }

@@ -84,7 +84,7 @@ Exponential ExponentialFactory::buildAsExponential(const Point & parameters) con
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Exponential distribution from the given parameters";
   }

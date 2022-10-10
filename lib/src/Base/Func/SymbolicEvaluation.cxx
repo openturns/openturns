@@ -207,7 +207,7 @@ Bool SymbolicEvaluation::isLinear() const
     {
       ev3Expression = ev3Parser.Parse(formulas_[columnIndex].c_str(), nerr);
     }
-    catch (Ev3::ErrBase & exc)
+    catch (const Ev3::ErrBase & exc)
     {
       throw InternalException(HERE) << exc.description_;
     }
@@ -247,7 +247,7 @@ Bool SymbolicEvaluation::isLinearlyDependent(const UnsignedInteger index) const
     {
       ev3Expression = ev3Parser.Parse(formulas_[columnIndex].c_str(), nerr);
     }
-    catch (Ev3::ErrBase & exc)
+    catch (const Ev3::ErrBase & exc)
     {
       throw InternalException(HERE) << exc.description_;
     }

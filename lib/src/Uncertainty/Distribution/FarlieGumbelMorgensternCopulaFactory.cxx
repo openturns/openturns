@@ -87,7 +87,7 @@ FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarli
     copula.setParameter(parameters);
     return copula;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula from the given parameters";
   }

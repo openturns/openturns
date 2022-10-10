@@ -80,7 +80,7 @@ Scalar RegularizedIncompleteGammaInverse(const Scalar a,
   {
     return (tail ? boost::math::gamma_q_inv(a, x) : boost::math::gamma_p_inv(a, x));
   }
-  catch (boost::math::evaluation_error & ex)
+  catch (const boost::math::evaluation_error & ex)
   {
     throw InvalidArgumentException(HERE) << ex.what();
   }

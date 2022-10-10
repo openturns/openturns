@@ -615,7 +615,7 @@ void ResourceMap::loadConfigurationFile()
   {
     readConfigurationFile(findConfigurationFile());
   }
-  catch (FileNotFoundException &)
+  catch (const FileNotFoundException &)
   {
     LOGWARN(OSS() << "The configuration file has not been found, using default parameters.");
   }

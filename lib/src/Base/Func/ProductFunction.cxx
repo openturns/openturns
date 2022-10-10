@@ -44,13 +44,13 @@ ProductFunction::ProductFunction(const Implementation & p_left,
   //  try{
   setGradient(new ProductGradient(p_leftFunction_->getEvaluation(), p_leftFunction_->getGradient(), p_rightFunction_->getEvaluation(), p_rightFunction_->getGradient()));
   //  }
-  //  catch(InvalidArgumentException &) {
+  //  catch (const InvalidArgumentException &) {
   // Nothing to do
   //  }
   //  try{
   setHessian(new ProductHessian(p_left->getEvaluation(), p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
   //  }
-  //  catch(InvalidArgumentException & ex) {
+  //  catch (const InvalidArgumentException & ex) {
   // Nothing to do
   //  }
 }

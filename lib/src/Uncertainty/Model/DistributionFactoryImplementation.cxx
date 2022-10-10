@@ -125,7 +125,7 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
         Point newEstimatedParameter(parameters.inverse(estimatedDistribution.getParameter()));
         parameterSample.add(newEstimatedParameter);
       }
-      catch (Exception &)
+      catch (const Exception &)
       {
         // pass
       }
@@ -159,7 +159,7 @@ DistributionFactoryResult DistributionFactoryImplementation::buildBootStrapEstim
       Distribution estimatedDistribution(build(bootstrapSample));
       parameterSample.add(estimatedDistribution.getParameter());
     }
-    catch (Exception &)
+    catch (const Exception &)
     {
       // pass
     }

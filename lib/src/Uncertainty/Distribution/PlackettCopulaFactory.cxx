@@ -81,7 +81,7 @@ PlackettCopula PlackettCopulaFactory::buildAsPlackettCopula(const Point & parame
     copula.setParameter(parameters);
     return copula;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a PlackettCopula from the given parameters";
   }

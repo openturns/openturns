@@ -461,11 +461,11 @@ void StrongMaximumTest::run()
   {
     nearestPointChecker.run();
   }
-  catch(InvalidArgumentException & ex)
+  catch (const InvalidArgumentException & ex)
   {
     throw InvalidArgumentException(HERE) << ex;
   }
-  catch(InternalException & ex)
+  catch (const InternalException & ex)
   {
     throw  InternalException(HERE) << ex;
   }

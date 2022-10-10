@@ -163,7 +163,7 @@ public:
     {
       distribution.setParameter(effectiveParameter);
     }
-    catch (Exception &)
+    catch (const Exception &)
     {
       return Point(1, SpecFunc::LowestScalar);
     }

@@ -108,7 +108,7 @@ void MultiFORM::run()
     {
       FORM::run();
     }
-    catch (Exception & ex)
+    catch (const Exception & ex)
     {
       Log::Warn(String("MultiFORM: ") + ex.what());
       break; // then exit while-loop

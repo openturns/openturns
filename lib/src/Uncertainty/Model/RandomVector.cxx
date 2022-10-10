@@ -230,7 +230,7 @@ RandomVector RandomVector::intersect(const RandomVector & other)
     // ThresholdEvent
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());
   }
-  catch (NotYetImplementedException &)
+  catch (const NotYetImplementedException &)
   {
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
@@ -248,7 +248,7 @@ RandomVector RandomVector::intersect(const RandomVector & other)
     // ThresholdEvent
     d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
   }
-  catch (NotYetImplementedException &)
+  catch (const NotYetImplementedException &)
   {
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
@@ -283,7 +283,7 @@ RandomVector RandomVector::join(const RandomVector & other)
     // ThresholdEvent
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());
   }
-  catch (NotYetImplementedException &)
+  catch (const NotYetImplementedException &)
   {
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
@@ -301,7 +301,7 @@ RandomVector RandomVector::join(const RandomVector & other)
     // ThresholdEvent
     d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
   }
-  catch (NotYetImplementedException &)
+  catch (const NotYetImplementedException &)
   {
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());

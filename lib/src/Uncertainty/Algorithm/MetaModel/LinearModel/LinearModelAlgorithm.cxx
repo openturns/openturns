@@ -58,7 +58,7 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
     // the sample description may contain invalid variable names
     const SymbolicFunction constant(inputDescription, Description(1, "1"));
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     // fallback to default variable names
     inputDescription = Description::BuildDefault(inputDimension, "X");

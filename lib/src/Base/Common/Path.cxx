@@ -245,7 +245,7 @@ Path::DirectoryList Path::GetConfigDirectoryList()
   {
     directoryList.push_back(GetLibraryDirectory());
   }
-  catch (InternalException & ex)
+  catch (const InternalException & ex)
   {
     // we cannot throw here as this method is called in the initialization
     LOGWARN(OSS() << "Could not get library directory: " << ex.what());

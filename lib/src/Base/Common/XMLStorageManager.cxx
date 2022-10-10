@@ -226,7 +226,7 @@ void XMLStorageManager::load(Study & study)
         study.add( ro.label_, *(ro.p_obj_) );
       }
     }
-    catch (InternalException & ex)
+    catch (const InternalException & ex)
     {
       LOGINFO(OSS() << ex);
     }
