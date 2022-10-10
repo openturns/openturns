@@ -5,6 +5,7 @@ Drop deprecated static CorrelationAnalysis::PearsonCorrelation|SpearmanCorrelati
 Remove Distribution.getStandardMoment
 Drop deprecated LinearModelAlgorithm | LinearModelStepwiseAlgorithm ctors for 1.21
 Remove FunctionalChaosAlgorithm(Function) ctors for 1.21
+Remove MetaModelResult(Function, Function, ...) ctor
 Remove FunctionalChaosResult.getComposedModel, MetaModelResult.getModel and associated attributes for 1.21
 Remove (Process)Sample::computeCenteredMoment
 Remove Distribution::getCenteredMoment

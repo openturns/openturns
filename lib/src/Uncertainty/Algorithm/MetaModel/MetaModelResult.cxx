@@ -39,13 +39,25 @@ MetaModelResult::MetaModelResult()
 /* Standard constructor */
 MetaModelResult::MetaModelResult(const Sample & inputSample,
                                  const Sample & outputSample,
-                                 const Function & model,
                                  const Function & metaModel,
                                  const Point & residuals,
                                  const Point & relativeErrors)
   : PersistentObject()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
+  , metaModel_(metaModel)
+  , residuals_(residuals)
+  , relativeErrors_(relativeErrors)
+{
+  // Nothing to do
+}
+
+/* Standard constructor */
+MetaModelResult::MetaModelResult(const Function & model,
+                                 const Function & metaModel,
+                                 const Point & residuals,
+                                 const Point & relativeErrors)
+  : PersistentObject()
   , model_(model)
   , metaModel_(metaModel)
   , residuals_(residuals)
