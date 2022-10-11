@@ -66,7 +66,7 @@ curve.setColor("blue")
 curve.setLegend(f"front {0}")
 graph.add(curve)
 graph.setGrid(True)
-View(graph)
+_ = View(graph)
 
 # %%
 # We show the Pareto front from successive generations
@@ -93,7 +93,7 @@ for k in range(len(fronts)):
     curve.setLegend(f"generation {k}")
     graph.add(curve)
 graph.setGrid(True)
-View(graph)
+_ = View(graph)
 
 
 View.ShowAll()

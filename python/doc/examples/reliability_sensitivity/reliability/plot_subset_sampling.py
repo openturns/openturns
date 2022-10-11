@@ -201,7 +201,7 @@ for i in range(levels.getSize()):
     graph.add(dr)
 
 # %%
-View(graph)
+_ = View(graph)
 
 # %%
 # Draw the frontiers only
@@ -227,7 +227,7 @@ graph.setTitle("Subset sampling: thresholds")
 graph.setXTitle(r"$x_1$")
 graph.setYTitle(r"$x_2$")
 
-View(graph)
+_ = View(graph)
 
 # %%
 # Get all the input and output points that realized the event
@@ -262,4 +262,4 @@ dr = gIsoLines.getDrawable(0)
 dr.setLevels([0.0])
 dr.setColor("red")
 graph.add(dr)
-View(graph)
+_ = View(graph)

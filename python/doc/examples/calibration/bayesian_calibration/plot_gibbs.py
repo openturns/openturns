@@ -41,7 +41,7 @@ graph = true_distribution.drawPDF()
 graph.setTitle("True distribution")
 graph.setXTitle("")
 graph.setLegends([""])
-View(graph)
+_ = View(graph)
 
 # %%
 # A natural step at this point is to introduce
@@ -145,6 +145,6 @@ graph.setTitle("Posterior density")
 graph.setLegendPosition("bottomright")
 graph.setXTitle(r"$\mu_0$")
 graph.setYTitle(r"$\mu_1$")
-View(graph)
+_ = View(graph)
 
 View.ShowAll()
