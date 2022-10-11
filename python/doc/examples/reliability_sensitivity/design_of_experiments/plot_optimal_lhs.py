@@ -10,6 +10,7 @@ import openturns as ot
 import math as m
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -20,7 +21,8 @@ N = 100
 # Considering independent Uniform distributions of dimension 3
 # Bounds are (-1,1), (0,2) and (0, 0.5)
 distribution = ot.ComposedDistribution(
-    [ot.Uniform(-1.0, 1.0), ot.Uniform(0.0, 2.0), ot.Uniform(0.0, 0.5)])
+    [ot.Uniform(-1.0, 1.0), ot.Uniform(0.0, 2.0), ot.Uniform(0.0, 0.5)]
+)
 # Random LHS
 lhs = ot.LHSExperiment(distribution, N)
 lhs.setAlwaysShuffle(True)  # randomized
@@ -69,7 +71,8 @@ design = algo.generate()
 # Considering independent Uniform distributions of dimension 3
 # Bounds are (-1,1), (0,2) and (0, 0.5)
 distribution = ot.ComposedDistribution(
-    [ot.Uniform(-1.0, 1.0), ot.Uniform(0.0, 2.0), ot.Uniform(0.0, 0.5)])
+    [ot.Uniform(-1.0, 1.0), ot.Uniform(0.0, 2.0), ot.Uniform(0.0, 0.5)]
+)
 # Random LHS
 lhs = ot.LHSExperiment(distribution, N)
 lhs.setAlwaysShuffle(True)  # randomized
@@ -101,7 +104,8 @@ N = 10
 # Considering independent Uniform distributions of dimension 3
 # Bounds are (-1,1), (0,2) and (0, 0.5)
 distribution = ot.ComposedDistribution(
-    [ot.Uniform(-1.0, 1.0), ot.Uniform(0.0, 2.0), ot.Uniform(0.0, 0.5)])
+    [ot.Uniform(-1.0, 1.0), ot.Uniform(0.0, 2.0), ot.Uniform(0.0, 0.5)]
+)
 # Random LHS
 lhs = ot.LHSExperiment(distribution, N)
 lhs.setAlwaysShuffle(True)  # randomized
@@ -141,7 +145,6 @@ view = viewer.View(graph)
 # %%
 # Convergence needs to be performed
 # New algo starting from this design
-algo = ot.SimulatedAnnealingLHS(
-    design, distribution, space_filling, temperatureProfile)
+algo = ot.SimulatedAnnealingLHS(design, distribution, space_filling, temperatureProfile)
 design = algo.generate()
 plt.show()

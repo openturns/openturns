@@ -6,8 +6,7 @@ ot.TESTPREAMBLE()
 
 
 # We create a numerical math function
-myFunction = ot.SymbolicFunction(
-    ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
+myFunction = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
 dim = myFunction.getInputDimension()
 
@@ -47,4 +46,3 @@ myAlgo.run()
 
 # Stream out the result
 print("LHS result=", myAlgo.getResult())
-

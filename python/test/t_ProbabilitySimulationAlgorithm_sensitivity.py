@@ -5,8 +5,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 # We create a numerical math function
-myFunction = ot.SymbolicFunction(
-    ('E', 'F', 'L', 'I'), ('-F*L^3/(3.*E*I)',))
+myFunction = ot.SymbolicFunction(("E", "F", "L", "I"), ("-F*L^3/(3.*E*I)",))
 myFunction = ot.MemoizeFunction(myFunction)
 dim = myFunction.getInputDimension()
 

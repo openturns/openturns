@@ -2,12 +2,11 @@
 
 import openturns as ot
 
-function1 = ot.SymbolicFunction(
-    ["x0", "x1", "x2"], ["x0^2+2*x1+3*x2^3"])
-function2 = ot.SymbolicFunction(["x0", "x1", "x2"],
-                             ["cos(x0*sin(x2+x1))", "exp(x1 - x0 * sin(x2))"])
-evaluation = ot.AggregatedEvaluation(
-    [function1, function2])
+function1 = ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2+2*x1+3*x2^3"])
+function2 = ot.SymbolicFunction(
+    ["x0", "x1", "x2"], ["cos(x0*sin(x2+x1))", "exp(x1 - x0 * sin(x2))"]
+)
+evaluation = ot.AggregatedEvaluation([function1, function2])
 print("evaluation=", evaluation)
 point = [4.0, -4.0, 1.0]
 print("function 1 at", point, "=", function1(point))

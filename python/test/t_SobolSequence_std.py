@@ -27,5 +27,5 @@ for i in range(sampleSize):
 probabilityEstimate = (1.0 * pointInsideCircle) / sampleSize
 probability = m.pi / 4.0
 relativeError = abs(probability - probabilityEstimate) / probability
-print('sample size=', sampleSize)
-print('relative error to Pi=%e' % relativeError)
+print("sample size=", sampleSize)
+print("relative error to Pi=%e" % relativeError)

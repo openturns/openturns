@@ -16,7 +16,7 @@ for splitter in splitters:
     print("splitter=", splitter)
     size = 0
     for indices1, indices2 in splitter:
-        print('indices=', indices1, indices2)
+        print("indices=", indices1, indices2)
 
         assert len(indices1) + len(indices2) == N, "not enough indices"
 

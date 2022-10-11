@@ -7,8 +7,7 @@ dimension = 5
 size = 100
 
 # Build OT LHS algorithm
-lhs = ot.LHSExperiment(
-    ot.ComposedDistribution([ot.Uniform()] * dimension), size)
+lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform()] * dimension), size)
 
 # Generate design without optimization
 design = lhs.generate()
@@ -20,5 +19,17 @@ spaceFillingPhiP = ot.SpaceFillingPhiP()
 spaceFillingPhiP50 = ot.SpaceFillingPhiP(50)
 
 # print the criteria on this design
-print("C2=%f MinDist=%f PhiP=%f, PhiP(50)=%f" %
-      tuple([sf.evaluate(design) for sf in [spaceFillingC2, spaceFillingMinDist, spaceFillingPhiP, spaceFillingPhiP50]]))
+print(
+    "C2=%f MinDist=%f PhiP=%f, PhiP(50)=%f"
+    % tuple(
+        [
+            sf.evaluate(design)
+            for sf in [
+                spaceFillingC2,
+                spaceFillingMinDist,
+                spaceFillingPhiP,
+                spaceFillingPhiP50,
+            ]
+        ]
+    )
+)

@@ -191,7 +191,9 @@ upper = (Yobs_sim.ravel() + delta).tolist()
 # Global support of the joint distribution: theta, tau, outputs
 support = ot.Interval([-2.0] * p + [1e-4] + lower, [2.0] * p + [1e1] + upper)
 
-prior = ot.ComposedDistribution([ot.Uniform(-2.0, 2.0), ot.Uniform(-2.0, 2.0), ot.Uniform(1e-4, 1e1)])
+prior = ot.ComposedDistribution(
+    [ot.Uniform(-2.0, 2.0), ot.Uniform(-2.0, 2.0), ot.Uniform(1e-4, 1e1)]
+)
 
 # Initialize to true value
 initial_state = theta_true[:, 0].tolist() + [tau_true] + Y_sim.ravel().tolist()
@@ -343,8 +345,8 @@ class BoxConstrainedNormal(ot.PythonRandomVector):
     def setParameter(self, parameter):
         d = self.getDimension()
         self.mu = np.array(parameter[:d])
-        self.Sigma = np.array(parameter[d: d + d * d]).reshape(d, d)
-        self.r = np.array(parameter[-2 * d: -d])
+        self.Sigma = np.array(parameter[d : d + d * d]).reshape(d, d)
+        self.r = np.array(parameter[-2 * d : -d])
         self.s = np.array(parameter[-d:])
         self.interval = ot.Interval(self.r, self.s)
 

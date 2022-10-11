@@ -22,6 +22,7 @@ Truncate a  distribution
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # the original distribution
@@ -31,15 +32,13 @@ view = viewer.View(graph)
 
 # %%
 # truncate on the left
-truncated = ot.TruncatedDistribution(
-    distribution, 0.2, ot.TruncatedDistribution.LOWER)
+truncated = ot.TruncatedDistribution(distribution, 0.2, ot.TruncatedDistribution.LOWER)
 graph = truncated.drawPDF()
 view = viewer.View(graph)
 
 # %%
 # truncate on the right
-truncated = ot.TruncatedDistribution(
-    distribution, 1.5, ot.TruncatedDistribution.UPPER)
+truncated = ot.TruncatedDistribution(distribution, 1.5, ot.TruncatedDistribution.UPPER)
 graph = truncated.drawPDF()
 view = viewer.View(graph)
 
@@ -63,8 +62,7 @@ truncatedKS = ot.Distribution(ot.TruncatedDistribution(ks, bounds))
 
 # %%
 # Draw its PDF
-graph = truncatedKS.drawPDF(
-    [-2.5] * dimension, [2.5] * dimension, [256] * dimension)
+graph = truncatedKS.drawPDF([-2.5] * dimension, [2.5] * dimension, [256] * dimension)
 graph.add(ot.Cloud(truncatedKS.getSample(200)))
 graph.setColors(["blue", "red"])
 view = viewer.View(graph)

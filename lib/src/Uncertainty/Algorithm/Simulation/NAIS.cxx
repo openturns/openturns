@@ -97,7 +97,7 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
   for (UnsignedInteger i = 0; i < numberOfSample ; ++i)
   {
     const Point meanNormal(sample[i]);
-    
+
     collectionOfDistribution[i] = Normal(meanNormal, silverman);
   }
   const Mixture auxiliaryDistribution(collectionOfDistribution, weights);

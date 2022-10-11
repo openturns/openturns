@@ -34,18 +34,19 @@ Advanced polynomial chaos construction
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-model = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], [
-                            '1+x1*x2 + 2*x3^2+x4^4'])
+model = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["1+x1*x2 + 2*x3^2+x4^4"])
 
 # %%
 # Create a distribution of dimension 4.
 
 # %%
 distribution = ot.ComposedDistribution(
-    [ot.Normal(), ot.Uniform(), ot.Gamma(2.75, 1.0), ot.Beta(2.5, 1.0, -1.0, 2.0)])
+    [ot.Normal(), ot.Uniform(), ot.Gamma(2.75, 1.0), ot.Beta(2.5, 1.0, -1.0, 2.0)]
+)
 
 # %%
 inputDimension = distribution.getDimension()
@@ -100,15 +101,13 @@ enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
 
 # %%
 q = 0.4
-enumerateFunction_1 = ot.HyperbolicAnisotropicEnumerateFunction(
-    inputDimension, q)
+enumerateFunction_1 = ot.HyperbolicAnisotropicEnumerateFunction(inputDimension, q)
 
 # %%
 # Create the multivariate orthonormal basis which is the the cartesian product of the univariate basis.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    polyColl, enumerateFunction)
+multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 
 # %%
 # Ask how many basis terms there are in the 6-th strata.
@@ -160,7 +159,8 @@ maximumConsideredTerms = 500
 mostSignificant = 50
 significanceFactor = 1.0e-4
 truncatureBasisStrategy_2 = ot.CleaningStrategy(
-    multivariateBasis, maximumConsideredTerms, mostSignificant, significanceFactor, True)
+    multivariateBasis, maximumConsideredTerms, mostSignificant, significanceFactor, True
+)
 
 # %%
 # STEP 3: Evaluation strategy of the approximation coefficients
@@ -187,7 +187,8 @@ basisSequenceFactory = ot.LARS()
 fittingAlgorithm = ot.CorrectedLeaveOneOut()
 # Finally the metamodel selection algorithm embbeded in LeastSquaresStrategy
 approximationAlgorithm = ot.LeastSquaresMetaModelSelectionFactory(
-    basisSequenceFactory, fittingAlgorithm)
+    basisSequenceFactory, fittingAlgorithm
+)
 evaluationCoeffStrategy_2 = ot.LeastSquaresStrategy(approximationAlgorithm)
 experiment_2 = experiment
 
@@ -216,4 +217,5 @@ Y = model(X)
 
 # %%
 polynomialChaosAlgorithm = ot.FunctionalChaosAlgorithm(
-    X, W, Y, distribution, truncatureBasisStrategy, evaluationCoeffStrategy)
+    X, W, Y, distribution, truncatureBasisStrategy, evaluationCoeffStrategy
+)

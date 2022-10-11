@@ -161,7 +161,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 
   const Scalar qNorm = ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-QNorm");
   EnumerateFunction enumerate;
-  if (std::abs(qNorm-1.0) <= SpecFunc::Precision) enumerate = LinearEnumerateFunction(inputDimension);
+  if (std::abs(qNorm - 1.0) <= SpecFunc::Precision) enumerate = LinearEnumerateFunction(inputDimension);
   else enumerate = HyperbolicAnisotropicEnumerateFunction(inputDimension, qNorm);
   OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
 

@@ -16,7 +16,7 @@ amplitude = ot.Point(dimension, 1.00)
 scale = ot.Point(dimension, 1.0)
 
 size = 128
-timeGrid = ot.RegularGrid(0., 0.1, size)
+timeGrid = ot.RegularGrid(0.0, 0.1, size)
 
 # Cauchy model
 model = ot.CauchyModel(scale, amplitude)
@@ -31,8 +31,7 @@ sample = myProcess.getSample(1000)
 myFactory = ot.StationaryCovarianceModelFactory()
 
 # Build a UserDefinedCovarianceModel using the Wellch method
-myCovarianceModel = myFactory.buildAsUserDefinedStationaryCovarianceModel(
-    sample)
+myCovarianceModel = myFactory.buildAsUserDefinedStationaryCovarianceModel(sample)
 tg = myCovarianceModel.getTimeGrid()
 
 # Get the time grid of the model
@@ -40,5 +39,9 @@ for i in range(tg.getN()):
     t = tg.getValue(i)
     estimatedValue = myCovarianceModel(t)[0, 0]
     modelValue = covModel(t)[0, 0]
-    print("Covariance C( %.6g" % t, ") : ", " evaluation =  %.6g" %
-          estimatedValue, " model =  %.6g" % modelValue)
+    print(
+        "Covariance C( %.6g" % t,
+        ") : ",
+        " evaluation =  %.6g" % estimatedValue,
+        " model =  %.6g" % modelValue,
+    )

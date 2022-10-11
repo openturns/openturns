@@ -10,7 +10,7 @@ for dimension in range(1, 4):
     size = f.getStrataCumulatedCardinal(stratas)
     print("First", size, "values for dimension", dimension)
     for i in range(size):
-        print('i=', i, 'f(i)=', f(i))
+        print("i=", i, "f(i)=", f(i))
 
 # with bounds
 f = ot.NormInfEnumerateFunction(2)

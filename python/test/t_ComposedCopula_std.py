@@ -33,8 +33,7 @@ print("oneRealization=", repr(oneRealization))
 # Test for sampling
 size = 10000
 oneSample = copula.getSample(size)
-print("oneSample first=", repr(
-    oneSample[0]), " last=", repr(oneSample[size - 1]))
+print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
 print("mean=", repr(oneSample.computeMean()))
 print("covariance=", repr(oneSample.computeCovariance()))
 
@@ -60,27 +59,35 @@ print("cdf(quantile)=%.6f" % copula.computeCDF(quantile))
 # Get 95% survival function
 inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      copula.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival)
+)
 print("entropy=%.6f" % copula.computeEntropy())
 # Confidence regions
 if copula.getDimension() <= 2:
     threshold = Point()
-    print("Minimum volume interval=",
-          copula.computeMinimumVolumeInterval(0.95, threshold))
+    print(
+        "Minimum volume interval=", copula.computeMinimumVolumeInterval(0.95, threshold)
+    )
     print("threshold=", threshold)
     beta = ot.Point()
     levelSet = copula.computeMinimumVolumeLevelSet(0.95, beta)
     print("Minimum volume level set=", levelSet)
     print("beta=", beta)
-    print("Bilateral confidence interval=",
-          copula.computeBilateralConfidenceInterval(0.95, beta))
+    print(
+        "Bilateral confidence interval=",
+        copula.computeBilateralConfidenceInterval(0.95, beta),
+    )
     print("beta=", beta)
-    print("Unilateral confidence interval (lower tail)=",
-          copula.computeUnilateralConfidenceInterval(0.95, False, beta))
+    print(
+        "Unilateral confidence interval (lower tail)=",
+        copula.computeUnilateralConfidenceInterval(0.95, False, beta),
+    )
     print("beta=", beta)
-    print("Unilateral confidence interval (upper tail)=",
-          copula.computeUnilateralConfidenceInterval(0.95, True, beta))
+    print(
+        "Unilateral confidence interval (upper tail)=",
+        copula.computeUnilateralConfidenceInterval(0.95, True, beta),
+    )
     print("beta=", beta)
 
 mean = copula.getMean()
@@ -103,18 +110,20 @@ print("kendall=", kendall)
 ot.PlatformInfo.SetNumericalPrecision(precision)
 dim = copula.getDimension()
 x = 0.6
-y = [0.2]*(dim-1)
+y = [0.2] * (dim - 1)
 print("conditional PDF=%.6f" % copula.computeConditionalPDF(x, y))
 print("conditional CDF=%.6f" % copula.computeConditionalCDF(x, y))
-print("conditional quantile=%.6f" %
-      copula.computeConditionalQuantile(x, y))
+print("conditional quantile=%.6f" % copula.computeConditionalQuantile(x, y))
 pt = ot.Point([0.1 * i + 0.05 for i in range(dim)])
-print("sequential conditional PDF=",
-      copula.computeSequentialConditionalPDF(point))
+print("sequential conditional PDF=", copula.computeSequentialConditionalPDF(point))
 resCDF = copula.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
-print("sequential conditional quantile(", resCDF, ")=",
-      copula.computeSequentialConditionalQuantile(resCDF))
+print(
+    "sequential conditional quantile(",
+    resCDF,
+    ")=",
+    copula.computeSequentialConditionalQuantile(resCDF),
+)
 
 # Specific to this copula
 
@@ -138,71 +147,88 @@ print("margins CDF(quantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
 # Tests the isoprobabilistic transformation
 # General case with normal standard distribution
-print("isoprobabilistic transformation (general normal)=",
-      copula.getIsoProbabilisticTransformation())
+print(
+    "isoprobabilistic transformation (general normal)=",
+    copula.getIsoProbabilisticTransformation(),
+)
 # General case with non-normal standard distribution
-collection[0] = ot.SklarCopula(ot.Student(
-    3.0, ot.Point(2, 1.0), ot.Point(2, 3.0), ot.CorrelationMatrix(2)))
+collection[0] = ot.SklarCopula(
+    ot.Student(3.0, ot.Point(2, 1.0), ot.Point(2, 3.0), ot.CorrelationMatrix(2))
+)
 copula = ot.ComposedCopula(collection)
-print("isoprobabilistic transformation (general non-normal)=",
-      copula.getIsoProbabilisticTransformation())
+print(
+    "isoprobabilistic transformation (general non-normal)=",
+    copula.getIsoProbabilisticTransformation(),
+)
 dim = copula.getDimension()
 x = 0.6
-y = [0.2]*(dim-1)
+y = [0.2] * (dim - 1)
 print("conditional PDF=%.6f" % copula.computeConditionalPDF(x, y))
 print("conditional CDF=%.6f" % copula.computeConditionalCDF(x, y))
-print("conditional quantile=%.6f" %
-      copula.computeConditionalQuantile(x, y))
+print("conditional quantile=%.6f" % copula.computeConditionalQuantile(x, y))
 pt = ot.Point([0.1 * i + 0.05 for i in range(dim)])
-print("sequential conditional PDF=",
-      copula.computeSequentialConditionalPDF(pt))
+print("sequential conditional PDF=", copula.computeSequentialConditionalPDF(pt))
 resCDF = copula.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
-print("sequential conditional quantile(", resCDF, ")=",
-      copula.computeSequentialConditionalQuantile(resCDF))
+print(
+    "sequential conditional quantile(",
+    resCDF,
+    ")=",
+    copula.computeSequentialConditionalQuantile(resCDF),
+)
 # Special case, independent copula
 collection[0] = ot.SklarCopula(ot.Normal(2))
 collection[1] = ot.IndependentCopula(2)
 collection[2] = ot.NormalCopula(ot.CorrelationMatrix(2))
 copula = ot.ComposedCopula(collection)
-print("isoprobabilistic transformation (independent)=",
-      copula.getIsoProbabilisticTransformation())
+print(
+    "isoprobabilistic transformation (independent)=",
+    copula.getIsoProbabilisticTransformation(),
+)
 dim = copula.getDimension()
 x = 0.6
-y = [0.2]*(dim-1)
+y = [0.2] * (dim - 1)
 print("conditional PDF=%.6f" % copula.computeConditionalPDF(x, y))
 print("conditional CDF=%.6f" % copula.computeConditionalCDF(x, y))
-print("conditional quantile=%.6f" %
-      copula.computeConditionalQuantile(x, y))
+print("conditional quantile=%.6f" % copula.computeConditionalQuantile(x, y))
 pt = ot.Point([0.1 * i + 0.05 for i in range(dim)])
-print("sequential conditional PDF=",
-      copula.computeSequentialConditionalPDF(pt))
+print("sequential conditional PDF=", copula.computeSequentialConditionalPDF(pt))
 resCDF = copula.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
-print("sequential conditional quantile(", resCDF, ")=",
-      copula.computeSequentialConditionalQuantile(resCDF))
+print(
+    "sequential conditional quantile(",
+    resCDF,
+    ")=",
+    copula.computeSequentialConditionalQuantile(resCDF),
+)
 # Special case, single contributor
-collection = [ot.SklarCopula(ot.Student(
-    3.0, ot.Point(2, 1.0), ot.Point(2, 3.0), ot.CorrelationMatrix(2)))]
+collection = [
+    ot.SklarCopula(
+        ot.Student(3.0, ot.Point(2, 1.0), ot.Point(2, 3.0), ot.CorrelationMatrix(2))
+    )
+]
 copula = ot.ComposedCopula(collection)
-print("isoprobabilistic transformation (single contributor)=",
-      copula.getIsoProbabilisticTransformation())
+print(
+    "isoprobabilistic transformation (single contributor)=",
+    copula.getIsoProbabilisticTransformation(),
+)
 dim = copula.getDimension()
 x = 0.6
-y = [0.2]*(dim-1)
+y = [0.2] * (dim - 1)
 print("conditional PDF=%.6f" % copula.computeConditionalPDF(x, y))
 print("conditional CDF=%.6f" % copula.computeConditionalCDF(x, y))
-print("conditional quantile=%.6f" %
-      copula.computeConditionalQuantile(x, y))
+print("conditional quantile=%.6f" % copula.computeConditionalQuantile(x, y))
 pt = ot.Point([0.1 * i + 0.05 for i in range(dim)])
-print("sequential conditional PDF=",
-      copula.computeSequentialConditionalPDF(pt))
+print("sequential conditional PDF=", copula.computeSequentialConditionalPDF(pt))
 resCDF = copula.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
-print("sequential conditional quantile(", resCDF, ")=",
-      copula.computeSequentialConditionalQuantile(resCDF))
+print(
+    "sequential conditional quantile(",
+    resCDF,
+    ")=",
+    copula.computeSequentialConditionalQuantile(resCDF),
+)
 
 # test ComposedCopula.getMarginal in reverse
 copula = ot.ComposedCopula([ot.IndependentCopula(2), ot.NormalCopula(2)])
 print(copula.getMarginal([3, 2, 1, 0]))
-

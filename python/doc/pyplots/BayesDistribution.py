@@ -4,7 +4,7 @@ from openturns.viewer import View
 
 distribution = ot.BayesDistribution()
 
-distribution.setDescription(['$X$', '$Y$'])
+distribution.setDescription(["$X$", "$Y$"])
 pdf_graph = distribution.drawPDF()
 pdf_graph.setTitle(str(distribution))
 fig = plt.figure(figsize=(10, 5))

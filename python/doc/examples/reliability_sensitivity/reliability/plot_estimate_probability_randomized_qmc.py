@@ -10,6 +10,7 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -55,4 +56,4 @@ algo.run()
 # %%
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
-print('Pf=', probability)
+print("Pf=", probability)

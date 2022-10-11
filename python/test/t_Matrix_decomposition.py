@@ -18,12 +18,11 @@ def testQR(m, n, full, keep):
     print("M=", matrix1)
     Q, R = matrix1.computeQR(full, keep)
     print("full=", full, "keep=", keep)
-    print('Q= ', Q)
-    print('R=', R)
-    print('Q*R=', Q * R)
+    print("Q= ", Q)
+    print("R=", R)
+    print("Q*R=", Q * R)
     if keep:
-        print('M2=', matrix1)
-
+        print("M2=", matrix1)
 
 
 # Square case
@@ -37,8 +36,7 @@ print("svd (svd only)= ", repr(result1))
 result1, u, v = matrix1.computeSVD(True)
 print("svd (svd + U, V full)= ", repr(result1))
 result1, u, v = matrix1.computeSVD(False)
-print("svd (svd + U, V small)= ", repr(result1),
-      ", U=", repr(u), ", v=", repr(v))
+print("svd (svd + U, V small)= ", repr(result1), ", U=", repr(u), ", v=", repr(v))
 
 # Rectangular case, m < n
 matrix1 = quadM(3, 5)
@@ -51,8 +49,7 @@ print("svd (svd only)= ", repr(result1))
 result1, u, v = matrix1.computeSVD(True)
 print("svd (svd + U, V full)= ", repr(result1))
 result1, u, v = matrix1.computeSVD(False)
-print("svd (svd + U, V small)= ", repr(result1),
-      ", U=", repr(u), ", v=", repr(v))
+print("svd (svd + U, V small)= ", repr(result1), ", U=", repr(u), ", v=", repr(v))
 
 # Rectangular case, m > n
 matrix1 = quadM(5, 3)

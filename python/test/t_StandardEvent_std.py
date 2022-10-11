@@ -6,8 +6,7 @@ ot.TESTPREAMBLE()
 
 
 # We create a numerical math function */
-myFunction = ot.SymbolicFunction(
-    ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
+myFunction = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
 dim = myFunction.getInputDimension()
 
@@ -27,12 +26,13 @@ print("myStandardEvent=", myStandardEvent)
 # We compute one realization of the event
 # E = (Y=f(X), operator, threshold)
 # E as a RandomVector : Y
-print("myStandardEvent (as a RandomVector) realization =",
-      repr(ot.RandomVector.getRealization(myStandardEvent)))
+print(
+    "myStandardEvent (as a RandomVector) realization =",
+    repr(ot.RandomVector.getRealization(myStandardEvent)),
+)
 
 # E as a Bernoulli
-print("myStandardEvent realization=", repr(
-    myStandardEvent.getRealization()))
+print("myStandardEvent realization=", repr(myStandardEvent.getRealization()))
 
 # We compute a sample of the event
 print("myStandardEvent sample=", repr(myStandardEvent.getSample(10)))
@@ -63,10 +63,11 @@ stdEvent = ot.StandardEvent(myEvent)
 # Get a sample from the second antecedent of the standard event */
 size = 2000
 # Check if the failure probabilities are the same */
-print("Failure probability (Event)=%.6f" %
-      myEvent.getSample(size).computeMean()[0])
-print("Failure probability (StandardEvent)=%.6f" %
-      stdEvent.getSample(size).computeMean()[0])
+print("Failure probability (Event)=%.6f" % myEvent.getSample(size).computeMean()[0])
+print(
+    "Failure probability (StandardEvent)=%.6f"
+    % stdEvent.getSample(size).computeMean()[0]
+)
 
 x = [[1.0, 0.5, 1.0, 0.5], [2.0, 1.0, 2.0, 1.0], [3.0, 1.5, 3.0, 1.5]]
 p = [0.3, 0.325, 0.375]

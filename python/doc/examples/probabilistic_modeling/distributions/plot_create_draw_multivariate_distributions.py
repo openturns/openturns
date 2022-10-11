@@ -7,6 +7,7 @@ Create and draw multivariate distributions
 import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -114,7 +115,7 @@ view = otv.View(graph)
 
 # %%
 # We first generate random points in the square.
-distUniform2 = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)]*2)
+distUniform2 = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 2)
 N = 100
 sample = distUniform2.getSample(N)
 
@@ -124,7 +125,7 @@ points = []
 weights = []
 for i in range(N):
     points.append(sample[i, :])
-    weights.append((sample[i, 0]**2 + sample[i, 1]**2)**2)
+    weights.append((sample[i, 0] ** 2 + sample[i, 1] ** 2) ** 2)
 
 # %%
 # We build the distribution :
@@ -135,8 +136,7 @@ graph.setTitle("User defined PDF")
 # %%
 # We can draw a sample from this distribution with the `getSample` method :
 omega = distribution.getSample(100)
-cloud = ot.Cloud(omega, 'black', 'fdiamond',
-                 'Sample from UserDefined distribution')
+cloud = ot.Cloud(omega, "black", "fdiamond", "Sample from UserDefined distribution")
 graph.add(cloud)
 view = otv.View(graph)
 

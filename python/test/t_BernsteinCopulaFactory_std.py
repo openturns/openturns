@@ -16,8 +16,10 @@ def compute_max_error(ref_copula, est_copula):
     for n in range(11):
         for p in range(11):
             point = [0.1 * n, 0.1 * p]
-            max_error = max(max_error, abs(ref_copula.computeCDF(
-                point) - est_copula.computeCDF(point)))
+            max_error = max(
+                max_error,
+                abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)),
+            )
     return max_error
 
 
@@ -57,7 +59,8 @@ try:
         # Penalized Csiszar divergence method
         f = ot.SymbolicFunction("t", "-log(t)")
         m = ot.BernsteinCopulaFactory.ComputePenalizedCsiszarDivergenceBinNumber(
-            sample, f)
+            sample, f
+        )
         print("Penalized Csiszar divergence m=", m)
         est_copula = ot.BernsteinCopulaFactory().build(sample, m)
         max_error = compute_max_error(ref_copula, est_copula)
@@ -67,5 +70,5 @@ try:
 
 except:
     import sys
-    print("t_BernsteinCopulaFactory_std.py",
-          sys.exc_info()[0], sys.exc_info()[1])
+
+    print("t_BernsteinCopulaFactory_std.py", sys.exc_info()[0], sys.exc_info()[1])

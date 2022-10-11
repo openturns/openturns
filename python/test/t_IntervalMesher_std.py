@@ -15,10 +15,10 @@ for diamond in [False, True]:
     mesh2D = mesher2D.build(ot.Interval([-1.0, -1.0], [2.0, 2.0]), diamond)
     print("mesh2D=", mesh2D)
 
-    mesher3D = ot.IntervalMesher([5]*3)
+    mesher3D = ot.IntervalMesher([5] * 3)
     print("mesher3D=", mesher3D)
     try:
         mesh3D = mesher3D.build(ot.Interval(3), diamond)
         print("mesh3D=", mesh3D)
     except RuntimeError:
-        print('notyetimpl')
+        print("notyetimpl")

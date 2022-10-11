@@ -14,7 +14,7 @@ print("Copula =", copula)
 print("Elliptical distribution = ", copula.isElliptical())
 
 # Is this copula continuous ?
-print("Continuous copula = ",  copula.isContinuous())
+print("Continuous copula = ", copula.isContinuous())
 
 # Is this copula elliptical ?
 print("Elliptical copula = ", copula.hasEllipticalCopula())
@@ -29,8 +29,7 @@ print("oneRealization=", repr(oneRealization))
 # Test for sampling
 size = 10000
 oneSample = copula.getSample(size)
-print("oneSample first=", repr(
-    oneSample[0]), " last=", repr(oneSample[size - 1]))
+print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
 print("mean=", repr(oneSample.computeMean()))
 print("covariance=", repr(oneSample.computeCovariance()))
 
@@ -67,27 +66,28 @@ print("cdf(quantile)=%.6f" % copula.computeCDF(quantile))
 # Get 95% survival function
 inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      copula.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival)
+)
 print("entropy=%.6f" % copula.computeEntropy())
 # Confidence regions
-interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(
-    0.95)
+interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
 print("Minimum volume interval=", interval)
 print("threshold=", ot.Point(1, threshold))
 levelSet, beta = copula.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
 print("beta=", ot.Point(1, beta))
-interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)
+interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
 print("Bilateral confidence interval=", interval)
 print("beta=", ot.Point(1, beta))
 interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, False)
+    0.95, False
+)
 print("Unilateral confidence interval (lower tail)=", interval)
 print("beta=", ot.Point(1, beta))
 interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, True)
+    0.95, True
+)
 print("Unilateral confidence interval (upper tail)=", interval)
 print("beta=", ot.Point(1, beta))
 

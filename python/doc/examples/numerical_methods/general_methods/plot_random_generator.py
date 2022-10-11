@@ -18,6 +18,7 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import os
 import time
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -33,7 +34,7 @@ ot.RandomGenerator.SetSeed(os.getpid())
 # %%
 # Example 2: using the time in milliseconds
 # -----------------------------------------
-ot.RandomGenerator.SetSeed(int(1000*time.time()))
+ot.RandomGenerator.SetSeed(int(1000 * time.time()))
 
 # %%
 # Example 3: using a previously saved generator state

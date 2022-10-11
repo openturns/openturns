@@ -69,7 +69,8 @@ public:
 
   /** Set sampling method accessor */
   enum SamplingMethod { CHOLESKY, HMAT, GALLIGAOGIBBS,
-	  GIBBS=2 }; // @deprecated
+                        GIBBS = 2
+                      }; // @deprecated
   SamplingMethod getSamplingMethod() const;
   void setSamplingMethod(const SamplingMethod samplingMethod);
 

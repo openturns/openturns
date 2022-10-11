@@ -191,7 +191,7 @@ view.getFigure().tight_layout()
 scaling = ot.SymbolicFunction("x", "1.3e-10 * x")
 scaled_ackley_pdf = ot.ComposedFunction(scaling, ackley_pdf)
 graph = proposal.drawPDF()
-graph.setXTitle('')
+graph.setXTitle("")
 graph.add(scaled_ackley_pdf.draw(0, 0, [0.0, 1.5], -3.0, 3.0, 100))
 graph.setLegends(["Histogram PDF", "Rescaled unnormalized PDF"])
 graph.setLegendPosition("top")
@@ -224,13 +224,12 @@ view.getFigure().tight_layout()
 scaling = ot.SymbolicFunction("x", "3.1e-10 * x")
 scaled_ackley_pdf = ot.ComposedFunction(scaling, ackley_pdf)
 graph = proposal.drawPDF()
-graph.setXTitle('')
+graph.setXTitle("")
 graph.add(scaled_ackley_pdf.draw(1, 0, [0.5, 0.0], -3.0, 3.0, 100))
 graph.setLegends(["Histogram PDF", "Rescaled unnormalized PDF"])
 graph.setLegendPosition("top")
 graph.setTitle("Conditional distribution of $X_1$ given $X_0 = 0.5$")
 _ = View(graph)
-
 
 
 # %%

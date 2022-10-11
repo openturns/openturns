@@ -14,8 +14,7 @@ print("distribution=", repr(distribution))
 print("Estimated distribution=", repr(estimatedDistribution))
 estimatedDistribution = factory.build()
 print("Default distribution=", estimatedDistribution)
-estimatedDistribution = factory.build(
-    distribution.getParameter())
+estimatedDistribution = factory.build(distribution.getParameter())
 print("Distribution from parameters=", estimatedDistribution)
 estimatedBurr = factory.buildAsBurr(sample)
 print("Burr          =", distribution)
@@ -27,14 +26,15 @@ print("Burr from parameters=", estimatedBurr)
 
 try:
     estimatedBurr = factory.build(ot.Normal(1e-3, 1e-5).getSample(100))
-    print('Estimated burr=', estimatedBurr)
+    print("Estimated burr=", estimatedBurr)
 except:
     pass
 
 ot.RandomGenerator.SetSeed(0)
 try:
-    estimatedBurr = factory.build(ot.UserDefined(
-        ot.LogNormal(7.71, 1.0056).getSample(500)).getSupport())
-    #print('Estimated burr=', estimatedBurr)
+    estimatedBurr = factory.build(
+        ot.UserDefined(ot.LogNormal(7.71, 1.0056).getSample(500)).getSupport()
+    )
+    # print('Estimated burr=', estimatedBurr)
 except:
     pass

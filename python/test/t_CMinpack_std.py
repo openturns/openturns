@@ -11,11 +11,11 @@ ot.Log.Show(ot.Log.ALL)
 
 
 def progress(percent):
-    sys.stderr.write('-- progress=' + str(percent) + '%\n')
+    sys.stderr.write("-- progress=" + str(percent) + "%\n")
 
 
 def stop():
-    sys.stderr.write('-- stop?\n')
+    sys.stderr.write("-- stop?\n")
     return False
 
 
@@ -25,7 +25,7 @@ m = 10
 x = [[0.5 + i] for i in range(m)]
 
 
-model = ot.SymbolicFunction(['a', 'b', 'c', 'x'], ['a + b * exp(c * x)'])
+model = ot.SymbolicFunction(["a", "b", "c", "x"], ["a + b * exp(c * x)"])
 p_ref = [2.8, 1.2, 0.5]  # a, b, c
 modelx = ot.ParametricFunction(model, [0, 1, 2], p_ref)
 y = modelx(x)

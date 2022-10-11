@@ -7,10 +7,8 @@ pointNumber = 251
 
 
 dist1D = ot.Normal(2.0, 4.0)
-dist2D = ot.Normal(ot.Point(2, 2.0),
-                ot.Point(2, 4.0), ot.CorrelationMatrix(2))
-distND = ot.Normal(ot.Point(5, 2.0),
-                ot.Point(5, 4.0), ot.CorrelationMatrix(5))
+dist2D = ot.Normal(ot.Point(2, 2.0), ot.Point(2, 4.0), ot.CorrelationMatrix(2))
+distND = ot.Normal(ot.Point(5, 2.0), ot.Point(5, 4.0), ot.CorrelationMatrix(5))
 # Check drawing methods for 1D distributions
 # PDF
 graphPDF = dist1D.drawPDF()
@@ -46,16 +44,13 @@ graphCDF = dist2D.drawCDF([101, 101])
 # Check drawing methods for ND distributions
 # PDF
 graphPDF = distND.drawMarginal1DPDF(2, -4.0, 4.0, 101)
-graphPDF = distND.drawMarginal2DPDF(
-    2, 3, [-4.0, -4.0], [4.0, 4.0], [101, 101])
+graphPDF = distND.drawMarginal2DPDF(2, 3, [-4.0, -4.0], [4.0, 4.0], [101, 101])
 # log-PDF
 graphLogPDF = distND.drawMarginal1DLogPDF(2, -4.0, 4.0, 101)
-graphLogPDF = distND.drawMarginal2DLogPDF(
-    2, 3, [-4.0, -4.0], [4.0, 4.0], [101, 101])
+graphLogPDF = distND.drawMarginal2DLogPDF(2, 3, [-4.0, -4.0], [4.0, 4.0], [101, 101])
 # CDF
 graphCDF = distND.drawMarginal1DCDF(2, -4.0, 4.0, 101)
-graphCDF = distND.drawMarginal2DCDF(
-    2, 3, [-4.0, -4.0], [4.0, 4.0], [101, 101])
+graphCDF = distND.drawMarginal2DCDF(2, 3, [-4.0, -4.0], [4.0, 4.0], [101, 101])
 # Quantile
 graphQuantile = dist1D.drawQuantile()
 graphQuantile = dist2D.drawQuantile()

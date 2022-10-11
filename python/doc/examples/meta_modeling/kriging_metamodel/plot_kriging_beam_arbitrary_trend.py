@@ -18,6 +18,7 @@ from openturns.usecases import cantilever_beam
 from matplotlib import pylab as plt
 import openturns.viewer as viewer
 import openturns as ot
+
 ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)
 
@@ -67,12 +68,11 @@ univariateFactory.getMeasure()
 # This interval does not correspond to the interval on which the input marginals are defined (we will come back to this topic later), but this will, anyway, create a consistent trend for the kriging.
 
 # %%
-polyColl = [univariateFactory]*dimension
+polyColl = [univariateFactory] * dimension
 
 # %%
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
-productBasis = ot.OrthogonalProductPolynomialFactory(
-    polyColl, enumerateFunction)
+productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 
 # %%
 functions = []
@@ -93,7 +93,7 @@ basis = ot.Basis(functions)
 # In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments.
 
 # %%
-covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
+covarianceModel = ot.SquaredExponential([1.0] * dimension, [1.0])
 
 # %%
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
@@ -128,8 +128,7 @@ result.getCovarianceModel()
 # We first create the polynomial basis which corresponds to the inputs.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    [cb.E, cb.F, cb.L, cb.I])
+multivariateBasis = ot.OrthogonalProductPolynomialFactory([cb.E, cb.F, cb.L, cb.I])
 
 # %%
 # Then we create the multivariate basis which has maximum degree equal to 2.
@@ -137,8 +136,7 @@ multivariateBasis = ot.OrthogonalProductPolynomialFactory(
 # %%
 totalDegree = 2
 enumerateFunction = multivariateBasis.getEnumerateFunction()
-numberOfTrendCoefficients = enumerateFunction.getStrataCumulatedCardinal(
-    totalDegree)
+numberOfTrendCoefficients = enumerateFunction.getStrataCumulatedCardinal(totalDegree)
 numberOfTrendCoefficients
 
 # %%

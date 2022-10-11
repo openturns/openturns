@@ -41,7 +41,7 @@ CorrelationAnalysis::CorrelationAnalysis()
 
 /* Standard constructor */
 CorrelationAnalysis::CorrelationAnalysis(const Sample & firstSample,
-                                         const Sample & secondSample)
+    const Sample & secondSample)
   : PersistentObject()
   , firstSample_(firstSample)
   , secondSample_(secondSample)
@@ -75,7 +75,7 @@ Point CorrelationAnalysis::computePearsonCorrelation() const
 
 /* Deprecated static Pearson correlation coefficient computation method */
 Point CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,
-                                              const Sample & outputSample)
+    const Sample & outputSample)
 {
   LOGWARN(OSS() << "CorrelationAnalysis::PearsonCorrelation(inputSample, outputSample) is deprecated, use CorrelationAnalysis::computePearsonCorrelation() instead");
   return CorrelationAnalysis(inputSample, outputSample).computePearsonCorrelation();
@@ -83,7 +83,7 @@ Point CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,
 
 // Compute the Pearson correlation coefficient with arguments
 Point CorrelationAnalysis::ComputePearsonCorrelation(const Sample & firstSample,
-                                                     const Sample & secondSample)
+    const Sample & secondSample)
 {
   const UnsignedInteger dimension = firstSample.getDimension();
   Point result(dimension);
@@ -104,7 +104,7 @@ Point CorrelationAnalysis::computeSpearmanCorrelation() const
 
 /* Deprecated static Spearman correlation coefficient computation method */
 Point CorrelationAnalysis::SpearmanCorrelation(const Sample & inputSample,
-                                               const Sample & outputSample)
+    const Sample & outputSample)
 {
   LOGWARN(OSS() << "CorrelationAnalysis::SpearmanCorrelation(inputSample, outputSample) is deprecated, use CorrelationAnalysis::computeSpearmanCorrelation() instead");
   return CorrelationAnalysis(inputSample, outputSample).computeSpearmanCorrelation();

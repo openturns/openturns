@@ -13,7 +13,7 @@ def test_one_input_one_output():
     sampleSize = 6
     dimension = 1
 
-    f = ot.SymbolicFunction(['x0'], ['x0 * sin(x0)'])
+    f = ot.SymbolicFunction(["x0"], ["x0 * sin(x0)"])
 
     X = ot.Sample(sampleSize, dimension)
     X2 = ot.Sample(sampleSize, dimension)
@@ -45,14 +45,12 @@ def test_one_input_one_output():
     covariance = result.getConditionalCovariance(X)
     covariancePoint = ot.Point(covariance.getImplementation())
     theoricalVariance = ot.Point(sampleSize * sampleSize)
-    ott.assert_almost_equal(covariance,
-                            ot.Matrix(sampleSize, sampleSize),
-                            0.0, 1e-1)
+    ott.assert_almost_equal(covariance, ot.Matrix(sampleSize, sampleSize), 0.0, 1e-1)
 
     # Covariance per marginal & extract variance component
     coll = result.getConditionalMarginalCovariance(X)
     var = [mat[0, 0] for mat in coll]
-    ott.assert_almost_equal(var, [0]*sampleSize, 0.0, 1e-1)
+    ott.assert_almost_equal(var, [0] * sampleSize, 0.0, 1e-1)
 
     # Variance per marginal
     var = result.getConditionalMarginalVariance(X)
@@ -71,13 +69,14 @@ def test_two_inputs_one_output():
     # Scale each direction
     inputSample *= 10.0
 
-    model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
+    model = ot.SymbolicFunction(["x", "y"], ["cos(0.5*x) + sin(y)"])
     outputSample = model(inputSample)
 
     # Validation
     sampleSize = 10
-    inputValidSample = ot.ComposedDistribution(
-        2 * [ot.Uniform(0, 10.0)]).getSample(sampleSize)
+    inputValidSample = ot.ComposedDistribution(2 * [ot.Uniform(0, 10.0)]).getSample(
+        sampleSize
+    )
     outputValidSample = model(inputValidSample)
 
     # 2) Definition of exponential model
@@ -88,8 +87,7 @@ def test_two_inputs_one_output():
     # 3) Basis definition
     basis = ot.ConstantBasisFactory(inputDimension).build()
     # Kriging algorithm
-    algo = ot.KrigingAlgorithm(inputSample, outputSample,
-                               covarianceModel, basis)
+    algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
     algo.run()
     result = algo.getResult()
     # Get meta model
@@ -98,26 +96,24 @@ def test_two_inputs_one_output():
 
     # 4) Errors
     # Interpolation
-    ott.assert_almost_equal(
-        outputSample,  metaModel(inputSample), 1, 3.0e-5)
+    ott.assert_almost_equal(outputSample, metaModel(inputSample), 1, 3.0e-5)
 
     # 5) Kriging variance is 0 on learning points
     covariance = result.getConditionalCovariance(inputSample)
-    ott.assert_almost_equal(
-        covariance, ot.SquareMatrix(len(inputSample)), 0.0, 1e-3)
+    ott.assert_almost_equal(covariance, ot.SquareMatrix(len(inputSample)), 0.0, 1e-3)
 
     # Covariance per marginal & extract variance component
     coll = result.getConditionalMarginalCovariance(inputSample)
     var = [mat[0, 0] for mat in coll]
-    ott.assert_almost_equal(var, [0]*len(var), 0.0, 1e-3)
+    ott.assert_almost_equal(var, [0] * len(var), 0.0, 1e-3)
 
     # Variance per marginal
     var = result.getConditionalMarginalVariance(inputSample)
-    ott.assert_almost_equal(var, ot.Sample(
-        inputSample.getSize(), 1), 0.0, 1e-3)
+    ott.assert_almost_equal(var, ot.Sample(inputSample.getSize(), 1), 0.0, 1e-3)
     # Estimation
-    ott.assert_almost_equal(outputValidSample,  metaModel(
-        inputValidSample), 1.e-1, 1e-1)
+    ott.assert_almost_equal(
+        outputValidSample, metaModel(inputValidSample), 1.0e-1, 1e-1
+    )
 
 
 def test_stationary_fun():

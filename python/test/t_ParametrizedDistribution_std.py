@@ -33,14 +33,30 @@ print("Point= ", point)
 eps = 1e-5
 DDF = distribution.computeDDF(point)
 print("ddf     =", DDF)
-print("ddf (FD)= %.6g" % ((distribution.computePDF(point + ot.Point(1, eps)) -
-                           distribution.computePDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
+print(
+    "ddf (FD)= %.6g"
+    % (
+        (
+            distribution.computePDF(point + ot.Point(1, eps))
+            - distribution.computePDF(point + ot.Point(1, -eps))
+        )
+        / (2.0 * eps)
+    )
+)
 LPDF = distribution.computeLogPDF(point)
 print("log pdf= %.6g" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6g" % PDF)
-print("pdf (FD)=%.6g" % ((distribution.computeCDF(point + ot.Point(1, eps)) -
-                          distribution.computeCDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
+print(
+    "pdf (FD)=%.6g"
+    % (
+        (
+            distribution.computeCDF(point + ot.Point(1, eps))
+            - distribution.computeCDF(point + ot.Point(1, -eps))
+        )
+        / (2.0 * eps)
+    )
+)
 CDF = distribution.computeCDF(point)
 print("cdf= %.6g" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
@@ -58,27 +74,35 @@ print("cdf(quantile)=", distribution.computeCDF(quantile))
 # Get 95% survival function
 inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      distribution.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f"
+    % distribution.computeSurvivalFunction(inverseSurvival)
+)
 
 # Confidence regions
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
-    0.95)
+    0.95
+)
 print("Minimum volume interval=", interval)
 print("threshold=", ot.Point(1, threshold))
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
 print("beta=", ot.Point(1, beta))
 interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)
+    0.95
+)
 print("Bilateral confidence interval=", interval)
 print("beta=", ot.Point(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, False)
+(
+    interval,
+    beta,
+) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
 print("Unilateral confidence interval (lower tail)=", interval)
 print("beta=", ot.Point(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, True)
+(
+    interval,
+    beta,
+) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
 print("Unilateral confidence interval (upper tail)=", interval)
 print("beta=", ot.Point(1, beta))
 

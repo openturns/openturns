@@ -17,5 +17,7 @@ for degree in degrees:
     print("\n")
     P = ot.MonomialFunction(degree)
     print("P :", P)
-    print("P(1) = %1.1f, dP(1) = %1.1f, d^2P(1) = %1.1f"
-          % (P(1.0), P.gradient(1.0), P.hessian(1.0)))
+    print(
+        "P(1) = %1.1f, dP(1) = %1.1f, d^2P(1) = %1.1f"
+        % (P(1.0), P.gradient(1.0), P.hessian(1.0))
+    )

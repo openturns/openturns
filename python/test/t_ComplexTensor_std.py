@@ -14,8 +14,7 @@ tensor0 = ot.ComplexTensor()
 print("tensor0 = ", repr(tensor0))
 
 # TEST NUMBER ONE : CONSTRUCTOR WITH SIZE, OPERATOR() AND STRING CONVERTER
-print(
-    "test number one : constructor with size, operator() and string converter")
+print("test number one : constructor with size, operator() and string converter")
 
 # Constructor with size
 tensor1 = ot.ComplexTensor(2, 2, 3)
@@ -36,14 +35,26 @@ tensor1[1, 1, 2] = 12 + 1.2j
 
 # String converter
 print("tensor1 = ", repr(tensor1))
-print("values = (%.6f, %.6fj)" % (tensor1[0, 0, 0].real, tensor1[0, 0, 0].imag), "  (%.6f, %.6fj)" % (tensor1[1, 0, 0].real, tensor1[1, 0, 0].imag), "  (%.6f, %.6fj)" % (tensor1[0, 1, 0].real, tensor1[0, 1, 0].imag), "  (%.6f, %.6fj)" % (tensor1[1, 1, 0].real, tensor1[1, 1, 0].imag), "  (%.6f, %.6fj)" % (tensor1[0, 0, 1].real, tensor1[0, 0, 1].imag), "  (%.6f, %.6fj)" % (tensor1[1, 0, 1].real, tensor1[
-      1, 0, 1].imag), "  (%.6f, %.6fj)" % (tensor1[0, 1, 1].real, tensor1[0, 1, 1].imag), "  (%.6f, %.6fj)" % (tensor1[1, 1, 1].real, tensor1[1, 1, 1].imag), "  (%.6f, %.6fj)" % (tensor1[0, 0, 2].real, tensor1[0, 0, 2].imag), "  (%.6f, %.6fj)" % (tensor1[1, 0, 2].real, tensor1[1, 0, 2].imag), "  (%.6f, %.6fj)" % (tensor1[0, 1, 2].real, tensor1[0, 1, 2].imag), "  (%.6f, %.6fj)" % (tensor1[1, 1, 2].real, tensor1[1, 1, 2].imag))
+print(
+    "values = (%.6f, %.6fj)" % (tensor1[0, 0, 0].real, tensor1[0, 0, 0].imag),
+    "  (%.6f, %.6fj)" % (tensor1[1, 0, 0].real, tensor1[1, 0, 0].imag),
+    "  (%.6f, %.6fj)" % (tensor1[0, 1, 0].real, tensor1[0, 1, 0].imag),
+    "  (%.6f, %.6fj)" % (tensor1[1, 1, 0].real, tensor1[1, 1, 0].imag),
+    "  (%.6f, %.6fj)" % (tensor1[0, 0, 1].real, tensor1[0, 0, 1].imag),
+    "  (%.6f, %.6fj)" % (tensor1[1, 0, 1].real, tensor1[1, 0, 1].imag),
+    "  (%.6f, %.6fj)" % (tensor1[0, 1, 1].real, tensor1[0, 1, 1].imag),
+    "  (%.6f, %.6fj)" % (tensor1[1, 1, 1].real, tensor1[1, 1, 1].imag),
+    "  (%.6f, %.6fj)" % (tensor1[0, 0, 2].real, tensor1[0, 0, 2].imag),
+    "  (%.6f, %.6fj)" % (tensor1[1, 0, 2].real, tensor1[1, 0, 2].imag),
+    "  (%.6f, %.6fj)" % (tensor1[0, 1, 2].real, tensor1[0, 1, 2].imag),
+    "  (%.6f, %.6fj)" % (tensor1[1, 1, 2].real, tensor1[1, 1, 2].imag),
+)
 
 # TEST NUMBER TWO : COPY CONSTRUCTOR AND STRING CONVERTER
 print("test number two : copy constructor and string converter")
 
 # Copy constructor
-tensor2 = (tensor1)
+tensor2 = tensor1
 
 # String converter
 print("tensor2 = ", repr(tensor2))
@@ -52,7 +63,7 @@ print("tensor2 = ", repr(tensor2))
 print("test number three : get dimensions methods")
 
 # Get dimension methods
-print("tensor1's nbRows = ", tensor1.getNbRows(), end=' ')
+print("tensor1's nbRows = ", tensor1.getNbRows(), end=" ")
 print("tensor1's nbColumns = ", tensor1.getNbColumns())
 print("tensor1's nbSheets = ", tensor1.getNbSheets())
 
@@ -81,4 +92,3 @@ sheet2[1, 1] = 0.8 - 0.5j
 print("sheet2 = ", repr(sheet2))
 tensor1.setSheet(1, sheet2)
 print("tensor1 = ", repr(tensor1))
-

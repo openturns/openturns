@@ -16,8 +16,13 @@ for i1 in range(nK):
     k = kMin + (kMax - kMin) * i1 / (nK - 1)
     for iX in range(nX):
         x = xMin + (xMax - xMin) * iX / (nX - 1)
-        print("pGamma(", k, ",  %.12g" % x, ")=%.6g" % ot.DistFunc.pGamma(
-            k, x), ", complementary=%.6g" % ot.DistFunc.pGamma(k, x, True))
+        print(
+            "pGamma(",
+            k,
+            ",  %.12g" % x,
+            ")=%.6g" % ot.DistFunc.pGamma(k, x),
+            ", complementary=%.6g" % ot.DistFunc.pGamma(k, x, True),
+        )
 # qGamma
 kMin = 0.2
 kMax = 5.0
@@ -29,8 +34,13 @@ for i1 in range(nK):
     k = kMin + (kMax - kMin) * i1 / (nK - 1)
     for iQ in range(nQ):
         q = qMin + (qMax - qMin) * iQ / (nQ - 1)
-        print("qGamma(", k, ",  %.12g" % q, ")=%.6g" % ot.DistFunc.qGamma(
-            k, q), ", complementary=%.6g" % ot.DistFunc.qGamma(k, q, True))
+        print(
+            "qGamma(",
+            k,
+            ",  %.12g" % q,
+            ")=%.6g" % ot.DistFunc.qGamma(k, q),
+            ", complementary=%.6g" % ot.DistFunc.qGamma(k, q, True),
+        )
 # rGamma
 kMin = 0.2
 kMax = 5.0
@@ -40,4 +50,3 @@ for i1 in range(nK):
     k = kMin + (kMax - kMin) * i1 / (nK - 1)
     for iR in range(nR):
         print("rGamma(", k, ")=%.6g" % ot.DistFunc.rGamma(k))
-

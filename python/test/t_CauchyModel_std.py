@@ -23,13 +23,16 @@ myModel = ot.CauchyModel(scale, amplitude)
 print("myModel = ", myModel)
 
 frequencyValue = 1.0
-print("spectral density matrix at f = ",
-      frequencyValue, " : ", myModel(frequencyValue))
+print("spectral density matrix at f = ", frequencyValue, " : ", myModel(frequencyValue))
 
 # Evaluation at time higher to check the decrease of the cauchy values
 frequencyValueHigh = 10.0
-print("spectral density matrix at f = ", frequencyValueHigh,
-      " : ", myModel(frequencyValueHigh))
+print(
+    "spectral density matrix at f = ",
+    frequencyValueHigh,
+    " : ",
+    myModel(frequencyValueHigh),
+)
 
 # Default dimension parameter to evaluate the model
 highDimension = 3
@@ -46,14 +49,18 @@ for index in range(highDimension):
 
 # check the cast
 mySecondOrderModel = ot.SpectralModel(
-    ot.CauchyModel(scale, amplitude, spatialCorrelation))
+    ot.CauchyModel(scale, amplitude, spatialCorrelation)
+)
 print("mySecondOrderModel = ", mySecondOrderModel)
 # checking the cast
 
 # Second order model  - dimension 10
 myHighModel = ot.CauchyModel(scale, amplitude, spatialCorrelation)
 print("myHighModel = ", myHighModel)
-print("spectral density matrix at f = ",
-      frequencyValue, " : ", myModel(frequencyValue))
-print("spectral density matrix at f = ", frequencyValueHigh,
-      " : ", myModel(frequencyValueHigh))
+print("spectral density matrix at f = ", frequencyValue, " : ", myModel(frequencyValue))
+print(
+    "spectral density matrix at f = ",
+    frequencyValueHigh,
+    " : ",
+    myModel(frequencyValueHigh),
+)

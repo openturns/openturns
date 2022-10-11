@@ -11,6 +11,7 @@ Fit a distribution from an input sample
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -19,8 +20,8 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 ot.RandomGenerator.SetSeed(0)
 dimension = 2
-input_names = ['x1', 'x2']
-formulas = ['cos(x1 + x2)', '(x2 + 1) * exp(x1)']
+input_names = ["x1", "x2"]
+formulas = ["cos(x1 + x2)", "(x2 + 1) * exp(x1)"]
 model = ot.SymbolicFunction(input_names, formulas)
 
 # %%
@@ -37,8 +38,7 @@ outputSample = model(inputSample)
 # First, we need to fit a distribution on the input sample. We can do this automatically with the Lilliefors test.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger(
-    "FittingTest-LillieforsMaximumSamplingSize", 100)
+ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100)
 
 # %%
 distribution = ot.FunctionalChaosAlgorithm.BuildDistribution(inputSample)

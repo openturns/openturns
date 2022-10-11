@@ -6,6 +6,7 @@ Test independence
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -58,17 +59,23 @@ resultPearson = ot.HypothesisTest.Pearson(sample1, sample2, 0.10)
 # We can then display the result of the test as a yes/no answer with
 # the `getBinaryQualityMeasure`. We can retrieve the p-value and the threshold with the `getPValue`
 # and `getThreshold` methods.
-print('Component is normal?', resultPearson.getBinaryQualityMeasure(),
-      'p-value=%.6g' % resultPearson.getPValue(),
-      'threshold=%.6g' % resultPearson.getThreshold())
+print(
+    "Component is normal?",
+    resultPearson.getBinaryQualityMeasure(),
+    "p-value=%.6g" % resultPearson.getPValue(),
+    "threshold=%.6g" % resultPearson.getThreshold(),
+)
 
 
 # %%
 # We can also use the Spearman test :
 resultSpearman = ot.HypothesisTest.Spearman(sample1, sample2, 0.10)
-print('Component is normal?', resultSpearman.getBinaryQualityMeasure(),
-      'p-value=%.6g' % resultSpearman.getPValue(),
-      'threshold=%.6g' % resultSpearman.getThreshold())
+print(
+    "Component is normal?",
+    resultSpearman.getBinaryQualityMeasure(),
+    "p-value=%.6g" % resultSpearman.getPValue(),
+    "threshold=%.6g" % resultSpearman.getThreshold(),
+)
 
 
 # %%
@@ -85,9 +92,12 @@ resultChi2 = ot.HypothesisTest.ChiSquared(sample1, sample2, 0.10)
 
 # %%
 # and display the results :
-print('Component is normal?', resultChi2.getBinaryQualityMeasure(),
-      'p-value=%.6g' % resultChi2.getPValue(),
-      'threshold=%.6g' % resultChi2.getThreshold())
+print(
+    "Component is normal?",
+    resultChi2.getBinaryQualityMeasure(),
+    "p-value=%.6g" % resultChi2.getPValue(),
+    "threshold=%.6g" % resultChi2.getThreshold(),
+)
 
 
 # %%
@@ -116,6 +126,11 @@ secondSample = sample[:, 2]
 # We test independence of each component of firstSample against the secondSample :
 test_results = ot.LinearModelTest.FullRegression(firstSample, secondSample)
 for i in range(len(test_results)):
-    print('Component', i, 'is independent?', test_results[i].getBinaryQualityMeasure(),
-          'p-value=%.6g' % test_results[i].getPValue(),
-          'threshold=%.6g' % test_results[i].getThreshold())
+    print(
+        "Component",
+        i,
+        "is independent?",
+        test_results[i].getBinaryQualityMeasure(),
+        "p-value=%.6g" % test_results[i].getPValue(),
+        "threshold=%.6g" % test_results[i].getThreshold(),
+    )

@@ -20,6 +20,7 @@ Metamodel of a field function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -44,15 +45,15 @@ process_X = ot.GaussianProcess(covariance_X, mesh)
 def drawKL(scaledKL, KLev, mesh, title="Scaled KL modes"):
     graph_modes = scaledKL.drawMarginal()
     graph_modes.setTitle(title + " scaled KL modes")
-    graph_modes.setXTitle('$x$')
-    graph_modes.setYTitle(r'$\sqrt{\lambda_i}\phi_i$')
+    graph_modes.setXTitle("$x$")
+    graph_modes.setYTitle(r"$\sqrt{\lambda_i}\phi_i$")
     data_ev = [[i, KLev[i]] for i in range(scaledKL.getSize())]
     graph_ev = ot.Graph()
     graph_ev.add(ot.Curve(data_ev))
     graph_ev.add(ot.Cloud(data_ev))
     graph_ev.setTitle(title + " KL eigenvalues")
-    graph_ev.setXTitle('$k$')
-    graph_ev.setYTitle(r'$\lambda_i$')
+    graph_ev.setXTitle("$k$")
+    graph_ev.setYTitle(r"$\lambda_i$")
     graph_ev.setAxes(True)
     graph_ev.setGrid(True)
     graph_ev.setLogScale(2)
@@ -68,8 +69,7 @@ def drawKL(scaledKL, KLev, mesh, title="Scaled KL modes"):
 # Karhunen-Loeve decomposition of the input process
 print("Compute the decomposition of the input process")
 threshold = 0.0001
-algo_X = ot.KarhunenLoeveP1Algorithm(
-    mesh, process_X.getCovarianceModel(), threshold)
+algo_X = ot.KarhunenLoeveP1Algorithm(mesh, process_X.getCovarianceModel(), threshold)
 algo_X.run()
 result_X = algo_X.getResult()
 phi_X = result_X.getScaledModesAsProcessSample()
@@ -160,30 +160,46 @@ dimension_xi_X = sample_xi_X.getDimension()
 dimension_xi_Y = sample_xi_Y.getDimension()
 enumerateFunction = ot.LinearEnumerateFunction(dimension_xi_X)
 basis = ot.OrthogonalProductPolynomialFactory(
-    [ot.HermiteFactory()] * dimension_xi_X, enumerateFunction)
+    [ot.HermiteFactory()] * dimension_xi_X, enumerateFunction
+)
 basisSize = enumerateFunction.getStrataCumulatedCardinal(degree)
 adaptive = ot.FixedStrategy(basis, basisSize)
 projection = ot.LeastSquaresStrategy(
-    ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.CorrectedLeaveOneOut()))
-ot.ResourceMap.SetAsScalar(
-    "LeastSquaresMetaModelSelection-ErrorThreshold", 1.0e-7)
+    ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.CorrectedLeaveOneOut())
+)
+ot.ResourceMap.SetAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 1.0e-7)
 algo_chaos = ot.FunctionalChaosAlgorithm(
-    sample_xi_X, sample_xi_Y, basis.getMeasure(), adaptive, projection)
+    sample_xi_X, sample_xi_Y, basis.getMeasure(), adaptive, projection
+)
 algo_chaos.run()
 result_chaos = algo_chaos.getResult()
 meta_model = result_chaos.getMetaModel()
-print("myConvolution=", myConvolution.getInputDimension(),
-      "->", myConvolution.getOutputDimension())
+print(
+    "myConvolution=",
+    myConvolution.getInputDimension(),
+    "->",
+    myConvolution.getOutputDimension(),
+)
 preprocessing = ot.KarhunenLoeveProjection(result_X)
-print("preprocessing=", preprocessing.getInputDimension(),
-      "->", preprocessing.getOutputDimension())
-print("meta_model=", meta_model.getInputDimension(),
-      "->", meta_model.getOutputDimension())
+print(
+    "preprocessing=",
+    preprocessing.getInputDimension(),
+    "->",
+    preprocessing.getOutputDimension(),
+)
+print(
+    "meta_model=", meta_model.getInputDimension(), "->", meta_model.getOutputDimension()
+)
 postprocessing = ot.KarhunenLoeveLifting(result_Y)
-print("postprocessing=", postprocessing.getInputDimension(),
-      "->", postprocessing.getOutputDimension())
+print(
+    "postprocessing=",
+    postprocessing.getInputDimension(),
+    "->",
+    postprocessing.getOutputDimension(),
+)
 meta_model_field = ot.FieldToFieldConnection(
-    postprocessing, ot.FieldToPointConnection(meta_model, preprocessing))
+    postprocessing, ot.FieldToPointConnection(meta_model, preprocessing)
+)
 
 
 # %%

@@ -43,8 +43,7 @@ point = ot.Point(dim, 0.2)
 # Show PDF and CDF of point
 pointPDF = copula.computePDF(point)
 pointCDF = copula.computeCDF(point)
-print("Point = ", repr(point), " pdf=%.6f" %
-      pointPDF, " cdf=%.6f" % pointCDF)
+print("Point = ", repr(point), " pdf=%.6f" % pointPDF, " cdf=%.6f" % pointCDF)
 
 # Get 50% quantile
 quantile = copula.computeQuantile(0.5)
@@ -58,8 +57,9 @@ print("Quantile=", repr(quantile))
 # Get 95% survival function
 inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      copula.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival)
+)
 print("entropy=%.6f" % copula.computeEntropy())
 
 # Confidence regions

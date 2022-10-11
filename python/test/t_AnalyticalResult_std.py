@@ -5,6 +5,7 @@ import math as m
 
 ot.TESTPREAMBLE()
 
+
 def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
@@ -14,18 +15,16 @@ def printPoint(point, digits):
         else:
             sep = ","
         if m.fabs(point[i]) < eps:
-            oss += sep + '%.6f' % m.fabs(point[i])
+            oss += sep + "%.6f" % m.fabs(point[i])
         else:
-            oss += sep + '%.6f' % point[i]
+            oss += sep + "%.6f" % point[i]
         sep = ","
     oss += "]"
     return oss
 
 
-
 # We create a numerical math function
-myFunction = ot.SymbolicFunction(
-    ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
+myFunction = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
 dim = myFunction.getInputDimension()
 # We create a normal distribution point of dimension 1
@@ -53,20 +52,27 @@ result = ot.AnalyticalResult(sigma, myEvent, False)
 print("result=", result)
 
 digits = 5
-print("standard space design point=", printPoint(
-    result.getStandardSpaceDesignPoint(), digits))
-print("physical space design point=", printPoint(
-    result.getPhysicalSpaceDesignPoint(), digits))
-print("is standard point origin in failure space? ",
-      result.getIsStandardPointOriginInFailureSpace())
-print("importance factors=", printPoint(
-    result.getImportanceFactors(), digits))
-print("importance factors(classical)=", printPoint(
-    result.getImportanceFactors(ot.AnalyticalResult.CLASSICAL), digits))
-print("importance factors(physical) =", printPoint(
-    result.getImportanceFactors(ot.AnalyticalResult.PHYSICAL), digits))
-print("Hasofer reliability index=%.5f" %
-      result.getHasoferReliabilityIndex())
+print(
+    "standard space design point=",
+    printPoint(result.getStandardSpaceDesignPoint(), digits),
+)
+print(
+    "physical space design point=",
+    printPoint(result.getPhysicalSpaceDesignPoint(), digits),
+)
+print(
+    "is standard point origin in failure space? ",
+    result.getIsStandardPointOriginInFailureSpace(),
+)
+print("importance factors=", printPoint(result.getImportanceFactors(), digits))
+print(
+    "importance factors(classical)=",
+    printPoint(result.getImportanceFactors(ot.AnalyticalResult.CLASSICAL), digits),
+)
+print(
+    "importance factors(physical) =",
+    printPoint(result.getImportanceFactors(ot.AnalyticalResult.PHYSICAL), digits),
+)
+print("Hasofer reliability index=%.5f" % result.getHasoferReliabilityIndex())
 print("graph importance factors=", result.drawImportanceFactors())
-print("graph sensitivity=",
-      result.drawHasoferReliabilityIndexSensitivity())
+print("graph sensitivity=", result.drawHasoferReliabilityIndexSensitivity())

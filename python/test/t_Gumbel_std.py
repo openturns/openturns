@@ -36,8 +36,19 @@ eps = 1e-5
 DDF = distribution.computeDDF(point)
 print("ddf     =", repr(DDF))
 # by the finite difference technique
-print("ddf (FD)=", repr(ot.Point(1, (distribution.computePDF(
-    point + ot.Point(1, eps)) - distribution.computePDF(point + ot.Point(1, -eps))) / (2.0 * eps))))
+print(
+    "ddf (FD)=",
+    repr(
+        ot.Point(
+            1,
+            (
+                distribution.computePDF(point + ot.Point(1, eps))
+                - distribution.computePDF(point + ot.Point(1, -eps))
+            )
+            / (2.0 * eps),
+        )
+    ),
+)
 
 # PDF value
 LPDF = distribution.computeLogPDF(point)
@@ -45,8 +56,16 @@ print("log pdf=%.6f" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
 # by the finite difference technique from CDF
-print("pdf (FD)=%.6f" % ((distribution.computeCDF(point + ot.Point(1, eps)) -
-                          distribution.computeCDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
+print(
+    "pdf (FD)=%.6f"
+    % (
+        (
+            distribution.computeCDF(point + ot.Point(1, eps))
+            - distribution.computeCDF(point + ot.Point(1, -eps))
+        )
+        / (2.0 * eps)
+    )
+)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -57,10 +76,14 @@ PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", repr(PDFgr))
 # by the finite difference technique
 PDFgrFD = ot.Point(2)
-PDFgrFD[0] = (ot.Gumbel(distribution.getBeta() + eps, distribution.getGamma()).computePDF(point)
-              - ot.Gumbel(distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps)
-PDFgrFD[1] = (ot.Gumbel(distribution.getBeta(), distribution.getGamma() + eps).computePDF(point)
-              - ot.Gumbel(distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps)
+PDFgrFD[0] = (
+    ot.Gumbel(distribution.getBeta() + eps, distribution.getGamma()).computePDF(point)
+    - ot.Gumbel(distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)
+) / (2.0 * eps)
+PDFgrFD[1] = (
+    ot.Gumbel(distribution.getBeta(), distribution.getGamma() + eps).computePDF(point)
+    - ot.Gumbel(distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)
+) / (2.0 * eps)
 print("pdf gradient (FD)=", repr(PDFgrFD))
 
 # derivative of the PDF with regards the parameters of the distribution
@@ -68,10 +91,14 @@ CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", repr(CDFgr))
 # by the finite difference technique
 CDFgrFD = ot.Point(2)
-CDFgrFD[0] = (ot.Gumbel(distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point)
-              - ot.Gumbel(distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
-CDFgrFD[1] = (ot.Gumbel(distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point)
-              - ot.Gumbel(distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps)
+CDFgrFD[0] = (
+    ot.Gumbel(distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point)
+    - ot.Gumbel(distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)
+) / (2.0 * eps)
+CDFgrFD[1] = (
+    ot.Gumbel(distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point)
+    - ot.Gumbel(distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)
+) / (2.0 * eps)
 print("cdf gradient (FD)=", repr(CDFgrFD))
 
 # quantile
@@ -81,29 +108,36 @@ print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
 # Get 95% survival function
 inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      distribution.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f"
+    % distribution.computeSurvivalFunction(inverseSurvival)
+)
 print("entropy=%.6f" % distribution.computeEntropy())
 
 # Confidence regions
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
-    0.95)
+    0.95
+)
 print("Minimum volume interval=", interval)
 print("threshold=", ot.Point(1, threshold))
-levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
-    0.95)
+levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
 print("beta=", ot.Point(1, beta))
 interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)
+    0.95
+)
 print("Bilateral confidence interval=", interval)
 print("beta=", ot.Point(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, False)
+(
+    interval,
+    beta,
+) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
 print("Unilateral confidence interval (lower tail)=", interval)
 print("beta=", ot.Point(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, True)
+(
+    interval,
+    beta,
+) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
 print("Unilateral confidence interval (upper tail)=", interval)
 print("beta=", ot.Point(1, beta))
 

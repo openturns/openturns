@@ -15,10 +15,10 @@ aCollection = ot.DistributionCollection()
 
 aCollection.add(ot.Normal(meanPoint, sigma, ot.IdentityMatrix(dimension)))
 sample.add(meanPoint)
-meanPoint += [1.0]*dimension
+meanPoint += [1.0] * dimension
 aCollection.add(ot.Normal(meanPoint, sigma, ot.IdentityMatrix(dimension)))
 sample.add(meanPoint)
-meanPoint += [1.0]*dimension
+meanPoint += [1.0] * dimension
 aCollection.add(ot.Normal(meanPoint, sigma, ot.IdentityMatrix(dimension)))
 sample.add(meanPoint)
 
@@ -41,13 +41,12 @@ print("oneRealization=", repr(oneRealization))
 # Test for sampling
 size = 100
 oneSample = distribution.getSample(size)
-print("oneSample first=", repr(
-    oneSample[0]), " last=", repr(oneSample[size - 1]))
+print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
 print("mean=", repr(oneSample.computeMean()))
 print("covariance=", repr(oneSample.computeCovariance()))
 
 # Define a point
-point = [1.0]*distribution.getDimension()
+point = [1.0] * distribution.getDimension()
 print("Point= ", repr(point))
 
 # Show PDF and CDF of point
@@ -64,8 +63,9 @@ for i in range(dimension):
     left[i] += eps
     right = ot.Point(point)
     right[i] -= eps
-    ddfFD[i] = (distribution.computePDF(left) -
-                distribution.computePDF(right)) / (2.0 * eps)
+    ddfFD[i] = (distribution.computePDF(left) - distribution.computePDF(right)) / (
+        2.0 * eps
+    )
 print("ddf (FD)=", repr(ddfFD))
 
 # PDF value
@@ -75,9 +75,17 @@ PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
 print("pdf (ref)=%.6f" % distributionRef.computePDF(point))
 # by the finite difference technique from CDF
-if (dimension == 1):
-    print("pdf (FD)=%.6f" % ((distribution.computeCDF(point + Point(1, eps)) -
-                              distribution.computeCDF(point + Point(1, -eps))) / (2.0 * eps)))
+if dimension == 1:
+    print(
+        "pdf (FD)=%.6f"
+        % (
+            (
+                distribution.computeCDF(point + Point(1, eps))
+                - distribution.computeCDF(point + Point(1, -eps))
+            )
+            / (2.0 * eps)
+        )
+    )
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -94,28 +102,38 @@ print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
 # Get 95% survival function
 inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      distribution.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f"
+    % distribution.computeSurvivalFunction(inverseSurvival)
+)
 # Takes too much time
 # print("entropy=%.6f" % distribution.computeEntropy())
 # Confidence regions
 if distribution.getDimension() <= 2:
     threshold = ot.Point()
-    print("Minimum volume interval=",
-          distribution.computeMinimumVolumeInterval(0.95, threshold))
+    print(
+        "Minimum volume interval=",
+        distribution.computeMinimumVolumeInterval(0.95, threshold),
+    )
     print("threshold=", threshold)
     beta = Point()
     levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
     print("Minimum volume level set=", levelSet)
     print("beta=", beta)
-    print("Bilateral confidence interval=",
-          distribution.computeBilateralConfidenceInterval(0.95, beta))
+    print(
+        "Bilateral confidence interval=",
+        distribution.computeBilateralConfidenceInterval(0.95, beta),
+    )
     print("beta=", beta)
-    print("Unilateral confidence interval (lower tail)=",
-          distribution.computeUnilateralConfidenceInterval(0.95, False, beta))
+    print(
+        "Unilateral confidence interval (lower tail)=",
+        distribution.computeUnilateralConfidenceInterval(0.95, False, beta),
+    )
     print("beta=", beta)
-    print("Unilateral confidence interval (upper tail)=",
-          distribution.computeUnilateralConfidenceInterval(0.95, True, beta))
+    print(
+        "Unilateral confidence interval (upper tail)=",
+        distribution.computeUnilateralConfidenceInterval(0.95, True, beta),
+    )
     print("beta=", beta)
 
 x = [1.1, 1.6, 2.2]
@@ -134,15 +152,21 @@ condQuantile = distribution.computeConditionalQuantile(q[0], y[0])
 print("cond. quantile=%.5f" % condQuantile)
 condQuantiles = distribution.computeConditionalQuantile(q, y)
 print("cond. quantile (vect)=", condQuantiles)
-print("cond. cdf(cond. quantile)=",
-      distribution.computeConditionalCDF(condQuantiles, y))
+print(
+    "cond. cdf(cond. quantile)=", distribution.computeConditionalCDF(condQuantiles, y)
+)
 pt = ot.Point([i + 1.5 for i in range(dimension)])
-print("sequential conditional PDF=",
-      distribution.computeSequentialConditionalPDF(point))
+print(
+    "sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point)
+)
 resCDF = distribution.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
-print("sequential conditional quantile(", resCDF, ")=",
-      distribution.computeSequentialConditionalQuantile(resCDF))
+print(
+    "sequential conditional quantile(",
+    resCDF,
+    ")=",
+    distribution.computeSequentialConditionalQuantile(resCDF),
+)
 
 mean = distribution.getMean()
 print("mean=", repr(mean))

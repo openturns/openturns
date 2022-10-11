@@ -7,7 +7,8 @@ ot.TESTPREAMBLE()
 
 # Create an instance
 myFunc = ot.PointToPointEvaluation(
-    ot.SymbolicFunction("x", "sin(x)"), ot.SymbolicFunction("x", "cos(x)"))
+    ot.SymbolicFunction("x", "sin(x)"), ot.SymbolicFunction("x", "cos(x)")
+)
 
 print("myFunc=", myFunc)
 # Get the input and output description
@@ -22,7 +23,7 @@ print("point=", point)
 print("myFunc(point)=", myFunc(point))
 print("called ", myFunc.getCallsNumber(), " times")
 # Evaluation on a sample
-sample = [[1.0] * myFunc.getInputDimension()]*10
+sample = [[1.0] * myFunc.getInputDimension()] * 10
 print("sample=", sample)
 print("myFunc(sample)=", myFunc(sample))
 # Get the number of calls

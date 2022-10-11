@@ -82,11 +82,11 @@ LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample & inputS
 
 /** Oldest constructor (for compatibility) */
 LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample &inputSample,
-     const Basis &basis,
-     const Sample &outputSample,
-     const Indices &minimalIndices,
-     const Direction direction,
-     const Indices &startIndices)
+    const Basis &basis,
+    const Sample &outputSample,
+    const Indices &minimalIndices,
+    const Direction direction,
+    const Indices &startIndices)
   : LinearModelStepwiseAlgorithm(inputSample, outputSample, basis, minimalIndices, direction, startIndices)
 {
   LOGWARN(OSS() << "LinearModelStepwiseAlgorithm(inputSample, basis, outputSample, minimalIndices, direction, startIndices) is deprecated");

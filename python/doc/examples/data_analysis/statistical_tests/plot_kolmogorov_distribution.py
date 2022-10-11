@@ -9,7 +9,7 @@ Kolmogorov-Smirnov : get the statistics distribution
 # We want to test the hypothesis that this sample has the `Uniform(0, 1)`
 # distribution.
 # The K.S. distribution is first plotted in the case where the
-# parameters of the uniform distribution are known.
+# parameters of the uniform distribution are known.
 # Then we plot the distribution when the parameters of the uniform
 # distribution are estimated from the sample.
 #
@@ -22,11 +22,11 @@ Kolmogorov-Smirnov : get the statistics distribution
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-x = [0.9374, 0.7629, 0.4771, 0.5111, 0.8701,
-     0.0684, 0.7375, 0.5615, 0.2835, 0.2508]
+x = [0.9374, 0.7629, 0.4771, 0.5111, 0.8701, 0.0684, 0.7375, 0.5615, 0.2835, 0.2508]
 sample = ot.Sample([[xi] for xi in x])
 
 # %%
@@ -54,15 +54,15 @@ view = viewer.View(graph)
 def computeKSStatistics(sample, distribution):
     sample = sample.sort()
     n = sample.getSize()
-    D = 0.
+    D = 0.0
     index = -1
-    D_previous = 0.
+    D_previous = 0.0
     for i in range(n):
         F = distribution.computeCDF(sample[i])
-        Fminus = F - float(i)/n
-        Fplus = float(i+1)/n - F
+        Fminus = F - float(i) / n
+        Fplus = float(i + 1) / n - F
         D = max(Fminus, Fplus, D)
-        if (D > D_previous):
+        if D > D_previous:
             index = i
             D_previous = D
     return D
@@ -132,9 +132,9 @@ def dKolmogorov(x, samplesize):
 
 # %%
 def linearSample(xmin, xmax, npoints):
-    '''Returns a sample created from a regular grid
-    from xmin to xmax with npoints points.'''
-    step = (xmax-xmin)/(npoints-1)
+    """Returns a sample created from a regular grid
+    from xmin to xmax with npoints points."""
+    step = (xmax - xmin) / (npoints - 1)
     rg = ot.RegularGrid(xmin, step, npoints)
     vertices = rg.getVertices()
     return vertices

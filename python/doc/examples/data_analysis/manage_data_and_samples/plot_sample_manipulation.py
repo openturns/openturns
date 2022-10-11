@@ -7,6 +7,7 @@ Sample manipulation
 
 # %%
 import openturns as ot
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -20,7 +21,7 @@ ot.Log.Show(ot.Log.NONE)
 
 # input parameters
 inputDist = ot.ComposedDistribution([ot.Normal()] * 2, ot.IndependentCopula(2))
-inputDist.setDescription(['X1', 'X2'])
+inputDist.setDescription(["X1", "X2"])
 
 # %%
 # We create a vector from the 2D-distribution created before :

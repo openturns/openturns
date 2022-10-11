@@ -13,8 +13,10 @@ result = algo.getResult()
 lifting = ot.KarhunenLoeveLifting(result)
 # Construction based on a Function followed by a PointToFieldFunction
 dimension = lifting.getInputDimension()
-function = ot.SymbolicFunction(ot.Description.BuildDefault(
-    dimension, "x"), ot.Description.BuildDefault(dimension, "x"))
+function = ot.SymbolicFunction(
+    ot.Description.BuildDefault(dimension, "x"),
+    ot.Description.BuildDefault(dimension, "x"),
+)
 # Create an instance
 myFunc = ot.PointToFieldConnection(lifting, function)
 
@@ -51,5 +53,3 @@ print("point=", point)
 print("myFunc(point)=", myFunc(point))
 # Get the number of calls
 print("called ", myFunc.getCallsNumber(), " times")
-
-

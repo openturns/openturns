@@ -6,7 +6,7 @@ ot.RandomGenerator.SetSeed(0)
 dimension = 2
 R = ot.CorrelationMatrix(dimension)
 R[0, 1] = 0.8
-distribution = ot.Normal([3.] * dimension, [2.] * dimension, R)
+distribution = ot.Normal([3.0] * dimension, [2.0] * dimension, R)
 size = 100
 sample = distribution.getSample(size)
 firstSample = ot.Sample(size, 1)
@@ -19,4 +19,4 @@ lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
 
 drawLinearModelResidual = ot.VisualTest.DrawLinearModelResidual(lmtest)
 
-View(drawLinearModelResidual, figure_kw={'figsize': (5, 5)})
+View(drawLinearModelResidual, figure_kw={"figsize": (5, 5)})

@@ -45,6 +45,7 @@ import pylab as pl
 import openturns.viewer
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -72,8 +73,8 @@ def plotXvsY(sampleX, sampleY, figsize=(15, 3)):
     inputdescr = sampleX.getDescription()
     fig = pl.figure(figsize=figsize)
     for i in range(dimX):
-        ax = fig.add_subplot(1, dimX, i+1)
-        graph = ot.Graph('', inputdescr[i], 'Y', True, '')
+        ax = fig.add_subplot(1, dimX, i + 1)
+        graph = ot.Graph("", inputdescr[i], "Y", True, "")
         cloud = ot.Cloud(sampleX[:, i], sampleY)
         graph.add(cloud)
         _ = ot.viewer.View(graph, figure=fig, axes=[ax])
@@ -117,8 +118,7 @@ outputDesign = im.model(inputDesign)
 # Then we estimate the Sobol' indices with the `SaltelliSensitivityAlgorithm`.
 
 # %%
-sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(
-    inputDesign, outputDesign, size)
+sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign, size)
 
 # %%
 # The `getFirstOrderIndices` and `getTotalOrderIndices` method respectively return estimates of all first order and total Sobol' indices.
@@ -159,14 +159,13 @@ outputDesign = im.model(inputDesign)
 # We see that 8000 function evaluations are now required; that is 3000 more evaluations than in the previous situation.
 
 # %%
-sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(
-    inputDesign, outputDesign, size)
+sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign, size)
 
 # %%
 second_order = sensitivityAnalysis.getSecondOrderIndices()
 for i in range(im.dim):
     for j in range(i):
-        print('2nd order indice (%d,%d)=%g' % (i, j, second_order[i, j]))
+        print("2nd order indice (%d,%d)=%g" % (i, j, second_order[i, j]))
 
 # %%
 # This shows that the only significant interaction is the one between :math:`X_1` and :math:`X_3` (beware of Python's index shift: 0 denotes the first input variable).
@@ -187,8 +186,7 @@ for i in range(im.dim):
 # In order to compare the results with another method, we use the `MartinezSensitivityAlgorithm` class.
 
 # %%
-sensitivityAnalysis = ot.MartinezSensitivityAlgorithm(
-    inputDesign, outputDesign, size)
+sensitivityAnalysis = ot.MartinezSensitivityAlgorithm(inputDesign, outputDesign, size)
 
 # %%
 graph = sensitivityAnalysis.draw()

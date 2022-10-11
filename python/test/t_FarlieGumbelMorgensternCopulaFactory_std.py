@@ -13,20 +13,21 @@ print("distribution=", repr(distribution))
 print("Estimated distribution=", repr(estimatedDistribution))
 estimatedDistribution = factory.build()
 print("Default distribution=", estimatedDistribution)
-estimatedDistribution = factory.build(
-    distribution.getParameter())
+estimatedDistribution = factory.build(distribution.getParameter())
 print("Distribution from parameters=", estimatedDistribution)
 estimatedFarlieGumbelMorgensternCopula = factory.buildAsFarlieGumbelMorgensternCopula(
-    sample)
-print("FarlieGumbelMorgensternCopula          =", distribution)
-print("Estimated farlieGumbelMorgensternCopula=",
-      estimatedFarlieGumbelMorgensternCopula)
-estimatedFarlieGumbelMorgensternCopula = factory.buildAsFarlieGumbelMorgensternCopula(
+    sample
 )
-print("Default farlieGumbelMorgensternCopula=",
-      estimatedFarlieGumbelMorgensternCopula)
+print("FarlieGumbelMorgensternCopula          =", distribution)
+print(
+    "Estimated farlieGumbelMorgensternCopula=", estimatedFarlieGumbelMorgensternCopula
+)
+estimatedFarlieGumbelMorgensternCopula = factory.buildAsFarlieGumbelMorgensternCopula()
+print("Default farlieGumbelMorgensternCopula=", estimatedFarlieGumbelMorgensternCopula)
 estimatedFarlieGumbelMorgensternCopula = factory.buildAsFarlieGumbelMorgensternCopula(
-    distribution.getParameter())
-print("FarlieGumbelMorgensternCopula from parameters=",
-      estimatedFarlieGumbelMorgensternCopula)
-
+    distribution.getParameter()
+)
+print(
+    "FarlieGumbelMorgensternCopula from parameters=",
+    estimatedFarlieGumbelMorgensternCopula,
+)

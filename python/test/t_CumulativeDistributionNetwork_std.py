@@ -47,11 +47,12 @@ quantile = distribution.computeQuantile(0.95)
 print("quantile=", quantile)
 print("cdf(quantile)= %.12g" % distribution.computeCDF(quantile))
 # Get 95% survival function
-inverseSurvival = ot.Point(
-    distribution.computeInverseSurvivalFunction(0.95))
+inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      distribution.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f"
+    % distribution.computeSurvivalFunction(inverseSurvival)
+)
 # Confidence regions. Some computations take ages so they are commented
 if distribution.getDimension() <= 2:
     # interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
@@ -63,12 +64,20 @@ if distribution.getDimension() <= 2:
     # interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
     # print("Bilateral confidence interval=", interval)
     # print("beta=", ot.Point(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-        0.95, False)
+    (
+        interval,
+        beta,
+    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, False
+    )
     print("Unilateral confidence interval (lower tail)=", interval)
     print("beta=", ot.Point(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-        0.95, True)
+    (
+        interval,
+        beta,
+    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True
+    )
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=", ot.Point(1, beta))
 
@@ -106,8 +115,9 @@ ref = ot.CumulativeDistributionNetwork([atom_ref] * 2, graph_ref)
 print(ref)
 print(distribution.getMarginal([0, 1]))
 X = atom_ref.getSample(10000)
-error = (ref.computeCDF(X) - distribution.getMarginal(
-    [0, 1]).computeCDF(X)).computeStandardDeviation()
+error = (
+    ref.computeCDF(X) - distribution.getMarginal([0, 1]).computeCDF(X)
+).computeStandardDeviation()
 ott.assert_almost_equal(error[0], 0.0)
 
 # test getMarginal with full indices

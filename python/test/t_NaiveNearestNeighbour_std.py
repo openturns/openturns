@@ -9,7 +9,7 @@ ot.TESTPREAMBLE()
 
 sample = ot.Normal(3).getSample(1000)
 tree = ot.NaiveNearestNeighbour(sample)
-print('tree=', tree)
+print("tree=", tree)
 
 test = ot.Normal(3).getSample(100)
 

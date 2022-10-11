@@ -11,15 +11,11 @@ f = ot.VertexValuePointToFieldFunction(g, grid)
 
 print("f=", f)
 # Get the input and output description
-print("f input description=",
-      f.getInputDescription())
-print("f output description=",
-      f.getOutputDescription())
+print("f input description=", f.getInputDescription())
+print("f output description=", f.getOutputDescription())
 # Get the input and output dimension, based on description
-print("f input dimension=",
-      f.getInputDimension())
-print("f output dimension=",
-      f.getOutputDimension())
+print("f input dimension=", f.getInputDimension())
+print("f output dimension=", f.getOutputDimension())
 x = [4.0]
 print("input=", x)
 print("output time series=", f(x))

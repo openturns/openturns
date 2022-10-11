@@ -15,6 +15,7 @@ Specify a simulation algorithm
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -30,7 +31,7 @@ distribution = ot.ComposedDistribution(marginals)
 # Create the model.
 
 # %%
-model = ot.SymbolicFunction(['R', 'F'], ['R-F/(pi_*100.0)'])
+model = ot.SymbolicFunction(["R", "F"], ["R-F/(pi_*100.0)"])
 
 # %%
 # Create the event whose probability we want to estimate.
@@ -87,7 +88,7 @@ algo.setConvergenceStrategy(ot.Compact(N))
 def progress(p):
     if p >= progress.t:
         progress.t += 10.0
-        print('progress=', p, '%')
+        print("progress=", p, "%")
     return False
 
 
@@ -115,4 +116,4 @@ algo.run()
 # %%
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
-print('Pf=', probability)
+print("Pf=", probability)

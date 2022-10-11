@@ -80,8 +80,8 @@ print("test : multiplication with a numerical point method")
 
 # Create the numerical point
 pt = ot.Point()
-pt.add(1.)
-pt.add(2.)
+pt.add(1.0)
+pt.add(2.0)
 print("pt = ", repr(pt))
 
 # Check the product method
@@ -92,7 +92,7 @@ print("ptResult = ", repr(ptResult))
 print("test : multiplication and division by a numerical scalar methods")
 
 # Check the multiplication method
-s = 3. + 2j
+s = 3.0 + 2j
 scalprod = hermitianMatrix1 * s
 
 print("scalprod = ", repr(scalprod))

@@ -28,10 +28,16 @@ print("mean=", repr(oneSample.computeMean()))
 print("covariance=", repr(oneSample.computeCovariance()))
 
 print("support=\n" + str(distribution.getSupport()))
-interval = ot.Interval(ot.Point(distribution.getDimension(), 1.0),
-                    ot.Point(distribution.getDimension(), 3.0))
-print("support restricted to the interval=\n" + str(interval) +
-      " gives=\n" + str(distribution.getSupport(interval)))
+interval = ot.Interval(
+    ot.Point(distribution.getDimension(), 1.0),
+    ot.Point(distribution.getDimension(), 3.0),
+)
+print(
+    "support restricted to the interval=\n"
+    + str(interval)
+    + " gives=\n"
+    + str(distribution.getSupport(interval))
+)
 
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
@@ -44,8 +50,12 @@ PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
 CDF = distribution.computeCDF(point)
 print("cdf=%.5f" % CDF)
-proba = distribution.computeProbability(ot.Interval([i for i in range(
-    distribution.getDimension())], [i+1.0 for i in range(distribution.getDimension())]))
+proba = distribution.computeProbability(
+    ot.Interval(
+        [i for i in range(distribution.getDimension())],
+        [i + 1.0 for i in range(distribution.getDimension())],
+    )
+)
 print("probability=%.5f" % proba)
 quantile = distribution.computeQuantile(0.95)
 print("quantile=", repr(quantile))

@@ -42,13 +42,12 @@ quadratic[2, 1, 1] = -11.0
 quadratic[2, 2, 0] = 12.0
 quadratic[2, 2, 1] = -12.0
 
-myFunction = ot.QuadraticEvaluation(
-    center, constant, linear, quadratic)
-myFunction.setName('quadraticFunction')
+myFunction = ot.QuadraticEvaluation(center, constant, linear, quadratic)
+myFunction.setName("quadraticFunction")
 inPoint = ot.Point(inputDimension)
 inPoint[0] = 7.0
 inPoint[1] = 8.0
 inPoint[2] = 9.0
 outPoint = myFunction(inPoint)
-print('myFunction=', repr(myFunction))
-print(myFunction.getName(), '( ', repr(inPoint), ' ) = ', repr(outPoint))
+print("myFunction=", repr(myFunction))
+print(myFunction.getName(), "( ", repr(inPoint), " ) = ", repr(outPoint))

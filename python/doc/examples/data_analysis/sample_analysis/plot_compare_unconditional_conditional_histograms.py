@@ -20,6 +20,7 @@ from openturns.usecases import flood_model
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -54,12 +55,14 @@ sampleQ = inputSample[:, 0]
 # %%
 
 
-def computeConditionnedSample(sample, alpha=0.9, criteriaComponent=None, selectedComponent=0):
-    '''
+def computeConditionnedSample(
+    sample, alpha=0.9, criteriaComponent=None, selectedComponent=0
+):
+    """
     Return values from the selectedComponent-th component of the sample.
     Selects the values according to the alpha-level quantile of
     the criteriaComponent-th component of the sample.
-    '''
+    """
     dim = sample.getDimension()
     if criteriaComponent is None:
         criteriaComponent = dim - 1
@@ -67,10 +70,8 @@ def computeConditionnedSample(sample, alpha=0.9, criteriaComponent=None, selecte
     quantiles = sortedSample.computeQuantilePerComponent(alpha)
     quantileValue = quantiles[criteriaComponent]
     sortedSampleCriteria = sortedSample[:, criteriaComponent]
-    indices = np.where(
-        np.array(sortedSampleCriteria.asPoint()) > quantileValue)[0]
-    conditionnedSortedSample = sortedSample[int(
-        indices[0]):, selectedComponent]
+    indices = np.where(np.array(sortedSampleCriteria.asPoint()) > quantileValue)[0]
+    conditionnedSortedSample = sortedSample[int(indices[0]) :, selectedComponent]
     return conditionnedSortedSample
 
 
@@ -89,7 +90,8 @@ alpha = 0.9
 criteriaComponent = 4
 selectedComponent = 0
 conditionnedSampleQ = computeConditionnedSample(
-    sample, alpha, criteriaComponent, selectedComponent)
+    sample, alpha, criteriaComponent, selectedComponent
+)
 
 # %%
 # We could as well use:
@@ -105,7 +107,8 @@ conditionnedSampleQ = computeConditionnedSample(
 first = histogram.getFirst()
 width = histogram.getWidth()
 conditionnedHistogram = ot.HistogramFactory().buildAsHistogram(
-    conditionnedSampleQ, first, width)
+    conditionnedSampleQ, first, width
+)
 
 # %%
 # Then creates a graphics with the unconditional and the conditional histograms.

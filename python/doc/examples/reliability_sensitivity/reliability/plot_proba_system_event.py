@@ -83,9 +83,9 @@ import openturns as ot
 def buildNormal(b, t, mu_S, covariance, delta_t=1e-5):
     sigma = ot.CovarianceMatrix(2)
     sigma[0, 0] = covariance(t, t)[0, 0]
-    sigma[0, 1] = covariance(t, t+delta_t)[0, 0]
-    sigma[1, 1] = covariance(t+delta_t, t+delta_t)[0, 0]
-    return ot.Normal([b*t + mu_S, b*(t+delta_t) + mu_S], sigma)
+    sigma[0, 1] = covariance(t, t + delta_t)[0, 0]
+    sigma[1, 1] = covariance(t + delta_t, t + delta_t)[0, 0]
+    return ot.Normal([b * t + mu_S, b * (t + delta_t) + mu_S], sigma)
 
 
 # %%
@@ -113,7 +113,9 @@ def getXEvent(b, t, mu_S, covariance, R, delta_t):
 
 
 # %%
-def computeCrossingProbability_MonteCarlo(b, t, mu_S, covariance, R, delta_t, n_block, n_iter, CoV):
+def computeCrossingProbability_MonteCarlo(
+    b, t, mu_S, covariance, R, delta_t, n_block, n_iter, CoV
+):
     X, event = getXEvent(b, t, mu_S, covariance, R, delta_t)
     algo = ot.ProbabilitySimulationAlgorithm(event, ot.MonteCarloExperiment())
     algo.setBlockSize(n_block)
@@ -127,10 +129,14 @@ def computeCrossingProbability_MonteCarlo(b, t, mu_S, covariance, R, delta_t, n_
 # This function evaluates the probability using the Low Discrepancy sampling.
 
 # %%
-def computeCrossingProbability_QMC(b, t, mu_S, covariance, R, delta_t, n_block, n_iter, CoV):
+def computeCrossingProbability_QMC(
+    b, t, mu_S, covariance, R, delta_t, n_block, n_iter, CoV
+):
     X, event = getXEvent(b, t, mu_S, covariance, R, delta_t)
-    algo = ot.ProbabilitySimulationAlgorithm(event, ot.LowDiscrepancyExperiment(
-        ot.SobolSequence(X.getDimension()), n_block, False))
+    algo = ot.ProbabilitySimulationAlgorithm(
+        event,
+        ot.LowDiscrepancyExperiment(ot.SobolSequence(X.getDimension()), n_block, False),
+    )
     algo.setBlockSize(n_block)
     algo.setMaximumOuterSampling(n_iter)
     algo.setMaximumCoefficientOfVariation(CoV)
@@ -172,7 +178,7 @@ mu_R = 5.0
 sigma_R = 0.3
 R = ot.Normal(mu_R, sigma_R)
 
-covariance = ot.SquaredExponential([l/sqrt(2)], [sigma_S])
+covariance = ot.SquaredExponential([l / sqrt(2)], [sigma_S])
 
 t0 = 0.0
 t1 = 50.0
@@ -197,17 +203,24 @@ values_QMC = list()
 values_FORM = list()
 
 for tick in times:
-    values_MC.append(computeCrossingProbability_MonteCarlo(
-        b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2))
-    values_QMC.append(computeCrossingProbability_QMC(
-        b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2))
-    values_FORM.append(computeCrossingProbability_FORM(
-        b, tick[0], mu_S, covariance, R, delta_t))
+    values_MC.append(
+        computeCrossingProbability_MonteCarlo(
+            b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2
+        )
+    )
+    values_QMC.append(
+        computeCrossingProbability_QMC(
+            b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2
+        )
+    )
+    values_FORM.append(
+        computeCrossingProbability_FORM(b, tick[0], mu_S, covariance, R, delta_t)
+    )
 
 # %%
-print('Values MC = ', values_MC)
-print('Values QMC = ', values_QMC)
-print('Values FORM = ', values_FORM)
+print("Values MC = ", values_MC)
+print("Values QMC = ", values_QMC)
+print("Values FORM = ", values_FORM)
 
 # %%
 # Draw the graphs!
@@ -223,7 +236,7 @@ g.add(c)
 c = ot.Curve(times, [[p] for p in values_FORM])
 g.add(c)
 g.setLegends(["MC", "QMC", "FORM"])
-g.setColors(["red", "blue", 'black'])
+g.setColors(["red", "blue", "black"])
 g.setLegendPosition("topleft")
 g.setXTitle("t")
 g.setYTitle("Outcrossing rate")

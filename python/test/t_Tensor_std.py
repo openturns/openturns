@@ -15,36 +15,47 @@ tensor0 = ot.Tensor()
 print("tensor0 = ", repr(tensor0))
 
 # TEST NUMBER ONE : CONSTRUCTOR WITH SIZE, OPERATOR() AND STRING CONVERTER
-print(
-    "test number one : constructor with size, operator() and string converter")
+print("test number one : constructor with size, operator() and string converter")
 
 # Constructor with size
 tensor1 = ot.Tensor(2, 2, 3)
 
 # Check operator() methods
-tensor1[0, 0, 0] = 1.
-tensor1[1, 0, 0] = 2.
-tensor1[0, 1, 0] = 3.
-tensor1[1, 1, 0] = 4.
-tensor1[0, 0, 1] = 5.
-tensor1[1, 0, 1] = 6.
-tensor1[0, 1, 1] = 7.
-tensor1[1, 1, 1] = 8.
-tensor1[0, 0, 2] = 9.
-tensor1[1, 0, 2] = 10.
-tensor1[0, 1, 2] = 11.
-tensor1[1, 1, 2] = 12.
+tensor1[0, 0, 0] = 1.0
+tensor1[1, 0, 0] = 2.0
+tensor1[0, 1, 0] = 3.0
+tensor1[1, 1, 0] = 4.0
+tensor1[0, 0, 1] = 5.0
+tensor1[1, 0, 1] = 6.0
+tensor1[0, 1, 1] = 7.0
+tensor1[1, 1, 1] = 8.0
+tensor1[0, 0, 2] = 9.0
+tensor1[1, 0, 2] = 10.0
+tensor1[0, 1, 2] = 11.0
+tensor1[1, 1, 2] = 12.0
 
 # String converter
 print("tensor1 = ", repr(tensor1))
-print("values = %.6f" % tensor1[0, 0, 0], "  %.6f" % tensor1[1, 0, 0], "  %.6f" % tensor1[0, 1, 0], "  %.6f" % tensor1[1, 1, 0], "  %.6f" % tensor1[0, 0, 1], "  %.6f" % tensor1[
-      1, 0, 1], "  %.6f" % tensor1[0, 1, 1], "  %.6f" % tensor1[1, 1, 1], "  %.6f" % tensor1[0, 0, 2], "  %.6f" % tensor1[1, 0, 2], "  %.6f" % tensor1[0, 1, 2], "  %.6f" % tensor1[1, 1, 2])
+print(
+    "values = %.6f" % tensor1[0, 0, 0],
+    "  %.6f" % tensor1[1, 0, 0],
+    "  %.6f" % tensor1[0, 1, 0],
+    "  %.6f" % tensor1[1, 1, 0],
+    "  %.6f" % tensor1[0, 0, 1],
+    "  %.6f" % tensor1[1, 0, 1],
+    "  %.6f" % tensor1[0, 1, 1],
+    "  %.6f" % tensor1[1, 1, 1],
+    "  %.6f" % tensor1[0, 0, 2],
+    "  %.6f" % tensor1[1, 0, 2],
+    "  %.6f" % tensor1[0, 1, 2],
+    "  %.6f" % tensor1[1, 1, 2],
+)
 
 # TEST NUMBER TWO : COPY CONSTRUCTOR AND STRING CONVERTER
 print("test number two : copy constructor and string converter")
 
 # Copy constructor
-tensor2 = (tensor1)
+tensor2 = tensor1
 
 # String converter
 print("tensor2 = ", repr(tensor2))
@@ -53,7 +64,7 @@ print("tensor2 = ", repr(tensor2))
 print("test number three : get dimensions methods")
 
 # Get dimension methods
-print("tensor1's nbRows = ", tensor1.getNbRows(), end=' ')
+print("tensor1's nbRows = ", tensor1.getNbRows(), end=" ")
 print("tensor1's nbColumns = ", tensor1.getNbColumns())
 print("tensor1's nbSheets = ", tensor1.getNbSheets())
 

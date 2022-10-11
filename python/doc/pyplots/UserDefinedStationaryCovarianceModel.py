@@ -22,7 +22,8 @@ for k in range(N):
     myCovarianceCollection.add(matrix)
 
 covarianceModel = ot.UserDefinedStationaryCovarianceModel(
-    myMesh, myCovarianceCollection)
+    myMesh, myCovarianceCollection
+)
 
 
 def f(tau):
@@ -30,9 +31,9 @@ def f(tau):
 
 
 func = ot.PythonFunction(1, 1, f)
-func.setDescription(['$t$', '$cov$'])
+func.setDescription(["$t$", "$cov$"])
 cov_graph = func.draw(0.0, 20.0, 512)
-cov_graph.setTitle('User defined stationary covariance model')
+cov_graph.setTitle("User defined stationary covariance model")
 
 fig = plt.figure(figsize=(10, 4))
 cov_axis = fig.add_subplot(111)

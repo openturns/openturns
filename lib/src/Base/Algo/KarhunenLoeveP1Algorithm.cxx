@@ -491,7 +491,7 @@ void KarhunenLoeveP1Algorithm::run()
     for(UnsignedInteger i = 0; i < augmentedDimension; ++i)
       projection(k, i) = b[i];
   }
-  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection, selectedVariance/cumulatedVariance);
+  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection, selectedVariance / cumulatedVariance);
 }
 
 /* Mesh accessor */

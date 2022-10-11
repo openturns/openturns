@@ -10,6 +10,7 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -30,7 +31,7 @@ R = ot.IdentityMatrix(dim)
 # We create the input parameters distribution and make a random vector :
 distribution = ot.Normal(mean, sigma, R)
 X = ot.RandomVector(distribution)
-X.setDescription(['E', 'F', 'L', 'I'])
+X.setDescription(["E", "F", "L", "I"])
 
 # %%
 # `f` is the cantilever beam model :
@@ -39,7 +40,7 @@ f = cb.model
 # %%
 # The random variable of interest Y is then
 Y = ot.CompositeRandomVector(f, X)
-Y.setDescription('Y')
+Y.setDescription("Y")
 
 # %%
 # Taylor expansion
@@ -54,12 +55,12 @@ taylor_mean_fo = taylor.getMeanFirstOrder()
 taylor_mean_so = taylor.getMeanSecondOrder()
 taylor_cov = taylor.getCovariance()
 taylor_if = taylor.getImportanceFactors()
-print('model evaluation calls number=', f.getGradientCallsNumber())
-print('model gradient calls number=', f.getGradientCallsNumber())
-print('model hessian calls number=', f.getHessianCallsNumber())
-print('taylor mean first order=', taylor_mean_fo)
-print('taylor variance=', taylor_cov)
-print('taylor importance factors=', taylor_if)
+print("model evaluation calls number=", f.getGradientCallsNumber())
+print("model gradient calls number=", f.getGradientCallsNumber())
+print("model hessian calls number=", f.getHessianCallsNumber())
+print("taylor mean first order=", taylor_mean_fo)
+print("taylor variance=", taylor_cov)
+print("taylor importance factors=", taylor_if)
 
 # %%
 graph = taylor.drawImportanceFactors()
@@ -78,13 +79,17 @@ view = viewer.View(graph)
 # %%
 algo = ot.ExpectationSimulationAlgorithm(Y)
 algo.setMaximumOuterSampling(1000)
-algo.setCoefficientOfVariationCriterionType('NONE')
+algo.setCoefficientOfVariationCriterionType("NONE")
 algo.run()
-print('model evaluation calls number=', f.getEvaluationCallsNumber())
+print("model evaluation calls number=", f.getEvaluationCallsNumber())
 expectation_result = algo.getResult()
 expectation_mean = expectation_result.getExpectationEstimate()
-print('monte carlo mean=', expectation_mean, 'var=',
-      expectation_result.getVarianceEstimate())
+print(
+    "monte carlo mean=",
+    expectation_mean,
+    "var=",
+    expectation_result.getVarianceEstimate(),
+)
 
 # %%
 # Central dispersion analysis based on a sample
@@ -98,7 +103,7 @@ Y_s = Y.getSample(1000)
 y_mean = Y_s.computeMean()
 y_stddev = Y_s.computeStandardDeviation()
 y_quantile_95p = Y_s.computeQuantilePerComponent(0.95)
-print('mean=', y_mean, 'stddev=', y_stddev, 'quantile@95%', y_quantile_95p)
+print("mean=", y_mean, "stddev=", y_stddev, "quantile@95%", y_quantile_95p)
 
 # %%
 graph = ot.KernelSmoothing().build(Y_s).drawPDF()

@@ -46,55 +46,159 @@ Survival = distribution.computeSurvivalFunction(point)
 print("survival=%.6f" % Survival)
 InverseSurvival = distribution.computeInverseSurvivalFunction(0.95)
 print("Inverse survival=", InverseSurvival)
-print("Survival(inverse survival)=%.6f" %
-      distribution.computeSurvivalFunction(InverseSurvival))
+print(
+    "Survival(inverse survival)=%.6f"
+    % distribution.computeSurvivalFunction(InverseSurvival)
+)
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", PDFgr)
 PDFgrFD = ot.Point(4)
-PDFgrFD[0] = (ot.NormalGamma(distribution.getMu() + eps, distribution.getKappa(), distribution.getAlpha(), distribution.getBeta()).computePDF(point)
-              - ot.NormalGamma(distribution.getMu() - eps, distribution.getKappa(), distribution.getAlpha(), distribution.getBeta()).computePDF(point)) / (2.0 * eps)
-PDFgrFD[1] = (ot.NormalGamma(distribution.getMu(), distribution.getKappa() + eps, distribution.getAlpha(), distribution.getBeta()).computePDF(point)
-              - ot.NormalGamma(distribution.getMu(), distribution.getKappa() - eps, distribution.getAlpha(), distribution.getBeta()).computePDF(point)) / (2.0 * eps)
-PDFgrFD[2] = (ot.NormalGamma(distribution.getMu(), distribution.getKappa(), distribution.getAlpha() + eps, distribution.getBeta()).computePDF(point)
-              - ot.NormalGamma(distribution.getMu(), distribution.getKappa(), distribution.getAlpha() - eps, distribution.getBeta()).computePDF(point)) / (2.0 * eps)
-PDFgrFD[3] = (ot.NormalGamma(distribution.getMu(), distribution.getKappa(), distribution.getAlpha(), distribution.getBeta() + eps).computePDF(point)
-              - ot.NormalGamma(distribution.getMu(), distribution.getKappa(), distribution.getAlpha(), distribution.getBeta() - eps).computePDF(point)) / (2.0 * eps)
+PDFgrFD[0] = (
+    ot.NormalGamma(
+        distribution.getMu() + eps,
+        distribution.getKappa(),
+        distribution.getAlpha(),
+        distribution.getBeta(),
+    ).computePDF(point)
+    - ot.NormalGamma(
+        distribution.getMu() - eps,
+        distribution.getKappa(),
+        distribution.getAlpha(),
+        distribution.getBeta(),
+    ).computePDF(point)
+) / (2.0 * eps)
+PDFgrFD[1] = (
+    ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa() + eps,
+        distribution.getAlpha(),
+        distribution.getBeta(),
+    ).computePDF(point)
+    - ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa() - eps,
+        distribution.getAlpha(),
+        distribution.getBeta(),
+    ).computePDF(point)
+) / (2.0 * eps)
+PDFgrFD[2] = (
+    ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa(),
+        distribution.getAlpha() + eps,
+        distribution.getBeta(),
+    ).computePDF(point)
+    - ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa(),
+        distribution.getAlpha() - eps,
+        distribution.getBeta(),
+    ).computePDF(point)
+) / (2.0 * eps)
+PDFgrFD[3] = (
+    ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa(),
+        distribution.getAlpha(),
+        distribution.getBeta() + eps,
+    ).computePDF(point)
+    - ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa(),
+        distribution.getAlpha(),
+        distribution.getBeta() - eps,
+    ).computePDF(point)
+) / (2.0 * eps)
 print("pdf gradient (FD)=", PDFgrFD)
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", CDFgr)
 CDFgrFD = ot.Point(4)
-CDFgrFD[0] = (ot.NormalGamma(distribution.getMu() + eps, distribution.getKappa(), distribution.getAlpha(), distribution.getBeta()).computeCDF(point)
-              - ot.NormalGamma(distribution.getMu() - eps, distribution.getKappa(), distribution.getAlpha(), distribution.getBeta()).computeCDF(point)) / (2.0 * eps)
-CDFgrFD[1] = (ot.NormalGamma(distribution.getMu(), distribution.getKappa() + eps, distribution.getAlpha(), distribution.getBeta()).computeCDF(point)
-              - ot.NormalGamma(distribution.getMu(), distribution.getKappa() - eps, distribution.getAlpha(), distribution.getBeta()).computeCDF(point)) / (2.0 * eps)
-CDFgrFD[2] = (ot.NormalGamma(distribution.getMu(), distribution.getKappa(), distribution.getAlpha() + eps, distribution.getBeta()).computeCDF(point)
-              - ot.NormalGamma(distribution.getMu(), distribution.getKappa(), distribution.getAlpha() - eps, distribution.getBeta()).computeCDF(point)) / (2.0 * eps)
-CDFgrFD[3] = (ot.NormalGamma(distribution.getMu(), distribution.getKappa(), distribution.getAlpha(), distribution.getBeta() + eps).computeCDF(point)
-              - ot.NormalGamma(distribution.getMu(), distribution.getKappa(), distribution.getAlpha(), distribution.getBeta() - eps).computeCDF(point)) / (2.0 * eps)
+CDFgrFD[0] = (
+    ot.NormalGamma(
+        distribution.getMu() + eps,
+        distribution.getKappa(),
+        distribution.getAlpha(),
+        distribution.getBeta(),
+    ).computeCDF(point)
+    - ot.NormalGamma(
+        distribution.getMu() - eps,
+        distribution.getKappa(),
+        distribution.getAlpha(),
+        distribution.getBeta(),
+    ).computeCDF(point)
+) / (2.0 * eps)
+CDFgrFD[1] = (
+    ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa() + eps,
+        distribution.getAlpha(),
+        distribution.getBeta(),
+    ).computeCDF(point)
+    - ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa() - eps,
+        distribution.getAlpha(),
+        distribution.getBeta(),
+    ).computeCDF(point)
+) / (2.0 * eps)
+CDFgrFD[2] = (
+    ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa(),
+        distribution.getAlpha() + eps,
+        distribution.getBeta(),
+    ).computeCDF(point)
+    - ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa(),
+        distribution.getAlpha() - eps,
+        distribution.getBeta(),
+    ).computeCDF(point)
+) / (2.0 * eps)
+CDFgrFD[3] = (
+    ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa(),
+        distribution.getAlpha(),
+        distribution.getBeta() + eps,
+    ).computeCDF(point)
+    - ot.NormalGamma(
+        distribution.getMu(),
+        distribution.getKappa(),
+        distribution.getAlpha(),
+        distribution.getBeta() - eps,
+    ).computeCDF(point)
+) / (2.0 * eps)
 print("cdf gradient (FD)=", CDFgrFD)
 quantile = distribution.computeQuantile(0.95)
 print("quantile=", quantile)
 print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
 print("entropy=%.6f" % distribution.computeEntropy())
 # Confidence regions
-probability, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
-    0.95)
+(
+    probability,
+    threshold,
+) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
 print("Minimum volume interval=", probability)
 print("threshold=%.6f" % threshold)
-levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
-    0.95)
+levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
 print("beta=%.6f" % beta)
 interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)
+    0.95
+)
 print("Bilateral confidence interval=", interval)
 print("beta=%.6f" % beta)
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, False)
+(
+    interval,
+    beta,
+) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
 print("Unilateral confidence interval (lower tail)=", interval)
 print("beta=%.6f" % beta)
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, True)
+(
+    interval,
+    beta,
+) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
 print("Unilateral confidence interval (upper tail)=", interval)
 print("beta=%.6f" % beta)
 mean = distribution.getMean()

@@ -36,8 +36,13 @@ eps = 1e-5
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
 # by the finite difference technique from CDF
-print("pdf (FD)=%.6f" % (distribution.computeCDF(
-    point + ot.Point(1, 0)) - distribution.computeCDF(point + ot.Point(1, -1))))
+print(
+    "pdf (FD)=%.6f"
+    % (
+        distribution.computeCDF(point + ot.Point(1, 0))
+        - distribution.computeCDF(point + ot.Point(1, -1))
+    )
+)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -62,7 +67,5 @@ print("parameters=", repr(parameters))
 print("Standard representative=", distribution.getStandardRepresentative())
 # Confidence interval
 alpha = 0.05
-bounds = distribution.computeBilateralConfidenceInterval(1-alpha)
-print("%.2f%% bilateral confidence interval" %
-      ((1-alpha)*100), " =", bounds)
-
+bounds = distribution.computeBilateralConfidenceInterval(1 - alpha)
+print("%.2f%% bilateral confidence interval" % ((1 - alpha) * 100), " =", bounds)

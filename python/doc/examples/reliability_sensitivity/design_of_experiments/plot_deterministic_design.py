@@ -20,6 +20,7 @@ Deterministic design of experiments
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -29,7 +30,7 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 def drawBidimensionalSample(sample, title):
     n = sample.getSize()
-    graph = ot.Graph("%s, size=%d" % (title, n), "X1", "X2", True, '')
+    graph = ot.Graph("%s, size=%d" % (title, n), "X1", "X2", True, "")
     cloud = ot.Cloud(sample)
     graph.add(cloud)
     return graph

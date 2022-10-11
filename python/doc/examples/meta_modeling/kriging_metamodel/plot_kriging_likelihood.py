@@ -15,7 +15,7 @@ from matplotlib import pylab as plt
 
 # %%
 # We define the exact model with a :class:`~openturns.SymbolicFunction` :
-f = ot.SymbolicFunction(['x'], ['x*sin(x)'])
+f = ot.SymbolicFunction(["x"], ["x*sin(x)"])
 
 # %%
 # We use the following input and output training samples :
@@ -46,7 +46,8 @@ print("Scale of the covariance model : %.3e" % theta[0])
 # %%
 # This hyperparameter is calibrated thanks to a maximization of the log-likelihood. We get this log-likehood as a function of :math:`\theta` :
 ot.ResourceMap.SetAsBool(
-    "GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", True)
+    "GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", True
+)
 reducedLogLikelihoodFunction = algo.getReducedLogLikelihoodFunction()
 
 # %%

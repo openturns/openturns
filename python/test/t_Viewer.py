@@ -12,7 +12,7 @@ try:
     # Curve
     graph = ot.Normal().drawCDF()
     # graph.draw('curve1.png')
-    view = View(graph, pixelsize=(800, 600), plot_kw={'color': 'blue'})
+    view = View(graph, pixelsize=(800, 600), plot_kw={"color": "blue"})
     # view.save('curve1.png')
     view.show()
 
@@ -48,13 +48,10 @@ try:
     dimension = 2
     R = ot.CorrelationMatrix(dimension)
     R[0, 1] = 0.8
-    distribution = ot.Normal(
-        ot.Point(dimension, 3.0), ot.Point(dimension, 2.0), R)
+    distribution = ot.Normal(ot.Point(dimension, 3.0), ot.Point(dimension, 2.0), R)
     size = 100
-    sample1 = ot.Normal([3.0] * dimension, [2.0] *
-                        dimension, R).getSample(size)
-    sample2 = ot.Normal([2.0] * dimension, [3.0] *
-                        dimension, R).getSample(size // 2)
+    sample1 = ot.Normal([3.0] * dimension, [2.0] * dimension, R).getSample(size)
+    sample2 = ot.Normal([2.0] * dimension, [3.0] * dimension, R).getSample(size // 2)
     cloud1 = ot.Cloud(sample1, "blue", "fsquare", "Sample1 Cloud")
     cloud2 = ot.Cloud(sample2, "red", "fsquare", "Sample2 Cloud")
     graph = ot.Graph("two samples clouds", "x1", "x2", True, "topright")
@@ -66,7 +63,7 @@ try:
     view.show()
 
     # Text
-    graph = ot.Graph('Annotated cloud', 'x', 'y', True, '')
+    graph = ot.Graph("Annotated cloud", "x", "y", True, "")
     distribution = ot.Normal(2)
     size = 30
     sample2D = distribution.getSample(size)
@@ -104,18 +101,19 @@ try:
     size = 100
     dim = 6
     inputSample = ot.Normal(dim).getSample(size)
-    inputVar = list(['X' + str(i) for i in range(dim)])
-    expression = ''
+    inputVar = list(["X" + str(i) for i in range(dim)])
+    expression = ""
     for i in range(dim):
         if i > 0:
-            expression += '+'
-        expression += 'cos(' + str(i + 1) + '*' + inputVar[i] + ')'
+            expression += "+"
+        expression += "cos(" + str(i + 1) + "*" + inputVar[i] + ")"
     model = ot.SymbolicFunction(inputVar, [expression])
     outputSample = model(inputSample)
     graph = ot.VisualTest.DrawParallelCoordinates(
-        inputSample, outputSample, 2.5, 3.0, 'red', False)
+        inputSample, outputSample, 2.5, 3.0, "red", False
+    )
     # graph.draw('curve6.png')
-    view = View(graph, legend_kw={'loc': 'lower center'})
+    view = View(graph, legend_kw={"loc": "lower center"})
     # view.save('curve6.png')
     view.show()
 
@@ -129,7 +127,8 @@ try:
 
     # Pie
     graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
-        [.4, .3, .2, .1], ['a0', 'a1', 'a2', 'a3'], 'Zou')
+        [0.4, 0.3, 0.2, 0.1], ["a0", "a1", "a2", "a3"], "Zou"
+    )
     # graph.draw('curve8.png')
     view = View(graph)
     # view.save('curve8.png')
@@ -137,13 +136,13 @@ try:
 
     # Convergence graph curve
     aCollection = []
-    aCollection.append(ot.LogNormalFactory().build(
-        ot.LogNormalMuSigma()([300.0, 30.0, 0.0])))
+    aCollection.append(
+        ot.LogNormalFactory().build(ot.LogNormalMuSigma()([300.0, 30.0, 0.0]))
+    )
     aCollection.append(ot.Normal(75e3, 5e3))
     myDistribution = ot.ComposedDistribution(aCollection)
     vect = ot.RandomVector(myDistribution)
-    LimitState = ot.SymbolicFunction(
-        ('R', 'F'), ('R-F/(pi_*100.0)',))
+    LimitState = ot.SymbolicFunction(("R", "F"), ("R-F/(pi_*100.0)",))
     G = ot.CompositeRandomVector(LimitState, vect)
     myEvent = ot.ThresholdEvent(G, ot.Less(), 0.0)
     experiment = ot.MonteCarloExperiment()
@@ -159,26 +158,26 @@ try:
 
     # Polygon
     size = 50
-    cursor = [0.] * 2
+    cursor = [0.0] * 2
     data1 = ot.Sample(size, 2)  # polygon y = 2x for x in [-25]
     data2 = ot.Sample(size, 2)  # polygon y = x*x for x in [-11]
     for i in range(size):
-        tmp = 7. * i / size + 2
+        tmp = 7.0 * i / size + 2
         cursor[0] = tmp
         cursor[1] = 2 * tmp
         data1[i] = cursor
-        tmp = 9. * i / size + 1
+        tmp = 9.0 * i / size + 1
         cursor[0] = tmp
         cursor[1] = tmp * tmp
         data2[i] = cursor
-    graph = ot.Graph('Some polygons', 'x1', 'x2', True, 'topright', 1.0)
+    graph = ot.Graph("Some polygons", "x1", "x2", True, "topright", 1.0)
     myPolygon1 = ot.Polygon(data1)
-    myPolygon1.setColor('blue')
-    myPolygon1.setLegend('polygon 1')
+    myPolygon1.setColor("blue")
+    myPolygon1.setLegend("polygon 1")
     graph.add(myPolygon1)
     myPolygon2 = ot.Polygon(data2)
-    myPolygon2.setColor('red')
-    myPolygon2.setLegend('polygon 2')
+    myPolygon2.setColor("red")
+    myPolygon2.setLegend("polygon 2")
     graph.add(myPolygon2)
     # graph.draw('curve11.png')
     view = View(graph)
@@ -190,13 +189,13 @@ try:
     size = 5
     array = ot.PolygonCollection(size)
     palette = ot.Drawable.BuildDefaultPalette(size)
-    palette[0] = 'blue'
+    palette[0] = "blue"
     for i in range(size):
         vertices = generator.getSample(3)
         array[i] = ot.Polygon(vertices, palette[i], palette[size - i - 1])
-    graph = ot.Graph('An array of polygons', 'x', 'y', True, 'topright')
+    graph = ot.Graph("An array of polygons", "x", "y", True, "topright")
     parray = ot.PolygonArray(array)
-    parray.setLegend('array of polys')
+    parray.setLegend("array of polys")
     graph.add(parray)
     # graph.draw('curve12.png')
     view = View(graph)
@@ -207,7 +206,7 @@ try:
     view = View(graph)
 
     # FORM reliability index marginal parameter sensitivity
-    f = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+    f = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
     dim = f.getInputDimension()
     mean = [50.0, 1.0, 10.0, 5.0]
     sigma = ot.Point(dim, 1.0)
@@ -225,8 +224,10 @@ try:
     algo = ot.FORM(solver, event, mean)
     algo.run()
     result = algo.getResult()
-    marginalSensitivity, otherSensitivity = result.drawHasoferReliabilityIndexSensitivity(
-    )
+    (
+        marginalSensitivity,
+        otherSensitivity,
+    ) = result.drawHasoferReliabilityIndexSensitivity()
     view = View(marginalSensitivity)
 
     # Optimization error history
@@ -244,8 +245,8 @@ try:
         cdf_curve = ot.WeibullMin(1.0, alpha, 0.0).drawCDF()
         pdf_curve.setColors([palette[j]])
         cdf_curve.setColors([palette[j]])
-        pdf_curve.setLegends(['alpha={}'.format(alpha)])
-        cdf_curve.setLegends(['alpha={}'.format(alpha)])
+        pdf_curve.setLegends(["alpha={}".format(alpha)])
+        cdf_curve.setLegends(["alpha={}".format(alpha)])
         grid.setGraph(0, j, pdf_curve)
         grid.setGraph(1, j, cdf_curve)
     view = View(grid)
@@ -262,7 +263,7 @@ try:
 
     # test _repr_png_
     png = graph._repr_png_()
-    assert(b'PNG' in png[:10])
+    assert b"PNG" in png[:10]
 
     # BuildDefaultPalette, BuildTableauPalette
     ncurves = 5

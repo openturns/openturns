@@ -1,14 +1,14 @@
 import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
+
 ot.RandomGenerator.SetSeed(0)
 
 # Generate sample with the given plane
 distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
 size = 10
 weightingDistribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
-experiment = ot.ImportanceSamplingExperiment(
-    distribution, weightingDistribution, size)
+experiment = ot.ImportanceSamplingExperiment(distribution, weightingDistribution, size)
 sample = experiment.generate()
 
 # Create an empty graph

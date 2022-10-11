@@ -10,7 +10,7 @@ print("myHanningFilter = ", myHanningFilter)
 
 # Hamming filter
 myHammingFilter = ot.Hamming()
-print("myHammingFilter = ",  myHammingFilter)
+print("myHammingFilter = ", myHammingFilter)
 
 # Evaluation of values between t=0 and t=1 using a step = 0.01
 steps = 100
@@ -20,5 +20,4 @@ tStep = (tMax - tMin) / steps
 
 for i in range(steps + 1):
     t = tMin + i * tStep
-    print('t = %g Hann = %g Hamming = %g' %
-          (t, myHanningFilter(t), myHammingFilter(t)))
+    print("t = %g Hann = %g Hamming = %g" % (t, myHanningFilter(t), myHammingFilter(t)))

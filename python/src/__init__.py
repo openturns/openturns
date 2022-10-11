@@ -91,6 +91,7 @@ def Show(graph):
         the graph to display
     """
     from .viewer import View
+
     view = View(graph)
     view.ShowAll()
 

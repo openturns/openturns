@@ -15,5 +15,5 @@ print("Domain=", domain)
 # Accessors
 print("Dimension=", domain.getDimension())
 # Contains
-print("is point ", p1, " inside ",  domain,  "? ",  p1 in domain)
-print("is point ", p2, " inside ",  domain,  "? ",  p2 in domain)
+print("is point ", p1, " inside ", domain, "? ", p1 in domain)
+print("is point ", p2, " inside ", domain, "? ", p2 in domain)

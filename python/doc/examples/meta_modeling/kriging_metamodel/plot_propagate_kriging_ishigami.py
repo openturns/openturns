@@ -17,6 +17,7 @@ import openturns.viewer as otv
 # %%
 # We first load the Ishigami model from the usecases module :
 from openturns.usecases import ishigami_function
+
 im = ishigami_function.IshigamiModel()
 
 # %%
@@ -39,7 +40,7 @@ ydata = model(xdata)
 #
 dimension = 3
 basis = ot.ConstantBasisFactory(dimension).build()
-covarianceModel = ot.SquaredExponential([0.1]*dimension, [1.0])
+covarianceModel = ot.SquaredExponential([0.1] * dimension, [1.0])
 algo = ot.KrigingAlgorithm(xdata, ydata, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
@@ -65,7 +66,7 @@ Y = ot.CompositeRandomVector(metamodel, X)
 algo = ot.ExpectationSimulationAlgorithm(Y)
 algo.setMaximumOuterSampling(50000)
 algo.setBlockSize(1)
-algo.setCoefficientOfVariationCriterionType('NONE')
+algo.setCoefficientOfVariationCriterionType("NONE")
 
 # %%
 # We run it and store the result :

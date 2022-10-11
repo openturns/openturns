@@ -31,6 +31,7 @@ from openturns.usecases.ishigami_function import IshigamiModel
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -81,8 +82,9 @@ maxValue = Y.getMax()[0]
 # We deactivate the default quantile scale.
 quantileScale = False
 graph = ot.VisualTest.DrawParallelCoordinates(
-    X, Y, minValue, maxValue, 'red', quantileScale)
-graph.setLegendPosition('bottomright')
+    X, Y, minValue, maxValue, "red", quantileScale
+)
+graph.setLegendPosition("bottomright")
 view = viewer.View(graph)
 
 # %%
@@ -95,8 +97,9 @@ minValue = 0.80 * Y.getMax()[0]
 maxValue = Y.getMax()[0]
 quantileScale = False
 graph = ot.VisualTest.DrawParallelCoordinates(
-    X, Y, minValue, maxValue, 'red', quantileScale)
-graph.setLegendPosition('bottomright')
+    X, Y, minValue, maxValue, "red", quantileScale
+)
+graph.setLegendPosition("bottomright")
 view = viewer.View(graph)
 
 # %%
@@ -116,8 +119,9 @@ maxValue = 1.0
 # a quantileScale is used, default behaviour
 quantileScale = True
 graph = ot.VisualTest.DrawParallelCoordinates(
-    X, Y, minValue, maxValue, 'red', quantileScale)
-graph.setLegendPosition('bottomright')
+    X, Y, minValue, maxValue, "red", quantileScale
+)
+graph.setLegendPosition("bottomright")
 view = viewer.View(graph)
 
 # %%
@@ -162,8 +166,9 @@ minValue = 0.48
 maxValue = 0.52
 quantileScale = True
 graph = ot.VisualTest.DrawParallelCoordinates(
-    X, Y, minValue, maxValue, 'red', quantileScale)
-graph.setLegendPosition('topright')
+    X, Y, minValue, maxValue, "red", quantileScale
+)
+graph.setLegendPosition("topright")
 view = viewer.View(graph)
 
 # %%

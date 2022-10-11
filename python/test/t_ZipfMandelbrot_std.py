@@ -5,7 +5,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
-distribution = ot.ZipfMandelbrot(15, 1.2, 2.)
+distribution = ot.ZipfMandelbrot(15, 1.2, 2.0)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)
 
@@ -49,8 +49,13 @@ eps = 1e-5
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
 # by the finite difference technique from CDF
-print("pdf (FD)=%.6f" % (distribution.computeCDF(
-    point + ot.Point(1, 0)) - distribution.computeCDF(point + ot.Point(1, -1))))
+print(
+    "pdf (FD)=%.6f"
+    % (
+        distribution.computeCDF(point + ot.Point(1, 0))
+        - distribution.computeCDF(point + ot.Point(1, -1))
+    )
+)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)

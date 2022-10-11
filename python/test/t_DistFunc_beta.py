@@ -21,8 +21,15 @@ for i1 in range(n1):
         p2 = p2Min + (p2Max - p2Min) * i2 / (n2 - 1)
         for iX in range(nX):
             x = xMin + (xMax - xMin) * iX / (nX - 1)
-            print("pBeta(", p1, ", ", p2, ",  %.12g" % x, ")=%.6g" % ot.DistFunc.pBeta(
-                p1, p2, x), ", complementary=%.6g" % ot.DistFunc.pBeta(p1, p2, x, True))
+            print(
+                "pBeta(",
+                p1,
+                ", ",
+                p2,
+                ",  %.12g" % x,
+                ")=%.6g" % ot.DistFunc.pBeta(p1, p2, x),
+                ", complementary=%.6g" % ot.DistFunc.pBeta(p1, p2, x, True),
+            )
 # qBeta
 p1Min = 0.2
 p1Max = 5.0
@@ -39,8 +46,15 @@ for i1 in range(n1):
         p2 = p2Min + (p2Max - p2Min) * i2 / (n2 - 1)
         for iQ in range(nQ):
             q = qMin + (qMax - qMin) * iQ / (nQ - 1)
-            print("qBeta(", p1, ", ", p2, ",  %.12g" % q, ")=%.6g" % ot.DistFunc.qBeta(
-                p1, p2, q), ", complementary=%.6g" % ot.DistFunc.qBeta(p1, p2, q, True))
+            print(
+                "qBeta(",
+                p1,
+                ", ",
+                p2,
+                ",  %.12g" % q,
+                ")=%.6g" % ot.DistFunc.qBeta(p1, p2, q),
+                ", complementary=%.6g" % ot.DistFunc.qBeta(p1, p2, q, True),
+            )
 # rBeta
 p1Min = 0.2
 p1Max = 5.0
@@ -54,7 +68,4 @@ for i1 in range(n1):
     for i2 in range(n2):
         p2 = p2Min + (p2Max - p2Min) * i2 / (n2 - 1)
         for iR in range(nR):
-            print("rBeta(", p1, ", ", p2, ")=%.6g" %
-                  ot.DistFunc.rBeta(p1, p2))
-
-
+            print("rBeta(", p1, ", ", p2, ")=%.6g" % ot.DistFunc.rBeta(p1, p2))

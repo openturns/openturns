@@ -38,8 +38,7 @@ print("mySum=", mySum)
 value = mySum(inPoint)
 print("Value at  %s =\n%s" % (inPoint.clean(1e-5), value.clean(1e-5)))
 gradient = mySum.gradient(inPoint)
-print("Gradient at  %s =\n%s" %
-      (inPoint.clean(1e-5), gradient.clean(1e-5)))
+print("Gradient at  %s =\n%s" % (inPoint.clean(1e-5), gradient.clean(1e-5)))
 hessian = mySum.hessian(inPoint)
 print("Hessian at  %s =\n%s" % (inPoint.clean(1e-5), hessian.clean(1e-5)))
 myDiff = f1 - f2
@@ -47,8 +46,6 @@ print("myDiff=", myDiff)
 value = myDiff(inPoint)
 print("Value at  %s =\n%s" % (inPoint.clean(1e-5), value.clean(1e-5)))
 gradient = myDiff.gradient(inPoint)
-print("Gradient at  %s =\n%s" %
-      (inPoint.clean(1e-5), gradient.clean(1e-5)))
+print("Gradient at  %s =\n%s" % (inPoint.clean(1e-5), gradient.clean(1e-5)))
 hessian = myDiff.hessian(inPoint)
 print("Hessian at  %s =\n%s" % (inPoint.clean(1e-5), hessian.clean(1e-5)))
-

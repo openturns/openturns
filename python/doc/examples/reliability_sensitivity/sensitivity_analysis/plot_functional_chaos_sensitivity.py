@@ -26,22 +26,26 @@ import openturns as ot
 from operator import itemgetter
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # borehole model
 dimension = 8
-input_names = ['rw', 'r', 'Tu', 'Hu', 'Tl', 'Hl', 'L', 'Kw']
-model = ot.SymbolicFunction(input_names,
-                            ['(2*pi_*Tu*(Hu-Hl))/(ln(r/rw)*(1+(2*L*Tu)/(ln(r/rw)*rw^2*Kw)+Tu/Tl))'])
-coll = [ot.Normal(0.1, 0.0161812),
-        ot.LogNormal(7.71, 1.0056),
-        ot.Uniform(63070.0, 115600.0),
-        ot.Uniform(990.0, 1110.0),
-        ot.Uniform(63.1, 116.0),
-        ot.Uniform(700.0, 820.0),
-        ot.Uniform(1120.0, 1680.0),
-        ot.Uniform(9855.0, 12045.0)]
+input_names = ["rw", "r", "Tu", "Hu", "Tl", "Hl", "L", "Kw"]
+model = ot.SymbolicFunction(
+    input_names, ["(2*pi_*Tu*(Hu-Hl))/(ln(r/rw)*(1+(2*L*Tu)/(ln(r/rw)*rw^2*Kw)+Tu/Tl))"]
+)
+coll = [
+    ot.Normal(0.1, 0.0161812),
+    ot.LogNormal(7.71, 1.0056),
+    ot.Uniform(63070.0, 115600.0),
+    ot.Uniform(990.0, 1110.0),
+    ot.Uniform(63.1, 116.0),
+    ot.Uniform(700.0, 820.0),
+    ot.Uniform(1120.0, 1680.0),
+    ot.Uniform(9855.0, 12045.0),
+]
 distribution = ot.ComposedDistribution(coll)
 distribution.setDescription(input_names)
 
@@ -51,7 +55,8 @@ selection = [1, 2, 4]
 complement = ot.Indices(selection).complement(dimension)
 distribution = distribution.getMarginal(complement)
 model = ot.ParametricFunction(
-    model, selection, distribution.getMarginal(selection).getMean())
+    model, selection, distribution.getMarginal(selection).getMean()
+)
 input_names_copy = list(input_names)
 input_names = itemgetter(*complement)(input_names)
 dimension = len(complement)
@@ -78,10 +83,8 @@ print(sensitivityAnalysis)
 # %%
 # draw Sobol' indices
 first_order = [sensitivityAnalysis.getSobolIndex(i) for i in range(dimension)]
-total_order = [sensitivityAnalysis.getSobolTotalIndex(
-    i) for i in range(dimension)]
-graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(
-    input_names, first_order, total_order)
+total_order = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(dimension)]
+graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
 view = viewer.View(graph)
 
 # %%
@@ -89,7 +92,10 @@ view = viewer.View(graph)
 # so the higher order indices must be all quite close to 0
 for i in range(dimension):
     for j in range(i):
-        print(input_names[i] + ' & ' + input_names[j], ":",
-              sensitivityAnalysis.getSobolIndex([i, j]))
+        print(
+            input_names[i] + " & " + input_names[j],
+            ":",
+            sensitivityAnalysis.getSobolIndex([i, j]),
+        )
 
 plt.show()

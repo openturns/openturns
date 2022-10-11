@@ -47,7 +47,7 @@ result2 = matrix1.solveLinearSystem(b, True)
 print("result2=" + repr(result2))
 
 matrix3 = ot.CovarianceMatrix(3)
-matrix3[1, 0] = float('nan')
+matrix3[1, 0] = float("nan")
 try:
     print("ev=", matrix3.computeSingularValues())
 except:

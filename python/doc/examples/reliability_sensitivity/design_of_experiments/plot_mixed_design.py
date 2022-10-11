@@ -13,6 +13,7 @@ import openturns as ot
 import math as m
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -38,7 +39,7 @@ sample = experiment.generate()
 # %%
 covariance = rv.getCovariance()
 scaling = [m.sqrt(covariance[i, i]) for i in range(dim)]
-print('scaling=', scaling)
+print("scaling=", scaling)
 sample *= scaling
 
 # %%
@@ -46,7 +47,7 @@ sample *= scaling
 
 # %%
 center = rv.getMean()
-print('center=', center)
+print("center=", center)
 sample += center
 
 # %%
@@ -55,8 +56,8 @@ sample += center
 # %%
 graph = distribution.drawPDF()
 doe = ot.Cloud(sample)
-doe.setColor('red')
-doe.setLegend('design')
+doe.setColor("red")
+doe.setLegend("design")
 graph.add(doe)
 view = viewer.View(graph)
 plt.show()

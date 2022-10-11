@@ -5,7 +5,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 
-print('Catalog={')
+print("Catalog={")
 for key in ot.Catalog.GetKeys():
-    print('  %s,' % key)
-print('}')
+    print("  %s," % key)
+print("}")

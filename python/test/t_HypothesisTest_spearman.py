@@ -39,10 +39,14 @@ print("FullSpearmanYY=", ot.HypothesisTest.FullSpearman(sampleY, sampleY, 0.10))
 
 selection = [0]
 # The three tests must be equal
-print("PartialSpearmanX0Y=", ot.HypothesisTest.PartialSpearman(
-    sampleX, sampleY, selection, 0.10))
+print(
+    "PartialSpearmanX0Y=",
+    ot.HypothesisTest.PartialSpearman(sampleX, sampleY, selection, 0.10),
+)
 print("SpearmanX0Y=", ot.HypothesisTest.Spearman(sampleX0, sampleY, 0.10))
 print("FullSpearmanX0Y=", ot.HypothesisTest.FullSpearman(sampleX0, sampleY, 0.10))
 
-print("PartialSpearmanXY=", ot.HypothesisTest.PartialSpearman(
-    sampleX, sampleY, selection, 0.10))
+print(
+    "PartialSpearmanXY=",
+    ot.HypothesisTest.PartialSpearman(sampleX, sampleY, selection, 0.10),
+)

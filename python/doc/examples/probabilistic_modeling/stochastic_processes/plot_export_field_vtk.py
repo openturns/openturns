@@ -15,6 +15,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -26,13 +27,14 @@ upperBound = [2.0, 1.0]
 interval = ot.Interval(lowerBound, upperBound)
 mesh = mesher.build(interval)
 graph = mesh.draw()
-graph.setTitle('Regular 2-d mesh')
+graph.setTitle("Regular 2-d mesh")
 view = viewer.View(graph)
 
 # %%
 # We now create a field from a mesh and some values
-values = ot.Normal([0.0]*2, [1.0]*2, ot.CorrelationMatrix(2)
-                   ).getSample(len(mesh.getVertices()))
+values = ot.Normal([0.0] * 2, [1.0] * 2, ot.CorrelationMatrix(2)).getSample(
+    len(mesh.getVertices())
+)
 for i in range(len(values)):
     x = values[i]
     values[i] = 0.05 * x / x.norm()
@@ -41,7 +43,7 @@ field = ot.Field(mesh, values)
 # %%
 # We can export the `field` to a VTK files. It can be
 # read later with an external program such as Paraview.
-field.exportToVTKFile('field.vtk')
+field.exportToVTKFile("field.vtk")
 
 # %%
 # Display figures

@@ -38,8 +38,8 @@ FieldFunctionalChaosResult::FieldFunctionalChaosResult()
 
 /* Constructor with parameters */
 FieldFunctionalChaosResult::FieldFunctionalChaosResult(const Collection<KarhunenLoeveResult> & inputKLResultCollection,
-                                                       const FunctionalChaosResult & fceResult,
-                                                       const Collection<KarhunenLoeveResult> & outputKLResultCollection)
+    const FunctionalChaosResult & fceResult,
+    const Collection<KarhunenLoeveResult> & outputKLResultCollection)
   : PersistentObject()
   , inputKLResultCollection_(inputKLResultCollection)
   , fceResult_(fceResult)

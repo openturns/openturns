@@ -24,7 +24,7 @@ oneSample = distribution.getSample(size)
 print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
 print("mean=", oneSample.computeMean())
 sampleCovariance = oneSample.computeCovariance()[0, 0]
-if (abs(sampleCovariance) < 1.0e-16):
+if abs(sampleCovariance) < 1.0e-16:
     sampleCovariance = 0.0
 print("covariance=", sampleCovariance)
 
@@ -35,8 +35,13 @@ print("Point= ", point)
 # Show PDF and CDF of point
 PDF = distribution.computePDF(point)
 print("pdf     =", PDF)
-print("pdf (FD)=", (distribution.computeCDF(point + ot.Point(1, 0)) -
-                    distribution.computeCDF(point + ot.Point(1, -1))))
+print(
+    "pdf (FD)=",
+    (
+        distribution.computeCDF(point + ot.Point(1, 0))
+        - distribution.computeCDF(point + ot.Point(1, -1))
+    ),
+)
 CDF = distribution.computeCDF(point)
 print("cdf=", CDF)
 
@@ -47,8 +52,13 @@ print("Point= ", point)
 # Show PDF and CDF of point
 PDF = distribution.computePDF(point)
 print("pdf     =", PDF)
-print("pdf (FD)=", (distribution.computeCDF(point + ot.Point(1, 0)) -
-                    distribution.computeCDF(point + ot.Point(1, -1))))
+print(
+    "pdf (FD)=",
+    (
+        distribution.computeCDF(point + ot.Point(1, 0))
+        - distribution.computeCDF(point + ot.Point(1, -1))
+    ),
+)
 CDF = distribution.computeCDF(point)
 print("cdf=", CDF)
 CF = distribution.computeCharacteristicFunction(0.5)
@@ -97,7 +107,7 @@ print("mean=", oneSample.computeMean())
 sampleCovariance = oneSample.computeCovariance()
 for i in range(dim):
     for j in range(i + 1):
-        if (abs(sampleCovariance[i, j]) < 1.0e-16):
+        if abs(sampleCovariance[i, j]) < 1.0e-16:
             sampleCovariance[i, j] = 0.0
 print("covariance=", sampleCovariance)
 
@@ -108,8 +118,13 @@ print("Point= ", point)
 # Show PDF and CDF of point
 PDF = distribution.computePDF(point)
 print("pdf     =", PDF)
-print("pdf (FD)=", (distribution.computeCDF(point + ot.Point(dim, 0)) -
-                    distribution.computeCDF(point + ot.Point(dim, -1))))
+print(
+    "pdf (FD)=",
+    (
+        distribution.computeCDF(point + ot.Point(dim, 0))
+        - distribution.computeCDF(point + ot.Point(dim, -1))
+    ),
+)
 CDF = distribution.computeCDF(point)
 print("cdf=", CDF)
 
@@ -120,8 +135,13 @@ print("Point= ", point)
 # Show PDF and CDF of point
 PDF = distribution.computePDF(point)
 print("pdf     =", PDF)
-print("pdf (FD)=", (distribution.computeCDF(point + ot.Point(dim, 0)) -
-                    distribution.computeCDF(point + ot.Point(dim, -1))))
+print(
+    "pdf (FD)=",
+    (
+        distribution.computeCDF(point + ot.Point(dim, 0))
+        - distribution.computeCDF(point + ot.Point(dim, -1))
+    ),
+)
 CDF = distribution.computeCDF(point)
 print("cdf=", CDF)
 
@@ -141,4 +161,3 @@ print("covariance=", covariance)
 parameters = distribution.getParametersCollection()
 print("parameters=", parameters)
 print("Standard representative=", distribution.getStandardRepresentative())
-

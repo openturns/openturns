@@ -7,8 +7,8 @@ ot.TESTPREAMBLE()
 
 # Constructor with size
 point1 = ot.PointWithDescription(2)
-point1[0] = 100.
-point1[1] = 101.
+point1[0] = 100.0
+point1[1] = 101.0
 
 # Copy constructor
 point2 = ot.PointWithDescription(point1)

@@ -12,7 +12,7 @@ ot.RandomGenerator.SetSeed(1)
 # Sample from a target distribution defined through its log-PDF
 # (defined up to some additive constant) and its support:
 
-log_density = ot.SymbolicFunction('x', 'log(2 + sin(x)^2)')
+log_density = ot.SymbolicFunction("x", "log(2 + sin(x)^2)")
 support = ot.Interval([0.0], [2.0 * m.pi])
 
 # Apply a Metropolis adjusted Langevin algorithm (MALA).
@@ -26,12 +26,17 @@ std_deviation = m.sqrt(h)
 # The mean of the proposal normal distribution is the current state,
 # but moved according to the derivative of the target log-density.
 
+
 def python_link(x):
     derivative_log_density = log_density.getGradient().gradient(x)[0, 0]
     mean = x[0] + h / 2 * derivative_log_density
     return [mean, std_deviation]
+
+
 link = ot.PythonFunction(1, 2, python_link)
-mala = otexp.UserDefinedMetropolisHastings(log_density, support, initialState, proposal, link)
+mala = otexp.UserDefinedMetropolisHastings(
+    log_density, support, initialState, proposal, link
+)
 
 # %%
 # Get a sample

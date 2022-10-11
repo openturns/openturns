@@ -5,7 +5,7 @@ import math
 
 ot.TESTPREAMBLE()
 
-f = ot.SymbolicFunction(['t'], ['log(1+t)'])
+f = ot.SymbolicFunction(["t"], ["log(1+t)"])
 a = 0.5
 b = 0.5 + 8.0 * math.pi
 n = 100

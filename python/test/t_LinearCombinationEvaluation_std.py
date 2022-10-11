@@ -22,8 +22,7 @@ functions.append(ot.SymbolicFunction(inVar, formula))
 coefficients = ot.Point(2)
 coefficients[0] = 0.3
 coefficients[1] = 2.9
-myEvaluation = ot.LinearCombinationEvaluation(
-    functions, coefficients)
+myEvaluation = ot.LinearCombinationEvaluation(functions, coefficients)
 inPoint = ot.Point(3)
 inPoint[0] = 1.2
 inPoint[1] = 2.3

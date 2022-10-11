@@ -10,8 +10,8 @@ for j in range(grid.getNbColumns()):
     cdf_curve = ot.WeibullMin(1.0, alpha, 0.0).drawCDF()
     pdf_curve.setColors([palette[j]])
     cdf_curve.setColors([palette[j]])
-    pdf_curve.setLegends(['alpha={}'.format(alpha)])
-    cdf_curve.setLegends(['alpha={}'.format(alpha)])
+    pdf_curve.setLegends(["alpha={}".format(alpha)])
+    cdf_curve.setLegends(["alpha={}".format(alpha)])
     grid.setGraph(0, j, pdf_curve)
     grid.setGraph(1, j, cdf_curve)
 graph = grid

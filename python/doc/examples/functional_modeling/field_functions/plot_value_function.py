@@ -35,6 +35,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -44,7 +45,7 @@ mesh = ot.RegularGrid(0.0, 1.0, N)
 
 # %%
 # Create the function that acts the values of the mesh
-g = ot.SymbolicFunction(['x1', 'x2'],  ['x1^2', 'x1+x2'])
+g = ot.SymbolicFunction(["x1", "x2"], ["x1^2", "x1+x2"])
 
 # %%
 # Create the field function

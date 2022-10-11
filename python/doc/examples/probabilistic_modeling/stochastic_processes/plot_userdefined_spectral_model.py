@@ -43,6 +43,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -56,7 +57,7 @@ fgrid = ot.RegularGrid(fmin, df, N)
 # %%
 # Define the spectral function:
 def s(f):
-    if(f <= 5.0):
+    if f <= 5.0:
         return 1.0
     else:
         x = f - 5.0
@@ -96,10 +97,11 @@ for k in range(N):
     x[k, 1] = value[0, 0].real
 
 # Create the graph
-graph = ot.Graph('Spectral user-defined model', 'Frequency',
-                 'Spectral density value', True)
-curve = ot.Curve(x, 'UserSpectral')
+graph = ot.Graph(
+    "Spectral user-defined model", "Frequency", "Spectral density value", True
+)
+curve = ot.Curve(x, "UserSpectral")
 graph.add(curve)
-graph.setLegendPosition('topright')
+graph.setLegendPosition("topright")
 view = viewer.View(graph)
 plt.show()

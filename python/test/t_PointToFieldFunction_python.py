@@ -9,11 +9,10 @@ mesh = ot.RegularGrid(0.0, 0.1, 11)
 
 
 class FUNC(ot.OpenTURNSPythonPointToFieldFunction):
-
     def __init__(self):
         super(FUNC, self).__init__(2, mesh, 2)
-        self.setInputDescription(['R', 'S'])
-        self.setOutputDescription(['T', 'U'])
+        self.setInputDescription(["R", "S"])
+        self.setOutputDescription(["T", "U"])
         self.mesh_ = ot.RegularGrid(0.0, 0.1, 11)
 
     def _exec(self, X):
@@ -24,8 +23,9 @@ class FUNC(ot.OpenTURNSPythonPointToFieldFunction):
 
 
 F = FUNC()
-print('in_dim=' + str(F.getInputDimension())
-      + ' out_dim=' + str(F.getOutputDimension()))
+print(
+    "in_dim=" + str(F.getInputDimension()) + " out_dim=" + str(F.getOutputDimension())
+)
 
 print((F((10.0, 5.0))))
 
@@ -38,8 +38,8 @@ myFunc = ot.PointToFieldFunction(F)
 # Copy constructor
 newFunc = ot.PointToFieldFunction(myFunc)
 
-print(('myFunc input dimension= ' + str(myFunc.getInputDimension())))
-print(('myFunc output dimension= ' + str(myFunc.getOutputDimension())))
+print(("myFunc input dimension= " + str(myFunc.getInputDimension())))
+print(("myFunc output dimension= " + str(myFunc.getOutputDimension())))
 
 inPt = ot.Point(2, 2.0)
 print((repr(inPt)))

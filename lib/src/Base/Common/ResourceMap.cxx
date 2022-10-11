@@ -1330,7 +1330,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // NAIS parameters //
   addAsScalar("NAIS-DefaultRhoQuantile", 0.25);
-  
+
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);
 

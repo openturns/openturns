@@ -13,9 +13,9 @@ def printPoint(point, digits):
         else:
             sep = ","
         if abs(point[i]) < eps:
-            oss += sep + '%.6f' % abs(point[i])
+            oss += sep + "%.6f" % abs(point[i])
         else:
-            oss += sep + '%.6f' % point[i]
+            oss += sep + "%.6f" % point[i]
         sep = ","
     oss += "]"
     return oss
@@ -25,8 +25,7 @@ ot.TESTPREAMBLE()
 
 
 # We create a numerical math function
-myFunction = ot.SymbolicFunction(
-    ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
+myFunction = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
 dim = myFunction.getInputDimension()
 
@@ -74,29 +73,36 @@ myAlgo.run()
 # Stream out the result
 result = myAlgo.getResult()
 digits = 5
-print("Breitung event probability=%.6f" %
-      result.getEventProbabilityBreitung())
-print("Breitung generalized reliability index=%.6f" %
-      result.getGeneralisedReliabilityIndexBreitung())
-print("Hohenbichler event probability=%.6f" %
-      result.getEventProbabilityHohenbichler())
-print("Hohenbichler generalized reliability index=%.6f" %
-      result.getGeneralisedReliabilityIndexHohenbichler())
+print("Breitung event probability=%.6f" % result.getEventProbabilityBreitung())
+print(
+    "Breitung generalized reliability index=%.6f"
+    % result.getGeneralisedReliabilityIndexBreitung()
+)
+print("Hohenbichler event probability=%.6f" % result.getEventProbabilityHohenbichler())
+print(
+    "Hohenbichler generalized reliability index=%.6f"
+    % result.getGeneralisedReliabilityIndexHohenbichler()
+)
 print("Tvedt event probability=%.6f" % result.getEventProbabilityTvedt())
-print("Tvedt generalized reliability index=%.6f" %
-      result.getGeneralisedReliabilityIndexTvedt())
-print("sorted curvatures=", printPoint(
-    result.getSortedCurvatures(), digits))
-print("standard space design point=", printPoint(
-    result.getStandardSpaceDesignPoint(), digits))
-print("physical space design point=", printPoint(
-    result.getPhysicalSpaceDesignPoint(), digits))
+print(
+    "Tvedt generalized reliability index=%.6f"
+    % result.getGeneralisedReliabilityIndexTvedt()
+)
+print("sorted curvatures=", printPoint(result.getSortedCurvatures(), digits))
+print(
+    "standard space design point=",
+    printPoint(result.getStandardSpaceDesignPoint(), digits),
+)
+print(
+    "physical space design point=",
+    printPoint(result.getPhysicalSpaceDesignPoint(), digits),
+)
 
 # Is the standard point origin in failure space?
-print("is standard point origin in failure space? ",
-      result.getIsStandardPointOriginInFailureSpace())
+print(
+    "is standard point origin in failure space? ",
+    result.getIsStandardPointOriginInFailureSpace(),
+)
 
-print("importance factors=", printPoint(
-    result.getImportanceFactors(), digits))
-print("Hasofer reliability index=%.6f" %
-      result.getHasoferReliabilityIndex())
+print("importance factors=", printPoint(result.getImportanceFactors(), digits))
+print("Hasofer reliability index=%.6f" % result.getHasoferReliabilityIndex())

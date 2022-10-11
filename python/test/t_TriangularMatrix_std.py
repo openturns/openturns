@@ -21,9 +21,9 @@ print("test : constructor with size, operator() and string converter")
 triangularMatrix1 = ot.TriangularMatrix(2)
 
 # Check operator() methods
-triangularMatrix1[0, 0] = 1.
-triangularMatrix1[1, 0] = 3.
-triangularMatrix1[1, 1] = 4.
+triangularMatrix1[0, 0] = 1.0
+triangularMatrix1[1, 0] = 3.0
+triangularMatrix1[1, 1] = 4.0
 
 # String converter
 print("triangularMatrix1 = ", repr(triangularMatrix1))
@@ -48,15 +48,12 @@ print("isLower? ", triangularMatrix1.isLowerTriangular())
 # TRANSPOSE AND CONJUGATE METHOD
 print("test  : transpose and conjugate methods")
 
-print("triangularMatrix1 transpose = ",
-      repr(triangularMatrix1.transpose()))
-print("is transpose Lower? ",
-      triangularMatrix1.transpose().isLowerTriangular())
+print("triangularMatrix1 transpose = ", repr(triangularMatrix1.transpose()))
+print("is transpose Lower? ", triangularMatrix1.transpose().isLowerTriangular())
 
 triangularMatrix4 = triangularMatrix1.transpose()
 
-print("triangularMatrix1 conjugate and transpose = ",
-      repr(triangularMatrix4))
+print("triangularMatrix1 conjugate and transpose = ", repr(triangularMatrix4))
 print("is conjugate Lower? ", triangularMatrix4.isLowerTriangular())
 
 #  ADDITION METHOD
@@ -89,8 +86,8 @@ print("test : multiplication with a numerical point method")
 
 # Create the numerical point
 pt = ot.Point()
-pt.add(1.)
-pt.add(2.)
+pt.add(1.0)
+pt.add(2.0)
 print("pt = ", repr(pt))
 
 # Check the product method
@@ -101,7 +98,7 @@ print("ptResult = ", repr(ptResult))
 print("test : multiplication and division by a numerical scalar methods")
 
 # Check the multiplication method
-s = 3.
+s = 3.0
 scalprod = triangularMatrix1 * s
 
 print("scalprod = ", repr(scalprod))

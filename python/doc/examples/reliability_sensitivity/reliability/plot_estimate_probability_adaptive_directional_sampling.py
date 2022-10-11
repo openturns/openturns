@@ -28,6 +28,7 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -67,8 +68,7 @@ samplingStrategy = ot.RandomDirection()
 # Create a simulation algorithm.
 
 # %%
-algo = ot.AdaptiveDirectionalStratification(
-    event, rootStrategy, samplingStrategy)
+algo = ot.AdaptiveDirectionalStratification(event, rootStrategy, samplingStrategy)
 algo.setMaximumCoefficientOfVariation(0.1)
 algo.setMaximumOuterSampling(40000)
 algo.setConvergenceStrategy(ot.Full())
@@ -81,5 +81,5 @@ algo.run()
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
 print(result)
-print('Pf=', probability)
-print('Iterations=', result.getOuterSampling())
+print("Pf=", probability)
+print("Iterations=", result.getOuterSampling())

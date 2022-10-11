@@ -7,8 +7,7 @@ ot.TESTPREAMBLE()
 
 # Function
 sampleSize = 20
-levelFunction = ot.SymbolicFunction(
-    ["x1", "x2", "x3", "x4"], ["x1+2*x2-3*x3+4*x4"])
+levelFunction = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["x1+2*x2-3*x3+4*x4"])
 myOperator = ot.LessOrEqual()
 threshold = 2.0
 mySample = ot.Sample(0, levelFunction.getInputDimension())
@@ -29,9 +28,9 @@ for index in range(sampleSize):
     mySample.add(point)
 
 myNearestPointChecker = ot.NearestPointChecker(
-    levelFunction, myOperator, threshold, mySample)
+    levelFunction, myOperator, threshold, mySample
+)
 for index in range(sampleSize):
     print(repr(mySample[index]))
 myNearestPointChecker.run()
 print("myNearestPointChecker = ", myNearestPointChecker)
-

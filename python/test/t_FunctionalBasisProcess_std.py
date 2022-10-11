@@ -21,7 +21,8 @@ for i in range(basisDimension):
     coefficients[i] = ot.Normal(0.0, (1.0 + i))
 
 process = ot.FunctionalBasisProcess(
-    ot.ComposedDistribution(coefficients), ot.Basis(basis))
+    ot.ComposedDistribution(coefficients), ot.Basis(basis)
+)
 
 # Setting the timeGrid
 process.setTimeGrid(timeGrid)
@@ -40,4 +41,3 @@ stepNumber = 4
 print("One future=", process.getFuture(stepNumber))
 size = 3
 print("Some futures=", process.getFuture(stepNumber, size))
-

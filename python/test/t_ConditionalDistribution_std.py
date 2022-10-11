@@ -17,14 +17,17 @@ coll1.add(ot.Uniform())
 d1 = ot.ComposedDistribution(coll1)
 # Test the different DOE
 ot.ResourceMap.SetAsUnsignedInteger(
-    "ConditionalDistribution-MarginalIntegrationNodesNumber", 256)
+    "ConditionalDistribution-MarginalIntegrationNodesNumber", 256
+)
 ot.ResourceMap.SetAsUnsignedInteger(
-    "ConditionalDistribution-MaximumIntegrationNodesNumber", 10000)
+    "ConditionalDistribution-MaximumIntegrationNodesNumber", 10000
+)
 for method in ["GaussProduct", "QMC", "MC"]:
-    print("#"*50)
+    print("#" * 50)
     print("method=", method)
     ot.ResourceMap.SetAsString(
-        "ConditionalDistribution-ContinuousDiscretizationMethod", method)
+        "ConditionalDistribution-ContinuousDiscretizationMethod", method
+    )
     distribution = ot.ConditionalDistribution(d1, d2)
     dim = distribution.getDimension()
     print("distribution=", distribution)
@@ -66,8 +69,10 @@ for method in ["GaussProduct", "QMC", "MC"]:
     # Get 95% survival function
     inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" %
-          distribution.computeSurvivalFunction(inverseSurvival))
+    print(
+        "Survival(inverseSurvival)=%.6f"
+        % distribution.computeSurvivalFunction(inverseSurvival)
+    )
 
     # Confidence regions
     # interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
@@ -79,12 +84,20 @@ for method in ["GaussProduct", "QMC", "MC"]:
     # interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
     # print("Bilateral confidence interval=", interval)
     # print("beta=", Point(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-        0.95, False)
+    (
+        interval,
+        beta,
+    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, False
+    )
     print("Unilateral confidence interval (lower tail)=", interval)
     print("beta=", ot.Point(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-        0.95, True)
+    (
+        interval,
+        beta,
+    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True
+    )
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=", ot.Point(1, beta))
 
@@ -109,10 +122,10 @@ atoms.add(ot.Dirac(0.5))
 atoms.add(ot.Uniform(1.0, 2.0))
 conditioningDistributionCollection.add(ot.ComposedDistribution(atoms))
 for i in range(conditioningDistributionCollection.getSize()):
-    print("conditioning distribution=",
-          conditioningDistributionCollection[i])
+    print("conditioning distribution=", conditioningDistributionCollection[i])
     distribution = ot.ConditionalDistribution(
-        conditionedDistribution, conditioningDistributionCollection[i])
+        conditionedDistribution, conditioningDistributionCollection[i]
+    )
     dim = distribution.getDimension()
     print("Distribution ", distribution)
     print("Parameters ", distribution.getParametersCollection())
@@ -148,16 +161,16 @@ for i in range(conditioningDistributionCollection.getSize()):
     # Show PDF and CDF of zero point
     zeroPDF = distribution.computePDF(zero)
     zeroCDF = distribution.computeCDF(zero)
-    print("Zero point= ", zero, " pdf=%.6f" %
-          zeroPDF, " cdf=%.6f" % zeroCDF)
+    print("Zero point= ", zero, " pdf=%.6f" % zeroPDF, " cdf=%.6f" % zeroCDF)
 
     # Get 95% quantile
     quantile = distribution.computeQuantile(0.95)
     print("Quantile=", quantile)
     print("CDF(quantile)= %.12g" % distribution.computeCDF(quantile))
     # Get 95% survival function
-    inverseSurvival = ot.Point(
-        distribution.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" %
-          distribution.computeSurvivalFunction(inverseSurvival))
+    print(
+        "Survival(inverseSurvival)=%.6f"
+        % distribution.computeSurvivalFunction(inverseSurvival)
+    )

@@ -12,11 +12,12 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
 import time
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define an event to compute a probability
-myFunction = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3.0*E*I)'])
+myFunction = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3.0*E*I)"])
 dim = myFunction.getInputDimension()
 mean = [50.0, 1.0, 10.0, 5.0]
 sigma = [1.0] * dim
@@ -56,8 +57,8 @@ myCobyla.setStopCallback(stop)
 myAlgo = ot.FORM(myCobyla, myEvent, mean)
 myAlgo.run()
 result = myAlgo.getResult()
-print('event probability:', result.getEventProbability())
-print('calls number:', myFunction.getCallsNumber())
+print("event probability:", result.getEventProbability())
+print("calls number:", myFunction.getCallsNumber())
 
 # %%
 # **Stop a simulation algorithm using a time limit**
@@ -80,5 +81,5 @@ myAlgo.setStopCallback(timer)
 # Run algorithm
 myAlgo.run()
 result = myAlgo.getResult()
-print('event probability:', result.getProbabilityEstimate())
-print('calls number:', myFunction.getCallsNumber())
+print("event probability:", result.getProbabilityEstimate())
+print("calls number:", myFunction.getCallsNumber())

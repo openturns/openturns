@@ -36,7 +36,8 @@ from openturns.usecases import ishigami_function
 
 # %%
 def compute_sparse_least_squares_chaos(
-        inputTrain, outputTrain, basis, totalDegree, distribution):
+    inputTrain, outputTrain, basis, totalDegree, distribution
+):
     """
     Create a sparse polynomial chaos based on least squares.
 
@@ -79,11 +80,13 @@ def compute_sparse_least_squares_chaos(
     result = chaosalgo.getResult()
     return result
 
+
 # %%
 
 
 def compute_Q2_score_by_splitting(
-        X, Y, basis, totalDegree, distribution, split_fraction=0.75):
+    X, Y, basis, totalDegree, distribution, split_fraction=0.75
+):
     """
     Compute Q2 score by splitting into train/test sets.
 
@@ -107,7 +110,8 @@ def compute_Q2_score_by_splitting(
     X_test = X_train.split(split_index)
     Y_test = Y_train.split(split_index)
     result = compute_sparse_least_squares_chaos(
-        X_train, Y_train, basis, totalDegree, distribution)
+        X_train, Y_train, basis, totalDegree, distribution
+    )
     metamodel = result.getMetaModel()
     val = ot.MetaModelValidation(X_test, Y_test, metamodel)
     Q2_score = val.computePredictivityFactor()[0]
@@ -117,8 +121,7 @@ def compute_Q2_score_by_splitting(
 # %%
 
 
-def compute_Q2_score_by_kfold(
-        X, Y, basis, totalDegree, distribution, n_folds=5):
+def compute_Q2_score_by_kfold(X, Y, basis, totalDegree, distribution, n_folds=5):
     """
     Compute score by KFold.
 
@@ -142,7 +145,8 @@ def compute_Q2_score_by_kfold(
         X_train, X_test = X[indices1], X[indices2]
         Y_train, Y_test = Y[indices1], Y[indices2]
         result = compute_sparse_least_squares_chaos(
-            X_train, Y_train, basis, totalDegree, distribution)
+            X_train, Y_train, basis, totalDegree, distribution
+        )
         metamodel = result.getMetaModel()
         val = ot.MetaModelValidation(X_test, Y_test, metamodel)
         Q2_local = val.computePredictivityFactor()[0]
@@ -173,10 +177,10 @@ print(Y[:5])
 # function creates a sparse chaos using regression and the LARS method.
 dimension = im.distributionX.getDimension()
 basis = ot.OrthogonalProductPolynomialFactory(
-    [im.distributionX.getMarginal(i) for i in range(dimension)])
+    [im.distributionX.getMarginal(i) for i in range(dimension)]
+)
 totalDegree = 5  # Polynomial degree
-result = compute_sparse_least_squares_chaos(
-    X, Y, basis, totalDegree, im.distributionX)
+result = compute_sparse_least_squares_chaos(X, Y, basis, totalDegree, im.distributionX)
 metamodel = result.getMetaModel()
 
 
@@ -245,7 +249,8 @@ score_sample = ot.Sample(len(degree_list), 1)
 for i in range(n_degrees):
     totalDegree = degree_list[i]
     score_sample[i, 0] = compute_Q2_score_by_kfold(
-        X, Y, basis, totalDegree, im.distributionX)
+        X, Y, basis, totalDegree, im.distributionX
+    )
     print(f"k-fold, degree = {totalDegree}, score = {score_sample[i, 0]:.4f}")
 
 # %%

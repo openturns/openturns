@@ -5,7 +5,7 @@ Use case : logistic model
 import openturns as ot
 
 
-class LogisticModel():
+class LogisticModel:
     """
     Data class for the logistic model.
 
@@ -56,31 +56,33 @@ class LogisticModel():
         self.distY0 = ot.Normal(self.y0, 0.1 * self.y0)
         self.distA = ot.Normal(self.a, 0.3 * self.a)
         self.distB = ot.Normal(self.b, 0.3 * self.b)
-        self.distX = ot.ComposedDistribution(
-            [self.distY0, self.distA, self.distB])
-        self.model = ot.SymbolicFunction(['t', 'y', 'a', 'b'], ['a*y - b*y^2'])
+        self.distX = ot.ComposedDistribution([self.distY0, self.distA, self.distB])
+        self.model = ot.SymbolicFunction(["t", "y", "a", "b"], ["a*y - b*y^2"])
 
         # Observation points
-        self.data = ot.Sample([
-            [1790, 3.9],
-            [1800, 5.3],
-            [1810, 7.2],
-            [1820, 9.6],
-            [1830, 13],
-            [1840, 17],
-            [1850, 23],
-            [1860, 31],
-            [1870, 39],
-            [1880, 50],
-            [1890, 62],
-            [1900, 76],
-            [1910, 92],
-            [1920, 106],
-            [1930, 123],
-            [1940, 132],
-            [1950, 151],
-            [1960, 179],
-            [1970, 203],
-            [1980, 221],
-            [1990, 250],
-            [2000, 281]])
+        self.data = ot.Sample(
+            [
+                [1790, 3.9],
+                [1800, 5.3],
+                [1810, 7.2],
+                [1820, 9.6],
+                [1830, 13],
+                [1840, 17],
+                [1850, 23],
+                [1860, 31],
+                [1870, 39],
+                [1880, 50],
+                [1890, 62],
+                [1900, 76],
+                [1910, 92],
+                [1920, 106],
+                [1930, 123],
+                [1940, 132],
+                [1950, 151],
+                [1960, 179],
+                [1970, 203],
+                [1980, 221],
+                [1990, 250],
+                [2000, 281],
+            ]
+        )

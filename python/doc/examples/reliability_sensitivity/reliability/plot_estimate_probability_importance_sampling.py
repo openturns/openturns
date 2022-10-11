@@ -23,6 +23,7 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -130,9 +131,11 @@ print("Probability = ", probability)
 alpha = 0.05
 
 # %%
-pflen = result.getConfidenceLength(1-alpha)
-print("%.2f%% confidence interval = [%.10f,%.10f]" % (
-    (1-alpha)*100, probability-pflen/2, probability+pflen/2))
+pflen = result.getConfidenceLength(1 - alpha)
+print(
+    "%.2f%% confidence interval = [%.10f,%.10f]"
+    % ((1 - alpha) * 100, probability - pflen / 2, probability + pflen / 2)
+)
 
 # %%
 # We can observe the convergence history of the estimate with the `drawProbabilityConvergence`

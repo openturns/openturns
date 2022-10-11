@@ -51,7 +51,7 @@ FunctionalChaosResult::FunctionalChaosResult()
 
 /* Default constructor */
 FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
-                                             const Sample & outputSample,
+    const Sample & outputSample,
     const Function & model,
     const Distribution & distribution,
     const Function & transformation,

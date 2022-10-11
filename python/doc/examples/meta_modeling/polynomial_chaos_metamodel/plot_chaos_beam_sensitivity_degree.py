@@ -51,7 +51,7 @@ dim_output = 1  # dimension of the output
 
 def function_beam(X):
     E, F, L, I = X
-    Y = F * L ** 3 / (3 * E * I)
+    Y = F * L**3 / (3 * E * I)
     return [Y]
 
 
@@ -94,8 +94,7 @@ def ComputeSparseLeastSquaresChaos(
         The estimated polynomial chaos.
     """
     selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
-    projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm
-    )
+    projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
     enumfunc = multivariateBasis.getEnumerateFunction()
     P = enumfunc.getStrataCumulatedCardinal(totalDegree)
     adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
@@ -140,8 +139,7 @@ def computeQ2Chaos(chaosResult, inputTest, outputTest):
 # %%
 def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, totalDegree):
     """Print statistics of a chaos."""
-    sparsityRate = computeSparsityRate(
-        multivariateBasis, totalDegree, chaosResult)
+    sparsityRate = computeSparsityRate(multivariateBasis, totalDegree, chaosResult)
     Q2 = computeQ2Chaos(chaosResult, inputTest, outputTest)
     metamodel = chaosResult.getMetaModel()
     val = ot.MetaModelValidation(inputTest, outputTest, metamodel)

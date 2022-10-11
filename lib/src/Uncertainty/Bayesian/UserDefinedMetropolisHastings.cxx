@@ -117,7 +117,7 @@ Function UserDefinedMetropolisHastings::getProposalLinkFunction() const
 }
 
 void UserDefinedMetropolisHastings::setProposalAndLinkFunction(const Distribution & proposal,
-                                                           const Function & linkFunction)
+    const Function & linkFunction)
 {
   if (proposal.getDimension() != marginalIndices_.getSize())
     throw InvalidArgumentException(HERE) << "The proposal density dimension (" << proposal.getDimension()

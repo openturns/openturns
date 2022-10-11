@@ -22,32 +22,55 @@ evaluation = ot.MarginalTransformationEvaluation(coll1)
 transformation = ot.MarginalTransformationHessian(evaluation)
 
 print("transformation=", repr(transformation))
-print("transformation.hessian(", repr(pointLow), ")=",
-      repr(transformation.hessian(pointLow)))
-print("finite difference hessian(", repr(pointLow), ")=", repr(
-    ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(pointLow)))
-print("transformation.hessian(", repr(pointHigh), ")=",
-      repr(transformation.hessian(pointHigh)))
-print("finite difference hessian(", repr(pointHigh), ")=", repr(
-    ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(pointHigh)))
+print(
+    "transformation.hessian(",
+    repr(pointLow),
+    ")=",
+    repr(transformation.hessian(pointLow)),
+)
+print(
+    "finite difference hessian(",
+    repr(pointLow),
+    ")=",
+    repr(ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(pointLow)),
+)
+print(
+    "transformation.hessian(",
+    repr(pointHigh),
+    ")=",
+    repr(transformation.hessian(pointHigh)),
+)
+print(
+    "finite difference hessian(",
+    repr(pointHigh),
+    ")=",
+    repr(ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(pointHigh)),
+)
 print("input dimension=", transformation.getInputDimension())
 print("output dimension=", transformation.getOutputDimension())
 
 # Second, check the constructor for old inverse transformation
 evaluation = ot.MarginalTransformationEvaluation(
-    coll1, ot.MarginalTransformationEvaluation.TO)
+    coll1, ot.MarginalTransformationEvaluation.TO
+)
 transformation = ot.MarginalTransformationHessian(evaluation)
 print("transformation=", repr(transformation))
 uLow = ot.Point(coll1.getSize(), 0.25)
 uHigh = ot.Point(coll1.getSize(), 0.75)
-print("transformation.hessian(", repr(uLow), ")=",
-      repr(transformation.hessian(uLow)))
-print("finite difference hessian(", repr(uLow), ")=", repr(
-    ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(uLow)))
-print("transformation.hessian(", repr(uHigh), ")=",
-      repr(transformation.hessian(uHigh)))
-print("finite difference hessian(", repr(uHigh), ")=", repr(
-    ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(uHigh)))
+print("transformation.hessian(", repr(uLow), ")=", repr(transformation.hessian(uLow)))
+print(
+    "finite difference hessian(",
+    repr(uLow),
+    ")=",
+    repr(ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(uLow)),
+)
+print("transformation.hessian(", repr(uHigh), ")=", repr(transformation.hessian(uHigh)))
+print(
+    "finite difference hessian(",
+    repr(uHigh),
+    ")=",
+    repr(ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(uHigh)),
+)
 print("input dimension=", transformation.getInputDimension())
 print("output dimension=", transformation.getOutputDimension())
 
@@ -56,13 +79,29 @@ print("output dimension=", transformation.getOutputDimension())
 evaluation = ot.MarginalTransformationEvaluation(coll1, coll2)
 transformation = ot.MarginalTransformationHessian(evaluation)
 print("transformation=", repr(transformation))
-print("transformation.hessian(", repr(pointLow), ")=",
-      repr(transformation.hessian(pointLow)))
-print("finite difference hessian(", repr(pointLow), ")=", repr(
-    ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(pointLow)))
-print("transformation.hessian(", repr(pointHigh), ")=",
-      repr(transformation.hessian(pointHigh)))
-print("finite difference hessian(", repr(pointHigh), ")=", repr(
-    ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(pointHigh)))
+print(
+    "transformation.hessian(",
+    repr(pointLow),
+    ")=",
+    repr(transformation.hessian(pointLow)),
+)
+print(
+    "finite difference hessian(",
+    repr(pointLow),
+    ")=",
+    repr(ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(pointLow)),
+)
+print(
+    "transformation.hessian(",
+    repr(pointHigh),
+    ")=",
+    repr(transformation.hessian(pointHigh)),
+)
+print(
+    "finite difference hessian(",
+    repr(pointHigh),
+    ")=",
+    repr(ot.CenteredFiniteDifferenceHessian(1.0e-4, evaluation).hessian(pointHigh)),
+)
 print("input dimension=", transformation.getInputDimension())
 print("output dimension=", transformation.getOutputDimension())

@@ -5,7 +5,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 
-distribution = ot.Arcsine(1., 2.5)
+distribution = ot.Arcsine(1.0, 2.5)
 size = 10000
 sample = distribution.getSample(size)
 factory = ot.ArcsineFactory()
@@ -18,14 +18,12 @@ mydist = ot.ArcsineFactory().build(distribution.getSample(10))
 myde = ot.MonteCarloExperiment(mydist, 10)
 estimatedDistribution = factory.build()
 print("Default distribution=", estimatedDistribution)
-estimatedDistribution = factory.build(
-    distribution.getParameter())
+estimatedDistribution = factory.build(distribution.getParameter())
 print("Distribution from parameters=", estimatedDistribution)
 estimatedArcsine = factory.buildAsArcsine(sample)
 print("Arcsine          =", distribution)
 print("Estimated Arcsine=", estimatedArcsine)
 estimatedArcsine = factory.buildAsArcsine()
 print("Default Arcsine=", estimatedArcsine)
-estimatedArcsine = factory.buildAsArcsine(
-    distribution.getParameter())
+estimatedArcsine = factory.buildAsArcsine(distribution.getParameter())
 print("Arcsine from parameters=", estimatedArcsine)

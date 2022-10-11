@@ -21,4 +21,3 @@ try:
     sample1[1, 2] = -4.0
 except:
     print("set item failed on purpose")
-

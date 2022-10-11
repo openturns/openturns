@@ -26,7 +26,8 @@ realization = ot.TimeSeries(myARMA.getRealization())
 # p-value : probability (test variable decision > test variable decision (statistic) evaluated on data)
 # Test = True <=> p-value > p-value threshold
 test = ot.DickeyFullerTest(realization)
-print("Drift and linear trend model=",
-      test.testUnitRootInDriftAndLinearTrendModel(0.05))
+print(
+    "Drift and linear trend model=", test.testUnitRootInDriftAndLinearTrendModel(0.05)
+)
 print("Drift model=", test.testUnitRootInDriftModel(0.05))
 print("AR1 model=", test.testUnitRootInAR1Model(0.05))

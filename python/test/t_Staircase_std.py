@@ -30,15 +30,15 @@ data2 = ot.Sample(nPoints, 2)
 cursor1 = ot.Point(2)
 cursor2 = ot.Point(2)
 for i in range(nPoints):
-    cursor1[0] = 13. * i / nPoints - 6.5
-    count1 = 0.
-    cursor2[0] = 24. * i / nPoints - 13.5
-    count2 = 0.
+    cursor1[0] = 13.0 * i / nPoints - 6.5
+    count1 = 0.0
+    cursor2[0] = 24.0 * i / nPoints - 13.5
+    count2 = 0.0
     for j in range(size):
-        if(sample1[j, 0] < cursor1[0]):
-            count1 += 1.
-        if(sample2[j, 0] < cursor2[0]):
-            count2 += 1.
+        if sample1[j, 0] < cursor1[0]:
+            count1 += 1.0
+        if sample2[j, 0] < cursor2[0]:
+            count2 += 1.0
     cursor1[1] = count1 / size
     cursor2[1] = count2 / size
     data1[i] = cursor1

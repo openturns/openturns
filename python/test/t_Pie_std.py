@@ -55,8 +55,7 @@ labels.add("cumul candidates < 3.5% ")
 palette.add("purple")
 
 # Create an empty graph
-myGraph = ot.Graph(
-    "Presidentielle 2002 - 1er tour", "x1", "x2", True, "topright")
+myGraph = ot.Graph("Presidentielle 2002 - 1er tour", "x1", "x2", True, "topright")
 
 # Create the first cloud
 myPie1 = ot.Pie(data, labels, ot.Point(2), 1, palette)

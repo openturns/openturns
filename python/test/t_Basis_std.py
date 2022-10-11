@@ -5,14 +5,14 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 basis = ot.Basis()
-print('basis =', basis)
+print("basis =", basis)
 basisSize = 3
 
 phis = []
 for j in range(basisSize):
-    phis.append(ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]))
+    phis.append(ot.SymbolicFunction(["x"], ["x^" + str(j + 1)]))
 basis = ot.Basis(phis)
-print('basis =', basis)
+print("basis =", basis)
 
 print(basis.getSize())
 print(basis.getSubBasis([1, 2]))
@@ -30,8 +30,8 @@ try:
     degree = 2
     poly = []
     factory = ot.MonomialFunctionFactory()
-    for i in range(degree+1):
+    for i in range(degree + 1):
         poly.append(factory.build(i))
     basis = ot.Basis(poly)
 except RuntimeError:
-    print('ok')
+    print("ok")

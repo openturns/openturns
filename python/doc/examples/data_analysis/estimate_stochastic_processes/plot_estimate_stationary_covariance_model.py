@@ -15,6 +15,7 @@ Estimate a stationary covariance function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -87,13 +88,12 @@ for i in range(N):
             sampleValueEstimated[i, 0] = estimatedValue[0, 0]
             sampleValueModel[i, 0] = modelValue[0, 0]
 sampleT = tgrid.getVertices()
-graph = ot.Graph('Covariance estimation', 'time',
-                 'Covariance value C(0,t)', True)
-curveEstimated = ot.Curve(sampleT, sampleValueEstimated, 'Estimated model')
+graph = ot.Graph("Covariance estimation", "time", "Covariance value C(0,t)", True)
+curveEstimated = ot.Curve(sampleT, sampleValueEstimated, "Estimated model")
 graph.add(curveEstimated)
-curveModel = ot.Curve(sampleT, sampleValueModel, 'Exact model')
-curveModel.setColor('red')
+curveModel = ot.Curve(sampleT, sampleValueModel, "Exact model")
+curveModel.setColor("red")
 graph.add(curveModel)
-graph.setLegendPosition('topright')
+graph.setLegendPosition("topright")
 view = viewer.View(graph)
 plt.show()

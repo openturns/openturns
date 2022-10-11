@@ -33,4 +33,3 @@ for index in range(size):
 # result of the function
 outSample = myFunction(inSample)
 print(myFunction.getName(), "( ", repr(inSample), " ) = ", repr(outSample))
-

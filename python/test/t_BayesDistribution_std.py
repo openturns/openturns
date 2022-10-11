@@ -5,10 +5,10 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 conditionedDistribution = ot.Normal()
-conditioningDistribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0),
-                                                    ot.Uniform(1.0, 2.0)])
-distribution = ot.BayesDistribution(
-    conditionedDistribution, conditioningDistribution)
+conditioningDistribution = ot.ComposedDistribution(
+    [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
+)
+distribution = ot.BayesDistribution(conditionedDistribution, conditioningDistribution)
 dim = distribution.getDimension()
 print("Distribution ", distribution)
 print("Parameters ", distribution.getParametersCollection())
@@ -44,8 +44,7 @@ point = [1.0, 0.5, 1.5]
 # Show PDF and CDF of point point
 pointPDF = distribution.computePDF(point)
 pointCDF = distribution.computeCDF(point)
-print("Point point= ", point, " pdf=%.6f" %
-      pointPDF, " cdf=%.6f" % pointCDF)
+print("Point point= ", point, " pdf=%.6f" % pointPDF, " cdf=%.6f" % pointCDF)
 
 # Get 95% quantile
 quantile = distribution.computeQuantile(0.95)

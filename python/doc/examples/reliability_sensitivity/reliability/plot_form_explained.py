@@ -38,9 +38,9 @@ distX = ot.ComposedDistribution([distX1, distX2])
 # We can draw the bidimensional PDF of the distribution `distX` over :math:`[0,-10] \times [10,10]` :
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 8)
 graphPDF = distX.drawPDF([0, -10], [10, 10])
-graphPDF.setTitle(r'2D-PDF of the input variables $(X_1, X_2)$')
-graphPDF.setXTitle(r'$x_1$')
-graphPDF.setYTitle(r'$x_2$')
+graphPDF.setTitle(r"2D-PDF of the input variables $(X_1, X_2)$")
+graphPDF.setXTitle(r"$x_1$")
+graphPDF.setYTitle(r"$x_2$")
 graphPDF.setLegendPosition("bottomright")
 view = otv.View(graphPDF)
 
@@ -48,11 +48,11 @@ view = otv.View(graphPDF)
 # %%
 # We consider the model :math:`f : (x_1, x_2) \mapsto x_1 x_2` which maps the random input vector :math:`X` to the output variable :math:`Y=f(X) \in \mathbb{R}`. We also draw the isolines of the model `f`.
 #
-f = ot.SymbolicFunction(['x1', 'x2'], ['x1 * x2'])
+f = ot.SymbolicFunction(["x1", "x2"], ["x1 * x2"])
 graphModel = f.draw([0.0, -10.0], [10.0, 10.0])
-graphModel.setXTitle(r'$x_1$')
-graphModel.setXTitle(r'$x_2$')
-graphModel.setTitle(r'Isolines of the model : $Y = f(X)$')
+graphModel.setXTitle(r"$x_1$")
+graphModel.setXTitle(r"$x_2$")
+graphModel.setTitle(r"Isolines of the model : $Y = f(X)$")
 view = otv.View(graphModel)
 
 
@@ -88,12 +88,10 @@ event = ot.ThresholdEvent(vectorY, ot.Greater(), s)
 nx, ny = 15, 15
 xx = ot.Box([nx], ot.Interval([0.0], [10.0])).generate()
 yy = ot.Box([ny], ot.Interval([-10.0], [10.0])).generate()
-inputData = ot.Box([nx, ny], ot.Interval(
-    [0.0, -10.0], [10.0, 10.0])).generate()
+inputData = ot.Box([nx, ny], ot.Interval([0.0, -10.0], [10.0, 10.0])).generate()
 outputData = f(inputData)
 mycontour = ot.Contour(xx, yy, outputData, [10.0], ["10.0"])
-myGraph = ot.Graph("Representation of the failure domain",
-                   r"$X_1$", r"$X_2$", True, "")
+myGraph = ot.Graph("Representation of the failure domain", r"$X_1$", r"$X_2$", True, "")
 myGraph.add(mycontour)
 
 # %%
@@ -211,15 +209,17 @@ print("zi2D = ", zi2D)
 # We can represent the boundary of the event in the standard space : that is a composition of the
 # hyperbole :math:`h : x \mapsto 10/x` and the inverse transform :math:`T_1^{-1}` defined by
 # :math:`inverseTransformX1`.
-failureBoundaryPhysicalSpace = ot.SymbolicFunction(['x'], ['10.0 / x'])
+failureBoundaryPhysicalSpace = ot.SymbolicFunction(["x"], ["10.0 / x"])
 failureBoundaryStandardSpace = ot.ComposedFunction(
-    failureBoundaryPhysicalSpace, inverseTransformX1)
+    failureBoundaryPhysicalSpace, inverseTransformX1
+)
 x = np.linspace(1.1, 5.0, 100)
 cx = np.array([failureBoundaryStandardSpace([xi])[0] for xi in x])
 
 graphStandardSpace = ot.Graph(
-    'Failure event in the standard space', r'$u_1$', r'$u_2$', True, '')
-curveCX = ot.Curve(x, cx, 'Boundary of the event $\partial \mathcal{D}$')
+    "Failure event in the standard space", r"$u_1$", r"$u_2$", True, ""
+)
+curveCX = ot.Curve(x, cx, "Boundary of the event $\partial \mathcal{D}$")
 curveCX.setLineStyle("solid")
 curveCX.setColor("blue")
 graphStandardSpace.add(curveCX)
@@ -295,8 +295,11 @@ cloud.setLegend("design point")
 graphStandardSpace.add(cloud)
 graphStandardSpace.setGrid(True)
 graphStandardSpace.setLegendPosition("bottomright")
-cc = ot.Curve([0.0, designPointStandardSpace[0]], [
-              0.0, designPointStandardSpace[1]], r'$\beta_{HL}$ distance')
+cc = ot.Curve(
+    [0.0, designPointStandardSpace[0]],
+    [0.0, designPointStandardSpace[1]],
+    r"$\beta_{HL}$ distance",
+)
 cc.setLineStyle("dashed")
 cc.setColor("black")
 graphStandardSpace.add(cc)
@@ -319,8 +322,7 @@ view = otv.View(graphStandardSpace)
 u0 = [designPointStandardSpace[0]]
 du0 = failureBoundaryStandardSpace.getGradient().gradient(u0)
 print("abscissa of the design point u0  = ", u0[0])
-print("value of the failure boundary at u0 = ",
-      failureBoundaryStandardSpace(u0)[0])
+print("value of the failure boundary at u0 = ", failureBoundaryStandardSpace(u0)[0])
 print("value of the gradient of the failure boundary at u0 = ", du0[0, 0])
 
 
@@ -332,8 +334,8 @@ print("value of the gradient of the failure boundary at u0 = ", du0[0, 0])
 #    \Pi_{u_0}(x) = (h \circ T^{-1}) (u_0) + \frac{d}{dx} (h \circ T^{-1}) (u_0) (x-u_0)
 #
 x = np.linspace(1.1, 5.0, 100)
-hyperplane = failureBoundaryStandardSpace(u0)[0] + du0[0, 0] * (x-u0)
-curveHyperplane = ot.Curve(x, hyperplane, r'$\Pi_{u_0}$ (FORM)')
+hyperplane = failureBoundaryStandardSpace(u0)[0] + du0[0, 0] * (x - u0)
+curveHyperplane = ot.Curve(x, hyperplane, r"$\Pi_{u_0}$ (FORM)")
 curveHyperplane.setLineStyle("dashed")
 curveHyperplane.setColor("green")
 graphStandardSpace.add(curveHyperplane)
@@ -384,9 +386,12 @@ print("value of the hessian of the failure boundary at u0 = ", d2u0[0, 0, 0])
 #    \mathcal{P}_{u_0}(x) = h \circ T^{-1} (u_0) + \frac{d}{dx} (h \circ T^{-1})(u_0) (x-u_0) + \frac{1}{2} \frac{d^2}{dx^2} (h \circ T^{-1})(u_0) (x-u_0)^2
 #
 x = np.linspace(1.1, 5.0, 100)
-parabola = failureBoundaryStandardSpace(
-    u0)[0] + du0[0, 0] * (x-u0) + 0.5 * d2u0[0, 0, 0] * (x-u0)**2
-curveParabola = ot.Curve(x, parabola, r'$\mathcal{P}_{u_0}$ (SORM)')
+parabola = (
+    failureBoundaryStandardSpace(u0)[0]
+    + du0[0, 0] * (x - u0)
+    + 0.5 * d2u0[0, 0, 0] * (x - u0) ** 2
+)
+curveParabola = ot.Curve(x, parabola, r"$\mathcal{P}_{u_0}$ (SORM)")
 curveParabola.setLineStyle("dashed")
 curveParabola.setColor("orange")
 graphStandardSpace.add(curveParabola)
@@ -404,7 +409,7 @@ view = otv.View(graphStandardSpace)
 #
 # For the oscilating parabola of concern we use the gradient and hessian previously computed :
 #
-curvature = (d2u0[0, 0, 0]) / (1 + (du0[0, 0]) ** 2)**(3/2)
+curvature = (d2u0[0, 0, 0]) / (1 + (du0[0, 0]) ** 2) ** (3 / 2)
 print("Curvature (analytic formula) = ", curvature)
 
 
@@ -432,7 +437,7 @@ print("Curvature (estimated) = ", resultSORM.getSortedCurvatures()[1])
 #
 #    P_f \approx E(\beta_{HL}) \frac{1}{\sqrt{1+\beta_{HL}\kappa}}
 #
-coeff = (1.0 + betaHL*curvature) ** (-0.5)
+coeff = (1.0 + betaHL * curvature) ** (-0.5)
 pf = (1.0 - ot.Normal().computeCDF(betaHL)) * coeff
 print("SORM : Pf = ", pf)
 

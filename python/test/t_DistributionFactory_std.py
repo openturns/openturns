@@ -2,14 +2,22 @@
 
 import openturns as ot
 
-print("Continuous univariate factories=",
-      ot.DistributionFactory.GetContinuousUniVariateFactories())
-print("Continuous multivariate factories=",
-      ot.DistributionFactory.GetContinuousMultiVariateFactories())
-print("Discrete univariate factories=",
-      ot.DistributionFactory.GetDiscreteUniVariateFactories())
-print("Discrete multivariate factories=",
-      ot.DistributionFactory.GetDiscreteMultiVariateFactories())
+print(
+    "Continuous univariate factories=",
+    ot.DistributionFactory.GetContinuousUniVariateFactories(),
+)
+print(
+    "Continuous multivariate factories=",
+    ot.DistributionFactory.GetContinuousMultiVariateFactories(),
+)
+print(
+    "Discrete univariate factories=",
+    ot.DistributionFactory.GetDiscreteUniVariateFactories(),
+)
+print(
+    "Discrete multivariate factories=",
+    ot.DistributionFactory.GetDiscreteMultiVariateFactories(),
+)
 print("Univariate factories=", ot.DistributionFactory.GetUniVariateFactories())
 print("Multivariate factories=", ot.DistributionFactory.GetMultiVariateFactories())
 
@@ -26,11 +34,11 @@ for factory in factories:
             dist = factory.build(sample)
         except Exception as exc:
             ok = True
-        print('constant:', 'ok' if ok else 'fail')
-        assert ok, str(factory)+' vs const'
+        print("constant:", "ok" if ok else "fail")
+        assert ok, str(factory) + " vs const"
 
     # check if raises on sample with nan/inf
-    for weird in ['nan', 'inf']:
+    for weird in ["nan", "inf"]:
         sample = factory.build().getSample(100)
         sample[0, 0] = float(weird)
         ok = False
@@ -38,5 +46,5 @@ for factory in factories:
             dist = factory.build(sample)
         except Exception:
             ok = True
-        print(weird + ':', 'ok' if ok else 'fail')
-        assert ok, str(factory)+' vs ' + weird
+        print(weird + ":", "ok" if ok else "fail")
+        assert ok, str(factory) + " vs " + weird

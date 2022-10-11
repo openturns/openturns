@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+
 ot.TESTPREAMBLE()
 
 

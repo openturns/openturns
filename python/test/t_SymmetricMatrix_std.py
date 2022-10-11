@@ -14,17 +14,16 @@ symmetricMatrix0 = ot.SymmetricMatrix()
 print("symmetricMatrix0 = ", repr(symmetricMatrix0))
 
 # TEST NUMBER ONE : CONSTRUCTOR WITH SIZE, OPERATOR() AND STRING CONVERTER
-print(
-    "test number one : constructor with size, operator() and string converter")
+print("test number one : constructor with size, operator() and string converter")
 
 # Constructor with size
 symmetricMatrix1 = ot.SymmetricMatrix(2)
 
 # Check operator() methods
-symmetricMatrix1[0, 0] = 1.
-symmetricMatrix1[1, 0] = 2.
-symmetricMatrix1[0, 1] = 3.
-symmetricMatrix1[1, 1] = 4.
+symmetricMatrix1[0, 0] = 1.0
+symmetricMatrix1[1, 0] = 2.0
+symmetricMatrix1[0, 1] = 3.0
+symmetricMatrix1[1, 1] = 4.0
 
 # String converter
 print("symmetricMatrix1 = ", repr(symmetricMatrix1))
@@ -88,8 +87,8 @@ print("test number ten : multiplication with a numerical point method")
 
 # Create the numerical point
 pt = ot.Point()
-pt.add(1.)
-pt.add(2.)
+pt.add(1.0)
+pt.add(2.0)
 print("pt = ", repr(pt))
 
 # Check the product method
@@ -98,11 +97,10 @@ print("ptResult = ", repr(ptResult))
 
 # TEST NUMBER ELEVEN : MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR
 # METHODS
-print(
-    "test number eleven : multiplication and division by a numerical scalar methods")
+print("test number eleven : multiplication and division by a numerical scalar methods")
 
 # Check the multiplication method
-s = 3.
+s = 3.0
 scalprod1 = symmetricMatrix1 * s
 # bug PYTHON scalprod2 = s * symmetricMatrix1
 scalprod3 = symmetricMatrix1 * s

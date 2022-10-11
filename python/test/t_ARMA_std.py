@@ -17,8 +17,8 @@ squareMatrix1[1, 1] = 0.4
 # Second matrix to add to the ARMACoefficients
 squareMatrix2 = ot.SquareMatrix(dim)
 squareMatrix2[0, 0] = 0.1
-squareMatrix2[1, 0] = 0.
-squareMatrix2[0, 1] = 0.
+squareMatrix2[1, 0] = 0.0
+squareMatrix2[0, 1] = 0.0
 squareMatrix2[1, 1] = 0.5
 
 # ARMA(p, q)
@@ -52,7 +52,7 @@ dist2 = ot.Normal(0.0, 0.02)
 aCollection = [dist1, dist2]
 
 dist = ot.ComposedDistribution(aCollection)
-print("dist = ",  dist)
+print("dist = ", dist)
 
 epsilon = ot.WhiteNoise(dist)
 
@@ -75,8 +75,8 @@ for j in range(dim):
         lastNoiseValues[i, j] = ot.RandomGenerator.Generate()
 
 # Print the initial state of the ARMA : coefficients
-print("Last values of the process = ",  lastValues)
-print("Last innovations of the process = ",  lastNoiseValues)
+print("Last values of the process = ", lastValues)
+print("Last innovations of the process = ", lastNoiseValues)
 
 # ARMAState creation
 # instanciation of timeGrid
@@ -84,9 +84,9 @@ state = ot.ARMAState(lastValues, lastNoiseValues)
 process = ot.Process(ot.ARMA(coefficientsP, coefficientsQ, epsilon))
 process2 = ot.ARMA(coefficientsP, coefficientsQ, epsilon)
 process3 = ot.ARMA(coefficientsP, coefficientsQ, epsilon, state)
-print("process = ",  process)
-print("ARMA process = ",  process2)
-print("ARMA process with ARMAstate = ",  process3)
+print("process = ", process)
+print("ARMA process = ", process2)
+print("ARMA process with ARMAstate = ", process3)
 
 # Test realization
 print("One realization=", process2.getRealization())
@@ -96,4 +96,3 @@ stepNumber = 4
 print("One future=", process2.getFuture(stepNumber))
 size = 3
 print("Some futures=", process2.getFuture(stepNumber, size))
-

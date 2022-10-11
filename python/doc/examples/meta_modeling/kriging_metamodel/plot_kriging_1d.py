@@ -52,13 +52,14 @@ import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-g = ot.SymbolicFunction(['x'], ['sin(x)'])
+g = ot.SymbolicFunction(["x"], ["sin(x)"])
 
 # %%
-x_train = ot.Sample([[x] for x in [1., 3., 4., 6., 7.9, 11., 11.5]])
+x_train = ot.Sample([[x] for x in [1.0, 3.0, 4.0, 6.0, 7.9, 11.0, 11.5]])
 y_train = g(x_train)
 n_train = x_train.getSize()
 n_train
@@ -67,10 +68,10 @@ n_train
 # In order to compare the function and its metamodel, we use a test (i.e. validation) design of experiments made of a regular grid of 100 points from 0 to 12. Then we convert this grid into a `Sample` and we compute the outputs of the function on this sample.
 
 # %%
-xmin = 0.
-xmax = 12.
+xmin = 0.0
+xmax = 12.0
 n_test = 100
-step = (xmax-xmin)/(n_test-1)
+step = (xmax - xmin) / (n_test - 1)
 myRegularGrid = ot.RegularGrid(xmin, step, n_test)
 x_test = myRegularGrid.getVertices()
 y_test = g(x_test)
@@ -99,7 +100,7 @@ def plot_data_test(x_test, y_test):
 
 
 # %%
-graph = ot.Graph('test and train', '', '', True, '')
+graph = ot.Graph("test and train", "", "", True, "")
 graph.add(plot_data_test(x_test, y_test))
 graph.add(plot_data_train(x_train, y_train))
 graph.setAxes(True)
@@ -114,9 +115,9 @@ view = viewer.View(graph)
 # %%
 dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
-#basis = ot.LinearBasisFactory(dimension).build()
+# basis = ot.LinearBasisFactory(dimension).build()
 basis = ot.QuadraticBasisFactory(dimension).build()
-covarianceModel = ot.MaternModel([1.]*dimension, 1.5)
+covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 algo = ot.KrigingAlgorithm(x_train, y_train, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
@@ -143,7 +144,7 @@ def plot_data_kriging(x_test, y_test_MM):
 
 
 # %%
-graph = ot.Graph('', '', '', True, '')
+graph = ot.Graph("", "", "", True, "")
 graph.add(plot_data_test(x_test, y_test))
 graph.add(plot_data_train(x_train, y_train))
 graph.add(plot_data_kriging(x_test, y_test_MM))
@@ -177,7 +178,7 @@ alpha = 0.05
 
 
 def computeQuantileAlpha(alpha):
-    bilateralCI = ot.Normal().computeBilateralConfidenceInterval(1-alpha)
+    bilateralCI = ot.Normal().computeBilateralConfidenceInterval(1 - alpha)
     return bilateralCI.getUpperBound()[0]
 
 
@@ -190,16 +191,17 @@ print("Quantile alpha=%f" % (quantileAlpha))
 
 # %%
 sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
-epsilon = ot.Sample(n_test, [1.e-8])
-conditionalVariance = result.getConditionalMarginalVariance(x_test)+epsilon
+epsilon = ot.Sample(n_test, [1.0e-8])
+conditionalVariance = result.getConditionalMarginalVariance(x_test) + epsilon
 conditionalSigma = sqrt(conditionalVariance)
 
 # %%
 # The following figure presents the conditional standard deviation depending on :math:`x`.
 
 # %%
-graph = ot.Graph('Conditional standard deviation', 'x',
-                 'Conditional standard deviation', True, '')
+graph = ot.Graph(
+    "Conditional standard deviation", "x", "Conditional standard deviation", True, ""
+)
 curve = ot.Curve(x_test, conditionalSigma)
 graph.add(curve)
 view = viewer.View(graph)
@@ -211,13 +213,18 @@ view = viewer.View(graph)
 
 # %%
 def computeBoundsConfidenceInterval(quantileAlpha):
-    dataLower = [[y_test_MM[i, 0] - quantileAlpha *
-                  conditionalSigma[i, 0]] for i in range(n_test)]
-    dataUpper = [[y_test_MM[i, 0] + quantileAlpha *
-                  conditionalSigma[i, 0]] for i in range(n_test)]
+    dataLower = [
+        [y_test_MM[i, 0] - quantileAlpha * conditionalSigma[i, 0]]
+        for i in range(n_test)
+    ]
+    dataUpper = [
+        [y_test_MM[i, 0] + quantileAlpha * conditionalSigma[i, 0]]
+        for i in range(n_test)
+    ]
     dataLower = ot.Sample(dataLower)
     dataUpper = ot.Sample(dataUpper)
     return dataLower, dataUpper
+
 
 # %%
 # In order to create the graphics containing the bounds of the confidence interval, we use the `Polygon`. This will create a colored surface associated to the confidence interval. In order to do this, we create the nodes of the polygons at the lower level `vLow` and at the upper level `vUp`. Then we assemble these nodes to create the polygons. That is what we do inside the `plot_kriging_bounds` function.
@@ -234,10 +241,10 @@ def plot_kriging_bounds(dataLower, dataUpper, n_test, color=[120, 1.0, 1.0]):
     vLow = [[x_test[i, 0], dataLower[i, 0]] for i in range(n_test)]
     vUp = [[x_test[i, 0], dataUpper[i, 0]] for i in range(n_test)]
     myHSVColor = ot.Polygon.ConvertFromHSV(color[0], color[1], color[2])
-    polyData = [[vLow[i], vLow[i+1], vUp[i+1], vUp[i]]
-                for i in range(n_test-1)]
-    polygonList = [ot.Polygon(polyData[i], myHSVColor, myHSVColor)
-                   for i in range(n_test-1)]
+    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
+    polygonList = [
+        ot.Polygon(polyData[i], myHSVColor, myHSVColor) for i in range(n_test - 1)
+    ]
     boundsPoly = ot.PolygonArray(polygonList)
     return boundsPoly
 
@@ -253,7 +260,7 @@ mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 
 # %%
 # sphinx_gallery_thumbnail_number = 4
-graph = ot.Graph('', '', '', True, '')
+graph = ot.Graph("", "", "", True, "")
 graph.add(plot_data_test(x_test, y_test))
 graph.add(plot_data_train(x_train, y_train))
 graph.add(plot_data_kriging(x_test, y_test_MM))
@@ -263,7 +270,7 @@ for idx, v in enumerate(alphas):
     quantileAlpha = computeQuantileAlpha(v)
     vLow, vUp = computeBoundsConfidenceInterval(quantileAlpha)
     boundsPoly = plot_kriging_bounds(vLow, vUp, n_test, mycolors[idx])
-    boundsPoly.setLegend(" %d%% bounds" % ((1.0-v)*100))
+    boundsPoly.setLegend(" %d%% bounds" % ((1.0 - v) * 100))
     graph.add(boundsPoly)
 
 graph.setAxes(True)

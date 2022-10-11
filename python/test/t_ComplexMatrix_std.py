@@ -16,17 +16,16 @@ matrix0 = ot.ComplexMatrix()
 print("matrix0 = ", repr(matrix0))
 
 # CONSTRUCTOR WITH SIZE, OPERATOR() AND STRING CONVERTER
-print(
-    "test number one : constructor with size, operator() and string converter")
+print("test number one : constructor with size, operator() and string converter")
 
 # Constructor with size
 matrix1 = ot.ComplexMatrix(2, 2)
 
 # Check operator() methods
-matrix1[0, 0] = 1. + 1j
-matrix1[1, 0] = 2. + 4j
-matrix1[0, 1] = 3. - 1j
-matrix1[1, 1] = 4.
+matrix1[0, 0] = 1.0 + 1j
+matrix1[1, 0] = 2.0 + 4j
+matrix1[0, 1] = 3.0 - 1j
+matrix1[1, 1] = 4.0
 
 # String converter
 print("matrix1 = ", repr(matrix1))
@@ -52,12 +51,12 @@ print("test 4 : constructor with collection method")
 
 # Create the collection of values
 elementsValues = ot.ComplexCollection()
-elementsValues.add(1. - 1j)
-elementsValues.add(2. - 1j)
-elementsValues.add(3. - 1j)
-elementsValues.add(4. + 1j)
-elementsValues.add(5. + 1j)
-elementsValues.add(6. + 1j)
+elementsValues.add(1.0 - 1j)
+elementsValues.add(2.0 - 1j)
+elementsValues.add(3.0 - 1j)
+elementsValues.add(4.0 + 1j)
+elementsValues.add(5.0 + 1j)
+elementsValues.add(6.0 + 1j)
 
 # Check the content of the collection
 print("elementsValues = ", repr(elementsValues))
@@ -112,8 +111,8 @@ print("test 9 : multiplication with a numerical point method")
 
 # Create the numerical point
 pt = ot.Point()
-pt.add(1.)
-pt.add(2.)
+pt.add(1.0)
+pt.add(2.0)
 print("pt = ", repr(pt))
 
 # Check the product method
@@ -121,11 +120,10 @@ ptResult = matrix1 * pt
 print("ptResult = ", repr(ptResult))
 
 #  MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS
-print(
-    "test 10 : multiplication and division by a numerical scalar methods")
+print("test 10 : multiplication and division by a numerical scalar methods")
 
 # Check the multiplication method
-s = 3. + 1j
+s = 3.0 + 1j
 scalprod1 = matrix1 * s
 print("scalprod1 = ", repr(scalprod1))
 
@@ -150,14 +148,14 @@ print("test 11 : multiplication with a numerical point method")
 
 # Create the numerical point
 pt_test = ot.Point()
-pt_test.add(1.)
-pt_test.add(2.)
+pt_test.add(1.0)
+pt_test.add(2.0)
 print("pt_test = ", repr(pt_test))
 
 A = ot.ComplexMatrix(2, 2)
 A[0, 0] = 0.5
-A[1, 0] = -(m.sqrt(3.) / 2)
-A[0, 1] = (m.sqrt(3.) / 2)
+A[1, 0] = -(m.sqrt(3.0) / 2)
+A[0, 1] = m.sqrt(3.0) / 2
 A[1, 1] = 0.5
 B = A.transpose()
 identity = B * A

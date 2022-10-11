@@ -8,7 +8,8 @@ ot.TESTPREAMBLE()
 # Construction based on two functions
 # Create an instance */
 myFunc = ot.PointToPointConnection(
-    ot.SymbolicFunction("x", "sin(x)"), ot.SymbolicFunction("x", "cos(x)"))
+    ot.SymbolicFunction("x", "sin(x)"), ot.SymbolicFunction("x", "cos(x)")
+)
 
 print("myFunc=", myFunc)
 # Get the input and output description */

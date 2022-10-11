@@ -39,5 +39,10 @@ for i in range(size):
         s = timeGrid.getValue(j)
         estimatedValue = myCovarianceModel(t, s)[0, 0]
         modelValue = model(t, s)[0, 0]
-        print("Covariance C( %.6g" % t, ",  %.6g" % s, ") : ", " evaluation =  %.6g" %
-              estimatedValue, " model =  %.6g" % modelValue)
+        print(
+            "Covariance C( %.6g" % t,
+            ",  %.6g" % s,
+            ") : ",
+            " evaluation =  %.6g" % estimatedValue,
+            " model =  %.6g" % modelValue,
+        )

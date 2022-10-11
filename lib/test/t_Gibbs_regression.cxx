@@ -201,7 +201,7 @@ int main(int, char *[])
     UnsignedInteger count_nomove = 0;
     for ( UnsignedInteger j = 1; j < sample.getSize(); ++j )
     {
-      if (sample[j] == sample[j-1]) count_nomove++;
+      if (sample[j] == sample[j - 1]) count_nomove++;
     }
     const Scalar frequency_nomove = (Scalar)count_nomove / (Scalar)sample.getSize();
     assert_almost_equal(frequency_nomove, 0.5, 0.02, 0.0);

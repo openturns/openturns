@@ -16,6 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -33,7 +34,7 @@ n_pt = 20  # number of initial points
 with_error = True  # whether to use generation with error
 
 # %%
-ref_func_with_error = ot.SymbolicFunction(['x', 'eps'], ['x * sin(x) + eps'])
+ref_func_with_error = ot.SymbolicFunction(["x", "eps"], ["x * sin(x) + eps"])
 ref_func = ot.ParametricFunction(ref_func_with_error, [1], [0.0])
 x = np.vstack(np.linspace(xmin, xmax, n_pt))
 ot.RandomGenerator.SetSeed(1235)
@@ -49,8 +50,8 @@ else:
 # %%
 graph = ref_func.draw(xmin, xmax, 200)
 cloud = ot.Cloud(x, y)
-cloud.setColor('red')
-cloud.setPointStyle('bullet')
+cloud.setColor("red")
+cloud.setPointStyle("bullet")
 graph.add(cloud)
 graph.setLegends(["Function", "Data"])
 graph.setLegendPosition("topleft")
@@ -63,12 +64,13 @@ view = viewer.View(graph)
 
 # 1. basis
 ot.ResourceMap.SetAsBool(
-    'GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', True)
+    "GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", True
+)
 basis = ot.ConstantBasisFactory(dim).build()
 print(basis)
 
 # 2. covariance model
-cov = ot.MaternModel([1.], [2.5], 1.5)
+cov = ot.MaternModel([1.0], [2.5], 1.5)
 print(cov)
 
 # 3. kriging algorithm
@@ -80,8 +82,7 @@ algokriging = ot.KrigingAlgorithm(x, y, cov, basis)
 # 4. Optimization
 # algokriging.setOptimizationAlgorithm(ot.NLopt('GN_DIRECT'))
 lhsExperiment = ot.LHSExperiment(ot.Uniform(1e-1, 1e2), 50)
-algokriging.setOptimizationAlgorithm(
-    ot.MultiStart(ot.TNC(), lhsExperiment.generate()))
+algokriging.setOptimizationAlgorithm(ot.MultiStart(ot.TNC(), lhsExperiment.generate()))
 algokriging.setOptimizationBounds(ot.Interval([0.1], [1e2]))
 
 # if we choose not to optimize parameters
@@ -97,13 +98,13 @@ algokriging.run()
 # %%
 # get some results
 krigingResult = algokriging.getResult()
-print('residual = ', krigingResult.getResiduals())
-print('R2 = ', krigingResult.getRelativeErrors())
-print('Optimal scale= {}'.format(krigingResult.getCovarianceModel().getScale()))
-print('Optimal amplitude = {}'.format(
-    krigingResult.getCovarianceModel().getAmplitude()))
-print('Optimal trend coefficients = {}'.format(
-    krigingResult.getTrendCoefficients()))
+print("residual = ", krigingResult.getResiduals())
+print("R2 = ", krigingResult.getRelativeErrors())
+print("Optimal scale= {}".format(krigingResult.getCovarianceModel().getScale()))
+print(
+    "Optimal amplitude = {}".format(krigingResult.getCovarianceModel().getAmplitude())
+)
+print("Optimal trend coefficients = {}".format(krigingResult.getTrendCoefficients()))
 
 # %%
 # get the metamodel
@@ -128,7 +129,7 @@ graph.setLegendPosition("topleft")
 View(graph, axes=[ax1])
 
 # On the right, the conditional kriging variance
-graph = ot.Graph("", "x", "Conditional kriging variance", True, '')
+graph = ot.Graph("", "x", "Conditional kriging variance", True, "")
 # Sample for the data
 sample = ot.Sample(n_pt, 2)
 sample[:, 0] = x
@@ -138,8 +139,7 @@ graph.add(cloud)
 # Sample for the variance
 sample = ot.Sample(n_pts_plot, 2)
 sample[:, 0] = x_plot
-variance = [
-    [krigingResult.getConditionalCovariance(xx)[0, 0]] for xx in x_plot]
+variance = [[krigingResult.getConditionalCovariance(xx)[0, 0]] for xx in x_plot]
 sample[:, 1] = variance
 curve = ot.Curve(sample)
 curve.setColor("green")
@@ -155,18 +155,20 @@ fig.suptitle("Kriging result")
 # %%
 # sphinx_gallery_thumbnail_number = 3
 level = 0.95
-quantile = ot.Normal().computeQuantile((1-level)/2)[0]
+quantile = ot.Normal().computeQuantile((1 - level) / 2)[0]
 borne_sup = krigingMeta(x_plot) + quantile * np.sqrt(variance)
 borne_inf = krigingMeta(x_plot) - quantile * np.sqrt(variance)
 
 fig, ax = plt.subplots(figsize=(8, 8))
-ax.plot(x, y, ('ro'))
-ax.plot(x_plot, borne_sup, '--', color='orange', label='Confidence interval')
-ax.plot(x_plot, borne_inf, '--', color='orange')
-View(ref_func.draw(xmin, xmax, n_pts_plot),
-     axes=[ax], plot_kw={'label': '$x sin(x)$'})
-View(krigingMeta.draw(xmin, xmax, n_pts_plot), plot_kw={
-     'color': 'green', 'label': 'prediction'}, axes=[ax])
+ax.plot(x, y, ("ro"))
+ax.plot(x_plot, borne_sup, "--", color="orange", label="Confidence interval")
+ax.plot(x_plot, borne_inf, "--", color="orange")
+View(ref_func.draw(xmin, xmax, n_pts_plot), axes=[ax], plot_kw={"label": "$x sin(x)$"})
+View(
+    krigingMeta.draw(xmin, xmax, n_pts_plot),
+    plot_kw={"color": "green", "label": "prediction"},
+    axes=[ax],
+)
 legend = ax.legend()
 ax.autoscale()
 
@@ -189,17 +191,24 @@ krv_sample = krv.getSample(5)
 # %%
 x_plot = np.vstack(np.linspace(xmin, xmax, n_pts_plot))
 fig, ax = plt.subplots(figsize=(8, 6))
-ax.plot(x, y, ('ro'))
+ax.plot(x, y, ("ro"))
 for i in range(krv_sample.getSize()):
     if i == 0:
-        ax.plot(values, krv_sample[i, :], '--',
-                alpha=0.8, label='Conditional trajectories')
+        ax.plot(
+            values, krv_sample[i, :], "--", alpha=0.8, label="Conditional trajectories"
+        )
     else:
-        ax.plot(values, krv_sample[i, :], '--', alpha=0.8)
-View(ref_func.draw(xmin, xmax, n_pts_plot), axes=[ax],
-     plot_kw={'color': 'black', 'label': '$x*sin(x)$'})
-View(krigingMeta.draw(xmin, xmax, n_pts_plot), axes=[ax],
-     plot_kw={'color': 'green', 'label': 'prediction'})
+        ax.plot(values, krv_sample[i, :], "--", alpha=0.8)
+View(
+    ref_func.draw(xmin, xmax, n_pts_plot),
+    axes=[ax],
+    plot_kw={"color": "black", "label": "$x*sin(x)$"},
+)
+View(
+    krigingMeta.draw(xmin, xmax, n_pts_plot),
+    axes=[ax],
+    plot_kw={"color": "green", "label": "prediction"},
+)
 legend = ax.legend()
 ax.autoscale()
 

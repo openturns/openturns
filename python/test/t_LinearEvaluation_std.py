@@ -25,8 +25,7 @@ linear[1, 1] = 5.0
 linear[2, 1] = 6.0
 
 # myFunction = linear * (X- center) + constant
-myFunction = ot.LinearEvaluation(
-    center, constant, linear)
+myFunction = ot.LinearEvaluation(center, constant, linear)
 myFunction.setName("linearFunction")
 inPoint = ot.Point(inputDimension)
 inPoint[0] = 7.0

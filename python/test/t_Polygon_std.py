@@ -12,12 +12,12 @@ data1 = ot.Sample(size, 2)  # polygon y = 2x for x in [-25]
 data2 = ot.Sample(size, 2)  # polygon y = x*x for x in [-11]
 
 for i in range(size):
-    tmp = 7. * i / size + 2
+    tmp = 7.0 * i / size + 2
     cursor[0] = tmp
     cursor[1] = 2 * tmp
     data1[i] = cursor
 
-    tmp = 9. * i / size + 1
+    tmp = 9.0 * i / size + 1
     cursor[0] = tmp
     cursor[1] = tmp * tmp
     data2[i] = cursor

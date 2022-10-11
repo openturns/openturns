@@ -13,15 +13,12 @@ print("distribution=", repr(distribution))
 print("Estimated distribution=", repr(estimatedDistribution))
 estimatedDistribution = factory.build()
 print("Default distribution=", estimatedDistribution)
-estimatedDistribution = factory.build(
-    distribution.getParameter())
+estimatedDistribution = factory.build(distribution.getParameter())
 print("Distribution from parameters=", estimatedDistribution)
 estimatedInverseNormal = factory.buildAsInverseNormal(sample)
 print("InverseNormal          =", distribution)
 print("Estimated inverseNormal=", estimatedInverseNormal)
 estimatedInverseNormal = factory.buildAsInverseNormal()
 print("Default inverseNormal=", estimatedInverseNormal)
-estimatedInverseNormal = factory.buildAsInverseNormal(
-    distribution.getParameter())
+estimatedInverseNormal = factory.buildAsInverseNormal(distribution.getParameter())
 print("InverseNormal from parameters=", estimatedInverseNormal)
-

@@ -31,20 +31,19 @@ outputSample = f(inputSample)
 print("input history=", f.getInputHistory())
 print("output history=", f.getOutputHistory())
 
-mem = ot.MemoizeFunction(ot.SymbolicFunction(
-    ['x1', 'x2'], ['x1+x2', '3*(x1+x2)']))
+mem = ot.MemoizeFunction(ot.SymbolicFunction(["x1", "x2"], ["x1+x2", "3*(x1+x2)"]))
 mem([1, 2])
 mem2 = ot.MemoizeFunction(mem.getMarginal(1))
 mem2([1, 2])
-print('mem2.in', mem2.getCacheInput())
-print('mem2.out', mem2.getCacheOutput())
-print('mem2.hits', mem2.getCacheHits())
+print("mem2.in", mem2.getCacheInput())
+print("mem2.out", mem2.getCacheOutput())
+print("mem2.hits", mem2.getCacheHits())
 
 # check getCacheInput/getCacheOutput order
 for i in range(5):
-    mem([i+2, i+3])
+    mem([i + 2, i + 3])
 assert mem(mem.getCacheInput()) == mem.getCacheOutput(), "wrong order"
-print('ok')
+print("ok")
 
 ot.PlatformInfo.SetNumericalPrecision(20)
 
@@ -92,7 +91,7 @@ assert_almost_equal(n_calls_1 - n_calls_0, 22, 0.0, 0.0)
 def f_py(x):
     f_py.n += 1
     x0, x1 = x
-    return [x0+x1, x0-x1]
+    return [x0 + x1, x0 - x1]
 
 
 f_py.n = 0

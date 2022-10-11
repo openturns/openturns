@@ -40,7 +40,7 @@ b = 0.01
 t0 = 0.0
 step = 1
 tfin = 50
-n = round((tfin-t0)/step)
+n = round((tfin - t0) / step)
 myMesh = ot.RegularGrid(t0, step, n)
 
 # %%
@@ -53,9 +53,9 @@ myMesh = ot.RegularGrid(t0, step, n)
 #
 
 # %%
-l = 10/sqrt(2)
+l = 10 / sqrt(2)
 myCovKernel = ot.SquaredExponential([l])
-print('cov model = ', myCovKernel)
+print("cov model = ", myCovKernel)
 
 # %%
 # Create the gaussian process :math:`S(t)`:
@@ -91,8 +91,8 @@ B = ot.Dirac(b)
 # with :math:`(R,B)` independent.
 
 # %%
-const_func = ot.SymbolicFunction(['t'], ['1'])
-linear_func = ot.SymbolicFunction(['t'], ['-t'])
+const_func = ot.SymbolicFunction(["t"], ["1"])
+linear_func = ot.SymbolicFunction(["t"], ["-t"])
 myBasis = ot.Basis([const_func, linear_func])
 
 coef = ot.ComposedDistribution([R, B])
@@ -123,7 +123,7 @@ myRS_proc = ot.AggregatedProcess([R_proc, S_proc])
 #
 
 # %%
-g = ot.SymbolicFunction(['x1', 'x2'], ['x1-x2'])
+g = ot.SymbolicFunction(["x1", "x2"], ["x1-x2"])
 gDyn = ot.ValueFunction(g, myMesh)
 
 # %%
@@ -140,7 +140,7 @@ Z_proc = ot.CompositeProcess(gDyn, myRS_proc)
 N = 10
 sampleZ_proc = Z_proc.getSample(N)
 graph = sampleZ_proc.drawMarginal(0)
-graph.setTitle(r'Some realizations of $Z(\omega, t)$')
+graph.setTitle(r"Some realizations of $Z(\omega, t)$")
 view = View(graph)
 
 # %%
@@ -152,7 +152,7 @@ view = View(graph)
 
 # %%
 domain = ot.Interval([2], [4])
-print('D = ', domain)
+print("D = ", domain)
 event = ot.ProcessEvent(Z_proc, domain)
 
 # %%
@@ -168,10 +168,10 @@ MC_algo.run()
 result = MC_algo.getResult()
 
 proba = result.getProbabilityEstimate()
-print('Probability = ', proba)
+print("Probability = ", proba)
 variance = result.getVarianceEstimate()
-print('Variance Estimate = ', variance)
-IC90_low = proba - result.getConfidenceLength(0.90)/2
-IC90_upp = proba + result.getConfidenceLength(0.90)/2
-print('IC (90%) = [', IC90_low, ', ', IC90_upp, ']')
+print("Variance Estimate = ", variance)
+IC90_low = proba - result.getConfidenceLength(0.90) / 2
+IC90_upp = proba + result.getConfidenceLength(0.90) / 2
+print("IC (90%) = [", IC90_low, ", ", IC90_upp, "]")
 view.ShowAll()

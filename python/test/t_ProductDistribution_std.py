@@ -27,7 +27,7 @@ print("mean=", oneSample.computeMean())
 print("covariance=", oneSample.computeCovariance())
 
 # Define a point
-point = [2.5]*distribution.getDimension()
+point = [2.5] * distribution.getDimension()
 print("Point= ", point)
 
 # Show PDF and CDF of point
@@ -45,8 +45,10 @@ quantile = distribution.computeQuantile(0.95)
 print("quantile     =", quantile)
 print("cdf(quantile)=%.6g" % distribution.computeCDF(quantile))
 print("entropy=%.6g" % distribution.computeEntropy())
-print("entropy (MC)=%.6g" % -
-      distribution.computeLogPDF(distribution.getSample(10000)).computeMean()[0])
+print(
+    "entropy (MC)=%.6g"
+    % -distribution.computeLogPDF(distribution.getSample(10000)).computeMean()[0]
+)
 mean = distribution.getMean()
 print("mean      =", mean)
 standardDeviation = distribution.getStandardDeviation()

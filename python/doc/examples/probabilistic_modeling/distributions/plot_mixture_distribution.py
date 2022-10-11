@@ -16,12 +16,16 @@ Create a mixture of PDFs
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # create a collection of distribution and the associated weights
-distributions = [ot.Triangular(1.0, 2.0, 4.0),
-                 ot.Normal(-1.0, 1.0), ot.Uniform(5.0, 6.0)]
+distributions = [
+    ot.Triangular(1.0, 2.0, 4.0),
+    ot.Normal(-1.0, 1.0),
+    ot.Uniform(5.0, 6.0),
+]
 weights = [0.4, 1.0, 0.2]
 
 # %%

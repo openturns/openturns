@@ -26,8 +26,7 @@ print("Variance=", repr(sample.computeVariance()))
 print("Skewness=", repr(sample.computeSkewness()))
 print("Kurtosis=", repr(sample.computeKurtosis()))
 for i in range(10):
-    print("Centered moment of order ", i, "=",
-          sample.computeCentralMoment(i))
+    print("Centered moment of order ", i, "=", sample.computeCentralMoment(i))
 print("Marginal 1=", repr(sample.getMarginal(1)))
 indices = ot.Indices(2)
 indices[0] = 2
@@ -35,20 +34,30 @@ indices[1] = 0
 print("Marginal [2, 0]=", repr(sample.getMarginal(indices)))
 print("Rank=", repr(sample.rank()))
 print("Sort=", repr(sample.sort()))
-print("Sort according to component 0=", repr(
-    sample.sortAccordingToAComponent(0)))
+print("Sort according to component 0=", repr(sample.sortAccordingToAComponent(0)))
 prob = 0.25
-print("Quantile per component(", prob, ")=", repr(
-    sample.computeQuantilePerComponent(prob)))
-probs = [0.25, 0.75]
-print("Quantile per component(", probs, ")=", repr(
-    sample.computeQuantilePerComponent(probs)))
-probs = [0.75, 0.25]
-print("Quantile per component(", probs, ")=", repr(
-    sample.computeQuantilePerComponent(probs)))
-pointCDF = ot.Point(sample.getDimension(), 0.25)
 print(
-    "Empirical CDF(", repr(pointCDF), "=", sample.computeEmpiricalCDF(pointCDF))
+    "Quantile per component(",
+    prob,
+    ")=",
+    repr(sample.computeQuantilePerComponent(prob)),
+)
+probs = [0.25, 0.75]
+print(
+    "Quantile per component(",
+    probs,
+    ")=",
+    repr(sample.computeQuantilePerComponent(probs)),
+)
+probs = [0.75, 0.25]
+print(
+    "Quantile per component(",
+    probs,
+    ")=",
+    repr(sample.computeQuantilePerComponent(probs)),
+)
+pointCDF = ot.Point(sample.getDimension(), 0.25)
+print("Empirical CDF(", repr(pointCDF), "=", sample.computeEmpiricalCDF(pointCDF))
 dim = 3
 R = ot.CorrelationMatrix(dim)
 for i in range(1, dim):
@@ -69,8 +78,10 @@ print("Sort           =", repr(sample.sort()))
 sample2 = ot.Sample(sample)
 sample2.sortInPlace()
 print("Sort (in place)=", repr(sample2))
-print("Sort according to component 0           =", repr(
-    sample.sortAccordingToAComponent(0)))
+print(
+    "Sort according to component 0           =",
+    repr(sample.sortAccordingToAComponent(0)),
+)
 sample2 = ot.Sample(sample)
 sample2.sortAccordingToAComponentInPlace(0)
 print("Sort according to component 0 (in place)=", repr(sample2))

@@ -9,7 +9,7 @@ dimension = 1
 
 # Parameters of the distribution
 N = 51
-t0 = 0.
+t0 = 0.0
 dt = 0.1
 myTimeGrid = ot.RegularGrid(t0, dt, N)
 
@@ -23,17 +23,15 @@ myRealization = ot.TimeSeries(myTimeGrid, mySample)
 # Create the lambda parameter
 lambdaVector = ot.Point(dimension)
 for index in range(dimension):
-    lambdaVector[index] = (index + 2.) * 0.1
+    lambdaVector[index] = (index + 2.0) * 0.1
 
 myInverseBoxCox = ot.InverseBoxCoxTransform(lambdaVector)
 
 print("myInverseBoxCox=", myInverseBoxCox)
 
 # Get the input and output dimension
-print("myInverseBoxCox input dimension = ",
-      myInverseBoxCox.getInputDimension())
-print("myInverseBoxCox output dimension = ",
-      myInverseBoxCox.getOutputDimension())
+print("myInverseBoxCox input dimension = ", myInverseBoxCox.getInputDimension())
+print("myInverseBoxCox output dimension = ", myInverseBoxCox.getOutputDimension())
 
 # Evaluation of the InverseBoxCoxTransform on the realization
 print("input time series =")

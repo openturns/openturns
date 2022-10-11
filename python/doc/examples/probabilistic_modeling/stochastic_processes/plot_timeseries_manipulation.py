@@ -20,11 +20,12 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the RegularGrid
-tMin = 0.
+tMin = 0.0
 timeStep = 0.1
 N = 100
 myTimeGrid = ot.RegularGrid(tMin, timeStep, N)
@@ -53,20 +54,20 @@ myTimeSeries.getMesh().getDimension()
 # %%
 # Get the value Xi at index i
 i = 37
-print('Xi = ', myTimeSeries.getValueAtIndex(i))
+print("Xi = ", myTimeSeries.getValueAtIndex(i))
 
 # %%
 # Get the time series at index i : Xi
 i = 37
-print('Xi = ', myTimeSeries[i])
+print("Xi = ", myTimeSeries[i])
 
 # %%
 # Get a the marginal value at index i of the time series
 i = 37
 # get the time stamp:
-print('ti = ', myTimeSeries.getTimeGrid().getValue(i))
+print("ti = ", myTimeSeries.getTimeGrid().getValue(i))
 # get the first component of the corresponding value :
-print('Xi1 = ', myTimeSeries[i, 0])
+print("Xi1 = ", myTimeSeries[i, 0])
 
 # %%
 # Get all the values (X1, .., Xn) of the time series

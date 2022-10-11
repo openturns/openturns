@@ -25,21 +25,21 @@ def printPoint(point, digits):
 
 
 # linear
-levelFunction = ot.SymbolicFunction(
-    ["x1", "x2", "x3", "x4"], ["x1+2*x2-3*x3+4*x4"])
+levelFunction = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["x1+2*x2-3*x3+4*x4"])
 startingPoint = ot.Point(4, 0.0)
 algo = ot.Cobyla(ot.NearestPointProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
-print('algo=', algo)
+print("algo=", algo)
 algo.run()
 result = algo.getResult()
-print('x^=', printPoint(result.getOptimalPoint(), 4))
-print('f(x^)=', printPoint(result.getOptimalValue(), 4))
-print('lambda^=', printPoint(result.computeLagrangeMultipliers(), 4))
+print("x^=", printPoint(result.getOptimalPoint(), 4))
+print("f(x^)=", printPoint(result.getOptimalValue(), 4))
+print("lambda^=", printPoint(result.computeLagrangeMultipliers(), 4))
 
 # non-linear
 levelFunction = ot.SymbolicFunction(
-    ["x1", "x2", "x3", "x4"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
+    ["x1", "x2", "x3", "x4"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"]
+)
 startingPoint = ot.Point(4, 0.0)
 algo = ot.Cobyla(ot.NearestPointProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
@@ -50,37 +50,35 @@ algo.setMaximumResidualError(1.0e-10)
 algo.setMaximumConstraintError(1.0e-10)
 algo.run()
 result = algo.getResult()
-print('x^=', printPoint(result.getOptimalPoint(), 4))
-print('f(x^)=', printPoint(result.getOptimalValue(), 4))
-print('lambda^=', printPoint(result.computeLagrangeMultipliers(), 4))
+print("x^=", printPoint(result.getOptimalPoint(), 4))
+print("f(x^)=", printPoint(result.getOptimalValue(), 4))
+print("lambda^=", printPoint(result.computeLagrangeMultipliers(), 4))
 
 # bounds
-linear = ot.SymbolicFunction(
-    ['x1', 'x2', 'x3', 'x4'], ['x1+2*x2-3*x3+4*x4'])
+linear = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["x1+2*x2-3*x3+4*x4"])
 
 dim = 4
-startingPoint = [0.] * dim
+startingPoint = [0.0] * dim
 
-bounds = ot.Interval([-3.] * dim, [5.] * dim)
+bounds = ot.Interval([-3.0] * dim, [5.0] * dim)
 
 for minimization in [True, False]:
 
-    problem = ot.OptimizationProblem(
-        linear, ot.Function(), ot.Function(), bounds)
+    problem = ot.OptimizationProblem(linear, ot.Function(), ot.Function(), bounds)
     problem.setMinimization(minimization)
     algo = ot.Cobyla(problem)
     algo.setMaximumEvaluationNumber(150)
     algo.setStartingPoint(startingPoint)
-    print('algo=', algo)
+    print("algo=", algo)
     algo.run()
     result = algo.getResult()
-    print('x^=', printPoint(result.getOptimalPoint(), 4))
-    print('f(x^)=', printPoint(result.getOptimalValue(), 4))
-    print('lambda^=', printPoint(result.computeLagrangeMultipliers(), 4))
+    print("x^=", printPoint(result.getOptimalPoint(), 4))
+    print("f(x^)=", printPoint(result.getOptimalValue(), 4))
+    print("lambda^=", printPoint(result.computeLagrangeMultipliers(), 4))
 
 # empty problem
 algo = ot.Cobyla()
 try:
     algo.run()
 except:
-    print('OK')
+    print("OK")

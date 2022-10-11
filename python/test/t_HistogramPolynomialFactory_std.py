@@ -6,7 +6,8 @@ ot.TESTPREAMBLE()
 
 
 histogramPolynomial = ot.HistogramPolynomialFactory(
-    -2.0, [1.0, 2.0, 1.5], [2.0, 5.0, 3.5])
+    -2.0, [1.0, 2.0, 1.5], [2.0, 5.0, 3.5]
+)
 print("histogramPolynomial=", histogramPolynomial)
 for i in range(10):
     print("histogramPolynomial(", i, ")=", histogramPolynomial.build(i))

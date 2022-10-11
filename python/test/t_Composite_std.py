@@ -20,4 +20,3 @@ experiment = ot.Composite(center, levels)
 print("experiment = ", experiment)
 sample = experiment.generate()
 print("sample = ", repr(sample))
-

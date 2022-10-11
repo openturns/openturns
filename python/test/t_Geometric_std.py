@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+
 ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
@@ -35,8 +36,13 @@ eps = 1e-5
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
 # by the finite difference technique from CDF
-print("pdf (FD)=%.6f" % (distribution.computeCDF(
-    point + ot.Point(1, 0)) - distribution.computeCDF(point + ot.Point(1, -1))))
+print(
+    "pdf (FD)=%.6f"
+    % (
+        distribution.computeCDF(point + ot.Point(1, 0))
+        - distribution.computeCDF(point + ot.Point(1, -1))
+    )
+)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -45,8 +51,10 @@ PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", repr(PDFgr))
 # by the finite difference technique
 PDFgrFD = ot.Point(1)
-PDFgrFD[0] = (ot.Geometric(distribution.getP() + eps).computePDF(point) -
-              ot.Geometric(distribution.getP() - eps).computePDF(point)) / (2.0 * eps)
+PDFgrFD[0] = (
+    ot.Geometric(distribution.getP() + eps).computePDF(point)
+    - ot.Geometric(distribution.getP() - eps).computePDF(point)
+) / (2.0 * eps)
 print("pdf gradient (FD)=", repr(PDFgrFD))
 
 # derivative of the PDF with regards the parameters of the distribution
@@ -54,8 +62,10 @@ CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", repr(CDFgr))
 # by the finite difference technique
 CDFgrFD = ot.Point(1)
-CDFgrFD[0] = (ot.Geometric(distribution.getP() + eps).computeCDF(point) -
-              ot.Geometric(distribution.getP() - eps).computeCDF(point)) / (2.0 * eps)
+CDFgrFD[0] = (
+    ot.Geometric(distribution.getP() + eps).computeCDF(point)
+    - ot.Geometric(distribution.getP() - eps).computeCDF(point)
+) / (2.0 * eps)
 print("cdf gradient (FD)=", repr(CDFgrFD))
 
 # quantile

@@ -25,4 +25,3 @@ inPoint[2] = 9.0
 outMatrix = myGradient.gradient(inPoint)
 print("myGradient=", repr(myGradient))
 print(myGradient.getName(), "( ", repr(inPoint), " ) = ", repr(outMatrix))
-

@@ -11,8 +11,8 @@ def hyperplane(coefs):
     Generate a linear NMF from its coefficients
     """
     dim = len(coefs)
-    constant = [0.]
-    center = [0.] * len(coefs)
+    constant = [0.0]
+    center = [0.0] * len(coefs)
     linear = ot.Matrix(1, dim)
     for i in range(dim):
         linear[0, i] = coefs[i]
@@ -21,32 +21,32 @@ def hyperplane(coefs):
 
 
 # To avoid discrepancy on CI
-ot.ResourceMap.SetAsScalar("Solver-DefaultResidualError",  1.0e-8)
+ot.ResourceMap.SetAsScalar("Solver-DefaultResidualError", 1.0e-8)
 
 for dim in [3, 5, 8][1:2]:
     functions = []
     linears = []
 
-    linear = [1.] * dim
+    linear = [1.0] * dim
     linears.append(linear)
 
     function = hyperplane(linear)
-    function.setName('H1')
+    function.setName("H1")
     functions.append(function)
 
     linear = list(linear)
     linear[0] = 0.25
     linears.append(linear)
     function = hyperplane(linear)
-    function.setName('H2')
+    function.setName("H2")
     functions.append(function)
 
     linear = list(linear)
-    linear = [0.] * dim
-    linear[dim - 1] = 1.
+    linear = [0.0] * dim
+    linear[dim - 1] = 1.0
     linears.append(linear)
     function = hyperplane(linear)
-    function.setName('H3')
+    function.setName("H3")
     functions.append(function)
 
     for ih in range(len(functions)):
@@ -58,13 +58,11 @@ for dim in [3, 5, 8][1:2]:
 
         for pft in [1e-4, 1e-6, 1e-8][1:2]:
 
-            k = ot.Normal().computeQuantile(pft)[
-                0] * ot.Point(linears[ih]).norm()
+            k = ot.Normal().computeQuantile(pft)[0] * ot.Point(linears[ih]).norm()
             event = ot.ThresholdEvent(composite, ot.Less(), k)
 
-            print('--------------------')
-            print('model H' + str(ih) + ' dim=%d' %
-                  dim, 'pft=%.2e' % pft, 'k=%g' % k)
+            print("--------------------")
+            print("model H" + str(ih) + " dim=%d" % dim, "pft=%.2e" % pft, "k=%g" % k)
 
             for n in [100, 1000][1:]:
                 for gamma1 in [0.25, 0.5, 0.75][1:2]:
@@ -84,6 +82,5 @@ for dim in [3, 5, 8][1:2]:
                     pf = result.getProbabilityEstimate()
                     var = result.getVarianceEstimate()
                     cov = result.getCoefficientOfVariation()
-                    print(result, end=' ')
-                    print('callsNumber=%d' %
-                          calls + ' gamma=' + str(algo.getGamma()))
+                    print(result, end=" ")
+                    print("callsNumber=%d" % calls + " gamma=" + str(algo.getGamma()))

@@ -25,8 +25,7 @@ for index in range(dimension):
     scale[index] = (index + 1.0) / dimension
 
 # Sample a ExponentialModel
-referenceModel = ot.ExponentialModel(
-    scale, amplitude, spatialCorrelation)
+referenceModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 
 print("reference model=", referenceModel)
 size = 100
@@ -37,16 +36,18 @@ for i in range(timeGrid.getN()):
     t = timeGrid.getValue(i)
     covarianceCollection[i] = referenceModel(t)
 # Create a UserDefinedStationaryCovarianceModel
-myModel = ot.UserDefinedStationaryCovarianceModel(
-    timeGrid, covarianceCollection)
+myModel = ot.UserDefinedStationaryCovarianceModel(timeGrid, covarianceCollection)
 print("myModel=", myModel)
 
 for i in range(timeGrid.getN()):
     t = timeGrid.getValue(i)
     # We look for cov(s,t) ==> when adding to the collection, we compute cov(t,s)
     # Because of symmetry, we check the right index computation
-    print("t= %.6g" % t, "myModel =  %.6g" %
-          myModel(t)[0, 0], ", referenceModel=  %.6g" % referenceModel(t)[0, 0])
+    print(
+        "t= %.6g" % t,
+        "myModel =  %.6g" % myModel(t)[0, 0],
+        ", referenceModel=  %.6g" % referenceModel(t)[0, 0],
+    )
 
 # Test the drawing method as a nonstationary model, in the covariance range
 graph = myModel.draw(0, 0, -2.0, 2.0, 21, True, False)
@@ -55,4 +56,3 @@ print(graph)
 # range
 graph = myModel.draw(0, 0, -2.0, 2.0, 21, True, True)
 print(graph)
-

@@ -5,8 +5,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 # We create a numerical math function
-myFunction = ot.SymbolicFunction(
-    ('E', 'F', 'L', 'I'), ('-F*L^3/(3.*E*I)',))
+myFunction = ot.SymbolicFunction(("E", "F", "L", "I"), ("-F*L^3/(3.*E*I)",))
 
 dim = myFunction.getInputDimension()
 # We create a normal distribution point of dimension 1
@@ -63,7 +62,7 @@ myAlgo2.run()
 print("DirectionalSampling result=", myAlgo2.getResult())
 
 # Ticket #778
-myFunction = ot.SymbolicFunction('x', 'x')
+myFunction = ot.SymbolicFunction("x", "x")
 
 X1 = ot.RandomVector(ot.Uniform(-2, 1.99999))
 X2 = ot.RandomVector(ot.Uniform(-2, 2.0))
@@ -72,11 +71,11 @@ for X in [X1, X2]:
     vector = ot.CompositeRandomVector(myFunction, X)
     event = ot.ThresholdEvent(vector, ot.GreaterOrEqual(), 0.0)
 
-    print('X:', X.getDistribution())
+    print("X:", X.getDistribution())
 
     myAlgo3 = ot.DirectionalSampling(event)
     n1 = myFunction.getCallsNumber()
     myAlgo3.run()
     n2 = myFunction.getCallsNumber()
     result = myAlgo3.getResult().getProbabilityEstimate()
-    print('p=%.6g (ncalls = %d)' % (result, n2 - n1))
+    print("p=%.6g (ncalls = %d)" % (result, n2 - n1))

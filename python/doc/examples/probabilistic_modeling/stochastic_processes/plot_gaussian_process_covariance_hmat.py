@@ -12,6 +12,7 @@ Create a gaussian process from a cov. model using HMatrix
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 # ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -55,13 +56,13 @@ process.setSamplingMethod(ot.GaussianProcess.HMAT)
 
 # %%
 # The `HMatrix` framework uses an algebraic algorithm to compress sub-blocks of the matrix. Several algorithms are available and can be set from the ResourceMap key.
-ot.ResourceMap.SetAsString("HMatrix-CompressionMethod",  "AcaRandom")
+ot.ResourceMap.SetAsString("HMatrix-CompressionMethod", "AcaRandom")
 
 # %%
 # There are two threshold used in the HMatrix framework. The `AssemblyEpsilon` is the most important one.
 #
-ot.ResourceMap.SetAsScalar("HMatrix-AssemblyEpsilon",  1e-7)
-ot.ResourceMap.SetAsScalar("HMatrix-RecompressionEpsilon",  1e-7)
+ot.ResourceMap.SetAsScalar("HMatrix-AssemblyEpsilon", 1e-7)
+ot.ResourceMap.SetAsScalar("HMatrix-RecompressionEpsilon", 1e-7)
 
 
 # %%

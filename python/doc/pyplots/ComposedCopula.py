@@ -4,13 +4,13 @@ from openturns.viewer import View
 
 myColl = [ot.ClaytonCopula(0.3), ot.NormalCopula(3)]
 myMergedCop = ot.ComposedCopula(myColl)
-myMergedCop.setDescription(['$u_1$', '$u_2$', '$u_3$', '$u_4$', '$u_5$'])
+myMergedCop.setDescription(["$u_1$", "$u_2$", "$u_3$", "$u_4$", "$u_5$"])
 graphPDF = myMergedCop.drawMarginal2DPDF(0, 1, [0.0] * 2, [1.0] * 2, [100] * 2)
-graphPDF.setXTitle('$u_1$')
-graphPDF.setYTitle('$u_2$')
+graphPDF.setXTitle("$u_1$")
+graphPDF.setYTitle("$u_2$")
 graphCDF = myMergedCop.drawMarginal2DCDF(0, 1, [0.0] * 2, [1.0] * 2, [100] * 2)
-graphCDF.setXTitle('$u_1$')
-graphCDF.setYTitle('$u_2$')
+graphCDF.setXTitle("$u_1$")
+graphCDF.setYTitle("$u_2$")
 
 
 fig = plt.figure(figsize=(10, 4))

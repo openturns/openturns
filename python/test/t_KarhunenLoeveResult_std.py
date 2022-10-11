@@ -26,7 +26,8 @@ graph4 = klresult.drawCumulatedEigenvaluesRemainder()
 graph4.setLogScale(ot.GraphImplementation.LOGY)
 if 0:
     from openturns.viewer import View
-    View(graph1).save('eigen1.png')
-    View(graph2).save('eigen2.png')
-    View(graph3).save('eigen3.png')
-    View(graph4).save('eigen4.png')
+
+    View(graph1).save("eigen1.png")
+    View(graph2).save("eigen2.png")
+    View(graph3).save("eigen3.png")
+    View(graph4).save("eigen4.png")

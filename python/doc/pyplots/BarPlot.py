@@ -15,13 +15,13 @@ nBars = 20
 data = ot.Sample(nBars, [(maxSample - minSample) / nBars, 0])
 
 for i in range(2000):
-    index = int(
-        floor((sample[i, 0] - minSample) / (maxSample - minSample) * nBars))
+    index = int(floor((sample[i, 0] - minSample) / (maxSample - minSample) * nBars))
     data[index, 1] += 1
 
 # Create an empty graph
 graph = ot.Graph(
-    "Sample histogram example", "Realizations", "Frequency", True, "topright")
+    "Sample histogram example", "Realizations", "Frequency", True, "topright"
+)
 
 # Create the barplot
 barPlot = ot.BarPlot(data, minSample, "Normal histogram")

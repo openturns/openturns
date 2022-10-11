@@ -93,18 +93,23 @@ dTdp = (left(pointHigh) - right(pointHigh)) * factor
 gradientHigh[4, 0] = dTdp[0]
 gradientHigh[4, 1] = dTdp[1]
 
-print("transformation    parameters gradient=", repr(
-    transformation.parameterGradient(pointLow)))
+print(
+    "transformation    parameters gradient=",
+    repr(transformation.parameterGradient(pointLow)),
+)
 print("finite difference parameters gradient=", repr(gradientLow))
-print("transformation    parameters gradient=", repr(
-    transformation.parameterGradient(pointHigh)))
+print(
+    "transformation    parameters gradient=",
+    repr(transformation.parameterGradient(pointHigh)),
+)
 print("finite difference parameters gradient=", repr(gradientHigh))
 print("input dimension=", transformation.getInputDimension())
 print("output dimension=", transformation.getOutputDimension())
 
 # Second, check the constructor for old inverse transformation
 transformation = ot.MarginalTransformationEvaluation(
-    coll1, ot.MarginalTransformationEvaluation.TO)
+    coll1, ot.MarginalTransformationEvaluation.TO
+)
 print("transformation=", repr(transformation))
 uLow = ot.Point(coll1.getSize(), 0.25)
 uHigh = ot.Point(coll1.getSize(), 0.75)
@@ -115,11 +120,11 @@ print("transformation(", uHigh, ")=", repr(transformation(uHigh)))
 coll = ot.DistributionCollection(2)
 coll[0] = ot.Normal(1.0 + eps, 2.5)
 coll[1] = coll1[1]
-left = ot.MarginalTransformationEvaluation(
-    coll, ot.MarginalTransformationEvaluation.TO)
+left = ot.MarginalTransformationEvaluation(coll, ot.MarginalTransformationEvaluation.TO)
 coll[0] = ot.Normal(1.0 - eps, 2.5)
 right = ot.MarginalTransformationEvaluation(
-    coll, ot.MarginalTransformationEvaluation.TO)
+    coll, ot.MarginalTransformationEvaluation.TO
+)
 dTdp = (left(uLow) - right(uLow)) * factor
 gradientLow[0, 0] = dTdp[0]
 gradientLow[0, 1] = dTdp[1]
@@ -130,11 +135,11 @@ gradientHigh[0, 1] = dTdp[1]
 coll = ot.DistributionCollection(2)
 coll[0] = ot.Normal(1.0, 2.5 + eps)
 coll[1] = coll1[1]
-left = ot.MarginalTransformationEvaluation(
-    coll, ot.MarginalTransformationEvaluation.TO)
+left = ot.MarginalTransformationEvaluation(coll, ot.MarginalTransformationEvaluation.TO)
 coll[0] = ot.Normal(1.0, 2.5 - eps)
 right = ot.MarginalTransformationEvaluation(
-    coll, ot.MarginalTransformationEvaluation.TO)
+    coll, ot.MarginalTransformationEvaluation.TO
+)
 dTdp = (left(uLow) - right(uLow)) * factor
 gradientLow[1, 0] = dTdp[0]
 gradientLow[1, 1] = dTdp[1]
@@ -145,11 +150,11 @@ gradientHigh[1, 1] = dTdp[1]
 coll = ot.DistributionCollection(2)
 coll[0] = coll1[0]
 coll[1] = ot.Gamma(1.5 + eps, 3.0, 0.0)
-left = ot.MarginalTransformationEvaluation(
-    coll, ot.MarginalTransformationEvaluation.TO)
+left = ot.MarginalTransformationEvaluation(coll, ot.MarginalTransformationEvaluation.TO)
 coll[1] = ot.Gamma(1.5 - eps, 3.0, 0.0)
 right = ot.MarginalTransformationEvaluation(
-    coll, ot.MarginalTransformationEvaluation.TO)
+    coll, ot.MarginalTransformationEvaluation.TO
+)
 dTdp = (left(uLow) - right(uLow)) * factor
 gradientLow[2, 0] = dTdp[0]
 gradientLow[2, 1] = dTdp[1]
@@ -160,11 +165,11 @@ gradientHigh[2, 1] = dTdp[1]
 coll = ot.DistributionCollection(2)
 coll[0] = coll1[0]
 coll[1] = ot.Gamma(1.5, 3.0 + eps, 0.0)
-left = ot.MarginalTransformationEvaluation(
-    coll, ot.MarginalTransformationEvaluation.TO)
+left = ot.MarginalTransformationEvaluation(coll, ot.MarginalTransformationEvaluation.TO)
 coll[1] = ot.Gamma(1.5, 3.0 - eps, 0.0)
 right = ot.MarginalTransformationEvaluation(
-    coll, ot.MarginalTransformationEvaluation.TO)
+    coll, ot.MarginalTransformationEvaluation.TO
+)
 dTdp = (left(uLow) - right(uLow)) * factor
 gradientLow[3, 0] = dTdp[0]
 gradientLow[3, 1] = dTdp[1]
@@ -175,11 +180,11 @@ gradientHigh[3, 1] = dTdp[1]
 coll = ot.DistributionCollection(2)
 coll[0] = coll1[0]
 coll[1] = ot.Gamma(1.5, 3.0, 0.0 + eps)
-left = ot.MarginalTransformationEvaluation(
-    coll, ot.MarginalTransformationEvaluation.TO)
+left = ot.MarginalTransformationEvaluation(coll, ot.MarginalTransformationEvaluation.TO)
 coll[1] = ot.Gamma(1.5, 3.0, 0.0 - eps)
 right = ot.MarginalTransformationEvaluation(
-    coll, ot.MarginalTransformationEvaluation.TO)
+    coll, ot.MarginalTransformationEvaluation.TO
+)
 dTdp = (left(uLow) - right(uLow)) * factor
 gradientLow[4, 0] = dTdp[0]
 gradientLow[4, 1] = dTdp[1]
@@ -187,11 +192,15 @@ dTdp = (left(uHigh) - right(uHigh)) * factor
 gradientHigh[4, 0] = dTdp[0]
 gradientHigh[4, 1] = dTdp[1]
 
-print("transformation    parameters gradient=", repr(
-    transformation.parameterGradient(uLow)))
+print(
+    "transformation    parameters gradient=",
+    repr(transformation.parameterGradient(uLow)),
+)
 print("finite difference parameters gradient=", repr(gradientLow))
-print("transformation    parameters gradient=", repr(
-    transformation.parameterGradient(uHigh)))
+print(
+    "transformation    parameters gradient=",
+    repr(transformation.parameterGradient(uHigh)),
+)
 print("finite difference parameters gradient=", repr(gradientHigh))
 print("input dimension=", transformation.getInputDimension())
 print("output dimension=", transformation.getOutputDimension())
@@ -204,12 +213,11 @@ print("transformation(", pointHigh, ")=", repr(transformation(pointHigh)))
 print("input dimension=", transformation.getInputDimension())
 print("output dimension=", transformation.getOutputDimension())
 
-T1 = ot.MarginalTransformationEvaluation(
-    [ot.Exponential(2.0)], [ot.Exponential(1.0)])
+T1 = ot.MarginalTransformationEvaluation([ot.Exponential(2.0)], [ot.Exponential(1.0)])
 print("T1=", T1)
-T2 = ot.MarginalTransformationEvaluation(
-    [ot.Exponential(1.0)], [ot.Exponential(2.0)])
+T2 = ot.MarginalTransformationEvaluation([ot.Exponential(1.0)], [ot.Exponential(2.0)])
 print("T2=", T2)
 T3 = ot.MarginalTransformationEvaluation(
-    [ot.Exponential(3.0, 4.0)], [ot.Exponential(3.0, 5.0)])
+    [ot.Exponential(3.0, 4.0)], [ot.Exponential(3.0, 5.0)]
+)
 print("T3=", T3)

@@ -21,8 +21,7 @@ y = g(x)
 q, totalDegree = 0.4, 5
 P = x.getDimension()
 enumerateFunction = ot.HyperbolicAnisotropicEnumerateFunction(P, q)
-productBasis = ot.OrthogonalProductPolynomialFactory(marginals,
-    enumerateFunction)
+productBasis = ot.OrthogonalProductPolynomialFactory(marginals, enumerateFunction)
 fittingAlgorithm = ot.CorrectedLeaveOneOut()
 approximationAlgorithm = ot.LeastSquaresMetaModelSelectionFactory(
     ot.LARS(), fittingAlgorithm

@@ -16,17 +16,16 @@ print("squareMatrix0 = ", repr(squareMatrix0))
 
 # TEST NUMBER ONE : CONSTRUCTOR WITH SIZE, OPERATOR() AND STRING CONVERTER
 # */
-print(
-    "test number one : constructor with size, operator() and string converter")
+print("test number one : constructor with size, operator() and string converter")
 
 # Constructor with size */
 squareMatrix1 = ot.SquareMatrix(2)
 
 # Check operator() methods */
-squareMatrix1[0, 0] = 1.
-squareMatrix1[1, 0] = 2.
-squareMatrix1[0, 1] = 3.
-squareMatrix1[1, 1] = 4.
+squareMatrix1[0, 0] = 1.0
+squareMatrix1[1, 0] = 2.0
+squareMatrix1[0, 1] = 3.0
+squareMatrix1[1, 1] = 4.0
 
 # String converter */
 print("squareMatrix1 = ", repr(squareMatrix1))
@@ -91,8 +90,8 @@ print("test number ten : multiplication with a numerical point method")
 
 # Create the numerical point */
 pt = ot.Point()
-pt.add(1.)
-pt.add(2.)
+pt.add(1.0)
+pt.add(2.0)
 print("pt = ", repr(pt))
 
 # Check the product method */
@@ -101,11 +100,10 @@ print("ptResult = ", repr(ptResult))
 
 # TEST NUMBER ELEVEN : MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR
 # METHODS */
-print(
-    "test number eleven : multiplication and division by a numerical scalar methods")
+print("test number eleven : multiplication and division by a numerical scalar methods")
 
 # Check the multiplication method */
-s = 3.
+s = 3.0
 scalprod1 = squareMatrix1 * s
 # bug PYTHON scalprod2 = s * matrix1
 scalprod2 = squareMatrix1 * s

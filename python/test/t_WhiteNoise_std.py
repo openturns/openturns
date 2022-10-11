@@ -24,4 +24,3 @@ print("process = ", process)
 # Get a realization of the process
 timeSerie = process.getRealization()
 print("timeSerie = ", timeSerie)
-

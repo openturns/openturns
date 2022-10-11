@@ -27,31 +27,50 @@ for n in range(len(allDistributions)):
     print("covariance=", oneSample.computeCovariance())
     size = 100
     for i in range(2):
-        if ot.FittingTest.Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure():
+        if ot.FittingTest.Kolmogorov(
+            distribution.getSample(size), distribution
+        ).getBinaryQualityMeasure():
             msg = "accepted"
         else:
             msg = "rejected"
-        print(
-            "Kolmogorov test for the generator, sample size=", size, " is ", msg)
+        print("Kolmogorov test for the generator, sample size=", size, " is ", msg)
         size *= 10
 
     # Define a point
     point = ot.Point(
-        distribution.getDimension(), 2.0 / (distribution.getLambda() * distribution.getK()))
+        distribution.getDimension(),
+        2.0 / (distribution.getLambda() * distribution.getK()),
+    )
     print("Point= ", point)
 
     # Show PDF and CDF of point
     eps = 1e-5
     DDF = distribution.computeDDF(point)
     print("ddf     =", DDF)
-    print("ddf (FD)=%.6g" % ((distribution.computePDF(point + ot.Point(1, eps)) -
-                              distribution.computePDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
+    print(
+        "ddf (FD)=%.6g"
+        % (
+            (
+                distribution.computePDF(point + ot.Point(1, eps))
+                - distribution.computePDF(point + ot.Point(1, -eps))
+            )
+            / (2.0 * eps)
+        )
+    )
     LPDF = distribution.computeLogPDF(point)
     print("log pdf= %.12g" % LPDF)
     PDF = distribution.computePDF(point)
     print("pdf     =%.6g" % PDF)
-    print("pdf (FD)=%.6g" % ((distribution.computeCDF(point + ot.Point(1, eps)) -
-                              distribution.computeCDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
+    print(
+        "pdf (FD)=%.6g"
+        % (
+            (
+                distribution.computeCDF(point + ot.Point(1, eps))
+                - distribution.computeCDF(point + ot.Point(1, -eps))
+            )
+            / (2.0 * eps)
+        )
+    )
     CDF = distribution.computeCDF(point)
     print("cdf= %.12g" % CDF)
     CCDF = distribution.computeComplementaryCDF(point)
@@ -61,54 +80,89 @@ for n in range(len(allDistributions)):
     CF = distribution.computeCharacteristicFunction(point[0])
     print("characteristic function=(%.6g, %.6g)" % (CF.real, CF.imag))
     LCF = distribution.computeLogCharacteristicFunction(point[0])
-    print("log characteristic function=(%.6g, %.6g)" %
-          (LCF.real, LCF.imag))
+    print("log characteristic function=(%.6g, %.6g)" % (LCF.real, LCF.imag))
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", PDFgr)
     PDFgrFD = ot.Point(2)
-    PDFgrFD[0] = (ot.InverseGamma(distribution.getLambda() + eps, distribution.getK()).computePDF(point) -
-                  ot.InverseGamma(distribution.getLambda() - eps, distribution.getK()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[1] = (ot.InverseGamma(distribution.getLambda(), distribution.getK() + eps).computePDF(point) -
-                  ot.InverseGamma(distribution.getLambda(), distribution.getK() - eps).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[0] = (
+        ot.InverseGamma(distribution.getLambda() + eps, distribution.getK()).computePDF(
+            point
+        )
+        - ot.InverseGamma(
+            distribution.getLambda() - eps, distribution.getK()
+        ).computePDF(point)
+    ) / (2.0 * eps)
+    PDFgrFD[1] = (
+        ot.InverseGamma(distribution.getLambda(), distribution.getK() + eps).computePDF(
+            point
+        )
+        - ot.InverseGamma(
+            distribution.getLambda(), distribution.getK() - eps
+        ).computePDF(point)
+    ) / (2.0 * eps)
     print("pdf gradient (FD)=", PDFgrFD)
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", CDFgr)
     CDFgrFD = ot.Point(2)
-    CDFgrFD[0] = (ot.InverseGamma(distribution.getLambda() + eps, distribution.getK()).computeCDF(point) -
-                  ot.InverseGamma(distribution.getLambda() - eps, distribution.getK()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[1] = (ot.InverseGamma(distribution.getLambda(), distribution.getK() + eps).computeCDF(point) -
-                  ot.InverseGamma(distribution.getLambda(), distribution.getK() - eps).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[0] = (
+        ot.InverseGamma(distribution.getLambda() + eps, distribution.getK()).computeCDF(
+            point
+        )
+        - ot.InverseGamma(
+            distribution.getLambda() - eps, distribution.getK()
+        ).computeCDF(point)
+    ) / (2.0 * eps)
+    CDFgrFD[1] = (
+        ot.InverseGamma(distribution.getLambda(), distribution.getK() + eps).computeCDF(
+            point
+        )
+        - ot.InverseGamma(
+            distribution.getLambda(), distribution.getK() - eps
+        ).computeCDF(point)
+    ) / (2.0 * eps)
     print("cdf gradient (FD)=", CDFgrFD)
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)= %.2f" % distribution.computeCDF(quantile))
     # Get 95% survival function
-    inverseSurvival = ot.Point(
-        distribution.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" %
-          distribution.computeSurvivalFunction(inverseSurvival))
+    print(
+        "Survival(inverseSurvival)=%.6f"
+        % distribution.computeSurvivalFunction(inverseSurvival)
+    )
     print("entropy=%.6f" % distribution.computeEntropy())
 
     # Confidence regions
-    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
-        0.95)
+    (
+        interval,
+        threshold,
+    ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
     print("Minimum volume interval=", interval)
     print("threshold=", ot.Point(1, threshold))
-    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
-        0.95)
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)
     print("beta=", ot.Point(1, beta))
-    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
-        0.95)
+    (
+        interval,
+        beta,
+    ) = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
     print("Bilateral confidence interval=", interval)
     print("beta=", ot.Point(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-        0.95, False)
+    (
+        interval,
+        beta,
+    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, False
+    )
     print("Unilateral confidence interval (lower tail)=", interval)
     print("beta=", ot.Point(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-        0.95, True)
+    (
+        interval,
+        beta,
+    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True
+    )
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=", ot.Point(1, beta))
 
@@ -124,8 +178,7 @@ for n in range(len(allDistributions)):
     print("kendall=", kendall)
     parameters = distribution.getParametersCollection()
     print("parameters=", parameters)
-    print("Standard representative=",
-          distribution.getStandardRepresentative())
+    print("Standard representative=", distribution.getStandardRepresentative())
 
     standardDeviation = distribution.getStandardDeviation()
     print("standard deviation=", standardDeviation)

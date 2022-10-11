@@ -29,8 +29,7 @@ print("Realization = ", mySpectralProcess0.getRealization())
 
 # Constructor using maximalFrequency value and size of discretization
 maximalFrequency = 10.0
-mySpectralProcess1 = ot.SpectralGaussianProcess(
-    myModel, maximalFrequency, points)
+mySpectralProcess1 = ot.SpectralGaussianProcess(myModel, maximalFrequency, points)
 tg = ot.RegularGrid(mySpectralProcess1.getTimeGrid())
 
 print("mySpectralProcess1 = ", mySpectralProcess1)
@@ -47,8 +46,6 @@ print("mySpecModel = ", mySpecModel)
 mySpectralProcess2 = ot.SpectralGaussianProcess(mySpecModel, myTimeGrid)
 print("mySpectralProcess2 = ", mySpectralProcess2)
 print("Realization = ", mySpectralProcess2.getRealization())
-mySpectralProcess3 = ot.SpectralGaussianProcess(
-    mySpecModel, maximalFrequency, points)
+mySpectralProcess3 = ot.SpectralGaussianProcess(mySpecModel, maximalFrequency, points)
 print("mySpectralProcess3 = ", mySpectralProcess3)
 print("Realization = ", mySpectralProcess3.getRealization())
-

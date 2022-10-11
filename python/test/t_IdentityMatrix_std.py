@@ -8,8 +8,8 @@ matrix1 = ot.IdentityMatrix(2)
 print("matrix1 = ", repr(matrix1))
 
 pt = ot.Point()
-pt.add(5.)
-pt.add(0.)
+pt.add(5.0)
+pt.add(0.0)
 print("pt = ", repr(pt))
 
 result = ot.Point()

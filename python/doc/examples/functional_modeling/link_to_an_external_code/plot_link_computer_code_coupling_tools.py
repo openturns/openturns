@@ -52,13 +52,14 @@ import openturns.coupling_tools as ct
 import sys
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The following is the content of the `external_program.py` script.
 
 # %%
-code = '''
+code = """
 # 1. Get input
 import sys
 inFile = sys.argv[1]
@@ -73,7 +74,7 @@ f = open("output.txt", "w")
 f.write("Y0=%.17e\\n" % (Y0))
 f.write("Y1=%.17e\\n" % (Y1))
 f.close()
-'''
+"""
 
 # %%
 f = open("external_program.py", "w")
@@ -84,11 +85,11 @@ f.close()
 # Let us see the content of the `input.txt` file: the content is in Python format, so that reading the file is easier.
 
 # %%
-content = '''
+content = """
 X0=1.2
 X1=45
 X2=91.8
-'''
+"""
 
 # %%
 f = open("input.txt", "w")
@@ -99,10 +100,10 @@ f.close()
 # The content of the `output.txt` file has a simple format.
 
 # %%
-content = '''
+content = """
 Y0=1.38e+02
 Y1=4.1322e+03
-'''
+"""
 
 # %%
 f = open("output.txt", "w")
@@ -113,11 +114,11 @@ f.close()
 # The `input_template.py` file is a template which will be used to generate the actual file `input.txt`.
 
 # %%
-content = '''
+content = """
 X0=@X0
 X1=@X1
 X2=@X2
-'''
+"""
 
 # %%
 f = open("input_template.txt", "w")
@@ -216,11 +217,11 @@ print(f.read())
 # Consider for example the following file.
 
 # %%
-content = '''
+content = """
 1 2 3 04 5 6
 7 8 9 10
 11 12 13 14
-'''
+"""
 
 # %%
 f = open("results.txt", "w")

@@ -17,4 +17,3 @@ print("myFunc input dimension=", myFunc.getInputDimension())
 print("myFunc output dimension=", myFunc.getOutputDimension())
 # Get the number of calls
 print("called ", myFunc.getCallsNumber(), " times")
-

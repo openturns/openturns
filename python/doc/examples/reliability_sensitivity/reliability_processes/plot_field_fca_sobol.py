@@ -35,8 +35,8 @@ from openturns.viewer import View
 T = 3.0
 NT = 32
 tg = ot.RegularGrid(0.0, T / NT, NT)
-f1 = ot.SymbolicFunction(['t'], ['sin(t)'])
-f2 = ot.SymbolicFunction(['t'], ['cos(t)^2'])
+f1 = ot.SymbolicFunction(["t"], ["sin(t)"])
+f2 = ot.SymbolicFunction(["t"], ["cos(t)^2"])
 coeff1_dist = ot.Normal([1.0] * 2, [0.6] * 2, ot.CorrelationMatrix(2))
 p1 = ot.FunctionalBasisProcess(coeff1_dist, ot.Basis([f1, f2]), tg)
 p2 = ot.GaussianProcess(ot.SquaredExponential([1.0], [T / 4.0]), tg)
@@ -52,7 +52,7 @@ X.setMesh(tg)
 ot.RandomGenerator.SetSeed(0)
 x = X.getSample(10)
 graph = x.drawMarginal(0)
-graph.setTitle(f'{x.getSize()} input trajectories')
+graph.setTitle(f"{x.getSize()} input trajectories")
 _ = View(graph)
 
 # %%
@@ -61,12 +61,15 @@ class pyf2p(ot.OpenTURNSPythonFieldToPointFunction):
     def __init__(self, mesh):
         super(pyf2p, self).__init__(mesh, 4, 1)
         self.setInputDescription(["x1", "x2", "x3", "x4"])
-        self.setOutputDescription(['y'])
+        self.setOutputDescription(["y"])
+
     def _exec(self, X):
         Xs = ot.Sample(X)
         x1, x2, x3, x4 = Xs.computeMean()
         y = x1 + x2 + x3 - x4 + x1 * x2 - x3 * x4 - 0.1 * x1 * x2 * x3
         return [y]
+
+
 f = ot.FieldToPointFunction(pyf2p(tg))
 N = 1000
 x = X.getSample(N)
@@ -79,14 +82,18 @@ algo = otexp.FieldToPointFunctionalChaosAlgorithm(x, y)
 # 1. KL parameters
 algo.setCenteredSample(False)  # our input sample is not centered (default)
 algo.setThreshold(4e-2)  # we expect to explain 96% of variance
-algo.setRecompress(False)  # whether to re-truncate modes according to a global eigen value threshold across inputs (default)
-algo.setNbModes(10) # max KL modes (default=unlimited)
+algo.setRecompress(
+    False
+)  # whether to re-truncate modes according to a global eigen value threshold across inputs (default)
+algo.setNbModes(10)  # max KL modes (default=unlimited)
 # 2. chaos parameters:
-bs = ot.ResourceMap.GetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize')
-ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', N) # chaos basis size
-ot.ResourceMap.SetAsBool('FunctionalChaosAlgorithm-Sparse', True)
+bs = ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize")
+ot.ResourceMap.SetAsUnsignedInteger(
+    "FunctionalChaosAlgorithm-BasisSize", N
+)  # chaos basis size
+ot.ResourceMap.SetAsBool("FunctionalChaosAlgorithm-Sparse", True)
 algo.run()
-ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', bs)
+ot.ResourceMap.SetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize", bs)
 result = algo.getResult()
 
 # %%
@@ -110,7 +117,7 @@ graphs = []
 for i in range(x.getDimension()):
     validation = ot.KarhunenLoeveValidation(x.getMarginal(i), kl_results[i])
     graph = validation.drawValidation().getGraph(0, 0)
-    graph.setTitle(f'KL validation - marginal #{i} ratio={100.0 * ratios[i]:.2f} %')
+    graph.setTitle(f"KL validation - marginal #{i} ratio={100.0 * ratios[i]:.2f} %")
     View(graph)
     graphs.append(graph)
 
@@ -123,7 +130,7 @@ normal = ot.NormalFactory().build(data)
 log_pdf = normal.computeLogPDF(data).asPoint()
 l_pair = [(log_pdf[i], data[i]) for i in range(len(data))]
 l_pair.sort(key=lambda t: t[0])
-index_bad = int(0.01 * len(data)) # here 0.01 = (100-99)%
+index_bad = int(0.01 * len(data))  # here 0.01 = (100-99)%
 beta = l_pair[index_bad][0]
 gnorm = normal.drawLogPDF(data.getMin(), data.getMax())
 bad = [l_pair[i][1] for i in range(index_bad + 1)]
@@ -155,7 +162,7 @@ validation = ot.MetaModelValidation(modes, output, metamodel)
 q2 = validation.computePredictivityFactor()
 print(f"q2={q2}")
 graph = validation.drawValidation()
-graph.setTitle(f'Chaos validation - q2={q2}')
+graph.setTitle(f"Chaos validation - q2={q2}")
 _ = View(graph)
 
 # %%
@@ -165,7 +172,7 @@ metamodel = result.getFieldToPointMetamodel()
 x0 = X.getRealization()
 y0 = f(x0)
 y0hat = metamodel(x0)
-print(f'y0={y0} y0^={y0hat}')
+print(f"y0={y0} y0^={y0hat}")
 
 # %%
 # Retrieve the first order Sobol' indices

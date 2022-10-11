@@ -47,6 +47,5 @@ result = algo.getResult()
 metaModel = result.getMetaModel()
 conditionalCovariance = result.getCovarianceModel()
 residual = metaModel(X) - Y
-assert_almost_equal(residual.computeCentralMoment(2),
-                    [0.00013144], 1e-5, 1e-5)
+assert_almost_equal(residual.computeCentralMoment(2), [0.00013144], 1e-5, 1e-5)
 print("Test Ok")

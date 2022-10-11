@@ -27,6 +27,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -43,7 +44,7 @@ dist = ot.UserDefined([[-1], [10]], [0.9, 0.1])
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
 graph = sample.drawMarginal(0)
-graph.setTitle('1D Random Walk with discrete steps')
+graph.setTitle("1D Random Walk with discrete steps")
 view = viewer.View(graph)
 
 # %%
@@ -52,25 +53,25 @@ dist = ot.Normal(0.0, 1.0)
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
 graph = sample.drawMarginal(0)
-graph.setTitle('1D Random Walk with continuous steps')
+graph.setTitle("1D Random Walk with continuous steps")
 view = viewer.View(graph)
 
 # %%
 # Define the origin
-origin = [0.0]*2
+origin = [0.0] * 2
 
 # %%
 # color palette
-pal = ['red', 'cyan', 'blue', 'yellow', 'green']
+pal = ["red", "cyan", "blue", "yellow", "green"]
 
 # %%
 # 2-d random walk and discrete distribution
-dist = ot.UserDefined([[-1., -2.], [1., 3.]], [0.5, 0.5])
+dist = ot.UserDefined([[-1.0, -2.0], [1.0, 3.0]], [0.5, 0.5])
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
-graph = ot.Graph('2D Random Walk with discrete steps', 'X1', 'X2', True)
+graph = ot.Graph("2D Random Walk with discrete steps", "X1", "X2", True)
 for i in range(5):
-    graph.add(ot.Curve(sample[i], pal[i % len(pal)], 'solid'))
+    graph.add(ot.Curve(sample[i], pal[i % len(pal)], "solid"))
 view = viewer.View(graph)
 
 # %%
@@ -78,8 +79,8 @@ view = viewer.View(graph)
 dist = ot.Normal(2)
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
-graph = ot.Graph('2D Random Walk with continuous steps', 'X1', 'X2', True)
+graph = ot.Graph("2D Random Walk with continuous steps", "X1", "X2", True)
 for i in range(5):
-    graph.add(ot.Curve(sample[i], pal[i % len(pal)], 'solid'))
+    graph.add(ot.Curve(sample[i], pal[i % len(pal)], "solid"))
 view = viewer.View(graph)
 plt.show()

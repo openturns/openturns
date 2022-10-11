@@ -7,4 +7,4 @@ ot.RandomGenerator.SetSeed(0)
 graph = ot.Normal().drawPDF()
 
 fig = plt.figure()
-View(graph, figure=fig, add_legend=False, plot_kw={'color': 'blue'})
+View(graph, figure=fig, add_legend=False, plot_kw={"color": "blue"})

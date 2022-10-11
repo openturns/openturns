@@ -16,6 +16,5 @@ print("PlackettCopula          =", distribution)
 print("Estimated plackettCopula=", estimatedPlackettCopula)
 estimatedPlackettCopula = factory.buildAsPlackettCopula()
 print("Default plackettCopula=", estimatedPlackettCopula)
-estimatedPlackettCopula = factory.buildAsPlackettCopula(
-    distribution.getParameter())
+estimatedPlackettCopula = factory.buildAsPlackettCopula(distribution.getParameter())
 print("PlackettCopula from parameters=", estimatedPlackettCopula)

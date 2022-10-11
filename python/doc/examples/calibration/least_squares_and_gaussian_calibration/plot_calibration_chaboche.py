@@ -119,8 +119,7 @@ thetaMAP
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[
-    0]
+thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
 
 # %%
 # We can see that the `Gamma` parameter has a large confidence interval : even the sign of the parameter is unknown.
@@ -199,8 +198,7 @@ thetaMAP
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[
-    0]
+thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
 
 # %%
 # We can see that all three parameters are estimated with a large confidence interval.
@@ -257,7 +255,7 @@ sigmaStress = 1.0e7  # (Pa)
 
 # %%
 errorCovariance = ot.CovarianceMatrix(1)
-errorCovariance[0, 0] = sigmaStress ** 2
+errorCovariance[0, 0] = sigmaStress**2
 
 # %%
 # Define the covariance matrix of the parameters :math:`\theta` to calibrate.
@@ -269,9 +267,9 @@ sigmaGamma = 0.1 * Gamma
 
 # %%
 sigma = ot.CovarianceMatrix(3)
-sigma[0, 0] = sigmaR ** 2
-sigma[1, 1] = sigmaC ** 2
-sigma[2, 2] = sigmaGamma ** 2
+sigma[0, 0] = sigmaR**2
+sigma[1, 1] = sigmaC**2
+sigma[2, 2] = sigmaGamma**2
 sigma
 
 # %%
@@ -311,8 +309,7 @@ thetaMAP
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[
-    0]
+thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
 
 # %%
 # We can see that all three parameters are estimated with a large confidence interval.
@@ -396,8 +393,7 @@ thetaMAP
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[
-    0]
+thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
 
 # %%
 # We can see that all three parameters are estimated with a large confidence interval.

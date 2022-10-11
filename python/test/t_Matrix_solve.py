@@ -100,4 +100,3 @@ result6 = matrix3.solveLinearSystem(b2, True)
 print("result6=" + repr(result6))
 result6 = matrix3.solveLinearSystem(b2, False)
 print("result6 = " + repr(result6))
-

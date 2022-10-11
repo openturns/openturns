@@ -88,8 +88,8 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
 
 /** Oldest constructor (for compatibility) */
 LinearModelAlgorithm::LinearModelAlgorithm(const Sample &inputSample,
-                                           const Basis &basis,
-                                           const Sample &outputSample)
+    const Basis &basis,
+    const Sample &outputSample)
   : LinearModelAlgorithm(inputSample, outputSample, basis)
 {
   LOGWARN(OSS() << "LinearModelAlgorithm(inputSample, basis, outpuSample) is deprecated");

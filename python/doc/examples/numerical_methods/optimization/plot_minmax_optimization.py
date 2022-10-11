@@ -11,6 +11,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -30,7 +31,7 @@ bounds = ot.Interval(lowerBound, upperBound)
 
 # %%
 # Create the model
-model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
+model = ot.SymbolicFunction(["E", "F", "L", "I"], ["F*L^3/(3*E*I)"])
 
 # %%
 # Define the problems
@@ -51,11 +52,9 @@ solver.setStartingPoint(distribution.getMean())
 solver.setProblem(minProblem)
 solver.run()
 minResult = solver.getResult()
-print('min: y=', minResult.getOptimalValue(),
-      'with x=', minResult.getOptimalPoint())
+print("min: y=", minResult.getOptimalValue(), "with x=", minResult.getOptimalPoint())
 
 solver.setProblem(maxProblem)
 solver.run()
 maxResult = solver.getResult()
-print('max: y=', maxResult.getOptimalValue(),
-      'with x=', maxResult.getOptimalPoint())
+print("max: y=", maxResult.getOptimalValue(), "with x=", maxResult.getOptimalPoint())

@@ -22,24 +22,44 @@ sampleY = sample.getMarginal(0)
 
 sampleZ = ot.Sample(size, 1)
 for i in range(size):
-    sampleZ[i, 0] = sampleY[i, 0]**2
-print("LinearModelFisher pvalue=%1.2g" %
-      ot.LinearModelTest.LinearModelFisher(sampleY, sampleZ).getPValue())
-print("LinearModelResidualMean pvalue=%1.2g" %
-      ot.LinearModelTest.LinearModelResidualMean(sampleY, sampleZ).getPValue())
+    sampleZ[i, 0] = sampleY[i, 0] ** 2
+print(
+    "LinearModelFisher pvalue=%1.2g"
+    % ot.LinearModelTest.LinearModelFisher(sampleY, sampleZ).getPValue()
+)
+print(
+    "LinearModelResidualMean pvalue=%1.2g"
+    % ot.LinearModelTest.LinearModelResidualMean(sampleY, sampleZ).getPValue()
+)
 
 # Durbin Watson
 ot.RandomGenerator.SetSeed(5415)
 eps = ot.Normal(0, 20)
-f = ot.SymbolicFunction('x', '5+2*x+x^2-0.1*x^3')
+f = ot.SymbolicFunction("x", "5+2*x+x^2-0.1*x^3")
 N = 15
-x = ot.Sample([[0], [1.42857], [2.85714], [4.28571], [5.71429], [7.14286],
-               [8.57143], [10], [11.4286], [12.8571], [14.2857], [15.7143],
-               [17.1429], [18.5714], [20]])
+x = ot.Sample(
+    [
+        [0],
+        [1.42857],
+        [2.85714],
+        [4.28571],
+        [5.71429],
+        [7.14286],
+        [8.57143],
+        [10],
+        [11.4286],
+        [12.8571],
+        [14.2857],
+        [15.7143],
+        [17.1429],
+        [18.5714],
+        [20],
+    ]
+)
 y = f(x) + eps.getSample(N)
 linmodel = ot.LinearModelAlgorithm(x, y).getResult().getCoefficients()
 dwTest = ot.LinearModelTest.LinearModelDurbinWatson(x, y)
-print('Durbin Watson = ', dwTest)
+print("Durbin Watson = ", dwTest)
 
 
 selection = ot.Indices(5)
@@ -58,13 +78,16 @@ sampleX0 = sampleX.getMarginal(0)
 # analysis of the regression. The t-test is used.
 
 # The two tests must be equal
-print('PartialRegressionX0Y=', ot.LinearModelTest.PartialRegression(
-    sampleX, sampleY, selection2, 0.10))
-print('FullRegressionX0Y=', ot.LinearModelTest.FullRegression(
-    sampleX0, sampleY, 0.10))
+print(
+    "PartialRegressionX0Y=",
+    ot.LinearModelTest.PartialRegression(sampleX, sampleY, selection2, 0.10),
+)
+print("FullRegressionX0Y=", ot.LinearModelTest.FullRegression(sampleX0, sampleY, 0.10))
 
-print('PartialRegressionXY=', ot.LinearModelTest.PartialRegression(
-    sampleX, sampleY, selection, 0.10))
+print(
+    "PartialRegressionXY=",
+    ot.LinearModelTest.PartialRegression(sampleX, sampleY, selection, 0.10),
+)
 
 # Regression test between 2 samples : firstSample of dimension n and
 # secondSample of dimension 1. If firstSample[i] is the numerical sample
@@ -75,7 +98,6 @@ print('PartialRegressionXY=', ot.LinearModelTest.PartialRegression(
 # is significant. It is based on the deviation analysis of the regression.
 # The t-test is used.
 
-print('FullRegressionXZ=', ot.LinearModelTest.FullRegression(
-    sampleX, sampleY, 0.10))
+print("FullRegressionXZ=", ot.LinearModelTest.FullRegression(sampleX, sampleY, 0.10))
 # print('FullRegressionZZ=', ot.LinearModelTest.FullRegression(
 # sampleZ, sampleZ, 0.10))

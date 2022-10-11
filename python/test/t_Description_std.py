@@ -61,27 +61,27 @@ for x in desc5:
     i += 1
 
 # slicing
-desc6 = ot.Description(('S1', 'S2', 'S3', 'S4', 'S5'))
-print('desc6[2] = ', desc6[2])
-print('desc6[1:3] = ', desc6[1:3])
-print('desc6[:] = ', desc6[:])
-desc6[1:3] = ('88', '99')
-print('desc6 = ', desc6)
+desc6 = ot.Description(("S1", "S2", "S3", "S4", "S5"))
+print("desc6[2] = ", desc6[2])
+print("desc6[1:3] = ", desc6[1:3])
+print("desc6[:] = ", desc6[:])
+desc6[1:3] = ("88", "99")
+print("desc6 = ", desc6)
 
 # sequence indexing
 desc = ot.Description.BuildDefault(10, "H")
 print("sequence indexing read:", desc[(4, 2, 2, -1)])
-desc[(4, 2, 2, -1)] = ['T']*4
+desc[(4, 2, 2, -1)] = ["T"] * 4
 print("sequence indexing write:", desc)
 
 # unicode support
-desc7 = ot.Description(['forunicode', 'n2', 'n3'])
-desc7[1] = 'r2'
-print('desc7 = ', desc7)
+desc7 = ot.Description(["forunicode", "n2", "n3"])
+desc7[1] = "r2"
+print("desc7 = ", desc7)
 
 # comparison
-a = ot.Description(['n2', 'n3'])
+a = ot.Description(["n2", "n3"])
 print(a == a)
-print(a == ot.Description(['n2', 'NN']))
+print(a == ot.Description(["n2", "NN"]))
 print(a != a)
-print(a != ot.Description(['n2', 'NN']))
+print(a != ot.Description(["n2", "NN"]))

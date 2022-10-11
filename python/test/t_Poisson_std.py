@@ -22,8 +22,7 @@ print("oneRealization=", repr(oneRealization))
 # Test for sampling
 size = 10000
 oneSample = distribution.getSample(size)
-print("oneSample first=", repr(
-    oneSample[0]), " last=", repr(oneSample[size - 1]))
+print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
 print("mean=", repr(oneSample.computeMean()))
 print("covariance=", repr(oneSample.computeCovariance()))
 
@@ -40,8 +39,13 @@ print("log pdf=%.6f" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
 # by the finite difference technique from CDF
-print("pdf (FD)=%.6f" % (distribution.computeCDF(
-    point + ot.Point(1, 0)) - distribution.computeCDF(point + ot.Point(1, -1))))
+print(
+    "pdf (FD)=%.6f"
+    % (
+        distribution.computeCDF(point + ot.Point(1, 0))
+        - distribution.computeCDF(point + ot.Point(1, -1))
+    )
+)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -52,17 +56,21 @@ PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", repr(PDFgr))
 # by the finite difference technique
 PDFgrFD = ot.Point(1)
-PDFgrFD[0] = (ot.Poisson(distribution.getLambda() + eps).computePDF(point) -
-              ot.Poisson(distribution.getLambda() - eps).computePDF(point)) / (2.0 * eps)
+PDFgrFD[0] = (
+    ot.Poisson(distribution.getLambda() + eps).computePDF(point)
+    - ot.Poisson(distribution.getLambda() - eps).computePDF(point)
+) / (2.0 * eps)
 print("pdf gradient (FD)=", repr(PDFgrFD))
 
 # derivative of the PDF with regards the parameters of the distribution
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", repr(CDFgr))
 CDFgrFD = ot.Point(1)
-CDFgrFD[0] = (ot.Poisson(distribution.getLambda() + eps).computeCDF(point) -
-              ot.Poisson(distribution.getLambda() - eps).computeCDF(point)) / (2.0 * eps)
-print("cdf gradient (FD)=",  repr(CDFgrFD))
+CDFgrFD[0] = (
+    ot.Poisson(distribution.getLambda() + eps).computeCDF(point)
+    - ot.Poisson(distribution.getLambda() - eps).computeCDF(point)
+) / (2.0 * eps)
+print("cdf gradient (FD)=", repr(CDFgrFD))
 
 # quantile
 quantile = distribution.computeQuantile(0.95)

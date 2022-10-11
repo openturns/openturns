@@ -18,8 +18,11 @@ arCoefficients = ot.Point(p, 0.80)
 maCoefficients = ot.Point(q, 0.50)
 
 # ARMA creation
-myARMA = ot.ARMA(ot.ARMACoefficients(arCoefficients),
-              ot.ARMACoefficients(maCoefficients), ot.WhiteNoise(ot.Normal(0.0, 0.05)))
+myARMA = ot.ARMA(
+    ot.ARMACoefficients(arCoefficients),
+    ot.ARMACoefficients(maCoefficients),
+    ot.WhiteNoise(ot.Normal(0.0, 0.05)),
+)
 myARMA.setTimeGrid(ot.RegularGrid(0.0, 0.1, 256))
 print("myARMA process=", myARMA)
 

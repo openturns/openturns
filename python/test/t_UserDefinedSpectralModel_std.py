@@ -6,10 +6,9 @@ ot.TESTPREAMBLE()
 
 
 def cleanScalar(inScalar):
-    if (abs(inScalar) < 1.e-6):
+    if abs(inScalar) < 1.0e-6:
         return 0.0
     return inScalar
-
 
 
 # Default constructor
@@ -29,7 +28,7 @@ spatialCorrelation = ot.CorrelationMatrix(dimension)
 for index in range(dimension):
     # constant amplitude
     amplitude[index] = (index + 1.0) / dimension
-    if (index > 0):
+    if index > 0:
         spatialCorrelation[index, index - 1] = 1.0 / index
 
 # Sample a CauchyModel

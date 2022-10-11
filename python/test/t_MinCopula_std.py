@@ -56,8 +56,9 @@ print("Quantile=", quantile)
 # Get 95% survival function
 inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      copula.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival)
+)
 print("entropy=%.6e" % copula.computeEntropy())
 # Extract the marginals
 for i in range(dim):

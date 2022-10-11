@@ -18,6 +18,7 @@ Create a Bayes distribution
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -26,7 +27,7 @@ YDist = ot.Uniform(-1.0, 1.0)
 
 # %%
 # create Theta=f(y)
-f = ot.SymbolicFunction(['y'], ['y', '1 + y'])
+f = ot.SymbolicFunction(["y"], ["y", "1 + y"])
 
 # %%
 # create the X|Theta distribution
@@ -35,7 +36,7 @@ XgivenThetaDist = ot.Uniform()
 # %%
 # create the distribution
 XDist = ot.BayesDistribution(XgivenThetaDist, YDist, f)
-XDist.setDescription(['X|Theta=f(y)', 'y'])
+XDist.setDescription(["X|Theta=f(y)", "y"])
 XDist
 
 # %%
@@ -46,8 +47,8 @@ sample = XDist.getSample(100)
 # draw PDF
 graph = XDist.drawPDF()
 cloud = ot.Cloud(sample)
-cloud.setColor('red')
-cloud.setLegend('sample')
+cloud.setColor("red")
+cloud.setLegend("sample")
 graph.add(cloud)
 view = viewer.View(graph)
 plt.show()

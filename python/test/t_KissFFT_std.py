@@ -28,13 +28,13 @@ print("myFFT = ", myFFT)
 print("collection = ", collection)
 
 # FFT transform
-transformedCollection = ot.ComplexCollection(
-    myFFT.transform(collection))
+transformedCollection = ot.ComplexCollection(myFFT.transform(collection))
 print("FFT result = ", transformedCollection)
 
 # Inverse transformation
 inverseTransformedCollection = ot.ComplexCollection(
-    myFFT.inverseTransform(transformedCollection))
+    myFFT.inverseTransform(transformedCollection)
+)
 print("FFT back=", inverseTransformedCollection)
 
 # 2D case now
@@ -63,4 +63,3 @@ print("3D FFT result = ", repr(transformedTensor.clean(threshold)))
 # Inverse transformation
 inverseTransformedTensor = myFFT.inverseTransform3D(transformedTensor)
 print("3D FFT back=", repr(inverseTransformedTensor.clean(threshold)))
-

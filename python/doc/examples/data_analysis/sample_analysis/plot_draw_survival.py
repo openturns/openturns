@@ -59,6 +59,7 @@ Draw a survival function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -75,11 +76,11 @@ distribution = ot.GeneralizedPareto(sigma, xi, u)
 # The `computeCDF` and `computeSurvivalFunction` computes the CDF :math:`F` and survival :math:`S` of a distribution.
 
 # %%
-p1 = distribution.computeCDF(10.)
+p1 = distribution.computeCDF(10.0)
 p1
 
 # %%
-p2 = distribution.computeSurvivalFunction(10.)
+p2 = distribution.computeSurvivalFunction(10.0)
 p2
 
 # %%
@@ -116,8 +117,7 @@ xmax
 npoints = 50
 logScaleX = True
 graph = distribution.drawSurvivalFunction(xmin, xmax, npoints, logScaleX)
-graph.setTitle(
-    "Survival function of a distribution where X axis is in log scale")
+graph.setTitle("Survival function of a distribution where X axis is in log scale")
 view = viewer.View(graph)
 # graph
 
@@ -130,7 +130,8 @@ logScaleX = True
 graph = distribution.drawSurvivalFunction(xmin, xmax, npoints, logScaleX)
 graph.setLogScale(ot.GraphImplementation.LOGXY)
 graph.setTitle(
-    "Survival function of a distribution where X and Y axes are in log scale")
+    "Survival function of a distribution where X and Y axes are in log scale"
+)
 view = viewer.View(graph)
 # graph
 
@@ -162,7 +163,7 @@ p2 = sample.computeEmpiricalCDF([10], True)
 p2
 
 # %%
-p1+p2
+p1 + p2
 
 # %%
 # Draw the survival of a sample
@@ -210,8 +211,7 @@ pointNumber = sample.getSize()
 logScaleX = True
 graph = userdefined.drawSurvivalFunction(xmin, xmax, pointNumber, logScaleX)
 graph.setLogScale(ot.GraphImplementation.LOGXY)
-graph.setTitle(
-    "Empirical survival function of a sample; X and Y axes in log-scale")
+graph.setTitle("Empirical survival function of a sample; X and Y axes in log-scale")
 view = viewer.View(graph)
 # graph
 
@@ -231,8 +231,7 @@ graph = userdefined.drawSurvivalFunction(xmin, xmax, pointNumber, logScaleX)
 graph.setLogScale(ot.GraphImplementation.LOGXY)
 graph.setColors(["blue"])
 graph.setLegends(["Sample"])
-graphDistribution = distribution.drawSurvivalFunction(
-    xmin, xmax, npoints, logScaleX)
+graphDistribution = distribution.drawSurvivalFunction(xmin, xmax, npoints, logScaleX)
 graphDistribution.setLegends(["GPD"])
 graph.add(graphDistribution)
 graph.setLegendPosition("topright")

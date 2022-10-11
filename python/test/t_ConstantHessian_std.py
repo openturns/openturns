@@ -38,4 +38,3 @@ inPoint[2] = 9.0
 outTensor = myHessian.hessian(inPoint)
 print("myHessian=", repr(myHessian))
 print(myHessian.getName(), "( ", repr(inPoint), " ) = ", repr(outTensor))
-

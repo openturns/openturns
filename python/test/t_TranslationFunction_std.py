@@ -15,7 +15,17 @@ inPoint[2] = 9.0
 outPoint = myFunction(inPoint)
 print("myFunction=", repr(myFunction))
 print(myFunction.getName(), "( ", repr(inPoint), " ) = ", repr(outPoint))
-print(myFunction.getName(), ".gradient( ", repr(inPoint), " ) = ",
-      repr(myFunction.gradient(inPoint)))
-print(myFunction.getName(), ".hessian( ", repr(inPoint), " ) = ",
-      repr(myFunction.hessian(inPoint)))
+print(
+    myFunction.getName(),
+    ".gradient( ",
+    repr(inPoint),
+    " ) = ",
+    repr(myFunction.gradient(inPoint)),
+)
+print(
+    myFunction.getName(),
+    ".hessian( ",
+    repr(inPoint),
+    " ) = ",
+    repr(myFunction.hessian(inPoint)),
+)

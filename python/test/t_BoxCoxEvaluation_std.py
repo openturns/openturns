@@ -10,7 +10,7 @@ dimension = 3
 
 # Lambda
 lambdaVector = ot.Point(dimension)
-lambdaVector[0] = 0.
+lambdaVector[0] = 0.0
 lambdaVector[1] = 0.5
 lambdaVector[2] = 1
 
@@ -36,4 +36,3 @@ for index in range(size):
 # result of the function
 outSample = myFunction(inSample)
 print(myFunction.getName(), "( ", repr(inSample), " ) = ", repr(outSample))
-

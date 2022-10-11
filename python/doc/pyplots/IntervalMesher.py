@@ -16,15 +16,15 @@ mesh2 = mesher.build(square, True)
 
 # Draw the first mesh
 graph1 = mesh1.draw()
-graph1.setTitle('diamond=False')
-graph1.setXTitle('$x_0$')
-graph1.setYTitle('$x_1$')
+graph1.setTitle("diamond=False")
+graph1.setXTitle("$x_0$")
+graph1.setYTitle("$x_1$")
 
 # Draw the second mesh
 graph2 = mesh2.draw()
-graph2.setTitle('diamond=True')
-graph2.setXTitle('$x_0$')
-graph2.setYTitle('$x_1$')
+graph2.setTitle("diamond=True")
+graph2.setXTitle("$x_0$")
+graph2.setYTitle("$x_1$")
 
 fig = plt.figure(figsize=(10, 4))
 graph1_axis = fig.add_subplot(121)

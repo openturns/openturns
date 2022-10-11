@@ -15,6 +15,7 @@ from openturns.viewer import View
 import numpy as np
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -25,7 +26,7 @@ dimension = 1
 # Define the function.
 
 # %%
-g = ot.SymbolicFunction(['x'], ['0.5*x^2 + sin(2.5*x)'])
+g = ot.SymbolicFunction(["x"], ["0.5*x^2 + sin(2.5*x)"])
 
 # %%
 # Create the design of experiments.
@@ -51,10 +52,10 @@ view = viewer.View(graph)
 
 # %%
 def createMyBasicKriging(X, Y):
-    '''
+    """
     Create a kriging from a pair of X and Y samples.
     We use a 3/2 Matérn covariance model and a constant trend.
-    '''
+    """
     basis = ot.ConstantBasisFactory(dimension).build()
     covarianceModel = ot.MaternModel([1.0], 1.5)
     algo = ot.KrigingAlgorithm(X, Y, covarianceModel, basis)
@@ -65,9 +66,9 @@ def createMyBasicKriging(X, Y):
 
 # %%
 def linearSample(xmin, xmax, npoints):
-    '''Returns a sample created from a regular grid
-    from xmin to xmax with npoints points.'''
-    step = (xmax-xmin)/(npoints-1)
+    """Returns a sample created from a regular grid
+    from xmin to xmax with npoints points."""
+    step = (xmax - xmin) / (npoints - 1)
     rg = ot.RegularGrid(xmin, step, npoints)
     vertices = rg.getVertices()
     return vertices
@@ -75,16 +76,17 @@ def linearSample(xmin, xmax, npoints):
 
 # %%
 def plot_kriging_bounds(vLow, vUp, n_test):
-    '''
+    """
     From two lists containing the lower and upper bounds of the region,
     create a PolygonArray.
-    '''
+    """
     palette = ot.Drawable.BuildDefaultPalette(2)
     myPaletteColor = palette[1]
-    polyData = [[vLow[i], vLow[i+1], vUp[i+1], vUp[i]]
-                for i in range(n_test-1)]
-    polygonList = [ot.Polygon(
-        polyData[i], myPaletteColor, myPaletteColor) for i in range(n_test-1)]
+    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
+    polygonList = [
+        ot.Polygon(polyData[i], myPaletteColor, myPaletteColor)
+        for i in range(n_test - 1)
+    ]
     boundsPoly = ot.PolygonArray(polygonList)
     boundsPoly.setLegend("95% bounds")
     return boundsPoly
@@ -99,10 +101,10 @@ sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 
 # %%
 def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
-    '''
+    """
     Given a kriging result, plot the data, the kriging metamodel
     and a confidence interval.
-    '''
+    """
     samplesize = X.getSize()
     meta = krigResult.getMetaModel()
     graphKriging = meta.draw(xMin, xMax)
@@ -113,19 +115,20 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     yFunction = g(xGrid)
     yKrig = meta(xGrid)
     # Compute the conditional covariance
-    epsilon = ot.Sample(nbpoints, [1.e-8])
-    conditionalVariance = krigResult.getConditionalMarginalVariance(
-        xGrid)+epsilon
+    epsilon = ot.Sample(nbpoints, [1.0e-8])
+    conditionalVariance = krigResult.getConditionalMarginalVariance(xGrid) + epsilon
     conditionalSigma = sqrt(conditionalVariance)
     # Compute the quantile of the Normal distribution
-    alpha = 1-(1-level)/2
+    alpha = 1 - (1 - level) / 2
     quantileAlpha = ot.DistFunc.qNormal(alpha)
     # Graphics of the bounds
-    epsilon = 1.e-8
-    dataLower = [yKrig[i, 0] - quantileAlpha * conditionalSigma[i, 0]
-                 for i in range(nbpoints)]
-    dataUpper = [yKrig[i, 0] + quantileAlpha * conditionalSigma[i, 0]
-                 for i in range(nbpoints)]
+    epsilon = 1.0e-8
+    dataLower = [
+        yKrig[i, 0] - quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
+    ]
+    dataUpper = [
+        yKrig[i, 0] + quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
+    ]
     # Coordinates of the vertices of the Polygons
     vLow = [[xGrid[i, 0], dataLower[i]] for i in range(nbpoints)]
     vUp = [[xGrid[i, 0], dataUpper[i]] for i in range(nbpoints)]
@@ -155,7 +158,7 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level=0.95):
     graph.setLegendPosition("bottomright")
     graph.setAxes(True)
     graph.setGrid(True)
-    graph.setTitle("Size = %d, Q2=%.2f%%" % (samplesize, 100*Q2))
+    graph.setTitle("Size = %d, Q2=%.2f%%" % (samplesize, 100 * Q2))
     graph.setXTitle("X")
     graph.setYTitle("Y")
     return graph
@@ -179,10 +182,10 @@ view = viewer.View(graph)
 
 # %%
 def getNewPoint(xMin, xMax, krigResult):
-    '''
+    """
     Returns a new point to be added to the design of experiments.
     This point maximizes the conditional variance of the kriging.
-    '''
+    """
     nbpoints = 50
     xGrid = linearSample(xMin, xMax, nbpoints)
     conditionalVariance = krigResult.getConditionalMarginalVariance(xGrid)
@@ -190,6 +193,7 @@ def getNewPoint(xMin, xMax, krigResult):
     xNew = xGrid[iMaxVar, 0]
     xNew = ot.Point([xNew])
     return xNew
+
 
 # %%
 # We first call `getNewPoint` to get a point to add to the design of experiments.

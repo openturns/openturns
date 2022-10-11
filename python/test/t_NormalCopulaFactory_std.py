@@ -20,7 +20,8 @@ print("Estimated distribution=", estimatedDistribution)
 # non-regression for #572
 estimated_dist = ot.NormalCopulaFactory().build(distribution.getSample(10))
 mydist = ot.ComposedDistribution(
-    ot.DistributionCollection(dim, ot.Normal()), estimated_dist)
+    ot.DistributionCollection(dim, ot.Normal()), estimated_dist
+)
 estimatedDistribution = factory.build()
 print("Default distribution=", estimatedDistribution)
 estimatedNormalCopula = factory.buildAsNormalCopula(sample)

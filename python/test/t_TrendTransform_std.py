@@ -17,8 +17,7 @@ print("myTrendFunc=", myTrendFunc)
 print("myTrendFunc input description=", myTrendFunc.getInputDescription())
 print("myTrendFunc input dimension=", myTrendFunc.getInputDimension())
 # Get the output description and dimension
-print("myTrendFunc output description=",
-      myTrendFunc.getOutputDescription())
+print("myTrendFunc output description=", myTrendFunc.getOutputDescription())
 print("myTrendFunc output dimension=", myTrendFunc.getOutputDimension())
 # Create a TimeSeries
 data = ot.Sample(tg.getN(), formula.getSize())
@@ -32,4 +31,3 @@ print("output time series = ")
 print(myTrendFunc(ts))
 # Get the number of calls
 print("called ", myTrendFunc.getCallsNumber(), " times")
-

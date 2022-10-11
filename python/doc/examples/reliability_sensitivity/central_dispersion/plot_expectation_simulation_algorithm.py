@@ -14,6 +14,7 @@ from matplotlib import pylab as plt
 # We shall use this algorithm for the :ref:`Ishigami function <use-case-ishigami>` that we load from the `usecases` module :
 #
 from openturns.usecases import ishigami_function
+
 im = ishigami_function.IshigamiModel()
 
 
@@ -44,7 +45,7 @@ algo = ot.ExpectationSimulationAlgorithm(outputVector)
 # We can also set the algorithm parameters :
 algo.setMaximumOuterSampling(80000)
 algo.setBlockSize(1)
-algo.setCoefficientOfVariationCriterionType('NONE')
+algo.setCoefficientOfVariationCriterionType("NONE")
 
 
 # %%
@@ -71,15 +72,17 @@ print("Estimated mean of the output random vector : %.5f" % expectation[0])
 # %%
 # The variance and standard deviation of the estimated mean are respectively given by `getVarianceEstimate` and `getStandardDeviation`:
 expectationVariance = result.getVarianceEstimate()
-print("Variance of the estimated mean of the output random vector : %.5f" %
-      expectationVariance[0])
+print(
+    "Variance of the estimated mean of the output random vector : %.5f"
+    % expectationVariance[0]
+)
 standardDeviation = result.getStandardDeviation()
 print("Standard deviation : %.5f" % standardDeviation[0])
 
 # %%
 # This variance and this standard deviation must not to be confused with the variance and the standard deviation of the Ishigami model!
 print("Ishigami variance : %.5f" % im.variance)
-print("Ishigami standard deviation : %.5f" % im.variance**(1/2))
+print("Ishigami standard deviation : %.5f" % im.variance ** (1 / 2))
 
 
 # %%
@@ -91,7 +94,8 @@ print(expectationDistribution)
 # Let us draw it:
 graphExpectationDistribution = expectationDistribution.drawPDF()
 graphExpectationDistribution.setTitle(
-    "Normal asymptotic distribution of the mean estimate")
+    "Normal asymptotic distribution of the mean estimate"
+)
 view = otv.View(graphExpectationDistribution)
 
 # %%

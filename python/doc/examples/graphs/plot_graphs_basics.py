@@ -19,6 +19,7 @@ import pylab as pl
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -42,8 +43,7 @@ type(graph)
 # %%
 graph.setXTitle("N")
 graph.setYTitle("PDF")
-graph.setTitle(
-    "Probability density function of the standard gaussian distribution")
+graph.setTitle("Probability density function of the standard gaussian distribution")
 graph.setLegends(["N"])
 graph.setColors(["blue"])
 view = viewer.View(graph)
@@ -82,13 +82,13 @@ view = viewer.View(graph)
 corr = ot.CorrelationMatrix(2)
 corr[0, 1] = 0.2
 copula = ot.NormalCopula(corr)
-x1 = ot.Normal(-1., 1)
+x1 = ot.Normal(-1.0, 1)
 x2 = ot.Normal(2, 1)
 x_funk = ot.ComposedDistribution([x1, x2], copula)
 
 # %%
 # Create a Punk distribution
-x1 = ot.Normal(1., 1)
+x1 = ot.Normal(1.0, 1)
 x2 = ot.Normal(-2, 1)
 x_punk = ot.ComposedDistribution([x1, x2], copula)
 
@@ -96,14 +96,14 @@ x_punk = ot.ComposedDistribution([x1, x2], copula)
 # Let us mix these two distributions.
 
 # %%
-mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.])
+mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.0])
 
 # %%
 n = 500
 sample = mixture.getSample(n)
 
 # %%
-graph = ot.Graph("n=%d" % (n), "X1", "X2", True, '')
+graph = ot.Graph("n=%d" % (n), "X1", "X2", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = viewer.View(graph)
@@ -126,7 +126,7 @@ ot.Drawable.GetValidColors()[0:10]
 # In the following graphics, we use the "aquamarine1" color with "fcircle" circles.
 
 # %%
-graph = ot.Graph("n=%d" % (n), "X1", "X2", True, '')
+graph = ot.Graph("n=%d" % (n), "X1", "X2", True, "")
 cloud = ot.Cloud(sample)
 cloud.setColor("aquamarine1")
 cloud.setPointStyle("fcircle")
@@ -158,9 +158,9 @@ ot.Drawable.GetValidLineStyles()
 
 # %%
 def linearSample(xmin, xmax, npoints):
-    '''Returns a sample created from a regular grid
-    from xmin to xmax with npoints points.'''
-    step = (xmax-xmin)/(npoints-1)
+    """Returns a sample created from a regular grid
+    from xmin to xmax with npoints points."""
+    step = (xmax - xmin) / (npoints - 1)
     rg = ot.RegularGrid(xmin, step, npoints)
     vertices = rg.getVertices()
     return vertices
@@ -187,10 +187,11 @@ view = viewer.View(graph)
 
 # %%
 def createHSVColor(indexCurve, maximumNumberOfCurves):
-    '''Create a HSV color for the indexCurve-th curve
-    from a sample with maximum size equal to maximumNumberOfCurves'''
+    """Create a HSV color for the indexCurve-th curve
+    from a sample with maximum size equal to maximumNumberOfCurves"""
     color = ot.Drawable.ConvertFromHSV(
-        indexCurve * 360.0/maximumNumberOfCurves, 1.0, 1.0)
+        indexCurve * 360.0 / maximumNumberOfCurves, 1.0, 1.0
+    )
     return color
 
 
@@ -198,12 +199,11 @@ def createHSVColor(indexCurve, maximumNumberOfCurves):
 pofa = ot.HermiteFactory()
 
 # %%
-graph = ot.Graph("Orthonormal Hermite polynomials",
-                 "x", "y", True, "bottomright")
+graph = ot.Graph("Orthonormal Hermite polynomials", "x", "y", True, "bottomright")
 degreemax = 5
 for k in range(degreemax):
     pk = pofa.build(k)
-    curve = pk.draw(-3., 3., 50)
+    curve = pk.draw(-3.0, 3.0, 50)
     curve.setLegends(["P%d" % (k)])
     curve.setColors([createHSVColor(k, degreemax)])
     graph.add(curve)
@@ -287,5 +287,5 @@ fig
 # The `plot_kw` optional argument sets the arguments of the plot. In the following example, we set the color of the plot in blue.
 
 # %%
-view = otv.View(graph, plot_kw={'color': 'blue'})
+view = otv.View(graph, plot_kw={"color": "blue"})
 plt.show()

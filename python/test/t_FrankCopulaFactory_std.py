@@ -16,6 +16,5 @@ print("FrankCopula          =", distribution)
 print("Estimated frankCopula=", estimatedFrankCopula)
 estimatedFrankCopula = factory.buildAsFrankCopula()
 print("Default frankCopula=", estimatedFrankCopula)
-estimatedFrankCopula = factory.buildAsFrankCopula(
-    distribution.getParameter())
+estimatedFrankCopula = factory.buildAsFrankCopula(distribution.getParameter())
 print("FrankCopula from parameters=", estimatedFrankCopula)

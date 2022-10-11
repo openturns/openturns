@@ -100,7 +100,7 @@ OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const Dis
 }
 
 OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const DistributionCollection & marginals,
-                                                                       const EnumerateFunction & phi)
+    const EnumerateFunction & phi)
   : OrthogonalFunctionFactory()
 {
   const UnsignedInteger size = marginals.getSize();

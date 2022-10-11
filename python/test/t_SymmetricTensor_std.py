@@ -15,27 +15,38 @@ symmetricTensor0 = ot.SymmetricTensor()
 print("symmetricTensor0 = ", repr(symmetricTensor0))
 
 # TEST NUMBER ONE : CONSTRUCTOR WITH SIZE, OPERATOR() AND STRING CONVERTER
-print(
-    "test number one : constructor with size, operator() and string converter")
+print("test number one : constructor with size, operator() and string converter")
 
 # Constructor with size
 symmetricTensor1 = ot.SymmetricTensor(2, 3)
 
 # Check operator() methods
-symmetricTensor1[0, 0, 0] = 1.
-symmetricTensor1[1, 0, 0] = 2.
-symmetricTensor1[1, 1, 0] = 3.
-symmetricTensor1[0, 0, 1] = 4.
-symmetricTensor1[1, 0, 1] = 5.
-symmetricTensor1[1, 1, 1] = 6.
-symmetricTensor1[0, 0, 2] = 7.
-symmetricTensor1[1, 0, 2] = 8.
-symmetricTensor1[1, 1, 2] = 9.
+symmetricTensor1[0, 0, 0] = 1.0
+symmetricTensor1[1, 0, 0] = 2.0
+symmetricTensor1[1, 1, 0] = 3.0
+symmetricTensor1[0, 0, 1] = 4.0
+symmetricTensor1[1, 0, 1] = 5.0
+symmetricTensor1[1, 1, 1] = 6.0
+symmetricTensor1[0, 0, 2] = 7.0
+symmetricTensor1[1, 0, 2] = 8.0
+symmetricTensor1[1, 1, 2] = 9.0
 
 # String converter
 print("symmetricTensor1 = ", repr(symmetricTensor1))
-print("values = %.6f" % symmetricTensor1[0, 0, 0], "  %.6f" % symmetricTensor1[0, 1, 0], "  %.6f" % symmetricTensor1[1, 0, 0], "  %.6f" % symmetricTensor1[1, 1, 0], "  %.6f" % symmetricTensor1[0, 0, 1], "  %.6f" % symmetricTensor1[
-      0, 1, 1], "  %.6f" % symmetricTensor1[1, 0, 1], "  %.6f" % symmetricTensor1[1, 1, 1], "  %.6f" % symmetricTensor1[0, 0, 2], "  %.6f" % symmetricTensor1[0, 1, 2], "  %.6f" % symmetricTensor1[1, 0, 2], "  %.6f" % symmetricTensor1[1, 1, 2])
+print(
+    "values = %.6f" % symmetricTensor1[0, 0, 0],
+    "  %.6f" % symmetricTensor1[0, 1, 0],
+    "  %.6f" % symmetricTensor1[1, 0, 0],
+    "  %.6f" % symmetricTensor1[1, 1, 0],
+    "  %.6f" % symmetricTensor1[0, 0, 1],
+    "  %.6f" % symmetricTensor1[0, 1, 1],
+    "  %.6f" % symmetricTensor1[1, 0, 1],
+    "  %.6f" % symmetricTensor1[1, 1, 1],
+    "  %.6f" % symmetricTensor1[0, 0, 2],
+    "  %.6f" % symmetricTensor1[0, 1, 2],
+    "  %.6f" % symmetricTensor1[1, 0, 2],
+    "  %.6f" % symmetricTensor1[1, 1, 2],
+)
 
 # TEST NUMBER TWO : COPY CONSTRUCTOR AND STRING CONVERTER
 print("test number two : copy constructor and string converter")

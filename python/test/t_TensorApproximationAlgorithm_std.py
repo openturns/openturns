@@ -6,8 +6,13 @@ import openturns.testing as ott
 ot.Log.Show(ot.Log.ALL)
 
 dim = 3
-model = ot.SymbolicFunction(['x0', 'x1', 'x2'],
-                            ['sin(x0)*cos(x1)*exp(x2)+x0*x1*x2', '(-1+x0*x0^2+x0^3)*(2+x1+2*x1^2+3*x1^5)*(15+2*x2+5*x2^7)'])
+model = ot.SymbolicFunction(
+    ["x0", "x1", "x2"],
+    [
+        "sin(x0)*cos(x1)*exp(x2)+x0*x1*x2",
+        "(-1+x0*x0^2+x0^3)*(2+x1+2*x1^2+3*x1^5)*(15+2*x2+5*x2^7)",
+    ],
+)
 coll = [ot.Uniform()] * dim
 
 
@@ -32,8 +37,14 @@ coll = [ot.Uniform()] * dim
 # ot.Uniform(9855.0, 12045.0)]
 
 distribution = ot.ComposedDistribution(coll)
-factoryCollection = [ot.OrthogonalUniVariateFunctionFamily(
-    ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.StandardDistributionPolynomialFactory(dist))) for dist in coll]
+factoryCollection = [
+    ot.OrthogonalUniVariateFunctionFamily(
+        ot.OrthogonalUniVariatePolynomialFunctionFactory(
+            ot.StandardDistributionPolynomialFactory(dist)
+        )
+    )
+    for dist in coll
+]
 
 
 functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
@@ -48,8 +59,7 @@ Y = model(X)
 # n-d
 nk = [10] * dim
 maxRank = 5
-algo = ot.TensorApproximationAlgorithm(
-    X, Y, distribution, functionFactory, nk, maxRank)
+algo = ot.TensorApproximationAlgorithm(X, Y, distribution, functionFactory, nk, maxRank)
 algo.run()
 result = algo.getResult()
 # print('residuals=', result.getResiduals())
@@ -57,6 +67,6 @@ ott.assert_almost_equal(result.getResiduals(), [0.000466643, 0.0])
 
 metamodel = result.getMetaModel()
 x = distribution.getMean()
-print('x=', ot.Point(x), 'f(x)=', model(x), 'f^(x)=', metamodel(x))
+print("x=", ot.Point(x), "f(x)=", model(x), "f^(x)=", metamodel(x))
 for i in range(model.getOutputDimension()):
-    print('rank[', i, ']=', result.getTensor(i).getRank())
+    print("rank[", i, "]=", result.getTensor(i).getRank())

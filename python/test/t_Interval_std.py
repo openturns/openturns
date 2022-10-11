@@ -42,14 +42,18 @@ p4 = ot.Point(2)
 p4[0] = 1.5
 p4[1] = 2.5
 interval2 = ot.Interval(p3, p4)
-print("intersection of ", repr(interval1), " and ", repr(
-    interval2), " equals ", repr(interval1.intersect(interval2)))
+print(
+    "intersection of ",
+    repr(interval1),
+    " and ",
+    repr(interval2),
+    " equals ",
+    repr(interval1.intersect(interval2)),
+)
 # Inside
 p5 = (p1 + p2) * 0.5
-print("is point", p5, "inside", repr(
-    interval1), "? ", p5 in interval1)
+print("is point", p5, "inside", repr(interval1), "? ", p5 in interval1)
 p6 = p2 * 2.0
-print("is point", p6, "inside", repr(
-    interval1), "? ", p6 in interval1)
-print('marginal(1)=', interval2.getMarginal(1))
-print('marginal(1,0)=', interval2.getMarginal([1, 0]))
+print("is point", p6, "inside", repr(interval1), "? ", p6 in interval1)
+print("marginal(1)=", interval2.getMarginal(1))
+print("marginal(1,0)=", interval2.getMarginal([1, 0]))

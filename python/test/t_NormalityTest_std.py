@@ -8,55 +8,55 @@ continuousDistributionCollection = ot.DistributionCollection()
 discreteDistributionCollection = ot.DistributionCollection()
 distributionCollection = ot.DistributionCollection()
 
-beta = ot.Beta(2., 1., 0., 1.)
+beta = ot.Beta(2.0, 1.0, 0.0, 1.0)
 distributionCollection.add(beta)
 continuousDistributionCollection.add(beta)
 
-gamma = ot.Gamma(1., 2., 3.)
+gamma = ot.Gamma(1.0, 2.0, 3.0)
 distributionCollection.add(gamma)
 continuousDistributionCollection.add(gamma)
 
-gumbel = ot.Gumbel(1., 2.)
+gumbel = ot.Gumbel(1.0, 2.0)
 distributionCollection.add(gumbel)
 continuousDistributionCollection.add(gumbel)
 
-lognormal = ot.LogNormal(1., 1., 2.)
+lognormal = ot.LogNormal(1.0, 1.0, 2.0)
 distributionCollection.add(lognormal)
 continuousDistributionCollection.add(lognormal)
 
-logistic = ot.Logistic(1., 1.)
+logistic = ot.Logistic(1.0, 1.0)
 distributionCollection.add(logistic)
 continuousDistributionCollection.add(logistic)
 
-normal = ot.Normal(1., 2.)
+normal = ot.Normal(1.0, 2.0)
 distributionCollection.add(normal)
 continuousDistributionCollection.add(normal)
 
-truncatednormal = ot.TruncatedNormal(1., 1., 0., 3.)
+truncatednormal = ot.TruncatedNormal(1.0, 1.0, 0.0, 3.0)
 distributionCollection.add(truncatednormal)
 continuousDistributionCollection.add(truncatednormal)
 
-student = ot.Student(10., 10., 1.)
+student = ot.Student(10.0, 10.0, 1.0)
 distributionCollection.add(student)
 continuousDistributionCollection.add(student)
 
-triangular = ot.Triangular(-1., 2., 4.)
+triangular = ot.Triangular(-1.0, 2.0, 4.0)
 distributionCollection.add(triangular)
 continuousDistributionCollection.add(triangular)
 
-uniform = ot.Uniform(1., 2.)
+uniform = ot.Uniform(1.0, 2.0)
 distributionCollection.add(uniform)
 continuousDistributionCollection.add(uniform)
 
-weibull = ot.WeibullMin(1., 1., 2.)
+weibull = ot.WeibullMin(1.0, 1.0, 2.0)
 distributionCollection.add(weibull)
 continuousDistributionCollection.add(weibull)
 
-geometric = ot.Geometric(.5)
+geometric = ot.Geometric(0.5)
 distributionCollection.add(geometric)
 discreteDistributionCollection.add(geometric)
 
-poisson = ot.Poisson(2.)
+poisson = ot.Poisson(2.0)
 distributionCollection.add(poisson)
 discreteDistributionCollection.add(poisson)
 
@@ -73,46 +73,42 @@ continuousDistributionNumber = continuousDistributionCollection.getSize()
 # Number of discrete distributions
 discreteDistributionNumber = discreteDistributionCollection.getSize()
 # Number of distributions
-distributionNumber = continuousDistributionNumber + \
-    discreteDistributionNumber
+distributionNumber = continuousDistributionNumber + discreteDistributionNumber
 
 # We create a collection of Sample of size "size" and of
 # dimension 1 (scalar values) : the collection has distributionNumber
 # Samples
-sampleCollection = [ot.Sample(size, 1)
-                    for i in range(distributionNumber)]
+sampleCollection = [ot.Sample(size, 1) for i in range(distributionNumber)]
 # We create a collection of Sample of size "size" and of
 # dimension 1 (scalar values) : the collection has
 # continuousDistributionNumber Samples
-continuousSampleCollection = [ot.Sample(size, 1)
-                              for i in range(continuousDistributionNumber)]
+continuousSampleCollection = [
+    ot.Sample(size, 1) for i in range(continuousDistributionNumber)
+]
 # We create a collection of Sample of size "size" and of
 # dimension 1 (scalar values) : the collection has
 # discreteDistributionNumber Samples
-discreteSampleCollection = [ot.Sample(size, 1)
-                            for i in range(discreteDistributionNumber)]
+discreteSampleCollection = [
+    ot.Sample(size, 1) for i in range(discreteDistributionNumber)
+]
 
 for i in range(continuousDistributionNumber):
-    continuousSampleCollection[
-        i] = continuousDistributionCollection[i].getSample(size)
-    continuousSampleCollection[i].setName(
-        continuousDistributionCollection[i].getName())
+    continuousSampleCollection[i] = continuousDistributionCollection[i].getSample(size)
+    continuousSampleCollection[i].setName(continuousDistributionCollection[i].getName())
     sampleCollection[i] = continuousSampleCollection[i]
 for i in range(discreteDistributionNumber):
-    discreteSampleCollection[
-        i] = discreteDistributionCollection[i].getSample(size)
-    discreteSampleCollection[i].setName(
-        discreteDistributionCollection[i].getName())
-    sampleCollection[
-        continuousDistributionNumber + i] = discreteSampleCollection[i]
+    discreteSampleCollection[i] = discreteDistributionCollection[i].getSample(size)
+    discreteSampleCollection[i].setName(discreteDistributionCollection[i].getName())
+    sampleCollection[continuousDistributionNumber + i] = discreteSampleCollection[i]
 
 # Test the normality of several samples using the Anderson Darling test
 andersonDarlingResult = ot.Point(distributionNumber)
 for i in range(distributionNumber):
     result = ot.NormalityTest.AndersonDarlingNormal(sampleCollection[i])
     andersonDarlingResult[i] = result.getBinaryQualityMeasure()
-    print("sample ", sampleCollection[
-          i].getName(), " result=", andersonDarlingResult[i])
+    print(
+        "sample ", sampleCollection[i].getName(), " result=", andersonDarlingResult[i]
+    )
 print("andersonDarlingResult=", repr(andersonDarlingResult))
 
 # Test the normality of several samples using the Cramer Von Mises test
@@ -120,6 +116,5 @@ cramerVonMisesResult = ot.Point(distributionNumber)
 for i in range(distributionNumber):
     result = ot.NormalityTest.CramerVonMisesNormal(sampleCollection[i])
     cramerVonMisesResult[i] = result.getBinaryQualityMeasure()
-    print("sample ", sampleCollection[
-          i].getName(), " result=", cramerVonMisesResult[i])
+    print("sample ", sampleCollection[i].getName(), " result=", cramerVonMisesResult[i])
 print("cramerVonMisesResult=", repr(cramerVonMisesResult))

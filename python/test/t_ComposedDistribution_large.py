@@ -14,8 +14,7 @@ R[0, 0] = 1.0
 # Create a collection of distribution
 dimension = 2000
 print("Creating a composed distribution of dimension ", dimension)
-aCollection = ot.DistributionCollection(
-    dimension, ot.Normal(meanPoint, sigma, R))
+aCollection = ot.DistributionCollection(dimension, ot.Normal(meanPoint, sigma, R))
 for i in range(dimension):
     aCollection[i] = ot.Normal(meanPoint, sigma, R)
 
@@ -33,7 +32,7 @@ print("Elliptical = ", distribution.isElliptical())
 print("Elliptical copula = ", distribution.hasEllipticalCopula())
 
 # Has this distribution an independent copula?
-print("Independent copula = ",  distribution.hasIndependentCopula())
+print("Independent copula = ", distribution.hasIndependentCopula())
 
 # Test for sampling
 size = 10

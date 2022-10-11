@@ -10,7 +10,7 @@ dimension = 1
 
 # Parameters of the distribution
 N = 101
-t0 = 0.
+t0 = 0.0
 dt = 0.1
 myTimeGrid = ot.RegularGrid(t0, dt, N)
 
@@ -24,7 +24,7 @@ myRealization = ot.TimeSeries(myTimeGrid, mySample)
 # Create the lambda parameter
 lambdaVector = ot.Point(dimension)
 for index in range(dimension):
-    lambdaVector[index] = (index + 2.) * 0.1
+    lambdaVector[index] = (index + 2.0) * 0.1
 
 myBoxCox = ot.BoxCoxTransform(lambdaVector)
 

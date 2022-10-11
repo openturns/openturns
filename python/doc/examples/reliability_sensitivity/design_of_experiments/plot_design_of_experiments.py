@@ -16,6 +16,7 @@ import openturns.viewer as otv
 import pylab as pl
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -61,7 +62,7 @@ fig.set_size_inches(10, 10)
 # ------------------------
 
 # %%
-distribution = ot.ComposedDistribution([ot.Uniform()]*3)
+distribution = ot.ComposedDistribution([ot.Uniform()] * 3)
 samplesize = 5
 experiment = ot.LHSExperiment(distribution, samplesize, False, False)
 sample = experiment.generate()
@@ -84,7 +85,7 @@ fig.set_size_inches(10, 10)
 # -------------
 
 # %%
-distribution = ot.ComposedDistribution([ot.Uniform()]*3)
+distribution = ot.ComposedDistribution([ot.Uniform()] * 3)
 samplesize = 10
 
 # %%
@@ -112,7 +113,7 @@ fig.set_size_inches(10, 10)
 
 # %%
 dim = 2
-distribution = ot.ComposedDistribution([ot.Uniform()]*dim)
+distribution = ot.ComposedDistribution([ot.Uniform()] * dim)
 bounds = distribution.getRange()
 
 # %%
@@ -120,8 +121,7 @@ sequence = ot.SobolSequence(dim)
 
 # %%
 samplesize = 2**5  # Sobol' sequences are in base 2
-experiment = ot.LowDiscrepancyExperiment(
-    sequence, distribution, samplesize, False)
+experiment = ot.LowDiscrepancyExperiment(sequence, distribution, samplesize, False)
 sample = experiment.generate()
 
 # %%
@@ -141,7 +141,7 @@ fig.set_size_inches(6, 6)
 
 # %%
 dim = 2
-distribution = ot.ComposedDistribution([ot.Uniform()]*dim)
+distribution = ot.ComposedDistribution([ot.Uniform()] * dim)
 bounds = distribution.getRange()
 
 # %%
@@ -150,8 +150,7 @@ sequence = ot.HaltonSequence(dim)
 # %%
 # Halton sequence uses prime numbers 2 and 3 in two dimensions.
 samplesize = 2**2 * 3**2
-experiment = ot.LowDiscrepancyExperiment(
-    sequence, distribution, samplesize, False)
+experiment = ot.LowDiscrepancyExperiment(sequence, distribution, samplesize, False)
 sample = experiment.generate()
 
 # %%

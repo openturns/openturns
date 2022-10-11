@@ -1,6 +1,7 @@
 import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
+
 ot.RandomGenerator.SetSeed(0)
 
 
@@ -12,7 +13,7 @@ def flooding(X):
     Zd = Zb + Hd
     Q, Ks, Zv, Zm = X
     alpha = (Zm - Zv) / L
-    H = (Q / (Ks * B * alpha**0.5))**0.6
+    H = (Q / (Ks * B * alpha**0.5)) ** 0.6
     Zc = H + Zv
     S = Zc - Zd
     return [S]
@@ -32,8 +33,7 @@ size = 5000
 computeSO = True
 inputDesign = ot.SobolIndicesExperiment(inputX, size, computeSO).generate()
 outputDesign = myFunction(inputDesign)
-sensitivityAnalysis = ot.MartinezSensitivityAlgorithm(
-    inputDesign, outputDesign, size)
+sensitivityAnalysis = ot.MartinezSensitivityAlgorithm(inputDesign, outputDesign, size)
 
 graph = sensitivityAnalysis.draw()
 

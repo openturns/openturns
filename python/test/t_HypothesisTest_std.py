@@ -32,10 +32,14 @@ try:
     # p-value threshold : probability of the H0 reject zone : 0.10
     # p-value : probability (test variable decision > test variable decision evaluated on the samples)
     # Test = True <=> p-value > p-value threshold
-    print("ChiSquared=", ot.HypothesisTest.ChiSquared(
-        discreteSample1, discreteSample2, 0.10))
-    print("ChiSquared2=", ot.HypothesisTest.ChiSquared(
-        discreteSample1, discreteSample1, 0.10))
+    print(
+        "ChiSquared=",
+        ot.HypothesisTest.ChiSquared(discreteSample1, discreteSample2, 0.10),
+    )
+    print(
+        "ChiSquared2=",
+        ot.HypothesisTest.ChiSquared(discreteSample1, discreteSample1, 0.10),
+    )
 
     # Pearson Test : test if two gaussian samples are independent (based on the evaluation of the linear correlation coefficient)
     # H0 : independent samples (linear correlation coefficient = 0)
@@ -49,8 +53,10 @@ try:
     sample1 = ot.Normal().getSample(20)
     sample2 = ot.Normal(0.1, 1.1).getSample(30)
     resultTwoSamplesKolmogorov = ot.HypothesisTest.TwoSamplesKolmogorov(
-        sample1, sample2)
+        sample1, sample2
+    )
     print(resultTwoSamplesKolmogorov)
 except:
     import sys
+
     print("t_HypothesisTest_std.py", sys.exc_info()[0], sys.exc_info()[1])

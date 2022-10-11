@@ -10,6 +10,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -27,10 +28,11 @@ def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blu
     for r in all_r:
         equation += "+" + str(r) + "^s"
     dim = len(f_i)
-    s = ot.Brent().solve(ot.SymbolicFunction("s", equation),
-                         0.0, 0.0, -m.log(dim)/m.log(max(all_r)))
+    s = ot.Brent().solve(
+        ot.SymbolicFunction("s", equation), 0.0, 0.0, -m.log(dim) / m.log(max(all_r))
+    )
     # Add a small perturbation to sample even the degenerated transforms
-    probabilities = [r**s+1e-2 for r in all_r]
+    probabilities = [r**s + 1e-2 for r in all_r]
     # Build the sampling distribution
     support = [[i] for i in range(dim)]
     choice = ot.UserDefined(support, probabilities)
@@ -38,7 +40,7 @@ def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blu
     points = ot.Sample(0, 2)
     # Convert the f_i into LinearEvaluation to benefit from the evaluation over
     # a Sample
-    phi_i = [ot.LinearEvaluation([0.0]*2, f[0], f[1]) for f in f_i]
+    phi_i = [ot.LinearEvaluation([0.0] * 2, f[0], f[1]) for f in f_i]
     # Burning phase
     for i in range(skip):
         index = int(round(choice.getRealization()[0]))
@@ -68,26 +70,38 @@ def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blu
 # Spiral
 rho1 = 0.9
 theta1 = 137.5 * m.pi / 180.0
-f1 = [[0.0]*2, ot.SquareMatrix(2, [rho1 * m.cos(theta1), -rho1 * m.sin(theta1),
-                                   rho1 * m.sin(theta1),  rho1 * m.cos(theta1)])]
+f1 = [
+    [0.0] * 2,
+    ot.SquareMatrix(
+        2,
+        [
+            rho1 * m.cos(theta1),
+            -rho1 * m.sin(theta1),
+            rho1 * m.sin(theta1),
+            rho1 * m.cos(theta1),
+        ],
+    ),
+]
 
 rho2 = 0.15
 f2 = [[1.0, 0.0], rho2 * ot.IdentityMatrix(2)]
 f_i = [f1, f2]
-graph, s = drawIFS(f_i, skip=100, iterations=100000,
-                   batch_size=1, name="Spiral", color="blue")
+graph, s = drawIFS(
+    f_i, skip=100, iterations=100000, batch_size=1, name="Spiral", color="blue"
+)
 print("Box counting dimension=%.3f" % s)
 view = viewer.View(graph)
 
 # %%
 # Fern
-f1 = [[0.0]*2, ot.SquareMatrix(2, [0.0, 0.0, 0.0, 0.16])]
+f1 = [[0.0] * 2, ot.SquareMatrix(2, [0.0, 0.0, 0.0, 0.16])]
 f2 = [[0.0, 1.6], ot.SquareMatrix(2, [0.85, 0.04, -0.04, 0.85])]
 f3 = [[0.0, 1.6], ot.SquareMatrix(2, [0.2, -0.26, 0.23, 0.22])]
 f4 = [[0.0, 0.44], ot.SquareMatrix(2, [-0.15, 0.28, 0.26, 0.24])]
 f_i = [f1, f2, f3, f4]
-graph, s = drawIFS(f_i, skip=100, iterations=100000,
-                   batch_size=1, name="Fern", color="green")
+graph, s = drawIFS(
+    f_i, skip=100, iterations=100000, batch_size=1, name="Fern", color="green"
+)
 print("Box counting dimension=%.3f" % s)
 view = viewer.View(graph)
 
@@ -96,8 +110,9 @@ view = viewer.View(graph)
 f1 = [[0.0, 0.0], ot.SquareMatrix(2, [0.5, -0.5, 0.5, 0.5])]
 f2 = [[1.0, 0.0], ot.SquareMatrix(2, [-0.5, -0.5, 0.5, -0.5])]
 f_i = [f1, f2]
-graph, s = drawIFS(f_i, skip=100, iterations=100000,
-                   batch_size=1, name="Dragon", color="red")
+graph, s = drawIFS(
+    f_i, skip=100, iterations=100000, batch_size=1, name="Dragon", color="red"
+)
 print("Box counting dimension=%.3f" % s)
 view = viewer.View(graph)
 
@@ -105,10 +120,16 @@ view = viewer.View(graph)
 # Sierpinski triangle
 f1 = [[0.0, 0.0], ot.SquareMatrix(2, [0.5, 0.0, 0.0, 0.5])]
 f2 = [[0.5, 0.0], ot.SquareMatrix(2, [0.5, 0.0, 0.0, 0.5])]
-f3 = [[0.25, m.sqrt(3.0)/4.0], ot.SquareMatrix(2, [0.5, 0.0, 0.0, 0.5])]
+f3 = [[0.25, m.sqrt(3.0) / 4.0], ot.SquareMatrix(2, [0.5, 0.0, 0.0, 0.5])]
 f_i = [f1, f2, f3]
-graph, s = drawIFS(f_i, skip=100, iterations=100000, batch_size=1,
-                   name="Sierpinski's triangle", color="magenta")
+graph, s = drawIFS(
+    f_i,
+    skip=100,
+    iterations=100000,
+    batch_size=1,
+    name="Sierpinski's triangle",
+    color="magenta",
+)
 print("Box counting dimension=%.3f" % s)
 view = viewer.View(graph)
 plt.show()

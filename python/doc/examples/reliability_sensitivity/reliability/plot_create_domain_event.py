@@ -27,7 +27,7 @@ distX = ot.Normal(dim)
 #    f : (x_1, x_2) \mapsto (x_1 + x_2, 2x_1)
 #
 #
-f = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2', '2*x1'])
+f = ot.SymbolicFunction(["x1", "x2"], ["x1+x2", "2*x1"])
 
 
 # %%
@@ -67,16 +67,16 @@ event = ot.DomainEvent(vecY, domain)
 # We  represent the first marginal of `vecY`.
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 7)
 graphModel0 = f.draw(0, 1, 0, [0.0, 0.0], [-5.0, -5.0], [5.0, 5.0])
-graphModel0.setXTitle(r'$x_1$')
-graphModel0.setYTitle(r'$x_2$')
-graphModel0.setTitle(r'Isolines of the model : $Y = f(X)$, first marginal')
+graphModel0.setXTitle(r"$x_1$")
+graphModel0.setYTitle(r"$x_2$")
+graphModel0.setTitle(r"Isolines of the model : $Y = f(X)$, first marginal")
 
 # %%
 # We represent the second marginal of `vecY`.
 graphModel1 = f.draw(0, 1, 1, [0.0, 0.0], [-5.0, -5.0], [5.0, 5.0])
-graphModel1.setXTitle(r'$x_1$')
-graphModel1.setYTitle(r'$x_2$')
-graphModel1.setTitle(r'Isolines of the model : $Y = f(X)$, second marginal')
+graphModel1.setXTitle(r"$x_1$")
+graphModel1.setYTitle(r"$x_2$")
+graphModel1.setTitle(r"Isolines of the model : $Y = f(X)$, second marginal")
 
 # %%
 # We shall now represent the curves delimiting the domain of interest :
@@ -128,15 +128,16 @@ data = [[0.0, 0.0], [0.5, -0.5], [0.5, 0.5], [0.0, 1.0], [0.0, 0.0]]
 # %%
 # We create a polygon from these vertices with the :class:`~openturns.Polygon`
 # class : that is our domain event.
-myGraph = ot.Graph('Domain event', r'$x_1$', r'$x_2$', True, '', 1.0)
+myGraph = ot.Graph("Domain event", r"$x_1$", r"$x_2$", True, "", 1.0)
 myPolygon = ot.Polygon(data)
-myPolygon.setColor('darkgray')
-myPolygon.setEdgeColor('darkgray')
+myPolygon.setColor("darkgray")
+myPolygon.setEdgeColor("darkgray")
 myGraph.add(myPolygon)
 
 # Some annotation
 texts = [
-    r'$\mathcal{D} = \{ \mathbf{x}=(x_1, x_2) \in \mathbb{R}^2 \; | \; x_1+x_2 \in [0,1] \; \mathrm{and} \; 2x_1 \in [0,1] \}$']
+    r"$\mathcal{D} = \{ \mathbf{x}=(x_1, x_2) \in \mathbb{R}^2 \; | \; x_1+x_2 \in [0,1] \; \mathrm{and} \; 2x_1 \in [0,1] \}$"
+]
 
 myText = ot.Text([0.25], [0.0], texts)
 myText.setTextSize(1)
@@ -159,9 +160,9 @@ view = otv.View(myGraph)
 # %%
 # We observe the integration domain :math:`{\mathcal{D}}` superimposed on the 2D-PDF.
 graphPDF = distX.drawPDF([-5.0, -5.0], [5.0, 5.0])
-graphPDF.setXTitle(r'$x_1$')
-graphPDF.setYTitle(r'$x_2$')
-graphPDF.setTitle(r'Isolines of the 2D-PDF')
+graphPDF.setXTitle(r"$x_1$")
+graphPDF.setYTitle(r"$x_2$")
+graphPDF.setTitle(r"Isolines of the 2D-PDF")
 graphPDF.add(myPolygon)
 view = otv.View(graphPDF)
 

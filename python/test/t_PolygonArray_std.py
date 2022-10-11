@@ -14,5 +14,5 @@ for i in range(size):
     vertices = generator.getSample(3)
     array.append(ot.Polygon(vertices, palette[i], palette[size - i - 1]))
 
-graph = ot.Graph('An array of polygons', 'x', 'y', True, '')
+graph = ot.Graph("An array of polygons", "x", "y", True, "")
 graph.add(ot.PolygonArray(array))

@@ -5,18 +5,12 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 
-ot.ResourceMap.SetAsUnsignedInteger(
-    "MeixnerDistribution-CDFIntegrationNodesNumber", 8)
-ot.ResourceMap.SetAsUnsignedInteger(
-    "MeixnerDistribution-CDFDiscretization", 100)
-ot.ResourceMap.SetAsScalar(
-    "MeixnerDistribution-MaximumAbsoluteError", 1.0e-6)
-ot.ResourceMap.SetAsScalar(
-    "MeixnerDistribution-MaximumRelativeError", 1.0e-6)
-ot.ResourceMap.SetAsScalar(
-    "MeixnerDistribution-MaximumConstraintError", 1.0e-6)
-ot.ResourceMap.SetAsScalar(
-    "MeixnerDistribution-MaximumObjectiveError", 1.0e-6)
+ot.ResourceMap.SetAsUnsignedInteger("MeixnerDistribution-CDFIntegrationNodesNumber", 8)
+ot.ResourceMap.SetAsUnsignedInteger("MeixnerDistribution-CDFDiscretization", 100)
+ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumAbsoluteError", 1.0e-6)
+ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumRelativeError", 1.0e-6)
+ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumConstraintError", 1.0e-6)
+ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumObjectiveError", 1.0e-6)
 # Instantiate one distribution object
 distribution = ot.MeixnerDistribution(1.5, 0.5, 2.5, -0.5)
 print("Distribution ", repr(distribution))
@@ -40,12 +34,13 @@ print("mean=", oneSample.computeMean())
 print("covariance=", oneSample.computeCovariance())
 size = 100
 for i in range(2):
-    if ot.FittingTest.Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure():
+    if ot.FittingTest.Kolmogorov(
+        distribution.getSample(size), distribution
+    ).getBinaryQualityMeasure():
         msg = "accepted"
     else:
         msg = rejected
-    print(
-        "Kolmogorov test for the generator, sample size=", size, " is ", msg)
+    print("Kolmogorov test for the generator, sample size=", size, " is ", msg)
     size *= 10
 
 # Define a point
@@ -58,8 +53,16 @@ print("log pdf=%.6f" % LPDF)
 eps = 1.0e-5
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
-print("pdf (FD)=%.6f" % ((distribution.computeCDF(point + ot.Point(1, eps)) -
-                          distribution.computeCDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
+print(
+    "pdf (FD)=%.6f"
+    % (
+        (
+            distribution.computeCDF(point + ot.Point(1, eps))
+            - distribution.computeCDF(point + ot.Point(1, -eps))
+        )
+        / (2.0 * eps)
+    )
+)
 CDF = distribution.computeCDF(point)
 print("cdf=%.6f" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
@@ -74,29 +77,36 @@ print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
 # Get 95% survival function
 inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      distribution.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f"
+    % distribution.computeSurvivalFunction(inverseSurvival)
+)
 print("entropy=%.6f" % distribution.computeEntropy())
 
 # Confidence regions
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
-    0.95)
+    0.95
+)
 print("Minimum volume interval=", interval)
 print("threshold=", ot.Point(1, threshold))
-levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
-    0.95)
+levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
 print("beta=", ot.Point(1, beta))
 interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)
+    0.95
+)
 print("Bilateral confidence interval=", interval)
 print("beta=", ot.Point(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, False)
+(
+    interval,
+    beta,
+) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
 print("Unilateral confidence interval (lower tail)=", interval)
 print("beta=", ot.Point(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, True)
+(
+    interval,
+    beta,
+) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
 print("Unilateral confidence interval (upper tail)=", interval)
 print("beta=", ot.Point(1, beta))
 
@@ -123,4 +133,3 @@ skewness = distribution.getSkewness()
 print("skewness=", skewness)
 kurtosis = distribution.getKurtosis()
 print("kurtosis=", kurtosis)
-

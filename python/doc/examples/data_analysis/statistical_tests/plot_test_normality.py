@@ -14,6 +14,7 @@ Test Normality
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -56,24 +57,36 @@ sample2 = ot.Gumbel().getSample(200)
 
 # %%
 test_result = ot.NormalityTest.AndersonDarlingNormal(sample1)
-print('Component is normal?', test_result.getBinaryQualityMeasure(),
-      'p-value=%.6g' % test_result.getPValue(),
-      'threshold=%.6g' % test_result.getThreshold())
+print(
+    "Component is normal?",
+    test_result.getBinaryQualityMeasure(),
+    "p-value=%.6g" % test_result.getPValue(),
+    "threshold=%.6g" % test_result.getThreshold(),
+)
 
 # %%
 test_result = ot.NormalityTest.AndersonDarlingNormal(sample2)
-print('Component is normal?', test_result.getBinaryQualityMeasure(),
-      'p-value=%.6g' % test_result.getPValue(),
-      'threshold=%.6g' % test_result.getThreshold())
+print(
+    "Component is normal?",
+    test_result.getBinaryQualityMeasure(),
+    "p-value=%.6g" % test_result.getPValue(),
+    "threshold=%.6g" % test_result.getThreshold(),
+)
 
 # %%
 test_result = ot.NormalityTest.CramerVonMisesNormal(sample1)
-print('Component is normal?', test_result.getBinaryQualityMeasure(),
-      'p-value=%.6g' % test_result.getPValue(),
-      'threshold=%.6g' % test_result.getThreshold())
+print(
+    "Component is normal?",
+    test_result.getBinaryQualityMeasure(),
+    "p-value=%.6g" % test_result.getPValue(),
+    "threshold=%.6g" % test_result.getThreshold(),
+)
 
 # %%
 test_result = ot.NormalityTest.CramerVonMisesNormal(sample2)
-print('Component is normal?', test_result.getBinaryQualityMeasure(),
-      'p-value=%.6g' % test_result.getPValue(),
-      'threshold=%.6g' % test_result.getThreshold())
+print(
+    "Component is normal?",
+    test_result.getBinaryQualityMeasure(),
+    "p-value=%.6g" % test_result.getPValue(),
+    "threshold=%.6g" % test_result.getThreshold(),
+)

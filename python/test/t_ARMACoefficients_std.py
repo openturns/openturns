@@ -9,13 +9,13 @@ ot.TESTPREAMBLE()
 dimension = 2
 squareMatrix1 = ot.SquareMatrix(dimension)
 
-squareMatrix1[0, 0] = 1.
-squareMatrix1[1, 0] = 2.
-squareMatrix1[0, 1] = 3.
-squareMatrix1[1, 1] = 4.
+squareMatrix1[0, 0] = 1.0
+squareMatrix1[1, 0] = 2.0
+squareMatrix1[0, 1] = 3.0
+squareMatrix1[1, 1] = 4.0
 
 # Second matrix to add to the ARMACoefficients
-s = 3.
+s = 3.0
 squareMatrix2 = squareMatrix1 * s
 
 # Second matrix to add to the ARMACoefficients
@@ -54,10 +54,10 @@ print("coefficients2 = ", repr(coefficients2))
 
 # 1D case
 point = ot.Point(dimension * dimension, 0.0)
-point[0] = 1.
-point[1] = 2.
-point[2] = 3.
-point[3] = 4.
+point[0] = 1.0
+point[1] = 2.0
+point[2] = 3.0
+point[3] = 4.0
 
 # ARMACoefficients Point constructor
 coefficients3 = ot.ARMACoefficients(point)

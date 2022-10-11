@@ -2,6 +2,7 @@
 
 import openturns as ot
 
+
 def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
@@ -11,9 +12,9 @@ def printPoint(point, digits):
         else:
             sep = ","
         if abs(point[i]) < eps:
-            oss += sep + '%.6f' % abs(point[i])
+            oss += sep + "%.6f" % abs(point[i])
         else:
-            oss += sep + '%.6f' % point[i]
+            oss += sep + "%.6f" % point[i]
         sep = ","
     oss += "]"
     return oss
@@ -88,22 +89,19 @@ myAlgo.run()
 # Stream out the result
 result = ot.FORMResult(myAlgo.getResult())
 digits = 5
-print("importance factors=", printPoint(
-    result.getImportanceFactors(), digits))
+print("importance factors=", printPoint(result.getImportanceFactors(), digits))
 
 # Graph 1 : Importance Factors graph
 importanceFactorsGraph = result.drawImportanceFactors()
 
 # Graph 2 : Hasofer Reliability Index Sensitivity Graphs graph
-reliabilityIndexSensitivityGraphs = result.drawHasoferReliabilityIndexSensitivity(
-)
+reliabilityIndexSensitivityGraphs = result.drawHasoferReliabilityIndexSensitivity()
 graph2a = reliabilityIndexSensitivityGraphs[0]
 
 graph2b = reliabilityIndexSensitivityGraphs[1]
 
 # Graph 3 : FORM Event Probability Sensitivity Graphs graph
-eventProbabilitySensitivityGraphs = result.drawEventProbabilitySensitivity(
-)
+eventProbabilitySensitivityGraphs = result.drawEventProbabilitySensitivity()
 graph3a = eventProbabilitySensitivityGraphs[0]
 
 graph3b = eventProbabilitySensitivityGraphs[1]

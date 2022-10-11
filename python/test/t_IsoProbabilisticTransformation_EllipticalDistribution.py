@@ -13,10 +13,9 @@ def cleanSymmetricTensor(inSymmetricTensor):
     for i in range(rowDim):
         for j in range(colDim):
             for k in range(sheetDim):
-                if (abs(inSymmetricTensor[i, j, k]) < 1.e-6):
+                if abs(inSymmetricTensor[i, j, k]) < 1.0e-6:
                     inSymmetricTensor[i, j, k] = 0.0
     return inSymmetricTensor
-
 
 
 # Instantiate one distribution object
@@ -42,45 +41,87 @@ print("sample covariance=", repr(sample.computeCovariance()))
 transform = distribution.getIsoProbabilisticTransformation()
 print("isoprobabilistic transformation=", repr(transform))
 transformedSample = transform(sample)
-print("transformed sample first=", repr(
-    transformedSample[0]), " last=", repr(transformedSample[size - 1]))
+print(
+    "transformed sample first=",
+    repr(transformedSample[0]),
+    " last=",
+    repr(transformedSample[size - 1]),
+)
 print("transformed sample mean=", repr(transformedSample.computeMean()))
-print("transformed sample covariance=", repr(
-    transformedSample.computeCovariance()))
+print("transformed sample covariance=", repr(transformedSample.computeCovariance()))
 
 # Test for evaluation
 inverseTransform = distribution.getInverseIsoProbabilisticTransformation()
 print("inverse isoprobabilistic transformation=", repr(inverseTransform))
 transformedBackSample = inverseTransform(transformedSample)
-print("transformed back sample first=", repr(
-    transformedBackSample[0]), " last=", repr(transformedBackSample[size - 1]))
-print("transformed back sample mean=", repr(
-    transformedBackSample.computeMean()))
-print("transformed back sample covariance=", repr(
-    transformedBackSample.computeCovariance()))
+print(
+    "transformed back sample first=",
+    repr(transformedBackSample[0]),
+    " last=",
+    repr(transformedBackSample[size - 1]),
+)
+print("transformed back sample mean=", repr(transformedBackSample.computeMean()))
+print(
+    "transformed back sample covariance=",
+    repr(transformedBackSample.computeCovariance()),
+)
 point = ot.Point(dim, 1.0)
 print("point=", repr(point))
 transformedPoint = transform(point)
 print("transform value at point        =", repr(transformedPoint))
-print("transform gradient at point     =", repr(
-    transform.gradient(point).clean(1e-6)))
-print("transform gradient at point (FD)=", repr(ot.CenteredFiniteDifferenceGradient(
-    1.0e-5, transform.getEvaluation()).gradient(point).clean(1e-6)))
-print("transform hessian at point      =", repr(
-    cleanSymmetricTensor(transform.hessian(point))))
-print("transform hessian at point (FD) =", repr(cleanSymmetricTensor(
-    ot.CenteredFiniteDifferenceHessian(1.0e-4, transform.getEvaluation()).hessian(point))))
-print("inverse transform value at transformed point        =",
-      repr(inverseTransform(transformedPoint)))
-print("inverse transform gradient at transformed point (FD)=", repr(
-    inverseTransform.gradient(transformedPoint).clean(1e-6)))
-print("inverse transform gradient at transformed point     =", repr(ot.CenteredFiniteDifferenceGradient(
-    1.0e-5, inverseTransform.getEvaluation()).gradient(transformedPoint).clean(1e-6)))
-print("inverse transform hessian at transformed point      =", repr(
-    cleanSymmetricTensor(inverseTransform.hessian(transformedPoint))))
-print("inverse transform hessian at transformed point (FD) =", repr(cleanSymmetricTensor(
-    ot.CenteredFiniteDifferenceHessian(1.0e-4, inverseTransform.getEvaluation()).hessian(transformedPoint))))
+print("transform gradient at point     =", repr(transform.gradient(point).clean(1e-6)))
+print(
+    "transform gradient at point (FD)=",
+    repr(
+        ot.CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluation())
+        .gradient(point)
+        .clean(1e-6)
+    ),
+)
+print(
+    "transform hessian at point      =",
+    repr(cleanSymmetricTensor(transform.hessian(point))),
+)
+print(
+    "transform hessian at point (FD) =",
+    repr(
+        cleanSymmetricTensor(
+            ot.CenteredFiniteDifferenceHessian(
+                1.0e-4, transform.getEvaluation()
+            ).hessian(point)
+        )
+    ),
+)
+print(
+    "inverse transform value at transformed point        =",
+    repr(inverseTransform(transformedPoint)),
+)
+print(
+    "inverse transform gradient at transformed point (FD)=",
+    repr(inverseTransform.gradient(transformedPoint).clean(1e-6)),
+)
+print(
+    "inverse transform gradient at transformed point     =",
+    repr(
+        ot.CenteredFiniteDifferenceGradient(1.0e-5, inverseTransform.getEvaluation())
+        .gradient(transformedPoint)
+        .clean(1e-6)
+    ),
+)
+print(
+    "inverse transform hessian at transformed point      =",
+    repr(cleanSymmetricTensor(inverseTransform.hessian(transformedPoint))),
+)
+print(
+    "inverse transform hessian at transformed point (FD) =",
+    repr(
+        cleanSymmetricTensor(
+            ot.CenteredFiniteDifferenceHessian(
+                1.0e-4, inverseTransform.getEvaluation()
+            ).hessian(transformedPoint)
+        )
+    ),
+)
 
 # Test for parameters
-print("parameters gradient at point=", repr(
-    transform.parameterGradient(point)))
+print("parameters gradient at point=", repr(transform.parameterGradient(point)))

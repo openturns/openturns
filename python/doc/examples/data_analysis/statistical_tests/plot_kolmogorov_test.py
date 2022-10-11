@@ -7,6 +7,7 @@ Use the Kolmogorov/Lilliefors test
 
 # %%
 import openturns as ot
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -24,8 +25,7 @@ sample = distribution.getSample(50)
 
 # %%
 result = ot.FittingTest.Kolmogorov(sample, distribution, 0.01)
-print('Conclusion=', result.getBinaryQualityMeasure(),
-      'P-value=', result.getPValue())
+print("Conclusion=", result.getBinaryQualityMeasure(), "P-value=", result.getPValue())
 
 # %%
 # Test succeeded ?
@@ -58,16 +58,14 @@ result.getStatistic()
 # In the case where the parameters of the distribution are estimated from the sample, we must use the `Lilliefors` static method and the distribution factory to be tested.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger(
-    "FittingTest-LillieforsMaximumSamplingSize", 1000)
+ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 1000)
 
 # %%
 distributionFactory = ot.NormalFactory()
 
 # %%
 dist, result = ot.FittingTest.Lilliefors(sample, distributionFactory, 0.01)
-print('Conclusion=', result.getBinaryQualityMeasure(),
-      'P-value=', result.getPValue())
+print("Conclusion=", result.getBinaryQualityMeasure(), "P-value=", result.getPValue())
 
 # %%
 dist

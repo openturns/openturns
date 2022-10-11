@@ -47,8 +47,8 @@ QuantileMatchingFactory::QuantileMatchingFactory()
 
 /* Parameters constructor */
 QuantileMatchingFactory::QuantileMatchingFactory(const Distribution & distribution,
-                                                 const Point & probabilities,
-                                                 const Interval & optimizationBounds)
+    const Point & probabilities,
+    const Interval & optimizationBounds)
   : DistributionFactoryImplementation()
   , distribution_(distribution)
   , probabilities_(probabilities)
@@ -108,14 +108,14 @@ class QuantileMatchingEvaluation : public EvaluationImplementation
 {
 public:
   QuantileMatchingEvaluation(const Point & refQuantiles,
-                            const Distribution & distribution,
+                             const Distribution & distribution,
                              const Point & probabilities,
-                            const Point & knownParameterValues,
-                            const Indices & knownParameterIndices)
+                             const Point & knownParameterValues,
+                             const Indices & knownParameterIndices)
     : EvaluationImplementation()
     , refQuantiles_(refQuantiles)
     , distribution_(distribution)
-   , probabilities_(probabilities)
+    , probabilities_(probabilities)
     , knownParameterValues_(knownParameterValues)
     , knownParameterIndices_(knownParameterIndices)
   {
@@ -186,7 +186,7 @@ public:
     // compute deltas between quantiles
     Point result(parameterDimension);
     for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
-     result[j] = refQuantiles_[j] - distribution.computeQuantile(probabilities_[j])[0];
+      result[j] = refQuantiles_[j] - distribution.computeQuantile(probabilities_[j])[0];
     return result;
   }
 
@@ -234,7 +234,7 @@ Distribution QuantileMatchingFactory::build(const Sample & sample) const
 
   Point refQuantiles(effectiveParameterSize);
   for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
-   refQuantiles[j] = sample.computeQuantile(probabilities_[j])[0];
+    refQuantiles[j] = sample.computeQuantile(probabilities_[j])[0];
 
   Distribution result(buildFromQuantiles(refQuantiles));
   result.setDescription(sample.getDescription());
@@ -289,7 +289,7 @@ Distribution QuantileMatchingFactory::buildFromQuantiles(const Point & quantiles
   const UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
   for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
     effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
- 
+
   Distribution result(distribution_);
   result.setParameter(effectiveParameter);
   return result;
@@ -338,8 +338,8 @@ Point QuantileMatchingFactory::getKnownParameterValues() const
 void QuantileMatchingFactory::setProbabilities(const Point & probabilities)
 {
   const UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
-    if (probabilities_.getSize() != effectiveParameterSize)
-   throw InvalidArgumentException(HERE) << "Expected " << effectiveParameterSize << " probabilities";
+  if (probabilities_.getSize() != effectiveParameterSize)
+    throw InvalidArgumentException(HERE) << "Expected " << effectiveParameterSize << " probabilities";
   probabilities_ = probabilities;
 }
 

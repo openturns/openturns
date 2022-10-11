@@ -43,14 +43,14 @@ from openturns.viewer import View
 # Create the input random vector :math:`X`:
 
 # %%
-X = ot.RandomVector(ot.Normal([0.25]*2, [1]*2, ot.IdentityMatrix(2)))
+X = ot.RandomVector(ot.Normal([0.25] * 2, [1] * 2, ot.IdentityMatrix(2)))
 
 # %%
 # Create the function :math:`g`:
 
 # %%
-g = ot.SymbolicFunction(['x1', 'x2'], ['20-(x1-x2)^2-8*(x1+x2-4)^3'])
-print('function g: ', g)
+g = ot.SymbolicFunction(["x1", "x2"], ["20-(x1-x2)^2-8*(x1+x2-4)^3"])
+print("function g: ", g)
 
 # %%
 # In order to be able to get the subset samples used in the algorithm, it is necessary to transform the *SymbolicFunction* into a *MemoizeFunction*:
@@ -93,30 +93,34 @@ algo.run()
 # %%
 result = algo.getResult()
 proba = result.getProbabilityEstimate()
-print('Proba Subset = ',  proba)
-print('Current coefficient of variation = ',
-      result.getCoefficientOfVariation())
+print("Proba Subset = ", proba)
+print("Current coefficient of variation = ", result.getCoefficientOfVariation())
 
 # %%
 # The length of the confidence interval of level :math:`95\%` is:
 
 # %%
 length95 = result.getConfidenceLength()
-print('Confidence length (0.95) = ', result.getConfidenceLength())
+print("Confidence length (0.95) = ", result.getConfidenceLength())
 
 # %%
 # which enables to build the confidence interval:
 
 # %%
-print('Confidence interval (0.95) = [', proba -
-      length95/2, ', ', proba + length95/2, ']')
+print(
+    "Confidence interval (0.95) = [",
+    proba - length95 / 2,
+    ", ",
+    proba + length95 / 2,
+    "]",
+)
 
 # %%
 # You can also get the succesive thresholds used by the algorithm:
 
 # %%
 levels = algo.getThresholdPerStep()
-print('Levels of g = ', levels)
+print("Levels of g = ", levels)
 
 # %%
 # Draw the subset samples used by the algorithm
@@ -129,27 +133,27 @@ print('Levels of g = ', levels)
 # %%
 inputSampleSubset = g.getInputHistory()
 nTotal = inputSampleSubset.getSize()
-print('Number of evaluations of g = ', nTotal)
+print("Number of evaluations of g = ", nTotal)
 
 # %%
 # Within each step of the algorithm, a sample of size :math:`N` is created, where:
 
 # %%
-N = algo.getMaximumOuterSampling()*algo.getBlockSize()
-print('Size of each subset = ', N)
+N = algo.getMaximumOuterSampling() * algo.getBlockSize()
+print("Size of each subset = ", N)
 
 # %%
 # You can get the number :math:`N_s` of steps with:
 
 # %%
 Ns = algo.getStepsNumber()
-print('Number of steps= ', Ns)
+print("Number of steps= ", Ns)
 
 # %%
 # and you can verify that :math:`N_s` is equal to :math:`\frac{nTotal}{N}`:
 
 # %%
-print('nTotal / N = ', int(nTotal / N))
+print("nTotal / N = ", int(nTotal / N))
 
 # %%
 # Now, we can split the initial sample into subset samples of size :math:`N_s`:
@@ -157,7 +161,7 @@ print('nTotal / N = ', int(nTotal / N))
 # %%
 list_subSamples = list()
 for i in range(Ns):
-    list_subSamples.append(inputSampleSubset[i*N:i*N + N])
+    list_subSamples.append(inputSampleSubset[i * N : i * N + N])
 
 # %%
 # The following graph draws each subset sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
@@ -166,10 +170,10 @@ for i in range(Ns):
 graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
-graph.setTitle('Subset sampling: samples')
-graph.setXTitle(r'$x_1$')
-graph.setYTitle(r'$x_2$')
-graph.setLegendPosition('bottomleft')
+graph.setTitle("Subset sampling: samples")
+graph.setXTitle(r"$x_1$")
+graph.setYTitle(r"$x_2$")
+graph.setLegendPosition("bottomleft")
 
 # %%
 # Add all the subset samples:
@@ -186,12 +190,12 @@ graph.setColors(col)
 # Add the frontiers :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
-gIsoLines = g.draw([-3]*2, [5]*2, [128]*2)
+gIsoLines = g.draw([-3] * 2, [5] * 2, [128] * 2)
 dr = gIsoLines.getDrawable(0)
 for i in range(levels.getSize()):
     dr.setLevels([levels[i]])
-    dr.setLineStyle('solid')
-    dr.setLegend(r'$g(X) = $' + str(round(levels[i], 2)))
+    dr.setLineStyle("solid")
+    dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
     dr.setLineWidth(3)
     dr.setColor(col[i])
     graph.add(dr)
@@ -212,16 +216,16 @@ graph.setGrid(True)
 dr = gIsoLines.getDrawable(0)
 for i in range(levels.getSize()):
     dr.setLevels([levels[i]])
-    dr.setLineStyle('solid')
-    dr.setLegend(r'$g(X) = $' + str(round(levels[i], 2)))
+    dr.setLineStyle("solid")
+    dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
     dr.setLineWidth(3)
     graph.add(dr)
 
 graph.setColors(col)
-graph.setLegendPosition('bottomleft')
-graph.setTitle('Subset sampling: thresholds')
-graph.setXTitle(r'$x_1$')
-graph.setYTitle(r'$x_2$')
+graph.setLegendPosition("bottomleft")
+graph.setTitle("Subset sampling: thresholds")
+graph.setXTitle(r"$x_1$")
+graph.setYTitle(r"$x_2$")
 
 View(graph)
 
@@ -233,13 +237,13 @@ View(graph)
 # %%
 inputEventSample = algo.getEventInputSample()
 outputEventSample = algo.getEventOutputSample()
-print('Number of event realizations = ', inputEventSample.getSize())
+print("Number of event realizations = ", inputEventSample.getSize())
 
 # %%
 # Here we have to avoid a bug of the version 1.15 because *getEventInputSample()* gives the sample in the stadrad space: we have to push it backward to the physical space.
 
 # %%
-dist = ot.Normal([0.25]*2, [1]*2, ot.IdentityMatrix(2))
+dist = ot.Normal([0.25] * 2, [1] * 2, ot.IdentityMatrix(2))
 transformFunc = dist.getInverseIsoProbabilisticTransformation()
 inputEventSample = transformFunc(inputEventSample)
 
@@ -251,11 +255,11 @@ graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
 cloud = ot.Cloud(inputEventSample)
-cloud.setPointStyle('dot')
+cloud.setPointStyle("dot")
 graph.add(cloud)
-gIsoLines = g.draw([-3]*2, [5]*2, [1000]*2)
+gIsoLines = g.draw([-3] * 2, [5] * 2, [1000] * 2)
 dr = gIsoLines.getDrawable(0)
 dr.setLevels([0.0])
-dr.setColor('red')
+dr.setColor("red")
 graph.add(dr)
 View(graph)

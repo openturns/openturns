@@ -23,7 +23,8 @@ X = distX.getSample(size)
 
 # The Ishigami model
 modelIshigami = ot.SymbolicFunction(
-    ["X1", "X2", "X3"], ["sin(X1) + 5.0 * (sin(X2))^2 + 0.1 * X3^4 * sin(X1)"])
+    ["X1", "X2", "X3"], ["sin(X1) + 5.0 * (sin(X2))^2 + 0.1 * X3^4 * sin(X1)"]
+)
 
 # Apply model: Y = m(X)
 Y = modelIshigami(X)
@@ -53,12 +54,12 @@ estimatorType = ot.HSICUStat()
 
 # We define a distance function for the weights
 #  For the TSA, the critical domain is [5,+inf].
-interval = ot.Interval(5, float('inf'))
+interval = ot.Interval(5, float("inf"))
 g = ot.DistanceToDomainFunction(interval)
 
 stdDev = Y.computeStandardDeviation()[0]
 foo = ot.SymbolicFunction(["x", "s"], ["exp(-x/s)"])
-g2 = ot.ParametricFunction(foo, [1], [0.1*stdDev])
+g2 = ot.ParametricFunction(foo, [1], [0.1 * stdDev])
 
 # The filter function
 filterFunction = ot.ComposedFunction(g2, g)
@@ -66,7 +67,8 @@ filterFunction = ot.ComposedFunction(g2, g)
 
 # We eventually build the HSIC object!
 TSA = ot.HSICEstimatorTargetSensitivity(
-    covarianceModelCollection, X, Y, estimatorType, filterFunction)
+    covarianceModelCollection, X, Y, estimatorType, filterFunction
+)
 
 # We get the R2-HSIC
 R2HSIC = TSA.getR2HSICIndices()
@@ -92,9 +94,9 @@ ott.assert_almost_equal(pvaluesPerm, [0.00000000, 0.23376623, 0.26573427])
 squaredExponential = ot.SymbolicFunction("x", "exp(-0.1 * x^2)")
 alternateFilter = ot.ComposedFunction(squaredExponential, g)
 TSA.setFilterFunction(alternateFilter)
-ott.assert_almost_equal(TSA.getR2HSICIndices(), [
-                        0.263026, 0.0041902, 0.00309598])
-ott.assert_almost_equal(TSA.getHSICIndices(), [
-                        1.54349e-05, 2.45066e-07, 1.88477e-07], 1e-4, 0.0)
+ott.assert_almost_equal(TSA.getR2HSICIndices(), [0.263026, 0.0041902, 0.00309598])
+ott.assert_almost_equal(
+    TSA.getHSICIndices(), [1.54349e-05, 2.45066e-07, 1.88477e-07], 1e-4, 0.0
+)
 ott.assert_almost_equal(TSA.getPValuesPermutation(), [0.0, 0.264735, 0.279720])
 ott.assert_almost_equal(TSA.getPValuesAsymptotic(), [0.0, 0.270278, 0.288026])

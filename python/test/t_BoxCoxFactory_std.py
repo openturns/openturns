@@ -16,7 +16,8 @@ whiteNoise = ot.WhiteNoise(ot.Uniform(), timeGrid)
 
 # Composite process
 process = ot.CompositeProcess(
-    ot.ValueFunction(ot.SymbolicFunction("x", "x+2"), timeGrid), whiteNoise)
+    ot.ValueFunction(ot.SymbolicFunction("x", "x+2"), timeGrid), whiteNoise
+)
 # A realization of the process
 timeSeries = process.getRealization()
 sample = timeSeries.getValues()

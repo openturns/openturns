@@ -6,7 +6,7 @@ ot.TESTPREAMBLE()
 
 
 distribution = ot.Normal(4)
-distribution.setMean([5.0]*4)
+distribution.setMean([5.0] * 4)
 size = 16
 experiment = ot.LowDiscrepancyExperiment(ot.HaltonSequence(), distribution, size)
 print("experiment = ", experiment)
@@ -24,8 +24,7 @@ print("sample3 = ", experiment.generate())
 
 # Test sampling without reinitialization excepted when distribution
 # dimension changes
-experiment = ot.LowDiscrepancyExperiment(
-    ot.HaltonSequence(), distribution, size, False)
+experiment = ot.LowDiscrepancyExperiment(ot.HaltonSequence(), distribution, size, False)
 print("sample  = ", experiment.generate())
 # sample 2 != sample
 print("sample2 = ", experiment.generate())
@@ -44,7 +43,5 @@ R = ot.CorrelationMatrix(4)
 for i in range(1, 4):
     R[i - 1, i] = 0.5
 distribution.setCorrelation(R)
-experiment = ot.LowDiscrepancyExperiment(
-    ot.HaltonSequence(), distribution, size, False)
+experiment = ot.LowDiscrepancyExperiment(ot.HaltonSequence(), distribution, size, False)
 print("sample = ", experiment.generate())
-

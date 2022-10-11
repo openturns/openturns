@@ -7,17 +7,23 @@ ot.TESTPREAMBLE()
 
 try:
     ot.ResourceMap.SetAsUnsignedInteger(
-        "OptimizationAlgorithm-DefaultMaximumIterationNumber", 1000)
+        "OptimizationAlgorithm-DefaultMaximumIterationNumber", 1000
+    )
     ot.ResourceMap.SetAsUnsignedInteger(
-        "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000)
+        "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000
+    )
     ot.ResourceMap.SetAsScalar(
-        "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7)
+        "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7
+    )
     ot.ResourceMap.SetAsScalar(
-        "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7)
+        "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7
+    )
     ot.ResourceMap.SetAsScalar(
-        "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7)
+        "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7
+    )
     ot.ResourceMap.SetAsScalar(
-        "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-7)
+        "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-7
+    )
     ot.PlatformInfo.SetNumericalPrecision(2)
 
     # The 1D mesher
@@ -37,7 +43,8 @@ try:
     print("mesher2D=", mesher2D)
 
     function2D = ot.SymbolicFunction(
-        ["x0", "x1"], ["cos(x0 * x1)/(1 + 0.1 * (x0^2 + x1^2))"])
+        ["x0", "x1"], ["cos(x0 * x1)/(1 + 0.1 * (x0^2 + x1^2))"]
+    )
     levelSet2D = ot.LevelSet(function2D, ot.LessOrEqual(), level)
 
     # Manual bounding box
@@ -49,7 +56,8 @@ try:
     print("mesher3D=", mesher3D)
 
     function3D = ot.SymbolicFunction(
-        ["x0", "x1", "x2"], ["cos(x0 * x1 + x2)/(1 + 0.1*(x0^2 + x1^2 + x2^2))"])
+        ["x0", "x1", "x2"], ["cos(x0 * x1 + x2)/(1 + 0.1*(x0^2 + x1^2 + x2^2))"]
+    )
     levelSet3D = ot.LevelSet(function3D, ot.LessOrEqual(), level)
 
     # Manual bounding box
@@ -59,16 +67,20 @@ try:
     # Issue #1668
     f = ot.SymbolicFunction(["x", "y"], ["x^2+y^2"])
     levelset = ot.LevelSet(f, ot.Less(), 1.0)
-    mesh = ot.LevelSetMesher([16]*2).build(levelset,
-                                           ot.Interval([-1.5]*2, [1.5]*2))
+    mesh = ot.LevelSetMesher([16] * 2).build(
+        levelset, ot.Interval([-1.5] * 2, [1.5] * 2)
+    )
     gLess = mesh.draw()
     f = ot.SymbolicFunction(["x", "y"], ["-(x^2+y^2)"])
     levelset = ot.LevelSet(f, ot.Greater(), -1.0)
-    mesh = ot.LevelSetMesher([16]*2).build(levelset,
-                                           ot.Interval([-1.5]*2, [1.5]*2))
+    mesh = ot.LevelSetMesher([16] * 2).build(
+        levelset, ot.Interval([-1.5] * 2, [1.5] * 2)
+    )
     gGreater = mesh.draw()
-    ott.assert_almost_equal(gLess.getDrawable(
-        0).getData(), gGreater.getDrawable(0).getData(), 1e-4, 1e-4)
+    ott.assert_almost_equal(
+        gLess.getDrawable(0).getData(), gGreater.getDrawable(0).getData(), 1e-4, 1e-4
+    )
 except:
     import sys
+
     print("t_LevelSetMesher_std.py", sys.exc_info()[0], sys.exc_info()[1])

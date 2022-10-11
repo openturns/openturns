@@ -19,16 +19,21 @@ distribution = ot.Normal(meanPoint, sigma, R)
 # Test for sampling
 size = 1000
 oneSample = distribution.getSample(size)
-print("sample of size ",  size,  " first=",  repr(
-    oneSample[0]),  " last=",  repr(oneSample[oneSample.getSize() - 1]))
+print(
+    "sample of size ",
+    size,
+    " first=",
+    repr(oneSample[0]),
+    " last=",
+    repr(oneSample[oneSample.getSize() - 1]),
+)
 mean = oneSample.computeMean()
 print("mean error=%.6f" % ((mean - meanPoint).norm() / meanPoint.norm()))
 covariance = oneSample.computeCovariance()
 errorCovariance = 0.0
 for i in range(dim):
     for j in range(dim):
-        errorCovariance += abs(
-            covariance[i, j] - sigma[i] * sigma[j] * R[i, j])
+        errorCovariance += abs(covariance[i, j] - sigma[i] * sigma[j] * R[i, j])
 print("covariance error=%.6f" % (errorCovariance / (dim * dim)))
 
 # Define a point
@@ -37,8 +42,14 @@ zero = ot.Point(dim, 0.0)
 # Show PDF and CDF of zero point
 zeroPDF = distribution.computePDF(zero)
 zeroCDF = distribution.computeCDF(zero)
-print("Zero point = ", repr(zero), " pdf=%.6f" % zeroPDF, repr(zero), " cdf=%.6f" %
-      zeroCDF, " density generator=%.6f" % distribution.computeDensityGenerator(0.0))
+print(
+    "Zero point = ",
+    repr(zero),
+    " pdf=%.6f" % zeroPDF,
+    repr(zero),
+    " cdf=%.6f" % zeroCDF,
+    " density generator=%.6f" % distribution.computeDensityGenerator(0.0),
+)
 
 # Extract the marginals
 for i in range(dim):
@@ -72,15 +83,21 @@ print("Has independent copula? ", distribution.hasIndependentCopula())
 
 # Test for sampling
 oneSample = distribution.getSample(size // 10)
-print("sample of size ", size, " first=", repr(
-    oneSample[0]), " last=",  repr(oneSample[oneSample.getSize() - 1]))
+print(
+    "sample of size ",
+    size,
+    " first=",
+    repr(oneSample[0]),
+    " last=",
+    repr(oneSample[oneSample.getSize() - 1]),
+)
 mean = oneSample.computeMean()
 print("mean error=%.6f" % ((mean - meanPoint).norm() / meanPoint.norm()))
 covariance = oneSample.computeCovariance()
 errorCovariance = 0.0
 for i in range(dim):
     for j in range(dim):
-        if (i == j):
+        if i == j:
             temp = sigma[i] * sigma[j]
         else:
             temp = 0.0
@@ -93,5 +110,10 @@ zero = ot.Point(dim, 0.0)
 # Show PDF and CDF of zero point
 zeroPDF = distribution.computePDF(zero)
 zeroCDF = distribution.computeCDF(zero)
-print("Zero point= ", repr(zero), " pdf=%.6f" % zeroPDF, " cdf=%.6f" %
-      zeroCDF, " density generator=%.6f" % distribution.computeDensityGenerator(0.0))
+print(
+    "Zero point= ",
+    repr(zero),
+    " pdf=%.6f" % zeroPDF,
+    " cdf=%.6f" % zeroCDF,
+    " density generator=%.6f" % distribution.computeDensityGenerator(0.0),
+)

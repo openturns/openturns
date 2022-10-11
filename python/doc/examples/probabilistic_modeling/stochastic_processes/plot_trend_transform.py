@@ -34,28 +34,29 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define a bi dimensional mesh
 myIndices = [40, 20]
 myMesher = ot.IntervalMesher(myIndices)
-lowerBound = [0., 0.]
-upperBound = [2., 1.]
+lowerBound = [0.0, 0.0]
+upperBound = [2.0, 1.0]
 myInterval = ot.Interval(lowerBound, upperBound)
 myMesh = myMesher.build(myInterval)
 
 # Define a scalar temporal normal process on the mesh
 # this process is stationary
 amplitude = [1.0]
-scale = [0.01]*2
+scale = [0.01] * 2
 myCovModel = ot.ExponentialModel(scale, amplitude)
 myXProcess = ot.GaussianProcess(myCovModel, myMesh)
 
 # Create a trend function
 # fTrend : R^2 --> R
 #          (t,s) --> 1+2t+2s
-fTrend = ot.SymbolicFunction(['t', 's'], ['1+2*t+2*s'])
+fTrend = ot.SymbolicFunction(["t", "s"], ["1+2*t+2*s"])
 fTemp = ot.TrendTransform(fTrend, myMesh)
 
 # Add the trend to the initial process
@@ -77,8 +78,12 @@ myFittingAlgorithm_2 = ot.KFold()
 
 # Define the basis function
 # For example composed of 5 functions
-myFunctionBasis = list(map(lambda fst: ot.SymbolicFunction(
-    ['t', 's'], [fst]), ['1', 't', 's', 't^2', 's^2']))
+myFunctionBasis = list(
+    map(
+        lambda fst: ot.SymbolicFunction(["t", "s"], [fst]),
+        ["1", "t", "s", "t^2", "s^2"],
+    )
+)
 
 # Define the trend function factory algorithm
 myTrendFactory = ot.TrendFactory(myBasisSequenceFactory, myFittingAlgorithm)
@@ -87,7 +92,7 @@ myTrendFactory = ot.TrendFactory(myBasisSequenceFactory, myFittingAlgorithm)
 myTrendTransform = myTrendFactory.build(myYField, ot.Basis(myFunctionBasis))
 
 # Check the estimated trend function
-print('Trend function = ', myTrendTransform)
+print("Trend function = ", myTrendTransform)
 
 # %%
 # CASE 2 : we impose the trend (or its inverse)
@@ -95,18 +100,18 @@ print('Trend function = ', myTrendTransform)
 # The function g computes the trend : R^2 -> R
 # g :      R^2 --> R
 #          (t,s) --> 1+2t+2s
-g = ot.SymbolicFunction(['t', 's'], ['1+2*t+2*s'])
+g = ot.SymbolicFunction(["t", "s"], ["1+2*t+2*s"])
 gTemp = ot.TrendTransform(g, myMesh)
 
 # Get the inverse trend transformation
 # from the trend transform already defined
 myInverseTrendTransform = myTrendTransform.getInverse()
-print('Inverse trend fucntion = ', myInverseTrendTransform)
+print("Inverse trend fucntion = ", myInverseTrendTransform)
 
 # Sometimes it is more useful to define
 # the opposite trend h : R^2 -> R
 # in fact h = -g
-h = ot.SymbolicFunction(['t', 's'], ['-(1+2*t+2*s)'])
+h = ot.SymbolicFunction(["t", "s"], ["-(1+2*t+2*s)"])
 myInverseTrendTransform_2 = ot.InverseTrendTransform(h, myMesh)
 
 ################################

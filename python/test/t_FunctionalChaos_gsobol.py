@@ -28,9 +28,16 @@ for i in range(dimension):
     a[i] = 0.5 * i
     covTh = covTh * (1.0 + 1.0 / (3.0 * (1.0 + a[i]) ** 2))
     inputVariables[i] = "xi" + str(i)
-    formula[0] = formula[0] + \
-        " * ((abs(4.0 * xi" + str(i) + " - 2.0) + " + \
-        str(a[i]) + ") / (1.0 + " + str(a[i]) + "))"
+    formula[0] = (
+        formula[0]
+        + " * ((abs(4.0 * xi"
+        + str(i)
+        + " - 2.0) + "
+        + str(a[i])
+        + ") / (1.0 + "
+        + str(a[i])
+        + "))"
+    )
 covTh = covTh - 1.0
 model = ot.SymbolicFunction(inputVariables, formula)
 
@@ -51,10 +58,12 @@ indexMax = enumerateFunction.getStrataCumulatedCardinal(degree)
 basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree // 2)
 threshold = 1.0e-6
 listAdaptiveStrategy.append(
-    ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold, False))
+    ot.CleaningStrategy(productBasis, indexMax, basisDimension, threshold, False)
+)
 # Second, the most used (and most basic!) strategy
 listAdaptiveStrategy.append(
-    ot.FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)))
+    ot.FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree))
+)
 
 for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
     adaptiveStrategy = listAdaptiveStrategy[adaptiveStrategyIndex]
@@ -66,7 +75,9 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
     # LHS sampling
     listExperiment.append(ot.LHSExperiment(distribution, samplingSize))
     # Low Discrepancy sequence
-    listExperiment.append(ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, samplingSize))
+    listExperiment.append(
+        ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, samplingSize)
+    )
     for experiment in listExperiment:
         # Create the polynomial chaos algorithm
         maximumResidual = 1.0e-10
@@ -91,18 +102,20 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         # Post-process the results
         vector = ot.FunctionalChaosRandomVector(result)
         mean = vector.getMean()[0]
-        print("mean=%.8f" % mean, "absolute error=%.8f" %
-              abs(mean - meanTh))
+        print("mean=%.8f" % mean, "absolute error=%.8f" % abs(mean - meanTh))
         variance = vector.getCovariance()[0, 0]
         sensitivity = ot.FunctionalChaosSobolIndices(result)
-        print("variance=%.8f" % variance, "absolute error=%.8f" %
-              abs(variance - covTh))
+        print("variance=%.8f" % variance, "absolute error=%.8f" % abs(variance - covTh))
         indices = ot.Indices(1)
         for i in range(dimension):
             indices[0] = i
             value = sensitivity.getSobolIndex(i)
-            print("Sobol index", i, "= %.8f" % value, "absolute error=%.8f" %
-                  abs(value - sobol(indices, a) / covTh))
+            print(
+                "Sobol index",
+                i,
+                "= %.8f" % value,
+                "absolute error=%.8f" % abs(value - sobol(indices, a) / covTh),
+            )
         indices = ot.Indices(2)
         k = 0
         for i in range(dimension):
@@ -110,11 +123,18 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
             for j in range(i + 1, dimension):
                 indices[1] = j
                 value = sensitivity.getSobolIndex(indices)
-                print("Sobol index", indices, "=%.8f" % value, "absolute error=%.8f" % abs(
-                    value - sobol(indices, a) / covTh))
+                print(
+                    "Sobol index",
+                    indices,
+                    "=%.8f" % value,
+                    "absolute error=%.8f" % abs(value - sobol(indices, a) / covTh),
+                )
                 k = k + 1
         indices = ot.Indices([0, 1, 2])
         value = sensitivity.getSobolIndex(indices)
-        print("Sobol index", indices, "=%.8f" % value, "absolute error=%.8f" %
-              abs(value - sobol(indices, a) / covTh))
-
+        print(
+            "Sobol index",
+            indices,
+            "=%.8f" % value,
+            "absolute error=%.8f" % abs(value - sobol(indices, a) / covTh),
+        )

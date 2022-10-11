@@ -3,6 +3,7 @@
 import openturns as ot
 import math as m
 
+
 def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
@@ -12,9 +13,9 @@ def printPoint(point, digits):
         else:
             sep = ","
         if abs(point[i]) < eps:
-            oss += sep + '%.6f' % abs(point[i])
+            oss += sep + "%.6f" % abs(point[i])
         else:
-            oss += sep + '%.6f' % point[i]
+            oss += sep + "%.6f" % point[i]
         sep = ","
     oss += "]"
     return oss
@@ -98,19 +99,17 @@ for i in range(1):
     # Stream out the result
     result = ot.FORMResult(myAlgo.getResult())
     digits = 5
-    print("importance factors=", printPoint(
-        result.getImportanceFactors(), digits))
-    print("Hasofer reliability index=%.6f" %
-          result.getHasoferReliabilityIndex())
+    print("importance factors=", printPoint(result.getImportanceFactors(), digits))
+    print("Hasofer reliability index=%.6f" % result.getHasoferReliabilityIndex())
     print("result=", result)
 
     # Hasofer Reliability Index Sensitivity
-    hasoferReliabilityIndexSensitivity = result.getHasoferReliabilityIndexSensitivity(
+    hasoferReliabilityIndexSensitivity = result.getHasoferReliabilityIndexSensitivity()
+    print(
+        "hasoferReliabilityIndexSensitivity = ",
+        repr(hasoferReliabilityIndexSensitivity),
     )
-    print("hasoferReliabilityIndexSensitivity = ",
-          repr(hasoferReliabilityIndexSensitivity))
 
     # Event Probability Sensitivity
     eventProbabilitySensitivity = result.getEventProbabilitySensitivity()
-    print("eventProbabilitySensitivity = ",
-          repr(eventProbabilitySensitivity))
+    print("eventProbabilitySensitivity = ", repr(eventProbabilitySensitivity))

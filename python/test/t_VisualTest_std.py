@@ -30,8 +30,7 @@ print("HenryPlot = ", henryPlot)
 dimension = 2
 R = ot.CorrelationMatrix(dimension)
 R[0, 1] = 0.8
-distribution = ot.Normal(
-    ot.Point(dimension, 3.0), ot.Point(dimension, 2.0), R)
+distribution = ot.Normal(ot.Point(dimension, 3.0), ot.Point(dimension, 2.0), R)
 size = 100
 sample2D = distribution.getSample(size)
 firstSample = ot.Sample(size, 1)
@@ -62,11 +61,13 @@ formula[0] = expression
 model = ot.SymbolicFunction(inputVar, formula)
 outputSample = model(inputSample)
 cobwebValue = ot.VisualTest.DrawParallelCoordinates(
-    inputSample, outputSample, 2.5, 3.0, "red", False)
+    inputSample, outputSample, 2.5, 3.0, "red", False
+)
 print("cobwebValue = ", cobwebValue)
 
 cobwebQuantile = ot.VisualTest.DrawParallelCoordinates(
-    inputSample, outputSample, 0.7, 0.9, "red", False)
+    inputSample, outputSample, 0.7, 0.9, "red", False
+)
 print("cobwebQuantile = ", cobwebQuantile)
 
 # KendallPlot tests
@@ -88,6 +89,7 @@ sample = ot.Normal(4).getSample(200)
 clouds = ot.VisualTest.DrawPairs(sample)
 print("Clouds = ", clouds)
 distribution = ot.ComposedDistribution(
-    [ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(4)])
+    [ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(4)]
+)
 cloudsMarginals = ot.VisualTest.DrawPairsMarginals(sample, distribution)
 print("CloudsMarginals = ", cloudsMarginals)

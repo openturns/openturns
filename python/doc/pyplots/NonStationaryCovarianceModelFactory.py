@@ -6,6 +6,7 @@ from openturns.viewer import View
 
 # Create the covariance function at (s,t)
 
+
 def C(s, t):
     return exp(-4.0 * abs(s - t) / (1 + (s * s + t * t)))
 
@@ -51,8 +52,7 @@ for k in range(N):
         covariance[k, l] = C(s, t)
 
 # Create the covariance model
-myCovarianceModel = ot.UserDefinedCovarianceModel(
-    myMesh, covariance)
+myCovarianceModel = ot.UserDefinedCovarianceModel(myMesh, covariance)
 
 # Create the non stationary Gaussian process with
 # that covariance model
@@ -88,9 +88,8 @@ for i in range(alld.getSize()):
     d.setColor(palette[i])
     d.setDrawLabels(False)
     cov_graph.add(d)
-cov_graph.setTitle('Non stationary covariance model estimation')
+cov_graph.setTitle("Non stationary covariance model estimation")
 
 fig = plt.figure(figsize=(10, 4))
 cov_axis = fig.add_subplot(111)
-View(cov_graph, figure=fig, axes=[cov_axis],
-     add_legend=False, square_axes=True)
+View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)

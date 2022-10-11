@@ -9,7 +9,9 @@ ot.TESTPREAMBLE()
 # Create an instance
 grid = ot.RegularGrid(0.0, 0.1, 11)
 myFunc = ot.FieldToFieldConnection(
-    ot.ValueFunction(ot.SymbolicFunction("x", "sin(x)"), grid), ot.ValueFunction(ot.SymbolicFunction("x", "cos(x)"), grid))
+    ot.ValueFunction(ot.SymbolicFunction("x", "sin(x)"), grid),
+    ot.ValueFunction(ot.SymbolicFunction("x", "cos(x)"), grid),
+)
 
 print("myFunc=", myFunc)
 # Get the input and output description
@@ -52,4 +54,3 @@ print("field=", field)
 print("myFunc(field)=", myFunc(field))
 # Get the number of calls
 print("called ", myFunc.getCallsNumber(), " times")
-

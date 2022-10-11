@@ -30,6 +30,7 @@ import math as m
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -55,10 +56,10 @@ def f(X):
 
 
 func = ot.PythonFunction(2, 1, f)
-func.setDescription([':math:`s`', ':math:`t`', ':math:`cov`'])
+func.setDescription([":math:`s`", ":math:`t`", ":math:`cov`"])
 graph = func.draw([t0] * 2, [tmax] * 2)
-graph.setTitle('Original covariance model')
-graph.setLegendPosition('')
+graph.setTitle("Original covariance model")
+graph.setLegendPosition("")
 view = viewer.View(graph)
 
 # %%
@@ -92,7 +93,7 @@ estimatedModel = factory.build(sample)
 
 # %%
 graph = estimatedModel.draw(0, 0, t0, tmax, 256, False)
-graph.setTitle('Estimated covariance model')
-graph.setLegendPosition('')
+graph.setTitle("Estimated covariance model")
+graph.setLegendPosition("")
 view = viewer.View(graph)
 plt.show()

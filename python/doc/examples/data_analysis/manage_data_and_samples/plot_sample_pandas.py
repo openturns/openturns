@@ -10,6 +10,7 @@ Link Pandas and OpenTURNS
 # %%
 import openturns as ot
 import pandas as pd
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%

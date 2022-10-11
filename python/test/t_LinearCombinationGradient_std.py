@@ -21,7 +21,8 @@ coefficients = ot.Point(2)
 coefficients[0] = 0.3
 coefficients[1] = 2.9
 myGradient = ot.LinearCombinationGradient(
-    ot.LinearCombinationEvaluation(functions, coefficients))
+    ot.LinearCombinationEvaluation(functions, coefficients)
+)
 inPoint = ot.Point(3)
 inPoint[0] = 1.2
 inPoint[1] = 2.3

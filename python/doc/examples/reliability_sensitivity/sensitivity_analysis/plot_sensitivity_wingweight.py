@@ -7,7 +7,7 @@ Example of sensitivity analyses on the wing weight model
 # This example is a brief overview of the use of the most usual sensitivity analysis techniques and how to call them:
 #
 # - PCC: Partial Correlation Coefficients
-# - PRCC: Partial Rank Correlation Coefficients 
+# - PRCC: Partial Rank Correlation Coefficients
 # - SRC: Standard Regression Coefficients
 # - SRRC: Standard Rank Regression Coefficients
 # - Pearson coefficients
@@ -30,6 +30,7 @@ import openturns.viewer as otv
 from openturns.usecases.wingweight_function import WingWeightModel
 from matplotlib import pylab as plt
 import numpy as np
+
 ot.Log.Show(ot.Log.NONE)
 m = WingWeightModel()
 
@@ -45,7 +46,7 @@ fig = plt.figure(figsize=(12, 12))
 lowerBound = m.distributionX.getRange().getLowerBound()
 upperBound = m.distributionX.getRange().getUpperBound()
 
-# Definition of number of meshes in x and y axes for the 2D cross cut plots
+# Definition of number of meshes in x and y axes for the 2D cross cut plots
 nX = 20
 nY = 20
 for i in range(m.dim):
@@ -55,43 +56,44 @@ for i in range(m.dim):
         for k in range(m.dim):
             if k != i and k != j:
                 crossCutIndices.append(k)
-                # Definition of the reference point
+                # Definition of the reference point
                 crossCutReferencePoint.append(m.distributionX.getMean()[k])
         # Definition of 2D cross cut function
         crossCutFunction = ot.ParametricFunction(
-            m.model, crossCutIndices, crossCutReferencePoint)
+            m.model, crossCutIndices, crossCutReferencePoint
+        )
         crossCutLowerBound = [lowerBound[j], lowerBound[i]]
         crossCutUpperBound = [upperBound[j], upperBound[i]]
-        # Definition of the mesh
+        # Definition of the mesh
         inputData = ot.Box([nX, nY]).generate()
-        inputData *= (ot.Point(crossCutUpperBound)-ot.Point(crossCutLowerBound))
+        inputData *= ot.Point(crossCutUpperBound) - ot.Point(crossCutLowerBound)
         inputData += ot.Point(crossCutLowerBound)
-        meshX = np.array(inputData)[:,0].reshape(nX+2,nY+2)
-        meshY = np.array(inputData)[:,1].reshape(nX+2,nY+2)
+        meshX = np.array(inputData)[:, 0].reshape(nX + 2, nY + 2)
+        meshY = np.array(inputData)[:, 1].reshape(nX + 2, nY + 2)
         data = crossCutFunction(inputData)
-        meshZ = np.array(data).reshape(nX+2,nY+2)
-        levels = [(150 + 3*i) for i in range(101)]
-        
-        # Creation of the contour        
+        meshZ = np.array(data).reshape(nX + 2, nY + 2)
+        levels = [(150 + 3 * i) for i in range(101)]
+
+        # Creation of the contour
         index = 1 + i * m.dim + j
 
         ax = fig.add_subplot(m.dim, m.dim, index)
-        ax.contour(meshX, meshY,meshZ,levels,cmap='hsv')
+        ax.contour(meshX, meshY, meshZ, levels, cmap="hsv")
         ax.set_xticks([])
-        ax.set_yticks([])        
-        
-        # Creation of axes title
-        if j==0:
-            ax.set_ylabel(m.distributionX.getDescription()[i])            
-        if i ==9:
+        ax.set_yticks([])
+
+        # Creation of axes title
+        if j == 0:
+            ax.set_ylabel(m.distributionX.getDescription()[i])
+        if i == 9:
             ax.set_xlabel(m.distributionX.getDescription()[j])
 
-# %%       
+# %%
 # We can see that the variables :math:`t_c, N_z, A, W_{dg}` seem to be influent on the wing weight whereas :math:`l, W_p, W_{fw}` do not have influence on the function.
-            
+
 
 # %%
-# Data generation 
+# Data generation
 # ---------------
 #
 # We create the input and output data for the estimation of the different sensitivity coefficients and we get the input variables description:
@@ -104,7 +106,7 @@ outputDesign = m.model(inputDesign)
 
 # %%
 # Let's estimate the PCC, PRCC, SRC, SRRC, Pearson and Spearman coefficients, display and analyze them.
-# We create a :class:`~openturns.CorrelationAnalysis` model.
+# We create a :class:`~openturns.CorrelationAnalysis` model.
 
 corr_analysis = ot.CorrelationAnalysis(inputDesign, outputDesign)
 
@@ -122,7 +124,8 @@ print(pcc_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    pcc_indices, inputNames, "PCC coefficients - Wing weight")
+    pcc_indices, inputNames, "PCC coefficients - Wing weight"
+)
 view = otv.View(graph)
 
 # %%
@@ -136,7 +139,8 @@ print(prcc_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    prcc_indices, inputNames, "PRCC coefficients - Wing weight")
+    prcc_indices, inputNames, "PRCC coefficients - Wing weight"
+)
 view = otv.View(graph)
 
 # %%
@@ -150,7 +154,8 @@ print(src_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    src_indices, inputNames, 'SRC coefficients - Wing weight')
+    src_indices, inputNames, "SRC coefficients - Wing weight"
+)
 view = otv.View(graph)
 
 # %%
@@ -165,7 +170,8 @@ print(squared_src_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    squared_src_indices, inputNames, 'Squared SRC coefficients - Wing weight')
+    squared_src_indices, inputNames, "Squared SRC coefficients - Wing weight"
+)
 view = otv.View(graph)
 
 # %%
@@ -182,7 +188,8 @@ print(srrc_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    srrc_indices, inputNames, 'SRRC coefficients - Wing weight')
+    srrc_indices, inputNames, "SRRC coefficients - Wing weight"
+)
 view = otv.View(graph)
 
 # %%
@@ -196,9 +203,9 @@ print(pearson_correlation)
 
 # %%
 title_pearson_graph = "Pearson correlation coefficients - Wing weight"
-graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(pearson_correlation,
-                                                             inputNames,
-                                                             title_pearson_graph)
+graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
+    pearson_correlation, inputNames, title_pearson_graph
+)
 view = otv.View(graph)
 
 # %%
@@ -212,9 +219,9 @@ print(spearman_correlation)
 
 # %%
 title_spearman_graph = "Spearman correlation coefficients - Wing weight"
-graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(spearman_correlation,
-                                                             inputNames,
-                                                             title_spearman_graph)
+graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
+    spearman_correlation, inputNames, title_spearman_graph
+)
 view = otv.View(graph)
 plt.show()
 
@@ -251,7 +258,7 @@ print(taylor.getImportanceFactors())
 # %%
 # We draw the importance factors
 graph = taylor.drawImportanceFactors()
-graph.setTitle('Taylor expansion imporfance factors - Wing weight')
+graph.setTitle("Taylor expansion imporfance factors - Wing weight")
 view = otv.View(graph)
 
 # %%
@@ -286,16 +293,17 @@ outputDesignSobol = m.model(inputDesignSobol)
 
 # %%
 sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(
-    inputDesignSobol, outputDesignSobol, sizeSobol)
+    inputDesignSobol, outputDesignSobol, sizeSobol
+)
 
 # %%
 # The `getFirstOrderIndices` and `getTotalOrderIndices` methods respectively return estimates of all first order and total Sobol' indices.
 
 # %%
-print('First order indices:', sensitivityAnalysis.getFirstOrderIndices())
+print("First order indices:", sensitivityAnalysis.getFirstOrderIndices())
 
 # %%
-print('Total order indices:',sensitivityAnalysis.getTotalOrderIndices())
+print("Total order indices:", sensitivityAnalysis.getTotalOrderIndices())
 
 
 # %%
@@ -303,7 +311,7 @@ print('Total order indices:',sensitivityAnalysis.getTotalOrderIndices())
 
 # %%
 graph = sensitivityAnalysis.draw()
-graph.setTitle('Sobol indices with Saltelli - wing weight')
+graph.setTitle("Sobol indices with Saltelli - wing weight")
 view = otv.View(graph)
 
 # %%
@@ -317,13 +325,14 @@ inputDesignSobol.getSize()
 outputDesignSobol = m.model(inputDesignSobol)
 
 sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(
-    inputDesignSobol, outputDesignSobol, sizeSobol)
-    
+    inputDesignSobol, outputDesignSobol, sizeSobol
+)
+
 sensitivityAnalysis.getFirstOrderIndices()
 sensitivityAnalysis.getTotalOrderIndices()
 
 graph = sensitivityAnalysis.draw()
-graph.setTitle('Sobol indices with Saltelli - wing weight')
+graph.setTitle("Sobol indices with Saltelli - wing weight")
 view = otv.View(graph)
 
 # %%
@@ -336,8 +345,7 @@ sizePCE = 800
 inputDesignPCE = m.distributionX.getSample(sizePCE)
 outputDesignPCE = m.model(inputDesignPCE)
 
-algo = ot.FunctionalChaosAlgorithm(
-    inputDesignPCE, outputDesignPCE, m.distributionX)
+algo = ot.FunctionalChaosAlgorithm(inputDesignPCE, outputDesignPCE, m.distributionX)
 
 algo.run()
 result = algo.getResult()
@@ -350,17 +358,15 @@ print(result.getRelativeErrors())
 sensitivityAnalysis = ot.FunctionalChaosSobolIndices(result)
 print(sensitivityAnalysis.summary())
 firstOrder = [sensitivityAnalysis.getSobolIndex(i) for i in range(m.dim)]
-totalOrder = [sensitivityAnalysis.getSobolTotalIndex(
-    i) for i in range(m.dim)]
-graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(
-    inputNames, firstOrder, totalOrder)
-graph.setTitle('Sobol indices by Polynomial Chaos Expansion - wing weight')
+totalOrder = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(m.dim)]
+graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(inputNames, firstOrder, totalOrder)
+graph.setTitle("Sobol indices by Polynomial Chaos Expansion - wing weight")
 view = otv.View(graph)
 
 # %%
 #
 # The Sobol' indices confirm the previous analyses, in terms of ranking of the most influent variables. We also see that five variables have a quasi null total Sobol' indices, that indicates almost no influence on the wing weight.
-# There is no discrepancy between first order and total Sobol' indices, that indicates no or very low interaction between the variables in the variance of the output. 
+# There is no discrepancy between first order and total Sobol' indices, that indicates no or very low interaction between the variables in the variance of the output.
 # As the most important variables act only through decoupled first degree contributions, the hypothesis of a linear dependence between the input variables and the weight is legitimate.
 # This explains why both squared SRC and Taylor give the exact same results even if the first one is based on a :math:`\mathcal{L}^2` linear approximation and the second one is based on a linear expansion around the mean value of the input variables.
 
@@ -400,7 +406,8 @@ estimatorType = ot.HSICUStat()
 # %%
 # We now build the HSIC estimator:
 globHSIC = ot.HSICEstimatorGlobalSensitivity(
-    covarianceModelCollection, inputDesignHSIC, outputDesignHSIC, estimatorType)
+    covarianceModelCollection, inputDesignHSIC, outputDesignHSIC, estimatorType
+)
 
 # %%
 # We get the R2-HSIC indices:

@@ -8,7 +8,7 @@ import math as m
 
 ot.TESTPREAMBLE()
 
-fileName = 'pyxmlh5.xml.gz'
+fileName = "pyxmlh5.xml.gz"
 study = ot.Study()
 study.setStorageManager(ot.XMLH5StorageManager(fileName, 5))
 
@@ -25,11 +25,11 @@ sample.add(point2)
 sample.add(point4)
 sample.add(point3)
 print(sample)
-study.add('sample', sample)
+study.add("sample", sample)
 
 
-mesh = ot.IntervalMesher([50]*3).build(ot.Interval(3))
-study.add('mesh', mesh)
+mesh = ot.IntervalMesher([50] * 3).build(ot.Interval(3))
+study.add("mesh", mesh)
 
 study.save()
 
@@ -38,12 +38,12 @@ study2.setStorageManager(ot.XMLH5StorageManager(fileName))
 
 study2.load()
 sample2 = ot.Sample()
-study2.fillObject('sample', sample2)
+study2.fillObject("sample", sample2)
 print(sample2)
 assert sample == sample2, "wrong sample"
 
 mesh2 = ot.Mesh()
-study2.fillObject('mesh', mesh2)
+study2.fillObject("mesh", mesh2)
 assert mesh == mesh2, "wrong mesh"
 
 # cleanup

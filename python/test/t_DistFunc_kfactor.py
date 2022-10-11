@@ -16,7 +16,7 @@ for n in range(nMin, nMax):
         for iAlpha in range(nAlpha + 1):
             alpha = alphaMin + (alphaMax - alphaMin) * iAlpha / nAlpha
             kF = ot.DistFunc.kFactor(2 * n, p, alpha)
-            print('kFactor(%d, %.12g, %.12g)=%.6g' % (2 * n, p, alpha, kF))
+            print("kFactor(%d, %.12g, %.12g)=%.6g" % (2 * n, p, alpha, kF))
 mMin = 1
 mMax = 3
 for n in range(nMin, nMax):
@@ -26,5 +26,7 @@ for n in range(nMin, nMax):
             for iAlpha in range(nAlpha + 1):
                 alpha = alphaMin + (alphaMax - alphaMin) * iAlpha / nAlpha
                 kF = ot.DistFunc.kFactorPooled(2 * n, m, p, alpha)
-                print('kFactorPooled(%d, %.12g, %.12g, %.12g)=%.6g' %
-                      (2 * n, m, p, alpha, kF))
+                print(
+                    "kFactorPooled(%d, %.12g, %.12g, %.12g)=%.6g"
+                    % (2 * n, m, p, alpha, kF)
+                )

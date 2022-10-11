@@ -25,7 +25,7 @@ def f(x):
 
 
 func = ot.PythonFunction(1, 1, f)
-func.setDescription(['$t$', '$cov$'])
+func.setDescription(["$t$", "$cov$"])
 
 
 def fEst(X):
@@ -34,13 +34,13 @@ def fEst(X):
 
 
 funcEst = ot.PythonFunction(1, 1, fEst)
-funcEst.setDescription(['$t$', '$cov_{est}$'])
+funcEst.setDescription(["$t$", "$cov_{est}$"])
 
 
 cov_graph = func.draw(-a / 4, a / 4, 1024)
 cov_graph.add(funcEst.draw(-a / 4, a / 4, 1024))
-cov_graph.setColors(['blue', 'red'])
-cov_graph.setTitle('Stationary covariance model estimation')
+cov_graph.setColors(["blue", "red"])
+cov_graph.setTitle("Stationary covariance model estimation")
 
 fig = plt.figure(figsize=(10, 4))
 cov_axis = fig.add_subplot(111)

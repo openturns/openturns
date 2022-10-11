@@ -27,8 +27,11 @@ for k in range(sample.getSize()):
     sample[k] = field
 lagrange = ot.P1LagrangeEvaluation(sample)
 # New mesh
-mesh = ot.Mesh(ot.MonteCarloExperiment(
-    ot.ComposedDistribution([ot.Uniform(-1, 1)]*2), 200).generate())
+mesh = ot.Mesh(
+    ot.MonteCarloExperiment(
+        ot.ComposedDistribution([ot.Uniform(-1, 1)] * 2), 200
+    ).generate()
+)
 
 point = mesh.getVertices()[0]
 y = lagrange(point)

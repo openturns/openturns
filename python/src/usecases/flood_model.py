@@ -5,7 +5,7 @@ Use case : flood model
 import openturns as ot
 
 
-class FloodModel():
+class FloodModel:
     """
     Data class for the flood model.
 
@@ -56,13 +56,15 @@ class FloodModel():
         self.dim = 4  # number of inputs
         # Q
         self.Q = ot.TruncatedDistribution(
-            ot.Gumbel(558., 1013.), 0, ot.TruncatedDistribution.LOWER)
+            ot.Gumbel(558.0, 1013.0), 0, ot.TruncatedDistribution.LOWER
+        )
         self.Q.setDescription(["Q (m3/s)"])
         self.Q.setName("Q")
 
         # Ks
         self.Ks = ot.TruncatedDistribution(
-            ot.Normal(30.0, 7.5), 0, ot.TruncatedDistribution.LOWER)
+            ot.Normal(30.0, 7.5), 0, ot.TruncatedDistribution.LOWER
+        )
         self.Ks.setName("Ks")
 
         # Zv
@@ -71,12 +73,13 @@ class FloodModel():
 
         # Zm
         self.Zm = ot.Uniform(54.0, 56.0)
-        #Zm.setDescription(["Zm (m)"])
+        # Zm.setDescription(["Zm (m)"])
         self.Zm.setName("Zm")
 
-        self.model = ot.SymbolicFunction(['Q', 'Ks', 'Zv', 'Zm'],
-                                         ['(Q/(Ks*300.*sqrt((Zm-Zv)/5000)))^(3.0/5.0)+Zv-58.5'])
+        self.model = ot.SymbolicFunction(
+            ["Q", "Ks", "Zv", "Zm"],
+            ["(Q/(Ks*300.*sqrt((Zm-Zv)/5000)))^(3.0/5.0)+Zv-58.5"],
+        )
 
-        self.distribution = ot.ComposedDistribution(
-            [self.Q, self.Ks, self.Zv, self.Zm])
-        self.distribution.setDescription(['Q', 'Ks', 'Zv', 'Zm'])
+        self.distribution = ot.ComposedDistribution([self.Q, self.Ks, self.Zv, self.Zm])
+        self.distribution.setDescription(["Q", "Ks", "Zv", "Zm"])

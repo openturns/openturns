@@ -41,8 +41,7 @@ linear[2, 2, 0] = 12.0
 linear[2, 2, 1] = -12.0
 
 # myFunction = linear * (X- center) + constant
-myGradient = ot.LinearGradient(
-    center, constant, linear)
+myGradient = ot.LinearGradient(center, constant, linear)
 myGradient.setName("linearGradient")
 inPoint = ot.Point(inputDimension)
 inPoint[0] = 7.0

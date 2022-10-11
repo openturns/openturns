@@ -11,6 +11,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -28,7 +29,7 @@ sampleX = distribution.getSample(100)
 
 # %%
 # Create the model.
-model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
+model = ot.SymbolicFunction(["E", "F", "L", "I"], ["F*L^3/(3*E*I)"])
 
 # %%
 # Evaluate the outputs.
@@ -38,10 +39,10 @@ sampleY = model(sampleX)
 # Get minimum and maximum values of both inputs and output variables.
 minY = sampleY.getMin()
 minX = sampleX[sampleY.find(minY)]
-print('min: y=', minY, ' with x=', minX)
+print("min: y=", minY, " with x=", minX)
 maxY = sampleY.getMax()
 maxX = sampleX[sampleY.find(maxY)]
-print('max: y=', maxY, ' with x=', maxX)
+print("max: y=", maxY, " with x=", maxX)
 
 # %%
 # Get sensitivity at minimum input values.

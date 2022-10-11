@@ -38,19 +38,20 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the coefficients distribution
-mu = [2.0]*2
-sigma = [5.0]*2
+mu = [2.0] * 2
+sigma = [5.0] * 2
 R = ot.CorrelationMatrix(2)
 coefDist = ot.Normal(mu, sigma, R)
 
 # %%
 # Create a basis of functions
-phi_1 = ot.SymbolicFunction(['t'], ['sin(t)'])
-phi_2 = ot.SymbolicFunction(['t'], ['cos(t)^2'])
+phi_1 = ot.SymbolicFunction(["t"], ["sin(t)"])
+phi_2 = ot.SymbolicFunction(["t"], ["cos(t)^2"])
 myBasis = ot.Basis([phi_1, phi_2])
 
 # %%
@@ -66,5 +67,5 @@ process = ot.FunctionalBasisProcess(coefDist, myBasis, myMesh)
 N = 6
 sample = process.getSample(N)
 graph = sample.drawMarginal(0)
-graph.setTitle(str(N)+' realizations of functional basis process')
+graph.setTitle(str(N) + " realizations of functional basis process")
 view = viewer.View(graph)

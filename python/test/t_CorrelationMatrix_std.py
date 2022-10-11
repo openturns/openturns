@@ -8,10 +8,10 @@ matrix1 = ot.CorrelationMatrix(2)
 matrix1.setName("matrix1")
 print("matrix1 = ", repr(matrix1))
 
-p = ot.Point((1., 3.))
+p = ot.Point((1.0, 3.0))
 print("matrix1*", p, "=", matrix1 * p)
 
-s = 3.
+s = 3.0
 print("matrix1*", s, "=", matrix1 * s)
 print(s, "*matrix1=", s * matrix1)
 print("matrix1/", s, "=", matrix1 / s)

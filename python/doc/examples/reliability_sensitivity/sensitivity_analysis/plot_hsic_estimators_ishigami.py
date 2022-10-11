@@ -83,7 +83,8 @@ estimatorType = ot.HSICUStat()
 # %%
 # We now build the HSIC estimator:
 globHSIC = ot.HSICEstimatorGlobalSensitivity(
-    covarianceModelCollection, X, Y, estimatorType)
+    covarianceModelCollection, X, Y, estimatorType
+)
 
 # %%
 # We get the R2-HSIC indices:
@@ -139,7 +140,7 @@ view4 = otv.View(graph4)
 
 # %%
 # We first define a critical domain: in our case that is the :math:`[5,+\infty[` interval.
-criticalDomain = ot.Interval(5, float('inf'))
+criticalDomain = ot.Interval(5, float("inf"))
 
 # %%
 # We have access to the distance to this  domain thanks to the

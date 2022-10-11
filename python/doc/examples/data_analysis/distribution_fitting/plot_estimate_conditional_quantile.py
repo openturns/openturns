@@ -17,6 +17,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import numpy as np
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -44,8 +45,8 @@ sample = distX.getSample(1000)
 # Let's see the data
 
 # %%
-graph = ot.Graph('2D-Normal sample', 'x1', 'x2', True, '')
-cloud = ot.Cloud(sample, 'blue', 'fsquare', 'My Cloud')
+graph = ot.Graph("2D-Normal sample", "x1", "x2", True, "")
+cloud = ot.Cloud(sample, "blue", "fsquare", "My Cloud")
 graph.add(cloud)
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
@@ -92,19 +93,17 @@ sampleObs = ot.Sample([[xi] for xi in xobs])
 
 # %%
 x = [xi for xi in xobs]
-yapp = [estimated.computeConditionalQuantile(
-    0.9, sampleObs[i]) for i in range(N)]
+yapp = [estimated.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 
 # %%
 cxy_app = ot.Curve(x, yapp)
 cxy_ex = ot.Curve(x, yex)
-graph = ot.Graph('90% quantile of $X_2 | X_1=x_1$',
-                 '$x_1$', '$Q_2(x_1)$', True, '')
+graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$", True, "")
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
-graph.setLegendPosition('bottomright')
+graph.setLegendPosition("bottomright")
 graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 
@@ -133,8 +132,8 @@ sample = distX.getSample(1000)
 # Let's see the data
 
 # %%
-graph = ot.Graph('2D-Normal sample', 'x1', 'x2', True, '')
-cloud = ot.Cloud(sample, 'blue', 'fsquare', 'My Cloud')
+graph = ot.Graph("2D-Normal sample", "x1", "x2", True, "")
+cloud = ot.Cloud(sample, "blue", "fsquare", "My Cloud")
 graph.add(cloud)
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
@@ -180,19 +179,17 @@ sampleObs = ot.Sample([[xi] for xi in xobs])
 
 # %%
 x = [xi for xi in xobs]
-yapp = [estimated.computeConditionalQuantile(
-    0.9, sampleObs[i]) for i in range(N)]
+yapp = [estimated.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 
 # %%
 cxy_app = ot.Curve(x, yapp)
 cxy_ex = ot.Curve(x, yex)
-graph = ot.Graph('90% quantile of $X_2 | X_1=x_1$',
-                 '$x_1$', '$Q_2(x_1)$', True, '')
+graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$", True, "")
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
-graph.setLegendPosition('bottomright')
+graph.setLegendPosition("bottomright")
 graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 

@@ -42,8 +42,7 @@ point = ot.Point(dim, 0.2)
 # Show PDF and CDF of point
 pointPDF = copula.computePDF(point)
 pointCDF = copula.computeCDF(point)
-print("Point = ", repr(point), " pdf=%.6f" %
-      pointPDF, " cdf=%.6f" % pointCDF)
+print("Point = ", repr(point), " pdf=%.6f" % pointPDF, " cdf=%.6f" % pointCDF)
 
 # Get 50% quantile
 quantile = copula.computeQuantile(0.5)
@@ -52,28 +51,29 @@ print("CDF(quantile)=%.6f" % copula.computeCDF(quantile))
 # Get 95% survival function
 inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      copula.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival)
+)
 print("entropy=%.6f" % copula.computeEntropy())
 
 # Confidence regions
-interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(
-    0.95)
+interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
 print("Minimum volume interval=", interval)
 print("threshold=", ot.Point(1, threshold))
 levelSet, beta = copula.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
 print("beta=", ot.Point(1, beta))
-interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)
+interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
 print("Bilateral confidence interval=", interval)
 print("beta=", ot.Point(1, beta))
 interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, False)
+    0.95, False
+)
 print("Unilateral confidence interval (lower tail)=", interval)
 print("beta=", ot.Point(1, beta))
 interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, True)
+    0.95, True
+)
 print("Unilateral confidence interval (upper tail)=", interval)
 print("beta=", ot.Point(1, beta))
 

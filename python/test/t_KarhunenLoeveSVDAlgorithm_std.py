@@ -95,6 +95,8 @@ print("KL lift as field=", result.liftAsField(coefficients[0]))
 # truncation test
 def func(tau, theta):
     return m.sin(2 * m.pi * (tau - theta)) + 1.0
+
+
 mesh_size = 10
 mesh = ot.RegularGrid(0.0, 1.0 / (mesh_size - 1.0), mesh_size)
 samples = ot.ProcessSample(mesh, 100, 1)

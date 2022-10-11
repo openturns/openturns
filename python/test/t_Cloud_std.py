@@ -50,4 +50,3 @@ myCloud2 = ot.Cloud(sample2, "red", "circle", "Second Cloud")
 
 # Add it to the graph and draw everything
 myGraph.add(myCloud2)
-

@@ -56,6 +56,7 @@ Posterior sampling using a PythonDistribution
 import numpy as np
 import openturns as ot
 from openturns.viewer import View
+
 ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(123)
 
@@ -89,12 +90,12 @@ class CensoredWeibull(ot.PythonDistribution):
         self.alpha = alpha
 
     def getRange(self):
-        return ot.Interval([0, 0], [1, 1], [True]*2, [False, True])
+        return ot.Interval([0, 0], [1, 1], [True] * 2, [False, True])
 
     def computeLogPDF(self, x):
         if not (self.alpha > 0.0 and self.beta > 0.0):
             return -np.inf
-        log_pdf = -(x[0] / self.beta)**self.alpha
+        log_pdf = -((x[0] / self.beta) ** self.alpha)
         log_pdf += (self.alpha - 1) * np.log(x[0] / self.beta) * x[1]
         log_pdf += np.log(self.alpha / self.beta) * x[1]
         return log_pdf
@@ -105,6 +106,7 @@ class CensoredWeibull(ot.PythonDistribution):
 
     def getParameter(self):
         return [self.beta, self.alpha]
+
 
 # %%
 # Convert to :class:`~openturns.Distribution`
@@ -125,7 +127,7 @@ conditional = ot.Distribution(CensoredWeibull())
 # %%
 
 Tobs = np.array([4380, 1791, 1611, 1291, 6132, 5694, 5296, 4818, 4818, 4380])
-fail = np.array([True]*4+[False]*6)
+fail = np.array([True] * 4 + [False] * 6)
 x = ot.Sample(np.vstack((Tobs, fail)).T)
 
 
@@ -141,10 +143,9 @@ a_beta, b_beta = 2, 2e-4
 priorCopula = ot.IndependentCopula(2)  # prior independence
 priorMarginals = []  # prior marginals
 priorMarginals.append(ot.Gamma(a_beta, b_beta))  # Gamma prior for beta
-priorMarginals.append(ot.Uniform(alpha_min, alpha_max)
-                      )  # uniform prior for alpha
+priorMarginals.append(ot.Uniform(alpha_min, alpha_max))  # uniform prior for alpha
 prior = ot.ComposedDistribution(priorMarginals, priorCopula)
-prior.setDescription(['beta', 'alpha'])
+prior.setDescription(["beta", "alpha"])
 
 
 # %%
@@ -153,7 +154,7 @@ prior.setDescription(['beta', 'alpha'])
 
 # %%
 
-initialState = [a_beta / b_beta, 0.5*(alpha_max - alpha_min)]
+initialState = [a_beta / b_beta, 0.5 * (alpha_max - alpha_min)]
 
 # %%
 # For our random walk proposal distributions, we choose normal steps, with standard deviation equal to roughly :math:`10\%` of the prior range (for the uniform prior) or standard deviation (for the normal prior).
@@ -162,8 +163,8 @@ initialState = [a_beta / b_beta, 0.5*(alpha_max - alpha_min)]
 # %%
 
 proposal = []
-proposal.append(ot.Normal(0., 0.1 * np.sqrt(a_beta / b_beta**2)))
-proposal.append(ot.Normal(0., 0.1 * (alpha_max - alpha_min)))
+proposal.append(ot.Normal(0.0, 0.1 * np.sqrt(a_beta / b_beta**2)))
+proposal.append(ot.Normal(0.0, 0.1 * (alpha_max - alpha_min)))
 proposal = ot.ComposedDistribution(proposal)
 
 # %%
@@ -187,13 +188,13 @@ print("Acceptance rate: %s" % (sampler.getAcceptanceRate()))
 kernel = ot.KernelSmoothing()
 posterior = kernel.build(sample)
 grid = ot.GridLayout(1, 2)
-grid.setTitle('Bayesian inference')
+grid.setTitle("Bayesian inference")
 for parameter_index in range(2):
     graph = posterior.getMarginal(parameter_index).drawPDF()
     priorGraph = prior.getMarginal(parameter_index).drawPDF()
     graph.add(priorGraph)
     graph.setColors(ot.Drawable.BuildDefaultPalette(2))
-    graph.setLegends(['Posterior', 'Prior'])
+    graph.setLegends(["Posterior", "Prior"])
     grid.setGraph(0, parameter_index, graph)
 _ = View(grid)
 
@@ -208,15 +209,14 @@ _ = View(grid)
 #   \mathcal \pi(\beta, \alpha) \propto \frac{1}{\beta}.
 #
 
-logpdf = ot.SymbolicFunction(['beta', 'alpha'], ['-log(beta)'])
+logpdf = ot.SymbolicFunction(["beta", "alpha"], ["-log(beta)"])
 support = ot.Interval([0] * 2, [1] * 2)
 support.setFiniteUpperBound([False] * 2)
 
 # %%
 # Sample from the posterior distribution
 
-sampler2 = ot.RandomWalkMetropolisHastings(
-    logpdf, support, initialState, proposal)
+sampler2 = ot.RandomWalkMetropolisHastings(logpdf, support, initialState, proposal)
 sampler2.setLikelihood(conditional, x)
 sample2 = sampler2.getSample(1000)
 print("Acceptance rate: %s" % (sampler2.getAcceptanceRate()))
@@ -229,11 +229,11 @@ print("Acceptance rate: %s" % (sampler2.getAcceptanceRate()))
 kernel = ot.KernelSmoothing()
 posterior = kernel.build(sample)
 grid = ot.GridLayout(1, 2)
-grid.setTitle('Bayesian inference (with log-pdf)')
+grid.setTitle("Bayesian inference (with log-pdf)")
 for parameter_index in range(2):
     graph = posterior.getMarginal(parameter_index).drawPDF()
     graph.setColors(ot.Drawable.BuildDefaultPalette(2))
-    graph.setLegends(['Posterior'])
+    graph.setLegends(["Posterior"])
     grid.setGraph(0, parameter_index, graph)
 _ = View(grid)
 

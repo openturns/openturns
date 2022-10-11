@@ -30,14 +30,14 @@ for i in range(dimension):
     for j in range(dimension):
         print("Spectre ", i, "-", j)
         for k in range(myFrequencyGrid.getN()):
-            frequency = myFrequencyGrid.getStart(
-            ) + k * myFrequencyGrid.getStep()
-            estimatedValue = (
-                mySpectralModel(frequency)[i, j]).real
-            modelValue = (
-                model(frequency)[i, j]).real
-            print("Frequency =  %.6f" % frequency, ", evaluation = %.8f" %
-                  estimatedValue, " model = %.8f" % modelValue)
+            frequency = myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep()
+            estimatedValue = (mySpectralModel(frequency)[i, j]).real
+            modelValue = (model(frequency)[i, j]).real
+            print(
+                "Frequency =  %.6f" % frequency,
+                ", evaluation = %.8f" % estimatedValue,
+                " model = %.8f" % modelValue,
+            )
 
 # Create a Time Series
 timeSeries = myProcess.getRealization()
@@ -51,11 +51,11 @@ for i in range(dimension):
     for j in range(dimension):
         print("Spectre ", i, "-", j)
         for k in range(myFrequencyGrid.getN()):
-            frequency = myFrequencyGrid.getStart(
-            ) + k * myFrequencyGrid.getStep()
-            estimatedValue = (
-                mySpectralModel2(frequency)[i, j]).real
-            modelValue = (
-                model(frequency)[i, j]).real
-            print("Frequency =  %.6f" % frequency, ", evaluation = %.8f" %
-                  estimatedValue, " model = %.8f" % modelValue)
+            frequency = myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep()
+            estimatedValue = (mySpectralModel2(frequency)[i, j]).real
+            modelValue = (model(frequency)[i, j]).real
+            print(
+                "Frequency =  %.6f" % frequency,
+                ", evaluation = %.8f" % estimatedValue,
+                " model = %.8f" % modelValue,
+            )

@@ -15,6 +15,7 @@ Kolmogorov-Smirnov : understand the p-value
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -80,9 +81,9 @@ def dKolmogorov(x, samplesize):
 
 # %%
 def linearSample(xmin, xmax, npoints):
-    '''Returns a sample created from a regular grid
-    from xmin to xmax with npoints points.'''
-    step = (xmax-xmin)/(npoints-1)
+    """Returns a sample created from a regular grid
+    from xmin to xmax with npoints points."""
+    step = (xmax - xmin) / (npoints - 1)
     rg = ot.RegularGrid(xmin, step, npoints)
     vertices = rg.getVertices()
     return vertices
@@ -96,15 +97,16 @@ y = dKolmogorov(s, samplesize)
 
 # %%
 def drawInTheBounds(vLow, vUp, n_test):
-    '''
+    """
     Draw the area within the bounds.
-    '''
+    """
     palette = ot.Drawable.BuildDefaultPalette(2)
     myPaletteColor = palette[1]
-    polyData = [[vLow[i], vLow[i+1], vUp[i+1], vUp[i]]
-                for i in range(n_test-1)]
-    polygonList = [ot.Polygon(
-        polyData[i], myPaletteColor, myPaletteColor) for i in range(n_test-1)]
+    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
+    polygonList = [
+        ot.Polygon(polyData[i], myPaletteColor, myPaletteColor)
+        for i in range(n_test - 1)
+    ]
     boundsPoly = ot.PolygonArray(polygonList)
     return boundsPoly
 
@@ -120,7 +122,7 @@ x = linearSample(KSstat, 0.6, nplot)
 # Compute the bounds to fill: the lower vertical bound is zero and the upper vertical bound is the KS PDF.
 
 # %%
-vLow = [[x[i, 0], 0.] for i in range(nplot)]
+vLow = [[x[i, 0], 0.0] for i in range(nplot)]
 vUp = [[x[i, 0], pKolmogorov.gradient(x[i])[0, 0]] for i in range(nplot)]
 
 # %%
@@ -128,11 +130,16 @@ boundsPoly = drawInTheBounds(vLow, vUp, nplot)
 boundsPoly.setLegend("pvalue = %.4f" % (pvalue))
 curve = ot.Curve(s, y)
 curve.setLegend("Exact distribution")
-curveStat = ot.Curve([KSstat, KSstat], [0., kolmogorovPDF([KSstat])])
+curveStat = ot.Curve([KSstat, KSstat], [0.0, kolmogorovPDF([KSstat])])
 curveStat.setColor("red")
 curveStat.setLegend("KS-statistics = %.4f" % (KSstat))
-graph = ot.Graph('Kolmogorov-Smirnov distribution (known parameters)',
-                 'KS-Statistics', 'PDF', True, 'topright')
+graph = ot.Graph(
+    "Kolmogorov-Smirnov distribution (known parameters)",
+    "KS-Statistics",
+    "PDF",
+    True,
+    "topright",
+)
 graph.setLegends(["Empirical distribution"])
 graph.add(curve)
 graph.add(curveStat)

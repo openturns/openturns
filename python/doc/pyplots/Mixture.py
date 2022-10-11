@@ -14,7 +14,7 @@ mu2 = [3.0, 3.0]
 myNormal2 = ot.Normal(mu2, sigma, R2)
 
 myMixture = ot.Mixture([myNormal1, myNormal2], [0.3, 0.7])
-myMixture.setDescription(['$x_1$', '$x_2$'])
+myMixture.setDescription(["$x_1$", "$x_2$"])
 
 graphPDF = myMixture.drawPDF()
 graphCDF = myMixture.drawCDF()

@@ -21,6 +21,7 @@ A quick start guide to the `Point` and `Sample` classes
 # %%
 import numpy as np
 import openturns as ot
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -129,20 +130,14 @@ data.getMarginal([0, 2])
 # Slicing can also be used to set a `Sample` row or column.
 
 # %%
-sample = ot.Sample([[1.0, 2.0],
-                    [3.0, 4.0],
-                    [5.0, 6.0]])
+sample = ot.Sample([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 p = [8.0, 10.0]
 sample[2, :] = p
 sample
 
 # %%
-sample = ot.Sample([[1.0, 2.0],
-                    [3.0, 4.0],
-                    [5.0, 6.0]])
-s = ot.Sample([[3.0],
-               [5.0],
-               [7.0]])
+sample = ot.Sample([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
+s = ot.Sample([[3.0], [5.0], [7.0]])
 sample[:, 1] = s
 sample
 
@@ -166,7 +161,7 @@ p2
 # In the following statement, we create a point by iterating over the components of a `Point`.
 
 # %%
-p3 = ot.Point([i*i for i in p1])
+p3 = ot.Point([i * i for i in p1])
 p3
 
 # %%
@@ -263,7 +258,7 @@ sample
 # Choice B: we create a `Sample` with size 1 in 5 dimensions.
 
 # %%
-sample = ot.Sample([u[i:i+5] for i in range(len(u)//5)])
+sample = ot.Sample([u[i : i + 5] for i in range(len(u) // 5)])
 sample
 
 # %%

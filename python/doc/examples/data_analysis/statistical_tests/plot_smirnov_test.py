@@ -23,6 +23,7 @@ Test identical distributions
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -48,13 +49,19 @@ view = viewer.View(graph)
 # %%
 # Numerically test sample1 against sample2
 test_result = ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample2)
-print('Samples follow the same distribution?', test_result.getBinaryQualityMeasure(),
-      'p-value=%.6g' % test_result.getPValue(),
-      'threshold=%.6g' % test_result.getThreshold())
+print(
+    "Samples follow the same distribution?",
+    test_result.getBinaryQualityMeasure(),
+    "p-value=%.6g" % test_result.getPValue(),
+    "threshold=%.6g" % test_result.getThreshold(),
+)
 
 # %%
 # Numerically test sample1 against sample3
 test_result = ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample3)
-print('Samples follow the same distribution?', test_result.getBinaryQualityMeasure(),
-      'p-value=%.6g' % test_result.getPValue(),
-      'threshold=%.6g' % test_result.getThreshold())
+print(
+    "Samples follow the same distribution?",
+    test_result.getBinaryQualityMeasure(),
+    "p-value=%.6g" % test_result.getPValue(),
+    "threshold=%.6g" % test_result.getThreshold(),
+)

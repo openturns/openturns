@@ -43,8 +43,7 @@ point = ot.Point(dim, 0.2)
 # Show PDF and CDF of point
 pointPDF = copula.computePDF(point)
 pointCDF = copula.computeCDF(point)
-print("Point = ", repr(point), " pdf=%.6f" %
-      pointPDF, " cdf=%.6f" % pointCDF)
+print("Point = ", repr(point), " pdf=%.6f" % pointPDF, " cdf=%.6f" % pointCDF)
 
 # Get 50% quantile
 quantile = copula.computeQuantile(0.5)
@@ -58,28 +57,29 @@ print("Quantile=", repr(quantile))
 # Get 95% survival function
 inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" %
-      copula.computeSurvivalFunction(inverseSurvival))
+print(
+    "Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival)
+)
 print("entropy=%.6f" % copula.computeEntropy())
 
 # Confidence regions
-interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(
-    0.95)
+interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
 print("Minimum volume interval=", interval)
 print("threshold=", ot.Point(1, threshold))
 levelSet, beta = copula.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
 print("beta=", ot.Point(1, beta))
-interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)
+interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
 print("Bilateral confidence interval=", interval)
 print("beta=", ot.Point(1, beta))
 interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, False)
+    0.95, False
+)
 print("Unilateral confidence interval (lower tail)=", interval)
 print("beta=", ot.Point(1, beta))
 interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
-    0.95, True)
+    0.95, True
+)
 print("Unilateral confidence interval (upper tail)=", interval)
 print("beta=", ot.Point(1, beta))
 
@@ -108,8 +108,15 @@ print("margins realization=", repr(margins.getRealization()))
 
 # Additional tests for PDF/CDF in extreme cases
 # We focus on the main diagonal as it is the most challenging computation
-points = [[1.0e-12] * 2, [1.0e-7] * 2, [0.1] * 2,
-          [0.5] * 2, [0.1] * 2, [0.1] * 2, [0.1] * 2]
+points = [
+    [1.0e-12] * 2,
+    [1.0e-7] * 2,
+    [0.1] * 2,
+    [0.5] * 2,
+    [0.1] * 2,
+    [0.1] * 2,
+    [0.1] * 2,
+]
 
 thetas = [1.0e-12, 0.9e-8, 1.1e-8, -0.99, 9.9e1, 1.1e2, 1.0e5]
 c_py = list()

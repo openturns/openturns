@@ -5,14 +5,14 @@ import math as m
 import dill
 
 # ensures python code is included
-dill.settings['recurse'] = True
+dill.settings["recurse"] = True
 
 ot.TESTPREAMBLE()
 
 
 def g(X):
     a, b = X
-    Y = [a*m.sin(b)]
+    Y = [a * m.sin(b)]
     return Y
 
 
@@ -22,6 +22,6 @@ print(f(x))
 
 # save
 study = ot.Study()
-study.setStorageManager(ot.XMLStorageManager('pyf.xml'))
-study.add('f', f)
+study.setStorageManager(ot.XMLStorageManager("pyf.xml"))
+study.add("f", f)
 study.save()
