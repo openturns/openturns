@@ -278,7 +278,7 @@ void TruncatedDistribution::computeRange()
     normalizationFactor_ = 1.0 / probability;
 
     // scale quantile epsilon of the inner distribution
-    distribution_.getImplementation()->setQuantileEpsilon(ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * probability);
+    distribution_.getImplementation()->setQuantileEpsilon(quantileEpsilon_ * probability);
   }
   epsilonRange_ = getRange() + Interval(Point(dimension_, -quantileEpsilon_), Point(dimension_, quantileEpsilon_));
 }
