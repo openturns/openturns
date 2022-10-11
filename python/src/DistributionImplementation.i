@@ -30,6 +30,12 @@
 %ignore OT::DistributionImplementation::isParallel;
 %ignore OT::DistributionImplementation::setQuantileEpsilon;
 %ignore OT::DistributionImplementation::getQuantileEpsilon;
+%ignore OT::DistributionImplementation::computeProbabilityGeneral;
+%ignore OT::DistributionImplementation::computeProbabilityGeneral1D;
+%ignore OT::DistributionImplementation::computeProbabilityContinuous;
+%ignore OT::DistributionImplementation::computeProbabilityContinuous1D;
+%ignore OT::DistributionImplementation::computeProbabilityDiscrete;
+
 
 %include openturns/DistributionImplementation.hxx
 
