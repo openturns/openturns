@@ -6,7 +6,7 @@ Release process
 
 1. New "release" branch
 
-2. Reindent sources (utils/reindent.sh)
+2. Reindent sources (utils/indent.sh)
 
 3. Increment version number X.Yrc1 (utils/setVersionNumber.sh)
 
