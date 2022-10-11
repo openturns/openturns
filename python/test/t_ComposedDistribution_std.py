@@ -12,7 +12,7 @@ sigma = [2.0, 3.0, 4.0]
 aCollection = []
 try:
     aCollection[10] = ot.Normal()
-except:
+except Exception:
     pass
 # Create a marginal : distribution 1D
 marginal = ot.Normal(mean[0], sigma[0])
@@ -99,13 +99,13 @@ print(
 print("entropy=%.6f" % distribution.computeEntropy())
 # Confidence regions
 if distribution.getDimension() <= 2:
-    threshold = Point()
+    threshold = ot.Point()
     print(
         "Minimum volume interval=",
         distribution.computeMinimumVolumeInterval(0.95, threshold),
     )
     print("threshold=", threshold)
-    beta = Point()
+    beta = ot.Point()
     levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
     print("Minimum volume level set=", levelSet)
     print("beta=", beta)

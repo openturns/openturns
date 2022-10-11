@@ -5,7 +5,12 @@ Configuring an arbitrary trend in Kriging
 # %%
 # The goal of this example is to show how to configure an arbitrary trend in a Kriging metamodel.
 #
-# In general, any collection of multivariate functions can be used as the `basis` argument of a `KrigingAlgorithm`. In practice, it might not be convenient to create a multivariate basis and this is why we sometimes create it by tensorization of univariate functions. In this example, we first use Legendre polynomials as our univariate functions, then we create an orthogonal polynomial basis corresponding to the input marginals.
+# In general, any collection of multivariate functions can be used as the
+# `basis` argument of a `KrigingAlgorithm`.
+# In practice, it might not be convenient to create a multivariate basis and
+# this is why we sometimes create it by tensorization of univariate functions.
+# In this example, we first use Legendre polynomials as our univariate functions,
+# then we create an orthogonal polynomial basis corresponding to the input marginals.
 #
 # For this purpose, we use the :ref:`cantilever beam <use-case-cantilever-beam>` example.
 
@@ -15,8 +20,6 @@ Configuring an arbitrary trend in Kriging
 
 # %%
 from openturns.usecases import cantilever_beam
-from matplotlib import pylab as plt
-import openturns.viewer as viewer
 import openturns as ot
 
 ot.RandomGenerator.SetSeed(0)
@@ -128,7 +131,7 @@ result.getCovarianceModel()
 # We first create the polynomial basis which corresponds to the inputs.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory([cb.E, cb.F, cb.L, cb.I])
+multivariateBasis = ot.OrthogonalProductPolynomialFactory([cb.E, cb.F, cb.L, cb.II])
 
 # %%
 # Then we create the multivariate basis which has maximum degree equal to 2.

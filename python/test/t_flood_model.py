@@ -3,7 +3,6 @@
 import openturns as ot
 from openturns.testing import assert_almost_equal
 from openturns.usecases import flood_model as flood_model
-from math import pi
 
 
 ot.TESTPREAMBLE()

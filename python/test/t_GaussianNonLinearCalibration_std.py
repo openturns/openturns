@@ -2,8 +2,6 @@
 
 import openturns as ot
 import openturns.testing as ott
-import math as m
-import sys
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(2)

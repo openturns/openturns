@@ -161,7 +161,7 @@ print("nTotal / N = ", int(nTotal / N))
 # %%
 list_subSamples = list()
 for i in range(Ns):
-    list_subSamples.append(inputSampleSubset[i * N : i * N + N])
+    list_subSamples.append(inputSampleSubset[i * N: i * N + N])
 
 # %%
 # The following graph draws each subset sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:

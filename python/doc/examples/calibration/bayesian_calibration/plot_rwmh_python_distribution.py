@@ -9,7 +9,12 @@ Posterior sampling using a PythonDistribution
 #
 # In the following, we assume that the lifetime :math:`T_i` of an industrial component follows the Weibull distribution :math:`\mathcal W(\alpha, \beta)`, with CDF  given by :math:`F(t|\alpha,\beta)= 1 - e^{-\left( \frac{t}{\beta} \right)^\alpha}`.
 #
-# Our goal is to estimate the model parameters :math:`\alpha, \beta` based on a dataset of recorded failures :math:`(t_1, \ldots, t_n),` some of which correspond to actual failures, and the remaining are right-censored. Let :math:`(f_1, \ldots, f_n) \in \{0,1\}^n` represent the nature of each datum, :math:`f_i=1` if :math:`t_i` corresponds to an actual failure, :math:`f_i=0` if it is right-censored.
+# Our goal is to estimate the model parameters :math:`\alpha, \beta` based on
+# a dataset of recorded failures :math:`(t_1, \ldots, t_n),` some of which
+# correspond to actual failures, and the remaining are right-censored.
+# Let :math:`(f_1, \ldots, f_n) \in \{0,1\}^n` represent the nature of each
+# datum, :math:`f_i=1` if :math:`t_i` corresponds to an actual failure,
+# :math:`f_i=0` if it is right-censored.
 #
 # Note that the likelihood of each recorded failure is given by the Weibull density:
 #

@@ -1,5 +1,4 @@
 import openturns as ot
-from math import exp
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 

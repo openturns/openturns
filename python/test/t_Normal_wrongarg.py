@@ -20,5 +20,5 @@ try:
     newR = ot.CorrelationMatrix(2)
     distribution.setCorrelation(newR)
     raise
-except:
+except Exception:
     pass

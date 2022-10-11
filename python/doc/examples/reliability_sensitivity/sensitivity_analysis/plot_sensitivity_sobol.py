@@ -40,7 +40,6 @@ Estimate Sobol' indices for the Ishigami function by a sampling method: a quick 
 # %%
 from openturns.usecases import ishigami_function
 import openturns as ot
-import numpy as np
 import pylab as pl
 import openturns.viewer
 import openturns.viewer as viewer

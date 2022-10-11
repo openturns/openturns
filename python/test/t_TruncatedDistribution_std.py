@@ -104,7 +104,7 @@ for testCase in range(len(distribution)):
             "pdf gradient (ref)=",
             repr(cleanPoint(referenceDistribution[testCase].computePDFGradient(point))),
         )
-    except:
+    except Exception:
         pass
 
     try:
@@ -114,7 +114,7 @@ for testCase in range(len(distribution)):
             "cdf gradient (ref)=",
             repr(cleanPoint(referenceDistribution[testCase].computeCDFGradient(point))),
         )
-    except:
+    except Exception:
         pass
 
     # quantile

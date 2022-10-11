@@ -34,7 +34,7 @@ try:
     ot.Normal().drawPDF().draw(fname)
     os.remove(fname)
     has_r = True
-except:
+except Exception:
     has_r = False
 print_feature("legacy plotting (R)", has_r)
 

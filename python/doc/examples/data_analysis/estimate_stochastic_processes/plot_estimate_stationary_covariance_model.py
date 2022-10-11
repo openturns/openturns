@@ -6,9 +6,17 @@ Estimate a stationary covariance function
 # %%
 # The objective here is to estimate a stationary covariance model from data.
 #
-# The library builds an estimation of the stationary covariance function on a *ProcessSample* or *TimeSeries* using the previous algorithm implemented in the *StationaryCovarianceModelFactory* class. The result consists in a *UserDefinedStationaryCovarianceModel* which is easy to manipulate.
+# The library builds an estimation of the stationary covariance function on a
+# *ProcessSample* or *TimeSeries* using the previous algorithm implemented in
+# the *StationaryCovarianceModelFactory* class.
+# The result consists in a *UserDefinedStationaryCovarianceModel* which is easy to manipulate.
 #
-# Such an object is composed of a time grid and a collection of :math:`K` square matrices of dimension d. :math:`K` corresponds to the number of time steps of the final time grid on which the covariance is estimated. When estimated from a time series , the *UserDefinedStationaryCovarianceModel* may have a time grid different from the initial time grid of the time series.
+# Such an object is composed of a time grid and a collection of :math:`K`
+# square matrices of dimension d.
+# :math:`K` corresponds to the number of time steps of the final time grid on
+# which the covariance is estimated.
+# When estimated from a time series , the *UserDefinedStationaryCovarianceModel*
+# may have a time grid different from the initial time grid of the time series.
 #
 
 # %%

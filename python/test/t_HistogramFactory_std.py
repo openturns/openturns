@@ -5,9 +5,9 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
-l = [1.0, 0.7, 1.2, 0.9]
+ll = [1.0, 0.7, 1.2, 0.9]
 h = [0.5, 1.5, 3.5, 2.5]
-distribution = ot.Histogram(-1.5, l, h)
+distribution = ot.Histogram(-1.5, ll, h)
 size = 10000
 sample = distribution.getSample(size)
 factory = ot.HistogramFactory()

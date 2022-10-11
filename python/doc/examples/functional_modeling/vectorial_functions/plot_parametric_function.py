@@ -16,9 +16,6 @@ Create a parametric function
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-import math as m
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -26,8 +23,8 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # Create the function with all parameters d(E, F, L, I)
 def d_func(X):
-    E, F, L, I = X
-    d = -F * L**3 / (3.0 * E * I)
+    E, F, L, II = X
+    d = -F * L**3 / (3.0 * E * II)
     return [d]
 
 

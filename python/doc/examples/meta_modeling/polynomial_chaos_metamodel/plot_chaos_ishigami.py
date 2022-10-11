@@ -47,7 +47,6 @@ outputSample = im.model(inputSample)
 # %%
 def plotXvsY(sampleX, sampleY, figsize=(15, 3)):
     import pylab as pl
-    import openturns.viewer
 
     dimX = sampleX.getDimension()
     inputdescr = sampleX.getDescription()

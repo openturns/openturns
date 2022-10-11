@@ -200,36 +200,35 @@ class FireSatelliteModel:
             ["H", "Pother", "Fs", "theta", "Lsp", "q", "RD", "Lalpha", "Cd"]
         )
 
-        ## Definitions of models
+        # Definitions of models
         # Global model
         self.model = ot.PythonFunction(9, 3, self.multidisciplinaryAnalysis)
 
         # Model of Total torque
-        multidisciplinaryAnalysisToTalTorque = lambda x: [
-            self.multidisciplinaryAnalysis(x)[0]
-        ]
+        def multidisciplinaryAnalysisToTalTorque(x):
+            return [self.multidisciplinaryAnalysis(x)[0]]
 
         self.modelTotalTorque = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisToTalTorque
         )
 
         # Model of Total power
-        multidisciplinaryAnalysisToTalPower = lambda x: [
-            self.multidisciplinaryAnalysis(x)[1]
-        ]
+        def multidisciplinaryAnalysisToTalPower(x):
+            return [self.multidisciplinaryAnalysis(x)[1]]
+
         self.modelTotalPower = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisToTalPower
         )
 
         # Model of Solar Array Area
-        multidisciplinaryAnalysisSolarArrayArea = lambda x: [
-            self.multidisciplinaryAnalysis(x)[2]
-        ]
+        def multidisciplinaryAnalysisSolarArrayArea(x):
+            return [self.multidisciplinaryAnalysis(x)[2]]
+
         self.modelSolarArrayArea = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisSolarArrayArea
         )
 
-        ## Optional variables (deterministic)
+        # Optional variables (deterministic)
         # Speed of light
         self.c = 2.9979e8
 
@@ -434,7 +433,6 @@ class FireSatelliteModel:
         c = self.c
         As = self.As
         i = self.i
-        Id = self.Id
         M = self.M
         rho = self.rho
         A = self.A
@@ -523,6 +521,7 @@ class FireSatelliteModel:
             inputs_power["delta_t_orbit"] = outputs_orbit["delta_t_orbit"]
             inputs_power["delta_t_eclipse"] = outputs_orbit["delta_t_eclipse"]
 
+            global outputs_attitude
             if itFPI == 0:
                 inputs_power["P_ACS"] = 150.0
             else:

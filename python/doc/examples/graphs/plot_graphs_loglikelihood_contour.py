@@ -130,7 +130,12 @@ levels
 # -----------------------
 
 # %%
-# We first configure the contour plot. By default each level is a dedicated contour in order to have one color per contour, but they all share the same grid and data. We use the `getDrawable` method to take the first contour as the only one with multiple levels. Then we use the `setLevels` method: we ask for many iso-values in the same data so the color will be the same for all curves. In order to inline the level values labels, we use the `setDrawLabels` method.
+# We first configure the contour plot.
+# By default each level is a dedicated contour in order to have one color per contour,
+# but they all share the same grid and data.
+# We use the `getDrawable` method to take the first contour as the only one with multiple levels.
+# Then we use the `setLevels` method: we ask for many iso-values in the same data so the color will be the same for all curves.
+# In order to inline the level values labels, we use the `setDrawLabels` method.
 
 # %%
 contours = graphBasic.getDrawable(0)

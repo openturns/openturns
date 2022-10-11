@@ -85,7 +85,6 @@ def test_active_amplitude_parameter():
     )
 
     print("Product covariance model")
-    d = 3
     cov_model = ot.ProductCovarianceModel([model1, model2])
     print("Full parameter : ", cov_model.getFullParameter())
     print(

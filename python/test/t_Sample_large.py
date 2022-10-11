@@ -16,7 +16,7 @@ try:
 
     # We should NEVER go here
     raise
-except:
+except Exception:
     pass
 
 # We create an small Sample
@@ -33,7 +33,7 @@ try:
     print("p[0]=", p0, " p[1]=", p1, " p[2]=", p2)
     # We should NEVER go here
     raise
-except:
+except Exception:
     pass
 
 # We create a big Sample

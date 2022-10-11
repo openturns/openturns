@@ -74,18 +74,14 @@ scaleOptimizationBounds = ot.Interval(
     [1.0e7, 2.0e3, 2.0e3, 1e2, 10.0, 10.0, 10.0, 10.0, 10.0, 1e8, 1e4, 1e3],
 )
 
-#%%
-# We can now define the scaled version of Kriging model.
-
 # %%
+# We can now define the scaled version of Kriging model.
 covarianceModel.setScale(inputTrainingSet.getMax())
 algo = ot.KrigingAlgorithm(inputTrainingSet, outputTrainingSet, covarianceModel, basis)
 algo.setOptimizationBounds(scaleOptimizationBounds)
 
-#%%
-# We run the algorithm and get the metamodel.
-
 # %%
+# We run the algorithm and get the metamodel.
 algo.run()
 result = algo.getResult()
 krigingMetamodel = result.getMetaModel()
@@ -101,10 +97,8 @@ inputTestSet = experimentTest.generate()
 outputTestSet = model(inputTestSet)
 outputKriging = krigingMetamodel(inputTestSet)
 
-#%%
-# Then, we use the `MetaModelValidation` class to validate the metamodel.
-
 # %%
+# Then, we use the `MetaModelValidation` class to validate the metamodel.
 val = ot.MetaModelValidation(inputTestSet, outputTestSet, krigingMetamodel)
 
 Q2 = val.computePredictivityFactor()

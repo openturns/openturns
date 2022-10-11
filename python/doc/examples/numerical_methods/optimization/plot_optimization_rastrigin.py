@@ -1,26 +1,28 @@
 """
 Optimization of the Rastrigin test function
 ===========================================
-
-The Rastrigin function is defined by:
-
-.. math::
-   f(\\vect{x}) = A + \\sum_{i=1}^n \\left[x_i^2 - A\\cos(2 \\pi x_i)\\right]
-
-where :math:`A=10` and :math:`\\vect{x}\in[-5.12,5.12]^n`.
-
-It has a global minimum at :math:`\\vect{x} = \\vect{0}` where :math:`f(\\vect{x})= - 10`.
-
-This function has many local minima, so optimization algorithms must be run from multiple starting points.
-
-In our example, we consider the bidimensional case, i.e. :math:`n=2`.
-
-**References**:
-
-- Rastrigin, L. A. "Systems of extremal control." Mir, Moscow (1974).
-- Rudolph, G. "Globale Optimierung mit parallelen Evolutionsstrategien". Diplomarbeit. Department of Computer Science, University of Dortmund, July 1990.
-
 """
+
+# %%
+# The Rastrigin function is defined by:
+#
+# .. math::
+#
+#   f(\vect{x}) = A + \sum_{i=1}^n \left[x_i^2 - A\cos(2 \pi x_i)\right]
+#
+# where :math:`A=10` and :math:`\vect{x}\in[-5.12,5.12]^n`.
+#
+# It has a global minimum at :math:`\vect{x} = \vect{0}` where :math:`f(\vect{x})= - 10`.
+#
+# This function has many local minima, so optimization algorithms must be run from multiple starting points.
+#
+# In our example, we consider the bidimensional case, i.e. :math:`n=2`.
+#
+# **References**:
+#
+# - Rastrigin, L. A. "Systems of extremal control." Mir, Moscow (1974).
+# - Rudolph, G. "Globale Optimierung mit parallelen Evolutionsstrategien". Diplomarbeit. Department of Computer Science, University of Dortmund, July 1990.
+#
 
 # %%
 # Definition of the problem

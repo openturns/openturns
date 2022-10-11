@@ -66,7 +66,7 @@ try:
     # We get the tenth element of the ts
     # THIS SHOULD NORMALLY FAIL
     tenthElement = ts1.at(9)
-except:
+except Exception:
     print("Expected failure")
 
 tg1 = ot.RegularGrid(0.0, 0.1, 11)

@@ -40,8 +40,7 @@ print("pdf     =%.6f" % PDF)
 print(
     "pdf (FD)=%.6f"
     % (
-        distribution.computeCDF(point + ot.Point(1, 0))
-        - distribution.computeCDF(point + ot.Point(1, -1))
+        distribution.computeCDF(point + ot.Point(1, 0)) - distribution.computeCDF(point + ot.Point(1, -1))
     )
 )
 

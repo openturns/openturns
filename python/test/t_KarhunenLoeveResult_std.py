@@ -1,7 +1,4 @@
 import openturns as ot
-import unittest
-import openturns.testing as ott
-import sys
 
 ot.TESTPREAMBLE()
 

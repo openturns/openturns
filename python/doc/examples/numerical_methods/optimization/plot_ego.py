@@ -23,7 +23,6 @@ from openturns.usecases import ackley_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-import math as m
 
 ot.RandomGenerator.SetSeed(0)
 ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK")
@@ -119,7 +118,8 @@ problem.setBounds(bounds)
 # %%
 # In order to show the various options, we configure them all, even if most could be left to default settings in this case.
 #
-# The most important method is `setMaximumEvaluationNumber` which limits the number of iterations that the algorithm can perform. In the Ackley example, we choose to perform 10 iterations of the algorithm.
+# The most important method is `setMaximumEvaluationNumber` which limits the number of iterations that the algorithm can perform.
+# In the Ackley example, we choose to perform 10 iterations of the algorithm.
 
 # %%
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
@@ -140,7 +140,12 @@ result.getOptimalValue()
 fexact
 
 # %%
-# Compared to the minimum function value, we see that the EGO algorithm provides solution which is not very accurate. However, the optimal point is in the neighbourhood of the exact solution, and this is quite an impressive success given the limited amount of function evaluations: only 60 evaluations for the initial DOE and 10 iterations of the EGO algorithm, for a total equal to 70 function evaluations.
+# Compared to the minimum function value, we see that the EGO algorithm
+# provides solution which is not very accurate.
+# However, the optimal point is in the neighbourhood of the exact solution,
+# and this is quite an impressive success given the limited amount of function
+# evaluations: only 60 evaluations for the initial DOE and 10 iterations of
+# the EGO algorithm, for a total equal to 70 function evaluations.
 
 # %%
 graph = result.drawOptimalValueHistory()
@@ -164,7 +169,8 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# We see that the initial (black) points are dispersed in the whole domain, while the solution points are much closer to the solution.
+# We see that the initial (black) points are dispersed in the whole domain,
+# while the solution points are much closer to the solution.
 #
 # However, the final solution produced by the EGO algorithm is not very accurate. This is why we finalize the process by adding a local optimization step.
 

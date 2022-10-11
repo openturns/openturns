@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from math import sqrt, pi, exp
 
 ot.TESTPREAMBLE()
 ot.ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 4000000)

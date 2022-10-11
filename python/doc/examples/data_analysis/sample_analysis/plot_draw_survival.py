@@ -8,7 +8,8 @@ Draw a survival function
 # Introduction
 # ------------
 #
-# The goal of this example is to show how to draw the survival function of a sample or a distribution, in linear and logarithmic scales.
+# The goal of this example is to show how to draw the survival function of a
+# sample or a distribution, in linear and logarithmic scales.
 #
 # Let :math:`X` be a random variable with distribution function :math:`F`:
 #
@@ -45,11 +46,21 @@ Draw a survival function
 # Motivations for the survival function
 # -------------------------------------
 #
-# For many probabilistic models associated with extreme events or lifetime models, the survival function has a simpler expression than the distribution function.
+# For many probabilistic models associated with extreme events or lifetime models,
+# the survival function has a simpler expression than the distribution function.
 #
-# * More specifically, several models (e.g. Pareto or Weibull) have a simple expression when we consider the logarithm of the survival function. In this situation, the :math:`(\log(x),\log(S(x)))` plot is often used. For some distributions, this plot is a straight line.
+# * More specifically, several models (e.g. Pareto or Weibull) have a simple
+#   expression when we consider the logarithm of the survival function.
+#   In this situation, the :math:`(\log(x),\log(S(x)))` plot is often used.
+#   For some distributions, this plot is a straight line.
 #
-# * When we consider probabilities very close to 1 (e.g. with extreme events), a loss of precision can occur when we consider the :math:`1-F(x)` expression with floating point numbers. This loss of significant digits is known as "catastrophic cancellation" in the bibliography and happens when two close floating point numbers are subtracted. This is one of the reasons why we sometimes use directly the survival function instead of the complementary of the distribution.
+# * When we consider probabilities very close to 1 (e.g. with extreme events),
+#   a loss of precision can occur when we consider the :math:`1-F(x)` expression
+#   with floating point numbers.
+#   This loss of significant digits is known as "catastrophic cancellation" in
+#   the bibliography and happens when two close floating point numbers are subtracted.
+#   This is one of the reasons why we sometimes use directly the survival
+#   function instead of the complementary of the distribution.
 
 # %%
 # Define a distribution
@@ -100,7 +111,8 @@ graph.setTitle("Survival function of a distribution")
 view = viewer.View(graph)
 
 # %%
-# In order to get finite bounds for the next graphics, we compute the `xmin` and `xmax` bounds from the 0.01 and 0.99 quantiles of the distributions.
+# In order to get finite bounds for the next graphics, we compute the `xmin`
+# and `xmax` bounds from the 0.01 and 0.99 quantiles of the distributions.
 
 # %%
 xmin = distribution.computeQuantile(0.01)[0]
@@ -202,7 +214,9 @@ view = viewer.View(graph)
 # graph
 
 # %%
-# We obviously have :math:`P(X>X_{max})=0`, where :math:`X_{max}` is the sample maximum. This prevents from using the sample maximum and have a logarithmic Y axis at the same time. This is why in the following example we restrict the interval where we draw the survival function.
+# We obviously have :math:`P(X>X_{max})=0`, where :math:`X_{max}` is the sample maximum.
+# This prevents from using the sample maximum and have a logarithmic Y axis at the same time.
+# This is why in the following example we restrict the interval where we draw the survival function.
 
 # %%
 xmin = sample.getMin()[0]

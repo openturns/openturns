@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import math as m
 import sys
 
 ot.TESTPREAMBLE()
@@ -83,7 +82,7 @@ for algoName in algoNames:
                     ot.NLopt.SetSeed(0)
                     try:
                         algo.setProblem(problem)
-                    except:
+                    except Exception:
                         print("-- Not supported")
                         continue
                     algo.setMaximumEvaluationNumber(100)

@@ -7,7 +7,6 @@ Calibration of the Chaboche mechanical model
 # In this example we present calibration methods on the Chaboche model. A detailed explanation of this mechanical law is presented :ref:`here <use-case-chaboche>`.
 
 # %%
-import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt

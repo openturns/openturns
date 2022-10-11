@@ -21,7 +21,8 @@ sample = distribution.getSample(50)
 # Case 1 : the distribution parameters are known.
 # -----------------------------------------------
 #
-# In the case where the parameters of the distribution are known, we must use the `Kolmogorov` static method and the distribution to be tested.
+# In the case where the parameters of the distribution are known,
+# we must use the `Kolmogorov` static method and the distribution to be tested.
 
 # %%
 result = ot.FittingTest.Kolmogorov(sample, distribution, 0.01)
@@ -55,7 +56,8 @@ result.getStatistic()
 # Case 2 : the distribution parameters are estimated from the sample.
 # -------------------------------------------------------------------
 #
-# In the case where the parameters of the distribution are estimated from the sample, we must use the `Lilliefors` static method and the distribution factory to be tested.
+# In the case where the parameters of the distribution are estimated from the sample,
+# we must use the `Lilliefors` static method and the distribution factory to be tested.
 
 # %%
 ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 1000)

@@ -36,7 +36,7 @@ constrainingBoundsProblem = ot.OptimizationProblem(
 boundedPref = [0.0, -1.0]
 unboundedPref = [0.0, 0.0]
 
-## GLOBAL ALGORITHM ##
+# GLOBAL ALGORITHM
 
 # Non-contraining bounds Global
 notConstrainingBoundsGlobal = ot.Dlib(notConstrainingBoundsProblem, "global")

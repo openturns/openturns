@@ -50,7 +50,7 @@ matrix3 = ot.CovarianceMatrix(3)
 matrix3[1, 0] = float("nan")
 try:
     print("ev=", matrix3.computeSingularValues())
-except:
+except Exception:
     print("ok")
 
 # from SymmetricMatrix

@@ -83,7 +83,7 @@ n = sample.getSize()
 # are considered, the regression can be performed with the help of the `LinearModelAlgorithm` class.
 
 # %%
-input_sample = sample[:, 1 : dimension + 1]
+input_sample = sample[:, 1: dimension + 1]
 output_sample = sample[:, 0]
 algo_full = ot.LinearModelAlgorithm(input_sample, output_sample)
 algo_full.run()

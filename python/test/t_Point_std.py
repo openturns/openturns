@@ -107,13 +107,13 @@ j[1] = 1
 print("j = ", repr(j))
 
 # BUG PYTHON for I = Point(2. * i)
-I = ot.Point(i * 2.0)
-print("I = ", repr(I))
+II = ot.Point(i * 2.0)
+print("I = ", repr(II))
 
 J = ot.Point(j * 3.0)
 print("J = ", repr(J))
 
-dotProduct = I.dot(J)
+dotProduct = II.dot(J)
 print("dotProduct = %.6f" % dotProduct)
 
 # slicing
@@ -143,7 +143,7 @@ print("pt[-1]=", pt[-1])
 print(0 + pt1)
 try:
     1 + pt1
-except:
+except Exception:
     print("1+Point -> ok")
 
 # unary minus

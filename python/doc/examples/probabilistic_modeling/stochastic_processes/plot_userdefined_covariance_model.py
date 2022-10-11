@@ -33,9 +33,9 @@ def C(s, t):
 covariance = ot.CovarianceMatrix(mesh.getVerticesNumber())
 for k in range(mesh.getVerticesNumber()):
     t = mesh.getVertices()[k]
-    for l in range(k + 1):
-        s = mesh.getVertices()[l]
-        covariance[k, l] = C(s[0], t[0])
+    for ll in range(k + 1):
+        s = mesh.getVertices()[ll]
+        covariance[k, ll] = C(s[0], t[0])
 
 # %%
 # Create the covariance model

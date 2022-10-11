@@ -54,7 +54,6 @@ Estimate a scalar ARMA process
 
 # %%
 import openturns as ot
-import matplotlib.pyplot as plt
 
 ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)

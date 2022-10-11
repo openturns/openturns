@@ -484,7 +484,9 @@ graph = calibrationResult.drawParameterDistributions()
 view = viewer.View(graph)
 
 # %%
-# The two distributions are different, which shows that the calibration is sensible to the observations (if the observations were not sensible, the two distributions were superimposed). Moreover, the two distributions are quite close, which implies that the prior distribution has played a roled in the calibration (otherwise the two distributions would be completely different, indicating that only the observations were taken into account).
+# The two distributions are different, which shows that the calibration is sensible to the observations (if the observations were not sensible, the two distributions were superimposed).
+# Moreover, the two distributions are quite close, which implies that the prior distribution has played a roled in the calibration (otherwise the two distributions would be completely different,
+# indicating that only the observations were taken into account).
 
 # %%
 # Gaussian nonlinear calibration

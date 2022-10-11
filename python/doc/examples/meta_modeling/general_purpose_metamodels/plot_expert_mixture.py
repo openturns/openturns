@@ -39,8 +39,6 @@ Mixture of experts
 import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
-from openturns.viewer import View
 import numpy as np
 
 ot.Log.Show(ot.Log.NONE)

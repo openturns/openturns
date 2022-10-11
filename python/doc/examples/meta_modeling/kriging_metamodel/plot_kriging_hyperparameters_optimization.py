@@ -20,7 +20,9 @@ Kriging :configure the optimization solver
 #
 # All these parameters are estimated with the `GeneralLinearModelAlgorithm` class.
 #
-# The estimation of the :math:`{\bf \theta}` parameters is the step which has the highest CPU cost. Moreover, the maximization of likelihood may be associated with difficulties e.g. many local maximums or even the non convergence of the optimization algorithm. In this case, it might be useful to fine tune the optimization algorithm so that the convergence of the optimization algorithm is, hopefully, improved.
+# The estimation of the :math:`{\bf \theta}` parameters is the step which has the highest CPU cost.
+# Moreover, the maximization of likelihood may be associated with difficulties e.g. many local maximums or even the non convergence of the optimization algorithm.
+# In this case, it might be useful to fine tune the optimization algorithm so that the convergence of the optimization algorithm is, hopefully, improved.
 #
 # Furthermore, there are several situations in which the optimization can be initialized or completely bypassed. Suppose for example that we have already created an initial kriging metamodel with :math:`N` points and we want to add a single new point.
 #
@@ -59,8 +61,8 @@ F.setDescription("F")
 L = ot.Uniform(250.0, 260.0)  # in cm
 L.setDescription("L")
 # Moment of inertia I
-I = ot.Beta(2.5, 1.5, 310, 450)  # in cm^4
-I.setDescription("I")
+II = ot.Beta(2.5, 1.5, 310, 450)  # in cm^4
+II.setDescription("I")
 
 # %%
 # Finally, we define the dependency using a `NormalCopula`.
@@ -70,7 +72,7 @@ dim = 4  # number of inputs
 R = ot.CorrelationMatrix(dim)
 R[2, 3] = -0.2
 myCopula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
-myDistribution = ot.ComposedDistribution([E, F, L, I], myCopula)
+myDistribution = ot.ComposedDistribution([E, F, L, II], myCopula)
 
 # %%
 # Create the design of experiments
@@ -245,7 +247,10 @@ result.getTrendCoefficients()
 # Reuse the parameters from a previous optimization
 # -------------------------------------------------
 #
-# In this example, we show how to reuse the optimized parameters of a previous kriging and configure a new one. Furthermore, we disable the optimization so that the parameters of the covariance model are not updated. This make the process of adding a new point very fast: it improves the quality by adding a new point in the design of experiments without paying the price of the update of the covariance model.
+# In this example, we show how to reuse the optimized parameters of a previous kriging and configure a new one.
+# Furthermore, we disable the optimization so that the parameters of the covariance model are not updated.
+# This make the process of adding a new point very fast:
+# it improves the quality by adding a new point in the design of experiments without paying the price of the update of the covariance model.
 
 # %%
 # Step 1: Run a first kriging algorithm.
@@ -303,7 +308,10 @@ def printCovarianceParameterChange(covarianceModel1, covarianceModel2):
 printCovarianceParameterChange(covarianceModel, notUpdatedCovarianceModel)
 
 # %%
-# We see that the parameters did not change *at all*: disabling the optimization allows one to keep a constant covariance model. In a practical algorithm, we may, for example, add a block of 10 new points before updating the parameters of the covariance model. At this point, we may reuse the previous covariance model so that the optimization starts from a better point, compared to the parameters default values. This will reduce the cost of the optimization.
+# We see that the parameters did not change *at all*: disabling the optimization allows one to keep a constant covariance model.
+# In a practical algorithm, we may, for example, add a block of 10 new points before updating the parameters of the covariance model.
+# At this point, we may reuse the previous covariance model so that the optimization starts from a better point, compared to the parameters default values.
+# This will reduce the cost of the optimization.
 
 # %%
 # Configure the local optimization solver
@@ -336,7 +344,9 @@ printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model
 # ----------------------------------------
 
 # %%
-# The following example checks the robustness of the optimization of the kriging algorithm with respect to the optimization of the likelihood function in the covariance model parameters estimation. We use a `MultiStart` algorithm in order to avoid to be trapped by a local minimum. Furthermore, we generate the design of experiments using a `LHSExperiments`, which guarantees that the points will fill the space.
+# The following example checks the robustness of the optimization of the kriging algorithm with respect to the optimization of the likelihood function in the covariance model parameters estimation.
+# We use a `MultiStart` algorithm in order to avoid to be trapped by a local minimum.
+# Furthermore, we generate the design of experiments using a `LHSExperiments`, which guarantees that the points will fill the space.
 
 # %%
 sampleSize_train = 10

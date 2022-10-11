@@ -7,7 +7,10 @@ Apply a transform or inverse transform on your polynomial chaos
 # Introduction
 # ------------
 #
-# In this document we present the transformation involved in the creation of a polynomial chaos. Indeed, the polynomial chaos expansion is never directly applied to the input random variable of a model :math:`g`. Instead, the expansion is expressed based on the associated standard random variable. In this example,  we show how to transform a Log-Normal random variable into its standardized variable with the class `DistributionTransformation`.
+# In this document we present the transformation involved in the creation of a polynomial chaos.
+# Indeed, the polynomial chaos expansion is never directly applied to the input random variable of a model :math:`g`.
+# Instead, the expansion is expressed based on the associated standard random variable.
+# In this example,  we show how to transform a Log-Normal random variable into its standardized variable with the class `DistributionTransformation`.
 
 # %%
 # Probabilistic transform
@@ -101,4 +104,6 @@ Tinverse(sampleZ)
 # Conclusion
 # ----------
 #
-# The `DistributionTransformation` class is rarely used directly because the polynomial chaos classes perform the transformation automatically. However, understanding how this transform is done clarifies why the coefficients of the chaos expansion cannot be related to the input random variable :math:`X`: the expansion is based on the standard variables :math:`\xi`. Hence, the absolute values of the corresponding coefficients have no straightforward interpretation, even though squaring them yields the part of the global variance associated with each coefficient.
+# The `DistributionTransformation` class is rarely used directly because the polynomial chaos classes perform the transformation automatically.
+# However, understanding how this transform is done clarifies why the coefficients of the chaos expansion cannot be related to the input random variable :math:`X`: the expansion is based on the standard variables :math:`\xi`.
+# Hence, the absolute values of the corresponding coefficients have no straightforward interpretation, even though squaring them yields the part of the global variance associated with each coefficient.

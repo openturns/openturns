@@ -5,7 +5,7 @@ import openturns as ot
 
 from io import StringIO
 from docutils.parsers.rst import Directive
-from docutils import nodes, statemachine
+from docutils import nodes
 
 
 class execforresourcemap_directive(Directive):

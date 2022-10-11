@@ -21,8 +21,6 @@ try:
     from pkg_resources import parse_version as LooseVersion
 except ImportError:
     from distutils.version import LooseVersion
-import os
-import re
 import warnings
 import io
 
@@ -364,7 +362,7 @@ class View(object):
             if "marker" not in plot_kw_default:
                 try:
                     plot_kw["marker"] = pointStyleDict[drawable.getPointStyle()]
-                except:
+                except Exception:
                     warnings.warn("-- Unknown marker: " + drawable.getPointStyle())
 
             # set line style
@@ -379,12 +377,12 @@ class View(object):
             if ("linestyle" not in plot_kw_default) and ("ls" not in plot_kw_default):
                 try:
                     plot_kw["linestyle"] = lineStyleDict[drawable.getLineStyle()]
-                except:
+                except Exception:
                     warnings.warn("-- Unknown line style")
             if ("linestyle" not in step_kw_default) and ("ls" not in step_kw_default):
                 try:
                     step_kw["linestyle"] = lineStyleDict[drawable.getLineStyle()]
-                except:
+                except Exception:
                     warnings.warn("-- Unknown line style")
 
             # set line width
@@ -512,7 +510,7 @@ class View(object):
                         contour_kw["linestyles"] = lineStyleDict[
                             drawable.getLineStyle()
                         ]
-                    except:
+                    except Exception:
                         warnings.warn("-- Unknown line style")
                 if "colors" not in contour_kw_default:
                     contour_kw["colors"] = [drawable.getColorCode()]
@@ -521,10 +519,10 @@ class View(object):
                     clabel_kw.setdefault("fontsize", 8)
                     # Use labels
                     fmt = {}
-                    for l, s in zip(
+                    for lv, s in zip(
                         np.array(drawable.getLevels()), drawable.getLabels()
                     ):
-                        fmt[l] = s
+                        fmt[lv] = s
                     clabel_kw.setdefault("fmt", fmt)
                     try:
                         plt.clabel(contourset, **clabel_kw)
@@ -542,8 +540,6 @@ class View(object):
                 self._ax[0].step(x, y, **step_kw)
 
             elif drawableKind == "Text":
-                dim = drawable.getData().getDimension()
-
                 # adjust font
                 if ("fontsize" not in text_kw_default) and (
                     "size" not in text_kw_default
@@ -611,7 +607,7 @@ class View(object):
                         "center": "center",
                     }
                     legend_kw["loc"] = legendPositionDict[graph.getLegendPosition()]
-                except:
+                except Exception:
                     warnings.warn(
                         "-- Unknown legend position: " + graph.getLegendPosition()
                     )
@@ -901,7 +897,7 @@ def PlotDesign(
     labels = data.getDescription()
 
     # adjust font
-    if (not "fontsize" in text_kw) and (not "size" in text_kw):
+    if ("fontsize" not in text_kw) and ("size" not in text_kw):
         text_kw["fontsize"] = max(16 - dim, 4)
     text_kw.setdefault("horizontalalignment", "center")
     text_kw.setdefault("verticalalignment", "center")
@@ -924,7 +920,7 @@ def PlotDesign(
         "dot": ",",
         "none": "None",
     }
-    if not "marker" in plot_kw:
+    if "marker" not in plot_kw:
         plot_kw["marker"] = pointStyleDict["square"]
 
     if not enableTicks:

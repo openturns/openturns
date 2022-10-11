@@ -2,7 +2,6 @@
 
 import sys
 import openturns as ot
-import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 ot.Log.Show(ot.Log.INFO)

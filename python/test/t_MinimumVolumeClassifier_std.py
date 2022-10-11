@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
 import openturns as ot
-import sys
-import openturns.testing as ott
 import math as m
 
 ot.TESTPREAMBLE()

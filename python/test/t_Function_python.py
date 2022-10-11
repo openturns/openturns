@@ -135,7 +135,7 @@ print("no func")
 try:
     myFunc = ot.PythonFunction(2, 1)
     outSample = myFunc(a_sample)
-except:
+except Exception:
     # must raise exception
     print("no function detected : ok.")
 else:
@@ -156,7 +156,7 @@ for n in range(2):
     try:
         X = ot.Point(1, n)
         myFunc(X)
-    except Exception as exc:
+    except Exception:
         # print exc
         print("exception handling: ok")
 

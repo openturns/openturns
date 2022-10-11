@@ -7,7 +7,6 @@ Probabilistic design of experiments
 
 # %%
 import openturns as ot
-import math as m
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 

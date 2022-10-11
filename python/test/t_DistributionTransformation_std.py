@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import math as m
 
 # ot.Log.Show(ot.Log.ALL)
 

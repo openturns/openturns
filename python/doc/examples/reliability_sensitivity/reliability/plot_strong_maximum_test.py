@@ -27,8 +27,6 @@ Test the design point with the Strong Maximum Test
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 

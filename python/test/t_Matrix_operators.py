@@ -35,7 +35,7 @@ for a in mats:
         print("a*s=", ats)
         sta = s * a
         print("s*a=", sta)
-    except:
+    except Exception:
         print("no scalar mul for", iname)
 
     # try scalar div
@@ -43,7 +43,7 @@ for a in mats:
         s = 5.0
         ads = a / s
         print("a/s=", ads)
-    except:
+    except Exception:
         print("no scalar div for", iname)
 
     # try vec mul
@@ -51,13 +51,13 @@ for a in mats:
         x = ot.Point(range(6, 6 + a.getNbColumns()))
         ax = a * x
         print("a*x=", ax)
-    except:
+    except Exception:
         print("no vec mul for", iname)
 
     try:
         a3 = a**3
         print("a**3=", a3)
-    except:
+    except Exception:
         print("no pow for", iname)
 
     for b in mats:
@@ -65,19 +65,19 @@ for a in mats:
         try:
             ab = a * b
             print("a*b=", ab)
-        except:
+        except Exception:
             print("no mul for", iname, jname)
 
         try:
             apb = a + b
             print("a+b=", apb)
-        except:
+        except Exception:
             print("no add for", iname, jname)
 
         try:
             amb = a - b
             print("a-b=", amb)
-        except:
+        except Exception:
             print("no sub for", jname)
 
 sm = ot.SymmetricMatrix(2)

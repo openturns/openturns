@@ -16,7 +16,6 @@ from openturns.usecases import logistic_model
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-from numpy import linspace, exp, maximum
 
 ot.Log.Show(ot.Log.NONE)
 

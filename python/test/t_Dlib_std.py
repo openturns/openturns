@@ -35,7 +35,7 @@ start = [3.0, -1.5]
 unboundedPref = [1.0, 1.0]
 boundedPref = [0.70856, 0.5]
 
-## CONJUGATE GRADIENT ALGORITHM ##
+# CONJUGATE GRADIENT ALGORITHM ##
 
 # Unbounded CG
 unboundedCg = ot.Dlib(unboundedProblem, "cg")
@@ -62,7 +62,7 @@ constrainingBoundsCg.run()
 printResults(constrainingBoundsCg.getResult(), "Constraining bounds CG")
 
 
-## BFGS ALGORITHM ##
+# BFGS ALGORITHM
 
 # Unbounded BFGS
 unboundedBfgs = ot.Dlib(unboundedProblem, "bfgs")
@@ -89,7 +89,7 @@ constrainingBoundsBfgs.run()
 printResults(constrainingBoundsBfgs.getResult(), "Constraining bounds BFGS")
 
 
-## LBFGS ALGORITHM ##
+# LBFGS ALGORITHM
 
 # Unbounded LBFGS
 unboundedLbfgs = ot.Dlib(unboundedProblem, "lbfgs")
@@ -118,7 +118,7 @@ constrainingBoundsLbfgs.setMaxSize(15)
 constrainingBoundsLbfgs.run()
 
 
-## NEWTON ALGORITHM ##
+# NEWTON ALGORITHM
 
 # Unbounded BFGS
 unboundedNewton = ot.Dlib(unboundedProblem, "newton")
@@ -145,7 +145,7 @@ constrainingBoundsNewton.run()
 printResults(constrainingBoundsNewton.getResult(), "Constraining bounds Newton")
 
 
-## TRUST REGION ALGORITHM ##
+# TRUST REGION ALGORITHM
 unboundedTrustRegion = ot.Dlib(unboundedProblem, "trust_region")
 unboundedTrustRegion.setStartingPoint(start)
 unboundedTrustRegion.setMaximumIterationNumber(10000)

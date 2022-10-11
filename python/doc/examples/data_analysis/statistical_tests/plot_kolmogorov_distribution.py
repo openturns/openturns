@@ -13,7 +13,8 @@ Kolmogorov-Smirnov : get the statistics distribution
 # Then we plot the distribution when the parameters of the uniform
 # distribution are estimated from the sample.
 #
-# *Reference* : Hovhannes Keutelian, "The Kolmogorov-Smirnov test when parameters are estimated from data", 30 April 1991, Fermilab
+# *Reference* : Hovhannes Keutelian, "The Kolmogorov-Smirnov test when
+# parameters are estimated from data", 30 April 1991, Fermilab
 #
 # Note: There is a sign error in the paper; the equation:
 # `D[i]=max(abs(S+step),D[i])` must be replaced with `D[i]=max(abs(S-step),D[i])`.
@@ -48,14 +49,16 @@ view = viewer.View(graph)
 
 
 # %%
-# The computeKSStatisticsIndex function computes the Kolmogorov-Smirnov distance between the sample and the distribution. The following function is for teaching purposes only: use `FittingTest` for real applications.
+# The computeKSStatisticsIndex function computes the Kolmogorov-Smirnov
+# distance between the sample and the distribution.
+# The following function is for teaching purposes only: use `FittingTest`
+# for real applications.
 
 # %%
 def computeKSStatistics(sample, distribution):
     sample = sample.sort()
     n = sample.getSize()
     D = 0.0
-    index = -1
     D_previous = 0.0
     for i in range(n):
         F = distribution.computeCDF(sample[i])
@@ -63,7 +66,6 @@ def computeKSStatistics(sample, distribution):
         Fplus = float(i + 1) / n - F
         D = max(Fminus, Fplus, D)
         if D > D_previous:
-            index = i
             D_previous = D
     return D
 
@@ -161,7 +163,9 @@ view = viewer.View(graph)
 # --------------------------------------------
 
 # %%
-# The following function generates a sample of K.S. distances when the tested distribution is the `Uniform(a,b)` distribution, where the `a` and `b` parameters are estimated from the sample.
+# The following function generates a sample of K.S. distances when the tested
+# distribution is the `Uniform(a,b)` distribution, where the `a` and `b`
+# parameters are estimated from the sample.
 
 # %%
 def generateKSSampleEstimatedParameters(nrepeat, samplesize):
@@ -198,4 +202,7 @@ view = viewer.View(graph)
 plt.show()
 
 # %%
-# We see that the distribution of the KS distances when the parameters are estimated is shifted towards the left: smaller distances occur more often. This is a consequence of the fact that the estimated parameters tend to make the estimated distribution closer to the empirical sample.
+# We see that the distribution of the KS distances when the parameters are
+# estimated is shifted towards the left: smaller distances occur more often.
+# This is a consequence of the fact that the estimated parameters tend to make
+# the estimated distribution closer to the empirical sample.

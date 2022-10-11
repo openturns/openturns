@@ -1,7 +1,6 @@
 import openturns as ot
 import unittest
 import openturns.testing as ott
-import sys
 
 ot.TESTPREAMBLE()
 
@@ -27,11 +26,11 @@ class CheckKarhunenLoeveValidation(unittest.TestCase):
         assert type(residualProcessSample) is ot.ProcessSample
         # Check standard deviation
         residualSigmaField = validation.computeResidualStandardDeviation()
-        exact = ot.Sample(numberOfVertices, 1)
+        ot.Sample(numberOfVertices, 1)
         # ott.assert_almost_equal(residualSigmaField, exact)
         # Check mean
         residualMean = validation.computeResidualMean()
-        exact = ot.Sample(numberOfVertices, 1)
+        ot.Sample(numberOfVertices, 1)
         # ott.assert_almost_equal(residualMean, exact)
         # Check graph
         graph0 = validation.drawValidation()

@@ -86,8 +86,8 @@ if dimension == 1:
         "pdf (FD)=%.6f"
         % (
             (
-                distribution.computeCDF(point + Point(1, eps))
-                - distribution.computeCDF(point + Point(1, -eps))
+                distribution.computeCDF(point + ot.Point(1, eps))
+                - distribution.computeCDF(point + ot.Point(1, -eps))
             )
             / (2.0 * eps)
         )

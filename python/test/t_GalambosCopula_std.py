@@ -15,13 +15,13 @@ ref_cov_matrix = ot.CovarianceMatrix(2, [0.0833333, 0.0241064, 0.0241064, 0.0833
 ott.assert_almost_equal(copula.getCovariance(), ref_cov_matrix, 1e-5, 0.0)
 
 # Is this copula an elliptical distribution?
-assert copula.isElliptical() == False
+assert not copula.isElliptical()
 
 # Is this copula elliptical?
-assert copula.hasEllipticalCopula() == False
+assert not copula.hasEllipticalCopula()
 
 # Is this copula independent?
-assert copula.hasIndependentCopula() == False
+assert not copula.hasIndependentCopula()
 
 # Test for realization of distribution
 ott.assert_almost_equal(copula.getRealization(), [0.629877, 0.871724], 1e-5, 0.0)

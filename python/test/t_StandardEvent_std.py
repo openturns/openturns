@@ -82,5 +82,5 @@ output3 = ot.CompositeRandomVector(myFunction, vect3)
 # We try to create a StandardEvent from this RandomVector */
 try:
     myStandardEvent3 = ot.StandardEvent(output3, ot.Less(), 1.0)
-except:
+except Exception:
     print("Error trying to build myStandardEvent3")

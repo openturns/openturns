@@ -13,7 +13,6 @@ Use the FORM algorithm in case of several design points
 # %%
 import openturns as ot
 import openturns.viewer as otv
-import numpy as np
 from matplotlib import pylab as plt
 
 # %%

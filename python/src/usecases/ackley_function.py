@@ -18,7 +18,7 @@ def g(X):
 
 
 class AckleyModel:
-    """
+    r"""
     Data class for the Ackley test function.
 
 

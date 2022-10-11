@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from math import *
+from math import pi
 
 ot.TESTPREAMBLE()
 

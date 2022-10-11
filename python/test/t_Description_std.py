@@ -50,8 +50,8 @@ print("desc1 = ", repr(ref_desc1))
 desc4 = ot.Description(("A", "B", "C"))
 print("desc4 = ", repr(desc4))
 
-l = ["U", "I", "O", "P"]
-desc5 = ot.Description(l)
+ll = ["U", "I", "O", "P"]
+desc5 = ot.Description(ll)
 print("desc5 = ", repr(desc5))
 
 sz = len(desc5)

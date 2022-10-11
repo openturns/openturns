@@ -345,8 +345,8 @@ class BoxConstrainedNormal(ot.PythonRandomVector):
     def setParameter(self, parameter):
         d = self.getDimension()
         self.mu = np.array(parameter[:d])
-        self.Sigma = np.array(parameter[d : d + d * d]).reshape(d, d)
-        self.r = np.array(parameter[-2 * d : -d])
+        self.Sigma = np.array(parameter[d: d + d * d]).reshape(d, d)
+        self.r = np.array(parameter[-2 * d: -d])
         self.s = np.array(parameter[-d:])
         self.interval = ot.Interval(self.r, self.s)
 

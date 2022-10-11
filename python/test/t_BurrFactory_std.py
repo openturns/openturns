@@ -27,7 +27,7 @@ print("Burr from parameters=", estimatedBurr)
 try:
     estimatedBurr = factory.build(ot.Normal(1e-3, 1e-5).getSample(100))
     print("Estimated burr=", estimatedBurr)
-except:
+except Exception:
     pass
 
 ot.RandomGenerator.SetSeed(0)
@@ -36,5 +36,5 @@ try:
         ot.UserDefined(ot.LogNormal(7.71, 1.0056).getSample(500)).getSupport()
     )
     # print('Estimated burr=', estimatedBurr)
-except:
+except Exception:
     pass

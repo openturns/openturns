@@ -27,7 +27,6 @@ import pylab as pl
 from openturns.viewer import View
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -151,10 +150,16 @@ view = viewer.View(graph)
 # Other covariance models
 # -----------------------
 #
-# There are other covariance models. The models which are used more often are the following.
+# There are other covariance models. The models which are used more often are the following:
+#
 # * `SquaredExponential`. The generated processes can be derivated in mean square at all orders.
-# * `MaternModel`. When :math:`\nu\rightarrow+\infty`, it converges to the squared exponential model. This model can be derivated :math:`k` times only if :math:`k<\nu`. In other words, when :math:`\nu` increases, then the trajectories are more and more regular. The particular case :math:`\nu=1/2` is the exponential model. The most commonly used values are :math:`\nu=3/2` and :math:`\nu=5/2`, which produce trajectories that are, in terms of regularity, in between the squared exponential and the exponential models.
+# * `MaternModel`. When :math:`\nu\rightarrow+\infty`, it converges to the squared exponential model.
+#   This model can be derivated :math:`k` times only if :math:`k<\nu`.
+#   In other words, when :math:`\nu` increases, then the trajectories are more and more regular.
+#   The particular case :math:`\nu=1/2` is the exponential model.
+#   The most commonly used values are :math:`\nu=3/2` and :math:`\nu=5/2`, which produce trajectories that are, in terms of regularity, in between the squared exponential and the exponential models.
 # * `ExponentialModel`. The associated process is continus, but not differentiable.
+#
 
 # %%
 # The Matérn and exponential models

@@ -12,7 +12,7 @@ def functionWingWeight(x):
     A = x[2]
     Lambda = x[3]
     q = x[4]
-    l = x[5]
+    ll = x[5]
     tc = x[6]
     Nz = x[7]
     Wdg = x[8]
@@ -24,7 +24,7 @@ def functionWingWeight(x):
             * Wfw**0.0035
             * (A / m.cos(m.pi / 180 * Lambda) ** 2) ** 0.6
             * q**0.006
-            * l**0.04
+            * ll**0.04
             * (100 * tc / m.cos(m.pi / 180 * Lambda)) ** (-0.3)
             * (Nz * Wdg) ** 0.49
             + Sw * Wp
@@ -113,8 +113,8 @@ class WingWeightModel:
         self.q.setName("q")
 
         # Sixth marginal : l
-        self.l = ot.Uniform(0.5, 1.0)
-        self.l.setName("l")
+        self.ll = ot.Uniform(0.5, 1.0)
+        self.ll.setName("l")
 
         # Seventh marginal : tc
         self.tc = ot.Uniform(0.08, 0.18)
@@ -140,7 +140,7 @@ class WingWeightModel:
                 self.A,
                 self.Lambda,
                 self.q,
-                self.l,
+                self.ll,
                 self.tc,
                 self.Nz,
                 self.Wdg,

@@ -8,14 +8,14 @@ ot.PlatformInfo.SetNumericalPrecision(16)
 a = -m.pi
 b = m.pi
 f = ot.SymbolicFunction(["x", "y"], ["1+cos(x)*sin(y)"])
-l = [ot.SymbolicFunction(["x"], [" 2+cos(x)"])]
+ll = [ot.SymbolicFunction(["x"], [" 2+cos(x)"])]
 u = [ot.SymbolicFunction(["x"], ["-2-cos(x)"])]
 
 # Draw the graph of the integrand and the bounds:
 
 g = ot.Graph("IteratedQuadrature example", "x", "y", True, "topright")
 g.add(f.draw([a, a], [b, b]))
-curve = l[0].draw(a, b).getDrawable(0)
+curve = ll[0].draw(a, b).getDrawable(0)
 curve.setLineWidth(2)
 curve.setColor("red")
 g.add(curve)
@@ -28,12 +28,12 @@ g.add(curve)
 
 Iref = ot.IteratedQuadrature(
     ot.GaussKronrod(100000, 1e-13, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))
-).integrate(f, a, b, l, u)
+).integrate(f, a, b, ll, u)
 
 # Evaluate the integral with the default GaussKronrod algorithm:
 
 f = ot.MemoizeFunction(f)
-I1 = ot.IteratedQuadrature(ot.GaussKronrod()).integrate(f, a, b, l, u)
+I1 = ot.IteratedQuadrature(ot.GaussKronrod()).integrate(f, a, b, ll, u)
 sample1 = f.getInputHistory()
 print(
     "I1=",
@@ -52,7 +52,7 @@ f.clearHistory()
 
 # Evaluate the integral with the default IteratedQuadrature algorithm:
 
-I2 = ot.IteratedQuadrature().integrate(f, a, b, l, u)
+I2 = ot.IteratedQuadrature().integrate(f, a, b, ll, u)
 sample2 = f.getInputHistory()
 # print('I2=', I2, '#evals=', sample2.getSize(), \
 #        'err=', abs(100.0*(1.0-I2[0]/Iref[0])), '%')

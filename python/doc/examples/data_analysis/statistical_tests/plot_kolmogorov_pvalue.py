@@ -149,4 +149,5 @@ view = viewer.View(graph)
 plt.show()
 
 # %%
-# We observe that the p-value is the area of the curve which corresponds to the KS distances greater than the observed KS statistics.
+# We observe that the p-value is the area of the curve which corresponds to
+# the KS distances greater than the observed KS statistics.

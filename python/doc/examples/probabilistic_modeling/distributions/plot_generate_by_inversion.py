@@ -7,7 +7,10 @@ Generate random variates by inverting the CDF
 # Abstract
 # --------
 #
-# In this example, we show how to generate random variates by inversion of the cumulated distribution function. In simple situations, this method is rarely used in practice because of problems with performance, statistical quality of the generated random variates and numerical accuracy of the generated numbers when we use floating point numbers. However, it is an interesting method to know about because it is a building block for other algorithms and can be used to visualize the distribution of the generated numbers.
+# In this example, we show how to generate random variates by inversion of the cumulated distribution function.
+# In simple situations, this method is rarely used in practice because of problems with performance,
+# statistical quality of the generated random variates and numerical accuracy of the generated numbers when we use floating point numbers.
+# However, it is an interesting method to know about because it is a building block for other algorithms and can be used to visualize the distribution of the generated numbers.
 
 # %%
 # The WeibullMin distribution
@@ -39,7 +42,9 @@ Generate random variates by inverting the CDF
 # Loss of accuracy when the probability is close to 1
 # ---------------------------------------------------
 #
-# In practice, if the probability :math:`p` is *very* close to 1, then the complementary probability :math:`1-p` is close to zero. This can lead to a significant loss of accuracy when we evaluate the subtraction :math:`1-p` with floating point numbers because :math:`p` and 1 have lots of common digits. This is called a *loss of accuracy by catastrophic cancellation*, a problem which is common in extreme events.
+# In practice, if the probability :math:`p` is *very* close to 1, then the complementary probability :math:`1-p` is close to zero.
+# This can lead to a significant loss of accuracy when we evaluate the subtraction :math:`1-p` with floating point numbers because :math:`p` and 1 have lots of common digits.
+# This is called a *loss of accuracy by catastrophic cancellation*, a problem which is common in extreme events.
 #
 # We can use the :math:`\textrm{expm1}` function, defined by the equation:
 #

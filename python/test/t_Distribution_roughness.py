@@ -14,7 +14,7 @@ def compute_roughness_sampling(distribution, size=500000):
     This allows comparing sampling & integrating methods
     """
     dimension = distribution.getDimension()
-    uniformNd = ot.ComposedDistribution([ot.Uniform(0, 1) for i in range(dimension)])
+    ot.ComposedDistribution([ot.Uniform(0, 1) for i in range(dimension)])
     sequence = ot.SobolSequence(dimension)
     experiment = ot.LowDiscrepancyExperiment(sequence, distribution, size, False)
     sample = experiment.generate()

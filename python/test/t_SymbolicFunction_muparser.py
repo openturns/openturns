@@ -58,7 +58,7 @@ for func in elementaryFunctions:
     print("f(", x[0], ")=%.4e" % f(x)[0])
     try:
         df = f.gradient(x)[0, 0]
-    except:
+    except Exception:
         pass
     else:
         f.setGradient(
@@ -79,7 +79,7 @@ for func in elementaryFunctions:
             print("GRADIENT ERROR! check " + func + " gradient, err=%.12g" % err_g)
     try:
         d2f = f.hessian(x)[0, 0, 0]
-    except:
+    except Exception:
         pass
     else:
         f.setHessian(
@@ -215,7 +215,7 @@ print(f, ", f([2, 3])=", f([2.0, 3.0]))
 f = ot.SymbolicFunction("x", "sqrt(x)")
 try:
     print(f, ", f([-1])=", f([-1.0]))
-except:
+except Exception:
     print(f, ", f([-1]) not defined")
 
 f = ot.SymbolicFunction("x", "sqrt(x)")

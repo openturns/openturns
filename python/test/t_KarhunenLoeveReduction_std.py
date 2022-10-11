@@ -18,7 +18,7 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         algo.run()
         klresult = algo.getResult()
         # Create the KL reduction
-        meanField = processSample.computeMean()
+        processSample.computeMean()
         klreduce = ot.KarhunenLoeveReduction(klresult)
         # Generate a trajectory and reduce it
         field = process.getRealization()
@@ -46,7 +46,7 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         algo.run()
         klresult = algo.getResult()
         # Create the KL reduction
-        meanField = processSample.computeMean()
+        processSample.computeMean()
         klreduce = ot.KarhunenLoeveReduction(klresult)
         # Generate a trajectory and reduce it
         field = process.getRealization()

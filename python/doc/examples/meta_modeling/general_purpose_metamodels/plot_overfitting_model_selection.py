@@ -123,7 +123,11 @@ view = otv.View(graph)
 #
 
 # %%
-# In order to approximate the function with polynomials up to degree 4, we create a list of strings containing the associated monomials. We do not include a constant in the polynomial basis, as this constant term is automatically included in the model by the `LinearLeastSquares` class. We perform the loop from 1 up to `total_degree` (but the `range` function takes `total_degree + 1` as its second input argument).
+# In order to approximate the function with polynomials up to degree 4,
+# we create a list of strings containing the associated monomials.
+# We do not include a constant in the polynomial basis, as this constant term
+# is automatically included in the model by the `LinearLeastSquares` class.
+# We perform the loop from 1 up to `total_degree` (but the `range` function takes `total_degree + 1` as its second input argument).
 
 # %%
 total_degree = 4
@@ -280,7 +284,10 @@ _ = ot.viewer.View(
 #
 # However, when the polynomial degree is high, it produces large oscillations which significantly deviate from the true function. This is *overfitting*. This is a pity, given the fact that the polynomial *exactly* interpolates the observations: the residuals are zeroed.
 #
-# If the locations of the x abscissas could be changed, then the oscillations could be made smaller. This is the method used in gaussian quadrature, where the nodes of interpolation are made closer on the left and right bounds. In our situation, we make the asssumption that these abscissas cannot be changed: the most obvious choice is to limit the degree of the polynomial. Another possibility is to include a regularization into the least squares solution.
+# If the locations of the x abscissas could be changed, then the oscillations could be made smaller.
+# This is the method used in gaussian quadrature, where the nodes of interpolation are made closer on the left and right bounds.
+# In our situation, we make the asssumption that these abscissas cannot be changed: the most obvious choice is to limit the degree of the polynomial.
+# Another possibility is to include a regularization into the least squares solution.
 
 # %%
 # Root mean squared error

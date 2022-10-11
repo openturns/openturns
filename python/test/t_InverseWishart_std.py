@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import unittest as ut
-from math import pi, log, log10, floor
+from math import log, pi
 
 import openturns as ot
 

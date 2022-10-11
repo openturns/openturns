@@ -51,7 +51,7 @@ def remove_file(filename, quiet=False):
     if quiet:
         try:
             os.remove(filename)
-        except:
+        except Exception:
             pass
     else:
         os.remove(filename)
@@ -160,7 +160,7 @@ def create_results(tokens, values=None, big=False):
                 handle.write(b"\n")
         handle.write(b"# ooo\n")
 
-    if values == None:
+    if values is None:
         handle.write(tokens.encode())
     else:
         n = 0
@@ -266,14 +266,14 @@ def check_get_line_col():
 
     try:
         result = ct.get_line_col(result_file, skip_line=4)
-    except:
+    except Exception:
         pass
     else:
         raise Exception("! should have fail !")
 
     try:
         result = ct.get_line_col(result_file, skip_line=-5)
-    except:
+    except Exception:
         pass
     else:
         raise Exception("! should have fail !")
@@ -299,7 +299,7 @@ def check_get_line_col():
 
     try:
         result = ct.get_line_col(result_file, skip_line=-1)
-    except:
+    except Exception:
         pass
     else:
         raise Exception("! should have fail !")
@@ -316,7 +316,7 @@ def check_get():
     result_file = create_results(tokens, values)
     results = ct.get(filename=result_file, tokens=tokens)
     check_results(values, results)
-    remove(result_file)
+    os.remove(result_file)
 
     # Y = ct.get(outfile="output.py", tokens=["@Y1=", "@Y2="],
     #                       occurrence=[0, 0], col=[0, 3], line=[0, 2])

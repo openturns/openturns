@@ -1,7 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
-import math as m
 
 Id = ot.IdentityMatrix(2)
 atoms = [

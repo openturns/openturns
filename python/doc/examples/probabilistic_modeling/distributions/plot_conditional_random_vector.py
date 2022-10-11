@@ -12,8 +12,6 @@ Create a conditional random vector
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 # %%
 # create the random vector Theta (parameters of X)

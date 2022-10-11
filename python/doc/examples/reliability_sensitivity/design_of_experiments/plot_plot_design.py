@@ -13,9 +13,6 @@ The goal of this example is to present the features of the PlotDesign static met
 import matplotlib.pyplot as plt
 import openturns as ot
 import openturns.viewer as otv
-import pylab as pl
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 

@@ -32,7 +32,7 @@ for factory in factories:
         ok = False
         try:
             dist = factory.build(sample)
-        except Exception as exc:
+        except Exception:
             ok = True
         print("constant:", "ok" if ok else "fail")
         assert ok, str(factory) + " vs const"

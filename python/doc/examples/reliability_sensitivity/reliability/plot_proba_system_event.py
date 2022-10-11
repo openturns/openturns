@@ -170,7 +170,7 @@ def computeCrossingProbability_FORM(b, t, mu_S, covariance, R, delta_t):
 # %%
 mu_S = 3.0
 sigma_S = 0.5
-l = 10
+ll = 10
 
 b = 0.01
 
@@ -178,7 +178,7 @@ mu_R = 5.0
 sigma_R = 0.3
 R = ot.Normal(mu_R, sigma_R)
 
-covariance = ot.SquaredExponential([l / sqrt(2)], [sigma_S])
+covariance = ot.SquaredExponential([ll / sqrt(2)], [sigma_S])
 
 t0 = 0.0
 t1 = 50.0

@@ -23,14 +23,14 @@ ot.Log.Show(ot.Log.NONE)
 a = -m.pi
 b = m.pi
 f = ot.SymbolicFunction(["x", "y"], ["1+cos(x)*sin(y)"])
-l = [ot.SymbolicFunction(["x"], [" 2+cos(x)"])]
+ll = [ot.SymbolicFunction(["x"], [" 2+cos(x)"])]
 u = [ot.SymbolicFunction(["x"], ["-2-cos(x)"])]
 
 # %%
 # Draw the graph of the integrand and the bounds
 g = ot.Graph("Integration nodes", "x", "y", True, "topright")
 g.add(f.draw([a, a], [b, b]))
-curve = l[0].draw(a, b).getDrawable(0)
+curve = ll[0].draw(a, b).getDrawable(0)
 curve.setLineWidth(2)
 curve.setColor("red")
 g.add(curve)
@@ -42,6 +42,6 @@ view = viewer.View(g)
 
 # %%
 # compute the integral value
-I2 = ot.IteratedQuadrature().integrate(f, a, b, l, u)
+I2 = ot.IteratedQuadrature().integrate(f, a, b, ll, u)
 print(I2)
 plt.show()

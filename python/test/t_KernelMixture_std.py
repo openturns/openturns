@@ -80,8 +80,8 @@ if dimension == 1:
         "pdf (FD)=%.6f"
         % (
             (
-                distribution.computeCDF(point + Point(1, eps))
-                - distribution.computeCDF(point + Point(1, -eps))
+                distribution.computeCDF(point + ot.Point(1, eps))
+                - distribution.computeCDF(point + ot.Point(1, -eps))
             )
             / (2.0 * eps)
         )
@@ -116,7 +116,7 @@ if distribution.getDimension() <= 2:
         distribution.computeMinimumVolumeInterval(0.95, threshold),
     )
     print("threshold=", threshold)
-    beta = Point()
+    beta = ot.Point()
     levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
     print("Minimum volume level set=", levelSet)
     print("beta=", beta)

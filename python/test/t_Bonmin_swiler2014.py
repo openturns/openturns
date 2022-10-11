@@ -1,27 +1,24 @@
 #!/usr/bin/env python
-"""
-An optimization problem with mixed discrete input variables.
-
-min f(x1,x2,x3)
-where
-x1 is discrete in {0,1,2,3,4}
-x2 and x3 are real in [0,1]
-
-Mixed parameter space with one discrete parameter \eqn{x_1 \in \{0, 1, 2, 3, 4\}}
-and two numerical parameters \eqn{x_1, x_2 \in [0, 1]}.
-The function is defined as follows:
-f(\mathbf{x}) = \\
-\sin(2\pi x_3 - \pi) + 7 \sin^2(2 \pi x_2 - \pi) \, if \, x_1 = 0 \\
-\sin(2\pi x_3 - \pi) + 7 \sin^2(2 \pi x_2 - \pi) + 12 \sin(2 \pi x_3 - \pi) \, if \, x_1 = 1 \\
-\sin(2\pi x_3 - \pi) + 7 \sin^2(2 \pi x_2 - \pi) + 0.5 \sin(2 \pi x_3 - \pi) \, if \, x_1 = 2 \\
-\sin(2\pi x_3 - \pi) + 7 \sin^2(2 \pi x_2 - \pi) + 8.0 \sin(2 \pi x_3 - \pi) \, if \, x_1 = 3 \\
-\sin(2\pi x_3 - \pi) + 7 \sin^2(2 \pi x_2 - \pi) + 3.5 \sin(2 \pi x_3 - \pi) \, if \, x_1 = 4.
-
-Reference
-Ported from R to Python, based on
-https://rdrr.io/cran/smoof/src/R/sof.swiler2014.R
-
-"""
+# An optimization problem with mixed discrete input variables.
+#
+# min f(x1,x2,x3)
+# where
+# x1 is discrete in {0,1,2,3,4}
+# x2 and x3 are real in [0,1]
+#
+# Mixed parameter space with one discrete parameter \eqn{x_1 \in \{0, 1, 2, 3, 4\}}
+# and two numerical parameters \eqn{x_1, x_2 \in [0, 1]}.
+# The function is defined as follows:
+# f(\mathbf{x}) = \\
+# \sin(2\pi x_3 - \pi) + 7 \sin^2(2 \pi x_2 - \pi) \, if \, x_1 = 0 \\
+# \sin(2\pi x_3 - \pi) + 7 \sin^2(2 \pi x_2 - \pi) + 12 \sin(2 \pi x_3 - \pi) \, if \, x_1 = 1 \\
+# \sin(2\pi x_3 - \pi) + 7 \sin^2(2 \pi x_2 - \pi) + 0.5 \sin(2 \pi x_3 - \pi) \, if \, x_1 = 2 \\
+# \sin(2\pi x_3 - \pi) + 7 \sin^2(2 \pi x_2 - \pi) + 8.0 \sin(2 \pi x_3 - \pi) \, if \, x_1 = 3 \\
+# \sin(2\pi x_3 - \pi) + 7 \sin^2(2 \pi x_2 - \pi) + 3.5 \sin(2 \pi x_3 - \pi) \, if \, x_1 = 4.
+#
+# Reference
+# Ported from R to Python, based on
+# https://rdrr.io/cran/smoof/src/R/sof.swiler2014.R
 
 import math
 import openturns as ot

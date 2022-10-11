@@ -166,8 +166,8 @@ plt.show()
 
 
 def cantilever_beam_python(X):
-    E, F, L, I = X
-    return [F * L**3 / (3 * E * I)]
+    E, F, L, II = X
+    return [F * L**3 / (3 * E * II)]
 
 
 cbPythonFunction = ot.PythonFunction(4, 1, func=cantilever_beam_python)

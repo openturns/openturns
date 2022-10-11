@@ -6,7 +6,14 @@ Quick start guide
 # Abstract
 # ---------
 #
-# In this example, we present classes for univariate and multivariate distributions. We demonstrate the probabilistic programming capabilities of the library. For univariate distributions, we show how to compute the probability density, the cumulated probability density and the quantiles. We also show how to create graphics. The `ComposedDistribution` class, which creates a distribution based on its marginals and its copula, is presented. We show how to truncate any distribution with the `TruncatedDistribution` class.
+# In this example, we present classes for univariate and multivariate distributions.
+# We demonstrate the probabilistic programming capabilities of the library.
+# For univariate distributions, we show how to compute the probability density,
+# the cumulated probability density and the quantiles.
+# We also show how to create graphics.
+# The `ComposedDistribution` class, which creates a distribution based on its
+# marginals and its copula, is presented.
+# We show how to truncate any distribution with the `TruncatedDistribution` class.
 
 # %%
 # Univariate distribution
@@ -24,7 +31,6 @@ Quick start guide
 #  - `Weibull`.
 
 # %%
-import pylab as plt
 import openturns.viewer as otv
 import openturns as ot
 import openturns.viewer as viewer

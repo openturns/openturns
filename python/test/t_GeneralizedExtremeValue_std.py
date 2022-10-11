@@ -17,7 +17,7 @@ for i in range(len(all_cases)):
     for dist in ["WeibullMax", "Frechet", "Gumbel"]:
         try:
             eval("print('conversion as ', distribution.as" + dist + "())")
-        except:
+        except Exception:
             pass
 
     # Is this distribution elliptical ?

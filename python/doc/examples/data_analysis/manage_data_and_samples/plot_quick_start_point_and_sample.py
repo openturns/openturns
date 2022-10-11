@@ -258,7 +258,7 @@ sample
 # Choice B: we create a `Sample` with size 1 in 5 dimensions.
 
 # %%
-sample = ot.Sample([u[i : i + 5] for i in range(len(u) // 5)])
+sample = ot.Sample([u[i: i + 5] for i in range(len(u) // 5)])
 sample
 
 # %%

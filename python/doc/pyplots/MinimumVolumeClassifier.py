@@ -1,6 +1,5 @@
 import openturns as ot
 from openturns.viewer import View
-import math as m
 
 ot.RandomGenerator.SetSeed(0)
 

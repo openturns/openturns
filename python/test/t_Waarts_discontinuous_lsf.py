@@ -121,7 +121,7 @@ myLHS.run()
 # Directional Sampling
 CoV_DS = 0.1
 myDS1 = ot.DirectionalSampling(
-    myEvent, ot.RootStrategy(ot.RiskyAndFast()), ot.SamplingStrategy(RandomDirection())
+    myEvent, ot.RootStrategy(ot.RiskyAndFast()), ot.SamplingStrategy(ot.RandomDirection())
 )
 myDS1.setMaximumOuterSampling(100000)
 myDS1.setBlockSize(1000)
@@ -129,7 +129,7 @@ myDS1.setMaximumCoefficientOfVariation(CoV_DS)
 myDS1.run()
 
 myDS2 = ot.DirectionalSampling(
-    myEvent, ot.RootStrategy(ot.MediumSafe()), ot.SamplingStrategy(RandomDirection())
+    myEvent, ot.RootStrategy(ot.MediumSafe()), ot.SamplingStrategy(ot.RandomDirection())
 )
 myDS2.setMaximumOuterSampling(100000)
 myDS2.setBlockSize(1000)
@@ -137,7 +137,7 @@ myDS2.setMaximumCoefficientOfVariation(CoV_DS)
 myDS2.run()
 
 myDS3 = ot.DirectionalSampling(
-    myEvent, ot.RootStrategy(ot.SafeAndSlow()), ot.SamplingStrategy(RandomDirection())
+    myEvent, ot.RootStrategy(ot.SafeAndSlow()), ot.SamplingStrategy(ot.RandomDirection())
 )
 myDS3.setMaximumOuterSampling(100000)
 myDS3.setBlockSize(1000)

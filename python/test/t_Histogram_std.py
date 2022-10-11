@@ -6,17 +6,17 @@ ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
 first = -1.5
-l = [1.0, 0.7, 1.2, 0.9]
+ll = [1.0, 0.7, 1.2, 0.9]
 h = [0.5, 1.5, 3.5, 2.5]
 t = [first]
 f = list()
-for i in range(len(l)):
-    t.append(t[i] + l[i])
-    f.append(h[i] * l[i])
+for i in range(len(ll)):
+    t.append(t[i] + ll[i])
+    f.append(h[i] * ll[i])
 distribution = ot.Histogram(t, f)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)
-distribution = ot.Histogram(first, l, h)
+distribution = ot.Histogram(first, ll, h)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)
 
@@ -147,7 +147,7 @@ print("Standard representative=", distribution.getStandardRepresentative())
 testSize = 0
 for i in range(testSize):
     q = ot.RandomGenerator().Generate()
-    if fabs(q - distribution.computeCDF(distribution.computeQuantile(q))) > eps:
+    if abs(q - distribution.computeCDF(distribution.computeQuantile(q))) > eps:
         print(
             "q=%.6f" % q,
             " quantile=%.6f" % distribution.computeQuantile(q)[0],

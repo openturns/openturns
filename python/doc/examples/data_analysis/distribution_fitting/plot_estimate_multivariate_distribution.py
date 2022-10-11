@@ -54,7 +54,6 @@ estimated_marginals
 
 # %%
 def find_neighbours(head, covariance, to_visit, visited):
-    N = covariance.getDimension()
     visited[head] = 1
     to_visit.remove(head)
     current_component = [head]

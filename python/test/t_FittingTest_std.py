@@ -240,7 +240,7 @@ for i in range(discreteDistributionNumber):
             if fabs(pvalue) < 1.0e-6:
                 value = 0.0
             resultChiSquared[i, j] = value
-        except:
+        except Exception:
             print(
                 "Sample=",
                 discreteSampleCollection[i],

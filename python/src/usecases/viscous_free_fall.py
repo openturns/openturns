@@ -14,6 +14,7 @@ def AltiFunc(X):
     c = X[3]
     tau = m / c
     vinf = -m * g / c
+    global vertices
     t = np.array(vertices)
     z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(-t / tau))
     z = np.maximum(z, 0.0)

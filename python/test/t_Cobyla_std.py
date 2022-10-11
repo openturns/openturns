@@ -80,5 +80,5 @@ for minimization in [True, False]:
 algo = ot.Cobyla()
 try:
     algo.run()
-except:
+except Exception:
     print("OK")

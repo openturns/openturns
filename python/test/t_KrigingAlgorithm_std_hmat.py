@@ -25,7 +25,7 @@ def test_one_input_one_output():
     X2[0, 0] = 2.0
     X2[1, 0] = 4.0
     Y = f(X)
-    Y2 = f(X2)
+    f(X2)
 
     # create algorithm
     basis = ot.ConstantBasisFactory(dimension).build()
@@ -43,8 +43,8 @@ def test_one_input_one_output():
 
     # Kriging variance is 0 on learning points
     covariance = result.getConditionalCovariance(X)
-    covariancePoint = ot.Point(covariance.getImplementation())
-    theoricalVariance = ot.Point(sampleSize * sampleSize)
+    ot.Point(covariance.getImplementation())
+    ot.Point(sampleSize * sampleSize)
     ott.assert_almost_equal(covariance, ot.Matrix(sampleSize, sampleSize), 0.0, 1e-1)
 
     # Covariance per marginal & extract variance component
@@ -92,7 +92,7 @@ def test_two_inputs_one_output():
     result = algo.getResult()
     # Get meta model
     metaModel = result.getMetaModel()
-    outData = metaModel(inputValidSample)
+    metaModel(inputValidSample)
 
     # 4) Errors
     # Interpolation

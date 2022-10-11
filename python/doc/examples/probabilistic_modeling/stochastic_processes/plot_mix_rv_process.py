@@ -26,7 +26,7 @@ Create a process from random vectors and processes
 # %%
 import openturns as ot
 from openturns.viewer import View
-from math import *
+import math as m
 
 # %%
 # 1. Create the gaussian process :math:`(\omega, t) \rightarrow S(\omega,t)`
@@ -53,8 +53,8 @@ myMesh = ot.RegularGrid(t0, step, n)
 #
 
 # %%
-l = 10 / sqrt(2)
-myCovKernel = ot.SquaredExponential([l])
+ll = 10 / m.sqrt(2)
+myCovKernel = ot.SquaredExponential([ll])
 print("cov model = ", myCovKernel)
 
 # %%

@@ -48,7 +48,6 @@ Kriging : quick-start
 # We begin by defining the function `g` as a symbolic function. Then we define the `x_train` variable which contains the inputs of the design of experiments of the training step. Then we compute the `y_train` corresponding outputs. The variable `n_train` is the size of the training design of experiments.
 
 # %%
-import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -157,7 +156,8 @@ view = viewer.View(graph)
 # %%
 # We see that the kriging metamodel is interpolating. This is what is meant by *conditioning* a gaussian process.
 #
-# We see that, when the sine function has a strong curvature between two points which are separated by a large distance (e.g. between :math:`x=4` and :math:`x=6`), then the kriging metamodel is not close to the function :math:`g`. However, when the training points are close (e.g. between :math:`x=11` and :math:`x=11.5`) or when the function is nearly linear (e.g. between :math:`x=8` and :math:`x=11`), then the kriging metamodel is quite accurate.
+# We see that, when the sine function has a strong curvature between two points which are separated by a large distance (e.g. between :math:`x=4` and :math:`x=6`), then the kriging metamodel is not close to the function :math:`g`.
+# However, when the training points are close (e.g. between :math:`x=11` and :math:`x=11.5`) or when the function is nearly linear (e.g. between :math:`x=8` and :math:`x=11`), then the kriging metamodel is quite accurate.
 
 # %%
 # Compute confidence bounds
@@ -166,7 +166,8 @@ view = viewer.View(graph)
 # %%
 # In order to assess the quality of the metamodel, we can estimate the kriging variance and compute a 95% confidence interval associated with the conditioned gaussian process.
 #
-# We begin by defining the `alpha` variable containing the complementary of the confidence level than we want to compute. Then we compute the quantile of the gaussian distribution corresponding to `1-alpha/2`. Therefore, the confidence interval is :
+# We begin by defining the `alpha` variable containing the complementary of the confidence level than we want to compute.
+# Then we compute the quantile of the gaussian distribution corresponding to `1-alpha/2`. Therefore, the confidence interval is:
 #
 # .. math::
 #    P\in\left(X\in\left[q_{\alpha/2},q_{1-\alpha/2}\right]\right)=1-\alpha.
@@ -187,7 +188,15 @@ print("alpha=%f" % (alpha))
 print("Quantile alpha=%f" % (quantileAlpha))
 
 # %%
-# In order to compute the kriging error, we can consider the conditional variance. The `getConditionalCovariance` method returns the covariance matrix `covGrid` evaluated at each points in the given sample. Then we can use the diagonal coefficients in order to get the marginal conditional kriging variance. Since this is a variance, we use the square root in order to compute the standard deviation. However, some coefficients in the diagonal are very close to zero and nonpositive, which leads to an exception of the sqrt function. This is why we add an epsilon on the diagonal (nugget factor), which prevents this issue.
+# In order to compute the kriging error, we can consider the conditional variance.
+# The `getConditionalCovariance` method returns the covariance matrix `covGrid`
+# evaluated at each points in the given sample. Then we can use the diagonal
+# coefficients in order to get the marginal conditional kriging variance.
+# Since this is a variance, we use the square root in order to compute the
+# standard deviation.
+# However, some coefficients in the diagonal are very close to zero and
+# nonpositive, which leads to an exception of the sqrt function.
+# This is why we add an epsilon on the diagonal (nugget factor), which prevents this issue.
 
 # %%
 sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
@@ -227,7 +236,13 @@ def computeBoundsConfidenceInterval(quantileAlpha):
 
 
 # %%
-# In order to create the graphics containing the bounds of the confidence interval, we use the `Polygon`. This will create a colored surface associated to the confidence interval. In order to do this, we create the nodes of the polygons at the lower level `vLow` and at the upper level `vUp`. Then we assemble these nodes to create the polygons. That is what we do inside the `plot_kriging_bounds` function.
+# In order to create the graphics containing the bounds of the confidence
+# interval, we use the `Polygon`.
+# This will create a colored surface associated to the confidence interval.
+# In order to do this, we create the nodes of the polygons at the lower level
+# `vLow` and at the upper level `vUp`.
+# Then we assemble these nodes to create the polygons.
+# That is what we do inside the `plot_kriging_bounds` function.
 
 # %%
 

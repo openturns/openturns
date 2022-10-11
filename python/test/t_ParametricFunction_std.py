@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import openturns as ot
-import math as m
 
 f = ot.SymbolicFunction(
     ot.Description.BuildDefault(5, "x"),

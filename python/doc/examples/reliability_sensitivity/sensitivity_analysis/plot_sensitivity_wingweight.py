@@ -396,11 +396,9 @@ outputCovariance = ot.SquaredExponential(1)
 outputCovariance.setScale(outputDesignHSIC.computeStandardDeviation())
 covarianceModelCollection.append(outputCovariance)
 
-#%%
-#
+# %%
 # In this paragraph, we perform the analysis on the raw data: that is
 # the global HSIC estimator.
-
 estimatorType = ot.HSICUStat()
 
 # %%

@@ -12,7 +12,7 @@ try:
 
     matplotlib.use("Agg")
     use_matplotlib = True
-except:
+except Exception:
     pass
 
 py_files = sys.argv[1:]

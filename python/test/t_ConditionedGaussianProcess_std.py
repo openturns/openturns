@@ -2,7 +2,6 @@
 
 import openturns as ot
 import openturns.testing as ott
-from math import cos, sin
 
 ot.TESTPREAMBLE()
 

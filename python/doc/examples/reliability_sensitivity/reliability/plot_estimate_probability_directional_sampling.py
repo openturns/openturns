@@ -27,7 +27,6 @@ Use the Directional Sampling Algorithm
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 

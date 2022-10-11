@@ -54,6 +54,8 @@ X = ot.RandomVector(ot.Normal(2))
 # Create the function :math:`g` from a :class:`~openturns.PythonFunction`:
 
 # %%
+
+
 def fourBranch(x):
     x1 = x[0]
     x2 = x[1]
@@ -170,8 +172,8 @@ print("Number of steps = ", Ns)
 listNAISSamples = list()
 listOutputNAISSamples = list()
 for i in range(Ns):
-    listNAISSamples.append(inputNAIS[i * N : i * N + N])
-    listOutputNAISSamples.append(outputNAIS[i * N : i * N + N])
+    listNAISSamples.append(inputNAIS[i * N: i * N + N])
+    listOutputNAISSamples.append(outputNAIS[i * N: i * N + N])
 
 # %%
 # And get all the levels defining the intermediate and final thresholds given by the empirical quantiles of each NAIS output sample:

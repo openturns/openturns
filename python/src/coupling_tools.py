@@ -365,7 +365,7 @@ def get_real_from_line(line):
     # get the value
     match = re_real.match(line)
     if match:
-        result = float(line[match.start() : match.end()])
+        result = float(line[match.start(): match.end()])
     else:
         raise EOFError(
             "error: real not found at the beginning of this line: " "(" + line + ")!"

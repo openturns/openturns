@@ -3,7 +3,6 @@
 import openturns as ot
 import openturns.testing
 import os
-import sys
 import math as m
 
 ot.TESTPREAMBLE()
@@ -364,7 +363,7 @@ try:
     # cleanup
     os.remove(fileName)
 
-except:
+except Exception:
     import os
     import traceback
 

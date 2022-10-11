@@ -78,9 +78,9 @@ for i in range(1000):
     myCovariance = ot.CovarianceMatrix(myMesh.getVerticesNumber())
     for k in range(myMesh.getVerticesNumber()):
         t = myMesh.getVertices()[k]
-        for l in range(k + 1):
-            s = myMesh.getVertices()[l]
-            myCovariance[k, l] = C(s[0], t[0])
+        for ll in range(k + 1):
+            s = myMesh.getVertices()[ll]
+            myCovariance[k, ll] = C(s[0], t[0])
 
     covModel_discrete = ot.UserDefinedCovarianceModel(myMesh, myCovariance)
     f_ = ot.SymbolicFunction(

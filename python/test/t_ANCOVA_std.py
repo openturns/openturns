@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from math import *
 
 ot.TESTPREAMBLE()
 
@@ -73,14 +72,14 @@ for i in range(inputDimension):
         "ANCOVA index",
         i,
         "= %.6g" % value,
-        "absolute error=%.6g" % fabs(value - Si[i][0]),
+        "absolute error=%.6g" % abs(value - Si[i][0]),
     )
     value = uncorrelatedIndices[i]
     print(
         "ANCOVA uncorrelated index",
         i,
         "= %.8f" % value,
-        "absolute error=%.6g" % fabs(value - Si[i][1]),
+        "absolute error=%.6g" % abs(value - Si[i][1]),
     )
 
 # Compare full/sparse
@@ -100,7 +99,7 @@ polyCol = [0.0] * dim
 for i in range(dim):
     polyCol[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
 
-####### Chaos definition ######
+# Chaos definition
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyCol, enumerateFunction)
 indexMax = enumerateFunction.getStrataCumulatedCardinal(1)
 strategy = ot.FixedStrategy(multivariateBasis, indexMax)

@@ -1,11 +1,11 @@
-"""
+r"""
 Sampling from an unnormalized probability density
 =================================================
 We sample from an unnormalized probability density
 using Metropolis-Hastings algorithms.
 
 .. math::
-   f(x) = \\frac{1}{2} (2 + \sin(x)^2) \\exp \\left[- \\left(2 + \\cos(3x)^3 + \\sin(2x)^3 \\right) x \\right] \\mathbf{1}_{[0, 2 \\pi]}(x).
+   f(x) = \frac{1}{2} (2 + \sin(x)^2) \exp \left[- \left(2 + \cos(3x)^3 + \sin(2x)^3 \right) x \right] \mathbf{1}_{[0, 2 \pi]}(x).
 
 This example is drawn from [1].
 """

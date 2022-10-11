@@ -53,7 +53,7 @@ m0 = np.array([[1, 1], [2, 2], [3, 3]])
 try:
     p0 = ot.Point(m0)
     print(p0)
-except:
+except Exception:
     print("Conversion from 2d-array => Point failed (as expected :)")
 
 # Check tuple / Sample conversion

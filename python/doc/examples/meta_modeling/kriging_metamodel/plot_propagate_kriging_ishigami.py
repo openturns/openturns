@@ -3,7 +3,6 @@ Kriging : propagate uncertainties
 =================================
 """
 import openturns as ot
-import numpy as np
 from matplotlib import pylab as plt
 import openturns.viewer as otv
 

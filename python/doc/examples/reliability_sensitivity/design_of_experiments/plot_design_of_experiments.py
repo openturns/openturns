@@ -13,9 +13,6 @@ Various design of experiments in OpenTURNS
 # %%
 import openturns as ot
 import openturns.viewer as otv
-import pylab as pl
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 

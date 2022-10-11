@@ -172,8 +172,11 @@ graph.setLegendPosition("topright")
 view = viewer.View(graph)
 
 # %%
-# We cannot extract any useful information from this parallel plot. In fact it is the expected behaviour as mean values should be attained from various combinations of# the input variables.
-# The parallel coordinates graph is a cheap tool and highly useful to explore more extreme values !
+# We cannot extract any useful information from this parallel plot.
+# In fact it is the expected behaviour as mean values should be attained from
+# various combinations of# the input variables.
+# The parallel coordinates graph is a cheap tool and highly useful to explore
+# more extreme values!
 
 # %%
 # Display figures

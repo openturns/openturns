@@ -6,7 +6,7 @@ import openturns as ot
 
 
 class BraninModel:
-    """
+    r"""
     Data class for the Branin test function.
 
 

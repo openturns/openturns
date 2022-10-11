@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import math as m
 
 
 def printPoint(point, digits):

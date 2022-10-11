@@ -39,7 +39,7 @@ for i in range(2):
     ).getBinaryQualityMeasure():
         msg = "accepted"
     else:
-        msg = rejected
+        msg = "rejected"
     print("Kolmogorov test for the generator, sample size=", size, " is ", msg)
     size *= 10
 

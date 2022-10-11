@@ -141,5 +141,5 @@ algo = ot.LinearModelStepwiseAlgorithm(X, basis, Y, i_min)
 try:
     algo.run()
     assert False, "should not go here"
-except:
+except Exception:
     pass

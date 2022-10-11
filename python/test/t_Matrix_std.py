@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from math import *
+import math as m
 
 ot.TESTPREAMBLE()
 
@@ -158,8 +158,8 @@ print("pt_test = ", repr(pt_test))
 
 A = ot.Matrix(2, 2)
 A[0, 0] = 0.5
-A[1, 0] = -(sqrt(3.0) / 2)
-A[0, 1] = sqrt(3.0) / 2
+A[1, 0] = -(m.sqrt(3.0) / 2)
+A[0, 1] = m.sqrt(3.0) / 2
 A[1, 1] = 0.5
 B = A.transpose()
 id = B * A

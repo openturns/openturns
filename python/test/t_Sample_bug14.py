@@ -19,5 +19,5 @@ print("sample1[2][0]=", sample1[2][0])
 print("sample1[2, 0]=", sample1[2, 0])
 try:
     sample1[1, 2] = -4.0
-except:
+except Exception:
     print("set item failed on purpose")

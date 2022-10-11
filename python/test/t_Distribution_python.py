@@ -232,7 +232,7 @@ try:
     print("try with another Python distribution")
     myDist = ot.Distribution(UniformNdPy([0.0] * 2, [2.0] * 2))
     print(ot.ComposedDistribution([ot.Normal(), ot.Normal()], myDist))
-except:
+except Exception:
     print("The construction failed on purpose as", myDist, "is not a copula")
 
 # Extract the copula

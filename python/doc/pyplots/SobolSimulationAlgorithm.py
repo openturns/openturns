@@ -16,9 +16,9 @@ F.setDescription("F")
 L = ot.Uniform(250.0, 260.0)  # in cm
 L.setDescription("L")
 # Moment of inertia I
-I = ot.Beta(2.5, 4, 310, 450)  # in cm^4
-I.setDescription("I")
-distribution = ot.ComposedDistribution([E, F, L, I])
+II = ot.Beta(2.5, 4, 310, 450)  # in cm^4
+II.setDescription("I")
+distribution = ot.ComposedDistribution([E, F, L, II])
 
 # estimator
 estimator = ot.SaltelliSensitivityAlgorithm()

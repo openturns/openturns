@@ -143,5 +143,5 @@ n = mesh.getVerticesNumber()
 try:
     s = processSample.getSampleAtVertex(n)
     assert False, "should not go there"
-except:
+except Exception:
     pass

@@ -53,5 +53,5 @@ for x in strided2:
 
 try:
     ot.IndicesCollection([["zou"]])
-except:
+except Exception:
     print("ok")

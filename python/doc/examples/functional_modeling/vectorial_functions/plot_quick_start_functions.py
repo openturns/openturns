@@ -45,8 +45,6 @@ Defining Python and symbolic functions: a quick start introduction to functions
 # %%
 import numpy as np
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 

@@ -47,9 +47,9 @@ tmax = myMesh.getEnd()
 covariance = ot.CovarianceMatrix(N)
 for k in range(N):
     s = myMesh.getValue(k)
-    for l in range(k + 1):
-        t = myMesh.getValue(l)
-        covariance[k, l] = C(s, t)
+    for ll in range(k + 1):
+        t = myMesh.getValue(ll)
+        covariance[k, ll] = C(s, t)
 
 # Create the covariance model
 myCovarianceModel = ot.UserDefinedCovarianceModel(myMesh, covariance)

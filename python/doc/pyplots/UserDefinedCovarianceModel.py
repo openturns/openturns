@@ -17,9 +17,9 @@ vertices = myMesh.getVertices()
 myCovariance = ot.CovarianceMatrix(len(vertices))
 for k in range(len(vertices)):
     t = vertices[k]
-    for l in range(k + 1):
-        s = vertices[l]
-        myCovariance[k, l] = C(s[0], t[0])
+    for ll in range(k + 1):
+        s = vertices[ll]
+        myCovariance[k, ll] = C(s[0], t[0])
 
 covarianceModel = ot.UserDefinedCovarianceModel(myMesh, myCovariance)
 cov_graph = covarianceModel.draw(0, 0, -a, a, 512)

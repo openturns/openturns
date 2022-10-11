@@ -65,7 +65,7 @@ print(
 print("entropy=%.6f" % copula.computeEntropy())
 # Confidence regions
 if copula.getDimension() <= 2:
-    threshold = Point()
+    threshold = ot.Point()
     print(
         "Minimum volume interval=", copula.computeMinimumVolumeInterval(0.95, threshold)
     )

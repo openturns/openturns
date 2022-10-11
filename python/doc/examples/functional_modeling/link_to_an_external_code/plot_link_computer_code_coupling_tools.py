@@ -50,8 +50,6 @@ Link to a computer code with coupling tools
 import openturns as ot
 import openturns.coupling_tools as ct
 import sys
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 

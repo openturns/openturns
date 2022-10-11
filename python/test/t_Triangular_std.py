@@ -152,7 +152,7 @@ for distribution in coll:
             ).computeCDF(point)
         ) / (2.0 * eps)
         print("cdf gradient (FD)=", repr(CDFgrFD))
-    except:
+    except Exception:
         pass
 
     # quantile
@@ -304,7 +304,7 @@ for distribution in coll:
             ).computeCDF(point)
         ) / (2.0 * eps)
         print("cdf gradient (FD)=", repr(CDFgrFD))
-    except:
+    except Exception:
         pass
 
     # quantile

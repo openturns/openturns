@@ -30,7 +30,10 @@ selection = ot.Indices(5)
 selection.fill()
 print("selection = ", selection)
 
-# PartialPearson : Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialPearson performs the Independence Pearson test simultaneously on firstSample[i] and secondSample, for i in the selection. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector.
+# PartialPearson : Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1.
+# If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample),
+# PartialPearson performs the Independence Pearson test simultaneously on firstSample[i] and secondSample, for i in the selection.
+# For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector.
 # Probability of the H0 reject zone : 0.10
 
 print(
@@ -51,7 +54,10 @@ print(
 print("PearsonX0Y=", ot.HypothesisTest.Pearson(sampleX0, sampleY, 0.10))
 print("FullPearsonX0Y=", ot.HypothesisTest.FullPearson(sampleX0, sampleY, 0.10))
 
-# FullPearson : Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullPearson performs the Independence Pearson test simultaneously on firstSample[i] and secondSample. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector.
+# FullPearson : Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1.
+# If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample),
+# FullPearson performs the Independence Pearson test simultaneously on firstSample[i] and secondSample.
+# For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector.
 # Probability of the H0 reject zone : 0.10
 print("FullPearsonXY=", ot.HypothesisTest.FullPearson(sampleX, sampleY, 0.10))
 print("FullPearsonYY=", ot.HypothesisTest.FullPearson(sampleY, sampleY, 0.10))

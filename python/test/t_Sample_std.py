@@ -49,7 +49,7 @@ try:
 
     # Normally, we should never go here
     raise
-except:
+except Exception:
     pass
 
 # We try to create a sample with 5 times the same point
@@ -101,13 +101,13 @@ v1 = [ot.Point([12.0]), ot.Point([1.0])]
 v2 = [ot.Point([13.0]), ot.Point([2.0])]
 try:
     s = ot.Sample([v1, v2])
-except:
+except Exception:
     print("ok")
 
 try:
     # uneven points
     s = ot.Sample([[1.0, 2.0], [5.0]])
-except:
+except Exception:
     print("ok")
 
 # getMarginal by identifiers

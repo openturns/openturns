@@ -4,7 +4,12 @@ Viscous free fall: metamodel of a field function
 """
 # %%
 #
-# In this example, we present how to create the metamodel of a field function. This examples considers the :ref:`free fall model <use-case-viscous-fall>`. We first compute the Karhunen-Loève decomposition of a sample of trajectories. Then we create a create a polynomial chaos which takes the inputs and returns the KL decomposition modes as outputs. Finally, we create a metamodel by combining the KL decomposition and the polynomial chaos.
+# In this example, we present how to create the metamodel of a field function.
+# This examples considers the :ref:`free fall model <use-case-viscous-fall>`.
+# We first compute the Karhunen-Loève decomposition of a sample of trajectories.
+# Then we create a create a polynomial chaos which takes the inputs and returns
+# the KL decomposition modes as outputs. Finally, we create a metamodel by
+# combining the KL decomposition and the polynomial chaos.
 
 # %%
 # Define the model
