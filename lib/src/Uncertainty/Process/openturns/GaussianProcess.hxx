@@ -68,9 +68,7 @@ public:
   void setTimeGrid(const RegularGrid & timeGrid) override;
 
   /** Set sampling method accessor */
-  enum SamplingMethod { CHOLESKY, HMAT, GALLIGAOGIBBS,
-                        GIBBS = 2
-                      }; // @deprecated
+  enum SamplingMethod { CHOLESKY, HMAT, GALLIGAOGIBBS };
   SamplingMethod getSamplingMethod() const;
   void setSamplingMethod(const SamplingMethod samplingMethod);
 
