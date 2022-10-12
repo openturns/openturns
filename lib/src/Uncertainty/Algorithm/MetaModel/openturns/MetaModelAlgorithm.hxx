@@ -49,15 +49,10 @@ public:
   /** Constructor with parameters */
   MetaModelAlgorithm(const Sample & inputSample,
                      const Sample & outputSample,
-                     const Distribution & distribution,
-                     const Function & model = Function());// @deprecated argument
+                     const Distribution & distribution);
 
   MetaModelAlgorithm(const Sample & inputSample,
                      const Sample & outputSample);
-
-  /** @deprecated Constructor with parameters */
-  MetaModelAlgorithm(const Distribution & distribution,
-                     const Function & model);
 
   /** Virtual constructor */
   MetaModelAlgorithm * clone() const override;
@@ -92,10 +87,6 @@ protected:
 
   /** The input vector distribution */
   Distribution distribution_;
-
-  /** The model */
-  Function model_;
-
 
 private:
   friend struct TestedDistribution;

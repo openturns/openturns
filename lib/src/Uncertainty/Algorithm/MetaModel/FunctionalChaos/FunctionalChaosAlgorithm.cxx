@@ -71,7 +71,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution)
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -91,7 +91,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution)
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -109,7 +109,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution)
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -122,7 +122,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution)
-  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution)
   , adaptiveStrategy_()
   , projectionStrategy_()
   , maximumResidual_(ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual"))
@@ -178,7 +178,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution)
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -231,7 +231,7 @@ AdaptiveStrategy FunctionalChaosAlgorithm::getAdaptiveStrategy() const
 /* Computes the functional chaos */
 void FunctionalChaosAlgorithm::run()
 {
-  const UnsignedInteger outputDimension = model_.getOutputDimension();
+  const UnsignedInteger outputDimension = getOutputSample().getDimension();
 
   // Get the measure upon which the orthogonal basis is built
   const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
@@ -252,8 +252,9 @@ void FunctionalChaosAlgorithm::run()
 
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
   const Bool noTransformation = (measure == distribution_);
-  if (noTransformation) composedModel_ = model_;
-  else composedModel_ = ComposedFunction(model_, inverseTransformation_);
+  const Function model(DatabaseFunction(getInputSample(), getOutputSample()));
+  if (noTransformation) composedModel_ = model;
+  else composedModel_ = ComposedFunction(model, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
   const Sample initialInputSample(projectionStrategy_.getInputSample());
   if (!noTransformation)
