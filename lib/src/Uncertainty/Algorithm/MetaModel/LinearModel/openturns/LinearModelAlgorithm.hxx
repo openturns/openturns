@@ -52,11 +52,6 @@ public:
                        const Sample &outputSample,
                        const Basis &basis);
 
-  /** Oldest constructor (for compatibility) */
-  LinearModelAlgorithm(const Sample &inputSample,
-                       const Basis &basis,
-                       const Sample &outputSample);
-
   /** Virtual constructor */
   LinearModelAlgorithm *clone() const override;
 

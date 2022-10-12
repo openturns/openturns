@@ -13,6 +13,7 @@
  * Removed FunctionalChaosSobolIndices::summary
  * Removed CorrelationAnalysis::PearsonCorrelation|SpearmanCorrelation|PCC|PRCC
  * Removed Distribution.getStandardMoment
+ * Removed deprecated LinearModelAlgorithm | LinearModelStepwiseAlgorithm ctors
 
 === Documentation ===
 

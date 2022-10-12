@@ -86,15 +86,6 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   basis_ = basis;
 }
 
-/** Oldest constructor (for compatibility) */
-LinearModelAlgorithm::LinearModelAlgorithm(const Sample &inputSample,
-    const Basis &basis,
-    const Sample &outputSample)
-  : LinearModelAlgorithm(inputSample, outputSample, basis)
-{
-  LOGWARN(OSS() << "LinearModelAlgorithm(inputSample, basis, outpuSample) is deprecated");
-}
-
 /* Virtual constructor */
 LinearModelAlgorithm * LinearModelAlgorithm::clone() const
 {
