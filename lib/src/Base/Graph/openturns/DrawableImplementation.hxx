@@ -149,12 +149,6 @@ public:
   /** Bounding box accessor */
   virtual Interval getBoundingBox() const;
 
-  /** @deprecated R command generating method, for plotting through R */
-  virtual String draw() const;
-
-  /** @deprecated Clean all the temporary data created by draw() method */
-  virtual void clean() const;
-
   /** Clone method */
   DrawableImplementation * clone() const override;
 
@@ -307,9 +301,6 @@ protected:
 
   /** Initialize Valid parameter list */
   static void InitializeValidParameterList();
-
-  /** Temporary file name for the exchange with R */
-  mutable String dataFileName_;
 
 }; /* class DrawableImplementation */
 

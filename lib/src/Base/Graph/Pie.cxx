@@ -151,42 +151,6 @@ Interval Pie::getBoundingBox() const
   return Interval(lowerBound, upperBound);
 }
 
-/* Draw method */
-String Pie::draw() const
-{
-  dataFileName_ = "";
-  //pie(xpi,center=center,radius=rayon,labels=noms)
-  OSS oss;
-  // Stores the data in a temporary file
-  oss << DrawableImplementation::draw() << "\n";
-  // The specific R command for drawing
-  // Labels are drawn only if the associated data shares a sufficient amount of the total
-  Scalar labelThreshold = data_.getMax()[0] * ResourceMap::GetAsScalar("Pie-LabelThreshold");
-  oss << "pie(dataOT[,1],"
-      << "center=c(" << center_[0] << "," << center_[1]
-      << "),radius=" << radius_;
-  UnsignedInteger size = labels_.getSize();
-  // If there is any label defined
-  if (size > 0)
-  {
-    oss << ",labels=c(\"";
-    String separator("");
-    for(UnsignedInteger i = 0; i < size; ++i, separator = "\",\"") oss << separator << (data_(i, 0) >= labelThreshold ? labels_[i] : "");
-    oss << "\")";
-  }
-  size = palette_.getSize();
-  // If there is any color defined
-  if (size > 0)
-  {
-    oss << ",col=c(\"";
-    String separator("");
-    for(UnsignedInteger i = 0; i < size; ++i, separator = "\",\"") oss << separator << palette_[i];
-    oss << "\")";
-  }
-  oss << ")";
-  return oss;
-}
-
 /* Clone method */
 Pie * Pie::clone() const
 {

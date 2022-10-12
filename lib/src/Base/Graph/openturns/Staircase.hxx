@@ -67,9 +67,6 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** Draw method */
-  String draw() const override;
-
   /** Clone method */
   Staircase * clone() const override;
 

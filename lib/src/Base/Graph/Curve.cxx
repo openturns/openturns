@@ -137,33 +137,6 @@ String Curve::__repr__() const
   return oss;
 }
 
-/* Draw method */
-String Curve::draw() const
-{
-  dataFileName_ = "";
-  OSS oss;
-  // Stores the data in a temporary file
-  oss << DrawableImplementation::draw() << "\n";
-  // The specific R command for drawing
-  oss << "lines(dataOT[,1], dataOT[,2]"
-      << ", lty=\"" << lineStyle_
-      << "\", col=\"" << color_
-      << "\", lwd=" << lineWidth_;
-  if (pointStyle_ != "none")
-  {
-    const String code((OSS() << getPointCode(pointStyle_)));
-    oss << ", type=\"b\""
-        << ", pch=" << (pointStyle_ == "dot" ? "\".\"" : code);
-  }
-  else
-  {
-    oss << ", type=\"l\"";
-  }
-  oss << ")";
-
-  return oss;
-}
-
 /* Clone method */
 Curve * Curve::clone() const
 {

@@ -1,2 +1,1 @@
-Drop deprecated Drawable.draw|clean & Graph.draw|clean|getRCommand|makeR*|GetExtensionMap methods
 Drop deprecated GaussianProcess.GIBBS

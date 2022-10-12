@@ -22,6 +22,7 @@
  * Removed Distribution::getCenteredMoment
  * Removed IterativeMoments::getCenteredMoments
  * Removed GeneralLinearModelAlgorithm | KrigingAlgorithm ctors
+ * Removed Drawable.draw|clean & Graph.draw|clean|getRCommand|makeR*|GetExtensionMap methods
 
 === Documentation ===
 

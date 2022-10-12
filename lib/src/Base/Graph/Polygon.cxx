@@ -127,31 +127,6 @@ String Polygon::__repr__() const
   return oss;
 }
 
-/* Draw method */
-String Polygon::draw() const
-{
-  dataFileName_ = "";
-  OSS oss;
-  // Stores the data in a temporary file
-  oss << DrawableImplementation::draw();
-  // The specific R command for drawing
-  oss << "polygon(dataOT[,1], dataOT[,2]"
-      << ", border="
-      << "\"" << edgeColor_ << "\""
-      << ", lty=\"" << lineStyle_ << "\""
-      << ", col="
-      << "\"" << color_ << "\""
-      << ", lwd=" << lineWidth_;
-  if (pointStyle_ != "none")
-  {
-    const String code((OSS() << getPointCode(pointStyle_)));
-    oss << ", pch=" << (pointStyle_ == "dot" ? "\".\"" : code);
-  }
-  oss << ")";
-
-  return oss;
-}
-
 /* Clone method */
 Polygon * Polygon::clone() const
 {

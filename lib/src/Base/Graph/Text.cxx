@@ -190,37 +190,6 @@ void Text::setTextSize(const Scalar size)
 }
 
 
-/* Draw method */
-String Text::draw() const
-{
-  dataFileName_ = "";
-  OSS oss;
-  if (textAnnotations_.getSize() == 0)
-    return oss;
-  // Stores the data in a temporary file
-  oss << DrawableImplementation::draw() << "\n";
-
-  oss << "labels <- rep(\"\", " << textAnnotations_.getSize() << ")\n";
-  oss << "position <- rep(3, " << textAnnotations_.getSize() << ")\n";
-// We assume that only few labels are printed, otherwise graph is ugly
-  for (UnsignedInteger i = 0; i < textAnnotations_.getSize(); ++i)
-  {
-    if (textAnnotations_[i] != "")
-    {
-      oss << "labels[" << (i + 1) << "] <- \"" << textAnnotations_[i] << "\"\n";
-      const std::map<String, UnsignedInteger>::const_iterator it(Position.find(textPositions_[i]));
-      oss << "position[" << (i + 1) << "] <- \"" << it->second << "\"\n";
-    }
-  }
-  oss << "indices <- which(labels != \"\")\n";
-  oss << "text(dataOT[indices,1], dataOT[indices,2], labels[indices], cex = " << textSize_
-      << ", xpd = TRUE, pos = position[indices]"
-      << ", col=\"" << color_ << "\""
-      << ", offset = 0.25)\n";
-
-  return oss;
-}
-
 /* Clone method */
 Text * Text::clone() const
 {

@@ -141,18 +141,6 @@ public:
   String getTitle() const;
   void setTitle(const String & title);
 
-  /** @deprecated The method that generates the graphic files */
-  void draw(const String & file,
-            const Scalar width = ResourceMap::GetAsUnsignedInteger("Graph-DefaultWidth"),
-            const Scalar height = ResourceMap::GetAsUnsignedInteger("Graph-DefaultHeight"),
-            SignedInteger format = GraphImplementation::ALL);
-
-  /** @deprecated Get the R command corresponding to the graph */
-  String getRCommand() const;
-
-  /** @deprecated Clean temporary files */
-  void clean();
-
   /** Margin accessor */
   void setXMargin(const Scalar xMargin);
   void setYMargin(const Scalar yMargin);

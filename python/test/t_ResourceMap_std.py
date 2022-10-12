@@ -9,6 +9,6 @@ for key in ot.ResourceMap.GetKeys():
     print("  %s => %s," % (key, ot.ResourceMap.Get(key)))
 print("}")
 print(
-    "Extract from ResourceMap : R-executable-command -> ",
-    ot.ResourceMap.Get("Graph-RExecutableCommand"),
+    "Extract from ResourceMap: Path-TemporaryDirectory -> ",
+    ot.ResourceMap.Get("Path-TemporaryDirectory"),
 )

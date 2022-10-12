@@ -137,18 +137,6 @@ public:
   virtual String getTitle() const;
   void setTitle(const String & title);
 
-  /** @deprecated The method that generates the graphic files */
-  void draw(const String & file,
-            const Scalar width = ResourceMap::GetAsUnsignedInteger("Graph-DefaultWidth"),
-            const Scalar height = ResourceMap::GetAsUnsignedInteger("Graph-DefaultHeight"),
-            SignedInteger format = ALL);
-
-  /** @deprecated Get the R command corresponding to the graph */
-  String getRCommand() const;
-
-  /** @deprecated Clean temporary files */
-  void clean();
-
   /** Margin accessor */
   virtual void setXMargin(const Scalar xMargin);
   virtual void setYMargin(const Scalar yMargin);
@@ -188,20 +176,8 @@ private:
   /** Initialize valid legend positions **/
   static void InitializeValidLegendPositions();
 
-  /** Initialize format enum/extension map */
-  static std::map<SignedInteger, String> GetExtensionMap();
-
   /** Compute the best bounding box to enclose all the drawables */
   void computeBoundingBox() const;
-
-  /** Make R legend command */
-  String makeRLegendCommand() const;
-
-  /** Make R header command */
-  String makeRHeaderCommand() const;
-
-  /** Make R core command */
-  String makeRCoreCommand() const;
 
   /** main title */
   String title_;

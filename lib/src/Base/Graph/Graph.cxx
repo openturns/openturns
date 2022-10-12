@@ -274,27 +274,6 @@ void Graph::setTitle(const String & title)
   getImplementation()->setTitle(title);
 }
 
-/* The method that generates the graphic files */
-void Graph::draw(const String & file,
-                 const Scalar width,
-                 const Scalar height,
-                 SignedInteger format)
-{
-  getImplementation()->draw(file, width, height, format);
-}
-
-/* Get the R command corresponding to the graph */
-String Graph::getRCommand() const
-{
-  return getImplementation()->getRCommand();
-}
-
-/* Clean temporary files */
-void Graph::clean()
-{
-  getImplementation()->clean();
-}
-
 /* Margin accessor */
 void Graph::setXMargin(const Scalar xMargin)
 {

@@ -718,7 +718,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Drawable-DefaultPattern", "s");
   addAsString("Drawable-DefaultPointStyle", "plus");
   addAsString("Drawable-DefaultSurfaceColor", "white");
-  addAsString("Drawable-NoSpecifiedLabel", "");
   addAsUnsignedInteger("Drawable-DataThreshold", 2000);
   addAsUnsignedInteger("Drawable-DefaultPalettePhase", 12);
 
@@ -726,15 +725,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Text-DefaultTextSize", 0.75);
 
   // GraphImplementation parameters //
-#ifdef R_EXECUTABLE
-  addAsString("Graph-RExecutableCommand", R_EXECUTABLE);
-#else
-  addAsString("Graph-RExecutableCommand", "");
-#endif
   addAsScalar("Graph-DefaultHorizontalMargin", 0.05);
   addAsScalar("Graph-DefaultLegendFontSize", 1.0);
   addAsScalar("Graph-DefaultVerticalMargin", 0.05);
-  addAsString("Graph-NoSpecifiedLabel", "");
   addAsUnsignedInteger("Graph-DefaultHeight", 480);
   addAsUnsignedInteger("Graph-DefaultWidth", 640);
 

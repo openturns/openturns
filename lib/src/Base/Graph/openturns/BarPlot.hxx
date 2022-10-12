@@ -76,9 +76,6 @@ public:
   /** Accessor for boundingbox */
   Interval getBoundingBox() const override;
 
-  /** Draw method */
-  String draw() const override;
-
   /** Clone method */
   BarPlot * clone() const override;
 
