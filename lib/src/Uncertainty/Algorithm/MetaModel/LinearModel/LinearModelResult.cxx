@@ -67,7 +67,6 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
   , sigma2_(sigma2)
   , hasIntercept_(false)
 {
-  model_ = DatabaseFunction(inputSample, outputSample); // deprecated
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In LinearModelResult::LinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();

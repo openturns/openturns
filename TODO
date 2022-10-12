@@ -1,9 +1,6 @@
-Remove MetaModelResult(Function, Function, ...) ctor
-Remove FunctionalChaosResult.getComposedModel, MetaModelResult.getModel and associated attributes for 1.21
 Remove (Process)Sample::computeCenteredMoment
 Remove Distribution::getCenteredMoment
 Remove IterativeMoments::getCenteredMoments
 Drop deprecated GeneralLinearModelAlgorithm | KrigingAlgorithm ctors for 1.21
 Drop deprecated Drawable.draw|clean & Graph.draw|clean|getRCommand|makeR*|GetExtensionMap methods
 Drop deprecated GaussianProcess.GIBBS
-Remove FunctionalChaosResult Function ctor

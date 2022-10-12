@@ -61,20 +61,6 @@ public:
                         const Distribution & distribution,
                         const Function & transformation,
                         const Function & inverseTransformation,
-                        const Function & composedModel,
-                        const OrthogonalBasis & orthogonalBasis,
-                        const Indices & I,
-                        const Sample & alpha_k,
-                        const FunctionCollection & Psi_k,
-                        const Point & residuals,
-                        const Point & relativeErrors);
-
-  /** @deprecated Parameter constructor */
-  FunctionalChaosResult(const Function & model,
-                        const Distribution & distribution,
-                        const Function & transformation,
-                        const Function & inverseTransformation,
-                        const Function & composedModel,
                         const OrthogonalBasis & orthogonalBasis,
                         const Indices & I,
                         const Sample & alpha_k,
@@ -97,9 +83,6 @@ public:
 
   /** InverseIsoProbabilisticTransformation accessor */
   virtual Function getInverseTransformation() const;
-
-  /** @deprecated Composed model accessor */
-  virtual Function getComposedModel() const;
 
   /** Orthogonal basis accessor */
   virtual OrthogonalBasis getOrthogonalBasis() const;
@@ -134,9 +117,6 @@ private:
 
   /** The inverse isoprobabilistic transformation */
   Function inverseTransformation_;
-
-  /** The composed model */
-  Function composedModel_;
 
   /** The orthogonal basis */
   OrthogonalBasis orthogonalBasis_;

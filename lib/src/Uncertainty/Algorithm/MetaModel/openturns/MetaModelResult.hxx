@@ -50,12 +50,6 @@ public:
                   const Point & residuals,
                   const Point & relativeErrors);
 
-  /** @deprecated Standard constructor */
-  MetaModelResult(const Function & model,
-                  const Function & metaModel,
-                  const Point & residuals,
-                  const Point & relativeErrors);
-
   /** Virtual constructor */
   MetaModelResult * clone() const override;
 
@@ -66,10 +60,6 @@ public:
   /** Sample accessor */
   virtual void setOutputSample(const Sample & sampleY);
   virtual Sample getOutputSample() const;
-
-  /** Model accessor @deprecated */
-  virtual void setModel(const Function & model);
-  virtual Function getModel() const;
 
   /** MetaModel accessor */
   virtual void setMetaModel(const Function & metaModel);
@@ -96,9 +86,6 @@ protected:
 
   Sample inputSample_;
   Sample outputSample_;
-
-  // The initial model
-  Function model_;
 
   // The corresponding meta-model
   Function metaModel_;

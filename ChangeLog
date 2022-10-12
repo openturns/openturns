@@ -15,6 +15,9 @@
  * Removed Distribution.getStandardMoment
  * Removed deprecated LinearModelAlgorithm | LinearModelStepwiseAlgorithm ctors
  * Removed FunctionalChaosAlgorithm(Function) ctors
+ * Removed MetaModelResult(Function, Function, ...) ctor
+ * Removed FunctionalChaosResult.getComposedModel, MetaModelResult.getModel and associated attributes for 1.21
+ * Removed FunctionalChaosResult Function ctor
 
 === Documentation ===
 

@@ -38,7 +38,6 @@
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
-#include "openturns/UserDefined.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/LeastSquaresMetaModelSelectionFactory.hxx"
 #include "openturns/LARS.hxx"
@@ -319,8 +318,7 @@ void FunctionalChaosAlgorithm::run()
     Psi_k.add(basis.build(i));
   }
   // Build the result
-  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, composedModel_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
-  result_.setModel(model_);
+  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
 }
 
 /* Marginal computation */

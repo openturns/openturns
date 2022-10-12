@@ -54,7 +54,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , covarianceModel_(covarianceModel)
   , covarianceCoefficients_(covarianceCoefficients)
 {
-  model_ = DatabaseFunction(inputSample, outputSample); // deprecated
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In KrigingResult::KrigingResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
@@ -83,7 +82,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , covarianceCholeskyFactor_(covarianceCholeskyFactor)
   , covarianceHMatrix_(covarianceHMatrix)
 {
-  model_ = DatabaseFunction(inputSample, outputSample); // deprecated
   const UnsignedInteger outputDimension = outputSample.getDimension();
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
