@@ -4,7 +4,6 @@ import openturns as ot
 
 
 class RandomExp(object):
-
     def __init__(self, size, dim):
         self.size = size
         self.dim = dim

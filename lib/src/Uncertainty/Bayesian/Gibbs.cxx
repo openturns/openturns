@@ -84,18 +84,18 @@ UnsignedInteger Gibbs::getDimension() const
 // Sequentially sample from the MH blocks
 void Gibbs::computeRealizationDeterministicUpdating() const
 {
-    for (UnsignedInteger j = 0; j < samplers_.getSize(); ++ j)
-    {
-      // get the current state from the previous sampler
-      samplers_[j].getImplementation()->currentState_ = currentState_;
-      if (recomputeLogPosterior_[j])
-        currentLogPosterior_ = samplers_[j].computeLogPosterior(currentState_);
-      samplers_[j].getImplementation()->currentLogPosterior_ = currentLogPosterior_;
+  for (UnsignedInteger j = 0; j < samplers_.getSize(); ++ j)
+  {
+    // get the current state from the previous sampler
+    samplers_[j].getImplementation()->currentState_ = currentState_;
+    if (recomputeLogPosterior_[j])
+      currentLogPosterior_ = samplers_[j].computeLogPosterior(currentState_);
+    samplers_[j].getImplementation()->currentLogPosterior_ = currentLogPosterior_;
 
-      // pass the current state to the next sampler
-      currentState_ = samplers_[j].getRealization();
-      currentLogPosterior_ = samplers_[j].getImplementation()->currentLogPosterior_;
-    }
+    // pass the current state to the next sampler
+    currentState_ = samplers_[j].getRealization();
+    currentLogPosterior_ = samplers_[j].getImplementation()->currentLogPosterior_;
+  }
 }
 
 // Sample from a randomly chosen MH block
@@ -163,10 +163,10 @@ Point Gibbs::getRealization() const
       if (recompute)
       {
         for (UnsignedInteger j = 0; j < nbSamplers; ++j)
-            recomputeLogPosterior_[j] = true;
+          recomputeLogPosterior_[j] = true;
       }
     } // random updating
-}
+  }
 
   // for each new sample
   for (UnsignedInteger i = 0; i < size; ++ i)

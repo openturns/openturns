@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from math import *
 
 ot.TESTPREAMBLE()
 
@@ -36,11 +35,22 @@ for i in range(kernels.getSize()):
     bw = smoother.getBandwidth()
     print("kernel bandwidth=[ %.6g" % bw[0], ",  %.6g" % bw[1], "]")
     meanSmoothed = smoothed.getMean()
-    print("mean(smoothed)=[ %.6g" % meanSmoothed[0], ",  %.6g" % meanSmoothed[
-          1], "] mean(exact)=[", meanExact[0], ", ", meanExact[1], "]")
+    print(
+        "mean(smoothed)=[ %.6g" % meanSmoothed[0],
+        ",  %.6g" % meanSmoothed[1],
+        "] mean(exact)=[",
+        meanExact[0],
+        ", ",
+        meanExact[1],
+        "]",
+    )
     covarianceSmoothed = smoothed.getCovariance()
-    print("covariance=", repr(covarianceSmoothed),
-          " covariance(exact)=", repr(covarianceExact))
+    print(
+        "covariance=",
+        repr(covarianceSmoothed),
+        " covariance(exact)=",
+        repr(covarianceExact),
+    )
     # Define a point
     point = ot.Point(smoothed.getDimension(), 0.0)
 
@@ -57,8 +67,10 @@ for i in range(kernels.getSize()):
 distributionCollection = ot.DistributionCollection(2)
 distributionCollection[0] = ot.Normal(0.0, 1.0)
 distributionCollection[1] = ot.Beta(0.7, 0.9, -1.0, 2.0)
-sampleCollection = [distributionCollection[0].getSample(
-    discretization), distributionCollection[1].getSample(discretization)]
+sampleCollection = [
+    distributionCollection[0].getSample(discretization),
+    distributionCollection[1].getSample(discretization),
+]
 for i in range(kernels.getSize()):
     kernel = kernels[i]
     print("kernel=", kernel.getName())
@@ -67,18 +79,26 @@ for i in range(kernels.getSize()):
         for corr in [False, True]:
             smoother.setBoundaryCorrection(corr)
             smoothed = smoother.build(sampleCollection[j])
-            print("Bounded underlying distribution? ", j ==
-                  1, " bounded reconstruction? ", corr)
+            print(
+                "Bounded underlying distribution? ",
+                j == 1,
+                " bounded reconstruction? ",
+                corr,
+            )
             # Define a point
             point = ot.Point(smoothed.getDimension(), -0.9)
 
             # Show PDF and CDF of point point
             pointPDF = smoothed.computePDF(point)
             pointCDF = smoothed.computeCDF(point)
-            print(" pdf(smoothed)=  %.6g" % pointPDF, " pdf(exact)= %.6g" %
-                  distributionCollection[j].computePDF(point))
-            print(" cdf(smoothed)=  %.6g" % pointCDF, " cdf(exact)= %.6g" %
-                  distributionCollection[j].computeCDF(point))
+            print(
+                " pdf(smoothed)=  %.6g" % pointPDF,
+                " pdf(exact)= %.6g" % distributionCollection[j].computePDF(point),
+            )
+            print(
+                " cdf(smoothed)=  %.6g" % pointCDF,
+                " cdf(exact)= %.6g" % distributionCollection[j].computeCDF(point),
+            )
 
 sample = ot.Normal().getSample(5000)
 ks1 = ot.KernelSmoothing(ot.Normal(), True, 64).build(sample)
@@ -95,77 +115,101 @@ sample = ot.Uniform().getSample(500)
 algo1 = ot.KernelSmoothing(ot.Normal(), False)
 algo1.setBoundingOption(ot.KernelSmoothing.NONE)
 ks1 = algo1.build(sample)
-print("with no boundary correction, pdf(left)=%.6g" %
-      ks1.computePDF(left), ", pdf(right)=%.6g" % ks1.computePDF(right))
+print(
+    "with no boundary correction, pdf(left)=%.6g" % ks1.computePDF(left),
+    ", pdf(right)=%.6g" % ks1.computePDF(right),
+)
 
 algo2 = ot.KernelSmoothing(ot.Normal(), False)
 algo2.setBoundingOption(ot.KernelSmoothing.LOWER)
 algo2.setAutomaticLowerBound(True)
 ks2 = algo2.build(sample)
-print("with automatic lower boundary correction, pdf(left)=%.6g" %
-      ks2.computePDF(left), ", pdf(right)=%.6g" % ks2.computePDF(right))
+print(
+    "with automatic lower boundary correction, pdf(left)=%.6g" % ks2.computePDF(left),
+    ", pdf(right)=%.6g" % ks2.computePDF(right),
+)
 
 algo3 = ot.KernelSmoothing(ot.Normal(), False)
 algo3.setBoundingOption(ot.KernelSmoothing.LOWER)
 algo3.setLowerBound(-1.0)
 algo3.setAutomaticLowerBound(False)
 ks3 = algo3.build(sample)
-print("with user defined lower boundary correction, pdf(left)=%.6g" %
-      ks3.computePDF(left), ", pdf(right)=%.6g" % ks3.computePDF(right))
+print(
+    "with user defined lower boundary correction, pdf(left)=%.6g"
+    % ks3.computePDF(left),
+    ", pdf(right)=%.6g" % ks3.computePDF(right),
+)
 
 algo4 = ot.KernelSmoothing(ot.Normal(), False)
 algo4.setBoundingOption(ot.KernelSmoothing.UPPER)
 algo4.setAutomaticUpperBound(True)
 ks4 = algo4.build(sample)
-print("with automatic upper boundary correction, pdf(left)=%.6g" %
-      ks4.computePDF(left), ", pdf(right)=%.6g" % ks4.computePDF(right))
+print(
+    "with automatic upper boundary correction, pdf(left)=%.6g" % ks4.computePDF(left),
+    ", pdf(right)=%.6g" % ks4.computePDF(right),
+)
 
 algo5 = ot.KernelSmoothing(ot.Normal(), False)
 algo5.setBoundingOption(ot.KernelSmoothing.UPPER)
 algo5.setUpperBound(1.0)
 algo5.setAutomaticLowerBound(False)
 ks5 = algo5.build(sample)
-print("with user defined upper boundary correction, pdf(left)=%.6g" %
-      ks5.computePDF(left), ", pdf(right)=%.6g" % ks5.computePDF(right))
+print(
+    "with user defined upper boundary correction, pdf(left)=%.6g"
+    % ks5.computePDF(left),
+    ", pdf(right)=%.6g" % ks5.computePDF(right),
+)
 
 algo6 = ot.KernelSmoothing(ot.Normal(), False)
 algo6.setBoundingOption(ot.KernelSmoothing.BOTH)
 ks6 = algo6.build(sample)
-print("with automatic boundaries correction, pdf(left)=%.6g" %
-      ks6.computePDF(left), ", pdf(right)=%.6g" % ks6.computePDF(right))
+print(
+    "with automatic boundaries correction, pdf(left)=%.6g" % ks6.computePDF(left),
+    ", pdf(right)=%.6g" % ks6.computePDF(right),
+)
 
 algo7 = ot.KernelSmoothing(ot.Normal(), False)
 algo7.setBoundingOption(ot.KernelSmoothing.BOTH)
 algo7.setLowerBound(-1.0)
 ks7 = algo7.build(sample)
-print("with user defined lower/automatic upper boundaries correction, pdf(left)=%.6g" %
-      ks7.computePDF(left), ", pdf(right)=%.6g" % ks7.computePDF(right))
+print(
+    "with user defined lower/automatic upper boundaries correction, pdf(left)=%.6g"
+    % ks7.computePDF(left),
+    ", pdf(right)=%.6g" % ks7.computePDF(right),
+)
 
 algo8 = ot.KernelSmoothing(ot.Normal(), False)
 algo8.setBoundingOption(ot.KernelSmoothing.BOTH)
 algo8.setUpperBound(1.0)
 ks8 = algo8.build(sample)
-print("with automatic lower/user defined upper boundaries correction, pdf(left)=%.6g" %
-      ks8.computePDF(left), ", pdf(right)=%.6g" % ks8.computePDF(right))
+print(
+    "with automatic lower/user defined upper boundaries correction, pdf(left)=%.6g"
+    % ks8.computePDF(left),
+    ", pdf(right)=%.6g" % ks8.computePDF(right),
+)
 
 algo9 = ot.KernelSmoothing(ot.Normal(), False)
 algo9.setBoundingOption(ot.KernelSmoothing.BOTH)
 algo9.setLowerBound(-1.0)
 algo9.setUpperBound(1.0)
 ks9 = algo9.build(sample)
-print("with user defined boundaries correction, pdf(left)=%.6g" %
-      ks9.computePDF(left), ", pdf(right)=%.6g" % ks9.computePDF(right))
+print(
+    "with user defined boundaries correction, pdf(left)=%.6g" % ks9.computePDF(left),
+    ", pdf(right)=%.6g" % ks9.computePDF(right),
+)
 
 # full degenerate case
 sample = ot.ComposedDistribution(
-    [ot.Dirac(-7.0), ot.Dirac(0.0), ot.Dirac(8.0)]).getSample(50)
+    [ot.Dirac(-7.0), ot.Dirac(0.0), ot.Dirac(8.0)]
+).getSample(50)
 smoothed = ot.KernelSmoothing().build(sample)
 print(smoothed.getSample(3))
 
 # n-d degenerate case
 sample = ot.ComposedDistribution(
-    [ot.Dirac(-7.0), ot.Arcsine(2.0, 3.0), ot.Dirac(8.0)]).getSample(50)
-sample.setDescription(['d7', 'a23', 'd8'])
+    [ot.Dirac(-7.0), ot.Arcsine(2.0, 3.0), ot.Dirac(8.0)]
+).getSample(50)
+sample.setDescription(["d7", "a23", "d8"])
 smoothed = ot.KernelSmoothing().build(sample)
 print(smoothed.getSample(3))
 

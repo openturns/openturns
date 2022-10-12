@@ -280,7 +280,7 @@ void GeneralLinearModelAlgorithm::setBasisCollection(const BasisCollection & bas
       outputDimension =  basis[index][0].getOutputDimension();
       continuationCondition = false;
     }
-    catch (InvalidArgumentException &)
+    catch (const InvalidArgumentException &)
     {
       ++index;
       continuationCondition = continuationCondition && index < basis.getSize();
@@ -514,7 +514,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
     // If the solver is single start, we can use its setStartingPoint method
     solver_.setStartingPoint(initialParameters);
   }
-  catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+  catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
   {
     // Nothing to do if setStartingPoint is not defined
   }

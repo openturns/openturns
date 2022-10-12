@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.testing as ott
 import math as m
 
 ot.TESTPREAMBLE()
@@ -16,17 +15,16 @@ def printPoint(point, digits):
         else:
             sep = ","
         if m.fabs(point[i]) < eps:
-            oss += sep + '%.6f' % m.fabs(point[i])
+            oss += sep + "%.6f" % m.fabs(point[i])
         else:
-            oss += sep + '%.6f' % point[i]
+            oss += sep + "%.6f" % point[i]
         sep = ","
     oss += "]"
     return oss
 
 
 # We create a numerical math function
-myFunction = ot.SymbolicFunction(
-    ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
+myFunction = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
 dim = myFunction.getInputDimension()
 
@@ -77,24 +75,27 @@ myAlgo.run()
 result = myAlgo.getResult()
 digits = 5
 print("event probability=%.6f" % result.getEventProbability())
-print("generalized reliability index=%.6f" %
-      result.getGeneralisedReliabilityIndex())
-print("standard space design point=", printPoint(
-    result.getStandardSpaceDesignPoint(), digits))
-print("physical space design point=", printPoint(
-    result.getPhysicalSpaceDesignPoint(), digits))
+print("generalized reliability index=%.6f" % result.getGeneralisedReliabilityIndex())
+print(
+    "standard space design point=",
+    printPoint(result.getStandardSpaceDesignPoint(), digits),
+)
+print(
+    "physical space design point=",
+    printPoint(result.getPhysicalSpaceDesignPoint(), digits),
+)
 
 # Is the standard point origin in failure space?
-print("is standard point origin in failure space? %s" %
-      (result.getIsStandardPointOriginInFailureSpace() and "true" or "false"))
+print(
+    "is standard point origin in failure space? %s"
+    % (result.getIsStandardPointOriginInFailureSpace() and "true" or "false")
+)
 
-print("importance factors=", printPoint(
-    result.getImportanceFactors(), digits))
-print("Hasofer reliability index=%.6f" %
-      result.getHasoferReliabilityIndex())
+print("importance factors=", printPoint(result.getImportanceFactors(), digits))
+print("Hasofer reliability index=%.6f" % result.getHasoferReliabilityIndex())
 
 # run twice
-f = ot.SymbolicFunction(['x'], ['x-1.25'])
+f = ot.SymbolicFunction(["x"], ["x-1.25"])
 dist = ot.Normal(2.0, 0.5)
 vect = ot.RandomVector(dist)
 output = ot.CompositeRandomVector(f, vect)

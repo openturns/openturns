@@ -21,8 +21,8 @@ import openturns.viewer as viewer
 # %%
 ot.RandomGenerator.SetSeed(0)
 distribution = ot.Normal(2)
-distribution.setDescription(['x', 'y'])
-func = ot.SymbolicFunction(['x', 'y'], ['2 * x - y + 3 + 0.05 * sin(0.8*x)'])
+distribution.setDescription(["x", "y"])
+func = ot.SymbolicFunction(["x", "y"], ["2 * x - y + 3 + 0.05 * sin(0.8*x)"])
 input_sample = distribution.getSample(30)
 epsilon = ot.Normal(0, 0.1).getSample(30)
 output_sample = func(input_sample) + epsilon

@@ -1,17 +1,17 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-ref = SymbolicFunction("x", "sin(x)")
+ref = ot.SymbolicFunction("x", "sin(x)")
 size = 12
-locations = Point(size)
-values = Point(size)
+locations = ot.Point(size)
+values = ot.Point(size)
 # Build locations/values with non-increasing locations
 for i in range(size):
     locations[i] = 10.0 * i * i / (size - 1.0) / (size - 1.0)
     values[i] = ref([locations[i]])[0]
 
-evaluation = PiecewiseLinearEvaluation(locations, values)
+evaluation = ot.PiecewiseLinearEvaluation(locations, values)
 print("evaluation=", evaluation)
 # Check the values
 for i in range(2 * size):

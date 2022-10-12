@@ -244,7 +244,7 @@ Point KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
     const Scalar h2 = computeSilvermanBandwidth(smallSample)[0];
     return computeSilvermanBandwidth(sample) * (h1 / h2);
   }
-  catch (NotDefinedException &)
+  catch (const NotDefinedException &)
   {
     // fallback to silverman
     return computeSilvermanBandwidth(sample);

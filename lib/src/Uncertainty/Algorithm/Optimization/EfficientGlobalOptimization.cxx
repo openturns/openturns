@@ -296,7 +296,7 @@ void EfficientGlobalOptimization::run()
       // If the solver is single start, we can use its setStartingPoint method
       solver_.setStartingPoint(optimizer);
     }
-    catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+    catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
     {
       // Nothing to do if setStartingPoint is not defined
     }

@@ -32,4 +32,3 @@ print("a realization=", myProcess.getRealization())
 marginalProcess = myProcess.getMarginal(1)
 print("a marginal process=", marginalProcess)
 print("another marginal process=", myProcess.getMarginal([0, 2]))
-

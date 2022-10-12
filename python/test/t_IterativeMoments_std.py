@@ -7,10 +7,10 @@ ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
 # We create a Sample
-point1 = [10., 20.]
-point2 = [11., 21.]
-point3 = [12., 22.]
-point4 = [15., 25.]
+point1 = [10.0, 20.0]
+point2 = [11.0, 21.0]
+point3 = [12.0, 22.0]
+point4 = [15.0, 25.0]
 sample1 = ot.Sample([point1, point2, point3, point4])
 
 referenceMean = sample1.computeMean()

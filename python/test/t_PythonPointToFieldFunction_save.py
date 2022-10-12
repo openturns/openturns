@@ -9,7 +9,7 @@ mesh = ot.RegularGrid(0, 1, 100)
 
 def g(X):
     a, b = X
-    Y = [[a*t+b] for t in range(100)]
+    Y = [[a * t + b] for t in range(100)]
     return Y
 
 
@@ -21,6 +21,6 @@ assert y[0] == [5.0], "wrong y value"
 
 # save
 study = ot.Study()
-study.setStorageManager(ot.XMLStorageManager('pyp2ff.xml'))
-study.add('f', f)
+study.setStorageManager(ot.XMLStorageManager("pyp2ff.xml"))
+study.add("f", f)
 study.save()

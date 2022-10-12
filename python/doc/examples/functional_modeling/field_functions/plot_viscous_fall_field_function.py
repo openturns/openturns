@@ -16,6 +16,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import numpy as np
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -23,9 +24,9 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 tmin = 0.0  # Minimum time
-tmax = 12.  # Maximum time
+tmax = 12.0  # Maximum time
 gridsize = 100  # Number of time steps
-mesh = ot.IntervalMesher([gridsize-1]).build(ot.Interval(tmin, tmax))
+mesh = ot.IntervalMesher([gridsize - 1]).build(ot.Interval(tmin, tmax))
 
 # %%
 # The `getVertices` method returns the time values in this mesh.
@@ -60,10 +61,10 @@ def AltiFunc(X):
     m = X[2]
     c = X[3]
     tau = m / c
-    vinf = - m * g / c
+    vinf = -m * g / c
     t = np.array(vertices)
-    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(- t / tau))
-    z = np.maximum(z, 0.)
+    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(-t / tau))
+    z = np.maximum(z, 0.0)
     return [[zeta[0]] for zeta in z]
 
 
@@ -72,8 +73,7 @@ def AltiFunc(X):
 
 # %%
 outputDimension = 1
-alti = ot.PythonPointToFieldFunction(
-    dimension, mesh, outputDimension, AltiFunc)
+alti = ot.PythonPointToFieldFunction(dimension, mesh, outputDimension, AltiFunc)
 
 # %%
 # Sample trajectories
@@ -88,16 +88,16 @@ inputSample = distribution.getSample(size)
 outputSample = alti(inputSample)
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger('Drawable-DefaultPalettePhase', size)
+ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", size)
 
 # %%
 # Draw some curves.
 
 # %%
 graph = outputSample.drawMarginal(0)
-graph.setTitle('Viscous free fall: %d trajectories' % (size))
-graph.setXTitle(r'$t$')
-graph.setYTitle(r'$z$')
+graph.setTitle("Viscous free fall: %d trajectories" % (size))
+graph.setXTitle(r"$t$")
+graph.setYTitle(r"$z$")
 view = viewer.View(graph)
 plt.show()
 # %%

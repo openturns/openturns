@@ -44,6 +44,8 @@ OPENTURNS_CONFIG_PATH                 --- Path to configuration file
 OPENTURNS_LOG_SEVERITY                --- Log severity flag, for example "ALL"
 """
 
+# flake8: noqa
+
 from .common import *
 from .typ import *
 from .graph import *
@@ -91,6 +93,7 @@ def Show(graph):
         the graph to display
     """
     from .viewer import View
+
     view = View(graph)
     view.ShowAll()
 

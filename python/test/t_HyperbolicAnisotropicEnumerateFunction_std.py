@@ -4,11 +4,14 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
-print('Default q :', ot.ResourceMap.GetAsScalar(
-    'HyperbolicAnisotropicEnumerateFunction-DefaultQ'), '\n')
+print(
+    "Default q :",
+    ot.ResourceMap.GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"),
+    "\n",
+)
 
 # check weight constructor
-f = ot.HyperbolicAnisotropicEnumerateFunction((1., 2., 3., 4., 5.), 0.75)
+f = ot.HyperbolicAnisotropicEnumerateFunction((1.0, 2.0, 3.0, 4.0, 5.0), 0.75)
 
 # check inverse when the cache is empty
 print("inverse([0,0,0,0,0])=", f.inverse([0, 0, 0, 0, 0]))
@@ -26,41 +29,41 @@ for dimension in range(1, 4):
     g = ot.LinearEnumerateFunction(dimension)
     print("First", size, "values for dimension", dimension)
     for index in range(size):
-        if (not f(index) == g(index)):
-            raise Exception('spam', f(index), g(index))
+        if not f(index) == g(index):
+            raise Exception("spam", f(index), g(index))
         print("index=", index, repr(f(index)))
     strataCardinal = []
     for index in range(stratas):
         strataCardinal.append(int(f.getStrataCardinal(index)))
-    print('And first', stratas, 'strata cardinals :', strataCardinal, '\n')
+    print("And first", stratas, "strata cardinals :", strataCardinal, "\n")
 
 
 # now let q vary
 size = 25
 for dimension in range(2, 5):
     for q in [0.75, 0.5, 0.25]:
-        print('First', size, 'values dimension=', dimension, ' q=', q)
+        print("First", size, "values dimension=", dimension, " q=", q)
         f = ot.HyperbolicAnisotropicEnumerateFunction(dimension, q)
         for index in range(size):
             print("index=", index, repr(f(index)))
         strataCardinal = []
         for index in range(stratas):
             strataCardinal.append(int(f.getStrataCardinal(index)))
-        print('And first', stratas, 'strata cardinals :', strataCardinal)
+        print("And first", stratas, "strata cardinals :", strataCardinal)
 
         cardinalsPerDegree = []
         for deg in range(5):
             cardinalsPerDegree.append(int(f.getMaximumDegreeCardinal(deg)))
-        print('Cardinals per degree=', cardinalsPerDegree, '\n')
+        print("Cardinals per degree=", cardinalsPerDegree, "\n")
 
 for dimension in range(1, 4):
     q = 0.8
     f = ot.HyperbolicAnisotropicEnumerateFunction(dimension, q)
     for d in range(10):
         idx = f.getMaximumDegreeStrataIndex(d)
-        print('dim', dimension, 'degree', d, 'max_degree_strata_index', idx)
+        print("dim", dimension, "degree", d, "max_degree_strata_index", idx)
         size = f.getBasisSizeFromTotalDegree(d)
-        print('degree', d, 'size', size)
+        print("degree", d, "size", size)
 
 # with bounds
 f = ot.HyperbolicAnisotropicEnumerateFunction(2, 1.0)

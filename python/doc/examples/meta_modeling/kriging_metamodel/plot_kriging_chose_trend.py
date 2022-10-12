@@ -45,11 +45,11 @@ dimension = 1
 # where :math:`m(.)` is the trend and :math:`Z(.)` is a gaussian process with zero-mean and its covariance matrix is :math:`C_{\theta}(s,t)`. The trend is deterministic and the gaussian process is probabilistc but they both contribute to the metamodel.
 # A special feature of the kriging is the interpolation property : the metamodel is exact at the
 # trainig data.
-covarianceModel = ot.SquaredExponential([1.], [1.0])
+covarianceModel = ot.SquaredExponential([1.0], [1.0])
 
 # %%
 # We define our exact model with a `SymbolicFunction` :
-model = ot.SymbolicFunction(['x'], ['x*sin(0.5*x)'])
+model = ot.SymbolicFunction(["x"], ["x*sin(0.5*x)"])
 
 
 # %%
@@ -72,7 +72,7 @@ x_test = ot.RegularGrid(0, step, nTest).getVertices()
 
 
 def plot_exact_model():
-    graph = ot.Graph('', 'x', '', True, '')
+    graph = ot.Graph("", "x", "", True, "")
     y_test = model(x_test)
     curveModel = ot.Curve(x_test, y_test)
     curveModel.setLineStyle("solid")
@@ -87,9 +87,9 @@ def plot_exact_model():
 
 # %%
 graph = plot_exact_model()
-graph.setLegends(['exact model', 'training data'])
+graph.setLegends(["exact model", "training data"])
 graph.setLegendPosition("bottom")
-graph.setTitle('1D Kriging : exact model')
+graph.setTitle("1D Kriging : exact model")
 view = otv.View(graph)
 
 
@@ -104,8 +104,8 @@ print("Xtrain, mean : %.3f" % mean)
 print("Xtrain, standard deviation : %.3f" % stdDev)
 
 # %%
-tf = ot.SymbolicFunction(['mu', 'sigma', 'x'], ['(x-mu)/sigma'])
-itf = ot.SymbolicFunction(['mu', 'sigma', 'x'], ['sigma*x+mu'])
+tf = ot.SymbolicFunction(["mu", "sigma", "x"], ["(x-mu)/sigma"])
+itf = ot.SymbolicFunction(["mu", "sigma", "x"], ["sigma*x+mu"])
 myInverseTransform = ot.ParametricFunction(itf, [0, 1], [mean, stdDev])
 myTransform = ot.ParametricFunction(tf, [0, 1], [mean, stdDev])
 
@@ -140,9 +140,9 @@ curve = ot.Curve(x_test, y_test)
 curve.setLineStyle("dashed")
 curve.setColor("red")
 graph.add(curve)
-graph.setLegends(['exact model', 'training data', 'kriging metamodel'])
+graph.setLegends(["exact model", "training data", "kriging metamodel"])
 graph.setLegendPosition("bottom")
-graph.setTitle('1D Kriging : exact model and metamodel')
+graph.setTitle("1D Kriging : exact model and metamodel")
 view = otv.View(graph)
 
 # %%
@@ -161,7 +161,7 @@ print("Amplitude parameter : %.3e" % sigma)
 
 # %%
 # We build the trend from the coefficient :
-constantTrend = ot.SymbolicFunction(['a', 'x'], ['a'])
+constantTrend = ot.SymbolicFunction(["a", "x"], ["a"])
 myTrend = ot.ParametricFunction(constantTrend, [0], [c0[0][0]])
 
 
@@ -172,10 +172,11 @@ curve = ot.Curve(x_test, y_test)
 curve.setLineStyle("dotdash")
 curve.setColor("green")
 graph.add(curve)
-graph.setLegends(['exact model', 'training data',
-                  'kriging metamodel', 'constant trend'])
+graph.setLegends(
+    ["exact model", "training data", "kriging metamodel", "constant trend"]
+)
 graph.setLegendPosition("bottom")
-graph.setTitle('1D Kriging with a constant trend')
+graph.setTitle("1D Kriging with a constant trend")
 view = otv.View(graph)
 
 
@@ -184,9 +185,8 @@ view = otv.View(graph)
 def plot_ICBounds(x_test, y_test, nTest, sigma):
     vUp = [[x_test[i][0], y_test[i][0] + sigma] for i in range(nTest)]
     vLow = [[x_test[i][0], y_test[i][0] - sigma] for i in range(nTest)]
-    polyData = [[vLow[i], vLow[i+1], vUp[i+1], vUp[i]] for i in range(nTest-1)]
-    polygonList = [ot.Polygon(polyData[i], "grey", "grey")
-                   for i in range(nTest-1)]
+    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(nTest - 1)]
+    polygonList = [ot.Polygon(polyData[i], "grey", "grey") for i in range(nTest - 1)]
     boundsPoly = ot.PolygonArray(polygonList)
     return boundsPoly
 
@@ -195,10 +195,17 @@ def plot_ICBounds(x_test, y_test, nTest, sigma):
 # We now draw it :
 boundsPoly = plot_ICBounds(x_test, y_test, nTest, sigma)
 graph.add(boundsPoly)
-graph.setLegends(['exact model', 'training data', 'kriging metamodel',
-                  'constant trend', '68% - confidence interval'])
+graph.setLegends(
+    [
+        "exact model",
+        "training data",
+        "kriging metamodel",
+        "constant trend",
+        "68% - confidence interval",
+    ]
+)
 graph.setLegendPosition("bottom")
-graph.setTitle('1D Kriging with a constant trend')
+graph.setTitle("1D Kriging with a constant trend")
 view = otv.View(graph)
 
 
@@ -235,9 +242,9 @@ curve = ot.Curve(x_test, y_test)
 curve.setLineStyle("dashed")
 curve.setColor("red")
 graph.add(curve)
-graph.setLegends(['exact model', 'training data', 'kriging metamodel'])
+graph.setLegends(["exact model", "training data", "kriging metamodel"])
 graph.setLegendPosition("bottom")
-graph.setTitle('1D Kriging : exact model and metamodel')
+graph.setTitle("1D Kriging : exact model and metamodel")
 view = otv.View(graph)
 
 
@@ -259,17 +266,16 @@ print("Amplitude parameter : %.3e" % sigma)
 
 # %%
 # We draw the linear trend that we are interested in.
-linearTrend = ot.SymbolicFunction(['a', 'b', 'x'], ['a*x+b'])
+linearTrend = ot.SymbolicFunction(["a", "b", "x"], ["a*x+b"])
 myTrend = ot.ParametricFunction(linearTrend, [0, 1], [c0[0][1], c0[0][0]])
 y_test = myTrend(myTransform(x_test))
 curve = ot.Curve(x_test, y_test)
 curve.setLineStyle("dotdash")
 curve.setColor("green")
 graph.add(curve)
-graph.setLegends(['exact model', 'training data',
-                  'kriging metamodel', 'linear trend'])
+graph.setLegends(["exact model", "training data", "kriging metamodel", "linear trend"])
 graph.setLegendPosition("bottom")
-graph.setTitle('1D Kriging with a linear trend')
+graph.setTitle("1D Kriging with a linear trend")
 view = otv.View(graph)
 
 
@@ -277,10 +283,17 @@ view = otv.View(graph)
 # The same graphic with the 68% confidence interval :
 boundsPoly = plot_ICBounds(x_test, y_test, nTest, sigma)
 graph.add(boundsPoly)
-graph.setLegends(['exact model', 'training data', 'kriging metamodel',
-                  'linear trend', '68% - confidence interval'])
+graph.setLegends(
+    [
+        "exact model",
+        "training data",
+        "kriging metamodel",
+        "linear trend",
+        "68% - confidence interval",
+    ]
+)
 graph.setLegendPosition("bottom")
-graph.setTitle('1D Kriging with a linear trend')
+graph.setTitle("1D Kriging with a linear trend")
 view = otv.View(graph)
 
 # %%
@@ -313,17 +326,19 @@ curve = ot.Curve(x_test, y_test)
 curve.setLineStyle("dashed")
 curve.setColor("red")
 graph.add(curve)
-graph.setLegends(['exact model', 'training data', 'kriging metamodel'])
+graph.setLegends(["exact model", "training data", "kriging metamodel"])
 graph.setLegendPosition("bottom")
-graph.setTitle('1D Kriging : exact model and metamodel')
+graph.setTitle("1D Kriging : exact model and metamodel")
 view = otv.View(graph)
 
 
 # %%
 #  We can retrieve the calibrated trend coefficients with `getTrendCoefficients` :
 c0 = result.getTrendCoefficients()
-print("Trend is the curve m(X) = %.6e X**2 + %.6e X + %.6e" %
-      (c0[0][2], c0[0][1], c0[0][0]))
+print(
+    "Trend is the curve m(X) = %.6e X**2 + %.6e X + %.6e"
+    % (c0[0][2], c0[0][1], c0[0][0])
+)
 
 
 # %%
@@ -337,9 +352,10 @@ print("Amplitude parameter : %.3e" % sigma)
 
 # %%
 # The quadratic linear trend obtained is :
-quadraticTrend = ot.SymbolicFunction(['a', 'b', 'c', 'x'], ['a*x^2 + b*x + c'])
-myTrend = ot.ParametricFunction(quadraticTrend, [0, 1, 2], [
-                                c0[0][2], c0[0][1], c0[0][0]])
+quadraticTrend = ot.SymbolicFunction(["a", "b", "c", "x"], ["a*x^2 + b*x + c"])
+myTrend = ot.ParametricFunction(
+    quadraticTrend, [0, 1, 2], [c0[0][2], c0[0][1], c0[0][0]]
+)
 
 
 # %%
@@ -349,10 +365,11 @@ curve = ot.Curve(x_test, y_test)
 curve.setLineStyle("dotdash")
 curve.setColor("green")
 graph.add(curve)
-graph.setLegends(['exact model', 'training data',
-                  'kriging metamodel', 'quadratic trend'])
+graph.setLegends(
+    ["exact model", "training data", "kriging metamodel", "quadratic trend"]
+)
 graph.setLegendPosition("bottom")
-graph.setTitle('1D Kriging with a quadratic trend')
+graph.setTitle("1D Kriging with a quadratic trend")
 view = otv.View(graph)
 axes = view.getAxes()
 _ = axes[0].set_xlim(0.0, 6.0)
@@ -364,10 +381,17 @@ _ = axes[0].set_ylim(-2.5, 4.0)
 # The same graphic with the 68% confidence interval.
 boundsPoly = plot_ICBounds(x_test, y_test, nTest, sigma)
 graph.add(boundsPoly)
-graph.setLegends(['exact model', 'training data', 'kriging metamodel',
-                  'quadratic trend', '68% - confidence interval'])
+graph.setLegends(
+    [
+        "exact model",
+        "training data",
+        "kriging metamodel",
+        "quadratic trend",
+        "68% - confidence interval",
+    ]
+)
 graph.setLegendPosition("bottom")
-graph.setTitle('1D Kriging with a quadratic trend')
+graph.setTitle("1D Kriging with a quadratic trend")
 view = otv.View(graph)
 axes = view.getAxes()
 _ = axes[0].set_xlim(0.0, 6.0)

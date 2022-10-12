@@ -114,7 +114,7 @@ void MultiStart::run()
       solver.run();
       ++successNumber;
     }
-    catch (Exception & ex)
+    catch (const Exception & ex)
     {
       LOGDEBUG(OSS() << "StartingPoint " << i << " failed. Reason=" << ex);
       continue;

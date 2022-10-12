@@ -6,6 +6,7 @@ Create a normal process
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -21,9 +22,9 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 defaultDimension = 1
 # Amplitude values
-amplitude = [1.0]*defaultDimension
+amplitude = [1.0] * defaultDimension
 # Scale values
-scale = [1.0]*defaultDimension
+scale = [1.0] * defaultDimension
 # Covariance model
 myModel = ot.AbsoluteExponential(scale, amplitude)
 

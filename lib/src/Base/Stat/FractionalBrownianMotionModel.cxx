@@ -204,7 +204,7 @@ void FractionalBrownianMotionModel::setExponentEtaRho(const Point & exponent,
     {
       const TriangularComplexMatrix C(A.computeCholesky(false));
     }
-    catch (InvalidArgumentException &)
+    catch (const InvalidArgumentException &)
     {
       throw InvalidArgumentException(HERE) << "Error: the given Hurst exponents, dissymmetry matrix and correlation matrix are not compatible.";
     }

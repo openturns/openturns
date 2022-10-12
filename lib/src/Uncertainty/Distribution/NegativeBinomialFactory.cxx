@@ -152,7 +152,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Point & 
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from the given parameters";
   }

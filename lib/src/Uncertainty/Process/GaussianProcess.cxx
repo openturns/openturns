@@ -158,7 +158,7 @@ void GaussianProcess::initialize() const
       }
       // If the factorization failed regularize the matrix
       // Here we use a generic exception as different exceptions may be thrown
-      catch (Exception &)
+      catch (const Exception &)
       {
         // If the largest eigenvalue module has not been computed yet...
         if (maxEV < 0.0)

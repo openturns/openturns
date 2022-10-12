@@ -23,15 +23,14 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
         x2 = ot.Point(x2)
 
     if myModel.isStationary():
-        ott.assert_almost_equal(
-            myModel(x1 - x2), myModel(x1, x2), 1e-14, 1e-14)
-        ott.assert_almost_equal(
-            myModel(x2 - x1), myModel(x1, x2), 1e-14, 1e-14)
+        ott.assert_almost_equal(myModel(x1 - x2), myModel(x1, x2), 1e-14, 1e-14)
+        ott.assert_almost_equal(myModel(x2 - x1), myModel(x1, x2), 1e-14, 1e-14)
 
     eps = 1e-3
 
-    mesh = ot.IntervalMesher([7]*inputDimension).build(
-        ot.Interval([-10]*inputDimension, [10]*inputDimension))
+    mesh = ot.IntervalMesher([7] * inputDimension).build(
+        ot.Interval([-10] * inputDimension, [10] * inputDimension)
+    )
 
     C = myModel.discretize(mesh)
     if dimension == 1:
@@ -40,8 +39,12 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
         vertices = mesh.getVertices()
         for j in range(len(vertices)):
             for i in range(j, len(vertices)):
-                ott.assert_almost_equal(C[i, j], myModel.computeAsScalar(
-                    vertices[i], vertices[j]), 1e-14, 1e-14)
+                ott.assert_almost_equal(
+                    C[i, j],
+                    myModel.computeAsScalar(vertices[i], vertices[j]),
+                    1e-14,
+                    1e-14,
+                )
     else:
         # Check that discretize & operator() provide the same values
         vertices = mesh.getVertices()
@@ -50,37 +53,51 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
             for i in range(j, len(vertices)):
                 for localJ in range(dimension):
                     for localI in range(dimension):
-                        localMatrix[localI, localJ] = C[i *
-                                                        dimension + localI, j * dimension + localJ]
-                ott.assert_almost_equal(localMatrix, myModel(
-                    vertices[i], vertices[j]), 1e-14, 1e-14)
+                        localMatrix[localI, localJ] = C[
+                            i * dimension + localI, j * dimension + localJ
+                        ]
+                ott.assert_almost_equal(
+                    localMatrix, myModel(vertices[i], vertices[j]), 1e-14, 1e-14
+                )
 
     # Now we suppose that discretize is ok
     # we look at crossCovariance of (vertices, vertices) which should return the same values
     C.getImplementation().symmetrize()
     crossCov = myModel.computeCrossCovariance(vertices, vertices)
-    ott.assert_almost_equal(crossCov, C, 1e-14, 1e-14,  "in " +
-                            myModel.getClassName() + "::computeCrossCovariance")
+    ott.assert_almost_equal(
+        crossCov,
+        C,
+        1e-14,
+        1e-14,
+        "in " + myModel.getClassName() + "::computeCrossCovariance",
+    )
 
     # Now crossCovariance(sample, sample) is ok
     # Let us validate crossCovariance(Sample, point) with 1st column(s) of previous calculations
     crossCovSamplePoint = myModel.computeCrossCovariance(vertices, vertices[0])
     crossCovCol = crossCov.reshape(crossCov.getNbRows(), dimension)
-    ott.assert_almost_equal(crossCovSamplePoint, crossCovCol, 1e-14, 1e-14,
-                            "in " + myModel.getClassName() + "::computeCrossCovarianceSamplePoint")
+    ott.assert_almost_equal(
+        crossCovSamplePoint,
+        crossCovCol,
+        1e-14,
+        1e-14,
+        "in " + myModel.getClassName() + "::computeCrossCovarianceSamplePoint",
+    )
 
     if test_partial_grad:
         grad = myModel.partialGradient(x1, x2)
 
-        if (dimension == 1):
+        if dimension == 1:
             gradfd = ot.Matrix(inputDimension, 1)
             for j in range(inputDimension):
                 x1_g = ot.Point(x1)
                 x1_d = ot.Point(x1)
                 x1_g[j] = x1_d[j] + eps
                 x1_d[j] = x1_d[j] - eps
-                gradfd[j, 0] = (myModel.computeAsScalar(
-                    x1_g, x2) - myModel.computeAsScalar(x1_d, x2)) / (2 * eps)
+                gradfd[j, 0] = (
+                    myModel.computeAsScalar(x1_g, x2)
+                    - myModel.computeAsScalar(x1_d, x2)
+                ) / (2 * eps)
         else:
             gradfd = ot.Matrix(inputDimension, dimension * dimension)
             covarianceX1X2 = myModel(x1, x2)
@@ -94,8 +111,9 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
                 for j in range(currentValue.getSize()):
                     gradfd[i, j] = (currentValue[j] - centralValue[j]) / eps
 
-        ott.assert_almost_equal(grad, gradfd, 1e-5, 1e-5,
-                                "in " + myModel.getClassName() + " grad")
+        ott.assert_almost_equal(
+            grad, gradfd, 1e-5, 1e-5, "in " + myModel.getClassName() + " grad"
+        )
 
 
 def test_scalar_model(myModel, x1=None, x2=None):
@@ -103,8 +121,12 @@ def test_scalar_model(myModel, x1=None, x2=None):
         x1 = 2.0
         x2 = -3.0
     # Check that computeAsScalar(Scalar) == computeAsScalar(Point)
-    ott.assert_almost_equal(myModel.computeAsScalar(
-        [x1], [x2]), myModel.computeAsScalar(x1, x2), 1.0e-14, 1.0e-14)
+    ott.assert_almost_equal(
+        myModel.computeAsScalar([x1], [x2]),
+        myModel.computeAsScalar(x1, x2),
+        1.0e-14,
+        1.0e-14,
+    )
 
     # Gradient testing
     eps = 1e-5
@@ -113,8 +135,9 @@ def test_scalar_model(myModel, x1=None, x2=None):
 
     x1_g = x1 + eps
     x1_d = x1 - eps
-    gradfd = (myModel.computeAsScalar(x1_g, x2) -
-              myModel.computeAsScalar(x1_d, x2)) / (2.0 * eps)
+    gradfd = (myModel.computeAsScalar(x1_g, x2) - myModel.computeAsScalar(x1_d, x2)) / (
+        2.0 * eps
+    )
     ott.assert_almost_equal(gradfd, grad, 1e-5, 1e-5)
 
 
@@ -225,16 +248,14 @@ dimension = 2
 spatialCorrelation = ot.CorrelationMatrix(dimension)
 for j in range(dimension):
     for i in range(j + 1, dimension):
-        spatialCorrelation[i, j] = (
-            i + 1.0) / dimension - (j + 1.0) / dimension
-myModel = ot.DiracCovarianceModel(
-    inputDimension, amplitude, spatialCorrelation)
+        spatialCorrelation[i, j] = (i + 1.0) / dimension - (j + 1.0) / dimension
+myModel = ot.DiracCovarianceModel(inputDimension, amplitude, spatialCorrelation)
 ott.assert_almost_equal(myModel.getScale(), [1, 1], 0, 0)
 ott.assert_almost_equal(myModel.getAmplitude(), amplitude, 0, 0)
 test_model(myModel, test_partial_grad=False, x1=[0.5, 0.0], x2=[0.5, 0.0])
 
 # 9) StationaryFunctionalCovarianceModel
-rho = ot.SymbolicFunction(['tau'], ['exp(-abs(tau))*cos(2*pi_*abs(tau))'])
+rho = ot.SymbolicFunction(["tau"], ["exp(-abs(tau))*cos(2*pi_*abs(tau))"])
 myModel = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
 ott.assert_almost_equal(myModel.getScale(), [1], 0, 0)
 ott.assert_almost_equal(myModel.getAmplitude(), [1], 0, 0)
@@ -253,20 +274,24 @@ ott.assert_almost_equal(myModel.getAmplitude(), [9], 0, 0)
 point = [0.50, -6]
 x = [point[0]]
 y = [point[1]]
-ott.assert_almost_equal(myModel.computeAsScalar(point), cov1.computeAsScalar(
-    x) * cov2.computeAsScalar(y), 1.0e-15, 1.0e-15)
+ott.assert_almost_equal(
+    myModel.computeAsScalar(point),
+    cov1.computeAsScalar(x) * cov2.computeAsScalar(y),
+    1.0e-15,
+    1.0e-15,
+)
 
 # 11) TensorizedCovarianceModel
 
 # Collection ==> add covariance models
 myAbsoluteExponential = ot.AbsoluteExponential([2.0] * inputDimension, [3.0])
 mySquaredExponential = ot.SquaredExponential([2.0] * inputDimension, [3.0])
-myGeneralizedExponential = ot.GeneralizedExponential(
-    [2.0] * inputDimension, [3.0], 1.5)
+myGeneralizedExponential = ot.GeneralizedExponential([2.0] * inputDimension, [3.0], 1.5)
 # Build TensorizedCovarianceModel with scale = [1,..,1]
 # Tensorized ignore scales
 myModel = ot.TensorizedCovarianceModel(
-    [myAbsoluteExponential, mySquaredExponential, myGeneralizedExponential])
+    [myAbsoluteExponential, mySquaredExponential, myGeneralizedExponential]
+)
 ott.assert_almost_equal(myModel.getScale(), [1, 1], 0, 0)
 ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 0, 0)
 test_model(myModel)
@@ -281,10 +306,8 @@ test_model(myModel)
 # 12) Testing 1d in/out dimension & stationary
 
 # Test scalar input models
-coll = [ot.AbsoluteExponential(), ot.SquaredExponential(),
-        ot.GeneralizedExponential()]
-coll += [ot.MaternModel(), ot.SphericalModel(),
-         ot.ExponentiallyDampedCosineModel()]
+coll = [ot.AbsoluteExponential(), ot.SquaredExponential(), ot.GeneralizedExponential()]
+coll += [ot.MaternModel(), ot.SphericalModel(), ot.ExponentiallyDampedCosineModel()]
 for model in coll:
     test_scalar_model(model)
 
@@ -296,17 +319,15 @@ test_model(myIsotropicKernel)
 scale = 3.5
 amplitude = 1.5
 myOneDimensionalKernel = ot.SquaredExponential([scale], [amplitude])
-myIsotropicKernel = ot.IsotropicCovarianceModel(
-    myOneDimensionalKernel, inputDimension)
+myIsotropicKernel = ot.IsotropicCovarianceModel(myOneDimensionalKernel, inputDimension)
 
 # Test consistency of isotropic model with underlying 1D kernel
-ott.assert_almost_equal(myIsotropicKernel.getAmplitude()[
-                        0], amplitude, 1e-12, 0.0)
+ott.assert_almost_equal(myIsotropicKernel.getAmplitude()[0], amplitude, 1e-12, 0.0)
 ott.assert_almost_equal(myIsotropicKernel.getScale()[0], scale, 1e-12, 0.0)
-ott.assert_almost_equal(myIsotropicKernel.getKernel().getAmplitude()[
-                        0], amplitude, 1e-12, 0.0)
-ott.assert_almost_equal(myIsotropicKernel.getKernel().getScale()[
-                        0], scale, 1e-12, 0.0)
+ott.assert_almost_equal(
+    myIsotropicKernel.getKernel().getAmplitude()[0], amplitude, 1e-12, 0.0
+)
+ott.assert_almost_equal(myIsotropicKernel.getKernel().getScale()[0], scale, 1e-12, 0.0)
 
 # Standard tests applied
 test_model(myIsotropicKernel)
@@ -314,22 +335,21 @@ test_model(myIsotropicKernel)
 # Test consistency of isotropic kernel's discretization
 inputVector = ot.Point([0.3, 1.7])
 inputVectorNorm = ot.Point([inputVector.norm()])
-ott.assert_almost_equal(myOneDimensionalKernel(inputVectorNorm)[
-                        0, 0], 1.992315565746, 1e-12, 0.0)
-ott.assert_almost_equal(myIsotropicKernel(inputVector)[
-                        0, 0], 1.992315565746, 1e-12, 0.0)
+ott.assert_almost_equal(
+    myOneDimensionalKernel(inputVectorNorm)[0, 0], 1.992315565746, 1e-12, 0.0
+)
+ott.assert_almost_equal(
+    myIsotropicKernel(inputVector)[0, 0], 1.992315565746, 1e-12, 0.0
+)
 inputSample = ot.Sample([ot.Point(2), inputVector])
 inputSampleNorm = ot.Sample([ot.Point(1), inputVectorNorm])
 oneDimensionalCovMatrix = myOneDimensionalKernel.discretize(inputSampleNorm)
 isotropicCovMatrix = myIsotropicKernel.discretize(inputSample)
-ott.assert_almost_equal(
-    oneDimensionalCovMatrix[0, 0], 2.250000000002, 1e-12, 0.0)
-ott.assert_almost_equal(
-    oneDimensionalCovMatrix[1, 1], 2.250000000002, 1e-12, 0.0)
+ott.assert_almost_equal(oneDimensionalCovMatrix[0, 0], 2.250000000002, 1e-12, 0.0)
+ott.assert_almost_equal(oneDimensionalCovMatrix[1, 1], 2.250000000002, 1e-12, 0.0)
 ott.assert_almost_equal(isotropicCovMatrix[0, 0], 2.250000000002, 1e-12, 0.0)
 ott.assert_almost_equal(isotropicCovMatrix[1, 1], 2.250000000002, 1e-12, 0.0)
-ott.assert_almost_equal(
-    oneDimensionalCovMatrix[0, 1], 1.992315565746, 1e-12, 0.0)
+ott.assert_almost_equal(oneDimensionalCovMatrix[0, 1], 1.992315565746, 1e-12, 0.0)
 ott.assert_almost_equal(isotropicCovMatrix[0, 1], 1.992315565746, 1e-12, 0.0)
 
 # Exponential covariance model
@@ -343,13 +363,12 @@ myModel = ot.ExponentialModel(scale, spatialCovariance)
 test_model(myModel)
 # assert that spatialCovariance is taken into account
 checkDiag = spatialCovariance.isDiagonal() == myModel.isDiagonal()
-if (not checkDiag):
-    raise Exception(
-        "isDiagonal differ between spatial covariance & covariance model")
-rho = spatialCovariance[1, 0] / \
-    sqrt(spatialCovariance[0, 0] * spatialCovariance[1, 1])
-ott.assert_almost_equal(myModel.getOutputCorrelation(
-)[0, 1], rho, 0, 0, "in ExponentialModel correlation")
+if not checkDiag:
+    raise Exception("isDiagonal differ between spatial covariance & covariance model")
+rho = spatialCovariance[1, 0] / sqrt(spatialCovariance[0, 0] * spatialCovariance[1, 1])
+ott.assert_almost_equal(
+    myModel.getOutputCorrelation()[0, 1], rho, 0, 0, "in ExponentialModel correlation"
+)
 
 # Kronecker covariance model
 
@@ -382,27 +401,47 @@ outputCorrelation[0, 1] = 0.8
 amplitude = [1, 2]
 myModel = ot.KroneckerCovarianceModel(rho, amplitude, outputCorrelation)
 test_model(myModel)
-ott.assert_almost_equal(myModel.getInputDimension(), 3,
-                        0, 0, "in kronecker dimension check")
-ott.assert_almost_equal(myModel.getScale(), [
-                        1], 0, 0, "in kronecker scale check")
+ott.assert_almost_equal(
+    myModel.getInputDimension(), 3, 0, 0, "in kronecker dimension check"
+)
+ott.assert_almost_equal(myModel.getScale(), [1], 0, 0, "in kronecker scale check")
 # full param size = 5 (scale(1), amplitude(2), spatialCorrelation(1), Matern nu(1))
-ott.assert_almost_equal(myModel.getFullParameter(), [
-                        1, 1, 2, 0.8, 1.5], 0, 0, "in kronecker full param check")
-ott.assert_almost_equal(myModel.getFullParameter(
-).getSize(), 5, 0, 0, "in kronecker param size check")
-ott.assert_almost_equal(myModel.getFullParameterDescription(
-).getSize(), 5, 0, 0, "in kronecker param description size check")
-ott.assert_almost_equal(myModel.getActiveParameter(), [
-                        0, 1, 2], "in kronecker active param check")
-myModel.setFullParameter([2, 1, 2, .5, 2.5])
-ott.assert_almost_equal(myModel.getFullParameter(), [
-                        2, 1, 2, .5, 2.5], 0, 0, "in kronecker param check")
+ott.assert_almost_equal(
+    myModel.getFullParameter(),
+    [1, 1, 2, 0.8, 1.5],
+    0,
+    0,
+    "in kronecker full param check",
+)
+ott.assert_almost_equal(
+    myModel.getFullParameter().getSize(), 5, 0, 0, "in kronecker param size check"
+)
+ott.assert_almost_equal(
+    myModel.getFullParameterDescription().getSize(),
+    5,
+    0,
+    0,
+    "in kronecker param description size check",
+)
+ott.assert_almost_equal(
+    myModel.getActiveParameter(), [0, 1, 2], "in kronecker active param check"
+)
+myModel.setFullParameter([2, 1, 2, 0.5, 2.5])
+ott.assert_almost_equal(
+    myModel.getFullParameter(), [2, 1, 2, 0.5, 2.5], 0, 0, "in kronecker param check"
+)
 myModel.setActiveParameter([0, 1, 2, 4])
-ott.assert_almost_equal(myModel.getActiveParameter(), [
-                        0, 1, 2, 4], "in kronecker active param check")
+ott.assert_almost_equal(
+    myModel.getActiveParameter(), [0, 1, 2, 4], "in kronecker active param check"
+)
 # Now we should get all values except correlation
-ott.assert_almost_equal(myModel.getParameter(), [
-                        2, 1, 2, 2.5], 0, 0, "in kronecker param check")
-assert myModel.getFullParameterDescription(
-) == ["scale_0", "amplitude_0", "amplitude_1", "R_1_0", "nu"]
+ott.assert_almost_equal(
+    myModel.getParameter(), [2, 1, 2, 2.5], 0, 0, "in kronecker param check"
+)
+assert myModel.getFullParameterDescription() == [
+    "scale_0",
+    "amplitude_0",
+    "amplitude_1",
+    "R_1_0",
+    "nu",
+]

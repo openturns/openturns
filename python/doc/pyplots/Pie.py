@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 # Create the Pie
-pie = ot.Pie([.4, .3, .2, .1], ['a0', 'a1', 'a2', 'a3'])
+pie = ot.Pie([0.4, 0.3, 0.2, 0.1], ["a0", "a1", "a2", "a3"])
 # Create an empty graph
 graph = ot.Graph("Pie example")
 graph.add(pie)

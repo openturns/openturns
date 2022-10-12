@@ -17,6 +17,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import numpy as np
+
 ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
@@ -46,13 +47,13 @@ outputSample = im.model(inputSample)
 # %%
 def plotXvsY(sampleX, sampleY, figsize=(15, 3)):
     import pylab as pl
-    import openturns.viewer
+
     dimX = sampleX.getDimension()
     inputdescr = sampleX.getDescription()
     fig = pl.figure(figsize=figsize)
     for i in range(dimX):
-        ax = fig.add_subplot(1, dimX, i+1)
-        graph = ot.Graph('', inputdescr[i], 'Y', True, '')
+        ax = fig.add_subplot(1, dimX, i + 1)
+        graph = ot.Graph("", inputdescr[i], "Y", True, "")
         cloud = ot.Cloud(sampleX[:, i], sampleY)
         graph.add(cloud)
         _ = ot.viewer.View(graph, figure=fig, axes=[ax])
@@ -92,8 +93,7 @@ chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
 # Since the input distribution is known in our particular case, we instead create the multivariate basis from the distribution.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    [im.X1, im.X2, im.X3])
+multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
 projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
 totalDegree = 8
@@ -101,7 +101,8 @@ enumfunc = multivariateBasis.getEnumerateFunction()
 P = enumfunc.getStrataCumulatedCardinal(totalDegree)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
 chaosalgo = ot.FunctionalChaosAlgorithm(
-    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy)
+    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+)
 
 # %%
 chaosalgo.run()
@@ -124,7 +125,7 @@ Q2
 
 # %%
 graph = val.drawValidation()
-graph.setTitle("Q2=%.2f%%" % (Q2*100))
+graph.setTitle("Q2=%.2f%%" % (Q2 * 100))
 view = viewer.View(graph)
 
 # %%
@@ -149,8 +150,7 @@ dim_input = im.distributionX.getDimension()
 first_order = [chaosSI.getSobolIndex(i) for i in range(dim_input)]
 total_order = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
 input_names = im.model.getInputDescription()
-graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(
-    input_names, first_order, total_order)
+graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
 view = viewer.View(graph)
 
 
@@ -172,31 +172,31 @@ view = viewer.View(graph)
 
 # %%
 def ishigamiSA(a, b):
-    '''Exact sensitivity indices of the Ishigami function for given a and b.'''
-    var = 1.0/2 + a**2/8 + b*np.pi**4/5 + b**2*np.pi**8/18
-    S1 = (1.0/2 + b*np.pi**4/5+b**2*np.pi**8/50)/var
-    S2 = (a**2/8)/var
+    """Exact sensitivity indices of the Ishigami function for given a and b."""
+    var = 1.0 / 2 + a**2 / 8 + b * np.pi**4 / 5 + b**2 * np.pi**8 / 18
+    S1 = (1.0 / 2 + b * np.pi**4 / 5 + b**2 * np.pi**8 / 50) / var
+    S2 = (a**2 / 8) / var
     S3 = 0
-    S13 = b**2*np.pi**8/2*(1.0/9-1.0/25)/var
+    S13 = b**2 * np.pi**8 / 2 * (1.0 / 9 - 1.0 / 25) / var
     exact = {
-        'expectation': a/2,
-        'variance': var,
-        'S1': (1.0/2 + b*np.pi**4/5+b**2*np.pi**8.0/50)/var,
-        'S2': (a**2/8)/var,
-        'S3': 0,
-        'S12': 0,
-        'S23': 0,
-        'S13': S13,
-        'S123': 0,
-        'ST1': S1 + S13,
-        'ST2': S2,
-        'ST3': S3 + S13
+        "expectation": a / 2,
+        "variance": var,
+        "S1": (1.0 / 2 + b * np.pi**4 / 5 + b**2 * np.pi**8.0 / 50) / var,
+        "S2": (a**2 / 8) / var,
+        "S3": 0,
+        "S12": 0,
+        "S23": 0,
+        "S13": S13,
+        "S123": 0,
+        "ST1": S1 + S13,
+        "ST2": S2,
+        "ST3": S3 + S13,
     }
     return exact
 
 
 # %%
-a = 7.
+a = 7.0
 b = 0.1
 exact = ishigamiSA(a, b)
 exact
@@ -213,10 +213,12 @@ ST_exact = [exact["ST1"], exact["ST2"], exact["ST3"]]
 
 # %%
 for i in range(im.dim):
-    absoluteErrorS = abs(first_order[i]-S_exact[i])
-    absoluteErrorST = abs(total_order[i]-ST_exact[i])
-    print("X%d, Abs.Err. on S=%.1e, Abs.Err. on ST=%.1e" %
-          (i+1, absoluteErrorS, absoluteErrorST))
+    absoluteErrorS = abs(first_order[i] - S_exact[i])
+    absoluteErrorST = abs(total_order[i] - ST_exact[i])
+    print(
+        "X%d, Abs.Err. on S=%.1e, Abs.Err. on ST=%.1e"
+        % (i + 1, absoluteErrorS, absoluteErrorST)
+    )
 
 plt.show()
 # %%

@@ -132,8 +132,7 @@ _ = axes[0].set_xlim(-20.0, 20.0)
 #
 
 # %%
-print(ot.ResourceMap.GetAsUnsignedInteger(
-    "GeneralizedParetoFactory-SmallSize"))
+print(ot.ResourceMap.GetAsUnsignedInteger("GeneralizedParetoFactory-SmallSize"))
 
 
 # %%

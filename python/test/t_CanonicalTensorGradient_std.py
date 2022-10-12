@@ -23,7 +23,7 @@ x = [1.0] * dim
 print(x)
 
 df = tensorGrad.gradient(x) * ot.Point([1.0])
-print('df=', df)
+print("df=", df)
 
 f = ot.Function(tensorEval)
 fx = f(x)[0]
@@ -36,7 +36,7 @@ for i in range(dim):
     xp[i] += eps
     fp = f(xp)
     dffd[i] = (f(xp)[0] - fx) / eps
-print('dffd', dffd)
+print("dffd", dffd)
 
 # print(tensor)
 

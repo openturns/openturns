@@ -24,15 +24,17 @@ Estimate Sobol' indices for a function with multivariate output
 import openturns as ot
 import openturns.viewer
 import openturns.viewer as viewer
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We define a linear model with 5 independent Gaussian inputs and 2 outputs.
 
 inputDistribution = ot.Normal(5)
-function = ot.SymbolicFunction(['x0', 'x1', 'x2', 'x3', 'x4'],
-                               ['x0 + 4.0 * x1 ^ 2 + 3.0 * x2',
-                                '-7.0 * x2 - 4.0 * x3 + x4'])
+function = ot.SymbolicFunction(
+    ["x0", "x1", "x2", "x3", "x4"],
+    ["x0 + 4.0 * x1 ^ 2 + 3.0 * x2", "-7.0 * x2 - 4.0 * x3 + x4"],
+)
 
 # %%
 # Estimate the Sobol' indices
@@ -60,8 +62,7 @@ outputDesign = function(inputDesign)
 # Then we estimate the Sobol' indices with the `SaltelliSensitivityAlgorithm`.
 
 # %%
-sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(
-    inputDesign, outputDesign, size)
+sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign, size)
 
 # %%
 # The `getFirstOrderIndices` and `getTotalOrderIndices` method respectively return estimates of first order and total Sobol' indices with a given output.

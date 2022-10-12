@@ -9,10 +9,7 @@ Compute grouped indices for the Ishigami function
 # %%
 from openturns.usecases import ishigami_function
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-from math import pi
-import openturns.viewer as otv
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -37,17 +34,18 @@ outputTrain = im.model(inputTrain)
 # Create the chaos.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    [im.X1, im.X2, im.X3])
+multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
 projectionStrategy = ot.LeastSquaresStrategy(
-    inputTrain, outputTrain, selectionAlgorithm)
+    inputTrain, outputTrain, selectionAlgorithm
+)
 totalDegree = 8
 enumfunc = multivariateBasis.getEnumerateFunction()
 P = enumfunc.getStrataCumulatedCardinal(totalDegree)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
 chaosalgo = ot.FunctionalChaosAlgorithm(
-    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy)
+    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+)
 
 # %%
 chaosalgo.run()

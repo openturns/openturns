@@ -50,7 +50,7 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const PointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
     const Scalar optimalLogLikelihood)
-  : MetaModelResult(inputSample, outputSample, DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+  : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
   , basis_(basis)
   , beta_(trendCoefficients)
   , covarianceModel_(covarianceModel)
@@ -59,6 +59,7 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
 {
+  model_ = DatabaseFunction(inputSample, outputSample); // deprecated
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();

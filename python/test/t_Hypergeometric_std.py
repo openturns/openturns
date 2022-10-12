@@ -29,8 +29,10 @@ print("covariance=", oneSample.computeCovariance())
 
 size = 100
 for i in range(2):
-    msg = ''
-    if ot.FittingTest.ChiSquared(distribution.getSample(size), distribution).getBinaryQualityMeasure():
+    msg = ""
+    if ot.FittingTest.ChiSquared(
+        distribution.getSample(size), distribution
+    ).getBinaryQualityMeasure():
         msg = "accepted"
     else:
         msg = "rejected"
@@ -47,8 +49,13 @@ LPDF = distribution.computeLogPDF(point)
 print("log pdf= %.12g" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     = %.12g" % PDF)
-print("pdf (FD)= %.12g" % (distribution.computeCDF(
-    point + ot.Point(1, 0)) - distribution.computeCDF(point + ot.Point(1, -1))))
+print(
+    "pdf (FD)= %.12g"
+    % (
+        distribution.computeCDF(point + ot.Point(1, 0))
+        - distribution.computeCDF(point + ot.Point(1, -1))
+    )
+)
 CDF = distribution.computeCDF(point)
 print("cdf= %.12g" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)

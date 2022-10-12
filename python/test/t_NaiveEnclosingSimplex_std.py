@@ -23,19 +23,31 @@ for i, vertex in enumerate(test):
     if index >= nrSimplices:
         print(i, "is outside")
     else:
-        found, coordinates = mesh.checkPointInSimplexWithCoordinates(
-            vertex, index)
+        found, coordinates = mesh.checkPointInSimplexWithCoordinates(vertex, index)
         if not found:
-            print("Wrong simplex found for", vertex,
-                  "(index=", index, simplices[index], "barycentric coordinates=", coordinates)
+            print(
+                "Wrong simplex found for",
+                vertex,
+                "(index=",
+                index,
+                simplices[index],
+                "barycentric coordinates=",
+                coordinates,
+            )
 
 indices = naive.query(test)
 for i, index in enumerate(indices):
     if index >= nrSimplices:
         print(i, "is outside")
     else:
-        found, coordinates = mesh.checkPointInSimplexWithCoordinates(
-            test[i], index)
+        found, coordinates = mesh.checkPointInSimplexWithCoordinates(test[i], index)
         if not found:
-            print("Wrong simplex found for", test[
-                  i], "(index=", index, simplices[index], "barycentric coordinates=", coordinates)
+            print(
+                "Wrong simplex found for",
+                test[i],
+                "(index=",
+                index,
+                simplices[index],
+                "barycentric coordinates=",
+                coordinates,
+            )

@@ -32,6 +32,7 @@ Estimate a multivariate ARMA process
 
 # %%
 import openturns as ot
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -71,4 +72,4 @@ factory = ot.ARMALikelihoodFactory(p, q, dim)
 factory.setInitialConditions(ar, ma, cov)
 
 arma_est = ot.ARMA(factory.build(timeSeries))
-print('Estimated ARMA= ', arma_est)
+print("Estimated ARMA= ", arma_est)

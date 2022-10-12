@@ -27,7 +27,7 @@ YDist = ot.Uniform(-1.0, 1.0)
 
 # %%
 # create Theta=f(y)
-f = ot.SymbolicFunction(['y'], ['y', '1+y^2'])
+f = ot.SymbolicFunction(["y"], ["y", "1+y^2"])
 
 # %%
 # create the X|Theta distribution
@@ -36,7 +36,7 @@ XgivenThetaDist = ot.Uniform()
 # %%
 # create the distribution
 XDist = ot.ConditionalDistribution(XgivenThetaDist, YDist, f)
-XDist.setDescription(['X|Theta=f(y)'])
+XDist.setDescription(["X|Theta=f(y)"])
 XDist
 
 # %%

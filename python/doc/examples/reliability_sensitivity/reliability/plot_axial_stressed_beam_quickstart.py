@@ -17,7 +17,7 @@ from openturns.usecases import stressed_beam
 import openturns as ot
 import numpy as np
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -32,9 +32,9 @@ limitStateFunction = sm.model
 # Before using the function within an algorithm, we check that the limit state function is correctly evaluated.
 
 # %%
-x = [3.e6, 750.]
-print('x=', x)
-print('G(x)=', limitStateFunction(x))
+x = [3.0e6, 750.0]
+print("x=", x)
+print("G(x)=", limitStateFunction(x))
 
 # %%
 # Probabilistic model
@@ -74,8 +74,7 @@ inputRandomVector = ot.RandomVector(myDistribution)
 # Finally we create a `CompositeRandomVector` by associating the limit state function with the input random vector.
 
 # %%
-outputRandomVector = ot.CompositeRandomVector(
-    limitStateFunction, inputRandomVector)
+outputRandomVector = ot.CompositeRandomVector(limitStateFunction, inputRandomVector)
 
 # %%
 # Exact computation
@@ -88,10 +87,10 @@ outputRandomVector = ot.CompositeRandomVector(
 D = 0.02
 
 # %%
-G = R-F/(D**2/4 * np.pi)
+G = R - F / (D**2 / 4 * np.pi)
 
 # %%
-G.computeCDF(0.)
+G.computeCDF(0.0)
 
 # %%
 # This is the exact result from the description of this example.
@@ -150,11 +149,12 @@ algoMC.run()
 # %%
 result = algoMC.getResult()
 probability = result.getProbabilityEstimate()
-numberOfFunctionEvaluations = limitStateFunction.getEvaluationCallsNumber() - \
-    initialNumberOfCall
-print('Number of calls to the limit state =', numberOfFunctionEvaluations)
-print('Pf = ', probability)
-print('CV =', result.getCoefficientOfVariation())
+numberOfFunctionEvaluations = (
+    limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
+)
+print("Number of calls to the limit state =", numberOfFunctionEvaluations)
+print("Pf = ", probability)
+print("CV =", result.getCoefficientOfVariation())
 
 # %%
 # The `drawProbabilityConvergence` method plots the probability estimate depending on the number of function evaluations. The order of convergence is :math:`O \left( 1/N^2 \right)` with :math:`N` being the number of function evaluations. This is why we use a logarithmic scale for the X axis of the graphics.
@@ -173,9 +173,11 @@ view = viewer.View(graph)
 alpha = 0.05
 
 # %%
-pflen = result.getConfidenceLength(1-alpha)
-print("%.2f%% confidence interval = [%f,%f]" % (
-    (1-alpha)*100, probability-pflen/2, probability+pflen/2))
+pflen = result.getConfidenceLength(1 - alpha)
+print(
+    "%.2f%% confidence interval = [%f,%f]"
+    % ((1 - alpha) * 100, probability - pflen / 2, probability + pflen / 2)
+)
 
 # %%
 # This interval is consistent with the exact probability :math:`P_f=0.02920`.

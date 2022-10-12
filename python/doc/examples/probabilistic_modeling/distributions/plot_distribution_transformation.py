@@ -9,6 +9,7 @@ Transform a distribution
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -107,7 +108,7 @@ view = viewer.View(graph)
 # And for the `log2` function :
 
 # %%
-f = ot.SymbolicFunction(['x'], ['log2(x)'])
+f = ot.SymbolicFunction(["x"], ["log2(x)"])
 f.setDescription(["X", "ln(X)"])
 graph = ot.CompositeDistribution(f, distribution1).drawPDF()
 view = viewer.View(graph)
@@ -132,7 +133,7 @@ antecedent = ot.Normal()
 
 # %%
 # and a 1D transform :
-f = ot.SymbolicFunction(['x'], ['sin(x)+cos(x)'])
+f = ot.SymbolicFunction(["x"], ["sin(x)+cos(x)"])
 
 # %%
 # We then create the composite distribution :

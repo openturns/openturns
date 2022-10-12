@@ -6,9 +6,9 @@ Release process
 
 1. New "release" branch
 
-2. Reindent sources (utils/reindent.sh)
+2. Reindent sources (utils/indent.sh)
 
-3. Increment version number X.Yrc1 (utils/setVersionNumber.sh) and soversion (lib/src/CMakeLists.txt)
+3. Increment version number X.Yrc1 (utils/setVersionNumber.sh)
 
 4. Increment rpm package number (distro/rpm)
 
@@ -40,3 +40,5 @@ Release process
 15. Set version X.Y+1, new changelog in master
 
 16. Drop deprecated methods listed in TODO file
+
+17. Bump soversion (lib/src/CMakeLists.txt)

@@ -1,19 +1,13 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-try:
-    ResourceMap.Set("SymbolicParser-Backend", "MuParser")
-    evaluation = SymbolicEvaluation(
-        ["x0", "x1", "x2"], ["y0"], ["x0^2+2*x1+3*x2^3"])
-    gradient = SymbolicGradient(evaluation)
-    point = [-1.0, 4.0, -4.0]
-    print("gradient=", gradient)
-    print("value at point", point, "=", gradient.gradient(point))
 
-except:
-    import sys
-    print("t_SymbolicGradient_std.py",
-          sys.exc_info()[0], sys.exc_info()[1])
+ot.ResourceMap.Set("SymbolicParser-Backend", "MuParser")
+evaluation = ot.SymbolicEvaluation(["x0", "x1", "x2"], ["y0"], ["x0^2+2*x1+3*x2^3"])
+gradient = ot.SymbolicGradient(evaluation)
+point = [-1.0, 4.0, -4.0]
+print("gradient=", gradient)
+print("value at point", point, "=", gradient.gradient(point))

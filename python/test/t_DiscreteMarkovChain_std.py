@@ -13,8 +13,7 @@ process = ot.DiscreteMarkovChain(0, ot.SquareMatrix([[1.0, 0.0], [0.0, 1.0]]))
 print("Constructor from int and SquareMatrix: process = ")
 print(process)
 
-transitionMatrix = ot.SquareMatrix(
-    [[0.0, 0.5, 0.5], [0.7, 0.0, 0.3], [0.8, 0.0, 0.2]])
+transitionMatrix = ot.SquareMatrix([[0.0, 0.5, 0.5], [0.7, 0.0, 0.3], [0.8, 0.0, 0.2]])
 print("transition matrix =")
 print(transitionMatrix)
 
@@ -46,12 +45,13 @@ futures = process.getFuture(20, 3)
 print("3 different futures :")
 print(futures)
 
-process.exportToDOTFile('markov.dot')
-with open('markov.dot') as f:
+process.exportToDOTFile("markov.dot")
+with open("markov.dot") as f:
     print(f.read())
 if 0:
     from graphviz import Source
-    path = 'markov.dot'
+
+    path = "markov.dot"
     s = Source.from_file(path)
     s.view()
-os.remove('markov.dot')
+os.remove("markov.dot")

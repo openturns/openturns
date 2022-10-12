@@ -13,18 +13,18 @@ import openturns as ot
 import openturns.viewer as viewer
 import numpy as np
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a composite random vector
 ot.RandomGenerator.SetSeed(0)
-input_names = ['x1', 'x2', 'x3', 'x4']
-myFunc = ot.SymbolicFunction(input_names,
-                             ['cos(x2*x2+x4)/(x1*x1+1+x3^4)'])
+input_names = ["x1", "x2", "x3", "x4"]
+myFunc = ot.SymbolicFunction(input_names, ["cos(x2*x2+x4)/(x1*x1+1+x3^4)"])
 R = ot.CorrelationMatrix(4)
 for i in range(4):
     R[i, i - 1] = 0.25
-distribution = ot.Normal([0.2]*4, [0.1, 0.2, 0.3, 0.4], R)
+distribution = ot.Normal([0.2] * 4, [0.1, 0.2, 0.3, 0.4], R)
 distribution.setDescription(input_names)
 # We create a distribution-based RandomVector
 X = ot.RandomVector(distribution)
@@ -89,33 +89,37 @@ plt.show()
 
 def myPythonFunction(X):
     x1, x2, x3, x4 = X
-    return [np.cos(x2*x2+x4)/(x1*x1+1.+x3**4)]
+    return [np.cos(x2 * x2 + x4) / (x1 * x1 + 1.0 + x3**4)]
 
 
 myFunc = ot.PythonFunction(4, 1, myPythonFunction)
 
 # %%
 # For instance, a user-defined constant step value can be considered
-gradEpsilon = [1e-8]*4
-hessianEpsilon = [1e-7]*4
+gradEpsilon = [1e-8] * 4
+hessianEpsilon = [1e-7] * 4
 gradStep = ot.ConstantStep(gradEpsilon)  # Costant gradient step
 hessianStep = ot.ConstantStep(hessianEpsilon)  # Constant Hessian step
-myFunc.setGradient(ot.CenteredFiniteDifferenceGradient(
-    gradStep, myFunc.getEvaluation()))
-myFunc.setHessian(ot.CenteredFiniteDifferenceHessian(
-    hessianStep, myFunc.getEvaluation()))
+myFunc.setGradient(
+    ot.CenteredFiniteDifferenceGradient(gradStep, myFunc.getEvaluation())
+)
+myFunc.setHessian(
+    ot.CenteredFiniteDifferenceHessian(hessianStep, myFunc.getEvaluation())
+)
 
 # %%
 # Alternatively, we can consider a finite difference step value which
 # depends on the location in the input space by relying on the BlendedStep class:
-gradEpsilon = [1e-8]*4
-hessianEpsilon = [1e-7]*4
+gradEpsilon = [1e-8] * 4
+hessianEpsilon = [1e-7] * 4
 gradStep = ot.BlendedStep(gradEpsilon)  # Costant gradient step
 hessianStep = ot.BlendedStep(hessianEpsilon)  # Constant Hessian step
-myFunc.setGradient(ot.CenteredFiniteDifferenceGradient(
-    gradStep, myFunc.getEvaluation()))
-myFunc.setHessian(ot.CenteredFiniteDifferenceHessian(
-    hessianStep, myFunc.getEvaluation()))
+myFunc.setGradient(
+    ot.CenteredFiniteDifferenceGradient(gradStep, myFunc.getEvaluation())
+)
+myFunc.setHessian(
+    ot.CenteredFiniteDifferenceHessian(hessianStep, myFunc.getEvaluation())
+)
 
 # %%
 # We can then proceed in the same way as before

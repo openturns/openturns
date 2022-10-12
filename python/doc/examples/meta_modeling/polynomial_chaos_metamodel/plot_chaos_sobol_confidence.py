@@ -56,6 +56,8 @@ X = distribution.getSample(N)
 Y = g(X)
 
 # %%
+
+
 def computeSparseLeastSquaresChaos(X, Y, basis, total_degree, distribution):
     """
     Create a sparse polynomial chaos with least squares.
@@ -137,6 +139,8 @@ _ = otv.View(graph)
 # We define the `multiBootstrap` function in order to simultaneously bootstrap in the input
 # and output samples, so that the input/output mapping is preserved.
 # We use the `GenerateSelection` method of the :class:`~openturns.BootstrapExperiment` class.
+
+
 def multiBootstrap(*data):
     """
     Bootstrap multiple samples at once.
@@ -164,6 +168,8 @@ print(X_boot[:5])
 print(Y_boot[:5])
 
 # %%
+
+
 def computeChaosSensitivity(X, Y, basis, total_degree, distribution):
     """
     Compute the first and total order Sobol' indices from a polynomial chaos.
@@ -193,6 +199,8 @@ def computeChaosSensitivity(X, Y, basis, total_degree, distribution):
 
 
 # %%
+
+
 def computeBootstrapChaosSobolIndices(
     X, Y, basis, total_degree, distribution, bootstrap_size
 ):
@@ -235,6 +243,8 @@ fo_sample, to_sample = computeBootstrapChaosSobolIndices(
 )
 
 # %%
+
+
 def computeSobolIndicesConfidenceInterval(fo_sample, to_sample, alpha=0.95):
     """
     From a sample of first or total order indices,
@@ -285,6 +295,8 @@ def computeSobolIndicesConfidenceInterval(fo_sample, to_sample, alpha=0.95):
 fo_interval, to_interval = computeSobolIndicesConfidenceInterval(fo_sample, to_sample)
 
 # %%
+
+
 def computeAndDrawSobolIndices(
     N, basis, total_degree, distribution, bootstrap_size=500, alpha=0.95
 ):

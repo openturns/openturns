@@ -21,7 +21,7 @@ from openturns.usecases import stressed_beam
 
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -57,8 +57,7 @@ myDistribution = sm.distribution
 
 # %%
 inputRandomVector = ot.RandomVector(myDistribution)
-outputRandomVector = ot.CompositeRandomVector(
-    limitStateFunction, inputRandomVector)
+outputRandomVector = ot.CompositeRandomVector(limitStateFunction, inputRandomVector)
 myEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), 0.0)
 
 # %%
@@ -88,12 +87,12 @@ algoMC.run()
 # %%
 result = algoMC.getResult()
 probabilityMonteCarlo = result.getProbabilityEstimate()
-numberOfFunctionEvaluationsMonteCarlo = limitStateFunction.getEvaluationCallsNumber() - \
-    initialNumberOfCall
-print('Number of calls to the limit state =',
-      numberOfFunctionEvaluationsMonteCarlo)
-print('Pf = ', probabilityMonteCarlo)
-print('CV =', result.getCoefficientOfVariation())
+numberOfFunctionEvaluationsMonteCarlo = (
+    limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
+)
+print("Number of calls to the limit state =", numberOfFunctionEvaluationsMonteCarlo)
+print("Pf = ", probabilityMonteCarlo)
+print("CV =", result.getCoefficientOfVariation())
 
 # %%
 graph = algoMC.drawProbabilityConvergence()
@@ -133,11 +132,12 @@ algoFORM.run()
 
 # %%
 resultFORM = algoFORM.getResult()
-numberOfFunctionEvaluationsFORM = limitStateFunction.getEvaluationCallsNumber() - \
-    initialNumberOfCall
+numberOfFunctionEvaluationsFORM = (
+    limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
+)
 probabilityFORM = resultFORM.getEventProbability()
-print('Number of calls to the limit state =', numberOfFunctionEvaluationsFORM)
-print('Pf =', probabilityFORM)
+print("Number of calls to the limit state =", numberOfFunctionEvaluationsFORM)
+print("Pf =", probabilityFORM)
 
 # %%
 graph = resultFORM.drawImportanceFactors()
@@ -170,12 +170,15 @@ algoDS.run()
 # %%
 result = algoDS.getResult()
 probabilityDirectionalSampling = result.getProbabilityEstimate()
-numberOfFunctionEvaluationsDirectionalSampling = limitStateFunction.getEvaluationCallsNumber() - \
-    initialNumberOfCall
-print('Number of calls to the limit state =',
-      numberOfFunctionEvaluationsDirectionalSampling)
-print('Pf = ', probabilityDirectionalSampling)
-print('CV =', result.getCoefficientOfVariation())
+numberOfFunctionEvaluationsDirectionalSampling = (
+    limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
+)
+print(
+    "Number of calls to the limit state =",
+    numberOfFunctionEvaluationsDirectionalSampling,
+)
+print("Pf = ", probabilityDirectionalSampling)
+print("CV =", result.getCoefficientOfVariation())
 
 # %%
 graph = algoDS.drawProbabilityConvergence()
@@ -236,12 +239,12 @@ algo.run()
 # retrieve results
 result = algo.getResult()
 probabilityFORMIS = result.getProbabilityEstimate()
-numberOfFunctionEvaluationsFORMIS = limitStateFunction.getEvaluationCallsNumber() - \
-    initialNumberOfCall
-print('Number of calls to the limit state =',
-      numberOfFunctionEvaluationsFORMIS)
-print('Pf = ', probabilityFORMIS)
-print('CV =', result.getCoefficientOfVariation())
+numberOfFunctionEvaluationsFORMIS = (
+    limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
+)
+print("Number of calls to the limit state =", numberOfFunctionEvaluationsFORMIS)
+print("Pf = ", probabilityFORMIS)
+print("CV =", result.getCoefficientOfVariation())
 
 # %%
 # Conclusion
@@ -269,25 +272,27 @@ def computeLogRelativeError(exact, computed):
 def printMethodSummary(name, computedProbability, numberOfFunctionEvaluations):
     print("---")
     print(name, ":")
-    print('Number of calls to the limit state =', numberOfFunctionEvaluations)
-    print('Pf = ', computedProbability)
+    print("Number of calls to the limit state =", numberOfFunctionEvaluations)
+    print("Pf = ", computedProbability)
     exactProbability = 0.02919819462483051
-    logRelativeError = computeLogRelativeError(
-        exactProbability, computedProbability)
+    logRelativeError = computeLogRelativeError(exactProbability, computedProbability)
     print("Number of correct digits=%.3f" % (logRelativeError))
-    performance = logRelativeError/numberOfFunctionEvaluations
+    performance = logRelativeError / numberOfFunctionEvaluations
     print("Performance=%.2e (correct digits/evaluation)" % (performance))
     return
 
 
 # %%
-printMethodSummary("Monte-Carlo", probabilityMonteCarlo,
-                   numberOfFunctionEvaluationsMonteCarlo)
+printMethodSummary(
+    "Monte-Carlo", probabilityMonteCarlo, numberOfFunctionEvaluationsMonteCarlo
+)
 printMethodSummary("FORM", probabilityFORM, numberOfFunctionEvaluationsFORM)
-printMethodSummary("DirectionalSampling", probabilityDirectionalSampling,
-                   numberOfFunctionEvaluationsDirectionalSampling)
-printMethodSummary("FORM-IS", probabilityFORMIS,
-                   numberOfFunctionEvaluationsFORMIS)
+printMethodSummary(
+    "DirectionalSampling",
+    probabilityDirectionalSampling,
+    numberOfFunctionEvaluationsDirectionalSampling,
+)
+printMethodSummary("FORM-IS", probabilityFORMIS, numberOfFunctionEvaluationsFORMIS)
 
 # %%
 # We see that all three methods produce the correct probability, but not with the same accuracy. In this case, we have found the correct order of magnitude of the probability, i.e. between one and two correct digits. There is, however, a significant difference in computational performance (measured here by the number of function evaluations).

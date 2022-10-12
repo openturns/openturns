@@ -18,7 +18,7 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         algo.run()
         klresult = algo.getResult()
         # Create the KL reduction
-        meanField = processSample.computeMean()
+        processSample.computeMean()
         klreduce = ot.KarhunenLoeveReduction(klresult)
         # Generate a trajectory and reduce it
         field = process.getRealization()
@@ -46,7 +46,7 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         algo.run()
         klresult = algo.getResult()
         # Create the KL reduction
-        meanField = processSample.computeMean()
+        processSample.computeMean()
         klreduce = ot.KarhunenLoeveReduction(klresult)
         # Generate a trajectory and reduce it
         field = process.getRealization()
@@ -66,10 +66,9 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         algo = ot.KarhunenLoeveSVDAlgorithm(sample, 1e-6)
         algo.run()
         result = algo.getResult()
-        trend = ot.TrendTransform(
-            ot.P1LagrangeEvaluation(sample.computeMean()), mesh)
+        trend = ot.TrendTransform(ot.P1LagrangeEvaluation(sample.computeMean()), mesh)
         sample2 = process.getSample(P)
-        sample2.setName('reduction of sign(x) w/o trend')
+        sample2.setName("reduction of sign(x) w/o trend")
         reduced1 = ot.KarhunenLoeveReduction(result)(sample2)
         reduced2 = ot.KarhunenLoeveReduction(result, trend)(sample2)
         g = sample2.drawMarginal(0)
@@ -92,7 +91,8 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         g.add(g2)
         if 0:
             from openturns.viewer import View
-            View(g).save('reduction.png')
+
+            View(g).save("reduction.png")
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ vecX = ot.RandomVector(distX)
 
 # %%
 # We consider the simple model :math:`f:x \mapsto |x|` and consider the output random variable :math:`Y = f(X)`.
-f = ot.SymbolicFunction(['x1'], ['abs(x1)'])
+f = ot.SymbolicFunction(["x1"], ["abs(x1)"])
 vecY = ot.CompositeRandomVector(f, vecX)
 
 # %%
@@ -34,8 +34,10 @@ print("Probability of the event : %.4f" % 0.6827)
 
 # %%
 # We can also use a basic estimator to get the probability of the event by drawing samples from the initial distribution `distX` and counting those which realize the event :
-print("Probability of the event (event sampling) : %.4f" %
-      thresholdEvent.getSample(1000).computeMean()[0])
+print(
+    "Probability of the event (event sampling) : %.4f"
+    % thresholdEvent.getSample(1000).computeMean()[0]
+)
 
 
 # %%
@@ -47,7 +49,7 @@ def linearSample(xmin, xmax, npoints):
     Returns a sample created from a regular grid
     from xmin to xmax with npoints points.
     """
-    step = (xmax-xmin)/(npoints-1)
+    step = (xmax - xmin) / (npoints - 1)
     rg = ot.RegularGrid(xmin, step, npoints)
     vertices = rg.getVertices()
     return vertices
@@ -69,15 +71,16 @@ def drawInTheBounds(vLow, vUp, n_test):
     """
     palette = ot.Drawable.BuildDefaultPalette(2)
     myPaletteColor = palette[0]
-    polyData = [[vLow[i], vLow[i+1], vUp[i+1], vUp[i]]
-                for i in range(n_test-1)]
-    polygonList = [ot.Polygon(
-        polyData[i], myPaletteColor, myPaletteColor) for i in range(n_test-1)]
+    polyData = [[vLow[i], vLow[i + 1], vUp[i + 1], vUp[i]] for i in range(n_test - 1)]
+    polygonList = [
+        ot.Polygon(polyData[i], myPaletteColor, myPaletteColor)
+        for i in range(n_test - 1)
+    ]
     boundsPoly = ot.PolygonArray(polygonList)
     return boundsPoly
 
 
-vLow = [[x[i, 0], 0.] for i in range(nplot)]
+vLow = [[x[i, 0], 0.0] for i in range(nplot)]
 vUp = [[x[i, 0], y[i, 0]] for i in range(nplot)]
 area = distX.computeCDF(b) - distX.computeCDF(a)
 boundsPoly = drawInTheBounds(vLow, vUp, nplot)

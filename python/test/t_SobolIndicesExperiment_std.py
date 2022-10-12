@@ -10,9 +10,10 @@ for method in ["MonteCarlo", "LHS", "QMC"]:
         distribution = ot.Normal(dimension)
         for computeSecondOrder in [False, True]:
             experiment = ot.SobolIndicesExperiment(
-                distribution, size, computeSecondOrder)
-            print('experiment=', experiment)
+                distribution, size, computeSecondOrder
+            )
+            print("experiment=", experiment)
             ot.RandomGenerator.SetSeed(0)
             sample = experiment.generate()
-            print('sample=', sample)
-            print('size=', sample.getSize())
+            print("sample=", sample)
+            print("size=", sample.getSize())

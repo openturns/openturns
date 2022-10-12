@@ -58,7 +58,7 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
     // the sample description may contain invalid variable names
     const SymbolicFunction constant(inputDescription, Description(1, "1"));
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     // fallback to default variable names
     inputDescription = Description::BuildDefault(inputDimension, "X");
@@ -88,8 +88,8 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
 
 /** Oldest constructor (for compatibility) */
 LinearModelAlgorithm::LinearModelAlgorithm(const Sample &inputSample,
-                                           const Basis &basis,
-                                           const Sample &outputSample)
+    const Basis &basis,
+    const Sample &outputSample)
   : LinearModelAlgorithm(inputSample, outputSample, basis)
 {
   LOGWARN(OSS() << "LinearModelAlgorithm(inputSample, basis, outpuSample) is deprecated");

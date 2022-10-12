@@ -41,7 +41,7 @@ graph = true_distribution.drawPDF()
 graph.setTitle("True distribution")
 graph.setXTitle("")
 graph.setLegends([""])
-View(graph)
+_ = View(graph)
 
 # %%
 # A natural step at this point is to introduce
@@ -95,8 +95,8 @@ def nor1post(pt):
 def zpost(pt):
     mu0 = pt[0]
     mu1 = pt[1]
-    term1 = p * np.exp(- (observations - mu1)**2 / 2)
-    term0 = (1.0 - p) * np.exp(- (observations - mu0)**2 / 2)
+    term1 = p * np.exp(-((observations - mu1) ** 2) / 2)
+    term0 = (1.0 - p) * np.exp(-((observations - mu0) ** 2) / 2)
     res = term1 / (term1 + term0)
     # output must be a 1d list or array in order to create a PythonFunction
     return res.reshape(-1)
@@ -112,14 +112,17 @@ zposterior = ot.PythonFunction(2 + N, N, zpost)
 initialState = [0.0] * (N + 2)
 
 sampler0 = ot.RandomVectorMetropolisHastings(
-    ot.RandomVector(ot.Normal()), initialState, [0], nor0posterior)
+    ot.RandomVector(ot.Normal()), initialState, [0], nor0posterior
+)
 sampler1 = ot.RandomVectorMetropolisHastings(
-    ot.RandomVector(ot.Normal()), initialState, [1], nor1posterior)
+    ot.RandomVector(ot.Normal()), initialState, [1], nor1posterior
+)
 
 big_bernoulli = ot.ComposedDistribution([ot.Bernoulli()] * N)
 
-sampler2 = ot.RandomVectorMetropolisHastings(ot.RandomVector(
-    big_bernoulli), initialState, range(2, N + 2), zposterior)
+sampler2 = ot.RandomVectorMetropolisHastings(
+    ot.RandomVector(big_bernoulli), initialState, range(2, N + 2), zposterior
+)
 
 gibbs = ot.Gibbs([sampler0, sampler1, sampler2])
 
@@ -142,6 +145,6 @@ graph.setTitle("Posterior density")
 graph.setLegendPosition("bottomright")
 graph.setXTitle(r"$\mu_0$")
 graph.setYTitle(r"$\mu_1$")
-View(graph)
+_ = View(graph)
 
 View.ShowAll()

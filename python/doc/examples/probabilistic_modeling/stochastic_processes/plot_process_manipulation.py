@@ -19,7 +19,7 @@ Draw fields
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -28,7 +28,7 @@ tMin = 0.0
 timeStep = 0.1
 n = 100
 time_grid = ot.RegularGrid(tMin, timeStep, n)
-time_grid.setName('time')
+time_grid.setName("time")
 
 # %%
 # We create a Normal process :math:`X_t = (X_t^0, X_t^1, X_t^2)` in dimension 3 with an exponential covariance model.
@@ -109,8 +109,7 @@ continuousRealization = process.getContinuousRealization()
 # Once again we draw its first marginal :
 marginal0 = continuousRealization.getMarginal(0)
 graph = marginal0.draw(minMesh, maxMesh)
-graph.setTitle(
-    "First marginal of a P1-Lagrange continuous realization of the process")
+graph.setTitle("First marginal of a P1-Lagrange continuous realization of the process")
 graph.setXTitle("t")
 view = viewer.View(graph)
 

@@ -106,7 +106,7 @@ int main(int, char *[])
     /* We eventually build the HSIC object!
       HSICVStat event is already embedded as it is the only one available
       for that kind of analysis
-   */
+    */
     HSICEstimatorConditionalSensitivity CSA(covarianceModelCollection, X, Y, weight);
 
     /* We get the R2-HSIC */

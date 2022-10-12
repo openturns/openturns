@@ -179,7 +179,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
     {
       opt.add_inequality_constraint(nlopt::func(), 0);
     }
-    catch (std::invalid_argument &)
+    catch (const std::invalid_argument &)
     {
       throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support inequality constraints";
     }
@@ -191,7 +191,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
     {
       opt.add_equality_constraint(nlopt::func(), 0);
     }
-    catch (std::invalid_argument &)
+    catch (const std::invalid_argument &)
     {
       throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support equality constraints";
     }
@@ -315,17 +315,17 @@ void NLopt::run()
     p_opt_ = &opt;
     opt.optimize(x, optimalValue);
   }
-  catch (nlopt::roundoff_limited &)
+  catch (const nlopt::roundoff_limited &)
   {
     // Here we catch the roundoff_limited exception as the result
     // of the optimization may be useful even if not at the requested precision
     LOGWARN("NLopt raised a roundoff-limited exception");
   }
-  catch (nlopt::forced_stop &)
+  catch (const nlopt::forced_stop &)
   {
     LOGWARN("NLopt was stopped by user");
   }
-  catch (std::exception & exc)
+  catch (const std::exception & exc)
   {
     throw InternalException(HERE) << "NLopt raised an exception: " << exc.what();
   }

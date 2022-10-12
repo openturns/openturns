@@ -6,7 +6,14 @@ Quick start guide
 # Abstract
 # ---------
 #
-# In this example, we present classes for univariate and multivariate distributions. We demonstrate the probabilistic programming capabilities of the library. For univariate distributions, we show how to compute the probability density, the cumulated probability density and the quantiles. We also show how to create graphics. The `ComposedDistribution` class, which creates a distribution based on its marginals and its copula, is presented. We show how to truncate any distribution with the `TruncatedDistribution` class.
+# In this example, we present classes for univariate and multivariate distributions.
+# We demonstrate the probabilistic programming capabilities of the library.
+# For univariate distributions, we show how to compute the probability density,
+# the cumulated probability density and the quantiles.
+# We also show how to create graphics.
+# The `ComposedDistribution` class, which creates a distribution based on its
+# marginals and its copula, is presented.
+# We show how to truncate any distribution with the `TruncatedDistribution` class.
 
 # %%
 # Univariate distribution
@@ -24,11 +31,11 @@ Quick start guide
 #  - `Weibull`.
 
 # %%
-import pylab as plt
 import openturns.viewer as otv
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -240,7 +247,7 @@ view = viewer.View(graph)
 # We can truncate this distribution to the :math:`[1,2]` interval. We see that the PDF of the distribution becomes discontinuous at the truncation points 1 and 2.
 
 # %%
-Y = ot.TruncatedDistribution(X, 1., 2.)
+Y = ot.TruncatedDistribution(X, 1.0, 2.0)
 graph = Y.drawPDF()
 view = viewer.View(graph)
 
@@ -248,7 +255,7 @@ view = viewer.View(graph)
 # We can also also truncate it with only a lower bound.
 
 # %%
-Y = ot.TruncatedDistribution(X, 1., ot.TruncatedDistribution.LOWER)
+Y = ot.TruncatedDistribution(X, 1.0, ot.TruncatedDistribution.LOWER)
 graph = Y.drawPDF()
 view = viewer.View(graph)
 
@@ -256,7 +263,7 @@ view = viewer.View(graph)
 # We can finally truncate a distribution with an upper bound.
 
 # %%
-Y = ot.TruncatedDistribution(X, 2., ot.TruncatedDistribution.UPPER)
+Y = ot.TruncatedDistribution(X, 2.0, ot.TruncatedDistribution.UPPER)
 graph = Y.drawPDF()
 view = viewer.View(graph)
 

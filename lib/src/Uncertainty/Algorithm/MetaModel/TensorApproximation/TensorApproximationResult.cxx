@@ -58,7 +58,7 @@ TensorApproximationResult::TensorApproximationResult(
   const Collection<CanonicalTensorEvaluation> & tensorCollection,
   const Point & residuals,
   const Point & relativeErrors)
-  : MetaModelResult(Sample(), Sample(), Function(), Function(), residuals, relativeErrors)
+  : MetaModelResult(Sample(), Sample(), Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)

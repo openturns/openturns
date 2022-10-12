@@ -102,7 +102,7 @@ Collection<Pointer<MuParser > > SymbolicParserMuParser::allocateExpressions(Poin
       parsers[outputIndex].get()->SetExpr(formulas_[outputIndex].c_str());
     }
   }
-  catch (mu::Parser::exception_type & ex)
+  catch (const mu::Parser::exception_type & ex)
   {
     throw InvalidArgumentException(HERE) << "Error constructing an analytical function, message=" << ex.GetMsg() << " formula=" << ex.GetExpr() << " token=" << ex.GetToken() << " position=" << ex.GetPos();
   }
@@ -137,7 +137,7 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
       result[outputIndex] = value;
     } // outputIndex
   }
-  catch (mu::Parser::exception_type & ex)
+  catch (const mu::Parser::exception_type & ex)
   {
     throw InternalException(HERE) << ex.GetMsg();
   }
@@ -184,7 +184,7 @@ struct SymbolicParserMuParserPolicy
           output_(i, outputIndex) = value;
         }
       }
-      catch (mu::Parser::exception_type & ex)
+      catch (const mu::Parser::exception_type & ex)
       {
         throw InternalException(HERE) << ex.GetMsg();
       }

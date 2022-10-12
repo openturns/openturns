@@ -76,8 +76,7 @@ for bootstrapSize in [0, 30]:
             ot.LowDiscrepancyExperiment(
                 ot.SobolSequence(),
                 ot.Normal(
-                    candidate, ot.CovarianceMatrix(
-                        ot.Point(candidate).getDimension())
+                    candidate, ot.CovarianceMatrix(ot.Point(candidate).getDimension())
                 ),
                 ot.ResourceMap.GetAsUnsignedInteger(
                     "GaussianNonLinearCalibration-MultiStartSize"
@@ -102,7 +101,7 @@ for bootstrapSize in [0, 30]:
     algo.run()
     calibrationResult = algo.getResult()
     parameterMAP = calibrationResult.getParameterMAP()
-    #print("(Global) MAP=", repr(parameterMAP))
+    # print("(Global) MAP=", repr(parameterMAP))
     rtol = 0.0
     atol = 0.5
     ref = [2.61, 1.2, 0.731]

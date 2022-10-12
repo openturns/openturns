@@ -8,9 +8,9 @@ ot.PlatformInfo.SetNumericalPrecision(5)
 ot.RandomGenerator.SetSeed(0)
 
 # We create a Sample
-point1 = [10., 20.]
-point2 = [11., 21.]
-point3 = [12., 22.]
+point1 = [10.0, 20.0]
+point2 = [11.0, 21.0]
+point3 = [12.0, 22.0]
 sample1 = ot.Sample([point1, point2, point3])
 referencemin = point1
 referencemax = point3
@@ -46,7 +46,7 @@ iterMixed.increment(point2)
 iterMixed.increment(point3)
 computedmin = iterMixed.getMin()
 computedmax = iterMixed.getMax()
-ott.assert_almost_equal(referencemin,  computedmin)
+ott.assert_almost_equal(referencemin, computedmin)
 ott.assert_almost_equal(referencemax, computedmax)
 iteration = iterMixed.getIterationNumber()
 ott.assert_almost_equal(iteration, 6)

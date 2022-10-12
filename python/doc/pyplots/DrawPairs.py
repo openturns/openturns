@@ -6,4 +6,4 @@ ot.RandomGenerator.SetSeed(0)
 sample = ot.Normal(3).getSample(100)
 graph = ot.VisualTest.DrawPairs(sample)
 
-View(graph, figure_kw={'figsize': (6.0, 6.0)})
+View(graph, figure_kw={"figsize": (6.0, 6.0)})

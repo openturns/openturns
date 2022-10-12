@@ -15,6 +15,7 @@ Estimate a multivariate distribution
 # %%
 import openturns as ot
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
@@ -23,8 +24,12 @@ ot.RandomGenerator.SetSeed(0)
 cop1 = ot.AliMikhailHaqCopula(0.6)
 cop2 = ot.ClaytonCopula(2.5)
 copula = ot.ComposedCopula([cop1, cop2])
-marginals = [ot.Uniform(5.0, 6.0), ot.Arcsine(
-), ot.Normal(-40.0, 3.0), ot.Triangular(100.0, 150.0, 300.0)]
+marginals = [
+    ot.Uniform(5.0, 6.0),
+    ot.Arcsine(),
+    ot.Normal(-40.0, 3.0),
+    ot.Triangular(100.0, 150.0, 300.0),
+]
 distribution = ot.ComposedDistribution(marginals, copula)
 sample = distribution.getSample(10000).getMarginal([0, 2, 3, 1])
 
@@ -33,12 +38,14 @@ sample = distribution.getSample(10000).getMarginal([0, 2, 3, 1])
 dimension = sample.getDimension()
 marginalFactories = []
 for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
-    if str(factory).startswith('Histogram'):
+    if str(factory).startswith("Histogram"):
         # ~ non-parametric
         continue
     marginalFactories.append(factory)
-estimated_marginals = [ot.FittingTest.BestModelBIC(
-    sample.getMarginal(i), marginalFactories)[0] for i in range(dimension)]
+estimated_marginals = [
+    ot.FittingTest.BestModelBIC(sample.getMarginal(i), marginalFactories)[0]
+    for i in range(dimension)
+]
 estimated_marginals
 
 
@@ -47,7 +54,6 @@ estimated_marginals
 
 # %%
 def find_neighbours(head, covariance, to_visit, visited):
-    N = covariance.getDimension()
     visited[head] = 1
     to_visit.remove(head)
     current_component = [head]
@@ -118,19 +124,20 @@ blocs
 copula_sample = ot.Sample(sample.getSize(), sample.getDimension())
 copula_sample.setDescription(sample.getDescription())
 for index in range(sample.getDimension()):
-    copula_sample[:, index] = estimated_marginals[index].computeCDF(
-        sample[:, index])
+    copula_sample[:, index] = estimated_marginals[index].computeCDF(sample[:, index])
 
 # %%
 copulaFactories = []
 for factory in ot.DistributionFactory.GetContinuousMultiVariateFactories():
     if not factory.build().isCopula():
         continue
-    if factory.getImplementation().getClassName() == 'BernsteinCopulaFactory':
+    if factory.getImplementation().getClassName() == "BernsteinCopulaFactory":
         continue
     copulaFactories.append(factory)
-estimated_copulas = [ot.FittingTest.BestModelBIC(
-    copula_sample.getMarginal(bloc), copulaFactories)[0] for bloc in blocs]
+estimated_copulas = [
+    ot.FittingTest.BestModelBIC(copula_sample.getMarginal(bloc), copulaFactories)[0]
+    for bloc in blocs
+]
 estimated_copulas
 
 # %%
@@ -156,6 +163,5 @@ estimated_copula
 # We build joint distribution from marginal distributions and dependency structure:
 
 # %%
-estimated_distribution = ot.ComposedDistribution(
-    estimated_marginals, estimated_copula)
+estimated_distribution = ot.ComposedDistribution(estimated_marginals, estimated_copula)
 estimated_distribution

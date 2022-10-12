@@ -14,11 +14,11 @@ f = ot.SymbolicFunction(["x", "y", "z"], ["x-1.5*y+2*z"])
 size = 100
 inputSample = distribution.getSample(size)
 outputSample = f(inputSample)
-comparisonOperators = [ot.Less(), ot.LessOrEqual(),
-                       ot.Greater(), ot.GreaterOrEqual()]
+comparisonOperators = [ot.Less(), ot.LessOrEqual(), ot.Greater(), ot.GreaterOrEqual()]
 threshold = 3.0
 ot.ResourceMap.SetAsUnsignedInteger(
-    "SimulationSensitivityAnalysis-DefaultSampleMargin", 10)
+    "SimulationSensitivityAnalysis-DefaultSampleMargin", 10
+)
 for i in range(4):
     # Analysis based on an event
     X = ot.RandomVector(distribution)
@@ -27,23 +27,29 @@ for i in range(4):
     algo = ot.SimulationSensitivityAnalysis(event, inputSample, outputSample)
     print("algo=", algo)
     # Perform the analysis
-    print("Mean point in event domain=",
-          algo.computeMeanPointInEventDomain())
-    print("Importance factors at threshold ", threshold,
-          " =", algo.computeImportanceFactors())
-    print("Importance factors at threshold/2 ", threshold / 2,
-          " =", algo.computeImportanceFactors(threshold / 2))
+    print("Mean point in event domain=", algo.computeMeanPointInEventDomain())
+    print(
+        "Importance factors at threshold ",
+        threshold,
+        " =",
+        algo.computeImportanceFactors(),
+    )
+    print(
+        "Importance factors at threshold/2 ",
+        threshold / 2,
+        " =",
+        algo.computeImportanceFactors(threshold / 2),
+    )
     importanceFactorsGraph = algo.drawImportanceFactors()
     print("importanceFactorsGraph=", importanceFactorsGraph)
 
     # Importance factors evolution on probability scale
-    importanceFactorsRangeGraphProbability = algo.drawImportanceFactorsRange(
+    importanceFactorsRangeGraphProbability = algo.drawImportanceFactorsRange()
+    print(
+        "importanceFactorsRangeGraphProbability=",
+        importanceFactorsRangeGraphProbability,
     )
-    print("importanceFactorsRangeGraphProbability=",
-          importanceFactorsRangeGraphProbability)
 
     # Importance factors evolution on threshold scale
-    importanceFactorsRangeGraphThreshold = algo.drawImportanceFactorsRange(
-        False)
-    print("importanceFactorsRangeGraphThreshold=",
-          importanceFactorsRangeGraphThreshold)
+    importanceFactorsRangeGraphThreshold = algo.drawImportanceFactorsRange(False)
+    print("importanceFactorsRangeGraphThreshold=", importanceFactorsRangeGraphThreshold)

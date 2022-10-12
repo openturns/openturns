@@ -200,36 +200,35 @@ class FireSatelliteModel:
             ["H", "Pother", "Fs", "theta", "Lsp", "q", "RD", "Lalpha", "Cd"]
         )
 
-        ## Definitions of models
+        # Definitions of models
         # Global model
         self.model = ot.PythonFunction(9, 3, self.multidisciplinaryAnalysis)
 
         # Model of Total torque
-        multidisciplinaryAnalysisToTalTorque = lambda x: [
-            self.multidisciplinaryAnalysis(x)[0]
-        ]
+        def multidisciplinaryAnalysisToTalTorque(x):
+            return [self.multidisciplinaryAnalysis(x)[0]]
 
         self.modelTotalTorque = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisToTalTorque
         )
 
         # Model of Total power
-        multidisciplinaryAnalysisToTalPower = lambda x: [
-            self.multidisciplinaryAnalysis(x)[1]
-        ]
+        def multidisciplinaryAnalysisToTalPower(x):
+            return [self.multidisciplinaryAnalysis(x)[1]]
+
         self.modelTotalPower = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisToTalPower
         )
 
         # Model of Solar Array Area
-        multidisciplinaryAnalysisSolarArrayArea = lambda x: [
-            self.multidisciplinaryAnalysis(x)[2]
-        ]
+        def multidisciplinaryAnalysisSolarArrayArea(x):
+            return [self.multidisciplinaryAnalysis(x)[2]]
+
         self.modelSolarArrayArea = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisSolarArrayArea
         )
 
-        ## Optional variables (deterministic)
+        # Optional variables (deterministic)
         # Speed of light
         self.c = 2.9979e8
 
@@ -371,9 +370,9 @@ class FireSatelliteModel:
         L = m.sqrt(A_sa * r_lw / n_sa)
         W = m.sqrt(A_sa / (r_lw * n_sa))
         m_sa = 2 * rho_sa * L * W * t
-        I_saX = m_sa * (1 / 12 * (L ** 2 + t ** 2) + (D + L / 2) ** 2)
-        I_saY = m_sa / 12 * (t ** 2 + W ** 2)
-        I_saZ = m_sa * (1 / 12 * (L ** 2 + W ** 2) + (D + L / 2) ** 2)
+        I_saX = m_sa * (1 / 12 * (L**2 + t**2) + (D + L / 2) ** 2)
+        I_saY = m_sa / 12 * (t**2 + W**2)
+        I_saZ = m_sa * (1 / 12 * (L**2 + W**2) + (D + L / 2) ** 2)
 
         # total moment of inertia
         I_tot = ot.Sample([[I_saX + I_bodyX], [I_saY + I_bodyY], [I_saZ + I_bodyZ]])
@@ -434,7 +433,6 @@ class FireSatelliteModel:
         c = self.c
         As = self.As
         i = self.i
-        Id = self.Id
         M = self.M
         rho = self.rho
         A = self.A
@@ -457,7 +455,7 @@ class FireSatelliteModel:
         v = inputs["v"]
 
         # slewing torque
-        tau_slew = 4 * theta_slew * Imax / delta_theta_slew ** 2
+        tau_slew = 4 * theta_slew * Imax / delta_theta_slew**2
 
         # torque due to gravity gradients
         tau_g = 3 * mu / (2 * RE + H) ** 3 * abs(Imax - Imin) * m.sin(2 * theta)
@@ -469,10 +467,10 @@ class FireSatelliteModel:
         tau_m = 2 * M * R_D / (RE + H) ** 3
 
         # torque due to atmospheric drag
-        tau_alpha = 0.5 * rho * L_alpha * C_d * A * v ** 2
+        tau_alpha = 0.5 * rho * L_alpha * C_d * A * v**2
 
         # total disturbance torque
-        tau_dist = m.sqrt(tau_sp ** 2 + tau_m ** 2 + tau_g ** 2 + tau_alpha ** 2)
+        tau_dist = m.sqrt(tau_sp**2 + tau_m**2 + tau_g**2 + tau_alpha**2)
 
         # total torque
         tau_tot = ot.Sample([[tau_dist], [tau_slew]]).getMax()[0]
@@ -523,6 +521,7 @@ class FireSatelliteModel:
             inputs_power["delta_t_orbit"] = outputs_orbit["delta_t_orbit"]
             inputs_power["delta_t_eclipse"] = outputs_orbit["delta_t_eclipse"]
 
+            global outputs_attitude
             if itFPI == 0:
                 inputs_power["P_ACS"] = 150.0
             else:

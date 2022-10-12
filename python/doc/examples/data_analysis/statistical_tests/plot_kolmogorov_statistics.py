@@ -55,7 +55,18 @@ def computeKSStatisticsIndex(sample, distribution):
 
 
 # %%
-# The `drawKSDistance()` function plots the empirical distribution function of the sample and the Kolmogorov-Smirnov distance at point x. The empirical CDF is a staircase function and is discontinuous at each observation. Denote by :math:`\hat{F}` the empirical CDF. For a given observation :math:`x` which achieves the maximum distance to the candidate distribution CDF, let us denote :math:`\hat{F}^- = \lim_{x \rightarrow x^-} \hat{F}(x)` and :math:`\hat{F}^+ = \lim_{x\rightarrow x^+} \hat{F}(x)`. The maximum distance can be achieved either by :math:`\hat{F}^-` or :math:`\hat{F}^+`. The `computeEmpiricalCDF(x)` method computes :math:`\hat{F}^+=\mathbb{P}(X \leq x)`. We compute :math:`\hat{F}^-` with the equation :math:`\hat{F}^- = \hat{F}^+ - 1/n` where :math:`n` is the sample size.
+# The `drawKSDistance()` function plots the empirical distribution function
+# of the sample and the Kolmogorov-Smirnov distance at point x.
+# The empirical CDF is a staircase function and is discontinuous at each observation.
+# Denote by :math:`\hat{F}` the empirical CDF. For a given observation :math:`x`
+# which achieves the maximum distance to the candidate distribution CDF,
+# let us denote :math:`\hat{F}^- = \lim_{x \rightarrow x^-} \hat{F}(x)` and
+# :math:`\hat{F}^+ = \lim_{x\rightarrow x^+} \hat{F}(x)`.
+# The maximum distance can be achieved either by :math:`\hat{F}^-` or :math:`\hat{F}^+`.
+# The `computeEmpiricalCDF(x)` method computes :math:`\hat{F}^+=\mathbb{P}(X \leq x)`.
+# We compute :math:`\hat{F}^-` with the equation :math:`\hat{F}^- = \hat{F}^+ - 1/n`
+# where :math:`n` is the sample size.
+#
 
 # %%
 def drawKSDistance(sample, distribution, observation, D, distFactory):

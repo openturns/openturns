@@ -23,7 +23,8 @@ for conditioning in conditioningDistributionCollection:
     observationsDistribution.setParameter(conditioning.getMean())
     observations = observationsDistribution.getSample(observationsSize)
     distribution = ot.PosteriorDistribution(
-        ot.ConditionalDistribution(conditionedDistribution, conditioning), observations)
+        ot.ConditionalDistribution(conditionedDistribution, conditioning), observations
+    )
     dim = distribution.getDimension()
     print("Distribution ", distribution)
     print("Distribution ", distribution)
@@ -50,10 +51,10 @@ for conditioning in conditioningDistributionCollection:
     # print("oneSample=", oneSample)
 
     # Test for sampling
-#       size = 10000
-#       Sample anotherSample = distribution.getSample(size)
-#       print("anotherSample mean=", anotherSample.computeMean())
-#       print("anotherSample covariance=", anotherSample.computeCovariance())
+    #       size = 10000
+    #       Sample anotherSample = distribution.getSample(size)
+    #       print("anotherSample mean=", anotherSample.computeMean())
+    #       print("anotherSample covariance=", anotherSample.computeCovariance())
 
     # Define a point
     zero = [0.0] * dim

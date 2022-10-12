@@ -28,8 +28,10 @@ spaceFillingC2 = ot.SpaceFillingC2()
 spaceFillingPhiP = ot.SpaceFillingPhiP()
 
 # print the criteria on this design
-print("PhiP=%f, C2=%f" %
-      (ot.SpaceFillingPhiP().evaluate(design), ot.SpaceFillingC2().evaluate(design)))
+print(
+    "PhiP=%f, C2=%f"
+    % (ot.SpaceFillingPhiP().evaluate(design), ot.SpaceFillingC2().evaluate(design))
+)
 
 # Parameters for drawing design ==> Number of points are for the "grid"
 Nx = 50
@@ -79,12 +81,13 @@ c = 0.95
 geomProfile = ot.GeometricProfile(T0, c, iMax)
 
 # 3) Simulated Annealing LHS with geometric temperature, C2 optimization
-optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    lhs, spaceFillingC2, geomProfile)
+optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(lhs, spaceFillingC2, geomProfile)
 print("lhs=", optimalLHSAlgorithm)
 design = optimalLHSAlgorithm.generate()
 print(
-    "Generating design using SimulatedAnnealing geometric temperature & C2 criterion=", design)
+    "Generating design using SimulatedAnnealing geometric temperature & C2 criterion=",
+    design,
+)
 result = optimalLHSAlgorithm.getResult()
 history = result.getAlgoHistory()
 print("History criterion=", history[:, 0])
@@ -99,12 +102,13 @@ probaGraph = result.drawHistoryProbability()
 tempGraph = result.drawHistoryTemperature()
 
 # 4) Simulated Annealing LHS with geometric temperature, PhiP optimization
-optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    lhs, spaceFillingPhiP, geomProfile)
+optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(lhs, spaceFillingPhiP, geomProfile)
 print("lhs=", optimalLHSAlgorithm)
 design = optimalLHSAlgorithm.generate()
 print(
-    "Generating design using SimulatedAnnealing geometric temperature & C2 criterion=", design)
+    "Generating design using SimulatedAnnealing geometric temperature & C2 criterion=",
+    design,
+)
 result = optimalLHSAlgorithm.getResult()
 history = result.getAlgoHistory()
 print("History criterion=", history[:, 0])
@@ -121,12 +125,13 @@ tempGraph = result.drawHistoryTemperature()
 linearProfile = ot.LinearProfile(T0, iMax)
 
 # 5) Simulated Annealing LHS with linear temperature, C2 optimization
-optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    lhs, spaceFillingC2, linearProfile)
+optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(lhs, spaceFillingC2, linearProfile)
 print("lhs=", optimalLHSAlgorithm)
 design = optimalLHSAlgorithm.generate()
 print(
-    "Generating design using linear temperature SimulatedAnnealing & C2 criterion =", design)
+    "Generating design using linear temperature SimulatedAnnealing & C2 criterion =",
+    design,
+)
 result = optimalLHSAlgorithm.getResult()
 history = result.getAlgoHistory()
 print("History criterion=", history[:, 0])
@@ -140,12 +145,13 @@ probaGraph = result.drawHistoryProbability()
 tempGraph = result.drawHistoryTemperature()
 
 # 6) Simulated Annealing LHS with linear temperature, PhiP optimization
-optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    lhs, spaceFillingPhiP, linearProfile)
+optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(lhs, spaceFillingPhiP, linearProfile)
 print("lhs=", optimalLHSAlgorithm)
 design = optimalLHSAlgorithm.generate()
 print(
-    "Generating design using linear temperature SimulatedAnnealing & PhiP criterion =", design)
+    "Generating design using linear temperature SimulatedAnnealing & PhiP criterion =",
+    design,
+)
 result = optimalLHSAlgorithm.getResult()
 history = result.getAlgoHistory()
 print("History criterion=", history[:, 0])
@@ -167,12 +173,13 @@ for i in range(nStart):
     design = result.getOptimalDesign(i)
     history = result.getAlgoHistory(i)
     print(
-        "Generating design using linear temperature SimulatedAnnealing & PhiP criterion =", design)
+        "Generating design using linear temperature SimulatedAnnealing & PhiP criterion =",
+        design,
+    )
     print("History criterion=", history[:, 0])
     # print("History temperature=", history[:,1])
     # print("History probability=", history[:,2])
-    print("Final criteria: C2=%f, PhiP=%f" %
-          (result.getC2(i), result.getPhiP(i)))
+    print("Final criteria: C2=%f, PhiP=%f" % (result.getC2(i), result.getPhiP(i)))
 
     # decreasing criterion
     criterionGraph = result.drawHistoryCriterion(i)

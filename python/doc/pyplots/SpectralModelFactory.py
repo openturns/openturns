@@ -1,12 +1,11 @@
 import openturns as ot
-from math import exp
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 # Create the time grid
 # In the context of the spectral estimate or Fourier transform use,
 # we use data blocs with size of form 2^p
-tMin = 0.
+tMin = 0.0
 timeStep = 0.1
 size = pow(2, 12)
 myTimeGrid = ot.RegularGrid(tMin, timeStep, size)
@@ -59,19 +58,26 @@ ind = ot.Indices(2)
 ind.fill()
 
 # Some cosmetics : labels, legend position, ...
-graph = ot.Graph("Spectral model estimation", "Frequency",
-                 "Spectral density function", True, "topright", 1.0, ot.GraphImplementation.LOGY)
+graph = ot.Graph(
+    "Spectral model estimation",
+    "Frequency",
+    "Spectral density function",
+    True,
+    "topright",
+    1.0,
+    ot.GraphImplementation.LOGY,
+)
 
 # The first curve is the estimate density as function of frequency
 curve1 = ot.Curve(plotSample.getMarginal(ind))
-curve1.setColor('blue')
-curve1.setLegend('estimate model')
+curve1.setColor("blue")
+curve1.setLegend("estimate model")
 
 # The second curve is the theoritical density as function of frequency
 ind[1] = 2
 curve2 = ot.Curve(plotSample.getMarginal(ind))
-curve2.setColor('red')
-curve2.setLegend('Cauchy model')
+curve2.setColor("red")
+curve2.setLegend("Cauchy model")
 
 graph.add(curve1)
 graph.add(curve2)

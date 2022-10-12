@@ -97,7 +97,7 @@ Normal NormalFactory::buildAsNormal(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException & ex)
+  catch (const InvalidArgumentException & ex)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Normal distribution from the given parameters" << ex;
   }

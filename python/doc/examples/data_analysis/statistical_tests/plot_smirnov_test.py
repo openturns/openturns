@@ -5,24 +5,30 @@ Test identical distributions
 # %%
 
 # %%
-# In this example we are going to estimate whether two samples follow the same distribution using the two samples Kolmogorov-Smirnov test and the graphical QQ-plot test.
+# In this example we are going to estimate whether two samples follow the same
+# distribution using the two samples Kolmogorov-Smirnov test and the graphical QQ-plot test.
 #
 # The Smirnov test relies on the maximum distance between the cumulative distribution function.
-# If :math:`F_{n_1}^{*}` and :math:`F_{n_2}^{*}` are the empirical cumulative density functions of both samples of size :math:`n_1` and :math:`n_2`, the Smirnov test evaluates the decision variable:
+# If :math:`F_{n_1}^{*}` and :math:`F_{n_2}^{*}` are the empirical cumulative
+# density functions of both samples of size :math:`n_1` and :math:`n_2`,
+# the Smirnov test evaluates the decision variable:
 #
 # .. math::
 #    D^2 = \displaystyle \sqrt{\frac{n_1n_2}{n_1+n_2}} \sup_{x}|F_{n_1}^{*}(x) - F_{n_2}^{*}(x)|
 #
-# which tends towards the Kolmogorov distribution. The hypothesis of same distribution is rejected if :math:`D^2` is too high (depending on the p-value threshold).
+# which tends towards the Kolmogorov distribution.
+# The hypothesis of same distribution is rejected if :math:`D^2` is too high
+# (depending on the p-value threshold).
 #
-# The QQ-plot graph plots empirical quantiles levels from two samples. If both samples correspond to the same probability distribution the curve should be close to the diagonal.
-#
+# The QQ-plot graph plots empirical quantiles levels from two samples.
+# If both samples correspond to the same probability distribution the curve
+# should be close to the diagonal.
 #
 
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -48,13 +54,19 @@ view = viewer.View(graph)
 # %%
 # Numerically test sample1 against sample2
 test_result = ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample2)
-print('Samples follow the same distribution?', test_result.getBinaryQualityMeasure(),
-      'p-value=%.6g' % test_result.getPValue(),
-      'threshold=%.6g' % test_result.getThreshold())
+print(
+    "Samples follow the same distribution?",
+    test_result.getBinaryQualityMeasure(),
+    "p-value=%.6g" % test_result.getPValue(),
+    "threshold=%.6g" % test_result.getThreshold(),
+)
 
 # %%
 # Numerically test sample1 against sample3
 test_result = ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample3)
-print('Samples follow the same distribution?', test_result.getBinaryQualityMeasure(),
-      'p-value=%.6g' % test_result.getPValue(),
-      'threshold=%.6g' % test_result.getThreshold())
+print(
+    "Samples follow the same distribution?",
+    test_result.getBinaryQualityMeasure(),
+    "p-value=%.6g" % test_result.getPValue(),
+    "threshold=%.6g" % test_result.getThreshold(),
+)

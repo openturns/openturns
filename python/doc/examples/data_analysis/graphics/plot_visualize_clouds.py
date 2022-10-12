@@ -10,6 +10,7 @@ Visualize clouds
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -18,16 +19,16 @@ N = 500
 R = ot.CorrelationMatrix(2)
 R[0, 1] = -0.7
 # 2d N(1,1) with correlation
-sample1 = ot.Normal([1.0]*2, [1.0]*2, R).getSample(N)
+sample1 = ot.Normal([1.0] * 2, [1.0] * 2, R).getSample(N)
 sample2 = ot.Normal(2).getSample(N)  # 2d N(0,1) independent
 
 # %%
 # Create cloud drawables
-cloud1 = ot.Cloud(sample1, 'blue', 'fsquare', 'First Cloud')
-cloud2 = ot.Cloud(sample2, 'red', 'fsquare', 'Second Cloud')
+cloud1 = ot.Cloud(sample1, "blue", "fsquare", "First Cloud")
+cloud2 = ot.Cloud(sample2, "red", "fsquare", "Second Cloud")
 
 # Then, assemble it into a graph
-myGraph2d = ot.Graph('2d clouds', 'x1', 'x2', True, 'topright')
+myGraph2d = ot.Graph("2d clouds", "x1", "x2", True, "topright")
 myGraph2d.add(cloud1)
 myGraph2d.add(cloud2)
 view = viewer.View(myGraph2d)
@@ -45,6 +46,6 @@ sample3 = ot.Normal(mean, sigma, R).getSample(N)
 # %%
 # Draw clouds pairs
 graph3 = ot.VisualTest.DrawPairs(sample3)
-graph3.setTitle('3d clouds')
+graph3.setTitle("3d clouds")
 view = viewer.View(graph3)
 plt.show()

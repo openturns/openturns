@@ -392,7 +392,7 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
     // If the solver is single start, we can use its setStartingPoint method
     algorithm_.setStartingPoint(getCandidate());
   }
-  catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+  catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
   {
     LOGWARN(OSS() << "Candidate=" << getCandidate() << " is ignored because algorithm "
             << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");

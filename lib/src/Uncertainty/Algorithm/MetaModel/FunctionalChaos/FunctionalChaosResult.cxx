@@ -51,7 +51,38 @@ FunctionalChaosResult::FunctionalChaosResult()
 
 /* Default constructor */
 FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
-                                             const Sample & outputSample,
+    const Sample & outputSample,
+    const Distribution & distribution,
+    const Function & transformation,
+    const Function & inverseTransformation,
+    const Function & composedModel,
+    const OrthogonalBasis & orthogonalBasis,
+    const Indices & I,
+    const Sample & alpha_k,
+    const FunctionCollection & Psi_k,
+    const Point & residuals,
+    const Point & relativeErrors)
+  : MetaModelResult(inputSample, outputSample, Function(), residuals, relativeErrors)
+  , distribution_(distribution)
+  , transformation_(transformation)
+  , inverseTransformation_(inverseTransformation)
+  , composedModel_(composedModel)
+  , orthogonalBasis_(orthogonalBasis)
+  , I_(I)
+  , alpha_k_(alpha_k)
+  , Psi_k_(Psi_k)
+  , composedMetaModel_()
+{
+  // The composed meta model will be a dual linear combination
+  composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
+  if (transformation.getEvaluation().getImplementation()->getClassName() == "IdentityEvaluation")
+    metaModel_ = composedMetaModel_;
+  else
+    metaModel_ = ComposedFunction(composedMetaModel_, transformation);
+}
+
+/* Default constructor */
+FunctionalChaosResult::FunctionalChaosResult(
     const Function & model,
     const Distribution & distribution,
     const Function & transformation,
@@ -63,7 +94,7 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
     const FunctionCollection & Psi_k,
     const Point & residuals,
     const Point & relativeErrors)
-  : MetaModelResult(inputSample, outputSample, model, Function(), residuals, relativeErrors)
+  : MetaModelResult(Sample(), Sample(), Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)
@@ -74,6 +105,7 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
   , Psi_k_(Psi_k)
   , composedMetaModel_()
 {
+  model_ = model; // deprecated
   // The composed meta model will be a dual linear combination
   composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
   if (transformation.getEvaluation().getImplementation()->getClassName() == "IdentityEvaluation")

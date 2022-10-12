@@ -134,7 +134,7 @@ TriangularComplexMatrix SpectralGaussianProcess::computeCholeskyFactor(const Uns
       continuationCondition = false;
     }
     // If the factorization failed, increase the regularization
-    catch (InternalException &)
+    catch (const InternalException &)
     {
       cumulatedScaling += scaling;
       for (UnsignedInteger  index = 0; index < getOutputDimension(); ++index) spectralDensityMatrix(index, index) += scaling;

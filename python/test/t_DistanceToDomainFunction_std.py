@@ -25,10 +25,10 @@ distance_to_point2 = distance(point2)
 ott.assert_almost_equal(distance_to_point2, ot.Point([0.1]), 1e-12, 0.0)
 
 sample = ot.Sample([point1, point2])
-ott.assert_almost_equal(box.computeDistance(
-    sample), ot.Sample([[0.0], [0.1]]), 1e-12, 0.0)
 ott.assert_almost_equal(
-    distance(sample), ot.Sample([[0.0], [0.1]]), 1e-12, 0.0)
+    box.computeDistance(sample), ot.Sample([[0.0], [0.1]]), 1e-12, 0.0
+)
+ott.assert_almost_equal(distance(sample), ot.Sample([[0.0], [0.1]]), 1e-12, 0.0)
 
 # distance function from a DomainUnion of Intervals
 interval1 = ot.Interval(-0.5, 0.0)  # [-0.5, 0]
@@ -41,14 +41,14 @@ small_union = ot.DomainUnion(interval1, interval2)  # [-0.5, 0] U [0.7, 1.3]
 big_union = ot.DomainUnion(small_union, interval3)
 
 sample_dim1 = ot.Sample([[0.1], [1.4]])
-ott.assert_almost_equal(small_union.computeDistance(
-    sample_dim1), [[0.1]] * 2, 1e-12, 0.0)
-ott.assert_almost_equal(big_union.computeDistance(
-    sample_dim1), [[0.1], [0.0]], 1e-12, 0.0)
+ott.assert_almost_equal(
+    small_union.computeDistance(sample_dim1), [[0.1]] * 2, 1e-12, 0.0
+)
+ott.assert_almost_equal(
+    big_union.computeDistance(sample_dim1), [[0.1], [0.0]], 1e-12, 0.0
+)
 
 distance_to_small_union = ot.DistanceToDomainFunction(small_union)
-ott.assert_almost_equal(distance_to_small_union(
-    sample_dim1), [[0.1]] * 2, 1e-12, 0.0)
+ott.assert_almost_equal(distance_to_small_union(sample_dim1), [[0.1]] * 2, 1e-12, 0.0)
 distance_to_big_union = ot.DistanceToDomainFunction(big_union)
-ott.assert_almost_equal(distance_to_big_union(
-    sample_dim1), [[0.1], [0.0]], 1e-12, 0.0)
+ott.assert_almost_equal(distance_to_big_union(sample_dim1), [[0.1], [0.0]], 1e-12, 0.0)

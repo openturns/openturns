@@ -50,8 +50,8 @@ dim_output = 1  # dimension of the output
 
 
 def function_beam(X):
-    E, F, L, I = X
-    Y = F * L ** 3 / (3 * E * I)
+    E, F, L, II = X
+    Y = F * L**3 / (3 * E * II)
     return [Y]
 
 
@@ -94,8 +94,7 @@ def ComputeSparseLeastSquaresChaos(
         The estimated polynomial chaos.
     """
     selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
-    projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm
-    )
+    projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
     enumfunc = multivariateBasis.getEnumerateFunction()
     P = enumfunc.getStrataCumulatedCardinal(totalDegree)
     adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
@@ -140,8 +139,7 @@ def computeQ2Chaos(chaosResult, inputTest, outputTest):
 # %%
 def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, totalDegree):
     """Print statistics of a chaos."""
-    sparsityRate = computeSparsityRate(
-        multivariateBasis, totalDegree, chaosResult)
+    sparsityRate = computeSparsityRate(multivariateBasis, totalDegree, chaosResult)
     Q2 = computeQ2Chaos(chaosResult, inputTest, outputTest)
     metamodel = chaosResult.getMetaModel()
     val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
@@ -192,9 +190,13 @@ for totalDegree in range(1, maxDegree + 1):
     pl.suptitle("Metamodel validation")
 
 # %%
-# We see that when the degree of the polynomial increases, the Q2 coefficient decreases. We also see that the sparsity rate increases: while the basis size grows rapidly with the degree, the algorithm selects a smaller fraction of this basis. This shows that the algorithm performs its task of selecting relevant coefficients. However, this selection does not seem to be sufficient to mitigate the large number of coefficients.
+# We see that when the degree of the polynomial increases, the Q2 coefficient decreases.
+# We also see that the sparsity rate increases: while the basis size grows rapidly with the degree, the algorithm selects a smaller fraction of this basis.
+# This shows that the algorithm performs its task of selecting relevant coefficients.
+# However, this selection does not seem to be sufficient to mitigate the large number of coefficients.
 #
-# Of course, this example is designed to make a predictivity decrease gradually. We are going to see that this situation is actually easy to reproduce.
+# Of course, this example is designed to make a predictivity decrease gradually.
+# We are going to see that this situation is actually easy to reproduce.
 
 # %%
 # Distribution of the predictivity coefficient
@@ -235,7 +237,7 @@ def computeSampleQ2(N, n_valid, numberAttempts, maxDegree):
 # %%
 def plotQ2Boxplots(Q2sample, N):
     data = np.array(Q2sample)
-    fig = pl.figure()
+    pl.figure()
     pl.boxplot(data)
     pl.title("N=%d" % (N))
     pl.xlabel("Degree")
@@ -279,7 +281,14 @@ pl.show()
 # Conclusion
 # ----------
 #
-# We observe that on the cantilever beam example, to use a polynomial total degree equal to 4, we need a sample size at least equal to 50 to get a satisfactory and reproducible Q2. When the degree is equal to 4, if the sample is small, then depending on the particular sample, the predictivity coefficient can be very low (i.e. less than 0.5). With a sample size as small as 20, a polynomial degree of 1 is safer. However the limited sample size may have an impact on other statistics that could be derived from a metamodel calculated on such a small training sample.
+# We observe that on the cantilever beam example, to use a polynomial total
+# degree equal to 4, we need a sample size at least equal to 50 to get a
+# satisfactory and reproducible Q2.
+# When the degree is equal to 4, if the sample is small, then depending on the
+# particular sample, the predictivity coefficient can be very low (i.e. less than 0.5).
+# With a sample size as small as 20, a polynomial degree of 1 is safer.
+# However the limited sample size may have an impact on other statistics that
+# could be derived from a metamodel calculated on such a small training sample.
 #
 # References
 # ----------

@@ -12,15 +12,11 @@ myTemporalFunc = ot.VertexValueFunction(myFunc, tg)
 
 print("myTemporalFunc=", myTemporalFunc)
 # Get the input and output description
-print("myTemporalFunc input description=",
-      myTemporalFunc.getInputDescription())
-print("myTemporalFunc output description=",
-      myTemporalFunc.getOutputDescription())
+print("myTemporalFunc input description=", myTemporalFunc.getInputDescription())
+print("myTemporalFunc output description=", myTemporalFunc.getOutputDescription())
 # Get the input and output dimension, based on description
-print("myTemporalFunc input dimension=",
-      myTemporalFunc.getInputDimension())
-print("myTemporalFunc output dimension=",
-      myTemporalFunc.getOutputDimension())
+print("myTemporalFunc input dimension=", myTemporalFunc.getInputDimension())
+print("myTemporalFunc output dimension=", myTemporalFunc.getOutputDimension())
 # Create a TimeSeries
 data = ot.Sample(tg.getN(), myFunc.getInputDimension() - 1)
 for i in range(data.getSize()):

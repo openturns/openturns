@@ -16,6 +16,7 @@ in addition to a scalar correlation function :math:`\\rho`.
 import openturns as ot
 import openturns.viewer as viewer
 from numpy import square
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%

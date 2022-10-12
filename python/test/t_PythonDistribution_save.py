@@ -6,21 +6,20 @@ ot.TESTPREAMBLE()
 
 
 class UniformNdPy(ot.PythonDistribution):
-
     def __init__(self, a=[-1.0], b=[1.0]):
         # https://github.com/uqfoundation/dill/issues/300
-        #super(UniformNdPy, self).__init__(len(a))
+        # super(UniformNdPy, self).__init__(len(a))
         ot.PythonDistribution.__init__(self, len(a))
         if len(a) != len(b):
-            raise ValueError('Invalid bounds')
+            raise ValueError("Invalid bounds")
         for i in range(len(a)):
             if a[i] > b[i]:
-                raise ValueError('Invalid bounds')
+                raise ValueError("Invalid bounds")
         self.a = a
         self.b = b
         self.factor = 1.0
         for i in range(len(a)):
-            self.factor *= (b[i] - a[i])
+            self.factor *= b[i] - a[i]
 
     def getRange(self):
         return ot.Interval(self.a, self.b, [True] * len(self.a), [True] * len(self.a))
@@ -29,7 +28,8 @@ class UniformNdPy(ot.PythonDistribution):
         X = []
         for i in range(len(self.a)):
             X.append(
-                self.a[i] + (self.b[i] - self.a[i]) * ot.RandomGenerator.Generate())
+                self.a[i] + (self.b[i] - self.a[i]) * ot.RandomGenerator.Generate()
+            )
         return X
 
     def getSample(self, size):
@@ -43,7 +43,7 @@ class UniformNdPy(ot.PythonDistribution):
         for i in range(len(self.a)):
             if X[i] < self.a[i]:
                 return 0.0
-            prod *= (min(self.b[i], X[i]) - self.a[i])
+            prod *= min(self.b[i], X[i]) - self.a[i]
         return prod / self.factor
 
     def computePDF(self, X):
@@ -68,6 +68,6 @@ print(d.computeCDF([0.5]))
 
 # save
 study = ot.Study()
-study.setStorageManager(ot.XMLStorageManager('pyd.xml'))
-study.add('d', d)
+study.setStorageManager(ot.XMLStorageManager("pyd.xml"))
+study.add("d", d)
 study.save()

@@ -16,13 +16,15 @@ def test_solver(solver):
     def test_f1(x):
         y = exp(x[0]) - 1.9151695967140057e-174
         return [y]
+
     f1 = ot.PythonFunction(1, 1, test_f1)
     root = solver.solve(f1, 0.0, -450.0, -350.0)
     ott.assert_almost_equal(root, -400.0, relEps, absEps)
 
     def test_f2(x):
-        y = exp(x[0]) - 5.221469689764144e+173
+        y = exp(x[0]) - 5.221469689764144e173
         return [y]
+
     f2 = ot.PythonFunction(1, 1, test_f2)
     root = solver.solve(f2, 0.0, 350.0, 450.0)
     ott.assert_almost_equal(root, 400.0, relEps, absEps)

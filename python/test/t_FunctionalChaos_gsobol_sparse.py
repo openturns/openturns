@@ -29,9 +29,16 @@ formula[0] = "1.0"
 for i in range(dimension):
     covTh = covTh * (1.0 + 1.0 / (3.0 * (1.0 + a[i]) ** 2))
     inputVariables[i] = "xi" + str(i)
-    formula[0] = formula[0] + \
-        " * ((abs(4.0 * xi" + str(i) + " - 2.0) + " + \
-        str(a[i]) + ") / (1.0 + " + str(a[i]) + "))"
+    formula[0] = (
+        formula[0]
+        + " * ((abs(4.0 * xi"
+        + str(i)
+        + " - 2.0) + "
+        + str(a[i])
+        + ") / (1.0 + "
+        + str(a[i])
+        + "))"
+    )
 covTh = covTh - 1.0
 
 model = ot.SymbolicFunction(inputVariables, formula)
@@ -43,7 +50,8 @@ distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension)
 q = 0.4
 enumerateFunction = ot.HyperbolicAnisotropicEnumerateFunction(dimension, q)
 productBasis = ot.OrthogonalProductPolynomialFactory(
-    [ot.LegendreFactory()] * dimension, enumerateFunction)
+    [ot.LegendreFactory()] * dimension, enumerateFunction
+)
 
 # design experiment
 samplingSize = 75
@@ -58,13 +66,18 @@ listFittingAlgorithm.append(ot.CorrectedLeaveOneOut())
 for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
     fittingAlgorithm = listFittingAlgorithm[fittingAlgorithmIndex]
     adaptiveStrategy = ot.FixedStrategy(productBasis, basisSize)
-    projectionStrategy = ot.LeastSquaresStrategy(ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), fittingAlgorithm))
-    experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, samplingSize)
+    projectionStrategy = ot.LeastSquaresStrategy(
+        ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), fittingAlgorithm)
+    )
+    experiment = ot.LowDiscrepancyExperiment(
+        ot.SobolSequence(), distribution, samplingSize
+    )
     ot.RandomGenerator.SetSeed(0)
     X = experiment.generate()
     Y = model(X)
     algo = ot.FunctionalChaosAlgorithm(
-        X, Y, distribution, adaptiveStrategy, projectionStrategy)
+        X, Y, distribution, adaptiveStrategy, projectionStrategy
+    )
     algo.run()
 
     result = algo.getResult()

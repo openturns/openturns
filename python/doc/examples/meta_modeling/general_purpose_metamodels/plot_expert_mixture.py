@@ -39,9 +39,8 @@ Mixture of experts
 import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
-from openturns.viewer import View
 import numpy as np
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -56,7 +55,11 @@ def piecewise(X):
     # else:
     #     f = 2.0-x**2
     xarray = np.array(X, copy=False)
-    return np.piecewise(xarray, [xarray < 0, xarray >= 0], [lambda x: x*(x+1.5), lambda x: 2.0 - x*x])
+    return np.piecewise(
+        xarray,
+        [xarray < 0, xarray >= 0],
+        [lambda x: x * (x + 1.5), lambda x: 2.0 - x * x],
+    )
 
 
 f = ot.PythonFunction(1, 1, func_sample=piecewise)
@@ -67,9 +70,11 @@ degree = 5
 samplingSize = 100
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
 productBasis = ot.OrthogonalProductPolynomialFactory(
-    [ot.LegendreFactory()] * dimension, enumerateFunction)
+    [ot.LegendreFactory()] * dimension, enumerateFunction
+)
 adaptiveStrategy = ot.FixedStrategy(
-    productBasis, enumerateFunction.getStrataCumulatedCardinal(degree))
+    productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)
+)
 
 # %%
 # Segment 1: (-1.0; 0.0)
@@ -96,9 +101,9 @@ view = viewer.View(graph)
 # %%
 # Define the mixture
 R = ot.CorrelationMatrix(2)
-d1 = ot.Normal([-1.0, -1.0], [1.0]*2, R)  # segment 1
-d2 = ot.Normal([1.0, 1.0], [1.0]*2, R)  # segment 2
-weights = [1.0]*2
+d1 = ot.Normal([-1.0, -1.0], [1.0] * 2, R)  # segment 1
+d2 = ot.Normal([1.0, 1.0], [1.0] * 2, R)  # segment 2
+weights = [1.0] * 2
 atoms = [d1, d2]
 mixture = ot.Mixture(atoms, weights)
 

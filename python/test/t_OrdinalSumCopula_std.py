@@ -41,7 +41,7 @@ ot.PlatformInfo.SetNumericalPrecision(precision)
 
 # Define a point
 dim = copula.getDimension()
-point = [0.6]*dim
+point = [0.6] * dim
 print("Point= ", point)
 
 # Show PDF and CDF of point
@@ -57,38 +57,45 @@ print("Survival      =%.5f" % Survival)
 print("Survival (ref)=%.5f" % copula.computeSurvivalFunction(point))
 InverseSurvival = copula.computeInverseSurvivalFunction(0.95)
 print("Inverse survival=", InverseSurvival)
-print("Survival(inverse survival)=%.5f" %
-      copula.computeSurvivalFunction(InverseSurvival))
+print(
+    "Survival(inverse survival)=%.5f" % copula.computeSurvivalFunction(InverseSurvival)
+)
 # Get 50% quantile
 quantile = copula.computeQuantile(0.5)
 print("Quantile=", quantile)
 print("CDF(quantile)=", copula.computeCDF(quantile))
 
-if (dim <= 2):
+if dim <= 2:
     # Confidence regions
     interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(
-        0.95)
+        0.95
+    )
     print("Minimum volume interval=", interval)
     print("threshold=%.5f" % threshold)
     levelSet, beta = copula.computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)
     print("beta=%.5f" % beta)
     interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(
-        0.95)
+        0.95
+    )
     print("Bilateral confidence interval=", interval)
     print("beta=%.5f" % beta)
     interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
-        0.95, False)
+        0.95, False
+    )
     print("Unilateral confidence interval (lower tail)=", interval)
     print("beta=%.5f" % beta)
     interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
-        0.95, True)
+        0.95, True
+    )
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=%.5f" % beta)
 
     print("entropy=%.5f" % copula.computeEntropy())
-    print("entropy (MC)=%.5f" % -
-          copula.computeLogPDF(copula.getSample(1000000)).computeMean()[0])
+    print(
+        "entropy (MC)=%.5f"
+        % -copula.computeLogPDF(copula.getSample(1000000)).computeMean()[0]
+    )
 mean = copula.getMean()
 print("mean=", mean)
 precision = ot.PlatformInfo.GetNumericalPrecision()
@@ -106,14 +113,17 @@ ot.PlatformInfo.SetNumericalPrecision(precision)
 parameters = copula.getParametersCollection()
 print("parameters=", parameters)
 x = 0.6
-y = [0.2]*(dim-1)
+y = [0.2] * (dim - 1)
 print("conditional PDF=%.6f" % copula.computeConditionalPDF(x, y))
 print("conditional CDF=%.6f" % copula.computeConditionalCDF(x, y))
 print("conditional quantile=%.6f" % copula.computeConditionalQuantile(x, y))
 pt = ot.Point([0.1 * i + 0.05 for i in range(dim)])
-print("sequential conditional PDF=",
-      copula.computeSequentialConditionalPDF(point))
+print("sequential conditional PDF=", copula.computeSequentialConditionalPDF(point))
 resCDF = copula.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
-print("sequential conditional quantile(", resCDF, ")=",
-      copula.computeSequentialConditionalQuantile(resCDF))
+print(
+    "sequential conditional quantile(",
+    resCDF,
+    ")=",
+    copula.computeSequentialConditionalQuantile(resCDF),
+)

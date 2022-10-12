@@ -19,6 +19,7 @@ Create a polynomial chaos metamodel by integration on the cantilever beam
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as otv
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -31,7 +32,7 @@ cb = cantilever_beam.CantileverBeam()
 dist_E = cb.E
 dist_F = cb.F
 dist_L = cb.L
-dist_I = cb.I
+dist_I = cb.II
 distribution = cb.independentDistribution
 
 # %%
@@ -48,7 +49,8 @@ g = cb.model
 # We create the multivariate polynomial basis by tensorization of the
 # univariate polynomials and the default linear enumerate rule.
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    [dist_E, dist_F, dist_L, dist_I])
+    [dist_E, dist_F, dist_L, dist_I]
+)
 
 # %%
 # In this case, we select `P` using the
@@ -87,8 +89,9 @@ projectionStrategy = ot.IntegrationStrategy()
 
 # %%
 # We can now create the functional chaos.
-algo = ot.FunctionalChaosAlgorithm(X, W, Y, distribution,
-                                   adaptiveStrategy, projectionStrategy)
+algo = ot.FunctionalChaosAlgorithm(
+    X, W, Y, distribution, adaptiveStrategy, projectionStrategy
+)
 algo.run()
 
 # %%
@@ -132,7 +135,8 @@ view = otv.View(graph)
 def draw_validation(experiment):
     projectionStrategy = ot.IntegrationStrategy(experiment)
     algo = ot.FunctionalChaosAlgorithm(
-        g, distribution, adaptiveStrategy, projectionStrategy)
+        g, distribution, adaptiveStrategy, projectionStrategy
+    )
     algo.run()
     result = algo.getResult()
     metamodel = result.getMetaModel()
@@ -141,7 +145,9 @@ def draw_validation(experiment):
     val = ot.MetaModelValidation(X_test, Y_test, metamodel)
     Q2 = val.computePredictivityFactor()[0]
     graph = val.drawValidation()
-    graph.setTitle(f"{experiment.__class__.__name__} - N={experiment.getSize()} - Q2={Q2*100:.2f}")
+    graph.setTitle(
+        f"{experiment.__class__.__name__} - N={experiment.getSize()} - Q2={Q2*100:.2f}"
+    )
     return graph
 
 

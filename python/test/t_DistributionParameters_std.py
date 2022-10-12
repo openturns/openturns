@@ -18,19 +18,19 @@ distParams.append(ot.WeibullMinMuSigma(1.3, 1.23, -0.5))
 
 for distParam in distParams:
 
-    print('Distribution Parameters ', repr(distParam))
-    print('Distribution Parameters ', distParam)
+    print("Distribution Parameters ", repr(distParam))
+    print("Distribution Parameters ", distParam)
 
     p = distParam.getValues()
     desc = distParam.getDescription()
-    print('p=', p, desc)
+    print("p=", p, desc)
     p_native = distParam.evaluate()
-    print('native=', p_native)
+    print("native=", p_native)
     p_roundtrip = distParam.inverse(p_native)
-    print('roundtrip=', p_roundtrip)
+    print("roundtrip=", p_roundtrip)
     ott.assert_almost_equal(p_roundtrip, p)
     dist = distParam.getDistribution()
-    print('built dist=', dist)
+    print("built dist=", dist)
     assert dist.getParameter() == p_native
 
     # derivative of the native parameters with regards the parameters of the
@@ -49,7 +49,6 @@ for distParam in distParams:
             xp[i] += eps
             xm = list(p)
             xm[i] -= eps
-            grad_fd[i, j] = 0.5 * \
-                (distParam(xp)[j] - distParam(xm)[j]) / eps
+            grad_fd[i, j] = 0.5 * (distParam(xp)[j] - distParam(xm)[j]) / eps
     print(grad_fd)
     ott.assert_almost_equal(grad, grad_fd)

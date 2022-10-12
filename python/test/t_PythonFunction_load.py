@@ -9,11 +9,11 @@ f = ot.Function()
 
 # load
 study = ot.Study()
-study.setStorageManager(ot.XMLStorageManager('pyf.xml'))
+study.setStorageManager(ot.XMLStorageManager("pyf.xml"))
 study.load()
-study.fillObject('f', f)
+study.fillObject("f", f)
 
 x = [4, 5]
 print(f(x))
 
-os.remove('pyf.xml')
+os.remove("pyf.xml")

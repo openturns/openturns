@@ -24,9 +24,9 @@ Create a process from random vectors and processes
 # First, import the python modules:
 
 # %%
-from openturns import *
+import openturns as ot
 from openturns.viewer import View
-from math import *
+import math as m
 
 # %%
 # 1. Create the gaussian process :math:`(\omega, t) \rightarrow S(\omega,t)`
@@ -40,8 +40,8 @@ b = 0.01
 t0 = 0.0
 step = 1
 tfin = 50
-n = round((tfin-t0)/step)
-myMesh = RegularGrid(t0, step, n)
+n = round((tfin - t0) / step)
+myMesh = ot.RegularGrid(t0, step, n)
 
 # %%
 # Create the squared exeponential covariance model:
@@ -53,15 +53,15 @@ myMesh = RegularGrid(t0, step, n)
 #
 
 # %%
-l = 10/sqrt(2)
-myCovKernel = SquaredExponential([l])
-print('cov model = ', myCovKernel)
+ll = 10 / m.sqrt(2)
+myCovKernel = ot.SquaredExponential([ll])
+print("cov model = ", myCovKernel)
 
 # %%
 # Create the gaussian process :math:`S(t)`:
 
 # %%
-S_proc = GaussianProcess(myCovKernel, myMesh)
+S_proc = ot.GaussianProcess(myCovKernel, myMesh)
 
 
 # %%
@@ -74,13 +74,13 @@ S_proc = GaussianProcess(myCovKernel, myMesh)
 # %%
 muR = 5
 sigR = 0.3
-R = Normal(muR, sigR)
+R = ot.Normal(muR, sigR)
 
 # %%
 # The create the Dirac random variable :math:`B = b`:
 
 # %%
-B = Dirac(b)
+B = ot.Dirac(b)
 
 # %%
 # Then create the process :math:`(\omega, t) \rightarrow R(\omega)-bt` using the :math:`FunctionalBasisProcess` class and the functional basis :math:`\phi_1 : t \rightarrow 1` and :math:`\phi_2: -t \rightarrow t` :
@@ -91,13 +91,13 @@ B = Dirac(b)
 # with :math:`(R,B)` independent.
 
 # %%
-const_func = SymbolicFunction(['t'], ['1'])
-linear_func = SymbolicFunction(['t'], ['-t'])
-myBasis = Basis([const_func, linear_func])
+const_func = ot.SymbolicFunction(["t"], ["1"])
+linear_func = ot.SymbolicFunction(["t"], ["-t"])
+myBasis = ot.Basis([const_func, linear_func])
 
-coef = ComposedDistribution([R, B])
+coef = ot.ComposedDistribution([R, B])
 
-R_proc = FunctionalBasisProcess(coef, myBasis, myMesh)
+R_proc = ot.FunctionalBasisProcess(coef, myBasis, myMesh)
 
 # %%
 # 3. Create the process :math:`Z: (\omega, t) \rightarrow R(\omega)-bt + S(\omega, t)`
@@ -107,7 +107,7 @@ R_proc = FunctionalBasisProcess(coef, myBasis, myMesh)
 # First, aggregate both processes into one process of dimension 2: :math:`(R_{proc}, S_{proc})`
 
 # %%
-myRS_proc = AggregatedProcess([R_proc, S_proc])
+myRS_proc = ot.AggregatedProcess([R_proc, S_proc])
 
 # %%
 # Then create the spatial field function that acts only on the values of the process, keeping the mesh unchanged, using the *ValueFunction* class.
@@ -123,14 +123,14 @@ myRS_proc = AggregatedProcess([R_proc, S_proc])
 #
 
 # %%
-g = SymbolicFunction(['x1', 'x2'], ['x1-x2'])
-gDyn = ValueFunction(g, myMesh)
+g = ot.SymbolicFunction(["x1", "x2"], ["x1-x2"])
+gDyn = ot.ValueFunction(g, myMesh)
 
 # %%
 # Now you have to create the final process :math:`Z` thanks to :math:`g_{dyn}`:
 
 # %%
-Z_proc = CompositeProcess(gDyn, myRS_proc)
+Z_proc = ot.CompositeProcess(gDyn, myRS_proc)
 
 # %%
 # 4. Draw some realizations of the process
@@ -140,7 +140,7 @@ Z_proc = CompositeProcess(gDyn, myRS_proc)
 N = 10
 sampleZ_proc = Z_proc.getSample(N)
 graph = sampleZ_proc.drawMarginal(0)
-graph.setTitle(r'Some realizations of $Z(\omega, t)$')
+graph.setTitle(r"Some realizations of $Z(\omega, t)$")
 view = View(graph)
 
 # %%
@@ -151,15 +151,15 @@ view = View(graph)
 # We define the domaine :math:`\mathcal{D} = [2,4]` and the event :math:`Z(\omega, t) \in \mathcal{D}`:
 
 # %%
-domain = Interval([2], [4])
-print('D = ', domain)
-event = ProcessEvent(Z_proc, domain)
+domain = ot.Interval([2], [4])
+print("D = ", domain)
+event = ot.ProcessEvent(Z_proc, domain)
 
 # %%
 # We use the Monte Carlo sampling to evaluate the probability:
 
 # %%
-MC_algo = ProbabilitySimulationAlgorithm(event)
+MC_algo = ot.ProbabilitySimulationAlgorithm(event)
 MC_algo.setMaximumOuterSampling(1000000)
 MC_algo.setBlockSize(100)
 MC_algo.setMaximumCoefficientOfVariation(0.01)
@@ -168,10 +168,10 @@ MC_algo.run()
 result = MC_algo.getResult()
 
 proba = result.getProbabilityEstimate()
-print('Probability = ', proba)
+print("Probability = ", proba)
 variance = result.getVarianceEstimate()
-print('Variance Estimate = ', variance)
-IC90_low = proba - result.getConfidenceLength(0.90)/2
-IC90_upp = proba + result.getConfidenceLength(0.90)/2
-print('IC (90%) = [', IC90_low, ', ', IC90_upp, ']')
+print("Variance Estimate = ", variance)
+IC90_low = proba - result.getConfidenceLength(0.90) / 2
+IC90_upp = proba + result.getConfidenceLength(0.90) / 2
+print("IC (90%) = [", IC90_low, ", ", IC90_upp, "]")
 view.ShowAll()

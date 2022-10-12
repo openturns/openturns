@@ -238,7 +238,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
       {
         return buildMethodOfLocalLikelihoodMaximization(sample);
       }
-      catch (InvalidArgumentException & ex)
+      catch (const InvalidArgumentException & ex)
       {
         // We switch to the moment estimate
         LOGWARN(OSS() << ex.what());
@@ -250,7 +250,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
       {
         return buildMethodOfModifiedMoments(sample);
       }
-      catch (InvalidArgumentException & ex)
+      catch (const InvalidArgumentException & ex)
       {
         // We switch to the moment estimate
         LOGWARN(OSS() << ex.what());
@@ -276,7 +276,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution from the given parameters";
   }

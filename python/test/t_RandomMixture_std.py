@@ -59,8 +59,16 @@ for testIndex in range(len(testCases)):
     print("ddf (ref)=", distributionReference.computeDDF(point))
     PDF = distribution.computePDF(point)
     print("pdf      =%.6f" % PDF)
-    print("pdf  (FD)=%.6f" % ((distribution.computeCDF(point + ot.Point(1, eps)) -
-                               distribution.computeCDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
+    print(
+        "pdf  (FD)=%.6f"
+        % (
+            (
+                distribution.computeCDF(point + ot.Point(1, eps))
+                - distribution.computeCDF(point + ot.Point(1, -eps))
+            )
+            / (2.0 * eps)
+        )
+    )
     print("pdf (ref)=%.6f" % distributionReference.computePDF(point))
     CDF = distribution.computeCDF(point)
     print("cdf      =%.6f" % CDF)
@@ -68,48 +76,60 @@ for testIndex in range(len(testCases)):
     CF = distribution.computeCharacteristicFunction(point[0])
     print("characteristic function=%.6f + %.6fi" % (CF.real, CF.imag))
     LCF = distribution.computeLogCharacteristicFunction(point[0])
-    print("log characteristic function=%.6f + %.6fi" %
-          (LCF.real, LCF.imag))
+    print("log characteristic function=%.6f + %.6fi" % (LCF.real, LCF.imag))
     quantile = distribution.computeQuantile(0.95)
     print("quantile      =", quantile)
     print("quantile (ref)=", distributionReference.computeQuantile(0.95))
     print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
     quantileComp = distribution.computeQuantile(0.95, True)
     print("quantile comp.=", quantileComp)
-    print("cdfComp(quantileComp)=%.6f" %
-          distribution.computeComplementaryCDF(quantileComp))
+    print(
+        "cdfComp(quantileComp)=%.6f"
+        % distribution.computeComplementaryCDF(quantileComp)
+    )
     # Get 95% survival function
-    inverseSurvival = ot.Point(
-        distribution.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" %
-          distribution.computeSurvivalFunction(inverseSurvival))
+    print(
+        "Survival(inverseSurvival)=%.6f"
+        % distribution.computeSurvivalFunction(inverseSurvival)
+    )
     # Entropy: too expansive for now...
     if False:
         print("entropy=%.6f" % distribution.computeEntropy())
 
     # Confidence regions: too expansive for now...
     if False:
-        print("dimension=", distribution.getDimension(),
-              "test case=", testIndex)
-        interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
-            0.95)
+        print("dimension=", distribution.getDimension(), "test case=", testIndex)
+        (
+            interval,
+            threshold,
+        ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
         print("Minimum volume interval=", interval)
         print("threshold=", ot.Point(1, threshold))
-        levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
-            0.95)
+        levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
         print("Minimum volume level set=", levelSet)
         print("beta=", ot.Point(1, beta))
-        interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
-            0.95)
+        (
+            interval,
+            beta,
+        ) = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
         print("Bilateral confidence interval=", interval)
         print("beta=", ot.Point(1, beta))
-        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-            0.95, False)
+        (
+            interval,
+            beta,
+        ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, False
+        )
         print("Unilateral confidence interval (lower tail)=", interval)
         print("beta=", ot.Point(1, beta))
-        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-            0.95, True)
+        (
+            interval,
+            beta,
+        ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, True
+        )
         print("Unilateral confidence interval (upper tail)=", interval)
         print("beta=", ot.Point(1, beta))
 
@@ -118,8 +138,7 @@ for testIndex in range(len(testCases)):
     print("mean (ref)=", distributionReference.getMean())
     standardDeviation = distribution.getStandardDeviation()
     print("standard deviation      =", standardDeviation)
-    print("standard deviation (ref)=",
-          distributionReference.getStandardDeviation())
+    print("standard deviation (ref)=", distributionReference.getStandardDeviation())
     skewness = distribution.getSkewness()
     print("skewness      =", skewness)
     print("skewness (ref)=", distributionReference.getSkewness())
@@ -131,8 +150,7 @@ for testIndex in range(len(testCases)):
     print("covariance (ref)=", distributionReference.getCovariance())
     parameters = distribution.getParametersCollection()
     print("parameters=", parameters)
-    print("Standard representative=",
-          distribution.getStandardRepresentative())
+    print("Standard representative=", distribution.getStandardRepresentative())
     print("blockMin=", distribution.getBlockMin())
     print("blockMax=", distribution.getBlockMax())
     print("maxSize=", distribution.getMaxSize())
@@ -168,8 +186,13 @@ for i in range(10):
     print("pdf( %.6f )=%.6f" % (x, distribution.computePDF(x)))
 
 # Tests of the projection mechanism
-collFactories = [ot.UniformFactory(), ot.NormalFactory(
-), ot.TriangularFactory(), ot.ExponentialFactory(), ot.GammaFactory()]
+collFactories = [
+    ot.UniformFactory(),
+    ot.NormalFactory(),
+    ot.TriangularFactory(),
+    ot.ExponentialFactory(),
+    ot.GammaFactory(),
+]
 # , TrapezoidalFactory()
 result, norms = distribution.project(collFactories)
 print("projections=", result)
@@ -190,7 +213,7 @@ weightMatrix[1, 2] = -3.0
 distribution2D = ot.RandomMixture(collection, weightMatrix)
 print("distribution = ", distribution2D)
 print("range = ", distribution2D.getRange())
-print("mean = ",  distribution2D.getMean())
+print("mean = ", distribution2D.getMean())
 print("cov = ", distribution2D.getCovariance())
 print("sigma = ", distribution2D.getStandardDeviation())
 distribution2D.setBlockMin(3)
@@ -220,12 +243,11 @@ for index in range(grid.getSize()):
     point = grid[index]
     PDF = distribution2D.computePDF(point)
     # Very small values are not very accurate on x86, skip them
-    if (PDF < 1.e-12):
+    if PDF < 1.0e-12:
         continue
     print("pdf      = %.6g" % PDF)
     x, y = tuple(point)
-    pdf_ref = factor * \
-        exp(-3.0 / 50.0 * y * y - 2.0 / 25 * x * y - 11.0 / 100 * x * x)
+    pdf_ref = factor * exp(-3.0 / 50.0 * y * y - 2.0 / 25 * x * y - 11.0 / 100 * x * x)
     print("pdf (ref)= %.6g" % pdf_ref)
 
 # 2D test, but too much CPU consuming
@@ -237,7 +259,7 @@ dist_2D.setBlockMax(8)
 
 print("new distribution = ", dist_2D)
 print("range = ", dist_2D.getRange())
-print("mean = ",  dist_2D.getMean())
+print("mean = ", dist_2D.getMean())
 print("cov = ", dist_2D.getCovariance())
 print("sigma = ", dist_2D.getStandardDeviation())
 
@@ -257,15 +279,14 @@ for index in range(newGrid.getSize()):
 ot.ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 8290688)
 mixture = ot.Mixture([ot.Normal(2, 1), ot.Normal(-2, 1)])
 collection = [ot.Normal(0.0, 1.0), mixture, ot.Uniform(0, 1), ot.Uniform(0, 1)]
-matrix = ot.Matrix(
-    [[1, -0.05, 1, -0.5], [0.5, 1, -0.05, 0.3], [-0.5, -0.1, 1.2, -0.8]])
+matrix = ot.Matrix([[1, -0.05, 1, -0.5], [0.5, 1, -0.05, 0.3], [-0.5, -0.1, 1.2, -0.8]])
 dist_3D = ot.RandomMixture(collection, matrix)
 dist_3D.setBlockMin(3)
 dist_3D.setBlockMax(6)
 
 print("3D distribution = ", dist_3D)
 print("range = ", dist_3D.getRange())
-print("mean = ",  dist_3D.getMean())
+print("mean = ", dist_3D.getMean())
 print("cov = ", dist_3D.getCovariance())
 print("sigma = ", dist_3D.getStandardDeviation())
 # Total number of points (is (2+2)**3)
@@ -314,13 +335,13 @@ print("sum=", sum)
 print("CDF=%.6g" % sum.computeCDF(2.0))
 print("quantile=", sum.computeQuantile(0.2))
 # For ticket 1129
-dist = ot.RandomMixture([ot.Uniform()]*200)
+dist = ot.RandomMixture([ot.Uniform()] * 200)
 print("CDF(0)=%.5g" % dist.computeCDF([0]))
 
 # check parameter accessors
 dist = ot.Gumbel() + ot.Normal(0, 0.1)
-print('before', dist)
+print("before", dist)
 p = [1849.41, -133.6, -133.6, 359.172]
 dist.setParameter(p)
 assert p == dist.getParameter(), "wrong parameters"
-print('after ', dist)
+print("after ", dist)

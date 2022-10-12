@@ -87,7 +87,7 @@ Arcsine ArcsineFactory::buildAsArcsine(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Arcsine distribution from the given parameters";
   }

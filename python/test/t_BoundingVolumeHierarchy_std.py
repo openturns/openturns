@@ -22,30 +22,41 @@ for dim in [1, 2, 3]:
     print("bvh=", bvh)
 
     ot.RandomGenerator.SetSeed(0)
-    test = ot.ComposedDistribution(
-        [ot.Uniform(-1.0, 11.0)] * dim).getSample(100)
+    test = ot.ComposedDistribution([ot.Uniform(-1.0, 11.0)] * dim).getSample(100)
 
     for i, vertex in enumerate(test):
         index = bvh.query(vertex)
         if index >= nrSimplices:
             print(i, "is outside")
         else:
-            found, coordinates = mesh.checkPointInSimplexWithCoordinates(
-                vertex, index)
+            found, coordinates = mesh.checkPointInSimplexWithCoordinates(vertex, index)
             if not found:
-                print("Wrong simplex found for", vertex,
-                      "(index=", index, simplices[index], "barycentric coordinates=", coordinates)
+                print(
+                    "Wrong simplex found for",
+                    vertex,
+                    "(index=",
+                    index,
+                    simplices[index],
+                    "barycentric coordinates=",
+                    coordinates,
+                )
 
     indices = bvh.query(test)
     for i, index in enumerate(indices):
         if index >= nrSimplices:
             print(i, "is outside")
         else:
-            found, coordinates = mesh.checkPointInSimplexWithCoordinates(
-                test[i], index)
+            found, coordinates = mesh.checkPointInSimplexWithCoordinates(test[i], index)
             if not found:
-                print("Wrong simplex found for", test[
-                      i], "(index=", index, simplices[index], "barycentric coordinates=", coordinates)
+                print(
+                    "Wrong simplex found for",
+                    test[i],
+                    "(index=",
+                    index,
+                    simplices[index],
+                    "barycentric coordinates=",
+                    coordinates,
+                )
 
 # segfault with 1 simplex
 mesh = ot.Mesh([[0.0, 0.0], [1.0, 0.0], [0.5, 1.0]], [[0, 1, 2]])

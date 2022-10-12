@@ -10,6 +10,7 @@ Optimization using bonmin
 # interface.
 # %%
 import openturns as ot
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -59,20 +60,24 @@ for algo in ot.Bonmin.GetAlgorithmNames():
 
 # %%
 # Definition of objective function
-objectiveFunction = ot.SymbolicFunction(
-    ['x0', 'x1', 'x2', 'x3'], ['-x0 -x1 -x2'])
+objectiveFunction = ot.SymbolicFunction(["x0", "x1", "x2", "x3"], ["-x0 -x1 -x2"])
 
 # Definition of variables bounds
-bounds = ot.Interval([0, 0, 0, 0], [1, 1e99, 1e99, 5], [
-                     True, True, True, True], [True, False, False, True])
+bounds = ot.Interval(
+    [0, 0, 0, 0],
+    [1, 1e99, 1e99, 5],
+    [True, True, True, True],
+    [True, False, False, True],
+)
 
 # Definition of constraints
 # Constraints in OpenTURNS are defined as g(x) = 0 and h(x) >= 0
 #    No equality constraint -> nothing to do
 #    Inequality constraints:
-h = ot.SymbolicFunction(['x0', 'x1', 'x2', 'x3'], [
-                        '-(x1-0.5)^2 - (x2-0.5)^2 + 0.25',
-                        'x1 - x0', '-x0 - x2 - x3 + 2'])
+h = ot.SymbolicFunction(
+    ["x0", "x1", "x2", "x3"],
+    ["-(x1-0.5)^2 - (x2-0.5)^2 + 0.25", "x1 - x0", "-x0 - x2 - x3 + 2"],
+)
 
 # Definition of variables types
 CONTINUOUS = ot.OptimizationProblemImplementation.CONTINUOUS
@@ -86,13 +91,13 @@ problem.setBounds(bounds)
 problem.setVariablesType(variablesType)
 problem.setInequalityConstraint(h)
 
-bonminAlgorithm = ot.Bonmin(problem, 'B-BB')
+bonminAlgorithm = ot.Bonmin(problem, "B-BB")
 bonminAlgorithm.setMaximumEvaluationNumber(10000)
 bonminAlgorithm.setMaximumIterationNumber(1000)
 bonminAlgorithm.setStartingPoint([0, 0, 0, 0])
 
-ot.ResourceMap.AddAsString('Bonmin-mu_oracle', 'loqo')
-ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 5)
+ot.ResourceMap.AddAsString("Bonmin-mu_oracle", "loqo")
+ot.ResourceMap.AddAsScalar("Bonmin-bonmin.time_limit", 5)
 
 # %%
 # Running the solver

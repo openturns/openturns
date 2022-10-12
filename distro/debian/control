@@ -38,7 +38,7 @@ Vcs-Browser: https://salsa.debian.org/science-team/openturns
 Vcs-Git: https://salsa.debian.org/science-team/openturns.git
 Rules-Requires-Root: no
 
-Package: libopenturns0.20
+Package: libopenturns0.21
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends},
@@ -65,7 +65,7 @@ Architecture: any
 Depends: ${misc:Depends},
          libceres-dev,
          libhmat-oss-dev,
-         libopenturns0.20 (= ${binary:Version})
+         libopenturns0.21 (= ${binary:Version})
 Description: headers and development libraries for OpenTURNS
  OpenTURNS is a powerful and generic tool to treat and quantify
  uncertainties in numerical simulations in design, optimization and
@@ -104,7 +104,7 @@ Section: python
 Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libopenturns0.20 (= ${binary:Version}),
+         libopenturns0.21 (= ${binary:Version}),
          ${python3:Depends}
 Provides: ${python3:Provides}
 Suggests: python3-matplotlib,

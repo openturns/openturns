@@ -54,25 +54,28 @@ X = ot.RandomVector(ot.Normal(2))
 # Create the function :math:`g` from a :class:`~openturns.PythonFunction`:
 
 # %%
+
+
 def fourBranch(x):
     x1 = x[0]
     x2 = x[1]
-    
-    g1 = 5+0.1*(x1-x2)**2-(x1+x2)/math.sqrt(2)
-    g2 = 5+0.1*(x1-x2)**2+(x1+x2)/math.sqrt(2)
-    g3 = (x1-x2)+9/math.sqrt(2)
-    g4 =(x2-x1)+9/math.sqrt(2)
-    
-    return [min((g1,g2,g3,g4))]
 
-g = ot.PythonFunction(2,1,fourBranch)
+    g1 = 5 + 0.1 * (x1 - x2) ** 2 - (x1 + x2) / math.sqrt(2)
+    g2 = 5 + 0.1 * (x1 - x2) ** 2 + (x1 + x2) / math.sqrt(2)
+    g3 = (x1 - x2) + 9 / math.sqrt(2)
+    g4 = (x2 - x1) + 9 / math.sqrt(2)
+
+    return [min((g1, g2, g3, g4))]
+
+
+g = ot.PythonFunction(2, 1, fourBranch)
 
 # %%
 # Draw the function :math:`g` to help to understand the shape of the limit state function:
 
 # %%
-graph = ot.Graph('Four Branch function','x1','x2',True,'topright')
-drawfunction = g.draw([-8]*2,[8]*2,[100]*2)
+graph = ot.Graph("Four Branch function", "x1", "x2", True, "topright")
+drawfunction = g.draw([-8] * 2, [8] * 2, [100] * 2)
 graph.add(drawfunction)
 view = View(graph)
 
@@ -103,7 +106,7 @@ myEvent = ot.ThresholdEvent(Y, ot.Less(), threshold)
 
 # %%
 rhoQuantile = 0.1
-algo = ot.NAIS(myEvent,rhoQuantile)
+algo = ot.NAIS(myEvent, rhoQuantile)
 
 # %%
 # Now you can run the algorithm.
@@ -112,23 +115,27 @@ algo = ot.NAIS(myEvent,rhoQuantile)
 algo.run()
 result = algo.getResult()
 proba = result.getProbabilityEstimate()
-print('Proba NAIS = ',  proba)
-print('Current coefficient of variation = ',
-      result.getCoefficientOfVariation())
+print("Proba NAIS = ", proba)
+print("Current coefficient of variation = ", result.getCoefficientOfVariation())
 
 # %%
 # The length of the confidence interval of level :math:`95\%` is:
 
 # %%
 length95 = result.getConfidenceLength()
-print('Confidence length (0.95) = ', result.getConfidenceLength())
+print("Confidence length (0.95) = ", result.getConfidenceLength())
 
 # %%
 # which enables to build the confidence interval:
 
 # %%
-print('Confidence interval (0.95) = [', proba -
-      length95/2, ', ', proba + length95/2, ']')
+print(
+    "Confidence interval (0.95) = [",
+    proba - length95 / 2,
+    ", ",
+    proba + length95 / 2,
+    "]",
+)
 
 # %%
 # Draw the NAIS samples used by the algorithm
@@ -142,21 +149,21 @@ print('Confidence interval (0.95) = [', proba -
 inputNAIS = g.getInputHistory()
 outputNAIS = g.getOutputHistory()
 nTotal = inputNAIS.getSize()
-print('Number of evaluations of g = ', nTotal)
+print("Number of evaluations of g = ", nTotal)
 
 # %%
 # Within each step of the algorithm, a sample of size :math:`N` is created, where:
 
 # %%
-N = algo.getMaximumOuterSampling()*algo.getBlockSize()
-print('Size of each subset = ', N)
+N = algo.getMaximumOuterSampling() * algo.getBlockSize()
+print("Size of each subset = ", N)
 
 # %%
 # You can get the number :math:`N_s` of steps with:
 
 # %%
-Ns =  int(nTotal / N)
-print('Number of steps = ', Ns)
+Ns = int(nTotal / N)
+print("Number of steps = ", Ns)
 
 # %%
 # Now, we can split the initial sample into NAIS samples of size :math:`N_s`:
@@ -165,15 +172,15 @@ print('Number of steps = ', Ns)
 listNAISSamples = list()
 listOutputNAISSamples = list()
 for i in range(Ns):
-    listNAISSamples.append(inputNAIS[i*N:i*N + N])
-    listOutputNAISSamples.append(outputNAIS[i*N:i*N + N]) 
+    listNAISSamples.append(inputNAIS[i * N: i * N + N])
+    listOutputNAISSamples.append(outputNAIS[i * N: i * N + N])
 
 # %%
 # And get all the levels defining the intermediate and final thresholds given by the empirical quantiles of each NAIS output sample:
 
 # %%
 levels = ot.Point()
-for i in range(Ns-1):
+for i in range(Ns - 1):
     levels.add(listOutputNAISSamples[i].computeQuantile(rhoQuantile)[0])
 levels.add(threshold)
 
@@ -181,7 +188,7 @@ levels.add(threshold)
 # The following graph draws each NAIS sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
-graph = ot.Graph('NAIS samples','x1','x2',True,'bottomleft')
+graph = ot.Graph("NAIS samples", "x1", "x2", True, "bottomleft")
 graph.setGrid(True)
 
 # %%
@@ -198,12 +205,12 @@ graph.setColors(col)
 # Add the frontiers :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
-gIsoLines = g.draw([-8]*2, [8]*2, [128]*2)
+gIsoLines = g.draw([-8] * 2, [8] * 2, [128] * 2)
 dr = gIsoLines.getDrawable(2)
 for i in range(levels.getSize()):
     dr.setLevels([levels[i]])
-    dr.setLineStyle('solid')
-    dr.setLegend(r'$g(X) = $' + str(round(levels[i], 2)))
+    dr.setLineStyle("solid")
+    dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
     dr.setLineWidth(3)
     dr.setColor(col[i])
     graph.add(dr)
@@ -216,13 +223,13 @@ view = View(graph)
 # The following graph enables to understand the progression of the algorithm from the mean value of the initial distribution to the limit state function:
 
 # %%
-graph = ot.Graph('NAIS thresholds','x1','x2',True,'bottomleft')
+graph = ot.Graph("NAIS thresholds", "x1", "x2", True, "bottomleft")
 graph.setGrid(True)
 dr = gIsoLines.getDrawable(0)
 for i in range(levels.getSize()):
     dr.setLevels([levels[i]])
-    dr.setLineStyle('solid')
-    dr.setLegend(r'$g(X) = $' + str(round(levels[i], 2)))
+    dr.setLineStyle("solid")
+    dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
     dr.setLineWidth(3)
     graph.add(dr)
 

@@ -22,6 +22,7 @@ Kriging : multiple input dimensions
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -29,8 +30,8 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 dimension = 2
-input_names = ['x1', 'x2']
-formulas = ['cos(x1 + x2)']
+input_names = ["x1", "x2"]
+formulas = ["cos(x1 + x2)"]
 model = ot.SymbolicFunction(input_names, formulas)
 
 # %%
@@ -47,7 +48,7 @@ y = model(x)
 
 # %%
 basis = ot.ConstantBasisFactory(dimension).build()
-covarianceModel = ot.SquaredExponential([0.1]*dimension, [1.0])
+covarianceModel = ot.SquaredExponential([0.1] * dimension, [1.0])
 algo = ot.KrigingAlgorithm(x, y, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
@@ -71,7 +72,7 @@ graph = metamodelAtXref.draw(x2min, x2max)
 graph.setLegends(["Kriging"])
 curve = modelAtXref.draw(x2min, x2max)
 curve.setLegends(["Model"])
-curve.setColors(['red'])
+curve.setColors(["red"])
 graph.add(curve)
 graph.setLegendPosition("topright")
 graph.setTitle("Sample size = %d" % (samplesize))

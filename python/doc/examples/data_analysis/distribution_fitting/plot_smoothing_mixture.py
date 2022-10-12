@@ -36,13 +36,17 @@ Bandwidth sensitivity in kernel smoothing
 # Generate the mixture by merging two samples
 # -------------------------------------------
 #
-# In this section, we show that a mixture of two Normal distributions is nothing more than the merged sample of two independent Normal distributions. In order to generate a sample with size :math:`n`, we sample :math:`\lfloor w_1 n\rfloor` points from the first Normal distribution :math:`f_A` and :math:`\lfloor w_2 n\rfloor` points from the second Normal distribution :math:`f_B`. Then we merge the two samples.
+# In this section, we show that a mixture of two Normal distributions is
+# nothing more than the merged sample of two independent Normal distributions.
+# In order to generate a sample with size :math:`n`, we sample
+# :math:`\lfloor w_1 n\rfloor` points from the first Normal distribution
+# :math:`f_A` and :math:`\lfloor w_2 n\rfloor` points from the second Normal
+# distribution :math:`f_B`. Then we merge the two samples.
 
 # %%
 import openturns as ot
 import openturns.viewer as otv
 import pylab as pl
-import numpy as np
 
 # %%
 # We choose a rather large sample size: :math:`n=1000`.

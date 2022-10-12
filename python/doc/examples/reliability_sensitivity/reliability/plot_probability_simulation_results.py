@@ -17,6 +17,7 @@ Exploitation of simulation algorithm results
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -32,7 +33,7 @@ distribution = ot.ComposedDistribution(marginals)
 # Create the model.
 
 # %%
-model = ot.SymbolicFunction(['R', 'F'], ['R-F/(pi_*100.0)'])
+model = ot.SymbolicFunction(["R", "F"], ["R-F/(pi_*100.0)"])
 
 # %%
 modelCallNumberBefore = model.getEvaluationCallsNumber()
@@ -152,8 +153,13 @@ view = viewer.View(graph)
 probability = result.getProbabilityEstimate()
 length95 = result.getConfidenceLength(0.95)
 print("0.95 Confidence Interval length = ", length95)
-print("IC at 0.95 = [", probability - 0.5*length95,
-      "; ", probability + 0.5*length95, "]")
+print(
+    "IC at 0.95 = [",
+    probability - 0.5 * length95,
+    "; ",
+    probability + 0.5 * length95,
+    "]",
+)
 
 # %%
 # Draw the convergence graph and the confidence interval of level alpha. By default, alpha = 0.95.

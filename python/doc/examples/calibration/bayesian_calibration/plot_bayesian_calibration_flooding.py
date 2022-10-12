@@ -82,6 +82,7 @@ from openturns.usecases import flood_model
 import openturns.viewer as viewer
 import numpy as np
 import openturns as ot
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -105,11 +106,11 @@ def functionFlooding(X):
     L = 5.0e3
     B = 300.0
     Q, K_s, Z_v, Z_m = X
-    alpha = (Z_m - Z_v)/L
+    alpha = (Z_m - Z_v) / L
     if alpha < 0.0 or K_s <= 0.0:
         H = np.inf
     else:
-        H = (Q/(K_s*B*np.sqrt(alpha)))**(3.0/5.0)
+        H = (Q / (K_s * B * np.sqrt(alpha))) ** (3.0 / 5.0)
     return [H]
 
 
@@ -152,7 +153,7 @@ outputH = g(inputSample)
 
 # %%
 sigmaObservationNoiseH = 0.1  # (m)
-noiseH = ot.Normal(0., sigmaObservationNoiseH)
+noiseH = ot.Normal(0.0, sigmaObservationNoiseH)
 ot.RandomGenerator.SetSeed(0)
 sampleNoiseH = noiseH.getSample(nbobs)
 Hobs = outputH + sampleNoiseH
@@ -197,9 +198,9 @@ print(linkFunction)
 # Define the value of the reference values of the :math:`\vect\theta` parameter. In the Bayesian framework, this is called the mean of the *prior* Gaussian distribution. In the data assimilation framework, this is called the *background*.
 
 # %%
-KsInitial = 20.
-ZvInitial = 49.
-ZmInitial = 51.
+KsInitial = 20.0
+ZvInitial = 49.0
+ZmInitial = 51.0
 parameterPriorMean = [KsInitial, ZvInitial, ZmInitial]
 paramDim = len(parameterPriorMean)
 
@@ -207,9 +208,9 @@ paramDim = len(parameterPriorMean)
 # Define the covariance matrix of the parameters :math:`\vect\theta` to calibrate.
 
 # %%
-sigmaKs = 5.
-sigmaZv = 1.
-sigmaZm = 1.
+sigmaKs = 5.0
+sigmaZv = 1.0
+sigmaZm = 1.0
 
 # %%
 parameterPriorCovariance = ot.CovarianceMatrix(paramDim)
@@ -222,7 +223,7 @@ parameterPriorCovariance[2, 2] = sigmaZm**2
 
 # %%
 prior = ot.Normal(parameterPriorMean, parameterPriorCovariance)
-prior.setDescription(['Ks', 'Zv', 'Zm'])
+prior.setDescription(["Ks", "Zv", "Zm"])
 
 # %%
 # Define the distribution of observations :math:`\vect{y} | \vect{z}` conditional on model predictions.
@@ -238,15 +239,17 @@ conditional = ot.Normal()
 # but with different supports.
 
 # %%
-proposal = [ot.Uniform(-5., 5.), ot.Uniform(-1., 1.), ot.Uniform(-1., 1.)]
+proposal = [ot.Uniform(-5.0, 5.0), ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)]
 
 # %%
 # Build a Gibbs sampler
 # ---------------------
 
 initialState = parameterPriorMean
-mh_coll = [ot.RandomWalkMetropolisHastings(
-    prior, initialState, proposal[i], [i]) for i in range(paramDim)]
+mh_coll = [
+    ot.RandomWalkMetropolisHastings(prior, initialState, proposal[i], [i])
+    for i in range(paramDim)
+]
 for mh in mh_coll:
     mh.setLikelihood(conditional, Hobs, linkFunction, Qobs)
 sampler = ot.Gibbs(mh_coll)
@@ -284,10 +287,10 @@ fig = pl.figure(figsize=(12, 4))
 for parameter_index in range(paramDim):
     graph = posterior.getMarginal(parameter_index).drawPDF()
     priorGraph = prior.getMarginal(parameter_index).drawPDF()
-    priorGraph.setColors(['blue'])
+    priorGraph.setColors(["blue"])
     graph.add(priorGraph)
-    graph.setLegends(['Posterior', 'Prior'])
-    ax = fig.add_subplot(1, paramDim, parameter_index+1)
+    graph.setLegends(["Posterior", "Prior"])
+    ax = fig.add_subplot(1, paramDim, parameter_index + 1)
     _ = ot.viewer.View(graph, figure=fig, axes=[ax])
 
 _ = fig.suptitle("Bayesian calibration")

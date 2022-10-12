@@ -12,16 +12,14 @@ There are several possible ways to achieve this:
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-import os
 import pickle
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # create objects to save
 distribution = ot.Normal(4.0, 3.0)
-function = ot.SymbolicFunction(['x1', 'x2'], ['x1 + x2'])
+function = ot.SymbolicFunction(["x1", "x2"], ["x1 + x2"])
 
 # %%
 # **With the pickle module**
@@ -30,13 +28,13 @@ function = ot.SymbolicFunction(['x1', 'x2'], ['x1 + x2'])
 
 # %%
 # save objects
-with open('study.pkl', 'wb') as f:
+with open("study.pkl", "wb") as f:
     pickle.dump(distribution, f)
     pickle.dump(function, f)
 
 # %%
 # load saved objects
-with open('study.pkl', 'rb') as f:
+with open("study.pkl", "rb") as f:
     loaded_distribution = pickle.load(f)
     loaded_function = pickle.load(f)
 str(loaded_distribution), str(loaded_function)
@@ -61,19 +59,19 @@ study = ot.Study()
 
 # %%
 # Associate it to an XML file
-fileName = 'study.xml'
+fileName = "study.xml"
 study.setStorageManager(ot.XMLStorageManager(fileName))
 
 # %%
 # Alternatively, large amounts of data can be stored in binary HDF5 file. An XML file (`study_h5.xml`) serves as header for binary data, which are stored in the automatically created `study_h5.h5` file.
 study_h5 = ot.Study()
-fileName_h5 = 'study_h5.xml'
+fileName_h5 = "study_h5.xml"
 study_h5.setStorageManager(ot.XMLH5StorageManager(fileName_h5))
 
 # %%
 # Add an object to the study; at this point it is not written to disk yet
-study.add('distribution', distribution)
-study.add('function', function)
+study.add("distribution", distribution)
+study.add("function", function)
 
 # %%
 # Save the study; this writes into the file
@@ -98,12 +96,12 @@ study.printLabels()
 
 # %%
 # Check our 'distribution' labelled object was loaded
-study.hasObject('distribution')
+study.hasObject("distribution")
 
 # %%
 # Load the objects; we must create a void object of the desired type (or parent type)
 distribution2 = ot.Normal()
 function2 = ot.Function()
-study.fillObject('distribution', distribution2)
-study.fillObject('function', function2)
+study.fillObject("distribution", distribution2)
+study.fillObject("function", function2)
 str(distribution2), str(function2)

@@ -1,7 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
-from math import sqrt
 
 domain = ot.Interval(-1.0, 1.0)
 basis = ot.OrthogonalProductFunctionFactory([ot.FourierSeriesFactory()])
@@ -11,15 +10,16 @@ mustScale = False
 threshold = 0.001
 model = ot.AbsoluteExponential([1.0])
 algo = ot.KarhunenLoeveQuadratureAlgorithm(
-    domain, domain, model, experiment, coll, mustScale, threshold)
+    domain, domain, model, experiment, coll, mustScale, threshold
+)
 algo.run()
 ev = algo.getResult().getEigenvalues()
 modes = algo.getResult().getScaledModes()
-g = ot.Graph("Quadrature approx. of KL expansion for $C(s,t)=e^{-|s-t|}$")
+g = ot.Graph(r"Quadrature approx. of KL expansion for $C(s,t)=e^{-|s-t|}$")
 g.setAxes(True)
 g.setGrid(True)
-g.setXTitle("$t$")
-g.setYTitle("$\sqrt{\lambda_n}\phi_n$")
+g.setXTitle(r"$t$")
+g.setYTitle(r"$\sqrt{\lambda_n}\phi_n$")
 for mode in modes:
     g.add(mode.draw(-1.0, 1.0, 256))
 g.setColors(ot.Drawable.BuildDefaultPalette(len(modes)))

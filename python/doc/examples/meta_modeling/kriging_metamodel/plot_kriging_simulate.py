@@ -47,13 +47,14 @@ Kriging : generate trajectories from a metamodel
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-g = ot.SymbolicFunction(['x'], ['sin(x)'])
+g = ot.SymbolicFunction(["x"], ["sin(x)"])
 
 # %%
-x_train = [[x] for x in [1., 3., 4., 6., 7.9, 11., 11.5]]
+x_train = [[x] for x in [1.0, 3.0, 4.0, 6.0, 7.9, 11.0, 11.5]]
 y_train = g(x_train)
 n_train = len(x_train)
 n_train
@@ -65,7 +66,7 @@ n_train
 xmin = 0.0
 xmax = 12.0
 n_test = 101
-step = (xmax-xmin)/(n_test-1)
+step = (xmax - xmin) / (n_test - 1)
 myRegularGrid = ot.RegularGrid(xmin, step, n_test)
 x_test = myRegularGrid.getVertices()
 y_test = g(x_test)
@@ -76,7 +77,7 @@ y_test = g(x_test)
 
 # %%
 def plot_data_train(x_train, y_train):
-    '''Plot the data (x_train,y_train) as a Cloud, in red'''
+    """Plot the data (x_train,y_train) as a Cloud, in red"""
     graph_train = ot.Cloud(x_train, y_train)
     graph_train.setColor("red")
     graph_train.setLegend("Data")
@@ -85,7 +86,7 @@ def plot_data_train(x_train, y_train):
 
 # %%
 def plot_data_test(x_test, y_test):
-    '''Plot the data (x_test,y_test) as a Curve, in dashed black'''
+    """Plot the data (x_test,y_test) as a Curve, in dashed black"""
     graphF = ot.Curve(x_test, y_test)
     graphF.setLegend("Exact")
     graphF.setColor("black")
@@ -109,7 +110,7 @@ view = viewer.View(graph)
 # %%
 dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
-covarianceModel = ot.MaternModel([1.0]*dimension, 1.5)
+covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 algo = ot.KrigingAlgorithm(x_train, y_train, covarianceModel, basis)
 algo.run()
 krigingResult = algo.getResult()
@@ -128,7 +129,7 @@ y_test_MM = krigeageMM(x_test)
 
 # %%
 def plot_data_kriging(x_test, y_test_MM):
-    '''Plots (x_test,y_test_MM) from the metamodel as a Curve, in blue'''
+    """Plots (x_test,y_test_MM) from the metamodel as a Curve, in blue"""
     graphK = ot.Curve(x_test, y_test_MM)
     graphK.setColor("blue")
     graphK.setLegend("Kriging")

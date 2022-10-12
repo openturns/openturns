@@ -14,7 +14,7 @@ myFrequencyGrid = ot.RegularGrid(fmin, df, N)
 
 
 def s(f):
-    if(f <= 5.0):
+    if f <= 5.0:
         return 1.0
     else:
         x = f - 5.0
@@ -42,13 +42,14 @@ for k in range(N):
     x[k, 1] = value[0, 0].real
 
 # Create the curve of the spectral function
-myCurve = ot.Curve(x, 'UserSpectral')
+myCurve = ot.Curve(x, "UserSpectral")
 
 # Create the graph
-myGraph = ot.Graph('User Defined Spectral Model', 'Frequency',
-                   'Spectral density value', True)
+myGraph = ot.Graph(
+    "User Defined Spectral Model", "Frequency", "Spectral density value", True
+)
 myGraph.add(myCurve)
-myGraph.setLegendPosition('topright')
+myGraph.setLegendPosition("topright")
 
 fig = plt.figure(figsize=(10, 4))
 cov_axis = fig.add_subplot(111)

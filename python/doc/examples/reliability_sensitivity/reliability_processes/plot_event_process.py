@@ -37,16 +37,15 @@ Create an event based on a process
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define a 2-d mesh
 indices = [40, 20]
 mesher = ot.IntervalMesher(indices)
-lowerBound = [0., 0.]
-upperBound = [2., 1.]
+lowerBound = [0.0, 0.0]
+upperBound = [2.0, 1.0]
 interval = ot.Interval(lowerBound, upperBound)
 mesh = mesher.build(interval)
 

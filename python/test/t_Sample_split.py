@@ -1,17 +1,17 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
 # We create an empty Sample
 N = 100
-sample = Sample(N, 2)
+sample = ot.Sample(N, 2)
 print("Sample size=", sample.getSize())
 
 # We populate the empty sample with numerous data
 for i in range(N):
-    point = Point(2)
+    point = ot.Point(2)
     point[0] = 1000 + i
     point[1] = 2000 + i
     sample[i] = point

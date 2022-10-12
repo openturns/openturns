@@ -615,7 +615,7 @@ void ResourceMap::loadConfigurationFile()
   {
     readConfigurationFile(findConfigurationFile());
   }
-  catch (FileNotFoundException &)
+  catch (const FileNotFoundException &)
   {
     LOGWARN(OSS() << "The configuration file has not been found, using default parameters.");
   }
@@ -1330,7 +1330,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // NAIS parameters //
   addAsScalar("NAIS-DefaultRhoQuantile", 0.25);
-  
+
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);
 

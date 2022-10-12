@@ -12,6 +12,7 @@ Create an extreme value distribution
 import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -37,12 +38,14 @@ print(myDistribution.getActualDistribution())
 # We draw its PDF and CDF :
 graphPDF = myDistribution.drawPDF()
 graphPDF.setTitle(
-    r"PDF of the GEV with parameters $\mu = 0.0$, $\sigma = 1.0$ and $\xi = 0.0$ ")
+    r"PDF of the GEV with parameters $\mu = 0.0$, $\sigma = 1.0$ and $\xi = 0.0$ "
+)
 view = otv.View(graphPDF)
 
 graphCDF = myDistribution.drawCDF()
 graphCDF.setTitle(
-    r"CDF of the GEV with parameters $\mu = 0.0$, $\sigma = 1.0$ and $\xi = 0.0$ ")
+    r"CDF of the GEV with parameters $\mu = 0.0$, $\sigma = 1.0$ and $\xi = 0.0$ "
+)
 view = otv.View(graphCDF)
 
 # %%
@@ -58,13 +61,15 @@ myGPD = ot.GeneralizedPareto(1.0, 0.0, 0.0)
 # We draw its PDF and CDF :
 graphPDF = myGPD.drawPDF()
 graphPDF.setTitle(
-    r"PDF of the GPD with parameters $\sigma = 1.0$, $\xi = 0.0$ and $u = 0.0$ ")
+    r"PDF of the GPD with parameters $\sigma = 1.0$, $\xi = 0.0$ and $u = 0.0$ "
+)
 view = otv.View(graphPDF)
 
 # %%
 graphCDF = myGPD.drawCDF()
 graphCDF.setTitle(
-    r"CDF of the GPD with parameters $\sigma = 1.0$, $\xi = 0.0$ and $u = 0.0$ ")
+    r"CDF of the GPD with parameters $\sigma = 1.0$, $\xi = 0.0$ and $u = 0.0$ "
+)
 view = otv.View(graphCDF)
 
 # %%

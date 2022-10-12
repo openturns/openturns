@@ -128,7 +128,7 @@ public:
 
     p_rebuildObject->load(adv);
 
-    //} catch (Exception & ex) {
+    //} catch (const Exception & ex) {
     // Nothing to do
     // The rebuild object remains the default one
     //}

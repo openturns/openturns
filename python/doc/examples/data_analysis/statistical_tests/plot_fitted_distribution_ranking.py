@@ -16,11 +16,12 @@ Select fitted distributions
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a sample from a continuous distribution
-distribution = ot.Beta(2.0, 2.0, 0.0, 1.)
+distribution = ot.Beta(2.0, 2.0, 0.0, 1.0)
 sample = distribution.getSample(1000)
 graph = ot.UserDefined(sample).drawCDF()
 view = viewer.View(graph)
@@ -35,7 +36,8 @@ factories = [ot.BetaFactory(), ot.TriangularFactory()]
 # %%
 # Rank the continuous models by the Lilliefors p-values:
 estimated_distribution, test_result = ot.FittingTest.BestModelLilliefors(
-    sample, factories)
+    sample, factories
+)
 test_result
 
 # %%
@@ -60,7 +62,8 @@ distributions = [ot.Beta(2.0, 2.0, 0.0, 1.0), ot.Triangular(0.0, 0.5, 1.0)]
 # %%
 # Rank the continuous models by the Kolmogorov p-values:
 estimated_distribution, test_result = ot.FittingTest.BestModelKolmogorov(
-    sample, distributions)
+    sample, distributions
+)
 test_result
 
 # %%
@@ -92,7 +95,8 @@ distributions = [ot.Poisson(2.0), ot.Geometric(0.1)]
 # %%
 # Rank the discrete models wrt the ChiSquared p-values:
 estimated_distribution, test_result = ot.FittingTest.BestModelChiSquared(
-    sample, distributions)
+    sample, distributions
+)
 test_result
 
 # %%

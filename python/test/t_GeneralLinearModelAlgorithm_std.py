@@ -18,8 +18,11 @@ for i in range(sampleSize):
 Y = model(X)
 
 # Add a small noise to data
-Y += ot.GaussianProcess(ot.AbsoluteExponential(
-    [0.1], [0.2]), ot.Mesh(X)).getRealization().getValues()
+Y += (
+    ot.GaussianProcess(ot.AbsoluteExponential([0.1], [0.2]), ot.Mesh(X))
+    .getRealization()
+    .getValues()
+)
 
 basis = ot.LinearBasisFactory(inputDimension).build()
 # Case of a misspecified covariance model
@@ -72,7 +75,8 @@ print("\ncovariance (reduced, biased)=", result.getCovarianceModel())
 print("trend (reduced, biased)=", result.getTrendCoefficients())
 print("===================================================\n")
 ot.ResourceMap.SetAsBool(
-    "GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", False)
+    "GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", False
+)
 algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
 # Define interval
 bounds = ot.Interval([1e-2] * 2, [100] * 2)

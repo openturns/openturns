@@ -88,7 +88,9 @@ view = otv.View(graph, axes_kw={"aspect": "equal"})
 # for several dimension values.
 # We observe the exponential increase of the number of terms with the dimension
 # :math:`d` (curse of dimensionality).
-graph = ot.Graph("Full tensorized basis", "Total degree", "Number of coefficients", True)
+graph = ot.Graph(
+    "Full tensorized basis", "Total degree", "Number of coefficients", True
+)
 degree_maximum = 10
 list_of_polynomial_degrees = [1, 5, 10, 15, 20]
 point_styles = ["bullet", "circle", "fdiamond", "fsquare", "triangleup"]
@@ -116,16 +118,15 @@ view = otv.View(graph, figure_kw={"figsize": (5, 4)})
 
 
 def draw_qnorm(q):
-
     def qnorm(x):
         norm = 0.0
         for xi in x:
-            norm += xi ** q
+            norm += xi**q
         norm = norm ** (1.0 / q)
         return [norm]
 
     f = ot.PythonFunction(2, 1, qnorm)
-    f.setInputDescription(['x1', 'x2'])
+    f.setInputDescription(["x1", "x2"])
     graph = f.draw([0.0] * 2, [1.0] * 2)
     graph.setTitle(f"q = {q}")
     return graph
@@ -168,7 +169,12 @@ view = otv.View(grid, axes_kw={"aspect": "equal"})
 # We observe that the gap between high and low values of q can lead to a gap
 # in the numbers of terms of an order of magnitude.
 dim = 5
-graph = ot.Graph("Full tensorized basis. d = %d" % (dim), "Total degree", "Number of coefficients", True)
+graph = ot.Graph(
+    "Full tensorized basis. d = %d" % (dim),
+    "Total degree",
+    "Number of coefficients",
+    True,
+)
 degree_maximum = 10
 q_list = [0.2, 0.4, 0.6, 0.8, 1.0]
 point_styles = ["bullet", "circle", "fdiamond", "fsquare", "triangleup"]

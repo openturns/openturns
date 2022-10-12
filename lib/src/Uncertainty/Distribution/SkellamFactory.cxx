@@ -93,7 +93,7 @@ Skellam SkellamFactory::buildAsSkellam(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Skellam distribution from the given parameters";
   }

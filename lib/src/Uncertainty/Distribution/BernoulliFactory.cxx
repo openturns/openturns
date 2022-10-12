@@ -88,7 +88,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Bernoulli distribution from the given parameters";
   }

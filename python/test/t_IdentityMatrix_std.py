@@ -1,25 +1,25 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-matrix1 = IdentityMatrix(2)
+matrix1 = ot.IdentityMatrix(2)
 print("matrix1 = ", repr(matrix1))
 
-pt = Point()
-pt.add(5.)
-pt.add(0.)
+pt = ot.Point()
+pt.add(5.0)
+pt.add(0.0)
 print("pt = ", repr(pt))
 
-result = Point()
+result = ot.Point()
 result = matrix1.solveLinearSystem(pt)
 print("result = ", repr(result))
 
 determinant = matrix1.computeDeterminant()
 print("determinant = %.6f" % determinant)
 
-ev = ScalarCollection(2)
+ev = ot.ScalarCollection(2)
 ev = matrix1.computeEigenValues()
 print("ev = ", repr(ev))
 

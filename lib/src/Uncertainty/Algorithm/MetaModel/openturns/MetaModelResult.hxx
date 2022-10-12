@@ -46,7 +46,12 @@ public:
   /** Standard constructor */
   MetaModelResult(const Sample & inputSample,
                   const Sample & outputSample,
-                  const Function & model,
+                  const Function & metaModel,
+                  const Point & residuals,
+                  const Point & relativeErrors);
+
+  /** @deprecated Standard constructor */
+  MetaModelResult(const Function & model,
                   const Function & metaModel,
                   const Point & residuals,
                   const Point & relativeErrors);

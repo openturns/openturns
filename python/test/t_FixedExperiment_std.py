@@ -1,26 +1,20 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
-try:
-    size = 5
-    dim = 6
-    refSample = Sample(size, dim)
-    for i in range(size):
-        p = Point(dim)
-        for j in range(dim):
-            p[j] = i + j
-        refSample[i] = p
-    print("ref. sample=", refSample)
-    experiment = FixedExperiment(refSample)
-    print("experiment = ", experiment)
-    sample, weights = experiment.generateWithWeights()
-    print("sample = ", repr(sample))
-    print("weights = ", repr(weights))
-
-except:
-    import sys
-    print("t_FixedExperiment_std.py", sys.exc_info()[0], sys.exc_info()[1])
+size = 5
+dim = 6
+refSample = ot.Sample(size, dim)
+for i in range(size):
+    p = ot.Point(dim)
+    for j in range(dim):
+        p[j] = i + j
+    refSample[i] = p
+print("ref. sample=", refSample)
+experiment = ot.FixedExperiment(refSample)
+print("experiment = ", experiment)
+sample, weights = experiment.generateWithWeights()
+print("sample = ", repr(sample))
+print("weights = ", repr(weights))

@@ -5,7 +5,7 @@ Use case : axial stressed beam
 import openturns as ot
 
 
-class AxialStressedBeam():
+class AxialStressedBeam:
     """
     Data class for the axial stressed beam example.
 
@@ -57,21 +57,23 @@ class AxialStressedBeam():
         self.muR = 3.0e6
         self.sigmaR = 3.0e5
         # Random variable : F
-        self.muF = 750.
-        self.sigmaF = 50.
+        self.muF = 750.0
+        self.sigmaF = 50.0
         # create the limit state function model
-        self.model = ot.SymbolicFunction(['R', 'F'], ['R-F/(pi_/10000.0)'])
+        self.model = ot.SymbolicFunction(["R", "F"], ["R-F/(pi_/10000.0)"])
 
         # Yield strength
         self.distribution_R = ot.LogNormalMuSigma(
-            self.muR, self.sigmaR, 0.0).getDistribution()
-        self.distribution_R.setName('Yield strength')
-        self.distribution_R.setDescription('R')
+            self.muR, self.sigmaR, 0.0
+        ).getDistribution()
+        self.distribution_R.setName("Yield strength")
+        self.distribution_R.setDescription("R")
         # Traction load
         self.distribution_F = ot.Normal(self.muF, self.sigmaF)
-        self.distribution_F.setName('Traction_load')
-        self.distribution_F.setDescription('F')
+        self.distribution_F.setName("Traction_load")
+        self.distribution_F.setDescription("F")
 
         # Joint distribution of the input parameters
         self.distribution = ot.ComposedDistribution(
-            [self.distribution_R, self.distribution_F])
+            [self.distribution_R, self.distribution_F]
+        )

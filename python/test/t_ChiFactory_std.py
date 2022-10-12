@@ -23,8 +23,7 @@ print("distribution=", repr(distribution))
 print("Estimated distribution=", repr(estimatedDistribution))
 estimatedDistribution = factory.build()
 print("Default distribution=", estimatedDistribution)
-estimatedDistribution = factory.build(
-    distribution.getParameter())
+estimatedDistribution = factory.build(distribution.getParameter())
 print("Distribution from parameters=", estimatedDistribution)
 estimatedChi = factory.buildAsChi(sample)
 print("Chi          =", distribution)
@@ -35,7 +34,7 @@ estimatedChi = factory.buildAsChi(distribution.getParameter())
 print("Chi from parameters=", estimatedChi)
 
 # overflow in boost::math::gamma_q_inv
-true_dist = ot.Beta(0.9, 2., 3e7, 5e7)
+true_dist = ot.Beta(0.9, 2.0, 3e7, 5e7)
 ot.RandomGenerator.SetSeed(0)
 data = true_dist.getSample(229)
 try:

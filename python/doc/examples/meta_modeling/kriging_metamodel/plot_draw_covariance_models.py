@@ -68,7 +68,7 @@ graphModel.setLegends([r"$p = 0.25$", r"$p = 1$", r"$p = 2$"])
 xmin = -1.0
 step = 0.01
 n = 200
-grid1D = ot.RegularGrid(xmin, step, n+1)
+grid1D = ot.RegularGrid(xmin, step, n + 1)
 nbTrajectories = 1
 
 # %%
@@ -104,8 +104,7 @@ ax_pdf = fig.add_subplot(1, 2, 1)
 _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
 _ = otv.View(graphTraj, figure=fig, axes=[ax_cdf])
-_ = fig.suptitle(
-    r"Generalized Exponential Model : influence of the p parameter")
+_ = fig.suptitle(r"Generalized Exponential Model : influence of the p parameter")
 
 # %%
 # The blue trajectory corresponding to the parameter :math:`p=2` is smooth as expected as compared with
@@ -150,7 +149,7 @@ graphModel.setLegends([r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1$"])
 xmin = -1.0
 step = 0.01
 n = 200
-grid1D = ot.RegularGrid(xmin, step, n+1)
+grid1D = ot.RegularGrid(xmin, step, n + 1)
 nbTrajectories = 1
 
 # %%
@@ -186,8 +185,7 @@ ax_pdf = fig.add_subplot(1, 2, 1)
 _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
 _ = otv.View(graphTraj, figure=fig, axes=[ax_cdf])
-_ = fig.suptitle(
-    r"Exponential Model : influence of correlation length $\theta$")
+_ = fig.suptitle(r"Exponential Model : influence of correlation length $\theta$")
 
 # %%
 # We observe a smoother trajectory with a high correlation value.
@@ -232,7 +230,7 @@ graphModel.setLegends([r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1$"])
 xmin = -1.0
 step = 0.01
 n = 200
-grid1D = ot.RegularGrid(xmin, step, n+1)
+grid1D = ot.RegularGrid(xmin, step, n + 1)
 nbTrajectories = 1
 
 # %%
@@ -270,7 +268,8 @@ _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
 _ = otv.View(graphTraj, figure=fig, axes=[ax_cdf])
 _ = fig.suptitle(
-    r"Squared exponential model : influence of correlation length $\theta$")
+    r"Squared exponential model : influence of correlation length $\theta$"
+)
 
 # %%
 # Execpt for very small values of the correlation length, trajectories are usually smooth. It is the
@@ -324,7 +323,7 @@ graphModel.setLegends([r"$\nu = 1/2$", r"$\nu = 3/2$", r"$\nu = 5/2$"])
 xmin = -5.0
 step = 0.01
 n = 1000
-grid1D = ot.RegularGrid(xmin, step, n+1)
+grid1D = ot.RegularGrid(xmin, step, n + 1)
 nbTrajectories = 1
 
 # %%
@@ -398,8 +397,7 @@ graphModel.setColors(["green", "orange", "blue"])
 graphModel.setXTitle(r"$\tau = \|s-t\|$")
 graphModel.setYTitle(r"$C(\tau)$")
 graphModel.setTitle("Matern covariance model with \nu = 3/2")
-graphModel.setLegends(
-    [r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1.0$"])
+graphModel.setLegends([r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1.0$"])
 
 # %%
 # For each covariance model we build a gaussian process and generate a random trajectory of
@@ -408,7 +406,7 @@ graphModel.setLegends(
 xmin = -1.0
 step = 0.01
 n = 200
-grid1D = ot.RegularGrid(xmin, step, n+1)
+grid1D = ot.RegularGrid(xmin, step, n + 1)
 nbTrajectories = 1
 
 # %%
@@ -434,8 +432,7 @@ graphTraj.add(sample3.drawMarginal(0))
 graphTraj.setXTitle(r"$x$")
 graphTraj.setYTitle(r"$GP_{\theta}(x)$")
 graphTraj.setColors(["green", "orange", "blue"])
-graphTraj.setLegends(
-    [r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1.0$"])
+graphTraj.setLegends([r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1.0$"])
 
 # %%
 # We present each covariance model and the corresponding tracjectory side by side.

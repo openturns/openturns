@@ -66,14 +66,14 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Sample & sample) con
   {
     R = NormalCopula::GetCorrelationFromKendallCorrelation(sample.computeKendallTau());
   }
-  catch (NotSymmetricDefinitePositiveException &)
+  catch (const NotSymmetricDefinitePositiveException &)
   {
     LOGWARN(OSS() << "Warning! Unable to build a NormalCopula using Kendall's tau, trying Spearman's rho instead.");
     try
     {
       R = NormalCopula::GetCorrelationFromSpearmanCorrelation(sample.computeSpearmanCorrelation());
     }
-    catch (NotSymmetricDefinitePositiveException &)
+    catch (const NotSymmetricDefinitePositiveException &)
     {
       throw InvalidArgumentException(HERE) << "Unable to build a NormalCopula using Spearman's rho";
     }
@@ -91,7 +91,7 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Point & parameters) 
     copula.setParameter(parameters);
     return copula;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a NormalCopula from the given parameters";
   }

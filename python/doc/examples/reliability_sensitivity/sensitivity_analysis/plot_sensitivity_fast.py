@@ -27,6 +27,7 @@ from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -53,17 +54,19 @@ totalOrderIndices = sensitivityAnalysis.getTotalOrderIndices()
 
 # %%
 # Print indices
-print('First order FAST indices:', firstOrderIndices)
-print('Total order FAST indices:', totalOrderIndices)
+print("First order FAST indices:", firstOrderIndices)
+print("Total order FAST indices:", totalOrderIndices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
-    firstOrderIndices, distribution.getDescription(), 'FAST first order indices')
+    firstOrderIndices, distribution.getDescription(), "FAST first order indices"
+)
 view = viewer.View(graph)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
-    totalOrderIndices, distribution.getDescription(), 'FAST total order indices')
+    totalOrderIndices, distribution.getDescription(), "FAST total order indices"
+)
 view = viewer.View(graph)
 plt.show()
 

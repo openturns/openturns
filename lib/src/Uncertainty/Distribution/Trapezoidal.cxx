@@ -225,7 +225,7 @@ Point Trapezoidal::computePDFGradient(const Point & point) const
 Point Trapezoidal::computeLogPDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
- 
+
   if ((a_ == b_) || (b_ == c_) || (c_ == d_)) throw NotDefinedException(HERE) << "Error: cannot compute the log PDF gradient of a Trapezoidal distribution when a=b or b=c or c=d, here a=" << a_ << ", b=" << b_ << ", c=" << c_ << " and d=" << d_;
   const Scalar x = point[0];
   Point logPdfGradient(4, 0.0);

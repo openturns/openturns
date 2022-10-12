@@ -45,17 +45,16 @@ Defining Python and symbolic functions: a quick start introduction to functions
 # %%
 import numpy as np
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We first define the input random vector of the function.
 
 # %%
-X0 = ot.Normal(0., 1.)
-X1 = ot.Normal(0., 1.)
-X2 = ot.Normal(0., 1.)
+X0 = ot.Normal(0.0, 1.0)
+X1 = ot.Normal(0.0, 1.0)
+X2 = ot.Normal(0.0, 1.0)
 inputDistribution = ot.ComposedDistribution((X0, X1, X2))
 inputRandomVector = ot.RandomVector(inputDistribution)
 
@@ -89,8 +88,8 @@ inputRandomVector = ot.RandomVector(inputDistribution)
 
 # %%
 def mySimulator(x):
-    y0 = x[0]+x[1]+x[2]
-    y1 = x[0]-x[1]*x[2]
+    y0 = x[0] + x[1] + x[2]
+    y1 = x[0] - x[1] * x[2]
     y = [y0, y1]
     return y
 
@@ -105,7 +104,7 @@ myfunction = ot.PythonFunction(3, 2, mySimulator)
 # This function can be evaluated using parentheses. It produces the same outputs as the `mySimulator` function.
 
 # %%
-myfunction([1., 2., 3.])
+myfunction([1.0, 2.0, 3.0])
 
 # %%
 # However, the newly created `myfunction` has services that the basic Python function did not have. For example, we can create a `CompositeRandomVector` on top of it, by associating it to the input random vector.
@@ -223,8 +222,7 @@ myfunction = ot.PythonFunction(3, 2, mySimulator)
 myfunction = ot.MemoizeFunction(myfunction)
 
 # %%
-outputVariableOfInterest = ot.CompositeRandomVector(
-    myfunction, inputRandomVector)
+outputVariableOfInterest = ot.CompositeRandomVector(myfunction, inputRandomVector)
 montecarlosize = 10
 outputSample = outputVariableOfInterest.getSample(montecarlosize)
 
@@ -261,8 +259,7 @@ inputs
 # * list_of_formulas: a `list` of `nbOutputs` strings, the equations.
 
 # %%
-myfunction = ot.SymbolicFunction(
-    ("x0", "x1", "x2"), ("x0 + x1 + x2", "x0 - x1 * x2"))
+myfunction = ot.SymbolicFunction(("x0", "x1", "x2"), ("x0 + x1 + x2", "x0 - x1 * x2"))
 
 # %%
 # A `SymbolicFunction`, like any other function, can also have a history.
