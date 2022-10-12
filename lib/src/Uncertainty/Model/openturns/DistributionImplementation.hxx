@@ -395,9 +395,6 @@ public:
   /** Get the centered moments of the distribution */
   virtual Point getCentralMoment(const UnsignedInteger n) const;
 
-  /** @deprecated */
-  virtual Point getCenteredMoment(const UnsignedInteger n) const;
-
   /** Get the shifted moments of the distribution */
   virtual Point getShiftedMoment(const UnsignedInteger n,
                                  const Point & shift) const;

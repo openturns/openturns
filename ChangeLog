@@ -19,6 +19,8 @@
  * Removed FunctionalChaosResult.getComposedModel, MetaModelResult.getModel and associated attributes for 1.21
  * Removed FunctionalChaosResult Function ctor
  * Removed (Process)Sample::computeCenteredMoment
+ * Removed Distribution::getCenteredMoment
+ * Removed IterativeMoments::getCenteredMoments
 
 === Documentation ===
 

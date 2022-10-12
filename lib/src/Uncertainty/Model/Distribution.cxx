@@ -302,11 +302,6 @@ Point Distribution::getCentralMoment(const UnsignedInteger n) const
   return getImplementation()->getCentralMoment(n);
 }
 
-Point Distribution::getCenteredMoment(const UnsignedInteger n) const
-{
-  return getImplementation()->getCenteredMoment(n);
-}
-
 /* Get the shifted moments of the distribution */
 Point Distribution::getShiftedMoment(const UnsignedInteger n,
                                      const Point & shift) const
