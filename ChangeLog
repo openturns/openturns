@@ -21,6 +21,7 @@
  * Removed (Process)Sample::computeCenteredMoment
  * Removed Distribution::getCenteredMoment
  * Removed IterativeMoments::getCenteredMoments
+ * Removed GeneralLinearModelAlgorithm | KrigingAlgorithm ctors
 
 === Documentation ===
 

@@ -144,40 +144,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
 }
 
 
-/* Parameters constructor */
-GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
-    const Sample & outputSample,
-    const CovarianceModel & covarianceModel,
-    const BasisCollection & basisCollection,
-    const Bool keepCholeskyFactor)
-  : MetaModelAlgorithm(inputSample, outputSample)
-  , covarianceModel_()
-  , reducedCovarianceModel_()
-  , solver_()
-  , optimizationBounds_()
-  , beta_(0)
-  , rho_(0)
-  , F_(0, 0)
-  , result_()
-  , basisCollection_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
-  , keepCholeskyFactor_(keepCholeskyFactor)
-  , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
-  , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LowestScalar)
-{
-  LOGWARN(OSS() << "GeneralLinearModelAlgorithm(inputSample, outpuSample, covarianceModel, basisCollection, keepCholeskyFactor) is deprecated");
-  // Set covariance model
-  setCovarianceModel(covarianceModel);
-
-  // Set basis collection
-  if (basisCollection.getSize() > 0) setBasisCollection(basisCollection);
-
-  initializeMethod();
-  initializeDefaultOptimizationAlgorithm();
-}
-
 /* Covariance model accessors */
 void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & covarianceModel)
 {

@@ -170,7 +170,7 @@ public:
     // compute the mean of the transformed sample using the Box-Cox function
     const Sample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
     // Use of GLM to estimate the best generalized linear model
-    GeneralLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
+    GeneralLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_[0]);
     algo.run();
     // Return the optimal log-likelihood
     const Scalar result = algo.getResult().getOptimalLogLikelihood();
@@ -401,7 +401,7 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
   const Sample transformedOutputSample = myBoxFunction(outputSample);
   // Build the GeneralLinearModelResult
   // Use of GLM to estimate the best generalized linear model
-  GeneralLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);
+  GeneralLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis[0]);
   algo.run();
   // Get result
   result = algo.getResult();

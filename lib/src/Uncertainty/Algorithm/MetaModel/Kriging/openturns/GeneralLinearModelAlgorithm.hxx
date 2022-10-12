@@ -64,13 +64,6 @@ public:
                                const Basis & basis,
                                const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
-  /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const Sample & inputSample,
-                               const Sample & outputSample,
-                               const CovarianceModel & covarianceModel,
-                               const BasisCollection & basisCollection,
-                               const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
-
   /** Virtual constructor */
   GeneralLinearModelAlgorithm * clone() const override;
 
