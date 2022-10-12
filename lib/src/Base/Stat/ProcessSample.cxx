@@ -226,11 +226,6 @@ Field ProcessSample::computeCentralMoment(const UnsignedInteger k) const
   return getImplementation()->computeCentralMoment(k);
 }
 
-Field ProcessSample::computeCenteredMoment(const UnsignedInteger k) const
-{
-  return getImplementation()->computeCenteredMoment(k);
-}
-
 /* Gives the raw moment of order k of the sample (by component) */
 Field ProcessSample::computeRawMoment(const UnsignedInteger k) const
 {
