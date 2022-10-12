@@ -50,12 +50,6 @@ public:
   /** Default constructor */
   FunctionalChaosAlgorithm();
 
-  /** Constructor @deprecated */
-  FunctionalChaosAlgorithm(const Function & model,
-                           const Distribution & distribution,
-                           const AdaptiveStrategy & adaptiveStrategy,
-                           const ProjectionStrategy & projectionStrategy);
-
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
                            const Sample & outputSample,
@@ -70,11 +64,6 @@ public:
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy,
                            const ProjectionStrategy & projectionStrategy);
-
-  /** Constructor @deprecated */
-  FunctionalChaosAlgorithm(const Function & model,
-                           const Distribution & distribution,
-                           const AdaptiveStrategy & adaptiveStrategy);
 
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,

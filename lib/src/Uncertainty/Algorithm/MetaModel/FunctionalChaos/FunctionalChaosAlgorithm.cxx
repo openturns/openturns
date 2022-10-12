@@ -66,20 +66,6 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm()
   // Nothing to do
 }
 
-
-/* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
-    const Distribution & distribution,
-    const AdaptiveStrategy & adaptiveStrategy,
-    const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(distribution, model)
-  , adaptiveStrategy_(adaptiveStrategy)
-  , projectionStrategy_(projectionStrategy)
-  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
-{
-  LOGWARN(OSS() << "FunctionalChaosAlgorithm(Function) is deprecated");
-}
-
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
@@ -92,7 +78,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Overwrite the content of the projection strategy with the given data
-  projectionStrategy_.setMeasure(UserDefined(inputSample));
+  projectionStrategy_.setMeasure(distribution);
   projectionStrategy_.setExperiment(FixedExperiment(inputSample));
   projectionStrategy_.setWeights(Point(inputSample.getSize(), 1.0 / inputSample.getSize()));
   projectionStrategy_.setInputSample(inputSample);
@@ -112,23 +98,11 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Overwrite the content of the projection strategy with the given data
-  projectionStrategy_.setMeasure(UserDefined(inputSample));
+  projectionStrategy_.setMeasure(distribution);
   projectionStrategy_.setExperiment(FixedExperiment(inputSample));
   projectionStrategy_.setWeights(weights);
   projectionStrategy_.setInputSample(inputSample);
   projectionStrategy_.setOutputSample(outputSample);
-}
-
-/* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
-    const Distribution & distribution,
-    const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(distribution, model)
-  , adaptiveStrategy_(adaptiveStrategy)
-  , projectionStrategy_(LeastSquaresStrategy())
-  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
-{
-  LOGWARN(OSS() << "FunctionalChaosAlgorithm(Function) is deprecated");
 }
 
 /* Constructor */
@@ -263,9 +237,6 @@ void FunctionalChaosAlgorithm::run()
   // Get the measure upon which the orthogonal basis is built
   const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
   const Distribution measure(basis.getMeasure());
-  // Correct the measure of the projection strategy if no input sample
-  const Bool databaseProjection = projectionStrategy_.getInputSample().getSize() > 0;
-  if (!databaseProjection) projectionStrategy_.setMeasure(measure);
 
   // First, compute all the parts that are independent of the marginal output
   // Create the isoprobabilistic transformation
@@ -286,7 +257,7 @@ void FunctionalChaosAlgorithm::run()
   else composedModel_ = ComposedFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
   const Sample initialInputSample(projectionStrategy_.getInputSample());
-  if (databaseProjection && !noTransformation)
+  if (!noTransformation)
   {
     LOGINFO("Transform the input sample in the measure space");
     const Sample transformedSample(transformation_(initialInputSample));
