@@ -137,7 +137,7 @@ coll.append(ot.SymbolicFunction(["x1", "x2"], ["x1"]))
 coll.append(ot.SymbolicFunction(["x1", "x2"], ["0"]))
 coll.append(ot.SymbolicFunction(["x1", "x2"], ["x2"]))
 basis = ot.Basis(coll)
-algo = ot.LinearModelStepwiseAlgorithm(X, basis, Y, i_min)
+algo = ot.LinearModelStepwiseAlgorithm(X, Y, basis, i_min)
 try:
     algo.run()
     assert False, "should not go here"

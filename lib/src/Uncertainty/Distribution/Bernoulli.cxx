@@ -202,13 +202,6 @@ Point Bernoulli::getKurtosis() const
   return Point(1, 3.0 + (6.0 * p_ * (1.0 - p_) + 1.0) / (p_ * (1.0 - p_)));
 }
 
-/* Get the moments of the standardized distribution */
-Point Bernoulli::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n == 0) return Point(1, 0.0);
-  return Point(1, p_);
-}
-
 /* Compute the covariance of the distribution */
 void Bernoulli::computeCovariance() const
 {

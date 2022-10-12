@@ -1,5 +1,39 @@
 = New Features =
 
+== 1.21 release (in-progress) == #release-1.21
+
+=== Library ===
+
+==== New classes ====
+
+==== API changes ====
+ * Removed SequentialStrategy
+ * Removed TensorApproximationAlgorithm, TensorApproximationResult, CanonicalTensorEvaluation, CanonicalTensorGradient
+ * Removed FunctionalChaosSobolIndices.getSobolGrouped(Total)Index(int)
+ * Removed FunctionalChaosSobolIndices::summary
+ * Removed CorrelationAnalysis::PearsonCorrelation|SpearmanCorrelation|PCC|PRCC
+ * Removed Distribution.getStandardMoment
+ * Removed deprecated LinearModelAlgorithm | LinearModelStepwiseAlgorithm ctors
+ * Removed FunctionalChaosAlgorithm(Function) ctors
+ * Removed MetaModelResult(Function, Function, ...) ctor
+ * Removed FunctionalChaosResult.getComposedModel, MetaModelResult.getModel and associated attributes for 1.21
+ * Removed FunctionalChaosResult Function ctor
+ * Removed (Process)Sample::computeCenteredMoment
+ * Removed Distribution::getCenteredMoment
+ * Removed IterativeMoments::getCenteredMoments
+ * Removed GeneralLinearModelAlgorithm | KrigingAlgorithm ctors
+ * Removed Drawable.draw|clean & Graph.draw|clean|getRCommand|makeR*|GetExtensionMap methods
+ * Removed GaussianProcess.GIBBS
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
 == 1.20rc1 release (2022-10-13) == #release-1.20rc1
 
 === Library ===

@@ -304,16 +304,6 @@ void Beta::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point Beta::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n == 0) return Point(1, 1.0);
-  if ((n % 2 == 1) && (alpha_ == beta_)) return Point(1, 0.0);
-  // Here we have to convert n to a signed type else -n will produce an overflow
-  const Scalar value = (n % 2 == 0 ? 1.0 : -1.0) * SpecFunc::HyperGeom_2_1(alpha_, -static_cast<Scalar>(n), (alpha_ + beta_), 2.0);
-  return Point(1, value);
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Beta::getStandardRepresentative() const
 {

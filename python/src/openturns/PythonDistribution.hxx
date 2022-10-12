@@ -115,9 +115,6 @@ public:
   /** Get the kurtosis of the distribution */
   Point getKurtosis() const override;
 
-  /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const override;
-
   /** Get the raw moments of the distribution */
   Point getMoment(const UnsignedInteger n) const override;
 

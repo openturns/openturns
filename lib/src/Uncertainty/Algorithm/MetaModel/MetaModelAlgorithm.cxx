@@ -55,28 +55,16 @@ MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
 /* Constructor with parameters */
 MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
                                        const Sample & outputSample,
-                                       const Distribution & distribution,
-                                       const Function & model)
+                                       const Distribution & distribution)
   : PersistentObject()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , distribution_(distribution)
-  , model_(model)
 {
   if (inputSample.getSize() != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "MetaModelAlgorithm input sample size (" << inputSample.getSize() << ") does not match output sample size (" << outputSample.getSize() << ")";
   if (distribution.getDimension() != inputSample.getDimension())
     throw InvalidArgumentException(HERE) << "MetaModelAlgorithm distribution dimension (" << distribution.getDimension() << ") does not match input sample dimension (" << inputSample.getDimension() << ")";
-}
-
-/* Constructor with parameters */
-MetaModelAlgorithm::MetaModelAlgorithm(const Distribution & distribution,
-                                       const Function & model)
-  : PersistentObject()
-  , distribution_(distribution)
-  , model_(model)
-{
-  LOGWARN(OSS() << "MetaModelAlgorithm(Distribution, Function) is deprecated");
 }
 
 /* Virtual constructor */

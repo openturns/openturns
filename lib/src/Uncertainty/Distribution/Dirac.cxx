@@ -225,15 +225,6 @@ Point Dirac::getKurtosis() const
   return Point(getDimension(), 0.0);
 }
 
-/* Get the moments of the standardized distribution */
-Point Dirac::getStandardMoment(const UnsignedInteger n) const
-{
-  const UnsignedInteger dimension = getDimension();
-  Point result(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = std::pow(point_[i], static_cast<int>(n));
-  return result;
-}
-
 /* Compute the covariance of the distribution */
 void Dirac::computeCovariance() const
 {

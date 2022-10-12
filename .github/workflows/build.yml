@@ -23,7 +23,7 @@ jobs:
         cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
         make install -j3
     - run: |
-        cmake -DR_EXECUTABLE="dummyR" \
+        cmake \
         -DPYTHON_EXECUTABLE=/usr/local/bin/python3 \
         -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison \

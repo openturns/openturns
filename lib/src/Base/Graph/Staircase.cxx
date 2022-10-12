@@ -91,24 +91,6 @@ String Staircase::__repr__() const
   return oss;
 }
 
-/* Draw method */
-String Staircase::draw() const
-{
-  dataFileName_ = "";
-  OSS oss;
-  // Stores the data in a temporary file
-  oss << DrawableImplementation::draw() << "\n";
-  // The specific R command for drawing
-  oss << "lines(dataOT[, 1], dataOT[, 2]"
-      << ", lty=\"" << lineStyle_
-      << "\", col=\"" << color_
-      << "\", lwd=" << lineWidth_
-      << ", type=\"" << pattern_
-      << "\")";
-
-  return oss;
-}
-
 /* Clone method */
 Staircase * Staircase::clone() const
 {

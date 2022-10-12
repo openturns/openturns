@@ -135,7 +135,7 @@ view = otv.View(graph)
 def draw_validation(experiment):
     projectionStrategy = ot.IntegrationStrategy(experiment)
     algo = ot.FunctionalChaosAlgorithm(
-        g, distribution, adaptiveStrategy, projectionStrategy
+        X, Y, distribution, adaptiveStrategy, projectionStrategy
     )
     algo.run()
     result = algo.getResult()

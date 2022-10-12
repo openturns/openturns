@@ -229,13 +229,6 @@ Point Laplace::getKurtosis() const
   return Point(1, 6.0);
 }
 
-/* Get the moments of the standardized distribution */
-Point Laplace::getStandardMoment(const UnsignedInteger n) const
-{
-  if ((n % 2) == 1) return Point(1, 0.0);
-  return Point(1, SpecFunc::Gamma(n + 1));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Laplace::getStandardRepresentative() const
 {

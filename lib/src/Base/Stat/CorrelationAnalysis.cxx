@@ -73,14 +73,6 @@ Point CorrelationAnalysis::computePearsonCorrelation() const
   return ComputePearsonCorrelation(firstSample_, secondSample_);
 }
 
-/* Deprecated static Pearson correlation coefficient computation method */
-Point CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,
-    const Sample & outputSample)
-{
-  LOGWARN(OSS() << "CorrelationAnalysis::PearsonCorrelation(inputSample, outputSample) is deprecated, use CorrelationAnalysis::computePearsonCorrelation() instead");
-  return CorrelationAnalysis(inputSample, outputSample).computePearsonCorrelation();
-}
-
 // Compute the Pearson correlation coefficient with arguments
 Point CorrelationAnalysis::ComputePearsonCorrelation(const Sample & firstSample,
     const Sample & secondSample)
@@ -100,14 +92,6 @@ Point CorrelationAnalysis::ComputePearsonCorrelation(const Sample & firstSample,
 Point CorrelationAnalysis::computeSpearmanCorrelation() const
 {
   return ComputePearsonCorrelation(firstSample_.rank(), secondSample_.rank());
-}
-
-/* Deprecated static Spearman correlation coefficient computation method */
-Point CorrelationAnalysis::SpearmanCorrelation(const Sample & inputSample,
-    const Sample & outputSample)
-{
-  LOGWARN(OSS() << "CorrelationAnalysis::SpearmanCorrelation(inputSample, outputSample) is deprecated, use CorrelationAnalysis::computeSpearmanCorrelation() instead");
-  return CorrelationAnalysis(inputSample, outputSample).computeSpearmanCorrelation();
 }
 
 /* Compute the Kendall Tau coefficient between the component number index of the input sample and the 1D output sample */
@@ -168,14 +152,6 @@ Point CorrelationAnalysis::computePCC() const
   return ComputePCC(firstSample_, secondSample_);
 }
 
-/* Deprecated static PCC computation method */
-Point CorrelationAnalysis::PCC(const Sample & inputSample,
-                               const Sample & outputSample)
-{
-  LOGWARN(OSS() << "CorrelationAnalysis::PCC(inputSample, outputSample) is deprecated, use CorrelationAnalysis::computePCC() instead");
-  return CorrelationAnalysis(inputSample, outputSample).computePCC();
-}
-
 // Compute the Partial Correlation Coefficients (PCC) with arguments
 Point CorrelationAnalysis::ComputePCC(const Sample & firstSample,
                                       const Sample & secondSample)
@@ -222,14 +198,6 @@ Point CorrelationAnalysis::computeSRRC() const
 Point CorrelationAnalysis::computePRCC() const
 {
   return ComputePCC(firstSample_.rank(), secondSample_.rank());
-}
-
-/* Deprecated static PRCC computation method */
-Point CorrelationAnalysis::PRCC(const Sample & inputSample,
-                                const Sample & outputSample)
-{
-  LOGWARN(OSS() << "CorrelationAnalysis::PRCC(inputSample, outputSample) is deprecated, use CorrelationAnalysis::computePRCC() instead");
-  return CorrelationAnalysis(inputSample, outputSample).computePRCC();
 }
 
 /* Method save() stores the object through the StorageManager */

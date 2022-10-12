@@ -253,9 +253,6 @@ public:
    */
   Point computeCentralMoment(const UnsignedInteger k) const;
 
-  /** @deprecated */
-  Point computeCenteredMoment(const UnsignedInteger k) const;
-
   /**
    * Gives the raw moment of order k of the sample (by component)
    */

@@ -32,7 +32,7 @@ int main(int, char *[])
   // Create a ResourceMap Object
   fullprint << ResourceMap::GetInstance() << std::endl;
 
-  fullprint << "Extract from ResourceMap: R-executable-command -> " << ResourceMap::GetAsString("Graph-RExecutableCommand") << std::endl;
+  fullprint << "Extract from ResourceMap: Path-TemporaryDirectory -> " << ResourceMap::GetAsString("Path-TemporaryDirectory") << std::endl;
 
   // Create string key
   fullprint << "Create key: dummy_key" << std::endl;

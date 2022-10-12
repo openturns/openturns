@@ -90,7 +90,6 @@
   <Drawable-DefaultPattern      value_str="s"              />
   <Drawable-DefaultPointStyle   value_str="plus"           />
   <Drawable-DefaultSurfaceColor value_str="white"          />
-  <Drawable-NoSpecifiedLabel    value_str=""               />
   <Drawable-DataThreshold       value_int="2000"           />
   <Drawable-DefaultPalettePhase value_int="12"             />
 
@@ -98,11 +97,9 @@
   <Text-DefaultTextSize    value_float="0.75"            />
 
   <!-- OT::GraphImplementation parameters -->
-  <Graph-RExecutableCommand value_str="@R_EXECUTABLE@" />
   <Graph-DefaultHorizontalMargin value_float="0.05"          />
   <Graph-DefaultLegendFontSize   value_float="1.0"           />
   <Graph-DefaultVerticalMargin   value_float="0.05"          />
-  <Graph-NoSpecifiedLabel        value_str=""              />
   <Graph-DefaultHeight           value_int="480" />
   <Graph-DefaultWidth            value_int="640" />
 
@@ -960,13 +957,6 @@
 
   <!-- OT::Classifier parameters -->
   <Classifier-Parallel value_bool="true" />
-
-  <!-- OT::TensorApproximationAlgorithm parameters -->
-  <TensorApproximationAlgorithm-DefaultMaximumRadiusError                      value_float="1.0e-5"        />
-  <TensorApproximationAlgorithm-DefaultMaximumResidualError                    value_float="1.0e-5"        />
-  <TensorApproximationAlgorithm-DecompositionMethod                            value_str="SVD"           />
-  <TensorApproximationAlgorithm-Method                                         value_str="GreedyRankOne" />
-  <TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration value_int="100" />
 
   <!-- viewer.View parameters -->
   <View-ImageFormat value_str="png" />

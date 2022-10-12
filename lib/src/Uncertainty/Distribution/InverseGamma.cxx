@@ -322,13 +322,6 @@ Point InverseGamma::getKurtosis() const
   return Point(1, 3.0 * (k_ * (k_ + 3.0) - 10.0) / ((k_ - 3.0) * (k_ - 4.0)));
 }
 
-/* Get the moments of the standardized distribution */
-Point InverseGamma::getStandardMoment(const UnsignedInteger n) const
-{
-  if (k_ <= n) throw NotDefinedException(HERE) << "InverseGamma standard moment of order " << n << " is defined only for k > " << n << ", here k=" << k_;
-  return Point(1, std::exp(SpecFunc::LogGamma(k_ - n) - SpecFunc::LogGamma(k_)));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution InverseGamma::getStandardRepresentative() const
 {

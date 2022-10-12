@@ -88,9 +88,6 @@ public:
   /** Accessor to the centered moments */
   Sample getCentralMoments() const;
 
-  /** @deprecated */
-  Sample getCenteredMoments() const;
-
   /** Get the actual order */
   UnsignedInteger getOrder() const;
 

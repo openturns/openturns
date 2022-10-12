@@ -696,16 +696,6 @@ Point Normal::getSkewness() const
   return Point(getDimension(), 0.0);
 }
 
-/* Get the moments of the standardized distribution */
-Point Normal::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n % 2 == 1) return Point(1, 0.0);
-  Scalar moment = 1.0;
-  for (UnsignedInteger i = 1; i < n / 2; ++i)
-    moment *= 2.0 * i + 1.0;
-  return Point(1, moment);
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Normal::getStandardRepresentative() const
 {

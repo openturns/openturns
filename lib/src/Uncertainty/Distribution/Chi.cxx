@@ -279,12 +279,6 @@ Point Chi::getKurtosis() const
   return Point(1, 3.0 + 2.0 * (1.0 - sigma * (mu * gamma1 + sigma)) / std::pow(sigma, 2.0));
 }
 
-/* Get the moments of the standardized distribution */
-Point Chi::getStandardMoment(const UnsignedInteger n) const
-{
-  return Point(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(0.5 * (n + nu_)) - SpecFunc::LnGamma(0.5 * nu_)));
-}
-
 /* Parameters value accessor */
 Point Chi::getParameter() const
 {

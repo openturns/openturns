@@ -1803,12 +1803,6 @@ Point SampleImplementation::computeCentralMoment(const UnsignedInteger k) const
   return centeredMoment / size_;
 }
 
-Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
-{
-  LOGWARN(OSS() << "Sample::computeCenteredMoment is deprecated, use computeCentralMoment");
-  return computeCentralMoment(k);
-}
-
 /*
  * Gives the raw moment of order k of the sample (by component)
  */

@@ -1023,7 +1023,6 @@ DrawableImplementation::DrawableImplementation()
   , lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle"))
   , pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle"))
   , lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth"))
-  , dataFileName_("")
 {
   // Nothing to do
 }
@@ -1038,8 +1037,7 @@ DrawableImplementation::DrawableImplementation(const Sample & data,
     fillStyle_(ResourceMap::GetAsString("Drawable-DefaultFillStyle")),
     lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle")),
     pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle")),
-    lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth")),
-    dataFileName_("")
+    lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth"))
 {
   setName(legend);
   if(IsFirstInitialization)
@@ -1501,29 +1499,6 @@ Scalar DrawableImplementation::getTextSize() const
 void DrawableImplementation::setTextSize(const Scalar /*size*/)
 {
   throw NotDefinedException(HERE) << "Error: no text size in " << getClassName();
-}
-
-
-/* R command generating method, for plotting through R */
-String DrawableImplementation::draw() const
-{
-  const UnsignedInteger size = data_.getSize();
-  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: trying to build a Drawable with empty data";
-  // Two strategies: if data is small, it is inlined, else it is passed through a file
-  const UnsignedInteger dimension = data_.getDimension();
-  dataFileName_ = "";
-  if (size * dimension > ResourceMap::GetAsUnsignedInteger("Drawable-DataThreshold"))
-  {
-    dataFileName_ = data_.storeToTemporaryFile();
-    return OSS() << "dataOT <- data.matrix(read.table(\"" << dataFileName_ << "\", stringsAsFactors = F))" << "\n";
-  }
-  return OSS().setPrecision(20) << "dataOT <- " << data_.streamToRFormat() << "\n";
-}
-
-/* Clean all the temporary data created by draw() method */
-void DrawableImplementation::clean() const
-{
-  if (dataFileName_ != "") Os::Remove(dataFileName_);
 }
 
 /* Build default palette */

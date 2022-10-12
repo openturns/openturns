@@ -52,35 +52,10 @@ MetaModelResult::MetaModelResult(const Sample & inputSample,
   // Nothing to do
 }
 
-/* Standard constructor */
-MetaModelResult::MetaModelResult(const Function & model,
-                                 const Function & metaModel,
-                                 const Point & residuals,
-                                 const Point & relativeErrors)
-  : PersistentObject()
-  , model_(model)
-  , metaModel_(metaModel)
-  , residuals_(residuals)
-  , relativeErrors_(relativeErrors)
-{
-  // Nothing to do
-}
-
 /* Virtual constructor */
 MetaModelResult * MetaModelResult::clone() const
 {
   return new MetaModelResult(*this);
-}
-
-/* Model accessor */
-void MetaModelResult::setModel(const Function & model)
-{
-  model_ = model;
-}
-
-Function MetaModelResult::getModel() const
-{
-  return model_;
 }
 
 /* MetaModel accessor */

@@ -171,63 +171,6 @@ Interval Contour::getBoundingBox() const
   return Interval(lowerBound, upperBound);
 }
 
-/* Clean all the temporary data created by draw() method */
-void Contour::clean() const
-{
-  DrawableImplementation::clean();
-  if (xFileName_ != "") Os::Remove(xFileName_);
-  if (yFileName_ != "") Os::Remove(yFileName_);
-}
-
-/* Draw method */
-String Contour::draw() const
-{
-  dataFileName_ = "";
-  xFileName_ = "";
-  yFileName_ = "";
-  OSS oss;
-  // Stores the data in a temporary file
-  // For a contour, it is a matrix of values
-  oss << DrawableImplementation::draw() << "\n";
-  // The specific R command for drawing
-  // Here we store the discretizations of the axes
-  if (x_.getDimension() * x_.getSize() > ResourceMap::GetAsUnsignedInteger("Drawable-DataThreshold"))
-  {
-    xFileName_ = x_.storeToTemporaryFile();
-    yFileName_ = y_.storeToTemporaryFile();
-    oss << "x <- dataOT.matrix(read.table(\"" << xFileName_ << "\", stringsAsFactors = F))\n"
-        << "y <- dataOT.matrix(read.table(\"" << yFileName_ << "\", stringsAsFactors = F))\n";
-  }
-  else
-  {
-    oss << "x <- " << x_.streamToRFormat() << "\n"
-        << "y <- " << y_.streamToRFormat() << "\n";
-  }
-  oss << "dataOT <- matrix(dataOT, length(x), length(y))\n"
-      << "levels=c(";
-  const UnsignedInteger length = levels_.getSize() - 1;
-  for(UnsignedInteger i = 0; i < length; ++i)
-  {
-    oss << levels_[i] << ",";
-  }
-  oss << levels_[length] << ")\n"
-      << "labels=c(\"";
-  for(UnsignedInteger i = 0; i < length; ++i)
-  {
-    oss << labels_[i] << "\",\"";
-  }
-  oss << labels_[length] << "\")\n";
-  oss << "contour(x, y, dataOT, "
-      << "levels=levels,"
-      << "labels=labels,"
-      << "drawlabels=" << (drawLabels_ ? "TRUE" : "FALSE") << ","
-      << "lty=\"" << lineStyle_ << "\","
-      << "col=\"" << color_ << "\","
-      << "lwd=" << lineWidth_
-      << ", add=TRUE, axes=FALSE)";
-  return oss;
-}
-
 /* Clone method */
 Contour * Contour::clone() const
 {

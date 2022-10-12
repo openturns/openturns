@@ -75,27 +75,6 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
 }
 
 
-/* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
-                                   const Sample & outputSample,
-                                   const CovarianceModel & covarianceModel,
-                                   const BasisCollection & basisCollection)
-  : MetaModelAlgorithm(inputSample, outputSample)
-  , inputSample_(inputSample)
-  , outputSample_(outputSample)
-  , covarianceModel_(covarianceModel)
-  , glmAlgo_(inputSample, outputSample, covarianceModel, basisCollection, true)
-  , gamma_(0)
-  , rho_(0)
-  , result_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
-{
-  LOGWARN(OSS() << "KrigingAlgorithm(inputSample, outpuSample, covarianceModel, basisCollection) is deprecated");
-  // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  setMethod(ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra"));
-}
-
 /* Virtual constructor */
 KrigingAlgorithm * KrigingAlgorithm::clone() const
 {

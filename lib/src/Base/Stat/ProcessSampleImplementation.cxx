@@ -270,12 +270,6 @@ Field ProcessSampleImplementation::computeCentralMoment(const UnsignedInteger k)
   return Field(mesh_, values);
 }
 
-Field ProcessSampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
-{
-  LOGWARN(OSS() << "ProcessSample::computeCenteredMoment is deprecated, use computeCentralMoment");
-  return computeCentralMoment(k);
-}
-
 /*
  * Gives the raw moment of order k of the sample (by component)
  */

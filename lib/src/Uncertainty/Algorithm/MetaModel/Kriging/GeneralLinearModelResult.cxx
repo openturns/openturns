@@ -59,7 +59,6 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
 {
-  model_ = DatabaseFunction(inputSample, outputSample); // deprecated
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();

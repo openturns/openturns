@@ -72,12 +72,6 @@ Sample IterativeMoments::getCentralMoments() const
   return centralMoments_;
 }
 
-Sample IterativeMoments::getCenteredMoments() const
-{
-  LOGWARN(OSS() << "IterativeMoments::getCenteredMoments is deprecated, use getCentralMoments");
-  return getCentralMoments();
-}
-
 /* Accessor to the maximum order declared */
 UnsignedInteger IterativeMoments::getOrder() const
 {

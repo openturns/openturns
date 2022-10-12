@@ -332,12 +332,6 @@ Point LogNormal::getKurtosis() const
   return Point(1, -3.0 + expSigmaLog2 * expSigmaLog2 * (3.0 + expSigmaLog2 * (2.0 + expSigmaLog2)));
 }
 
-/* Get the moments of the standardized distribution */
-Point LogNormal::getStandardMoment(const UnsignedInteger n) const
-{
-  return Point(1, std::exp(n * muLog_ + 0.5 * std::pow(n * sigmaLog_, 2)));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution LogNormal::getStandardRepresentative() const
 {

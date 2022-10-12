@@ -319,18 +319,6 @@ Sample Drawable::getData() const
   return getImplementation()->getData();
 }
 
-/* Generate de R commands for plotting  the graphic */
-String Drawable::draw() const
-{
-  return getImplementation()->draw();
-}
-
-/* Clean all the temporary data created by draw() method */
-void Drawable::clean() const
-{
-  return getImplementation()->clean();
-}
-
 /* Get R point code from key */
 UnsignedInteger Drawable::getPointCode(const String key) const
 {

@@ -2899,12 +2899,6 @@ Point DistributionImplementation::getCentralMoment(const UnsignedInteger n) cons
   return getShiftedMoment(n, getMean());
 }
 
-Point DistributionImplementation::getCenteredMoment(const UnsignedInteger n) const
-{
-  LOGWARN(OSS() << "Distribution::getCenteredMoment is deprecated, use getCentralMoment");
-  return getCentralMoment(n);
-}
-
 /* Compute the covariance of the distribution */
 void DistributionImplementation::computeCovariance() const
 {
@@ -3336,14 +3330,6 @@ Point DistributionImplementation::getGaussNodesAndWeights(Point & weights) const
   if (!isAlreadyComputedGaussNodesAndWeights_) computeGaussNodesAndWeights();
   weights = gaussWeights_;
   return gaussNodes_;
-}
-
-
-/* Get the moments of the standardized distribution */
-Point DistributionImplementation::getStandardMoment(const UnsignedInteger n) const
-{
-  LOGWARN(OSS() << "getStandardMoment is deprecated");
-  return getStandardRepresentative().getMoment(n);
 }
 
 

@@ -56,14 +56,6 @@ public:
                                const Direction direction = FORWARD,
                                const Indices &startIndices = Indices());
 
-  /** Oldest constructor (for compatibility) */
-  LinearModelStepwiseAlgorithm(const Sample &inputSample,
-                               const Basis &basis,
-                               const Sample &outputSample,
-                               const Indices &minimalIndices,
-                               const Direction direction = FORWARD,
-                               const Indices &startIndices = Indices());
-
   /** Virtual constructor */
   LinearModelStepwiseAlgorithm * clone() const override;
 

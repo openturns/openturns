@@ -307,24 +307,6 @@ void Triangular::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point Triangular::getStandardMoment(const UnsignedInteger n) const
-{
-  const Scalar mu = ((m_ - a_) + (m_ - b_)) / (b_ - a_);
-  // Even order
-  if (n % 2 == 0)
-  {
-    // Vertical part?
-    if (1.0 - std::abs(mu) < ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon")) return Point(1, 1.0 / (n + 1.0));
-    // Usual case
-    return Point(1, 2.0 * (1.0 - std::pow(mu, n + 2.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
-  }
-  // Odd order
-  // Vertical part?
-  if (1.0 - std::abs(mu) < ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon")) return Point(1, 1.0 / (n + 2.0));
-  return Point(1, 2.0 * mu * (1.0 - std::pow(mu, n + 1.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Triangular::getStandardRepresentative() const
 {

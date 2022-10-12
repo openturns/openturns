@@ -624,18 +624,6 @@ CovarianceMatrix Student::getCovariance() const
   return EllipticalDistribution::getCovariance();
 }
 
-/* Get the moments of the standardized distribution */
-Point Student::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n >= nu_) throw NotDefinedException(HERE) << "Error: cannot compute a standard moment of order greater or equal to the number of degrees of freedom";
-  if (n % 2 == 1) return Point(1, 0.0);
-  Scalar moment = 1.0;
-  for (UnsignedInteger i = 0; i < n / 2; ++i) moment *= (nu_ * (2 * i + 1)) / (nu_ - 2 * (i + 1));
-  // Alternate expression, not very useful as the raw moments overflow the double precision for n approximately equal to 300 (if nu is large enough), and for these values the loop is equivalent to the analytic expression both in terms of speed and
-  // const Scalar moment(exp(0.5 * n * std::log(nu_) + SpecFunc::LogGamma(0.5 * (n + 1.0)) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)) / sqrt(M_PI));
-  return Point(1, moment);
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Student::getStandardRepresentative() const
 {

@@ -136,9 +136,6 @@ public:
   /** Get the covariance of the distribution */
   CovarianceMatrix getCovariance() const override;
 
-  /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const override;
-
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Distribution getStandardRepresentative() const override;
 
