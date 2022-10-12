@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-import os
 import importlib
 import openturns as ot
 
@@ -26,17 +25,6 @@ def try_import(name):
 
 
 print_feature("plotting (matplotlib)", try_import("openturns.viewer"))
-
-# check that OpenTURNS can run R
-# It should produce a file named testDraw.png
-try:
-    fname = "testDraw.png"
-    ot.Normal().drawPDF().draw(fname)
-    os.remove(fname)
-    has_r = True
-except Exception:
-    has_r = False
-print_feature("legacy plotting (R)", has_r)
 
 print_feature("serialization (LibXML2)", ot.PlatformInfo.HasFeature("libxml2"))
 print_feature("serialization (HDF5)", ot.PlatformInfo.HasFeature("hdf5"))
