@@ -11,7 +11,8 @@
  * Removed TensorApproximationAlgorithm, TensorApproximationResult, CanonicalTensorEvaluation, CanonicalTensorGradient
  * Removed FunctionalChaosSobolIndices.getSobolGrouped(Total)Index(int)
  * Removed FunctionalChaosSobolIndices::summary
- 
+ * Removed CorrelationAnalysis::PearsonCorrelation|SpearmanCorrelation|PCC|PRCC
+
 === Documentation ===
 
 === Python module ===
