@@ -868,7 +868,6 @@ ot_add_python_module(metamodel metamodel_module.i
                       QuadraticLeastSquares.i QuadraticLeastSquares_doc.i.in
                       AdaptiveStrategyImplementation.i AdaptiveStrategyImplementation_doc.i.in
                       FixedStrategy.i FixedStrategy_doc.i.in
-                      SequentialStrategy.i SequentialStrategy_doc.i.in
                       CleaningStrategy.i CleaningStrategy_doc.i.in
                       AdaptiveStrategy.i AdaptiveStrategy_doc.i.in
                       ProjectionStrategyImplementation.i ProjectionStrategyImplementation_doc.i.in

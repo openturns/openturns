@@ -50,7 +50,6 @@
 %include QuadraticLeastSquares.i
 %include AdaptiveStrategyImplementation.i
 %include FixedStrategy.i
-%include SequentialStrategy.i
 %include CleaningStrategy.i
 %include AdaptiveStrategy.i
 %include ProjectionStrategyImplementation.i

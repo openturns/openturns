@@ -7,6 +7,7 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed SequentialStrategy
 
 === Documentation ===
 
