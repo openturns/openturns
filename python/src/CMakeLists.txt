@@ -849,8 +849,6 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       FourierSeriesFactory.i FourierSeriesFactory_doc.i.in
                       HaarWaveletFactory.i HaarWaveletFactory_doc.i.in
                       OrthogonalProductFunctionFactory.i OrthogonalProductFunctionFactory_doc.i.in
-                      CanonicalTensorEvaluation.i CanonicalTensorEvaluation_doc.i.in
-                      CanonicalTensorGradient.i CanonicalTensorGradient_doc.i.in
                       UncertaintyOrthogonalBasisTemplateDefs.i
                    )
 
@@ -895,8 +893,6 @@ ot_add_python_module(metamodel metamodel_module.i
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
-                      TensorApproximationResult.i TensorApproximationResult_doc.i.in
-                      TensorApproximationAlgorithm.i TensorApproximationAlgorithm_doc.i.in
                       UncertaintyMetaModelTemplateDefs.i
                    )
 

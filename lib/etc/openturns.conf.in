@@ -961,13 +961,6 @@
   <!-- OT::Classifier parameters -->
   <Classifier-Parallel value_bool="true" />
 
-  <!-- OT::TensorApproximationAlgorithm parameters -->
-  <TensorApproximationAlgorithm-DefaultMaximumRadiusError                      value_float="1.0e-5"        />
-  <TensorApproximationAlgorithm-DefaultMaximumResidualError                    value_float="1.0e-5"        />
-  <TensorApproximationAlgorithm-DecompositionMethod                            value_str="SVD"           />
-  <TensorApproximationAlgorithm-Method                                         value_str="GreedyRankOne" />
-  <TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration value_int="100" />
-
   <!-- viewer.View parameters -->
   <View-ImageFormat value_str="png" />
 

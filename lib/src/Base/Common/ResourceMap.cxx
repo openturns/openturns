@@ -1594,13 +1594,6 @@ void ResourceMap::loadDefaultConfiguration()
   // Classifier parameters //
   addAsBool("Classifier-Parallel", true);
 
-  // TensorApproximationAlgorithm parameters //
-  addAsScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError", 1.0e-5);
-  addAsScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
-  addAsString("TensorApproximationAlgorithm-DecompositionMethod", "SVD");
-  addAsString("TensorApproximationAlgorithm-Method", "GreedyRankOne");
-  addAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration", 100);
-
   // viewer.View parameters //
   addAsString("View-ImageFormat", "png");
 }

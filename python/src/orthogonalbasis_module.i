@@ -54,8 +54,6 @@
 %include HaarWaveletFactory.i
 %include OrthogonalProductFunctionFactory.i
 %include SoizeGhanemFactory.i
-%include CanonicalTensorEvaluation.i
-%include CanonicalTensorGradient.i
 
 /* At last we include template definitions */
 %include UncertaintyOrthogonalBasisTemplateDefs.i

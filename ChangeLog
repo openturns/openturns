@@ -8,6 +8,7 @@
 
 ==== API changes ====
  * Removed SequentialStrategy
+ * Removed TensorApproximationAlgorithm, TensorApproximationResult, CanonicalTensorEvaluation, CanonicalTensorGradient
 
 === Documentation ===
 
