@@ -90,9 +90,6 @@ public:
   /** Get the kurtosis of the distribution */
   Point getKurtosis() const override;
 
-  /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const override;
-
   /** Interface specific to InverseNormal */
   void setMuLambda(const Scalar mu,
                    const Scalar lambda);

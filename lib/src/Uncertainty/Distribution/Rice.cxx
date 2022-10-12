@@ -182,14 +182,6 @@ Point Rice::getStandardDeviation() const
   return Point(1, std::sqrt(covariance_(0, 0)));
 }
 
-/* Get the moments of the standardized distribution */
-Point Rice::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n == 0) return Point(1, 1.0);
-  const Scalar beta2 = beta_ * beta_;
-  return Point(1, std::pow(2.0 * beta2, 0.5 * n) * SpecFunc::Gamma(1.0 + 0.5 * n) * SpecFunc::HyperGeom_1_1(-0.5 * n, 1.0, -0.5 * nu_ * nu_ / beta2));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Rice::getStandardRepresentative() const
 {

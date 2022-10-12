@@ -326,19 +326,6 @@ Point GeneralizedPareto::getKurtosis() const
   return Point(1, 3.0 * (1.0 - 2.0 * xi_) * (3.0 + xi_ * (1.0 + 2.0 * xi_)) / ((1.0 - 4.0 * xi_) * (1.0 - 3.0 * xi_)));
 }
 
-/* Get the moments of the standardized distribution */
-Point GeneralizedPareto::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n == 0) return Point(1, 1.0);
-  if (xi_ == 0.0) return Point(1, SpecFunc::Gamma(n + 1.0));
-  if (xi_ > 0.0)
-  {
-    if (n < trunc(1.0 / xi_)) return Point(1, std::exp(-std::log(xi_) * (n + 1.0) + SpecFunc::LogGamma(1.0 / xi_ - n) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(1.0 + 1.0 / xi_)));
-    throw NotDefinedException(HERE) << "Error: the standard moments are defined up to order " << trunc(1.0 / xi_) << " and n=" << n;
-  }
-  return Point(1, std::exp(-(n + 1.0) * std::log(-xi_) + SpecFunc::LogGamma(-1.0 / xi_) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(-1.0 / xi_ + n + 1.0)));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution GeneralizedPareto::getStandardRepresentative() const
 {

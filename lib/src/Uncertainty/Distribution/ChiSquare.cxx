@@ -268,12 +268,6 @@ void ChiSquare::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point ChiSquare::getStandardMoment(const UnsignedInteger n) const
-{
-  return Point(1, std::exp(SpecFunc::LnGamma(n + 0.5 * nu_) - SpecFunc::LnGamma(0.5 * nu_)));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution ChiSquare::getStandardRepresentative() const
 {

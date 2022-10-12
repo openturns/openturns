@@ -306,24 +306,6 @@ void Histogram::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point Histogram::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n == 0) return Point(1, 1.0);
-  Scalar value = 0.0;
-  const UnsignedInteger size = width_.getSize();
-  Scalar xPrec = -1.0;
-  const Scalar factor = 2.0 / cumulatedWidth_[size - 1];
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Scalar x = xPrec + width_[i] * factor;
-    value += (std::pow(x, static_cast<int>(n + 1)) - std::pow(xPrec, static_cast<int>(n + 1))) * height_[i];
-    xPrec = x;
-  }
-  value /= (n + 1) * factor;
-  return Point(1, value);
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Histogram::getStandardRepresentative() const
 {

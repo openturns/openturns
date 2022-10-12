@@ -12,6 +12,7 @@
  * Removed FunctionalChaosSobolIndices.getSobolGrouped(Total)Index(int)
  * Removed FunctionalChaosSobolIndices::summary
  * Removed CorrelationAnalysis::PearsonCorrelation|SpearmanCorrelation|PCC|PRCC
+ * Removed Distribution.getStandardMoment
 
 === Documentation ===
 

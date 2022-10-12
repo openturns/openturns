@@ -212,21 +212,6 @@ Point InverseNormal::getKurtosis() const
   return Point(1, 3.0 + 15.0 * mu_ / lambda_);
 }
 
-/* Get the moments of the standardized distribution */
-Point InverseNormal::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n == 0) return Point(1, 1.0);
-  Scalar moment = 1.0;
-  Scalar rho = 0.5 * mu_ / lambda_;
-  Scalar product = 1.0;
-  for (UnsignedInteger k = 1; k < n; ++k)
-  {
-    product *= (n - k) * (n + k - 1) * rho / k;
-    moment += product;
-  }
-  return Point(1, std::pow(mu_, static_cast<int>(n)) * moment);
-}
-
 /* Interface specific to InverseNormal */
 
 void InverseNormal::setMuLambda(const Scalar mu,

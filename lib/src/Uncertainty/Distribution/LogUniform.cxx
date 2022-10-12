@@ -272,13 +272,6 @@ void LogUniform::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point LogUniform::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n == 0) return Point(1, 1.0);
-  return Point(1, (std::pow(b_, static_cast<int>(n)) - std::pow(a_, static_cast<int>(n))) / (n * (bLog_ - aLog_)));
-}
-
 /* Parameters value accessor */
 Point LogUniform::getParameter() const
 {

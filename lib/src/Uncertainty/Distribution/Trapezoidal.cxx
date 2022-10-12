@@ -385,25 +385,6 @@ Point Trapezoidal::getKurtosis() const /*throw(NotDefinedException)*/
   return Point(1, fourthMoment / standardDeviation4);
 }
 
-/* Get the moments of the standardized distribution */
-Point Trapezoidal::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n == 0) return Point(1, 1.0);
-  const Scalar beta = 1.0 - 2.0 * (d_ - b_) / (d_ - a_);
-  const Scalar gamma = 1.0 - 2.0 * (d_ - c_) / (d_ - a_);
-  const Scalar eta = 2.0 / (2.0 - beta + gamma);
-  const Scalar betaPow = std::pow(beta, n + 1.0);
-  const Scalar gammaPow = std::pow(gamma, n + 1.0);
-  Scalar value = eta * (gammaPow - betaPow) / (n + 1);
-  if (beta > -1.0)
-  {
-    if (n % 2 == 0) value += (eta / (beta + 1.0)) * ((beta * betaPow - 1.0) / (n + 2) + (betaPow + 1.0) / (n + 1));
-    else value += (eta / (beta + 1.0)) * ((beta * betaPow + 1.0) / (n + 2) + (betaPow - 1.0) / (n + 1));
-  }
-  if (gamma <  1.0) value -= (eta / (1.0 - gamma)) * ((1.0 - gamma * gammaPow) / (n + 2) - (1.0 - gammaPow) / (n + 1));
-  return Point(1, value);
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Trapezoidal::getStandardRepresentative() const
 {

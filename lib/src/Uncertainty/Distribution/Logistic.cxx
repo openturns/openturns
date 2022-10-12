@@ -270,38 +270,6 @@ void Logistic::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point Logistic::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n % 2 == 1) return Point(1, 0.0);
-  if (n ==  2) return Point(1, 3.2898681336964528730e00);
-  if (n ==  4) return Point(1, 4.5457575815867804043e01);
-  if (n ==  6) return Point(1, 1.4191935714683065499e03);
-  if (n ==  8) return Point(1, 8.0336229269397526593e04);
-  if (n == 10) return Point(1, 7.2506291303452157147e06);
-  if (n == 12) return Point(1, 9.5777106159240860718e08);
-  if (n == 14) return Point(1, 1.7434597634941644924e11);
-  if (n == 16) return Point(1, 4.1844942225739403485e13);
-  if (n == 18) return Point(1, 1.2804698598089257967e16);
-  if (n == 20) return Point(1, 4.8657993773520842256e18);
-  if (n == 22) return Point(1, 2.2480009196614112639e21);
-  if (n == 24) return Point(1, 1.2408967295076549681e24);
-  if (n == 26) return Point(1, 8.0658291023450627114e26);
-  if (n == 28) return Point(1, 6.0977668695185918278e29);
-  if (n == 30) return Point(1, 5.3050571913031274079e32);
-  if (n == 32) return Point(1, 5.2626167374485750005e35);
-  if (n == 34) return Point(1, 5.9046559804483869578e38);
-  if (n == 36) return Point(1, 7.4398665356897600917e41);
-  if (n == 38) return Point(1, 1.0460452349293967338e45);
-  if (n == 40) return Point(1, 1.6318305664943113275e48);
-  if (n == 42) return Point(1, 2.8100122355051208743e51);
-  if (n == 44) return Point(1, 5.3165431495765953256e54);
-  if (n == 46) return Point(1, 1.1005244319624021505e58);
-  if (n == 48) return Point(1, 2.4827831185072057135e61);
-  if (n == 50) return Point(1, 6.0828186403426702060e64);
-  return DistributionImplementation::getStandardMoment(n);
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Logistic::getStandardRepresentative() const
 {

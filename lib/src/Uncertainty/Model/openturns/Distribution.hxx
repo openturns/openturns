@@ -270,9 +270,6 @@ public:
   /** Cholesky factor of the covariance matrix accessor */
   TriangularMatrix getCholesky() const;
 
-  /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const;
-
   /** Get the raw moments of the distribution */
   Point getMoment(const UnsignedInteger n) const;
 

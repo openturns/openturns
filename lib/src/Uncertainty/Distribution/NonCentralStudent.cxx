@@ -168,15 +168,6 @@ Point NonCentralStudent::getKurtosis() const
   return Point(1, (nu_ * nu_ * (3.0 + 6.0 * delta2 + delta2 * delta2) / ((nu_ - 2.0) * (nu_ - 4.0)) - mup1 * mup1 * (nu_ * ((nu_ + 1.0) * delta2 + 3.0 * (3.0 * nu_ - 5.0)) / ((nu_ - 2.0) * (nu_ - 3.0)) - 3.0 * mu2)) * std::pow(mu2, -2.0));
 }
 
-/* Get the moments of the standardized distribution */
-Point NonCentralStudent::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n >= nu_) throw NotDefinedException(HERE) << "Error: cannot compute a standard moment of order greater or equal to the number of degrees of freedom";
-  UniVariatePolynomial p(Point(1, 1.0));
-  for (UnsignedInteger k = 0; k < n; ++k) p = p.derivate() + p.incrementDegree(1);
-  return Point(1, p(delta_) * std::exp(0.5 * n * std::log(0.5 * nu_) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution NonCentralStudent::getStandardRepresentative() const
 {

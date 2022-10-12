@@ -228,12 +228,6 @@ Point ParametrizedDistribution::getKurtosis() const
   return distribution_.getKurtosis();
 }
 
-/* Get the raw moments of the standardized distribution */
-Point ParametrizedDistribution::getStandardMoment(const UnsignedInteger n) const
-{
-  return distribution_.getStandardMoment(n);
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution ParametrizedDistribution::getStandardRepresentative() const
 {
