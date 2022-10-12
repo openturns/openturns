@@ -356,7 +356,7 @@ print(result.getRelativeErrors())
 # The relative errors are low : this indicates that the PCE model has good accuracy.
 # Then, we exploit the surrogate model to compute the Sobol' indices.
 sensitivityAnalysis = ot.FunctionalChaosSobolIndices(result)
-print(sensitivityAnalysis.summary())
+print(sensitivityAnalysis)
 firstOrder = [sensitivityAnalysis.getSobolIndex(i) for i in range(m.dim)]
 totalOrder = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(m.dim)]
 graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(inputNames, firstOrder, totalOrder)

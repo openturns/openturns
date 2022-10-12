@@ -65,12 +65,6 @@ inline bool varianceComparison(const std::pair<UnsignedInteger, Scalar> &a, cons
   return a.second > b.second;
 }
 
-String FunctionalChaosSobolIndices::summary() const
-{
-  LOGWARN(OSS() << "FunctionalChaosSobolIndices::summary is deprecated, use __str__()");
-  return __str__();
-}
-
 String FunctionalChaosSobolIndices::__str__(const String & /*offset*/) const
 {
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
@@ -345,15 +339,6 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
   else return 0.0;
 }
 
-/* Sobol (first order) index accessor */
-Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const UnsignedInteger variableIndex,
-    const UnsignedInteger marginalIndex) const
-{
-  LOGWARN(OSS() << "FunctionalChaosSobolIndices.getSobolGroupedIndex(int) is deprecated, use getSobolIndex");
-  const Indices index(1, variableIndex);
-  return getSobolGroupedIndex(index, marginalIndex);
-}
-
 /* Sobol grouped total index accessor */
 Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
@@ -366,14 +351,6 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
   const Scalar complementaryFirstIndex = getSobolGroupedIndex(complementaryVariableIndices, marginalIndex);
   const Scalar groupTotalIndex = 1.0 - complementaryFirstIndex;
   return groupTotalIndex;
-}
-/* Sobol total index accessor */
-Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const UnsignedInteger variableIndex,
-    const UnsignedInteger marginalIndex) const
-{
-  LOGWARN(OSS() << "FunctionalChaosSobolIndices.getSobolGroupedTotalIndex(int) is deprecated, use getSobolTotalIndex");
-  const Indices index(1, variableIndex);
-  return getSobolGroupedTotalIndex(index, marginalIndex);
 }
 
 /* Functional chaos result accessor */

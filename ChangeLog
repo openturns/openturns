@@ -9,7 +9,9 @@
 ==== API changes ====
  * Removed SequentialStrategy
  * Removed TensorApproximationAlgorithm, TensorApproximationResult, CanonicalTensorEvaluation, CanonicalTensorGradient
-
+ * Removed FunctionalChaosSobolIndices.getSobolGrouped(Total)Index(int)
+ * Removed FunctionalChaosSobolIndices::summary
+ 
 === Documentation ===
 
 === Python module ===

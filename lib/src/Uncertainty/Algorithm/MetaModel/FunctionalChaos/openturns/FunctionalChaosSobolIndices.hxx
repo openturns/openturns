@@ -50,9 +50,6 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
-  /** @deprecated Summary table */
-  String summary() const;
-
   /* Here is the interface that all derived class must implement */
 
   /** Sobol index accessor */
@@ -70,15 +67,9 @@ public:
   /** Sobol grouped (first order) index accessor */
   Scalar getSobolGroupedIndex(const Indices & variableIndices,
                               const UnsignedInteger marginalIndex = 0) const;
-  /** @deprecated */
-  Scalar getSobolGroupedIndex(const UnsignedInteger variableIndex,
-                              const UnsignedInteger marginalIndex = 0) const;
 
   /** Sobol grouped total index accessor */
   Scalar getSobolGroupedTotalIndex(const Indices & variableIndices,
-                                   const UnsignedInteger marginalIndex = 0) const;
-  /** @deprecated */
-  Scalar getSobolGroupedTotalIndex(const UnsignedInteger variableIndex,
                                    const UnsignedInteger marginalIndex = 0) const;
 
   /** Functional chaos result accessor */
