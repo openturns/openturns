@@ -28,6 +28,7 @@
  * Deprecated FunctionalChaos(Function, ...) ctors
  * Deprecated MetaModelResult(Function, Function, ...) ctor
  * Deprecated FunctionalChaosResult.getComposedModel, MetaModelResult.getModel
+ * Deprecated FunctionalChaosResult(Function, ...) ctor
  * Deprecated (Process)Sample::computeCenteredMoment in favor of computeCentralMoment
  * Deprecated Distribution::getCenteredMoment in favor of getCentralMoment
  * Deprecated IterativeMoments::getCenteredMoments in favor of getCentralMoments

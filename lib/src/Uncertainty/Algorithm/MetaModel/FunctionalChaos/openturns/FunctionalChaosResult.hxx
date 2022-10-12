@@ -58,7 +58,19 @@ public:
   /** Parameter constructor */
   FunctionalChaosResult(const Sample & inputSample,
                         const Sample & ouputSample,
-                        const Function & model,
+                        const Distribution & distribution,
+                        const Function & transformation,
+                        const Function & inverseTransformation,
+                        const Function & composedModel,
+                        const OrthogonalBasis & orthogonalBasis,
+                        const Indices & I,
+                        const Sample & alpha_k,
+                        const FunctionCollection & Psi_k,
+                        const Point & residuals,
+                        const Point & relativeErrors);
+
+  /** @deprecated Parameter constructor */
+  FunctionalChaosResult(const Function & model,
                         const Distribution & distribution,
                         const Function & transformation,
                         const Function & inverseTransformation,
