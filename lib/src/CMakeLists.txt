@@ -100,6 +100,8 @@ endif ()
 target_link_libraries (OT PUBLIC ${OPENTURNS_LIBRARIES})
 target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
 
+target_link_options(OT PUBLIC "-Wl,--push-state,--no-as-needed,-latomic,--pop-state")
+
 target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)
 target_include_directories (OT PUBLIC ${OPENTURNS_INCLUDE_DIRS})
 
