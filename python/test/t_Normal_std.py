@@ -286,3 +286,10 @@ for dim in range(1, 5):
     print("invchol=", repr(invChol.clean(1e-6)))
     print("chol*t(chol)=", repr((chol * chol.transpose()).clean(1e-6)))
     print("chol*invchol=", repr((chol * invChol).clean(1e-6)))
+
+# non-spd cov
+dist = ot.Normal(
+    [0] * 3, ot.CovarianceMatrix([[1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+)
+assert dist.getCorrelation()[0, 0] > 1.0, "not regularized"
+sample = dist.getSample(10)

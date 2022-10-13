@@ -106,19 +106,20 @@ Normal::Normal(const Point & mean,
 {
   setName("Normal");
   UnsignedInteger dimension = mean.getDimension();
-  if (C.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the mean vector and the covariance matrix have incompatible dimensions";
-  if (!C.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "Error: the covariance matrix is not positive definite";
+  if (C.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "The mean vector and the covariance matrix have incompatible dimensions";
   Point sigma(dimension);
   CorrelationMatrix R(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    sigma[i] = std::sqrt(C(i, i));
-    for (UnsignedInteger j = 0; j < i; ++j) R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+    const Scalar cii = C(i, i);
+    if (!(cii > 0.0))
+      throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
+    sigma[i] = std::sqrt(cii);
+    for (UnsignedInteger j = 0; j < i; ++ j)
+      R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
   }
-  // To check that the values are > 0. This call also compute the range.
-  setSigma(sigma);
-  setCorrelation(R);
-  checkIndependentCopula();
+  *this = Normal(mean, sigma, R);
 }
 
 /* Comparison operator */
