@@ -25,12 +25,12 @@ namespace std {
     $action
   }
   catch (const OT::InvalidArgumentException & ex) {
-    SWIG_exception(SWIG_TypeError,ex.__repr__().c_str());
+    SWIG_exception(SWIG_TypeError, ex.__repr__().c_str());
   }
   catch (const OT::OutOfBoundException & ex) {
     SWIG_exception(SWIG_IndexError, ex.__repr__().c_str());
   }
-  catch (const OT::InterruptionException & ex) {
+  catch (const OT::InterruptionException &) {
     SWIG_exception(SWIG_RuntimeError, "Interruption in $decl");
   }
   catch (const OT::Exception & ex) {
