@@ -185,3 +185,23 @@ for name in ["gaco", "ihs", "sga"]:
     y = result.getOptimalValue()
     print(name, x, y)
     assert y[0] < 200.0, str(y)
+
+
+# check we dont expose penalized values
+f = ot.SymbolicFunction(
+    ["x1", "x2"], ["x1", "var g := 1.0 + 9.0 * (x1 + x2); g * (1.0 - sqrt(x1 / g))"]
+)
+zdt1 = ot.OptimizationProblem(f)
+bounds = ot.Interval([0.0] * 2, [5.0] * 2)
+zdt1.setBounds(bounds)
+ineq = ot.ComposedFunction(ot.SymbolicFunction(["y1", "y2"], ["2-y1", "2-y2"]), f)  # y1,y2 <2
+zdt1.setInequalityConstraint(ineq)
+dist = ot.ComposedDistribution([ot.Uniform(0.0, 5.0)] * 2)
+pop0 = dist.getSample(50)
+algo = ot.Pagmo(zdt1, "nsga2", pop0)
+algo.run()
+result = algo.getResult()
+x = result.getFinalPoints()
+y = result.getFinalValues()
+for i in range(y.getSize()):
+    assert y[i, 1] < 100.0, "penalized y value"

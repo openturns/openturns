@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OTconfig.hxx"
+#include "openturns/DatabaseFunction.hxx"
 
 #ifdef OPENTURNS_HAVE_PAGMO
 #include <pagmo/algorithm.hpp>
@@ -61,6 +62,9 @@ struct PagmoProblem
   PagmoProblem(const Pagmo * algorithm)
     : algorithm_(algorithm)
   {
+    if (!algorithm)
+      throw InvalidArgumentException(HERE) << "Null algo";
+
     // pagmo wants the integer components grouped at the end, so renumbering is in order
     Indices renum;
     Indices renum_inv;
@@ -75,6 +79,9 @@ struct PagmoProblem
     ordinal.fill();
     if (renum != ordinal)
       renum_ = renum;
+
+    evaluationInputHistory_ = Sample(0, algorithm->getProblem().getDimension());
+    evaluationOutputHistory_ = Sample(0, algorithm->getProblem().getObjective().getOutputDimension());
   }
 
   Point renumber(const Point & inP) const
@@ -91,7 +98,9 @@ struct PagmoProblem
   pagmo::vector_double fitness(const pagmo::vector_double & inv) const
   {
     const Point inP(renumber(Point(inv.begin(), inv.end())));
+    evaluationInputHistory_.add(inP);
     Point outP(algorithm_->getProblem().getObjective()(inP));
+    evaluationOutputHistory_.add(outP);
     for (UnsignedInteger i = 0; i < outP.getDimension(); ++ i)
       if (!algorithm_->getProblem().isMinimization(i))
         outP[i] *= -1.0;
@@ -171,7 +180,9 @@ struct PagmoProblem
         const Point xsi(xs.begin() + offset + i * inputDimension, xs.begin() + offset + (i + 1) * inputDimension);
         inSb[i] = renumber(xsi);
       }
+      evaluationInputHistory_.add(inSb);
       Sample outSb(problem.getObjective()(inSb));
+      evaluationOutputHistory_.add(outSb);
       for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
         for (UnsignedInteger j = 0; j < outputDimension; ++ j)
           if (!problem.isMinimization(j))
@@ -221,11 +232,15 @@ struct PagmoProblem
   }
 
   static UnsignedInteger evaluationNumber_;
+  static Sample evaluationInputHistory_;
+  static Sample evaluationOutputHistory_;
   const Pagmo * algorithm_ = 0;
   Indices renum_;
 };
 
 UnsignedInteger PagmoProblem::evaluationNumber_ = 0;
+Sample PagmoProblem::evaluationInputHistory_;
+Sample PagmoProblem::evaluationOutputHistory_;
 #endif
 
 
@@ -535,48 +550,46 @@ void Pagmo::run()
   algo.set_seed(seed_);
   PagmoProblem::evaluationNumber_ = 0;
   pop = algo.evolve(pop);
-  UnsignedInteger evaluationNumber = PagmoProblem::evaluationNumber_;
   result_ = OptimizationResult(getProblem());
-  result_.setEvaluationNumber(evaluationNumber);
+  result_.setEvaluationNumber(PagmoProblem::evaluationNumber_);
   Scalar optimalValue = 0.0;
   Point optimalPoint;
-  const UnsignedInteger objectiveDimension = getProblem().getObjective().getOutputDimension();
   Sample finalPoints(0, getProblem().getDimension());
-  Sample finalValues(0, objectiveDimension);
 
+  // retrieve final population
   for (UnsignedInteger i = 0; i < pop.size(); ++ i)
   {
     const pagmo::vector_double x(pop.get_x()[i]);
-    const pagmo::vector_double y(pop.get_f()[i]);
     const Point inP(pproblem.renumber(Point(x.begin(), x.end())));
-    Point outP(y.begin(), y.begin() + objectiveDimension); // also contains constraints
-    for (UnsignedInteger j = 0; j < objectiveDimension; ++ j)
-      if (!getProblem().isMinimization(j))
-        outP[j] *= -1.0;
+    finalPoints.add(inP);
+  }
+  // we want to retrieve evaluations before penalization to avoid MaxScalar values
+  const DatabaseFunction xToY(PagmoProblem::evaluationInputHistory_,
+                              PagmoProblem::evaluationOutputHistory_);
+  const Sample finalValues(xToY(finalPoints));
+  result_.setFinalPoints(finalPoints);
+  result_.setFinalValues(finalValues);
 
-    if (objectiveDimension == 1)
+  const UnsignedInteger objectiveDimension = getProblem().getObjective().getOutputDimension();
+  if (objectiveDimension == 1)
+  {
+    Point optimalPoint;
+    for (UnsignedInteger i = 0; i < finalPoints.getSize(); ++ i)
     {
+      const Point inP(finalPoints[i]);
+      const Point outP(finalValues[i]);
       if (i == 0)
       {
-        optimalValue = outP[0];
         optimalPoint = inP;
+        optimalValue = outP[0];
       }
       if ((getProblem().isMinimization() && (outP[0] < optimalValue))
           || (!getProblem().isMinimization() && (outP[0] > optimalValue)))
       {
-        optimalValue = outP[0];
         optimalPoint = inP;
+        optimalValue = outP[0];
       }
     }
-    finalPoints.add(inP);
-    finalValues.add(outP);
-  }
-
-  result_.setFinalPoints(finalPoints);
-  result_.setFinalValues(finalValues);
-
-  if (objectiveDimension == 1)
-  {
     result_.setOptimalPoint(optimalPoint);
     result_.setOptimalValue(Point(1, optimalValue));
   }
