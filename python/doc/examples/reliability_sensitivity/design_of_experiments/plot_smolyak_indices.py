@@ -6,19 +6,22 @@ Plot Smolyak multi-indices
 # The goal of this example is to plot the multi-indices used in Smolyak's
 # quadrature.
 #
-# For a given dimension :math:`d_x \in \mathbb{N}` and a given level :math:`\ell \in \mathbb{N}`
+# For a given dimension :math:`d_x \in \mathbb{N}` and a given level
+# :math:`\ell \in \mathbb{N}`
 # Smolyak's quadrature is the combination of tensorized univariate quadratures.
 # These quadrature are defined by the set of multi-indices:
 #
 # .. math::
 #
-#     \mathcal{S}_{\ell, d_x} = \left\{\|\boldsymbol{k}\|_1 \leq \ell + d_x - 1\right\}
+#     \mathcal{S}_{\ell, d_x} = \left\{\|\boldsymbol{k}\|_1 \leq \ell
+#                                      + d_x - 1\right\}
 #
 # where :math:`\|\boldsymbol{k}\|_1 = k_1 + ... + k_{d_x}` is the 1-norm of the
 # multi-index :math:`\boldsymbol{k} \in \mathbb{N}^{d_x}`.
 #
 # The goal of this script is to plot the multi-indices involved in Smolyak's
-# quadrature for different values of the level :math:`\ell` in dimension :math:`d_x = 2`.
+# quadrature for different values of the level :math:`\ell` in
+# dimension :math:`d_x = 2`.
 
 # %%
 import openturns as ot
@@ -28,10 +31,11 @@ from matplotlib import pylab as plt
 # %%
 # In the first example, we print the indices involved in
 # Smolyak-Legendre quadrature of level 3.
-# The multi-indices are computed using the :meth:`~openturns.SmolyakExperiment.computeCombination` method.
-# Actually, the multi-indices do not actually depend on the underlying univariate
-# quadratures, but this is required for the :class:`~openturns.SmolyakExperiment`
-# class.
+# The multi-indices are computed using the
+# :meth:`~openturns.SmolyakExperiment.computeCombination` method.
+# Actually, the multi-indices do not actually depend on the
+# underlying univariate quadratures, but this is required for
+# the :class:`~openturns.SmolyakExperiment` class.
 
 uniform = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
 collection = [uniform] * 2
@@ -57,7 +61,7 @@ def drawSmolyakIndices(level):
     experiment = ot.SmolyakExperiment(collection, level)
     indices = experiment.computeCombination()
     sample = ot.Sample(indices)
-    graph = ot.Graph("$\ell = %d$" % (level), "$k_1$", "$k_2$", True)
+    graph = ot.Graph("L = %d" % (level), "k1", "k2", True)
     cloud = ot.Cloud(sample)
     cloud.setPointStyle("bullet")
     graph.add(cloud)

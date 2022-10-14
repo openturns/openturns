@@ -5,8 +5,8 @@ Merge nodes in Smolyak quadrature
 # %%
 # The goal of this example is to see the effect of the merge algorithm in
 # Smolyak's quadrature implemented in :class:`~openturns.SmolyakExperiment`.
-# We analyse the sensitivity of the number of nodes to the relative and absolute
-# tolerances.
+# We analyse the sensitivity of the number of nodes to the relative
+# and absolute tolerances.
 # Then we analyse the effect of the merge algorithm on the number of nodes.
 
 # %%
@@ -56,7 +56,8 @@ def computeNumberOfSmolyakNodes(level, epsilon_a, epsilon_r):
 
 
 # %%
-# In the following experiments, we use :math:`\epsilon = \epsilon_a = \epsilon_r` i.e.
+# In the following experiments, we use
+# :math:`\epsilon = \epsilon_a = \epsilon_r` i.e.
 # the relative and absolute tolerances are set to be equal.
 
 
@@ -109,7 +110,7 @@ for epsilon in epsilon_array:
         size = computeNumberOfSmolyakNodes(level, epsilon, epsilon)
         size_list.append(size)
     cloud = ot.Cloud(level_list, size_list)
-    cloud.setLegend("$\epsilon = %.2e$" % (epsilon))
+    cloud.setLegend("epsilon = %.2e" % (epsilon))
     cloud.setPointStyle(point_styles[index])
     graph.add(cloud)
     index += 1
@@ -124,8 +125,9 @@ otv.View(
 plt.tight_layout()
 
 # %%
-# We see that changing the tolerance from :math:`10^{-6}` down to :math:`10^{-20}`
-# does not change much the size of Smolyak's quadrature.
+# We see that changing the tolerance from :math:`10^{-6}` down
+# to :math:`10^{-20}` does not change much the size of Smolyak's
+# quadrature.
 # Using :math:`\epsilon = 10^{-1}` reduces the number of nodes by a too large
 # amount.
 # This is because a relatively large tolerance considers that many candidate
