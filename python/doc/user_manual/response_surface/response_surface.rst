@@ -37,6 +37,5 @@ Non-parametric
     functional_chaos_expansion
     glm
     kriging
-    low_rank_approximation
     lm
 

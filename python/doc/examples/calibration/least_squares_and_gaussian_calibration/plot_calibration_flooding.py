@@ -78,7 +78,8 @@ from matplotlib import pylab as plt
 import openturns.viewer as viewer
 import numpy as np
 import openturns as ot
-ot.ResourceMap.SetAsUnsignedInteger('Normal-SmallDimension', 1)
+
+ot.ResourceMap.SetAsUnsignedInteger("Normal-SmallDimension", 1)
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -102,11 +103,11 @@ def functionFlooding(X):
     L = 5.0e3
     B = 300.0
     Q, K_s, Z_v, Z_m = X
-    alpha = (Z_m - Z_v)/L
+    alpha = (Z_m - Z_v) / L
     if alpha < 0.0 or K_s <= 0.0:
         H = np.inf
     else:
-        H = (Q/(K_s*B*np.sqrt(alpha)))**(3.0/5.0)
+        H = (Q / (K_s * B * np.sqrt(alpha))) ** (3.0 / 5.0)
     return [H]
 
 
@@ -159,7 +160,7 @@ view = viewer.View(graph)
 
 # %%
 sigmaObservationNoiseH = 0.1  # (m)
-noiseH = ot.Normal(0., sigmaObservationNoiseH)
+noiseH = ot.Normal(0.0, sigmaObservationNoiseH)
 sampleNoiseH = noiseH.getSample(nbobs)
 Hobs = outputH + sampleNoiseH
 
@@ -183,9 +184,9 @@ view = viewer.View(graph)
 # Define the value of the reference values of the :math:`\theta` parameter. In the bayesian framework, this is called the mean of the *prior* normal distribution. In the data assimilation framework, this is called the *background*.
 
 # %%
-KsInitial = 20.
-ZvInitial = 49.
-ZmInitial = 51.
+KsInitial = 20.0
+ZvInitial = 49.0
+ZmInitial = 51.0
 thetaPrior = [KsInitial, ZvInitial, ZmInitial]
 
 # %%
@@ -243,8 +244,11 @@ print(distributionPosterior)
 # Let us compute a 95% confidence interval for the solution :math:`\theta^\star`.
 
 # %%
-print(distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)[0])
+print(
+    distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+        0.95
+    )[0]
+)
 
 # %%
 # The confidence interval is *very* large. In order to clarify the situation, we compute the Jacobian matrix of the model at the candidate point.
@@ -328,8 +332,7 @@ print(thetaMAP)
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)[0])
+print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
 
 # %%
 # In this case, the value of the parameter :math:`K_s` is quite accurately computed, but there is a relatively large uncertainty on the values of :math:`Z_v` and :math:`Z_m`.
@@ -391,9 +394,9 @@ errorCovariance[0, 0] = sigmaH**2
 # Define the covariance matrix of the parameters :math:`\theta` to calibrate.
 
 # %%
-sigmaKs = 5.
-sigmaZv = 1.
-sigmaZm = 1.
+sigmaKs = 5.0
+sigmaZv = 1.0
+sigmaZm = 1.0
 
 # %%
 sigma = ot.CovarianceMatrix(3)
@@ -407,7 +410,8 @@ print(sigma)
 
 # %%
 algo = ot.GaussianLinearCalibration(
-    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance, "SVD")
+    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance, "SVD"
+)
 
 # %%
 # The `run` method computes the solution of the problem.
@@ -463,8 +467,11 @@ print(distributionPosterior)
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
 
 # %%
-print(distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)[0])
+print(
+    distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+        0.95
+    )[0]
+)
 
 # %%
 # We see that there is a large uncertainty on the value of the parameter :math:`K_s` which can be as small as :math:`14` and as large as :math:`34`.
@@ -477,7 +484,9 @@ graph = calibrationResult.drawParameterDistributions()
 view = viewer.View(graph)
 
 # %%
-# The two distributions are different, which shows that the calibration is sensible to the observations (if the observations were not sensible, the two distributions were superimposed). Moreover, the two distributions are quite close, which implies that the prior distribution has played a roled in the calibration (otherwise the two distributions would be completely different, indicating that only the observations were taken into account).
+# The two distributions are different, which shows that the calibration is sensible to the observations (if the observations were not sensible, the two distributions were superimposed).
+# Moreover, the two distributions are quite close, which implies that the prior distribution has played a roled in the calibration (otherwise the two distributions would be completely different,
+# indicating that only the observations were taken into account).
 
 # %%
 # Gaussian nonlinear calibration
@@ -488,7 +497,8 @@ view = viewer.View(graph)
 
 # %%
 algo = ot.GaussianNonLinearCalibration(
-    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance)
+    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance
+)
 
 # %%
 # The `run` method computes the solution of the problem.
@@ -542,8 +552,11 @@ distributionPosterior = calibrationResult.getParameterPosterior()
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
 
 # %%
-print(distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
-    0.95)[0])
+print(
+    distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+        0.95
+    )[0]
+)
 
 # %%
 # We see that there is a small uncertainty on the value of all parameters.
@@ -570,12 +583,12 @@ view = viewer.View(graph)
 # We must configure the key before creating the object (otherwise changing the parameter does not change the result).
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger(
-    "GaussianNonLinearCalibration-BootstrapSize", 0)
+ot.ResourceMap.SetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 0)
 
 # %%
 algo = ot.GaussianNonLinearCalibration(
-    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance)
+    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance
+)
 
 # %%
 algo.run()

@@ -1,0 +1,202 @@
+%feature("docstring") OT::FieldFunctionalChaosResult
+"Functional metamodel result.
+
+Parameters
+----------
+inputKLResultCollection : sequence of :class:`~openturns.KarhunenLoeveResult`
+    List of input fields decompositions.
+fceResult : :class:`~openturns.FunctionalChaosResult`
+    Functional chaos decomposition.
+outputKLResultCollection : sequence of :class:`~openturns.KarhunenLoeveResult`
+    List of output fields decompositions.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getInputKLResultCollection
+"Accessor to the input fields decompositions.
+
+Returns
+-------
+inputKLResultCollection : Collection of :class:`~openturns.KarhunenLoeveResult`
+    List of input fields decompositions."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getOutputKLResultCollection
+"Accessor to the output fields decompositions.
+
+Returns
+-------
+outputKLResultCollection : Collection of :class:`~openturns.KarhunenLoeveResult`
+    List of output fields decompositions."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getFCEResult
+"Accessor to the chaos decomposition.
+
+Returns
+-------
+fceResult : :class:`~openturns.FunctionalChaosResult`
+    Functional chaos decomposition."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::setBlockIndices
+"Accessor to the block indices.
+
+Parameters
+----------
+blockIndices : 2-d sequence of int
+    Independent components indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getBlockIndices
+"Accessor to the block indices.
+
+Returns
+-------
+blockIndices : :class:`~openturns.IndicesCollection`
+    Independent components indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::setMetamodel
+"Accessor to the metamodel.
+
+Parameters
+----------
+metamodel : :class:`~openturns.FieldToPointFunction`
+    Metamodel function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getFieldToPointMetamodel
+"Accessor to the metamodel.
+
+Returns
+-------
+metamodel : :class:`~openturns.FieldToPointFunction`
+    Metamodel function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getPointToFieldMetamodel
+"Accessor to the metamodel.
+
+Returns
+-------
+metamodel : :class:`~openturns.PointToFieldFunction`
+    Metamodel function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getFieldMetamodel
+"Accessor to the metamodel.
+
+Returns
+-------
+metamodel : :class:`~openturns.FieldFunction`
+    Metamodel function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::setInputProcessSample
+"Accessor to the input process sample.
+
+Parameters
+----------
+inputProcessSample : :class:`~openturns.ProcessSample`
+    Input process sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getInputProcessSample
+"Accessor to the input process sample.
+
+Returns
+-------
+inputProcessSample : :class:`~openturns.ProcessSample`
+    Input process sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::setOutputProcessSample
+"Accessor to the output process sample.
+
+Parameters
+----------
+outputProcessSample : :class:`~openturns.ProcessSample`
+    Output process sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getOutputProcessSample
+"Accessor to the output process sample.
+
+Returns
+-------
+outputProcessSample : :class:`~openturns.ProcessSample`
+    Output process sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::setInputSample
+"Accessor to the input sample.
+
+Parameters
+----------
+inputSample : :class:`~openturns.Sample`
+    Input values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    Input values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::setOutputSample
+"Accessor to the output sample.
+
+Parameters
+----------
+outputSample : :class:`~openturns.Sample`
+    Ouput values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    Ouput values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::setModesSample
+"Accessor to the modes sample.
+
+Parameters
+----------
+modes : :class:`~openturns.Sample`
+    Projected modes values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosResult::getModesSample
+"Accessor to the modes sample.
+
+Returns
+-------
+modes : :class:`~openturns.Sample`
+     Projected modes values."

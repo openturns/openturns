@@ -6,7 +6,8 @@ ot.TESTPREAMBLE()
 
 # Instance creation
 myFunc = ot.SymbolicFunction(
-    ['x1', 'x2'], ['x1*sin(x2)', 'cos(x1+x2)', '(x2+1)*exp(x1-2*x2)'])
+    ["x1", "x2"], ["x1*sin(x2)", "cos(x1+x2)", "(x2+1)*exp(x1-2*x2)"]
+)
 
 # Copy constructor
 newFunc = ot.Function(myFunc)

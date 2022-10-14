@@ -220,10 +220,10 @@ Field ProcessSample::computeKurtosis() const
   return getImplementation()->computeKurtosis();
 }
 
-/* Gives the centered moment of order k of the sample (by component) */
-Field ProcessSample::computeCenteredMoment(const UnsignedInteger k) const
+/* Gives the central moment of order k of the sample (by component) */
+Field ProcessSample::computeCentralMoment(const UnsignedInteger k) const
 {
-  return getImplementation()->computeCenteredMoment(k);
+  return getImplementation()->computeCentralMoment(k);
 }
 
 /* Gives the raw moment of order k of the sample (by component) */

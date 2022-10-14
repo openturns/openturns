@@ -40,21 +40,21 @@ print("KL lift=", result.lift(coefficients[0]))
 print("KL lift as field=", result.liftAsField(coefficients[0]))
 
 # 2d input, to check that issue #1660 is solved
-mesh = ot.IntervalMesher([4]*2).build(ot.Interval([-1.2]*2, [1.0]*2))
-cov2D = ot.AbsoluteExponential([1.0]*2)
+mesh = ot.IntervalMesher([4] * 2).build(ot.Interval([-1.2] * 2, [1.0] * 2))
+cov2D = ot.AbsoluteExponential([1.0] * 2)
 algo = ot.KarhunenLoeveP1Algorithm(mesh, cov2D, 1e-3)
 algo.run()
 result = algo.getResult()
 lambd = result.getEigenvalues()
 KLModesPS = result.getModesAsProcessSample()
 # The output is hidden due to near-zero nonreproducible values
-#print("KL modes (process sample)=", KLModesPS)
+# print("KL modes (process sample)=", KLModesPS)
 KLScaledModesPS = result.getScaledModesAsProcessSample()
 # The output is hidden due to near-zero nonreproducible values
-#print("KL scaled modes (process sample)=", KLScaledModesPS)
+# print("KL scaled modes (process sample)=", KLScaledModesPS)
 KLModes = result.getModes()
 # The output is hidden due to near-zero nonreproducible values
-#print("KL modes (functions)=", KLModes)
+# print("KL modes (functions)=", KLModes)
 KLScaledModes = result.getScaledModes()
 # The output is hidden due to near-zero nonreproducible values
-#print("KL scaled modes (functions)=", KLScaledModes)
+# print("KL scaled modes (functions)=", KLScaledModes)

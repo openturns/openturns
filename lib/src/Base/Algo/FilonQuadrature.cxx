@@ -209,4 +209,22 @@ String FilonQuadrature::__str__(const String & ) const
   return oss;
 }
 
+/* Method save() stores the object through the StorageManager */
+void FilonQuadrature::save(Advocate & adv) const
+{
+  IntegrationAlgorithmImplementation::save(adv);
+  adv.saveAttribute("n_", n_);
+  adv.saveAttribute("omega_", omega_);
+  adv.saveAttribute("kind_", kind_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void FilonQuadrature::load(Advocate & adv)
+{
+  IntegrationAlgorithmImplementation::load(adv);
+  adv.loadAttribute("n_", n_);
+  adv.loadAttribute("omega_", omega_);
+  adv.loadAttribute("kind_", kind_);
+}
+
 END_NAMESPACE_OPENTURNS

@@ -78,9 +78,6 @@ public:
   /** Accessor for boundingbox */
   Interval getBoundingBox() const override;
 
-  /** Draw method */
-  String draw() const override;
-
   /** Clone method */
   Pie * clone() const override;
 

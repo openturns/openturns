@@ -61,7 +61,7 @@ int main(int, char *[])
     fullprint << "is stationary? " << myProcess1.isStationary() << std::endl;
     myProcess1.setSamplingMethod(GaussianProcess::CHOLESKY);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
-    myProcess1.setSamplingMethod(GaussianProcess::GIBBS);
+    myProcess1.setSamplingMethod(GaussianProcess::GALLIGAOGIBBS);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With constant trend */
@@ -71,7 +71,7 @@ int main(int, char *[])
     fullprint << "is stationary? " << myProcess2.isStationary() << std::endl;
     myProcess1.setSamplingMethod(GaussianProcess::CHOLESKY);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
-    myProcess1.setSamplingMethod(GaussianProcess::GIBBS);
+    myProcess1.setSamplingMethod(GaussianProcess::GALLIGAOGIBBS);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With varying trend */
@@ -81,7 +81,7 @@ int main(int, char *[])
     fullprint << "is stationary? " << myProcess3.isStationary() << std::endl;
     myProcess1.setSamplingMethod(GaussianProcess::CHOLESKY);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
-    myProcess1.setSamplingMethod(GaussianProcess::GIBBS);
+    myProcess1.setSamplingMethod(GaussianProcess::GALLIGAOGIBBS);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
   }
   catch (TestFailed & ex)

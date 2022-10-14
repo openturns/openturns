@@ -259,14 +259,14 @@ Field ProcessSampleImplementation::computeKurtosis() const
 }
 
 /*
- * Gives the centered moment of order k of the sample (by component)
+ * Gives the central moment of order k of the sample (by component)
  */
-Field ProcessSampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
+Field ProcessSampleImplementation::computeCentralMoment(const UnsignedInteger k) const
 {
   const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
   Sample values(verticesNumber, getDimension());
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
-    values[i] = getSampleAtVertex(i).computeCenteredMoment(k);
+    values[i] = getSampleAtVertex(i).computeCentralMoment(k);
   return Field(mesh_, values);
 }
 
@@ -517,6 +517,9 @@ ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerCompo
 /* Extract the sample of values at the given vertex index */
 Sample ProcessSampleImplementation::getSampleAtVertex(const UnsignedInteger index) const
 {
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  if (index >= verticesNumber)
+    throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than vertices number (" << verticesNumber << ")";
   const UnsignedInteger size = getSize();
   const UnsignedInteger dimension = getDimension();
   Sample result(size, dimension);

@@ -25,10 +25,6 @@
 %import dist_bundle1_module.i
 %import dist_bundle2_module.i
 
-/* FIXME: Wrong place in Base/Stat */
-/* Base/Stat */
-%include CorrelationAnalysis.i
-
 /* Uncertainty/Algorithm/Experiment */
 %import weightedexperiment_module.i
 

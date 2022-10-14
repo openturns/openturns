@@ -96,9 +96,6 @@ public:
   using ContinuousDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
-  /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const override;
-
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Distribution getStandardRepresentative() const override;
 

@@ -138,8 +138,6 @@ int main(int, char *[])
       fullprint << "covariance (ref)=" << distributionReference.getCovariance() << std::endl;
       RandomMixture::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
-      /*    distribution.setIntegrationNodesNumber(6);
-            for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;*/
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
       fullprint << "blockMin=" << distribution.getBlockMin() << std::endl;
       fullprint << "blockMax=" << distribution.getBlockMax() << std::endl;
@@ -180,7 +178,6 @@ int main(int, char *[])
     colors[0] = "red";
     colors[1] = "green";
     graph.setColors(colors);
-    //     graph.draw("validation");
     // Test for the projection
     Collection<DistributionFactory> collFactories(0);
     collFactories.add(UniformFactory());

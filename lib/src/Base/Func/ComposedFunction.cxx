@@ -55,7 +55,7 @@ ComposedFunction::ComposedFunction(const Implementation & p_left,
     setGradient(new ComposedGradient(p_left->getGradient(), p_right->getEvaluation(), p_right->getGradient()));
     setUseDefaultGradientImplementation(p_left->getUseDefaultGradientImplementation() || p_right->getUseDefaultGradientImplementation());
   }
-  catch(InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     // Nothing to do
   }
@@ -64,7 +64,7 @@ ComposedFunction::ComposedFunction(const Implementation & p_left,
     setHessian(new ComposedHessian(p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
     setUseDefaultHessianImplementation(p_left->getUseDefaultHessianImplementation() || p_right->getUseDefaultHessianImplementation());
   }
-  catch(InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     // Nothing to do
   }
@@ -84,7 +84,7 @@ ComposedFunction::ComposedFunction(const Function & left,
     setGradient(new ComposedGradient(left.getGradient(), right.getEvaluation(), right.getGradient()));
     setUseDefaultGradientImplementation(left.getUseDefaultGradientImplementation() || right.getUseDefaultGradientImplementation());
   }
-  catch(InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     // Nothing to do
   }
@@ -93,7 +93,7 @@ ComposedFunction::ComposedFunction(const Function & left,
     setHessian(new ComposedHessian(left.getGradient(), left.getHessian(), right.getEvaluation(), right.getGradient(), right.getHessian()));
     setUseDefaultHessianImplementation(left.getUseDefaultHessianImplementation() || right.getUseDefaultHessianImplementation());
   }
-  catch(InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     // Nothing to do
   }

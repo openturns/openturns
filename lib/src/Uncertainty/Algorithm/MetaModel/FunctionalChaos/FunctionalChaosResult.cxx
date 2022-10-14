@@ -39,7 +39,6 @@ FunctionalChaosResult::FunctionalChaosResult()
   , distribution_()
   , transformation_()
   , inverseTransformation_()
-  , composedModel_()
   , orthogonalBasis_()
   , I_(0)
   , alpha_k_(0, 0)
@@ -50,27 +49,25 @@ FunctionalChaosResult::FunctionalChaosResult()
 
 
 /* Default constructor */
-FunctionalChaosResult::FunctionalChaosResult(const Function & model,
+FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
+    const Sample & outputSample,
     const Distribution & distribution,
     const Function & transformation,
     const Function & inverseTransformation,
-    const Function & composedModel,
     const OrthogonalBasis & orthogonalBasis,
     const Indices & I,
     const Sample & alpha_k,
     const FunctionCollection & Psi_k,
     const Point & residuals,
     const Point & relativeErrors)
-  : MetaModelResult(model, Function(), residuals, relativeErrors)
+  : MetaModelResult(inputSample, outputSample, Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)
-  , composedModel_(composedModel)
   , orthogonalBasis_(orthogonalBasis)
   , I_(I)
   , alpha_k_(alpha_k)
   , Psi_k_(Psi_k)
-  , composedMetaModel_()
 {
   // The composed meta model will be a dual linear combination
   composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
@@ -79,7 +76,6 @@ FunctionalChaosResult::FunctionalChaosResult(const Function & model,
   else
     metaModel_ = ComposedFunction(composedMetaModel_, transformation);
 }
-
 
 /* Virtual constructor */
 FunctionalChaosResult * FunctionalChaosResult::clone() const
@@ -96,7 +92,6 @@ String FunctionalChaosResult::__repr__() const
          << " distribution=" << distribution_
          << " transformation=" << transformation_
          << " inverseTransformation=" << inverseTransformation_
-         << " composedModel=" << composedModel_
          << " orthogonalBasis=" << orthogonalBasis_
          << " indices=" << I_
          << " coefficients=" << alpha_k_
@@ -131,12 +126,6 @@ Function FunctionalChaosResult::getTransformation() const
 Function FunctionalChaosResult::getInverseTransformation() const
 {
   return inverseTransformation_;
-}
-
-/* Composed model accessor */
-Function FunctionalChaosResult::getComposedModel() const
-{
-  return composedModel_;
 }
 
 /* Orthogonal basis accessor */
@@ -176,7 +165,6 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "distribution_", distribution_ );
   adv.saveAttribute( "transformation_", transformation_ );
   adv.saveAttribute( "inverseTransformation_", inverseTransformation_ );
-  adv.saveAttribute( "composedModel_", composedModel_ );
   adv.saveAttribute( "orthogonalBasis_", orthogonalBasis_ );
   adv.saveAttribute( "I_", I_ );
   adv.saveAttribute( "alpha_k_", alpha_k_ );
@@ -192,7 +180,6 @@ void FunctionalChaosResult::load(Advocate & adv)
   adv.loadAttribute( "distribution_", distribution_ );
   adv.loadAttribute( "transformation_", transformation_ );
   adv.loadAttribute( "inverseTransformation_", inverseTransformation_ );
-  adv.loadAttribute( "composedModel_", composedModel_ );
   adv.loadAttribute( "orthogonalBasis_", orthogonalBasis_ );
   adv.loadAttribute( "I_", I_ );
   adv.loadAttribute( "alpha_k_", alpha_k_ );

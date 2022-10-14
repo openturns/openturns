@@ -1,9 +1,6 @@
 %feature("docstring") OT::Uniform
 "Uniform distribution.
 
-Available constructors:
-    Uniform(*a=-1.0, b=1.0*)
-
 Parameters
 ----------
 a : float
@@ -37,6 +34,10 @@ Create a distribution:
 
 >>> import openturns as ot
 >>> distribution = ot.Uniform(2.0, 3.0)
+
+Create it from the alternative parametrization :math:`(\mu, \sigma)`:
+
+>>> distribution2 = ot.UniformMuSigma(3.0, 1.15).getDistribution()
 
 Draw a sample:
 

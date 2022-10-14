@@ -7,8 +7,9 @@ import openturns as ot
 #
 
 formulas = [
-    'min(0.1 * (u1 - u2)^2.0 - (u1 + u2) / sqrt(2.0) + 3.0, 0.1 * (u1 - u2)^2.0 + (u1 + u2) / sqrt(2.0) + 3.0, u1 - u2 + 3.5 * sqrt(2.0), -u1 + u2 + 3.5 * sqrt(2.0))']
-limitState = ot.SymbolicFunction(['u1', 'u2'], formulas)
+    "min(0.1 * (u1 - u2)^2.0 - (u1 + u2) / sqrt(2.0) + 3.0, 0.1 * (u1 - u2)^2.0 + (u1 + u2) / sqrt(2.0) + 3.0, u1 - u2 + 3.5 * sqrt(2.0), -u1 + u2 + 3.5 * sqrt(2.0))"
+]
+limitState = ot.SymbolicFunction(["u1", "u2"], formulas)
 dim = limitState.getInputDimension()
 
 #
@@ -74,36 +75,52 @@ N_SS = resultSS.getOuterSampling() * resultSS.getBlockSize()
 
 #
 
-print('')
+print("")
 print(
-    '************************************************************************************************')
+    "************************************************************************************************"
+)
 print(
-    '**************************************** MONTE CARLO *******************************************')
+    "**************************************** MONTE CARLO *******************************************"
+)
 print(
-    '************************************************************************************************')
-print('Pf estimation = %.5e' % PFMC)
-print('Pf Variance estimation = %.5e' % variance_PF_MC)
-print('CoV = %.5f' % CVMC)
-print('90% Confidence Interval =', '%.5e' % length90MC)
-print('CI at 90% =[', '%.5e' % (PFMC - 0.5 * length90MC),
-      '; %.5e' % (PFMC + 0.5 * length90MC), ']')
-print('Limit state calls =', N_MC)
+    "************************************************************************************************"
+)
+print("Pf estimation = %.5e" % PFMC)
+print("Pf Variance estimation = %.5e" % variance_PF_MC)
+print("CoV = %.5f" % CVMC)
+print("90% Confidence Interval =", "%.5e" % length90MC)
 print(
-    '************************************************************************************************')
-print('')
+    "CI at 90% =[",
+    "%.5e" % (PFMC - 0.5 * length90MC),
+    "; %.5e" % (PFMC + 0.5 * length90MC),
+    "]",
+)
+print("Limit state calls =", N_MC)
 print(
-    '************************************************************************************************')
+    "************************************************************************************************"
+)
+print("")
 print(
-    '******************************************* SUBSET SAMPLING **********************************************')
+    "************************************************************************************************"
+)
 print(
-    '************************************************************************************************')
-print('Pf estimation = %.5e' % PFSS)
-print('Pf Variance estimation = %.5e' % variance_PF_SS)
-print('CoV = %.5f' % CVSS)
-print('90% Confidence Interval =', '%.5e' % length90SS)
-print('CI at 90% =[', '%.5e' % (PFSS - 0.5 * length90SS),
-      '; %.5e' % (PFSS + 0.5 * length90SS), ']')
-print('Limit state calls =', N_SS)
+    "******************************************* SUBSET SAMPLING **********************************************"
+)
 print(
-    '************************************************************************************************')
-print('')
+    "************************************************************************************************"
+)
+print("Pf estimation = %.5e" % PFSS)
+print("Pf Variance estimation = %.5e" % variance_PF_SS)
+print("CoV = %.5f" % CVSS)
+print("90% Confidence Interval =", "%.5e" % length90SS)
+print(
+    "CI at 90% =[",
+    "%.5e" % (PFSS - 0.5 * length90SS),
+    "; %.5e" % (PFSS + 0.5 * length90SS),
+    "]",
+)
+print("Limit state calls =", N_SS)
+print(
+    "************************************************************************************************"
+)
+print("")

@@ -13,8 +13,7 @@ for i in range(size):
     values[i] = ref([locations[i]])[0]
     derivatives[i] = ref.gradient([locations[i]])[0, 0]
 
-evaluation = ot.PiecewiseHermiteEvaluation(
-    locations, values, derivatives)
+evaluation = ot.PiecewiseHermiteEvaluation(locations, values, derivatives)
 print("evaluation=", evaluation)
 # Check the values
 X = [[-1.0 + 12.0 * i / (2.0 * size - 1.0)] for i in range(2 * size)]

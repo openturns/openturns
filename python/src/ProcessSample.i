@@ -76,6 +76,10 @@ void __setitem__(SignedInteger index,
   if (index < 0) {
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
+  if (values.getSize() != self->getMesh().getVerticesNumber())
+    throw OT::InvalidArgumentException(HERE) << "got value of size " << values.getSize() << " expected " << self->getMesh().getVerticesNumber();
+  if (values.getDimension() != self->getDimension())
+    throw OT::InvalidArgumentException(HERE) << "got value of dimension " << values.getDimension() << " expected " << self->getDimension();
   self->operator[](index) = values;
 }
 

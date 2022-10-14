@@ -10,7 +10,7 @@ Create and manipulate an ARMA process
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -104,8 +104,8 @@ print(process)
 
 # %%
 # First we get the coefficients AR and MA of the recurrence :
-print('AR coeff = ', process.getARCoefficients())
-print('MA coeff = ', process.getMACoefficients())
+print("AR coeff = ", process.getARCoefficients())
+print("MA coeff = ", process.getMACoefficients())
 
 # %%
 # We check that the white noise is the one we have previously defined :
@@ -116,7 +116,7 @@ print(myWhiteNoise)
 # %%
 # We generate a possible time series realization :
 ts = process.getRealization()
-ts.setName('ARMA realization')
+ts.setName("ARMA realization")
 
 # %%
 # We draw this time series by specifying the wanted marginal index (only 0 is available here).
@@ -129,12 +129,12 @@ view = viewer.View(graph0)
 
 # %%
 # Generate a k time series
-#k = 5
-#myProcessSample = process.getSample(k)
+# k = 5
+# myProcessSample = process.getSample(k)
 
 # Then get the current state of the ARMA
-#armaState = process.getState()
-#print("armaState = ")
+# armaState = process.getState()
+# print("armaState = ")
 # print(armaState)
 
 # %%
@@ -204,7 +204,7 @@ view = viewer.View(graph0)
 # It is of course possible to generate N different possible futures over the Nit next instants.
 N = 6
 possibleFuture_N = arma.getFuture(Nit, N)
-possibleFuture_N.setName('Possible futures')
+possibleFuture_N.setName("Possible futures")
 
 # %%
 # Here we only show the future.

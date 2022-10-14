@@ -30,6 +30,7 @@ Parallel coordinates graph as sensitivity tool
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -41,8 +42,8 @@ model = ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2"])
 # Create the input distribution and random vector X
 myCorMat = ot.CorrelationMatrix(2)
 myCorMat[0, 1] = -0.6
-inputDist = ot.Normal([0., 0.], myCorMat)
-inputDist.setDescription(['X1', 'X2'])
+inputDist = ot.Normal([0.0, 0.0], myCorMat)
+inputDist.setDescription(["X1", "X2"])
 
 inputVector = ot.RandomVector(inputDist)
 
@@ -65,8 +66,9 @@ minValue = 3.35
 maxValue = 20.0
 quantileScale = False
 graphCobweb = ot.VisualTest.DrawParallelCoordinates(
-    X, Y, minValue, maxValue, 'red', quantileScale)
-graphCobweb.setLegendPosition('bottomright')
+    X, Y, minValue, maxValue, "red", quantileScale
+)
+graphCobweb.setLegendPosition("bottomright")
 view = viewer.View(graphCobweb)
 
 # %%
@@ -75,7 +77,8 @@ minValue = 0.9
 maxValue = 1.0
 quantileScale = True
 graphCobweb = ot.VisualTest.DrawParallelCoordinates(
-    X, Y, minValue, maxValue, 'red', quantileScale)
-graphCobweb.setLegendPosition('bottomright')
+    X, Y, minValue, maxValue, "red", quantileScale
+)
+graphCobweb.setLegendPosition("bottomright")
 view = viewer.View(graphCobweb)
 plt.show()

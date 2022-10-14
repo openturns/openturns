@@ -566,16 +566,6 @@ void MixedHistogramUserDefined::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point MixedHistogramUserDefined::getStandardMoment(const UnsignedInteger n) const
-{
-  const UnsignedInteger dimension = getDimension();
-  Point standardMoment(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    standardMoment[i] = getMarginal(i).getStandardMoment(n)[0];
-  return standardMoment;
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution MixedHistogramUserDefined::getStandardRepresentative() const
 {

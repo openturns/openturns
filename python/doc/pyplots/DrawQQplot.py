@@ -8,4 +8,4 @@ sample = normal.getSample(size)
 
 QQPlot = ot.VisualTest.DrawQQplot(sample, normal)
 
-View(QQPlot, figure_kw={'figsize': (4.5, 4.5)})
+View(QQPlot, figure_kw={"figsize": (4.5, 4.5)})

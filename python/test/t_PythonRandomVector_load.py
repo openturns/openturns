@@ -9,12 +9,12 @@ rv = ot.RandomVector()
 
 # load
 study = ot.Study()
-study.setStorageManager(ot.XMLStorageManager('pyrv.xml'))
+study.setStorageManager(ot.XMLStorageManager("pyrv.xml"))
 study.load()
-study.fillObject('rv', rv)
+study.fillObject("rv", rv)
 
 print(rv)
 print(rv.getRealization())
 print(rv.getMean())
 
-os.remove('pyrv.xml')
+os.remove("pyrv.xml")

@@ -75,7 +75,7 @@ public:
 
   struct InternalObject
   {
-    virtual ~InternalObject() throw() {}
+    virtual ~InternalObject() {}
     virtual InternalObject * clone() const
     {
       return new InternalObject(*this);
@@ -378,6 +378,11 @@ public:
   {
     mgr_.readIndexedValue( p_state_, attributeIndex, attributeValue );
     return *this;
+  }
+
+  UnsignedInteger getStudyVersion() const
+  {
+    return mgr_.getStudyVersion();
   }
 
 private:

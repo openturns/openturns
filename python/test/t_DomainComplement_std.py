@@ -20,7 +20,7 @@ print("Complement=", complement)
 # Accessors
 print("Dimension=", complement.getDimension())
 # Contains
-print("is point ", p3, " inside complement? ",  complement.contains(p3))
-print("is point ", p4, " inside complement? ",  complement.contains(p4))
+print("is point ", p3, " inside complement? ", complement.contains(p3))
+print("is point ", p4, " inside complement? ", complement.contains(p4))
 sample = [p3, p4]
-print("is sample ", sample, " inside? ",  complement.contains(sample))
+print("is sample ", sample, " inside? ", complement.contains(sample))

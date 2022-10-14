@@ -19,6 +19,7 @@ Choose the trend basis of a kriging metamodel
 from openturns.usecases import cantilever_beam
 import openturns as ot
 from openturns.viewer import View
+
 ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)
 
@@ -73,7 +74,8 @@ print(X_train.getMin(), X_train.getMax())
 
 # %%
 scaleOptimizationBounds = ot.Interval(
-    [1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5])
+    [1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5]
+)
 
 # %%
 # Finally, we use the `KrigingAlgorithm` class to create the Kriging metamodel.
@@ -181,7 +183,7 @@ def drawMetaModelValidation(X_test, Y_test, krigingMetamodel, title):
     Q2 = val.computePredictivityFactor()[0]
     graph = val.drawValidation().getGraph(0, 0)
     graph.setLegends([""])
-    graph.setLegends(["%s, Q2 = %.2f%%" % (title, 100*Q2), ""])
+    graph.setLegends(["%s, Q2 = %.2f%%" % (title, 100 * Q2), ""])
     graph.setLegendPosition("topleft")
     return graph
 
@@ -190,15 +192,16 @@ def drawMetaModelValidation(X_test, Y_test, krigingMetamodel, title):
 grid = ot.GridLayout(1, 3)
 grid.setTitle("Different trends")
 graphConstant = drawMetaModelValidation(
-    X_test, Y_test, krigingWithConstantTrend, "Constant")
-graphLinear = drawMetaModelValidation(
-    X_test, Y_test, krigingWithLinearTrend, "Linear")
+    X_test, Y_test, krigingWithConstantTrend, "Constant"
+)
+graphLinear = drawMetaModelValidation(X_test, Y_test, krigingWithLinearTrend, "Linear")
 graphQuadratic = drawMetaModelValidation(
-    X_test, Y_test, krigingWithQuadraticTrend, "Quadratic")
+    X_test, Y_test, krigingWithQuadraticTrend, "Quadratic"
+)
 grid.setGraph(0, 0, graphConstant)
 grid.setGraph(0, 1, graphLinear)
 grid.setGraph(0, 2, graphQuadratic)
-_ = View(grid, figure_kw={'figsize': (13, 4)})
+_ = View(grid, figure_kw={"figsize": (13, 4)})
 
 # %%
 # We observe that the three trends perform very well in this case. With more coefficients, the Kriging metamodel is more flexibile and can adjust better to the training sample. This does not mean, however, that the trend coefficients will provide a good fit for the validation sample.

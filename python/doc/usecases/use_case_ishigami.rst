@@ -53,7 +53,7 @@ This leads to the following first order Sobol' indices:
 and the following total order indices:
 
 .. math::
-    ST_1 = \frac{V_1+V_{1,3}}{V(Y)}, \qquad ST_2 = S_2, \qquad S_3 = \frac{V_{1,3}}{V(Y)}.
+    ST_1 = \frac{V_1+V_{1,3}}{V(Y)}, \qquad ST_2 = S_2, \qquad ST_3 = \frac{V_{1,3}}{V(Y)}.
  
 
 The third variable :math:`X_3` has no effect at first order (because :math:`X_3^4` it is multiplied by :math:`\sin(X_1)`), but has a total effet because of the interactions with :math:`X_1`. On the other hand, the second variable :math:`X_2` has no interactions which implies that the first order indice is equal to the total order indice for this input variable.

@@ -75,9 +75,6 @@ public:
     // Nothing to do
   }
 
-  /** Destructor */
-  ~Indices() throw() {}
-
   /** Check that no value is repeated and no value exceed the given bound */
   Bool check(const UnsignedInteger bound) const;
 

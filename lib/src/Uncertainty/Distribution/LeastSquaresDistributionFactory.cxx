@@ -162,7 +162,7 @@ public:
     {
       distribution.setParameter(effectiveParameter);
     }
-    catch (Exception &)
+    catch (const Exception &)
     {
       return Point(getOutputDimension(), SpecFunc::MaxScalar);
     }

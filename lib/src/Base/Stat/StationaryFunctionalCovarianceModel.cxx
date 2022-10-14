@@ -112,7 +112,7 @@ Matrix StationaryFunctionalCovarianceModel::partialGradient(const Point & s,
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected to match the input dimension=" << inputDimension_;
   const Point tau(s - t);
   Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++ i) tauOverTheta[i] = std::fabs(tau[i]) / scale_[i];
+  for (UnsignedInteger i = 0; i < inputDimension_; ++ i) tauOverTheta[i] = std::abs(tau[i]) / scale_[i];
   Matrix grad(amplitude_[0] * amplitude_[0] * rho_.gradient(tauOverTheta));
   for (UnsignedInteger i = 0; i < inputDimension_; ++ i)
     if (tau[i] < 0.0) grad(i, 0) *= -1.0;

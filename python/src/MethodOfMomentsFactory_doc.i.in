@@ -13,14 +13,14 @@ bounds : :class:`~openturns.Interval`, optional
 Notes
 -----
 The underlying optimization problem seeks to minimize the sum of slacks between the
-centered moments of the sample and the centered moments of the parametric model:
+central moments of the sample and the central moments of the parametric model:
 
 .. math::
 
     \Delta = \argmin_{\vect{\theta} \in \Rset^K} [ |\mu_1-m_1|/\sigma ]^2 + \sum_{i=2}^K[ (|\mu_i|^{1/i}-|m_i|^{1/i})/\sigma ]^2
 
 with :math:`K` the number of parameters of the distribution, :math:`\mu_i` and
-:math:`m_i` the centered moments of the sample and the parametric model.
+:math:`m_i` the central moments of the sample and the parametric model.
 
 See also
 --------
@@ -123,3 +123,34 @@ Returns
 -------
 indices : :class:`~openturns.Indices`
     Indices of fixed parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MethodOfMomentsFactory::buildFromMoments
+"Build from moments.
+
+Parameters
+----------
+moments : sequence of float
+    Consists in the mean followed by consecutive central moments from order 2
+    (variance), of total size at least the distribution parameter dimension.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    Estimated distribution.
+
+Notes
+-----
+Depending on the parametric model choosed, not all moments define a valid
+distribution, so it should only used with empirical moments from the same model.
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
+>>> factory = ot.MethodOfMomentsFactory(ot.Beta())
+>>> cm = [distribution.getCentralMoment(i + 2)[0] for i in range(3)]
+>>> moments = [distribution.getMean()[0]] + cm
+>>> inf_distribution = factory.buildFromMoments(moments)"
+

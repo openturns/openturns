@@ -56,23 +56,19 @@ Print Sobol' indices :
 
 Get first order Sobol' indices for X0:
 
->>> chaosSI.getSobolIndex(0)
-0.322659...
+>>> s0 = chaosSI.getSobolIndex(0)
 
 Get total order Sobol' indices for X0:
 
->>> chaosSI.getSobolTotalIndex(0)
-0.4744650...
+>>> st0 = chaosSI.getSobolTotalIndex(0)
 
 Get first order Sobol' indices for group [X0,X1]:
 
->>> chaosSI.getSobolGroupedIndex([0,1])
-0.78412698...
+>>> stg01 = chaosSI.getSobolGroupedIndex([0,1])
 
 Get total order Sobol' indices for group [X1,X2]:
 
->>> chaosSI.getSobolGroupedTotalIndex([1,2])
-0.6773409..."
+>>> stg12 = chaosSI.getSobolGroupedTotalIndex([1,2])"
 
 // ---------------------------------------------------------------------
 
@@ -94,14 +90,14 @@ Parameters
 i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated Sobol indices. :math:`d`
     is the dimension of the input variables.
-out_marginal : int
-    Output marginal
-    Default value is 0
+marginalIndex : int
+    Output marginal index.
+    Default value is 0, i.e. the first output.
 
 Returns
 -------
 s : float
-    The Sobol indice."
+    The first order Sobol index."
 
 // ---------------------------------------------------------------------
 
@@ -113,14 +109,14 @@ Parameters
 i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated total Sobol indices.
     :math:`d` is the dimension of the input variables.
-out_marginal : int
-    Output marginal
-    Default value is 0
+marginalIndex : int
+    Output marginal index.
+    Default value is 0, i.e. the first output.
 
 Returns
 -------
 s : float
-    The total Sobol indice."
+    The total Sobol index."
 
 // ---------------------------------------------------------------------
 
@@ -132,11 +128,14 @@ Parameters
 i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated grouped Sobol indices.
     :math:`d` is the dimension of the input variables.
+marginalIndex : int
+    Output marginal index.
+    Default value is 0, i.e. the first output.
 
 Returns
 -------
 s : float
-    The grouped Sobol first order indice."
+    The grouped Sobol first order index."
 
 // ---------------------------------------------------------------------
 
@@ -148,18 +147,11 @@ Parameters
 i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated grouped Sobol indices.
     :math:`d` is the dimension of the input variables.
+marginalIndex : int
+    Output marginal index.
+    Default value is 0, i.e. the first output.
 
 Returns
 -------
 s : float
-    The grouped Sobol total order indice."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::FunctionalChaosSobolIndices::summary
-"Summary accessor.
-
-Returns
--------
-summary : str
-    A text summary of the sensitivity analysis to be shown in a console."
+    The grouped Sobol total order index."

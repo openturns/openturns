@@ -2,25 +2,21 @@
 "Algorithm for the evaluation of general linear models.
 
 Available constructors:
-    GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basis, keepCovariance=True*)
+    GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, keepCovariance=True*)
 
-    GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basisCollection, keepCovariance=True*)
+    GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basis, keepCovariance=True*)
 
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^n` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^d`.
 
-basis : :class:`~openturns.Basis`
-    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
-
-    If :math:`d>1`, the same basis is used for each marginal output.
-basisCollection : collection of :class:`~openturns.Basis`
-    Collection of :math:`d` functional basis: one basis for each marginal output.
-
-    An empty collection means that no trend is estimated.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model of the Gaussian process. See notes for the details.
+
+basis : :class:`~openturns.Basis`
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
+    If :math:`d>1`, the same basis is used for each marginal output.
 
 keepCovariance : bool, optional
     Indicates whether the covariance matrix has to be stored in the result structure *GeneralLinearModelResult*.

@@ -98,7 +98,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   factory.setOptimizationAlgorithm(solver);
 
   // Estimate
-  const Point parameters(factory.buildParameter(sample));
+  const Point parameters(factory.build(sample).getParameter());
   TruncatedNormal result(buildAsTruncatedNormal(parameters));
   result.setDescription(sample.getDescription());
   return result;
@@ -178,7 +178,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Point & par
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution from the given parameters";
   }

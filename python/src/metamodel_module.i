@@ -50,7 +50,6 @@
 %include QuadraticLeastSquares.i
 %include AdaptiveStrategyImplementation.i
 %include FixedStrategy.i
-%include SequentialStrategy.i
 %include CleaningStrategy.i
 %include AdaptiveStrategy.i
 %include ProjectionStrategyImplementation.i
@@ -82,8 +81,6 @@
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosRandomVector.i
 %include KrigingRandomVector.i
-%include TensorApproximationResult.i
-%include TensorApproximationAlgorithm.i
 
 /* At last we include template definitions */
 %include UncertaintyMetaModelTemplateDefs.i

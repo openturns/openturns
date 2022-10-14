@@ -307,12 +307,6 @@ void WeibullMin::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point WeibullMin::getStandardMoment(const UnsignedInteger n) const
-{
-  return Point(1, SpecFunc::Gamma(1.0 + n / alpha_));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution WeibullMin::getStandardRepresentative() const
 {

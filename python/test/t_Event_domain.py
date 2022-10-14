@@ -41,7 +41,6 @@ print("sample=", event.getSample(10))
 
 # 3. from distribution
 antecedent = ot.RandomVector(ot.Normal(2))
-domain = ot.LevelSet(ot.SymbolicFunction(
-    ['x', 'y'], ['x^2+y^2']), ot.Less(), 1.0)
+domain = ot.LevelSet(ot.SymbolicFunction(["x", "y"], ["x^2+y^2"]), ot.Less(), 1.0)
 event = ot.DomainEvent(antecedent, domain)
-print('sample=', event.getSample(10))
+print("sample=", event.getSample(10))

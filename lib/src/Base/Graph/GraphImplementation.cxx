@@ -71,13 +71,8 @@ GraphImplementation::GraphImplementation(const String & title)
   , legendFontSize_(ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize"))
   , xTitle_()
   , yTitle_()
-  , showAxes_(false)
-  , logScale_(NONE)
-  , showGrid_(false)
-  , gridColor_("gray")
   , xMargin_(ResourceMap::GetAsScalar("Graph-DefaultHorizontalMargin"))
   , yMargin_(ResourceMap::GetAsScalar("Graph-DefaultVerticalMargin"))
-  , automaticBoundingBox_(true)
   , boundingBox_(4)
   , drawablesCollection_(0)
 {
@@ -104,10 +99,8 @@ GraphImplementation::GraphImplementation(const String & title,
   , showAxes_(showAxes)
   , logScale_(NONE)
   , showGrid_(true)
-  , gridColor_("gray")
   , xMargin_(ResourceMap::GetAsScalar("Graph-DefaultHorizontalMargin"))
   , yMargin_(ResourceMap::GetAsScalar("Graph-DefaultVerticalMargin"))
-  , automaticBoundingBox_(true)
   , boundingBox_(4)
   , drawablesCollection_(0)
 {
@@ -262,6 +255,28 @@ GraphImplementation::TickLocation GraphImplementation::getTickLocation() const
   return tickLocation_;
 }
 
+/* integer x-tick flag accessor */
+void GraphImplementation::setIntegerXTick(const Bool integerXTick)
+{
+  integerXTick_ = integerXTick;
+}
+
+Bool GraphImplementation::getIntegerXTick() const
+{
+  return integerXTick_;
+}
+
+/* integer y-tick flag accessor */
+void GraphImplementation::setIntegerYTick(const Bool integerYTick)
+{
+  integerYTick_ = integerYTick;
+}
+
+Bool GraphImplementation::getIntegerYTick() const
+{
+  return integerYTick_;
+}
+
 /* Set log scale for x, y both or none axes */
 void GraphImplementation::setLogScale(const LogScale logScale)
 {
@@ -335,259 +350,6 @@ String GraphImplementation::getTitle() const
 void GraphImplementation::setTitle(const String & title)
 {
   title_ = title;
-}
-
-/* Build the R command corresponding to the legend */
-String GraphImplementation::makeRLegendCommand() const
-{
-  OSS labels, colors, lines, points, fill;
-  labels << "c(";
-  colors << "c(";
-  lines << "c(";
-  points << "c(";
-  fill << "c(";
-
-  Bool drawLegend = false;
-
-  for(DrawableCollection::const_iterator it = drawablesCollection_.begin(); it != drawablesCollection_.end(); ++it)
-  {
-    if (it->getLegend().size() != 0)
-    {
-      drawLegend = true;
-      labels << "\"" << it->getLegend() << "\",";
-
-      if(it->getColor().size() == 0)
-        colors << "NA,";
-      else colors << "\"" << it->getColor() << "\",";
-
-      if(it->getFillStyle().size() == 0)
-        fill << "NA,";
-      else fill << "\"" << it->getFillStyle() << "\",";
-
-      if(it->getPointStyle().size() == 0 || it->getFillStyle().size() != 0) //cannot merge fill and point symbol
-        points << "NA,";
-      else points << it->getPointCode(it->getPointStyle()) << ",";
-
-      if(it->getLineStyle().size() == 0 || it->getFillStyle().size() != 0 ) //cannot merge line and fill symbol
-        lines << "NA,";
-      else lines << "\"" << it->getLineStyle() << "\",";
-    }
-  }
-  if (drawLegend)
-  {
-    String labels_str(labels);
-    labels_str.replace(labels_str.length() - 1, 1, ")");
-
-    String colors_str(colors);
-    colors_str.replace(colors_str.length() - 1, 1, ")");
-
-    String lines_str(lines);
-    lines_str.replace(lines_str.length() - 1, 1, ")");
-
-    String points_str(points);
-    points_str.replace(points_str.length() - 1, 1, ")");
-
-    String fill_str(fill);
-    fill_str.replace(fill_str.length() - 1, 1, ")");
-
-    OSS rCommand;
-    rCommand << "legend(\"" << legendPosition_ << "\","
-             << "legend=" << labels_str << ","
-             << "col=" << colors_str << ","
-             << "lty=" << lines_str << ","
-             << "pch=" << points_str << ","
-             << "fill=" << fill_str << ","
-             << "cex=" << legendFontSize_ << ","
-             << "bg=\"grey90\",merge=TRUE,density=40)";
-
-    return rCommand;
-  }
-
-  else return String();
-}
-
-/* Get the R command corresponding to the graph */
-String GraphImplementation::getRCommand() const
-{
-  return OSS() << makeRHeaderCommand() << makeRCoreCommand();
-}
-
-/* Make R header commande */
-String GraphImplementation::makeRHeaderCommand() const
-{
-  OSS oss;
-  // Check if we want to print a legend and if there is a legend to print before to include the corresponding R code
-  // First, do we want a legend?
-  if (legendPosition_ != "")
-  {
-    // Secodn, is there a legend to print?
-    for (UnsignedInteger i = 0; i < drawablesCollection_.getSize(); ++i)
-    {
-      if (drawablesCollection_[i].getLegend().size() > 0)
-      {
-        oss << R_LEGEND << "\n";
-        break;
-      }
-    }
-  }
-  // Check if we want to draw a Pie before to include the corresponding R code
-  for (UnsignedInteger i = 0; i < drawablesCollection_.getSize(); ++i)
-  {
-    if (drawablesCollection_[i].getImplementation()->getClassName() == Pie::GetClassName())
-    {
-      oss << "\n" << R_PIE << "\n";
-      break;
-    }
-  }
-  oss << "options(digits=17)" << "\n" << "options(warn=-1)" << "\n";
-  return oss;
-}
-
-/* Make R core command */
-String GraphImplementation::makeRCoreCommand() const
-{
-  // get the general bounding box
-  const Interval boundingBox(getBoundingBox());
-  const Point lowerBound(boundingBox.getLowerBound());
-  const Point upperBound(boundingBox.getUpperBound());
-
-  //load the R code attached to the general plot
-  OSS graphCommand;
-  graphCommand << "plot(c(" << lowerBound[0] << "," << upperBound[0] << "),"
-               << "c(" << lowerBound[1] << "," << upperBound[1] << "),"
-               << "type=\"n\",main=\"" << title_ << "\",";
-  if (showAxes_)
-  {
-    graphCommand << "xlab=\"" << xTitle_ << "\",ylab=\"" << yTitle_ << "\","
-                 << "axes=TRUE";
-  }
-  else
-  {
-    graphCommand << "xlab=\"\",ylab=\"\",axes=FALSE";
-  }
-  if (showGrid_)
-  {
-    graphCommand << ", panel.first=grid(col=\"" + gridColor_ + "\")";
-  }
-  switch (logScale_)
-  {
-    case NONE:
-      break;
-    case LOGX:
-      graphCommand << ", log=\"x\"";
-      break;
-    case LOGY:
-      graphCommand << ", log=\"y\"";
-      break;
-    case LOGXY:
-      graphCommand << ", log=\"xy\"";
-      break;
-  }
-  graphCommand << ", cex.main=2, cex.axis=1.5, cex.lab=1.5)\n";
-
-  // add the R code attached to each drawable
-  UnsignedInteger drawablesSize = drawablesCollection_.getSize();
-  for(UnsignedInteger i = 0; i < drawablesSize; ++i)
-  {
-    if (drawablesCollection_[i].getData().getSize() != 0)
-      graphCommand << drawablesCollection_[i].draw() << "\n";
-  }
-  // make the legend command
-  graphCommand << (legendPosition_.size() == 0 ? String() : makeRLegendCommand());
-  return graphCommand;
-}
-
-
-std::map<SignedInteger, String> GraphImplementation::GetExtensionMap()
-{
-  std::map<SignedInteger, String> m;
-  m[PNG] = ".png";
-  m[EPS] = ".eps";
-  m[FIG] = ".fig";
-  m[PDF] = ".pdf";
-  return m;
-}
-
-/* The method that generates the graphic files */
-void GraphImplementation::draw(const String & file,
-                               const Scalar width,
-                               const Scalar height,
-                               SignedInteger drawingFormat)
-{
-  // Override format base on extension
-  size_t pos = file.find_last_of(".");
-  Bool matchedExtension = false;
-  static std::map<SignedInteger, String> extensionMap = GetExtensionMap();
-  if (pos != String::npos)
-  {
-    String extension = file.substr(pos, file.length());
-    std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
-    for(std::map<SignedInteger, String>::iterator iter = extensionMap.begin(); iter != extensionMap.end(); ++iter)
-    {
-      if (!extension.compare(iter->second))
-      {
-        drawingFormat = iter->first;
-        matchedExtension = true;
-        break;
-      }
-    }
-  }
-
-  // Check the needed drawingFormat. If it is invalid, set it to ALL
-  if (!(drawingFormat & (PNG | EPS | FIG | PDF)))
-  {
-    LOGINFO(OSS() << "Warning: invalid drawing format: " << drawingFormat << ", selecting all formats.");
-    drawingFormat = ALL;
-  }
-
-  OSS rCommand;
-  rCommand << makeRHeaderCommand();
-  String rCoreCommand(makeRCoreCommand());
-  if (drawingFormat & EPS)
-  {
-    rCommand << "postscript(\"" << file + (matchedExtension ? "" : extensionMap[EPS]) << "\", horizontal = FALSE, onefile = FALSE, paper = \"special\", height=" << height / 72. << ", width=" << width / 72. << ")" << "\n" << rCoreCommand << "\n" << "dev.off()" << "\n";
-  }
-  if (drawingFormat & PDF)
-  {
-    rCommand << "pdf(\"" << file + (matchedExtension ? "" : extensionMap[PDF]) << "\", onefile = FALSE, paper = \"special\", height=" << height / 72. << ", width=" << width / 72. << ")" << "\n" << rCoreCommand << "\n" << "dev.off()" << "\n";
-  }
-  if (drawingFormat & PNG)
-  {
-    rCommand << "png(\"" << file + (matchedExtension ? "" : extensionMap[PNG]) << "\",height=" << height << ", width=" << width << ",res=72)" << "\n" << rCoreCommand << "\n" << "dev.off()" << "\n";
-  }
-  if (drawingFormat & FIG)
-  {
-    rCommand << "xfig(\"" << file + (matchedExtension ? "" : extensionMap[FIG]) << "\", horizontal = FALSE, onefile = FALSE, paper = \"A4\", height=" << height / 72. << ", width=" << width / 72. << ")" << "\n" << rCoreCommand << "\n" << "dev.off()" << "\n";
-  }
-  LOGDEBUG(OSS() << "R command=" << String(rCommand));
-
-  // system commands to write R code in a temporary file
-  /* using mkstemp non standard C for temporary file generation */
-  String temporaryFileName(Path::BuildTemporaryFileName("tmp_graph.R.XXXXXX"));
-  std::ofstream cmdFile(temporaryFileName.c_str(), std::ios::out);
-  cmdFile << String(rCommand);
-  cmdFile.close();
-
-  //execute R and load R script in temporary file
-  const String RExecutable(ResourceMap::GetAsString("Graph-RExecutableCommand"));
-  OSS systemCommand;
-  if (RExecutable != "") systemCommand << "" << RExecutable << "" << " --no-save --silent < \"" << temporaryFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In GraphImplementation::draw(): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
-  if (Os::ExecuteCommand(systemCommand) != 0) throw InternalException(HERE) << "GraphImplementation: error trying to execute R command=" << String(systemCommand);
-  Os::Remove(temporaryFileName);
-  clean();
-}
-
-/* Clean temporary files */
-void GraphImplementation::clean()
-{
-  UnsignedInteger drawableNumber = drawablesCollection_.getSize();
-  // Clean all the temporary data created by the drawables during their drawing
-  for (UnsignedInteger i = 0; i < drawableNumber; ++i)
-  {
-    if (drawablesCollection_[i].getData().getSize() != 0)
-      drawablesCollection_[i].clean();
-  }
 }
 
 /* Margin accessor */
@@ -758,6 +520,8 @@ void GraphImplementation::save(Advocate & adv) const
   adv.saveAttribute( "yTitle_", yTitle_ );
   adv.saveAttribute( "showAxes_", showAxes_ );
   adv.saveAttribute( "tickLocation_", static_cast<UnsignedInteger>(tickLocation_) );
+  adv.saveAttribute( "integerXTick_", integerXTick_);
+  adv.saveAttribute( "integerYTick_", integerYTick_);
   adv.saveAttribute( "logScale_", static_cast<UnsignedInteger>(logScale_) );
   adv.saveAttribute( "showGrid_", showGrid_ );
   adv.saveAttribute( "gridColor_", gridColor_ );
@@ -781,6 +545,11 @@ void GraphImplementation::load(Advocate & adv)
   UnsignedInteger tickLocation = 0;
   adv.loadAttribute( "tickLocation_", tickLocation );
   tickLocation_ = static_cast<TickLocation>(tickLocation);
+  if (adv.hasAttribute("integerXTick_"))
+  {
+    adv.loadAttribute( "integerXTick_", integerXTick_);
+    adv.loadAttribute( "integerYTick_", integerYTick_);
+  }
   UnsignedInteger logScale = 0;
   adv.loadAttribute( "logScale_", logScale );
   logScale_ = static_cast<LogScale>(logScale);

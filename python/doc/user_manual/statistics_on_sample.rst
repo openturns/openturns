@@ -84,6 +84,13 @@ Building distributions from samples
     NormalFactory
     ParetoFactory
     PoissonFactory
+
+    :template: class.rst_t
+
+    QuantileMatchingFactory
+
+    :template: DistributionFactory.rst_t
+
     RayleighFactory
 
     :template: class.rst_t
@@ -125,23 +132,9 @@ Building copulas from samples
 
     FrankCopulaFactory
     GumbelCopulaFactory
+    IndependentCopulaFactory
     NormalCopulaFactory
     PlackettCopulaFactory
-
-Correlation analysis
-====================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: function.rst_t
-
-    CorrelationAnalysis.PearsonCorrelation
-    CorrelationAnalysis.SpearmanCorrelation
-    CorrelationAnalysis.PCC
-    CorrelationAnalysis.PRCC
-    CorrelationAnalysis.SRC
-    CorrelationAnalysis.SRRC
-    CorrelationAnalysis.SignedSRC
 
 Sensitivity Analysis
 ====================
@@ -152,6 +145,7 @@ Refer to :ref:`sensitivity_sobol`.
     :toctree: _generated/
     :template: class.rst_t
 
+    CorrelationAnalysis
     ANCOVA
     FAST
 
@@ -168,11 +162,11 @@ Refer to :ref:`sensitivity_sobol`.
     SobolIndicesExperiment
 
     :template: classWithPlot.rst_t
- 
-    SobolSimulationAlgorithm 
+
+    SobolSimulationAlgorithm
     SobolSimulationResult
 
-HSIC Indices 
+HSIC Indices
 ============
 
 .. autosummary::
@@ -273,5 +267,3 @@ Model selection
     FittingTest.BestModelChiSquared
     FittingTest.BestModelKolmogorov
     FittingTest.BestModelLilliefors
-
-

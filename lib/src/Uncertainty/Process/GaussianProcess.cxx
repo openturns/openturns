@@ -158,7 +158,7 @@ void GaussianProcess::initialize() const
       }
       // If the factorization failed regularize the matrix
       // Here we use a generic exception as different exceptions may be thrown
-      catch (Exception &)
+      catch (const Exception &)
       {
         // If the largest eigenvalue module has not been computed yet...
         if (maxEV < 0.0)
@@ -227,13 +227,18 @@ void GaussianProcess::setTimeGrid(const RegularGrid & timeGrid)
   setMesh(timeGrid);
 }
 
+GaussianProcess::SamplingMethod GaussianProcess::getSamplingMethod() const
+{
+  const GaussianProcess::SamplingMethod output = static_cast<GaussianProcess::SamplingMethod>(samplingMethod_);
+  return output;
+}
+
 /** Set sampling method accessor */
 void GaussianProcess::setSamplingMethod(const SamplingMethod samplingMethod)
 {
   if (samplingMethod > 2)
-    throw InvalidArgumentException(HERE) << "Sampling method should be 0 (Cholesky), 1 (H-Matrix implementation) or 2 (Gibbs, available only in dimension 1)";
-  if ((samplingMethod == SamplingMethod::GIBBS) && getOutputDimension() != 1)
-    throw InvalidArgumentException(HERE) << "Sampling method Gibbs is available only in dimension 1 ";
+    throw InvalidArgumentException(HERE) << "Sampling method should be 0 (Cholesky), 1 (H-Matrix implementation) or 2 (Gibbs)";
+
   // Set the sampling method
   if (samplingMethod != samplingMethod_)
   {
@@ -270,30 +275,34 @@ Field GaussianProcess::getRealization() const
 Sample GaussianProcess::getRealizationGibbs() const
 {
   const Sample vertices(getMesh().getVertices());
+  const UnsignedInteger outputDimension = getOutputDimension();
   const UnsignedInteger size = vertices.getSize();
+  const UnsignedInteger fullSize = size * outputDimension;
   const UnsignedInteger nMax = std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration"));
 
-  Sample values(size, 1);
-  Point diagonal(size);
-  const KPermutationsDistribution permutationDistribution(size, size);
+  Sample values(fullSize, 1);
+  const KPermutationsDistribution permutationDistribution(fullSize, fullSize);
+  const Sample permutationSample(permutationDistribution.getSample(nMax));
   for (UnsignedInteger n = 0; n < nMax; ++n)
   {
     LOGINFO(OSS() << "Gibbs sampler - start iteration " << n + 1 << " over " << nMax);
-    const Point permutation(permutationDistribution.getRealization());
-    for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < fullSize; ++i)
     {
-      const UnsignedInteger index = static_cast< UnsignedInteger >(permutation[i]);
-      LOGDEBUG(OSS() << "Gibbs sampler - update " << i << " -> component " << index << " over " << size - 1);
-      // Here we work on the normalized covariance, ie the correlation
-      Sample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
-      diagonal[index] = covarianceRow[index][0];
-      const Point delta(1, (DistFunc::rNormal() - values(index, 0)) / diagonal[index]);
+      const UnsignedInteger index = static_cast< UnsignedInteger >(permutationSample(n, i));
+      LOGDEBUG(OSS() << "Gibbs sampler - update " << i << " -> component " << index << " over " << fullSize - 1);
+      // Here we implement equation (6) of Arroyo and Emery (2020) with rho=0 and J={j}
+      const Sample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
+      const Scalar diagonalIndex = covarianceRow(index, 0);
+      const Point delta(1, (std::sqrt(diagonalIndex) * DistFunc::rNormal() - values(index, 0)) / diagonalIndex);
       values += covarianceRow * delta;
     }
   }
-  // We have to rescale the realization
-  for (UnsignedInteger i = 0; i < size; ++i) values[i] *= diagonal[i];
-  return values;
+  // for output dim > 1 we need to reshape data
+  if (outputDimension == 1) return values;
+  Sample outputValues(size, outputDimension);
+  const Point rawData(values.getImplementation()->getData());
+  outputValues.getImplementation()->setData(rawData);
+  return outputValues;
 }
 
 Sample GaussianProcess::getRealizationCholesky() const

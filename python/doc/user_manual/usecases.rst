@@ -21,4 +21,5 @@ Use cases from the usecases module
     usecases.logistic_model.LogisticModel
     usecases.stressed_beam.AxialStressedBeam
     usecases.viscous_free_fall.ViscousFreeFall
-
+    usecases.fireSatellite_function.FireSatelliteModel
+    usecases.wingweight_function.WingWeightModel

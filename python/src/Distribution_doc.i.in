@@ -108,8 +108,8 @@ OT_Distribution_drawMarginal1DSurvivalFunction_doc
 OT_Distribution_drawMarginal1DPDF_doc
 %feature("docstring") OT::Distribution::getCDFEpsilon
 OT_Distribution_getCDFEpsilon_doc
-%feature("docstring") OT::Distribution::getCenteredMoment
-OT_Distribution_getCenteredMoment_doc
+%feature("docstring") OT::Distribution::getCentralMoment
+OT_Distribution_getCentralMoment_doc
 %feature("docstring") OT::Distribution::getShiftedMoment
 OT_Distribution_getShiftedMoment_doc
 %feature("docstring") OT::Distribution::getCholesky
@@ -180,8 +180,6 @@ OT_Distribution_getSpearmanCorrelation_doc
 OT_Distribution_getStandardDeviation_doc
 %feature("docstring") OT::Distribution::getStandardDistribution
 OT_Distribution_getStandardDistribution_doc
-%feature("docstring") OT::Distribution::getStandardMoment
-OT_Distribution_getStandardMoment_doc
 %feature("docstring") OT::Distribution::getStandardRepresentative
 OT_Distribution_getStandardRepresentative_doc
 %feature("docstring") OT::Distribution::getSupport

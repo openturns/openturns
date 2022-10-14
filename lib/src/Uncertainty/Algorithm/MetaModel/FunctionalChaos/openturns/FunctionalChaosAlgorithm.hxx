@@ -51,12 +51,6 @@ public:
   FunctionalChaosAlgorithm();
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const Function & model,
-                           const Distribution & distribution,
-                           const AdaptiveStrategy & adaptiveStrategy,
-                           const ProjectionStrategy & projectionStrategy);
-
-  /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
                            const Sample & outputSample,
                            const Distribution & distribution,
@@ -72,11 +66,6 @@ public:
                            const ProjectionStrategy & projectionStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const Function & model,
-                           const Distribution & distribution,
-                           const AdaptiveStrategy & adaptiveStrategy);
-
-  /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
                            const Sample & outputSample,
                            const Distribution & distribution,
@@ -85,6 +74,10 @@ public:
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
                            const Sample & outputSample);
+  /** Constructor */
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Sample & outputSample,
+                           const Distribution & distribution);
 
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
@@ -114,10 +107,6 @@ public:
 
   /** Get the functional chaos result */
   FunctionalChaosResult getResult() const;
-
-  /** Sample accessors */
-  Sample getInputSample() const override;
-  Sample getOutputSample() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

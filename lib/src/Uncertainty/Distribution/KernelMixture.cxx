@@ -501,13 +501,12 @@ Scalar KernelMixture::computeConditionalPDF(const Scalar x,
   {
     Scalar marginalAtomPDF = 1.0;
     for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
-      marginalAtomPDF *= p_kernel_->computePDF((y[j] - sample_(i, j)) / bandwidth_[j]);
+      marginalAtomPDF *= p_kernel_->computePDF((y[j] - sample_(i, j)) * bandwidthInverse_[j]);
     marginalPDF += marginalAtomPDF;
-    jointPDF += marginalAtomPDF * p_kernel_->computePDF((x - sample_(i, conditioningDimension)) / bandwidth_[conditioningDimension]);
+    jointPDF += marginalAtomPDF * p_kernel_->computePDF((x - sample_(i, conditioningDimension)) * bandwidthInverse_[conditioningDimension]);
   }
   if (marginalPDF <= 0.0) return 0.0;
-  // No need to normalize by 1/h as it simplifies
-  return jointPDF / marginalPDF;
+  return bandwidthInverse_[conditioningDimension] * jointPDF / marginalPDF;
 }
 
 Point KernelMixture::computeSequentialConditionalPDF(const Point & x) const
@@ -529,14 +528,13 @@ Point KernelMixture::computeSequentialConditionalPDF(const Point & x) const
     // Return the result as soon as a conditional pdf is zero
     if (pdfConditioning == 0) return result;
     currentX = x[conditioningDimension];
-    currentH = bandwidth_[conditioningDimension];
     Scalar pdfConditioned = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      atomsValues[i] *= p_kernel_->computePDF((currentX - sample_(i, conditioningDimension)) / currentH);
+      atomsValues[i] *= p_kernel_->computePDF((currentX - sample_(i, conditioningDimension)) * bandwidthInverse_[conditioningDimension]);
       pdfConditioned += atomsValues[i];
     }
-    result[conditioningDimension] = pdfConditioned / pdfConditioning;
+    result[conditioningDimension] = bandwidthInverse_[conditioningDimension] * pdfConditioned / pdfConditioning;
     pdfConditioning = pdfConditioned;
   } // conditioningDimension
   return result;
@@ -684,7 +682,7 @@ Point KernelMixture::getStandardDeviation() const
   const UnsignedInteger dimension = getDimension();
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
   const Scalar sigmaKernel = p_kernel_->getStandardDeviation()[0];
-  Point result(sample_.computeCenteredMoment(2));
+  Point result(sample_.computeCentralMoment(2));
   for (UnsignedInteger i = 0; i < dimension; ++i)
     result[i] = std::sqrt(result[i] + std::pow(bandwidth_[i] * sigmaKernel, 2));
   return result;
@@ -702,7 +700,7 @@ Point KernelMixture::getSkewness() const
   const Scalar skewnessKernel = p_kernel_->getSkewness()[0];
   // Standard deviation of the KernelMixture
   const Point sigma(getStandardDeviation());
-  Point result(sample_.computeCenteredMoment(3));
+  Point result(sample_.computeCentralMoment(3));
   for (UnsignedInteger i = 0; i < dimension; ++i)
     result[i] = (result[i] + std::pow(bandwidth_[i] * sigmaKernel, 3) * skewnessKernel) / std::pow(sigma[i], 3);
   return result;
@@ -719,10 +717,10 @@ Point KernelMixture::getKurtosis() const
   // We know that the kernel is 1D, so its skewness is actually a scalar
   const Scalar kurtosisKernel = p_kernel_->getKurtosis()[0];
   // Standard deviation of the sample
-  const Point varSample(sample_.computeCenteredMoment(2));
+  const Point varSample(sample_.computeCentralMoment(2));
   // Standard deviation of the KernelMixture
   const Point sigma(getStandardDeviation());
-  Point result(sample_.computeCenteredMoment(4));
+  Point result(sample_.computeCentralMoment(4));
   for (UnsignedInteger i = 0; i < dimension; ++i)
     result[i] = (result[i] + std::pow(bandwidth_[i] * sigmaKernel, 4) * kurtosisKernel + 6.0 * varSample[i] * std::pow(bandwidth_[i] * sigmaKernel, 2)) / std::pow(sigma[i], 4);
   return result;

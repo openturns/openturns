@@ -15,6 +15,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import numpy as np
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -22,9 +23,9 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 tmin = 0.0  # Minimum time
-tmax = 12.  # Maximum time
+tmax = 12.0  # Maximum time
 gridsize = 100  # Number of time steps
-mesh = ot.IntervalMesher([gridsize-1]).build(ot.Interval(tmin, tmax))
+mesh = ot.IntervalMesher([gridsize - 1]).build(ot.Interval(tmin, tmax))
 
 # %%
 vertices = mesh.getVertices()
@@ -56,9 +57,9 @@ def AltiFunc(X):
     c = X[3]
     zmin = X[4]
     tau = m / c
-    vinf = - m * g / c
+    vinf = -m * g / c
     t = np.array(vertices)
-    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(- t / tau))
+    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(-t / tau))
     z = np.maximum(z, zmin)
     return [[zeta[0]] for zeta in z]
 
@@ -66,7 +67,8 @@ def AltiFunc(X):
 # %%
 outputDimension = 1
 altitudeWithFiveInputs = ot.PythonPointToFieldFunction(
-    5, mesh, outputDimension, AltiFunc)
+    5, mesh, outputDimension, AltiFunc
+)
 
 # %%
 # Restrict the number of inputs
@@ -77,14 +79,16 @@ altitudeWithFiveInputs = ot.PythonPointToFieldFunction(
 
 # %%
 projectionFunction = ot.SymbolicFunction(
-    ["z0", "v0", "m", "c"], ["z0", "v0", "m", "c", "0.0"])
+    ["z0", "v0", "m", "c"], ["z0", "v0", "m", "c", "0.0"]
+)
 
 # %%
 # Then we use the `PointToFieldConnection` to create a function which has 4 inputs and returns the output field.
 
 # %%
 altitudeWithFourInputs = ot.PointToFieldConnection(
-    altitudeWithFiveInputs, projectionFunction)
+    altitudeWithFiveInputs, projectionFunction
+)
 
 # %%
 # Sample trajectories
@@ -103,8 +107,8 @@ outputSample = altitudeWithFourInputs(inputSample)
 
 # %%
 graph = outputSample.drawMarginal(0)
-graph.setTitle('Viscous free fall: %d trajectories' % (size))
-graph.setXTitle(r'$t$')
-graph.setYTitle(r'$z$')
+graph.setTitle("Viscous free fall: %d trajectories" % (size))
+graph.setXTitle(r"$t$")
+graph.setYTitle(r"$z$")
 view = viewer.View(graph)
 plt.show()

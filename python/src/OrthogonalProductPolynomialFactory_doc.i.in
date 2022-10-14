@@ -8,6 +8,8 @@ Available constructors:
 
     OrthogonalProductPolynomialFactory(*marginals*)
 
+    OrthogonalProductPolynomialFactory(*marginals, enumerateFunction*)
+
 Parameters
 ----------
 polynomials : sequence of :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
@@ -29,8 +31,6 @@ univariate orthogonal polynomials (e.g. Hermite, Legendre, Laguerre and Jacobi)
 needed to determine the distribution measure of projection of the input
 variable. Let's note that the exact hessian and gradient have been implemented
 for the product of polynomials.
-To facilitate the construction of the basis it is recommanded to use the class
-:class:`~openturns.StandardDistributionPolynomialFactory`.
 
 See also
 --------

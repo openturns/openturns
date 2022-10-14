@@ -68,10 +68,112 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[a : -0.5, m : 1.5, b : 2.5]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.111111]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.185185]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0.037037]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.0748971]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0.0178326]
 Standard representative=Triangular(a = -1, m = 0.333333, b = 1)
+Distribution class=Triangular name=Triangular dimension=1 a=-0.5 m=-0.5 b=2.5
+Distribution Triangular(a = -0.5, m = -0.5, b = 2.5)
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[-0.448569]
+oneSample first=class=Point name=Unnamed dimension=1 values=[1.02457] last=class=Point name=Unnamed dimension=1 values=[0.576697]
+mean=class=Point name=Unnamed dimension=1 values=[0.503814]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.498958]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.222222]
+log pdf=-1.09861
+pdf     =0.333333
+pdf (FD)=0.333333
+cdf=0.75
+ccdf=0.25
+survival=0.25
+Inverse survival=class=Point name=Unnamed dimension=1 values=[-0.424038]
+Survival(inverse survival)=0.95
+characteristic function=(0.692667,0.345522)
+log characteristic function=(-0.256102,0.46271)
+quantile=class=Point name=Unnamed dimension=1 values=[-0.0980762]
+cdf(quantile)=0.25
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.5] upper bound=class=Point name=Unnamed dimension=1 values=[1.82918] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = -0.5, b = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Triangular(a = -0.5, m = -0.5, b = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = -0.5, b = 2.5)) level=1.90333
+beta=0.149071
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.462263] upper bound=class=Point name=Unnamed dimension=1 values=[2.02566] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.5] upper bound=class=Point name=Unnamed dimension=1 values=[1.82918] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.424038] upper bound=class=Point name=Unnamed dimension=1 values=[2.5] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Point= class=Point name=Unnamed dimension=1 values=[2]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.222222]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.222222]
+pdf     =0.111111
+pdf (FD)=0.111111
+cdf=0.972222
+quantile=class=Point name=Unnamed dimension=1 values=[1.82918]
+cdf(quantile)=0.95
+entropy=0.905465
+entropy (MC)=0.905233
+mean=class=Point name=Unnamed dimension=1 values=[0.5]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.707107]
+skewness=class=Point name=Unnamed dimension=1 values=[0.565685]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.4]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.5]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[a : -0.5, m : -0.5, b : 2.5]]
+Standard representative=Triangular(a = -1, m = -1, b = 1)
+Distribution class=Triangular name=Triangular dimension=1 a=-0.5 m=2.5 b=2.5
+Distribution Triangular(a = -0.5, m = 2.5, b = 2.5)
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[1.87854]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.529311] last=class=Point name=Unnamed dimension=1 values=[1.91944]
+mean=class=Point name=Unnamed dimension=1 values=[1.50193]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.50609]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.222222]
+log pdf=-1.09861
+pdf     =0.333333
+pdf (FD)=0.333333
+cdf=0.25
+ccdf=0.75
+survival=0.75
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.17082]
+Survival(inverse survival)=0.95
+characteristic function=(0.0259312,0.773629)
+log characteristic function=(-0.256102,1.53729)
+quantile=class=Point name=Unnamed dimension=1 values=[1]
+cdf(quantile)=0.25
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[2.5] upper bound=class=Point name=Unnamed dimension=1 values=[2.5] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = 2.5, b = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Triangular(a = -0.5, m = 2.5, b = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = 2.5, b = 2.5)) level=1.90333
+beta=0.149071
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.0256584] upper bound=class=Point name=Unnamed dimension=1 values=[2.46226] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.5] upper bound=class=Point name=Unnamed dimension=1 values=[2.42404] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.17082] upper bound=class=Point name=Unnamed dimension=1 values=[2.5] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Point= class=Point name=Unnamed dimension=1 values=[2]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.222222]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[0.222222]
+pdf     =0.555556
+pdf (FD)=0.555556
+cdf=0.694444
+quantile=class=Point name=Unnamed dimension=1 values=[2.42404]
+cdf(quantile)=0.95
+entropy=0.905465
+entropy (MC)=0.905983
+mean=class=Point name=Unnamed dimension=1 values=[1.5]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.707107]
+skewness=class=Point name=Unnamed dimension=1 values=[-0.565685]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.4]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.5]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[a : -0.5, m : 2.5, b : 2.5]]
+Standard representative=Triangular(a = -1, m = 1, b = 1)

@@ -260,6 +260,10 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   {
     solver = Ipopt();
   }
+  else if (PlatformInfo::HasFeature("pagmo") && Pagmo::GetAlgorithmNames().contains(solverName))
+  {
+    solver = Pagmo(solverName);
+  }
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
 
@@ -279,7 +283,7 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & p
       algorithm.setProblem(problem);
       return algorithm;
     }
-    catch (InvalidArgumentException &)
+    catch (const InvalidArgumentException &)
     {
       // try next algorithm
     }
@@ -324,7 +328,7 @@ Description OptimizationAlgorithm::GetAlgorithmNames(const OptimizationProblem &
       algorithm.setProblem(problem);
       result.add(names[i]);
     }
-    catch (InvalidArgumentException &)
+    catch (const InvalidArgumentException &)
     {
       // try next algorithm
     }

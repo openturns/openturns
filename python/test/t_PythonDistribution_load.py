@@ -9,12 +9,12 @@ d = ot.Distribution()
 
 # load
 study = ot.Study()
-study.setStorageManager(ot.XMLStorageManager('pyd.xml'))
+study.setStorageManager(ot.XMLStorageManager("pyd.xml"))
 study.load()
-study.fillObject('d', d)
+study.fillObject("d", d)
 
 print(d.getKurtosis())
 print(d.computePDF([0.5]))
 print(d.computeCDF([0.5]))
 
-os.remove('pyd.xml')
+os.remove("pyd.xml")

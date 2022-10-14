@@ -26,6 +26,7 @@ Create a polynomial chaos metamodel
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -34,8 +35,8 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 ot.RandomGenerator.SetSeed(0)
 dimension = 2
-input_names = ['x1', 'x2']
-formulas = ['cos(x1 + x2)', '(x2 + 1) * exp(x1)']
+input_names = ["x1", "x2"]
+formulas = ["cos(x1 + x2)", "(x2 + 1) * exp(x1)"]
 model = ot.SymbolicFunction(input_names, formulas)
 
 # %%
@@ -52,8 +53,7 @@ outputSample = model(inputSample)
 # First, we need to fit a distribution on the input sample. We can do this automatically with the Lilliefors test.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger(
-    "FittingTest-LillieforsMaximumSamplingSize", 100)
+ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100)
 
 # %%
 algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
@@ -67,16 +67,15 @@ metamodel = result.getMetaModel()
 # %%
 x1index = 0
 x1value = 0.5
-x2min = -3.
-x2max = 3.
+x2min = -3.0
+x2max = 3.0
 outputIndex = 1
 metamodelParametric = ot.ParametricFunction(metamodel, [x1index], [x1value])
 graph = metamodelParametric.getMarginal(outputIndex).draw(x2min, x2max)
 graph.setLegends(["Metamodel"])
 modelParametric = ot.ParametricFunction(model, [x1index], [x1value])
-curve = modelParametric.getMarginal(
-    outputIndex).draw(x2min, x2max).getDrawable(0)
-curve.setColor('red')
+curve = modelParametric.getMarginal(outputIndex).draw(x2min, x2max).getDrawable(0)
+curve.setColor("red")
 curve.setLegend("Model")
 graph.add(curve)
 graph.setLegendPosition("bottomright")
@@ -100,7 +99,7 @@ outputTest = model(inputTest)
 val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
 Q2 = val.computePredictivityFactor()
 graph = val.drawValidation()
-graph.setTitle("Metamodel validation Q2="+str(Q2))
+graph.setTitle("Metamodel validation Q2=" + str(Q2))
 view = viewer.View(graph)
 
 # %%
@@ -113,7 +112,7 @@ view = viewer.View(graph)
 
 # %%
 chaosSI = ot.FunctionalChaosSobolIndices(result)
-print(chaosSI.summary())
+print(chaosSI)
 
 # %%
 # Let us analyse the results of this global sensitivity analysis.
@@ -127,13 +126,11 @@ print(chaosSI.summary())
 # %%
 sensitivityAnalysis = ot.FunctionalChaosSobolIndices(result)
 first_order = [sensitivityAnalysis.getSobolIndex(i) for i in range(dimension)]
-total_order = [sensitivityAnalysis.getSobolTotalIndex(
-    i) for i in range(dimension)]
+total_order = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(dimension)]
 
 # %%
 input_names = model.getInputDescription()
-graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(
-    input_names, first_order, total_order)
+graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
 graph.setLegendPosition("center")
 view = viewer.View(graph)
 
@@ -152,8 +149,7 @@ view = viewer.View(graph)
 # The default value of this parameter is 10.
 
 # %%
-ot.ResourceMap.GetAsUnsignedInteger(
-    "FunctionalChaosAlgorithm-MaximumTotalDegree")
+ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree")
 
 # %%
 # This is why we explore the values from 5 to 15.
@@ -163,7 +159,8 @@ degrees = range(5, 12)
 q2 = ot.Sample(len(degrees), 2)
 for maximumDegree in degrees:
     ot.ResourceMap.SetAsUnsignedInteger(
-        "FunctionalChaosAlgorithm-MaximumTotalDegree", maximumDegree)
+        "FunctionalChaosAlgorithm-MaximumTotalDegree", maximumDegree
+    )
     print("Maximum total degree =", maximumDegree)
     algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
     algo.run()
@@ -171,9 +168,9 @@ for maximumDegree in degrees:
     metamodel = result.getMetaModel()
     for outputIndex in range(2):
         val = ot.MetaModelValidation(
-            inputTest, outputTest[:, outputIndex], metamodel.getMarginal(outputIndex))
-        q2[maximumDegree - degrees[0],
-            outputIndex] = val.computePredictivityFactor()[0]
+            inputTest, outputTest[:, outputIndex], metamodel.getMarginal(outputIndex)
+        )
+        q2[maximumDegree - degrees[0], outputIndex] = val.computePredictivityFactor()[0]
 
 # %%
 graph = ot.Graph("Predictivity", "Total degree", "Q2", True)

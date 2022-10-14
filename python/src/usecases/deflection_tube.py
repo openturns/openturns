@@ -5,7 +5,7 @@ Use case : vertical deflection of a tube
 import openturns as ot
 
 
-class DeflectionTube():
+class DeflectionTube:
     """
     Data class for the deflection of a tube model.
 
@@ -50,10 +50,12 @@ class DeflectionTube():
     def __init__(self):
         self.dim = 6
 
-        self.model = ot.SymbolicFunction(["F", "L", "a", "De", "di", "E"], [
-                                         "g1", "g2", "g3"], "var I:=pi_*(De^4-di^4)/32; var b:=L-a; g1:=-F*a^2*(L-a)^2/(3*E*L*I); g2:=-F*b*(L^2-b^2)/(6*E*L*I); g3:=F*a*(L^2-a^2)/(6*E*L*I)")
-        self.model.setOutputDescription(
-            ["Deflection", "Left angle", "Right angle"])
+        self.model = ot.SymbolicFunction(
+            ["F", "L", "a", "De", "di", "E"],
+            ["g1", "g2", "g3"],
+            "var I:=pi_*(De^4-di^4)/32; var b:=L-a; g1:=-F*a^2*(L-a)^2/(3*E*L*I); g2:=-F*b*(L^2-b^2)/(6*E*L*I); g3:=F*a*(L^2-a^2)/(6*E*L*I)",
+        )
+        self.model.setOutputDescription(["Deflection", "Left angle", "Right angle"])
 
         self.XF = ot.Normal(1, 0.1)
         self.XF.setDescription(["Force"])
@@ -74,4 +76,5 @@ class DeflectionTube():
         self.Xd.setDescription(["Internal diameter"])
 
         self.inputDistribution = ot.ComposedDistribution(
-            [self.XF, self.XL, self.Xa, self.XD, self.Xd, self.XE])
+            [self.XF, self.XL, self.Xa, self.XD, self.Xd, self.XE]
+        )

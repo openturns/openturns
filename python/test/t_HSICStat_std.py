@@ -19,7 +19,8 @@ X = distX.getSample(size)
 
 # The Ishigami model
 modelIshigami = ot.SymbolicFunction(
-    ["X1", "X2", "X3"], ["sin(X1) + 5.0 * (sin(X2))^2 + 0.1 * X3^4 * sin(X1)"])
+    ["X1", "X2", "X3"], ["sin(X1) + 5.0 * (sin(X2))^2 + 0.1 * X3^4 * sin(X1)"]
+)
 
 # Output
 Y = modelIshigami(X)

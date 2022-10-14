@@ -1,19 +1,19 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-conditionedDistribution = Normal()
-conditioningDistribution = ComposedDistribution([Uniform(0.0, 1.0),
-                                                 Uniform(1.0, 2.0)])
-distribution = BayesDistribution(
-    conditionedDistribution, conditioningDistribution)
+conditionedDistribution = ot.Normal()
+conditioningDistribution = ot.ComposedDistribution(
+    [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
+)
+distribution = ot.BayesDistribution(conditionedDistribution, conditioningDistribution)
 dim = distribution.getDimension()
 print("Distribution ", distribution)
 print("Parameters ", distribution.getParametersCollection())
 print("Mean ", distribution.getMean())
-print("Covariance ", SquareMatrix(distribution.getCovariance()).clean(1.0e-6))
+print("Covariance ", ot.SquareMatrix(distribution.getCovariance()).clean(1.0e-6))
 # Is this distribution an elliptical distribution?
 print("Elliptical distribution= ", distribution.isElliptical())
 
@@ -44,8 +44,7 @@ point = [1.0, 0.5, 1.5]
 # Show PDF and CDF of point point
 pointPDF = distribution.computePDF(point)
 pointCDF = distribution.computeCDF(point)
-print("Point point= ", point, " pdf=%.6f" %
-      pointPDF, " cdf=%.6f" % pointCDF)
+print("Point point= ", point, " pdf=%.6f" % pointPDF, " cdf=%.6f" % pointCDF)
 
 # Get 95% quantile
 quantile = distribution.computeQuantile(0.95)

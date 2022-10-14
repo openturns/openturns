@@ -60,11 +60,299 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[a : 1, b : 1.2, c : 3, d : 14]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[-0.310603]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.312872]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[-0.176411]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.1781]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[-0.120255]
 Standard representative=Trapezoidal(a = -1, b = -0.969231, c = -0.692308, d = 1)
 roughness=0.101047
+Distribution class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1 c=3 d=14 h=0.133333
+Distribution Trapezoidal(a = 1, b = 1, c = 3, d = 14)
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[1.25495]
+oneSample first=class=Point name=Unnamed dimension=1 values=[7.6826] last=class=Point name=Unnamed dimension=1 values=[5.76491]
+mean=class=Point name=Unnamed dimension=1 values=[5.43866]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.25788]
+skewness=class=Point name=Unnamed dimension=1 values=[0.529596]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.35558]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0]
+log pdf=-2.0149
+pdf     =0.133333
+pdf (FD)=0.133333
+cdf=0.0133333
+ccdf=0.986667
+survival=0.986667
+Inverse survival=class=Point name=Unnamed dimension=1 values=[1.375]
+Survival(inverse survival)=0.95
+characteristic function=(-0.108371,0.0503646)
+log characteristic function=(-2.12442,2.70655)
+quantile=class=Point name=Unnamed dimension=1 values=[11.1277]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[11.1277] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1, c = 3, d = 14)) gradientImplementation=MinimumVolumeLevelSetGradient(Trapezoidal(a = 1, b = 1, c = 3, d = 14)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1, c = 3, d = 14)) level=3.35769
+beta=0.0348155
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.1875] upper bound=class=Point name=Unnamed dimension=1 values=[11.969] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[11.1277] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.375] upper bound=class=Point name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+entropy=2.38157
+entropy (MC)=2.38134
+mean=class=Point name=Unnamed dimension=1 values=[5.42222]
+standard deviation=class=Point name=Unnamed dimension=1 values=[3.04586]
+skewness=class=Point name=Unnamed dimension=1 values=[0.546649]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.39301]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.27728]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[a : 1, b : 1, c : 3, d : 14]]
+Standard representative=Trapezoidal(a = -1, b = -1, c = -0.692308, d = 1)
+roughness=0.100741
+Distribution class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1.2 c=1.2 d=14 h=0.153846
+Distribution Trapezoidal(a = 1, b = 1.2, c = 1.2, d = 14)
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[6.13868]
+oneSample first=class=Point name=Unnamed dimension=1 values=[1.88343] last=class=Point name=Unnamed dimension=1 values=[6.37298]
+mean=class=Point name=Unnamed dimension=1 values=[5.42941]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.49851]
+skewness=class=Point name=Unnamed dimension=1 values=[0.564576]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.37027]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.769231]
+log pdf=-2.56495
+pdf     =0.0769231
+pdf (FD)=0.0769231
+cdf=0.00384615
+ccdf=0.996154
+survival=0.996154
+Inverse survival=class=Point name=Unnamed dimension=1 values=[1.42701]
+Survival(inverse survival)=0.95
+characteristic function=(-0.118661,0.0558854)
+log characteristic function=(-2.03132,2.70144)
+quantile=class=Point name=Unnamed dimension=1 values=[11.1156]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.04472] upper bound=class=Point name=Unnamed dimension=1 values=[11.1378] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 1.2, d = 14)) gradientImplementation=MinimumVolumeLevelSetGradient(Trapezoidal(a = 1, b = 1.2, c = 1.2, d = 14)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 1.2, d = 14)) level=3.36967
+beta=0.034401
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.26265] upper bound=class=Point name=Unnamed dimension=1 values=[11.9604] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[11.1156] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.42701] upper bound=class=Point name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+entropy=2.3718
+entropy (MC)=2.37228
+mean=class=Point name=Unnamed dimension=1 values=[5.4]
+standard deviation=class=Point name=Unnamed dimension=1 values=[3.04083]
+skewness=class=Point name=Unnamed dimension=1 values=[0.565227]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.4]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.24667]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[a : 1, b : 1.2, c : 1.2, d : 14]]
+Standard representative=Trapezoidal(a = -1, b = -0.969231, c = -0.969231, d = 1)
+roughness=0.102564
+Distribution class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1 c=1 d=14 h=0.153846
+Distribution Trapezoidal(a = 1, b = 1, c = 1, d = 14)
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[13.2378]
+oneSample first=class=Point name=Unnamed dimension=1 values=[9.31604] last=class=Point name=Unnamed dimension=1 values=[7.26952]
+mean=class=Point name=Unnamed dimension=1 values=[5.33121]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.25624]
+skewness=class=Point name=Unnamed dimension=1 values=[0.570735]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.42541]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.0118343]
+log pdf=-1.87952
+pdf     =0.152663
+pdf (FD)=0.152663
+cdf=0.0153254
+ccdf=0.984675
+survival=0.984675
+Inverse survival=class=Point name=Unnamed dimension=1 values=[1.32917]
+Survival(inverse survival)=0.95
+characteristic function=(-0.110888,0.0691918)
+log characteristic function=(-2.03482,2.58373)
+quantile=class=Point name=Unnamed dimension=1 values=[11.0931]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[11.0931] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1, c = 1, d = 14)) gradientImplementation=MinimumVolumeLevelSetGradient(Trapezoidal(a = 1, b = 1, c = 1, d = 14)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1, c = 1, d = 14)) level=3.36967
+beta=0.034401
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.16353] upper bound=class=Point name=Unnamed dimension=1 values=[11.9445] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[11.0931] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.32917] upper bound=class=Point name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+entropy=2.3718
+entropy (MC)=2.37166
+mean=class=Point name=Unnamed dimension=1 values=[5.33333]
+standard deviation=class=Point name=Unnamed dimension=1 values=[3.06413]
+skewness=class=Point name=Unnamed dimension=1 values=[0.565685]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.4]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.38889]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[a : 1, b : 1, c : 1, d : 14]]
+Standard representative=Trapezoidal(a = -1, b = -1, c = -1, d = 1)
+roughness=0.102564
+Distribution class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1.2 c=14 d=14 h=0.0775194
+Distribution Trapezoidal(a = 1, b = 1.2, c = 14, d = 14)
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[11.1866]
+oneSample first=class=Point name=Unnamed dimension=1 values=[3.77109] last=class=Point name=Unnamed dimension=1 values=[9.25364]
+mean=class=Point name=Unnamed dimension=1 values=[7.48222]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.6097]
+skewness=class=Point name=Unnamed dimension=1 values=[0.0052642]
+kurtosis=class=Point name=Unnamed dimension=1 values=[1.81967]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.387597]
+log pdf=-3.25037
+pdf     =0.0387597
+pdf (FD)=0.0387597
+cdf=0.00193798
+ccdf=0.998062
+survival=0.998062
+Inverse survival=class=Point name=Unnamed dimension=1 values=[1.745]
+Survival(inverse survival)=0.95
+characteristic function=(-0.0444406,0.0919846)
+log characteristic function=(-2.28124,2.02086)
+quantile=class=Point name=Unnamed dimension=1 values=[13.355]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.3725] upper bound=class=Point name=Unnamed dimension=1 values=[13.6275] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 14, d = 14)) gradientImplementation=MinimumVolumeLevelSetGradient(Trapezoidal(a = 1, b = 1.2, c = 14, d = 14)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 14, d = 14)) level=2.55723
+beta=0.0775194
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.4225] upper bound=class=Point name=Unnamed dimension=1 values=[13.6775] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[13.355] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.745] upper bound=class=Point name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+entropy=2.5611
+entropy (MC)=2.56108
+mean=class=Point name=Unnamed dimension=1 values=[7.54987]
+standard deviation=class=Point name=Unnamed dimension=1 values=[3.72413]
+skewness=class=Point name=Unnamed dimension=1 values=[-0.000208124]
+kurtosis=class=Point name=Unnamed dimension=1 values=[1.80029]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.8692]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[a : 1, b : 1.2, c : 14, d : 14]]
+Standard representative=Trapezoidal(a = -1, b = -0.969231, c = 1, d = 1)
+roughness=0.0773191
+Distribution class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1 c=14 d=14 h=0.0769231
+Distribution Trapezoidal(a = 1, b = 1, c = 14, d = 14)
+Elliptical = true
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[7.73506]
+oneSample first=class=Point name=Unnamed dimension=1 values=[9.76639] last=class=Point name=Unnamed dimension=1 values=[6.2652]
+mean=class=Point name=Unnamed dimension=1 values=[7.46739]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[14.2939]
+skewness=class=Point name=Unnamed dimension=1 values=[0.00889252]
+kurtosis=class=Point name=Unnamed dimension=1 values=[1.77932]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0]
+log pdf=-2.56495
+pdf     =0.0769231
+pdf (FD)=0.0769231
+cdf=0.00769231
+ccdf=0.992308
+survival=0.992308
+Inverse survival=class=Point name=Unnamed dimension=1 values=[1.65]
+Survival(inverse survival)=0.95
+characteristic function=(-0.0411251,0.0983601)
+log characteristic function=(-2.23857,1.96681)
+quantile=class=Point name=Unnamed dimension=1 values=[13.35]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.325] upper bound=class=Point name=Unnamed dimension=1 values=[13.675] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1, c = 14, d = 14)) gradientImplementation=MinimumVolumeLevelSetGradient(Trapezoidal(a = 1, b = 1, c = 14, d = 14)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1, c = 14, d = 14)) level=2.56495
+beta=0.0769231
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.325] upper bound=class=Point name=Unnamed dimension=1 values=[13.675] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[13.35] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.65] upper bound=class=Point name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+entropy=2.56495
+entropy (MC)=2.56495
+mean=class=Point name=Unnamed dimension=1 values=[7.5]
+standard deviation=class=Point name=Unnamed dimension=1 values=[3.75278]
+skewness=class=Point name=Unnamed dimension=1 values=[0]
+kurtosis=class=Point name=Unnamed dimension=1 values=[1.8]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[14.0833]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[a : 1, b : 1, c : 14, d : 14]]
+Standard representative=Trapezoidal(a = -1, b = -1, c = 1, d = 1)
+roughness=0.0769231
+Distribution class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=14 c=14 d=14 h=0.153846
+Distribution Trapezoidal(a = 1, b = 14, c = 14, d = 14)
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=1 values=[8.70598]
+oneSample first=class=Point name=Unnamed dimension=1 values=[12.6867] last=class=Point name=Unnamed dimension=1 values=[8.53665]
+mean=class=Point name=Unnamed dimension=1 values=[9.65974]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.47491]
+skewness=class=Point name=Unnamed dimension=1 values=[-0.56056]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.38511]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.0118343]
+log pdf=-6.73934
+pdf     =0.00118343
+pdf (FD)=0.00118343
+cdf=5.91716e-05
+ccdf=0.999941
+survival=0.999941
+Inverse survival=class=Point name=Unnamed dimension=1 values=[3.90689]
+Survival(inverse survival)=0.95
+characteristic function=(0.0286375,0.127528)
+log characteristic function=(-2.03482,1.3499)
+quantile=class=Point name=Unnamed dimension=1 values=[13.6708]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[3.90689] upper bound=class=Point name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 14, c = 14, d = 14)) gradientImplementation=MinimumVolumeLevelSetGradient(Trapezoidal(a = 1, b = 14, c = 14, d = 14)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 14, c = 14, d = 14)) level=3.36967
+beta=0.034401
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[3.05548] upper bound=class=Point name=Unnamed dimension=1 values=[13.8365] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[13.6708] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[3.90689] upper bound=class=Point name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+entropy=2.3718
+entropy (MC)=2.37231
+mean=class=Point name=Unnamed dimension=1 values=[9.66667]
+standard deviation=class=Point name=Unnamed dimension=1 values=[3.06413]
+skewness=class=Point name=Unnamed dimension=1 values=[-0.565685]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.4]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.38889]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[a : 1, b : 14, c : 14, d : 14]]
+Standard representative=Trapezoidal(a = -1, b = 1, c = 1, d = 1)
+roughness=0.102564

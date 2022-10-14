@@ -53,11 +53,11 @@ XMLStorageManager::XMLStorageManager(const FileName & filename,
     p_state_(new XMLStorageManagerState),
     p_document_(),
     fileName_(filename),
-    compressionLevel_(std::min(compressionLevel, 9UL))
+    compressionLevel_(compressionLevel)
 {
-  // Nothing to do
+  if (compressionLevel > 9)
+    throw InvalidArgumentException(HERE) << "Compression level should be in [0; 9]";
 }
-
 
 
 /*
@@ -226,7 +226,7 @@ void XMLStorageManager::load(Study & study)
         study.add( ro.label_, *(ro.p_obj_) );
       }
     }
-    catch (InternalException & ex)
+    catch (const InternalException & ex)
     {
       LOGINFO(OSS() << ex);
     }

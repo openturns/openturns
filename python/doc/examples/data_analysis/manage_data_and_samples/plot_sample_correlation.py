@@ -18,6 +18,7 @@ from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -30,17 +31,20 @@ im = ishigami_function.IshigamiModel()
 input_names = im.distributionX.getDescription()
 
 size = 100
-inputDesign = ot.SobolIndicesExperiment(
-    im.distributionX, size, True).generate()
+inputDesign = ot.SobolIndicesExperiment(im.distributionX, size, True).generate()
 outputDesign = im.model(inputDesign)
+
+# %%
+# Create a :class:`~openturns.CorrelationAnalysis` object to compute various estimates
+# of the correlation between the inputs and the output.
+
+corr_analysis = ot.CorrelationAnalysis(inputDesign, outputDesign)
 
 # %%
 # PCC coefficients
 # ------------------
-# We compute here `PCC` coefficients using the `CorrelationAnalysis`
 
-# %%
-pcc_indices = ot.CorrelationAnalysis.PCC(inputDesign, outputDesign)
+pcc_indices = corr_analysis.computePCC()
 print(pcc_indices)
 
 # %%
@@ -48,114 +52,89 @@ print(pcc_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    pcc_indices, input_names, "PCC coefficients")
+    pcc_indices, input_names, "PCC coefficients"
+)
 view = viewer.View(graph)
 
 # %%
 # PRCC coefficients
 # --------------------
-# We compute here `PRCC` coefficients using the `CorrelationAnalysis`
 
-# %%
-prcc_indices = ot.CorrelationAnalysis.PRCC(inputDesign, outputDesign)
+prcc_indices = corr_analysis.computePRCC()
 print(prcc_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    prcc_indices, input_names, "PRCC coefficients")
+    prcc_indices, input_names, "PRCC coefficients"
+)
 view = viewer.View(graph)
 
 # %%
 # SRC coefficients
 # -------------------
-# We compute here `SRC` coefficients using the `CorrelationAnalysis`
 
-# %%
-src_indices = ot.CorrelationAnalysis.SRC(inputDesign, outputDesign)
+src_indices = corr_analysis.computeSRC()
 print(src_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    src_indices, input_names, 'SRC coefficients')
+    src_indices, input_names, "SRC coefficients"
+)
 view = viewer.View(graph)
 
 # %%
-# Case where coefficients sum to 1 :
+# Normalized squared SRC coefficients (coefficients are made to sum to 1) :
+
+squared_src_indices = corr_analysis.computeSquaredSRC(True)
+print(squared_src_indices)
 
 # %%
-scale_src_indices = ot.CorrelationAnalysis.SRC(inputDesign, outputDesign, True)
-print(scale_src_indices)
 
-# %%
-# And its associated graph:
-
-# %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    scale_src_indices, input_names, 'Scaled SRC coefficients')
+    squared_src_indices, input_names, "Squared SRC coefficients"
+)
 view = viewer.View(graph)
 
-# %%
-# Finally, using signed src: we get the trend importance :
-
-# %%
-signed_src_indices = ot.CorrelationAnalysis.SignedSRC(
-    inputDesign, outputDesign)
-print(signed_src_indices)
-
-# %%
-# and its graph :
-
-# %%
-graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    signed_src_indices, input_names, 'Signed SRC coefficients')
-view = viewer.View(graph)
-
-# %%
-#
 
 # %%
 # SRRC coefficients
 # --------------------
-# We compute here `SRRC` coefficients using the `CorrelationAnalysis`
 
-# %%
-srrc_indices = ot.CorrelationAnalysis.SRRC(inputDesign, outputDesign)
+srrc_indices = corr_analysis.computeSRRC()
 print(srrc_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    srrc_indices, input_names, 'SRRC coefficients')
+    srrc_indices, input_names, "SRRC coefficients"
+)
 view = viewer.View(graph)
 
 # %%
 # Pearson coefficients
 # -----------------------
-# We compute here the Pearson :math:`\rho` coefficients using the `CorrelationAnalysis`
+# We compute here the Pearson :math:`\rho` coefficients.
 
-# %%
-pearson_correlation = ot.CorrelationAnalysis.PearsonCorrelation(
-    inputDesign, outputDesign)
+pearson_correlation = corr_analysis.computePearsonCorrelation()
 print(pearson_correlation)
 
 # %%
-graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(pearson_correlation,
-                                                             input_names,
-                                                             "Pearson correlation coefficients")
+graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
+    pearson_correlation, input_names, "Pearson correlation coefficients"
+)
 view = viewer.View(graph)
 
 # %%
 # Spearman coefficients
 # -----------------------
-# We compute here the Pearson :math:`\rho_s` coefficients using the `CorrelationAnalysis`
+# We compute here the Spearman :math:`\rho_s` coefficients.
 
 # %%
-spearman_correlation = ot.CorrelationAnalysis.SpearmanCorrelation(
-    inputDesign, outputDesign)
+spearman_correlation = corr_analysis.computeSpearmanCorrelation()
 print(spearman_correlation)
 
 # %%
-graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(spearman_correlation,
-                                                             input_names,
-                                                             "Spearman correlation coefficients")
+graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
+    spearman_correlation, input_names, "Spearman correlation coefficients"
+)
 view = viewer.View(graph)
 plt.show()

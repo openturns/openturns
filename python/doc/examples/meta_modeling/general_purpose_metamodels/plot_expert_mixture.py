@@ -39,9 +39,8 @@ Mixture of experts
 import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
-from openturns.viewer import View
 import numpy as np
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -56,7 +55,11 @@ def piecewise(X):
     # else:
     #     f = 2.0-x**2
     xarray = np.array(X, copy=False)
-    return np.piecewise(xarray, [xarray < 0, xarray >= 0], [lambda x: x*(x+1.5), lambda x: 2.0 - x*x])
+    return np.piecewise(
+        xarray,
+        [xarray < 0, xarray >= 0],
+        [lambda x: x * (x + 1.5), lambda x: 2.0 - x * x],
+    )
 
 
 f = ot.PythonFunction(1, 1, func_sample=piecewise)
@@ -67,16 +70,18 @@ degree = 5
 samplingSize = 100
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
 productBasis = ot.OrthogonalProductPolynomialFactory(
-    [ot.LegendreFactory()] * dimension, enumerateFunction)
+    [ot.LegendreFactory()] * dimension, enumerateFunction
+)
 adaptiveStrategy = ot.FixedStrategy(
-    productBasis, enumerateFunction.getStrataCumulatedCardinal(degree))
-projectionStrategy = ot.LeastSquaresStrategy(
-    ot.MonteCarloExperiment(samplingSize))
+    productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)
+)
 
 # %%
 # Segment 1: (-1.0; 0.0)
 d1 = ot.Uniform(-1.0, 0.0)
-fc1 = ot.FunctionalChaosAlgorithm(f, d1, adaptiveStrategy, projectionStrategy)
+X1 = d1.getSample(samplingSize)
+Y1 = f(X1)
+fc1 = ot.FunctionalChaosAlgorithm(X1, Y1, d1, adaptiveStrategy)
 fc1.run()
 mm1 = fc1.getResult().getMetaModel()
 graph = mm1.draw(-1.0, -1e-6)
@@ -85,7 +90,9 @@ view = viewer.View(graph)
 # %%
 # Segment 2: (0.0, 1.0)
 d2 = ot.Uniform(0.0, 1.0)
-fc2 = ot.FunctionalChaosAlgorithm(f, d2, adaptiveStrategy, projectionStrategy)
+X2 = d2.getSample(samplingSize)
+Y2 = f(X2)
+fc2 = ot.FunctionalChaosAlgorithm(X2, Y2, d2, adaptiveStrategy)
 fc2.run()
 mm2 = fc2.getResult().getMetaModel()
 graph = mm2.draw(1e-6, 1.0)
@@ -94,9 +101,9 @@ view = viewer.View(graph)
 # %%
 # Define the mixture
 R = ot.CorrelationMatrix(2)
-d1 = ot.Normal([-1.0, -1.0], [1.0]*2, R)  # segment 1
-d2 = ot.Normal([1.0, 1.0], [1.0]*2, R)  # segment 2
-weights = [1.0]*2
+d1 = ot.Normal([-1.0, -1.0], [1.0] * 2, R)  # segment 1
+d2 = ot.Normal([1.0, 1.0], [1.0] * 2, R)  # segment 2
+weights = [1.0] * 2
 atoms = [d1, d2]
 mixture = ot.Mixture(atoms, weights)
 

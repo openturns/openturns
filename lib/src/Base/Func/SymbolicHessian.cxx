@@ -168,7 +168,7 @@ void SymbolicHessian::initialize() const
     {
       ev3Expression = ev3Parser.Parse(p_evaluation_->formulas_[sheetIndex].c_str(), nerr);
     }
-    catch (Ev3::ErrBase & exc)
+    catch (const Ev3::ErrBase & exc)
     {
       throw InternalException(HERE) << exc.description_;
     }
@@ -288,17 +288,10 @@ Hessian SymbolicHessian::getMarginal(const UnsignedInteger i) const
 Hessian SymbolicHessian::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal hessian must be in the range [0, outputDimension-1] and must be different";
-  const UnsignedInteger marginalDimension = indices.getSize();
-  Description marginalFormulas(marginalDimension);
-  Description marginalOutputNames(marginalDimension);
-  Description outputNames(p_evaluation_->getOutputVariablesNames());
-  Description formulas(p_evaluation_->getFormulas());
-  for (UnsignedInteger i = 0; i < marginalDimension; ++i)
-  {
-    marginalFormulas[i] = formulas[indices[i]];
-    marginalOutputNames[i] = outputNames[indices[i]];
-  }
-  return new SymbolicHessian(SymbolicEvaluation(p_evaluation_->getInputVariablesNames(), marginalOutputNames, marginalFormulas));
+  if (p_evaluation_->getOutputVariablesNames().getSize() == p_evaluation_->getFormulas().getSize())
+    return new SymbolicHessian(SymbolicEvaluation(p_evaluation_->getInputVariablesNames(), p_evaluation_->getOutputVariablesNames().select(indices), p_evaluation_->getFormulas().select(indices)));
+  else
+    return HessianImplementation::getMarginal(indices);
 }
 
 /* Method save() stores the object through the StorageManager */

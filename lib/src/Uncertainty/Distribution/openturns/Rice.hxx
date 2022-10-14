@@ -81,9 +81,6 @@ public:
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const override;
 
-  /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const override;
-
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Distribution getStandardRepresentative() const override;
 

@@ -11,9 +11,7 @@ Composite random vector
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -23,7 +21,7 @@ X = ot.RandomVector(dist2d)
 
 # %%
 # Create the function
-f = ot.SymbolicFunction(['x1', 'x2'], ['x1 + x2', 'x1*x2'])
+f = ot.SymbolicFunction(["x1", "x2"], ["x1 + x2", "x1*x2"])
 f
 
 # %%

@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from math import *
+import math as m
 
 ot.TESTPREAMBLE()
 
@@ -16,17 +16,16 @@ matrix0 = ot.Matrix()
 print("matrix0 = ", repr(matrix0))
 
 # TEST NUMBER ONE : CONSTRUCTOR WITH SIZE, OPERATOR() AND STRING CONVERTER
-print(
-    "test number one : constructor with size, operator() and string converter")
+print("test number one : constructor with size, operator() and string converter")
 
 # Constructor with size
 matrix1 = ot.Matrix(2, 2)
 
 # Check operator() methods
-matrix1[0, 0] = 1.
-matrix1[1, 0] = 2.
-matrix1[0, 1] = 3.
-matrix1[1, 1] = 4.
+matrix1[0, 0] = 1.0
+matrix1[1, 0] = 2.0
+matrix1[0, 1] = 3.0
+matrix1[1, 1] = 4.0
 
 # String converter
 print("matrix1 = ", repr(matrix1))
@@ -52,12 +51,12 @@ print("test number four : constructor with collection method")
 
 # Create the collection of values
 elementsValues = ot.ScalarCollection()
-elementsValues.add(1.)
-elementsValues.add(2.)
-elementsValues.add(3.)
-elementsValues.add(4.)
-elementsValues.add(5.)
-elementsValues.add(6.)
+elementsValues.add(1.0)
+elementsValues.add(2.0)
+elementsValues.add(3.0)
+elementsValues.add(4.0)
+elementsValues.add(5.0)
+elementsValues.add(6.0)
 
 # Check the content of the collection
 print("elementsValues = ", repr(elementsValues))
@@ -117,11 +116,10 @@ print("ptResult = ", repr(ptResult))
 
 # TEST NUMBER ELEVEN : MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR
 # METHODS
-print(
-    "test number eleven : multiplication and division by a numerical scalar methods")
+print("test number eleven : multiplication and division by a numerical scalar methods")
 
 # Check the multiplication method
-s = 3.
+s = 3.0
 scalprod1 = matrix1 * s
 # bug PYTHON scalprod2 = s * matrix1
 scalprod3 = matrix1 * s
@@ -152,8 +150,7 @@ print("matrix6 is empty = ", matrix6.isEmpty())
 print("matrix0 is empty = ", matrix0.isEmpty())
 
 # TEST NUMBER FOURTEEN : MULTIPLICATION WITH A NUMERICAL POINT METHOD
-print(
-    "test number fourteen : multiplication with a numerical point method")
+print("test number fourteen : multiplication with a numerical point method")
 
 # Create the numerical point
 pt_test = ot.Point([1.0, 2.0])
@@ -161,8 +158,8 @@ print("pt_test = ", repr(pt_test))
 
 A = ot.Matrix(2, 2)
 A[0, 0] = 0.5
-A[1, 0] = -(sqrt(3.) / 2)
-A[0, 1] = (sqrt(3.) / 2)
+A[1, 0] = -(m.sqrt(3.0) / 2)
+A[0, 1] = m.sqrt(3.0) / 2
 A[1, 1] = 0.5
 B = A.transpose()
 id = B * A
@@ -175,8 +172,7 @@ print("id = ", repr(id))
 print("ptResult2 = ", repr(ptResult2))
 
 # TEST NUMBER FIFTEEN : MULTIPLICATION WITH A SAMPLE
-print(
-    "test number fifteen : multiplication with a sample")
+print("test number fifteen : multiplication with a sample")
 s = ot.Sample([[1.0, 3.0, -1.0, -3.0], [-2.0, -5.0, 3.0, 1.0]])
 matrix32 = ot.Matrix(3, 2, [1.0 + i for i in range(6)])
 print("matrix32 = ", repr(matrix32))

@@ -245,12 +245,6 @@ Point Rayleigh::getKurtosis() const
   return Point(1, 3.245089300687638062848667);
 }
 
-/* Get the moments of the distribution */
-Point Rayleigh::getStandardMoment(const UnsignedInteger n) const
-{
-  return Point(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(1.0 + 0.5 * n)));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Rayleigh::getStandardRepresentative() const
 {

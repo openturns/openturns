@@ -558,32 +558,6 @@ Point PythonDistribution::getKurtosis() const
   }
 }
 
-
-/* Get the raw moments of the distribution */
-Point PythonDistribution::getStandardMoment(const UnsignedInteger n) const
-{
-  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getStandardMoment") ) )
-  {
-    ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getStandardMoment" ));
-    ScopedPyObjectPointer nArg(convert< UnsignedInteger, _PyInt_ >( n ));
-    ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
-                                     methodName.get(),
-                                     nArg.get(), NULL));
-    if (callResult.isNull())
-    {
-      handleException();
-    }
-    Point result(convert< _PySequence_, Point >(callResult.get()));
-    if (result.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Moment returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << getDimension();
-    return result;
-  }
-  else
-  {
-    return DistributionImplementation::getStandardMoment( n );
-  }
-}
-
-
 /* Get the raw moments of the distribution */
 Point PythonDistribution::getMoment(const UnsignedInteger n) const
 {
@@ -609,11 +583,11 @@ Point PythonDistribution::getMoment(const UnsignedInteger n) const
 }
 
 /* Get the centered moments of the distribution */
-Point PythonDistribution::getCenteredMoment(const UnsignedInteger n) const
+Point PythonDistribution::getCentralMoment(const UnsignedInteger n) const
 {
-  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getCenteredMoment") ) )
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getCentralMoment") ) )
   {
-    ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getCenteredMoment" ));
+    ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getCentralMoment" ));
     ScopedPyObjectPointer nArg(convert< UnsignedInteger, _PyInt_ >( n ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
@@ -628,7 +602,7 @@ Point PythonDistribution::getCenteredMoment(const UnsignedInteger n) const
   }
   else
   {
-    return DistributionImplementation::getCenteredMoment( n );
+    return DistributionImplementation::getCentralMoment( n );
   }
 }
 
@@ -935,6 +909,8 @@ Sample PythonDistribution::getSupport(const Interval & interval) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getSupport")))
   {
+    if (interval.getDimension() != getDimension())
+      throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
     ScopedPyObjectPointer methodName(convert< String, _PyString_ >("getSupport"));
     ScopedPyObjectPointer pyInterval(SWIG_NewPointerObj(new Interval(interval), SWIG_TypeQuery("OT::Interval *"), SWIG_POINTER_OWN));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs(pyObj_, methodName.get(), pyInterval.get(), NULL));

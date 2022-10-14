@@ -49,9 +49,9 @@ SymbolicFunction::SymbolicFunction ()
 /* Parameter constructor */
 SymbolicFunction::SymbolicFunction (const String & inputVariablesName,
                                     const String & formula)
-  : Function()
+  : SymbolicFunction(Description(1, inputVariablesName), Description(1, formula))
 {
-  *this = SymbolicFunction(Description(1, inputVariablesName), Description(1, formula));
+  // Nothing to do
 }
 
 

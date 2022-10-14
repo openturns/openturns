@@ -29,6 +29,7 @@
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/FittingTest.hxx"
 #include "openturns/HypothesisTest.hxx"
+#include "openturns/UserDefined.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,13 +45,26 @@ MetaModelAlgorithm::MetaModelAlgorithm()
 }
 
 /* Constructor with parameters */
-MetaModelAlgorithm::MetaModelAlgorithm(const Distribution & distribution,
-                                       const Function & model)
-  : PersistentObject()
-  , distribution_(distribution)
-  , model_(model)
+MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
+                                       const Sample & outputSample)
+  : MetaModelAlgorithm(inputSample, outputSample, UserDefined(inputSample))
 {
   // Nothing to do
+}
+
+/* Constructor with parameters */
+MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
+                                       const Sample & outputSample,
+                                       const Distribution & distribution)
+  : PersistentObject()
+  , inputSample_(inputSample)
+  , outputSample_(outputSample)
+  , distribution_(distribution)
+{
+  if (inputSample.getSize() != outputSample.getSize())
+    throw InvalidArgumentException(HERE) << "MetaModelAlgorithm input sample size (" << inputSample.getSize() << ") does not match output sample size (" << outputSample.getSize() << ")";
+  if (distribution.getDimension() != inputSample.getDimension())
+    throw InvalidArgumentException(HERE) << "MetaModelAlgorithm distribution dimension (" << distribution.getDimension() << ") does not match input sample dimension (" << inputSample.getDimension() << ")";
 }
 
 /* Virtual constructor */
@@ -237,13 +251,13 @@ void MetaModelAlgorithm::run()
 
 Sample MetaModelAlgorithm::getInputSample() const
 {
-  throw NotYetImplementedException(HERE) << "In MetaModelAlgorithm::getInputSample() const";
+  return inputSample_;
 }
 
 
 Sample MetaModelAlgorithm::getOutputSample() const
 {
-  throw NotYetImplementedException(HERE) << "In MetaModelAlgorithm::getOutputSample() const";
+  return outputSample_;
 }
 
 
@@ -251,17 +265,21 @@ Sample MetaModelAlgorithm::getOutputSample() const
 void MetaModelAlgorithm::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
+  adv.saveAttribute( "inputSample_", inputSample_ );
+  adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "distribution_", distribution_ );
-  adv.saveAttribute( "model_", model_ );
-
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MetaModelAlgorithm::load(Advocate & adv)
 {
   PersistentObject::load(adv);
+  if (adv.hasAttribute( "inputSample_"))
+  {
+    adv.loadAttribute( "inputSample_", inputSample_ );
+    adv.loadAttribute( "outputSample_", outputSample_ );
+  }
   adv.loadAttribute( "distribution_", distribution_ );
-  adv.loadAttribute( "model_", model_ );
 }
 
 END_NAMESPACE_OPENTURNS

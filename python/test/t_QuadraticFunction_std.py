@@ -49,9 +49,19 @@ inPoint[0] = 7.0
 inPoint[1] = 8.0
 inPoint[2] = 9.0
 outPoint = myFunction(inPoint)
-print('myFunction=', repr(myFunction))
-print(myFunction.getName(), '( ', repr(inPoint), ' ) = ', repr(outPoint))
-print(myFunction.getName(), '.gradient( ', repr(inPoint), ' ) = ',
-      repr(myFunction.gradient(inPoint)))
-print(myFunction.getName(), '.hessian( ', repr(inPoint), ' ) = ',
-      repr(myFunction.hessian(inPoint)))
+print("myFunction=", repr(myFunction))
+print(myFunction.getName(), "( ", repr(inPoint), " ) = ", repr(outPoint))
+print(
+    myFunction.getName(),
+    ".gradient( ",
+    repr(inPoint),
+    " ) = ",
+    repr(myFunction.gradient(inPoint)),
+)
+print(
+    myFunction.getName(),
+    ".hessian( ",
+    repr(inPoint),
+    " ) = ",
+    repr(myFunction.hessian(inPoint)),
+)

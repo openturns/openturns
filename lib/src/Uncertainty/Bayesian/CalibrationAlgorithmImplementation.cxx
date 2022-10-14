@@ -48,7 +48,9 @@ CalibrationAlgorithmImplementation::CalibrationAlgorithmImplementation(const Fun
   , parameterPrior_(parameterPrior)
   , result_()
 {
-  // Nothing to do
+  // Allow for a dim-0 sample but it should have the right size internally
+  if (!inputObservations_.getDimension())
+    inputObservations_ = Sample(outputObservations.getSize(), 0);
 }
 
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */

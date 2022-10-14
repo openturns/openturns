@@ -2,18 +2,18 @@ import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
-distribution = ot.Normal([0.5], [2.], ot.CorrelationMatrix(1))
+distribution = ot.Normal([0.5], [2.0], ot.CorrelationMatrix(1))
 sample = distribution.getSample(200)
 
 # Construct empirical CDF for the sample
 data = ot.Sample(20, 2)
 cursor = ot.Point(2)
 for i in range(20):
-    cursor[0] = 13. * i / 20 - 6.5
-    count = 0.
+    cursor[0] = 13.0 * i / 20 - 6.5
+    count = 0.0
     for j in range(200):
-        if(sample[j, 0] < cursor[0]):
-            count += 1.
+        if sample[j, 0] < cursor[0]:
+            count += 1.0
     cursor[1] = count / 200
     data[i] = cursor
 

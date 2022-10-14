@@ -93,9 +93,6 @@ public:
   /** Accessor for boundingbox */
   Interval getBoundingBox() const override;
 
-  /** Draw method */
-  String draw() const override;
-
   /** Clone method */
   Contour * clone() const override;
 
@@ -111,9 +108,6 @@ public:
 
   /** Method load() stores the object through the StorageManager */
   void load(Advocate & adv) override;
-
-  /** Clean all the temporary data created by draw() method */
-  void clean() const override;
 
 protected:
   /** Check fo data validity */
@@ -135,12 +129,6 @@ private:
 
   /** Flag for drawing the labels */
   Bool drawLabels_;
-
-  /** Temporary file name for the exchange with R */
-  mutable String xFileName_;
-
-  /** Temporary file name for the exchange with R */
-  mutable String yFileName_;
 
 }; /* class Contour */
 

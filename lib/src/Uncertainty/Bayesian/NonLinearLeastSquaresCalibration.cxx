@@ -57,11 +57,11 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
 {
   // Check the input
-  const UnsignedInteger inputDimension = inputObservations.getDimension();
+  const UnsignedInteger inputDimension = inputObservations_.getDimension();
   if (model.getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << inputDimension << ", got input dimension=" << model.getInputDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
-  const UnsignedInteger size = inputObservations.getSize();
+  const UnsignedInteger size = outputObservations.getSize();
   if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
 
   // Now the automatic selection of the algorithm
@@ -311,7 +311,7 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
     // If the solver is single start, we can use its setStartingPoint method
     algorithm_.setStartingPoint(candidate);
   }
-  catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+  catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
   {
     LOGWARN(OSS() << "Candidate=" << candidate << " is ignored because algorithm "
             << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");

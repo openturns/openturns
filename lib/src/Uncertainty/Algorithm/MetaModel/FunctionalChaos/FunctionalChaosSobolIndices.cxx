@@ -65,7 +65,7 @@ inline bool varianceComparison(const std::pair<UnsignedInteger, Scalar> &a, cons
   return a.second > b.second;
 }
 
-String FunctionalChaosSobolIndices::summary() const
+String FunctionalChaosSobolIndices::__str__(const String & /*offset*/) const
 {
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
   const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
@@ -339,14 +339,6 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
   else return 0.0;
 }
 
-/* Sobol (first order) index accessor */
-Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const UnsignedInteger variableIndex,
-    const UnsignedInteger marginalIndex) const
-{
-  const Indices index(1, variableIndex);
-  return getSobolGroupedIndex(index, marginalIndex);
-}
-
 /* Sobol grouped total index accessor */
 Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
@@ -359,13 +351,6 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
   const Scalar complementaryFirstIndex = getSobolGroupedIndex(complementaryVariableIndices, marginalIndex);
   const Scalar groupTotalIndex = 1.0 - complementaryFirstIndex;
   return groupTotalIndex;
-}
-/* Sobol total index accessor */
-Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const UnsignedInteger variableIndex,
-    const UnsignedInteger marginalIndex) const
-{
-  const Indices index(1, variableIndex);
-  return getSobolGroupedTotalIndex(index, marginalIndex);
 }
 
 /* Functional chaos result accessor */

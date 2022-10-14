@@ -239,10 +239,25 @@ Point GeneralizedPareto::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   Point result(3);
-  const Scalar epsilon = 1.0e-5;
-  result[0] = (GeneralizedPareto(sigma_ + epsilon, xi_, u_).computePDF(point) - GeneralizedPareto(sigma_ - epsilon, xi_, u_).computePDF(point)) / (2.0 * epsilon);
-  result[1] = (GeneralizedPareto(sigma_, xi_ + epsilon, u_).computePDF(point) - GeneralizedPareto(sigma_, xi_ - epsilon, u_).computePDF(point)) / (2.0 * epsilon);
-  result[2] = (GeneralizedPareto(sigma_, xi_, u_ + epsilon).computePDF(point) - GeneralizedPareto(sigma_, xi_, u_ - epsilon).computePDF(point)) / (2.0 * epsilon);
+  const Scalar z = (point[0] - u_) / sigma_;
+  if (z < 0.0) return result;
+  const Scalar xiZ = xi_ * z;
+  if ((xi_ < 0.0) && (xiZ <= -1.0)) return result;
+  if (std::abs(xi_) <= 1.0e-8)
+  {
+    const Scalar expFactor = std::exp(-z) / sigma_;
+    result[0] = (z - 1.0) * expFactor / sigma_ * (1.0 + 0.5 * xiZ * (z - 4.0));
+    result[1] = z * expFactor * (0.5 * (z - 2.0) + xiZ * z * (24.0 + z * (-20.0 + z * 3.0)) / 12.0);
+    result[2] = expFactor / sigma_ * (1.0 + 0.5 * xi_ * (2.0 + z * (-4.0 + z)));
+  }
+  else
+  {
+    const Scalar logTerm = log1p(xiZ);
+    const Scalar expFactor = std::exp(-(2.0 + 1.0 / xi_) * logTerm) / sigma_;
+    result[0] = (z - 1.0) * expFactor / sigma_;
+    result[1] = ((1.0 + xiZ) * logTerm - xiZ * (1.0 + xi_)) * expFactor / (xi_ * xi_);
+    result[2] = (1.0 + xi_) * expFactor / sigma_;
+  }
   return result;
 }
 
@@ -252,10 +267,25 @@ Point GeneralizedPareto::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point result(3);
-  const Scalar epsilon = 1.0e-5;
-  result[0] = (GeneralizedPareto(sigma_ + epsilon, xi_, u_).computeCDF(point) - GeneralizedPareto(sigma_ - epsilon, xi_, u_).computeCDF(point)) / (2.0 * epsilon);
-  result[1] = (GeneralizedPareto(sigma_, xi_ + epsilon, u_).computeCDF(point) - GeneralizedPareto(sigma_, xi_ - epsilon, u_).computeCDF(point)) / (2.0 * epsilon);
-  result[2] = (GeneralizedPareto(sigma_, xi_, u_ + epsilon).computeCDF(point) - GeneralizedPareto(sigma_, xi_, u_ - epsilon).computeCDF(point)) / (2.0 * epsilon);
+  const Scalar z = (point[0] - u_) / sigma_;
+  if (z < 0.0) return result;
+  const Scalar xiZ = xi_ * z;
+  if ((xi_ < 0.0) && (xiZ <= -1.0)) return result;
+  if (std::abs(xi_) <= 1.0e-8)
+  {
+    const Scalar expFactor = -std::exp(-z);
+    result[0] = z * expFactor * (1 + 0.5 * xiZ * (z - 2.0)) / sigma_;
+    result[1] = 0.5 * z * z * expFactor * (1.0 + xiZ * (-8.0 + 3.0 * z) / 6.0);
+    result[2] = expFactor * (1.0 + 0.5 * xiZ * (-2.0 + z)) / sigma_;
+  }
+  else
+  {
+    const Scalar logTerm = log1p(xiZ);
+    const Scalar expFactor = -std::exp(-(1.0 + 1.0 / xi_) * logTerm);
+    result[0] = z * expFactor / sigma_;
+    result[1] = ((1.0 + xiZ) * logTerm - xiZ) * expFactor / (xi_ * xi_);
+    result[2] = expFactor / sigma_;
+  }
   return result;
 }
 
@@ -294,19 +324,6 @@ Point GeneralizedPareto::getKurtosis() const
 {
   if (xi_ >= 1.0 / 4.0) throw NotDefinedException(HERE) << "Error: the kurtosis is defined only for xi<1/4, here xi=" << xi_;
   return Point(1, 3.0 * (1.0 - 2.0 * xi_) * (3.0 + xi_ * (1.0 + 2.0 * xi_)) / ((1.0 - 4.0 * xi_) * (1.0 - 3.0 * xi_)));
-}
-
-/* Get the moments of the standardized distribution */
-Point GeneralizedPareto::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n == 0) return Point(1, 1.0);
-  if (xi_ == 0.0) return Point(1, SpecFunc::Gamma(n + 1.0));
-  if (xi_ > 0.0)
-  {
-    if (n < trunc(1.0 / xi_)) return Point(1, std::exp(-std::log(xi_) * (n + 1.0) + SpecFunc::LogGamma(1.0 / xi_ - n) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(1.0 + 1.0 / xi_)));
-    throw NotDefinedException(HERE) << "Error: the standard moments are defined up to order " << trunc(1.0 / xi_) << " and n=" << n;
-  }
-  return Point(1, std::exp(-(n + 1.0) * std::log(-xi_) + SpecFunc::LogGamma(-1.0 / xi_) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(-1.0 / xi_ + n + 1.0)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

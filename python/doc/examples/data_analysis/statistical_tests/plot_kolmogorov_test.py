@@ -7,6 +7,7 @@ Use the Kolmogorov/Lilliefors test
 
 # %%
 import openturns as ot
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -20,12 +21,12 @@ sample = distribution.getSample(50)
 # Case 1 : the distribution parameters are known.
 # -----------------------------------------------
 #
-# In the case where the parameters of the distribution are known, we must use the `Kolmogorov` static method and the distribution to be tested.
+# In the case where the parameters of the distribution are known,
+# we must use the `Kolmogorov` static method and the distribution to be tested.
 
 # %%
 result = ot.FittingTest.Kolmogorov(sample, distribution, 0.01)
-print('Conclusion=', result.getBinaryQualityMeasure(),
-      'P-value=', result.getPValue())
+print("Conclusion=", result.getBinaryQualityMeasure(), "P-value=", result.getPValue())
 
 # %%
 # Test succeeded ?
@@ -55,19 +56,18 @@ result.getStatistic()
 # Case 2 : the distribution parameters are estimated from the sample.
 # -------------------------------------------------------------------
 #
-# In the case where the parameters of the distribution are estimated from the sample, we must use the `Lilliefors` static method and the distribution factory to be tested.
+# In the case where the parameters of the distribution are estimated from the sample,
+# we must use the `Lilliefors` static method and the distribution factory to be tested.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger(
-    "FittingTest-LillieforsMaximumSamplingSize", 1000)
+ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 1000)
 
 # %%
 distributionFactory = ot.NormalFactory()
 
 # %%
 dist, result = ot.FittingTest.Lilliefors(sample, distributionFactory, 0.01)
-print('Conclusion=', result.getBinaryQualityMeasure(),
-      'P-value=', result.getPValue())
+print("Conclusion=", result.getBinaryQualityMeasure(), "P-value=", result.getPValue())
 
 # %%
 dist

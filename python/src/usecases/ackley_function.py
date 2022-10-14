@@ -13,13 +13,12 @@ def g(X):
     d = len(X)
     sumOfSquared = sum(x**2 for x in X) / d
     sumOfCos = sum(m.cos(c * x) for x in X) / d
-    f = - a * m.exp(- b * m.sqrt(sumOfSquared)) \
-        - m.exp(sumOfCos) + a + m.exp(1.0)
+    f = -a * m.exp(-b * m.sqrt(sumOfSquared)) - m.exp(sumOfCos) + a + m.exp(1.0)
     return [f]
 
 
-class AckleyModel():
-    """
+class AckleyModel:
+    r"""
     Data class for the Ackley test function.
 
 

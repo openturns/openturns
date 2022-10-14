@@ -290,12 +290,6 @@ Point Distribution::getKurtosis() const
   return getImplementation()->getKurtosis();
 }
 
-/* Get the raw moments of the standardized distribution */
-Point Distribution::getStandardMoment(const UnsignedInteger n) const
-{
-  return getImplementation()->getStandardMoment(n);
-}
-
 /* Get the raw moments of the distribution */
 Point Distribution::getMoment(const UnsignedInteger n) const
 {
@@ -303,9 +297,9 @@ Point Distribution::getMoment(const UnsignedInteger n) const
 }
 
 /* Get the centered moments about the mean of the distribution */
-Point Distribution::getCenteredMoment(const UnsignedInteger n) const
+Point Distribution::getCentralMoment(const UnsignedInteger n) const
 {
-  return getImplementation()->getCenteredMoment(n);
+  return getImplementation()->getCentralMoment(n);
 }
 
 /* Get the shifted moments of the distribution */

@@ -1,27 +1,29 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
 
 # Reduce the precision output as the estimation is based on a lazy
 # optimizer
-PlatformInfo.SetNumericalPrecision(4)
+ot.PlatformInfo.SetNumericalPrecision(4)
 
 # ARMA(p, q)
 p = 1
 q = 1
 
 # ARMACoefficients initializing
-arCoefficients = Point(p, 0.80)
-maCoefficients = Point(q, 0.50)
+arCoefficients = ot.Point(p, 0.80)
+maCoefficients = ot.Point(q, 0.50)
 
 # ARMA creation
-myARMA = ARMA(ARMACoefficients(arCoefficients),
-              ARMACoefficients(maCoefficients), WhiteNoise(Normal(0.0, 0.05)))
-myARMA.setTimeGrid(RegularGrid(0.0, 0.1, 256))
+myARMA = ot.ARMA(
+    ot.ARMACoefficients(arCoefficients),
+    ot.ARMACoefficients(maCoefficients),
+    ot.WhiteNoise(ot.Normal(0.0, 0.05)),
+)
+myARMA.setTimeGrid(ot.RegularGrid(0.0, 0.1, 256))
 print("myARMA process=", myARMA)
 
 # Create a realization
@@ -31,12 +33,11 @@ timeSeries = myARMA.getRealization()
 sample = myARMA.getSample(100)
 
 # First, build an ARMA based on a given order using the WhittleFactory
-factory = WhittleFactory(p, q)
+factory = ot.WhittleFactory(p, q)
 # factory.setVerbose(False)
 print("factory=", factory)
-print("factory as an ARMA factory=", ARMAFactory(factory))
-informationCriteria = Point()
-result, informationCriteria = factory.buildWithCriteria(TimeSeries(timeSeries))
+print("factory as an ARMA factory=", ot.ARMAFactory(factory))
+result, informationCriteria = factory.buildWithCriteria(ot.TimeSeries(timeSeries))
 # print "Estimated ARMA=", result
 # print "Information criteria=", informationCriteria
 result2, informationCriteria = factory.buildWithCriteria(sample)
@@ -45,20 +46,19 @@ result2, informationCriteria = factory.buildWithCriteria(sample)
 
 # Second, build the best ARMA based on a given range of order using the
 # WhittleFactory
-pIndices = Indices(p + 1)
+pIndices = ot.Indices(p + 1)
 pIndices.fill()
-qIndices = Indices(q + 1)
+qIndices = ot.Indices(q + 1)
 qIndices.fill()
-factory = WhittleFactory(pIndices, qIndices)
+factory = ot.WhittleFactory(pIndices, qIndices)
 print("factory=", factory)
-informationCriteria = Point()
-result, informationCriteria = factory.buildWithCriteria(TimeSeries(timeSeries))
+result, informationCriteria = factory.buildWithCriteria(ot.TimeSeries(timeSeries))
 # print "Estimated ARMA=", result
 # print "Information criteria=", informationCriteria
 # print "History=", factory.getHistory()
 result2, informationCriteria = factory.buildWithCriteria(sample)
 # print "Estimated ARMA=", result2
 # print "Information criteria=", informationCriteria
-history = WhittleFactoryStateCollection(factory.getHistory())
-firstTestes = WhittleFactoryState(history[0])
+history = ot.WhittleFactoryStateCollection(factory.getHistory())
+firstTestes = ot.WhittleFactoryState(history[0])
 # print "History=", factory.getHistory()

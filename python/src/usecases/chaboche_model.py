@@ -12,7 +12,7 @@ def g(X):
     return [stress]
 
 
-class ChabocheModel():
+class ChabocheModel:
     """
     Data class for the Chaboche mechanical model.
 
@@ -68,7 +68,8 @@ class ChabocheModel():
         self.Gamma.setDescription(["Gamma"])
 
         self.inputDistribution = ot.ComposedDistribution(
-            [self.Strain, self.R, self.C, self.Gamma])
+            [self.Strain, self.R, self.C, self.Gamma]
+        )
 
         self.model = ot.PythonFunction(4, 1, g)
         self.model.setInputDescription(["Strain", "R", "C", "Gamma"])

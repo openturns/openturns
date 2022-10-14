@@ -296,7 +296,7 @@ void EfficientGlobalOptimization::run()
       // If the solver is single start, we can use its setStartingPoint method
       solver_.setStartingPoint(optimizer);
     }
-    catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+    catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
     {
       // Nothing to do if setStartingPoint is not defined
     }
@@ -399,7 +399,7 @@ void EfficientGlobalOptimization::run()
 
     if (evaluationNumber > 0)
     {
-      KrigingAlgorithm algo(inputSample, outputSample, metaModelResult.getCovarianceModel(), metaModelResult.getBasisCollection());
+      KrigingAlgorithm algo(inputSample, outputSample, metaModelResult.getCovarianceModel(), metaModelResult.getBasisCollection()[0]);
       LOGINFO(OSS() << "Rebuilding kriging ...");
       algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
       if (hasNoise)

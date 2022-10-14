@@ -8,15 +8,13 @@ ot.TESTPREAMBLE()
 
 
 # lm build
-print(
-    "Fit y ~ 3 - 2 x + 0.05 * sin(x) model using 20 points (sin(x) ~ noise)")
+print("Fit y ~ 3 - 2 x + 0.05 * sin(x) model using 20 points (sin(x) ~ noise)")
 size = 20
 oneSample = ot.Sample(size, 1)
 twoSample = ot.Sample(size, 1)
 for i in range(size):
     oneSample[i, 0] = 7.0 * sin(-3.5 + (6.5 * i) / (size - 1.0)) + 2.0
-    twoSample[i, 0] = -2.0 * oneSample[
-        i, 0] + 3.0 + 0.05 * sin(oneSample[i, 0])
+    twoSample[i, 0] = -2.0 * oneSample[i, 0] + 3.0 + 0.05 * sin(oneSample[i, 0])
 
 test = ot.LinearModelAlgorithm(oneSample, twoSample)
 result = ot.LinearModelResult(test.getResult())
@@ -48,8 +46,9 @@ X.stack(X2)
 # Define y
 Y = ot.Sample(size, 1)
 for i in range(size):
-    Y[i, 0] = 1.0 + 0.1 * X[i, 0] + 10.0 * \
-        X[i, 0] * X[i, 0] + 0.1 * ot.DistFunc.rNormal()
+    Y[i, 0] = (
+        1.0 + 0.1 * X[i, 0] + 10.0 * X[i, 0] * X[i, 0] + 0.1 * ot.DistFunc.rNormal()
+    )
 test = ot.LinearModelAlgorithm(X, Y)
 result = test.getResult()
 analysis = ot.LinearModelAnalysis(result)
@@ -67,7 +66,7 @@ a0 = 0.6
 a1 = 2.0
 x = ot.Normal(0.5, 0.2).getSample(sample_size)
 epsilon = ot.Exponential(0.1).getSample(sample_size)
-y = ot.Sample([[a0]]*sample_size) + a1 * x + epsilon
+y = ot.Sample([[a0]] * sample_size) + a1 * x + epsilon
 algo = ot.LinearModelAlgorithm(x, y)
 result = algo.getResult()
 analysis = ot.LinearModelAnalysis(result)
@@ -77,15 +76,18 @@ results = str(analysis)
 ot.RandomGenerator.SetSeed(0)
 distribution = ot.Normal()
 sample = distribution.getSample(30)
-func = ot.SymbolicFunction('x', '2 * x + 1')
+func = ot.SymbolicFunction("x", "2 * x + 1")
 firstSample = sample
 secondSample = func(sample) + ot.Normal().getSample(30)
 linear_model = ot.LinearModelAlgorithm(firstSample, secondSample)
 linear_result = linear_model.getResult()
 test_result = ot.LinearModelTest.LinearModelFisher(
-    firstSample, secondSample, linear_result)
+    firstSample, secondSample, linear_result
+)
 linear_model_analysis = ot.LinearModelAnalysis(linear_result)
-ott.assert_almost_equal(test_result.getStatistic(),
-                        linear_model_analysis.getFisherScore(), 1e-13, 0)
-ott.assert_almost_equal(test_result.getPValue(),
-                        linear_model_analysis.getFisherPValue(), 0, 0)
+ott.assert_almost_equal(
+    test_result.getStatistic(), linear_model_analysis.getFisherScore(), 1e-13, 0
+)
+ott.assert_almost_equal(
+    test_result.getPValue(), linear_model_analysis.getFisherPValue(), 0, 0
+)

@@ -296,13 +296,6 @@ Point Frechet::getKurtosis() const
   return Point(1, kurtosis);
 }
 
-/* Get the moments of the standardized distribution */
-Point Frechet::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n >= alpha_) throw NotDefinedException(HERE) << "Error: cannot compute a standard moment of order greater or equal to alpha=" << alpha_;
-  return Point(1, SpecFunc::Gamma(1.0 - n / alpha_));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Frechet::getStandardRepresentative() const
 {

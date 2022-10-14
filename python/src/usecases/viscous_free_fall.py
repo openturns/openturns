@@ -13,14 +13,15 @@ def AltiFunc(X):
     m = X[2]
     c = X[3]
     tau = m / c
-    vinf = - m * g / c
+    vinf = -m * g / c
+    global vertices
     t = np.array(vertices)
-    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(- t / tau))
-    z = np.maximum(z, 0.)
+    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(-t / tau))
+    z = np.maximum(z, 0.0)
     return [[zeta[0]] for zeta in z]
 
 
-class ViscousFreeFall():
+class ViscousFreeFall:
     """
     Data class for the viscous free fall.
 
@@ -81,8 +82,9 @@ class ViscousFreeFall():
         self.tmin = 0.0  # Minimum time
         self.tmax = 12.0  # Maximum time
         self.gridsize = 100  # Number of time steps
-        self.mesh = ot.IntervalMesher(
-            [self.gridsize-1]).build(ot.Interval(self.tmin, self.tmax))
+        self.mesh = ot.IntervalMesher([self.gridsize - 1]).build(
+            ot.Interval(self.tmin, self.tmax)
+        )
         self.vertices = self.mesh.getVertices()
 
         # Marginals
@@ -93,8 +95,10 @@ class ViscousFreeFall():
 
         # Joint distribution
         self.distribution = ot.ComposedDistribution(
-            [self.distZ0, self.distV0, self.distM, self.distC])
+            [self.distZ0, self.distV0, self.distM, self.distC]
+        )
 
         # Exact solution
         self.alti = ot.PythonPointToFieldFunction(
-            self.dim, self.mesh, self.outputDimension, AltiFunc)
+            self.dim, self.mesh, self.outputDimension, AltiFunc
+        )

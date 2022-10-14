@@ -389,14 +389,11 @@ public:
   /** Get the kurtosis of the distribution */
   virtual Point getKurtosis() const;
 
-  /** Get the raw moments of the standardized distribution */
-  virtual Point getStandardMoment(const UnsignedInteger n) const;
-
   /** Get the raw moments of the distribution */
   virtual Point getMoment(const UnsignedInteger n) const;
 
   /** Get the centered moments of the distribution */
-  virtual Point getCenteredMoment(const UnsignedInteger n) const;
+  virtual Point getCentralMoment(const UnsignedInteger n) const;
 
   /** Get the shifted moments of the distribution */
   virtual Point getShiftedMoment(const UnsignedInteger n,

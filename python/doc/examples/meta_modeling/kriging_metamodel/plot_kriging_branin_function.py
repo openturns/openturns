@@ -10,7 +10,6 @@ Kriging: metamodel of the Branin-Hoo function
 # %%
 from numpy import sqrt
 import openturns as ot
-import openturns.viewer as viewer
 import openturns.viewer as otv
 from openturns.usecases import branin_function
 from matplotlib import pylab as plt
@@ -25,7 +24,7 @@ model = bm.objectiveFunction
 # We shall represent this 2D function with isolines. We set the number of isolines to a maximum of 10
 # thanks to the following `ResourceMap` key :
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 10)
-graphBasic = model.draw([0.0, 0.0], [1.0, 1.0], [100]*2)
+graphBasic = model.draw([0.0, 0.0], [1.0, 1.0], [100] * 2)
 
 
 # %%
@@ -41,8 +40,7 @@ for contours in drawables:
 # Take the first contour as the only one with multiple levels
 contour = graphBasic.getDrawable(0)
 # Build a range of colors
-ot.ResourceMap.SetAsUnsignedInteger(
-    'Drawable-DefaultPalettePhase', len(levels))
+ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
 palette = ot.Drawable.BuildDefaultPalette(len(levels))
 # Create the drawables list, appending each contour with its own color
 drawables = list()
@@ -53,8 +51,7 @@ for i in range(len(levels)):
     # We have to copy the drawable because a Python list stores only pointers
     drawables.append(ot.Drawable(contour))
 
-graphFineTune = ot.Graph("The exact Branin model",
-                         r"$x_1$", r"$x_2$", True, '')
+graphFineTune = ot.Graph("The exact Branin model", r"$x_1$", r"$x_2$", True, "")
 graphFineTune.setDrawables(drawables)  # Replace the drawables
 graphFineTune.setLegendPosition("")  # Remove the legend
 graphFineTune.setColors(palette)  # Add colors
@@ -63,7 +60,7 @@ graphFineTune.setColors(palette)  # Add colors
 # %%
 # We also represent the three minima of the Branin function with orange diamonds :
 sample1 = ot.Sample([bm.xexact1, bm.xexact2, bm.xexact3])
-cloud1 = ot.Cloud(sample1, 'orange', 'diamond', 'First Cloud')
+cloud1 = ot.Cloud(sample1, "orange", "diamond", "First Cloud")
 graphFineTune.add(cloud1)
 view = otv.View(graphFineTune)
 
@@ -82,8 +79,12 @@ print(bm.objectiveFunction(sample1))
 #
 # We use the :class:`~openturns.KrigingAlgorithm` class to perform the kriging analysis.
 # We first generate a design of experiments with LHS and store the input trainig points in `xdata`
-experiment = ot.LHSExperiment(ot.ComposedDistribution(
-    [ot.Uniform(0.0, 1.0), ot.Uniform(0.0, 1.0)]), 28, False, True)
+experiment = ot.LHSExperiment(
+    ot.ComposedDistribution([ot.Uniform(0.0, 1.0), ot.Uniform(0.0, 1.0)]),
+    28,
+    False,
+    True,
+)
 xdata = experiment.generate()
 
 # %%
@@ -98,7 +99,7 @@ basis = ot.ConstantBasisFactory(dimension).build()
 
 # %%
 # We choose a squared exponential covariance model in dimension 2 :
-covarianceModel = ot.SquaredExponential([0.1]*dimension, [1.0])
+covarianceModel = ot.SquaredExponential([0.1] * dimension, [1.0])
 
 # %%
 # We have all the components to build a kriging algorithm and run it :
@@ -117,7 +118,7 @@ result = algo.getResult()
 metamodel = result.getMetaModel()
 
 
-graphBasic = metamodel.draw([0.0, 0.0], [1.0, 1.0], [100]*2)
+graphBasic = metamodel.draw([0.0, 0.0], [1.0, 1.0], [100] * 2)
 drawables = graphBasic.getDrawables()
 levels = []
 for i in range(len(drawables)):
@@ -127,8 +128,7 @@ for i in range(len(drawables)):
 # Take the first contour as the only one with multiple levels
 contour = graphBasic.getDrawable(0)
 # Build a range of colors
-ot.ResourceMap.SetAsUnsignedInteger(
-    'Drawable-DefaultPalettePhase', len(levels))
+ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
 palette = ot.Drawable.BuildDefaultPalette(len(levels))
 # Create the drawables list, appending each contour with its own color
 drawables = list()
@@ -139,8 +139,7 @@ for i in range(len(levels)):
     # We have to copy the drawable because a Python list stores only pointers
     drawables.append(ot.Drawable(contour))
 
-graphFineTune = ot.Graph("Branin metamodel (mean)",
-                         r"$x_1$", r"$x_2$", True, '')
+graphFineTune = ot.Graph("Branin metamodel (mean)", r"$x_1$", r"$x_2$", True, "")
 graphFineTune.setDrawables(drawables)
 graphFineTune.setLegendPosition("")
 graphFineTune.setColors(palette)
@@ -148,7 +147,7 @@ graphFineTune.setColors(palette)
 # %%
 # We also represent the location of the minima of the Branin function :
 sample1 = ot.Sample([bm.xexact1, bm.xexact2, bm.xexact3])
-cloud1 = ot.Cloud(sample1, 'orange', 'diamond', 'First Cloud')
+cloud1 = ot.Cloud(sample1, "orange", "diamond", "First Cloud")
 graphFineTune.add(cloud1)
 view = otv.View(graphFineTune)
 
@@ -182,17 +181,16 @@ condCovSd = sqrt(condCov)
 # %%
 # As we have previously done we build contours with the following levels ans labels :
 levels = [0.01, 0.025, 0.050, 0.075, 0.1, 0.125, 0.150, 0.175]
-labels = ['0.01', '0.025', '0.050', '0.075', '0.1', '0.125', '0.150', '0.175']
-contour = ot.Contour(N+2, N+2, condCovSd)
-graph = ot.Graph('', 'x', 'y', True, '')
+labels = ["0.01", "0.025", "0.050", "0.075", "0.1", "0.125", "0.150", "0.175"]
+contour = ot.Contour(N + 2, N + 2, condCovSd)
+graph = ot.Graph("", "x", "y", True, "")
 graph.add(contour)
 
 
 # %%
 # We use fancy colored isolines for the contour plot :
 contour = graph.getDrawable(0)
-ot.ResourceMap.SetAsUnsignedInteger(
-    'Drawable-DefaultPalettePhase', len(levels))
+ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
 palette = ot.Drawable.BuildDefaultPalette(len(levels))
 drawables = list()
 for i in range(len(levels)):
@@ -200,7 +198,7 @@ for i in range(len(levels)):
     contour.setDrawLabels(True)
     drawables.append(ot.Drawable(contour))
 
-graphFineTune = ot.Graph("Standard deviation", r"$x_1$", r"$x_2$", True, '')
+graphFineTune = ot.Graph("Standard deviation", r"$x_1$", r"$x_2$", True, "")
 graphFineTune.setDrawables(drawables)
 graphFineTune.setLegendPosition("")
 graphFineTune.setColors(palette)

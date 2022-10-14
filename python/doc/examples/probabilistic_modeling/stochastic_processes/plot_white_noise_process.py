@@ -28,7 +28,7 @@ Create a white noise process
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -49,18 +49,19 @@ process
 # Draw a realization
 realization = process.getRealization()
 graph = realization.drawMarginal(0)
-graph.setTitle('Realization of a white noise with distribution N(0,1)')
+graph.setTitle("Realization of a white noise with distribution N(0,1)")
 view = viewer.View(graph)
 
 # %%
 # Draw a sample
 sample = process.getSample(5)
 graph = sample.drawMarginal(0)
-graph.setTitle(str(sample.getSize()) +
-               ' realizations of a white noise with distribution N(0,1)')
+graph.setTitle(
+    str(sample.getSize()) + " realizations of a white noise with distribution N(0,1)"
+)
 for k in range(sample.getSize()):
     drawable = graph.getDrawable(k)
-    drawable.setLegend('realization ' + str(k+1))
+    drawable.setLegend("realization " + str(k + 1))
     graph.setDrawable(drawable, k)
 view = viewer.View(graph)
 plt.show()

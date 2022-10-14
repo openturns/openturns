@@ -13,9 +13,7 @@ The goal of this example is to present the features of the PlotDesign static met
 import matplotlib.pyplot as plt
 import openturns as ot
 import openturns.viewer as otv
-import pylab as pl
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -69,7 +67,7 @@ fig = otv.PlotDesign(sample, enableTicks=False)
 # Configure the marker.
 
 # %%
-fig = otv.PlotDesign(sample, plot_kw={"marker": '.', "color": "red"})
+fig = otv.PlotDesign(sample, plot_kw={"marker": ".", "color": "red"})
 
 # %%
 # Create the figure beforehand.

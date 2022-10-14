@@ -93,13 +93,16 @@ int main(int, char *[])
   listFittingAlgorithm.add( KFold() );
   listFittingAlgorithm.add( CorrectedLeaveOneOut() );
 
-  for ( UnsignedInteger fittingAlgorithmIndex = 0; fittingAlgorithmIndex < listFittingAlgorithm.getSize(); ++ fittingAlgorithmIndex )
+  for (UnsignedInteger fittingAlgorithmIndex = 0; fittingAlgorithmIndex < listFittingAlgorithm.getSize(); ++ fittingAlgorithmIndex)
   {
     FixedStrategy adaptiveStrategy( productBasis, basisSize );
     FittingAlgorithm fittingAlgorithm( listFittingAlgorithm[fittingAlgorithmIndex] );
-    LeastSquaresStrategy projectionStrategy( LowDiscrepancyExperiment(SobolSequence(dimension), samplingSize), LeastSquaresMetaModelSelectionFactory(LARS(), fittingAlgorithm));
-    FunctionalChaosAlgorithm algo(model, distribution, adaptiveStrategy, projectionStrategy);
+    const LeastSquaresStrategy projectionStrategy(LeastSquaresMetaModelSelectionFactory(LARS(), fittingAlgorithm));
+    const LowDiscrepancyExperiment experiment(SobolSequence(), distribution, samplingSize);
     RandomGenerator::SetSeed(0);
+    const Sample X(experiment.generate());
+    const Sample Y(model(X));
+    FunctionalChaosAlgorithm algo(X, Y, distribution, adaptiveStrategy, projectionStrategy);
     algo.run();
     FunctionalChaosResult result(algo.getResult());
     fullprint << "coeffs = " << result.getCoefficients() << std::endl;

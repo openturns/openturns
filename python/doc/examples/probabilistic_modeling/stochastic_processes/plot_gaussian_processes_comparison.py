@@ -27,7 +27,7 @@ import pylab as pl
 from openturns.viewer import View
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -58,7 +58,7 @@ myModel = ot.SquaredExponential(scale, amplitude)
 xmin = 0.0
 step = 0.1
 n = 100
-myTimeGrid = ot.RegularGrid(xmin, step, n+1)
+myTimeGrid = ot.RegularGrid(xmin, step, n + 1)
 graph = myTimeGrid.draw()
 graph.setTitle("Regular grid")
 view = viewer.View(graph)
@@ -92,7 +92,7 @@ view = viewer.View(graph)
 
 # %%
 def plotCovarianceModel(myCovarianceModel, myTimeGrid, nbTrajectories):
-    '''Plots the given number of trajectories with given covariance model.'''
+    """Plots the given number of trajectories with given covariance model."""
     process = ot.GaussianProcess(myCovarianceModel, myTimeGrid)
     sample = process.getSample(nbTrajectories)
     graph = sample.drawMarginal(0)
@@ -104,7 +104,7 @@ def plotCovarianceModel(myCovarianceModel, myTimeGrid, nbTrajectories):
 # The amplitude parameter sets the variance of the process. A greater amplitude increases the chances of getting larger absolute values of the process.
 
 # %%
-amplitude = [7.]
+amplitude = [7.0]
 scale = [1.5]
 myModel = ot.SquaredExponential(scale, amplitude)
 graph = plotCovarianceModel(myModel, myTimeGrid, 10)
@@ -129,7 +129,7 @@ view = viewer.View(graph)
 # The trend is a deterministic function. With the `GaussianProcess` class, the associated process is the sum of a trend and a gaussian process with zero mean.
 
 # %%
-f = ot.SymbolicFunction(['x'], ['2*x'])
+f = ot.SymbolicFunction(["x"], ["2*x"])
 fTrend = ot.TrendTransform(f, myTimeGrid)
 
 # %%
@@ -150,10 +150,16 @@ view = viewer.View(graph)
 # Other covariance models
 # -----------------------
 #
-# There are other covariance models. The models which are used more often are the following.
+# There are other covariance models. The models which are used more often are the following:
+#
 # * `SquaredExponential`. The generated processes can be derivated in mean square at all orders.
-# * `MaternModel`. When :math:`\nu\rightarrow+\infty`, it converges to the squared exponential model. This model can be derivated :math:`k` times only if :math:`k<\nu`. In other words, when :math:`\nu` increases, then the trajectories are more and more regular. The particular case :math:`\nu=1/2` is the exponential model. The most commonly used values are :math:`\nu=3/2` and :math:`\nu=5/2`, which produce trajectories that are, in terms of regularity, in between the squared exponential and the exponential models.
+# * `MaternModel`. When :math:`\nu\rightarrow+\infty`, it converges to the squared exponential model.
+#   This model can be derivated :math:`k` times only if :math:`k<\nu`.
+#   In other words, when :math:`\nu` increases, then the trajectories are more and more regular.
+#   The particular case :math:`\nu=1/2` is the exponential model.
+#   The most commonly used values are :math:`\nu=3/2` and :math:`\nu=5/2`, which produce trajectories that are, in terms of regularity, in between the squared exponential and the exponential models.
 # * `ExponentialModel`. The associated process is continus, but not differentiable.
+#
 
 # %%
 # The Matérn and exponential models

@@ -69,7 +69,7 @@ test of contingency.
 
 .. topic:: API:
 
-    - See :class:`~openturns.HypothesisTest_ChiSquared`
+    - See :py:func:`~openturns.HypothesisTest.ChiSquared`
 
 
 .. topic:: Examples:

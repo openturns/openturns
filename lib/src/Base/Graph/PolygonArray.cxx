@@ -34,7 +34,6 @@ PolygonArray::PolygonArray(const String & legend)
   : DrawableImplementation(Sample(0, 2), legend)
   , verticesNumber_(2)
   , palette_(0)
-  , paletteFileName_("")
 {
   // Nothing to do
 }
@@ -45,7 +44,6 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
   : DrawableImplementation(Sample(0, 2), legend)
   , verticesNumber_(2)
   , palette_(0)
-  , paletteFileName_("")
 {
   // Convert the collection of polygons into a valid (coordinates, verticesNumber) pair
   const UnsignedInteger size = polygons.getSize();
@@ -79,7 +77,6 @@ PolygonArray::PolygonArray(const Sample & coordinates,
   : DrawableImplementation(Sample(0, 2), legend)
   , verticesNumber_(0)
   , palette_(palette)
-  , paletteFileName_("")
 {
   // First, set the coordinates and the verticesNumber
   setCoordinatesAndVerticesNumber(coordinates, verticesNumber);
@@ -99,62 +96,12 @@ String PolygonArray::__repr__() const
   return oss;
 }
 
-/* Draw method */
-String PolygonArray::draw() const
-{
-  OSS oss;
-  // Store the data in a temporary file
-  dataFileName_ = Path::BuildTemporaryFileName("RData.txt.XXXXXX");
-  std::ofstream dataFile(dataFileName_.c_str());
-  const UnsignedInteger polygonNumber = palette_.getSize();
-  UnsignedInteger index = 0;
-  for (UnsignedInteger i = 0; i < polygonNumber; ++i)
-  {
-    for (UnsignedInteger j = 0; j < verticesNumber_; ++j)
-    {
-      dataFile << std::setprecision(16) << data_(index, 0) << " " << data_(index, 1) << "\n";
-      ++index;
-    }
-    // Insert NaNs in order to tell R to go to the next polygon
-    dataFile << "\"nan\" \"nan\"\n";
-  }
-  dataFile.close();
-  oss << "dataOT <- data.matrix(read.table(\"" << dataFileName_ << "\", stringsAsFactors = F))" << "\n";
-  // Store the palette in a temporary file
-  paletteFileName_ = Path::BuildTemporaryFileName("RPalette.txt.XXXXXX");
-  std::ofstream paletteFile(paletteFileName_.c_str(), std::ios::out);
-  for (UnsignedInteger i = 0; i < palette_.getSize(); ++i)
-    paletteFile << "\"" << palette_[i] << "\"\n";
-  paletteFile.close();
-  oss << "paletteOT <- scan(\"" << paletteFileName_ << "\", what=\"\")\n";
-  // The specific R command for drawing
-  oss << "polygon(dataOT[,1], dataOT[,2]"
-      << ", border=paletteOT"
-      << ", lty=\"" << lineStyle_ << "\""
-      << ", col=paletteOT"
-      << ", lwd=" << lineWidth_;
-  if (pointStyle_ != "none")
-  {
-    const String code((OSS() << getPointCode(pointStyle_)));
-    oss << ", pch=" << (pointStyle_ == "dot" ? "\".\"" : code);
-  }
-  oss << ")";
-
-  return oss;
-}
-
-/* Clean method */
-void PolygonArray::clean() const
-{
-  Os::Remove(paletteFileName_);
-  DrawableImplementation::clean();
-}
-
 /* Clone method */
 PolygonArray * PolygonArray::clone() const
 {
   return new PolygonArray(*this);
 }
+
 /* Check validity of data */
 void PolygonArray::checkData(const Sample & data) const
 {

@@ -1,49 +1,45 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
-try:
-    # TimeGrid parameters
-    n = 101
-    timeStart = 0.0
-    timeStep = 0.1
-    timeGrid = RegularGrid(timeStart, timeStep, n)
 
-    # White noise
-    whiteNoise = WhiteNoise(Uniform(), timeGrid)
+# TimeGrid parameters
+n = 101
+timeStart = 0.0
+timeStep = 0.1
+timeGrid = ot.RegularGrid(timeStart, timeStep, n)
 
-    # Composite process
-    process = CompositeProcess(
-        ValueFunction(SymbolicFunction("x", "x+2"), timeGrid), whiteNoise)
-    # A realization of the process
-    timeSeries = process.getRealization()
-    sample = timeSeries.getValues()
+# White noise
+whiteNoise = ot.WhiteNoise(ot.Uniform(), timeGrid)
 
-    # Now we build the factory
-    factory = BoxCoxFactory()
+# Composite process
+process = ot.CompositeProcess(
+    ot.ValueFunction(ot.SymbolicFunction("x", "x+2"), timeGrid), whiteNoise
+)
+# A realization of the process
+timeSeries = process.getRealization()
+sample = timeSeries.getValues()
 
-    # Creation of the BoxCoxTransform
-    myBoxCox = factory.build(timeSeries)
+# Now we build the factory
+factory = ot.BoxCoxFactory()
 
-    print("myBoxCox (time-series)=", myBoxCox)
-    print("myBoxCox (sample)     =", factory.build(sample))
+# Creation of the BoxCoxTransform
+myBoxCox = factory.build(timeSeries)
 
-    # Creation of the BoxCoxTransform using shift
-    shift = Point(1, 1.0)
-    myBoxCoxShift = factory.build(timeSeries, shift)
+print("myBoxCox (time-series)=", myBoxCox)
+print("myBoxCox (sample)     =", factory.build(sample))
 
-    print("myBoxCox with shift (time-series)=", myBoxCoxShift)
-    print("myBoxCox with shift (sample)     =", factory.build(sample, shift))
+# Creation of the BoxCoxTransform using shift
+shift = ot.Point(1, 1.0)
+myBoxCoxShift = factory.build(timeSeries, shift)
 
-    # Creation of the BoxCoxTransform using shift with graph
-    graph = Graph()
-    myBoxCoxShiftGraph = factory.build(timeSeries, shift, graph)
+print("myBoxCox with shift (time-series)=", myBoxCoxShift)
+print("myBoxCox with shift (sample)     =", factory.build(sample, shift))
 
-    print("BoxCox graph (time-series)=", graph)
+# Creation of the BoxCoxTransform using shift with graph
+graph = ot.Graph()
+myBoxCoxShiftGraph = factory.build(timeSeries, shift, graph)
 
-except:
-    import sys
-    print("t_BoxCoxFactory_std.py", sys.exc_info()[0], sys.exc_info()[1])
+print("BoxCox graph (time-series)=", graph)

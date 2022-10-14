@@ -42,9 +42,6 @@ quantile = distribution.computeQuantile(0.95)
 print("Quantile=", repr(quantile))
 print("entropy=%.6f" % distribution.computeEntropy())
 
-for i in range(6):
-    print("standard moment n=", i, " value=",
-          distribution.getStandardMoment(i))
 print("Standard representative=", distribution.getStandardRepresentative())
 print("parameter=", distribution.getParameter())
 print("parameterDescription=", distribution.getParameterDescription())
@@ -70,6 +67,6 @@ print("Marginal 0=", multivariateUserDefined.getMarginal(0))
 print("Marginal (2, 0)=", multivariateUserDefined.getMarginal([2, 0]))
 
 # cdf bug
-loi_UD = ot.UserDefined([[350],[358],[360],[353],[364],[355],[349],[351]])
+loi_UD = ot.UserDefined([[350], [358], [360], [353], [364], [355], [349], [351]])
 assert loi_UD.computeCDF([349]) == 0.125, "wrong cdf at min"
 assert loi_UD.computeCDF([364]) == 1.0, "wrong cdf at max"

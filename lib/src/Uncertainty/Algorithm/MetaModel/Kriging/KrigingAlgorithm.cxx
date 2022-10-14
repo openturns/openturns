@@ -50,8 +50,7 @@ KrigingAlgorithm::KrigingAlgorithm()
   , covarianceCholeskyFactorHMatrix_()
 {
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
-  else glmAlgo_.setMethod(0);
+  setMethod(ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra"));
 }
 
 
@@ -60,7 +59,7 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
                                    const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis)
-  : MetaModelAlgorithm()
+  : MetaModelAlgorithm(inputSample, outputSample)
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , covarianceModel_()
@@ -72,31 +71,9 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   , covarianceCholeskyFactorHMatrix_()
 {
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
-  else glmAlgo_.setMethod(0);
+  setMethod(ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra"));
 }
 
-
-/* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
-                                   const Sample & outputSample,
-                                   const CovarianceModel & covarianceModel,
-                                   const BasisCollection & basisCollection)
-  : MetaModelAlgorithm()
-  , inputSample_(inputSample)
-  , outputSample_(outputSample)
-  , covarianceModel_(covarianceModel)
-  , glmAlgo_(inputSample, outputSample, covarianceModel, basisCollection, true)
-  , gamma_(0)
-  , rho_(0)
-  , result_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
-{
-  // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
-  else glmAlgo_.setMethod(0);
-}
 
 /* Virtual constructor */
 KrigingAlgorithm * KrigingAlgorithm::clone() const
@@ -177,18 +154,6 @@ String KrigingAlgorithm::__repr__() const
 }
 
 
-Sample KrigingAlgorithm::getInputSample() const
-{
-  return inputSample_;
-}
-
-
-Sample KrigingAlgorithm::getOutputSample() const
-{
-  return outputSample_;
-}
-
-
 KrigingResult KrigingAlgorithm::getResult()
 {
   return result_;
@@ -255,16 +220,15 @@ String KrigingAlgorithm::getMethod() const
 void KrigingAlgorithm::setMethod(const String & method)
 {
   if (method == "HMAT")
-    glmAlgo_.setMethod(1);
-  glmAlgo_.setMethod(0);
+    glmAlgo_.setMethod(GeneralLinearModelAlgorithm::HMAT);
+  else
+    glmAlgo_.setMethod(GeneralLinearModelAlgorithm::LAPACK);
 }
 
 /* Method save() stores the object through the StorageManager */
 void KrigingAlgorithm::save(Advocate & adv) const
 {
   MetaModelAlgorithm::save(adv);
-  adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
   adv.saveAttribute( "result_", result_ );
   adv.saveAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );
@@ -275,8 +239,6 @@ void KrigingAlgorithm::save(Advocate & adv) const
 void KrigingAlgorithm::load(Advocate & adv)
 {
   MetaModelAlgorithm::load(adv);
-  adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "result_", result_ );
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );

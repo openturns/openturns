@@ -14,9 +14,8 @@ Create a Python function
 # %%
 import numpy as np
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -36,12 +35,12 @@ function = ot.PythonFunction(3, 2, regularFunc)
 # %%
 # evaluate the function on a Point
 x = [1.0, 2.0, 3.0]
-print('x=', x, 'f(x)=', function(x))
+print("x=", x, "f(x)=", function(x))
 
 # %%
 # evaluate the function on a Sample
 xs = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]
-print('xs=', xs, '\nf(xs)=', function(xs))
+print("xs=", xs, "\nf(xs)=", function(xs))
 
 # %%
 # now we can use the Function object services such as the gradient
@@ -78,15 +77,14 @@ functionSample = ot.PythonFunction(3, 2, func_sample=regularFuncSample)
 
 # %%
 # evaluate the function on a Sample
-print('xs=', xs, '\nf(xs)=', functionSample(xs))
+print("xs=", xs, "\nf(xs)=", functionSample(xs))
 
 # %%
 # evaluate the function on a Point
-print('x=', x, 'f(x)=', functionSample(x))
+print("x=", x, "f(x)=", functionSample(x))
 
 # %%
 # The most efficient solution is to provide evaluations both on Point and Sample.  This requires two Python function definitions, but if your code takes a lot of time, you should consider this option.
 
 # %%
-functionFast = ot.PythonFunction(
-    3, 2, func=regularFunc, func_sample=regularFuncSample)
+functionFast = ot.PythonFunction(3, 2, func=regularFunc, func_sample=regularFuncSample)

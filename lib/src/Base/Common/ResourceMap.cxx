@@ -73,7 +73,7 @@ ResourceMap_init::~ResourceMap_init()
 
 
 template<>
-MutexLockSingleton<ResourceMap>::MutexLockSingleton( ResourceMap & singleton )  throw()
+MutexLockSingleton<ResourceMap>::MutexLockSingleton(ResourceMap & singleton)
   : singleton_(singleton)
   , lock_(ResourceMap_InstanceMutex_) {}
 
@@ -615,7 +615,7 @@ void ResourceMap::loadConfigurationFile()
   {
     readConfigurationFile(findConfigurationFile());
   }
-  catch (FileNotFoundException &)
+  catch (const FileNotFoundException &)
   {
     LOGWARN(OSS() << "The configuration file has not been found, using default parameters.");
   }
@@ -718,7 +718,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Drawable-DefaultPattern", "s");
   addAsString("Drawable-DefaultPointStyle", "plus");
   addAsString("Drawable-DefaultSurfaceColor", "white");
-  addAsString("Drawable-NoSpecifiedLabel", "");
   addAsUnsignedInteger("Drawable-DataThreshold", 2000);
   addAsUnsignedInteger("Drawable-DefaultPalettePhase", 12);
 
@@ -726,15 +725,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Text-DefaultTextSize", 0.75);
 
   // GraphImplementation parameters //
-#ifdef R_EXECUTABLE
-  addAsString("Graph-RExecutableCommand", R_EXECUTABLE);
-#else
-  addAsString("Graph-RExecutableCommand", "");
-#endif
   addAsScalar("Graph-DefaultHorizontalMargin", 0.05);
   addAsScalar("Graph-DefaultLegendFontSize", 1.0);
   addAsScalar("Graph-DefaultVerticalMargin", 0.05);
-  addAsString("Graph-NoSpecifiedLabel", "");
   addAsUnsignedInteger("Graph-DefaultHeight", 480);
   addAsUnsignedInteger("Graph-DefaultWidth", 640);
 
@@ -749,6 +742,10 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FieldToPointConnection parameters //
   addAsUnsignedInteger("FieldToPointConnection-BlockSize", 256);
+
+  // FieldToPointFunctionalChaosAlgorithm
+  addAsBool("FieldToPointFunctionalChaosAlgorithm-DefaultRecompress", false);
+  addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal");
 
   // SQP parameters //
   addAsScalar("SQP-DefaultOmega", 1.0e-4);
@@ -1114,6 +1111,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
 
+  // Gibbs parameters //
+  addAsUnsignedInteger("Gibbs-DefaultUpdatingMethod", 0);
+
   // InverseNormalFactory parameters //
   addAsString("InverseNormalFactory-Method", "MLE");
 
@@ -1211,6 +1211,14 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("MethodOfMomentsFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("MethodOfMomentsFactory-MaximumRelativeError", 1.0e-10);
   addAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber", 1000);
+
+  // QuantileMatchingFactory parameters //
+  addAsScalar("QuantileMatchingFactory-MaximumAbsoluteError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-MaximumConstraintError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-MaximumObjectiveError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-MaximumRelativeError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-QuantileEpsilon", 1.0e-2);
+  addAsUnsignedInteger("QuantileMatchingFactory-MaximumEvaluationNumber", 1000);
 
   // Student parameters //
   addAsScalar("Student-MaximumCDFEpsilon", 5.0e-6);
@@ -1313,6 +1321,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SubsetSampling-DefaultProposalRange", 2.0);
   addAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling", 10000);
 
+  // NAIS parameters //
+  addAsScalar("NAIS-DefaultRhoQuantile", 0.25);
+
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);
 
@@ -1350,9 +1361,10 @@ void ResourceMap::loadDefaultConfiguration()
   // FunctionalChaosAlgorithm parameters //
   addAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6);
   addAsScalar("FunctionalChaosAlgorithm-QNorm", 0.5);
-  addAsUnsignedInteger("FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree", 10);
-  addAsUnsignedInteger("FunctionalChaosAlgorithm-SmallSampleSize", 1000);
+  addAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize", 0);
+  addAsBool("FunctionalChaosAlgorithm-Sparse", false);
+  addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut");
 
   // FunctionalChaosSobolIndices parameters //
   addAsScalar("FunctionalChaosSobolIndices-VariancePartThreshold", 1.0e-2);
@@ -1574,13 +1586,6 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Classifier parameters //
   addAsBool("Classifier-Parallel", true);
-
-  // TensorApproximationAlgorithm parameters //
-  addAsScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError", 1.0e-5);
-  addAsScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
-  addAsString("TensorApproximationAlgorithm-DecompositionMethod", "SVD");
-  addAsString("TensorApproximationAlgorithm-Method", "GreedyRankOne");
-  addAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration", 100);
 
   // viewer.View parameters //
   addAsString("View-ImageFormat", "png");

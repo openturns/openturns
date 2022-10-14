@@ -23,7 +23,6 @@ Construction of the truncated multivariate orthogonal basis
     AdaptiveStrategy
     CleaningStrategy
     FixedStrategy
-    SequentialStrategy
 
 Computation of the polynomial chaos coefficients
 ================================================
@@ -74,3 +73,14 @@ Results
     FunctionalChaosRandomVector
     FunctionalChaosResult
     FunctionalChaosSobolIndices
+
+Functional chaos on fields
+==========================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    experimental.FieldToPointFunctionalChaosAlgorithm
+    experimental.FieldFunctionalChaosResult
+    experimental.FieldFunctionalChaosSobolIndices

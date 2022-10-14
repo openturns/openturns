@@ -85,7 +85,7 @@ Uniform UniformFactory::buildAsUniform(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Uniform distribution from the given parameters";
   }

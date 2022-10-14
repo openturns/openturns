@@ -250,14 +250,6 @@ Point Pareto::getKurtosis() const
   return Point(1, 3.0 * (3.0 * alpha_ * alpha_ * alpha_ - 5.0 * alpha_ * alpha_ - 4.0) / (alpha_ * (alpha_ - 3.0) * (alpha_ - 4.0)));
 }
 
-/* Get the moments of the standardized distribution */
-Point Pareto::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n == 0) return Point(1, 1.0);
-  if (n < trunc(alpha_)) return Point(1, std::exp(std::log(alpha_) * (n + 1.0) + SpecFunc::LogGamma(alpha_ - n) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(1.0 + alpha_)));
-  throw NotDefinedException(HERE) << "Error: the standard moments are defined up to order " << trunc(alpha_) << " and n=" << n;
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Pareto::getStandardRepresentative() const
 {

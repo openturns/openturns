@@ -118,26 +118,6 @@ String Cloud::__repr__() const
   return oss;
 }
 
-/* Draw method */
-String Cloud::draw() const
-{
-  dataFileName_ = "";
-  OSS oss;
-  if (pointStyle_ != "none")
-  {
-    // Stores the data in a temporary file
-    oss << DrawableImplementation::draw() << "\n";
-    // The specific R command for drawing
-    oss << "points(dataOT[,1], dataOT[,2]";
-    const String code((OSS() << getPointCode(pointStyle_)));
-    oss << ",pch=" << (pointStyle_ == "dot" ? "\".\"" : code)
-        << ",col=\"" << color_
-        << "\",lwd=" << lineWidth_
-        << ")";
-  }
-  return oss;
-}
-
 /* Clone method */
 Cloud * Cloud::clone() const
 {

@@ -9,8 +9,8 @@ point1 = ot.Point()
 ref_point1 = point1
 
 # Check method add()
-point1.add(0.)
-point1.add(1.)
+point1.add(0.0)
+point1.add(1.0)
 
 size = ref_point1.getDimension()
 print("size of point1 = ", size)
@@ -26,8 +26,8 @@ point2 = ot.Point(2)
 ref_point2 = point2
 
 # Check operator[] methods
-point2[0] = 10.
-point2[1] = 11.
+point2[0] = 10.0
+point2[1] = 11.0
 
 val1 = ref_point2[0]
 val2 = ref_point2[1]
@@ -50,7 +50,7 @@ point = ot.Point(indices)
 print("point=", point)
 
 # Constructor from python sequence
-point4 = ot.Point((1000., 1001.))
+point4 = ot.Point((1000.0, 1001.0))
 i = 0
 for coord in point4:
     print("point4[%d] = %.6f" % (i, coord))
@@ -59,12 +59,14 @@ for coord in point4:
 # Comparison operator
 if ref_point2 != ref_point2:
     print(
-        "OT::Base::Type::Point.operator == does NOT return the correct value. Says that point2 and point2 are DIFFERENT though they are equal.")
+        "OT::Base::Type::Point.operator == does NOT return the correct value. Says that point2 and point2 are DIFFERENT though they are equal."
+    )
     raise RuntimeError()
 
 if ref_point2 == ref_point3:
     print(
-        "OT::Base::Type::Point.operator == does NOT return the correct value. Says that point2 and point3 are EQUAL though they are different.")
+        "OT::Base::Type::Point.operator == does NOT return the correct value. Says that point2 and point3 are EQUAL though they are different."
+    )
     raise RuntimeError()
 
 # Addition/Subtraction/Product operators
@@ -105,24 +107,24 @@ j[1] = 1
 print("j = ", repr(j))
 
 # BUG PYTHON for I = Point(2. * i)
-I = ot.Point(i * 2.)
-print("I = ", repr(I))
+II = ot.Point(i * 2.0)
+print("I = ", repr(II))
 
-J = ot.Point(j * 3.)
+J = ot.Point(j * 3.0)
 print("J = ", repr(J))
 
-dotProduct = I.dot(J)
+dotProduct = II.dot(J)
 print("dotProduct = %.6f" % dotProduct)
 
 # slicing
-point8 = ot.Point((1., 2., 3., 4., 5.))
-print('point8[2] = ', point8[2])
-print('point8[1:3] = ', point8[1:3])
-print('point8[:] = ', point8[:])
+point8 = ot.Point((1.0, 2.0, 3.0, 4.0, 5.0))
+print("point8[2] = ", point8[2])
+print("point8[1:3] = ", point8[1:3])
+print("point8[:] = ", point8[:])
 point8[1:3] = (88, 99)
-print('point8 = ', point8)
+print("point8 = ", point8)
 point8[0:5] = ot.Point(5, 9)
-print('point8 = ', point8)
+print("point8 = ", point8)
 
 # equality
 pt1 = ot.Point([1.1, 2.2, 3.3])
@@ -131,18 +133,18 @@ print("Equality ? ", (pt1 == pt2))
 
 # non-regression for #754
 pt = ot.Point([-3, -5, 6])
-print('pt = ', pt)
+print("pt = ", pt)
 
 # last
-print('pt[-1]=', pt[-1])
-pt[-1] = 8.
-print('pt[-1]=', pt[-1])
+print("pt[-1]=", pt[-1])
+pt[-1] = 8.0
+print("pt[-1]=", pt[-1])
 
 print(0 + pt1)
 try:
     1 + pt1
-except:
-    print('1+Point -> ok')
+except Exception:
+    print("1+Point -> ok")
 
 # unary minus
 x = ot.Point([1, 2, 3])

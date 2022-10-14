@@ -7,7 +7,10 @@ Generate random variates by inverting the CDF
 # Abstract
 # --------
 #
-# In this example, we show how to generate random variates by inversion of the cumulated distribution function. In simple situations, this method is rarely used in practice because of problems with performance, statistical quality of the generated random variates and numerical accuracy of the generated numbers when we use floating point numbers. However, it is an interesting method to know about because it is a building block for other algorithms and can be used to visualize the distribution of the generated numbers.
+# In this example, we show how to generate random variates by inversion of the cumulated distribution function.
+# In simple situations, this method is rarely used in practice because of problems with performance,
+# statistical quality of the generated random variates and numerical accuracy of the generated numbers when we use floating point numbers.
+# However, it is an interesting method to know about because it is a building block for other algorithms and can be used to visualize the distribution of the generated numbers.
 
 # %%
 # The WeibullMin distribution
@@ -39,7 +42,9 @@ Generate random variates by inverting the CDF
 # Loss of accuracy when the probability is close to 1
 # ---------------------------------------------------
 #
-# In practice, if the probability :math:`p` is *very* close to 1, then the complementary probability :math:`1-p` is close to zero. This can lead to a significant loss of accuracy when we evaluate the subtraction :math:`1-p` with floating point numbers because :math:`p` and 1 have lots of common digits. This is called a *loss of accuracy by catastrophic cancellation*, a problem which is common in extreme events.
+# In practice, if the probability :math:`p` is *very* close to 1, then the complementary probability :math:`1-p` is close to zero.
+# This can lead to a significant loss of accuracy when we evaluate the subtraction :math:`1-p` with floating point numbers because :math:`p` and 1 have lots of common digits.
+# This is called a *loss of accuracy by catastrophic cancellation*, a problem which is common in extreme events.
 #
 # We can use the :math:`\textrm{expm1}` function, defined by the equation:
 #
@@ -93,6 +98,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import numpy as np
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -105,7 +111,7 @@ def weibullQ(argument):
     WeibullMin quantile function
     """
     p, alpha, beta = argument
-    quantile = beta*(-np.log1p(-p))**(1/alpha)
+    quantile = beta * (-np.log1p(-p)) ** (1 / alpha)
     return [quantile]
 
 
@@ -127,7 +133,7 @@ quantile
 # In the library, the uniform distribution is by default over the :math:`[-1,1]` interval. To obtain a uniform distribution over :math:`[0,1]`, we need to set the bounds explicitly.
 
 # %%
-U = ot.Uniform(0., 1.)
+U = ot.Uniform(0.0, 1.0)
 
 # %%
 # Then we generate a sample of size 1000 from the uniform distribution.
@@ -193,16 +199,17 @@ weibullSample = sample[:, 0]
 uniformSample = sample[:, 1]
 
 # %%
-graph = ot.Graph("Weibull alpha=%s, beta=%s, n=%s" %
-                 (alpha, beta, n), "x", "U", True)
+graph = ot.Graph("Weibull alpha=%s, beta=%s, n=%s" % (alpha, beta, n), "x", "U", True)
 # Add the CDF plot
 curve = W.drawCDF()
 curve.setColors(["blue"])
 graph.add(curve)
 # Plot dashed horizontal & vertical lines
 for i in range(n):
-    curve = ot.Curve([0., weibullSample[i, 0], weibullSample[i, 0]], [
-                     uniformSample[i, 0], uniformSample[i, 0], 0.])
+    curve = ot.Curve(
+        [0.0, weibullSample[i, 0], weibullSample[i, 0]],
+        [uniformSample[i, 0], uniformSample[i, 0], 0.0],
+    )
     curve.setColor("red")
     curve.setLineStyle("dashed")
     graph.add(curve)

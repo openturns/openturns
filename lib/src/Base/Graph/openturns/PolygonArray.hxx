@@ -62,9 +62,6 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** Draw method */
-  String draw() const override;
-
   /** Clone method */
   PolygonArray * clone() const override;
 
@@ -89,9 +86,6 @@ public:
   /** Method load() stores the object through the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Remove all the temporary files */
-  void clean() const override;
-
 protected:
   /** Check fo data validity */
   void checkData(const Sample & data) const override;
@@ -103,12 +97,6 @@ private:
 
   /** List of palette for strip of polygons */
   Description palette_;
-
-  /** Name of the file to store the palette of the polygons */
-  mutable String paletteFileName_;
-
-  /** Name of the file to store the coordinates of the polygon */
-  mutable String coordinatesFileName_;
 
 }; /* class Polygon */
 

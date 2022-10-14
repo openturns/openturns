@@ -327,4 +327,22 @@ String GaussKronrod::__str__(const String & offset) const
   return oss;
 }
 
+/* Method save() stores the object through the StorageManager */
+void GaussKronrod::save(Advocate & adv) const
+{
+  IntegrationAlgorithmImplementation::save(adv);
+  adv.saveAttribute("maximumSubIntervals_", maximumSubIntervals_);
+  adv.saveAttribute("maximumError_", maximumError_);
+  adv.saveAttribute("rule_", rule_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void GaussKronrod::load(Advocate & adv)
+{
+  IntegrationAlgorithmImplementation::load(adv);
+  adv.loadAttribute("maximumSubIntervals_", maximumSubIntervals_);
+  adv.loadAttribute("maximumError_", maximumError_);
+  adv.loadAttribute("rule_", rule_);
+}
+
 END_NAMESPACE_OPENTURNS

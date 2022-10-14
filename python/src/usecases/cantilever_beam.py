@@ -5,7 +5,7 @@ Use case : cantilever beam
 import openturns as ot
 
 
-class CantileverBeam():
+class CantileverBeam:
     """
     Data class for the cantilever beam example.
 
@@ -69,22 +69,24 @@ class CantileverBeam():
         self.L.setName("Length")
 
         # Moment of inertia I
-        self.I = ot.Beta(2.5, 4.0, 1.3e-7, 1.7e-7)  # in m^4
-        self.I.setDescription("I")
-        self.I.setName("Inertia")
+        self.II = ot.Beta(2.5, 4.0, 1.3e-7, 1.7e-7)  # in m^4
+        self.II.setDescription("I")
+        self.II.setName("Inertia")
 
         # physical model
-        self.model = ot.SymbolicFunction(
-            ['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
+        self.model = ot.SymbolicFunction(["E", "F", "L", "I"], ["F*L^3/(3*E*I)"])
 
         # correlation matrix
         self.R = ot.CorrelationMatrix(self.dim)
         self.R[2, 3] = -0.2
         self.copula = ot.NormalCopula(
-            ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(self.R))
+            ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(self.R)
+        )
         self.distribution = ot.ComposedDistribution(
-            [self.E, self.F, self.L, self.I], self.copula)
+            [self.E, self.F, self.L, self.II], self.copula
+        )
 
         # special case of an independent copula
         self.independentDistribution = ot.ComposedDistribution(
-            [self.E, self.F, self.L, self.I])
+            [self.E, self.F, self.L, self.II]
+        )

@@ -56,7 +56,7 @@ public:
   XMLDoc( const XMLDoc & other );
   XMLDoc( const FileName & pathToFile );
   XMLDoc(const char * buffer, int size);
-  ~XMLDoc() throw();
+  virtual ~XMLDoc();
 
   XMLDoc & operator =( const XMLDoc & other );
 

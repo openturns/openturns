@@ -17,12 +17,13 @@ jobs:
     - run: |
         cd $HOME/work/openturns
         git clone https://github.com/jeromerobert/hmat-oss.git hmat-oss
-        cd hmat-oss/ 
-        git checkout 1.7.1 
+        cd hmat-oss/
+        git checkout 1.7.1
+        git cherry-pick 6ad59b7d
         cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
         make install -j3
     - run: |
-        cmake -DR_EXECUTABLE="dummyR" \
+        cmake \
         -DPYTHON_EXECUTABLE=/usr/local/bin/python3 \
         -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison \
@@ -31,7 +32,7 @@ jobs:
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
         make install -j3
         make tests -j3
-        ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
+        OMP_NUM_THREADS=1 ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
 
   windows:
     runs-on: windows-latest

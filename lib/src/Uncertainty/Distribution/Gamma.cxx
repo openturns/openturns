@@ -360,12 +360,6 @@ Point Gamma::getKurtosis() const
   return Point(1, 3.0 * (k_ + 2.0) / k_);
 }
 
-/* Get the moments of the standardized distribution */
-Point Gamma::getStandardMoment(const UnsignedInteger n) const
-{
-  return Point(1, std::exp(SpecFunc::LogGamma(n + k_) - SpecFunc::LogGamma(k_)));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Gamma::getStandardRepresentative() const
 {

@@ -160,24 +160,6 @@ Point NonCentralChiSquare::getKurtosis() const
   return Point(1, 3.0 + 12.0 * (nu_ + 4.0 * lambda_) / std::pow(nu_ + 2.0 * lambda_, 2.0));
 }
 
-/* Get the moments of the standardized distribution */
-Point NonCentralChiSquare::getStandardMoment(const UnsignedInteger n) const
-{
-  UniVariatePolynomial p(Point(1, 1.0));
-  Point derivativeFactor(3);
-  derivativeFactor[0] = 1.0;
-  derivativeFactor[1] = -4.0;
-  derivativeFactor[2] = 4.0;
-  for (UnsignedInteger k = 0; k < n; ++k)
-  {
-    Point polynomialFactor(2);
-    polynomialFactor[0] = lambda_ + 4.0 * k + nu_;
-    polynomialFactor[1] = -8.0 * k - 2.0 * nu_;
-    p = p.derivate() * UniVariatePolynomial(derivativeFactor) + p * UniVariatePolynomial(polynomialFactor);
-  }
-  return Point(1, p.getCoefficients()[0]);
-}
-
 /* Compute the covariance of the distribution */
 void NonCentralChiSquare::computeCovariance() const
 {

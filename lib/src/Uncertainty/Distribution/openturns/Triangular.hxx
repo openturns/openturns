@@ -82,7 +82,6 @@ public:
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const override;
-  Complex computeLogCharacteristicFunction(const Scalar x) const override;
 
   /** Get the PDFGradient of the Triangular distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -106,9 +105,6 @@ public:
 
   /** Get the kurtosis of the distribution */
   Point getKurtosis() const override;
-
-  /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const override;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Distribution getStandardRepresentative() const override;

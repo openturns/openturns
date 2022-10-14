@@ -172,6 +172,30 @@ Graph::TickLocation Graph::getTickLocation() const
   return getImplementation()->getTickLocation();
 }
 
+/* integer X-ticks flag accessor */
+void Graph::setIntegerXTick(const Bool integerXTick)
+{
+  copyOnWrite();
+  getImplementation()->setIntegerXTick(integerXTick);
+}
+
+Bool Graph::getIntegerXTick() const
+{
+  return getImplementation()->getIntegerXTick();
+}
+
+/* integer Y-ticks flag accessor */
+void Graph::setIntegerYTick(const Bool integerYTick)
+{
+  copyOnWrite();
+  getImplementation()->setIntegerYTick(integerYTick);
+}
+
+Bool Graph::getIntegerYTick() const
+{
+  return getImplementation()->getIntegerYTick();
+}
+
 /* Set log scale for x, y both or none axes */
 void Graph::setLogScale(const LogScale logScale)
 {
@@ -248,27 +272,6 @@ void Graph::setTitle(const String & title)
 {
   copyOnWrite();
   getImplementation()->setTitle(title);
-}
-
-/* The method that generates the graphic files */
-void Graph::draw(const String & file,
-                 const Scalar width,
-                 const Scalar height,
-                 SignedInteger format)
-{
-  getImplementation()->draw(file, width, height, format);
-}
-
-/* Get the R command corresponding to the graph */
-String Graph::getRCommand() const
-{
-  return getImplementation()->getRCommand();
-}
-
-/* Clean temporary files */
-void Graph::clean()
-{
-  getImplementation()->clean();
 }
 
 /* Margin accessor */

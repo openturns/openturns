@@ -284,7 +284,7 @@ Scalar LinearModelAnalysis::getFisherScore() const
   // Sum of Squared Total (SST) = n * var(Y) or n * E(Y^2) depending on intercept
   Scalar SST = 1.0;
   if (hasIntercept)
-    SST = outputSample.computeCenteredMoment(2)[0] * size;
+    SST = outputSample.computeCentralMoment(2)[0] * size;
   else
     SST = outputSample.computeRawMoment(2)[0] * size;
   // Sum of Squared Model (SSM) = SST - SSE
@@ -517,12 +517,11 @@ Graph LinearModelAnalysis::drawQQplot() const
   UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
   if (identifiers > 0)
   {
-    const UnsignedInteger size = stdResiduals.getSize();
+    const Sample dataFull(graph.getDrawable(1).getData());
+    const Sample sortedSample(stdResiduals.sort(0));
+    const UnsignedInteger size = dataFull.getSize();//size(dataFull) may be < size(sortedSample)
     if (identifiers > size)
       identifiers = size;
-    const Sample sortedSample(stdResiduals.sort(0));
-
-    const Sample dataFull(graph.getDrawable(1).getData());
     Description annotations(size);
     Sample dataWithIndex1(size, 2);
     Sample dataWithIndex2(size, 2);

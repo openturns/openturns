@@ -47,7 +47,6 @@ int main(int, char *[])
     std::cout << "palette" << polygonArray.getPalette() << std::endl;
     std::cout << "palette (RGBA)" << polygonArray.getPaletteAsNormalizedRGBA() << std::endl;
     graph.add(polygonArray);
-    graph.draw("polygon_array.png");
   }
   catch (TestFailed & ex)
   {

@@ -140,10 +140,12 @@ ot_install_header_file (IsotropicCovarianceModel.hxx)
 # Build on the fly source files
 if (BISON_FOUND AND FLEX_FOUND)
   ot_add_build_dir_to_include_dirs (${CMAKE_CURRENT_BINARY_DIR})
-  add_custom_command(OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.hh
+  set (BISON_FLAGS "-Wno-deprecated" CACHE STRING "bison flags")
+  separate_arguments(BISON_FLAGS)
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.hh
                       MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/csv_parser.yy
                       COMMAND ${BISON_EXECUTABLE}
-                      ARGS    -Wno-deprecated
+                      ARGS    ${BISON_FLAGS}
                               -o ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc
                                  ${CMAKE_CURRENT_SOURCE_DIR}/csv_parser.yy
                       COMMENT "CSV parser generation"
@@ -151,7 +153,7 @@ if (BISON_FOUND AND FLEX_FOUND)
   ot_add_built_source_file (${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc)
   add_custom_target (generate_csv_parser DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc)
 
-  add_custom_command(OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.cc ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.h
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.cc ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.h
                       MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/csv_lexer.ll
                       COMMAND ${FLEX_EXECUTABLE}
                       ARGS    -o ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.cc

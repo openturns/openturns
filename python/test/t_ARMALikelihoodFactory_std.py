@@ -49,9 +49,9 @@ for k in range(q):
     ma[k] = ma[k] + alpha
 
 factory = ot.ARMALikelihoodFactory(p, q, dim)
-print('factory=', factory)
+print("factory=", factory)
 factory.setInitialConditions(ar, ma, cov)
 
 result = ot.ARMA(factory.build(timeSeries))
-print('original process = ', myARMA)
-#print('Estimated ARMA= ', result)
+print("original process = ", myARMA)
+# print('Estimated ARMA= ', result)

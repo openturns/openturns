@@ -6,29 +6,34 @@ ot.TESTPREAMBLE()
 
 
 class RVEC(ot.PythonRandomVector):
-
     def __init__(self):
         super(RVEC, self).__init__(2)
-        self.setDescription(['R', 'S'])
+        self.setDescription(["R", "S"])
         self._offset = 2.0
 
     def getRealization(self):
-        X = [ot.RandomGenerator.Generate(), self._offset +
-             ot.RandomGenerator.Generate()]
+        X = [
+            ot.RandomGenerator.Generate(),
+            self._offset + ot.RandomGenerator.Generate(),
+        ]
         return X
 
     def getSample(self, size):
         X = []
         for i in range(size):
             X.append(
-                [ot.RandomGenerator.Generate(), self._offset + ot.RandomGenerator.Generate()])
+                [
+                    ot.RandomGenerator.Generate(),
+                    self._offset + ot.RandomGenerator.Generate(),
+                ]
+            )
         return X
 
     def getMean(self):
         return [0.5, self._offset + 0.5]
 
     def getCovariance(self):
-        return [[0.0833333, 0.], [0., 0.0833333]]
+        return [[0.0833333, 0.0], [0.0, 0.0833333]]
 
     def isEvent(self):
         return False
@@ -56,33 +61,33 @@ newRV = ot.RandomVector(myRV)
 
 # Dimension
 dim = myRV.getDimension()
-print('dimension=', dim)
+print("dimension=", dim)
 
 # Realization
 X = myRV.getRealization()
-print('realization=', X)
+print("realization=", X)
 
 # Sample
 X = myRV.getSample(5)
-print('sample=', X)
+print("sample=", X)
 
 # Mean
 mean = myRV.getMean()
-print('mean=', mean)
+print("mean=", mean)
 
 # Covariance
 covariance = myRV.getCovariance()
-print('covariance=', covariance)
+print("covariance=", covariance)
 
 isEvent = myRV.isEvent()
-print('isEvent=', isEvent)
+print("isEvent=", isEvent)
 
 # Parameter description
-print('description=', myRV.getParameterDescription())
+print("description=", myRV.getParameterDescription())
 
 # Parameter
 myRV.setParameter([10.5])
-print('new parameter=', myRV.getParameter())
-print('new mean=', myRV.getMean())
-print('new realization=', myRV.getRealization())
-print('new sample=', myRV.getSample(5))
+print("new parameter=", myRV.getParameter())
+print("new mean=", myRV.getMean())
+print("new realization=", myRV.getRealization())
+print("new sample=", myRV.getSample(5))

@@ -75,12 +75,6 @@ int main(int, char *[])
     Cov2.setScale(Y.computeStandardDeviation());
     covarianceModelCollection.add(Cov2);
 
-    /* We choose an estimator type :
-       - unbiased: HSICUStat (not available here!!);
-       - biased: HSICVStat.
-    */
-    HSICVStat estimatorType;
-
     /* We define a distance function for the weights
        For the CSA, the critical domain is [5,+inf].
 
@@ -109,8 +103,11 @@ int main(int, char *[])
     /* The weight function */
     Function weight = ComposedFunction(g2, g );
 
-    /* We eventually build the HSIC object! */
-    HSICEstimatorConditionalSensitivity CSA(covarianceModelCollection, X, Y, estimatorType, weight);
+    /* We eventually build the HSIC object!
+      HSICVStat event is already embedded as it is the only one available
+      for that kind of analysis
+    */
+    HSICEstimatorConditionalSensitivity CSA(covarianceModelCollection, X, Y, weight);
 
     /* We get the R2-HSIC */
     Point referenceR2HSIC = {0.0371735, 0.0052413, 0.235519};

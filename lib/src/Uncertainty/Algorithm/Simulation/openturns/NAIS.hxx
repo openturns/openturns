@@ -44,8 +44,8 @@ public:
   NAIS();
 
   /** Default constructor */
-  NAIS(const RandomVector & event,
-       const Scalar rhoQuantile = 0.7);
+  explicit  NAIS(const RandomVector & event,
+                 const Scalar rhoQuantile = ResourceMap::GetAsScalar("NAIS-DefaultRhoQuantile"));
 
   /** Virtual constructor */
   NAIS * clone() const override;
@@ -78,7 +78,7 @@ private:
   Distribution initialDistribution_;
 
   // Quantile
-  Scalar rhoQuantile_;
+  Scalar rhoQuantile_ = 0.0;
 
   // Result of NAIS algorithm
   NAISResult naisResult_;

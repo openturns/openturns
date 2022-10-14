@@ -292,13 +292,6 @@ void Uniform::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point Uniform::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n % 2 == 1) return Point(1, 0.0);
-  return Point(1, 1.0 / (n + 1));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Uniform::getStandardRepresentative() const
 {

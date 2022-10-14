@@ -8,14 +8,18 @@ ot.RandomGenerator.SetSeed(0)
 
 # Force the use of the approximation to avoid timeout
 ot.ResourceMap.SetAsBool(
-    "MaximumEntropyOrderStatisticsDistribution-UseApproximation", True)
+    "MaximumEntropyOrderStatisticsDistribution-UseApproximation", True
+)
 
 # Instantiate one distribution object
 distribution = ot.MaximumEntropyOrderStatisticsDistribution(
-    [ot.Trapezoidal(-2.0, -1.1, -1.0, 1.0),
-     ot.LogUniform(1.0, 1.2),
-     ot.Triangular(3.0, 4.5, 5.0),
-     ot.Beta(2.5, 3.5, 4.7, 5.2)])
+    [
+        ot.Trapezoidal(-2.0, -1.1, -1.0, 1.0),
+        ot.LogUniform(1.0, 1.2),
+        ot.Triangular(3.0, 4.5, 5.0),
+        ot.Beta(2.5, 3.5, 4.7, 5.2),
+    ]
+)
 
 dim = distribution.getDimension()
 print("Distribution ", distribution)
@@ -30,8 +34,7 @@ print("oneRealization=", repr(oneRealization))
 # Test for sampling
 size = 10000
 oneSample = distribution.getSample(size)
-print("oneSample first=", repr(
-    oneSample[0]), " last=", repr(oneSample[size - 1]))
+print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
 print("mean=", repr(oneSample.computeMean()))
 print("covariance=", repr(oneSample.computeCovariance()))
 
@@ -95,7 +98,7 @@ print("skewness=", repr(skewness))
 kurtosis = distribution.getKurtosis()
 print("kurtosis=", repr(kurtosis))
 ot.ResourceMap.SetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals", 20)
-ot.ResourceMap.SetAsScalar("GaussKronrod-MaximumError",  1.0e-4)
+ot.ResourceMap.SetAsScalar("GaussKronrod-MaximumError", 1.0e-4)
 covariance = distribution.getCovariance()
 print("covariance=", repr(covariance))
 correlation = distribution.getCorrelation()
@@ -103,7 +106,7 @@ print("correlation=", repr(correlation))
 spearman = distribution.getSpearmanCorrelation()
 print("spearman=", repr(spearman))
 ot.ResourceMap.SetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals", 100)
-ot.ResourceMap.SetAsScalar("GaussKronrod-MaximumError",  1.0e-12)
+ot.ResourceMap.SetAsScalar("GaussKronrod-MaximumError", 1.0e-12)
 parameters = distribution.getParametersCollection()
 print("parameters=", repr(parameters))
 

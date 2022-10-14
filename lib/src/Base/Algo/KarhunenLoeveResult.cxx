@@ -41,8 +41,9 @@ KarhunenLoeveResult::KarhunenLoeveResult(const CovarianceModel & covariance,
     const Point & eigenvalues,
     const FunctionCollection & modes,
     const ProcessSample & modesAsProcessSample,
-    const Matrix & projection)
-  : TypedInterfaceObject<KarhunenLoeveResultImplementation>( new KarhunenLoeveResultImplementation(covariance, threshold, eigenvalues, modes, modesAsProcessSample, projection) )
+    const Matrix & projection,
+    const Scalar selectionRatio)
+  : TypedInterfaceObject<KarhunenLoeveResultImplementation>(new KarhunenLoeveResultImplementation(covariance, threshold, eigenvalues, modes, modesAsProcessSample, projection, selectionRatio))
 {
   // Nothing to do
 }
@@ -122,6 +123,12 @@ Matrix KarhunenLoeveResult::getProjectionMatrix() const
 Mesh KarhunenLoeveResult::getMesh() const
 {
   return getImplementation()->getMesh();
+}
+
+/* Selection ratio accessor */
+Scalar KarhunenLoeveResult::getSelectionRatio() const
+{
+  return getImplementation()->getSelectionRatio();
 }
 
 /* Projection method */

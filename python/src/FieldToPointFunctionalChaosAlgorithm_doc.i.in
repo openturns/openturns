@@ -1,0 +1,323 @@
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm
+"Functional metamodel algorithm based on chaos decomposition.
+
+The present algorithm allows to build a response surface of the application :math:`h` of the form:
+
+.. math::
+    h: \left|
+      \begin{array}{ccl}
+         \cM_N \times (\Rset^d)^N & \rightarrow & \Rset^p \\
+         \mat{X} & \mapsto & \vect{Y}
+      \end{array}
+    \right.
+
+The application :math:`h` is known from :math:`n` fields :math:`(\mat{X_1}, \dots, \mat{X_n})`
+of the associated input process :math:`\mat{X}`
+and :math:`n` vectors :math:`(\vect{Y_1},\dots,\vect{Y_n})`
+that fully characterize the output vector :math:`\vect{Y}`
+
+The linear projection function :math:`\pi_{ \vect{\lambda}, \vect{\varphi}}` of
+the Karhunen-Loeve decomposition by SVD is used to project the input fields,
+see :class:`~openturns.KarhunenLoeveSVDAlgorithm` and :class:`~openturns.KarhunenLoeveAlgorithm` for the notations.
+
+.. math::
+    \pi_{\vect{\lambda}, \vect{\varphi}}: \left|
+      \begin{array}{ccl}
+        L^2(\cD, \Rset^d) & \rightarrow & \cS^{\Nset} \\
+        f & \mapsto &\left(\dfrac{1}{\sqrt{\lambda_k}}\int_{\cD}f(\vect{t}) \vect{\varphi}_k(\vect{t})\, d\vect{t}\right)_{k \geq 1}
+      \end{array}
+    \right.
+
+The Karhunen-Loeve algorithm allows to replace this integral by a specific weighted and finite sum
+and to write the projections of the j-th marginal of i-th input field :math:`\vect{X_i^j}` by multiplication
+with the projection matrix :math:`\mat{M^j} \in \Rset^{K_j} \times \Rset^{Nd}`:
+
+.. math::
+
+    \mat{M_j} \vect{X_i^j} = \left( \begin{array}{l} \xi_1^j \\ \dots \\ \xi_{K_j}^j \end{array} \right)
+    \in \Rset^{K_j}, \forall i \in [1, n], \forall j \in [1, d]
+
+with :math:`K_j` the retained number of modes in the decomposition of the j-th input.
+The projections of all the :math:`d` components of :math:`n` fields are assembled in the :math:`Q` matrix:
+
+.. math::
+
+    \begin{align*}
+        \mat{Q} = \mat{M} \mat{X} =
+        \left(
+          \begin{array}{l}
+            \mat{M_1} \mat{X^1} \\
+            \dots \\
+            \mat{M_d} \mat{X^d}
+          \end{array}
+        \right) \in \Rset^{K_T} \times \Rset^n
+     \end{align*}
+
+with :math:`K_T = \sum_{j=1}^d{K_j}` the total number of modes across input components.
+
+Then a functional chaos decomposition is built between the projected modes
+sample :math:`\mat{Q}` and the output samples :math:`\mat{Y}`,
+see :class:`~openturns.FunctionalChaosAlgorithm` for details.
+
+.. math::
+
+    \tilde{g}(x) = \sum_{k=1}^{K_c} \beta_{\vect{\alpha}_k} \Psi_{\vect{\alpha}_k}(x)
+
+with :math:`K_c` the number of terms in the chaos decomposition.
+
+The final metamodel consists in the composition of the Karhunen-Loeve
+projections and the functional chaos metamodel.
+
+.. math::
+    \tilde{h}: \left|
+      \begin{array}{ccccl}
+         \cM_N \times (\Rset^d)^N & \rightarrow & \Rset^{K_T} & \rightarrow & \Rset^p \\
+         \mat{X} & \mapsto & \vect{Q} & \mapsto & \vect{Y}
+      \end{array}
+    \right.
+
+A limitation of this approach is that the projected modes sample has a dimension
+:math:`K_T` so the dimension of the input fields :math:`\mat{X_i}`
+and the associated number of modes must remain modest (curse of dimensionality).
+
+Parameters
+----------
+x : :class:`~openturns.ProcessSample`
+    Input process sample.
+y : :class:`~openturns.Sample`
+    Output sample.
+
+See also
+--------
+FieldFunctionalChaosSobolIndices, KarhunenLoeveAlgorithm, FunctionalChaosAlgorithm
+
+Notes
+-----
+As the input process decomposition is done with the values decomposition approach,
+it is possible to control the number of modes retained per input,
+the idea being to avoid a large input dimension for the chaos decomposition step.
+As done in :class:`~openturns.KarhunenLoeveSVDAlgorithm`, the :func:`setThreshold`
+and :func:`setNbModes` methods allow to control the spectrum ratio and maximum count.
+
+By default the input process data is assumed to not be centered, and the method
+:func:`setCenteredSample` allows to skip centering of the data for both the
+computation of modes coefficients and inside the metamodel.
+
+In the case of homogenous data (if variables have the same unit or scale),
+it is also possible to recompress the modes at the global level with :func:`setRecompress`.
+When enabled, the eigenvalues are gathered and sorted so as to find a global
+spectrum cut-off value by which the spectrum of each input is truncated.
+The default value can be set through the :class:`~openturns.ResourceMap` key
+*FieldToPointFunctionalChaosAlgorithm-DefaultRecompress*.
+
+For the chaos metamodel step, it is possible to specify the basis size with
+the :class:`~openturns.ResourceMap` key *FunctionalChaosAlgorithm-BasisSize*.
+
+It is possible to group input variables by independent blocks with :func:`setBlockIndices`,
+this way Karhunen-Loeve process decompositions are done on each block rather
+than on each variable thus reducing the total number of modes and help reduce
+the chaos input dimension.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> ot.RandomGenerator.SetSeed(0)
+>>> mesh = ot.RegularGrid(0.0, 0.1, 20)
+>>> cov = ot.KroneckerCovarianceModel(ot.MaternModel([2.0], 1.5), ot.CovarianceMatrix(4))
+>>> X = ot.GaussianProcess(cov, mesh)
+>>> x = X.getSample(500)
+>>> y = [[m[0] + m[1] + m[2] - m[3] + m[0] * m[1] - m[2] * m[3] - 0.1 * m[0] * m[1] * m[2]] for m in [xi.computeMean() for xi in x]]
+>>> algo = otexp.FieldToPointFunctionalChaosAlgorithm(x, y)
+>>> algo.setThreshold(4e-2)
+>>> # Temporarily lower the basis size for the sake of this example.
+>>> # We need to store the original size.
+>>> bs = ot.ResourceMap.GetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize')
+>>> ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', 100)
+>>> algo.run()
+>>> # The algorithm has been run with the lower basis size:
+>>> # we can now restore the original value.
+>>> ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', bs)
+>>> result = algo.getResult()
+>>> metamodel = result.getFieldToPointMetamodel()
+>>> y0hat = metamodel(x[0])
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::getInputProcessSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.ProcessSample`
+    Input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    Output sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::run
+"Compute the response surfaces.
+
+Notes
+-----
+It computes the response surfaces and creates a
+:class:`~openturns.MetaModelResult` structure containing all the results."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::getResult
+"Result accessor.
+
+Returns
+-------
+result : :class:`~openturns.FieldFunctionalChaosResult`
+    Result class."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::setBlockIndices
+"Accessor to the block indices.
+
+Parameters
+----------
+blockIndices : 2-d sequence of int
+    Independent components indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::getBlockIndices
+"Accessor to the block indices.
+
+Returns
+-------
+blockIndices : :class:`~openturns.IndicesCollection`
+    Independent components indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::setNbModes
+"Accessor to the maximum number of modes to compute.
+
+Parameters
+----------
+n : int
+    The maximum number of modes to compute.
+    The actual number of modes also depends on the threshold criterion."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::getNbModes
+"Accessor to the maximum number of modes to compute.
+
+Returns
+-------
+n : int
+    The maximum number of modes to compute.
+    The actual number of modes also depends on the threshold criterion."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::setRecompress
+"Accessor to the recompression flag.
+
+Parameters
+----------
+recompress : bool
+    Whether to recompress the input Karhunen-Loeve decompositions.
+    The modes are truncated a second time according to a global eigen value
+    bound across input decompositions.
+    This can only be enabled if the scale of the input variable blocks is the same."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::getRecompress
+"Accessor to the recompression flag.
+
+Returns
+-------
+recompress : bool
+    Whether to recompress the input Karhunen-Loeve decompositions.
+    This can only be enabled if the scale of the input variable blocks is the same."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::setCenteredSample
+"Accessor to centered sample flag.
+
+Parameters
+----------
+centered : bool
+    Whether the input sample is centered.
+    When set to True, it allows to skip centering of the input process data."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::getCenteredSample
+"Accessor to centered sample flag.
+
+Parameters
+----------
+centered : bool
+    Whether the input sample is centered.
+    When set to True, it allows to skip centering of the input process data."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::setThreshold
+"Accessor to the eigenvalues cutoff ratio.
+
+Parameters
+----------
+s : float, :math:`\geq 0`
+    The threshold :math:`s`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::getThreshold
+"Accessor to the eigenvalues cutoff ratio.
+
+Returns
+-------
+s : float, :math:`\geq 0`
+    The threshold :math:`s`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::BuildDistribution
+"Build the distribution of Karhunen-Loeve coefficients.
+
+This method aims at building a possibly parametric representation of
+Karhunen-Loeve coefficients based on their Gaussian or independent theorical
+properties in order to build efficient metamodels.
+When this is not possible it falls back to non-parametric representations for
+the marginals and the dependence structure.
+
+Parameters
+----------
+modesSample : :class:`~openturns.Sample`
+    Karhunen-Loeve modes sample.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Distribution of coefficients.
+
+Notes
+-----
+The strategy for marginals is to test for a :class:`~openturns.Normal` hypothesis
+via the :py:meth:`~openturns.NormalityTest.CramerVonMisesNormal` test, else fallback to :class:`~openturns.Histogram`.
+
+For the dependence structure it tests for an :class:`~openturns.IndependentCopula`
+thanks to the :py:meth:`~openturns.HypothesisTest.Spearman` test, else fallback
+to the Normal or Beta copula (see :class:`~openturns.EmpiricalBernsteinCopula`)
+according to the :class:`~openturns.ResourceMap` key *FieldToPointFunctionalChaosAlgorithm-CopulaType*."

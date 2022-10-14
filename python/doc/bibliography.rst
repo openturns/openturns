@@ -92,6 +92,10 @@ Bibliography
 .. [halko2011] Nathan Halko, Per-Gunnar Martisson, Yoel Shkolnisky and Mark Tygert,
     *An algorithm for the principal component analysis of large data sets*,
     `pdf <https://arxiv.org/pdf/1007.5510.pdf>`__
+.. [helton2003] Helton, J.C., and Davis, F. J.,
+    *Latin Hypercube sampling and the propagation of uncertainty analyses of complex systems*,
+    Reliability Engineering and System Safety 81, 23-69.
+    `pdf <https://web.archive.org/web/20141222122431id_/http://www.stat.unm.edu:80/~storlie/st579/articles/RESS_2003_LHS.pdf>`__
 .. [janon2014] Janon A., Klein T., Lagnoux-Renaudie A., Prieur C., *Asymptotic
     normality and efficiency of two Sobol index estimators*,
     ESAIM: Probability and Statistics, EDP Sciences, 2014, 18, pp.342-364.
@@ -116,6 +120,10 @@ Bibliography
 .. [kiureghian1998] Kiureghian A., Dakessian T., *Multiple design points in first and second-order reliability*
     Structural Safety, Volume 20, Issue 1, 1998, Pages 37-49
     `pdf <https://openturns.github.io/openturns/papers/kiureghian1998.pdf>`__
+.. [kleijnen1999] Kleijnen J. P. C., Helton J. C.,
+    *Statistical analyses of scatterplots to identify factors in large-scale simulations, 1: Review and comparison of techniques.*
+    Reliability Engineering and System Safety 65, 147-185
+    `pdf <https://www.osti.gov/servlets/purl/5004>`__
 .. [knight1966] Knight, W. R. *A Computer Method for Calculating Kendall's Tau
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.
@@ -153,6 +161,9 @@ Bibliography
     `pdf <http://academicos.fciencias.unam.mx/wp-content/uploads/sites/91/2015/04/Lillifors_normality_ks.pdf>`__
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
+.. [marelli2018] S. Marelli, B. Sudret, *An active-learning algorithm that combines sparse
+   polynomial chaos expansions and bootstrap for structural reliability analysis*, Structural Safety, 2018.
+   `pdf <https://arxiv.org/pdf/1709.01589.pdf>`__
 .. [marrel2021] Marrel, A., & Chabridon, V. (2021). *Statistical developments for target and conditional sensitivity analysis: 
     application on safety studies for nuclear reactor.* Reliability Engineering & System Safety, 107711.
 .. [marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
@@ -184,7 +195,7 @@ Bibliography
 .. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). *Quasi-Monte Carlo 
     integration.* Journal of computational physics, 122(2), 218-230.
     `pdf <https://www.math.ucla.edu/~caflisch/Pubs/Pubs1995-1999/actaNumerica1998.pdf>`__
-.. [Muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
+.. [muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
 .. [munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,
@@ -216,25 +227,30 @@ Bibliography
     *Design of computer experiments: Space filling and beyond.*
     Statistics and Computing 22(3): 681-701.
     `pdf <https://hal.archives-ouvertes.fr/hal-00685876/document>`__
-.. [rai2015] Rai, P. *Sparse Low Rank Approximation of Multivariate Functions -
-    Applications in Uncertainty Quantification.*, PhD thesis.
-    Ecole Centrale de Nantes, France, 2015.
-    `pdf <https://tel.archives-ouvertes.fr/tel-01143694/document>`__
 .. [rawlings2001] Rawlings, J. O., Pantula, S. G., and Dickey, D. A.
     *Applied regression analysis: a research tool.*
     Springer Science and Business Media, 2001.
+.. [robert2015] Robert, C. P.
+    *The Metropolis-Hastings algorithm.*
+    arXiv preprint arXiv:1504.01896, 2015.
+    `pdf <https://arxiv.org/pdf/1504.01896.pdf>`__
 .. [rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__
 .. [rubinstein2017] Rubinstein, R. Y., & Kroese, D. P. (2017). *Simulation and the Monte Carlo method.* John Wiley & Sons.
    `pdf <http://www.ru.ac.bd/wp-content/uploads/soites/25/2019/03/308_03_Rubinstein_Simulation-and-the-Monte-Carlo-Method-Wiley-2017.pdf>`__
-.. [saltelli1999] Saltelli, A., Tarantola, S. & Chan, K. *A quantitative, model
+.. [saltelli1999] Saltelli, A., Tarantola, S. and Chan, K. *A quantitative, model
     independent method for global sensitivity analysis of model output.*
     Technometrics, 1999, 41(1), 39-56.
+    `pdf <http://www.andreasaltelli.eu/file/repository/Saltelli_Technom.pdf>`__
+.. [saltelli2000] Saltelli, A., Chan, K. and Scott, M. *Sensitivity analysis.*
+    John Wiley and Sons publishers, Probability and statistics series, 2000.
     `pdf <http://www.andreasaltelli.eu/file/repository/Saltelli_Technom.pdf>`__
 .. [saltelli2002] Saltelli, A. *Making best use of model evaluations to compute
     sensitivity indices.* Computer Physics Communication, 2002, 145, 580-297.
     `pdf <http://www.andreasaltelli.eu/file/repository/Making_best_use.pdf>`__
+.. [sankararaman2012] Sankararaman, S. and Mahadevan, S. *Likelihood-based approach to multidisciplinary analysis under uncertainty.* 
+    Journal of Mechanical Design, 134(3):031008, 2012.
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
     Statistique*, Technip
 .. [scott1992] David W. Scott (1992). *Multivariate density estimation*,
@@ -271,3 +287,7 @@ Bibliography
     *Introduction to uncertainty quantification*. Springer.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.   
+.. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
+    Microcosm, Inc. Torrance, CA.,1999.
+.. [zaman2012] Zaman, K. *Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design.* 
+    PhD thesis, Vanderbilt University, USA, 2012

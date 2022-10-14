@@ -34,16 +34,17 @@
 #include "openturns/LeastSquaresStrategy.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
-#include "openturns/UserDefined.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/LeastSquaresMetaModelSelectionFactory.hxx"
 #include "openturns/LARS.hxx"
 #include "openturns/KFold.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/DistributionTransformation.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -64,35 +65,19 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm()
   // Nothing to do
 }
 
-
-/* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
-    const Distribution & distribution,
-    const AdaptiveStrategy & adaptiveStrategy,
-    const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm( distribution, model )
-  , adaptiveStrategy_(adaptiveStrategy)
-  , projectionStrategy_(projectionStrategy)
-  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
-{
-  // Nothing to do
-}
-
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution)
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Overwrite the content of the projection strategy with the given data
-  projectionStrategy_.setMeasure(UserDefined(inputSample));
+  projectionStrategy_.setMeasure(distribution);
   projectionStrategy_.setExperiment(FixedExperiment(inputSample));
   projectionStrategy_.setWeights(Point(inputSample.getSize(), 1.0 / inputSample.getSize()));
   projectionStrategy_.setInputSample(inputSample);
@@ -106,15 +91,13 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution)
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Overwrite the content of the projection strategy with the given data
-  projectionStrategy_.setMeasure(UserDefined(inputSample));
+  projectionStrategy_.setMeasure(distribution);
   projectionStrategy_.setExperiment(FixedExperiment(inputSample));
   projectionStrategy_.setWeights(weights);
   projectionStrategy_.setInputSample(inputSample);
@@ -122,74 +105,71 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm( distribution, model )
+  : MetaModelAlgorithm(inputSample, outputSample, distribution)
   , adaptiveStrategy_(adaptiveStrategy)
-  , projectionStrategy_(LeastSquaresStrategy())
+  , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Nothing to do
 }
 
+
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
-    const Distribution & distribution,
-    const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
-  , adaptiveStrategy_(adaptiveStrategy)
-  , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
-  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+    const Distribution & distribution)
+  : MetaModelAlgorithm(inputSample, outputSample, distribution)
+  , adaptiveStrategy_()
+  , projectionStrategy_()
+  , maximumResidual_(ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual"))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
-}
+  const UnsignedInteger inputDimension = inputSample.getDimension();
+  Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
+  for (UnsignedInteger i = 0; i < inputDimension; ++ i)
+    polynomials[i] = StandardDistributionPolynomialFactory(getDistribution().getMarginal(i));
 
+  const Scalar qNorm = ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-QNorm");
+  EnumerateFunction enumerate;
+  if (std::abs(qNorm - 1.0) <= SpecFunc::Precision) enumerate = LinearEnumerateFunction(inputDimension);
+  else enumerate = HyperbolicAnisotropicEnumerateFunction(inputDimension, qNorm);
+  OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
+
+  const Bool sparse = ResourceMap::GetAsBool("FunctionalChaosAlgorithm-Sparse");
+  if (sparse)
+  {
+    const String fittingAlgorithm(ResourceMap::GetAsString("FunctionalChaosAlgorithm-FittingAlgorithm"));
+    if (fittingAlgorithm == "CorrectedLeaveOneOut")
+      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut()));
+    else if (fittingAlgorithm == "KFold")
+      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
+    else
+      throw InvalidArgumentException(HERE) << "Unknown fitting algorithm: " << fittingAlgorithm;
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and " << fittingAlgorithm);
+  }
+  else
+  {
+    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy");
+  }
+
+  // total basis size can be either parametrized via MaximumTotalDegree or BasisSize
+  const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree");
+  const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize");
+  const UnsignedInteger totalSize = basisSize ? basisSize : enumerate.getBasisSizeFromTotalDegree(maximumTotalDegree);
+  LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a basis size of " << totalSize);
+  adaptiveStrategy_ = FixedStrategy(basis, totalSize);
+}
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample)
-  : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample))
-  , adaptiveStrategy_()
-  , projectionStrategy_()
-  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  : FunctionalChaosAlgorithm(inputSample, outputSample, BuildDistribution(inputSample))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
-  // Recover the distribution
-  LOGINFO("In FunctionalChaosAlgorithm, identify marginal distribution");
-  setDistribution(BuildDistribution(inputSample));
-  const UnsignedInteger inputDimension = inputSample.getDimension();
-  Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
-  for (UnsignedInteger i = 0; i < inputDimension; ++ i)
-  {
-    polynomials[i] = StandardDistributionPolynomialFactory(getDistribution().getMarginal(i));
-  }
-
-  const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-QNorm" ));
-  OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
-  const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree" );
-  // For small sample size, use sparse regression
-  LOGINFO("In FunctionalChaosAlgorithm, select adaptive strategy");
-  if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-SmallSampleSize" ))
-  {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and KFold for a total degree of " << maximumTotalDegree);
-  } // Small sample
-  else if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-LargeSampleSize" ))
-  {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut()));
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and CorrectedLeaveOneOut for a total degree of " << maximumTotalDegree);
-  } // Medium sample
-  else
-  {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy for a total degree of " << maximumTotalDegree);
-  } // Large sample
-  const UnsignedInteger totalSize = enumerate.getStrataCumulatedCardinal(maximumTotalDegree);
-  adaptiveStrategy_ = FixedStrategy(basis, totalSize);
+  // Nothing to do
 }
 
 /* Constructor */
@@ -198,13 +178,12 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution)
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
+  // Nothing to do
 }
 
 
@@ -252,14 +231,11 @@ AdaptiveStrategy FunctionalChaosAlgorithm::getAdaptiveStrategy() const
 /* Computes the functional chaos */
 void FunctionalChaosAlgorithm::run()
 {
-  const UnsignedInteger outputDimension = model_.getOutputDimension();
+  const UnsignedInteger outputDimension = getOutputSample().getDimension();
 
   // Get the measure upon which the orthogonal basis is built
   const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
   const Distribution measure(basis.getMeasure());
-  // Correct the measure of the projection strategy if no input sample
-  const Bool databaseProjection = projectionStrategy_.getInputSample().getSize() > 0;
-  if (!databaseProjection) projectionStrategy_.setMeasure(measure);
 
   // First, compute all the parts that are independent of the marginal output
   // Create the isoprobabilistic transformation
@@ -276,11 +252,12 @@ void FunctionalChaosAlgorithm::run()
 
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
   const Bool noTransformation = (measure == distribution_);
-  if (noTransformation) composedModel_ = model_;
-  else composedModel_ = ComposedFunction(model_, inverseTransformation_);
+  const Function model(DatabaseFunction(getInputSample(), getOutputSample()));
+  if (noTransformation) composedModel_ = model;
+  else composedModel_ = ComposedFunction(model, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
   const Sample initialInputSample(projectionStrategy_.getInputSample());
-  if (databaseProjection && !noTransformation)
+  if (!noTransformation)
   {
     LOGINFO("Transform the input sample in the measure space");
     const Sample transformedSample(transformation_(initialInputSample));
@@ -342,7 +319,7 @@ void FunctionalChaosAlgorithm::run()
     Psi_k.add(basis.build(i));
   }
   // Build the result
-  result_ = FunctionalChaosResult(model_, distribution_, transformation_, inverseTransformation_, composedModel_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
+  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
 }
 
 /* Marginal computation */
@@ -390,19 +367,6 @@ FunctionalChaosResult FunctionalChaosAlgorithm::getResult() const
 {
   return result_;
 }
-
-
-Sample FunctionalChaosAlgorithm::getInputSample() const
-{
-  return projectionStrategy_.getInputSample();
-}
-
-
-Sample FunctionalChaosAlgorithm::getOutputSample() const
-{
-  return projectionStrategy_.getOutputSample();
-}
-
 
 /* Method save() stores the object through the StorageManager */
 void FunctionalChaosAlgorithm::save(Advocate & adv) const

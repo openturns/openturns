@@ -33,6 +33,8 @@
 #include "openturns/IntegrationStrategy.hxx"
 #include "openturns/ProjectionStrategy.hxx"
 #include "openturns/ProjectionStrategyImplementation.hxx"
-#include "openturns/SequentialStrategy.hxx"
+#include "openturns/FieldFunctionalChaosResult.hxx"
+#include "openturns/FieldToPointFunctionalChaosAlgorithm.hxx"
+#include "openturns/FieldFunctionalChaosSobolIndices.hxx"
 
 #endif /* OPENTURNS_OTFUNCTIONALCHAOS_HXX */

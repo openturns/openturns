@@ -129,8 +129,8 @@ public:
   /** Gives the kurtosis of the sample (by component) */
   Field computeKurtosis() const;
 
-  /** Gives the centered moment of order k of the sample (by component) */
-  Field computeCenteredMoment(const UnsignedInteger k) const;
+  /** Gives the central moment of order k of the sample (by component) */
+  Field computeCentralMoment(const UnsignedInteger k) const;
 
   /** Gives the raw moment of order k of the sample (by component) */
   Field computeRawMoment(const UnsignedInteger k) const;

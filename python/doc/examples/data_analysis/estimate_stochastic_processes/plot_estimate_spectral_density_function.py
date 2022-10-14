@@ -21,6 +21,7 @@ Estimate a spectral density function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -29,7 +30,7 @@ ot.Log.Show(ot.Log.NONE)
 # Create the time grid
 # In the context of the spectral estimate or Fourier transform use,
 # we use data blocs with size of form 2^p
-tMin = 0.
+tMin = 0.0
 tstep = 0.1
 size = 2**12
 tgrid = ot.RegularGrid(tMin, tstep, size)
@@ -61,8 +62,7 @@ factory.setFilteringWindows(ot.Hamming())
 
 # %%
 # Get the frequencyGrid
-frequencyGrid = ot.SpectralGaussianProcess(
-    estimatedModel_PS, tgrid).getFrequencyGrid()
+frequencyGrid = ot.SpectralGaussianProcess(estimatedModel_PS, tgrid).getFrequencyGrid()
 
 # %%
 
@@ -78,18 +78,25 @@ for k in range(frequencyGrid.getN()):
     plotSample[k, 2] = abs(model(freq)[0, 0])
 
 # Some cosmetics : labels, legend position, ...
-graph = ot.Graph("Estimated spectral function - Validation", "Frequency",
-                 "Spectral density function", True, "topright", 1.0, ot.GraphImplementation.LOGY)
+graph = ot.Graph(
+    "Estimated spectral function - Validation",
+    "Frequency",
+    "Spectral density function",
+    True,
+    "topright",
+    1.0,
+    ot.GraphImplementation.LOGY,
+)
 
 # The first curve is the estimate density as function of frequency
 curve1 = ot.Curve(plotSample.getMarginal([0, 1]))
-curve1.setColor('blue')
-curve1.setLegend('estimate model')
+curve1.setColor("blue")
+curve1.setLegend("estimate model")
 
 # The second curve is the theoritical density as function of frequency
 curve2 = ot.Curve(plotSample.getMarginal([0, 2]))
-curve2.setColor('red')
-curve2.setLegend('Cauchy model')
+curve2.setColor("red")
+curve2.setLegend("Cauchy model")
 
 graph.add(curve1)
 graph.add(curve2)

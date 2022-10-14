@@ -221,13 +221,6 @@ Point FisherSnedecor::getKurtosis() const
   return Point(1, 3.0 * (d2_ - 4.0) * (16.0 + d2_ * (-16.0 + 4.0 * d2_) + d1_ * (-20.0 + d2_ * (8.0 + d2_) + d1_ * (10.0 + d2_))) / (d1_ * (d1_ + d2_ - 2.0) * (d2_ - 6.0) * (d2_ - 8.0)));
 }
 
-/* Get the moments of the standardized distribution */
-Point FisherSnedecor::getStandardMoment(const UnsignedInteger n) const
-{
-  if (2 * n >= d2_) throw NotDefinedException(HERE) << "Error: The raw moment of a FisherSnedecor distribution is defined only up to order d2/2, here n=" << n << " and d2=" << d2_;
-  return Point(1, std::exp(n * std::log(d2_ / d1_) + SpecFunc::LogGamma(0.5 * d1_ + n) + SpecFunc::LogGamma(0.5 * d2_ - n) - SpecFunc::LogGamma(0.5 * d1_) - SpecFunc::LogGamma(0.5 * d2_)));
-}
-
 /* Compute the covariance of the distribution */
 void FisherSnedecor::computeCovariance() const
 {

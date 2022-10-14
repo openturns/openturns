@@ -168,6 +168,12 @@ UnsignedInteger LinearEnumerateFunction::getMaximumDegreeStrataIndex(const Unsig
   return maximumDegree;
 }
 
+/* Upper bound accessor */
+void LinearEnumerateFunction::setUpperBound(const Indices & /*upperBound*/)
+{
+  throw NotYetImplementedException(HERE) << " in LinearEnumerateFunction::setUpperBound";
+}
+
 /* Method save() stores the object through the StorageManager */
 void LinearEnumerateFunction::save(Advocate & adv) const
 {

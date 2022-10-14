@@ -69,15 +69,6 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
-  void computeCoefficients(const Function & function,
-                           const FunctionCollection & basis,
-                           const Indices & indices,
-                           const Indices & addedRanks,
-                           const Indices & conservedRanks,
-                           const Indices & removedRanks,
-                           const UnsignedInteger marginalIndex = 0) override;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -86,7 +77,14 @@ public:
 
 
 protected:
-
+  /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
+  void computeCoefficients(const Function & function,
+                           const FunctionCollection & basis,
+                           const Indices & indices,
+                           const Indices & addedRanks,
+                           const Indices & conservedRanks,
+                           const Indices & removedRanks,
+                           const UnsignedInteger marginalIndex = 0) override;
 private:
 
 } ; /* class IntegrationStrategy */

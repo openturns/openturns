@@ -28,12 +28,8 @@ Sensitivity analysis
     :maxdepth: 1
 
     taylor_importance_factors
-    ranking_pearson
-    ranking_spearman
     ranking_src
-    ranking_srrc
     ranking_pcc
-    ranking_prcc
     sensitivity_sobol
     sensitivity_ancova
     sensitivity_fast

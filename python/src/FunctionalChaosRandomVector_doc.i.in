@@ -1,22 +1,17 @@
 %feature("docstring") OT::FunctionalChaosRandomVector
-"Functional chaos random vector used to evaluate the Sobol indices.
+"Functional chaos random vector.
 
-Available constructors:
-    FunctionalChaosRandomVector(functionalChaosResult)
+Allows to simulate a variable through a chaos decomposition,
+and retrieve its mean and covariance analytically from the chaos coefficients.
 
 Parameters
 ----------
 functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
-    A functional chaos result resulting from a polynomial chaos decomposition.
+    A result from a functional chaos decomposition.
 
 See also
 --------
 FunctionalChaosAlgorithm, FunctionalChaosResult
-
-Notes
------
-This structure is created from a FunctionalChaosResult in order to evaluate the
-Sobol indices associated to the polynomial chaos decomposition of the model.
 "
 
 // ---------------------------------------------------------------------
@@ -27,4 +22,4 @@ Sobol indices associated to the polynomial chaos decomposition of the model.
 Returns
 -------
 functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
-    The functional chaos result resulting from a polynomial chaos decomposition."
+    The result from a functional chaos decomposition."

@@ -40,6 +40,14 @@ OT_Graph_setAxes_doc
 OT_Graph_setTickLocation_doc
 %feature("docstring") OT::Graph::getTickLocation
 OT_Graph_getTickLocation_doc
+%feature("docstring") OT::Graph::setIntegerXTick
+OT_Graph_setIntegerXTick_doc
+%feature("docstring") OT::Graph::getIntegerXTick
+OT_Graph_getIntegerXTick_doc
+%feature("docstring") OT::Graph::setIntegerYTick
+OT_Graph_setIntegerYTick_doc
+%feature("docstring") OT::Graph::getIntegerYTick
+OT_Graph_getIntegerYTick_doc
 %feature("docstring") OT::Graph::getLogScale
 OT_Graph_getLogScale_doc
 %feature("docstring") OT::Graph::setLogScale
@@ -72,14 +80,6 @@ OT_Graph_setGridColor_doc
 OT_Graph_getFileName_doc
 %feature("docstring") OT::Graph::getPath
 OT_Graph_getPath_doc
-%feature("docstring") OT::Graph::getBitmap
-OT_Graph_getBitmap_doc
-%feature("docstring") OT::Graph::getPostscript
-OT_Graph_getPostscript_doc
-%feature("docstring") OT::Graph::getVectorial
-OT_Graph_getVectorial_doc
-%feature("docstring") OT::Graph::getPDF
-OT_Graph_getPDF_doc
 %feature("docstring") OT::Graph::setXMargin
 OT_Graph_setXMargin_doc
 %feature("docstring") OT::Graph::setYMargin
@@ -88,18 +88,12 @@ OT_Graph_setYMargin_doc
 OT_Graph_getBoundingBox_doc
 %feature("docstring") OT::Graph::setBoundingBox
 OT_Graph_setBoundingBox_doc
-%feature("docstring") OT::Graph::getRCommand
-OT_Graph_getRCommand_doc
 %feature("docstring") OT::Graph::getAutomaticBoundingBox
 OT_Graph_getAutomaticBoundingBox_doc
 %feature("docstring") OT::Graph::setAutomaticBoundingBox
 OT_Graph_setAutomaticBoundingBox_doc
-%feature("docstring") OT::Graph::draw
-OT_Graph_draw_doc
 %feature("docstring") OT::Graph::add
 OT_Graph_add_doc
-%feature("docstring") OT::Graph::clean
-OT_Graph_clean_doc
 %feature("docstring") OT::Graph::erase
 OT_Graph_erase_doc
 

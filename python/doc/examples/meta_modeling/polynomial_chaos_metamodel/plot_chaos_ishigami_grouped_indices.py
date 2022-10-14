@@ -9,10 +9,7 @@ Compute grouped indices for the Ishigami function
 # %%
 from openturns.usecases import ishigami_function
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-from math import pi
-import openturns.viewer as otv
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -37,17 +34,18 @@ outputTrain = im.model(inputTrain)
 # Create the chaos.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    [im.X1, im.X2, im.X3])
+multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
 projectionStrategy = ot.LeastSquaresStrategy(
-    inputTrain, outputTrain, selectionAlgorithm)
+    inputTrain, outputTrain, selectionAlgorithm
+)
 totalDegree = 8
 enumfunc = multivariateBasis.getEnumerateFunction()
 P = enumfunc.getStrataCumulatedCardinal(totalDegree)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
 chaosalgo = ot.FunctionalChaosAlgorithm(
-    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy)
+    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+)
 
 # %%
 chaosalgo.run()
@@ -59,7 +57,7 @@ metamodel = result.getMetaModel()
 
 # %%
 chaosSI = ot.FunctionalChaosSobolIndices(result)
-print(chaosSI.summary())
+print(chaosSI)
 
 # %%
 # We compute the first order indice of the group [0,1].
@@ -80,7 +78,7 @@ chaosSI.getSobolGroupedIndex([0, 1])
 0.279938 + 0.190322 + 0.130033 + 0.12058 + 0.0250262
 
 # %%
-# The difference between the previous sum and the output of `getSobolGroupedIndex` is lower than 0.01, which is the threshold used by the `summary` method.
+# The difference between the previous sum and the output of `getSobolGroupedIndex` is lower than 0.01, which is the threshold used by the `__str__` method.
 
 # %%
 # We compute the total order indice of the group [1,2].

@@ -32,20 +32,19 @@ Advanced polynomial chaos construction
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-model = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], [
-                            '1+x1*x2 + 2*x3^2+x4^4'])
+model = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["1+x1*x2 + 2*x3^2+x4^4"])
 
 # %%
 # Create a distribution of dimension 4.
 
 # %%
 distribution = ot.ComposedDistribution(
-    [ot.Normal(), ot.Uniform(), ot.Gamma(2.75, 1.0), ot.Beta(2.5, 1.0, -1.0, 2.0)])
+    [ot.Normal(), ot.Uniform(), ot.Gamma(2.75, 1.0), ot.Beta(2.5, 1.0, -1.0, 2.0)]
+)
 
 # %%
 inputDimension = distribution.getDimension()
@@ -100,33 +99,26 @@ enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
 
 # %%
 q = 0.4
-enumerateFunction_1 = ot.HyperbolicAnisotropicEnumerateFunction(
-    inputDimension, q)
+enumerateFunction_1 = ot.HyperbolicAnisotropicEnumerateFunction(inputDimension, q)
 
 # %%
 # Create the multivariate orthonormal basis which is the the cartesian product of the univariate basis.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    polyColl, enumerateFunction)
+multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 
 # %%
-# Ask how many polynomials have total degrees equal to k=5.
-
-# %%
+# Ask how many basis terms there are in the 6-th strata.
+# In the special case of the Linear enumerate function this is also the strata with all the multi-indices of total degree 5.
 k = 5
 enumerateFunction.getStrataCardinal(k)
 
 # %%
-# Ask how many polynomials have degrees lower or equal to k=5.
-
-# %%
-enumerateFunction.getStrataCumulatedCardinal(k)
+# Ask how many basis multi-indices have total degrees lower or equal to k=5.
+enumerateFunction.getBasisSizeFromTotalDegree(k)
 
 # %%
 # Give the k-th term of the multivariate basis. To calculate its degree, add the integers.
-
-# %%
 k = 5
 enumerateFunction(k)
 
@@ -157,14 +149,6 @@ p = 15
 truncatureBasisStrategy = ot.FixedStrategy(multivariateBasis, p)
 
 # %%
-# SequentialStrategy : among the maximumCardinalBasis = 100 first polynomials of the multivariate basis those verfying the convergence criterion.
-
-# %%
-maximumCardinalBasis = 100
-truncatureBasisStrategy_1 = ot.SequentialStrategy(
-    multivariateBasis, maximumCardinalBasis)
-
-# %%
 # CleaningStrategy : among the maximumConsideredTerms = 500 first polynomials, those which have the mostSignificant = 50 most significant contributions with significance criterion significanceFactor equal to :math:`10^{-4}`
 # The `True` boolean indicates if we are interested in the online monitoring of the current basis update (removed or added coefficients).
 
@@ -173,7 +157,8 @@ maximumConsideredTerms = 500
 mostSignificant = 50
 significanceFactor = 1.0e-4
 truncatureBasisStrategy_2 = ot.CleaningStrategy(
-    multivariateBasis, maximumConsideredTerms, mostSignificant, significanceFactor, True)
+    multivariateBasis, maximumConsideredTerms, mostSignificant, significanceFactor, True
+)
 
 # %%
 # STEP 3: Evaluation strategy of the approximation coefficients
@@ -184,8 +169,8 @@ truncatureBasisStrategy_2 = ot.CleaningStrategy(
 
 # %%
 sampleSize = 100
-evaluationCoeffStrategy = ot.LeastSquaresStrategy(
-    ot.MonteCarloExperiment(sampleSize))
+evaluationCoeffStrategy = ot.LeastSquaresStrategy()
+experiment = ot.MonteCarloExperiment(distribution, sampleSize)
 
 # %%
 # You can specify the approximation algorithm. This is the algorithm that generates a sequence of basis using Least Angle Regression.
@@ -200,17 +185,22 @@ basisSequenceFactory = ot.LARS()
 fittingAlgorithm = ot.CorrectedLeaveOneOut()
 # Finally the metamodel selection algorithm embbeded in LeastSquaresStrategy
 approximationAlgorithm = ot.LeastSquaresMetaModelSelectionFactory(
-    basisSequenceFactory, fittingAlgorithm)
-evaluationCoeffStrategy_2 = ot.LeastSquaresStrategy(
-    ot.MonteCarloExperiment(sampleSize), approximationAlgorithm)
+    basisSequenceFactory, fittingAlgorithm
+)
+evaluationCoeffStrategy_2 = ot.LeastSquaresStrategy(approximationAlgorithm)
+experiment_2 = experiment
 
 # %%
 # Try integration.
+marginalSizes = [2] * inputDimension
+evaluationCoeffStrategy_3 = ot.IntegrationStrategy()
+experiment_3 = ot.GaussProductExperiment(distribution, marginalSizes)
 
 # %%
-marginalSizes = [2] * inputDimension
-evaluationCoeffStrategy_3 = ot.IntegrationStrategy(
-    ot.GaussProductExperiment(distributionStandard, marginalSizes))
+# Evaluate design of experiments.
+# For the Gauss product we need to specify the non-uniform weights.
+X, W = experiment.generateWithWeights()
+Y = model(X)
 
 # %%
 # STEP 4: Creation of the Functional Chaos Algorithm
@@ -225,4 +215,5 @@ evaluationCoeffStrategy_3 = ot.IntegrationStrategy(
 
 # %%
 polynomialChaosAlgorithm = ot.FunctionalChaosAlgorithm(
-    model, distribution, truncatureBasisStrategy, evaluationCoeffStrategy)
+    X, W, Y, distribution, truncatureBasisStrategy, evaluationCoeffStrategy
+)

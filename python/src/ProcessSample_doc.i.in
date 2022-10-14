@@ -46,8 +46,8 @@ OT_ProcessSample_computeVariance_doc
 OT_ProcessSample_computeSkewness_doc
 %feature("docstring") OT::ProcessSample::computeKurtosis
 OT_ProcessSample_computeKurtosis_doc
-%feature("docstring") OT::ProcessSample::computeCenteredMoment
-OT_ProcessSample_computeCenteredMoment_doc
+%feature("docstring") OT::ProcessSample::computeCentralMoment
+OT_ProcessSample_computeCentralMoment_doc
 %feature("docstring") OT::ProcessSample::computeRawMoment
 OT_ProcessSample_computeRawMoment_doc
 %feature("docstring") OT::ProcessSample::computeEmpiricalCDF

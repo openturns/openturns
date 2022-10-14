@@ -41,9 +41,9 @@ MarginalGradient::MarginalGradient()
 /* Parameter constructor */
 MarginalGradient::MarginalGradient(const GradientImplementation & gradient,
                                    const Indices & indices)
-  : GradientImplementation()
+  : MarginalGradient(gradient.clone(), indices)
 {
-  *this = MarginalGradient(gradient.clone(), indices);
+  // Nothing to do
 }
 
 /* Parameters constructor */

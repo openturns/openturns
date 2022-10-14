@@ -13,8 +13,8 @@ defaultVersion : positive int
 
 Notes
 -----
-A StorageManager object can be used only through its derived class
-:class:`~openturns.XMLStorageManager`.
+A StorageManager object can be used only through its derived classes
+including :class:`~openturns.XMLStorageManager` and its HDF5 counterpart.
 
 See also
 --------

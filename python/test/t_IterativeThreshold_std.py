@@ -9,9 +9,9 @@ ot.PlatformInfo.SetNumericalPrecision(5)
 ot.RandomGenerator.SetSeed(0)
 
 # We create a Sample
-point1 = [10., 20.]
-point2 = [11., 21.]
-point3 = [12., 22.]
+point1 = [10.0, 20.0]
+point2 = [11.0, 21.0]
+point3 = [12.0, 22.0]
 sample1 = [point1, point2, point3]
 referencethreshold = [0, 3]
 

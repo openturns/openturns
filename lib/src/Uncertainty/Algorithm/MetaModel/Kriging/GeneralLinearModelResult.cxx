@@ -50,8 +50,7 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const PointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
     const Scalar optimalLogLikelihood)
-  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
-  , inputData_(inputSample)
+  : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
   , basis_(basis)
   , beta_(trendCoefficients)
   , covarianceModel_(covarianceModel)
@@ -131,7 +130,7 @@ Process GeneralLinearModelResult::getNoise() const
     return noise;
   }
   // Other covariance models
-  const GaussianProcess noise(covarianceModel_, Mesh(inputData_));
+  const GaussianProcess noise(covarianceModel_, Mesh(inputSample_));
   return noise;
 }
 
@@ -144,7 +143,7 @@ TriangularMatrix GeneralLinearModelResult::getCholeskyFactor() const
 void GeneralLinearModelResult::setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
     const HMatrix & covarianceHMatrix)
 {
-  const UnsignedInteger size = inputData_.getSize();
+  const UnsignedInteger size = inputSample_.getSize();
   const UnsignedInteger outputDimension = getMetaModel().getOutputDimension();
   if (covarianceCholeskyFactor_.getDimension() != 0 && covarianceCholeskyFactor_.getDimension() != size * outputDimension)
     throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::setCholeskyFactor, Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceCholeskyFactor_.getDimension();
@@ -170,7 +169,6 @@ HMatrix GeneralLinearModelResult::getHMatCholeskyFactor() const
 void GeneralLinearModelResult::save(Advocate & adv) const
 {
   MetaModelResult::save(adv);
-  adv.saveAttribute( "inputData_", inputData_ );
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
@@ -184,7 +182,8 @@ void GeneralLinearModelResult::save(Advocate & adv) const
 void GeneralLinearModelResult::load(Advocate & adv)
 {
   MetaModelResult::load(adv);
-  adv.loadAttribute( "inputData_", inputData_ );
+  if (adv.hasAttribute("inputData_"))// <=1.19
+    adv.loadAttribute("inputData_", inputSample_);
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );

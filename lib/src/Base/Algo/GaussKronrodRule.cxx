@@ -365,4 +365,32 @@ String GaussKronrodRule::__str__(const String & ) const
   return oss;
 }
 
+/* Method save() stores the object through the StorageManager */
+void GaussKronrodRule::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute("pair_", (UnsignedInteger)pair_);
+  adv.saveAttribute("order_", order_);
+  adv.saveAttribute("zeroGaussWeight_", zeroGaussWeight_);
+  adv.saveAttribute("otherGaussWeights_", otherGaussWeights_);
+  adv.saveAttribute("otherKronrodNodes_", otherKronrodNodes_);
+  adv.saveAttribute("zeroKronrodWeight_", zeroKronrodWeight_);
+  adv.saveAttribute("otherKronrodWeights_", otherKronrodWeights_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void GaussKronrodRule::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  UnsignedInteger pair = 0;
+  adv.loadAttribute("pair_", pair);
+  pair_ = (GaussKronrodPair)pair;
+  adv.loadAttribute("order_", order_);
+  adv.loadAttribute("zeroGaussWeight_", zeroGaussWeight_);
+  adv.loadAttribute("otherGaussWeights_", otherGaussWeights_);
+  adv.loadAttribute("otherKronrodNodes_", otherKronrodNodes_);
+  adv.loadAttribute("zeroKronrodWeight_", zeroKronrodWeight_);
+  adv.loadAttribute("otherKronrodWeights_", otherKronrodWeights_);
+}
+
 END_NAMESPACE_OPENTURNS

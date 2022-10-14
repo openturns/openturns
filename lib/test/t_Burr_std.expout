@@ -42,10 +42,4 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[c : 1.5, k : 4.5]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.37922]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.240044]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0.228571]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.324466]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0.738598]
 Standard representative=Burr(c = 1.5, k = 4.5)

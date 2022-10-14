@@ -1,17 +1,12 @@
 %feature("docstring") OT::Study
-"Study.
-
-Available constructors:
-    Study()
-
-    Study(*fileName, compressionLevel*)
+"Save/load a Study.
 
 Parameters
 ----------
 fileName : str
     Name of the file used by the underlying storage manager,
     a :class:`~openturns.XMLStorageManager` in this case.
-compressionLevel : int
+compressionLevel : int, optional
     Compression level of the resulting XML file, in the range 0,...,9 (0=no compression, 9=best compression).
     The compression is done only if the XML lib has been compiled with zlib support.
     The default value is given by 'XMLStorageManager-DefaultCompressionLevel' in :class:`~openturns.ResourceMap`.
@@ -24,6 +19,15 @@ modification of the original won't affect the data saved in the study. To
 update the data saved in the study, the user has to explicitly save it again.
 Study allows the user to retrieve previously saved objects either by their name
 if a name was defined for the object or by their Id.
+
+If the study contains Python wrapper classes (:class:`~openturns.PythonFunction`,
+:class:`~openturns.PythonDistribution`, etc) serialization of the pure Python
+parts of the objects go through the pickle module or the dill module if available.
+The latter allows to serialize objects including their Python definition which
+means the study can be reloaded in a Python environment that does not include
+their Python class or function definition contrary to the default pickle module.
+In that regard it can be useful to set the *recurse* setting of dill before
+saving.
 
 Examples
 --------

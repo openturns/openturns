@@ -43,20 +43,8 @@ OPENTURNS_HOME                        --- Custom installation path
 OPENTURNS_CONFIG_PATH                 --- Path to configuration file
 OPENTURNS_LOG_SEVERITY                --- Log severity flag, for example "ALL"
 """
-import sys
 
-# SWIG-related: check if interactive mode
-if not hasattr(sys, 'ps1'):
-    try:
-        # ipython does not define ps1
-        __IPYTHON__
-    except:
-        # Reset the default Crtl-C behavior
-        import signal
-        try:
-            signal.signal(signal.SIGINT, signal.SIG_DFL)
-        except ValueError:
-            pass
+# flake8: noqa
 
 from .common import *
 from .typ import *
@@ -65,7 +53,6 @@ from .geom import *
 from .func import *
 from .SpecFunc import *
 from .statistics import *
-from .CorrelationAnalysis import *
 from .diff import *
 from .optim import *
 from .solver import *
@@ -106,6 +93,7 @@ def Show(graph):
         the graph to display
     """
     from .viewer import View
+
     view = View(graph)
     view.ShowAll()
 

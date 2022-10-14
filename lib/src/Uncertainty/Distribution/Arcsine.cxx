@@ -259,13 +259,6 @@ Point Arcsine::getKurtosis() const /*throw(NotDefinedException)*/
   return Point(1, (3.0 / 8.0) * a4 / standardDeviation4);
 }
 
-/* Get the moments of the standardized distribution */
-Point Arcsine::getStandardMoment(const UnsignedInteger n) const
-{
-  if (n % 2 == 1) return Point(1, 0.0);
-  return Point(1, std::exp(SpecFunc::LogGamma(0.5 * n + 0.5) - SpecFunc::LogGamma(0.5 * n + 1)) / std::sqrt(M_PI));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Arcsine::getStandardRepresentative() const
 {

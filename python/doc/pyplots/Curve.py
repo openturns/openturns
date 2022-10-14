@@ -5,7 +5,8 @@ from math import sin, pi
 
 # Generate the data for the curves to be drawn
 data = [
-    [-3 * pi + 6 * pi * i / 100, sin(-3 * pi + 6 * pi * i / 100)] for i in range(100)]
+    [-3 * pi + 6 * pi * i / 100, sin(-3 * pi + 6 * pi * i / 100)] for i in range(100)
+]
 
 # Create an empty graph
 graph = ot.Graph("Curve example", "x", "sin(x)", True, "")

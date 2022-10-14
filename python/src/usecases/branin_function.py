@@ -5,8 +5,8 @@ Use case : Branin test function
 import openturns as ot
 
 
-class BraninModel():
-    """
+class BraninModel:
+    r"""
     Data class for the Branin test function.
 
 
@@ -53,14 +53,18 @@ class BraninModel():
         self.dim = 2
         self.trueNoiseFunction = 0.1
 
-        self.branin = ot.SymbolicFunction(['x1', 'x2'],
-                                          ['((x2-(5.1/(4*pi_^2))*x1^2+5*x1/pi_-6)^2+10*(1-1/(8*pi_))*cos(x1)+10-54.8104)/51.9496'])
-        self.transfo = ot.SymbolicFunction(['u1', 'u2'],
-                                           ['15*u1-5', '15*u2'])
+        self.branin = ot.SymbolicFunction(
+            ["x1", "x2"],
+            [
+                "((x2-(5.1/(4*pi_^2))*x1^2+5*x1/pi_-6)^2+10*(1-1/(8*pi_))*cos(x1)+10-54.8104)/51.9496"
+            ],
+        )
+        self.transfo = ot.SymbolicFunction(["u1", "u2"], ["15*u1-5", "15*u2"])
 
         self.model = ot.ComposedFunction(self.branin, self.transfo)
         self.noiseModel = ot.SymbolicFunction(
-            ['x1', 'x2'], [str(self.trueNoiseFunction)])
+            ["x1", "x2"], [str(self.trueNoiseFunction)]
+        )
         # %%
         self.lowerbound = ot.Point([0.0] * self.dim)
         self.upperbound = ot.Point([1.0] * self.dim)

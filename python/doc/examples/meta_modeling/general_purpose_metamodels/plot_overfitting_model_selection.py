@@ -123,12 +123,15 @@ view = otv.View(graph)
 #
 
 # %%
-# In order to approximate the function with polynomials up to degree 4, we create a list of strings containing the associated monomials. We do not include a constant in the polynomial basis, as this constant term is automatically included in the model by the `LinearLeastSquares` class. We perform the loop from 1 up to `total_degree` (but the `range` function takes `total_degree + 1` as its second input argument).
+# In order to approximate the function with polynomials up to degree 4,
+# we create a list of strings containing the associated monomials.
+# We do not include a constant in the polynomial basis, as this constant term
+# is automatically included in the model by the `LinearLeastSquares` class.
+# We perform the loop from 1 up to `total_degree` (but the `range` function takes `total_degree + 1` as its second input argument).
 
 # %%
 total_degree = 4
-polynomialCollection = ["x^%d" % (degree)
-                        for degree in range(1, total_degree + 1)]
+polynomialCollection = ["x^%d" % (degree) for degree in range(1, total_degree + 1)]
 polynomialCollection
 
 # %%
@@ -197,8 +200,7 @@ graph.add(curve)
 # Errors
 ypredicted_train = responseSurface(basis(x_train))
 for i in range(n_train):
-    curve = ot.Curve([x_train[i], x_train[i]], [
-                     y_train[i], ypredicted_train[i]])
+    curve = ot.Curve([x_train[i], x_train[i]], [y_train[i], ypredicted_train[i]])
     curve.setColor("green")
     curve.setLineWidth(2)
     graph.add(curve)
@@ -217,8 +219,7 @@ def myPolynomialDataFitting(total_degree, x_train, y_train):
     with given total degree.
     This is for learning purposes only: please consider a serious metamodel
     for real applications, e.g. polynomial chaos or kriging."""
-    polynomialCollection = ["x^%d" % (degree)
-                            for degree in range(1, total_degree + 1)]
+    polynomialCollection = ["x^%d" % (degree) for degree in range(1, total_degree + 1)]
     basis = ot.SymbolicFunction(["x"], polynomialCollection)
     designMatrix = basis(x_train)
     myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)
@@ -231,8 +232,7 @@ def myPolynomialDataFitting(total_degree, x_train, y_train):
 def myPolynomialCurveFittingGraph(total_degree, x_train, y_train):
     """Returns the graphics for a polynomial curve fitting
     with given total degree"""
-    responseSurface, basis = myPolynomialDataFitting(
-        total_degree, x_train, y_train)
+    responseSurface, basis = myPolynomialDataFitting(total_degree, x_train, y_train)
     # Graphics
     n_test = 100
     x_test = linearSample(0, 1, n_test)
@@ -284,7 +284,10 @@ _ = ot.viewer.View(
 #
 # However, when the polynomial degree is high, it produces large oscillations which significantly deviate from the true function. This is *overfitting*. This is a pity, given the fact that the polynomial *exactly* interpolates the observations: the residuals are zeroed.
 #
-# If the locations of the x abscissas could be changed, then the oscillations could be made smaller. This is the method used in gaussian quadrature, where the nodes of interpolation are made closer on the left and right bounds. In our situation, we make the asssumption that these abscissas cannot be changed: the most obvious choice is to limit the degree of the polynomial. Another possibility is to include a regularization into the least squares solution.
+# If the locations of the x abscissas could be changed, then the oscillations could be made smaller.
+# This is the method used in gaussian quadrature, where the nodes of interpolation are made closer on the left and right bounds.
+# In our situation, we make the asssumption that these abscissas cannot be changed: the most obvious choice is to limit the degree of the polynomial.
+# Another possibility is to include a regularization into the least squares solution.
 
 # %%
 # Root mean squared error
@@ -302,8 +305,7 @@ sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 
 # %%
 total_degree = 4
-responseSurface, basis = myPolynomialDataFitting(
-    total_degree, x_train, y_train)
+responseSurface, basis = myPolynomialDataFitting(total_degree, x_train, y_train)
 
 
 # %%
@@ -357,12 +359,9 @@ maximum_degree = 10
 RMSE_train = ot.Sample(maximum_degree, 1)
 RMSE_test = ot.Sample(maximum_degree, 1)
 for total_degree in range(maximum_degree):
-    responseSurface, basis = myPolynomialDataFitting(
-        total_degree, x_train, y_train)
-    RMSE_train[total_degree, 0] = computeRMSE(
-        responseSurface, basis, x_train, y_train)
-    RMSE_test[total_degree, 0] = computeRMSE(
-        responseSurface, basis, x_test, y_test)
+    responseSurface, basis = myPolynomialDataFitting(total_degree, x_train, y_train)
+    RMSE_train[total_degree, 0] = computeRMSE(responseSurface, basis, x_train, y_train)
+    RMSE_test[total_degree, 0] = computeRMSE(responseSurface, basis, x_test, y_test)
 
 # %%
 degreeSample = ot.Sample([[i] for i in range(maximum_degree)])

@@ -1,14 +1,15 @@
 import openturns as ot
 from openturns.viewer import View
+
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 10)
 grid = ot.GridLayout(2, 2)
-pdf_graph = ot.Graph('PDFs of 1D Dirichlet distributions', 'x', '', True)
-cdf_graph = ot.Graph('CDFs of 1D Dirichlet distributions', 'x', '', True)
-title_2d = 'PDF of the Dirichlet dist. with theta = {}'
+pdf_graph = ot.Graph("PDFs of 1D Dirichlet distributions", "x", "", True)
+cdf_graph = ot.Graph("CDFs of 1D Dirichlet distributions", "x", "", True)
+title_2d = "PDF of the Dirichlet dist. with theta = {}"
 theta_1 = (2.0, 2.0, 2.0)
 theta_2 = (0.5, 0.7, 0.9)
-pdf_2d_1 = ot.Graph(title_2d.format(theta_1), 'x1', 'x2', True)
-pdf_2d_2 = ot.Graph(title_2d.format(theta_2), 'x1', 'x2', True)
+pdf_2d_1 = ot.Graph(title_2d.format(theta_1), "x1", "x2", True)
+pdf_2d_2 = ot.Graph(title_2d.format(theta_2), "x1", "x2", True)
 palette = ot.Drawable.BuildDefaultPalette(10)
 list_theta = [(2, 2), (7, 5), (2, 6), (3, 4)]
 for theta in list_theta:
@@ -19,8 +20,8 @@ for theta in list_theta:
     cdf_graph.add(cdf_curve)
 pdf_graph.setColors([palette[i] for i in range(4)])
 cdf_graph.setColors([palette[i] for i in range(4)])
-pdf_graph.setLegends(['theta={}'.format(theta) for theta in list_theta])
-cdf_graph.setLegends(['theta={}'.format(theta) for theta in list_theta])
+pdf_graph.setLegends(["theta={}".format(theta) for theta in list_theta])
+cdf_graph.setLegends(["theta={}".format(theta) for theta in list_theta])
 distribution_2d_1 = ot.Dirichlet(theta_1)
 distribution_2d_2 = ot.Dirichlet(theta_2)
 pdf_2d_1.add(distribution_2d_1.drawPDF())
@@ -29,8 +30,8 @@ grid.setGraph(0, 0, pdf_graph)
 grid.setGraph(0, 1, cdf_graph)
 grid.setGraph(1, 0, pdf_2d_1)
 grid.setGraph(1, 1, pdf_2d_2)
-grid.setTitle('Dirichlet (theta)')
-grid.setLegendPosition('topright')
+grid.setTitle("Dirichlet (theta)")
+grid.setLegendPosition("topright")
 v = View(grid)
 fig = v.getFigure()
-fig.axes[1].legend(loc='best')
+fig.axes[1].legend(loc="best")

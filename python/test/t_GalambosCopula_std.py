@@ -11,32 +11,46 @@ ot.RandomGenerator.SetSeed(0)
 dim = 2
 copula = ot.GalambosCopula(0.5)
 ott.assert_almost_equal(copula.getMean(), [0.5, 0.5], 0.0, 0.0)
-ref_cov_matrix = ot.CovarianceMatrix(
-    2, [0.0833333, 0.0241064, 0.0241064, 0.0833333])
+ref_cov_matrix = ot.CovarianceMatrix(2, [0.0833333, 0.0241064, 0.0241064, 0.0833333])
 ott.assert_almost_equal(copula.getCovariance(), ref_cov_matrix, 1e-5, 0.0)
 
 # Is this copula an elliptical distribution?
-assert copula.isElliptical() == False
+assert not copula.isElliptical()
 
 # Is this copula elliptical?
-assert copula.hasEllipticalCopula() == False
+assert not copula.hasEllipticalCopula()
 
 # Is this copula independent?
-assert copula.hasIndependentCopula() == False
+assert not copula.hasIndependentCopula()
 
 # Test for realization of distribution
-ott.assert_almost_equal(copula.getRealization(), [
-                        0.629877, 0.871724], 1e-5, 0.0)
+ott.assert_almost_equal(copula.getRealization(), [0.629877, 0.871724], 1e-5, 0.0)
 
 # Test correlation and covariance
-ott.assert_almost_equal(copula.getCorrelation(), ot.CovarianceMatrix(
-    2, [1, 0.289277, 0.289277, 1]), 1e-5, 0.0)
-ott.assert_almost_equal(copula.getCovariance(), ot.CovarianceMatrix(
-    2, [0.0833333, 0.0241064, 0.0241064, 0.0833333]), 1e-5, 0.0)
-ott.assert_almost_equal(copula.getSpearmanCorrelation(
-), ot.CovarianceMatrix(2, [1, 0.289277, 0.289277, 1]), 1e-5, 0.0)
-ott.assert_almost_equal(copula.getKendallTau(), ot.CovarianceMatrix(
-    2, [1, 0.299108, 0.299108, 1]), 1e-5, 0.0)
+ott.assert_almost_equal(
+    copula.getCorrelation(),
+    ot.CovarianceMatrix(2, [1, 0.289277, 0.289277, 1]),
+    1e-5,
+    0.0,
+)
+ott.assert_almost_equal(
+    copula.getCovariance(),
+    ot.CovarianceMatrix(2, [0.0833333, 0.0241064, 0.0241064, 0.0833333]),
+    1e-5,
+    0.0,
+)
+ott.assert_almost_equal(
+    copula.getSpearmanCorrelation(),
+    ot.CovarianceMatrix(2, [1, 0.289277, 0.289277, 1]),
+    1e-5,
+    0.0,
+)
+ott.assert_almost_equal(
+    copula.getKendallTau(),
+    ot.CovarianceMatrix(2, [1, 0.299108, 0.299108, 1]),
+    1e-5,
+    0.0,
+)
 
 # Test for sampling
 oneSample = copula.getSample(10)
@@ -56,10 +70,8 @@ ott.assert_almost_equal(oneSample, ref_sample, 1e-5, 0.0)
 
 # Test for sampling
 anotherSample = copula.getSample(10000)
-ott.assert_almost_equal(anotherSample.computeMean(), [
-                        0.502777, 0.501261], 1e-5, 0.0)
-ref_cov_matrix_2 = ot.CovarianceMatrix(
-    2, [0.0833333, 0.0241064, 0.0244522, 0.0833333])
+ott.assert_almost_equal(anotherSample.computeMean(), [0.502777, 0.501261], 1e-5, 0.0)
+ref_cov_matrix_2 = ot.CovarianceMatrix(2, [0.0833333, 0.0241064, 0.0244522, 0.0833333])
 ott.assert_almost_equal(copula.getCovariance(), ref_cov_matrix_2, 1e-5, 0.0)
 
 # Define a point
@@ -114,5 +126,4 @@ ott.assert_almost_equal(margins.computeCDF([0.25] * 2), 0.0883883, 1e-5, 0.0)
 quantile = ot.Point(margins.computeQuantile(0.95))
 ott.assert_almost_equal(quantile, [0.971115, 0.971115], 1e-5, 0.0)
 ott.assert_almost_equal(margins.computeCDF(quantile), 0.950000, 1e-4, 0.0)
-ott.assert_almost_equal(margins.getRealization(), [
-                        0.915787, 0.243714], 1e-5, 0.0)
+ott.assert_almost_equal(margins.getRealization(), [0.915787, 0.243714], 1e-5, 0.0)

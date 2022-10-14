@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <limits>
 #include "openturns/EnumerateFunctionImplementation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -32,6 +33,7 @@ static const Factory<EnumerateFunctionImplementation> Factory_EnumerateFunctionI
 /* Parameter constructor */
 EnumerateFunctionImplementation::EnumerateFunctionImplementation(const UnsignedInteger dimension)
   : PersistentObject()
+  , upperBound_(dimension, std::numeric_limits<UnsignedInteger>::max())
   , dimension_(dimension)
 {
   if (!(dimension > 0))
@@ -64,9 +66,18 @@ Indices EnumerateFunctionImplementation::operator() (const UnsignedInteger) cons
 }
 
 /* The inverse of the association */
-UnsignedInteger EnumerateFunctionImplementation::inverse(const Indices &) const
+UnsignedInteger EnumerateFunctionImplementation::inverse(const Indices & indices) const
 {
-  throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::inverse";
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = indices.getSize();
+  if (size != dimension)
+    throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension, here size=" << size << " and dimension=" << dimension;
+  UnsignedInteger index = 0;
+  while (operator()(index) != indices)
+  {
+    ++ index;
+  }
+  return index;
 }
 
 /* The cardinal of the given strata */
@@ -75,7 +86,7 @@ UnsignedInteger EnumerateFunctionImplementation::getStrataCardinal(const Unsigne
   throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::getStrataCardinal";
 }
 
-/* The cardinal of the cumulated strata above or equal to the given strate */
+/* The cardinal of the cumulated strata lower or equal to the given strate */
 UnsignedInteger EnumerateFunctionImplementation::getStrataCumulatedCardinal(const UnsignedInteger) const
 {
   throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::getStrataCumulatedCardinal";
@@ -105,11 +116,25 @@ UnsignedInteger EnumerateFunctionImplementation::getDimension() const
   return dimension_;
 }
 
+/* Upper bound accessor */
+void EnumerateFunctionImplementation::setUpperBound(const Indices & upperBound)
+{
+  if (upperBound.getSize() != getDimension())
+    throw InvalidArgumentException(HERE) << "Upper bound dimension must match enumerate function dimension.";
+  upperBound_ = upperBound;
+}
+
+Indices EnumerateFunctionImplementation::getUpperBound() const
+{
+  return upperBound_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void EnumerateFunctionImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("dimension_", dimension_);
+  adv.saveAttribute( "upperBound_", upperBound_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -117,6 +142,10 @@ void EnumerateFunctionImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("dimension_", dimension_);
+  if (adv.hasAttribute( "upperBound_"))
+    adv.loadAttribute( "upperBound_", upperBound_ );
+  else
+    upperBound_ = Indices(getDimension(), std::numeric_limits<UnsignedInteger>::max());
 }
 
 

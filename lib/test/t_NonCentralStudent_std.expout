@@ -50,10 +50,4 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[nu : 7.2, delta : 4.8, gamma : -3.7]]
-standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[5.38455]
-standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[33.2862]
-standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[240.367]
-standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[2093.79]
-standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[23449.8]
 Standard representative=NonCentralStudent(nu = 7.2, delta = 4.8, gamma = 0)

@@ -1,26 +1,28 @@
 """
 Optimization of the Rastrigin test function
 ===========================================
-
-The Rastrigin function is defined by:
-
-.. math::
-   f(\\vect{x}) = A + \\sum_{i=1}^n \\left[x_i^2 - A\\cos(2 \\pi x_i)\\right]
-
-where :math:`A=10` and :math:`\\vect{x}\in[-5.12,5.12]^n`.
-
-It has a global minimum at :math:`\\vect{x} = \\vect{0}` where :math:`f(\\vect{x})= - 10`.
-
-This function has many local minima, so optimization algorithms must be run from multiple starting points.
-
-In our example, we consider the bidimensional case, i.e. :math:`n=2`.
-
-**References**:
-
-- Rastrigin, L. A. "Systems of extremal control." Mir, Moscow (1974).
-- Rudolph, G. "Globale Optimierung mit parallelen Evolutionsstrategien". Diplomarbeit. Department of Computer Science, University of Dortmund, July 1990.
-
 """
+
+# %%
+# The Rastrigin function is defined by:
+#
+# .. math::
+#
+#   f(\vect{x}) = A + \sum_{i=1}^n \left[x_i^2 - A\cos(2 \pi x_i)\right]
+#
+# where :math:`A=10` and :math:`\vect{x}\in[-5.12,5.12]^n`.
+#
+# It has a global minimum at :math:`\vect{x} = \vect{0}` where :math:`f(\vect{x})= - 10`.
+#
+# This function has many local minima, so optimization algorithms must be run from multiple starting points.
+#
+# In our example, we consider the bidimensional case, i.e. :math:`n=2`.
+#
+# **References**:
+#
+# - Rastrigin, L. A. "Systems of extremal control." Mir, Moscow (1974).
+# - Rudolph, G. "Globale Optimierung mit parallelen Evolutionsstrategien". Diplomarbeit. Department of Computer Science, University of Dortmund, July 1990.
+#
 
 # %%
 # Definition of the problem
@@ -30,6 +32,7 @@ In our example, we consider the bidimensional case, i.e. :math:`n=2`.
 import openturns as ot
 import openturns.viewer as viewer
 import numpy as np
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -70,10 +73,9 @@ bounds = ot.Interval(lowerbound, upperbound)
 # ---------------------------------------------
 
 # %%
-graph = rastrigin.draw(lowerbound, upperbound, [100]*dim)
+graph = rastrigin.draw(lowerbound, upperbound, [100] * dim)
 graph.setTitle("Rastrigin function")
-view = viewer.View(graph, legend_kw={
-                   'bbox_to_anchor': (1, 1), 'loc': "upper left"})
+view = viewer.View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
 view.getFigure().tight_layout()
 
 # %%
@@ -91,10 +93,8 @@ problem = ot.OptimizationProblem(rastrigin)
 
 # %%
 size = 64
-distribution = ot.ComposedDistribution(
-    [ot.Uniform(lowerbound[0], upperbound[0])] * dim)
-experiment = ot.LowDiscrepancyExperiment(
-    ot.SobolSequence(), distribution, size)
+distribution = ot.ComposedDistribution([ot.Uniform(lowerbound[0], upperbound[0])] * dim)
+experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, size)
 solver = ot.MultiStart(ot.Cobyla(problem), experiment.generate())
 
 # %%
@@ -103,7 +103,7 @@ solver = ot.MultiStart(ot.Cobyla(problem), experiment.generate())
 
 # %%
 startingPoints = solver.getStartingSample()
-graph = rastrigin.draw(lowerbound, upperbound, [100]*dim)
+graph = rastrigin.draw(lowerbound, upperbound, [100] * dim)
 graph.setTitle("Rastrigin function")
 cloud = ot.Cloud(startingPoints)
 cloud.setPointStyle("bullet")
@@ -148,14 +148,13 @@ result.getEvaluationNumber()
 
 # %%
 inputSample = result.getInputSample()
-graph = rastrigin.draw(lowerbound, upperbound, [100]*dim)
+graph = rastrigin.draw(lowerbound, upperbound, [100] * dim)
 graph.setTitle("Rastrigin function")
 cloud = ot.Cloud(inputSample)
 cloud.setPointStyle("bullet")
 cloud.setColor("black")
 graph.add(cloud)
-view = viewer.View(graph, legend_kw={
-                   'bbox_to_anchor': (1, 1), 'loc': "upper left"})
+view = viewer.View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
 view.getFigure().tight_layout()
 
 # %%
@@ -174,14 +173,13 @@ view = viewer.View(graph)
 
 # %%
 inputSample = rastrigin.getInputHistory()
-graph = rastrigin.draw(lowerbound, upperbound, [100]*dim)
+graph = rastrigin.draw(lowerbound, upperbound, [100] * dim)
 graph.setTitle("Rastrigin function")
 cloud = ot.Cloud(inputSample)
 cloud.setPointStyle("bullet")
 cloud.setColor("black")
 graph.add(cloud)
-view = viewer.View(graph, legend_kw={
-                   'bbox_to_anchor': (1, 1), 'loc': "upper left"})
+view = viewer.View(graph, legend_kw={"bbox_to_anchor": (1, 1), "loc": "upper left"})
 view.getFigure().tight_layout()
 
 # %%

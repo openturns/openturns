@@ -47,6 +47,8 @@ public:
   typedef GeneralLinearModelResult::BasisCollection BasisCollection;
   typedef GeneralLinearModelResult::BasisPersistentCollection BasisPersistentCollection;
 
+  enum LinearAlgebra { LAPACK, HMAT };
+
   /** Default constructor */
   GeneralLinearModelAlgorithm();
 
@@ -62,13 +64,6 @@ public:
                                const Basis & basis,
                                const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
-  /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const Sample & inputSample,
-                               const Sample & outputSample,
-                               const CovarianceModel & covarianceModel,
-                               const BasisCollection & basisCollection,
-                               const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
-
   /** Virtual constructor */
   GeneralLinearModelAlgorithm * clone() const override;
 
@@ -77,10 +72,6 @@ public:
 
   /** Perform regression */
   void run() override;
-
-  /** Sample accessors */
-  Sample getInputSample() const override;
-  Sample getOutputSample() const override;
 
   /** result accessor */
   GeneralLinearModelResult getResult();
@@ -207,10 +198,6 @@ private:
     GeneralLinearModelAlgorithm & algorithm_;
   }; // ReducedLogLikelihoodEvaluation
 
-  /** set sample  method */
-  void setData(const Sample & inputSample,
-               const Sample & outputSample);
-
   /** Covariance model accessor */
   void setCovarianceModel(const CovarianceModel & covarianceModel);
   CovarianceModel getCovarianceModel() const;
@@ -221,12 +208,6 @@ private:
 
   /** check that sample is centered to precison eps */
   void checkYCentered(const Sample & Y);
-
-  // The input data
-  Sample inputSample_;
-
-  // The associated output data
-  Sample outputSample_;
 
   // The covariance model parametric familly
   CovarianceModel covarianceModel_;
@@ -258,13 +239,13 @@ private:
   mutable HMatrix covarianceCholeskyFactorHMatrix_;
 
   /** Boolean argument for keep covariance */
-  Bool keepCholeskyFactor_;
+  Bool keepCholeskyFactor_ = false;
 
-  /** Method : 0 (lapack), 1 (hmat) */
-  UnsignedInteger method_;
+  /** Linear algebra */
+  UnsignedInteger method_ = LAPACK;
 
   /** Bool to tell if optimization has run */
-  mutable Bool hasRun_;
+  mutable Bool hasRun_ = false;
 
   /** Flag to tell if the parameters of the covariance model
       have to be optimized */

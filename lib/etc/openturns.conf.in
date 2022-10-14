@@ -90,7 +90,6 @@
   <Drawable-DefaultPattern      value_str="s"              />
   <Drawable-DefaultPointStyle   value_str="plus"           />
   <Drawable-DefaultSurfaceColor value_str="white"          />
-  <Drawable-NoSpecifiedLabel    value_str=""               />
   <Drawable-DataThreshold       value_int="2000"           />
   <Drawable-DefaultPalettePhase value_int="12"             />
 
@@ -98,11 +97,9 @@
   <Text-DefaultTextSize    value_float="0.75"            />
 
   <!-- OT::GraphImplementation parameters -->
-  <Graph-RExecutableCommand value_str="@R_EXECUTABLE@" />
   <Graph-DefaultHorizontalMargin value_float="0.05"          />
   <Graph-DefaultLegendFontSize   value_float="1.0"           />
   <Graph-DefaultVerticalMargin   value_float="0.05"          />
-  <Graph-NoSpecifiedLabel        value_str=""              />
   <Graph-DefaultHeight           value_int="480" />
   <Graph-DefaultWidth            value_int="640" />
 
@@ -117,6 +114,10 @@
 
   <!-- OT:: FieldToPointConnection parameters -->
   <FieldToPointConnection-BlockSize value_int="256" />
+
+  <!-- OT:: FieldToPointFunctionalChaosAlgorithm parameters -->
+  <FieldToPointFunctionalChaosAlgorithm-DefaultRecompress value_bool="false" />
+  <FieldToPointFunctionalChaosAlgorithm-CopulaType value_str="Normal" />
 
   <!-- OT::SQP parameters -->
   <SQP-DefaultOmega                   value_float="1.0e-4"           />
@@ -481,6 +482,9 @@
   <GeneralizedParetoFactory-MaximumRelativeError    value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumEvaluationNumber value_int="1000" />
   <GeneralizedParetoFactory-SmallSize               value_int="20"   />
+
+  <!-- OT::Gibbs parameters -->
+  <Gibbs-DefaultUpdatingMethod       value_int="0"     />
   
   <!-- OT::InverseNormalFactory parameters -->
   <InverseNormalFactory-Method value_str="MLE" />
@@ -579,6 +583,14 @@
   <MethodOfMomentsFactory-MaximumObjectiveError   value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumRelativeError    value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumEvaluationNumber value_int="1000" />
+
+  <!-- OT::QuantileMatchingFactory parameters -->
+  <QuantileMatchingFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
+  <QuantileMatchingFactory-MaximumConstraintError  value_float="1.0e-10"        />
+  <QuantileMatchingFactory-MaximumObjectiveError   value_float="1.0e-10"        />
+  <QuantileMatchingFactory-MaximumRelativeError    value_float="1.0e-10"        />
+  <QuantileMatchingFactory-QuantileEpsilon         value_float="1.0e-2"        />
+  <QuantileMatchingFactory-MaximumEvaluationNumber value_int="1000" />
 
   <!-- OT::Student parameters -->
   <Student-MaximumCDFEpsilon              value_float="5.0e-6"             />
@@ -684,6 +696,9 @@
   <!-- OT::DirectionalSampling parameters -->
   <DirectionalSampling-MeanContributionIntegrationNodesNumber value_int="255" />
 
+  <!-- OT::NAIS parameters -->
+  <NAIS-DefaultRhoQuantile value_float="0.25" />
+
   <!-- OT::AdaptiveDirectionalStratification parameters -->
   <AdaptiveDirectionalStratification-DefaultGamma                          value_float="0.5"         />
   <AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension value_int="3" />
@@ -718,9 +733,10 @@
   <!-- OT::FunctionalChaosAlgorithm parameters -->
   <FunctionalChaosAlgorithm-DefaultMaximumResidual value_float="1.0e-6"          />
   <FunctionalChaosAlgorithm-QNorm                  value_float="0.5"             />
-  <FunctionalChaosAlgorithm-LargeSampleSize        value_int="10000" />
   <FunctionalChaosAlgorithm-MaximumTotalDegree     value_int="10"    />
-  <FunctionalChaosAlgorithm-SmallSampleSize        value_int="1000"  />
+  <FunctionalChaosAlgorithm-BasisSize              value_int="0"     />
+  <FunctionalChaosAlgorithm-Sparse                 value_bool="false" />
+  <FunctionalChaosAlgorithm-FittingAlgorithm       value_str="CorrectedLeaveOneOut" />
 
   <!-- OT::FunctionalChaosSobolIndices parameters -->
   <FunctionalChaosSobolIndices-VariancePartThreshold value_float="1.0e-2" />
@@ -941,13 +957,6 @@
 
   <!-- OT::Classifier parameters -->
   <Classifier-Parallel value_bool="true" />
-
-  <!-- OT::TensorApproximationAlgorithm parameters -->
-  <TensorApproximationAlgorithm-DefaultMaximumRadiusError                      value_float="1.0e-5"        />
-  <TensorApproximationAlgorithm-DefaultMaximumResidualError                    value_float="1.0e-5"        />
-  <TensorApproximationAlgorithm-DecompositionMethod                            value_str="SVD"           />
-  <TensorApproximationAlgorithm-Method                                         value_str="GreedyRankOne" />
-  <TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration value_int="100" />
 
   <!-- viewer.View parameters -->
   <View-ImageFormat value_str="png" />

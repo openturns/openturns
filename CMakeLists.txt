@@ -19,7 +19,6 @@ option (USE_MUPARSER                 "Use muParser library"                     
 option (USE_EXPRTK                   "Use ExprTK library"                                                    ON)
 option (USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON)
 option (USE_HDF5                     "Use HDF5 for high volume storage"                                      ON)
-option (USE_R                        "Use R for graph output support"                                        ON)
 option (USE_BOOST                    "Use Boost for distribution computation"                                ON)
 option (USE_MPFR                     "Use MPFR for real valued special functions computation"                ON)
 option (USE_MPC                      "Use MPC for complex valued special functions computation"              ON)
@@ -29,8 +28,7 @@ option (USE_NLOPT                    "Use NLopt for additional optimization algo
 option (USE_CERES                    "Use Ceres Solver for additional optimization algorithms"               ON)
 option (USE_CMINPACK                 "Use CMinpack for additional optimization algorithms"                   ON)
 option (USE_DLIB                     "Use dlib for additional optimization algorithms"                       ON)
-option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
-option (USE_IPOPT                    "Use Ipopt for MINLP problems"                                          ON)
+option (USE_IPOPT                    "Use Ipopt for nonlinear optimization"                                  ON)
 option (USE_BONMIN                   "Use Bonmin for MINLP problems"                                         ON)
 option (USE_PAGMO                    "Use Pagmo for multi-objective optimization"                            ON)
 option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"                               ON)
@@ -64,36 +62,44 @@ if (POLICY CMP0093)
   cmake_policy (SET CMP0093 NEW)
 endif ()
 
-if (USE_COTIRE)
-  if (POLICY CMP0058)
-    # Ninja requires custom command byproducts to be explicit
-    cmake_policy (SET CMP0058 NEW)
-  endif()
-  include (cotire)
-  # exclude dirty third-party sources (static vars, macros, ...)
-  set (COTIRE_UNITY_SOURCE_EXCLUDE_EXTENSIONS "c;cc")
+if (POLICY CMP0058)
+  # Ninja requires custom command byproducts to be explicit
+  cmake_policy (SET CMP0058 NEW)
+endif()
+
+if(POLICY CMP0042)
+  # Set MACOSX_RPATH to ON
+  cmake_policy(SET CMP0042 NEW)
+endif()
+
+if (POLICY CMP0054)
+  cmake_policy (SET CMP0054 NEW)
 endif ()
 
+if (POLICY CMP0056)
+  cmake_policy (SET CMP0056 NEW)
+endif ()
 
-# add library with unity build support, inspired by https://github.com/onqtam/ucm
-macro (ot_add_library name)
-  if (USE_COTIRE)
-    set (orig_target ${name}_orig)
-    # add regular target with another name
-    add_library (${orig_target} ${ARGN})
-    set_target_properties (${orig_target} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
-    # set unity target name with the original name
-    set_target_properties (${orig_target} PROPERTIES COTIRE_UNITY_TARGET_NAME ${name})
-    # add unity build target
-    cotire (${orig_target})
-    set_target_properties (${name} PROPERTIES EXCLUDE_FROM_ALL 0 EXCLUDE_FROM_DEFAULT_BUILD 0)
-    set_target_properties (${name} PROPERTIES OUTPUT_NAME ${name})
-  else ()
-    add_library (${name} ${ARGN})
-  endif ()
-endmacro ()
+if (POLICY CMP0066)
+  cmake_policy (SET CMP0066 NEW)
+endif ()
 
-set (OPENTURNS_HOME_ENV_VAR OPENTURNS_HOME    )
+if (POLICY CMP0074)
+  # find_package() uses <PackageName>_ROOT variables
+  cmake_policy(SET CMP0074 NEW)
+endif ()
+
+if (POLICY CMP0078)
+  # swig standard target names
+  cmake_policy(SET CMP0078 NEW)
+endif ()
+
+if (POLICY CMP0086)
+  # UseSWIG honors SWIG_MODULE_NAME via -module flag
+  cmake_policy(SET CMP0086 NEW)
+endif ()
+
+set (OPENTURNS_HOME_ENV_VAR OPENTURNS_HOME)
 
 if (NOT DEFINED CMAKE_INSTALL_LIBDIR)
   set (CMAKE_INSTALL_LIBDIR lib${LIB_SUFFIX})
@@ -198,7 +204,7 @@ if (USE_TBB)
     set (TBB_LIBRARIES TBB::tbb)
   else ()
     # fallback to our macro
-    find_package (TBB)
+    find_package (TBB 2017)
   endif ()
 endif ()
 if (TBB_FOUND)
@@ -298,13 +304,6 @@ if (USE_BOOST)
     endif ()
     list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
   endif ()
-endif ()
-
-if (USE_R)
-  find_package (R COMPONENTS base QUIET)
-endif ()
-if (NOT R_EXECUTABLE)
-  set (R_EXECUTABLE "R${CMAKE_EXECUTABLE_SUFFIX}")
 endif ()
 
 if (USE_NLOPT)
@@ -444,28 +443,6 @@ else ()
   endif ()
 endif ()
 
-if(POLICY CMP0042)
-  # Set MACOSX_RPATH to ON
-  cmake_policy(SET CMP0042 NEW)
-endif()
-if (POLICY CMP0054)
-  cmake_policy (SET CMP0054 NEW)
-endif ()
-if (POLICY CMP0056)
-  cmake_policy (SET CMP0056 NEW)
-endif ()
-if (POLICY CMP0066)
-  cmake_policy (SET CMP0066 NEW)
-endif ()
-if (POLICY CMP0078)
-  # swig standard target names
-  cmake_policy(SET CMP0078 NEW)
-endif ()
-if (POLICY CMP0086)
-  # UseSWIG honors SWIG_MODULE_NAME via -module flag
-  cmake_policy(SET CMP0086 NEW)
-endif ()
-
 try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/unsignedlong_same_as_uint64_t.cxx)
@@ -588,7 +565,7 @@ include_directories (${OPENTURNS_PRIVATE_INCLUDE_DIRS})
 
 set (CPACK_PACKAGE_NAME          openturns     )
 set (CPACK_PACKAGE_VERSION_MAJOR 1             )
-set (CPACK_PACKAGE_VERSION_MINOR 20dev)
+set (CPACK_PACKAGE_VERSION_MINOR 21dev)
 set (CPACK_PACKAGE_VERSION_PATCH               )
 set (CPACK_SOURCE_GENERATOR      "TGZ;TBZ2"    )
 set (CPACK_BINARY_STGZ    OFF CACHE BOOL "STGZ")
@@ -678,6 +655,12 @@ if (BUILD_PYTHON)
         set (SPHINX_FOUND FALSE)
         message (STATUS "Disabling documentation (need numpydoc/sphinx-gallery/matplotlib/libxml2/nlopt)")
       endif ()
+    endif ()
+
+    if (NOT DEFINED PYTHON_SITE_PACKAGES AND NOT CMAKE_CROSSCOMPILING)
+      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sysconfig, os; print(sysconfig.get_path('platlib').replace(sysconfig.get_path('data'), '').lstrip(os.path.sep))"
+                       OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+      file (TO_CMAKE_PATH "${PYTHON_SITE_PACKAGES}" PYTHON_SITE_PACKAGES)
     endif ()
 
     if (DEFINED PYTHON_SITE_PACKAGES)

@@ -142,7 +142,6 @@ int main(int, char *[])
     UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(5);
     fullprint << "parameters=" << parameters << std::endl;
-    for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     PlatformInfo::SetNumericalPrecision(oldPrecision);
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
 

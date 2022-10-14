@@ -378,6 +378,8 @@ void Ceres::run()
     LOGINFO(OSS() << summary.BriefReport());
     if (summary.termination_type == ceres::FAILURE)
       throw InternalException(HERE) << "Ceres terminated with failure.";
+    else if (summary.termination_type == ceres::NO_CONVERGENCE)
+      throw InternalException(HERE) << "Ceres did not converge.";
     else if (summary.termination_type != ceres::CONVERGENCE)
       LOGWARN(OSS() << "Ceres terminated with " << ceres::TerminationTypeToString(summary.termination_type));
 
@@ -448,7 +450,11 @@ void Ceres::run()
     ceres::Solve(options, problem, &x[0], &summary);
 
     LOGINFO(OSS() << summary.BriefReport());
-    if (summary.termination_type != ceres::CONVERGENCE)
+    if (summary.termination_type == ceres::FAILURE)
+      throw InternalException(HERE) << "Ceres terminated with failure.";
+    else if (summary.termination_type == ceres::NO_CONVERGENCE)
+      throw InternalException(HERE) << "Ceres did not converge.";
+    else if (summary.termination_type != ceres::CONVERGENCE)
       LOGWARN(OSS() << "Ceres terminated with " << ceres::TerminationTypeToString(summary.termination_type));
 
     optimalValue = getProblem().isMinimization() ? summary.final_cost : -summary.final_cost;

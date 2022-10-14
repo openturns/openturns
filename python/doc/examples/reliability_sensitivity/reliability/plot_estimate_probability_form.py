@@ -29,6 +29,7 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -38,7 +39,7 @@ cb = cantilever_beam.CantileverBeam()
 # %%
 # We use the input parameters distribution from the data class :
 distribution = cb.distribution
-distribution.setDescription(['E', 'F', 'L', 'I'])
+distribution.setDescription(["E", "F", "L", "I"])
 
 # %%
 # We define the model
@@ -104,20 +105,20 @@ view = viewer.View(graph)
 # %%
 marginalSensitivity, otherSensitivity = result.drawHasoferReliabilityIndexSensitivity()
 marginalSensitivity.setLegends(["E", "F", "L", "I"])
-marginalSensitivity.setLegendPosition('bottom')
+marginalSensitivity.setLegendPosition("bottom")
 view = viewer.View(marginalSensitivity)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawEventProbabilitySensitivity()
 marginalSensitivity.setLegends(["E", "F", "L", "I"])
-marginalSensitivity.setLegendPosition('bottom')
+marginalSensitivity.setLegendPosition("bottom")
 view = viewer.View(marginalSensitivity)
 
 # %%
 # Error history
 optimResult = result.getOptimizationResult()
 graphErrors = optimResult.drawErrorHistory()
-graphErrors.setLegendPosition('bottom')
+graphErrors.setLegendPosition("bottom")
 graphErrors.setYMargin(0.0)
 view = viewer.View(graphErrors)
 
@@ -165,15 +166,16 @@ plt.show()
 
 
 def cantilever_beam_python(X):
-    E, F, L, I = X
-    return [F*L**3/(3*E*I)]
+    E, F, L, II = X
+    return [F * L**3 / (3 * E * II)]
 
 
 cbPythonFunction = ot.PythonFunction(4, 1, func=cantilever_beam_python)
-epsilon = [1e-8]*4  # Here, a constant step of 1e-8 is used for every dimension
+epsilon = [1e-8] * 4  # Here, a constant step of 1e-8 is used for every dimension
 gradStep = ot.ConstantStep(epsilon)
-cbPythonFunction.setGradient(ot.CenteredFiniteDifferenceGradient(gradStep,
-                                                                 cbPythonFunction.getEvaluation()))
+cbPythonFunction.setGradient(
+    ot.CenteredFiniteDifferenceGradient(gradStep, cbPythonFunction.getEvaluation())
+)
 G = ot.CompositeRandomVector(cbPythonFunction, vect)
 event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
 event.setName("deviation")
@@ -183,8 +185,9 @@ event.setName("deviation")
 # finite difference step may be preferable:
 # The step depends on the location in the input space
 gradStep = ot.BlendedStep(epsilon)
-cbPythonFunction.setGradient(ot.CenteredFiniteDifferenceGradient(gradStep,
-                                                                 cbPythonFunction.getEvaluation()))
+cbPythonFunction.setGradient(
+    ot.CenteredFiniteDifferenceGradient(gradStep, cbPythonFunction.getEvaluation())
+)
 G = ot.CompositeRandomVector(cbPythonFunction, vect)
 event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
 event.setName("deviation")

@@ -6,6 +6,7 @@ Draw minimum volume level sets
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -38,7 +39,7 @@ threshold
 # The `LevelSet` has a `contains` method. Obviously, the point 0 is in the LevelSet.
 
 # %%
-levelSet.contains([0.])
+levelSet.contains([0.0])
 
 
 # %%
@@ -76,17 +77,18 @@ def from1Dto2Dsample(oldSample):
 
 # %%
 def drawLevelSet1D(distribution, levelSet, alpha, threshold, sampleSize=100):
-    '''
+    """
     Draw a 1D sample included in a given levelSet.
     The sample is generated from the distribution.
-    '''
+    """
     inLevelSample = computeSampleInLevelSet(distribution, levelSet, sampleSize)
     cloudSample = from1Dto2Dsample(inLevelSample)
     graph = distribution.drawPDF()
     mycloud = ot.Cloud(cloudSample)
     graph.add(mycloud)
-    graph.setTitle("%.2f%% of the distribution, sample size = %d, " %
-                   (100*alpha, sampleSize))
+    graph.setTitle(
+        "%.2f%% of the distribution, sample size = %d, " % (100 * alpha, sampleSize)
+    )
     return graph
 
 
@@ -105,18 +107,20 @@ interval
 
 # %%
 def drawPDFAndInterval1D(distribution, interval, alpha):
-    '''
+    """
     Draw the PDF of the distribution and the lower and upper bounds of an interval.
-    '''
+    """
     xmin = interval.getLowerBound()[0]
     xmax = interval.getUpperBound()[0]
     graph = distribution.drawPDF()
     yvalue = distribution.computePDF(xmin)
-    curve = ot.Curve([[xmin, 0.], [xmin, yvalue], [xmax, yvalue], [xmax, 0.]])
+    curve = ot.Curve([[xmin, 0.0], [xmin, yvalue], [xmax, yvalue], [xmax, 0.0]])
     curve.setColor("black")
     graph.add(curve)
-    graph.setTitle("%.2f%% of the distribution, lower bound = %.3f, upper bound = %.3f" % (
-        100*alpha, xmin, xmax))
+    graph.setTitle(
+        "%.2f%% of the distribution, lower bound = %.3f, upper bound = %.3f"
+        % (100 * alpha, xmin, xmax)
+    )
     return graph
 
 
@@ -132,7 +136,7 @@ view = viewer.View(graph)
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 # %%
-m = ot.Mixture([ot.Normal(-5., 1.), ot.Normal(5., 1.)], [0.2, 0.8])
+m = ot.Mixture([ot.Normal(-5.0, 1.0), ot.Normal(5.0, 1.0)], [0.2, 0.8])
 
 # %%
 graph = m.drawPDF()
@@ -178,17 +182,17 @@ view = viewer.View(graph)
 corr = ot.CorrelationMatrix(2)
 corr[0, 1] = 0.2
 copula = ot.NormalCopula(corr)
-x1 = ot.Normal(-1., 1)
+x1 = ot.Normal(-1.0, 1)
 x2 = ot.Normal(2, 1)
 x_funk = ot.ComposedDistribution([x1, x2], copula)
 
 # Create a second gaussian
-x1 = ot.Normal(1., 1)
+x1 = ot.Normal(1.0, 1)
 x2 = ot.Normal(-2, 1)
 x_punk = ot.ComposedDistribution([x1, x2], copula)
 
 # Mix the distributions
-mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.])
+mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.0])
 
 # %%
 graph = mixture.drawPDF()
@@ -199,7 +203,8 @@ view = viewer.View(graph)
 
 # %%
 ot.ResourceMap.SetAsUnsignedInteger(
-    "Distribution-MinimumVolumeLevelSetSamplingSize", 1000)
+    "Distribution-MinimumVolumeLevelSetSamplingSize", 1000
+)
 
 # %%
 # We want to compute the minimum volume LevelSet which contains `alpha`=90% of the distribution. The `threshold` is the value of the PDF corresponding the `alpha`-probability: the points contained in the LevelSet have a PDF value lower or equal to this threshold.
@@ -211,31 +216,34 @@ threshold
 
 
 # %%
-def drawLevelSetContour2D(distribution, numberOfPointsInXAxis, alpha, threshold, sampleSize=500):
-    '''
+def drawLevelSetContour2D(
+    distribution, numberOfPointsInXAxis, alpha, threshold, sampleSize=500
+):
+    """
     Compute the minimum volume LevelSet of measure equal to alpha and get the
     corresponding density value (named threshold).
     Generate a sample of the distribution and draw it.
     Draw a contour plot for the distribution, where the PDF is equal to threshold.
-    '''
+    """
     sample = distribution.getSample(sampleSize)
     X1min = sample[:, 0].getMin()[0]
     X1max = sample[:, 0].getMax()[0]
     X2min = sample[:, 1].getMin()[0]
     X2max = sample[:, 1].getMax()[0]
-    xx = ot.Box([numberOfPointsInXAxis],
-                ot.Interval([X1min], [X1max])).generate()
-    yy = ot.Box([numberOfPointsInXAxis],
-                ot.Interval([X2min], [X2max])).generate()
-    xy = ot.Box([numberOfPointsInXAxis, numberOfPointsInXAxis],
-                ot.Interval([X1min, X2min], [X1max, X2max])).generate()
+    xx = ot.Box([numberOfPointsInXAxis], ot.Interval([X1min], [X1max])).generate()
+    yy = ot.Box([numberOfPointsInXAxis], ot.Interval([X2min], [X2max])).generate()
+    xy = ot.Box(
+        [numberOfPointsInXAxis, numberOfPointsInXAxis],
+        ot.Interval([X1min, X2min], [X1max, X2max]),
+    ).generate()
     data = distribution.computePDF(xy)
-    graph = ot.Graph('', 'X1', 'X2', True, 'topright')
-    labels = ["%.2f%%" % (100*alpha)]
+    graph = ot.Graph("", "X1", "X2", True, "topright")
+    labels = ["%.2f%%" % (100 * alpha)]
     contour = ot.Contour(xx, yy, data, [threshold], labels)
-    contour.setColor('black')
-    graph.setTitle("%.2f%% of the distribution, sample size = %d" %
-                   (100*alpha, sampleSize))
+    contour.setColor("black")
+    graph.setTitle(
+        "%.2f%% of the distribution, sample size = %d" % (100 * alpha, sampleSize)
+    )
     graph.add(contour)
     cloud = ot.Cloud(sample)
     graph.add(cloud)

@@ -434,9 +434,9 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     /* Convert the gradient into the output format */
     std::copy(gradient.data(), gradient.data() + dimension, g);
   }
-  catch (...)
+  catch (const std::exception & exc)
   {
-    LOGWARN(OSS() << "TNC went to an abnormal point=" << inP.__str__());
+    LOGWARN(OSS() << "TNC went to an abnormal point x=" << inP.__str__() << " y=" << outP.__str__() << " msg=" << exc.what());
 
     // penalize it
     *f = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;

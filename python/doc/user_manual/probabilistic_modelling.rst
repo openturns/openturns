@@ -130,6 +130,7 @@ Parametrized distributions
     GumbelMuSigma
     LogNormalMuSigma
     LogNormalMuSigmaOverMu
+    UniformMuSigma
     WeibullMaxMuSigma
     WeibullMinMuSigma
 
@@ -287,7 +288,9 @@ Low-level distribution functions
     DistFunc.pHypergeometric
     DistFunc.pPearsonCorrelation
     DistFunc.dNormal
+    DistFunc.logdNormal
     DistFunc.pNormal
+    DistFunc.logpNormal
     DistFunc.qNormal
     DistFunc.rBinomial
     DistFunc.rDiscrete

@@ -8,8 +8,10 @@ ot.PlatformInfo.SetNumericalPrecision(5)
 size = 10000
 
 
-for distribution in [ot.GeneralizedExtremeValue(2.0, 1.5, -0.15),
-                     ot.GeneralizedExtremeValue(2.0, 1.5,  0.0)]:
+for distribution in [
+    ot.GeneralizedExtremeValue(2.0, 1.5, -0.15),
+    ot.GeneralizedExtremeValue(2.0, 1.5, 0.0),
+]:
     # ot.GeneralizedExtremeValue(2.0, 1.5,  0.15)]:
 
     sample = distribution.getSample(size)
@@ -22,14 +24,12 @@ for distribution in [ot.GeneralizedExtremeValue(2.0, 1.5, -0.15),
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
-    estimatedGeneralizedExtremeValue = factory.buildAsGeneralizedExtremeValue(
-        sample)
+    estimatedGeneralizedExtremeValue = factory.buildAsGeneralizedExtremeValue(sample)
     print("GeneralizedExtremeValue          =", distribution)
-    print("Estimated GeneralizedExtremeValue=",
-          estimatedGeneralizedExtremeValue)
+    print("Estimated GeneralizedExtremeValue=", estimatedGeneralizedExtremeValue)
     estimatedGeneralizedExtremeValue = factory.buildAsGeneralizedExtremeValue()
     print("Default GeneralizedExtremeValue=", estimatedGeneralizedExtremeValue)
     estimatedGeneralizedExtremeValue = factory.buildAsGeneralizedExtremeValue(
-        distribution.getParameter())
-    print("GeneralizedExtremeValue from parameters=",
-          estimatedGeneralizedExtremeValue)
+        distribution.getParameter()
+    )
+    print("GeneralizedExtremeValue from parameters=", estimatedGeneralizedExtremeValue)

@@ -125,29 +125,6 @@ Interval BarPlot::getBoundingBox() const
   return Interval(lowerBound, upperBound);
 }
 
-/* Draw method */
-String BarPlot::draw() const
-{
-  dataFileName_ = "";
-  OSS oss;
-  // Stores the data in a temporary file
-  oss << DrawableImplementation::draw() << "\n";
-  // The specific R command for drawing
-  oss << "x <- dataOT[, 1];"
-      << "y <- dataOT[, 2];"
-      << "n <- length(y)" << ";"
-      << "x <- cumsum(c(" << origin_ << ", x));"
-      << "rect(x[1:n], rep(0, n), x[2:(n + 1)], y, col=\"" << color_
-      << "\", lwd=" << lineWidth_
-      << ",lty=\"" << lineStyle_;
-
-  if(getFillStyle() == "shaded")
-    oss << "\", density=20)";
-  else oss << "\")";
-
-  return oss;
-}
-
 /* Clone method */
 BarPlot * BarPlot::clone() const
 {

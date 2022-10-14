@@ -173,9 +173,6 @@
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "@PACKAGE_VERSION@"
 
-/* The path to the R executable */
-#define R_EXECUTABLE "@R_EXECUTABLE@"
-
 /* Default symbolic parser backend (MuParser if found, ExprTk otherwise) */
 #define SYMBOLICPARSER_DEFAULT_BACKEND "@SYMBOLICPARSER_DEFAULT_BACKEND@"
 

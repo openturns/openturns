@@ -20,8 +20,10 @@ Estimate a non stationary covariance function
 # The domain :math:`\mathcal{D}` is discretized on a mesh :math:`\mathcal{M}` which is a time grid with 64 points.
 # We build a normal process :math:`X: \Omega \times [-4, 4]  \rightarrow \mathbb{R}` with zero mean and
 # :math:`C` as covariance function.
-# We discretize the covariance model :math:`C` using :math:`C(t_k, t_\ell)` for each :math:`(t_k, t_\ell)\in \mathcal{M} \times \mathcal{M}`.
-# We get a :math:`N=10^3` fields from the process :math:`X` from which we estimate the covariance model :math:`C`.
+# We discretize the covariance model :math:`C` using :math:`C(t_k, t_\ell)`
+# for each :math:`(t_k, t_\ell)\in \mathcal{M} \times \mathcal{M}`.
+# We get a :math:`N=10^3` fields from the process :math:`X` from which we
+# estimate the covariance model :math:`C`.
 #
 # We use the object *NonStationaryCovarianceModelFactory* which creates a *UserDefinedCovarianceModel*.
 
@@ -30,6 +32,7 @@ import math as m
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -55,10 +58,10 @@ def f(X):
 
 
 func = ot.PythonFunction(2, 1, f)
-func.setDescription([':math:`s`', ':math:`t`', ':math:`cov`'])
+func.setDescription([":math:`s`", ":math:`t`", ":math:`cov`"])
 graph = func.draw([t0] * 2, [tmax] * 2)
-graph.setTitle('Original covariance model')
-graph.setLegendPosition('')
+graph.setTitle("Original covariance model")
+graph.setLegendPosition("")
 view = viewer.View(graph)
 
 # %%
@@ -68,9 +71,9 @@ view = viewer.View(graph)
 covariance = ot.CovarianceMatrix(N)
 for k in range(N):
     s = tgrid.getValue(k)
-    for l in range(k + 1):
-        t = tgrid.getValue(l)
-        covariance[k, l] = C(s, t)
+    for ll in range(k + 1):
+        t = tgrid.getValue(ll)
+        covariance[k, ll] = C(s, t)
 
 covmodel = ot.UserDefinedCovarianceModel(tgrid, covariance)
 
@@ -92,7 +95,7 @@ estimatedModel = factory.build(sample)
 
 # %%
 graph = estimatedModel.draw(0, 0, t0, tmax, 256, False)
-graph.setTitle('Estimated covariance model')
-graph.setLegendPosition('')
+graph.setTitle("Estimated covariance model")
+graph.setLegendPosition("")
 view = viewer.View(graph)
 plt.show()

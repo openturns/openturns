@@ -87,7 +87,7 @@ public:
       return TypedInterfaceObject<T>::getImplementation()->at(i);
 
     }
-    catch (std::out_of_range & ex)
+    catch (const std::out_of_range & ex)
     {
       throw OutOfBoundException(HERE) << "sample size=" << getSize()
                                       << " - erroneous index=" << i
@@ -102,7 +102,7 @@ public:
       return TypedInterfaceObject<T>::getImplementation()->at(i);
 
     }
-    catch (std::out_of_range & ex)
+    catch (const std::out_of_range & ex)
     {
       throw OutOfBoundException(HERE) << "sample size=" << getSize()
                                       << " - erroneous index=" << i

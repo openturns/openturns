@@ -113,7 +113,7 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const Point & parameters) con
     copula.setParameter(parameters);
     return copula;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a FrankCopula from the given parameters";
   }

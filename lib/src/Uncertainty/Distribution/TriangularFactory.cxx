@@ -87,7 +87,7 @@ Triangular TriangularFactory::buildAsTriangular(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Triangular distribution from the given parameters";
   }

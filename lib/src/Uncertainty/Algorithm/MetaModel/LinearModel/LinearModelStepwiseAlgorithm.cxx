@@ -54,15 +54,15 @@ LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm()
 
 /* Parameters constructor */
 LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample & inputSample,
-    const Basis & basis,
     const Sample & outputSample,
+    const Basis & basis,
     const Indices & minimalIndices,
     const Direction direction,
     const Indices & startIndices)
   : PersistentObject()
   , inputSample_(inputSample)
-  , basis_(basis)
   , outputSample_(outputSample)
+  , basis_(basis)
   , direction_(direction)
   , penalty_(ResourceMap::GetAsScalar("LinearModelStepwiseAlgorithm-Penalty"))
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("LinearModelStepwiseAlgorithm-MaximumIterationNumber"))
@@ -382,6 +382,13 @@ void LinearModelStepwiseAlgorithm::run()
   const Sample fx(f(inputSample_));
   LOGDEBUG(OSS() << "Total number of columns=" << fx.getDimension());
 
+  // check for null basis term
+  const Point mean = fx.computeMean();
+  const Point stddev = fx.computeStandardDeviation();
+  for (UnsignedInteger i = 0; i < fx.getDimension(); ++ i)
+    if (!(stddev[i] > 0.0) && (mean[i] == 0.0))
+      throw InvalidArgumentException(HERE) << "Null basis term at index " << i;
+
   {
     // Reduce scope of Xt
     const Matrix Xt(fx.getDimension(), size, fx.getImplementation()->getData());
@@ -616,9 +623,9 @@ void LinearModelStepwiseAlgorithm::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
-  adv.saveAttribute( "direction_", static_cast<UnsignedInteger>(direction_) );
+  adv.saveAttribute("basis_", basis_);
+  adv.saveAttribute("direction_", static_cast<UnsignedInteger>(direction_));
   adv.saveAttribute( "penalty_", penalty_ );
   adv.saveAttribute( "maximumIterationNumber_", maximumIterationNumber_ );
   adv.saveAttribute( "minimalIndices_", minimalIndices_ );
@@ -639,8 +646,8 @@ void LinearModelStepwiseAlgorithm::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
+  adv.loadAttribute("basis_", basis_);
   UnsignedInteger direction = 0;
   adv.loadAttribute( "direction_", direction );
   direction_ = static_cast<Direction>(direction);

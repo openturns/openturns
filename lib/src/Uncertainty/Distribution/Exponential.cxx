@@ -258,12 +258,6 @@ void Exponential::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point Exponential::getStandardMoment(const UnsignedInteger n) const
-{
-  return Point(1, SpecFunc::Gamma(n + 1));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Exponential::getStandardRepresentative() const
 {

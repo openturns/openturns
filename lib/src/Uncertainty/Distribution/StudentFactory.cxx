@@ -20,7 +20,6 @@
  */
 #include "openturns/StudentFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NormalCopula.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -67,8 +66,9 @@ DistributionFactoryResult StudentFactory::buildEstimator(const Sample & sample) 
 }
 
 
-struct StudentFactoryReducedLogLikelihood
+class StudentFactoryReducedLogLikelihood : public EvaluationImplementation
 {
+public:
   /** Constructor from a sample and a derivative factor estimate */
   StudentFactoryReducedLogLikelihood(const Sample & sample,
                                      const Point & mu,
@@ -80,17 +80,34 @@ struct StudentFactoryReducedLogLikelihood
     , R_(R)
   {
     // Nothing to do
-  };
+  }
 
-  Point computeLogLikelihood(const Point & parameter) const
+  StudentFactoryReducedLogLikelihood * clone() const override
+  {
+    return new StudentFactoryReducedLogLikelihood(*this);
+  }
+
+  Point operator() (const Point & parameter) const override
   {
     const Scalar nu = parameter[0];
+
     const Scalar factor = 1.0 - 2.0 / nu;
     if (factor <= 0.0) return Point(1, SpecFunc::LowestScalar);
     const Point sigma(stdev_ * std::sqrt(factor));
     return Student(nu, mu_, sigma, R_).computeLogPDF(sample_).computeMean();
   }
 
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+private:
   Sample sample_;
   Point mu_;
   Point stdev_;
@@ -108,7 +125,7 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
 
   // Now, nu is found by reduced likelihood maximization
   StudentFactoryReducedLogLikelihood logLikelihood(sample, mu, stdev, R);
-  const Function objective(bindMethod<StudentFactoryReducedLogLikelihood, Point, Point>(logLikelihood, &StudentFactoryReducedLogLikelihood::computeLogLikelihood, 1, 1));
+  const Function objective(logLikelihood.clone());
   OptimizationProblem problem(objective);
   const Interval bounds(2.0 * (1.0 + SpecFunc::ScalarEpsilon), ResourceMap::GetAsScalar("StudentFactory-NuMax"));
   problem.setBounds(bounds);
@@ -132,7 +149,7 @@ Student StudentFactory::buildAsStudent(const Point & parameter) const
     distribution.setParameter(parameter);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from the given parameters";
   }

@@ -49,12 +49,12 @@ public:
   LinearModelStepwiseAlgorithm();
 
   /** Parameters constructor */
-  LinearModelStepwiseAlgorithm(const Sample & inputSample,
-                               const Basis & basis,
-                               const Sample & outputSample,
-                               const Indices & minimalIndices,
+  LinearModelStepwiseAlgorithm(const Sample &inputSample,
+                               const Sample &outputSample,
+                               const Basis &basis,
+                               const Indices &minimalIndices,
                                const Direction direction = FORWARD,
-                               const Indices & startIndices = Indices());
+                               const Indices &startIndices = Indices());
 
   /** Virtual constructor */
   LinearModelStepwiseAlgorithm * clone() const override;
@@ -101,11 +101,11 @@ private:
   /** Input sample */
   Sample inputSample_;
 
-  /** The monomials collection */
-  Basis basis_;
-
   /** Output sample */
   Sample outputSample_;
+
+  /** The monomials collection */
+  Basis basis_;
 
   /** The direction of the stepwise regression method */
   Direction direction_;

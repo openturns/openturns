@@ -298,12 +298,6 @@ void WeibullMax::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the moments of the standardized distribution */
-Point WeibullMax::getStandardMoment(const UnsignedInteger n) const
-{
-  return Point(1, SpecFunc::Gamma(1.0 + n / alpha_));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution WeibullMax::getStandardRepresentative() const
 {

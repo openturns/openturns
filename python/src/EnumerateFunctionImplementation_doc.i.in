@@ -3,51 +3,65 @@
 
 Notes
 -----
-*EnumerateFunction* represents a bijection from :math:`\Nset` to
-:math:`\Nset^{dim}`. This bijection is based on a particular procedure of
-enumerating the set of multi-indices. It begins from the multi-index
-:math:`\{0,0,\dots,0\}`.
+*EnumerateFunction* represents a bijection :math:`\tau`  from :math:`\Nset` to
+:math:`\Nset^{dim}`. This bijection is based on a particular enumeration rule
+of the set of multi-indices.
 
-We associate a multi-index :math:`\{j_{p1}, j_{p2},\dots, j_{pdim}\}` for every
-integer :math:`i_p` in :math:`\Nset`:
-
-For more details, let us consider any :math:`i_p, i_q \in \Nset`:
-
-if :math:`|i_p-i_q|\leq 1` then
-:math:`|\sum_{k=1}^{dim} (j_{pk}- j_{qk})| \leq 1`. This proposition provides a
-necessary but unsufficient condition for the construction of the bijection.
-Another assumption was done indicating the way of iteration.
-Below an example showing this assumption.
-
-Example for :math:`dim=2`:
+For every integer :math:`i \in \Nset`, we associate a multi-index
 
 .. math::
 
-    phi(0) &= [0 ~ 0] \\
-    phi(1) &= [1 ~ 0] \\
-    phi(2) &= [0 ~ 1] \\
-    phi(3) &= [2 ~ 0] \\
-    phi(4) &= [1 ~ 1] \\
-    phi(5) &= [0 ~ 2] \\
-    phi(6) &= [3 ~ 0]
+    \boldsymbol{\tau}(i) = (\alpha_1,\dots, \alpha_{n_X}) \in {\Nset}^{n_X}.
+
+The first multi-index is
+
+.. math::
+
+    \boldsymbol{\alpha}(0) = (0, 0, \dots, 0).
+
+Let :math:`i, j \in \Nset` be any pair of indices. If :math:`|i - j|\leq 1` then
+
+.. math::
+
+    \left|\sum_{k=1}^{n_X} \left[ \alpha_k(i) - \alpha_k(j) \right]\right| \leq 1
+
+where :math:`\alpha_k(i)` represents the k-th component of the multi-index :math:`\boldsymbol{\alpha}(i)`.
+    
+This provides a necessary but insufficient condition 
+for the construction of the bijection: 
+a supplementary hypothesis must be made. 
+
+For example, consider the dimension :math:`\textrm{dim}=2`. 
+The following mapping is an enumerate function:
+
+.. math::
+
+    \phi(0) &= (0, \; 0) \\
+    \phi(1) &= (1, \; 0) \\
+    \phi(2) &= (0, \; 1) \\
+    \phi(3) &= (2, \; 0) \\
+    \phi(4) &= (1, \; 1) \\
+    \phi(5) &= (0, \; 2) \\
+    \phi(6) &= (3, \; 0)
 
 For the functional expansion (respectively polynomial chaos expansion), the
 multi-index :math:`\vect{i_p}` represents the collection of degrees of the
-selected orthogonal functions (respectively orthogonal polynomials). In fact,
-after the selection of the type of orthogonal functions (respectively
+selected orthogonal functions (respectively orthogonal polynomials). 
+More precisely, after the selection of the type of orthogonal functions (respectively
 orthogonal polynomials) for the construction of the orthogonal basis, the
 *EnumerateFunction* characterizes the term of the basis by providing the
 degrees of the univariate functions (respectively univariate polynomials).
 
-In order to know the degree of the :math:`k^{th}` polynomial of the
-multivariate basis, it is enough to sum all the integers given in the list.
+The total degree of the :math:`k^{th}` polynomial of the
+multivariate basis is equal to the sum of all the integers given in the list.
 
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.LinearEnumerateFunction(2)
+>>> dim = 2
+>>> enum_func = ot.LinearEnumerateFunction(dim)
 >>> for i in range(6):
-...     print(enumerateFunction(i))
+...     print(enum_func(i))
 [0,0]
 [1,0]
 [0,1]
@@ -57,7 +71,7 @@ Examples
 
 See Also
 --------
-LinearEnumerateFunction, HyperbolicEnumerateFunction"
+LinearEnumerateFunction, HyperbolicAnisotropicEnumerateFunction, NormInfEnumerateFunction"
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation
 OT_EnumerateFunction_doc
@@ -78,33 +92,29 @@ OT_EnumerateFunction_getDimension_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getMaximumDegreeCardinal_doc
-"Get the cardinal of indices of degree inferior or equal to a given value.
+"Get the number of terms of total degree below a threshold.
 
 Parameters
 ----------
-maximumDegree : int
-    Degree.
+max_deg : int
+    Maximum total degree.
 
 Returns
 -------
 cardinal : int
-    Cardinal of indices of degree :math:`max \leq maximumDegree`.
+    Number of terms in the basis of total degree :math:`\leq max_deg`.
+
+Notes
+-----
+In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
+this is also the cumulated cardinal of stratas of index :math:`\leq max_deg`.
 
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.LinearEnumerateFunction(2)
->>> for i in range(6):
-...     indices = enumerateFunction(i)
-...     degree = sum(indices)
-...     print(str(int(degree))+' '+str(indices))
-0 [0,0]
-1 [1,0]
-1 [0,1]
-2 [2,0]
-2 [1,1]
-2 [0,2]
->>> print(enumerateFunction.getMaximumDegreeCardinal(2))
+>>> dim = 2
+>>> enum_func = ot.LinearEnumerateFunction(dim)
+>>> enum_func.getMaximumDegreeCardinal(2)
 6"
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation::getMaximumDegreeCardinal
@@ -113,29 +123,29 @@ OT_EnumerateFunction_getMaximumDegreeCardinal_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getMaximumDegreeStrataIndex_doc
-"Get the largest index of the strata of degree lower or equal to a given value.
+"Get the largest index of the strata containing terms of maximum degree.
 
 Parameters
 ----------
-maximumDegree : int
-    Degree.
+max_deg : int
+    Maximum total degree.
 
 Returns
 -------
 index : int
-    Index of the last strata of degree :math:`max \leq maximumDegree`.
+    Index of the last strata that contains terms of total degree :math:`\leq max_deg`.
+
+Notes
+-----
+In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
+this is the strata of index *max_deg*.
 
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.LinearEnumerateFunction(2)
->>> for i in [1, 2]:
-...     indices = enumerateFunction(i)
-...     strataIndex = sum(indices) + 1
-...     print(str(int(strataIndex))+' '+str(indices))
-2 [1,0]
-2 [0,1]
->>> print(enumerateFunction.getMaximumDegreeStrataIndex(2))
+>>> dim = 2
+>>> enum_func = ot.LinearEnumerateFunction(dim)
+>>> enum_func.getMaximumDegreeStrataIndex(2)
 2"
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation::getMaximumDegreeStrataIndex
@@ -144,33 +154,30 @@ OT_EnumerateFunction_getMaximumDegreeStrataIndex_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getStrataCardinal_doc
-"Get the number of members of the basis associated to a given strata.
+"Get the number of terms in the basis inside a given strata.
 
 Parameters
 ----------
 strataIndex : int
-    Index of the strata in the hierarchical basis. In the context of product of
-    polynomial basis, this is the total polynom degree.
+    Index of the strata of the tensorized basis.
 
 Returns
 -------
 cardinal : int
-    Number of members of the basis associated to the strata *strataIndex*. In
-    the context of product of polynomial basis, this is the number of polynoms
-    of the basis which total degree is *strataIndex*.
+    Number of terms in the basis inside the strata *strataIndex*.
+
+Notes
+-----
+In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
+the strata *strataIndex* consists of a hyperplane of all the terms of total degree
+*strataIndex*, and its cardinal is *strataIndex* + 1.
 
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.LinearEnumerateFunction(2)
->>> for i in [3, 4, 5]:
-...     indices = enumerateFunction(i)
-...     degree = sum(indices)
-...     print(str(int(degree))+' '+str(indices))
-2 [2,0]
-2 [1,1]
-2 [0,2]
->>> print(enumerateFunction.getStrataCardinal(2))
+>>> dim = 2
+>>> enum_func = ot.LinearEnumerateFunction(dim)
+>>> enum_func.getStrataCardinal(2)
 3"
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation::getStrataCardinal
@@ -179,38 +186,34 @@ OT_EnumerateFunction_getStrataCardinal_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getStrataCumulatedCardinal_doc
-"Get the cardinal of the cumulated strata above or equal to the given strata.
+"Get the number of terms in the basis inside a range of stratas.
 
 Parameters
 ----------
 strataIndex : int
-    Index of the strata in the hierarchical basis. In the context of product of
-    polynomial basis, this is the total polynomial degree.
+    Index of the strata of the tensorized basis.
 
 Returns
 -------
 cardinal : int
-    Number of members of the basis associated to the strata of index inferior or equal
-    to *strataIndex*. In the context of product of polynomial basis, this is
-    the number of polynomials of the basis which total degree is inferior or
-    equal to *strataIndex*.
+    Number of terms in the basis inside the stratas of index lower of equal to *strataIndex*.
+
+Notes
+-----
+The number of terms is the total of terms inside each consecutive stratas.
+In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
+this returns the number of terms of maximal total degree *strataIndex*.
 
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.LinearEnumerateFunction(2)
->>> for i in range(6):
-...     indices = enumerateFunction(i)
-...     degree = sum(indices)
-...     print(str(int(degree))+' '+str(indices))
-0 [0,0]
-1 [1,0]
-1 [0,1]
-2 [2,0]
-2 [1,1]
-2 [0,2]
->>> print(enumerateFunction.getStrataCumulatedCardinal(2))
+>>> dim = 2
+>>> enum_func = ot.LinearEnumerateFunction(dim)
+>>> enum_func.getStrataCumulatedCardinal(2)
+6
+>>> sum([enum_func.getStrataCardinal(i) for i in range(3)])
 6"
+
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation::getStrataCumulatedCardinal
 OT_EnumerateFunction_getStrataCumulatedCardinal_doc
@@ -233,16 +236,17 @@ antecedent : int
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.LinearEnumerateFunction(2)
+>>> dim = 2
+>>> enum_func = ot.LinearEnumerateFunction(dim)
 >>> for i in range(6):
-...     print(str(i)+' '+str(enumerateFunction(i)))
+...     print(str(i)+' '+str(enum_func(i)))
 0 [0,0]
 1 [1,0]
 2 [0,1]
 3 [2,0]
 4 [1,1]
 5 [0,2]
->>> print(enumerateFunction.inverse([1,1]))
+>>> print(enum_func.inverse([1,1]))
 4"
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation::inverse
@@ -268,19 +272,55 @@ OT_EnumerateFunction_setDimension_doc
 
 Parameters
 ----------
-maximumDegree : int
-    Degree.
+max_deg : int
+    Maximum total degree.
 
 Returns
 -------
 size : int
-    Number of members of the basis of degree :math:`max \leq maximumDegree`.
+    Number of terms in the basis of total degree :math:`\leq max_deg`.
 
+Notes
+-----
+In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
+this is also the cumulated cardinal of stratas up to *max_deg*.
+    
 Examples
 --------
 >>> import openturns as ot
->>> ef = ot.LinearEnumerateFunction(2)
->>> size = ef.getBasisSizeFromTotalDegree(3)"
+>>> dim = 2
+>>> enum_func = ot.LinearEnumerateFunction(dim)
+>>> enum_func.getBasisSizeFromTotalDegree(3)
+10
+>>> enum_func.getStrataCumulatedCardinal(3)
+10"
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation::getBasisSizeFromTotalDegree
 OT_EnumerateFunction_getBasisSizeFromTotalDegree_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_EnumerateFunction_setUpperBound_doc
+"Accessor to the upper bound.
+
+Parameters
+----------
+ub : sequence of int
+    Upper bound of the indices (inclusive)."
+%enddef
+%feature("docstring") OT::EnumerateFunctionImplementation::setUpperBound
+OT_EnumerateFunction_setUpperBound_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_EnumerateFunction_getUpperBound_doc
+"Accessor to the upper bound.
+
+Returns
+-------
+ub : sequence of int
+    Upper bound of the indices (inclusive)."
+%enddef
+%feature("docstring") OT::EnumerateFunctionImplementation::getUpperBound
+OT_EnumerateFunction_getUpperBound_doc

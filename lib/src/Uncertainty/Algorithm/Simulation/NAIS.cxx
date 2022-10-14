@@ -92,17 +92,17 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
   Collection<Distribution> margins(dimensionSample);
 
   // Computation of auxiliary distribution using ot.Mixture
-  for (UnsignedInteger k = 0; k < dimensionSample ; ++k)
+  const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
+  Collection<Distribution> collectionOfDistribution(numberOfSample);
+  for (UnsignedInteger i = 0; i < numberOfSample ; ++i)
   {
-    const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
-    Collection<Distribution> collectionOfDistribution(numberOfSample);
-    for (UnsignedInteger i = 0; i < numberOfSample ; ++i)
-    {
-      collectionOfDistribution[i] = Normal(sample(i, k), silverman[k]);
-    }
-    margins[k] = Mixture(collectionOfDistribution, weights);
-  } // for k
-  return ComposedDistribution(margins);
+    const Point meanNormal(sample[i]);
+
+    collectionOfDistribution[i] = Normal(meanNormal, silverman);
+  }
+  const Mixture auxiliaryDistribution(collectionOfDistribution, weights);
+
+  return auxiliaryDistribution;
 }
 
 // Function computing weigths of sample
@@ -244,7 +244,7 @@ void NAIS::run()
   naisResult_.setAuxiliaryInputSample(auxiliaryInputSample);
   naisResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
   naisResult_.setWeights(weights);
-  naisResult_.setOuterSampling(getMaximumOuterSampling()*iterationNumber );
+  naisResult_.setOuterSampling(getMaximumOuterSampling() * iterationNumber);
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
 }

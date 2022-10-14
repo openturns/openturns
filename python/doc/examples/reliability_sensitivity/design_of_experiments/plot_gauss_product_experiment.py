@@ -9,12 +9,14 @@ Create a Gauss product design
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the underlying distribution, degrees
 distribution = ot.ComposedDistribution(
-    [ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
+    [ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)]
+)
 marginalSizes = [15, 8]
 
 # %%

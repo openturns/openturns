@@ -55,3 +55,6 @@
    {% block methods %}
    .. automethod:: __init__
    {% endblock %}
+
+.. minigallery:: {{module}}.{{objname}}
+   :add-heading: Examples using the class

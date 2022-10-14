@@ -73,6 +73,10 @@ public:
   void setDimension(const UnsignedInteger dimension);
   UnsignedInteger getDimension() const;
 
+  /** Upper bound accessor */
+  virtual void setUpperBound(const Indices & upperBound);
+  virtual Indices getUpperBound() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -81,10 +85,13 @@ public:
 
 protected:
 
+  // Bounds
+  Indices upperBound_;
 private:
 
   // The enumerate function maps N into N^dimension
   UnsignedInteger dimension_;
+
 
 } ; /* class EnumerateFunctionImplementation */
 

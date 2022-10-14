@@ -23,6 +23,7 @@
 #define OPENTURNS_PYTHONWRAPPINGFUNCTIONS_HXX
 
 #include <Python.h>
+#include <csignal>
 #include "openturns/OT.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -1759,18 +1760,30 @@ void pickleSave(Advocate & adv, PyObject * pyObj, const String attributName = "p
   handleException();
   assert(base64Dump.get());
 
-  String pyInstanceSt(convert< _PyBytes_, String >(base64Dump.get()));
-  adv.saveAttribute(attributName, pyInstanceSt);
+  // convert string into Indices to benefit from h5
+  UnsignedInteger size = PyBytes_Size(base64Dump.get());
+  char * content = PyBytes_AsString(base64Dump.get());
+  assert(content);
+  Indices pyInstanceIndices(size);
+  for (UnsignedInteger j = 0; j < size; ++j)
+    pyInstanceIndices[j] = content[j];
+
+  adv.saveAttribute(attributName, pyInstanceIndices);
 }
 
 
 inline
 void pickleLoad(Advocate & adv, PyObject * & pyObj, const String attributName = "pyInstance_")
 {
-  String pyInstanceSt;
-  adv.loadAttribute(attributName, pyInstanceSt);
+  Indices pyInstanceIndices;
+  adv.loadAttribute(attributName, pyInstanceIndices);
 
-  ScopedPyObjectPointer base64Dump(convert< String, _PyBytes_ >(pyInstanceSt)); // new reference
+  // convert from indices to string
+  const UnsignedInteger size = pyInstanceIndices.getSize();
+  std::vector<char> content(size);
+  for (UnsignedInteger j = 0; j < size; ++j)
+    content[j] = pyInstanceIndices[j];
+  ScopedPyObjectPointer base64Dump(PyBytes_FromStringAndSize(content.data(), size));
   assert(base64Dump.get());
 
   ScopedPyObjectPointer base64Module(PyImport_ImportModule("base64")); // new reference
@@ -1832,6 +1845,11 @@ ScopedPyObjectPointer deepCopy(PyObject * pyObj)
   ScopedPyObjectPointer pyObjDeepCopy(PyObject_CallFunctionObjArgs(deepCopyMethod, pyObj, NULL));
   handleException();
   return pyObjDeepCopy;
+}
+
+inline void SignalHandler(int /*signum*/)
+{
+  throw InterruptionException(HERE);
 }
 
 END_NAMESPACE_OPENTURNS

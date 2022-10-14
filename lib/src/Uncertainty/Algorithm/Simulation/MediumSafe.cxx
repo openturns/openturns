@@ -75,7 +75,7 @@ MediumSafe::ScalarCollection MediumSafe::solve(const Function & function,
     infValue = getOriginValue();
   }
   // If it has not yet been computed, compute it and store it
-  catch (NotDefinedException &)
+  catch (const NotDefinedException &)
   {
     infValue = function(Point(1, infPoint))[0];
     setOriginValue(infValue);

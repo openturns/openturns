@@ -287,13 +287,6 @@ Point InverseChiSquare::getKurtosis() const
   return Point(1, 12.0 * (0.5 * nu_ * (0.5 * nu_ + 3.0) - 10.0) / ((nu_ - 6.0) * (nu_ - 8.0)));
 }
 
-/* Get the moments of the standardized distribution */
-Point InverseChiSquare::getStandardMoment(const UnsignedInteger n) const
-{
-  if (nu_ <= 2.0 * n) throw NotDefinedException(HERE) << "InverseChiSquare standard moment of order " << 2.0 * n << " is defined only for nu > " << 2.0 * n << ", here k=" << nu_;
-  return Point(1, std::exp(SpecFunc::LogGamma(0.5 * nu_ - n) - SpecFunc::LogGamma(0.5 * nu_)));
-}
-
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution InverseChiSquare::getStandardRepresentative() const
 {

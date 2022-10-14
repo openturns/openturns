@@ -9,7 +9,7 @@ ot.TESTPREAMBLE()
 dim = 2
 
 # event
-f = ot.SymbolicFunction(['x0', 'x1'], ['5.0-x1-0.5*(x0-0.1)^2'])
+f = ot.SymbolicFunction(["x0", "x1"], ["5.0-x1-0.5*(x0-0.1)^2"])
 dist = ot.Normal(dim)
 X = ot.RandomVector(dist)
 Y = ot.CompositeRandomVector(f, X)
@@ -37,20 +37,20 @@ ott.assert_almost_equal(pf_multi, 0.00281872, 1e-4, 1e-4)
 print("event probability=%.6f" % pf_multi)
 
 n_design_pts = len(result.getFORMResultCollection())
-print('n design points:', n_design_pts)
+print("n design points:", n_design_pts)
 assert n_design_pts == 2, "should get 2 design points"
 
 for form_result in result.getFORMResultCollection():
-    print('-'*50)
-    print("generalized reliability indexes=",
-          form_result.getGeneralisedReliabilityIndex())
+    print("-" * 50)
+    print(
+        "generalized reliability indexes=", form_result.getGeneralisedReliabilityIndex()
+    )
     print("pf=", form_result.getEventProbability())
-    print("standard space design points=",
-          form_result.getStandardSpaceDesignPoint())
-    print("physical space design points=",
-          form_result.getPhysicalSpaceDesignPoint())
-    print("is standard point origin in failure space? %s" % (
-        form_result.getIsStandardPointOriginInFailureSpace() and "true" or "false"))
+    print("standard space design points=", form_result.getStandardSpaceDesignPoint())
+    print("physical space design points=", form_result.getPhysicalSpaceDesignPoint())
+    print(
+        "is standard point origin in failure space? %s"
+        % (form_result.getIsStandardPointOriginInFailureSpace() and "true" or "false")
+    )
     print("importance factors=", form_result.getImportanceFactors())
-    print("Hasofer reliability indexes=",
-          form_result.getHasoferReliabilityIndex())
+    print("Hasofer reliability indexes=", form_result.getHasoferReliabilityIndex())

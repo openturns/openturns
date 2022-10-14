@@ -87,7 +87,7 @@ MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a MeixnerDistribution distribution from the given parameters";
   }

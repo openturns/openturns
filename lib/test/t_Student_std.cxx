@@ -179,8 +179,6 @@ int main(int, char *[])
       Student::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
       distribution.setParametersCollection(parameters);
-      if (dim == 1)
-        for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
 
       // Specific to this distribution
