@@ -91,20 +91,20 @@ private:
   // Merge (potentially) duplicated nodes
   void mergeNodesAndWeights(
     const Sample duplicatedNodes, const Point duplicatedWeights) const;
-  
+
   // Marginal experiment collection
   WeightedExperimentPersistentCollection collection_;
 
   // Minimum of a multiindex
   UnsignedInteger indicesMinimum(Indices indices) const;
-  
+
   // Level
   mutable UnsignedInteger level_;
 
   // Integration nodes; weights
   mutable Sample nodes_;
   mutable Point weights_;
-  
+
   bool isAlreadyComputed_;
 
 }; /* class SmolyakExperiment */

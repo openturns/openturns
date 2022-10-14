@@ -60,6 +60,7 @@ def printNodesAndWeights(nodes, weights):
         print(row)
     return
 
+
 def printNodes(nodes):
     """
     Print nodes of an Experiment.
@@ -81,14 +82,14 @@ def printNodes(nodes):
 def roundSample(sample, numberOfDigits):
     """
     Round a sample
-    
+
     Parameters
     ----------
     sample : ot.Sample(size, dimension)
         The sample.
     numberOfDigits : int
         The number of decimal digits to keep.
-        
+
     Returns
     -------
     roundedSample : ot.Sample(size, dimension)
@@ -96,7 +97,7 @@ def roundSample(sample, numberOfDigits):
     """
     size = sample.getSize()
     dimension = sample.getDimension()
-    factor = 10.0 ** numberOfDigits
+    factor = 10.0**numberOfDigits
     for i in range(size):
         for j in range(dimension):
             rounded = (int)(factor * sample[i, j])
@@ -188,6 +189,7 @@ def sortNodes(nodes):
     sortedNodes = nodes[indices]
     return sortedNodes
 
+
 def testSmolyakExperiment2():
     # Test generate() method
     print("testSmolyakExperiment2:")
@@ -226,6 +228,7 @@ def testSmolyakExperiment2():
     atol = 1.0e-5
     ott.assert_almost_equal(nodes, nodesExact, rtol, atol)
 
+
 def testSmolyakExperiment3():
     # Generate a Smolyak Gauss-Legendre rule in 3 dimensions.
     # Each marginal elementary experiment has 6 nodes.
@@ -242,6 +245,7 @@ def testSmolyakExperiment3():
     assert nodes.getDimension() == 3
     size = nodes.getSize()
     assert size == weights.getDimension()
+
 
 def testSmolyakExperiment4():
     # Special case : Level = 1
@@ -279,6 +283,7 @@ def testSmolyakExperiment4():
     expected_distribution = ot.BlockIndependentDistribution(collection)
     assert distribution == expected_distribution
 
+
 def testSmolyakExperiment5():
     # Special case : Level = 1
     print("testSmolyakExperiment5:")
@@ -291,9 +296,10 @@ def testSmolyakExperiment5():
     smolyak = ot.SmolyakExperiment(collection, level)
     indicesCollection = smolyak.computeCombination()
     print("indicesCollection = ", indicesCollection)
-    expected = [[2,1],[1,2],[3,1],[2,2],[1,3]]
+    expected = [[2, 1], [1, 2], [3, 1], [2, 2], [1, 3]]
     for i in range(len(indicesCollection)):
         assert indicesCollection[i] == expected[i]
+
 
 # Testing
 testSmolyakExperiment1()

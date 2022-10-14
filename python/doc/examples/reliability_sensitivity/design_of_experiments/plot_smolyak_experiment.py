@@ -88,11 +88,11 @@ plt.show()
 #
 
 # %%
-# In the following script, we plot the number of nodes versus the level, 
-# of the tensor product and Smolyak experiments, under the assumption 
-# that :math:`n_{\textrm{tensorisation}} = 2^{\ell d}` 
-# and :math:`n_{\textrm{Smolyak}} = 2^\ell \ell^{d - 1}`. 
-# In other words, we assume that the constants involved in the previous 
+# In the following script, we plot the number of nodes versus the level,
+# of the tensor product and Smolyak experiments, under the assumption
+# that :math:`n_{\textrm{tensorisation}} = 2^{\ell d}`
+# and :math:`n_{\textrm{Smolyak}} = 2^\ell \ell^{d - 1}`.
+# In other words, we assume that the constants involved in the previous
 # Landau equations are equal to 1.
 
 level_max = 8  # Maximum level
@@ -117,7 +117,7 @@ for dimension in dimension_list:
     graph.add(curve)
     # Smolyak
     for level in level_list:
-        number_of_nodes[level - 1, 0] = 2 ** level * level ** (dimension - 1)
+        number_of_nodes[level - 1, 0] = 2**level * level ** (dimension - 1)
     curve = ot.Curve(ot.Sample.BuildFromPoint(level_list), number_of_nodes)
     curve.setLegend("")
     curve.setLineStyle("dashed")
@@ -136,12 +136,12 @@ plt.show()
 
 
 # %%
-# We see that the number of nodes increases when the level increases. 
-# Smolyak's number of nodes is, however, smaller or equal to the number of 
-# nodes involved in a tensor product quadrature rule. 
-# In dimension 7 for example, the quadrature level 8 leads to less than 
-# :math:`10^9` nodes with Smolyak's quadrature but more than 
-# :math:`10^{15}` nodes with a tensor product quadrature. 
+# We see that the number of nodes increases when the level increases.
+# Smolyak's number of nodes is, however, smaller or equal to the number of
+# nodes involved in a tensor product quadrature rule.
+# In dimension 7 for example, the quadrature level 8 leads to less than
+# :math:`10^9` nodes with Smolyak's quadrature but more than
+# :math:`10^{15}` nodes with a tensor product quadrature.
 
 # %%
 # In the following cell, we count the number of nodes in Smolyak's quadrature
@@ -186,5 +186,5 @@ plt.tight_layout()
 plt.show()
 
 # %%
-# We see that the number of nodes increases when the level increases. 
-# This growth depends on the dimension of the problem. 
+# We see that the number of nodes increases when the level increases.
+# This growth depends on the dimension of the problem.

@@ -38,13 +38,13 @@ SmolyakExperiment::SmolyakExperiment()
   , nodes_(0, 0)
   , isAlreadyComputed_(false)
 {
-   // Nothing to do
+  // Nothing to do
 }
 
 /* Constructor with parameters */
-SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collection, 
-    const UnsignedInteger level
-)
+SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collection,
+                                     const UnsignedInteger level
+                                    )
   : WeightedExperimentImplementation()
   , collection_(collection)
   , level_(level)
@@ -75,9 +75,9 @@ String SmolyakExperiment::__repr__() const
 {
   OSS oss;
   oss << "class=" << GetClassName()
-    << " name=" << getName()
-    << " level=" << level_
-    << " collection=" << collection_;
+      << " name=" << getName()
+      << " level=" << level_
+      << " collection=" << collection_;
   return oss;
 }
 
@@ -87,7 +87,7 @@ Bool SmolyakExperiment::hasUniformWeights() const
 }
 
 /* Sample generation */
-Sample SmolyakExperiment::generateWithWeights(Point & weights) 
+Sample SmolyakExperiment::generateWithWeights(Point & weights)
 {
   computeNodesAndWeights();
   weights = weights_;
@@ -98,7 +98,7 @@ Sample SmolyakExperiment::generateWithWeights(Point & weights)
 }
 
 /* Sample generation */
-Sample SmolyakExperiment::generate() 
+Sample SmolyakExperiment::generate()
 {
   Point weights;
   return generateWithWeights(weights);
@@ -139,8 +139,8 @@ IndicesCollection SmolyakExperiment::computeCombination() const
     LOGDEBUG(OSS() << "  strataIndex = " <<  strataIndex);
     const UnsignedInteger strataCardinal = enumerateFunction.getStrataCardinal(strataIndex);
     const UnsignedInteger cumulatedCardinal = enumerateFunction.getStrataCumulatedCardinal(
-        strataIndex
-    );
+          strataIndex
+        );
     const UnsignedInteger indexStart = cumulatedCardinal - strataCardinal;
     for (UnsignedInteger i = indexStart; i < cumulatedCardinal; ++i)
     {
@@ -158,48 +158,49 @@ IndicesCollection SmolyakExperiment::computeCombination() const
 class PointApproximateComparison
 {
 public:
-    PointApproximateComparison(const Scalar absoluteEpsilon, 
-                      const Scalar relativeEpsilon):
-                      absoluteEpsilon_(absoluteEpsilon)
-                      , relativeEpsilon_(relativeEpsilon)
-    {
-        // Nothing to do
-    };
+  PointApproximateComparison(const Scalar absoluteEpsilon,
+                             const Scalar relativeEpsilon):
+    absoluteEpsilon_(absoluteEpsilon)
+    , relativeEpsilon_(relativeEpsilon)
+  {
+    // Nothing to do
+  };
 
-    /* Compare two points, according to lexicographic order
-    * Returns true if x < y, false otherwise.
-    */
-    bool operator()(const Point x, const Point y) const {
-        const UnsignedInteger dimension = x.getDimension();
-        if (y.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the two points must have the same dimension. Here x has dimension " << dimension << " while y has dimension " << y.getDimension();
-        bool comparison = false;
-        for (UnsignedInteger k = 0; k < dimension; ++k)
-        {
-            // std::cout << "  " << x[k] << " < " << y[k] << " ?" << std::endl;
-            const Scalar maximumXY = std::max(std::abs(x[k]), std::abs(y[k]));
-            const Scalar delta = absoluteEpsilon_ + relativeEpsilon_ * maximumXY;
-            if (x[k] + delta < y[k])
-            {
-                comparison = true;
-                break;
-            } 
-            else if (x[k] > y[k] + delta)
-            {
-                break;
-            }
-        } // Loop over the dimensions
-        return comparison;
-    }
+  /* Compare two points, according to lexicographic order
+  * Returns true if x < y, false otherwise.
+  */
+  bool operator()(const Point x, const Point y) const
+  {
+    const UnsignedInteger dimension = x.getDimension();
+    if (y.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the two points must have the same dimension. Here x has dimension " << dimension << " while y has dimension " << y.getDimension();
+    bool comparison = false;
+    for (UnsignedInteger k = 0; k < dimension; ++k)
+    {
+      // std::cout << "  " << x[k] << " < " << y[k] << " ?" << std::endl;
+      const Scalar maximumXY = std::max(std::abs(x[k]), std::abs(y[k]));
+      const Scalar delta = absoluteEpsilon_ + relativeEpsilon_ * maximumXY;
+      if (x[k] + delta < y[k])
+      {
+        comparison = true;
+        break;
+      }
+      else if (x[k] > y[k] + delta)
+      {
+        break;
+      }
+    } // Loop over the dimensions
+    return comparison;
+  }
 private:
-    // Absolute tolerance for comparison
-    Scalar absoluteEpsilon_;
-    // Relative tolerance for comparison
-    Scalar relativeEpsilon_;
+  // Absolute tolerance for comparison
+  Scalar absoluteEpsilon_;
+  // Relative tolerance for comparison
+  Scalar relativeEpsilon_;
 };
 
 // Implement merge with std::map
 void SmolyakExperiment::mergeNodesAndWeights(
-    const Sample duplicatedNodes, const Point duplicatedWeights) const
+  const Sample duplicatedNodes, const Point duplicatedWeights) const
 {
   LOGDEBUG(OSS() << "SmolyakExperiment::mergeNodesAndWeights()");
   const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
@@ -207,16 +208,19 @@ void SmolyakExperiment::mergeNodesAndWeights(
   UnsignedInteger duplicatedSize = duplicatedNodes.getSize();
   LOGDEBUG(OSS() << "Number of (potentially) duplicated nodes =" << duplicatedSize);
   if (duplicatedWeights.getDimension() != duplicatedSize) throw InvalidArgumentException(HERE) << "Error: the weights must have dimension " << duplicatedSize << " but have dimension " << duplicatedWeights.getDimension();
-    UnsignedInteger dimension = duplicatedNodes.getDimension();
+  UnsignedInteger dimension = duplicatedNodes.getDimension();
   // Fill the map
   std::map<Point, Scalar, PointApproximateComparison> nodeWeightMap(PointApproximateComparison(absoluteEpsilon, relativeEpsilon));
   for (UnsignedInteger i = 0; i < duplicatedSize; ++i)
   {
     std::map<Point, Scalar>::iterator search = nodeWeightMap.find(duplicatedNodes[i]);
-    if (search != nodeWeightMap.end()) {
+    if (search != nodeWeightMap.end())
+    {
       LOGDEBUG(OSS() << "[" << i << "], found     : " << search->first << " = " << search->second);
       search->second += duplicatedWeights[i];
-    } else {
+    }
+    else
+    {
       LOGDEBUG(OSS() << "[" << i << "], not found : " << duplicatedNodes[i]);
       nodeWeightMap[duplicatedNodes[i]] = duplicatedWeights[i];
     }
@@ -245,14 +249,14 @@ void SmolyakExperiment::mergeNodesAndWeights(
 
 The algorithm has 3 steps:
 - create the multi-index set for the combination technique,
-- create the list of elementary Smolyak quadrature corresponding 
+- create the list of elementary Smolyak quadrature corresponding
   to each multi-index in the set,
-- merge the elementary quadratures to avoid duplicate nodes, 
+- merge the elementary quadratures to avoid duplicate nodes,
   updating the weights if necessary.
 
-The algorithm to merge the elementary quadratures 
-starts with an empty sample of unique nodes Q^U and weights w^U. 
-For each candidate node, we search if it is already in the 
+The algorithm to merge the elementary quadratures
+starts with an empty sample of unique nodes Q^U and weights w^U.
+For each candidate node, we search if it is already in the
 sample of unique nodes:
 - if the node is not found in Q^U, it is added to Q^U,
   and the weight is added to w^U,
@@ -271,7 +275,7 @@ void SmolyakExperiment::computeNodesAndWeights() const
   // Create elementary Smolyak quadratures
   Sample duplicatedNodes(0, dimension);
   Point duplicatedWeights(0);
-  const UnsignedInteger numberOfUnitaryQuadratures= combinationIndicesCollection.getSize();
+  const UnsignedInteger numberOfUnitaryQuadratures = combinationIndicesCollection.getSize();
   for (UnsignedInteger i = 0; i < numberOfUnitaryQuadratures; ++i)
   {
     WeightedExperimentCollection collection;
@@ -329,7 +333,7 @@ UnsignedInteger SmolyakExperiment::getSize() const
   return WeightedExperimentImplementation::getSize();
 }
 
-/* Compare two points approximately 
+/* Compare two points approximately
    This is for testing purposes only. */
 bool SmolyakExperiment::comparePointsApproximately(const Point x, const Point y)
 {

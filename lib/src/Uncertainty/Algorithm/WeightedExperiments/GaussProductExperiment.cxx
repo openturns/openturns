@@ -136,7 +136,7 @@ void GaussProductExperiment::setMarginalSizes(const Indices & marginalSizes)
 void GaussProductExperiment::setDistributionAndMarginalSizes(const Distribution & distribution,
     const Indices & marginalSizes)
 {
- // Set the marginal sizes here then the distribution with checks
+// Set the marginal sizes here then the distribution with checks
   marginalSizes_ = marginalSizes;
   setDistribution(distribution);
 
@@ -207,8 +207,8 @@ void GaussProductExperiment::computeNodesAndWeights() const
   isAlreadyComputedNodesAndWeights_ = true;
 }
 
-/* Set size 
-   The first dimension gets the size, the other dimensions get a 
+/* Set size
+   The first dimension gets the size, the other dimensions get a
    marginal size equal to 1. */
 void GaussProductExperiment::setSize(const UnsignedInteger size)
 {

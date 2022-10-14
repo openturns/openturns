@@ -47,7 +47,7 @@ void sortNodesAndWeights(Sample & nodes, Point & weights)
   } // loop over points
 }
 
-// Sort the nodes 
+// Sort the nodes
 void sortNodes(Sample & nodes)
 {
   const Indices order(nodes.argsort());
@@ -102,375 +102,375 @@ void roundSample(Sample & nodes, UnsignedInteger numberOfDigits)
 // Test #1 : 2 experiments with dimensions 1
 void test_1()
 {
-    Log::Show(Log::ALL);
-    OStream fullprint(std::cout);
-    fullprint << "test_1" << std::endl;
-    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: Uniform
-    const Uniform distribution1(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment1(distribution1);  
-    experimentCollection.add(marginalExperiment1);
-    // Marginal 1: Uniform
-    const Uniform distribution2(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment2(distribution2);
-    experimentCollection.add(marginalExperiment2);
-    //
-    const UnsignedInteger level = 3;
-    SmolyakExperiment experiment(experimentCollection, level);
-    Point weights(0);
-    Sample nodes(experiment.generateWithWeights(weights));
-    printNodesAndWeights(nodes, weights);
-    const int experimentSize = experiment.getSize();
-    assert_equal(experimentSize, 13);
-    //
-    UnsignedInteger numberOfDigits = 14;
-    roundSample(nodes, numberOfDigits);
-    sortNodesAndWeights(nodes, weights);
-    //
-    const int size(nodes.getSize());
-    const int dimension(nodes.getDimension());
-    const int weightDimension(weights.getDimension());
-    assert_equal(size, 13);
-    assert_equal(dimension, 2);
-    assert_equal(weightDimension, 13);
-    //
-    Point column_1 = {0.112702, 0.211325, 0.211325, 0.211325, 0.5, 0.5, 0.5, 0.5, 0.5, 0.788675, 0.788675, 0.788675, 0.887298};
-    Point column_2 = {0.5, 0.211325, 0.5, 0.788675, 0.112702, 0.211325, 0.5, 0.788675, 0.887298, 0.211325, 0.5, 0.788675, 0.5};
-    Sample nodesExpected(size, dimension);
-    for (int i = 0; i < size; ++i)
-    {
-      nodesExpected(i, 0) = column_1[i];
-      nodesExpected(i, 1) = column_2[i];
-    }
-    Point weightsExpected = {0.277778, 0.25, -0.5, 0.25, 0.277778, -0.5, 0.888888, -0.5, 0.277778, 0.25, -0.5, 0.25, 0.277778};
-    sortNodesAndWeights(nodesExpected, weightsExpected);
-    const Scalar rtol = 1.0e-5;
-    const Scalar atol = 1.0e-5;
-    assert_almost_equal(nodesExpected, nodes, rtol, atol);
-    assert_almost_equal(weightsExpected, weights, rtol, atol);
-    // Test generate()
-    Sample nodesBis(experiment.generate());
-    roundSample(nodesBis, numberOfDigits);
-    sortNodes(nodesBis);
-    assert_almost_equal(nodesExpected, nodesBis, rtol, atol);
+  Log::Show(Log::ALL);
+  OStream fullprint(std::cout);
+  fullprint << "test_1" << std::endl;
+  SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+  // Marginal 0: Uniform
+  const Uniform distribution1(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment1(distribution1);
+  experimentCollection.add(marginalExperiment1);
+  // Marginal 1: Uniform
+  const Uniform distribution2(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment2(distribution2);
+  experimentCollection.add(marginalExperiment2);
+  //
+  const UnsignedInteger level = 3;
+  SmolyakExperiment experiment(experimentCollection, level);
+  Point weights(0);
+  Sample nodes(experiment.generateWithWeights(weights));
+  printNodesAndWeights(nodes, weights);
+  const int experimentSize = experiment.getSize();
+  assert_equal(experimentSize, 13);
+  //
+  UnsignedInteger numberOfDigits = 14;
+  roundSample(nodes, numberOfDigits);
+  sortNodesAndWeights(nodes, weights);
+  //
+  const int size(nodes.getSize());
+  const int dimension(nodes.getDimension());
+  const int weightDimension(weights.getDimension());
+  assert_equal(size, 13);
+  assert_equal(dimension, 2);
+  assert_equal(weightDimension, 13);
+  //
+  Point column_1 = {0.112702, 0.211325, 0.211325, 0.211325, 0.5, 0.5, 0.5, 0.5, 0.5, 0.788675, 0.788675, 0.788675, 0.887298};
+  Point column_2 = {0.5, 0.211325, 0.5, 0.788675, 0.112702, 0.211325, 0.5, 0.788675, 0.887298, 0.211325, 0.5, 0.788675, 0.5};
+  Sample nodesExpected(size, dimension);
+  for (int i = 0; i < size; ++i)
+  {
+    nodesExpected(i, 0) = column_1[i];
+    nodesExpected(i, 1) = column_2[i];
+  }
+  Point weightsExpected = {0.277778, 0.25, -0.5, 0.25, 0.277778, -0.5, 0.888888, -0.5, 0.277778, 0.25, -0.5, 0.25, 0.277778};
+  sortNodesAndWeights(nodesExpected, weightsExpected);
+  const Scalar rtol = 1.0e-5;
+  const Scalar atol = 1.0e-5;
+  assert_almost_equal(nodesExpected, nodes, rtol, atol);
+  assert_almost_equal(weightsExpected, weights, rtol, atol);
+  // Test generate()
+  Sample nodesBis(experiment.generate());
+  roundSample(nodesBis, numberOfDigits);
+  sortNodes(nodesBis);
+  assert_almost_equal(nodesExpected, nodesBis, rtol, atol);
 }
 
 // Test #2 : check hasUniformWeights
 void test_2()
 {
-    OStream fullprint(std::cout);
-    fullprint << "test_2" << std::endl;
-    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: Uniform
-    const Uniform distribution1(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment1(distribution1);  
-    experimentCollection.add(marginalExperiment1);
-    // Marginal 1: Uniform
-    const Uniform distribution2(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment2(distribution2);  
-    experimentCollection.add(marginalExperiment2);
-    //
-    const UnsignedInteger level = 3;
-    SmolyakExperiment experiment(experimentCollection, level);
-    const bool hasUniformWeights = experiment.hasUniformWeights();
-    assert_equal(hasUniformWeights, false);
-    
+  OStream fullprint(std::cout);
+  fullprint << "test_2" << std::endl;
+  SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+  // Marginal 0: Uniform
+  const Uniform distribution1(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment1(distribution1);
+  experimentCollection.add(marginalExperiment1);
+  // Marginal 1: Uniform
+  const Uniform distribution2(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment2(distribution2);
+  experimentCollection.add(marginalExperiment2);
+  //
+  const UnsignedInteger level = 3;
+  SmolyakExperiment experiment(experimentCollection, level);
+  const bool hasUniformWeights = experiment.hasUniformWeights();
+  assert_equal(hasUniformWeights, false);
+
 }
 
 // Test #3 : 3 experiments with dimensions 1
 void test_3()
 {
-    Log::Show(Log::ALL);
-    OStream fullprint(std::cout);
-    fullprint << "test_3" << std::endl;
-    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: Uniform
-    const Uniform distribution1(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment1(distribution1);  
-    experimentCollection.add(marginalExperiment1);
-    // Marginal 1: Uniform
-    const Uniform distribution2(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment2(distribution2);
-    experimentCollection.add(marginalExperiment2);
-    // Marginal 2: Uniform
-    const Uniform distribution3(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment3(distribution3);  
-    experimentCollection.add(marginalExperiment3);
-    //
-    const UnsignedInteger level = 3;
-    SmolyakExperiment experiment(experimentCollection, level);
-    Point weights(0);
-    Sample nodes(experiment.generateWithWeights(weights));
-    const int experimentSize = experiment.getSize();
-    assert_equal(experimentSize, 25);
-    //
-    UnsignedInteger numberOfDigits = 14;
-    roundSample(nodes, numberOfDigits);
-    sortNodesAndWeights(nodes, weights);
-    //
-    const int size(nodes.getSize());
-    const int dimension(nodes.getDimension());
-    const int weightDimension(weights.getDimension());
-    assert_equal(size, 25);
-    assert_equal(dimension, 3);
-    assert_equal(weightDimension, 25);
-    //
-    Point column_1 = {0.11270167, 0.21132487, 0.21132487, 0.21132487, 0.21132487, 0.21132487, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.78867513, 0.78867513, 0.78867513, 0.78867513, 0.78867513, 0.88729833};
-    Point column_2 = {0.5, 0.21132487, 0.5, 0.5, 0.5, 0.78867513, 0.11270167, 0.21132487, 0.21132487, 0.21132487, 0.5, 0.5, 0.5, 0.5, 0.5, 0.78867513, 0.78867513, 0.78867513, 0.88729833, 0.21132487, 0.5, 0.5, 0.5, 0.78867513, 0.5       };
-    Point column_3 = {0.5, 0.5, 0.21132487, 0.5, 0.78867513, 0.5, 0.5, 0.21132487, 0.5, 0.78867513, 0.11270167, 0.21132487, 0.5, 0.78867513, 0.88729833, 0.21132487, 0.5, 0.78867513, 0.5, 0.5, 0.21132487, 0.5, 0.78867513, 0.5, 0.5};
-    Sample nodesExpected(size, dimension);
-    for (int i = 0; i < size; ++i)
-    {
-      nodesExpected(i, 0) = column_1[i];
-      nodesExpected(i, 1) = column_2[i];
-      nodesExpected(i, 2) = column_3[i];
-    }
-    Point weightsExpected = {0.277778, 0.25, 0.25,-1, 0.25, 0.25, 0.277778, 0.25,-1, 0.25, 0.277778,-1,2.33333,-1, 0.277778, 0.25,-1, 0.25, 0.277778, 0.25, 0.25,-1, 0.25, 0.25, 0.277778};
-    sortNodesAndWeights(nodesExpected, weightsExpected);
-    const Scalar rtol = 1.0e-5;
-    const Scalar atol = 1.0e-5;
-    assert_almost_equal(nodesExpected, nodes, rtol, atol);
-    assert_almost_equal(weightsExpected, weights, rtol, atol);
+  Log::Show(Log::ALL);
+  OStream fullprint(std::cout);
+  fullprint << "test_3" << std::endl;
+  SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+  // Marginal 0: Uniform
+  const Uniform distribution1(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment1(distribution1);
+  experimentCollection.add(marginalExperiment1);
+  // Marginal 1: Uniform
+  const Uniform distribution2(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment2(distribution2);
+  experimentCollection.add(marginalExperiment2);
+  // Marginal 2: Uniform
+  const Uniform distribution3(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment3(distribution3);
+  experimentCollection.add(marginalExperiment3);
+  //
+  const UnsignedInteger level = 3;
+  SmolyakExperiment experiment(experimentCollection, level);
+  Point weights(0);
+  Sample nodes(experiment.generateWithWeights(weights));
+  const int experimentSize = experiment.getSize();
+  assert_equal(experimentSize, 25);
+  //
+  UnsignedInteger numberOfDigits = 14;
+  roundSample(nodes, numberOfDigits);
+  sortNodesAndWeights(nodes, weights);
+  //
+  const int size(nodes.getSize());
+  const int dimension(nodes.getDimension());
+  const int weightDimension(weights.getDimension());
+  assert_equal(size, 25);
+  assert_equal(dimension, 3);
+  assert_equal(weightDimension, 25);
+  //
+  Point column_1 = {0.11270167, 0.21132487, 0.21132487, 0.21132487, 0.21132487, 0.21132487, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.78867513, 0.78867513, 0.78867513, 0.78867513, 0.78867513, 0.88729833};
+  Point column_2 = {0.5, 0.21132487, 0.5, 0.5, 0.5, 0.78867513, 0.11270167, 0.21132487, 0.21132487, 0.21132487, 0.5, 0.5, 0.5, 0.5, 0.5, 0.78867513, 0.78867513, 0.78867513, 0.88729833, 0.21132487, 0.5, 0.5, 0.5, 0.78867513, 0.5       };
+  Point column_3 = {0.5, 0.5, 0.21132487, 0.5, 0.78867513, 0.5, 0.5, 0.21132487, 0.5, 0.78867513, 0.11270167, 0.21132487, 0.5, 0.78867513, 0.88729833, 0.21132487, 0.5, 0.78867513, 0.5, 0.5, 0.21132487, 0.5, 0.78867513, 0.5, 0.5};
+  Sample nodesExpected(size, dimension);
+  for (int i = 0; i < size; ++i)
+  {
+    nodesExpected(i, 0) = column_1[i];
+    nodesExpected(i, 1) = column_2[i];
+    nodesExpected(i, 2) = column_3[i];
+  }
+  Point weightsExpected = {0.277778, 0.25, 0.25, -1, 0.25, 0.25, 0.277778, 0.25, -1, 0.25, 0.277778, -1, 2.33333, -1, 0.277778, 0.25, -1, 0.25, 0.277778, 0.25, 0.25, -1, 0.25, 0.25, 0.277778};
+  sortNodesAndWeights(nodesExpected, weightsExpected);
+  const Scalar rtol = 1.0e-5;
+  const Scalar atol = 1.0e-5;
+  assert_almost_equal(nodesExpected, nodes, rtol, atol);
+  assert_almost_equal(weightsExpected, weights, rtol, atol);
 }
 
 // Test Point comparison
 void test_4()
 {
-    std::cout << "test_4" << std::endl;
-    ResourceMap::SetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon", 1.e-2);
-    ResourceMap::SetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon", 1.e-2);
-    //
-    Point x1({0.1, 0.2});
-    Point y1({0.3, 0.4});
-    //
-    std::cout << "(1) Compare = " << x1 << " and " << y1 << std::endl;
-    bool comparison1 = SmolyakExperiment::comparePointsApproximately(x1, y1);
-    assert_equal(comparison1, true);
-    //
-    std::cout << "(2) Compare = " << y1 << " and " << x1 << std::endl;
-    bool comparison1_bis = SmolyakExperiment::comparePointsApproximately(y1, x1);
-    assert_equal(comparison1_bis, false);
-    //
-    std::cout << "(3) Compare = " << x1 << " and " << x1 << std::endl;
-    bool comparison3 = SmolyakExperiment::comparePointsApproximately(x1, x1);
-    assert_equal(comparison3, false);
-    //
-    Point x1_bis({0.1001, 0.2001});
-    std::cout << "(4) Compare = " << x1_bis << " and " << x1 << std::endl;
-    bool comparison4 = SmolyakExperiment::comparePointsApproximately(x1_bis, x1);
-    assert_equal(comparison4, false);
-    //
-    std::cout << "(5) Compare = " << x1 << " and " << x1_bis << std::endl;
-    bool comparison5 = SmolyakExperiment::comparePointsApproximately(x1, x1_bis);
-    assert_equal(comparison5, false);
-    //
-    Point zero({0.0, 0.0});
-    Point zero_close({0.0001, 0.0001});
-    std::cout << "(6) Compare = " << zero << " and " << zero_close << std::endl;
-    bool comparison6 = SmolyakExperiment::comparePointsApproximately(zero, zero_close);
-    assert_equal(comparison6, false);
-    //
-    std::cout << "(7) Compare = " << zero_close << " and " << zero << std::endl;
-    bool comparison7 = SmolyakExperiment::comparePointsApproximately(zero_close, zero);
-    assert_equal(comparison7, false);
+  std::cout << "test_4" << std::endl;
+  ResourceMap::SetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon", 1.e-2);
+  ResourceMap::SetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon", 1.e-2);
+  //
+  Point x1({0.1, 0.2});
+  Point y1({0.3, 0.4});
+  //
+  std::cout << "(1) Compare = " << x1 << " and " << y1 << std::endl;
+  bool comparison1 = SmolyakExperiment::comparePointsApproximately(x1, y1);
+  assert_equal(comparison1, true);
+  //
+  std::cout << "(2) Compare = " << y1 << " and " << x1 << std::endl;
+  bool comparison1_bis = SmolyakExperiment::comparePointsApproximately(y1, x1);
+  assert_equal(comparison1_bis, false);
+  //
+  std::cout << "(3) Compare = " << x1 << " and " << x1 << std::endl;
+  bool comparison3 = SmolyakExperiment::comparePointsApproximately(x1, x1);
+  assert_equal(comparison3, false);
+  //
+  Point x1_bis({0.1001, 0.2001});
+  std::cout << "(4) Compare = " << x1_bis << " and " << x1 << std::endl;
+  bool comparison4 = SmolyakExperiment::comparePointsApproximately(x1_bis, x1);
+  assert_equal(comparison4, false);
+  //
+  std::cout << "(5) Compare = " << x1 << " and " << x1_bis << std::endl;
+  bool comparison5 = SmolyakExperiment::comparePointsApproximately(x1, x1_bis);
+  assert_equal(comparison5, false);
+  //
+  Point zero({0.0, 0.0});
+  Point zero_close({0.0001, 0.0001});
+  std::cout << "(6) Compare = " << zero << " and " << zero_close << std::endl;
+  bool comparison6 = SmolyakExperiment::comparePointsApproximately(zero, zero_close);
+  assert_equal(comparison6, false);
+  //
+  std::cout << "(7) Compare = " << zero_close << " and " << zero << std::endl;
+  bool comparison7 = SmolyakExperiment::comparePointsApproximately(zero_close, zero);
+  assert_equal(comparison7, false);
 }
 
 // Test #5 : 2 experiments, level = 1
 void test_5()
 {
-    Log::Show(Log::ALL);
-    OStream fullprint(std::cout);
-    fullprint << "test_5" << std::endl;
-    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: Uniform
-    const Uniform distribution1(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment1(distribution1);  
-    experimentCollection.add(marginalExperiment1);
-    // Marginal 1: Uniform
-    const Uniform distribution2(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment2(distribution2);
-    experimentCollection.add(marginalExperiment2);
-    //
-    const UnsignedInteger level = 1;
-    SmolyakExperiment experiment(experimentCollection, level);
-    Point weights(0);
-    Sample nodes(experiment.generateWithWeights(weights));
-    printNodesAndWeights(nodes, weights);
-    const int experimentSize = experiment.getSize();
-    assert_equal(experimentSize, 1);
-    //
-    UnsignedInteger numberOfDigits = 14;
-    roundSample(nodes, numberOfDigits);
-    sortNodesAndWeights(nodes, weights);
-    //
-    const int size(nodes.getSize());
-    const int dimension(nodes.getDimension());
-    const int weightDimension(weights.getDimension());
-    assert_equal(size, 1);
-    assert_equal(dimension, 2);
-    assert_equal(weightDimension, 1);
-    //
-    Point column_1 = {0.5};
-    Point column_2 = {0.5};
-    Sample nodesExpected(size, dimension);
-    for (int i = 0; i < size; ++i)
-    {
-      nodesExpected(i, 0) = column_1[i];
-      nodesExpected(i, 1) = column_2[i];
-    }
-    Point weightsExpected = {1.0};
-    sortNodesAndWeights(nodesExpected, weightsExpected);
-    const Scalar rtol = 1.0e-5;
-    const Scalar atol = 1.0e-5;
-    assert_almost_equal(nodesExpected, nodes, rtol, atol);
-    assert_almost_equal(weightsExpected, weights, rtol, atol);
-    // Test generate()
-    Sample nodesBis(experiment.generate());
-    roundSample(nodesBis, numberOfDigits);
-    sortNodes(nodesBis);
-    assert_almost_equal(nodesExpected, nodesBis, rtol, atol);
+  Log::Show(Log::ALL);
+  OStream fullprint(std::cout);
+  fullprint << "test_5" << std::endl;
+  SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+  // Marginal 0: Uniform
+  const Uniform distribution1(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment1(distribution1);
+  experimentCollection.add(marginalExperiment1);
+  // Marginal 1: Uniform
+  const Uniform distribution2(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment2(distribution2);
+  experimentCollection.add(marginalExperiment2);
+  //
+  const UnsignedInteger level = 1;
+  SmolyakExperiment experiment(experimentCollection, level);
+  Point weights(0);
+  Sample nodes(experiment.generateWithWeights(weights));
+  printNodesAndWeights(nodes, weights);
+  const int experimentSize = experiment.getSize();
+  assert_equal(experimentSize, 1);
+  //
+  UnsignedInteger numberOfDigits = 14;
+  roundSample(nodes, numberOfDigits);
+  sortNodesAndWeights(nodes, weights);
+  //
+  const int size(nodes.getSize());
+  const int dimension(nodes.getDimension());
+  const int weightDimension(weights.getDimension());
+  assert_equal(size, 1);
+  assert_equal(dimension, 2);
+  assert_equal(weightDimension, 1);
+  //
+  Point column_1 = {0.5};
+  Point column_2 = {0.5};
+  Sample nodesExpected(size, dimension);
+  for (int i = 0; i < size; ++i)
+  {
+    nodesExpected(i, 0) = column_1[i];
+    nodesExpected(i, 1) = column_2[i];
+  }
+  Point weightsExpected = {1.0};
+  sortNodesAndWeights(nodesExpected, weightsExpected);
+  const Scalar rtol = 1.0e-5;
+  const Scalar atol = 1.0e-5;
+  assert_almost_equal(nodesExpected, nodes, rtol, atol);
+  assert_almost_equal(weightsExpected, weights, rtol, atol);
+  // Test generate()
+  Sample nodesBis(experiment.generate());
+  roundSample(nodesBis, numberOfDigits);
+  sortNodes(nodesBis);
+  assert_almost_equal(nodesExpected, nodesBis, rtol, atol);
 }
 
 // Test #6 : 3 experiments, level = 2
 void test_6()
 {
-    Log::Show(Log::ALL);
-    OStream fullprint(std::cout);
-    fullprint << "test_6" << std::endl;
-    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: Uniform
-    const Uniform distribution1(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment1(distribution1);  
-    experimentCollection.add(marginalExperiment1);
-    // Marginal 1: Uniform
-    const Uniform distribution2(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment2(distribution2);
-    experimentCollection.add(marginalExperiment2);
-    // Marginal 2: Uniform
-    const Uniform distribution3(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment3(distribution3);
-    experimentCollection.add(marginalExperiment3);
-    //
-    const UnsignedInteger level = 2;
-    SmolyakExperiment experiment(experimentCollection, level);
-    Point weights(0);
-    Sample nodes(experiment.generateWithWeights(weights));
-    printNodesAndWeights(nodes, weights);
-    const int experimentSize = experiment.getSize();
-    assert_equal(experimentSize, 7);
-    //
-    const int size(nodes.getSize());
-    const int dimension(nodes.getDimension());
-    const int weightDimension(weights.getDimension());
-    assert_equal(size, 7);
-    assert_equal(dimension, 3);
-    assert_equal(weightDimension, 7);
+  Log::Show(Log::ALL);
+  OStream fullprint(std::cout);
+  fullprint << "test_6" << std::endl;
+  SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+  // Marginal 0: Uniform
+  const Uniform distribution1(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment1(distribution1);
+  experimentCollection.add(marginalExperiment1);
+  // Marginal 1: Uniform
+  const Uniform distribution2(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment2(distribution2);
+  experimentCollection.add(marginalExperiment2);
+  // Marginal 2: Uniform
+  const Uniform distribution3(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment3(distribution3);
+  experimentCollection.add(marginalExperiment3);
+  //
+  const UnsignedInteger level = 2;
+  SmolyakExperiment experiment(experimentCollection, level);
+  Point weights(0);
+  Sample nodes(experiment.generateWithWeights(weights));
+  printNodesAndWeights(nodes, weights);
+  const int experimentSize = experiment.getSize();
+  assert_equal(experimentSize, 7);
+  //
+  const int size(nodes.getSize());
+  const int dimension(nodes.getDimension());
+  const int weightDimension(weights.getDimension());
+  assert_equal(size, 7);
+  assert_equal(dimension, 3);
+  assert_equal(weightDimension, 7);
 }
 
 // Test #7 : use ResourceMap keys
 void test_7()
 {
-    OStream fullprint(std::cout);
-    fullprint << "test_7" << std::endl;
-    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: Uniform
-    const Uniform distribution1(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment1(distribution1);  
-    experimentCollection.add(marginalExperiment1);
-    // Marginal 1: Uniform
-    const Uniform distribution2(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment2(distribution2);
-    experimentCollection.add(marginalExperiment2);
-    // Marginal 2: Uniform
-    const Uniform distribution3(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment3(distribution3);
-    experimentCollection.add(marginalExperiment3);
-    // Test 1 : with default settings
-    const UnsignedInteger level = 4;
-    SmolyakExperiment experiment(experimentCollection, level);
-    Point weights(0);
-    Sample nodes(experiment.generateWithWeights(weights));
-    printNodesAndWeights(nodes, weights);
-    const int experimentSize = experiment.getSize();
-    fullprint << "experimentSize = " << experimentSize << std::endl;
-    assert_equal(experimentSize, 69);
-    //
-    const int size(nodes.getSize());
-    const int dimension(nodes.getDimension());
-    const int weightDimension(weights.getDimension());
-    assert_equal(size, 69);
-    assert_equal(dimension, 3);
-    assert_equal(weightDimension, 69);
-    // Test 2 : Disable merge
-    ResourceMap::SetAsBool("SmolyakExperiment-MergeQuadrature", false);
-    Point weightsBis(0);
-    Sample nodesBis(experiment.generateWithWeights(weightsBis));
-    printNodesAndWeights(nodesBis, weightsBis);
-    const int experimentSizeBis = experiment.getSize();
-    fullprint << "experimentSizeBis = " << experimentSizeBis << std::endl;
-    assert_equal(experimentSizeBis, 83);
-    //
-    const int sizeBis(nodesBis.getSize());
-    const int dimensionBis(nodesBis.getDimension());
-    const int weightDimensionBis(weightsBis.getDimension());
-    assert_equal(sizeBis, 83);
-    assert_equal(dimensionBis, 3);
-    assert_equal(weightDimensionBis, 83);
-    ResourceMap::SetAsBool("SmolyakExperiment-MergeQuadrature", true);
-    // Test 3 : Set tolerances to zero
-    Scalar defaultRelativeEpsilon(ResourceMap::GetAsScalar("SmolyakExperiment-DefaultPointRelativeEpsilon"));
-    Scalar defaultAbsoluteEpsilon(ResourceMap::GetAsScalar("SmolyakExperiment-DefaultPointAbsoluteEpsilon"));
-    ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointRelativeEpsilon", 0.0);
-    ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointAbsoluteEpsilon", 0.0);
-    Point weightsTer(0);
-    Sample nodesTer(experiment.generateWithWeights(weightsTer));
-    printNodesAndWeights(nodesTer, weightsTer);
-    const int experimentSizeTer = experiment.getSize();
-    fullprint << "experimentSizeTer = " << experimentSizeTer << std::endl;
-    assert_equal(experimentSizeTer, 83);
-    //
-    const int sizeTer(nodesTer.getSize());
-    const int dimensionTer(nodesTer.getDimension());
-    const int weightDimensionTer(weightsTer.getDimension());
-    assert_equal(sizeTer, 83);
-    assert_equal(dimensionTer, 3);
-    assert_equal(weightDimensionTer, 83);
-    ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointRelativeEpsilon", defaultRelativeEpsilon);
-    ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointAbsoluteEpsilon", defaultAbsoluteEpsilon);
-    
+  OStream fullprint(std::cout);
+  fullprint << "test_7" << std::endl;
+  SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+  // Marginal 0: Uniform
+  const Uniform distribution1(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment1(distribution1);
+  experimentCollection.add(marginalExperiment1);
+  // Marginal 1: Uniform
+  const Uniform distribution2(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment2(distribution2);
+  experimentCollection.add(marginalExperiment2);
+  // Marginal 2: Uniform
+  const Uniform distribution3(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment3(distribution3);
+  experimentCollection.add(marginalExperiment3);
+  // Test 1 : with default settings
+  const UnsignedInteger level = 4;
+  SmolyakExperiment experiment(experimentCollection, level);
+  Point weights(0);
+  Sample nodes(experiment.generateWithWeights(weights));
+  printNodesAndWeights(nodes, weights);
+  const int experimentSize = experiment.getSize();
+  fullprint << "experimentSize = " << experimentSize << std::endl;
+  assert_equal(experimentSize, 69);
+  //
+  const int size(nodes.getSize());
+  const int dimension(nodes.getDimension());
+  const int weightDimension(weights.getDimension());
+  assert_equal(size, 69);
+  assert_equal(dimension, 3);
+  assert_equal(weightDimension, 69);
+  // Test 2 : Disable merge
+  ResourceMap::SetAsBool("SmolyakExperiment-MergeQuadrature", false);
+  Point weightsBis(0);
+  Sample nodesBis(experiment.generateWithWeights(weightsBis));
+  printNodesAndWeights(nodesBis, weightsBis);
+  const int experimentSizeBis = experiment.getSize();
+  fullprint << "experimentSizeBis = " << experimentSizeBis << std::endl;
+  assert_equal(experimentSizeBis, 83);
+  //
+  const int sizeBis(nodesBis.getSize());
+  const int dimensionBis(nodesBis.getDimension());
+  const int weightDimensionBis(weightsBis.getDimension());
+  assert_equal(sizeBis, 83);
+  assert_equal(dimensionBis, 3);
+  assert_equal(weightDimensionBis, 83);
+  ResourceMap::SetAsBool("SmolyakExperiment-MergeQuadrature", true);
+  // Test 3 : Set tolerances to zero
+  Scalar defaultRelativeEpsilon(ResourceMap::GetAsScalar("SmolyakExperiment-DefaultPointRelativeEpsilon"));
+  Scalar defaultAbsoluteEpsilon(ResourceMap::GetAsScalar("SmolyakExperiment-DefaultPointAbsoluteEpsilon"));
+  ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointRelativeEpsilon", 0.0);
+  ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointAbsoluteEpsilon", 0.0);
+  Point weightsTer(0);
+  Sample nodesTer(experiment.generateWithWeights(weightsTer));
+  printNodesAndWeights(nodesTer, weightsTer);
+  const int experimentSizeTer = experiment.getSize();
+  fullprint << "experimentSizeTer = " << experimentSizeTer << std::endl;
+  assert_equal(experimentSizeTer, 83);
+  //
+  const int sizeTer(nodesTer.getSize());
+  const int dimensionTer(nodesTer.getDimension());
+  const int weightDimensionTer(weightsTer.getDimension());
+  assert_equal(sizeTer, 83);
+  assert_equal(dimensionTer, 3);
+  assert_equal(weightDimensionTer, 83);
+  ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointRelativeEpsilon", defaultRelativeEpsilon);
+  ResourceMap::SetAsScalar("SmolyakExperiment-DefaultPointAbsoluteEpsilon", defaultAbsoluteEpsilon);
+
 }
 
 // Test #8 : get indices collection
 void test_8()
 {
-    Log::Show(Log::ALL);
-    OStream fullprint(std::cout);
-    fullprint << "test_8" << std::endl;
-    SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
-    // Marginal 0: Uniform
-    const Uniform distribution1(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment1(distribution1);  
-    experimentCollection.add(marginalExperiment1);
-    // Marginal 1: Uniform
-    const Uniform distribution2(0.0, 1.0);
-    const GaussProductExperiment marginalExperiment2(distribution2);
-    experimentCollection.add(marginalExperiment2);
-    //
-    const UnsignedInteger level = 3;
-    SmolyakExperiment experiment(experimentCollection, level);
-    const IndicesCollection indicesCollection(experiment.computeCombination());
-    fullprint << "indicesCollection = " << indicesCollection << std::endl;
-    const Collection<Indices> coll = {{2,1},{1,2},{3,1},{2,2},{1,3}};
-    const int size = indicesCollection.getSize();
-    const int dimension = 2;
-    for (int i = 0; i < size; ++i)
+  Log::Show(Log::ALL);
+  OStream fullprint(std::cout);
+  fullprint << "test_8" << std::endl;
+  SmolyakExperiment::WeightedExperimentCollection experimentCollection(0);
+  // Marginal 0: Uniform
+  const Uniform distribution1(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment1(distribution1);
+  experimentCollection.add(marginalExperiment1);
+  // Marginal 1: Uniform
+  const Uniform distribution2(0.0, 1.0);
+  const GaussProductExperiment marginalExperiment2(distribution2);
+  experimentCollection.add(marginalExperiment2);
+  //
+  const UnsignedInteger level = 3;
+  SmolyakExperiment experiment(experimentCollection, level);
+  const IndicesCollection indicesCollection(experiment.computeCombination());
+  fullprint << "indicesCollection = " << indicesCollection << std::endl;
+  const Collection<Indices> coll = {{2, 1}, {1, 2}, {3, 1}, {2, 2}, {1, 3}};
+  const int size = indicesCollection.getSize();
+  const int dimension = 2;
+  for (int i = 0; i < size; ++i)
+  {
+    const Indices indices(coll[i]);
+    for (int j = 0; j < dimension; ++j)
     {
-      const Indices indices(coll[i]);
-      for (int j = 0; j < dimension; ++j)
-      {
-        assert_equal(indices[j], indicesCollection(i, j));
-      }
+      assert_equal(indices[j], indicesCollection(i, j));
     }
+  }
 }
 
 int main(int, char *[])
