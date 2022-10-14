@@ -46,7 +46,7 @@ and
 
       <<\vect{\vect{\vect{\nabla }}}^2 h(\muX,\: \vect{\mu}_{X}),\: \uX - \muX>,\: \uX - \muX> = \left( \Tr{(\uX^i - \muX^i)}. \left(\frac{\partial^2 y^k}{\partial x^i \partial x^k}\right)_{\ux = \muX}. (\uX^j - \muX^j) \right)_{ijk}
 
-The Taylor expansion of order 2 of the model :math:`h` is written by:
+The Taylor expansion of order 2 of the model :math:`h` is:
 
 .. math::
 
