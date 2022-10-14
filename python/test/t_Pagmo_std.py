@@ -205,3 +205,6 @@ x = result.getFinalPoints()
 y = result.getFinalValues()
 for i in range(y.getSize()):
     assert y[i, 1] < 100.0, "penalized y value"
+fi0 = result.getParetoFrontsIndices()[0]
+print(fi0)
+assert 19 in fi0 and len(fi0) <= 5, "pareto indices"
