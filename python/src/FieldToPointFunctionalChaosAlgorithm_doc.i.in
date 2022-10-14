@@ -1,6 +1,10 @@
 %feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm
 "Functional metamodel algorithm based on chaos decomposition.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 The present algorithm allows to build a response surface of the application :math:`h` of the form:
 
 .. math::
