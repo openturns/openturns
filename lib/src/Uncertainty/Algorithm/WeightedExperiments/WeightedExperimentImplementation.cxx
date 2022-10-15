@@ -36,6 +36,7 @@ WeightedExperimentImplementation::WeightedExperimentImplementation()
   : ExperimentImplementation()
   , distribution_()
   , size_(ResourceMap::GetAsUnsignedInteger("WeightedExperiment-DefaultSize"))
+  , isRandom_(true)
 {
   // Nothing to do
 }
@@ -45,6 +46,18 @@ WeightedExperimentImplementation::WeightedExperimentImplementation(const Unsigne
   : ExperimentImplementation()
   , distribution_()
   , size_(0)
+  , isRandom_(true)
+{
+  // Check if the size is valid
+  setSize(size);
+}
+
+/* Constructor with parameters */
+WeightedExperimentImplementation::WeightedExperimentImplementation(const UnsignedInteger size, const Bool isRandom)
+  : ExperimentImplementation()
+  , distribution_()
+  , size_(0)
+  , isRandom_(isRandom)
 {
   // Check if the size is valid
   setSize(size);
@@ -56,6 +69,19 @@ WeightedExperimentImplementation::WeightedExperimentImplementation(const Distrib
   : ExperimentImplementation()
   , distribution_(distribution)
   , size_(0)
+  , isRandom_(true)
+{
+  // Check if the size is valid
+  setSize(size);
+}
+
+/* Constructor with parameters */
+WeightedExperimentImplementation::WeightedExperimentImplementation(const Distribution & distribution,
+    const UnsignedInteger size, const Bool isRandom)
+  : ExperimentImplementation()
+  , distribution_(distribution)
+  , size_(0)
+  , isRandom_(isRandom)
 {
   // Check if the size is valid
   setSize(size);
@@ -125,6 +151,12 @@ void WeightedExperimentImplementation::setLevel(const UnsignedInteger level)
   const UnsignedInteger size = level;
   setSize(size);
 }
+
+Bool WeightedExperimentImplementation::getIsRandom() const
+{
+  return isRandom_;
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void WeightedExperimentImplementation::save(Advocate & adv) const

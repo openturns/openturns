@@ -147,6 +147,7 @@ void GaussProductExperiment::setDistributionAndMarginalSizes(const Distribution 
     const UnsignedInteger dI = marginalSizes_[i];
     size_ *= dI;
   }
+  isRandom_ = false;
 }
 
 Indices GaussProductExperiment::getMarginalSizes() const

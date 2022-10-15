@@ -109,7 +109,6 @@ private:
 
 }; /* class SmolyakExperiment */
 
-
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_SMOLYAKEXPERIMENT_HXX */

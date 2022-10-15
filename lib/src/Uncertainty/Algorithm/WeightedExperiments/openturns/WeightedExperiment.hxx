@@ -75,6 +75,9 @@ public:
   /** Set the level */
   virtual void setLevel(const UnsignedInteger level);
 
+    /** Return the random flag */
+  virtual Bool getIsRandom() const;
+
 } ; /* class WeightedExperiment */
 
 END_NAMESPACE_OPENTURNS

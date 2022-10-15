@@ -99,5 +99,9 @@ void WeightedExperiment::setLevel(const UnsignedInteger level)
   return getImplementation()->setLevel(level);
 }
 
+Bool WeightedExperiment::getIsRandom() const
+{
+  return getImplementation()->getIsRandom();
+}
 
 END_NAMESPACE_OPENTURNS

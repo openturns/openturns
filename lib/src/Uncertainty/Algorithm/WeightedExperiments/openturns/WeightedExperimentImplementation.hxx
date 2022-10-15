@@ -49,8 +49,17 @@ public:
   explicit WeightedExperimentImplementation(const UnsignedInteger size);
 
   /** Parameters constructor */
+  explicit WeightedExperimentImplementation(const UnsignedInteger size,
+                                            const Bool isRandom);
+
+  /** Parameters constructor */
   WeightedExperimentImplementation(const Distribution & distribution,
                                    const UnsignedInteger size);
+
+  /** Parameters constructor */
+  WeightedExperimentImplementation(const Distribution & distribution,
+                                   const UnsignedInteger size,
+                                   const Bool isRandom);
 
   /** Virtual constructor */
   WeightedExperimentImplementation * clone() const override;
@@ -80,6 +89,9 @@ public:
   /** Level accessor */
   virtual void setLevel(const UnsignedInteger level);
 
+  /** Return isRandom flag */
+  virtual Bool getIsRandom() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -93,6 +105,9 @@ protected:
 
   /** The size of the sample to be generated */
   UnsignedInteger size_;
+
+    /** Is the Experiment random? */
+  Bool isRandom_;
 
 }; /* class WeightedExperimentImplementation */
 
