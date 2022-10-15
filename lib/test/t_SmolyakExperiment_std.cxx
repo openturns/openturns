@@ -244,34 +244,34 @@ void test_4()
   Point y1({0.3, 0.4});
   //
   std::cout << "(1) Compare = " << x1 << " and " << y1 << std::endl;
-  bool comparison1 = SmolyakExperiment::comparePointsApproximately(x1, y1);
+  bool comparison1 = SmolyakExperiment::ComparePointsApproximately(x1, y1);
   assert_equal(comparison1, true);
   //
   std::cout << "(2) Compare = " << y1 << " and " << x1 << std::endl;
-  bool comparison1_bis = SmolyakExperiment::comparePointsApproximately(y1, x1);
+  bool comparison1_bis = SmolyakExperiment::ComparePointsApproximately(y1, x1);
   assert_equal(comparison1_bis, false);
   //
   std::cout << "(3) Compare = " << x1 << " and " << x1 << std::endl;
-  bool comparison3 = SmolyakExperiment::comparePointsApproximately(x1, x1);
+  bool comparison3 = SmolyakExperiment::ComparePointsApproximately(x1, x1);
   assert_equal(comparison3, false);
   //
   Point x1_bis({0.1001, 0.2001});
   std::cout << "(4) Compare = " << x1_bis << " and " << x1 << std::endl;
-  bool comparison4 = SmolyakExperiment::comparePointsApproximately(x1_bis, x1);
+  bool comparison4 = SmolyakExperiment::ComparePointsApproximately(x1_bis, x1);
   assert_equal(comparison4, false);
   //
   std::cout << "(5) Compare = " << x1 << " and " << x1_bis << std::endl;
-  bool comparison5 = SmolyakExperiment::comparePointsApproximately(x1, x1_bis);
+  bool comparison5 = SmolyakExperiment::ComparePointsApproximately(x1, x1_bis);
   assert_equal(comparison5, false);
   //
   Point zero({0.0, 0.0});
   Point zero_close({0.0001, 0.0001});
   std::cout << "(6) Compare = " << zero << " and " << zero_close << std::endl;
-  bool comparison6 = SmolyakExperiment::comparePointsApproximately(zero, zero_close);
+  bool comparison6 = SmolyakExperiment::ComparePointsApproximately(zero, zero_close);
   assert_equal(comparison6, false);
   //
   std::cout << "(7) Compare = " << zero_close << " and " << zero << std::endl;
-  bool comparison7 = SmolyakExperiment::comparePointsApproximately(zero_close, zero);
+  bool comparison7 = SmolyakExperiment::ComparePointsApproximately(zero_close, zero);
   assert_equal(comparison7, false);
 }
 

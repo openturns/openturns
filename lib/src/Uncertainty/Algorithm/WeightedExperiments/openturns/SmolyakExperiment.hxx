@@ -44,13 +44,10 @@ public:
   typedef PersistentCollection<WeightedExperiment> WeightedExperimentPersistentCollection;
 
   /** Compare two points approximately */
-  static bool comparePointsApproximately(const Point x, const Point y);
+  static bool ComparePointsApproximately(const Point & x, const Point & y);
 
   /** Default constructor */
   SmolyakExperiment();
-
-  /** Parameters constructor */
-  explicit SmolyakExperiment(const WeightedExperimentCollection & experimentCollection, const UnsignedInteger level);
 
   /** Virtual constructor */
   SmolyakExperiment * clone() const override;
@@ -90,7 +87,7 @@ private:
 
   // Merge (potentially) duplicated nodes
   void mergeNodesAndWeights(
-    const Sample duplicatedNodes, const Point duplicatedWeights) const;
+    const Sample & duplicatedNodes, const Point & duplicatedWeights) const;
 
   // Marginal experiment collection
   WeightedExperimentPersistentCollection collection_;

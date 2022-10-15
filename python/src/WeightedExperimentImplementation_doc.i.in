@@ -193,3 +193,17 @@ level : positive int
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation::setLevel
 OT_WeightedExperiment_setLevel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_getIsRandom_doc
+"Accessor to the randomness of quadrature.
+
+Parameters
+----------
+isRandom : bool
+    Is true if the design of experiments is random.
+    Otherwise, the design of experiment is assumed to be deterministic."
+%enddef
+%feature("docstring") getIsRandom
+OT_WeightedExperiment_getIsRandom_doc

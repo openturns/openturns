@@ -59,6 +59,8 @@ SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collec
     distributionCollection[i] = collection_[i].getDistribution();
     const UnsignedInteger marginalDimension = distributionCollection[i].getDimension();
     if (marginalDimension != 1) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " has dimension " << marginalDimension << " which is different from 1";
+    const isMarginalRandom = collection_[i].getIsRandom();
+    if (isMarginalRandom) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " is random.";
   }
   const BlockIndependentDistribution distribution(distributionCollection);
   WeightedExperimentImplementation::setDistribution(distribution);
@@ -200,7 +202,7 @@ private:
 
 // Implement merge with std::map
 void SmolyakExperiment::mergeNodesAndWeights(
-  const Sample duplicatedNodes, const Point duplicatedWeights) const
+  const Sample & duplicatedNodes, const Point & duplicatedWeights) const
 {
   LOGDEBUG(OSS() << "SmolyakExperiment::mergeNodesAndWeights()");
   const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon" );
@@ -335,7 +337,7 @@ UnsignedInteger SmolyakExperiment::getSize() const
 
 /* Compare two points approximately
    This is for testing purposes only. */
-bool SmolyakExperiment::comparePointsApproximately(const Point x, const Point y)
+bool SmolyakExperiment::ComparePointsApproximately(const Point & x, const Point & y)
 {
   const Scalar relativeEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointRelativeEpsilon");
   const Scalar absoluteEpsilon = ResourceMap::GetAsScalar( "SmolyakExperiment-DefaultPointAbsoluteEpsilon");

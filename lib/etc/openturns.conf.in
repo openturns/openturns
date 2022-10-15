@@ -784,6 +784,11 @@
   <!-- OT::WeightedExperimentImplementation parameters -->
   <WeightedExperiment-DefaultSize value_int="100" />
 
+    <!-- OT::SmolyakExperiment parameters -->
+  <SmolyakExperiment-DefaultPointRelativeEpsilon value_float="1.0e-8" />
+  <SmolyakExperiment-DefaultPointAbsoluteEpsilon value_float="1.0e-8" />
+  <SmolyakExperiment-MergeQuadrature value_bool="true" />
+
   <!-- OT::GaussProductExperiment parameters -->
   <GaussProductExperiment-DefaultMarginalSize value_int="5" />
 
