@@ -29,6 +29,7 @@
 /* Uncertainty/Algorithm/WeightedExperiment */
 %import weightedexperiment_module.i
 %include SmolyakExperiment.i
+%include UncertaintyWeightedExperimentTemplateDefs.i
 
 /* Uncertainty/Algorithm/OrthogonalBasis */
 %import orthogonalbasis_module.i

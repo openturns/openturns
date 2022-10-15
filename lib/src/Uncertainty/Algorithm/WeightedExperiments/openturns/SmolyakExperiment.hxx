@@ -49,6 +49,9 @@ public:
   /** Default constructor */
   SmolyakExperiment();
 
+  /** Parameters constructor */
+  SmolyakExperiment(const WeightedExperimentCollection & experimentCollection, const UnsignedInteger level);
+
   /** Virtual constructor */
   SmolyakExperiment * clone() const override;
 

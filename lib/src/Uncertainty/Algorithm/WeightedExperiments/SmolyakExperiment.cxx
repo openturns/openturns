@@ -59,7 +59,7 @@ SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collec
     distributionCollection[i] = collection_[i].getDistribution();
     const UnsignedInteger marginalDimension = distributionCollection[i].getDimension();
     if (marginalDimension != 1) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " has dimension " << marginalDimension << " which is different from 1";
-    const isMarginalRandom = collection_[i].getIsRandom();
+    const Bool isMarginalRandom = collection_[i].getIsRandom();
     if (isMarginalRandom) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " is random.";
   }
   const BlockIndependentDistribution distribution(distributionCollection);
