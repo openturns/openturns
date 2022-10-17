@@ -78,7 +78,7 @@ for i in range(m.dim):
         index = 1 + i * m.dim + j
 
         ax = fig.add_subplot(m.dim, m.dim, index)
-        ax.pcolormesh(meshX, meshY, meshZ, cmap="hsv", vmin = 176., vmax =363., shading='auto')
+        ax.pcolormesh(meshX, meshY, meshZ, cmap="hsv", vmin = 176., vmax = 363., shading='auto')
         ax.set_xticks([])
         ax.set_yticks([])
 
