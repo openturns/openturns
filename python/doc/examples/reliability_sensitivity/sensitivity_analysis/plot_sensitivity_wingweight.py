@@ -78,7 +78,7 @@ for i in range(m.dim):
         index = 1 + i * m.dim + j
 
         ax = fig.add_subplot(m.dim, m.dim, index)
-        ax.contour(meshX, meshY, meshZ, levels, cmap="hsv")
+        ax.pcolormesh(meshX,meshY,meshZ,cmap="hsv",vmin = 176.,vmax =363.,shading='auto')
         ax.set_xticks([])
         ax.set_yticks([])
 
@@ -89,8 +89,7 @@ for i in range(m.dim):
             ax.set_xlabel(m.distributionX.getDescription()[j])
 
 # %%
-# We can see that the variables :math:`t_c, N_z, A, W_{dg}` seem to be influent on the wing weight whereas :math:`l, W_p, W_{fw}` do not have influence on the function.
-
+# We can see that the variables :math:`t_c, N_z, A, W_{dg}` seem to be influent on the wing weight whereas :math:`\Lambda, \ell, q, W_p, W_{fw}` have less influence on the function.
 
 # %%
 # Data generation
