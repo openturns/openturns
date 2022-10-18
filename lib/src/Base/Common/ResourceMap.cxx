@@ -1521,6 +1521,18 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
   addAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
 
+  // GaussianProcessFitter parameters //
+  addAsBool("GaussianProcessFitter-KeepCovariance", true);
+  addAsBool("GaussianProcessFitter-OptimizeParameters", true);
+  addAsBool("GaussianProcessFitter-UnbiasedVariance", true);
+  addAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", true);
+  addAsScalar("GaussianProcessFitter-DefaultOptimizationLowerBound", 1.0e-2);
+  addAsScalar("GaussianProcessFitter-DefaultOptimizationScaleFactor", 2.0);
+  addAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound", 1.0e2);
+  addAsScalar("GaussianProcessFitter-MeanEpsilon", 1.0e-12);
+  addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "Cobyla");
+  addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK");
+
   // KrigingAlgorithm parameters //
   addAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK");
 

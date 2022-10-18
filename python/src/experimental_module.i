@@ -87,3 +87,4 @@
 %include FunctionalChaosValidation.i
 %include LinearModelValidation.i
 %include GaussianProcessFitterResult.i
+%include GaussianProcessFitter.i
