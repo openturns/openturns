@@ -35,6 +35,7 @@
 %include TemperatureProfile.i
 %include GeometricProfile.i
 %include LinearProfile.i
+%include SmolyakExperiment.i
 %include SpaceFillingImplementation.i
 %include SpaceFilling.i
 %include SpaceFillingC2.i

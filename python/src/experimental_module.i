@@ -28,8 +28,7 @@
 
 /* Uncertainty/Algorithm/WeightedExperiment */
 %import weightedexperiment_module.i
-%include SmolyakExperiment.i
-%include UncertaintyWeightedExperimentTemplateDefs.i
+// %include SmolyakExperiment.i // MBN : does not build if the SmolyakExperiment class is in experimental
 
 /* Uncertainty/Algorithm/OrthogonalBasis */
 %import orthogonalbasis_module.i
@@ -44,3 +43,6 @@
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
+
+/* At last we include template definitions */
+// %include UncertaintyWeightedExperimentTemplateDefs.i // MBN : required for SmolyakExperiment
