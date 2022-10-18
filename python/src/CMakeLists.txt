@@ -1031,6 +1031,7 @@ ot_add_python_module(experimental experimental_module.i
                      UniformOverMesh.i UniformOverMesh_doc.i.in
                      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                      GaussianProcessFitterResult.i GaussianProcessFitterResult_doc.i.in
+                     GaussianProcessFitter.i GaussianProcessFitter_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 

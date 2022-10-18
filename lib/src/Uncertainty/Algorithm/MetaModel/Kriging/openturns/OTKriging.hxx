@@ -29,5 +29,6 @@
 #include "openturns/GeneralLinearModelResult.hxx"
 #include "openturns/GeneralLinearModelAlgorithm.hxx"
 #include "openturns/GaussianProcessFitterResult.hxx"
+#include "openturns/GaussianProcessFitter.hxx"
 
 #endif /* OPENTURNS_OTKRIGING_HXX */
