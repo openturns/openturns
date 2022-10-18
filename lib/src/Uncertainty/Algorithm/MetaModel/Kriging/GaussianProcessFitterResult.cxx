@@ -56,7 +56,6 @@ GaussianProcessFitterResult::GaussianProcessFitterResult(const Sample & inputSam
       regressionMatrix_(regressionMatrix),
       basis_(basis),
       beta_(trendCoefficients),
-      trendFunction_(),
       covarianceModel_(covarianceModel),
       optimalLogLikelihood_(optimalLogLikelihood),
       linearAlgebraMethod_(linearAlgebraMethod),
@@ -106,12 +105,6 @@ Basis GaussianProcessFitterResult::getBasis() const
 Point GaussianProcessFitterResult::getTrendCoefficients() const
 {
   return beta_;
-}
-
-/** Trend function accessor */
-Function GaussianProcessFitterResult::getTrendFunction() const
-{
-  return trendFunction_;
 }
 
 /* Covariance models accessor */
@@ -205,7 +198,6 @@ void GaussianProcessFitterResult::save(Advocate & adv) const
   adv.saveAttribute("regressionMatrix_", regressionMatrix_);
   adv.saveAttribute("basis_", basis_);
   adv.saveAttribute("beta_", beta_ );
-  adv.saveAttribute("trendFunction_", trendFunction_);
   adv.saveAttribute("covarianceModel_", covarianceModel_ );
   adv.saveAttribute("rho_", covarianceModel_);
   adv.saveAttribute("optimalLogLikelihood_", optimalLogLikelihood_);
@@ -223,7 +215,6 @@ void GaussianProcessFitterResult::load(Advocate & adv)
   adv.loadAttribute("regressionMatrix_", regressionMatrix_);
   adv.loadAttribute("basis_", basis_);
   adv.loadAttribute("beta_", beta_ );
-  adv.loadAttribute("trendFunction_", trendFunction_);
   adv.loadAttribute("covarianceModel_", covarianceModel_ );
   adv.loadAttribute("rho_", covarianceModel_);
   adv.loadAttribute("optimalLogLikelihood_", optimalLogLikelihood_);

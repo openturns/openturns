@@ -196,13 +196,3 @@ trendCoef : sequence of float
 "
 
 // ---------------------------------------------------------------------
-
-%feature("docstring") OT::GaussianProcessFitterResult::getTrendFunction
-"Accessor to the trend function.
-
-Returns
--------
-trendFunc : :class:`~openturns.Function`
-    The trend function.
-"
-// ---------------------------------------------------------------------

@@ -82,9 +82,6 @@ public:
   /** Trend coefficients accessor */
   Point getTrendCoefficients() const;
 
-  /** Trend function accessor */
-  Function getTrendFunction() const;
-
   /** Conditional covariance models accessor */
   CovarianceModel getCovarianceModel() const;
 
@@ -143,9 +140,6 @@ private:
 
   /** The trend coefficients */
   Point beta_;
-
-  /** trend function accessor */
-  Function trendFunction_;
 
   /** The covariance model */
   CovarianceModel covarianceModel_;
