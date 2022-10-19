@@ -632,55 +632,6 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
   return impl;
 }
 
-/* Store a sample in a temporary text file, one realization by line. Returns the file name. */
-String SampleImplementation::storeToTemporaryFile() const
-{
-  const String dataFileName(Path::BuildTemporaryFileName("RData.txt.XXXXXX"));
-  std::ofstream dataFile(dataFileName.c_str());
-  dataFile << std::setprecision(16);
-  // Fill-in the data file
-  UnsignedInteger index = 0;
-  for (UnsignedInteger i = 0; i < size_; ++i)
-  {
-    Scalar value = data_[index];
-    ++index;
-    if (SpecFunc::IsNaN(value)) dataFile << '\"' << value << '\"';
-    else dataFile << value;
-    for (UnsignedInteger j = 1; j < dimension_; ++j)
-    {
-      value = data_[index];
-      ++index;
-      if (SpecFunc::IsNaN(value)) dataFile << ' ' << '\"' << value << '\"';
-      else dataFile << ' ' << value;
-    }
-    dataFile << "\n";
-  }
-  dataFile.close();
-  return dataFileName;
-}
-
-/* Export a sample as a matrix, one row by realization, in a format suitable to exchange with R */
-String SampleImplementation::streamToRFormat() const
-{
-  OSS oss;
-  oss.setPrecision(16);
-  oss << "matrix(c(";
-  String separator("");
-  for (UnsignedInteger j = 0; j < dimension_; ++j)
-  {
-    UnsignedInteger index = j;
-    for (UnsignedInteger i = 0; i < size_; ++i, separator = ",")
-    {
-      const Scalar value = data_[index];
-      index += dimension_;
-      const Bool isNaN = SpecFunc::IsNaN(value);
-      oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
-    }
-  }
-  oss << "), nrow=" << size_ << ", ncol=" << dimension_ << ")";
-  return oss;
-}
-
 /* Default constructor is private */
 SampleImplementation::SampleImplementation()
   : PersistentObject()

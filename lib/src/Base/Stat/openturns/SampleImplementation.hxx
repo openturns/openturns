@@ -484,12 +484,6 @@ public:
       const UnsignedInteger skippedLines = 0,
       const String & numSeparator = ".");
 
-  /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
-  String storeToTemporaryFile() const;
-
-  /** Export a sample as a matrix, one row by realization, in a format suitable to exchange with R */
-  String streamToRFormat() const;
-
 protected:
 
   /**

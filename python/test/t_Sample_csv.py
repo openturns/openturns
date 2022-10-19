@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.testing as ott
 import os
 
 ot.TESTPREAMBLE()
@@ -79,16 +78,6 @@ print("aSample with special chars (see log)=", repr(aSample))
 aSample = ot.Sample.ImportFromTextFile("sample.csv", ";")
 aSample.setName("a sample with special chars")
 print("aSample with special chars (see log)=", repr(aSample))
-
-# Print stream to R format
-print("Stream to R format = ", aSample.getImplementation().streamToRFormat())
-
-# Store to a temporary file and compute difference with current aSample
-tmpFilename = aSample.getImplementation().storeToTemporaryFile()
-tmpSample = ot.Sample.ImportFromTextFile(tmpFilename)
-# // Difference with aSample
-ott.assert_almost_equal(tmpSample, aSample, 1e-15, 1e-15)
-os.remove(tmpFilename)
 
 # text file with comments
 with open("sample.csv", "w") as f:

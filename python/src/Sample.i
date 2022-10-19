@@ -1,8 +1,5 @@
 // SWIG file Sample.i
 
-%ignore OT::Sample::storeToTemporaryFile;
-%ignore OT::Sample::streamToRFormat;
-
 %{
 #include "openturns/PythonWrappingFunctions.hxx"
 #include "openturns/SampleImplementation.hxx"

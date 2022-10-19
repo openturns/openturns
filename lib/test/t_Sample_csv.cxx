@@ -149,16 +149,6 @@ int main(int, char *[])
       // Nothing to do
     }
 
-    // Print stream to R format
-    fullprint << "Stream to R format = " << aSample.getImplementation()->streamToRFormat() << std::endl;
-
-    // Store to a temporary file and compute difference with current aSample
-    const String tmpFilename(aSample.getImplementation()->storeToTemporaryFile());
-    Sample tmpSample(Sample::ImportFromTextFile(tmpFilename));
-    // Difference with aSample
-    assert_almost_equal(tmpSample, aSample, 1e-15, 1e-15);
-    Os::Remove(tmpFilename);
-
   }
   catch (TestFailed & ex)
   {

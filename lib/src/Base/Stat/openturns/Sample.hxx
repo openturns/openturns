@@ -66,10 +66,6 @@ public:
                        const UnsignedInteger precision = ResourceMap::GetAsUnsignedInteger("Sample-CSVPrecision"),
                        const String & format = ResourceMap::Get("Sample-CSVFormat")) const;
 
-  /** Export a sample as a matrix, one row by realization, in a format suitable to exchange with R. */
-  String streamToRFormat() const;
-
-
 public:
 
   /**
@@ -335,9 +331,6 @@ public:
 
   /** argsort */
   Indices argsort(Bool isIncreasing = true) const;
-
-  /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
-  virtual String storeToTemporaryFile() const;
 
   /** Get the i-th marginal sample */
   Sample getMarginal(const UnsignedInteger index) const;
