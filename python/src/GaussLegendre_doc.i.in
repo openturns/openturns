@@ -28,7 +28,7 @@ with :math:`f: \Rset^d \mapsto \Rset^p`, :math:`\vect{a}, \vect{b}\in\Rset^d` us
 
     \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}} = \sum_{\vect{n}\in \cN}\left(\prod_{i=1}^d w^{N_i}_{n_i}\right)f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
 
-where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i`th node of the :math:`N_i`-points Gauss-Legendre 1D integration rule and :math:`w^{N_i}_{n_i}` the associated weight.
+where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i` th node of the :math:`N_i` -points Gauss-Legendre 1D integration rule and :math:`w^{N_i}_{n_i}` the associated weight.
 
 Examples
 --------
