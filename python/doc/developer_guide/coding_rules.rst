@@ -557,7 +557,7 @@ Example:
 Explicit keyword
 ~~~~~~~~~~~~~~~~
 
-Marking a single argument class constructors with the the *explicit* keyword
+Marking a single argument class constructors with the *explicit* keyword
 allows one to avoid unwanted conversions.
 
 It is relevant for constructors that have a single-argument, and also for

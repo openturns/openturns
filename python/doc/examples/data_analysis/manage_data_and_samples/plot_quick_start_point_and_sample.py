@@ -156,8 +156,8 @@ p2 = ot.Point(range(2))
 p2
 
 # %%
-# The first useful *Pythonism* that we will review is the *list comprehension*. This creates a list from a `for` loop. This kind of statements is often used in the the examples, so that they can be as short as possible.
-#
+# The first useful *Pythonism* that we will review is the *list comprehension*. This creates a list from a `for` loop.
+# This kind of statements is often used in the examples, so that they can be as short as possible.
 # In the following statement, we create a point by iterating over the components of a `Point`.
 
 # %%

@@ -102,7 +102,7 @@ graph.setYTitle(r"$z$")
 view = viewer.View(graph)
 
 # %%
-# We create the `postProcessingKL` function which takes coefficients of the the K.-L. modes as inputs and returns the trajectories.
+# We create the `postProcessingKL` function which takes coefficients of the K.-L. modes as inputs and returns the trajectories.
 
 # %%
 karhunenLoeveLiftingFunction = ot.KarhunenLoeveLifting(KLResult)
@@ -128,7 +128,8 @@ algo.run()
 chaosMetamodel = algo.getResult().getMetaModel()
 
 # %%
-# The final metamodel is a composition of the KL lifting function and the polynomial chaos metamodel. In order to combine these two functions, we use the `PointToFieldConnection` class.
+# The final metamodel is a composition of the KL lifting function and the polynomial chaos metamodel.
+# In order to combine these two functions, we use the `PointToFieldConnection` class.
 
 # %%
 metaModel = ot.PointToFieldConnection(karhunenLoeveLiftingFunction, chaosMetamodel)

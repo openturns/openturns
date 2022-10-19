@@ -35,7 +35,7 @@ sigma0s = [0.1, 1.0]
 # play with the variance of the prior:
 # if the prior variance is low (information concernig the mu parameter is strong)
 # then the posterior mean will be equal to the prior mean
-# if large, the the posterior distribution is equivalent to the
+# if large, the posterior distribution is equivalent to the
 # distribution of the sample mean
 for i in range(len(sigma0s)):
 
