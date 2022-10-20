@@ -32,26 +32,6 @@ FunctionalChaosResult"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MetaModelResult::getModel
-"Accessor to the model.
-
-Returns
--------
-model : :class:`~openturns.Function`
-    Physical model approximated by a metamodel."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MetaModelResult::setModel
-"Accessor to the model.
-
-Parameters
-----------
-model : :class:`~openturns.Function`
-    Physical model approximated by a metamodel."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::MetaModelResult::getMetaModel
 "Accessor to the metamodel.
 
@@ -121,3 +101,43 @@ relativeErrors : sequence of float
     :math:`\displaystyle \frac{\sum_{i=1}^N (y_i - \hat{y_i})^2}{N \Var{\vect{Y}}}`
     with :math:`\vect{Y}` the vector of the :math:`N` model's values
     :math:`y_i` and :math:`\hat{y_i}` the metamodel's values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::setInputSample
+"Accessor to the input sample.
+
+Parameters
+----------
+inputSample : :class:`~openturns.Sample`
+    The input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    The input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::setOutputSample
+"Accessor to the output sample.
+
+Parameters
+----------
+outputSample : :class:`~openturns.Sample`
+    The output sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    The output sample."
