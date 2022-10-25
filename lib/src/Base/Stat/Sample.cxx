@@ -63,18 +63,6 @@ void Sample::exportToCSVFile(const FileName & filename,
   getImplementation()->exportToCSVFile(filename, csvSeparator, numSeparator, precision, format);
 }
 
-/* Store a sample in a temporary text file, one realization by line. Returns the file name. */
-String Sample::storeToTemporaryFile() const
-{
-  return getImplementation()->storeToTemporaryFile();
-}
-
-/* Export a sample as a matrix, one row by realization, in a format suitable to exchange with R. */
-String Sample::streamToRFormat() const
-{
-  return getImplementation()->streamToRFormat();
-}
-
 /* Default constructor */
 Sample::Sample()
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(0, 1))

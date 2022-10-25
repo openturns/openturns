@@ -23,6 +23,7 @@
  * Removed IterativeMoments::getCenteredMoments
  * Removed GeneralLinearModelAlgorithm | KrigingAlgorithm ctors
  * Removed Drawable.draw|clean & Graph.draw|clean|getRCommand|makeR*|GetExtensionMap methods
+ * Removed Sample.storeToTemporaryFile|streamToRFormat methods
  * Removed GaussianProcess.GIBBS
 
 === Documentation ===
