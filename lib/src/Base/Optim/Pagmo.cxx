@@ -318,6 +318,8 @@ void Pagmo::run()
 #ifdef OPENTURNS_HAVE_PAGMO
   PagmoProblem pproblem(this);
   pagmo::problem prob(pproblem);
+  const pagmo::vector_double ctol(prob.get_nc(), getMaximumConstraintError());
+  prob.set_c_tol(ctol);
   const Description constrainedAgorithms = {"gaco", "ihs"};
   Bool emulatedConstraints = false;
   if ((getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint()) && !constrainedAgorithms.contains(getAlgorithmName()))
