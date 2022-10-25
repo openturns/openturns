@@ -265,9 +265,9 @@ This way of doing is more efficient.
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.VisualTest_DrawQQplot` to draw a QQ plot
-    - See :py:func:`~openturns.VisualTest_DrawHenryLine` to draw the Henry line
-    - See :py:func:`~openturns.VisualTest_DrawKendallPlot` to draw the Kendall plot
+    - See :py:func:`~openturns.VisualTest.DrawQQplot` to draw a QQ plot
+    - See :py:func:`~openturns.VisualTest.DrawHenryLine` to draw the Henry line
+    - See :py:func:`~openturns.VisualTest.DrawKendallPlot` to draw the Kendall plot
 
 .. topic:: Examples:
 
