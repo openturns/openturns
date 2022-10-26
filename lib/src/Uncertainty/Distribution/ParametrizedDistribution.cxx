@@ -33,7 +33,8 @@ static const Factory<ParametrizedDistribution> Factory_ParametrizedDistribution;
 ParametrizedDistribution::ParametrizedDistribution()
   : DistributionImplementation()
 {
-  // Nothing to do
+  // Update the range
+  computeRange();
 }
 
 
@@ -43,7 +44,8 @@ ParametrizedDistribution::ParametrizedDistribution(const DistributionParameters 
   , distributionParameters_(distParam)
   , distribution_(distParam.getDistribution())
 {
-  // Nothing to do
+  // Update the range
+  computeRange();
 }
 
 
@@ -240,9 +242,9 @@ Distribution ParametrizedDistribution::getStandardRepresentative() const
   return distribution_.getStandardRepresentative().getImplementation()->clone();
 }
 
-Interval ParametrizedDistribution::getRange() const
+void ParametrizedDistribution::computeRange()
 {
-  return distribution_.getRange();
+  range_ = distribution_.getRange();
 }
 
 /* Method save() stores the object through the StorageManager */
