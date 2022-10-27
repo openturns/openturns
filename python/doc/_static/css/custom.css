@@ -25,3 +25,6 @@ div.sphx-glr-download-link-note {
 pre, div[class*="highlight-"] {
   clear: left;
 }
+
+/* Shrink overlarge warning box from PR #2169 */
+div.admonition::after{content:none;}
