@@ -23,6 +23,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/DatabaseFunction.hxx"
+#include "openturns/BootstrapExperiment.hxx"
 
 #ifdef OPENTURNS_HAVE_PAGMO
 #include <pagmo/algorithm.hpp>
@@ -281,8 +282,8 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support multi-objective optimization";
   if ((problem.getObjective().getOutputDimension() < 2) && multiObjectiveAgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " only supports multi-objective optimization";
-  const Description integerAgorithms = {"gaco", "ihs", "sga", "nsga2", "mhaco"};
-  if (!problem.isContinuous() && !integerAgorithms.contains(getAlgorithmName()))
+  const Description integerAlgorithms = {"gaco", "ihs", "sga", "nsga2", "mhaco"};
+  if (!problem.isContinuous() && !integerAlgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support non continuous problems";
 #else
   (void)problem;
@@ -336,6 +337,37 @@ void Pagmo::run()
   {
     LOGINFO(OSS() << "Pagmo: must drop the last " << (populationSize % 4) << " points of the initial population for NSGA2 as the size=" << populationSize << " is not a multiple of 4");
     populationSize = 4 * (populationSize / 4);
+  }
+  // with mhaco starting population must satisfy constraints
+  if ((algoName_ == "mhaco") && (getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint()))
+  {
+    Sample startingSampleConstrained(0, getProblem().getDimension());
+    Sample ineqOutput;
+    if (getProblem().hasInequalityConstraint())
+      ineqOutput = getProblem().getInequalityConstraint()(startingSample_);
+    Sample eqOutput;
+    if (getProblem().hasEqualityConstraint())
+      eqOutput = getProblem().getEqualityConstraint()(startingSample_);
+    for (UnsignedInteger i = 0; i < populationSize; ++ i)
+    {
+      Bool ok = true;
+      if (getProblem().hasInequalityConstraint())
+        for (UnsignedInteger j = 0; j < ineqOutput.getDimension(); ++ j)
+          ok = ok && (ineqOutput(i, j) >= -getMaximumConstraintError());
+      if (getProblem().hasEqualityConstraint())
+        for (UnsignedInteger j = 0; j < eqOutput.getDimension(); ++ j)
+          ok = ok && (std::abs(eqOutput(i, j)) <= getMaximumConstraintError());
+      if (ok)
+        startingSampleConstrained.add(startingSample_[i]);
+    }
+    if (!startingSampleConstrained.getSize())
+      throw InvalidArgumentException(HERE) << "No point in starting population satisfies constraints";
+    if (startingSampleConstrained.getSize() < populationSize)
+    {
+      const Indices indices(BootstrapExperiment::GenerateSelection(populationSize, startingSampleConstrained.getSize()));
+      startingSample_ = startingSampleConstrained.select(indices);
+      LOGINFO(OSS() << "Pagmo: Initial population bootstrapped to satisfy constraints");
+    }
   }
   for (UnsignedInteger i = 0; i < populationSize; ++ i)
   {
@@ -565,6 +597,33 @@ void Pagmo::run()
     const Point inP(pproblem.renumber(Point(x.begin(), x.end())));
     finalPoints.add(inP);
   }
+
+  // filter according to constraints
+  if (getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint())
+  {
+    Sample finalPointsConstrained(0, getProblem().getDimension());
+    Sample ineqOutput;
+    if (getProblem().hasInequalityConstraint())
+      ineqOutput = getProblem().getInequalityConstraint()(finalPoints);
+    Sample eqOutput;
+    if (getProblem().hasEqualityConstraint())
+      eqOutput = getProblem().getEqualityConstraint()(finalPoints);
+    for (UnsignedInteger i = 0; i < pop.size(); ++ i)
+    {
+      Bool ok = true;
+      if (getProblem().hasInequalityConstraint())
+        for (UnsignedInteger j = 0; j < ineqOutput.getDimension(); ++ j)
+          ok = ok && (ineqOutput(i, j) >= -getMaximumConstraintError());
+      if (getProblem().hasEqualityConstraint())
+        for (UnsignedInteger j = 0; j < eqOutput.getDimension(); ++ j)
+          ok = ok && (std::abs(eqOutput(i, j)) <= getMaximumConstraintError());
+      if (ok)
+        finalPointsConstrained.add(finalPoints[i]);
+    }
+    if (finalPointsConstrained.getSize())
+      finalPoints = finalPointsConstrained;
+  }
+
   // we want to retrieve evaluations before penalization to avoid MaxScalar values
   const DatabaseFunction xToY(PagmoProblem::evaluationInputHistory_,
                               PagmoProblem::evaluationOutputHistory_);
