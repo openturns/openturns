@@ -17,7 +17,7 @@ A factory for constant basis of input dimension *dimension*.
 Examples
 --------
 >>> import openturns as ot
->>> basis = ConstantBasisFactory(2).build()
+>>> basis = ot.ConstantBasisFactory(2).build()
 >>> f = ot.AggregatedFunction(basis)
 >>> x = [2, 3]
 >>> print(f(x))
