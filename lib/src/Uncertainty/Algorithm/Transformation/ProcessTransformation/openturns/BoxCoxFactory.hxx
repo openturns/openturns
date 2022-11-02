@@ -46,8 +46,6 @@ class OT_API BoxCoxFactory
 
 public:
 
-  typedef GeneralLinearModelResult::BasisCollection BasisCollection;
-
   /** Default constructor without parameters */
   BoxCoxFactory();
 
@@ -85,13 +83,6 @@ public:
   BoxCoxTransform build(const Sample & inputSample,
                         const Sample & outputSample,
                         const CovarianceModel & covarianceModel,
-                        const BasisCollection & basis,
-                        const Point & shift,
-                        GeneralLinearModelResult & result);
-
-  BoxCoxTransform build(const Sample & inputSample,
-                        const Sample & outputSample,
-                        const CovarianceModel & covarianceModel,
                         const Point & shift,
                         GeneralLinearModelResult & result);
 
@@ -103,11 +94,6 @@ protected:
 
   /** Optimization solver */
   OptimizationAlgorithm solver_;
-
-  void checkGLMData(const Sample & inputSample,
-                    const Sample & outputSample,
-                    const CovarianceModel & covarianceModel,
-                    const BasisCollection & basis);
 
 } ; /* class BoxCoxFactory */
 
