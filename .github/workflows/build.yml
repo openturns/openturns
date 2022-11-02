@@ -2,6 +2,10 @@ on:
   push:
     branches: [ master ]
   pull_request:
+
+permissions:
+  contents: read
+
 jobs:
   macos:
     runs-on: macos-latest
@@ -19,7 +23,7 @@ jobs:
         git clone https://github.com/jeromerobert/hmat-oss.git hmat-oss
         cd hmat-oss/
         git checkout 1.7.1
-        git cherry-pick 6ad59b7d
+        git cherry-pick 6ad59b7d d7387b2a
         cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
         make install -j3
     - run: |

@@ -102,7 +102,7 @@ q = 0.4
 enumerateFunction_1 = ot.HyperbolicAnisotropicEnumerateFunction(inputDimension, q)
 
 # %%
-# Create the multivariate orthonormal basis which is the the cartesian product of the univariate basis.
+# Create the multivariate orthonormal basis which is the cartesian product of the univariate basis.
 
 # %%
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)

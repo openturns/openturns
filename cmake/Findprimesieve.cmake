@@ -4,10 +4,10 @@
 #
 # The module defines the following variables:
 #  PRIMESIEVE_INCLUDE_DIRS, where to find mpc.h, etc.
-#  PRIMESIEVE_LIBRARIES, the libraries needed to use MPC.
-#  PRIMESIEVE_FOUND, If false, do not try to use MPC.
+#  PRIMESIEVE_LIBRARIES, the libraries needed to use primesieve.
+#  PRIMESIEVE_FOUND, If false, do not try to use primesieve.
 # also defined, but not for general use are
-#  PRIMESIEVE_LIBRARY, where to find the MPC library.
+#  PRIMESIEVE_LIBRARY, where to find the primesieve library.
 #
 #=============================================================================
 # Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca

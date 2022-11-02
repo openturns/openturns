@@ -3,9 +3,16 @@
 The cantilever beam model
 =========================
 
-We are interested in the the vertical deviation of a diving board created by a child diver. We consider a child whose weight generates a force approximately equal to 300N (i.e. almost 30 kg). Because of the uncertainties in the weight of the person, we consider that the force is a random variable. The length of the diving board is between 2.5 m and 2.6 m. The Young modulus is uncertain and between 65 and 75 GPa, which corresponds to the fiberglass material, a material often used for diving boards. Uncertainties in the production of the material are taken into account in the Young modulus and the section modulus of the board. 
+We are interested in the vertical deviation of a diving board created by a child diver.
+We consider a child whose weight generates a force approximately equal to 300N (i.e. almost 30 kg).
+Because of the uncertainties in the weight of the person, we consider that the force is a random variable.
+The length of the diving board is between 2.5 m and 2.6 m.
+The Young modulus is uncertain and between 65 and 75 GPa, which corresponds to
+the fiberglass material, a material often used for diving boards.
+Uncertainties in the production of the material are taken into account in the Young modulus and the section modulus of the board.
 
-We consider a cantilever beam defined by its Young’s modulus :math:`E`, its length :math:`L` and its section modulus :math:`I`. One end of the cantilever beam is built in a wall and we apply a concentrated bending load :math:`F` at the other end of the beam, resulting in a deviation :math:`Y`. 
+We consider a cantilever beam defined by its Young’s modulus :math:`E`, its length :math:`L` and its section modulus :math:`I`.
+One end of the cantilever beam is built in a wall and we apply a concentrated bending load :math:`F` at the other end of the beam, resulting in a deviation :math:`Y`.
 
 .. figure:: ../_static/beam.png
     :align: center

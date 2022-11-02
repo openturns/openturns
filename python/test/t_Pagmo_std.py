@@ -31,12 +31,6 @@ ineq = ot.SymbolicFunction(["x1", "x2"], ["x1-x2"])  # x1>x2
 size = 100
 dist = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2)
 pop0 = dist.getSample(size)
-# constrained population
-pop1 = []
-while len(pop1) < size:
-    x = dist.getRealization()
-    if x[0] > x[1]:
-        pop1.append(x)
 
 multi_obj = ["nsga2", "moead", "mhaco", "nspso"]
 for name in multi_obj:
@@ -45,9 +39,7 @@ for name in multi_obj:
         zdt1.setBounds(bounds)
         if use_ineq:
             zdt1.setInequalityConstraint(ineq)
-            algo = ot.Pagmo(zdt1, name, pop1)
-        else:
-            algo = ot.Pagmo(zdt1, name, pop0)
+        algo = ot.Pagmo(zdt1, name, pop0)
         algo.setBlockSize(8)
         # algo.setProgressCallback(progress)
         # algo.setStopCallback(stop)
@@ -68,10 +60,8 @@ dim = 2
 f = ot.SymbolicFunction(["x1", "x2"], ["1+100*(x2-x1^2)^2+(1-x1)^2"])
 ineq = ot.SymbolicFunction(["x1", "x2"], ["-x2"])  # x2<0
 bounds = ot.Interval([-1.5] * dim, [1.5] * dim)
-pop0 = ot.ComposedDistribution([ot.Uniform(-1.5, 1.5)] * 2).getSample(8)
-for i in range(pop0.getSize()):
-    if pop0[i, 1] > 0.0:
-        pop0[i, 1] = -pop0[i, 1]
+pop0 = ot.ComposedDistribution([ot.Uniform(-1.5, 1.5)] * 2).getSample(80)
+
 for name in ot.Pagmo.GetAlgorithmNames():
     if name in multi_obj:
         continue
@@ -88,9 +78,12 @@ for name in ot.Pagmo.GetAlgorithmNames():
         result = algo.getResult()
         x = result.getOptimalPoint()
         y = result.getOptimalValue()
-        assert result.getFinalPoints().getSize() == pop0.getSize(), "no final pop"
+        if not use_ineq:
+            assert result.getFinalPoints().getSize() == pop0.getSize(), "no final pop"
         assert y[0] < 40.0, str(y)
         print(name, x, y)
+        if use_ineq:
+            assert x[1] < 1e-5, "verified constraint"
 
 print("----- minlp -----")
 
@@ -184,4 +177,28 @@ for name in ["gaco", "ihs", "sga"]:
     x = result.getOptimalPoint()
     y = result.getOptimalValue()
     print(name, x, y)
-    assert y[0] < 200.0, str(y)
+    if name != "ihs":
+        assert y[0] < 200.0, str(y)
+
+
+# check we dont expose penalized values
+f = ot.SymbolicFunction(
+    ["x1", "x2"], ["x1", "var g := 1.0 + 9.0 * (x1 + x2); g * (1.0 - sqrt(x1 / g))"]
+)
+zdt1 = ot.OptimizationProblem(f)
+bounds = ot.Interval([0.0] * 2, [5.0] * 2)
+zdt1.setBounds(bounds)
+ineq = ot.ComposedFunction(ot.SymbolicFunction(["y1", "y2"], ["2-y1", "2-y2"]), f)  # y1,y2 <2
+zdt1.setInequalityConstraint(ineq)
+dist = ot.ComposedDistribution([ot.Uniform(0.0, 5.0)] * 2)
+pop0 = dist.getSample(50)
+algo = ot.Pagmo(zdt1, "nsga2", pop0)
+algo.run()
+result = algo.getResult()
+x = result.getFinalPoints()
+y = result.getFinalValues()
+for i in range(y.getSize()):
+    assert y[i, 1] < 100.0, "penalized y value"
+fi0 = result.getParetoFrontsIndices()[0]
+print(fi0)
+assert len(fi0) <= 6, "pareto indices " + str(fi0)

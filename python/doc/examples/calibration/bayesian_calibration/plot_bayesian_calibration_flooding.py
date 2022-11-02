@@ -219,7 +219,7 @@ parameterPriorCovariance[1, 1] = sigmaZv**2
 parameterPriorCovariance[2, 2] = sigmaZm**2
 
 # %%
-# Define the the prior distribution :math:`\pi(\vect\theta)` of the parameter :math:`\vect\theta`
+# Define the prior distribution :math:`\pi(\vect\theta)` of the parameter :math:`\vect\theta`
 
 # %%
 prior = ot.Normal(parameterPriorMean, parameterPriorCovariance)
