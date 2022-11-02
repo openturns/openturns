@@ -118,11 +118,11 @@ This method is also referred to in the literature as Kolmogorov's Test.
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.FittingTest_Kolmogorov` to compare a sample with
+    - See :py:func:`~openturns.FittingTest.Kolmogorov` to compare a sample with
       a reference probability distribution
-    - See :py:func:`~openturns.FittingTest_BestModelKolmogorov` to select the
+    - See :py:func:`~openturns.FittingTest.BestModelKolmogorov` to select the
       best candidate from several probability models with respect to a sample
-    - See :py:func:`~openturns.HypothesisTest_TwoSamplesKolmogorov` to compare two samples
+    - See :py:func:`~openturns.HypothesisTest.TwoSamplesKolmogorov` to compare two samples
 
 .. topic:: Examples:
 

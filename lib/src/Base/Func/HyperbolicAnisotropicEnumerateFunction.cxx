@@ -56,8 +56,8 @@ HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(c
     const Scalar q)
   : EnumerateFunctionImplementation(weight.getDimension())
   , weight_(weight)
-  , q_(q)
 {
+  setQ(q);
   initialize();
 }
 
@@ -84,7 +84,7 @@ void HyperbolicAnisotropicEnumerateFunction::initialize()
   cache_.clear();
   candidates_.clear();
   // insert indice 0, with q-norm 0.0 in the candidate list
-  ValueType zero(Indices( getDimension(), 0), 0.0);
+  ValueType zero(Indices(getDimension(), 0), 0.0);
   candidates_.insert(candidates_.begin(), zero);
 }
 
@@ -122,6 +122,9 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedIntege
   // if we haven't generated enough indices, generate them
   for (UnsignedInteger i = cache_.getSize(); i <= index; ++ i)
   {
+    if (candidates_.empty())
+      throw NotDefinedException(HERE) << "Cannot enumerate up to index=" << index << " because of the bounds.";
+
     // the current indice is the first candidate in the list as we maintain q-norm sorting
     ValueType current(candidates_.front());
 
@@ -131,16 +134,18 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedIntege
     // detect a norm leap
     if ((cache_.getSize() > 0) && (current.second > qNorm(cache_[cache_.getSize() - 1]))) strataCumulatedCardinal_.add( cache_.getSize() );
 
-    cache_.add( current.first );
-
+    cache_.add(current.first);
 
     // generate all the neighbours indices
     for(UnsignedInteger j = 0; j < getDimension(); ++ j)
     {
-      Indices nextIndices( current.first );
+      Indices nextIndices(current.first);
+      if (nextIndices[j] >= upperBound_[j])
+        continue;
       ++ nextIndices[j];
-      Scalar nextNorm = qNorm( nextIndices );
-      ValueType next( nextIndices, nextNorm );
+
+      Scalar nextNorm = qNorm(nextIndices);
+      ValueType next(nextIndices, nextNorm);
       IndiceCache::iterator it = candidates_.begin();
 
       // we'll try to insert the indice in the list according to its q-norm
@@ -232,6 +237,7 @@ void HyperbolicAnisotropicEnumerateFunction::setQ(const Scalar q)
 {
   if (!(q > 0.0)) throw InvalidRangeException( HERE ) << "q parameter should be positive, but q=" << q;
   q_ = q;
+  initialize();
 }
 
 
@@ -248,16 +254,25 @@ void HyperbolicAnisotropicEnumerateFunction::setWeight(const Point & weight)
   {
     if (!(weight[i] >= 0.0))
     {
-      throw InvalidRangeException( HERE ) << "Anisotropic weights should not be negative, but the weight of index " << i << " is " << weight[i];
+      throw InvalidRangeException(HERE) << "Anisotropic weights should not be negative, but the weight of index " << i << " is " << weight[i];
     }
   }
   weight_ = weight;
+  initialize();
 }
 
 
 Point HyperbolicAnisotropicEnumerateFunction::getWeight() const
 {
   return weight_;
+}
+
+
+/* Upper bound accessor */
+void HyperbolicAnisotropicEnumerateFunction::setUpperBound(const Indices & upperBound)
+{
+  EnumerateFunctionImplementation::setUpperBound(upperBound);
+  initialize();
 }
 
 

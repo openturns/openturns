@@ -7,7 +7,7 @@ R = ot.CorrelationMatrix(2)
 for i in range(1, 2):
     R[i, i - 1] = -0.25
 
-distribution = ot.Normal([-1.5, 0.5], [4., 1.], R)
+distribution = ot.Normal([-1.5, 0.5], [4.0, 1.0], R)
 
 sample = distribution.getSample(200)
 

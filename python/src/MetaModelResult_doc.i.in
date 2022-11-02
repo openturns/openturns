@@ -1,11 +1,10 @@
 %feature("docstring") OT::MetaModelResult
 "Data structure containing a metamodel.
 
-Available constructor:
-    MetaModelResult(model, metaModel, residuals, relativeErrors)
-
 Parameters
 ----------
+sampleX, sampleY : 2-d sequence of float
+    Input/output samples
 model : :class:`~openturns.Function`
     Physical model approximated by a metamodel.
 metaModel : :class:`~openturns.Function`

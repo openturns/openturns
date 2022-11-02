@@ -9,30 +9,31 @@ distribution = ot.FisherSnedecor(4.5, 8.4)
 size = 10000
 sample = distribution.getSample(size)
 factory = ot.FisherSnedecorFactory()
-print('Distribution                      =', repr(distribution))
+print("Distribution                      =", repr(distribution))
 result = factory.buildEstimator(sample)
 estimatedDistribution = result.getDistribution()
-print('Estimated distribution            =', repr(estimatedDistribution))
+print("Estimated distribution            =", repr(estimatedDistribution))
 parameterDistribution = result.getParameterDistribution()
-print('Parameter distribution            =', parameterDistribution)
+print("Parameter distribution            =", parameterDistribution)
 defaultDistribution = factory.build()
-print('Default distribution              =', defaultDistribution)
+print("Default distribution              =", defaultDistribution)
 fromParameterDistribution = factory.build(distribution.getParameter())
-print('Distribution from parameters      =', fromParameterDistribution)
+print("Distribution from parameters      =", fromParameterDistribution)
 typedEstimatedDistribution = factory.buildAsFisherSnedecor(sample)
-print('Typed estimated distribution      =', typedEstimatedDistribution)
+print("Typed estimated distribution      =", typedEstimatedDistribution)
 defaultTypedDistribution = factory.buildAsFisherSnedecor()
-print('Default typed distribution        =', defaultTypedDistribution)
+print("Default typed distribution        =", defaultTypedDistribution)
 typedFromParameterDistribution = factory.buildAsFisherSnedecor(
-    distribution.getParameter())
-print('Typed distribution from parameters=', typedFromParameterDistribution)
+    distribution.getParameter()
+)
+print("Typed distribution from parameters=", typedFromParameterDistribution)
 # Various estimators
 estimatedDistribution = factory.build(sample)
-print('Estimated distribution with default estimator =', estimatedDistribution)
+print("Estimated distribution with default estimator =", estimatedDistribution)
 estimatedDistribution = factory.buildMethodOfMoments(sample)
-print('Estimated distribution with moments=', estimatedDistribution)
+print("Estimated distribution with moments=", estimatedDistribution)
 estimatedDistribution = factory.buildMethodOfLikelihoodMaximization(sample)
-print('Estimated distribution with likelihoodMax.=', estimatedDistribution)
+print("Estimated distribution with likelihoodMax.=", estimatedDistribution)
 
 # Build method of moments
 print("Build method of moments")
@@ -45,8 +46,8 @@ exact_mu = sample.computeMean()[0]
 exact_sigma2 = sample.computeCovariance()[0, 0]
 computed_mu = estimatedTN.getMean()[0]
 computed_sigma2 = estimatedTN.getCovariance()[0, 0]
-ott.assert_almost_equal(exact_mu, computed_mu, 1.e-15, 0.0)
-ott.assert_almost_equal(exact_sigma2, computed_sigma2, 1.e-15, 0.0)
+ott.assert_almost_equal(exact_mu, computed_mu, 1.0e-15, 0.0)
+ott.assert_almost_equal(exact_sigma2, computed_sigma2, 1.0e-15, 0.0)
 
 # Build method of likelihood maximization
 print("Build method of likelihood maximization")

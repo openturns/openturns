@@ -883,26 +883,6 @@ The default value is `0.75`."
 %enddef
 %feature("docstring") OT::DrawableImplementation::setTextSize
 OT_Drawable_setTextSize_doc
-// ---------------------------------------------------------------------
-
-%define OT_Drawable_draw_doc
-"Generate R command for plotting through R.
-
-Returns
--------
-command : str
-    R command used mainly by the draw method of :class:`~openturns.Graph`."
-%enddef
-%feature("docstring") OT::DrawableImplementation::draw
-OT_Drawable_draw_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Drawable_clean_doc
-"Clean all the temporary data created by :meth:`draw` method."
-%enddef
-%feature("docstring") OT::DrawableImplementation::clean
-OT_Drawable_clean_doc
 
 // ---------------------------------------------------------------------
 

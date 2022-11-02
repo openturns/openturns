@@ -731,6 +731,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Poisson.i Poisson_doc.i.in
                       PoissonFactory.i PoissonFactory_doc.i.in
                       ProductDistribution.i ProductDistribution_doc.i.in
+                      QuantileMatchingFactory.i QuantileMatchingFactory_doc.i.in
                       RandomMixture.i RandomMixture_doc.i.in
                       Rayleigh.i Rayleigh_doc.i.in
                       RayleighFactory.i RayleighFactory_doc.i.in
@@ -751,6 +752,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
+                      UniformMuSigma.i UniformMuSigma_doc.i.in
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
@@ -893,9 +895,6 @@ ot_add_python_module(metamodel metamodel_module.i
                       UnionEvent.i UnionEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
-                      FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
-                      FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in
-                      FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
                       TensorApproximationResult.i TensorApproximationResult_doc.i.in
                       TensorApproximationAlgorithm.i TensorApproximationAlgorithm_doc.i.in
@@ -1026,6 +1025,12 @@ ot_add_python_module(uncertainty uncertainty_module.i
 ot_add_python_module(testing testing_module.i
                     )
 
+ot_add_python_module(experimental experimental_module.i
+                     FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
+                     FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in
+                     FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
+                     UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
+                    )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
 

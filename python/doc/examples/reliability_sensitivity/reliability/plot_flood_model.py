@@ -15,6 +15,7 @@ from openturns.usecases import flood_model
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -42,7 +43,7 @@ model = fm.model
 vect = ot.RandomVector(distribution)
 G = ot.CompositeRandomVector(model, vect)
 event = ot.ThresholdEvent(G, ot.Greater(), 0.0)
-event.setName('overflow')
+event.setName("overflow")
 
 # %%
 # Estimate the probability with FORM
@@ -75,7 +76,7 @@ standardSpaceDesignPoint = result.getStandardSpaceDesignPoint()
 # %%
 result = algo.getResult()
 probability = result.getEventProbability()
-print('Pf=', probability)
+print("Pf=", probability)
 
 # %%
 # Importance factors.

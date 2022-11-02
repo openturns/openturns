@@ -121,8 +121,8 @@ public:
   /** Get the raw moments of the distribution */
   Point getMoment(const UnsignedInteger n) const override;
 
-  /** Get the centered moments of the distribution */
-  Point getCenteredMoment(const UnsignedInteger n) const override;
+  /** Get the central moments of the distribution */
+  Point getCentralMoment(const UnsignedInteger n) const override;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter) override;

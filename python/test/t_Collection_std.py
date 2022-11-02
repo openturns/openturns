@@ -6,9 +6,9 @@ import openturns as ot
 ulc1 = ot.UnsignedIntegerCollection((1, 2, 3, 4, 5))
 ulc2 = ot.UnsignedIntegerCollection([1, 2, 3, 4, 5])
 t = (1, 2, 3, 4, 5)
-l = [1, 2, 3, 4, 5]
+ll = [1, 2, 3, 4, 5]
 ulc3 = ot.UnsignedIntegerCollection(t)
-ulc4 = ot.UnsignedIntegerCollection(l)
+ulc4 = ot.UnsignedIntegerCollection(ll)
 
 ulc1[2] = 100
 print(ulc1)

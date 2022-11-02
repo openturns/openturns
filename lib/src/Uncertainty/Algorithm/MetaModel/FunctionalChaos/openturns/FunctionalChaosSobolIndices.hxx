@@ -48,8 +48,9 @@ public:
 
   /** String converter */
   String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
-  /** Summary table */
+  /** @deprecated Summary table */
   String summary() const;
 
   /* Here is the interface that all derived class must implement */

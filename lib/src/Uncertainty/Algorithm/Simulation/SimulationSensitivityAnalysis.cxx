@@ -64,9 +64,9 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const RandomVector 
 
 /* Standard constructor */
 SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const ProbabilitySimulationResult & result)
-  : PersistentObject()
+  : SimulationSensitivityAnalysis(result.getEvent())
 {
-  *this = SimulationSensitivityAnalysis(result.getEvent());
+  // Nothing to do
 }
 
 /* Standard constructor */

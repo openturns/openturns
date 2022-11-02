@@ -14,19 +14,18 @@ Create a symbolic function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # create a symbolic function
-function = ot.SymbolicFunction(['x0', 'x1'],
-                               ['-(6 + x0^2 - x1)'])
+function = ot.SymbolicFunction(["x0", "x1"], ["-(6 + x0^2 - x1)"])
 print(function)
 
 # %%
 # evaluate function
 x = [2.0, 3.0]
-print('x=', x, 'f(x)=', function(x))
+print("x=", x, "f(x)=", function(x))
 
 # %%
 # show gradient
@@ -34,7 +33,7 @@ print(function.getGradient())
 
 # %%
 # use gradient
-print('x=', x, 'df(x)=', function.gradient(x))
+print("x=", x, "df(x)=", function.gradient(x))
 
 # %%
 # draw isocontours of f around [2,3]

@@ -33,19 +33,34 @@ point = [1.8]
 print("Nearest index(", point, ")=", tree.query(point))
 simplex = enclosingSimplex.query(point)
 found, coordinates = mesh1D.checkPointInSimplexWithCoordinates(point, simplex)
-print("Nearest index(", point, "), found=", found,
-      "simplex=", int(simplex), "coordinates=", coordinates)
+print(
+    "Nearest index(",
+    point,
+    "), found=",
+    found,
+    "simplex=",
+    int(simplex),
+    "coordinates=",
+    coordinates,
+)
 point = [-1.8]
 simplex = enclosingSimplex.query(point)
 found, coordinates = mesh1D.checkPointInSimplexWithCoordinates(point, simplex)
-print("Nearest index(", point, "), found=", found,
-      "simplex=", int(simplex), "coordinates=", coordinates)
+print(
+    "Nearest index(",
+    point,
+    "), found=",
+    found,
+    "simplex=",
+    int(simplex),
+    "coordinates=",
+    coordinates,
+)
 points = [[-0.25], [2.25]]
 print("Nearest index(", points, ")=", tree.query(points))
 print("P1 gram=\n", mesh1D.computeP1Gram())
 # 2D case
-vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
-            [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
+vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
 simplicies = [[0, 1, 2], [1, 2, 3], [2, 3, 4], [2, 4, 5], [0, 2, 5]]
 
 mesh2D = ot.Mesh(vertices, simplicies)
@@ -102,7 +117,7 @@ mesh = ot.Mesh(time_grid)
 print(mesh.isRegular())
 
 # numerical limit testcase
-m1 = ot.IntervalMesher([1]*2).build(ot.Interval([0.0]*2, [1.0]*2))
+m1 = ot.IntervalMesher([1] * 2).build(ot.Interval([0.0] * 2, [1.0] * 2))
 simplex = 0
 point = [0.8, 0.2]
 found, coordinates = m1.checkPointInSimplexWithCoordinates(point, simplex)
@@ -116,4 +131,4 @@ try:
     mesh = ot.Mesh(vertices, simplices, True)
     weights = mesh.computeWeights()
 except Exception:
-    print('ok')
+    print("ok")

@@ -29,18 +29,18 @@ s = 3
 values = ot.Normal(s).getSample(mesh3D.getVerticesNumber())
 field = ot.Field(mesh3D, values)
 tree = ot.KDTree(vertices)
-print('field=', field)
-print('input dim=', field.getInputDimension())
-print('value[4]=', field.getValueAtIndex(4))
-print('value[4, 0]=%.6g' % field[4, 0])
-print('nearest[2]=', field.getValueAtIndex(tree.query(field[2])))
-print('mesh=', field.getMesh())
-print('input mean=', field.getInputMean())
-print('norm=%.6g' % field.norm())
-print('deformed=', field.asDeformedMesh())
-print('description=', field.getDescription())
+print("field=", field)
+print("input dim=", field.getInputDimension())
+print("value[4]=", field.getValueAtIndex(4))
+print("value[4, 0]=%.6g" % field[4, 0])
+print("nearest[2]=", field.getValueAtIndex(tree.query(field[2])))
+print("mesh=", field.getMesh())
+print("input mean=", field.getInputMean())
+print("norm=%.6g" % field.norm())
+print("deformed=", field.asDeformedMesh())
+print("description=", field.getDescription())
 
-fname = 'field.vtk'
+fname = "field.vtk"
 field.exportToVTKFile(fname)
 with open(fname) as f:
     data = f.read()
@@ -48,4 +48,4 @@ with open(fname) as f:
 os.remove(fname)
 
 scalarField = ot.Field(mesh3D, ot.Sample(len(vertices), [1.0]))
-print('deformed with complement=', scalarField.asDeformedMesh([1], [0, 2, 3]))
+print("deformed with complement=", scalarField.asDeformedMesh([1], [0, 2, 3]))

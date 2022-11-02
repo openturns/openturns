@@ -48,20 +48,20 @@ public:
                        const Sample & outputSample);
 
   /** Parameters constructor */
-  LinearModelAlgorithm(const Sample & inputSample,
-                       const Basis & basis,
-                       const Sample & outputSample);
+  LinearModelAlgorithm(const Sample &inputSample,
+                       const Sample &outputSample,
+                       const Basis &basis);
+
+  /** Oldest constructor (for compatibility) */
+  LinearModelAlgorithm(const Sample &inputSample,
+                       const Basis &basis,
+                       const Sample &outputSample);
 
   /** Virtual constructor */
-  LinearModelAlgorithm * clone() const override;
-
+  LinearModelAlgorithm *clone() const override;
 
   /** String converter */
   String __repr__() const override;
-
-  /** Sample accessors */
-  Sample getInputSample() const override;
-  Sample getOutputSample() const override;
 
   /** Basis accessor */
   Basis getBasis() const;
@@ -80,21 +80,14 @@ public:
 
 
 private:
-
-  // The input data
-  Sample inputSample_;
-
   /** The basis */
   Basis basis_;
-
-  // The associated output data
-  Sample outputSample_;
 
   /** Result */
   LinearModelResult result_;
 
   /** Bool to tell if optimization has run */
-  Bool hasRun_;
+  Bool hasRun_ = false;
 
 }; /* class LinearModelAlgorithm */
 

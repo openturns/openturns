@@ -1,23 +1,19 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-try:
-    # The 1D interface
-    dim = 2
-    a = Point(dim, -1.0)
-    b = Point(dim, 2.0)
-    domain = Domain(Interval(a, b))
-    p1 = Point(dim, 0.5)
-    p2 = Point(dim, 2.5)
-    print("Domain=", domain)
-    # Accessors
-    print("Dimension=", domain.getDimension())
-    # Contains
-    print("is point ", p1, " inside ",  domain,  "? ",  p1 in domain)
-    print("is point ", p2, " inside ",  domain,  "? ",  p2 in domain)
-except:
-    import sys
-    print("t_Domain_std.py", sys.exc_info()[0], sys.exc_info()[1])
+# The 1D interface
+dim = 2
+a = ot.Point(dim, -1.0)
+b = ot.Point(dim, 2.0)
+domain = ot.Domain(ot.Interval(a, b))
+p1 = ot.Point(dim, 0.5)
+p2 = ot.Point(dim, 2.5)
+print("Domain=", domain)
+# Accessors
+print("Dimension=", domain.getDimension())
+# Contains
+print("is point ", p1, " inside ", domain, "? ", p1 in domain)
+print("is point ", p2, " inside ", domain, "? ", p2 in domain)

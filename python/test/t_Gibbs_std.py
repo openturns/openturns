@@ -18,7 +18,7 @@ ot.TESTPREAMBLE()
 
 # observations
 size = 10
-realDist = ot.Normal(31., 1.2)
+realDist = ot.Normal(31.0, 1.2)
 
 data = realDist.getSample(size)
 
@@ -27,7 +27,7 @@ mean_instrumental = ot.Uniform(-2.0, 2.0)
 std_instrumental = ot.Uniform(-2.0, 2.0)
 
 # prior distribution
-mu0 = 25.
+mu0 = 25.0
 
 sigma0s = [0.1, 1.0]
 # sigma0s.append(2.0)
@@ -51,28 +51,29 @@ for i in range(len(sigma0s)):
 
     # create a Gibbs sampler
     mean_sampler = ot.RandomWalkMetropolisHastings(
-        prior, initialState, mean_instrumental, [0])
+        prior, initialState, mean_instrumental, [0]
+    )
     mean_sampler.setLikelihood(conditional, data)
     std_sampler = ot.RandomWalkMetropolisHastings(
-        prior, initialState, std_instrumental, [1])
+        prior, initialState, std_instrumental, [1]
+    )
     std_sampler.setLikelihood(conditional, data)
     sampler = ot.Gibbs([mean_sampler, std_sampler])
     sampler.setThinning(2)
     sampler.setBurnIn(500)
     realization = sampler.getRealization()
 
-    sigmay = ot.ConditionalDistribution(
-        ot.Normal(), prior).getStandardDeviation()[0]
-    w = size * sigma0 ** 2. / (size * sigma0 ** 2. + sigmay ** 2.0)
+    sigmay = ot.ConditionalDistribution(ot.Normal(), prior).getStandardDeviation()[0]
+    w = size * sigma0**2.0 / (size * sigma0**2.0 + sigmay**2.0)
 
-    print("prior variance= %.12g" % (sigma0 ** 2.))
+    print("prior variance= %.12g" % (sigma0**2.0))
     print("  realization=", realization)
 
     print("  w= %.12g" % w)
 
     # the posterior for mu is analytical
-    mu_exp = (w * data.computeMean()[0] + (1. - w) * mu0)
-    sigma_exp = ((w * sigmay ** 2.0 / size) ** 0.5)
+    mu_exp = w * data.computeMean()[0] + (1.0 - w) * mu0
+    sigma_exp = (w * sigmay**2.0 / size) ** 0.5
     print("  expected posterior ~N( %.6g" % mu_exp, ",  %.6g" % sigma_exp, ")")
 
     # try to generate a sample
@@ -84,8 +85,10 @@ for i in range(len(sigma0s)):
     ott.assert_almost_equal(x_mu, mu_exp, 2e-1, 1e-1)
     ott.assert_almost_equal(x_sigma, sigma_exp, 1e-2, 1e-1)
 
-    print('acceptance rate=', [mh.getAcceptanceRate()
-                               for mh in sampler.getMetropolisHastingsCollection()])
+    print(
+        "acceptance rate=",
+        [mh.getAcceptanceRate() for mh in sampler.getMetropolisHastingsCollection()],
+    )
 
 
 # improper prior
@@ -105,12 +108,12 @@ class CensoredWeibull(ot.PythonDistribution):
         self.alpha = alpha
 
     def getRange(self):
-        return ot.Interval([0, 0], [1, 1], [True]*2, [False, True])
+        return ot.Interval([0, 0], [1, 1], [True] * 2, [False, True])
 
     def computeLogPDF(self, x):
         if not (self.alpha > 0.0 and self.beta > 0.0):
-            return float('-inf')
-        log_pdf = -(x[0] / self.beta)**self.alpha
+            return float("-inf")
+        log_pdf = -((x[0] / self.beta) ** self.alpha)
         log_pdf += (self.alpha - 1) * m.log(x[0] / self.beta) * x[1]
         log_pdf += m.log(self.alpha / self.beta) * x[1]
         return log_pdf
@@ -124,35 +127,51 @@ class CensoredWeibull(ot.PythonDistribution):
 
 
 conditional = ot.Distribution(CensoredWeibull())
-x = ot.Sample([[4380, 1], [1791, 1], [1611, 1], [1291, 1], [6132, 0], [
-              5694, 0], [5296, 0], [4818, 0], [4818, 0], [4380, 0]])
-logpdf = ot.SymbolicFunction(['beta', 'alpha'], ['-log(beta)'])
+x = ot.Sample(
+    [
+        [4380, 1],
+        [1791, 1],
+        [1611, 1],
+        [1291, 1],
+        [6132, 0],
+        [5694, 0],
+        [5296, 0],
+        [4818, 0],
+        [4818, 0],
+        [4380, 0],
+    ]
+)
+logpdf = ot.SymbolicFunction(["beta", "alpha"], ["-log(beta)"])
 support = ot.Interval([0] * 2, [1] * 2)
 support.setFiniteUpperBound([False] * 2)
 initialState = [1.0, 1.0]
 rwmh_beta = ot.RandomWalkMetropolisHastings(
-    logpdf, support, initialState, ot.Normal(0., 10000.0), [0])
+    logpdf, support, initialState, ot.Normal(0.0, 10000.0), [0]
+)
 rwmh_beta.setLikelihood(conditional, x)
 rwmh_alpha = ot.RandomWalkMetropolisHastings(
-    logpdf, support, initialState, ot.Normal(0., 0.5), [1])
+    logpdf, support, initialState, ot.Normal(0.0, 0.5), [1]
+)
 rwmh_alpha.setLikelihood(conditional, x)
 gibbs = ot.Gibbs([rwmh_beta, rwmh_alpha])
 sample = gibbs.getSample(1000)
-print('mu=', sample.computeMean())
-print('sigma=', sample.computeStandardDeviation())
+print("mu=", sample.computeMean())
+print("sigma=", sample.computeStandardDeviation())
 
 
 # check recompute indices, update bug
 initial_state = [0.0, 0.0, 20.0]
 target = ot.Normal(3)
-weird_target = ot.ComposedDistribution(
-    [ot.Normal(), ot.Normal(), ot.Dirac(20.0)])
+weird_target = ot.ComposedDistribution([ot.Normal(), ot.Normal(), ot.Dirac(20.0)])
 normal0_rwmh = ot.RandomWalkMetropolisHastings(
-    target, initial_state, ot.Uniform(-10, 10), [0])  # samples from Normal(0,1)
+    target, initial_state, ot.Uniform(-10, 10), [0]
+)  # samples from Normal(0,1)
 normal1_rwmh = ot.RandomWalkMetropolisHastings(
-    target, initial_state, ot.Uniform(-10, 10), [1])  # samples from Normal(0,1)
+    target, initial_state, ot.Uniform(-10, 10), [1]
+)  # samples from Normal(0,1)
 dirac_rwmh = ot.RandomWalkMetropolisHastings(
-    weird_target, initial_state, ot.Normal(), [2])     # samples from Dirac(20)
+    weird_target, initial_state, ot.Normal(), [2]
+)  # samples from Dirac(20)
 # samples from Normal(0,1) x Normal(0,1) x Dirac(20)
 gibbs = ot.Gibbs([normal0_rwmh, normal1_rwmh, dirac_rwmh])
 sample = gibbs.getSample(1000)
@@ -164,3 +183,39 @@ stddev = sample.computeStandardDeviation()
 print(mean, stddev)
 ott.assert_almost_equal(mean, [-0.015835, 0.169951, 20])
 ott.assert_almost_equal(stddev, [0.956516, 1.05469, 0])
+
+# check log-pdf is recomputed by the correct blocks
+initialState = [0.5] * 4
+rvmh1 = ot.RandomVectorMetropolisHastings(
+    ot.RandomVector(ot.Dirac([0.5] * 2)), initialState, [0, 1]
+)
+rvmh2 = ot.RandomVectorMetropolisHastings(
+    ot.RandomVector(ot.Uniform(0.0, 1.0)), initialState, [2]
+)
+rwmh = ot.RandomWalkMetropolisHastings(
+    ot.SymbolicFunction(["x", "y", "z", "t"], ["1"]),
+    ot.Interval(4),
+    initialState,
+    ot.Uniform(),
+    [3],
+)
+gibbs = ot.Gibbs([rvmh1, rvmh2, rwmh])
+gibbs.getRealization()
+assert gibbs.getRecomputeLogPosterior() == [1, 0, 1]
+gibbs.setUpdatingMethod(ot.Gibbs.RANDOM_UPDATING)
+gibbs.getRealization()
+assert gibbs.getRecomputeLogPosterior() == [1, 1, 1]
+
+# Check all blocks are called equally often under the random order option.
+# Here there are 3 blocks:
+# 1) a Dirac RandomVectorMetropolisHastings -- never moves
+# 2) a Uniform RandomVectorMetropolisHastings -- always moves
+# 3) a RandomWalkMetropolisHastings with average acceptance probability 1/2
+# If 1) is selected or 3) is selected and the proposal is rejected, the chain does not move
+# This happens with probability 1/3 + 1/3 * 1/2 = 1/2.
+sample = gibbs.getSample(10000)
+diffs = sample[1:] - sample[:-1]
+zeros = ot.Point(4)
+null_diffs = [point == zeros for point in diffs]
+frequency_nomove = sum(null_diffs) / len(null_diffs)
+ott.assert_almost_equal(frequency_nomove, 0.5, 0.02, 0.0)

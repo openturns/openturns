@@ -10,6 +10,7 @@ Polynomial chaos graphs
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -19,13 +20,11 @@ def drawFamily(factory, degreeMax=5):
     colorList = ot.Drawable.BuildDefaultPalette(degreeMax)
 
     # Create a fine title
-    titleJacobi = factory.__class__.__name__.replace(
-        'Factory', '') + " polynomials"
+    titleJacobi = factory.__class__.__name__.replace("Factory", "") + " polynomials"
 
     # Create an empty graph which will be fulfilled
     # with curves
-    graphJacobi = ot.Graph(
-        titleJacobi, "z", "polynomial values", True, "topright")
+    graphJacobi = ot.Graph(titleJacobi, "z", "polynomial values", True, "topright")
 
     # Fix the number of points for the graph
     pointNumber = 101
@@ -36,8 +35,7 @@ def drawFamily(factory, degreeMax=5):
 
     # Get the curves
     for i in range(degreeMax):
-        graphJacobi_temp = factory.build(i).draw(
-            xMinJacobi, xMaxJacobi, pointNumber)
+        graphJacobi_temp = factory.build(i).draw(xMinJacobi, xMaxJacobi, pointNumber)
         graphJacobi_temp_draw = graphJacobi_temp.getDrawable(0)
         graphJacobi_temp_draw.setLegend("degree " + str(i))
         graphJacobi_temp_draw.setColor(colorList[i])

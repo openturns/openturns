@@ -26,7 +26,7 @@ myXproc = ot.GaussianProcess(myCovModel, myMesh)
 # and to get a positive process
 # thanks to the spatial function g
 # myXtProcess R --> R
-g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
+g = ot.SymbolicFunction(["x1"], ["exp(x1)"])
 myDynTransform = ot.ValueFunction(g, myMesh)
 myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
 
@@ -45,8 +45,9 @@ shift = [0.0]
 # We estimate the lambda parameter from the field myField
 # All values of the field are positive
 myModelTransform = myBoxCoxFactory.build(myField, shift, graph)
-graphMarginal2 = ot.KernelSmoothing().build(
-    myModelTransform(myField).getValues()).drawPDF()
+graphMarginal2 = (
+    ot.KernelSmoothing().build(myModelTransform(myField).getValues()).drawPDF()
+)
 graphMarginal2.setXTitle("T_lambda(X)")
 graphMarginal2.setLegendPosition("")
 

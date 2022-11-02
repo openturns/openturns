@@ -9,6 +9,7 @@ Create a general linear model metamodel
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -17,8 +18,8 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 ot.RandomGenerator.SetSeed(0)
 dimension = 2
-input_names = ['x1', 'x2']
-formulas = ['cos(x1 + x2)']
+input_names = ["x1", "x2"]
+formulas = ["cos(x1 + x2)"]
 model = ot.SymbolicFunction(input_names, formulas)
 distribution = ot.Normal(dimension)
 x = distribution.getSample(100)
@@ -29,7 +30,7 @@ y = model(x)
 
 # %%
 basis = ot.LinearBasisFactory(dimension).build()
-covarianceModel = ot.SquaredExponential([1]*dimension, [1.0])
+covarianceModel = ot.SquaredExponential([1] * dimension, [1.0])
 algo = ot.GeneralLinearModelAlgorithm(x, y, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
@@ -56,14 +57,12 @@ responseSurface = result.getMetaModel()
 # Plot the output of our model depending on `x2` with `x1=0.5`.
 
 # %%
-xmin = -5.
-xmax = 5.
+xmin = -5.0
+xmax = 5.0
 x1value = 0.5
-parametricModelGraph = ot.ParametricFunction(
-    model, [0], [x1value]).draw(xmin, xmax)
+parametricModelGraph = ot.ParametricFunction(model, [0], [x1value]).draw(xmin, xmax)
 parametricModelGraph.setColors(["red"])
-graphMetamodel = ot.ParametricFunction(
-    responseSurface, [0], [x1value]).draw(xmin, xmax)
+graphMetamodel = ot.ParametricFunction(responseSurface, [0], [x1value]).draw(xmin, xmax)
 graphMetamodel.setColors(["blue"])
 parametricModelGraph.add(graphMetamodel)
 parametricModelGraph.setLegends(["Model", "Meta-Model"])

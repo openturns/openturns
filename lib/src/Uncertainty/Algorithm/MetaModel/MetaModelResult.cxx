@@ -37,6 +37,22 @@ MetaModelResult::MetaModelResult()
 }
 
 /* Standard constructor */
+MetaModelResult::MetaModelResult(const Sample & inputSample,
+                                 const Sample & outputSample,
+                                 const Function & metaModel,
+                                 const Point & residuals,
+                                 const Point & relativeErrors)
+  : PersistentObject()
+  , inputSample_(inputSample)
+  , outputSample_(outputSample)
+  , metaModel_(metaModel)
+  , residuals_(residuals)
+  , relativeErrors_(relativeErrors)
+{
+  // Nothing to do
+}
+
+/* Standard constructor */
 MetaModelResult::MetaModelResult(const Function & model,
                                  const Function & metaModel,
                                  const Point & residuals,
@@ -100,12 +116,33 @@ Point MetaModelResult::getRelativeErrors() const
   return relativeErrors_;
 }
 
+/* Sample accessor */
+void MetaModelResult::setInputSample(const Sample & inputSample)
+{
+  inputSample_ = inputSample;
+}
+
+Sample MetaModelResult::getInputSample() const
+{
+  return inputSample_;
+}
+
+/* Sample accessor */
+void MetaModelResult::setOutputSample(const Sample & outputSample)
+{
+  outputSample_ = outputSample;
+}
+
+Sample MetaModelResult::getOutputSample() const
+{
+  return outputSample_;
+}
+
 /* String converter */
 String MetaModelResult::__repr__() const
 {
   OSS oss;
-  oss << "model=" << model_
-      << " metaModel=" << metaModel_
+  oss << " metaModel=" << metaModel_
       << " residuals=" << residuals_
       << " relativeErrors=" << relativeErrors_;
   return oss;
@@ -115,7 +152,8 @@ String MetaModelResult::__repr__() const
 void MetaModelResult::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "model_", model_ );
+  adv.saveAttribute( "inputSample_", inputSample_ );
+  adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "metaModel_", metaModel_ );
   adv.saveAttribute( "residuals_", residuals_ );
   adv.saveAttribute( "relativeErrors_", relativeErrors_ );
@@ -125,7 +163,11 @@ void MetaModelResult::save(Advocate & adv) const
 void MetaModelResult::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "model_", model_ );
+  if (adv.hasAttribute( "inputSample_"))
+  {
+    adv.loadAttribute( "inputSample_", inputSample_ );
+    adv.loadAttribute( "outputSample_", outputSample_ );
+  }
   adv.loadAttribute( "metaModel_", metaModel_ );
   adv.loadAttribute( "residuals_", residuals_ );
   adv.loadAttribute( "relativeErrors_", relativeErrors_ );

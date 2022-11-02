@@ -53,7 +53,7 @@ public:
   inline
   Bool operator ==(const IterativeMoments & other) const
   {
-    return (dimension_ == other.dimension_) && (orderMax_ == other.orderMax_) && (centeredMoments_ == other.centeredMoments_);
+    return (dimension_ == other.dimension_) && (orderMax_ == other.orderMax_) && (centralMoments_ == other.centralMoments_);
   }
 
   /**
@@ -86,6 +86,9 @@ public:
   Point getKurtosis() const;
 
   /** Accessor to the centered moments */
+  Sample getCentralMoments() const;
+
+  /** @deprecated */
   Sample getCenteredMoments() const;
 
   /** Get the actual order */
@@ -113,7 +116,7 @@ private:
 
 private:
   UnsignedInteger orderMax_;
-  Sample centeredMoments_;
+  Sample centralMoments_;
 };
 
 END_NAMESPACE_OPENTURNS

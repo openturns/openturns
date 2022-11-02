@@ -71,10 +71,6 @@ public:
   /** Perform regression */
   void run() override;
 
-  /** Sample accessors */
-  Sample getInputSample() const override;
-  Sample getOutputSample() const override;
-
   /** result accessor */
   KrigingResult getResult();
 

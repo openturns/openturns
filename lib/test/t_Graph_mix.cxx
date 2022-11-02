@@ -127,8 +127,6 @@ int main(int, char *[])
     myGraph.add(myCloud);
     myGraph.add(myLine);
     myGraph.add(myPie);
-    myGraph.draw("Graph_mix_OT.png");
-
 
     // Test if a drawable can be extracted from a graph to be added to another graph
     Graph firstGraph("Overall graph", "x", "y", true, "topright");
@@ -137,7 +135,6 @@ int main(int, char *[])
     secondGraph.add(myLine);
     // Extract the drawable from the second graph and add it to the first graph
     firstGraph.add(secondGraph.getDrawables()[0]);
-    firstGraph.draw("OverallGraph.png");
 
     //  Set new colors
     Description colors(0);

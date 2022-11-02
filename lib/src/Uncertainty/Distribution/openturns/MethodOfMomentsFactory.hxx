@@ -54,6 +54,7 @@ public:
   using DistributionFactoryImplementation::build;
 
   /* Here is the interface that all derived class must implement */
+
   /** Build a distribution based on a sample */
   Distribution build(const Sample & sample) const override;
 
@@ -63,8 +64,8 @@ public:
   /** Build a distribution using its default constructor */
   Distribution build() const override;
 
-  /** Build a distribution based on a set of parameters */
-  Point buildParameter(const Sample & sample) const;
+  /** Build a distribution from its moments */
+  Distribution buildFromMoments(const Point & moments) const;
 
   /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);

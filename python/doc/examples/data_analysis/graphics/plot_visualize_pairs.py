@@ -10,6 +10,7 @@ Visualize pairs
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -17,7 +18,7 @@ ot.Log.Show(ot.Log.NONE)
 R = ot.CorrelationMatrix(3)
 for i in range(1, 3):
     R[i, i - 1] = -0.4
-distribution = ot.Normal([0.] * 3, [5.] * 3, R)
+distribution = ot.Normal([0.0] * 3, [5.0] * 3, R)
 sample = distribution.getSample(200)
 
 # %%

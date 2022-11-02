@@ -81,7 +81,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sampl
     {
       return buildMethodOfProbabilityWeightedMoments(sample);
     }
-    catch (InvalidArgumentException &)
+    catch (const InvalidArgumentException &)
     {
       // Nothing to do, fallback on the exponential regression
       LOGINFO("Method of probability weighted moment failed, using method of exponential regression");
@@ -92,7 +92,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sampl
   {
     return buildMethodOfExponentialRegression(sample);
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     // Nothing to do, fallback on the exponential regression
     LOGINFO("Method of exponential regression failed, using method of probability weighted moment");
@@ -108,7 +108,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Point
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from the given parameters";
   }
@@ -130,9 +130,9 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & 
   if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
   const Scalar stddev = sample.computeStandardDeviation()[0];
   if (stddev == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution from a constant sample.";
-  const Scalar xi = 0.5 * (std::pow(mean / stddev, 2.0) - 1.0);
+  const Scalar xi = -0.5 * (std::pow(mean / stddev, 2.0) - 1.0);
   // The moment estimator is valid only if the estimated xi parameter is greater than -1/4
-  if (xi <= -0.25) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of moments when the estimated xi parameter=" << xi << " is less than -0.25";
+  if (xi >= 0.25) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of moments when the estimated xi parameter=" << xi << " is greater than 0.25";
   const Scalar sigma = 0.5 * mean * (std::pow(mean / stddev, 2) + 1.0);
   GeneralizedPareto result(sigma, xi, u);
   result.setDescription(sample.getDescription());

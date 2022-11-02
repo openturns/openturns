@@ -75,6 +75,11 @@ public:
   /** Dimension accessor */
   UnsignedInteger getDimension() const override;
 
+  /** Sampling method accessors */
+  enum UpdatingMethod { DETERMINISTIC_UPDATING, RANDOM_UPDATING };
+  void setUpdatingMethod(const UpdatingMethod updatingMethod);
+  UpdatingMethod getUpdatingMethod() const;
+
   /** Propose a new point in the chain */
   Point getRealization() const override;
 
@@ -86,6 +91,12 @@ public:
   HistoryStrategy getHistory() const;
 
 protected:
+  // Sequentially sample from the MH blocks
+  void computeRealizationDeterministicUpdating() const;
+
+  // Sample from a randomly chosen MH block
+  void computeRealizationRandomUpdating() const;
+
   mutable Point currentState_;
   mutable HistoryStrategy history_;
 
@@ -95,6 +106,12 @@ private:
 
   // collection of MH samplers
   MetropolisHastingsPersistentCollection samplers_;
+
+  // sampling method: determines in which order the MH samplers are called
+  UnsignedInteger updatingMethod_ = 0;
+
+  // which MH sampler was previously called (used when updatingMethod_ is RANDOM_UPDATING)
+  mutable UnsignedInteger previouslyChosenSampler_ = 0;
 
   // number of first samples discarded to reach stationary regime
   UnsignedInteger burnIn_ = 0;

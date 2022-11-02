@@ -27,5 +27,5 @@ assert_almost_equal(sb.distribution_R.getMean()[0], 3.0e6, 1e-12)
 assert_almost_equal(sb.distribution_F.getMean()[0], 750.0, 1e-12)
 
 # special value of the model function
-X = ot.Point([1.0, pi/10000.0])
+X = ot.Point([1.0, pi / 10000.0])
 assert_almost_equal(sb.model(X), [0.0], 1e-12)

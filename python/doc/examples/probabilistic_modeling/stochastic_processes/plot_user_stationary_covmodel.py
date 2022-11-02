@@ -19,6 +19,7 @@ Create a stationary covariance model
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -63,12 +64,11 @@ for k in range(N):
     x[k, 1] = value[0, 0]
 
 # Create the curve of the spectral function
-curve = ot.Curve(x, 'User Model')
+curve = ot.Curve(x, "User Model")
 
 # Create the graph
-myGraph = ot.Graph('User covariance model', 'Time',
-                   'Covariance function', True)
+myGraph = ot.Graph("User covariance model", "Time", "Covariance function", True)
 myGraph.add(curve)
-myGraph.setLegendPosition('topright')
+myGraph.setLegendPosition("topright")
 view = viewer.View(myGraph)
 plt.show()

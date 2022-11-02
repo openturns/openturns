@@ -31,16 +31,17 @@ Use the ANCOVA indices
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the model (x1,x2) --> (y) = (4.*x1+5.*x2)
-model = ot.SymbolicFunction(['x1', 'x2'], ['4.*x1+5.*x2'])
+model = ot.SymbolicFunction(["x1", "x2"], ["4.*x1+5.*x2"])
 
 # %%
 # Create the input independent joint distribution
 distribution = ot.Normal(2)
-distribution.setDescription(['X1', 'X2'])
+distribution.setDescription(["X1", "X2"])
 
 # %%
 # Create the correlated input distribution
@@ -54,14 +55,16 @@ distribution_corr = ot.ComposedDistribution([ot.Normal()] * 2, copula)
 # ANCOVA needs a functional decomposition of the model
 enumerateFunction = ot.LinearEnumerateFunction(2)
 productBasis = ot.OrthogonalProductPolynomialFactory(
-    [ot.HermiteFactory()]*2, enumerateFunction)
+    [ot.HermiteFactory()] * 2, enumerateFunction
+)
 adaptiveStrategy = ot.FixedStrategy(
-    productBasis, enumerateFunction.getStrataCumulatedCardinal(4))
+    productBasis, enumerateFunction.getStrataCumulatedCardinal(4)
+)
 samplingSize = 250
-projectionStrategy = ot.LeastSquaresStrategy(
-    ot.MonteCarloExperiment(samplingSize))
-algo = ot.FunctionalChaosAlgorithm(
-    model, distribution, adaptiveStrategy, projectionStrategy)
+experiment = ot.MonteCarloExperiment(distribution, samplingSize)
+X = experiment.generate()
+Y = model(X)
+algo = ot.FunctionalChaosAlgorithm(X, Y, distribution, adaptiveStrategy)
 algo.run()
 result = ot.FunctionalChaosResult(algo.getResult())
 
@@ -88,16 +91,23 @@ print("ANCOVA correlated indices ", correlatedIndices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
-    indices, distribution.getDescription(), 'ANCOVA indices (Sobol\')')
+    indices, distribution.getDescription(), "ANCOVA indices (Sobol')"
+)
 view = viewer.View(graph)
 
 # %%
-graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(uncorrelatedIndices, distribution.getDescription(
-), 'ANCOVA uncorrelated indices\n(part of physical variance in the model)')
+graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
+    uncorrelatedIndices,
+    distribution.getDescription(),
+    "ANCOVA uncorrelated indices\n(part of physical variance in the model)",
+)
 view = viewer.View(graph)
 
 # %%
-graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(correlatedIndices, distribution.getDescription(
-), 'ANCOVA correlated indices\n(part of variance due to the correlation)')
+graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
+    correlatedIndices,
+    distribution.getDescription(),
+    "ANCOVA correlated indices\n(part of variance due to the correlation)",
+)
 view = viewer.View(graph)
 plt.show()

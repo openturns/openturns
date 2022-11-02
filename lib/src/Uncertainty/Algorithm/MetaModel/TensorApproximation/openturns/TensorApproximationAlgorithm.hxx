@@ -66,10 +66,6 @@ public:
   /** Result accessor */
   TensorApproximationResult getResult() const;
 
-  /** Sample accessors */
-  Sample getInputSample() const override;
-  Sample getOutputSample() const override;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -130,10 +126,6 @@ private:
 
   /** The composed model */
   Function composedModel_;
-
-  // samples
-  Sample inputSample_;
-  Sample outputSample_;
 
   UnsignedInteger maxRank_;
 

@@ -27,8 +27,7 @@ Test the design point with the Strong Maximum Test
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -37,7 +36,7 @@ model = ot.SymbolicFunction(["x1", "x2"], ["x1+2*x2"])
 
 # Create the input distribution and random vector X
 inputDist = ot.Normal(2)
-inputDist.setDescription(['X1', 'X2'])
+inputDist.setDescription(["X1", "X2"])
 
 inputVector = ot.RandomVector(inputDist)
 
@@ -79,12 +78,22 @@ confidenceLevel = 0.99
 # CARE : the event must be declared in the standard space
 # 1. From the confidenceLevel parameter
 mySMT_CL = ot.StrongMaximumTest(
-    myStandardEvent, standardSpaceDesignPoint,  importanceLevel, accuracyLevel,  confidenceLevel)
+    myStandardEvent,
+    standardSpaceDesignPoint,
+    importanceLevel,
+    accuracyLevel,
+    confidenceLevel,
+)
 
 # 2. Or from the  maximum number of points sampling the sphere
 pointsNumber = 1000
 mySMT_PN = ot.StrongMaximumTest(
-    myStandardEvent, standardSpaceDesignPoint,  importanceLevel, accuracyLevel,  pointsNumber)
+    myStandardEvent,
+    standardSpaceDesignPoint,
+    importanceLevel,
+    accuracyLevel,
+    pointsNumber,
+)
 
 # Perform the test
 mySMT_CL.run()
@@ -92,11 +101,11 @@ mySMT_PN.run()
 
 # Get (or evaluate) the confidence level
 # associated to the number of points used to sample the sphere
-print('Confidence level = ', mySMT_CL.getConfidenceLevel())
+print("Confidence level = ", mySMT_CL.getConfidenceLevel())
 
 # Get (or evaluate) the number of points used to sample the sphere
 # associated the confidence level used
-print('Points Number = ', mySMT_CL.getPointNumber())
+print("Points Number = ", mySMT_CL.getPointNumber())
 
 # %%
 
@@ -104,28 +113,35 @@ print('Points Number = ', mySMT_CL.getPointNumber())
 # Get also the values of limit state function at these points
 potentialDesignPoints = mySMT_CL.getFarDesignPointVerifyingEventPoints()
 values = mySMT_CL.getFarDesignPointVerifyingEventValues()
-print('Potential design points = ', potentialDesignPoints)
-print('Model values = ', values)
+print("Potential design points = ", potentialDesignPoints)
+print("Model values = ", values)
 
 # Get all the points verifying the event and inside the design point vicinity
 # Get also the values of limit state function at these points
 vicinityDesignPoint = mySMT_CL.getNearDesignPointVerifyingEventPoints()
 values = mySMT_CL.getNearDesignPointVerifyingEventValues()
-print('Points verifying the Event in the vicinity of the design points = ',
-      vicinityDesignPoint)
-print('Model values = ', values)
+print(
+    "Points verifying the Event in the vicinity of the design points = ",
+    vicinityDesignPoint,
+)
+print("Model values = ", values)
 
 # Get all the points not verifying the event and outside the design point vicinity
 # Get also the values of limit state function at these points
 farSecurityPoints = mySMT_CL.getFarDesignPointViolatingEventPoints()
 values = mySMT_CL.getFarDesignPointViolatingEventValues()
-print('Points NOT verifying the Event outside the vicinity of the design points = ', farSecurityPoints)
-print('Model values = ', values)
+print(
+    "Points NOT verifying the Event outside the vicinity of the design points = ",
+    farSecurityPoints,
+)
+print("Model values = ", values)
 
 # Get  all the points not verifying the event and inside the design point vicinity
 # Get also the values of limit state function at these points
 vicinitySecurityPoints = mySMT_CL.getNearDesignPointViolatingEventPoints()
 values = mySMT_CL.getNearDesignPointViolatingEventValues()
-print('Points NOT verifying the Event outside the vicinity of the design points = ',
-      vicinitySecurityPoints)
-print('Model values = ', values)
+print(
+    "Points NOT verifying the Event outside the vicinity of the design points = ",
+    vicinitySecurityPoints,
+)
+print("Model values = ", values)

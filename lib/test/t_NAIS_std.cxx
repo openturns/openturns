@@ -89,6 +89,6 @@ int main()
   algoNais.run();
 
   const NAISResult resultNais(algoNais.getResult());
-  OT::Test::assert_almost_equal(resultNais.getProbabilityEstimate(), 0.00227031);
+  OT::Test::assert_almost_equal(resultNais.getProbabilityEstimate(), 0.00215688);
   return 0;
 }

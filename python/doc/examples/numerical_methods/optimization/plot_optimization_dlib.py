@@ -10,6 +10,7 @@ import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -28,12 +29,12 @@ for algo in ot.Dlib.GetAlgorithmNames():
 
 # %%
 # Define the problem based on Rosebrock function
-rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+(x2-x1^2)^2'])
+rosenbrock = ot.SymbolicFunction(["x1", "x2"], ["(1-x1)^2+(x2-x1^2)^2"])
 problem = ot.OptimizationProblem(rosenbrock)
 
 # %%
 # The optimization algorithm is instantiated from the problem to solve and the name of the algorithm
-algo = ot.Dlib(problem, 'cg')
+algo = ot.Dlib(problem, "cg")
 print("Dlib algorithm, type ", algo.getAlgorithmName())
 print("Maximum iteration number: ", algo.getMaximumIterationNumber())
 print("Maximum evaluation number: ", algo.getMaximumEvaluationNumber())
@@ -66,7 +67,7 @@ algo.run()
 # %%
 # Retrieve results
 result = algo.getResult()
-print('x^ = ', result.getOptimalPoint())
+print("x^ = ", result.getOptimalPoint())
 print("f(x^) = ", result.getOptimalValue())
 print("Iteration number: ", result.getIterationNumber())
 print("Evaluation number: ", result.getEvaluationNumber())
@@ -87,7 +88,8 @@ print("Constraint error: ", result.getConstraintError())
 # Define the bounds and the problem
 bounds = ot.Interval([0.0, 0.0], [0.8, 2.0])
 boundedProblem = ot.OptimizationProblem(
-    rosenbrock, ot.Function(), ot.Function(), bounds)
+    rosenbrock, ot.Function(), ot.Function(), bounds
+)
 
 # %%
 # Define the Dlib algorithm
@@ -102,7 +104,7 @@ boundedAlgo.run()
 # %%
 # Retrieve results
 result = boundedAlgo.getResult()
-print('x^ = ', result.getOptimalPoint())
+print("x^ = ", result.getOptimalPoint())
 print("f(x^) = ", result.getOptimalValue())
 print("Iteration number: ", result.getIterationNumber())
 print("Evaluation number: ", result.getEvaluationNumber())
@@ -132,9 +134,9 @@ view = viewer.View(graph)
 # Define residual function
 n = 3
 m = 20
-x = [[0.5 + 0.1*i] for i in range(m)]
+x = [[0.5 + 0.1 * i] for i in range(m)]
 
-model = ot.SymbolicFunction(['a', 'b', 'c', 'x'], ['a + b * exp(-c *x^2)'])
+model = ot.SymbolicFunction(["a", "b", "c", "x"], ["a + b * exp(-c *x^2)"])
 p_ref = [2.8, 1.2, 0.5]  # Reference a, b, c
 modelx = ot.ParametricFunction(model, [0, 1, 2], p_ref)
 
@@ -162,7 +164,7 @@ lsqAlgo.run()
 # %%
 # Retrieve results
 result = lsqAlgo.getResult()
-print('x^ = ', result.getOptimalPoint())
+print("x^ = ", result.getOptimalPoint())
 print("f(x^) = ", result.getOptimalValue())
 print("Iteration number: ", result.getIterationNumber())
 print("Evaluation number: ", result.getEvaluationNumber())

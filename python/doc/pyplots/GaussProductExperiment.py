@@ -1,14 +1,15 @@
 import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
+
 ot.RandomGenerator.SetSeed(0)
 
 # Generate sample with the given plane
 distribution = ot.ComposedDistribution(
-    [ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
+    [ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)]
+)
 marginalSizes = ot.Indices([3, 6])
-experiment = ot.GaussProductExperiment(
-    ot.Distribution(distribution), marginalSizes)
+experiment = ot.GaussProductExperiment(ot.Distribution(distribution), marginalSizes)
 
 sample = experiment.generate()
 

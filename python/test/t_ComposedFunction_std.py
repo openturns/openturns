@@ -6,11 +6,14 @@ ot.TESTPREAMBLE()
 
 # Left hand side of the composition
 left = ot.SymbolicFunction(
-    ['x1', 'x2'], ['x1*sin(x2)', 'cos(x1+x2)', '(x2+1)*exp(x1-2*x2)'])
+    ["x1", "x2"], ["x1*sin(x2)", "cos(x1+x2)", "(x2+1)*exp(x1-2*x2)"]
+)
 
 # Right hand side of the composition
-right = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], [
-                            '(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)', 'cos(x2*x2+x4)/(x1*x1+1+x3^4)'])
+right = ot.SymbolicFunction(
+    ["x1", "x2", "x3", "x4"],
+    ["(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)", "cos(x2*x2+x4)/(x1*x1+1+x3^4)"],
+)
 
 # Compositon of left and right
 composed = ot.ComposedFunction(left, right)

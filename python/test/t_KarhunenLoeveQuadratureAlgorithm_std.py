@@ -2,8 +2,7 @@
 
 import openturns as ot
 
-ot.ResourceMap.SetAsScalar(
-    "LinearCombinationEvaluation-SmallCoefficient", 1.0e-10)
+ot.ResourceMap.SetAsScalar("LinearCombinationEvaluation-SmallCoefficient", 1.0e-10)
 domain = ot.Interval(-1.0, 1.0)
 basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()])
 basisSize = 5
@@ -13,7 +12,8 @@ mustScale = False
 threshold = 0.0001
 model = ot.AbsoluteExponential([1.0])
 algo = ot.KarhunenLoeveQuadratureAlgorithm(
-    domain, domain, model, experiment, functions, mustScale, threshold)
+    domain, domain, model, experiment, functions, mustScale, threshold
+)
 algo.run()
 result = algo.getResult()
 lambd = result.getEigenvalues()
@@ -31,7 +31,8 @@ print("KL lift as field=", result.liftAsField(coefficients[0]))
 # Now using Legendre/Gauss quadrature
 marginalDegree = 5
 algo = ot.KarhunenLoeveQuadratureAlgorithm(
-    domain, domain, model, marginalDegree, threshold)
+    domain, domain, model, marginalDegree, threshold
+)
 algo.run()
 result = algo.getResult()
 lambd = result.getEigenvalues()

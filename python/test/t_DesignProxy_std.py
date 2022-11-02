@@ -2,6 +2,8 @@
 
 import openturns as ot
 
+ot.TESTPREAMBLE()
+
 basisSize = 3
 sampleSize = 3
 
@@ -13,7 +15,7 @@ Y = ot.Sample(sampleSize, 1)
 
 phis = []
 for j in range(basisSize):
-    phis.append(ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]))
+    phis.append(ot.SymbolicFunction(["x"], ["x^" + str(j + 1)]))
 basis = ot.Basis(phis)
 for i in range(basisSize):
     print(ot.FunctionCollection(basis)[i](X))

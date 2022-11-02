@@ -1,42 +1,27 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
+ot.RandomGenerator.SetSeed(0)
 
-try:
-    # Create a collection of distribution
-    aCollection = DistributionCollection()
-    aCollection.add(Normal(0., 4))
-    aCollection.add(Uniform(5., 7.))
-    aCollection.add(Triangular(7., 8., 9.))
+# Create a collection of distribution
+aCollection = [ot.Normal(0.0, 4), ot.Uniform(5.0, 7.0), ot.Triangular(7.0, 8.0, 9.0)]
 
-    # Instantiate one distribution object
-    distribution = Mixture(
-        aCollection, Point(aCollection.getSize(), 1.0))
-    print("mixture=",  distribution)
-    classifier = Classifier(MixtureClassifier(distribution))
-    inS = Sample()
-    inS.add(Point(1, 2.))
-    inS.add(Point(1, 4.))
-    inS.add(Point(1, 6.))
-    inS.add(Point(1, 8.))
+# Instantiate one distribution object
+distribution = ot.Mixture(aCollection)
+print("mixture=", distribution)
+classifier = ot.MixtureClassifier(distribution)
+inS = ot.Sample([[2.0], [4.0], [6.0], [8.0]])
 
-    for i in range(inS.getSize()):
-        print("inP=",  inS[i], " class=",  classifier.classify(inS[i]))
+for i in range(inS.getSize()):
+    print("inP=", inS[i], " class=", classifier.classify(inS[i]))
 
-    print("classes=", classifier.classify(inS))
+print("classes=", classifier.classify(inS))
 
-    for i in range(inS.getSize()):
-        for j in range(aCollection.getSize()):
-            print("inP=",  inS[i],  " grade|", j, "= %g" %
-                  classifier.grade(inS[i], j))
+for i in range(inS.getSize()):
+    for j in range(len(aCollection)):
+        print("inP=", inS[i], " grade|", j, "= %g" % classifier.grade(inS[i], j))
 
-    for j in range(aCollection.getSize()):
-        print("grades|", j, "=",  classifier.grade(
-            inS, Indices(inS.getSize(), j)))
-
-except:
-    import sys
-    print("t_MixtureClassifier_std.py", sys.exc_info()[0], sys.exc_info()[1])
+for j in range(len(aCollection)):
+    print("grades|", j, "=", classifier.grade(inS, ot.Indices(inS.getSize(), j)))

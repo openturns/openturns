@@ -112,22 +112,16 @@ int main(int, char *[])
 
     /* Graph 1 : Importance Factors graph */
     Graph importanceFactorsGraph(result.drawImportanceFactors());
-    importanceFactorsGraph.draw("ImportanceFactorsDrawingFORM.png");
 
     /* Graph 1bis : Importance Factors graph */
     Graph classicalImportanceFactorsGraph(result.drawImportanceFactors(AnalyticalResult::CLASSICAL));
-    classicalImportanceFactorsGraph.draw("ClassicalImportanceFactorsDrawingFORM.png");
 
     /* Graph 2 : Hasofer Reliability Index Sensitivity Graphs graph */
     AnalyticalResult::GraphCollection reliabilityIndexSensitivityGraphs(result.drawHasoferReliabilityIndexSensitivity());
-    reliabilityIndexSensitivityGraphs[0].draw("HasoferReliabilityIndexMarginalSensitivityDrawing.png");
-    reliabilityIndexSensitivityGraphs[1].draw("HasoferReliabilityIndexOtherSensitivityDrawing.png");
 
 
     /* Graph 3 : FORM Event Probability Sensitivity Graphs graph */
     AnalyticalResult::GraphCollection eventProbabilitySensitivityGraphs(result.drawEventProbabilitySensitivity());
-    eventProbabilitySensitivityGraphs[0].draw("EventProbabilityIndexMarginalSensitivityDrawing.png");
-    eventProbabilitySensitivityGraphs[1].draw("EventProbabilityIndexOtherSensitivityDrawing.png");
 
   }
   catch (TestFailed & ex)

@@ -72,12 +72,12 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm( distribution, model )
+  : MetaModelAlgorithm(distribution, model)
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "FunctionalChaosAlgorithm(Function) is deprecated");
 }
 
 /* Constructor */
@@ -86,13 +86,11 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Overwrite the content of the projection strategy with the given data
   projectionStrategy_.setMeasure(UserDefined(inputSample));
   projectionStrategy_.setExperiment(FixedExperiment(inputSample));
@@ -108,13 +106,11 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Overwrite the content of the projection strategy with the given data
   projectionStrategy_.setMeasure(UserDefined(inputSample));
   projectionStrategy_.setExperiment(FixedExperiment(inputSample));
@@ -127,12 +123,12 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm( distribution, model )
+  : MetaModelAlgorithm(distribution, model)
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy())
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "FunctionalChaosAlgorithm(Function) is deprecated");
 }
 
 /* Constructor */
@@ -140,13 +136,12 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
+  // Nothing to do
 }
 
 
@@ -154,14 +149,11 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
   , adaptiveStrategy_()
   , projectionStrategy_()
   , maximumResidual_(ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual"))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
-
   const UnsignedInteger inputDimension = inputSample.getDimension();
   Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
   for (UnsignedInteger i = 0; i < inputDimension; ++ i)
@@ -169,7 +161,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 
   const Scalar qNorm = ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-QNorm");
   EnumerateFunction enumerate;
-  if (std::abs(qNorm-1.0) <= SpecFunc::Precision) enumerate = LinearEnumerateFunction(inputDimension);
+  if (std::abs(qNorm - 1.0) <= SpecFunc::Precision) enumerate = LinearEnumerateFunction(inputDimension);
   else enumerate = HyperbolicAnisotropicEnumerateFunction(inputDimension, qNorm);
   OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
 
@@ -213,13 +205,12 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, distribution, DatabaseFunction(inputSample, outputSample))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
+  // Nothing to do
 }
 
 
@@ -357,7 +348,8 @@ void FunctionalChaosAlgorithm::run()
     Psi_k.add(basis.build(i));
   }
   // Build the result
-  result_ = FunctionalChaosResult(model_, distribution_, transformation_, inverseTransformation_, composedModel_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
+  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, composedModel_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
+  result_.setModel(model_);
 }
 
 /* Marginal computation */
@@ -405,19 +397,6 @@ FunctionalChaosResult FunctionalChaosAlgorithm::getResult() const
 {
   return result_;
 }
-
-
-Sample FunctionalChaosAlgorithm::getInputSample() const
-{
-  return projectionStrategy_.getInputSample();
-}
-
-
-Sample FunctionalChaosAlgorithm::getOutputSample() const
-{
-  return projectionStrategy_.getOutputSample();
-}
-
 
 /* Method save() stores the object through the StorageManager */
 void FunctionalChaosAlgorithm::save(Advocate & adv) const

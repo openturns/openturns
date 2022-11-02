@@ -1,12 +1,6 @@
 %feature("docstring") OT::LinearModelAlgorithm
 "Class used to create a linear model from numerical samples.
 
-**Available usages**:
-
-    LinearModelAlgorithm(Xsample, Ysample)
-
-    LinearModelAlgorithm(Xsample, basis, Ysample)
-
 Parameters
 ----------
 XSample : 2-d sequence of float
@@ -16,6 +10,7 @@ YSample : 2-d sequence of float
     The output samples of a model, must be of dimension 1.
 
 basis : :class:`~openturns.Basis`
+    Optional.
     The :math:`\phi` basis .
 
 See Also
@@ -60,9 +55,7 @@ Examples
 >>> output_sample = func(input_sample)
 >>> algo = ot.LinearModelAlgorithm(input_sample, output_sample)
 >>> algo.run()
->>> result = ot.LinearModelResult(algo.getResult())
-
-"
+>>> result = ot.LinearModelResult(algo.getResult())"
 
 // ---------------------------------------------------------------------
 

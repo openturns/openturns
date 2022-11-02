@@ -50,7 +50,7 @@ samples.
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.HypothesisTest_TwoSamplesKolmogorov`
+    - See :py:func:`~openturns.HypothesisTest.TwoSamplesKolmogorov`
 
 .. topic:: Examples:
 

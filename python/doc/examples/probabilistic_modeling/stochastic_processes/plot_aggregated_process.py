@@ -9,6 +9,7 @@ Aggregate processes
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -35,7 +36,8 @@ myAggregatedProcess = ot.AggregatedProcess([myProcess1, myProcess2])
 # %%
 # Draw values of the realization on the 2nd marginal
 marginal = ot.HistogramFactory().build(
-    myAggregatedProcess.getRealization().getValues().getMarginal(0))
+    myAggregatedProcess.getRealization().getValues().getMarginal(0)
+)
 graph = marginal.drawPDF()
 viewer.View(graph)
 plt.show()

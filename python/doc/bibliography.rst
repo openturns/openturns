@@ -159,6 +159,9 @@ Bibliography
     `pdf <http://academicos.fciencias.unam.mx/wp-content/uploads/sites/91/2015/04/Lillifors_normality_ks.pdf>`__
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
+.. [marelli2018] S. Marelli, B. Sudret, *An active-learning algorithm that combines sparse
+   polynomial chaos expansions and bootstrap for structural reliability analysis*, Structural Safety, 2018.
+   `pdf <https://arxiv.org/pdf/1709.01589.pdf>`__
 .. [marrel2021] Marrel, A., & Chabridon, V. (2021). *Statistical developments for target and conditional sensitivity analysis: 
     application on safety studies for nuclear reactor.* Reliability Engineering & System Safety, 107711.
 .. [marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
@@ -190,7 +193,7 @@ Bibliography
 .. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). *Quasi-Monte Carlo 
     integration.* Journal of computational physics, 122(2), 218-230.
     `pdf <https://www.math.ucla.edu/~caflisch/Pubs/Pubs1995-1999/actaNumerica1998.pdf>`__
-.. [Muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
+.. [muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
 .. [munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,
@@ -222,6 +225,10 @@ Bibliography
 .. [rawlings2001] Rawlings, J. O., Pantula, S. G., and Dickey, D. A.
     *Applied regression analysis: a research tool.*
     Springer Science and Business Media, 2001.
+.. [robert2015] Robert, C. P.
+    *The Metropolis-Hastings algorithm.*
+    arXiv preprint arXiv:1504.01896, 2015.
+    `pdf <https://arxiv.org/pdf/1504.01896.pdf>`__
 .. [rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__
@@ -237,6 +244,8 @@ Bibliography
 .. [saltelli2002] Saltelli, A. *Making best use of model evaluations to compute
     sensitivity indices.* Computer Physics Communication, 2002, 145, 580-297.
     `pdf <http://www.andreasaltelli.eu/file/repository/Making_best_use.pdf>`__
+.. [sankararaman2012] Sankararaman, S. and Mahadevan, S. *Likelihood-based approach to multidisciplinary analysis under uncertainty.* 
+    Journal of Mechanical Design, 134(3):031008, 2012.
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
     Statistique*, Technip
 .. [scott1992] David W. Scott (1992). *Multivariate density estimation*,
@@ -269,5 +278,10 @@ Bibliography
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
+.. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.   
+.. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
+    Microcosm, Inc. Torrance, CA.,1999.
+.. [zaman2012] Zaman, K. *Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design.* 
+    PhD thesis, Vanderbilt University, USA, 2012

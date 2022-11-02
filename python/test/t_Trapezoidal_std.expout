@@ -48,3 +48,267 @@ covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 parameters= [class=PointWithDescription name=X0 dimension=4 description=[a,b,c,d] values=[1,1.2,3,14]]
 Standard representative= Trapezoidal(a = -1, b = -0.969231, c = -0.692308, d = 1)
 roughness= [0.101047]
+Distribution  class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1 c=3 d=14 h=0.133333
+Distribution  Trapezoidal(a = 1, b = 1, c = 3, d = 14)
+Mean=  class=Point name=Unnamed dimension=1 values=[5.42222]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.27728]
+Elliptical =  False
+oneRealization= class=Point name=Unnamed dimension=1 values=[2.65345]
+oneSample first= class=Point name=Unnamed dimension=1 values=[5.46722]  last= class=Point name=Unnamed dimension=1 values=[3.24916]
+mean= class=Point name=Unnamed dimension=1 values=[5.43296]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.27893]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     = class=Point name=Unnamed dimension=1 values=[0]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[0]
+log pdf=-2.014903
+pdf     =0.133333
+pdf (FD)=0.133333
+cdf=0.013333
+ccdf=0.986667
+characteristic function= (-0.108371008362+0.0503646282831j)
+quantile= class=Point name=Unnamed dimension=1 values=[11.1277]
+cdf(quantile)=0.950000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.375]
+Survival(inverseSurvival)=0.950000
+entropy=2.381570
+Minimum volume interval= [1, 11.1277]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 3.35769} with f=
+MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1, c = 3, d = 14))
+beta= [0.0348155]
+Bilateral confidence interval= [1.1875, 11.969]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [1, 11.1277]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [1.375, 14]
+beta= [0.95]
+mean= class=Point name=Unnamed dimension=1 values=[5.42222]
+standard deviation= class=Point name=Unnamed dimension=1 values=[3.04586]
+skewness= class=Point name=Unnamed dimension=1 values=[0.546649]
+kurtosis= class=Point name=Unnamed dimension=1 values=[2.39301]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.27728]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[a,b,c,d] values=[1,1,3,14]]
+Standard representative= Trapezoidal(a = -1, b = -1, c = -0.692308, d = 1)
+roughness= [0.100741]
+Distribution  class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1.2 c=1.2 d=14 h=0.153846
+Distribution  Trapezoidal(a = 1, b = 1.2, c = 1.2, d = 14)
+Mean=  class=Point name=Unnamed dimension=1 values=[5.4]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.24667]
+Elliptical =  False
+oneRealization= class=Point name=Unnamed dimension=1 values=[4.06927]
+oneSample first= class=Point name=Unnamed dimension=1 values=[1.54064]  last= class=Point name=Unnamed dimension=1 values=[9.92759]
+mean= class=Point name=Unnamed dimension=1 values=[5.40197]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.23506]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     = class=Point name=Unnamed dimension=1 values=[0.769231]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.769231]
+log pdf=-2.564949
+pdf     =0.076923
+pdf (FD)=0.076923
+cdf=0.003846
+ccdf=0.996154
+characteristic function= (-0.1186605461+0.0558853713745j)
+quantile= class=Point name=Unnamed dimension=1 values=[11.1156]
+cdf(quantile)=0.950000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.42701]
+Survival(inverseSurvival)=0.950000
+entropy=2.371802
+Minimum volume interval= [1.04472, 11.1378]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 3.36967} with f=
+MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 1.2, d = 14))
+beta= [0.034401]
+Bilateral confidence interval= [1.26265, 11.9604]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [1, 11.1156]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [1.42701, 14]
+beta= [0.95]
+mean= class=Point name=Unnamed dimension=1 values=[5.4]
+standard deviation= class=Point name=Unnamed dimension=1 values=[3.04083]
+skewness= class=Point name=Unnamed dimension=1 values=[0.565227]
+kurtosis= class=Point name=Unnamed dimension=1 values=[2.4]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.24667]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[a,b,c,d] values=[1,1.2,1.2,14]]
+Standard representative= Trapezoidal(a = -1, b = -0.969231, c = -0.969231, d = 1)
+roughness= [0.102564]
+Distribution  class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1 c=1 d=14 h=0.153846
+Distribution  Trapezoidal(a = 1, b = 1, c = 1, d = 14)
+Mean=  class=Point name=Unnamed dimension=1 values=[5.33333]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.38889]
+Elliptical =  False
+oneRealization= class=Point name=Unnamed dimension=1 values=[5.00016]
+oneSample first= class=Point name=Unnamed dimension=1 values=[10.8908]  last= class=Point name=Unnamed dimension=1 values=[11.1461]
+mean= class=Point name=Unnamed dimension=1 values=[5.33282]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.5907]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     = class=Point name=Unnamed dimension=1 values=[-0.0118343]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.0118343]
+log pdf=-1.879524
+pdf     =0.152663
+pdf (FD)=0.152663
+cdf=0.015325
+ccdf=0.984675
+characteristic function= (-0.110887732511+0.0691917799374j)
+quantile= class=Point name=Unnamed dimension=1 values=[11.0931]
+cdf(quantile)=0.950000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.32917]
+Survival(inverseSurvival)=0.950000
+entropy=2.371802
+Minimum volume interval= [1, 11.0931]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 3.36967} with f=
+MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1, c = 1, d = 14))
+beta= [0.034401]
+Bilateral confidence interval= [1.16353, 11.9445]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [1, 11.0931]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [1.32917, 14]
+beta= [0.95]
+mean= class=Point name=Unnamed dimension=1 values=[5.33333]
+standard deviation= class=Point name=Unnamed dimension=1 values=[3.06413]
+skewness= class=Point name=Unnamed dimension=1 values=[0.565685]
+kurtosis= class=Point name=Unnamed dimension=1 values=[2.4]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.38889]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[a,b,c,d] values=[1,1,1,14]]
+Standard representative= Trapezoidal(a = -1, b = -1, c = -1, d = 1)
+roughness= [0.102564]
+Distribution  class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1.2 c=14 d=14 h=0.0775194
+Distribution  Trapezoidal(a = 1, b = 1.2, c = 14, d = 14)
+Mean=  class=Point name=Unnamed dimension=1 values=[7.54987]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.8692]
+Elliptical =  False
+oneRealization= class=Point name=Unnamed dimension=1 values=[5.85989]
+oneSample first= class=Point name=Unnamed dimension=1 values=[13.4942]  last= class=Point name=Unnamed dimension=1 values=[3.79764]
+mean= class=Point name=Unnamed dimension=1 values=[7.55731]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.9015]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     = class=Point name=Unnamed dimension=1 values=[0.387597]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.387597]
+log pdf=-3.250374
+pdf     =0.038760
+pdf (FD)=0.038760
+cdf=0.001938
+ccdf=0.998062
+characteristic function= (-0.0444405891758+0.0919845543507j)
+quantile= class=Point name=Unnamed dimension=1 values=[13.355]
+cdf(quantile)=0.950000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.745]
+Survival(inverseSurvival)=0.950000
+entropy=2.561103
+Minimum volume interval= [1.3725, 13.6275]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 2.55723} with f=
+MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 14, d = 14))
+beta= [0.0775194]
+Bilateral confidence interval= [1.4225, 13.6775]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [1, 13.355]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [1.745, 14]
+beta= [0.95]
+mean= class=Point name=Unnamed dimension=1 values=[7.54987]
+standard deviation= class=Point name=Unnamed dimension=1 values=[3.72413]
+skewness= class=Point name=Unnamed dimension=1 values=[-0.000208124]
+kurtosis= class=Point name=Unnamed dimension=1 values=[1.80029]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.8692]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[a,b,c,d] values=[1,1.2,14,14]]
+Standard representative= Trapezoidal(a = -1, b = -0.969231, c = 1, d = 1)
+roughness= [0.0773191]
+Distribution  class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1 c=14 d=14 h=0.0769231
+Distribution  Trapezoidal(a = 1, b = 1, c = 14, d = 14)
+Mean=  class=Point name=Unnamed dimension=1 values=[7.5]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[14.0833]
+Elliptical =  True
+oneRealization= class=Point name=Unnamed dimension=1 values=[1.12575]
+oneSample first= class=Point name=Unnamed dimension=1 values=[8.06296]  last= class=Point name=Unnamed dimension=1 values=[5.9333]
+mean= class=Point name=Unnamed dimension=1 values=[7.51259]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.8878]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     = class=Point name=Unnamed dimension=1 values=[0]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[0]
+log pdf=-2.564949
+pdf     =0.076923
+pdf (FD)=0.076923
+cdf=0.007692
+ccdf=0.992308
+characteristic function= (-0.041125105127+0.0983600726093j)
+quantile= class=Point name=Unnamed dimension=1 values=[13.35]
+cdf(quantile)=0.950000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.65]
+Survival(inverseSurvival)=0.950000
+entropy=2.564949
+Minimum volume interval= [1.325, 13.675]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 2.56495} with f=
+MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1, c = 14, d = 14))
+beta= [0.0769231]
+Bilateral confidence interval= [1.325, 13.675]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [1, 13.35]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [1.65, 14]
+beta= [0.95]
+mean= class=Point name=Unnamed dimension=1 values=[7.5]
+standard deviation= class=Point name=Unnamed dimension=1 values=[3.75278]
+skewness= class=Point name=Unnamed dimension=1 values=[0]
+kurtosis= class=Point name=Unnamed dimension=1 values=[1.8]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[14.0833]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[a,b,c,d] values=[1,1,14,14]]
+Standard representative= Trapezoidal(a = -1, b = -1, c = 1, d = 1)
+roughness= [0.0769231]
+Distribution  class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=14 c=14 d=14 h=0.153846
+Distribution  Trapezoidal(a = 1, b = 14, c = 14, d = 14)
+Mean=  class=Point name=Unnamed dimension=1 values=[9.66667]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.38889]
+Elliptical =  False
+oneRealization= class=Point name=Unnamed dimension=1 values=[11.8001]
+oneSample first= class=Point name=Unnamed dimension=1 values=[10.6483]  last= class=Point name=Unnamed dimension=1 values=[8.13993]
+mean= class=Point name=Unnamed dimension=1 values=[9.67024]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.31687]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     = class=Point name=Unnamed dimension=1 values=[0.0118343]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[0.0118343]
+log pdf=-6.739337
+pdf     =0.001183
+pdf (FD)=0.001183
+cdf=0.000059
+ccdf=0.999941
+characteristic function= (0.0286375222568+0.127528365281j)
+quantile= class=Point name=Unnamed dimension=1 values=[13.6708]
+cdf(quantile)=0.950000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[3.90689]
+Survival(inverseSurvival)=0.950000
+entropy=2.371802
+Minimum volume interval= [3.90689, 14]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 3.36967} with f=
+MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 14, c = 14, d = 14))
+beta= [0.034401]
+Bilateral confidence interval= [3.05548, 13.8365]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [1, 13.6708]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [3.90689, 14]
+beta= [0.95]
+mean= class=Point name=Unnamed dimension=1 values=[9.66667]
+standard deviation= class=Point name=Unnamed dimension=1 values=[3.06413]
+skewness= class=Point name=Unnamed dimension=1 values=[-0.565685]
+kurtosis= class=Point name=Unnamed dimension=1 values=[2.4]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.38889]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[a,b,c,d] values=[1,14,14,14]]
+Standard representative= Trapezoidal(a = -1, b = 1, c = 1, d = 1)
+roughness= [0.102564]

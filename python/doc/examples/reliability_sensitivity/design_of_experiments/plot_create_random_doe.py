@@ -11,8 +11,8 @@ Create a random design of experiments
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-import math as m
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 

@@ -21,4 +21,5 @@ Contents
    use_case_chaboche.rst
    use_case_deflection_tube.rst
    use_case_viscous_fall.rst
-
+   use_case_fireSatellite.rst
+   use_case_wingweight.rst

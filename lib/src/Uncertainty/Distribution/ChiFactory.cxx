@@ -80,7 +80,7 @@ Chi ChiFactory::buildAsChi(const Sample & sample) const
     result.setDescription(sample.getDescription());
     return result;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Chi distribution from the given sample";
   }
@@ -94,7 +94,7 @@ Chi ChiFactory::buildAsChi(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Chi distribution from the given parameters";
   }

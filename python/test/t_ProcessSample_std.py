@@ -79,7 +79,7 @@ outputDimension = 2
 sampleSize = 250
 
 processSample = ot.ProcessSample(mesh, sampleSize, outputDimension)
-#processSample.setDescription(['Twater', 'Tair'])
+# processSample.setDescription(['Twater', 'Tair'])
 
 R = ot.CorrelationMatrix(outputDimension)
 R[0, 1] = 0.75
@@ -90,8 +90,8 @@ mean = processSample.computeMean()
 stddev = processSample.computeStandardDeviation()
 sample_node4 = processSample.getSampleAtVertex(4)
 assert len(sample_node4) == len(processSample), "wrong len"
-print('mean=', mean.getValues())
-print('sttdev=', stddev.getValues())
+print("mean=", mean.getValues())
+print("sttdev=", stddev.getValues())
 graph1 = processSample.draw()
 graph2 = processSample.drawMarginalCorrelation(0, 1)
 graph3 = processSample.drawCorrelation()
@@ -99,31 +99,49 @@ graph3 = processSample.drawCorrelation()
 processSample -= processSample.computeMean().getValues()
 if 0:
     from openturns.viewer import View
-    View(graph1).save('graph1.png')
-    View(graph2).save('graph2.png')
-    View(graph3).save('graph3.png')
+
+    View(graph1).save("graph1.png")
+    View(graph2).save("graph2.png")
+    View(graph3).save("graph3.png")
 
 # ctor from collection of Samples
-coll = [ot.Normal(outputDimension).getSample(mesh.getVerticesNumber())
-        for i in range(sampleSize)]
+coll = [
+    ot.Normal(outputDimension).getSample(mesh.getVerticesNumber())
+    for i in range(sampleSize)
+]
 processSample2 = ot.ProcessSample(mesh, coll)
 assert len(processSample2) == sampleSize, "wrong size"
 
 # More statistical methods
 # processSample = ot.GaussianProcess(ot.MaternModel([10.0], [0.1], 1.5),  ot.RegularGrid(0.0, 0.1, 1000)).getSample(10000)
-print('min=', processSample.getMin().getValues())
-print('max=', processSample.getMax().getValues())
-print('range=', processSample.computeRange().getValues())
-print('variance=', processSample.computeVariance().getValues())
-print('skewness=', processSample.computeSkewness().getValues())
-print('kurtosis=', processSample.computeKurtosis().getValues())
-print('centered moment (3)=', processSample.computeCenteredMoment(3).getValues())
-print('raw moment (3)=', processSample.computeRawMoment(3).getValues())
-x = [0.2]*processSample.getDimension()
-print('median=', processSample.computeMedian().getValues())
+print("min=", processSample.getMin().getValues())
+print("max=", processSample.getMax().getValues())
+print("range=", processSample.computeRange().getValues())
+print("variance=", processSample.computeVariance().getValues())
+print("skewness=", processSample.computeSkewness().getValues())
+print("kurtosis=", processSample.computeKurtosis().getValues())
+print("centered moment (3)=", processSample.computeCentralMoment(3).getValues())
+print("raw moment (3)=", processSample.computeRawMoment(3).getValues())
+x = [0.2] * processSample.getDimension()
+print("median=", processSample.computeMedian().getValues())
 q = 0.3
-print('quantile at level', q, '=',
-      processSample.computeQuantilePerComponent(q).getValues())
-print('empirical CDF at', x, '=', processSample.computeEmpiricalCDF(x).getValues())
-print('complementary empirical CDF at', x, '=',
-      processSample.computeEmpiricalCDF(x, True).getValues())
+print(
+    "quantile at level",
+    q,
+    "=",
+    processSample.computeQuantilePerComponent(q).getValues(),
+)
+print("empirical CDF at", x, "=", processSample.computeEmpiricalCDF(x).getValues())
+print(
+    "complementary empirical CDF at",
+    x,
+    "=",
+    processSample.computeEmpiricalCDF(x, True).getValues(),
+)
+
+n = mesh.getVerticesNumber()
+try:
+    s = processSample.getSampleAtVertex(n)
+    assert False, "should not go there"
+except Exception:
+    pass

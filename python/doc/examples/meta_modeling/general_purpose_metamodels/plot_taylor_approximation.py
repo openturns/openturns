@@ -20,11 +20,12 @@ Taylor approximations
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # Prepare some data.
-formulas = ['cos(x1 + x2)', '(x2 + 1) * exp(x1 - 2 * x2)']
-model = ot.SymbolicFunction(['x1', 'x2'], formulas)
+formulas = ["cos(x1 + x2)", "(x2 + 1) * exp(x1 - 2 * x2)"]
+model = ot.SymbolicFunction(["x1", "x2"], formulas)
 
 # Center of the approximation.
 x0 = [-0.4, -0.4]
@@ -41,15 +42,15 @@ responseSurface = algo.getMetaModel()
 
 # %%
 # Plot the second output of our model with :math:`x_1=x_{0,1}`.
-graph = ot.ParametricFunction(
-    responseSurface, [0], [x0[1]]).getMarginal(1).draw(a, b)
-graph.setLegends(['taylor'])
-curve = ot.ParametricFunction(model, [0], [x0[1]]).getMarginal(
-    1).draw(a, b).getDrawable(0)
-curve.setColor('red')
-curve.setLegend('model')
+graph = ot.ParametricFunction(responseSurface, [0], [x0[1]]).getMarginal(1).draw(a, b)
+graph.setLegends(["taylor"])
+curve = (
+    ot.ParametricFunction(model, [0], [x0[1]]).getMarginal(1).draw(a, b).getDrawable(0)
+)
+curve.setColor("red")
+curve.setLegend("model")
 graph.add(curve)
-graph.setLegendPosition('topright')
+graph.setLegendPosition("topright")
 view = viewer.View(graph)
 
 # %%
@@ -69,14 +70,14 @@ responseSurface = algo.getMetaModel()
 
 # %%
 # Plot second output of our model with :math:`x_1=x_{0,1}`.
-graph = ot.ParametricFunction(
-    responseSurface, [0], [x0[1]]).getMarginal(1).draw(a, b)
-graph.setLegends(['taylor'])
-curve = ot.ParametricFunction(model, [0], [x0[1]]).getMarginal(
-    1).draw(a, b).getDrawable(0)
-curve.setColor('red')
-curve.setLegend('model')
+graph = ot.ParametricFunction(responseSurface, [0], [x0[1]]).getMarginal(1).draw(a, b)
+graph.setLegends(["taylor"])
+curve = (
+    ot.ParametricFunction(model, [0], [x0[1]]).getMarginal(1).draw(a, b).getDrawable(0)
+)
+curve.setColor("red")
+curve.setLegend("model")
 graph.add(curve)
-graph.setLegendPosition('topright')
+graph.setLegendPosition("topright")
 view = viewer.View(graph)
 plt.show()

@@ -76,6 +76,13 @@ public:
   /** String converter */
   String __repr__() const override;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+
+protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   void computeCoefficients(const Function & function,
                            const FunctionCollection & basis,
@@ -84,16 +91,6 @@ public:
                            const Indices & conservedRanks,
                            const Indices & removedRanks,
                            const UnsignedInteger marginalIndex = 0) override;
-
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;
-
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;
-
-
-protected:
-
 private:
   /** Factory to build an ApproximationAlgorithmImplementation */
   ApproximationAlgorithmImplementationFactoryImplementation p_approximationAlgorithmImplementationFactory_;

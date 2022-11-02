@@ -33,11 +33,11 @@ Quick start guide to optimization
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-rosenbrock = ot.SymbolicFunction(['x1', 'x2'],
-                                 ['(1-x1)^2+100*(x2-x1^2)^2'])
+rosenbrock = ot.SymbolicFunction(["x1", "x2"], ["(1-x1)^2+100*(x2-x1^2)^2"])
 
 # %%
 x0 = [-1.0, 1.0]
@@ -57,7 +57,7 @@ upperbound = [2.0, 2.0]
 rosenbrock = ot.MemoizeFunction(rosenbrock)
 
 # %%
-graph = rosenbrock.draw(lowerbound, upperbound, [100]*2)
+graph = rosenbrock.draw(lowerbound, upperbound, [100] * 2)
 graph.setTitle("Rosenbrock function")
 view = viewer.View(graph)
 
@@ -73,7 +73,7 @@ problem = ot.OptimizationProblem(rosenbrock)
 
 # %%
 algo = ot.Cobyla(problem)
-algo.setMaximumRelativeError(1.e-1)  # on x
+algo.setMaximumRelativeError(1.0e-1)  # on x
 algo.setMaximumEvaluationNumber(50000)
 algo.setStartingPoint(x0)
 algo.run()
@@ -100,7 +100,7 @@ result.getOptimalValue()  # f(x*)
 result.getEvaluationNumber()
 
 # %%
-graph = rosenbrock.draw(lowerbound, upperbound, [100]*2)
+graph = rosenbrock.draw(lowerbound, upperbound, [100] * 2)
 cloud = ot.Cloud(ot.Sample([x0, xoptim]))
 cloud.setColor("black")
 cloud.setPointStyle("bullet")
@@ -125,7 +125,7 @@ view = viewer.View(graph)
 inputSample = result.getInputSample()
 
 # %%
-graph = rosenbrock.draw(lowerbound, upperbound, [100]*2)
+graph = rosenbrock.draw(lowerbound, upperbound, [100] * 2)
 graph.setTitle("Rosenbrock function solved with Cobyla")
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
@@ -148,7 +148,7 @@ problem = ot.OptimizationProblem(rosenbrock)
 problem.setBounds(bounds)
 
 # %%
-algo = ot.NLopt(problem, 'LD_LBFGS')
+algo = ot.NLopt(problem, "LD_LBFGS")
 algo.setStartingPoint(x0)
 algo.run()
 
@@ -180,7 +180,7 @@ result.getEvaluationNumber()
 inputSample = result.getInputSample()
 
 # %%
-graph = rosenbrock.draw(lowerbound, upperbound, [100]*2)
+graph = rosenbrock.draw(lowerbound, upperbound, [100] * 2)
 graph.setTitle("Rosenbrock function solved with NLopt/LD_LBFGS")
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)

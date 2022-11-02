@@ -1,17 +1,29 @@
-myAntecedentProcess =   ARMA process dimension = 1
-X_{0,t} = E_{0,t}
-with E_t ~ Normal(mu = 0, sigma = 1)
-myCompositeProcess =  class=CompositeProcess function=class=FieldFunction name=Unnamed implementation=class=ValueFunction evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[y0] formulas=[2 * x + 5.0] antecedent=class= ARMA timeGrid=class=RegularGrid name=Unnamed start=0 step=0.1 n=11 coefficients AR=class=ARMACoefficients coefficients MA=class=ARMACoefficients noiseDistribution= class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] state= class= ARMAState x= class=Sample name=Unnamed description=[] implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[] epsilon= class=Sample name=Unnamed description=[] implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[]
-One realization= 
-     [          y0       ]
- 0 : [ 0        0.63723  ]
- 1 : [ 0.1      5.70008  ]
- 2 : [ 0.2      4.28999  ]
- 3 : [ 0.3      7.8745   ]
- 4 : [ 0.4      6.62134  ]
- 5 : [ 0.5      6.58631  ]
- 6 : [ 0.6      4.05895  ]
- 7 : [ 0.7      5.52204  ]
- 8 : [ 0.8      0.419876 ]
- 9 : [ 0.9      2.43423  ]
-10 : [ 1        2.37644  ]
+myProcess= AggregatedProcess([WhiteNoise(Normal(mu = 0, sigma = 1))])
+a realization=      [ t         X0        ]
+ 0 : [  0         0.608202 ]
+ 1 : [  0.1      -1.26617  ]
+ 2 : [  0.2      -0.438266 ]
+ 3 : [  0.3       1.20548  ]
+ 4 : [  0.4      -2.18139  ]
+ 5 : [  0.5       0.350042 ]
+ 6 : [  0.6      -0.355007 ]
+ 7 : [  0.7       1.43725  ]
+ 8 : [  0.8       0.810668 ]
+ 9 : [  0.9       0.793156 ]
+10 : [  1        -0.470526 ]
+a marginal process= WhiteNoise(Normal(mu = 0, sigma = 1))
+myProcess= AggregatedProcess([WhiteNoise(Normal(mu = 0, sigma = 1)),ARMA(X_{0,t} = E_{0,t}, E_t ~ Normal(mu = 0, sigma = 1)),GaussianProcess(trend=[x0]->[0.0], covariance=ExponentialModel(scale=[1], amplitude=[1], no spatial correlation))])
+a realization=      [ t          X0         X0         y0         ]
+ 0 : [  0         -1.28289    0.351418  -0.0436123 ]
+ 1 : [  0.1       -1.31178    1.78236    0.190168  ]
+ 2 : [  0.2       -0.0907838  0.0702074  0.299777  ]
+ 3 : [  0.3        0.995793  -0.781366   0.444838  ]
+ 4 : [  0.4       -0.139453  -0.721533   0.195966  ]
+ 5 : [  0.5       -0.560206  -0.241223   0.0142559 ]
+ 6 : [  0.6        0.44549   -1.78796   -0.307618  ]
+ 7 : [  0.7        0.322925   0.40136   -0.16853   ]
+ 8 : [  0.8        0.445785   1.36783    0.685721  ]
+ 9 : [  0.9       -1.03808    1.00434    0.33466   ]
+10 : [  1         -0.856712   0.741548   1.09293   ]
+a marginal process= ARMA(X_{0,t} = E_{0,t}, E_t ~ Normal(mu = 0, sigma = 1))
+another marginal process= AggregatedProcess([WhiteNoise(Normal(mu = 0, sigma = 1)),GaussianProcess(trend=[x0]->[0.0], covariance=ExponentialModel(scale=[1], amplitude=[1], no spatial correlation))])

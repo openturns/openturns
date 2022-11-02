@@ -25,8 +25,8 @@ import openturns.testing as ott
 def fourdsoo(x):
     x1, x2, disc_b, logic = x
     # minimum : f([-5,-3,1,1]) = -18
-    if round(disc_b) == 0.:
-        result = x1 ** 2 + x2 ** 2 + 10 * round(logic)
+    if round(disc_b) == 0.0:
+        result = x1**2 + x2**2 + 10 * round(logic)
     else:
         result = x1 + x2 - 10 * round(logic)
     return [result]
@@ -41,11 +41,15 @@ print("Evaluate f at x=", x)
 print("f(x)=", objectiveFun(x))
 
 # Define bounds
-bounds = ot.Interval([-5., -3., 0., 0.], [5., 3., 1, 1])
+bounds = ot.Interval([-5.0, -3.0, 0.0, 0.0], [5.0, 3.0, 1, 1])
 
 # Define variable types
-varTypes = [ot.OptimizationProblemImplementation.CONTINUOUS, ot.OptimizationProblemImplementation.CONTINUOUS,
-            ot.OptimizationProblemImplementation.BINARY, ot.OptimizationProblemImplementation.INTEGER]
+varTypes = [
+    ot.OptimizationProblemImplementation.CONTINUOUS,
+    ot.OptimizationProblemImplementation.CONTINUOUS,
+    ot.OptimizationProblemImplementation.BINARY,
+    ot.OptimizationProblemImplementation.INTEGER,
+]
 
 # Define problem
 problem = ot.OptimizationProblem(objectiveFun)
@@ -58,7 +62,7 @@ algo = ot.Bonmin(problem, "B-BB")
 algo.setStartingPoint(x0)
 algo.setMaximumEvaluationNumber(10000)
 algo.setMaximumIterationNumber(1000)
-#ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 60)
+# ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 60)
 algo.run()
 
 result = algo.getResult()

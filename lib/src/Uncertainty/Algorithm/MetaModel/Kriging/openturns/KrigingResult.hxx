@@ -87,10 +87,6 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
-  /** Design accessors */
-  virtual Sample getInputSample() const;
-  virtual Sample getOutputSample() const;
-
   /** Trend basis accessor */
   virtual BasisCollection getBasisCollection() const;
 

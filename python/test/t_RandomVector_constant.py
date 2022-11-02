@@ -5,7 +5,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 # We create a numerical point of dimension 4
-point = ot.Point([101., 102., 103., 104.])
+point = ot.Point([101.0, 102.0, 103.0, 104.0])
 
 print("point = ", repr(point))
 

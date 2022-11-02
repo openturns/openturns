@@ -15,6 +15,7 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -61,9 +62,9 @@ view = viewer.View(histo)
 # We change default parameters (compression, recompression) to higher values. The model is less accurate but very fast to build & evaluate.
 
 # %%
-ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra",  "HMAT")
-ot.ResourceMap.SetAsScalar("HMatrix-AssemblyEpsilon",  1e-5)
-ot.ResourceMap.SetAsScalar("HMatrix-RecompressionEpsilon",  1e-4)
+ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra", "HMAT")
+ot.ResourceMap.SetAsScalar("HMatrix-AssemblyEpsilon", 1e-5)
+ot.ResourceMap.SetAsScalar("HMatrix-RecompressionEpsilon", 1e-4)
 
 # %%
 # In order to create the Kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance kernel.
@@ -87,7 +88,8 @@ print(X_train.getMin(), X_train.getMax())
 
 # %%
 scaleOptimizationBounds = ot.Interval(
-    [1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5])
+    [1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5]
+)
 
 # %%
 # Finally, we use the `KrigingAlgorithm` class to create the Kriging metamodel.
@@ -168,7 +170,7 @@ view = viewer.View(graph)
 # %%
 # sphinx_gallery_thumbnail_number = 3
 graph = val.drawValidation()
-graph.setTitle("Q2 = %.2f%%" % (100*Q2))
+graph.setTitle("Q2 = %.2f%%" % (100 * Q2))
 view = viewer.View(graph)
 
 plt.show()

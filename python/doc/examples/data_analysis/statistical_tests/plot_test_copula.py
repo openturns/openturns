@@ -6,6 +6,7 @@ Test the copula
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -22,17 +23,16 @@ N = 500
 # %%
 dist1 = ot.ComposedDistribution([ot.Normal()] * 2, ot.GumbelCopula(3.0))
 sample1 = dist1.getSample(N)
-sample1.setName('sample1')
+sample1.setName("sample1")
 
 # %%
 dist2 = ot.ComposedDistribution([ot.Normal()] * 2, ot.ClaytonCopula(0.2))
 sample2 = dist2.getSample(N)
-sample2.setName('sample2')
+sample2.setName("sample2")
 
 # %%
 # We change the parameter for the evaluation of E(Wi) thanks to the `ResourceMap` :
-ot.ResourceMap.SetAsUnsignedInteger(
-    'VisualTest-KendallPlot-MonteCarloSize', 25)
+ot.ResourceMap.SetAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 25)
 
 # %%
 # We can test a specific copula model for a given sample,
@@ -70,22 +70,22 @@ estimated = ot.ClaytonCopulaFactory().build(sample)
 # %%
 # We represent data as a cloud in the rank space :
 ranksTransf = ot.MarginalTransformationEvaluation(
-    marginals, ot.MarginalTransformationEvaluation.FROM)
+    marginals, ot.MarginalTransformationEvaluation.FROM
+)
 rankSample = ranksTransf(sample)
-rankCloud = ot.Cloud(rankSample, 'blue', 'plus', 'sample')
+rankCloud = ot.Cloud(rankSample, "blue", "plus", "sample")
 
 # %%
 # We can plot the graph with rank sample and estimated copula :
-myGraph = ot.Graph('Parametric estimation of the copula',
-                   'X', 'Y', True, 'topleft')
-myGraph.setLegendPosition('bottomright')
+myGraph = ot.Graph("Parametric estimation of the copula", "X", "Y", True, "topleft")
+myGraph.setLegendPosition("bottomright")
 myGraph.add(rankCloud)
 
 # %%
 # and draw the iso-curves of the estimated copula
-minPoint = [0.0]*2
-maxPoint = [1.0]*2
-pointNumber = [201]*2
+minPoint = [0.0] * 2
+maxPoint = [1.0] * 2
+pointNumber = [201] * 2
 graphCop = estimated.drawPDF(minPoint, maxPoint, pointNumber)
 contour_estCop = graphCop.getDrawable(0)
 # Erase the labels of the iso-curves
@@ -97,9 +97,9 @@ for i in range(nlev):
     levels[i] = 0.25 * nlev / (nlev - i)
 contour_estCop.setLevels(levels)
 # Change the legend of the curves
-contour_estCop.setLegend('Gumbel copula')
+contour_estCop.setLegend("Gumbel copula")
 # Change the color of the iso-curves
-contour_estCop.setColor('red')
+contour_estCop.setColor("red")
 # Add the iso-curves graph into the cloud one
 myGraph.add(contour_estCop)
 view = viewer.View(myGraph)

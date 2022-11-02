@@ -12,10 +12,10 @@ def four_branch(x):
     x2 = x[1]
     k = x[2]
 
-    g1 = 3+0.1*(x1-x2)**2-(x1+x2)/math.sqrt(2)
-    g2 = 3+0.1*(x1-x2)**2+(x1+x2)/math.sqrt(2)
-    g3 = (x1-x2)+k/math.sqrt(2)
-    g4 = (x2-x1)+k/math.sqrt(2)
+    g1 = 3 + 0.1 * (x1 - x2) ** 2 - (x1 + x2) / math.sqrt(2)
+    g2 = 3 + 0.1 * (x1 - x2) ** 2 + (x1 + x2) / math.sqrt(2)
+    g3 = (x1 - x2) + k / math.sqrt(2)
+    g4 = (x2 - x1) + k / math.sqrt(2)
 
     return [min((g1, g2, g3, g4))]
 
@@ -72,4 +72,4 @@ Nais_algo.setBlockSize(blockSize)
 Nais_algo.run()
 NAIS_result = Nais_algo.getResult()
 
-assert_almost_equal(NAIS_result.getProbabilityEstimate(), 0.00227031)
+assert_almost_equal(NAIS_result.getProbabilityEstimate(), 0.00215688)

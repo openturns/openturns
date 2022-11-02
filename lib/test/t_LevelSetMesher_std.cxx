@@ -69,7 +69,6 @@ int main(int, char *[])
     // Manual bounding box
     Mesh mesh3D = mesher3D.build(levelSet3D, Interval(Point(3, -10.0), Point(3, 10.0)));
     fullprint << "mesh3D=" << mesh3D << std::endl;
-    //mesh3D.draw().draw("manual.png");
   }
   catch (TestFailed & ex)
   {

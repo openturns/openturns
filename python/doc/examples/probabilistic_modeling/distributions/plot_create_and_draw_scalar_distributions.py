@@ -6,6 +6,7 @@ Create and draw scalar distributions
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -31,13 +32,15 @@ print(sample)
 # We draw its PDF and CDF :
 graphPDF = distribution.drawPDF()
 graphPDF.setTitle(
-    r"PDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$")
+    r"PDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$"
+)
 view = viewer.View(graphPDF)
 
 # %%
 graphCDF = distribution.drawCDF()
 graphCDF.setTitle(
-    r"CDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$")
+    r"CDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$"
+)
 view = viewer.View(graphCDF)
 
 

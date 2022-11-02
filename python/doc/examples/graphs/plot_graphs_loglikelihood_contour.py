@@ -12,6 +12,7 @@ Plot the log-likelihood contours of a distribution
 from matplotlib import pylab as plt
 import openturns.viewer as viewer
 import openturns as ot
+
 ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)
 
@@ -57,9 +58,9 @@ view = viewer.View(graph)
 
 # %%
 def logLikelihood(X):
-    '''
+    """
     Evaluate the log-likelihood of a TruncatedNormal on a sample.
-    '''
+    """
     samplesize = sample.getSize()
     mu = X[0]
     sigma = X[1]
@@ -86,7 +87,7 @@ def logLikelihood(X):
 
 # %%
 logLikelihoodFunction = ot.PythonFunction(2, 1, logLikelihood)
-graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50]*2)
+graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50] * 2)
 graphBasic.setXTitle(r"$\mu$")
 graphBasic.setYTitle(r"$\sigma$")
 view = viewer.View(graphBasic)
@@ -101,7 +102,7 @@ view = viewer.View(graphBasic)
 # %%
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 5)
 logLikelihoodFunction = ot.PythonFunction(2, 1, logLikelihood)
-graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50]*2)
+graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50] * 2)
 graphBasic.setXTitle(r"$\mu$")
 graphBasic.setYTitle(r"$\sigma$")
 view = viewer.View(graphBasic)
@@ -129,7 +130,12 @@ levels
 # -----------------------
 
 # %%
-# We first configure the contour plot. By default each level is a dedicated contour in order to have one color per contour, but they all share the same grid and data. We use the `getDrawable` method to take the first contour as the only one with multiple levels. Then we use the `setLevels` method: we ask for many iso-values in the same data so the color will be the same for all curves. In order to inline the level values labels, we use the `setDrawLabels` method.
+# We first configure the contour plot.
+# By default each level is a dedicated contour in order to have one color per contour,
+# but they all share the same grid and data.
+# We use the `getDrawable` method to take the first contour as the only one with multiple levels.
+# Then we use the `setLevels` method: we ask for many iso-values in the same data so the color will be the same for all curves.
+# In order to inline the level values labels, we use the `setDrawLabels` method.
 
 # %%
 contours = graphBasic.getDrawable(0)
@@ -140,7 +146,7 @@ contours.setDrawLabels(True)
 # Then we create a new graph. Finally, we use the `setDrawables` to substitute the collection of drawables by a collection reduced to this unique contour.
 
 # %%
-graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, '')
+graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, "")
 graphFineTune.setDrawables([contours])
 graphFineTune.setLegendPosition("")  # Remove the legend
 view = viewer.View(graphFineTune)
@@ -158,8 +164,7 @@ view = viewer.View(graphFineTune)
 # Take the first contour as the only one with multiple levels
 contour = graphBasic.getDrawable(0)
 # Build a range of colors
-ot.ResourceMap.SetAsUnsignedInteger(
-    'Drawable-DefaultPalettePhase', len(levels))
+ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
 palette = ot.Drawable.BuildDefaultPalette(len(levels))
 # Create the drawables list, appending each contour with its own color
 drawables = list()
@@ -171,7 +176,7 @@ for i in range(len(levels)):
     drawables.append(ot.Drawable(contour))
 
 # %%
-graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, '')
+graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, "")
 graphFineTune.setDrawables(drawables)  # Replace the drawables
 graphFineTune.setLegendPosition("")  # Remove the legend
 graphFineTune.setColors(palette)  # Add colors

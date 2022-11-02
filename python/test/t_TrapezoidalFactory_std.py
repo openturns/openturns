@@ -32,4 +32,4 @@ print("Trapezoidal from parameters=", estimatedTrapezoidal)
 # cobyla freeze bug
 ot.RandomGenerator.SetSeed(10)
 dist = factory.build(ot.Uniform().getSample(100))
-print('ok')
+print("ok")

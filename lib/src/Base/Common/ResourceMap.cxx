@@ -615,7 +615,7 @@ void ResourceMap::loadConfigurationFile()
   {
     readConfigurationFile(findConfigurationFile());
   }
-  catch (FileNotFoundException &)
+  catch (const FileNotFoundException &)
   {
     LOGWARN(OSS() << "The configuration file has not been found, using default parameters.");
   }
@@ -1118,6 +1118,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
 
+  // Gibbs parameters //
+  addAsUnsignedInteger("Gibbs-DefaultUpdatingMethod", 0);
+
   // InverseNormalFactory parameters //
   addAsString("InverseNormalFactory-Method", "MLE");
 
@@ -1215,6 +1218,14 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("MethodOfMomentsFactory-MaximumObjectiveError", 1.0e-10);
   addAsScalar("MethodOfMomentsFactory-MaximumRelativeError", 1.0e-10);
   addAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber", 1000);
+
+  // QuantileMatchingFactory parameters //
+  addAsScalar("QuantileMatchingFactory-MaximumAbsoluteError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-MaximumConstraintError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-MaximumObjectiveError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-MaximumRelativeError", 1.0e-10);
+  addAsScalar("QuantileMatchingFactory-QuantileEpsilon", 1.0e-2);
+  addAsUnsignedInteger("QuantileMatchingFactory-MaximumEvaluationNumber", 1000);
 
   // Student parameters //
   addAsScalar("Student-MaximumCDFEpsilon", 5.0e-6);
@@ -1316,6 +1327,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SubsetSampling-DefaultConditionalProbability", 0.1);
   addAsScalar("SubsetSampling-DefaultProposalRange", 2.0);
   addAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling", 10000);
+
+  // NAIS parameters //
+  addAsScalar("NAIS-DefaultRhoQuantile", 0.25);
 
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);

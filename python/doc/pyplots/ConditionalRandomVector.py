@@ -14,10 +14,11 @@ sampleX = rvX.getSample(1000)
 
 histX = ot.HistogramFactory().build(sampleX)
 graph = histX.drawPDF()
-graph.setXTitle('x')
-graph.setYTitle('pdf')
+graph.setXTitle("x")
+graph.setYTitle("pdf")
 graph.setTitle(
-    "Conditional Random Vector: Exp($\gamma$, $\lambda$), $\gamma \sim \mathcal{U}(1,2)$, $\lambda \sim \mathcal{U}(0,1)$")
+    r"Conditional Random Vector: Exp($\gamma$, $\lambda$), $\gamma \sim \mathcal{U}(1,2)$, $\lambda \sim \mathcal{U}(0,1)$"
+)
 
 fig = plt.figure(figsize=(8, 4))
 axis = fig.add_subplot(111)

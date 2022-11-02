@@ -212,4 +212,22 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
   return hOpt;
 }
 
+Histogram HistogramFactory::buildFromQuantiles(const Scalar lowerBound, const Point & probabilities, const Point & quantiles) const
+{
+  const UnsignedInteger size = quantiles.getSize();
+  if (probabilities.getSize() != size)
+    throw InvalidArgumentException(HERE) << "Fractiles size (" << probabilities.getSize() << ") should match quantile size (" << size << ").";
+  Point width(size);
+  Point height(size);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    width[i] = quantiles[i] - (i > 0 ? quantiles[i - 1] : lowerBound);
+    if (!(width[i] > 0.0)) // Avoid a division by zero. Histogram will make the required extra checks.
+      throw InvalidArgumentException(HERE) << "Invalid histogram quantile at index " << i;
+    height[i] = (probabilities[i] - (i > 0 ? probabilities[i - 1] : 0.0)) / width[i];
+  }
+  return Histogram(lowerBound, width, height);
+}
+
+
 END_NAMESPACE_OPENTURNS

@@ -98,7 +98,7 @@ distributions.
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.VisualTest_DrawQQplot` to draw a QQ plot
+    - See :py:func:`~openturns.VisualTest.DrawQQplot` to draw a QQ plot
 
 .. topic:: Examples:
 

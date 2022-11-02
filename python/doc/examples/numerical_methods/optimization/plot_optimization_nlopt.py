@@ -10,7 +10,7 @@ Optimization using NLopt
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -23,14 +23,14 @@ for algo in ot.NLopt.GetAlgorithmNames():
 
 # %%
 # The optimization algorithm is instantiated from the NLopt name
-algo = ot.NLopt('LD_SLSQP')
+algo = ot.NLopt("LD_SLSQP")
 
 # %%
 # define the problem
-objective = ot.SymbolicFunction(['x1', 'x2'], ['100*(x2-x1^2)^2+(1-x1)^2'])
-inequality_constraint = ot.SymbolicFunction(['x1', 'x2'], ['x1-2*x2'])
+objective = ot.SymbolicFunction(["x1", "x2"], ["100*(x2-x1^2)^2+(1-x1)^2"])
+inequality_constraint = ot.SymbolicFunction(["x1", "x2"], ["x1-2*x2"])
 dim = objective.getInputDimension()
-bounds = ot.Interval([-3.] * dim, [5.] * dim)
+bounds = ot.Interval([-3.0] * dim, [5.0] * dim)
 problem = ot.OptimizationProblem(objective)
 problem.setMinimization(True)
 problem.setInequalityConstraint(inequality_constraint)
@@ -46,7 +46,7 @@ algo.run()
 # %%
 # retrieve results
 result = algo.getResult()
-print('x^=', result.getOptimalPoint())
+print("x^=", result.getOptimalPoint())
 
 # %%
 # draw optimal value history

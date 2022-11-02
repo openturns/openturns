@@ -84,6 +84,9 @@ public:
   void setWeight(const Point & weight);
   Point getWeight() const;
 
+  /** Upper bound accessor */
+  void setUpperBound(const Indices & upperBound) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

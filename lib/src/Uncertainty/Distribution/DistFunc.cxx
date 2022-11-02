@@ -1133,22 +1133,47 @@ Point DistFunc::rNonCentralStudent(const Scalar nu,
 Scalar DistFunc::pNormal(const Scalar x,
                          const Bool tail)
 {
-  if (tail) return 0.5 * SpecFunc::ErfC(x * M_SQRT1_2);
-  return 0.5 * SpecFunc::ErfC(-x * M_SQRT1_2);
+  if (tail) return pNormal(-x, false);
+  const Scalar t = x * M_SQRT1_2;
+  const Scalar z = std::abs(t);
+  Scalar y;
+  if (z < M_SQRT1_2) y = 0.5 + 0.5 * SpecFunc::Erf(t);
+  else
+  {
+    y = 0.5 * SpecFunc::ErfC(z);
+    if (t > 0.0) y = 1.0 - y;
+  }
+  return y;
 }
 
 Point DistFunc::pNormal(const Point & x,
                         const Bool tail)
 {
+  if (tail) return pNormal(x * (-1.0), false);
   const UnsignedInteger size = x.getSize();
   Point result(size);
-  if (tail)
-    for (UnsignedInteger i = 0; i < size; ++i)
-      result[i] = 0.5 * SpecFunc::ErfC(x[i] * M_SQRT1_2);
-  else
-    for (UnsignedInteger i = 0; i < size; ++i)
-      result[i] = 0.5 * SpecFunc::ErfC(-x[i] * M_SQRT1_2);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar t = x[i] * M_SQRT1_2;
+    const Scalar z = std::abs(t);
+    Scalar *y = &result[i];
+    if (z < M_SQRT1_2) *y = 0.5 + 0.5 * SpecFunc::Erf(t);
+    else
+    {
+      *y = 0.5 * SpecFunc::ErfC(z);
+      if (t > 0.0) *y = 1.0 - *y;
+    }
+  }
   return result;
+}
+
+Scalar DistFunc::logpNormal(const Scalar x,
+                            const Bool tail)
+{
+  if (tail) return logpNormal(-x, false);
+  const Scalar t = x * M_SQRT1_2;
+  if (x < -1.0) return std::log(0.5 * SpecFunc::ErfCX(-t)) - t * t;
+  else return log1p(-0.5 * SpecFunc::ErfC(t));
 }
 
 Scalar DistFunc::pNormal2D(const Scalar x1,
@@ -1382,6 +1407,11 @@ Point DistFunc::dNormal(const Point &x)
   for (UnsignedInteger i = 0; i < size; ++i)
     result[i] = dNormal(x[i]);
   return result;
+}
+
+Scalar DistFunc::logdNormal(const Scalar x)
+{
+  return -0.5 * x * x - SpecFunc::LOGSQRT2PI;
 }
 
 /**********************************************************************************/

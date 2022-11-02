@@ -11,7 +11,7 @@ from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-from math import pi
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -46,8 +46,7 @@ chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
 # Since the input distribution is known in our particular case, we instead create the multivariate basis from the distribution, that is three independent variables X1, X2 and X3.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    [im.X1, im.X2, im.X3])
+multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 totalDegree = 8
 enumfunc = multivariateBasis.getEnumerateFunction()
 P = enumfunc.getStrataCumulatedCardinal(totalDegree)
@@ -56,11 +55,13 @@ adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
 # %%
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
 projectionStrategy = ot.LeastSquaresStrategy(
-    inputTrain, outputTrain, selectionAlgorithm)
+    inputTrain, outputTrain, selectionAlgorithm
+)
 
 # %%
 chaosalgo = ot.FunctionalChaosAlgorithm(
-    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy)
+    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+)
 
 # %%
 chaosalgo.run()
@@ -87,7 +88,7 @@ Q2
 
 # %%
 graph = val.drawValidation()
-graph.setTitle("Q2=%.2f%%" % (Q2*100))
+graph.setTitle("Q2=%.2f%%" % (Q2 * 100))
 view = viewer.View(graph)
 plt.show()
 

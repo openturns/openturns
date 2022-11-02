@@ -25,18 +25,16 @@ Use the post-analytical importance sampling algorithm
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a model
-model = ot.SymbolicFunction(['x1', 'x2'], ['x1^2+x2'])
+model = ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2"])
 R = ot.CorrelationMatrix(2)
 R[0, 1] = -0.6
-inputDist = ot.Normal([0., 0.], R)
-inputDist.setDescription(['X1', 'X2'])
+inputDist = ot.Normal([0.0, 0.0], R)
+inputDist.setDescription(["X1", "X2"])
 inputVector = ot.RandomVector(inputDist)
 
 # Create the output random vector Y=model(X)

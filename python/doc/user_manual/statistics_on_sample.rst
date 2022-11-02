@@ -84,6 +84,13 @@ Building distributions from samples
     NormalFactory
     ParetoFactory
     PoissonFactory
+
+    :template: class.rst_t
+
+    QuantileMatchingFactory
+
+    :template: DistributionFactory.rst_t
+
     RayleighFactory
 
     :template: class.rst_t

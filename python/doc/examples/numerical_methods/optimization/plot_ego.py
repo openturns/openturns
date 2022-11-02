@@ -23,9 +23,9 @@ from openturns.usecases import ackley_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-import math as m
+
 ot.RandomGenerator.SetSeed(0)
-ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra",  "LAPACK")
+ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK")
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -63,7 +63,7 @@ fexact = model(xexact)
 fexact
 
 # %%
-graph = model.draw(lowerbound, upperbound, [100]*dim)
+graph = model.draw(lowerbound, upperbound, [100] * dim)
 graph.setTitle("Ackley function")
 view = viewer.View(graph)
 
@@ -77,8 +77,9 @@ view = viewer.View(graph)
 # Before using the EGO algorithm, we must create an initial kriging. In order to do this, we must create a design of experiment which fills the space. In this situation, the `LHSExperiment` is a good place to start (but other design of experiments may allow to better fill the space). We use a uniform distribution in order to create a LHS design with 50 points.
 
 # %%
-listUniformDistributions = [ot.Uniform(
-    lowerbound[i], upperbound[i]) for i in range(dim)]
+listUniformDistributions = [
+    ot.Uniform(lowerbound[i], upperbound[i]) for i in range(dim)
+]
 distribution = ot.ComposedDistribution(listUniformDistributions)
 sampleSize = 50
 experiment = ot.LHSExperiment(distribution, sampleSize)
@@ -86,8 +87,9 @@ inputSample = experiment.generate()
 outputSample = model(inputSample)
 
 # %%
-graph = ot.Graph("Initial LHS design of experiment - n=%d" %
-                 (sampleSize), "$x_0$", "$x_1$", True)
+graph = ot.Graph(
+    "Initial LHS design of experiment - n=%d" % (sampleSize), "$x_0$", "$x_1$", True
+)
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
 view = viewer.View(graph)
@@ -98,8 +100,7 @@ view = viewer.View(graph)
 # %%
 covarianceModel = ot.SquaredExponential([1.0] * dim, [0.5])
 basis = ot.ConstantBasisFactory(dim).build()
-kriging = ot.KrigingAlgorithm(
-    inputSample, outputSample, covarianceModel, basis)
+kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 kriging.run()
 
 # %%
@@ -117,7 +118,8 @@ problem.setBounds(bounds)
 # %%
 # In order to show the various options, we configure them all, even if most could be left to default settings in this case.
 #
-# The most important method is `setMaximumEvaluationNumber` which limits the number of iterations that the algorithm can perform. In the Ackley example, we choose to perform 10 iterations of the algorithm.
+# The most important method is `setMaximumEvaluationNumber` which limits the number of iterations that the algorithm can perform.
+# In the Ackley example, we choose to perform 10 iterations of the algorithm.
 
 # %%
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
@@ -138,7 +140,12 @@ result.getOptimalValue()
 fexact
 
 # %%
-# Compared to the minimum function value, we see that the EGO algorithm provides solution which is not very accurate. However, the optimal point is in the neighbourhood of the exact solution, and this is quite an impressive success given the limited amount of function evaluations: only 60 evaluations for the initial DOE and 10 iterations of the EGO algorithm, for a total equal to 70 function evaluations.
+# Compared to the minimum function value, we see that the EGO algorithm
+# provides solution which is not very accurate.
+# However, the optimal point is in the neighbourhood of the exact solution,
+# and this is quite an impressive success given the limited amount of function
+# evaluations: only 60 evaluations for the initial DOE and 10 iterations of
+# the EGO algorithm, for a total equal to 70 function evaluations.
 
 # %%
 graph = result.drawOptimalValueHistory()
@@ -148,10 +155,9 @@ view = viewer.View(graph)
 inputHistory = result.getInputSample()
 
 # %%
-graph = model.draw(lowerbound, upperbound, [100]*dim)
+graph = model.draw(lowerbound, upperbound, [100] * dim)
 graph.setLegends([""])
-graph.setTitle(
-    "Ackley function. Initial : black bullet. Solution : green diamond.")
+graph.setTitle("Ackley function. Initial : black bullet. Solution : green diamond.")
 cloud = ot.Cloud(inputSample)
 cloud.setPointStyle("bullet")
 cloud.setColor("black")
@@ -163,12 +169,13 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# We see that the initial (black) points are dispersed in the whole domain, while the solution points are much closer to the solution.
+# We see that the initial (black) points are dispersed in the whole domain,
+# while the solution points are much closer to the solution.
 #
 # However, the final solution produced by the EGO algorithm is not very accurate. This is why we finalize the process by adding a local optimization step.
 
 # %%
-algo2 = ot.NLopt(problem, 'LD_LBFGS')
+algo2 = ot.NLopt(problem, "LD_LBFGS")
 algo2.setStartingPoint(result.getOptimalPoint())
 algo2.run()
 result = algo2.getResult()
@@ -221,7 +228,7 @@ fexact = objectiveFunction(xexact)
 fexact
 
 # %%
-graph = objectiveFunction.draw(lowerbound, upperbound, [100]*dim)
+graph = objectiveFunction.draw(lowerbound, upperbound, [100] * dim)
 graph.setTitle("Branin function")
 view = viewer.View(graph)
 
@@ -241,8 +248,9 @@ outputSample = objectiveFunction(inputSample)
 noiseSample = noise(inputSample)
 
 # %%
-graph = ot.Graph("Initial LHS design of experiment - n=%d" %
-                 (sampleSize), "$x_0$", "$x_1$", True)
+graph = ot.Graph(
+    "Initial LHS design of experiment - n=%d" % (sampleSize), "$x_0$", "$x_1$", True
+)
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
 view = viewer.View(graph)
@@ -250,8 +258,7 @@ view = viewer.View(graph)
 # %%
 covarianceModel = ot.SquaredExponential([1.0] * dim, [1.0])
 basis = ot.ConstantBasisFactory(dim).build()
-kriging = ot.KrigingAlgorithm(
-    inputSample, outputSample, covarianceModel, basis)
+kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 
 # %%
 kriging.setNoise([x[0] for x in noiseSample])
@@ -294,10 +301,9 @@ fexact
 inputHistory = result.getInputSample()
 
 # %%
-graph = objectiveFunction.draw(lowerbound, upperbound, [100]*dim)
+graph = objectiveFunction.draw(lowerbound, upperbound, [100] * dim)
 graph.setLegends([""])
-graph.setTitle(
-    "Branin function. Initial : black bullet. Solution : green diamond.")
+graph.setTitle("Branin function. Initial : black bullet. Solution : green diamond.")
 cloud = ot.Cloud(inputSample)
 cloud.setPointStyle("bullet")
 cloud.setColor("black")
@@ -313,8 +319,7 @@ view = viewer.View(graph)
 
 # %%
 graph = result.drawOptimalValueHistory()
-view = viewer.View(graph, axes_kw={"xticks": range(
-    0, result.getIterationNumber(), 5)})
+view = viewer.View(graph, axes_kw={"xticks": range(0, result.getIterationNumber(), 5)})
 
 plt.show()
 # %%

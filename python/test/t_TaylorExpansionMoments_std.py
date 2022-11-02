@@ -3,14 +3,15 @@
 import openturns as ot
 
 # We create a Function
-myFunc = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'],
-                             ['(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)',
-                              'cos(x2*x2+x4)/(x1*x1+1+x3^4)'])
+myFunc = ot.SymbolicFunction(
+    ["x1", "x2", "x3", "x4"],
+    ["(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)", "cos(x2*x2+x4)/(x1*x1+1+x3^4)"],
+)
 
 # We create a distribution
 dim = myFunc.getInputDimension()
 meanPoint = [0.2] * dim
-sigma = [0.] * dim
+sigma = [0.0] * dim
 for i in range(dim):
     sigma[i] = 0.1 * (i + 1)
 R = ot.CorrelationMatrix(dim)
@@ -29,16 +30,15 @@ Y = ot.CompositeRandomVector(myFunc, X)
 algo = ot.TaylorExpansionMoments(Y)
 
 # We test the attributes here
-print('algo=', algo)
+print("algo=", algo)
 
 # We compute the several elements provided by the quadratic cumul algorithm
-print('First order mean=', repr(algo.getMeanFirstOrder()))
-print('Second order mean=', repr(algo.getMeanSecondOrder()))
-print('Covariance=', repr(algo.getCovariance()))
-print('Value at mean=', repr(algo.getValueAtMean()))
-print('Gradient at mean=', repr(algo.getGradientAtMean()))
-print('Hessian at mean=', repr(algo.getHessianAtMean()))
+print("First order mean=", repr(algo.getMeanFirstOrder()))
+print("Second order mean=", repr(algo.getMeanSecondOrder()))
+print("Covariance=", repr(algo.getCovariance()))
+print("Value at mean=", repr(algo.getValueAtMean()))
+print("Gradient at mean=", repr(algo.getGradientAtMean()))
+print("Hessian at mean=", repr(algo.getHessianAtMean()))
 
 algo_1 = ot.TaylorExpansionMoments(Y.getMarginal(0))
-print('Importance factors=', repr(
-    algo_1.getImportanceFactors()))
+print("Importance factors=", repr(algo_1.getImportanceFactors()))

@@ -1,46 +1,92 @@
-Distribution  TruncatedNormal(mu = 0.5, sigma = 3, a = -2, b = 2)
-Elliptical =  False
+Distribution  TruncatedNormal(mu = 1.5, sigma = 3, a = -2, b = 5)
+Elliptical =  True
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[-0.814797]
-oneSample first= class=Point name=Unnamed dimension=1 values=[1.55013]  last= class=Point name=Unnamed dimension=1 values=[-0.505664]
-mean= class=Point name=Unnamed dimension=1 values=[0.0635542]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.25177]
+oneRealization= class=Point name=Unnamed dimension=1 values=[3.3246]
+oneSample first= class=Point name=Unnamed dimension=1 values=[0.185203]  last= class=Point name=Unnamed dimension=1 values=[-1.83857]
+mean= class=Point name=Unnamed dimension=1 values=[1.47585]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.35552]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=Point name=Unnamed dimension=1 values=[1]
-ddf     = class=Point name=Unnamed dimension=1 values=[-0.0148955]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.0148955]
-log pdf=-1.316321
-pdf     =0.268120
-pdf (FD)=0.268120
-cdf=0.743877
-ccdf=0.256123
-pdf gradient     = class=Point name=Unnamed dimension=4 values=[0.0277138,-0.0118013,0.0515102,-0.0643285]
-pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[0.0277138,-0.0118013,0.0515102,-0.0643285]
-log-pdf gradient     = class=Point name=Unnamed dimension=4 values=[0.103363,-0.0440151,0.192116,-0.239924]
-log-pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[0.103363,-0.0440151,0.192116,-0.239924]
-cdf gradient     = class=Point name=Unnamed dimension=4 values=[-0.0404404,0.00354582,-0.0492055,-0.178474]
-cdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-0.0404404,0.00354582,-0.0492055,-0.178474]
-quantile= class=Point name=Unnamed dimension=1 values=[1.79498]
+Point=  class=Point name=Unnamed dimension=1 values=[3.5]
+ddf     = class=Point name=Unnamed dimension=1 values=[-0.0312729]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.0312729]
+log pdf=-1.960925
+pdf     =0.140728
+pdf (FD)=0.140728
+cdf=0.827107
+ccdf=0.172893
+pdf gradient     = class=Point name=Unnamed dimension=4 values=[0.0312729,0.0031597,0.0125231,-0.0125231]
+pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[0.0312729,0.0031597,0.0125231,-0.0125231]
+log-pdf gradient     = class=Point name=Unnamed dimension=4 values=[0.222222,0.0224525,0.0889876,-0.0889876]
+log-pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[0.222222,0.0224525,0.0889876,-0.0889876]
+cdf gradient     = class=Point name=Unnamed dimension=4 values=[-0.0517406,-0.0258989,-0.0153853,-0.0736023]
+cdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-0.0517406,-0.0258989,-0.0153853,-0.0736023]
+quantile= class=Point name=Unnamed dimension=1 values=[4.48948]
 cdf(quantile)=0.950000
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[-1.74843]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-1.48948]
 Survival(inverseSurvival)=0.950000
-entropy=1.382344
-Minimum volume interval= [-1.74843, 2]
+entropy=1.927246
+Minimum volume interval= [-1.73303, 4.73303]
 threshold= [0.95]
-Minimum volume level set= {x | f(x) <= 1.58329} with f=
-MinimumVolumeLevelSetEvaluation(TruncatedNormal(mu = 0.5, sigma = 3, a = -2, b = 2))
-beta= [0.205299]
-Bilateral confidence interval= [-1.87213, 1.89667]
+Minimum volume level set= {x | f(x) <= 2.3194} with f=
+MinimumVolumeLevelSetEvaluation(TruncatedNormal(mu = 1.5, sigma = 3, a = -2, b = 5))
+beta= [0.0983328]
+Bilateral confidence interval= [-1.73303, 4.73303]
 beta= [0.95]
-Unilateral confidence interval (lower tail)= [-2, 1.79498]
+Unilateral confidence interval (lower tail)= [-2, 4.48948]
 beta= [0.95]
-Unilateral confidence interval (upper tail)= [-1.74843, 2]
+Unilateral confidence interval (upper tail)= [-1.48948, 5]
 beta= [0.95]
-mean= class=Point name=Unnamed dimension=1 values=[0.0697287]
-standard deviation= class=Point name=Unnamed dimension=1 values=[1.1195]
-skewness= class=Point name=Unnamed dimension=1 values=[-0.0708515]
-kurtosis= class=Point name=Unnamed dimension=1 values=[1.86887]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.25327]
-parameters= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[0.5,3,-2,2]]
-Standard representative= TruncatedNormal(mu = 0.25, sigma = 1.5, a = -1, b = 1)
+mean= class=Point name=Unnamed dimension=1 values=[1.5]
+standard deviation= class=Point name=Unnamed dimension=1 values=[1.84222]
+skewness= class=Point name=Unnamed dimension=1 values=[0]
+kurtosis= class=Point name=Unnamed dimension=1 values=[1.99309]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.39378]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[1.5,3,-2,5]]
+Standard representative= TruncatedNormal(mu = 0, sigma = 0.857143, a = -1, b = 1)
+Distribution  TruncatedNormal(mu = 50, sigma = 1, a = 3, b = 4)
+Elliptical =  False
+Continuous =  True
+oneRealization= class=Point name=Unnamed dimension=1 values=[3.97053]
+oneSample first= class=Point name=Unnamed dimension=1 values=[3.99371]  last= class=Point name=Unnamed dimension=1 values=[3.97978]
+mean= class=Point name=Unnamed dimension=1 values=[3.97803]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.000488568]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[3.5]
+ddf     = class=Point name=Unnamed dimension=1 values=[1.93801e-07]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[1.93801e-07]
+log pdf=-19.295887
+pdf     =0.000000
+pdf (FD)=0.000000
+cdf=0.000000
+ccdf=1.000000
+pdf gradient     = class=Point name=Unnamed dimension=4 values=[-1.99336e-09,1.84427e-07,0,-1.91808e-07]
+pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-1.99336e-09,1.84427e-07,0,-1.91808e-07]
+log-pdf gradient     = class=Point name=Unnamed dimension=4 values=[-0.478281,44.2509,0,-46.0217]
+log-pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-0.478281,46.2509,0,-46.0217]
+cdf gradient     = class=Point name=Unnamed dimension=4 values=[-4.47731e-11,4.14344e-09,-2.95456e-19,-4.12299e-09]
+cdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[-4.47731e-11,4.14344e-09,-2.86282e-19,-4.12299e-09]
+quantile= class=Point name=Unnamed dimension=1 values=[3.99889]
+cdf(quantile)=0.950000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[3.93495]
+Survival(inverseSurvival)=0.950000
+entropy=-2.829585
+Minimum volume interval= [3.93495, 4]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= -0.834793} with f=
+MinimumVolumeLevelSetEvaluation(TruncatedNormal(mu = 50, sigma = 1, a = 3, b = 4))
+beta= [2.30434]
+Bilateral confidence interval= [3.91991, 3.99945]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [3, 3.99889]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [3.93495, 4]
+beta= [0.95]
+mean= class=Point name=Unnamed dimension=1 values=[3.97828]
+standard deviation= class=Point name=Unnamed dimension=1 values=[0.0217084]
+skewness= class=Point name=Unnamed dimension=1 values=[-1.99718]
+kurtosis= class=Point name=Unnamed dimension=1 values=[-1.99718]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.000471255]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[50,1,3,4]]
+Standard representative= TruncatedNormal(mu = 93, sigma = 2, a = -1, b = 1)

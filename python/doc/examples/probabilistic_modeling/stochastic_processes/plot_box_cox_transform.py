@@ -56,6 +56,7 @@ Use the Box-Cox transformation
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -68,7 +69,7 @@ amplitude = [1.0]
 scale = [0.2, 0.2]
 myCovModel = ot.ExponentialModel(scale, amplitude)
 myXproc = ot.GaussianProcess(myCovModel, myMesh)
-g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
+g = ot.SymbolicFunction(["x1"], ["exp(x1)"])
 myDynTransform = ot.ValueFunction(g, myMesh)
 myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
 

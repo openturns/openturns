@@ -54,7 +54,7 @@ Estimate a scalar ARMA process
 
 # %%
 import openturns as ot
-import matplotlib.pyplot as plt
+
 ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)
 
@@ -101,7 +101,7 @@ print("New spectral model factory = ", factory.getSpectralModelFactory())
 # To get the quantified AICc, AIC and BIC criteria
 arma42, criterion = factory.buildWithCriteria(tseries)
 AICc, AIC, BIC = criterion[0:3]
-print('AICc=', AICc, 'AIC=', AIC, 'BIC=', BIC)
+print("AICc=", AICc, "AIC=", AIC, "BIC=", BIC)
 arma42
 
 # %%
@@ -119,7 +119,7 @@ factory_range = ot.WhittleFactory(pIndices, qIndices)
 # Estimate the arma model from a process sample
 arma_range, criterion = factory_range.buildWithCriteria(sample)
 AICc, AIC, BIC = criterion[0:3]
-print('AICc=', AICc, 'AIC=', AIC, 'BIC=', BIC)
+print("AICc=", AICc, "AIC=", AIC, "BIC=", BIC)
 arma_range
 
 # %%

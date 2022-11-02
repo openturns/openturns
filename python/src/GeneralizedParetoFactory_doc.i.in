@@ -1,9 +1,6 @@
 %feature("docstring") OT::GeneralizedParetoFactory
 "Generalized Pareto factory.
 
-Available constructor:
-    GeneralizedParetoFactory()
-
 Notes
 -----
 Several estimators are available to build a GeneralizedPareto distribution
@@ -33,7 +30,7 @@ Then we estimate :math:`(\hat{\sigma}_n, \hat{\xi}_n, \hat{u}_n)` using:
     :label: gpd_moment_estimator
 
     \begin{eqnarray*}
-        \hat{\xi}_n &= \dfrac{1}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}-1\right) \\
+        \hat{\xi}_n &= -\dfrac{1}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}-1\right) \\
         \hat{\sigma}_n &= \dfrac{\overline{x}_n}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}+1\right) \\
         \hat{u}_n &= x_{(1)} - \frac{x_{(1)}}{2 + n}
     \end{eqnarray*}

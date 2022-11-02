@@ -83,7 +83,13 @@ for method in methods:
     # 1. Check with local error covariance
     print("Local error covariance")
     algo = ot.GaussianLinearCalibration(
-        model, inputObservations, outputObservations, candidate, priorCovariance, errorCovariance, method
+        model,
+        inputObservations,
+        outputObservations,
+        candidate,
+        priorCovariance,
+        errorCovariance,
+        method,
     )
     algo.run()
     calibrationResult = algo.getResult()

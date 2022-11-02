@@ -13,20 +13,20 @@ def printResults(result, problemName):
     print("      -- Absolute error = {:.6e}".format(result.getAbsoluteError()))
     print("      -- Relative error = {:.6e}".format(result.getRelativeError()))
     print("      -- Residual error = {:.6e}".format(result.getResidualError()))
-    print(
-        "      -- Constraint error = {:.6e}".format(result.getConstraintError()))
+    print("      -- Constraint error = {:.6e}".format(result.getConstraintError()))
 
 
 n = 3
 m = 20
-x = [[0.5 + 0.1*i] for i in range(m)]
+x = [[0.5 + 0.1 * i] for i in range(m)]
 
-model = ot.SymbolicFunction(['a', 'b', 'c', 'x'], ['a + b * exp(-c *x^2)'])
+model = ot.SymbolicFunction(["a", "b", "c", "x"], ["a + b * exp(-c *x^2)"])
 p_ref = [2.8, 1.2, 0.5]  # Reference a, b, c
 modelx = ot.ParametricFunction(model, [0, 1, 2], p_ref)
 y = modelx(x)
-ynoise = ot.Sample([ot.Normal(1.0, 0.05).getRealization()[0] * modelx(x)[i]
-                    for i in range(m)])  # Generate sample with noise
+ynoise = ot.Sample(
+    [ot.Normal(1.0, 0.05).getRealization()[0] * modelx(x)[i] for i in range(m)]
+)  # Generate sample with noise
 
 # Define residual functions
 

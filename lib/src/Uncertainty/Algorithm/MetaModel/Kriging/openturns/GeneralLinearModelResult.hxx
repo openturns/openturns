@@ -116,9 +116,6 @@ protected:
 
 private:
 
-  /** inputData should be keeped*/
-  Sample inputData_;
-
   /** The trend basis */
   BasisPersistentCollection basis_;
 

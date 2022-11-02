@@ -349,13 +349,65 @@ OT_Graph_setTickLocation_doc
 %define OT_Graph_getTickLocation_doc
 "Accessor to the ticks location flag.
 
-Parameters
-----------
+Returns
+-------
 loc : int
     Indicates the ticks location."
 %enddef
 %feature("docstring") OT::GraphImplementation::getTickLocation
 OT_Graph_getTickLocation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setIntegerXTick_doc
+"Accessor to the integer x-axis ticks flag.
+
+Parameters
+----------
+integerXTick : bool
+    Whether to draw only integer ticks on the x-axis."
+%enddef
+%feature("docstring") OT::GraphImplementation::setIntegerXTick
+OT_Graph_setIntegerXTick_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getIntegerXTick_doc
+"Accessor to the integer x-axis ticks flag.
+
+Returns
+-------
+integerXTick : bool
+    Whether to draw only integer ticks on the x-axis."
+%enddef
+%feature("docstring") OT::GraphImplementation::getIntegerXTick
+OT_Graph_getIntegerXTick_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setIntegerYTick_doc
+"Accessor to the integer y-axis ticks flag.
+
+Parameters
+----------
+integerYTick : bool
+    Whether to draw only integer ticks on the y-axis."
+%enddef
+%feature("docstring") OT::GraphImplementation::setIntegerYTick
+OT_Graph_setIntegerYTick_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getIntegerYTick_doc
+"Accessor to the integer y-axis ticks flag.
+
+Returns
+-------
+integerYTick : bool
+    Whether to draw only integer ticks on the y-axis."
+%enddef
+%feature("docstring") OT::GraphImplementation::getIntegerYTick
+OT_Graph_getIntegerYTick_doc
 
 // ---------------------------------------------------------------------
 
@@ -584,38 +636,6 @@ OT_Graph_getPath_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Graph_getBitmap_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::GraphImplementation::getBitmap
-OT_Graph_getBitmap_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Graph_getPostscript_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::GraphImplementation::getPostscript
-OT_Graph_getPostscript_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Graph_getVectorial_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::GraphImplementation::getVectorial
-OT_Graph_getVectorial_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Graph_getPDF_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::GraphImplementation::getPDF
-OT_Graph_getPDF_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Graph_setXMargin_doc
 "Accessor to the horizontal margin size.
 
@@ -677,14 +697,6 @@ OT_Graph_setBoundingBox_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Graph_getRCommand_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::GraphImplementation::getRCommand
-OT_Graph_getRCommand_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Graph_getAutomaticBoundingBox_doc
 "Accessor to the indication of automatic bounding box.
 
@@ -715,25 +727,6 @@ OT_Graph_setAutomaticBoundingBox_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Graph_draw_doc
-"Generate graphic files.
-
-Parameters
-----------
-file : str
-     Name of the created file. The format is guessed from the extension.
-     Supports png, fig, pdf and eps file formats. When the path is not
-     specified in the file name, the files are created in the current directory.
-width : float
-    Number of pixels fixing the width of the Graph, default value=640.
-height : float
-    Number of pixels fixing the height of the Graph, default value=480."
-%enddef
-%feature("docstring") OT::GraphImplementation::draw
-OT_Graph_draw_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Graph_add_doc
 "Add drawable instances to the collection of drawables contained in Graph.
 
@@ -760,18 +753,6 @@ its graphical context.
 %enddef
 %feature("docstring") OT::GraphImplementation::add
 OT_Graph_add_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Graph_clean_doc
-"Clean temporary files.
-
-Notes
------
-Cleans all the temporary data created by the drawables during their drawing."
-%enddef
-%feature("docstring") OT::GraphImplementation::clean
-OT_Graph_clean_doc
 
 // ---------------------------------------------------------------------
 

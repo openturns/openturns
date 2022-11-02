@@ -11,7 +11,7 @@ The Bayesian Information Criterion (BIC) allows one to
 answer this question in the one dimensional case :math:`n_X =1`.
 
 Let us limit the case to :math:`n_X = 1`. Thus we denote
-:math:`\vect{X} = X^1 = X`. Moreover, let us denote by :math:`\cM_1`,…,
+:math:`\vect{X} = X^1 = X`. Moreover, let us denote by :math:`\cM_1`,\dots,
 :math:`\cM_K` the parametric models envisaged by user among the
 :ref:`parametric models <parametric_distribution_factories>`. We
 suppose here that the parameters of these models have been estimated
@@ -47,20 +47,20 @@ increases with the numbers of parameters to be estimated. A complex
 model will then have a good score only if the gain in terms of
 likelihood is high enough to justify the number of parameters used.
 
-The term “Bayesian Information Criterion” comes the interpretation of
+The term "Bayesian Information Criterion" comes the interpretation of
 the quantity :math:`\textrm{BIC}_i`. In a bayesian context, the unknown
-“true” model may be seen as a random variable. Suppose now that the user
+"true" model may be seen as a random variable. Suppose now that the user
 does not have any informative prior information on which model is more
-relevant among :math:`\cM_1`,…, :math:`\cM_K`; all the models are thus
+relevant among :math:`\cM_1`,\dots, :math:`\cM_K`; all the models are thus
 equally likely from the point of view of the user. Then, one can show
 that :math:`\textrm{BIC}_i` is an approximation of the posterior
-distribution’s logarithm for the model :math:`\cM_i`.
+distribution's logarithm for the model :math:`\cM_i`.
 
 
 .. topic:: API:
 
-    - See :class:`~openturns.FittingTest_BIC`
-    - See :class:`~openturns.FittingTest_BestModelBIC`
+    - See :py:func:`~openturns.FittingTest.BIC`
+    - See :py:func:`~openturns.FittingTest.BestModelBIC`
 
 .. topic:: Examples:
 

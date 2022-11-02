@@ -12,6 +12,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -32,9 +33,9 @@ def C(s, t):
 covariance = ot.CovarianceMatrix(mesh.getVerticesNumber())
 for k in range(mesh.getVerticesNumber()):
     t = mesh.getVertices()[k]
-    for l in range(k + 1):
-        s = mesh.getVertices()[l]
-        covariance[k, l] = C(s[0], t[0])
+    for ll in range(k + 1):
+        s = mesh.getVertices()[ll]
+        covariance[k, ll] = C(s[0], t[0])
 
 # %%
 # Create the covariance model
@@ -48,8 +49,8 @@ def f(x):
 
 
 func = ot.PythonFunction(2, 1, f)
-func.setDescription(['$s$', '$t$', '$cov$'])
+func.setDescription(["$s$", "$t$", "$cov$"])
 cov_graph = func.draw([-a] * 2, [a] * 2, [512] * 2)
-cov_graph.setLegendPosition('')
+cov_graph.setLegendPosition("")
 view = viewer.View(cov_graph)
 plt.show()

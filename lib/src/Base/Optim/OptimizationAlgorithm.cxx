@@ -283,7 +283,7 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & p
       algorithm.setProblem(problem);
       return algorithm;
     }
-    catch (InvalidArgumentException &)
+    catch (const InvalidArgumentException &)
     {
       // try next algorithm
     }
@@ -328,7 +328,7 @@ Description OptimizationAlgorithm::GetAlgorithmNames(const OptimizationProblem &
       algorithm.setProblem(problem);
       result.add(names[i]);
     }
-    catch (InvalidArgumentException &)
+    catch (const InvalidArgumentException &)
     {
       // try next algorithm
     }

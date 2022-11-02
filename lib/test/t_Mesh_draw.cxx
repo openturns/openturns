@@ -45,8 +45,8 @@ int main(int, char *[])
       simplices(2, 0) = 2;
       simplices(2, 1) = 3;
       Mesh mesh1D(vertices, simplices);
-      mesh1D.draw().draw("mesh1D");
-      mesh1D.draw1D().draw("mesh1D");
+      mesh1D.draw();
+      mesh1D.draw1D();
       fullprint << "mesh 1D ok" << std::endl;
     }
     {
@@ -97,8 +97,8 @@ int main(int, char *[])
       simplices(4, 1) = 2;
       simplices(4, 2) = 5;
       Mesh mesh2D(vertices, simplices);
-      mesh2D.draw().draw("mesh2D");
-      mesh2D.draw2D().draw("mesh2D");
+      mesh2D.draw();
+      mesh2D.draw2D();
       fullprint << "mesh 2D ok" << std::endl;
     }
     {
@@ -177,14 +177,14 @@ int main(int, char *[])
       simplices(5, 3) = 6;
 
       Mesh mesh3D(vertices, simplices);
-      mesh3D.draw().draw("mesh3D");
+      mesh3D.draw();
       SquareMatrix rotation(3);
       rotation(0, 0) =  cos(M_PI / 3.0);
       rotation(0, 1) =  sin(M_PI / 3.0);
       rotation(1, 0) = -sin(M_PI / 3.0);
       rotation(1, 1) =  cos(M_PI / 3.0);
       rotation(2, 2) = 1.0;
-      mesh3D.draw3D(true, rotation, true, 0.9).draw("mesh3D_2");
+      mesh3D.draw3D(true, rotation, true, 0.9);
       fullprint << "mesh 3D ok" << std::endl;
     }
   }

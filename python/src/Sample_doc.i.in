@@ -276,22 +276,22 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Sample::computeCenteredMoment
-"Estimate componentwise centered moments.
+%feature("docstring") OT::Sample::computeCentralMoment
+"Estimate componentwise central moments.
 
 Parameters
 ----------
 k : int
-    The centered moment's order.
+    The central moment's order.
 
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise centered moment of order :math:`k` estimated from the sample.
+    Componentwise central moment of order :math:`k` estimated from the sample.
 
 Notes
 -----
-The centered moment of order :math:`k` is estimated as follows:
+The central moment of order :math:`k` is estimated as follows:
 
 .. math::
 
@@ -311,7 +311,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal(2).getSample(30)
->>> print(sample.computeCenteredMoment(2))
+>>> print(sample.computeCentralMoment(2))
 [0.915126,0.873119]"
 
 // ---------------------------------------------------------------------
@@ -426,7 +426,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::computeKurtosis
-"Estimate the componentwise kurtosis (4th order centered normalized moment).
+"Estimate the componentwise kurtosis (4th order central normalized moment).
 
 Returns
 -------
@@ -639,7 +639,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::computeRawMoment
-"Compute the raw (non-centered) moment per component.
+"Compute the raw (non-central) moment per component.
 
 Parameters
 ----------
@@ -672,7 +672,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::computeSkewness
-"Estimate the componentwise skewness (3rd order centered normalized moment).
+"Estimate the componentwise skewness (3rd order central normalized moment).
 
 Returns
 -------

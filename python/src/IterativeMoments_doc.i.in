@@ -11,7 +11,7 @@ dimension : int
 
 Notes
 -----
-This class iteratively computes the centered moments of an iteratively increasing
+This class iteratively computes the central moments of an iteratively increasing
 dataset without storing any data in memory.
 
 See also
@@ -131,13 +131,13 @@ mean : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::IterativeMoments::getCenteredMoments
-"Returns the centered moments
+%feature("docstring") OT::IterativeMoments::getCentralMoments
+"Returns the central moments
 
 Returns
 -------
-centeredMoments : :class:`~openturns.Sample`
-    Current value of the centered moments."
+centralMoments : :class:`~openturns.Sample`
+    Current value of the central moments."
 
 // ---------------------------------------------------------------------
 

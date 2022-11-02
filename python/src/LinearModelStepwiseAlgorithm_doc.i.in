@@ -66,7 +66,7 @@ Stepwise regression
 >>> minimalIndices = [0]
 >>> direction = ot.LinearModelStepwiseAlgorithm.BACKWARD
 >>> penalty = 2.0 #Akaike Information Criterion, log(n) can be used for a BIC
->>> algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
+>>> algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, output_sample, basis, minimalIndices, direction)
 >>> algo_forward.setPenalty(penalty)
 >>> algo_forward.run()
 >>> result_forward = algo_forward.getResult()

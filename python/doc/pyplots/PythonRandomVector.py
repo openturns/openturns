@@ -31,7 +31,7 @@ myRV = ot.RandomVector(NormalTruncatedToBall(2, 1.5))
 myRV.setParameter([1.3, 0.6])
 sample = myRV.getSample(1000)
 
-graph = ot.Graph("Sample from a PythonRandomVector", "", "", True, '')
+graph = ot.Graph("Sample from a PythonRandomVector", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 View(graph)

@@ -61,7 +61,7 @@ desired by the user. Note that the higher
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.FittingTest_ChiSquared`
+    - See :py:func:`~openturns.FittingTest.ChiSquared`
 
 .. topic:: Examples:
 

@@ -11,6 +11,7 @@ Create unions or intersections of events
 import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 
@@ -50,9 +51,9 @@ X = ot.RandomVector(distribution)
 
 # %%
 # We consider three functions `f1`, `f2` and `f3` :
-f1 = ot.SymbolicFunction(['x0', 'x1'], ['x0'])
-f2 = ot.SymbolicFunction(['x0', 'x1'], ['x1'])
-f3 = ot.SymbolicFunction(['x0', 'x1'], ['x0+x1'])
+f1 = ot.SymbolicFunction(["x0", "x1"], ["x0"])
+f2 = ot.SymbolicFunction(["x0", "x1"], ["x1"])
+f3 = ot.SymbolicFunction(["x0", "x1"], ["x0+x1"])
 
 # %%
 # We build :class:`~openturns.CompositeRandomVector` from these functions and the initial distribution.
@@ -68,12 +69,11 @@ e3 = ot.ThresholdEvent(Y3, ot.Greater(), 0.0)
 
 # %%
 # The restriction of the domain :math:`E_1` to :math:`[-4,4] \times [-4, 4]` is the grey area.
-myGraph = ot.Graph(r'Representation of the event $E_1$',
-                   r'$x_1$', r'$x_2$', True, '')
+myGraph = ot.Graph(r"Representation of the event $E_1$", r"$x_1$", r"$x_2$", True, "")
 data = [[-4, -4], [0, -4], [0, 4], [-4, 4]]
 myPolygon = ot.Polygon(data)
-myPolygon.setColor('grey')
-myPolygon.setEdgeColor('black')
+myPolygon.setColor("grey")
+myPolygon.setEdgeColor("black")
 myGraph.add(myPolygon)
 view = otv.View(myGraph)
 axes = view.getAxes()
@@ -83,12 +83,11 @@ _ = axes[0].set_ylim(-4.0, 4.0)
 
 # %%
 # The restriction of the domain :math:`E_2` to :math:`[-4,4] \times [-4, 4]` is the grey area.
-myGraph = ot.Graph(r'Representation of the event $E_2$',
-                   r'$x_1$', r'$x_2$', True, '')
+myGraph = ot.Graph(r"Representation of the event $E_2$", r"$x_1$", r"$x_2$", True, "")
 data = [[-4, 0], [4, 0], [4, 4], [-4, 4]]
 myPolygon = ot.Polygon(data)
-myPolygon.setColor('grey')
-myPolygon.setEdgeColor('black')
+myPolygon.setColor("grey")
+myPolygon.setEdgeColor("black")
 myGraph.add(myPolygon)
 view = otv.View(myGraph)
 axes = view.getAxes()
@@ -97,12 +96,11 @@ _ = axes[0].set_ylim(-4.0, 4.0)
 
 # %%
 # The restriction of the domain :math:`E_3` to :math:`[-4,4] \times [-4, 4]` is the grey area.
-myGraph = ot.Graph(r'Representation of the event $E_3$',
-                   r'$x_1$', r'$x_2$', True, '')
+myGraph = ot.Graph(r"Representation of the event $E_3$", r"$x_1$", r"$x_2$", True, "")
 data = [[-4, 4], [4, -4], [4, 4]]
 myPolygon = ot.Polygon(data)
-myPolygon.setColor('grey')
-myPolygon.setEdgeColor('black')
+myPolygon.setColor("grey")
+myPolygon.setEdgeColor("black")
 myGraph.add(myPolygon)
 view = otv.View(myGraph)
 axes = view.getAxes()
@@ -116,11 +114,16 @@ e4 = ot.IntersectionEvent([e1, e2])
 # %%
 # The restriction of the domain :math:`E_4` to :math:`[-4,4] \times [-4, 4]` is the grey area.
 myGraph = ot.Graph(
-    r'Representation of the event $E_4  = E_1 \bigcap E_2$', r'$x_1$', r'$x_2$', True, '')
+    r"Representation of the event $E_4  = E_1 \bigcap E_2$",
+    r"$x_1$",
+    r"$x_2$",
+    True,
+    "",
+)
 data = [[-4, 0], [0, 0], [0, 4], [-4, 4]]
 myPolygon = ot.Polygon(data)
-myPolygon.setColor('grey')
-myPolygon.setEdgeColor('black')
+myPolygon.setColor("grey")
+myPolygon.setEdgeColor("black")
 myGraph.add(myPolygon)
 view = otv.View(myGraph)
 axes = view.getAxes()
@@ -138,11 +141,16 @@ e5 = ot.UnionEvent([e1, e2])
 # %%
 # The restriction of the domain :math:`E_5` to :math:`[-4,4] \times [-4, 4]` is the grey area.
 myGraph = ot.Graph(
-    r'Representation of the event $E_5  = E_1 \bigcup E_2$', r'$x_1$', r'$x_2$', True, '')
+    r"Representation of the event $E_5  = E_1 \bigcup E_2$",
+    r"$x_1$",
+    r"$x_2$",
+    True,
+    "",
+)
 data = [[-4, -4], [0, -4], [0, 0], [4, 0], [4, 4], [-4, 4]]
 myPolygon = ot.Polygon(data)
-myPolygon.setColor('grey')
-myPolygon.setEdgeColor('black')
+myPolygon.setColor("grey")
+myPolygon.setEdgeColor("black")
 myGraph.add(myPolygon)
 view = otv.View(myGraph)
 axes = view.getAxes()
@@ -161,11 +169,12 @@ e6 = ot.UnionEvent([e1, ot.IntersectionEvent([e2, e3])])
 # %%
 # First we draw the domain :math:`E_6 = E_1 \bigcup (E_2 \bigcap E_3)` :
 myGraph = ot.Graph(
-    r'Representation of the event $E_2 \bigcap E_3 $', r'$x_1$', r'$x_2$', True, '')
+    r"Representation of the event $E_2 \bigcap E_3 $", r"$x_1$", r"$x_2$", True, ""
+)
 data = [[-4, 4], [0, 0], [4, 0], [4, 4]]
 myPolygon = ot.Polygon(data)
-myPolygon.setColor('grey')
-myPolygon.setEdgeColor('black')
+myPolygon.setColor("grey")
+myPolygon.setEdgeColor("black")
 myGraph.add(myPolygon)
 view = otv.View(myGraph)
 axes = view.getAxes()
@@ -199,7 +208,7 @@ result = algo.getResult()
 prb = result.getProbabilityEstimate()
 print("Probability of e6 through MC : %.4f" % prb)
 cl = result.getConfidenceLength()
-print("Confidence interval MC : [%.4f, %.4f]" % (prb-0.5*cl, prb+0.5*cl))
+print("Confidence interval MC : [%.4f, %.4f]" % (prb - 0.5 * cl, prb + 0.5 * cl))
 
 
 # %%
@@ -232,27 +241,42 @@ X = ot.RandomVector(dist)
 
 # %%
 # We define the leaf events thanks to :class:`~openturns.SymbolicFunction`.
-inputs = ['M1', 'M2', 'M3', 'M4', 'M5']
-e0 = ot.ThresholdEvent(ot.CompositeRandomVector(
-    ot.SymbolicFunction(inputs, ['M1-M2+M4']), X), ot.Less(), 0.0)
-e1 = ot.ThresholdEvent(ot.CompositeRandomVector(
-    ot.SymbolicFunction(inputs, ['M2+2*M3-M4']), X), ot.Less(), 0.0)
-e2 = ot.ThresholdEvent(ot.CompositeRandomVector(
-    ot.SymbolicFunction(inputs, ['2*M3-2*M4-M5']), X), ot.Less(), 0.0)
-e3 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(
-    inputs, ['-(M1+M2+M4+M5-5*10.0)']), X), ot.Less(), 0.0)
-e4 = ot.ThresholdEvent(ot.CompositeRandomVector(
-    ot.SymbolicFunction(inputs, ['-(M2+2*M3+M4-5*40.0)']), X), ot.Less(), 0.0)
+inputs = ["M1", "M2", "M3", "M4", "M5"]
+e0 = ot.ThresholdEvent(
+    ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ["M1-M2+M4"]), X),
+    ot.Less(),
+    0.0,
+)
+e1 = ot.ThresholdEvent(
+    ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ["M2+2*M3-M4"]), X),
+    ot.Less(),
+    0.0,
+)
+e2 = ot.ThresholdEvent(
+    ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ["2*M3-2*M4-M5"]), X),
+    ot.Less(),
+    0.0,
+)
+e3 = ot.ThresholdEvent(
+    ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ["-(M1+M2+M4+M5-5*10.0)"]), X),
+    ot.Less(),
+    0.0,
+)
+e4 = ot.ThresholdEvent(
+    ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ["-(M2+2*M3+M4-5*40.0)"]), X),
+    ot.Less(),
+    0.0,
+)
 
 # %%
 # We consider a system event in disjunctive normal form (union of intersections):
-event = ot.UnionEvent([ot.IntersectionEvent([e0, e3, e4]),
-                       ot.IntersectionEvent([e2, e3, e4])])
+event = ot.UnionEvent(
+    [ot.IntersectionEvent([e0, e3, e4]), ot.IntersectionEvent([e2, e3, e4])]
+)
 
 # %%
 # We can estimate the probability of the event with basic sampling.
-print("Probability of the event : %.4f" %
-      event.getSample(10000).computeMean()[0])
+print("Probability of the event : %.4f" % event.getSample(10000).computeMean()[0])
 
 # %%
 # We can also run a :class:`~openturns.systemFORM` algorithm to estimate the probability differently.

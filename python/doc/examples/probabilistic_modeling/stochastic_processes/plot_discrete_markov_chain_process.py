@@ -28,6 +28,7 @@ Create a discrete Markov chain process
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -36,8 +37,7 @@ origin = ot.Dirac(0.0)
 
 # %%
 # Define the transition matrix
-transition = ot.SquareMatrix(
-    [[0.1, 0.3, 0.6], [0.7, 0.1, 0.2], [0.5, 0.3, 0.2]])
+transition = ot.SquareMatrix([[0.1, 0.3, 0.6], [0.7, 0.1, 0.2], [0.5, 0.3, 0.2]])
 
 # %%
 # Define an 1-d mesh
@@ -48,7 +48,7 @@ tgrid = ot.RegularGrid(0.0, 1.0, 50)
 process = ot.DiscreteMarkovChain(origin, transition, tgrid)
 real = process.getRealization()
 graph = real.drawMarginal(0)
-graph.setTitle('Discrete Markov chain')
+graph.setTitle("Discrete Markov chain")
 view = viewer.View(graph)
 
 # %%
@@ -56,20 +56,20 @@ view = viewer.View(graph)
 process.setTimeGrid(ot.RegularGrid(0.0, 1.0, 20))
 reals = process.getSample(3)
 graph = reals.drawMarginal(0)
-graph.setTitle('Discrete Markov chain, 3 realizations')
+graph.setTitle("Discrete Markov chain, 3 realizations")
 view = viewer.View(graph)
 
 # %%
 # Markov chain future 10 steps
 future = process.getFuture(10)
 graph = future.drawMarginal(0)
-graph.setTitle('Markov chain future 10 steps')
+graph.setTitle("Markov chain future 10 steps")
 view = viewer.View(graph)
 
 # %%
 # Markov chain 3 different futures
 futures = process.getFuture(10, 3)
 graph = futures.drawMarginal(0)
-graph.setTitle('Three Markov chain futures, 10 steps')
+graph.setTitle("Three Markov chain futures, 10 steps")
 view = viewer.View(graph)
 plt.show()

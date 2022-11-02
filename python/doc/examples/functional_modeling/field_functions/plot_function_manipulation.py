@@ -21,33 +21,33 @@ Function manipulation
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
-import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a vectorial function R ^n --> R^p
 # for example R^2 --> R^2
-f = ot.SymbolicFunction(['x1', 'x2'], ['1+2*x1+x2', '2+x1+2*x2'])
+f = ot.SymbolicFunction(["x1", "x2"], ["1+2*x1+x2", "2+x1+2*x2"])
 
 # Create a scalar function R --> R
-func1 = ot.SymbolicFunction(['x'], ['x^2'])
+func1 = ot.SymbolicFunction(["x"], ["x^2"])
 
 # Create another function R^2 --> R
-func2 = ot.SymbolicFunction(['x', 'y'], ['x*y'])
+func2 = ot.SymbolicFunction(["x", "y"], ["x*y"])
 
 # Create a vectorial function R ^3 --> R^2
 func3 = ot.SymbolicFunction(
-    ['x1', 'x2', 'x3'], ['1+2*x1+x2+x3^3', '2+sin(x1+2*x2)-sin(x3) * x3^4'])
+    ["x1", "x2", "x3"], ["1+2*x1+x2+x3^3", "2+sin(x1+2*x2)-sin(x3) * x3^4"]
+)
 
 # Create a second vectorial function R ^n --> R^p
 # for example R^2 --> R^2
-g = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2', 'x1^2+2*x2^2'])
+g = ot.SymbolicFunction(["x1", "x2"], ["x1+x2", "x1^2+2*x2^2"])
 
 
 def python_eval(X):
     a, b = X
-    y = a+b
+    y = a + b
     return [y]
 
 
@@ -66,13 +66,13 @@ f = ot.MemoizeFunction(f)
 # Evaluate the function at a particular point
 x = [1.0] * f.getInputDimension()
 y = f(x)
-print('x=', x, 'y=', y)
+print("x=", x, "y=", y)
 
 # %%
 # Get the history
 samplex = f.getInputHistory()
 sampley = f.getOutputHistory()
-print('evaluation history = ', samplex,  sampley)
+print("evaluation history = ", samplex, sampley)
 
 # %%
 # Clear the history mechanism
@@ -172,13 +172,14 @@ secondInputMarg = 2
 inputMin2 = [-1.5, -2.5]
 inputMax2 = [1.5, 2.5]
 # Give the coordinates of the fixed input components
-centralPt = [0.0, 2., 2.5]
+centralPt = [0.0, 2.0, 2.5]
 # Specify the output marginal function
 outputMarg = 1
 # Specify the point number of the final curve
 ptNb = [101, 101]
-graph = func3.draw(firstInputMarg, secondInputMarg,
-                   outputMarg, centralPt, inputMin2, inputMax2, ptNb)
+graph = func3.draw(
+    firstInputMarg, secondInputMarg, outputMarg, centralPt, inputMin2, inputMax2, ptNb
+)
 view = viewer.View(graph)
 
 # %%
@@ -200,7 +201,7 @@ view = viewer.View(graph)
 inputMin4 = [-1.5, -2.5]
 inputMax4 = [1.5, 2.5]
 # Give the coordinates of the fixed input components
-centralPt = [0.0, 2., 2.5]
+centralPt = [0.0, 2.0, 2.5]
 # Specify the output marginal function
 outputMarg = 1
 # Specify the point number of the final curve

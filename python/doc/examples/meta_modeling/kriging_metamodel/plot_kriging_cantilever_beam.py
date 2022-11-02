@@ -15,6 +15,7 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -78,7 +79,8 @@ print(X_train.getMin(), X_train.getMax())
 
 # %%
 scaleOptimizationBounds = ot.Interval(
-    [1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5])
+    [1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5]
+)
 
 # %%
 # Finally, we use the `KrigingAlgorithm` class to create the Kriging metamodel.
@@ -159,7 +161,7 @@ view = viewer.View(graph)
 # %%
 # sphinx_gallery_thumbnail_number = 3
 graph = val.drawValidation()
-graph.setTitle("Q2 = %.2f%%" % (100*Q2))
+graph.setTitle("Q2 = %.2f%%" % (100 * Q2))
 view = viewer.View(graph)
 
 plt.show()

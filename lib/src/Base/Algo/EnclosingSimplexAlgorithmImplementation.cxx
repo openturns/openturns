@@ -105,9 +105,12 @@ void EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices(const Samp
     }
     for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(i), guard = simplices_.cend_at(i); cit != guard; ++cit)
     {
+      const UnsignedInteger j = *cit;
+      if (j >= vertices_.getSize())
+        throw InvalidArgumentException(HERE) << "the mesh simplices reference more vertices than provided";
       for(UnsignedInteger k = 0; k < dimension; ++k)
       {
-        const Scalar coordinate = vertices_(*cit, k);
+        const Scalar coordinate = vertices_(j, k);
         lower[k] = std::min(lower[k], coordinate);
         upper[k] = std::max(upper[k], coordinate);
       }

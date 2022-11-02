@@ -71,13 +71,8 @@ GraphImplementation::GraphImplementation(const String & title)
   , legendFontSize_(ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize"))
   , xTitle_()
   , yTitle_()
-  , showAxes_(false)
-  , logScale_(NONE)
-  , showGrid_(false)
-  , gridColor_("gray")
   , xMargin_(ResourceMap::GetAsScalar("Graph-DefaultHorizontalMargin"))
   , yMargin_(ResourceMap::GetAsScalar("Graph-DefaultVerticalMargin"))
-  , automaticBoundingBox_(true)
   , boundingBox_(4)
   , drawablesCollection_(0)
 {
@@ -104,10 +99,8 @@ GraphImplementation::GraphImplementation(const String & title,
   , showAxes_(showAxes)
   , logScale_(NONE)
   , showGrid_(true)
-  , gridColor_("gray")
   , xMargin_(ResourceMap::GetAsScalar("Graph-DefaultHorizontalMargin"))
   , yMargin_(ResourceMap::GetAsScalar("Graph-DefaultVerticalMargin"))
-  , automaticBoundingBox_(true)
   , boundingBox_(4)
   , drawablesCollection_(0)
 {
@@ -260,6 +253,28 @@ void GraphImplementation::setTickLocation(const TickLocation tickLocation)
 GraphImplementation::TickLocation GraphImplementation::getTickLocation() const
 {
   return tickLocation_;
+}
+
+/* integer x-tick flag accessor */
+void GraphImplementation::setIntegerXTick(const Bool integerXTick)
+{
+  integerXTick_ = integerXTick;
+}
+
+Bool GraphImplementation::getIntegerXTick() const
+{
+  return integerXTick_;
+}
+
+/* integer y-tick flag accessor */
+void GraphImplementation::setIntegerYTick(const Bool integerYTick)
+{
+  integerYTick_ = integerYTick;
+}
+
+Bool GraphImplementation::getIntegerYTick() const
+{
+  return integerYTick_;
 }
 
 /* Set log scale for x, y both or none axes */
@@ -514,6 +529,8 @@ void GraphImplementation::draw(const String & file,
                                const Scalar height,
                                SignedInteger drawingFormat)
 {
+  LOGWARN(OSS() << "Graph.draw is deprecated");
+
   // Override format base on extension
   size_t pos = file.find_last_of(".");
   Bool matchedExtension = false;
@@ -758,6 +775,8 @@ void GraphImplementation::save(Advocate & adv) const
   adv.saveAttribute( "yTitle_", yTitle_ );
   adv.saveAttribute( "showAxes_", showAxes_ );
   adv.saveAttribute( "tickLocation_", static_cast<UnsignedInteger>(tickLocation_) );
+  adv.saveAttribute( "integerXTick_", integerXTick_);
+  adv.saveAttribute( "integerYTick_", integerYTick_);
   adv.saveAttribute( "logScale_", static_cast<UnsignedInteger>(logScale_) );
   adv.saveAttribute( "showGrid_", showGrid_ );
   adv.saveAttribute( "gridColor_", gridColor_ );
@@ -781,6 +800,11 @@ void GraphImplementation::load(Advocate & adv)
   UnsignedInteger tickLocation = 0;
   adv.loadAttribute( "tickLocation_", tickLocation );
   tickLocation_ = static_cast<TickLocation>(tickLocation);
+  if (adv.hasAttribute("integerXTick_"))
+  {
+    adv.loadAttribute( "integerXTick_", integerXTick_);
+    adv.loadAttribute( "integerYTick_", integerYTick_);
+  }
   UnsignedInteger logScale = 0;
   adv.loadAttribute( "logScale_", logScale );
   logScale_ = static_cast<LogScale>(logScale);

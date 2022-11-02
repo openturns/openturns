@@ -17,6 +17,7 @@ Overview of univariate distribution management
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -165,7 +166,7 @@ N.setDescription(["Normal"])
 # Secondly, we create a function.
 
 # %%
-f = ot.SymbolicFunction(['x'], ['exp(x)'])
+f = ot.SymbolicFunction(["x"], ["exp(x)"])
 f.setDescription(["X", "Exp(X)"])
 
 # %%
@@ -240,7 +241,7 @@ class Quartic(ot.PythonDistribution):
         elif u >= 1:
             p = 1.0
         else:
-            p = 0.5 + 15./16 * u - 5. / 8 * pow(u, 3) + 3./16 * pow(u, 5)
+            p = 0.5 + 15.0 / 16 * u - 5.0 / 8 * pow(u, 3) + 3.0 / 16 * pow(u, 5)
         return p
 
     def computePDF(self, x):
@@ -248,7 +249,7 @@ class Quartic(ot.PythonDistribution):
         if u < -1 or u > 1:
             y = 0.0
         else:
-            y = self.c * (1 - u ** 2)**2
+            y = self.c * (1 - u**2) ** 2
         return y
 
     def getRange(self):

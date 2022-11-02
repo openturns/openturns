@@ -224,7 +224,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
       setCoefficients(normalMatrix.solveLinearSystem(basisMatrix.genVectProd(rightHandSide, true), false));
       isSolved = true;
     }
-    catch (NotDefinedException & ex)
+    catch (const NotDefinedException & ex)
     {
       LOGINFO(OSS() << ex);
       isSolved = false;

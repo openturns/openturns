@@ -14,19 +14,16 @@ Create a random vector
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-import math as m
+
 ot.Log.Show(ot.Log.NONE)
 
 
 # %%
 # Inherit PythonRandomVector
 class RVEC(ot.PythonRandomVector):
-
     def __init__(self):
         super(RVEC, self).__init__(2)
-        self.setDescription(['R', 'S'])
+        self.setDescription(["R", "S"])
 
     def getRealization(self):
         X = [ot.RandomGenerator.Generate(), 2.0 + ot.RandomGenerator.Generate()]
@@ -36,7 +33,8 @@ class RVEC(ot.PythonRandomVector):
         X = []
         for i in range(size):
             X.append(
-                [ot.RandomGenerator.Generate(), 2.0 + ot.RandomGenerator.Generate()])
+                [ot.RandomGenerator.Generate(), 2.0 + ot.RandomGenerator.Generate()]
+            )
         return X
 
     def getMean(self):

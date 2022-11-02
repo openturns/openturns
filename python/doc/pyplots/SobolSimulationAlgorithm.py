@@ -10,15 +10,15 @@ E = ot.Beta(0.9, 3.5, 2.5e7, 5.0e7)  # in N/m^2
 E.setDescription("E")
 # Load F
 F = ot.LogNormal()  # in N
-F.setParameter(ot.LogNormalMuSigma()([30.e3, 9e3, 15.e3]))
+F.setParameter(ot.LogNormalMuSigma()([30.0e3, 9e3, 15.0e3]))
 F.setDescription("F")
 # Length L
-L = ot.Uniform(250., 260.)  # in cm
+L = ot.Uniform(250.0, 260.0)  # in cm
 L.setDescription("L")
 # Moment of inertia I
-I = ot.Beta(2.5, 4, 310, 450)  # in cm^4
-I.setDescription("I")
-distribution = ot.ComposedDistribution([E, F, L, I])
+II = ot.Beta(2.5, 4, 310, 450)  # in cm^4
+II.setDescription("I")
+distribution = ot.ComposedDistribution([E, F, L, II])
 
 # estimator
 estimator = ot.SaltelliSensitivityAlgorithm()

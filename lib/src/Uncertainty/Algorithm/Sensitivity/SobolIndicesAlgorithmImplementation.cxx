@@ -621,7 +621,7 @@ Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & 
   const Scalar descriptionMargin = 1.6 * (dimension - 1.0) / (dimension + 2.0);
   upperBound[0] = dimension + descriptionMargin;
   graph.setBoundingBox(Interval(lowerBound, upperBound));
-
+  graph.setIntegerXTick(true);
   graph.setLegendPosition("topright");
   return graph;
 }
@@ -740,8 +740,6 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
   Point data(dimension);
   /* Normalization */
   for (UnsignedInteger i = 0; i < dimension; ++i) data[i] = values[i] / l1Norm;
-  /* we build the pie */
-  Pie importanceFactorsPie(data);
 
   /* build labels and colors for the pie */
   Description palette(dimension);
@@ -761,9 +759,8 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
     oss << 100.0 * data[i] << "%";
     labels[i] = oss;
   }
-  /* we complete the pie */
-  importanceFactorsPie.setLabels(labels);
-  importanceFactorsPie.buildDefaultPalette();
+  /* we build the pie */
+  Pie importanceFactorsPie(data, labels);
   /* we build the graph with a title */
   Graph importanceFactorsGraph(title);
   /* we embed the pie into the graph */
@@ -830,8 +827,8 @@ Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Poi
   else
     upperBound[1] = 0.1;
 
+  graph.setIntegerXTick(true);
   graph.setBoundingBox(Interval(lowerBound, upperBound));
-
   return graph;
 }
 

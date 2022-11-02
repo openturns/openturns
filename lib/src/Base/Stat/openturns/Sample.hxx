@@ -249,8 +249,11 @@ public:
   Point computeKurtosis() const;
 
   /**
-   * Gives the centered moment of order k of the sample (by component)
+   * Gives the central moment of order k of the sample (by component)
    */
+  Point computeCentralMoment(const UnsignedInteger k) const;
+
+  /** @deprecated */
   Point computeCenteredMoment(const UnsignedInteger k) const;
 
   /**

@@ -109,6 +109,14 @@ public:
   void setTickLocation(const TickLocation tickLocation);
   TickLocation getTickLocation() const;
 
+  /** integer x-tick flag accessor */
+  void setIntegerXTick(const Bool integerXTick);
+  Bool getIntegerXTick() const;
+
+  /** integer y-tick flag accessor */
+  void setIntegerYTick(const Bool integerYTick);
+  Bool getIntegerYTick() const;
+
   /** Set log scale for x, y both or none axes */
   void setLogScale(const LogScale logScale);
   LogScale getLogScale() const;
@@ -133,16 +141,16 @@ public:
   String getTitle() const;
   void setTitle(const String & title);
 
-  /** The method that generates the graphic files */
+  /** @deprecated The method that generates the graphic files */
   void draw(const String & file,
             const Scalar width = ResourceMap::GetAsUnsignedInteger("Graph-DefaultWidth"),
             const Scalar height = ResourceMap::GetAsUnsignedInteger("Graph-DefaultHeight"),
             SignedInteger format = GraphImplementation::ALL);
 
-  /** Get the R command corresponding to the graph */
+  /** @deprecated Get the R command corresponding to the graph */
   String getRCommand() const;
 
-  /** Clean temporary files */
+  /** @deprecated Clean temporary files */
   void clean();
 
   /** Margin accessor */

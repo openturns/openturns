@@ -67,9 +67,9 @@ only if :math:`\alpha_\textrm{lim}` is greater than the value
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.HypothesisTest_Spearman`
-    - See :py:func:`~openturns.HypothesisTest_PartialSpearman`
-    - See :py:func:`~openturns.HypothesisTest_FullSpearman`
+    - See :py:func:`~openturns.HypothesisTest.Spearman`
+    - See :py:func:`~openturns.HypothesisTest.PartialSpearman`
+    - See :py:func:`~openturns.HypothesisTest.FullSpearman`
 
 
 .. topic:: Examples:

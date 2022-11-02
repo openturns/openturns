@@ -29,9 +29,9 @@ print("disjunctive union=", domain)
 # Accessors
 print("Dimension=", domain.getDimension())
 # Contains
-print("is point ", p0, " inside ? ",  domain.contains(p0))
-print("is point ", p1, " inside ? ",  domain.contains(p1))
-print("is point ", p2, " inside ? ",  domain.contains(p2))
-print("is point ", p3, " inside ? ",  domain.contains(p3))
+print("is point ", p0, " inside ? ", domain.contains(p0))
+print("is point ", p1, " inside ? ", domain.contains(p1))
+print("is point ", p2, " inside ? ", domain.contains(p2))
+print("is point ", p3, " inside ? ", domain.contains(p3))
 sample = [p0, p1, p2, p3]
-print("is sample ", sample, " inside ? ",  domain.contains(sample))
+print("is sample ", sample, " inside ? ", domain.contains(sample))

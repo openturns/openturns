@@ -485,6 +485,9 @@
   <GeneralizedParetoFactory-MaximumRelativeError    value_float="1.0e-10"        />
   <GeneralizedParetoFactory-MaximumEvaluationNumber value_int="1000" />
   <GeneralizedParetoFactory-SmallSize               value_int="20"   />
+
+  <!-- OT::Gibbs parameters -->
+  <Gibbs-DefaultUpdatingMethod       value_int="0"     />
   
   <!-- OT::InverseNormalFactory parameters -->
   <InverseNormalFactory-Method value_str="MLE" />
@@ -583,6 +586,14 @@
   <MethodOfMomentsFactory-MaximumObjectiveError   value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumRelativeError    value_float="1.0e-10"        />
   <MethodOfMomentsFactory-MaximumEvaluationNumber value_int="1000" />
+
+  <!-- OT::QuantileMatchingFactory parameters -->
+  <QuantileMatchingFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
+  <QuantileMatchingFactory-MaximumConstraintError  value_float="1.0e-10"        />
+  <QuantileMatchingFactory-MaximumObjectiveError   value_float="1.0e-10"        />
+  <QuantileMatchingFactory-MaximumRelativeError    value_float="1.0e-10"        />
+  <QuantileMatchingFactory-QuantileEpsilon         value_float="1.0e-2"        />
+  <QuantileMatchingFactory-MaximumEvaluationNumber value_int="1000" />
 
   <!-- OT::Student parameters -->
   <Student-MaximumCDFEpsilon              value_float="5.0e-6"             />
@@ -687,6 +698,9 @@
 
   <!-- OT::DirectionalSampling parameters -->
   <DirectionalSampling-MeanContributionIntegrationNodesNumber value_int="255" />
+
+  <!-- OT::NAIS parameters -->
+  <NAIS-DefaultRhoQuantile value_float="0.25" />
 
   <!-- OT::AdaptiveDirectionalStratification parameters -->
   <AdaptiveDirectionalStratification-DefaultGamma                          value_float="0.5"         />

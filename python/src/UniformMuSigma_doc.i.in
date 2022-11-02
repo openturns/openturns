@@ -1,0 +1,38 @@
+%feature("docstring") OT::UniformMuSigma
+"Uniform distribution parameters.
+
+Parameters
+----------
+mu : float
+    Mean.
+sigma : float
+    Standard deviation :math:`\sigma > 0`.
+
+Notes
+-----
+The native parameters are defined as follows:
+
+.. math::
+
+    a &= \mu - \sigma \frac{\sqrt{12}}{2} \\
+    b &= \mu + \sigma \frac{\sqrt{12}}{2}
+
+See also
+--------
+Uniform
+
+Examples
+--------
+Create the parameters of the Uniform distribution:
+
+>>> import openturns as ot
+>>> parameters = ot.UniformMuSigma(8.4, 2.25)
+
+Convert parameters into the native parameters:
+
+>>> p_native = parameters.evaluate()
+
+The gradient of the transformation of the native parameters into the new
+parameters:
+
+>>> p_grad = parameters.gradient()"

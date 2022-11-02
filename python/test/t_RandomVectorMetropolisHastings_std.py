@@ -14,13 +14,12 @@ x = sampler.getSample(10000)
 mean = x.computeMean()
 stddev = x.computeStandardDeviation()
 print(mean, stddev)
-#ott.assert_almost_equal(mean, [0.824453, -0.0215115])
-#ott.assert_almost_equal(stddev, [0.00197192, 0.968657])
+# ott.assert_almost_equal(mean, [0.824453, -0.0215115])
+# ott.assert_almost_equal(stddev, [0.00197192, 0.968657])
 
 # with link function
-slf = ot.SymbolicFunction(['x'], ['0.0', '0.1'])
-sampler = ot.RandomVectorMetropolisHastings(
-    randomVector, initialState, [0], slf)
+slf = ot.SymbolicFunction(["x"], ["0.0", "0.1"])
+sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState, [0], slf)
 x = sampler.getSample(10000)
 mean = x.computeMean()
 stddev = x.computeStandardDeviation()

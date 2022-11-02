@@ -50,6 +50,7 @@ class OT_API ProjectionStrategyImplementation
   // as this last class is in charge of managing data that are part of the FunctionalChaosAlgorithm
   // state
   friend class FunctionalChaosAlgorithm;
+  friend class ProjectionStrategy;
 
 public:
 
@@ -108,6 +109,13 @@ public:
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);
   virtual WeightedExperiment getExperiment() const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+
+protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   virtual void computeCoefficients(const Function & function,
                                    const FunctionCollection & basis,
@@ -117,13 +125,6 @@ public:
                                    const Indices & removedRanks,
                                    const UnsignedInteger marginalIndex = 0);
 
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;
-
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;
-
-protected:
   /** The collection of Alpha_k coefficients */
   Point alpha_k_p_;
 

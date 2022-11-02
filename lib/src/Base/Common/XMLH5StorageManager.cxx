@@ -34,7 +34,7 @@ class XMLH5StorageManagerImplementation
 public:
 
   explicit XMLH5StorageManagerImplementation(const FileName & h5FileName,
-                                             const UnsignedInteger compressionLevel = 0)
+      const UnsignedInteger compressionLevel = 0)
     : h5FileName_(h5FileName)
     , compressionLevel_(compressionLevel)
   {}

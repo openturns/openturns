@@ -13,17 +13,16 @@ Simulate an Event
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create model f(x) = x1 + 2*x2
-model = ot.SymbolicFunction(['x1', 'x2'], ['x1+2*x2'])
+model = ot.SymbolicFunction(["x1", "x2"], ["x1+2*x2"])
 
 # Create the input distribution and random vector X
 inputDist = ot.Normal(2)
-inputDist.setDescription(['X1', 'X2'])
+inputDist.setDescription(["X1", "X2"])
 
 inputVector = ot.RandomVector(inputDist)
 
@@ -37,11 +36,11 @@ event = ot.ThresholdEvent(outputVector, ot.Greater(), threshold)
 
 # %%
 # Realization as a Bernoulli
-print('realization=', event.getRealization())
+print("realization=", event.getRealization())
 
 # %%
 # Sample of 10 realizations as a Bernoulli
-print('sample=', event.getSample(10))
+print("sample=", event.getSample(10))
 
 # %%
 # Build a standard event based on an event

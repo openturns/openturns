@@ -27,8 +27,7 @@ for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
         dist.setParameter(p_tmp)
         pdfgrad_fd[j] = (dist.computePDF(x) - pdf_ref) / h
     print(dist.getName(), "PDF", pdfgrad, pdfgrad_fd)
-    ott.assert_almost_equal(pdfgrad_fd, pdfgrad, 1e-3,
-                            1e-3, dist.getName()+".pdf")
+    ott.assert_almost_equal(pdfgrad_fd, pdfgrad, 1e-3, 1e-3, dist.getName() + ".pdf")
 
     cdfgrad_fd = ot.Point(n)
     for j in range(n):
@@ -37,5 +36,4 @@ for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
         dist.setParameter(p_tmp)
         cdfgrad_fd[j] = (dist.computeCDF(x) - cdf_ref) / h
     print(dist.getName(), "CDF", cdfgrad, cdfgrad_fd)
-    ott.assert_almost_equal(cdfgrad_fd, cdfgrad, 1e-3,
-                            1e-3, dist.getName()+".cdf")
+    ott.assert_almost_equal(cdfgrad_fd, cdfgrad, 1e-3, 1e-3, dist.getName() + ".cdf")

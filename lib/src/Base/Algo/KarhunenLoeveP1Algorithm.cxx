@@ -445,7 +445,7 @@ void KarhunenLoeveP1Algorithm::run()
     selectedVariance += eigenValues[K];
     ++ K;
   }
-  while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
+  while ((K < nbModesMax) && (selectedVariance <= (1.0 - threshold_) * cumulatedVariance));
   LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
 
   // Reduce and rescale the eigenvectors
@@ -491,7 +491,7 @@ void KarhunenLoeveP1Algorithm::run()
     for(UnsignedInteger i = 0; i < augmentedDimension; ++i)
       projection(k, i) = b[i];
   }
-  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection, selectedVariance/cumulatedVariance);
+  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection, selectedVariance / cumulatedVariance);
 }
 
 /* Mesh accessor */

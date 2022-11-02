@@ -1,6 +1,10 @@
 %feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm
 "Functional metamodel algorithm based on chaos decomposition.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 The present algorithm allows to build a response surface of the application :math:`h` of the form:
 
 .. math::
@@ -121,13 +125,14 @@ the chaos input dimension.
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> mesh = ot.RegularGrid(0.0, 0.1, 20)
 >>> cov = ot.KroneckerCovarianceModel(ot.MaternModel([2.0], 1.5), ot.CovarianceMatrix(4))
 >>> X = ot.GaussianProcess(cov, mesh)
 >>> x = X.getSample(500)
 >>> y = [[m[0] + m[1] + m[2] - m[3] + m[0] * m[1] - m[2] * m[3] - 0.1 * m[0] * m[1] * m[2]] for m in [xi.computeMean() for xi in x]]
->>> algo = ot.FieldToPointFunctionalChaosAlgorithm(x, y)
+>>> algo = otexp.FieldToPointFunctionalChaosAlgorithm(x, y)
 >>> algo.setThreshold(4e-2)
 >>> # Temporarily lower the basis size for the sake of this example.
 >>> # We need to store the original size.

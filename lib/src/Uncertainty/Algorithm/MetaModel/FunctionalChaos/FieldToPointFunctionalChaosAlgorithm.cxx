@@ -64,7 +64,7 @@ FieldToPointFunctionalChaosAlgorithm::FieldToPointFunctionalChaosAlgorithm()
 
 /* Constructor with parameters */
 FieldToPointFunctionalChaosAlgorithm::FieldToPointFunctionalChaosAlgorithm(const ProcessSample & inputProcessSample,
-                                                                           const Sample & outputSample)
+    const Sample & outputSample)
   : PersistentObject()
   , inputProcessSample_(inputProcessSample)
   , outputSample_(outputSample)
@@ -179,10 +179,10 @@ class StackedProjectionFunction : public FieldToPointFunctionImplementation
 {
 public:
   StackedProjectionFunction(const Collection<FieldToPointFunction> & projectionCollection,
-                              const Collection<Indices> & blockIndices)
-  : FieldToPointFunctionImplementation()
-  , projectionCollection_(projectionCollection)
-  , blockIndices_(blockIndices)
+                            const Collection<Indices> & blockIndices)
+    : FieldToPointFunctionImplementation()
+    , projectionCollection_(projectionCollection)
+    , blockIndices_(blockIndices)
   {
     if (!projectionCollection.getSize())
       throw InvalidArgumentException(HERE) << "projectionCollection should not be empty";
@@ -206,7 +206,7 @@ public:
   {
     return new StackedProjectionFunction(*this);
   }
-  
+
   UnsignedInteger getInputDimension() const override
   {
     return inputDimension_;
@@ -309,7 +309,10 @@ void FieldToPointFunctionalChaosAlgorithm::run()
   if (recompress_)
   {
     const Scalar cumulatedVariance = eigenValues.norm1();
-    std::sort(eigenValues.begin(), eigenValues.end(), [](const Scalar a, const Scalar b) { return a > b; });
+    std::sort(eigenValues.begin(), eigenValues.end(), [](const Scalar a, const Scalar b)
+    {
+      return a > b;
+    });
     const UnsignedInteger nbModesMax = std::min(nbModes_, eigenValues.getSize());
     // Find the cut-off in the eigenvalues
     UnsignedInteger K = 0;
@@ -318,7 +321,8 @@ void FieldToPointFunctionalChaosAlgorithm::run()
     {
       selectedVariance += eigenValues[K];
       ++ K;
-    } while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
+    }
+    while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
     LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
 
     const Scalar lambdaCut = eigenValues[K];
@@ -341,12 +345,12 @@ void FieldToPointFunctionalChaosAlgorithm::run()
       modesAsProcessSampleI.erase(Ki, modesAsProcessSampleI.getSize());
       MatrixImplementation projectionMatrixI(*klResultCollection[i].getProjectionMatrix().getImplementation());
       projectionMatrixI.resize(Ki, projectionMatrixI.getNbColumns());
-      
-      klResultCollection[i] = KarhunenLoeveResult(covarianceI, klResultCollection[i].getThreshold(), eigenValuesI, modesI, modesAsProcessSampleI, projectionMatrixI, selectedVarianceI/cumulatedVarianceI);
+
+      klResultCollection[i] = KarhunenLoeveResult(covarianceI, klResultCollection[i].getThreshold(), eigenValuesI, modesI, modesAsProcessSampleI, projectionMatrixI, selectedVarianceI / cumulatedVarianceI);
     }
   }
 
-  // the global input projection stacks projections of each block of variables  
+  // the global input projection stacks projections of each block of variables
   Sample modesSample(size, 0);
   Collection<Distribution> distributionBlocks(blockIndices_.getSize());
   Collection<FieldToPointFunction> projectionCollection(blockIndices_.getSize());

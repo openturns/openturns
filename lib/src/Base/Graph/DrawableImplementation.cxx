@@ -1164,7 +1164,7 @@ Bool DrawableImplementation::IsValidColorCode(const String & key)
     ScanColorCode(key, rgba);
     return true;
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     return false;
   }

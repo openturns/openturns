@@ -87,7 +87,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   // Sum of Squared Total (SST) = n * var(Y) or n * E(Y^2) depending on intercept
   Scalar SST = 1.0;
   if (hasIntercept)
-    SST = secondSample.computeCenteredMoment(2)[0] * size;
+    SST = secondSample.computeCentralMoment(2)[0] * size;
   else
     SST = secondSample.computeRawMoment(2)[0] * size;
   // Sum of Squared Model (SSM) = SST - SSE
@@ -270,7 +270,7 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   }
 
   /* Build a linear model on the squared residuals */
-  LinearModelAlgorithm algo(firstSample, linearModelResult.getBasis(), w);
+  LinearModelAlgorithm algo(firstSample, w, linearModelResult.getBasis());
   const LinearModelResult result(algo.getResult());
   /* Predicted values of the squared residuals*/
   const Sample wPredicted(result.getFittedSample());

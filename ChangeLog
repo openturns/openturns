@@ -1,17 +1,18 @@
 = New Features =
 
-== 1.20 release (in-progress) == #release-1.20
+== 1.20rc1 release (2022-10-13) == #release-1.20rc1
 
 === Library ===
 
-==== Major changes ====
-
 ==== New classes ====
  * IndependentCopulaFactory
- * FieldToPointFunctionalChaosAlgorithm
- * FieldFunctionalChaosResult
- * FieldFunctionalChaosSobolIndices
+ * FieldToPointFunctionalChaosAlgorithm (openturns.experimental)
+ * FieldFunctionalChaosResult (openturns.experimental)
+ * FieldFunctionalChaosSobolIndices (openturns.experimental)
  * CorrelationAnalysis
+ * UserDefinedMetropolisHastings (openturns.experimental)
+ * QuantileMatchingFactory
+ * UniformMuSigma
 
 ==== API changes ====
  * Removed coupling_tools.execute get_stderr,get_stdout arguments
@@ -22,14 +23,61 @@
  * Deprecated static CorrelationAnalysis::PearsonCorrelation|SpearmanCorrelation|PCC|PRCC, use the methods of the new CorrelationAnalysis class instead.
  * Removed static CorrelationAnalysis::SRC|SRRC due to a bug: #1753.
  * Deprecated Distribution::getStandardMoment
+ * Inverted ctors arguments order in LinearModelAlgorithm & LinearModelStepwiseAlgorithm : first sample, then basis
+ * Deprecated oldest LinearModelAlgorithm(X, basis, Y) and LinearModelStepwiseAlgorithm(X, basis, Y,...) ctors
+ * Deprecated FunctionalChaos(Function, ...) ctors
+ * Deprecated MetaModelResult(Function, Function, ...) ctor
+ * Deprecated FunctionalChaosResult.getComposedModel, MetaModelResult.getModel
+ * Deprecated FunctionalChaosResult(Function, ...) ctor
+ * Deprecated (Process)Sample::computeCenteredMoment in favor of computeCentralMoment
+ * Deprecated Distribution::getCenteredMoment in favor of getCentralMoment
+ * Deprecated IterativeMoments::getCenteredMoments in favor of getCentralMoments
+ * Deprecated GeneralLinearModelAlgorithm | KrigingAlgorithm ctors using collection of basis
+ * Deprecated Drawable.draw|clean & Graph.draw|clean|getRCommand methods for legacy R graphs
+ * Deprecated GaussianProcess.GIBBS in favor of GaussianProcess.GALLIGAOGIBBS
+ * Deprecated FunctionalChaosSobolIndices::summary in favor of __str__
 
 === Documentation ===
+ * Added example galleries at the end of API doc pages
 
 === Python module ===
+ * New openturns.experimental submodule introducing newest classes until stabilization
 
 === Miscellaneous ===
+ * Chaos for mixed variables
 
 === Bug fixes ===
+ * #1214 (There is no example with IntegrationStrategy on a database)
+ * #1333 (Polynomial chaos with mixed variables (improvement))
+ * #1473 (FunctionalChaosResult should provide the used input/output samples )
+ * #1568 (There is no example to bootstrap the polynomial chaos)
+ * #2030 (There is no example which shows how to calibrate a model without observed inputs)
+ * #2043 (Some attributes of PythonDistribution are changed during the lifecycle of the object)
+ * #2058 (TruncatedNormal failure)
+ * #2059 (Pb with computeConditionalPDF in KernelMixture)
+ * #2064 (drop getGroupedSobolIndex(int) ?)
+ * #2073 (getCenteredMoment(0))
+ * #2076 (Problem in TruncatedDistribution of discrete distributions)
+ * #2083 (Problem in the QQplot of a discrete distribution)
+ * #2088 (Why is this library overriding the SIGINT handler?)
+ * #2089 (Cannot load Python objects with large attributes in a Study)
+ * #2097 (LinearModelStepwiseAlgorithm ctor order)
+ * #2091 (Compressed H5 files?)
+ * #2094 (getSampleAtVertex() is not robust)
+ * #2095 (Triangular::computeCharacteristicfunction() produces NaNs)
+ * #2098 (LinearModelStepwiseAlgorithm null basis)
+ * #2101 (drop FunctionalChaosSobolIndices::summary)
+ * #2103 (FunctionalChaosRandomVector notes)
+ * #2110 (HSIC draw indices method does not handle input sample descritption names)
+ * #2115 (Add mini-galleries of examples on the API pages)
+ * #2121 (GaussianProcess Gibbs sampling method issues)
+ * #2123 (MixtureClassifier 'grade' method does not work with a Sample input)
+ * #2125 (SciPyDistribution __init__ failure with scipy 1.9.0)
+ * #2129 (get samples from Wishart distribution)
+ * #2139 (KarhunenLoeveSVDAlgorithm seems to truncate the expansion from v1.19)
+ * #2140 (GeneralizedParetoFactory.buildMethodOfMoments estimating wrong parameter)
+ * #2145 (Calibration wo obs input API)
+ * #2152 (P1LagrangeInterpolation can make Python fail)
 
 
 == 1.19 release (2022-05-10) == #release-1.19
@@ -113,7 +161,6 @@
  * #2025 (The lack of Bonmin generates an error during example compilation)
  * #2031 (Multi-objective optimization example question)
  * #2032 (Documentation of NAIS)
-
 
 == 1.18 release (2021-11-10) == #release-1.18
 

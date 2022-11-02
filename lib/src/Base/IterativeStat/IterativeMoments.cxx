@@ -37,7 +37,7 @@ static const Factory<IterativeMoments> Factory_IterativeMoments;
 IterativeMoments::IterativeMoments(const UnsignedInteger orderMax, const UnsignedInteger dimension)
   : IterativeAlgorithmImplementation(dimension)
   , orderMax_(orderMax)
-  , centeredMoments_(orderMax, dimension_)
+  , centralMoments_(orderMax, dimension_)
 {
   // Nothing to do
 }
@@ -56,20 +56,26 @@ String IterativeMoments::__repr__() const
       << " iteration=" << iteration_
       << " dimension=" << dimension_
       << " order max=" << orderMax_
-      << " centered moments=" << centeredMoments_.__repr__();
+      << " central moments=" << centralMoments_.__repr__();
   return oss;
 }
 
 /* String converter */
 String IterativeMoments::__str__(const String & offset) const
 {
-  return getCenteredMoments().__str__(offset);
+  return getCentralMoments().__str__(offset);
 }
 
 /*  Accessor to the centered moments */
+Sample IterativeMoments::getCentralMoments() const
+{
+  return centralMoments_;
+}
+
 Sample IterativeMoments::getCenteredMoments() const
 {
-  return centeredMoments_;
+  LOGWARN(OSS() << "IterativeMoments::getCenteredMoments is deprecated, use getCentralMoments");
+  return getCentralMoments();
 }
 
 /* Accessor to the maximum order declared */
@@ -83,7 +89,7 @@ Point IterativeMoments::getMean() const
 {
   LOGDEBUG(OSS() << "IterativeMoments::getMean()");
   if (!(iteration_ > 0)) throw InternalException(HERE) << "Error: cannot compute the mean per component of an empty sample.";
-  return centeredMoments_[0] / iteration_;
+  return centralMoments_[0] / iteration_;
 }
 
 /* Accessor to the unbiased variance */
@@ -96,7 +102,7 @@ Point IterativeMoments::getVariance() const
   /* Special case for a size 1 */
   if (iteration_ == 1) return Point(dimension_, 0.0);
 
-  return centeredMoments_[1] / (iteration_ - 1);
+  return centralMoments_[1] / (iteration_ - 1);
 }
 
 /* Accessor to the unbiased estimator of the skewness
@@ -119,7 +125,7 @@ Point IterativeMoments::getSkewness() const
   for(UnsignedInteger d = 0; d < dimension_; ++d)
   {
     if (!(varianceEstimator[d] < 0.0 || varianceEstimator[d] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << d << " constant. The skewness is not defined.";
-    result[d] = iteration_ / ((iteration_ - 1.0) * (iteration_ - 2.0)) * centeredMoments_(2, d) / std::pow(varianceEstimator[d], 1.5) ;
+    result[d] = iteration_ / ((iteration_ - 1.0) * (iteration_ - 2.0)) * centralMoments_(2, d) / std::pow(varianceEstimator[d], 1.5) ;
   }
   return result;
 }
@@ -151,7 +157,7 @@ Point IterativeMoments::getKurtosis() const
   {
     LOGDEBUG(OSS() << "varianceEstimator[d] = " << varianceEstimator[d]);
     if (!(varianceEstimator[d] < 0.0 || varianceEstimator[d] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << d << " constant. The kurtosis is not defined.";
-    result[d] = factor1 * centeredMoments_(3, d) / std::pow(varianceEstimator[d], 2) + factor2;
+    result[d] = factor1 * centralMoments_(3, d) / std::pow(varianceEstimator[d], 2) + factor2;
   } // loop over the dimensions
   return result;
 }
@@ -170,7 +176,7 @@ void IterativeMoments::increment(const Point & newData)
   ++ iteration_;
   const Point delta_over_n = delta / iteration_;
 
-  for(UnsignedInteger d = 0; d < dimension_; ++d) centeredMoments_(0, d) += newData[d];
+  for(UnsignedInteger d = 0; d < dimension_; ++d) centralMoments_(0, d) += newData[d];
   if(orderMax_ > 1) updateHigherMoments(orderMax_, delta, delta_over_n);
 }
 
@@ -188,23 +194,23 @@ void IterativeMoments::updateHigherMoments(UnsignedInteger orderMax, const Point
   /* special case: second centered moment */
   if(orderMax == 2)
   {
-    for(UnsignedInteger d = 0; d < dimension_; ++d) centeredMoments_(1, d) += delta[d] * (delta[d] - delta_over_n[d]);
+    for(UnsignedInteger d = 0; d < dimension_; ++d) centralMoments_(1, d) += delta[d] * (delta[d] - delta_over_n[d]);
   }
   else
   {
     /* general case for order >= 2 */
     for(UnsignedInteger d = 0; d < dimension_; ++d)
     {
-      centeredMoments_(1, d) += delta[d] * (delta[d] - delta_over_n[d]);
+      centralMoments_(1, d) += delta[d] * (delta[d] - delta_over_n[d]);
       for(UnsignedInteger order = 3 ; order <= orderMax ; ++order)
       {
         Scalar tmp = 0.0;
         for(UnsignedInteger l = 1; l <= order - 2; ++l)
         {
           const UnsignedInteger binomialCoeff = SpecFunc::BinomialCoefficient(order, l) ;
-          tmp += std::pow(delta_over_n[d], l) * centeredMoments_(order - l - 1, d) * binomialCoeff ;
+          tmp += std::pow(delta_over_n[d], l) * centralMoments_(order - l - 1, d) * binomialCoeff ;
         } // loop over lower order moments
-        centeredMoments_(order - 1, d) += delta[d] * (std::pow(delta[d], order - 1) - std::pow(delta_over_n[d], order - 1)) - tmp;
+        centralMoments_(order - 1, d) += delta[d] * (std::pow(delta[d], order - 1) - std::pow(delta_over_n[d], order - 1)) - tmp;
       } // loop of the the order of the moment
     } // loop over the dimensions
   }
@@ -254,7 +260,7 @@ void IterativeMoments::save(Advocate & adv) const
 {
   IterativeAlgorithmImplementation::save(adv);
   adv.saveAttribute( "orderMax_", orderMax_);
-  adv.saveAttribute( "centeredMoments_", centeredMoments_);
+  adv.saveAttribute( "centralMoments_", centralMoments_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -262,7 +268,10 @@ void IterativeMoments::load(Advocate & adv)
 {
   IterativeAlgorithmImplementation::load(adv);
   adv.loadAttribute( "orderMax_", orderMax_);
-  adv.loadAttribute( "centeredMoments_", centeredMoments_);
+  if (adv.hasAttribute("centralMoments_"))
+    adv.loadAttribute( "centralMoments_", centralMoments_);
+  else
+    adv.loadAttribute( "centeredMoments_", centralMoments_);
 }
 
 END_NAMESPACE_OPENTURNS

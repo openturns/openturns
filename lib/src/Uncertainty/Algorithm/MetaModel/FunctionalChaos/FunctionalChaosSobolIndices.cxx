@@ -67,6 +67,12 @@ inline bool varianceComparison(const std::pair<UnsignedInteger, Scalar> &a, cons
 
 String FunctionalChaosSobolIndices::summary() const
 {
+  LOGWARN(OSS() << "FunctionalChaosSobolIndices::summary is deprecated, use __str__()");
+  return __str__();
+}
+
+String FunctionalChaosSobolIndices::__str__(const String & /*offset*/) const
+{
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
   const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
   OSS oss;

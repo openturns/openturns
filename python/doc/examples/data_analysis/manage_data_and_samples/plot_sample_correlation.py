@@ -18,6 +18,7 @@ from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -30,8 +31,7 @@ im = ishigami_function.IshigamiModel()
 input_names = im.distributionX.getDescription()
 
 size = 100
-inputDesign = ot.SobolIndicesExperiment(
-    im.distributionX, size, True).generate()
+inputDesign = ot.SobolIndicesExperiment(im.distributionX, size, True).generate()
 outputDesign = im.model(inputDesign)
 
 # %%
@@ -52,7 +52,8 @@ print(pcc_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    pcc_indices, input_names, "PCC coefficients")
+    pcc_indices, input_names, "PCC coefficients"
+)
 view = viewer.View(graph)
 
 # %%
@@ -64,7 +65,8 @@ print(prcc_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    prcc_indices, input_names, "PRCC coefficients")
+    prcc_indices, input_names, "PRCC coefficients"
+)
 view = viewer.View(graph)
 
 # %%
@@ -76,7 +78,8 @@ print(src_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    src_indices, input_names, 'SRC coefficients')
+    src_indices, input_names, "SRC coefficients"
+)
 view = viewer.View(graph)
 
 # %%
@@ -88,7 +91,8 @@ print(squared_src_indices)
 # %%
 
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    squared_src_indices, input_names, 'Squared SRC coefficients')
+    squared_src_indices, input_names, "Squared SRC coefficients"
+)
 view = viewer.View(graph)
 
 
@@ -101,7 +105,8 @@ print(srrc_indices)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
-    srrc_indices, input_names, 'SRRC coefficients')
+    srrc_indices, input_names, "SRRC coefficients"
+)
 view = viewer.View(graph)
 
 # %%
@@ -113,9 +118,9 @@ pearson_correlation = corr_analysis.computePearsonCorrelation()
 print(pearson_correlation)
 
 # %%
-graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(pearson_correlation,
-                                                             input_names,
-                                                             "Pearson correlation coefficients")
+graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
+    pearson_correlation, input_names, "Pearson correlation coefficients"
+)
 view = viewer.View(graph)
 
 # %%
@@ -128,8 +133,8 @@ spearman_correlation = corr_analysis.computeSpearmanCorrelation()
 print(spearman_correlation)
 
 # %%
-graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(spearman_correlation,
-                                                             input_names,
-                                                             "Spearman correlation coefficients")
+graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
+    spearman_correlation, input_names, "Spearman correlation coefficients"
+)
 view = viewer.View(graph)
 plt.show()

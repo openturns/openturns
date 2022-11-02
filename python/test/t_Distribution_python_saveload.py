@@ -6,19 +6,18 @@ import os
 
 
 class UniformNdPy(ot.PythonDistribution):
-
     def __init__(self, a=[0.0], b=[1.0]):
         super(UniformNdPy, self).__init__(len(a))
         if len(a) != len(b):
-            raise ValueError('Invalid bounds')
+            raise ValueError("Invalid bounds")
         for i in range(len(a)):
             if a[i] > b[i]:
-                raise ValueError('Invalid bounds')
+                raise ValueError("Invalid bounds")
         self.a = a
         self.b = b
         self.factor = 1.0
         for i in range(len(a)):
-            self.factor *= (b[i] - a[i])
+            self.factor *= b[i] - a[i]
 
     def getRange(self):
         return ot.Interval(self.a, self.b, [True] * len(self.a), [True] * len(self.a))
@@ -27,7 +26,8 @@ class UniformNdPy(ot.PythonDistribution):
         X = []
         for i in range(len(self.a)):
             X.append(
-                self.a[i] + (self.b[i] - self.a[i]) * ot.RandomGenerator.Generate())
+                self.a[i] + (self.b[i] - self.a[i]) * ot.RandomGenerator.Generate()
+            )
         return X
 
     def getSample(self, size):
@@ -41,7 +41,7 @@ class UniformNdPy(ot.PythonDistribution):
         for i in range(len(self.a)):
             if X[i] < self.a[i]:
                 return 0.0
-            prod *= (min(self.b[i], X[i]) - self.a[i])
+            prod *= min(self.b[i], X[i]) - self.a[i]
         return prod / self.factor
 
     def computePDF(self, X):
@@ -64,11 +64,11 @@ class UniformNdPy(ot.PythonDistribution):
     def getStandardDeviation(self):
         stdev = []
         for i in range(len(self.a)):
-            stdev.append((self.b[i] - self.a[i]) / m.sqrt(12.))
+            stdev.append((self.b[i] - self.a[i]) / m.sqrt(12.0))
         return stdev
 
     def getSkewness(self):
-        return [0.] * len(self.a)
+        return [0.0] * len(self.a)
 
     def getKurtosis(self):
         return [1.8] * len(self.a)
@@ -76,12 +76,12 @@ class UniformNdPy(ot.PythonDistribution):
     def getMoment(self, n):
         return [-0.1 * n] * len(self.a)
 
-    def getCenteredMoment(self, n):
-        return [0.] * len(self.a)
+    def getCentralMoment(self, n):
+        return [0.0] * len(self.a)
 
     def computeCharacteristicFunction(self, x):
         if len(self.a) > 1:
-            raise ValueError('dim>1')
+            raise ValueError("dim>1")
         ax = self.a[0] * x
         bx = self.b[0] * x
         return (m.sin(bx) - m.sin(ax) + 1j * (m.cos(ax) - m.cos(bx))) / (bx - ax)
@@ -119,8 +119,8 @@ class UniformNdPy(ot.PythonDistribution):
         return param
 
     def getParameterDescription(self):
-        paramDesc = ['a_' + str(i) for i in range(len(self.a))]
-        paramDesc.extend(['b_' + str(i) for i in range(len(self.a))])
+        paramDesc = ["a_" + str(i) for i in range(len(self.a))]
+        paramDesc.extend(["b_" + str(i) for i in range(len(self.a))])
         return paramDesc
 
     def setParameter(self, parameter):
@@ -133,13 +133,13 @@ class UniformNdPy(ot.PythonDistribution):
 myDist = ot.Distribution(UniformNdPy([0.0] * 2, [2.0] * 2))
 
 st = ot.Study()
-fileName = 'PyDIST.xml'
+fileName = "PyDIST.xml"
 st.setStorageManager(ot.XMLStorageManager(fileName))
 
 st.add("myDist", myDist)
 st.save()
 
-print('saved dist=', myDist)
+print("saved dist=", myDist)
 
 dist = ot.Distribution()
 
@@ -149,5 +149,5 @@ st.setStorageManager(ot.XMLStorageManager(fileName))
 st.load()
 
 st.fillObject("myDist", dist)
-print('loaded dist=', dist)
+print("loaded dist=", dist)
 os.remove(fileName)

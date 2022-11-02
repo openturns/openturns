@@ -46,7 +46,7 @@ KrigingResult::KrigingResult(const Sample & inputSample,
                              const PointCollection & trendCoefficients,
                              const CovarianceModel & covarianceModel,
                              const Sample & covarianceCoefficients)
-  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+  : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , basis_(basis)
@@ -54,6 +54,7 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , covarianceModel_(covarianceModel)
   , covarianceCoefficients_(covarianceCoefficients)
 {
+  model_ = DatabaseFunction(inputSample, outputSample); // deprecated
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In KrigingResult::KrigingResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
@@ -72,7 +73,7 @@ KrigingResult::KrigingResult(const Sample & inputSample,
                              const Sample & covarianceCoefficients,
                              const TriangularMatrix & covarianceCholeskyFactor,
                              const HMatrix & covarianceHMatrix)
-  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+  : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , basis_(basis)
@@ -82,6 +83,7 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , covarianceCholeskyFactor_(covarianceCholeskyFactor)
   , covarianceHMatrix_(covarianceHMatrix)
 {
+  model_ = DatabaseFunction(inputSample, outputSample); // deprecated
   const UnsignedInteger outputDimension = outputSample.getDimension();
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
@@ -125,19 +127,6 @@ String KrigingResult::__str__(const String & ) const
   oss << ", trend coefficients=" << trendCoefficients_ << ")";
   return oss;
 }
-
-
-/* Design accessors */
-Sample KrigingResult::getInputSample() const
-{
-  return inputSample_;
-}
-
-Sample KrigingResult::getOutputSample() const
-{
-  return outputSample_;
-}
-
 
 /* Basis accessor */
 KrigingResult::BasisCollection KrigingResult::getBasisCollection() const

@@ -39,7 +39,7 @@ public:
   MaximumLikelihoodFactory();
 
   /** Parameters constructor */
-  MaximumLikelihoodFactory(const Distribution & distribution);
+  explicit MaximumLikelihoodFactory(const Distribution & distribution);
 
   /** Virtual constructor */
   MaximumLikelihoodFactory * clone() const override;

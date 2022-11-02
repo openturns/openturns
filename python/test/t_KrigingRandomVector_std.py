@@ -10,20 +10,21 @@ ot.PlatformInfo.SetNumericalPrecision(3)
 inputDimension = 2
 
 # Learning data
-levels = [8., 5.]
+levels = [8.0, 5.0]
 box = ot.Box(levels)
 inputSample = box.generate()
 # Scale each direction
 inputSample *= 10
 
 
-model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
+model = ot.SymbolicFunction(["x", "y"], ["cos(0.5*x) + sin(y)"])
 outputSample = model(inputSample)
 
 # Validation data
 sampleSize = 10
-inputValidSample = ot.ComposedDistribution(
-    2 * [ot.Uniform(0, 10.0)]).getSample(sampleSize)
+inputValidSample = ot.ComposedDistribution(2 * [ot.Uniform(0, 10.0)]).getSample(
+    sampleSize
+)
 outputValidSample = model(inputValidSample)
 
 # 2) Definition of exponential model
@@ -35,8 +36,7 @@ covarianceModel = ot.SquaredExponential([7.63, 2.11], [7.38])
 basis = ot.ConstantBasisFactory(inputDimension).build()
 
 # Kriging algorithm
-algo = ot.KrigingAlgorithm(inputSample, outputSample,
-                           covarianceModel, basis)
+algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 algo.setOptimizeParameters(False)  # do not optimize hyper-parameters
 algo.run()
 result = algo.getResult()
@@ -47,7 +47,7 @@ outData = metaModel(inputValidSample)
 
 # 4) Errors
 # Interpolation
-ott.assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5)
+ott.assert_almost_equal(outputSample, metaModel(inputSample), 3.0e-5, 3.0e-5)
 
 
 # 5) Kriging variance is 0 on learning points

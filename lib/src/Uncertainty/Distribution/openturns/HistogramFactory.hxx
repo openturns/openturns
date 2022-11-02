@@ -64,6 +64,11 @@ public:
                              const Point & width) const;
   Histogram buildAsHistogram() const;
 
+  /** Build from quantiles */
+  Histogram buildFromQuantiles(const Scalar lowerBound,
+                               const Point & probabilities,
+                               const Point & quantiles) const;
+
   /** Compute the bandwidth according to Silverman's rule */
   Scalar computeBandwidth(const Sample & sample,
                           const Bool useQuantile = true) const;

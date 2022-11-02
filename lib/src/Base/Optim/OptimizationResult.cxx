@@ -402,6 +402,7 @@ Graph OptimizationResult::drawOptimalValueHistory() const
   optimalValueCurve.setLegend("optimal value");
   optimalValueCurve.setColor("red");
   result.add(optimalValueCurve);
+  result.setIntegerXTick(true);
   return result;
 }
 

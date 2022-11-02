@@ -16,7 +16,7 @@ from openturns.usecases import logistic_model
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-from numpy import linspace, exp, maximum
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -40,14 +40,13 @@ distX = lm.distX
 
 # %%
 class Popu(ot.OpenTURNSPythonPointToFieldFunction):
-
     def __init__(self, t0=1790.0, tfinal=2000.0, nt=1000):
         grid = ot.RegularGrid(t0, (tfinal - t0) / (nt - 1), nt)
         super(Popu, self).__init__(3, grid, 1)
-        self.setInputDescription(['y0', 'a', 'b'])
-        self.setOutputDescription(['N'])
+        self.setInputDescription(["y0", "a", "b"])
+        self.setOutputDescription(["N"])
         self.ticks_ = [t[0] for t in grid.getVertices()]
-        self.phi_ = ot.SymbolicFunction(['t', 'y', 'a', 'b'], ['a*y - b*y^2'])
+        self.phi_ = ot.SymbolicFunction(["t", "y", "a", "b"], ["a*y - b*y^2"])
 
     def _exec(self, X):
         y0 = X[0]
@@ -77,20 +76,20 @@ inputSample = distX.getSample(size)
 outputSample = popu(inputSample)
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger('Drawable-DefaultPalettePhase', size)
+ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", size)
 
 # %%
 # Draw some curves
 
 # %%
 graph = outputSample.drawMarginal(0)
-graph.setTitle('US population')
-graph.setXTitle(r'$t$ (years)')
-graph.setYTitle(r'$N$ (millions)')
+graph.setTitle("US population")
+graph.setXTitle(r"$t$ (years)")
+graph.setYTitle(r"$N$ (millions)")
 cloud = ot.Cloud(ustime, uspop)
-cloud.setPointStyle('circle')
-cloud.setLegend('Data')
+cloud.setPointStyle("circle")
+cloud.setLegend("Data")
 graph.add(cloud)
-graph.setLegendPosition('topleft')
+graph.setLegendPosition("topleft")
 view = viewer.View(graph)
 plt.show()

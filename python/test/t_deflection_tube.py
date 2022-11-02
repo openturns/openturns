@@ -3,7 +3,6 @@
 import openturns as ot
 from openturns.testing import assert_almost_equal
 from openturns.usecases import deflection_tube as deflection_tube
-from math import pi
 
 
 ot.TESTPREAMBLE()

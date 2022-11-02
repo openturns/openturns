@@ -1,0 +1,127 @@
+%feature("docstring") OT::UserDefinedMetropolisHastings
+"User-defined Metropolis-Hastings method.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
+
+Available constructor:
+    UserDefinedMetropolisHastings(*targetDistribution, initialState, proposal, linkFunction, marginalIndices*)
+
+    UserDefinedMetropolisHastings(*targetLogPDF, support, initialState, proposal, linkFunction, marginalIndices*)
+
+Parameters
+----------
+targetDistribution : :class:`~openturns.Distribution`
+    Target distribution sampled
+targetLogPDF : :class:`~openturns.Function`
+    Target log-density up to an additive constant
+support : :class:`~openturns.Domain`
+    Support of the target when defined with *targetLogPDF*
+initialState : sequence of float
+    Initial state of the chain
+proposal : :class:`~openturns.Distribution`
+    Proposal distribution, its parameters depend on the state of the chain.
+linkFunction : :class:`~openturns.Function`
+    Link between the state of the chain and the parameters of *proposal*.
+marginalIndices : sequence of int, optional
+    Indices of the components to be updated.
+    If not specified, all components are updated.
+    The number of updated components must be equal to the dimension of *proposal*.
+
+Notes
+-----
+
+Using the notations from :ref:`metropolis_hastings` page,
+this class allows to completely specify the transition kernel :math:`Q`.
+This is done by specifying:
+
+- a :class:`~openturns.Distribution` :math:`\Pi` (called *proposal* below) which admits :math:`p` parameters,
+- a :class:`~openturns.Function` :math:`g: \Omega \rightarrow \Rset^p` (called *linkFunction* below).
+
+If :math:`\vect{\lambda} \in \Rset^p` is a set of parameters for :math:`\Pi` (i.e. a :class:`~openturns.Point`
+that could be provided to the :meth:`~openturns.Distribution.setParameter` method of :math:`\Pi`),
+then let us denote by :math:`\Pi_{\vect{\lambda}}` the distribution :math:`\Pi` with parameter :math:`\vect{\lambda}`.
+
+The transition kernel :math:`Q` is then defined by
+
+.. math::
+    \forall \vect{x} \in \Omega \quad Q(\vect{x}, \cdot) = \Pi_{g(\vect{x})}.
+
+This class therefore applies the Metropolis-Hastings algorithm this way:
+
+Let :math:`t` be the density up to a multiplicative constant of the target probability distribution
+(specified by *targetDistribution* or *targetLogPDF* and possibly penalized by a likelihood function
+in a Bayesian setting - see :meth:`setLikelihood`).
+For all :math:`\vect{x} \in \Omega`, let :math:`\pi_{g(\vect{x})}` denote the PDF of the distribution :math:`\Pi_{g(\vect{x})}`.
+With an *initialState* :math:`\vect{x}_0`, the steps of the Metropolis-Hastings algorithm are the following.
+
+For :math:`k=1,2,...`:
+
+1. Sample a realization :math:`\tilde{\vect{x}}` from the distribution :math:`\Pi_{g(\vect{x}_{k-1})}`.
+2. Compute the ratio:
+
+.. math::
+    \rho_k := \frac{t(\tilde{\vect{x}}) / \pi_{g(\vect{x}_{k-1})}(\tilde{\vect{x}})}{t(\vect{x}_{k-1}) / \pi_{g(\tilde{\vect{x}})}(\vect{x}_{k-1}) }.
+
+3. Sample a realization :math:`u_k \sim \cU([0,1])`. If :math:`u_k \leq \rho_k`, then :math:`\vect{x}_k := \tilde{\vect{x}}`, otherwise :math:`\vect{x}_k := \vect{x}_{k-1}`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> import math as m
+>>> ot.RandomGenerator.SetSeed(0)
+
+Sample from a target distribution defined through its log-PDF (defined up to some additive constant) and its support:
+
+>>> log_density = ot.SymbolicFunction('x', 'log(2 + sin(x)^2)')
+>>> support = ot.Interval([0.0], [2.0 * m.pi])
+
+Apply a *Metropolis adjusted Langevin algorithm* (MALA) [robert2015]_ (page 10).
+The idea is to use a normal proposal distribution,
+whose mean will depend on the state of the chain
+(but will not be equal to that state, otherwise the algorithm
+would be easier to implement with the :class:`~openturns.RandomWalkMetropolisHastings` class).
+
+>>> initialState = [3.0]
+>>> proposal = ot.Normal()
+>>> h = 0.1
+>>> std_deviation = m.sqrt(h)
+
+The mean of the proposal normal distribution is the current state,
+but moved according to the derivative of the target log-density.
+
+>>> def python_link(x):
+...     derivative_log_density = log_density.getGradient().gradient(x)[0, 0]
+...     mean = x[0] + h / 2 * derivative_log_density
+...     return [mean, std_deviation]
+>>> link = ot.PythonFunction(1, 2, python_link)
+>>> mala = otexp.UserDefinedMetropolisHastings(log_density, support, initialState, proposal, link)
+>>> x = mala.getSample(10)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefinedMetropolisHastings::getProposal
+"Get the proposal distribution.
+
+Returns
+-------
+proposal : :class:`~openturns.Distribution`
+    The distribution from which the transition kernels of the
+    Metropolis-Hastings algorithm is defined."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefinedMetropolisHastings::getProposalLinkFunction
+"Get the proposal link function.
+
+Returns
+-------
+proposalLinkFunction : :class:`~openturns.Function`
+    The function which takes the state of the chain as input
+    and outputs the parameters of the proposal distribution.
+    Used to condition the proposal distribution on the state of the chain."

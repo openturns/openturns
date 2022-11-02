@@ -5,7 +5,6 @@ import math as m
 
 
 class TestHMatrixRealAssemblyFunction(object):
-
     def __init__(self, vertices, scaling=1.0):
         self.vertices = vertices
         self.scaling = scaling
@@ -18,8 +17,8 @@ class TestHMatrixRealAssemblyFunction(object):
         return val
 
 
-ot.ResourceMap.SetAsBool('HMatrix-ForceSequential', True)
-ot.ResourceMap.SetAsUnsignedInteger('HMatrix-MaxLeafSize', 10)
+ot.ResourceMap.SetAsBool("HMatrix-ForceSequential", True)
+ot.ResourceMap.SetAsUnsignedInteger("HMatrix-MaxLeafSize", 10)
 
 ot.PlatformInfo.SetNumericalPrecision(3)
 
@@ -32,47 +31,46 @@ vertices = mesh2D.getVertices()
 
 factory = ot.HMatrixFactory()
 parameters = ot.HMatrixParameters()
-parameters.setAssemblyEpsilon(1.e-6)
-parameters.setRecompressionEpsilon(1.e-6)
+parameters.setAssemblyEpsilon(1.0e-6)
+parameters.setRecompressionEpsilon(1.0e-6)
 # HMatrix must be symmetric in order to perform Cholesky decomposition
 hmat = factory.build(vertices, 1, True, parameters)
 simpleAssembly = TestHMatrixRealAssemblyFunction(vertices, 0.1)
 
-hmat.assembleReal(simpleAssembly, 'L')
+hmat.assembleReal(simpleAssembly, "L")
 
 hmatRef = ot.HMatrix(hmat)
 
-hmat.factorize('LLt')
+hmat.factorize("LLt")
 
 # Compute A - L*L^T
-hmatRef.gemm('N', 'T', -1.0, hmat, hmat, 1.0)
+hmatRef.gemm("N", "T", -1.0, hmat, hmat, 1.0)
 
 # Check LU factorization
 hmat = factory.build(vertices, 1, False, parameters)
-hmat.assembleReal(simpleAssembly, 'N')
-hmat.factorize('LU')
+hmat.assembleReal(simpleAssembly, "N")
+hmat.factorize("LU")
 
-print('rows=', hmat.getNbRows())
-print('columns=', hmat.getNbColumns())
-print('norm=', ot.Point(1, hmat.norm()))
-if hmatRef.norm() < 1.e-3:
-    print('norm(A-LLt) < 1e-3')
+print("rows=", hmat.getNbRows())
+print("columns=", hmat.getNbColumns())
+print("norm=", ot.Point(1, hmat.norm()))
+if hmatRef.norm() < 1.0e-3:
+    print("norm(A-LLt) < 1e-3")
 else:
-    print('norm(A-LLt) =', hmatRef.norm())
-print('diagonal=', hmat.getDiagonal())
-print('compressionRatio= (%d, %d)' % hmat.compressionRatio())
-print('fullrkRatio= (%d, %d)' % hmat.fullrkRatio())
+    print("norm(A-LLt) =", hmatRef.norm())
+print("diagonal=", hmat.getDiagonal())
+print("compressionRatio= (%d, %d)" % hmat.compressionRatio())
+print("fullrkRatio= (%d, %d)" % hmat.fullrkRatio())
 
 # vector multiply
 y = ot.Point(hmat.getNbColumns())
 x = [2.0] * hmat.getNbColumns()
-hmat.gemv('N', 1.0, x, 3.0, y)
-print('y=', y)
+hmat.gemv("N", 1.0, x, 3.0, y)
+print("y=", y)
 
 
 # block assembly
 class TestHMatrixTensorRealAssemblyFunction(object):
-
     def __init__(self, covarianceModel, vertices):
         self.covarianceModel = covarianceModel
         self.vertices = vertices
@@ -85,24 +83,22 @@ class TestHMatrixTensorRealAssemblyFunction(object):
 
 
 covarianceModel = ot.ExponentialModel([0.1] * 2, [1.0] * 2)
-hmat = factory.build(
-    vertices, covarianceModel.getOutputDimension(), True, parameters)
-blockAssembly = TestHMatrixTensorRealAssemblyFunction(
-    covarianceModel, vertices)
-hmat.assembleTensor(blockAssembly, covarianceModel.getOutputDimension(), 'L')
+hmat = factory.build(vertices, covarianceModel.getOutputDimension(), True, parameters)
+blockAssembly = TestHMatrixTensorRealAssemblyFunction(covarianceModel, vertices)
+hmat.assembleTensor(blockAssembly, covarianceModel.getOutputDimension(), "L")
 hmatRef = ot.HMatrix(hmat)
-hmat.factorize('LLt')
+hmat.factorize("LLt")
 normL = hmat.norm()
-hmatRef.gemm('N', 'T', -1.0, hmat, hmat, 1.0)
+hmatRef.gemm("N", "T", -1.0, hmat, hmat, 1.0)
 if hmatRef.norm() < 1e-3:
-    print('norm(A-LLt) < 1e-3')
+    print("norm(A-LLt) < 1e-3")
 else:
-    print('norm(A-LLt) =', hmatRef.norm())
+    print("norm(A-LLt) =", hmatRef.norm())
 
 alpha = 0.1
 hmat.scale(alpha)
 normScaled = hmat.norm()
 if abs(normL - normScaled / alpha) < 1e-10:
-    print('|norm(L) - 10 * norm(0.1*L)| < 1e-10')
+    print("|norm(L) - 10 * norm(0.1*L)| < 1e-10")
 else:
-    print('|norm(L) - 10 * norm(0.1*L)| > 1e-10')
+    print("|norm(L) - 10 * norm(0.1*L)| > 1e-10")

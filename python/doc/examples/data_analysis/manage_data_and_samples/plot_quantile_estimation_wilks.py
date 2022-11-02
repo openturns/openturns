@@ -49,15 +49,15 @@ Estimate Wilks and empirical quantile
 import openturns as ot
 import math as m
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-model = ot.SymbolicFunction(['x1', 'x2'], ['x1^2+x2'])
+model = ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2"])
 R = ot.CorrelationMatrix(2)
 R[0, 1] = -0.6
-inputDist = ot.Normal([0., 0.], R)
-inputDist.setDescription(['X1', 'X2'])
+inputDist = ot.Normal([0.0, 0.0], R)
+inputDist.setDescription(["X1", "X2"])
 inputVector = ot.RandomVector(inputDist)
 
 # Create the output random vector Y=model(X)
@@ -82,27 +82,27 @@ view = viewer.View(graph)
 empiricalQuantile = sample.computeQuantile(alpha)
 
 # Get the indices of the confidence interval bounds
-aAlpha = ot.Normal(1).computeQuantile((1.0+beta)/2.0)[0]
-min_i = int(N*alpha - aAlpha*m.sqrt(N*alpha*(1.0-alpha)))
-max_i = int(N*alpha + aAlpha*m.sqrt(N*alpha*(1.0-alpha)))
-#print(min_i, max_i)
+aAlpha = ot.Normal(1).computeQuantile((1.0 + beta) / 2.0)[0]
+min_i = int(N * alpha - aAlpha * m.sqrt(N * alpha * (1.0 - alpha)))
+max_i = int(N * alpha + aAlpha * m.sqrt(N * alpha * (1.0 - alpha)))
+# print(min_i, max_i)
 
 # Get the sorted sample
 sortedSample = sample.sort()
 
 # Get the Confidence interval of the Empirical Quantile Estimator [infQuantile, supQuantile]
-infQuantile = sortedSample[min_i-1]
-supQuantile = sortedSample[max_i-1]
+infQuantile = sortedSample[min_i - 1]
+supQuantile = sortedSample[max_i - 1]
 print(infQuantile, empiricalQuantile, supQuantile)
 
 # %%
 # Wilks number
-i = N - (min_i+max_i)//2  # compute wilks with the same sample size
+i = N - (min_i + max_i) // 2  # compute wilks with the same sample size
 wilksNumber = ot.Wilks.ComputeSampleSize(alpha, beta, i)
-print('wilksNumber =', wilksNumber)
+print("wilksNumber =", wilksNumber)
 
 # %%
 # Wilks Quantile Estimator
 algo = ot.Wilks(output)
 wilksQuantile = algo.computeQuantileBound(alpha, beta, i)
-print('wilks Quantile 0.95 =', wilksQuantile)
+print("wilks Quantile 0.95 =", wilksQuantile)

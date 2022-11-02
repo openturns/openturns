@@ -167,6 +167,44 @@ int main(int, char *[])
     std::cout << "covariance=" << x_cov << std::endl;
     std::cout << "expected covariance=" << Qn_inv << std::endl;
     assert_almost_equal(x_cov, Qn_inv, 1e-3, 2e-2);
+
+    // check log-pdf is recomputed by the correct blocks
+    const Point initialState({0.5, 0.5, 0.5, 0.5});
+    RandomVectorMetropolisHastings rvmh1(RandomVector(Dirac({0.5, 0.5})), initialState, Indices({0, 1}));
+    RandomVectorMetropolisHastings rvmh2(RandomVector(Uniform(0.0, 1.0)), initialState, Indices({2}));
+    RandomWalkMetropolisHastings rwmh(SymbolicFunction({"x", "y", "z", "t"}, {"1"}), Interval(4), initialState, Uniform(), Indices({3}));
+    Gibbs::MetropolisHastingsCollection coll2;
+    coll2.add(rvmh1);
+    coll2.add(rvmh2);
+    coll2.add(rwmh);
+    Gibbs gibbs(coll2);
+    gibbs.getRealization();
+    Indices recompute(gibbs.getRecomputeLogPosterior());
+    assert_almost_equal(recompute[0], 1);
+    assert_almost_equal(recompute[1], 0);
+    assert_almost_equal(recompute[2], 1);
+    gibbs.setUpdatingMethod(Gibbs::UpdatingMethod::RANDOM_UPDATING);
+    gibbs.getRealization();
+    recompute = gibbs.getRecomputeLogPosterior();
+    assert_almost_equal(recompute[0], 1);
+    assert_almost_equal(recompute[1], 1);
+    assert_almost_equal(recompute[2], 1);
+
+    // Check all blocks are called equally often under the random order option.
+    // Here there are 3 blocks:
+    // 1) a Dirac RandomVectorMetropolisHastings -- never moves
+    // 2) a Uniform RandomVectorMetropolisHastings -- always moves
+    // 3) a RandomWalkMetropolisHastings with average acceptance probability 1/2
+    // If 1) is selected or 3) is selected and the proposal is rejected, the chain does not move
+    // This happens with probability 1/3 + 1/3 * 1/2 = 1/2.
+    sample = gibbs.getSample(10000);
+    UnsignedInteger count_nomove = 0;
+    for ( UnsignedInteger j = 1; j < sample.getSize(); ++j )
+    {
+      if (sample[j] == sample[j - 1]) count_nomove++;
+    }
+    const Scalar frequency_nomove = (Scalar)count_nomove / (Scalar)sample.getSize();
+    assert_almost_equal(frequency_nomove, 0.5, 0.02, 0.0);
   }
   catch (TestFailed & ex)
   {
