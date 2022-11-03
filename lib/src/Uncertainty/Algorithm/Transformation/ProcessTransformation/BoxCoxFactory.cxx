@@ -129,11 +129,11 @@ public:
   }
 };
 
-class BoxCoxGLMBasisOptimization : public EvaluationImplementation
+class BoxCoxGLMOptimization : public EvaluationImplementation
 {
 
 public:
-  BoxCoxGLMBasisOptimization(const Sample &inputSample,
+  BoxCoxGLMOptimization(const Sample &inputSample,
                              const Sample &shiftedOutputSample,
                              const CovarianceModel &covarianceModel,
                              const Basis &basis)
@@ -145,9 +145,9 @@ public:
     // Nothing to do
   }
 
-  BoxCoxGLMBasisOptimization *clone() const override
+  BoxCoxGLMOptimization *clone() const override
   {
-    return new BoxCoxGLMBasisOptimization(*this);
+    return new BoxCoxGLMOptimization(*this);
   }
 
   UnsignedInteger getInputDimension() const override
@@ -340,7 +340,7 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
   shiftedSample += shift;
 
   // optimization process
-  BoxCoxGLMBasisOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
+  BoxCoxGLMOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
   Function objectiveFunction(boxCoxOptimization);
   MemoizeFunction objectiveMemoizeFunction(objectiveFunction, Full());
   objectiveMemoizeFunction.enableCache();
