@@ -37,18 +37,18 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LevelSet::intersect
-"Return the levelSet equals to the intersection between the LevelSet and another one.
+"Return the intersection with another LevelSet.
 
 Parameters
 ----------
-otherLevelSet :
+other : :class:`~openturns.LevelSet`
     A LevelSet defined by :math:`(f_2, s_2)`.
 
 Returns
 -------
 levelSet : :class:`~openturns.LevelSet`
-    *levelSet* equals to the intersection between the LevelSet and
-    *otherLevelSet* i.e. *levelSet* is defined by:
+    The intersection between this LevelSet and the LevelSet *other*,
+    i.e. the LevelSet defined as:
     :math:`\{\vect{x} \in \Rset^{dim} | f(\vect{x}) \leq s \, \mbox{and} \, f_2(\vect{x}) \leq s_2\}`.
 
 Examples
@@ -71,18 +71,18 @@ True"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LevelSet::join
-"Return the levelSet equals to the union between the LevelSet and another one.
+"Return the union with another LevelSet.
 
 Parameters
 ----------
-otherLevelSet :
+other : :class:`~openturns.LevelSet`
     A LevelSet defined by :math:`(f_2, s_2)`.
 
 Returns
 -------
 levelSet : :class:`~openturns.LevelSet`
-    *levelSet* equals to the union between the LevelSet and *otherLevelSet*
-    i.e. *levelSet* is defined by:
+    The union between this LevelSet and the LevelSet *other*,
+    i.e. the LevelSet defined as:
     :math:`\{\vect{x} \in \Rset^{dim} | f(\vect{x}) \leq s \, \mbox{or} \, f_2(\vect{x}) \leq s_2\}`.
 
 Examples
@@ -95,11 +95,11 @@ Examples
 >>> function = ot.SymbolicFunction(['x'], ['x'])
 >>> levelSet2 = ot.LevelSet(function, ot.LessOrEqual(), 0.0)
 >>> # Union between levelSet1 and levelSet2
->>> join = levelSet1.join(levelSet2)
+>>> union = levelSet1.join(levelSet2)
 >>> # Tests
->>> print([0.5] in join)
+>>> print([0.5] in union)
 False
->>> print([0.25] in join)
+>>> print([0.25] in union)
 True"
 
 // ---------------------------------------------------------------------

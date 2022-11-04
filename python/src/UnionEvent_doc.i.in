@@ -10,11 +10,15 @@ An occurrence of one single event :math:`E_i` yields the occurrence of the syste
 Parameters
 ----------
 coll : sequence of :class:`~openturns.RandomVector`
-    Collection of events
+    Collection of events, evaluated from left to right.
+    Ordering the most probable events first can help to avoid evaluating the last ones.
+    In case the ranking of the probabilities of the events is unknown,
+    it can be quickly estimated with (for example) a FORM analysis
+    of each individual event.
 
 See also
 --------
-Event
+IntersectionEvent
 
 Examples
 --------

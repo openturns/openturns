@@ -99,6 +99,8 @@ public:
   void load(Advocate & adv) override;
 
 private:
+  /** Returns the levelSet equals to the intersection/union between the levelSet and another one */
+  LevelSet intersectOrJoin(const LevelSet & other, const Bool intersection) const;
 
   /** Function defining the level set*/
   Function function_;
@@ -107,7 +109,7 @@ private:
   ComparisonOperator operator_;
 
   /** Level defining the level set */
-  Scalar level_;
+  Scalar level_ = 0.0;
 
   /** Lower bound of the bounding box */
   Point lowerBound_;
