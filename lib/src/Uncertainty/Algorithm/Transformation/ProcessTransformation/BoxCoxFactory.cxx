@@ -46,18 +46,8 @@ CLASSNAMEINIT(BoxCoxFactory)
 
 static const Factory<BoxCoxFactory> Factory_BoxCoxFactory;
 
-class BoxCoxSampleOptimization
+class BoxCoxSampleOptimization : public EvaluationImplementation
 {
-private:
-
-  /** only used to pass data to be used in computeLogLikeliHood */
-  mutable Sample sample_;
-
-  /** only used to pass data to be used in computeLogLikeliHood */
-  mutable Scalar sumLog_;
-
-  /** Optimization solver */
-  mutable OptimizationAlgorithm solver_;
 
 public:
 
@@ -65,26 +55,40 @@ public:
                            const Scalar sumLog)
     : sample_(sample)
     , sumLog_(sumLog)
-    , solver_(new Cobyla())
   {
     // Nothing to do
   }
 
-  BoxCoxSampleOptimization(const Sample & sample,
-                           const OptimizationAlgorithm & solver)
+  explicit BoxCoxSampleOptimization(const Sample & sample)
     : sample_(sample)
     , sumLog_(0.0)
-    , solver_(solver)
   {
     computeSumLog();
   }
 
+  BoxCoxSampleOptimization *clone() const override
+  {
+    return new BoxCoxSampleOptimization(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
   /** Likelihood function */
-  Point computeLogLikelihood(const Point & lambda) const
+  Point operator()(const Point & lambda) const override
   {
     const UnsignedInteger size = sample_.getSize();
     // Define BoxCox transformation for sample
-    BoxCoxEvaluation myBoxFunction(Point(1, lambda[0]));
+    // lambda has the right dimension as BoxCoxSampleOptimization is
+    // an EvaluationImplementation
+    BoxCoxEvaluation myBoxFunction(lambda);
     // compute the mean of the transformed sample using the Box-Cox function
     const Sample outSample(myBoxFunction(sample_));
     const Scalar ratio = 1.0 - 1.0 / size;
@@ -96,37 +100,25 @@ public:
     return Point(1, result);
   }
 
-  void computeSumLog() const
+  void computeSumLog()
   {
     // Compute the sum of the log-data
     const UnsignedInteger size = sample_.getSize();
     sumLog_ = 0.0;
     for (UnsignedInteger k = 0; k < size; ++k) sumLog_ += std::log(sample_(k, 0));
   }
-  /** Likelihood function accessor */
-  Function getLogLikelihoodFunction() const
-  {
-    return bindMethod <BoxCoxSampleOptimization, Point, Point> ( *this, &BoxCoxSampleOptimization::computeLogLikelihood, 1, 1);
-  }
-
-  Point optimizeLogLikelihood() const
-  {
-    // Define optimization problem
-    OptimizationProblem problem(getLogLikelihoodFunction());
-    problem.setMinimization(false);
-    solver_.setProblem(problem);
-    solver_.setStartingPoint(Point(1, 1.0));
-    // run Optimization problem
-    solver_.run();
-    // Return optimization point
-    const Point optpoint(solver_.getResult().getOptimalPoint());
-    return optpoint;
-  }
 
   Scalar getSumLog() const
   {
     return sumLog_;
   }
+
+private:
+  /** only used to pass data to be used in computeLogLikeliHood */
+  Sample sample_;
+
+  /** only used to pass data to be used in computeLogLikeliHood */
+  Scalar sumLog_;
 };
 
 class BoxCoxGLMOptimization : public EvaluationImplementation
@@ -134,9 +126,9 @@ class BoxCoxGLMOptimization : public EvaluationImplementation
 
 public:
   BoxCoxGLMOptimization(const Sample &inputSample,
-                             const Sample &shiftedOutputSample,
-                             const CovarianceModel &covarianceModel,
-                             const Basis &basis)
+                        const Sample &shiftedOutputSample,
+                        const CovarianceModel &covarianceModel,
+                        const Basis &basis)
       : inputSample_(inputSample)
       , shiftedOutputSample_(shiftedOutputSample)
       , covarianceModel_(covarianceModel)
@@ -266,11 +258,22 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
   Collection< Sample > marginalSamples(dimension);
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
-    // Extract the marginal sample and pply the shift
+    // Extract the marginal sample and apply the shift
     marginalSamples[d] = sample.getMarginal(d);
     marginalSamples[d] += Point(1, shift[d]);
-    BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d], solver_);
-    const Point optpoint = boxCoxOptimization.optimizeLogLikelihood();
+
+    BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d]);
+    Function objectiveFunction(boxCoxOptimization);
+    // Define optimization problem
+    OptimizationProblem problem((objectiveFunction));
+    problem.setMinimization(false);
+    OptimizationAlgorithm solver(solver_);
+    solver.setProblem(problem);
+    solver.setStartingPoint(Point(1, 1.0));
+    // run Optimization problem
+    solver.run();
+    // Return optimization point
+    const Point optpoint(solver.getResult().getOptimalPoint());
     // get the sum of the log-data
     sumLog[d] = boxCoxOptimization.getSumLog();
     // Store the result
@@ -285,17 +288,22 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
   const UnsignedInteger npts = ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber");
   Sample lambdaValues(npts, 1);
   for (UnsignedInteger i = 0; i < npts; ++i) lambdaValues(i, 0) = xMin + i * (xMax - xMin) / (npts - 1.0);
+  Point lambdaMarginal(1, 0.0);
+  Sample logLikelihoodValues(npts, 1);
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
-    Sample logLikelihoodValues(npts, 1);
     BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d], sumLog[d]);
-    for (UnsignedInteger i = 0; i < npts; ++i) logLikelihoodValues(i, 0) = boxCoxOptimization.computeLogLikelihood(lambdaValues[i])[0];
+    for (UnsignedInteger i = 0; i < npts; ++i)
+    {
+      lambdaMarginal[0] = lambdaValues(i, 0);
+      logLikelihoodValues(i, 0) = boxCoxOptimization(lambdaMarginal)[0];
+    }
     Curve curve(lambdaValues, logLikelihoodValues);
     curve.setColor(Curve::ConvertFromHSV((360.0 * d) / dimension, 1.0, 1.0));
     graph.add(curve);
     Point optimum(2);
     optimum[0] = lambda[d];
-    optimum[1] = boxCoxOptimization.computeLogLikelihood(optimum)[0];
+    optimum[1] = boxCoxOptimization(Point(1, optimum[0]))[0];
     Cloud cloud(Sample(1, optimum));
     cloud.setColor(curve.getColor());
     cloud.setPointStyle("circle");
