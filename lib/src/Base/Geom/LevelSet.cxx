@@ -29,6 +29,7 @@
 #include "openturns/Cobyla.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
+#include "openturns/Less.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -42,9 +43,6 @@ LevelSet::LevelSet(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
   , function_(SymbolicFunction(Description::BuildDefault(dimension, "x"), Description(1, "1.0")))
   , operator_(LessOrEqual())
-  , level_(0.0)
-  , lowerBound_(0)
-  , upperBound_(0)
 {
   // Nothing to do
 }
@@ -57,8 +55,6 @@ LevelSet::LevelSet(const Function & function,
   , function_(function)
   , operator_(op)
   , level_(level)
-  , lowerBound_(0)
-  , upperBound_(0)
 {
   if (function.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot build a level set based on functions with output dimension different from 1. Here, output dimension=" << function.getOutputDimension();
 }
@@ -69,60 +65,190 @@ LevelSet * LevelSet::clone() const
   return new LevelSet(*this);
 }
 
-/* Returns the levelSet equals to the intersection between the levelSet and another one */
-LevelSet LevelSet::intersect(const LevelSet & other) const
+
+class OT_API LevelSetBooleanOperationEvaluation : public EvaluationImplementation
+{
+public:
+  explicit LevelSetBooleanOperationEvaluation(const Function::FunctionCollection & collFunc = Function::FunctionCollection(),
+                                              const Collection<ComparisonOperator> & collOp = Collection<ComparisonOperator>(),
+                               const Point & level = Point(),
+                               const Bool intersection = true)
+    : EvaluationImplementation()
+    , collFunc_(collFunc)
+    , collOp_(collOp)
+    , level_(level)
+    , intersection_(intersection)
+  {
+    const UnsignedInteger size = collFunc.getSize();
+    const UnsignedInteger inputDimension = size ? collFunc[0].getInputDimension() : 0;
+
+    for (UnsignedInteger i = 1; i < size; ++ i)
+    {
+      if (collFunc[i].getInputDimension() != inputDimension)
+        throw InvalidArgumentException(HERE) << "Mismatching input dimension";
+      if (collFunc[i].getOutputDimension() != 1)
+        throw InvalidArgumentException(HERE) << "Mismatching output dimension";
+    }
+    if (collOp_.getSize() != size)
+      throw InvalidArgumentException(HERE) << "Mismatching op size";
+    if (level_.getSize() != size)
+      throw InvalidArgumentException(HERE) << "Mismatching level size";
+  }
+
+  LevelSetBooleanOperationEvaluation * clone() const override
+  {
+    return new LevelSetBooleanOperationEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return collFunc_.getSize() ? collFunc_[0].getInputDimension() : 0;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator() (const Point & x) const override
+  {
+    const UnsignedInteger size = collFunc_.getSize();
+    Scalar value = 0.0;
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      const Scalar fx = collFunc_[i](x)[0];
+      const Scalar sign = collOp_[i](1.0, 2.0) ? 1.0 : -1.0;
+      value = sign * (fx - level_[i]);
+      const Bool ok = collOp_[i](fx, level_[i]);
+      // return if outside subdomain for intersection or inside subdomain for union
+      if ((intersection_ && !ok) || (!intersection_ && ok))
+        break;
+    }
+    return Point(1, value);
+  }
+
+  String __repr__() const override
+  {
+    OSS oss;
+    oss << "LevelSetBooleanOperationEvaluation func=" << collFunc_ << " op=" << collOp_ << " level=" << level_ << " intersection=" << intersection_;
+    return oss;
+  }
+
+  String __str__(const String & offset = "") const override
+  {
+    OSS oss;
+    oss << offset;
+    const UnsignedInteger size = collFunc_.getSize();
+    // Scalar value = 0.0;
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      oss << collFunc_[i].__str__() << " " << collOp_[i].__str__() << " " << level_[i];
+      if (i != size - 1)
+        oss << (intersection_ ? " and " : " or ");
+    }
+    return oss;
+  }
+
+  void save(Advocate & adv) const override
+  {
+    EvaluationImplementation::save(adv);
+    adv.saveAttribute("collFunc_", collFunc_);
+    adv.saveAttribute("collOp_", collOp_);
+    adv.saveAttribute("level_", level_);
+    adv.saveAttribute("intersection_", intersection_);
+  }
+
+  void load(Advocate & adv) override
+  {
+    EvaluationImplementation::load(adv);
+    adv.loadAttribute("collFunc_", collFunc_);
+    adv.loadAttribute("collOp_", collOp_);
+    adv.loadAttribute("level_", level_);
+    adv.loadAttribute("intersection_", intersection_);
+  }
+
+  Function::FunctionCollection getFunctionCollection() const { return collFunc_; }
+  Collection<ComparisonOperator> getComparisonOperatorCollection() const { return collOp_; }
+  Point getLevel() const { return level_; }
+  Bool getIntersection() const { return intersection_; }
+  String getClassName() const override { return "LevelSetBooleanOperationEvaluation"; }
+  static String GetClassName() { return "LevelSetBooleanOperationEvaluation"; }
+
+private:
+  PersistentCollection<Function> collFunc_;
+  PersistentCollection<ComparisonOperator> collOp_;
+  Point level_;
+
+  // intersection/union
+  Bool intersection_ = true;
+};
+
+static const Factory<LevelSetBooleanOperationEvaluation> Factory_LevelSetBooleanOperationEvaluation;
+static const Factory<PersistentCollection<ComparisonOperator> > Factory_PersistentCollection_ComparisonOperator;
+
+
+/* Returns the levelSet equals to the intersection/union between the levelSet and another one */
+LevelSet LevelSet::intersectOrJoin(const LevelSet & other, const Bool intersection) const
 {
   // If one intersect the levelSet with itself
   if (this == &other) return (*this);
-  // else check dimension compatibility
-  if (other.dimension_ != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
-  // The intersectFunction is negative or zero if the given point is inside of the resulting level set, ie if both functions are less or equal to their respective level
-  const String sign1 = operator_(1.0, 2.0) ? "" : "-";
-  const String sign2 = other.operator_(1.0, 2.0) ? "" : "-";
-  const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "max(" << sign1 << "(x0 - " << level_ << "), " << sign2 << "(x1 - " << other.level_ << "))")));
-  Function::FunctionCollection coll(2);
-  coll[0] = function_;
-  coll[1] = other.function_;
-  LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), LessOrEqual(), 0.0);
+
+  // check dimension compatibility
+  const String composeType = intersection ? "intersect" : "join";
+  if (other.dimension_ != dimension_)
+    throw InvalidArgumentException(HERE) << "Error: cannot "<< composeType << " level sets of different dimensions";
+
+  Collection<Function> collFunc;
+  Collection<ComparisonOperator> collOp;
+  Point level;
+  const LevelSetBooleanOperationEvaluation *evaluation = dynamic_cast<LevelSetBooleanOperationEvaluation*>(function_.getEvaluation().getImplementation().get());
+  if (evaluation && (intersection == evaluation->getIntersection()))
+  {
+    // merge evaluation
+    collFunc.add(evaluation->getFunctionCollection());
+    collFunc.add(other.function_);
+    collOp.add(evaluation->getComparisonOperatorCollection());
+    collOp.add(other.operator_);
+    level.add(evaluation->getLevel());
+    level.add(other.level_);
+  }
+  else
+  {
+    // standard case
+    collFunc = {function_, other.function_};
+    collOp = {operator_, other.operator_};
+    level = {level_, other.level_};
+  }
+  const Function function(new LevelSetBooleanOperationEvaluation(collFunc, collOp, level, intersection));
+  const ComparisonOperator op(operator_(1.0, 1.0) && other.operator_(1.0, 1.0) ? ComparisonOperator(LessOrEqual()) : ComparisonOperator(Less()));
+  LevelSet result(function, op, 0.0);
   // Check if we can compute a bounding box
   if ((lowerBound_.getDimension() == dimension_) &&
       (upperBound_.getDimension() == dimension_) &&
       (other.lowerBound_.getDimension() == dimension_) &&
       (other.upperBound_.getDimension() == dimension_))
   {
-    const Interval boundingBox(Interval(lowerBound_, upperBound_).intersect(Interval(other.lowerBound_, other.upperBound_)));
+    Interval boundingBox;
+    if (intersection)
+      boundingBox = Interval(lowerBound_, upperBound_).intersect(Interval(other.lowerBound_, other.upperBound_));
+    else
+      boundingBox = Interval(lowerBound_, upperBound_).join(Interval(other.lowerBound_, other.upperBound_));
     result.setLowerBound(boundingBox.getLowerBound());
     result.setUpperBound(boundingBox.getUpperBound());
   }
   return result;
 }
 
+/* Returns the levelSet equals to the intersection between the levelSet and another one */
+LevelSet LevelSet::intersect(const LevelSet & other) const
+{
+  return intersectOrJoin(other, true);
+}
+
 /* Returns the levelSet equals to the union between the levelSet and another one */
 LevelSet LevelSet::join(const LevelSet & other) const
 {
-  // If one intersect the levelSet with itself
-  if (this == &other) return (*this);
-  // else check dimension compatibility
-  if (other.dimension_ != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
-  // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if at least on function is less or equal to its level
-  const String sign1 = operator_(1.0, 2.0) ? "" : "-";
-  const String sign2 = other.operator_(1.0, 2.0) ? "" : "-";
-  const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "min(" << sign1 << "(x0 - " << level_ << "), " << sign2 << "(x1 - " << other.level_ << "))")));
-  Function::FunctionCollection coll(2);
-  coll[0] = function_;
-  coll[1] = other.function_;
-  LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), LessOrEqual(), 0.0);
-  // Check if we can compute a bounding box
-  if ((lowerBound_.getDimension() == dimension_) &&
-      (upperBound_.getDimension() == dimension_) &&
-      (other.lowerBound_.getDimension() == dimension_) &&
-      (other.upperBound_.getDimension() == dimension_))
-  {
-    const Interval boundingBox(Interval(lowerBound_, upperBound_).join(Interval(other.lowerBound_, other.upperBound_)));
-    result.setLowerBound(boundingBox.getLowerBound());
-    result.setUpperBound(boundingBox.getUpperBound());
-  }
-  return result;
+  return intersectOrJoin(other, false);
 }
 
 /* Check if the given point is inside of the closed levelSet */

@@ -106,3 +106,24 @@ ott.assert_almost_equal(subset_event(e3), 0.25, 1e-2, 1e-2)
 ott.assert_almost_equal(subset_event(e5), 0.25, 1e-2, 1e-2)
 ott.assert_almost_equal(subset_event(e6), 0.75, 1e-2, 1e-2)
 ott.assert_almost_equal(subset_event(e7), 0.25, 1e-2, 1e-2)
+
+
+# check that f2 is not called when not needed
+f1 = ot.SymbolicFunction(["x" + str(i) for i in range(dim)], ["x0"])
+f2 = ot.MemoizeFunction(ot.SymbolicFunction(["x" + str(i) for i in range(dim)], ["x1"]))
+Y1 = ot.CompositeRandomVector(f1, X)
+Y2 = ot.CompositeRandomVector(f2, X)
+e1 = ot.ThresholdEvent(Y1, ot.Less(), 1e6)
+e2 = ot.ThresholdEvent(Y2, ot.Less(), 0.0)
+union = ot.UnionEvent([e1, e2])
+proba = union.getSample(1000).computeMean()[0]
+print(proba)
+assert proba == 1.0, "always true"
+assert f2.getCallsNumber() == 0, "union prune"
+e1 = ot.ThresholdEvent(Y1, ot.Greater(), 1e6)
+e2 = ot.ThresholdEvent(Y2, ot.Less(), 0.0)
+intersection = ot.IntersectionEvent([e1, e2])
+proba = intersection.getSample(1000).computeMean()[0]
+print(proba)
+assert proba == 0.0, "always false"
+assert f2.getCallsNumber() == 0, "intersection prune"

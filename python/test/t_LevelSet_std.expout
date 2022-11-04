@@ -11,14 +11,18 @@ levelSet2 contains  [1.5, 0.0] ?  True
 intersection of  {x | f(x) <= 1} with f=
 [x,y]->[x^4 + y^4]  and  {x | f(x) <= 1} with f=
 [x,y]->[(x-1)^2 + y^2]  equals  {x | f(x) <= 0} with f=
-([x0,x1]->[max((x0 - 1), (x1 - 1))])o([[x,y]->[x^4 + y^4],[x,y]->[(x-1)^2 + y^2]])
+[x,y]->[x^4 + y^4] <= 1 and [x,y]->[(x-1)^2 + y^2] <= 1
 intersection contains  [-0.5, -0.5] ?  False
 intersection contains  [0.5, 0.0] ?  True
 intersection contains  [1.5, 0.0] ?  False
 join of  {x | f(x) <= 1} with f=
 [x,y]->[x^4 + y^4]  and  {x | f(x) <= 1} with f=
 [x,y]->[(x-1)^2 + y^2]  equals  {x | f(x) <= 0} with f=
-([x0,x1]->[min((x0 - 1), (x1 - 1))])o([[x,y]->[x^4 + y^4],[x,y]->[(x-1)^2 + y^2]])
+[x,y]->[x^4 + y^4] <= 1 or [x,y]->[(x-1)^2 + y^2] <= 1
 join contains  [-0.5, -0.5] ?  True
 join contains  [0.5, 0.0] ?  True
 join contains  [1.5, 0.0] ?  True
+union x3 {x | f(x) < 0} with f=
+[x]->[x] < 0 or [x]->[x+1] < 0 or [x]->[x+2] < 0
+intersection 3x {x | f(x) < 0} with f=
+[x]->[x] < 0 and [x]->[x+1] < 0 and [x]->[x+2] < 0
