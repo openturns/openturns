@@ -374,7 +374,7 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
 }
 
 /* Factory of SampleImplementation from TXT file
- * The file is supposed to be formated this way:
+ * The file is supposed to be formatted this way:
  * + an optional description of each column in the first row
  * + an arbitrary number of rows containing the same number of values
  * + the values can have an arbitrary number of spaces before or after them, with

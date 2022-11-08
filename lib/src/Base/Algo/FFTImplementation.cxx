@@ -112,7 +112,7 @@ FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const S
   return inverseTransform(coll);
 }
 
-/** FFT inverse transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
+/** FFT inverse transformation on a regular sequence of the collection (between first and last, separated by step)*/
 FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ScalarCollection &,
     const UnsignedInteger,
     const UnsignedInteger,
@@ -135,7 +135,7 @@ FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const C
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger size) const";
 }
 
-/* FFT transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
+/* FFT transformation on a regular sequence of the collection (between first and last, separated by step)*/
 FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection &,
     const UnsignedInteger,
     const UnsignedInteger,

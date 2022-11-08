@@ -178,7 +178,7 @@ Complex WeibullMax::computeCharacteristicFunction(const Scalar x) const
   if (x == 0.0) return 1.0;
   // Special case: beta == 1 -> exponential distribution
   if (alpha_ == 1.0) return 1.0 / Complex(1.0, -x / beta_);
-  // If beta < 1.0, the series based on the Gamma function is divergente so use the generic implementation
+  // If beta < 1.0, the series based on the Gamma function is divergent so use the generic implementation
   if (alpha_ < 1.0) return DistributionImplementation::computeCharacteristicFunction(x);
   Complex value(1.0);
   const Scalar u = x * beta_;

@@ -248,7 +248,7 @@ void DickeyFullerTest::estimateDriftModel()
     computeNoConstantCharacteristics();
     computeDriftCharacteristics();
     // Linear system of dimension 2
-    // The size term vanish sice we use a biased variance estimator
+    // The size term vanish since we use a biased variance estimator
     SymmetricMatrix matrix(2);
 
     matrix(0, 0) = T_;

@@ -55,7 +55,7 @@ public:
   SphereUniformNorm(SphereUniformNormImplementation * p_implementation);
 #endif
 
-  /** Symmettric accessor */
+  /** Symmetric accessor */
   Bool isSymmetric() const;
 
   /** Get all points at a certain distance */

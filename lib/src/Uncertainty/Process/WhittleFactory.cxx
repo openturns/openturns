@@ -290,7 +290,7 @@ String WhittleFactory::__str__(const String & ) const
   return this->__repr__();
 }
 
-/* SpectralModelFactory set acccessor */
+/* SpectralModelFactory accessor */
 WelchFactory WhittleFactory::getSpectralModelFactory() const
 {
   return spectralFactory_;
@@ -333,7 +333,7 @@ Collection< WhittleFactoryState > WhittleFactory::getHistory() const
   return history_;
 }
 
-/* SpectralModelFactory get acccessor */
+/* SpectralModelFactory accessor */
 void WhittleFactory::setSpectralModelFactory(const WelchFactory & factory)
 {
   spectralFactory_ = factory;
@@ -361,7 +361,7 @@ ARMA WhittleFactory::buildWithCriteria(const TimeSeries & timeSeries,
   if (timeSeries.getOutputDimension() != 1)
     throw NotYetImplementedException(HERE) << "In WhittleFactory::build(const TimeSeries & timeSeries, Point & informationCriteria) const: currently implemented for 1 d case only";
 
-  // Compute the tapered periodogramme for the time series using the Welch method
+  // Compute the tapered periodogram for the time series using the Welch method
   // The computation is done once
   buildSpectralDensity(timeSeries);
   return maximizeLogLikelihood(informationCriteria);
@@ -380,7 +380,7 @@ ARMA WhittleFactory::buildWithCriteria(const ProcessSample & sample,
   if (sample.getDimension() != 1)
     throw NotYetImplementedException(HERE) << "In WhittleFactory::build(const ProcessSample & sample, Point & informationCriteria) const: currently implemented for 1 d case only";
 
-  // Compute the tapered periodogramme for the process sample using the Welch method
+  // Compute the tapered periodogram for the process sample using the Welch method
   buildSpectralDensity(sample);
   return maximizeLogLikelihood(informationCriteria);
 }
