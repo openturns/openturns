@@ -69,12 +69,11 @@ UnsignedInteger MixtureClassifier::classify(const Point& inP) const
   if (inP.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the point to classify has dimension=" << inP.getDimension() << " but the classifier expects dimension=" << mixture_.getDimension();
   const UnsignedInteger size = mixture_.getDistributionCollection().getSize();
   UnsignedInteger bestClass = 0;
-  Distribution atom(mixture_.getDistributionCollection()[0]);
-  Scalar bestGrade = log(atom.getWeight()) + atom.computeLogPDF(inP);
+  
+  Scalar bestGrade = std::log(mixture_.getWeights()[0]) + mixture_.getDistributionCollection()[0].computeLogPDF(inP);
   for (UnsignedInteger classIndex = 1; classIndex < size; ++classIndex)
   {
-    atom = mixture_.getDistributionCollection()[classIndex];
-    const Scalar gradeValue = log(atom.getWeight()) + atom.computeLogPDF(inP);
+    const Scalar gradeValue = std::log(mixture_.getWeights()[classIndex]) + mixture_.getDistributionCollection()[classIndex].computeLogPDF(inP);
     if (gradeValue > bestGrade)
     {
       bestClass = classIndex;
@@ -96,7 +95,7 @@ Indices MixtureClassifier::classify(const Sample & inS) const
   {
     const Distribution atom(mixture_.getDistributionCollection()[classIndex]);
     atomsLogPDF[classIndex] = atom.computeLogPDF(inS).getImplementation()->getData();
-    logWeights[classIndex] = std::log(atom.getWeight());
+    logWeights[classIndex] = std::log(mixture_.getWeights()[classIndex]);
   }
   // Now grade the points
   // The outer loop is on the classes and the inner loop on the point to
@@ -118,12 +117,12 @@ Indices MixtureClassifier::classify(const Sample & inS) const
   return bestClasses;
 }
 
-Scalar MixtureClassifier::grade(const Point& inP,
+Scalar MixtureClassifier::grade(const Point & inP,
                                 const UnsignedInteger outC) const
 {
   const UnsignedInteger size = mixture_.getDistributionCollection().getSize();
   if (outC >= size) throw InvalidDimensionException(HERE) << "Class number (=" << outC << ") must be lower than size (=" << size << ").";
-  return log(mixture_.getDistributionCollection()[outC].getWeight()) + mixture_.getDistributionCollection()[outC].computeLogPDF( inP );
+  return std::log(mixture_.getWeights()[outC]) + mixture_.getDistributionCollection()[outC].computeLogPDF(inP);
 }
 
 /* Mixture accessors */

@@ -133,8 +133,6 @@ public:
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Distribution getStandardRepresentative() const override;
 
-  Interval getRange() const override;
-
   /** String converter */
   String __repr__() const override;
 
@@ -145,6 +143,9 @@ public:
   void load(Advocate & adv) override;
 
 private:
+
+  /** Compute the range of the distribution*/
+  void computeRange() override;
 
   DistributionParameters distributionParameters_;
   Distribution distribution_;

@@ -134,7 +134,7 @@ String Mixture::__str__(const String & ) const
   String separator("");
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {
-    oss << separator << "(w = " << distributionCollection_[i].getWeight() << ", d = " << distributionCollection_[i] << ")";
+    oss << separator << "(w = " << p_[i] << ", d = " << distributionCollection_[i] << ")";
     separator = ", ";
   }
   oss << ")";
@@ -144,10 +144,7 @@ String Mixture::__str__(const String & ) const
 /* Weights accessor */
 Point Mixture::getWeights() const
 {
-  const UnsignedInteger size = distributionCollection_.getSize();
-  Point weights(size);
-  for (UnsignedInteger i = 0; i < size; ++i) weights[i] = distributionCollection_[i].getWeight();
-  return weights;
+  return p_;
 }
 
 void Mixture::setWeights(const Point & weights)
@@ -155,7 +152,6 @@ void Mixture::setWeights(const Point & weights)
   const DistributionCollection coll(distributionCollection_);
   setDistributionCollectionWithWeights( coll, weights);
 }
-
 
 /* Compute the numerical range of the distribution given the parameters values */
 void Mixture::computeRange()
@@ -187,7 +183,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   Scalar weightSum = maximumWeight;
   UnsignedInteger dimension = coll[0].getDimension();
   // First loop, check the atoms dimensions and the weigths values
-  for(UnsignedInteger i = 1; i < size; ++i)
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (dimension != coll[i].getDimension())
       // We throw an exception because the collection has distributions of different sizes
@@ -197,46 +193,41 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     if (w > maximumWeight) maximumWeight = w;
     weightSum += w;
   } /* end for */
-  const Scalar smallWeight = ResourceMap::GetAsScalar("Mixture-SmallWeight");
+  const Scalar smallWeight = ResourceMap::GetAsScalar("Mixture-SmallWeight") * maximumWeight;
   if (weightSum < smallWeight)
     // We throw an exception because the collection of distributions has only distributions with small weight: they cannot be renormalized
     throw InvalidArgumentException(HERE) << "Collection of distributions has atoms with too small total weight=" << weightSum << " for a threshold equal to Mixture-SmallWeight=" << smallWeight;
   // Second loop, keep only the atoms with a significant weight and update the sum
   weightSum = 0.0;
   distributionCollection_ = DistributionCollection(0);
+  p_ = Point(0);
   isCopula_ = true;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar w = weights[i];
-    if (w < smallWeight * maximumWeight)
+    const Scalar w = weights[i];
+    if (w < smallWeight)
     {
       LOGWARN(OSS() << "Warning! The distribution number " << i << " has a too small weight=" << w << " for a relative threshold equal to Mixture-SmallWeight=" << smallWeight << " with respect to the maximum weight=" << maximumWeight << ". It is removed from the collection.");
     }
     else
     {
       // Set the original weight into the collection as it will be reused from here in the normalization step
-      Distribution atom(coll[i]);
-      atom.setWeight(w);
-      distributionCollection_.add(atom);
+      distributionCollection_.add(coll[i]);
+      p_.add(w);
       weightSum += w;
-      isCopula_ = isCopula_ && atom.isCopula();
+      isCopula_ = isCopula_ && coll[i].isCopula();
     }
-  }
+  } // i
 
   // Update the size of the collection as null-weighted distributions could have been dismissed
   size = distributionCollection_.getSize();
 
   // We set the member with the collection passed as argument and we renormalize it in place
-  Sample x(size, 1);
-  p_ = Point(size);
+  p_ /= weightSum;
   Bool parallel = true;
   uniformWeights_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar normalizedWeight = distributionCollection_[i].getWeight() / weightSum;
-    distributionCollection_[i].setWeight(normalizedWeight);
-    x(i, 0) = i;
-    p_[i] = normalizedWeight;
     parallel = parallel && distributionCollection_[i].getImplementation()->isParallel();
     uniformWeights_ = uniformWeights_ && ((std::abs(p_[i] - p_[0]) < SpecFunc::Precision));
   } /* end for */
@@ -293,7 +284,7 @@ Point Mixture::computeDDF(const Point & point) const
   Point ddfValue(dimension, 0.0);
   if (!getRange().numericallyContains(point)) return ddfValue;
   const UnsignedInteger size = distributionCollection_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i) ddfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeDDF(point);
+  for(UnsignedInteger i = 0; i < size; ++i) ddfValue += p_[i] * distributionCollection_[i].computeDDF(point);
   return ddfValue;
 }
 
@@ -310,7 +301,7 @@ Scalar Mixture::computePDF(const Point & point) const
   Scalar pdfValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   if (!getRange().numericallyContains(point)) return pdfValue;
-  for(UnsignedInteger i = 0; i < size; ++i) pdfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computePDF(point);
+  for(UnsignedInteger i = 0; i < size; ++i) pdfValue += p_[i] * distributionCollection_[i].computePDF(point);
   return pdfValue;
 }
 
@@ -327,7 +318,7 @@ Scalar Mixture::computeCDF(const Point & point) const
   }
   Scalar cdfValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i) cdfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeCDF(point);
+  for(UnsignedInteger i = 0; i < size; ++i) cdfValue += p_[i] * distributionCollection_[i].computeCDF(point);
   return cdfValue;
 }
 
@@ -339,7 +330,7 @@ Scalar Mixture::computeSurvivalFunction(const Point & point) const
 
   Scalar survivalValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i) survivalValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeSurvivalFunction(point);
+  for(UnsignedInteger i = 0; i < size; ++i) survivalValue += p_[i] * distributionCollection_[i].computeSurvivalFunction(point);
   return survivalValue;
 }
 
@@ -358,7 +349,7 @@ Scalar Mixture::computeProbability(const Interval & interval) const
 
   Scalar probability = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i) probability += distributionCollection_[i].getWeight() * distributionCollection_[i].computeProbability(reducedInterval);
+  for(UnsignedInteger i = 0; i < size; ++i) probability += p_[i] * distributionCollection_[i].computeProbability(reducedInterval);
   return probability;
 }
 
@@ -367,7 +358,7 @@ Complex Mixture::computeCharacteristicFunction(const Scalar x) const
 {
   Complex cfValue(0.0);
   UnsignedInteger size = distributionCollection_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i) cfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeCharacteristicFunction(x);
+  for(UnsignedInteger i = 0; i < size; ++i) cfValue += p_[i] * distributionCollection_[i].computeCharacteristicFunction(x);
   return cfValue;
 }
 
@@ -380,7 +371,7 @@ Point Mixture::computePDFGradient(const Point & point) const
   Point pdfGradientValue;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i)
-    pdfGradientValue.add(distributionCollection_[i].getWeight() * distributionCollection_[i].computePDFGradient(point));
+    pdfGradientValue.add(p_[i] * distributionCollection_[i].computePDFGradient(point));
   return pdfGradientValue;
 }
 
@@ -393,7 +384,7 @@ Point Mixture::computeCDFGradient(const Point & point) const
   Point cdfGradientValue;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i)
-    cdfGradientValue.add(distributionCollection_[i].getWeight() * distributionCollection_[i].computeCDFGradient(point));
+    cdfGradientValue.add(p_[i] * distributionCollection_[i].computeCDFGradient(point));
   return cdfGradientValue;
 }
 
@@ -418,7 +409,7 @@ Scalar Mixture::computeConditionalPDF(const Scalar x,
   z.add(x);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar wI = distributionCollection_[i].getWeight();
+    const Scalar wI = p_[i];
     conditioningPDF += wI * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(y);
     if (conditioningPDF > 0.0)
       conditionedPDF += wI * distributionCollection_[i].getMarginal(conditionedIndices).computePDF(z);
@@ -435,7 +426,7 @@ Point Mixture::computeSequentialConditionalPDF(const Point & x) const
   Point currentX(1, x[0]);
   Scalar pdfConditioning = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
-    pdfConditioning += distributionCollection_[i].getWeight() * distributionCollection_[i].getMarginal(conditioning).computePDF(currentX);
+    pdfConditioning += p_[i] * distributionCollection_[i].getMarginal(conditioning).computePDF(currentX);
   result[0] = pdfConditioning;
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension_; ++conditioningDimension)
   {
@@ -445,7 +436,7 @@ Point Mixture::computeSequentialConditionalPDF(const Point & x) const
     currentX.add(x[conditioningDimension]);
     Scalar pdfConditioned = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
-      pdfConditioned += distributionCollection_[i].getWeight() * distributionCollection_[i].getMarginal(conditioning).computePDF(currentX);
+      pdfConditioned += p_[i] * distributionCollection_[i].getMarginal(conditioning).computePDF(currentX);
     result[conditioningDimension] = pdfConditioned / pdfConditioning;
     pdfConditioning = pdfConditioned;
   } // conditioningDimension
@@ -472,7 +463,7 @@ Scalar Mixture::computeConditionalCDF(const Scalar x,
   z.add(x);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar weightedMarginalAtomPDF = distributionCollection_[i].getWeight() * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(y);
+    const Scalar weightedMarginalAtomPDF = p_[i] * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(y);
     conditioningPDF += weightedMarginalAtomPDF;
     if (weightedMarginalAtomPDF > 0.0)
       conditionedCDF += distributionCollection_[i].computeConditionalCDF(x, y) * weightedMarginalAtomPDF;
@@ -495,7 +486,7 @@ Point Mixture::computeSequentialConditionalCDF(const Point & x) const
   Scalar cdfConditioned = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar wI = distributionCollection_[i].getWeight();
+    const Scalar wI = p_[i];
     weights[i] = wI;
     const Distribution marginalAtom(distributionCollection_[i].getMarginal(0));
     const Scalar weightedMarginalAtomPDF = wI * marginalAtom.computePDF(xConditioned);
@@ -546,7 +537,7 @@ Distribution Mixture::getMarginal(const UnsignedInteger i) const
   for (UnsignedInteger index = 0; index < size; ++index)
   {
     collection.add(distributionCollection_[index].getMarginal(i));
-    collection[index].setWeight(distributionCollection_[index].getWeight());
+    collection[index].setWeight(p_[index]);
   }
   Mixture* marginal(new Mixture(collection));
   marginal->isCopula_ = isCopula_;
@@ -566,7 +557,7 @@ Distribution Mixture::getMarginal(const Indices & indices) const
   for (UnsignedInteger index = 0; index < size; ++index)
   {
     collection.add(distributionCollection_[index].getMarginal(indices));
-    collection[index].setWeight(distributionCollection_[index].getWeight());
+    collection[index].setWeight(p_[index]);
   }
   Mixture* marginal(new Mixture(collection));
   marginal->isCopula_ = isCopula_;
@@ -579,7 +570,7 @@ void Mixture::computeMean() const
 {
   mean_ = Point(getDimension(), 0.0);
   const UnsignedInteger size = distributionCollection_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i) mean_ += distributionCollection_[i].getWeight() * distributionCollection_[i].getMean();
+  for(UnsignedInteger i = 0; i < size; ++i) mean_ += p_[i] * distributionCollection_[i].getMean();
   isAlreadyComputedMean_ = true;
 }
 
@@ -594,7 +585,7 @@ void Mixture::computeCovariance() const
   // First, compute E(X.X^t)
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar weightI = distributionCollection_[i].getWeight();
+    const Scalar weightI = p_[i];
     const CovarianceMatrix covarianceI(distributionCollection_[i].getCovariance());
     const Point meanI(distributionCollection_[i].getMean());
     for(UnsignedInteger row = 0; row < dimension; ++row)
@@ -626,7 +617,7 @@ Mixture::PointWithDescriptionCollection Mixture::getParametersCollection() const
       const Description atomDescription(atomParameters.getDescription());
       const UnsignedInteger atomParameterDimension = atomParameters.getDimension();
       // Add the current atom parameters
-      parameters[0].add(distributionCollection_[i].getWeight());
+      parameters[0].add(p_[i]);
       description.add(OSS() << "w_" << i);
       for (UnsignedInteger j = 0; j < atomParameterDimension; ++j)
       {
@@ -676,7 +667,7 @@ Point Mixture::getParameter() const
   Point parameter(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    parameter.add(distributionCollection_[i].getWeight());
+    parameter.add(p_[i]);
     parameter.add(distributionCollection_[i].getParameter());
   }
   return parameter;
@@ -701,6 +692,7 @@ void Mixture::setParameter(const Point & parameter)
   // Get the atom parameters
   const UnsignedInteger size = distributionCollection_.getSize();
   Collection<Distribution> newAtoms(size);
+  Point newWeights(size);
   UnsignedInteger shift = 0;
   const UnsignedInteger parameterSize = parameter.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -710,7 +702,7 @@ void Mixture::setParameter(const Point & parameter)
     const UnsignedInteger atomParameterSize = atomParameter.getSize();
     if (shift + atomParameterSize + 1 > parameterSize) throw InvalidArgumentException(HERE) << "Error: expected at least a parameter of size=" << shift + atomParameterSize + 1 << ", got size=" << parameterSize;
     // Update the current atom weight
-    atom.setWeight(parameter[shift]);
+    newWeights[i] = parameter[shift];
     ++shift;
     // Update the current atom parameter
     std::copy(parameter.begin() + shift, parameter.begin() + shift + atomParameterSize, atomParameter.begin());
@@ -848,8 +840,8 @@ void Mixture::load(Advocate & adv)
   adv.loadAttribute( "pdfApproximationCCDF_", pdfApproximationCCDF_ );
   adv.loadAttribute( "ccdfApproximation_", ccdfApproximation_ );
   adv.loadAttribute( "useApproximatePDFCDF_", useApproximatePDFCDF_ );
-  // To compute the range
-  setDistributionCollectionWithWeights(DistributionCollection(distributionCollection_), p_);
+  // To compute the range. Care! p_ is reset in setDistributionCollectionWithWeights
+  setDistributionCollectionWithWeights(DistributionCollection(distributionCollection_), Point(p_));
 }
 
 END_NAMESPACE_OPENTURNS

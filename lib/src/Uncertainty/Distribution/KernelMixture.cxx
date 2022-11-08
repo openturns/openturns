@@ -408,17 +408,17 @@ Scalar KernelMixture::computeProbability(const Interval & interval) const
   {
     const Scalar hInverse = bandwidthInverse_[0];
     for(UnsignedInteger i = 0; i < size; ++i)
-      probability += p_kernel_->computeProbability(Interval((lowerBound[0] - sample_(i, 0)) * hInverse, (upperBound[0] - sample_(i, 0)) * hInverse));
+      probability += p_kernel_->computeProbabilityGeneral1D((lowerBound[0] - sample_(i, 0)) * hInverse, (upperBound[0] - sample_(i, 0)) * hInverse);
     return probability / size;
   }
   const Scalar probabilityEpsilon = p_kernel_->getCDFEpsilon();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar probabilityAtom = p_kernel_->computeProbability(Interval((lowerBound[0] - sample_(i, 0)) * bandwidthInverse_[0], (upperBound[0] - sample_(i, 0)) * bandwidthInverse_[0]));
+    Scalar probabilityAtom = p_kernel_->computeProbabilityGeneral1D((lowerBound[0] - sample_(i, 0)) * bandwidthInverse_[0], (upperBound[0] - sample_(i, 0)) * bandwidthInverse_[0]);
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (probabilityAtom < probabilityEpsilon) break;
-      probabilityAtom *= p_kernel_->computeProbability(Interval((lowerBound[j] - sample_(i, j)) * bandwidthInverse_[j], (upperBound[j] - sample_(i, j)) * bandwidthInverse_[j]));
+      probabilityAtom *= p_kernel_->computeProbabilityGeneral1D((lowerBound[j] - sample_(i, j)) * bandwidthInverse_[j], (upperBound[j] - sample_(i, j)) * bandwidthInverse_[j]);
     }
     probability += probabilityAtom;
   } /* end for */

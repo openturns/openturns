@@ -253,14 +253,16 @@ public:
 
   /** Get the probability content of an interval */
   virtual Scalar computeProbability(const Interval & interval) const;
-protected:
   /** Generic implementation for continuous distributions */
+  virtual Scalar computeProbabilityGeneral(const Interval & interval) const;
+  /** Generic implementation for 1D continuous distributions */
+  virtual Scalar computeProbabilityGeneral1D(const Scalar a, const Scalar b) const;
+  /** Generic implementation for continuous distribution by integration of the PDF */
   virtual Scalar computeProbabilityContinuous(const Interval & interval) const;
+  /** Generic implementation for 1D continuous distribution by integration of the PDF */
+  virtual Scalar computeProbabilityContinuous1D(const Scalar a, const Scalar b) const;
   /** Generic implementation for discrete distributions */
   virtual Scalar computeProbabilityDiscrete(const Interval & interval) const;
-  /** Generic implementation for general distributions */
-  virtual Scalar computeProbabilityGeneral(const Interval & interval) const;
-public:
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   virtual Complex computeCharacteristicFunction(const Scalar x) const;
