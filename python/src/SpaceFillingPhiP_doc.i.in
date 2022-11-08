@@ -17,7 +17,7 @@ Computes the criterion:
       \phi_p(X) = \sum_{i=1}^{j} \sum_{j=1}^{n} \left( |x^{(i)} - x^{(j)}|^{-p} \right)^{\frac{1}{p}}
     \end{equation*}
 
-This criterion is knwon to converge to mindist (minimal distance between two distinct elements of the design) criterion when p tends to infinity.
+This criterion is known to converge to mindist (minimal distance between two distinct elements of the design) criterion when p tends to infinity.
 "
 
 %enddef

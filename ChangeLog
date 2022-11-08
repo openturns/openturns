@@ -35,7 +35,7 @@
 === Bug fixes ===
 
 
-== 1.20rc1 release (2022-10-13) == #release-1.20rc1
+== 1.20 release (2022-11-08) == #release-1.20
 
 === Library ===
 
@@ -69,11 +69,15 @@
  * Deprecated IterativeMoments::getCenteredMoments in favor of getCentralMoments
  * Deprecated GeneralLinearModelAlgorithm | KrigingAlgorithm ctors using collection of basis
  * Deprecated Drawable.draw|clean & Graph.draw|clean|getRCommand methods for legacy R graphs
+ * Deprecated SampleImplementation.storeToTemporaryFile|streamToRFormat
  * Deprecated GaussianProcess.GIBBS in favor of GaussianProcess.GALLIGAOGIBBS
  * Deprecated FunctionalChaosSobolIndices::summary in favor of __str__
+ * Deprecated BoxCoxFactory::build method using collection of basis
 
 === Documentation ===
  * Added example galleries at the end of API doc pages
+ * Added new use case: WingWeightModel and example of use
+ * Added new use case: FireSatelliteModel and example of use
 
 === Python module ===
  * New openturns.experimental submodule introducing newest classes until stabilization
@@ -113,6 +117,10 @@
  * #2140 (GeneralizedParetoFactory.buildMethodOfMoments estimating wrong parameter)
  * #2145 (Calibration wo obs input API)
  * #2152 (P1LagrangeInterpolation can make Python fail)
+ * #2154 (SpaceFillingMinDist: LaTeX typo)
+ * #2157 (Slow creation of mixtures when the atom distributions are costly to copy)
+ * #2161 (Drop Normal SPD check)
+ * #2176 (Missing documentation on Kriging Result methods)
 
 
 == 1.19 release (2022-05-10) == #release-1.19

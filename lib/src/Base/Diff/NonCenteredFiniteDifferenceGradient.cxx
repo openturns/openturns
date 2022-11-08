@@ -92,7 +92,7 @@ Matrix NonCenteredFiniteDifferenceGradient::gradient(const Point & inP) const
   const UnsignedInteger inputDimension = inP.getDimension();
   const Point step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inputDimension << ", expected " << step.getDimension();
-  /* At which points do we have to compute the evaluation for the decentered finite difference. We need 1+dim pionts. */
+  /* At which points do we have to compute the evaluation for the decentered finite difference. We need 1+dim points. */
   Sample gridPoints(inputDimension + 1, inP);
   for(UnsignedInteger i = 0; i < inputDimension; ++i) gridPoints(i + 1, i) += step[i];
   /* Evaluate the evaluation */

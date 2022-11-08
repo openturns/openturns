@@ -168,7 +168,7 @@ Matrix ExponentialModel::partialGradient(const Point & s,
   if (norm == 0)
     throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the points t and s are equal. Covariance model has no derivate for that case.";
   norm = std::sqrt(norm);
-  // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'kroneker',
+  // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'kronecker',
   SquareMatrix covariance(outputCovariance_);
   covariance.getImplementation()->symmetrize();
   Point covariancePoint(*covariance.getImplementation());

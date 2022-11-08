@@ -170,7 +170,8 @@ view = viewer.View(graph)
 # -----------------------------------------------
 
 # %%
-# Now that we know that we can define a copula, we create a bivariate distribution with normal and uniform marginals and an arbitrary copula. We select the the Ali-Mikhail-Haq copula as an example of a non trivial dependence.
+# Now that we know that we can define a copula, we create a bivariate distribution with normal and uniform marginals and an arbitrary copula.
+# We select the Ali-Mikhail-Haq copula as an example of a non trivial dependence.
 
 # %%
 normal = ot.Normal()

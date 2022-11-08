@@ -44,7 +44,7 @@ public:
   /** Virtual constructor */
   SphereUniformNormImplementation * clone() const override;
 
-  /** Symmettric accessor */
+  /** Symmetric accessor */
   Bool isSymmetric() const
   {
     return symmetric_;

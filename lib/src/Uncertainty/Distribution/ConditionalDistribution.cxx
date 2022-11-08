@@ -281,7 +281,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
     // Create the DOE for continuous integration
     const String method(ResourceMap::GetAsString("ConditionalDistribution-ContinuousDiscretizationMethod"));
     const UnsignedInteger maximumIntegrationNumber = ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MaximumIntegrationNodesNumber" );
-    // All these quantities are needed for the upper class allgorithms even if locally they are only useful for GaussProduct
+    // All these quantities are needed for the upper class algorithms even if locally they are only useful for GaussProduct
     const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(maximumIntegrationNumber, 1.0 / continuousDimension)));
     const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MarginalIntegrationNodesNumber" );
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of integration nodes=" << std::pow(candidateNumber, 1.0 * continuousDimension) << ". It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"ConditionalDistribution-MaximumIntegrationNodesNumber\" or decrease the ResourceMap key \"ConditionalDistribution-MarginalIntegrationNodesNumber\"");

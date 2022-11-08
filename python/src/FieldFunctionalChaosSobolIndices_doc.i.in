@@ -1,6 +1,10 @@
 %feature("docstring") OT::FieldFunctionalChaosSobolIndices
 "Sobol indices from a functional decomposition.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 This class allows to perform sensitivity analysis from field chaos decomposition.
 The process decomposition is done by Karhunen-Loeve and the modes interpolation
 is performed by functional chaos:

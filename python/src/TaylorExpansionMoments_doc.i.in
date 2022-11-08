@@ -11,32 +11,17 @@ limitStateVariable : :class:`~openturns.RandomVector`
 
 Notes
 -----
-In a probabilistic approach the Taylor expansion can be used
-propagate the uncertainties of the input variables :math:`\uX` through the
-model :math:`h` towards the output variables :math:`\uY`. It enables to access
-the central dispersion (Expectation, Variance) of the output variables.
+Assuming that :math:`\uX` has its two first moments finite and that :math:`h` is sufficiently regular,
+the Taylor expansion method is used to approximate the mean and variance of a random variable :math:`\uY = h(\uX)`
+with respect to the mean and variance of the input random vector :math:`\uX`.
 
-This method is based on a Taylor decomposition of the output variable
-:math:`\uY` towards the :math:`\uX` random vectors around the mean point
-:math:`\muX`. Depending on the order of the Taylor decomposition (classically
-first order or second order), one can obtain different formulas introduced
-hereafter.
+We note:
 
-As :math:`\uY=h(\uX)`, the Taylor decomposition around :math:`\ux = \muX` at
-the second order yields to:
+- :math:`\mu_X = \Expect{\uX}` the mean of the random vector :math:`\uX`
 
-.. math::
-
-    \uY = h(\muX) + <\vect{\vect{\nabla}}h(\muX) , \: \uX - \muX> + \frac{1}{2}<<\vect{\vect{\vect{\nabla }}}^2 h(\muX,\: \vect{\mu}_{\:X}),\: \uX - \muX>,\: \uX - \muX> + o(\Cov \uX)
-
-where:
-
-- :math:`\muX = \Expect{\uX}` is the vector of the input variables at the mean
-  values of each component.
-
-- :math:`\Cov \uX` is the covariance matrix of the random vector `\uX`. The
+- :math:`\Cov \uX` the covariance matrix of the random vector :math:`\uX`. The
   elements are the followings :
-  :math:`(\Cov \uX)_{ij} = \Expect{\left(X^i - \Expect{X^i} \right)^2}`
+  :math:`(\Cov \uX)_{ij} = \Expect{\left(X^i - \Expect{X^i} \right) \left(X^j - \Expect{X^j} \right) }`
 
 - :math:`\vect{\vect{\nabla}} h(\muX) = \: \Tr{\left( \frac{\partial y^i}{\partial x^j}\right)}_{\ux\: =\: \muX} = \: \Tr{\left( \frac{\partial h^i(\ux)}{\partial x^j}\right)}_{\ux\: =\: \muX}`
   is the transposed Jacobian matrix with :math:`i=1,\ldots,n_Y` and
@@ -49,12 +34,28 @@ where:
   yields to:
   :math:`\left( \nabla^2 h(\ux) \right)_{ijk} = \frac{\partial^2 (h^k(\ux))}{\partial x^i \partial x^j}`
 
-- :math:`<\vect{\vect{\nabla}}h(\muX) , \: \uX - \muX> = \sum_{j=1}^{n_X} \left( \frac{\partial {\uy}}{\partial {x^j}}\right)_{\ux = \muX} . \left( X^j-\muX^j \right)`
+Then we have:
 
--
+  .. math::
+
+      <\vect{\vect{\nabla}}h(\muX) , \: \uX - \muX> = \sum_{j=1}^{n_X} \left( \frac{\partial {\uy}}{\partial {x^j}}\right)_{\ux = \muX} . \left( X^j-\muX^j \right)
+
+and
+
   .. math::
 
       <<\vect{\vect{\vect{\nabla }}}^2 h(\muX,\: \vect{\mu}_{X}),\: \uX - \muX>,\: \uX - \muX> = \left( \Tr{(\uX^i - \muX^i)}. \left(\frac{\partial^2 y^k}{\partial x^i \partial x^k}\right)_{\ux = \muX}. (\uX^j - \muX^j) \right)_{ijk}
+
+The Taylor expansion of order 2 of the model :math:`h` is:
+
+.. math::
+
+    \uY = h(\muX) + <\vect{\vect{\nabla}}h(\muX) , \: \uX - \muX> + \frac{1}{2}<<\vect{\vect{\vect{\nabla }}}^2 h(\muX,\: \vect{\mu}_{\:X}),\: \uX - \muX>,\: \uX - \muX> + o(\Cov \uX)
+
+
+Depending on the order of the Taylor expansion (classically
+first order or second order), one can obtain different formulas introduced
+hereafter.
 
 **Approximation at the order 1:**
 

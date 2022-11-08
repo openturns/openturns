@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Interval is defined as the cartesian product of n 1D intervalls ]low_1, up_1]x...x]low_n,up_n]
+ *  @brief Interval is defined as the cartesian product of n 1D intervals ]low_1, up_1]x...x]low_n,up_n]
  *
  *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
  *

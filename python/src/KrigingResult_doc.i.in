@@ -328,22 +328,3 @@ metaModel : :class:`~openturns.Function`
     The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
 "
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KrigingResult::getInputSample
-"Accessor to the input sample.
-
-Returns
--------
-inputSample : :class:`~openturns.Sample`
-    The input sample."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KrigingResult::getOutputSample
-"Accessor to the output sample.
-
-Returns
--------
-outputSample : :class:`~openturns.Sample`
-    The output sample."

@@ -1,6 +1,10 @@
 %feature("docstring") OT::UserDefinedMetropolisHastings
 "User-defined Metropolis-Hastings method.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
 
 Available constructor:

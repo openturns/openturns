@@ -289,7 +289,7 @@ Distribution FittingTest::BestModelLilliefors(const Sample & sample,
       factoryPairs[i] = std::pair< Scalar, DistributionFactory >(pValue, factory);
       builtAtLeastOne = true;
     } // try
-    // The factories can raise many different exceptions (InvalidArgumenException, InternalException, NotDefinedException...). Here we catch everything and echo the reason of the exception.
+    // The factories can raise many different exceptions (InvalidArgumentException, InternalException, NotDefinedException...). Here we catch everything and echo the reason of the exception.
     catch (const Exception & ex)
     {
       LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
@@ -324,7 +324,7 @@ Distribution FittingTest::BestModelLilliefors(const Sample & sample,
         builtAtLeastOne = true;
       }
     } // try
-    // The factories can raise many different exceptions (InvalidArgumenException, InternalException, NotDefinedException...). Here we catch everything and echo the reason of the exception.
+    // The factories can raise many different exceptions (InvalidArgumentException, InternalException, NotDefinedException...). Here we catch everything and echo the reason of the exception.
     catch (const Exception & ex)
     {
       LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);

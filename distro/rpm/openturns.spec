@@ -20,7 +20,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.20rc1
+Version:        1.20
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -45,7 +45,9 @@ BuildRequires:  tbb-devel
 BuildRequires:  pagmo-devel
 %endif
 BuildRequires:  python3-devel
+%if !0%{?mageia}
 BuildRequires:  hmat-oss-devel
+%endif
 BuildRequires:  spectra-devel
 BuildRequires:  cminpack-devel
 %if 0%{?fedora_version}
@@ -73,7 +75,9 @@ Uncertainty treatment library binaries
 Summary:        OpenTURNS development files
 Group:          Development/Libraries/C and C++
 Requires:       %{name}-libs = %{version}
+%if !0%{?mageia}
 Requires:       hmat-oss-devel
+%endif
 
 %description devel
 Development files for OpenTURNS uncertainty library

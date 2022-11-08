@@ -53,8 +53,8 @@ len(fronts)
 
 # %%
 # We show the Pareto front
-graph = ot.Graph("Pareto front", "X1", "X2", True, "topright")
-front = algo.getResult().getFinalPoints().select(fronts[0]).sortAccordingToAComponent(0)
+graph = ot.Graph("Pareto front", "y1", "y2", True, "topright")
+front = algo.getResult().getFinalValues().select(fronts[0]).sortAccordingToAComponent(0)
 data = ot.Sample(2 * front.getSize() - 1, 2)
 for i in range(front.getSize()):
     data[2 * i] = front[i]
@@ -76,8 +76,8 @@ for gen in range(5):
     algo.setGenerationNumber(gen)
     algo.run()
     front0 = algo.getResult().getParetoFrontsIndices()[0]
-    fronts.append(algo.getResult().getFinalPoints().select(front0))
-graph = ot.Graph("Successive fronts", "X1", "X2", True, "topright")
+    fronts.append(algo.getResult().getFinalValues().select(front0))
+graph = ot.Graph("Successive fronts", "y1", "y2", True, "topright")
 palette = ot.Drawable.BuildDefaultPalette(len(fronts))
 for k in range(len(fronts)):
     front = fronts[k].sortAccordingToAComponent(0)

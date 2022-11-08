@@ -9,7 +9,7 @@ Compute the criterion based on the minimal distance of sample points:
     :nowrap:
 
     \begin{equation*}
-      \phi_min(X) = \min_{i \neq j} ||x^{(i)} - x^{(j)}|| ^{\frac{1}{2}}
+      \phi_{min}(X) = \min_{i \neq j} ||x^{(i)} - x^{(j)}||
     \end{equation*}
 "
 

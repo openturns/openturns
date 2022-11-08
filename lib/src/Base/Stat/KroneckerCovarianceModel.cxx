@@ -168,7 +168,7 @@ Matrix KroneckerCovarianceModel::partialGradient(const Point &s, const Point &t)
   const Matrix rhoGradient(rho_.partialGradient(s, t));
 
   Matrix gradient(getInputDimension(), covariancePoint.getDimension());
-  // Final gradient is a kroneker product grad_{i,j} = gradRho_i * Cov_j
+  // Final gradient is a kronecker product grad_{i,j} = gradRho_i * Cov_j
   // Cov seen as a vector of size outputDimension x outputDimension
   for (UnsignedInteger j = 0; j < covariancePoint.getDimension(); ++j)
     for (UnsignedInteger i = 0; i < getInputDimension(); ++i)

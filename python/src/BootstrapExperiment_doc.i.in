@@ -46,12 +46,12 @@ UserDefined({x = [0,1], p = 0.2}, {x = [1,2], p = 0.2}, {x = [2,3], p = 0.2}, {x
 Parameters
 ----------
 size : positive int
-    Size of the set of indices in which the indices are chosen.
-length : positive int
     Number of indices to choose.
+n : positive int
+    Upper bound of the interval in which the indices are chosen.
 
 Returns
 -------
 selection : :class:`~openturns.Indices`
-    Sequence of size *length* of indices :math:`i` such that :math:`0\leq i<size`.
+    Sequence of size *size* of indices :math:`i` such that :math:`0\leq i<n`.
 "

@@ -22,6 +22,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OTconfig.hxx"
+#include "openturns/DatabaseFunction.hxx"
+#include "openturns/BootstrapExperiment.hxx"
 
 #ifdef OPENTURNS_HAVE_PAGMO
 #include <pagmo/algorithm.hpp>
@@ -61,6 +63,9 @@ struct PagmoProblem
   PagmoProblem(const Pagmo * algorithm)
     : algorithm_(algorithm)
   {
+    if (!algorithm)
+      throw InvalidArgumentException(HERE) << "Null algo";
+
     // pagmo wants the integer components grouped at the end, so renumbering is in order
     Indices renum;
     Indices renum_inv;
@@ -75,6 +80,9 @@ struct PagmoProblem
     ordinal.fill();
     if (renum != ordinal)
       renum_ = renum;
+
+    evaluationInputHistory_ = Sample(0, algorithm->getProblem().getDimension());
+    evaluationOutputHistory_ = Sample(0, algorithm->getProblem().getObjective().getOutputDimension());
   }
 
   Point renumber(const Point & inP) const
@@ -91,7 +99,9 @@ struct PagmoProblem
   pagmo::vector_double fitness(const pagmo::vector_double & inv) const
   {
     const Point inP(renumber(Point(inv.begin(), inv.end())));
+    evaluationInputHistory_.add(inP);
     Point outP(algorithm_->getProblem().getObjective()(inP));
+    evaluationOutputHistory_.add(outP);
     for (UnsignedInteger i = 0; i < outP.getDimension(); ++ i)
       if (!algorithm_->getProblem().isMinimization(i))
         outP[i] *= -1.0;
@@ -171,7 +181,9 @@ struct PagmoProblem
         const Point xsi(xs.begin() + offset + i * inputDimension, xs.begin() + offset + (i + 1) * inputDimension);
         inSb[i] = renumber(xsi);
       }
+      evaluationInputHistory_.add(inSb);
       Sample outSb(problem.getObjective()(inSb));
+      evaluationOutputHistory_.add(outSb);
       for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
         for (UnsignedInteger j = 0; j < outputDimension; ++ j)
           if (!problem.isMinimization(j))
@@ -221,11 +233,15 @@ struct PagmoProblem
   }
 
   static UnsignedInteger evaluationNumber_;
+  static Sample evaluationInputHistory_;
+  static Sample evaluationOutputHistory_;
   const Pagmo * algorithm_ = 0;
   Indices renum_;
 };
 
 UnsignedInteger PagmoProblem::evaluationNumber_ = 0;
+Sample PagmoProblem::evaluationInputHistory_;
+Sample PagmoProblem::evaluationOutputHistory_;
 #endif
 
 
@@ -266,8 +282,8 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support multi-objective optimization";
   if ((problem.getObjective().getOutputDimension() < 2) && multiObjectiveAgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " only supports multi-objective optimization";
-  const Description integerAgorithms = {"gaco", "ihs", "sga", "nsga2", "mhaco"};
-  if (!problem.isContinuous() && !integerAgorithms.contains(getAlgorithmName()))
+  const Description integerAlgorithms = {"gaco", "ihs", "sga", "nsga2", "mhaco"};
+  if (!problem.isContinuous() && !integerAlgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support non continuous problems";
 #else
   (void)problem;
@@ -303,6 +319,8 @@ void Pagmo::run()
 #ifdef OPENTURNS_HAVE_PAGMO
   PagmoProblem pproblem(this);
   pagmo::problem prob(pproblem);
+  const pagmo::vector_double ctol(prob.get_nc(), getMaximumConstraintError());
+  prob.set_c_tol(ctol);
   const Description constrainedAgorithms = {"gaco", "ihs"};
   Bool emulatedConstraints = false;
   if ((getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint()) && !constrainedAgorithms.contains(getAlgorithmName()))
@@ -319,6 +337,37 @@ void Pagmo::run()
   {
     LOGINFO(OSS() << "Pagmo: must drop the last " << (populationSize % 4) << " points of the initial population for NSGA2 as the size=" << populationSize << " is not a multiple of 4");
     populationSize = 4 * (populationSize / 4);
+  }
+  // with mhaco starting population must satisfy constraints
+  if ((algoName_ == "mhaco") && (getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint()))
+  {
+    Sample startingSampleConstrained(0, getProblem().getDimension());
+    Sample ineqOutput;
+    if (getProblem().hasInequalityConstraint())
+      ineqOutput = getProblem().getInequalityConstraint()(startingSample_);
+    Sample eqOutput;
+    if (getProblem().hasEqualityConstraint())
+      eqOutput = getProblem().getEqualityConstraint()(startingSample_);
+    for (UnsignedInteger i = 0; i < populationSize; ++ i)
+    {
+      Bool ok = true;
+      if (getProblem().hasInequalityConstraint())
+        for (UnsignedInteger j = 0; j < ineqOutput.getDimension(); ++ j)
+          ok = ok && (ineqOutput(i, j) >= -getMaximumConstraintError());
+      if (getProblem().hasEqualityConstraint())
+        for (UnsignedInteger j = 0; j < eqOutput.getDimension(); ++ j)
+          ok = ok && (std::abs(eqOutput(i, j)) <= getMaximumConstraintError());
+      if (ok)
+        startingSampleConstrained.add(startingSample_[i]);
+    }
+    if (!startingSampleConstrained.getSize())
+      throw InvalidArgumentException(HERE) << "No point in starting population satisfies constraints";
+    if (startingSampleConstrained.getSize() < populationSize)
+    {
+      const Indices indices(BootstrapExperiment::GenerateSelection(populationSize, startingSampleConstrained.getSize()));
+      startingSample_ = startingSampleConstrained.select(indices);
+      LOGINFO(OSS() << "Pagmo: Initial population bootstrapped to satisfy constraints");
+    }
   }
   for (UnsignedInteger i = 0; i < populationSize; ++ i)
   {
@@ -535,55 +584,84 @@ void Pagmo::run()
   algo.set_seed(seed_);
   PagmoProblem::evaluationNumber_ = 0;
   pop = algo.evolve(pop);
-  UnsignedInteger evaluationNumber = PagmoProblem::evaluationNumber_;
   result_ = OptimizationResult(getProblem());
-  result_.setEvaluationNumber(evaluationNumber);
+  result_.setEvaluationNumber(PagmoProblem::evaluationNumber_);
   Scalar optimalValue = 0.0;
   Point optimalPoint;
-  const UnsignedInteger objectiveDimension = getProblem().getObjective().getOutputDimension();
   Sample finalPoints(0, getProblem().getDimension());
-  Sample finalValues(0, objectiveDimension);
 
+  // retrieve final population
   for (UnsignedInteger i = 0; i < pop.size(); ++ i)
   {
     const pagmo::vector_double x(pop.get_x()[i]);
-    const pagmo::vector_double y(pop.get_f()[i]);
     const Point inP(pproblem.renumber(Point(x.begin(), x.end())));
-    Point outP(y.begin(), y.begin() + objectiveDimension); // also contains constraints
-    for (UnsignedInteger j = 0; j < objectiveDimension; ++ j)
-      if (!getProblem().isMinimization(j))
-        outP[j] *= -1.0;
+    finalPoints.add(inP);
+  }
 
-    if (objectiveDimension == 1)
+  // filter according to constraints
+  if (getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint())
+  {
+    Sample finalPointsConstrained(0, getProblem().getDimension());
+    Sample ineqOutput;
+    if (getProblem().hasInequalityConstraint())
+      ineqOutput = getProblem().getInequalityConstraint()(finalPoints);
+    Sample eqOutput;
+    if (getProblem().hasEqualityConstraint())
+      eqOutput = getProblem().getEqualityConstraint()(finalPoints);
+    for (UnsignedInteger i = 0; i < pop.size(); ++ i)
     {
+      Bool ok = true;
+      if (getProblem().hasInequalityConstraint())
+        for (UnsignedInteger j = 0; j < ineqOutput.getDimension(); ++ j)
+          ok = ok && (ineqOutput(i, j) >= -getMaximumConstraintError());
+      if (getProblem().hasEqualityConstraint())
+        for (UnsignedInteger j = 0; j < eqOutput.getDimension(); ++ j)
+          ok = ok && (std::abs(eqOutput(i, j)) <= getMaximumConstraintError());
+      if (ok)
+        finalPointsConstrained.add(finalPoints[i]);
+    }
+    if (finalPointsConstrained.getSize())
+      finalPoints = finalPointsConstrained;
+  }
+
+  // we want to retrieve evaluations before penalization to avoid MaxScalar values
+  const DatabaseFunction xToY(PagmoProblem::evaluationInputHistory_,
+                              PagmoProblem::evaluationOutputHistory_);
+  const Sample finalValues(xToY(finalPoints));
+  result_.setFinalPoints(finalPoints);
+  result_.setFinalValues(finalValues);
+
+  const UnsignedInteger objectiveDimension = getProblem().getObjective().getOutputDimension();
+  if (objectiveDimension == 1)
+  {
+    Point optimalPoint;
+    for (UnsignedInteger i = 0; i < finalPoints.getSize(); ++ i)
+    {
+      const Point inP(finalPoints[i]);
+      const Point outP(finalValues[i]);
       if (i == 0)
       {
-        optimalValue = outP[0];
         optimalPoint = inP;
+        optimalValue = outP[0];
       }
       if ((getProblem().isMinimization() && (outP[0] < optimalValue))
           || (!getProblem().isMinimization() && (outP[0] > optimalValue)))
       {
-        optimalValue = outP[0];
         optimalPoint = inP;
+        optimalValue = outP[0];
       }
     }
-    finalPoints.add(inP);
-    finalValues.add(outP);
-  }
-
-  result_.setFinalPoints(finalPoints);
-  result_.setFinalValues(finalValues);
-
-  if (objectiveDimension == 1)
-  {
     result_.setOptimalPoint(optimalPoint);
     result_.setOptimalValue(Point(1, optimalValue));
   }
   else
   {
+    // retrieve non-penalized output values instead of using pop.get_f
+    std::vector<std::vector<double> > popf;
+    for (UnsignedInteger i = 0; i < finalPoints.getSize(); ++ i)
+      popf.push_back(Point(finalPoints[i]).toStdVector());
     // compute the fronts
-    std::vector<std::vector<pagmo::pop_size_t> > fronts(std::get<0>(pagmo::fast_non_dominated_sorting(pop.get_x())));
+    std::vector<std::vector<pagmo::pop_size_t> > fronts(std::get<0>(pagmo::fast_non_dominated_sorting(popf)));
     Collection<Indices> frontIndices(fronts.size());
     for (UnsignedInteger i = 0; i < fronts.size(); ++ i)
       frontIndices[i] = Indices(fronts[i].begin(), fronts[i].end());

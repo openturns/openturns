@@ -64,7 +64,7 @@ SphereUniformNorm SphereUniformNorm::GetFromGridSteps(const Point & step, const 
   return result;
 }
 
-/** Symmettric accessor */
+/** Symmetric accessor */
 Bool SphereUniformNorm::isSymmetric() const
 {
   return getImplementation()->isSymmetric();

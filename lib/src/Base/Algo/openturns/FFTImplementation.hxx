@@ -88,7 +88,7 @@ public:
       const UnsignedInteger first,
       const UnsignedInteger size) const;
 
-  /** FFT inverse transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
+  /** FFT inverse transformation on a regular sequence of the collection (between first and last, separated by step)*/
   virtual ComplexCollection inverseTransform(const ScalarCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger step,
@@ -102,7 +102,7 @@ public:
       const UnsignedInteger first,
       const UnsignedInteger size) const;
 
-  /** FFT transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
+  /** FFT transformation on a regular sequence of the collection (between first and last, separated by step)*/
   virtual ComplexCollection inverseTransform(const ComplexCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger step,

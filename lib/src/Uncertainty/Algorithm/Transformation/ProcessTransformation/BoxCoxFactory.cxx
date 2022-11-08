@@ -83,7 +83,7 @@ public:
   Point computeLogLikelihood(const Point & lambda) const
   {
     const UnsignedInteger size = sample_.getSize();
-    // Define BoxCox trannsformation for sample
+    // Define BoxCox transformation for sample
     BoxCoxEvaluation myBoxFunction(Point(1, lambda[0]));
     // compute the mean of the transformed sample using the Box-Cox function
     const Sample outSample(myBoxFunction(sample_));
@@ -165,7 +165,7 @@ public:
   /** Likelihood function */
   Point computeLogLikelihood(const Point & lambda) const
   {
-    // Define BoxCox trannsformation for output sample
+    // Define BoxCox transformation for output sample
     BoxCoxEvaluation myBoxFunction(lambda);
     // compute the mean of the transformed sample using the Box-Cox function
     const Sample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
@@ -201,6 +201,60 @@ public:
   }
 };
 
+class BoxCoxGLMBasisOptimization : public EvaluationImplementation
+{
+
+public:
+  BoxCoxGLMBasisOptimization(const Sample &inputSample,
+                             const Sample &shiftedOutputSample,
+                             const CovarianceModel &covarianceModel,
+                             const Basis &basis)
+      : inputSample_(inputSample)
+      , shiftedOutputSample_(shiftedOutputSample)
+      , covarianceModel_(covarianceModel)
+      , basis_(basis)
+  {
+    // Nothing to do
+  }
+
+  BoxCoxGLMBasisOptimization *clone() const override
+  {
+    return new BoxCoxGLMBasisOptimization(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  // It is a simple call to the likelihood function
+  Point operator()(const Point &lambda) const override
+  {
+    // Define BoxCox transformation for output sample
+    BoxCoxEvaluation myBoxFunction(lambda);
+    // compute the mean of the transformed sample using the Box-Cox function
+    const Sample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
+    // Use of GLM to estimate the best generalized linear model
+    // TODO discuss here about freezing model parameters
+    GeneralLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
+    algo.run();
+    // Return the optimal log-likelihood
+    const Scalar result = algo.getResult().getOptimalLogLikelihood();
+    return Point(1, result);
+  }
+
+private:
+  /** only used to pass data to be used in computeLogLikeliHood */
+  Sample inputSample_;
+  Sample shiftedOutputSample_;
+  CovarianceModel covarianceModel_;
+  Basis basis_;
+};
 
 /* Constructor with parameters */
 BoxCoxFactory::BoxCoxFactory()
@@ -329,6 +383,8 @@ void BoxCoxFactory::checkGLMData(const Sample & inputSample,
                                  const CovarianceModel & covarianceModel,
                                  const BasisCollection & basis)
 {
+  LOGWARN(OSS() << "checkGLMData method is deprecated and will be dropped");
+
   // Check the input size
   const UnsignedInteger size = inputSample.getSize();
   if (size == 0)
@@ -351,7 +407,6 @@ void BoxCoxFactory::checkGLMData(const Sample & inputSample,
 
 }
 
-
 /** Build the factory from data by estimating the best generalized linear model */
 BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
                                      const Sample & outputSample,
@@ -360,8 +415,56 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
                                      const Point & shift,
                                      GeneralLinearModelResult & result)
 {
-  BasisCollection basisColl(outputSample.getDimension(), basis);
-  return build(inputSample, outputSample, covarianceModel, basisColl, shift, result);
+  // Check the input size
+  const UnsignedInteger size = inputSample.getSize();
+  if (size == 0)
+    throw InvalidArgumentException(HERE) << "Error: cannot build a Box-Cox factory from empty data";
+
+  if (size != outputSample.getSize())
+    throw InvalidArgumentException(HERE) << "Error: input and output sample have different size. Could not perform GLM & Box Cox algorithms";
+
+  // Check the dimensions
+  const UnsignedInteger dimension = outputSample.getDimension();
+  const UnsignedInteger inputDimension = inputSample.getDimension();
+
+  if (covarianceModel.getInputDimension() != inputDimension)
+    throw InvalidArgumentException(HERE) << "Error: the covariance model has an input dimension=" << covarianceModel.getInputDimension() << " different from the input sample dimension=" << inputDimension;
+
+  if (covarianceModel.getOutputDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the covariance model should be of dimension " << dimension << ". Here, covariance model dimension=" << covarianceModel.getOutputDimension();
+
+  if (shift.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the shift has a dimension=" << shift.getDimension() << " different from the output sample dimension=" << dimension;
+
+  // Keep the shifted marginal samples
+  Sample shiftedSample(outputSample);
+  shiftedSample += shift;
+
+  // optimization process
+  BoxCoxGLMBasisOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
+  Function objectiveFunction(boxCoxOptimization);
+  MemoizeFunction objectiveMemoizeFunction(objectiveFunction, Full());
+  objectiveMemoizeFunction.enableCache();
+  OptimizationProblem problem(objectiveMemoizeFunction);
+  problem.setMinimization(false);
+  solver_.setProblem(problem);
+  solver_.setStartingPoint(Point(1, 1.0));
+  // run Optimization problem
+  solver_.run();
+  // Return optimization point
+  const Point optpoint(solver_.getResult().getOptimalPoint());
+
+  // Define BoxCox transformation for output sample
+  BoxCoxEvaluation myBoxFunction(optpoint, shift);
+  // compute the transformed output sample using the Box-Cox function
+  const Sample transformedOutputSample = myBoxFunction(outputSample);
+  // Build the GeneralLinearModelResult
+  // Use of GLM to estimate the best generalized linear model
+  GeneralLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);
+  algo.run();
+  // Get result
+  result = algo.getResult();
+  return BoxCoxTransform(optpoint, shift);
 }
 
 BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
@@ -370,8 +473,7 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
                                      const Point & shift,
                                      GeneralLinearModelResult & result)
 {
-  BasisCollection basis;
-  return build(inputSample, outputSample, covarianceModel, basis, shift, result);
+  return build(inputSample, outputSample, covarianceModel, Basis(), shift, result);
 }
 
 BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
@@ -381,6 +483,7 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
                                      const Point & shift,
                                      GeneralLinearModelResult & result)
 {
+  LOGWARN(OSS() << "BoxCoxFactory::build(inputSample, outpuSample, covarianceModel, basisCollection, shift) is deprecated");
   checkGLMData(inputSample, outputSample, covarianceModel, basis);
 
   // Check the dimensions
@@ -395,7 +498,7 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
   // optimization process
   BoxCoxGLMOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis, solver_);
   const Point lambda = boxCoxOptimization.optimizeLogLikelihood();
-  // Define BoxCox trannsformation for output sample
+  // Define BoxCox transformation for output sample
   BoxCoxEvaluation myBoxFunction(lambda, shift);
   // compute the transformed output sample using the Box-Cox function
   const Sample transformedOutputSample = myBoxFunction(outputSample);

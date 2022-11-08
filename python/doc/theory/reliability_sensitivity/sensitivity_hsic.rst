@@ -7,7 +7,7 @@ Introduction
 ~~~~~~~~~~~~
 
 The Hilbert-Schmidt Indepencence Criterion deals with analyzing the influence that the random vector
-:math:`\vect{X} = \left( X^1,\ldots,X^{d} \right)` has on a random variable
+:math:`\vect{X} = \left( X_1,\ldots,X_{d} \right)` has on a random variable
 :math:`Y`, which is being studied for uncertainty. Here, we attempt to evaluate the influence
 through the dependence between the two random variables :math:`Y` and :math:`X^i`.
 In practice, we compute the dependence between :math:`Y` and :math:`X^i` as the
@@ -51,7 +51,7 @@ and :math:`P_{Y,X_i}` in :math:`\mathcal{V}_{i}` as:
 
     \mu [ P_{Y,X_i} ] = \Eset_{Y,X_i} [v_{i}((Y, X_i),\cdot) ]	
     
-We can then define a dependence measure between :math:`Y^k` and :math:`X^i`, under
+We can then define a dependence measure between :math:`Y` and :math:`X^i`, under
 the form of HSIC, as the squared distance between the mean embeddings of
 :math:`P_YP_{X_i}` and :math:`P_{Y,X_i}`:
 
@@ -96,9 +96,9 @@ where :math:`\tilde{L}_{i_{j,k}}` and :math:`\tilde{L}_{j,k}` are computed as:
 
 .. math::
 
-    \tilde{L}_{i_{j,k}} = (1-\delta_{j,k}) \kappa\left( Y^{(j)}, Y^{(k)}\right) 
+    \tilde{L}_{i_{j,k}} = (1-\delta_{j,k}) \kappa_i\left( X_i^{(j)}, X_i^{(k)}\right) 
 
-	\tilde{L}_{j,k} = (1-\delta_{j,k}) \kappa_i\left( X_i^{(j)}, X_i^{(k)}\right) 
+	\tilde{L}_{j,k} = (1-\delta_{j,k}) \kappa\left( Y^{(j)}, Y^{(k)}\right) 
 
 In order to compare the HSIC values associated to various input variables :math:`X^i`,
 it is common practice to consider a normalized index (bounded between 0 and 1) called R2-HSIC,
@@ -129,10 +129,10 @@ standard deviation of the sample :math:`X_i`.
 Screening with HSIC-based statistical tests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The HSIC can also be used in order to perform screening on a set of input variables.
-This can be defined as the the process of identifying the input variables which are 
+This can be defined as the process of identifying the input variables which are 
 significantly influential on the considered output. 
 More specifically, within the framework of HSIC this can be done by relying on 
-statistical hypothesis tests. In practice, we wish to test the the following hypothesis:
+statistical hypothesis tests. In practice, we wish to test the following hypothesis:
 
 .. math::
     
@@ -174,9 +174,9 @@ Alternatively, when dealing with small data sets, a permutation-based estimator 
 the p-value can be considered. The underlying idea is that under the independence 
 hypothesis :math:`\cH_{0,i}`, considering a permutation of the considered output sample
 :math:`Y` should have no impact on the estimated HSIC value. We therefore consider
-an initial n-size pair of samples :math:`Z_{n} := \left(X_i^{(j)}, Y^{(j)}\right)_{(1\leq j\leq n)}`
-and :math:`\widehat{\mathrm{HSIC}}(Z_{n})`. From this samples, we can generate a set of 
-B independent permutations :math:`\{\tau_1,\dots,\tau_B\}` of :math:`X^{(j)}_{i_{(1 \leq j \leq n)}}`
+an initial n-size sample :math:`Z_{n} := \left(X_i^{(j)}, Y^{(j)}\right)_{(1\leq j\leq n)}`
+and :math:`\widehat{\mathrm{HSIC}}(Z_{n})`. From these samples, we can generate a set of 
+B independent permutations :math:`\{\tau_1,\dots,\tau_B\}` of :math:`Y^{(j)}_{(1 \leq j \leq n)}`
 and compute the associated HSIC values: 
 :math:`\widehat{H}^{*b} := \widehat{\mathrm{HSIC}} \left(X^{(j)}, Y^{(\tau_{b}(j))}\right)_{(1\leq j\leq n)}`.
 We can then finally estimate the p-value (under :math:`\cH_{0,i}`) as :
@@ -200,7 +200,7 @@ We can then estimate the target HSIC value associated to the input variable :mat
 
 .. math::
 
-    \widehat{\mathrm{T-HSIC},i} = \widehat{\mathrm{HSIC}}(X_i,\tilde{Y})
+    \mathrm{T-}\widehat{\mathrm{HSIC},i} = \widehat{\mathrm{HSIC}}(X_i,\tilde{Y})
 
 Please note that both the U-statistics a the V-statistics estimators described
 in the previous section can be used.
@@ -259,10 +259,10 @@ by relying on an adapted V-statistics estimator:
 
 .. math::
 
-    \widehat{\mathrm{C-HSIC}} (X_i,Y) = \frac{1}{n^2} \mathrm{Tr} (\hat{W} L_i \hat{W} H_1 L H_2)
+    \mathrm{C-}\widehat{\mathrm{HSIC}} (X_i,Y) = \frac{1}{n^2} \mathrm{Tr} (\hat{W} L_i \hat{W} H_1 L H_2)
 
-where :math:`\hat{W} = \frac{W}{\frac{1}{n}\sum_{j = 1}^{n} W_{j,j} }`, :math:`H_1 = I_n - \frac{1}{n} U\hat{W}`
-and :math:`H_2 = I_n - \frac{1}{n} \hat{W}U`.
+where :math:`\hat{W} = \frac{W}{\frac{1}{n}\sum_{j = 1}^{n} W_{j,j} }`, :math:`H_1 = I_n - \frac{1}{n} U\hat{W}`,
+ :math:`H_2 = I_n - \frac{1}{n} \hat{W}U`, :math:`I_n` is an :math:`n \times n` identity matrix and :math:`U` is an :math:`n \times n` comprised of ones.
 
 Please note that no U-statistics estimator exists for the conditional HSIC. Furhtermore,
 differently than in the target analysis case, standard continuous covariance kernels

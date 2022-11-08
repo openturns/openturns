@@ -147,7 +147,7 @@ FFT::ComplexCollection FFT::inverseTransform(const ScalarCollection & collection
   return getImplementation()->inverseTransform(collection, first, size);
 }
 
-/** FFT inverse transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
+/** FFT inverse transformation on a regular sequence of the collection (between first and last, separated by step)*/
 FFT::ComplexCollection FFT::inverseTransform(const ScalarCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger step,

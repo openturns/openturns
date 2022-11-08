@@ -48,27 +48,6 @@ Returns
 basis : :class:`~openturns.Basis`
     The basis which had been passed to the constructor."
 
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearModelResult::getInputSample
-"Accessor to the input sample.
-
-Returns
--------
-inputSample : :class:`~openturns.Sample`
-    The Xsample which had been passed to the constructor."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearModelResult::getOutputSample
-"Accessor to the output sample.
-
-Returns
--------
-outputSample : :class:`~openturns.Sample`
-    The Ysample which had been passed to the constructor."
-
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelResult::getFittedSample

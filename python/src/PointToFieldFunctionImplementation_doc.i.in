@@ -37,7 +37,7 @@ Examples
 
 Use the class :class:`~openturns.OpenTURNSPythonPointToFieldFunction` to create a function that acts a vector :math:`\vect{v}` of dimension :math:`d=2` and returns a field defined by:
 
-    - the mesh that discretizes :math:`[0, 1]` into 10 regular intervalls of length 0.1 (:math:`n=1`)
+    - the mesh that discretizes :math:`[0, 1]` into 10 regular intervals of length 0.1 (:math:`n=1`)
     - the value associated to the vertex number :math:`i` is :math:`\vect{v}'_i = i*\vect{v}` (:math:`d'=2`)
 
 Using the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` allows one to define a persistent state between the evaluations of the function.
