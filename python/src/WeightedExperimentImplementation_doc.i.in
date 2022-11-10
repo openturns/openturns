@@ -180,3 +180,17 @@ hasUniformWeights : bool
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation::hasUniformWeights
 OT_WeightedExperiment_hasUniformWeights_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_isRandom_doc
+"Accessor to the randomness of quadrature.
+
+Parameters
+----------
+isRandom : bool
+    Is true if the design of experiments is random.
+    Otherwise, the design of experiment is assumed to be deterministic."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::isRandom
+OT_WeightedExperiment_isRandom_doc

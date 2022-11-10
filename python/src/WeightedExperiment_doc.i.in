@@ -14,3 +14,5 @@ OT_WeightedExperiment_getSize_doc
 OT_WeightedExperiment_setSize_doc
 %feature("docstring") OT::WeightedExperiment::hasUniformWeights
 OT_WeightedExperiment_hasUniformWeights_doc
+%feature("docstring") OT::WeightedExperiment::isRandom
+OT_WeightedExperiment_isRandom_doc

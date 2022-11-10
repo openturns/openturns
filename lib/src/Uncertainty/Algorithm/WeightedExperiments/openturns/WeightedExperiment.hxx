@@ -72,6 +72,9 @@ public:
   /** Uniform weights ? */
   virtual Bool hasUniformWeights() const;
 
+  /** Return the random flag */
+  virtual Bool isRandom() const;
+
 } ; /* class WeightedExperiment */
 
 END_NAMESPACE_OPENTURNS

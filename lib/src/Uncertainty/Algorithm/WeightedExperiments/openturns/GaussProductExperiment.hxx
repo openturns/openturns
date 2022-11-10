@@ -69,6 +69,9 @@ public:
   /** Sample generation */
   Sample generateWithWeights(Point & weightsOut) const override;
 
+  /** Return isRandom flag */
+  Bool isRandom() const override;
+
   /** Marginal sizes accessor */
   void setMarginalSizes(const Indices & marginalSizes);
   Indices getMarginalSizes() const;

@@ -114,6 +114,12 @@ Sample GaussProductExperiment::generateWithWeights(Point & weights) const
   return nodes_;
 }
 
+/* Return isRandom flag */
+Bool GaussProductExperiment::isRandom() const
+{
+  return false;
+}
+
 /** Marginal sizes accessor */
 void GaussProductExperiment::setMarginalSizes(const Indices & marginalSizes)
 {

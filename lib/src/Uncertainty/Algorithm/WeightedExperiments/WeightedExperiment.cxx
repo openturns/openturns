@@ -94,4 +94,9 @@ Bool WeightedExperiment::hasUniformWeights() const
   return getImplementation()->hasUniformWeights();
 }
 
+Bool WeightedExperiment::isRandom() const
+{
+  return getImplementation()->isRandom();
+}
+
 END_NAMESPACE_OPENTURNS
