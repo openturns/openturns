@@ -152,6 +152,8 @@ Bibliography
     Management Science, vol 46. Springer, Boston, MA
     `pdf <https://www.researchgate.net/profile/Pierre_LEcuyer/publication/226670289_Recent_Advances_in_Randomized_Quasi-Monte_Carlo_Methods/links/0deec52dd9d449512b000000/Recent-Advances-in-Randomized-Quasi-Monte-Carlo-Methods.pdf>`__
 .. [lemaire2009] Lemaire M., *Structural reliability*, John Wiley & Sons, 2009.
+.. [lemaitre2010] Le Maître, O., & Knio, O. M. (2010).
+    *Spectral methods for uncertainty quantification: with applications to computational fluid dynamics*. Springer Science & Business Media.
 .. [Lilliefors1967] *On the Kolmogorov-Smirnov Test for Normality with Mean and Variance Unknown*
     Hubert W. Lilliefors
     Journal of the American Statistical Association,
@@ -215,6 +217,9 @@ Bibliography
     http://www.itl.nist.gov/div898/handbook/
 .. [nlopt2009] Steven G. Johnson, The NLopt nonlinear-optimization package,
     http://ab-initio.mit.edu/nlopt
+.. [petras2003] Petras, K. (2003). *Smolyak cubature of given polynomial
+    degree with few nodes for increasing dimension.* Numerische Mathematik,
+    93 (4), 729-753.
 .. [pmfre01116] Dumas A., *Lois asymptotiques des estimateurs des indices de Sobol'*,
     Technical report, Phimeca, 2018.
     `pdf <https://openturns.github.io/openturns/papers/RT-PMFRE-01116-001C_-_Rapport_loi_estimateur_sobol.pdf>`__

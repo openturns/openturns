@@ -603,6 +603,7 @@ ot_check_test (LHSExperiment_std)
 ot_check_test (LowDiscrepancyExperiment_std)
 ot_check_test (MonteCarloExperiment_std)
 ot_check_test (TensorProductExperiment_std IGNOREOUT)
+ot_check_test (SmolyakExperiment_std IGNOREOUT)
 
 # IterativeStat
 ot_check_test (IterativeExtrema_std IGNOREOUT)

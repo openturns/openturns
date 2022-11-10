@@ -1018,6 +1018,7 @@ ot_add_python_module(experimental experimental_module.i
                      FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in
                      FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
+                     SmolyakExperiment.i SmolyakExperiment_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 

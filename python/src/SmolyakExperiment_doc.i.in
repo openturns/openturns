@@ -1,0 +1,284 @@
+%feature("docstring") OT::SmolyakExperiment
+"Smolyak experiment.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Parameters
+----------
+experiments : list of :class:`~openturns.WeightedExperiment`
+    List of :math:`n` marginal experiments of the Smolyak experiment.
+    Each marginal experiment must have dimension 1.
+level : int
+    Level value :math:`\ell \geq 1`.
+
+Notes
+-----
+The Smolyak design of experiments (DOE) is based on a collection
+of marginal multidimensional elementary designs of experiments.
+Compared to the :class:`~openturns.TensorProductExperiment`, the
+Smolyak experiment has a significantly lower number of nodes [petras2003]_.
+This implementation uses the combination technique ([gerstner1998]_ page 215).
+Smolyak quadrature involve weights which are negative ([sullivan2015]_ page 177).
+The size of the experiment is only known after the nodes and weights have been computed,
+that is, after the :meth:`~openturns.experimental.SmolyakExperiment.generateWithWeights` method is called.
+
+**Method**
+
+Let :math:`\mathcal{X} \subset \mathbb{R}^{d_x}` be the integration domain 
+and let :math:`g : \mathcal{X} \rightarrow \mathbb{R}^{d_y}` be an integrable 
+function. 
+Let :math:`f : \mathcal{X} \rightarrow \mathbb{R}` be a probability density function.
+The Smolyak experiment produces an approximation of the integral:
+
+.. math::
+
+    \int_{\mathcal{X}} g(\boldsymbol{x}) f(\boldsymbol{x}) d\boldsymbol{x}
+    \approx \sum_{i = 1}^{s_t} w_i g\left(\boldsymbol{x}_i\right)
+
+where :math:`s_t \in \mathbb{N}` is the size of the Smolyak
+design of experiments, :math:`w_1, ..., w_{s_t} \in \mathbb{R}` are the
+weights and :math:`\boldsymbol{x}_1, ..., \boldsymbol{x}_{s_t} \in \mathbb{R}^{d_x}`
+are the nodes. 
+
+Let :math:`\boldsymbol{k} = (k_1, ..., k_{d_x}) \in (\mathbb{N}^\star)^{d_x}` 
+be the multi-index where
+
+.. math::
+
+    \mathbb{N}^\star = \{1, 2, ... \}
+
+is the set of natural numbers without zero.
+Consider the 1 and the infinity norms ([lemaitre2010]_ page 57, eq. 3.28):
+
+.. math::
+
+    \|\boldsymbol{k}\|_1 = \sum_{i = 1}^{d_x} k_i \qquad
+    \|\boldsymbol{k}\|_\infty = \max_{i = 1, ..., d_x} k_i.
+
+for any :math:`\boldsymbol{k} \in (\mathbb{N}^\star)^{d_x}`.
+
+Let :math:`\ell` be an integer representing the level of the quadrature.
+Let :math:`Q_{\ell}^{(1)}` be a marginal quadrature of level :math:`\ell`.
+This marginal quadrature must have dimension 1 as is suggested by the exponent in the
+notation :math:`Q_{\ell}^{(1)}`.
+Depending on the level :math:`\ell`, we can compute the actual number of nodes
+depending on a particular choice of that number of nodes and depending
+on the quadrature rule.
+The tensor product quadrature is:
+
+.. math::
+
+    T_\ell^{(d_x)} = Q_{\ell}^{(1)} \otimes ... \otimes Q_{\ell}^{(1)}.
+
+In the previous equation, the marginal quadratures are not necessarily 
+of the same type. 
+For example, if the dimension is equal to 2, the first marginal quadrature may 
+be a Gaussian quadrature while the second one may be a random experiment, such 
+as a Monte-Carlo design of experiment.
+
+Let :math:`Q_0^{(1)} = \emptyset` be the empty quadrature. 
+For any integer :math:`k \in \mathbb{N}`, let :math:`\Delta_k^{(1)}` be the 
+difference quadrature defined by:
+
+.. math::
+
+    \Delta_{k}^{(1)} = Q_{k}^{(1)} - Q_{k - 1}^{(1)}.    
+
+Therefore, the quadrature formula :math:`Q_\ell` can be expressed depending
+on difference quadratures:
+
+.. math::
+
+    Q_\ell^{(1)} = \sum_{k = 1}^\ell \Delta_k^{(1)}.
+
+for any :math:`\ell \geq 1`. 
+
+The following equation provides an equivalent equation for the tensor product
+quadrature ([lemaitre2010]_ page 57, eq. 3.30):
+
+.. math::
+
+    T_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_\infty \leq \ell}
+    \Delta_{k_1}^{(1)} \otimes \cdots \otimes \Delta_{k_{d_x}}^{(1)}.
+
+The significant part of the previous equation is the set of multi-indices
+:math:`\|\boldsymbol{k}\|_\infty \leq \ell`, which may be very large
+depending on the dimension of the problem.
+
+One of the ways to reduce the size of this set is to consider the smaller set
+of multi-indices such that :math:`\|\boldsymbol{k}\|_1 \leq \ell + {d_x} - 1`. The sparse
+quadrature ([lemaitre2010]_ page 57, eq. 3.29, [gerstner1998]_  page 214)
+is introduced in the following definition.
+
+The Smolyak sparse quadrature formula at level :math:`\ell` is:
+
+.. math::
+
+    S_\ell^{(d_x)} = \sum_{\|\boldsymbol{k}\|_1 \leq \ell + d_x - 1} 
+    \Delta_{k_1}^{(1)} \otimes \cdots \otimes \Delta_{k_{d_x}}^{(1)}
+
+for any :math:`\ell \geq 1`. 
+
+As shown by the previous equation, for a given multi-index :math:`\boldsymbol{k}`
+the Smolyak quadrature requires to set the level of each marginal experiment to
+an integer which depends on the multi-index.
+This is done using the :meth:`~openturns.experimental.SmolyakExperiment.setLevel` method of the marginal quadrature.
+
+The following formula expresses the multivariate quadrature in terms of
+combinations univariate quadratures, known as the *combination technique*.
+This method combines elementary tensorized quadratures, summing them
+depending on the binomial coefficient.
+The sparse quadrature formula at level :math:`\ell` is:
+
+.. math::
+
+    S_\ell^{(d_x)} = \sum_{\ell \leq \|\boldsymbol{k}\|_1 \leq \ell + d_x - 1} 
+    (-1)^{\ell + d_x - \|\boldsymbol{k}\|_1 - 1} 
+    {d_x - 1 \choose \|\boldsymbol{k}\|_1 - \ell} 
+    Q_{k_1}^{(1)} \otimes \cdots \otimes Q_{k_{d_x}}^{(1)}
+
+for any :math:`\ell \geq 1` where the binomial coefficient is:
+
+.. math::
+
+    {n \choose m} = \frac{n!}{m! (n - m)!}
+
+for any integers :math:`n \geq 0` and :math:`0 \leq m \leq n`.
+
+**Merge duplicate nodes**
+
+The Smolyak quadrature requires to merge the potentially duplicated nodes of the
+elementary quadratures.
+To do so, a dictionary is used so that unique nodes only are kept.
+This algorithm is enabled by default, but it can be disabled with the
+`SmolyakExperiment-MergeQuadrature` boolean key of the :class:`~openturns.ResourceMap`.
+This can reduce the number of nodes, which may be particularly efficient when the
+marginal quadrature rule is nested such as, for example, with Fejér or Clenshaw-Curtis
+quadrature rule.
+
+If two candidate nodes :math:`\boldsymbol{x}_1, \boldsymbol{x}_2 \in \mathbb{R}^{d_x}`,
+associated with the two weights :math:`w_1, w_2 \in \mathbb{R}`, are to be merged,
+then the merged node is
+
+.. math::
+
+    \boldsymbol{x}_1' = \boldsymbol{x}_1
+
+and the merged weight is:
+
+
+.. math::
+
+    w_1' = w_1 + w_2.
+
+If, however, the elementary quadrature rules have nodes which are computed up to some
+rounding error, the merging algorithm may not detect that two nodes which are
+close to each other are, indeed, the same.
+This is why rounding errors must be taken into account.
+Let :math:`\epsilon_r, \epsilon_a > 0` be the relative and absolute tolerances.
+These parameters can be set using the :class:`~openturns.ResourceMap` keys
+`SmolyakExperiment-MergeRelativeEpsilon` and `SmolyakExperiment-MergeAbsoluteEpsilon`.
+The criterion is based on a mixed absolute and relative tolerance.
+Two candidate nodes :math:`\boldsymbol{x}_1, \boldsymbol{x}_2 \in \mathbb{R}^{d_x}`
+are close to each other and are to be merged if:
+
+.. math::
+
+    |(x_1)_i - (y_1)_i| \leq \delta_i
+
+for :math:`i = 1, ..., d_x`, where :math:`\delta_i` is equal to:
+
+.. math::
+
+    \delta_i = \epsilon_a + \epsilon_r
+    \max\left(\left|(x_1)_i\right|, \left|(y_1)_i\right|\right).
+
+If the bounds of the input distribution are either very close to zero
+or very large, then the default settings may not work properly: in this case,
+please fine tune the parameters to match your needs.
+
+**Accuracy**
+    
+The following equation presents the absolute error of a sparse
+quadrature ([sullivan2015]_ page 177, eq. 9.10).
+Assume that :math:`g \in \mathcal{C}^r([0, 1]^{d_x})` and that we use a sparse
+quadrature with :math:`n_\ell` nodes at level :math:`\ell`.
+In this particular case, the probability density function :math:`f` is
+equal to 1. 
+Therefore,
+
+.. math::
+
+    \left|\int_{[0, 1]^{d_x}} g(\boldsymbol{x}) d\boldsymbol{x} 
+    - S_\ell(g)\right|
+    = O \left(n_\ell^{-r} (\log(n_\ell))^{(d_x - 1)(r + 1)}\right).
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+In the following example, we create Smolyak quadrature using two Gauss-Legendre
+marginal quadratures.
+
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
+>>> experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
+>>> collection = [experiment1, experiment2]
+>>> level = 3
+>>> multivariate_experiment = otexp.SmolyakExperiment(collection, level)
+>>> nodes, weights = multivariate_experiment.generateWithWeights()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmolyakExperiment::getWeightedExperimentCollection
+"Get the marginals of the experiment.
+
+Returns
+-------
+experiments : list of :class:`~openturns.WeightedExperiment`
+    List of the marginals of the experiment."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmolyakExperiment::setWeightedExperimentCollection
+"Set the marginals of the experiment.
+
+Parameters
+----------
+experiments : list of :class:`~openturns.WeightedExperiment`
+    List of the marginals of the experiment."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmolyakExperiment::computeCombination
+"Compute the indices involved in the quadrature.
+
+Returns
+-------
+indicesCollection : list of :class:`~openturns.IndicesCollection`
+    List of the multi-indices involved in Smolyak's quadrature."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmolyakExperiment::getLevel
+"Get the level of the experiment.
+
+Returns
+-------
+level : int
+    Level value :math:`\ell \geq 1`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmolyakExperiment::setLevel
+"Set the level of the experiment.
+
+Parameters
+----------
+level : int
+    Level value :math:`\ell \geq 1`."

@@ -26,12 +26,13 @@
 /* Uncertainty/Distribution */
 %import model_copula_module.i
 
-/* Uncertainty/Algorithm/WeightedExperiment */
-%import weightedexperiment_module.i
-
 /* Uncertainty/Algorithm/OrthogonalBasis */
 %import orthogonalbasis_module.i
 %import UncertaintyOrthogonalBasisTemplateDefs.i
+
+/* Uncertainty/Algorithm/WeightedExperiment */
+%import weightedexperiment_module.i
+%include UncertaintyWeightedExperimentTemplateDefs.i
 
 /* Uncertainty/Model */
 %import bayesian_module.i
@@ -42,3 +43,9 @@
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
+
+// duplicate helpers
+OTTypedInterfaceObjectHelper(WeightedExperiment)
+OTDefaultCollectionConvertFunctions(WeightedExperiment)
+OTTypedCollectionInterfaceObjectHelper(WeightedExperiment)
+%include SmolyakExperiment.i

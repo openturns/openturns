@@ -45,5 +45,6 @@
 #include "openturns/KFoldSplitter.hxx"
 #include "openturns/LeaveOneOutSplitter.hxx"
 #include "openturns/TensorProductExperiment.hxx"
+#include "openturns/SmolyakExperiment.hxx"
 
 #endif /* OPENTURNS_OTWEIGHTEDEXPERIMENTS_HXX */
