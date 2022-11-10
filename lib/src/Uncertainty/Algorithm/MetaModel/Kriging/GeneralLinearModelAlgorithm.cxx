@@ -37,7 +37,8 @@
 #endif
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
-#include "openturns/DualLinearCombinationFunction.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/AggregatedFunction.hxx"
 #include "openturns/MemoizeFunction.hxx"
 #include "openturns/MultiStart.hxx"
 
@@ -58,7 +59,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
   , rho_(0)
   , F_(0, 0)
   , result_()
-  , basisCollection_()
+  , basis_()
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
   , optimizeParameters_(true)
@@ -84,7 +85,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , rho_(0)
   , F_(0, 0)
   , result_()
-  , basisCollection_()
+  , basis_()
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
   , keepCholeskyFactor_(keepCholeskyFactor)
@@ -115,7 +116,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , rho_(0)
   , F_(0, 0)
   , result_()
-  , basisCollection_()
+  , basis_()
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
   , keepCholeskyFactor_(keepCholeskyFactor)
@@ -127,22 +128,14 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   setCovarianceModel(covarianceModel);
 
   if (basis.getSize() > 0)
-  {
-    if (basis[0].getOutputDimension() > 1) LOGWARN(OSS() << "Expected a basis of scalar functions, but first function has dimension " << basis[0].getOutputDimension() << ". Only the first output component will be taken into account.");
-    if (outputSample.getDimension() > 1) LOGWARN(OSS() << "The basis of functions will be applied to all output marginals" );
-    // Set basis
-    basisCollection_ = BasisCollection(outputSample.getDimension(), basis);
-  }
+    setBasis(basis);
   else
-  {
     // If no basis then we suppose output sample centered
     checkYCentered(outputSample);
-  }
 
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
 }
-
 
 /* Covariance model accessors */
 void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & covarianceModel)
@@ -228,35 +221,24 @@ CovarianceModel GeneralLinearModelAlgorithm::getReducedCovarianceModel() const
   return reducedCovarianceModel_;
 }
 
-/* Set basis collection method */
-void GeneralLinearModelAlgorithm::setBasisCollection(const BasisCollection & basis)
+/* Set basis method */
+void GeneralLinearModelAlgorithm::setBasis(const Basis & basis)
 {
-  // If basis given, then its size should be the same as the output dimension (each marginal of multibasis is a basis that will be used for trend of the corresponding marginal.
-  if (basis.getSize() != outputSample_.getDimension())
-    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, output sample dimension=" << outputSample_.getDimension()  << " does not match multi-basis dimension=" << basis.getSize();
-  // Get the output dimension of the basis
-  // The first marginal may be an empty basis
-  Bool continuationCondition = true;
-  UnsignedInteger index = 0;
-  UnsignedInteger outputDimension = 0;
-  while(continuationCondition)
+  // Basis does not provide any getOutputDimension
+  // getDimension checks also only the dimension of the first element in case of FiniteBasis
+  // If basis given, then its size should be the same as the output dimension (each item of the basis is a function with the same input/output dimensions).
+  if (!basis.isFinite())
+    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, basis should be finite!" ;
+  const UnsignedInteger size = basis.getSize();
+  for (UnsignedInteger index = 0; index < size; ++index)
   {
-    try
-    {
-      outputDimension =  basis[index][0].getOutputDimension();
-      continuationCondition = false;
-    }
-    catch (const InvalidArgumentException &)
-    {
-      ++index;
-      continuationCondition = continuationCondition && index < basis.getSize();
-    }
+    if (basis[index].getOutputDimension() != outputSample_.getDimension())
+      throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, output sample dimension=" << outputSample_.getDimension() << " does not match basis[=" << index  << "] dimension=" << basis[index].getOutputDimension();
+    if (basis[index].getInputDimension() != inputSample_.getDimension())
+      throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, input sample dimension=" << inputSample_.getDimension() << " does not match basis[=" << index << "] dimension=" << basis[index].getInputDimension();
   }
-  if (outputDimension == 0)
-    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, basisCollection argument contains basis with empty collection of functions";
-  if (outputDimension > 1) LOGWARN(OSS() << "Expected a basis of scalar functions, but some function has dimension" << outputDimension << ". Only the first output component will be taken into account.");
   // Everything is ok, we set the basis
-  basisCollection_ = basis;
+  basis_ = basis;
 }
 
 void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
@@ -299,28 +281,26 @@ void GeneralLinearModelAlgorithm::computeF()
   // of corresponding marginal
   const UnsignedInteger outputDimension = outputSample_.getDimension();
   const UnsignedInteger sampleSize = inputSample_.getSize();
-  const UnsignedInteger basisCollectionSize = basisCollection_.getSize();
-  UnsignedInteger totalSize = 0;
-  for (UnsignedInteger i = 0; i < basisCollectionSize; ++ i ) totalSize += basisCollection_[i].getSize();
-  // if totalSize > 0, then basisCollection_.getSize() should be equal to outputDimension
-  // This is checked in GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm
+  const UnsignedInteger basisSize = basis_.getSize();
+  // Basis \Phi is a function from R^{inputDimension} to R^{outputDimension}
+  // As we get B functions, total number of values is B * outputDimension
+  const UnsignedInteger totalSize = outputDimension * basisSize;
+
   F_ = Matrix(sampleSize * outputDimension, totalSize);
   if (totalSize == 0) return;
-  // Compute F
-  UnsignedInteger index = 0;
-  for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++ outputMarginal )
+
+  // Compute F  
+  for (UnsignedInteger j = 0; j < basisSize; ++j)
   {
-    const Basis localBasis = basisCollection_[outputMarginal];
-    const UnsignedInteger localBasisSize = localBasis.getSize();
-    for (UnsignedInteger j = 0; j < localBasisSize; ++j, ++index )
-    {
-      // Here we use potential parallelism in the evaluation of the basis functions
-      const Sample basisSample = localBasis[j](inputSample_);
-      for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample(i, 0);
-    }
+    // Compute phi_j (X)
+    // Here we use potential parallelism in the evaluation of the basis functions
+    // It generates a sample of shape (sampleSize, outputDimension) 
+    const Sample basisSample = basis_[j](inputSample_);
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
+        F_(outputMarginal + i * outputDimension, j * outputDimension + outputMarginal) = basisSample(i, outputMarginal);
   }
 }
-
 
 /* Perform regression
 1) Compute the design matrix
@@ -354,7 +334,7 @@ void GeneralLinearModelAlgorithm::run()
   //   maximizeReducedLogLikelihood()
   // + even if there is actually no parameter to optimize,
   //   maximizeReducedLogLikelihood() is the entry point to
-  //   computeReducedLogLikelyhood() which has side effects on covariance
+  //   computeReducedLogLikelihood() which has side effects on covariance
   //   discretization and factorization, and it computes beta_
   Scalar optimalLogLikelihood = maximizeReducedLogLikelihood();
 
@@ -362,45 +342,32 @@ void GeneralLinearModelAlgorithm::run()
   // Here we do the work twice:
   // 1) To get a collection of Point for the result class
   // 2) To get same results as Sample for the trend NMF
-  Collection<Point> trendCoefficients(basisCollection_.getSize());
-  Sample trendCoefficientsSample(beta_.getSize(), reducedCovarianceModel_.getOutputDimension());
-
-  UnsignedInteger cumulatedSize = 0;
-  for (UnsignedInteger outputIndex = 0; outputIndex < basisCollection_.getSize(); ++ outputIndex)
+  LOGINFO("Build the output meta-model");
+  Collection<Function> marginalCollections(basis_.getSize());
+  Collection<Function> marginalFunctions(outputDimension);
+  Point beta_k(basis_.getSize());
+  for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
   {
-    const UnsignedInteger localBasisSize = basisCollection_[outputIndex].getSize();
-    Point beta_i(localBasisSize);
-    for(UnsignedInteger basisElement = 0; basisElement < localBasisSize; ++ basisElement)
+    for (UnsignedInteger k = 0; k < basis_.getSize(); ++k)
     {
-      beta_i[basisElement] = beta_[cumulatedSize];
-      trendCoefficientsSample(cumulatedSize, outputIndex) =  beta_[cumulatedSize];
-      ++cumulatedSize;
+      marginalCollections[k] = basis_[k].getMarginal(outputMarginal);
+      beta_k[k] = beta_[k * outputDimension + outputMarginal];
     }
-    trendCoefficients[outputIndex] = beta_i;
+    LinearCombinationFunction marginalFunction(marginalCollections, beta_k);
+    marginalFunctions[outputMarginal] = marginalFunction;
   }
 
-  LOGINFO("Build the output meta-model");
-  // The meta model is of type DualLinearCombination function
-  // We should write the coefficients into a Sample and build the basis into a collection
-  Collection<Function> allFunctionsCollection;
-  for (UnsignedInteger k = 0; k < basisCollection_.getSize(); ++k)
-    for (UnsignedInteger l = 0; l < basisCollection_[k].getSize(); ++l)
-      allFunctionsCollection.add(basisCollection_[k].build(l));
   Function metaModel;
 
-  if (basisCollection_.getSize() > 0)
+  if (basis_.getSize() > 0)
   {
     // Care ! collection should be non empty
-    metaModel = DualLinearCombinationFunction(allFunctionsCollection, trendCoefficientsSample);
+    metaModel = AggregatedFunction(marginalFunctions);
   }
   else
   {
     // If no basis ==> zero function
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
     metaModel = SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(covarianceModel_.getOutputDimension(), "0.0"));
-#else
-    metaModel = DatabaseFunction(Sample(1, reducedCovarianceModel_.getInputDimension()), Sample(1, reducedCovarianceModel_.getOutputDimension()));
-#endif
   }
 
   // compute residual, relative error
@@ -422,7 +389,7 @@ void GeneralLinearModelAlgorithm::run()
   CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
   reducedCovarianceModelCopy.setActiveParameter(covarianceModel_.getActiveParameter());
 
-  result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModelCopy, optimalLogLikelihood);
+  result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood);
 
   // The scaling is done there because it has to be done as soon as some optimization has been done, either numerically or through an analytical formula
   if (keepCholeskyFactor_)
@@ -437,9 +404,9 @@ void GeneralLinearModelAlgorithm::run()
     result_.setCholeskyFactor(covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
   }
   else
-    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModelCopy, optimalLogLikelihood);
+    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood);
   hasRun_ = true;
-}
+  }
 
 // Maximize the log-likelihood of the Gaussian process model wrt the observations
 // If the covariance model has no active parameter, no numerical optimization
@@ -615,7 +582,7 @@ Scalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
   rho_ = covarianceCholeskyFactor_.solveLinearSystem(y);
   LOGDEBUG(OSS(false) << "rho_=L^{-1}y=" << rho_);
   // If trend to estimate
-  if (basisCollection_.getSize() > 0)
+  if (basis_.getSize() > 0)
   {
     // Phi = L^{-1}F
     LOGDEBUG("Solve L.Phi = F");
@@ -671,7 +638,7 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
   LOGDEBUG("Solve L.rho = y");
   rho_ = covarianceCholeskyFactorHMatrix_.solveLower(y);
   // If trend to estimate
-  if (basisCollection_.getSize() > 0)
+  if (basis_.getSize() > 0)
   {
     // Phi = L^{-1}F
     LOGDEBUG("Solve L.Phi = F");
@@ -767,7 +734,7 @@ String GeneralLinearModelAlgorithm::__repr__() const
   oss << "class=" << getClassName()
       << ", inputSample=" << inputSample_
       << ", outputSample=" << outputSample_
-      << ", basis=" << basisCollection_
+      << ", basis=" << basis_
       << ", covarianceModel=" << covarianceModel_
       << ", reducedCovarianceModel=" << reducedCovarianceModel_
       << ", solver=" << solver_
@@ -809,7 +776,7 @@ UnsignedInteger GeneralLinearModelAlgorithm::getMethod() const
 void GeneralLinearModelAlgorithm::reset()
 {
   // Reset elements for new computation
-  // No need to update F_ as computeF /setBasisCollection are private
+  // No need to update F_ as computeF /setBasis are private
   // Same remark for setCovarianceModel & setData
   covarianceCholeskyFactor_ = TriangularMatrix();
   covarianceCholeskyFactorHMatrix_ = HMatrix();
@@ -840,7 +807,7 @@ void GeneralLinearModelAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "reducedCovarianceModel_", reducedCovarianceModel_ );
   adv.saveAttribute( "solver_", solver_ );
   adv.saveAttribute( "optimizationBounds_", optimizationBounds_ );
-  adv.saveAttribute( "basisCollection_", basisCollection_ );
+  adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "result_", result_ );
   adv.saveAttribute( "method", method_ );
   adv.saveAttribute( "keepCholeskyFactor_", keepCholeskyFactor_ );
@@ -858,7 +825,7 @@ void GeneralLinearModelAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "reducedCovarianceModel_", reducedCovarianceModel_ );
   adv.loadAttribute( "solver_", solver_ );
   adv.loadAttribute( "optimizationBounds_", optimizationBounds_ );
-  adv.loadAttribute( "basisCollection_", basisCollection_ );
+  adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "result_", result_ );
   adv.loadAttribute( "method", method_ );
   adv.loadAttribute( "keepCholeskyFactor_", keepCholeskyFactor_ );

@@ -44,9 +44,6 @@ class OT_API GeneralLinearModelAlgorithm
 
 public:
 
-  typedef GeneralLinearModelResult::BasisCollection BasisCollection;
-  typedef GeneralLinearModelResult::BasisPersistentCollection BasisPersistentCollection;
-
   enum LinearAlgebra { LAPACK, HMAT };
 
   /** Default constructor */
@@ -204,7 +201,7 @@ private:
   CovarianceModel getReducedCovarianceModel() const;
 
   /** Set basis collection method */
-  void setBasisCollection(const BasisCollection & basisCollection);
+  void setBasis(const Basis & basis);
 
   /** check that sample is centered to precision eps */
   void checkYCentered(const Sample & Y);
@@ -230,7 +227,7 @@ private:
   GeneralLinearModelResult result_;
 
   /** BasisCollection */
-  BasisPersistentCollection basisCollection_;
+  Basis basis_;
 
   /** Cholesky factor ==>  TriangularMatrix */
   mutable TriangularMatrix covarianceCholeskyFactor_;
