@@ -79,6 +79,9 @@ public:
   /** Distribution accessor */
   void setDistribution(const Distribution & distribution) override;
 
+  /** Set size */
+  void setSize(const UnsignedInteger size) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

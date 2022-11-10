@@ -128,6 +128,12 @@ void GaussProductExperiment::setMarginalSizes(const Indices & marginalSizes)
   if (marginalSizes != marginalSizes_)
   {
     marginalSizes_ = marginalSizes;
+    size_ = 1;
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      const UnsignedInteger dI = marginalSizes_[i];
+      size_ *= dI;
+    } // Loop over the dimensions
     isAlreadyComputedNodesAndWeights_ = false;
   }
 }
@@ -205,6 +211,16 @@ void GaussProductExperiment::computeNodesAndWeights() const
     for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalSizes_[j];
   } // Loop over the n-D nodes
   isAlreadyComputedNodesAndWeights_ = true;
+}
+
+/* Set size */
+void GaussProductExperiment::setSize(const UnsignedInteger size)
+{
+  const UnsignedInteger dimension = distribution_.getDimension();
+  if (dimension > 1)
+    throw InvalidArgumentException(HERE) << "Cannot set size of GaussProductExperiment when dimension > 1";
+  if (dimension > 0)
+    setMarginalSizes(Indices(1, size));
 }
 
 /* Method save() stores the object through the StorageManager */

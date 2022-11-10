@@ -35,20 +35,60 @@ int main(int, char *[])
     marginals.add(Exponential());
     marginals.add(Triangular(-1.0, -0.5, 1.0));
     ComposedDistribution distribution(marginals);
-    Indices marginalDegrees(0);
-    marginalDegrees.add(3);
-    marginalDegrees.add(6);
+    Indices marginalSizes = {3, 6};
     // Test the constructor based on marginal degrees
-    fullprint << "experiment1=" << GaussProductExperiment(marginalDegrees) << std::endl;
+    fullprint << "experiment1=" << GaussProductExperiment(marginalSizes) << std::endl;
     // Test the constructor based on distribution
     fullprint << "experiment2=" << GaussProductExperiment(distribution) << std::endl;
     // Test the constructor based on marginal degrees and distribution
-    GaussProductExperiment experiment(distribution, marginalDegrees);
+    GaussProductExperiment experiment(distribution, marginalSizes);
     fullprint << "experiment = " << experiment << std::endl;
     Point weights(0);
     Sample sample(experiment.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
+    // Test generate()
+    Sample sampleGenerate(experiment.generate());
+    fullprint << "sampleGenerate = " << sampleGenerate << std::endl;
+    // Test set marginal degrees
+    Indices marginalSizesBis = {7, 13};
+    experiment.setMarginalSizes(marginalSizesBis);
+    fullprint << "experiment = " << experiment << std::endl;
+    Point weightsBis(0);
+    Sample sampleBis(experiment.generateWithWeights(weightsBis));
+    const int sizeBis(sampleBis.getSize());
+    const int dimensionBis(sampleBis.getDimension());
+    const int weightDimensionBis(weightsBis.getDimension());
+    assert_equal(sizeBis, 91);
+    assert_equal(dimensionBis, 2);
+    assert_equal(weightDimensionBis, 91);
+    // Test set size
+    GaussProductExperiment experiment1(Normal(), Indices(1, 5));
+    experiment1.setSize(47);
+    fullprint << "experiment = " << experiment1 << std::endl;
+    Point weightsTer(0);
+    Sample sampleTer(experiment1.generateWithWeights(weightsTer));
+    const int sizeTer(sampleTer.getSize());
+    const int dimensionTer(sampleTer.getDimension());
+    const int weightDimensionTer(weightsTer.getDimension());
+    assert_equal(sizeTer, 47);
+    assert_equal(dimensionTer, 1);
+    assert_equal(weightDimensionTer, 47);
+    // Test set distribution
+    Collection<Distribution> marginalsBis(0);
+    marginalsBis.add(Normal());
+    marginalsBis.add(Uniform());
+    ComposedDistribution distributionBis(marginalsBis);
+    experiment.setDistribution(distributionBis);
+    fullprint << "experiment = " << experiment << std::endl;
+    Point weightsQuater(0);
+    Sample sampleQuater(experiment.generateWithWeights(weightsQuater));
+    const int sizeQuater(sampleQuater.getSize());
+    const int dimensionQuater(sampleQuater.getDimension());
+    const int weightDimensionQuater(weightsQuater.getDimension());
+    assert_equal(sizeQuater, 91);
+    assert_equal(dimensionQuater, 2);
+    assert_equal(weightDimensionQuater, 91);
   }
   catch (TestFailed & ex)
   {

@@ -105,3 +105,14 @@ Parameters
 ----------
 marginalSizes : sequence of positive int
     Numbers of points :math:`s_j` for each direction."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussProductExperiment::setSize
+"Accessor to the size of the generated sample.
+
+Parameters
+----------
+size : positive int
+    Number :math:`cardI` of points constituting the design of experiments.
+    Only available in dimension 1."
