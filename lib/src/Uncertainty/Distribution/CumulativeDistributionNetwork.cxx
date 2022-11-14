@@ -147,7 +147,7 @@ void CumulativeDistributionNetwork::setDistributionCollection(const Distribution
 }
 
 /* Distribution collection accessor */
-const CumulativeDistributionNetwork::DistributionCollection & CumulativeDistributionNetwork::getDistributionCollection() const
+CumulativeDistributionNetwork::DistributionCollection CumulativeDistributionNetwork::getDistributionCollection() const
 {
   return distributionCollection_;
 }
@@ -168,7 +168,7 @@ void CumulativeDistributionNetwork::setGraph(const BipartiteGraph & graph)
 }
 
 /* Graph accessor */
-const BipartiteGraph & CumulativeDistributionNetwork::getGraph() const
+BipartiteGraph CumulativeDistributionNetwork::getGraph() const
 {
   return graph_;
 }

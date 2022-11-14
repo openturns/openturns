@@ -66,7 +66,7 @@ public:
 
   /** Distribution collection accessor */
   void setDistributionCollection(const DistributionCollection & coll);
-  const DistributionCollection & getDistributionCollection() const;
+  DistributionCollection getDistributionCollection() const;
 
   /** get/set weights accessor */
   Point getWeights() const;

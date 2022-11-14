@@ -65,7 +65,7 @@ public:
                          const Point & t) const override;
 
   /** Collection accessor */
-  const CovarianceModelCollection & getCollection() const;
+  CovarianceModelCollection getCollection() const;
 
   /** Marginal accessor */
   CovarianceModel getMarginal(const UnsignedInteger index) const override;

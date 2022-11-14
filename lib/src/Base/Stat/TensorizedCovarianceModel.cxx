@@ -98,7 +98,7 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
   collection_ = collection;
 }
 
-const TensorizedCovarianceModel::CovarianceModelCollection & TensorizedCovarianceModel::getCollection() const
+TensorizedCovarianceModel::CovarianceModelCollection TensorizedCovarianceModel::getCollection() const
 {
   return collection_;
 }

@@ -67,7 +67,7 @@ public:
 
   /** Distribution collection accessor */
   void setDistributionCollection(const DistributionCollection & coll);
-  const DistributionCollection & getDistributionCollection() const;
+  DistributionCollection getDistributionCollection() const;
 
   /** Copula accessor */
   void setCopula(const Distribution & copula);

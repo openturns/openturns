@@ -191,7 +191,7 @@ void OrdinalSumCopula::setBounds(const Point & bounds)
     copulaCollection_ = coll;
 }
 
-const Point & OrdinalSumCopula::getBounds() const
+Point OrdinalSumCopula::getBounds() const
 {
   return bounds_;
 }

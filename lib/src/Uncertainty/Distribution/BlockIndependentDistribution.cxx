@@ -135,7 +135,7 @@ void BlockIndependentDistribution::setDistributionCollection(const DistributionC
 
 
 /* Distribution collection accessor */
-const BlockIndependentDistribution::DistributionCollection & BlockIndependentDistribution::getDistributionCollection() const
+BlockIndependentDistribution::DistributionCollection BlockIndependentDistribution::getDistributionCollection() const
 {
   return distributionCollection_;
 }
