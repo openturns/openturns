@@ -235,7 +235,7 @@ marginal quadratures.
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SmolyakExperiment::getWeightedExperimentCollection
+%feature("docstring") OT::SmolyakExperiment::getExperimentCollection
 "Get the marginals of the experiment.
 
 Returns
@@ -245,7 +245,7 @@ experiments : list of :class:`~openturns.WeightedExperiment`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SmolyakExperiment::setWeightedExperimentCollection
+%feature("docstring") OT::SmolyakExperiment::setExperimentCollection
 "Set the marginals of the experiment.
 
 Parameters

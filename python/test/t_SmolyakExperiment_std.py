@@ -167,8 +167,8 @@ def testSmolyakExperiment1():
     assert size == 13
     #
     distribution = smolyak.getDistribution()
-    collection = [ot.Uniform(0.0, 1.0), ot.Uniform(0.0, 1.0)]
-    expected_distribution = ot.BlockIndependentDistribution(collection)
+    collection = [ot.Uniform(0.0, 1.0)] * 2
+    expected_distribution = ot.ComposedDistribution(collection)
     assert distribution == expected_distribution
 
 
@@ -279,8 +279,8 @@ def testSmolyakExperiment4():
     assert size == 1
     #
     distribution = smolyak.getDistribution()
-    collection = [ot.Uniform(0.0, 1.0), ot.Uniform(0.0, 1.0)]
-    expected_distribution = ot.BlockIndependentDistribution(collection)
+    collection = [ot.Uniform(0.0, 1.0)] * 2
+    expected_distribution = ot.ComposedDistribution(collection)
     assert distribution == expected_distribution
 
 

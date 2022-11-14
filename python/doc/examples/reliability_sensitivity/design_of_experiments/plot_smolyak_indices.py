@@ -38,8 +38,7 @@ from matplotlib import pylab as plt
 # underlying univariate quadratures, but this is required for
 # the :class:`~openturns.SmolyakExperiment` class.
 
-uniform = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
-collection = [uniform] * 2
+collection = [ot.GaussProductExperiment()] * 2
 level = 3
 print("level = ", level)
 experiment = otexp.SmolyakExperiment(collection, level)
@@ -57,11 +56,10 @@ print(indices)
 
 def drawSmolyakIndices(level):
     # Plot Smolyak indices of given level in 2 dimensions
-    uniform = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0))
-    collection = [uniform] * 2
+    collection = [ot.GaussProductExperiment()] * 2
     experiment = otexp.SmolyakExperiment(collection, level)
     indices = experiment.computeCombination()
-    sample = ot.Sample(indices)
+    sample = indices
     graph = ot.Graph("L = %d" % (level), "k1", "k2", True)
     cloud = ot.Cloud(sample)
     cloud.setPointStyle("bullet")
@@ -100,3 +98,6 @@ plt.tight_layout()
 # correspond to two different layers of constant 1-norm.
 # This is a consequence of Smolyak's quadrature, which is based on
 # tensorization of univariate difference quadratures.
+
+# %%
+plt.show()

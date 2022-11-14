@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an Smolyak experiment
  *
- *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/BlockIndependentDistribution.hxx"
+#include "openturns/ComposedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,7 +46,7 @@ SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collec
 {
   if (level == 0) throw InvalidArgumentException(HERE) << "Error: the level is zero";
   const UnsignedInteger numberOfMarginalExperiments = collection_.getSize();
-  BlockIndependentDistribution::DistributionCollection distributionCollection(numberOfMarginalExperiments);
+  Collection<Distribution> distributionCollection(numberOfMarginalExperiments);
   for (UnsignedInteger i = 0; i < numberOfMarginalExperiments; ++ i)
   {
     distributionCollection[i] = collection_[i].getDistribution();
@@ -54,7 +54,7 @@ SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collec
     if (marginalDimension != 1) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " has dimension " << marginalDimension << " which is different from 1";
     if (collection_[i].isRandom()) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " is random.";
   }
-  const BlockIndependentDistribution distribution(distributionCollection);
+  const ComposedDistribution distribution(distributionCollection);
   WeightedExperimentImplementation::setDistribution(distribution);
 }
 
@@ -82,15 +82,6 @@ Bool SmolyakExperiment::hasUniformWeights() const
 }
 
 /* Sample generation */
-Sample SmolyakExperiment::generateWithWeights(Point & weights) const
-{
-  computeNodesAndWeights();
-  weights = weights_;
-  isAlreadyComputed_ = true;
-  return nodes_;
-}
-
-/* Sample generation */
 Sample SmolyakExperiment::generate() const
 {
   Point weights;
@@ -98,12 +89,12 @@ Sample SmolyakExperiment::generate() const
 }
 
 /* Compute the minimum of a multiindex */
-UnsignedInteger SmolyakExperiment::indicesMinimum(Indices indices) const
+UnsignedInteger SmolyakExperiment::indicesMinimum(const Indices & indices) const
 {
   const UnsignedInteger dimension = indices.getSize();
-  UnsignedInteger multiindexMin = indices[0];
-  for (UnsignedInteger j = 0; j < dimension; ++ j) multiindexMin = std::min(indices[j], multiindexMin);
-  return multiindexMin;
+  UnsignedInteger multiIndexMin = indices[0];
+  for (UnsignedInteger j = 1; j < dimension; ++ j) multiIndexMin = std::min(indices[j], multiIndexMin);
+  return multiIndexMin;
 }
 
 /* Compute multiindex set for combination rule*/
@@ -122,7 +113,7 @@ IndicesCollection SmolyakExperiment::computeCombination() const
   LOGDEBUG(OSS() << "  combinationIndicesCollectionSize = " << combinationIndicesCollectionSize);
   // Fill the indices
   IndicesCollection combinationIndicesCollection(combinationIndicesCollectionSize, dimension);
-  UnsignedInteger multiindexIndex = 0;
+  UnsignedInteger multiIndexIndex = 0;
   const UnsignedInteger strataIndexMin = (level_ < dimension) ? 0 : level_ - dimension;
   LOGDEBUG(OSS() << "  strataIndexMin = " << strataIndexMin);
   LOGDEBUG(OSS() << "  level_ = " << level_);
@@ -139,8 +130,8 @@ IndicesCollection SmolyakExperiment::computeCombination() const
       Indices indices(enumerateFunction(i));
       for (UnsignedInteger j = 0; j < dimension; ++ j) indices[j] += 1;
       LOGDEBUG(OSS() << "  indices = " <<  indices);
-      std::copy(indices.begin(), indices.end(), combinationIndicesCollection.begin_at(multiindexIndex));
-      ++ multiindexIndex;
+      std::copy(indices.begin(), indices.end(), combinationIndicesCollection.begin_at(multiIndexIndex));
+      ++ multiIndexIndex;
     } // loop over the indices in the strata
   } // loop over the strata
   return combinationIndicesCollection;
@@ -168,7 +159,6 @@ public:
     bool comparison = false;
     for (UnsignedInteger k = 0; k < dimension; ++ k)
     {
-      // std::cout << "  " << x[k] << " < " << y[k] << " ?" << std::endl;
       const Scalar maximumXY = std::max(std::abs(x[k]), std::abs(y[k]));
       const Scalar delta = absoluteEpsilon_ + relativeEpsilon_ * maximumXY;
       if (x[k] + delta < y[k])
@@ -191,46 +181,45 @@ private:
 };
 
 // Implement merge with std::map
-void SmolyakExperiment::mergeNodesAndWeights(
-  const Sample & duplicatedNodes, const Point & duplicatedWeights) const
+void SmolyakExperiment::mergeNodesAndWeights(Sample & nodes, Point & weights) const
 {
   LOGDEBUG(OSS() << "SmolyakExperiment::mergeNodesAndWeights()");
   const Scalar relativeEpsilon = ResourceMap::GetAsScalar("SmolyakExperiment-MergeRelativeEpsilon");
   const Scalar absoluteEpsilon = ResourceMap::GetAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon");
-  const UnsignedInteger duplicatedSize = duplicatedNodes.getSize();
+  const UnsignedInteger duplicatedSize = nodes.getSize();
   LOGDEBUG(OSS() << "Number of (potentially) duplicated nodes =" << duplicatedSize);
-  if (duplicatedWeights.getDimension() != duplicatedSize) throw InvalidArgumentException(HERE) << "Error: the weights must have dimension " << duplicatedSize << " but have dimension " << duplicatedWeights.getDimension();
-  UnsignedInteger dimension = duplicatedNodes.getDimension();
+  if (weights.getDimension() != duplicatedSize) throw InvalidArgumentException(HERE) << "Error: the weights must have dimension " << duplicatedSize << " but have dimension " << weights.getDimension();
+  UnsignedInteger dimension = nodes.getDimension();
   // Fill the map
   std::map<Point, Scalar, PointApproximateComparison> nodeWeightMap(PointApproximateComparison(absoluteEpsilon, relativeEpsilon));
   for (UnsignedInteger i = 0; i < duplicatedSize; ++ i)
   {
-    std::map<Point, Scalar>::iterator search = nodeWeightMap.find(duplicatedNodes[i]);
+    std::map<Point, Scalar>::iterator search = nodeWeightMap.find(nodes[i]);
     if (search != nodeWeightMap.end())
     {
       LOGDEBUG(OSS() << "[" << i << "], found     : " << search->first << " = " << search->second);
-      search->second += duplicatedWeights[i];
+      search->second += weights[i];
     }
     else
     {
-      LOGDEBUG(OSS() << "[" << i << "], not found : " << duplicatedNodes[i]);
-      nodeWeightMap[duplicatedNodes[i]] = duplicatedWeights[i];
+      LOGDEBUG(OSS() << "[" << i << "], not found : " << nodes[i]);
+      nodeWeightMap[nodes[i]] = weights[i];
     }
   } // Loop over (potentially) duplicated nodes, weights
   // Extract the map
   const UnsignedInteger size = nodeWeightMap.size();
   LOGDEBUG(OSS() << "size = " <<  size);
   LOGDEBUG(OSS() << "Extract the map");
-  nodes_ = Sample(size, dimension);
-  weights_ = Point(size);
+  nodes = Sample(size, dimension);
+  weights = Point(size);
   if (size > 0)
   {
     UnsignedInteger index = 0;
     for (std::map<Point, Scalar>::iterator it = nodeWeightMap.begin(); it != nodeWeightMap.end(); ++ it)
     {
       LOGDEBUG(OSS() << "[" << index << "], add " << it->first << " = " << it->second);
-      nodes_[index] = it->first;
-      weights_[index] = it->second;
+      nodes[index] = it->first;
+      weights[index] = it->second;
       ++ index;
     } // Loop over unique nodes, weights in map
   }
@@ -254,7 +243,7 @@ sample of unique nodes:
   and the weight is added to w^U,
 - otherwise, the weight is updated.
 */
-void SmolyakExperiment::computeNodesAndWeights() const
+Sample SmolyakExperiment::generateWithWeights(Point & weights) const
 {
   LOGDEBUG(OSS() << "SmolyakExperiment::computeNodesAndWeights()");
   const UnsignedInteger dimension = collection_.getSize();
@@ -265,8 +254,8 @@ void SmolyakExperiment::computeNodesAndWeights() const
   const IndicesCollection combinationIndicesCollection(computeCombination());
   LOGDEBUG(OSS() << "  combinationIndicesCollection = " << combinationIndicesCollection);
   // Create elementary Smolyak quadratures
-  Sample duplicatedNodes(0, dimension);
-  Point duplicatedWeights(0);
+  Sample nodes(0, dimension);
+  weights.clear();
   const UnsignedInteger numberOfUnitaryQuadratures = combinationIndicesCollection.getSize();
   for (UnsignedInteger i = 0; i < numberOfUnitaryQuadratures; ++ i)
   {
@@ -284,39 +273,31 @@ void SmolyakExperiment::computeNodesAndWeights() const
     const Scalar smolyakSign = (exponent % 2 == 0) ? 1.0 : -1.0;
     const UnsignedInteger binomial = SpecFunc::BinomialCoefficient(dimension - 1, marginalLevelsSum - level_);
     const Scalar smolyakFactor = smolyakSign * binomial;
-    duplicatedNodes.add(elementaryNodes);
-    duplicatedWeights.add(smolyakFactor * elementaryWeights);
+    nodes.add(elementaryNodes);
+    weights.add(smolyakFactor * elementaryWeights);
   } // Loop over the marginal levels
   // Reduce to unique nodes and weights
   if (ResourceMap::GetAsBool("SmolyakExperiment-MergeQuadrature"))
-  {
-    mergeNodesAndWeights(duplicatedNodes, duplicatedWeights);
-  }
-  else
-  {
-    nodes_ = duplicatedNodes;
-    weights_ = duplicatedWeights;
-  }
+    mergeNodesAndWeights(nodes, weights);
+  return nodes;
 }
 
 /* Distribution collection accessor */
-SmolyakExperiment::WeightedExperimentCollection SmolyakExperiment::getWeightedExperimentCollection() const
+SmolyakExperiment::WeightedExperimentCollection SmolyakExperiment::getExperimentCollection() const
 {
   return collection_;
 }
 
 /* Distribution collection accessor */
-void SmolyakExperiment::setWeightedExperimentCollection(const WeightedExperimentCollection & coll)
+void SmolyakExperiment::setExperimentCollection(const WeightedExperimentCollection & coll)
 {
   collection_ = coll;
-  isAlreadyComputed_ = false;
 }
 
 /** Distribution collection accessor */
 void SmolyakExperiment::setLevel(const UnsignedInteger level)
 {
   level_ = level;
-  isAlreadyComputed_ = false;
 }
 
 UnsignedInteger SmolyakExperiment::getLevel() const
@@ -332,16 +313,17 @@ void SmolyakExperiment::setSize(const UnsignedInteger /*size*/)
 
 UnsignedInteger SmolyakExperiment::getSize() const
 {
-  if (!isAlreadyComputed_) throw NotDefinedException(HERE) << "Error: the size is not set yet. Please generate the experiment.";
-  return nodes_.getSize();
+  // only known at generation time
+  return generate().getSize();
 }
+
 /* Compare two points approximately
    This is for testing purposes only. */
 Bool SmolyakExperiment::ComparePointsApproximately(const Point & x, const Point & y)
 {
   const Scalar relativeEpsilon = ResourceMap::GetAsScalar("SmolyakExperiment-MergeRelativeEpsilon");
   const Scalar absoluteEpsilon = ResourceMap::GetAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon");
-  PointApproximateComparison comparison(absoluteEpsilon, relativeEpsilon);
+  const PointApproximateComparison comparison(absoluteEpsilon, relativeEpsilon);
   return comparison(x, y);
 }
 

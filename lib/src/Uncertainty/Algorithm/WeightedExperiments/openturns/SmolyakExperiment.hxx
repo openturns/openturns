@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of a Smolyak experiment
  *
- *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -69,8 +69,8 @@ public:
   Sample generate() const override;
 
   /** Distribution collection accessor */
-  void setWeightedExperimentCollection(const WeightedExperimentCollection & coll);
-  WeightedExperimentCollection getWeightedExperimentCollection() const;
+  void setExperimentCollection(const WeightedExperimentCollection & coll);
+  WeightedExperimentCollection getExperimentCollection() const;
 
   /** Level accessor */
   void setLevel(const UnsignedInteger level);
@@ -90,27 +90,17 @@ public:
   void load(Advocate & adv) override;
 
 private:
-  // Compute the tensor product nodes and weights
-  void computeNodesAndWeights() const;
-
   // Merge (potentially) duplicated nodes
-  void mergeNodesAndWeights(const Sample & duplicatedNodes,
-                            const Point & duplicatedWeights) const;
+  void mergeNodesAndWeights(Sample & nodes, Point & weights) const;
 
   // Minimum of a multiindex
-  UnsignedInteger indicesMinimum(Indices indices) const;
+  UnsignedInteger indicesMinimum(const Indices & indices) const;
 
   // Marginal experiment collection
   WeightedExperimentPersistentCollection collection_;
 
   // Level
   UnsignedInteger level_ = 0;
-
-  // Integration nodes, weights
-  mutable Sample nodes_;
-  mutable Point weights_;
-
-  mutable Bool isAlreadyComputed_ = false;
 
 }; /* class SmolyakExperiment */
 
