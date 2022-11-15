@@ -18,18 +18,12 @@ ot.Log.Show(ot.Log.NONE)
 cb = cantilever_beam.CantileverBeam()
 
 # %%
-# We want to create the random variable of interest Y=g(X) where :math:`g(.)` is the physical model and :math:`X` is the input vectors. For this example we consider independent marginals.
+# We want to create the random variable of interest :math:`Y=g(X)` where :math:`g(.)` is the physical model and :math:`X` is the input vectors.
+#
+# We create the input parameters distribution and make a random vector.
+# For the sake of this example, we consider an independent copula.
 
-# %%
-# We set a `mean` vector and a unitary standard deviation :
-dim = cb.dim
-mean = [50.0, 1.0, 10.0, 5.0]
-sigma = [1.0] * dim
-R = ot.IdentityMatrix(dim)
-
-# %%
-# We create the input parameters distribution and make a random vector :
-distribution = ot.Normal(mean, sigma, R)
+distribution = ot.ComposedDistribution([cb.E, cb.F, cb.L, cb.II])
 X = ot.RandomVector(distribution)
 X.setDescription(["E", "F", "L", "I"])
 
@@ -67,7 +61,8 @@ graph = taylor.drawImportanceFactors()
 view = viewer.View(graph)
 
 # %%
-# We see that, at first order, the variable :math:`F` explains 88.5% of the variance of the output :math:`Y`. On the other hand, the variable :math:`E` is not significant in the variance of the output: at first order, the random variable :math:`E` could be replaced by a constant with no change to the output variance.
+# We see that, at first order, the variable :math:`F` explains about 70% of the variance of the output :math:`Y`.
+# On the other hand, the variable :math:`E` is the least significant in the variance of the output: :math:`E` only explains about 5% of the output variance.
 
 # %%
 # Monte-Carlo simulation
