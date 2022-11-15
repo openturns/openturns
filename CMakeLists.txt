@@ -447,6 +447,20 @@ try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/unsignedlong_same_as_uint64_t.cxx)
 
+# on armel atomic must be explicitely linked
+if (UNIX AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  try_compile(OPENTURNS_HAVE_INLINE_ATOMIC
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/have_inline_atomic.cxx)
+  message(STATUS "Performing Test OPENTURNS_HAVE_INLINE_ATOMIC - ${OPENTURNS_HAVE_INLINE_ATOMIC}")
+  if (NOT OPENTURNS_HAVE_INLINE_ATOMIC)
+    find_library (ATOMIC_LIBRARY NAMES atomic)
+    if (ATOMIC_LIBRARY)
+      list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${ATOMIC_LIBRARY})
+    endif ()
+  endif ()
+endif ()
+
 try_run (_HAVE_FR_LOC_RUNS _HAVE_FR_LOC_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/have_fr_loc.cxx)
 if (_HAVE_FR_LOC_BUILDS)
   if (NOT _HAVE_FR_LOC_RUNS EQUAL 0)
