@@ -70,41 +70,17 @@ References
 
 * Picheny, V., Wagner, T., & Ginsbourger, D. (2012). A benchmark of kriging-based infill criteria for noisy optimization.
 
-Load the use case
------------------
-
-We can load this model from the use cases module as follows :
-
-.. code-block:: python
-
-    >>> from openturns.usecases import branin_function
-    >>> # Load the Branin-Hoo test case
-    >>> bm = branin_function.BraninModel()
 
 API documentation
 -----------------
 
-See :class:`~openturns.usecases.branin_function.BraninModel`.
+.. currentmodule:: openturns.usecases.branin_function
+
+.. autoclass:: BraninModel
+    :noindex:
 
 Examples based on this use case
 -------------------------------
 
-.. raw:: html
+.. minigallery:: openturns.usecases.branin_function.BraninModel
 
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_numerical_methods/optimization/images/thumb/sphx_glr_plot_ego_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_numerical_methods_optimization_plot_ego.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
- 
-   /auto_numerical_methods/optimization/plot_ego

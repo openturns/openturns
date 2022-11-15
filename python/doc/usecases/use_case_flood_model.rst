@@ -125,111 +125,16 @@ References
  * Baudin M., Dutfoy A., Iooss B., Popelin AL. (2015) OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation. In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
 
 
-Load the use case
------------------
-
-We can load this model from the use cases module as follows :
-
-.. code-block:: python
-
-    >>> from openturns.usecases import flood_model
-    >>> # Load the use case flood model
-    >>> fm = flood_model.FloodModel()
-
 API documentation
 -----------------
 
-See :class:`~openturns.usecases.flood_model.FloodModel`.
+.. currentmodule:: openturns.usecases.flood_model
 
+.. autoclass:: FloodModel
+    :noindex:
 
 Examples based on this use case
 -------------------------------
 
-
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_data_analysis/sample_analysis/images/thumb/sphx_glr_plot_compare_unconditional_conditional_histograms_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_data_analysis_sample_analysis_plot_compare_unconditional_conditional_histograms.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_data_analysis/sample_analysis/plot_compare_unconditional_conditional_histograms
-
-
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_calibration/bayesian_calibration/images/thumb/sphx_glr_plot_bayesian_calibration_flooding_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_calibration_bayesian_calibration_plot_bayesian_calibration_flooding.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_calibration/bayesian_calibration/plot_bayesian_calibration_flooding
-
-
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_flood_model_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_reliability_sensitivity_reliability_plot_flood_model.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_reliability_sensitivity/reliability/plot_flood_model
-
-
-
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_calibration/least_squares_and_gaussian_calibration/images/thumb/sphx_glr_plot_calibration_flooding_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_calibration_least_squares_and_gaussian_calibration_plot_calibration_flooding.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_flooding
-
-  
-  
+.. minigallery:: openturns.usecases.flood_model.FloodModel
 

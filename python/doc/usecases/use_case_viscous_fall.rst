@@ -84,89 +84,16 @@ References
 
 * Steven C. Chapra. Applied numerical methods with Matlab for engineers and scientists, Third edition. 2012. Chapter 7, "Optimization", p.182.
 
-Load the use case
------------------
-
-We can load this model from the use cases module as follows :
-
-.. code-block:: python
-
-    >>> from openturns.usecases import viscous_free_fall
-    >>> # Load the viscous free fall model
-    >>> fm = viscous_free_fall.ViscousFreeFall()
-
 API documentation
 -----------------
 
-See :class:`~openturns.usecases.viscous_free_fall.ViscousFreeFall`.
+.. currentmodule:: openturns.usecases.viscous_free_fall
+
+.. autoclass:: ViscousFreeFall
+    :noindex:
 
 Examples based on this use case
 -------------------------------
 
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_functional_modeling/field_functions/images/thumb/sphx_glr_plot_viscous_fall_field_function_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_functional_modeling_field_functions_plot_viscous_fall_field_function.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_functional_modeling/field_functions/plot_viscous_fall_field_function
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_functional_modeling/field_functions/images/thumb/sphx_glr_plot_viscous_fall_field_function_connection_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_functional_modeling_field_functions_plot_viscous_fall_field_function_connection.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_functional_modeling/field_functions/plot_viscous_fall_field_function_connection
-
-
-
-
-
-
-
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_meta_modeling/fields_metamodels/images/thumb/sphx_glr_plot_viscous_fall_metamodel_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_meta_modeling_fields_metamodels_plot_viscous_fall_metamodel.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_meta_modeling/fields_metamodels/plot_viscous_fall_metamodel
+.. minigallery:: openturns.usecases.viscous_free_fall.ViscousFreeFall
 

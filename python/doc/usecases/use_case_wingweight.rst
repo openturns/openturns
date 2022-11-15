@@ -53,41 +53,17 @@ References
 
 * Raymer D.P. (2018). Aircraft Design: a conceptual approach. American Institute of Aeronautics and Astronautics.
 
-Load the use case
------------------
-
-We can load this model from the use cases module as follows:
-
-.. code-block:: python
-
-    >>> from openturns.usecases import wingweight_function
-    >>> # Load the Wing weight use case
-    >>> ww = wingweight_function.WingWeightModel()
 
 API documentation
 -----------------
 
-See :class:`~openturns.usecases.wingweight_function.WingWeightModel`.
+.. currentmodule:: openturns.usecases.wingweight_function
+
+.. autoclass:: WingWeightModel
+    :noindex:
 
 Examples based on this use case
 -------------------------------
 
-.. raw:: html                                                             
+.. minigallery:: openturns.usecases.wingweight_function.WingWeightModel
 
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_reliability_sensitivity/sensitivity_analysis/images/thumb/sphx_glr_plot_sensitivity_wingweight_thumb.png
-     :alt: 
-
-     :ref:`sphx_glr_auto_reliability_sensitivity_sensitivity_analysis_plot_sensitivity_wingweight.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
- 
-   /auto_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_wingweight

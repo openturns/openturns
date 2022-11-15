@@ -38,42 +38,17 @@ References
 
     * Back, T. (1996). Evolutionary algorithms in theory and practice: evolution strategies, evolutionary programming, genetic algorithms. Oxford University Press on Demand.
 
-Load the use case
------------------
-
-We can load this model from the use cases module as follows :
-
-.. code-block:: python
-
-    >>> from openturns.usecases import ackley_function
-    >>> # Load the Ackley model
-    >>> am = ackley_function.AckleyModel()
 
 API documentation
 -----------------
 
-See :class:`~openturns.usecases.ackley_function.AckleyModel`.
+.. currentmodule:: openturns.usecases.ackley_function
 
+.. autoclass:: AckleyModel
+    :noindex:
 
 Examples based on this use case
 -------------------------------
 
-.. raw:: html                                                             
+.. minigallery:: openturns.usecases.ackley_function.AckleyModel
 
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_numerical_methods/optimization/images/thumb/sphx_glr_plot_ego_thumb.png
-     :alt: 
-
-     :ref:`sphx_glr_auto_numerical_methods_optimization_plot_ego.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
- 
-   /auto_numerical_methods/optimization/plot_ego
