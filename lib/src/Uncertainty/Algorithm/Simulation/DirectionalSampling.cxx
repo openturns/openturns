@@ -188,7 +188,6 @@ Scalar DirectionalSampling::computeTotalContribution(const Sample & directionSam
   const UnsignedInteger sampleSize = directionSample.getSize();
   Scalar totalContribution = 0.0;
   // meanPointInEventDomain = Point(dimension);
-  UnsignedInteger contributionNumber = 0;
   Matrix linear(dimension, 1);
   // For each direction
   for (UnsignedInteger indexDirection = 0; indexDirection < sampleSize; ++indexDirection)
@@ -212,7 +211,6 @@ Scalar DirectionalSampling::computeTotalContribution(const Sample & directionSam
       totalContribution += contribution;
       // Third, compute the mean point along this direction
       // meanPointInEventDomain = meanPointInEventDomain + computeMeanContribution(roots) * direction;
-      ++contributionNumber;
     } // if contribution
   }
   // meanPointInEventDomain = meanPointInEventDomain * (1.0 / contributionNumber);
