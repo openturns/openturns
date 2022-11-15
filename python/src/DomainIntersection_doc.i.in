@@ -1,18 +1,12 @@
 %feature("docstring") OT::DomainIntersection
-"A Domain representing the intersection of two Domain.
+"A domain representing the intersection of several domains.
 
-A point is inside this domain if it is contained in both
-left and right domains.
-
-Available constructors:
-    DomainIntersection(*left, right*)
+A point is inside this domain if it is contained in all domains.
 
 Parameters
 ----------
-left : :class:`~openturns.Domain`
-    The first domain
-right : :class:`~openturns.Domain`
-    The second domain"
+collection : sequence of :class:`~openturns.Domain`
+    The domains"
 
 // ---------------------------------------------------------------------
 
@@ -28,7 +22,7 @@ Returns
 -------
 isInside : bool
     Flag telling whether the point is inside this domain, which means
-    that is is inside both left and right domains.
+    that is is inside all domains.
 
 Examples
 --------
@@ -39,7 +33,7 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
 >>> simplices = [[0, 1, 2], [1, 2, 3]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
->>> intersection = ot.DomainIntersection(interval2d, mesh2d)
+>>> intersection = ot.DomainIntersection([interval2d, mesh2d])
 >>> [0.2, 0.1] in intersection
 True
 >>> [0.1, 0.2] in intersection

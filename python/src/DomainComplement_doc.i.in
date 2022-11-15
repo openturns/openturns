@@ -4,9 +4,6 @@
 A point is inside this domain if it is not contained in domain
 passed as argument.
 
-Available constructors:
-    DomainComplement(*domain*)
-
 Parameters
 ----------
 domain : :class:`~openturns.Domain`

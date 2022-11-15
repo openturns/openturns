@@ -39,12 +39,16 @@ class OT_API DomainUnion
   CLASSNAME
 
 public:
-  typedef DomainImplementation::BoolCollection  BoolCollection;
+  typedef Collection<Domain> DomainCollection;
+  typedef PersistentCollection<Domain> DomainPersistentCollection;
 
   /** Default constructor */
   DomainUnion();
 
   /** Default constructor */
+  explicit DomainUnion(const DomainCollection & collection);
+
+  /** @deprecated constructor */
   DomainUnion(const Domain & left, const Domain & right);
 
   /** Virtual constructor method */
@@ -52,9 +56,7 @@ public:
 
   /** Check if the given point is inside this domain */
   Bool contains(const Point & point) const override;
-
-  /** Check if the given points are inside this domain */
-  BoolCollection contains(const Sample & sample) const override;
+  using DomainImplementation::contains;
 
   /** Compute the Euclidean distance from a given point to the domain */
   Scalar computeDistance(const Point & point) const override;
@@ -78,11 +80,7 @@ public:
 
 private:
 
-  // The first domain
-  Domain left_;
-
-  // The second domain
-  Domain right_;
+  DomainPersistentCollection collection_;
 
 }; /* class DomainUnion */
 

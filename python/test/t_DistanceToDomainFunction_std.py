@@ -36,9 +36,9 @@ interval2 = ot.Interval(0.7, 1.3)  # [0.7, 1.3]
 interval3 = ot.Interval(0.9, 1.0)
 interval3.setFiniteUpperBound([False])  # [0.9, +infinity)
 
-small_union = ot.DomainUnion(interval1, interval2)  # [-0.5, 0] U [0.7, 1.3]
+small_union = ot.DomainUnion([interval1, interval2])  # [-0.5, 0] U [0.7, 1.3]
 # [-0.5, 0] U [0.7, +infinity)
-big_union = ot.DomainUnion(small_union, interval3)
+big_union = ot.DomainUnion([small_union, interval3])
 
 sample_dim1 = ot.Sample([[0.1], [1.4]])
 ott.assert_almost_equal(

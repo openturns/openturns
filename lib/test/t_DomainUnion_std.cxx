@@ -55,7 +55,7 @@ int main(int, char *[])
     p3[0] = 4.0;
     p3[1] = 4.0;
 
-    DomainUnion domain(cube, sphere);
+    DomainUnion domain(DomainIntersection::DomainCollection({cube, sphere}));
     fullprint << "cube=" << cube << std::endl;
     fullprint << "sphere=" << sphere << std::endl;
     fullprint << "union=" << domain << std::endl;

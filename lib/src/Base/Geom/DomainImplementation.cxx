@@ -67,8 +67,9 @@ Bool DomainImplementation::contains(const Point & ) const
 /* Check if the given points are inside of the domain */
 DomainImplementation::BoolCollection DomainImplementation::contains(const Sample & sample) const
 {
-  BoolCollection result(sample.getSize());
-  for(UnsignedInteger i = 0; i < sample.getSize(); ++i)
+  const UnsignedInteger size = sample.getSize();
+  BoolCollection result(size, 0);
+  for(UnsignedInteger i = 0; i < size; ++ i)
     result[i] = contains(sample[i]);
   return result;
 }

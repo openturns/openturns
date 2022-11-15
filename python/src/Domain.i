@@ -2,6 +2,51 @@
 
 %{
 #include "openturns/Domain.hxx"
+
+
+namespace OT {
+template <>
+  struct traitsPythonType<OT::Domain>
+  {
+    typedef _PyObject_ Type;
+  };
+
+  template <>
+  inline
+  bool
+  canConvert< _PyObject_, OT::Domain >(PyObject * pyObj)
+  {
+    return SWIG_IsOK(SWIG_ConvertPtr(pyObj, NULL, SWIGTYPE_p_OT__Domain, SWIG_POINTER_NO_NULL))
+        || SWIG_IsOK(SWIG_ConvertPtr(pyObj, NULL, SWIGTYPE_p_OT__DomainImplementation, SWIG_POINTER_NO_NULL))
+        || SWIG_IsOK(SWIG_ConvertPtr(pyObj, NULL, SWIGTYPE_p_OT__Mesh, SWIG_POINTER_NO_NULL));
+  }
+
+  template <>
+  inline
+  OT::Domain
+  convert< _PyObject_, OT::Domain >(PyObject * pyObj)
+  {
+    void * ptr = 0;
+    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__Domain, SWIG_POINTER_NO_NULL))) {
+      OT::Domain * p_it = reinterpret_cast< OT::Domain * >(ptr);
+      return *p_it;
+    }
+    else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__DomainImplementation, SWIG_POINTER_NO_NULL))) {
+      OT::DomainImplementation * p_impl = reinterpret_cast< OT::DomainImplementation * >(ptr);
+      return *p_impl;
+    }
+    else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Mesh, SWIG_POINTER_NO_NULL))) {
+      // From Mesh
+      OT::Mesh * p_mesh = reinterpret_cast< OT::Mesh * >(ptr);
+      OT::MeshDomain * p_impl = new OT::MeshDomain(*p_mesh);
+      return OT::Domain(*p_impl);
+    }
+    else {
+      throw OT::InvalidArgumentException(HERE) << "Object passed as argument is not convertible to a Domain";
+    }
+    return OT::Domain();
+  }
+}
 %}
 
 %include Domain_doc.i
@@ -42,3 +87,4 @@ namespace OT { %extend Domain { Domain (const Domain & other) { return new OT::D
 Domain.__contains__ = Domain.contains
 %}
 
+OTTypedCollectionInterfaceObjectHelper(Domain)

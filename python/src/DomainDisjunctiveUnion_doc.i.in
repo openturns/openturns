@@ -1,18 +1,12 @@
 %feature("docstring") OT::DomainDisjunctiveUnion
-"A Domain representing the disjunctive union of two Domain.
+"A Domain representing the disjunctive union of several subdomains.
 
-A point is inside this domain if it is either in left or right
-domains, but not both.
-
-Available constructors:
-    DomainDisjunctiveUnion(*left, right*)
+A point is inside this domain if only in exactly one subdomain.
 
 Parameters
 ----------
-left : :class:`~openturns.Domain`
-    The first domain
-right : :class:`~openturns.Domain`
-    The second domain"
+collection : sequence of :class:`~openturns.Domain`
+    The domains"
 
 // ---------------------------------------------------------------------
 
@@ -39,7 +33,7 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
 >>> simplices = [[0, 1, 2], [1, 2, 3]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
->>> disjunctive_union = ot.DomainDisjunctiveUnion(interval2d, mesh2d)
+>>> disjunctive_union = ot.DomainDisjunctiveUnion([interval2d, mesh2d])
 >>> [0.2, 0.1] in disjunctive_union
 False
 >>> [0.1, 0.2] in disjunctive_union

@@ -38,12 +38,20 @@ DomainDisjunctiveUnion::DomainDisjunctiveUnion()
 }
 
 /* Default constructor */
-DomainDisjunctiveUnion::DomainDisjunctiveUnion(const Domain & left, const Domain & right)
-  : DomainImplementation(left.getDimension())
-  , left_(left)
-  , right_(right)
+DomainDisjunctiveUnion::DomainDisjunctiveUnion(const DomainCollection & collection)
+  : DomainImplementation(collection.getSize() ? collection[0].getDimension() : 0)
+  , collection_(collection)
 {
-  if (right.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build a DomainDisjunctiveUnion from two Domain of different dimensions";
+  for (UnsignedInteger i = 1; i < collection.getSize(); ++ i)
+    if (collection[i].getDimension() != getDimension())
+      throw InvalidArgumentException(HERE) << "Error: cannot build a DomainDisjunctiveUnion from domains of different dimensions";
+}
+
+/* Default constructor */
+DomainDisjunctiveUnion::DomainDisjunctiveUnion(const Domain & left, const Domain & right)
+  : DomainDisjunctiveUnion(DomainCollection({left, right}))
+{
+  LOGWARN(OSS() << "DomainDisjunctiveUnion(Domain, Domain) is deprecated in favor of DomainDisjunctiveUnion(List[Domain])");
 }
 
 /* Clone method */
@@ -57,9 +65,7 @@ String DomainDisjunctiveUnion::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
          << " name=" << getName()
-         << " left=" << left_
-         << " right=" << right_;
-
+         << " collection=" << collection_;
 }
 
 String DomainDisjunctiveUnion::__str__(const String & ) const
@@ -70,27 +76,17 @@ String DomainDisjunctiveUnion::__str__(const String & ) const
 /* Check if the given point is inside of the domain */
 Bool DomainDisjunctiveUnion::contains(const Point & point) const
 {
-  return left_.contains(point) != right_.contains(point);
-}
-
-/* Check if the given points are inside of the domain */
-DomainDisjunctiveUnion::BoolCollection DomainDisjunctiveUnion::contains(const Sample & sample) const
-{
-  const UnsignedInteger size(sample.getSize());
-  const BoolCollection leftResult(left_.contains(sample));
-  const BoolCollection rightResult(right_.contains(sample));
-  BoolCollection result(size);
-  for(UnsignedInteger i = 0; i < size; ++i)
-  {
-    result[i] = (leftResult[i] != rightResult[i]);
-  }
-  return result;
+  UnsignedInteger count = 0;
+  for (UnsignedInteger i = 0; (count < 2) && (i < collection_.getSize()); ++ i)
+    if (collection_[i].contains(point))
+      ++ count;
+  return count == 1;
 }
 
 Bool DomainDisjunctiveUnion::operator == (const DomainDisjunctiveUnion & other) const
 {
   if (this == &other) return true;
-  return left_ == other.left_ && right_ == other.right_;
+  return collection_ == other.collection_;
 }
 
 Bool DomainDisjunctiveUnion::operator != (const DomainDisjunctiveUnion & other) const
@@ -102,16 +98,23 @@ Bool DomainDisjunctiveUnion::operator != (const DomainDisjunctiveUnion & other) 
 void DomainDisjunctiveUnion::save(Advocate & adv) const
 {
   DomainImplementation::save(adv);
-  adv.saveAttribute("left_", left_);
-  adv.saveAttribute("right_", right_);
+  adv.saveAttribute("collection_", collection_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void DomainDisjunctiveUnion::load(Advocate & adv)
 {
   DomainImplementation::load(adv);
-  adv.loadAttribute("left_", left_);
-  adv.loadAttribute("right_", right_);
+  if (adv.hasAttribute("collection_"))
+    adv.loadAttribute("collection_", collection_);
+  else
+  {
+    Domain left;
+    Domain right;
+    adv.loadAttribute("left_", left);
+    adv.loadAttribute("right_", right);
+    collection_ = DomainCollection({left, right});
+  }
 }
 
 END_NAMESPACE_OPENTURNS

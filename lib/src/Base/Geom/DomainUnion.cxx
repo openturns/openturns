@@ -20,7 +20,7 @@
  */
 #include "openturns/DomainUnion.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Os.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -38,12 +38,20 @@ DomainUnion::DomainUnion()
 }
 
 /* Default constructor */
-DomainUnion::DomainUnion(const Domain & left, const Domain & right)
-  : DomainImplementation(left.getDimension())
-  , left_(left)
-  , right_(right)
+DomainUnion::DomainUnion(const DomainCollection & collection)
+  : DomainImplementation(collection.getSize() ? collection[0].getDimension() : 0)
+  , collection_(collection)
 {
-  if (right.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build a DomainUnion from two Domain of different dimensions";
+  for (UnsignedInteger i = 1; i < collection.getSize(); ++ i)
+    if (collection[i].getDimension() != getDimension())
+      throw InvalidArgumentException(HERE) << "Error: cannot build a DomainUnion from domains of different dimensions";
+}
+
+/* Default constructor */
+DomainUnion::DomainUnion(const Domain & left, const Domain & right)
+  : DomainUnion(DomainCollection({left, right}))
+{
+  LOGWARN(OSS() << "DomainUnion(Domain, Domain) is deprecated in favor of DomainUnion(List[Domain])");
 }
 
 /* Clone method */
@@ -57,8 +65,7 @@ String DomainUnion::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
          << " name=" << getName()
-         << " left=" << left_
-         << " right=" << right_;
+         << " collection=" << collection_;
 
 }
 
@@ -70,43 +77,25 @@ String DomainUnion::__str__(const String & ) const
 /* Check if the given point is inside of the domain */
 Bool DomainUnion::contains(const Point & point) const
 {
-  return left_.contains(point) || right_.contains(point);
-}
-
-/* Check if the given points are inside of the domain */
-DomainUnion::BoolCollection DomainUnion::contains(const Sample & sample) const
-{
-  const UnsignedInteger size(sample.getSize());
-  // We do not know whether contains() is costly or not, thus we prefer to
-  // minimize calls to right_.contains()
-  BoolCollection leftResult(left_.contains(sample));
-  Indices notInLeft(0);
-  for(UnsignedInteger i = 0; i < size; ++i)
-  {
-    if (!leftResult[i])
-      notInLeft.add(i);
-  }
-  const BoolCollection rightResult(right_.contains(sample.select(notInLeft)));
-  BoolCollection result(size, 1);
-  for(UnsignedInteger i = 0; i < rightResult.getSize(); ++i)
-    result[notInLeft[i]] = rightResult[i];
+  Bool result = false;
+  for (UnsignedInteger i = 0; !result && (i < collection_.getSize()); ++ i)
+    result = result || collection_[i].contains(point);
   return result;
 }
 
 /* Compute the Euclidean distance from a given point to the domain */
 Scalar DomainUnion::computeDistance(const Point & point) const
 {
-  const Scalar distanceLeft = left_.computeDistance(point);
-  if (distanceLeft == 0.0) return 0.0;
-  const Scalar distanceRight = right_.computeDistance(point);
-
-  return std::min(distanceLeft, distanceRight);
+  Scalar distance = SpecFunc::MaxScalar;
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++ i)
+    distance = std::min(distance, collection_[i].computeDistance(point));
+  return distance;
 }
 
 Bool DomainUnion::operator == (const DomainUnion & other) const
 {
   if (this == &other) return true;
-  return left_ == other.left_ && right_ == other.right_;
+  return collection_ == other.collection_;
 }
 
 Bool DomainUnion::operator != (const DomainUnion & other) const
@@ -118,16 +107,23 @@ Bool DomainUnion::operator != (const DomainUnion & other) const
 void DomainUnion::save(Advocate & adv) const
 {
   DomainImplementation::save(adv);
-  adv.saveAttribute("left_", left_);
-  adv.saveAttribute("right_", right_);
+  adv.saveAttribute("collection_", collection_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void DomainUnion::load(Advocate & adv)
 {
   DomainImplementation::load(adv);
-  adv.loadAttribute("left_", left_);
-  adv.loadAttribute("right_", right_);
+  if (adv.hasAttribute("collection_"))
+    adv.loadAttribute("collection_", collection_);
+  else
+  {
+    Domain left;
+    Domain right;
+    adv.loadAttribute("left_", left);
+    adv.loadAttribute("right_", right);
+    collection_ = DomainCollection({left, right});
+  }
 }
 
 END_NAMESPACE_OPENTURNS

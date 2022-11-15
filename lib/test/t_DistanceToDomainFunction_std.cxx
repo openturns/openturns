@@ -72,8 +72,8 @@ int main(int, char *[])
     finite.add(false);
     interval3.setFiniteUpperBound(finite); // [0.9, +infinity)
 
-    const DomainUnion small_union(interval1, interval2); // [-0.5, 0] U [0.7, 1.3]
-    const DomainUnion big_union(small_union, interval3); // [-0.5, 0] U [0.7, +infinity)
+    const DomainUnion small_union(DomainIntersection::DomainCollection({interval1, interval2})); // [-0.5, 0] U [0.7, 1.3]
+    const DomainUnion big_union(DomainIntersection::DomainCollection({small_union, interval3})); // [-0.5, 0] U [0.7, +infinity)
 
     Sample sample_dim1(2, 1);
     sample_dim1(0, 0) = 0.1;
