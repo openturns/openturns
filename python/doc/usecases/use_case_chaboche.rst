@@ -95,47 +95,17 @@ References
 
 - J. Lemaitre and J. L. Chaboche (2002) "Mechanics of solid materials" Cambridge University Press.
 
-Load the use case
------------------
-
-We can load this model from the use cases module as follows :
-
-.. code-block:: python
-
-    >>> from openturns.usecases import chaboche_model
-    >>> # Load the Chaboche use case
-    >>> cm = chaboche_model.ChabocheModel()
 
 API documentation
 -----------------
 
-See :class:`~openturns.usecases.chaboche_model.ChabocheModel`.
+.. currentmodule:: openturns.usecases.chaboche_model
+
+.. autoclass:: ChabocheModel
+    :noindex:
 
 Examples based on this use case
 -------------------------------
 
-
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_calibration/least_squares_and_gaussian_calibration/images/thumb/sphx_glr_plot_calibration_chaboche_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_calibration_least_squares_and_gaussian_calibration_plot_calibration_chaboche.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_chaboche
-
-
-
-
+.. minigallery:: openturns.usecases.chaboche_model.ChabocheModel
 

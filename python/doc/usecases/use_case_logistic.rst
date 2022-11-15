@@ -137,63 +137,16 @@ References
 
 [3] Raymond Pearl and Lowell Reed. On the rate of growth of the population of the united states since 1790 and its mathematical representation. Proceedings of the National Academy of Sciences, 1920.
 
-Load the use case
------------------
-
-We can load this model from the use cases module as follows :
-
-.. code-block:: python
-
-    >>> from openturns.usecases import logistic_model
-    >>> # Load the logistic model
-    >>> lm = logistic_model.LogisticModel()
-
 API documentation
 -----------------
 
-See :class:`~openturns.usecases.logistic_model.LogisticModel`.
+.. currentmodule:: openturns.usecases.logistic_model
+
+.. autoclass:: LogisticModel
+    :noindex:
 
 Examples based on this use case
 -------------------------------
 
+.. minigallery:: openturns.usecases.logistic_model.LogisticModel
 
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_calibration/least_squares_and_gaussian_calibration/images/thumb/sphx_glr_plot_calibration_logistic_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_calibration_least_squares_and_gaussian_calibration_plot_calibration_logistic.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_logistic
-
-
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_functional_modeling/field_functions/images/thumb/sphx_glr_plot_logistic_growth_model_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_functional_modeling_field_functions_plot_logistic_growth_model.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_functional_modeling/field_functions/plot_logistic_growth_model

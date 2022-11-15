@@ -93,43 +93,17 @@ References
 * Mechanics of Materials (7th Edition), James M. Gere, Barry J. Goodno, Cengage Learning (2009)
 * Statics and Mechanics of Materials (5th Edition), Ferdinand Beer, E. Russell Johnston, Jr., John DeWolf, David Mazurek. Mc Graw Hill (2011) Chapter 15: deflection of beams.
 
-Load the use case
------------------
-
-We can load this model from the use cases module as follows :
-
-.. code-block:: python
-
-    >>> from openturns.usecases import deflection_tube
-    >>> # Load the tube deflection model
-    >>> dt = deflection_tube.DeflectionTube()
 
 API documentation
 -----------------
 
-See :class:`~openturns.usecases.deflection_tube.DeflectionTube`.
+.. currentmodule:: openturns.usecases.deflection_tube
+
+.. autoclass:: DeflectionTube
+    :noindex:
 
 Examples based on this use case
 -------------------------------
 
-
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_calibration/least_squares_and_gaussian_calibration/images/thumb/sphx_glr_plot_calibration_deflection_tube_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_calibration_least_squares_and_gaussian_calibration_plot_calibration_deflection_tube.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_deflection_tube
+.. minigallery:: openturns.usecases.deflection_tube.DeflectionTube
 

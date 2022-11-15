@@ -27,6 +27,7 @@
  * Removed GaussianProcess.GIBBS
 
 === Documentation ===
+ * Add API documentation to common use cases pages
 
 === Python module ===
 
