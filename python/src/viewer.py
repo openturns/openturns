@@ -841,7 +841,7 @@ def PlotDesign(
 
     >>> import openturns as ot
     >>> from openturns.viewer import PlotDesign
-    >>> dim = 20
+    >>> dim = 2
     >>> X = [ot.Uniform()] * dim
     >>> distribution = ot.ComposedDistribution(X)
     >>> sampleSize = 10
