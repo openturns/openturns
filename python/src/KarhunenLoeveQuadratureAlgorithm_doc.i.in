@@ -82,7 +82,7 @@ Discretize the domain :math:`\cD` and create a covariance model:
 
 >>> import openturns as ot
 >>> bounds = ot.Interval([-1.0]*2, [1.0]*2)
->>> domain = ot.IntervalMesher([10]*2).build(bounds)
+>>> domain = ot.MeshDomain(ot.IntervalMesher([10]*2).build(bounds))
 >>> s = 0.01
 >>> model = ot.AbsoluteExponential([1.0]*2)
 
