@@ -8,7 +8,7 @@ set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
 set (SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
 
 if (NOT DEFINED PYTHON_EXTENSION_MODULE_SUFFIX AND NOT CMAKE_CROSSCOMPILING)
-  execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import importlib.machinery; print(importlib.machinery.EXTENSION_SUFFIXES[0])"
+  execute_process (COMMAND ${Python_EXECUTABLE} -c "import importlib.machinery; print(importlib.machinery.EXTENSION_SUFFIXES[0])"
                    OUTPUT_VARIABLE PYTHON_EXTENSION_MODULE_SUFFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif ()
 
@@ -76,9 +76,14 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   endif ()
 
   add_dependencies (${module_target} generate_swig_runtime)
+  target_include_directories (${module_target} PRIVATE ${Python_INCLUDE_DIRS})
   swig_link_libraries (${MODULENAME} OT)
 
-  target_link_libraries_with_dynamic_lookup (${module_target} ${PYTHON_LIBRARIES})
+  if (TARGET Python::Module)
+    target_link_libraries (${module_target} Python::Module)
+  else ()
+    target_link_libraries_with_dynamic_lookup (${module_target} ${Python_LIBRARIES})
+  endif ()
 
   set_target_properties (${module_target} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 
@@ -1031,7 +1036,12 @@ set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for th
 
 # Build and install openturns.memoryview
 add_library (memoryview MODULE PythonReadOnlyBuffer.c)
-target_link_libraries_with_dynamic_lookup (memoryview ${PYTHON_LIBRARIES})
+target_include_directories (memoryview PRIVATE ${Python_INCLUDE_DIRS})
+if (TARGET Python::Module)
+  target_link_libraries (memoryview Python::Module)
+else ()
+  target_link_libraries_with_dynamic_lookup (memoryview ${Python_LIBRARIES})
+endif ()
 set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
 if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
   set_target_properties (memoryview PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
