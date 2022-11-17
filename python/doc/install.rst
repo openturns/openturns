@@ -58,8 +58,7 @@ A non-interactive installation is also possible with the command line::
 
 macOS
 -----
-Installation options include pip and conda for x86 processors.
-For ARM processors binary packages are only provided via conda for now.
+Installation options include pip and conda for x86_86 and arm64 processors.
 
 Debian/Ubuntu
 -------------
