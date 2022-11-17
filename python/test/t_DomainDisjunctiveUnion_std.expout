@@ -9,3 +9,9 @@ is point  [0.25, 0.25]  inside ?  False
 is point  [1.8, 1.8]  inside ?  True
 is point  [4.0, 4.0]  inside ?  False
 is sample  [[-0.25, 0.25], [0.25, 0.25], [1.8, 1.8], [4.0, 4.0]]  inside ?  [1,0,1,0]
+x=-1.0 d=0.6 ref=0.6
+x=-0.25 d=0.0 ref=0.0
+x=0.875 d=0.125 ref=0.125
+x=1.05 d=0.0 ref=0.0
+x=1.2 d=None ref=None
+x=2.0 d=0.5 ref=0.5

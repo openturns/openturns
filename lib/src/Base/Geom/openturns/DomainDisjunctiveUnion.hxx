@@ -58,6 +58,10 @@ public:
   Bool contains(const Point & point) const override;
   using DomainImplementation::contains;
 
+  /** Compute the Euclidean distance from a given point to the domain */
+  Scalar computeDistance(const Point & point) const override;
+  using DomainImplementation::computeDistance;
+
   /** Comparison operator */
   Bool operator == (const DomainDisjunctiveUnion & other) const;
   Bool operator != (const DomainDisjunctiveUnion & other) const;

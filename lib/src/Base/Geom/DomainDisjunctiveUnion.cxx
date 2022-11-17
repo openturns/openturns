@@ -20,7 +20,7 @@
  */
 #include "openturns/DomainDisjunctiveUnion.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Os.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -81,6 +81,27 @@ Bool DomainDisjunctiveUnion::contains(const Point & point) const
     if (collection_[i].contains(point))
       ++ count;
   return count == 1;
+}
+
+/* Compute the Euclidean distance from a given point to the domain */
+Scalar DomainDisjunctiveUnion::computeDistance(const Point & point) const
+{
+  Scalar best = SpecFunc::MaxScalar;
+  UnsignedInteger count = 0;
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++ i)
+  {
+    const Scalar distance = collection_[i].computeDistance(point);
+    if (distance < best)
+    {
+      count = 1;
+      best = distance;
+    }
+    else if (distance == best)
+      ++ count;
+  }
+  if (count > 1)
+    throw NotDefinedException(HERE) << "distance reached for at least 2 subdomains";
+  return best;
 }
 
 Bool DomainDisjunctiveUnion::operator == (const DomainDisjunctiveUnion & other) const
