@@ -1,11 +1,9 @@
 #                                               -*- cmake -*-
 
-cmake_minimum_required (VERSION 3.2)
+cmake_minimum_required (VERSION 3.13)
 
 # By default, build in Release mode. Must appear before project() command
-if (NOT DEFINED CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
-endif ()
+set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" Release Debug RelWithDebInfo MinSizeRel)
 set (CMAKE_TRY_COMPILE_CONFIGURATION ${CMAKE_BUILD_TYPE})
 
@@ -619,19 +617,7 @@ if (BUILD_PYTHON)
     endif ()
   endif ()
 
-  if (CMAKE_VERSION VERSION_LESS 3.12)
-    find_package (PythonInterp 3.5)
-    if (PYTHONINTERP_FOUND)
-      set (Python_EXECUTABLE ${PYTHON_EXECUTABLE})
-      find_package (PythonLibs ${PYTHON_VERSION_STRING} EXACT)
-      set (Python_FOUND ${PYTHONLIBS_FOUND})
-      set (Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
-      set (Python_LIBRARIES ${PYTHON_LIBRARIES})
-      set (Python_VERSION_MAJOR ${PYTHON_VERSION_MAJOR})
-      set (Python_VERSION_MINOR ${PYTHON_VERSION_MINOR})
-      set (Python_VERSION ${PYTHON_VERSION_STRING})
-    endif ()
-  elseif (CMAKE_VERSION VERSION_LESS 3.18)
+  if (CMAKE_VERSION VERSION_LESS 3.24)
     find_package (Python 3.5 COMPONENTS Interpreter Development)
   else ()
     find_package (Python 3.5 COMPONENTS Interpreter Development.Module)

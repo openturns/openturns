@@ -805,7 +805,7 @@ ot_pyinstallcheck_test (Waarts_system_series)
 ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
-if (MATPLOTLIB_FOUND AND NOT CMAKE_VERSION VERSION_LESS 3.9)
+if (MATPLOTLIB_FOUND)
   file (GLOB_RECURSE PYFILES "${CMAKE_SOURCE_DIR}/python/doc/examples/*/*.py")
   foreach (PYF ${PYFILES})
     if (PYF MATCHES plot)
