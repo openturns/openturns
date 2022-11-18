@@ -83,6 +83,7 @@ except ImportError:
     pngmath_use_preview = True
 
 extensions.append('matplotlib.sphinxext.plot_directive')
+plot_formats = ['png']
 
 extensions.append('sphinx_gallery.gen_gallery')
 sphinx_gallery_conf = {
