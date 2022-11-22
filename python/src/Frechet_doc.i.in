@@ -41,7 +41,7 @@ Its first moments are:
     \end{eqnarray*}
 
 where :math:`\Gamma` denotes Euler's Gamma function
-:class:`~openturns.SpecFunc_Gamma`.
+:meth:`~openturns.SpecFunc.Gamma`.
 
 Examples
 --------

@@ -52,7 +52,7 @@ with :math:`\nu > 0, d \geq 1, \mat{R} \in  \cM_{d \times d}(\Rset),
 \sigma_k > 0, k=1, \dots, d` , and
 where :math:`\vect{z}=\mat{\Delta}^{-1}\left(\vect{x}-\vect{\mu}\right)`, 
 :math:`\mat{\Delta} = \mat{\mathrm{diag}}(\vect{\sigma})` and :math:`\Gamma`
-denotes Euler's Gamma function :class:`~openturns.SpecFunc_Gamma`.
+denotes Euler's Gamma function :meth:`~openturns.SpecFunc.Gamma`.
 
 The matrix :math:`\mat{R}` is symmetric positive definite.
 

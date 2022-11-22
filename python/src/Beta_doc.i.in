@@ -23,7 +23,7 @@ Its probability density function is defined as:
                   \quad x \in [a, b]
 
 with :math:`\alpha, \beta > 0` and :math:`a < b` and where :math:`\rm B` denotes
-Euler's beta function :class:`~openturns.SpecFunc_Beta`.
+Euler's beta function :meth:`~openturns.SpecFunc.Beta`.
 
 Its first moments are:
 

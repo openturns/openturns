@@ -35,7 +35,7 @@ Its first moments are:
     \end{eqnarray*}
 
 where :math:`\Gamma` denotes Euler's Gamma function
-:class:`~openturns.SpecFunc_Gamma`.
+:meth:`~openturns.SpecFunc.Gamma`.
 
 It is possible to create a WeibullMin distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.WeibullMinMuSigma`. In that case, all the results are presented in that new parametrization.
 

@@ -26,7 +26,7 @@ Its probability density function is defined as:
              \quad x \in \Rset
 
 With :math:`\Gamma` denotes Euler's Gamma function
-:class:`~openturns.SpecFunc_Gamma`.
+:meth:`~openturns.SpecFunc.Gamma`.
 
 Its first moments are:
 
