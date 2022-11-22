@@ -459,6 +459,12 @@ if (UNIX AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   endif ()
 endif ()
 
+# for consistent floating-point operations across architectures
+option (DISABLE_FP_CONTRACT "Disable floating-point contractions" ON)
+if (DISABLE_FP_CONTRACT AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffp-contract=off")
+endif ()
+
 try_run (_HAVE_FR_LOC_RUNS _HAVE_FR_LOC_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/have_fr_loc.cxx)
 if (_HAVE_FR_LOC_BUILDS)
   if (NOT _HAVE_FR_LOC_RUNS EQUAL 0)
