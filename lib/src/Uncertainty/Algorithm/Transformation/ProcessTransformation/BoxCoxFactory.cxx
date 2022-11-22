@@ -133,6 +133,21 @@ public:
       , shiftedOutputSample_(shiftedOutputSample)
       , covarianceModel_(covarianceModel)
       , basis_(basis)
+      , sumLog_(0.0)
+  {
+    computeSumLog();
+  }
+
+  BoxCoxGLMOptimization(const Sample &inputSample,
+                        const Sample &shiftedOutputSample,
+                        const CovarianceModel &covarianceModel,
+                        const Basis &basis,
+                        const Scalar sumLog)
+      : inputSample_(inputSample)
+      , shiftedOutputSample_(shiftedOutputSample)
+      , covarianceModel_(covarianceModel)
+      , basis_(basis)
+      , sumLog_(sumLog)
   {
     // Nothing to do
   }
@@ -160,12 +175,28 @@ public:
     // compute the mean of the transformed sample using the Box-Cox function
     const Sample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
     // Use of GLM to estimate the best generalized linear model
-    // TODO discuss here about freezing model parameters
     GeneralLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
     algo.run();
     // Return the optimal log-likelihood
-    const Scalar result = algo.getResult().getOptimalLogLikelihood();
+    // Global likelihood do include (lambda - 1) * sumLog_
+    const Scalar result = algo.getResult().getOptimalLogLikelihood() + (lambda[0] - 1) * getSumLog();
     return Point(1, result);
+  }
+
+  void computeSumLog()
+  {
+    // Compute the sum of the log-data
+    const UnsignedInteger size = shiftedOutputSample_.getSize();
+    const UnsignedInteger dimension = shiftedOutputSample_.getDimension();
+    sumLog_ = 0.0;
+    for (UnsignedInteger k = 0; k < size; ++k)
+      for (UnsignedInteger d = 0; d < dimension; ++d)
+        sumLog_ += std::log(shiftedOutputSample_(k, d));
+  }
+
+  Scalar getSumLog() const
+  {
+    return sumLog_;
   }
 
 private:
@@ -174,6 +205,7 @@ private:
   Sample shiftedOutputSample_;
   CovarianceModel covarianceModel_;
   Basis basis_;
+  Scalar sumLog_;
 };
 
 /* Constructor with parameters */
