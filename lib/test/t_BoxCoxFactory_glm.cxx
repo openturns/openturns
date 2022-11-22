@@ -39,24 +39,23 @@ int main(int, char *[])
     Sample outputSample(inputSample);
 
     // Evaluation of y = ax + b (a: scale, b: translate)
-
     // scale
-    const Point scale(1, 3.0);
+    const Point scale = {3.0};
     outputSample *= scale;
 
     // translate sample
-    const Point translate(1, 3.1);
+    const Point translate = {10.0};
     outputSample += translate;
 
     // Finally inverse transform using an arbitrary lambda
-    const Point lambda(1, 1.8);
-    const InverseBoxCoxEvaluation  boxCoxFunction(lambda);
+    const Point lambda = {2.0};
+    const InverseBoxCoxEvaluation boxCoxFunction(lambda);
 
     // transform y using BoxCox function
     outputSample = boxCoxFunction(outputSample);
 
     // Add small noise
-    const Sample epsilon = Normal(0, 1e-2).getSample(size);
+    const Sample epsilon = Normal(0, 1e-3).getSample(size);
     outputSample +=  epsilon;
     // Now we build the factory
     BoxCoxFactory factory;
@@ -65,11 +64,11 @@ int main(int, char *[])
     GeneralLinearModelResult result;
     const Basis basis = LinearBasisFactory(1).build();
     const DiracCovarianceModel covarianceModel;
-    const Point shift(1, 1.0e-1);
+    const Point shift = {1e-10};
     BoxCoxTransform myBoxCox = factory.build(inputSample, outputSample, covarianceModel, basis, shift, result);
 
-    fullprint << "myBoxCox (GLM)=" << myBoxCox << std::endl;
-    fullprint << "GLM result=" << result << std::endl;
+    fullprint << "myBoxCox (GLM)=" << myBoxCox.__str__() << std::endl;
+    fullprint << "GLM result=" << result.__str__() << std::endl;
 
   }
   catch (TestFailed & ex)
