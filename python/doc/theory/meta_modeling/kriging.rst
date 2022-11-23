@@ -23,7 +23,7 @@ We put the following Gaussian process prior on the model :math:`\cM`:
 
 where:
 
--  :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` is a generalized linear
+-  :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` is a general linear
    model based upon a functional basis
    :math:`\vect{f} = \left(f_j, j = 1, \ldots, p\right)` and a vector of
    coefficients
