@@ -61,15 +61,12 @@ bonminAlgorithm.setStopCallback(stop)
 # ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 60)
 ot.ResourceMap.AddAsString("Bonmin-mu_oracle", "loqo")
 
-algos = ot.Bonmin.GetAlgorithmNames()
-
-for algo in algos:
-    if algo != "B-iFP":  # Solver B-iFP fails to terminate on this case
-        print("MINIMIZATION WITH " + algo)
-        bonminAlgorithm.setAlgorithmName(algo)
-        bonminAlgorithm.run()
-        result = bonminAlgorithm.getResult()
-        print(" -- Optimal point = " + result.getOptimalPoint().__str__())
-        print(" -- Optimal value = " + result.getOptimalValue().__str__())
-        print(" -- Evaluation number = " + result.getInputSample().getSize().__str__())
-        ott.assert_almost_equal(result.getOptimalPoint(), [1, 1, 0.5, 0], 1, 5e-4)
+for algo in ot.Bonmin.GetAlgorithmNames():
+    print("MINIMIZATION WITH " + algo)
+    bonminAlgorithm.setAlgorithmName(algo)
+    bonminAlgorithm.run()
+    result = bonminAlgorithm.getResult()
+    print(" -- Optimal point = " + result.getOptimalPoint().__str__())
+    print(" -- Optimal value = " + result.getOptimalValue().__str__())
+    print(" -- Evaluation number = " + result.getInputSample().getSize().__str__())
+    ott.assert_almost_equal(result.getOptimalPoint(), [1, 1, 0.5, 0], 1, 5e-4)
