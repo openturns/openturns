@@ -158,9 +158,13 @@ static double **CreateMatrixD (int N, int M)
   double **T2;
 
   T2 = (double **) malloc (N * sizeof (double *));
-  T2[0] = (double *) malloc (N * M * sizeof (double));
-  for (i = 1; i < N; i++)
-    T2[i] = T2[0] + i * M;
+  if (T2)
+  {
+    T2[0] = (double *) malloc (N * M * sizeof (double));
+    if (T2[0])
+      for (i = 1; i < N; i++)
+        T2[i] = T2[0] + i * M;
+  }
   return T2;
 }
 
@@ -701,6 +705,9 @@ static double DurbinMatrix (int n, double d)
   h = k - n * d;
   H = (double *) malloc ((m * m) * sizeof (double));
   Q = (double *) malloc ((m * m) * sizeof (double));
+  s = 0.0;
+  if (H && Q)
+  {
   for (i = 0; i < m; i++)
     for (j = 0; j < m; j++)
       if (i - j + 1 < 0)
@@ -731,6 +738,7 @@ static double DurbinMatrix (int n, double d)
   s *= pow (10., (double) eQ);
   free (H);
   free (Q);
+  }
   return s;
 }
 
@@ -769,24 +777,27 @@ static void mPower (double *A, int eA, double *V, int *eV, int m, int n)
     return;
   }
   mPower (A, eA, V, eV, m, n / 2);
-  B = (double *) malloc ((m * m) * sizeof (double));
-  mMultiply (V, V, B, m);
-  eB = 2 * (*eV);
-  if (B[(m / 2) * m + (m / 2)] > NORM)
-    renormalize (B, m, &eB);
+  B = (double *) calloc (m * m, sizeof (double));
+  if (B)
+  {
+    mMultiply (V, V, B, m);
+    eB = 2 * (*eV);
+    if (B[(m / 2) * m + (m / 2)] > NORM)
+      renormalize (B, m, &eB);
 
-  if (n % 2 == 0) {
-    for (i = 0; i < m * m; i++)
-      V[i] = B[i];
-    *eV = eB;
-  } else {
-    mMultiply (A, B, V, m);
-    *eV = eA + eB;
+    if (n % 2 == 0) {
+      for (i = 0; i < m * m; i++)
+        V[i] = B[i];
+      *eV = eB;
+    } else {
+      mMultiply (A, B, V, m);
+      *eV = eA + eB;
+    }
+
+    if (V[(m / 2) * m + (m / 2)] > NORM)
+      renormalize (V, m, eV);
+    free (B);
   }
-
-  if (V[(m / 2) * m + (m / 2)] > NORM)
-    renormalize (V, m, eV);
-  free (B);
 }
 
 
