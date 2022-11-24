@@ -26,6 +26,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 
+#define HAVE_CSTDDEF// for 3.11 in debian
 #include <BonTMINLP.hpp>
 #include <IpTNLP.hpp>
 
