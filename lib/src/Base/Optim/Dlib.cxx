@@ -589,7 +589,7 @@ void Dlib::run()
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       lb(i) = SpecFunc::LowestScalar;
-      ub(i) =  SpecFunc::MaxScalar;
+      ub(i) = SpecFunc::MaxScalar;
     }
   }
 
@@ -597,10 +597,10 @@ void Dlib::run()
   result_ = OptimizationResult(getProblem());
 
   /** SWITCH BETWEEN ALGORITHMS **/
-  if (   algoName_ == "cg"
-         || algoName_ == "bfgs"
-         || algoName_ == "lbfgs"
-         || algoName_ == "newton")
+  if (algoName_ == "cg"
+    || algoName_ == "bfgs"
+    || algoName_ == "lbfgs"
+    || algoName_ == "newton")
   {
     // Create searchStrategy
     DlibSearchStrategy searchStrategy;

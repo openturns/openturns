@@ -102,15 +102,15 @@ private:
   String algoName_;
 
   // Parameters of the line search performed in some algorithms
-  Scalar wolfeRho_;
-  Scalar wolfeSigma_;
-  UnsignedInteger maxLineSearchIterations_;
+  Scalar wolfeRho_ = 0.0;
+  Scalar wolfeSigma_ = 0.0;
+  UnsignedInteger maxLineSearchIterations_ = 0;
 
   // Maximum size used by L-BFGS algorithm
-  UnsignedInteger maxSize_;
+  UnsignedInteger maxSize_ = 0;
 
   // Initial trust region radius to use in "TrustRegion", "LSQ" and "LSQLM" algorithms
-  Scalar initialTrustRegionRadius_;
+  Scalar initialTrustRegionRadius_ = 0.0;
 };
 
 END_NAMESPACE_OPENTURNS
