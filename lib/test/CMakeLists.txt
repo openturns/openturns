@@ -218,7 +218,7 @@ ot_check_test (SQP_std)
 ot_check_test (TNC_std)
 ot_check_test (NearestPointChecker_std)
 if (NLopt_FOUND)
-ot_check_test (NLopt_std)
+  ot_check_test (NLopt_std IGNOREOUT)
 endif ()
 ot_check_test (MultiStart_std)
 
