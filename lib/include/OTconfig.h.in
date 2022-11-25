@@ -91,9 +91,6 @@
 /* Define to 1 if NLopt has AGS. */
 #cmakedefine OPENTURNS_NLOPT_HAVE_AGS
 
-/* Define to 1 if you have the OPT++ library. */
-#cmakedefine OPENTURNS_HAVE_OPTPP
-
 /* Define to 1 if you have the Ceres library. */
 #cmakedefine OPENTURNS_HAVE_CERES
 
