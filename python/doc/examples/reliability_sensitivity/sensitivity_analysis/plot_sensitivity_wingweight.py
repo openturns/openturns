@@ -40,7 +40,7 @@ m = WingWeightModel()
 #
 # Let's have a look on 2D cross cuts of the wing weight function.
 # For each 2D cross cut, the other variables are fixed to the input distribution mean values.
-# This graph allows to have a first idea of the variations of the function in pair of dimensions.
+# This graph allows one to have a first idea of the variations of the function in pair of dimensions.
 # The colors of each contour plot are comparable. The number of contour levels are related to the amount of variation of the function in the corresponding coordinates.
 fig = plt.figure(figsize=(12, 12))
 lowerBound = m.distributionX.getRange().getLowerBound()

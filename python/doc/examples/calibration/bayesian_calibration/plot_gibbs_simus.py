@@ -222,7 +222,7 @@ initial_state = ot.Point(initial_state)
 #        {\bf 1}_{\left[\vect{Y}^{obs}-\frac{\delta}{2}; \vect{Y}^{obs}+\frac{\delta}{2}\right[}(\vect{Y}).
 #        \end{array}
 #
-# This allows to perform the following Metropolis within Gibbs sampling
+# This allows one to perform the following Metropolis within Gibbs sampling
 # scheme, wherein the pre-defined blocks of variables
 # :math:`(\vect{Y},\vect{\theta},\tau)` are updated in turn, according to their
 # conditional posterior density, or to a Markov kernel targeting it, as

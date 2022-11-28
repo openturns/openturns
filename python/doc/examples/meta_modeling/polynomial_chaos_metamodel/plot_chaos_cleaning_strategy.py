@@ -692,7 +692,7 @@ score_Q2 = compute_cleaning_PCE(
 
 # %%
 #
-# The previous text (and a detailed analysis of the output file) allows to
+# The previous text (and a detailed analysis of the output file) allows one to
 # understand what exactly happens in the algorithm. To understand each step,
 # note that the significant threshold is equal to :math:`\epsilon = 10^{-10}`.
 #
