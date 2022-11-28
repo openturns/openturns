@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -119,8 +120,6 @@ chaos_sparse = ot.FunctionalChaosAlgorithm(
     input_sample, output_sample, distribution, strategy, evaluationStrategy_sparse
 )
 chaos_sparse.run()
-print("indices/full=", chaos.getResult().getIndices())
-print("indices/sparse=", chaos_sparse.getResult().getIndices())
 
 ancova = ot.ANCOVA(chaos.getResult(), input_sample)
 ancova_sparse = ot.ANCOVA(chaos_sparse.getResult(), input_sample)
@@ -132,3 +131,5 @@ print(
         *ancova_sparse.getIndices()
     )
 )
+
+ott.assert_almost_equal(ancova.getIndices(), ancova_sparse.getIndices())
