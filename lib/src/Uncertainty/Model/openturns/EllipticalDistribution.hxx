@@ -176,10 +176,7 @@ protected:
   /** The correlation matrix (Rij) of the distribution */
   mutable CorrelationMatrix R_;
 
-  /** The shape matrix of the distribution = Diag(sigma_) * R_ * Diag(sigma_) */
-  mutable CovarianceMatrix shape_;
-
-  /** The Cholesky factor of the shape matrix shape_ = cholesky_ * cholesky_.transpose() */
+  /** The Cholesky factor of the shape matrix shape = cholesky_ * cholesky_.transpose() */
   TriangularMatrix cholesky_;
 
   /** The inverse Cholesky factor of the covariance matrix */
@@ -188,7 +185,7 @@ protected:
   /** The normalization factor of the distribution */
   Scalar normalizationFactor_;
 
-  /** The scaling factor of the covariance matrix covariance = covarianceScalingFactor_ * shape_*/
+  /** The scaling factor of the covariance matrix covariance = covarianceScalingFactor_ * shape */
   Scalar covarianceScalingFactor_;
 
 private:
@@ -253,6 +250,9 @@ private:
 
   /** Compute the value of the auxiliary attributes */
   void update();
+
+  /** The shape matrix of the distribution = Diag(sigma_) * R_ * Diag(sigma_) */
+  CovarianceMatrix getShape() const;
 
 }; /* class EllipticalDistribution */
 

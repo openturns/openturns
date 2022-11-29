@@ -464,6 +464,17 @@ LevelSet EllipticalDistribution::computeMinimumVolumeLevelSetWithThreshold(const
   return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), -logThreshold);
 }
 
+
+CovarianceMatrix EllipticalDistribution::getShape() const
+{
+  CovarianceMatrix shape(R_);
+  const UnsignedInteger dimension = getDimension();
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+      shape(i, j) *= sigma_[i] * sigma_[j];
+  return shape;
+}
+
 /* Update the derivative attributes */
 void EllipticalDistribution::update()
 {
@@ -471,25 +482,20 @@ void EllipticalDistribution::update()
   if (dimension > 1)
   {
     // Compute the shape matrix
-    shape_ = R_;
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-      for (UnsignedInteger j = 0; j <= i; ++j)
-        shape_(i, j) *= sigma_[i] * sigma_[j];
+    const CovarianceMatrix shape(getShape());
     // Try to compute the Cholesky factor of the shape matrix
-    cholesky_ = shape_.computeRegularizedCholesky();
+    cholesky_ = shape.computeRegularizedCholesky();
     inverseCholesky_ = cholesky_.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
     normalizationFactor_ = 1.0;
     for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky_(i, i);
   } // dimension > 1
   else  // dimension 1
   {
-    if (shape_.getDimension() == 0)  // First time we enter here, set matrix sizes
+    if (!cholesky_.getDimension())  // First time we enter here, set matrix sizes
     {
-      shape_ = CovarianceMatrix(1);
       cholesky_ = TriangularMatrix(1);
       inverseCholesky_ = TriangularMatrix(1);
     }
-    shape_(0, 0) = sigma_[0] * sigma_[0];
     cholesky_(0, 0) = sigma_[0];
     inverseCholesky_(0, 0) = 1.0 / sigma_[0];
     normalizationFactor_ = 1.0 / sigma_[0];
@@ -523,7 +529,7 @@ void EllipticalDistribution::computeCovariance() const
   // We have to extract the implementation because we know that the result
   // is a valid covariance matrix, but it cannot be inferred by the C++
   // from the operands
-  covariance_ = (covarianceScalingFactor_ * shape_).getImplementation();
+  covariance_ = (covarianceScalingFactor_ * getShape()).getImplementation();
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -553,7 +559,7 @@ Point EllipticalDistribution::getSigma() const
 
 /* Get the standard deviation of the distribution.
    Warning! This method MUST be overloaded for elliptical distributions without finite second moment:
-   it is possible to have a well-defined sigma vector but no standard deviation, think about Stundent
+   it is possible to have a well-defined sigma vector but no standard deviation, think about Student
    distribution with nu < 2 */
 Point EllipticalDistribution::getStandardDeviation() const
 {
@@ -845,7 +851,6 @@ void EllipticalDistribution::save(Advocate & adv) const
   adv.saveAttribute( "R_", R_ );
   adv.saveAttribute( "sigma_", sigma_ );
   adv.saveAttribute( "mean_duplicate", mean_ );
-  adv.saveAttribute( "shape_", shape_ );
   adv.saveAttribute( "cholesky_", cholesky_ );
   adv.saveAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
@@ -858,7 +863,6 @@ void EllipticalDistribution::load(Advocate & adv)
   adv.loadAttribute( "R_", R_ );
   adv.loadAttribute( "sigma_", sigma_ );
   adv.loadAttribute( "mean_duplicate", mean_ );
-  adv.loadAttribute( "shape_", shape_ );
   adv.loadAttribute( "cholesky_", cholesky_ );
   adv.loadAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
