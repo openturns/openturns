@@ -476,17 +476,6 @@ if (_HAVE_FR_LOC_BUILDS)
   endif ()
 endif ()
 
-try_run (_HAVE_STD_REGEX_RUNS _HAVE_STD_REGEX_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/have_std_regex.cxx)
-if (_HAVE_STD_REGEX_BUILDS)
-  if (NOT _HAVE_STD_REGEX_RUNS EQUAL 0)
-    set (OPENTURNS_HAVE_STD_REGEX TRUE)
-    message (STATUS "std::regex found")
-  else()
-    set (OPENTURNS_HAVE_STD_REGEX FALSE)
-    message (STATUS "std::regex not found")
-  endif ()
-endif ()
-
 # Find system prerequisites
 include (CheckIncludeFile)
 check_include_file (dirent.h      OPENTURNS_HAVE_DIRENT_H     )

@@ -57,20 +57,8 @@ void SymbolicParserImplementation::setVariables(const Description & inputVariabl
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const String varName(inputVariablesNames[i]);
-#ifdef OPENTURNS_HAVE_STD_REGEX
     if (!std::regex_match(inputVariablesNames[i], std::regex("[a-zA-Z][0-9a-zA-Z_]*")))
       throw InvalidArgumentException(HERE) << "Invalid input variable: " << varName;
-#else
-    Bool isValid = (varName.size() >= 1) && isalpha(varName[0]);
-    for (UnsignedInteger j = 1; j < varName.size(); ++ j)
-      if (!(isalnum(varName[j]) || (varName[j] == '_')))
-      {
-        isValid = false;
-        break;
-      }
-    if (!isValid)
-      throw InvalidArgumentException(HERE) << "Invalid input variable: " << varName;
-#endif
   }
   inputVariablesNames_ = inputVariablesNames;
 }
