@@ -471,29 +471,7 @@ void EllipticalDistribution::update()
       for (UnsignedInteger j = 0; j <= i; ++j)
         shape_(i, j) *= sigma_[i] * sigma_[j];
     // Try to compute the Cholesky factor of the shape matrix
-    try
-    {
-      cholesky_ = shape_.computeCholesky();
-    }
-    // In the case where the matrix is not numerically SPD, try a unique regularization loop
-    // as it should succeed (otherwise the covariance matrix is truly non SPD)
-    // Here we use a generic exception as different exceptions may be thrown
-    catch(const Exception &)
-    {
-      Scalar largestEV = 0.0;
-      (void) shape_.getImplementation()->computeLargestEigenValueModuleSym(largestEV, 10, 1e-2);
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-        R_(i, i) += largestEV * SpecFunc::Precision;
-      // This time throw if the decomposition fails
-      try
-      {
-        cholesky_ = R_.computeCholesky();
-      }
-      catch (const Exception &)
-      {
-        throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
-      } // Second decomposition
-    } // First decomposition
+    cholesky_ = shape_.computeRegularizedCholesky();
     inverseCholesky_ = cholesky_.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
     // Inverse the correlation matrix R = D^(-1).L.L'.D^(-1)
     // R^(-1) = D.L^(-1).L^(-1)'.D

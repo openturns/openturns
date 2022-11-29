@@ -291,5 +291,4 @@ for dim in range(1, 5):
 dist = ot.Normal(
     [0] * 3, ot.CovarianceMatrix([[1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
 )
-assert dist.getCorrelation()[0, 0] > 1.0, "not regularized"
 sample = dist.getSample(10)

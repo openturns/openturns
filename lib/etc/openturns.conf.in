@@ -403,18 +403,18 @@
 
   <!-- OT::Matrix parameters -->
   <Matrix-size-visible-in-str-from value_int="5" />
+  <Matrix-DefaultSmallPivot value_float="1.0e-7"  />
+  <Matrix-LargestEigenValueRelativeError value_float="1.0e-4" />
+  <Matrix-SymmetryThreshold value_float="1.0e-12" />
+  <Matrix-LargestEigenValueIterations value_int="50" />
+  <Matrix-MaximalScaling  value_float="1.0e-5" />
+  <Matrix-StartingScaling value_float="1.0e-13" />
 
   <!-- OT::Tensor parameters -->
   <Tensor-size-visible-in-str-from value_int="5" />
 
   <!-- OT::Tensor parameters -->
   <ComplexTensor-size-visible-in-str-from value_int="6" />
-
-  <!-- OT::MatrixImplementation parameters -->
-  <Matrix-DefaultSmallPivot value_float="1.0e-7"  />
-  <Matrix-LargestEigenValueRelativeError value_float="1.0e-4" />
-  <Matrix-SymmetryThreshold value_float="1.0e-12" />
-  <Matrix-LargestEigenValueIterations value_int="50"  />
 
   <!-- OT::BernsteinCopulaFactory parameters -->
   <BernsteinCopulaFactory-alpha                    value_float="1.0"             />
@@ -749,15 +749,11 @@
   <GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound    value_float="1.0e-2"  />
   <GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor   value_float="2.0"     />
   <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound    value_float="1.0e2"   />
-  <GeneralLinearModelAlgorithm-MaximalScaling                   value_float="1.0e-5"   />
   <GeneralLinearModelAlgorithm-MeanEpsilon                      value_float="1.0e-12" />
-  <GeneralLinearModelAlgorithm-StartingScaling                  value_float="1.0e-13" />
   <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm     value_str="TNC"     />
   <GeneralLinearModelAlgorithm-LinearAlgebra                    value_str="LAPACK"  />
 
   <!-- OT::KrigingAlgorithm parameters -->
-  <KrigingAlgorithm-MaximalScaling  value_float="1.0e-5"   />
-  <KrigingAlgorithm-StartingScaling value_float="1.0e-13" />
   <KrigingAlgorithm-LinearAlgebra   value_str="LAPACK"  />
 
   <!-- OT::SquaredExponential parameters -->
@@ -866,8 +862,6 @@
   <HMatrix-ValidationRerun      value_int="0"    />
 
   <!-- OT::GaussianProcess parameters -->
-  <GaussianProcess-StartingScaling       value_float="1.0e-13"       />
-  <GaussianProcess-MaximalScaling        value_float="1.0e-5"        />
   <GaussianProcess-GibbsMaximumIteration value_int="100" />
 
   <!-- OT::SpectralGaussianProcess parameters -->
@@ -923,10 +917,7 @@
   <!-- OT::ARMALikelihoodFactoryFactory parameters -->
   <ARMALikelihoodFactory-DefaultRhoBeg             value_float="0.01"            />
   <ARMALikelihoodFactory-DefaultRhoEnd             value_float="1.0e-10"         />
-  <ARMALikelihoodFactory-DefaultStartingPointScale value_float="1.0"             />
-  <ARMALikelihoodFactory-MaximalScaling            value_float="1.0e-5"          />
   <ARMALikelihoodFactory-RootEpsilon               value_float="1.0e-6"          />
-  <ARMALikelihoodFactory-StartingScaling           value_float="1.0e-13"         />
   <ARMALikelihoodFactory-DefaultMaximumEvaluationNumber             value_int="10000" />
 
   <!-- OT::FittingTest parameters -->

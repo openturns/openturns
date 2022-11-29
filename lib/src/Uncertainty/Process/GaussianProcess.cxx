@@ -109,15 +109,6 @@ GaussianProcess * GaussianProcess::clone() const
 
 void GaussianProcess::initialize() const
 {
-  // Initialization of the process
-  // Get the covariance matrix (its Cholesky factor)
-  CovarianceMatrix covarianceMatrix;
-  if (samplingMethod_ != 1)
-  {
-    LOGINFO(OSS() << "Discretize the covariance model");
-    covarianceMatrix = CovarianceMatrix(covarianceModel_.discretize(mesh_));
-  }
-
   // There is a specific regularization for h-matrices
   if (samplingMethod_ == SamplingMethod::HMAT)
   {
@@ -136,51 +127,14 @@ void GaussianProcess::initialize() const
       covarianceHMatrix_.assemble(block, hmatrixParameters, 'L');
     }
     covarianceHMatrix_.factorize(hmatrixParameters.getFactorizationMethod());
-  } // samplingMethod_ == 1, ie hmat
-  // Other sampling methods
+  }
   else
   {
-    // Boolean flag to tell if the regularization is enough
-    Bool continuationCondition = true;
-    // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
-    // The regularization is needed for fast decreasing covariance models
-    Scalar maxEV = -1.0;
-    const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
-    const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
-    Scalar cumulatedScaling = 0.0;
-    Scalar scaling = startingScaling;
-    while (continuationCondition)
-    {
-      try
-      {
-        covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
-        continuationCondition = false;
-      }
-      // If the factorization failed regularize the matrix
-      // Here we use a generic exception as different exceptions may be thrown
-      catch (const Exception &)
-      {
-        // If the largest eigenvalue module has not been computed yet...
-        if (maxEV < 0.0)
-        {
-          maxEV = covarianceMatrix.computeLargestEigenValueModule();
-          LOGDEBUG(OSS() << "maxEV=" << maxEV);
-          scaling *= maxEV;
-        }
-        cumulatedScaling += scaling ;
-        LOGDEBUG(OSS() << "scaling=" << scaling << ", cumulatedScaling=" << cumulatedScaling);
-        // Unroll the regularization to optimize the computation
-        for (UnsignedInteger i = 0; i < covarianceMatrix.getDimension(); ++i) covarianceMatrix(i, i) += scaling;
-        scaling *= 2.0;
-        continuationCondition = scaling < maxEV * maximalScaling;
-      }
-    }
-    if (maxEV > 0.0 && scaling >= maximalScaling * maxEV)
-      throw InvalidArgumentException(HERE) << "In GaussianProcess, could not compute the Cholesky factor."
-                                           << " Scaling up to " << cumulatedScaling << " was not enough";
-    if (cumulatedScaling > 0.0)
-      LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
-  } // else samplingMethod_ != 1
+    // LAPACK
+    LOGINFO(OSS() << "Discretize the covariance model");
+    CovarianceMatrix covarianceMatrix(covarianceModel_.discretize(mesh_));
+    covarianceCholeskyFactor_ = covarianceMatrix.computeRegularizedCholesky();
+  }
 
   // The process has been initialized
   isInitialized_ = true;

@@ -110,6 +110,11 @@ TriangularMatrix CovarianceMatrix::computeCholesky(const Bool keepIntact)
   return Implementation(getImplementation()->computeCholesky(keepIntact).clone());
 }
 
+/* Build the regularized Cholesky factorization of the matrix */
+TriangularMatrix CovarianceMatrix::computeRegularizedCholesky() const
+{
+  return getImplementation()->computeRegularizedCholesky();
+}
 
 /* Resolution of a linear system */
 Point CovarianceMatrix::solveLinearSystem(const Point & b,
