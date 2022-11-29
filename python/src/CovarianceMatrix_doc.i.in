@@ -71,7 +71,20 @@ This uses LAPACK's `DPOTRF <http://www.netlib.org/lapack/lapack-3.1.1/html/dpotr
 
 Returns
 -------
-cholesky_factor : :class:`~openturns.SquareMatrix`
+cholesky_factor : :class:`~openturns.TriangularMatrix`
+    The left (lower) Cholesky factor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CovarianceMatrix::computeRegularizedCholesky
+"Compute the regularized Cholesky factor.
+
+Similar to :meth:`computeCholesky` but with a regularization loop according
+to the largest eigenvalue and keys `Matrix-StartingScaling` and `Matrix-MaximalScaling`.
+
+Returns
+-------
+cholesky_factor : :class:`~openturns.TriangularMatrix`
     The left (lower) Cholesky factor."
 
 // ---------------------------------------------------------------------

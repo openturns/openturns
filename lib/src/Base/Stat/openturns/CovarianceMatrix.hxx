@@ -79,6 +79,9 @@ public:
   /** Build the Cholesky factorization of the matrix */
   virtual TriangularMatrix computeCholesky(const Bool keepIntact = true);
 
+  /** Build the regularize Cholesky factorization of the matrix */
+  virtual TriangularMatrix computeRegularizedCholesky() const;
+
   /** Resolution of a linear system */
   Point solveLinearSystem(const Point & b,
                           const Bool keepIntact = true);

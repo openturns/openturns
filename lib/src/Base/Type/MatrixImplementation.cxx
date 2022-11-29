@@ -1453,11 +1453,58 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
 
   dpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
   if (info != 0) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the matrix is not definite positive.";
-  for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++ j)
-    for (UnsignedInteger i = 0; i < j; ++ i)
-      A(i, j) = 0.0;
+  // ensure upper triangle is zero
+  for (UnsignedInteger j = 1; j < (UnsignedInteger)(n); ++ j)
+    std::fill_n(&A(0, j), j, 0.0);
   A.setName("");
   return A;
+}
+
+MatrixImplementation MatrixImplementation::computeRegularizedCholesky() const
+{
+  Bool continuationCondition = true;
+  Scalar maxEV = -1.0;
+  const Scalar startingScaling = ResourceMap::GetAsScalar("Matrix-StartingScaling");
+  const Scalar maximalScaling = ResourceMap::GetAsScalar("Matrix-MaximalScaling");
+  Scalar cumulatedScaling = 0.0;
+  Scalar scaling = startingScaling;
+  MatrixImplementation choleskyFactor;
+  MatrixImplementation work(*this);
+  while (continuationCondition)
+  {
+    try
+    {
+      choleskyFactor = work.computeCholesky(false);
+      continuationCondition = false;
+    }
+    // If the factorization failed regularize the matrix
+    // Here we use a generic exception as different exceptions may be thrown
+    catch (const Exception &)
+    {
+      // If the largest eigenvalue module has not been computed yet...
+      if (maxEV < 0.0)
+      {
+        const Bool found = computeLargestEigenValueModuleSym(maxEV);
+        if (!found) throw InternalException(HERE) << "In MatrixImplementation::computeRegularizedCholesky, could not find largest eigenvalue module up to the desired precision";
+        LOGDEBUG(OSS() << "maxEV=" << maxEV);
+        scaling *= maxEV;
+      }
+      cumulatedScaling += scaling ;
+      LOGDEBUG(OSS() << "scaling=" << scaling << ", cumulatedScaling=" << cumulatedScaling);
+      // Unroll the regularization to optimize the computation
+      work = *this;
+      for (UnsignedInteger i = 0; i < work.getDimension(); ++ i)
+        work(i, i) += cumulatedScaling;
+      scaling *= 2.0;
+      continuationCondition = scaling < maxEV * maximalScaling;
+    }
+  }
+  if (maxEV > 0.0 && scaling >= maximalScaling * maxEV)
+    throw InvalidArgumentException(HERE) << "In MatrixImplementation::computeRegularizedCholesky, could not compute the Cholesky factor."
+                                         << " Scaling up to "  << cumulatedScaling << " was not enough";
+  if (cumulatedScaling > 0.0)
+    LOGWARN(OSS() <<  "Warning! Scaling up to " << cumulatedScaling << " was needed in order to factorize the matrix.");
+  return choleskyFactor;
 }
 
 /* Update in-place the Cholesky factor L of an SPD matrix M given a rank-one update vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M + vv^t */

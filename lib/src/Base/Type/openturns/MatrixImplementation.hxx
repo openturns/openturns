@@ -281,6 +281,9 @@ public:
   /** Build the Cholesky factorization of the matrix */
   virtual MatrixImplementation computeCholesky(const Bool keepIntact = true);
 
+  /** Build the regularized Cholesky factorization of the matrix */
+  virtual MatrixImplementation computeRegularizedCholesky() const;
+
 #ifndef SWIG
   /** Update in-place the Cholesky factor L of an SPD matrix M given a rank-one update vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M + vv^t */
   static void CholeskyUpdate(MatrixImplementation & cholesky,
