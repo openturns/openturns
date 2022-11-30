@@ -168,6 +168,10 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
         throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " global algorithm requires finite bounds";
     }
   }
+
+  if ((getAlgorithmName() == "LN_NEWUOA") && problem.hasBounds())
+    throw InvalidArgumentException(HERE) << "Error: LN_NEWUOA algorithm does not support bounds";
+
 #ifdef OPENTURNS_HAVE_NLOPT
   const UnsignedInteger dimension = problem.getDimension();
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(getAlgorithmName()));

@@ -24,10 +24,6 @@ bounds = ot.Interval([-6.0, -6.0], [1.0, 7.0])
 algoNames = ot.NLopt.GetAlgorithmNames()
 
 for algoName in algoNames:
-    # fails on aarch64
-    if "NEWUOA" in algoName:
-        continue
-
     algo = ot.NLopt(algoName)
 
     for minimization in [False, True]:

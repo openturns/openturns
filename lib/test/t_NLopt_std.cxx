@@ -48,10 +48,6 @@ int main(int, char *[])
     const Description algoNames(NLopt::GetAlgorithmNames());
     for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
     {
-      // fails on aarch64
-      if (algoNames[i].find("NEWUOA") != std::string::npos)
-        continue;
-  
       NLopt algo(algoNames[i]);
       for (SignedInteger minimization = 0; minimization < 2; ++ minimization)
         for (SignedInteger inequality = 0; inequality < 2; ++ inequality)
