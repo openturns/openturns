@@ -653,7 +653,7 @@ score_Q2 = compute_cleaning_PCE(
 
 # %%
 #
-# .. code-block::
+# .. code-block:: python
 #
 #    Step 1:  [0, 1, 7, 10, 15, 16]
 #    Step 2:  [0, 1, 7, 10, 15, 17]
