@@ -1015,6 +1015,11 @@ Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & in
     } // i
 
   } // not independent
+
+  // clip to [0, 1]
+  probability = std::max(probability, 0.0);
+  probability = std::min(probability, 1.0);
+
   return probability;
 }
 
