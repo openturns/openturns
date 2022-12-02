@@ -107,3 +107,13 @@ for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
     assert len(p) == len(pd), "len p/pd"
     assert len(pc) == 1, "len(pc)"
     assert len(p) == len(pc[0]), "len p/pc"
+
+# negative proba bug
+Torque = ot.LogNormal(0.0, 0.25)
+Angle = ot.Normal(0.0, 2.0)
+rho = 0.5
+TorqueAngleCopula = ot.NormalCopula(ot.CorrelationMatrix(2, [1.0, rho, rho, 1.0]))
+d = ot.ComposedDistribution([Torque, Angle], TorqueAngleCopula)
+interval = ot.Interval([6.30177467808195, 3.56435643564356], [6.36881483423176, 3.72277227722772])
+p = d.computeProbability(interval)
+assert p > 0.0, "!positive proba"
