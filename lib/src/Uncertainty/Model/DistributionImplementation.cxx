@@ -961,14 +961,18 @@ Sample DistributionImplementation::computeSurvivalFunction(const Sample & inSamp
 /* Compute the probability content of an interval */
 Scalar DistributionImplementation::computeProbability(const Interval & interval) const
 {
-  if (interval.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
-  // Empty interval, quick check. More checks will be done in the refined algorithms
-  // Generic implementation for discrete distributions
-  if (isDiscrete()) return computeProbabilityDiscrete(interval);
+  if (interval.getDimension() != dimension_)
+    throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
+
+  // Generic implementations for continuous & discrete distributions
+  if (isContinuous())
+    return computeProbabilityContinuous(interval);
+  if (isDiscrete())
+    return computeProbabilityDiscrete(interval);
+
   if (dimension_ == 1)
-  {
     return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
-  }
+
   return computeProbabilityGeneral(interval);
 }
 
