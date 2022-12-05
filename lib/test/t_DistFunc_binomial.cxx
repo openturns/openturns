@@ -32,65 +32,38 @@ int main(int, char *[])
 
   try
   {
-    // Binomial related functions
+    // binomial + logdBinomial
+    const Sample sample1(Sample::ImportFromCSVFile("t_DistFunc_binomial1.csv", ","));
+    for (UnsignedInteger i = 0; i < sample1.getSize(); ++ i)
     {
-      // dBinomial
-      Scalar pMin = 0.1;
-      Scalar pMax = 0.9;
-      UnsignedInteger nMin = 2;
-      UnsignedInteger nMax = 12;
-      UnsignedInteger n1 = 5;
-      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
-      {
-        Scalar p = pMin + i1 * (pMax - pMin) / (n1 - 1.0);
-        for (UnsignedInteger n = nMin; n <= nMax; ++n)
-        {
-          for (UnsignedInteger k = 0; k <= n; ++k)
-          {
-            fullprint << "dBinomial(" << n << ", " << p << ", " << k << ")=" << std::setprecision(3) << DistFunc::dBinomial(n, p, k) << std::endl;
-          }
-        }
-      }
-    } // dBinomial
+      const UnsignedInteger n = sample1(i, 0);
+      const Scalar p = sample1(i, 1);
+      const UnsignedInteger k = sample1(i, 2);
+      const Scalar ref = sample1(i, 3);
+      const Scalar log_ref = sample1(i, 4);
+        
+      const Scalar val = DistFunc::dBinomial(n, p, k);
+      std::cout << "dbinomial(" << n <<", " << p<<", "<<k<<") ref=" << ref << " val=" << val <<std::endl;
+      assert_almost_equal(val, ref);
+
+      const Scalar log_val = DistFunc::logdBinomial(n, p, k);
+      std::cout << "logdbinomial(" << n <<", " << p<<", "<<k<<") ref=" << log_val << " val=" << log_val <<std::endl;
+      assert_almost_equal(log_val, log_ref);
+    }
+
+    // rBinomial
+    const Sample sample2(Sample::ImportFromCSVFile("t_DistFunc_binomial2.csv", ","));
+    for (UnsignedInteger i = 0; i < sample2.getSize(); ++ i)
     {
-      // logdBinomial
-      Scalar pMin = 0.1;
-      Scalar pMax = 0.9;
-      UnsignedInteger nMin = 2;
-      UnsignedInteger nMax = 12;
-      UnsignedInteger n1 = 5;
-      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
-      {
-        Scalar p = pMin + i1 * (pMax - pMin) / (n1 - 1.0);
-        for (UnsignedInteger n = nMin; n <= nMax; ++n)
-        {
-          for (UnsignedInteger k = 0; k <= n; ++k)
-          {
-            fullprint << "logdBinomial(" << n << ", " << p << ", " << k << ")=" << DistFunc::logdBinomial(n, p, k) << std::endl;
-          }
-        }
-      }
-    } // logdBinomial
-    {
-      // rBinomial
-      Scalar pMin = 0.1;
-      Scalar pMax = 0.9;
-      UnsignedInteger nMin = 2;
-      UnsignedInteger nMax = 12;
-      UnsignedInteger n1 = 5;
-      UnsignedInteger nR = 5;
-      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
-      {
-        Scalar p = pMin + i1 * (pMax - pMin) / (n1 - 1.0);
-        for (UnsignedInteger n = nMin; n <= nMax; ++n)
-        {
-          for (UnsignedInteger iR = 0; iR < nR; ++iR)
-          {
-            fullprint << "rBinomial()=" << DistFunc::rBinomial(n, p) << std::endl;
-          }
-        }
-      }
-    } // rBinomial
+      const UnsignedInteger n = sample2(i, 0);
+      const Scalar p = sample2(i, 1);
+      const UnsignedInteger iR = sample2(i, 2);
+      const Scalar ref = sample2(i, 3);
+
+      const Scalar val = DistFunc::rBinomial(n, p);
+      std::cout << "rBinomial(" << n <<", " << p<<") iR="<<iR<<" ref=" << ref << " val=" << val <<std::endl;
+      assert_almost_equal(val, ref);
+    }
   }
   catch (TestFailed & ex)
   {
