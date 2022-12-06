@@ -98,8 +98,6 @@ Now, we make some additional hypotheses on the relation between
         \right.
 
 
-where :math:`\lambda = 1-\frac{\beta}{2}`.
-
 The inverse Box Cox transformation is defined by:
 
 .. math::
@@ -174,8 +172,8 @@ are:
 .. math::
   :label: eqBetaSigma
 
-    \hat{\beta}(\lambda) = \frac{1}{N} \sum_{k=0}^{N-1} h_{\lambda}(x_k) \\
-    \hat{\sigma}^2(\lambda) = \frac{1}{N} \sum_{k=0}^{N-1} (h_{\lambda}(x_k) - \beta(\lambda))^2
+    \hat{\beta}(\lambda) = \frac{1}{N} \sum_{k=1}^{N} h_{\lambda}(x_k) \\
+    \hat{\sigma}^2(\lambda) = \frac{1}{N} \sum_{k=1}^{N} (h_{\lambda}(x_k) - \beta(\lambda))^2
 
 | Substituting :eq:`eqBetaSigma` into :eq:`LKH` and taking the
   :math:`\log-`\ likelihood, we obtain:
@@ -187,17 +185,80 @@ are:
     \frac{N}{2}
     \log\left[\hat{\sigma}^2(\lambda)\right]
     \;+\;
-    \left(\lambda - 1 \right) \sum_{k=0}^{N-1} \log(x_i)\,,
+    \left(\lambda - 1 \right) \sum_{k=1}^{N} \log(x_k)\,,
 
 where :math:`C` is a constant.
 
 The parameter :math:`\hat{\lambda}` is the one maximizing :math:`\ell(\lambda)` defined in :eq:`lLambda`.
+
+| **Estimation of the Box Cox transformation in the frame of general linear model:** 
+
+In the frame of the general linear model, we consider a functional relation between some input and 
+output values. Let us consider the following dataset:
+:math:`\left(\left(\vect{x}^{(i)}, y^{(i)}\right), i = 1, \ldots, m\right)`.
+
+The general linear model aims at assessing the following 
+prior model :
+
+.. math:: Y(\vect{x}) = \Tr{\vect{\phi}(\vect{x})} \vect{\alpha} + Z(\vect{x})
+
+where:
+
+-  :math:`\Tr{\vect{\phi}(\vect{x})} \vect{\alpha}` is a general linear
+   model based upon a functional basis
+   :math:`\vect{\phi} = \left(\phi_j, j = 1, \ldots, p\right)` and a vector of
+   coefficients
+   :math:`\vect{\alpha} = \left(\alpha_j, j = 1, \ldots, p\right)`,
+
+-  :math:`Z` is a zero-mean stationary Gaussian process whose covariance
+   function reads:
+
+   .. math:: \mathbb{E}[Z(\vect{x})\,Z(\vect{x'})] = \tau^2 R(\vect{x} - \vect{x'}, \vect{\theta})
+
+   where :math:`\tau^2 > 0` is the variance and :math:`R` is the
+   correlation function that solely depends on the Manhattan distance
+   between input points :math:`\vect{x} - \vect{x'}` and a vector of
+   parameters :math:`\vect{\theta} \in \Rset^{n_\theta}`.
+
+The optimal parameters of such model are estimated by maximizing a log-likelihood function.
+
+Here we suppose a gaussian prior on :math:`h_\lambda(y)`. Thus, if we write our various hypotheses, 
+we get the following log-likelihood function to be optimized: 
+
+  .. math::
+    :label: lLambdaglm
+
+    \ell(\lambda) = \log L( \hat{\beta}(\lambda), \hat{\sigma}(\lambda),\lambda ) = C -
+    \frac{m}{2}
+    \log\left[\hat{\sigma}^2(\lambda)\right]
+    \;+\;
+    \left(\lambda - 1 \right) \sum_{k=1}^{m} \log(y_k)\,,
+
+where :math:`C` is a constant,
+
+   .. math::
+    :label: betasigmaglm
+
+    \epsilon_k = y_k - \Tr{\vect{\phi}(\vect{x_k})} \vect{\alpha}, k=1...m \\
+    \hat{\beta}(\lambda) = \frac{1}{m} \sum_{k=1}^{m} h_{\lambda}(\epsilon_k) \\
+    \hat{\sigma}^2(\lambda) = \frac{1}{m} \sum_{k=1}^{m} (h_{\lambda}(\epsilon_k) - \beta(\lambda))^2
+
+Remarks :
+
+-  The equation :eq:`lLambdaglm` applies also if we replace the general linear model by a linear regression model. 
+   Indeed a linear model is a specific case of general linear model where the correlation model is a 
+   Dirac covariance model.
+
+-  We get hare a double loop optimization. For each :math:`\lambda` value, we optimize the parameters of the underlying
+   general linear model. Some practitioners use to freeze first general linear model parameters and then preform a one loop
+   optimization selecting only the best :math:`\lambda` value
 
 .. topic:: API:
 
     - See :class:`~openturns.BoxCoxTransform`
     - See :class:`~openturns.InverseBoxCoxTransform`
     - See :class:`~openturns.BoxCoxFactory`
+    - See :class:`~openturns.GeneralLinearModelAlgorithm`
 
 .. topic:: Examples:
 

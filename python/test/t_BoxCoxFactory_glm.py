@@ -17,18 +17,18 @@ scale = [3.0]
 outputSample *= scale
 
 # translate sample
-translate = [3.1]
+translate = [10]
 outputSample += translate
 
 # Finally inverse transform using an arbitrary lambda
-lamb = [1.8]
+lamb = [2.0]
 boxCoxFunction = ot.InverseBoxCoxEvaluation(lamb)
 
 # transform y using BoxCox function
 outputSample = boxCoxFunction(outputSample)
 
 # Add small noise
-epsilon = ot.Normal(0, 1.0e-2).getSample(size)
+epsilon = ot.Normal(0, 1.0e-3).getSample(size)
 outputSample += epsilon
 
 # Now we build the factory
@@ -38,7 +38,7 @@ factory = ot.BoxCoxFactory()
 result = ot.GeneralLinearModelResult()
 basis = ot.LinearBasisFactory(1).build()
 covarianceModel = ot.DiracCovarianceModel()
-shift = [1.0e-1]
+shift = [1.0e-10]
 myBoxCox = factory.build(
     inputSample, outputSample, covarianceModel, basis, shift, result
 )
