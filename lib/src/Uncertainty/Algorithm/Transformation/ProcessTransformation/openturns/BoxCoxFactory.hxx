@@ -31,6 +31,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/GeneralLinearModelResult.hxx"
+#include "openturns/LinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -85,6 +86,17 @@ public:
                         const CovarianceModel & covarianceModel,
                         const Point & shift,
                         GeneralLinearModelResult & result);
+
+  BoxCoxTransform build(const Sample &inputSample,
+                        const Sample &outputSample,
+                        const Basis &basis,
+                        const Point &shift,
+                        LinearModelResult &linearModelResult);
+
+  BoxCoxTransform build(const Sample &inputSample,
+                        const Sample &outputSample,
+                        const Point &shift,
+                        LinearModelResult &linearModelResult);
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;

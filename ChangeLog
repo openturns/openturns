@@ -4,6 +4,9 @@
 
 === Library ===
 
+==== Major changes ====
+ * BoxCoxFactory handles linear model
+
 ==== New classes ====
  * SmolyakExperiment (openturns.experimental)
 
