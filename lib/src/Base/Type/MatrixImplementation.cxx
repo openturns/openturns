@@ -1269,6 +1269,8 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSquare(Scalar & maximum
   Point currentEigenVector(dimension, 1.0);
   Point nextEigenVector(genVectProd(currentEigenVector));
   Scalar nextEigenValue = nextEigenVector.norm();
+  if (!SpecFunc::IsNormal(nextEigenValue))
+    throw InvalidArgumentException(HERE) << "Cannot compute eigen value due to nan/inf values";
   maximumModule = nextEigenValue / std::sqrt(1.0 * dimension);
   Bool found = false;
   Scalar precision = 0.0;
@@ -1295,6 +1297,8 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSym(Scalar & maximumMod
   Point currentEigenVector(dimension, 1.0);
   Point nextEigenVector(symVectProd(currentEigenVector));
   Scalar nextEigenValue = nextEigenVector.norm();
+  if (!SpecFunc::IsNormal(nextEigenValue))
+    throw InvalidArgumentException(HERE) << "Cannot compute eigen value due to nan/inf values";
   maximumModule = nextEigenValue / std::sqrt(1.0 * dimension);
   Bool found = false;
   Scalar precision = 0.0;
