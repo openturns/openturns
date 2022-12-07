@@ -43,7 +43,7 @@ macro (find_python_module module)
     endif ()
 
     # A module's location is usually a directory, but for binary modules it's a .so file.
-    execute_process (COMMAND "${PYTHON_EXECUTABLE}" "-c" 
+    execute_process (COMMAND "${Python_EXECUTABLE}" "-c"
                       "import re, ${module}; print(re.compile('/__init__.py.*').sub('',${module}.__file__))"
                       RESULT_VARIABLE _${module}_status
                       OUTPUT_VARIABLE _${module}_location
@@ -52,7 +52,7 @@ macro (find_python_module module)
       set (${module_upper}_LOCATION ${_${module}_location}
             CACHE STRING "Location of Python module ${module}")
       # retrieve version
-      execute_process (COMMAND "${PYTHON_EXECUTABLE}" "-c" "import ${module}; print(${module}.__version__)"
+      execute_process (COMMAND "${Python_EXECUTABLE}" "-c" "import ${module}; print(${module}.__version__)"
                         RESULT_VARIABLE _${module}_status
                         OUTPUT_VARIABLE _${module}_version
                         ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)

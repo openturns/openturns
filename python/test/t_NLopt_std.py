@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import sys
 
 ot.TESTPREAMBLE()
@@ -16,42 +17,20 @@ def stop():
     return False
 
 
-# rosenbrock x*=(1,1), x*=(0.7864, 0.6177) on unit disk
 dim = 2
-f = ot.SymbolicFunction(["x1", "x2"], ["1+100*(x2-x1^2)^2+(1-x1)^2"])
-startingPoint = [1e-3] * dim
-bounds = ot.Interval([-1.5] * dim, [1.5] * dim)
+f = ot.SymbolicFunction(["x1", "x2"], ["10-5*(x1-3)^2-7*(x2-2)^2+0.1*(x1+x2)"])
+startingPoint = [0.0] * dim
+bounds = ot.Interval([-6.0, -6.0], [1.0, 7.0])
 algoNames = ot.NLopt.GetAlgorithmNames()
 
 for algoName in algoNames:
-    # STOGO/AGS might not be enabled
-    if "STOGO" in algoName or "AGS" in algoName:
-        continue
-
-    # NEWUOA nan/-nan
-    # COBYLA crashes on squeeze
-    # ESCH not same results with 2.4.1
-    # AUGLAG_EQ raises a roundoff-limited exception on i386
-    # LD_SLSQP/LD_CCSAQ not same point on i386
-    if (
-        "NEWUOA" in algoName
-        or "COBYLA" in algoName
-        or "ESCH" in algoName
-        or "AUGLAG_EQ" in algoName
-        or "LD_SLSQP" in algoName
-        or "LD_CCSAQ" in algoName
-        or "LD_MMA" in algoName
-    ):
-        print("-- Skipped: algo=", algoName)
-        continue
-
     algo = ot.NLopt(algoName)
 
-    for minimization in [True, False]:
-        for inequality in [True, False]:
-            for equality in [True, False]:
-                for bound in [True, False]:
-                    if not minimization and not bound:
+    for minimization in [False, True]:
+        for inequality in [False, True]:
+            for equality in [False, True]:
+                for bound in [False, True]:
+                    if minimization and not bound:
                         continue
                     print(
                         "algo=",
@@ -68,14 +47,14 @@ for algoName in algoNames:
                     problem = ot.OptimizationProblem(f)
                     problem.setMinimization(minimization)
                     if inequality:
-                        # x1^2+x2^2 <= 1
+                        # x1 <= 2
                         problem.setInequalityConstraint(
-                            ot.SymbolicFunction(["x1", "x2"], ["1-x1^2-x2^2"])
+                            ot.SymbolicFunction(["x1", "x2"], ["2-x1"])
                         )
                     if equality:
-                        # x1 = x2
+                        # x2 = 4
                         problem.setEqualityConstraint(
-                            ot.SymbolicFunction(["x1", "x2"], ["x1-x2"])
+                            ot.SymbolicFunction(["x1", "x2"], ["x2-4"])
                         )
                     if bound:
                         problem.setBounds(bounds)
@@ -85,7 +64,7 @@ for algoName in algoNames:
                     except Exception:
                         print("-- Not supported")
                         continue
-                    algo.setMaximumEvaluationNumber(100)
+                    algo.setMaximumEvaluationNumber(1000)
                     algo.setStartingPoint(startingPoint)
                     try:
                         algo.run()
@@ -93,9 +72,26 @@ for algoName in algoNames:
                         print("-- ", e)
                         continue
                     result = algo.getResult()
+                    x = result.getOptimalPoint()
                     print(
-                        "x^=", result.getOptimalPoint(), "y^=", result.getOptimalValue()
+                        "x^=", x, "y^=", result.getOptimalValue()
                     )
+                    if not inequality and not equality:
+                        if not minimization:
+                            if not bound:
+                                x_ref = [3.0, 2.0]
+                            else:
+                                x_ref = [1.0, 2.0]
+                        else:
+                            x_ref = [-6.0, -6.0]
+                            # these go to (-6,7)
+                            if "NELDERMEAD" in algoName or "SBPLX" in algoName:
+                                continue
+                        ott.assert_almost_equal(x, x_ref, 4e-1, 1e-2)
+                    elif equality:
+                        ott.assert_almost_equal(x[1], 4.0, 4e-1, 1e-2)
+                    elif inequality:
+                        assert x[0] < 2.01, "!x1<=2.0"
 
 # FORM
 f = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
@@ -116,4 +112,6 @@ solver.setMaximumConstraintError(1.0e-10)
 algo = ot.FORM(solver, event, mean)
 algo.run()
 result = algo.getResult()
-print("beta=%.6f" % result.getGeneralisedReliabilityIndex())
+beta = result.getGeneralisedReliabilityIndex()
+print("beta=%.6f" % beta)
+ott.assert_almost_equal(beta, 1.009255)

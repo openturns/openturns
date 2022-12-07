@@ -35,54 +35,35 @@ int main(int, char *[])
   try
   {
     // bounds
-    Description inVars;
-    inVars.add("x1");
-    inVars.add("x2");
-    Description formula(1, "1+100*(x2-x1^2)^2+(1-x1)^2");
+    const Description inVars = {"x1", "x2"};
+    const Description formula(1, "10-5*(x1-3)^2-7*(x2-2)^2+0.1*(x1+x2)");
 
-    SymbolicFunction f(inVars, formula);
+    const SymbolicFunction f(inVars, formula);
 
-    UnsignedInteger dim = f.getInputDimension();
-    Point startingPoint(dim, 1e-3);
+    const UnsignedInteger dim = f.getInputDimension();
+    const Point startingPoint(dim, 0.0);
 
-    Interval bounds(Point(dim, -1.5), Point(dim, 1.5));
+    const Interval bounds(Point(dim, -6.0), Point({1.0, 7.0}));
 
-    Description algoNames(NLopt::GetAlgorithmNames());
+    const Description algoNames(NLopt::GetAlgorithmNames());
     for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
     {
-      // STOGO/AGS might not be enabled
-      if ((algoNames[i] == "GD_STOGO") || (algoNames[i] == "GD_STOGO_RAND") || (algoNames[i] == "GN_AGS"))
-        continue;
-      // NEWUOA nan/-nan
-      // COBYLA crashes on squeeze
-      // ESCH not same results with 2.4.1
-      // AUGLAG_EQ raises a roundoff-limited on i386
-      if ((algoNames[i].find("NEWUOA") != std::string::npos)
-          || (algoNames[i].find("MLSL") != std::string::npos)
-          || (algoNames[i] == "LN_COBYLA")
-          || (algoNames[i] == "GN_ESCH")
-          || (algoNames[i].find("AUGLAG_EQ") != std::string::npos))
-      {
-        fullprint << "-- Skipped: algo=" << algoNames[i] << std::endl;
-        continue;
-      }
-
       NLopt algo(algoNames[i]);
-      for (SignedInteger minimization = 1; minimization >= 0; -- minimization)
-        for (SignedInteger inequality = 1; inequality >= 0; -- inequality)
-          for (SignedInteger equality = 1; equality >= 0; -- equality)
-            for(SignedInteger bound = 1; bound >= 0; -- bound)
+      for (SignedInteger minimization = 0; minimization < 2; ++ minimization)
+        for (SignedInteger inequality = 0; inequality < 2; ++ inequality)
+          for (SignedInteger equality = 0; equality < 2; ++ equality)
+            for(SignedInteger bound = 0; bound < 2; ++ bound)
             {
-              if (!minimization && !bound)
+              if (minimization && !bound)
                 continue;
               OptimizationProblem problem(f);
               problem.setMinimization(minimization == 1);
               if (inequality)
-                // x1^2+x2^2 <= 1
-                problem.setInequalityConstraint(SymbolicFunction(inVars, Description(1, "1-x1^2-x2^2")));
+                // x1 <= 2
+                problem.setInequalityConstraint(SymbolicFunction(inVars, Description(1, "2-x1")));
               if (equality)
-                // x1 = x2
-                problem.setEqualityConstraint(SymbolicFunction(inVars, Description(1, "x1-x2")));
+                // x2 = 4
+                problem.setEqualityConstraint(SymbolicFunction(inVars, Description(1, "x2-4")));
               if (bound)
                 problem.setBounds(bounds);
               try
@@ -90,16 +71,38 @@ int main(int, char *[])
                 NLopt::SetSeed(0);
                 algo.setProblem(problem);
                 algo.setStartingPoint(startingPoint);
-                algo.setMaximumEvaluationNumber(100);
+                algo.setMaximumEvaluationNumber(1000);
                 fullprint << "algo=" << algoNames[i] << " minimization=" << minimization << " bounds=" << bound << " inequality=" << inequality << " equality=" << equality << std::endl;
                 algo.run();
-                OptimizationResult result(algo.getResult());
-                fullprint << "x^=" << result.getOptimalPoint().__str__() << " y^=" << result.getOptimalValue().__str__() << std::endl;
               }
               catch (...)
               {
-                fullprint << "-- Not supported: algo=" << algoNames[i] << " inequality=" << (inequality == 1 ? "true" : "false") << " equality=" << (equality == 1 ? "true" : "false") << std::endl;
+                fullprint << "-- Not supported: algo=" << algoNames[i] << " inequality=" << inequality << " equality=" << equality << std::endl;
+                continue;
               }
+              const OptimizationResult result(algo.getResult());
+              const Point x(result.getOptimalPoint());
+              fullprint << "x=" << x.__str__() << " y=" << result.getOptimalValue().__str__() << std::endl;
+              if (!inequality && !equality)
+              {
+                if (!minimization)
+                {
+                  const Point x_ref = bound ? Point({1.0, 2.0}) : Point({3.0, 2.0});
+                  assert_almost_equal(x, x_ref, 4e-1, 1e-2);
+                }
+                else
+                {
+                  const Point x_ref = {-6.0, -6.0};
+                  // these go to (-6,7)
+                  if ((algoNames[i] == "LN_NELDERMEAD") || (algoNames[i] == "LN_SBPLX"))
+                    continue;
+                  assert_almost_equal(x, x_ref, 4e-1, 1e-2);
+                }
+              }
+              else if (equality)
+                assert_almost_equal(x[1], 4.0, 4e-1, 1e-2);
+              else if (inequality && x[0] > 2.01)
+                throw TestFailed("!x1<=2");
             } // bound
     } // algo
   }

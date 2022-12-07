@@ -8,7 +8,7 @@ set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
 set (SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
 
 if (NOT DEFINED PYTHON_EXTENSION_MODULE_SUFFIX AND NOT CMAKE_CROSSCOMPILING)
-  execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import importlib.machinery; print(importlib.machinery.EXTENSION_SUFFIXES[0])"
+  execute_process (COMMAND ${Python_EXECUTABLE} -c "import importlib.machinery; print(importlib.machinery.EXTENSION_SUFFIXES[0])"
                    OUTPUT_VARIABLE PYTHON_EXTENSION_MODULE_SUFFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif ()
 
@@ -62,50 +62,36 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   endforeach ()
 
   # swig_add_module is deprecated
-  if (CMAKE_VERSION VERSION_LESS 3.8)
-    swig_add_module (${MODULENAME} python ${SOURCEFILE} ${swig_other_sources})
-  else ()
-    swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})
-  endif ()
+  swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})
 
-  # UseSWIG generates now standard target names
-  if (CMAKE_VERSION VERSION_LESS 3.13)
-    set (module_target ${SWIG_MODULE_${MODULENAME}_REAL_NAME})
-  else ()
-    set (module_target ${MODULENAME})
-  endif ()
-
-  add_dependencies (${module_target} generate_swig_runtime)
+  add_dependencies (${MODULENAME} generate_swig_runtime)
+  target_include_directories (${MODULENAME} PRIVATE ${Python_INCLUDE_DIRS})
   swig_link_libraries (${MODULENAME} OT)
 
-  target_link_libraries_with_dynamic_lookup (${module_target} ${PYTHON_LIBRARIES})
+  if (TARGET Python::Module)
+    target_link_libraries (${MODULENAME} Python::Module)
+  else ()
+    target_link_libraries_with_dynamic_lookup (${MODULENAME} ${Python_LIBRARIES})
+  endif ()
 
-  set_target_properties (${module_target} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
+  set_target_properties (${MODULENAME} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 
-  set_target_properties (${module_target} PROPERTIES UNITY_BUILD OFF)
+  set_target_properties (${MODULENAME} PROPERTIES UNITY_BUILD OFF)
 
   if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
-    set_target_properties (${module_target} PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
+    set_target_properties (${MODULENAME} PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
   endif ()
 
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
            DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
-  install (TARGETS ${module_target}
+  install (TARGETS ${MODULENAME}
             LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
-  add_dependencies (pylib ${module_target})
+  add_dependencies (pylib ${MODULENAME})
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
 endmacro ()
 
 install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
-
-if (LIBXML2_FOUND AND CMAKE_VERSION VERSION_LESS 3.12)
-  list (APPEND SWIG_MODULE_common_EXTRA_FLAGS -DOPENTURNS_HAVE_LIBXML2=1)
-endif ()
-
-if (HDF5_FOUND AND CMAKE_VERSION VERSION_LESS 3.12)
-  list (APPEND SWIG_MODULE_common_EXTRA_FLAGS -DOPENTURNS_HAVE_HDF5=1)
-endif ()
 
 ot_add_python_module(common common_module.i
                       OTtypes.i
@@ -137,12 +123,12 @@ ot_add_python_module(common common_module.i
                       BaseCommonTemplateDefs.i
                    )
 
-if (LIBXML2_FOUND AND NOT CMAKE_VERSION VERSION_LESS 3.12)
-  set_property (TARGET ${SWIG_MODULE_common_REAL_NAME} APPEND PROPERTY SWIG_COMPILE_DEFINITIONS OPENTURNS_HAVE_LIBXML2=1)
+if (LibXml2_FOUND)
+  set_property (TARGET common APPEND PROPERTY SWIG_COMPILE_DEFINITIONS OPENTURNS_HAVE_LIBXML2=1)
 endif ()
 
-if (HDF5_FOUND AND NOT CMAKE_VERSION VERSION_LESS 3.12)
-  set_property (TARGET ${SWIG_MODULE_common_REAL_NAME} APPEND PROPERTY SWIG_COMPILE_DEFINITIONS OPENTURNS_HAVE_HDF5=1)
+if (HDF5_FOUND)
+  set_property (TARGET common APPEND PROPERTY SWIG_COMPILE_DEFINITIONS OPENTURNS_HAVE_HDF5=1)
 endif ()
 
 ot_add_python_module(typ typ_module.i
@@ -1031,7 +1017,12 @@ set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for th
 
 # Build and install openturns.memoryview
 add_library (memoryview MODULE PythonReadOnlyBuffer.c)
-target_link_libraries_with_dynamic_lookup (memoryview ${PYTHON_LIBRARIES})
+target_include_directories (memoryview PRIVATE ${Python_INCLUDE_DIRS})
+if (TARGET Python::Module)
+  target_link_libraries (memoryview Python::Module)
+else ()
+  target_link_libraries_with_dynamic_lookup (memoryview ${Python_LIBRARIES})
+endif ()
 set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
 if (DEFINED PYTHON_EXTENSION_MODULE_SUFFIX)
   set_target_properties (memoryview PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
@@ -1138,12 +1129,7 @@ if (SPHINX_FOUND)
                         DEPENDS ${sphinx_clones}
                      )
     foreach (MODULENAME ${OPENTURNS_PYTHON_MODULES})
-      if (CMAKE_VERSION VERSION_LESS 3.13)
-        set (module_target ${SWIG_MODULE_${MODULENAME}_REAL_NAME})
-      else ()
-        set (module_target ${MODULENAME})
-      endif ()
-      add_dependencies (sphinx_${format} ${module_target})
+      add_dependencies (sphinx_${format} ${MODULENAME})
     endforeach ()
     add_dependencies (sphinx_${format} memoryview)
   endforeach ()

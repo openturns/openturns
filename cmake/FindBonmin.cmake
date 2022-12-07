@@ -22,10 +22,21 @@
 # Find the path based on a required header file
 #
 find_path (COIN_INCLUDE_DIR NAMES CbcModel.hpp IpNLP.hpp
-  PATH_SUFFIXES coin
-  HINTS "${COIN_INCLUDE_DIR}"
-  HINTS "${COIN_ROOT_DIR}/include/coin"
+  PATH_SUFFIXES coin coin-or
+  HINTS "${COIN_ROOT_DIR}/include/coin" "${COIN_ROOT_DIR}/include/coin-or"
 )
+
+find_path (COIN_BONMIN_INCLUDE_DIR NAMES BonCbc.hpp
+  PATH_SUFFIXES coin coin-or
+  HINTS "${COIN_ROOT_DIR}/include/coin" "${COIN_ROOT_DIR}/include/coin-or"
+)
+
+if (EXISTS "${COIN_BONMIN_INCLUDE_DIR}/BonminConfig.h")
+  file (STRINGS "${COIN_BONMIN_INCLUDE_DIR}/BonminConfig.h" _BONMIN_VERSION_LINE REGEX ".*define[ ]+BONMIN_VERSION[ ].*")
+  if (_BONMIN_VERSION_LINE)
+    string (REGEX REPLACE ".*BONMIN_VERSION[ ]+\"([0-9\\.]+)\"" "\\1" BONMIN_VERSION_STRING ${_BONMIN_VERSION_LINE})
+  endif ()
+endif ()
 
 # try to guess root dir from include dir
 if (COIN_INCLUDE_DIR AND NOT DEFINED COIN_ROOT_DIR)
@@ -95,17 +106,11 @@ find_library (COIN_BONMIN_LIBRARY
   HINTS "${COIN_ROOT_DIR}/lib"
 )
 
-if (EXISTS "${COIN_INCLUDE_DIR}/BonminConfig.h")
-  file (STRINGS "${COIN_INCLUDE_DIR}/BonminConfig.h" _BONMIN_VERSION_LINE REGEX ".*define[ ]+BONMIN_VERSION[ ].*")
-  if (_BONMIN_VERSION_LINE)
-    string (REGEX REPLACE ".*BONMIN_VERSION[ ]+\"([0-9\\.]+)\"" "\\1" BONMIN_VERSION_STRING ${_BONMIN_VERSION_LINE})
-  endif ()
-endif ()
 
 #
 # Set all required cmake variables based on our findings
 #
-set (COIN_INCLUDE_DIRS ${COIN_INCLUDE_DIR})
+set (COIN_INCLUDE_DIRS ${COIN_INCLUDE_DIR};${COIN_BONMIN_INCLUDE_DIR})
 set (COIN_CLP_LIBRARIES "${COIN_CLP_LIBRARY};${COIN_COIN_UTILS_LIBRARY};${COIN_ZLIB_LIBRARY}")
 if (COIN_ZLIB_LIBRARY)
   set (COIN_CLP_LIBRARIES "${COIN_CLP_LIBRARIES};${COIN_ZLIB_LIBRARY}")
@@ -121,7 +126,7 @@ set (COIN_LIBRARIES ${COIN_IPOPT_LIBRARIES})
 
 include (FindPackageHandleStandardArgs)
 find_package_handle_standard_args (Bonmin DEFAULT_MSG
-  COIN_BONMIN_LIBRARY COIN_INCLUDE_DIR
+  COIN_BONMIN_LIBRARY COIN_BONMIN_INCLUDE_DIR COIN_INCLUDE_DIR
 )
 
 mark_as_advanced (COIN_INCLUDE_DIR

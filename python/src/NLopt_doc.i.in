@@ -97,7 +97,7 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | LN_NELDERMEAD              | no derivative     | bounds                      |
 +----------------------------+-------------------+-----------------------------+
-| LN_NEWUOA                  | no derivative     | bounds                      |
+| LN_NEWUOA                  | no derivative     | none                        |
 +----------------------------+-------------------+-----------------------------+
 | LN_NEWUOA_BOUND            | no derivative     | bounds                      |
 +----------------------------+-------------------+-----------------------------+

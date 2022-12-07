@@ -1,11 +1,9 @@
 #                                               -*- cmake -*-
 
-cmake_minimum_required (VERSION 3.2)
+cmake_minimum_required (VERSION 3.13)
 
 # By default, build in Release mode. Must appear before project() command
-if (NOT DEFINED CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
-endif ()
+set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" Release Debug RelWithDebInfo MinSizeRel)
 set (CMAKE_TRY_COMPILE_CONFIGURATION ${CMAKE_BUILD_TYPE})
 
@@ -447,6 +445,26 @@ try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/unsignedlong_same_as_uint64_t.cxx)
 
+# on armel atomic must be explicitely linked
+if (UNIX AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  try_compile(OPENTURNS_HAVE_INLINE_ATOMIC
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/have_inline_atomic.cxx)
+  message(STATUS "Performing Test OPENTURNS_HAVE_INLINE_ATOMIC - ${OPENTURNS_HAVE_INLINE_ATOMIC}")
+  if (NOT OPENTURNS_HAVE_INLINE_ATOMIC)
+    find_library (ATOMIC_LIBRARY NAMES atomic)
+    if (ATOMIC_LIBRARY)
+      list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${ATOMIC_LIBRARY})
+    endif ()
+  endif ()
+endif ()
+
+# for consistent floating-point operations across architectures
+option (DISABLE_FP_CONTRACT "Disable floating-point contractions" ON)
+if (DISABLE_FP_CONTRACT AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffp-contract=off")
+endif ()
+
 try_run (_HAVE_FR_LOC_RUNS _HAVE_FR_LOC_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/have_fr_loc.cxx)
 if (_HAVE_FR_LOC_BUILDS)
   if (NOT _HAVE_FR_LOC_RUNS EQUAL 0)
@@ -455,17 +473,6 @@ if (_HAVE_FR_LOC_BUILDS)
   else()
     set (OPENTURNS_HAVE_FR_LOC FALSE)
     message (STATUS "French locale not found")
-  endif ()
-endif ()
-
-try_run (_HAVE_STD_REGEX_RUNS _HAVE_STD_REGEX_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/have_std_regex.cxx)
-if (_HAVE_STD_REGEX_BUILDS)
-  if (NOT _HAVE_STD_REGEX_RUNS EQUAL 0)
-    set (OPENTURNS_HAVE_STD_REGEX TRUE)
-    message (STATUS "std::regex found")
-  else()
-    set (OPENTURNS_HAVE_STD_REGEX FALSE)
-    message (STATUS "std::regex not found")
   endif ()
 endif ()
 
@@ -595,7 +602,6 @@ if (BUILD_PYTHON)
   find_package (SWIG 3)
   if (SWIG_FOUND)
     include (${SWIG_USE_FILE})
-    include (TargetLinkLibrariesWithDynamicLookup)
 
     # this name was chosen in common with pyagrum for otagrum
     set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
@@ -606,9 +612,17 @@ if (BUILD_PYTHON)
     endif ()
   endif ()
 
-  find_package (PythonInterp 3.5)
-  if (PYTHONINTERP_FOUND)
-    find_package (PythonLibs ${PYTHON_VERSION_STRING} EXACT)
+  if (CMAKE_VERSION VERSION_LESS 3.24)
+    find_package (Python 3.5 COMPONENTS Interpreter Development)
+  else ()
+    find_package (Python 3.5 COMPONENTS Interpreter Development.Module)
+  endif ()
+
+  if (NOT TARGET Python::Module)
+    include (TargetLinkLibrariesWithDynamicLookup)
+  endif ()
+
+  if (Python_FOUND)
     include (FindPythonModule)
     find_python_module (numpy)
     find_python_module (scipy)
@@ -658,7 +672,7 @@ if (BUILD_PYTHON)
     endif ()
 
     if (NOT DEFINED PYTHON_SITE_PACKAGES AND NOT CMAKE_CROSSCOMPILING)
-      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sysconfig, os; print(sysconfig.get_path('platlib').replace(sysconfig.get_path('data'), '').lstrip(os.path.sep))"
+      execute_process (COMMAND ${Python_EXECUTABLE} -c "import sysconfig, os; print(sysconfig.get_path('platlib').replace(sysconfig.get_path('data'), '').lstrip(os.path.sep))"
                        OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
       file (TO_CMAKE_PATH "${PYTHON_SITE_PACKAGES}" PYTHON_SITE_PACKAGES)
     endif ()
@@ -669,11 +683,9 @@ if (BUILD_PYTHON)
      if (WIN32)
        set (OPENTURNS_PYTHON_MODULE_PATH Lib/site-packages)
      else ()
-       set (OPENTURNS_PYTHON_MODULE_PATH ${CMAKE_INSTALL_LIBDIR}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
+       set (OPENTURNS_PYTHON_MODULE_PATH ${CMAKE_INSTALL_LIBDIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages)
       endif ()
     endif ()
-
-    set (OPENTURNS_PYTHON${PYTHON_VERSION_MAJOR}_MODULE_PATH "${OPENTURNS_PYTHON_MODULE_PATH}")
   endif ()
 endif ()
 
@@ -699,7 +711,7 @@ set (OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/openturns/swig)
 
 add_subdirectory (lib)
 
-if (PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND SWIG_FOUND)
+if (Python_FOUND AND SWIG_FOUND)
   add_subdirectory (python)
 endif ()
 

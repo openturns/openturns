@@ -91,9 +91,6 @@
 /* Define to 1 if NLopt has AGS. */
 #cmakedefine OPENTURNS_NLOPT_HAVE_AGS
 
-/* Define to 1 if you have the OPT++ library. */
-#cmakedefine OPENTURNS_HAVE_OPTPP
-
 /* Define to 1 if you have the Ceres library. */
 #cmakedefine OPENTURNS_HAVE_CERES
 
@@ -210,6 +207,3 @@
 
 /* Define to 1 if UnsignedInteger and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-
-/* Define to 1 if std::regex is implemented */
-#cmakedefine OPENTURNS_HAVE_STD_REGEX
