@@ -33,9 +33,9 @@ zdt1.setBounds(ot.Interval([0.0] * 2, [1.0] * 2))
 pop0 = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2).getSample(100)
 
 # %%
-# We create the algorithm that should evolve over 180 generations
+# We create the algorithm that should evolve over 10 generations
 algo = ot.Pagmo(zdt1, "nsga2", pop0)
-algo.setGenerationNumber(180)
+algo.setGenerationNumber(10)
 
 # %%
 # Benefit from parallel evaluations if the function allows it

@@ -658,8 +658,8 @@ void Pagmo::run()
   {
     // retrieve non-penalized output values instead of using pop.get_f
     std::vector<std::vector<double> > popf;
-    for (UnsignedInteger i = 0; i < finalPoints.getSize(); ++ i)
-      popf.push_back(Point(finalPoints[i]).toStdVector());
+    for (UnsignedInteger i = 0; i < finalValues.getSize(); ++ i)
+      popf.push_back(Point(finalValues[i]).toStdVector());
     // compute the fronts
     std::vector<std::vector<pagmo::pop_size_t> > fronts(std::get<0>(pagmo::fast_non_dominated_sorting(popf)));
     Collection<Indices> frontIndices(fronts.size());
