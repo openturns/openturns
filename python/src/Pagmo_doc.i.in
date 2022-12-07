@@ -48,7 +48,7 @@ Pagmo provides the following global `heuristics <https://esa.github.io/pagmo2/ov
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
 | sga                 | Simple Genetic Algorithm                        | no              | yes   | no    |
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
-| simulated_annealing | Corana’s Simulated Annealing                    | no              | no    | no    |
+| simulated_annealing | Corana's Simulated Annealing                    | no              | no    | no    |
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
 | bee_colony          | Artificial Bee Colony                           | no              | no    | no    |
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
