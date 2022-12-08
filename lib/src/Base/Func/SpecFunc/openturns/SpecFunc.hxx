@@ -23,6 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/Point.hxx"
 #include <limits>
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -240,6 +241,9 @@ OT_API Scalar Cbrt(const Scalar x);
 // binomial coefficient C(n, k)
 OT_API UnsignedInteger BinomialCoefficient(const UnsignedInteger n,
     const UnsignedInteger k);
+
+// Accurate summation
+OT_API Scalar AccurateSum(const Point & v);
 
 } /* SpecFunc */
 

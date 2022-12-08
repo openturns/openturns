@@ -25,6 +25,7 @@
 #include "openturns/IntersectionEvent.hxx"
 #include "openturns/UnionEvent.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -176,7 +177,9 @@ void SystemFORM::run()
     numberOfPoincareTerms = 2 * numberOfPoincareTerms + 1;
   }
 
-  Scalar eventProbability = 0.0;
+  // We store all the terms of the Poincare formula in order to use an extra-precision summation for the final result
+  Point signedProbabilities(numberOfPoincareTerms);
+  Scalar sign = 1.0;
   for (UnsignedInteger k = 0; k < numberOfPoincareTerms; ++ k)
   {
     // retrieve region
@@ -214,21 +217,16 @@ void SystemFORM::run()
     // compute the parallel region probability
     const Point mu(regionSize, 0.0);
     const Normal normal(mu, C);
-    const Scalar poincareProbability = normal.computeCDF(-1.0 * regionBeta);
+    signedProbabilities[k] = sign * normal.computeCDF(-1.0 * regionBeta);
+    sign = -sign;
 
-    LOGINFO(OSS() << "SystemFORM: poincare probability [" << k << "]=" << poincareProbability);
-
-    // trick to update the poincare sum
-    // we invert the sign of each consecutive term to follow the order of our recursive expansion of the Poincare formula
-    eventProbability = -eventProbability + poincareProbability;
+    LOGINFO(OSS() << "SystemFORM: poincare probability [" << k << "]=" << signedProbabilities[k]);
   }
-
-  // clip to [0, 1]
-  eventProbability = std::max(eventProbability, 0.0);
-  eventProbability = std::min(eventProbability, 1.0);
 
   // store results
   multiFORMResult_ = MultiFORMResult(formResultCollection);
+  // Clip the sum to [0, 1]
+  const Scalar eventProbability = std::min(1.0, std::max(0.0, SpecFunc::AccurateSum(signedProbabilities)));
   multiFORMResult_.setEventProbability(eventProbability);
 }
 
