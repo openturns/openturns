@@ -228,7 +228,9 @@ prior.setDescription(["Ks", "Zv", "Zm"])
 # %%
 # Define the distribution of observations :math:`\vect{y} | \vect{z}` conditional on model predictions.
 #
-# Note that its parameter dimension is the one of :math:`\vect{z}`, so the model must be adjusted accordingly. In other words, the input argument of the `setParameter` method of the conditional distribution must be equal to the dimension of the output of the `model`. Hence, we do not have to set the actual parameters: only the type of distribution is used.
+# Note that its parameter dimension is the one of :math:`\vect{z}`, so the model must be adjusted accordingly.
+# In other words, the input argument of the `setParameter` method of the conditional distribution must be equal to the dimension of the output of the `model`.
+# Hence, we do not have to set the actual parameters: only the type of distribution is used.
 
 # %%
 conditional = ot.Normal()

@@ -49,9 +49,13 @@ str(loaded_distribution), str(loaded_function)
 #
 # Each object is identified whether with:
 #
-# - its name: it is useful to give names to the objects we want to save. If no name has been given by the user, we can use the default name. The name of each saved object can be checked in the output XML file or with the python `print` command (applied to the `Study` object).
-# - its id number: this id number is unique to each object. It distinguishes objects with identical type and name (like the default name "Unnamed"). This id number may be checked by printing the study **after** it has been loaded in the python interface (with the `print` command). It can differ from the id number indicated in the XML file the study was loaded from.
-# - for HDF5 storage (see below): the id serves both as xml id and hdf5 dataset name. Id uniqueness forbids any misleading in reading/writing hdf5 datasets.
+# - its name: it is useful to give names to the objects we want to save. If no name has been given by the user, we can use the default name.
+#   The name of each saved object can be checked in the output XML file or with the python `print` command (applied to the `Study` object).
+# - its id number: this id number is unique to each object. It distinguishes objects with identical type and name (like the default name "Unnamed").
+#   This id number may be checked by printing the study **after** it has been loaded in the python interface (with the `print` command).
+#   It can differ from the id number indicated in the XML file the study was loaded from.
+# - for HDF5 storage (see below): the id serves both as xml id and hdf5 dataset name.
+#   Id uniqueness forbids any misleading in reading/writing hdf5 datasets.
 
 # %%
 # Create a Study Object

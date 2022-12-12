@@ -74,7 +74,10 @@ view = viewer.View(graph)
 # Create the initial kriging
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# Before using the EGO algorithm, we must create an initial kriging. In order to do this, we must create a design of experiment which fills the space. In this situation, the `LHSExperiment` is a good place to start (but other design of experiments may allow to better fill the space). We use a uniform distribution in order to create a LHS design with 50 points.
+# Before using the EGO algorithm, we must create an initial kriging.
+# In order to do this, we must create a design of experiment which fills the space.
+# In this situation, the `LHSExperiment` is a good place to start (but other design of experiments may allow to better fill the space).
+# We use a uniform distribution in order to create a LHS design with 50 points.
 
 # %%
 listUniformDistributions = [
@@ -95,7 +98,8 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# We now create the kriging metamodel. We selected the `SquaredExponential` covariance model with a constant basis (the `MaternModel` may perform better in this case). We use default settings (1.0) for the scale parameters of the covariance model, but configure the amplitude to 0.1, which better corresponds to the properties of the Ackley function.
+# We now create the kriging metamodel. We selected the `SquaredExponential` covariance model with a constant basis (the `MaternModel` may perform better in this case).
+# We use default settings (1.0) for the scale parameters of the covariance model, but configure the amplitude to 0.1, which better corresponds to the properties of the Ackley function.
 
 # %%
 covarianceModel = ot.SquaredExponential([1.0] * dim, [0.5])
@@ -172,7 +176,8 @@ view = viewer.View(graph)
 # We see that the initial (black) points are dispersed in the whole domain,
 # while the solution points are much closer to the solution.
 #
-# However, the final solution produced by the EGO algorithm is not very accurate. This is why we finalize the process by adding a local optimization step.
+# However, the final solution produced by the EGO algorithm is not very accurate.
+# This is why we finalize the process by adding a local optimization step.
 
 # %%
 algo2 = ot.NLopt(problem, "LD_LBFGS")
@@ -315,7 +320,8 @@ graph.add(cloud)
 view = viewer.View(graph)
 
 # %%
-# We see that the EGO algorithm found the second local minimum. Given the limited number of function evaluations, the other local minimas have not been explored.
+# We see that the EGO algorithm found the second local minimum.
+# Given the limited number of function evaluations, the other local minimas have not been explored.
 
 # %%
 graph = result.drawOptimalValueHistory()

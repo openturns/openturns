@@ -21,10 +21,13 @@ ot.Log.Show(ot.Log.NONE)
 #
 # A regular time grid is a regular discretization of the interval :math:`[0, T] \in \mathbb{R}` into :math:`N` points, noted :math:`(t_0, \dots, t_{N-1})`.
 #
-# The time grid can be defined using :math:`(t_{Min}, \Delta t, N)` where :math:`N` is the number of points in the time grid. :math:`\Delta t` the time step between two consecutive instants and :math:`t_0 = t_{Min}`. Then,  :math:`t_k = t_{Min} + k \Delta t` and :math:`t_{Max} = t_{Min} +  (N-1) \Delta t`.
+# The time grid can be defined using :math:`(t_{Min}, \Delta t, N)` where :math:`N` is the number of points in the time grid. :math:`\Delta t` the time step between two consecutive instants and :math:`t_0 = t_{Min}`.
+# Then, :math:`t_k = t_{Min} + k \Delta t` and :math:`t_{Max} = t_{Min} +  (N-1) \Delta t`.
 #
 #
-# Consider :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` a multivariate stochastic process of dimension :math:`d`,  where :math:`n=1`, :math:`\mathcal{D}=[0,T]` and :math:`t\in \mathcal{D}` is interpreted as a time stamp. Then the mesh associated to the process :math:`X` is a (regular) time grid.
+# Consider :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` a multivariate stochastic process of dimension :math:`d`,
+# where :math:`n=1`, :math:`\mathcal{D}=[0,T]` and :math:`t\in \mathcal{D}` is interpreted as a time stamp.
+# Then the mesh associated to the process :math:`X` is a (regular) time grid.
 
 
 # %%
@@ -59,11 +62,14 @@ view = viewer.View(graph)
 # %%
 # In this paragraph we create a mesh :math:`\mathcal{M}` associated to a domain :math:`\mathcal{D} \in \mathbb{R}^n`.
 #
-# A mesh is defined from vertices in :math:`\mathbb{R}^n` and a topology that connects the vertices: the simplices. The simplex :math:`Indices([i_1,\dots, i_{n+1}])` relies the vertices of index :math:`(i_1,\dots, i_{n+1})` in :math:`\mathbb{N}^n`. In dimension 1, a simplex is an interval :math:`Indices([i_1,i_2])`; in dimension 2, it is a triangle :math:`Indices([i_1,i_2, i_3])`.
+# A mesh is defined from vertices in :math:`\mathbb{R}^n` and a topology that connects the vertices: the simplices.
+# The simplex :math:`Indices([i_1,\dots, i_{n+1}])` relies the vertices of index :math:`(i_1,\dots, i_{n+1})` in :math:`\mathbb{N}^n`.
+# In dimension 1, a simplex is an interval :math:`Indices([i_1,i_2])`; in dimension 2, it is a triangle :math:`Indices([i_1,i_2, i_3])`.
 #
 # The library enables to easily create a mesh which is a box of dimension :math:`d=1` or :math:`d=2` regularly meshed in all its directions, thanks to the object IntervalMesher.
 #
-# Consider :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` a multivariate stochastic process of dimension :math:`d`, where :math:`\mathcal{D} \in \mathbb{R}^n`. The mesh :math:`\mathcal{M}` is a discretization of the domain :math:`\mathcal{D}`.
+# Consider :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` a multivariate stochastic process of dimension :math:`d`, where :math:`\mathcal{D} \in \mathbb{R}^n`.
+# The mesh :math:`\mathcal{M}` is a discretization of the domain :math:`\mathcal{D}`.
 
 # %%
 # A  one dimensional mesh is created and represented by :

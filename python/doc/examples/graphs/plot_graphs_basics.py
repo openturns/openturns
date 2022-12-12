@@ -225,7 +225,10 @@ myCDF = n.drawCDF()
 # %%
 
 # %%
-# We create a figure with the `figure` function from Matplotlib, then we add two graphics with the `add_subplot` function. We use the `viewer.View` function to create the required Matplotlib object. Since we are not interested by the output of the `View` function, we use the dummy variable `_` as output. The title is finally configured with `suptitle`.
+# We create a figure with the `figure` function from Matplotlib, then we add two graphics with the `add_subplot` function.
+# We use the `viewer.View` function to create the required Matplotlib object.
+# Since we are not interested by the output of the `View` function, we use the dummy variable `_` as output.
+# The title is finally configured with `suptitle`.
 
 # %%
 fig = pl.figure(figsize=(12, 4))

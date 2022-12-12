@@ -90,13 +90,16 @@ graph = fit.drawPDF()
 view = otv.View(graph)
 
 # %%
-# We see that the distribution of the merged sample has two modes. However, these modes are not clearly distinct. To distinguish them, we could increase the sample size. However, it might be interesting to see if the bandwidth selection rule can be better chosen: this is the purpose of the next section.
+# We see that the distribution of the merged sample has two modes.
+# However, these modes are not clearly distinct. To distinguish them, we could increase the sample size.
+# However, it might be interesting to see if the bandwidth selection rule can be better chosen: this is the purpose of the next section.
 
 # %%
 # Simulation based on a mixture
 # -----------------------------
 #
-# Since the distribution that we approximate is a mixture, it will be more convenient to create it from the `Mixture` class. It takes as input argument a list of distributions and a list of weights.
+# Since the distribution that we approximate is a mixture, it will be more convenient to create it from the `Mixture` class.
+# It takes as input argument a list of distributions and a list of weights.
 
 # %%
 distribution = ot.Mixture([distribution1, distribution2], [w1, w2])
@@ -134,7 +137,9 @@ view = otv.View(graph)
 # ----------------------------
 
 # %%
-# In this section, we observe the sensitivity of the kernel smoothing to the bandwidth. We consider the three following bandwidths: the small bandwidth 0.05, the large bandwidth 0.54 and 0.18 which is in-between. For each bandwidth, we use the second optional argument of the `build` method in order to select a specific bandwidth value.
+# In this section, we observe the sensitivity of the kernel smoothing to the bandwidth.
+# We consider the three following bandwidths: the small bandwidth 0.05, the large bandwidth 0.54 and 0.18 which is in-between.
+# For each bandwidth, we use the second optional argument of the `build` method in order to select a specific bandwidth value.
 
 # %%
 hArray = [0.05, 0.54, 0.18]
@@ -159,7 +164,9 @@ for i in range(nLen):
 
 view = otv.View(graph)
 # %%
-# We see that when the bandwidth is too small, the resulting kernel smoothing has many more modes than the distribution it is supposed to approximate. When the bandwidth is too large, the approximated distribution is too smooth and has only one mode instead of the expected two modes which are in the mixture distribution. When the bandwidth is equal to 0.18, the two modes are correctly represented.
+# We see that when the bandwidth is too small, the resulting kernel smoothing has many more modes than the distribution it is supposed to approximate.
+# When the bandwidth is too large, the approximated distribution is too smooth and has only one mode instead of the expected two modes which are in the mixture distribution.
+# When the bandwidth is equal to 0.18, the two modes are correctly represented.
 
 # %%
 # Sensitivity to the bandwidth rule
@@ -183,7 +190,8 @@ h3
 factory.getBandwidth()[0]
 
 # %%
-# We see that the default rule is the "Mixed" rule. This is because the sample is in dimension 1 and the sample size is quite large. For a small sample in 1 dimension, the "Plugin" rule would have been used.
+# We see that the default rule is the "Mixed" rule. This is because the sample is in dimension 1 and the sample size is quite large.
+# For a small sample in 1 dimension, the "Plugin" rule would have been used.
 #
 # The following script compares the results produced by the three rules.
 
@@ -215,4 +223,5 @@ view = otv.View(graph)
 
 otv.View.ShowAll()
 # %%
-# We see that the bandwidth produced by Silverman's rule is too large, leading to an oversmoothed distribution. The results produced by the Plugin and Mixed rules are comparable in this case.
+# We see that the bandwidth produced by Silverman's rule is too large, leading to an oversmoothed distribution.
+# The results produced by the Plugin and Mixed rules are comparable in this case.

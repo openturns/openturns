@@ -295,9 +295,17 @@ printMethodSummary(
 printMethodSummary("FORM-IS", probabilityFORMIS, numberOfFunctionEvaluationsFORMIS)
 
 # %%
-# We see that all three methods produce the correct probability, but not with the same accuracy. In this case, we have found the correct order of magnitude of the probability, i.e. between one and two correct digits. There is, however, a significant difference in computational performance (measured here by the number of function evaluations).
+# We see that all three methods produce the correct probability, but not with the same accuracy.
+# In this case, we have found the correct order of magnitude of the probability, i.e. between one and two correct digits.
+# There is, however, a significant difference in computational performance (measured here by the number of function evaluations).
 #
-# * The fastest method is the FORM method, which produces more than 1 correct digit with less than 98 function evaluations with a performance equal to :math:`1.60 \times 10^{-2}` (correct digits/evaluation). A practical limitation is that the FORM method does not produce a confidence interval: there is no guarantee that the computed probability is correct.
-# * The slowest method is Monte-Carlo simulation, which produces more than 1 correct digit with 12806 function evaluations. This is associated with a very slow performance equal to :math:`1.11 \times 10^{-4}` (correct digits/evaluation). The interesting point with the Monte-Carlo simulation is that the method produces a confidence interval.
+# * The fastest method is the FORM method, which produces more than 1 correct
+#   digit with less than 98 function evaluations with a performance equal to :math:`1.60 \times 10^{-2}` (correct digits/evaluation).
+#   A practical limitation is that the FORM method does not produce a confidence interval: there is no guarantee that the computed probability is correct.
+# * The slowest method is Monte-Carlo simulation, which produces more than 1 correct digit with 12806 function evaluations.
+#   This is associated with a very slow performance equal to :math:`1.11 \times 10^{-4}` (correct digits/evaluation).
+#   The interesting point with the Monte-Carlo simulation is that the method produces a confidence interval.
 # * The DirectionalSampling method is somewhat in-between the two previous methods.
-# * The FORM-IS method produces 2 correct digits and has a small number of function evaluations. It has an intermediate performance equal to :math:`2.37\times 10^{-3}` (correct digits/evaluation). It combines the best of the both worlds: it has the small number of function evaluation of FORM computation and the confidence interval of Monte-Carlo simulation.
+# * The FORM-IS method produces 2 correct digits and has a small number of function evaluations.i
+#   It has an intermediate performance equal to :math:`2.37\times 10^{-3}` (correct digits/evaluation).
+#   It combines the best of the both worlds: it has the small number of function evaluation of FORM computation and the confidence interval of Monte-Carlo simulation.
