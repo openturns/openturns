@@ -171,10 +171,10 @@ public:
 protected:
 
   /** The sigma vector of the distribution */
-  mutable Point sigma_;
+  Point sigma_;
 
   /** The correlation matrix (Rij) of the distribution */
-  mutable CorrelationMatrix R_;
+  CorrelationMatrix R_;
 
   /** The inverse Cholesky factor of the covariance matrix */
   TriangularMatrix inverseCholesky_;
