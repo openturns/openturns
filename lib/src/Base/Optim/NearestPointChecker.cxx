@@ -107,7 +107,7 @@ void NearestPointChecker::setSample(const Sample & sample)
 }
 
 /* sample accessor */
-const Sample & NearestPointChecker::getSample() const
+Sample NearestPointChecker::getSample() const
 {
   return sample_;
 }

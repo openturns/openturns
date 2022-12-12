@@ -1261,7 +1261,7 @@
  * Frechet, distribution
  * ParametrizedDistribution, to reparametrize a distribution
  * DistributionParameters, ArcsineMuSigma, BetaMuSigma, GumbelAB, GumbelMuSigma, GammaMuSigma, LogNormalMuSigma, LogNormalMuSigmaOverMu, WeibullMuSigma parameters
- * PolygonArray, allows to draw a collection of polygons
+ * PolygonArray, allows one to draw a collection of polygons
  * MarginalDistribution, MaximumDistribution, RatioDistribution, arithmetic distributions
  * KrigingRandomVector
  * ConditionalNormalProcess
@@ -1755,7 +1755,7 @@ New classes:
  * Changed the return type of the getMarginal() method of the DistributionImplementation, RandomVectorImplementation and ProcessImplementation related classes. Now, it returns smart pointers instead of C++ pointers to avoid memory leak.
 
 === Python module ===
- * DistributedPythonFunction: new python wrapper module, which allows to launch a function
+ * DistributedPythonFunction: new python wrapper module, which allows one to launch a function
  to several nodes and cores in parallel
  * PythonFunction: added simplified constructor for functions
  * New matplotlib viewer as replacement for rpy2 & qt4 routines
@@ -2186,7 +2186,7 @@ General:
  * Removed the exception declarations to all the methods.
 
 Moved classes:
- * LeastSquaresAlgorithm became PenalizedLeastSquaresAlgorithm, which allows to specify a general definite positive L2 penalization term to the least squares optimization problem.
+ * LeastSquaresAlgorithm became PenalizedLeastSquaresAlgorithm, which allows one to specify a general definite positive L2 penalization term to the least squares optimization problem.
  * Removed the classes related to the inverse marginal transformation: they have been merged with the corresponding marginal transformation classes.
  * Moved the BoundConstrainedAlgorithmImplementation::Result class into the BoundConstrainedAlgorithmImplementationResult class to ease the maintenance of the TUI.
 
@@ -2239,7 +2239,7 @@ New classes:
    generation of a sample from any distribution with independent
    copula using low discrepancy sequences.
  * Added pretty printing to C++ library.
- * Added the ImportanceSamplingExperiment class, that allows to generate a sample according to a distribution and weights such that the weighted sample is representative of another distribution.
+ * Added the ImportanceSamplingExperiment class, that allows one to generate a sample according to a distribution and weights such that the weighted sample is representative of another distribution.
 
 Enhancement of existing classes:
  * TruncatedDistribution.
@@ -2297,7 +2297,7 @@ Methods:
  * Changed the quantile computation of the Beta, ChiSquare, Epanechnikov, Exponential, Gamma, Geometric, Gumbel, Histogram, Laplace, Logistic, LogNormal, Poisson, RandomMixture, Rayleigh, Triangular, TruncatedDistribution, TruncatedNormal, Uniform and Weibull classes.
  * Added a setParametersCollection method to the Beta, ChiSquare, ClaytonCopula, Exponential, FrankCopula, Gamma, Geometric, GumbelCopula, Gumbel, Laplace, Logistic, LogNormal, NonCentralStudent, Poisson, Rayleigh, Triangular, TruncatedNormal, Uniform and Weibull classes.
  * Added a buildImplementation() method based on parameters to the BetaFactory, ChiSquareFactory, ClaytonCopulaFactory, ExponentialFactory, FrankCopulaFactory, GammaFactory, GeometricFactory, GumbelCopulaFactory, GumbelFactory, LaplaceFactory, LogisticFactory, LogNormalFactory, PoissonFactory, RayleighFactory, TriangularFactory, TruncatedNormalFactory, UniformFactory and WeibullFactory classes.
- * Added a new buildImplementation() to the DistributionFactory and DistributionImplementationFactory classes. It allows to build the default representative instance of any distribution. All the distribution factories have been updated.
+ * Added a new buildImplementation() to the DistributionFactory and DistributionImplementationFactory classes. It allows one to build the default representative instance of any distribution. All the distribution factories have been updated.
  * Added a default constructor to the MultiNomial and Histogram classes.
  * Added a setParametersCollection() method to the EllipticalDistribution class.
  * Added a method to compute centered moments of any order on a component basis in the NumericalSample and NumericalSampleImplementation classes.
@@ -2590,7 +2590,7 @@ Converted Maple binary files into Maple text files into validation directory.
 ==== Enhancements ====
 New classes:
  * SensitivityAnalysis : using R sensitivity package for Sobol indices computation. Might strongly evolve soon
- * SklarCopula : allows to extract the copula of any multidimensional distribution
+ * SklarCopula : allows one to extract the copula of any multidimensional distribution
  * StandardSpaceSimulation
  * StandardSpaceImportanceSampling
  * ClaytonCopulaFactory

@@ -117,7 +117,7 @@ Y_test = g(X_test)
 
 
 # %%
-# The MetaModelValidation class allows to validate the metamodel on a test sample.
+# The MetaModelValidation class allows one to validate the metamodel on a test sample.
 # Plot the observed versus the predicted outputs.
 val = ot.MetaModelValidation(X_test, Y_test, metamodel)
 graph = val.drawValidation()

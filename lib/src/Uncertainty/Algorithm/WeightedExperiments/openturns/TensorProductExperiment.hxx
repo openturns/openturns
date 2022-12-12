@@ -62,7 +62,7 @@ public:
 
   /** Distribution collection accessor */
   void setWeightedExperimentCollection(const WeightedExperimentCollection & coll);
-  const WeightedExperimentCollection & getWeightedExperimentCollection() const;
+  WeightedExperimentCollection getWeightedExperimentCollection() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

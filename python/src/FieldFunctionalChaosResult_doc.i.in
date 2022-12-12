@@ -173,7 +173,7 @@ inputSample : :class:`~openturns.Sample`
 Parameters
 ----------
 outputSample : :class:`~openturns.Sample`
-    Ouput values."
+    Output values."
 
 // ---------------------------------------------------------------------
 
@@ -183,7 +183,7 @@ outputSample : :class:`~openturns.Sample`
 Returns
 -------
 outputSample : :class:`~openturns.Sample`
-    Ouput values."
+    Output values."
 
 // ---------------------------------------------------------------------
 

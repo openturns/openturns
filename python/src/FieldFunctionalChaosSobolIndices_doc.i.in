@@ -5,7 +5,7 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-This class allows to perform sensitivity analysis from field chaos decomposition.
+This class allows one to perform sensitivity analysis from field chaos decomposition.
 The process decomposition is done by Karhunen-Loeve and the modes interpolation
 is performed by functional chaos:
 
@@ -97,7 +97,7 @@ Parameters
 i : int or list of int
     Input index
 j : int, default=0
-    Ouput index
+    Output index
 
 Returns
 -------
@@ -114,7 +114,7 @@ Parameters
 i : int or list of int
     Input index
 j : int, default=0
-    Ouput index
+    Output index
 
 Returns
 -------
@@ -129,7 +129,7 @@ s : float
 Parameters
 ----------
 j : int, default=0
-    Ouput index
+    Output index
 
 Returns
 -------
@@ -144,7 +144,7 @@ indices : :class:`~openturns.Point`
 Parameters
 ----------
 j : int, default=0
-    Ouput index
+    Output index
 
 Returns
 -------

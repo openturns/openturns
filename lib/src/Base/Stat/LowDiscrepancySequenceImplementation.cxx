@@ -380,7 +380,11 @@ Unsigned64BitsInteger LowDiscrepancySequenceImplementation::GetNextPrimeNumber(c
   if (n == 0) return 2;
 #ifdef OPENTURNS_HAVE_PRIMESIEVE
   primesieve::iterator it;
+#if PRIMESIEVE_VERSION_MAJOR >= 11
+  it.jump_to(n - 1);
+#else
   it.skipto(n - 1);
+#endif
   return it.next_prime();
 #else
   const Unsigned64BitsIntegerCollection primes(GetFirstPrimeNumbers(static_cast<UnsignedInteger>(n / SpecFunc::LambertW(n))));

@@ -35,7 +35,7 @@ Notes
 -----
 
 Using the notations from :ref:`metropolis_hastings` page,
-this class allows to completely specify the transition kernel :math:`Q`.
+this class allows one to completely specify the transition kernel :math:`Q`.
 This is done by specifying:
 
 - a :class:`~openturns.Distribution` :math:`\Pi` (called *proposal* below) which admits :math:`p` parameters,

@@ -62,13 +62,8 @@ Bonmin * Bonmin::clone() const
 
 Description Bonmin::GetAlgorithmNames()
 {
-  Description algoNames(5);
-  algoNames[0] = "B-BB";
-  algoNames[1] = "B-OA";
-  algoNames[2] = "B-QG";
-  algoNames[3] = "B-Hyb";
-  algoNames[4] = "B-iFP";
-
+  const Description algoNames = {"B-BB", "B-OA", "B-QG", "B-Hyb"};
+  // iFP/Ecp are disabled, see https://github.com/coin-or/Bonmin/issues/31
   return algoNames;
 }
 

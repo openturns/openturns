@@ -147,7 +147,7 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
 
 }
 
-const ProductCovarianceModel::CovarianceModelCollection & ProductCovarianceModel::getCollection() const
+ProductCovarianceModel::CovarianceModelCollection ProductCovarianceModel::getCollection() const
 {
   return collection_;
 }

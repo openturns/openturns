@@ -28,7 +28,8 @@ Its first moment is:
 
     \Expect{X} = \sum_{i=1}^n p_i \vect{x}_i.
 
-Sampling is done using the *alias* method as described in [devroye1986]_, Chapter 3. It has an optimal space complexity of :math:`\cO(n)` and runtime CPU complexity of :math:`\cO(1)`, see :meth:`~openturns.DistFunc_rDiscrete`.
+Sampling is done using the *alias* method as described in [devroye1986]_, Chapter 3.
+It has an optimal space complexity of :math:`\cO(n)` and runtime CPU complexity of :math:`\cO(1)`, see :meth:`~openturns.DistFunc.rDiscrete`.
 
 Examples
 --------

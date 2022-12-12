@@ -216,7 +216,7 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
 
 
 /* Distribution collection accessor */
-const ComposedDistribution::DistributionCollection & ComposedDistribution::getDistributionCollection() const
+ComposedDistribution::DistributionCollection ComposedDistribution::getDistributionCollection() const
 {
   return distributionCollection_;
 }

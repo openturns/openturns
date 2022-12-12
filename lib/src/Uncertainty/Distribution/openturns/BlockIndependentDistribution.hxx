@@ -62,7 +62,7 @@ public:
 
   /** Copula collection accessor */
   void setDistributionCollection(const DistributionCollection & coll);
-  const DistributionCollection & getDistributionCollection() const;
+  DistributionCollection getDistributionCollection() const;
 
   /* Here is the interface that all derived class must implement */
 

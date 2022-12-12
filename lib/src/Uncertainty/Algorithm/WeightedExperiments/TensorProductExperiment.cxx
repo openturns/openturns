@@ -172,7 +172,7 @@ void TensorProductExperiment::load(Advocate & adv)
 }
 
 /* Distribution collection accessor */
-const TensorProductExperiment::WeightedExperimentCollection & TensorProductExperiment::getWeightedExperimentCollection() const
+TensorProductExperiment::WeightedExperimentCollection TensorProductExperiment::getWeightedExperimentCollection() const
 {
   return collection_;
 }

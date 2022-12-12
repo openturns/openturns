@@ -138,9 +138,12 @@ dim_repr(Py_ssize_t* dims, int size)
   char *ptr = s;
   int i;
 
-  ptr += sprintf(s, "%ld", (long)dims[0]);
-  for(i = 1; i < size; ++i)
-    ptr += sprintf(ptr, ",%ld", (long)dims[i]);
+  if (s)
+  {
+    ptr += sprintf(s, "%ld", (long)dims[0]);
+    for(i = 1; i < size; ++i)
+      ptr += sprintf(ptr, ",%ld", (long)dims[i]);
+  }
   return s;
 }
 
@@ -148,14 +151,17 @@ static PyObject *
 Buffer_repr(Buffer * self)
 {
   char * r = dim_repr(self->bufferview.shape, self->bufferview.ndim);
-  char * s = malloc(100 + strlen(r));
+  char * s = r ? malloc(100 + strlen(r)) : NULL;
   PyObject * result = NULL;
 
-  sprintf(s, "<read-only buffer at %p shape=(%s)>", self->bufferview.data, r);
-  free(r);
+  if (s)
+  {
+    sprintf(s, "<read-only buffer at %p shape=(%s)>", self->bufferview.data, r);
+    free(r);
 
-  result = PyUnicode_DecodeUTF8(s, (Py_ssize_t) strlen(s), "surrogateescape");
-  free(s);
+    result = PyUnicode_DecodeUTF8(s, (Py_ssize_t) strlen(s), "surrogateescape");
+    free(s);
+  }
   return result;
 }
 

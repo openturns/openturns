@@ -972,7 +972,7 @@ x : float
 
 Returns
 -------
-result : foat
+result : float
 
 Examples
 --------
@@ -996,7 +996,7 @@ x : float
 
 Returns
 -------
-result : foat
+result : float
 
 Examples
 --------

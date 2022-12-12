@@ -5,7 +5,7 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-The present algorithm allows to build a response surface of the application :math:`h` of the form:
+The present algorithm allows one to build a response surface of the application :math:`h` of the form:
 
 .. math::
     h: \left|
@@ -32,7 +32,7 @@ see :class:`~openturns.KarhunenLoeveSVDAlgorithm` and :class:`~openturns.Karhune
       \end{array}
     \right.
 
-The Karhunen-Loeve algorithm allows to replace this integral by a specific weighted and finite sum
+The Karhunen-Loeve algorithm allows one to replace this integral by a specific weighted and finite sum
 and to write the projections of the j-th marginal of i-th input field :math:`\vect{X_i^j}` by multiplication
 with the projection matrix :math:`\mat{M^j} \in \Rset^{K_j} \times \Rset^{Nd}`:
 
@@ -104,7 +104,7 @@ As done in :class:`~openturns.KarhunenLoeveSVDAlgorithm`, the :func:`setThreshol
 and :func:`setNbModes` methods allow to control the spectrum ratio and maximum count.
 
 By default the input process data is assumed to not be centered, and the method
-:func:`setCenteredSample` allows to skip centering of the data for both the
+:func:`setCenteredSample` allows one to skip centering of the data for both the
 computation of modes coefficients and inside the metamodel.
 
 In the case of homogenous data (if variables have the same unit or scale),
@@ -262,7 +262,7 @@ Parameters
 ----------
 centered : bool
     Whether the input sample is centered.
-    When set to True, it allows to skip centering of the input process data."
+    When set to True, it allows one to skip centering of the input process data."
 
 // ---------------------------------------------------------------------
 
@@ -273,7 +273,7 @@ Parameters
 ----------
 centered : bool
     Whether the input sample is centered.
-    When set to True, it allows to skip centering of the input process data."
+    When set to True, it allows one to skip centering of the input process data."
 
 // ---------------------------------------------------------------------
 

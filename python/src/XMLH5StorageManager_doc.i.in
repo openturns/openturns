@@ -1,7 +1,7 @@
 %feature("docstring") OT::XMLH5StorageManager
 "Storage manager that drives XML/H5 files.
 
-This class allows to read and write objects from a XML/H5 files pair.
+This class allows one to read and write objects from a XML/H5 files pair.
 The XML part saves the metadata while the H5 binary file save the sample data.
 
 Parameters

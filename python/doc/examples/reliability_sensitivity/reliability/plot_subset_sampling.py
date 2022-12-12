@@ -240,14 +240,6 @@ outputEventSample = algo.getEventOutputSample()
 print("Number of event realizations = ", inputEventSample.getSize())
 
 # %%
-# Here we have to avoid a bug of the version 1.15 because *getEventInputSample()* gives the sample in the stadrad space: we have to push it backward to the physical space.
-
-# %%
-dist = ot.Normal([0.25] * 2, [1] * 2, ot.IdentityMatrix(2))
-transformFunc = dist.getInverseIsoProbabilisticTransformation()
-inputEventSample = transformFunc(inputEventSample)
-
-# %%
 # Draw them! They are all in the event space.
 
 # %%

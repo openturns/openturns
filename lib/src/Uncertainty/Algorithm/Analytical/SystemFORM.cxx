@@ -151,36 +151,36 @@ void SystemFORM::run()
     }
   }
 
-  // generate all poincarre terms
-  Collection<Indices> poincarreRegion;
-  UnsignedInteger numberOfPoincarreTerms = 0;
+  // generate all poincare terms
+  Collection<Indices> poincareRegion;
+  UnsignedInteger numberOfPoincareTerms = 0;
   for (UnsignedInteger k = 0; k < unionCollection.getSize(); ++ k)
   {
     // retrieve region
     const Indices region(parallelRegionIdCollection[k]);
 
-    // recursive expansion of the Poincarre formula
-    for (UnsignedInteger i = 0; i < numberOfPoincarreTerms; ++ i)
+    // recursive expansion of the Poincare formula
+    for (UnsignedInteger i = 0; i < numberOfPoincareTerms; ++ i)
     {
-      // intersection of region / poincarreRegion[i]
+      // intersection of region / poincareRegion[i]
       Indices intersection(region);
-      const UnsignedInteger poincarreRegionSize = poincarreRegion[i].getSize();
-      for (UnsignedInteger j = 0; j < poincarreRegionSize; ++ j)
-        if (!region.contains(poincarreRegion[i][j]))
-          intersection.add(poincarreRegion[i][j]);
-      poincarreRegion.add(intersection);
+      const UnsignedInteger poincareRegionSize = poincareRegion[i].getSize();
+      for (UnsignedInteger j = 0; j < poincareRegionSize; ++ j)
+        if (!region.contains(poincareRegion[i][j]))
+          intersection.add(poincareRegion[i][j]);
+      poincareRegion.add(intersection);
     }
-    poincarreRegion.add(region);
+    poincareRegion.add(region);
 
-    // update number of poincarre terms (=2^n-1)
-    numberOfPoincarreTerms = 2 * numberOfPoincarreTerms + 1;
+    // update number of poincare terms (=2^n-1)
+    numberOfPoincareTerms = 2 * numberOfPoincareTerms + 1;
   }
 
   Scalar eventProbability = 0.0;
-  for (UnsignedInteger k = 0; k < numberOfPoincarreTerms; ++ k)
+  for (UnsignedInteger k = 0; k < numberOfPoincareTerms; ++ k)
   {
     // retrieve region
-    const Indices region(poincarreRegion[k]);
+    const Indices region(poincareRegion[k]);
     const UnsignedInteger regionSize = region.getSize();
 
     // set region beta
@@ -214,14 +214,18 @@ void SystemFORM::run()
     // compute the parallel region probability
     const Point mu(regionSize, 0.0);
     const Normal normal(mu, C);
-    const Scalar poincarreProbability = normal.computeCDF(-1.0 * regionBeta);
+    const Scalar poincareProbability = normal.computeCDF(-1.0 * regionBeta);
 
-    LOGINFO(OSS() << "SystemFORM: poincarre probability [" << k << "]=" << poincarreProbability);
+    LOGINFO(OSS() << "SystemFORM: poincare probability [" << k << "]=" << poincareProbability);
 
-    // trick to update the poincarre sum
-    // we invert the sign of each consecutive term to follow the order of our recursive expansion of the Poincarre formula
-    eventProbability = -eventProbability + poincarreProbability;
+    // trick to update the poincare sum
+    // we invert the sign of each consecutive term to follow the order of our recursive expansion of the Poincare formula
+    eventProbability = -eventProbability + poincareProbability;
   }
+
+  // clip to [0, 1]
+  eventProbability = std::max(eventProbability, 0.0);
+  eventProbability = std::min(eventProbability, 1.0);
 
   // store results
   multiFORMResult_ = MultiFORMResult(formResultCollection);

@@ -57,7 +57,7 @@ public:
 
   /** Parameter constructor */
   FunctionalChaosResult(const Sample & inputSample,
-                        const Sample & ouputSample,
+                        const Sample & outputSample,
                         const Distribution & distribution,
                         const Function & transformation,
                         const Function & inverseTransformation,

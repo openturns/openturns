@@ -1,6 +1,6 @@
 """
-Perfom stepwise regression
-==========================
+Perform stepwise regression
+===========================
 In this example we perform the selection of the most suitable function basis for a linear regression model with the help of the stepwise algorithm.
 
 We consider te so-called Linthurst data set, which contains measures of aerial biomass (BIO) as well as 5 five physicochemical properties of the soil: salinity (SAL), pH, K, Na, and Zn.

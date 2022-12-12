@@ -84,7 +84,7 @@ public:
   void setSample(const Sample & sample);
 
   /** sample accessor */
-  const Sample & getSample() const;
+  Sample getSample() const;
 
   /** Performs the actual test */
   void run();

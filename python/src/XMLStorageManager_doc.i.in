@@ -1,7 +1,7 @@
 %feature("docstring") OT::XMLStorageManager
 "Storage manager that drives a XML file.
 
-This class allows to read and write objects from an XML file.
+This class allows one to read and write objects from an XML file.
 
 Parameters
 ----------

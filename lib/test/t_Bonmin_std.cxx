@@ -42,11 +42,7 @@ int main()
     /* TEST ON SIMPLE FUNCTION */
 
     // Definition of objective function
-    Description inputVariables(4);
-    inputVariables[0] = "x0";
-    inputVariables[1] = "x1";
-    inputVariables[2] = "x2";
-    inputVariables[3] = "x3";
+    const Description inputVariables = {"x0", "x1", "x2", "x3"};
     Description objective(1, "-x0 -x1 -x2");
     SymbolicFunction objectiveFunction(inputVariables, objective);
 
@@ -108,21 +104,12 @@ int main()
 
 
     // Defining reference solution
-    Point referenceSolution(4);
-    referenceSolution[0] = 1;
-    referenceSolution[1] = 1;
-    referenceSolution[2] = 0.5;
-    referenceSolution[3] = 0;
+    const Point referenceSolution= {1.0, 1.0, 0.5, 0.0};
 
     // Defining solvers to test
-    Description solvers(4);
-    solvers[0] = "B-BB";
-    solvers[1] = "B-OA";
-    solvers[2] = "B-QG";
-    solvers[3] = "B-Hyb";
-    // B-iFP fails to converge on this example
+    const Description solvers(Bonmin::GetAlgorithmNames());
 
-    for (UnsignedInteger i = 0; i < 4; ++i)
+    for (UnsignedInteger i = 0; i < solvers.getSize(); ++i)
     {
       // Set solver
       bonminAlgorithm.setAlgorithmName(solvers[i]);

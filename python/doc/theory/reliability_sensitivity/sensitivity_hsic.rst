@@ -36,7 +36,7 @@ be two (universal) Reproducing Kernel Hilbert Spaces (RKHS).
 These functional spaces are equipped with their characteristic kernels: (resp.) 
 :math:`\kappa_{i}(\cdot,\cdot)` and :math:`\kappa(\cdot,\cdot)` and the associated
 scalar products are denoted by :math:`\langle \cdot, \cdot \rangle_{\cF_{i}}` and 
-:math:`\langle \cdot, \cdot \rangle_{\cG}`. This allows to define the evaluation
+:math:`\langle \cdot, \cdot \rangle_{\cG}`. This allows one to define the evaluation
 operator: :math:`f \in \cF_i \rightarrow  f(\mathbf{x}) = \langle f, \kappa_i (\mathbf{x}, \cdot) \rangle_{\cF_{i}}`
 
 Let us now consider  :math:`\cV_{i}`, an RKHS over :math:`\cX_{i} \times \cY`
@@ -190,7 +190,7 @@ Target sensitivity analysis using HSIC
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 On top of the standard screening and global sensitivity analysis described in the 
-previous paragraphs, HSIC also allows to perform target sensitivity analysis.
+previous paragraphs, HSIC also allows one to perform target sensitivity analysis.
 The underlying concept is to identify the most influential input parameters which
 cause the considered output :math:`Y` to cross into a user-defined critical domain:
 :math:`\cC`. In practice, rather than directly computing the HSIC values on a given

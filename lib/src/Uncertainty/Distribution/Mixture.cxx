@@ -254,7 +254,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
 
 
 /* Distribution collection accessor */
-const Mixture::DistributionCollection & Mixture::getDistributionCollection() const
+Mixture::DistributionCollection Mixture::getDistributionCollection() const
 {
   return distributionCollection_;
 }

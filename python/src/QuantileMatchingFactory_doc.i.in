@@ -86,7 +86,7 @@ With parameter bounds:
 >>> factory.setOptimizationBounds(bounds)
 >>> inf_distribution = factory.build(sample)
 
-An example with 4 parameters allows to see the default grid of probabilities in action.
+An example with 4 parameters allows one to see the default grid of probabilities in action.
 
 >>> # A distribution with 4 parameters
 >>> distribution = ot.Beta(2.0, 3.0, 4.0, 5.0)

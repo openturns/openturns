@@ -155,7 +155,7 @@ Example gallery
 Example pages are generated from Python scripts in the examples directory
 (:file:`$OT_SOURCE_DIR/python/doc/examples/*.py`).
 
-Each page allows to display notebook-like code or text cells.
+Each page allows one to display notebook-like code or text cells.
 Each cell is delimited by a specific marker and the text cells are written in
 rst format, for example::
 

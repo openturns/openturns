@@ -65,11 +65,11 @@ public:
 
   /** Distribution collection accessor */
   void setDistributionCollection(const DistributionCollection & coll);
-  const DistributionCollection & getDistributionCollection() const;
+  DistributionCollection getDistributionCollection() const;
 
   /** Graph accessor */
   void setGraph(const BipartiteGraph & graph);
-  const BipartiteGraph & getGraph() const;
+  BipartiteGraph getGraph() const;
 
   /* Here is the interface that all derived class must implement */
 

@@ -68,7 +68,7 @@ public:
 
   /** Bounds accessor */
   void setBounds(const Point & bounds);
-  const Point & getBounds() const;
+  Point getBounds() const;
 
   /* Here is the interface that all derived class must implement */
 
