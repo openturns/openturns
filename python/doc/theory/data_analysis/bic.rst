@@ -29,7 +29,7 @@ If such models provide indeed a large numbers of degrees-of-freedom that
 can be used to fit the sample, one has to keep in mind that complex
 models may be less robust that simpler models with less parameters.
 Actually, the limited available information (:math:`N` data points) does
-not allow to estimate robustly too many parameters.
+not allow one to estimate robustly too many parameters.
 
 The BIC criterion can be used to avoid this problem. The principle is to
 rank :math:`\cM_1,\dots,\cM_K` according to the following quantity:

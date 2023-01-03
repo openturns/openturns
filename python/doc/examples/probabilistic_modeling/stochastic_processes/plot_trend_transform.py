@@ -116,7 +116,7 @@ gTemp = ot.TrendTransform(g, myMesh)
 # Get the inverse trend transformation
 # from the trend transform already defined
 myInverseTrendTransform = myTrendTransform.getInverse()
-print("Inverse trend fucntion = ", myInverseTrendTransform)
+print("Inverse trend function = ", myInverseTrendTransform)
 
 # Sometimes it is more useful to define
 # the opposite trend h : R^2 -> R

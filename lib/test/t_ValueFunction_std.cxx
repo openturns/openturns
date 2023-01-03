@@ -31,8 +31,6 @@ int main(int, char *[])
 
   try
   {
-
-    /* Create an intance */
     SymbolicFunction myFunc("x", "x^2");
     RegularGrid tg(0.0, 0.2, 6);
     ValueFunction mySpatialFunc(myFunc, tg);

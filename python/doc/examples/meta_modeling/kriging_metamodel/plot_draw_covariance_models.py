@@ -273,7 +273,7 @@ _ = fig.suptitle(
 
 # %%
 # Execpt for very small values of the correlation length, trajectories are usually smooth. It is the
-# main effect of teh squared exponential model which leads to smooth process.
+# main effect of the squared exponential model which leads to smooth process.
 
 
 # %%

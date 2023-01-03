@@ -8,7 +8,7 @@ set (PYINSTALLCHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCO
 # It can have two optional arguments PRE and POST followed by some shell command to be run
 # before or after the test if needed
 # PRE and POST options cn be repeated many times: the arguments will be run one after the other
-# in the order of appearence. If one fails, the whole command fails.
+# in the order of appearance. If one fails, the whole command fails.
 macro (ot_pyinstallcheck_test TESTNAME)
   set (TESTNAME_TGT t_${TESTNAME})
   set (TESTNAME_SRC ${TESTNAME_TGT}.py)

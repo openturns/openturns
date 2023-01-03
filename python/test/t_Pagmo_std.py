@@ -181,7 +181,7 @@ for name in ["gaco", "ihs", "sga"]:
         assert y[0] < 200.0, str(y)
 
 
-# check we dont expose penalized values
+# check we don't expose penalized values
 f = ot.SymbolicFunction(
     ["x1", "x2"], ["x1", "var g := 1.0 + 9.0 * (x1 + x2); g * (1.0 - sqrt(x1 / g))"]
 )

@@ -72,7 +72,7 @@ Matrix MarginalTransformationGradient::gradient(const Point & inP) const
         // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
         const Point  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
         const Scalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
-        // The output PDF should never be zero here, be it can occure due to some strange rounding error
+        // The output PDF should never be zero here, be it can occur due to some strange rounding error
         if (outputPDF > 0.0) result(i, i) = inputPDF / outputPDF;
       } // PDF > 0
     } // No simplification

@@ -84,7 +84,7 @@ private:
  * @brief The base class for all OpenTURNS' exceptions
  *
  * Exception defines top-most exception strategies. It derives from STL std::exception
- * so OpenTURNS' exceptions can be catched as standard exceptions.
+ * so OpenTURNS' exceptions can be caught as standard exceptions.
  */
 
 class OT_API Exception :

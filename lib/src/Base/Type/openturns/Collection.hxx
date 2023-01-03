@@ -314,7 +314,8 @@ public:
     return static_cast<UnsignedInteger>(coll__.size());
   }
 
-  /** Method resize() changes the size of the Collection. If the new size is smaller than the older one, the last elements are thrown away, else the new elements are setted to the default value of the element type */
+  /** Method resize() changes the size of the Collection.
+   *  If the new size is smaller than the older one, the last elements are thrown away, else the new elements are set to the default value of the element type */
   inline
   virtual void resize(const UnsignedInteger newSize)
   {

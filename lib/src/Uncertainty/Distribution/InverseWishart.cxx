@@ -143,7 +143,7 @@ CovarianceMatrix InverseWishart::getRealizationAsMatrix() const
   for (UnsignedInteger i = 0; i < p; ++i)
   {
     A(i, i) = std::sqrt(2.0 * DistFunc::rGamma(0.5 * (nu_ - i)));
-    // The off-diagonal elements are normaly distributed
+    // The off-diagonal elements are normally distributed
     for (UnsignedInteger j = 0; j < i; ++j) A(i, j) = DistFunc::rNormal();
   }
   return A.solveLinearSystem(inverseCholeskyInverse_).computeGram(true).getImplementation();

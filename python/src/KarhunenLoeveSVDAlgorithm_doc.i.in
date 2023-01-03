@@ -83,7 +83,7 @@ very accurate and reasonably fast for small to medium sized problems, it becomes
 prohibitively slow for large cases. The user can choose to use a stochastic
 algorithm instead, with the constraint that the number of singular values to be
 computed has to be fixed a priori.
-The following keys of :class:`~openturns.ResourceMap` allow to select and tune
+The following keys of :class:`~openturns.ResourceMap` allow one to select and tune
 these algorithms:
 
     - 'KarhunenLoeveSVDAlgorithm-UseRandomSVD' which triggers the use of a random

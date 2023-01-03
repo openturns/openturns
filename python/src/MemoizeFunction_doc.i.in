@@ -17,9 +17,9 @@ Notes
 -----
 
 When the function passed as argument is a :class:`~openturns.MemoizeFunction`,
-its input and output history are copied into current instance.  This allows
-to retrieve this history from a :class:`~openturns.Function` object which
-is in fact a :class:`~openturns.MemoizeFunction`.
+its input and output history are copied into current instance.
+This allows one to retrieve this history from a :class:`~openturns.Function`
+object which is in fact a :class:`~openturns.MemoizeFunction`.
 Thus, if you create a :class:`~openturns.MemoizeFunction` from an unknown
 :class:`~openturns.Function`, it is better to call :meth:`clearHistory`.
 The cache size is initialized by the value of the :class:`~openturns.ResourceMap` `Cache-MaxSize` entry.

@@ -32,7 +32,7 @@ Examples
 >>> # Model here is sin(x)
 >>> model = ot.SymbolicFunction(['x'], ['sin(x)'])
 >>> # We can build several types of models (kriging, pc, ...)
->>> # We use a Taylor developement (order 5) and compare the metamodel with the model
+>>> # We use a Taylor development (order 5) and compare the metamodel with the model
 >>> metaModel = ot.SymbolicFunction(['x'], ['x - x^3/6.0 + x^5/120.0'])
 >>> x = dist.getSample(10)
 >>> y = model(x)

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Implement the Filon quadrature for oscilatory integrands
+ *  @brief Implement the Filon quadrature for oscillatory integrands
  *
  *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -93,7 +93,7 @@ private:
   /* Pulsation */
   Scalar omega_;
 
-  /* Kind: nature of the oscilating kernel */
+  /* Kind: nature of the oscillating kernel */
   UnsignedInteger kind_;
 } ; /* class FilonQuadrature */
 

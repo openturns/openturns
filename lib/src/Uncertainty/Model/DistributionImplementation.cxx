@@ -1987,7 +1987,7 @@ Collection<PiecewiseHermiteEvaluation> DistributionImplementation::interpolatePD
   const Scalar xMax = range_.getUpperBound()[0];
   const Scalar mu = getMean()[0];
   // Here we use an absolute precision of 0.0 in order to force the algorithm to use all the available discretization points
-  GaussKronrod algorithm(n - 1, cdfEpsilon_ * cdfEpsilon_, GaussKronrodRule::G3K7);
+  GaussKronrod algorithm( n - 1, cdfEpsilon_ * cdfEpsilon_, GaussKronrodRule::G3K7);
   const PDFWrapper pdfWrapper(this);
   Scalar error = -1.0;
   Point ai;
@@ -4677,7 +4677,7 @@ Scalar DistributionImplementation::getCDFEpsilon() const
   return cdfEpsilon_;
 }
 
-/* Get a positon indicator for a 1D distribution */
+/* Get a position indicator for a 1D distribution */
 Scalar DistributionImplementation::getPositionIndicator() const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: cannot get the position indicator of a distribution with dimension > 1";

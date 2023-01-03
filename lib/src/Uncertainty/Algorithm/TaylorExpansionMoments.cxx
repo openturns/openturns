@@ -197,7 +197,7 @@ void TaylorExpansionMoments::computeCovariance() const
 
   /* we compute here the covariance_
      hessianAtMean_ is symmetrical
-     The following straightforward implementation does'nt work because OT has no way to discover
+     The following straightforward implementation doesn't work because OT has no way to discover
      that the resulting matrice is square and symmetric only by checking the type of the arguments
      setCovariance(getGradientAtMean().transpose() * getInputCovariance() * getGradientAtMean());
      We use an intermediate rectangular matrix, then we make an element-wise copy of this matrix into
@@ -263,8 +263,8 @@ void TaylorExpansionMoments::computeMeanSecondOrder() const
     isAlreadyComputedHessian_ = true;
   }
   /* we compute here the meanSecondOrder_ */
-  /* tensoriel writting : setCovariance(getGradientAtMean() + 0.5*getHessianAtMean().dotdot(getInputCovariance())); */
-  /* developped formula */
+  /* tensoriel writing: setCovariance(getGradientAtMean() + 0.5*getHessianAtMean().dotdot(getInputCovariance())); */
+  /* developed formula */
 
   const UnsignedInteger rowDimension = hessianAtMean_.getNbRows();
   /* i */

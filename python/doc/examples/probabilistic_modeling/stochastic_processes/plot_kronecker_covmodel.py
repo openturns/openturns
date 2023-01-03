@@ -87,7 +87,7 @@ _ = viewer.View(graph, square_axes=True)
 # Change the correlation between the outputs
 # ------------------------------------------
 #
-# By setting covariance matrix of the outputs, we have implicitely set the
+# By setting covariance matrix of the outputs, we have implicitly set the
 # amplitudes and the correlation matrix of the Kronecker covariance function.
 #
 # The amplitudes are the square roots of the diagonal elements

@@ -207,7 +207,7 @@ initial_state = ot.Point(initial_state)
 # distribution of all uncertain parameters, including the vector of
 # continuous intensities :math:`\vect{Y},` seen here as a latent variable.
 # Indeed, adding :math:`\vect{Y}` to the vector of sampled variables yields a
-# posterior density which is available in closed form, up to an unkown
+# posterior density which is available in closed form, up to an unknown
 # multiplicative factor
 #
 # .. math::

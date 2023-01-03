@@ -62,7 +62,7 @@ HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(c
 }
 
 
-/* Virtual constrcutor */
+/* Virtual constructor */
 HyperbolicAnisotropicEnumerateFunction * HyperbolicAnisotropicEnumerateFunction::clone() const
 {
   return new HyperbolicAnisotropicEnumerateFunction(*this);

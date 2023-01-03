@@ -4,8 +4,6 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
-
-# Create an intance
 myFunc = ot.SymbolicFunction("x", "x^2")
 tg = ot.RegularGrid(0.0, 0.2, 6)
 mySpatialFunc = ot.ValueFunction(myFunc, tg)

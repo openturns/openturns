@@ -9,7 +9,7 @@ FAST sensitivity indices
 # which is a relevant alternative to the classical
 # simulation approach for computing Sobol sensitivity indices.
 #
-# The FAST indices, like the Sobol indices, allow to
+# The FAST indices, like the Sobol indices, allow one to
 # evaluate the importance of a single variable or a specific set of variables.
 #
 # In theory, FAST indices range is :math:`\left[0; 1\right]` ; the closer to 1 the

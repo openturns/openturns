@@ -115,7 +115,7 @@ private:
   GeneralLinearModelAlgorithm glmAlgo_;
   // The coefficients of the current output deterministic trend
   mutable Point gamma_;
-  // Temporarly used to compute gamma
+  // Temporarily used to compute gamma
   mutable Point rho_;
 
   /** Result */

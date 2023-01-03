@@ -180,7 +180,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
           // Here we have to change the current value of the amplitude as it has
           // to be equal to 1 during the potential optimization step in order for
           // the analytical formula to be correct.
-          // Now, the amplitude has disapear form the active parameters so it must
+          // Now, the amplitude has disappear form the active parameters so it must
           // be updated using the amplitude accessor.
           reducedCovarianceModel_.setAmplitude(Point(1, 1.0));
           break;

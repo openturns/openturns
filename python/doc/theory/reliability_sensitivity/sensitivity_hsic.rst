@@ -264,7 +264,7 @@ by relying on an adapted V-statistics estimator:
 where :math:`\hat{W} = \frac{W}{\frac{1}{n}\sum_{j = 1}^{n} W_{j,j} }`, :math:`H_1 = I_n - \frac{1}{n} U\hat{W}`,
  :math:`H_2 = I_n - \frac{1}{n} \hat{W}U`, :math:`I_n` is an :math:`n \times n` identity matrix and :math:`U` is an :math:`n \times n` comprised of ones.
 
-Please note that no U-statistics estimator exists for the conditional HSIC. Furhtermore,
+Please note that no U-statistics estimator exists for the conditional HSIC. Furthermore,
 differently than in the target analysis case, standard continuous covariance kernels
 can be used, regardless of the type of weight function that is being considered.
 

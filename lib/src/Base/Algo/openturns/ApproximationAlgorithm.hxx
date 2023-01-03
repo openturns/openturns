@@ -75,13 +75,13 @@ public:
   void run(const DesignProxy & proxy);
 #endif
 
-  /** Acccessor to the coefficients of the selected metamodel on the provided basis */
+  /** Accessor to the coefficients of the selected metamodel on the provided basis */
   Point getCoefficients();
 
-  /** Acccessor to the residual of the selected metamodel on the provided basis */
+  /** Accessor to the residual of the selected metamodel on the provided basis */
   Scalar getResidual();
 
-  /** Acccessor to the residual of the selected metamodel on the provided basis */
+  /** Accessor to the residual of the selected metamodel on the provided basis */
   Scalar getRelativeError();
 
 }; /* class ApproximationAlgorithm */

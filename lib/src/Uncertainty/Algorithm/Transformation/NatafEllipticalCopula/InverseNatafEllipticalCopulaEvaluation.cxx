@@ -93,7 +93,7 @@ Point InverseNatafEllipticalCopulaEvaluation::operator () (const Point & inP) co
   // First, correlate the components
   Point result(cholesky_ * inP);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
-  // Second, apply the commmon marginal distribution
+  // Second, apply the common marginal distribution
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal.computeCDF(Point(1, result[i]));
   callsNumber_.increment();
   return result;

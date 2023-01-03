@@ -225,7 +225,7 @@ Sample MultiStart::getStartingSample() const
 void MultiStart::checkStartingSampleConsistentWithOptimizationProblem(const Sample & startingSample, const OptimizationProblem & problem) const
 {
   const UnsignedInteger problemDimension = problem.getDimension();
-  if ( (problemDimension > 0) && (startingSample.getSize() > 0) ) // only perform check if problem is initalized and starting points are already defined
+  if ( (problemDimension > 0) && (startingSample.getSize() > 0) ) // only perform check if problem is initialized and starting points are already defined
   {
     if (problemDimension != startingSample.getDimension())
     {

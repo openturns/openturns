@@ -70,7 +70,7 @@ int main(int, char *[])
       NonLinearLeastSquaresCalibration algo(model, x, y, candidate);
       algo.setBootstrapSize(bootstrapSizes[n]);
       algo.run();
-      // To avoid discrepance between the plaforms with or without CMinpack
+      // To avoid discrepance between the platforms with or without CMinpack
       Point parameterMAP(algo.getResult().getParameterMAP());
       fullprint << "MAP =" << parameterMAP << std::endl;
       assert_almost_equal(parameterMAP, trueParameter, 1e-2);

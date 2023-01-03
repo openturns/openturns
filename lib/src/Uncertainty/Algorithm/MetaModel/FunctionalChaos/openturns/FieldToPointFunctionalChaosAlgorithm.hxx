@@ -104,7 +104,7 @@ protected:
 
   /** Number of eigenvalues management
    *  The number of modes computed by 'run' method can be defined:
-   *  - by specifing the threshold of spectrum cut-off
+   *  - by specifying the threshold of spectrum cut-off
    *  - by specifying the number of modes to compute */
   Scalar threshold_ = 0.0;
   UnsignedInteger nbModes_;

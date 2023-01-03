@@ -108,7 +108,7 @@ view = viewer.View(graph)
 # %%
 # In this case, the two distributions are very close: there is no obvious outlier.
 #
-# Cook's distance measures the impact of every invidual data point on the linear regression, and can be plotted as follows:
+# Cook's distance measures the impact of every individual data point on the linear regression, and can be plotted as follows:
 
 # %%
 graph = analysis.drawCookDistance()

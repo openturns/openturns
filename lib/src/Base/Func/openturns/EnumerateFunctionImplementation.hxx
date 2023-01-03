@@ -42,7 +42,7 @@ public:
   /** Parameter constructor */
   explicit EnumerateFunctionImplementation(const UnsignedInteger dimension = 1);
 
-  /** Virtual constrcutor */
+  /** Virtual constructor */
   EnumerateFunctionImplementation * clone() const override;
 
   /** String converter */

@@ -23,7 +23,7 @@ for bootstrapSize in bootstrapSizes:
     algo = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
-    # To avoid discrepance between the plaforms with or without CMinpack
+    # To avoid discrepance between the platforms with or without CMinpack
     print("result (Auto)=", algo.getResult().getParameterMAP())
     ott.assert_almost_equal(
         algo.getResult().getObservationsError().getMean(), [0.0051, -0.0028], 1e-1, 1e-3
@@ -43,7 +43,7 @@ for bootstrapSize in bootstrapSizes:
         )
     )
     algo.run()
-    # To avoid discrepance between the plaforms with or without CMinpack
+    # To avoid discrepance between the platforms with or without CMinpack
     print("result  (TNC)=", algo.getResult().getParameterMAP())
     ott.assert_almost_equal(
         algo.getResult().getObservationsError().getMean(), [0.0051, -0.0028], 1e-1, 1e-3

@@ -122,7 +122,7 @@ Matrix ProductFunction::parameterGradient(const Point & inP) const
     grad(rowIndex, 0) = upper(i, 0);
     ++ rowIndex;
   }
-  // Gradient accroding to right parameters
+  // Gradient according to right parameters
   for (UnsignedInteger i = 0; i < leftParametersDimension; ++i)
   {
     grad(rowIndex, 0) = lower(i, 0);

@@ -37,22 +37,22 @@ ExitCodeValue check()
   catch (const EXC & ex)
   {
     rc = ExitCode::Success;
-    std::cerr << "+++ Correct exception catched." << std::endl;
+    std::cerr << "+++ Correct exception caught." << std::endl;
   }
   catch (const Exception & ex)
   {
     rc = ExitCode::Error;
-    std::cerr << "--- General exception catched !" << std::endl;
+    std::cerr << "--- General exception caught !" << std::endl;
   }
   catch (const std::exception & ex)
   {
     rc = ExitCode::Error;
-    std::cerr << "--- Standard exception catched !" << std::endl;
+    std::cerr << "--- Standard exception caught !" << std::endl;
   }
   catch (...)
   {
     rc = ExitCode::Error;
-    std::cerr << "--- Unknown exception catched !" << std::endl;
+    std::cerr << "--- Unknown exception caught !" << std::endl;
   };
 
   return rc;
@@ -71,17 +71,17 @@ ExitCodeValue check< Exception >()
   catch (const Exception & ex)
   {
     rc = ExitCode::Success;
-    std::cerr << "+++ Correct exception catched." << std::endl;
+    std::cerr << "+++ Correct exception caught." << std::endl;
   }
   catch (const std::exception & ex)
   {
     rc = ExitCode::Error;
-    std::cerr << "--- Standard exception catched !" << std::endl;
+    std::cerr << "--- Standard exception caught !" << std::endl;
   }
   catch (...)
   {
     rc = ExitCode::Error;
-    std::cerr << "--- Unknown exception catched !" << std::endl;
+    std::cerr << "--- Unknown exception caught !" << std::endl;
   };
 
   return rc;

@@ -31,7 +31,7 @@ algo.setBlockSize(100)  # size of Sobol experiment at each iteration
 algo.setBatchSize(4)  # number of points evaluated simultaneously
 # alpha: cirteria checks whether CIs are small enough
 algo.setIndexQuantileLevel(0.05)
-# epsilon: critera checks whether CIs are tight enough
+# epsilon: criteria checks whether CIs are tight enough
 algo.setIndexQuantileEpsilon(1e-2)
 algo.run()
 

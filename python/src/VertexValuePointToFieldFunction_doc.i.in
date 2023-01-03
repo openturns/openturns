@@ -34,7 +34,7 @@ The field :math:`F'` is defined by the function :math:`g: \Rset^n \times \Rset^d
     \forall \vect{t}_i \in \cM_N, \quad \vect{v}'_i = g(\vect{t}_i, \vect{v}_i)
 
 When :math:`g` is not specified, the constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*).
-The instanciation of such an object is used to extract an actual :class:`~openturns.VertexValuePointToFieldFunction` from a :class:`~openturns.Study`.
+The instantiation of such an object is used to extract an actual :class:`~openturns.VertexValuePointToFieldFunction` from a :class:`~openturns.Study`.
 
 See also
 --------

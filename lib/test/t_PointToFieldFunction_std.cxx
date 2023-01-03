@@ -31,8 +31,6 @@ int main(int, char *[])
 
   try
   {
-
-    /* Create an intance */
     PointToFieldFunction myFunc;
 
     fullprint << "myFunc=" << myFunc << std::endl;

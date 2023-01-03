@@ -41,7 +41,7 @@ NormInfEnumerateFunction::NormInfEnumerateFunction(const UnsignedInteger dimensi
 }
 
 
-/* Virtual constrcutor */
+/* Virtual constructor */
 NormInfEnumerateFunction * NormInfEnumerateFunction::clone() const
 {
   return new NormInfEnumerateFunction(*this);
@@ -147,7 +147,7 @@ UnsignedInteger NormInfEnumerateFunction::getMaximumDegreeStrataIndex(const Unsi
 void NormInfEnumerateFunction::save(Advocate & adv) const
 {
   EnumerateFunctionImplementation::save(adv);
-  // Dont serialize state: index_, multiIndices_
+  // Don't serialize state: index_, multiIndices_
 }
 
 
@@ -155,7 +155,7 @@ void NormInfEnumerateFunction::save(Advocate & adv) const
 void NormInfEnumerateFunction::load(Advocate & adv)
 {
   EnumerateFunctionImplementation::load(adv);
-  // Dont serialize state: index_, multiIndices_
+  // Don't serialize state: index_, multiIndices_
 }
 
 

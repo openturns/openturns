@@ -68,7 +68,7 @@ We focus on the integral on each subdomain :math:`\mathcal{M}_k`. Using numerica
 
     \int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\di{f} \approx \Delta f S_{i,j}(f_k) \exp\left\{  2i\pi f_k \tau \right\}
 
-:math:`\tau` must be in correspondance with frequency values with respect to the Shannon criteria. Thus the temporal domain of estimation is the following:
+:math:`\tau` must be in correspondence with frequency values with respect to the Shannon criteria. Thus the temporal domain of estimation is the following:
 
     - :math:`\Delta t` is the time step, :math:`\Delta t = \frac{1}{2 \Omega_c}` such as :math:`\Delta f \Delta t = \frac{1}{M}`
 

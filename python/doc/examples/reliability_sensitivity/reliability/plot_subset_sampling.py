@@ -116,7 +116,7 @@ print(
 )
 
 # %%
-# You can also get the succesive thresholds used by the algorithm:
+# You can also get the successive thresholds used by the algorithm:
 
 # %%
 levels = algo.getThresholdPerStep()

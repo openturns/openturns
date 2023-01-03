@@ -1652,7 +1652,7 @@ MatrixImplementation MatrixImplementation::getDiagonal(const SignedInteger k) co
   if (k >= n) throw OutOfBoundException(HERE) << "One must have k < nbColumns";
   if (-k > m) throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
 
-  /* Fisrt step: the size of the diagonal */
+  /* First step: the size of the diagonal */
   UnsignedInteger nElt;
   /* Extraction */
   if(k >= 0)
@@ -1691,7 +1691,7 @@ void MatrixImplementation::setDiagonal(const Point &diag, const SignedInteger k)
   if (k >= n) throw OutOfBoundException(HERE) << "One must have k < nbColumns";
   if (-k > m) throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
 
-  /* Fisrt step: the size of the diagonal */
+  /* First step: the size of the diagonal */
   UnsignedInteger nElt;
   if(k >= 0)
   {

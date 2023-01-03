@@ -156,7 +156,7 @@ Let :math:`V_i^{(k)}` be the (first order) variance of the conditional expectati
     V_i^{(k)} & = \Var{ \Expect{Y^{(k)} \vert X_i} }
 
 for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
-Similarily, let :math:`VT_i^{(k)}` be the total variance of the conditional expectation of :math:`Y^{(k)}` for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`. 
+Similarly, let :math:`VT_i^{(k)}` be the total variance of the conditional expectation of :math:`Y^{(k)}` for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`. 
 
 The indices can be aggregated with the following formulas:
 

@@ -101,7 +101,7 @@ As the input process decomposition is done with the values decomposition approac
 it is possible to control the number of modes retained per input,
 the idea being to avoid a large input dimension for the chaos decomposition step.
 As done in :class:`~openturns.KarhunenLoeveSVDAlgorithm`, the :func:`setThreshold`
-and :func:`setNbModes` methods allow to control the spectrum ratio and maximum count.
+and :func:`setNbModes` methods allow one to control the spectrum ratio and maximum count.
 
 By default the input process data is assumed to not be centered, and the method
 :func:`setCenteredSample` allows one to skip centering of the data for both the

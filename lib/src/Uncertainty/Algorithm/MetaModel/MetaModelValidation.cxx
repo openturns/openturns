@@ -86,7 +86,7 @@ void MetaModelValidation::initialize() const
 {
   // Initialize
   // We compute first the residual sample
-  // This last one is stored and retured by getResidualSample method
+  // This last one is stored and returned by getResidualSample method
   // From this, it derives also the predictive factor i.e. 1 - RSS/SS,
   // RSS = Residual Sum of Squares, SS = Sum of Squares
   residual_ = outputSample_ - metaModel_(inputSample_);

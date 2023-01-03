@@ -45,7 +45,7 @@ kriging.run()
 # algo
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult(), noiseModel)
 algo.setMaximumEvaluationNumber(20)
-algo.setImprovementFactor(0.05)  # stop whe improvement is < a% the current optimum
+algo.setImprovementFactor(0.05)  # stop when improvement is < a% the current optimum
 algo.setAEITradeoff(0.66744898)
 algo.run()
 result = algo.getResult()
@@ -61,7 +61,7 @@ print(result.getOutputSample())
 # openturns.testing.assert_almost_equal(result.getOptimalValue(),
 # [-0.802223], 1e-5, 1e-5)
 
-# local refinement eventhough the model is noisy (we still want to check
+# local refinement even though the model is noisy (we still want to check
 # we're not too far from optimum)
 problem.setObjective(model.getMarginal(0))
 algo2 = ot.TNC(problem)

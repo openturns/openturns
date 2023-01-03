@@ -63,7 +63,7 @@ blockSize = 1
 # Quantile determining the percentage of failure samples in the current population
 rhoQuantile = 0.25
 
-# Definition of the algoritm
+# Definition of the algorithm
 Nais_algo = ot.NAIS(event, rhoQuantile)
 Nais_algo.setMaximumOuterSampling(numberSamples)
 Nais_algo.setBlockSize(blockSize)

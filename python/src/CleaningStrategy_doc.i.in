@@ -19,7 +19,7 @@ orthogonalBasis : :class:`~openturns.OrthogonalBasis`
 maximumDimension : positive int
     Maximum index that can be used by the :class:`~openturns.EnumerateFunction`
     to determine the last term of the basis.
-maximumSize : positve int
+maximumSize : positive int
     Parameter that characterizes the cleaning strategy. It represents the 
     number of efficient coefficients of the basis. Its default value is set to 
     20.

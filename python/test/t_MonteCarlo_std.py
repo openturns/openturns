@@ -58,7 +58,7 @@ myAlgo.run()
 # Stream out the result
 print("MonteCarlo result=", myAlgo.getResult())
 
-# Use the standard deviation as a stoping rule
+# Use the standard deviation as a stopping rule
 myAlgo = ot.MonteCarlo(myEvent)
 myAlgo.setMaximumOuterSampling(250)
 myAlgo.setBlockSize(4)

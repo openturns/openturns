@@ -10,7 +10,7 @@
 %pythoncode %{
 class PythonRandomVector(object):
     """
-    Allow to overload RandomVector from Python.
+    Allow one to overload RandomVector from Python.
 
     Parameters
     ----------

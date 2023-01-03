@@ -207,7 +207,7 @@ protected:
   /** Variance of the reference output sample */
   Point referenceVariance_;
 
-  /** Variance conditionnaly to the i-th variable => Si = Vi/Var*/
+  /** Variance conditionally to the i-th variable => Si = Vi/Var*/
   mutable Sample varianceI_;
 
   /** Variance totale of the i-th variable => STi = VTi/Var */

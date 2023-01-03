@@ -24,7 +24,7 @@ distribution3 = ot.WeibullMin(1.5, 2.0)
 # Sum & difference of distributions
 # ---------------------------------
 #
-# It is easy to compute the sum of distributions. For example :
+# It is easy to compute the sum of distributions. For example:
 
 # %%
 distribution = distribution1 + distribution2
@@ -33,7 +33,7 @@ graph = distribution.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# We might also use substraction even with scalar values :
+# We might also use subtraction even with scalar values:
 
 # %%
 distribution = 3.0 - distribution3
@@ -45,7 +45,7 @@ view = viewer.View(graph)
 # Product & inverse
 # -----------------
 #
-# We might also compute the product of two (or more) distributions. For example :
+# We might also compute the product of two (or more) distributions. For example:
 
 # %%
 distribution = distribution1 * distribution2
@@ -75,7 +75,7 @@ view = viewer.View(graph)
 # Transformation using functions
 # ------------------------------
 #
-# The library provides methods to get the full distributions of `f(x)` where `f` can be equal to :
+# The library provides methods to get the full distributions of `f(x)` where `f` can be equal to:
 #
 #  - `sin`,
 #  - `asin`,
@@ -98,7 +98,7 @@ view = viewer.View(graph)
 #  - `cbrt`.
 #
 #
-# For example for the usual `log` transformation :
+# For example for the usual `log` transformation:
 
 # %%
 graph = distribution1.log().drawPDF()
@@ -128,7 +128,7 @@ view = viewer.View(graph)
 #
 
 # %%
-# We create a 1D normal distribution :
+# We create a 1D normal distribution
 antecedent = ot.Normal()
 
 # %%
@@ -136,19 +136,19 @@ antecedent = ot.Normal()
 f = ot.SymbolicFunction(["x"], ["sin(x)+cos(x)"])
 
 # %%
-# We then create the composite distribution :
+# We then create the composite distribution
 distribution = ot.CompositeDistribution(f, antecedent)
 graph = distribution.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# We can also build a distribution with the simplified construction :
+# We can also build a distribution with the simplified construction
 distribution = antecedent.exp()
 graph = distribution.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# and by using chained operators :
+# and by using chained operators:
 distribution = antecedent.abs().sqrt()
 graph = distribution.drawPDF()
 view = viewer.View(graph)

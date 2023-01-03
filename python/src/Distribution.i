@@ -86,7 +86,7 @@ import math
 
 class PythonDistribution(object):
     """
-    Allow to override Distribution from Python.
+    Allow one to override Distribution from Python.
 
     Parameters
     ----------
@@ -124,7 +124,7 @@ class PythonDistribution(object):
 
 class SciPyDistribution(PythonDistribution):
     """
-    Allow to override Distribution from a scipy distribution.
+    Allow one to override Distribution from a scipy distribution.
 
     Parameters
     ----------
@@ -249,7 +249,7 @@ class SciPyDistribution(PythonDistribution):
 
 class ChaospyDistribution(PythonDistribution):
     """
-    Allow to override Distribution from a chaospy distribution.
+    Allow one to override Distribution from a chaospy distribution.
 
     Parameters
     ----------

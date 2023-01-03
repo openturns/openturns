@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class Process
  *
- * The class that implements all processs
+ * The class that implements all process
  */
 class OT_API Process
   : public TypedInterfaceObject<ProcessImplementation>

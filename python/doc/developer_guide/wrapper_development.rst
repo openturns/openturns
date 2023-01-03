@@ -264,13 +264,13 @@ parses output files. It is provided for backward compatibility::
 Performance considerations
 --------------------------
 
-Two differents cases can be encounter when wrapping code: the wrapping
+Two different cases can be encounter when wrapping code: the wrapping
 code is a mathematical formula or it is an external code (an external process).
 
 Symbolic formula
 ~~~~~~~~~~~~~~~~
 
-A benchmark involving the differents wrapping methods available from
+A benchmark involving the different wrapping methods available from
 has been done using a dummy symbolic formula.
 
 Benchmark sources
@@ -411,7 +411,7 @@ external process (scilab) vs PythonFunction.
 
 If you still need to launch tiny external process, slow overhead and
 parallel ability are the important factors of the wrapper. Comparison of
-the differents wrapper compute time with a sample of size 1000 and an
+the different wrapper compute time with a sample of size 1000 and an
 external code that last 0.07s per point on a 8 cores computer:
 
 -  PythonFunction overhead is really slow (0.000004s) but can not launch

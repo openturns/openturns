@@ -40,7 +40,7 @@ for bootstrapSize in bootstrapSizes:
     )
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
-    # To avoid discrepance between the plaforms with or without CMinpack
+    # To avoid discrepance between the platforms with or without CMinpack
     print("result   (Auto)=", algo.getResult().getParameterMAP())
     algo.setOptimizationAlgorithm(
         ot.MultiStart(
@@ -57,7 +57,7 @@ for bootstrapSize in bootstrapSizes:
         )
     )
     algo.run()
-    # To avoid discrepance between the plaforms with or without CMinpack
+    # To avoid discrepance between the platforms with or without CMinpack
     print("result    (TNC)=", algo.getResult().getParameterMAP())
     print("error=", algo.getResult().getObservationsError())
     algo = ot.GaussianNonLinearCalibration(

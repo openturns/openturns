@@ -39,7 +39,7 @@ class OT_API Wilks : public Object
 public:
 
 
-  /* Default constuctor */
+  /* Default constructor */
   explicit Wilks(const RandomVector & vector);
 
   /** Maximum sample size accessor */

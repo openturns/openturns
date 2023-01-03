@@ -125,7 +125,7 @@ As a consequence, if one does want to achieve variance reduction with SS compare
 (and thus, to decrease the computational cost in context of very low failure probability), one
 should be able to sample sequentially from a quasi-optimal auxiliary PDF.
 
-Such a problem can be adressed by using dedicated algorithms based on the *Markov Chain Monte
+Such a problem can be addressed by using dedicated algorithms based on the *Markov Chain Monte
 Carlo* (MCMC) sampling technique (see, e.g., Robert and Casella, 2004; Asmussen and Glynn,
 2007).
 

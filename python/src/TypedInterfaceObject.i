@@ -36,7 +36,7 @@
 // The typemaps implement dynamic typecasting to ChildImplementation for the Python version of TypedInterfaceObject::getImplementation.
 %define OTgetImplementationHelper(Namespace, Interface, ParentImplementation)
 
-// Avoid arbritrary creation of SwigValueWrapper thingies around Pointer<ParentImplementation> type objects
+// Avoid arbitrary creation of SwigValueWrapper thingies around Pointer<ParentImplementation> type objects
 // following SWIG maintainer William Fulton's idea here:
 // https://github.com/swig/swig/blob/90cdbee6a69d13b39d734083b9f91069533b0d7b/Examples/test-suite/template_private_assignment.i
 %template() OT::Pointer<Namespace::ParentImplementation>;

@@ -38,7 +38,7 @@ print("future=", myCompositeProcess.getFuture(5))
 #               (x1,x2) --> (x1^2, x1+x2)
 g = ot.SymbolicFunction(["x1", "x2"], ["x1^2", "x1+x2"])
 
-# Convert g : R --> R into a spatial fucntion
+# Convert g : R --> R into a spatial function
 myDynFunc = ot.ValueFunction(g, ot.Mesh(2))
 
 # Then g acts on processes X: Omega * R^nSpat --> R^2

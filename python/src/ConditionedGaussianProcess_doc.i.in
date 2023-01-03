@@ -14,7 +14,7 @@ mesh : :class:`~openturns.Mesh`
 Notes
 -----
 ConditionedGaussianProcess helps to create Gaussian random fields,
-:math:`X: \Omega \times\cD \mapsto \Rset^d` where :math:`\cD \in \Rset^n`, with covariance function :math:`\cC: \cD \times \cD \mapsto \cM_{d \times d}(\Rset)` ( :math:`\cC^{stat}: \cD \mapsto \cM_{d \times d}(\Rset)` in the stationary case), conditionaly to some observations.
+:math:`X: \Omega \times\cD \mapsto \Rset^d` where :math:`\cD \in \Rset^n`, with covariance function :math:`\cC: \cD \times \cD \mapsto \cM_{d \times d}(\Rset)` ( :math:`\cC^{stat}: \cD \mapsto \cM_{d \times d}(\Rset)` in the stationary case), conditionally to some observations.
 
       Let :math:`X(\omega,x=x_1)=y_1,\cdots,X(\omega,x=x_n)=y_n` be the observations of the Gaussian process. We assume the same Gaussian prior as in the :class:`~openturns.KrigingAlgorithm`:
 
@@ -28,7 +28,7 @@ with :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` a general linear model, :math:
 
     \mathbb{E}[Z(\vect{x}), Z(\vect{\tilde{x}})] = \sigma^2 \cC^{stat}_{\theta}(\vect{x} - \vect{\tilde{x}})
 
-The ConditionedGaussianProcess generates realizations of the conditioned process. It focuses first on the :class:`~openturns.KrigingAlgorithm` to build such prior. Results are stored in a :class:`~openturns.KrigingResult` structure, which is given as input argument of the class. This last one, combined with the mesh argument, define both the prior  :math:`Y(\cM)` and the covariance evaluation on the mesh vertices :math:`\cC^{stat}_{\theta}(\cM)` conditionnaly to the previous observations. It follows that the realizations are randomly generated from the Gaussian distribution :math:`\cN ( Y(\cM), \cC^{stat}_{\theta}(\cM) )`.
+The ConditionedGaussianProcess generates realizations of the conditioned process. It focuses first on the :class:`~openturns.KrigingAlgorithm` to build such prior. Results are stored in a :class:`~openturns.KrigingResult` structure, which is given as input argument of the class. This last one, combined with the mesh argument, define both the prior  :math:`Y(\cM)` and the covariance evaluation on the mesh vertices :math:`\cC^{stat}_{\theta}(\cM)` conditionally to the previous observations. It follows that the realizations are randomly generated from the Gaussian distribution :math:`\cN ( Y(\cM), \cC^{stat}_{\theta}(\cM) )`.
 
 In practice, we do not store the Gaussian distribution as we need only the random realization method. For that purpose, we use the Cholesky method : we compute the Cholesky factor :math:`\cL_{\theta}(\cM)` of the covariance matrix :math:`\cC^{stat}_{\theta}(\cM)` such as :math:`\cC^{stat}_{\theta}(\cM) = \cL_{\theta}(\cM) \Tr{\cL_{\theta}(\cM)}`.
 It follows that the random realizations are obtained as following : :math:`realization = Y(\cM) + \cL_{\theta}(\cM) W` with :math:`W` a centered & reduced random Gaussian realization.

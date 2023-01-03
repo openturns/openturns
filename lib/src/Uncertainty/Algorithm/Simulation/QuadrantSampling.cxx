@@ -194,7 +194,7 @@ void QuadrantSampling::updateRotation()
       }
     }
 
-    // R is the tranformation E -> G
+    // R is the transformation E -> G
     R_ = P * H;
 
 

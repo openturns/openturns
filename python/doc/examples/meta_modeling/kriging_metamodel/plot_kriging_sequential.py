@@ -235,7 +235,8 @@ for krigingStep in range(5):
     View(graph)
 
 # %%
-# We observe that the second added point is the left bound of the domain. The remaining points were added strictly inside the domain where the accuracy was drastically improved.
+# We observe that the second added point is the left bound of the domain.
+# The remaining points were added strictly inside the domain where the accuracy was drastically improved.
 #
 # With only 10 points, the metamodel accuracy is already very good with a Q2 which is equal to 99.9%.
 
@@ -243,10 +244,11 @@ for krigingStep in range(5):
 # Conclusion
 # ----------
 #
-# The current example presents the naive implementation on the creation of a sequential design of experiments based on kriging. More pratical algorithms are presented in the following references.
+# The current example presents the naive implementation on the creation of a sequential design of experiments based on kriging.
+# More practical algorithms are presented in the following references.
 #
 # * Mona Abtini. Plans prédictifs à taille fixe et séquentiels pour le krigeage (2008). Thèse de doctorat de l'Université de Lyon.
 # * Céline Scheidt. Analyse statistique d’expériences simulées : Modélisation adaptative de réponses non régulières par krigeage et plans d’expériences (2007). Thèse présentée pour obtenir le grade de Docteur de l’Université Louis Pasteur.
-# * David Ginsbourger. Sequential Design of Computer Experiments. Wiley StatsRef: Statistics Reference Online, Wiley (2018 )
+# * David Ginsbourger. Sequential Design of Computer Experiments. Wiley StatsRef: Statistics Reference Online, Wiley (2018)
 
 View.ShowAll()

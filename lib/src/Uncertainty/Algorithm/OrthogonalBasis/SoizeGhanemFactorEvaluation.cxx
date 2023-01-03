@@ -76,7 +76,7 @@ Bool SoizeGhanemFactorEvaluation::operator ==(const SoizeGhanemFactorEvaluation 
  * where p_k is the PDF of the kth marginal distribution and p
  * its join PDF. Introducing the copula PDF c, one gets:
  * K(x)=\frac{1}{\sqrt{c(F_1(x_1),\dots,F_d(x_d))}}
- * beause p(x_1,\dots,x_d)=c(F_1(x_1),\dots,F_d(x_d))\prod_{k=1}^d p_k(x_k)
+ * because p(x_1,\dots,x_d)=c(F_1(x_1),\dots,F_d(x_d))\prod_{k=1}^d p_k(x_k)
  * where F_k is the CDF of the kth marginal distribution.
  * See: Christian Soize, R. Ghanem.
  * "Physical systems with random uncertainties: Chaos representations with

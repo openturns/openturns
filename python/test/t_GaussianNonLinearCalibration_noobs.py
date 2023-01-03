@@ -62,7 +62,7 @@ for bootstrapSize in [0, 30]:
     )
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
-    # To avoid discrepance between the plaforms with or without CMinpack
+    # To avoid discrepance between the platforms with or without CMinpack
     # Check MAP
     calibrationResult = algo.getResult()
     parameterMAP = calibrationResult.getParameterMAP()
@@ -85,7 +85,7 @@ for bootstrapSize in [0, 30]:
         )
     )
     algo.run()
-    # To avoid discrepance between the plaforms with or without CMinpack
+    # To avoid discrepance between the platforms with or without CMinpack
     # Check MAP
     calibrationResult = algo.getResult()
     parameterMAP = calibrationResult.getParameterMAP()

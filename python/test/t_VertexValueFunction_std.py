@@ -5,7 +5,6 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 
-# Create an intance
 myFunc = ot.SymbolicFunction(["t", "x"], ["x + t^2"])
 tg = ot.RegularGrid(0.0, 0.2, 6)
 myTemporalFunc = ot.VertexValueFunction(myFunc, tg)

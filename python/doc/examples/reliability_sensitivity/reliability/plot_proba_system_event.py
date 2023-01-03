@@ -20,7 +20,7 @@ Time variant system reliability problem
 #    g(t) \leq 0
 #
 #
-# which means that the resistance at :math:`t` is less thant the stress at :math:`t`.
+# which means that the resistance at :math:`t` is less than the stress at :math:`t`.
 #
 #
 # We propose the following probabilistic model:
@@ -59,8 +59,8 @@ Time variant system reliability problem
 # We define the bivariate random vector :math:`Y_t = (bt + S_t, b(t+\Delta t) + S_{t+\Delta t})`.
 # Here, :math:`Y_t` is a bivariate Normal random vector:
 #
-# - whith mean :math:`[bt, b(t+\delta t)]` and
-# - whith covariance matrix :math:`\Sigma` defined by:
+# - with mean :math:`[bt, b(t+\delta t)]` and
+# - with covariance matrix :math:`\Sigma` defined by:
 #
 # ..math::
 #   \begin{align*}

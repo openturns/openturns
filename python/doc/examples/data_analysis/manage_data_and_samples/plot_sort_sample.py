@@ -71,7 +71,7 @@ sorted_marginal = sample.sort(1)
 print(sorted_marginal)
 
 # %%
-# We can sort the sample in place, that is whithout creating a new sample, as well with sortInPlace. When the dimension is greater than one the sort is made according to the first marginal.
+# We can sort the sample in place, that is without creating a new sample, as well with sortInPlace. When the dimension is greater than one the sort is made according to the first marginal.
 sample.sortInPlace()
 print(sample)
 

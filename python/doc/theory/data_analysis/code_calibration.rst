@@ -214,12 +214,12 @@ The bootstrap method is based on the following
 experiment. 
 Provided that we can generate a set of input and output observations, 
 we can compute the corresponding value of the parameter :math:`\hat{\vect{\theta}}`. 
-Reproducing this sampling experiment a large number of times would allow 
+Reproducing this sampling experiment a large number of times would allow one 
 to get the distribution of the estimated parameter :math:`\hat{\vect{\theta}}`. 
 In practice, we only have one single sample of :math:`n` observations. 
 If this sample is large enough and correctly represents the variability 
 of the observations, the bootstrap method allows one to generate
-observations resamples, which, in turn, allow to get a sample of 
+observations resamples, which, in turn, allow one to get a sample of 
 :math:`\hat{\vect{\theta}}`. 
 An approximate distribution of :math:`\hat{\vect{\theta}}` can then be computed 
 based on kernel smoothing, for example. 

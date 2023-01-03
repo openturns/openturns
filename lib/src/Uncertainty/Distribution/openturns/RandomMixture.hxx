@@ -241,7 +241,7 @@ public:
   /** Weights distribution accessor */
   Matrix getWeights() const;
 
-  /** Get a positon indicator for a 1D distribution */
+  /** Get a position indicator for a 1D distribution */
   Scalar getPositionIndicator() const;
 
   /** Get a dispersion indicator for a 1D distribution */

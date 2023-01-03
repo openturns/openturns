@@ -237,7 +237,7 @@ void EfficientGlobalOptimization::run()
     Scalar optimalValueSubstitute = optimalValue;
     if (hasNoise)
     {
-      // with noisy objective we dont have access to the real current optimal value
+      // with noisy objective we don't have access to the real current optimal value
       // so consider a quantile of the kriging prediction: argmin_xi mk(xi) + c * sk(xi)
       optimalValueSubstitute = problem.isMinimization() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
       const Sample mx(metaModelResult.getConditionalMean(inputSample));

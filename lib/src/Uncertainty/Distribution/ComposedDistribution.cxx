@@ -1033,7 +1033,7 @@ ComposedDistribution::PointWithDescriptionCollection ComposedDistribution::getPa
     const PointWithDescriptionCollection marginalParameters(distributionCollection_[marginalIndex].getParametersCollection());
     PointWithDescription point(marginalParameters[0]);
     Description marginalParametersDescription(point.getDescription());
-    // Here we must add a unique prefix to the marginal parameters description in order to deambiguate the parameters of different marginals sharing the same description
+    // Here we must add a unique prefix to the marginal parameters description in order to desambiguate the parameters of different marginals sharing the same description
     for (UnsignedInteger i = 0; i < point.getDimension(); ++i) marginalParametersDescription[i] = (OSS() << marginalParametersDescription[i] << "_marginal_" << marginalIndex);
     point.setDescription(marginalParametersDescription);
     point.setName(description[marginalIndex]);
@@ -1044,7 +1044,7 @@ ComposedDistribution::PointWithDescriptionCollection ComposedDistribution::getPa
     // Second put the dependence parameters
     PointWithDescription point(copula_.getParametersCollection()[0]);
     Description copulaParametersDescription(point.getDescription());
-    // Here we must add a unique prefix to the copula parameters description in order to deambiguate the parameters of marginals sharing the same description
+    // Here we must add a unique prefix to the copula parameters description in order to disambiguate the parameters of marginals sharing the same description
     for (UnsignedInteger i = 0; i < point.getDimension(); ++i) copulaParametersDescription[i] = (OSS() << copulaParametersDescription[i] << "_copula");
     point.setDescription(copulaParametersDescription);
     point.setName(copula_.getName());

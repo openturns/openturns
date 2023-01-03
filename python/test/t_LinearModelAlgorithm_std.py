@@ -24,7 +24,7 @@ print("Fit y ~ 1 + 0.1 x + 10 x^2 model using 100 points")
 ot.RandomGenerator.SetSeed(0)
 size = 100
 # Define a linespace from 0 to 10 with size points
-# We use a Box expermient ==> remove 0 & 1 points
+# We use a Box experiment ==> remove 0 & 1 points
 experiment = ot.Box([size - 2])
 X = experiment.generate()
 # X is defined in [0,1]

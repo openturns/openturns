@@ -99,29 +99,29 @@ public:
   /** Process coefficients accessor */
   virtual Sample getCovarianceCoefficients() const;
 
-  /** Compute mean of new points conditionnaly to observations */
+  /** Compute mean of new points conditionally to observations */
   virtual Sample getConditionalMean(const Sample & xi) const;
 
-  /** Compute mean of new points conditionnaly to observations */
+  /** Compute mean of new points conditionally to observations */
   virtual Point getConditionalMean(const Point & xi) const;
 
-  /** Compute covariance matrix conditionnaly to observations*/
+  /** Compute covariance matrix conditionally to observations*/
   virtual CovarianceMatrix getConditionalCovariance(const Sample & xi) const ;
 
-  /** Compute covariance matrix conditionnaly to observations*/
+  /** Compute covariance matrix conditionally to observations*/
   virtual CovarianceMatrix getConditionalCovariance(const Point & xi) const;
 
-  /** Compute covariance matrices conditionnaly to observations (1 cov / point)*/
+  /** Compute covariance matrices conditionally to observations (1 cov / point)*/
   virtual CovarianceMatrixCollection getConditionalMarginalCovariance(const Sample & xi) const;
 
-  /** Compute covariance matrix conditionnaly to observations (1 cov of size outdimension)*/
+  /** Compute covariance matrix conditionally to observations (1 cov of size outdimension)*/
   virtual CovarianceMatrix getConditionalMarginalCovariance(const Point & xi) const;
 
-  /** Compute marginal variance conditionnaly to observations (1 cov of size outdimension)*/
+  /** Compute marginal variance conditionally to observations (1 cov of size outdimension)*/
   virtual Scalar getConditionalMarginalVariance(const Point & point,
       const UnsignedInteger marginalIndex = 0) const;
 
-  /** Compute marginal variance conditionnaly to observations (1 cov / point)*/
+  /** Compute marginal variance conditionally to observations (1 cov / point)*/
   virtual Sample getConditionalMarginalVariance(const Sample & xi,
       const UnsignedInteger marginalIndex = 0) const;
 
@@ -131,10 +131,10 @@ public:
   virtual Sample getConditionalMarginalVariance(const Sample & xi,
       const Indices & indices) const;
 
-  /** Compute joint normal distribution conditionnaly to observations*/
+  /** Compute joint normal distribution conditionally to observations*/
   virtual Normal operator()(const Sample & xi) const;
 
-  /** Compute joint normal distribution conditionnaly to observations*/
+  /** Compute joint normal distribution conditionally to observations*/
   virtual Normal operator()(const Point & xi) const;
 
   /** Method save() stores the object through the StorageManager */

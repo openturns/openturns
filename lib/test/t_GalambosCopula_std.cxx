@@ -33,7 +33,7 @@ int main(int, char *[])
 
   try
   {
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     UnsignedInteger dim = 2;
     GalambosCopula copula(0.5);
     Scalar myTheta = copula.getTheta();

@@ -13,7 +13,7 @@ Install x86 binary packages from `PyPI <https://pypi.org/project/openturns/>`_::
 
     pip3 install openturns
 
-For an installation without administrative priviledges the option :code:`--user` can be used.
+For an installation without administrative privileges the option :code:`--user` can be used.
 Note that pip does not install pre-releases unless given the option :code:`--pre`.
 
 Conda

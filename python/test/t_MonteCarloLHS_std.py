@@ -5,7 +5,7 @@ import openturns as ot
 # Defining parameters
 dimension = 3
 size = 25
-# Specifiy if initial LHS is centered or randomized
+# Specify if initial LHS is centered or randomized
 centered = True
 # Build standard LHS algorithm
 distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * dimension)

@@ -94,7 +94,7 @@ Point NatafEllipticalCopulaEvaluation::operator () (const Point & inP) const
   const UnsignedInteger dimension = getOutputDimension();
   Point result(dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
-  // First, filter the commmon marginal distribution
+  // First, filter the common marginal distribution
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal.computeQuantile(inP[i])[0];
   // Second, decorrelate the components
   result = cholesky_.solveLinearSystem(result);

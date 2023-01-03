@@ -78,7 +78,7 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const Sample & sample) const
   return result;
 }
 
-/* Algoritm associated with the method of local likelihood maximization */
+/* Algorithm associated with the method of local likelihood maximization */
 LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sample & sample) const
 {
   const Scalar std = sample.computeStandardDeviation()[0];
