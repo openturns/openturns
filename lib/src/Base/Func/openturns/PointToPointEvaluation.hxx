@@ -4,7 +4,7 @@
  *         math functions implementations or a point to field function
  *         and a field to point function
  *
- *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
