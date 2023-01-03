@@ -36,6 +36,7 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
+  PlatformInfo::SetNumericalPrecision(4);
 
   try
   {
