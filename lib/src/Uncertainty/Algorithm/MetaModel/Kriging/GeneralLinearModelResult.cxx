@@ -46,8 +46,8 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const Function & metaModel,
     const Point & residuals,
     const Point & relativeErrors,
-    const BasisCollection & basis,
-    const PointCollection & trendCoefficients,
+    const Basis & basis,
+    const Point & trendCoefficients,
     const CovarianceModel & covarianceModel,
     const Scalar optimalLogLikelihood)
   : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
@@ -59,9 +59,7 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
 {
-  const UnsignedInteger size = inputSample.getSize();
-  if (size != outputSample.getSize())
-    throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
+  // Nothing to do
 }
 
 
@@ -92,13 +90,13 @@ String GeneralLinearModelResult::__str__(const String & offset) const
 }
 
 /* Basis accessor */
-GeneralLinearModelResult::BasisCollection GeneralLinearModelResult::getBasisCollection() const
+Basis GeneralLinearModelResult::getBasis() const
 {
   return basis_;
 }
 
 /* Trend coefficients accessor */
-GeneralLinearModelResult::PointCollection GeneralLinearModelResult::getTrendCoefficients() const
+Point GeneralLinearModelResult::getTrendCoefficients() const
 {
   return beta_;
 }
