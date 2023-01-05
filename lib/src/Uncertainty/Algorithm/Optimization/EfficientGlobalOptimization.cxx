@@ -399,7 +399,7 @@ void EfficientGlobalOptimization::run()
 
     if (evaluationNumber > 0)
     {
-      KrigingAlgorithm algo(inputSample, outputSample, metaModelResult.getCovarianceModel(), metaModelResult.getBasisCollection()[0]);
+      KrigingAlgorithm algo(inputSample, outputSample, metaModelResult.getCovarianceModel(), metaModelResult.getBasis());
       LOGINFO(OSS() << "Rebuilding kriging ...");
       algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
       if (hasNoise)
