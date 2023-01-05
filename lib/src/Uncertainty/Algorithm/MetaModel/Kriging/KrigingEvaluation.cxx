@@ -29,8 +29,6 @@ CLASSNAMEINIT(KrigingEvaluation)
 
 
 static const Factory<KrigingEvaluation> Factory_KrigingEvaluation;
-static const Factory<PersistentCollection<Basis> > Factory_PersistentCollection_Basis;
-
 
 /* Constructor with parameters */
 KrigingEvaluation::KrigingEvaluation()
@@ -41,10 +39,10 @@ KrigingEvaluation::KrigingEvaluation()
 
 
 /* Constructor with parameters */
-KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
+KrigingEvaluation::KrigingEvaluation (const Basis & basis,
                                       const Sample & inputSample,
                                       const CovarianceModel & covarianceModel,
-                                      const PointCollection & beta,
+                                      const Point & beta,
                                       const Sample & gamma)
   : EvaluationImplementation()
   , basis_(basis)
@@ -53,11 +51,17 @@ KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
   , beta_(beta)
   , gamma_(gamma)
 {
-  if (basis.getSize() > 0)
+  if (!basis.isFinite())
+    throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, basis should be finite!";
+  const UnsignedInteger size = basis.getSize();
+  for (UnsignedInteger index = 0; index < size; ++index)
   {
-    if (basis.getSize() != covarianceModel.getOutputDimension())
-      throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, output sample dimension (" << covarianceModel.getOutputDimension()  << ") does not match multi-basis dimension (" << basis_.getSize() << ")";
+    if (basis[index].getOutputDimension() != covarianceModel.getOutputDimension())
+      throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, output sample dimension=" << covarianceModel.getOutputDimension() << " does not match basis[=" << index << "] dimension=" << basis[index].getOutputDimension();
+    if (basis[index].getInputDimension() != inputSample_.getDimension())
+      throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, input sample dimension=" << inputSample_.getDimension() << " does not match basis[=" << index << "] dimension=" << basis[index].getInputDimension();
   }
+
   if (covarianceModel.getInputDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the input dimension=" << covarianceModel.getInputDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getOutputDimension();
   setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
@@ -187,16 +191,16 @@ Point KrigingEvaluation::operator()(const Point & inP) const
     TBBImplementation::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
     value = functor.accumulator_;
   }
-  // Evaluate the basis part sequentially
-  // Number of basis is 0 or outputDimension
+  // Evaluate the trend part sequentially
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < basis_.getSize(); ++i)
   {
-    // Get local basis -> basis_[i]
-    const Basis localBasis(basis_[i]);
-    const Point betaBasis(beta_[i]);
-    const UnsignedInteger basisSize = localBasis.getSize();
-    for (UnsignedInteger j = 0; j < basisSize; ++j)
-      value[i] += localBasis[j](inP)[0] * betaBasis[j];
+    const Point phi_i(basis_[i](inP));
+    for (UnsignedInteger outputMarginal = 0; outputMarginal < getOutputDimension(); ++outputMarginal)
+    {
+      value[outputMarginal] += phi_i[outputMarginal] * beta_[index];
+      ++index;
+    }
   }
   callsNumber_.increment();
   return value;
@@ -287,26 +291,17 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
 
   // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension
-  Sample trend(size, 0);
+  Sample trend(size, getOutputDimension());
   for (UnsignedInteger i = 0; i < basis_.getSize(); ++i)
   {
-    // Get local basis -> basis_[i]
-    const Basis localBasis(basis_[i]);
-    const Point betaBasis(beta_[i]);
-    const UnsignedInteger basisSize = localBasis.getSize();
-    // For the i-th Basis (marginal), take into account the trend
-    Sample fi(size, 1);
-
-    for (UnsignedInteger j = 0; j < basisSize; ++j)
+    // Evaluate basis_[i] on the full sample & benefit from the parallelism
+    // of the underlying functions
+    const Sample phi_i(basis_[i](inS));
+    for (UnsignedInteger outputMarginal = 0; outputMarginal < getOutputDimension(); ++outputMarginal)
     {
-      Sample fj(localBasis[j](inS));
-      // scale ==> use of parallelism
-      fj *= betaBasis[j];
-      // Adding fj to fi
-      fi += fj;
+      for (UnsignedInteger k = 0; k < size; ++k)
+        trend(k, outputMarginal) += phi_i(k, outputMarginal) * beta_[i * getOutputDimension() + outputMarginal];
     }
-    // add it to the trend sample
-    trend.stack(fi);
   }
   // Adding trend to result, using parallelism
   // Add should be done only if there is a trend

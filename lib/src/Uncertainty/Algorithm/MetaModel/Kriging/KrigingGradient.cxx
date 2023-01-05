@@ -44,10 +44,10 @@ KrigingGradient::KrigingGradient()
 
 
 /* Constructor with parameters */
-KrigingGradient::KrigingGradient(const BasisCollection & basis,
+KrigingGradient::KrigingGradient(const Basis & basis,
                                  const Sample & inputSample,
                                  const CovarianceModel & covarianceModel,
-                                 const PointCollection & beta,
+                                 const Point & beta,
                                  const Sample & gamma)
   : GradientImplementation()
   , basis_(basis)
@@ -56,12 +56,19 @@ KrigingGradient::KrigingGradient(const BasisCollection & basis,
   , beta_(beta)
   , gamma_(gamma)
 {
-  if (basis.getSize() > 0)
+
+  if (!basis.isFinite())
+    throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, basis should be finite!";
+  const UnsignedInteger size = basis.getSize();
+  for (UnsignedInteger index = 0; index < size; ++index)
   {
-    if (basis.getSize() != covarianceModel.getOutputDimension())
-      throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, output sample dimension (" << covarianceModel.getOutputDimension()  << ") does not match multi-basis dimension (" << basis_.getSize() << ")";
+    if (basis[index].getOutputDimension() != covarianceModel.getOutputDimension())
+      throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, output sample dimension=" << covarianceModel.getOutputDimension() << " does not match basis[=" << index << "] dimension=" << basis[index].getOutputDimension();
+    if (basis[index].getInputDimension() != inputSample_.getDimension())
+      throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, input sample dimension=" << inputSample_.getDimension() << " does not match basis[=" << index << "] dimension=" << basis[index].getInputDimension();
   }
-  if (covarianceModel.getInputDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the input dimension=" << covarianceModel.getInputDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
+  if (covarianceModel.getInputDimension() != inputSample.getDimension())
+    throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the input dimension=" << covarianceModel.getInputDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getOutputDimension();
   setParameter(Point(getInputDimension()));
 }
@@ -126,23 +133,13 @@ Matrix KrigingGradient::gradient(const Point & inP) const
   }
 
   // trend part
-  const UnsignedInteger basisSize = basis_.getSize();
-
-  // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension
-  for (UnsignedInteger i = 0; i < basisSize; ++i)
+  for (UnsignedInteger k = 0; k < basis_.getSize(); ++k)
   {
-    // Get local basis -> basis_[i]
-    const Basis localBasis(basis_[i]);
-    const Point betaBasis(beta_[i]);
-    const UnsignedInteger localBasisSize = localBasis.getSize();
-    // For the i-th Basis (marginal), take into account the trend
-    // We write explicitly the linear combination instead of using a LinearCombinationGradient
-    for (UnsignedInteger j = 0; j < localBasisSize; ++j)
-    {
-      const Matrix gradient_bj(localBasis[j].gradient(inP) * betaBasis[j]);
-      for (UnsignedInteger k = 0; k < p; ++k) result(k, i) += gradient_bj(k, 0);
-    }
+    const Matrix gradient_bk(basis_[k].gradient(inP));
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      for (UnsignedInteger i = 0; i < p; ++i)
+        result(i, j) += gradient_bk(i, j) * beta_[k * dimension + j];
   }
 
   // update calls number

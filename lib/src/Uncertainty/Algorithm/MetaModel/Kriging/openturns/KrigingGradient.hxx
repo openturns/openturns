@@ -40,19 +40,14 @@ class OT_API KrigingGradient
 
 public:
 
-  typedef Collection<Point> PointCollection;
-  typedef PersistentCollection<Point> PointPersistentCollection;
-  typedef Collection<Basis> BasisCollection;
-  typedef PersistentCollection<Basis> BasisPersistentCollection;
-
   /** Default constructor */
   KrigingGradient();
 
   /** Constructor with parameters */
-  KrigingGradient(const BasisCollection & basis,
+  KrigingGradient(const Basis & basis,
                   const Sample & inputSample,
                   const CovarianceModel & correlationModel,
-                  const PointCollection & beta,
+                  const Point & beta,
                   const Sample & gamma);
 
   /** Virtual constructor */
@@ -82,8 +77,9 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-  // BasisCollection ==> Persistent for save attribut
-  BasisPersistentCollection basis_;
+
+  // Basis
+  Basis basis_;
 
   /// Training (input) sample
   Sample inputSample_;
@@ -92,7 +88,7 @@ protected:
   CovarianceModel covarianceModel_;
 
   /// Regression weights
-  PointPersistentCollection beta_;
+  Point beta_;
   Sample gamma_;
 
 };
