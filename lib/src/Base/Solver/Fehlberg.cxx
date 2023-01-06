@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Fehlberg.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -272,6 +273,9 @@ Point Fehlberg::computeStep(Pointer<EvaluationImplementation> & transitionFuncti
     parameter[0] = tK;
     transitionFunction->setParameter(parameter);
     f[k + 1] = transitionFunction->operator()(yK);
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+      if (!SpecFunc::IsNormal(f(k + 1, j)))
+        throw InvalidArgumentException(HERE) << "Fehlberg: transition function returns " << Point(f[k + 1]).__str__() << " at " << yK.__str__() << " with t=" << tK;
   }
   Point PhiI(dimension);
   Point PhiII(dimension);
