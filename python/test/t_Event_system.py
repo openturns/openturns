@@ -127,3 +127,35 @@ proba = intersection.getSample(1000).computeMean()[0]
 print(proba)
 assert proba == 0.0, "always false"
 assert f2.getCallsNumber() == 0, "intersection prune"
+
+
+# check batch evaluation
+n = 10000
+
+
+def f1py(x):
+    x0 = ot.Sample(x).getMarginal(0)
+    print('eval f1')
+    assert x0.getSize() == n, "no batch eval"
+    return x0
+
+
+def f2py(x):
+    x1 = ot.Sample(x).getMarginal(1)
+    print('eval f2')
+    assert x1.getSize() > 1, "no batch eval"
+    return x1
+
+
+f1 = ot.PythonFunction(2, 1, func_sample=f1py)
+f2 = ot.PythonFunction(2, 1, func_sample=f2py)
+Y1 = ot.CompositeRandomVector(f1, X)
+Y2 = ot.CompositeRandomVector(f2, X)
+e1 = ot.ThresholdEvent(Y1, ot.Less(), 0.0)
+e2 = ot.ThresholdEvent(Y2, ot.Greater(), 0.0)
+e3 = ot.UnionEvent([e1, e2])
+p3 = e3.getSample(n).computeMean()[0]
+ott.assert_almost_equal(p3, 0.75, 1e-2, 1e-2)
+e4 = ot.IntersectionEvent([e1, e2])
+p4 = e4.getSample(n).computeMean()[0]
+ott.assert_almost_equal(p4, 0.25, 1e-2, 1e-2)

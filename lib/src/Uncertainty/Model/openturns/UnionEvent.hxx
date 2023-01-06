@@ -64,6 +64,9 @@ public:
   /** Realization accessor */
   Point getRealization() const override;
 
+  /** Sample accessor */
+  Sample getSample(const UnsignedInteger size) const override;
+
   /** Whether it is an event */
   Bool isEvent() const override;
 

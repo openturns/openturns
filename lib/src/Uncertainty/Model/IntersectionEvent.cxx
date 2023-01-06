@@ -149,6 +149,12 @@ Point IntersectionEvent::getRealization() const
   return composedEvent_.getRealization();
 }
 
+/* Sample accessor */
+Sample IntersectionEvent::getSample(const UnsignedInteger size) const
+{
+  return composedEvent_.getSample(size);
+}
+
 Bool IntersectionEvent::isEvent() const
 {
   return true;
