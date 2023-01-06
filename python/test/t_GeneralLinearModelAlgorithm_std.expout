@@ -2,31 +2,31 @@
 
 
 covariance (dirac, optimized)= DiracCovarianceModel(t)=[[ 0.03832 ]] * t==[0]
-trend (dirac, optimized)= [[-0.1109,1.015]]
+trend (dirac, optimized)= [-0.1109,1.015]
 ===================================================
 
 
 covariance (dirac, not optimized)= DiracCovarianceModel(t)=[[ 1 ]] * t==[0]
-trend (dirac, not optimized)= [[-0.1109,1.015]]
+trend (dirac, not optimized)= [-0.1109,1.015]
 ===================================================
 
 
 covariance (dirac, not optimized)= DiracCovarianceModel(t)=[[ 1 ]] * t==[0]
-trend (dirac, not optimized)= [[-0.1109,1.015]]
+trend (dirac, not optimized)= [-0.1109,1.015]
 ===================================================
 
 
 covariance (reduced, unbiased)= AbsoluteExponential(scale=[0.1328], amplitude=[0.1956])
-trend (reduced, unbiased)= [[-0.1034,1.014]]
+trend (reduced, unbiased)= [-0.1034,1.014]
 ===================================================
 
 
 covariance (reduced, biased)= AbsoluteExponential(scale=[0.1328], amplitude=[0.1907])
-trend (reduced, biased)= [[-0.1034,1.014]]
+trend (reduced, biased)= [-0.1034,1.014]
 ===================================================
 
 
 covariance (full optim)= AbsoluteExponential(scale=[0.1328], amplitude=[0.1907])
-trend (full optim)= [[-0.1034,1.014]]
+trend (full optim)= [-0.1034,1.014]
 ===================================================
 

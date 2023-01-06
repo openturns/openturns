@@ -143,9 +143,12 @@ def test_two_outputs():
     f = ot.SymbolicFunction(["x"], ["x * sin(x)", "x * cos(x)"])
     sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0], [7.0], [8.0]]
     sampleY = f(sampleX)
-    basis = ot.Basis(
-        [ot.SymbolicFunction(["x"], ["x"]), ot.SymbolicFunction(["x"], ["x^2"])]
-    )
+    # Build a basis phi from R --> R^2
+    # phi_{0,0} = phi_{0,1} = x
+    # phi_{1,0} = phi_{1,1} = x^2
+    phi0 = ot.AggregatedFunction([ot.SymbolicFunction(["x"], ["x"]), ot.SymbolicFunction(["x"], ["x"])])
+    phi1 = ot.AggregatedFunction([ot.SymbolicFunction(["x"], ["x^2"]), ot.SymbolicFunction(["x"], ["x^2"])])
+    basis = ot.Basis([phi0, phi1])
     covarianceModel = ot.SquaredExponential([1.0])
     covarianceModel.setActiveParameter([])
     covarianceModel = ot.TensorizedCovarianceModel([covarianceModel] * 2)

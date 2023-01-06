@@ -58,7 +58,7 @@ int main(int, char *[])
     Point ref = {0.1957};
     assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
     ref = {-0.1109, 1.015};
-    assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
+    assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
     // Now without estimating covariance parameters
     basis = LinearBasisFactory(inputDimension).build();
     covarianceModel = DiracCovarianceModel(inputDimension);
@@ -69,7 +69,7 @@ int main(int, char *[])
     ref = {1.0};
     assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
     ref = {-0.1109, 1.015};
-    assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
+    assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
     // Case of a well specified covariance model
     // Test the optimization when the amplitude is deduced analytically from the scale
     {
@@ -80,7 +80,7 @@ int main(int, char *[])
       ref = {0.1328, 0.1956};
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
       ref = {-0.1034, 1.014};
-      assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
+      assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
       ResourceMap::SetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", false);
       algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel2, basis);
       algo.run();
@@ -88,7 +88,7 @@ int main(int, char *[])
       ref = {0.1328, 0.1907};
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
       ref = {-0.1034, 1.014};
-      assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
+      assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
       ResourceMap::SetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", false);
       algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel2, basis);
       algo.run();
@@ -96,7 +96,7 @@ int main(int, char *[])
       ref = {0.01, 0.1908};
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-2, 1e-2);
       ref = {-0.111, 1.015};
-      assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
+      assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
     }
   }
   catch (TestFailed & ex)
