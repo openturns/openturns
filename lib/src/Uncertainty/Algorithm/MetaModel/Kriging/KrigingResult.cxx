@@ -664,8 +664,6 @@ void KrigingResult::load(Advocate & adv)
   MetaModelResult::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
-  adv.loadAttribute( "basis_", basis_ );
-  adv.loadAttribute( "trendCoefficients_", trendCoefficients_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "covarianceCoefficients_", covarianceCoefficients_ );
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
@@ -673,6 +671,49 @@ void KrigingResult::load(Advocate & adv)
   adv.loadAttribute( "phiT_", phiT_);
   adv.loadAttribute( "Gt_", Gt_);
 
+
+  if (adv.getStudyVersion() >= 102100)
+  {
+    adv.loadAttribute("basis_", basis_);
+    adv.loadAttribute("trendCoefficients_", trendCoefficients_);
+  }
+  else
+  {
+    // Backward load method
+    // Here the implementation suggests that we rely on a collection of Basis and Point
+    // Partially compatible with new implementation : we should have here the basis of
+    // same size
+    PersistentCollection<Basis> basis;
+    PersistentCollection<Point> beta;
+    adv.loadAttribute("basis_", basis);
+    adv.loadAttribute("trendCoefficients_", beta);
+    const UnsignedInteger basisSize = basis[0].getSize();
+    if (basisSize != covarianceModel_.getOutputDimension())
+      throw InvalidArgumentException(HERE) << "Collection size differ from covariance model output dimension. basisSize= " << basisSize << " whereas covariance model output dimension = " << covarianceModel_.getOutputDimension();
+
+    for (UnsignedInteger outputMarginalIndex = 1; outputMarginalIndex < basis.getSize(); ++outputMarginalIndex)
+    {
+      if (basis[outputMarginalIndex].getSize() != basisSize)
+        throw InvalidArgumentException(HERE) << "With new implementation, we should have all basis of same size. Here, basis[0].size = " << basisSize
+                                             << " whereas basis[" << outputMarginalIndex << "].size = " << basis[outputMarginalIndex].getSize();
+    }
+    // Now we convert the persistent collection of Basis/Point into a standard multivariate Basis
+    trendCoefficients_ = Point(basisSize * basis.getSize());
+    Collection<Function> marginalCollection(covarianceModel_.getOutputDimension());
+    Collection<Function> phi(basisSize);
+    UnsignedInteger index = 0;
+
+    for (UnsignedInteger j = 0; j < basisSize; ++j)
+    {
+      for (UnsignedInteger outputMarginalIndex = 0; outputMarginalIndex < basis.getSize(); ++outputMarginalIndex)
+      {
+        marginalCollection[outputMarginalIndex] = basis[outputMarginalIndex].build(j);
+        trendCoefficients_[index] = beta[outputMarginalIndex][j];
+      }
+      phi[j] = AggregatedFunction(marginalCollection);
+    }
+    basis_ = Basis(phi);
+  } // else
 }
 
 

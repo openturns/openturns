@@ -182,9 +182,51 @@ void GeneralLinearModelResult::load(Advocate & adv)
   MetaModelResult::load(adv);
   if (adv.hasAttribute("inputData_"))// <=1.19
     adv.loadAttribute("inputData_", inputSample_);
-  adv.loadAttribute( "basis_", basis_ );
-  adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
+
+  if (adv.getStudyVersion() >= 102100)
+  {
+    adv.loadAttribute("basis_", basis_);
+    adv.loadAttribute("beta_", beta_);
+  }
+  else
+  {
+    // Backward load method
+    // Here the implementation suggests that we rely on a collection of Basis and Point
+    // Partially compatible with new implementation : we should have here the basis of
+    // same size
+    PersistentCollection<Basis> basis;
+    PersistentCollection<Point> beta;
+    adv.loadAttribute("basis_", basis);
+    adv.loadAttribute("beta_", beta);
+    const UnsignedInteger basisSize = basis[0].getSize();
+    if (basisSize != covarianceModel_.getOutputDimension())
+      throw InvalidArgumentException(HERE) << "Collection size differ from covariance model output dimension. basisSize= " << basisSize << " whereas covariance model output dimension = " << covarianceModel_.getOutputDimension();
+
+    for (UnsignedInteger outputMarginalIndex = 1; outputMarginalIndex < basis.getSize(); ++outputMarginalIndex)
+    {
+      if (basis[outputMarginalIndex].getSize() != basisSize)
+        throw InvalidArgumentException(HERE) << "With new implementation, we should have all basis of same size. Here, basis[0].size = " << basisSize
+                                             << " whereas basis[" << outputMarginalIndex << "].size = " << basis[outputMarginalIndex].getSize();
+    }
+    // Now we convert the persistent collection of Basis/Point into a standard multivariate Basis
+    beta_ = Point(basisSize * basis.getSize());
+    Collection<Function> marginalCollection(covarianceModel_.getOutputDimension());
+    Collection<Function> phi(basisSize);
+    UnsignedInteger index = 0;
+
+    for (UnsignedInteger j = 0; j < basisSize; ++j)
+    {
+      for (UnsignedInteger outputMarginalIndex = 0; outputMarginalIndex < basis.getSize(); ++outputMarginalIndex)
+      {
+        marginalCollection[outputMarginalIndex] = basis[outputMarginalIndex].build(j);
+        beta_[index] = beta[outputMarginalIndex][j];
+      }
+      phi[j] = AggregatedFunction(marginalCollection);
+    }
+    basis_ = Basis(phi);
+  } // else
+
   adv.loadAttribute( "optimalLogLikelihood_", optimalLogLikelihood_ );
   adv.loadAttribute( "hasCholeskyFactor_", hasCholeskyFactor_);
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
