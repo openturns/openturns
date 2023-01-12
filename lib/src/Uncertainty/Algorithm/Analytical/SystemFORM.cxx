@@ -190,8 +190,8 @@ void SystemFORM::run()
 
     // set the correlation matrix C
     CovarianceMatrix C(regionSize);
-    for (UnsignedInteger i = 0; i < regionSize; ++ i)
-      for (UnsignedInteger j = 0; j < i; ++ j)
+    for (UnsignedInteger j = 0; j < regionSize; ++ j)
+      for (UnsignedInteger i = j + 1; i < regionSize; ++ i)
         C(i, j) = idToAlphaMap[region[i]].dot(idToAlphaMap[region[j]]);
 
     // Regularize C
