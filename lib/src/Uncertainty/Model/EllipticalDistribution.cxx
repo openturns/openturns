@@ -391,7 +391,12 @@ Point EllipticalDistribution::computePDFGradient(const Point & point) const
   const Point minusGardientMean(computeDDF(point));
   const UnsignedInteger dimension = getDimension();
   const Point u(normalize(point));
-  const Point iRu(inverseR_ * u);
+  Point iRu(u);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    iRu[i] *= std::max(SpecFunc::Precision, sigma_[i]);
+  iRu = inverseCholesky_.transpose() * inverseCholesky_ * iRu;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    iRu[i] *= std::max(SpecFunc::Precision, sigma_[i]);
   const Scalar betaSquare = u.dot(iRu);
   const Scalar phi = computeDensityGenerator(betaSquare);
   const Scalar phiDerivative = computeDensityGeneratorDerivative(betaSquare);
@@ -473,20 +478,6 @@ void EllipticalDistribution::update()
     // Try to compute the Cholesky factor of the shape matrix
     cholesky_ = shape_.computeRegularizedCholesky();
     inverseCholesky_ = cholesky_.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
-    // Inverse the correlation matrix R = D^(-1).L.L'.D^(-1)
-    // R^(-1) = D.L^(-1).L^(-1)'.D
-    inverseR_ = SymmetricMatrix(dimension);
-    const SquareMatrix inverseShape(inverseCholesky_.transpose() * inverseCholesky_);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      const Scalar sigmaI = std::max(SpecFunc::Precision, sigma_[i]);
-      for (UnsignedInteger j = 0; j <= i; ++j)
-      {
-        const Scalar sigmaJ = std::max(SpecFunc::Precision, sigma_[j]);
-        const Scalar sigmaIJ = sigmaI * sigmaJ;
-        inverseR_(i, j) = inverseShape(i, j) * sigmaIJ;
-      } // j
-    } // i
     normalizationFactor_ = 1.0;
     for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky_(i, i);
   } // dimension > 1
@@ -495,7 +486,6 @@ void EllipticalDistribution::update()
     if (shape_.getDimension() == 0)  // First time we enter here, set matrix sizes
     {
       shape_ = CovarianceMatrix(1);
-      inverseR_ = IdentityMatrix(1);
       cholesky_ = TriangularMatrix(1);
       inverseCholesky_ = TriangularMatrix(1);
     }
@@ -595,7 +585,12 @@ CorrelationMatrix EllipticalDistribution::getCorrelation() const
 /* Inverse correlation matrix accessor */
 SquareMatrix EllipticalDistribution::getInverseCorrelation() const
 {
-  return inverseR_;
+  LOGWARN(OSS() << "getInverseCorrelation is deprecated");
+  SymmetricMatrix inverseR((inverseCholesky_.transpose() * inverseCholesky_).getImplementation());
+  for (UnsignedInteger j = 0; j < dimension_; ++ j)
+    for (UnsignedInteger i = j; i < dimension_; ++ i)
+      inverseR(i, j) *= std::max(SpecFunc::Precision, sigma_[i]) * std::max(SpecFunc::Precision, sigma_[j]);
+  return inverseR;
 }
 
 /* Cholesky factor of the correlation matrix accessor */
@@ -851,7 +846,6 @@ void EllipticalDistribution::save(Advocate & adv) const
   adv.saveAttribute( "sigma_", sigma_ );
   adv.saveAttribute( "mean_duplicate", mean_ );
   adv.saveAttribute( "shape_", shape_ );
-  adv.saveAttribute( "inverseR_", inverseR_ );
   adv.saveAttribute( "cholesky_", cholesky_ );
   adv.saveAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
@@ -865,7 +859,6 @@ void EllipticalDistribution::load(Advocate & adv)
   adv.loadAttribute( "sigma_", sigma_ );
   adv.loadAttribute( "mean_duplicate", mean_ );
   adv.loadAttribute( "shape_", shape_ );
-  adv.loadAttribute( "inverseR_", inverseR_ );
   adv.loadAttribute( "cholesky_", cholesky_ );
   adv.loadAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
