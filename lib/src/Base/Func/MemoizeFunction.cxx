@@ -47,8 +47,6 @@ MemoizeFunction::MemoizeFunction (const Function & function, const HistoryStrate
                            function.getGradient(),
                            function.getHessian())
 {
-  setUseDefaultGradientImplementation(function.getUseDefaultGradientImplementation());
-  setUseDefaultHessianImplementation(function.getUseDefaultHessianImplementation());
   // Modify the evaluation in the gradient and the hessian if they are based on finite difference
   // First try: CenteredFiniteDifferenceGradient
   {
@@ -65,6 +63,8 @@ MemoizeFunction::MemoizeFunction (const Function & function, const HistoryStrate
     const CenteredFiniteDifferenceHessian * p_hessian = dynamic_cast<const CenteredFiniteDifferenceHessian *>(getHessian().getImplementation().get());
     if (p_hessian) setHessian(CenteredFiniteDifferenceHessian(p_hessian->getFiniteDifferenceStep(), getEvaluation()));
   }
+  setUseDefaultGradientImplementation(function.getUseDefaultGradientImplementation());
+  setUseDefaultHessianImplementation(function.getUseDefaultHessianImplementation());
 }
 
 

@@ -34,6 +34,7 @@ int main(int, char *[])
     SymbolicFunction g("x", "x^2");
     MemoizeFunction f(g);
     f.disableHistory();
+    fullprint << "default gradient=" << f.getUseDefaultGradientImplementation() << std::endl;
     fullprint << f << std::endl;
     UnsignedInteger size = 4;
     Sample input(size, 1);
@@ -73,6 +74,9 @@ int main(int, char *[])
     indices.add(1);
     Function marginal(memoMulti.getMarginal(indices));
     fullprint << "memoized marginal=" << marginal << std::endl;
+    Function g2(new SymbolicEvaluation(Description(1, "x"), Description(1, "y"), Description(1, "x^3")));
+    MemoizeFunction f2(g2);
+    fullprint << "default gradient=" << f2.getUseDefaultGradientImplementation() << std::endl;
   }
   catch (TestFailed & ex)
   {

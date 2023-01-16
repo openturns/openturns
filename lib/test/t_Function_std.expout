@@ -1,3 +1,4 @@
+default gradient=false
 myFunc=class=SymbolicFunction name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x1,x2,y0,y1,y2] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x1,x2] outputVariablesNames=[y0,y1,y2] formulas=[x1*sin(x2),cos(x1+x2),(x2+1)*exp(x1-2*x2)] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x1,x2] outputVariablesNames=[y0,y1,y2] formulas=[x1*sin(x2),cos(x1+x2),(x2+1)*exp(x1-2*x2)] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x1,x2] outputVariablesNames=[y0,y1,y2] formulas=[x1*sin(x2),cos(x1+x2),(x2+1)*exp(x1-2*x2)]
 myFunc(point)=class=Point name=Unnamed dimension=3 values=[1.11845,-0.737394,0.662627]
 myFunc input parameter(s)=x1,x2
@@ -6,3 +7,4 @@ myFunc marginal 0(point)=class=Point name=Unnamed dimension=1 values=[1.11845]
 myFunc marginal 1(point)=class=Point name=Unnamed dimension=1 values=[-0.737394]
 myFunc marginal 2(point)=class=Point name=Unnamed dimension=1 values=[0.662627]
 myFunc marginal [2,0](point)=class=Point name=Unnamed dimension=2 values=[0.662627,1.11845]
+default gradient=true
