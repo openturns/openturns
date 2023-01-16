@@ -1,1 +1,2 @@
 Remove DomainIntersection|Union|DisjunctiveUnion(Domain, Domain) ctors
+Remove EllipticalDistribution::getInverseCorrelation

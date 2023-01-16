@@ -131,7 +131,7 @@ public:
   /** Denormalize the given point x_i = mu_i + sigma_i * x_i */
   Point denormalize(const Point & u) const;
 
-  /** Inverse correlation matrix accessor */
+  /** @deprecated Inverse correlation matrix accessor */
   SquareMatrix getInverseCorrelation() const;
 
   /** Cholesky factor of the correlation matrix accessor */
@@ -178,9 +178,6 @@ protected:
 
   /** The shape matrix of the distribution = Diag(sigma_) * R_ * Diag(sigma_) */
   mutable CovarianceMatrix shape_;
-
-  /** The inverse of the correlation matrix of the distribution */
-  SymmetricMatrix inverseR_;
 
   /** The Cholesky factor of the shape matrix shape_ = cholesky_ * cholesky_.transpose() */
   TriangularMatrix cholesky_;
