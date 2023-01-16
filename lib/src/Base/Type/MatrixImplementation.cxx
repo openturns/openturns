@@ -20,6 +20,7 @@
  */
 #include <cstdlib>
 #include <functional>
+#include <numeric>
 #include <cstring> // std::memset
 
 #include "openturns/MatrixImplementation.hxx"
@@ -1826,16 +1827,7 @@ Scalar MatrixImplementation::computeSumElements() const
   if (nbColumns_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive number of columns!";
 
   /* Result */
-  Scalar sum = 0.0;
-
-  /* TODO: is there any better implementation ? */
-  for(UnsignedInteger j = 0; j < nbColumns_; ++j)
-  {
-    for(UnsignedInteger i = 0; i < nbRows_; ++i)
-    {
-      sum += (*this)(i, j);
-    }
-  }
+  const Scalar sum = std::accumulate(begin(), end(), 0.0);
 
   return sum;
 }
