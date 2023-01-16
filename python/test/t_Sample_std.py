@@ -127,3 +127,17 @@ assert indices == [3, 2, 0, 1]
 indices = sample.argsort(False)
 print("indices = ", indices)
 assert indices == [1, 0, 2, 3]
+
+
+# this should not crash
+
+
+def centeredSumOfProduct(sampleA, sampleB, center):
+    sampleA -= center
+    sampleB -= center
+    return sampleA.asPoint().dot(sampleB.asPoint())
+
+
+YA = ot.Sample(10, 1)
+center = 0.0
+sumOfSquaresOfG = centeredSumOfProduct(YA, YA, center)

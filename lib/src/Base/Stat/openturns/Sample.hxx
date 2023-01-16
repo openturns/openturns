@@ -281,12 +281,14 @@ public:
   /**
    * Translate realizations in-place
    */
+#ifndef SWIG
   Sample & operator += (const Scalar translation);
   Sample & operator += (const Point & translation);
   Sample & operator += (const Sample & translation);
   Sample & operator -= (const Scalar translation);
   Sample & operator -= (const Point & translation);
   Sample & operator -= (const Sample & translation);
+#endif
 
   /** Translate/scale realizations */
   Sample operator + (const Scalar translation) const;
