@@ -43,7 +43,8 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API HSICEstimatorImplementation
   : public PersistentObject
 {
-  friend struct HSICPValuesPermutationFunctor;
+  // For parallelism using TBB. This struct is defined
+  // in HSICEstimatorImplementation.cxx
   friend struct HSICPValuesPermutationPolicy;
   CLASSNAME
 
@@ -108,9 +109,6 @@ public:
   /** Get the p-values by permutation */
   Point getPValuesPermutation() const;
 
-  /** Get the p-values by permutation */
-  Point getPValuesPermutationParallel() const;
-
   /** Compute all indices at once */
   virtual void run() const;
 
@@ -138,9 +136,9 @@ protected:
   virtual void computeCovarianceMatrices();
 
   /** Compute p-value with permutation */
-  virtual void computePValuesPermutation() const;
+  virtual void computePValuesPermutationSequential() const;
 
-  /** Compute p-value with permutation */
+  /** Compute p-value with permutation using TBB */
   virtual void computePValuesPermutationParallel() const;
 
   /** Compute the p-values with asymptotic formula */

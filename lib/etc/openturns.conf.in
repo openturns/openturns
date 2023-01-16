@@ -349,6 +349,7 @@
   <FAST-DefaultResamplingSize     value_int="1" />
 
   <!-- OT::HSICEstimator parameters -->
+  <HSICEstimator-ParallelPValues value_bool="true" />
   <HSICEstimator-PermutationSize value_int="100" />
 
   <!-- OT::RandomGenerator parameters -->

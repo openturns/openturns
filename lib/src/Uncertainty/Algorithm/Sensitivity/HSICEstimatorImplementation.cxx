@@ -159,7 +159,7 @@ UnsignedInteger HSICEstimatorImplementation::getPermutationSize() const
 }
 
 /* Compute p-value with permutation */
-void HSICEstimatorImplementation::computePValuesPermutation() const
+void HSICEstimatorImplementation::computePValuesPermutationSequential() const
 {
   const SquareMatrix Wobs(computeWeightMatrix(outputSample_));
   Point HSICobs(inputDimension_);
@@ -198,75 +198,76 @@ void HSICEstimatorImplementation::computePValuesPermutation() const
 }
 
 // Helper for the parallel version of the pvalue-permutation computation
-struct HSICPValuesPermutationFunctor
-{
-  const Collection<Indices> indicesCollection_;
-  const Point HSICobs_;
-  const Collection<CovarianceMatrix> inputCovarianceMatrixCollection_;
-  const Sample outputSample_;
-  const CovarianceMatrix outputCovarianceMatrix_;
-  const Pointer<HSICEstimatorImplementation> p_hsic_;
-  Point accumulator_;
+// For an unknown version it doesn't work...
+// struct HSICPValuesPermutationFunctor
+// {
+//   const Collection<Indices> indicesCollection_;
+//   const Point HSICobs_;
+//   const Collection<CovarianceMatrix> inputCovarianceMatrixCollection_;
+//   const Sample outputSample_;
+//   const CovarianceMatrix outputCovarianceMatrix_;
+//   const Pointer<HSICEstimatorImplementation> p_hsic_;
+//   Point accumulator_;
 
-  HSICPValuesPermutationFunctor(const Collection<Indices> & indicesCollection,
-                                const Point & HSICobs,
-                                const Collection<CovarianceMatrix> & inputCovarianceMatrixCollection,
-                                const Sample & outputSample,
-                                const CovarianceMatrix & outputCovarianceMatrix,
-                                const HSICEstimatorImplementation & hsic)
-    : indicesCollection_(indicesCollection)
-    , HSICobs_(HSICobs)
-    , inputCovarianceMatrixCollection_(inputCovarianceMatrixCollection)
-    , outputSample_(outputSample)
-    , outputCovarianceMatrix_(outputCovarianceMatrix)
-    , p_hsic_(hsic.clone())
-    , accumulator_(HSICobs.getDimension())
-  {}
+//   HSICPValuesPermutationFunctor(const Collection<Indices> & indicesCollection,
+//                                 const Point & HSICobs,
+//                                 const Collection<CovarianceMatrix> & inputCovarianceMatrixCollection,
+//                                 const Sample & outputSample,
+//                                 const CovarianceMatrix & outputCovarianceMatrix,
+//                                 const HSICEstimatorImplementation & hsic)
+//     : indicesCollection_(indicesCollection)
+//     , HSICobs_(HSICobs)
+//     , inputCovarianceMatrixCollection_(inputCovarianceMatrixCollection)
+//     , outputSample_(outputSample)
+//     , outputCovarianceMatrix_(outputCovarianceMatrix)
+//     , p_hsic_(hsic.clone())
+//     , accumulator_(HSICobs.getDimension())
+//   {}
 
-  HSICPValuesPermutationFunctor(const HSICPValuesPermutationFunctor & other,
-                                TBBImplementation::Split)
-    : indicesCollection_(other.indicesCollection_)
-    , HSICobs_(other.HSICobs_)
-    , inputCovarianceMatrixCollection_(other.inputCovarianceMatrixCollection_)
-    , outputSample_(other.outputSample_)
-    , outputCovarianceMatrix_(other.outputCovarianceMatrix_)
-    , p_hsic_(other.p_hsic_)
-    , accumulator_(other.accumulator_)
-  {}
+//   HSICPValuesPermutationFunctor(const HSICPValuesPermutationFunctor & other,
+//                                 TBBImplementation::Split)
+//     : indicesCollection_(other.indicesCollection_)
+//     , HSICobs_(other.HSICobs_)
+//     , inputCovarianceMatrixCollection_(other.inputCovarianceMatrixCollection_)
+//     , outputSample_(other.outputSample_)
+//     , outputCovarianceMatrix_(other.outputCovarianceMatrix_)
+//     , p_hsic_(other.p_hsic_)
+//     , accumulator_(other.accumulator_)
+//   {}
 
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
-  {
-    Sample shuffledSample(outputSample_.getSize(), outputSample_.getDimension());
-    CovarianceMatrix shuffledCovariance(outputCovarianceMatrix_.getDimension());
-    SquareMatrix shuffledWeight;
-    for (UnsignedInteger b = r.begin(); b != r.end(); ++b)
-      {
-        const Indices indices(indicesCollection_[b]);
-        for (UnsignedInteger j = 0; j < outputCovarianceMatrix_.getDimension(); ++j)
-          {
-            const UnsignedInteger newJ = indices[j];
-            shuffledSample[j] = outputSample_[newJ];
-            for (UnsignedInteger i = j; i < outputCovarianceMatrix_.getDimension(); ++i)
-              {
-                const UnsignedInteger newI = indices[i];
-                shuffledCovariance(i, j) = outputCovarianceMatrix_(newI, newJ);
-              } // i
-          } // j
-        shuffledWeight = p_hsic_->computeWeightMatrix(shuffledSample);
-        for (UnsignedInteger dim = 0; dim < accumulator_.getDimension(); ++dim)
-          {
-            const Scalar HSICloc = p_hsic_->computeHSICIndex(inputCovarianceMatrixCollection_[dim], shuffledCovariance, shuffledWeight);
-            if (HSICloc > HSICobs_[dim]) ++accumulator_[dim];
-          }
-      } // b
-  } // operator()
+//   inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
+//   {
+//     Sample shuffledSample(outputSample_.getSize(), outputSample_.getDimension());
+//     CovarianceMatrix shuffledCovariance(outputCovarianceMatrix_.getDimension());
+//     SquareMatrix shuffledWeight;
+//     for (UnsignedInteger b = r.begin(); b != r.end(); ++b)
+//       {
+//         const Indices indices(indicesCollection_[b]);
+//         for (UnsignedInteger j = 0; j < outputCovarianceMatrix_.getDimension(); ++j)
+//           {
+//             const UnsignedInteger newJ = indices[j];
+//             shuffledSample[j] = outputSample_[newJ];
+//             for (UnsignedInteger i = j; i < outputCovarianceMatrix_.getDimension(); ++i)
+//               {
+//                 const UnsignedInteger newI = indices[i];
+//                 shuffledCovariance(i, j) = outputCovarianceMatrix_(newI, newJ);
+//               } // i
+//           } // j
+//         shuffledWeight = p_hsic_->computeWeightMatrix(shuffledSample);
+//         for (UnsignedInteger dim = 0; dim < accumulator_.getDimension(); ++dim)
+//           {
+//             const Scalar HSICloc = p_hsic_->computeHSICIndex(inputCovarianceMatrixCollection_[dim], shuffledCovariance, shuffledWeight);
+//             if (HSICloc > HSICobs_[dim]) ++accumulator_[dim];
+//           }
+//       } // b
+//   } // operator()
 
-  inline void join(const HSICPValuesPermutationFunctor & other)
-  {
-    accumulator_ += other.accumulator_;
-  }
+//   inline void join(const HSICPValuesPermutationFunctor & other)
+//   {
+//     accumulator_ += other.accumulator_;
+//   }
 
-}; // struct HSICPValuesPermutationFunctor
+// }; // struct HSICPValuesPermutationFunctor
 
 struct HSICPValuesPermutationPolicy
 {
@@ -333,16 +334,14 @@ void HSICEstimatorImplementation::computePValuesPermutationParallel() const
     const Indices indices(shuffleIndices(outputSample_.getSize()));
     indicesCollection[b] = indices;
   }
-#ifdef WITH_FUNCTOR
-  HSICPValuesPermutationFunctor functor(indicesCollection,
-                                        HSICobs,
-                                        inputCovarianceMatrixCollection_,
-                                        outputSample_,
-                                        outputCovarianceMatrix_,
-                                        *this);
-  TBBImplementation::ParallelReduce( 0, permutationSize_, functor );
-  PValuesPermutation_ = functor.accumulator_ / (permutationSize_ + 1.0);
-#else
+  // HSICPValuesPermutationFunctor functor(indicesCollection,
+  //                                       HSICobs,
+  //                                       inputCovarianceMatrixCollection_,
+  //                                       outputSample_,
+  //                                       outputCovarianceMatrix_,
+  //                                       *this);
+  // TBBImplementation::ParallelReduce( 0, permutationSize_, functor );
+  // PValuesPermutation_ = functor.accumulator_ / (permutationSize_ + 1.0);
   Sample result(permutationSize_, inputDimension_);
   HSICPValuesPermutationPolicy policy(indicesCollection,
                                       HSICobs,
@@ -351,7 +350,6 @@ void HSICEstimatorImplementation::computePValuesPermutationParallel() const
   
   TBBImplementation::ParallelFor( 0, permutationSize_, policy );
   PValuesPermutation_ = result.computeMean() * (1.0 - 1.0 / (permutationSize_ + 1.0));
-#endif
   isAlreadyComputedPValuesPermutation_ = true;
 }
 
@@ -429,18 +427,11 @@ Point HSICEstimatorImplementation::getPValuesPermutation() const
 {
   if( !(isAlreadyComputedPValuesPermutation_))
   {
-    computePValuesPermutation();
-    isAlreadyComputedPValuesPermutation_ = true ;
-  }
-  return PValuesPermutation_;
-}
-
-/* Get the p-values by permutation */
-Point HSICEstimatorImplementation::getPValuesPermutationParallel() const
-{
-  if( !(isAlreadyComputedPValuesPermutation_))
-  {
-    computePValuesPermutationParallel();
+    if (ResourceMap::GetAsBool("HSICEstimator-ParallelPValues"))
+      computePValuesPermutationParallel();
+    else
+      computePValuesPermutationSequential();
+      
     isAlreadyComputedPValuesPermutation_ = true ;
   }
   return PValuesPermutation_;
@@ -614,17 +605,14 @@ Indices HSICEstimatorImplementation::shuffleIndices(const UnsignedInteger size) 
 /* Run all computations at once */
 void HSICEstimatorImplementation::run() const
 {
-  /* Compute the HSIC and R2-HSIC indices */
-  if(!(isAlreadyComputedIndices_))
-  {
-    computeIndices();
-  }
+  /* Compute the HSIC indices */
+  (void) getHSICIndices();
+
+  /* Compute the R2-HSIC indices */
+  (void) getR2HSICIndices();
 
   /* Compute the p-values by permutation */
-  if(!(isAlreadyComputedPValuesPermutation_))
-  {
-    computePValuesPermutation();
-  }
+  (void) getPValuesPermutation();
 }
 
 /* Method save() stores the object through the StorageManager */
