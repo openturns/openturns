@@ -40,6 +40,7 @@ HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity(
   : HSICEstimatorImplementation(covarianceModelCollection, X, Y, HSICVStat())
 {
   weightFunction_ = weightFunction;
+  computeCovarianceMatrices();
 }
 
 /* Virtual constructor */

@@ -38,7 +38,7 @@ HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity(
   const HSICStat & estimatorType)
   : HSICEstimatorImplementation(covarianceModelCollection, X, Y, estimatorType)
 {
-  // Nothing to do
+  computeCovarianceMatrices();
 }
 
 /* Virtual constructor */
@@ -50,7 +50,7 @@ HSICEstimatorGlobalSensitivity* HSICEstimatorGlobalSensitivity::clone() const
 /* Compute the weight matrix */
 SquareMatrix HSICEstimatorGlobalSensitivity::computeWeightMatrix(const Sample&) const
 {
-  IdentityMatrix mat(n_);
+  const IdentityMatrix mat(n_);
   return mat;
 }
 

@@ -46,12 +46,16 @@ class OT_API HSICEstimatorGlobalSensitivity
 public:
 
   typedef Collection<CovarianceModel> CovarianceModelCollection;
+  typedef Collection <CovarianceMatrix>  CovarianceMatrixCollection;
 
   /** Default */
   HSICEstimatorGlobalSensitivity();
 
   /** Constructor */
-  HSICEstimatorGlobalSensitivity(const CovarianceModelCollection & covarianceModelCollection,  const Sample & X,  const Sample & Y, const HSICStat & estimatorType);
+  HSICEstimatorGlobalSensitivity(const CovarianceModelCollection & covarianceModelCollection,
+                                 const Sample & X,
+                                 const Sample & Y,
+                                 const HSICStat & estimatorType);
 
   /** Virtual constructor */
   HSICEstimatorGlobalSensitivity* clone() const override;
