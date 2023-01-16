@@ -86,49 +86,16 @@ void HSICEstimatorTargetSensitivity::setFilterFunction(const Function & filterFu
   computeCovarianceMatrices();
 }
 
-/* Reset all indices to void */
-void HSICEstimatorTargetSensitivity::resetIndices()
-{
-  HSICEstimatorImplementation::resetIndices();
-  PValuesAsymptotic_ = Point();
-  isAlreadyComputedPValuesAsymptotic_ = false;
-}
-
 /* Draw the asymptotic p-values */
 Graph HSICEstimatorTargetSensitivity::drawPValuesAsymptotic() const
 {
   return drawValues(getPValuesAsymptotic(), "Asymptotic p-values");
 }
 
-/* Compute all indices at once */
-void HSICEstimatorTargetSensitivity::run() const
-{
-  /* Compute the HSIC and R2-HSIC indices */
-  if(!(isAlreadyComputedIndices_))
-  {
-    computeIndices();
-  }
-
-  /* Compute the p-values by permutation */
-  if(!(isAlreadyComputedPValuesPermutation_))
-  {
-    computePValuesPermutation();
-  }
-
-  /* Compute the p-values asymptotically */
-  if(!(isAlreadyComputedPValuesAsymptotic_))
-  {
-    computePValuesAsymptotic();
-  }
-
-}
-
 /* Method save() stores the object through the StorageManager */
 void HSICEstimatorTargetSensitivity::save(Advocate & adv) const
 {
   HSICEstimatorImplementation::save(adv);
-  adv.saveAttribute( "PValuesAsymptotic_", PValuesAsymptotic_ );
-  adv.saveAttribute( "isAlreadyComputedPValuesAsymptotic_", isAlreadyComputedPValuesAsymptotic_ );
   adv.saveAttribute( "filterFunction_", filterFunction_ );
 }
 
@@ -136,8 +103,6 @@ void HSICEstimatorTargetSensitivity::save(Advocate & adv) const
 void HSICEstimatorTargetSensitivity::load(Advocate & adv)
 {
   HSICEstimatorImplementation::load(adv);
-  adv.loadAttribute( "PValuesAsymptotic_", PValuesAsymptotic_ );
-  adv.loadAttribute( "isAlreadyComputedPValuesAsymptotic_", isAlreadyComputedPValuesAsymptotic_ );
   adv.loadAttribute( "filterFunction_", filterFunction_ );
 }
 

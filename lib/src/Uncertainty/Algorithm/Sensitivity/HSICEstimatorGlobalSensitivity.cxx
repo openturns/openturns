@@ -50,8 +50,7 @@ HSICEstimatorGlobalSensitivity* HSICEstimatorGlobalSensitivity::clone() const
 /* Compute the weight matrix */
 SquareMatrix HSICEstimatorGlobalSensitivity::computeWeightMatrix(const Sample&) const
 {
-  const IdentityMatrix mat(n_);
-  return mat;
+  return IdentityMatrix(n_);
 }
 
 /* Get the asymptotic p-values */
@@ -91,7 +90,8 @@ void HSICEstimatorGlobalSensitivity::run() const
   /* Compute the p-values by permutation */
   if(!(isAlreadyComputedPValuesPermutation_))
   {
-    computePValuesPermutation();
+    // In order to avoid th
+    (void) getPValuesPermutation();
   }
 
   /* Compute the p-values asymptotically */

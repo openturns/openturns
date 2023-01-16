@@ -51,7 +51,11 @@ public:
   HSICEstimatorTargetSensitivity();
 
   /** Constructor */
-  HSICEstimatorTargetSensitivity(const CovarianceModelCollection & covarianceModelCollection, const Sample & X, const Sample & Y, const HSICStat & estimatorType, const Function & filterFunction);
+  HSICEstimatorTargetSensitivity(const CovarianceModelCollection & covarianceModelCollection,
+                                 const Sample & X,
+                                 const Sample & Y,
+                                 const HSICStat & estimatorType,
+                                 const Function & filterFunction);
 
   /** Virtual constructor */
   HSICEstimatorTargetSensitivity* clone() const override;
@@ -68,9 +72,6 @@ public:
   /** Get the filter function */
   void setFilterFunction(const Function & filterFunction);
 
-  /** Compute all indices at once */
-  void run() const override;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -81,9 +82,6 @@ protected:
 
   /* data */
   Function filterFunction_ ;
-
-  /** Reset all indices to void */
-  void resetIndices() override;
 
 private:
 
