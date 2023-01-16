@@ -44,6 +44,7 @@ int main(int, char *[])
     formula[1] = "cos(x1+x2)";
     formula[2] = "(x2+1)*exp(x1-2*x2)";
     SymbolicFunction myFunc(input, formula);
+    fullprint << "default gradient=" << myFunc.getUseDefaultGradientImplementation() << std::endl;
 
     /** Copy constructor */
     Function newFunc(myFunc);
@@ -71,6 +72,9 @@ int main(int, char *[])
     indices[0] = 2;
     indices[1] = 0;
     fullprint << "myFunc marginal " << indices << "(point)=" << myFunc.getMarginal(indices)(point) << std::endl;
+
+    Function myFunc2(new SymbolicEvaluation(input, Description::BuildDefault(3, "y"), formula));
+    fullprint << "default gradient=" << myFunc2.getUseDefaultGradientImplementation() << std::endl;
   }
   catch (TestFailed & ex)
   {
