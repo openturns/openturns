@@ -124,13 +124,13 @@ protected:
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
 
-public:
   /** Normalize the given point u_i = (x_i - mu_i) / sigma_i */
   Point normalize(const Point & x) const;
 
   /** Denormalize the given point x_i = mu_i + sigma_i * x_i */
   Point denormalize(const Point & u) const;
 
+public:
   /** @deprecated Inverse correlation matrix accessor */
   SquareMatrix getInverseCorrelation() const;
 
