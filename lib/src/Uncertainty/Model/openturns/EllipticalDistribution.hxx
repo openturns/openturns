@@ -176,9 +176,6 @@ protected:
   /** The correlation matrix (Rij) of the distribution */
   mutable CorrelationMatrix R_;
 
-  /** The Cholesky factor of the shape matrix shape = cholesky_ * cholesky_.transpose() */
-  TriangularMatrix cholesky_;
-
   /** The inverse Cholesky factor of the covariance matrix */
   TriangularMatrix inverseCholesky_;
 
