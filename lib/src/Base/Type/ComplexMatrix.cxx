@@ -94,16 +94,24 @@ ComplexMatrix::ComplexMatrix(const HermitianMatrix & hermitian)
 
 
 /* Resolution of a linear system */
-ComplexMatrix::ComplexCollection ComplexMatrix::solveLinearSystem(const ComplexCollection & b,
-    const Bool keepIntact)
+ComplexMatrix::ComplexCollection ComplexMatrix::solveLinearSystemInPlace(const ComplexCollection & b)
 {
-  return getImplementation()->solveLinearSystemRect(b, keepIntact);
+  return getImplementation()->solveLinearSystemRectInPlace(b);
 }
 
-ComplexMatrix ComplexMatrix::solveLinearSystem(const ComplexMatrix & b,
-    const Bool keepIntact)
+ComplexMatrix::ComplexCollection ComplexMatrix::solveLinearSystem(const ComplexCollection & b) const
 {
-  return Implementation(getImplementation()->solveLinearSystemRect(*(b.getImplementation()), keepIntact).clone());
+  return getImplementation()->solveLinearSystemRect(b);
+}
+
+ComplexMatrix ComplexMatrix::solveLinearSystemInPlace(const ComplexMatrix & b)
+{
+  return Implementation(getImplementation()->solveLinearSystemRectInPlace(*(b.getImplementation())).clone());
+}
+
+ComplexMatrix ComplexMatrix::solveLinearSystem(const ComplexMatrix & b) const
+{
+  return Implementation(getImplementation()->solveLinearSystemRect(*(b.getImplementation())).clone());
 }
 
 /* Set small elements to zero */

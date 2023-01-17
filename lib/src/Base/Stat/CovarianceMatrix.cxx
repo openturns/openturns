@@ -117,16 +117,24 @@ TriangularMatrix CovarianceMatrix::computeRegularizedCholesky() const
 }
 
 /* Resolution of a linear system */
-Point CovarianceMatrix::solveLinearSystem(const Point & b,
-    const Bool keepIntact)
+Point CovarianceMatrix::solveLinearSystemInPlace(const Point & b)
 {
-  return getImplementation()->solveLinearSystemCov(b, keepIntact);
+  return getImplementation()->solveLinearSystemCovInPlace(b);
 }
 
-Matrix CovarianceMatrix::solveLinearSystem(const Matrix & b,
-    const Bool keepIntact)
+Point CovarianceMatrix::solveLinearSystem(const Point & b) const
 {
-  return Implementation(getImplementation()->solveLinearSystemCov(*b.getImplementation(), keepIntact).clone());
+  return getImplementation()->solveLinearSystemCov(b);
+}
+
+Matrix CovarianceMatrix::solveLinearSystemInPlace(const Matrix & b)
+{
+  return Implementation(getImplementation()->solveLinearSystemCovInPlace(*b.getImplementation()).clone());
+}
+
+Matrix CovarianceMatrix::solveLinearSystem(const Matrix & b) const
+{
+  return Implementation(getImplementation()->solveLinearSystemCov(*b.getImplementation()).clone());
 }
 
 END_NAMESPACE_OPENTURNS

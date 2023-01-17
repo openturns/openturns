@@ -172,8 +172,7 @@ Point Student::getRealization() const
   Point value(dimension);
   // First, a realization of independent standard normal coordinates
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = DistFunc::rNormal();
-  TriangularMatrix inverseCholesky(inverseCholesky_);
-  return std::sqrt(0.5 * nu_ / DistFunc::rGamma(0.5 * nu_)) * inverseCholesky.solveLinearSystem(value) + mean_;
+  return std::sqrt(0.5 * nu_ / DistFunc::rGamma(0.5 * nu_)) * inverseCholesky_.solveLinearSystem(value) + mean_;
 }
 
 

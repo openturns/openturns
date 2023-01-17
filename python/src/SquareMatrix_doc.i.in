@@ -237,9 +237,6 @@ Parameters
 ----------
 rhs : sequence of float or :class:`~openturns.Matrix` with :math:`n_r` values or rows, respectively
     The right hand side member of the linear system.
-keep_intact : bool, optional
-    A flag telling whether the present matrix can be overwritten or not.
-    Default is *True* and leaves the present matrix unchanged.
 
 Returns
 -------

@@ -92,11 +92,10 @@ public:
   ComplexMatrixImplementation * clone() const override;
 
   /** Resolution of a linear system in case of a rectangular matrix */
-  ComplexCollection solveLinearSystemRect(const ComplexCollection & b,
-                                          const Bool keepIntact = true);
-
-  ComplexMatrixImplementation solveLinearSystemRect(const ComplexMatrixImplementation & b,
-      const Bool keepIntact = true);
+  ComplexCollection solveLinearSystemRectInPlace(const ComplexCollection & b);
+  ComplexCollection solveLinearSystemRect(const ComplexCollection & b) const;
+  ComplexMatrixImplementation solveLinearSystemRectInPlace(const ComplexMatrixImplementation & b);
+  ComplexMatrixImplementation solveLinearSystemRect(const ComplexMatrixImplementation & b) const;
 
   /** Set small elements to zero */
   virtual ComplexMatrixImplementation clean(const Scalar threshold) const;

@@ -190,39 +190,44 @@ public:
   void triangularize(const Bool isLowerTriangular) const;
 
   /** Resolution of a linear system in case of a rectangular matrix */
-  Point solveLinearSystemRect(const Point & b,
-                              const Bool keepIntact = true);
-  MatrixImplementation solveLinearSystemRect(const MatrixImplementation & b,
-      const Bool keepIntact = true);
+  Point solveLinearSystemRect(const Point & b) const;
+  Point solveLinearSystemRectInPlace(const Point & b);
+
+  MatrixImplementation solveLinearSystemRect(const MatrixImplementation & b) const;
+  MatrixImplementation solveLinearSystemRectInPlace(const MatrixImplementation & b);
 
   /** Resolution of a linear system in case of a square matrix */
-  Point solveLinearSystemSquare(const Point & b,
-                                const Bool keepIntact = true);
-  MatrixImplementation solveLinearSystemSquare(const MatrixImplementation & b,
-      const Bool keepIntact = true);
+  Point solveLinearSystemSquareInPlace(const Point & b);
+  Point solveLinearSystemSquare(const Point & b) const;
+  MatrixImplementation solveLinearSystemSquareInPlace(const MatrixImplementation & b);
+  MatrixImplementation solveLinearSystemSquare(const MatrixImplementation & b) const;
 
   /** Resolution of a linear system in case of a triangular matrix */
   Point solveLinearSystemTri(const Point & b,
-                             const Bool keepIntact = true,
                              const Bool lower = true,
-                             const Bool transpose = false);
+                             const Bool transpose = false) const;
+  Point solveLinearSystemTriInPlace(const Point & b,
+                                    const Bool lower = true,
+                                    const Bool transpose = false);
 
   MatrixImplementation solveLinearSystemTri(const MatrixImplementation & b,
-      const Bool keepIntact = true,
-      const Bool lower = true,
-      const Bool transpose = false);
+                                            const Bool lower = true,
+                                            const Bool transpose = false) const;
+  MatrixImplementation solveLinearSystemTriInPlace(const MatrixImplementation & b,
+                                                  const Bool lower = true,
+                                                  const Bool transpose = false);
 
   /** Resolution of a linear system in case of a symmetric matrix */
-  Point solveLinearSystemSym(const Point & b,
-                             const Bool keepIntact = true);
-  MatrixImplementation solveLinearSystemSym(const MatrixImplementation & b,
-      const Bool keepIntact = true);
+  Point solveLinearSystemSymInPlace(const Point & b);
+  Point solveLinearSystemSym(const Point & b) const;
+  MatrixImplementation solveLinearSystemSymInPlace(const MatrixImplementation & b);
+  MatrixImplementation solveLinearSystemSym(const MatrixImplementation & b) const;
 
   /** Resolution of a linear system in case of a covariance matrix */
-  Point solveLinearSystemCov(const Point & b,
-                             const Bool keepIntact = true);
-  MatrixImplementation solveLinearSystemCov(const MatrixImplementation & b,
-      const Bool keepIntact = true);
+  Point solveLinearSystemCovInPlace(const Point & b);
+  Point solveLinearSystemCov(const Point & b) const;
+  MatrixImplementation solveLinearSystemCovInPlace(const MatrixImplementation & b);
+  MatrixImplementation solveLinearSystemCov(const MatrixImplementation & b) const;
 
   /** Triangular matrix product : side argument L/R for the position of the triangular matrix, up/lo to tell if it  */
   MatrixImplementation triangularProd(const MatrixImplementation & m,

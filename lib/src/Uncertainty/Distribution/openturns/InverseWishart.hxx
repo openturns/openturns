@@ -125,7 +125,7 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  mutable TriangularMatrix cholesky_;
+  TriangularMatrix cholesky_;
   Scalar nu_;
 
   /** The inverse of the Cholesky factor of the inverse of the scale matrix V */

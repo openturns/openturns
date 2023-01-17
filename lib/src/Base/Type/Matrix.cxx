@@ -227,16 +227,24 @@ Matrix Matrix::operator/ (const Scalar s) const
 }
 
 /* Resolution of a linear system */
-Point Matrix::solveLinearSystem(const Point & b,
-                                const Bool keepIntact)
+Point Matrix::solveLinearSystemInPlace(const Point & b)
 {
-  return getImplementation()->solveLinearSystemRect(b, keepIntact);
+  return getImplementation()->solveLinearSystemRectInPlace(b);
 }
 
-Matrix Matrix::solveLinearSystem(const Matrix & b,
-                                 const Bool keepIntact)
+Point Matrix::solveLinearSystem(const Point & b) const
 {
-  return Implementation(getImplementation()->solveLinearSystemRect(*(b.getImplementation()), keepIntact).clone());
+  return getImplementation()->solveLinearSystemRect(b);
+}
+
+Matrix Matrix::solveLinearSystemInPlace(const Matrix & b)
+{
+  return Implementation(getImplementation()->solveLinearSystemRectInPlace(*(b.getImplementation())).clone());
+}
+
+Matrix Matrix::solveLinearSystem(const Matrix & b) const
+{
+  return Implementation(getImplementation()->solveLinearSystemRect(*(b.getImplementation())).clone());
 }
 
 /* Compute singular values */

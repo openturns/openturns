@@ -59,7 +59,7 @@ pt3.add(1.0)
 print("pt3=" + repr(pt3))
 
 result3 = ot.Point()
-result3 = matrix3.solveLinearSystem(pt3, True)
+result3 = matrix3.solveLinearSystem(pt3)
 print("result3=" + repr(result3))
 
 b1 = ot.Matrix(2, 4)
@@ -72,14 +72,14 @@ b1[1, 2] = 3.0
 b1[0, 3] = 20.0
 b1[1, 3] = 4.0
 print("b1=" + repr(b1))
-result4 = matrix1.solveLinearSystem(b1, True)
+result4 = matrix1.solveLinearSystem(b1)
 print("result4=" + repr(result4))
-result4 = matrix1.solveLinearSystem(b1, False)
+result4 = matrix1.solveLinearSystemInPlace(b1)
 print("result4=" + repr(result4))
 
-result5 = matrix2.solveLinearSystem(b1, True)
+result5 = matrix2.solveLinearSystem(b1)
 print("result5=" + repr(result5))
-result5 = matrix2.solveLinearSystem(b1, False)
+result5 = matrix2.solveLinearSystemInPlace(b1)
 print("result5=" + repr(result5))
 
 b2 = ot.Matrix(3, 4)
@@ -96,7 +96,7 @@ b2[0, 3] = 20.0
 b2[1, 3] = 4.0
 b2[2, 3] = -8.0
 print("b2=" + repr(b2))
-result6 = matrix3.solveLinearSystem(b2, True)
+result6 = matrix3.solveLinearSystem(b2)
 print("result6=" + repr(result6))
-result6 = matrix3.solveLinearSystem(b2, False)
+result6 = matrix3.solveLinearSystemInPlace(b2)
 print("result6 = " + repr(result6))

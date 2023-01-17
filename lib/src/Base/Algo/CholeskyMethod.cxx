@@ -255,10 +255,9 @@ Point CholeskyMethod::solve(const Point & rhs)
   const MatrixImplementation psiAk(computeWeightedDesign());
   const Point c(psiAk.genVectProd(b, true));
   // We first solve Ly=b then L^Tx=y. The flags given to solveLinearSystemTri() are:
-  // 1) To keep the matrix intact
-  // 2) To say that the matrix L is lower triangular
-  // 3) To say that it is L^Tx=y that is solved instead of Lx=y
-  return l_.getImplementation()->solveLinearSystemTri(l_.solveLinearSystem(c), true, true, true);
+  // 1) To say that the matrix L is lower triangular
+  // 2) To say that it is L^Tx=y that is solved instead of Lx=y
+  return l_.getImplementation()->solveLinearSystemTri(l_.solveLinearSystem(c), true, true);
 }
 
 
@@ -279,10 +278,9 @@ Point CholeskyMethod::solveNormal(const Point & rhs)
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
   }
   // We first solve Ly=b then L^Tx=y. The flags given to solveLinearSystemTri() are:
-  // 1) To keep the matrix intact
-  // 2) To say that the matrix L is lower triangular
-  // 3) To say that it is L^Tx=y that is solved instead of Lx=y
-  return l_.getImplementation()->solveLinearSystemTri(l_.solveLinearSystem(b), true, true, true);
+  // 1) To say that the matrix L is lower triangular
+  // 2) To say that it is L^Tx=y that is solved instead of Lx=y
+  return l_.getImplementation()->solveLinearSystemTri(l_.solveLinearSystem(b), true, true);
 }
 
 

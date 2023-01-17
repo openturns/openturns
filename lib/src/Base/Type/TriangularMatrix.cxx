@@ -251,16 +251,24 @@ TriangularMatrix TriangularMatrix::operator / (const Scalar s) const
 
 
 /* Resolution of a linear system */
-Point TriangularMatrix::solveLinearSystem (const Point & b,
-    const Bool keepIntact)
+Point TriangularMatrix::solveLinearSystem(const Point & b) const
 {
-  return getImplementation()->solveLinearSystemTri(b, keepIntact, isLowerTriangular_);
+  return getImplementation()->solveLinearSystemTri(b, isLowerTriangular_);
 }
 
-Matrix TriangularMatrix::solveLinearSystem (const Matrix & b,
-    const Bool keepIntact)
+Point TriangularMatrix::solveLinearSystemInPlace(const Point & b)
 {
-  return getImplementation()->solveLinearSystemTri(*b.getImplementation(), keepIntact, isLowerTriangular_);
+  return getImplementation()->solveLinearSystemTriInPlace(b, isLowerTriangular_);
+}
+
+Matrix TriangularMatrix::solveLinearSystem(const Matrix & b) const
+{
+  return getImplementation()->solveLinearSystemTri(*b.getImplementation(), isLowerTriangular_);
+}
+
+Matrix TriangularMatrix::solveLinearSystemInPlace(const Matrix & b)
+{
+  return getImplementation()->solveLinearSystemTriInPlace(*b.getImplementation(), isLowerTriangular_);
 }
 
 END_NAMESPACE_OPENTURNS

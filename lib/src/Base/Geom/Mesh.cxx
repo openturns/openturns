@@ -258,7 +258,7 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
   buildSimplexMatrix(index, matrix);
   Point v(point);
   v.add(1.0);
-  coordinates = matrix.solveLinearSystem(v, false);
+  coordinates = matrix.solveLinearSystemInPlace(v);
   for (UnsignedInteger i = 0; i <= dimension_; ++i) if ((coordinates[i] < -epsilon) || (coordinates[i] > 1.0 + epsilon)) return false;
   return true;
 }
