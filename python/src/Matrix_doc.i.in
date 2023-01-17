@@ -245,9 +245,6 @@ Parameters
 ----------
 rhs : :class:`~openturns.Point` or :class:`~openturns.Matrix` with :math:`n_r` values or rows, respectively
     The right hand side member of the linear system.
-keep_intact : bool, optional
-    A flag telling whether the present matrix can be overwritten or not.
-    Default is *True* and leaves the present matrix unchanged.
 
 Returns
 -------
@@ -274,6 +271,16 @@ Examples
 >>> b = ot.Point([1.0] * 3)
 >>> x = M.solveLinearSystem(b)
 >>> np.testing.assert_array_almost_equal(M * x, b)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::solveLinearSystemInPlace
+"Solve a rectangular linear system whose the present matrix is the operator.
+
+Similar to :meth:`solveLinearSystem` except the matrix is modified in-place
+during the resolution avoiding the need to allocate an extra copy if the
+original copy is not re-used.
+"
 
 // ---------------------------------------------------------------------
 

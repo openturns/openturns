@@ -190,10 +190,11 @@ public:
   void triangularize(const Bool isLowerTriangular) const;
 
   /** Resolution of a linear system in case of a rectangular matrix */
-  Point solveLinearSystemRect(const Point & b,
-                              const Bool keepIntact = true);
-  MatrixImplementation solveLinearSystemRect(const MatrixImplementation & b,
-      const Bool keepIntact = true);
+  Point solveLinearSystemRect(const Point & b) const;
+  Point solveLinearSystemRectInPlace(const Point & b);
+
+  MatrixImplementation solveLinearSystemRect(const MatrixImplementation & b) const;
+  MatrixImplementation solveLinearSystemRectInPlace(const MatrixImplementation & b);
 
   /** Resolution of a linear system in case of a square matrix */
   Point solveLinearSystemSquareInPlace(const Point & b);

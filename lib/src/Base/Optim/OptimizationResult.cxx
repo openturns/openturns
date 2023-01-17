@@ -474,7 +474,7 @@ Point OptimizationResult::computeLagrangeMultipliers(const Point & x) const
         rhs.add(Point(inputDimension));
     }
   } // Inequality constraints
-  return Matrix(inputDimension, rhs.getDimension() / inputDimension, rhs).solveLinearSystem(lhs, false);
+  return Matrix(inputDimension, rhs.getDimension() / inputDimension, rhs).solveLinearSystemInPlace(lhs);
 }
 
 

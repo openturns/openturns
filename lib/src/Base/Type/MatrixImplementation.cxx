@@ -750,8 +750,7 @@ MatrixImplementation MatrixImplementation::cleanSym(const Scalar threshold) cons
 /* Resolution of a linear system : rectangular matrix
  * MX = b, M is an mxn matrix, b is an mxq matrix and
  * X is an nxq matrix */
-MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixImplementation & b,
-    const Bool keepIntact)
+MatrixImplementation MatrixImplementation::solveLinearSystemRectInPlace(const MatrixImplementation & b)
 {
   if (nbRows_ != b.nbRows_) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
   if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
@@ -772,36 +771,41 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
   double rcond(ResourceMap::GetAsScalar("Matrix-DefaultSmallPivot"));
   int rank = -1;
 
-  MatrixImplementation Q;
-  if (keepIntact) Q = MatrixImplementation(*this);
-  MatrixImplementation & A = keepIntact ? Q : *this;
-
-  dgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
+  dgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
   lwork = static_cast<int>(lwork_d);
   Point work(lwork);
-  dgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
+  dgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
 
   MatrixImplementation result(n, q);
   for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
-    for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
-      result(i, j) = B(i, j);
+    std::copy(&B(0, j), &B(0, j) + n, &result(0, j));
   return result;
+}
+
+MatrixImplementation MatrixImplementation::solveLinearSystemRect(const MatrixImplementation & b) const
+{
+  MatrixImplementation A(*this);
+  return A.solveLinearSystemRectInPlace(b);
 }
 
 /* Resolution of a linear system : rectangular matrix
  * Mx = b, M is an mxn matrix, b is an m-dimensional
  * vector and x is an n-dimensional vector */
-Point MatrixImplementation::solveLinearSystemRect (const Point & b,
-    const Bool keepIntact)
+Point MatrixImplementation::solveLinearSystemRectInPlace(const Point & b)
 {
   const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // Solve the matrix linear system
   // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemRect(MatrixImplementation(m, 1, b), keepIntact);
+  return solveLinearSystemRectInPlace(MatrixImplementation(m, 1, b));
 }
 
+Point MatrixImplementation::solveLinearSystemRect(const Point & b) const
+{
+  MatrixImplementation A(*this);
+  return A.solveLinearSystemRectInPlace(b);
+}
 
 /* Resolution of a linear system : triangular matrix */
 MatrixImplementation MatrixImplementation::solveLinearSystemTriInPlace (const MatrixImplementation & b,
@@ -923,12 +927,10 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSymInPlace(const Mat
   std::vector<int> ipiv(n);
   int luplo(1);
 
-  MatrixImplementation & A = *this;
-
-  dsysv_(&uplo, &n, &nrhs, &A[0], &n, &ipiv[0], &B[0], &n, &lwork_d, &lwork, &info, &luplo);
+  dsysv_(&uplo, &n, &nrhs, &(*this)[0], &n, &ipiv[0], &B[0], &n, &lwork_d, &lwork, &info, &luplo);
   lwork = static_cast<int>(lwork_d);
   Point work(lwork);
-  dsysv_(&uplo, &n, &nrhs, &A[0], &n, &ipiv[0], &B[0], &n, &work[0], &lwork, &info, &luplo);
+  dsysv_(&uplo, &n, &nrhs, &(*this)[0], &n, &ipiv[0], &B[0], &n, &work[0], &lwork, &info, &luplo);
 
   if (info != 0) throw NotDefinedException(HERE) << "Error: the matrix is singular.";
   return B;

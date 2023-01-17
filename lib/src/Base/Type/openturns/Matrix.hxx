@@ -152,10 +152,10 @@ public:
   Matrix operator / (const Scalar s) const;
 
   /** Resolution of a linear system */
-  Point solveLinearSystem(const Point & b,
-                          const Bool keepIntact = true);
-  Matrix solveLinearSystem(const Matrix & b,
-                           const Bool keepIntact = true);
+  Point solveLinearSystemInPlace(const Point & b);
+  Point solveLinearSystem(const Point & b) const;
+  Matrix solveLinearSystemInPlace(const Matrix & b);
+  Matrix solveLinearSystem(const Matrix & b) const;
 
   /** Compute singular values */
   Point computeSingularValues(const Bool keepIntact = true);
