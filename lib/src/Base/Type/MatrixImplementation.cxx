@@ -868,8 +868,7 @@ Point MatrixImplementation::solveLinearSystemTri(const Point & b,
 }
 
 /* Resolution of a linear system : square matrix */
-MatrixImplementation MatrixImplementation::solveLinearSystemSquare (const MatrixImplementation & b,
-    const Bool keepIntact)
+MatrixImplementation MatrixImplementation::solveLinearSystemSquareInPlace(const MatrixImplementation & b)
 {
   if (nbColumns_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
   if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
@@ -880,25 +879,31 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquare (const Matrix
   int nrhs(B.nbColumns_);
   int info;
   std::vector<int> ipiv(m);
-  if (keepIntact)
-  {
-    MatrixImplementation A(*this);
-    dgesv_(&m, &nrhs, &A[0], &m, &ipiv[0], &B[0], &m, &info);
-  }
-  else dgesv_(&m, &nrhs, &(*this)[0], &m, &ipiv[0], &B[0], &m, &info);
+  dgesv_(&m, &nrhs, &(*this)[0], &m, &ipiv[0], &B[0], &m, &info);
   if (info != 0) throw NotDefinedException(HERE) << "Error: the matrix is singular.";
   return B;
 }
 
+MatrixImplementation MatrixImplementation::solveLinearSystemSquare(const MatrixImplementation & b) const
+{
+  MatrixImplementation A(*this);
+  return A.solveLinearSystemSquareInPlace(b);
+}
+
 /* Resolution of a linear system : square matrix */
-Point MatrixImplementation::solveLinearSystemSquare (const Point & b,
-    const Bool keepIntact)
+Point MatrixImplementation::solveLinearSystemSquareInPlace(const Point & b)
 {
   const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemRect(MatrixImplementation(m, 1, b), keepIntact);
+  return solveLinearSystemSquareInPlace(MatrixImplementation(m, 1, b));
+}
+
+Point MatrixImplementation::solveLinearSystemSquare(const Point & b) const
+{
+  MatrixImplementation A(*this);
+  return A.solveLinearSystemSquareInPlace(b);
 }
 
 /* Resolution of a linear system : symmetric matrix */

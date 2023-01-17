@@ -166,16 +166,24 @@ SquareMatrix SquareMatrix::power(const UnsignedInteger n) const
 }
 
 /* Resolution of a linear system */
-Point SquareMatrix::solveLinearSystem(const Point & b,
-                                      const Bool keepIntact)
+Point SquareMatrix::solveLinearSystemInPlace(const Point & b)
 {
-  return getImplementation()->solveLinearSystemSquare(b, keepIntact);
+  return getImplementation()->solveLinearSystemSquareInPlace(b);
 }
 
-Matrix SquareMatrix::solveLinearSystem(const Matrix & b,
-                                       const Bool keepIntact)
+Point SquareMatrix::solveLinearSystem(const Point & b) const
 {
-  return Implementation(getImplementation()->solveLinearSystemSquare(*b.getImplementation(), keepIntact).clone());
+  return getImplementation()->solveLinearSystemSquare(b);
+}
+
+Matrix SquareMatrix::solveLinearSystemInPlace(const Matrix & b)
+{
+  return Implementation(getImplementation()->solveLinearSystemSquareInPlace(*b.getImplementation()).clone());
+}
+
+Matrix SquareMatrix::solveLinearSystem(const Matrix & b) const
+{
+  return Implementation(getImplementation()->solveLinearSystemSquare(*b.getImplementation()).clone());
 }
 
 /* Compute determinant */

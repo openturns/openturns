@@ -196,10 +196,10 @@ public:
       const Bool keepIntact = true);
 
   /** Resolution of a linear system in case of a square matrix */
-  Point solveLinearSystemSquare(const Point & b,
-                                const Bool keepIntact = true);
-  MatrixImplementation solveLinearSystemSquare(const MatrixImplementation & b,
-      const Bool keepIntact = true);
+  Point solveLinearSystemSquareInPlace(const Point & b);
+  Point solveLinearSystemSquare(const Point & b) const;
+  MatrixImplementation solveLinearSystemSquareInPlace(const MatrixImplementation & b);
+  MatrixImplementation solveLinearSystemSquare(const MatrixImplementation & b) const;
 
   /** Resolution of a linear system in case of a triangular matrix */
   Point solveLinearSystemTri(const Point & b,

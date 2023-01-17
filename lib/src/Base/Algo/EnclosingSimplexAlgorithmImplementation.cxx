@@ -301,7 +301,7 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
   Point v(dimension + 1, 1.0);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     v[i] = point[i];
-  const Point coordinates(simplexMatrix.solveLinearSystem(v, false));
+  const Point coordinates(simplexMatrix.solveLinearSystemInPlace(v));
   for (UnsignedInteger i = 0; i <= dimension; ++i)
     if (!(coordinates[i] >= 0.0 && coordinates[i] <= 1.0))
       return false;
