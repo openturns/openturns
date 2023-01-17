@@ -176,8 +176,7 @@ Point Normal::getRealization() const
     return value;
   }
   // General case
-  TriangularMatrix inverseCholesky(inverseCholesky_);
-  return inverseCholesky.solveLinearSystem(value) + mean_;
+  return inverseCholesky_.solveLinearSystem(value) + mean_;
 }
 
 Sample Normal::getSample(const UnsignedInteger size) const
@@ -649,8 +648,7 @@ Point Normal::computeSequentialConditionalQuantile(const Point & q) const
       result[i] = mean_[i] + sigma_[i] * DistFunc::qNormal(q[i]);
     return result;
   }
-  TriangularMatrix inverseCholesky(inverseCholesky_);
-  return mean_ + inverseCholesky.solveLinearSystem(DistFunc::qNormal(q));
+  return mean_ + inverseCholesky_.solveLinearSystem(DistFunc::qNormal(q));
 }
 
 /* Get the i-th marginal distribution */

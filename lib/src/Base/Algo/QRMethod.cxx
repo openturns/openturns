@@ -125,7 +125,7 @@ Point QRMethod::solve(const Point & rhs)
   }
   // compute c = Q^t b
   const Point c(q_.getImplementation()->genVectProd(b, true)); // transpose
-  const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
+  const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, false, false)); // rhs, lower, transpose
   return coefficients;
 }
 
@@ -141,8 +141,8 @@ Point QRMethod::solveNormal(const Point & rhs)
     const UnsignedInteger size = rhs.getSize();
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
   }
-  const Point c(r_.getImplementation()->solveLinearSystemTri(b, true, false, true)); // rhs, keep, lower, transpose
-  const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
+  const Point c(r_.getImplementation()->solveLinearSystemTri(b, false, true)); // rhs, lower, transpose
+  const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, false, false)); // rhs, lower, transpose
   return coefficients;
 }
 
@@ -185,7 +185,7 @@ CovarianceMatrix QRMethod::getGramInverse() const
   // G^{-1}=R^-1*R*^-T
   const UnsignedInteger basisSize = currentIndices_.getSize();
   const MatrixImplementation b(*IdentityMatrix(basisSize).getImplementation());
-  Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, true, false));
+  Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, false, false));
   // Compute gram matrix (false --> M.M^t)
   return invR.computeGram(false);
 }
@@ -196,7 +196,7 @@ Point QRMethod::getGramInverseDiag() const
   const UnsignedInteger dimension = r_.getNbRows();
   const UnsignedInteger basisSize = currentIndices_.getSize();
   const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
-  const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, true, false, true));
+  const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, false, true));
 
   Point diag(dimension);
   MatrixImplementation::const_iterator invRT_iterator(invRT.begin());
@@ -218,7 +218,7 @@ Scalar QRMethod::getGramInverseTrace() const
   // G^{-1}=R^-1*R*^-T
   const UnsignedInteger dimension = r_.getNbRows();
   const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
-  const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, true, false, true));
+  const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, false, true));
 
   Scalar traceInverse = 0.0;
   for (MatrixImplementation::const_iterator it = invRT.begin(); it != invRT.end(); ++it)

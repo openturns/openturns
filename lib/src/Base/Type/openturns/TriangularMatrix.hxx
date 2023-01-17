@@ -139,11 +139,11 @@ public:
   TriangularMatrix operator / (const Scalar s) const;
 
   /** Resolution of a linear system */
-  Point solveLinearSystem(const Point & b,
-                          const Bool keepIntact = true);
+  Point solveLinearSystem(const Point & b) const;
+  Point solveLinearSystemInPlace(const Point & b);
 
-  Matrix solveLinearSystem(const Matrix & b,
-                           const Bool keepIntact = true);
+  Matrix solveLinearSystem(const Matrix & b) const;
+  Matrix solveLinearSystemInPlace(const Matrix & b);
 private:
 
   /** Boolean information : is the matrix triangular lower or upper? */

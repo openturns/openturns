@@ -602,8 +602,8 @@ Scalar LinearModelStepwiseAlgorithm::computeLogLikelihood()
   Matrix R;
   currentQ_ = currentX_.computeQR(R, size < p, true);
   const MatrixImplementation b(*IdentityMatrix(p).getImplementation());
-  //                                                     keep intact, lower, transposed
-  currentInvRt_ = R.getImplementation()->solveLinearSystemTri(b, false, false, true);
+  //                                                                    lower, transposed
+  currentInvRt_ = R.getImplementation()->solveLinearSystemTriInPlace(b, false, true);
 
   // residual = Y - Q*Q^T*Y
   const Matrix QtY = currentQ_.getImplementation()->genProd(*(Y_.getImplementation()), true, false);

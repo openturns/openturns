@@ -803,9 +803,8 @@ Point MatrixImplementation::solveLinearSystemRect (const Point & b,
 }
 
 
-/* Resolution of a linear system : square matrix */
-MatrixImplementation MatrixImplementation::solveLinearSystemTri (const MatrixImplementation & b,
-    const Bool keepIntact,
+/* Resolution of a linear system : triangular matrix */
+MatrixImplementation MatrixImplementation::solveLinearSystemTriInPlace (const MatrixImplementation & b,
     const Bool lower,
     const Bool transposed)
 {
@@ -836,18 +835,20 @@ MatrixImplementation MatrixImplementation::solveLinearSystemTri (const MatrixImp
   int lda = nbRows_;
   // leading dimension of B
   int ldb = b.nbRows_;
-  if (keepIntact)
-  {
-    MatrixImplementation A(*this);
-    dtrsm_(&side, &uplo, &transa, &diag, &m, &n, &alpha, const_cast<double*>(&(A[0])), &lda, const_cast<double*>(&(B[0])), &ldb, &lside, &luplo, &ltransa, &ldiag);
-  }
-  else dtrsm_(&side, &uplo, &transa, &diag, &m, &n, &alpha, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(B[0])), &ldb, &lside, &luplo, &ltransa, &ldiag);
+  dtrsm_(&side, &uplo, &transa, &diag, &m, &n, &alpha, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(B[0])), &ldb, &lside, &luplo, &ltransa, &ldiag);
   return B;
 }
 
-/* Resolution of a linear system : square matrix */
-Point MatrixImplementation::solveLinearSystemTri (const Point & b,
-    const Bool keepIntact,
+MatrixImplementation MatrixImplementation::solveLinearSystemTri(const MatrixImplementation & b,
+    const Bool lower,
+    const Bool transposed) const
+{
+  MatrixImplementation A(*this);
+  return A.solveLinearSystemTriInPlace(b, lower, transposed);
+}
+
+/* Resolution of a linear system : triangular matrix */
+Point MatrixImplementation::solveLinearSystemTriInPlace(const Point & b,
     const Bool lower,
     const Bool transposed)
 {
@@ -855,10 +856,16 @@ Point MatrixImplementation::solveLinearSystemTri (const Point & b,
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemTri(MatrixImplementation(m, 1, b), keepIntact, lower, transposed);
+  return solveLinearSystemTriInPlace(MatrixImplementation(m, 1, b), lower, transposed);
 }
 
-
+Point MatrixImplementation::solveLinearSystemTri(const Point & b,
+    const Bool lower,
+    const Bool transposed) const
+{
+  MatrixImplementation A(*this);
+  return A.solveLinearSystemTriInPlace(b, lower, transposed);
+}
 
 /* Resolution of a linear system : square matrix */
 MatrixImplementation MatrixImplementation::solveLinearSystemSquare (const MatrixImplementation & b,

@@ -203,14 +203,18 @@ public:
 
   /** Resolution of a linear system in case of a triangular matrix */
   Point solveLinearSystemTri(const Point & b,
-                             const Bool keepIntact = true,
                              const Bool lower = true,
-                             const Bool transpose = false);
+                             const Bool transpose = false) const;
+  Point solveLinearSystemTriInPlace(const Point & b,
+                                    const Bool lower = true,
+                                    const Bool transpose = false);
 
   MatrixImplementation solveLinearSystemTri(const MatrixImplementation & b,
-      const Bool keepIntact = true,
-      const Bool lower = true,
-      const Bool transpose = false);
+                                            const Bool lower = true,
+                                            const Bool transpose = false) const;
+  MatrixImplementation solveLinearSystemTriInPlace(const MatrixImplementation & b,
+                                                  const Bool lower = true,
+                                                  const Bool transpose = false);
 
   /** Resolution of a linear system in case of a symmetric matrix */
   Point solveLinearSystemSym(const Point & b,

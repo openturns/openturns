@@ -199,7 +199,7 @@ Scalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
     logPDF += logNormalizationFactor_;
     // Trace(V M^{-1}) = Trace(C C' X'^{-1} X^{-1}) = Trace(C'X'^{-1} X^{-1}C)
     //                 = Trace(A'A) with A = X^{-1}C
-    const TriangularMatrix A(X.solveLinearSystem(cholesky_, false).getImplementation());
+    const TriangularMatrix A(X.solveLinearSystemInPlace(cholesky_).getImplementation());
     logPDF -= 0.5 * A.computeGram(true).computeTrace();
     return logPDF;
   }
@@ -353,8 +353,7 @@ void InverseWishart::setV(const CovarianceMatrix & v)
   CovarianceMatrix vInverse(T.computeGram(true));
   // Flag false means that vInverse is not preserved, non const because we solve a linear system with this matrix
   TriangularMatrix vInverseCholesky(vInverse.computeCholesky(false));
-  // Flag false means that vInverse is not preserved
-  inverseCholeskyInverse_ = vInverseCholesky.solveLinearSystem(IdentityMatrix(p), false).getImplementation();
+  inverseCholeskyInverse_ = vInverseCholesky.solveLinearSystemInPlace(IdentityMatrix(p)).getImplementation();
   setDimension((p * (p + 1)) / 2);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;

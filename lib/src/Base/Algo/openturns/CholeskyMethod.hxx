@@ -85,7 +85,7 @@ public:
 
 protected:
   // cholesky decomposition A=LL^T (lower triangular)
-  mutable TriangularMatrix l_;
+  TriangularMatrix l_;
 
 }; /* class CholeskyMethod */
 
