@@ -217,10 +217,10 @@ public:
                                                   const Bool transpose = false);
 
   /** Resolution of a linear system in case of a symmetric matrix */
-  Point solveLinearSystemSym(const Point & b,
-                             const Bool keepIntact = true);
-  MatrixImplementation solveLinearSystemSym(const MatrixImplementation & b,
-      const Bool keepIntact = true);
+  Point solveLinearSystemSymInPlace(const Point & b);
+  Point solveLinearSystemSym(const Point & b) const;
+  MatrixImplementation solveLinearSystemSymInPlace(const MatrixImplementation & b);
+  MatrixImplementation solveLinearSystemSym(const MatrixImplementation & b) const;
 
   /** Resolution of a linear system in case of a covariance matrix */
   Point solveLinearSystemCov(const Point & b,

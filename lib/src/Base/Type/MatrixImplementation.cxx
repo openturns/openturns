@@ -907,8 +907,7 @@ Point MatrixImplementation::solveLinearSystemSquare(const Point & b) const
 }
 
 /* Resolution of a linear system : symmetric matrix */
-MatrixImplementation MatrixImplementation::solveLinearSystemSym (const MatrixImplementation & b,
-    const Bool keepIntact)
+MatrixImplementation MatrixImplementation::solveLinearSystemSymInPlace(const MatrixImplementation & b)
 {
   if (nbColumns_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
   if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
@@ -924,9 +923,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSym (const MatrixImp
   std::vector<int> ipiv(n);
   int luplo(1);
 
-  MatrixImplementation Q;
-  if (keepIntact) Q = MatrixImplementation(*this);
-  MatrixImplementation & A = keepIntact ? Q : *this;
+  MatrixImplementation & A = *this;
 
   dsysv_(&uplo, &n, &nrhs, &A[0], &n, &ipiv[0], &B[0], &n, &lwork_d, &lwork, &info, &luplo);
   lwork = static_cast<int>(lwork_d);
@@ -937,16 +934,27 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSym (const MatrixImp
   return B;
 }
 
+MatrixImplementation MatrixImplementation::solveLinearSystemSym(const MatrixImplementation & b) const
+{
+  MatrixImplementation A(*this);
+  return A.solveLinearSystemSymInPlace(b);
+}
+
 /* Resolution of a linear system : symmetric matrix */
-Point MatrixImplementation::solveLinearSystemSym (const Point & b,
-    const Bool keepIntact)
+Point MatrixImplementation::solveLinearSystemSymInPlace(const Point & b)
 {
   const UnsignedInteger dimension = b.getDimension();
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   MatrixImplementation B(dimension, 1, b);
   // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemSym(B, keepIntact);
+  return solveLinearSystemSymInPlace(B);
+}
+
+Point MatrixImplementation::solveLinearSystemSym(const Point & b) const
+{
+  MatrixImplementation A(*this);
+  return A.solveLinearSystemSymInPlace(b);
 }
 
 /* Resolution of a linear system : covariance matrix */
