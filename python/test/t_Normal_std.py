@@ -187,6 +187,8 @@ for dim in range(1, 5):
     print("skewness=", repr(skewness))
     kurtosis = distribution.getKurtosis()
     print("kurtosis=", repr(kurtosis))
+    roughness = distribution.getRoughness()
+    print("roughness=%.6f" % roughness)
     covariance = distribution.getCovariance()
     print("covariance=", repr(covariance))
     parameters = distribution.getParametersCollection()

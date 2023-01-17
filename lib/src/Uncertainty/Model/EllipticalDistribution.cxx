@@ -484,19 +484,17 @@ void EllipticalDistribution::update()
     // Compute the shape matrix
     const CovarianceMatrix shape(getShape());
     // Try to compute the Cholesky factor of the shape matrix
-    cholesky_ = shape.computeRegularizedCholesky();
-    inverseCholesky_ = cholesky_.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
+    TriangularMatrix cholesky(getCholesky());
+    inverseCholesky_ = cholesky.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
     normalizationFactor_ = 1.0;
-    for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky_(i, i);
+    for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky(i, i);
   } // dimension > 1
   else  // dimension 1
   {
-    if (!cholesky_.getDimension())  // First time we enter here, set matrix sizes
+    if (!inverseCholesky_.getDimension())  // First time we enter here, set matrix sizes
     {
-      cholesky_ = TriangularMatrix(1);
       inverseCholesky_ = TriangularMatrix(1);
     }
-    cholesky_(0, 0) = sigma_[0];
     inverseCholesky_(0, 0) = 1.0 / sigma_[0];
     normalizationFactor_ = 1.0 / sigma_[0];
   } // dimension == 1
@@ -602,7 +600,7 @@ SquareMatrix EllipticalDistribution::getInverseCorrelation() const
 /* Cholesky factor of the correlation matrix accessor */
 TriangularMatrix EllipticalDistribution::getCholesky() const
 {
-  return cholesky_;
+  return getShape().computeRegularizedCholesky();
 }
 
 /* Inverse of the Cholesky factor of the correlation matrix accessor */
@@ -651,8 +649,9 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
 EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribution::getInverseIsoProbabilisticTransformation() const
 {
   InverseIsoProbabilisticTransformation inverseTransform;
-  inverseTransform.setEvaluation(new InverseNatafEllipticalDistributionEvaluation(mean_, cholesky_));
-  inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky_));
+  const TriangularMatrix cholesky(getCholesky());
+  inverseTransform.setEvaluation(new InverseNatafEllipticalDistributionEvaluation(mean_, cholesky));
+  inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky));
   inverseTransform.setHessian(new InverseNatafEllipticalDistributionHessian(getDimension()));
   // Set the parameters values and descriptions
   // The result of parameterGradient is given
@@ -851,7 +850,6 @@ void EllipticalDistribution::save(Advocate & adv) const
   adv.saveAttribute( "R_", R_ );
   adv.saveAttribute( "sigma_", sigma_ );
   adv.saveAttribute( "mean_duplicate", mean_ );
-  adv.saveAttribute( "cholesky_", cholesky_ );
   adv.saveAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
 }
@@ -863,7 +861,6 @@ void EllipticalDistribution::load(Advocate & adv)
   adv.loadAttribute( "R_", R_ );
   adv.loadAttribute( "sigma_", sigma_ );
   adv.loadAttribute( "mean_duplicate", mean_ );
-  adv.loadAttribute( "cholesky_", cholesky_ );
   adv.loadAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
 }
