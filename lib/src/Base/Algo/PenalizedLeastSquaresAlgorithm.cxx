@@ -221,7 +221,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     {
       LOGINFO("In PenalizedLeastSquaresAlgorithm::run(), use normal equation");
       CovarianceMatrix normalMatrix(basisMatrix.computeGram(true));
-      setCoefficients(normalMatrix.solveLinearSystem(basisMatrix.genVectProd(rightHandSide, true), false));
+      setCoefficients(normalMatrix.solveLinearSystemInPlace(basisMatrix.genVectProd(rightHandSide, true)));
       isSolved = true;
     }
     catch (const NotDefinedException & ex)

@@ -223,10 +223,10 @@ public:
   MatrixImplementation solveLinearSystemSym(const MatrixImplementation & b) const;
 
   /** Resolution of a linear system in case of a covariance matrix */
-  Point solveLinearSystemCov(const Point & b,
-                             const Bool keepIntact = true);
-  MatrixImplementation solveLinearSystemCov(const MatrixImplementation & b,
-      const Bool keepIntact = true);
+  Point solveLinearSystemCovInPlace(const Point & b);
+  Point solveLinearSystemCov(const Point & b) const;
+  MatrixImplementation solveLinearSystemCovInPlace(const MatrixImplementation & b);
+  MatrixImplementation solveLinearSystemCov(const MatrixImplementation & b) const;
 
   /** Triangular matrix product : side argument L/R for the position of the triangular matrix, up/lo to tell if it  */
   MatrixImplementation triangularProd(const MatrixImplementation & m,

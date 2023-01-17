@@ -958,8 +958,7 @@ Point MatrixImplementation::solveLinearSystemSym(const Point & b) const
 }
 
 /* Resolution of a linear system : covariance matrix */
-MatrixImplementation MatrixImplementation::solveLinearSystemCov (const MatrixImplementation & b,
-    const Bool keepIntact)
+MatrixImplementation MatrixImplementation::solveLinearSystemCovInPlace(const MatrixImplementation & b)
 {
   if (nbRows_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
   if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
@@ -971,29 +970,32 @@ MatrixImplementation MatrixImplementation::solveLinearSystemCov (const MatrixImp
   int nrhs(B.nbColumns_);
   int info;
   int luplo(1);
-  if (keepIntact)
-  {
-    MatrixImplementation A(*this);
-    dposv_(&uplo, &n, &nrhs, &A[0], &n, &B[0], &n, &info, &luplo);
-  }
-  else
-  {
-    dposv_(&uplo, &n, &nrhs, &(*this)[0], &n, &B[0], &n, &info, &luplo);
-  }
+  dposv_(&uplo, &n, &nrhs, &(*this)[0], &n, &B[0], &n, &info, &luplo);
   if (info != 0) throw NotDefinedException(HERE) << "Error: the matrix is singular.";
   return B;
 }
 
+MatrixImplementation MatrixImplementation::solveLinearSystemCov(const MatrixImplementation & b) const
+{
+  MatrixImplementation A(*this);
+  return A.solveLinearSystemCovInPlace(b);
+}
+
 /* Resolution of a linear system : symmetric matrix */
-Point MatrixImplementation::solveLinearSystemCov (const Point & b,
-    const Bool keepIntact)
+Point MatrixImplementation::solveLinearSystemCovInPlace(const Point & b)
 {
   const UnsignedInteger dimension = b.getDimension();
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   MatrixImplementation B(dimension, 1, b);
   // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemCov(B, keepIntact);
+  return solveLinearSystemCovInPlace(B);
+}
+
+Point MatrixImplementation::solveLinearSystemCov(const Point & b) const
+{
+  MatrixImplementation A(*this);
+  return A.solveLinearSystemCovInPlace(b);
 }
 
 /* Compute determinant */

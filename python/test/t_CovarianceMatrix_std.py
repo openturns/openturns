@@ -44,7 +44,7 @@ b[0, 1] = 10.0
 b[1, 1] = 1.0
 b[0, 2] = 15.0
 b[1, 2] = 2.0
-result2 = matrix1.solveLinearSystem(b, True)
+result2 = matrix1.solveLinearSystem(b)
 print("result2=" + repr(result2))
 
 matrix3 = ot.CovarianceMatrix(3)
