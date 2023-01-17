@@ -101,10 +101,10 @@ public:
   virtual ComplexMatrix clean(const Scalar threshold) const;
 
   /** Resolution of a linear system */
-  ComplexMatrix solveLinearSystem(const ComplexMatrix & b,
-                                  const Bool keepIntact = true);
-  ComplexCollection solveLinearSystem(const ComplexCollection & b,
-                                      const Bool keepIntact = true);
+  ComplexMatrix solveLinearSystemInPlace(const ComplexMatrix & b);
+  ComplexMatrix solveLinearSystem(const ComplexMatrix & b) const;
+  ComplexCollection solveLinearSystemInPlace(const ComplexCollection & b);
+  ComplexCollection solveLinearSystem(const ComplexCollection & b) const;
 
   /** String converter */
   String __repr__() const override;
