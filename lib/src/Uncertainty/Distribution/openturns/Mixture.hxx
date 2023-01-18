@@ -93,6 +93,10 @@ public:
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
+  /** Get the complementary CDF of the Mixture */
+  using DistributionImplementation::computeComplementaryCDF;
+  Scalar computeComplementaryCDF(const Point & point) const override;
+
   /** Compute the survival function */
   using DistributionImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const override;

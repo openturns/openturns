@@ -24,6 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -563,7 +564,7 @@ Scalar KernelMixture::computeConditionalCDF(const Scalar x,
   }
   if (marginalPDF <= 0.0) return 0.0;
   // No need to normalize by 1/h as it simplifies
-  return std::min(1.0, jointCDF / marginalPDF);
+  return SpecFunc::Clip01(jointCDF / marginalPDF);
 }
 
 Point KernelMixture::computeSequentialConditionalCDF(const Point & x) const

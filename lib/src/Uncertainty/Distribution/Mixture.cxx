@@ -321,7 +321,19 @@ Scalar Mixture::computeCDF(const Point & point) const
   Scalar cdfValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) cdfValue += p_[i] * distributionCollection_[i].computeCDF(point);
-  return cdfValue;
+  return SpecFunc::Clip01(cdfValue);
+}
+
+/* Get the complementary CDF of the Mixture */
+Scalar Mixture::computeComplementaryCDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+
+  Scalar complementaryCDFValue = 0.0;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for(UnsignedInteger i = 0; i < size; ++i) complementaryCDFValue += p_[i] * distributionCollection_[i].computeComplementaryCDF(point);
+  return SpecFunc::Clip01(complementaryCDFValue);
 }
 
 /* Get the survival function of the Mixture */
@@ -333,7 +345,7 @@ Scalar Mixture::computeSurvivalFunction(const Point & point) const
   Scalar survivalValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) survivalValue += p_[i] * distributionCollection_[i].computeSurvivalFunction(point);
-  return survivalValue;
+  return SpecFunc::Clip01(survivalValue);
 }
 
 /* Compute the probability content of an interval */
@@ -472,7 +484,7 @@ Scalar Mixture::computeConditionalCDF(const Scalar x,
   }
   if (conditioningPDF <= 0.0) return 0.0;
   // No need to normalize by 1/h as it simplifies
-  return std::min(1.0, conditionedCDF / conditioningPDF);
+  return SpecFunc::Clip01(conditionedCDF / conditioningPDF);
 }
 
 Point Mixture::computeSequentialConditionalCDF(const Point & x) const
