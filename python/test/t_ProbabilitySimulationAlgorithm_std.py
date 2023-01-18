@@ -81,7 +81,7 @@ for experiment in experiments:
     print("algo result=", myAlgo.getResult())
     print("probability distribution=", myAlgo.getResult().getProbabilityDistribution())
 
-    # Use the standard deviation as a stoping rule
+    # Use the standard deviation as a stopping rule
     experiment = ot.MonteCarloExperiment()
     myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
     myAlgo.setMaximumOuterSampling(250)

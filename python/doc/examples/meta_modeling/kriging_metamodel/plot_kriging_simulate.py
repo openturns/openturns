@@ -151,7 +151,11 @@ view = viewer.View(graph)
 # Simulate new trajectories
 # -------------------------
 #
-# In order to generate new trajectories of the conditioned gaussian process, we couild technically use the `KrigingRandomVector` class, because it provides the `getSample` method that we need. However, the `KrigingRandomVector` class was more specifically designed to create a `RandomVector` so that it can feed, for example, a function which has a field as input argument.
+# In order to generate new trajectories of the conditioned gaussian process,
+# we could technically use the `KrigingRandomVector` class, because it provides
+# the `getSample` method that we need.
+# However, the `KrigingRandomVector` class was more specifically designed to
+# create a `RandomVector` so that it can feed, for example, a function which has a field as input argument.
 #
 # This is why we use the `ConditionedGaussianProcess`, which provides a `Process`.
 

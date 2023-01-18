@@ -46,7 +46,7 @@ Exception::Exception(const Exception & other)
   , reason_(other.reason_)
   , className_(other.className_)
 {
-  //LOGDEBUG(OSS() << className_  << " emited at " << point_.str() << ": " << String(reason_) );
+  //LOGDEBUG(OSS() << className_  << " emitted at " << point_.str() << ": " << String(reason_) );
 }
 
 /* Inheritance constructor */

@@ -89,7 +89,7 @@ private:
   /** The domain of the evenProcess */
   Domain domain_;
 
-  /** Private method - check that values of a time serie are/are not in the domain */
+  /** Private method - check that values of a time series are/are not in the domain */
   Bool checkTimeSerieValuesInDomain(const Field & ts) const;
 }; /* class ProcessEvent */
 

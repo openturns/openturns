@@ -43,7 +43,7 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    // Instanciate one distribution object
+    // Instantiate one distribution object
     Collection<TruncatedNormal> coll(2);
     coll[0] = TruncatedNormal(1.5, 3.0, -2.0, 5.0);
     coll[1] = TruncatedNormal(50.0, 1.0, 3.0, 4.0);

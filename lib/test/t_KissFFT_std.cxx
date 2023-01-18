@@ -51,7 +51,7 @@ int main(int, char *[])
       collection[index] = Complex(realPart, imagPart);
     }
 
-    /* Instanciation of FFT class */
+    /* Instantiation of FFT class */
     KissFFT myFFT;
     fullprint << "myFFT = " << myFFT << std::endl;
 

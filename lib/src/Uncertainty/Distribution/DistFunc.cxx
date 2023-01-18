@@ -1566,7 +1566,7 @@ Scalar DistFunc::pSpearmanCorrelation(const UnsignedInteger size, const Scalar r
   }
   // Exact computation for small sample size thanks to the values given
   // in http://www.luke-g.com/math/spearman/index.html
-  // The case n==2 has been addded to the table
+  // The case n==2 has been added to the table
   if (size <= 26)
   {
     // Include the tabulated exact distribution
@@ -1696,7 +1696,7 @@ Scalar DistFunc::eZ1(const UnsignedInteger n)
 
 
 /* Dickey Fuller asymptotic table
-   The use of such table allow to make a linear approximation
+   The use of such table allow one to make a linear approximation
 */
 Scalar DistFunc::pDickeyFullerTrend(const Scalar x,
                                     const Bool tail)

@@ -30,6 +30,7 @@
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
 #include "openturns/Less.hxx"
+#include "openturns/SpecFunc.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -112,19 +113,47 @@ public:
 
   Point operator() (const Point & x) const override
   {
-    const UnsignedInteger size = collFunc_.getSize();
-    Scalar value = 0.0;
-    for (UnsignedInteger i = 0; i < size; ++ i)
+    const UnsignedInteger collSize = collFunc_.getSize();
+    Scalar value = intersection_ ? -SpecFunc::MaxScalar : SpecFunc::MaxScalar;
+    for (UnsignedInteger j = 0; j < collSize; ++ j)
     {
-      const Scalar fx = collFunc_[i](x)[0];
-      const Scalar sign = collOp_[i](1.0, 2.0) ? 1.0 : -1.0;
-      value = sign * (fx - level_[i]);
-      const Bool ok = collOp_[i](fx, level_[i]);
+      const Scalar fx = collFunc_[j](x)[0];
+      const Scalar sign = collOp_[j](1.0, 2.0) ? 1.0 : -1.0;
+      const Scalar slack = sign * (fx - level_[j]);
+      const Bool ok = collOp_[j](fx, level_[j]);
+      value = intersection_ ? std::max(value, slack) : std::min(value, slack);
       // return if outside subdomain for intersection or inside subdomain for union
-      if ((intersection_ && !ok) || (!intersection_ && ok))
+      if (intersection_ != ok)
         break;
     }
     return Point(1, value);
+  }
+
+  Sample operator() (const Sample & inS) const override
+  {
+    const UnsignedInteger size = inS.getSize();
+    const UnsignedInteger collSize = collFunc_.getSize();
+    Sample outS(size, Point(getOutputDimension(), intersection_ ? -SpecFunc::MaxScalar : SpecFunc::MaxScalar));
+    Indices todo(size);
+    todo.fill();
+    for (UnsignedInteger j = 0; j < collSize; ++ j)
+    {
+      const Sample fx(collFunc_[j](inS.select(todo)));
+      const Scalar sign = collOp_[j](1.0, 2.0) ? 1.0 : -1.0;
+      for (SignedInteger i = todo.getSize() - 1; i >= 0; -- i)
+      {
+        const Scalar slack = sign * (fx(i, 0) - level_[j]);
+        const Bool ok = collOp_[j](fx(i, 0), level_[j]);
+        outS(todo[i], 0) = intersection_ ? std::max(outS(todo[i], 0), slack) : std::min(outS(todo[i], 0), slack);
+        // return if outside subdomain for intersection or inside subdomain for union
+        if (intersection_ != ok)
+          todo.erase(todo.begin() + i, todo.begin() + i + 1);
+      }
+      // exit loop if all points are pruned
+      if (!todo.getSize())
+        break;
+    }
+    return outS;
   }
 
   String __repr__() const override

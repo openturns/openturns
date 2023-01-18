@@ -206,7 +206,7 @@ private:
   /** Set basis collection method */
   void setBasisCollection(const BasisCollection & basisCollection);
 
-  /** check that sample is centered to precison eps */
+  /** check that sample is centered to precision eps */
   void checkYCentered(const Sample & Y);
 
   // The covariance model parametric familly
@@ -221,7 +221,7 @@ private:
 
   // The coefficients of the current output conditional expectation part
   mutable Point beta_;
-  // Temporarly used to compute gamma
+  // Temporarily used to compute gamma
   mutable Point rho_;
   // The current output Gram matrix
   mutable Matrix F_;

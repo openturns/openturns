@@ -750,7 +750,7 @@ public:
   /** Accessor to CDF computation precision */
   Scalar getCDFEpsilon() const;
 
-  /** Get a positon indicator for a 1D distribution */
+  /** Get a position indicator for a 1D distribution */
   Scalar getPositionIndicator() const;
 
   /** Get a dispersion indicator for a 1D distribution */

@@ -4,6 +4,7 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
+ot.PlatformInfo.SetNumericalPrecision(4)
 
 
 def clean(polynomial):

@@ -50,10 +50,10 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
-  /** Buffer Acccessor */
+  /** Buffer Accessor */
   Indices getBuffer() const;
 
-  /** Index Acccessor */
+  /** Index Accessor */
   UnsignedInteger getIndex() const;
 
   /** Comparison operator */

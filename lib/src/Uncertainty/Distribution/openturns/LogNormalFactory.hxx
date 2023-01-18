@@ -60,7 +60,7 @@ public:
   /** Algorithm associated with the method of moments */
   LogNormal buildMethodOfMoments(const Sample & sample) const;
 
-  /** Algoritm associated with the method of local likelihood maximization */
+  /** Algorithm associated with the method of local likelihood maximization */
   LogNormal buildMethodOfLocalLikelihoodMaximization(const Sample & sample) const;
 
   /** Algorithm associated with the method of modified moments */

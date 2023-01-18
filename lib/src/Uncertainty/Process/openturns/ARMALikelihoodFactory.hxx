@@ -139,7 +139,7 @@ private :
   /** Likelihood function ==> Compute the reduced form of the likelihood */
   Scalar computeLogLikelihood(const Point & beta) const;
 
-  /** Run the default initilization of coefficients / covariance for the optimization */
+  /** Run the default initialization of coefficients / covariance for the optimization */
   void defaultInitialize() const;
 
   /** Compute the autocovariance matrix - This method is public for validation purposes*/

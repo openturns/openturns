@@ -9,7 +9,7 @@ The bivariate Archimedean copulas are defined by:
 
     C(u_1, u_2; \theta) = \varphi^{-1}(\varphi(u_1; \theta) + \varphi(u_2; \theta); \theta)
 
-where :math:`\varphi` is the generator of the copula, a continous, strictly
+where :math:`\varphi` is the generator of the copula, a continuous, strictly
 decreasing and convex function from :math:`[0, 1]\times \theta` to
 :math:`[0, \infty)` such that :math:`\varphi(1; \theta)=0`. :math:`\varphi^{-1}`
 is the pseudo-inverse of the generator function defined by:

@@ -79,7 +79,6 @@ print("Last values of the process = ", lastValues)
 print("Last innovations of the process = ", lastNoiseValues)
 
 # ARMAState creation
-# instanciation of timeGrid
 state = ot.ARMAState(lastValues, lastNoiseValues)
 process = ot.Process(ot.ARMA(coefficientsP, coefficientsQ, epsilon))
 process2 = ot.ARMA(coefficientsP, coefficientsQ, epsilon)

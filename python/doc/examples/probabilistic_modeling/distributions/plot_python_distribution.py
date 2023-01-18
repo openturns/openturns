@@ -11,7 +11,7 @@ Create a customized distribution or copula
 #
 # Then an instance of the new class can be passed on into a Distribution object.
 #
-# At least computeCDF should be overriden.
+# At least computeCDF should be overridden.
 
 # %%
 import openturns as ot

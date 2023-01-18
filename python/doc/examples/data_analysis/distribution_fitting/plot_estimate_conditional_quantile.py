@@ -108,14 +108,14 @@ graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 
 # %%
-# In this case the :math:`Q_2` quantile is constant because of the independance of the marginals.
+# In this case the :math:`Q_2` quantile is constant because of the independence of the marginals.
 #
 
 # %%
-# Dependance through a Clayton copula
+# Dependence through a Clayton copula
 # -----------------------------------
 #
-# We now define a Clayton copula to model the dependance between our marginals.
+# We now define a Clayton copula to model the dependence between our marginals.
 # The Clayton copula is a bivariate asymmmetric Archimedean copula, exhibiting greater dependence
 # in the negative tail than in the positive.
 #

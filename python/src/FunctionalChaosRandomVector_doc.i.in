@@ -1,7 +1,7 @@
 %feature("docstring") OT::FunctionalChaosRandomVector
 "Functional chaos random vector.
 
-Allows to simulate a variable through a chaos decomposition,
+Allows one to simulate a variable through a chaos decomposition,
 and retrieve its mean and covariance analytically from the chaos coefficients.
 
 Parameters

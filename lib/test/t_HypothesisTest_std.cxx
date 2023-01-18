@@ -49,7 +49,7 @@ int main(int, char *[])
   Sample discreteSample1(Poisson(0.1).getSample(size));
   Sample discreteSample2(Geometric(0.4).getSample(size));
 
-  // ChiSquared Independance test : test if two samples (of sizes not necessarily equal) are independent ?
+  // ChiSquared Independence test: test if two samples (of sizes not necessarily equal) are independent ?
   // Care : discrete samples only
   // H0 = independent samples
   // p-value threshold : probability of the H0 reject zone : 0.10

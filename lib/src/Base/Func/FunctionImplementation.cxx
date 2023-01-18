@@ -288,7 +288,7 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
   } // Usual gradient failed
 }
 
-/* Method hessian() returns the symetric tensor of the function at point */
+/* Method hessian() returns the symmetric tensor of the function at point */
 SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
 {
   if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");

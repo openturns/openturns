@@ -31,8 +31,6 @@ int main(int, char *[])
 
   try
   {
-
-    /* Create an intance */
     Description inputVars;
     inputVars.add("t");
 

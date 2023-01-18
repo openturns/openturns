@@ -30,7 +30,8 @@ The  field :math:`F'` is defined by the function :math:`g: \Rset^d \rightarrow \
     \forall \vect{t}_i \in \cM_N, \quad \vect{v}'_i = g(\vect{v}_i)
  
 
-The first constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*). The instanciation of such an object is used to extract an actual :class:`~openturns.ValueFunction` from a  :class:`~openturns.Study`.
+The first constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*).
+The instantiation of such an object is used to extract an actual :class:`~openturns.ValueFunction` from a  :class:`~openturns.Study`.
 
 See also
 --------

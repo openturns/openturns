@@ -91,7 +91,7 @@ private:
                                           Collection<Sample> & learningCollection,
                                           Collection<Sample> & validationCollection);
 
-  /** Find the best bin number using an exhaustive search between two bounds given throug ResourceMap, or between 1 and size/2 if the bounds are in reverse order */
+  /** Find the best bin number using an exhaustive search between two bounds given through ResourceMap, or between 1 and size/2 if the bounds are in reverse order */
   static UnsignedInteger FindBestBinNumberSequential(const Function & mObjective,
       const UnsignedInteger mMin,
       const UnsignedInteger mMax);

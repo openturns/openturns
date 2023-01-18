@@ -53,7 +53,7 @@ public:
   static const char * GetEndOfLine();
 
   /**
-   * Return the command that permit to snub the output of a command.
+   * Return the command that permit one to snub the output of a command.
    */
   static String GetDeleteCommandOutput();
 

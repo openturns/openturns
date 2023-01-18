@@ -3,7 +3,7 @@ Combinatorial generators
 ========================
 """
 # %%
-# In this example we are going to expose the various desing of experiments that allow to generate all the integer collections satisfying a given combinatorial constraint:
+# In this example we are going to expose the various design of experiments that allow one to generate all the integer collections satisfying a given combinatorial constraint:
 #
 # - The Tuples generator, which allows one to generate all the elements of a Cartesian product :math:`E=\{0,\dots,n_0-1\}\times\dots\times\{0,\dots,n_{d-1}-1\}`.
 #

@@ -116,7 +116,10 @@ graph = result.drawOptimalValueHistory()
 view = viewer.View(graph)
 
 # %%
-# The function value history make the path of the algorithm clear. In the first step, the algorithm went in the valley, which made the function value decrease rapidly. Once there, the algorithm had to follow the bottom of the valley so that the function decreased but slowly. In the final steps, the algorithm found the neighbourhood of the minimum so that the local convergence could take place.
+# The function value history make the path of the algorithm clear.
+# In the first step, the algorithm went in the valley, which made the function value decrease rapidly.
+# Once there, the algorithm had to follow the bottom of the valley so that the function decreased but slowly.
+# In the final steps, the algorithm found the neighbourhood of the minimum so that the local convergence could take place.
 
 # %%
 # In order to see where the function was evaluated, we use the `getInputSample` method.
@@ -138,7 +141,10 @@ view = viewer.View(graph)
 # Solving the problem with NLopt
 # ------------------------------
 #
-# We see that the `Cobyla` algorithm required lots of function evaluations. This is why we now use the `NLopt` class with the LBFGS algorithm. However, the algorithm may use input points which are far away from the input domain we used so far. This is why we had bounds to the problem, so that the algorithm never goes to far away from the valley.
+# We see that the `Cobyla` algorithm required lots of function evaluations.
+# This is why we now use the `NLopt` class with the LBFGS algorithm.
+# However, the algorithm may use input points which are far away from the input domain we used so far.
+# This is why we had bounds to the problem, so that the algorithm never goes to far away from the valley.
 
 # %%
 bounds = ot.Interval(lowerbound, upperbound)

@@ -6,7 +6,6 @@ import math as m
 ot.TESTPREAMBLE()
 
 
-# Create an intance
 inputVars = ot.Description(["t"])
 formula = ot.Description(["sin(t)", "cos(t)"])
 myFunc = ot.SymbolicFunction(inputVars, formula)

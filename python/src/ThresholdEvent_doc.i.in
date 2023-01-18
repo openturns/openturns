@@ -37,7 +37,7 @@ The probability content of the event :math:`\cD_f` is :math:`P_f`:
 Here, the event considered is explicited directly from the limit state function
 :math:`g(\vect{X}\,,\,\vect{d})` : this is the classical structural reliability
 formulation. However, if the event is a threshold exceedance, it is useful to
-explicite the variable of interest :math:`Z=\tilde{g}(\vect{X}\,,\,\vect{d})`,
+explicit the variable of interest :math:`Z=\tilde{g}(\vect{X}\,,\,\vect{d})`,
 evaluated from the model :math:`\tilde{g}(.)`. In that case, the event
 considered, associated to the threshold :math:`z_s` has the formulation:
 

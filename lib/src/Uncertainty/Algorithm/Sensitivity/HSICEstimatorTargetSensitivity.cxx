@@ -69,13 +69,13 @@ Point HSICEstimatorTargetSensitivity::getPValuesAsymptotic() const
   return PValuesAsymptotic_;
 }
 
-/* Get the filter functon */
+/* Get the filter function */
 Function HSICEstimatorTargetSensitivity::getFilterFunction() const
 {
   return filterFunction_;
 }
 
-/* Get the filter functon */
+/* Get the filter function */
 void HSICEstimatorTargetSensitivity::setFilterFunction(const Function & filterFunction)
 {
   filterFunction_ =  filterFunction;

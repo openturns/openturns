@@ -201,7 +201,7 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 /* Get the evaluation corresponding to indices components */
 Evaluation MemoizeEvaluation::getMarginal(const Indices & indices) const
 {
-  // dont rely on the proxy here, we want a marginal on the memoized original evaluation
+  // don't rely on the proxy here, we want a marginal on the memoized original evaluation
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal evaluation must be in the range [0, outputDimension-1] and must be different";
   Indices full(getOutputDimension());
   full.fill();

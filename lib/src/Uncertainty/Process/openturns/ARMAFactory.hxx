@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ARMAFactory
  *
- * The class that implements all processs
+ * The class that implements all process
  */
 class OT_API ARMAFactory
   : public TypedInterfaceObject<ARMAFactoryImplementation>

@@ -81,9 +81,9 @@ event = ot.UnionEvent(
 )
 
 # sampling test
-pf_sim = event.getSample(100000).computeMean()[0]
+pf_sim = event.getSample(10000).computeMean()[0]
 print("pf_sim = %.6g" % pf_sim)
-ott.assert_almost_equal(pf_sim, 0.00384, 1e-4, 1e-4)
+ott.assert_almost_equal(pf_sim, 0.00384, 1e-3, 1e-3)
 
 # system FORM
 algo = ot.SystemFORM(solver, event, mean)

@@ -47,7 +47,7 @@ public:
   /** Parameter constructor */
   explicit LinearEnumerateFunction(const UnsignedInteger dimension);
 
-  /** Virtual constrcutor */
+  /** Virtual constructor */
   LinearEnumerateFunction * clone() const override;
 
   /** String converter */

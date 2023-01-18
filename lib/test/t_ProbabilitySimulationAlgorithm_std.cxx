@@ -113,7 +113,7 @@ int main(int, char *[])
       fullprint << "Confidence length at level 80%=" << myAlgo.getResult().getConfidenceLength(0.8) << std::endl;
       fullprint << "Probability distribution=" << myAlgo.getResult().getProbabilityDistribution() << std::endl;
 
-      /* Use the standard deviation as a stoping rule */
+      /* Use the standard deviation as a stopping rule */
       myAlgo = ProbabilitySimulationAlgorithm(myEvent, experiments[i]);
       myAlgo.setMaximumOuterSampling(250);
       myAlgo.setBlockSize(4);

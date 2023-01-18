@@ -60,7 +60,7 @@ void FaureSequence::initialize(const UnsignedInteger dimension)
     ++logSeed_;
     seedBound_ *= modulus_;
   }
-  // Binomial coefficients modulo the modulus associated withthe current value of the seed
+  // Binomial coefficients modulo the modulus associated with the current value of the seed
   computeInitialBinomialCoefficients();
 }
 

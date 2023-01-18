@@ -148,7 +148,7 @@ void LowDiscrepancySequenceImplementation::load(Advocate & adv)
 }
 
 
-/* Compute the local discrepancy of a sample, given a multidimensionnal interval */
+/* Compute the local discrepancy of a sample, given a multidimensional interval */
 Scalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(const Sample & sample,
     const Interval & interval)
 {

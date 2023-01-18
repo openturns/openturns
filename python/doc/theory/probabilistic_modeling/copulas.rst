@@ -22,7 +22,7 @@ The joined cumulative density function is therefore defined by:
        \Prob{X^1 \leq x^1, X^2 \leq x^2, \cdots, X^{n_X} \leq x^{n_X}}       = C\left(F_{X^1}(x^1),F_{X^2}(x^2),\cdots,F_{X^{n_X}}(x^{n_X}) \right)
      \end{aligned}
 
-| Copulas allow to represent the part of the joined cumulative density
+| Copulas allow one to represent the part of the joined cumulative density
   function which is not described by the marginal laws. It enables to
   represent the dependency structure of the input variables. A copula is
   a special cumulative density function defined on :math:`[0,1]^{n_X}`

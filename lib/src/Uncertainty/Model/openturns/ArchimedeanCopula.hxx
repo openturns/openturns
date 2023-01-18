@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ArchimedeanCopula
  *
- * All traditionnal distribution inherits from this class.
+ * All traditional distribution inherits from this class.
  * Classes derived from ArchimedeanCopula are known by themselves,
  * without being reconstructed or built in any way.
  */

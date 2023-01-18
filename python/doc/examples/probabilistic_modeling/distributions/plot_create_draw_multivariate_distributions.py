@@ -56,7 +56,7 @@ view = otv.View(graph)
 
 
 # %%
-# If a dependance between marginals is needed we have to create the copula specifying the dependency structure, here a :class:`~openturns.NormalCopula` :
+# If a dependence between marginals is needed we have to create the copula specifying the dependency structure, here a :class:`~openturns.NormalCopula` :
 R = ot.CorrelationMatrix(2)
 R[0, 1] = 0.3
 copula = ot.NormalCopula(R)

@@ -57,7 +57,7 @@ The inverse Box Cox transformation writes:
 Examples
 --------
 
-Create a Box Cox tranformation:
+Create a Box Cox transformation:
 
 >>> import openturns as ot
 >>> myLambda = 0.1

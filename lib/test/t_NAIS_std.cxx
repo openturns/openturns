@@ -80,7 +80,7 @@ int main()
   // Quantile determining the percentage of failure samples in the current population
   const Scalar rhoQuantile = 0.25 ;
 
-  // Definition of the algoritm
+  // Definition of the algorithm
   NAIS algoNais(event, rhoQuantile);
   algoNais.setMaximumOuterSampling(numberSamples);
   algoNais.setBlockSize(blockSize);

@@ -404,7 +404,7 @@ view = otv.View(graphStandardSpace)
 #
 #    \kappa(x_0) = \frac{g''(x_0)}{(1+[g'(x_0)]^2)^{3/2}}.
 #
-# For the oscilating parabola of concern we use the gradient and hessian previously computed :
+# For the oscillating parabola of concern we use the gradient and hessian previously computed :
 #
 curvature = (d2u0[0, 0, 0]) / (1 + (du0[0, 0]) ** 2) ** (3 / 2)
 print("Curvature (analytic formula) = ", curvature)

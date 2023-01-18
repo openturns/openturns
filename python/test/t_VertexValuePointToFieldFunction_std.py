@@ -4,7 +4,6 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
-# Create an intance
 g = ot.SymbolicFunction(["t", "x"], ["x + t^2", "5*x + 3*t"])
 grid = ot.RegularGrid(0.0, 0.2, 6)
 f = ot.VertexValuePointToFieldFunction(g, grid)

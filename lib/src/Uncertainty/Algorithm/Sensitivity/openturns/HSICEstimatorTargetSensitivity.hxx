@@ -61,10 +61,10 @@ public:
   /** Draw the asymptotic p-values */
   Graph drawPValuesAsymptotic() const;
 
-  /** Get the filter functon */
+  /** Get the filter function */
   Function getFilterFunction() const;
 
-  /** Get the filter functon */
+  /** Get the filter function */
   void setFilterFunction(const Function & filterFunction);
 
   /** Compute all indices at once */

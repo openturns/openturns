@@ -10,7 +10,7 @@ Compute Sobol' indices confidence intervals
 # so we can fallback to bootstrap.
 #
 # Bootstraping the polynomial chaos is presented in [marelli2018]_ as "full bootstraping"
-# and refered to as bootstrap-PCE or bPCE.
+# and referred to as bootstrap-PCE or bPCE.
 # Full bPCE can be CPU time consuming in some cases, e.g. when the dimension of the input
 # random vector is large or when the training sample size is large.
 # In the fast bPCE method, the sparse polynomial basis identified by the LARS algorithm

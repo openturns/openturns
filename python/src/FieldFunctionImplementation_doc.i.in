@@ -25,9 +25,12 @@ Field functions act on fields to produce fields:
 
 with  :math:`\cM_N` a mesh of :math:`\cD \subset \Rset^n`,  :math:`\cM_{N'}` a mesh of :math:`\cD' \subset \Rset^{n'}`.
 
-A field is represented by a collection :math:`(\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}` of elements of :math:`\cM_N \times (\Rset^d)^N` where :math:`\vect{t}_i` is a vertex of :math:`\cM_N` and :math:`\vect{v}_i` the associated value in :math:`\Rset^d`.
+A field is represented by a collection :math:`(\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`
+of elements of :math:`\cM_N \times (\Rset^d)^N` where :math:`\vect{t}_i` is a vertex
+of :math:`\cM_N` and :math:`\vect{v}_i` the associated value in :math:`\Rset^d`.
 
-The constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*). The instanciation of such an object is used to extract an actual :class:`~openturns.FieldFunction` from a  :class:`~openturns.Study`.
+The constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*).
+The instantiation of such an object is used to extract an actual :class:`~openturns.FieldFunction` from a  :class:`~openturns.Study`.
 
 See also
 --------

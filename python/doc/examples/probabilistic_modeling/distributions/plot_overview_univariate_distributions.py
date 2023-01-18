@@ -131,7 +131,8 @@ E = ot.Exponential(3)
 S = B + E
 
 # %%
-# The `S` variable is equipped with the methods of any distribution: we can for example compute the PDF or the CDF at any point and compute its quantile. For example, we can simply draw the PDF with the `drawPDF` class.
+# The `S` variable is equipped with the methods of any distribution: we can for example compute the PDF or the CDF at any point and compute its quantile.
+# For example, we can simply draw the PDF with the `drawPDF` class.
 
 # %%
 graph = S.drawPDF()
@@ -153,7 +154,9 @@ view = viewer.View(graph)
 # The `CompositeDistribution` class for more general functions
 # ------------------------------------------------------------
 #
-# More complex functions can be created thanks to the `CompositeDistribution` class, but it requires an `f` function. In the following example, we create the distribution of a random variable equal to the exponential of a gaussian variable. Obviously, this is equivalent to the `LogNormal` distribution but this shows how such a distribution could be created.
+# More complex functions can be created thanks to the `CompositeDistribution` class, but it requires an `f` function.
+# In the following example, we create the distribution of a random variable equal to the exponential of a gaussian variable.
+# Obviously, this is equivalent to the `LogNormal` distribution but this shows how such a distribution could be created.
 
 # %%
 # First, we create a distribution.

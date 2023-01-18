@@ -106,7 +106,7 @@ String UniVariatePolynomialImplementation::__str__(const String & variableName,
       // For the other coefficients
       else
       {
-        // Separate the sign from the absolute value by a binay +/- operator
+        // Separate the sign from the absolute value by a binary +/- operator
         // Here, i > 0
         if (aI > 0.0) oss << " + ";
         else oss << " - ";

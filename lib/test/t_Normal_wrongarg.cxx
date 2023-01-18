@@ -58,7 +58,7 @@ int main(int, char *[])
       distribution.setCorrelation(newR);
 
       // Normally, we should never go here
-      throw TestFailed("Exception has NOT been thrown or catched !");
+      throw TestFailed("Exception has NOT been thrown or caught !");
 
 
     }

@@ -5,28 +5,41 @@ Trend computation
 # %%
 # In this example we are going to estimate a trend from a field.
 #
-# We note :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` the values of the initial field associated to the mesh :math:`\mathcal{M}` of :math:`\mathcal{D} \in \mathbb{R}^n`, where :math:`\underline{x}_i \in \mathbb{R}^d` and :math:`(\underline{x}^{stat}_0, \dots, \underline{x}^{stat}_{N-1})` the values of the resulting stationary field.
+# We note :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` the values of
+# the initial field associated to the mesh :math:`\mathcal{M}` of :math:`\mathcal{D} \in \mathbb{R}^n`,
+# where :math:`\underline{x}_i \in \mathbb{R}^d` and :math:`(\underline{x}^{stat}_0, \dots, \underline{x}^{stat}_{N-1})`
+# the values of the resulting stationary field.
 #
 # The object **TrendFactory** allows one to estimate a trend and is built from:
 #
 # - a regression strategy that generates a basis using the Least Angle Regression method thanks to the object **LARS**,
-# - a fitting algorithm that estimates the empirical error on each sub-basis using the leave one out strategy, thanks to the object **CorrectedLeaveOneOut** or the k-fold algorithm thanks to the object **KFold**.
+# - a fitting algorithm that estimates the empirical error on each sub-basis using the leave one out strategy,
+#   thanks to the object **CorrectedLeaveOneOut** or the k-fold algorithm thanks to the object **KFold**.
 #
-# Then, the trend transformation is estimated from the initial field :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` and a function basis :math:`\mathcal{B}` thanks to the method **build** of the object **TrendFactory**, which produces an object of type **TrendTransform**. This last object allows one to:
+# Then, the trend transformation is estimated from the initial field :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})`
+# and a function basis :math:`\mathcal{B}` thanks to the method **build** of the object **TrendFactory**,
+# which produces an object of type **TrendTransform**. This last object allows one to:
 #
-# - add the trend to a given field :math:`\underline{w}_0, \dots, \underline{w}_{N-1}` defined on the same mesh :math:`\mathcal{M}`: the resulting field  shares the same mesh than the initial field. For example, it may be useful to add the trend to a realization of the stationary process :math:`X_{stat}` in order to get a realization of the process :math:`X`
+# - add the trend to a given field :math:`\underline{w}_0, \dots, \underline{w}_{N-1}` defined on the same mesh :math:`\mathcal{M}`:
+#   the resulting field shares the same mesh than the initial field.
+#   For example, it may be useful to add the trend to a realization of the stationary
+#   process :math:`X_{stat}` in order to get a realization of the process :math:`X`
 #
 # - get the function :math:`f_{trend}` defined in that evaluates the trend thanks to the method **getEvaluation()**;
 #
-# - create the inverse trend transformation in order to remove the trend the intiail field :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` and  to create the resulting stationary field :math:`(\underline{x}^{stat}_0, \dots, \underline{x}^{stat}_{N-1})` such that:
+# - create the inverse trend transformation in order to remove the trend the intiail field
+#   :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` and to create the
+#   resulting stationary field :math:`(\underline{x}^{stat}_0, \dots, \underline{x}^{stat}_{N-1})` such that:
 #
 # .. math::
 #    \underline{x}^{stat}_i = \underline{x}_i - f_{trend}(\underline{t}_i)
 #
 # where :math:`\underline{t}_i` is the simplex associated to the value :math:`\underline{x}_i`.
 #
-# This creation of the inverse trend function :math:`-f_{trend}` is done thanks to the method **getInverse()** which produces an object of type **InverseTrendTransform** that can be evaluated on a a field.
-# For example, it may be useful in order to get the stationary field :math:`(\underline{x}^{stat}_0, \dots, \underline{x}^{stat}_{N-1})` and then analyze it with methods adapted to stationary processes (ARMA decomposition for example).
+# This creation of the inverse trend function :math:`-f_{trend}` is done thanks to the method **getInverse()**
+# which produces an object of type **InverseTrendTransform** that can be evaluated on a a field.
+# For example, it may be useful in order to get the stationary field :math:`(\underline{x}^{stat}_0, \dots, \underline{x}^{stat}_{N-1})`
+# and then analyze it with methods adapted to stationary processes (ARMA decomposition for example).
 #
 
 # %%
@@ -103,7 +116,7 @@ gTemp = ot.TrendTransform(g, myMesh)
 # Get the inverse trend transformation
 # from the trend transform already defined
 myInverseTrendTransform = myTrendTransform.getInverse()
-print("Inverse trend fucntion = ", myInverseTrendTransform)
+print("Inverse trend function = ", myInverseTrendTransform)
 
 # Sometimes it is more useful to define
 # the opposite trend h : R^2 -> R

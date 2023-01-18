@@ -192,7 +192,7 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
 
 UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Field & timeSeries) const
 {
-  // We split the time series into overlaping blockNumbers that are used as a ProcessSample
+  // We split the time series into overlapping blockNumbers that are used as a ProcessSample
   const UnsignedInteger size = timeSeries.getSize();
   const UnsignedInteger dimension = timeSeries.getOutputDimension();
   // First, compute the block size

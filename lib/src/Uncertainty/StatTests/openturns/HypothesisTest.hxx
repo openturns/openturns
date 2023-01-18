@@ -40,7 +40,7 @@ namespace HypothesisTest
 
 typedef Collection<TestResult>      TestResultCollection;
 
-/** Independance ChiSquared test between 2 scalar samples for discrete distributions */
+/** Independence ChiSquared test between 2 scalar samples for discrete distributions */
 OT_API TestResult ChiSquared(const Sample & firstSample,
                              const Sample & secondSample,
                              const Scalar level = 0.05);

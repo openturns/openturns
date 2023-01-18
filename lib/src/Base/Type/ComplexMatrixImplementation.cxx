@@ -108,7 +108,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
   if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
   int m(nbRows_);
   int n(nbColumns_);
-  // B is an extended copy of b, it must be large enought to store the solution, see LAPACK documentation
+  // B is an extended copy of b, it must be large enough to store the solution, see LAPACK documentation
   int p(std::max(m, n));
   int q(b.nbColumns_);
   ComplexMatrixImplementation B(p, q);

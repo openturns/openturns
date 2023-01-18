@@ -884,6 +884,42 @@ Sample(PyObject * pyObj)
 
 Bool __eq__(const Sample & other) { return (*self) == other; }
 
+Sample __iadd__(const Scalar value)
+{
+  *self += value;
+  return *self;
+}
+
+Sample __iadd__(const Point & pt)
+{
+  *self += pt;
+  return *self;
+}
+
+Sample __iadd__(const Sample & other)
+{
+  *self += other;
+  return *self;
+}
+
+Sample __isub__(const Scalar value)
+{
+  *self -= value;
+  return *self;
+}
+
+Sample __isub__(const Point & pt)
+{
+  *self -= pt;
+  return *self;
+}
+
+Sample __isub__(const Sample & other)
+{
+  *self -= other;
+  return *self;
+}
+
 #if SWIG_VERSION < 0x030011
 Sample __truediv__(const Scalar & u) { return (*self) / u; }
 

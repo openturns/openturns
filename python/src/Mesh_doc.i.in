@@ -165,7 +165,7 @@ index : int
 Returns
 -------
 isInside : bool
-    Flag telling whether *point* is inside a simplex containg vertex *index*.
+    Flag telling whether *point* is inside a simplex containing vertex *index*.
 simplex : int
     Index of the simplex containing this point.
 coordinates : :class:`~openturns.Point`

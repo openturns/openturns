@@ -100,7 +100,7 @@ Point IterativeMoments::getVariance() const
 }
 
 /* Accessor to the unbiased estimator of the skewness
-   The factors used in the formula below allow to provide an unbiased
+   The factors used in the formula below allow one to provide an unbiased
    estimate the skewness.
    Joanes, Derrick N.; Gill, Christine A. (1998),
    "Comparing measures of sample skewness and kurtosis",
@@ -125,7 +125,7 @@ Point IterativeMoments::getSkewness() const
 }
 
 /* Accessor to the unbiased estimator of the kurtosis
-   The factors used in the formula below allow to provide an unbiased
+   The factors used in the formula below allow one to provide an unbiased
    estimate the kurtosis.
    Joanes, Derrick N.; Gill, Christine A. (1998),
    "Comparing measures of sample skewness and kurtosis",

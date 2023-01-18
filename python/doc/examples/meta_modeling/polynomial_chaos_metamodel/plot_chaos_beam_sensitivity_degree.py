@@ -107,7 +107,10 @@ def ComputeSparseLeastSquaresChaos(
 
 
 # %%
-# The following function computes  the sparsity rate of the polynomial chaos. To do this, we compute the number of coefficients in the decomposition assuming a linear enumeration rule and a fixed truncation. The sparsity rate is the complement of the ratio between the number of coefficients selected from LARS and the total number of coefficients in the full polynomial basis.
+# The following function computes the sparsity rate of the polynomial chaos.
+# To do this, we compute the number of coefficients in the decomposition assuming a linear enumeration rule and a fixed truncation.
+# The sparsity rate is the complement of the ratio between the number of coefficients
+# selected from LARS and the total number of coefficients in the full polynomial basis.
 
 # %%
 def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):

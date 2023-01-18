@@ -164,7 +164,7 @@ class View(object):
                     "The given object cannot be converted into a Graph nor Drawable."
                 )
 
-        # check that arguments are dictionnaries
+        # check that arguments are dictionaries
         figure_kw = self._CheckDict(figure_kw)
         axes_kw = self._CheckDict(axes_kw)
         plot_kw_default = self._CheckDict(plot_kw)
@@ -861,7 +861,7 @@ def PlotDesign(
     >>> subdivisions = [size]*dim
     >>> fig = PlotDesign(sample, bounds, subdivisions)
     """
-    # check that arguments are dictionnaries
+    # check that arguments are dictionaries
     axes_kw = View._CheckDict(axes_kw)
     plot_kw = View._CheckDict(plot_kw)
     text_kw = View._CheckDict(text_kw)

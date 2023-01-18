@@ -48,7 +48,7 @@ print("symmetricMatrix1's nbColumns = ", symmetricMatrix1.getNbColumns())
 print("test number five : assignment method")
 
 # Assignment method
-# No sense with pyton
+# No sense with python
 
 # TEST NUMBER SIX : TRANSPOSITION METHOD
 print("test number six : transposition method")

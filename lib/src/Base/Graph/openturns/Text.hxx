@@ -118,7 +118,7 @@ private:
   /** A map matching text position with R codes */
   static std::map<String, UnsignedInteger> Position;
 
-  /** Initialize positon map */
+  /** Initialize position map */
   static void InitializePositionMap();
   static Bool IsTextFirstInitialization;
 

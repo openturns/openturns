@@ -149,6 +149,12 @@ Point UnionEvent::getRealization() const
   return composedEvent_.getRealization();
 }
 
+/* Sample accessor */
+Sample UnionEvent::getSample(const UnsignedInteger size) const
+{
+  return composedEvent_.getSample(size);
+}
+
 Bool UnionEvent::isEvent() const
 {
   return true;

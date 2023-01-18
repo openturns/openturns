@@ -140,7 +140,7 @@ MaximumEntropyOrderStatisticsCopula::PointWithDescriptionCollection MaximumEntro
     const PointWithDescriptionCollection marginalParameters(maxEntropyDistribution_.distributionCollection_[marginalIndex].getParametersCollection());
     PointWithDescription point(marginalParameters[0]);
     Description marginalParametersDescription(point.getDescription());
-    // Here we must add a unique prefix to the marginal parameters description in order to deambiguate the parameters of different marginals sharing the same description
+    // Here we must add a unique prefix to the marginal parameters description in order to disambiguate the parameters of different marginals sharing the same description
     for (UnsignedInteger i = 0; i < point.getDimension(); ++i) marginalParametersDescription[i] = (OSS() << marginalParametersDescription[i] << "_marginal_" << marginalIndex);
     point.setDescription(marginalParametersDescription);
     point.setName(description[marginalIndex]);

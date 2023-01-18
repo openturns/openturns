@@ -55,7 +55,7 @@ public:
   HyperbolicAnisotropicEnumerateFunction(const Point & weight,
                                          const Scalar q = ResourceMap::GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
 
-  /** Virtual constrcutor */
+  /** Virtual constructor */
   HyperbolicAnisotropicEnumerateFunction * clone() const override;
 
   /** String converter */

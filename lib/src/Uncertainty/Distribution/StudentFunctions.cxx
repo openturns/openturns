@@ -454,7 +454,7 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   // correction factors. Thus, we proceed as follows:
   // First, update the correction factors for the betaP and betaQ factors
   // Second, update the betaP and betaQ factors
-  // Third, upate the P and Q factors
+  // Third, update the P and Q factors
   // Fourth, accumulate the current contribution
   // It is the responsibility of the main iteration to update kForward and kBackward
 #define FORWARD_ITERATION                                               \

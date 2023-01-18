@@ -87,7 +87,7 @@ Matrix InverseNatafEllipticalCopulaGradient::gradient(const Point & inP) const
   Point point(cholesky_ * inP);
   Matrix result(dimension, dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
-  // Second, apply the commmon marginal distribution
+  // Second, apply the common marginal distribution
   for (UnsignedInteger j = 0; j < dimension; ++j)
   {
     Scalar marginalPDF = standardMarginal.computePDF(Point(1, point[j]));

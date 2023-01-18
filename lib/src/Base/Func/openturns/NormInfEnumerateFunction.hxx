@@ -43,7 +43,7 @@ public:
   /** Parameter constructor */
   explicit NormInfEnumerateFunction(const UnsignedInteger dimension = 1);
 
-  /** Virtual constrcutor */
+  /** Virtual constructor */
   NormInfEnumerateFunction * clone() const override;
 
   /** String converter */

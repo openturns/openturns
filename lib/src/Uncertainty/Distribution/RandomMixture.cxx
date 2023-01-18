@@ -441,7 +441,7 @@ String RandomMixture::__str__(const String & offset) const
   // Print marginal by marginal
   for (UnsignedInteger marginal = 0; marginal < dimension_; ++ marginal)
   {
-    // If marginal > 0, alignement
+    // If marginal > 0, alignment
     if (constant_[marginal] != 0.0) oss << constant_[marginal];
     for (UnsignedInteger i = 0; i < size; ++i)
     {
@@ -2925,14 +2925,14 @@ Description RandomMixture::getParameterDescription() const
   return parameterDescription;
 } // getParameterDescription
 
-/* Get a positon indicator for a 1D distribution */
+/* Get a position indicator for a 1D distribution */
 Scalar RandomMixture::getPositionIndicator() const
 {
   if (!isAlreadyComputedPositionIndicator_) computePositionIndicator();
   return positionIndicator_;
 }
 
-/* Compute a positon indicator for a 1D distribution */
+/* Compute a position indicator for a 1D distribution */
 void RandomMixture::computePositionIndicator() const
 {
   if (getDimension() == 1)

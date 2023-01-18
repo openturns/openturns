@@ -201,7 +201,7 @@ Complex WeibullMin::computeCharacteristicFunction(const Scalar x) const
     const Complex term((term4 - term2) / alpha_, sign * (term1 - term3) / alpha_);
     oldNorm = norm;
     norm = std::abs(term);
-    // If the term grows too much, the cancelation will be too large
+    // If the term grows too much, the cancellation will be too large
     if (norm > 1e3) return DistributionImplementation::computeCharacteristicFunction(x);
     value += term;
     increasing = norm > oldNorm;

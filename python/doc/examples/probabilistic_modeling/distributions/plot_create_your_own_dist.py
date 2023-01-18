@@ -31,7 +31,7 @@ Create your own distribution given its quantile function
 # Then :math:`G(U)` is distributed according to the :math:`F` distribution.
 
 # %%
-# First, we import the useful librairies and we create the symbolic function :math:`G`.
+# First, we import the useful libraries and we create the symbolic function :math:`G`.
 
 # %%
 import openturns as ot

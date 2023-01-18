@@ -79,7 +79,7 @@ public:
   void load(Advocate & adv) override;
 
 private:
-  /** Compute the local discrepancy of a sample, given a multidimensionnal interval */
+  /** Compute the local discrepancy of a sample, given a multidimensional interval */
   static Scalar ComputeLocalDiscrepancy(const Sample & sample,
                                         const Interval & interval);
 

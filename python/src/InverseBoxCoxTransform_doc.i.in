@@ -55,7 +55,7 @@ for all :math:`x+\alpha_i >0`.
 Examples
 --------
 
-Create an inverse Box Cox tranformation:
+Create an inverse Box Cox transformation:
 
 >>> import openturns as ot
 >>> myLambda = 0.1

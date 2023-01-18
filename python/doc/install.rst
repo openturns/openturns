@@ -13,7 +13,7 @@ Install x86 binary packages from `PyPI <https://pypi.org/project/openturns/>`_::
 
     pip3 install openturns
 
-For an installation without administrative priviledges the option :code:`--user` can be used.
+For an installation without administrative privileges the option :code:`--user` can be used.
 Note that pip does not install pre-releases unless given the option :code:`--pre`.
 
 Conda
@@ -129,14 +129,14 @@ Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Fedora_36/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.3/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.4/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Mageia_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_36/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.3/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.4/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_8/repodata/repomd.xml.key
 
 The following packages are available:

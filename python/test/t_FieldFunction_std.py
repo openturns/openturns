@@ -2,7 +2,6 @@
 
 import openturns as ot
 
-# Create an intance
 myFunc = ot.FieldFunction()
 
 print("myFunc=", myFunc)

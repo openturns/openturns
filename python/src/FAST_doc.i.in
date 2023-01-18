@@ -78,7 +78,7 @@ of :math:`D` arising from the uncertainty of the :math:`i^{th}` input and
 except the :math:`i^{th}` input.
 
 :math:`N` is the size of the sample using to compute the Fourier series and
-:math:`M` is the interference factor. *Saltelli et al.* (1999) recommanded to
+:math:`M` is the interference factor. *Saltelli et al.* (1999) recommended to
 set :math:`M` to a value in the range :math:`[4, 6]`.
 :math:`\{\omega_i\}, \forall i=1, \dots, n_X` is a set of integer frequencies
 assigned to each input :math:`X^i`. The frequency associated with the input

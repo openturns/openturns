@@ -18,7 +18,7 @@ designPoint : sequence of float
 importanceLevel : float, :math:`0 < \varepsilon < 1`
     Importance level.
 accuracyLevel : float, :math:`\tau > 0`
-    Accuracy level. It is recommanded to take :math:`\tau \leq 4`.
+    Accuracy level. It is recommended to take :math:`\tau \leq 4`.
 confidenceLevel : positive float, :math:`0 < (1-q) < 1`
     Confidence level.
 pointNumber : int, :math:`N > 0`

@@ -49,8 +49,8 @@ Estimate a process-based event probability
 #
 # with :math:`\Phi` the cumulative distribution function of the scalar standard *Normal* distribution.
 #
-# As the proces is discretized on a time grid of size :math:`N` and using the
-# independance property of the white noise between two different time
+# As the process is discretized on a time grid of size :math:`N` and using the
+# independence property of the white noise between two different time
 # stamps and the fact that the white noise follows the same distribution
 # at each time :math:`t`, the final probability :math:`p` writes:
 #

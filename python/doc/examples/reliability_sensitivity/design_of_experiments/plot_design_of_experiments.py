@@ -75,7 +75,7 @@ fig = otv.PlotDesign(sample, bounds)
 fig.set_size_inches(10, 10)
 
 # %%
-# We see that each column or row exactly contains one single point. This shows that a LHS design of experimens has good 1D projection properties, and, hence, is a good candidate for a space filling design.
+# We see that each column or row exactly contains one single point. This shows that a LHS design of experiments has good 1D projection properties, and, hence, is a good candidate for a space filling design.
 
 # %%
 # Optimized LHS

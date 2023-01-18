@@ -20,7 +20,7 @@ The empirical Bernstein copula is a copula based on the Bernstein approximation 
 
 for :math:`\vect{u}\in[0,1]^d`, where :math:`r_j^i=\lceil binNumber U_j^i \rceil`, :math:`binNumber - r_j^i + 1`, :math:`(\vect{U}_i)_{i=1,\dots,N}` is the empirical copula sample associated to *sample* and :math:`I_{a,b}(x)` is the value of the regularized incomplete beta function of parameters :math:`a` and :math:`b` at :math:`x`, see :class:`~openturns.SpecFunc`.
 
-This construction leads to an actual copula if and only if :math:`N` is a multiple of :math:`binNumber`. If it is not the case, the last points of the sample are droped in order to fulfill this condition.
+This construction leads to an actual copula if and only if :math:`N` is a multiple of :math:`binNumber`. If it is not the case, the last points of the sample are dropped in order to fulfill this condition.
 
 See also
 --------

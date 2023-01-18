@@ -277,7 +277,7 @@ def get_regex(filename, patterns, encoding=default_encoding):
     filename : str
         The name of the file to parse
     patterns : list of str
-        Regex patterns that will permit to get the values
+        Regex patterns that will permit one to get the values
         see https://docs.python.org/2/library/re.html for available patterns
         The value to be searched must be surrounded by parenthesis.
     encoding : str

@@ -5,7 +5,6 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 
-# Create an intance
 myFunc = ot.PointToFieldFunction()
 
 print("myFunc=", myFunc)

@@ -1246,7 +1246,7 @@ Scalar Distribution::getCDFEpsilon() const
   return getImplementation()->getCDFEpsilon();
 }
 
-/* Get a positon indicator for a 1D distribution */
+/* Get a position indicator for a 1D distribution */
 Scalar Distribution::getPositionIndicator() const
 {
   return getImplementation()->getPositionIndicator();

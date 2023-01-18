@@ -19,7 +19,6 @@ for index in range(size):
     imagPart = 0.3 * (index + 1.0) / size
     collection[index] = realPart + 1j * imagPart
 
-# Instanciation of FFT class
 myFFT = ot.KissFFT()
 print("myFFT = ", myFFT)
 

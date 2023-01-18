@@ -100,11 +100,11 @@ int main(int, char *[])
     // try
     // {
     //   // We get the tenth element of the ts
-    //   // THIS SHOULD NORMALY FAIL
+    //   // THIS SHOULD NORMALLY FAIL
     //   Point tenthElement = ts1.at(9);
 
     //   // Normally, we should never go here
-    //   throw TestFailed("Exception has NOT been thrown or catched !");
+    //   throw TestFailed("Exception has NOT been thrown or caught !");
 
     // }
     // catch (OutOfBoundException & ex)

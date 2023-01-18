@@ -103,7 +103,7 @@ void ApproximationAlgorithm::run(const DesignProxy & proxy)
   getImplementation()->run(proxy);
 }
 
-/* Acccessor to the coefficients of the selected metamodel on the provided basis */
+/* Accessor to the coefficients of the selected metamodel on the provided basis */
 Point ApproximationAlgorithm::getCoefficients()
 {
   return getImplementation()->getCoefficients();
@@ -114,7 +114,7 @@ Scalar ApproximationAlgorithm::getResidual()
   return getImplementation()->getResidual();
 }
 
-/* Acccessor to the residual of the selected metamodel on the provided basis */
+/* Accessor to the residual of the selected metamodel on the provided basis */
 Scalar ApproximationAlgorithm::getRelativeError()
 {
   return getImplementation()->getRelativeError();

@@ -45,7 +45,7 @@ where only the points :math:`\vect{\xi}_\ell \in \cD` are considered.
 
 We introduce the matrices :math:`\mat{\Theta}=(\mat{\Theta}_{ij})_{1 \leq i \leq L, 1 \leq j \leq P} \in \cM_{Ld, Pd}(\Rset)` such that :math:`\mat{\Theta}_{ij} = \theta_{j}(\vect{\xi}_i)\mat{I}_d`, :math:`\mat{C}_{\ell, \ell'} =  \mat{C}(\vect{\xi}_{\ell},\vect{\xi}_{\ell'})` and :math:`\mat{W}= \mathrm{diag} (\mat{W}_{ii})_{1 \leq i \leq L} \in \cM_{Ld, Ld}(\Rset)` such that :math:`\mat{W}_{ii} = \eta_i \mat{I}_d`.
 
-The normalisation constraint :math:`\|\vect{\varphi}_k\|^2_{L^2(\cD, \Rset^d)}=1` ang the orthogonality of the :math:`\vect{\varphi}_k` in :math:`L^2(\cD, \Rset^d)` leads to:
+The normalisation constraint :math:`\|\vect{\varphi}_k\|^2_{L^2(\cD, \Rset^d)}=1` and the orthogonality of the :math:`\vect{\varphi}_k` in :math:`L^2(\cD, \Rset^d)` leads to:
 
 .. math::
     :label: contNorm

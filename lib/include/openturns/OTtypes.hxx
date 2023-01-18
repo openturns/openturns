@@ -61,7 +61,7 @@ typedef double Scalar;
 typedef std::complex<Scalar> Complex;
 
 /**
- * Type FileName stores file names and pathes
+ * Type FileName stores file names and paths
  */
 typedef std::string FileName;
 

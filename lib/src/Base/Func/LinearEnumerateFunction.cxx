@@ -48,7 +48,7 @@ LinearEnumerateFunction::LinearEnumerateFunction(const UnsignedInteger dimension
 }
 
 
-/* Virtual constrcutor */
+/* Virtual constructor */
 LinearEnumerateFunction * LinearEnumerateFunction::clone() const
 {
   return new LinearEnumerateFunction(*this);

@@ -3,11 +3,15 @@ Manipulate a time series
 ========================
 """
 # %%
-# The objective here is to create and manipulate a time series. A time series is a particular field where the mesh :math:`\mathcal{M}` 1-d and regular, eg a time grid :math:`(t_0, \dots, t_{N-1})`.
+# The objective here is to create and manipulate a time series.
+# A time series is a particular field where the mesh :math:`\mathcal{M}` 1-d and regular, eg a time grid :math:`(t_0, \dots, t_{N-1})`.
 #
 # It is possible to draw a time series, using interpolation between the values: see the use case on the Field.
 #
-# A time series can be obtained as a realization of a multivariate stochastic process  :math:`X: \Omega \times [0,T] \rightarrow \mathbb{R}^d`   of dimension :math:`d` where :math:`[0,T]` is discretized according to the regular grid :math:`(t_0, \dots, t_{N-1})` . The  values :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` of the  time series are defined by:
+# A time series can be obtained as a realization of a multivariate stochastic process
+# :math:`X: \Omega \times [0,T] \rightarrow \mathbb{R}^d` of dimension :math:`d` where :math:`[0,T]`
+# is discretized according to the regular grid :math:`(t_0, \dots, t_{N-1})`.
+# The  values :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` of the  time series are defined by:
 #
 # .. math::
 #    \forall i \in [0, N-1],\quad \underline{x}_i= X(\omega)(t_i)

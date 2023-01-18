@@ -316,7 +316,7 @@ class PythonFunction(Function):
         protected using the `if __name__== '__main__'` idiom.
     copy : bool, optional
         If True, input sample is converted into a Python 2-d sequence before calling
-        func_sample.  Otherwise, it is passed directy to func_sample.
+        func_sample.  Otherwise, it is passed directly to func_sample.
         Default is False.
     functionLinearity : bool, optional
         Indicates if the function is linear.

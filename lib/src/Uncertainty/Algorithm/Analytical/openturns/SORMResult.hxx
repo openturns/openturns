@@ -84,7 +84,7 @@ public:
 
 private:
 
-  /** the function that evaluates the curvatures of the standard limite state fucntion at the standard design point */
+  /** the function that evaluates the curvatures of the standard limit state function at the standard design point */
   void computeSortedCurvatures() const;
 
   /** type of gradients and hessian attributes are due to the constraint : limitStateVariable is scalar only in Open Turns v std */

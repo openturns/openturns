@@ -553,7 +553,7 @@ void EllipticalDistribution::computeMean() const
 void EllipticalDistribution::computeCovariance() const
 {
   // We have to extract the implementation because we know that the result
-  // is a valid covariance matrix, but it cannot be infered by the C++
+  // is a valid covariance matrix, but it cannot be inferred by the C++
   // from the operands
   covariance_ = (covarianceScalingFactor_ * shape_).getImplementation();
   isAlreadyComputedCovariance_ = true;

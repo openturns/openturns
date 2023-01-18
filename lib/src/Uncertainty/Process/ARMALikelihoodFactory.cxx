@@ -551,7 +551,7 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   if (dimension_ == 1)
     return WhittleFactory(currentP_, currentQ_).build(timeSeries);
 
-  // Calling the default initilization if no coefficients have been initialized
+  // Calling the default initialization if no coefficients have been initialized
   if ((!hasInitializedARCoefficients_) || (!hasInitializedMACoefficients_) || (!hasInitializedCovarianceMatrix_))
     defaultInitialize();
 
@@ -709,7 +709,7 @@ void ARMALikelihoodFactory::setInitialARCoefficients(const ARMACoefficients & ph
   hasInitializedARCoefficients_ = true;
 }
 
-/* Run the default initilization of coefficients / covariance for the optimization */
+/* Run the default initialization of coefficients / covariance for the optimization */
 void ARMALikelihoodFactory::defaultInitialize() const
 {
   // Launch d times the WhittleFactory to get initial conditions for the optimization problem

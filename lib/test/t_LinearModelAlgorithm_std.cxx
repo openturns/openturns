@@ -53,7 +53,7 @@ int main(int, char *[])
       fullprint << "Fit y ~ 1 + 0.1 x + 10 x^2 model using 100 points" << std::endl;
       UnsignedInteger size = 100;
       // Define a linespace from 0 to 10 with size points
-      // We use a Box expermient ==> remove 0 & 1 points
+      // We use a Box experiment ==> remove 0 & 1 points
       const Box experiment(Indices(1, size - 2));
       Sample X(experiment.generate());
       // X is defined in [0,1]

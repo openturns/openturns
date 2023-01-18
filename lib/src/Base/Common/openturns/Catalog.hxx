@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Catalog records all the factories into a dictionnary
+ *  @brief Catalog records all the factories into a dictionary
  *
  *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -37,9 +37,9 @@ class PersistentObjectFactory;
 /**
  * @class Catalog
  *
- * @brief %Catalog records all the object's factories into a dictionnary.
+ * @brief %Catalog records all the object's factories into a dictionary.
  *
- * %Catalog implements the 'singleton' strategy to share an unique dictionnary.
+ * %Catalog implements the 'singleton' strategy to share an unique dictionary.
  * The catalog is readonly for common usage but writable only for factories
  * that record themselves within their constructor.
  */
@@ -71,7 +71,7 @@ private:
 
   typedef std::map<String, const PersistentObjectFactory *> CatalogType;
 
-  /** The dictionnary of factories */
+  /** The dictionary of factories */
   CatalogType catalog_;
 
   /** Default constructor is private so Catalog can not be instantiated */

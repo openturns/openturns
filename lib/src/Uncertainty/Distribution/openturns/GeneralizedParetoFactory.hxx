@@ -61,7 +61,7 @@ public:
   /** Algorithm associated with the method of moments */
   GeneralizedPareto buildMethodOfMoments(const Sample & sample) const;
 
-  /** Algoritm associated with the method of exponential regression model */
+  /** Algorithm associated with the method of exponential regression model */
   GeneralizedPareto buildMethodOfExponentialRegression(const Sample & sample) const;
 
   /** Algorithm associated with the method of modified moments */
