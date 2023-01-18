@@ -1,0 +1,50 @@
+%feature("docstring") OT::LatentVariableModel
+"Latent variable covariance function.
+
+Available constructors:
+    LatentVariableModel(*nlevels=2*)
+
+    LatentVariableModel(*latentDim, nlevels*)
+
+Parameters
+----------
+nlevels : int
+    Number of levels :math:`l` characterizing the discrete variable.
+latentDim : int
+	The dimension :math:`d_l` of the latent space onto which the discrete variable levels are projected.
+
+Notes
+-----
+The *Latant variable covariance function* is a covariance model allowing to compute the covariance between different unordered values (or levels) of a discrete variable.
+
+The underlying idea is that each discrete level is mapped onto a distinct point in a :math:`d_l`-dimensional latent space. The covariance between the various levels 
+
+is then computed as the squared exponential covariance between the mappings in the latent space.
+
+The coordinates of the mapping points are part of the covariance model parameters, together with the latent squared exponential model scale and amplitude.
+it is important to note that in order to compensate for possible rotations and translations of the mapping points, the coordinates of the first level mapping
+are fixed to the latent space origin, whereas all of the coordinates of the second level mapping are fixed to :math:`0`, except for the first one. 
+
+As a result, the number of active latent variable coordinates is equal to :math:`d_l * (l - 2) + 1`
+
+
+
+
+See Also
+--------
+CovarianceModel
+
+Examples
+--------
+Create a latent model covariance function with a latent space of dimension 2, for a discrete variable characterized by 3 levels:
+
+>>> import openturns as ot
+>>> covModel = ot.LatentModel(2, 3)
+>>> activeCoordinates = [0.1, 0.3, -0.4]
+>>> covModel.setLatentVariables(activeCoordinates)
+>>> print(covModel(1, 2))
+[[ 0.904837 ]]
+>>> print(covModel(0, 2))
+[[ 0.882497 ]]
+>>> print(covModel(1, 1))
+[[ 1 ]]

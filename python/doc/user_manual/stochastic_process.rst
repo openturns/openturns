@@ -50,6 +50,7 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     SquaredExponential
     TensorizedCovarianceModel
     StationaryFunctionalCovarianceModel
+    LatentVariableModel
 
     :template: classWithPlot.rst_t
     UserDefinedCovarianceModel
@@ -163,7 +164,6 @@ Others
     DiscreteMarkovChain
     RandomWalk
     WhiteNoise
-
 
 Check hypothesis on time series
 ===============================
