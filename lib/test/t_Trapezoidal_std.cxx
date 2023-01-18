@@ -51,6 +51,43 @@ int main(int, char *[])
     coll.add(Trapezoidal(1.0, 1.2, 14.0, 14.0));  // a<>b<>c==d
     coll.add(Trapezoidal(1.0, 1.0, 14.0, 14.0));  // a==b<>c==d
     coll.add(Trapezoidal(1.0, 14.0, 14.0, 14.0)); // a<>b==c==d
+    Point u = {0.1, 0.01, 0.001, 0.0001, 0.00001};
+    Collection< Collection<Complex> > refValues(7);
+    refValues[0].add(Complex(8.1648062395158700174e-01, 4.9558226288439289407e-01));
+    refValues[0].add(Complex(9.9804203188353452648e-01, 5.4755809968087283756e-02));
+    refValues[0].add(Complex(9.9998040760593556200e-01, 5.4810260548082906477e-03));
+    refValues[0].add(Complex(9.9999980407478762063e-01, 5.4810805308158094778e-04));
+    refValues[0].add(Complex(9.9999999804074774903e-01, 5.4810810755784281107e-05));
+    refValues[1].add(Complex(8.1885162171376256180e-01, 4.9039401027722149958e-01));
+    refValues[1].add(Complex(9.9806737813236500099e-01, 5.4167952011195103802e-02));
+    refValues[1].add(Complex(9.9998066123785714894e-01, 5.4221679269201802622e-03));
+    refValues[1].add(Complex(9.9999980661112378576e-01, 5.4222216792666920181e-04));
+    refValues[1].add(Complex(9.9999999806611111238e-01, 5.4222222167926666692e-05));
+    refValues[2].add(Complex(8.2010530024929859062e-01, 4.8858783460852941056e-01));
+    refValues[2].add(Complex(9.9808092313888015117e-01, 5.3946166331792846592e-02));
+    refValues[2].add(Complex(9.9998079679235743119e-01, 5.3999461414513856650e-03));
+    refValues[2].add(Complex(9.9999980796667923579e-01, 5.3999994614120251386e-04));
+    refValues[2].add(Complex(9.9999999807966666792e-01, 5.3999999946141200025e-05));
+    refValues[3].add(Complex(8.2278530264722867394e-01, 4.8270899588142185511e-01));
+    refValues[3].add(Complex(9.9810957048360230445e-01, 5.3280324745167937987e-02));
+    refValues[3].add(Complex(9.9998108345709123351e-01, 5.3332803002475183738e-03));
+    refValues[3].add(Complex(9.9999981083334570917e-01, 5.3333328030000247519e-04));
+    refValues[3].add(Complex(9.9999999810833333457e-01, 5.3333333280300000025e-05));
+    refValues[4].add(Complex(6.7881647967479417697e-01, 6.3873828620489879412e-01));
+    refValues[4].add(Complex(9.9645998689553485985e-01, 7.5374711169201023985e-02));
+    refValues[4].add(Complex(9.9996456548954769714e-01, 7.5497467239641588934e-03));
+    refValues[4].add(Complex(9.9999964565145593167e-01, 7.5498695602548717650e-04));
+    refValues[4].add(Complex(9.9999999645651421536e-01, 7.5498707886258037290e-05));
+    refValues[5].add(Complex(6.8124331795510156027e-01, 6.3464386336752679037e-01));
+    refValues[5].add(Complex(9.9648677930822936181e-01, 7.4876955415600814472e-02));
+    refValues[5].add(Complex(9.9996483367809005780e-01, 7.4998768758044346845e-03));
+    refValues[5].add(Complex(9.9999964833336780917e-01, 7.4999987687500804437e-04));
+    refValues[5].add(Complex(9.9999999648333333678e-01, 7.4999999876875000080e-05));
+    refValues[6].add(Complex(5.3970133326297444660e-01, 7.8657873085363172562e-01));
+    refValues[6].add(Complex(9.9486398813285641918e-01, 9.6473586086033690957e-02));
+    refValues[6].add(Complex(9.9994858389908888208e-01, 9.6664734513613509951e-03));
+    refValues[6].add(Complex(9.9999948583338990916e-01, 9.6666647345001361356e-04));
+    refValues[6].add(Complex(9.9999999485833333899e-01, 9.6666666473450000136e-05));
 
     // Instantiate one distribution object
     for (UnsignedInteger nTrapezoidal = 0; nTrapezoidal < coll.getSize(); ++nTrapezoidal)
@@ -112,6 +149,8 @@ int main(int, char *[])
       fullprint << "characteristic function=" << CF << std::endl;
       Complex LCF = distribution.computeLogCharacteristicFunction( point[0] );
       fullprint << "log characteristic function=" << LCF << std::endl;
+      for (UnsignedInteger j = 0; j < refValues[nTrapezoidal].getSize(); ++j)
+        assert_almost_equal(distribution.computeCharacteristicFunction(u[j]), refValues[nTrapezoidal][j]);
       try
       {
         Point PDFgr = distribution.computePDFGradient( point );

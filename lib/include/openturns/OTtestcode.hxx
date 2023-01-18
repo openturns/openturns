@@ -307,6 +307,17 @@ inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rto
   }
 }
 
+inline void assert_almost_equal(const Complex & a, const Complex & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  if (!SpecFunc::IsNormal(a.real()) || !SpecFunc::IsNormal(b.real()) ||
+      !SpecFunc::IsNormal(a.imag()) || !SpecFunc::IsNormal(b.imag()))
+    throw TestFailed(OSS() << "Value a: " << a << " or b: " << b << " are invalid " << errMsg);
+  if (std::abs(a - b) > atol + rtol * std::abs(b))
+  {
+    throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);
+  }
+}
+
 inline void assert_almost_equal(const Indices &a, const Indices &b, const String errMsg = "")
 {
   if (a.getSize() != b.getSize())
