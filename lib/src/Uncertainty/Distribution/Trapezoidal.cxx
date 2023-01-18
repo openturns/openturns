@@ -168,8 +168,18 @@ Complex Trapezoidal::computeCharacteristicFunction(const Scalar u) const
   Scalar real = 0.0;
   Scalar imag = 0.0;
   Complex phi;
-
-  if (std::abs(u) <= 1.0e-10) phi = Complex((-a_ + 3.0 * b_ - 3.0 * c_ + d_) * h_ / 2.0, 1.0);
+  const Scalar u2 = u * u;
+  const Scalar u3 = u2 * u;
+  const Scalar u4 = u2 * u2;
+  const Scalar a2 = a_ * a_;
+  const Scalar a3 = a2 * a_;
+  const Scalar a4 = a2 * a2;
+  const Scalar c2 = c_ * c_;
+  const Scalar c3 = c2 * c_;
+  const Scalar c4 = c2 * c2;
+  // Use an even power to check if the series can be used
+  const Scalar factor = h_ * ((d_ + c_) * (c2 + d_ * (c_ + d_)) * (c2 + d_ * (d_ - c_)) - (b_ + a_) * (a2 + b_ * (a_ + b_)) * (a2 + b_ * (b_ - a_))) * u4 / 720.0;
+  if (std::abs(factor) < SpecFunc::ScalarEpsilon) phi = Complex(1.0 + ((a_ + b_) * (a2 + b_ * b_) - (c_ + d_) * (c2 + d_ * d_)) * h_ * u2 / 24.0 + factor, (c2 + d_ * (c_ + d_) - (a2 + b_ * (a_ + b_))) * h_ * u / 6.0 + (a4 + b_ * (a3 + b_ * (a2 + b_ * (a_ + b_))) - (c4 + d_ * (c3 + d_ * (c2 + d_ * (c_ + d_))))) * h_ * u3 / 120.0);
   else
   {
     if (a_ < b_)

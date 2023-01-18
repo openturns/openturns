@@ -1309,7 +1309,6 @@ Scalar RandomMixture::computePDF(const Point & point) const
   for (UnsignedInteger k = 0; k < dimension_; ++k) two_pi_on_h[k] = 2.0 * M_PI / referenceBandwidth_[k];
   UnsignedInteger levelMax = 0;
   Scalar value = computeEquivalentNormalPDFSum(point, two_pi_on_h, 0, levelMax);
-
   UnsignedInteger k = 1;
   const Scalar precision = pdfPrecision_;
   const UnsignedInteger kmin = 1 << blockMin_;
@@ -2368,9 +2367,6 @@ Scalar RandomMixture::computeCDF(const Point & point) const
 
   // Here we call computeProbability with a ]-inf, x] interval
   Scalar cdf = computeProbability(Interval(Point(1, lowerBound), point, getRange().getFiniteLowerBound(), Interval::BoolCollection(1, true)));
-  if (cdf < 0.5) return cdf;
-  // and if the cdf value is less than 1/2, it was better to use the complementary CDF
-  cdf = 1.0 - computeProbability(Interval(point, Point(1, upperBound), Interval::BoolCollection(1, true), getRange().getFiniteUpperBound()));
   return cdf;
 }
 
@@ -2441,16 +2437,14 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" )))
   {
     pdfPrecision_ = std::pow(SpecFunc::ScalarEpsilon, 2.0 / (3.0 * dimension_));
-    const UnsignedInteger n1 = ResourceMap::GetAsUnsignedInteger("RandomMixture-MarginalIntegrationNodesNumber");
-    const UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("RandomMixture-MaximumIntegrationNodesNumber");
-    const UnsignedInteger n2 = static_cast<UnsignedInteger>(round(std::pow(N, 1.0 / dimension_)));
-    const UnsignedInteger marginalSize = SpecFunc::NextPowerOfTwo(std::min(n1, n2));
-    setIntegrationNodesNumber(marginalSize);
-    if (isContinuous()) return computeProbabilityContinuous(interval);
+    Scalar probability;
+    // Generic implementation for continuous distributions
+    if (isContinuous()) probability = computeProbabilityContinuous(interval);
     // Generic implementation for discrete distributions
-    if (isDiscrete())   return computeProbabilityDiscrete(interval);
+    else if (isDiscrete()) probability = computeProbabilityDiscrete(interval);
     // Generic implementation for general distributions
-    return computeProbabilityGeneral(interval);
+    else probability = computeProbabilityGeneral(interval);
+    return probability;
   }
   // Special case for combination containing only one contributor
   if (isAnalytical_ && (dimension_ == 1))
@@ -2465,8 +2459,8 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   const Interval clippedInterval(getRange().intersect(interval));
   // Quick return if there is no mass in the clipped interval
   if (clippedInterval.isEmpty()) return 0.0;
-  const Bool finiteLowerBound = clippedInterval.getFiniteLowerBound()[0] == 1;
-  const Bool finiteUpperBound = clippedInterval.getFiniteUpperBound()[0] == 1;
+  const Bool finiteLowerBound = clippedInterval.getFiniteLowerBound()[0];
+  const Bool finiteUpperBound = clippedInterval.getFiniteUpperBound()[0];
   // Quick return for integral over the whole real line
   if (!finiteLowerBound && !finiteUpperBound) return 1.0;
   const Scalar lowerBound = clippedInterval.getLowerBound()[0];
@@ -2613,11 +2607,17 @@ Complex RandomMixture::computeLogCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 0.0;
   Complex logCfValue(0.0, constant_[0] * x);
+  OSS oss(true);
+  oss.setPrecision(20);
   const UnsignedInteger size = distributionCollection_.getSize();
   const Scalar smallScalar = 0.5 * std::log(SpecFunc::MinScalar);
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    logCfValue += distributionCollection_[i].computeLogCharacteristicFunction(weights_(0, i) * x);
+    const Scalar u = weights_(0, i) * x;
+    const Complex logCFI = distributionCollection_[i].computeLogCharacteristicFunction(u);
+    logCfValue += logCFI;
+    OSS oss2(true);
+    oss2.setPrecision(20);
     // Early exit for null value
     if (logCfValue.real() < smallScalar) break;
   } /* end for */
@@ -2665,7 +2665,6 @@ Complex RandomMixture::computeDeltaCharacteristicFunction(const UnsignedInteger 
     Complex value;
     if (std::abs(deltaLog) < 1.0e-5) value = std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
     else value = std::exp(logCF) - std::exp(logNormalCF);
-    LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << std::exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << std::exp(logNormalCF) << ", value=" << value);
     return value;
   }
   // Here, the index has not been computed so far, fill-in the gap
@@ -2680,7 +2679,6 @@ Complex RandomMixture::computeDeltaCharacteristicFunction(const UnsignedInteger 
       Complex value;
       if (std::abs(deltaLog) < 1.0e-5) value = std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
       else value = std::exp(logCF) - std::exp(logNormalCF);
-      LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << std::exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << std::exp(logNormalCF) << ", value=" << value);
       characteristicValuesCache_.add(value);
     }
     storedSize_ = index;
@@ -2718,7 +2716,6 @@ void RandomMixture::updateCacheDeltaCharacteristicFunction(const Sample & points
     Complex value;
     if (std::abs(deltaLog) < 1.0e-5) value = std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
     else value = std::exp(logCF) - std::exp(logNormalCF);
-    LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << std::exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << std::exp(logNormalCF) << ", value=" << value);
     characteristicValuesCache_.add(value);
     ++storedSize_;
   }

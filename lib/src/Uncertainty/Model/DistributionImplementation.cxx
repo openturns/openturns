@@ -839,7 +839,6 @@ Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar pr
     rightTau = 1.0;
     rightSurvival = 0.0;
   }
-  LOGDEBUG(OSS() << "DistributionImplementation::computeInverseSurvivalFunction: dimension=" << dimension_ << ", prob=" << prob << ", leftTau=" << leftTau << ", leftSurvival=" << leftSurvival << ", rightTau=" << rightTau << ", rightSurvival=" << rightSurvival);
   // Use Brent's method to compute the quantile efficiently for continuous distributions
   const Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   marginalProb = solver.solve(f, prob, leftTau, rightTau, leftSurvival, rightSurvival);
@@ -1457,7 +1456,6 @@ Sample DistributionImplementation::computeDDF(const Sample & inSample) const
 /* Get the PDF of the distribution */
 Sample DistributionImplementation::computePDFSequential(const Sample & inSample) const
 {
-  LOGDEBUG("In DistributionImplementation::computePDFSequential(const Sample & inSample)");
   const UnsignedInteger size = inSample.getSize();
   SampleImplementation outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) outSample(i, 0) = computePDF(inSample[i]);
@@ -1488,7 +1486,6 @@ struct ComputePDFPolicy
 
 Sample DistributionImplementation::computePDFParallel(const Sample & inSample) const
 {
-  LOGDEBUG("In DistributionImplementation::computePDFParallel(const Sample & inSample)");
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
@@ -5148,7 +5145,6 @@ Distribution DistributionImplementation::ln() const
 
 Distribution DistributionImplementation::pow(const Scalar exponent) const
 {
-  LOGDEBUG(OSS() << "Scalar exponent=" << exponent);
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   // First, the case where the exponent is integer
   if (trunc(exponent) == exponent) return pow(static_cast< SignedInteger >(trunc(exponent)));
@@ -5168,7 +5164,6 @@ Distribution DistributionImplementation::pow(const Scalar exponent) const
 
 Distribution DistributionImplementation::pow(const SignedInteger exponent) const
 {
-  LOGDEBUG(OSS() << "Signed integer exponent=" << exponent);
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   if (exponent == 0) return new Dirac(Point(1, 1.0));
   if (exponent == 1) return *this;
@@ -5184,7 +5179,6 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     const Scalar b = range_.getUpperBound()[0];
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
-    LOGDEBUG(OSS() << "a=" << a << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // Easy case: b <= 0
@@ -5195,7 +5189,6 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
   {
     bounds.add(b);
     values.add(b == 0.0 ? (exponent < 0.0 ? std::pow(computeScalarQuantile(quantileEpsilon_, true), 1.0 * exponent) : 0.0) : std::pow(b, 1.0 * exponent));
-    LOGDEBUG(OSS() << "b=" << b << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // Difficult case: a < 0 < b
@@ -5207,7 +5200,6 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     {
       bounds.add(b);
       values.add(std::pow(b, 1.0 * exponent));
-      LOGDEBUG(OSS() << "odd exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
       return new CompositeDistribution(toPower, clone(), bounds, values);
     }
     // A singularity at 0 for negative exponent
@@ -5217,7 +5209,6 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     values.add(SpecFunc::MaxScalar);
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
-    LOGDEBUG(OSS() << "odd exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // For even exponent, the behaviour changes at 0
@@ -5225,7 +5216,6 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
   values.add(exponent > 0 ? 0.0 : SpecFunc::MaxScalar);
   bounds.add(b);
   values.add(std::pow(b, 1.0 * exponent));
-  LOGDEBUG(OSS() << "even exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
   return new CompositeDistribution(toPower, clone(), bounds, values);
 }
 

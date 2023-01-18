@@ -202,6 +202,7 @@ Complex Uniform::computeCharacteristicFunction(const Scalar x) const
   else
   {
     const Scalar idenom = 1.0 / (bx - ax);
+    // (i/((b-a)*u)*(exp(i*a*u)-exp(i*b*u))=(i/((b-a)*u)*(exp(i*(a+b)*u/2)*(exp(i*(a-b)/2*u)-exp(i*b*u))
     result = Complex(idenom * (std::sin(bx) - std::sin(ax)), idenom * (std::cos(ax) - std::cos(bx)));
   }
   return result;
