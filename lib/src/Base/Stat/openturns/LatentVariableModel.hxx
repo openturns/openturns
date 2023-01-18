@@ -49,7 +49,7 @@ public:
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::computeAsScalar;
-  Scalar computeAsScalar(const Point & z1, const Point & z2) const;
+  Scalar computeAsScalar(const Point & z1, const Point & z2) const override;
 #ifndef SWIG
   Scalar computeAsScalar(const Collection<Scalar>::const_iterator & z1_begin,
                          const Collection<Scalar>::const_iterator & z2_begin) const override;
@@ -97,29 +97,26 @@ public:
 
 private:
 
-  // The latent variable coordinates parameter
-  Sample fullLatentVariables_;
-
-  // The active latent variable coordinates parameter
-  Point activeLatentVariables_;
-
-  // The latent dimension parameter
-  UnsignedInteger latentDimension_;
+  // The latent dimension
+  UnsignedInteger latent_dim_;
 
   // The number of levels
   UnsignedInteger n_levels_;
 
-  // The size of the latent variable parameter
-  UnsignedInteger activeLatentCoordinateDim_;
-
-  // The latent dimension
-  UnsignedInteger latent_dim_;
+  // The latent covariance matrix
+  CovarianceMatrix latCovMat_;
 
   // The latent covariance model
   SquaredExponential latCovMod_;
 
-  // The latent covariance matrix
-  CovarianceMatrix latCovMat_;
+  // The size of the latent variable parameter
+  UnsignedInteger activeLatentCoordinateDim_;
+
+  // The active latent variable coordinates parameter
+  Point activeLatentVariables_;
+
+  // The latent variable coordinates parameter
+  Sample fullLatentVariables_;
 
   /** Covariance matrix update */
   void updateLatentCovarianceMatrix();

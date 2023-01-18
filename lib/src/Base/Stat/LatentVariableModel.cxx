@@ -33,9 +33,9 @@ static const Factory<LatentVariableModel> Factory_LatentVariableModel;
 LatentVariableModel::LatentVariableModel(const UnsignedInteger n_levels)
   : CovarianceModelImplementation(Point(1, 1.0), Point(1, 1.0))
   , latent_dim_(2)
-  , latCovMod_(latent_dim_)
   , n_levels_(n_levels)
   , latCovMat_(n_levels_)
+  , latCovMod_(latent_dim_)
 {
   activeLatentCoordinateDim_ = 1 + latent_dim_ * (n_levels_ - 2);
   activeLatentVariables_ = Point(activeLatentCoordinateDim_, 0.0);
@@ -50,9 +50,9 @@ LatentVariableModel::LatentVariableModel(const UnsignedInteger latent_dim,
 						 const UnsignedInteger n_levels)
   : CovarianceModelImplementation(Point(1, 1.0), Point(1, 1.0))
   , latent_dim_(latent_dim)
-  , latCovMod_(latent_dim_)
   , n_levels_(n_levels)
   , latCovMat_(n_levels_)
+  , latCovMod_(latent_dim_)
 {
   activeLatentCoordinateDim_ = 1 + latent_dim_ * (n_levels_ - 2);
   activeLatentVariables_ = Point(activeLatentCoordinateDim_,0.);
