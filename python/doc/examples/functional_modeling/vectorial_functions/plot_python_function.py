@@ -53,7 +53,10 @@ function.gradient(x)
 # When this function is used internally to evaluate a Sample, it loops over its points.  This requires many memory allocations; moreover this loop is done in Python, it may thus be slow if Sample is large.
 # We can define a function to operate on a Sample, and return a Sample.
 #
-# For maximum performance, argument is in fact not a Sample, but a wrapper object which contains a pointer to data.  When using Numpy arrays without copies and loops, performance is similar to C code, but Python definition is somewhat convoluted; please refer to Numpy documentation to learn how to efficiently define such functions.
+# For maximum performance, argument is in fact not a Sample, but a wrapper
+# object which contains a pointer to data.  When using Numpy arrays without
+# copies and loops, performance is similar to C code, but Python definition
+# is somewhat convoluted; please refer to Numpy documentation to learn how to efficiently define such functions.
 
 # %%
 # define the same function on a Sample

@@ -11,8 +11,11 @@ import pylab as pl
 # Abstract
 # --------
 #
-# Gaussian processes are a common fixture in UQ and in OpenTURNS. They are defined by their covariance function and OpenTURNS implements several of them. In this example we should depict covariance functions and play with parameters for two families of models : the generalized exponential model and the
-# Matern models.
+# Gaussian processes are a common fixture in UQ.
+# They are defined by their covariance function and the library implements several of them.
+# In this example we should depict covariance functions and play with parameters
+# for two families of models: the generalized exponential model and the Matern models.
+#
 # For visualization sake we should limit ourselves to the dimension 1.
 dimension = 1
 

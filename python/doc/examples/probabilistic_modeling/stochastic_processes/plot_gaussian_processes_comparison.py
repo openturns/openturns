@@ -5,7 +5,9 @@ Compare covariance models
 # %%
 # The main goal of this example is to briefly review the most important covariance models and compare them in terms of regularity.
 #
-# We first show how to define a covariance model, a temporal grid and a gaussian process. We first consider the squared exponential covariance model and show how the trajectories are sensitive to its parameters. We show how to define a trend. In the final section, we compare the trajectories from exponential and Matérn covariance models.
+# We first show how to define a covariance model, a temporal grid and a gaussian process.
+# We first consider the squared exponential covariance model and show how the trajectories are sensitive to its parameters.
+# We show how to define a trend. In the final section, we compare the trajectories from exponential and Matérn covariance models.
 
 # %%
 # References

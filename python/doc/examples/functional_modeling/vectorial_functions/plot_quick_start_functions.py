@@ -145,8 +145,11 @@ print(empiricalSd)
 # The vectorized Python function
 # ------------------------------
 #
-# The `PythonFunction` class has a `func_sample` option which vectorizes the computation so that all the output values in the sample are computed from a single function call, without any `for` loop. To make this possible, the input and output is then a `Sample` instead of a `Point`. This often boosts performance (but not always).
-#
+# The `PythonFunction` class has a `func_sample` option which vectorizes the
+# computation so that all the output values in the sample are computed from a
+# single function call, without any `for` loop.
+# To make this possible, the input and output is then a `Sample` instead of a `Point`.
+# This often boosts performance (but not always).
 
 # %%
 # The calling sequence of a vectorized Python function is:

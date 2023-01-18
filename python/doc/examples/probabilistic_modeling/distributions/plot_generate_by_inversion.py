@@ -103,7 +103,10 @@ ot.Log.Show(ot.Log.NONE)
 
 
 # %%
-# The following function defines the quantile function of the `WeibullMin` distribution. (Of course, we could use the `computeQuantile` method of the `WeibullMin` class as well. This would create a simpler, but less interesting example: this is a trade off that we accept in order to better understand the algorithm.)
+# The following function defines the quantile function of the `WeibullMin` distribution.
+# (Of course, we could use the `computeQuantile` method of the `WeibullMin` class as well.
+# This would create a simpler, but less interesting example: this is a trade off
+# that we accept in order to better understand the algorithm.)
 
 # %%
 def weibullQ(argument):

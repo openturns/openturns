@@ -5,7 +5,7 @@ set -e
 # pip install flake8 
 # TODO: reduce max line length
 
-PATH=~/.local/bin/:$PATH flake8 python/ --ignore=W503 --max-line-length=350
+PATH=~/.local/bin/:$PATH flake8 python/ --ignore=W503 --max-line-length=300
 
 # check for windows line endings
 ! find python lib -type f | xargs file | grep CRLF

@@ -223,7 +223,10 @@ thetaStar = calibrationResult.getParameterMAP()
 print(thetaStar)
 
 # %%
-# In this case, we see that there seems to be a great distance from the reference value of :math:`\theta` to the optimum: the values seem too large in magnitude. The value of the optimum :math:`K_s` is nonpositive. In fact, there is an identification problem because the Jacobian matrix is rank-degenerate.
+# In this case, we see that there seems to be a great distance from the
+# reference value of :math:`\theta` to the optimum: the values seem too large in magnitude.
+# The value of the optimum :math:`K_s` is nonpositive.
+# In fact, there is an identification problem because the Jacobian matrix is rank-degenerate.
 
 # %%
 # Diagnostic of the identification issue
@@ -328,7 +331,9 @@ print(thetaMAP)
 # %%
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
 #
-# This confidence interval is based on bootstrap, based on a sample size equal to 100 (as long as the value of the `ResourceMap` key "NonLinearLeastSquaresCalibration-BootstrapSize" is unchanged). This confidence interval reflects the sensitivity of the optimum to the variability in the observations.
+# This confidence interval is based on bootstrap, based on a sample size equal
+# to 100 (as long as the value of the `ResourceMap` key "NonLinearLeastSquaresCalibration-BootstrapSize" is unchanged).
+# This confidence interval reflects the sensitivity of the optimum to the variability in the observations.
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
@@ -454,7 +459,10 @@ graph.setLegendPosition("topleft")
 view = viewer.View(graph)
 
 # %%
-# We see that the distribution of the residual is not centered on zero: the mean residual is approximately :math:`-0.5`, which implies that the predictions are, on average, smaller than the observations. This is a proof that the calibration cannot be performed with this method in this particular case.
+# We see that the distribution of the residual is not centered on zero: the
+# mean residual is approximately :math:`-0.5`, which implies that the
+# predictions are, on average, smaller than the observations.
+# This is a proof that the calibration cannot be performed with this method in this particular case.
 
 # %%
 # The `getParameterPosterior` method returns the posterior normal distribution of :math:`\theta`.

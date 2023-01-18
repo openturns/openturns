@@ -442,5 +442,6 @@ graph4 = globHSIC.drawPValuesPermutation()
 view4 = otv.View(graph4)
 
 # %%
-#
-# The HSIC indices go in the same way as the other estimators in terms the most influent variables. The variables :math:`W_{fw}, q, l, W_p` seem to be independent to the output as the corresponding p-values are high. We can also see that the asymptotic p-values and p-values estimated by permutation are quite similar.
+# The HSIC indices go in the same way as the other estimators in terms the most influent variables.
+# The variables :math:`W_{fw}, q, l, W_p` seem to be independent to the output as the corresponding p-values are high.
+# We can also see that the asymptotic p-values and p-values estimated by permutation are quite similar.

@@ -47,14 +47,19 @@ view = viewer.View(graph)
 
 
 # %%
-# The following function computes the log-likelihood of a `TruncatedNormal` which mean and standard deviations are given as input arguments. The lower and upper bounds of the distribution are computed as minimum and maximum of the sample.
+# The following function computes the log-likelihood of a `TruncatedNormal`
+# which mean and standard deviations are given as input arguments.
+# The lower and upper bounds of the distribution are computed as minimum and maximum of the sample.
 
 # %%
 # Define the log-likelihood function
 # ----------------------------------
 
 # %%
-# The following function evaluates the log-likelihood function given a point :math:`X=(\mu,\sigma`). In order to evaluate the likelihood on the sample, we use a trick: we evaluate the `computeMean` method on the log-PDF sample, then multiply by the sample size. This is much faster than using a `for` loop.
+# The following function evaluates the log-likelihood function given a point :math:`X=(\mu,\sigma`).
+# In order to evaluate the likelihood on the sample, we use a trick: we evaluate
+# the `computeMean` method on the log-PDF sample, then multiply by the sample size.
+# This is much faster than using a `for` loop.
 
 # %%
 def logLikelihood(X):
@@ -156,7 +161,11 @@ view = viewer.View(graphFineTune)
 # -----------------------
 
 # %%
-# The previous contour plot is fine, but lacks of colors. It is not obvious that the colors make the plot clearer given that the values in the contour plot are so different: some adjacent contours have close levels, while others are very different. Anyway, it is obviously nicer to get a colored graphics.
+# The previous contour plot is fine, but lacks of colors.
+# It is not obvious that the colors make the plot clearer given that the values
+# in the contour plot are so different: some adjacent contours have close
+# levels, while others are very different.
+# Anyway, it is obviously nicer to get a colored graphics.
 #
 # The following script first creates a palette of colors with the `BuildDefaultPalette` class.
 # Before doing so, we configure the `Drawable-DefaultPalettePhase` `ResourceMap` key so

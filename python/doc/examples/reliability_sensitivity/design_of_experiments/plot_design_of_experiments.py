@@ -130,7 +130,9 @@ fig = otv.PlotDesign(sample, bounds, subdivisions)
 fig.set_size_inches(6, 6)
 
 # %%
-# We have elementary intervals in 2 dimensions, each having a volume equal to 1/8. Since there are 32 points, the Sobol' sequence is so that each elementary interval contains exactly 32/8 = 4 points. Notice that each elementary interval is closed on the left (or bottom) and open on the right (or top).
+# We have elementary intervals in 2 dimensions, each having a volume equal to 1/8.
+# Since there are 32 points, the Sobol' sequence is so that each elementary interval contains exactly 32/8 = 4 points.
+# Notice that each elementary interval is closed on the left (or bottom) and open on the right (or top).
 
 # %%
 # Halton low discrepancy sequence
@@ -159,4 +161,6 @@ fig = otv.PlotDesign(sample, bounds, subdivisions)
 fig.set_size_inches(6, 6)
 
 # %%
-# We have elementary intervals in 2 dimensions, each having a volume equal to 1/12. Since there are 36 points, the Halton sequence is so that each elementary interval contains exactly 36/12 = 3 points. Notice that each elementary interval is closed on the left (or bottom) and open on the right (or top).
+# We have elementary intervals in 2 dimensions, each having a volume equal to 1/12.
+# Since there are 36 points, the Halton sequence is so that each elementary interval contains exactly 36/12 = 3 points.
+# Notice that each elementary interval is closed on the left (or bottom) and open on the right (or top).

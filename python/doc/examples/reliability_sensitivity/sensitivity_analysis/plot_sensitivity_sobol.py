@@ -136,10 +136,17 @@ graph = sensitivityAnalysis.draw()
 view = viewer.View(graph)
 
 # %%
-# - We see that the variable :math:`X_1`, with a total Sobol' index close to 0.6, is the most significant variable, taking into account both its direct effect and its interactions with other variables. Its first order index is close to 0.3, which implies that its interactions alone produce almost 30% (0.6 - 0.3) of the total variance.
-# - The variable :math:`X_2` has the highest first order index: approximately 0.4. However, it has little interaction with other variables since its total order indice is close to its first order index.
-# - The variable :math:`X_3` has a first order index close to zero. However, it has an impact to the total variance thanks to its interactions with :math:`X_1`.
-# - We see that the variability of the estimates is quite high even with a relatively large sample size. Moreover, since the exact first order Sobol' index for :math:`X_3` is zero, its estimate has a 50% chance of being nonpositive.
+# - We see that the variable :math:`X_1`, with a total Sobol' index close
+#   to 0.6, is the most significant variable, taking into account both its direct
+#   effect and its interactions with other variables.
+#   Its first order index is close to 0.3, which implies that its interactions
+#   alone produce almost 30% (0.6 - 0.3) of the total variance.
+# - The variable :math:`X_2` has the highest first order index: approximately 0.4.
+#   However, it has little interaction with other variables since its total order indice is close to its first order index.
+# - The variable :math:`X_3` has a first order index close to zero.
+#   However, it has an impact to the total variance thanks to its interactions with :math:`X_1`.
+# - We see that the variability of the estimates is quite high even with a relatively large sample size.
+#   Moreover, since the exact first order Sobol' index for :math:`X_3` is zero, its estimate has a 50% chance of being nonpositive.
 
 # %%
 # Estimate the second order indices

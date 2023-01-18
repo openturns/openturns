@@ -7,19 +7,29 @@ Use the post-analytical importance sampling algorithm
 #
 #   - perform an FORM or SORM study in order to find the design point,
 #
-#   - perform an importance sampling study centered around the design point: the importance distribution operates in the standard space and is the standard distribution of the standard space (the standard elliptical distribution in the case of an elliptic copula of the input random vector, the standard normal one in all the other cases).
+#   - perform an importance sampling study centered around the design point:
+#     the importance distribution operates in the standard space and is the
+#     standard distribution of the standard space (the standard elliptical
+#     distribution in the case of an elliptic copula of the input random vector,
+#     the standard normal one in all the other cases).
 #
 # The importance sampling technique in the standard space may be of two kinds:
 #
-#   - the sample is generated according to the new importance distribution: this technique is called post analytical importance sampling,
+#   - the sample is generated according to the new importance distribution:
+#     this technique is called post analytical importance sampling,
 #
-#   - the sample is generated according to the new importance distribution and is controlled by the value of the linearized limit state function: this technique is called post analytical controlled importance sampling.
+#   - the sample is generated according to the new importance distribution and
+#     is controlled by the value of the linearized limit state function:
+#     this technique is called post analytical controlled importance sampling.
 #
 # This post analytical importance sampling algorithm is created from the result structure of a FORM or SORM algorithm.
 #
 # It is parameterized like other simulation algorithm, through the parameters OuterSampling, BlockSize, ... and provide the same type of results.
 #
-# Let us note that the post FORM/SORM importance sampling method may be implemented thanks to the ImportanceSampling object, where the importance distribution is defined in the standard space: then, it requires that the event initially defined in the pysical space be transformed in the standard space.
+# Let us note that the post FORM/SORM importance sampling method may be
+# implemented thanks to the ImportanceSampling object, where the importance
+# distribution is defined in the standard space: then, it requires that the
+# event initially defined in the pysical space be transformed in the standard space.
 #
 # The controlled importance sampling technique is only accessible within the post analytical context.
 
