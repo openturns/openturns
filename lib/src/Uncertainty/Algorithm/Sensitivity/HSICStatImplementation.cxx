@@ -1,7 +1,8 @@
 
 //                                               -*- C++ -*-
 /**
- * @brief HSICStatImplementation implements the HSIC sensivity index for one marginal.
+ * @brief HSICStatImplementation implements the HSIC sensivity index for
+ *        one marginal.
  *
  *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -43,9 +44,9 @@ HSICStatImplementation * HSICStatImplementation::clone() const
 }
 
 /* Compute the HSIC index for one marginal*/
-Scalar HSICStatImplementation::computeHSICIndex(const CovarianceMatrix&,
-    const CovarianceMatrix&,
-    const SquareMatrix&) const
+Scalar HSICStatImplementation::computeHSICIndex(const CovarianceMatrix &,
+    const CovarianceMatrix &,
+    const SquareMatrix &) const
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class such as HSICUStat or HSICVStat.";
 }
@@ -57,7 +58,7 @@ Bool HSICStatImplementation::isCompatibleWithConditionalAnalysis() const
 }
 
 /* Compute the asymptotic p-value */
-Scalar HSICStatImplementation::computePValue(const Gamma&,
+Scalar HSICStatImplementation::computePValue(const Gamma &,
     const UnsignedInteger,
     const Scalar,
     const Scalar) const

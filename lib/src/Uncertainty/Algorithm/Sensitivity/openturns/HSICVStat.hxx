@@ -41,10 +41,15 @@ public:
   HSICVStat* clone() const override;
 
   /** Compute the HSIC index for one marginal*/
-  Scalar computeHSICIndex(const CovarianceMatrix & CovMat1, const CovarianceMatrix & CovMat2, const SquareMatrix & weightMatrix) const override;
+  Scalar computeHSICIndex(const CovarianceMatrix & CovMat1,
+                          const CovarianceMatrix & CovMat2,
+                          const SquareMatrix & weightMatrix) const override;
 
   /** Compute the asymptotic p-value */
-  Scalar computePValue(const Gamma &dist, const UnsignedInteger n, const Scalar HSIC_obs, const Scalar mHSIC) const override;
+  Scalar computePValue(const Gamma & distribution,
+                       const UnsignedInteger n,
+                       const Scalar HSICObs,
+                       const Scalar mHSIC) const override;
 
   /** Is compatible with a Conditional HSIC Estimator ? */
   Bool isCompatibleWithConditionalAnalysis() const override;

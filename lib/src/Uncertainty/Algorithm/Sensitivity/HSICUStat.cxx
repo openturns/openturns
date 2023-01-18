@@ -39,8 +39,8 @@ HSICUStat* HSICUStat::clone() const
 }
 
 /* Compute the HSIC index for one marginal*/
-Scalar HSICUStat::computeHSICIndex(const CovarianceMatrix & CovMat1,
-                                   const CovarianceMatrix & CovMat2,
+Scalar HSICUStat::computeHSICIndex(const CovarianceMatrix & covarianceMatrix1,
+                                   const CovarianceMatrix & covarianceMatrix2,
                                    const SquareMatrix & weightMatrix) const
 {
 
@@ -49,18 +49,18 @@ Scalar HSICUStat::computeHSICIndex(const CovarianceMatrix & CovMat1,
 
   const Point nullDiag(n);
   
-  CovarianceMatrix CovMat1cp(CovMat1);
-  CovarianceMatrix CovMat2cp(CovMat2);
-  CovMat1cp.setDiagonal(nullDiag, 0);
-  CovMat2cp.setDiagonal(nullDiag, 0);
+  CovarianceMatrix covarianceMatrix1Copy(covarianceMatrix1);
+  CovarianceMatrix covarianceMatrix2Copy(covarianceMatrix2);
+  covarianceMatrix1Copy.setDiagonal(nullDiag, 0);
+  covarianceMatrix2Copy.setDiagonal(nullDiag, 0);
 
 
-  const SquareMatrix Kv(CovMat1cp * CovMat2cp);
+  const SquareMatrix Kv(covarianceMatrix1Copy * covarianceMatrix2Copy);
 
   const Scalar trace = Kv.computeTrace();
   const Scalar sumKv = Kv.computeSumElements();
-  const Scalar sumCov1 = CovMat1cp.computeSumElements();
-  const Scalar SumCov2 = CovMat2cp.computeSumElements();
+  const Scalar sumCov1 = covarianceMatrix1Copy.computeSumElements();
+  const Scalar SumCov2 = covarianceMatrix2Copy.computeSumElements();
 
   hsic = trace - 2 * sumKv / (n - 2) + sumCov1 * SumCov2 / (n - 1) / (n - 2);
   hsic /= n * (n - 3);

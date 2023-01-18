@@ -349,6 +349,8 @@ void HSICEstimatorImplementation::computePValuesPermutationParallel() const
                                       result);
   
   TBBImplementation::ParallelFor( 0, permutationSize_, policy );
+  // Here we want to divide the sum by (size+1) instead of size, so we multiply the mean by
+  // size/(size+1)=1-1/(size+1)
   PValuesPermutation_ = result.computeMean() * (1.0 - 1.0 / (permutationSize_ + 1.0));
   isAlreadyComputedPValuesPermutation_ = true;
 }
