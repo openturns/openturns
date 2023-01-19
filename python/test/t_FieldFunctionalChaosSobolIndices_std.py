@@ -81,8 +81,8 @@ sobol_0 = sensitivity.getFirstOrderIndices()
 sobol_0t = sensitivity.getTotalOrderIndices()
 print(f"first order={sobol_0}")
 print(f"total order={sobol_0t}")
-ott.assert_almost_equal(sobol_0, [0.0671066, 0.43925, 0.0946414, 0.278936])
-ott.assert_almost_equal(sobol_0t, [0.0907787, 0.463361, 0.191124, 0.374894])
+ott.assert_almost_equal(sobol_0, [0.0673166,0.439809,0.0946051,0.278286])
+ott.assert_almost_equal(sobol_0t, [0.0908364,0.463752,0.191125,0.374326])
 graph = sensitivity.draw()
 # ot.Show(graph)
 
@@ -90,7 +90,7 @@ sobol2 = dict(
     [((j, i), sensitivity.getSobolIndex([i, j])) for i in range(4) for j in range(i)]
 )
 print(sobol2)
-ott.assert_almost_equal(sobol2[(0, 1)], 0.529936)
+ott.assert_almost_equal(sobol2[(0, 1)], 0.530589)
 
 # rerun with block indices
 blockIndices = [[0], [1], [2, 3]]
@@ -104,7 +104,7 @@ sobol_0 = sensitivity.getFirstOrderIndices()
 sobol_0t = sensitivity.getTotalOrderIndices()
 print(f"first order={sobol_0}")
 print(f"total order={sobol_0t}")
-ott.assert_almost_equal(sobol_0, [0.0662528, 0.434932, 0.474861])
-ott.assert_almost_equal(sobol_0t, [0.0897672, 0.458886, 0.475398])
+ott.assert_almost_equal(sobol_0, [0.06653,0.434889,0.474891])
+ott.assert_almost_equal(sobol_0t, [0.0897988,0.458579,0.475371])
 graph = sensitivity.draw()
 # ot.Show(graph)

@@ -81,7 +81,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
   if (!(sampleSize > 0)) throw InvalidArgumentException( HERE ) << "Output sample cannot be empty.";
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
-//   if (x.getDimension() != psi.getDimension()) throw InvalidArgumentException( HERE ) << "Sample dimension (" << x.getDimension() << ") does not match basis dimension (" << psi.getDimension() << ").";
+  //   if (x.getDimension() != psi.getDimension()) throw InvalidArgumentException( HERE ) << "Sample dimension (" << x.getDimension() << ") does not match basis dimension (" << psi.getDimension() << ").";
 
   // get y as as point
   const Point mY(y.getImplementation()->getData());
@@ -107,21 +107,28 @@ void LARS::updateBasis(LeastSquaresMethod & method,
   if (iterations == 0) inPredictors_ = Indices(basisSize, 0);
   if ((iterations < maximumNumberOfIterations) && (relativeConvergence_ > maximumRelativeConvergence_))
   {
-    // find the predictor most correlated with the current residual
-    const Point cC(mPsiX_.getImplementation()->genVectProd(mY - mu_, true));
     UnsignedInteger candidatePredictor = 0;
+    // find the predictor most correlated with the current residual only after
+    // the constant function has been introduced
+    const Point cC(mPsiX_.getImplementation()->genVectProd(mY - mu_, true));
     Scalar cMax = -1.0;
-    for (UnsignedInteger j = 0; j < basisSize; ++ j)
-      if (!inPredictors_[j])
-      {
-        const Scalar cAbs = std::abs(cC[j]);
-        if (cAbs > cMax)
+    if (iterations == 0)
+    {
+      cMax = std::abs(cC[0]);
+    }
+    else
+    {
+      for (UnsignedInteger j = 0; j < basisSize; ++ j)
+        if (!inPredictors_[j])
         {
-          cMax = cAbs;
-          candidatePredictor = j;
-        }
-      } // if
-
+          const Scalar cAbs = std::abs(cC[j]);
+          if (cAbs > cMax)
+          {
+            cMax = cAbs;
+            candidatePredictor = j;
+          }
+        } // if
+    }
     if (getVerbose()) LOGINFO(OSS() << "predictor=" << candidatePredictor << " residual=" << cMax);
 
     // add the predictor index
