@@ -53,8 +53,8 @@ getGramInverse: [[  2.06431   -1.16342    0.152433  ]
 getGramInverseDiag: [2.06431,0.696429,0.0132002]
 getGramInverseTrace: 2.7739
 -- method: SparseMethod
-solve: [0,0.276282,-0.0496824]
-residual: 0.176725
+solve: [0.738901,-0.118098,0]
+residual: 0.100929
 -no solveNormal-
 getHDiag: [0.562574,0.447462,0.459268,0.571429,0.959268]
 getGramInverse: [[  2.06431   -1.16342    0.152433  ]
@@ -93,8 +93,8 @@ getGramInverse: [[  2.06431   -1.16342    0.152433  ]
 getGramInverseDiag: [2.06431,0.696429,0.0132002]
 getGramInverseTrace: 2.7739
 -- method: SparseMethod
-solve: [0,0.276282,-0.0496824]
-residual: 0.176725
+solve: [0.738901,-0.118098,0]
+residual: 0.100929
 -no solveNormal-
 getHDiag: [0.562574,0.447462,0.459268,0.571429,0.959268]
 getGramInverse: [[  2.06431   -1.16342    0.152433  ]

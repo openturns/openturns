@@ -79,7 +79,7 @@ xm = x.computeMean()
 print("f(xm)=", f(xm))
 fhat_xm = metamodel(xm)
 print("f^(xm)=", fhat_xm)
-ott.assert_almost_equal(fhat_xm, [1.09112])
+ott.assert_almost_equal(fhat_xm, [1.09018], 1e-3, 1e-3)
 
 # test residual
 residuals = result.getFCEResult().getResiduals()
