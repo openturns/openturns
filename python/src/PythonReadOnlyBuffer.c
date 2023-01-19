@@ -140,9 +140,9 @@ dim_repr(Py_ssize_t* dims, int size)
 
   if (s)
   {
-    ptr += sprintf(s, "%ld", (long)dims[0]);
+    ptr += snprintf(s, 18, "%ld", (long)dims[0]);
     for(i = 1; i < size; ++i)
-      ptr += sprintf(ptr, ",%ld", (long)dims[i]);
+      ptr += snprintf(ptr, 18, ",%ld", (long)dims[i]);
   }
   return s;
 }
@@ -156,7 +156,7 @@ Buffer_repr(Buffer * self)
 
   if (s)
   {
-    sprintf(s, "<read-only buffer at %p shape=(%s)>", self->bufferview.data, r);
+    snprintf(s, 100, "<read-only buffer at %p shape=(%s)>", self->bufferview.data, r);
     free(r);
 
     result = PyUnicode_DecodeUTF8(s, (Py_ssize_t) strlen(s), "surrogateescape");

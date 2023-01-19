@@ -914,7 +914,7 @@ Example: error handling
       if(n < MIN || n > MAX) {
         char msg[BUFSIZ];
         // automatic allocation for the processing
-        sprintf (msg,
+        snprintf (msg, BUFSIZ,
         "n = %d is out of range, valid range is [%d, %d]",
         n, MIN, MAX);
         throw Exception(msg);
