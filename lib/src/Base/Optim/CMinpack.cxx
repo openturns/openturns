@@ -452,7 +452,7 @@ void CMinpack::run()
       relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
       residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
     }
-    result.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
+    result.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
   }
 
   result.setEvaluationNumber(size);

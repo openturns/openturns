@@ -320,12 +320,9 @@ public:
     lastInput_ = xPoint;
     lastOutput_ = fxPoint;
 
-    optimizationResult_.store(lastInput_,
-                              lastOutput_,
-                              absoluteError,
-                              relativeError,
-                              residualError,
-                              constraintError);
+    optimizationResult_.store(lastInput_, lastOutput_,
+                              absoluteError, relativeError, residualError, constraintError,
+                              dlibAlgorithm_.getMaximumConstraintError());
 
     if (!stopSearch) optimizationResult_.setIterationNumber(optimizationResult_.getIterationNumber() + 1);
 

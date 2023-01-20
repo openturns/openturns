@@ -23,7 +23,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/NearestNeighbourAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,7 +34,6 @@ static const Factory<Cobyla> Factory_Cobyla;
 Cobyla::Cobyla()
   : OptimizationAlgorithmImplementation()
   , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
-  , ignoreFailure_(false)
 {
   // Nothing to do
 }
@@ -43,7 +41,6 @@ Cobyla::Cobyla()
 Cobyla::Cobyla(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
-  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -52,7 +49,6 @@ Cobyla::Cobyla(const OptimizationProblem & problem,
                const Scalar rhoBeg)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(rhoBeg)
-  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -190,15 +186,8 @@ void Cobyla::run()
       relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
       residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
     }
-    result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
+    result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
   }
-
-  UnsignedInteger optimalIndex = evaluationInputHistory_.find(x);
-  // x might not be exactly the best point evaluated, so fallback to the nearest
-  if (optimalIndex >= size)
-    optimalIndex = NearestNeighbourAlgorithm(evaluationInputHistory_).query(x);
-  result_.setOptimalPoint(evaluationInputHistory_[optimalIndex]);
-  result_.setOptimalValue(evaluationOutputHistory_[optimalIndex]);
 
   result_.setEvaluationNumber(maxFun);
 }
