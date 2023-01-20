@@ -1,6 +1,6 @@
 """
 Kriging: metamodel with continuous and categorical variables
-==============================================
+============================================================
 """
 # %%
 # We consider here the surrogate modeling of a bending function characterized by continuous and categorical variables
