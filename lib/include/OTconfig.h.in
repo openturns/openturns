@@ -54,9 +54,6 @@
 /* Define to 1 if you have the <libgen.h> header file. */
 #cmakedefine OPENTURNS_HAVE_LIBGEN_H
 
-/* Define if you have LAPACK library. */
-#cmakedefine OPENTURNS_HAVE_LAPACK
-
 /* Support for regular expression library */
 #cmakedefine OPENTURNS_HAVE_LIBXML2
 
