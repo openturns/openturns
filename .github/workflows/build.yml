@@ -27,7 +27,7 @@ jobs:
         -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison \
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
-        -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function -Wno-missing-field-initializers -Wno-deprecated-declarations" \
+        -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function -Wno-deprecated-declarations" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
         make install -j3
         make tests -j3
