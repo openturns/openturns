@@ -47,4 +47,4 @@ Create a latent model covariance function with a latent space of dimension 2, fo
 >>> print(covModel(0, 2))
 [[ 0.882497 ]]
 >>> print(covModel(1, 1))
-[[ 1 ]]
+[[ 1 ]]"
