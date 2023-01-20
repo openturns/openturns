@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2022 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,6 +37,7 @@ LatentVariableModel::LatentVariableModel(const UnsignedInteger n_levels)
   , latCovMat_(n_levels_)
   , latCovMod_(latent_dim_)
 {
+  if (n_levels_ < 2) throw InvalidArgumentException(HERE) << "Error: the number of discrete levels must be >= 2";
   activeLatentCoordinateDim_ = 1 + latent_dim_ * (n_levels_ - 2);
   activeLatentVariables_ = Point(activeLatentCoordinateDim_, 0.0);
   fullLatentVariables_ = Sample(n_levels_,latent_dim_);
@@ -54,6 +55,8 @@ LatentVariableModel::LatentVariableModel(const UnsignedInteger latent_dim,
   , latCovMat_(n_levels_)
   , latCovMod_(latent_dim_)
 {
+  if (latent_dim_ < 2) throw InvalidArgumentException(HERE) << "Error: the dimension of the latent space must be >= 2";
+  if (n_levels_ < 2) throw InvalidArgumentException(HERE) << "Error: the number of discrete levels must be >= 2";
   activeLatentCoordinateDim_ = 1 + latent_dim_ * (n_levels_ - 2);
   activeLatentVariables_ = Point(activeLatentCoordinateDim_,0.);
   fullLatentVariables_ = Sample(n_levels_,latent_dim_);
@@ -77,12 +80,20 @@ Scalar LatentVariableModel::computeAsScalar(const Scalar z1, const Scalar z2) co
 
   for (UnsignedInteger i = 0; i < n_levels_; ++i)
   {
-    if (z1 == i) isLevelz1 = true;
+    if (z1 == i) 
+    {
+      isLevelz1 = true;
+      break;
+    }
   }
 
   for (UnsignedInteger i = 0; i < n_levels_; ++i)
   {
-    if (z2 == i) isLevelz2 = true;
+    if (z2 == i)
+    {
+      isLevelz2 = true;
+      break;
+    }
   }
 
   if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values are not amongst the known levels";

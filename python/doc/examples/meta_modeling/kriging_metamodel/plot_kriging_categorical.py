@@ -87,7 +87,7 @@ kopt = kopt.getCollection()[-1]
 kopt = kopt.getImplementation()
 a = kopt.getFullLatentVariables()
 plt.figure()
-plt.plot(a[:, 0], a[:, 1], ' * ')
+plt.plot(a[:, 0], a[:, 1], '*')
 for i in range(lvls):
     plt.annotate(str(i + 1), ((a[i, 0], a[i, 1])))
 plt.ylim(-0.5, 0.5)
