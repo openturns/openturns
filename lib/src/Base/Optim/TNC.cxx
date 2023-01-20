@@ -48,8 +48,6 @@ TNC::TNC()
   , accuracy_(ResourceMap::GetAsScalar("TNC-DefaultAccuracy"))
   , fmin_(ResourceMap::GetAsScalar("TNC-DefaultFmin"))
   , rescale_(ResourceMap::GetAsScalar("TNC-DefaultRescale"))
-  , p_nfeval_(0)
-  , ignoreFailure_(false)
 {
   // Nothing to do
 }
@@ -63,8 +61,6 @@ TNC::TNC(const OptimizationProblem & problem)
   , accuracy_(ResourceMap::GetAsScalar("TNC-DefaultAccuracy"))
   , fmin_(ResourceMap::GetAsScalar("TNC-DefaultFmin"))
   , rescale_(ResourceMap::GetAsScalar("TNC-DefaultRescale"))
-  , p_nfeval_(0)
-  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -88,8 +84,6 @@ TNC::TNC (const OptimizationProblem & problem,
   , accuracy_(accuracy)
   , fmin_(fmin)
   , rescale_(rescale)
-  , p_nfeval_(0)
-  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -257,10 +251,9 @@ void TNC::run()
         constraintError = std::max(constraintError, inP[j] - up[j]);
       }
     } // for j
-    result_.store(inP, Point(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
+    result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
   } // for i
 
-  /* Store the result */
   result_.setEvaluationNumber(size);
   result_.setOptimalPoint(x);
   const Scalar sign = getProblem().isMinimization() ? 1.0 : -1.0;

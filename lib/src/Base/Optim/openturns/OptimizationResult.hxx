@@ -121,7 +121,7 @@ public:
              const Scalar absoluteError,
              const Scalar relativeError,
              const Scalar residualError,
-             const Scalar constraintError);
+             const Scalar constraintError, const Scalar maximumConstraintError = 0.0);
 
   /** Draw error history graph */
   Graph drawErrorHistory() const;

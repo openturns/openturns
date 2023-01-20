@@ -131,10 +131,10 @@ private:
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
 
-  void * p_nfeval_;
+  void * p_nfeval_ = nullptr;
 
   /** Whether to ignore failure return codes */
-  Bool ignoreFailure_;
+  Bool ignoreFailure_ = false;
 
 }; /* class TNC */
 

@@ -233,7 +233,7 @@ void Bonmin::run()
                       absoluteError,
                       relativeError,
                       residualError,
-                      constraintError);
+                      constraintError, getMaximumConstraintError());
   }
 
   // Optimum is not the last call to objective function
