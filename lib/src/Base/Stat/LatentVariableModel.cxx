@@ -368,16 +368,18 @@ Graph LatentVariableModel::draw(const UnsignedInteger rowIndex,
   // Check if the model is stationary and if we want to draw it this way
   
   // Dummy line in order to use all inputs
-  if (asStationary && correlationFlag) Scalar dummyVariable = zMin+zMax;  
+  Scalar dummyVariable = 0.; 
+  if (asStationary && correlationFlag) dummyVariable = zMin+zMax;  
 
   Graph graph("Covariance values", "x", "x", true, "topright");
   graph.setIntegerXTick(true);
   graph.setIntegerYTick(true);
   Drawable drawable = Drawable();
   Description palette = drawable.BuildDefaultPalette(int(n_levels_*(n_levels_-1)/2)+1);
+  Sample data = Sample(4,2);
+  data(0,0) = dummyVariable;
   for (UnsignedInteger i = 0; i < n_levels_; ++i)
   {
-    Sample data = Sample(4,2);
     data(0,0) = i;
     data(0,1) = i;
     data(1,0) = i;
@@ -404,7 +406,6 @@ Graph LatentVariableModel::draw(const UnsignedInteger rowIndex,
   {
     for (UnsignedInteger j = i+1; j < n_levels_; ++j)
     {
-	  Sample data = Sample(4,2);
       data(0,0) = i;
       data(0,1) = j;
       data(1,0) = i;
