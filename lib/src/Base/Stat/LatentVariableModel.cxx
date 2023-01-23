@@ -360,12 +360,17 @@ Graph LatentVariableModel::draw(const UnsignedInteger rowIndex,
     const Bool asStationary,
     const Bool correlationFlag) const
 {
+ // This method relies on useless parameters, this needs to be changed ASAP
   if (inputDimension_ != 1) throw NotDefinedException(HERE) << "Error: can draw covariance models only if input dimension=1, here input dimension=" << inputDimension_;
   if (!(rowIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
   if (!(columnIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
   if (!(pointNumber >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;
   // Check if the model is stationary and if we want to draw it this way
-  Graph graph(getName(), "x", "x", true, "topright");
+  
+  // Dummy line in order to use all inputs
+  if (asStationary && correlationFlag) Scalar dummyVariable = zMin+zMax;  
+
+  Graph graph("Covariance values", "x", "x", true, "topright");
   graph.setIntegerXTick(true);
   graph.setIntegerYTick(true);
   Drawable drawable = Drawable();
