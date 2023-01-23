@@ -58,7 +58,7 @@ LatentVariableModel::LatentVariableModel(const UnsignedInteger latent_dim,
   , latCovMat_(n_levels_)
   , latCovMod_(latent_dim_)
 {
-  if (latent_dim_ < 2) throw InvalidArgumentException(HERE) << "Error: the dimension of the latent space must be >= 2";
+  if (latent_dim_ < 1) throw InvalidArgumentException(HERE) << "Error: the dimension of the latent space must be >= 1";
   if (n_levels_ < 2) throw InvalidArgumentException(HERE) << "Error: the number of discrete levels must be >= 2";
   activeLatentCoordinateDim_ = 1 + latent_dim_ * (n_levels_ - 2);
   activeLatentVariables_ = Point(activeLatentCoordinateDim_,0.);
@@ -126,14 +126,20 @@ Scalar LatentVariableModel::computeAsScalar(const Collection<Scalar>::const_iter
 
   for (UnsignedInteger i = 0; i < n_levels_; ++i)
   {
-    if (*z1_it == i) isLevelz1 = true;
-    break;
+    if (*z1_it == i)
+    {
+      isLevelz1 = true;
+      break;
+    }
   }
 
   for (UnsignedInteger i = 0; i < n_levels_; ++i)
   {
-    if (*z2_it == i) isLevelz2 = true;
-    break;
+    if (*z2_it == i)
+    {
+      isLevelz2 = true;
+      break;
+    }
   }
 
   if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values are not amongst the known levels";
