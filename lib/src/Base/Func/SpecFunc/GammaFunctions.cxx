@@ -85,10 +85,11 @@ Scalar RegularizedIncompleteGammaInverse(const Scalar a,
     throw InvalidArgumentException(HERE) << ex.what();
   }
 #else
-  const Scalar y = 0.5 + (0.5 - x);
+  const Scalar xC = std::max(x, 1e-80);
+  const Scalar y = 0.5 + (0.5 - xC);
   Scalar xr = -1.0;
-  SignedInteger ierr;
-  invincgam(a, (tail ? y : x), (tail ? x : y), xr, ierr);
+  SignedInteger ierr = 0;
+  invincgam(a, (tail ? y : xC), (tail ? xC : y), xr, ierr);
   if (ierr == -1) LOGWARN(OSS() << "cannot compute the RegularizedIncompleteGammaInverse function to full precision for a=" << a << ", x=" << x << ", tail=" << tail << " because of an overflow.");
   if (ierr == -2) LOGWARN(OSS() << "up to 15 Newton iterations have been made to compute the RegularizedIncompleteGammaInverse function for a=" << a << ", x=" << x << ", tail=" << tail << ". The accuracy may be reduced.");
   return xr;

@@ -172,9 +172,9 @@ Scalar KPermutationsDistribution::computeCDF(const Point & point) const
 Scalar KPermutationsDistribution::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  const UnsignedInteger i = static_cast< UnsignedInteger >(ceil(prob * (n_ - 1.0)));
+  const UnsignedInteger i = static_cast< UnsignedInteger >(ceil(SpecFunc::Clip01(prob) * (n_ - 1.0)));
   return (tail ? n_ - 1.0 - i : i);
-} // computeScalarQuantile
+}
 
 /* Compute the quantile of the KPermutationsDistribution distribution */
 Point KPermutationsDistribution::computeQuantile(const Scalar prob,
