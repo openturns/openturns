@@ -109,25 +109,7 @@ Scalar LatentVariableModel::computeAsScalar(const Scalar z1, const Scalar z2) co
 
 Scalar LatentVariableModel::computeAsScalar(const Point & z1, const Point & z2) const
 {
-  /*check z being one of the levels*/
-  bool isLevelz1 = false;
-  bool isLevelz2 = false;
-
-  for (UnsignedInteger i = 0; i < n_levels_; ++i)
-  {
-    if (z1[0] == i) isLevelz1 = true;
-  }
-
-  for (UnsignedInteger i = 0; i < n_levels_; ++i)
-  {
-    if (z2[0] == i) isLevelz2 = true;
-  }
-
-  if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values are not among the known levels";
-
-  Scalar cov = latCovMat_(z1[0],z2[0]);
-
-  return cov;
+  return computeAsScalar(z1[0],z2[0]);
 }
 
 
@@ -145,11 +127,13 @@ Scalar LatentVariableModel::computeAsScalar(const Collection<Scalar>::const_iter
   for (UnsignedInteger i = 0; i < n_levels_; ++i)
   {
     if (*z1_it == i) isLevelz1 = true;
+    break;
   }
 
   for (UnsignedInteger i = 0; i < n_levels_; ++i)
   {
     if (*z2_it == i) isLevelz2 = true;
+    break;
   }
 
   if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values are not amongst the known levels";
@@ -263,10 +247,8 @@ void LatentVariableModel::setLatentVariables(const Point & latentVariablesCoordi
 
   // Set the full sample of latent coordinates
   // Fix the coordinates of the first two latent variables
-  fullLatentVariables_[0] = Point(latent_dim_,0.);
-  Point levelMapping = Point(latent_dim_,0.);
-  levelMapping[0] = latentVariablesCoordinates[0];
-  fullLatentVariables_[1] = levelMapping;
+  fullLatentVariables_ = Sample(n_levels_, Point(latent_dim_,0.));
+  fullLatentVariables_(1,0) = latentVariablesCoordinates[0];
 
   UnsignedInteger count = 1;
   // Fix the coordinates of the remaining latent variables
@@ -274,14 +256,11 @@ void LatentVariableModel::setLatentVariables(const Point & latentVariablesCoordi
   {
     for (UnsignedInteger j = 0; j < latent_dim_; ++j)
     {
-      levelMapping[j] = latentVariablesCoordinates[count];
+      fullLatentVariables_(i,j) = latentVariablesCoordinates[count];
       count++;
     }
-    fullLatentVariables_[i] = levelMapping;
   }
-
   updateLatentCovarianceMatrix();
-
 }
 
 void LatentVariableModel::updateLatentCovarianceMatrix()
