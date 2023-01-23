@@ -21,6 +21,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Polygon.hxx"
+#include "openturns/Text.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,6 +46,7 @@ LatentVariableModel::LatentVariableModel(const UnsignedInteger n_levels)
   Indices activeParameter = Indices(inputDimension_ + outputDimension_ + activeLatentCoordinateDim_);
   activeParameter.fill();
   setActiveParameter(activeParameter);
+  updateLatentCovarianceMatrix();
 }
 
 /** Parameters constructor */
@@ -63,6 +66,7 @@ LatentVariableModel::LatentVariableModel(const UnsignedInteger latent_dim,
   Indices activeParameter = Indices(inputDimension_ + outputDimension_ + activeLatentCoordinateDim_);
   activeParameter.fill();
   setActiveParameter(activeParameter);
+  updateLatentCovarianceMatrix();
 }
 
 /* Virtual constructor */
@@ -345,6 +349,81 @@ void LatentVariableModel::setNuggetFactor(const Scalar nuggetFactor)
   latCovMod_.setNuggetFactor(nuggetFactor_);
   nuggetFactor_ = nuggetFactor;
   updateLatentCovarianceMatrix();
+}
+
+/* Drawing method */
+Graph LatentVariableModel::draw(const UnsignedInteger rowIndex,
+    const UnsignedInteger columnIndex,
+    const Scalar zMin,
+    const Scalar zMax,
+    const UnsignedInteger pointNumber,
+    const Bool asStationary,
+    const Bool correlationFlag) const
+{
+  if (inputDimension_ != 1) throw NotDefinedException(HERE) << "Error: can draw covariance models only if input dimension=1, here input dimension=" << inputDimension_;
+  if (!(rowIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
+  if (!(columnIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
+  if (!(pointNumber >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;
+  // Check if the model is stationary and if we want to draw it this way
+  Graph graph(getName(), "x", "x", true, "topright");
+  graph.setIntegerXTick(true);
+  graph.setIntegerYTick(true);
+  Drawable drawable = Drawable();
+  Description palette = drawable.BuildDefaultPalette(int(n_levels_*(n_levels_-1)/2)+1);
+  for (UnsignedInteger i = 0; i < n_levels_; ++i)
+  {
+    Sample data = Sample(4,2);
+    data(0,0) = i;
+    data(0,1) = i;
+    data(1,0) = i;
+    data(1,1) = i+1;
+    data(2,0) = i+1;
+    data(2,1) = i+1;
+    data(3,0) = i+1;
+    data(3,1) = i;
+    Polygon polygon = Polygon(data);
+    polygon.setColor(palette[0]);
+    graph.add(polygon);
+    Collection<String> description;
+	String string = "cov = " + std::to_string(latCovMat_(i,i));
+    description.add(string);
+    Point locPoint(2);
+    locPoint[0] = i+0.5;
+    locPoint[1] = i+0.5;
+    Sample location = Sample(1, locPoint);
+    Text text = Text(location, description);
+    graph.add(text);
+  }
+  UnsignedInteger counter = 1;
+  for (UnsignedInteger i = 0; i < n_levels_; ++i)
+  {
+    for (UnsignedInteger j = i+1; j < n_levels_; ++j)
+    {
+	  Sample data = Sample(4,2);
+      data(0,0) = i;
+      data(0,1) = j;
+      data(1,0) = i;
+      data(1,1) = j+1;
+      data(2,0) = i+1;
+      data(2,1) = j+1;
+      data(3,0) = i+1;
+      data(3,1) = j;
+	  Polygon polygon = Polygon(data);
+      polygon.setColor(palette[counter]);
+	  graph.add(polygon);
+      Collection<String> description;
+   	  String string = "cov = " + std::to_string(latCovMat_(i,j));
+      description.add(string);
+      Point locPoint(2);
+      locPoint[0] = i+0.5;
+      locPoint[1] = j+0.5;
+      Sample location = Sample(1, locPoint);
+	  Text text = Text(location, description);
+      graph.add(text);
+      counter++;
+    }
+  }
+  return graph;
 }
 
 /* Method save() stores the object through the StorageManager */
