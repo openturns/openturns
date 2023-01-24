@@ -217,6 +217,8 @@ void TNC::run()
     else
       throw InternalException(HERE) << "Solving problem by TNC method failed (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
   }
+  if (!evaluationInputHistory_.getSize())
+    throw InternalException(HERE) << "TNC error at starting point x=" << x << " (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
 }
