@@ -124,7 +124,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
 
   const UnsignedInteger dimension = 2;// optimize (mu, sigma)
   Point parametersLowerBound(dimension, SpecFunc::LowestScalar);
-  parametersLowerBound[1] = ResourceMap::GetAsScalar( "TruncatedNormalFactory-SigmaLowerBound");
+  parametersLowerBound[1] = ResourceMap::GetAsScalar("TruncatedNormalFactory-SigmaLowerBound");
   Interval::BoolCollection parametersLowerFlags(dimension, false);
   parametersLowerFlags[1] = true;
   const Point startingPoint = {normalizedSample.computeMean()[0], normalizedSample.computeStandardDeviation()[0]};
@@ -161,6 +161,11 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   scaledParameters[3] += oneEps / alpha;// b
 
   TruncatedNormal result(buildAsTruncatedNormal(scaledParameters));
+
+  // abort if distribution is not valid
+  if (!SpecFunc::IsNormal(result.getMean()[0]))
+    throw InvalidArgumentException(HERE) << "Likelihood-optimized TruncatedNormal is not valid";
+
   result.setDescription(sample.getDescription());
   return result;
 }
