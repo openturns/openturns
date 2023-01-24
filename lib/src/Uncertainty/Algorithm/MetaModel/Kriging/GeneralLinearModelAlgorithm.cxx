@@ -209,7 +209,14 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
     if (isScaleActive)
     {
       const Point inputSampleRange(inputSample_.getMax() - inputSample_.getMin());
-      for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k) upperBound[k] = inputSampleRange[k] * scaleFactor;
+      for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k)
+      {
+	upperBound[k] = inputSampleRange[k] * scaleFactor;
+	if (upperBound[k] < lowerBound[k])
+	{
+	  upperBound[k] += lowerBound[k];
+	}
+      }
     }
     LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
 
