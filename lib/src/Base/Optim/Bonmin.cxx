@@ -175,79 +175,10 @@ void Bonmin::run()
   Bab solver;
   solver(app);
 
-  // Retrieve input/output history
-  Sample inputHistory(tminlp->getInputHistory());
-  Sample outputHistory(tminlp->getOutputHistory());
-
-  // Create OptimizationResult, initialize error values
-  OptimizationResult optimResult(getProblem());
-  Scalar absoluteError = -1.0;
-  Scalar relativeError = -1.0;
-  Scalar residualError = -1.0;
-  Scalar constraintError = -1.0;
-
-  /* Populate OptimizationResult from history */
-
-  for (UnsignedInteger i = 0; i < inputHistory.getSize(); ++ i)
-  {
-    const Point inP(inputHistory[i]);
-    const Point outP(outputHistory[i]);
-    constraintError = 0.0;
-
-    // Constraint error on bounds
-    if (getProblem().hasBounds())
-    {
-      Interval bounds(getProblem().getBounds());
-      for (UnsignedInteger j = 0; j < getProblem().getDimension(); ++ j)
-      {
-        if (bounds.getFiniteLowerBound()[j])
-          constraintError = std::max(constraintError, bounds.getLowerBound()[j] - inP[j]);
-        if (bounds.getFiniteUpperBound()[j])
-          constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
-      }
-    }
-
-    // Constraint error on equality constraints
-    if (getProblem().hasEqualityConstraint())
-    {
-      const Point g(getProblem().getEqualityConstraint()(inP));
-      constraintError = std::max(constraintError, g.normInf());
-    }
-
-    // Constraint error on inequality constraints
-    if (getProblem().hasInequalityConstraint())
-    {
-      Point h(getProblem().getInequalityConstraint()(inP));
-      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
-      {
-        h[k] = std::min(h[k], 0.0); // convention h(x)>=0 <=> admissibility
-      }
-      constraintError = std::max(constraintError, h.normInf());
-    }
-
-    // Computing errors, storing into OptimizationResult
-    if (i > 0)
-    {
-      const Point inPM(inputHistory[i - 1]);
-      const Point outPM(outputHistory[i - 1]);
-      absoluteError = (inP - inPM).normInf();
-      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
-      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
-    }
-
-    optimResult.store(inP,
-                      outP,
-                      absoluteError,
-                      relativeError,
-                      residualError,
-                      constraintError, getMaximumConstraintError());
-  }
-
-  // Optimum is not the last call to objective function
-  optimResult.setOptimalPoint(tminlp->getOptimalPoint());
-  optimResult.setOptimalValue(tminlp->getOptimalValue());
-
-  setResult(optimResult);
+  const Sample inputHistory(tminlp->getInputHistory());
+  setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
+                                 getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
+                                 getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
   String allOptions;
   app.options()->PrintList(allOptions);

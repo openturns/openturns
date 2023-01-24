@@ -208,6 +208,7 @@ void TNC::run()
    */
 
   int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
+  p_nfeval_ = nullptr;
 
   if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
   {
@@ -216,48 +217,8 @@ void TNC::run()
     else
       throw InternalException(HERE) << "Solving problem by TNC method failed (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
   }
-  p_nfeval_ = 0;
 
-  // Update the result
-  result_ = OptimizationResult(getProblem());
-  const UnsignedInteger size = evaluationInputHistory_.getSize();
-
-  Scalar absoluteError = -1.0;
-  Scalar relativeError = -1.0;
-  Scalar residualError = -1.0;
-  Scalar constraintError = -1.0;
-
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    const Point inP(evaluationInputHistory_[i]);
-    const Point outP(evaluationOutputHistory_[i]);
-    if (i > 0)
-    {
-      const Point inPM(evaluationInputHistory_[i - 1]);
-      const Point outPM(evaluationOutputHistory_[i - 1]);
-      absoluteError = (inP - inPM).normInf();
-      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
-      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
-    }
-    constraintError = 0.0;
-    for (UnsignedInteger j = 0; j < dimension; ++ j)
-    {
-      if (finiteLow[j] && (inP[j] < low[j]))
-      {
-        constraintError = std::max(constraintError, low[j] - inP[j]);
-      }
-      if (finiteUp[j] && (up[j] < inP[j]))
-      {
-        constraintError = std::max(constraintError, inP[j] - up[j]);
-      }
-    } // for j
-    result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
-  } // for i
-
-  result_.setEvaluationNumber(size);
-  result_.setOptimalPoint(x);
-  const Scalar sign = getProblem().isMinimization() ? 1.0 : -1.0;
-  result_.setOptimalValue(Point(1, sign * f));
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
 }
 
 /* Scale accessor */
@@ -411,7 +372,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   Point outP;
   try
   {
-    for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
       if (!SpecFunc::IsNormal(inP[i]))
         throw InvalidArgumentException(HERE) << "TNC got a nan input value";
 

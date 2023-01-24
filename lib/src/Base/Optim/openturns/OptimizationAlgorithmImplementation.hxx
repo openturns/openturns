@@ -132,6 +132,10 @@ protected:
   std::pair< ProgressCallback, void *> progressCallback_;
   std::pair< StopCallback, void *> stopCallback_;
 
+  // set the result from evaluation history
+  void setResultFromEvaluationHistory(const Sample & inputHistory, const Sample & outputHistory,
+                                      const Sample & inequalityHistory = Sample(), const Sample & equalityHistory = Sample());
+
 private:
   Point startingPoint_;
   OptimizationProblem problem_;

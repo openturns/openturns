@@ -21,6 +21,7 @@
 
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -197,7 +198,9 @@ void OptimizationAlgorithmImplementation::run()
   throw NotYetImplementedException(HERE) << "In OptimizationAlgorithmImplementation::run()";
 }
 
-/* Virtual constructor */
+/* Virtual constructor */  // set the result from evalaution history
+  void setResultFromEvaluationHistory(const Sample & inputHistory, const Sample & outputHistory);
+
 OptimizationAlgorithmImplementation * OptimizationAlgorithmImplementation::clone() const
 {
   return new OptimizationAlgorithmImplementation(*this);
@@ -258,5 +261,81 @@ void OptimizationAlgorithmImplementation::setStopCallback(StopCallback callBack,
   stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
 }
 
+void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
+  const Sample & inputHistory, const Sample & outputHistory,
+  const Sample & inequalityHistory, const Sample & equalityHistory)
+{
+  // Update the result
+  result_ = OptimizationResult(getProblem());
+  const UnsignedInteger size = inputHistory.getSize();
+  const UnsignedInteger dimension = getProblem().getDimension();
+
+  Scalar absoluteError = -1.0;
+  Scalar relativeError = -1.0;
+  Scalar residualError = -1.0;
+  Scalar constraintError = -1.0;
+
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Point inP(inputHistory[i]);
+    const Point outP(outputHistory[i]);
+    constraintError = 0.0;
+    if (getProblem().hasBounds())
+    {
+      const Interval bounds(getProblem().getBounds());
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+      {
+        if (bounds.getFiniteLowerBound()[j])
+          constraintError = std::max(constraintError, bounds.getLowerBound()[j] - inP[j]);
+        if (bounds.getFiniteUpperBound()[j])
+          constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
+      }
+    }
+    if (getProblem().hasEqualityConstraint())
+    {
+      const Point g(equalityHistory[i]);
+      constraintError = std::max(constraintError, g.normInf());
+    }
+    if (getProblem().hasInequalityConstraint())
+    {
+      Point h(inequalityHistory[i]);
+      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
+      {
+        h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
+      }
+      constraintError = std::max(constraintError, h.normInf());
+    }
+    if (!getProblem().isContinuous())
+    {
+      const Indices variablesType(getProblem().getVariablesType());
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+      {
+        switch (variablesType[j])
+        {
+          case OptimizationProblemImplementation::CONTINUOUS:
+            break;
+          case OptimizationProblemImplementation::BINARY:
+	    // TODO: use Clip01
+            constraintError = std::max(constraintError, std::abs(inP[j] - std::max(0.0, std::min(1.0, std::round(inP[j])))));
+            break;
+          case OptimizationProblemImplementation::INTEGER:
+            constraintError = std::max(constraintError, std::abs(inP[j] - std::round(inP[j])));
+            break;
+        }
+      }
+    }
+
+    if (i > 0)
+    {
+      const Point inPM(inputHistory[i - 1]);
+      const Point outPM(outputHistory[i - 1]);
+      absoluteError = (inP - inPM).normInf();
+      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
+      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
+    }
+    result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
+  }
+  result_.setEvaluationNumber(size);
+}
 
 END_NAMESPACE_OPENTURNS
