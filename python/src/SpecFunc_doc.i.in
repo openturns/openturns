@@ -1184,3 +1184,19 @@ Returns
 -------
 result : float"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::AccurateSum
+"Accurate summation.
+
+Returns the value :math:`\sum_{i=0}^{n-1}x_i` using extended precision (if
+available) or Kahan's method
+
+Parameters
+----------
+x : sequence of float
+
+Returns
+-------
+result : float"
+

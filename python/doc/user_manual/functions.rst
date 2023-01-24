@@ -201,6 +201,7 @@ as Python functions.
     :toctree: _generated/
     :template: function.rst_t
 
+    SpecFunc.AccurateSum
     SpecFunc.BesselI0
     SpecFunc.BesselI1
     SpecFunc.BesselK

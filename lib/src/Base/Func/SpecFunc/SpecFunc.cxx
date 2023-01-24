@@ -874,6 +874,7 @@ Scalar SpecFunc::HyperGeom_1_1(const Scalar p1,
 #endif
 }
 
+
 // Complex hypergeometric function of type (1,1): HyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
 Complex SpecFunc::HyperGeom_1_1(const Scalar p1,
                                 const Scalar q1,
@@ -1346,5 +1347,26 @@ UnsignedInteger SpecFunc::BinomialCoefficient(const UnsignedInteger n,
   return value;
 }
 
+Scalar SpecFunc::AccurateSum(const Point & v)
+{
+#ifdef OPENTURNS_HAVE_MPFR
+  boost::multiprecision::mpfr_float_500 sum(0.0);
+  for (UnsignedInteger i = 0; i < v.getSize(); ++i)
+    sum += v[i];
+  return sum.convert_to<Scalar>();
+#else
+  // Here we use Kahan's compensated summation
+  Scalar sum = 0.0;
+  Scalar error = 0.0;
+  for (UnsignedInteger i = 0; i < v.getSize(); ++i)
+    {
+      const Scalar y = v[i] - error;
+      const Scalar t = sum + y;
+      error = (t - sum) - y;
+      sum = t;
+    }
+  return sum;
+#endif
+}
 
 END_NAMESPACE_OPENTURNS

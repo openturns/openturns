@@ -997,6 +997,7 @@ Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & in
     // and n(c) = Card({c_i == a_i, i = 1, ..., n})
     probability = 0.0;
     const UnsignedInteger iMax = 1 << dimension_;
+    Point probabilities(iMax);
     for( UnsignedInteger i = 0; i < iMax; ++i )
     {
       Bool evenLower = true;
@@ -1011,9 +1012,9 @@ Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & in
         }
       } // j
       const Scalar cdf = computeCDF(c);
-      probability += (evenLower ? cdf : -cdf);
+      probabilities[i] = (evenLower ? cdf : -cdf);
     } // i
-
+    probability = SpecFunc::AccurateSum(probabilities);
   } // not independent
 
   // clip to [0, 1]
