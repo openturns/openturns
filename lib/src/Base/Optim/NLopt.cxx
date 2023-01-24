@@ -129,7 +129,6 @@ void NLopt::SetSeed(const UnsignedInteger seed)
 NLopt::NLopt(const String & algoName)
   : OptimizationAlgorithmImplementation()
   , algoName_(algoName)
-  , p_opt_(0)
 {
   GetAlgorithmCode(algoName);
 }
@@ -138,7 +137,6 @@ NLopt::NLopt(const OptimizationProblem & problem,
              const String & algoName)
   : OptimizationAlgorithmImplementation(problem)
   , algoName_(algoName)
-  , p_opt_(0)
 {
   checkProblem(problem);
 }
@@ -333,66 +331,14 @@ void NLopt::run()
   {
     throw InternalException(HERE) << "NLopt raised an exception: " << exc.what();
   }
-  p_opt_ = 0;
+  p_opt_ = nullptr;
 
-  Point optimizer(x.begin(), x.end());
-  OptimizationResult result(getProblem());
-
-  const UnsignedInteger size = evaluationInputHistory_.getSize();
-
-  Scalar absoluteError = -1.0;
-  Scalar relativeError = -1.0;
-  Scalar residualError = -1.0;
-  Scalar constraintError = -1.0;
-
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    const Point inP(evaluationInputHistory_[i]);
-    const Point outP(evaluationOutputHistory_[i]);
-    constraintError = 0.0;
-    if (getProblem().hasBounds())
-    {
-      const Interval bounds(getProblem().getBounds());
-      for (UnsignedInteger j = 0; j < dimension; ++ j)
-      {
-        if (bounds.getFiniteLowerBound()[j])
-          constraintError = std::max(constraintError, bounds.getLowerBound()[j] - inP[j]);
-        if (bounds.getFiniteUpperBound()[j])
-          constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
-      }
-    }
-    if (getProblem().hasEqualityConstraint())
-    {
-      const Point g(equalityConstraintHistory_[i]);
-      constraintError = std::max(constraintError, g.normInf());
-    }
-    if (getProblem().hasInequalityConstraint())
-    {
-      // some AUGLAG variants call inequality constraints less times
-      // https://github.com/stevengj/nlopt/blob/master/src/algs/auglag/auglag.c#L96
-      const Bool same = (inequalityConstraintHistory_.getSize() == evaluationInputHistory_.getSize());
-      Point h(same ? inequalityConstraintHistory_[i] : getProblem().getInequalityConstraint()(inP));
-      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
-      {
-        h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
-      }
-      constraintError = std::max(constraintError, h.normInf());
-    }
-    if (i > 0)
-    {
-      const Point inPM(evaluationInputHistory_[i - 1]);
-      const Point outPM(evaluationOutputHistory_[i - 1]);
-      absoluteError = (inP - inPM).normInf();
-      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
-      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
-    }
-    result.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
-  }
-
-  result.setEvaluationNumber(size);
-  result.setOptimalPoint(optimizer);
-  result.setOptimalValue(Point(1, optimalValue));
-  setResult(result);
+  // some AUGLAG variants call inequality constraints less times than objective
+  // https://github.com/stevengj/nlopt/blob/master/src/algs/auglag/auglag.c#L96
+  if (getProblem().hasInequalityConstraint() && (inequalityConstraintHistory_.getSize() != evaluationInputHistory_.getSize()))
+    inequalityConstraintHistory_ = getProblem().getInequalityConstraint()(evaluationInputHistory_);
+  
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
 #else
   (void) p_opt_;
   throw NotYetImplementedException(HERE) << "No NLopt support";

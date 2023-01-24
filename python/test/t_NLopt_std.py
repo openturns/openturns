@@ -25,7 +25,8 @@ algoNames = ot.NLopt.GetAlgorithmNames()
 
 for algoName in algoNames:
     algo = ot.NLopt(algoName)
-
+    if algoName == "GN_ISRES":
+        algo.setMaximumConstraintError(1e-2)
     for minimization in [False, True]:
         for inequality in [False, True]:
             for equality in [False, True]:

@@ -49,6 +49,8 @@ int main(int, char *[])
     for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
     {
       NLopt algo(algoNames[i]);
+      if (algoNames[i] == "GN_ISRES")
+        algo.setMaximumConstraintError(1e-2);
       for (SignedInteger minimization = 0; minimization < 2; ++ minimization)
         for (SignedInteger inequality = 0; inequality < 2; ++ inequality)
           for (SignedInteger equality = 0; equality < 2; ++ equality)

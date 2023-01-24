@@ -139,57 +139,7 @@ void Cobyla::run()
       throw InternalException(HERE) << "Solving problem by cobyla method failed (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
   }
 
-  // Update the result
-  result_ = OptimizationResult(getProblem());
-  UnsignedInteger size = evaluationInputHistory_.getSize();
-
-  Scalar absoluteError = -1.0;
-  Scalar relativeError = -1.0;
-  Scalar residualError = -1.0;
-  Scalar constraintError = -1.0;
-
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    const Point inP(evaluationInputHistory_[i]);
-    const Point outP(evaluationOutputHistory_[i]);
-    constraintError = 0.0;
-    if (getProblem().hasBounds())
-    {
-      const Interval bounds(getProblem().getBounds());
-      for (UnsignedInteger j = 0; j < dimension; ++ j)
-      {
-        if (bounds.getFiniteLowerBound()[j])
-          constraintError = std::max(constraintError, bounds.getLowerBound()[j] - inP[j]);
-        if (bounds.getFiniteUpperBound()[j])
-          constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
-      }
-    }
-    if (getProblem().hasEqualityConstraint())
-    {
-      const Point g(equalityConstraintHistory_[i]);
-      constraintError = std::max(constraintError, g.normInf());
-    }
-    if (getProblem().hasInequalityConstraint())
-    {
-      Point h(inequalityConstraintHistory_[i]);
-      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
-      {
-        h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
-      }
-      constraintError = std::max(constraintError, h.normInf());
-    }
-    if (i > 0)
-    {
-      const Point inPM(evaluationInputHistory_[i - 1]);
-      const Point outPM(evaluationOutputHistory_[i - 1]);
-      absoluteError = (inP - inPM).normInf();
-      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
-      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
-    }
-    result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
-  }
-
-  result_.setEvaluationNumber(maxFun);
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
 }
 
 /* RhoBeg accessor */
