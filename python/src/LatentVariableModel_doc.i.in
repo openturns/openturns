@@ -39,7 +39,7 @@ Examples
 Create a latent model covariance function with a latent space of dimension 2, for a discrete variable characterized by 3 levels:
 
 >>> import openturns as ot
->>> covModel = ot.LatentModel(3, 2)
+>>> covModel = ot.LatentVariableModel(3, 2)
 >>> activeCoordinates = [0.1, 0.3, -0.4]
 >>> covModel.setLatentVariables(activeCoordinates)
 >>> print(covModel(1, 2))
