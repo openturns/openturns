@@ -32,17 +32,17 @@ static const Factory<LatentVariableModel> Factory_LatentVariableModel;
 
 
 /* Default constructor */
-LatentVariableModel::LatentVariableModel(const UnsignedInteger n_levels)
+LatentVariableModel::LatentVariableModel(const UnsignedInteger nLevels)
   : CovarianceModelImplementation(Point(1, 1.0), Point(1, 1.0))
-  , latent_dim_(2)
-  , n_levels_(n_levels)
-  , latCovMat_(n_levels_)
-  , latCovMod_(latent_dim_)
+  , latentDim_(2)
+  , nLevels_(nLevels)
+  , latCovMat_(nLevels_)
+  , latCovMod_(latentDim_)
 {
-  if (n_levels_ < 2) throw InvalidArgumentException(HERE) << "Error: the number of discrete levels must be >= 2";
-  activeLatentCoordinateDim_ = 1 + latent_dim_ * (n_levels_ - 2);
+  if (nLevels_ < 2) throw InvalidArgumentException(HERE) << "Error: the number of discrete levels must be >= 2";
+  activeLatentCoordinateDim_ = 1 + latentDim_ * (nLevels_ - 2);
   activeLatentVariables_ = Point(activeLatentCoordinateDim_, 0.0);
-  fullLatentVariables_ = Sample(n_levels_,latent_dim_);
+  fullLatentVariables_ = Sample(nLevels_,latentDim_);
   Indices activeParameter = Indices(inputDimension_ + outputDimension_ + activeLatentCoordinateDim_);
   activeParameter.fill();
   setActiveParameter(activeParameter);
@@ -50,19 +50,19 @@ LatentVariableModel::LatentVariableModel(const UnsignedInteger n_levels)
 }
 
 /** Parameters constructor */
-LatentVariableModel::LatentVariableModel(const UnsignedInteger latent_dim,
-						 const UnsignedInteger n_levels)
+LatentVariableModel::LatentVariableModel(const UnsignedInteger nLevels,
+						 const UnsignedInteger latentDim)
   : CovarianceModelImplementation(Point(1, 1.0), Point(1, 1.0))
-  , latent_dim_(latent_dim)
-  , n_levels_(n_levels)
-  , latCovMat_(n_levels_)
-  , latCovMod_(latent_dim_)
+  , latentDim_(latentDim)
+  , nLevels_(nLevels)
+  , latCovMat_(nLevels_)
+  , latCovMod_(latentDim_)
 {
-  if (latent_dim_ < 1) throw InvalidArgumentException(HERE) << "Error: the dimension of the latent space must be >= 1";
-  if (n_levels_ < 2) throw InvalidArgumentException(HERE) << "Error: the number of discrete levels must be >= 2";
-  activeLatentCoordinateDim_ = 1 + latent_dim_ * (n_levels_ - 2);
+  if (latentDim_ < 1) throw InvalidArgumentException(HERE) << "Error: the dimension of the latent space must be >= 1";
+  if (nLevels_ < 2) throw InvalidArgumentException(HERE) << "Error: the number of discrete levels must be >= 2";
+  activeLatentCoordinateDim_ = 1 + latentDim_ * (nLevels_ - 2);
   activeLatentVariables_ = Point(activeLatentCoordinateDim_,0.);
-  fullLatentVariables_ = Sample(n_levels_,latent_dim_);
+  fullLatentVariables_ = Sample(nLevels_,latentDim_);
   Indices activeParameter = Indices(inputDimension_ + outputDimension_ + activeLatentCoordinateDim_);
   activeParameter.fill();
   setActiveParameter(activeParameter);
@@ -82,7 +82,7 @@ Scalar LatentVariableModel::computeAsScalar(const Scalar z1, const Scalar z2) co
   bool isLevelz1 = false;
   bool isLevelz2 = false;
 
-  for (UnsignedInteger i = 0; i < n_levels_; ++i)
+  for (UnsignedInteger i = 0; i < nLevels_; ++i)
   {
     if (z1 == i) 
     {
@@ -91,7 +91,7 @@ Scalar LatentVariableModel::computeAsScalar(const Scalar z1, const Scalar z2) co
     }
   }
 
-  for (UnsignedInteger i = 0; i < n_levels_; ++i)
+  for (UnsignedInteger i = 0; i < nLevels_; ++i)
   {
     if (z2 == i)
     {
@@ -120,32 +120,7 @@ Scalar LatentVariableModel::computeAsScalar(const Collection<Scalar>::const_iter
   Collection<Scalar>::const_iterator z1_it = z1_begin;
   Collection<Scalar>::const_iterator z2_it = z2_begin;
 
-  /*check z being one of the levels*/
-  bool isLevelz1 = false;
-  bool isLevelz2 = false;
-
-  for (UnsignedInteger i = 0; i < n_levels_; ++i)
-  {
-    if (*z1_it == i)
-    {
-      isLevelz1 = true;
-      break;
-    }
-  }
-
-  for (UnsignedInteger i = 0; i < n_levels_; ++i)
-  {
-    if (*z2_it == i)
-    {
-      isLevelz2 = true;
-      break;
-    }
-  }
-
-  if (!isLevelz1 || !isLevelz2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values are not amongst the known levels";
-
-  Scalar cov = latCovMat_(*z1_it,*z2_it);
-  return cov;
+  return computeAsScalar(*z1_it,*z2_it);
 }
 
 
@@ -156,7 +131,7 @@ void LatentVariableModel::setFullParameter(const Point & parameter)
     should be :
      - Size of scale : here 1
      - Size of amplitude : here 1
-     - Number of latent variable coordinates : latent_dim_*n_levels_-2*latent_dim_+1
+     - Number of latent variable coordinates : latentDim_*nLevels_-2*latentDim_+1
     CovarianceModelImplementation::setFullParameter checks that size is
     equal to the total number of parameters
   */
@@ -185,7 +160,7 @@ void LatentVariableModel::setFullParameter(const Point & parameter)
 
   // Update the latent covariance model
   latCovMod_.setAmplitude(amplitude_);
-  latCovMod_.setScale(Point(latent_dim_,scale_[0]));
+  latCovMod_.setScale(Point(latentDim_,scale_[0]));
 
   // Third the latent variable coordinates
   Point activeLatentVariables = Point(activeLatentCoordinateDim_,1.0);
@@ -253,14 +228,14 @@ void LatentVariableModel::setLatentVariables(const Point & latentVariablesCoordi
 
   // Set the full sample of latent coordinates
   // Fix the coordinates of the first two latent variables
-  fullLatentVariables_ = Sample(n_levels_, Point(latent_dim_,0.));
+  fullLatentVariables_ = Sample(nLevels_, latentDim_);
   fullLatentVariables_(1,0) = latentVariablesCoordinates[0];
 
   UnsignedInteger count = 1;
   // Fix the coordinates of the remaining latent variables
-  for (UnsignedInteger i = 2; i < n_levels_; ++i)
+  for (UnsignedInteger i = 2; i < nLevels_; ++i)
   {
-    for (UnsignedInteger j = 0; j < latent_dim_; ++j)
+    for (UnsignedInteger j = 0; j < latentDim_; ++j)
     {
       fullLatentVariables_(i,j) = latentVariablesCoordinates[count];
       count++;
@@ -271,13 +246,7 @@ void LatentVariableModel::setLatentVariables(const Point & latentVariablesCoordi
 
 void LatentVariableModel::updateLatentCovarianceMatrix()
 {
-  for (UnsignedInteger i = 0; i < n_levels_; ++i)
-  {
-    for (UnsignedInteger j = 0; j <= i; ++j)
-    {
-      latCovMat_(i,j) = latCovMod_(fullLatentVariables_[i], fullLatentVariables_[j])(0,0);
-    }
-  }
+  latCovMat_ = latCovMod_.discretize(fullLatentVariables_);
 }
 
 /* latentVariables accessor */
@@ -295,14 +264,14 @@ Point LatentVariableModel::getActiveLatentVariables() const
 UnsignedInteger LatentVariableModel::getLatentDimension() const
 {
 
-  return latent_dim_;
+  return latentDim_;
 }
 
 /* NLevels accessor */
 UnsignedInteger LatentVariableModel::getNLevels() const
 {
 
-  return n_levels_;
+  return nLevels_;
 }
 
 void LatentVariableModel::setScale(const Point & scale)
@@ -312,7 +281,7 @@ void LatentVariableModel::setScale(const Point & scale)
     if (!(scale[index] > 0.0))
       throw InvalidArgumentException(HERE) << "In LatentVariableModel::setScale: the component " << index << " of scale is non positive" ;
   scale_ = scale;
-  latCovMod_.setScale(Point(latent_dim_,scale_[0]));
+  latCovMod_.setScale(Point(latentDim_,scale_[0]));
   updateLatentCovarianceMatrix();
 }
 
@@ -339,11 +308,11 @@ void LatentVariableModel::setNuggetFactor(const Scalar nuggetFactor)
 /* Drawing method */
 Graph LatentVariableModel::draw(const UnsignedInteger rowIndex,
     const UnsignedInteger columnIndex,
-    const Scalar zMin,
-    const Scalar zMax,
+    const Scalar /*zMin*/,
+    const Scalar /*zMax*/,
     const UnsignedInteger pointNumber,
-    const Bool asStationary,
-    const Bool correlationFlag) const
+    const Bool /*asStationary*/,
+    const Bool /*correlationFlag*/) const
 {
  // This method relies on useless parameters, this needs to be changed ASAP
   if (inputDimension_ != 1) throw NotDefinedException(HERE) << "Error: can draw covariance models only if input dimension=1, here input dimension=" << inputDimension_;
@@ -351,19 +320,14 @@ Graph LatentVariableModel::draw(const UnsignedInteger rowIndex,
   if (!(columnIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
   if (!(pointNumber >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;
   // Check if the model is stationary and if we want to draw it this way
-  
-  // Dummy line in order to use all inputs
-  Scalar dummyVariable = 0.; 
-  if (asStationary && correlationFlag) dummyVariable = zMin+zMax;  
 
   Graph graph("Covariance values", "x", "x", true, "topright");
   graph.setIntegerXTick(true);
   graph.setIntegerYTick(true);
   Drawable drawable = Drawable();
-  Description palette = drawable.BuildDefaultPalette(int(n_levels_*(n_levels_-1)/2)+1);
+  Description palette = drawable.BuildDefaultPalette(int(nLevels_*(nLevels_-1)/2)+1);
   Sample data = Sample(4,2);
-  data(0,0) = dummyVariable;
-  for (UnsignedInteger i = 0; i < n_levels_; ++i)
+  for (UnsignedInteger i = 0; i < nLevels_; ++i)
   {
     data(0,0) = i;
     data(0,1) = i;
@@ -387,9 +351,9 @@ Graph LatentVariableModel::draw(const UnsignedInteger rowIndex,
     graph.add(text);
   }
   UnsignedInteger counter = 1;
-  for (UnsignedInteger i = 0; i < n_levels_; ++i)
+  for (UnsignedInteger i = 0; i < nLevels_; ++i)
   {
-    for (UnsignedInteger j = i+1; j < n_levels_; ++j)
+    for (UnsignedInteger j = i+1; j < nLevels_; ++j)
     {
       data(0,0) = i;
       data(0,1) = j;
@@ -423,8 +387,8 @@ void LatentVariableModel::save(Advocate & adv) const
   CovarianceModelImplementation::save(adv);
   adv.saveAttribute("fullLatentVariables_", fullLatentVariables_);
   adv.saveAttribute("activeLatentVariables_", activeLatentVariables_);
-  adv.saveAttribute("n_levels_", n_levels_);
-  adv.saveAttribute("latent_dim_", latent_dim_);
+  adv.saveAttribute("nLevels_", nLevels_);
+  adv.saveAttribute("latentDim_", latentDim_);
 // ADD OTHER ATTRIBUTES
 }
 
@@ -434,8 +398,8 @@ void LatentVariableModel::load(Advocate & adv)
   CovarianceModelImplementation::load(adv);
   adv.loadAttribute("fullLatentVariables_", fullLatentVariables_);
   adv.loadAttribute("activeLatentVariables_", activeLatentVariables_);
-  adv.loadAttribute("n_levels_", n_levels_);
-  adv.loadAttribute("latent_dim_", latent_dim_);
+  adv.loadAttribute("nLevels_", nLevels_);
+  adv.loadAttribute("latentDim_", latentDim_);
 }
 
 END_NAMESPACE_OPENTURNS

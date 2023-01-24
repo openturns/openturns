@@ -38,11 +38,11 @@ class OT_API LatentVariableModel
 public:
 
   /** Default constructor based on levels*/
-  explicit LatentVariableModel(const UnsignedInteger n_levels = 2);
+  explicit LatentVariableModel(const UnsignedInteger nLevels = 2);
 
   /** Parameters constructor */
-  LatentVariableModel(const UnsignedInteger latent_dim,
-						 const UnsignedInteger levels);
+  LatentVariableModel(const UnsignedInteger nLevels,
+						 const UnsignedInteger latentDim);
 
   /** Virtual copy constructor */
   LatentVariableModel * clone() const override;
@@ -107,10 +107,10 @@ public:
 private:
 
   // The latent dimension
-  UnsignedInteger latent_dim_;
+  UnsignedInteger latentDim_;
 
   // The number of levels
-  UnsignedInteger n_levels_;
+  UnsignedInteger nLevels_;
 
   // The latent covariance matrix
   CovarianceMatrix latCovMat_;

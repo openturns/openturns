@@ -48,7 +48,7 @@ Y = fun(X)
 latdim = 2  # Dimension of the latent space
 kl = ot.SquaredExponential(1)
 kh = ot.SquaredExponential(1)
-ki = ot.LatentVariableModel(latdim, lvls)
+ki = ot.LatentVariableModel(lvls, latdim)
 k = ot.ProductCovarianceModel([kl, kh, ki])
 k.setNuggetFactor(1e-6)
 k.setActiveParameter([0, 1, 3, 4, 5, 6])
