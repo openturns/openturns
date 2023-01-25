@@ -23,7 +23,7 @@ jobs:
         make install -j3
     - run: |
         cmake \
-        -DPYTHON_EXECUTABLE=/usr/local/bin/python3 \
+        -DPython_EXECUTABLE=/usr/local/bin/python3 \
         -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison \
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
