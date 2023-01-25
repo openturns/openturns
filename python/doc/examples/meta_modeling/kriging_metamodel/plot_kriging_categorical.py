@@ -3,7 +3,8 @@ Kriging: metamodel with continuous and categorical variables
 ============================================================
 """
 # %%
-# We consider here the surrogate modeling of a bending function characterized by continuous and categorical variables
+# We consider here the surrogate modeling of a bending function characterized by
+# continuous and categorical variables
 #
 
 # %%
@@ -14,7 +15,9 @@ from openturns.viewer import View
 ot.RandomGenerator_SetSeed(0)
 
 # %%
-# We define the bending function depending on the beam length L, its height h and the type of cross-section I. We consider here 3 types of cross-section characterized by different moments of inertia
+# We define the bending function depending on the beam length L, its height h
+# and the type of cross-section I. We consider here 3 types of cross-section
+# characterized by different moments of inertia
 
 
 # %%
@@ -59,7 +62,8 @@ basis = ot.ConstantBasisFactory(3).build()
 algo = ot.KrigingAlgorithm(X, Y, k, basis)
 
 # %%
-# We perform the likelihood optimization by relying on a multi-start optimization of the COBYLA algorithm
+# We perform the likelihood optimization by relying on a multi-start optimization
+# of the COBYLA algorithm
 
 # %%
 activecoord = 1 + latdim * (lvls - 2)  # Number of active coordinates in the latent space
@@ -78,7 +82,10 @@ algo.run()
 
 
 # %%
-# We then proceed onto the result analysis. We start by plotting the optimal latent mappings. It can be seen that the results are coherent with the function definition, as the levels are mapped on points, the coordinates of which are proportional to the moment of inertia characterizing the different cross-sections.
+# We then proceed onto the result analysis. We start by plotting the optimal latent mappings.
+# It can be seen that the results are coherent with the function definition, as
+# the levels are mapped on points, the coordinates of which are proportional to
+# the moment of inertia characterizing the different cross-sections.
 
 # %%
 res = algo.getResult()

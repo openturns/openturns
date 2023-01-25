@@ -2,20 +2,20 @@
 "Latent variable covariance function.
 
 Available constructors:
-    LatentVariableModel(*nlevels=2*)
+    LatentVariableModel(*nLevels=2*)
 
-    LatentVariableModel(*latentDim, nlevels*)
+    LatentVariableModel(*nLevels, latentDim*)
 
 Parameters
 ----------
-nlevels : int
+nLevels : int
     Number of levels :math:`l` characterizing the discrete variable.
 latentDim : int
-	The dimension :math:`d_l` of the latent space onto which the discrete variable levels are projected.
+    The dimension :math:`d_l` of the latent space onto which the discrete variable levels are projected.
 
 Notes
 -----
-The *Latant variable covariance function* is a covariance model allowing to compute the covariance between different unordered values (or levels) of a discrete variable.
+The *Latent variable covariance function* is a covariance model allowing to compute the covariance between different unordered values (or levels) of a discrete variable.
 
 The underlying idea is that each discrete level is mapped onto a distinct point in a :math:`d_l`-dimensional latent space. The covariance between the various levels 
 
