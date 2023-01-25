@@ -198,7 +198,7 @@ GCC compilation:
 ::
 
     mkdir -p build && cd build
-    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wno-unused-parameter -D_GLIBCXX_ASSERTIONS" ..
+    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-Wall -Wextra -D_GLIBCXX_ASSERTIONS" ..
     make
 
 Namespaces
