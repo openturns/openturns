@@ -1,0 +1,100 @@
+%feature("docstring") OT::TimeVaryingResult
+"GeneralizedExtremeValue factory result for time-varying likelihood estimation.
+
+See also
+--------
+GeneralizedExtremeValueFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getDistribution
+"Accessor to the distribution at a given time.
+
+Parameters
+----------
+t : float
+    Time value
+
+Returns
+-------
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getParameterDistribution
+"Accessor to the distribution of the parameter.
+
+Returns
+-------
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::setParameterDistribution
+"Accessor to the distribution of the parameter.
+
+Parameters
+----------
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getParameterFunction
+"Parameter function accessor.
+
+Returns
+-------
+parameterFunction : :class:`~openturns.Funtion`
+    The :math:`\theta(t)` function."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getOptimalParameter
+"Confidence level accessor.
+
+Returns
+-------
+optimalParameter : :class:`~openturns.Point`
+    Optimal linear combination parameters :math:`\vect{\beta}`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::setLogLikelihood
+"Likelihood value accessor.
+
+Parameters
+----------
+llh : float
+    Log-likelihood value.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getLogLikelihood
+"Likelihood value accessor.
+
+Returns
+-------
+llh : float
+    Log-likelihood value.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::drawParameterFunction
+"Draw the parameter function.
+
+Parameters
+----------
+parameterIndex : int, default=0
+    The parameter index.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Parameter function graph.
+"

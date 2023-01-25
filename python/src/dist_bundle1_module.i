@@ -16,6 +16,7 @@
 %include OTexceptions.i
 %include std_vector.i
 
+%include BaseFuncCollection.i
 %import base_module.i
 %import model_copula_module.i
 
@@ -68,6 +69,9 @@
 %include WeibullMaxFactory.i
 %include WeibullMaxMuSigma.i
 %include GeneralizedExtremeValue.i
+%include LikelihoodResult.i
+%include ProfileLikelihoodResult.i
+%include TimeVaryingResult.i
 %include GeneralizedExtremeValueFactory.i
 %include GumbelFactory.i
 %include GumbelLambdaGamma.i

@@ -1,0 +1,61 @@
+%feature("docstring") OT::ProfileLikelihoodResult
+"GeneralizedExtremeValue factory result for profile likelihood estimation.
+
+See also
+--------
+GeneralizedExtremeValueFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::setConfidenceLevel
+"Confidence level accessor.
+
+Parameters
+----------
+alpha : float
+    Confidence level for the computation of the :math:`\xi` confidence interval
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::getConfidenceLevel
+"Confidence level accessor.
+
+Returns
+-------
+alpha : float
+    Confidence level for the computation of the :math:`\xi` confidence interval
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::getXiConfidenceInterval
+"Confidence interval accessor.
+
+Returns
+-------
+ci : :class:`~openturns.Interval`
+    Confidence interval of the :math:`\xi` parameter estimate.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::getProfileLikelihood
+"Profile likelihood accessor.
+
+Returns
+-------
+ll : :class:`~openturns.Function`
+    Profile likelihood accessor.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProfileLikelihoodResult::drawProfileLikelihood
+"Draw the profile likelihood and the confidence interval.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Profile likelihood function graph.
+"

@@ -1,0 +1,28 @@
+%feature("docstring") OT::LikelihoodResult
+"Result from likelihood estimation.
+
+See also
+--------
+GeneralizedExtremeValueFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LikelihoodResult::setLogLikelihood
+"Likelihood value accessor.
+
+Parameters
+----------
+llh : float
+    Log-likelihood value.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LikelihoodResult::getLogLikelihood
+"Likelihood value accessor.
+
+Returns
+-------
+llh : float
+    Log-likelihood value.
+"

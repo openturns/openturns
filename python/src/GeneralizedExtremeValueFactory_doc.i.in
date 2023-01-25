@@ -34,7 +34,9 @@ distribution : :class:`~openturns.GeneralizedExtremeValueFactory`
 
 Notes
 -----
-The default strategy is trying to fit the three models :class:`~openturns.Frechet`, :class:`~openturns.Gumbel` and :class:`~openturns.WeibullMax`. Then the three models are classified w.r.t. the BIC criterion. The best one is returned."
+The default strategy is trying to fit the three models :class:`~openturns.Frechet`, :class:`~openturns.Gumbel` and :class:`~openturns.WeibullMax`.
+Then the three models are classified w.r.t. the BIC criterion. The best one is returned."
+
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValueFactory::buildAsGeneralizedExtremeValueFactory
@@ -49,3 +51,209 @@ Returns
 -------
 distribution : :class:`~openturns.GeneralizedExtremeValueFactory`
     The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildMethodOfLikelihoodMaximization
+"Estimate the distribution with maximum likelihood method.
+
+The parameters are estimated thanks to a numerical optimization of the likelihood:
+
+.. math::
+
+    \ell (\mu, \sigma, \xi) = -m log{\sigma} - (-1 + 1 / \xi) \sum_{i=1}^m log{\left[ 1 + \xi \left( \frac{z_i - \mu}{\sigma} \right) \right]} - \sum_{i=1}^m \left[ 1 + \xi \left( \frac{z_i - \mu}{\sigma} \right) \right]^{-1 / \xi}
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.GeneralizedExtremeValueFactory`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildMethodOfProfileLikelihoodMaximization
+"Estimate the distribution with maximum likelihood method.
+
+The parameters are estimated thanks to a nested numerical optimization of the profile likelihood:
+
+.. math::
+
+    \ell_p (\xi) = \max_{(\mu, \sigma)} \ell (\mu, \sigma, \xi)
+
+with:
+
+.. math::
+
+    \ell (\mu, \sigma, \xi) = -m log{\sigma} - (-1 + 1 / \xi) \sum_{i=1}^m log{\left[ 1 + \xi \left( \frac{z_i - \mu}{\sigma} \right) \right]} - \sum_{i=1}^m \left[ 1 + \xi \left( \frac{z_i - \mu}{\sigma} \right) \right]^{-1 / \xi}
+
+the parameters estimators are given by:
+
+.. math::
+    :nowrap:
+
+    \begin{align}
+    \hat{\xi} = \argmax_{\xi} \ell_p(\xi)\\
+    (\hat{\mu}, \hat{\sigma}) = \argmax_{\mu, \sigma} \ell(\mu, \sigma, \hat{\xi})\\
+    \end{align}
+
+    
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.GeneralizedExtremeValueFactory`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildMethodOfProfileLikelihoodMaximizationEstimator
+"Estimate the distribution and its parameters with maximum likelihood method.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+result : :class:`~openturns.ProfileLikelihoodResult`
+    The associated results"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildRMaxima
+"Estimate the distribution with R maxima method.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Sample of size :math:`M` (the number of independent samples),
+    and dimension :math:`R` (the number of maxima per sample)
+    Each record of :math:`R` maxima are sorted in decreasing order
+r : int, default=0 (sets :math:`r=R` to use all maxima)
+    Number of maximas taken into account
+
+Returns
+-------
+distribution : :class:`~openturns.GeneralizedExtremeValueFactory`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildRMaximaEstimator
+"Estimate the distribution and its parameters with R maxima method.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Sample of size :math:`M` (the number of independent samples),
+    and dimension :math:`R` (the number of maxima per sample)
+    Each record of :math:`R` maxima are sorted in decreasing order
+r : int, default=0 (sets :math:`r=R` to use all maxima)
+    Number of maximas taken into account
+
+Returns
+-------
+result : :class:`~openturns.DistributionFactoryResult`
+    The associated results"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildBestRMaxima
+"Find the best r value for R maxima method.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Sample of size :math:`M` (the number of independent samples),
+    and dimension :math:`R` (the number of maxima per sample)
+    Each record of :math:`R` maxima are sorted in decreasing order
+r : sequence of int
+    List of number of maximas taken into account
+
+Returns
+-------
+r_opt : int
+    The value of r for which the likelihood is optimal.
+llh : :class:`~openturns.Point`
+    Likelihood values for each :math:`r` value."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildTimeVarying
+"Estimate the temporal dependency of the distribution parameters.
+
+Lets write each parameter :math:`\mu, sigma, \xi` as a parametric function of :math:`t`:
+
+.. math::
+
+    \theta(t) = h(X^T \beta) = h(\sum{i}{} \beta_i X_i)
+
+
+Now the likelihood writes:
+
+.. math::
+
+    L(\beta) = \prod{i=1}{m} g(z_{t_i};\mu(t_i), \sigma(t_i), \xi(t_i))
+
+And the log-likelihood writes, when :math:`\xi(t_i) \neq 0`:
+
+.. math::
+
+    \mathcal{l}(\beta) = -\sum{i=1}{m} \left\{ log(\sigma(t_i)) + (1 + 1 / \xi(t_i) ) log\left[ 1+\xi(t) \left( \frac{z_t - \mu(t_i)}{\sigma(t_i)}\right) \right] + \left[ 1 + \xi(t_i) \left( \frac{z_t- \mu(t_i)}{\sigma(t_i)} \right) \right]^{-1 / \xi(t_i)} \right\}
+
+And when :math:`\xi(t_i) = 0`:
+
+.. math::
+
+    \mathcal{l}(\beta) = -\sum{i=1}{m} \left\{ log(\sigma(t_i)) + \frac{z_t - \mu(t_i)}{\sigma(t_i)} + \exp \left\{ - \frac{z_t - \mu(t_i)}{\sigma(t_i)} \right\} \right\}
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data to estimate
+timeGrid : :class:`~openturns.Mesh`
+    Mesh for :math:`t` values.
+basisCollection : sequence of class:`~openturns.Basis`
+    Basis for each of the 3 parameters: :math:`\mu(t), \sigma(t), \xi(t)`
+inverseLinkFunction : :class:`~openturns.Function`, optional
+    :math:`h` function
+
+Returns
+-------
+result : :class:`~openturns.TimeVaryingResult`
+    The associated results."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueFactory::buildReturnLevelEstimator
+"Estimate the return level.
+
+The return level :math:`z_m` is computed as quantile of level :math:`1-p=1-1/m`
+The asymptotic distribution of :math:`z_m` is obtained by the delta method from the
+distribution of the parameters (\hat{\mu}, \hat{\sigma}, \hat{\xi})
+
+.. math::
+
+    Var[z_m] = (\nabla z_m)^T(\hat{\mu}, \hat{\sigma}, \hat{\xi}) V_n \nabla z_m(\hat{\mu}, \hat{\sigma}, \hat{\xi})
+
+with :math:`V_n` the covariance of the distribution of the parameters.
+    
+Parameters
+----------
+result : :class:`~openturns.DistributionFactoryResult`
+    Likelihood estimation result of a :class:`~openturns.GeneralizedExtremeValue`
+m : float
+    The return period, defines the level of the quantile as :math:`1-1/m`
+
+Returns
+-------
+result : :class:`~openturns.Distribution`
+    The asymptotic distribution of :math:`z_m`"

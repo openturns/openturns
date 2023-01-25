@@ -466,10 +466,17 @@
   <!-- OT::FrechetFactory parameters -->
   <FrechetFactory-BoundMargin value_float="10.0" />
 
-  <!-- OT::GeneralizedParetoFactory parameters -->
+  <!-- OT::GeneralizedExtremeValue parameters -->
   <GeneralizedExtremeValue-XiThreshold value_float="1.0e-6" />
   <GeneralizedExtremeValue-MMin value_float="1.05" />
   <GeneralizedExtremeValue-MMax value_float="1.0e3" />
+
+  <!-- OT::GeneralizedExtremeValueFactory parameters -->
+  <GeneralizedExtremeValueFactory-MaximumEvaluationNumber value_int="10000" />
+
+  <!-- OT::ProfileLikelihoodResult parameters -->
+  <ProfileLikelihoodResult-AbsolutePrecision value_float="1.0e-10" />
+  <ProfileLikelihoodResult-RelativePrecision value_float="1.0e-10" />
 
   <!-- OT::GeneralizedParetoFactory parameters -->
   <GeneralizedParetoFactory-MaximumAbsoluteError    value_float="1.0e-10"        />

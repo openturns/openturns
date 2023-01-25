@@ -92,6 +92,7 @@ public:
     const DistributionFactoryImplementation & factory,
     const Sample & sample, const Bool isRegular = false);
 
+  static Distribution BuildGaussianEstimator(const Distribution & distribution, const Sample & sample);
 protected:
   /* The underlying distribution */
   Distribution distribution_;

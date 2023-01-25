@@ -435,29 +435,36 @@ void MaximumLikelihoodFactory::load(Advocate & adv)
   adv.loadAttribute("optimizationInequalityConstraint_", optimizationInequalityConstraint_);
 }
 
+
+Distribution MaximumLikelihoodFactory::BuildGaussianEstimator (
+  const Distribution & distribution,
+  const Sample & sample)
+{
+  const UnsignedInteger size = sample.getSize();
+  const UnsignedInteger parameterDimension = distribution.getParameterDimension();
+  Matrix theta(parameterDimension, parameterDimension);
+  const Sample pdf(distribution.computePDF(sample));
+  const Sample dpdf(distribution.computePDFGradient(sample));
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    Matrix dpdfi(parameterDimension, 1, dpdf[i].getCollection());
+    dpdfi = dpdfi / pdf(i, 0);
+    theta = theta + dpdfi * dpdfi.transpose() / size;
+  }
+  const CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension) / size).getImplementation());
+  return Normal(distribution.getParameter(), covariance);
+}
+
+
 DistributionFactoryResult MaximumLikelihoodFactory::BuildEstimator (
   const DistributionFactoryImplementation & factory,
   const Sample & sample,
   const Bool isRegular)
 {
-  const UnsignedInteger size = sample.getSize();
   const Distribution distribution(factory.build(sample));
-  const UnsignedInteger parameterDimension = distribution.getParameterDimension();
   Distribution parameterDistribution;
   if (isRegular)
-  {
-    Matrix theta(parameterDimension, parameterDimension);
-    const Sample pdf(distribution.computePDF(sample));
-    const Sample dpdf(distribution.computePDFGradient(sample));
-    for (UnsignedInteger i = 0; i < size; ++ i)
-    {
-      Matrix dpdfi(parameterDimension, 1, dpdf[i].getCollection());
-      dpdfi = dpdfi / pdf(i, 0);
-      theta = theta + dpdfi * dpdfi.transpose() / size;
-    }
-    CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension) / size).getImplementation());
-    parameterDistribution = Normal(distribution.getParameter(), covariance);
-  }
+    parameterDistribution = BuildGaussianEstimator(distribution, sample);
   else
   {
     const UnsignedInteger bootstrapSize = factory.getBootstrapSize();

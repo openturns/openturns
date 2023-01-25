@@ -24,6 +24,9 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/GeneralizedExtremeValue.hxx"
+#include "openturns/ProfileLikelihoodResult.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/TimeVaryingResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,6 +38,7 @@ class OT_API GeneralizedExtremeValueFactory
 {
   CLASSNAME
 public:
+  typedef Collection<Basis> BasisCollection;
 
   /** Default constructor */
   GeneralizedExtremeValueFactory();
@@ -55,6 +59,28 @@ public:
   GeneralizedExtremeValue buildAsGeneralizedExtremeValue(const Sample & sample) const;
   GeneralizedExtremeValue buildAsGeneralizedExtremeValue(const Point & parameters) const;
   GeneralizedExtremeValue buildAsGeneralizedExtremeValue() const;
+
+  /** Maximum likelihood */
+  GeneralizedExtremeValue buildMethodOfLikelihoodMaximization(const Sample & sample) const;
+  LikelihoodResult buildMethodOfLikelihoodMaximizationEstimator(const Sample & sample) const;
+
+  /** Profiled maximum likelihood */
+  ProfileLikelihoodResult buildMethodOfProfileLikelihoodMaximizationEstimator(const Sample & sample) const;
+  GeneralizedExtremeValue buildMethodOfProfileLikelihoodMaximization(const Sample & sample) const;
+
+  /** R largest order statistics */
+  DistributionFactoryResult buildRMaximaEstimator(const Sample & sample, const UnsignedInteger r = 0);
+  GeneralizedExtremeValue buildRMaxima(const Sample & sample, const UnsignedInteger r = 0);
+  UnsignedInteger buildBestRMaxima(const Sample & sample, const Indices & r, Point & logLikelihoodOut);
+
+  /** Time-varying */
+  TimeVaryingResult buildTimeVarying(const Sample & sample,
+                                             const Mesh & mesh,
+                                             const BasisCollection & basisCollection,
+                                             const Function & inverseLinkFunction = Function()) const;
+
+  /** Return level */
+  Distribution buildReturnLevelEstimator(const DistributionFactoryResult & result, const Scalar m) const;
 
 }; /* class GeneralizedExtremeValueFactory */
 
