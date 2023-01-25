@@ -52,13 +52,15 @@ Pagmo provides the following global `heuristics <https://esa.github.io/pagmo2/ov
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
 | bee_colony          | Artificial Bee Colony                           | no              | no    | no    |
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
-| cmaes               | Covariance Matrix Adaptation Evo. Strategy      | no              | no    | no    |
+| cmaes               | Covariance Matrix Adaptation Evo. Strategy      | no              | no    | yes   |
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
 | xnes                | Exponential Evolution Strategies                | no              | no    | no    |
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
 | nsga2               | Non-dominated Sorting GA                        | yes             | yes   | yes   |
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
-| moead               | Multi-objective EA vith Decomposition           | yes             | no    | no    |
+| moead               | Multi-objective EA with Decomposition           | yes             | no    | no    |
++---------------------+-------------------------------------------------+-----------------+-------+-------+
+| moead_gen           | Multi-objective EA with Decomposition Gen.      | yes             | no    | yes   |
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
 | mhaco               | Multi-objective Hypervolume-based ACO           | yes             | yes   | yes   |
 +---------------------+-------------------------------------------------+-----------------+-------+-------+
@@ -69,8 +71,7 @@ Only gaco and ihs natively support constraints, but for the other algorithms
 constraints are emulated through penalization.
 For mhaco, the initial population must satisfy constraints, else it is built
 by boostrap on valid points with the same population size as the one provided.
-Some algorithms support batch evaluation, except when constraints are emulated,
-see :meth:`setBlockSize`.
+Some algorithms support batch evaluation, see :meth:`setBlockSize`.
 Default parameters are available in the :class:`~openturns.ResourceMap` for
 each algorithm, refer to the correspondings keys in the Pagmo `documentation <https://esa.github.io/pagmo2/>`_.
 
