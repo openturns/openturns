@@ -74,7 +74,7 @@ initdist = ot.DistributionCollection()
 for i in range(len(lb)):
     initdist.add(ot.Uniform(lb[i], ub[i]))
 initdist = ot.ComposedDistribution(initdist)
-initSample = initdist.getSample(3)
+initSample = initdist.getSample(10)
 optalg = ot.MultiStart(ot.NLopt('LN_COBYLA'), initSample)
 algo.setOptimizationAlgorithm(optalg)
 algo.setOptimizationBounds(bounds)
