@@ -20,8 +20,8 @@
  */
 #include "openturns/SpaceFillingMinDist.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
-#include <limits>
 #include <cmath>
 
 
@@ -61,7 +61,7 @@ Scalar SpaceFillingMinDist::evaluate(const Sample & sample) const
   const UnsignedInteger dimension(sample.getDimension());
   const Sample normalizedSample(normalize(sample));
   const Scalar* addr_sample = &normalizedSample(0, 0);
-  Scalar minDist = std::numeric_limits<Scalar>::max();
+  Scalar minDist = SpecFunc::MaxScalar;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar* ptI = addr_sample + dimension * i;

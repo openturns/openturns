@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_LARS_HXX
 #define OPENTURNS_LARS_HXX
 
-#include <limits>
 #include "openturns/Matrix.hxx"
 #include "openturns/BasisSequenceFactoryImplementation.hxx"
 

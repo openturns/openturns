@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PARAMETRICPOINTTOFIELDFUNCTION_HXX
 #define OPENTURNS_PARAMETRICPOINTTOFIELDFUNCTION_HXX
 
-#include <openturns/PointToFieldFunction.hxx>
+#include "openturns/PointToFieldFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

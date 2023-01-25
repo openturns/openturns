@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_TYPEDCOLLECTIONINTERFACEOBJECT_HXX
 #define OPENTURNS_TYPEDCOLLECTIONINTERFACEOBJECT_HXX
 
-#include <stdexcept>
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/Exception.hxx"
 

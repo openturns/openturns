@@ -21,9 +21,6 @@
 #ifndef OPENTURNS_TIMESERIES_HXX
 #define OPENTURNS_TIMESERIES_HXX
 
-#include <stdint.h> // for uint64_t
-#include <cmath>    // for nearbyint
-
 #include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Indices.hxx"

@@ -21,9 +21,6 @@
 #ifndef OPENTURNS_XMLSTORAGEMANAGER_HXX
 #define OPENTURNS_XMLSTORAGEMANAGER_HXX
 
-#include <iostream>              // for std::ostream
-#include <stack>                 // for std::stack
-#include <algorithm>             // for std::find
 #include "openturns/XMLToolbox.hxx"
 #include "openturns/OTprivate.hxx"
 #include "openturns/OTconfig.hxx"

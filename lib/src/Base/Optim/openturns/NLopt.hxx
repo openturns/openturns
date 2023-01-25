@@ -94,7 +94,7 @@ protected:
   /** Map of NLopt algorithms names */
   static std::map<String, UnsignedInteger> AlgorithmNames_;
 
-  /** Method to initialize alrogithm names map */
+  /** Method to initialize algorithm names map */
   static void InitializeAlgorithmNames();
 
 private:

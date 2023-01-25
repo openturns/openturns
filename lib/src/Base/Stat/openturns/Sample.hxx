@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_SAMPLE_HXX
 #define OPENTURNS_SAMPLE_HXX
 
-#include <iostream>              // for std::ostream
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Description.hxx"

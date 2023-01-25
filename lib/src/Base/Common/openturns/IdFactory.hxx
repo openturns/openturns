@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_IDFACTORY_HXX
 #define OPENTURNS_IDFACTORY_HXX
 
-#include <iostream>              // for std::ostream
 #include "openturns/OTprivate.hxx"
 #include "openturns/AtomicInt.hxx"
 #include "openturns/OStream.hxx"

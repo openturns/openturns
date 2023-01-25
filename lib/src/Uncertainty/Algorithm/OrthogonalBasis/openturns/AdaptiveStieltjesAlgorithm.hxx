@@ -23,8 +23,6 @@
 #ifndef OPENTURNS_ADAPTIVESTIELTJESALGORITHM_HXX
 #define OPENTURNS_ADAPTIVESTIELTJESALGORITHM_HXX
 
-#include <map>
-
 #include "openturns/OrthonormalizationAlgorithmImplementation.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 
