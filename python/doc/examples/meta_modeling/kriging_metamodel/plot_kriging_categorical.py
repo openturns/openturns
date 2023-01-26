@@ -41,7 +41,7 @@ def bending(inp):
 fun = ot.PythonFunction(3, 1, bending)
 lvls = 3  # Number of discrete levels
 dist = ot.ComposedDistribution([ot.Uniform(0, 1), ot.Uniform(0, 1), ot.UserDefined(np.arange(0, lvls).reshape((-1, 1)))])
-X = dist.getSample(200)
+X = dist.getSample(250)
 Y = fun(X)
 
 # %%
@@ -74,7 +74,7 @@ initdist = ot.DistributionCollection()
 for i in range(len(lb)):
     initdist.add(ot.Uniform(lb[i], ub[i]))
 initdist = ot.ComposedDistribution(initdist)
-initSample = initdist.getSample(10)
+initSample = initdist.getSample(20)
 optalg = ot.MultiStart(ot.NLopt('LN_COBYLA'), initSample)
 algo.setOptimizationAlgorithm(optalg)
 algo.setOptimizationBounds(bounds)
@@ -97,7 +97,8 @@ plt.figure()
 plt.plot(a[:, 0], a[:, 1], '*')
 for i in range(lvls):
     plt.annotate(str(i + 1), ((a[i, 0], a[i, 1])))
-plt.ylim(-0.5, 0.5)
+plt.xlim(-1.0, 1.0)
+plt.ylim(-1.0, 1.0)
 plt.title('Latent Variable mappings')
 
 # %%
