@@ -186,45 +186,6 @@ DistributionFactoryResult DistributionFactoryImplementation::buildBootStrapEstim
   return result;
 }
 
-DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelihoodEstimator (const Sample & sample,
-    const Bool isRegular) const
-{
-  const UnsignedInteger size = sample.getSize();
-  const Distribution distribution(build(sample));
-  const UnsignedInteger parameterDimension = distribution.getParameterDimension();
-  Distribution parameterDistribution;
-  if (isRegular)
-  {
-    Matrix theta(parameterDimension, parameterDimension);
-    const Sample pdf(distribution.computePDF(sample));
-    const Sample dpdf(distribution.computePDFGradient(sample));
-    for (UnsignedInteger i = 0; i < size; ++ i)
-    {
-      Matrix dpdfi(parameterDimension, 1, dpdf[i].getCollection());
-      dpdfi = dpdfi / pdf(i, 0);
-      theta = theta + dpdfi * dpdfi.transpose() / size;
-    }
-    CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension) / size).getImplementation());
-    parameterDistribution = Normal(distribution.getParameter(), covariance);
-  }
-  else
-  {
-    const UnsignedInteger bootstrapSize = getBootstrapSize();
-    BootstrapExperiment experiment(sample);
-    Sample parameterSample(0, distribution.getParameterDimension());
-    for (UnsignedInteger i = 0; i < bootstrapSize; ++ i)
-    {
-      Sample bootstrapSample(experiment.generate());
-      Distribution estimatedDistribution(build(bootstrapSample));
-      parameterSample.add(estimatedDistribution.getParameter());
-    }
-    KernelSmoothing factory;
-    parameterDistribution = factory.build(parameterSample);
-  }
-  DistributionFactoryResult result(distribution, parameterDistribution);
-  return result;
-}
-
 /* Bootstrap size accessor */
 UnsignedInteger DistributionFactoryImplementation::getBootstrapSize() const
 {

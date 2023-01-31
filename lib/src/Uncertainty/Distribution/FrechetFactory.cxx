@@ -120,7 +120,7 @@ Frechet FrechetFactory::buildAsFrechet() const
 
 DistributionFactoryResult FrechetFactory::buildEstimator(const Sample & sample) const
 {
-  return buildMaximumLikelihoodEstimator(sample, true);
+  return MaximumLikelihoodFactory::BuildEstimator(*this, sample, true);
 }
 
 END_NAMESPACE_OPENTURNS
