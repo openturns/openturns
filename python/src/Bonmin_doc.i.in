@@ -1,7 +1,7 @@
 %feature("docstring") OT::Bonmin
 "Bonmin MINLP solver.
 
-`Bonmin <https://www.coin-or.org/Bonmin/index.html>`_ is an open-source code for solving general MINLP problems.
+`Bonmin <https://www.coin-or.org/Bonmin/Intro.html>`_ is an open-source code for solving general MINLP problems.
 
 Parameters
 ----------
@@ -28,9 +28,13 @@ Notes
   +-----------+-------------------------------------------------+
   | B-OA      | Outer-approximation decomposition               |
   +-----------+-------------------------------------------------+
-  | B-QG      | Quesada and Grossmann's branch-and-cut          |
+  | B-QG      | Quesada and Grossmann branch-and-cut            |
   +-----------+-------------------------------------------------+
   | B-Hyb     | Hybrid outer-approximation based branch-and-cut |
+  +-----------+-------------------------------------------------+
+  | B-Ecp     | ECP cuts based branch-and-cut a la FilMINT      |
+  +-----------+-------------------------------------------------+
+  | B-iFP     | Iterated feasibility pump algorithm for MINLP   |
   +-----------+-------------------------------------------------+
 
 *Algorithms parameters:*

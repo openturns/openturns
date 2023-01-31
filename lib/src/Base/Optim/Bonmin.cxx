@@ -28,6 +28,7 @@
 #include "openturns/BonminProblem.hxx"
 #include <BonBonminSetup.hpp>
 #include <BonCbc.hpp>
+#include <BonminConfig.h>
 using namespace Bonmin;
 using namespace Ipopt;
 #endif
@@ -62,8 +63,11 @@ Bonmin * Bonmin::clone() const
 
 Description Bonmin::GetAlgorithmNames()
 {
-  const Description algoNames = {"B-BB", "B-OA", "B-QG", "B-Hyb"};
-  // iFP/Ecp are disabled, see https://github.com/coin-or/Bonmin/issues/31
+  const Description algoNames = {"B-BB", "B-OA", "B-QG", "B-Hyb"
+#if (BONMIN_VERSION_MAJOR * 100000 + BONMIN_VERSION_MINOR * 100 + BONMIN_VERSION_RELEASE) >= 100809
+    , "B-Ecp", "B-iFP"
+#endif
+  };
   return algoNames;
 }
 
@@ -145,17 +149,20 @@ void Bonmin::run()
   // Create setup, initialize options
   BonminSetup app;
   app.initializeOptionsAndJournalist();
-  app.options()->SetStringValue("bonmin.algorithm", algoName_);
-  app.options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
-  app.options()->SetStringValue("sb", "yes"); // skip ipopt banner
-  app.options()->SetIntegerValue("print_level", 0);
-  app.options()->SetStringValue("honor_original_bounds", "yes");// disabled in ipopt 3.14
-  app.options()->SetIntegerValue("bonmin.bb_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.nlp_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.lp_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.oa_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.fp_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.milp_log_level", 0);
+  if (!app.options()->SetStringValue("bonmin.algorithm", algoName_))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin.algorithm";
+  if (!app.options()->SetIntegerValue("max_iter", getMaximumIterationNumber()))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for max_iter";
+  if (!app.options()->SetStringValue("sb", "yes"))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for sb";
+  if (!app.options()->SetIntegerValue("print_level", 0))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for print_level";
+  if (!app.options()->SetStringValue("honor_original_bounds", "yes"))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for honor_original_bounds";
+  const Description algos = {"bb", "nlp", "lp", "oa", "fp", "milp"};
+  for (UnsignedInteger i = 0; i < algos.getSize(); ++ i)
+    if (!app.options()->SetIntegerValue("bonmin." + algos[i] + "_log_level", 0))
+      throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin." << algos[i] << "_log_level";
   GetOptionsFromResourceMap(app.options());
   String optlist;
   app.options()->PrintList(optlist);
