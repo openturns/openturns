@@ -109,7 +109,7 @@
  * #2098 (LinearModelStepwiseAlgorithm null basis)
  * #2101 (drop FunctionalChaosSobolIndices::summary)
  * #2103 (FunctionalChaosRandomVector notes)
- * #2110 (HSIC draw indices method does not handle input sample descritption names)
+ * #2110 (HSIC draw indices method does not handle input sample description names)
  * #2115 (Add mini-galleries of examples on the API pages)
  * #2121 (GaussianProcess Gibbs sampling method issues)
  * #2123 (MixtureClassifier 'grade' method does not work with a Sample input)
@@ -173,7 +173,7 @@
 === Miscellaneous ===
  * Add Collection::select(Indices) method
  * Parallelized SymbolicFunction evaluation (enabled from a sample size>100 with exprtk)
- * Sample csv export: allow to set precision and format
+ * Sample csv export: allow one to set precision and format
  * Sample csv import: handle nan/inf values
  * Add EnumerateFunction::getBasisSizeFromTotalDegree(maximumDegree)
 
@@ -268,7 +268,7 @@
  * #1911 (DirectionalSampling freezes python if not correctly initialized)
  * #1912 (splitter: missing doc)
  * #1915 (computePDFGradient(const Sample &) should rely on computePDFGradient(const Point &) in DistributionImplementation)
- * #1918 (PythonDistribution does not allow to overload the isDiscrete() method)
+ * #1918 (PythonDistribution does not allow one to overload the isDiscrete() method)
 
 
 == 1.17 release (2021-05-12) == #release-1.17
@@ -452,7 +452,7 @@
  * #1553 (Optimization algorithms ignore MaxEvaluationNumber parameter in SORM)
  * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)
  * #1558 (Example estimate_multivariate_normal: FittingTest::BestModelBIC fails to compute the BIC)
- * #1564 (Set a Point makes ot crash)
+ * #1564 (Set a Point makes OT crash)
  * #1567 (The API doc of SobolIndicesExperiment has a format issue)
  * #1573 (LinearModelAnalysis::drawQQPlot line is not the first bisector)
  * #1578 (Option to suppressing and/or save warnings?)
@@ -655,7 +655,7 @@
 
 ==== Major changes ====
  * Added OPT++ solvers
- * Improved a lot the performace of all the Rosenblatt related computations
+ * Improved a lot the performance of all the Rosenblatt related computations
  * Added elementary calibration capabilities
  * Added CMinpack, Ceres Solver least-squares solvers
 
@@ -1273,7 +1273,7 @@
  * Changed the parameter value of the default constructor for the AliMikhailHaqCopula and FarlieGumbelMorgensternCopula classes.
  * Added a new constructor to the ParametricEvaluationImplementation class.
  * Added floor, ceil, round, trunc symbols to analytical function.
- * Allow to save/load simulation algorithms
+ * Allow one to save/load simulation algorithms
  * Added the low order G1K3 rule to the GaussKronrodRule class.
  * Added the BitCount() method to the SpecFunc class.
  * Added vectorized versions of the non-uniform random generation methods in the DistFunc class.
@@ -1391,7 +1391,7 @@
 === Python module ===
  * Include sphinx documentation
  * Improved collection accessors
- * Allow to overload gradient and hessian
+ * Allow one to overload gradient and hessian
  * Improved viewer's integration with matplotlib api
  * Added PythonDynamicalFunction to override DynamicalFunction
 
@@ -1575,7 +1575,7 @@
  * Added a new constructor to the Cloud, Curve and Polygon classes.
  * Added an optimization for regularly discretized locations to the PiecewiseHermiteEvaluationImplementation and PiecewiseLinearEvaluationImplementation classes.
  * Added the streamToVTKFormat() method to the Mesh class.
- * Create the RandomGeneratorState class and allow to save and load a RandomGeneratorState.
+ * Create the RandomGeneratorState class and allow one to save and load a RandomGeneratorState.
  * Allow the use of a sample as operator() method argument of the AnalyticalNumericalMathEvaluationImplementation class.
  * Removed deprecated method Distribution::computeCDF(x, tail)
  * Removed deprecated method Curve::set|getShowPoints
@@ -1585,7 +1585,7 @@
 
 === Python module ===
  * Added NumericalSample::_repr_html_ for html representation in IPython
- * Allow to reuse figure/axes instances from matplotlib viewer
+ * Allow one to reuse figure/axes instances from matplotlib viewer
  * PythonFunction now prints the complete traceback
 
 === Miscellaneous ===
@@ -1618,7 +1618,7 @@
  * #669 (Bad export of NumericalSample)
  * #670 (TruncatedDistribution)
  * #672 (Multivariate python distribution requires getRange.)
- * #674 (python nmf dont force cache)
+ * #674 (python nmf don't force cache)
  * #675 (Bug with standard deviation evaluation for UserDefined distribution with dimension > 1)
  * #676 (DistributionCollection Study::add crash)
  * #677 (Error in SobolSequence.cxx on macos 10.9 with gcc4.8)
@@ -1672,7 +1672,7 @@
  * Changed back to the first (thinest) definition of hyperbolic stratas. Added a function to control the number of terms per degree.
 
 ==== Bug fixes ====
- * #411 (Long time to instanciate a NumericaMathFunction (analytical function))
+ * #411 (Long time to instantiate a NumericaMathFunction (analytical function))
  * #586 (The Pie graphics could be easily improved.)
  * #593 (Can't draw a Contour drawable with the new viewer)
  * #594 (Useless dependency to R library)
@@ -1782,7 +1782,7 @@ New classes:
  * Added a constructor based on the Indices class to the Box class.
 
 ==== Bug fixes ====
- * #403 (do not display the name if object is unamed)
+ * #403 (do not display the name if object is unnamed)
  * #424 (OT rc1.0 Ipython interactive mode: problem with "ctrl-c")
  * #429 (OT r1.0 Creation of a NumericalSample with an np.array of dimension 1)
  * #471 (The key 'BoxCox-RootEpsilon' is missing in the ResourceMap object)
@@ -1915,7 +1915,7 @@ Enhancements:
 
 ==== Bug fixes ====
  * #300 (openturns_preload makes it harder to bypass system libraries)
- * #365 (LeastSquaresStrategy sample contructor)
+ * #365 (LeastSquaresStrategy sample constructor)
  * #366 (ProjectionStrategy's input sample gets erased)
  * #369 (ndarray of dimension > 1 casts into NumericalPoint)
  * #371 (Invalid DistributionImplementation::computeCDF dimension)
@@ -1971,7 +1971,7 @@ New classe:
 
 Enhancements:
  * Added the DrawKendallPlot() method to the VisualTest class.
- * SensitivityAnalysis uses efficient Saltelli's algorith implementation without relying on R-sensitivity
+ * SensitivityAnalysis uses efficient Saltelli's algorithm implementation without relying on R-sensitivity
 
 ==== Bug fixes ====
  * #344
@@ -2215,7 +2215,7 @@ Fixes:
    * TestResult
    * UniVariatePolynomial
    * UserDefinedPair
- * Improved the use of interface classes in place of implementation classes: it removes the need to explicitely cast an implementation class into an interface class.
+ * Improved the use of interface classes in place of implementation classes: it removes the need to explicitly cast an implementation class into an interface class.
  * Split the module into 16 sub-modules, to allow for a fine grain loading of OpenTURNS.
 
 ==== Bug fixes ====
@@ -2272,7 +2272,7 @@ Enhancement of existing classes:
  * Minor enhancement of the ComposedNumericalMathFunction class to improve the save/load mechanism.
  * Enhanced the Curve class to allow the drawing of 1D sample or the drawing of a pair of 1D samples.
  * Changed the default precision for the PDF and CDF computations in the RandomMixture class.
- * Enhanced the Indices class: is is now persistent.
+ * Enhanced the Indices class: is now persistent.
  * Enhanced the WeightedExperiment class in order to add a non-uniform scalar weight to each realization of the generated sample.
  * Enhanced the LeastSquaresStrategy class to use the non-uniformly weighted experiments.
  * Enhanced the ProjectionStrategy class to prepare the development of the IntegrationStrategy class.
@@ -2338,7 +2338,7 @@ Fixes:
  * Fixed bug #505650 from Debian.
  * Fixed an overflow bug in the computeRange() method of the ChiSquared and Gamma distributions.
  * Fixed a bug in the computeCharacteristicFunction() method of the KernelMixture class.
- * Fixed an aliasing issue for bounded distributions in the the RandomMixture class.
+ * Fixed an aliasing issue for bounded distributions in the RandomMixture class.
  * Fixed bug in t_Cache_std.cxx : double definition for TEMPLATE_CLASSNAMEINIT.
  * Fixed bug in openturns_preload.c: look for the library libOT.so.0 in the standard paths, ${OPENTURNS_HOME}/lib/openturns and install path. Closes #211.
  * Fixed bug in Path.cxx: Use env var OPENTURNS_HOME to find OpenTURNS standard paths. Closes #212.
@@ -2354,7 +2354,7 @@ Fixes:
  * Fixed a bug in the computeSkewness() and computeKurtosis() methods of the KernelMixture class.
  * Fixed a bug in the computeRange() method of the Laplace class.
  * Fixed bug concerning DTD validation for wrapper description files.
- * Fixed bug concerning wrapper templates that didn't link to OpenTURNS correclty.
+ * Fixed bug concerning wrapper templates that didn't link to OpenTURNS correctly.
  * Fixed bug on wrapper description structure.
  * Fixed minor cast warnings.
 
@@ -2412,7 +2412,7 @@ Fixes:
   * Sensitivity Analysis (Sobol indices).
 
 === GUI ===
-The gui module is definitely removed. A new (and simplier) GUI will be proposed later.
+The gui module is definitely removed. A new (and simpler) GUI will be proposed later.
 
 ----
 
@@ -2434,7 +2434,7 @@ New classes:
  * Orthonormal Jacobi factory
  * LHSExperiment
  * CleaningStrategy
- * FixedExperiment: allow to reuse an existing sample into a factory of NumericalSample.
+ * FixedExperiment: allow one to reuse an existing sample into a factory of NumericalSample.
 
 Enhancement of existing classes:
  * WrapperFile
@@ -2625,7 +2625,7 @@ Wrappers:
 
 Methods:
  * Add method adapter to NumericalMathFunction : one can use any object's method as a execute part of a NumericalMathFunction.
- * Started to implement complementary CDF for all the distributions. It will allow to greatly improve the accuracy of the isoprobabilistic transformations.
+ * Started to implement complementary CDF for all the distributions. It will allow one to greatly improve the accuracy of the isoprobabilistic transformations.
  * Added tail CDF computation for most of the distributions (ongoing work).
  * Added Debye function to SpecFunc class.
  * Added a method to solve linear systems with several right-hand sides to all the matrices classes.
