@@ -1051,19 +1051,23 @@ SampleImplementation & SampleImplementation::stack(const SampleImplementation & 
 {
   if (sample.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the given sample has size=" << sample.getSize() << ", expected size=" << size_;
   const UnsignedInteger otherDimension = sample.getDimension();
-  SampleImplementation result(size_, dimension_ + otherDimension);
+  const UnsignedInteger totalDimension = dimension_ + otherDimension;
+  SampleImplementation result(size_, totalDimension);
   // First, the values
-  for (UnsignedInteger i = 0; i < size_; ++i)
+  for (UnsignedInteger i = 0; i < size_; ++ i)
   {
-    for (UnsignedInteger j = 0; j < dimension_; ++j) result(i, j) = operator()(i, j);
-    for (UnsignedInteger j = 0; j < otherDimension; ++j) result(i, dimension_ + j) = sample(i, j);
+    std::copy(data_begin() + i * dimension_, data_begin() + (i + 1) * dimension_,
+              result.data_begin() + i * totalDimension);
+    std::copy(sample.data_begin() + i * otherDimension, sample.data_begin() + (i + 1) * otherDimension,
+              result.data_begin() + i * totalDimension + dimension_);
   }
   // Second, the description
   if (!p_description_.isNull() || !sample.p_description_.isNull())
   {
     Description description(getDescription());
     const Description otherDescription(sample.getDescription());
-    for (UnsignedInteger i = 0; i < otherDimension; ++i) description.add(otherDescription[i]);
+    for (UnsignedInteger i = 0; i < otherDimension; ++ i)
+      description.add(otherDescription[i]);
     result.setDescription(description);
   }
   *this = result;
