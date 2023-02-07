@@ -37,29 +37,36 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS generate_docstrings openturns/PythonWrappingFunctions.hxx)
 
   set (swig_other_sources)
+  set (docstring_sources)
   foreach (it ${ARGN})
     if (${it} MATCHES ".*\\.i$")
       ot_install_swig_file (${it})
-    elseif(${it} MATCHES ".*_doc\\.i\\.in$")
-     # handle docstring generation
-      set (DOCSTRING_IN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${it})
-      get_filename_component (DOCSTRING_FILE_BASENAME ${DOCSTRING_IN_FILE} NAME_WE)
-      # https://github.com/swig/swig/issues/1273
-      option (SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH "Force double escaping of backslashes" OFF)
-      mark_as_advanced (SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH)
-      set (TIMES x1)
-      if ((SWIG_VERSION VERSION_LESS 4) OR SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH)
-        set (TIMES x2)
-      endif ()
-      add_custom_target (generate_${DOCSTRING_FILE_BASENAME}
-                          COMMAND ${CMAKE_COMMAND} -DDOCSTRING_IN_FILE=${DOCSTRING_IN_FILE} -DDOCSTRING_FILE=${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i -DTIMES=${TIMES} -P ${CMAKE_SOURCE_DIR}/cmake/escape_backslash.cmake
-                          DEPENDS ${DOCSTRING_IN_FILE})
-      add_dependencies (generate_docstrings generate_${DOCSTRING_FILE_BASENAME})
+    elseif (${it} MATCHES ".*_doc\\.i\\.in$")
+      list (APPEND docstring_sources ${it})
+
+      # for install target
+      get_filename_component (DOCSTRING_FILE_BASENAME ${it} NAME_WE)
       list (APPEND SWIGFILES ${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i)
     else ()
       list (APPEND swig_other_sources "${it}")
     endif ()
   endforeach ()
+  
+  # https://github.com/swig/swig/issues/1273
+  option (SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH "Force double escaping of backslashes" OFF)
+  mark_as_advanced (SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH)
+  set (TIMES x1)
+  if ((SWIG_VERSION VERSION_LESS 4) OR SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH)
+    set (TIMES x2)
+  endif ()
+
+  # handle docstring generation
+  add_custom_target (generate_${MODULENAME}_docstrings
+                      COMMAND ${CMAKE_COMMAND} -DDOCSTRING_SOURCES="${docstring_sources}"
+                      -DCURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DTIMES=${TIMES}
+                      -P ${CMAKE_SOURCE_DIR}/cmake/escape_backslash.cmake
+                      DEPENDS ${docstring_sources})
+  add_dependencies (generate_docstrings generate_${MODULENAME}_docstrings)  
 
   # swig_add_module is deprecated
   swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})
