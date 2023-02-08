@@ -146,7 +146,7 @@ SPHINX_FLAGS
     This is passed as the options of the sphinx-build command (see
     `sphinx-build invocation <http://sphinx-doc.org/invocation.html#invocation-of-sphinx-build>`_).
 
-All these targets depend on the rst files located in the sources 
+All these targets depend on the rst files located in the sources
 (:file:`$OT_SOURCE_DIR/python/doc/*.rst`).
 
 Example gallery

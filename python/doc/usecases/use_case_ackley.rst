@@ -6,24 +6,24 @@ The Ackley test case
 Introduction
 ------------
 
-The Ackley test case is a real function defined in dimension :math:`d` where :math:`d` is an integer. 
+The Ackley test case is a real function defined in dimension :math:`d` where :math:`d` is an integer.
 
 The Ackley function is defined by the equation:
 
 .. math::
    f(\mathbf{x}) = -a \exp\left(-b\sqrt{\frac{1}{d}\sum_{i=1}^d}x_i^2\right)-\exp\left(\frac{1}{d}\sum_{i=1}^d \cos(c x_i)\right)+a+\exp(1)
- 
+
 
 for any :math:`\mathbf{x} \in [-15,15]^d`. However, we consider the smaller interval :math:`[-4,4]^d` in this example, for visual purposes.
 
-We use the dimension :math:`d=2` with the parameters :math:`a=20`, :math:`b=0.2`, :math:`c=2\pi`. 
+We use the dimension :math:`d=2` with the parameters :math:`a=20`, :math:`b=0.2`, :math:`c=2\pi`.
 
-The solution is 
+The solution is
 
 .. math::
    \mathbf{x}^\star=(0,0,...,0)
 
-where 
+where
 
 .. math::
    f_{min} = f(\mathbf{x}^\star) = 0.

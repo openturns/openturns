@@ -8,7 +8,7 @@ We consider a simple beam stressed by a traction load F at both sides.
 
 
 .. figure:: ../_static/axial-stressed-beam.png
-    :align: center 
+    :align: center
     :alt: use case geometry
     :width: 50%
 
@@ -29,8 +29,8 @@ Failure occurs when the beam plastifies, i.e. when the axial stress gets larger 
 .. math:: R - \frac{F}{ \pi D^2/4} \leq 0
 
 where :math:`R` is the strength.
-  
-Therefore, the limit state function :math:`G` is: 
+
+Therefore, the limit state function :math:`G` is:
 
 .. math:: G(R,F) = R - \frac{F}{\pi D^2/4},
 
@@ -48,21 +48,21 @@ We consider the following distribution functions.
 
 
 ========  ================================================================================
-Variable  Distribution 
+Variable  Distribution
 ========  ================================================================================
 R         LogNormal(  :math:`\mu_R= 3 \times 10^6`,  :math:`\sigma_R=3  \times 10^5` ) [Pa]
-F         Normal(     :math:`\mu_F=750` ,  :math:`\sigma_F=50`)  [N]                       
+F         Normal(     :math:`\mu_F=750` ,  :math:`\sigma_F=50`)  [N]
 ========  ================================================================================
 
 
  where :math:`\mu_R=E(R)` and :math:`\sigma_R^2=V(R)` are the mean and the variance of :math:`R`.
 
-The failure probability is: 
+The failure probability is:
 
 .. math:: P_f = \text{Prob}(G(R,F) \leq 0).
 
 
-The exact :math:`P_f` is 
+The exact :math:`P_f` is
 
 .. math:: P_f = 0.02920.
 

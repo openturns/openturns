@@ -33,20 +33,20 @@ In a general way, the covariance models write:
 
 .. math::
 
-    C(\vect{s}, \vect{t}) = \mat{L}_{\rho}\left(\dfrac{\vect{s}}{\theta}, 
-                            \dfrac{\vect{t}}{\theta}\right)\, 
-                            \mbox{Diag}(\vect{\sigma}) \, \mat{R} \, 
-                            \mbox{Diag}(\vect{\sigma}) \, 
-                            \Tr{\mat{L}}_{\rho}\left(\dfrac{\vect{s}}{\theta}, 
-                            \dfrac{\vect{t}}{\theta}\right), \quad 
+    C(\vect{s}, \vect{t}) = \mat{L}_{\rho}\left(\dfrac{\vect{s}}{\theta},
+                            \dfrac{\vect{t}}{\theta}\right)\,
+                            \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,
+                            \mbox{Diag}(\vect{\sigma}) \,
+                            \Tr{\mat{L}}_{\rho}\left(\dfrac{\vect{s}}{\theta},
+                            \dfrac{\vect{t}}{\theta}\right), \quad
                             \forall (\vect{s}, \vect{t}) \in \cD
 
 where:
 
 - :math:`\vect{\theta} \in \Rset^n` is the *scale* parameter
 - :math:`\vect{\sigma} \in \Rset^d` id the *amplitude* parameter
-- :math:`\mat{L}_{\rho}(\vect{s}, \vect{t})` is the Cholesky factor of 
-  :math:`\mat{\rho}(\vect{s}, \vect{t})`: 
+- :math:`\mat{L}_{\rho}(\vect{s}, \vect{t})` is the Cholesky factor of
+  :math:`\mat{\rho}(\vect{s}, \vect{t})`:
 
 .. math::
 
@@ -56,7 +56,7 @@ where:
 The correlation function :math:`\mat{\rho}` may depend on additional
 specific parameters which are not made explicit here.
 
-The global correlation is given by two separate correlations: 
+The global correlation is given by two separate correlations:
 
     - the spatial correlation between the components of :math:`X_{\vect{t}}`
       which is given by the correlation matrix
@@ -66,7 +66,7 @@ The global correlation is given by two separate correlations:
       For each  :math:`\vect{t}`, it links together the components of
       :math:`X_{\vect{t}}`.
     - the correlation between :math:`X_{\vect{s}}` and  :math:`X_{\vect{t}}`
-      which is given by :math:`\mat{\rho}(\vect{s}, \vect{t})`. 
+      which is given by :math:`\mat{\rho}(\vect{s}, \vect{t})`.
 
         - In the general case, the correlation links each component
           :math:`X^i_{\vect{t}}` to all the components of :math:`X_{\vect{s}}`
@@ -82,7 +82,7 @@ The global correlation is given by two separate correlations:
 
 .. math::
 
-    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta}, 
+    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta},
                                       \dfrac{\vect{t}}{\theta}\right)\,
                             \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,
                             \mbox{Diag}(\vect{\sigma}), \quad

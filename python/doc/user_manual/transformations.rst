@@ -19,6 +19,6 @@ Transformations
     TrendFactory
 
     :template: class.rst_t
-    
+
     TrendTransform
     InverseTrendTransform

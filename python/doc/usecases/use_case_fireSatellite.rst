@@ -3,22 +3,22 @@
 The Fire Satellite model
 ========================
 
-The fire satellite model is a multidisciplinary test case that involves 3 disciplines: Power, Orbit and Attitude \& control. This usecase has been firstly proposed by Wertz et al. [wertz1999]_. 
+The fire satellite model is a multidisciplinary test case that involves 3 disciplines: Power, Orbit and Attitude \& control. This usecase has been firstly proposed by Wertz et al. [wertz1999]_.
 
-The model deals with the design of a realistic satellite, the goal of which is to detect and monitor forest fires from Earth's orbit, through the use of optical sensors. 
-Three disciplines are needed to design this satellite. 
-The orbit discipline is responsible of computing the orbit period, the satellite velocity, the maximal slewing angle and the eclipse period. 
-The power discipline is used to estimate the total power of the system and the area of the solar arrays. 
+The model deals with the design of a realistic satellite, the goal of which is to detect and monitor forest fires from Earth's orbit, through the use of optical sensors.
+Three disciplines are needed to design this satellite.
+The orbit discipline is responsible of computing the orbit period, the satellite velocity, the maximal slewing angle and the eclipse period.
+The power discipline is used to estimate the total power of the system and the area of the solar arrays.
 Finally, the attitude \& control discipline computes the total torque of the satellite and the power required for the attitude control system.
 These disciplines exchange several coupling variables. The multidisciplinary analysis that is used to compute the converged values of the coupling variables is performed through a Fixed Point Iteration algorithm.
 
 
 .. figure:: ../_static/firesatellite.png
-    :align: center 
+    :align: center
     :alt: use case geometry
     :width: 50%
-    
-    
+
+
 This test case is composed of nine random variables:
 
 - :math:`H \sim\mathcal{N}(18e6, 1e6)`: the altitude (m)
@@ -52,7 +52,7 @@ The three outputs of interest are:
 
 Different deterministic quantities are also present:
 
-- :math:`c`:  the speed of light, 2.9979e8 m/s 
+- :math:`c`:  the speed of light, 2.9979e8 m/s
 
 - :math:`\omega_{max}`: the maximum rotational velocity of reaction wheel, 6000 rpm
 
@@ -104,10 +104,10 @@ Different deterministic quantities are also present:
 
 We assume that the input variables are independent.
 
-The following figure depicts the interaction between the disciplines.    
+The following figure depicts the interaction between the disciplines.
 
 .. figure:: ../_static/N2firesat.png
-    :align: center 
+    :align: center
     :alt: use case geometry
     :width: 80%
 
@@ -141,7 +141,7 @@ with
 .. math::
     \tau_{slew} = \frac{4\theta_{slew}}{\Delta t_{slew}^2} I_{max}
 
-and 
+and
 
 .. math::
     \tau_{dist} = \sqrt{\tau_g^2 + \tau_{sp}^2 + \tau_m^2 + \tau_a^2}
@@ -158,7 +158,10 @@ and
 .. math::
     \tau_{a} = \frac{1}{2} L_{alpha} \rho C_d A v^2
 
-with :math:`\tau_{tot}` the total torque, :math:`\tau_{slew}` the slewing torque, :math:`\tau_{dist}` the disturbance torque, :math:`\tau_{g}` the gravity gradient torque, :math:`\tau_{sp}` the solar radiation torque, :math:`\tau_{m}` the magnetic filed interaction torque, :math:`\tau_{a}` the aerodynamic torque.
+with :math:`\tau_{tot}` the total torque, :math:`\tau_{slew}` the slewing torque,
+:math:`\tau_{dist}` the disturbance torque, :math:`\tau_{g}` the gravity gradient
+torque, :math:`\tau_{sp}` the solar radiation torque, :math:`\tau_{m}` the
+magnetic field interaction torque, :math:`\tau_{a}` the aerodynamic torque.
 
 The attitude control power :math:`P_{ACS}` is finally defined by
 
@@ -178,28 +181,28 @@ with,
 .. math::
     P_{EOL} = P_{BOL}(1-\epsilon_{deg})^{LT},
 
-the power production capability at the end of life, defined by 
+the power production capability at the end of life, defined by
 
 .. math::
     P_{BOL} = \eta F_s I_d \cos(i)
-    
-the power production capability at the beginning of life, and 
+
+the power production capability at the beginning of life, and
 
 
 .. math::
     P_{sa} = \frac{\left( \frac{P_e T_e}{0.6} + \frac{P_d}{T_d}{0.8} \right)}{T_d}
- 
+
 is the required power output. :math:`P_e` and :math:`P_d` are the satellite requirements during eclipse and daylight (here :math:`P_e = P_d = P_{tot}`). :math:`T_e` and :math:`T_d` are the time per orbit spent in eclipse and daylight.
 
 Finally, the inertia can be derived as follows,
 
 .. math::
-    I_{min} = \min(I_{totX},I_{totY},I_{totZ}) 
+    I_{min} = \min(I_{totX},I_{totY},I_{totZ})
 
 .. math::
-    I_{max} = \max(I_{totX},I_{totY},I_{totZ}) 
+    I_{max} = \max(I_{totX},I_{totY},I_{totZ})
 
-with :math:`I_{tot} = I_{sa} + I_{body}` the total moment of inertia in the three dimensions, that depends on, 
+with :math:`I_{tot} = I_{sa} + I_{body}` the total moment of inertia in the three dimensions, that depends on,
 
 .. math::
     I_{saX} = m_{sa} \left( \frac{1}{12} (L^2+t^2) + (D+\frac{L}{2})^2 \right)
@@ -214,8 +217,8 @@ with :math:`I_{tot} = I_{sa} + I_{body}` the total moment of inertia in the thre
 with :math:`L = \sqrt{\frac{A_{sa} r_{tw}}{n_{sa}}}` the length of the solar array,
 :math:`W = \sqrt{\frac{A_{sa}}{r_{tw}n_{sa}}}` the width of the solar array, and
 :math:`m_{sa} = 2\rho_{sa}L W t` the mass of the solar array.
-   
-Two tunings parameters are present : 
+
+Two tunings parameters are present :
 
 - :math:`tolFPI`: the tolerance on the fixed point iteration algorithm used in the multidisciplinary analysis, 1e-3
 - :math:`maxFPIIter`: the maximum number of iterations of the fixed point iteration algorithm used in the multidisciplinary analysis, 50
@@ -244,9 +247,9 @@ We can load this model from the use cases module as follows :
     >>> # Load the Fire satellite use case with total torque as output
     >>> modelTotalTorque = m.modelTotalTorque()
     >>> # Load the Fire satellite use case with total power as output
-    >>> modelTotalPower = m.modelTotalPower()    
+    >>> modelTotalPower = m.modelTotalPower()
     >>> # Load the Fire satellite use case with solar array area as output
-    >>> modelSolarArrayArea = m.modelSolarArrayArea()    
+    >>> modelSolarArrayArea = m.modelSolarArrayArea()
 
 API documentation
 -----------------

@@ -397,7 +397,7 @@ external process (scilab) vs PythonFunction.
            mfprintf(f, "y = %.20e", y);
            file("close", f);
            quit
-         
+
 
 -  Conversion to Python of the scilab script. It takes now 0.00001s per
    point:

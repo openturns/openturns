@@ -720,7 +720,7 @@ Incorrect example:
     #define MAXIMUM_ITERATIONS 32;
     #define PRINT_FORMAT       "%s:line %d, %s"
 
-Comments and internal documentation 
+Comments and internal documentation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::

@@ -6,7 +6,7 @@ This section deals with the process of creation of a new extra module.
 Adapt an existing template
 --------------------------
 
-#. Fork the C++ template module repository 
+#. Fork the C++ template module repository
    `OTTemplate <https://github.com/openturns/ottemplate>`_,
    rename it from the project settings and clone it:
 
@@ -30,7 +30,7 @@ Adapt an existing template
 
         git rm customize.sh
         git commit customize.sh -m "Removed customize script"
-        
+
 #. Set the version of your module:
 
    ::
@@ -68,7 +68,7 @@ Install and test
    ::
 
            python -c "import openturns as ot; print(ot.__version__)"
-         
+
 
    and python should not complain about a non existing openturns module.
 
@@ -78,7 +78,7 @@ Install and test
 
            python
            >>> import mymodule
-         
+
 
    and python should not complain about a non existing mymodule module.
 
@@ -87,7 +87,7 @@ Install and test
    ::
 
            make package_source
-         
+
 
    It will create a tarball named mymodule-X.Y.tar.gz (and
    mymodule-X.Y.tar.bz2), where X.Y is the version number of the module.

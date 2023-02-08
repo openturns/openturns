@@ -45,7 +45,7 @@ response surface :math:`\widehat{h}^{(-\cX_i)}` is built on the
 remaining sub-samples :math:`\cX \setminus \cX_i`. The approximation
 error is estimated on the set-aside sample :math:`\cX_i`:
 
-.. math:: 
+.. math::
    Err^{(i)}  = \dfrac{1}{ |\cX_i|}  \sum\limits_{\underline{x}^{(j)} \in \cX_i} \left[ h(\underline{x}^{(j)}) - \widehat{h}^{(-\cX_i)} {(\underline{x}^{(j)})} \right]^2
 
 in which
@@ -176,7 +176,7 @@ Leave-one-out cross validation is also known as jackknife in statistics.
 
 
 .. .. topic:: Examples:
-.. 
+..
 ..     - See :doc:`/examples/data_analysis/XXXXXXXXXXXXx`
 
 

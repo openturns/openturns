@@ -254,7 +254,7 @@ The Kendall Plot test validates the use of the Frank copula for a sample.
     graph = ot.VisualTest.DrawKendallPlot(sample, copula2)
     View(graph)
 
-The Kendall Plot test invalidates the use of the Frank copula for a sample. 
+The Kendall Plot test invalidates the use of the Frank copula for a sample.
 
 
 Remark: In the case where you want to test a sample with respect to a

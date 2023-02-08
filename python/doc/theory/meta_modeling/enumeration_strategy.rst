@@ -42,10 +42,10 @@ Let us first define the *length* of any multi-index :math:`{\idx} \in {\Nset}^{n
 
     |{\idx}| = \sum_{i=1}^{n_X} \alpha_i
 
-When the multi-index represents the marginal degrees of a polynomial, 
-the length of the multi-index is the total degree of the polynomial. 
+When the multi-index represents the marginal degrees of a polynomial,
+the length of the multi-index is the total degree of the polynomial.
 
-An enumeration rule is a method to explore this basis. 
+An enumeration rule is a method to explore this basis.
 It is defined by an enumeration function :math:`\tau` from :math:`\Nset` to :math:`\NM`,
 which creates a one-to-one mapping between an integer :math:`j` and a multi-index :math:`\idx`.
 

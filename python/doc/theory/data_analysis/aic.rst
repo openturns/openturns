@@ -4,11 +4,11 @@ Akaike Information Criterion (AIC)
 ----------------------------------
 
 This method deals with the modelling of a probability distribution of a
-random variable :math:`X`. It seeks to rank variable candidate 
+random variable :math:`X`. It seeks to rank variable candidate
 distributions by using a sample of data
 :math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}`.
 
-We denote by :math:`\cM_1`,…, :math:`\cM_K` the parametric models 
+We denote by :math:`\cM_1`,…, :math:`\cM_K` the parametric models
 envisaged by user among the :ref:`parametric models <parametric_distribution_factories>`.
 We suppose here that the parameters of these models have been estimated
 previously by :ref:`Maximum Likelihood <maximum_likelihood>`
@@ -27,13 +27,13 @@ models may be less robust that simpler models with less parameters.
 Actually, the limited available information (:math:`N` data points) does
 not allow one to estimate robustly too many parameters.
 
-The Akaike Information Criterion (AIC) can be used to avoid this problem. 
+The Akaike Information Criterion (AIC) can be used to avoid this problem.
 The principle is to rank :math:`\cM_1,\dots,\cM_K` according to the following quantity:
 
 .. math::
 
    \begin{aligned}
-       \textrm{AIC}_i = -2 \frac{\log(L_i)}{n} + \frac{2 p_i}{n} 
+       \textrm{AIC}_i = -2 \frac{\log(L_i)}{n} + \frac{2 p_i}{n}
      \end{aligned}
 
 where :math:`p_i` denotes the number of parameters being adjusted for
@@ -43,9 +43,9 @@ increases with the numbers of parameters to be estimated. A complex
 model will then have a good score only if the gain in terms of
 likelihood is high enough to justify the number of parameters used.
 
-In context of small data, there is a substantial risk that AIC select 
-models that have too many parameters. In other words, the risk of 
-overfitting is important. To tackle such issue, the AICc criterion was 
+In context of small data, there is a substantial risk that AIC select
+models that have too many parameters. In other words, the risk of
+overfitting is important. To tackle such issue, the AICc criterion was
 developed : it consists in evaluating the AIC with a correction term (
 extra penalty) for small data. The formula is as follows :
 
@@ -55,7 +55,7 @@ extra penalty) for small data. The formula is as follows :
        \textrm{AICC}_i = AIC + \frac{(2 p_i)(p_i + 1)}{n - p_i - 1}
      \end{aligned}
 
-One might notice that the extra term penalty vanishes for 
+One might notice that the extra term penalty vanishes for
 :math:`n \rightarrow \infty`.
 
 

@@ -40,7 +40,7 @@ We assume that the random variables E, F, L and I are dependent and associated w
         0 & 0 & 1 & -0.2 \\
         0 & 0 & -0.2 & 1
         \end{pmatrix}
- 
+
 
 In other words, we consider that the variables L and I are negatively correlated : when the length L increases, the moment of intertia I decreases.
 
@@ -52,7 +52,7 @@ The vertical displacement at free end of the cantilever beam is:
 
 A typical event of interest is when the beam deviation is too large which is a failure :
  .. math::
-    Y \ge 0.30 (m) 
+    Y \ge 0.30 (m)
 
 
 API documentation

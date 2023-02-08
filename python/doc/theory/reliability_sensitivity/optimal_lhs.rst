@@ -24,7 +24,7 @@ Let the input vector X whose marginals are independent and associated probabilis
 In practice, we look for a design in the space :math:`[0,1]^d` and we use an inverse
 iso-probabilistic transformation to get the result in the original domain.
 
-Let :math:`\phi : [0,1]^d \rightarrow \mathbb{R}^{+}` be a a space filling criterion, which is a measure of *accuracy* of an optimal LHS design. 
+Let :math:`\phi : [0,1]^d \rightarrow \mathbb{R}^{+}` be a a space filling criterion, which is a measure of *accuracy* of an optimal LHS design.
 Most of these criteria focus on discrepancy, which measures how far a given distribution of points deviates from a perfectly uniform one.
 
 Two space filling criteria are implemented:

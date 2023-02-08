@@ -104,10 +104,10 @@ Relation :eq:`Silverman` is empirical and gives good results when the density is
 Plug-in bandwidth selection method (dimension 1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The plug-in bandwidth selection method improves the estimation of the rugosity of the second 
-derivative of the density. 
-Instead of making the gaussian assumption, the method uses a kernel smoothing method 
-in order to make an approximation of higher derivatives of the density. 
+The plug-in bandwidth selection method improves the estimation of the rugosity of the second
+derivative of the density.
+Instead of making the gaussian assumption, the method uses a kernel smoothing method
+in order to make an approximation of higher derivatives of the density.
 
 Relation :eq:`AMISE` requires the evaluation of the quantity :math:`\Phi_4`.
 As a general rule, we use the estimator :math:`\hat{\Phi}_r` of :math:`\Phi_r` defined by:
@@ -216,9 +216,9 @@ Then, to summarize, thanks to relations :eq:`rel1`, :eq:`rel2`, :eq:`rel3`, :eq:
 
     \boldsymbol{h_{AMISE}(K) = t \circ \hat{\Phi}_4 \circ l (h_{AMISE}(K))}
 
-This method is due to (Sheather, Jones, 1991) who used ideas from (Park, Marron, 1990). 
-The algorithm is presented in (Wand, Jones, 1994), page 74 under the "Solve the equation rule" name. 
-The implementation uses ideas from (Raykar, Duraiswami, 2006), but the fast selection is not implemented. 
+This method is due to (Sheather, Jones, 1991) who used ideas from (Park, Marron, 1990).
+The algorithm is presented in (Wand, Jones, 1994), page 74 under the "Solve the equation rule" name.
+The implementation uses ideas from (Raykar, Duraiswami, 2006), but the fast selection is not implemented.
 
 Scott rule (dimension d)
 ~~~~~~~~~~~~~~~~~~~~~~~~

@@ -42,7 +42,7 @@ Here are the steps required to propose a modification with git:
 
 To write a nice commit message, keep a short commit title (less than 50 characters),
 leave a blank line, then add a more detailed description.
-If the commit fixes an issue, add `Closes #NNN` to the message body that 
+If the commit fixes an issue, add `Closes #NNN` to the message body that
 way it will be closed automatically on merge.
 Also update the ChangeLog file accordingly.
 

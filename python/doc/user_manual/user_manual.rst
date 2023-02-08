@@ -18,7 +18,7 @@ This section details classes, functions included in the Python bindings.
     integration
     isoprobabilistic_transformation
     optimization
-    orthogonal_basis 
+    orthogonal_basis
     probabilistic_modelling
     response_surface/response_surface
     statistics_on_sample

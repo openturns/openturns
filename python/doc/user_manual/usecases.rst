@@ -23,3 +23,4 @@ Use cases from the usecases module
     usecases.viscous_free_fall.ViscousFreeFall
     usecases.fireSatellite_function.FireSatelliteModel
     usecases.wingweight_function.WingWeightModel
+

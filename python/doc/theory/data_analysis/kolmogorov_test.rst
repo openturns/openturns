@@ -33,24 +33,24 @@ With a sample :math:`\left\{ x_1,x_2,\ldots,x_N \right\}`, the distance is estim
 
     \widehat{D}_N = \sup_{i=1 \ldots N}\left|F\left(x_i\right)-\frac{i-1}{N} ; \frac{i}{N}-F\left(x_i\right)\right|
 
-Assume that the sample is drawn from the candidate distribution. 
+Assume that the sample is drawn from the candidate distribution.
 By definition, the *p*-value of the test is the probability:
 
 .. math::
 
     p = P(D > \widehat{D}_N)
 
-In the case where the fit is good, the value of :math:`\widehat{D}_N` is 
-small, which leads to a p-value closer to 1. 
-The candidate distribution will not be rejected if and only if 
-:math:`p` is larger than a given threshold probability. 
+In the case where the fit is good, the value of :math:`\widehat{D}_N` is
+small, which leads to a p-value closer to 1.
+The candidate distribution will not be rejected if and only if
+:math:`p` is larger than a given threshold probability.
 In general, the threshold p-value is chosen to be 0.05:
 
 .. math::
 
     p_{ref} = 0.05
 
-Based on the p-value, 
+Based on the p-value,
 
 - if  :math:`p<p_{ref}`, we reject the candidate distribution,
 
@@ -60,22 +60,22 @@ Two situations may occur in practice.
 
 - the parameters of the distribution under test are known,
 
-- the parameters of the distribution under test are estimated from a sample. 
+- the parameters of the distribution under test are estimated from a sample.
 
-If the parameters of the distribution under test are known, 
-algorithms are available to directly compute 
-the distribution of :math:`\widehat{D}_N` both for *N* large 
-(asymptotic distribution) or for *N* small (exact distribution). 
-This is because the distribution of :math:`\widehat{D}_N` does 
-not depend on the candidate distribution. 
+If the parameters of the distribution under test are known,
+algorithms are available to directly compute
+the distribution of :math:`\widehat{D}_N` both for *N* large
+(asymptotic distribution) or for *N* small (exact distribution).
+This is because the distribution of :math:`\widehat{D}_N` does
+not depend on the candidate distribution.
 
-If the parameters of the distribution under test are estimated 
-from a sample, the :math:`\widehat{D}_N` statistic is generally smaller, because 
-the parameters of the distribution have been computed from the 
-sample. 
-In general, the distribution of :math:`\widehat{D}_N` is not known 
-and depends on the candidate distribution.  
-Therefore, sampling methods can be used in order to estimate the p-value.  
+If the parameters of the distribution under test are estimated
+from a sample, the :math:`\widehat{D}_N` statistic is generally smaller, because
+the parameters of the distribution have been computed from the
+sample.
+In general, the distribution of :math:`\widehat{D}_N` is not known
+and depends on the candidate distribution.
+Therefore, sampling methods can be used in order to estimate the p-value.
 
 The diagram below illustrates the principle of comparison with the empirical
 cumulative distribution function for an ordered sample
