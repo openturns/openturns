@@ -31,9 +31,8 @@ gradientObservations : 2-d sequence of float
 
 Notes
 -----
-GaussianLinearCalibration is known as the *Best Linear Unbiased Estimator* or *BLUE*. 
-It is the minimum variance estimator of the parameter of a given model under 
-the assumption that this parameter acts linearly in the model.
+GaussianLinearCalibration implements the "Maximum A Posteriori" (MAP) estimator for a linear model
+under the Bayesian hypothesis that the prior and the observation errors have Gaussian distributions. 
 
 The given observation error covariance can be either *local*, ie the same matrix applies for each observation and is of
 dimension the output dimension of the model, or *global*, ie the matrix describes
