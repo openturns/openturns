@@ -19,9 +19,8 @@ errorCovariance : 2-d sequence of float
 
 Notes
 -----
-GaussianNonLinearCalibration is the minimum variance estimator of the parameter of a given model
-under the assumption that this parameter is dispersed according to a known
-covariance matrix. 
+GaussianNonLinearCalibration implements the "Maximum A Posteriori" (MAP) estimator for a nonlinear model
+under the Bayesian hypothesis that the prior and the observation errors have Gaussian distributions. 
 This algorithm is also known as *3DVAR*. 
 
 The given observation error covariance can be either *local*,
