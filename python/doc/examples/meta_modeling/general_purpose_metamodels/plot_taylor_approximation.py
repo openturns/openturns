@@ -12,8 +12,10 @@ Taylor approximations
 #          = \, h(\vect{x}_0) \, +
 #         \, \sum_{i=1}^{n_{X}} \; \frac{\partial h}{\partial x_i}(\vect{x}_0).\left(x_i - x_{0,i} \right)
 #
+# where :math:`h : \Rset^2 \rightarrow \Rset^2` is defined by:
 #
-# Here :math:`h(x) = [cos(x_1 + x_2), (x_2 + 1) e^{x_1 - 2 x_2}]`.
+# .. math::
+#    h(\vect{x}) = \left( \cos(x_1 + x_2), (x_2 + 1) e^{x_1 - 2 x_2} \right).
 #
 
 # %%
