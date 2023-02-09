@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # pip install flake8 
 # TODO: reduce max line length
 
