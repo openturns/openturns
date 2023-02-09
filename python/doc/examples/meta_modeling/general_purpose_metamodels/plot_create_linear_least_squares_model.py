@@ -7,14 +7,14 @@ Create a linear least squares model
 # function:
 #
 # .. math::
-#     \underline{y} \, \approx \, \widehat{h}(\underline{x}) \,
-#    = \, \sum_{j=0}^{n_X} \; a_j \; \psi_j(\underline{x})
+#     \vect{y} \, \approx \, \widehat{h}(\vect{x}) \,
+#    = \, \sum_{j=0}^{n_X} \; a_j \; \psi_j(\vect{x})
 #
 #
-# Here
+# where :math:`h : \Rset^2 \rightarrow \Rset^2` is defined by:
 #
 # .. math::
-#    h(x) = [cos(x_1 + x_2), (x2 + 1)* e^{x_1 - 2* x_2}]
+#    h(\vect{x}) = \left(\cos(x_1 + x_2), (x_2 + 1) e^{x_1 - 2 x_2} \right)
 #
 
 # %%
@@ -24,7 +24,7 @@ from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 
-# Prepare an input sample
+# Prepare an input sample.
 x = [[0.5, 0.5], [-0.5, -0.5], [-0.5, 0.5], [0.5, -0.5]]
 x += [[0.25, 0.25], [-0.25, -0.25], [-0.25, 0.25], [0.25, -0.25]]
 
@@ -40,19 +40,19 @@ algo = ot.LinearLeastSquares(x, y)
 algo.run()
 
 # %%
-# get the linear term
+# Get the linear term.
 algo.getLinear()
 
 # %%
-# get the constant term
+# Get the constant term.
 algo.getConstant()
 
 # %%
-# get the metamodel
+# Get the metamodel.
 responseSurface = algo.getMetaModel()
 
 # %%
-# plot 2nd output of our model with x1=0.5
+# Plot 2nd output of our model with x1=0.5.
 graph = (
     ot.ParametricFunction(responseSurface, [0], [0.5]).getMarginal(1).draw(-0.5, 0.5)
 )
