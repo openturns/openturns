@@ -3,6 +3,9 @@
 Stochastic process definitions
 ==============================
 
+Notations
+---------
+
 In this document, we note:
 
 -  :math:`X: \Omega \times\cD \rightarrow \Rset^d` a multivariate
@@ -27,18 +30,25 @@ In this document, we note:
    :math:`m(\vect{t})=\Expect{X_{\vect{t}}}`,
 
 -  :math:`C : \cD \times \cD \rightarrow  \cM_{d \times d}(\Rset)` its
-   *covariance function*, defined by
-   :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))^t}`,
+   *covariance function*, defined by:
+
+.. math::
+   \operatorname{Cov}(\vect{s}, \vect{t})
+   = \Expect{(X_{\vect{s}} - m(\vect{s}))(X_{\vect{t}} - m(\vect{t}))^t},
 
 -  :math:`R : \cD \times \cD \rightarrow  \mathcal{M}_{d \times d}(\Rset)`
    its *correlation function*, defined for all
    :math:`(\vect{s}, \vect{t})`, by :math:`R(\vect{s}, \vect{t})` such
-   that for all :math:`(i,j)`,
-   :math:`R_{ij}(\vect{s}, \vect{t})=C_{ij}(\vect{s}, \vect{t})/\sqrt{C_{ii}(\vect{s}, \vect{t})C_{jj}(\vect{s}, \vect{t})}`.
+   that for all :math:`(i,j)`:
+
+.. math::
+   R_{ij}(\vect{s}, \vect{t})
+   = \frac{\operatorname{Cov}_{ij}(\vect{s}, \vect{t})}{\sqrt{\operatorname{Cov}_{ij}(\vect{s}, \vect{s}) \operatorname{Cov}_{ij}(\vect{t}, \vect{t})}}.
 
 We recall here some useful definitions.
 
-**Spatial (temporal) and Stochastic Mean**
+Spatial (temporal) and Stochastic Mean
+--------------------------------------
 
 The *spatial mean* of the process :math:`X` is the function
 :math:`m: \Omega \rightarrow \Rset^d` defined by:
@@ -78,7 +88,8 @@ If :math:`n=1` and if the mesh is a regular grid
 
     \forall \omega\in \Omega, \, \forall \vect{t} \in \cM, \, m(\omega)=  g(\vect{t})  = \vect{c}
 
-**Normal process**
+Normal process
+--------------
 
 A stochastic process is *normal* if all its finite
 dimensional joint distributions are normal, which means that for all
@@ -114,7 +125,8 @@ A normal process is entirely defined by its mean function :math:`m`
 and its covariance function :math:`C` (or correlation function
 :math:`R`).
 
-**Weak stationarity (second order stationarity)**
+Weak stationarity (second order stationarity)
+---------------------------------------------
 
 A process
 :math:`X` is *weakly stationary* or *stationary of second order* if
@@ -136,7 +148,8 @@ discrete case, :math:`\cD` is a lattice
 :math:`\mathcal{L}=(\delta_1 \Zset \times \dots \times \delta_n \Zset)`
 where :math:`\forall i, \delta_i >0`.
 
-**Stationarity**
+Stationarity
+------------
 
 A process :math:`X` is *stationary* if its
 distribution is invariant by translation: :math:`\forall k \in \Nset`,
@@ -148,7 +161,8 @@ distribution is invariant by translation: :math:`\forall k \in \Nset`,
 
     \forall k \in \Nset, \, \forall (\vect{t}_1, \dots, \vect{t}_k) \in \cD, \, \forall \vect{h}\in \Rset^n, \, (X_{\vect{t}_1}, \dots, X_{\vect{t}_k}) \stackrel{\mathcal{D}}{=} (X_{\vect{t}_1+\vect{h}}, \dots, X_{\vect{t}_k+\vect{h}})
 
-**Spectral density function**
+Spectral density function
+-------------------------
 
 If :math:`X` is a zero-mean weakly
 stationary continuous process and if for all :math:`(i,j)`,
