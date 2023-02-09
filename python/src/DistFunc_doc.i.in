@@ -453,6 +453,7 @@ This method allows one to compute the *exact* margin factor :math:`k` of a
 Normal population of size :math:`n` with unknown
 means :math:`\mu_i` and unknown common variance :math:`\sigma^2`. It
 is equivalent to the pooled version with :math:`m=1`.
+This implements the standard NF ISO 16269-6. 
 
 Examples
 --------
