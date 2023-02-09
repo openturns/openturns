@@ -144,25 +144,28 @@ view = otv.View(graph)
 # %%
 hArray = [0.05, 0.54, 0.18]
 nLen = len(hArray)
-fig = pl.figure(figsize=(10, 8))
+grid = ot.GridLayout(1, len(hArray))
+index = 0
 for i in range(nLen):
-    ax = fig.add_subplot(2, 2, i + 1)
     fit = factory.build(sample, [hArray[i]])
     graph = fit.drawPDF()
-    graph.setColors(["dodgerblue3"])
-    graph.setLegends(["h=%.4f" % (hArray[i])])
     exact = distribution.drawPDF()
     curve = exact.getDrawable(0)
-    curve.setColor("darkorange1")
     curve.setLegend("Mixture")
     curve.setLineStyle("dashed")
     graph.add(curve)
-    graph.setLegendPosition("topleft")
     graph.setXTitle("X")
-    view = otv.View(graph, figure=fig, axes=[ax])
-    pl.ylim(top=0.5)  # Common y-range
+    graph.setTitle("h=%.4f" % (hArray[i]))
+    graph.setLegends([""])
+    graph.setColors(ot.Drawable.BuildDefaultPalette(2))
+    bounding_box = graph.getBoundingBox()
+    upper_bound = bounding_box.getUpperBound()
+    upper_bound[1] = 0.5  # Common y-range
+    graph.setBoundingBox(bounding_box)
+    grid.setGraph(0, index, graph)
+    index += 1
 
-view = otv.View(graph)
+view = otv.View(grid, figure_kw={"figsize": (10.0, 4.0)})
 # %%
 # We see that when the bandwidth is too small, the resulting kernel smoothing has many more modes than the distribution it is supposed to approximate.
 # When the bandwidth is too large, the approximated distribution is too smooth and has only one mode instead of the expected two modes which are in the mixture distribution.
@@ -199,27 +202,30 @@ factory.getBandwidth()[0]
 hArray = [h1, h2, h3]
 legends = ["Silverman", "Plugin", "Mixed"]
 nLen = len(hArray)
-fig = pl.figure(figsize=(10, 8))
+grid = ot.GridLayout(1, len(hArray))
+index = 0
 for i in range(nLen):
-    ax = fig.add_subplot(2, 2, i + 1)
     fit = factory.build(sample, [hArray[i]])
     graph = fit.drawPDF()
-    graph.setColors(["dodgerblue3"])
-    graph.setLegends(["h=%.4f, %s" % (hArray[i], legends[i])])
     exact = distribution.drawPDF()
     curve = exact.getDrawable(0)
-    curve.setColor("darkorange1")
     curve.setLegend("Mixture")
     curve.setLineStyle("dashed")
     graph.add(curve)
-    graph.setLegendPosition("topleft")
+    graph.setLegends([""])
+    graph.setTitle("h=%.4f, %s" % (hArray[i], legends[i]))
     graph.setXTitle("X")
+    graph.setColors(ot.Drawable.BuildDefaultPalette(2))
     if i > 0:
         graph.setYTitle("")
-    view = otv.View(graph, figure=fig, axes=[ax])
-    pl.ylim(top=0.5)  # Common y-range
+    bounding_box = graph.getBoundingBox()
+    upper_bound = bounding_box.getUpperBound()
+    upper_bound[1] = 0.5  # Common y-range
+    graph.setBoundingBox(bounding_box)
+    grid.setGraph(0, index, graph)
+    index += 1
 
-view = otv.View(graph)
+view = otv.View(grid, figure_kw={"figsize": (10.0, 4.0)})
 
 otv.View.ShowAll()
 # %%
