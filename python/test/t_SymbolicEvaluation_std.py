@@ -14,3 +14,9 @@ print("evaluation=", evaluation)
 print("value at ", point, "=", evaluation(point))
 for i in range(evaluation.getOutputDimension()):
     print("marginal", i, "=", evaluation.getMarginal(i))
+
+# check for duplicate variable
+try:
+    evaluation = ot.SymbolicEvaluation(["a", "b", "a"], ["y"], ["a+b"])
+except TypeError:
+    print("ok")
