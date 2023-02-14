@@ -13,7 +13,7 @@ jobs:
     - run: |
         brew upgrade
         brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo
-        pip3 install "matplotlib<3.7" scipy chaospy pandas dill
+        pip3 install matplotlib scipy chaospy pandas dill
     - run: |
         cd $HOME/work/openturns
         git clone -b 1.8.1 https://github.com/jeromerobert/hmat-oss.git hmat-oss

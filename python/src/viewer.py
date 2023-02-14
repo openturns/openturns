@@ -296,7 +296,7 @@ class View(object):
         ):
             self._ax[0].set_yscale("log")
 
-        self._ax[0].grid(b=graph.getGrid())
+        self._ax[0].grid(graph.getGrid())
 
         # use scientific notation on non-log axis
         axis_mask = {
