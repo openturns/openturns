@@ -513,27 +513,18 @@ TruncatedDistribution KernelSmoothing::buildAsTruncatedDistribution(const Sample
   if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
   if (dimension > 1) throw InternalException(HERE) << "Error: cannot make boundary correction on samples with dimension>1, here dimension=" << dimension;
   setBandwidth(bandwidth);
-  Scalar xMin = 0.0;
-  Scalar xMax = 0.0;
-  if ((boundingOption_ == LOWER) || (boundingOption_ == BOTH))
+  Scalar xMin = sample.getMin()[0];
+  Scalar xMax = sample.getMax()[0];
+  if (((boundingOption_ == LOWER) || (boundingOption_ == BOTH)) && (!automaticLowerBound_))
   {
-    xMin = sample.getMin()[0];
-    if (!automaticLowerBound_)
-    {
-      // Check the sample against the user-defined bounds
-      if (!(lowerBound_ <= xMin)) throw InvalidArgumentException(HERE) << "Error: expected a sample with a minimum value at least equal to lowerBound=" << lowerBound_ << ", got xMin=" << xMin;
-      xMin = lowerBound_;
-    } // !automaticLowerBound
+    // Check the sample against the user-defined bounds
+    if (!(lowerBound_ <= xMin)) throw InvalidArgumentException(HERE) << "Error: expected a sample with a minimum value at least equal to lowerBound=" << lowerBound_ << ", got xMin=" << xMin;
+    xMin = lowerBound_;
   } // Boundary correction on the lower bound
-  if ((boundingOption_ == UPPER) || (boundingOption_ == BOTH))
+  if (((boundingOption_ == UPPER) || (boundingOption_ == BOTH)) && (!automaticUpperBound_))
   {
-    xMax = sample.getMax()[0];
-    if (!automaticUpperBound_)
-    {
-      // Check the sample against the user-defined bounds
-      if (!(upperBound_ >= xMax)) throw InvalidArgumentException(HERE) << "Error: expected a sample with a maximum value at most equal to upperBound=" << upperBound_ << ", got xMax=" << xMax;
-      xMax = upperBound_;
-    } // !automaticUpperBound
+    if (!(upperBound_ >= xMax)) throw InvalidArgumentException(HERE) << "Error: expected a sample with a maximum value at most equal to upperBound=" << upperBound_ << ", got xMax=" << xMax;
+    xMax = upperBound_;
   } // Boundary correction on the upper bound
   // Here we are in the 1D case with boundary boundary correction
   Point newSampleData(sample.asPoint());
