@@ -45,17 +45,11 @@ int main(int, char *[])
     Point p0(2); // inside sphere but not cube
     p0[0] = -0.2;
     p0[1] = 0.2;
-    Point p1(2); // inside cube and sphere
-    p1[0] = 0.2;
-    p1[1] = 0.2;
-    Point p2(2); // inside cube but not sphere
-    p2[0] = 0.8;
-    p2[1] = 0.8;
-    Point p3(2); // outside
-    p3[0] = 4.0;
-    p3[1] = 4.0;
+    Point p1(2, 0.2); // inside cube and sphere
+    Point p2(2, 0.8); // inside cube but not sphere
+    Point p3(2, 4.0); // outside
 
-    DomainIntersection domain(cube, sphere);
+    DomainIntersection domain(DomainIntersection::DomainCollection({cube, sphere}));
     fullprint << "cube=" << cube << std::endl;
     fullprint << "sphere=" << sphere << std::endl;
     fullprint << "union=" << domain << std::endl;

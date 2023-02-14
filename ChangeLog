@@ -25,6 +25,7 @@
  * Removed Drawable.draw|clean & Graph.draw|clean|getRCommand|makeR*|GetExtensionMap methods
  * Removed Sample.storeToTemporaryFile|streamToRFormat methods
  * Removed GaussianProcess.GIBBS
+ * Deprecated DomainIntersection|Union|DisjunctiveUnion(Domain, Domain) ctors
 
 === Documentation ===
  * Add API documentation to common use cases pages

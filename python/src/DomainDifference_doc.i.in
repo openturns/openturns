@@ -4,9 +4,6 @@
 A point is inside this domain if it is contained in
 left domain but not in right domain.
 
-Available constructors:
-    DomainDifference(*left, right*)
-
 Parameters
 ----------
 left : :class:`~openturns.Domain`
@@ -38,7 +35,7 @@ Examples
 >>> # Second domain
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
 >>> simplices = [[0, 1, 2], [1, 2, 3]]
->>> mesh2d = ot.Mesh(vertices, simplices)
+>>> mesh2d = ot.MeshDomain(ot.Mesh(vertices, simplices))
 >>> difference = ot.DomainDifference(interval2d, mesh2d)
 >>> [0.2, 0.1] in difference
 False

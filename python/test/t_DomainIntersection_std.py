@@ -22,7 +22,7 @@ p2 = [1.8, 1.8]
 # Outside
 p3 = [4.0, 4.0]
 
-domain = ot.DomainIntersection(cube, sphere)
+domain = ot.DomainIntersection([cube, sphere])
 print("cube=", cube)
 print("sphere=", sphere)
 print("intersection=", domain)
@@ -35,3 +35,8 @@ print("is point ", p2, " inside ? ", domain.contains(p2))
 print("is point ", p3, " inside ? ", domain.contains(p3))
 sample = [p0, p1, p2, p3]
 print("is sample ", sample, " inside ? ", domain.contains(sample))
+
+# p0 is outside cube, no need to check sphere2
+sphere2 = ot.LevelSet(ot.SymbolicFunction(["x", "y"], ["x/0"]), ot.LessOrEqual(), 1.0)
+domain2 = ot.DomainIntersection([cube, sphere2])
+assert not domain2.contains(p0), "prune sphere"

@@ -39,12 +39,16 @@ class OT_API DomainDisjunctiveUnion
   CLASSNAME
 
 public:
-  typedef DomainImplementation::BoolCollection  BoolCollection;
+  typedef Collection<Domain> DomainCollection;
+  typedef PersistentCollection<Domain> DomainPersistentCollection;
 
   /** Default constructor */
   DomainDisjunctiveUnion();
 
   /** Default constructor */
+  explicit DomainDisjunctiveUnion(const DomainCollection & collection);
+
+  /** @deprecated constructor */
   DomainDisjunctiveUnion(const Domain & left, const Domain & right);
 
   /** Virtual constructor method */
@@ -52,9 +56,11 @@ public:
 
   /** Check if the given point is inside this domain */
   Bool contains(const Point & point) const override;
+  using DomainImplementation::contains;
 
-  /** Check if the given points are inside this domain */
-  BoolCollection contains(const Sample & sample) const override;
+  /** Compute the Euclidean distance from a given point to the domain */
+  Scalar computeDistance(const Point & point) const override;
+  using DomainImplementation::computeDistance;
 
   /** Comparison operator */
   Bool operator == (const DomainDisjunctiveUnion & other) const;
@@ -74,11 +80,7 @@ public:
 
 private:
 
-  // The first domain
-  Domain left_;
-
-  // The second domain
-  Domain right_;
+  DomainPersistentCollection collection_;
 
 }; /* class DomainDisjunctiveUnion */
 

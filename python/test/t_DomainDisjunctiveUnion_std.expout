@@ -2,10 +2,16 @@ cube= [0, 2]
 [0, 2]
 sphere= {x | f(x) <= 1} with f=
 [x,y]->[x^2 + y^2]
-disjunctive union= class=DomainDisjunctiveUnion name=Unnamed left=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1] right=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x,y,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x,y] outputVariablesNames=[y0] formulas=[x^2 + y^2] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x,y] outputVariablesNames=[y0] formulas=[x^2 + y^2] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x,y] outputVariablesNames=[y0] formulas=[x^2 + y^2] level=1
+disjunctive union= class=DomainDisjunctiveUnion name=Unnamed collection=[class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1],class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x,y,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x,y] outputVariablesNames=[y0] formulas=[x^2 + y^2] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x,y] outputVariablesNames=[y0] formulas=[x^2 + y^2] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x,y] outputVariablesNames=[y0] formulas=[x^2 + y^2] level=1]
 Dimension= 2
 is point  [-0.25, 0.25]  inside ?  True
 is point  [0.25, 0.25]  inside ?  False
 is point  [1.8, 1.8]  inside ?  True
 is point  [4.0, 4.0]  inside ?  False
 is sample  [[-0.25, 0.25], [0.25, 0.25], [1.8, 1.8], [4.0, 4.0]]  inside ?  [1,0,1,0]
+x=-1.0 d=0.6 ref=0.6
+x=-0.25 d=0.0 ref=0.0
+x=0.875 d=0.125 ref=0.125
+x=1.05 d=0.0 ref=0.0
+x=1.2 d=None ref=None
+x=2.0 d=0.5 ref=0.5
