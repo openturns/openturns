@@ -573,10 +573,17 @@ void EllipticalDistribution::setCorrelation(const CorrelationMatrix & R)
         << ") differ from distribution dimension(" << getDimension()
         << "). Unable to construct elliptical distribution object.";
 
-  // We check that the given correlation matrix is definite positive
-  if ( !R.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
+  CovarianceMatrix shape(R.getImplementation());
+  const UnsignedInteger dimension = getDimension();
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+      shape(i, j) *= sigma_[i] * sigma_[j];
+  TriangularMatrix cholesky(shape.computeRegularizedCholesky());
+  inverseCholesky_ = cholesky.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
   R_ = R;
-  update();
+  normalizationFactor_ = 1.0;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    normalizationFactor_ /= cholesky(i, i);
   isAlreadyComputedCovariance_ = false;
 }
 
