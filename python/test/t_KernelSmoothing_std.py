@@ -109,94 +109,97 @@ print("with low  bin count, pdf=%.6g" % ks1.computePDF(point))
 print("with high bin count, pdf=%.6g" % ks2.computePDF(point))
 print("without   binning,   pdf=%.6g" % ks3.computePDF(point))
 # Test with varying boundary corrections
-left = [-0.9]
-right = [0.9]
-sample = ot.Uniform().getSample(500)
-algo1 = ot.KernelSmoothing(ot.Normal(), False)
-algo1.setBoundingOption(ot.KernelSmoothing.NONE)
-ks1 = algo1.build(sample)
-print(
-    "with no boundary correction, pdf(left)=%.6g" % ks1.computePDF(left),
-    ", pdf(right)=%.6g" % ks1.computePDF(right),
-)
+coll = [ot.Uniform(-1.0, 1.0), ot.Uniform(0.0, 2.0)]
+left = [-0.9, 0.1]
+right = [0.9, 1.9]
+for nDist in range(len(coll)):
+    baseDist = coll[nDist]
+    sample = baseDist.getSample(500)
+    algo1 = ot.KernelSmoothing(ot.Normal(), False)
+    algo1.setBoundingOption(ot.KernelSmoothing.NONE)
+    ks1 = algo1.build(sample)
+    print(
+        "with no boundary correction, pdf(left)=%.6g" % ks1.computePDF(left[nDist]),
+        ", pdf(right)=%.6g" % ks1.computePDF(right[nDist]),
+    )
 
-algo2 = ot.KernelSmoothing(ot.Normal(), False)
-algo2.setBoundingOption(ot.KernelSmoothing.LOWER)
-algo2.setAutomaticLowerBound(True)
-ks2 = algo2.build(sample)
-print(
-    "with automatic lower boundary correction, pdf(left)=%.6g" % ks2.computePDF(left),
-    ", pdf(right)=%.6g" % ks2.computePDF(right),
-)
+    algo2 = ot.KernelSmoothing(ot.Normal(), False)
+    algo2.setBoundingOption(ot.KernelSmoothing.LOWER)
+    algo2.setAutomaticLowerBound(True)
+    ks2 = algo2.build(sample)
+    print(
+        "with automatic lower boundary correction, pdf(left)=%.6g" % ks2.computePDF(left[nDist]),
+        ", pdf(right)=%.6g" % ks2.computePDF(right[nDist]),
+    )
 
-algo3 = ot.KernelSmoothing(ot.Normal(), False)
-algo3.setBoundingOption(ot.KernelSmoothing.LOWER)
-algo3.setLowerBound(-1.0)
-algo3.setAutomaticLowerBound(False)
-ks3 = algo3.build(sample)
-print(
-    "with user defined lower boundary correction, pdf(left)=%.6g"
-    % ks3.computePDF(left),
-    ", pdf(right)=%.6g" % ks3.computePDF(right),
-)
+    algo3 = ot.KernelSmoothing(ot.Normal(), False)
+    algo3.setBoundingOption(ot.KernelSmoothing.LOWER)
+    algo3.setLowerBound(baseDist.getRange().getLowerBound()[0])
+    algo3.setAutomaticLowerBound(False)
+    ks3 = algo3.build(sample)
+    print(
+        "with user defined lower boundary correction, pdf(left)=%.6g"
+        % ks3.computePDF(left[nDist]),
+        ", pdf(right)=%.6g" % ks3.computePDF(right[nDist]),
+    )
 
-algo4 = ot.KernelSmoothing(ot.Normal(), False)
-algo4.setBoundingOption(ot.KernelSmoothing.UPPER)
-algo4.setAutomaticUpperBound(True)
-ks4 = algo4.build(sample)
-print(
-    "with automatic upper boundary correction, pdf(left)=%.6g" % ks4.computePDF(left),
-    ", pdf(right)=%.6g" % ks4.computePDF(right),
-)
+    algo4 = ot.KernelSmoothing(ot.Normal(), False)
+    algo4.setBoundingOption(ot.KernelSmoothing.UPPER)
+    algo4.setAutomaticUpperBound(True)
+    ks4 = algo4.build(sample)
+    print(
+        "with automatic upper boundary correction, pdf(left)=%.6g" % ks4.computePDF(left[nDist]),
+        ", pdf(right)=%.6g" % ks4.computePDF(right[nDist]),
+    )
 
-algo5 = ot.KernelSmoothing(ot.Normal(), False)
-algo5.setBoundingOption(ot.KernelSmoothing.UPPER)
-algo5.setUpperBound(1.0)
-algo5.setAutomaticLowerBound(False)
-ks5 = algo5.build(sample)
-print(
-    "with user defined upper boundary correction, pdf(left)=%.6g"
-    % ks5.computePDF(left),
-    ", pdf(right)=%.6g" % ks5.computePDF(right),
-)
+    algo5 = ot.KernelSmoothing(ot.Normal(), False)
+    algo5.setBoundingOption(ot.KernelSmoothing.UPPER)
+    algo5.setUpperBound(baseDist.getRange().getUpperBound()[0])
+    algo5.setAutomaticLowerBound(False)
+    ks5 = algo5.build(sample)
+    print(
+        "with user defined upper boundary correction, pdf(left)=%.6g"
+        % ks5.computePDF(left[nDist]),
+        ", pdf(right)=%.6g" % ks5.computePDF(right[nDist]),
+    )
 
-algo6 = ot.KernelSmoothing(ot.Normal(), False)
-algo6.setBoundingOption(ot.KernelSmoothing.BOTH)
-ks6 = algo6.build(sample)
-print(
-    "with automatic boundaries correction, pdf(left)=%.6g" % ks6.computePDF(left),
-    ", pdf(right)=%.6g" % ks6.computePDF(right),
-)
+    algo6 = ot.KernelSmoothing(ot.Normal(), False)
+    algo6.setBoundingOption(ot.KernelSmoothing.BOTH)
+    ks6 = algo6.build(sample)
+    print(
+        "with automatic boundaries correction, pdf(left)=%.6g" % ks6.computePDF(left[nDist]),
+        ", pdf(right)=%.6g" % ks6.computePDF(right[nDist]),
+    )
 
-algo7 = ot.KernelSmoothing(ot.Normal(), False)
-algo7.setBoundingOption(ot.KernelSmoothing.BOTH)
-algo7.setLowerBound(-1.0)
-ks7 = algo7.build(sample)
-print(
-    "with user defined lower/automatic upper boundaries correction, pdf(left)=%.6g"
-    % ks7.computePDF(left),
-    ", pdf(right)=%.6g" % ks7.computePDF(right),
-)
+    algo7 = ot.KernelSmoothing(ot.Normal(), False)
+    algo7.setBoundingOption(ot.KernelSmoothing.BOTH)
+    algo7.setLowerBound(baseDist.getRange().getLowerBound()[0])
+    ks7 = algo7.build(sample)
+    print(
+        "with user defined lower/automatic upper boundaries correction, pdf(left)=%.6g"
+        % ks7.computePDF(left[nDist]),
+        ", pdf(right)=%.6g" % ks7.computePDF(right[nDist]),
+    )
 
-algo8 = ot.KernelSmoothing(ot.Normal(), False)
-algo8.setBoundingOption(ot.KernelSmoothing.BOTH)
-algo8.setUpperBound(1.0)
-ks8 = algo8.build(sample)
-print(
-    "with automatic lower/user defined upper boundaries correction, pdf(left)=%.6g"
-    % ks8.computePDF(left),
-    ", pdf(right)=%.6g" % ks8.computePDF(right),
-)
+    algo8 = ot.KernelSmoothing(ot.Normal(), False)
+    algo8.setBoundingOption(ot.KernelSmoothing.BOTH)
+    algo8.setUpperBound(baseDist.getRange().getUpperBound()[0])
+    ks8 = algo8.build(sample)
+    print(
+        "with automatic lower/user defined upper boundaries correction, pdf(left)=%.6g"
+        % ks8.computePDF(left[nDist]),
+        ", pdf(right)=%.6g" % ks8.computePDF(right[nDist]),
+    )
 
-algo9 = ot.KernelSmoothing(ot.Normal(), False)
-algo9.setBoundingOption(ot.KernelSmoothing.BOTH)
-algo9.setLowerBound(-1.0)
-algo9.setUpperBound(1.0)
-ks9 = algo9.build(sample)
-print(
-    "with user defined boundaries correction, pdf(left)=%.6g" % ks9.computePDF(left),
-    ", pdf(right)=%.6g" % ks9.computePDF(right),
-)
+    algo9 = ot.KernelSmoothing(ot.Normal(), False)
+    algo9.setBoundingOption(ot.KernelSmoothing.BOTH)
+    algo9.setLowerBound(baseDist.getRange().getLowerBound()[0])
+    algo9.setUpperBound(baseDist.getRange().getUpperBound()[0])
+    ks9 = algo9.build(sample)
+    print(
+        "with user defined boundaries correction, pdf(left)=%.6g" % ks9.computePDF(left[nDist]),
+        ", pdf(right)=%.6g" % ks9.computePDF(right[nDist]),
+    )
 
 # full degenerate case
 sample = ot.ComposedDistribution(

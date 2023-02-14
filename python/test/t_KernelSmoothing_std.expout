@@ -164,11 +164,20 @@ with automatic boundaries correction, pdf(left)=0.521626 , pdf(right)=0.506744
 with user defined lower/automatic upper boundaries correction, pdf(left)=0.506571 , pdf(right)=0.506744
 with automatic lower/user defined upper boundaries correction, pdf(left)=0.521626 , pdf(right)=0.505152
 with user defined boundaries correction, pdf(left)=0.506571 , pdf(right)=0.505152
+with no boundary correction, pdf(left)=0.379383 , pdf(right)=0.404847
+with automatic lower boundary correction, pdf(left)=0.485563 , pdf(right)=0.404847
+with user defined lower boundary correction, pdf(left)=0.466624 , pdf(right)=0.404847
+with automatic upper boundary correction, pdf(left)=0.379383 , pdf(right)=0.512248
+with user defined upper boundary correction, pdf(left)=0.379383 , pdf(right)=0.511777
+with automatic boundaries correction, pdf(left)=0.485563 , pdf(right)=0.512248
+with user defined lower/automatic upper boundaries correction, pdf(left)=0.466624 , pdf(right)=0.512248
+with automatic lower/user defined upper boundaries correction, pdf(left)=0.485563 , pdf(right)=0.511777
+with user defined boundaries correction, pdf(left)=0.466624 , pdf(right)=0.511777
 0 : [ -7  0  8 ]
 1 : [ -7  0  8 ]
 2 : [ -7  0  8 ]
     [ d7       a23      d8       ]
-0 : [ -7        2.24363  8       ]
-1 : [ -7        2.24139  8       ]
-2 : [ -7        2.82444  8       ]
+0 : [ -7        2.82969  8       ]
+1 : [ -7        2.35796  8       ]
+2 : [ -7        2.08774  8       ]
 with reduced cutoff. h=0.769339
