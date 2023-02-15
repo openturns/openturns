@@ -32,35 +32,41 @@ int main(int, char *[])
 
   try
   {
-    Gamma distribution(0.2, 1.0, 1.0);
     UnsignedInteger size = 10000;
+
+    // factory.build from distribution sample
+    Gamma distribution(0.2, 1.0, 1.0);
     Sample sample(distribution.getSample(size));
     GammaFactory factory;
-    CovarianceMatrix covariance;
-    // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
-    fullprint << "Distribution          =" << distribution << std::endl;
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
+    assert_almost_equal(estimatedDistribution, distribution, 0.13, 0.0);
+
+    // factory.build from distribution (with other parameters) sample
     distribution = Gamma(2.3, 1.0, 1.0);
     sample = distribution.getSample(size);
-    // estimatedDistribution = factory.build(sample, covariance);
     estimatedDistribution = factory.build(sample);
-    fullprint << "Distribution          =" << distribution << std::endl;
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
+    assert_almost_equal(estimatedDistribution, distribution, 0.07, 0.0);
+
+    // factory.build default
+    Gamma defaultDistribution(1.0, 1.0, 0.0);
     estimatedDistribution = factory.build();
-    fullprint << "Default distribution=" << estimatedDistribution << std::endl;
+    assert_almost_equal(estimatedDistribution, defaultDistribution, 0.0, 0.0);
+
+    // factory.build from parameters
     estimatedDistribution = factory.build(distribution.getParameter());
-    fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
+    assert_almost_equal(estimatedDistribution, distribution, 0.0, 0.0);
+
+    // factory.buildAs from distribution sample
     Gamma estimatedGamma(factory.buildAsGamma(sample));
-    fullprint << "Gamma          =" << distribution << std::endl;
-    fullprint << "Estimated gamma=" << estimatedGamma << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
+    assert_almost_equal(estimatedGamma, distribution, 0.07, 0.0);
+
+    // factory.buildAs default
     estimatedGamma = factory.buildAsGamma();
-    fullprint << "Default gamma=" << estimatedGamma << std::endl;
+    assert_almost_equal(estimatedGamma, defaultDistribution, 0.0, 0.0);
+
+    // factory.buildAs from distribution parameters
     estimatedGamma = factory.buildAsGamma(distribution.getParameter());
-    fullprint << "Gamma from parameters=" << estimatedGamma << std::endl;
+    assert_almost_equal(estimatedGamma, distribution, 0.0, 0.0);
   }
   catch (TestFailed & ex)
   {

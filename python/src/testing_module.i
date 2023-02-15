@@ -19,6 +19,8 @@
 %import statistics_module.i
 %import BaseStatisticsTemplateDefs.i
 
+/* Uncertainty/Model */
+%import model_copula_module.i
 
 %{
 #include "openturns/OTtestcode.hxx"

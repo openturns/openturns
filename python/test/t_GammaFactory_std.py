@@ -1,35 +1,49 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
-distribution = ot.Gamma(0.2, 1.0, 1.0)
 size = 10000
+
+# factory.build from distribution sample
+distribution = ot.Gamma(0.2, 1.0, 1.0)
 sample = distribution.getSample(size)
 factory = ot.GammaFactory()
 estimatedDistribution = factory.build(sample)
-print("distribution=", repr(distribution))
-print("Estimated distribution=", repr(estimatedDistribution))
+ott.assert_almost_equal(estimatedDistribution, distribution, 0.13, 0.0)
+
+# factory.build from distribution (with other parameters) sample
 distribution = ot.Gamma(2.3, 1.0, 1.0)
 sample = distribution.getSample(size)
 estimatedDistribution = factory.build(sample)
-print("distribution=", repr(distribution))
-print("Estimated distribution=", repr(estimatedDistribution))
+ott.assert_almost_equal(estimatedDistribution, distribution, 0.07, 0.0)
+
+# factory.build from different sample of the same distribution
 distribution = ot.Gamma(2.3, 1.0, 1.0)
 sample = distribution.getSample(size)
 estimatedDistribution = factory.build(sample)
-print("Distribution          =", distribution)
-print("Estimated distribution=", estimatedDistribution)
+ott.assert_almost_equal(estimatedDistribution, distribution, 0.07, 0.0)
+
+# factory.build default
+defaultDistribution = ot.Gamma(1.0, 1.0, 0.0)
 estimatedDistribution = factory.build()
-print("Default distribution=", estimatedDistribution)
+ott.assert_almost_equal(estimatedDistribution, defaultDistribution, 0.0, 0.0)
+
+# factory.build from parameters
 estimatedDistribution = factory.build(distribution.getParameter())
-print("Distribution from parameters=", estimatedDistribution)
+ott.assert_almost_equal(estimatedDistribution, distribution, 0.0, 0.0)
+
+# factory.buildAs from distribution sample
 estimatedGamma = factory.buildAsGamma(sample)
-print("Gamma          =", distribution)
-print("Estimated gamma=", estimatedGamma)
+ott.assert_almost_equal(estimatedGamma, distribution, 0.07, 0.0)
+
+# factory.buildAs default
 estimatedGamma = factory.buildAsGamma()
-print("Default gamma=", estimatedGamma)
+ott.assert_almost_equal(estimatedGamma, defaultDistribution, 0.0, 0.0)
+
+# factory.buildAs from distribution parameters
 estimatedGamma = factory.buildAsGamma(distribution.getParameter())
-print("Gamma from parameters=", estimatedGamma)
+ott.assert_almost_equal(estimatedGamma, distribution, 0.0, 0.0)

@@ -36,6 +36,7 @@
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TBB.hxx"
+#include "openturns/Distribution.hxx"
 
 #define TESTPREAMBLE { OT::TBB::Enable(); }
 
@@ -377,6 +378,17 @@ inline void assert_almost_equal(const SymmetricMatrix &a, const SymmetricMatrix 
       assert_almost_equal(a(i, j), b(i, j), rtol, atol, errMsg);
     }
   }
+}
+
+inline void assert_almost_equal(const Distribution &a, const Distribution &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  if (a.getImplementation()->getClassName() != b.getImplementation()->getClassName())
+    throw InvalidArgumentException(HERE) << "A and B must be the same distribution. A is a " << a.getImplementation()->getClassName() << " whereas B is a " << b.getImplementation()->getClassName();
+
+  if (a.getParameterDimension() != b.getParameterDimension())
+    throw InvalidArgumentException(HERE) << "A and B must have the same number of parameters. A has " << a.getParameterDimension() << " parameters whereas B has " << b.getParameterDimension() << " parameters.";
+
+  assert_almost_equal(a.getParameter(), b.getParameter(), rtol, atol, errMsg);
 }
 
 template <typename T>
