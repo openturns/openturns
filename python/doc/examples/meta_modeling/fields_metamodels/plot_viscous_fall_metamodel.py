@@ -51,7 +51,10 @@ dimension
 
 
 # %%
-# Then we define the Python function which computes the altitude at each time value. In order to compute all altitudes with a vectorized evaluation, we first convert the vertices into a Numpy `array` and use the Numpy functions`exp` and `maximum`: this increases the evaluation performance of the script.
+# Then we define the Python function which computes the altitude at each time value.
+# In order to compute all altitudes with a vectorized evaluation, we first convert
+# the vertices into a Numpy `array` and use the Numpy functions`exp` and `maximum`:
+# this increases the evaluation performance of the script.
 
 # %%
 def AltiFunc(X):
@@ -159,4 +162,8 @@ view = viewer.View(graph)
 plt.show()
 
 # %%
-# We see that the blue trajectories (i.e. the metamodel) are close to the red trajectories (i.e. the validation sample). This shows that the metamodel is quite accurate. However, we observe that the trajectory singularity that occurs when the object touches the ground (i.e. when :math:`z` is equal to zero), makes the metamodel less accurate.
+# We see that the blue trajectories (i.e. the metamodel) are close to the red
+# trajectories (i.e. the validation sample).
+# This shows that the metamodel is quite accurate.
+# However, we observe that the trajectory singularity that occurs when the object
+# touches the ground (i.e. when :math:`z` is equal to zero), makes the metamodel less accurate.

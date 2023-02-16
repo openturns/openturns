@@ -41,7 +41,10 @@ Kriging : generate trajectories from a metamodel
 # Creation of the metamodel
 # -------------------------
 #
-# We begin by defining the function `g` as a symbolic function. Then we define the `x_train` variable which contains the inputs of the design of experiments of the training step. Then we compute the `y_train` corresponding outputs. The variable `n_train` is the size of the training design of experiments.
+# We begin by defining the function `g` as a symbolic function.
+# Then we define the `x_train` variable which contains the inputs of the design of experiments of the training step.
+# Then we compute the `y_train` corresponding outputs.
+# The variable `n_train` is the size of the training design of experiments.
 
 # %%
 import openturns as ot

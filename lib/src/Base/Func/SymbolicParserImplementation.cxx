@@ -54,11 +54,15 @@ Description SymbolicParserImplementation::getVariables() const
 void SymbolicParserImplementation::setVariables(const Description & inputVariablesNames)
 {
   const UnsignedInteger size = inputVariablesNames.getSize();
+  std::map<String, int> varMap;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const String varName(inputVariablesNames[i]);
     if (!std::regex_match(inputVariablesNames[i], std::regex("[a-zA-Z][0-9a-zA-Z_]*")))
       throw InvalidArgumentException(HERE) << "Invalid input variable: " << varName;
+    ++ varMap[varName];
+    if (varMap[varName] > 1)
+      throw InvalidArgumentException(HERE) << "Duplicate input variable: " << varName;
   }
   inputVariablesNames_ = inputVariablesNames;
 }

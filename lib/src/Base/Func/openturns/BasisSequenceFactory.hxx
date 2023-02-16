@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_BASISSEQUENCEFACTORY_HXX
 #define OPENTURNS_BASISSEQUENCEFACTORY_HXX
 
-#include <iostream>
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/BasisSequence.hxx"
 #include "openturns/BasisSequenceFactoryImplementation.hxx"

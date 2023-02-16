@@ -13,7 +13,7 @@ jobs:
     - name: Install
       run: |
         sudo apt-get install python3-pip lintian
-        pip3 install flake8
+        pip3 install flake8 doc8
     - name: Run linter 
       run: ./utils/lint.sh
 

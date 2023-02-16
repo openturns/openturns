@@ -220,11 +220,11 @@ Equation gives:
 .. math::
 
    \begin{aligned}
-     E_{m_1,\hdots,m_d}(k_1,\hdots,k_j+1,\hdots,k_d) 
-     &= 
+     E_{m_1,\hdots,m_d}(k_1,\hdots,k_j+1,\hdots,k_d)
+     &=
          e^{-2i\pi\left(\frac{\sum_{l=1}^{d}k_l m_l}{N} +\frac{m_j}{N}\right)}
          f_1(k_1-1)\times\hdots\times f_j(k_j)\times\hdots\times f_d(k_d-1)\notag\\
-     &= 
+     &=
          e^{-2i\pi\left(\frac{m_j}{N}\right)}
          e^{-2i\pi\left(\frac{\sum_{l=1}^{d}k_l m_l}{N}\right)}
          f_1(k_1-1)\times\hdots\times f_j(k_j)\times\hdots\times f_d(k_d-1)
@@ -257,13 +257,13 @@ Equation  gives:
 .. math::
 
    \begin{aligned}
-     E_{m_1,\hdots,m_d}(k_1,\hdots,k_j-N,\hdots,k_d) 
-     &= 
+     E_{m_1,\hdots,m_d}(k_1,\hdots,k_j-N,\hdots,k_d)
+     &=
          e^{-2i\pi\left(\frac{\sum_{l=1}^{d}k_l m_l}{N} -m_j\right)}
          f_1(k_1-1)\times\hdots\times f_j(k_j-1-N)\times\hdots\times f_d(k_d-1) \notag\\
-     &= 
+     &=
          e^{-2i\pi\left(\frac{\sum_{l=1}^{d}k_l m_l}{N}\right)}
-         f_1(k_1-1)\times\hdots\times \overline{f}_j(N-1-k_j)\times\hdots\times f_d(k_d-1) 
+         f_1(k_1-1)\times\hdots\times \overline{f}_j(N-1-k_j)\times\hdots\times f_d(k_d-1)
      \end{aligned}
 
 Thus:

@@ -33,7 +33,6 @@
 #include "openturns/Indices.hxx"
 #include "openturns/FFT.hxx"
 #include "openturns/GaussKronrod.hxx"
-#include <limits>       // std::numeric_limits
 
 BEGIN_NAMESPACE_OPENTURNS
 

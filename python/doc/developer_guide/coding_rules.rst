@@ -198,7 +198,7 @@ GCC compilation:
 ::
 
     mkdir -p build && cd build
-    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wno-unused-parameter -D_GLIBCXX_ASSERTIONS" ..
+    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-Wall -Wextra -D_GLIBCXX_ASSERTIONS" ..
     make
 
 Namespaces
@@ -720,7 +720,7 @@ Incorrect example:
     #define MAXIMUM_ITERATIONS 32;
     #define PRINT_FORMAT       "%s:line %d, %s"
 
-Comments and internal documentation 
+Comments and internal documentation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
@@ -914,7 +914,7 @@ Example: error handling
       if(n < MIN || n > MAX) {
         char msg[BUFSIZ];
         // automatic allocation for the processing
-        sprintf (msg,
+        snprintf (msg, BUFSIZ,
         "n = %d is out of range, valid range is [%d, %d]",
         n, MIN, MAX);
         throw Exception(msg);

@@ -22,10 +22,10 @@
 #ifndef OPENTURNS_MUTEXLOCK_HXX
 #define OPENTURNS_MUTEXLOCK_HXX
 
-#include <errno.h>  // for errno(3)
-#include <stdio.h>  // for perror(3)
-#include <stdlib.h> // for exit(3)
-#include <string.h> // for strerror(3)
+#include <cerrno>  // for errno(3)
+#include <cstdio>  // for perror(3)
+#include <cstdlib> // for exit(3)
+#include <cstring> // for strerror(3)
 #include "openturns/OTprivate.hxx"
 #include "openturns/OTthread.hxx"
 

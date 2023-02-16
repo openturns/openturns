@@ -19,7 +19,6 @@
  *
  */
 
-#include <limits>
 #include "openturns/ARMA.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
@@ -230,7 +229,7 @@ UnsignedInteger ARMA::getNThermalization() const
   if (!hasComputedNThermalization_)
   {
     // Not yet in SpecFunc
-    nThermalization_ = computeNThermalization(std::numeric_limits<Scalar>::epsilon());
+    nThermalization_ = computeNThermalization(SpecFunc::ScalarEpsilon);
     hasComputedNThermalization_ = true;
   }
   return nThermalization_;

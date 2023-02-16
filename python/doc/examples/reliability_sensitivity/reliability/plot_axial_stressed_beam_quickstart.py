@@ -4,7 +4,10 @@ Estimate a probability with Monte-Carlo on axial stressed beam: a quick start gu
 """
 # %%
 #
-# The goal of this example is to show a simple practical example of probability estimation in a reliability study with the `ProbabilitySimulationAlgorithm` class. The `ThresholdEvent` is used to define the event. We use the Monte-Carlo method thanks to the `MonteCarloExperiment` class to estimate this probability and its confidence interval.
+# The goal of this example is to show a simple practical example of
+# probability estimation in a reliability study with the `ProbabilitySimulationAlgorithm` class.
+# The `ThresholdEvent` is used to define the event. We use the Monte-Carlo
+# method thanks to the `MonteCarloExperiment` class to estimate this probability and its confidence interval.
 # We use the :ref:`axial stressed beam <use-case-stressed-beam>` model as an illustrative example.
 
 
@@ -157,7 +160,8 @@ print("Pf = ", probability)
 print("CV =", result.getCoefficientOfVariation())
 
 # %%
-# The `drawProbabilityConvergence` method plots the probability estimate depending on the number of function evaluations. The order of convergence is :math:`O \left( 1/N^2 \right)` with :math:`N` being the number of function evaluations. This is why we use a logarithmic scale for the X axis of the graphics.
+# The `drawProbabilityConvergence` method plots the probability estimate depending on the number of function evaluations.
+# The order of convergence is :math:`O \left( 1/N^2 \right)` with :math:`N` being the number of function evaluations. This is why we use a logarithmic scale for the X axis of the graphics.
 
 # %%
 graph = algoMC.drawProbabilityConvergence()
@@ -167,7 +171,8 @@ view = viewer.View(graph)
 # %%
 # We see that the 95% confidence interval becomes smaller and smaller and stabilizes at the end of the simulation.
 #
-# In order to compute the confidence interval, we use the `getConfidenceLength` method, which returns the length of the interval. In order to compute the bounds of the interval, we divide this length by 2.
+# In order to compute the confidence interval, we use the `getConfidenceLength` method, which returns the length of the interval.
+# In order to compute the bounds of the interval, we divide this length by 2.
 
 # %%
 alpha = 0.05
@@ -200,7 +205,8 @@ print(
 #
 #
 # for any :math:`r,s\in\mathbb{R}`,
-# where :math:`f_S` is the probability distribution function of the random variable :math:`S` and :math:`f_R` is the probability distribution function of the random variable :math:`R`.
+# where :math:`f_S` is the probability distribution function of the random
+# variable :math:`S` and :math:`f_R` is the probability distribution function of the random variable :math:`R`.
 # Therefore,
 #
 # .. math::

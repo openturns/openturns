@@ -47,7 +47,7 @@ The vertical deflection at point :math:`x=a` is:
    g_1(X) = - F \frac{a^2 (L-a)^2}{3 E L I},
 
 
-where :math:`X=(F,L,a,D,d,E)`. 
+where :math:`X=(F,L,a,D,d,E)`.
 The angle of the tube at the left end is:
 
 .. math::

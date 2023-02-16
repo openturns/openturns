@@ -37,7 +37,7 @@ rank :math:`\cM_1,\dots,\cM_K` according to the following quantity:
 .. math::
 
    \begin{aligned}
-       \textrm{BIC}_i = -2 \frac{\log(L_i)}{n} + \frac{p_i \log(n)}{n} 
+       \textrm{BIC}_i = -2 \frac{\log(L_i)}{n} + \frac{p_i \log(n)}{n}
      \end{aligned}
 
 where :math:`p_i` denotes the number of parameters being adjusted for

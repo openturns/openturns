@@ -17,7 +17,7 @@ Different types of design of experiments can be determined:
    the random patterns, the low discrepancy sequences and the Gauss
    product.
 
-| **Stratified design of experiments** 
+| **Stratified design of experiments**
 | All stratified design of experiments are defined from the data of a
   center point and some discretization levels. The
   same number of levels for each direction is proposed: let us denote by
@@ -99,7 +99,7 @@ Different types of design of experiments can be determined:
     View(g)
 
 
-| **Weighted design of experiments** 
+| **Weighted design of experiments**
 | The first category is the *random patterns*, where the set of input
   data is generated from the joint distribution of the input random
   vector, according to the Monte Carlo sampling technique or the LHS one
@@ -171,7 +171,7 @@ Different types of design of experiments can be determined:
 
 
 
-| **Combinatorial generators** 
+| **Combinatorial generators**
 | In some situations, one want to explore all the possibilities related
   to constrained discrete uncertainties. In this case, we need to obtain
   all the sets of indices fulfilling the constraints. Examples of

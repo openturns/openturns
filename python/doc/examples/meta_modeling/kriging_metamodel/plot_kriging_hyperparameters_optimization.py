@@ -15,8 +15,15 @@ Kriging :configure the optimization solver
 #
 # The covariance model has two types of parameters.
 #
-# * The amplitude parameter :math:`\sigma^2` is estimated from the data. If the output dimension is equal to one, this parameter is estimated using the analytic variance estimator which maximizes the likelihood. Otherwise, if output dimension is greater than one or analytical sigma disabled, this parameter is estimated from numerical optimization.
-# * The other parameters :math:`{\bf \theta}\in\mathbb{R}^d` where :math:`d` is the spatial dimension of the covariance model. Often, the parameter :math:`{\bf \theta}` is a scale parameter. This step involves an optimization algorithm.
+# * The amplitude parameter :math:`\sigma^2` is estimated from the data.
+#   If the output dimension is equal to one, this parameter is estimated using
+#   the analytic variance estimator which maximizes the likelihood.
+#   Otherwise, if output dimension is greater than one or analytical sigma disabled,
+#   this parameter is estimated from numerical optimization.
+# * The other parameters :math:`{\bf \theta}\in\mathbb{R}^d` where :math:`d` is
+#   the spatial dimension of the covariance model.
+#   Often, the parameter :math:`{\bf \theta}` is a scale parameter.
+#   This step involves an optimization algorithm.
 #
 # All these parameters are estimated with the `GeneralLinearModelAlgorithm` class.
 #
@@ -91,7 +98,10 @@ Y_train = model(X_train)
 # --------------------
 
 # %%
-# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments.
+# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class.
+# Then we use a squared exponential covariance model.
+# Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel,
+# taking the training sample, the covariance model and the trend basis as input arguments.
 
 # %%
 dimension = myDistribution.getDimension()

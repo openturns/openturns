@@ -4,8 +4,6 @@
 
 %include openturns/HSICEstimatorImplementation.hxx
 
-%template(CovarianceModelCollection) OT::Collection<OT::CovarianceModel>;
-
 namespace OT {
 %extend HSICEstimatorImplementation {
 

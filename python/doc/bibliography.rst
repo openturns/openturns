@@ -70,16 +70,16 @@ Bibliography
     `pdf <https://tel.archives-ouvertes.fr/tel-00697026v2/document>`__
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
-.. [freedman1981] David Freedman, Persi Diaconis, *On the histogram as a density 
-    estimator: L2 theory*, December 1981, Probability Theory and Related Fields. 
-    57 (4): 453–476. 
+.. [freedman1981] David Freedman, Persi Diaconis, *On the histogram as a density
+    estimator: L2 theory*, December 1981, Probability Theory and Related Fields.
+    57 (4): 453–476.
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
 .. [gerstner1998] Gerstner, T., & Griebel, M. (1998). *Numerical integration using
     sparse grids.* Numerical algorithms, 18 (3), 209-232.
     `pdf <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.3141&rep=rep1&type=pdf>`__
-.. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October). 
+.. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October).
     *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
@@ -162,7 +162,7 @@ Bibliography
 .. [marelli2018] S. Marelli, B. Sudret, *An active-learning algorithm that combines sparse
    polynomial chaos expansions and bootstrap for structural reliability analysis*, Structural Safety, 2018.
    `pdf <https://arxiv.org/pdf/1709.01589.pdf>`__
-.. [marrel2021] Marrel, A., & Chabridon, V. (2021). *Statistical developments for target and conditional sensitivity analysis: 
+.. [marrel2021] Marrel, A., & Chabridon, V. (2021). *Statistical developments for target and conditional sensitivity analysis:
     application on safety studies for nuclear reactor.* Reliability Engineering & System Safety, 107711.
 .. [marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
     Journal of Statistical Computational and Simulation, vol 46, pp101 - 110,1993.
@@ -190,7 +190,7 @@ Bibliography
     computational experiments.*
     Journal of Statistical Planning and Inference, 43 :381-402, 1995.
     `pdf <https://www.osti.gov/servlets/purl/10184343>`__
-.. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). *Quasi-Monte Carlo 
+.. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). *Quasi-Monte Carlo
     integration.* Journal of computational physics, 122(2), 218-230.
     `pdf <https://www.math.ucla.edu/~caflisch/Pubs/Pubs1995-1999/actaNumerica1998.pdf>`__
 .. [muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
@@ -244,7 +244,7 @@ Bibliography
 .. [saltelli2002] Saltelli, A. *Making best use of model evaluations to compute
     sensitivity indices.* Computer Physics Communication, 2002, 145, 580-297.
     `pdf <http://www.andreasaltelli.eu/file/repository/Making_best_use.pdf>`__
-.. [sankararaman2012] Sankararaman, S. and Mahadevan, S. *Likelihood-based approach to multidisciplinary analysis under uncertainty.* 
+.. [sankararaman2012] Sankararaman, S. and Mahadevan, S. *Likelihood-based approach to multidisciplinary analysis under uncertainty.*
     Journal of Mechanical Design, 134(3):031008, 2012.
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
     Statistique*, Technip
@@ -280,8 +280,8 @@ Bibliography
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
-    First Edition, Chapman & Hall, 1994.   
+    First Edition, Chapman & Hall, 1994.
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
     Microcosm, Inc. Torrance, CA.,1999.
-.. [zaman2012] Zaman, K. *Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design.* 
+.. [zaman2012] Zaman, K. *Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design.*
     PhD thesis, Vanderbilt University, USA, 2012

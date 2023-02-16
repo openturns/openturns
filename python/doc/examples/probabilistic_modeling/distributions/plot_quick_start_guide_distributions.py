@@ -226,7 +226,10 @@ _ = otv.View(cdfexp, figure=fig, axes=[ax])
 #
 # Any distribution can be truncated with the `TruncatedDistribution` class.
 #
-# Let :math:`f_X` (resp. :math:`F_X`) the PDF (resp. the CDF) of the real random variable :math:`X`. Let :math:`a` and :math:`b` two reals with :math:`a<b`. Let :math:`Y` be the random variable :math:`max(a, min(b, X))`. Its distribution is the distribution of :math:`X` truncated to the :math:`[a,b]` interval.
+# Let :math:`f_X` (resp. :math:`F_X`) the PDF (resp. the CDF) of the real
+# random variable :math:`X`. Let :math:`a` and :math:`b` two reals with :math:`a<b`.
+# Let :math:`Y` be the random variable :math:`max(a, min(b, X))`.
+# Its distribution is the distribution of :math:`X` truncated to the :math:`[a,b]` interval.
 #
 # Therefore, the PDF of :math:`Y` is:
 #

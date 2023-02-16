@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_CSV_PARSER_STATE_HXX
 #define OPENTURNS_CSV_PARSER_STATE_HXX
 
-#include <string>
 #include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
 

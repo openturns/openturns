@@ -8,13 +8,13 @@ Introduction
 
 The Branin function is defined in 2 dimensions based on the functions :math:`g`:
 
-.. math:: 
+.. math::
    g(u_1, u_2) = \frac{\left(u_2-5.1\frac{u_1^2}{4\pi^2}+5\frac{u_1}{\pi}-6\right)^2+10\left(1-\frac{1}{8 \pi}\right)  \cos(u_1)+10-54.8104}{51.9496}
 
 
 and :math:`t`:
 
-.. math:: 
+.. math::
    t(x_1, x2) = (15 x_1 - 5, 15 x_2)^T.
 
 
@@ -24,7 +24,7 @@ Finally, the Branin function is the composition of the two previous functions:
    f_{Branin}(x_1, x_2) = g \circ  t(x_1, x_2)
 
 
-for any :math:`\mathbf{x} \in [0, 1]^2`. 
+for any :math:`\mathbf{x} \in [0, 1]^2`.
 
 There are three global minimas:
 
@@ -48,7 +48,7 @@ where the function value is:
    f_{min} = f_{Branin}(\mathbf{x}^\star) = -0.97947643837.
 
 
-We assume that the output of the Branin function is noisy, with a gaussian noise. 
+We assume that the output of the Branin function is noisy, with a gaussian noise.
 In other words, the objective function is:
 
 .. math::

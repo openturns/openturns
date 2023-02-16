@@ -93,7 +93,11 @@ basis = ot.Basis(functions)
 # --------------------
 
 # %%
-# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments.
+# In order to create the kriging metamodel, we first select a constant trend
+# with the `ConstantBasisFactory` class.
+# Then we use a squared exponential covariance model.
+# Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel,
+# taking the training sample, the covariance model and the trend basis as input arguments.
 
 # %%
 covarianceModel = ot.SquaredExponential([1.0] * dimension, [1.0])

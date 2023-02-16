@@ -5,13 +5,13 @@ The Ishigami function
 
 The Ishigami function of Ishigami & Homma (1990) is  recurrent test case for sensitivity analysis methods and uncertainty.
 
-Let :math:`a=7` and :math:`b=0.1` (see Crestaux et al. (2007) and Marrel et al. (2009)). We consider the function 
+Let :math:`a=7` and :math:`b=0.1` (see Crestaux et al. (2007) and Marrel et al. (2009)). We consider the function
 
 .. math::
    g(X_1,X_2,X_3) = \sin(X_1)+a \sin (X_2)^2 + b X_3^4 \sin(X_1)
 
 
-for any :math:`X_1,X_2,X_3\in[-\pi,\pi]` 
+for any :math:`X_1,X_2,X_3\in[-\pi,\pi]`
 
 We assume that the random variables :math:`X_1,X_2,X_3` are independent and have the uniform marginal distribution in the interval from :math:`-\pi` to :math:`\pi`:
 
@@ -19,28 +19,28 @@ We assume that the random variables :math:`X_1,X_2,X_3` are independent and have
    X_1,X_2,X_3\sim \mathcal{U}(-\pi,\pi).
 
 
-Analysis 
+Analysis
 --------
 
-The expectation and the variance of :math:`Y` are 
+The expectation and the variance of :math:`Y` are
 
 .. math::
     E(Y)  = \frac{a}{2}
- 
 
-and 
+
+and
 
 .. math::
     V(Y) = \frac{1}{2} +  \frac{a^2}{8} +  \frac{b^2 \pi^8}{18} +  \frac{b\pi^4}{5}.
- 
+
 
 The Sobol' decomposition variances are
 
 .. math::
-    V_1     = \frac{1}{2} \left(1 + b\frac{\pi^4}{5} \right)^2, \qquad 
-    V_2     = \frac{a^2}{8}, \qquad 
+    V_1     = \frac{1}{2} \left(1 + b\frac{\pi^4}{5} \right)^2, \qquad
+    V_2     = \frac{a^2}{8}, \qquad
     V_{1,3} = b^2 \pi^8 \frac{8}{225}
- 
+
 
 and :math:`V_3=V_{1,2} = V_{2,3}=V_{1,2,3} = 0`.
 
@@ -48,15 +48,18 @@ This leads to the following first order Sobol' indices:
 
 .. math::
     S_1 = \frac{V_1}{V(Y)}, \qquad S_2 = \frac{V_2}{V(Y)}, \qquad S_3 = 0,
- 
+
 
 and the following total order indices:
 
 .. math::
     ST_1 = \frac{V_1+V_{1,3}}{V(Y)}, \qquad ST_2 = S_2, \qquad ST_3 = \frac{V_{1,3}}{V(Y)}.
- 
 
-The third variable :math:`X_3` has no effect at first order (because :math:`X_3^4` it is multiplied by :math:`\sin(X_1)`), but has a total effet because of the interactions with :math:`X_1`. On the other hand, the second variable :math:`X_2` has no interactions which implies that the first order indice is equal to the total order indice for this input variable.
+
+The third variable :math:`X_3` has no effect at first order (because :math:`X_3^4` it is multiplied
+by :math:`\sin(X_1)`), but has a total effet because of the interactions with :math:`X_1`.
+On the other hand, the second variable :math:`X_2` has no interactions which implies
+that the first order indice is equal to the total order indice for this input variable.
 
 References
 ----------

@@ -21,8 +21,6 @@
 #ifndef OPENTURNS_SAMPLEIMPLEMENTATION_HXX
 #define OPENTURNS_SAMPLEIMPLEMENTATION_HXX
 
-#include <stdint.h> // for uint64_t
-
 #include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Indices.hxx"

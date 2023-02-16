@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_BASISSEQUENCEFACTORYIMPLEMENTATION_HXX
 #define OPENTURNS_BASISSEQUENCEFACTORYIMPLEMENTATION_HXX
 
-#include <iostream>
 #include "openturns/PersistentObject.hxx"
 #include "openturns/BasisSequence.hxx"
 #include "openturns/Sample.hxx"

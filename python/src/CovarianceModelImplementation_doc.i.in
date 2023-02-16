@@ -523,6 +523,8 @@ OT_CovarianceModel_operator_doc
 %define OT_CovarianceModel_setActiveParameter_doc
 "Accessor to the active parameter set.
 
+In the context of kriging, it allows one to choose which hyperparameters are tuned.
+
 Parameters
 ----------
 active : sequence of int
@@ -535,6 +537,8 @@ OT_CovarianceModel_setActiveParameter_doc
 
 %define OT_CovarianceModel_getActiveParameter_doc
 "Accessor to the active parameter set.
+
+In the context of kriging, it allows one to choose which hyperparameters are tuned.
 
 Returns
 -------

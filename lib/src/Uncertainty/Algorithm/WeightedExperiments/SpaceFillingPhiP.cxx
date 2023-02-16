@@ -20,9 +20,7 @@
  */
 #include "openturns/SpaceFillingPhiP.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-
-#include <limits>
-
+#include "openturns/SpecFunc.hxx"
 
 namespace OT
 {
@@ -66,7 +64,7 @@ Scalar SpaceFillingPhiP::evaluate(const Sample & sample) const
         const Scalar delta(ptI[d] - ptJ[d]);
         squaredNorm += delta * delta;
       }
-      if (squaredNorm == 0.0) return std::numeric_limits<Scalar>::max();
+      if (squaredNorm == 0.0) return SpecFunc::MaxScalar;
       sum += std::exp(-0.5 * p_ * std::log(squaredNorm));
     }
   }

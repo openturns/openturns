@@ -51,7 +51,10 @@ dimension
 
 
 # %%
-# Then we define the Python function which computes the altitude at each time value. In order to compute all altitudes with a vectorized evaluation, we first convert the vertices into a `numpy` `array` and use the `numpy` function `exp` and `maximum`: this increases the evaluation performance of the script.
+# Then we define the Python function which computes the altitude at each time value.
+# In order to compute all altitudes with a vectorized evaluation, we first
+# convert the vertices into a `numpy` `array` and use the `numpy` function
+# `exp` and `maximum`: this increases the evaluation performance of the script.
 
 # %%
 def AltiFunc(X):
@@ -69,7 +72,9 @@ def AltiFunc(X):
 
 
 # %%
-# In order to create a `Function` from this Python function, we use the `PythonPointToFieldFunction` class. Since the altitude is the only output field, the third argument `outputDimension` is equal to `1`. If we had computed the speed as an extra output field, we would have set `2` instead.
+# In order to create a `Function` from this Python function, we use the `PythonPointToFieldFunction` class.
+# Since the altitude is the only output field, the third argument `outputDimension` is equal to `1`.
+# If we had computed the speed as an extra output field, we would have set `2` instead.
 
 # %%
 outputDimension = 1
@@ -100,5 +105,9 @@ graph.setXTitle(r"$t$")
 graph.setYTitle(r"$z$")
 view = viewer.View(graph)
 plt.show()
+
 # %%
-# We see that the object first moves up and then falls down. Not all objects, however, achieve the same maximum altitude. We see that some trajectories reach a higher maximum altitude than others. Moreover, at the final time :math:`t_{max}`, one trajectory hits the ground: :math:`z(t_{max})=0` for this trajectory.
+# We see that the object first moves up and then falls down.
+# Not all objects, however, achieve the same maximum altitude.
+# We see that some trajectories reach a higher maximum altitude than others.
+# Moreover, at the final time :math:`t_{max}`, one trajectory hits the ground: :math:`z(t_{max})=0` for this trajectory.

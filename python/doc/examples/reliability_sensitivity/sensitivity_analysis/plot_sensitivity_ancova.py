@@ -3,9 +3,13 @@ Use the ANCOVA indices
 ======================
 """
 # %%
-# In this example we are going to use the ANCOVA decomposition to estimate sensitivity indices from a model with correlated inputs.
+# In this example we are going to use the ANCOVA decomposition to estimate
+# sensitivity indices from a model with correlated inputs.
 #
-# ANCOVA allows one to estimate the Sobol' indices, and thanks to a functional decomposition of the model it allows one to separate the part of variance explained by a variable itself from the part of variance explained by a correlation which is due to its correlation with the other input parameters.
+# ANCOVA allows one to estimate the Sobol' indices, and thanks to a functional
+# decomposition of the model it allows one to separate the part of variance
+# explained by a variable itself from the part of variance explained by a
+# correlation which is due to its correlation with the other input parameters.
 #
 #
 # In theory, ANCOVA indices range is :math:`\left[0; 1\right]` ; the closer to 1 the index is,

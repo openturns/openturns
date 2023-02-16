@@ -40,7 +40,7 @@ Box Cox transformation
   transformation as the aggregation of the marginal Box Cox
   transformations.
 
-| **Marginal Box Cox transformation:** 
+| **Marginal Box Cox transformation:**
 | The first order Taylor development of :math:`h` around
   :math:`\Expect{Y_{\vect{t}}}` writes:
 
@@ -111,7 +111,7 @@ The inverse Box Cox transformation is defined by:
      \end{array}
      \right.
 
-| **Estimation of the Box Cox transformation:** 
+| **Estimation of the Box Cox transformation:**
 | The parameter :math:`\lambda` is estimated from a given field of the
   process :math:`X` as follows.
 | The estimation of :math:`\lambda` given below is optimized in the case
@@ -147,7 +147,7 @@ writes:
 .. math::
   :label: LKH
 
-     L(\beta,\sigma,\lambda) = 
+     L(\beta,\sigma,\lambda) =
      \underbrace{ \frac{1}{(2\pi)^{N/2}}
        \times
        \frac{1}{(\sigma^2)^{N/2}}
@@ -191,13 +191,13 @@ where :math:`C` is a constant.
 
 The parameter :math:`\hat{\lambda}` is the one maximizing :math:`\ell(\lambda)` defined in :eq:`lLambda`.
 
-| **Estimation of the Box Cox transformation in the frame of general linear model:** 
+| **Estimation of the Box Cox transformation in the frame of general linear model:**
 
-In the frame of the general linear model, we consider a functional relation between some input and 
+In the frame of the general linear model, we consider a functional relation between some input and
 output values. Let us consider the following dataset:
 :math:`\left(\left(\vect{x}^{(i)}, y^{(i)}\right), i = 1, \ldots, m\right)`.
 
-The general linear model aims at assessing the following 
+The general linear model aims at assessing the following
 prior model :
 
 .. math:: Y(\vect{x}) = \Tr{\vect{\phi}(\vect{x})} \vect{\alpha} + Z(\vect{x})
@@ -222,8 +222,8 @@ where:
 
 The optimal parameters of such model are estimated by maximizing a log-likelihood function.
 
-Here we suppose a gaussian prior on :math:`h_\lambda(y)`. Thus, if we write our various hypotheses, 
-we get the following log-likelihood function to be optimized: 
+Here we suppose a gaussian prior on :math:`h_\lambda(y)`. Thus, if we write our various hypotheses,
+we get the following log-likelihood function to be optimized:
 
   .. math::
     :label: lLambdaglm
@@ -245,8 +245,8 @@ where :math:`C` is a constant,
 
 Remarks :
 
--  The equation :eq:`lLambdaglm` applies also if we replace the general linear model by a linear regression model. 
-   Indeed a linear model is a specific case of general linear model where the correlation model is a 
+-  The equation :eq:`lLambdaglm` applies also if we replace the general linear model by a linear regression model.
+   Indeed a linear model is a specific case of general linear model where the correlation model is a
    Dirac covariance model.
 
 -  We get hare a double loop optimization. For each :math:`\lambda` value, we optimize the parameters of the underlying

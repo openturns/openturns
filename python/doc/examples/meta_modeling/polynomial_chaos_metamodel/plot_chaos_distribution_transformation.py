@@ -22,7 +22,11 @@ Apply a transform or inverse transform on your polynomial chaos
 #    \xi = T(X).
 #
 #
-# Let :math:`F_X` be the Cumulative Distribution Function (CDF) associated with the random variable :math:`X` and let :math:`F_\xi` be the CDF associated with the random variable :math:`\xi`. Therefore, :math:`F_\xi` is the CDF associated with the orthogonal polynomials involved in the polynomial chaos expansion. In this case, the transform is:
+# Let :math:`F_X` be the Cumulative Distribution Function (CDF) associated with
+# the random variable :math:`X` and let :math:`F_\xi` be the CDF associated
+# with the random variable :math:`\xi`. Therefore, :math:`F_\xi` is the CDF
+# associated with the orthogonal polynomials involved in the polynomial chaos expansion.
+# In this case, the transform is:
 #
 # .. math::
 #    \xi = F_\xi^{-1} \left( F_X(X) \right),

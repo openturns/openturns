@@ -6,7 +6,11 @@ Kriging : quick-start
 # Abstract
 # --------
 #
-# In this example, we create a kriging metamodel for a function which has scalar real inputs and outputs. We show how to create the learning and the validation samples. We show how to create the kriging metamodel by choosing a trend and a covariance model. Finally, we compute the predicted kriging confidence interval using the conditional variance.
+# In this example, we create a kriging metamodel for a function which has
+# scalar real inputs and outputs.
+# We show how to create the learning and the validation samples.
+# We show how to create the kriging metamodel by choosing a trend and a covariance model.
+# Finally, we compute the predicted kriging confidence interval using the conditional variance.
 
 # %%
 # Introduction
@@ -45,7 +49,9 @@ Kriging : quick-start
 # Creation of the metamodel
 # -------------------------
 #
-# We begin by defining the function `g` as a symbolic function. Then we define the `x_train` variable which contains the inputs of the design of experiments of the training step. Then we compute the `y_train` corresponding outputs. The variable `n_train` is the size of the training design of experiments.
+# We begin by defining the function `g` as a symbolic function.
+# Then we define the `x_train` variable which contains the inputs of the design of experiments of the training step.
+# Then we compute the `y_train` corresponding outputs. The variable `n_train` is the size of the training design of experiments.
 
 # %%
 import openturns as ot
@@ -295,7 +301,11 @@ graph.setLegendPosition("topright")
 view = viewer.View(graph)
 
 # %%
-# We see that the confidence intervals are small in the regions where two consecutive training points are close to each other (e.g. between :math:`x=11` and :math:`x=11.5`) and large when the two points are not (e.g. between :math:`x=8.` and :math:`x=11`) or when the curvature of the function is large (between :math:`x=4` and :math:`x=6`).
+# We see that the confidence intervals are small in the regions where two
+# consecutive training points are close to each other
+# (e.g. between :math:`x=11` and :math:`x=11.5`) and large when the two points
+# are not (e.g. between :math:`x=8.` and :math:`x=11`) or when the curvature
+# of the function is large (between :math:`x=4` and :math:`x=6`).
 
 plt.show()
 

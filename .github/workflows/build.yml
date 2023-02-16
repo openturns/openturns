@@ -13,7 +13,7 @@ jobs:
     - run: |
         brew upgrade
         brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo
-        pip3 install "matplotlib<3.7" scipy chaospy pandas dill
+        pip3 install matplotlib scipy chaospy pandas dill
     - run: |
         cd $HOME/work/openturns
         git clone -b 1.8.1 https://github.com/jeromerobert/hmat-oss.git hmat-oss
@@ -27,7 +27,7 @@ jobs:
         -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison \
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
-        -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function -Wno-missing-field-initializers -Wno-deprecated-declarations" \
+        -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function -Wno-deprecated-declarations" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
         make install -j3
         make tests -j3
@@ -48,7 +48,7 @@ jobs:
         shell: cmd
         run: |
           mkdir build && cd build
-          cmake -LAH -DCMAKE_INSTALL_PREFIX=%cd:\=/%/install -DLAPACK_LIBRARIES=C:/Libraries/openblas/lib/libopenblas.dll.a  -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 -DSWIG_COMPILE_FLAGS="/bigobj" -DUSE_R=OFF ..
+          cmake -LAH -DCMAKE_INSTALL_PREFIX=%cd:\=/%/install -DLAPACK_LIBRARIES=C:/Libraries/openblas/lib/libopenblas.dll.a  -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 -DSWIG_COMPILE_FLAGS="/bigobj" ..
           cmake --build . --config Release --target install
           xcopy install\bin\OT.dll install\Lib\site-packages\openturns
           xcopy C:\Libraries\openblas\bin\libopenblas.dll install\Lib\site-packages\openturns

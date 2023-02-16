@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_SIMULATIONSENSITIVITYANALYSIS_HXX
 #define OPENTURNS_SIMULATIONSENSITIVITYANALYSIS_HXX
 
-#include <cmath>
 #include "openturns/PersistentObject.hxx"
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/ComparisonOperator.hxx"

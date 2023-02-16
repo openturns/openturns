@@ -16,9 +16,13 @@ The Dickey-Fuller test checks whether the random perturbation at time :math:`t` 
 
 When :math:`a \neq 0` and :math:`b=0`, the model :eq:`DFmodel` is said to have a *drift*. When :math:`a = 0` and :math:`b \neq 0`, the model :eq:`DFmodel` is said to have a *linear trend*.
 
-In the model :eq:`DFmodel`, the only way to have stochastic non stationarity is to have :math:`\rho = 1` (if :math:`\rho > 1`, then the process diverges with time which is readily seen in the data). In the general case, the Dickey-Fuller test is a unit root test to detect whether :math:`\rho=1` against :math:`\rho < 1`:
+In the model :eq:`DFmodel`, the only way to have stochastic non stationarity is to have :math:`\rho = 1` (if :math:`\rho > 1`,
+then the process diverges with time which is readily seen in the data).
+In the general case, the Dickey-Fuller test is a unit root test to detect whether :math:`\rho=1` against :math:`\rho < 1`:
 
-The test statistics and its limit distribution depend on the a priori knowledge we have on :math:`a` and :math:`b`. In case of absence of a priori knowledge on the structure of the model, several authors have proposed a global strategy to cover all the sub-cases of the model :eq:`DFmodel`, depending on the possible values on :math:`a` and :math:`b`. 
+The test statistics and its limit distribution depend on the a priori knowledge we have on :math:`a` and :math:`b`.
+In case of absence of a priori knowledge on the structure of the model, several
+authors have proposed a global strategy to cover all the sub-cases of the model :eq:`DFmodel`, depending on the possible values on :math:`a` and :math:`b`.
 
 The strategy implemented is recommended by Enders (*Applied Econometric Times Series*, Enders, W., second edition, John Wiley \& sons editions, 2004.).
 
@@ -98,7 +102,7 @@ The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted when :math:`
 The quantiles of the Dickey-Fuller statistics for the model with drift and linear trend are:
 
 .. math::
-    
+
     \left\{
     \begin{array}{ll}
         \alpha = 0.01, & C_{\alpha} = -3.96 \\
@@ -122,16 +126,23 @@ We test whether :math:`b=0`:
     \end{array}
     \right.
 
-where the statistics :math:`t_n = \frac{|\hat{b}_n|}{\sigma_{b_n}}` converges in distribution to the Student distribution :class:`~openturns.Student` with :math:`\nu=n-4`, where :math:`\sigma_{b_n}` is the least square estimate of the standard deviation of :math:`\Hat{b}_n`, given by:
+where the statistics :math:`t_n = \frac{|\hat{b}_n|}{\sigma_{b_n}}` converges
+in distribution to the Student distribution :class:`~openturns.Student` with :math:`\nu=n-4`,
+where :math:`\sigma_{b_n}` is the least square estimate of the standard deviation of :math:`\Hat{b}_n`, given by:
 
 .. math::
 
     \sigma_{b_n}=\mat{M}^{-1}_{22}\sqrt{\frac{1}{n-1}\sum_{i=2}^n\left(y_{i}-(\hat{a}_n+\hat{b}_nt_i+\hat{\rho}_ny_{i-1})\right)^2}
 
 The decision to be taken is:
-    - If :math:`\cH_0` from :eq:`TestSousModele1_1` is rejected, then the model 1 :eq:`Model1` is confirmed. And the test :eq:`TestModel1` proved that the unit root is rejected : :math:`\rho < 1`. We then conclude that the final model is : :math:`\boldsymbol{X_t = a + bt + \rho X_{t-1} + \varepsilon_{t}}` with :math:`\boldsymbol{\rho < 1}` which is a **trend stationary model**.
+    - If :math:`\cH_0` from :eq:`TestSousModele1_1` is rejected, then the model 1 :eq:`Model1` is confirmed.
+      And the test :eq:`TestModel1` proved that the unit root is rejected : :math:`\rho < 1`.
+      We then conclude that the final model is: :math:`\boldsymbol{X_t = a + bt + \rho X_{t-1} + \varepsilon_{t}}`
+      with :math:`\boldsymbol{\rho < 1}` which is a **trend stationary model**.
 
-    - If :math:`\cH_0` from :eq:`TestSousModele1_1` is accepted, then the model 1 :eq:`Model1` is not confirmed, since the trend presence is rejected and the test :eq:`TestModel1` is not conclusive (since based on a wrong model). **We then have to test the second model** :eq:`Model2`.
+    - If :math:`\cH_0` from :eq:`TestSousModele1_1` is accepted, then the model 1 :eq:`Model1` is not confirmed,
+      since the trend presence is rejected and the test :eq:`TestModel1` is not conclusive (since based on a wrong model).
+      **We then have to test the second model** :eq:`Model2`.
 
 
 **1.2. Case 2:** The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted
@@ -154,14 +165,26 @@ with the Fisher statistics:
 
     \displaystyle \hat{F}_1 = \frac{(S_{1,0} - S_{1,b})/2}{S_{1,b}/(n-3)}
 
-where :math:`S_{1,0}=\sum_{i=2}^n\left(y_i-(\hat{a}_n+y_{i-1})\right)^2` is the sum of the square errors of the model 1 :eq:`Model1` assuming :math:`\cH_0` from :eq:`TestSousModele1_2` and :math:`S_{1,b}=\sum_{i=2}^n\left(y_i-(\hat{a}_n+\hat{b}_nt_i+\hat{\rho}_ny_{i-1})\right)^2` is the same sum when we make no assumption on :math:`\rho` and :math:`b`.
+where :math:`S_{1,0}=\sum_{i=2}^n\left(y_i-(\hat{a}_n+y_{i-1})\right)^2` is the sum of the square
+errors of the model 1 :eq:`Model1` assuming :math:`\cH_0` from :eq:`TestSousModele1_2` and
+:math:`S_{1,b}=\sum_{i=2}^n\left(y_i-(\hat{a}_n+\hat{b}_nt_i+\hat{\rho}_ny_{i-1})\right)^2`
+is the same sum when we make no assumption on :math:`\rho` and :math:`b`.
 
-The statistics :math:`\hat{F}_1` converges in distribution to the Fisher-Snedecor distribution :class:`~openturns.FisherSnedecor` with :math:`d_1=2, d_2=n-3`. The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted when :math:`\hat{F}_1 < \Phi_{\alpha}` where :math:`\Phi_{\alpha}` is the test threshold of level :math:`\alpha`.
+The statistics :math:`\hat{F}_1` converges in distribution to the Fisher-Snedecor distribution
+:class:`~openturns.FisherSnedecor` with :math:`d_1=2, d_2=n-3`. The null hypothesis :math:`\cH_0`
+from :eq:`TestModel1` is accepted when :math:`\hat{F}_1 < \Phi_{\alpha}` where :math:`\Phi_{\alpha}`
+is the test threshold of level :math:`\alpha`.
 
 The decision to be taken is:
-    - If :math:`\cH_0` from :eq:`TestSousModele1_2` is rejected, then the model 1 :eq:`Model1` is confirmed since the presence of linear trend is confirmed. And the test :eq:`TestModel1` proved that the unit root is accepted: :math:`\rho = 1`. We then conclude that the model is: :math:`\boldsymbol{X_t = a + bt + X_{t-1} + \varepsilon_{t}}` which is a **non stationary model**.
-    
-    - If :math:`\cH_0` from :eq:`TestSousModele1_2` is accepted, then the model 1 :eq:`Model1` is not confirmed, since the presence of the linear trend is rejected and the test :eq:`TestModel1` is not conclusive (since based on a wrong model). **We then have to test the second model** :eq:`Model2`.
+    - If :math:`\cH_0` from :eq:`TestSousModele1_2` is rejected, then the model 1 :eq:`Model1`
+      is confirmed since the presence of linear trend is confirmed.
+      And the test :eq:`TestModel1` proved that the unit root is accepted: :math:`\rho = 1`.
+      We then conclude that the model is: :math:`\boldsymbol{X_t = a + bt + X_{t-1} + \varepsilon_{t}}` which is a **non stationary model**.
+
+    - If :math:`\cH_0` from :eq:`TestSousModele1_2` is accepted, then the model 1 :eq:`Model1`
+      is not confirmed, since the presence of the linear trend is rejected and the test
+      :eq:`TestModel1` is not conclusive (since based on a wrong model).
+      **We then have to test the second model** :eq:`Model2`.
 
 
 **2.** We assume the model :eq:`Model2`:
@@ -194,7 +217,7 @@ The coefficients :math:`(a,\rho)` are estimated as follows:
         \displaystyle \sum_{i=2}^n y_{i-1} y_{i}
        \end{array}
      \right)
-   
+
 
 We first test:
 
@@ -231,7 +254,7 @@ The null hypothesis :math:`\cH_0` from :eq:`TestModel2` is accepted when :math:`
 The quantiles of the Dickey-Fuller statistics for the model with drift are:
 
 .. math::
-    
+
     \left\{
     \begin{array}{ll}
         \alpha = 0.01, & C_{\alpha} = -3.43 \\
@@ -247,7 +270,7 @@ We test whether :math:`a=0`:
 
 .. math::
     :label: TestSousModele2_1
-    
+
     \left\{
     \begin{array}{lr}
       \mathcal{H}_0: & a = 0 \\
@@ -262,9 +285,13 @@ where the statistics :math:`t_n = \frac{|\hat{a}_n|}{\sigma_{a_n}}` converges in
     \sigma_{a_n}=\mat{N}^{-1}_{11}\sqrt{\frac{1}{n-1}\sum_{i=2}^n\left(y_{i}-(\hat{a}_n+\hat{\rho}_ny_{i-1})\right)^2}
 
 The decision to be taken is:
-    - If :math:`\cH_0` from :eq:`TestSousModele2_1` is rejected, then the model 2 :eq:`Model2` is confirmed. And the test :eq:`TestModel2` proved that the unit root is rejected: :math:`\rho < 1`. We then conclude that the final model is: :math:`\boldsymbol{X_t = a + \rho X_{t-1} + \varepsilon_{t}}` with :math:`\boldsymbol{\rho < 1}` which is a **stationary model**.
+    - If :math:`\cH_0` from :eq:`TestSousModele2_1` is rejected, then the model 2 :eq:`Model2` is confirmed.
+      And the test :eq:`TestModel2` proved that the unit root is rejected: :math:`\rho < 1`.
+      We then conclude that the final model is: :math:`\boldsymbol{X_t = a + \rho X_{t-1} + \varepsilon_{t}}` with :math:`\boldsymbol{\rho < 1}` which is a **stationary model**.
 
-    - If :math:`\cH_0` from :eq:`TestSousModele2_1` is accepted, then the model 2 :eq:`Model2` is not confirmed, since the drift presence is rejected and the test :eq:`TestModel1` is not conclusive (since based on a wrong model). **We then have to test the third model** :eq:`Model3`.
+    - If :math:`\cH_0` from :eq:`TestSousModele2_1` is accepted, then the model 2 :eq:`Model2` is not confirmed,
+      since the drift presence is rejected and the test :eq:`TestModel1` is not conclusive (since based on a wrong model).
+      **We then have to test the third model** :eq:`Model3`.
 
 
 **2.2. Case 2:** The null hypothesis :math:`\cH_0` from :eq:`TestModel2` is accepted
@@ -289,12 +316,18 @@ with a Fisher test. The statistics is:
 
 where :math:`SCR_{2,c}` is the sum of the square errors of the model 2 :eq:`Model2` assuming :math:`\cH_0` from :eq:`TestSousModele2_2` and :math:`SCR_{2}` is the same sum when we make no assumption on :math:`\rho` and :math:`a`.
 
-The statistics :math:`\hat{F}_2` converges in distribution to the Fisher-Snedecor distribution :class:`~openturns.FisherSnedecor` with :math:`d_1=2, d_2=n-2`. The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted if when :math:`\hat{F}_2 < \Phi_{\alpha}` where :math:`\Phi_{\alpha}` is the test threshold of level :math:`\alpha`.
+The statistics :math:`\hat{F}_2` converges in distribution to the Fisher-Snedecor distribution :class:`~openturns.FisherSnedecor` with :math:`d_1=2, d_2=n-2`.
+The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted if when :math:`\hat{F}_2 < \Phi_{\alpha}` where :math:`\Phi_{\alpha}` is the test threshold of level :math:`\alpha`.
 
 The decision to be taken is:
-    - If :math:`\cH_0` from :eq:`TestSousModele2_2` is rejected, then the model 2 :eq:`Model2` is confirmed since the presence of the drift is confirmed. And the test :eq:`TestModel2` proved that the unit root is accepted: :math:`\rho =1`. We then conclude that the model is: :math:`\boldsymbol{X_t = a + X_{t-1} + \varepsilon_{t}}` which is a **non stationary model**.
+    - If :math:`\cH_0` from :eq:`TestSousModele2_2` is rejected, then the model 2 :eq:`Model2`
+      is confirmed since the presence of the drift is confirmed.
+      And the test :eq:`TestModel2` proved that the unit root is accepted: :math:`\rho =1`.
+      We then conclude that the model is: :math:`\boldsymbol{X_t = a + X_{t-1} + \varepsilon_{t}}` which is a **non stationary model**.
 
-    - If :math:`\cH_0` from :eq:`TestSousModele2_2` is accepted, then the model 2 :eq:`Model2` is not confirmed, since the drift presence is rejected and the test :eq:`TestModel2` is not conclusive (since based on a wrong model). **We then have to test the third model** :eq:`Model3`.
+    - If :math:`\cH_0` from :eq:`TestSousModele2_2` is accepted, then the model 2 :eq:`Model2` is not confirmed,
+      since the drift presence is rejected and the test :eq:`TestModel2` is not conclusive (since based on a wrong model).
+      **We then have to test the third model** :eq:`Model3`.
 
 
 
@@ -316,7 +349,7 @@ We first test:
 
 .. math::
     :label: TestModel3
-  
+
     \left\{
     \begin{array}{lr}
       \mathcal{H}_0: & \rho = 1 \\
@@ -347,7 +380,7 @@ The null hypothesis :math:`\cH_0` from :eq:`TestModel3` is accepted when :math:`
 The quantiles of the Dickey-Fuller statistics for the random walk model are:
 
 .. math::
-    
+
     \left\{
     \begin{array}{ll}
         \alpha = 0.01, & C_{\alpha} = -2.57 \\

@@ -27,7 +27,11 @@ of view.
 All in all, these splitting techniques rely on the same idea: a rare event should be “split” into
 several less rare events, these events corresponding to some “subsets” containing the true failure
 set. Thus, the probability associated to each subset should be stronger, and consequently, easier
-to estimate. As an example, on can illustrate this by considering that a failure probability :math:`p_f` of the order of :math:`10^{-m}` can be split into a product of :math:`m` terms of probability :math:`1/10`. In the following, for the sake of conciseness, only the formulation proposed by Au and Beck (2001) is discussed.
+to estimate.
+As an example, on can illustrate this by considering that a failure probability
+:math:`p_f` of the order of :math:`10^{-m}` can be split into a product of
+:math:`m` terms of probability :math:`1/10`.
+In the following, for the sake of conciseness, only the formulation proposed by Au and Beck (2001) is discussed.
 
 
 
@@ -48,9 +52,9 @@ One can consider a set of *intermediate nested events* :math:`E_s` with :math:`s
       p_f {} & =  \mathbb{P}(E_m) \\
           {} & =   \mathbb{P}(E_m | E_{m-1}) \mathbb{P}(E_{m-1})  \\
           {} & =   \mathbb{P}(E_m | E_{m-1}) \mathbb{P}(E_{m-1})  \\
-	  {} & =   \prod_{s=1}^m p_s
+          {} & =   \prod_{s=1}^m p_s
    \end{aligned}
-   
+
 where :math:`p_1 = \mathbb{P}(E_1)` and :math:`p_s = \mathbb{P}(E_s | E_{s-1})` for :math:`s = 2, \hdots, m`. From this collection of nested failure events, one can define a set of *intermediate nested failure domains* (which are the so-called “subsets”) such that:
 
 .. math::
@@ -66,18 +70,18 @@ These thresholds are estimated as :math:`\alpha_{SS}` quantiles from the set of 
 .. math::
    \mathcal{F}_{u} = \mathcal{F}_{u,m} \subset \mathcal{F}_{u,m-1} \subset \hdots \subset \mathcal{F}_{u,2} \subset \mathcal{F}_{u,1}
 
-   
+
 The underlying mechanism of the SS is illustrated on a two-dimensional example in the following figure.
 
 
-.. figure:: tab.png                                               
+.. figure:: tab.png
   :align: center
   :scale: 75
 
   Illustration on a two-dimensional example of the SS mechanism in the standard space.
   (Top left) The true but unknown *limit state surface* ; (Top right) First intermediate failure domain :math:`\mathcal{F}_{u,1}`.
   (Bottom left) Second intermediate failure domain :math:`\mathcal{F}_{u,2}` ; (Bottom right) Third intermediate failure domain :math:`\mathcal{F}_{u,3}`.
-	  
+
 
 In the first figure (top left), the true, but unknown, *limit state surface* (LSS) is sketched. Then, one considers successive intermediate nested failure domains
 which adaptively evolve towards the true failure LSS (first, second and third intermediate failure domains).
@@ -120,7 +124,7 @@ Moreover, it appears that the conditional sampling PDF :math:`\Phi_d(.|E_{s-1})`
                      {} & = \frac{\Phi_d(u) \mathbf{1}_{\mathcal{F}_{u,s-1}}(u) }{p_{s-1}}, s=2,\hdots,m \qquad \text{ (auxiliary PDF)  }
    \end{aligned}
 
-   
+
 As a consequence, if one does want to achieve variance reduction with SS compared to Crude MonteCarlo
 (and thus, to decrease the computational cost in context of very low failure probability), one
 should be able to sample sequentially from a quasi-optimal auxiliary PDF.
@@ -130,19 +134,31 @@ Carlo* (MCMC) sampling technique (see, e.g., Robert and Casella, 2004; Asmussen 
 2007).
 
 For instance, dedicated algorithms such as the standard *Metropolis-Hastings* (MH) sampler (Metropolis et al., 1953; Hastings, 1970) can be used. In the specific context of SS, the *modified
-Metropolis-Hastings* (m-MH) sampler originally proposed by Au and Beck (2001) has been proposed to deal with possible higher-dimensional reliability problems than the ones standard MH algorithm traditionally used. 
+Metropolis-Hastings* (m-MH) sampler originally proposed by Au and Beck (2001) has been proposed to deal with possible higher-dimensional reliability problems than the ones standard MH algorithm traditionally used.
 
-Concerning the statistical properties of the estimator of :math:`p_f^{SS}`, Au and Beck (2001) point out the fact that this estimator is biased due to the correlation between the intermediate
-probability estimators :math:`\hat{p}_s` for :math:`s=1,\hdots,m`. Such a correlation comes from the way the m-MH sampler is seeded at each step (see, e.g., Bourinet (2018) or Dubourg (2011) for more details). It is also proved that the estimator :math:`p_f^{SS}` is asymptotically unbiased (Au and Beck, 2001). As for the c.v. :math:`\delta_{\hat{p}_f^{SS}}`, Au and Beck (2001) show that it is bounded such that:
+Concerning the statistical properties of the estimator of :math:`p_f^{SS}`,
+Au and Beck (2001) point out the fact that this estimator is biased due to the
+correlation between the intermediate probability estimators :math:`\hat{p}_s`
+for :math:`s=1,\hdots,m`.
+Such a correlation comes from the way the m-MH sampler is seeded at each step
+(see, e.g., Bourinet (2018) or Dubourg (2011) for more details).
+It is also proved that the estimator :math:`p_f^{SS}` is asymptotically unbiased (Au and Beck, 2001).
+As for the c.v. :math:`\delta_{\hat{p}_f^{SS}}`, Au and Beck (2001) show that it is bounded such that:
 
 .. math::
-   \sum_{s=1}^m \delta_{s} \leq  \delta^2_{\hat{p}_f^{SS}}  \leq  \sum_{s_1=1}^m \sum_{s_2=1}^m \delta_{s_1} \delta_{s_2} \qquad \text {(3)}
 
-   
-where :math:`\delta^2_{\hat{p}_f^{SS}} = \mathbb{E} \left[ \left( \frac{\hat{p}_f^{SS} -p_f  }{p_f} \right)^2 \right]` and :math:`\delta_s` are the c.v. of :math:`\hat{p_s}`, for :math:`s=1,\hdots,m`. For the sake of concisness, formulas for computing these quantities can be found in Au and Beck (2001) or Bourinet (2018).
+    \sum_{s=1}^m \delta_{s} \leq  \delta^2_{\hat{p}_f^{SS}}  \leq  \sum_{s_1=1}^m \sum_{s_2=1}^m \delta_{s_1} \delta_{s_2} \qquad \text {(3)}
 
-The upper bound is established under the assumption of fully-correlated intermediate probability estimators :math:`\hat{p}_s`. Instead of using this upper bound, one can use the lower bound, established
-under the assumption of independent probability estimators :math:`\hat{p}_s`. Indeed, although it underestimates the true c.v., it appears that,in practice (see, e.g., Au *et al.*, 2007), it may give a reasonable approximation and approaches the empirical c.v. obtained by repetitions of the SS algorithm.
+
+where :math:`\delta^2_{\hat{p}_f^{SS}} = \mathbb{E} \left[ \left( \frac{\hat{p}_f^{SS} -p_f  }{p_f} \right)^2 \right]`
+and :math:`\delta_s` are the c.v. of :math:`\hat{p_s}`, for :math:`s=1,\hdots,m`.
+For the sake of concisness, formulas for computing these quantities can be found in Au and Beck (2001) or Bourinet (2018).
+
+The upper bound is established under the assumption of fully-correlated intermediate probability estimators :math:`\hat{p}_s`.
+Instead of using this upper bound, one can use the lower bound, established
+under the assumption of independent probability estimators :math:`\hat{p}_s`.
+Indeed, although it underestimates the true c.v., it appears that,in practice (see, e.g., Au *et al.*, 2007),
+it may give a reasonable approximation and approaches the empirical c.v. obtained by repetitions of the SS algorithm.
 
 
 
@@ -209,10 +225,10 @@ References
 ^^^^^^^^^^
 
 For any further information about subset/splitting techniques for rare event simulation, the
-interested reader could refer to the following references  
+interested reader could refer to the following references
 
   - Asmussen and Glynn, 2007, *Stochastic Simulation: Algorithms and Analysis*
-  - Au and Beck, 2001, *Estimation of small failure probabilities in high dimensions by subset simulation*             
+  - Au and Beck, 2001, *Estimation of small failure probabilities in high dimensions by subset simulation*
   - Au *et al.*, 2007, *Application of subset simulation methods to reliability benchmark problems*
   - Au and Wang, 2014, *Engineering Risk Assessment with Subset Simulation*
   - Bect *et al.*, 2017, *Bayesian Subset Simulation*
@@ -234,11 +250,11 @@ interested reader could refer to the following references
   - Morio *et al.*, 2014, *A survey of rare event simulation methods for static input-output models*
   - Proppe, 2017, *Markov chain methods for reliability estimation*
   - Robert and Casella, 2004, *Monte Carlo Statistical Methods*
-  - Walter, 2015, *Moving particles: A parallel optimal multilevel splitting method with application in quantiles estimation and meta-model based algorithms*      
+  - Walter, 2015, *Moving particles: A parallel optimal multilevel splitting method with application in quantiles estimation and meta-model based algorithms*
   - Walter, 2016, *Using Poisson processes for rare event simulation*
   - Zuev and Katafygiotis, 2011, *Modified Metropolis-Hastings algorithm with delayed rejection*
 
-      
+
 .. topic:: API:
 
     - See :class:`~openturns.SubsetSampling`
@@ -248,5 +264,5 @@ interested reader could refer to the following references
 
     - See :doc:`/auto_reliability_sensitivity/reliability/plot_subset_sampling`
 
-     
+
 

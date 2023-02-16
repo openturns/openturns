@@ -31,7 +31,7 @@ It is associated to the Kronecker covariance model built upon an exponential cov
 
 where :math:`\mat{\Sigma}` is the covariance matrix of the Kronecker
 covariance model and :math:`\vect{\theta} = (\theta_1, \dots, \theta_n)`
-is the vector of scale parameters of the AbsoluteExponential covariance 
+is the vector of scale parameters of the AbsoluteExponential covariance
 model.
 
 .. topic:: API:

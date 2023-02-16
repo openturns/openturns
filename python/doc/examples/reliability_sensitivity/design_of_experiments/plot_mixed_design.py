@@ -4,9 +4,15 @@ Create mixed deterministic and probabilistic designs of experiments
 """
 # %%
 #
-# In this example we build a mixed deterministic and probabilistic design of experiments in which levels are defined from the probabilistic distribution of the input random vector. More precisely, we show how to create an `Axial` design of experiments whose points are updated so that they match the mean and variance of the distribution.
+# In this example we build a mixed deterministic and probabilistic design of
+# experiments in which levels are defined from the probabilistic distribution
+# of the input random vector. More precisely, we show how to create an `Axial`
+# design of experiments whose points are updated so that they match the mean
+# and variance of the distribution.
 #
-# The example here is an axial design of experiments where levels are proportional to the standard deviation of each component of the random input vector, and centered on the mean vector of the random input vector.
+# The example here is an axial design of experiments where levels are
+# proportional to the standard deviation of each component of the random input
+# vector, and centered on the mean vector of the random input vector.
 
 # %%
 import openturns as ot

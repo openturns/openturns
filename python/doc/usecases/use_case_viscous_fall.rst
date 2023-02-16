@@ -4,7 +4,7 @@ A viscous free fall example
 ===========================
 
 
-Introduction 
+Introduction
 -------------
 
 We consider an object inside a vertical cylinder which contains a viscous fluid. The fluid generates a drag force which limits the speed of the solid and we assume that the force depends linearily on the object speed:
@@ -29,7 +29,7 @@ The previous differential equation has the exact solution:
 
 
 for any :math:`t \in [0, t_{max}]`
- 
+
 where:
 
 - :math:`z` is the altitude above the surface :math:`[m]`,
@@ -49,7 +49,7 @@ where:
 The stationnary speed limit at infinite time is equal to :math:`v_{inf}`:
 
 .. math::
-   \lim_{t\rightarrow+\infty} v(t)= v_{inf}. 
+   \lim_{t\rightarrow+\infty} v(t)= v_{inf}.
 
 
 When there is no drag, i.e. when :math:`c=0`, the trajectory depends quadratically on :math:`t`:

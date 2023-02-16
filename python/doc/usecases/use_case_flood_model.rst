@@ -7,10 +7,13 @@ A flood model
 Introduction
 ------------
 
-The following figure presents a dyke protecting industrial facilities. When the river level exceeds the dyke height, flooding occurs. The model is based on a crude simplification of the 1D hydrodynamical equations of Saint-Venant under the assumptions of uniform and constant flow rate and large rectangular sections.
+The following figure presents a dyke protecting industrial facilities.
+When the river level exceeds the dyke height, flooding occurs.
+The model is based on a crude simplification of the 1D hydrodynamical equations of Saint-Venant
+under the assumptions of uniform and constant flow rate and large rectangular sections.
 
 .. figure:: ../_static/flooding_section.png
-    :align: center 
+    :align: center
     :alt: flooding section
     :width: 50%
 
@@ -24,7 +27,7 @@ Four independent random variables are considered:
   - :math:`Z_v`: downstream height :math:`[m]`
   - :math:`Z_m`: upstream height :math:`[m]`
 
-When the Strickler coefficient increases, the riverbed generates less friction. 
+When the Strickler coefficient increases, the riverbed generates less friction.
 
 The model depends on four parameters:
 
@@ -37,20 +40,20 @@ The altitude of the dyke is:
 
  .. math::
     Z_d = Z_b + H_d
- 
+
 
 The slope :math:`\alpha` of the river is assumed to be close to zero, which implies:
 
  .. math::
     \alpha = \frac{Z_m - Z_v}{L},
- 
-if :math:`Z_m \geq Z_v`. 
+
+if :math:`Z_m \geq Z_v`.
 
 The water depth is:
 
  .. math::
     H = \left(\frac{Q}{K_s B \sqrt{\alpha}}\right)^{0.6},
- 
+
 
 for any :math:`K_s, Q>0`.
 
@@ -58,19 +61,19 @@ The flood altitude is:
 
  .. math::
     Z_c = H + Z_v.
- 
+
 
 The altitude of the surface of the water is greater than the altitude of the top of the dyke (i.e. there is a flood) if:
 
  .. math::
     S = Z_c - Z_d
- 
+
 is greater than zero.
 
-The following figure presents the model with more details. 
+The following figure presents the model with more details.
 
 .. figure:: ../_static/flooding_section_detail.png
-    :align: center 
+    :align: center
     :alt: flooding section details
     :width: 50%
 
@@ -80,7 +83,7 @@ If we substitute the parameters into the equation, we get:
 
  .. math::
     S = \left(\frac{Q}{300 Ks \sqrt{(Zm-Zv)/5000}}\right)^{3/5} +Zv-58.5.
- 
+
 
 We assume that the four inputs have the following distributions:
 
@@ -99,8 +102,8 @@ We want to estimate the flood probability:
 Analysis of the calibration problem
 -----------------------------------
 
-In this section, we analyse why calibrating the parameters of this model 
-may raise some difficulties. 
+In this section, we analyse why calibrating the parameters of this model
+may raise some difficulties.
 
 First, the slope :math:`\alpha` only depends on the difference :math:`Z_m - Z_v`.
 This is why :math:`Z_v` and :math:`Z_m` cannot be identified at the same time.
@@ -115,8 +118,8 @@ This is why either :math:`K_s` or :math:`\alpha` can be identified separately,
 but not at the same time.
 This shows that only one parameter can be identified.
 
-Hence, calibrating this model requires some regularization which can be done 
-by Bayesian methods. 
+Hence, calibrating this model requires some regularization which can be done
+by Bayesian methods.
 
 References
 ----------

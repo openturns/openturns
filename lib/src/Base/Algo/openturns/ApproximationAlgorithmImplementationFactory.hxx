@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_APPROXIMATIONALGORITHMIMPLEMENTATIONFACTORY_HXX
 #define OPENTURNS_APPROXIMATIONALGORITHMIMPLEMENTATIONFACTORY_HXX
 
-#include <iostream>
 #include "openturns/ApproximationAlgorithmImplementation.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
