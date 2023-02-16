@@ -303,6 +303,26 @@ ott.assert_almost_equal(myModel.getScale(), [2.5, 1.5], 0, 0)
 ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 0, 0)
 test_model(myModel)
 
+# new test for tensorized covariance model
+output_dimension = 1  # 2 is ok
+
+f = ot.SymbolicFunction(["x"], ["x * sin(x)"] * output_dimension)
+sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0], [7.0], [8.0]]
+sampleY = f(sampleX)
+
+basis = ot.Basis(
+    [ot.SymbolicFunction(["x"], ["x"]), ot.SymbolicFunction(["x"], ["x^2"])]
+)
+covarianceModel = ot.TensorizedCovarianceModel(
+    [ot.SquaredExponential([1.0]) for _ in range(output_dimension)]
+)
+algo = ot.KrigingAlgorithm(sampleX, sampleY, covarianceModel, basis)
+lh = algo.getReducedLogLikelihoodFunction()
+# Using 1d graph we get the optimum around 1.5625
+max_lh = lh([1.5625])
+ott.assert_almost_equal(max_lh, [-14.1698], 1e-4, 1e-4)
+
+
 # 12) Testing 1d in/out dimension & stationary
 
 # Test scalar input models
