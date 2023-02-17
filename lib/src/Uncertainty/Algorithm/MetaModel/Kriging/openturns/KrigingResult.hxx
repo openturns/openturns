@@ -47,10 +47,6 @@ class OT_API KrigingResult
 
 public:
 
-  typedef Collection<Point> PointCollection;
-  typedef PersistentCollection<Point> PointPersistentCollection;
-  typedef Collection<Basis> BasisCollection;
-  typedef PersistentCollection<Basis> BasisPersistentCollection;
   typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
 
   /** Default constructor */
@@ -62,8 +58,8 @@ public:
                 const Function & metaModel,
                 const Point & residuals,
                 const Point & relativeErrors,
-                const BasisCollection & basis,
-                const PointCollection & trendCoefficients,
+                const Basis & basis,
+                const Point & trendCoefficients,
                 const CovarianceModel & covarianceModel,
                 const Sample & covarianceCoefficients);
 
@@ -73,8 +69,8 @@ public:
                 const Function & metaModel,
                 const Point & residuals,
                 const Point & relativeErrors,
-                const BasisCollection & basis,
-                const PointCollection & trendCoefficients,
+                const Basis & basis,
+                const Point & trendCoefficients,
                 const CovarianceModel & covarianceModel,
                 const Sample & covarianceCoefficients,
                 const TriangularMatrix & covarianceCholeskyFactor,
@@ -88,10 +84,10 @@ public:
   String __str__(const String & offset = "") const override;
 
   /** Trend basis accessor */
-  virtual BasisCollection getBasisCollection() const;
+  virtual Basis getBasis() const;
 
   /** Trend coefficients accessor */
-  virtual PointCollection getTrendCoefficients() const;
+  virtual Point getTrendCoefficients() const;
 
   /** Conditional covariance models accessor */
   virtual CovarianceModel getCovarianceModel() const;
@@ -157,10 +153,10 @@ private:
   Sample outputSample_;
 
   /** The trend basis */
-  BasisPersistentCollection basis_;
+  Basis basis_;
 
   /** The trend coefficients */
-  PointPersistentCollection trendCoefficients_;
+  Point trendCoefficients_;
 
   /** The covariance model */
   CovarianceModel covarianceModel_;

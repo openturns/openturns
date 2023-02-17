@@ -200,7 +200,8 @@ Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
 /* Parameters accessor */
 void TensorizedCovarianceModel::setFullParameter(const Point & parameter)
 {
-  const UnsignedInteger parameterDimension = getParameter().getDimension();
+  const UnsignedInteger parameterDimension = getFullParameter().getSize();
+
   if (parameter.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: parameter dimension should be " << getParameter().getDimension()
         << " (got " << parameter.getDimension() << ")";
   Point scale(inputDimension_);

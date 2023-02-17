@@ -47,11 +47,6 @@ class OT_API GeneralLinearModelResult
 
 public:
 
-  typedef Collection<Point> PointCollection;
-  typedef PersistentCollection<Point> PointPersistentCollection;
-  typedef Collection<Basis> BasisCollection;
-  typedef PersistentCollection<Basis> BasisPersistentCollection;
-
   /** Default constructor */
   GeneralLinearModelResult();
 
@@ -61,8 +56,8 @@ public:
                            const Function & metaModel,
                            const Point & residuals,
                            const Point & relativeErrors,
-                           const BasisCollection & basis,
-                           const PointCollection & trendCoefficients,
+                           const Basis & basis,
+                           const Point & trendCoefficients,
                            const CovarianceModel & covarianceModel,
                            const Scalar optimalLogLikelihood);
 
@@ -74,10 +69,10 @@ public:
   String __str__(const String & offset = "") const override;
 
   /** Trend basis accessor */
-  BasisCollection getBasisCollection() const;
+  Basis getBasis() const;
 
   /** Trend coefficients accessor */
-  PointCollection getTrendCoefficients() const;
+  Point getTrendCoefficients() const;
 
   /** Conditional covariance models accessor */
   CovarianceModel getCovarianceModel() const;
@@ -117,10 +112,10 @@ protected:
 private:
 
   /** The trend basis */
-  BasisPersistentCollection basis_;
+  Basis basis_;
 
   /** The trend coefficients */
-  PointPersistentCollection beta_;
+  Point beta_;
 
   /** The covariance model */
   CovarianceModel covarianceModel_;

@@ -42,8 +42,8 @@ KrigingResult::KrigingResult(const Sample & inputSample,
                              const Function & metaModel,
                              const Point & residuals,
                              const Point & relativeErrors,
-                             const BasisCollection & basis,
-                             const PointCollection & trendCoefficients,
+                             const Basis & basis,
+                             const Point & trendCoefficients,
                              const CovarianceModel & covarianceModel,
                              const Sample & covarianceCoefficients)
   : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
@@ -54,9 +54,7 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , covarianceModel_(covarianceModel)
   , covarianceCoefficients_(covarianceCoefficients)
 {
-  const UnsignedInteger size = inputSample.getSize();
-  if (size != outputSample.getSize())
-    throw InvalidArgumentException(HERE) << "In KrigingResult::KrigingResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
+  // Nothing to do
 }
 
 
@@ -66,8 +64,8 @@ KrigingResult::KrigingResult(const Sample & inputSample,
                              const Function & metaModel,
                              const Point & residuals,
                              const Point & relativeErrors,
-                             const BasisCollection & basis,
-                             const PointCollection & trendCoefficients,
+                             const Basis & basis,
+                             const Point & trendCoefficients,
                              const CovarianceModel & covarianceModel,
                              const Sample & covarianceCoefficients,
                              const TriangularMatrix & covarianceCholeskyFactor,
@@ -84,8 +82,7 @@ KrigingResult::KrigingResult(const Sample & inputSample,
 {
   const UnsignedInteger outputDimension = outputSample.getDimension();
   const UnsignedInteger size = inputSample.getSize();
-  if (size != outputSample.getSize())
-    throw InvalidArgumentException(HERE) << "In KrigingResult::KrigingResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
+
   if (covarianceCholeskyFactor_.getDimension() != 0 && covarianceCholeskyFactor_.getDimension() != size * outputDimension)
     throw InvalidArgumentException(HERE) << "In KrigingResult::KrigingResult, Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceCholeskyFactor_.getDimension();
   if (covarianceHMatrix_.getNbRows() != 0)
@@ -127,13 +124,13 @@ String KrigingResult::__str__(const String & ) const
 }
 
 /* Basis accessor */
-KrigingResult::BasisCollection KrigingResult::getBasisCollection() const
+Basis KrigingResult::getBasis() const
 {
   return basis_;
 }
 
 /* Trend coefficients accessor */
-KrigingResult::PointCollection KrigingResult::getTrendCoefficients() const
+Point KrigingResult::getTrendCoefficients() const
 {
   return trendCoefficients_;
 }
@@ -185,24 +182,25 @@ void KrigingResult::computeF() const
   if (F_.getNbRows() != 0) return;
   const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
   const UnsignedInteger sampleSize = inputSample_.getSize();
-  const UnsignedInteger basisCollectionSize = basis_.getSize();
-  UnsignedInteger totalSize = 0;
-  for (UnsignedInteger i = 0; i < basisCollectionSize; ++ i ) totalSize += basis_[i].getSize();
-  // basis_ is of size 0 or outputDimension
-  if (totalSize == 0) return;
-  UnsignedInteger index = 0;
-  // Compute F
+  const UnsignedInteger basisSize = basis_.getSize();
+  // Basis \Phi is a function from R^{inputDimension} to R^{outputDimension}
+  // As we get B functions, total number of values is B * outputDimension
+  const UnsignedInteger totalSize = outputDimension * basisSize;
+
   F_ = Matrix(sampleSize * outputDimension, totalSize);
-  for (UnsignedInteger outputMarginal = 0; outputMarginal < basisCollectionSize; ++ outputMarginal )
+  if (totalSize == 0)
+    return;
+
+  // Compute F
+  for (UnsignedInteger j = 0; j < basisSize; ++j)
   {
-    const Basis localBasis(basis_[outputMarginal]);
-    const UnsignedInteger localBasisSize = localBasis.getSize();
-    for (UnsignedInteger j = 0; j < localBasisSize; ++j, ++index )
-    {
-      // Here we use potential parallelism in the evaluation of the basis functions
-      const Sample basisSample(localBasis[j](inputSample_));
-      for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample(i, 0);
-    }
+    // Compute phi_j (X)
+    // Here we use potential parallelism in the evaluation of the basis functions
+    // It generates a sample of shape (sampleSize, outputDimension)
+    const Sample basisSample = basis_[j](inputSample_);
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
+        F_(outputMarginal + i * outputDimension, j * outputDimension + outputMarginal) = basisSample(i, outputMarginal);
   }
 }
 
@@ -296,20 +294,21 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   // compute f(x) & define u = psi - f(x)
   LOGINFO("Compute f(x)");
   // Note that fx = F^{T} for x in inputSample_
-  Matrix fx(F_.getNbColumns(), sampleSize * covarianceModel_.getOutputDimension());
+  Matrix fx(F_.getNbColumns(), sampleSize * outputDimension);
   // Fill fx => equivalent to F for the x data with transposition
-  UnsignedInteger index = 0;
-  for (UnsignedInteger basisMarginal = 0; basisMarginal < basis_.getSize(); ++ basisMarginal )
+  const UnsignedInteger basisSize = basis_.getSize();
+  // Basis \Phi is a function from R^{inputDimension} to R^{outputDimension}
+  // As we get B functions, total number of values is B * outputDimension
+  // Compute fx
+  for (UnsignedInteger j = 0; j < basisSize; ++j)
   {
-    const Basis localBasis(basis_[basisMarginal]);
-    const UnsignedInteger localBasisSize = localBasis.getSize();
-    for (UnsignedInteger j = 0; j < localBasisSize; ++ j )
-    {
-      // Here we use potential parallelism in the evaluation of the basis functions
-      const Sample basisSample(localBasis[j](sample));
-      for (UnsignedInteger i = 0; i < sampleSize; ++ i) fx(j + index, basisMarginal + i * outputDimension) = basisSample(i, 0);
-    }
-    index = index + localBasisSize;
+    // Compute phi_j (X)
+    // Here we use potential parallelism in the evaluation of the basis functions
+    // It generates a sample of shape (sampleSize, outputDimension)
+    const Sample basisSample = basis_[j](sample);
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
+        fx(j * outputDimension + outputMarginal, outputMarginal + i * outputDimension) = basisSample(i, outputMarginal);
   }
   LOGINFO("Compute ux = psi - fx");
   const Matrix ux(psi - fx);
@@ -389,18 +388,15 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
   // compute f(x) & define u = psi - f(x)
   LOGINFO("Compute f(x)");
   // Note that fx = F^{T} for x in inputSample_
-  Matrix fx(F_.getNbColumns(), covarianceModel_.getOutputDimension());
-  // Fill fx => equivalent to F for the x data with transposition
-  UnsignedInteger index = 0;
-  for (UnsignedInteger basisMarginal = 0; basisMarginal < basis_.getSize(); ++ basisMarginal )
+  const UnsignedInteger outputDimension = outputSample_.getDimension();
+  Matrix fx(F_.getNbColumns(), outputDimension);
+  // Compute fx
+  for (UnsignedInteger j = 0; j < basis_.getSize(); ++j)
   {
-    const Basis localBasis(basis_[basisMarginal]);
-    const UnsignedInteger localBasisSize = localBasis.getSize();
-    for (UnsignedInteger j = 0; j < localBasisSize; ++ j )
-    {
-      fx(j + index, basisMarginal) = localBasis[j](data)[0];
-    }
-    index = index + localBasisSize;
+    // Compute phi_j (data)
+    const Point phiX = basis_[j](data);
+    for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
+      fx(j * outputDimension + outputMarginal, outputMarginal) = phiX[outputMarginal];
   }
   LOGINFO("Compute ux = psi - fx");
   const Matrix ux(psi - fx);
@@ -464,7 +460,7 @@ Normal KrigingResult::operator()(const Sample & xi) const
 }
 
 
-/** Compute marginal variance conditionally to observations (1 cov of size outdimension)*/
+/** Compute marginal variance conditionally to observations (1 cov of size outputDimension)*/
 Scalar KrigingResult::getConditionalMarginalVariance(const Point & point,
     const UnsignedInteger marginalIndex) const
 {
@@ -503,7 +499,7 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     // First set sigmaXX
     const Point tau(inputDimension);
     // There is no computeAsScalar(tau) method
-    const Point sigma2(1, covarianceModel_(tau)(0, 0));
+    const Point sigma2(1, covarianceModel_.computeAsScalar(tau));
     Sample result(sampleSize, sigma2);
 
 
@@ -560,19 +556,14 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     // Note that fx = F^{T} for x in inputSample_
     Matrix fx(F_.getNbColumns(), sampleSize);
     // Fill fx => equivalent to F for the x data with transposition
-    UnsignedInteger index = 0;
-    for (UnsignedInteger basisMarginal = 0; basisMarginal < basis_.getSize(); ++basisMarginal)
+    for (UnsignedInteger j = 0; j < basis_.getSize(); ++j)
     {
-      const Basis localBasis(basis_[basisMarginal]);
-      const UnsignedInteger localBasisSize = localBasis.getSize();
-      for (UnsignedInteger j = 0; j < localBasisSize; ++j)
-      {
-        // Here we use potential parallelism in the evaluation of the basis functions
-        const Sample basisSample(localBasis[j](sample));
-        for (UnsignedInteger i = 0; i < sampleSize; ++i)
-          fx(j + index, basisMarginal + i * outputDimension) = basisSample(i, 0);
-      }
-      index = index + localBasisSize;
+      // Compute phi_j (X)
+      // Here we use potential parallelism in the evaluation of the basis functions
+      // It generates a sample of shape (sampleSize, outputDimension)
+      const Sample basisSample = basis_[j](sample);
+      for (UnsignedInteger i = 0; i < sampleSize; ++i)
+          fx(j,  i) = basisSample(i, 0);
     }
     LOGINFO("Compute ux = psi - fx");
     const Matrix ux(psi - fx);
@@ -589,7 +580,7 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
       result(j, 0) += sum;
     }
     return result;
-  }
+  } // end for if  outputdim=1
 
   Sample marginalVariance(sampleSize, 1);
 
@@ -673,8 +664,6 @@ void KrigingResult::load(Advocate & adv)
   MetaModelResult::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
-  adv.loadAttribute( "basis_", basis_ );
-  adv.loadAttribute( "trendCoefficients_", trendCoefficients_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "covarianceCoefficients_", covarianceCoefficients_ );
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
@@ -682,6 +671,49 @@ void KrigingResult::load(Advocate & adv)
   adv.loadAttribute( "phiT_", phiT_);
   adv.loadAttribute( "Gt_", Gt_);
 
+
+  if (adv.getStudyVersion() >= 102100)
+  {
+    adv.loadAttribute("basis_", basis_);
+    adv.loadAttribute("trendCoefficients_", trendCoefficients_);
+  }
+  else
+  {
+    // Backward load method
+    // Here the implementation suggests that we rely on a collection of Basis and Point
+    // Partially compatible with new implementation : we should have here the basis of
+    // same size
+    PersistentCollection<Basis> basis;
+    PersistentCollection<Point> beta;
+    adv.loadAttribute("basis_", basis);
+    adv.loadAttribute("trendCoefficients_", beta);
+    const UnsignedInteger basisSize = basis[0].getSize();
+    if (basisSize != covarianceModel_.getOutputDimension())
+      throw InvalidArgumentException(HERE) << "Collection size differ from covariance model output dimension. basisSize= " << basisSize << " whereas covariance model output dimension = " << covarianceModel_.getOutputDimension();
+
+    for (UnsignedInteger outputMarginalIndex = 1; outputMarginalIndex < basis.getSize(); ++outputMarginalIndex)
+    {
+      if (basis[outputMarginalIndex].getSize() != basisSize)
+        throw InvalidArgumentException(HERE) << "With new implementation, we should have all basis of same size. Here, basis[0].size = " << basisSize
+                                             << " whereas basis[" << outputMarginalIndex << "].size = " << basis[outputMarginalIndex].getSize();
+    }
+    // Now we convert the persistent collection of Basis/Point into a standard multivariate Basis
+    trendCoefficients_ = Point(basisSize * basis.getSize());
+    Collection<Function> marginalCollection(covarianceModel_.getOutputDimension());
+    Collection<Function> phi(basisSize);
+    UnsignedInteger index = 0;
+
+    for (UnsignedInteger j = 0; j < basisSize; ++j)
+    {
+      for (UnsignedInteger outputMarginalIndex = 0; outputMarginalIndex < basis.getSize(); ++outputMarginalIndex)
+      {
+        marginalCollection[outputMarginalIndex] = basis[outputMarginalIndex].build(j);
+        trendCoefficients_[index] = beta[outputMarginalIndex][j];
+      }
+      phi[j] = AggregatedFunction(marginalCollection);
+    }
+    basis_ = Basis(phi);
+  } // else
 }
 
 

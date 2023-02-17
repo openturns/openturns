@@ -44,9 +44,6 @@ class OT_API KrigingAlgorithm
 
 public:
 
-  typedef KrigingResult::BasisCollection BasisCollection;
-  typedef KrigingResult::BasisPersistentCollection BasisPersistentCollection;
-
   /** Default constructor */
   KrigingAlgorithm();
 

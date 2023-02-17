@@ -1,2 +1,2 @@
 myBoxCox (GLM)=BoxCox(lambda=[1.99098], shift=[1e-10])
-GLM result=GeneralLinearModelResult(covariance models=DiracCovarianceModel(t)=[[ 2.12358e-05 ]] * t==[0], basis=[Basis( [class=LinearEvaluation name=Unnamed center=[0] constant=[1] linear=[[ 0 ]],class=LinearEvaluation name=Unnamed center=[0] constant=[0] linear=[[ 1 ]]] )], trend coefficients=[[9.90054,2.95995]])
+GLM result=GeneralLinearModelResult(covariance models=DiracCovarianceModel(t)=[[ 2.12358e-05 ]] * t==[0], basis=Basis( [class=LinearEvaluation name=Unnamed center=[0] constant=[1] linear=[[ 0 ]],class=LinearEvaluation name=Unnamed center=[0] constant=[0] linear=[[ 1 ]]] ), trend coefficients=[9.90054,2.95995])

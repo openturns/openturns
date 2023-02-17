@@ -117,16 +117,17 @@ void KrigingAlgorithm::run()
   LOGINFO("Store the estimates");
   LOGINFO("Build the output meta-model");
   Function metaModel;
-  // We use directly the collection of points
-  const BasisCollection basis(glmResult.getBasisCollection());
+
+  // We use directly the points
+  const Basis basis(glmResult.getBasis());
   const CovarianceModel conditionalCovarianceModel(glmResult.getCovarianceModel());
-  const Collection<Point> trendCoefficients(glmResult.getTrendCoefficients());
+  const Point beta(glmResult.getTrendCoefficients());
   const UnsignedInteger outputDimension = outputSample_.getDimension();
   Sample covarianceCoefficients(inputSample_.getSize(), outputDimension);
   covarianceCoefficients.getImplementation()->setData(gamma_);
   // Meta model definition
-  metaModel.setEvaluation(new KrigingEvaluation(basis, inputSample_, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
-  metaModel.setGradient(new KrigingGradient(basis, inputSample_, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
+  metaModel.setEvaluation(new KrigingEvaluation(basis, inputSample_, conditionalCovarianceModel, beta, covarianceCoefficients));
+  metaModel.setGradient(new KrigingGradient(basis, inputSample_, conditionalCovarianceModel, beta, covarianceCoefficients));
   metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
 
   // compute residual, relative error
@@ -143,7 +144,7 @@ void KrigingAlgorithm::run()
     residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
     relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
   }
-  result_ = KrigingResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis, trendCoefficients, conditionalCovarianceModel, covarianceCoefficients, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
+  result_ = KrigingResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis, beta, conditionalCovarianceModel, covarianceCoefficients, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
 }
 
 

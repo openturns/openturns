@@ -49,10 +49,10 @@ public:
   KrigingEvaluation();
 
   /** Constructor with parameters */
-  KrigingEvaluation(const BasisCollection & basis,
+  KrigingEvaluation(const Basis & basis,
                     const Sample & inputSample,
                     const CovarianceModel & correlationModel,
-                    const PointCollection & beta,
+                    const Point & beta,
                     const Sample & gamma);
 
   /** Virtual constructor */
@@ -84,7 +84,7 @@ public:
 protected:
 
   // BasisCollection ==> Persistent for save attribut
-  BasisPersistentCollection basis_;
+  Basis basis_;
 
   /// Training (input) sample
   Sample inputSample_;
@@ -93,7 +93,7 @@ protected:
   CovarianceModel covarianceModel_;
 
   /// Regression weights
-  PointPersistentCollection beta_;
+  Point beta_;
   Sample gamma_;
 
 private:

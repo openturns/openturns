@@ -148,7 +148,7 @@ view = otv.View(graph)
 # %%
 # We can retrieve the calibrated trend coefficient :
 c0 = result.getTrendCoefficients()
-print("The trend is the curve m(x) = %.6e" % c0[0][0])
+print("The trend is the curve m(x) = %.6e" % c0[0])
 
 # %%
 # We also pay attention to the trained covariance model and observe the values
@@ -162,7 +162,7 @@ print("Amplitude parameter : %.3e" % sigma)
 # %%
 # We build the trend from the coefficient :
 constantTrend = ot.SymbolicFunction(["a", "x"], ["a"])
-myTrend = ot.ParametricFunction(constantTrend, [0], [c0[0][0]])
+myTrend = ot.ParametricFunction(constantTrend, [0], [c0[0]])
 
 
 # %%
@@ -251,7 +251,7 @@ view = otv.View(graph)
 # %%
 # We can retrieve the calibrated trend coefficients with `getTrendCoefficients` :
 c0 = result.getTrendCoefficients()
-print("Trend is the curve m(X) = %.6e X + %.6e" % (c0[0][1], c0[0][0]))
+print("Trend is the curve m(X) = %.6e X + %.6e" % (c0[1], c0[0]))
 
 
 # %%
@@ -267,7 +267,7 @@ print("Amplitude parameter : %.3e" % sigma)
 # %%
 # We draw the linear trend that we are interested in.
 linearTrend = ot.SymbolicFunction(["a", "b", "x"], ["a*x+b"])
-myTrend = ot.ParametricFunction(linearTrend, [0, 1], [c0[0][1], c0[0][0]])
+myTrend = ot.ParametricFunction(linearTrend, [0, 1], [c0[1], c0[0]])
 y_test = myTrend(myTransform(x_test))
 curve = ot.Curve(x_test, y_test)
 curve.setLineStyle("dotdash")
@@ -337,7 +337,7 @@ view = otv.View(graph)
 c0 = result.getTrendCoefficients()
 print(
     "Trend is the curve m(X) = %.6e X**2 + %.6e X + %.6e"
-    % (c0[0][2], c0[0][1], c0[0][0])
+    % (c0[2], c0[1], c0[0])
 )
 
 
@@ -354,7 +354,7 @@ print("Amplitude parameter : %.3e" % sigma)
 # The quadratic linear trend obtained is :
 quadraticTrend = ot.SymbolicFunction(["a", "b", "c", "x"], ["a*x^2 + b*x + c"])
 myTrend = ot.ParametricFunction(
-    quadraticTrend, [0, 1, 2], [c0[0][2], c0[0][1], c0[0][0]]
+    quadraticTrend, [0, 1, 2], [c0[2], c0[1], c0[0]]
 )
 
 
