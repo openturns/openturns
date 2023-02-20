@@ -22,7 +22,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/DatabaseFunction.hxx"
+#include "openturns/AggregatedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
