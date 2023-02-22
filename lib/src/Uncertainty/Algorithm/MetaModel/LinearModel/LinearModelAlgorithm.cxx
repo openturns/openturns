@@ -49,8 +49,10 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   if (inputSample.getSize() != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In LinearModelAlgorithm::LinearModelAlgorithm, input sample size (" << inputSample.getSize() << ") does not match output sample size (" << outputSample.getSize() << ").";
 
+  if (outputSample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "LinearModelAlgorithm can only handle and 1-d output sample.";
+
   const UnsignedInteger inputDimension = inputSample_.getDimension();
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   Collection<Function> functions;
   Description inputDescription(inputSample_.getDescription());
   try
@@ -69,9 +71,6 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
     functions.add(SymbolicFunction(inputDescription, Description(1, inputDescription[i])));
   }
   basis_ = Basis(functions);
-#else
-  basis_ = LinearBasisFactory(inputDimension).build();
-#endif
 }
 
 
