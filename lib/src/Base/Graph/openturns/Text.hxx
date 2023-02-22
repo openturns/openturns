@@ -94,6 +94,10 @@ public:
   Scalar getTextSize() const override;
   void setTextSize(const Scalar size) override;
 
+  /** Accessors to text rotation */
+  Scalar getRotation() const;
+  void setRotation(const Scalar rotation);
+  
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -111,7 +115,10 @@ protected:
   Description textPositions_;
 
   /** Text size */
-  Scalar textSize_;
+  Scalar textSize_ = 0.0;
+
+  /** Text rotation */
+  Scalar rotation_ = 0.0;
 
 private:
 
@@ -120,7 +127,6 @@ private:
 
   /** Initialize position map */
   static void InitializePositionMap();
-  static Bool IsTextFirstInitialization;
 
 }; /* class Text */
 

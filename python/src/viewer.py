@@ -573,6 +573,10 @@ class View:
                     del text_kw["verticalalignment"]
                 else:
                     vertical_default = "center"
+                if "rotation" not in text_kw_default:
+                    text_kw["rotation"] = drawable.getImplementation().getRotation()
+                if "rotation_mode" not in text_kw_default:
+                    text_kw["rotation_mode"] = "anchor"
                 positions = drawable.getTextPositions()
 
                 for i, text in enumerate(drawable.getTextAnnotations()):
