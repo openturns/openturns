@@ -11,11 +11,11 @@ residuals : :class:`~openturns.Point`
     The residual errors.
 relativeErrors : :class:`~openturns.Point`
     The relative errors.
-basis : collection of :class:`~openturns.Basis`
-    Collection of the  :math:`p` functional basis: :math:`(\varphi_j^l: \Rset^d \rightarrow \Rset)_{1 \leq j \leq n_l}` for each :math:`l \in [1, p]`.
+basis :  :class:`~openturns.Basis`
+    Functional basis of size :math:`b` : :math:`(\varphi^l: \Rset^d \rightarrow \Rset^p)` for each :math:`l \in [1, b]`.
     Its size should be equal to zero if the trend is not estimated.
-trendCoefficients : collection of :class:`~openturns.Point`
-   The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
+trendCoef : sequence of float
+    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)` stored as a Point.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance function of the Gaussian process with its optimized parameters.
 optimalLogLikelihood : float
@@ -38,9 +38,9 @@ The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p` is defined by:
        \end{array}
      \right)
 
-where :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \alpha_j^l \varphi_j^l(\vect{x})` and :math:`\varphi_j^l: \Rset^d \rightarrow \Rset` are the trend functions.
+where :math:`\mu_l(\vect{x}) = \sum_{j=1}^{b} \alpha_j^l \varphi_j^l(\vect{x})` and :math:`\varphi_j^l: \Rset^d \rightarrow \Rset` are the trend functions
+(the :math:`l-th` marginal of `\varphi(x)`).
 
-If a normalizing transformation *T* has been used, the meta model is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)` and the meta model writes:
 
 .. math::
     :label: metaModelWithT
@@ -92,8 +92,8 @@ Get the meta model:
 
 Returns
 -------
-trendCoef : collection of :class:`~openturns.Point`
-    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`
+trendCoef : sequence of float
+    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)` stored as a Point.
 "
 
 // ---------------------------------------------------------------------
@@ -109,13 +109,13 @@ covModel : :class:`~openturns.CovarianceModel`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralLinearModelResult::getBasisCollection
-"Accessor to the collection of basis.
+%feature("docstring") OT::GeneralLinearModelResult::getBasis
+"Accessor to the functional basis.
 
 Returns
 -------
-basisCollection : collection of :class:`~openturns.Basis`
-    Collection of the :math:`p` function basis: :math:`(\varphi_j^l: \Rset^d \rightarrow \Rset)_{1 \leq j \leq n_l}` for each :math:`l \in [1, p]`.
+basis : :class:`~openturns.Basis`
+    Functional basis of size :math:`b` : :math:`(\varphi^l: \Rset^d \rightarrow \Rset^p)` for each :math:`l \in [1, b]`.
 
 Notes
 -----
