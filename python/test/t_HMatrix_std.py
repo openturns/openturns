@@ -4,7 +4,7 @@ import openturns as ot
 import math as m
 
 
-class TestHMatrixRealAssemblyFunction(object):
+class TestHMatrixRealAssemblyFunction:
     def __init__(self, vertices, scaling=1.0):
         self.vertices = vertices
         self.scaling = scaling
@@ -70,7 +70,7 @@ print("y=", y)
 
 
 # block assembly
-class TestHMatrixTensorRealAssemblyFunction(object):
+class TestHMatrixTensorRealAssemblyFunction:
     def __init__(self, covarianceModel, vertices):
         self.covarianceModel = covarianceModel
         self.vertices = vertices

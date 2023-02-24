@@ -30,7 +30,7 @@
 %include XMLH5StorageManager.i
 #else
 %pythoncode %{
-class XMLH5StorageManager(object):
+class XMLH5StorageManager:
     pass
 %}
 #endif

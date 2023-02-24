@@ -84,7 +84,7 @@ Distribution __rtruediv__(Scalar s) { return self->inverse() * s; }
 from openturns.typ import Interval
 import math
 
-class PythonDistribution(object):
+class PythonDistribution:
     """
     Allow one to override Distribution from Python.
 

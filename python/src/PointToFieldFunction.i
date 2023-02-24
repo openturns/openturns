@@ -79,7 +79,7 @@ PointToFieldFunction(const PointToFieldFunction & other) { return new OT::PointT
 # We have to make sure the submodule is loaded with absolute path
 import openturns.typ
 
-class OpenTURNSPythonPointToFieldFunction(object):
+class OpenTURNSPythonPointToFieldFunction:
     """
     Override PointToFieldFunction from Python.
 
