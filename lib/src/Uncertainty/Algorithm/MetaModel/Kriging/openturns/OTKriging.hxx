@@ -30,5 +30,6 @@
 #include "openturns/GeneralLinearModelAlgorithm.hxx"
 #include "openturns/GaussianProcessFitterResult.hxx"
 #include "openturns/GaussianProcessFitter.hxx"
+#include "openturns/GaussianProcessRegressionResult.hxx"
 
 #endif /* OPENTURNS_OTKRIGING_HXX */
