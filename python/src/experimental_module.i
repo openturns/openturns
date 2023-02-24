@@ -69,3 +69,4 @@ OTTypedCollectionInterfaceObjectHelper(WeightedExperiment)
 %include GeneralizedExtremeValueValidation.i
 %include GaussianProcessFitterResult.i
 %include GaussianProcessFitter.i
+%include GaussianProcessRegressionResult.i
