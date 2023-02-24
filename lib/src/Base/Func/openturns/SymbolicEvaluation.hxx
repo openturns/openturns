@@ -57,6 +57,7 @@ public:
   SymbolicEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const SymbolicEvaluation & other) const;
 
   /** String converter */

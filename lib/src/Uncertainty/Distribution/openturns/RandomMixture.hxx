@@ -83,6 +83,7 @@ public:
                 const Sample & weights);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const RandomMixture & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

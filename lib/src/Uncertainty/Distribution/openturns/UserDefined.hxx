@@ -53,6 +53,7 @@ public:
 
 
   /** Comparison operator */
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const UserDefined & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

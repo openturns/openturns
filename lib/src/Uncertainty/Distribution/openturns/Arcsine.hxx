@@ -45,6 +45,7 @@ public:
           const Scalar b);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const Arcsine & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

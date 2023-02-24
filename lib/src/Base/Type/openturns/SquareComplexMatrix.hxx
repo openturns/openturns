@@ -94,7 +94,9 @@ public:
   SquareComplexMatrix operator - (const HermitianMatrix & m) const;
 
   /** SquareComplexMatrix multiplications (must have consistent dimensions) */
-  ComplexMatrix operator * (const ComplexMatrix & m) const;
+#ifdef _MSC_VER
+  using ComplexMatrix::operator *;
+#endif
   SquareComplexMatrix operator * (const SquareComplexMatrix & m) const;
   SquareComplexMatrix operator * (const HermitianMatrix & m) const;
   SquareComplexMatrix operator * (const IdentityMatrix & m) const;
@@ -113,6 +115,9 @@ public:
 
   /** Multiplication with a Complex */
   SquareComplexMatrix operator * (const Complex s) const;
+#ifndef _MSC_VER   // VS2010 does not like 'using' being called after overloads
+  using ComplexMatrix::operator *;
+#endif
 
   /** Division by a Complex*/
   SquareComplexMatrix operator / (const Complex s) const;

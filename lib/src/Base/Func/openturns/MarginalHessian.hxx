@@ -57,6 +57,7 @@ public:
   MarginalHessian * clone() const override;
 
   /** Comparison operator */
+  using HessianImplementation::operator ==;
   Bool operator ==(const MarginalHessian & other) const;
 
   /** String converter */

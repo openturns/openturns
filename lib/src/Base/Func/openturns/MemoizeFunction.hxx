@@ -58,6 +58,7 @@ public:
   void setEvaluation(const Evaluation & evaluation) override;
 
   /** Comparison operator */
+  using FunctionImplementation::operator ==;
   Bool operator ==(const MemoizeFunction & other) const;
 
   /** Operator () */

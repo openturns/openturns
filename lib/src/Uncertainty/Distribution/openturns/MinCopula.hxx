@@ -42,6 +42,7 @@ public:
   explicit MinCopula(const UnsignedInteger dim = 2);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const MinCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

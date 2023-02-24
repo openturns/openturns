@@ -47,6 +47,7 @@ public:
                         const Sample & observations);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const PosteriorDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

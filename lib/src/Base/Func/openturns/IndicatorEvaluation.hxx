@@ -52,6 +52,7 @@ public:
   IndicatorEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const IndicatorEvaluation & other) const;
 
   /** String converter */

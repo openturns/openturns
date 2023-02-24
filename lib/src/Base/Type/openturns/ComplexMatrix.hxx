@@ -189,6 +189,7 @@ public:
   ComplexMatrix operator / (const Complex s) const;
 
   /** Comparison operators */
+  using TypedInterfaceObject<ComplexMatrixImplementation>::operator ==;
   Bool operator == (const ComplexMatrix & rhs) const;
 
   /** Empty returns true if there is no element in the matrix */

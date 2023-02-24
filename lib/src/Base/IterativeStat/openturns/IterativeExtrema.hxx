@@ -49,6 +49,7 @@ public:
    *
    * This method compares objects based on their content.
    */
+  using IterativeAlgorithmImplementation::operator ==;
   inline
   Bool operator ==(const IterativeExtrema & other) const
   {
@@ -60,6 +61,7 @@ public:
    *
    * This method compares objects based on their content.
    */
+  using IterativeAlgorithmImplementation::operator !=;
   inline
   Bool operator !=(const IterativeExtrema & other) const
   {

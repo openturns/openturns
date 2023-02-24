@@ -56,6 +56,7 @@ public:
   InverseBoxCoxEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const InverseBoxCoxEvaluation & other) const;
 
   /** String converter */

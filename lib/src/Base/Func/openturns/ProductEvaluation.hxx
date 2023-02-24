@@ -47,6 +47,7 @@ public:
   ProductEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const ProductEvaluation & other) const;
 
   /** String converter */

@@ -43,6 +43,7 @@ public:
   IndicatorFunction(const Domain & domain);
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const IndicatorFunction & other) const;
 
   /** String converter */

@@ -133,6 +133,7 @@ public:
 
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const MethodBoundEvaluation & /*other*/) const
   {
     return true;

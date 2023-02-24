@@ -48,6 +48,7 @@ public:
                        const Indices & indices);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const MarginalDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

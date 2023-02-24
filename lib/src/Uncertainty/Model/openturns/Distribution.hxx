@@ -62,9 +62,11 @@ public:
 #endif
 
   /** Comparison operator */
+  using TypedInterfaceObject<DistributionImplementation>::operator ==;
   Bool operator ==(const Distribution & other) const;
 
   /** Comparison operator */
+  using TypedInterfaceObject<DistributionImplementation>::operator !=;
   Bool operator !=(const Distribution & other) const;
 
   /** Addition operator */

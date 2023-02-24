@@ -46,6 +46,7 @@ public:
   GumbelLambdaGamma * clone() const override;
 
   /** Comparison operator */
+  using DistributionParametersImplementation::operator ==;
   Bool operator ==(const GumbelLambdaGamma & other) const;
 
   /** Build a distribution based on a set of native parameters */

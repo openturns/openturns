@@ -52,6 +52,7 @@ public:
   DatabaseEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const DatabaseEvaluation & other) const;
 
   /** String converter */

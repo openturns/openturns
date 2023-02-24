@@ -52,6 +52,7 @@ public:
   ComposedGradient * clone() const override;
 
   /** Comparison operator */
+  using GradientImplementation::operator ==;
   Bool operator ==(const ComposedGradient & other) const;
 
   /** String converter */

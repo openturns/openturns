@@ -57,6 +57,7 @@ public:
                           const Function & linkFunction);
 
   /** Comparison operator */
+  using Mixture::operator ==;
   Bool operator ==(const ConditionalDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

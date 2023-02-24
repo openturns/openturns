@@ -59,7 +59,8 @@ public:
                           const Evaluation & evaluation);
 
   /** Comparison operator */
-  virtual Bool operator ==(const FiniteDifferenceHessian & other) const;
+  using HessianImplementation::operator ==;
+  Bool operator ==(const FiniteDifferenceHessian & other) const;
 
   /** String converter */
   String  __repr__() const override;

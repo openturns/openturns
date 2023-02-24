@@ -50,6 +50,7 @@ public:
   EvaluationProxy * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const EvaluationProxy & other) const;
 
   /** String converter */

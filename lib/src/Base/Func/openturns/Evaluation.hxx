@@ -59,6 +59,7 @@ public:
 #endif
 
   /** Comparison operator */
+  using TypedInterfaceObject<EvaluationImplementation>::operator ==;
   Bool operator ==(const Evaluation & other) const;
 
   /** String converter */

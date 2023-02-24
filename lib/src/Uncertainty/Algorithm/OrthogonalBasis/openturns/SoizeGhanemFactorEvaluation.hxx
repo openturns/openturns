@@ -57,6 +57,7 @@ public:
   SoizeGhanemFactorEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const SoizeGhanemFactorEvaluation & other) const;
 
   /** String converter */

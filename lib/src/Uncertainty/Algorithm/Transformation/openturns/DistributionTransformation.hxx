@@ -44,6 +44,7 @@ public:
                               const Distribution & right);
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const DistributionTransformation & other) const;
 
   DistributionTransformation inverse() const;

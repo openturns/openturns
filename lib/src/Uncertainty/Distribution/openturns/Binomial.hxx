@@ -45,6 +45,7 @@ public:
            const Scalar p);
 
   /** Comparison operator */
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const Binomial & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

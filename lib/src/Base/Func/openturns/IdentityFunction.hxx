@@ -47,6 +47,7 @@ public:
 
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const IdentityFunction & other) const;
 
   /** String converter */

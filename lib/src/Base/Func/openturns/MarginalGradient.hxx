@@ -55,6 +55,7 @@ public:
   MarginalGradient * clone() const override;
 
   /** Comparison operator */
+  using GradientImplementation::operator ==;
   Bool operator ==(const MarginalGradient & other) const;
 
   /** String converter */

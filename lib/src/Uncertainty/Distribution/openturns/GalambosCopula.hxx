@@ -43,6 +43,7 @@ public:
   explicit GalambosCopula(const Scalar theta);
 
   /** Comparison operator */
+  using ExtremeValueCopula::operator ==;
   Bool operator ==(const GalambosCopula & other) const;
 
   /** String converter */

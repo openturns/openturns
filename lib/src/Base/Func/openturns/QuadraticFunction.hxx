@@ -56,6 +56,7 @@ public:
 
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const QuadraticFunction & other) const;
 
   /** String converter */

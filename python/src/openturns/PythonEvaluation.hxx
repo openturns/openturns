@@ -55,6 +55,7 @@ public:
   virtual ~PythonEvaluation();
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const PythonEvaluation & other) const;
 
   /** String converter */

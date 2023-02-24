@@ -44,6 +44,7 @@ public:
                       const Scalar beta);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const MarshallOlkinCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

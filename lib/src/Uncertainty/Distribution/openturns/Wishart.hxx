@@ -47,6 +47,7 @@ public:
           const Scalar nu);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const Wishart & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

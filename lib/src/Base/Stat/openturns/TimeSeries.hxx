@@ -82,6 +82,7 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
+  using FieldImplementation::operator ==;
   Bool operator ==(const TimeSeries & other) const;
 
   /** Append an element to the collection */

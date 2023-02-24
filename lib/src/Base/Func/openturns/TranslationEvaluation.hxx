@@ -49,6 +49,7 @@ public:
   TranslationEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const TranslationEvaluation & other) const;
 
   /** String converter */
