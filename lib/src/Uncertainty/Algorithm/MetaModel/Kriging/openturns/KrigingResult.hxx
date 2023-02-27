@@ -148,10 +148,6 @@ protected:
 
 private:
 
-  /** input/output samples */
-  Sample inputSample_;
-  Sample outputSample_;
-
   /** The trend basis */
   Basis basis_;
 

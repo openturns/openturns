@@ -26,6 +26,10 @@
  * Removed Sample.storeToTemporaryFile|streamToRFormat methods
  * Removed GaussianProcess.GIBBS
  * Deprecated DomainIntersection|Union|DisjunctiveUnion(Domain, Domain) ctors
+ * KrigingResult.getTrendCoefficients now returns a single Point
+ * GeneralLinearModelResult.getTrendCoefficients now returns a single Point
+ * KrigingResult.getBasisCollection was removed in favor of KrigingResult.getBasis which returns a single Basis
+ * GeneralLinearModelResult.getBasisCollection was removed in favor of GeneralLinearModelResult.getBasis which returns a single Basis
 
 === Documentation ===
  * Add API documentation to common use cases pages

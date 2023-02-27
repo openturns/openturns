@@ -47,8 +47,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
                              const CovarianceModel & covarianceModel,
                              const Sample & covarianceCoefficients)
   : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
-  , inputSample_(inputSample)
-  , outputSample_(outputSample)
   , basis_(basis)
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)
@@ -71,8 +69,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
                              const TriangularMatrix & covarianceCholeskyFactor,
                              const HMatrix & covarianceHMatrix)
   : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
-  , inputSample_(inputSample)
-  , outputSample_(outputSample)
   , basis_(basis)
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)
@@ -181,7 +177,7 @@ void KrigingResult::computeF() const
   // Nothing to do if the design matrix has already been computed
   if (F_.getNbRows() != 0) return;
   const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
-  const UnsignedInteger sampleSize = inputSample_.getSize();
+  const UnsignedInteger sampleSize = getInputSample().getSize();
   const UnsignedInteger basisSize = basis_.getSize();
   // Basis \Phi is a function from R^{inputDimension} to R^{outputDimension}
   // As we get B functions, total number of values is B * outputDimension
@@ -197,7 +193,7 @@ void KrigingResult::computeF() const
     // Compute phi_j (X)
     // Here we use potential parallelism in the evaluation of the basis functions
     // It generates a sample of shape (sampleSize, outputDimension)
-    const Sample basisSample = basis_[j](inputSample_);
+    const Sample basisSample = basis_[j](getInputSample());
     for (UnsignedInteger i = 0; i < sampleSize; ++i)
       for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
         F_(outputMarginal + i * outputDimension, j * outputDimension + outputMarginal) = basisSample(i, outputMarginal);
@@ -388,7 +384,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
   // compute f(x) & define u = psi - f(x)
   LOGINFO("Compute f(x)");
   // Note that fx = F^{T} for x in inputSample_
-  const UnsignedInteger outputDimension = outputSample_.getDimension();
+  const UnsignedInteger outputDimension = getOutputSample().getDimension();
   Matrix fx(F_.getNbColumns(), outputDimension);
   // Compute fx
   for (UnsignedInteger j = 0; j < basis_.getSize(); ++j)
@@ -645,8 +641,6 @@ Normal KrigingResult::operator()(const Point & xi) const
 void KrigingResult::save(Advocate & adv) const
 {
   MetaModelResult::save(adv);
-  adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "trendCoefficients_", trendCoefficients_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
@@ -662,8 +656,6 @@ void KrigingResult::save(Advocate & adv) const
 void KrigingResult::load(Advocate & adv)
 {
   MetaModelResult::load(adv);
-  adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "covarianceCoefficients_", covarianceCoefficients_ );
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
