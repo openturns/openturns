@@ -151,12 +151,16 @@ graph.setLegendPosition("topleft")
 view = viewer.View(graph)
 
 # %%
-# The analysis of the residuals shows that the distribution is centered on zero and symmetric. This indicates that the calibration performed well.
-#
-# Moreover, the distribution of the residuals is close to being gaussian.
+# The analysis of the residuals shows that the distribution is centered on zero and symmetric.
+# This indicates that the calibration performed well.
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
+view = viewer.View(graph)
+
+# %%
+# Moreover, the distribution of the residuals is close to being gaussian.
+graph = calibrationResult.drawResidualsNormalPlot()
 view = viewer.View(graph)
 
 # %%
@@ -237,6 +241,10 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
+view = viewer.View(graph)
+
+# %%
+graph = calibrationResult.drawResidualsNormalPlot()
 view = viewer.View(graph)
 
 # %%
@@ -351,6 +359,10 @@ graph = calibrationResult.drawParameterDistributions()
 view = viewer.View(graph)
 
 # %%
+graph = calibrationResult.drawResidualsNormalPlot()
+view = viewer.View(graph)
+
+# %%
 # For the :math:`R` variable, the observations are much more important than the prior: this is shown by the fact that the posterior and prior distribution of the :math:`R` variable are very different.
 #
 # We see that the prior and posterior distribution are close to each other for the :math:`\gamma` variable: the observations did not convey much information for this variable.
@@ -431,6 +443,10 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
+view = viewer.View(graph)
+
+# %%
+graph = calibrationResult.drawResidualsNormalPlot()
 view = viewer.View(graph)
 
 plt.show()
