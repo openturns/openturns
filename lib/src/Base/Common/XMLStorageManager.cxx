@@ -257,7 +257,7 @@ XMLStorageManager::XMLReadObject XMLStorageManager::readDOMElement()
       }
       catch(...)
       {
-        throw InternalException(HERE) << "Error trying to load " << ro.label_ << ", skipped.";
+        throw InternalException(HERE) << "Error trying to load class " << className << " with label "<< ro.label_ << ", skipped.";
       }
     }
   }
