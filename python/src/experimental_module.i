@@ -89,3 +89,4 @@
 %include GaussianProcessFitterResult.i
 %include GaussianProcessFitter.i
 %include GaussianProcessRegressionResult.i
+%include GaussianProcessRegression.i

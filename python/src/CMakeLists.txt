@@ -1034,6 +1034,7 @@ ot_add_python_module(experimental experimental_module.i
                      GaussianProcessFitterResult.i GaussianProcessFitterResult_doc.i.in
                      GaussianProcessFitter.i GaussianProcessFitter_doc.i.in
                      GaussianProcessRegressionResult.i GaussianProcessRegressionResult_doc.i.in
+                     GaussianProcessRegression.i GaussianProcessRegression_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
