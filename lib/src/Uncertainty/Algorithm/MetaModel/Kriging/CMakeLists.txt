@@ -13,6 +13,7 @@ ot_add_source_file (GeneralLinearModelAlgorithm.cxx)
 ot_add_source_file (GaussianProcessFitterResult.cxx)
 ot_add_source_file (GaussianProcessFitter.cxx)
 ot_add_source_file (GaussianProcessRegressionResult.cxx)
+ot_add_source_file (GaussianProcessRegression.cxx)
 
 
 ot_install_header_file (KrigingEvaluation.hxx)
@@ -24,5 +25,6 @@ ot_install_header_file (GeneralLinearModelAlgorithm.hxx)
 ot_install_header_file (GaussianProcessFitterResult.hxx)
 ot_install_header_file (GaussianProcessFitter.hxx)
 ot_install_header_file (GaussianProcessRegressionResult.hxx)
+ot_install_header_file (GaussianProcessRegression.hxx)
 
 ot_install_header_file (OTKriging.hxx)
