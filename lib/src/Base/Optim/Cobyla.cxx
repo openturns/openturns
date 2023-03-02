@@ -23,7 +23,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/NearestNeighbourAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,7 +34,6 @@ static const Factory<Cobyla> Factory_Cobyla;
 Cobyla::Cobyla()
   : OptimizationAlgorithmImplementation()
   , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
-  , ignoreFailure_(false)
 {
   // Nothing to do
 }
@@ -43,7 +41,6 @@ Cobyla::Cobyla()
 Cobyla::Cobyla(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
-  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -52,7 +49,6 @@ Cobyla::Cobyla(const OptimizationProblem & problem,
                const Scalar rhoBeg)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(rhoBeg)
-  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -143,64 +139,7 @@ void Cobyla::run()
       throw InternalException(HERE) << "Solving problem by cobyla method failed (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
   }
 
-  // Update the result
-  result_ = OptimizationResult(getProblem());
-  UnsignedInteger size = evaluationInputHistory_.getSize();
-
-  Scalar absoluteError = -1.0;
-  Scalar relativeError = -1.0;
-  Scalar residualError = -1.0;
-  Scalar constraintError = -1.0;
-
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    const Point inP(evaluationInputHistory_[i]);
-    const Point outP(evaluationOutputHistory_[i]);
-    constraintError = 0.0;
-    if (getProblem().hasBounds())
-    {
-      const Interval bounds(getProblem().getBounds());
-      for (UnsignedInteger j = 0; j < dimension; ++ j)
-      {
-        if (bounds.getFiniteLowerBound()[j])
-          constraintError = std::max(constraintError, bounds.getLowerBound()[j] - inP[j]);
-        if (bounds.getFiniteUpperBound()[j])
-          constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
-      }
-    }
-    if (getProblem().hasEqualityConstraint())
-    {
-      const Point g(equalityConstraintHistory_[i]);
-      constraintError = std::max(constraintError, g.normInf());
-    }
-    if (getProblem().hasInequalityConstraint())
-    {
-      Point h(inequalityConstraintHistory_[i]);
-      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
-      {
-        h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
-      }
-      constraintError = std::max(constraintError, h.normInf());
-    }
-    if (i > 0)
-    {
-      const Point inPM(evaluationInputHistory_[i - 1]);
-      const Point outPM(evaluationOutputHistory_[i - 1]);
-      absoluteError = (inP - inPM).normInf();
-      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
-      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
-    }
-    result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
-  }
-
-  UnsignedInteger optimalIndex = evaluationInputHistory_.find(x);
-  // x might not be exactly the best point evaluated, so fallback to the nearest
-  if (optimalIndex >= size)
-    optimalIndex = NearestNeighbourAlgorithm(evaluationInputHistory_).query(x);
-  result_.setOptimalPoint(evaluationInputHistory_[optimalIndex]);
-  result_.setOptimalValue(evaluationOutputHistory_[optimalIndex]);
-
-  result_.setEvaluationNumber(maxFun);
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
 }
 
 /* RhoBeg accessor */

@@ -45,6 +45,9 @@
 #endif
 #include <pagmo/algorithms/nsga2.hpp>
 #include <pagmo/algorithms/moead.hpp>
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2019
+#include <pagmo/algorithms/moead_gen.hpp>
+#endif
 #include <pagmo/algorithms/maco.hpp>
 #include <pagmo/algorithms/nspso.hpp>
 #include <pagmo/utils/multi_objective.hpp>
@@ -277,7 +280,11 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Pagmo only supports bounded problems";
   if (problem.hasResidualFunction() || problem.hasLevelFunction())
     throw InvalidArgumentException(HERE) << "Pagmo does not support least squares or nearest point problems";
-  const Description multiObjectiveAgorithms = {"nsga2", "moead", "mhaco", "nspso"};
+  const Description multiObjectiveAgorithms = {"nsga2", "moead",
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2019
+    "moead_gen",
+#endif
+    "mhaco", "nspso"};
   if ((problem.getObjective().getOutputDimension() > 1) && !multiObjectiveAgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support multi-objective optimization";
   if ((problem.getObjective().getOutputDimension() < 2) && multiObjectiveAgorithms.contains(getAlgorithmName()))
@@ -449,13 +456,13 @@ void Pagmo::run()
   else if (algoName_ == "pso_gen")
   {
     // pso_gen(unsigned gen = 1u, double omega = 0.7298, double eta1 = 2.05, double eta2 = 2.05, double max_vel = 0.5, unsigned variant = 5u, unsigned neighb_type = 2u, unsigned neighb_param = 4u, bool memory = false, unsigned seed = pagmo::random_device::next())
-    const Scalar omega = ResourceMap::GetAsScalar("Pagmo-pso_gen-omega");
-    const Scalar eta1 = ResourceMap::GetAsScalar("Pagmo-pso_gen-eta1");
-    const Scalar eta2 = ResourceMap::GetAsScalar("Pagmo-pso_gen-eta2");
-    const Scalar max_vel = ResourceMap::GetAsScalar("Pagmo-pso_gen-max_vel");
-    const UnsignedInteger variant = ResourceMap::GetAsUnsignedInteger("Pagmo-pso_gen-variant");
-    const UnsignedInteger neighb_type = ResourceMap::GetAsUnsignedInteger("Pagmo-pso_gen-neighb_type");
-    const UnsignedInteger neighb_param = ResourceMap::GetAsUnsignedInteger("Pagmo-pso_gen-neighb_param");
+    const Scalar omega = ResourceMap::GetAsScalar("Pagmo-pso-omega");
+    const Scalar eta1 = ResourceMap::GetAsScalar("Pagmo-pso-eta1");
+    const Scalar eta2 = ResourceMap::GetAsScalar("Pagmo-pso-eta2");
+    const Scalar max_vel = ResourceMap::GetAsScalar("Pagmo-pso-max_vel");
+    const UnsignedInteger variant = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-variant");
+    const UnsignedInteger neighb_type = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_type");
+    const UnsignedInteger neighb_param = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_param");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     pagmo::pso_gen algorithm_impl(generationNumber_, omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
     if (!emulatedConstraints)
@@ -546,6 +553,22 @@ void Pagmo::run()
     const Bool preserve_diversity = ResourceMap::GetAsBool("Pagmo-moead-preserve_diversity");
     algo = pagmo::moead(generationNumber_, weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
   }
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2019
+  else if (algoName_ == "moead_gen")
+  {
+    // moead_gen(unsigned gen = 1u, std::string weight_generation = "grid", std::string decomposition = "tchebycheff", population::size_type neighbours = 20u, double CR = 1.0, double F = 0.5, double eta_m = 20., double realb = 0.9, unsigned limit = 2u, bool preserve_diversity = true, unsigned seed = pagmo::random_device::next())
+    const String weight_generation = ResourceMap::GetAsString("Pagmo-moead-weight_generation");
+    const String decomposition = ResourceMap::GetAsString("Pagmo-moead-decomposition");
+    const UnsignedInteger neighbours = ResourceMap::GetAsUnsignedInteger("Pagmo-moead-neighbours");
+    const Scalar CR = ResourceMap::GetAsScalar("Pagmo-moead-CR");
+    const Scalar F = ResourceMap::GetAsScalar("Pagmo-moead-F");
+    const Scalar eta_m = ResourceMap::GetAsScalar("Pagmo-moead-eta_m");
+    const Scalar realb = ResourceMap::GetAsScalar("Pagmo-moead-realb");
+    const UnsignedInteger limit = ResourceMap::GetAsUnsignedInteger("Pagmo-moead-limit");
+    const Bool preserve_diversity = ResourceMap::GetAsBool("Pagmo-moead-preserve_diversity");
+    algo = pagmo::moead_gen(generationNumber_, weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
+  }
+#endif
   else if (algoName_ == "mhaco")
   {
     // maco(unsigned gen = 100u, unsigned ker = 63u, double q = 1.0, unsigned threshold = 1u, unsigned n_gen_mark = 7u, unsigned evalstop = 100000u, double focus = 0., bool memory = false, unsigned seed = pagmo::random_device::next())
@@ -722,7 +745,11 @@ Description Pagmo::GetAlgorithmNames()
 #ifdef PAGMO_WITH_EIGEN3
                                  "cmaes", "xnes",
 #endif
-                                 "nsga2", "moead", "mhaco", "nspso"
+                                 "nsga2", "moead",
+#if (PAGMO_VERSION_MAJOR * 1000 + PAGMO_VERSION_MINOR) >= 2019
+                                 "moead_gen",
+#endif
+                                 "mhaco", "nspso"
                                 };
   return algoNames;
 }

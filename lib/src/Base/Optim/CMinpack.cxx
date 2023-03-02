@@ -76,11 +76,8 @@ void CMinpack::checkProblem(const OptimizationProblem & problem) const
     }
   }
 
-  if (problem.hasInequalityConstraint())
-    throw InvalidArgumentException(HERE) << getClassName() << " does not support inequality constraints";
-
-  if (problem.hasEqualityConstraint())
-    throw InvalidArgumentException(HERE) << getClassName() << " does not support equality constraints";
+  if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support constraints";
 
   if (!problem.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
@@ -216,7 +213,6 @@ void CMinpack::run()
     throw InvalidArgumentException(HERE) << "CMinpack does not support underdetermined least squares problems";
 
   int info = 0;
-  double optimalValue = 0.0;
 
   /* Parameters designated as input parameters must be specified on
     entry to LMDER and are not changed on exit, while parameters
@@ -366,12 +362,6 @@ void CMinpack::run()
                maxfev, &diag[0], mode, factor, nprint, &nfev, &njev,
                &ipvt[0], &qtf[0], &wa1[0], &wa2[0], &wa3[0], &wa4[0]);
 
-  if (getProblem().hasBounds())
-  {
-    Transform(x, n, bounds, wa1);
-  }
-  optimalValue = 0.5 * fvec.normSquare();
-
   switch (info)
   {
     case -1:
@@ -404,61 +394,7 @@ void CMinpack::run()
       throw NotYetImplementedException(HERE) << "CMinpack: unknown status code:" << info;
   }
 
-  Point optimizer(dimension);
-  std::copy(x.begin(), x.end(), optimizer.begin());
-  OptimizationResult result(getProblem());
-
-  const UnsignedInteger size = evaluationInputHistory_.getSize();
-
-  Scalar absoluteError = -1.0;
-  Scalar relativeError = -1.0;
-  Scalar residualError = -1.0;
-  Scalar constraintError = -1.0;
-
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    const Point inP(evaluationInputHistory_[i]);
-    const Point outP(evaluationOutputHistory_[i]);
-    constraintError = 0.0;
-    if (getProblem().hasBounds())
-    {
-      for (UnsignedInteger j = 0; j < dimension; ++ j)
-      {
-        if (bounds.getFiniteLowerBound()[j])
-          constraintError = std::max(constraintError, bounds.getLowerBound()[j] - inP[j]);
-        if (bounds.getFiniteUpperBound()[j])
-          constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
-      }
-    }
-    if (getProblem().hasEqualityConstraint())
-    {
-      const Point g(getProblem().getEqualityConstraint()(inP));
-      constraintError = std::max(constraintError, g.normInf());
-    }
-    if (getProblem().hasInequalityConstraint())
-    {
-      Point h(getProblem().getInequalityConstraint()(inP));
-      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
-      {
-        h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
-      }
-      constraintError = std::max(constraintError, h.normInf());
-    }
-    if (i > 0)
-    {
-      const Point inPM(evaluationInputHistory_[i - 1]);
-      const Point outPM(evaluationOutputHistory_[i - 1]);
-      absoluteError = (inP - inPM).normInf();
-      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
-      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
-    }
-    result.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
-  }
-
-  result.setEvaluationNumber(size);
-  result.setOptimalPoint(optimizer);
-  result.setOptimalValue(Point(1, optimalValue));
-  setResult(result);
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
 #else
   throw NotYetImplementedException(HERE) << "No CMinpack support";
 #endif

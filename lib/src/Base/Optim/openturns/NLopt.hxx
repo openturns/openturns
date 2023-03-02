@@ -117,7 +117,7 @@ private:
   Sample inequalityConstraintHistory_;
 
   // internal solver
-  void * p_opt_;
+  void * p_opt_ = nullptr;
 };
 
 

@@ -33,6 +33,9 @@ dist = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2)
 pop0 = dist.getSample(size)
 
 multi_obj = ["nsga2", "moead", "mhaco", "nspso"]
+if "moead_gen" in ot.Pagmo.GetAlgorithmNames():
+    multi_obj.append("moead_gen")  # pagmo>=2.19
+
 for name in multi_obj:
     for use_ineq in [False, True]:
         zdt1 = ot.OptimizationProblem(f)

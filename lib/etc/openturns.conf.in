@@ -182,14 +182,6 @@
   <Pagmo-pso-variant value_int="5" />
   <Pagmo-pso-neighb_type value_int="2" />
   <Pagmo-pso-neighb_param value_int="4" />
-  <!-- pso_gen -->
-  <Pagmo-pso_gen-omega value_float="0.7298" />
-  <Pagmo-pso_gen-eta1 value_float="2.05" />
-  <Pagmo-pso_gen-eta2 value_float="2.05" />
-  <Pagmo-pso_gen-max_vel value_float="0.5" />
-  <Pagmo-pso_gen-variant value_int="5" />
-  <Pagmo-pso_gen-neighb_type value_int="2" />
-  <Pagmo-pso_gen-neighb_param value_int="4" />
   <!-- sga -->
   <Pagmo-sga-cr value_float="0.9" />
   <Pagmo-sga-eta_c value_float="1.0" />

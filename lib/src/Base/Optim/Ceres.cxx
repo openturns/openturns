@@ -229,7 +229,6 @@ void Ceres::run()
   evaluationOutputHistory_ = Sample(0, 1);
   result_ = OptimizationResult(getProblem());
 
-  double optimalValue = 0.0;
   UnsignedInteger iterationNumber = 0;
 
   if (getProblem().hasResidualFunction())
@@ -383,7 +382,6 @@ void Ceres::run()
     else if (summary.termination_type != ceres::CONVERGENCE)
       LOGWARN(OSS() << "Ceres terminated with " << ceres::TerminationTypeToString(summary.termination_type));
 
-    optimalValue = summary.final_cost;
     iterationNumber = summary.iterations.size();
 
   }
@@ -457,51 +455,12 @@ void Ceres::run()
     else if (summary.termination_type != ceres::CONVERGENCE)
       LOGWARN(OSS() << "Ceres terminated with " << ceres::TerminationTypeToString(summary.termination_type));
 
-    optimalValue = getProblem().isMinimization() ? summary.final_cost : -summary.final_cost;
     iterationNumber = summary.iterations.size();
   }
 
-  OptimizationResult result(getProblem());
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  result_.setIterationNumber(iterationNumber);
 
-  const UnsignedInteger size = evaluationInputHistory_.getSize();
-
-  Scalar absoluteError = -1.0;
-  Scalar relativeError = -1.0;
-  Scalar residualError = -1.0;
-  Scalar constraintError = -1.0;
-
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    const Point inP(evaluationInputHistory_[i]);
-    const Point outP(evaluationOutputHistory_[i]);
-    constraintError = 0.0;
-    if (getProblem().hasBounds())
-    {
-      const Interval bounds(getProblem().getBounds());
-      for (UnsignedInteger j = 0; j < dimension; ++ j)
-      {
-        if (bounds.getFiniteLowerBound()[j])
-          constraintError = std::max(constraintError, bounds.getLowerBound()[j] - inP[j]);
-        if (bounds.getFiniteUpperBound()[j])
-          constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
-      }
-    }
-    if (i > 0)
-    {
-      const Point inPM(evaluationInputHistory_[i - 1]);
-      const Point outPM(evaluationOutputHistory_[i - 1]);
-      absoluteError = (inP - inPM).normInf();
-      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
-      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
-    }
-    result.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
-  }
-
-  result.setEvaluationNumber(size);
-  result.setIterationNumber(iterationNumber);
-  result.setOptimalPoint(x);
-  result.setOptimalValue(Point(1, optimalValue));
-  setResult(result);
 #else
   throw NotYetImplementedException(HERE) << "No Ceres support";
 #endif

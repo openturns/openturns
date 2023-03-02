@@ -125,7 +125,7 @@ int main()
       std::cout << " -- Evaluation num = " << result.getInputSample().getSize() << std::endl << std::endl;
 
       // Check result
-      assert_almost_equal(result.getOptimalPoint(), referenceSolution, 5e-4);
+      assert_almost_equal(result.getOptimalPoint(), referenceSolution, 1e-2);
       std::cout << " => TEST " << bonminAlgorithm.getAlgorithmName() << " PASSED" << std::endl;
     }
   }

@@ -88,7 +88,7 @@ private:
       double *con,
       void *state);
 
-  Scalar rhoBeg_;
+  Scalar rhoBeg_ = 0.0;
 
   /// temporary, used to track input/outputs
   Sample evaluationInputHistory_;
@@ -97,7 +97,7 @@ private:
   Sample inequalityConstraintHistory_;
 
   /** Whether to ignore failure return codes */
-  Bool ignoreFailure_;
+  Bool ignoreFailure_ = false;
 
 }; /* class Cobyla */
 

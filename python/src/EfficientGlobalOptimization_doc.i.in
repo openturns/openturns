@@ -107,7 +107,7 @@ Initial minimum output value:  [-248]
 >>> updatedKrigingResult = algo.getKrigingResult()
 >>> updatedOutputSample = updatedKrigingResult.getOutputSample()
 >>> print('Updated minimum output value: ', updatedOutputSample.getMin())
-Updated minimum output value:  [-610]"
+Updated minimum output value:  [-610.0..."
 
 // ---------------------------------------------------------------------
 

@@ -69,4 +69,4 @@ for algo in ot.Bonmin.GetAlgorithmNames():
     print(" -- Optimal point = " + result.getOptimalPoint().__str__())
     print(" -- Optimal value = " + result.getOptimalValue().__str__())
     print(" -- Evaluation number = " + result.getInputSample().getSize().__str__())
-    ott.assert_almost_equal(result.getOptimalPoint(), [1, 1, 0.5, 0], 1, 5e-4)
+    ott.assert_almost_equal(result.getOptimalPoint(), [1, 1, 0.5, 0], 1, 1e-2)

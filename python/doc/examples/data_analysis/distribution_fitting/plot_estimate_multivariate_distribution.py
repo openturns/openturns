@@ -92,7 +92,7 @@ print(C)
 # We filter and consider only significantly non-zero correlations.
 
 # %%
-epsilon = 1.0 / m.sqrt(sample.getSize())
+epsilon = 2.0 / m.sqrt(sample.getSize())
 for j in range(dimension):
     for i in range(j):
         C[i, j] = 1.0 if abs(C[i, j]) > epsilon else 0.0

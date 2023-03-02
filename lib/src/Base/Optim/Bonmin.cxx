@@ -28,6 +28,7 @@
 #include "openturns/BonminProblem.hxx"
 #include <BonBonminSetup.hpp>
 #include <BonCbc.hpp>
+#include <BonminConfig.h>
 using namespace Bonmin;
 using namespace Ipopt;
 #endif
@@ -62,8 +63,11 @@ Bonmin * Bonmin::clone() const
 
 Description Bonmin::GetAlgorithmNames()
 {
-  const Description algoNames = {"B-BB", "B-OA", "B-QG", "B-Hyb"};
-  // iFP/Ecp are disabled, see https://github.com/coin-or/Bonmin/issues/31
+  const Description algoNames = {"B-BB", "B-OA", "B-QG", "B-Hyb"
+#if (BONMIN_VERSION_MAJOR * 100000 + BONMIN_VERSION_MINOR * 100 + BONMIN_VERSION_RELEASE) >= 100809
+    , "B-Ecp", "B-iFP"
+#endif
+  };
   return algoNames;
 }
 
@@ -145,17 +149,20 @@ void Bonmin::run()
   // Create setup, initialize options
   BonminSetup app;
   app.initializeOptionsAndJournalist();
-  app.options()->SetStringValue("bonmin.algorithm", algoName_);
-  app.options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
-  app.options()->SetStringValue("sb", "yes"); // skip ipopt banner
-  app.options()->SetIntegerValue("print_level", 0);
-  app.options()->SetStringValue("honor_original_bounds", "yes");// disabled in ipopt 3.14
-  app.options()->SetIntegerValue("bonmin.bb_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.nlp_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.lp_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.oa_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.fp_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.milp_log_level", 0);
+  if (!app.options()->SetStringValue("bonmin.algorithm", algoName_))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin.algorithm";
+  if (!app.options()->SetIntegerValue("max_iter", getMaximumIterationNumber()))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for max_iter";
+  if (!app.options()->SetStringValue("sb", "yes"))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for sb";
+  if (!app.options()->SetIntegerValue("print_level", 0))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for print_level";
+  if (!app.options()->SetStringValue("honor_original_bounds", "yes"))
+    throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for honor_original_bounds";
+  const Description algos = {"bb", "nlp", "lp", "oa", "fp", "milp"};
+  for (UnsignedInteger i = 0; i < algos.getSize(); ++ i)
+    if (!app.options()->SetIntegerValue("bonmin." + algos[i] + "_log_level", 0))
+      throw InvalidArgumentException(HERE) << "Bonmin: Invalid parameter for bonmin." << algos[i] << "_log_level";
   GetOptionsFromResourceMap(app.options());
   String optlist;
   app.options()->PrintList(optlist);
@@ -168,79 +175,10 @@ void Bonmin::run()
   Bab solver;
   solver(app);
 
-  // Retrieve input/output history
-  Sample inputHistory(tminlp->getInputHistory());
-  Sample outputHistory(tminlp->getOutputHistory());
-
-  // Create OptimizationResult, initialize error values
-  OptimizationResult optimResult(getProblem());
-  Scalar absoluteError = -1.0;
-  Scalar relativeError = -1.0;
-  Scalar residualError = -1.0;
-  Scalar constraintError = -1.0;
-
-  /* Populate OptimizationResult from history */
-
-  for (UnsignedInteger i = 0; i < inputHistory.getSize(); ++ i)
-  {
-    const Point inP(inputHistory[i]);
-    const Point outP(outputHistory[i]);
-    constraintError = 0.0;
-
-    // Constraint error on bounds
-    if (getProblem().hasBounds())
-    {
-      Interval bounds(getProblem().getBounds());
-      for (UnsignedInteger j = 0; j < getProblem().getDimension(); ++ j)
-      {
-        if (bounds.getFiniteLowerBound()[j])
-          constraintError = std::max(constraintError, bounds.getLowerBound()[j] - inP[j]);
-        if (bounds.getFiniteUpperBound()[j])
-          constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
-      }
-    }
-
-    // Constraint error on equality constraints
-    if (getProblem().hasEqualityConstraint())
-    {
-      const Point g(getProblem().getEqualityConstraint()(inP));
-      constraintError = std::max(constraintError, g.normInf());
-    }
-
-    // Constraint error on inequality constraints
-    if (getProblem().hasInequalityConstraint())
-    {
-      Point h(getProblem().getInequalityConstraint()(inP));
-      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
-      {
-        h[k] = std::min(h[k], 0.0); // convention h(x)>=0 <=> admissibility
-      }
-      constraintError = std::max(constraintError, h.normInf());
-    }
-
-    // Computing errors, storing into OptimizationResult
-    if (i > 0)
-    {
-      const Point inPM(inputHistory[i - 1]);
-      const Point outPM(outputHistory[i - 1]);
-      absoluteError = (inP - inPM).normInf();
-      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
-      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
-    }
-
-    optimResult.store(inP,
-                      outP,
-                      absoluteError,
-                      relativeError,
-                      residualError,
-                      constraintError);
-  }
-
-  // Optimum is not the last call to objective function
-  optimResult.setOptimalPoint(tminlp->getOptimalPoint());
-  optimResult.setOptimalValue(tminlp->getOptimalValue());
-
-  setResult(optimResult);
+  const Sample inputHistory(tminlp->getInputHistory());
+  setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
+                                 getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
+                                 getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
   String allOptions;
   app.options()->PrintList(allOptions);

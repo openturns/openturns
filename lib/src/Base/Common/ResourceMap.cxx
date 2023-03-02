@@ -810,14 +810,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Pagmo-pso-variant", 5);
   addAsUnsignedInteger("Pagmo-pso-neighb_type", 2);
   addAsUnsignedInteger("Pagmo-pso-neighb_param", 4);
-  // pso_gen
-  addAsScalar("Pagmo-pso_gen-omega", 0.7298);
-  addAsScalar("Pagmo-pso_gen-eta1", 2.05);
-  addAsScalar("Pagmo-pso_gen-eta2", 2.05);
-  addAsScalar("Pagmo-pso_gen-max_vel", 0.5);
-  addAsUnsignedInteger("Pagmo-pso_gen-variant", 5);
-  addAsUnsignedInteger("Pagmo-pso_gen-neighb_type", 2);
-  addAsUnsignedInteger("Pagmo-pso_gen-neighb_param", 4);
   // sga
   addAsScalar("Pagmo-sga-cr", 0.9);
   addAsScalar("Pagmo-sga-eta_c", 1.0);
