@@ -72,7 +72,7 @@
 #include "openturns/GaussLegendre.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/OptimizationProblem.hxx"
-#include "openturns/TNC.hxx"
+#include "openturns/Cobyla.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/SobolSequence.hxx"
@@ -2468,7 +2468,6 @@ struct MinimumVolumeIntervalWrapper
                                const Scalar prob)
     : p_distribution_(p_distribution)
     , marginals_(marginals)
-    , lastB_(SpecFunc::LowestScalar)
     , prob_(prob)
   {
     // Nothing to do
@@ -2478,7 +2477,6 @@ struct MinimumVolumeIntervalWrapper
                                const Scalar prob)
     : p_distribution_(p_distribution)
     , marginals_(0)
-    , lastB_(SpecFunc::LowestScalar)
     , prob_(prob)
   {
     // Nothing to do
@@ -2489,23 +2487,25 @@ struct MinimumVolumeIntervalWrapper
   // b = F^{-1}(p+F(a))
   // f(a) = f(b) = f(F^{-1}(p+F(a)))
   // Here we compute f(F^{-1}(p+F(a))) - f(a)
-  Point operator() (const Point & point) const
+  Point operator() (const Point & A) const
   {
-    lastB_ = p_distribution_->computeQuantile(prob_ + p_distribution_->computeCDF(point))[0];
-    const Scalar pdfB = p_distribution_->computePDF(lastB_);
-    const Scalar pdfPoint = p_distribution_->computePDF(point);
-    return Point(1, pdfB - pdfPoint);
+    const Scalar B = computeB(A[0]);
+    const Scalar pdfB = p_distribution_->computePDF(B);
+    const Scalar pdfA = p_distribution_->computePDF(A);
+    return Point(1, pdfB - pdfA);
   }
 
-  Point objective(const Point & point) const
+  Point objective(const Point & A) const
   {
-    lastB_ = p_distribution_->computeQuantile(prob_ + p_distribution_->computeCDF(point))[0];
-    return Point(1, lastB_ - point[0]);
+    const Scalar B = computeB(A[0]);
+    return Point(1, B - A[0]);
   }
 
-  Scalar getLastB() const
+  Scalar computeB(const Scalar A) const
   {
-    return lastB_;
+    const Scalar alphaB = prob_ + p_distribution_->computeCDF(A);
+    const Scalar B = p_distribution_->computeQuantile(alphaB)[0];
+    return B;
   }
 
   Interval buildBilateralInterval(const Scalar beta) const
@@ -2552,7 +2552,6 @@ struct MinimumVolumeIntervalWrapper
 
   const DistributionImplementation * p_distribution_;
   Collection<Distribution> marginals_;
-  mutable Scalar lastB_;
   const Scalar prob_;
 }; // struct MinimumVolumeIntervalWrapper
 
@@ -2624,7 +2623,7 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByRoo
   const Scalar xMin = range_.getLowerBound()[0];
   const Scalar xMax = computeScalarQuantile(prob, true);
   const Scalar a = solver.solve(function, 0.0, xMin, xMax);
-  const Scalar b = minimumVolumeIntervalWrapper.getLastB();
+  const Scalar b = minimumVolumeIntervalWrapper.computeB(a);
   marginalProb = prob;
   return Interval(a, b);
 }
@@ -2638,13 +2637,18 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOpt
   const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
   const Function objective(bindMethod<MinimumVolumeIntervalWrapper, Point, Point>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::objective, 1, 1));
   OptimizationProblem problem(objective);
-  problem.setBounds(range_);
-  TNC solver(problem);
-  solver.setIgnoreFailure(true);
-  solver.setStartingPoint(computeQuantile(prob, true));
+  problem.setBounds(Interval(range_.getLowerBound(), computeQuantile(prob, true)));
+  Cobyla solver(problem);
+
+  // if the tail is on the right side, the result is more likely close to the lower bound
+  if (getSkewness()[0] > 0.0)
+    solver.setStartingPoint(range_.getLowerBound());
+  else
+    solver.setStartingPoint(computeQuantile(prob, true));
+
   solver.run();
   const Scalar a = solver.getResult().getOptimalPoint()[0];
-  const Scalar b = minimumVolumeIntervalWrapper.getLastB();
+  const Scalar b = minimumVolumeIntervalWrapper.computeB(a);
   marginalProb = prob;
   return Interval(a, b);
 }
