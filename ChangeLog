@@ -5,6 +5,7 @@
 === Library ===
 
 ==== New classes ====
+ * SmolyakExperiment (openturns.experimental)
 
 ==== API changes ====
  * Removed SequentialStrategy

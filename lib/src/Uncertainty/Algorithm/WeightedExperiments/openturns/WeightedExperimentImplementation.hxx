@@ -77,6 +77,9 @@ public:
   /** Sample generation with weights*/
   virtual Sample generateWithWeights(Point & weights) const;
 
+  /** Return isRandom flag */
+  virtual Bool isRandom() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -89,7 +92,7 @@ protected:
   Distribution distribution_;
 
   /** The size of the sample to be generated */
-  UnsignedInteger size_;
+  UnsignedInteger size_ = 0;
 
 }; /* class WeightedExperimentImplementation */
 

@@ -43,8 +43,6 @@ WeightedExperimentImplementation::WeightedExperimentImplementation()
 /* Constructor with parameters */
 WeightedExperimentImplementation::WeightedExperimentImplementation(const UnsignedInteger size)
   : ExperimentImplementation()
-  , distribution_()
-  , size_(0)
 {
   // Check if the size is valid
   setSize(size);
@@ -55,7 +53,6 @@ WeightedExperimentImplementation::WeightedExperimentImplementation(const Distrib
     const UnsignedInteger size)
   : ExperimentImplementation()
   , distribution_(distribution)
-  , size_(0)
 {
   // Check if the size is valid
   setSize(size);
@@ -117,6 +114,12 @@ Sample WeightedExperimentImplementation::generate() const
 Sample WeightedExperimentImplementation::generateWithWeights(Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In WeightedExperimentImplementation::generateWithWeights()";
+}
+
+/* Return isRandom flag */
+Bool WeightedExperimentImplementation::isRandom() const
+{
+  return true;
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -1589,6 +1589,12 @@ void ResourceMap::loadDefaultConfiguration()
 
   // viewer.View parameters //
   addAsString("View-ImageFormat", "png");
+
+  // SmolyakExperiment parameters //
+  addAsScalar("SmolyakExperiment-MergeRelativeEpsilon", 1.0e-8);
+  addAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon", 1.0e-8);
+  addAsBool("SmolyakExperiment-MergeQuadrature", true);
+
 }
 
 void ResourceMap::reload()
