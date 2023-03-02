@@ -74,18 +74,18 @@ public:
                         Graph & graph) const;
 
   /** Build the factory from data by estimating the best generalized linear model */
-  BoxCoxTransform build(const Sample & inputSample,
-                        const Sample & outputSample,
-                        const CovarianceModel & covarianceModel,
-                        const Basis & basis,
-                        const Point & shift,
-                        GeneralLinearModelResult & result);
+  BoxCoxTransform build(const Sample &inputSample,
+                        const Sample &outputSample,
+                        const CovarianceModel &covarianceModel,
+                        const Basis &basis,
+                        const Point &shift,
+                        GeneralLinearModelResult &generalLinearModelResult);
 
   BoxCoxTransform build(const Sample & inputSample,
                         const Sample & outputSample,
                         const CovarianceModel & covarianceModel,
                         const Point & shift,
-                        GeneralLinearModelResult & result);
+                        GeneralLinearModelResult & generalLinearModelResult);
 
   BoxCoxTransform build(const Sample &inputSample,
                         const Sample &outputSample,

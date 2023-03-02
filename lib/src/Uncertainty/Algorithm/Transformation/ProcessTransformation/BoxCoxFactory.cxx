@@ -462,7 +462,7 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
                                      const CovarianceModel & covarianceModel,
                                      const Basis & basis,
                                      const Point & shift,
-                                     GeneralLinearModelResult & result)
+                                     GeneralLinearModelResult & generalLinearModelResult)
 {
   // Check the input size
   const UnsignedInteger size = inputSample.getSize();
@@ -512,17 +512,17 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
   GeneralLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);
   algo.run();
   // Get result
-  result = algo.getResult();
+  generalLinearModelResult = algo.getResult();
   return BoxCoxTransform(optpoint, shift);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
-                                     const Sample & outputSample,
-                                     const CovarianceModel & covarianceModel,
-                                     const Point & shift,
-                                     GeneralLinearModelResult & result)
+BoxCoxTransform BoxCoxFactory::build(const Sample &inputSample,
+                                     const Sample &outputSample,
+                                     const CovarianceModel &covarianceModel,
+                                     const Point &shift,
+                                     GeneralLinearModelResult &generalLinearModelResult)
 {
-  return build(inputSample, outputSample, covarianceModel, Basis(), shift, result);
+  return build(inputSample, outputSample, covarianceModel, Basis(), shift, generalLinearModelResult);
 }
 
 /** Build the factory from data by estimating the best generalized linear model */

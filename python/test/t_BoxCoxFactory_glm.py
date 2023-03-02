@@ -35,12 +35,11 @@ outputSample += epsilon
 factory = ot.BoxCoxFactory()
 
 # Creation of the BoxCoxTransform
-result = ot.GeneralLinearModelResult()
 basis = ot.LinearBasisFactory(1).build()
 covarianceModel = ot.DiracCovarianceModel()
 shift = [1.0e-10]
-myBoxCox = factory.build(
-    inputSample, outputSample, covarianceModel, basis, shift, result
+myBoxCox, result = factory.build(
+    inputSample, outputSample, covarianceModel, basis, shift
 )
 
 print("myBoxCox (GLM) =", myBoxCox)
