@@ -39,9 +39,10 @@ Available usages with time series:
 
     build(*myTimeSeries, shift, likelihoodGraph*)
 
-    build(*mySample*)
 
 Available usages with data only:
+
+    build(*mySample*)
 
     build(*mySample, shift*)
 
