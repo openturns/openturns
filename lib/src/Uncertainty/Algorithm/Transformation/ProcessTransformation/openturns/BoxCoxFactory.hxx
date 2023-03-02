@@ -61,14 +61,19 @@ public:
 
   /** Build the factory from data by estimating the best \lambda which maximizes the log-likelihood function */
   BoxCoxTransform build(const Field & timeSeries) const;
+
   BoxCoxTransform build(const Field & timeSeries,
                         const Point & shift) const;
+
   BoxCoxTransform build(const Field & timeSeries,
                         const Point & shift,
                         Graph & graph) const;
+
   BoxCoxTransform build(const Sample & sample) const;
+
   BoxCoxTransform build(const Sample & sample,
                         const Point & shift) const;
+
   BoxCoxTransform build(const Sample & sample,
                         const Point & shift,
                         Graph & graph) const;

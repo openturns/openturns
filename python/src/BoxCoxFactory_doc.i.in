@@ -33,20 +33,15 @@ The objective is to estimate the most likely surrogate model (general linear mod
 "Estimate the Box Cox transformation.
 
 Available usages with time series:
-    build(*myTimeSeries*)
+    build(*myField*)
 
-    build(*myTimeSeries, shift*)
-
-    build(*myTimeSeries, shift, likelihoodGraph*)
-
+    build(*myField, shift*)
 
 Available usages with data only:
 
     build(*mySample*)
 
     build(*mySample, shift*)
-
-    build(*mySample, shift, likelihoodGraph*)
 
 Available usages with a general linear model:
 
@@ -62,15 +57,13 @@ Available usages with a linear model:
 
 Parameters
 ----------
-myTimeSeries : :class:`~openturns.TimeSeries`
+myField : :class:`~openturns.Field`
     One realization of a  process.
 mySample : :class:`~openturns.Sample`
     A set of *iid* values.
 shift : :class:`~openturns.Point`
     It ensures that when shifted, the data are all positive.
     By default the opposite of the min vector of the data is used if some data are negative.
-likelihoodGraph : :class:`~openturns.Graph`
-    An empty graph that is fulfilled later with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
 inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
     The input and output samples of a model evaluated apart.
 basis : :class:`~openturns.Basis`
@@ -88,6 +81,8 @@ Returns
 -------
 myBoxCoxTransform : :class:`~openturns.BoxCoxTransform`
     The estimated Box Cox transformation.
+likelihoodGraph : :class:`~openturns.Graph`
+    An empty graph that is fulfilled later with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
 generalLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
     Empty structure that contains results of general linear model algorithm.
 linearModelResult : :class:`~openturns.LinearModelResult`
@@ -95,6 +90,8 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 
 Notes
 -----
+We get `likelihoodGraph` with the two usages corresponding to the `field` or `sample` but only if we set at the sample time the
+data & shift.
 
 We get `generalLinearModelResult` with the two usages corresponding to the `general linear model application`.
 
@@ -218,14 +215,14 @@ Estimate the Box Cox transformation from a sample:
 
 Estimate the Box Cox transformation from a field:
 
->>> myIndices= ot.Indices([10, 5])
->>> myMesher=ot.IntervalMesher(myIndices)
+>>> myIndices = ot.Indices([10, 5])
+>>> myMesher = ot.IntervalMesher(myIndices)
 >>> myInterval = ot.Interval([0.0, 0.0], [2.0, 1.0])
->>> myMesh=myMesher.build(myInterval)
->>> amplitude=[1.0]
->>> scale=[0.2, 0.2]
->>> myCovModel=ot.ExponentialModel(scale, amplitude)
->>> myXproc=ot.GaussianProcess(myCovModel, myMesh)
+>>> myMesh = myMesher.build(myInterval)
+>>> amplitude = [1.0]
+>>> scale = [0.2, 0.2]
+>>> myCovModel = ot.ExponentialModel(scale, amplitude)
+>>> myXproc = ot.GaussianProcess(myCovModel, myMesh)
 >>> g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
 >>> myDynTransform = ot.ValueFunction(g, myMesh)
 >>> myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
