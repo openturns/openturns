@@ -22,6 +22,7 @@
 #include "openturns/MatrixImplementation.hxx"
 %}
 
+%rename(__stride__) OT::MatrixImplementation::stride;
 %rename(MatrixImplementation_operator___eq__) OT::operator ==(const MatrixImplementation & lhs, const MatrixImplementation & rhs);
 
 %include openturns/MatrixImplementation.hxx

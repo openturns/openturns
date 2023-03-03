@@ -6,6 +6,7 @@
 
 %include ComplexMatrixImplementation_doc.i
 
+%rename(__stride__) OT::ComplexMatrixImplementation::stride;
 %rename(ComplexMatrixImplementation_operator___eq__) OT::operator ==(const ComplexMatrixImplementation & lhs, const ComplexMatrixImplementation & rhs);
 
 %template(ComplexCollection)                   OT::Collection<OT::Complex>;

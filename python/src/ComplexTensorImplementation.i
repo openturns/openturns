@@ -4,6 +4,7 @@
 #include "openturns/ComplexTensorImplementation.hxx"
 %}
 
+%rename(__stride__) OT::ComplexTensorImplementation::stride;
 %rename(ComplexTensorImplementation_operator___eq__) OT::operator ==(const ComplexTensorImplementation & lhs, const ComplexTensorImplementation & rhs);
 
 %include openturns/ComplexTensorImplementation.hxx
