@@ -1,0 +1,22 @@
+%feature("docstring") OT::DiscreteDistribution
+"Base class for discrete distributions."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DiscreteDistribution::getSupportEpsilon
+"Accessor to the support tolerance.
+
+Returns
+-------
+epsilon : float
+    The support tolerance."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DiscreteDistribution::setSupportEpsilon
+"Accessor to the support tolerance.
+
+Parameters
+----------
+epsilon : float
+    The support tolerance."
