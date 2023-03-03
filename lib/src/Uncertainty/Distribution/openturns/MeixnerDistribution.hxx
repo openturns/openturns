@@ -130,9 +130,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Initialize optimization solver parameter using the ResourceMap */
-  void initializeOptimizationAlgorithmParameter();
-
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
@@ -143,6 +140,8 @@ protected:
   mutable OptimizationAlgorithm  solver_;
 
 private:
+  /** Initialize optimization solver parameter using the ResourceMap */
+  void initializeOptimizationAlgorithmParameter();
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
   Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
