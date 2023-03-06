@@ -230,6 +230,7 @@ ot_add_python_module(statistics statistics_module.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i.in
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
                       LatentVariableModel.i LatentVariableModel_doc.i.in
+                      GowerDistanceModel.i GowerDistanceModel_doc.i.in
                    )
 
 ot_add_python_module(iterative_statistics iterative_statistics_module.i

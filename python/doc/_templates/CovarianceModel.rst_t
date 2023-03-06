@@ -12,6 +12,10 @@
         covarianceModel.setLatentVariables([0.1, -0.3, 0.2])
         cov_graph = covarianceModel.draw()
         View(cov_graph)   
+    elif ot.{{ objname }}().__class__.__name__ == 'GowerDistanceModel':
+        covarianceModel = ot.GowerDistanceModel(3)
+        cov_graph = covarianceModel.draw()
+        View(cov_graph)   
     else:
 		if ot.{{ objname }}().__class__.__name__ == 'ExponentialModel':
 		    covarianceModel = ot.ExponentialModel([0.5], [5.0])

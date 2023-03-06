@@ -89,6 +89,7 @@
 %include IsotropicCovarianceModel.i
 %include CorrelationAnalysis.i
 %include LatentVariableModel.i
+%include GowerDistanceModel.i
 
 /* At last we include template definitions */
 %include BaseStatisticsTemplateDefs.i

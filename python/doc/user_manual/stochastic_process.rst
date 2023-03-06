@@ -51,6 +51,7 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     TensorizedCovarianceModel
     StationaryFunctionalCovarianceModel
     LatentVariableModel
+    GowerDistanceModel
 
     :template: classWithPlot.rst_t
     UserDefinedCovarianceModel

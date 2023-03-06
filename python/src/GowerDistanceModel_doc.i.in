@@ -1,0 +1,79 @@
+%feature("docstring") OT::GowerDistanceModel
+"Latent variable covariance function.
+
+Available constructors:
+    GowerDistanceModel(*nLevels=2*)
+
+    GowerDistanceModel(*nLevels, scale, amplitude*)
+
+Parameters
+----------
+nLevels : int
+    Number of levels :math:`l` characterizing the discrete variable.
+scale : sequence of floats
+    Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+    Must be of size equal to 1.
+    By default, equal to :math:`[1]`.
+amplitude : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
+    Must be of size equal to 1.
+    By default, equal to :math:`[1]`.
+
+Notes
+-----
+The *Gower distance covariance function* is a covariance model allowing to compute the covariance between different unordered values (or levels) of a discrete variable.
+
+The *gower distance covariance function* is defined by:
+
+.. math::
+
+    C(s, t) = \sigma^2 e^{-\frac{1}{2}  \left\|\dfrac{\delta(s,t)}{\vect{\theta}}\right\|_{2}^{2}}
+
+where :math:`\delta(s,t) = 0` in case s and t correspond to the same level, and :math:`\delta(s,t) = 1` otherwise.
+
+Is is important to note that for the sake of simplicity, the discrete variable levels are represented as integers, 
+ranging from math:`0` to :math:`l-1`. However, this representation is purely practical, and the values
+assigned to each level have no practical meaning or effect.
+
+Finally, for a similar reason, when using this type of kernel when defining a Gaussian process, it is suggested to 
+rely on a constant functional basis.
+
+See Also
+--------
+CovarianceModel
+
+Examples
+--------
+Create a Gower distance covariance function for a discrete variable characterized by 3 levels:
+
+>>> import openturns as ot
+>>> covModel = ot.GowerDistanceModel(3)
+>>> covModel.setScale([1.5])
+>>> print(covModel(0, 0))
+[[ 1 ]]
+>>> print(covModel(0, 1))
+[[ 0.800737]]
+>>> print(covModel(1, 2))
+[[ 0.800737 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::computeAsScalar
+"Compute the covariance function for scalar model.
+
+Available usages:
+    computeAsScalar(s, t)
+
+Parameters
+----------
+s, t : floats, must have integer values between :math:`0` and :math:`l-1`
+
+Returns
+-------
+covariance : float
+    Covariance.
+
+Notes
+-----
+The method makes sense only if the dimension of the process is :math:`d=1`.
+It evaluates :math:`C(s, t)`."

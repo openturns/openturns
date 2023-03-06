@@ -15,11 +15,12 @@ latentDim : int
 
 Notes
 -----
-The *Latent variable covariance function* is a covariance model allowing to compute the covariance between different unordered values (or levels) of a discrete variable.
+The *Latent variable covariance function* is a covariance model allowing to compute the covariance between 
+different unordered values (or levels) of a discrete variable.
 
-The underlying idea is that each discrete level is mapped onto a distinct point in a :math:`d_l`-dimensional latent space. The covariance between the various levels 
-
-is then computed as the squared exponential covariance between the mappings in the latent space.
+The underlying idea is that each discrete level is mapped onto a distinct point in a :math:`d_l`-dimensional latent space. 
+The covariance between the various levels is then computed as the squared exponential covariance between the mappings in 
+the latent space.
 
 The coordinates of the mapping points are part of the covariance model parameters, together with the latent squared exponential model scale and amplitude.
 it is important to note that in order to compensate for possible rotations and translations of the mapping points, the coordinates of the first level mapping
@@ -27,8 +28,14 @@ are fixed to the latent space origin, whereas all of the coordinates of the seco
 
 As a result, the number of active latent variable coordinates is equal to :math:`d_l * (l - 2) + 1`
 
+Additional informations can be found in [zhang2020]_
 
+Is is important to note that for the sake of simplicity, the discrete variable levels are represented as integers, 
+ranging from :math:`0` to :math:`l-1`. However, this representation is purely practical, and the values
+assigned to each level have no practical meaning or effect.
 
+Finally, for a similar reason, when using this type of kernel when defining a Gaussian process, it is suggested to 
+rely on a constant functional basis.
 
 See Also
 --------
@@ -48,3 +55,77 @@ Create a latent model covariance function with a latent space of dimension 2, fo
 [[ 0.882497 ]]
 >>> print(covModel(1, 1))
 [[ 1 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::computeAsScalar
+"Compute the covariance function for scalar model.
+
+Available usages:
+    computeAsScalar(s, t)
+
+Parameters
+----------
+s, t : floats, must have integer values between :math:`0` and :math:`l-1`
+
+Returns
+-------
+covariance : float
+    Covariance.
+
+Notes
+-----
+The method makes sense only if the dimension of the process is :math:`d=1`.
+It evaluates :math:`C(s, t)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::getActiveLatentVariables
+"Active latent variables accessor.
+
+Parameters
+----------
+activeLatentVariables : :class:`~openturns.Point`
+    Active coordinates of the discrete levels in the latent space. 
+    The inactive coordinates are set to 0."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::getFullLatentVariables
+"Latent variables accessor.
+
+Returns
+-------
+activeLatentVariables : :class:`~openturns.Point`
+    Coordinates of the discrete levels in the latent space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::getLatentDimension
+"Latent dimension accessor.
+
+Returns
+-------
+LatentDimension : int
+    Dimension of the latent space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::getNLevels
+"Number of levels accessor.
+
+Returns
+-------
+NLevels : int
+    Number of levels characterizing the discrete variable."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LatentVariableModel::setLatentVariables
+"Number of levels accessor.
+
+Parameters
+----------
+LatentVariables : :class:`~openturns.Point`
+    Active coordinates of the discrete levels in the latent space."
+

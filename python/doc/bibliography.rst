@@ -387,3 +387,5 @@ Bibliography
     Computational Statistics & Data Analysis, 43 (2003) pp 249-267
 .. [zaman2012] Zaman, K. *Modeling and management of epistemic uncertainty for multidisciplinary system analysis and design.*
     PhD thesis, Vanderbilt University, USA, 2012
+.. [zhang2020] Zhang, Y., Tao, S., Chen, W., & Apley, D. W.  *A latent variable approach to Gaussian process modeling with qualitative and quantitative factors* 
+    Technometrics 62.3 (2020): 291-302.

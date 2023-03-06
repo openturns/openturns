@@ -70,6 +70,7 @@ ot_add_source_file (StationaryCovarianceModelFactory.cxx)
 ot_add_source_file (kendall.c)
 ot_add_source_file (IsotropicCovarianceModel.cxx)
 ot_add_source_file (LatentVariableModel.cxx)
+ot_add_source_file (GowerDistanceModel.cxx)
 
 ot_install_header_file (HistoryStrategyImplementation.hxx)
 ot_install_header_file (SobolSequence.hxx)
@@ -138,6 +139,7 @@ ot_install_header_file (RankMCovarianceModel.hxx)
 ot_install_header_file (TensorizedCovarianceModel.hxx)
 ot_install_header_file (IsotropicCovarianceModel.hxx)
 ot_install_header_file (LatentVariableModel.hxx)
+ot_install_header_file (GowerDistanceModel.hxx)
 
 # Build on the fly source files
 if (BISON_FOUND AND FLEX_FOUND)
