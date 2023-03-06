@@ -152,9 +152,9 @@ optalg_ind = ot.MultiStart(ot.NLopt("LN_COBYLA"), initSample_ind)
 
 # %%
 # In order to assess their respective robustness with regards to the training data set,
-# we repeat the experiments 10 times with different training of size 72, 
-# and compute each time the normalized prediction Root Mean Squared Error (RMSE) on a 
-# test data set # of size 1000. 
+# we repeat the experiments 10 times with different training of size 72,
+# and compute each time the normalized prediction Root Mean Squared Error (RMSE) on a
+# test data set # of size 1000.
 
 # %%
 RMSE_LV = []
