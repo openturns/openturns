@@ -28,7 +28,7 @@ are fixed to the latent space origin, whereas all of the coordinates of the seco
 
 As a result, the number of active latent variable coordinates is equal to :math:`d_l * (l - 2) + 1`
 
-Additional informations can be found in [zhang2020]_
+Additional information can be found in [zhang2020]_
 
 Is is important to note that for the sake of simplicity, the discrete variable levels are represented as integers, 
 ranging from :math:`0` to :math:`l-1`. However, this representation is purely practical, and the values

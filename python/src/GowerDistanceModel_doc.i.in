@@ -52,7 +52,7 @@ Create a Gower distance covariance function for a discrete variable characterize
 >>> print(covModel(0, 0))
 [[ 1 ]]
 >>> print(covModel(0, 1))
-[[ 0.800737]]
+[[ 0.800737 ]]
 >>> print(covModel(1, 2))
 [[ 0.800737 ]]"
 

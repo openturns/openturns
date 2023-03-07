@@ -12,7 +12,7 @@ import openturns as ot
 import numpy as np
 import matplotlib.pyplot as plt
 
-ot.RandomGenerator_SetSeed(0)
+ot.RandomGenerator.SetSeed(0)
 
 # %%
 # The considered function is a modified version of the Goldstein function.
