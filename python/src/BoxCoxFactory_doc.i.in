@@ -32,34 +32,34 @@ The objective is to estimate the most likely surrogate model (general linear mod
 %feature("docstring") OT::BoxCoxFactory::build
 "Estimate the Box Cox transformation.
 
-Available usages with time series:
-    build(*myField*)
+Available usages with time series & fields:
+    build(*myField*) -> myBoxCoxTransform
 
-    build(*myField, shift*)
+    build(*myField, shift*) -> Tuple[myBoxCoxTransform, myGraph]
 
 Available usages with data only:
 
-    build(*mySample*)
+    build(*mySample*) -> myBoxCoxTransform
 
-    build(*mySample, shift*)
+    build(*mySample, shift*) -> Tuple[myBoxCoxTransform, myGraph]
 
 Available usages with a general linear model:
 
-    build(*inputSample, outputSample, covarianceModel, basis, shift*)
+    build(*inputSample, outputSample, covarianceModel, basis, shift*) -> Tuple[myBoxCoxTransform, myGeneralLinearModelResult]
 
-    build(*inputSample, outputSample, covarianceModel, shift*)
+    build(*inputSample, outputSample, covarianceModel, shift*) -> Tuple[myBoxCoxTransform, myGeneralLinearModelResult]
 
 Available usages with a linear model:
 
-    build(*inputSample, outputSample, basis, shift*)
+    build(*inputSample, outputSample, basis, shift*) -> Tuple[myBoxCoxTransform, myLinearModelResult]
 
-    build(*inputSample, outputSample, shift*)
+    build(*inputSample, outputSample, shift*) -> Tuple[myBoxCoxTransform, myLinearModelResult]
 
 Parameters
 ----------
 myField : :class:`~openturns.Field`
     One realization of a  process.
-mySample : :class:`~openturns.Sample`
+mySample : 2-d sequence of float
     A set of *iid* values.
 shift : :class:`~openturns.Point`
     It ensures that when shifted, the data are all positive.
@@ -67,11 +67,8 @@ shift : :class:`~openturns.Point`
 inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
     The input and output samples of a model evaluated apart.
 basis : :class:`~openturns.Basis`
-    Functional basis to estimate the trend.
-    If the output dimension is greater than 1, the same basis is used for all marginals.
-multivariateBasis : collection of :class:`~openturns.Basis`
-    Collection of functional basis: one basis for each marginal output.
-    If the trend is not estimated, the collection must be empty.
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
+    If :math:`d>1`, the same basis is used for each marginal output.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model.
     Should have input dimension equal to input sample's dimension and dimension equal to output sample's dimension.
@@ -81,21 +78,15 @@ Returns
 -------
 myBoxCoxTransform : :class:`~openturns.BoxCoxTransform`
     The estimated Box Cox transformation.
-likelihoodGraph : :class:`~openturns.Graph`
-    An empty graph that is fulfilled later with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
-generalLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
-    Empty structure that contains results of general linear model algorithm.
-linearModelResult : :class:`~openturns.LinearModelResult`
-    Empty structure that contains results of linear model algorithm.
+myGraph : :class:`~openturns.Graph`
+    A graph that is fulfilled with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
+myGeneralLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
+    The structure that contains results of general linear model algorithm.
+myLinearModelResult : :class:`~openturns.LinearModelResult`
+    The structure that contains results of linear model algorithm.
 
 Notes
 -----
-We get `likelihoodGraph` with the two usages corresponding to the `field` or `sample` but only if we set at the sample time the
-data & shift.
-
-We get `generalLinearModelResult` with the two usages corresponding to the `general linear model application`.
-
-We get `linearModelResult` with the two usages corresponding to the `linear model application`.
 
 We describe the estimation in the univariate case, in the case of no surrogate model estimate. Only the parameter :math:`\lambda` is estimated. To clarify the notations, we omit the mention of :math:`\alpha` in :math:`h_\lambda`.
 
