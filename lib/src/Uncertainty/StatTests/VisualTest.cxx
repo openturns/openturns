@@ -102,6 +102,77 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   return graphQQplot;
 }
 
+/* Draw the PPplot of the two Samples when its dimension is 1 */
+Graph VisualTest::DrawPPplot(const Sample & sample1,
+                             const Sample & sample2,
+                             const UnsignedInteger pointNumber)
+{
+  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PPplot only if dimension equals 1, here dimension=" << sample1.getDimension();
+  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PPplot only if dimension equals 1, here dimension=" << sample2.getDimension();
+  Sample data(pointNumber, 2);
+  const Scalar step = (sample1.getMax()[0] - sample1.getMin()[0]) / (pointNumber + 1.0);
+  for (UnsignedInteger i = 0; i < pointNumber; ++ i)
+  {
+    const Scalar p = sample1.getMin()[0] + (i + 0.5) * step;
+    data(i, 0) = sample1.computeEmpiricalCDF(Point(1, p));
+    data(i, 1) = sample2.computeEmpiricalCDF(Point(1, p));
+  }
+  Cloud cloud(data, "Data");
+  if (pointNumber < 100) cloud.setPointStyle("fcircle");
+  else if (pointNumber < 1000) cloud.setPointStyle("bullet");
+  else cloud.setPointStyle("dot");
+  Graph graph("Two sample PP-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
+  // First, the bisector
+  Sample diagonal(2, 2);
+  diagonal(0, 0) = data(0, 0);
+  diagonal(0, 1) = data(0, 0);
+  diagonal(1, 0) = data(pointNumber - 1, 0);
+  diagonal(1, 1) = data(pointNumber - 1, 0);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graph.add(bisector);
+  // Then the PP plot
+  graph.add(cloud);
+  return graph;
+}
+
+/* Draw the PPplot of one Sample and one Distribution when its dimension is 1 */
+Graph VisualTest::DrawPPplot(const Sample & sample,
+                             const Distribution & dist)
+{
+  if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PPplot only if dimension equals 1, here dimension=" << sample.getDimension();
+  if (dist.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PPplot only if dimension equals 1, here dimension=" << dist.getDimension();
+  const Sample sortedSample(sample.sortUnique());
+  if (!(sortedSample.getSize() >= 2)) throw InvalidArgumentException(HERE) << "Sample must have at least 2 distinct points";
+  const UnsignedInteger size = sortedSample.getSize() - 1;// avoids last point with p=1
+  Sample data(size, 2);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Scalar p = sample.computeEmpiricalCDF(sortedSample[i]);
+    data(i, 0) = p;
+    data(i, 1) = dist.computeCDF(sortedSample[i]);
+  }
+  Cloud cloud(data, "Data");
+  if (size < 100) cloud.setPointStyle("fcircle");
+  else if (size < 1000) cloud.setPointStyle("bullet");
+  else cloud.setPointStyle("dot");
+  Graph graph("Sample versus model PP-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
+  // First, the bisector
+  Sample diagonal(2, 2);
+  diagonal(0, 0) = data(0, 0);
+  diagonal(0, 1) = data(0, 0);
+  diagonal(1, 0) = data(size - 1, 0);
+  diagonal(1, 1) = data(size - 1, 0);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graph.add(bisector);
+  // Then the PP plot
+  graph.add(cloud);
+  return graph;
+}
+
 /* Draw the CDFplot of the two Samples when its dimension is 1 */
 Graph VisualTest::DrawCDFplot(const Sample & sample1,
                               const Sample & sample2)

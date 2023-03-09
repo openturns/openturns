@@ -19,6 +19,13 @@ dist = ot.Geometric()
 qq_plot = ot.VisualTest.DrawQQplot(dist.getSample(size), dist)
 print("discrete QQPlot = ", qq_plot)
 
+sample2 = normal.getSample(size)
+twoSamplesPPPlot = ot.VisualTest.DrawPPplot(sample, sample2)
+print("twoSamplesPPPlot = ", twoSamplesPPPlot)
+
+sampleDistributionPPplot = ot.VisualTest.DrawPPplot(sample, normal)
+print("sampleDistributionPPplot = ", sampleDistributionPPplot)
+
 # HenryLine test
 size = 100
 normal = ot.Normal(1)

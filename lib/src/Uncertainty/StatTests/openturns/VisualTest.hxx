@@ -42,9 +42,17 @@ OT_API Graph DrawQQplot(const Sample & sample1,
                         const Sample & sample2,
                         const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"));
 
-
 /** Draw the QQplot of one Sample and one Distribution when its dimension is 1 */
 OT_API Graph DrawQQplot(const Sample & sample,
+                        const Distribution & dist);
+
+/** Draw the PPplot of two Samples when its dimension is 1 */
+OT_API Graph DrawPPplot(const Sample & sample1,
+                        const Sample & sample2,
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"));
+
+/** Draw the PPplot of one Sample and one Distribution when its dimension is 1 */
+OT_API Graph DrawPPplot(const Sample & sample,
                         const Distribution & dist);
 
 /** Draw the CDFplot of two Samples when its dimension is 1 */
