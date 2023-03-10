@@ -178,7 +178,7 @@ void HSICEstimatorImplementation::computePValuesPermutationSequential() const
     for (UnsignedInteger j = 0; j < outputCovarianceMatrix_.getDimension(); ++j)
       {
         const UnsignedInteger newJ = indices[j];
-        shuffledSample[j] = outputSample_[newJ];
+        shuffledSample(j, 0) = outputSample_(newJ, 0);
         for (UnsignedInteger i = j; i < outputCovarianceMatrix_.getDimension(); ++i)
           {
             const UnsignedInteger newI = indices[i];
@@ -299,7 +299,7 @@ struct HSICPValuesPermutationPolicy
         for (UnsignedInteger j = 0; j < covarianceDimension; ++j)
           {
             const UnsignedInteger newJ = indices[j];
-            shuffledSample[j] = p_hsic_->outputSample_[newJ];
+            shuffledSample(j, 0) = p_hsic_->outputSample_(newJ, 0);
             for (UnsignedInteger i = j; i < covarianceDimension; ++i)
               {
                 const UnsignedInteger newI = indices[i];
