@@ -61,4 +61,4 @@ jobs:
       - name: Build
         run: |
           docker pull openturns/debian-aarch64
-          docker run --rm -e MAKEFLAGS='-j3' -v `pwd`:/io openturns/debian-aarch64 /io/.ci_support/run_docker_aarch64.sh
+          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/debian-aarch64 /io/.ci_support/run_docker_aarch64.sh
