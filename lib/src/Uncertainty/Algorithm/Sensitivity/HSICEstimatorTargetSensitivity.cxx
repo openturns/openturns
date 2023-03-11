@@ -26,6 +26,8 @@ CLASSNAMEINIT(HSICEstimatorTargetSensitivity)
 /* Default */
 HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity()
   : HSICEstimatorImplementation()
+  , unfilteredSample_()
+
 {
   // Nothing to do
 }
@@ -40,8 +42,9 @@ HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity(
   : HSICEstimatorImplementation(covarianceModelCollection, X, Y, estimatorType)
 {
   filterFunction_ =  filterFunction;
+  unfilteredSample_ = outputSample_;
   /* apply filter */
-  outputSample_ = filterFunction_(outputSample_);
+  outputSample_ = filterFunction_(unfilteredSample_);
   computeCovarianceMatrices();
 }
 
@@ -81,9 +84,9 @@ void HSICEstimatorTargetSensitivity::setFilterFunction(const Function & filterFu
 {
   filterFunction_ =  filterFunction;
   /* apply filter */
-  outputSample_ = filterFunction_(outputSample_);
+  outputSample_ = filterFunction_(unfilteredSample_);
   resetIndices();
-  computeCovarianceMatrices();
+  outputCovarianceMatrix_ = covarianceModelCollection_[inputDimension_].discretize(outputSample_);
 }
 
 /* Draw the asymptotic p-values */
@@ -97,6 +100,7 @@ void HSICEstimatorTargetSensitivity::save(Advocate & adv) const
 {
   HSICEstimatorImplementation::save(adv);
   adv.saveAttribute( "filterFunction_", filterFunction_ );
+  adv.saveAttribute( "unfilteredSample_", unfilteredSample_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -104,6 +108,7 @@ void HSICEstimatorTargetSensitivity::load(Advocate & adv)
 {
   HSICEstimatorImplementation::load(adv);
   adv.loadAttribute( "filterFunction_", filterFunction_ );
+  adv.loadAttribute( "unfilteredSample_", unfilteredSample_);
 }
 
 END_NAMESPACE_OPENTURNS

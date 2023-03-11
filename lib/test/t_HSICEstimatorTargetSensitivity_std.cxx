@@ -141,11 +141,10 @@ int main(int, char *[])
     SymbolicFunction squaredExponential("x", "exp(-0.1 * x^2)");
     ComposedFunction alternateFilter(squaredExponential, g);
     TSA.setFilterFunction(alternateFilter);
-    assert_almost_equal(TSA.getR2HSICIndices(), {0.263026, 0.0041902, 0.00309598});
-    assert_almost_equal(TSA.getHSICIndices(), {1.54349e-05, 2.45066e-07, 1.88477e-07}, 1e-4, 0.0);
-    assert_almost_equal(TSA.getPValuesPermutation(), {0.0, 0.264735, 0.279720});
-    assert_almost_equal(TSA.getPValuesAsymptotic(), {0.0, 0.270278, 0.288026});
-
+    assert_almost_equal(TSA.getR2HSICIndices(), {0.373511, 0.0130156, 0.0153977});
+    assert_almost_equal(TSA.getHSICIndices(), {0.00118685, 4.12193e-05, 5.07577e-05}, 1e-4, 0.0);
+    assert_almost_equal(TSA.getPValuesPermutation(), {0, 0.137862, 0.112887});
+    assert_almost_equal(TSA.getPValuesAsymptotic(), {7.32022e-13, 0.143851, 0.128866});
   }
   catch (TestFailed & ex)
   {

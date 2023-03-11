@@ -568,6 +568,7 @@ void HSICEstimatorImplementation::resetIndices()
   PValuesPermutation_ = Point();
   isAlreadyComputedIndices_ = false;
   isAlreadyComputedPValuesPermutation_ = false;
+  isAlreadyComputedPValuesAsymptotic_ = false;
 }
 
 /* Get the dimension of the indices: the number of marginals */
