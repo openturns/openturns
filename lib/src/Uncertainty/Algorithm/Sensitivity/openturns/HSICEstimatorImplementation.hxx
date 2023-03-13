@@ -45,7 +45,7 @@ class OT_API HSICEstimatorImplementation
 {
   // For parallelism using TBB. This struct is defined
   // in HSICEstimatorImplementation.cxx
-  friend struct HSICPValuesPermutationPolicy;
+  friend struct HSICPValuesPermutationFunctor;
   CLASSNAME
 
 public:
