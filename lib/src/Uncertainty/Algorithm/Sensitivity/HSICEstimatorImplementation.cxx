@@ -285,39 +285,71 @@ void HSICEstimatorImplementation::computePValuesPermutationParallel() const
 /* Compute the asymptotic p-values */
 void HSICEstimatorImplementation::computePValuesAsymptotic() const
 {
-  PValuesAsymptotic_ = Point(inputDimension_);
+  // The interest is to compute the asymptotic p-value, which is the sum of
+  // elements of the matrix B that writes :
+  // B[i,j] = Bx[i,j]^2 * By[i,j]^2 for i !=j, 0 if i = j
+  // where :
+  // Bx = H * Kx * H
+  // By = H * Ky * h
+  // H being the matrix:
+  // H = Id - U/n where U[i,j] = 1
+  // To perform easily this, one could notice that the left side (Bx) is easy to evaluate.
+  // (H * Kx * H) = (I - U / n) * Kx * (I -  U/n)
+  //                = (Kx - Kx * U / n - U * Kx / n + U * Ky * U / n / n)
+  // Having a deeper eye,
+  // (Kx * U)[i,j] = \sum_k Kx[i,k]
+  // Thus summing the two provides :
+  // 1/n * (Kx * U + U * Kx)[i,j] = 1/n \sum_k (Kx[i,k] + Kx[k,j])
+  //                              = 1/n \sum_k (Ky[i,k] + Ky[j,k])
+  // We get the vector easily using Kx * 1 vector for example
+  // For the last part of the second block, we need to compute (U * Kx * U)
+  // It is easy to notice that
+  // (U Kx U)[i,j] = sum_{k, l} Kx[k,l] for all i, j
+  // sum_{k, l} Kx[k,l] is the sum of elements!
+  // Finally we get the full structure of the Bx matrix:
+  // (H * Kx * H)[i,j] = Kx[i,j] - \sum_k (Kx[i,k] + Ky[j,k]) / n + \sum_{k,l} Kx[k,l] /n /n
+  // For By, we replace Kx per Ky
+  // As the interest is to get sum_{k,l} Bx@Bx@By@By[k,l] (except the diagonal), we can easily implement it!
+  // We compute easily the squared elements, product and the sum of scalars without building the structures
+  // Thanks to the symmetry, the quantity of interest is twice the sum of the lower part
 
-  SquareMatrix H(n_, Collection<Scalar>(n_ * n_, -1.0 / n_));
-  for(UnsignedInteger j = 0; j < n_; ++j)
-  {
-    H(j, j) += 1.0;
-  }
+  PValuesAsymptotic_ = Point(inputDimension_);
 
   const Scalar traceKy = outputCovarianceMatrix_.computeTrace();
   const Scalar sumKy = outputCovarianceMatrix_.computeSumElements();
+  const Scalar oneOverSqauaredN = 1.0 / n_ / n_;
+  // Compute sum rows/columns
+  const Point ones(n_, 1.0 / n_);
+  const Point sumKyRows(outputCovarianceMatrix_ * ones);
 
   const Scalar Ey = (sumKy - traceKy) / n_ / (n_ - 1 );
-  const Matrix By(H * outputCovarianceMatrix_ * H);
+  //const Matrix By(H * outputCovarianceMatrix_ * H);
   const Point HSICobsPt(getHSICIndices());
+  // Scaling factor for varHSIC
+  const Scalar factor = 2.0 * (n_ - 4) * (n_ - 5) / n_ / (n_ - 1) / (n_ - 2) / (n_ - 3) / n_ / (n_ - 1);
 
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
+    const CovarianceMatrix Kx(inputCovarianceMatrixCollection_[dim]);
     const Scalar traceKx = inputCovarianceMatrixCollection_[dim].computeTrace();
     const Scalar sumKx = inputCovarianceMatrixCollection_[dim].computeSumElements();
+    const Point sumKxRows(inputCovarianceMatrixCollection_[dim] * ones);
     const Scalar Ex = (sumKx - traceKx) / n_ / (n_ - 1);
 
-    const Matrix Bx(H * inputCovarianceMatrixCollection_[dim] * H);
-
-    /* Hadamard product then square all elements */
-    SquareMatrix B(Bx.computeHadamardProduct(By).getImplementation());
-    B.squareElements();
-
-    const Point nullDiag(n_);
-    B.setDiagonal(nullDiag, 0);
-
     const Scalar mHSIC = (1 + Ex * Ey - Ex - Ey) / n_;
-    const Scalar factor = 2.0 * (n_ - 4) * (n_ - 5) / n_ / (n_ - 1) / (n_ - 2) / (n_ - 3) / n_ / (n_ - 1);
-    const Scalar varHSIC = B.computeSumElements() * factor;
+    Scalar varHSIC = 0.0;
+    for (UnsignedInteger j = 0; j < n_; ++j)
+    {
+      for (UnsignedInteger i = j + 1; i < n_; ++i)
+      {
+        const Scalar left = Kx(i, j) - sumKxRows[i] - sumKxRows[j] + sumKx * oneOverSqauaredN;
+        const Scalar right = outputCovarianceMatrix_(i, j) - sumKyRows[i] - sumKyRows[j] + sumKy * oneOverSqauaredN;
+        varHSIC += 2.0 * left * left * right * right;
+      }
+    }
+
+    // scaling with the right factor
+    varHSIC *= factor;
 
     const Scalar alpha = mHSIC * mHSIC / varHSIC;
     const Scalar beta = n_ * varHSIC / mHSIC;
