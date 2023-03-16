@@ -1759,6 +1759,112 @@ MatrixImplementation MatrixImplementation::getDiagonal(const SignedInteger k) co
   return diag;
 }
 
+/** Extract diagonal */
+Point MatrixImplementation::getDiagonalAsPoint(const SignedInteger k) const
+{
+  SignedInteger m = nbRows_;
+  SignedInteger n = nbColumns_;
+  if (k >= n)
+    throw OutOfBoundException(HERE) << "One must have k < nbColumns";
+  if (-k > m)
+    throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
+
+  /* First step: the size of the diagonal */
+  UnsignedInteger nElt;
+  /* Extraction */
+  if (k >= 0)
+  {
+    nElt = std::min(m, n - k);
+  }
+  else
+  {
+    nElt = std::min(m + k, n);
+  }
+
+  /* Extraction */
+  Point diag(nElt);
+  if (k >= 0)
+  {
+    for (UnsignedInteger l = 0; l < nElt; ++l)
+    {
+      diag[l] = (*this)(l, l + k);
+    }
+  }
+  else
+  {
+    for (UnsignedInteger l = 0; l < nElt; ++l)
+    {
+      diag[l] = (*this)(l - k, l);
+    }
+  }
+  return diag;
+}
+
+/** Fill diagonal with values */
+void MatrixImplementation::setDiagonal(const MatrixImplementation &diag, const SignedInteger k)
+{
+  SignedInteger m = nbRows_;
+  SignedInteger n = nbColumns_;
+  if (k >= n)
+    throw OutOfBoundException(HERE) << "One must have k < nbColumns";
+  if (-k > m)
+    throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
+
+  /* First step: the size of the diagonal */
+  SignedInteger nElt;
+  if (k >= 0)
+  {
+    nElt = std::min(m, n - k);
+  }
+  else
+  {
+    nElt = std::min(m + k, n);
+  }
+
+  /* Extraction */
+  SignedInteger diagRows = diag.getNbRows();
+  SignedInteger diagColumns = diag.getNbColumns();
+
+  // Check dimension
+  // diag should be a (nElt, 1) or (1, nElt) matrix
+  if ((diagRows == nElt) && (diagColumns == 1))
+  {
+    if (k >= 0)
+    {
+      for (SignedInteger l = 0; l < nElt; ++l)
+      {
+        (*this)(l, l + k) = diag(l, 0);
+      }
+    }
+    else
+    {
+      for (SignedInteger l = 0; l < nElt; ++l)
+      {
+        (*this)(l - k, l) = diag(l, 0);
+      }
+    }
+  }
+  else if ((diagColumns == nElt) && (diagRows == 1))
+  {
+    if (k >= 0)
+    {
+      for (SignedInteger l = 0; l < nElt; ++l)
+      {
+        (*this)(l, l + k) = diag(0, l);
+      }
+    }
+    else
+    {
+      for (SignedInteger l = 0; l < nElt; ++l)
+      {
+        (*this)(l - k, l) = diag(0, l);
+      }
+    }
+  }
+  else
+      throw InvalidDimensionException(HERE) << "Dimension mismatch.";
+}
+
 /** Fill a diagonal with values */
 void MatrixImplementation::setDiagonal(const Point &diag, const SignedInteger k)
 {
@@ -1794,6 +1900,51 @@ void MatrixImplementation::setDiagonal(const Point &diag, const SignedInteger k)
     for(UnsignedInteger l = 0; l < nElt; ++l)
     {
       (*this)(l - k, l) = diag[l];
+    }
+  }
+}
+
+/** Fill diagonal with the same value */
+void MatrixImplementation::setDiagonal(const Scalar value, const SignedInteger k)
+{
+  SignedInteger m = nbRows_;
+  SignedInteger n = nbColumns_;
+  if (k >= n)
+    throw OutOfBoundException(HERE) << "One must have k < nbColumns";
+  if (-k > m)
+    throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
+
+  /* First step: the size of the diagonal */
+  UnsignedInteger nElt;
+  if (k >= 0)
+  {
+    nElt = std::min(m, n - k);
+  }
+  else
+  {
+    nElt = std::min(m + k, n);
+  }
+
+  /* Fill with values */
+  if (k == 0)
+  {
+    for (UnsignedInteger l = 0; l < nElt; ++l)
+    {
+      (*this).operator[](l + l * m) = value;
+    }
+  }
+  else if (k > 0)
+  {
+    for (UnsignedInteger l = 0; l < nElt; ++l)
+    {
+      (*this)(l, l + k) = value;
+    }
+  }
+  else
+  {
+    for (UnsignedInteger l = 0; l < nElt; ++l)
+    {
+      (*this)(l - k, l) = value;
     }
   }
 }

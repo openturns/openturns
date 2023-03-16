@@ -551,32 +551,61 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Matrix::getDiagonalAsPoint
+"Get the k-th diagonal of the matrix.
+
+Parameters
+----------
+k : int
+    The k-th diagonal to extract
+    Default value is 0
+
+Returns
+-------
+pt : :class:`~openturns.Point`
+    The k-th digonal.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]])
+>>> pt = M.getDiagonalAsPoint()
+>>> print(pt)
+[1,5,9]
+"
+
+// ---------------------------------------------------------------------
 
 %feature("docstring") OT::Matrix::setDiagonal
 "Set the k-th diagonal of the matrix.
 
 Parameters
 ----------
-diag : sequence of floats
-    Value to set
+diag : :class:`~openturns.Point` or :class:`~openturns.Matrix` or a float
+    Value(s) used to fill the diagonal of the matrix
 
 k : int
-    The k-th diagonal to extract
+    The k-th diagonal to fill
     Default value is 0
 
 Examples
 --------
 >>> import openturns as ot
 >>> M = ot.Matrix([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]])
->>> diag = M.getDiagonal()
->>> print(diag)
-[[ 1 ]
- [ 5 ]
- [ 9 ]]
 >>> M.setDiagonal([-1, 23, 9])
 >>> print(M)
 [[ -1  2  3 ]
  [  4 23  6 ]
- [  7  8  9 ]]"
+ [  7  8  9 ]]
+>>> M.setDiagonal(1.0)
+>>> print(M)
+[[ 1 2 3 ]
+ [ 4 1 6 ]
+ [ 7 8 1 ]]
+>>> M.setDiagonal([2, 6, 9])
+>>> print(M)
+[[ 2 2 3 ]
+ [ 4 6 6 ]
+ [ 7 8 9 ]]"
 
 // ---------------------------------------------------------------------
