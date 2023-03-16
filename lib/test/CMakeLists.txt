@@ -564,6 +564,7 @@ ot_check_test (IsoProbabilisticTransformation_EllipticalCopula)
 ot_check_test (IsoProbabilisticTransformation_EllipticalDistribution)
 ot_check_test (BoxCoxFactory_std)
 ot_check_test (BoxCoxFactory_glm)
+ot_check_test (BoxCoxFactory_lm IGNOREOUT)
 ot_check_test (TrendFactory_std)
 
 # Calibration

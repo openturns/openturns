@@ -249,9 +249,62 @@ Remarks :
    Indeed a linear model is a specific case of general linear model where the correlation model is a
    Dirac covariance model.
 
--  We get hare a double loop optimization. For each :math:`\lambda` value, we optimize the parameters of the underlying
-   general linear model. Some practitioners use to freeze first general linear model parameters and then preform a one loop
-   optimization selecting only the best :math:`\lambda` value
+Note that such estimate might be heavy as we get a double loop optimization. Indeed for each :math:`\lambda` value, we optimize
+the parameters of the underlying general linear model. Some practitioners are used to freeze the first general linear model parameters
+and then preform a one loop optimization selecting only the best :math:`\lambda` value.
+
+| **Estimation of the Box Cox transformation in the frame of linear models:**
+
+In the frame of linear models, we consider a functional relation between some input and
+output values. Let us consider the following dataset:
+:math:`\left(\left(\vect{x}^{(i)}, y^{(i)}\right), i = 1, \ldots, m\right)`.
+
+The general linear model aims at assessing the following
+prior model :
+
+.. math:: Y(\vect{x}) = \Tr{\vect{\phi}(\vect{x})} \vect{\alpha} + \epsilon
+
+where:
+
+-  :math:`\Tr{\vect{\phi}(\vect{x})} \vect{\alpha}` is a general linear
+   model based upon a functional basis
+   :math:`\vect{\phi} = \left(\phi_j, j = 1, \ldots, p\right)` and a vector of
+   coefficients
+   :math:`\vect{\alpha} = \left(\alpha_j, j = 1, \ldots, p\right)`,
+
+-  :math:`\epsilon` is a zero-mean stationary white noise process.
+
+
+The optimal parameters of such model are estimated by maximizing a log-likelihood function.
+
+Here we suppose a gaussian prior on :math:`h_\lambda(y)`. Thus, if we write our various hypotheses,
+we get the following log-likelihood function to be optimized:
+
+  .. math::
+    :label: lLambdalm
+
+    \ell(\lambda) = \log L( \hat{\beta}(\lambda), \hat{\sigma}(\lambda),\lambda ) = C -
+    \frac{m}{2}
+    \log\left[\hat{\sigma}^2(\lambda)\right]
+    \;+\;
+    \left(\lambda - 1 \right) \sum_{k=1}^{m} \log(y_k)\,,
+
+where :math:`C` is a constant,
+
+   .. math::
+    :label: betasigmalm
+
+    \epsilon_k = y_k - \Tr{\vect{\phi}(\vect{x_k})} \vect{\alpha}, k=1...m \\
+    \hat{\beta}(\lambda) = \frac{1}{m} \sum_{k=1}^{m} h_{\lambda}(\epsilon_k) \\
+    \hat{\sigma}^2(\lambda) = \frac{1}{m} \sum_{k=1}^{m} (h_{\lambda}(\epsilon_k) - \beta(\lambda))^2
+
+As a remark, the above case is a particular case of :eq:`lLambdalm`. Indeed if a linear model is a specific case of general linear model
+where the correlation model is a Dirac covariance model (White noise model).
+
+In term of costs, a factorization (QR or SVD) is done once for the regression matrix and the parameters defined in :eq:`betasigmalm`
+are easily obtained, for each new :math:`\lambda` value, solving the corresponding linear systems.
+Sometimes, people perform a grid search for example varying for example :math:`\lambda` from -3 to 3 using a small step. It allows one
+to get both the optimal and assess the robustness of the optimum.
 
 .. topic:: API:
 
@@ -259,6 +312,7 @@ Remarks :
     - See :class:`~openturns.InverseBoxCoxTransform`
     - See :class:`~openturns.BoxCoxFactory`
     - See :class:`~openturns.GeneralLinearModelAlgorithm`
+    - See :class:`~openturns.LinearModelAlgorithm`
 
 .. topic:: Examples:
 

@@ -31,6 +31,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/GeneralLinearModelResult.hxx"
+#include "openturns/LinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -60,31 +61,47 @@ public:
 
   /** Build the factory from data by estimating the best \lambda which maximizes the log-likelihood function */
   BoxCoxTransform build(const Field & timeSeries) const;
+
   BoxCoxTransform build(const Field & timeSeries,
                         const Point & shift) const;
+
   BoxCoxTransform build(const Field & timeSeries,
                         const Point & shift,
                         Graph & graph) const;
+
   BoxCoxTransform build(const Sample & sample) const;
+
   BoxCoxTransform build(const Sample & sample,
                         const Point & shift) const;
+
   BoxCoxTransform build(const Sample & sample,
                         const Point & shift,
                         Graph & graph) const;
 
   /** Build the factory from data by estimating the best generalized linear model */
-  BoxCoxTransform build(const Sample & inputSample,
-                        const Sample & outputSample,
-                        const CovarianceModel & covarianceModel,
-                        const Basis & basis,
-                        const Point & shift,
-                        GeneralLinearModelResult & result);
+  BoxCoxTransform build(const Sample &inputSample,
+                        const Sample &outputSample,
+                        const CovarianceModel &covarianceModel,
+                        const Basis &basis,
+                        const Point &shift,
+                        GeneralLinearModelResult &generalLinearModelResult);
 
   BoxCoxTransform build(const Sample & inputSample,
                         const Sample & outputSample,
                         const CovarianceModel & covarianceModel,
                         const Point & shift,
-                        GeneralLinearModelResult & result);
+                        GeneralLinearModelResult & generalLinearModelResult);
+
+  BoxCoxTransform build(const Sample &inputSample,
+                        const Sample &outputSample,
+                        const Basis &basis,
+                        const Point &shift,
+                        LinearModelResult &linearModelResult);
+
+  BoxCoxTransform build(const Sample &inputSample,
+                        const Sample &outputSample,
+                        const Point &shift,
+                        LinearModelResult &linearModelResult);
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;

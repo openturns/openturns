@@ -1,6 +1,9 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
+
+ot.TESTPREAMBLE()
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -35,12 +38,14 @@ outputSample += epsilon
 factory = ot.BoxCoxFactory()
 
 # Creation of the BoxCoxTransform
+result = ot.LinearModelResult()
 basis = ot.LinearBasisFactory(1).build()
-covarianceModel = ot.DiracCovarianceModel()
 shift = [1.0e-10]
-myBoxCox, result = factory.build(
-    inputSample, outputSample, covarianceModel, basis, shift
-)
+myBoxCox, result = factory.build(inputSample, outputSample, shift)
 
-print("myBoxCox (GLM) =", myBoxCox)
-print("GLM result     =", result)
+# estimated lambda =  1.99098,  beta = [9.90054,2.95995]
+beta = [9.90054, 2.95995]
+rtol = 1e-2
+atol = 5e-3
+ott.assert_almost_equal(myBoxCox.getLambda(), lamb, rtol, atol)
+ott.assert_almost_equal(result.getCoefficients(), beta, rtol, atol)

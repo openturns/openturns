@@ -35,6 +35,11 @@
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/GeneralLinearModelAlgorithm.hxx"
 #include "openturns/MemoizeFunction.hxx"
+#include "openturns/LinearModelAlgorithm.hxx"
+#include "openturns/DesignProxy.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearBasisFactory.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -208,6 +213,111 @@ private:
   Scalar sumLog_;
 };
 
+class BoxCoxLMOptimizationEvaluation : public EvaluationImplementation
+{
+
+public:
+  BoxCoxLMOptimizationEvaluation(const Sample & inputSample,
+                                 const Sample & shiftedOutputSample,
+                                 const Basis & basis)
+      : inputSample_(inputSample)
+      , shiftedOutputSample_(shiftedOutputSample)
+      , basis_(basis)
+      , sumLog_(0.0)
+      , algo_()
+  {
+    initialize();
+    computeSumLog();
+  }
+
+  void initialize()
+  {
+    const UnsignedInteger size = inputSample_.getSize();
+    if (shiftedOutputSample_.getDimension() != 1)
+      throw InvalidArgumentException(HERE) << "We can only handle and 1-d output sample.";
+
+    const UnsignedInteger basisSize = basis_.getSize();
+    // basisSize should be < size (not <=)
+    // In case of =, residual sample is always 0 and not possible to perform an optimization
+    // to set the optimal lambda value
+    if (!(basisSize < size))
+      throw InvalidArgumentException(HERE) << "Number of basis elements is greater than sample size. Data size = " << shiftedOutputSample_.getSize()
+                                           << ", basis size = " << basisSize;
+
+    // No particular strategy : using the full basis
+    Indices indices(basis_.getSize());
+    indices.fill();
+
+    // Define the design proxy
+    const DesignProxy proxy(inputSample_, basis_);
+
+    // Compute using a least squares method
+    algo_ = LeastSquaresMethod::Build(ResourceMap::GetAsString("LinearModelAlgorithm-DecompositionMethod"), proxy, indices);
+  }
+  BoxCoxLMOptimizationEvaluation *clone() const override
+  {
+    return new BoxCoxLMOptimizationEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  // It is a simple call to the likelihood function
+  Point operator()(const Point &lambda) const override
+  {
+    // Define BoxCox transformation for output sample
+    const BoxCoxEvaluation myBoxFunction(lambda);
+    // compute the mean of the transformed sample using the Box-Cox function
+    const Sample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
+
+    // Solve linear system
+    const Point coefficients(algo_.solve(transformedOutputSample.asPoint()));
+
+    // Define the linear model
+    const LinearCombinationFunction metaModel(basis_, coefficients);
+
+    // Residual sample
+    const Sample residualSample(transformedOutputSample - metaModel(inputSample_));
+
+    // noise variance
+    const UnsignedInteger size = shiftedOutputSample_.getSize();
+    const Scalar sigma2 = residualSample.computeRawMoment(2)[0];
+    const Scalar result = -0.5 * size * std::log(sigma2) + (lambda[0] - 1.0) * sumLog_;
+    return Point(1, result);
+  }
+
+  void computeSumLog()
+  {
+    // Compute the sum of the log-data
+    const UnsignedInteger size = shiftedOutputSample_.getSize();
+    const UnsignedInteger dimension = shiftedOutputSample_.getDimension();
+    sumLog_ = 0.0;
+    for (UnsignedInteger k = 0; k < size; ++k)
+      for (UnsignedInteger d = 0; d < dimension; ++d)
+        sumLog_ += std::log(shiftedOutputSample_(k, d));
+  }
+
+  Scalar getSumLog() const
+  {
+    return sumLog_;
+  }
+
+private:
+  /** only used to pass data to be used in computeLogLikeliHood */
+  Sample inputSample_;
+  Sample shiftedOutputSample_;
+  Basis basis_;
+  Scalar sumLog_;
+  mutable LeastSquaresMethod algo_;
+};
+
 /* Constructor with parameters */
 BoxCoxFactory::BoxCoxFactory()
   : PersistentObject()
@@ -352,7 +462,7 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
                                      const CovarianceModel & covarianceModel,
                                      const Basis & basis,
                                      const Point & shift,
-                                     GeneralLinearModelResult & result)
+                                     GeneralLinearModelResult & generalLinearModelResult)
 {
   // Check the input size
   const UnsignedInteger size = inputSample.getSize();
@@ -402,17 +512,77 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
   GeneralLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);
   algo.run();
   // Get result
-  result = algo.getResult();
+  generalLinearModelResult = algo.getResult();
   return BoxCoxTransform(optpoint, shift);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
-                                     const Sample & outputSample,
-                                     const CovarianceModel & covarianceModel,
-                                     const Point & shift,
-                                     GeneralLinearModelResult & result)
+BoxCoxTransform BoxCoxFactory::build(const Sample &inputSample,
+                                     const Sample &outputSample,
+                                     const CovarianceModel &covarianceModel,
+                                     const Point &shift,
+                                     GeneralLinearModelResult &generalLinearModelResult)
 {
-  return build(inputSample, outputSample, covarianceModel, Basis(), shift, result);
+  return build(inputSample, outputSample, covarianceModel, Basis(), shift, generalLinearModelResult);
+}
+
+/** Build the factory from data by estimating the best generalized linear model */
+BoxCoxTransform BoxCoxFactory::build(const Sample &inputSample,
+                                     const Sample &outputSample,
+                                     const Basis &basis,
+                                     const Point &shift,
+                                     LinearModelResult &linearModelResult)
+{
+  // Check the input size
+  const UnsignedInteger size = inputSample.getSize();
+  if (size == 0)
+    throw InvalidArgumentException(HERE) << "Error: cannot build a Box-Cox factory from empty data";
+
+  if (size != outputSample.getSize())
+    throw InvalidArgumentException(HERE) << "Error: input and output sample have different size. Could not perform linear model & Box-Cox algorithms";
+
+  // Check the dimensions
+  const UnsignedInteger dimension = outputSample.getDimension();
+
+  if (shift.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the shift has a dimension=" << shift.getDimension() << " different from the output sample dimension=" << dimension;
+
+  // Keep the shifted marginal samples
+  Sample shiftedSample(outputSample);
+  shiftedSample += shift;
+
+  // optimization process
+  const BoxCoxLMOptimizationEvaluation boxCoxOptimization(inputSample, shiftedSample, basis);
+  const Function objectiveFunction(boxCoxOptimization);
+  MemoizeFunction objectiveMemoizeFunction(objectiveFunction, Full());
+  objectiveMemoizeFunction.enableCache();
+  OptimizationProblem problem(objectiveMemoizeFunction);
+  problem.setMinimization(false);
+  solver_.setProblem(problem);
+  solver_.setStartingPoint(Point(1, 1.0));
+  // run Optimization problem
+  solver_.run();
+  // Return optimization point
+  const Point optpoint(solver_.getResult().getOptimalPoint());
+
+  // Define BoxCox transformation for output sample
+  const BoxCoxEvaluation myBoxFunction(optpoint, shift);
+  // compute the transformed output sample using the Box-Cox function
+  const Sample transformedOutputSample(myBoxFunction(outputSample));
+  // Build the LinearModelResult
+  LinearModelAlgorithm algo(inputSample, transformedOutputSample, basis);
+  algo.run();
+  // Get result
+  linearModelResult = algo.getResult();
+  return BoxCoxTransform(optpoint, shift);
+}
+
+BoxCoxTransform BoxCoxFactory::build(const Sample &inputSample,
+                                     const Sample &outputSample,
+                                     const Point &shift,
+                                     LinearModelResult &linearModelResult)
+{
+  const Basis basis(LinearBasisFactory(inputSample.getDimension()).build());
+  return build(inputSample, outputSample, basis, shift, linearModelResult);
 }
 
 /* String converter */

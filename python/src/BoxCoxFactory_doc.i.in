@@ -32,53 +32,58 @@ The objective is to estimate the most likely surrogate model (general linear mod
 %feature("docstring") OT::BoxCoxFactory::build
 "Estimate the Box Cox transformation.
 
-Available usages:
-    build(*myTimeSeries*)
+Available usages with time series & fields:
+    build(*myField*) -> myBoxCoxTransform
 
-    build(*myTimeSeries, shift*)
+    build(*myField, shift*) -> Tuple[myBoxCoxTransform, myGraph]
 
-    build(*myTimeSeries, shift, likelihoodGraph*)
+Available usages with data only:
 
-    build(*mySample*)
+    build(*mySample*) -> myBoxCoxTransform
 
-    build(*mySample, shift*)
+    build(*mySample, shift*) -> Tuple[myBoxCoxTransform, myGraph]
 
-    build(*mySample, shift, likelihoodGraph*)
+Available usages with a general linear model:
 
-    build(*inputSample, outputSample, covarianceModel, basis, shift, generalLinearModelResult*)
+    build(*inputSample, outputSample, covarianceModel, basis, shift*) -> Tuple[myBoxCoxTransform, myGeneralLinearModelResult]
 
-    build(*inputSample, outputSample, covarianceModel, shift, generalLinearModelResult*)
+    build(*inputSample, outputSample, covarianceModel, shift*) -> Tuple[myBoxCoxTransform, myGeneralLinearModelResult]
+
+Available usages with a linear model:
+
+    build(*inputSample, outputSample, basis, shift*) -> Tuple[myBoxCoxTransform, myLinearModelResult]
+
+    build(*inputSample, outputSample, shift*) -> Tuple[myBoxCoxTransform, myLinearModelResult]
 
 Parameters
 ----------
-myTimeSeries : :class:`~openturns.TimeSeries`
+myField : :class:`~openturns.Field`
     One realization of a  process.
-mySample : :class:`~openturns.Sample`
+mySample : 2-d sequence of float
     A set of *iid* values.
 shift : :class:`~openturns.Point`
     It ensures that when shifted, the data are all positive.
     By default the opposite of the min vector of the data is used if some data are negative.
-likelihoodGraph : :class:`~openturns.Graph`
-    An empty graph that is fulfilled later with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
 inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
     The input and output samples of a model evaluated apart.
 basis : :class:`~openturns.Basis`
-    Functional basis to estimate the trend.
-    If the output dimension is greater than 1, the same basis is used for all marginals.
-multivariateBasis : collection of :class:`~openturns.Basis`
-    Collection of functional basis: one basis for each marginal output.
-    If the trend is not estimated, the collection must be empty.
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
+    If :math:`d>1`, the same basis is used for each marginal output.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model.
     Should have input dimension equal to input sample's dimension and dimension equal to output sample's dimension.
     See note for some particular applications.
-generalLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
-    Empty structure that contains results of general linear model algorithm.
 
 Returns
 -------
 myBoxCoxTransform : :class:`~openturns.BoxCoxTransform`
     The estimated Box Cox transformation.
+myGraph : :class:`~openturns.Graph`
+    A graph that is fulfilled with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
+myGeneralLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
+    The structure that contains results of general linear model algorithm.
+myLinearModelResult : :class:`~openturns.LinearModelResult`
+    The structure that contains results of linear model algorithm.
 
 Notes
 -----
@@ -201,14 +206,14 @@ Estimate the Box Cox transformation from a sample:
 
 Estimate the Box Cox transformation from a field:
 
->>> myIndices= ot.Indices([10, 5])
->>> myMesher=ot.IntervalMesher(myIndices)
+>>> myIndices = ot.Indices([10, 5])
+>>> myMesher = ot.IntervalMesher(myIndices)
 >>> myInterval = ot.Interval([0.0, 0.0], [2.0, 1.0])
->>> myMesh=myMesher.build(myInterval)
->>> amplitude=[1.0]
->>> scale=[0.2, 0.2]
->>> myCovModel=ot.ExponentialModel(scale, amplitude)
->>> myXproc=ot.GaussianProcess(myCovModel, myMesh)
+>>> myMesh = myMesher.build(myInterval)
+>>> amplitude = [1.0]
+>>> scale = [0.2, 0.2]
+>>> myCovModel = ot.ExponentialModel(scale, amplitude)
+>>> myXproc = ot.GaussianProcess(myCovModel, myMesh)
 >>> g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
 >>> myDynTransform = ot.ValueFunction(g, myMesh)
 >>> myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
@@ -218,6 +223,7 @@ Estimate the Box Cox transformation from a field:
 
 Estimation of a general linear model:
 
+>>> ot.RandomGenerator.SetSeed(0)
 >>> inputSample = ot.Uniform(-1.0, 1.0).getSample(20)
 >>> outputSample = ot.Sample(inputSample)
 >>> # Evaluation of y = ax + b (a: scale, b: translate)
@@ -227,9 +233,22 @@ Estimation of a general linear model:
 >>> inv_transfo = ot.PythonFunction(1,1, f)
 >>> outputSample = inv_transfo(outputSample) + ot.Normal(0, 1.0e-2).getSample(20)
 >>> # Estimation
->>> result = ot.GeneralLinearModelResult()
 >>> basis = ot.LinearBasisFactory(1).build()
 >>> covarianceModel = ot.DiracCovarianceModel()
 >>> shift = [1.0e-1]
->>> myBoxCox = ot.BoxCoxFactory().build(inputSample, outputSample, covarianceModel, basis, shift, result)
+>>> myBoxCox, result = ot.BoxCoxFactory().build(inputSample, outputSample, covarianceModel, basis, shift)
+
+Estimation of a linear model:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> x = ot.Uniform(-1.0, 1.0).getSample(20)
+>>> y = ot.Sample(x)
+>>> # Evaluation of y = ax + b (a: scale, b: translate)
+>>> y = y * [3] + [3.1]
+>>> # inverse transformation
+>>> inv_transformation = ot.SymbolicFunction('x', 'exp(x)')
+>>> y = inv_transformation(y) + ot.Normal(0, 1.0e-4).getSample(20)
+>>> # Estimation
+>>> shift = [1.0e-1]
+>>> myBoxCox, result = ot.BoxCoxFactory().build(x, y, shift)
 "

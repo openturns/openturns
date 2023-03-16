@@ -33,13 +33,8 @@ print("myBoxCox (sample)     =", factory.build(sample))
 
 # Creation of the BoxCoxTransform using shift
 shift = ot.Point(1, 1.0)
-myBoxCoxShift = factory.build(timeSeries, shift)
+myBoxCoxShift, graph = factory.build(timeSeries, shift)
 
 print("myBoxCox with shift (time-series)=", myBoxCoxShift)
 print("myBoxCox with shift (sample)     =", factory.build(sample, shift))
-
-# Creation of the BoxCoxTransform using shift with graph
-graph = ot.Graph()
-myBoxCoxShiftGraph = factory.build(timeSeries, shift, graph)
-
 print("BoxCox graph (time-series)=", graph)
