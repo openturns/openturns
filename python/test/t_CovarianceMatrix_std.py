@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -43,7 +44,7 @@ b[0, 1] = 10.0
 b[1, 1] = 1.0
 b[0, 2] = 15.0
 b[1, 2] = 2.0
-result2 = matrix1.solveLinearSystem(b, True)
+result2 = matrix1.solveLinearSystem(b)
 print("result2=" + repr(result2))
 
 matrix3 = ot.CovarianceMatrix(3)
@@ -61,3 +62,9 @@ sym[2, 2] = 1.0e-02
 sym[0, 1] = 7.0e-04
 ot.CovarianceMatrix(sym)
 print("ok")
+
+# regularized cholesky
+A = ot.CovarianceMatrix([[1.0] * 10] * 10)
+L = A.computeRegularizedCholesky()
+B = L * L.transpose()
+ott.assert_almost_equal(A, B)

@@ -172,7 +172,7 @@ Point Student::getRealization() const
   Point value(dimension);
   // First, a realization of independent standard normal coordinates
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = DistFunc::rNormal();
-  return std::sqrt(0.5 * nu_ / DistFunc::rGamma(0.5 * nu_)) * (cholesky_ * value) + mean_;
+  return std::sqrt(0.5 * nu_ / DistFunc::rGamma(0.5 * nu_)) * inverseCholesky_.solveLinearSystem(value) + mean_;
 }
 
 
@@ -191,7 +191,10 @@ Sample Student::getSample(const UnsignedInteger size) const
   if (dimension == 1)
     result = normalSample * sigma_[0];
   else
-    result = (cholesky_.getImplementation()->genSampleProd(normalSample, true, false, 'R'));
+  {
+    const TriangularMatrix cholesky(getCholesky());
+    result = (cholesky.getImplementation()->genSampleProd(normalSample, true, false, 'R'));
+  }
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar alpha = std::sqrt(0.5 * nu_ / gammaDeviates[i]);
@@ -398,10 +401,11 @@ Scalar Student::computeConditionalPDF(const Scalar x,
   UnsignedInteger stop = conditioningDimension;
   UnsignedInteger shift = 0;
   Point yCentered(conditioningDimension);
+  const TriangularMatrix cholesky(getCholesky());
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     yCentered[i] = y[i] - mean_[i];
-    std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
+    std::copy(cholesky.getImplementation()->begin() + start, cholesky.getImplementation()->begin() + stop, cholY.begin() + shift);
     start += dimension_ + 1;
     stop += dimension_;
     shift += conditioningDimension + 1;
@@ -449,10 +453,11 @@ Scalar Student::computeConditionalCDF(const Scalar x,
   UnsignedInteger stop = conditioningDimension;
   UnsignedInteger shift = 0;
   Point yCentered(conditioningDimension);
+  const TriangularMatrix cholesky(getCholesky());
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     yCentered[i] = y[i] - mean_[i];
-    std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
+    std::copy(cholesky.getImplementation()->begin() + start, cholesky.getImplementation()->begin() + stop, cholY.begin() + shift);
     start += dimension_ + 1;
     stop += dimension_;
     shift += conditioningDimension + 1;
@@ -498,10 +503,11 @@ Scalar Student::computeConditionalQuantile(const Scalar q,
   UnsignedInteger stop = conditioningDimension;
   UnsignedInteger shift = 0;
   Point yCentered(conditioningDimension);
+  const TriangularMatrix cholesky(getCholesky());
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     yCentered[i] = y[i] - mean_[i];
-    std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
+    std::copy(cholesky.getImplementation()->begin() + start, cholesky.getImplementation()->begin() + stop, cholY.begin() + shift);
     start += dimension_ + 1;
     stop += dimension_;
     shift += conditioningDimension + 1;

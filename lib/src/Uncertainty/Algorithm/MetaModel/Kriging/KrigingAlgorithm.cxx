@@ -91,8 +91,8 @@ void KrigingAlgorithm::computeGamma()
   }
   else
   {
-    // Arguments are keepIntact=true, matrix_lower=true & solving_transposed=true
-    gamma_ = covarianceCholeskyFactor_.getImplementation()->solveLinearSystemTri(rho_, true, true, true);
+    // Arguments are matrix_lower=true & solving_transposed=true
+    gamma_ = covarianceCholeskyFactor_.getImplementation()->solveLinearSystemTri(rho_, true, true);
   }
 }
 

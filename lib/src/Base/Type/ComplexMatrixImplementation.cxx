@@ -101,8 +101,7 @@ ComplexMatrixImplementation * ComplexMatrixImplementation::clone() const
 /* Resolution of a linear system : rectangular matrix
  * MX = b, M is an mxn matrix, b is an mxq matrix and
  * X is an nxq matrix */
-ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (const ComplexMatrixImplementation & b,
-    const Bool keepIntact)
+ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRectInPlace(const ComplexMatrixImplementation & b)
 {
   if (nbRows_ != b.nbRows_) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
   if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
@@ -124,38 +123,42 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
   double rcond(ResourceMap::GetAsScalar("Matrix-DefaultSmallPivot"));
   int rank;
 
-  ComplexMatrixImplementation Q;
-  if (keepIntact) Q = ComplexMatrixImplementation(*this);
-  ComplexMatrixImplementation & A = keepIntact ? Q : *this;
-
   // (int *m, int *n, int *nrhs, std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb, int *jpvt, double *rcond, int *rank, std::complex<double> *work, int *lwork, double *rwork, int *info)
-  zgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
+  zgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
   lwork = static_cast<int>(std::real(work[0]));
   work = ComplexCollection(lwork);
-  zgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
+  zgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
 
   ComplexMatrixImplementation result(n, q);
   for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
-    for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
-      result(i, j) = B(i, j);
+    std::copy(&B(0, j), &B(0, j) + n, &result(0, j));
   return result;
+}
+
+ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect(const ComplexMatrixImplementation & b) const
+{
+  ComplexMatrixImplementation A(*this);
+  return A.solveLinearSystemRectInPlace(b);
 }
 
 /* Resolution of a linear system : rectangular matrix
  * Mx = b, M is an mxn matrix, b is an m-dimensional
  * vector and x is an n-dimensional vector */
-ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::solveLinearSystemRect (const ComplexCollection & b,
-    const Bool keepIntact)
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::solveLinearSystemRectInPlace(const ComplexCollection & b)
 {
   const UnsignedInteger m = b.getSize();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // Solve the matrix linear system
   // A ComplexMatrixImplementation is also a collection of Complex, so it is automatically converted into a ComplexCollection
-  return solveLinearSystemRect(ComplexMatrixImplementation(m, 1, b), keepIntact);
+  return solveLinearSystemRectInPlace(ComplexMatrixImplementation(m, 1, b));
 }
 
-
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::solveLinearSystemRect(const ComplexCollection & b) const
+{
+  ComplexMatrixImplementation A(*this);
+  return A.solveLinearSystemRectInPlace(b);
+}
 
 /* Set small elements to zero */
 ComplexMatrixImplementation ComplexMatrixImplementation::clean(const Scalar threshold) const

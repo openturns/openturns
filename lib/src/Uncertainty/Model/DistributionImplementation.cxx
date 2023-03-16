@@ -3295,10 +3295,7 @@ TriangularMatrix DistributionImplementation::getCholesky() const
 TriangularMatrix DistributionImplementation::getInverseCholesky() const
 {
   // Compute its Cholesky factor
-  TriangularMatrix cholesky(getCholesky());
-
-  const TriangularMatrix inverseCholesky(cholesky.solveLinearSystem(IdentityMatrix(dimension_), false).getImplementation());
-
+  const TriangularMatrix inverseCholesky(getCholesky().solveLinearSystem(IdentityMatrix(dimension_)).getImplementation());
   return inverseCholesky;
 }
 

@@ -86,7 +86,7 @@ public:
 protected:
 
   Matrix q_;
-  mutable Matrix r_;
+  Matrix r_;
 
 }; /* class QRMethod */
 

@@ -187,6 +187,8 @@ for dim in range(1, 5):
     print("skewness=", repr(skewness))
     kurtosis = distribution.getKurtosis()
     print("kurtosis=", repr(kurtosis))
+    roughness = distribution.getRoughness()
+    print("roughness=%.6f" % roughness)
     covariance = distribution.getCovariance()
     print("covariance=", repr(covariance))
     parameters = distribution.getParametersCollection()
@@ -291,5 +293,4 @@ for dim in range(1, 5):
 dist = ot.Normal(
     [0] * 3, ot.CovarianceMatrix([[1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
 )
-assert dist.getCorrelation()[0, 0] > 1.0, "not regularized"
 sample = dist.getSample(10)

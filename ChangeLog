@@ -31,6 +31,7 @@
  * GeneralLinearModelResult.getTrendCoefficients now returns a single Point
  * KrigingResult.getBasisCollection was removed in favor of KrigingResult.getBasis which returns a single Basis
  * GeneralLinearModelResult.getBasisCollection was removed in favor of GeneralLinearModelResult.getBasis which returns a single Basis
+ * Deprecated EllipticalDistribution::getInverseCorrelation
 
 === Documentation ===
  * Add API documentation to common use cases pages

@@ -130,7 +130,7 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  mutable TriangularMatrix cholesky_;
+  TriangularMatrix cholesky_;
   Scalar nu_;
 
   /** The log-normalization factor */

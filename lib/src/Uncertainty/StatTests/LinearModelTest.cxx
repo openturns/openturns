@@ -373,7 +373,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   CovarianceMatrix XtX(X.computeGram());
   const SquareMatrix XAXQt(XtX.solveLinearSystem(AX.transpose() * X).getImplementation());
   const Scalar P = 2 * (residualSize - 1) - XAXQt.computeTrace();
-  const Scalar XAXTrace = XtX.solveLinearSystem(AX.computeGram(), false).getImplementation()->computeTrace();
+  const Scalar XAXTrace = XtX.solveLinearSystemInPlace(AX.computeGram()).getImplementation()->computeTrace();
   const Scalar Q = 2 * (3 * residualSize - 4) - 2 * XAXTrace + (XAXQt * XAXQt).getImplementation()->computeTrace();
   const Scalar dmean = P / (residualSize - basisSize);
   const Scalar dvar = 2.0 / ((residualSize - basisSize) * (residualSize - basisSize + 2)) * (Q - P * dmean);

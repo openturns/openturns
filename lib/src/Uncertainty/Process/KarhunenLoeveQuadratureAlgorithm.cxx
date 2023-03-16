@@ -317,7 +317,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   // Transform the eigenvectors to the generalized ones
   // Last time we need cholesky, so we can overwrite it by eigenVectors
   LOGINFO("Get the generalized eigenvectors");
-  eigenVectors = choleskyBlock.transpose().solveLinearSystem(eigenVectors, false).getImplementation();
+  eigenVectors = choleskyBlock.transpose().solveLinearSystemInPlace(eigenVectors).getImplementation();
   LOGINFO("Post-process the eigenvalue problem");
   Collection< std::pair<Scalar, UnsignedInteger> > eigenPairs(augmentedDimension);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)

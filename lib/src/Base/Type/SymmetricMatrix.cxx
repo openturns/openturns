@@ -250,16 +250,24 @@ SymmetricMatrix SymmetricMatrix::power(const UnsignedInteger n) const
 }
 
 /* Resolution of a linear system */
-Point SymmetricMatrix::solveLinearSystem(const Point & b,
-    const Bool keepIntact)
+Point SymmetricMatrix::solveLinearSystemInPlace(const Point & b)
 {
-  return getImplementation()->solveLinearSystemSym(b, keepIntact);
+  return getImplementation()->solveLinearSystemSymInPlace(b);
 }
 
-Matrix SymmetricMatrix::solveLinearSystem(const Matrix & b,
-    const Bool keepIntact)
+Point SymmetricMatrix::solveLinearSystem(const Point & b) const
 {
-  return getImplementation()->solveLinearSystemSym(*b.getImplementation(), keepIntact);
+  return getImplementation()->solveLinearSystemSym(b);
+}
+
+Matrix SymmetricMatrix::solveLinearSystemInPlace(const Matrix & b)
+{
+  return getImplementation()->solveLinearSystemSymInPlace(*b.getImplementation());
+}
+
+Matrix SymmetricMatrix::solveLinearSystem(const Matrix & b) const
+{
+  return getImplementation()->solveLinearSystemSym(*b.getImplementation());
 }
 
 /* Compute determinant */

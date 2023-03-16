@@ -124,14 +124,14 @@ protected:
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
 
-public:
   /** Normalize the given point u_i = (x_i - mu_i) / sigma_i */
   Point normalize(const Point & x) const;
 
   /** Denormalize the given point x_i = mu_i + sigma_i * x_i */
   Point denormalize(const Point & u) const;
 
-  /** Inverse correlation matrix accessor */
+public:
+  /** @deprecated Inverse correlation matrix accessor */
   SquareMatrix getInverseCorrelation() const;
 
   /** Cholesky factor of the correlation matrix accessor */
@@ -171,19 +171,10 @@ public:
 protected:
 
   /** The sigma vector of the distribution */
-  mutable Point sigma_;
+  Point sigma_;
 
   /** The correlation matrix (Rij) of the distribution */
-  mutable CorrelationMatrix R_;
-
-  /** The shape matrix of the distribution = Diag(sigma_) * R_ * Diag(sigma_) */
-  mutable CovarianceMatrix shape_;
-
-  /** The inverse of the correlation matrix of the distribution */
-  SymmetricMatrix inverseR_;
-
-  /** The Cholesky factor of the shape matrix shape_ = cholesky_ * cholesky_.transpose() */
-  TriangularMatrix cholesky_;
+  CorrelationMatrix R_;
 
   /** The inverse Cholesky factor of the covariance matrix */
   TriangularMatrix inverseCholesky_;
@@ -191,7 +182,7 @@ protected:
   /** The normalization factor of the distribution */
   Scalar normalizationFactor_;
 
-  /** The scaling factor of the covariance matrix covariance = covarianceScalingFactor_ * shape_*/
+  /** The scaling factor of the covariance matrix covariance = covarianceScalingFactor_ * shape */
   Scalar covarianceScalingFactor_;
 
 private:
@@ -256,6 +247,9 @@ private:
 
   /** Compute the value of the auxiliary attributes */
   void update();
+
+  /** The shape matrix of the distribution = Diag(sigma_) * R_ * Diag(sigma_) */
+  CovarianceMatrix getShape() const;
 
 }; /* class EllipticalDistribution */
 

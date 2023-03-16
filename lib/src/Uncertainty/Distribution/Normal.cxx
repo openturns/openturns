@@ -176,7 +176,7 @@ Point Normal::getRealization() const
     return value;
   }
   // General case
-  return cholesky_ * value + mean_;
+  return inverseCholesky_.solveLinearSystem(value) + mean_;
 }
 
 Sample Normal::getSample(const UnsignedInteger size) const
@@ -190,7 +190,11 @@ Sample Normal::getSample(const UnsignedInteger size) const
     for (UnsignedInteger i = 0; i < size; ++i)
       for (UnsignedInteger j = 0; j < dimension; ++j) result(i, j) = DistFunc::rNormal();
     if (hasIndependentCopula_) result *= sigma_;
-    else result = cholesky_.getImplementation()->genSampleProd(result, true, false, 'R');
+    else
+    {
+      const TriangularMatrix cholesky(getCholesky());
+      result = cholesky.getImplementation()->genSampleProd(result, true, false, 'R');
+    }
   }
   result += mean_;
   result.setName(getName());
@@ -644,7 +648,7 @@ Point Normal::computeSequentialConditionalQuantile(const Point & q) const
       result[i] = mean_[i] + sigma_[i] * DistFunc::qNormal(q[i]);
     return result;
   }
-  return mean_ + cholesky_ * DistFunc::qNormal(q);
+  return mean_ + inverseCholesky_.solveLinearSystem(DistFunc::qNormal(q));
 }
 
 /* Get the i-th marginal distribution */
@@ -720,7 +724,7 @@ Scalar Normal::getRoughness() const
   else
   {
     for (UnsignedInteger d = 0; d < dimension_; ++d)
-      roughness *= 0.2820947917738781434740398 / cholesky_(d, d);
+      roughness *= 0.2820947917738781434740398 * inverseCholesky_(d, d);
   }
   return roughness;
 }

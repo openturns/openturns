@@ -107,8 +107,7 @@ void ConditionedGaussianProcess::initialize()
   Scalar maximumVariance = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     maximumVariance = std::max(maximumVariance, covarianceMatrix(i, i));
-  const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
-  const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
+  const Scalar startingScaling = ResourceMap::GetAsScalar("Matrix-StartingScaling");
   const Scalar epsilon = maximumVariance * startingScaling;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     if (covarianceMatrix(i, i) <= epsilon)
@@ -124,45 +123,7 @@ void ConditionedGaussianProcess::initialize()
     }
   // Get the Cholesky factor
   LOGINFO(OSS(false) << "Evaluation of the Cholesky factor");
-
-  // Boolean flag to tell if the regularization is enough
-  Bool continuationCondition = true;
-  // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
-  // The regularization is needed for fast decreasing covariance models
-  Scalar maxEV = -1.0;
-  Scalar cumulatedScaling = 0.0;
-  Scalar scaling = startingScaling;
-  while (continuationCondition)
-  {
-    try
-    {
-      covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
-      continuationCondition = false;
-    }
-    // If the factorization failed regularize the matrix
-    // Here we use a generic exception as different exceptions may be thrown
-    catch (const Exception &)
-    {
-      // If the largest eigenvalue module has not been computed yet...
-      if (maxEV < 0.0)
-      {
-        maxEV = covarianceMatrix.computeLargestEigenValueModule();
-        LOGDEBUG(OSS() << "maxEV=" << maxEV);
-        scaling *= maxEV;
-      }
-      cumulatedScaling += scaling ;
-      LOGDEBUG(OSS() << "scaling=" << scaling << ", cumulatedScaling=" << cumulatedScaling);
-      // Unroll the regularization to optimize the computation
-      for (UnsignedInteger i = 0; i < covarianceMatrix.getDimension(); ++i) covarianceMatrix(i, i) += scaling;
-      scaling *= 2.0;
-      continuationCondition = scaling < maxEV * maximalScaling;
-    }
-  }
-  if (maxEV > 0.0 && scaling >= maximalScaling * maxEV)
-    throw InvalidArgumentException(HERE) << "In GaussianProcess, could not compute the Cholesky factor."
-                                         << " Scaling up to " << cumulatedScaling << " was not enough";
-  if (cumulatedScaling > 0.0)
-    LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
+  covarianceCholeskyFactor_ = covarianceMatrix.computeRegularizedCholesky();
   // Build the trend function
   LOGINFO(OSS(false) << "Build of the trend function");
   const Function krigingEvaluation(krigingResult_.getMetaModel());

@@ -391,7 +391,12 @@ Point EllipticalDistribution::computePDFGradient(const Point & point) const
   const Point minusGardientMean(computeDDF(point));
   const UnsignedInteger dimension = getDimension();
   const Point u(normalize(point));
-  const Point iRu(inverseR_ * u);
+  Point iRu(u);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    iRu[i] *= std::max(SpecFunc::Precision, sigma_[i]);
+  iRu = inverseCholesky_.transpose() * inverseCholesky_ * iRu;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    iRu[i] *= std::max(SpecFunc::Precision, sigma_[i]);
   const Scalar betaSquare = u.dot(iRu);
   const Scalar phi = computeDensityGenerator(betaSquare);
   const Scalar phiDerivative = computeDensityGeneratorDerivative(betaSquare);
@@ -459,6 +464,17 @@ LevelSet EllipticalDistribution::computeMinimumVolumeLevelSetWithThreshold(const
   return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), -logThreshold);
 }
 
+
+CovarianceMatrix EllipticalDistribution::getShape() const
+{
+  CovarianceMatrix shape(R_);
+  const UnsignedInteger dimension = getDimension();
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+      shape(i, j) *= sigma_[i] * sigma_[j];
+  return shape;
+}
+
 /* Update the derivative attributes */
 void EllipticalDistribution::update()
 {
@@ -466,63 +482,19 @@ void EllipticalDistribution::update()
   if (dimension > 1)
   {
     // Compute the shape matrix
-    shape_ = R_;
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-      for (UnsignedInteger j = 0; j <= i; ++j)
-        shape_(i, j) *= sigma_[i] * sigma_[j];
+    const CovarianceMatrix shape(getShape());
     // Try to compute the Cholesky factor of the shape matrix
-    try
-    {
-      cholesky_ = shape_.computeCholesky();
-    }
-    // In the case where the matrix is not numerically SPD, try a unique regularization loop
-    // as it should succeed (otherwise the covariance matrix is truly non SPD)
-    // Here we use a generic exception as different exceptions may be thrown
-    catch(const Exception &)
-    {
-      Scalar largestEV = 0.0;
-      (void) shape_.getImplementation()->computeLargestEigenValueModuleSym(largestEV, 10, 1e-2);
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-        R_(i, i) += largestEV * SpecFunc::Precision;
-      // This time throw if the decomposition fails
-      try
-      {
-        cholesky_ = R_.computeCholesky();
-      }
-      catch (const Exception &)
-      {
-        throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
-      } // Second decomposition
-    } // First decomposition
-    inverseCholesky_ = cholesky_.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
-    // Inverse the correlation matrix R = D^(-1).L.L'.D^(-1)
-    // R^(-1) = D.L^(-1).L^(-1)'.D
-    inverseR_ = SymmetricMatrix(dimension);
-    const SquareMatrix inverseShape(inverseCholesky_.transpose() * inverseCholesky_);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      const Scalar sigmaI = std::max(SpecFunc::Precision, sigma_[i]);
-      for (UnsignedInteger j = 0; j <= i; ++j)
-      {
-        const Scalar sigmaJ = std::max(SpecFunc::Precision, sigma_[j]);
-        const Scalar sigmaIJ = sigmaI * sigmaJ;
-        inverseR_(i, j) = inverseShape(i, j) * sigmaIJ;
-      } // j
-    } // i
+    TriangularMatrix cholesky(getCholesky());
+    inverseCholesky_ = cholesky.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
     normalizationFactor_ = 1.0;
-    for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky_(i, i);
+    for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky(i, i);
   } // dimension > 1
   else  // dimension 1
   {
-    if (shape_.getDimension() == 0)  // First time we enter here, set matrix sizes
+    if (!inverseCholesky_.getDimension())  // First time we enter here, set matrix sizes
     {
-      shape_ = CovarianceMatrix(1);
-      inverseR_ = IdentityMatrix(1);
-      cholesky_ = TriangularMatrix(1);
       inverseCholesky_ = TriangularMatrix(1);
     }
-    shape_(0, 0) = sigma_[0] * sigma_[0];
-    cholesky_(0, 0) = sigma_[0];
     inverseCholesky_(0, 0) = 1.0 / sigma_[0];
     normalizationFactor_ = 1.0 / sigma_[0];
   } // dimension == 1
@@ -555,7 +527,7 @@ void EllipticalDistribution::computeCovariance() const
   // We have to extract the implementation because we know that the result
   // is a valid covariance matrix, but it cannot be inferred by the C++
   // from the operands
-  covariance_ = (covarianceScalingFactor_ * shape_).getImplementation();
+  covariance_ = (covarianceScalingFactor_ * getShape()).getImplementation();
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -585,7 +557,7 @@ Point EllipticalDistribution::getSigma() const
 
 /* Get the standard deviation of the distribution.
    Warning! This method MUST be overloaded for elliptical distributions without finite second moment:
-   it is possible to have a well-defined sigma vector but no standard deviation, think about Stundent
+   it is possible to have a well-defined sigma vector but no standard deviation, think about Student
    distribution with nu < 2 */
 Point EllipticalDistribution::getStandardDeviation() const
 {
@@ -601,10 +573,17 @@ void EllipticalDistribution::setCorrelation(const CorrelationMatrix & R)
         << ") differ from distribution dimension(" << getDimension()
         << "). Unable to construct elliptical distribution object.";
 
-  // We check that the given correlation matrix is definite positive
-  if ( !R.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
+  CovarianceMatrix shape(R.getImplementation());
+  const UnsignedInteger dimension = getDimension();
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+      shape(i, j) *= sigma_[i] * sigma_[j];
+  TriangularMatrix cholesky(shape.computeRegularizedCholesky());
+  inverseCholesky_ = cholesky.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
   R_ = R;
-  update();
+  normalizationFactor_ = 1.0;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    normalizationFactor_ /= cholesky(i, i);
   isAlreadyComputedCovariance_ = false;
 }
 
@@ -617,13 +596,18 @@ CorrelationMatrix EllipticalDistribution::getCorrelation() const
 /* Inverse correlation matrix accessor */
 SquareMatrix EllipticalDistribution::getInverseCorrelation() const
 {
-  return inverseR_;
+  LOGWARN(OSS() << "getInverseCorrelation is deprecated");
+  SymmetricMatrix inverseR((inverseCholesky_.transpose() * inverseCholesky_).getImplementation());
+  for (UnsignedInteger j = 0; j < dimension_; ++ j)
+    for (UnsignedInteger i = j; i < dimension_; ++ i)
+      inverseR(i, j) *= std::max(SpecFunc::Precision, sigma_[i]) * std::max(SpecFunc::Precision, sigma_[j]);
+  return inverseR;
 }
 
 /* Cholesky factor of the correlation matrix accessor */
 TriangularMatrix EllipticalDistribution::getCholesky() const
 {
-  return cholesky_;
+  return getShape().computeRegularizedCholesky();
 }
 
 /* Inverse of the Cholesky factor of the correlation matrix accessor */
@@ -672,8 +656,9 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
 EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribution::getInverseIsoProbabilisticTransformation() const
 {
   InverseIsoProbabilisticTransformation inverseTransform;
-  inverseTransform.setEvaluation(new InverseNatafEllipticalDistributionEvaluation(mean_, cholesky_));
-  inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky_));
+  const TriangularMatrix cholesky(getCholesky());
+  inverseTransform.setEvaluation(new InverseNatafEllipticalDistributionEvaluation(mean_, cholesky));
+  inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky));
   inverseTransform.setHessian(new InverseNatafEllipticalDistributionHessian(getDimension()));
   // Set the parameters values and descriptions
   // The result of parameterGradient is given
@@ -872,9 +857,6 @@ void EllipticalDistribution::save(Advocate & adv) const
   adv.saveAttribute( "R_", R_ );
   adv.saveAttribute( "sigma_", sigma_ );
   adv.saveAttribute( "mean_duplicate", mean_ );
-  adv.saveAttribute( "shape_", shape_ );
-  adv.saveAttribute( "inverseR_", inverseR_ );
-  adv.saveAttribute( "cholesky_", cholesky_ );
   adv.saveAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
 }
@@ -886,9 +868,6 @@ void EllipticalDistribution::load(Advocate & adv)
   adv.loadAttribute( "R_", R_ );
   adv.loadAttribute( "sigma_", sigma_ );
   adv.loadAttribute( "mean_duplicate", mean_ );
-  adv.loadAttribute( "shape_", shape_ );
-  adv.loadAttribute( "inverseR_", inverseR_ );
-  adv.loadAttribute( "cholesky_", cholesky_ );
   adv.loadAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
 }
