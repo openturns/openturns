@@ -92,7 +92,7 @@ OT_EnumerateFunction_getDimension_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getMaximumDegreeCardinal_doc
-"Get the number of terms of total degree below a threshold.
+"Get the number of multi-indices of total degree lower or equal to a threshold.
 
 Parameters
 ----------
@@ -102,12 +102,12 @@ max_deg : int
 Returns
 -------
 cardinal : int
-    Number of terms in the basis of total degree :math:`\leq max_deg`.
+    Number of multi-indices in the basis of total degree :math:`\leq \max_{deg}`.
 
 Notes
 -----
 In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
-this is also the cumulated cardinal of stratas of index :math:`\leq max_deg`.
+this is also the cumulated cardinal of stratas of index :math:`\leq \max_{deg}`.
 
 Examples
 --------
@@ -123,7 +123,7 @@ OT_EnumerateFunction_getMaximumDegreeCardinal_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getMaximumDegreeStrataIndex_doc
-"Get the largest index of the strata containing terms of maximum degree.
+"Get the largest index of the strata containing multi-indices lower or equal to the given maximum degree.
 
 Parameters
 ----------
@@ -133,12 +133,12 @@ max_deg : int
 Returns
 -------
 index : int
-    Index of the last strata that contains terms of total degree :math:`\leq max_deg`.
+    Index of the last strata that contains multi-indices of total degree :math:`\leq \max_{deg}`.
 
 Notes
 -----
 In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
-this is the strata of index *max_deg*.
+this is the strata of index `max_deg`.
 
 Examples
 --------
@@ -154,7 +154,7 @@ OT_EnumerateFunction_getMaximumDegreeStrataIndex_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getStrataCardinal_doc
-"Get the number of terms in the basis inside a given strata.
+"Get the number of multi-indices in the basis inside a given strata.
 
 Parameters
 ----------
@@ -164,12 +164,12 @@ strataIndex : int
 Returns
 -------
 cardinal : int
-    Number of terms in the basis inside the strata *strataIndex*.
+    Number of multi-indices in the basis inside the strata *strataIndex*.
 
 Notes
 -----
 In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
-the strata *strataIndex* consists of a hyperplane of all the terms of total degree
+the strata *strataIndex* consists of a hyperplane of all the multi-indices of total degree
 *strataIndex*, and its cardinal is *strataIndex* + 1.
 
 Examples
@@ -186,7 +186,7 @@ OT_EnumerateFunction_getStrataCardinal_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getStrataCumulatedCardinal_doc
-"Get the number of terms in the basis inside a range of stratas.
+"Get the number of multi-indices in the basis inside a range of stratas.
 
 Parameters
 ----------
@@ -196,13 +196,13 @@ strataIndex : int
 Returns
 -------
 cardinal : int
-    Number of terms in the basis inside the stratas of index lower of equal to *strataIndex*.
+    Number of multi-indices in the basis inside the stratas of index lower of equal to *strataIndex*.
 
 Notes
 -----
-The number of terms is the total of terms inside each consecutive stratas.
+The number of multi-indices is the total of multi-indices inside each consecutive stratas.
 In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
-this returns the number of terms of maximal total degree *strataIndex*.
+this returns the number of multi-indices of maximal total degree *strataIndex*.
 
 Examples
 --------
@@ -278,12 +278,12 @@ max_deg : int
 Returns
 -------
 size : int
-    Number of terms in the basis of total degree :math:`\leq max_deg`.
+    Number of multi-indices in the basis of total degree :math:`\leq \max_{deg}`.
 
 Notes
 -----
 In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
-this is also the cumulated cardinal of stratas up to *max_deg*.
+this is also the cumulated cardinal of stratas up to `max_deg`.
     
 Examples
 --------

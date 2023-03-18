@@ -89,21 +89,21 @@ view = otv.View(graph, axes_kw={"aspect": "equal"})
 # We observe the exponential increase of the number of terms with the dimension
 # :math:`d` (curse of dimensionality).
 graph = ot.Graph(
-    "Full tensorized basis", "Total degree", "Number of coefficients", True
+    "Linear enumeration", "Total degree", "Number of coefficients", True
 )
 degree_maximum = 10
-list_of_polynomial_degrees = [1, 5, 10, 15, 20]
+list_of_dimensions = [1, 5, 10, 15, 20]
 point_styles = ["bullet", "circle", "fdiamond", "fsquare", "triangleup"]
-palette = ot.DrawableImplementation.BuildDefaultPalette(len(list_of_polynomial_degrees))
-for i in range(len(list_of_polynomial_degrees)):
-    d = list_of_polynomial_degrees[i]
+palette = ot.DrawableImplementation.BuildDefaultPalette(len(list_of_dimensions))
+for i in range(len(list_of_dimensions)):
+    dimension = list_of_dimensions[i]
     number_of_coeff_array = ot.Sample(degree_maximum, 2)
-    for p in range(1, 1 + degree_maximum):
-        number_of_coeff_array[p - 1, 0] = p
-        number_of_coeff_array[p - 1, 1] = m.comb(p + d, p)
+    for degree in range(1, 1 + degree_maximum):
+        number_of_coeff_array[degree - 1, 0] = degree
+        number_of_coeff_array[degree - 1, 1] = m.comb(degree + dimension, degree)
     cloud = ot.Cloud(number_of_coeff_array)
     cloud.setPointStyle(point_styles[i])
-    cloud.setLegend(f"$d={d}$")
+    cloud.setLegend(f"dim.={dimension}")
     cloud.setColor(palette[i])
     graph.add(cloud)
 graph.setLegendPosition("topleft")
@@ -170,7 +170,7 @@ view = otv.View(grid, axes_kw={"aspect": "equal"})
 # in the numbers of terms of an order of magnitude.
 dim = 5
 graph = ot.Graph(
-    "Full tensorized basis. d = %d" % (dim),
+    "Hyperbolic enumeration. dim. = %d" % (dim),
     "Total degree",
     "Number of coefficients",
     True,
@@ -178,7 +178,7 @@ graph = ot.Graph(
 degree_maximum = 10
 q_list = [0.2, 0.4, 0.6, 0.8, 1.0]
 point_styles = ["bullet", "circle", "fdiamond", "fsquare", "triangleup"]
-palette = ot.DrawableImplementation.BuildDefaultPalette(len(list_of_polynomial_degrees))
+palette = ot.DrawableImplementation.BuildDefaultPalette(len(list_of_dimensions))
 for i in range(len(q_list)):
     q = q_list[i]
     enum_func = ot.HyperbolicAnisotropicEnumerateFunction(dim, q)
