@@ -2,19 +2,15 @@
 
 import openturns as ot
 import openturns.testing as ott
-import math as m
+from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
 
-# Definition of the marginals
-X1 = ot.Uniform(-m.pi, m.pi)
-X2 = ot.Uniform(-m.pi, m.pi)
-X3 = ot.Uniform(-m.pi, m.pi)
-
-# 3d distribution made with independent marginals
-distX = ot.ComposedDistribution([X1, X2, X3])
+# Ishigami use-case
+ishigami = ishigami_function.IshigamiModel()
+distX = ishigami.distributionX
 
 # Get a sample of it
 size = 100
@@ -22,9 +18,8 @@ X = distX.getSample(size)
 
 
 # The Ishigami model
-modelIshigami = ot.SymbolicFunction(
-    ["X1", "X2", "X3"], ["sin(X1) + 5.0 * (sin(X2))^2 + 0.1 * X3^4 * sin(X1)"]
-)
+modelIshigami = ishigami.model
+modelIshigami.setParameter([5, 0.1])
 
 # Apply model: Y = m(X)
 Y = modelIshigami(X)

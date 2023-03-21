@@ -38,50 +38,94 @@ HSICVStat* HSICVStat::clone() const
 }
 
 /* Compute the HSIC index for one marginal*/
-Scalar HSICVStat::computeHSICIndex(const Sample & inSample,
-                                   const Sample & outSample,
-                                   const CovarianceModel & inCovariance,
-                                   const CovarianceModel & outCovariance,
+Scalar HSICVStat::computeHSICIndex(const CovarianceMatrix & CovMat1,
+                                   const CovarianceMatrix & CovMat2,
                                    const SquareMatrix & weightMatrix) const
 {
-  if(inSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Input Sample must be of dimension 1";
-  if(outSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Output Sample must be of dimension 1";
-  if(inCovariance.getInputDimension() != 1) throw InvalidDimensionException(HERE) << "Input covariance input dimension must be 1";
-  if(outCovariance.getInputDimension() != 1) throw InvalidDimensionException(HERE) << "Output covariance input dimension must be 1";
-  if(inCovariance.getOutputDimension() != 1) throw InvalidDimensionException(HERE) << "Input covariance output dimension must be 1";
-  if(outCovariance.getOutputDimension() != 1) throw InvalidDimensionException(HERE) << "Output covariance output dimension must be 1";
-  if(inSample.getSize() != outSample.getSize()) throw InvalidDimensionException(HERE) << "Input and Output Samples must have the same size";
 
   UnsignedInteger n = weightMatrix.getNbColumns();
+  // The interest is to provide the V stat, which is the trace of
+  // M = (W * Kx * W) * (H1 * Ky * H2)
+  // Left side involves only Kx, the second only Ky
+  // The first block is easy to compute
+  // (W * Kx * W)_[i,j] = W[i] * Kx[i,j] * W[j]
+  // However we will not "build" a full matrix, as we intend
+  // to perform computations without using blas/lapack
+  // The second block needs more computations.
+  // If we drop the 1/n factor (in H1 / H2), we get
+  // (H1 * Ky * H2) = (I - U * W/n) * Ky * (I - W * U/n)
+  //                = (Ky - Ky * W * U / n - U * W * Ky / n + U * W * Ky * W * U / n / n)
+  // Looking more closely,
+  // (Ky * W * U)[i,j] = \sum_k Ky[i,k] * W[k]
+  // (U * Ky * W)[i,j] = \sum_k Ky[k,j] * W[k]
+  // Thus summing the two provides :
+  // 1/n * (Ky * W * U + U * Ky * W)[i,j] = 1/n \sum_k (Ky[i,k] + Ky[k,j]) * W[k]
+  //                                      = 1/n \sum_k (Ky[i,k] + Ky[j,k]) * W[k]
+  // We define the weightedSumRows to compute these sums
+  // For the last part of the second block, we need to compute (U * W * Ky * W * U)
+  // W * K * W is an easy task (same as left block but replacing Kx with Ky).
+  // Multiplying the latter by U on left and right allows one to sum all the elements
+  // (U M U)[i,j] = sum_{k, l} M[k,l] for all i, j
+  // The result is a square matrix with values \sum_{k,l} Ky[k,k] * W[k] * W[l]
+  // We define weightedSumElements to compute this
+  // Finally we get for the right side block a matrix that writes as
+  // (H1 * Ky * H2)[i,j] = Ky[i,j] - \sum_k (Ky[i,k] + Ky[j,k]) * W[k] / n + \sum_{k,l} Ky[k,l] * W[k] * W[l] /n /n
+  //                     = Ky[i,j] -  (weightedSumElements[i] + weightedSumElements[j]) + weightedSumElements
+  // One has to note that both left & right side blocks are symmetric
+  // Finally the trace is computed manually. Indeed it is a O(n^2) algorithm
+  // whereas building matrices (left/right), computing left * right then the trace is O(n^3)
+  // trace(left * right) = \sum{i,j} left[i,j] right[j,i]
+  //                     = \sum{i,j} left[i,j] right[i,j]
+  // because of symmetry
 
-  /* U = ones((n, n)) */
-  const SquareMatrix U(n, Collection<Scalar>(n * n, 1.0));
+  // Compute weighted sum \sum_k (Ky[i,k] + Ky[j,k]) * W[k]
+  Point weightedSumRows(CovMat2.getDimension());
+  Scalar weightedSumElements = 0.0;
+  for (UnsignedInteger j = 0; j < CovMat2.getDimension(); ++j)
+  {
+      const Scalar wjjCjj = weightMatrix(j, j) * CovMat2(j, j);
+      weightedSumRows[j] += wjjCjj;
+      weightedSumElements += wjjCjj * weightMatrix(j, j);
+      for (UnsignedInteger i = j + 1; i < CovMat2.getDimension(); ++i)
+      {
+        const Scalar wiiCij = CovMat2(i, j) * weightMatrix(i, i);
+        const Scalar wjjCij = CovMat2(i, j) * weightMatrix(j, j);
+        const Scalar wiCijwj = wjjCij * weightMatrix(i, i);
+        // Sum rows
+        weightedSumRows[j] += wiiCij;
+        weightedSumRows[i] += wjjCij;
+        // Sum all elements : because of symmetry using both lower and upper
+        weightedSumElements += 2.0 * wiCijwj;
+      }//i
+  }//j
 
-  SquareMatrix H1(n);
-  SquareMatrix H2(n);
-  const Point diag(n, 1.0);
-  H1.setDiagonal(diag);
-  H2.setDiagonal(diag);
+  // weightedSumRows scaled by 1/n
+  weightedSumRows /= n;
 
-  H1 = H1 - U * weightMatrix / n ;
-  H2 = H2 - weightMatrix * U / n ;
+  // weighted sum elements scaled by 1/ n / n
+  weightedSumElements /= n * n;
 
-  const CovarianceMatrix Kv1(inCovariance.discretize(inSample));
-  const CovarianceMatrix Kv2(outCovariance.discretize(outSample));
-
-  const SquareMatrix M = weightMatrix * Kv1 * weightMatrix * H1 * Kv2 * H2 / n / n;
-  const Scalar trace = M.computeTrace();
-
-  return trace;
+  // Compute the trace : the algorithm is O(n^2)
+  // If we compute left * right and then the trace, the algorithm is O(n^3)
+  Scalar trace = 0.0;
+  for (UnsignedInteger j = 0; j < CovMat2.getDimension(); ++j)
+  {
+    trace += (weightMatrix(j, j) * CovMat1(j, j) * weightMatrix(j, j)) * (CovMat2(j, j) + weightedSumElements - 2 * weightedSumRows[j]);
+    for (UnsignedInteger i = j + 1; i < CovMat2.getDimension(); ++i)
+    {
+      trace += 2.0 * (weightMatrix(i, i) * CovMat1(i, j) * weightMatrix(j, j)) * (CovMat2(i, j) + weightedSumElements - (weightedSumRows[i] + weightedSumRows[j]));
+    }
+  }
+  return trace / n /n;
 }
 
 /* Compute the asymptotic p-value */
-Scalar HSICVStat::computePValue(const Gamma &dist,
+Scalar HSICVStat::computePValue(const Gamma & distribution,
                                 const UnsignedInteger n,
-                                const Scalar HSIC_obs,
+                                const Scalar HSICObs,
                                 const Scalar) const
 {
-  return dist.computeComplementaryCDF(HSIC_obs * n);
+  return distribution.computeComplementaryCDF(HSICObs * n);
 }
 
 /* Is compatible with a Conditional HSIC Estimator ? Yes! */

@@ -39,39 +39,30 @@ HSICUStat* HSICUStat::clone() const
 }
 
 /* Compute the HSIC index for one marginal*/
-Scalar HSICUStat::computeHSICIndex(const Sample & inSample,
-                                   const Sample & outSample,
-                                   const CovarianceModel & inCovariance,
-                                   const CovarianceModel & outCovariance,
+Scalar HSICUStat::computeHSICIndex(const CovarianceMatrix & covarianceMatrix1,
+                                   const CovarianceMatrix & covarianceMatrix2,
                                    const SquareMatrix & weightMatrix) const
 {
-  if(inSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Input Sample must be of dimension 1";
-  if(outSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Output Sample must be of dimension 1";
-  if(inCovariance.getInputDimension() != 1) throw InvalidDimensionException(HERE) << "Input covariance input dimension must be 1";
-  if(outCovariance.getInputDimension() != 1) throw InvalidDimensionException(HERE) << "Output covariance input dimension must be 1";
-  if(inCovariance.getOutputDimension() != 1) throw InvalidDimensionException(HERE) << "Input covariance output dimension must be 1";
-  if(outCovariance.getOutputDimension() != 1) throw InvalidDimensionException(HERE) << "Output covariance output dimension must be 1";
-  if(inSample.getSize() != outSample.getSize()) throw InvalidDimensionException(HERE) << "Input and Output Samples must have the same size";
 
   Scalar hsic = 0.0;
   const SignedInteger n = weightMatrix.getNbColumns();
 
-  CovarianceMatrix Kv1(inCovariance.discretize(inSample));
-  CovarianceMatrix Kv2(outCovariance.discretize(outSample));
-
   const Point nullDiag(n);
-  Kv1.setDiagonal(nullDiag, 0);
-  Kv2.setDiagonal(nullDiag, 0);
+  
+  CovarianceMatrix covarianceMatrix1Copy(covarianceMatrix1);
+  CovarianceMatrix covarianceMatrix2Copy(covarianceMatrix2);
+  covarianceMatrix1Copy.setDiagonal(nullDiag, 0);
+  covarianceMatrix2Copy.setDiagonal(nullDiag, 0);
 
 
-  const SquareMatrix Kv = Kv1 * Kv2;
+  const SquareMatrix Kv(covarianceMatrix1Copy * covarianceMatrix2Copy);
 
   const Scalar trace = Kv.computeTrace();
   const Scalar sumKv = Kv.computeSumElements();
-  const Scalar sumKv1 = Kv1.computeSumElements();
-  const Scalar sumKv2 = Kv2.computeSumElements();
+  const Scalar sumCov1 = covarianceMatrix1Copy.computeSumElements();
+  const Scalar SumCov2 = covarianceMatrix2Copy.computeSumElements();
 
-  hsic = trace - 2 * sumKv / (n - 2) + sumKv1 * sumKv2 / (n - 1) / (n - 2);
+  hsic = trace - 2 * sumKv / (n - 2) + sumCov1 * SumCov2 / (n - 1) / (n - 2);
   hsic /= n * (n - 3);
 
   return hsic;

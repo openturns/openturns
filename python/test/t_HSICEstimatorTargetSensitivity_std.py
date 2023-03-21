@@ -2,19 +2,14 @@
 
 import openturns as ot
 import openturns.testing as ott
-import math as m
+from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
-
-# Definition of the marginals
-X1 = ot.Uniform(-m.pi, m.pi)
-X2 = ot.Uniform(-m.pi, m.pi)
-X3 = ot.Uniform(-m.pi, m.pi)
-
-# 3d distribution made with independent marginals
-distX = ot.ComposedDistribution([X1, X2, X3])
+# Ishigami use-case
+ishigami = ishigami_function.IshigamiModel()
+distX = ishigami.distributionX
 
 # Get a sample of it
 size = 100
@@ -22,9 +17,8 @@ X = distX.getSample(size)
 
 
 # The Ishigami model
-modelIshigami = ot.SymbolicFunction(
-    ["X1", "X2", "X3"], ["sin(X1) + 5.0 * (sin(X2))^2 + 0.1 * X3^4 * sin(X1)"]
-)
+modelIshigami = ishigami.model
+modelIshigami.setParameter([5, 0.1])
 
 # Apply model: Y = m(X)
 Y = modelIshigami(X)
@@ -94,9 +88,9 @@ ott.assert_almost_equal(pvaluesPerm, [0.00000000, 0.23376623, 0.26573427])
 squaredExponential = ot.SymbolicFunction("x", "exp(-0.1 * x^2)")
 alternateFilter = ot.ComposedFunction(squaredExponential, g)
 TSA.setFilterFunction(alternateFilter)
-ott.assert_almost_equal(TSA.getR2HSICIndices(), [0.263026, 0.0041902, 0.00309598])
+ott.assert_almost_equal(TSA.getR2HSICIndices(), [0.373511, 0.0130156, 0.0153977])
 ott.assert_almost_equal(
-    TSA.getHSICIndices(), [1.54349e-05, 2.45066e-07, 1.88477e-07], 1e-4, 0.0
+    TSA.getHSICIndices(), [0.00118685, 4.12193e-05, 5.07577e-05], 1e-4, 0.0
 )
-ott.assert_almost_equal(TSA.getPValuesPermutation(), [0.0, 0.264735, 0.279720])
-ott.assert_almost_equal(TSA.getPValuesAsymptotic(), [0.0, 0.270278, 0.288026])
+ott.assert_almost_equal(TSA.getPValuesPermutation(), [0, 0.137862, 0.112887])
+ott.assert_almost_equal(TSA.getPValuesAsymptotic(), [7.32022e-13, 0.143851, 0.128866])

@@ -43,17 +43,24 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API HSICEstimatorImplementation
   : public PersistentObject
 {
+  // For parallelism using TBB. This struct is defined
+  // in HSICEstimatorImplementation.cxx
+  friend struct HSICPValuesPermutationFunctor;
   CLASSNAME
 
 public:
 
   typedef Collection <CovarianceModel>  CovarianceModelCollection;
+  typedef Collection <CovarianceMatrix>  CovarianceMatrixCollection;
 
   /** Default constructor */
   HSICEstimatorImplementation();
 
   /** Constructor */
-  HSICEstimatorImplementation(const CovarianceModelCollection & covarianceModelCollection, const Sample & X, const Sample & Y, const HSICStat & estimatorType);
+  HSICEstimatorImplementation(const CovarianceModelCollection & covarianceModelCollection,
+                              const Sample & X,
+                              const Sample & Y,
+                              const HSICStat & estimatorType);
 
   /* Here is the interface that all derived class must implement */
 
@@ -125,8 +132,14 @@ protected:
   /** Reset indices to void */
   virtual void resetIndices();
 
+  /* Compute the covariance matrices associated to the inputs and outputs */
+  virtual void computeCovarianceMatrices();
+
   /** Compute p-value with permutation */
-  virtual void computePValuesPermutation() const;
+  virtual void computePValuesPermutationSequential() const;
+
+  /** Compute p-value with permutation using TBB */
+  virtual void computePValuesPermutationParallel() const;
 
   /** Compute the p-values with asymptotic formula */
   virtual void computePValuesAsymptotic() const;
@@ -135,7 +148,9 @@ protected:
   virtual SquareMatrix computeWeightMatrix(const Sample & Y) const;
 
   /** Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
-  virtual Scalar computeHSICIndex( const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
+  virtual Scalar computeHSICIndex(const CovarianceMatrix & covMat1,
+                                  const CovarianceMatrix & covMat2,
+                                  const SquareMatrix & weightMatrix) const;
 
   /** Compute HSIC and R2-HSIC indices */
   virtual void computeIndices() const;
@@ -143,7 +158,7 @@ protected:
   /** Draw values stored in a point */
   Graph drawValues(const Point &values, const String &title) const;
 
-  Sample shuffledCopy(const Sample & inSample) const;
+  Indices shuffleIndices(const UnsignedInteger size) const;
 
   /** Data */
   PersistentCollection <CovarianceModel> covarianceModelCollection_ ;
@@ -159,6 +174,8 @@ protected:
   mutable Point R2HSICIndices_;
   mutable Point PValuesPermutation_ ;
   mutable Point PValuesAsymptotic_ ;
+  PersistentCollection <CovarianceMatrix> inputCovarianceMatrixCollection_;
+  CovarianceMatrix outputCovarianceMatrix_;
   UnsignedInteger permutationSize_ ;
   mutable Bool isAlreadyComputedIndices_ = false ;
   mutable Bool isAlreadyComputedPValuesPermutation_ = false ;

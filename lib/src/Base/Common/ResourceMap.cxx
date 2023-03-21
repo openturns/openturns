@@ -977,6 +977,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FAST-DefaultResamplingSize", 1);
 
   // HSIC parameters //
+  addAsBool("HSICEstimator-ParallelPValues", true);
   addAsUnsignedInteger("HSICEstimator-PermutationSize", 100);
 
   // RandomGenerator parameters //

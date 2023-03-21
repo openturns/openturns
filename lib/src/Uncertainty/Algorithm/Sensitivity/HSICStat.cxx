@@ -41,13 +41,11 @@ HSICStat::HSICStat(const HSICStatImplementation & implementation)
 }
 
 /* Compute the HSIC index for one marginal*/
-Scalar HSICStat::computeHSICIndex(const Sample & inSample,
-                                  const Sample & outSample,
-                                  const CovarianceModel & inCovariance,
-                                  const CovarianceModel & outCovariance,
+Scalar HSICStat::computeHSICIndex(const CovarianceMatrix & covarianceMatrix1,
+                                  const CovarianceMatrix & covarianceMatrix2,
                                   const SquareMatrix & weightMatrix) const
 {
-  return getImplementation()->computeHSICIndex(inSample, outSample, inCovariance, outCovariance, weightMatrix);
+  return getImplementation()->computeHSICIndex(covarianceMatrix1, covarianceMatrix2, weightMatrix);
 }
 
 /* Is compatible with a Conditional HSIC Estimator ? */
@@ -57,12 +55,12 @@ Bool HSICStat::isCompatibleWithConditionalAnalysis() const
 }
 
 /* Compute the asymptotic p-value */
-Scalar HSICStat::computePValue(const Gamma &dist,
+Scalar HSICStat::computePValue(const Gamma & distribution,
                                const UnsignedInteger n,
-                               const Scalar HSIC_obs,
+                               const Scalar HSICObs,
                                const Scalar mHSIC) const
 {
-  return getImplementation()->computePValue(dist, n, HSIC_obs, mHSIC);
+  return getImplementation()->computePValue(distribution, n, HSICObs, mHSIC);
 }
 
 END_NAMESPACE_OPENTURNS

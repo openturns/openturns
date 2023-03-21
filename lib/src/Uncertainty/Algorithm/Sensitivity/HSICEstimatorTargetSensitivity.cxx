@@ -26,6 +26,8 @@ CLASSNAMEINIT(HSICEstimatorTargetSensitivity)
 /* Default */
 HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity()
   : HSICEstimatorImplementation()
+  , unfilteredSample_()
+
 {
   // Nothing to do
 }
@@ -40,8 +42,10 @@ HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity(
   : HSICEstimatorImplementation(covarianceModelCollection, X, Y, estimatorType)
 {
   filterFunction_ =  filterFunction;
+  unfilteredSample_ = outputSample_;
   /* apply filter */
-  outputSample_ = filterFunction_(outputSample_);
+  outputSample_ = filterFunction_(unfilteredSample_);
+  computeCovarianceMatrices();
 }
 
 /* Virtual constructor */
@@ -80,16 +84,9 @@ void HSICEstimatorTargetSensitivity::setFilterFunction(const Function & filterFu
 {
   filterFunction_ =  filterFunction;
   /* apply filter */
-  outputSample_ = filterFunction_(outputSample_);
+  outputSample_ = filterFunction_(unfilteredSample_);
   resetIndices();
-}
-
-/* Reset all indices to void */
-void HSICEstimatorTargetSensitivity::resetIndices()
-{
-  HSICEstimatorImplementation::resetIndices();
-  PValuesAsymptotic_ = Point();
-  isAlreadyComputedPValuesAsymptotic_ = false;
+  outputCovarianceMatrix_ = covarianceModelCollection_[inputDimension_].discretize(outputSample_);
 }
 
 /* Draw the asymptotic p-values */
@@ -98,45 +95,20 @@ Graph HSICEstimatorTargetSensitivity::drawPValuesAsymptotic() const
   return drawValues(getPValuesAsymptotic(), "Asymptotic p-values");
 }
 
-/* Compute all indices at once */
-void HSICEstimatorTargetSensitivity::run() const
-{
-  /* Compute the HSIC and R2-HSIC indices */
-  if(!(isAlreadyComputedIndices_))
-  {
-    computeIndices();
-  }
-
-  /* Compute the p-values by permutation */
-  if(!(isAlreadyComputedPValuesPermutation_))
-  {
-    computePValuesPermutation();
-  }
-
-  /* Compute the p-values asymptotically */
-  if(!(isAlreadyComputedPValuesAsymptotic_))
-  {
-    computePValuesAsymptotic();
-  }
-
-}
-
 /* Method save() stores the object through the StorageManager */
 void HSICEstimatorTargetSensitivity::save(Advocate & adv) const
 {
   HSICEstimatorImplementation::save(adv);
-  adv.saveAttribute( "PValuesAsymptotic_", PValuesAsymptotic_ );
-  adv.saveAttribute( "isAlreadyComputedPValuesAsymptotic_", isAlreadyComputedPValuesAsymptotic_ );
   adv.saveAttribute( "filterFunction_", filterFunction_ );
+  adv.saveAttribute( "unfilteredSample_", unfilteredSample_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void HSICEstimatorTargetSensitivity::load(Advocate & adv)
 {
   HSICEstimatorImplementation::load(adv);
-  adv.loadAttribute( "PValuesAsymptotic_", PValuesAsymptotic_ );
-  adv.loadAttribute( "isAlreadyComputedPValuesAsymptotic_", isAlreadyComputedPValuesAsymptotic_ );
   adv.loadAttribute( "filterFunction_", filterFunction_ );
+  adv.loadAttribute( "unfilteredSample_", unfilteredSample_);
 }
 
 END_NAMESPACE_OPENTURNS

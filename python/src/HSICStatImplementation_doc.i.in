@@ -4,7 +4,7 @@
 Notes
 -----
 This is a base class for the implementation of an HSIC statistic
-but cannot be used by itself. An HSIC statistic object can created by using the
+but cannot be used by itself. An HSIC statistic object can be created by using the
 derived classes: :class:`~openturns.HSICUStat` and :class:`~openturns.HSICVStat`.
 
 See also
@@ -21,17 +21,13 @@ OT_HSICStat_doc
 
 Parameters
 ----------
-inSample : 2-d sequence of float
-    Input sample.
 
-outSample : 2-d sequence of float
-    Output sample.
+covarianceMatrixX : :class:`~openturns.CovarianceMatrix`
+    The xi-covariance model discretized over the input marginal sample xi.
 
-inCovariance : :class:`~openturns.CovarianceModel`
-    The covariance model associated with the input sample.
-
-outCovariance : :class:`~openturns.CovarianceModel`
-    The covariance model associated with the output sample.
+covarianceMatrixY : :class:`~openturns.CovarianceMatrix`
+    The covariance model associated with the output sample, discretized
+    over the last one.
 
 weightMatrix : :class:`~openturns.Matrix`
     A weight matrix used for the statistic.
