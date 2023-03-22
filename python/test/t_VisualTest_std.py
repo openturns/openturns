@@ -46,7 +46,7 @@ print("LinearModelV = ", drawLinearModelVTest)
 drawLinearModelResidualTest = ot.VisualTest.DrawLinearModelResidual(lmtest)
 print("LinearModelR = ", drawLinearModelResidualTest)
 
-# CobWeb tests
+# Parallel coordinates tests
 size = 100
 inputDimension = 6
 inputSample = ot.Normal(inputDimension).getSample(size)
@@ -60,15 +60,15 @@ for i in range(inputDimension):
 formula[0] = expression
 model = ot.SymbolicFunction(inputVar, formula)
 outputSample = model(inputSample)
-cobwebValue = ot.VisualTest.DrawParallelCoordinates(
+parallelCoordinatesValue = ot.VisualTest.DrawParallelCoordinates(
     inputSample, outputSample, 2.5, 3.0, "red", False
 )
-print("cobwebValue = ", cobwebValue)
+print("parallelCoordinatesValue = ", parallelCoordinatesValue)
 
-cobwebQuantile = ot.VisualTest.DrawParallelCoordinates(
+parallelCoordinatesQuantile = ot.VisualTest.DrawParallelCoordinates(
     inputSample, outputSample, 0.7, 0.9, "red", False
 )
-print("cobwebQuantile = ", cobwebQuantile)
+print("parallelCoordinatesQuantile = ", parallelCoordinatesQuantile)
 
 # KendallPlot tests
 size = 100
