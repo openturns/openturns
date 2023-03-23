@@ -48,6 +48,14 @@ Scalar HSICStat::computeHSICIndex(const CovarianceMatrix & covarianceMatrix1,
   return getImplementation()->computeHSICIndex(covarianceMatrix1, covarianceMatrix2, weightMatrix);
 }
 
+/* Compute the HSIC index for one marginal*/
+Scalar HSICStat::computeHSICIndex(const CovarianceMatrix &covarianceMatrix1,
+                                  const CovarianceMatrix &covarianceMatrix2,
+                                  const Point &weights) const
+{
+  return getImplementation()->computeHSICIndex(covarianceMatrix1, covarianceMatrix2, weights);
+}
+
 /* Is compatible with a Conditional HSIC Estimator ? */
 Bool HSICStat::isCompatibleWithConditionalAnalysis() const
 {

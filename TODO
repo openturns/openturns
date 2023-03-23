@@ -1,2 +1,3 @@
 Remove DomainIntersection|Union|DisjunctiveUnion(Domain, Domain) ctors
 Remove EllipticalDistribution::getInverseCorrelation
+Drop HSICStat::computeHSICIndex(cov, cov, squareMat)
