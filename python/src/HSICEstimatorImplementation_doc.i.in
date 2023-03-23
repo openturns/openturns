@@ -235,30 +235,32 @@ OT_HSICEstimator_drawPValuesPermutation_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_HSICEstimator_drawValues_doc
-"Draw values contained in a point.
-
-Parameters
-----------
-values : sequence of float
-    The values to be displayed as a Cloud.
-
-title : str
-    The title of the graph.
-
-Returns
--------
-graph : :class:`~openturns.Graph`
-    The desired graph."
-%enddef
-%feature("docstring") OT::HSICEstimatorImplementation::drawValues
-OT_HSICEstimator_drawValues_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_HSICEstimator_run_doc
 "Compute all values at once."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::run
 OT_HSICEstimator_run_doc
+// ---------------------------------------------------------------------
+
+%define OT_HSICEstimator_getPValuesAsymptotic_doc
+"Get the p-values obtained with an asymptotic formula.
+
+Returns
+-------
+pval : sequence of float
+    The p-values for all components."
+%enddef
+%feature("docstring") OT::HSICEstimatorImplementation::getPValuesAsymptotic
+OT_HSICEstimator_getPValuesAsymptotic_doc
+// ---------------------------------------------------------------------
+%define OT_HSICEstimator_drawPValuesAsymptotic_doc
+"Draw the p-values obtained with an asymptotic formula.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph of all p-values estimated with an asymptotic formula."
+%enddef
+%feature("docstring") OT::HSICEstimatorImplementation::drawPValuesAsymptotic
+OT_HSICEstimator_drawPValuesAsymptotic_doc
 // ---------------------------------------------------------------------
