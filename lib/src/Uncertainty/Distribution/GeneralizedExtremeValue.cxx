@@ -417,10 +417,17 @@ void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
 /* Actual distribution accessor */
 void GeneralizedExtremeValue::setActualDistribution(const Distribution & distribution)
 {
+  Pointer<DistributionImplementation> impl = distribution.getImplementation();
+
+  // Try to cast the given distribution into a GEV
+  const GeneralizedExtremeValue* p_gev = dynamic_cast<const GeneralizedExtremeValue*>(impl.get());
+  if (p_gev)
+    impl = p_gev->getActualDistribution().getImplementation();
+
   // Try to cast the given distribution into a Gumbel distribution
   try
   {
-    const Gumbel* p_gumbel = dynamic_cast<const Gumbel*>(distribution.getImplementation().get());
+    const Gumbel* p_gumbel = dynamic_cast<const Gumbel*>(impl.get());
     // If it worked create the actual distribution
     if (p_gumbel)
     {
@@ -440,7 +447,7 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
   // Try to cast the given distribution into a Frechet distribution
   try
   {
-    const Frechet* p_frechet = dynamic_cast<const Frechet*>(distribution.getImplementation().get());
+    const Frechet* p_frechet = dynamic_cast<const Frechet*>(impl.get());
     // If it worked create the actual distribution
     if (p_frechet)
     {
@@ -460,7 +467,7 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
   // Try to cast the given distribution into a WeibullMax
   try
   {
-    const WeibullMax* p_weibull = dynamic_cast<const WeibullMax*>(distribution.getImplementation().get());
+    const WeibullMax* p_weibull = dynamic_cast<const WeibullMax*>(impl.get());
     if (p_weibull)
     {
       xi_ = -1.0 / p_weibull->getAlpha();
