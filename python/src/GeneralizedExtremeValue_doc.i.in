@@ -271,3 +271,13 @@ Parameters
 ----------
 xi : float, :math:`\xi \in \Rset`
     Shape parameter :math:`\xi`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::computeReturnLevel
+"Accessor to the return level.
+
+Returns
+-------
+q : float, quantile
+    Return level computed as the quantile of level :math:`1-1/m`."

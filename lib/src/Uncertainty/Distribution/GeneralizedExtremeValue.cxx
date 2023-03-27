@@ -278,6 +278,14 @@ Scalar GeneralizedExtremeValue::computeScalarQuantile(const Scalar prob,
   return actualDistribution_.computeQuantile(prob, tail)[0];
 }
 
+/* Return level */
+Scalar GeneralizedExtremeValue::computeReturnLevel(const Scalar m) const
+{
+  if (!(m > 1.0))
+    throw InvalidArgumentException(HERE) << "in computeReturnLevel m should be > 1";
+  return computeQuantile(1.0 / m, true)[0];
+}
+
 /* Compute the mean of the distribution */
 void GeneralizedExtremeValue::computeMean() const
 {
