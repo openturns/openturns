@@ -468,6 +468,8 @@
 
   <!-- OT::GeneralizedParetoFactory parameters -->
   <GeneralizedExtremeValue-XiThreshold value_float="1.0e-6" />
+  <GeneralizedExtremeValue-MMin value_float="1.05" />
+  <GeneralizedExtremeValue-MMax value_float="1.0e3" />
 
   <!-- OT::GeneralizedParetoFactory parameters -->
   <GeneralizedParetoFactory-MaximumAbsoluteError    value_float="1.0e-10"        />

@@ -286,6 +286,62 @@ Scalar GeneralizedExtremeValue::computeReturnLevel(const Scalar m) const
   return computeQuantile(1.0 / m, true)[0];
 }
 
+class GEVReturnLevelEvaluation: public EvaluationImplementation
+{
+public:
+  GEVReturnLevelEvaluation(const GeneralizedExtremeValue & gev)
+    : EvaluationImplementation()
+    , gev_(gev)
+  {
+    // Nothing to do
+  }
+
+  GEVReturnLevelEvaluation * clone() const override
+  {
+    return new GEVReturnLevelEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator()(const Point & inP) const override
+  {
+    const Scalar m = inP[0];
+    return Point(1, gev_.computeReturnLevel(m));
+  }
+
+private:
+  GeneralizedExtremeValue gev_;
+};
+
+/* Draw return level */
+Graph GeneralizedExtremeValue::drawReturnLevel() const
+{
+  const Scalar xMin = ResourceMap::GetAsScalar("GeneralizedExtremeValue-MMin");
+  const Scalar xMax = ResourceMap::GetAsScalar("GeneralizedExtremeValue-MMax");
+  const GEVReturnLevelEvaluation wrapper(*this);
+  const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber");
+  Graph graph(wrapper.draw(xMin, xMax, pointNumber, GraphImplementation::LOGX));
+  Drawable drawable(graph.getDrawable(0));
+  drawable.setColor("red");
+  drawable.setLegend("GEV return level");
+  drawable.setLineStyle("solid");
+  drawable.setLineWidth(2);
+  graph.setDrawable(drawable, 0);
+  graph.setXTitle("Return period");
+  graph.setYTitle("Return level");
+  graph.setTitle("");
+  graph.setLegendPosition("bottomright");
+  return graph;
+}
+
 /* Compute the mean of the distribution */
 void GeneralizedExtremeValue::computeMean() const
 {

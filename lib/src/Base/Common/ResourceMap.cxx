@@ -1091,6 +1091,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GeneralizedExtremeValue parameters //
   addAsScalar("GeneralizedExtremeValue-XiThreshold", 1.0e-6);
+  addAsScalar("GeneralizedExtremeValue-MMin", 1.05);
+  addAsScalar("GeneralizedExtremeValue-MMax", 1.0e3);
 
   // GeneralizedParetoFactory parameters //
   addAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError", 1.0e-10);

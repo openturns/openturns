@@ -151,6 +151,9 @@ public:
   /** Return level */
   Scalar computeReturnLevel(const Scalar m) const;
 
+  /** Draw return level */
+  Graph drawReturnLevel() const;
+
 protected:
 
 private:
