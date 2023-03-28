@@ -76,9 +76,6 @@
 /* Define to 1 if you have the <hmat.h> header file. */
 #cmakedefine OPENTURNS_HAVE_HMAT
 
-/* Define to 1 if you have the <pthread.h> header file. */
-#cmakedefine OPENTURNS_HAVE_PTHREAD_H
-
 /* Define to 1 if you have the NLopt library. */
 #cmakedefine OPENTURNS_HAVE_NLOPT
 
