@@ -32,7 +32,7 @@ cb = cantilever_beam.CantileverBeam()
 dist_E = cb.E
 dist_F = cb.F
 dist_L = cb.L
-dist_I = cb.II
+dist_I = cb.I
 distribution = cb.independentDistribution
 
 # %%
