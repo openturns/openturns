@@ -234,7 +234,6 @@ sampler = ot.Gibbs(mh_coll)
 # Tuning of the Gibbs algorithm:
 
 # %%
-sampler.setThinning(1)
 sampler.setBurnIn(2000)
 
 # %%

@@ -48,7 +48,6 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Point &
   , currentState_(initialState)
   , history_(Full())
   , burnIn_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultBurnIn"))
-  , thinning_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultThinning"))
 {
   setMarginalIndices(marginalIndices);
   history_.setDimension(initialState.getDimension());
@@ -64,7 +63,6 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Distrib
   , currentState_(initialState)
   , history_(Full())
   , burnIn_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultBurnIn"))
-  , thinning_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultThinning"))
 {
   setTargetDistribution(targetDistribution);
   setMarginalIndices(marginalIndices);
@@ -83,7 +81,6 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Functio
   , targetLogPDF_(targetLogPDF)
   , support_(support)
   , burnIn_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultBurnIn"))
-  , thinning_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultThinning"))
 {
   setTargetLogPDF(targetLogPDF, support);
   setMarginalIndices(marginalIndices);
@@ -141,8 +138,7 @@ String MetropolisHastingsImplementation::__repr__() const
          << " linkFunction=" << linkFunction_
          << " covariates=" << covariates_
          << " observations=" << observations_
-         << " burnIn=" << burnIn_
-         << " thinning=" << thinning_;
+         << " burnIn=" << burnIn_;
 }
 
 
@@ -182,7 +178,7 @@ Scalar MetropolisHastingsImplementation::computeLogPosterior(const Point & state
 Point MetropolisHastingsImplementation::getRealization() const
 {
   // perform burnin if necessary
-  const UnsignedInteger size = getThinning() + ((samplesNumber_ < getBurnIn()) ? getBurnIn() : 0);
+  const UnsignedInteger size = 1 + ((samplesNumber_ < getBurnIn()) ? getBurnIn() : 0);
 
   // check the first likelihood
   if (samplesNumber_ == 0)
@@ -353,19 +349,6 @@ UnsignedInteger MetropolisHastingsImplementation::getBurnIn() const
 }
 
 
-void MetropolisHastingsImplementation::setThinning(const UnsignedInteger thinning)
-{
-  if (thinning == 0) throw InvalidArgumentException(HERE) << "The thinning parameter should be positive.";
-  thinning_ = thinning;
-}
-
-
-UnsignedInteger MetropolisHastingsImplementation::getThinning() const
-{
-  return thinning_;
-}
-
-
 void MetropolisHastingsImplementation::setVerbose(const Bool verbose)
 {
   verbose_ = verbose;
@@ -422,7 +405,6 @@ void MetropolisHastingsImplementation::save(Advocate & adv) const
   adv.saveAttribute("covariates_", covariates_);
   adv.saveAttribute("observations_", observations_);
   adv.saveAttribute("burnIn_", burnIn_);
-  adv.saveAttribute("thinning_", thinning_);
   adv.saveAttribute("verbose_", verbose_);
 }
 
@@ -444,7 +426,6 @@ void MetropolisHastingsImplementation::load(Advocate & adv)
   adv.loadAttribute("covariates_", covariates_);
   adv.loadAttribute("observations_", observations_);
   adv.loadAttribute("burnIn_", burnIn_);
-  adv.loadAttribute("thinning_", thinning_);
   adv.loadAttribute("verbose_", verbose_);
 }
 

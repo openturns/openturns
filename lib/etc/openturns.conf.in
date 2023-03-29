@@ -902,7 +902,6 @@
   
   <!-- OT::MetropolisHastingsImplementation parameters -->
   <MetropolisHastings-DefaultBurnIn   value_int="0" />
-  <MetropolisHastings-DefaultThinning value_int="1" />
 
   <!-- OT::GaussianLinearCalibration parameters -->
   <GaussianLinearCalibration-Method   value_str="QR" />

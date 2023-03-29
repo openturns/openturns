@@ -203,46 +203,6 @@ OT_MetropolisHastings_getTargetDistribution_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_MetropolisHastings_getThinning_doc
-"Get the thinning parameter.
-
-Returns
--------
-thinning : int
-    Thinning parameter: storing only every :math:`k^{th}` point after the
-    burn-in period.
-
-Notes
------
-When generating a sample of size :math:`q`, the number of MCMC iterations
-performed is :math:`l+1+(q-1)k` where :math:`l` is the burn-in period length
-and :math:`k` the thinning parameter."
-%enddef
-%feature("docstring") OT::MetropolisHastingsImplementation::getThinning
-OT_MetropolisHastings_getThinning_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_MetropolisHastings_setThinning_doc
-"Set the thinning parameter.
-
-Parameters
-----------
-thinning : int, :math:`k \geq 0`
-    Thinning parameter: storing only every :math:`k^{th}` point after the
-    burn-in period.
-
-Notes
------
-When generating a sample of size :math:`q`, the number of MCMC iterations
-performed is :math:`l+1+(q-1)k` where :math:`l` is the burn-in period length
-and :math:`k` the thinning parameter."
-%enddef
-%feature("docstring") OT::MetropolisHastingsImplementation::setThinning
-OT_MetropolisHastings_setThinning_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_MetropolisHastings_getHistory_doc
 "Get the history storage.
 

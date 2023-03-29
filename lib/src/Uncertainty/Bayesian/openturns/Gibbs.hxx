@@ -62,10 +62,6 @@ public:
   void setBurnIn(const UnsignedInteger burnIn);
   UnsignedInteger getBurnIn() const;
 
-  /** Thinning accessor */
-  void setThinning(const UnsignedInteger thinning);
-  UnsignedInteger getThinning() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -115,9 +111,6 @@ private:
 
   // number of first samples discarded to reach stationary regime
   UnsignedInteger burnIn_ = 0;
-
-  // number of samples skipped at each generation
-  UnsignedInteger thinning_ = 1;
 
   mutable Indices recomputeLogPosterior_;
 

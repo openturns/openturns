@@ -94,17 +94,6 @@ UnsignedInteger MetropolisHastings::getBurnIn() const
   return getImplementation()->getBurnIn();
 }
 
-void MetropolisHastings::setThinning(const UnsignedInteger thinning)
-{
-  copyOnWrite();
-  getImplementation()->setThinning(thinning);
-}
-
-UnsignedInteger MetropolisHastings::getThinning() const
-{
-  return getImplementation()->getThinning();
-}
-
 void MetropolisHastings::setHistory(const HistoryStrategy & history)
 {
   copyOnWrite();

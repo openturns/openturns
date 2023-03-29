@@ -67,7 +67,6 @@ Examples
 >>> for mh in coll: mh.setLikelihood(conditional, y_obs, linkFunction, covariates)
 >>> sampler = ot.Gibbs(coll)
 >>> sampler.setBurnIn(20)
->>> sampler.setThinning(10)
 >>> # Get a realization
 >>> mu = sampler.getRealization()
 >>> # Create a Gibbs sampler which updates one randomly chosen component at each step
@@ -155,40 +154,6 @@ Parameters
 length : int
     Length of the burn-in period, that is the number of first iterates of the
     MCMC chain which will be thrown away when generating the sample."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Gibbs::getThinning
-"Get the thinning parameter.
-
-Returns
--------
-thinning : int
-    Thinning parameter: storing only every :math:`k^{th}` point after the
-    burn-in period.
-
-Notes
------
-When generating a sample of size :math:`q`, the number of MCMC iterations
-performed is :math:`l+1+(q-1)k` where :math:`l` is the burn-in period length
-and :math:`k` the thinning parameter."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Gibbs::setThinning
-"Set the thinning parameter.
-
-Parameters
-----------
-thinning : int, :math:`k \geq 0`
-    Thinning parameter: storing only every :math:`k^{th}` point after the
-    burn-in period.
-
-Notes
------
-When generating a sample of size :math:`q`, the number of MCMC iterations
-performed is :math:`l+1+(q-1)k` where :math:`l` is the burn-in period length
-and :math:`k` the thinning parameter."
 
 // ---------------------------------------------------------------------
 

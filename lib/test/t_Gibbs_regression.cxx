@@ -111,7 +111,6 @@ int main(int, char *[])
       coll.add(mh);
     }
     Gibbs sampler(coll);
-    sampler.setThinning(4);
     sampler.setBurnIn(2000);
 
     // get a realization

@@ -18,10 +18,6 @@ OT_MetropolisHastings_setLikelihood_doc
 OT_MetropolisHastings_setBurnIn_doc
 %feature("docstring") OT::MetropolisHastings::getBurnIn
 OT_MetropolisHastings_getBurnIn_doc
-%feature("docstring") OT::MetropolisHastings::setThinning
-OT_MetropolisHastings_setThinning_doc
-%feature("docstring") OT::MetropolisHastings::getThinning
-OT_MetropolisHastings_getThinning_doc
 %feature("docstring") OT::MetropolisHastings::getAcceptanceRate
 OT_MetropolisHastings_getAcceptanceRate_doc
 %feature("docstring") OT::MetropolisHastings::computeLogLikelihood

@@ -59,7 +59,6 @@ for i in range(len(sigma0s)):
     )
     std_sampler.setLikelihood(conditional, data)
     sampler = ot.Gibbs([mean_sampler, std_sampler])
-    sampler.setThinning(2)
     sampler.setBurnIn(500)
     realization = sampler.getRealization()
 

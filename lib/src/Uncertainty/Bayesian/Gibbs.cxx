@@ -127,7 +127,7 @@ Point Gibbs::getRealization() const
   const UnsignedInteger nbSamplers = samplers_.getSize();
 
   // perform burnin if necessary
-  const UnsignedInteger size = getThinning() + ((samplesNumber_ < getBurnIn()) ? getBurnIn() : 0);
+  const UnsignedInteger size = 1 + ((samplesNumber_ < getBurnIn()) ? getBurnIn() : 0);
 
   // check the first log-posterior
   if (samplesNumber_ == 0)
@@ -227,18 +227,6 @@ UnsignedInteger Gibbs::getBurnIn() const
 }
 
 
-void Gibbs::setThinning(const UnsignedInteger thinning)
-{
-  if (thinning == 0) throw InvalidArgumentException(HERE) << "The thinning parameter should be positive.";
-  thinning_ = thinning;
-}
-
-
-UnsignedInteger Gibbs::getThinning() const
-{
-  return thinning_;
-}
-
 /* Indices for which the posterior is recomputed */
 Indices Gibbs::getRecomputeLogPosterior() const
 {
@@ -265,7 +253,6 @@ void Gibbs::save(Advocate & adv) const
   adv.saveAttribute("previouslyChosenSampler_", previouslyChosenSampler_);
   adv.saveAttribute("currentState_", currentState_);
   adv.saveAttribute("burnIn_", burnIn_);
-  adv.saveAttribute("thinning_", thinning_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -277,7 +264,6 @@ void Gibbs::load(Advocate & adv)
   adv.loadAttribute("previouslyChosenSampler_", previouslyChosenSampler_);
   adv.loadAttribute("currentState_", currentState_);
   adv.loadAttribute("burnIn_", burnIn_);
-  adv.loadAttribute("thinning_", thinning_);
 }
 
 

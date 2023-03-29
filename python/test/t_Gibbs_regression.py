@@ -68,7 +68,6 @@ mh_coll = [
 for mh in mh_coll:
     mh.setLikelihood(conditional, y_obs, linkFunction, p)
 sampler = ot.Gibbs(mh_coll)
-sampler.setThinning(4)
 sampler.setBurnIn(2000)
 
 # get a realization
