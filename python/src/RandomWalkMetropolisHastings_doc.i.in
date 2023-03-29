@@ -53,7 +53,6 @@ Sample from a target distribution defined through its log-PDF (defined up to som
 >>> proposal = ot.Normal(0.0, 2.0)
 >>> initialState = [3.0]
 >>> sampler = ot.RandomWalkMetropolisHastings(log_density, support, initialState, proposal)
->>> sampler.setBurnIn(20)
 >>> x = sampler.getSample(10)
 
 The target distribution can also be a :class:`~openturns.Distribution`.

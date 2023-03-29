@@ -49,7 +49,6 @@ Sample from a target distribution defined through its log-PDF (defined up to som
 >>> proposal = ot.Uniform(0.0, 2.0 * m.pi)
 >>> initialState = [3.0]
 >>> sampler = ot.IndependentMetropolisHastings(log_density, support, initialState, proposal)
->>> sampler.setBurnIn(20)
 >>> x = sampler.getSample(10)"
 
 
