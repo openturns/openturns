@@ -177,9 +177,6 @@ Scalar MetropolisHastingsImplementation::computeLogPosterior(const Point & state
 
 Point MetropolisHastingsImplementation::getRealization() const
 {
-  // perform burnin if necessary
-  const UnsignedInteger size = 1 + ((samplesNumber_ < getBurnIn()) ? getBurnIn() : 0);
-
   // check the first likelihood
   if (samplesNumber_ == 0)
   {
@@ -188,30 +185,27 @@ Point MetropolisHastingsImplementation::getRealization() const
       throw InvalidArgumentException(HERE) << "The initial state should have non-zero posterior probability density";
   }
 
-  // for each new sample
-  for (UnsignedInteger i = 0; i < size; ++ i)
+  Point newState(currentState_);
+  const Point candidate(getCandidate());
+  for (UnsignedInteger j = 0; j < marginalIndices_.getSize(); ++ j)
+    newState[marginalIndices_[j]] = candidate[j];
+
+  const Scalar newLogPosterior = computeLogPosterior(newState);
+
+  // alpha = posterior(newstate)/posterior(oldstate)
+  const Scalar alphaLog = newLogPosterior - currentLogPosterior_ + logProbCurrentConditionedToNew_ - logProbNewConditionedToCurrent_;
+  const Scalar uLog = log(RandomGenerator::Generate());
+  if (uLog < alphaLog)
   {
-    Point newState(currentState_);
-    const Point candidate(getCandidate());
-    for (UnsignedInteger j = 0; j < marginalIndices_.getSize(); ++ j)
-      newState[marginalIndices_[j]] = candidate[j];
-
-    const Scalar newLogPosterior = computeLogPosterior(newState);
-
-    // alpha = posterior(newstate)/posterior(oldstate)
-    const Scalar alphaLog = newLogPosterior - currentLogPosterior_ + logProbCurrentConditionedToNew_ - logProbNewConditionedToCurrent_;
-    const Scalar uLog = log(RandomGenerator::Generate());
-    if (uLog < alphaLog)
-    {
-      currentLogPosterior_ = newLogPosterior;
-      ++ acceptedNumber_;
-      ++ acceptedNumberAdaptation_;
-      currentState_ = newState;
-    }
-
-    // increment 1 by 1 as used in getCandidate
-    ++ samplesNumber_;
+    currentLogPosterior_ = newLogPosterior;
+    ++ acceptedNumber_;
+    ++ acceptedNumberAdaptation_;
+    currentState_ = newState;
   }
+
+  // increment 1 by 1 as used in getCandidate
+  ++ samplesNumber_;
+
 
   // Save the current state
   history_.store(currentState_);

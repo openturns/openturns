@@ -168,22 +168,18 @@ Point Gibbs::getRealization() const
     } // random updating
   }
 
-  // for each new sample
-  for (UnsignedInteger i = 0; i < size; ++ i)
+  switch (updatingMethod_)
   {
-    switch (updatingMethod_)
-    {
-      case DETERMINISTIC_UPDATING:
-        computeRealizationDeterministicUpdating();
-        break;
-      case RANDOM_UPDATING:
-        computeRealizationRandomUpdating();
-        break;
-      default:
-        throw InvalidArgumentException(HERE) << "Error: invalid updating method, must be DETERMINISTIC_UPDATING or RANDOM_UPDATING, here updatingMethod_=" << updatingMethod_;
-    } /* end switch */
-  }
-  samplesNumber_ += size;
+    case DETERMINISTIC_UPDATING:
+      computeRealizationDeterministicUpdating();
+      break;
+    case RANDOM_UPDATING:
+      computeRealizationRandomUpdating();
+      break;
+    default:
+      throw InvalidArgumentException(HERE) << "Error: invalid updating method, must be DETERMINISTIC_UPDATING or RANDOM_UPDATING, here updatingMethod_=" << updatingMethod_;
+  } /* end switch */
+  samplesNumber_ ++;
 
   // Save the current state
   history_.store(currentState_);
