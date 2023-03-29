@@ -9,7 +9,6 @@ randomVector = ot.RandomVector(ot.Normal())
 initialState = [0.0]
 sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState)
 sampler.setBurnIn(20)
-sampler.setThinning(2)
 x = sampler.getSample(10000)
 mean = x.computeMean()
 stddev = x.computeStandardDeviation()

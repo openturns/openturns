@@ -1519,7 +1519,6 @@ void ResourceMap::loadDefaultConfiguration()
 
   // MetropolisHastingsImplementation parameters //
   addAsUnsignedInteger("MetropolisHastings-DefaultBurnIn", 0);
-  addAsUnsignedInteger("MetropolisHastings-DefaultThinning", 1);
 
   // GaussianLinearCalibration parameters //
   addAsString("GaussianLinearCalibration-Method", "QR");

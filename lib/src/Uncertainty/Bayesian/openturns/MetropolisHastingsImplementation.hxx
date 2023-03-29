@@ -107,10 +107,6 @@ public:
   void setBurnIn(const UnsignedInteger burnIn);
   UnsignedInteger getBurnIn() const;
 
-  /** Thinning accessor */
-  void setThinning(const UnsignedInteger thinning);
-  UnsignedInteger getThinning() const;
-
   /** History accessor */
   void setHistory(const HistoryStrategy & strategy);
   HistoryStrategy getHistory() const;
@@ -171,9 +167,6 @@ private:
 
   // number of first samples discarded to reach stationary regime
   UnsignedInteger burnIn_ = 0;
-
-  // number of samples skipped at each generation
-  UnsignedInteger thinning_ = 0;
 
   // verbosity flag
   Bool verbose_ = false;

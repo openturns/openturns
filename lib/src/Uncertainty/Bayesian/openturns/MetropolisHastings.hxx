@@ -72,10 +72,6 @@ public:
   void setBurnIn(const UnsignedInteger burnIn);
   UnsignedInteger getBurnIn() const;
 
-  /** Thinning accessor */
-  void setThinning(const UnsignedInteger thinning);
-  UnsignedInteger getThinning() const;
-
   /** History accessor */
   void setHistory(const HistoryStrategy & strategy);
   HistoryStrategy getHistory() const;

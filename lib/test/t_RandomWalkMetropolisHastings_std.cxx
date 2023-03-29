@@ -94,7 +94,6 @@ int main(int, char *[])
       RandomWalkMetropolisHastings sampler(prior, initialState, instrumental);
       sampler.setLikelihood(conditional, data);
       sampler.setVerbose(true);
-      sampler.setThinning(2);
       sampler.setBurnIn(500);
 
       Scalar sigmay = ConditionalDistribution(Normal(), prior).getStandardDeviation()[0];
