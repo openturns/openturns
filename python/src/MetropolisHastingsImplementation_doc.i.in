@@ -116,8 +116,10 @@ OT_MetropolisHastings_computeLogPosterior_doc
 Returns
 -------
 burnin : int
-    Length of the burn-in period, that is the number of first iterates of the
-    MCMC chain which will be thrown away when generating the sample."
+    Length of the burn-in period.
+    In the :class:`~openturns.RandomWalkMetropolisHastings` class, this is
+    the number of iterations after which adaptation stops. Unused in
+    other Metropolis-Hastings classes."
 %enddef
 %feature("docstring") OT::MetropolisHastingsImplementation::getBurnIn
 OT_MetropolisHastings_getBurnIn_doc
@@ -130,8 +132,10 @@ OT_MetropolisHastings_getBurnIn_doc
 Parameters
 ----------
 burnin : int
-    Length of the burn-in period, that is the number of first iterates of the
-    MCMC chain which will be thrown away when generating the sample."
+    Length of the burn-in period.
+    In the :class:`~openturns.RandomWalkMetropolisHastings` class, this is
+    the number of iterations after which adaptation stops. Unused in
+    other Metropolis-Hastings classes."
 %enddef
 %feature("docstring") OT::MetropolisHastingsImplementation::setBurnIn
 OT_MetropolisHastings_setBurnIn_doc
@@ -287,8 +291,9 @@ OT_MetropolisHastings_getInitialState_doc
 Returns
 -------
 period : positive int
-    This number defines the number of samples before adaptation occurs during
-    the burnin phase."
+    In the :class:`~openturns.RandomWalkMetropolisHastings` class,
+    during burn-in, adaptation is performed once every *period*
+    iterations. Unused in other classes."
 %enddef
 %feature("docstring") OT::MetropolisHastingsImplementation::getAdaptationPeriod
 OT_MetropolisHastings_getAdaptationPeriod_doc
@@ -301,8 +306,9 @@ OT_MetropolisHastings_getAdaptationPeriod_doc
 Parameters
 ----------
 period : positive int
-    This number defines the number of samples before adaptation occurs during
-    the burnin phase."
+    In the :class:`~openturns.RandomWalkMetropolisHastings` class,
+    during burn-in, adaptation is performed once every *period*
+    iterations. Unused in other classes."
 %enddef
 %feature("docstring") OT::MetropolisHastingsImplementation::setAdaptationPeriod
 OT_MetropolisHastings_setAdaptationPeriod_doc
