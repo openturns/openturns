@@ -123,8 +123,11 @@ This slope is then used in the computation of the height `H`.
 >>> import openturns as ot
 >>> inputs = ['Q', 'Ks', 'Zv', 'Zm', 'Hd', 'Zb', 'L', 'B']
 >>> outputs = ['H', 'S']
->>> formula = 'var alpha := (Zm - Zv)/L; H := (Q/(Ks*B*sqrt(alpha)))^(3.0/5.0);'
->>> formula += 'var Zc := H + Zv; var Zd := Zb + Hd; S := Zc - Zd'
+>>> formula = 'var alpha := (Zm - Zv)/L;'
+>>> formula += 'H := (Q / (Ks * B * sqrt(alpha)))^(3.0 / 5.0);'
+>>> formula += 'var Zc := H + Zv;'
+>>> formula += 'var Zd := Zb + Hd;'
+>>> formula += 'S := Zc - Zd'
 >>> myFunction = ot.SymbolicFunction(inputs, outputs, formula)
 >>> X = [1013.0, 30.0, 50.0, 55.0, 8, 55.5, 5000.0, 300.0]
 >>> print(myFunction(X))
