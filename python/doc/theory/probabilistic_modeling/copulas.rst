@@ -43,12 +43,12 @@ The joined cumulative density function is therefore defined by:
    :math:`\cB = [a_1,b_1] \times \cdots \times [a_{n_U},b_{n_U}] \in [0,1]^{n_U}`,
    we have :math:`\cV_C(\cB) \geq 0`, where:
 
-   -  :math:`\cV_C(\cB) = \sum_{i=1,\cdots, 2^{n_U}} sign(\underline{v}_i) \times C(\underline{v}_i)`,
+   -  :math:`\cV_C(\cB) = \sum_{i=1,\cdots, 2^{n_U}} \sgn(\underline{v}_i) \times C(\underline{v}_i)`,
       the summation being made over the :math:`2^{n_U}` vertices
       :math:`\underline{v_i}` of :math:`\cB`.
 
-   -  | :math:`sign(\underline{v}_i)= +1` if :math:`v_i^k = a_k` *for an
-        even number of* :math:`k's`, :math:`sign(\underline{v}_i)= -1`
+   -  | :math:`\sgn(\underline{v}_i)= +1` if :math:`v_i^k = a_k` *for an
+        even number of* :math:`k's`, :math:`\sgn(\underline{v}_i)= -1`
         *otherwise*.
 
 .. topic:: API:
