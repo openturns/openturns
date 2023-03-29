@@ -1520,10 +1520,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound", 0.117); // = 0.5 * 0.234
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor", 0.8);
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationUpperBound", 0.468); // = 2.0 * 0.234
-  addAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultAdaptationPeriod", 100);
+  addAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultAdaptationPeriod", 30);
 
   // MetropolisHastingsImplementation parameters //
-  addAsUnsignedInteger("MetropolisHastings-DefaultBurnIn", 0);
+  addAsUnsignedInteger("MetropolisHastings-DefaultBurnIn", 1000);
 
   // GaussianLinearCalibration parameters //
   addAsString("GaussianLinearCalibration-Method", "QR");

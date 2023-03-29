@@ -66,7 +66,6 @@ Examples
 >>> coll = [ot.RandomWalkMetropolisHastings(prior, mu0, prop, [i]) for i in range(chainDim)]
 >>> for mh in coll: mh.setLikelihood(conditional, y_obs, linkFunction, covariates)
 >>> sampler = ot.Gibbs(coll)
->>> sampler.setBurnIn(20)
 >>> # Get a realization
 >>> mu = sampler.getRealization()
 >>> # Create a Gibbs sampler which updates one randomly chosen component at each step
