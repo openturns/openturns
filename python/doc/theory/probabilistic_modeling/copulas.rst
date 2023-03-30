@@ -33,23 +33,23 @@ The joined cumulative density function is therefore defined by:
   :math:`n_U`-dimensional cumulative density function with uniform
   marginals.
 
--  :math:`C(\underline{u}) \geq 0`,
-   :math:`\forall \underline{u} \in [0,1]^{n_U}`
+-  :math:`C(\vect{u}) \geq 0`,
+   :math:`\forall \vect{u} \in [0,1]^{n_U}`
 
--  :math:`C(\underline{u}) = u_i`,
-   :math:`\forall \underline{u}=(1,\ldots,1,u_i,1,\ldots,1)`
+-  :math:`C(\vect{u}) = u_i`,
+   :math:`\forall \vect{u}=(1,\ldots,1,u_i,1,\ldots,1)`
 
 -  For all :math:`N`-box
    :math:`\cB = [a_1,b_1] \times \cdots \times [a_{n_U},b_{n_U}] \in [0,1]^{n_U}`,
    we have :math:`\cV_C(\cB) \geq 0`, where:
 
-   -  :math:`\cV_C(\cB) = \sum_{i=1,\cdots, 2^{n_U}} \sgn(\underline{v}_i) \times C(\underline{v}_i)`,
+   -  :math:`\cV_C(\cB) = \sum_{i=1,\cdots, 2^{n_U}} \sgn(\vect{v}_i) \times C(\vect{v}_i)`,
       the summation being made over the :math:`2^{n_U}` vertices
-      :math:`\underline{v_i}` of :math:`\cB`.
+      :math:`\vect{v}_i` of :math:`\cB`.
 
-   -  | :math:`\sgn(\underline{v}_i)= +1` if :math:`v_i^k = a_k` *for an
-        even number of* :math:`k's`, :math:`\sgn(\underline{v}_i)= -1`
-        *otherwise*.
+   -  | :math:`\sgn(\vect{v}_i)= +1` if :math:`v_i^k = a_k` for an
+        even number of :math:`k's`, :math:`\sgn(\vect{v}_i)= -1`
+        otherwise.
 
 .. topic:: API:
 
