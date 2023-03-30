@@ -1,6 +1,6 @@
 """
 Kriging: propagate uncertainties
-=================================
+================================
 
 In this example we propagate uncertainties through a Kriging metamodel of the :ref:`Ishigami model<use-case-ishigami>`.
 """
