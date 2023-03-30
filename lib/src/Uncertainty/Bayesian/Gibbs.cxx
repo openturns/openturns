@@ -126,9 +126,6 @@ Point Gibbs::getRealization() const
 {
   const UnsignedInteger nbSamplers = samplers_.getSize();
 
-  // perform burnin if necessary
-  const UnsignedInteger size = 1 + ((samplesNumber_ < getBurnIn()) ? getBurnIn() : 0);
-
   // check the first log-posterior
   if (samplesNumber_ == 0)
   {
