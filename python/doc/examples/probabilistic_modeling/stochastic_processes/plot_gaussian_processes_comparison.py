@@ -19,7 +19,7 @@ Compare covariance models
 # The anisotropic squared exponential model
 # -----------------------------------------
 #
-# The `SquaredExponential` class allows one to define covariance models :
+# The :class:`~openturns.SquaredExponential` class allows one to define covariance models:
 #
 # * :math:`\sigma\in\mathbb{R}` is the amplitude parameter,
 # * :math:`\boldsymbol{\theta}\in\mathbb{R}^d` is the scale.
@@ -44,7 +44,8 @@ myModel = ot.SquaredExponential(scale, amplitude)
 # Gaussian processes
 # ------------------
 #
-# In order to create a `GaussianProcess`, we must have
+# In order to create a `GaussianProcess`, we must have:
+#
 # * a covariance model,
 # * a grid.
 #
