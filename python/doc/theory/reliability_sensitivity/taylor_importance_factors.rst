@@ -11,7 +11,7 @@ Let us denote by :math:`\uX` the input random vector.
 Assume that the marginals of :math:`\uX` are independent.
 Suppose that :math:`Z = h(\ux)` is a real function of the
 input, i.e. :math:`n_Z = 1`.
-Assume that the order 1 Taylor expansion of the function $h$
+Assume that the order 1 Taylor expansion of the function :math:`h`
 at the point :math:`\ux = \muX` is exact, i.e.
 
   .. math::
