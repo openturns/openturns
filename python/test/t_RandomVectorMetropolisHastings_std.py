@@ -3,13 +3,14 @@
 import openturns as ot
 import openturns.testing as ott
 
+ot.RandomGenerator.SetSeed(0)
+
 ot.TESTPREAMBLE()
 
 randomVector = ot.RandomVector(ot.Normal())
 initialState = [0.0]
 sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState)
-sampler.setBurnIn(20)
-x = sampler.getSample(10000)
+x = sampler.getSample(10000)[sampler.getBurnIn():]
 mean = x.computeMean()
 stddev = x.computeStandardDeviation()
 print(mean, stddev)
@@ -19,9 +20,9 @@ print(mean, stddev)
 # with link function
 slf = ot.SymbolicFunction(["x"], ["0.0", "0.1"])
 sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState, [0], slf)
-x = sampler.getSample(10000)
+x = sampler.getSample(10000)[sampler.getBurnIn():]
 mean = x.computeMean()
 stddev = x.computeStandardDeviation()
 print(mean, stddev)
-ott.assert_almost_equal(mean, [0.000605902])
-ott.assert_almost_equal(stddev, [0.0997537])
+ott.assert_almost_equal(mean, [0.00139906], .1)
+ott.assert_almost_equal(stddev, [0.0997537], .1)

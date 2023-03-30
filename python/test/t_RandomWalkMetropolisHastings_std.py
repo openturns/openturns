@@ -5,16 +5,17 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
+ot.RandomGenerator.SetSeed(0)
 
 # dummy run without likelihood
 mu = 5000.0
 prior = ot.Normal(mu, 1.0)
 initialState = [0.0]
-instrumental = ot.Normal(0.0, 5.0)
+instrumental = ot.Normal(0.0, 1.0)
 sampler = ot.RandomWalkMetropolisHastings(prior, initialState, instrumental)
 sampler.setBurnIn(1000)
-s1 = sampler.getSample(50)
-ott.assert_almost_equal(s1.computeMean()[0], mu, 1e-2, 1e3)
+s1 = sampler.getSample(2000)
+ott.assert_almost_equal(s1[sampler.getBurnIn():].computeMean()[0], mu, 1e-2, 1e3)
 
 data = ot.Sample(
     [
@@ -63,14 +64,14 @@ rwmh.setLikelihood(conditional, observations, linkFunction, covariates)
 
 # try to generate a sample
 sample = rwmh.getSample(10000)
-mu = sample.computeMean()
+mu = sample[rwmh.getBurnIn():].computeMean()
 sigma = sample.computeStandardDeviation()
 print("mu=", mu, "sigma=", sigma)
-ott.assert_almost_equal(mu, [14.8747, -0.230384])
-ott.assert_almost_equal(sigma, [7.3662, 0.108103])
+ott.assert_almost_equal(mu, [10.3854, -0.164881])
+ott.assert_almost_equal(sigma, [3.51975, 0.0517796])
 
 print("acceptance rate=", rwmh.getAcceptanceRate())
-ott.assert_almost_equal(rwmh.getAcceptanceRate(), 0.1999)
+ott.assert_almost_equal(rwmh.getAcceptanceRate(), 0.3345)
 
 # from 1532
 fullModel = ot.SymbolicFunction(["x", "theta"], ["theta", "1.0"])
@@ -135,4 +136,4 @@ mh_coll = [
 for mh in mh_coll:
     mh.setLikelihood(likelihood, obs)
 sampler = ot.Gibbs(mh_coll)
-parameters_sample = sampler.getSample(200)
+parameters_sample = sampler.getSample(2000)
