@@ -3,112 +3,103 @@
 Strong Maximum Test
 -------------------
 
-| The Strong Maximum Test is used under the following context:
-  :math:`\vect{X}` denotes a random input vector, representing the
-  sources of uncertainties, :math:`\pdf` its joint density probability,
-  :math:`\vect{d}` a deterministic vector, representing the fixed
-  variables :math:`g(\vect{X}\,,\,\vect{d})` the limit state function of
-  the model,
-  :math:`\cD_f = \{\vect{X} \in \Rset^n \, / \, g(\vect{X}\,,\,\vect{d}) \le 0\}`
-  the event considered here and :math:`{g(\vect{X}\,,\,\vect{d}) = 0}`
-  its boundary (also called limit state surface).
-| The probability content of the event :math:`\cD_f`:
+The Strong Maximum Test is used under the following context:  let :math:`\vect{X}` be a
+probabilistic input
+vector with joint density probability  :math:`\pdf`, let :math:`\vect{d}` be a  deterministic
+vector, let :math:`g(\vect{X}\,,\,\vect{d})` be the limit state function of
+the model and let :math:`\cD_f = \{\vect{X} \in \Rset^n \,
+/ \, g(\vect{X}\,,\,\vect{d}) \le 0\}` be an event whose probability
+:math:`P_f` is defined as:
 
-  .. math::
+.. math::
     :label: PfX12
 
-     \begin{aligned}
-         P_f &=&     \int_{{g(\vect{X}\,,\,\vect{d}) \le 0}}  \pdf\, d\vect{x}.
-       \end{aligned}
+       P_f =     \int_{{g(\vect{X}\,,\,\vect{d}) \le 0}}  \pdf\, d\vect{x}
 
-  may be evaluated with the FORM or SORM method.
+The probability :math:`P_f` is evaluated with the  :ref:`form_approximation` and :ref:`sorm_approximation`
+methods. These methods use the Nataf
+isoprobabilistic transformation which maps the
+probabilistic model in terms of :math:`\vect{X}` onto an equivalent model in terms of :math:`n`
+independent standard normal random :math:`\vect{U}` (refer to :ref:`isoprobabilistic_transformation`). In that new
+:math:`\vect{u}`-space,
+the event has the new expression defined from the transformed limit state function of the model :math:`G`:
+:math:`\cD_f = \{\vect{U} \in \Rset^n \, / \, h(\vect{U}\,,\,\vect{d}) \le 0\}`.
 
-| In order to evaluate an approximation of :math:`P_f`, these analytical
-  methods uses the Nataf isoprobabilistic transformation which maps the
-  probabilistic model in terms of :math:`\vect{X}` onto an equivalent
-  model in terms of :math:`n` independent standard normal random
-  :math:`\vect{U}` (refer to to have details on the transformation). In
-  that new :math:`\vect{u}`-space, the event has the new expression
-  defined from the transformed limit state function of the model
-  :math:`G` :
-  :math:`\cD_f = \{\vect{U} \in \Rset^n \, / \, G(\vect{U}\,,\,\vect{d}) \le 0\}`
-  and its boundary:
-  :math:`\{\vect{U} \in \Rset^n \, / \,G(\vect{U}\,,\,\vect{d}) = 0\}`.
-| These analytical methods rely on the assumption that most of the
-  contribution to :math:`P_f` comes from points located in the vicinity
-  of a particular point :math:`P^*`, the design point, defined in the
-  :math:`\vect{u}`-space as the point located on the limit state surface
-  and of maximal likelihood. Given the probabilistic characteristics of
-  the :math:`\vect{u}`-space, :math:`P^*` has a geometrical
-  interpretation : it is the point located on the event boundary and at
-  minimal distance from the center of the :math:`\vect{u}`-space. Thus,
-  the design point :math:`P^*` is the result of a constrained
-  optimization problem.
-| The FORM/SORM methods suppose that :math:`P^*` is unique.
-| One important difficulty comes from the fact that numerical method
-  involved in the determination of :math:`P^*` gives no guaranty of a
-  global optimum : the point to which it converges might be a local
-  optimum only. In that case, the contribution of the points in the
-  vicinity of the real design point is not taken into account, and this
-  contribution is the most important one.
-| Furthermore, even in the case where the global optimum has really been
-  found, there may exist another local optimum :math:`\tilde{P}^*` which
-  likelihood is slightly inferior to the design point one, which means
-  its distance from the center of the :math:`\vect{u}`-space is slightly
-  superior to the design point one. Thus, points in the vicinity of
-  :math:`\tilde{P}^*` may contribute significantly to the probability
-  :math:`P_f` and are not taken into account in the FORM and SORM
-  approximations.
-| In these both cases, the FORM and SORM approximations are of bad
-  quality because they neglect important contributions to :math:`P_f` .
-| The Strong Maximum Test helps to evaluate the quality of the design
-  point resulting from the optimization algorithm. It checks whether the
-  design point computed is:
+These analytical methods rely on the assumption that most of the contribution to :math:`P_f`
+comes from points located in the vicinity of a particular point :math:`P^*`, the design point, defined in the
+:math:`\vect{u}`-space as the point located on the limit state surface
+and of maximal likelihood. Given the probabilistic characteristics of the
+:math:`\vect{u}`-space,
+:math:`P^*` has a geometrical interpretation : it is the point located on the event boundary and at minimal distance
+from the center of the :math:`\vect{u}`-space. Thus, the design point :math:`P^*` is the result of a constrained
+optimization problem.
+
+Both FORM and SORM methods assume that :math:`P^*` is unique. One important difficulty comes
+from the fact that numerical methods involved in the determination of :math:`P^*` gives no
+guaranty of a global optimum: the point to which they converge might be a local optimum only.
+In that case, the contribution of the points in the vicinity of the real design point is not
+taken into account, and this contribution is the most important one.
+
+Furthermore, even in the case where the global optimum has really been found, there may exist
+another local optimum :math:`\tilde{P}^*` with
+likelihood only slightly inferior to the likelihood of the design point one, which means that it is only slightly
+further apart from the
+center of the :math:`\vect{u}`-space than the design point. Thus, points in the vicinity of :math:`\tilde{P}^*` may
+contribute significantly to the probability
+:math:`P_f` and are not taken into account in the FORM and SORM approximations.
+
+In both cases, the FORM and SORM approximations are of bad quality because they neglect important contributions to
+:math:`P_f`.
+The Strong Maximum Test helps to evaluate the quality of the design point resulting from the optimization algorithm. It checks whether the
+design point computed is:
 
 -  the *true* design point, which means a global maximum point,
 
 -  a *strong* design point, which means that there is no other local
-   maximum located on the event boundary and which likelihood is
-   slightly inferior to the design point one.
+   maximum located on the event boundary and with likelihood
+   only slightly inferior to the likelihood of the design point one.
 
-| This verification is very important in order to give sense to the FORM
-  and SORM approximations.
+This verification is very important in order to give sense to the FORM
+and SORM approximations.
 
-| The principle of the Strong Maximum Test relies on the geometrical definition
-  of the design point.
-| The objective is to detect all the points :math:`\tilde{P}^*` in the
-  ball of radius :math:`R_{\varepsilon} = \beta(1+\delta_{\varepsilon})`
-  which are potentially the real design point (case of
-  :math:`\tilde{P}_2^*`) or which contribution to :math:`P_f` is not
-  negligible as regards the approximations Form and SORM (case of
-  :math:`\tilde{P}_1^*`). The contribution of a point is considered as
-  negligible when its likelihood in the :math:`\vect{u}`-space is more
-  than :math:`\varepsilon`-times lesser than the design point one. The
-  radius :math:`R_{\varepsilon}` is the distance to the
-  :math:`\vect{u}`-space center upon which points are considered as
-  negligible in the evaluation of :math:`P_f`.
-| In order to catch the potential points located on the sphere of radius
-  :math:`R_{\varepsilon}` (frontier of the zone of prospection), it is
-  necessary to go a little further more : that’s why the test samples
-  the sphere of radius :math:`R = \beta(1+\tau \delta_{\varepsilon})`,
-  with :math:`\tau >0`.
-| Points on the sampled sphere which are in the vicinity of the design
-  point :math:`P^*` are less interesting than those verifying the event
-  and located *far* from the design point : these last ones might reveal
-  a potential :math:`\tilde{P}^*` which contribution to :math:`P_f` has
-  to be taken into account. The vicinity of the design point is defined
-  with the angular parameter :math:`\alpha` as the cone centered on
-  :math:`P^*` and of half-angle :math:`\alpha`.
-| The number :math:`N` of the simulations sampling the sphere of radius
-  :math:`R` is determined to ensure that the test detect with a
-  probability greater than :math:`(1 - q)` any point verifying the event
-  and outside the design point vicinity.
+The principle of the Strong Maximum Test relies on the geometrical definition
+of the design point.
+The objective is to detect all the points :math:`\tilde{P}^*` in the
+ball of radius :math:`R_{\varepsilon} = \beta(1+\delta_{\varepsilon})`
+which are potentially the real design point (case of
+:math:`\tilde{P}_2^*`) or whose contribution to :math:`P_f` is not
+negligible as regards the approximations Form and SORM (case of
+:math:`\tilde{P}_1^*`). The contribution of a point is considered as
+negligible when its likelihood in the :math:`\vect{u}`-space is less
+than :math:`\varepsilon` times the likelihood of the design point. The
+radius :math:`R_{\varepsilon}` is the distance to the
+:math:`\vect{u}`-space center upon which points are considered as
+negligible :math:`P_f`.
+
+In order to catch the potential points located on the sphere of radius
+:math:`R_{\varepsilon}` (frontier of the zone of prospection), it is
+necessary to go a little further : this is why the test samples
+the sphere of radius :math:`R = \beta(1+\tau \delta_{\varepsilon})`,
+with :math:`\tau >0`.
+
+Points on the sampled sphere which are in the vicinity of the design
+point :math:`P^*` are less interesting than those verifying the event
+and located *far* from the design point : the latter might reveal
+a potential :math:`\tilde{P}^*` whose contribution to :math:`P_f` has
+to be taken into account. The vicinity of the design point is defined
+with the angular parameter :math:`\alpha` as the cone centered on
+:math:`P^*` and of half-angle :math:`\alpha`.
+
+The number :math:`N` of the simulations sampling the sphere of radius
+:math:`R` is determined to ensure that the test detects with a
+probability greater than :math:`(1 - q)` any point verifying the event
+and outside the design point vicinity.
 
 .. image:: FigureStrongMaxTest.svg
   :align: center
 
-The vicinity of the Design Point is the arc of the sampled sphere which
-is inside the half space which frontier is the linearized limit state
+The vicinity of the design point is the arc of the sampled sphere which
+is inside the half space whose frontier is the linearized limit state
 function at the Design Point: the vicinity is
 the arc included in the half space :math:`D_1`.
 
@@ -128,16 +119,19 @@ parameters:
    number of points :math:`N` used to sample the sphere. The parameters
    are deductible from one other.
 
-| The Strong Maximum Test will sample the sphere of radius
-  :math:`\beta(1+\tau  \delta_{\varepsilon})`, where
-  :math:`\delta_{\varepsilon} = \sqrt{1 - 2 \frac{\ln(\varepsilon)}{\beta^2}}- 1`.
-| The test will detect with a probability greater than :math:`(1 - q)`
-  any point of :math:`\cD_f` which contribution to :math:`P_f` is not
-  negligible (i.e. which density value in the :math:`\vect{u}`-space is
-  greater than :math:`\varepsilon` times the density value at the design
-  point).
 
-| The Strong Maximum Test provides:
+The Strong Maximum Test will sample the sphere of radius
+:math:`\beta(1+\tau  \delta_{\varepsilon})`, where
+:math:`\delta_{\varepsilon} = \sqrt{1 - 2 \frac{\ln(\varepsilon)}{\beta^2}}- 1`.
+
+
+The test will detect with probability greater than :math:`(1 - q)`
+any point of :math:`\cD_f` whose contribution to :math:`P_f` is not
+negligible (i.e. with density value in the :math:`\vect{u}`-space
+greater than :math:`\varepsilon` times the density value at the design
+point).
+
+The Strong Maximum Test provides:
 
 -  set 1: all the points detected on the sampled sphere that are in
    :math:`\cD_f` and outside the design point vicinity, with the
@@ -157,19 +151,21 @@ parameters:
 
 Points are described by their coordinates in the :math:`\vect{x}`-space.
 
-| The parameter :math:`\tau` is directly linked to the hypothesis
-  according to which the boundary of the space :math:`\cD_f` is supposed
-  to be well approximated by a plane near the design point, which is
-  primordial for a FORM approximation of the probability content of
-  :math:`\cD_f`. Increasing :math:`\tau` is increasing the area where
-  the approximation FORM is applied.
-| The parameter :math:`\tau` also serves as a measure of distance from
-  the design point :math:`\vect{OP}^*` for a hypothetical local maximum:
-  the greater it is, the further we search for another local maximum.
-| Numerical experiments show that it is recommended to take
-  :math:`\tau \leq 4` (see the given reference below).
-| The following table helps to quantify the parameters of the test for a
-  problem of dimension 5.
+The parameter :math:`\tau` is directly linked to the hypothesis
+according to which the boundary of the space :math:`\cD_f` is supposed
+to be well approximated by a plane near the design point, which is
+primordial for a FORM approximation of the probability content of
+:math:`\cD_f`. Increasing :math:`\tau` is increasing the area where
+the approximation FORM is applied.
+
+The parameter :math:`\tau` also serves as a measure of distance from
+the design point :math:`P^*` for a hypothetical local maximum:
+the larger it is, the further we search for another local maximum.
+Numerical experiments show that it is recommended to take
+:math:`\tau \leq 4` (see the given reference below).
+
+The following table helps to quantify the parameters of the test for a
+problem of dimension 5.
 
 
 +-------------------+-----------------------+----------------+---------------+--------------------------------+-------------+
@@ -249,41 +245,41 @@ Points are described by their coordinates in the :math:`\vect{x}`-space.
 As the Strong Maximum Test involves the computation of :math:`N` values
 of the limit state function, which is computationally intensive, it is
 interesting to have more than just an indication about the quality of
-:math:`\vect{OP}^*`. In fact, the test gives some information about the
+:math:`P^*`. In fact, the test gives some information about the
 trace of the limit state function on the sphere of radius
 :math:`\beta(1+\tau \delta_{\varepsilon})` centered on the origin of the
 :math:`\vect{u}`-space. Two cases can be distinguished:
 
 -  | Case 1: set 1 is empty. We are confident on the fact that
-     :math:`\vect{OP}^*` is a design point verifying the hypothesis
+     :math:`P^*` is a design point verifying the hypothesis
      according to which most of the contribution of :math:`P_f` is
-     concentrated in the vicinity of :math:`\vect{OP}^*`. By using the
+     concentrated in the vicinity of :math:`P^*`. By using the
      value of the limit state function on the sample
      :math:`(\vect{U}_1, \dots, \vect{U}_N)`, we can check if the limit
      state function is reasonably linear in the vicinity of
-     :math:`\vect{OP}^*`, which can validate the second hypothesis of
+     :math:`P^*`, which can validate the second hypothesis of
      FORM.
    | If the behavior of the limit state function is not linear, we can
      decide to use an importance sampling version of the Monte Carlo
-     method for computing the probability of failure.
+     method to compute the probability of failure.
      However, the information obtained through the Strong Max Test,
-     according to which :math:`\vect{OP}^*` is the actual design point,
+     according to which :math:`P^*` is the actual design point,
      is quite essential : it allows one to construct an effective importance
      sampling density, e.g. a multidimensional Gaussian distribution
-     centered on :math:`\vect{OP}^*`.
+     centered on :math:`P^*`.
 
 -  Case 2: set 1 is not empty. There are two possibilities:
 
-   #. We have found some points that suggest that :math:`\vect{OP}^*` is
+   #. We have found some points that suggest that :math:`P^*` is
       not a strong maximum, because for some points of the sampled
       sphere, the value taken by the limit state function is slightly
       negative;
 
-   #. | We have found some points that suggest that :math:`\vect{OP}^*`
+   #. We have found some points that suggest that :math:`P^*`
         is not even the global maximum, because for some points of the
         sampled sphere, the value taken by the limit state function is
         very negative.
-      | In the first case, we can decide to use an importance sampling
+        In the first case, we can decide to use an importance sampling
         version of the Monte Carlo method for computing the probability
         of failure, but with a mixture of e.g. multidimensional gaussian
         distributions centered on the :math:`U_i` in :math:`\cD_f`
@@ -302,4 +298,5 @@ trace of the limit state function on the sphere of radius
 
 .. topic:: References:
 
-    - A. Dutfoy, R. Lebrun, 2006, "The Strong Maximum Test: an efficient way to assess the quality of a design point", PSAM8, New Orleans.
+    - A. Dutfoy, R. Lebrun, 2006, "The Strong Maximum Test: an
+      efficient way to assess the quality of a design point", PSAM8, New Orleans.

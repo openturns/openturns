@@ -9,10 +9,13 @@ Because of the uncertainties in the weight of the person, we consider that the f
 The length of the diving board is between 2.5 m and 2.6 m.
 The Young modulus is uncertain and between 65 and 75 GPa, which corresponds to
 the fiberglass material, a material often used for diving boards.
-Uncertainties in the production of the material are taken into account in the Young modulus and the section modulus of the board.
+Uncertainties in the production of the material are taken into account in the Young modulus
+and the section modulus of the board.
 
-We consider a cantilever beam defined by its Young’s modulus :math:`E`, its length :math:`L` and its section modulus :math:`I`.
-One end of the cantilever beam is built in a wall and we apply a concentrated bending load :math:`F` at the other end of the beam, resulting in a deviation :math:`Y`.
+We consider a cantilever beam defined by its Young’s modulus :math:`E`, its length :math:`L` and its
+section modulus :math:`I`.
+One end of the cantilever beam is built in a wall and we apply a concentrated bending load :math:`F` at
+the other end of the beam, resulting in a deviation :math:`Y`.
 
 .. figure:: ../_static/beam.png
     :align: center
@@ -22,7 +25,8 @@ One end of the cantilever beam is built in a wall and we apply a concentrated be
     The beam geometry
 
 
-**Inputs**
+Inputs
+------
 
  * :math:`E` : Young modulus (Pa), Beta(:math:`\alpha = 0.9`, :math:`\beta = 3.5`, a = :math:`65.0 \times 10^9`, :math:`b = 75.0 \times 10^9`)
  * :math:`F` : Loading (N), Lognormal(:math:`\mu_F=300.0`, :math:`\sigma_F=30.0`, shift=0.0)
@@ -31,7 +35,9 @@ One end of the cantilever beam is built in a wall and we apply a concentrated be
 
 In the previous table :math:`\mu_F=E(F)` and :math:`\sigma_F=\sqrt{V(F)}` are the mean and the standard deviation of :math:`F`.
 
-We assume that the random variables E, F, L and I are dependent and associated with a gaussian copula which correlation matrix is :
+We assume that the random variables :math:`E`, :math:`F`, :math:`L` and :math:`I` are dependent
+and associated with a gaussian copula which correlation matrix is:
+
  .. math::
 
     R = \begin{pmatrix}
@@ -42,15 +48,19 @@ We assume that the random variables E, F, L and I are dependent and associated w
         \end{pmatrix}
 
 
-In other words, we consider that the variables L and I are negatively correlated : when the length L increases, the moment of intertia I decreases.
+In other words, we consider that the variables :math:`L` and :math:`I` are negatively correlated:
+when the length :math:`L` increases, the moment of inertia :math:`I` decreases.
 
-**Output**
+Output
+------
 
 The vertical displacement at free end of the cantilever beam is:
+
  .. math::
     Y  = \dfrac{F\, L^3}{3 \, E \, I}
 
-A typical event of interest is when the beam deviation is too large which is a failure :
+A typical event of interest is when the beam deviation is too large which is a failure:
+
  .. math::
     Y \ge 0.30 (m)
 
