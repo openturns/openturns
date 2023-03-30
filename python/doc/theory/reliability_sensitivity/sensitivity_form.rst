@@ -35,12 +35,12 @@ Sensitivity Factors from FORM method
   :math:`U_{\vect{\theta}}^{*}` the design point associated to the event
   considered in the :math:`U`-space, and if the mapping of the limit
   state function by the :math:`T` is noted
-  :math:`G(\vect{U}\,,\,\vect{\theta}) =  g[T^{-1}(\vect{U}\,,\,\vect{\theta}), \vect{d}]`,
+  :math:`h(\vect{U}\,,\,\vect{\theta}) =  g[T^{-1}(\vect{U}\,,\,\vect{\theta}), \vect{d}]`,
   then the sensitivity factors vector is defined as:
 
   .. math::
 
-      \nabla_{\vect{\theta}} \beta_{HL} =  \displaystyle +\frac{1}{||\nabla_{\vect{\theta}} G(U_{\vect{\theta}}^{*}, \vect{d})||} \nabla_{\vect{u}} G(U_{\vect{\theta}}^{*}, \vect{d}).
+      \nabla_{\vect{\theta}} \beta_{HL} =  \displaystyle +\frac{1}{||\nabla_{\vect{\theta}} h(U_{\vect{\theta}}^{*}, \vect{d})||} \nabla_{\vect{u}} G(U_{\vect{\theta}}^{*}, \vect{d}).
 
 The sensitivity factors indicate the importance on the Hasofer-Lind
 reliability index (refer to ) of the value of the parameters used to

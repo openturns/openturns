@@ -38,8 +38,8 @@ Sensitivity analysis
     sensitivity_form
     sensitivity_hsic
 
-Probability of exceeding a threshold
-------------------------------------
+Probability of crossing a threshold
+-----------------------------------
 
 Approximation methods
 ~~~~~~~~~~~~~~~~~~~~~
