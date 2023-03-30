@@ -16,7 +16,7 @@ oneSample first=class=Point name=Unnamed dimension=5 values=[2,6,1,0,8] last=cla
 mean=class=Point name=Unnamed dimension=5 values=[5.3888,5.4518,5.5082,5.4548,5.5287]
 covariance=class=CovarianceMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[11.8336,-1.13537,-1.06199,-1.10364,-0.960355,-1.13537,12.0819,-1.07121,-1.27841,-0.968764,-1.06199,-1.07121,11.8851,-1.10004,-0.885674,-1.10364,-1.27841,-1.10004,11.9077,-1.29858,-0.960355,-0.968764,-0.885674,-1.29858,11.9054]
 Point= class=Point name=Unnamed dimension=5 values=[1,1,1,1,1]
-log pdf=-1.79769e+308
+log pdf=-inf
 pdf     =0
 cdf=0
 ccdf=1

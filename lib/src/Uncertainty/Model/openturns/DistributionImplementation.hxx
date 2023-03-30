@@ -39,6 +39,7 @@
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -1648,6 +1649,7 @@ protected:
     Point operator() (const Point & point) const override
     {
       const Scalar logPDF = p_distribution_->computeLogPDF(point);
+      if (logPDF == SpecFunc::LowestScalar) return Point(1, 0.0);
       return Point(1, -std::exp(logPDF) * logPDF);
     }
 
@@ -1659,7 +1661,8 @@ protected:
       for (UnsignedInteger i = 0; i < size; ++i)
       {
         const Scalar logPDFI = logPDF[i];
-        result(i, 0) = -std::exp(logPDFI) * logPDFI;
+        if (logPDFI == SpecFunc::LowestScalar) result(i, 0) = 0.0;
+        else result(i, 0) = -std::exp(logPDFI) * logPDFI;
       }
       return result;
     }
