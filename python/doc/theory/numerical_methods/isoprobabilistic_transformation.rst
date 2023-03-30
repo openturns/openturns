@@ -11,7 +11,8 @@ Let us denote by :math:`\vect{d}` a deterministic vector,
 :math:`g(\vect{X}\,,\,\vect{d})` the limit state function of the
 model,
 :math:`\cD_f = \{\vect{X} \in \Rset^n \, / \, g(\vect{X}\,,\,\vect{d}) \le 0\}`
-the event considered here and g(,) = 0 its boundary.
+the event considered here.
+
 One way to evaluate the probability content :math:`P_f` of the event
 :math:`\cD_f`:
 
@@ -21,7 +22,7 @@ One way to evaluate the probability content :math:`P_f` of the event
     P_f = \Prob{g(\vect{X}\,,\,\vect{d})\leq 0}=   \int_{\cD_f} \pdf\, d\vect{x}
 
 is to introduce an isoprobabilistic transformation :math:`T` which is
-a diffeomorphism from :math:`\supp{\vect{X}}` into :math:`\Rset^n`,
+a diffeomorphism from the support of the distribution :math:`f_{\vect{X}}` into :math:`\Rset^n`,
 such that the distribution of the random vector
 :math:`\vect{U}=T(\vect{X})` has the following properties :
 :math:`\vect{U}` and :math:`\mat{R}\,\vect{U}` have the same
@@ -33,20 +34,20 @@ Such transformations exist and the most widely used are:
 -  the Rosenblatt transformation (refer to [rosenblatt1952]_).
 
 If we suppose that the numerical model :math:`g` has suitable properties
-of differentiability, the evaluation of the probability :eq:`PfXIsoProb`
-can be transformed in the evaluation of the probability:
+of differentiability, then  :eq:`PfXIsoProb` can be written as:
 
 .. math::
  :label: StandardSpace
 
-    P_f = \Prob{G(\vect{U}\,,\,\vect{d})\leq 0} = \int_{\Rset^n} \boldsymbol{1}_{G(\vect{u}\,,\,\vect{d}) \leq 0}\,f_{\vect{U}}(\vect{u})\,d\vect{u}
+    P_f = \Prob{h(\vect{U}\,,\,\vect{d})\leq 0} = \int_{\Rset^n} \boldsymbol{1}_{h(\vect{u}\,,\,\vect{d}) \leq 0}\,f_{\vect{U}}(\vect{u})\,d\vect{u}
 
 where :math:`T` is a :math:`C^1`-diffeomorphism called an
 *isoprobabilistic transformation*, :math:`f_{\vect{U}}` the
 probability density function of :math:`\vect{U}=T(\vect{X})` and
-:math:`G=f\circ T^{-1}`.
+:math:`h=g\circ T^{-1}`.
 The vector :math:`\vect{U}` is said to be in the *standard space*,
 whereas :math:`\vect{X}` is in the *physical space*.
+
 The interest of such a transformation is the rotational invariance of
 the distributions in the standard space : the random vector
 :math:`\vect{U}` has a spherical distribution, which means that the
@@ -81,7 +82,9 @@ case.
 
 .. topic:: References:
 
-    - A. Der Kiureghian, P.L. Liu, 1986,"Structural Reliability Under Incomplete Probabilistic Information", Journal of Engineering Mechanics, vol 112, no. 1, pp85-104.
+    - A. Der Kiureghian, P.L. Liu, 1986,"Structural Reliability Under Incomplete
+      Probabilistic Information", Journal of Engineering Mechanics,
+      vol 112, no. 1, pp85-104.
     - [lebrun2009a]_
     - [lebrun2009b]_
     - [lebrun2009c]_

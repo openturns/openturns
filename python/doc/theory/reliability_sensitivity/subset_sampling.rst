@@ -70,7 +70,7 @@ where :math:`y_s` belongs to a set of decreasing intermediate thresholds such th
    y_1 > y_2 > \hdots > y_{m-1} > y_m
 
 These thresholds are estimated as :math:`\alpha_{SS}` quantiles from the set of :math:`N` samples of LSF outputs
-:math:`\mathcal{G}_{u,s} = \{ \overset{\circ}{g}(U^{(j)}) \}_{j=1}^N` with :math:`\alpha_{SS} \in ]0, 1[` the *rarity parameter*.
+:math:`\mathcal{h}_{u,s} = \{ \overset{\circ}{g}(U^{(j)}) \}_{j=1}^N` with :math:`\alpha_{SS} \in ]0, 1[` the *rarity parameter*.
 Consequently, one can notice that
 
 .. math::
