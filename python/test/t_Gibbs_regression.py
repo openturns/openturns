@@ -4,6 +4,8 @@ import openturns as ot
 import openturns.testing as ott
 import math as m
 
+ot.RandomGenerator.SetSeed(0)
+
 ot.TESTPREAMBLE()
 
 
@@ -68,15 +70,15 @@ mh_coll = [
 for mh in mh_coll:
     mh.setLikelihood(conditional, y_obs, linkFunction, p)
 sampler = ot.Gibbs(mh_coll)
-sampler.setBurnIn(2000)
+sampler.setBurnIn(1000)
 
 # get a realization
 realization = sampler.getRealization()
 print("y1=", realization)
 
 # try to generate a sample
-sampleSize = 1000
-sample = sampler.getSample(sampleSize)
+sampleSize = 10000
+sample = sampler.getSample(sampleSize)[sampler.getBurnIn():]
 
 x_mu = sample.computeMean()
 x_sigma = sample.computeStandardDeviation()
