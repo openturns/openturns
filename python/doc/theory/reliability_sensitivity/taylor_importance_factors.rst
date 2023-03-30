@@ -14,10 +14,9 @@ input, i.e. :math:`n_Z = 1`.
 Assume that the order 1 Taylor expansion of the function :math:`h`
 at the point :math:`\ux = \muX` is exact, i.e.
 
-  .. math::
-
-     h(\ux) = h(\muX)
-     + \sum_{i=1}^{n_X} \frac{\partial h}{\partial x_i} (\muX) (x_i - \mu_i)
+.. math::
+    h(\ux) = h(\muX)
+    + \sum_{i=1}^{n_X} \frac{\partial h}{\partial x_i} (\muX) (x_i - \mu_i)
 
 where:
 
@@ -30,15 +29,13 @@ where:
 
 Therefore the expectation of :math:`Z` is:
 
-  .. math::
-
-     \Expect{Z} = h(\muX).
+.. math::
+    \Expect{Z} = h(\muX).
 
 The independence of the marginals implies:
 
-  .. math::
-
-     \Var Z = \sum_{i=1}^{n_X} \left(\frac{\partial h}{\partial x_i} (\muX)\right)^2 \sigma_i^2
+.. math::
+    \Var Z = \sum_{i=1}^{n_X} \left(\frac{\partial h}{\partial x_i} (\muX)\right)^2 \sigma_i^2
 
 where:
 
@@ -49,15 +46,13 @@ where:
 Let :math:`\cF_i` be the importance factor of the i-th input
 variable, defined by:
 
-  .. math::
-
-     \cF_i = \frac{\left(\frac{\partial h}{\partial x_i} (\muX)\right)^2 \sigma_i^2}{\Var Z}
+.. math::
+    \cF_i = \frac{\left(\frac{\partial h}{\partial x_i} (\muX)\right)^2 \sigma_i^2}{\Var Z}.
 
 Therefore, the importance factors sum to one:
 
-  .. math::
-
-     1 = \cF_1 + \cF_2 + \ldots + \cF_{n_X}
+.. math::
+    \cF_1 + \cF_2 + \ldots + \cF_{n_X} = 1
 
 | Each coefficient :math:`\frac{\partial h(\ux)}{\partial x^i}` is a
   linear estimate of the number of units change in the variable
