@@ -136,4 +136,4 @@ mh_coll = [
 for mh in mh_coll:
     mh.setLikelihood(likelihood, obs)
 sampler = ot.Gibbs(mh_coll)
-parameters_sample = sampler.getSample(200)
+parameters_sample = sampler.getSample(2000)

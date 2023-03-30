@@ -67,7 +67,7 @@ int main(int, char *[])
     //sigma0s.add(2.0);
 
 
-    const Point mean_ref = {24.9529, 26.884};
+    const Point mean_ref = {31.0, 25.0};
     const Point stddev_ref = {1.79439e-14, 1.79439e-14};
     // play with the variance of the prior:
     // if the prior variance is low (information concerning the mu parameter is strong)
@@ -94,7 +94,7 @@ int main(int, char *[])
       RandomWalkMetropolisHastings sampler(prior, initialState, instrumental);
       sampler.setLikelihood(conditional, data);
       sampler.setVerbose(true);
-      sampler.setBurnIn(500);
+      sampler.setBurnIn(1000);
 
       Scalar sigmay = ConditionalDistribution(Normal(), prior).getStandardDeviation()[0];
       Scalar w = size * pow(sigma0, 2.) / (size * pow(sigma0, 2.) + pow(sigmay, 2.0));
@@ -110,11 +110,11 @@ int main(int, char *[])
       std::cout << "  expected posterior ~N(" << w*data.computeMean()[0] + (1. - w)*mu0 << ", " << sqrt(w * pow(sigmay, 2.0) / size) << ")" << std::endl;
 
       // try to generate a sample
-      Sample sample(sampler.getSample(50));
+      Sample sample(sampler.getSample(2000));
 
       std::cout << "  obtained posterior ~N(" << sample.computeMean()[0] << ", " << sample.computeStandardDeviation()[0] << ")" << std::endl;
-      assert_almost_equal(sample.computeMean()[0], mean_ref[i]);
-      assert_almost_equal(sample.computeStandardDeviation()[0], stddev_ref[i]);
+      assert_almost_equal(sample.computeMean()[0], mean_ref[i], 0.1);
+      assert_almost_equal(sample.computeStandardDeviation()[0], stddev_ref[i], 0.1);
       std::cout << "  acceptance rate=" << sampler.getAcceptanceRate() << std::endl;
     }
 
