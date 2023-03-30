@@ -7,7 +7,15 @@ Bandwidth sensitivity in kernel smoothing
 # Introduction
 # ------------
 #
-# We consider the distribution
+# When we have a sample, we may estimate the probability density function of the
+# underlying distribution using kernel smoothing.
+# One of the parameters of this method is the bandwidth, which can be either
+# set by the user, or estimated from the data.
+# This is especially true when the density is multimodal.
+# In this example, we consider a bimodal distribution and see how the bandwidth
+# can change the estimated probability density function.
+#
+# We consider the distribution:
 #
 # .. math::
 #    f_1(x) = w_1 f_A(x) + w_2 f_B(x)
@@ -46,7 +54,6 @@ Bandwidth sensitivity in kernel smoothing
 # %%
 import openturns as ot
 import openturns.viewer as otv
-import pylab as pl
 
 # %%
 # We choose a rather large sample size: :math:`n=1000`.
