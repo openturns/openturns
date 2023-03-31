@@ -43,16 +43,16 @@ where:
 
 -  :math:`\sigma_i^2 = \Var X_i` is the variance of the i-th input variable.
 
-Let :math:`\cF_i` be the importance factor of the i-th input
+Let :math:`\eta_i` be the importance factor of the i-th input
 variable, defined by:
 
 .. math::
-    \cF_i = \frac{\left(\frac{\partial h}{\partial x_i} (\muX)\right)^2 \sigma_i^2}{\Var Z}.
+    \eta_i = \frac{\left(\frac{\partial h}{\partial x_i} (\muX)\right)^2 \sigma_i^2}{\Var Z}.
 
 Therefore, the importance factors sum to one:
 
 .. math::
-    \cF_1 + \cF_2 + \ldots + \cF_{n_X} = 1
+    \eta_1 + \eta_2 + \ldots + \eta_{n_X} = 1
 
 | Each coefficient :math:`\frac{\partial h(\ux)}{\partial x^i}` is a
   linear estimate of the number of units change in the variable

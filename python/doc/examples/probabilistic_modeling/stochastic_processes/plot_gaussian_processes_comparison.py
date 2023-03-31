@@ -44,7 +44,7 @@ myModel = ot.SquaredExponential(scale, amplitude)
 # Gaussian processes
 # ------------------
 #
-# In order to create a `GaussianProcess`, we must have:
+# In order to create a :class:`~openturns.GaussianProcess`, we must have:
 #
 # * a covariance model,
 # * a grid.
