@@ -181,7 +181,7 @@ assert recompute == ot.Indices([1, 0, 1]), "wrong recompute indices"
 mean = sample.computeMean()
 stddev = sample.computeStandardDeviation()
 print(mean, stddev)
-ott.assert_almost_equal(mean, [-0.0138686,0.0949951, 20], 0.1)
+ott.assert_almost_equal(mean, [-0.0138686, 0.0949951, 20], 0.1)
 ott.assert_almost_equal(stddev, [0.956516, 1.05469, 0], 0.9)
 
 # check log-pdf is recomputed by the correct blocks
