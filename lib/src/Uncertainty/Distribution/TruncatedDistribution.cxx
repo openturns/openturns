@@ -66,8 +66,8 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   : DistributionImplementation()
   , bounds_(Point(distribution.getDimension(), lowerBound), Point(distribution.getDimension(), upperBound))
 {
-  if (!SpecFunc::IsNormal(lowerBound)) throw InvalidArgumentException(HERE) << "The lower bound parameter must be a real value, here bound=" << lowerBound;
-  if (!SpecFunc::IsNormal(upperBound)) throw InvalidArgumentException(HERE) << "The upper bound parameter must be a real value, here bound=" << upperBound;
+  if (SpecFunc::IsNaN(lowerBound)) throw InvalidArgumentException(HERE) << "The lower bound parameter is NaN";
+  if (SpecFunc::IsNaN(upperBound)) throw InvalidArgumentException(HERE) << "The upper bound parameter is NaN";
   setName("TruncatedDistribution");
   // This call also set the range
   setDistribution(distribution);
@@ -82,7 +82,7 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   : DistributionImplementation()
   , bounds_(distribution.getDimension())
 {
-  if (!SpecFunc::IsNormal(bound)) throw InvalidArgumentException(HERE) << "The bound parameter must be a real value, here bound=" << bound;
+  if (SpecFunc::IsNaN(bound)) throw InvalidArgumentException(HERE) << "The bound parameter is NaN";
   setName("TruncatedDistribution");
   setThresholdRealization(thresholdRealization);
   switch (side)
