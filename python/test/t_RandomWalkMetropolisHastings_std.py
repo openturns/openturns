@@ -7,7 +7,6 @@ ot.TESTPREAMBLE()
 
 ot.RandomGenerator.SetSeed(0)
 
-# dummy run without likelihood
 mu = 5000.0
 prior = ot.Normal(mu, 1.0)
 initialState = [0.0]
@@ -15,7 +14,7 @@ instrumental = ot.Normal(0.0, 1.0)
 sampler = ot.RandomWalkMetropolisHastings(prior, initialState, instrumental)
 sampler.setBurnIn(1000)
 s1 = sampler.getSample(2000)
-ott.assert_almost_equal(s1[sampler.getBurnIn():].computeMean()[0], mu, 1e-2, 1e3)
+ott.assert_almost_equal(s1[sampler.getBurnIn():].computeMean()[0], mu, 1e-2, 0.0)
 
 data = ot.Sample(
     [

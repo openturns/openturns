@@ -34,89 +34,72 @@ int main(int, char *[])
 
   try
   {
-    // this analytical example is taken from "Bayesian Modeling Using WinBUGS" - Ioannis Ntzoufras
-    // 1.5.3: Inference for the mean or normal data with known variance
-
-    // Variable of interest: Y=N(mu, sigma)
-    // Prior for mu: Normal(mu0, sigma0), sigma is known
-    // Posterior for mu: E(mu|y)=w*y_mean+(1-w)*mu0, and Var(mu|y)=w*(sigmay^2)/n
-    // => weighted average of the prior an the sample mean
-    // with w = n*sigma0^2 / (n*sigma0^2 + sigma^2)
-
-
-    // observations
-    UnsignedInteger size = 10;
-    Normal realDist(31.0, 1.2);
-
-    Sample data(realDist.getSample(size));
-
-    // instrumental distribution
-    DistributionCollection proposalColl;
-    Uniform mean_proposal(-2.0, 2.0);
-    Uniform std_proposal(-2.0, 2.0);
-    proposalColl.add(mean_proposal);
-    proposalColl.add(std_proposal);
-    ComposedDistribution instrumental(proposalColl);
-
-    // prior distribution
-    Scalar mu0 = 25.0;
-
-    Point sigma0s;
-    sigma0s.add(0.1);
-    sigma0s.add(1.0);
-    //sigma0s.add(2.0);
-
-
-    const Point mean_ref = {31.0, 25.0};
-    const Point stddev_ref = {1.79439e-14, 1.79439e-14};
-    // play with the variance of the prior:
-    // if the prior variance is low (information concerning the mu parameter is strong)
-    // then the posterior mean will be equal to the prior mean
-    // if large, the the posterior distribution is equivalent to the distribution of the sample mean
-    for ( UnsignedInteger i = 0; i < sigma0s.getDimension(); ++ i )
+    Scalar mu = 5000.0;
+    Normal prior(mu, 1.0);
+    Point initialState(1);
+    Normal instrumental(0.0, 1.0);
+    RandomWalkMetropolisHastings sampler(prior, initialState, instrumental);
+    sampler.setBurnIn(1000);
+    Sample s1(sampler.getSample(2000));
+    // create list of indices
+    Indices postBurnIn(s1.getSize() - sampler.getBurnIn());
+    postBurnIn.fill(sampler.getBurnIn());
+    assert_almost_equal(s1.select(postBurnIn).computeMean()[0], mu, 1e-2, 0.0);
+    Collection<Point> dataList(
     {
-
-      Scalar sigma0 = sigma0s[i];
-      Normal mean_prior(mu0, sigma0);
-      Dirac std_prior(2.0); // standard dev is known
-      DistributionCollection priorColl;
-      priorColl.add(mean_prior);
-      priorColl.add(std_prior);
-      Distribution prior = ComposedDistribution( priorColl );
-
-      // choose the initial state within the prior
-      Point initialState(prior.getRealization());
-
-      // conditional distribution
-      Distribution conditional = Normal();
-
-      // create a metropolis-hastings sampler
-      RandomWalkMetropolisHastings sampler(prior, initialState, instrumental);
-      sampler.setLikelihood(conditional, data);
-      sampler.setVerbose(true);
-      sampler.setBurnIn(1000);
-
-      Scalar sigmay = ConditionalDistribution(Normal(), prior).getStandardDeviation()[0];
-      Scalar w = size * pow(sigma0, 2.) / (size * pow(sigma0, 2.) + pow(sigmay, 2.0));
-
-      std::cout << "prior variance=" << pow(sigma0, 2.) << std::endl;
-
-      Point realization(sampler.getRealization());
-      std::cout << "  realization=" << realization << std::endl;
-
-      std::cout << "  w=" << w << std::endl;
-
-      // the posterior for mu is analytical
-      std::cout << "  expected posterior ~N(" << w*data.computeMean()[0] + (1. - w)*mu0 << ", " << sqrt(w * pow(sigmay, 2.0) / size) << ")" << std::endl;
-
-      // try to generate a sample
-      Sample sample(sampler.getSample(2000));
-
-      std::cout << "  obtained posterior ~N(" << sample.computeMean()[0] << ", " << sample.computeStandardDeviation()[0] << ")" << std::endl;
-      assert_almost_equal(sample.computeMean()[0], mean_ref[i], 0.1);
-      assert_almost_equal(sample.computeStandardDeviation()[0], stddev_ref[i], 0.1);
-      std::cout << "  acceptance rate=" << sampler.getAcceptanceRate() << std::endl;
+        {53.0, 1.0},
+        {57.0, 1.0},
+        {58.0, 1.0},
+        {63.0, 1.0},
+        {66.0, 0.0},
+        {67.0, 0.0},
+        {67.0, 0.0},
+        {67.0, 0.0},
+        {68.0, 0.0},
+        {69.0, 0.0},
+        {70.0, 0.0},
+        {70.0, 0.0},
+        {70.0, 1.0},
+        {70.0, 1.0},
+        {72.0, 0.0},
+        {73.0, 0.0},
+        {75.0, 0.0},
+        {75.0, 1.0},
+        {76.0, 0.0},
+        {76.0, 0.0},
+        {78.0, 0.0},
+        {79.0, 0.0},
+        {81.0, 0.0},
     }
+    );
+    Sample data(dataList);    
+    
+    SymbolicFunction fun(
+        {"alpha", "beta", "x"}, {"exp(alpha + beta * x) / (1 + exp(alpha + beta * x))"}
+    );
+    ParametricFunction linkFunction(fun, {2}, {0.0});
+    Normal instrumental2({0.0, 0.0}, {0.5, 0.05}, IdentityMatrix(2));
+
+    ComposedDistribution target({Uniform(-100.0, 100.0), Uniform(-100.0, 100.0)});
+    RandomWalkMetropolisHastings rwmh(target, {0.0, 0.0}, instrumental2);
+    Bernoulli conditional;
+    Sample observations(data.getMarginal(1));
+    Sample covariates(data.getMarginal(0));
+    rwmh.setLikelihood(conditional, observations, linkFunction, covariates);
+
+    // try to generate a sample
+    Sample sample(rwmh.getSample(10000));
+    Indices postBurnIn2(sample.getSize() - rwmh.getBurnIn());
+    postBurnIn2.fill(rwmh.getBurnIn());
+    Point muPost(sample.select(postBurnIn2).computeMean());
+    Point sigma(sample.computeStandardDeviation());
+     
+    //std::cout << "mu=" << muPost << ", sigma=" << sigma << std::endl;
+    assert_almost_equal(muPost, {10.3854, -0.164881});
+    assert_almost_equal(sigma, {3.51975, 0.0517796});
+    
+    //std::cout << "acceptance rate=" << rwmh.getAcceptanceRate() << std::endl;
+    assert_almost_equal(rwmh.getAcceptanceRate(), 0.3345);
 
   }
   catch (TestFailed & ex)
