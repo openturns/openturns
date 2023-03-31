@@ -50,5 +50,9 @@
 #include "openturns/SobolSimulationAlgorithm.hxx"
 #include "openturns/NAISResult.hxx"
 #include "openturns/NAIS.hxx"
+#include "openturns/CrossEntropyResult.hxx"
+#include "openturns/CrossEntropyImportanceSamplingAlgorithm.hxx"
+#include "openturns/StandardSpaceCrossEntropyImportanceSamplingAlgorithm.hxx"
+#include "openturns/PhysicalSpaceCrossEntropyImportanceSamplingAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */
