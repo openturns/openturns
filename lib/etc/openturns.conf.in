@@ -917,6 +917,9 @@
   <CalibrationResult-PriorLineStyle       value_str="dashed" />
   <CalibrationResult-PosteriorLineStyle   value_str="dotdash"/>
   <CalibrationResult-ObservationLineStyle value_str="solid"  />
+  <CalibrationResult-PriorPointStyle       value_str="circle" />
+  <CalibrationResult-PosteriorPointStyle   value_str="diamond" />
+  <CalibrationResult-ObservationPointStyle value_str="fsquare" />
 
   <!-- OT::ARMA parameters -->
   <ARMA-MeanEpsilon value_float="1.0e-14" />

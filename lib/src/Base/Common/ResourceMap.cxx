@@ -1541,6 +1541,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("GaussianResult-PriorLineStyle", "dashed");
   addAsString("GaussianResult-PosteriorLineStyle", "dotdash");
   addAsString("GaussianResult-ObservationLineStyle", "solid");
+  addAsString("GaussianResult-PriorPointStyle", "circle");
+  addAsString("GaussianResult-PosteriorPointStyle", "diamond");
+  addAsString("GaussianResult-ObservationPointStyle", "fsquare");
 
   // ARMA parameters //
   addAsScalar("ARMA-MeanEpsilon", 1.0e-14);

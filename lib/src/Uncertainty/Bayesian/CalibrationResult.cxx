@@ -222,9 +222,6 @@ Sample CalibrationResult::getOutputAtPosteriorMean() const
 
 GridLayout CalibrationResult::drawParameterDistributions() const
 {
-  Log::Show(Log::ALL);
-  LOGDEBUG(OSS() << "DEBUG:" << bayesian_);
-  
   const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("GaussianResult-xRangeMarginFactor");
 
   const UnsignedInteger dimension = parameterMAP_.getDimension();
@@ -232,7 +229,6 @@ GridLayout CalibrationResult::drawParameterDistributions() const
   const Point candidate(getParameterPrior().getMean());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    LOGDEBUG(OSS() << "+ Input :" << j);
     Graph graph("", getParameterPrior().getDescription()[j], "PDF", true, "topright");
 
     // The graph must show:
@@ -246,17 +242,14 @@ GridLayout CalibrationResult::drawParameterDistributions() const
 
     const Scalar xMinPost = postPDF.getData().getMin()[0];
     const Scalar xMaxPost = postPDF.getData().getMax()[0];
-    LOGDEBUG(OSS() << "DEBUG: xMinPost=" << xMinPost);
-    LOGDEBUG(OSS() << "DEBUG: xMaxPost=" << xMaxPost);
 
     // candidate
     const Scalar xCandidate = candidate[j];
-    LOGDEBUG(OSS() << "DEBUG: xCandidate=" << xCandidate);
     Sample data(1, 2);
     data(0, 0) = xCandidate;
     Cloud cloudCandidate(data);
     cloudCandidate.setColor(priorColor_);
-    cloudCandidate.setPointStyle("star");
+    cloudCandidate.setPointStyle(ResourceMap::GetAsString( "GaussianResult-PriorPointStyle" ));
     cloudCandidate.setLegend("Candidate");
 
     // Compute min and max bounds of graphics
@@ -270,9 +263,6 @@ GridLayout CalibrationResult::drawParameterDistributions() const
         const Scalar xMinPrior = priorPDF.getData().getMin()[0];
         const Scalar xMaxPrior = priorPDF.getData().getMax()[0];
         const Scalar xRange = std::max(xMaxPost, std::max(xMaxPrior, xCandidate)) - std::min(xMinPost, std::min(xMinPrior, xCandidate));
-        LOGDEBUG(OSS() << "DEBUG: xMinPrior=" << xMinPrior);
-        LOGDEBUG(OSS() << "DEBUG: xMaxPrior=" << xMaxPrior);
-        LOGDEBUG(OSS() << "DEBUG: xRange=" << xRange);
 
         // Now, build the common range
         xMin = std::min(xCandidate, std::min(xMinPrior, xMinPost)) - xRangeMarginFactor * xRange;
@@ -281,12 +271,9 @@ GridLayout CalibrationResult::drawParameterDistributions() const
         // The prior is flat: ignore it to compute the bounds.
         // Now, build the common range
         const Scalar xRange = std::max(xMaxPost, xCandidate) - std::min(xMinPost, xCandidate);
-        LOGDEBUG(OSS() << "DEBUG: xRange=" << xRange);
         xMin = std::min(xCandidate, xMinPost) - xRangeMarginFactor * xRange;
         xMax = std::max(xCandidate, xMaxPost) + xRangeMarginFactor * xRange;
     }
-    LOGDEBUG(OSS() << "DEBUG: xMin=" << xMin);
-    LOGDEBUG(OSS() << "DEBUG: xMax=" << xMax);
     
     // Now draw everything using the common range
     postPDF = getParameterPosterior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0);
@@ -296,7 +283,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     }
     else
     {
-        postPDF.setLegend("After calibration");
+        postPDF.setLegend("Calibrated");
     }
     postPDF.setColor(posteriorColor_);
     postPDF.setLineStyle(posteriorLineStyle_);
@@ -308,7 +295,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     }
     else
     {
-        priorPDF.setLegend("Before calibration");
+        priorPDF.setLegend("Initial");
     }
     priorPDF.setColor(priorColor_);
     priorPDF.setLineStyle(priorLineStyle_);
@@ -346,6 +333,14 @@ GridLayout CalibrationResult::drawResiduals() const
     const Scalar delta = 2.0 * (errorMax - errorMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
     const Scalar xMin = std::min(priorMin[j], std::min(postMin[j], errorMin - delta));
     const Scalar xMax = std::max(priorMax[j], std::max(postMax[j], errorMax + delta));
+
+    // observation error
+    Drawable obsPDF(errorJ.drawPDF(xMin, xMax).getDrawable(0));
+    obsPDF.setLegend("Observations");
+    obsPDF.setColor(observationColor_);
+    obsPDF.setLineStyle(observationLineStyle_);
+    graph.add(obsPDF);
+
     // prior
     Drawable priorPDF(KernelSmoothing().build(priorResiduals.getMarginal(j)).drawPDF(xMin, xMax).getDrawable(0));
     priorPDF.setLegend("Initial");
@@ -359,13 +354,6 @@ GridLayout CalibrationResult::drawResiduals() const
     postPDF.setColor(posteriorColor_);
     postPDF.setLineStyle(posteriorLineStyle_);
     graph.add(postPDF);
-
-    // observation error
-    Drawable obsPDF(errorJ.drawPDF(xMin, xMax).getDrawable(0));
-    obsPDF.setLegend("Observation errors");
-    obsPDF.setColor(observationColor_);
-    obsPDF.setLineStyle(observationLineStyle_);
-    graph.add(obsPDF);
 
     grid.setGraph(0, j, graph);
   }
@@ -394,18 +382,21 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
       Cloud obsCloud(inputObservations_j, outputObservations_.getMarginal(i));
       obsCloud.setLegend("Observations");
       obsCloud.setColor(observationColor_);
+      obsCloud.setPointStyle(ResourceMap::GetAsString( "GaussianResult-ObservationPointStyle" ));
       graph.add(obsCloud);
 
       // model outputs before calibration
       Cloud priorCloud(inputObservations_j, outputAtPriorMean_.getMarginal(i));
       priorCloud.setLegend("Initial");
       priorCloud.setColor(priorColor_);
+      priorCloud.setPointStyle(ResourceMap::GetAsString( "GaussianResult-PriorPointStyle" ));
       graph.add(priorCloud);
 
       // model outputs after calibration
       Cloud postCloud(inputObservations_j, outputAtPosteriorMean_.getMarginal(i));
       postCloud.setLegend("Calibrated");
       postCloud.setColor(posteriorColor_);
+      postCloud.setPointStyle(ResourceMap::GetAsString( "GaussianResult-PosteriorPointStyle" ));
       graph.add(postCloud);
 
       grid.setGraph(i, j, graph);
@@ -423,9 +414,6 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   const Description yDescription(outputObservations_.getDescription());
-  const String & priorColor_ = ResourceMap::GetAsString( "GaussianResult-priorColor_" );
-  const String & posteriorColor_ = ResourceMap::GetAsString( "GaussianResult-posteriorColor_" );
-  const String & observationColor_ = ResourceMap::GetAsString( "GaussianResult-observationColor_" );
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
     Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions", true, "topleft");
@@ -445,12 +433,14 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
     Cloud priorCloud(outputObservations_j, outputAtPriorMean_.getMarginal(j));
     priorCloud.setLegend("Initial");
     priorCloud.setColor(priorColor_);
+    priorCloud.setPointStyle(ResourceMap::GetAsString( "GaussianResult-PriorPointStyle" ));
     graph.add(priorCloud);
 
     // predictions after
     Cloud postCloud(outputObservations_j, outputAtPosteriorMean_.getMarginal(j));
     postCloud.setLegend("Calibrated");
     postCloud.setColor(posteriorColor_);
+    postCloud.setPointStyle(ResourceMap::GetAsString( "GaussianResult-PosteriorPointStyle" ));
     graph.add(postCloud);
 
     grid.setGraph(0, j, graph);
