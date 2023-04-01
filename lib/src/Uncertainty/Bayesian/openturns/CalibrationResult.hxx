@@ -137,6 +137,14 @@ private:
   /* Bayesian */
   Bool bayesian_;
 
+  /* Colors */
+  String priorLineStyle_;
+  String posteriorLineStyle_;
+  String observationLineStyle_;
+  String priorColor_;
+  String posteriorColor_;
+  String observationColor_;
+
 }; // class CalibrationResult
 
 

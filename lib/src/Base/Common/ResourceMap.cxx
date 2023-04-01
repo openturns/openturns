@@ -1536,6 +1536,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 100);
   addAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize", 100);
 
+  // GaussianResult parameters //
+  addAsScalar("GaussianResult-xRangeMarginFactor", 0.2);
+  addAsString("GaussianResult-PriorLineStyle", "dashed");
+  addAsString("GaussianResult-PosteriorLineStyle", "dotdash");
+  addAsString("GaussianResult-ObservationLineStyle", "solid");
+
   // ARMA parameters //
   addAsScalar("ARMA-MeanEpsilon", 1.0e-14);
 

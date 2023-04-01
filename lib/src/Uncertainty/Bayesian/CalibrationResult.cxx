@@ -56,6 +56,9 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   , outputObservations_(outputObservations)
   , residualFunction_(residualFunction)
   , bayesian_(bayesian)
+  , priorLineStyle_(ResourceMap::GetAsString( "GaussianResult-PriorLineStyle" ))
+  , posteriorLineStyle_(ResourceMap::GetAsString( "GaussianResult-PosteriorLineStyle" ))
+  , observationLineStyle_(ResourceMap::GetAsString( "GaussianResult-ObservationLineStyle" ))
 {
   // compute output at prior/posterior mean using the fact that model(inputObs)|p = residualFunction(p) + outputObs as the model is not available
   SampleImplementation outputAtPriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
@@ -65,6 +68,12 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   SampleImplementation outputAtPosteriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
   outputAtPosteriorMean.setData(residualFunction_(parameterPosterior_.getMean()) + outputObservations_.getImplementation()->getData());
   outputAtPosteriorMean_ = outputAtPosteriorMean;
+  
+  // Set default colors
+  Description colors = DrawableImplementation::BuildDefaultPalette(3);
+  priorColor_ = colors[0];
+  posteriorColor_ = colors[1];
+  observationColor_ = colors[2];
 }
 
 
@@ -213,80 +222,96 @@ Sample CalibrationResult::getOutputAtPosteriorMean() const
 
 GridLayout CalibrationResult::drawParameterDistributions() const
 {
+  Log::Show(Log::ALL);
+  LOGDEBUG(OSS() << "DEBUG:" << bayesian_);
+  
+  const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("GaussianResult-xRangeMarginFactor");
+
   const UnsignedInteger dimension = parameterMAP_.getDimension();
   GridLayout grid(1, dimension);
   const Point candidate(getParameterPrior().getMean());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
+    LOGDEBUG(OSS() << "+ Input :" << j);
     Graph graph("", getParameterPrior().getDescription()[j], "PDF", true, "topright");
 
-    // The graphmust show:
+    // The graph must show:
     // + the full posterior PDF
     // + the full prior PDF if it does not shrink too much the posterior graph
     // + the candidate
 
     // Dry run: draw everything using the natural parameters
     // posterior
-    Graph postPDF(getParameterPosterior().getMarginal(j).drawPDF());
+    Drawable postPDF(getParameterPosterior().getMarginal(j).drawPDF().getDrawable(0));
 
-    const Scalar xMinPost = postPDF.getDrawable(0).getData().getMin()[0];
-    const Scalar xMaxPost = postPDF.getDrawable(0).getData().getMax()[0];
-    const Scalar deltaPost = xMaxPost - xMinPost;
+    const Scalar xMinPost = postPDF.getData().getMin()[0];
+    const Scalar xMaxPost = postPDF.getData().getMax()[0];
+    LOGDEBUG(OSS() << "DEBUG: xMinPost=" << xMinPost);
+    LOGDEBUG(OSS() << "DEBUG: xMaxPost=" << xMaxPost);
 
     // candidate
     const Scalar xCandidate = candidate[j];
+    LOGDEBUG(OSS() << "DEBUG: xCandidate=" << xCandidate);
     Sample data(1, 2);
     data(0, 0) = xCandidate;
     Cloud cloudCandidate(data);
-    cloudCandidate.setColor("red");
+    cloudCandidate.setColor(priorColor_);
     cloudCandidate.setPointStyle("star");
     cloudCandidate.setLegend("Candidate");
 
-    // prior
-    Graph priorPDF(getParameterPrior().getMarginal(j).drawPDF());
-
-    const Scalar xMinPrior = priorPDF.getDrawable(0).getData().getMin()[0];
-    const Scalar xMaxPrior = priorPDF.getDrawable(0).getData().getMax()[0];
-
-    // Now, build the common range
-    Scalar xMin = std::min(xMinPost, std::max(xMinPrior, xMinPost - 0.5 * deltaPost));
-    Scalar xMax = std::max(xMaxPost, std::min(xMaxPrior, xMaxPost + 0.5 * deltaPost));
-    const Scalar lowXCandidate = xCandidate - 0.1 * deltaPost;
-    if (lowXCandidate < xMin)
+    // Compute min and max bounds of graphics
+    Scalar xMin;
+    Scalar xMax;
+    if (bayesian_)
     {
-      xMin = lowXCandidate;
-      xMax = std::max(xMaxPost, xMax - (xMin - lowXCandidate));
-    }
+        // prior
+        Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF().getDrawable(0));
 
-    const Scalar highXCandidate = xCandidate + 0.1 * deltaPost;
-    if (highXCandidate > xMax)
-    {
-      xMax = highXCandidate;
-      xMin = std::min(xMinPost, xMin - (highXCandidate - xMax));
-    }
+        const Scalar xMinPrior = priorPDF.getData().getMin()[0];
+        const Scalar xMaxPrior = priorPDF.getData().getMax()[0];
+        const Scalar xRange = std::max(xMaxPost, std::max(xMaxPrior, xCandidate)) - std::min(xMinPost, std::min(xMinPrior, xCandidate));
+        LOGDEBUG(OSS() << "DEBUG: xMinPrior=" << xMinPrior);
+        LOGDEBUG(OSS() << "DEBUG: xMaxPrior=" << xMaxPrior);
+        LOGDEBUG(OSS() << "DEBUG: xRange=" << xRange);
 
+        // Now, build the common range
+        xMin = std::min(xCandidate, std::min(xMinPrior, xMinPost)) - xRangeMarginFactor * xRange;
+        xMax = std::max(xCandidate, std::max(xMaxPrior, xMaxPost)) + xRangeMarginFactor * xRange;
+    } else {
+        // The prior is flat: ignore it to compute the bounds.
+        // Now, build the common range
+        const Scalar xRange = std::max(xMaxPost, xCandidate) - std::min(xMinPost, xCandidate);
+        LOGDEBUG(OSS() << "DEBUG: xRange=" << xRange);
+        xMin = std::min(xCandidate, xMinPost) - xRangeMarginFactor * xRange;
+        xMax = std::max(xCandidate, xMaxPost) + xRangeMarginFactor * xRange;
+    }
+    LOGDEBUG(OSS() << "DEBUG: xMin=" << xMin);
+    LOGDEBUG(OSS() << "DEBUG: xMax=" << xMax);
+    
     // Now draw everything using the common range
-    postPDF = getParameterPosterior().getMarginal(j).drawPDF(xMin, xMax);
+    postPDF = getParameterPosterior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0);
     if (bayesian_)
     {
-        postPDF.setLegends(Description(1, "Posterior"));
+        postPDF.setLegend("Posterior");
     }
     else
     {
-        postPDF.setLegends(Description(1, "Calibrated"));
+        postPDF.setLegend("After calibration");
     }
-    postPDF.setColors(Description(1, "green"));
+    postPDF.setColor(posteriorColor_);
+    postPDF.setLineStyle(posteriorLineStyle_);
 
+    Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0));
     if (bayesian_)
     {
-        priorPDF.setLegends(Description(1, "Prior"));
+        priorPDF.setLegend("Prior");
     }
     else
     {
-        priorPDF.setLegends(Description(1, "Initial"));
+        priorPDF.setLegend("Before calibration");
     }
-    priorPDF.setColors(Description(1, "red"));
-    priorPDF = getParameterPrior().getMarginal(j).drawPDF(xMin, xMax);
+    priorPDF.setColor(priorColor_);
+    priorPDF.setLineStyle(priorLineStyle_);
 
     // assemble the graphs in the correct order
     graph.add(priorPDF);
@@ -322,21 +347,24 @@ GridLayout CalibrationResult::drawResiduals() const
     const Scalar xMin = std::min(priorMin[j], std::min(postMin[j], errorMin - delta));
     const Scalar xMax = std::max(priorMax[j], std::max(postMax[j], errorMax + delta));
     // prior
-    Graph priorPDF(KernelSmoothing().build(priorResiduals.getMarginal(j)).drawPDF(xMin, xMax));
-    priorPDF.setLegends(Description(1, "Initial"));
-    priorPDF.setColors(Description(1, "red"));
+    Drawable priorPDF(KernelSmoothing().build(priorResiduals.getMarginal(j)).drawPDF(xMin, xMax).getDrawable(0));
+    priorPDF.setLegend("Initial");
+    priorPDF.setColor(priorColor_);
+    priorPDF.setLineStyle(priorLineStyle_);
     graph.add(priorPDF);
 
     // posterior
-    Graph postPDF(KernelSmoothing().build(postResiduals.getMarginal(j)).drawPDF(xMin, xMax));
-    postPDF.setLegends(Description(1, "Calibrated"));
-    postPDF.setColors(Description(1, "green"));
+    Drawable postPDF(KernelSmoothing().build(postResiduals.getMarginal(j)).drawPDF(xMin, xMax).getDrawable(0));
+    postPDF.setLegend("Calibrated");
+    postPDF.setColor(posteriorColor_);
+    postPDF.setLineStyle(posteriorLineStyle_);
     graph.add(postPDF);
 
     // observation error
-    Graph obsPDF(errorJ.drawPDF(xMin, xMax));
-    obsPDF.setLegends(Description(1, "Observation errors"));
-    obsPDF.setColors(Description(1, "blue"));
+    Drawable obsPDF(errorJ.drawPDF(xMin, xMax).getDrawable(0));
+    obsPDF.setLegend("Observation errors");
+    obsPDF.setColor(observationColor_);
+    obsPDF.setLineStyle(observationLineStyle_);
     graph.add(obsPDF);
 
     grid.setGraph(0, j, graph);
@@ -365,19 +393,19 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
       // observation
       Cloud obsCloud(inputObservations_j, outputObservations_.getMarginal(i));
       obsCloud.setLegend("Observations");
-      obsCloud.setColor("blue");
+      obsCloud.setColor(observationColor_);
       graph.add(obsCloud);
 
       // model outputs before calibration
       Cloud priorCloud(inputObservations_j, outputAtPriorMean_.getMarginal(i));
       priorCloud.setLegend("Initial");
-      priorCloud.setColor("red");
+      priorCloud.setColor(priorColor_);
       graph.add(priorCloud);
 
       // model outputs after calibration
       Cloud postCloud(inputObservations_j, outputAtPosteriorMean_.getMarginal(i));
       postCloud.setLegend("Calibrated");
-      postCloud.setColor("green");
+      postCloud.setColor(posteriorColor_);
       graph.add(postCloud);
 
       grid.setGraph(i, j, graph);
@@ -395,6 +423,9 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   const Description yDescription(outputObservations_.getDescription());
+  const String & priorColor_ = ResourceMap::GetAsString( "GaussianResult-priorColor_" );
+  const String & posteriorColor_ = ResourceMap::GetAsString( "GaussianResult-posteriorColor_" );
+  const String & observationColor_ = ResourceMap::GetAsString( "GaussianResult-observationColor_" );
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
     Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions", true, "topleft");
@@ -407,19 +438,19 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
     diagonalPoints(1, 0) = outputObservations_j.getMax()[0];
     diagonalPoints(1, 1) = diagonalPoints(1, 0);
     Curve diagonal(diagonalPoints);
-    diagonal.setColor("blue");
+    diagonal.setColor(observationColor_);
     graph.add(diagonal);
 
     // predictions before
     Cloud priorCloud(outputObservations_j, outputAtPriorMean_.getMarginal(j));
     priorCloud.setLegend("Initial");
-    priorCloud.setColor("red");
+    priorCloud.setColor(priorColor_);
     graph.add(priorCloud);
 
     // predictions after
     Cloud postCloud(outputObservations_j, outputAtPosteriorMean_.getMarginal(j));
     postCloud.setLegend("Calibrated");
-    postCloud.setColor("green");
+    postCloud.setColor(posteriorColor_);
     graph.add(postCloud);
 
     grid.setGraph(0, j, graph);

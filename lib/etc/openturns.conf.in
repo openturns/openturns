@@ -912,6 +912,12 @@
   <GaussianNonLinearCalibration-BootstrapSize  value_int="100" />
   <GaussianNonLinearCalibration-MultiStartSize value_int="100"   />
 
+  <!-- OT::CalibrationResults parameters -->
+  <CalibrationResult-xRangeMarginFactor   value_float="0.2"  />
+  <CalibrationResult-PriorLineStyle       value_str="dashed" />
+  <CalibrationResult-PosteriorLineStyle   value_str="dotdash"/>
+  <CalibrationResult-ObservationLineStyle value_str="solid"  />
+
   <!-- OT::ARMA parameters -->
   <ARMA-MeanEpsilon value_float="1.0e-14" />
 
