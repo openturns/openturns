@@ -1,10 +1,73 @@
 """
 Calibration of the Chaboche mechanical model
 ============================================
+
+In this example we present calibration methods on the Chaboche model. 
+A detailed explanation of this mechanical law is presented :ref:`here <use-case-chaboche>`.
+As we are going to see, this model is relatively simple to calibrate:
+its parameters are identifiable and the output is relatively sensitive
+to the variation of the parameters.
+Hence, all methods perform correctly in this case.
+
+
+Parameters to calibrate
+-----------------------
+
+The vector of parameters to calibrate is:
+
+.. math::
+
+   \\theta = (R,C,\\gamma).
+
+
+We set:
+
+- :math:`R = 750\\times 10^6`,
+- :math:`C = 2750\\times 10^6`,
+- :math:`\\gamma = 10`.
+
+Observations
+------------
+
+In order to create a calibration problem, we make the hypothesis that the strain has the following distribution:
+
+.. math::
+   \\epsilon \\sim \\mathcal{U}(0,0.07).
+
+where :math:`\\mathcal{U}` is the uniform distribution.
+Moreover, we consider a Gaussian noise on the observed constraint:
+
+.. math::
+   \\epsilon_\\sigma \\sim \\mathcal{N} \\left(0,10\\times 10^6\\right)
+
+
+and we make the hypothesis that the observation errors are independent.
+We set the number of observations to:
+
+.. math::
+
+   n = 100.
+
+
+We generate a Monte-Carlo samplg with size :math:`n`:
+
+.. math::
+
+   \\sigma_i = G(\\epsilon_i,R,C,\\gamma) + (\\epsilon_\\sigma)_i,
+
+
+for :math:`i = 1,..., n`.
+The observations are the pairs :math:`\\{(\\epsilon_i,\\sigma_i)\\}_{i=1,...,n}`, i.e. each observation is a couple made of the strain and the corresponding stress.
+
+Variables
+---------
+
+In the particular situation where we want to calibrate this model, the following list presents which variables are observed input variables, input calibrated variables and observed output variables.
+
+- :math:`\\epsilon`: Input. Observed.
+- :math:`R`, :math:`C`, :math:`\\gamma` : Inputs. Calibrated.
+- :math:`\\sigma`: Output. Observed.
 """
-# %%
-#
-# In this example we present calibration methods on the Chaboche model. A detailed explanation of this mechanical law is presented :ref:`here <use-case-chaboche>`.
 
 # %%
 import openturns as ot
@@ -127,6 +190,7 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 # This is why this parameter seems the most important in this case.
 
 # %%
+# sphinx_gallery_thumbnail_number = 3
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
 view = viewer.View(graph)

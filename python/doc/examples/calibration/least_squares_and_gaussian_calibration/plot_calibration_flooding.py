@@ -365,6 +365,7 @@ print(observationError)
 # We can see that the observation error is close to have a zero mean and a standard deviation equal to 0.1.
 
 # %%
+# sphinx_gallery_thumbnail_number = 5
 graph = calibrationResult.drawResiduals()
 graph.setLegendPosition("topleft")
 view = viewer.View(graph)

@@ -185,6 +185,7 @@ if calibrationResult.getInputObservations().getSize() == 1:
     calibrationResult.setOutputAtPriorAndPosteriorMean(outputAtPrior, outputAtPosterior)
 
 # %%
+# sphinx_gallery_thumbnail_number = 3
 graph = calibrationResult.drawObservationsVsInputs()
 view = viewer.View(graph)
 
