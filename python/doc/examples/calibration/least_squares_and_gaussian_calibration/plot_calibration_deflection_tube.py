@@ -6,8 +6,6 @@ In this example, we calibrate the deflection of a tube as described :ref:`here <
 More precisely, we calibrate the mechanical parameters of a physical model which
 computes the vertical deflection of a tube and two deflection angles.
 This example shows how to calibrate a computer code which has several outputs.
-Please read :doc:`gaussian_calibration` for more details on Bayesian Gaussian
-calibration.
 
 Variables
 ---------
