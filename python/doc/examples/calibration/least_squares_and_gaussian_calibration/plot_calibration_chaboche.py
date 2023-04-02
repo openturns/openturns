@@ -2,7 +2,7 @@
 Calibration of the Chaboche mechanical model
 ============================================
 
-In this example we present calibration methods on the Chaboche model. 
+In this example we present calibration methods on the Chaboche model.
 A detailed explanation of this mechanical law is presented :ref:`here <use-case-chaboche>`.
 As we are going to see, this model is relatively simple to calibrate:
 its parameters are identifiable and the output is relatively sensitive
