@@ -6,9 +6,9 @@ Choose the trend basis of a kriging metamodel
 # The goal of this example is to show how to configure the trend in a Kriging metamodel.
 # This is why this example focuses on the three available trends:
 #
-# * `ConstantBasisFactory`,
-# * `LinearBasisFactory`,
-# * `QuadraticBasisFactory`.
+# * :class:`~openturns.ConstantBasisFactory`,
+# * :class:`~openturns.LinearBasisFactory`,
+# * :class:`~openturns.QuadraticBasisFactory`.
 #
 # For this purpose, we use the :ref:`cantilever beam <use-case-cantilever-beam>` example.
 
@@ -43,7 +43,7 @@ myDistribution = cb.distribution
 
 # %%
 # We consider a simple Monte-Carlo sampling as a design of experiments.
-# This is why we generate an input sample using the `getSample` method of the distribution.
+# This is why we generate an input sample using the :meth:`~openturns.Distribution.getSample` method of the distribution.
 # Then we evaluate the output using the `model` function.
 
 # %%
