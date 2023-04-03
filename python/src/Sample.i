@@ -102,7 +102,7 @@ def __Sample_asDataFrame(self):
         The converted data
     """
     from pandas import DataFrame
-    df = DataFrame.from_records(self, columns=self.getDescription())
+    df = DataFrame.from_records(self, columns=list(self.getDescription()))
     return df
 Sample.asDataFrame = __Sample_asDataFrame
 
