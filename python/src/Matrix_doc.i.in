@@ -439,3 +439,144 @@ Examples
 >>> M = ot.Matrix([[]])
 >>> M.isEmpty()
 True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::computeHadamardProduct
+"Compute the Hadamard product matrix.
+
+Parameters
+----------
+Mat : :class:`~openturns.Matrix`
+    The right hand matrix
+
+Returns
+-------
+C : :class:`~openturns.Matrix`
+    The Hadamard product matrix.
+
+Notes
+-----
+
+The matrix :math:`\cC` resulting from the Hadamard product of the matrices
+:math:`\cA` and :`\cB` is as follows:
+
+.. math::
+
+    \cC_{i,j} = \cA_{i,j} * \cB_{i,j}
+
+Examples
+--------
+>>> import openturns as ot
+>>> A = ot.Matrix([[1.0, 2.0], [3.0, 4.0]])
+>>> B = ot.Matrix([[1.0, 2.0], [3.0, 4.0]])
+>>> C = A.computeHadamardProduct(B)
+>>> print(C)
+[[  1  4 ]
+ [  9 16 ]]
+>>> print(B.computeHadamardProduct(A))
+[[  1  4 ]
+ [  9 16 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::computeSumElements
+"Compute the sum of the matrix elements.
+
+Returns
+-------
+sum : a float
+    The sum of the elements.
+
+Notes
+-----
+
+We compute here the sum of elements of the matrix :math:`\cM`, that defines as:
+
+.. math::
+
+    s = \sum_{i=1}^{nRows}\sum_{j=1}^{nColumns} \cM_{i,j}
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
+>>> s = M.computeSumElements()
+>>> print(s)
+21.0"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::squareElements
+"Square the Matrix, ie each element of the matrix is squared.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
+>>> M.squareElements()
+>>> print(M)
+[[  1  4 ]
+ [  9 16 ]
+ [ 25 36 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::getDiagonal
+"Get the k-th diagonal of the matrix.
+
+Parameters
+----------
+k : int
+    The k-th diagonal to extract
+    Default value is 0
+
+Returns
+-------
+D: :class:`~openturns.Matrix`
+    The k-th diagonal.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]])
+>>> diag = M.getDiagonal()
+>>> print(diag)
+[[ 1 ]
+ [ 5 ]
+ [ 9 ]]
+>>> print(M.getDiagonal(1))
+[[ 2 ]
+ [ 6 ]]"
+
+// ---------------------------------------------------------------------
+
+
+%feature("docstring") OT::Matrix::setDiagonal
+"Set the k-th diagonal of the matrix.
+
+Parameters
+----------
+diag : sequence of floats
+    Value to set
+
+k : int
+    The k-th diagonal to extract
+    Default value is 0
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]])
+>>> diag = M.getDiagonal()
+>>> print(diag)
+[[ 1 ]
+ [ 5 ]
+ [ 9 ]]
+>>> M.setDiagonal([-1, 23, 9])
+>>> print(M)
+[[ -1  2  3 ]
+ [  4 23  6 ]
+ [  7  8  9 ]]"
+
+// ---------------------------------------------------------------------
