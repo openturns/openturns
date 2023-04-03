@@ -34,6 +34,7 @@
 #include "openturns/Function.hxx"
 #include "openturns/HSICStat.hxx"
 #include "openturns/RandomGenerator.hxx"
+#include "openturns/Distribution.hxx"
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
@@ -52,6 +53,7 @@ public:
 
   typedef Collection <CovarianceModel>  CovarianceModelCollection;
   typedef Collection <CovarianceMatrix>  CovarianceMatrixCollection;
+  typedef Collection <Distribution>  DistributionCollection;
 
   /** Default constructor */
   HSICEstimatorImplementation();
@@ -112,6 +114,15 @@ public:
   /** Compute all indices at once */
   virtual void run() const;
 
+  /** Compute the HSIC indices estimator intervals */
+  Interval getHSICIndicesInterval() const;
+
+  /** Compute the R2-HSIC indices estimator intervals */
+  Interval getR2HSICIndicesInterval() const;
+
+  /** Compute the permutation p-values estimator intervals */
+  Interval getPermutationPValuesInterval() const;
+
   /** Draw the HSIC indices */
   Graph drawHSICIndices() const;
 
@@ -127,6 +138,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+
 protected:
 
   /** Reset indices to void */
@@ -136,10 +148,10 @@ protected:
   virtual void computeCovarianceMatrices();
 
   /** Compute p-value with permutation */
-  virtual void computePValuesPermutationSequential() const;
+  virtual Point computePValuesPermutationSequential(const Sample & sample, const CovarianceMatrixCollection & coll, const CovarianceMatrix & covMat) const;
 
   /** Compute p-value with permutation using TBB */
-  virtual void computePValuesPermutationParallel() const;
+  virtual Point computePValuesPermutationParallel(const Sample & sample, const CovarianceMatrixCollection & coll, const CovarianceMatrix & covMat) const;
 
   /** Compute the p-values with asymptotic formula */
   virtual void computePValuesAsymptotic() const;
@@ -154,6 +166,12 @@ protected:
 
   /** Compute HSIC and R2-HSIC indices */
   virtual void computeIndices() const;
+
+  /** Compute the bootstrap HSIC indices sample */
+  void computeBootstrapIndices() const;
+
+  /** Compute the bootstrap asymptotic pvalues sample */
+  void computeBootstrapPValuesPermutation() const;
 
   /** Draw values stored in a point */
   Graph drawValues(const Point &values, const String &title) const;
@@ -176,10 +194,19 @@ protected:
   mutable Point PValuesAsymptotic_ ;
   PersistentCollection <CovarianceMatrix> inputCovarianceMatrixCollection_;
   CovarianceMatrix outputCovarianceMatrix_;
+  mutable Sample hsicBootstratSample_;
+  mutable Sample hsicR2BootstratSample_;
+  mutable Sample pValuesPermutationBootstratSample_;
+  mutable Sample pValuesAsymptoticBootstratSample_;
   UnsignedInteger permutationSize_ ;
   mutable Bool isAlreadyComputedIndices_ = false ;
   mutable Bool isAlreadyComputedPValuesPermutation_ = false ;
   mutable Bool isAlreadyComputedPValuesAsymptotic_ = false ;
+  mutable Bool isAlreadyComputedIndicesBootstrap_ = false ;
+  mutable Bool isAlreadyComputedPValuesAsymptoticBootstrap_ = false ;
+  mutable Bool isAlreadyComputedPValuesPermutationBootstrap_ = false ;
+  Scalar confidenceLevel_;
+  UnsignedInteger bootstrapSize_;
 };
 
 END_NAMESPACE_OPENTURNS
