@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -27,8 +28,21 @@ print("Spearman=", ot.HypothesisTest.Spearman(sampleY, sampleZ, 0.10))
 # p-value : P_H0(test statistics > observed test statistics)
 # Test = True <=> p-value > p-value threshold
 
-print("FullSpearmanXZ=", ot.HypothesisTest.FullSpearman(sampleX, sampleZ, 0.10))
-print("FullSpearmanYY=", ot.HypothesisTest.FullSpearman(sampleY, sampleY, 0.10))
+# Expected result is SpecFunc::MaxScalar
+fullSpearman = ot.HypothesisTest.FullSpearman(sampleX, sampleZ, 0.10)[0]
+testStatistic = fullSpearman.getStatistic()
+assert (testStatistic == ot.SpecFunc.MaxScalar)
+
+fullSpearman = ot.HypothesisTest.FullSpearman(sampleX, sampleZ, 0.10)[1]
+pValue = fullSpearman.getPValue()
+testStatistic = fullSpearman.getStatistic()
+ott.assert_almost_equal(pValue, 0.903, 1e-4, 0.0)
+ott.assert_almost_equal(testStatistic, 0.1219, 1e-4, 0.0)
+
+# Expected result is SpecFunc::MaxScalar
+fullSpearman = ot.HypothesisTest.FullSpearman(sampleY, sampleY, 0.10)[0]
+testStatistic = fullSpearman.getStatistic()
+assert (testStatistic == ot.SpecFunc.MaxScalar)
 
 # Partial Spearman Test : collection of tests of zero correlation between a selection of the 1D marginals of a sample and another 1D sample
 # H0 = zero rank correlation

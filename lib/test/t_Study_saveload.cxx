@@ -42,8 +42,7 @@ void compare(const T & savedInstance, const Study & study, const String & tag = 
     label[0] = tolower(label[0]);
   }
   study.fillObject(label, loadedInstance);
-  fullprint << "saved  " << className << " = " << savedInstance  << std::endl;
-  fullprint << "loaded " << className << " = " << loadedInstance << std::endl;
+  assert (loadedInstance == savedInstance);
 }
 
 
@@ -995,8 +994,7 @@ int main(int, char *[])
 
     Point namedPoint2;
     study2.fillObjectByName( namedPoint2, "point" );
-    fullprint << "saved  Point = " << namedPoint  << std::endl;
-    fullprint << "loaded Point = " << namedPoint2 << std::endl;
+    assert (namedPoint2 == namedPoint);
 
 
     // Type

@@ -30,7 +30,7 @@ print("Point= ", point)
 
 # Show PDF and CDF of point
 LPDF = distribution.computeLogPDF(point)
-print("log pdf=%.5e" % LPDF)
+assert (LPDF == ot.SpecFunc.LowestScalar)
 PDF = distribution.computePDF(point)
 print("pdf     =", PDF)
 CDF = distribution.computeCDF(point)
