@@ -80,6 +80,8 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # Load the Chaboche data structure
 cm = chaboche_model.ChabocheModel()
+print("Inputs:", cm.model.getInputDescription())
+print("Outputs:", cm.model.getOutputDescription())
 
 # %%
 # We get the Chaboche model and the joint input distribution :

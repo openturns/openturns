@@ -3,6 +3,7 @@ Use case : logistic model
 =========================
 """
 import openturns as ot
+import numpy as np
 
 
 class LogisticModel:
@@ -21,6 +22,9 @@ class LogisticModel:
 
     b : Constant
         Parameter of the model b=1.5887e-10
+
+    nbdates : Constant
+        The number of years in the dataset.
 
     distY0 : `Normal` distribution
              ot.Normal(y0, 0.1 * y0)
@@ -57,8 +61,6 @@ class LogisticModel:
         self.distA = ot.Normal(self.a, 0.3 * self.a)
         self.distB = ot.Normal(self.b, 0.3 * self.b)
         self.distX = ot.ComposedDistribution([self.distY0, self.distA, self.distB])
-        self.model = ot.SymbolicFunction(["t", "y", "a", "b"], ["a*y - b*y^2"])
-
         # Observation points
         self.data = ot.Sample(
             [
@@ -86,3 +88,25 @@ class LogisticModel:
                 [2000, 281],
             ]
         )
+        self.data.setDescription(["Time", "U.S. Population"])
+        self.nbdates = self.data.getSize()
+        def logisticModel(X):
+            t = [X[i] for i in range(self.nbdates)]
+            a = X[22]
+            c = X[23]
+            t0 = 1790.0
+            y0 = 3.9e6
+            b = np.exp(c)
+            y = [0.0] * self.nbdates
+            for i in range(self.nbdates):
+                y[i] = a * y0 / (b * y0 + (a - b * y0) * np.exp(-a * (t[i] - t0)))
+            z = [yi / 1.0e6 for yi in y]  # Convert into millions
+            return z
+        self.model = ot.PythonFunction(24, self.nbdates, logisticModel)
+        inputLabels = ["t%d" % (i) for i in range(self.nbdates)]
+        inputLabels.append("a")
+        inputLabels.append("c")
+        outputLabels = ["z%d" % (i) for i in range(self.nbdates)]
+        self.model.setInputDescription(inputLabels)
+        self.model.setOutputDescription(outputLabels)
+

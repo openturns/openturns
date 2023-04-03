@@ -2,10 +2,17 @@
 Calibration of the deflection of a tube
 =======================================
 
-In this example, we calibrate the deflection of a tube as described :ref:`here <use-case-deflection-tube>`.
+In this example, we calibrate the deflection of a tube as described in the :ref:`use cases <use-case-deflection-tube>` section.
 More precisely, we calibrate the mechanical parameters of a physical model which
 computes the vertical deflection of a tube and two deflection angles.
 This example shows how to calibrate a computer code which has several outputs.
+
+In this example, we use Gaussian calibration method to calibrate the parametric
+model. 
+Please read :ref:`gaussian_calibration` for more details on Bayesian Gaussian
+calibration.
+This study is relatively complicated: please read the :doc:`calibration of the Chaboche mechanical model
+</auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_chaboche>` first if this is not already done.
 
 Variables
 ---------
@@ -43,6 +50,8 @@ print("Outputs:", dt.model.getOutputDescription())
 # 3 outputs: Deflection, Left angle, Right angle.
 # In this calibration example, the variables F and E are observed inputs
 # and the input parameters L, a, De, di are calibrated.
+
+# %%
 # We create a sample out of our input distribution :
 sampleSize = 100
 inputSample = dt.inputDistribution.getSample(sampleSize)
@@ -170,7 +179,8 @@ print("Physical Model Parameters:", dt.model.getParameterDescription())
 # In order to perform calibration, we have to define a parametric model,
 # with observed inputs and parameters to calibrate.
 # In order to do this, we create a :class:`~openturns.ParametricFunction` where the parameters
-# are L, a, de, di.
+# are `L`, `a`, `de`, `di`, which have the indices 1, 2, 3 and 4
+# in the physical model.
 #
 # +-------+----------------+
 # | Index | Input variable |
@@ -253,7 +263,8 @@ calibrationResult = algo.getResult()
 # %%
 # The `getParameterMAP()` method returns the optimized parameters.
 thetaMAP = calibrationResult.getParameterMAP()
-thetaMAP
+print("theta After = ", thetaMAP)
+print("theta Before = ", thetaPrior)
 
 # %%
 # Compute a 95% credibility interval for each marginal.

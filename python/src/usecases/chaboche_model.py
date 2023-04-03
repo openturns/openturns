@@ -73,3 +73,4 @@ class ChabocheModel:
 
         self.model = ot.PythonFunction(4, 1, g)
         self.model.setInputDescription(["Strain", "R", "C", "Gamma"])
+        self.model.setOutputDescription(["Sigma"])

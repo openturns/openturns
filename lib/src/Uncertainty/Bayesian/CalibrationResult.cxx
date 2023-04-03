@@ -56,9 +56,9 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   , outputObservations_(outputObservations)
   , residualFunction_(residualFunction)
   , bayesian_(bayesian)
-  , priorLineStyle_(ResourceMap::GetAsString( "GaussianResult-PriorLineStyle" ))
-  , posteriorLineStyle_(ResourceMap::GetAsString( "GaussianResult-PosteriorLineStyle" ))
-  , observationLineStyle_(ResourceMap::GetAsString( "GaussianResult-ObservationLineStyle" ))
+  , priorLineStyle_(ResourceMap::GetAsString( "CalibrationResult-PriorLineStyle" ))
+  , posteriorLineStyle_(ResourceMap::GetAsString( "CalibrationResult-PosteriorLineStyle" ))
+  , observationLineStyle_(ResourceMap::GetAsString( "CalibrationResult-ObservationLineStyle" ))
 {
   // compute output at prior/posterior mean using the fact that model(inputObs)|p = residualFunction(p) + outputObs as the model is not available
   SampleImplementation outputAtPriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
@@ -222,7 +222,7 @@ Sample CalibrationResult::getOutputAtPosteriorMean() const
 
 GridLayout CalibrationResult::drawParameterDistributions() const
 {
-  const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("GaussianResult-xRangeMarginFactor");
+  const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("CalibrationResult-xRangeMarginFactor");
 
   const UnsignedInteger dimension = parameterMAP_.getDimension();
   GridLayout grid(1, dimension);
@@ -253,7 +253,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
         data(0, 0) = xCandidate;
         cloudCandidate = Cloud(data);
         cloudCandidate.setColor(priorColor_);
-        cloudCandidate.setPointStyle(ResourceMap::GetAsString( "GaussianResult-PriorPointStyle" ));
+        cloudCandidate.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-PriorPointStyle" ));
         if (upperRightGraph)
         {
             cloudCandidate.setLegend("Candidate");
@@ -451,7 +451,7 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
           obsCloud.setLegend("Observations");
       }
       obsCloud.setColor(observationColor_);
-      obsCloud.setPointStyle(ResourceMap::GetAsString( "GaussianResult-ObservationPointStyle" ));
+      obsCloud.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-ObservationPointStyle" ));
       graph.add(obsCloud);
 
       // model outputs before calibration
@@ -461,7 +461,7 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
           priorCloud.setLegend("Initial");
       }
       priorCloud.setColor(priorColor_);
-      priorCloud.setPointStyle(ResourceMap::GetAsString( "GaussianResult-PriorPointStyle" ));
+      priorCloud.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-PriorPointStyle" ));
       graph.add(priorCloud);
 
       // model outputs after calibration
@@ -471,7 +471,7 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
           postCloud.setLegend("Calibrated");
       }
       postCloud.setColor(posteriorColor_);
-      postCloud.setPointStyle(ResourceMap::GetAsString( "GaussianResult-PosteriorPointStyle" ));
+      postCloud.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-PosteriorPointStyle" ));
       graph.add(postCloud);
 
       grid.setGraph(i, j, graph);
@@ -512,7 +512,7 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
       priorCloud.setLegend("Initial");
     }
     priorCloud.setColor(priorColor_);
-    priorCloud.setPointStyle(ResourceMap::GetAsString( "GaussianResult-PriorPointStyle" ));
+    priorCloud.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-PriorPointStyle" ));
     graph.add(priorCloud);
 
     // predictions after
@@ -522,7 +522,7 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
       postCloud.setLegend("Calibrated");
     }
     postCloud.setColor(posteriorColor_);
-    postCloud.setPointStyle(ResourceMap::GetAsString( "GaussianResult-PosteriorPointStyle" ));
+    postCloud.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-PosteriorPointStyle" ));
     graph.add(postCloud);
 
     grid.setGraph(0, j, graph);

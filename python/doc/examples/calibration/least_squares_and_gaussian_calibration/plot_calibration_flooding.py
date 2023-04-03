@@ -1,11 +1,17 @@
 """
 Calibration of the flooding model
 =================================
+
+In this example we are interested in the calibration of the :ref:`flooding model <use-case-flood-model>`.
+We calibrate the parameters of a flooding model where only the difference between the downstream and upstream riverbed levels can be calibrated. This example shows how to manage the lack of identifiability in a calibration problem.
+
+This example use least squares to calibrate the parametric
+model. 
+Please read :ref:`code_calibration` for more details on code calibration and least squares.
+This study is relatively complicated: please read the :doc:`calibration of the Chaboche mechanical model
+</auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_chaboche>` first if this is not already done.
 """
 # %%
-# In this example we are interested in the calibration of the :ref:`flooding model <use-case-flood-model>`.
-# In this example we calibrate the parameters of a flooding model where only the difference between the downstream and upstream riverbed levels can be calibrated. This example shows how to manage the lack of identifiability in a calibration problem.
-#
 # Parameters to calibrate
 # -----------------------
 #
@@ -55,9 +61,9 @@ Calibration of the flooding model
 # Variables
 # ---------
 #
-# - Q : Input. Observed.
-# - Ks, Zv, Zm : Input. Calibrated.
-# - H: Output. Observed.
+# - :math:`Q` : Input. Observed.
+# - :math:`K_s`, :math:`Z_v`, :math:`Z_m` : Input. Calibrated.
+# - :math:`H`: Output. Observed.
 #
 # Analysis
 # --------
@@ -85,6 +91,8 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # We load the flooding use case :
 fm = flood_model.FloodModel()
+print("Inputs:", fm.model.getInputDescription())
+print("Outputs:", fm.model.getOutputDescription())
 
 # %%
 # We define the model :math:`g` which has 4 inputs and one output H.
