@@ -82,6 +82,12 @@ public:
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const override;
 
+  /** Get the skewness of the distribution */
+  Point getSkewness() const override;
+
+  /** Get the kurtosis of the distribution */
+  Point getKurtosis() const override;
+
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Distribution getStandardRepresentative() const override;
 
