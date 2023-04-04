@@ -280,12 +280,12 @@ calibrationResult = algo.getResult()
 # returns the maximum of the posterior distribution of :math:`\theta`.
 thetaMAP = calibrationResult.getParameterMAP()
 print("theta After = ")
-print("    R = %.2f (MPa)" % (thetaMAP[0] / 1.e6))
-print("    C = %.2f (MPa)" % (thetaMAP[1] / 1.e6))
+print("    R = %.2f (MPa)" % (thetaMAP[0] / 1.0e6))
+print("    C = %.2f (MPa)" % (thetaMAP[1] / 1.0e6))
 print("    Gamma = %.4f (MPa)" % (thetaMAP[2]))
 print("theta Before = ")
-print("    R = %.2f (MPa)" % (thetaPrior[0] / 1.e6))
-print("    C = %.2f (MPa)" % (thetaPrior[1] / 1.e6))
+print("    R = %.2f (MPa)" % (thetaPrior[0] / 1.0e6))
+print("    C = %.2f (MPa)" % (thetaPrior[1] / 1.0e6))
 print("    Gamma = %.4f (MPa)" % (thetaPrior[2]))
 
 # %%
@@ -334,11 +334,14 @@ observationError
 
 # %%
 # In order to validate that the distribution of the residuals is
-# Gaussian after calibration, we use the 
+# Gaussian after calibration, we use the
 # :meth:`~openturns.CalibrationResult.drawResiduals` method.
 graph = calibrationResult.drawResiduals()
-view = viewer.View(graph, figure_kw={"figsize": (6.0, 4.0)}, 
-                   legend_kw={"bbox_to_anchor":(1.0, 1.0), "loc":"upper left"})
+view = viewer.View(
+    graph,
+    figure_kw={"figsize": (6.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
 plt.subplots_adjust(right=0.6)
 
 # %%
@@ -356,11 +359,14 @@ plt.subplots_adjust(right=0.6)
 # The parameters which best fit to the data may be sensitive to the random
 # noise in the observed outputs.
 # In order to see how this source of randomness change the optimum
-# parameter, we use 
+# parameter, we use
 # :meth:`~openturns.CalibrationResult.drawParameterDistributions`.
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(graph, figure_kw={"figsize": (10.0, 4.0)}, 
-                   legend_kw={"bbox_to_anchor":(1.0, 1.0), "loc":"upper left"})
+view = viewer.View(
+    graph,
+    figure_kw={"figsize": (10.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
 plt.subplots_adjust(right=0.8)
 
 # %%
@@ -458,8 +464,11 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawResiduals()
-view = viewer.View(graph, figure_kw={"figsize": (6.0, 4.0)}, 
-                   legend_kw={"bbox_to_anchor":(1.0, 1.0), "loc":"upper left"})
+view = viewer.View(
+    graph,
+    figure_kw={"figsize": (6.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
 plt.subplots_adjust(right=0.6)
 
 # %%
@@ -471,12 +480,15 @@ plt.subplots_adjust(right=0.6)
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(graph, figure_kw={"figsize": (10.0, 4.0)}, 
-                   legend_kw={"bbox_to_anchor":(1.0, 1.0), "loc":"upper left"})
+view = viewer.View(
+    graph,
+    figure_kw={"figsize": (10.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
 plt.subplots_adjust(right=0.8)
 
 # %%
-# We see that the parameters are relatively well estimated, 
+# We see that the parameters are relatively well estimated,
 # although the parameter :math:`\gamma` still has a significant
 # dispersion (but this is significantly reduced compared to linear
 # least squares).
@@ -506,7 +518,7 @@ sigmaGamma = 0.1 * Gamma
 
 # %%
 # Since there are 3 parameters, the prior covariance matrix is a
-# 3-by-3 covariance matrix. 
+# 3-by-3 covariance matrix.
 sigma = ot.CovarianceMatrix(3)
 sigma[0, 0] = sigmaR**2
 sigma[1, 1] = sigmaC**2
@@ -539,7 +551,7 @@ thetaMAP
 
 # %%
 # We can compute a 95% credibility interval of the parameter :math:`\theta^\star`
-# (when we consider Bayesian methods, confidence intervals are called 
+# (when we consider Bayesian methods, confidence intervals are called
 # credibility intervals).
 # This interval reflects the interval that contains 95%
 # of the posterior distribution.
@@ -577,8 +589,11 @@ observationError
 
 # %%
 graph = calibrationResult.drawResiduals()
-view = viewer.View(graph, figure_kw={"figsize": (6.0, 4.0)}, 
-                   legend_kw={"bbox_to_anchor":(1.0, 1.0), "loc":"upper left"})
+view = viewer.View(
+    graph,
+    figure_kw={"figsize": (6.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
 plt.subplots_adjust(right=0.6)
 
 # %%
@@ -592,8 +607,11 @@ plt.subplots_adjust(right=0.6)
 # the observations bring significant information compared to the prior
 # Gaussian distributions.
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(graph, figure_kw={"figsize": (10.0, 4.0)}, 
-                   legend_kw={"bbox_to_anchor":(1.0, 1.0), "loc":"upper left"})
+view = viewer.View(
+    graph,
+    figure_kw={"figsize": (10.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
 plt.subplots_adjust(right=0.8)
 
 # %%
@@ -680,8 +698,11 @@ observationError
 
 # %%
 graph = calibrationResult.drawResiduals()
-view = viewer.View(graph, figure_kw={"figsize": (6.0, 4.0)}, 
-                   legend_kw={"bbox_to_anchor":(1.0, 1.0), "loc":"upper left"})
+view = viewer.View(
+    graph,
+    figure_kw={"figsize": (6.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
 plt.subplots_adjust(right=0.6)
 
 # %%
@@ -689,8 +710,11 @@ plt.subplots_adjust(right=0.6)
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(graph, figure_kw={"figsize": (10.0, 4.0)}, 
-                   legend_kw={"bbox_to_anchor":(1.0, 1.0), "loc":"upper left"})
+view = viewer.View(
+    graph,
+    figure_kw={"figsize": (10.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
 plt.subplots_adjust(right=0.8)
 
 plt.show()

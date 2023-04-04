@@ -3,7 +3,7 @@ Calibration of the logistic model
 =================================
 
 We present a calibration study of the logistic growth model defined :ref:`here <use-case-logistic>`.
-The data set that we use is the U.S. population from 1790 to 2000. 
+The data set that we use is the U.S. population from 1790 to 2000.
 One of the specific properties of this study is that the observations
 that we use are real world observations.
 Hence when we calibrate the model on the data, there is a discrepancy that will
