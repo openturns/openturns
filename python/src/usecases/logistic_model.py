@@ -3,7 +3,7 @@ Use case : logistic model
 =========================
 """
 import openturns as ot
-import numpy as np
+import math
 
 
 class LogisticModel:
@@ -97,10 +97,10 @@ class LogisticModel:
             c = X[23]
             t0 = 1790.0
             y0 = 3.9e6
-            b = np.exp(c)
+            b = math.exp(c)
             y = [0.0] * self.nbdates
             for i in range(self.nbdates):
-                y[i] = a * y0 / (b * y0 + (a - b * y0) * np.exp(-a * (t[i] - t0)))
+                y[i] = a * y0 / (b * y0 + (a - b * y0) * math.exp(-a * (t[i] - t0)))
             z = [yi / 1.0e6 for yi in y]  # Convert into millions
             return z
         self.model = ot.PythonFunction(24, self.nbdates, logisticModel)
