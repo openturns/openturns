@@ -328,7 +328,10 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     priorPDF.setLineStyle(priorLineStyle_);
 
     // assemble the graphs in the correct order
-    graph.add(priorPDF);
+    if (bayesian_)
+    {
+        graph.add(priorPDF);
+    }
     graph.add(postPDF);
     if (not bayesian_)
     {

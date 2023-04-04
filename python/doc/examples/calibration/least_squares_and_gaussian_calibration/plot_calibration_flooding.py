@@ -3,7 +3,9 @@ Calibration of the flooding model
 =================================
 
 In this example we are interested in the calibration of the :ref:`flooding model <use-case-flood-model>`.
-We calibrate the parameters of a flooding model where only the difference between the downstream and upstream riverbed levels can be calibrated. This example shows how to manage the lack of identifiability in a calibration problem.
+We calibrate the parameters of a flooding model where only the difference between the
+downstream and upstream riverbed levels can be calibrated.
+This example shows how to manage the lack of identifiability in a calibration problem.
 
 This example use least squares to calibrate the parametric
 model.
@@ -26,12 +28,17 @@ This study is relatively complicated: please read the :doc:`calibration of the C
 # .. math::
 #    K_s = 30, \qquad Z_v = 50, \qquad Z_m = 55.
 #
+# This is the set of *true* values that we wish to estimate with the calibration methods.
+# In practical studies, these values are unknown.
+# In this study, we will simulate noisy observations of the output of the model
+# and estimate the parameters using calibration methods.
 #
 # Observations
 # ------------
 #
 # In this section, we describe the statistical model associated with the :math:`n` observations.
-# The errors of the water heights are associated with a normal distribution with a zero mean and a standard variation equal to:
+# The errors of the water heights are associated with a normal distribution
+# with a zero mean and a standard variation equal to:
 #
 # .. math::
 #    \sigma=0.1.
@@ -56,7 +63,8 @@ This study is relatively complicated: please read the :doc:`calibration of the C
 #    n=100.
 #
 #
-# The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`, i.e. each observation is a couple made of the flowrate and the corresponding river height.
+# The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`, i.e. each observation is a
+# couple made of the flowrate and the corresponding river height.
 #
 # Variables
 # ---------
@@ -77,6 +85,12 @@ This study is relatively complicated: please read the :doc:`calibration of the C
 # %%
 # Generate the observations
 # -------------------------
+# In practice, we generally use a data set which has been obtained from
+# measurements.
+# In this example, we generate the data using noisy observations of the
+# physical model.
+# In the next part, we will calibrate the parameters using the calibration
+# algorithms.
 
 # %%
 from openturns.usecases import flood_model
@@ -174,11 +188,7 @@ Hobs = outputH + sampleNoiseH
 
 # %%
 # Plot the Y observations versus the X observations.
-
-# %%
 Qobs = inputSample[:, 0]
-
-# %%
 graph = ot.Graph("Observations", "Q (m3/s)", "H (m)", True)
 cloud = ot.Cloud(Qobs, Hobs)
 graph.add(cloud)
@@ -216,17 +226,11 @@ algo = ot.LinearLeastSquaresCalibration(mycf, Qobs, Hobs, thetaPrior, "SVD")
 
 # %%
 # The `run` method computes the solution of the problem.
-
-# %%
 algo.run()
-
-# %%
 calibrationResult = algo.getResult()
 
 # %%
 # The `getParameterMAP` method returns the maximum of the posterior distribution of :math:`\theta`.
-
-# %%
 thetaStar = calibrationResult.getParameterMAP()
 print(thetaStar)
 
@@ -234,7 +238,8 @@ print(thetaStar)
 # In this case, we see that there seems to be a great distance from the
 # reference value of :math:`\theta` to the optimum: the values seem too large in magnitude.
 # The value of the optimum :math:`K_s` is nonpositive.
-# In fact, there is an identification problem because the Jacobian matrix is rank-degenerate.
+# As we are going to see, there is an identification problem because the
+# Jacobian matrix is rank-degenerate.
 
 # %%
 # Diagnostic of the identification issue
@@ -356,7 +361,8 @@ graph.setLegendPosition("topleft")
 view = viewer.View(graph)
 
 # %%
-# We see that there is a good fit after calibration, since the predictions after calibration (i.e. the green crosses) are close to the observations (i.e. the blue crosses).
+# We see that there is a good fit after calibration, since the predictions after calibration
+# are close to the observations.
 
 # %%
 graph = calibrationResult.drawObservationsVsPredictions()
@@ -429,8 +435,6 @@ algo = ot.GaussianLinearCalibration(
 
 # %%
 # The `run` method computes the solution of the problem.
-
-# %%
 algo.run()
 
 # %%

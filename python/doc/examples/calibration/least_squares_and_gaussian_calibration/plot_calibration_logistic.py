@@ -3,12 +3,26 @@ Calibration of the logistic model
 =================================
 
 We present a calibration study of the logistic growth model defined :ref:`here <use-case-logistic>`.
-In this example, we calibrate the parameters of a model which predicts the dynamics of the size of a population. This shows how you can calibrate a model which predicts a time dependent output. You need to view the output time series as a vector.
+The data set that we use is the U.S. population from 1790 to 2000. 
+One of the specific properties of this study is that the observations
+that we use are real world observations.
+Hence when we calibrate the model on the data, there is a discrepancy that will
+be seen.
+In this example, we calibrate the parameters of a model which predicts
+the dynamics of the size of a population.
+This shows how we can calibrate a model which predicts a time
+dependent output.
+The output of the model is a time series representing the evolution of the
+population.
+This requires a transpose of the sample, so that we can benefit from
+the visualization methods.
 
 Variables
 ---------
 
-In the particular situation where we want to calibrate this model, the following list presents which variables are observed input variables, input calibrated variables and observed output variables.
+In the particular situation where we want to calibrate this model, the
+following list presents which variables are observed input variables,
+input calibrated variables and observed output variables.
 
 - :math:`t`: Input. Observed.
 - :math:`z_0`, :math:`a`, :math:`c`: Inputs. Calibrated.
@@ -42,7 +56,8 @@ print("Outputs: ", lm.model.getOutputDescription())
 # The 22 outputs are the population of the U.S. in millions.
 
 # %%
-# The data is based on 22 dates from 1790 to 2000. The observation points are stored in the `data` field :
+# The data is based on 22 dates from 1790 to 2000. The observation points are
+# stored in the `data` field :
 observedSample = lm.data
 print(observedSample[:5])
 
@@ -79,7 +94,11 @@ view = viewer.View(graph)
 # This is a good candidate for model calibration.
 
 # %%
-# We consider the times and populations as dimension 22 vectors. The `logisticModel` function takes a dimension 24 vector as input and returns a dimension 22 vector. The first 22 components of the input vector contains the dates and the remaining 2 components are :math:`a` and :math:`b`.
+# We consider the times and populations as dimension 22 vectors.
+# The `logisticModel` function takes a dimension 24 vector as input and
+# returns a dimension 22 vector.
+# The first 22 components of the input vector contains the dates and the
+# remaining 2 components are :math:`a` and :math:`b`.
 
 # %%
 # Print the number of dates:

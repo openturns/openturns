@@ -49,6 +49,9 @@ where the Jacobian matrix is evaluated at the candidate point.
 The diagonal of the covariance matrix of the output error
 is constant and is estimated with the unbiased variance estimator.
 
+Please read :ref:`code_calibration` for more details on code calibration
+and least squares.
+
 See also
 --------
 GaussianLinearCalibration, NonLinearLeastSquaresCalibration, GaussianNonLinearCalibration

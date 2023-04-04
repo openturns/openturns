@@ -33,18 +33,31 @@ dimension of the model and the number of observations.
 The prior distribution of the parameter is a :class:`~openturns.Normal`.  
 
 The posterior distribution of the parameter is :class:`~openturns.Normal`. 
-By default, the posterior distribution is evaluated based on a linear approximation 
-of the model at the optimum. 
-This corresponds to using the :class:`~openturns.GaussianLinearCalibration` at the optimum,
-and is named *Laplace approximation* in the bayesian context.
-However, if the key `GaussianNonLinearCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap`
-is set to a nonzero positive integer, then a bootstrap resampling of the observations
-is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing`
-of the sample of boostrap optimum parameters.
+Depending on the value of the `GaussianNonLinearCalibration-BootstrapSize` key 
+in the :class:`~openturns.ResourceMap`, the parameters are estimated differently.
+
+- If the key `GaussianNonLinearCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap`
+  is set to a nonzero positive integer, then a bootstrap resampling of the observations
+  is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing`
+  of the sample of boostrap optimum parameters.
+- If the key `GaussianNonLinearCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap`
+  is set to zero, then the posterior distribution is
+  evaluated based on a linear approximation of the model at the optimum. 
+  This corresponds to using :class:`~openturns.GaussianLinearCalibration` at the optimum,
+  and is named *Laplace approximation* in the Bayesian context.
+
+The default value of `GaussianNonLinearCalibration-BootstrapSize` is nonzero, 
+meaning that a bootstrap is used by default.
+This can be costly in some practical use cases, because it requires
+several run of the optimization algorithm.
+In this case, please set the bootstrap size to zero.
 
 The resulting error distribution is :class:`~openturns.Normal`
-with a zero mean and with a covariance matrix equal to the
-`errorCovariance` input argument.
+with a mean estimated from the sample mean of the residuals and with a
+covariance matrix equal to the `errorCovariance` input argument.
+
+Please read read :ref:`gaussian_calibration` for more details
+on Gaussian calibration.
 
 See also
 --------
