@@ -90,6 +90,7 @@ class LogisticModel:
         )
         self.data.setDescription(["Time", "U.S. Population"])
         self.nbdates = self.data.getSize()
+
         def logisticModel(X):
             t = [X[i] for i in range(self.nbdates)]
             a = X[22]
@@ -109,4 +110,3 @@ class LogisticModel:
         outputLabels = ["z%d" % (i) for i in range(self.nbdates)]
         self.model.setInputDescription(inputLabels)
         self.model.setOutputDescription(outputLabels)
-

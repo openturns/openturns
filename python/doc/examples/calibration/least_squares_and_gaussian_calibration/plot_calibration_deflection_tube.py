@@ -8,7 +8,7 @@ computes the vertical deflection of a tube and two deflection angles.
 This example shows how to calibrate a computer code which has several outputs.
 
 In this example, we use Gaussian calibration method to calibrate the parametric
-model. 
+model.
 Please read :ref:`gaussian_calibration` for more details on Bayesian Gaussian
 calibration.
 This study is relatively complicated: please read the :doc:`calibration of the Chaboche mechanical model

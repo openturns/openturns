@@ -6,7 +6,7 @@ In this example we are interested in the calibration of the :ref:`flooding model
 We calibrate the parameters of a flooding model where only the difference between the downstream and upstream riverbed levels can be calibrated. This example shows how to manage the lack of identifiability in a calibration problem.
 
 This example use least squares to calibrate the parametric
-model. 
+model.
 Please read :ref:`code_calibration` for more details on code calibration and least squares.
 This study is relatively complicated: please read the :doc:`calibration of the Chaboche mechanical model
 </auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_chaboche>` first if this is not already done.
