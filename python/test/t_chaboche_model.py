@@ -15,9 +15,9 @@ cm = chaboche_model.ChabocheModel()
 
 # test parameters
 assert_almost_equal(cm.dim, 4, 1e-12)
-assert_almost_equal(cm.unknownR, 750.0e6, 1e-12)
-assert_almost_equal(cm.unknownC, 2750.0e6, 1e-12)
-assert_almost_equal(cm.unknownGamma, 10.0, 1e-12)
+assert_almost_equal(cm.trueR, 750.0e6, 1e-12)
+assert_almost_equal(cm.trueC, 2750.0e6, 1e-12)
+assert_almost_equal(cm.trueGamma, 10.0, 1e-12)
 
 # test marginals means
 assert_almost_equal(cm.Strain.getMean()[0], 0.035, 1e-12)
