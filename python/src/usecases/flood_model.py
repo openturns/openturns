@@ -13,11 +13,21 @@ class FloodModel:
     Parameters
     ----------
 
-    L : Constant
-        Length of the river, L = 5000.0
+    L : float
+        Length of the river. Default L = 5000.0.
 
-    B : Constant
-        Width of the river, B = 300.0
+    B : float
+        Width of the river. Default B = 300.0.
+
+    trueKs : float
+        The true value of the Ks parameter.
+
+    trueZv : float
+        The true value of the Zv parameter.
+
+    trueZm : float
+        The true value of the Zm parameter.
+
 
     Attributes
     ----------
@@ -43,6 +53,9 @@ class FloodModel:
     distribution : `ComposedDistribution`
                    The joint distribution of the input parameters.
 
+    data : ot.Sample(10, 2)
+        A dataset which contains noisy observations of the flowrate (column 0)
+        and the height (column 1).
 
     Examples
     --------
@@ -51,7 +64,10 @@ class FloodModel:
     >>> fm = flood_model.FloodModel()
     """
 
-    def __init__(self, L=5000.0, B=300.0):
+    def __init__(self, L=5000.0, B=300.0, trueKs=30.0, trueZv=50.0, trueZm=55.0):
+        self.trueKs = trueKs
+        self.trueZv = trueZv
+        self.trueZm = trueZm
         # Length of the river in meters
         self.L = L
         # Width of the river in meters
@@ -87,3 +103,18 @@ class FloodModel:
 
         self.distribution = ot.ComposedDistribution([self.Q, self.Ks, self.Zv, self.Zm])
         self.distribution.setDescription(["Q", "Ks", "Zv", "Zm"])
+        self.data = ot.Sample(
+            [
+                [130.0, 0.59],
+                [530.0, 1.33],
+                [960.0, 2.03],
+                [1400.0, 2.72],
+                [1830.0, 2.83],
+                [2260.0, 3.50],
+                [2700.0, 3.82],
+                [3130.0, 4.36],
+                [3560.0, 4.63],
+                [4010.0, 4.96],
+            ]
+        )
+        self.data.setDescription(["Q ($m^3/s$)", "H (m)"])

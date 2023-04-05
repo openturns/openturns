@@ -65,6 +65,8 @@ algorithms.
 import openturns as ot
 import openturns.viewer as viewer
 import numpy as np
+from openturns.usecases import flood_model
+from matplotlib import pylab as plt
 
 # %%
 # Create the flooding model.
@@ -85,15 +87,17 @@ g.setInputDescription(["Q (m3/s)", "Ks (m^(1/3)/s)", "Zv (m)", "Zm (m)"])
 g.setOutputDescription(["H (m)"])
 
 # %%
-# Set the true values of the parameters.
-trueKs = 30.0
-trueZv = 50.0
-trueZm = 55.0
+# Print the true values of the parameters.
+fm = flood_model.FloodModel()
+print("Parameters")
+print("   Ks = ", fm.trueKs)
+print("   Zv = ", fm.trueZv)
+print("   Zm = ", fm.trueZm)
 
 # %%
 # Create the parametric function.
 calibratedIndices = [1, 2, 3]
-thetaTrue = [trueKs, trueZv, trueZm]
+thetaTrue = [fm.trueKs, fm.trueZv, fm.trueZm]
 mycf = ot.ParametricFunction(g, calibratedIndices, thetaTrue)
 
 # %%
@@ -139,6 +143,8 @@ graph.add(cloud)
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegendPosition("topleft")
 view = viewer.View(graph)
+
+plt.show()
 
 # %%
 # The data which are actually used in

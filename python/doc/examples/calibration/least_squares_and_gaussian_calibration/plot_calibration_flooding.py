@@ -17,8 +17,8 @@ The observations that we use in this study are simulated with the script
 </auto_calibration/least_squares_and_gaussian_calibration/plot_generate_flooding>`.
 """
 # %%
-# Parameters to calibrate
-# -----------------------
+# Parameters to calibrate and observations
+# ----------------------------------------
 #
 # The variables of the model are:
 #
@@ -36,8 +36,17 @@ The observations that we use in this study are simulated with the script
 # Hence, calibrating this model requires some regularization.
 # We return to this topic when analyzing the singular values of
 # the Jacobian matrix.
+#
+# We consider a sample size equal to:
+#
+# .. math::
+#    n = 10.
+#
+#
+# The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`, i.e. each observation is a
+# couple made of the flowrate and the corresponding river height.
 
-# %%
+from openturns.usecases import flood_model
 from matplotlib import pylab as plt
 import openturns.viewer as viewer
 import numpy as np
@@ -53,24 +62,11 @@ ot.Log.Show(ot.Log.NONE)
 # measurements.
 # This data set can be loaded using e.g. :meth:`~openturns.Sample.ImportFromCSVFile`.
 # Here we define the data directly.
-data = ot.Sample(
-    [
-        [130.0, 0.59],
-        [530.0, 1.33],
-        [960.0, 2.03],
-        [1400.0, 2.72],
-        [1830.0, 2.83],
-        [2260.0, 3.50],
-        [2700.0, 3.82],
-        [3130.0, 4.36],
-        [3560.0, 4.63],
-        [4010.0, 4.96],
-    ]
-)
-data.setDescription(["Q ($m^3/s$)", "H (m)"])
-Qobs = data[:, 0]
-Hobs = data[:, 1]
-nbobs = data.getSize()
+fm = flood_model.FloodModel()
+print(fm.data)
+Qobs = fm.data[:, 0]
+Hobs = fm.data[:, 1]
+nbobs = fm.data.getSize()
 
 
 # %%
@@ -234,8 +230,15 @@ calibrationResult = algo.getResult()
 # %%
 # The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
 # maximum of the posterior distribution of :math:`\theta`.
-thetaStar = calibrationResult.getParameterMAP()
-print(thetaStar)
+thetaMAP = calibrationResult.getParameterMAP()
+print("theta After = ", thetaMAP)
+print("theta Before = ", thetaPrior)
+# %%
+# Print the true values of the parameters.
+print("True theta")
+print("  Ks = ", fm.trueKs)
+print("  Zv = ", fm.trueZv)
+print("  Zm = ", fm.trueZm)
 
 # %%
 # In this case, we see that there seems to be a great distance from the
@@ -463,8 +466,8 @@ calibrationResult = algo.getResult()
 # -----------------------
 # The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
 # maximum of the posterior distribution of :math:`\theta`.
-thetaStar = calibrationResult.getParameterMAP()
-print(thetaStar)
+thetaMAP = calibrationResult.getParameterMAP()
+print(thetaMAP)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
@@ -552,8 +555,8 @@ calibrationResult = algo.getResult()
 # -----------------------
 # The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
 # maximum of the posterior distribution of :math:`\theta`.
-thetaStar = calibrationResult.getParameterMAP()
-print(thetaStar)
+thetaMAP = calibrationResult.getParameterMAP()
+print(thetaMAP)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()

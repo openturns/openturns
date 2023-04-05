@@ -15,8 +15,8 @@ Please read :ref:`code_calibration` for more details on code calibration
 and least squares and read :ref:`gaussian_calibration` for more details
 on Gaussian calibration.
 
-Parameters to calibrate
------------------------
+Parameters to calibrate and observations
+----------------------------------------
 
 The vector of parameters to calibrate is:
 
@@ -24,54 +24,15 @@ The vector of parameters to calibrate is:
 
    \\theta = (R,C,\\gamma).
 
-
-The true values of the parameters are:
-
-- :math:`R = 750\\times 10^6`,
-- :math:`C = 2750\\times 10^6`,
-- :math:`\\gamma = 10`.
-
-This is the set of *true* values that we wish to estimate with the calibration
-methods.
-In practical studies, these values are unknown.
-
-Observations
-------------
-
-In order to create a calibration problem, we make the hypothesis that the
-strain has the following distribution:
-
-.. math::
-   \\epsilon \\sim \\mathcal{U}(0,0.07).
-
-where :math:`\\mathcal{U}` is the uniform distribution.
-Moreover, we consider a Gaussian noise on the observed constraint:
-
-.. math::
-   \\epsilon_\\sigma \\sim \\mathcal{N} \\left(0,10\\times 10^6\\right)
-
-
-and we make the hypothesis that the observation errors are independent.
-We set the number of observations to:
+We consider a data set where the number of observations is equal to:
 
 .. math::
 
-   n = 100.
+   n = 10.
 
 
-We generate a Monte-Carlo sample with size :math:`n`:
-
-.. math::
-
-   \\sigma_i = G(\\epsilon_i,R,C,\\gamma) + (\\epsilon_\\sigma)_i,
-
-
-for :math:`i = 1,..., n`.
 The observations are the pairs :math:`\\{(\\epsilon_i,\\sigma_i)\\}_{i=1,...,n}`,
 i.e. each observation is a couple made of the strain and the corresponding stress.
-
-Variables
----------
 
 In the particular situation where we want to calibrate this model, the following
 list presents which variables are observed input variables, input calibrated
@@ -91,18 +52,20 @@ from openturns.usecases import chaboche_model
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Generate the observations
-# -------------------------
+# Define the observations
+# -----------------------
 # In practice, we generally use a data set which has been obtained from
 # measurements.
-# In this example, we generate the data using noisy observations of the
-# physical model.
-# In the next part, we will calibrate the parameters using the calibration
-# algorithms.
+# This data set can be loaded using e.g. :meth:`~openturns.Sample.ImportFromCSVFile`.
+# Here we define the data directly.
+cm = chaboche_model.ChabocheModel()
+print(cm.data)
+observedStrain = cm.data[:, 0]
+observedStress = cm.data[:, 1]
+nbobs = cm.data.getSize()
 
 # %%
-# Load the Chaboche data structure
-cm = chaboche_model.ChabocheModel()
+# Print the Chaboche model
 print("Inputs:", cm.model.getInputDescription())
 print("Outputs:", cm.model.getOutputDescription())
 
@@ -113,73 +76,6 @@ print("Outputs:", cm.model.getOutputDescription())
 # output.
 # Using these observations, we want to estimate the parameters `R`, `C`
 # and `Gamma`.
-
-# %%
-# We get the Chaboche model and the joint input distribution :
-g = cm.model
-inputDistribution = cm.inputDistribution
-print("inputDistribution:", inputDistribution)
-
-# %%
-# Create the Monte-Carlo sample.
-# The next cell evaluates 100 observations of the strain and evaluate the
-# corresponding stresses.
-sampleSize = 100
-inputSample = inputDistribution.getSample(sampleSize)
-outputStress = g(inputSample)
-outputStress[0:5]
-
-# %%
-# Plot the histogram of the output.
-# The output of the model is the stress, measured in` Pascals (Pa).
-# The order of magnitude of the stress is :math:`10^8`, which may be
-# easy to visualize.
-# This is why we divide the outputs of the model by :math:`10^6` before
-# drawing the histogram: this conversion leads to stresses in Mpa.
-histoGraph = ot.HistogramFactory().build(outputStress / 1.0e6).drawPDF()
-histoGraph.setTitle("Histogram of the sample stress")
-histoGraph.setXTitle("Stress (MPa)")
-histoGraph.setLegends([""])
-view = viewer.View(histoGraph)
-
-# %%
-# Generate observation noise.
-# Here we consider a Gaussian observation noise, that we add
-# to the output of the model.
-stressObservationNoiseSigma = 10.0e6  # (Pa)
-noiseSigma = ot.Normal(0.0, stressObservationNoiseSigma)
-sampleNoiseH = noiseSigma.getSample(sampleSize)
-observedStress = outputStress + sampleNoiseH
-observedStrain = inputSample[:, 0]
-
-# %%
-# Then we plot the model and compare it to the observations.
-graph = ot.Graph("Model with true parameters", "Strain", "Stress (MPa)", True)
-# Plot the model
-centralPoint = [cm.strainMin, cm.trueR, cm.trueC, cm.trueGamma]
-curve = g.draw(0, 0, centralPoint, cm.strainMin, cm.strainMax, 50).getDrawable(
-    0
-)
-curve.setLegend("True model")
-curve.setLineStyle(ot.ResourceMap.GetAsString("CalibrationResult-ObservationLineStyle"))
-graph.add(curve)
-# Plot the noisy observations
-cloud = ot.Cloud(observedStrain, observedStress)
-cloud.setLegend("Observations")
-cloud.setPointStyle(
-    ot.ResourceMap.GetAsString("CalibrationResult-ObservationPointStyle")
-)
-graph.add(cloud)
-graph.setColors(ot.Drawable.BuildDefaultPalette(2))
-graph.setLegendPosition("topleft")
-view = viewer.View(graph)
-
-# %%
-# We see that the observations are relatively noisy, but that the
-# trend is clear: this shows that it may be possible to fit the model.
-# At this point, we have a data set that we can use for calibration
-# and a model to calibrate.
-
 # %%
 # Set the calibration parameters
 # ------------------------------
@@ -217,8 +113,8 @@ thetaPrior = [R, C, Gamma]
 #
 # **Table 1.** Indices and names of the inputs and parameters of the physical model.
 #
-print("Physical Model Inputs:", g.getInputDescription())
-print("Physical Model Parameters:", g.getParameterDescription())
+print("Physical Model Inputs:", cm.model.getInputDescription())
+print("Physical Model Parameters:", cm.model.getParameterDescription())
 
 # %%
 # In order to perform calibration, we have to define a parametric model,
@@ -250,7 +146,35 @@ print("Physical Model Parameters:", g.getParameterDescription())
 # The calibrated parameters `R`, `C`, `Gamma` are at indices 1, 2, 3 in
 # the inputs arguments of the model.
 calibratedIndices = [1, 2, 3]
-mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
+mycf = ot.ParametricFunction(cm.model, calibratedIndices, thetaPrior)
+
+# %%
+# Then we plot the model and compare it to the observations.
+graph = ot.Graph("Model before calibration", "Strain", "Stress (MPa)", True)
+# Plot the model
+curve = mycf.draw(cm.strainMin, cm.strainMax, 50).getDrawable(
+    0
+)
+curve.setLegend("Model before calibration")
+curve.setLineStyle(ot.ResourceMap.GetAsString("CalibrationResult-ObservationLineStyle"))
+graph.add(curve)
+# Plot the noisy observations
+cloud = ot.Cloud(observedStrain, observedStress)
+cloud.setLegend("Observations")
+cloud.setPointStyle(
+    ot.ResourceMap.GetAsString("CalibrationResult-ObservationPointStyle")
+)
+graph.add(cloud)
+graph.setColors(ot.Drawable.BuildDefaultPalette(2))
+graph.setLegendPosition("topleft")
+view = viewer.View(graph)
+
+# %%
+# We see that the observations are relatively noisy, but that the
+# trend is clear: this shows that it may be possible to fit the model.
+# At this point, we have a data set that we can use for calibration
+# and a model to calibrate.
+
 
 # %%
 # Calibration with linear least squares

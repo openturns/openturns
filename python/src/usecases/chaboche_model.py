@@ -57,6 +57,9 @@ class ChabocheModel:
     model : `PythonFunction`
             The Chaboche mechanical law.
 
+    data : ot.Sample(10, 2)
+        A dataset which contains noisy observations of the strain (column 0)
+        and the stress (column 1).
 
     Examples
     --------
@@ -103,3 +106,19 @@ class ChabocheModel:
         self.model = ot.PythonFunction(4, 1, g)
         self.model.setInputDescription(["Strain", "R", "C", "Gamma"])
         self.model.setOutputDescription(["Sigma"])
+
+        self.data = ot.Sample(
+            [
+                [0.0, 7.56e08],
+                [0.0077, 7.57e08],
+                [0.0155, 7.85e08],
+                [0.0233, 8.19e08],
+                [0.0311, 8.01e08],
+                [0.0388, 8.42e08],
+                [0.0466, 8.49e08],
+                [0.0544, 8.79e08],
+                [0.0622, 8.85e08],
+                [0.07, 8.96e08],
+            ]
+        )
+        self.data.setDescription(["Strain", "Stress (Pa)"])
