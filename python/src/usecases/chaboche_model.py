@@ -34,6 +34,15 @@ class ChabocheModel:
 
     Gamma : `Dirac` distribution
             ot.Dirac(10.0)
+    
+    trueR : float
+        The true value of the R parameter.
+
+    trueC : float
+        The true value of the C parameter.
+
+    trueGamma : float
+        The true value of the Gamma parameter.
 
     inputDistribution : `ComposedDistribution`
                         The joint distribution of the input parameters.
@@ -55,16 +64,16 @@ class ChabocheModel:
         self.Strain = ot.Uniform(0.0, 0.07)
         self.Strain.setDescription(["Strain"])
 
-        self.unknownR = 750.0e6
-        self.R = ot.Dirac(self.unknownR)
+        self.trueR = 750.0e6
+        self.R = ot.Dirac(self.trueR)
         self.R.setDescription(["R"])
 
-        self.unknownC = 2750.0e6
-        self.C = ot.Dirac(self.unknownC)
+        self.trueC = 2750.0e6
+        self.C = ot.Dirac(self.trueC)
         self.C.setDescription(["C"])
 
-        self.unknownGamma = 10.0
-        self.Gamma = ot.Dirac(self.unknownGamma)
+        self.trueGamma = 10.0
+        self.Gamma = ot.Dirac(self.trueGamma)
         self.Gamma.setDescription(["Gamma"])
 
         self.inputDistribution = ot.ComposedDistribution(
