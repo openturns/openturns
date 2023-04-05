@@ -96,7 +96,6 @@ def functionFlooding(X):
     return [H]
 
 
-# %%
 g = ot.PythonFunction(4, 1, functionFlooding)
 g = ot.MemoizeFunction(g)
 g.setInputDescription(["Q ($m^3/s$)", "Ks ($m^{1/3}/s$)", "Zv (m)", "Zm (m)"])
@@ -105,14 +104,10 @@ g.setOutputDescription(["H (m)"])
 # %%
 # Setting the calibration parameters
 # ----------------------------------
-
-# %%
 # Define the value of the reference values of the :math:`\theta` parameter.
 # In the Bayesian framework, this is called the mean of the *prior* normal
 # distribution.
 # In the data assimilation framework, this is called the *background*.
-
-# %%
 KsInitial = 20.0
 ZvInitial = 49.0
 ZmInitial = 51.0
@@ -176,11 +171,9 @@ print("Physical Model Parameters:", g.getParameterDescription())
 
 
 # %%
-# The following statement create the calibrated function from the model.
+# The following statement creates the calibrated function from the model.
 # The calibrated parameters :math:`K_s`, :math:`Z_v`, :math:`Z_m` are at
 # indices 1, 2, 3 in the inputs arguments of the model.
-
-# %%
 calibratedIndices = [1, 2, 3]
 mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
 
@@ -212,13 +205,9 @@ view = viewer.View(graph)
 # %%
 # Calibration with linear least squares
 # -------------------------------------
-
-# %%
 # The :class:`~openturns.LinearLeastSquaresCalibration` class performs the linear
 # least squares calibration by linearizing the model in the neighbourhood of
 # the reference point.
-
-# %%
 algo = ot.LinearLeastSquaresCalibration(mycf, Qobs, Hobs, thetaPrior, "SVD")
 
 # %%
@@ -397,7 +386,7 @@ print(observationError)
 
 # %%
 # We can see that the observation error has a sample mean close to zero and a
-# sampl standard deviation approximately equal to 0.11.
+# sample standard deviation approximately equal to 0.11.
 
 # %%
 # sphinx_gallery_thumbnail_number = 5
@@ -576,10 +565,15 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawResiduals()
-view = viewer.View(graph)
+view = viewer.View(
+    graph,
+    figure_kw={"figsize": (8.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plt.subplots_adjust(right=0.8)
 
 # %%
-# We see that the histogram of the residual is centered on zero.
+# We see that the distribution of the residual is centered on zero.
 # This is a proof that the calibration did perform correctly.
 
 # %%

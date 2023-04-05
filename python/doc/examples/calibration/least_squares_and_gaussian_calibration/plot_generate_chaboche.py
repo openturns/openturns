@@ -1,6 +1,6 @@
 """
-Generate noisy observations of the Chaboche mechanical model
-============================================================
+Generate observations of the Chaboche mechanical model
+======================================================
 
 In this example we present the simulation of noisy observations of the Chaboche model.
 A detailed explanation of this mechanical law is presented :ref:`here <use-case-chaboche>`.
