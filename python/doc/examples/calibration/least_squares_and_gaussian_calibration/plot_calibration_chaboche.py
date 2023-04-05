@@ -279,6 +279,23 @@ plt.subplots_adjust(right=0.6)
 # This shows that the distribution of the residuals is close to being Gaussian.
 
 # %%
+# Check that the results are Gaussian, using a Normal-plot.
+# This is a QQ-plot applied to the normal distribution.
+# We can use the :meth:`~openturns.VisualTest.DrawHenryLine`
+# method to plot it.
+residualFunction = calibrationResult.getResidualFunction()
+residualsPoint = residualFunction(thetaMAP)
+residualsSample = ot.Sample.BuildFromPoint(residualsPoint)
+graph = ot.VisualTest.DrawHenryLine(residualsSample)
+graph.setXTitle("Residuals samples")
+graph.setTitle("Normal plot, after calibration")
+view = viewer.View(graph)
+
+# %%
+# We see that the residuals fit to the Normal distribution,
+# according to the normal plot.
+
+# %%
 # The parameters which best fit to the data may be sensitive to the random
 # noise in the observed outputs.
 # In order to see how this source of randomness change the optimum
