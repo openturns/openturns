@@ -68,6 +68,8 @@ import numpy as np
 
 # %%
 # Create the flooding model.
+
+
 def functionFlooding(X):
     L = 5.0e3
     B = 300.0
@@ -75,6 +77,7 @@ def functionFlooding(X):
     alpha = (Z_m - Z_v) / L
     H = (Q / (K_s * B * np.sqrt(alpha))) ** (3.0 / 5.0)
     return [H]
+
 
 g = ot.PythonFunction(4, 1, functionFlooding)
 g = ot.MemoizeFunction(g)
@@ -138,6 +141,6 @@ graph.setLegendPosition("topleft")
 view = viewer.View(graph)
 
 # %%
-# The data which are actually used in 
+# The data which are actually used in
 # :doc:`Calibration of the flooding model </auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_flooding>`
 # are simplified so that the minimum number of significant digits is printed.

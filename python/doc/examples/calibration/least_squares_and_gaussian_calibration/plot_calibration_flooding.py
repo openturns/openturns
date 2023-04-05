@@ -38,7 +38,6 @@ The observations that we use in this study are simulated with the script
 # the Jacobian matrix.
 
 # %%
-from openturns.usecases import flood_model
 from matplotlib import pylab as plt
 import openturns.viewer as viewer
 import numpy as np

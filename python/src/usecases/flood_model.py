@@ -51,7 +51,7 @@ class FloodModel:
     >>> fm = flood_model.FloodModel()
     """
 
-    def __init__(self, L = 5000.0, B = 300.0):
+    def __init__(self, L=5000.0, B=300.0):
         # Length of the river in meters
         self.L = L
         # Width of the river in meters
