@@ -233,6 +233,7 @@ The following statement retrieves the asymptotically Gaussian distribution
 of the sample mean. 
 This may be useful for users who want to compute a confidence interval of 
 the sample mean. 
+
 >>> expectationDistribution = result.getExpectationDistribution()
 
 The following code prints the outer sample (i.e. the number of outer iterations 
