@@ -93,7 +93,7 @@ int main(int, char *[])
   // Expected result is SpecFunc::MaxScalar
   TestResult fullPearsonYY(HypothesisTest::FullPearson(sampleY, sampleY, 0.10)[0]);
   Scalar testStatistic = fullPearsonYY.getStatistic();
-  assert (testStatistic == SpecFunc::MaxScalar);
+  assert_equal(testStatistic, SpecFunc::MaxScalar);
 
   return ExitCode::Success;
 }

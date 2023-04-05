@@ -56,7 +56,7 @@ int main(int, char *[])
   // Expected result is SpecFunc::MaxScalar
   TestResult fullSpearman(HypothesisTest::FullSpearman(sampleX, sampleZ, 0.10)[0]);
   Scalar testStatistic = fullSpearman.getStatistic();
-  assert (testStatistic == SpecFunc::MaxScalar);
+  assert_equal(testStatistic, SpecFunc::MaxScalar);
 
   fullSpearman = HypothesisTest::FullSpearman(sampleX, sampleZ, 0.10)[1];
   Scalar pValue = fullSpearman.getPValue();
@@ -67,7 +67,7 @@ int main(int, char *[])
   // Expected result is SpecFunc::MaxScalar
   fullSpearman = HypothesisTest::FullSpearman(sampleY, sampleY, 0.10)[0];
   testStatistic = fullSpearman.getStatistic();
-  assert (testStatistic == SpecFunc::MaxScalar);
+  assert_equal(testStatistic, SpecFunc::MaxScalar);
 
   // Partial Spearman Test : collection of tests of zero correlation between a selection of the 1D marginals of a sample and another 1D sample
   // H0 = zero rank correlation
