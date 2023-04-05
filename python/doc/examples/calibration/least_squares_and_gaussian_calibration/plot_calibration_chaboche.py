@@ -90,6 +90,7 @@ from openturns.usecases import chaboche_model
 
 ot.Log.Show(ot.Log.NONE)
 
+# %%
 # Generate the observations
 # -------------------------
 # In practice, we generally use a data set which has been obtained from
@@ -106,7 +107,7 @@ print("Inputs:", cm.model.getInputDescription())
 print("Outputs:", cm.model.getOutputDescription())
 
 # %%
-# Wee see that there are four inputs: `Strain`, `R`, `C` and `Gamma` and one
+# We see that there are four inputs: `Strain`, `R`, `C` and `Gamma` and one
 # output: `Sigma`.
 # The `Strain` is observed on input and the stress `Sigma` is observed on
 # output.
