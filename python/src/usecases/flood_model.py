@@ -10,17 +10,20 @@ class FloodModel:
     Data class for the flood model.
 
 
-    Attributes
+    Parameters
     ----------
-
-    dim : The dimension of the problem
-          dim=4
 
     L : Constant
         Length of the river, L = 5000.0
 
     B : Constant
         Width of the river, B = 300.0
+
+    Attributes
+    ----------
+
+    dim : The dimension of the problem
+          dim=4
 
     Q : `TruncatedDistribution` of a `Gumbel` distribution
         ot.TruncatedDistribution(ot.Gumbel(558., 1013.), 0, ot.TruncatedDistribution.LOWER)
@@ -48,11 +51,11 @@ class FloodModel:
     >>> fm = flood_model.FloodModel()
     """
 
-    def __init__(self):
+    def __init__(self, L = 5000.0, B = 300.0):
         # Length of the river in meters
-        self.L = 5000.0
+        self.L = L
         # Width of the river in meters
-        self.B = 300.0
+        self.B = B
         self.dim = 4  # number of inputs
         # Q
         self.Q = ot.TruncatedDistribution(
@@ -76,10 +79,11 @@ class FloodModel:
         # Zm.setDescription(["Zm (m)"])
         self.Zm.setName("Zm")
 
-        self.model = ot.SymbolicFunction(
-            ["Q", "Ks", "Zv", "Zm"],
-            ["(Q/(Ks*300.*sqrt((Zm-Zv)/5000)))^(3.0/5.0)+Zv-58.5"],
+        g = ot.SymbolicFunction(
+            ["Q", "Ks", "Zv", "Zm", "B", "L"],
+            ["(Q / (Ks * B * sqrt((Zm - Zv) / L)))^(3.0 / 5.0) + Zv - 58.5"],
         )
+        self.model = ot.ParametricFunction(g, [4, 5], [L, B])
 
         self.distribution = ot.ComposedDistribution([self.Q, self.Ks, self.Zv, self.Zm])
         self.distribution.setDescription(["Q", "Ks", "Zv", "Zm"])

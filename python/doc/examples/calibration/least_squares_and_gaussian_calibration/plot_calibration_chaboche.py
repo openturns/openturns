@@ -155,14 +155,8 @@ observedStrain = inputSample[:, 0]
 # Then we plot the model and compare it to the observations.
 graph = ot.Graph("Model with true parameters", "Strain", "Stress (MPa)", True)
 # Plot the model
-strainParameters = inputDistribution.getMarginal(0).getParameter()
-Rtrue = inputDistribution.getMarginal(1).getParameter()[0]
-Ctrue = inputDistribution.getMarginal(2).getParameter()[0]
-Gammatrue = inputDistribution.getMarginal(3).getParameter()[0]
-strainLowerBound = strainParameters[0]
-strainUpperBound = strainParameters[1]
-centralPoint = [strainLowerBound, Rtrue, Ctrue, Gammatrue]
-curve = g.draw(0, 0, centralPoint, strainLowerBound, strainUpperBound, 50).getDrawable(
+centralPoint = [cm.strainMin, cm.trueR, cm.trueC, cm.trueGamma]
+curve = g.draw(0, 0, centralPoint, cm.strainMin, cm.strainMax, 50).getDrawable(
     0
 )
 curve.setLegend("True model")
@@ -282,11 +276,15 @@ thetaMAP = calibrationResult.getParameterMAP()
 print("theta After = ")
 print("    R = %.2f (MPa)" % (thetaMAP[0] / 1.0e6))
 print("    C = %.2f (MPa)" % (thetaMAP[1] / 1.0e6))
-print("    Gamma = %.4f (MPa)" % (thetaMAP[2]))
+print("    Gamma = %.4f" % (thetaMAP[2]))
 print("theta Before = ")
 print("    R = %.2f (MPa)" % (thetaPrior[0] / 1.0e6))
 print("    C = %.2f (MPa)" % (thetaPrior[1] / 1.0e6))
-print("    Gamma = %.4f (MPa)" % (thetaPrior[2]))
+print("    Gamma = %.4f" % (thetaPrior[2]))
+print("theta True = ")
+print("    R = %.2f (MPa)" % (cm.trueR / 1.0e6))
+print("    C = %.2f (MPa)" % (cm.trueC / 1.0e6))
+print("    Gamma = %.4f" % (cm.trueGamma))
 
 # %%
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
@@ -603,7 +601,7 @@ plt.subplots_adjust(right=0.6)
 # These information indicate that the calibration performed well.
 
 # %%
-# The posterior distribution of the parameters allows to see if
+# The posterior distribution of the parameters allows one to see if
 # the observations bring significant information compared to the prior
 # Gaussian distributions.
 graph = calibrationResult.drawParameterDistributions()

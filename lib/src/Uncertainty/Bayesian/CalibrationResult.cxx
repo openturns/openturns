@@ -230,7 +230,12 @@ GridLayout CalibrationResult::drawParameterDistributions() const
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     bool upperRightGraph = (j == dimension - 1);
-    Graph graph("", getParameterPrior().getDescription()[j], "PDF", true, "topright");
+    Graph graph("", getParameterPrior().getDescription()[j], "", true, "topright");
+    if (j == 0)
+    {
+        // Show the Y title only for the first graph
+        graph.setYTitle("PDF");
+    }
 
     // The graph must show:
     // + the full posterior PDF

@@ -16,33 +16,40 @@ class ChabocheModel:
     """
     Data class for the Chaboche mechanical model.
 
+    Parameters
+    ----------
+    strainMin : float
+        The minimum value of the strain. Default is 0.0.
+
+    strainMax : float
+        The maximum value of the strain. Default is 0.07
+
+    trueR : float
+        The true value of the R parameter. Default is 750.0e6.
+
+    trueC : float
+        The true value of the C parameter. Default is 2750.0e6.
+
+    trueGamma : float
+        The true value of the Gamma parameter. Default is 10.0.
+
 
     Attributes
     ----------
-
     dim : The dimension of the problem
           dim=4.
 
     Strain : `Uniform` distribution
-              ot.Uniform(0.0, 0.07)
+              ot.Uniform(strainMin, strainMax)
 
     R : `Dirac` distribution
-        ot.Dirac(750.0e6)
+        ot.Dirac(trueR)
 
     C : `Dirac` distribution
-        ot.Dirac(2750.0e6)
+        ot.Dirac(trueC)
 
     Gamma : `Dirac` distribution
-            ot.Dirac(10.0)
-    
-    trueR : float
-        The true value of the R parameter.
-
-    trueC : float
-        The true value of the C parameter.
-
-    trueGamma : float
-        The true value of the Gamma parameter.
+            ot.Dirac(trueGamma)
 
     inputDistribution : `ComposedDistribution`
                         The joint distribution of the input parameters.
@@ -58,21 +65,34 @@ class ChabocheModel:
     >>> cm = chaboche_model.ChabocheModel()
     """
 
-    def __init__(self):
+    def __init__(
+        self,
+        strainMin=0.0,
+        strainMax=0.07,
+        trueR=750.0e6,
+        trueC=2750.0e6,
+        trueGamma=10.0,
+    ):
         self.dim = 4  # number of inputs
 
-        self.Strain = ot.Uniform(0.0, 0.07)
+        if strainMin >= strainMax:
+            raise ValueError(
+                "Strain minimum = %s >= strainMax = %s." % (strainMin, strainMax)
+            )
+        self.strainMin = strainMin
+        self.strainMax = strainMax
+        self.Strain = ot.Uniform(strainMin, strainMax)
         self.Strain.setDescription(["Strain"])
 
-        self.trueR = 750.0e6
+        self.trueR = trueR
         self.R = ot.Dirac(self.trueR)
         self.R.setDescription(["R"])
 
-        self.trueC = 2750.0e6
+        self.trueC = trueC
         self.C = ot.Dirac(self.trueC)
         self.C.setDescription(["C"])
 
-        self.trueGamma = 10.0
+        self.trueGamma = trueGamma
         self.Gamma = ot.Dirac(self.trueGamma)
         self.Gamma.setDescription(["Gamma"])
 
