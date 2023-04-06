@@ -6,6 +6,8 @@ Code calibration
 Introduction
 ~~~~~~~~~~~~
 
+In this page, we present the method used in the :class:`~openturns.LinearLeastSquaresCalibration`
+and :class:`~openturns.NonLinearLeastSquaresCalibration` classes.
 We consider a computer model :math:`\vect{h}` (i.e. a deterministic function)
 to calibrate:
 
@@ -151,13 +153,13 @@ Assume that the random observations are Gaussian:
 
 .. math::
 
-       \varepsilon \sim \mathcal{N}(\vect{0}, \; \sigma^2 {\bf I}).
+       \varepsilon \sim \mathcal{N}\left(\vect{0}, \; \sigma^2 {\bf I}\right).
 
 Therefore, the distribution of :math:`\hat{\vect{\theta}}` is:
 
 .. math::
 
-       \hat{\vect{\theta}} \sim \mathcal{N}(\vect{\theta}, \; \sigma^2 J^T J).
+       \hat{\vect{\theta}} \sim \mathcal{N}\left(\vect{\theta}, \; \sigma^2 J^T J\right).
 
 The distribution of the estimator :math:`\hat{\vect{\theta}}` is the distribution
 of the value of the parameters which best predicts the output, given the
@@ -216,12 +218,17 @@ The second hypothesis is that the random measurement error :math:`\vect{\varepsi
 has the Gaussian distribution.
 In this particular case, it can be shown that the solution of the least squares
 problem maximizes the likelihood.
+In other words, the least squares estimator is equivalent to the maximum
+likelihood estimator.
 
 This is the reason why, after a least squares calibration has been performed,
 the distribution of the residuals may be interesting to analyze.
 Indeed, if the distribution of the residuals is Gaussian and if the outputs
 are independent, then the least squares estimator is the maximum likelihood estimator,
 which gives a richer interpretation to the solution.
+This validation can be done by visually comparing the distribution of the residuals
+to the Gaussian distribution or by creating the QQ-Plot
+against the Gaussian distribution (see :ref:`qqplot_graph`).
 
 Regularization and ill-conditioned problems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

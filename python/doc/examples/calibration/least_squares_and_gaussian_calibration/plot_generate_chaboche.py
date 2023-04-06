@@ -5,7 +5,7 @@ Generate observations of the Chaboche mechanical model
 In this example we present the simulation of noisy observations of the Chaboche model.
 A detailed explanation of this mechanical law is presented :ref:`here <use-case-chaboche>`.
 We show how to produce the observations that we use in the calibration
-model of :doc:`Calibration of the Chaboch model
+model of :doc:`Calibration of the Chaboche model
 </auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_chaboche>`.
 
 Parameters to calibrate

@@ -8,6 +8,14 @@ Introduction
 
 In this page, we present the method used in the :class:`~openturns.GaussianLinearCalibration`
 and :class:`~openturns.GaussianNonLinearCalibration` classes.
+The Gaussian calibration is a particular case of Bayesian calibration 
+(see :ref:`bayesian_calibration`) where
+the prior has a Gaussian distribution and the observation error has a Gaussian
+distribution.
+In this case, simplifications occur which can lead to an efficient
+algorithm, which can require less model evaluations compared to Monte-Carlo
+Markov Chains.
+
 We consider a computer model :math:`\vect{h}` (i.e. a deterministic function)
 to calibrate:
 
@@ -33,7 +41,7 @@ The standard hypothesis of the probabilistic calibration is:
 
 for :math:`i=1,...,n` where :math:`\vect{\varepsilon}^i` is a random measurement error.
 
-The goal of gaussian calibration is to estimate :math:`\vect{\theta}`, based on
+The goal of Gaussian calibration is to estimate :math:`\vect{\theta}`, based on
 observations of :math:`n` inputs :math:`(\vect{x}^1, \ldots, \vect{x}^n)`
 and the associated :math:`n` observations of the output
 :math:`(\vect{y}^1, \ldots, \vect{y}^n)`.
@@ -136,7 +144,7 @@ reached at :
 
 .. math::
 
-    \hat{\vect{\theta}} = \operatorname{arg} \min_{\vect{\theta}\in\Rset^{d_h}} \frac{1}{2} \left( \|\vect{y} - H(\vect{\theta})\|^2_R
+    \hat{\vect{\theta}}_{MAP} = \operatorname{arg} \min_{\vect{\theta}\in\Rset^{d_h}} \frac{1}{2} \left( \|\vect{y} - H(\vect{\theta})\|^2_R
     + \|\vect{\theta}-\vect{\mu} \|^2_B \right).
 
 It is called the *maximum a posteriori posterior* estimator or
@@ -195,16 +203,16 @@ for any :math:`\vect{\theta}\in\Rset^{d_h}`.
 
 If the covariance matrix :math:`B` is positive definite,
 then the Hessian matrix of the cost function is positive definite.
-Under this hypothesis, the solution of the nonlinear gaussian calibration is unique.
+Under this hypothesis, the solution of the nonlinear Gaussian calibration is unique.
 
 Solving the Non Linear Gaussian Calibration Problem
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The implementation of the resolution of the gaussian non linear calibration
+The implementation of the resolution of the Gaussian non linear calibration
 problem involves the Cholesky decomposition of the covariance matrices :math:`B`
 and :math:`R`.
 This allows one to transform the sum of two Mahalanobis distances into a single
-euclidian norm.
+Euclidian norm.
 This leads to a classical non linear least squares problem.
 
 Linear Gaussian Calibration
@@ -253,7 +261,7 @@ This implies:
 
 .. math::
 
-    \vect{\theta} \; | \; \vect{y} \sim \mathcal{N}(\vect{\theta}_{MAP}, \; A)
+    \vect{\theta} \; | \; \vect{y} \sim \mathcal{N}\left(\hat{\vect{\theta}}_{MAP}, \; A\right)
 
 Bias of Linear Gaussian Calibration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -268,8 +276,14 @@ The MAP estimator is biased and the bias is:
 
 .. math::
 
-    \operatorname{Bias}(\vect{\theta})
+    \operatorname{Bias}\left(\hat{\vect{\theta}}_{MAP}\right)
     = (KJ - \operatorname{I})\left(\vect{\theta}^\star - \vect{\mu}\right).
+
+This bias is introduced as a consequence of the regularization properties
+of the Gaussian calibration.
+In the tradeoff between the bias and the variance in the estimator of the
+parameters, the reduction of the variance come at the price of an increase
+of the bias.
 
 .. topic:: API:
 
