@@ -245,7 +245,6 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     // Dry run: draw everything using the natural parameters
     // posterior
     Drawable postPDF(getParameterPosterior().getMarginal(j).drawPDF().getDrawable(0));
-
     const Scalar xMinPost = postPDF.getData().getMin()[0];
     const Scalar xMaxPost = postPDF.getData().getMax()[0];
 
@@ -279,18 +278,20 @@ GridLayout CalibrationResult::drawParameterDistributions() const
         Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF().getDrawable(0));
         const Scalar xMinPrior = priorPDF.getData().getMin()[0];
         const Scalar xMaxPrior = priorPDF.getData().getMax()[0];
-        const Scalar xRange = std::max(xMaxPost, xMaxPrior) - std::min(xMinPost, xMinPrior);
 
         // Now, build the common range
-        xMin = std::min(xMinPrior, xMinPost) - xRangeMarginFactor * xRange;
-        xMax = std::max(xMaxPrior, xMaxPost) + xRangeMarginFactor * xRange;
+        xMin = std::min(xMinPrior, xMinPost);
+        xMax = std::max(xMaxPrior, xMaxPost);
     } else {
         // In the Least Squares framework, only the candidate and posterior matters.
+        // The candidate is just a point: this is why we need a margin here.
         // The prior is flat: ignore it to compute the bounds.
         // Now, build the common range
-        const Scalar xRange = std::max(xMaxPost, xCandidate) - std::min(xMinPost, xCandidate);
-        xMin = std::min(xCandidate, xMinPost) - xRangeMarginFactor * xRange;
-        xMax = std::max(xCandidate, xMaxPost) + xRangeMarginFactor * xRange;
+        const Scalar xMinRaw = std::min(xMinPost, xCandidate);
+        const Scalar xMaxRaw = std::max(xMaxPost, xCandidate);
+        const Scalar xScaledRange = xRangeMarginFactor * (xMaxRaw - xMinRaw);
+        xMin = xMinRaw - xScaledRange;
+        xMax = xMaxRaw + xScaledRange;
     }
     
     // Now draw everything using the common range
@@ -353,29 +354,41 @@ GridLayout CalibrationResult::drawResiduals() const
   if (!outputAtPriorMean_.getDimension())
     throw NotDefinedException(HERE) << "Output at prior not available";
 
+  const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("CalibrationResult-xRangeMarginFactor");
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   grid.setTitle("Residual analysis");
   const Sample priorResiduals(outputObservations_ - outputAtPriorMean_);
   const Sample postResiduals(outputObservations_ - outputAtPosteriorMean_);
-  const Point priorMin(priorResiduals.getMin());
-  const Point priorMax(priorResiduals.getMax());
-  const Point postMin(postResiduals.getMin());
-  const Point postMax(postResiduals.getMax());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
     bool upperRightGraph = (j == outputDimension - 1);
     Graph graph("", outputObservations_.getDescription()[j] + " residuals", "PDF", true, "topright");
 
+    // Get the distributions
     const Distribution errorJ(getObservationsError().getMarginal(j));
-    const Scalar errorMin = errorJ.computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
-    const Scalar errorMax = errorJ.computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
-    const Scalar delta = 2.0 * (errorMax - errorMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
-    const Scalar xMin = std::min(priorMin[j], std::min(postMin[j], errorMin - delta));
-    const Scalar xMax = std::max(priorMax[j], std::max(postMax[j], errorMax + delta));
+    const Distribution priorResidualsJ(KernelSmoothing().build(priorResiduals.getMarginal(j)));
+    const Distribution postResidualsJ(KernelSmoothing().build(postResiduals.getMarginal(j)));
+    // Dry run
+    // prior
+    Drawable priorPDF(priorResidualsJ.drawPDF().getDrawable(0));
+    const Scalar xMinPrior = priorPDF.getData().getMin()[0];
+    const Scalar xMaxPrior = priorPDF.getData().getMax()[0];
+    // posterior
+    Drawable postPDF(postResidualsJ.drawPDF().getDrawable(0));
+    const Scalar xMinPost = postPDF.getData().getMin()[0];
+    const Scalar xMaxPost = postPDF.getData().getMax()[0];
+    // normal
+    Drawable obsPDF(errorJ.drawPDF().getDrawable(0));
+    const Scalar xMinObs = obsPDF.getData().getMin()[0];
+    const Scalar xMaxObs = obsPDF.getData().getMax()[0];
+    // Now, build the common range
+    const Scalar xMin = std::min(xMinPrior, std::min(xMinPost, xMinObs));
+    const Scalar xMax = std::max(xMaxPrior, std::max(xMaxPost, xMaxObs));
 
+    // Now draw everything using the common range
     // observation error
-    Drawable obsPDF(errorJ.drawPDF(xMin, xMax).getDrawable(0));
+    obsPDF = errorJ.drawPDF(xMin, xMax).getDrawable(0);
     if (upperRightGraph)
     {
         if (bayesian_)
@@ -396,7 +409,7 @@ GridLayout CalibrationResult::drawResiduals() const
     graph.add(obsPDF);
 
     // prior
-    Drawable priorPDF(KernelSmoothing().build(priorResiduals.getMarginal(j)).drawPDF(xMin, xMax).getDrawable(0));
+    priorPDF = priorResidualsJ.drawPDF(xMin, xMax).getDrawable(0);
     if (upperRightGraph)
     {
       priorPDF.setLegend("Initial");
@@ -410,7 +423,7 @@ GridLayout CalibrationResult::drawResiduals() const
     graph.add(priorPDF);
 
     // posterior
-    Drawable postPDF(KernelSmoothing().build(postResiduals.getMarginal(j)).drawPDF(xMin, xMax).getDrawable(0));
+    postPDF = postResidualsJ.drawPDF(xMin, xMax).getDrawable(0);
     if (upperRightGraph)
     {
       postPDF.setLegend("Calibrated");
