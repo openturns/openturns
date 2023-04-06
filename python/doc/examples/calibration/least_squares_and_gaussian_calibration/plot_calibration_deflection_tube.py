@@ -38,8 +38,6 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # Create a calibration problem
 # ----------------------------
-
-# %%
 # We load the model from the use case module :
 dt = deflection_tube.DeflectionTube()
 print("Inputs:", dt.model.getInputDescription())
@@ -108,8 +106,6 @@ plt.subplots_adjust(wspace=0.3, hspace=0.3)
 # %%
 # Setting up the calibration
 # --------------------------
-
-# %%
 # Please consider that the input parameters L, a, De, di are calibrated.
 # We define the initial point of the calibrated parameters:
 # these values will be used as the mean of the prior normal distribution
@@ -221,9 +217,7 @@ print("Parametric Model Parameters:", calibrationFunction.getParameterDescriptio
 # We will be able to check if these hypotheses are correct
 # after calibration, using the `drawResiduals()` method.
 sigmaObservation = [0.2e-6, 0.3e-6, 0.3e-6]  # Exact : [0.1e-6, 0.5e-6, 0.5e-6]
-
-# %%
-# In the Bayesian framework,
+# Set the diagonal of the covariance matrix.
 errorCovariance = ot.CovarianceMatrix(3)
 errorCovariance[0, 0] = sigmaObservation[0] ** 2
 errorCovariance[1, 1] = sigmaObservation[1] ** 2
@@ -237,8 +231,6 @@ predictedOutput[0:5]
 # %%
 # Calibration with Gaussian non linear calibration
 # ------------------------------------------------
-
-# %%
 # We are finally able to use the :class:`~openturns.GaussianNonLinearCalibration`.
 algo = ot.GaussianNonLinearCalibration(
     calibrationFunction,
@@ -252,15 +244,11 @@ algo = ot.GaussianNonLinearCalibration(
 # %%
 # The `run` method launches the optimization algorithm.
 algo.run()
-
-# %%
 calibrationResult = algo.getResult()
 
 # %%
 # Analysis of the results
 # -----------------------
-
-# %%
 # The `getParameterMAP()` method returns the optimized parameters.
 thetaMAP = calibrationResult.getParameterMAP()
 print("theta After = ", thetaMAP)
@@ -302,10 +290,10 @@ plt.subplots_adjust(wspace=0.3, hspace=0.7, right=0.8)
 graph = calibrationResult.drawObservationsVsPredictions()
 view = viewer.View(
     graph,
-    figure_kw={"figsize": (14.0, 5.0)},
+    figure_kw={"figsize": (12.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(wspace=0.3, right=0.8)
+plt.subplots_adjust(wspace=0.3, left=0.05, right=0.85)
 
 # %%
 # We see that, after calibration, the points are on the first
@@ -345,10 +333,10 @@ plt.subplots_adjust(wspace=0.3, right=0.8)
 graph = calibrationResult.drawResiduals()
 view = viewer.View(
     graph,
-    figure_kw={"figsize": (14.0, 4.0)},
+    figure_kw={"figsize": (13.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(wspace=0.3, right=0.8)
+plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
 
 # %%
 # We see that the distribution of the residuals after calibration
@@ -375,9 +363,9 @@ plt.subplots_adjust(wspace=0.3, right=0.8)
 graph = calibrationResult.drawParameterDistributions()
 view = viewer.View(
     graph,
-    figure_kw={"figsize": (14.0, 4.0)},
+    figure_kw={"figsize": (10.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(wspace=0.3, right=0.8)
+plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
 
 plt.show()
