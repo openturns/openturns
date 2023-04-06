@@ -354,7 +354,6 @@ GridLayout CalibrationResult::drawResiduals() const
   if (!outputAtPriorMean_.getDimension())
     throw NotDefinedException(HERE) << "Output at prior not available";
 
-  const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("CalibrationResult-xRangeMarginFactor");
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   grid.setTitle("Residual analysis");
