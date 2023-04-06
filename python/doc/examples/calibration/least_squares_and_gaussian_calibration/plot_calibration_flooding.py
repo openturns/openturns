@@ -570,7 +570,7 @@ view = viewer.View(
     figure_kw={"figsize": (8.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(right=0.8)
+plt.subplots_adjust(right=0.7)
 
 # %%
 # We see that the distribution of the residual is centered on zero.
