@@ -80,9 +80,9 @@
 %include NAISResult.i
 %include NAIS.i
 %include CrossEntropyResult.i
-%include CrossEntropyImportanceSamplingAlgorithm.i
-%include StandardSpaceCrossEntropyImportanceSamplingAlgorithm.i
-%include PhysicalSpaceCrossEntropyImportanceSamplingAlgorithm.i
+%include CrossEntropyImportanceSampling.i
+%include StandardSpaceCrossEntropyImportanceSampling.i
+%include PhysicalSpaceCrossEntropyImportanceSampling.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i

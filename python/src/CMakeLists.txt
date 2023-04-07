@@ -983,9 +983,9 @@ ot_add_python_module(simulation simulation_module.i
                       NAISResult.i NAISResult_doc.i.in
                       NAIS.i NAIS_doc.i.in
                       CrossEntropyResult.i CrossEntropyResult_doc.i.in
-                      CrossEntropyImportanceSamplingAlgorithm.i CrossEntropyImportanceSamplingAlgorithm_doc.i.in
-                      StandardSpaceCrossEntropyImportanceSamplingAlgorithm.i StandardSpaceCrossEntropyImportanceSamplingAlgorithm_doc.i.in
-                      PhysicalSpaceCrossEntropyImportanceSamplingAlgorithm.i PhysicalSpaceCrossEntropyImportanceSamplingAlgorithm_doc.i.in
+                      CrossEntropyImportanceSampling.i CrossEntropyImportanceSampling_doc.i.in
+                      StandardSpaceCrossEntropyImportanceSampling.i StandardSpaceCrossEntropyImportanceSampling_doc.i.in
+                      PhysicalSpaceCrossEntropyImportanceSampling.i PhysicalSpaceCrossEntropyImportanceSampling_doc.i.in
                     )
 
 ot_add_python_module(stattests stattests_module.i

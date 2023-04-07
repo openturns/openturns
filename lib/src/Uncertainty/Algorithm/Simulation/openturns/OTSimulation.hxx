@@ -51,8 +51,8 @@
 #include "openturns/NAISResult.hxx"
 #include "openturns/NAIS.hxx"
 #include "openturns/CrossEntropyResult.hxx"
-#include "openturns/CrossEntropyImportanceSamplingAlgorithm.hxx"
-#include "openturns/StandardSpaceCrossEntropyImportanceSamplingAlgorithm.hxx"
-#include "openturns/PhysicalSpaceCrossEntropyImportanceSamplingAlgorithm.hxx"
+#include "openturns/CrossEntropyImportanceSampling.hxx"
+#include "openturns/StandardSpaceCrossEntropyImportanceSampling.hxx"
+#include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

@@ -789,8 +789,8 @@ ot_pyinstallcheck_test (AdaptiveDirectionalStratification_std)
 ot_pyinstallcheck_test (ExpectationSimulationAlgorithm_std)
 ot_pyinstallcheck_test (SobolSimulationAlgorithm_std)
 ot_pyinstallcheck_test (NAIS_std IGNOREOUT)
-ot_pyinstallcheck_test (StandardSpaceCrossEntropyImportanceSamplingAlgorithm_std IGNOREOUT)
-ot_pyinstallcheck_test (PhysicalSpaceCrossEntropyImportanceSamplingAlgorithm_std IGNOREOUT)
+ot_pyinstallcheck_test (StandardSpaceCrossEntropyImportanceSampling_std IGNOREOUT)
+ot_pyinstallcheck_test (PhysicalSpaceCrossEntropyImportanceSampling_std IGNOREOUT)
 
 ## StatTests
 ot_pyinstallcheck_test (VisualTest_std)
