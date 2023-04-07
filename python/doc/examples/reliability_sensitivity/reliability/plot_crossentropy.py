@@ -150,7 +150,7 @@ active_parameters = [0, 1, 2, 3, 4]
 # WARNING : native parameters of distribution have to be considered
 bounds = ot.Interval([14, 0.01, 0., 500, 20],
                      [16, 0.2, 0.1, 1000, 70])
-initial_theta= distribution.getParameter()
+initial_theta = distribution.getParameter()
 myPhysicalSpaceIS_1 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
                                                                      active_parameters,
                                                                      initial_theta,
@@ -187,14 +187,14 @@ distribution_margin1 = ot.LogNormalMuSigma(3e6, 3e5, 0.0).getDistribution()
 distribution_margin2 = ot.Normal(750., 50.)
 aux_marginals = [distribution_margin1, distribution_margin2]
 aux_distribution = ot.ComposedDistribution(aux_marginals)
-print('Parameters of initial distribution',aux_distribution.getParameter())
+print('Parameters of initial distribution', aux_distribution.getParameter())
 
 # Definition of parameters to be optimized
 active_parameters = [0, 3]
 # WARNING : native parameters of distribution have to be considered
 bounds = ot.Interval([14, 500],
                      [16, 1000])
-initial_theta= [15, 750]
+initial_theta = [15, 750]
 myPhysicalSpaceIS_2 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
                                                                      active_parameters,
                                                                      initial_theta,
@@ -218,7 +218,7 @@ myGraph.add(AuxiliarySamples2)
 myGraph.add(mycontour)
 view = viewer.View(myGraph)
 
-# %% 
+# %%
 # By analyzing the failure samples, one may want to include correlation parameters in the auxiliary distribution. In this last example, we add a Normal copula of which the correlation parameter is optimized.
 
 # %%
@@ -231,7 +231,7 @@ aux_distribution = ot.ComposedDistribution(aux_marginals, copula)
 print('Initial parameters of auxiliary distribution:', aux_distribution.getParameter())
 # Definition of parameters to be optimized
 active_parameters = [0, 1, 2, 3, 4, 5]
-bounds = ot.Interval([14, 0.01, 0., 500, 20,-1],
+bounds = ot.Interval([14, 0.01, 0., 500, 20, -1],
                      [16, 0.2, 0.1, 1000, 70, 1])
 initial_theta = distribution.getParameter()
 myPhysicalSpaceIS_3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,

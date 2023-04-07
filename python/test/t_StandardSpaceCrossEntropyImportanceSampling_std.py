@@ -19,4 +19,4 @@ myIS = ot.StandardSpaceCrossEntropyImportanceSampling(event, 0.3)
 myIS.run()
 myResult = myIS.getResult()
 
-assert_almost_equal(myResult.getProbabilityEstimate(),1.394611e-04)
+assert_almost_equal(myResult.getProbabilityEstimate(), 1.394611e-04)

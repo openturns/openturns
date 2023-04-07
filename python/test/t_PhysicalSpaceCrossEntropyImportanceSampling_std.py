@@ -20,7 +20,7 @@ aux_distribution = ot.ComposedDistribution(aux_marginals)
 active_parameters = [0, 1, 2, 3, 4]
 bounds = ot.Interval([3, 0.09, 0., 50e3, 2e3],
                      [7, 0.5, 0.5, 100e3, 10e3])
-initial_theta= [5.70, 0.1, 0., 75e3, 5e3]
+initial_theta = [5.70, 0.1, 0., 75e3, 5e3]
 my_IS_physical = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
                                                                 active_parameters,
                                                                 initial_theta,
@@ -30,4 +30,4 @@ my_IS_physical = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
 my_IS_physical.setSolver(ot.TNC())
 my_IS_physical.run()
 myResult = my_IS_physical.getResult()
-assert_almost_equal(myResult.getProbabilityEstimate(),0.000124728)
+assert_almost_equal(myResult.getProbabilityEstimate(), 0.000124728)
