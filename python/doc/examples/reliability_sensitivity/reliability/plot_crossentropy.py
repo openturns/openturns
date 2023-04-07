@@ -1,6 +1,6 @@
 """
 Cross Entropy Importance Sampling
-==================================================
+=================================
 """
 # %%
 #
@@ -33,7 +33,7 @@ distribution = ot.ComposedDistribution(marginals)
 # Create the function :math:`g`.
 
 # %%
-g = ot.SymbolicFunction(['R', 'F'], ['R-F/(pi_*1e-4)'])
+g = ot.SymbolicFunction(['R', 'F'], ['R - F/(pi_*1e-4)'])
 
 # %%
 # Draw the function :math:`g` to help to understand the shape of the limit state function.
@@ -147,11 +147,11 @@ distribution_margin2 = ot.Normal()
 aux_marginals = [distribution_margin1, distribution_margin2]
 aux_distribution = ot.ComposedDistribution(aux_marginals)
 # Definition of parameters to be optimized
-active_parameters = [0, 1, 2, 3, 4] # active parameters from the auxiliary distribution which will be optimized
+active_parameters = [0, 1, 2, 3, 4]
 # WARNING : native parameters of distribution have to be considered
-bounds = ot.Interval([14, 0.01, 0., 500, 20], # bounds on the active parameters
+bounds = ot.Interval([14, 0.01, 0., 500, 20],
                      [16, 0.2, 0.1, 1000, 70])
-initial_theta= distribution.getParameter() # initial value of the active parameters
+initial_theta= distribution.getParameter()
 myPhysicalSpaceIS_1 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
                                                                      active_parameters,
                                                                      initial_theta,
@@ -191,11 +191,11 @@ aux_distribution = ot.ComposedDistribution(aux_marginals)
 print('Parameters of initial distribution',aux_distribution.getParameter())
 
 # Definition of parameters to be optimized
-active_parameters = [0, 3] # active parameters of the auxiliary distribution which will be optimized
+active_parameters = [0, 3]
 # WARNING : native parameters of distribution have to be considered
-bounds = ot.Interval([14, 500], # bounds on the active parameters
+bounds = ot.Interval([14, 500],
                      [16, 1000])
-initial_theta= [15, 750] # initial value of the active parameters
+initial_theta= [15, 750]
 myPhysicalSpaceIS_2 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
                                                                      active_parameters,
                                                                      initial_theta,
@@ -231,10 +231,10 @@ copula = ot.NormalCopula()
 aux_distribution = ot.ComposedDistribution(aux_marginals,copula)
 print('Initial parameters of auxiliary distribution:', aux_distribution.getParameter())
 # Definition of parameters to be optimized
-active_parameters = [0, 1, 2, 3, 4, 5] # active parameters of the auxiliary distribution which will be optimized
-bounds = ot.Interval([14, 0.01, 0., 500, 20,-1], # bounds on the active parameters
+active_parameters = [0, 1, 2, 3, 4, 5]
+bounds = ot.Interval([14, 0.01, 0., 500, 20,-1],
                      [16, 0.2, 0.1, 1000, 70, 1])
-initial_theta= distribution.getParameter()# initial value of the active parameters
+initial_theta= distribution.getParameter()
 myPhysicalSpaceIS_3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
                                                                      active_parameters,
                                                                      initial_theta,
