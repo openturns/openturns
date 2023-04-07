@@ -16,6 +16,15 @@ source_files : sequence of str
 Notes
 -----
 
+Depends on the following Python libraries:
+
+  * python3.8+
+  * openturns
+  * matplotlib
+  * sphinx
+  * sphinx-gallery
+  * numpydoc
+
 Sphinx reads the docstrings of the OpenTURNS methods to generate the API doc.
 This means that changing the source _doc.i.in files will have no effect,
 since those files are not read by Sphinx.

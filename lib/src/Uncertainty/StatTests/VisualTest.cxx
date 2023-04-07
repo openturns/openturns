@@ -370,7 +370,7 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
   const Sample rankedInput(inputSample.rank());
   const Sample rankedOutput(outputSample.rank());
   // Create the graph
-  Graph cobWeb(String(OSS() << "Cobweb graph - " << outputSample.getDescription() << " vs " << inputSample.getDescription()), "", "", false, "topright");
+  Graph cobWeb(String(OSS() << "Parallel coordinates - " << outputSample.getDescription() << " vs " << inputSample.getDescription()), "", "", false, "topright");
   // First discriminate the filaments: draw the background filaments and memorize the selected ones
   Indices selectedFilaments(0);
   for (UnsignedInteger i = 0; i < size; ++i)

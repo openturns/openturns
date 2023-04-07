@@ -76,7 +76,7 @@ int main(int, char *[])
     fullprint << "LinearModelR = " << drawLinearModelResidualTest << std::endl;
   }
 
-  /* CobWeb tests */
+  /* Parallel coordinates tests */
   {
     UnsignedInteger size = 100;
     UnsignedInteger inputDimension = 6;
@@ -89,10 +89,10 @@ int main(int, char *[])
     formula[0] = oss;
     SymbolicFunction model(inputVar, formula);
     Sample outputSample(model(inputSample));
-    Graph cobwebValue(VisualTest::DrawParallelCoordinates(inputSample, outputSample, 2.5, 3.0, "red", false));
-    fullprint << "cobwebValue = " << cobwebValue << std::endl;
-    Graph cobwebQuantile(VisualTest::DrawParallelCoordinates(inputSample, outputSample, 0.7, 0.9, "red", false));
-    fullprint << "cobwebQuantile = " << cobwebQuantile << std::endl;
+    Graph parallelCoordinatesValue(VisualTest::DrawParallelCoordinates(inputSample, outputSample, 2.5, 3.0, "red", false));
+    fullprint << "parallelCoordinatesValue = " << parallelCoordinatesValue << std::endl;
+    Graph parallelCoordinatesQuantile(VisualTest::DrawParallelCoordinates(inputSample, outputSample, 0.7, 0.9, "red", false));
+    fullprint << "parallelCoordinatesQuantile = " << parallelCoordinatesQuantile << std::endl;
   }
 
   /* KendallPlot tests */

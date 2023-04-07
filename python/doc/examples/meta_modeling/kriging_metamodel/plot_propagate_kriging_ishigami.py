@@ -1,22 +1,22 @@
 """
-Kriging : propagate uncertainties
-=================================
+Kriging: propagate uncertainties
+================================
+
+In this example we propagate uncertainties through a Kriging metamodel of the :ref:`Ishigami model<use-case-ishigami>`.
 """
+
 import openturns as ot
 from matplotlib import pylab as plt
 import openturns.viewer as otv
 
+
 # %%
-# In this example we propagate uncertainties through a kriging metamodel of the
-#  :ref:`Ishigami model<use-case-ishigami>`.
-#
 # We first build the metamodel and then compute its mean with a MonteCarlo
 # computation.
+#
+# We load the Ishigami model from the usecases module:
 
-# %%
-# We first load the Ishigami model from the usecases module :
 from openturns.usecases import ishigami_function
-
 im = ishigami_function.IshigamiModel()
 
 # %%
