@@ -4,9 +4,8 @@ Cross Entropy Importance Sampling
 """
 # %%
 #
-# The objective is to evaluate a probability from the two versions of Cross Entropy Importance Sampling working in Physical or Standard spaces, see :class:`~openturns.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.PhysicalSpaceCrossEntropyImportanceSampling` .
-#
-# We consider the simple stress beam example: :ref:`axial stressed beam <use-case-stressed-beam>`. 
+# The objective is to evaluate a probability from the two versions of Cross Entropy Importance Sampling working in Physical or Standard spaces, see :class:`~openturns.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.PhysicalSpaceCrossEntropyImportanceSampling`.
+# We consider the simple stress beam example: :ref:`axial stressed beam <use-case-stressed-beam>`.
 
 
 # %%
@@ -99,13 +98,13 @@ print(
 # We can analyze the simulation budget.
 
 # %%
-print('Numerical budget:', myStandardSpaceISResult.getBlockSize()*myStandardSpaceISResult.getOuterSampling())
+print('Numerical budget: ', myStandardSpaceISResult.getBlockSize() * myStandardSpaceISResult.getOuterSampling())
 
 # %%
 # We can also retrieve the optimal auxiliary distribution in Standard Space.
 
 # %%
-print('Auxiliary distribution in Standard space:', myStandardSpaceISResult.getAuxiliaryDistribution())
+print('Auxiliary distribution in Standard space: ', myStandardSpaceISResult.getAuxiliaryDistribution())
 
 
 # %%
@@ -136,8 +135,8 @@ view = viewer.View(myGraph)
 # ----------------------------------------------------------------
 
 # %%
-# For more advanced use, it is possible to work in the physical space to specify the auxiliary distribution. 
-# In this second example, we take the auxiliary distribution in the same family as the initial distribution and we want to optimize all the parameters. 
+# For more advanced use, it is possible to work in the physical space to specify the auxiliary distribution.
+# In this second example, we take the auxiliary distribution in the same family as the initial distribution and we want to optimize all the parameters.
 # The parameters to be optimized are the parameters of the native distribution.
 
 # %%
@@ -207,7 +206,7 @@ print('Probability of failure:', myPhysicalSpaceISResult_2.getProbabilityEstimat
 print('Coefficient of variation:', myPhysicalSpaceISResult_2.getCoefficientOfVariation())
 
 # %%
-# Let analyze the auxiliary output samples for the two previous simulations. We can plot initial (in blue) and auxiliary samples in physical space. 
+# Let analyze the auxiliary output samples for the two previous simulations. We can plot initial (in blue) and auxiliary samples in physical space.
 
 # %%
 myGraph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "topright")
@@ -228,13 +227,13 @@ distribution_margin1 = ot.LogNormalMuSigma(3e6, 3e5, 0.0).getDistribution()
 distribution_margin2 = ot.Normal(750., 50.)
 aux_marginals = [distribution_margin1, distribution_margin2]
 copula = ot.NormalCopula()
-aux_distribution = ot.ComposedDistribution(aux_marginals,copula)
+aux_distribution = ot.ComposedDistribution(aux_marginals, copula)
 print('Initial parameters of auxiliary distribution:', aux_distribution.getParameter())
 # Definition of parameters to be optimized
 active_parameters = [0, 1, 2, 3, 4, 5]
 bounds = ot.Interval([14, 0.01, 0., 500, 20,-1],
                      [16, 0.2, 0.1, 1000, 70, 1])
-initial_theta= distribution.getParameter()
+initial_theta = distribution.getParameter()
 myPhysicalSpaceIS_3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
                                                                      active_parameters,
                                                                      initial_theta,
@@ -242,9 +241,9 @@ myPhysicalSpaceIS_3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
                                                                      aux_distribution)
 myPhysicalSpaceIS_3.run()
 myPhysicalSpaceISResult_3 = myPhysicalSpaceIS_3.getResult()
-print('Optimized parameters of auxiliary distribution:', myPhysicalSpaceISResult_3.getAuxiliaryDistribution().getParameter())
-print('Probability of failure:', myPhysicalSpaceISResult_3.getProbabilityEstimate())
-print('Coefficient of variation:', myPhysicalSpaceISResult_3.getCoefficientOfVariation())
+print('Optimized parameters of auxiliary distribution: ', myPhysicalSpaceISResult_3.getAuxiliaryDistribution().getParameter())
+print('Probability of failure: ', myPhysicalSpaceISResult_3.getProbabilityEstimate())
+print('Coefficient of variation: ', myPhysicalSpaceISResult_3.getCoefficientOfVariation())
 
 # %%
 # Finally, we plot the new auxiliary samples in black.
