@@ -25,8 +25,8 @@ Simulations methods
     NAIS
     CrossEntropyImportanceSampling
     PhysicalSpaceCrossEntropyImportanceSampling
-    StandardSpaceCrossEntropyImportanceSampling 
-    
+    StandardSpaceCrossEntropyImportanceSampling
+
 Wilks' method
 =============
 
