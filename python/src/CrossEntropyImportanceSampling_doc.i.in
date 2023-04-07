@@ -1,0 +1,57 @@
+%feature("docstring") OT::CrossEntropyImportanceSampling
+"Cross Entropy Importance Sampling algorithm.
+
+See also
+--------
+StandardSpaceCrossEntropyImportanceSampling, PhysicalSpaceCrossEntropyImportanceSampling, CrossEntropyResult
+
+
+Notes
+-----
+This class inherits from EventSimulation.
+
+The principle is to perform a simulation study to evaluate the threshold exceedance probability according to an importance density obtained using Cross Entropy algorithm.
+
+A CrossEntropyImportanceSampling object can be created only through its derivative classes : :class:`~openturns.StandardSpaceCrossEntropyImportanceSampling` or :class:`~PhysicalSpaceCrossEntropyImportanceSampling`."
+    
+// -------------------------------------------------------------------------------
+
+%feature("docstring") OT::CrossEntropyImportanceSampling::getOutputSample
+"Output sample accessor of the final Cross Entropy algorithm step.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    Output sample that realize the event."
+
+// -------------------------------------------------------------------------------
+
+%feature("docstring") OT::CrossEntropyImportanceSampling::getRhoQuantile
+"Accessor to the intermediate quantile level.
+
+Returns
+-------
+rhoQuantile : : float
+    Result of Cross Entropy algorithm."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::CrossEntropyImportanceSampling::setRhoQuantile
+"Accessor to the intermediate quantile level.
+
+Parameters
+----------
+rhoQuantile : : float  :math:`0<\rho<1`
+    Intermediate quantile level."
+    
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::CrossEntropyImportanceSampling::getResult
+"Accessor to the intermediate quantile level.
+
+Returns
+-------
+CrossEntropyResult : : class:`~CrossEntropyResult`
+    Class containing all the results of the Cross Entropy algorithm simulation."    
+    
+        
