@@ -7,10 +7,9 @@ distribution_R = ot.LogNormalMuSigma(300.0, 30.0, 0.0).getDistribution()
 distribution_F = ot.Normal(75e3, 5e3)
 marginals = [distribution_R, distribution_F]
 distribution = ot.ComposedDistribution(marginals)
-    
+
 # create the model
 model = ot.SymbolicFunction(['R', 'F'], ['R-F/(pi_*100.0)'])
-    
 #create the event 
 vect = ot.RandomVector(distribution)
 G = ot.CompositeRandomVector(model, vect)
@@ -21,5 +20,4 @@ myIS.run()
 myResult = myIS.getResult()
 
 # Compare with reference probability
-assert_almost_equal(myResult.getProbabilityEstimate(),1.394611e-04 )
-
+assert_almost_equal(myResult.getProbabilityEstimate(),1.394611e-04)

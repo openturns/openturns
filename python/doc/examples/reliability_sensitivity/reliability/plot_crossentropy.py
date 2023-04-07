@@ -194,7 +194,7 @@ print('Parameters of initial distribution',aux_distribution.getParameter())
 active_parameters = [0, 3] # active parameters of the auxiliary distribution which will be optimized
 # WARNING : native parameters of distribution have to be considered
 bounds = ot.Interval([14, 500], # bounds on the active parameters
-                     [16,1 000])
+                     [16, 1000])
 initial_theta= [15, 750] # initial value of the active parameters
 myPhysicalSpaceIS_2 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
                                                                      active_parameters,
