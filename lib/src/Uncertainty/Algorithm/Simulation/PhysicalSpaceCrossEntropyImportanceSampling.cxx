@@ -20,9 +20,8 @@
  */
 #include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/TNC.hxx"
 #include "openturns/OptimizationProblem.hxx"
-
+#include "openturns/NLopt.hxx"
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
@@ -51,7 +50,7 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
                                                          const Distribution & auxiliaryDistribution,
                                                          const Scalar rhoQuantile)
   : CrossEntropyImportanceSampling(event, rhoQuantile)
-  , solver_(new TNC)
+  , solver_(new NLopt("LD_LBFGS"))
   , useDefaultSolver_(true)
   {
     auxiliaryDistribution_ = auxiliaryDistribution;
@@ -101,31 +100,29 @@ public:
   
   Point operator()(const Point & x) const
   {
+    Distribution myDistrib = auxiliaryDistribution_;
   
-
-  Distribution myDistrib = auxiliaryDistribution_;
+    // update auxiliary distribution
+    Point parameters_(auxiliaryDistribution_.getParameter());
   
-  // update auxiliary distribution
-  Point parameters_(auxiliaryDistribution_.getParameter());
+    for (UnsignedInteger i = 0; i < activeParameters_.getDimension(); ++i)
+    {
+      parameters_[activeParameters_[i]] = x[i];
+    }
+    myDistrib.setParameter(parameters_);
   
-  for (UnsignedInteger i = 0; i < activeParameters_.getDimension(); ++i)
-  {
-       parameters_[activeParameters_[i]] = x[i];
-  }
-  myDistrib.setParameter(parameters_);
+    Point criticSamplesAuxiliaryPDFValue = myDistrib.computePDF(auxiliaryCriticInputSample_).asPoint();
+    Point criticSamplesAuxiliaryLogPDFValue = myDistrib.computeLogPDF(auxiliaryCriticInputSample_).asPoint();
   
-  Point criticSamplesAuxiliaryPDFValue = myDistrib.computePDF(auxiliaryCriticInputSample_).asPoint();
-  Point criticSamplesAuxiliaryLogPDFValue = myDistrib.computeLogPDF(auxiliaryCriticInputSample_).asPoint();
+    Scalar objectiveFunction = 0.0;
   
-  Scalar objectiveFunction = 0.0;
+    for(UnsignedInteger j = 0; j < auxiliaryCriticInputSample_.getSize(); ++j)
+    {  
+      objectiveFunction += initialCriticInputSamplePDFValue_[j]/criticSamplesAuxiliaryPDFValue[j]*criticSamplesAuxiliaryLogPDFValue[j];
+    }
+    objectiveFunction = 1/numberSamples_*objectiveFunction;
   
-  for(UnsignedInteger j = 0; j < auxiliaryCriticInputSample_.getSize(); ++j)
-  {
-     objectiveFunction += initialCriticInputSamplePDFValue_[j]/criticSamplesAuxiliaryPDFValue[j]*criticSamplesAuxiliaryLogPDFValue[j];
-  }
-  objectiveFunction = 1/numberSamples_*objectiveFunction;
-  
-  return Point(1,objectiveFunction);
+    return Point(1,objectiveFunction);
   }
   
   UnsignedInteger getInputDimension() const
@@ -133,7 +130,7 @@ public:
     return activeParameters_.getDimension();
   }
   
-    UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const
   {
     return 1;
   }
@@ -157,15 +154,13 @@ void PhysicalSpaceCrossEntropyImportanceSampling::setSolver(const OptimizationAl
 /** Get solver */
 OptimizationAlgorithm PhysicalSpaceCrossEntropyImportanceSampling::getSolver() const
 {
-   return solver_;
+  return solver_;
 }
 
 
 // Compute Output Samples
 Sample PhysicalSpaceCrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples) const
 {
-
-
   Sample outputSamples = getEvent().getFunction()(inputSamples);
 
   return outputSamples;
@@ -179,8 +174,8 @@ void PhysicalSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(co
   Point parameters_(auxiliaryDistribution_.getParameter());
   for (UnsignedInteger i = 0; i < activeParameters_.getDimension(); ++i)
   {
-       parameters_[activeParameters_[i]] = auxiliaryDistributionParameters[i];
-         }
+    parameters_[activeParameters_[i]] = auxiliaryDistributionParameters[i];
+  }
   auxiliaryDistribution_.setParameter(parameters_);
 } 
 
@@ -188,39 +183,38 @@ void PhysicalSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(co
 Point PhysicalSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryCriticInputSamples) const
 {
 
-Point initialCriticInputSamplePDFValue = initialDistribution_.computePDF(auxiliaryCriticInputSamples).asPoint();
+  Point initialCriticInputSamplePDFValue = initialDistribution_.computePDF(auxiliaryCriticInputSamples).asPoint();
 
-const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
-
-
-Function objective(new KullbackLeiblerDivergenceObjective(auxiliaryCriticInputSamples,
-                                                          initialCriticInputSamplePDFValue,
-                                                          auxiliaryDistribution_,
-                                                          activeParameters_,
-                                                          numberOfSample));
+  const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
 
 
-OptimizationProblem problem(objective);
-problem.setBounds(bounds_);
-problem.setMinimization(false);
-solver_.setProblem(problem);
+  Function objective(new KullbackLeiblerDivergenceObjective(auxiliaryCriticInputSamples,
+                                                            initialCriticInputSamplePDFValue,
+                                                            auxiliaryDistribution_,
+                                                            activeParameters_,
+                                                            numberOfSample));
 
 
-Point param(activeParameters_.getDimension());
+  OptimizationProblem problem(objective);
+  problem.setBounds(bounds_);
+  problem.setMinimization(false);
+  solver_.setProblem(problem);
 
+
+  Point param(activeParameters_.getDimension());
 
   for (UnsignedInteger i = 0; i < activeParameters_.getDimension(); ++i)
   {
-       param[i] = auxiliaryDistribution_.getParameter()[activeParameters_[i]];
+    param[i] = auxiliaryDistribution_.getParameter()[activeParameters_[i]];
   }
 
-solver_.setStartingPoint(param);
+  solver_.setStartingPoint(param);
 
-solver_.run();
+  solver_.run();
 
-Point auxiliaryParameters = solver_.getResult().getOptimalPoint();
+  Point auxiliaryParameters = solver_.getResult().getOptimalPoint();
 
-return auxiliaryParameters;
+  return auxiliaryParameters;
 }
 
 

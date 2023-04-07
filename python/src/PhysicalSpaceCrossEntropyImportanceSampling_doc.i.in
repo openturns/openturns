@@ -68,7 +68,7 @@ The Physical Space Cross-Entropy Importance Sampling algorithm [morio2015]_ uses
 
 
 
-Default solver for the optimization of auxiliary distribution is :class:`~openturns.TNC`.
+Default solver for the optimization of auxiliary distribution is 'LD_LBFGS' from :class:`~openturns.NLopt`.
 
 See also
 --------

@@ -678,7 +678,8 @@ ot_check_test (SimulationSensitivityAnalysis_std)
 ot_check_test (QuadrantSampling_std)
 ot_check_test (AdaptiveDirectionalStratification_std)
 ot_check_test (NAIS_std IGNOREOUT)
-
+ot_check_test (PhysicalSpaceCrossEntropyImportanceSampling_std)
+ot_check_test (StandardSpaceCrossEntropyImportanceSampling_std)
 # StatTests
 ot_check_test (VisualTest_std)
 ot_check_test (HypothesisTest_correlation)

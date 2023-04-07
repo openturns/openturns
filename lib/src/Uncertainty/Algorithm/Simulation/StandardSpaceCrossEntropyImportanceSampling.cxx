@@ -50,11 +50,10 @@ StandardSpaceCrossEntropyImportanceSampling * StandardSpaceCrossEntropyImportanc
 
 // Default constructor
 StandardSpaceCrossEntropyImportanceSampling::StandardSpaceCrossEntropyImportanceSampling(const RandomVector & event,
-                                                                                                           const Scalar rhoQuantile)
+                                                                                         const Scalar rhoQuantile)
   : CrossEntropyImportanceSampling(event,rhoQuantile)
   {
 
-  
   //ev = EventSimulation(event)
   initialDistribution_ = Normal(initialDistribution_.getDimension());
 
@@ -78,16 +77,16 @@ void StandardSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(co
   Point temporaryParameters = auxiliaryDistribution_.getParameter();
   
   for (UnsignedInteger i = 0; i < auxiliaryDistributionParameters.getDimension(); ++i)
-   {
-   temporaryParameters[i] = auxiliaryDistributionParameters[i];
-   }
+  {
+    temporaryParameters[i] = auxiliaryDistributionParameters[i];
+  }
   auxiliaryDistribution_.setParameter(temporaryParameters);
 } 
   
 // Optimize auxiliary distribution parameters
 Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryCriticInputSamples) const
 {
-//evaluate initial PDF on failure auxiliaryInputSamples
+  //evaluate initial PDF on failure auxiliaryInputSamples
   Point criticSamplesInitialPDFValue   = initialDistribution_.computePDF(auxiliaryCriticInputSamples).asPoint(); 
   //evaluate auxiliary PDF on failure auxiliaryInputSamples
   Point criticSamplesAuxiliaryPDFValue = auxiliaryDistribution_.computePDF(auxiliaryCriticInputSamples).asPoint(); 
@@ -113,14 +112,14 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
   {
   
-  Scalar numeratorMeanCalculation = 0.0;
+    Scalar numeratorMeanCalculation = 0.0;
   
       for(UnsignedInteger j = 0; j < auxiliaryCriticInputSamples.getSize(); ++j)
       {
       numeratorMeanCalculation += std::exp(criticSamplesInitialLogPDFValue[j] - criticSamplesAuxiliaryLogPDFValue[j])* auxiliaryCriticInputSamples(j,i);
       }
     
-  mean_[i]= numeratorMeanCalculation / sumPdfCritic; 
+    mean_[i]= numeratorMeanCalculation / sumPdfCritic; 
   }
  
   // Calculation of updated standard deviation of auxiliary distribution
@@ -128,28 +127,28 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   
   for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
   {
-  Point diff(auxiliaryCriticInputSamples.getSize());
+    Point diff(auxiliaryCriticInputSamples.getSize());
   
-  for(UnsignedInteger k=0; k < auxiliaryCriticInputSamples.getSize();++k)
-      {
+    for(UnsignedInteger k=0; k < auxiliaryCriticInputSamples.getSize();++k)
+    {
       diff[k] = std::pow(auxiliaryCriticInputSamples.getMarginal(i)(k,0) - mean_[i],2);
-      }
+    }
 
-  Scalar numeratorStdCalculation = 0.0;
+    Scalar numeratorStdCalculation = 0.0;
     for(UnsignedInteger j = 0; j < auxiliaryCriticInputSamples.getSize(); ++j)
-      {
+    {
       numeratorStdCalculation += criticSamplesInitialPDFValue[j]*diff[j] / criticSamplesAuxiliaryPDFValue[j];
-      }
-   standardDeviation_[i] = std::sqrt(numeratorStdCalculation/sumPdfCritic);
+    }
+    standardDeviation_[i] = std::sqrt(numeratorStdCalculation/sumPdfCritic);
   }
 
  Point auxiliaryParameters = Point(2*auxiliaryCriticInputSamples.getDimension());
  
  for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
-     {
-     auxiliaryParameters[2*i] = mean_[i];
-     auxiliaryParameters[2*i+1] = standardDeviation_[i]; 
-     } 
+ {
+   auxiliaryParameters[2*i] = mean_[i];
+   auxiliaryParameters[2*i+1] = standardDeviation_[i]; 
+ } 
 
  
 return auxiliaryParameters;

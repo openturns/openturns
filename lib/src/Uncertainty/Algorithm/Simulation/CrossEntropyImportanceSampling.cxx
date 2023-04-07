@@ -100,6 +100,7 @@ void CrossEntropyImportanceSampling::run()
   
   // Computation of current quantile
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(rhoQuantile_)[0];
+  
   Point  auxiliaryDistributionParameters;
 
   if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
@@ -119,6 +120,7 @@ void CrossEntropyImportanceSampling::run()
       } 
 
      const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
+     
    // Optimize auxiliary distribution parameters
     auxiliaryDistributionParameters = optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples);
 
@@ -161,8 +163,6 @@ void CrossEntropyImportanceSampling::run()
     }
     else
     {
-    
-
     Indices indiceCritic(0);
     for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
       {
@@ -171,17 +171,17 @@ void CrossEntropyImportanceSampling::run()
           indiceCritic.add(i);
       } 
 
-     // Extract the relevant sample
-     const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
+   // Extract the relevant sample
+   const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
   
   
-     // Optimize auxiliary distribution parameters
-     Point auxiliaryDistributionParameters = optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples);
+   // Optimize auxiliary distribution parameters
+   Point auxiliaryDistributionParameters = optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples);
   
-     // Update auxiliary Distribution Parameters
-     updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
+   // Update auxiliary Distribution Parameters
+   updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
 
-       //throw InternalException(HERE) << "User stopped simulation"; 
+    //throw InternalException(HERE) << "User stopped simulation"; 
       
     }
 

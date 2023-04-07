@@ -35,6 +35,8 @@ initial_theta= [5.70,0.1,0.,75e3,5e3] # initial value of the active parameters
 
 my_IS_physical = ot.PhysicalSpaceCrossEntropyImportanceSampling(
     event,active_parameters,initial_theta,bounds,aux_distribution,0.3)
+    
+my_IS_physical.setSolver(ot.TNC())
 
 my_IS_physical.run()
 myResult = my_IS_physical.getResult()
