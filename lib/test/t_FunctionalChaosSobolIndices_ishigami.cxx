@@ -28,10 +28,10 @@ using namespace OT::Test;
 void printSobolResult(Scalar S_computed, Scalar S_exact)
 {
   OStream fullprint(std::cout);
-  fullprint << "   S (PCE) " << S_computed << std::endl;
-  fullprint << "   S (exact) " << S_exact << std::endl;
+  fullprint << "   S (PCE) " << std::fixed << std::setprecision(4) << S_computed << std::endl;
+  fullprint << "   S (exact) " << std::fixed << std::setprecision(4) << S_exact << std::endl;
   Scalar absoluteError = abs(S_computed - S_exact);
-  fullprint << "   Abs. Error " << absoluteError << std::endl;
+  fullprint << "   Abs. Error " << std::scientific << std::setprecision(4) << absoluteError << std::endl;
 }
 
 int main(int, char *[])
@@ -61,14 +61,14 @@ int main(int, char *[])
     Scalar ST3 = S3 + S13;
     Scalar S123 = 0.0;
     fullprint << "mean = " << mean << std::endl;
-    fullprint << "variance = " << variance << std::endl;
-    fullprint << "S1 = " << S1 << std::endl;
-    fullprint << "S2 = " << S2 << std::endl;
-    fullprint << "S3 = " << S3 << std::endl;
-    fullprint << "S13 = " << S13 << std::endl;
-    fullprint << "ST1 = " << ST1 << std::endl;
-    fullprint << "ST2 = " << ST2 << std::endl;
-    fullprint << "ST3 = " << ST3 << std::endl;
+    fullprint << "variance = " << std::fixed << std::setprecision(4) << variance << std::endl;
+    fullprint << "S1 = " << std::fixed << std::setprecision(4) << S1 << std::endl;
+    fullprint << "S2 = " << std::fixed << std::setprecision(4) << S2 << std::endl;
+    fullprint << "S3 = " << std::fixed << std::setprecision(4) << S3 << std::endl;
+    fullprint << "S13 = " << std::fixed << std::setprecision(4) << S13 << std::endl;
+    fullprint << "ST1 = " << std::fixed << std::setprecision(4) << ST1 << std::endl;
+    fullprint << "ST2 = " << std::fixed << std::setprecision(4) << ST2 << std::endl;
+    fullprint << "ST3 = " << std::fixed << std::setprecision(4) << ST3 << std::endl;
     // Create the Ishigami function
     Description inputVariables(dimension);
     inputVariables[0] = "xi1";

@@ -1,12 +1,12 @@
 mean = 3.5
 variance = 13.8446
-S1 = 0.313905
-S2 = 0.442411
-S3 = 0
-S13 = 0.243684
-ST1 = 0.557589
-ST2 = 0.442411
-ST3 = 0.243684
+S1 = 0.3139
+S2 = 0.4424
+S3 = 0.0000
+S13 = 0.2437
+ST1 = 0.5576
+ST2 = 0.4424
+ST3 = 0.2437
 basisSize = 165
 Create object
 Run()
@@ -41,85 +41,85 @@ Component | Sobol index            | Sobol total index
 
 Test first order Sobol' indices
 First order, X1
-   S (PCE) 0.314426
-   S (exact) 0.313905
-   Abs. Error 0.000521269
+   S (PCE) 0.3144
+   S (exact) 0.3139
+   Abs. Error 5.2127e-04
 First order, X2
-   S (PCE) 0.442054
-   S (exact) 0.442411
-   Abs. Error 0.000357279
+   S (PCE) 0.4421
+   S (exact) 0.4424
+   Abs. Error 3.5728e-04
 First order, X3
-   S (PCE) 0
-   S (exact) 0
-   Abs. Error 0
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 0.0000e+00
 Test total order Sobol' indices
 Total, X1
-   S (PCE) 0.557946
-   S (exact) 0.557589
-   Abs. Error 0.000357279
+   S (PCE) 0.5579
+   S (exact) 0.5576
+   Abs. Error 3.5728e-04
 Total, X2
-   S (PCE) 0.442065
-   S (exact) 0.442411
-   Abs. Error 0.000346593
+   S (PCE) 0.4421
+   S (exact) 0.4424
+   Abs. Error 3.4659e-04
 Total, X3
-   S (PCE) 0.24352
-   S (exact) 0.243684
-   Abs. Error 0.00016399
+   S (PCE) 0.2435
+   S (exact) 0.2437
+   Abs. Error 1.6399e-04
 Test first order (closed) group Sobol' indices
 X1
-   S (PCE) 0.314426
-   S (exact) 0.313905
-   Abs. Error 0.000521269
+   S (PCE) 0.3144
+   S (exact) 0.3139
+   Abs. Error 5.2127e-04
 X2
-   S (PCE) 0.442054
-   S (exact) 0.442411
-   Abs. Error 0.000357279
+   S (PCE) 0.4421
+   S (exact) 0.4424
+   Abs. Error 3.5728e-04
 X3
-   S (PCE) 0
-   S (exact) 0
-   Abs. Error 0
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 0.0000e+00
 (X1, X2)
-   S (PCE) 0.75648
-   S (exact) 0.756316
-   Abs. Error 0.00016399
+   S (PCE) 0.7565
+   S (exact) 0.7563
+   Abs. Error 1.6399e-04
 (X1, X3)
-   S (PCE) 0.557935
-   S (exact) 0.557589
-   Abs. Error 0.000346593
+   S (PCE) 0.5579
+   S (exact) 0.5576
+   Abs. Error 3.4659e-04
 (X2, X3)
-   S (PCE) 0.442054
-   S (exact) 0.442411
-   Abs. Error 0.000357279
+   S (PCE) 0.4421
+   S (exact) 0.4424
+   Abs. Error 3.5728e-04
 (X1, X2, X3)
-   S (PCE) 1
-   S (exact) 1
-   Abs. Error 0
+   S (PCE) 1.0000
+   S (exact) 1.0000
+   Abs. Error 0.0000e+00
 Test total group Sobol' indices
 X1
-   S (PCE) 0.557946
-   S (exact) 0.557589
-   Abs. Error 0.000357279
+   S (PCE) 0.5579
+   S (exact) 0.5576
+   Abs. Error 3.5728e-04
 X2
-   S (PCE) 0.442065
-   S (exact) 0.442411
-   Abs. Error 0.000346593
+   S (PCE) 0.4421
+   S (exact) 0.4424
+   Abs. Error 3.4659e-04
 X3
-   S (PCE) 0.24352
-   S (exact) 0.243684
-   Abs. Error 0.00016399
+   S (PCE) 0.2435
+   S (exact) 0.2437
+   Abs. Error 1.6399e-04
 (X1, X2)
-   S (PCE) 1
-   S (exact) 1
-   Abs. Error 0
+   S (PCE) 1.0000
+   S (exact) 1.0000
+   Abs. Error 0.0000e+00
 (X1, X3)
-   S (PCE) 0.557946
-   S (exact) 0.557589
-   Abs. Error 0.000357279
+   S (PCE) 0.5579
+   S (exact) 0.5576
+   Abs. Error 3.5728e-04
 (X2, X3)
-   S (PCE) 0.685574
-   S (exact) 0.686095
-   Abs. Error 0.000521269
+   S (PCE) 0.6856
+   S (exact) 0.6861
+   Abs. Error 5.2127e-04
 (X1, X2, X3)
-   S (PCE) 1
-   S (exact) 1
-   Abs. Error 0
+   S (PCE) 1.0000
+   S (exact) 1.0000
+   Abs. Error 0.0000e+00
