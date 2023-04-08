@@ -355,7 +355,6 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
 {
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
   if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
-  const UnsignedInteger orderSobolIndice = variablesGroup.getSize();
   const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
@@ -406,7 +405,6 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedInteractionIndex(const Indice
 {
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
   if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
-  const UnsignedInteger orderSobolIndice = variablesGroup.getSize();
   const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
