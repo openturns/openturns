@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from math import pi
 from openturns.testing import assert_almost_equal
 from openturns.usecases import ishigami_function
 
@@ -76,6 +75,7 @@ print("First order, X3")
 S_computed = sensitivity.getSobolIndex(2)
 printSobolResult(S_computed, im.S3)
 assert_almost_equal(S_computed, im.S3, rtol, atol)
+#
 #
 print("2. Check total Sobol' indices")
 print("Total, X1")
