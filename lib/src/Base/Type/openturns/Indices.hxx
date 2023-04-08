@@ -91,6 +91,12 @@ public:
   /** Check if the integer is in the indices */
   Bool contains(const UnsignedInteger n) const;
 
+  /** Compute infinite-norm */
+  UnsignedInteger normInfinite() const;
+
+  /** Compute 1-norm */
+  UnsignedInteger normOne() const;
+
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
   String __repr__() const override;

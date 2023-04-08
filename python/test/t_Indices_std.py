@@ -47,3 +47,11 @@ assert not indices.contains(2), "wrong contains"
 assert not indices.contains(4), "wrong contains"
 assert not indices.contains(0), "wrong contains"
 assert not indices.contains(1), "wrong contains"
+
+# Check normOne() and normInfinite()
+indices = ot.Indices(())
+assert indices.normOne() == 0, "wrong normOne"
+assert indices.normInfinite() == 0, "wrong normOne"
+indices = ot.Indices((3, 5, 7))
+assert indices.normOne() == 15, "wrong normOne"
+assert indices.normInfinite() == 7, "wrong normOne"

@@ -148,3 +148,36 @@ Examples
 >>> indices.isIncreasing()
 True"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Indices::normInfinite
+"Compute the infinite norm of the indices.
+
+Returns
+-------
+norm: int
+    The maximum of the indices.
+
+Examples
+--------
+>>> import openturns as ot
+>>> indices = ot.Indices([3, 5, 7, 9])
+>>> print(indices.normInfinite())
+9"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Indices::normOne
+"Compute the 1-norm of the indices.
+
+Returns
+-------
+norm: int
+    The sum of the indices.
+
+Examples
+--------
+>>> import openturns as ot
+>>> indices = ot.Indices([3, 5, 7, 9])
+>>> print(indices.normOne())
+24"

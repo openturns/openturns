@@ -90,4 +90,28 @@ Bool Indices::contains(const UnsignedInteger n) const
   return false;
 }
 
+/* Returns the infinite-norm of the indices */
+UnsignedInteger Indices::normInfinite() const
+{
+  const UnsignedInteger size = getSize();
+  UnsignedInteger norm = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    if (operator[](i) > norm) norm = operator[](i);
+  }
+  return norm;
+}
+
+/* Returns the 1-norm of the indices */
+UnsignedInteger Indices::normOne() const
+{
+  const UnsignedInteger size = getSize();
+  UnsignedInteger norm = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    norm += operator[](i);
+  }
+  return norm;
+}
+
 END_NAMESPACE_OPENTURNS

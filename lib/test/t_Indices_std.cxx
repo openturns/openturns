@@ -50,7 +50,7 @@ int main(int, char *[])
     indices2 = {4, 5};
     fullprint << "indices2=" << indices2 << std::endl;
 
-    // Test contains
+    // Test contains()
     Indices indices3 = {};
     assert(!indices3.contains(0));
     assert(!indices3.contains(1));
@@ -67,6 +67,14 @@ int main(int, char *[])
     assert(indices5.contains(7));
     assert(!indices5.contains(0));
     assert(!indices5.contains(1));
+    
+    // Test normInfinite() and normOne()
+    Indices indices6 = {};
+    assert(indices6.normInfinite(0));
+    assert(indices6.normOne(0));
+    Indices indices7 = {1, 2, 3};
+    assert(indices7.normInfinite() == 3);
+    assert(indices7.normOne() == 6);
 
 }
   catch (TestFailed & ex)

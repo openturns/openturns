@@ -91,20 +91,22 @@ int main(int, char *[])
     polynomialCollection[1] = LegendreFactory();
     polynomialCollection[2] = LegendreFactory();
 
-    LinearEnumerateFunction enumerateFunction(dimension);
+    HyperbolicAnisotropicEnumerateFunction enumerateFunction( dimension,  0.6);
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
+    UnsignedInteger size = pow(2, 10);
+    fullprint << "size = " << size << std::endl;
+    WeightedExperiment experiment(LowDiscrepancyExperiment(SobolSequence(), distribution, size));
     // Create the adaptive strategy
     // We can choose amongst several strategies
     // First, the most efficient (but more complex!) strategy
-    UnsignedInteger degree = 8;
+    UnsignedInteger degree = 14;
     UnsignedInteger basisSize = enumerateFunction.getBasisSizeFromTotalDegree(degree);
     fullprint << "basisSize = " << basisSize << std::endl;
     FixedStrategy adaptiveStrategy( productBasis, basisSize );
     FittingAlgorithm fittingAlgorithm = CorrectedLeaveOneOut();
     const LeastSquaresStrategy projectionStrategy(LeastSquaresMetaModelSelectionFactory(LARS(), fittingAlgorithm));
-    UnsignedInteger size = 1000;
-    const Sample X(distribution.getSample(size));
+    const Sample X(experiment.generate());
     const Sample Y(model(X));
     fullprint << "Create object" << std::endl;
     FunctionalChaosAlgorithm algo(X, Y, distribution, adaptiveStrategy, projectionStrategy);
@@ -120,7 +122,7 @@ int main(int, char *[])
     const Scalar atol = 0.001;
     Scalar S_computed;
     Scalar S_exact;
-    // 
+    //
     fullprint << "Test first order Sobol' indices" << std::endl;
     fullprint << "First order, X1" << std::endl;
     S_computed = sensitivity.getSobolIndex(0);
@@ -232,6 +234,42 @@ int main(int, char *[])
     S_exact = 1.0;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
+    // 
+    fullprint << "Test interaction group Sobol' indices" << std::endl;
+    fullprint << "X1" << std::endl;
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({0});
+    printSobolResult(S_computed, S1);
+    assert_almost_equal(S_computed, S1, rtol, atol);
+    // 
+    fullprint << "X2" << std::endl;
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({1});
+    printSobolResult(S_computed, S2);
+    assert_almost_equal(S_computed, S2, rtol, atol);
+    // 
+    fullprint << "X3" << std::endl;
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({2});
+    printSobolResult(S_computed, S3);
+    assert_almost_equal(S_computed, S3, rtol, atol);
+    // 
+    fullprint << "X1, X2" << std::endl;
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({0, 1});
+    printSobolResult(S_computed, S12);
+    assert_almost_equal(S_computed, S12, rtol, atol);
+    // 
+    fullprint << "X1, X3" << std::endl;
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({0, 2});
+    printSobolResult(S_computed, S13);
+    assert_almost_equal(S_computed, S13, rtol, atol);
+    // 
+    fullprint << "X2, X3" << std::endl;
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({1, 2});
+    printSobolResult(S_computed, S23);
+    assert_almost_equal(S_computed, S23, rtol, atol);
+    // 
+    fullprint << "X1, X2, X3" << std::endl;
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({0, 1, 2});
+    printSobolResult(S_computed, S123);
+    assert_almost_equal(S_computed, S123, rtol, atol);
   }
   catch (TestFailed & ex)
   {

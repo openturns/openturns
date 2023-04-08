@@ -121,12 +121,21 @@ s : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedIndex
-"Get the grouped Sobol first order indices.
+"Get the grouped Sobol first order (closed) indices.
+
+Let :math:`d \in \mathbb{N}` the dimension of the input random vector.
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` be a group of variables. 
+The first order (closed) Sobol' index of a group of variables :math:`\bdu`
+is:
+
+.. math::
+    S_{\bdu}^{\operatorname{cl}}
+    = \frac{\variance{\expectation{Y|\vect{X}_{\bdu}}}}{\variance{Y}}
 
 Parameters
 ----------
 i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated grouped Sobol indices.
+    Indice(s) of the variable(s) we want the associated grouped first order (closed) Sobol indices.
     :math:`d` is the dimension of the input variables.
 marginalIndex : int
     Output marginal index.
@@ -140,12 +149,33 @@ s : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedTotalIndex
-"Get the grouped Sobol total order indices.
+"Get the grouped Sobol' total order indices.
+
+
+Let :math:`d \in \mathbb{N}` the dimension of the input random vector.
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` be a group of variables. 
+The first order (closed) Sobol' index of a group of variables :math:`\bdu`
+is:
+
+.. math::
+    S^T_\bdu 
+    = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} \var(h_\bdv(\bX_\bdv))}{\var(Y)}
+
+where :math:`h_\bdv` is the function of the variables in the group :math:`\bdv`
+of the functional ANOVA decomposition of the physical model.
+
+For any group of variables :math:`\bdu`, 
+the total and first order (closed) Sobol' indices are related by the equation:
+
+..math::
+    S^T_\bdu + S_{\overline{\bdu}}^{\operatorname{cl}} = 1
+
+where :math:`\overline{\bdu}` is the complementary group of :math:`\bdu`.
 
 Parameters
 ----------
 i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated grouped Sobol indices.
+    Indice(s) of the variable(s) we want the associated grouped total Sobol indices.
     :math:`d` is the dimension of the input variables.
 marginalIndex : int
     Output marginal index.
@@ -154,4 +184,23 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The grouped Sobol total order index."
+    The grouped Sobol' total order index."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedInteractionIndex
+"Get the grouped Sobol' interaction indices.
+
+Parameters
+----------
+i : int or sequence of int, :math:`0 \leq i < d - 1`
+    Indice(s) of the variable(s) we want the associated grouped interaction Sobol' indices.
+    :math:`d` is the dimension of the input variables.
+marginalIndex : int
+    Output marginal index.
+    Default value is 0, i.e. the first output.
+
+Returns
+-------
+s : float
+    The grouped Sobol' total order index."
