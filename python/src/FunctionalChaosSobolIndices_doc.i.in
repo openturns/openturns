@@ -13,7 +13,7 @@ FunctionalChaosAlgorithm, FunctionalChaosResult
 Notes
 -----
 This structure is created from a FunctionalChaosResult in order to evaluate the
-Sobol indices associated to the polynomial chaos decomposition of the model. 
+Sobol' indices associated to the polynomial chaos decomposition of the model. 
 The SobolIndicesAlgorithm.DrawSobolIndices static method can be used to 
 draw the indices.
 
@@ -83,7 +83,7 @@ functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolIndex
-"Get the Sobol indices.
+"Get the first order Sobol' index of an input variable.
 
 Parameters
 ----------
@@ -102,7 +102,7 @@ s : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolTotalIndex
-"Get the total Sobol indices.
+"Get the total Sobol' index of an input variable.
 
 Parameters
 ----------
@@ -121,11 +121,11 @@ s : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedIndex
-"Get the grouped Sobol first order (closed) indices.
+"Get the grouped Sobol first order (closed) indices of a group of input variables.
 
 Let :math:`d \in \mathbb{N}` the dimension of the input random vector.
-Let :math:`\bdu \subseteq \{0, ..., d - 1\}` be a group of variables. 
-The first order (closed) Sobol' index of a group of variables :math:`\bdu`
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` be a group of input variables. 
+The first order (closed) Sobol' index of a group of input variables :math:`\bdu`
 is:
 
 .. math::
@@ -144,16 +144,16 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The grouped Sobol first order index."
+    The grouped Sobol' first order index."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedTotalIndex
-"Get the grouped Sobol' total order indices.
+"Get the grouped Sobol' total order index of a group of input variables.
 
 
 Let :math:`d \in \mathbb{N}` the dimension of the input random vector.
-Let :math:`\bdu \subseteq \{0, ..., d - 1\}` be a group of variables. 
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` be a group of input variables. 
 The first order (closed) Sobol' index of a group of variables :math:`\bdu`
 is:
 
@@ -162,12 +162,12 @@ is:
     = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} \var(h_\bdv(\bX_\bdv))}{\var(Y)}
 
 where :math:`h_\bdv` is the function of the variables in the group :math:`\bdv`
-of the functional ANOVA decomposition of the physical model.
+of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
 
 For any group of variables :math:`\bdu`, 
 the total and first order (closed) Sobol' indices are related by the equation:
 
-..math::
+.. math::
     S^T_\bdu + S_{\overline{\bdu}}^{\operatorname{cl}} = 1
 
 where :math:`\overline{\bdu}` is the complementary group of :math:`\bdu`.
@@ -175,7 +175,7 @@ where :math:`\overline{\bdu}` is the complementary group of :math:`\bdu`.
 Parameters
 ----------
 i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated grouped total Sobol indices.
+    Indice(s) of the variable(s) we want the associated grouped total Sobol' indices.
     :math:`d` is the dimension of the input variables.
 marginalIndex : int
     Output marginal index.
@@ -191,6 +191,17 @@ s : float
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedInteractionIndex
 "Get the grouped Sobol' interaction indices.
 
+Let :math:`d \in \mathbb{N}` the dimension of the input random vector.
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` be a group of input variables. 
+The first order interaction Sobol' index of a group of variables :math:`\bdu`
+is:
+
+.. math::
+    S_\bdu = \frac{V_\bdu}{\var(Y)} = \frac{\var(h_\bdu(\bX_\bdu)}{\var(Y)}.
+
+where :math:`h_\bdu` is the function of the input variables in the group :math:`\bdu`
+of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
+
 Parameters
 ----------
 i : int or sequence of int, :math:`0 \leq i < d - 1`
@@ -203,4 +214,4 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The grouped Sobol' total order index."
+    The grouped Sobol' interaction index."
