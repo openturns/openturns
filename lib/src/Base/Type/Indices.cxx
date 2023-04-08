@@ -80,4 +80,14 @@ Indices Indices::complement(const UnsignedInteger n) const
   return result;
 }
 
+/* Return true if the integer n in is the indices */
+Bool Indices::contains(const UnsignedInteger n) const
+{
+  const UnsignedInteger size = getSize();
+  if (!(size > 0)) return false;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (operator[](i) == n) return true;
+  return false;
+}
+
 END_NAMESPACE_OPENTURNS

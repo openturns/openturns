@@ -88,6 +88,9 @@ public:
   /** Compute the complement between the indices and {0,...,n-1} for a given n */
   Indices complement(const UnsignedInteger n) const;
 
+  /** Check if the integer is in the indices */
+  Bool contains(const UnsignedInteger n) const;
+
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
   String __repr__() const override;
