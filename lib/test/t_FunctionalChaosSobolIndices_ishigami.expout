@@ -1,0 +1,125 @@
+mean = 3.5
+variance = 13.8446
+S1 = 0.313905
+S2 = 0.442411
+S3 = 0
+S13 = 0.243684
+ST1 = 0.557589
+ST2 = 0.442411
+ST3 = 0.243684
+basisSize = 165
+Create object
+Run()
+GetResult()
+ input dimension: 3
+ output dimension: 1
+ basis size: 20
+ mean: [3.50023]
+ std-dev: [3.72437]
+------------------------------------------------------------
+Index   | Multi-indice                  | Part of variance  
+------------------------------------------------------------
+      7 | [0,4,0]                       | 0.275426
+      1 | [1,0,0]                       | 0.190387
+      5 | [1,0,2]                       | 0.135915
+     13 | [0,6,0]                       | 0.132823
+      3 | [3,0,0]                       | 0.121382
+      9 | [3,0,2]                       | 0.0860363
+      2 | [0,2,0]                       | 0.0255738
+     11 | [1,0,4]                       | 0.011926
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+Component | Sobol index            | Sobol total index      
+------------------------------------------------------------
+        0 | 0.314426               | 0.557946              
+        1 | 0.442054               | 0.442065              
+        2 | 0                      | 0.24352               
+------------------------------------------------------------
+
+
+Test first order Sobol' indices
+First order, X1
+   S (PCE) 0.314426
+   S (exact) 0.313905
+   Abs. Error 0.000521269
+First order, X2
+   S (PCE) 0.442054
+   S (exact) 0.442411
+   Abs. Error 0.000357279
+First order, X3
+   S (PCE) 0
+   S (exact) 0
+   Abs. Error 0
+Test total order Sobol' indices
+Total, X1
+   S (PCE) 0.557946
+   S (exact) 0.557589
+   Abs. Error 0.000357279
+Total, X2
+   S (PCE) 0.442065
+   S (exact) 0.442411
+   Abs. Error 0.000346593
+Total, X3
+   S (PCE) 0.24352
+   S (exact) 0.243684
+   Abs. Error 0.00016399
+Test first order (closed) group Sobol' indices
+X1
+   S (PCE) 0.314426
+   S (exact) 0.313905
+   Abs. Error 0.000521269
+X2
+   S (PCE) 0.442054
+   S (exact) 0.442411
+   Abs. Error 0.000357279
+X3
+   S (PCE) 0
+   S (exact) 0
+   Abs. Error 0
+(X1, X2)
+   S (PCE) 0.75648
+   S (exact) 0.756316
+   Abs. Error 0.00016399
+(X1, X3)
+   S (PCE) 0.557935
+   S (exact) 0.557589
+   Abs. Error 0.000346593
+(X2, X3)
+   S (PCE) 0.442054
+   S (exact) 0.442411
+   Abs. Error 0.000357279
+(X1, X2, X3)
+   S (PCE) 1
+   S (exact) 1
+   Abs. Error 0
+Test total group Sobol' indices
+X1
+   S (PCE) 0.557946
+   S (exact) 0.557589
+   Abs. Error 0.000357279
+X2
+   S (PCE) 0.442065
+   S (exact) 0.442411
+   Abs. Error 0.000346593
+X3
+   S (PCE) 0.24352
+   S (exact) 0.243684
+   Abs. Error 0.00016399
+(X1, X2)
+   S (PCE) 1
+   S (exact) 1
+   Abs. Error 0
+(X1, X3)
+   S (PCE) 0.557946
+   S (exact) 0.557589
+   Abs. Error 0.000357279
+(X2, X3)
+   S (PCE) 0.685574
+   S (exact) 0.686095
+   Abs. Error 0.000521269
+(X1, X2, X3)
+   S (PCE) 1
+   S (exact) 1
+   Abs. Error 0
