@@ -306,7 +306,6 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
   // the conditional covariance cannot be extracted from the decomposition
   if (!functionalChaosResult_.getOrthogonalBasis().getMeasure().hasIndependentCopula()) throw InternalException(HERE) << "Error: cannot compute Sobol indices from a non-tensorized basis.";
   if (!functionalChaosResult_.getDistribution().hasIndependentCopula()) LOGWARN(OSS(false) << "The Sobol indices are computed wrt the basis measure, and there is no one-to-one transformation between this measure and the input distribution. The interpretation of the indices may be misleading.");
-  const UnsignedInteger orderSobolIndice = variablesGroup.getSize();
   const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
@@ -412,7 +411,6 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedInteractionIndex(const Indice
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
   Scalar totalVariance = 0.0;
-  const UnsignedInteger groupDimension = variablesGroup.getSize();
   bool mustInclude;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
