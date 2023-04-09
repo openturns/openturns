@@ -4,11 +4,12 @@ Sensitivity analysis.
 
 Notes
 -----
-This method analyzes the influence of each component of an input random vector
+This method measures the influence of each component of an input random vector
 :math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` on an output random vector
 :math:`\vect{Y} = \left( Y^1, \ldots, Y^{n_Y} \right)` by computing Sobol' indices (see [sobol1993]_).
 It computes, for every output random variable :math:`Y^k` (:math:`1 \leqslant k \leqslant n_Y`),
 the part of its variance due to each input component :math:`X^i` (:math:`1 \leqslant i \leqslant n_X`) of :math:`\vect{X}`.
+The definition of Sobol' indices is introduced in :ref:`_sensitivity_sobol`. 
 
 Let :math:`\vect{g}` be the physical model such as :math:`\vect{Y}=\vect{g}(\vect{X})`. Let us first consider the case where :math:`n_Y=1`.
 In that case, we denote :math:`\vect{Y}` by :math:`Y`.
@@ -69,9 +70,13 @@ The total order Sobol' index :math:`ST_i` quantifies the part of the variance of
 and its interactions with all the other input variables.
 It can also be viewed as the part of the variance of :math:`Y` that cannot be explained without :math:`X_i`.
 
-In practice, to estimate these quantities,
-Sobol' proposes to use numerical methods that rely on two independent realizations of the random vector :math:`\vect{X}`.
-Let :math:`\mat{A}` and :math:`\mat{B}` be two independent samples (of size :math:`N`) of :math:`\vect{X}` :
+To estimate these quantities,
+Sobol' suggests to use numerical methods that rely on two independent realizations of the random vector :math:`\vect{X}`. 
+This is known as the pick-freeze estimator. 
+
+Let :math:`N \in \Nset` be the size of each sample. 
+Let :math:`\mat{A}` and :math:`\mat{B}` be two independent samples of size :math:`N` 
+of :math:`\vect{X}` :
 
 .. math::
 
@@ -104,7 +109,7 @@ We are now going to mix these two samples to get an estimate of the sensitivity 
    \vdots  & \vdots  &        & \vdots  & \ddots & \vdots \\
    a_{N,1} & a_{1,2} & \cdots & b_{N,i} & \cdots & a_{N, n_X}
    \end{array}
-   \right),
+   \right), \; 
    \mat{C}^i = \left(
    \begin{array}{cccccc}
    b_{1,1} & b_{1,2} & \cdots & a_{1,i} & \cdots & b_{1, n_X} \\
@@ -114,7 +119,7 @@ We are now going to mix these two samples to get an estimate of the sensitivity 
    \end{array}
    \right)
 
-For the sake of stability, computations will be performed with centered output.
+For the sake of stability, computations are performed with centered output.
 Let :math:`\overline{\vect{g}}` be the mean of the combined samples 
 :math:`\vect{g}(\mat{A})` and :math:`\vect{g}(\mat{B})`.
 Let :math:`\tilde{\vect{g}}` be the empirically centered function defined,
@@ -134,15 +139,15 @@ Several estimators of :math:`V_i`, :math:`VT_i` and :math:`V_{-i}` are provided 
 - :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
 - :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method.
 
-Specific formulas for :math:`\hat{V}_i`, :math:`\widehat{VT}_i` and :math:`\hat{V}_{-i}` are given in the corresponding documentation pages.
+Specific formulas for :math:`\widehat{V}_i`, :math:`\widehat{VT}_i` and :math:`\widehat{V}_{-i}` are given in the corresponding documentation pages.
 
-The estimator :math:`\hat{V}_{i,j}` of :math:`V_{i,j}` is the same for all these classes:
+The estimator :math:`\widehat{V}_{i,j}` of :math:`V_{i,j}` is the same for all these classes:
 
 .. math::
 
-    \hat{V}_{i,j} = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{g}(\vect{E}_k^i) \tilde{g}(\vect{C}_k^j) - \frac{1}{N} \sum_{k=1}^{N} \tilde{g}(\vect{A}_k) \tilde{g}(\vect{B}_k) - \hat{V}_i - \hat{V}_j.
+    \widehat{V}_{i,j} = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{g}(\vect{E}_k^i) \tilde{g}(\vect{C}_k^j) - \frac{1}{N} \sum_{k=1}^{N} \tilde{g}(\vect{A}_k) \tilde{g}(\vect{B}_k) - \widehat{V}_i - \widehat{V}_j.
 
-Notice that the value of the second order conditional variance depends on the estimators :math:`\hat{V}_i` and :math:`\hat{V}_j` which are method-dependent. This implies that the value of the second order indices may depend on the specific Sobol' estimator we use. 
+Notice that the value of the second order conditional variance depends on the estimators :math:`\widehat{V}_i` and :math:`\widehat{V}_j` which are method-dependent. This implies that the value of the second order indices may depend on the specific Sobol' estimator we use. 
 
 For multivariate outputs i.e. when :math:`n_Y>1`, we compute the Sobol' indices with respect to each output variable. 
 In this case, the methods :meth:`getFirstOrderIndices` and 
@@ -170,7 +175,6 @@ for :math:`i=1,\ldots,n_X`.
 Aggregated indices can be retrieved with the :meth:`getAggregatedFirstOrderIndices` 
 and :meth:`getAggregatedTotalOrderIndices` methods. 
 
-|
 
 Notice that the distribution of the estimators of the first
 and total order indices can be estimated

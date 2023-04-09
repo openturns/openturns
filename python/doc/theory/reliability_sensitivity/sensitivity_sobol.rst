@@ -1,48 +1,364 @@
 .. _sensitivity_sobol:
 
-Sensitivity analysis using Sobol indices
-----------------------------------------
+Sensitivity analysis using Sobol' indices
+-----------------------------------------
 
-This method deals with analyzing the influence the random vector
-:math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)` has on a random variable
-:math:`Y^k` which is being studied for uncertainty. Here we attempt to evaluate the
-part of variance of :math:`Y^k` due to the different components :math:`X^i`.
+Consider the input random vector
+:math:`\vect{X} = \left( X_1,\ldots,X_{n_X} \right)` 
+and the output random vector :math:`\vect{Y} = \left( Y_1,\ldots,Y_{n_Y} \right)` 
+be the output of the physical model: 
 
-The estimators for the mean of  :math:`m_{Y^j}` and the standard deviation
-:math:`\sigma` of :math:`Y^k` can be obtained from a first sample, as Sobol
-indices estimation requires two samples of the input variables : :math:`(X^1,\ldots,X^{n_X})`,
-that is two sets of *N* vectors of dimension :math:`n_X`
-:math:`(x_{11}^{(1)},\ldots,x_{1n_X})^{(1)},\ldots,(x_{N^1}^{(1)},\ldots,x_{Nn_X}^{(1)})`
-and :math:`(x_{11}^{(2)},\ldots,x_{1n_X})^{(2)},\ldots,(x_{N^1}^{(2)},\ldots,x_{Nn_X}^{(2)})`
+.. math::
+    \vect{Y} = \operatorname{g}(\vect{X}).
 
-The estimation of sensitivity indices for first order consists in estimating the quantity
+We consider the output :math:`Y_k` for any index :math:`k \in \{1, ..., n_Y\}`. 
+Sobol' indices measure the influence the input :math:`\vect{X}` has 
+on the output :math:`Y_k`. 
+The method considers the part of the variance of the output :math:`Y_k` produced by 
+the different inputs :math:`X_i`.
+
+When the output is multivariate, then aggregated Sobol' indices can be
+used [gamboa2013]_.
+See :class:`~openturns.SobolIndicesAlgorithm` for details. 
+In this document, we introduce the Sobol' indices of a scalar output :math:`Y_k`. 
+Hence, the model is simplified to:
+
+.. math::
+    Y = \operatorname{g}(\vect{X}).
+
+
+The Sobol' decomposition is described more easily when the domain of the input 
+is the unit interval :math:`[0,1]^{n_X}`.
+It can be easily extended to any input domain using expectations, variances a
+and variance of conditional expectations.
+
+We assume that the input marginal variables :math:`X_1,\ldots,X_{n_X}` are 
+independent.
+If the input variables are dependent, then the Sobol' indices can be defined, 
+but some of their properties are lost.
+
+Sobol' decomposition
+~~~~~~~~~~~~~~~~~~~~
+
+In this section, we introduce the Sobol'-Hoeffding decomposition [sobol1993]_. 
+Let  :math:`i\in\{1,\ldots, n_X\}`, the vector :math:`\bdx_{\overline{\{i\}}}` be 
+the vector made of components of :math:`\bdx=(x_1,x_2,` :math:`\ldots,x_p)` which 
+indices are different from :math:`i`. 
+Hence, if :math:`\bdx\in[0,1]^{n_X}`, then:
+
+.. math::
+    \bdx_{\overline{\{i\}}} = (x_1,x_2,\ldots,x_{i-1},x_{i+1},\ldots,x_p)^T\in [0,1]^{n_X - 1}.
+
+Consider the function :math:`\operatorname{g}` defined by the equation: 
+
+.. math::
+    Y = \operatorname{g}(\bdx),
+
+where :math:`\bdx=(x_1,\ldots,x_p)^T \in [0,1]^{n_X}`.
+With this notation, we can write:
+
+.. math::
+    \operatorname{g}(\bdx) = \operatorname{g} \left(x_i,\bdx_{\overline{\{i\}}} \right).
+
+If :math:`\operatorname{g}` can be integrated in :math:`[0,1]^{n_X}`, then there is a unique 
+decomposition:
+
+.. math::
+    y &= h_0 + \sum_{i=1,2,\ldots,n_X} h_{\{i\}}(x_i) 
+         \quad + \sum_{1\leq i < j \leq n_X} h_{\{i,j\}}(x_i,x_j) \nonumber \\
+      & \quad+ \ldots + 
+             h_{\{1,2,\ldots,n_X\}}(x_1,x_2,\ldots,x_p),
+
+where :math:`h_0` is a constant and the functions of the decomposition satisfy the equalities:
+
+.. math::
+    \int_0^1 h_{\{i_1,\ldots,i_s\}}(x_{i_1},\ldots,x_{i_s})dx_{i_k} = 0,
+
+for any :math:`k=1,2,\ldots,s` and any indices :math:`1\leq i_1< i_2< \ldots< i_s\leq n_X` and 
+:math:`s=1,2,\ldots,n_X`.
+
+Extension to any input distribution with independent marginals
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In this section, we extend the previous definitions to an input random vector
+that is not necessarily in the unit cube :math:`[0,1]^{n_X}`.
+To do this, we define the functions :math:`h_\bdu` using conditional 
+expectations. 
+
+The functions :math:`h_\bdu` satisfy the equality:
+
+.. math::
+    \int_{[0,1]^{|\overline{\bdu}|}} \operatorname{g}(\bdx) d\bdx_{\overline{\bdu}} 
+    = \sum_{\bdv\subseteq \bdu} h_\bdv(\bdx_\bdv),
+
+for any group of variables :math:`\bdu\subseteq \{1,2,\ldots,n_X\}` with 
+size lower or equal to :math:`n_X`.
+The functions :math:`h_\bdu` can be defined recursively, using groups of 
+variables of lower dimensionality:
+
+.. math::
+    h_\bdu(\bdx_\bdu)
+    = \int_{[0,1]^{|\overline{\bdu}|}} \operatorname{g}(\bdx_\bdu,\bdx_{\overline{\bdu}}) d\bdx_{\overline{\bdu}} 
+    -  \sum_{\bdv\subsetneq \bdu} h_\bdv(\bdx_\bdv).
+
+Let :math:`\boldsymbol{x} \in [0,1]^{n_X}` be a point. 
+Let :math:`\bdu \subseteq \{1, ..., n_X\}` be a group of variables. 
+Therefore :
+
+.. math::
+    \Expect{Y|\bdX_\bdu=\bdx_\bdu}
+    = \sum_{\bdv \subseteq \bdu} h_\bdv(\bdx_\bdv),
+
+The inverse relationship is:
+
+.. math::
+    h_\bdu(\bdx_\bdu) 
+    = \sum_{\bdv \subseteq \bdu} (-1)^{|\bdu| - |\bdv|} \Expect{Y|\bdX_\bdv=\bdx_\bdv}.
+
+The previous equation is a consequence of the Möbius inversion formula [rota1964]_
+(also called the exclusion-inclusion principle).
+
+Decomposition of the variance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The variance of the function :math:`\operatorname{g}` can be 
+decomposed into:
+
+.. math::
+    \Var{Y}=\sum_{i=1}^{n_X} V_{i} 
+    + \sum_{1\leq i < j\leq n_X} V_{\{i,j\}} + \ldots + V_{\{1,2,\ldots,n_X\}},
+
+where the interaction variances are:
+
+.. math::
+    V_{i}        &= \Var{h_{\{i\}}(X_i)}, \label{eq-sde-varvi1-2} \\
+    V_{\{i,j\}}  &= \Var{h_{\{i, j\}}(X_i,X_j)}, \\
+    V_{\{i,j,\}} &= \Var{h_{i,j,k}(X_i,X_j,k)}, \\
+    \ldots       & \\
+    V_{\{1,2,\ldots,n_X\}} &= \Var{h_{\{1,2,\ldots,n_X\}}(X_1,X_2,\ldots,X_p)}.
+
+More generally, the interaction variance of a group of variables is:
+
+.. math::
+    V_\bdu = \Var{h_\bdu(\bdx_\bdu)},
+
+for any :math:`\bdu \subseteq \{1,2,\ldots,n_X\}`.
+
+Using the Hoeffding decomposition, we get:
 
 .. math::
 
-    V_i = \Var{\Expect{ Y^k \vert X_i}} = \Expect{ \Expect{Y^k \vert X_i}^2}  - \Expect{\Expect{ Y^k \vert X_i }} ^2 = U_i - \Expect{Y^k} ^2
+   \Var{Y} = \sum_{ \bdu \subseteq \{1, \ldots, n_X\} } V_\bdu.
 
-Sobol proposes to estimate the quantity :math:`U_i = \Expect{\Expect{ Y^k \vert X_i}^2}`
-by swapping every variables in the two samples except the variable :math:`X_i` between the two calls of the function:
-
-.. math::
-
-    \hat U_i = \frac{1}{N}\sum_{k=1}^N{ Y^k\left( x_{k1}^{(1)},\dots, x_{k(i-1)}^{(1)},x_{ki}^{(1)},x_{k(i+1)}^{(1)},\dots,x_{kn_X}^{(1)}\right) \times Y^k\left( x_{k1}^{(2)},\dots,x_{k(i-1)}^{(2)},x_{ki}^{(1)},x_{k(i+1)}^{(2)},\dots,x_{kn_X}^{(2)}\right)}
-
-Then the :math:`n_X` first order indices are estimated by
+The Möbius inversion formula implies:
 
 .. math::
 
-    \hat S_i = \frac{\hat V_i}{\hat \sigma^2} = \frac{\hat U_i - m_{Y^k}^2}{\hat \sigma^2}
+    V_\bdu = \Var{ \sum_{\bdv \subseteq \bdu} (-1)^{ |\bdu| - |\bdv| } \Expect{ Y \vert \mat{X}_\bdv} }.
 
-For the second order, the two variables :math:`X_i` and :math:`X_j` are not swapped to estimate :math:`U_{ij}`,
-and so on for higher orders, assuming that order :math:`< n_X`.
-Then the :math:`\binom {n_X}{2}` second order indices are estimated by
+Sensitivity indices of a variable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The first order interaction sensitivity indices are equal to:
 
 .. math::
 
-    \hat S_{ij} = \frac{\hat V_{ij}}{\hat \sigma^2} = \frac{\hat U_{ij} - m_{Y^k}^2 - \hat V_i - \hat V_j}{\hat \sigma^2}
+    S_i           &= \frac{V_{i}}{\Var{Y}} , \\
+    S_{\{i,j\}}   &= \frac{V_{\{i,j\}}}{\Var{Y}} , \\
+    S_{\{i,j,k\}} &= \frac{V_{\{i,j,k\}}}{\Var{Y}} , \\
+    \ldots & \\
+    S_{\{i_1,i_2,\ldots,i_s\}} &= \frac{V_{\{i_1,i_2,\ldots,i_s\}}}{\Var{Y}}, \\
+    \ldots & \\
+    S_{\{1,2,\ldots,p\}} &= \frac{V_{\{1,2,\ldots,p\}}}{\Var{Y}}.
 
-For the :math:`n_X` total order indices :math:`T_i`, we only swap the variable :math:`X_i` between the two samples.
+The first order Sobol' index :math:`S_i` measures the part of the variance of :math:`Y` explained by :math:`X_i` alone.
+The second order Sobol' index :math:`S_{i,j}`  measures the part of the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
+
+We can alternatively define the Sobol' sensitivity indices using 
+the variance of the conditional expectation. 
+The first order Sobol' sensitivity index is:
+
+.. math::
+    S_i &= \frac{\Var{\Expect{Y|X_i}}}{\Var{Y}}
+
+for :math:`i=1,\ldots, n_X`.
+
+The total  Sobol' sensitivity index is:
+
+.. math::
+    S^T_i &= \frac{V_{i} + \sum_{\substack{j\in\{1,\ldots, n_X\}\\j\neq i}} V_{\{i,j\}} + \ldots 
+    V_{1, 2,\ldots, n_X}}{\Var{Y}}
+
+for :math:`i=1,\ldots, n_X`.
+
+The total Sobol' sensitivity index can be equivalently defined in terms
+of the variance of a conditional expectation.
+The total  Sobol' sensitivity index is:
+
+.. math::
+    S^T_i &= 1 - \frac{\Var{\Expect{Y|X_{\overline{\{i\}}}}}}{\Var{Y}}
+
+for :math:`i=1,\ldots, n_X`.
+
+
+For any :math:`i=1,\ldots,n_X`, let us define
+
+.. math::
+
+    VT_i   & = \sum_{I \ni i} V_I \\
+    V_{-i} & = \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_{n_X}} }.
+
+Total order Sobol' indices are defined as follows:
+
+.. math::
+
+    ST_i = \frac{VT_i}{\Var{Y}} = 1 - \frac{V_{-i}}{\Var{Y}}
+
+for :math:`i=1,\ldots,n_X`.
+
+The total order Sobol' index :math:`ST_i` quantifies the part of the variance of :math:`Y` that is due to the effect of :math:`X_i`
+and its interactions with all the other input variables.
+It can also be viewed as the part of the variance of :math:`Y` that cannot be explained without :math:`X_i`.
+
+
+Sensitivity indices of a group of variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let :math:`\bdu \subseteq \{1, ..., n_X\}` be a group of input variables. 
+The first order (closed) Sobol' index of a group of input variables :math:`\bdu`
+is:
+
+.. math::
+    S_{\bdu}^{\operatorname{cl}}
+    = \frac{\Var{\Expect{Y|\vect{X}_{\bdu}}}}{\Var{Y}}
+
+The first order (closed) Sobol' index of a group of variables :math:`\bdu`
+is:
+
+.. math::
+    S^T_\bdu 
+    = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} \Var{h_\bdv(\bdX_\bdv)}}{\Var{Y}}
+
+where :math:`h_\bdv` is the function of the variables in the group :math:`\bdv`
+of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
+
+For any group of variables :math:`\bdu`, 
+the total and first order (closed) Sobol' indices are related by the equation:
+
+.. math::
+    S^T_\bdu + S_{\overline{\bdu}}^{\operatorname{cl}} = 1
+
+where :math:`\overline{\bdu}` is the complementary group of :math:`\bdu`.
+
+
+The first order interaction Sobol' index of a group of variables :math:`\bdu`
+is:
+
+.. math::
+    S_\bdu = \frac{V_\bdu}{\Var{Y}} = \frac{\Var{h_\bdu(\bdX_\bdu)}}{\Var{Y}}.
+
+where :math:`h_\bdu` is the function of the input variables in the group :math:`\bdu`
+of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
+
+Aggregated Sobol' indices
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For multivariate outputs i.e. when :math:`n_Y>1`, the Sobol' 
+indices can be aggregated [gamboa2013]_. 
+Let :math:`V_i^{(k)}` be the (first order) variance of the conditional 
+expectation of the k-th output :math:`Y^{(k)}`:
+
+.. math::
+
+    V_i^{(k)} & = \Var{ \Expect{Y^{(k)} \vert X_i} }
+
+for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
+Similarly, let :math:`VT_i^{(k)}` be the total variance of the conditional expectation of :math:`Y^{(k)}` for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`. 
+
+The indices can be aggregated with the following formulas:
+
+.. math::
+
+    S_i^{(a)}  & =  \frac{ \sum_{k=1}^{n_Y} V_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }  \\
+    ST_i^{(a)} & =  \frac{ \sum_{k=1}^{n_Y} VT_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }
+
+for :math:`i=1,\ldots,n_X`.
+
+Estimators
+~~~~~~~~~~
+To estimate these quantities,
+Sobol' proposes to use numerical methods that rely on two independent realizations of the random vector :math:`\vect{X}`.
+This is known as the pick-freeze estimator. 
+
+Let :math:`N \in \Nset` be the size of each sample. 
+Let :math:`\mat{A}` and :math:`\mat{B}` be two independent samples of size :math:`N`
+of :math:`\vect{X}` :
+
+.. math::
+
+   \mat{A} = \left(
+   \begin{array}{cccc}
+   a_{1,1} & a_{1,2} & \cdots & a_{1, n_X} \\
+   a_{2,1} & a_{2,2} & \cdots & a_{2, n_X} \\
+   \vdots  & \vdots  & \ddots  & \vdots \\
+   a_{N,1} & a_{1,2} & \cdots & a_{N, n_X}
+   \end{array}
+   \right), \  \mat{B} = \left(
+   \begin{array}{cccc}
+   b_{1,1} & b_{1,2} & \cdots & b_{1, n_X} \\
+   b_{2,1} & b_{2,2} & \cdots & b_{2, n_X} \\
+   \vdots  & \vdots  & \vdots  & \vdots \\
+   b_{N,1} & b_{1,2} & \cdots & b_{N, n_X}
+   \end{array}
+   \right)
+
+Each line is a realization of the random vector :math:`\vect{X}`. 
+
+We are now going to mix these two samples to get an estimate of the sensitivity indices.
+
+.. math::
+
+   \mat{E}^i = \left(
+   \begin{array}{cccccc}
+   a_{1,1} & a_{1,2} & \cdots & b_{1,i} & \cdots & a_{1, n_X} \\
+   a_{2,1} & a_{2,2} & \cdots & b_{2,i} & \cdots & a_{2, n_X} \\
+   \vdots  & \vdots  &        & \vdots  & \ddots & \vdots \\
+   a_{N,1} & a_{1,2} & \cdots & b_{N,i} & \cdots & a_{N, n_X}
+   \end{array}
+   \right), \; 
+   \mat{C}^i = \left(
+   \begin{array}{cccccc}
+   b_{1,1} & b_{1,2} & \cdots & a_{1,i} & \cdots & b_{1, n_X} \\
+   b_{2,1} & b_{2,2} & \cdots & a_{2,i} & \cdots & b_{2, n_X} \\
+   \vdots  & \vdots  &        & \vdots  & \ddots  & \vdots \\
+   b_{N,1} & b_{1,2} & \cdots & a_{N,i} & \cdots & b_{N, n_X}
+   \end{array}
+   \right)
+
+Several estimators of :math:`V_i`, :math:`VT_i` and :math:`V_{-i}` are provided by the :class:`SobolIndicesAlgorithm` implementations:
+
+- :class:`~openturns.SaltelliSensitivityAlgorithm` for the `Saltelli` method,
+- :class:`~openturns.JansenSensitivityAlgorithm` for the `Jansen` method,
+- :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
+- :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method.
+
+Specific formulas for :math:`\widehat{V}_i`, :math:`\widehat{VT}_i` and :math:`\widehat{V}_{-i}` are given in the corresponding documentation pages.
+
+Centering the output
+~~~~~~~~~~~~~~~~~~~~
+
+For the sake of stability, computations are performed with centered output.
+Let :math:`\overline{\vect{g}}` be the mean of the combined samples 
+:math:`\vect{g}(\mat{A})` and :math:`\vect{g}(\mat{B})`.
+Let :math:`\tilde{\vect{g}}` be the empirically centered function defined,
+for any :math:`\vect{x} \in \Rset^{n_X}`, by:
+
+.. math::
+
+   \tilde{\vect{g}}(\vect{x}) = \vect{g}(\vect{x}) - \overline{\vect{g}}.
+
+
+
 
 .. topic:: API:
 
@@ -57,3 +373,5 @@ For the :math:`n_X` total order indices :math:`T_i`, we only swap the variable :
 .. topic:: References:
 
     - [saltelli2002]_
+    - [daveiga2022]_
+    - [sobol1993]_
