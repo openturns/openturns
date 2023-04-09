@@ -12,10 +12,35 @@ FunctionalChaosAlgorithm, FunctionalChaosResult
 
 Notes
 -----
-This structure is created from a FunctionalChaosResult in order to evaluate the
+This structure is created from a :class:`~openturns.FunctionalChaosResult` in order to evaluate the
 Sobol' indices associated to the polynomial chaos decomposition of the model. 
-The SobolIndicesAlgorithm.DrawSobolIndices static method can be used to 
+The :meth:`~openturns.SobolIndicesAlgorithm.DrawSobolIndices` static method can be used to 
 draw the indices.
+
+This class provides methods to estimate the Sobol' indices which
+are presented in :ref:`sensitivity_sobol`.
+These indices can be easily computed from the polynomial chaos expansion: 
+these algorithm is documented for each of the methods presented below.
+
+In this help page, we use the following notations.
+Let :math:`d` be the dimension of the input random vector.
+Let :math:`P \in \Nset` be the number of coefficients in the functional 
+basis.
+Let :math:`\mathcal{J}_P \subseteq \Nset^d` the set of multi-indices up
+to the index :math:`P`.
+Depending on the way the coefficients are computed, the set of multi-indices
+is the consequence of the choice of the polynomial degree, the enumeration rule,
+and, if necessary, the selection method (e.g. the LARS selection method).
+Let :math:`\tilde{h}(\bdZ)` be the polynomial chaos expansion:
+
+.. math::
+    \tilde{h}(\bdZ)
+    &= \sum_{\idx \in \mathcal{J}_P} a_\idx \psi_\idx(\bdZ)
+
+where :math:`\bdZ` is the standardized input random vector,
+:math:`\{a_\idx\}_{\idx \in \mathcal{J}_P}` are the coefficients
+and :math:`\{\psi_\idx\}_{\idx \in \mathcal{J}_P}` are the functions in the
+functional basis.
 
 Examples
 --------
@@ -52,7 +77,7 @@ Create the chaos:
 Print Sobol' indices :
 
 >>> chaosSI = ot.FunctionalChaosSobolIndices(result) 
->>> #print( chaosSI.summary() )
+>>> print(chaosSI)
 
 Get first order Sobol' indices for X0:
 
@@ -85,11 +110,31 @@ functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolIndex
 "Get the first order Sobol' index of an input variable.
 
+Let :math:`i \in \{0, ..., d - 1\}` the index of an input 
+variable. 
+Let :math:`\mathcal{J}_i^S` the set of multi-indices such that 
+:math:`\alpha_i>0` and the other components of the multi-indices are zero:
+
+.. math::
+    \mathcal{J}_i^S
+    =\left\{\idx=(0,..., 0,\alpha_i,0,...,0) \in \mathcal{J}_P, 
+    \quad \alpha_i>0\right\}.
+
+Therefore, the first order Sobol' index :math:`S_i` is equal to the sum of the 
+square of the coefficients in :math:`\mathcal{J}_i^S`: 
+
+.. math::
+    S_i = \frac{\sum_{\idx\in\mathcal{J}_i^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
+
+If the polynomial basis is orthonormal, therefore:
+
+.. math::
+    S_i = \frac{\sum_{\idx\in\mathcal{J}_i^S} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+
 Parameters
 ----------
 i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated Sobol indices. :math:`d`
-    is the dimension of the input variables.
+    Indice(s) of the variable(s) we want the associated Sobol' indices. 
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -97,18 +142,37 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The first order Sobol index."
+    The first order Sobol' index."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolTotalIndex
 "Get the total Sobol' index of an input variable.
 
+Let :math:`\mathcal{J}_i^T` the set of multi-indices such that 
+:math:`\alpha_i> 0`:
+
+.. math::
+    \mathcal{J}_i^T
+    =\left\{\idx=(\alpha_1,...,\alpha_i,...,\alpha_p) \in \mathcal{J}_P, 
+    \quad \alpha_i>0\right\}.
+
+Therefore, the total order index :math:`S^T_i` is equal to the sum of the squared 
+coefficients in :math:`\mathcal{J}_i^T`: 
+
+.. math::
+    S^T_i 
+    = \frac{\sum_{\idx\in\mathcal{J}_i^T} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
+
+If the polynomial basis is orthonormal, therefore:
+
+.. math::
+    S^T_i = \frac{\sum_{\idx\in\mathcal{J}_i^T} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+
 Parameters
 ----------
 i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated total Sobol indices.
-    :math:`d` is the dimension of the input variables.
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -116,27 +180,39 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The total Sobol index."
+    The total Sobol' index."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedIndex
 "Get the grouped Sobol first order (closed) indices of a group of input variables.
 
-Let :math:`d \in \mathbb{N}` the dimension of the input random vector.
-Let :math:`\bdu \subseteq \{0, ..., d - 1\}` be a group of input variables. 
-The first order (closed) Sobol' index of a group of input variables :math:`\bdu`
-is:
+Let :math:`\mathcal{J}_\bdu^{S, \operatorname{cl}}` the set of multi-indices such that 
+each component of :math:`\idx` is contained in the group :math:`\bdu`:
 
 .. math::
-    S_{\bdu}^{\operatorname{cl}}
-    = \frac{\Var{\Expect{Y|\vect{X}_{\bdu}}}}{\Var{Y}}
+    \mathcal{J}_\bdu^{S, \operatorname{cl}}
+    = \left\{\idx\in\mathcal{J}_P, 
+      \quad \idx\neq \boldsymbol{0}, \quad \alpha_i=0 \quad \textrm{or} 
+      \quad i \in \bdu, \quad i=0,\ldots, d - 1\right\}.
+
+Therefore, the first order (closed) Sobol' index :math:`S^{\operatorname{cl}}_\bdu` 
+is equal to the sum of the square of the coefficients in 
+:math:`\mathcal{J}_\bdu^{S, \operatorname{cl}}`: 
+
+.. math::
+    S^{\operatorname{cl}}_\bdu = \frac{\sum_{\idx\in\mathcal{J}_\bdu^{S, \operatorname{cl}}} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
+
+If the polynomial basis is orthonormal, therefore:
+
+.. math::
+    S^{\operatorname{cl}}_\bdu 
+    = \frac{\sum_{\idx\in\mathcal{J}_\bdu^{S, \operatorname{cl}}} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
 
 Parameters
 ----------
-i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated grouped first order (closed) Sobol indices.
-    :math:`d` is the dimension of the input variables.
+variableIndices : sequence of int, :math:`0 \leq i < d - 1`
+    Indice(s) of the variable(s) in the group.
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -152,31 +228,29 @@ s : float
 "Get the grouped Sobol' total order index of a group of input variables.
 
 
-Let :math:`d \in \mathbb{N}` the dimension of the input random vector.
-Let :math:`\bdu \subseteq \{0, ..., d - 1\}` be a group of input variables. 
-The first order (closed) Sobol' index of a group of variables :math:`\bdu`
-is:
+Let :math:`\mathcal{J}_\bdu^T` the set of multi-indices:
 
 .. math::
-    S^T_\bdu 
-    = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} \Var{h_\bdv(\bdX_\bdv)}}{\Var{Y}}
+    \mathcal{J}_\bdu^T 
+    = \left\{\idx\in\mathcal{J}_P, 
+    \quad \idx\neq \boldsymbol{0}, \quad \exists i\in\{0,\ldots, d - 1\} \quad \textrm{s.t.} 
+    \quad i \in \bdu\right\}.
 
-where :math:`h_\bdv` is the function of the variables in the group :math:`\bdv`
-of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
-
-For any group of variables :math:`\bdu`, 
-the total and first order (closed) Sobol' indices are related by the equation:
+Therefore, the first order Sobol' index :math:`S^{\operatorname{cl}}_\bdu` is equal to the sum of the 
+square of the coefficients in :math:`\mathcal{J}_\bdu^{S, \operatorname{cl}}`: 
 
 .. math::
-    S^T_\bdu + S_{\overline{\bdu}}^{\operatorname{cl}} = 1
+    S^T_\bdu = \frac{\sum_{\idx\in\mathcal{J}_\bdu^T} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
 
-where :math:`\overline{\bdu}` is the complementary group of :math:`\bdu`.
+If the polynomial basis is orthonormal, therefore:
+
+.. math::
+    S^T_\bdu = \frac{\sum_{\idx\in\mathcal{J}_\bdu^T} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
 
 Parameters
 ----------
-i : int or sequence of int, :math:`0 \leq i < d - 1`
+variableIndices : sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated grouped total Sobol' indices.
-    :math:`d` is the dimension of the input variables.
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -191,22 +265,30 @@ s : float
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedInteractionIndex
 "Get the grouped Sobol' interaction indices.
 
-Let :math:`d \in \mathbb{N}` the dimension of the input random vector.
-Let :math:`\bdu \subseteq \{0, ..., d - 1\}` be a group of input variables. 
-The first order interaction Sobol' index of a group of variables :math:`\bdu`
-is:
+Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
 
 .. math::
-    S_\bdu = \frac{V_\bdu}{\Var{Y}} = \frac{\Var{h_\bdu(\bdX_\bdu)}}{\Var{Y}}.
+    \mathcal{J}_\bdu
+    =\left\{\idx\in\mathcal{J}_P, 
+    \quad \idx\neq \boldsymbol{0}, \quad 
+    \alpha_i = 0 \textrm{ if } i \not\in \bdu\right\}.
 
-where :math:`h_\bdu` is the function of the input variables in the group :math:`\bdu`
-of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
+Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is equal to the 
+sum of the square of the coefficients in :math:`\mathcal{J}_\bdu`: 
+
+.. math::
+    S_\bdu = \frac{\sum_{\idx\in\mathcal{J}_\bdu} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
+
+If the polynomial basis is orthonormal, therefore:
+
+.. math::
+    S_\bdu = \frac{\sum_{\idx\in\mathcal{J}_\bdu} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
 
 Parameters
 ----------
-i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated grouped interaction Sobol' indices.
-    :math:`d` is the dimension of the input variables.
+variableIndices : sequence of int, :math:`0 \leq i < d - 1`
+    Indice(s) of the variable(s) we want the associated grouped interaction 
+    Sobol' indices.
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
