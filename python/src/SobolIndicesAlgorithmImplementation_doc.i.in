@@ -9,7 +9,7 @@ This method measures the influence of each component of an input random vector
 :math:`\vect{Y} = \left( Y^1, \ldots, Y^{n_Y} \right)` by computing Sobol' indices (see [sobol1993]_).
 It computes, for every output random variable :math:`Y^k` (:math:`1 \leqslant k \leqslant n_Y`),
 the part of its variance due to each input component :math:`X^i` (:math:`1 \leqslant i \leqslant n_X`) of :math:`\vect{X}`.
-The definition of Sobol' indices is introduced in :ref:`_sensitivity_sobol`. 
+The definition of Sobol' indices is introduced in :ref:`sensitivity_sobol`. 
 
 Let :math:`\vect{g}` be the physical model such as :math:`\vect{Y}=\vect{g}(\vect{X})`. Let us first consider the case where :math:`n_Y=1`.
 In that case, we denote :math:`\vect{Y}` by :math:`Y`.
