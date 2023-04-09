@@ -130,7 +130,7 @@ is:
 
 .. math::
     S_{\bdu}^{\operatorname{cl}}
-    = \frac{\variance{\expectation{Y|\vect{X}_{\bdu}}}}{\variance{Y}}
+    = \frac{\Var{\Expect{Y|\vect{X}_{\bdu}}}}{\Var{Y}}
 
 Parameters
 ----------
@@ -159,7 +159,7 @@ is:
 
 .. math::
     S^T_\bdu 
-    = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} \var(h_\bdv(\bX_\bdv))}{\var(Y)}
+    = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} \Var{h_\bdv(\bdX_\bdv)}}{\Var{Y}}
 
 where :math:`h_\bdv` is the function of the variables in the group :math:`\bdv`
 of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
@@ -197,7 +197,7 @@ The first order interaction Sobol' index of a group of variables :math:`\bdu`
 is:
 
 .. math::
-    S_\bdu = \frac{V_\bdu}{\var(Y)} = \frac{\var(h_\bdu(\bX_\bdu)}{\var(Y)}.
+    S_\bdu = \frac{V_\bdu}{\Var{Y}} = \frac{\Var{h_\bdu(\bdX_\bdu)}}{\Var{Y}}.
 
 where :math:`h_\bdu` is the function of the input variables in the group :math:`\bdu`
 of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
