@@ -4,52 +4,52 @@ Sensitivity analysis using Sobol' indices
 -----------------------------------------
 
 Consider the input random vector
-:math:`\vect{X} = \left( X_1,\ldots,X_{n_X} \right)` 
-and the output random vector :math:`\vect{Y} = \left( Y_1,\ldots,Y_{n_Y} \right)` 
-be the output of the physical model: 
+:math:`\vect{X} = \left( X_1,\ldots,X_{n_X} \right)`
+and the output random vector :math:`\vect{Y} = \left( Y_1,\ldots,Y_{n_Y} \right)`
+be the output of the physical model:
 
 .. math::
     \vect{Y} = \operatorname{g}(\vect{X}).
 
-We consider the output :math:`Y_k` for any index :math:`k \in \{1, ..., n_Y\}`. 
-Sobol' indices measure the influence the input :math:`\vect{X}` has 
-on the output :math:`Y_k`. 
-The method considers the part of the variance of the output :math:`Y_k` produced by 
+We consider the output :math:`Y_k` for any index :math:`k \in \{1, ..., n_Y\}`.
+Sobol' indices measure the influence the input :math:`\vect{X}` has
+on the output :math:`Y_k`.
+The method considers the part of the variance of the output :math:`Y_k` produced by
 the different inputs :math:`X_i`.
 
 When the output is multivariate, then aggregated Sobol' indices can be
 used [gamboa2013]_.
-See :class:`~openturns.SobolIndicesAlgorithm` for details. 
-In this document, we introduce the Sobol' indices of a scalar output :math:`Y_k`. 
+See :class:`~openturns.SobolIndicesAlgorithm` for details.
+In this document, we introduce the Sobol' indices of a scalar output :math:`Y_k`.
 Hence, the model is simplified to:
 
 .. math::
     Y = \operatorname{g}(\vect{X}).
 
 
-The Sobol' decomposition is described more easily when the domain of the input 
+The Sobol' decomposition is described more easily when the domain of the input
 is the unit interval :math:`[0,1]^{n_X}`.
 It can be easily extended to any input domain using expectations, variances a
 and variance of conditional expectations.
 
-We assume that the input marginal variables :math:`X_1,\ldots,X_{n_X}` are 
+We assume that the input marginal variables :math:`X_1,\ldots,X_{n_X}` are
 independent.
-If the input variables are dependent, then the Sobol' indices can be defined, 
+If the input variables are dependent, then the Sobol' indices can be defined,
 but some of their properties are lost.
 
 Sobol' decomposition
 ~~~~~~~~~~~~~~~~~~~~
 
-In this section, we introduce the Sobol'-Hoeffding decomposition [sobol1993]_. 
-Let  :math:`i\in\{1,\ldots, n_X\}`, the vector :math:`\bdx_{\overline{\{i\}}}` be 
-the vector made of components of :math:`\bdx=(x_1,x_2,` :math:`\ldots,x_p)` which 
-indices are different from :math:`i`. 
+In this section, we introduce the Sobol'-Hoeffding decomposition [sobol1993]_.
+Let  :math:`i\in\{1,\ldots, n_X\}`, the vector :math:`\bdx_{\overline{\{i\}}}` be
+the vector made of components of :math:`\bdx=(x_1,x_2,` :math:`\ldots,x_p)` which
+indices are different from :math:`i`.
 Hence, if :math:`\bdx\in[0,1]^{n_X}`, then:
 
 .. math::
     \bdx_{\overline{\{i\}}} = (x_1,x_2,\ldots,x_{i-1},x_{i+1},\ldots,x_p)^T\in [0,1]^{n_X - 1}.
 
-Consider the function :math:`\operatorname{g}` defined by the equation: 
+Consider the function :math:`\operatorname{g}` defined by the equation:
 
 .. math::
     Y = \operatorname{g}(\bdx),
@@ -60,13 +60,13 @@ With this notation, we can write:
 .. math::
     \operatorname{g}(\bdx) = \operatorname{g} \left(x_i,\bdx_{\overline{\{i\}}} \right).
 
-If :math:`\operatorname{g}` can be integrated in :math:`[0,1]^{n_X}`, then there is a unique 
+If :math:`\operatorname{g}` can be integrated in :math:`[0,1]^{n_X}`, then there is a unique
 decomposition:
 
 .. math::
-    y &= h_0 + \sum_{i=1,2,\ldots,n_X} h_{\{i\}}(x_i) 
+    y &= h_0 + \sum_{i=1,2,\ldots,n_X} h_{\{i\}}(x_i)
          \quad + \sum_{1\leq i < j \leq n_X} h_{\{i,j\}}(x_i,x_j) \nonumber \\
-      & \quad+ \ldots + 
+      & \quad+ \ldots +
              h_{\{1,2,\ldots,n_X\}}(x_1,x_2,\ldots,x_p),
 
 where :math:`h_0` is a constant and the functions of the decomposition satisfy the equalities:
@@ -74,7 +74,7 @@ where :math:`h_0` is a constant and the functions of the decomposition satisfy t
 .. math::
     \int_0^1 h_{\{i_1,\ldots,i_s\}}(x_{i_1},\ldots,x_{i_s})dx_{i_k} = 0,
 
-for any :math:`k=1,2,\ldots,s` and any indices :math:`1\leq i_1< i_2< \ldots< i_s\leq n_X` and 
+for any :math:`k=1,2,\ldots,s` and any indices :math:`1\leq i_1< i_2< \ldots< i_s\leq n_X` and
 :math:`s=1,2,\ldots,n_X`.
 
 Extension to any input distribution with independent marginals
@@ -82,27 +82,27 @@ Extension to any input distribution with independent marginals
 
 In this section, we extend the previous definitions to an input random vector
 that is not necessarily in the unit cube :math:`[0,1]^{n_X}`.
-To do this, we define the functions :math:`h_\bdu` using conditional 
-expectations. 
+To do this, we define the functions :math:`h_\bdu` using conditional
+expectations.
 
 The functions :math:`h_\bdu` satisfy the equality:
 
 .. math::
-    \int_{[0,1]^{|\overline{\bdu}|}} \operatorname{g}(\bdx) d\bdx_{\overline{\bdu}} 
+    \int_{[0,1]^{|\overline{\bdu}|}} \operatorname{g}(\bdx) d\bdx_{\overline{\bdu}}
     = \sum_{\bdv\subseteq \bdu} h_\bdv(\bdx_\bdv),
 
-for any group of variables :math:`\bdu\subseteq \{1,2,\ldots,n_X\}` with 
+for any group of variables :math:`\bdu\subseteq \{1,2,\ldots,n_X\}` with
 size lower or equal to :math:`n_X`.
-The functions :math:`h_\bdu` can be defined recursively, using groups of 
+The functions :math:`h_\bdu` can be defined recursively, using groups of
 variables of lower dimensionality:
 
 .. math::
     h_\bdu(\bdx_\bdu)
-    = \int_{[0,1]^{|\overline{\bdu}|}} \operatorname{g}(\bdx_\bdu,\bdx_{\overline{\bdu}}) d\bdx_{\overline{\bdu}} 
+    = \int_{[0,1]^{|\overline{\bdu}|}} \operatorname{g}(\bdx_\bdu,\bdx_{\overline{\bdu}}) d\bdx_{\overline{\bdu}}
     -  \sum_{\bdv\subsetneq \bdu} h_\bdv(\bdx_\bdv).
 
-Let :math:`\boldsymbol{x} \in [0,1]^{n_X}` be a point. 
-Let :math:`\bdu \subseteq \{1, ..., n_X\}` be a group of variables. 
+Let :math:`\boldsymbol{x} \in [0,1]^{n_X}` be a point.
+Let :math:`\bdu \subseteq \{1, ..., n_X\}` be a group of variables.
 Therefore :
 
 .. math::
@@ -112,7 +112,7 @@ Therefore :
 The inverse relationship is:
 
 .. math::
-    h_\bdu(\bdx_\bdu) 
+    h_\bdu(\bdx_\bdu)
     = \sum_{\bdv \subseteq \bdu} (-1)^{|\bdu| - |\bdv|} \Expect{Y|\bdX_\bdv=\bdx_\bdv}.
 
 The previous equation is a consequence of the Möbius inversion formula [rota1964]_
@@ -121,11 +121,11 @@ The previous equation is a consequence of the Möbius inversion formula [rota196
 Decomposition of the variance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The variance of the function :math:`\operatorname{g}` can be 
+The variance of the function :math:`\operatorname{g}` can be
 decomposed into:
 
 .. math::
-    \Var{Y}=\sum_{i=1}^{n_X} V_{i} 
+    \Var{Y}=\sum_{i=1}^{n_X} V_{i}
     + \sum_{1\leq i < j\leq n_X} V_{\{i,j\}} + \ldots + V_{\{1,2,\ldots,n_X\}},
 
 where the interaction variances are:
@@ -174,8 +174,8 @@ The first order interaction sensitivity indices are equal to:
 The first order Sobol' index :math:`S_i` measures the part of the variance of :math:`Y` explained by :math:`X_i` alone.
 The second order Sobol' index :math:`S_{i,j}`  measures the part of the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
 
-We can alternatively define the Sobol' sensitivity indices using 
-the variance of the conditional expectation. 
+We can alternatively define the Sobol' sensitivity indices using
+the variance of the conditional expectation.
 The first order Sobol' sensitivity index is:
 
 .. math::
@@ -186,7 +186,7 @@ for :math:`i=1,\ldots, n_X`.
 The total  Sobol' sensitivity index is:
 
 .. math::
-    S^T_i &= \frac{V_{i} + \sum_{\substack{j\in\{1,\ldots, n_X\}\\j\neq i}} V_{\{i,j\}} + \ldots 
+    S^T_i &= \frac{V_{i} + \sum_{\substack{j\in\{1,\ldots, n_X\}\\j\neq i}} V_{\{i,j\}} + \ldots
     V_{1, 2,\ldots, n_X}}{\Var{Y}}
 
 for :math:`i=1,\ldots, n_X`.
@@ -224,7 +224,7 @@ It can also be viewed as the part of the variance of :math:`Y` that cannot be ex
 Sensitivity indices of a group of variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let :math:`\bdu \subseteq \{1, ..., n_X\}` be a group of input variables. 
+Let :math:`\bdu \subseteq \{1, ..., n_X\}` be a group of input variables.
 The first order (closed) Sobol' index of a group of input variables :math:`\bdu`
 is:
 
@@ -236,13 +236,13 @@ The first order (closed) Sobol' index of a group of variables :math:`\bdu`
 is:
 
 .. math::
-    S^T_\bdu 
+    S^T_\bdu
     = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} \Var{h_\bdv(\bdX_\bdv)}}{\Var{Y}}
 
 where :math:`h_\bdv` is the function of the variables in the group :math:`\bdv`
 of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
 
-For any group of variables :math:`\bdu`, 
+For any group of variables :math:`\bdu`,
 the total and first order (closed) Sobol' indices are related by the equation:
 
 .. math::
@@ -263,9 +263,9 @@ of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
 Aggregated Sobol' indices
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For multivariate outputs i.e. when :math:`n_Y>1`, the Sobol' 
-indices can be aggregated [gamboa2013]_. 
-Let :math:`V_i^{(k)}` be the (first order) variance of the conditional 
+For multivariate outputs i.e. when :math:`n_Y>1`, the Sobol'
+indices can be aggregated [gamboa2013]_.
+Let :math:`V_i^{(k)}` be the (first order) variance of the conditional
 expectation of the k-th output :math:`Y^{(k)}`:
 
 .. math::
@@ -273,7 +273,7 @@ expectation of the k-th output :math:`Y^{(k)}`:
     V_i^{(k)} & = \Var{ \Expect{Y^{(k)} \vert X_i} }
 
 for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
-Similarly, let :math:`VT_i^{(k)}` be the total variance of the conditional expectation of :math:`Y^{(k)}` for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`. 
+Similarly, let :math:`VT_i^{(k)}` be the total variance of the conditional expectation of :math:`Y^{(k)}` for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
 
 The indices can be aggregated with the following formulas:
 
@@ -288,11 +288,11 @@ Estimators
 ~~~~~~~~~~
 To estimate these quantities,
 Sobol' proposes to use numerical methods that rely on two independent realizations of the random vector :math:`\vect{X}`.
-This is known as the pick-freeze estimator. 
+This is known as the pick-freeze estimator.
 
-Let :math:`N \in \Nset` be the size of each sample. 
+Let :math:`N \in \Nset` be the size of each sample.
 Let :math:`\mat{A}` and :math:`\mat{B}` be two independent samples of size :math:`N`
-of :math:`\vect{X}` :
+of :math:`\vect{X}`:
 
 .. math::
 
@@ -312,7 +312,7 @@ of :math:`\vect{X}` :
    \end{array}
    \right)
 
-Each line is a realization of the random vector :math:`\vect{X}`. 
+Each line is a realization of the random vector :math:`\vect{X}`.
 
 We are now going to mix these two samples to get an estimate of the sensitivity indices.
 
@@ -325,7 +325,7 @@ We are now going to mix these two samples to get an estimate of the sensitivity 
    \vdots  & \vdots  &        & \vdots  & \ddots & \vdots \\
    a_{N,1} & a_{1,2} & \cdots & b_{N,i} & \cdots & a_{N, n_X}
    \end{array}
-   \right), \; 
+   \right), \;
    \mat{C}^i = \left(
    \begin{array}{cccccc}
    b_{1,1} & b_{1,2} & \cdots & a_{1,i} & \cdots & b_{1, n_X} \\
@@ -348,7 +348,7 @@ Centering the output
 ~~~~~~~~~~~~~~~~~~~~
 
 For the sake of stability, computations are performed with centered output.
-Let :math:`\overline{\vect{g}}` be the mean of the combined samples 
+Let :math:`\overline{\vect{g}}` be the mean of the combined samples
 :math:`\vect{g}(\mat{A})` and :math:`\vect{g}(\mat{B})`.
 Let :math:`\tilde{\vect{g}}` be the empirically centered function defined,
 for any :math:`\vect{x} \in \Rset^{n_X}`, by:

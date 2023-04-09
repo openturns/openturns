@@ -48,8 +48,8 @@ Bibliography
     `pdf <https://arxiv.org/pdf/1307.6835.pdf>`__
 .. [daveiga2015] Da Veiga, S. (2015). *Global sensitivity analysis with dependence measures.*
     Journal of Statistical Computation and Simulation, 85(7), 1283-1305.
-.. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021). 
-    *Basics and trends in sensitivity analysis: theory and practice in R.* 
+.. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
+    *Basics and trends in sensitivity analysis: theory and practice in R.*
     Society for Industrial and Applied Mathematics.
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
@@ -240,8 +240,8 @@ Bibliography
 .. [rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__
-.. [rota1964] Rota, G. C. (1964). *On the foundations of combinatorial theory I.* 
-    *Theory of Möbius functions.*. 
+.. [rota1964] Rota, G. C. (1964). *On the foundations of combinatorial theory I.*
+    *Theory of Möbius functions.*.
     Z. Wahrseheinlichkeitstheorie, volume 2, pages 340-368.
 .. [rubinstein2017] Rubinstein, R. Y., & Kroese, D. P. (2017). *Simulation and the Monte Carlo method.* John Wiley & Sons.
    `pdf <http://www.ru.ac.bd/wp-content/uploads/soites/25/2019/03/308_03_Rubinstein_Simulation-and-the-Monte-Carlo-Method-Wiley-2017.pdf>`__
