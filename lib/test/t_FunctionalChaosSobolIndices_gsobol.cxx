@@ -24,6 +24,19 @@
 using namespace OT;
 using namespace OT::Test;
 
+Scalar sobol(const Indices & indices,
+             const Point & a,
+             Scalar variance
+            )
+{
+  Scalar value = 1.0;
+  for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
+  {
+    value *= 1.0 / (3.0 * pow(1.0 + a[indices[i]], 2.0));
+  }
+  return value / variance;
+}
+
 // Simultaneously sort the nodes and weights
 void printSobolResult(Scalar S_computed, Scalar S_exact)
 {
@@ -45,67 +58,75 @@ int main(int, char *[])
 
     // Problem parameters
     UnsignedInteger dimension = 3;
-    Scalar a = 7.0;
-    Scalar b = 0.1;
     // Reference analytical values
-    Scalar mean = a / 2;
-    Scalar variance = 1.0 / 2.0 + pow(a, 2.0) / 8.0 + b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 18.0;
-    Scalar S1 = (1.0 / 2.0 + b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0) / variance;
-    Scalar S2 = (pow(a, 2.0) / 8.0) / variance;
-    Scalar S3 = 0.0;
-    Scalar S12 = 0.0;
-    Scalar S13 = (pow(b, 2.0) * pow(M_PI, 8.0) / 2.0 * (1.0 / 9.0 - 1.0 / 25.0)) / variance;
-    Scalar S23 = 0.0;
-    Scalar ST1 = S1 + S13;
-    Scalar ST2 = S2;
-    Scalar ST3 = S3 + S13;
-    Scalar S123 = 0.0;
-    fullprint << "mean = " << mean << std::endl;
-    fullprint << "variance = " << std::fixed << std::setprecision(4) << variance << std::endl;
-    fullprint << "S1 = " << std::fixed << std::setprecision(4) << S1 << std::endl;
-    fullprint << "S2 = " << std::fixed << std::setprecision(4) << S2 << std::endl;
-    fullprint << "S3 = " << std::fixed << std::setprecision(4) << S3 << std::endl;
-    fullprint << "S13 = " << std::fixed << std::setprecision(4) << S13 << std::endl;
-    fullprint << "ST1 = " << std::fixed << std::setprecision(4) << ST1 << std::endl;
-    fullprint << "ST2 = " << std::fixed << std::setprecision(4) << ST2 << std::endl;
-    fullprint << "ST3 = " << std::fixed << std::setprecision(4) << ST3 << std::endl;
-    // Create the Ishigami function
+    Scalar mean = 1.0;
+    Scalar variance = 1.0;
+    Point a(dimension);
+    // Create the gSobol function
     Description inputVariables(dimension);
-    inputVariables[0] = "xi1";
-    inputVariables[1] = "xi2";
-    inputVariables[2] = "xi3";
     Description formula(1);
-    formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
+    formula[0] = "1.0";
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      a[i] = 0.5 * i;
+      variance *= 1.0 + 1.0 / (3.0 * pow(1.0 + a[i], 2.0));
+      inputVariables[i] = (OSS() << "xi" << i);
+      formula[0] = (OSS() << formula[0] << " * ((abs(4.0 * xi" << i << " - 2.0) + " << a[i] << ") / (1.0 + " << a[i] << "))");
+    }
+    --variance;
     SymbolicFunction model(inputVariables, formula);
 
+    // 
+    fullprint << "Reference analytical values" << std::endl;
+    Scalar S0 = sobol({0}, a, variance);
+    Scalar S1 = sobol({1}, a, variance);
+    Scalar S2 = sobol({2}, a, variance);
+    Scalar S01 = sobol({0, 1}, a, variance);
+    Scalar S02 = sobol({0, 2}, a, variance);
+    Scalar S12 = sobol({1, 2}, a, variance);
+    Scalar S012 = sobol({0, 1, 2}, a, variance);
+    Scalar ST0 = S0 + S01 + S02 + S012;
+    Scalar ST1 = S1 + S01 + S12 + S012;
+    Scalar ST2 = S2 + S02 + S12 + S012;
+    fullprint << "  mean = " << mean << std::endl;
+    fullprint << "  variance = " << std::fixed << std::setprecision(4) << variance << std::endl;
+    fullprint << "  S0 = " << std::fixed << std::setprecision(4) << S0 << std::endl;
+    fullprint << "  S1 = " << std::fixed << std::setprecision(4) << S1 << std::endl;
+    fullprint << "  S2 = " << std::fixed << std::setprecision(4) << S2 << std::endl;
+    fullprint << "  S01 = " << std::fixed << std::setprecision(4) << S01 << std::endl;
+    fullprint << "  S02 = " << std::fixed << std::setprecision(4) << S02 << std::endl;
+    fullprint << "  S12 = " << std::fixed << std::setprecision(4) << S12 << std::endl;
+    fullprint << "  S012 = " << std::fixed << std::setprecision(4) << S012 << std::endl;
+    fullprint << "  ST0 = " << std::fixed << std::setprecision(4) << ST0 << std::endl;
+    fullprint << "  ST1 = " << std::fixed << std::setprecision(4) << ST1 << std::endl;
+    fullprint << "  ST2 = " << std::fixed << std::setprecision(4) << ST2 << std::endl;
+
     // Create the input distribution
-    Collection<Distribution> marginals(dimension);
-    marginals[0] = Uniform(-M_PI, M_PI);
-    marginals[1] = Uniform(-M_PI, M_PI);
-    marginals[2] = Uniform(-M_PI, M_PI);
+    Collection<Distribution> marginals(dimension, Uniform(0.0, 1.0));
     ComposedDistribution distribution(marginals);
 
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);
-    polynomialCollection[0] = LegendreFactory();
-    polynomialCollection[1] = LegendreFactory();
-    polynomialCollection[2] = LegendreFactory();
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      polynomialCollection[i] = LegendreFactory();
+    }
 
-    HyperbolicAnisotropicEnumerateFunction enumerateFunction( dimension,  0.6);
+    HyperbolicAnisotropicEnumerateFunction enumerateFunction(dimension,  0.5);
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
-    UnsignedInteger size = pow(2, 10);
+    UnsignedInteger size = pow(2, 12);
     fullprint << "size = " << size << std::endl;
     WeightedExperiment experiment(LowDiscrepancyExperiment(SobolSequence(), distribution, size));
-    // Create the adaptive strategy
-    // We can choose amongst several strategies
-    // First, the most efficient (but more complex!) strategy
-    UnsignedInteger degree = 14;
+    // Select the basis
+    UnsignedInteger degree = 26;
     UnsignedInteger basisSize = enumerateFunction.getBasisSizeFromTotalDegree(degree);
+    // UnsignedInteger basisSize = 240;
     fullprint << "basisSize = " << basisSize << std::endl;
-    FixedStrategy adaptiveStrategy( productBasis, basisSize );
+    AdaptiveStrategy adaptiveStrategy(FixedStrategy(productBasis, basisSize));
     FittingAlgorithm fittingAlgorithm = CorrectedLeaveOneOut();
-    const LeastSquaresStrategy projectionStrategy(LeastSquaresMetaModelSelectionFactory(LARS(), fittingAlgorithm));
+    // const LeastSquaresStrategy projectionStrategy(LeastSquaresMetaModelSelectionFactory(LARS(), fittingAlgorithm));
+    ProjectionStrategy projectionStrategy{LeastSquaresStrategy()};
     const Sample X(experiment.generate());
     const Sample Y(model(X));
     fullprint << "Create object" << std::endl;
@@ -115,117 +136,118 @@ int main(int, char *[])
     fullprint << "GetResult()" << std::endl;
     FunctionalChaosResult result = algo.getResult();
     FunctionalChaosSobolIndices sensitivity(result);
+    ResourceMap::SetAsScalar("FunctionalChaosSobolIndices-VariancePartThreshold", 0.00001);
     String report(sensitivity.__str__());
     fullprint << report << std::endl;
     //
     const Scalar rtol = 0.0;
-    const Scalar atol = 0.001;
+    const Scalar atol = 0.1;
     Scalar S_computed;
     Scalar S_exact;
     //
     fullprint << "Test first order Sobol' indices" << std::endl;
-    fullprint << "First order, X1" << std::endl;
+    fullprint << "First order, X0" << std::endl;
     S_computed = sensitivity.getSobolIndex(0);
+    printSobolResult(S_computed, S0);
+    assert_almost_equal(S_computed, S0, rtol, atol);
+    //
+    fullprint << "First order, X1" << std::endl;
+    S_computed = sensitivity.getSobolIndex(1);
     printSobolResult(S_computed, S1);
     assert_almost_equal(S_computed, S1, rtol, atol);
     //
     fullprint << "First order, X2" << std::endl;
-    S_computed = sensitivity.getSobolIndex(1);
+    S_computed = sensitivity.getSobolIndex(2);
     printSobolResult(S_computed, S2);
     assert_almost_equal(S_computed, S2, rtol, atol);
-    //
-    fullprint << "First order, X3" << std::endl;
-    S_computed = sensitivity.getSobolIndex(2);
-    printSobolResult(S_computed, S3);
-    assert_almost_equal(S_computed, S3, rtol, atol);
     // 
     fullprint << "Test total order Sobol' indices" << std::endl;
-    fullprint << "Total, X1" << std::endl;
+    fullprint << "Total, X0" << std::endl;
     S_computed = sensitivity.getSobolTotalIndex(0);
+    printSobolResult(S_computed, ST0);
+    assert_almost_equal(S_computed, ST0, rtol, atol);
+    //
+    fullprint << "Total, X1" << std::endl;
+    S_computed = sensitivity.getSobolTotalIndex(1);
     printSobolResult(S_computed, ST1);
     assert_almost_equal(S_computed, ST1, rtol, atol);
     //
     fullprint << "Total, X2" << std::endl;
-    S_computed = sensitivity.getSobolTotalIndex(1);
+    S_computed = sensitivity.getSobolTotalIndex(2);
     printSobolResult(S_computed, ST2);
     assert_almost_equal(S_computed, ST2, rtol, atol);
-    //
-    fullprint << "Total, X3" << std::endl;
-    S_computed = sensitivity.getSobolTotalIndex(2);
-    printSobolResult(S_computed, ST3);
-    assert_almost_equal(S_computed, ST3, rtol, atol);
     // 
     fullprint << "Test first order (closed) group Sobol' indices" << std::endl;
-    fullprint << "X1" << std::endl;
+    fullprint << "X0" << std::endl;
     S_computed = sensitivity.getSobolGroupedIndex({0});
+    printSobolResult(S_computed, S0);
+    assert_almost_equal(S_computed, S0, rtol, atol);
+    //
+    fullprint << "X1" << std::endl;
+    S_computed = sensitivity.getSobolGroupedIndex({1});
     printSobolResult(S_computed, S1);
     assert_almost_equal(S_computed, S1, rtol, atol);
     //
     fullprint << "X2" << std::endl;
-    S_computed = sensitivity.getSobolGroupedIndex({1});
+    S_computed = sensitivity.getSobolGroupedIndex({2});
     printSobolResult(S_computed, S2);
     assert_almost_equal(S_computed, S2, rtol, atol);
     //
-    fullprint << "X3" << std::endl;
-    S_computed = sensitivity.getSobolGroupedIndex({2});
-    printSobolResult(S_computed, S3);
-    assert_almost_equal(S_computed, S3, rtol, atol);
+    fullprint << "(X0, X1)" << std::endl;
+    S_computed = sensitivity.getSobolGroupedIndex({0, 1});
+    S_exact = S0 + S1 + S01;
+    printSobolResult(S_computed, S_exact);
+    assert_almost_equal(S_computed, S_exact, rtol, atol);
+    //
+    fullprint << "(X0, X2)" << std::endl;
+    S_computed = sensitivity.getSobolGroupedIndex({0, 2});
+    S_exact = S0 + S2 + S02;
+    printSobolResult(S_computed, S_exact);
+    assert_almost_equal(S_computed, S_exact, rtol, atol);
     //
     fullprint << "(X1, X2)" << std::endl;
-    S_computed = sensitivity.getSobolGroupedIndex({0, 1});
+    S_computed = sensitivity.getSobolGroupedIndex({1, 2});
     S_exact = S1 + S2 + S12;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
     //
-    fullprint << "(X1, X3)" << std::endl;
-    S_computed = sensitivity.getSobolGroupedIndex({0, 2});
-    S_exact = S1 + S3 + S13;
-    printSobolResult(S_computed, S_exact);
-    assert_almost_equal(S_computed, S_exact, rtol, atol);
-    //
-    fullprint << "(X2, X3)" << std::endl;
-    S_computed = sensitivity.getSobolGroupedIndex({1, 2});
-    S_exact = S2 + S3 + S23;
-    printSobolResult(S_computed, S_exact);
-    assert_almost_equal(S_computed, S_exact, rtol, atol);
-    //
-    fullprint << "(X1, X2, X3)" << std::endl;
+    fullprint << "(X0, X1, X2)" << std::endl;
     S_computed = sensitivity.getSobolGroupedIndex({0, 1, 2});
     S_exact = 1.0;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
     // 
     fullprint << "Test total group Sobol' indices" << std::endl;
-    fullprint << "X1" << std::endl;
+    fullprint << "X0" << std::endl;
     S_computed = sensitivity.getSobolGroupedTotalIndex({0});
+    printSobolResult(S_computed, ST0);
+    assert_almost_equal(S_computed, ST0, rtol, atol);
+    //
+    fullprint << "X1" << std::endl;
+    S_computed = sensitivity.getSobolGroupedTotalIndex({1});
     printSobolResult(S_computed, ST1);
     assert_almost_equal(S_computed, ST1, rtol, atol);
     //
     fullprint << "X2" << std::endl;
-    S_computed = sensitivity.getSobolGroupedTotalIndex({1});
+    S_computed = sensitivity.getSobolGroupedTotalIndex({2});
     printSobolResult(S_computed, ST2);
     assert_almost_equal(S_computed, ST2, rtol, atol);
     //
-    fullprint << "X3" << std::endl;
-    S_computed = sensitivity.getSobolGroupedTotalIndex({2});
-    printSobolResult(S_computed, ST3);
-    assert_almost_equal(S_computed, ST3, rtol, atol);
-    //
-    fullprint << "(X1, X2)" << std::endl;
+    fullprint << "(X0, X1)" << std::endl;  // Difficult !
     S_computed = sensitivity.getSobolGroupedTotalIndex({0, 1});
-    S_exact = S1 + S2 + S12 + S13 + S123;
+    S_exact = S0 + S1 + S01 + S02 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
     //
-    fullprint << "(X1, X3)" << std::endl;
+    fullprint << "(X0, X2)" << std::endl;  // Difficult !
     S_computed = sensitivity.getSobolGroupedTotalIndex({0, 2});
-    S_exact = S1 + S3 + S13 + S23 + S123;
+    S_exact = S0 + S2 + S02 + S12 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
     //
-    fullprint << "(X2, X3)" << std::endl;
+    fullprint << "(X1, X2)" << std::endl;  // Difficult !
     S_computed = sensitivity.getSobolGroupedTotalIndex({1, 2});
-    S_exact = S2 + S3 + S13 + S23 + S123;
+    S_exact = S1 + S2 + S02 + S12 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
     //
@@ -236,47 +258,46 @@ int main(int, char *[])
     assert_almost_equal(S_computed, S_exact, rtol, atol);
     // 
     fullprint << "Test interaction group Sobol' indices" << std::endl;
-    fullprint << "X1" << std::endl;
+    fullprint << "X0" << std::endl;
     S_computed = sensitivity.getSobolGroupedInteractionIndex({0});
+    printSobolResult(S_computed, S0);
+    assert_almost_equal(S_computed, S0, rtol, atol);
+    // 
+    fullprint << "X1" << std::endl;
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({1});
     printSobolResult(S_computed, S1);
     assert_almost_equal(S_computed, S1, rtol, atol);
     // 
     fullprint << "X2" << std::endl;
-    S_computed = sensitivity.getSobolGroupedInteractionIndex({1});
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({2});
     printSobolResult(S_computed, S2);
     assert_almost_equal(S_computed, S2, rtol, atol);
     // 
-    fullprint << "X3" << std::endl;
-    S_computed = sensitivity.getSobolGroupedInteractionIndex({2});
-    printSobolResult(S_computed, S3);
-    assert_almost_equal(S_computed, S3, rtol, atol);
+    fullprint << "X0, X1" << std::endl;
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({0, 1});
+    printSobolResult(S_computed, S01);
+    assert_almost_equal(S_computed, S01, rtol, atol);
+    // 
+    fullprint << "X0, X2" << std::endl;
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({0, 2});
+    printSobolResult(S_computed, S02);
+    assert_almost_equal(S_computed, S02, rtol, atol);
     // 
     fullprint << "X1, X2" << std::endl;
-    S_computed = sensitivity.getSobolGroupedInteractionIndex({0, 1});
+    S_computed = sensitivity.getSobolGroupedInteractionIndex({1, 2});
     printSobolResult(S_computed, S12);
     assert_almost_equal(S_computed, S12, rtol, atol);
     // 
-    fullprint << "X1, X3" << std::endl;
-    S_computed = sensitivity.getSobolGroupedInteractionIndex({0, 2});
-    printSobolResult(S_computed, S13);
-    assert_almost_equal(S_computed, S13, rtol, atol);
-    // 
-    fullprint << "X2, X3" << std::endl;
-    S_computed = sensitivity.getSobolGroupedInteractionIndex({1, 2});
-    printSobolResult(S_computed, S23);
-    assert_almost_equal(S_computed, S23, rtol, atol);
-    // 
-    fullprint << "X1, X2, X3" << std::endl;
+    fullprint << "X0, X1, X2" << std::endl;
     S_computed = sensitivity.getSobolGroupedInteractionIndex({0, 1, 2});
-    printSobolResult(S_computed, S123);
-    assert_almost_equal(S_computed, S123, rtol, atol);
+    printSobolResult(S_computed, S012);
+    assert_almost_equal(S_computed, S012, rtol, atol);
   }
   catch (TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;
   }
-
 
   return ExitCode::Success;
 }

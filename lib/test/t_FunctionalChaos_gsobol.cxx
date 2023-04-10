@@ -164,24 +164,6 @@ int main(int, char *[])
           indices.fill();
           Scalar value = sensitivity.getSobolIndex(indices);
           fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
-          // First order grouped index
-          indices = Indices({0, 1});
-          Scalar exactS0 = sobol(Indices({0}), a) / covTh;
-          Scalar exactS1 = sobol(Indices({1}), a) / covTh;
-          Scalar exactS01 = sobol(Indices({0, 1}), a) / covTh;
-          Scalar exactS = exactS0 + exactS1 + exactS01;
-          value = sensitivity.getSobolGroupedIndex(indices);
-          fullprint << "Grouped First Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << ", exact = " << exactS << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - exactS) << std::endl;
-          assert_almost_equal(value, exactS, 0.0, 1e-2);
-          // Total order grouped index
-          indices = Indices(2);
-          indices.fill();
-          value = sensitivity.getSobolGroupedTotalIndex(indices);
-          Indices complementaryindices(3);
-          complementaryindices.fill(2);
-          exactS = 1 - sensitivity.getSobolGroupedIndex(complementaryindices);
-          fullprint << "Grouped Total Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << std::endl;
-          assert_almost_equal(value, exactS, 0.0, 1e-2);
 
         }
       }
