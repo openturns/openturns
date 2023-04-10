@@ -55,6 +55,24 @@ simple:
 .. math::
     \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
 
+The part of variance of the multi-index :math:`\idx` is:
+
+.. math::
+    \operatorname{PoV}_\idx
+    = \frac{a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
+
+The sum of the part of variances of all multi-indices is equal to 1:
+
+.. math::
+    \sum_{\idx \in \mathcal{J}_P} \operatorname{PoV}_\idx = 1.
+
+Hence, we can identify the multi-indices which contribute
+more significantly to the variance of the output by sorting the
+multi-indices by decreasing order of their part of variance.
+This result is printed by the `str` representation of the
+`FunctionalChaosSobolIndices` class and is accessed by the 
+`print` function: see an example of this below.
+
 All the Sobol' indices that we introduce in this section depend on a 
 specific set of multi-indices. 
 Let :math:`\mathcal{J}^S \subseteq \mathcal{J}_P` a subset of the multi-indices 
@@ -76,6 +94,7 @@ If the polynomial basis is orthonormal, therefore:
 .. math::
     \operatorname{S}^{PCE}\left(\mathcal{J}^S\right) 
     = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+
 
 Hence, in the methods presented below, each Sobol' index is defined
 by its corresponding set of multi-indices.
@@ -112,39 +131,11 @@ Create the chaos:
 >>> chaosalgo.run()
 >>> result = chaosalgo.getResult()
 
-Print Sobol' indices :
+Print Sobol' indices (see :doc:`auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_ishigami_grouped_indices`
+for details):
 
 >>> chaosSI = ot.FunctionalChaosSobolIndices(result) 
->>> print(chaosSI)
-     input dimension: 3
-     output dimension: 1
-     basis size: 68
-     mean: [3.71094]
-     std-dev: [3.76056]
-    ------------------------------------------------------------
-    Index   | Multi-indice                  | Part of variance  
-    ------------------------------------------------------------
-         14 | [0,4,0]                       | 0.313...
-          1 | [1,0,0]                       | 0.179...
-         23 | [1,0,2]                       | 0.152...
-          7 | [3,0,0]                       | 0.093...
-         26 | [0,6,0]                       | 0.085...
-         54 | [3,0,2]                       | 0.059...
-         48 | [1,0,4]                       | 0.023...
-         17 | [0,5,0]                       | 0.013...
-         41 | [0,8,0]                       | 0.010...
-    ------------------------------------------------------------
-
-
-    ------------------------------------------------------------
-    Component | Sobol index            | Sobol total index      
-    ------------------------------------------------------------
-            0 | 0.281169               | 0.538...              
-            1 | 0.443179               | 0.465...              
-            2 | 0.00322462             | 0.269...              
-    ------------------------------------------------------------
-
-
+>>> #print(chaosSI)  # Prints a table of multi-indices
 
 Get first order Sobol' indices for X0:
 
