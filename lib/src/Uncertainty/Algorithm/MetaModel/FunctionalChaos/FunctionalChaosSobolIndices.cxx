@@ -185,7 +185,7 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variablesGroup
   // the conditional covariance cannot be extracted from the decomposition
   if (!functionalChaosResult_.getOrthogonalBasis().getMeasure().hasIndependentCopula()) throw InternalException(HERE) << "Error: cannot compute Sobol indices from a non-tensorized basis.";
   if (!functionalChaosResult_.getDistribution().hasIndependentCopula()) LOGWARN(OSS(false) << "The Sobol indices are computed wrt the basis measure, and there is no one-to-one transformation between this measure and the input distribution. The interpretation of the indices may be misleading.");
-  const UnsignedInteger orderSobolIndice = variablesGroup.getSize();
+  const UnsignedInteger groupDimension = variablesGroup.getSize();
   const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
@@ -207,7 +207,7 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variablesGroup
           totalVariance += coefficientI * coefficientI;
           Bool isProperSubset = true;
           // First check that the exponents associated to the selected variables are > 0
-          for (UnsignedInteger j = 0; j < orderSobolIndice; ++j)
+          for (UnsignedInteger j = 0; j < groupDimension; ++j)
           {
             const UnsignedInteger varJ = variablesGroup[j];
             isProperSubset = isProperSubset && (multiIndices[varJ] > 0);
@@ -249,7 +249,7 @@ Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & variables
   // the conditional covariance cannot be extracted from the decomposition
   if (!functionalChaosResult_.getOrthogonalBasis().getMeasure().hasIndependentCopula()) throw InternalException(HERE) << "Error: cannot compute Sobol total indices from a non-tensorized basis.";
   if (!functionalChaosResult_.getDistribution().hasIndependentCopula()) LOGWARN(OSS(false) << "The Sobol total indices are computed wrt the basis measure, and there is no one-to-one transformation between this measure and the input distribution. The interpretation of the total indices may be misleading.");
-  const UnsignedInteger orderSobolIndice = variablesGroup.getSize();
+  const UnsignedInteger groupDimension = variablesGroup.getSize();
   const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
@@ -271,7 +271,7 @@ Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & variables
           totalVariance += coefficientI * coefficientI;
           Bool isProperSubset = true;
           // Check that the exponents associated to the selected variables are > 0
-          for (UnsignedInteger j = 0; j < orderSobolIndice; ++j)
+          for (UnsignedInteger j = 0; j < groupDimension; ++j)
           {
             const UnsignedInteger varJ = variablesGroup[j];
             isProperSubset = isProperSubset && (multiIndices[varJ] > 0);
