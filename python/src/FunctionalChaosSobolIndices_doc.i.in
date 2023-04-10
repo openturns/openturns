@@ -149,22 +149,26 @@ Print Sobol' indices :
 Get first order Sobol' indices for X0:
 
 >>> s0 = chaosSI.getSobolIndex(0)
->>> print("S(0) = ", s0)
+>>> print('S(0) = ', s0)
+S(0) =  0.28...
 
 Get total order Sobol' indices for X0:
 
 >>> st0 = chaosSI.getSobolTotalIndex(0)
->>> print("ST(0) = ", st0)
+>>> print('ST(0) = ', st0)
+ST(0) =  0.53...
 
 Get first order Sobol' indices for group [X0,X2]:
 
 >>> sg02 = chaosSI.getSobolGroupedIndex([0,2])
->>> print("SG([0, 2]) = ", sg02)
+>>> print('SG([0, 2]) = ', sg02)
+SG([0, 2]) =  0.53...
 
 Get total order Sobol' indices for group [X0,X2]:
 
->>> stg02 = chaosSI.getSobolGroupedTotalIndex([0,2])"
->>> print("STG([0, 2]) = ", stg02)
+>>> stg02 = chaosSI.getSobolGroupedTotalIndex([0,2])
+>>> print('STG([0, 2]) = ', stg02)
+STG([0, 2]) =  0.55..."
 
 // ---------------------------------------------------------------------
 
