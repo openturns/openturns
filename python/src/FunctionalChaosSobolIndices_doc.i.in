@@ -127,7 +127,7 @@ Create a training sample:
 
 Create the chaos:
 
->>> chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
+>>> chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain, distribution)
 >>> chaosalgo.run()
 >>> result = chaosalgo.getResult()
 
@@ -137,29 +137,41 @@ for details):
 >>> chaosSI = ot.FunctionalChaosSobolIndices(result) 
 >>> #print(chaosSI)  # Prints a table of multi-indices
 
-Get first order Sobol' indices for X0:
+Get first order Sobol' index for X0:
 
 >>> s0 = chaosSI.getSobolIndex(0)
 >>> print('S(0) = ', s0)
-S(0) =  0.28...
+S(0) =  0.26...
 
-Get total order Sobol' indices for X0:
+Get total order Sobol' index for X0:
 
 >>> st0 = chaosSI.getSobolTotalIndex(0)
 >>> print('ST(0) = ', st0)
-ST(0) =  0.53...
+ST(0) =  0.48...
 
-Get first order Sobol' indices for group [X0,X2]:
+Get interaction Sobol' index for the group (X0, X1):
 
->>> sg02 = chaosSI.getSobolGroupedIndex([0,2])
->>> print('SG([0, 2]) = ', sg02)
-SG([0, 2]) =  0.53...
+>>> s01 = chaosSI.getSobolIndex([0, 1])
+>>> print('S([0, 1]) = ', s01)
+S([0, 1]) =  0.00...
 
-Get total order Sobol' indices for group [X0,X2]:
+Get total interaction Sobol' index for the group (X0, X1):
 
->>> stg02 = chaosSI.getSobolGroupedTotalIndex([0,2])
->>> print('STG([0, 2]) = ', stg02)
-STG([0, 2]) =  0.55..."
+>>> st01 = chaosSI.getSobolTotalIndex([0, 1])
+>>> print('ST([0, 1]) = ', st01)
+ST([0, 1]) =  0.00...
+
+Get first order Sobol' index for group [X0,X1]:
+
+>>> sg01 = chaosSI.getSobolGroupedIndex([0,1])
+>>> print('SG([0, 1]) = ', sg01)
+SG([0, 1]) =  0.76...
+
+Get total order Sobol' index for group [X0,X1]:
+
+>>> stg01 = chaosSI.getSobolGroupedTotalIndex([0,1])
+>>> print('STG([0, 1]) = ', stg01)
+STG([0, 1]) =  0.99..."
 
 // ---------------------------------------------------------------------
 
@@ -196,6 +208,8 @@ Therefore, the first order Sobol' index :math:`S_i` of the variable
     S_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^S\right).
 
 *Case 2: group of variables.*
+Let :math:`\bdu \subseteq \{0, ..., d-1\}` the list of variable indices
+in the group. 
 Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
 
 .. math::
@@ -227,6 +241,9 @@ s : float
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolTotalIndex
 "Get the total Sobol' index of an input variable.
 
+*Case 1: single variable.* 
+Let :math:`i \in \{0, ..., d - 1\}` the index of an input 
+variable. 
 Let :math:`\mathcal{J}_i^T` the set of multi-indices such that 
 :math:`\alpha_i> 0`:
 
@@ -239,6 +256,22 @@ Therefore, the total order index :math:`S^T_i` is:
 
 .. math::
     S^T_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^T\right).
+
+*Case 2: group of variables.*
+Let :math:`\bdu \subseteq \{0, ..., d-1\}` the list of variable indices
+in the group. 
+Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
+
+.. math::
+    \mathcal{J}_\bdu^{T, i}
+    =\left\{\boldsymbol{\alpha}\in\mathcal{J}_P, 
+    \quad \boldsymbol{\alpha}\neq \boldsymbol{0}, \quad 
+    \alpha_i >0 \textrm{ if } i \in \boldsymbol{u}\right\}.
+
+Therefore, the total interaction (high order) Sobol' index :math:`S_\bdu` is: 
+
+.. math::
+    S_\bdu^{T, i} = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^{T, i}\right).
 
 Parameters
 ----------
