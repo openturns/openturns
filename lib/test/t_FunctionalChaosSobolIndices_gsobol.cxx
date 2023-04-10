@@ -121,11 +121,9 @@ int main(int, char *[])
     // Select the basis
     UnsignedInteger degree = 26;
     UnsignedInteger basisSize = enumerateFunction.getBasisSizeFromTotalDegree(degree);
-    // UnsignedInteger basisSize = 240;
     fullprint << "basisSize = " << basisSize << std::endl;
     AdaptiveStrategy adaptiveStrategy(FixedStrategy(productBasis, basisSize));
-    FittingAlgorithm fittingAlgorithm = CorrectedLeaveOneOut();
-    // const LeastSquaresStrategy projectionStrategy(LeastSquaresMetaModelSelectionFactory(LARS(), fittingAlgorithm));
+    // Use full PCE (sparse PCE is too slow)
     ProjectionStrategy projectionStrategy{LeastSquaresStrategy()};
     const Sample X(experiment.generate());
     const Sample Y(model(X));
