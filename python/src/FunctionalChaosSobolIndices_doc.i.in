@@ -42,6 +42,44 @@ where :math:`\bdZ` is the standardized input random vector,
 and :math:`\{\psi_\idx\}_{\idx \in \mathcal{J}_P}` are the functions in the
 functional basis.
 
+The variance of the polynomial chaos expansion is:
+
+.. math::
+    \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2 \|\psi_\idx\|^2.
+
+In the previous expression, let us emphasise that the variance is a sum 
+of squares, excepted the :math:`a_0` coefficient. 
+If the polynomial basis is orthonormal, the expression is particularly 
+simple:
+
+.. math::
+    \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
+
+All the Sobol' indices that we introduce in this section depend on a 
+specific set of multi-indices. 
+Let :math:`\mathcal{J}^S \subseteq \mathcal{J}_P` a subset of the multi-indices 
+involved in the polynomial chaos expansion.
+Let :math:`\operatorname{S}^{PCE}` be the function of the coefficients associated 
+to the multi-indices :math:`\mathcal{J}^S`, defined by: 
+
+.. math::
+    \operatorname{S}^{PCE}\left(\mathcal{J}^S\right) 
+    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
+
+Then any Sobol' index :math:`S` can be defined by the equation:
+
+.. math::
+    S = \operatorname{S}^{PCE}\left(\mathcal{J}^S\right).
+
+If the polynomial basis is orthonormal, therefore:
+
+.. math::
+    \operatorname{S}^{PCE}\left(\mathcal{J}^S\right) 
+    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+
+Hence, in the methods presented below, each Sobol' index is defined
+by its corresponding set of multi-indices.
+
 Examples
 --------
 Create a polynomial chaos for the Ishigami function:
@@ -111,18 +149,22 @@ Print Sobol' indices :
 Get first order Sobol' indices for X0:
 
 >>> s0 = chaosSI.getSobolIndex(0)
+>>> print("S(0) = ", s0)
 
 Get total order Sobol' indices for X0:
 
 >>> st0 = chaosSI.getSobolTotalIndex(0)
+>>> print("ST(0) = ", st0)
 
-Get first order Sobol' indices for group [X0,X1]:
+Get first order Sobol' indices for group [X0,X2]:
 
->>> stg01 = chaosSI.getSobolGroupedIndex([0,1])
+>>> sg02 = chaosSI.getSobolGroupedIndex([0,2])
+>>> print("SG([0, 2]) = ", sg02)
 
-Get total order Sobol' indices for group [X1,X2]:
+Get total order Sobol' indices for group [X0,X2]:
 
->>> stg12 = chaosSI.getSobolGroupedTotalIndex([1,2])"
+>>> stg02 = chaosSI.getSobolGroupedTotalIndex([0,2])"
+>>> print("STG([0, 2]) = ", stg02)
 
 // ---------------------------------------------------------------------
 
@@ -139,6 +181,9 @@ functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolIndex
 "Get the first order Sobol' index of an input variable.
 
+This function can manage either a single variable or a group of variables.
+
+*Case 1: single variable.* 
 Let :math:`i \in \{0, ..., d - 1\}` the index of an input 
 variable. 
 Let :math:`\mathcal{J}_i^S` the set of multi-indices such that 
@@ -147,23 +192,32 @@ Let :math:`\mathcal{J}_i^S` the set of multi-indices such that
 .. math::
     \mathcal{J}_i^S
     =\left\{\idx=(0,..., 0,\alpha_i,0,...,0) \in \mathcal{J}_P, 
-    \quad \alpha_i>0\right\}.
+    \quad \alpha_i > 0\right\}.
 
-Therefore, the first order Sobol' index :math:`S_i` is equal to the sum of the 
-square of the coefficients in :math:`\mathcal{J}_i^S`: 
-
-.. math::
-    S_i = \frac{\sum_{\idx\in\mathcal{J}_i^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
-
-If the polynomial basis is orthonormal, therefore:
+Therefore, the first order Sobol' index :math:`S_i` of the variable 
+:math:`X_i` is: 
 
 .. math::
-    S_i = \frac{\sum_{\idx\in\mathcal{J}_i^S} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+    S_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^S\right).
+
+*Case 2: group of variables.*
+Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
+
+.. math::
+    \mathcal{J}_\bdu
+    =\left\{\idx\in\mathcal{J}_P, 
+    \quad \idx\neq \boldsymbol{0}, \quad 
+    \alpha_i = 0 \textrm{ if } i \not\in \bdu\right\}.
+
+Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is: 
+
+.. math::
+    S_\bdu = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu\right).
 
 Parameters
 ----------
 i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated Sobol' indices. 
+    Indice(s) of the variable(s). 
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -184,24 +238,17 @@ Let :math:`\mathcal{J}_i^T` the set of multi-indices such that
 .. math::
     \mathcal{J}_i^T
     =\left\{\idx=(\alpha_1,...,\alpha_i,...,\alpha_p) \in \mathcal{J}_P, 
-    \quad \alpha_i>0\right\}.
+    \quad \alpha_i > 0\right\}.
 
-Therefore, the total order index :math:`S^T_i` is equal to the sum of the squared 
-coefficients in :math:`\mathcal{J}_i^T`: 
-
-.. math::
-    S^T_i 
-    = \frac{\sum_{\idx\in\mathcal{J}_i^T} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
-
-If the polynomial basis is orthonormal, therefore:
+Therefore, the total order index :math:`S^T_i` is: 
 
 .. math::
-    S^T_i = \frac{\sum_{\idx\in\mathcal{J}_i^T} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+    S^T_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^T\right).
 
 Parameters
 ----------
 i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated total Sobol indices.
+    Indice(s) of the variable(s).
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -226,17 +273,11 @@ each component of :math:`\idx` is contained in the group :math:`\bdu`:
       \quad i \in \bdu, \quad i=0,\ldots, d - 1\right\}.
 
 Therefore, the first order (closed) Sobol' index :math:`S^{\operatorname{cl}}_\bdu` 
-is equal to the sum of the square of the coefficients in 
-:math:`\mathcal{J}_\bdu^{S, \operatorname{cl}}`: 
-
-.. math::
-    S^{\operatorname{cl}}_\bdu = \frac{\sum_{\idx\in\mathcal{J}_\bdu^{S, \operatorname{cl}}} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
-
-If the polynomial basis is orthonormal, therefore:
+is: 
 
 .. math::
     S^{\operatorname{cl}}_\bdu 
-    = \frac{\sum_{\idx\in\mathcal{J}_\bdu^{S, \operatorname{cl}}} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+    = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^{S, \operatorname{cl}}\right).
 
 Parameters
 ----------
@@ -265,16 +306,10 @@ Let :math:`\mathcal{J}_\bdu^T` the set of multi-indices:
     \quad \idx\neq \boldsymbol{0}, \quad \exists i\in\{0,\ldots, d - 1\} \quad \textrm{s.t.} 
     \quad i \in \bdu\right\}.
 
-Therefore, the first order Sobol' index :math:`S^{\operatorname{cl}}_\bdu` is equal to the sum of the 
-square of the coefficients in :math:`\mathcal{J}_\bdu^{S, \operatorname{cl}}`: 
+Therefore, the first order Sobol' index :math:`S^{\operatorname{cl}}_\bdu` is: 
 
 .. math::
-    S^T_\bdu = \frac{\sum_{\idx\in\mathcal{J}_\bdu^T} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
-
-If the polynomial basis is orthonormal, therefore:
-
-.. math::
-    S^T_\bdu = \frac{\sum_{\idx\in\mathcal{J}_\bdu^T} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+    S^T_\bdu = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^T\right).
 
 Parameters
 ----------
@@ -302,22 +337,15 @@ Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
     \quad \idx\neq \boldsymbol{0}, \quad 
     \alpha_i = 0 \textrm{ if } i \not\in \bdu\right\}.
 
-Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is equal to the 
-sum of the square of the coefficients in :math:`\mathcal{J}_\bdu`: 
+Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is: 
 
 .. math::
-    S_\bdu = \frac{\sum_{\idx\in\mathcal{J}_\bdu} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
-
-If the polynomial basis is orthonormal, therefore:
-
-.. math::
-    S_\bdu = \frac{\sum_{\idx\in\mathcal{J}_\bdu} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
+    S_\bdu = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu\right).
 
 Parameters
 ----------
 variableIndices : sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated grouped interaction 
-    Sobol' indices.
+    Indice(s) of the variable(s).
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
