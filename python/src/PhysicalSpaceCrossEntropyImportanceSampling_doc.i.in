@@ -1,5 +1,5 @@
 %feature("docstring") OT::PhysicalSpaceCrossEntropyImportanceSampling
-"PhysicalSpaceCrossEntropyImportanceSampling.
+"Physical Space Cross-Entropy Importance Sampling.
 
 Parameters
 ----------

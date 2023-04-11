@@ -33,12 +33,18 @@ int main()
   const Description input = {"R", "F"};
 
   const Function beam = SymbolicFunction(input, Description(1, formula));
-
   // Definition of input variable PDF
-  const Point mean(0.2, 0.0) ;
-  const Point sigma(0.1, 0.1) ;
-  const Normal distX(mean, sigma);
+  Point mean(2);
+  mean[0] = 0.2;
+  mean[1] = 0.0;
   
+  Point sigma(2) ;
+  sigma[0] = 0.1;
+  sigma[1] = 0.1;
+    
+
+  const Normal distX(mean, sigma);
+
   const RandomVector inputVector = RandomVector(distX);
   const CompositeRandomVector compositeVector = CompositeRandomVector(beam, inputVector);
   const ThresholdEvent event = ThresholdEvent(compositeVector, Less(), 0.0);
@@ -72,7 +78,7 @@ int main()
   initial_theta[1]=0.1;
   initial_theta[2]=0.;
   initial_theta[3]=0.1;
-  
+
   // Definition of the algorithm
   PhysicalSpaceCrossEntropyImportanceSampling algoPhysicalSpaceCE(event,
                                                                   active_parameters,
@@ -80,11 +86,13 @@ int main()
                                                                   bounds,
                                                                   aux_distrib);
   
-  // Run of the algorithm
-                                                                 
+  // Run of the algorithm           
+  RandomGenerator::SetSeed(1); 
+
   algoPhysicalSpaceCE.run();
 
   const CrossEntropyResult resultCE(algoPhysicalSpaceCE.getResult());
-  OT::Test::assert_almost_equal(resultCE.getProbabilityEstimate(), 0.075824);
+
+  OT::Test::assert_almost_equal(resultCE.getProbabilityEstimate(), 0.078949);
   return 0;
 }

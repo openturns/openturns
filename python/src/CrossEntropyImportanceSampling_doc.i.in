@@ -1,5 +1,5 @@
 %feature("docstring") OT::CrossEntropyImportanceSampling
-"Cross Entropy Importance Sampling algorithm.
+"Cross-Entropy Importance Sampling algorithm.
 
 See also
 --------
