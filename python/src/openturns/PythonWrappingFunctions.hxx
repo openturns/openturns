@@ -527,7 +527,7 @@ canConvertCollectionObjectFromPySequence(PyObject * pyObj)
   {
     check<_PySequence_>(pyObj);
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     return false;
   }
@@ -572,7 +572,7 @@ buildCollectionFromPySequence(PyObject * pyObj, int sz = 0)
     {
       check<typename traitsPythonType< T >::Type>(elt);
     }
-    catch (InvalidArgumentException &)
+    catch (const InvalidArgumentException &)
     {
       delete p_coll;
       throw;
@@ -1177,7 +1177,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
               {
                 p_implementation->operator()(i, j) = checkAndConvert<_PyFloat_, Scalar>(elt.get());
               }
-              catch (InvalidArgumentException &)
+              catch (const InvalidArgumentException &)
               {
                 delete p_implementation;
                 throw;
@@ -1469,7 +1469,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
               {
                 p_implementation->operator()(i, j) = checkAndConvert<_PyComplex_, Complex>(elt.get());
               }
-              catch (InvalidArgumentException &)
+              catch (const InvalidArgumentException &)
               {
                 delete p_implementation;
                 throw;
@@ -1654,7 +1654,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
                 {
                   p_implementation->operator()(i, j, k) = checkAndConvert<_PyComplex_, Complex>(elt.get());
                 }
-                catch (InvalidArgumentException &)
+                catch (const InvalidArgumentException &)
                 {
                   delete p_implementation;
                   throw;

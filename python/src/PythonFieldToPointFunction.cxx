@@ -197,7 +197,7 @@ Point PythonFieldToPointFunction::operator() (const Sample & inF) const
   {
     outP = convert< _PySequence_, Point >(pyOutP.get());
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a sequence object (list, tuple, Point, etc.)";
   }

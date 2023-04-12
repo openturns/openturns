@@ -186,7 +186,7 @@ Sample PythonPointToFieldFunction::operator() (const Point & inP) const
   {
     outF = convert< _PySequence_, Sample >(result.get());
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec_sample() method is not a 2d-sequence object";
   }

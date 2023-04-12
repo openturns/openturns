@@ -268,7 +268,7 @@ Point PythonEvaluation::operator() (const Point & inP) const
   {
     outP = convert< _PySequence_, Point >(result.get());
   }
-  catch (InvalidArgumentException &)
+  catch (const InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a sequence object (list, tuple, Point, etc.)";
   }
@@ -368,7 +368,7 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
     {
       outS = convert< _PySequence_, Sample >(result.get());
     }
-    catch (InvalidArgumentException &)
+    catch (const InvalidArgumentException &)
     {
       throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec_sample() method is not a 2d-sequence object";
     }

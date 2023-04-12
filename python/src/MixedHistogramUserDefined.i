@@ -14,7 +14,7 @@
   if (!SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     try {
       $1 = OT::buildCollectionFromPySequence< OT::Point >($input);
-    } catch (OT::InvalidArgumentException &) {
+    } catch (const OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Point");
     }
   }
