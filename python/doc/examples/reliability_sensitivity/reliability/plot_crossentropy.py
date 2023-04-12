@@ -153,7 +153,7 @@ view = viewer.View(myGraph)
 # In this second example, we take the auxiliary distribution in the same family as the initial distribution and we want to optimize all the parameters.
 
 # %%
-# The parameters to be optimized are the parameters of the native distribution. It is necessary to define among all the distribution parameters, which ones will be optimized through the indices of the parameters. In this case, all the parameters will be optimized. 
+# The parameters to be optimized are the parameters of the native distribution. It is necessary to define among all the distribution parameters, which ones will be optimized through the indices of the parameters. In this case, all the parameters will be optimized.
 
 # %%
 # Be careful that the native parameters of the auxiliary distribution will be considered. Here for the :class:`~openturns.LogNormalMuSigma` distribution, this corresponds to muLog, sigmaLog and gamma.
