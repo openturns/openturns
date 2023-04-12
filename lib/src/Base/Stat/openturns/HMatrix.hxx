@@ -113,6 +113,7 @@ class OT_API HMatrix :
   String __str__(const String & offset = "") const override;
 
   /** Comparison operators */
+  using TypedInterfaceObject<HMatrixImplementation>::operator ==;
   Bool operator == (const HMatrix & rhs) const;
 
 }; /* class HMatrix */

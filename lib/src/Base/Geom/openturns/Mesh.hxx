@@ -84,6 +84,7 @@ public:
   Point computeWeights() const;
 
   /** Comparison operator */
+  using PersistentObject::operator ==;
   Bool operator == (const Mesh & rhs) const;
 
   /** Check mesh validity, i.e:

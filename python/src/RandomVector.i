@@ -8,7 +8,7 @@
 %include RandomVector_doc.i
 
 %pythoncode %{
-class PythonRandomVector(object):
+class PythonRandomVector:
     """
     Allow one to overload RandomVector from Python.
 

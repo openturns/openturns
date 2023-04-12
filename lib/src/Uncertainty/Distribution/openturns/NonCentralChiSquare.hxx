@@ -45,6 +45,7 @@ public:
                       const Scalar lambda = 0.0);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const NonCentralChiSquare & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

@@ -50,6 +50,7 @@ public:
   explicit BlockIndependentDistribution(const DistributionCollection & coll);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const BlockIndependentDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

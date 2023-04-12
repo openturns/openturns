@@ -70,6 +70,7 @@ public:
   NearestNeighbourAlgorithm getNearestNeighbourAlgorithm() const;
 
   /** Comparison operator */
+  using FieldFunctionImplementation::operator ==;
   Bool operator ==(const P1LagrangeInterpolation & other) const;
 
   /** String converter */

@@ -57,6 +57,7 @@ public:
   virtual ~PythonDistribution();
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const PythonDistribution & other) const;
 
   /** String converter */

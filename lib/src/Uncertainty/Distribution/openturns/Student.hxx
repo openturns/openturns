@@ -59,6 +59,7 @@ public:
 
 
   /** Comparison operator */
+  using EllipticalDistribution::operator ==;
   Bool operator ==(const Student & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

@@ -63,6 +63,7 @@ public:
   ValueFunction * clone() const override;
 
   /** Comparison operator */
+  using FieldFunctionImplementation::operator ==;
   Bool operator ==(const ValueFunction & other) const;
 
   /** String converter */

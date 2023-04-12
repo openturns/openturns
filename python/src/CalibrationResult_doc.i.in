@@ -221,13 +221,8 @@ Plots the prior and posterior distribution of the calibrated parameter theta.
 
 Returns
 -------
-graph : :class:`~openturns.Graph`
-    Graph.
-
-Examples
---------
->>> import openturns as ot
->>> result = ot.CalibrationResult()"
+grid : :class:`~openturns.GridLayout`
+    Graph array."
 
 // ---------------------------------------------------------------------
 
@@ -238,13 +233,8 @@ Plot the distribution of the residuals and the distribution of the observation e
 
 Returns
 -------
-graph : :class:`~openturns.Graph`
-    Graph.
-
-Examples
---------
->>> import openturns as ot
->>> result = ot.CalibrationResult()"
+grid : :class:`~openturns.GridLayout`
+    Graph array."
 
 // ---------------------------------------------------------------------
 
@@ -256,13 +246,8 @@ and after calibration.
 
 Returns
 -------
-graph : :class:`~openturns.Graph`
-    Graph.
-
-Examples
---------
->>> import openturns as ot
->>> result = ot.CalibrationResult()"
+grid : :class:`~openturns.GridLayout`
+    Graph array."
 
 // ---------------------------------------------------------------------
 
@@ -274,11 +259,18 @@ after calibration.
 
 Returns
 -------
-graph : :class:`~openturns.Graph`
-    Graph.
+grid : :class:`~openturns.GridLayout`
+    Graph array."
 
-Examples
---------
->>> import openturns as ot
->>> result = ot.CalibrationResult()"
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::CalibrationResult::drawResidualsNormalPlot
+"Draw residuals normal plot.
+
+Plots the quantile-quantile graphs of the empirical residual vs
+the Gaussian distribution.
+
+Returns
+-------
+grid : :class:`~openturns.GridLayout`
+    Graph array."

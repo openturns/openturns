@@ -174,6 +174,7 @@ public:
   virtual CovarianceMatrix computeGram(const Bool transpose = true) const;
 
   /** Comparison operators */
+  using TypedInterfaceObject<MatrixImplementation>::operator ==;
   Bool operator == (const Matrix & rhs) const;
 
   /** Empty returns true if there is no element in the matrix */

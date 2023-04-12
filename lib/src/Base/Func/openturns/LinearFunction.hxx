@@ -54,6 +54,7 @@ public:
 
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const LinearFunction & other) const;
 
   /** String converter */

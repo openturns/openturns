@@ -44,6 +44,7 @@ public:
   explicit Poisson(const Scalar lambda);
 
   /** Comparison operator */
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const Poisson & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

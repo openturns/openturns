@@ -57,6 +57,7 @@ public:
   InverseBoxCoxHessian * clone() const override;
 
   /** Comparison operator */
+  using HessianImplementation::operator ==;
   Bool operator ==(const InverseBoxCoxHessian & other) const;
 
   /** String converter */

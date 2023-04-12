@@ -57,6 +57,7 @@ public:
   P1LagrangeEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const P1LagrangeEvaluation & other) const;
 
   /** String converter */

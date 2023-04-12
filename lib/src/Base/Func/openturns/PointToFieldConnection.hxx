@@ -59,6 +59,7 @@ public:
   PointToFieldConnection * clone() const override;
 
   /** Comparison operator */
+  using PointToFieldFunctionImplementation::operator ==;
   Bool operator ==(const PointToFieldConnection & other) const;
 
   /** String converter */

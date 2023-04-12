@@ -58,6 +58,7 @@ public:
   LinearGradient * clone() const override;
 
   /** Comparison operator */
+  using GradientImplementation::operator ==;
   Bool operator ==(const LinearGradient & other) const;
 
   /** String converter */

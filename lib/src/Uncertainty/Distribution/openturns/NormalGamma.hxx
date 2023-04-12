@@ -48,6 +48,7 @@ public:
               const Scalar beta);
 
   /** Comparison operator */
+  using BayesDistribution::operator ==;
   Bool operator ==(const NormalGamma & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

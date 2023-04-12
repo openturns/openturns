@@ -46,6 +46,7 @@ public:
   LogNormalMuErrorFactor * clone() const override;
 
   /** Comparison operator */
+  using DistributionParametersImplementation::operator ==;
   Bool operator ==(const LogNormalMuErrorFactor & other) const;
 
   /** Build a distribution based on a set of native parameters */

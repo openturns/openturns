@@ -48,6 +48,7 @@ public:
 
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const TranslationFunction & other) const;
 
   /** String converter */

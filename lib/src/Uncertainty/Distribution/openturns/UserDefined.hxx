@@ -53,6 +53,7 @@ public:
 
 
   /** Comparison operator */
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const UserDefined & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -90,9 +91,6 @@ public:
   /** Get the CDFGradient of the distribution */
   using DiscreteDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
-
-  /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange() override;
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
@@ -143,6 +141,8 @@ public:
 protected:
 
 private:
+  /** Compute the numerical range of the distribution given the parameters values */
+  void computeRange() override;
 
   /** Compute the mean of the distribution */
   void computeMean() const override;

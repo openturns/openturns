@@ -67,6 +67,7 @@ public:
 #endif
 
   /** Comparison operator */
+  using TypedInterfaceObject<FieldFunctionImplementation>::operator ==;
   Bool operator ==(const FieldFunction & other) const;
 
   /** String converter */

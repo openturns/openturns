@@ -47,6 +47,7 @@ public:
 
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const KernelMixture & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

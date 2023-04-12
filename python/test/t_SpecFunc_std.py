@@ -44,3 +44,11 @@ s1 = sum(x)
 s2 = ot.SpecFunc.AccurateSum(x)
 assert s1 == 0.0, "sum(x) nonzero"
 assert s2 == 1.0, "accurate sum(x) not 1"
+
+# Clip01
+assert ot.SpecFunc.Clip01(0.2) == 0.2
+assert ot.SpecFunc.Clip01(0.2, True) == 0.8
+assert ot.SpecFunc.Clip01(-5.0) == 0.0
+assert ot.SpecFunc.Clip01(5.0) == 1.0
+assert ot.SpecFunc.Clip01(-5.0, True) == 1.0
+assert ot.SpecFunc.Clip01(5.0, True) == 0.0

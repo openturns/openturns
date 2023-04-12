@@ -2436,7 +2436,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
     const Scalar upper = interval.getUpperBound()[0];
     const Scalar cdfLower = computeCDF(lower);
     const Scalar cdfUpper = computeCDF(upper);
-    return std::min(1.0, std::max(0.0, cdfUpper - cdfLower));
+    return SpecFunc::Clip01(cdfUpper - cdfLower);
   }
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" )))
   {

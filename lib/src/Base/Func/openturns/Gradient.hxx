@@ -56,6 +56,7 @@ public:
 #endif
 
   /** Comparison operator */
+  using TypedInterfaceObject<GradientImplementation>::operator ==;
   Bool operator ==(const Gradient & other) const;
 
   /** String converter */

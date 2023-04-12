@@ -125,7 +125,7 @@ Point DiscreteCompoundDistribution::computeProbabilities(const UnsignedInteger m
   probabilities_ = Point(m);
   for (UnsignedInteger i = 0; i < m; ++ i)
   {
-    probabilities_[i] = std::min(1.0, std::max(0.0, collection[i].real() / m / std::pow(r, (Scalar)i)));
+    probabilities_[i] = SpecFunc::Clip01(collection[i].real() / m / std::pow(r, (Scalar)i));
   }
   return probabilities_;
 }

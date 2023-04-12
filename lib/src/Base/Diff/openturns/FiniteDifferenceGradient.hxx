@@ -59,7 +59,8 @@ public:
                            const Evaluation & evaluation);
 
   /** Comparison operator */
-  virtual Bool operator ==(const FiniteDifferenceGradient & other) const;
+  using GradientImplementation::operator ==;
+  Bool operator ==(const FiniteDifferenceGradient & other) const;
 
   /** String converter */
   String  __repr__() const override;

@@ -308,7 +308,10 @@ public:
   virtual MatrixImplementation computeGram(const Bool transpose = true) const;
 
   /** Comparison operators */
+  using PersistentCollection::operator ==;
   Bool operator == (const MatrixImplementation & rhs) const;
+
+  using PersistentCollection::operator !=;
   inline Bool operator != (const MatrixImplementation & rhs) const
   {
     return !((*this) == rhs);

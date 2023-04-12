@@ -53,6 +53,7 @@ public:
   ConstantHessian * clone() const override;
 
   /** Comparison operator */
+  using HessianImplementation::operator ==;
   Bool operator ==(const ConstantHessian & other) const;
 
   /** String converter */

@@ -61,6 +61,7 @@ public:
   Evaluation getEvaluation() const;
 
   /** Comparison operator */
+  using EvaluationProxy::operator ==;
   Bool operator ==(const MemoizeEvaluation & other) const;
 
   /** String converter */
@@ -76,8 +77,8 @@ public:
   Sample operator() (const Sample & inSample) const override;
 
   /** Get the evaluation corresponding to indices components */
+  using EvaluationProxy::getMarginal;
   Evaluation getMarginal(const Indices & indices) const override;
-  using EvaluationImplementation::getMarginal;
 
   /** Enable or disable the internal cache */
   void enableCache() const;

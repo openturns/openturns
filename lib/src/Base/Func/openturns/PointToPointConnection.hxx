@@ -54,6 +54,7 @@ public:
   PointToPointConnection * clone() const override;
 
   /** Comparison operator */
+  using FunctionImplementation::operator ==;
   Bool operator ==(const PointToPointConnection & other) const;
 
   /** String converter */

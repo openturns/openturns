@@ -44,6 +44,7 @@ public:
   explicit Bernoulli(const Scalar p);
 
   /** Comparison operator */
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const Bernoulli & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

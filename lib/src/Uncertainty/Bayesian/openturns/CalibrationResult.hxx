@@ -105,6 +105,7 @@ public:
   GridLayout drawResiduals() const;
   GridLayout drawObservationsVsInputs() const;
   GridLayout drawObservationsVsPredictions() const;
+  GridLayout drawResidualsNormalPlot() const;
 
 private:
 

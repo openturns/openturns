@@ -44,6 +44,7 @@ public:
                    const Scalar lambda);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const Laplace & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

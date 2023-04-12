@@ -606,7 +606,7 @@ calibrationResult = algo.getResult()
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
-viewer = viewer.View(graph)
+view = viewer.View(graph)
 
 plt.show()
 # %%

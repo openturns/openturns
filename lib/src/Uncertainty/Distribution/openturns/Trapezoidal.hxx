@@ -47,6 +47,7 @@ public:
               const Scalar d);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const Trapezoidal & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

@@ -46,6 +46,7 @@ public:
   LogNormalMuSigma * clone() const override;
 
   /** Comparison operator */
+  using DistributionParametersImplementation::operator ==;
   Bool operator ==(const LogNormalMuSigma & other) const;
 
   /** Build a distribution based on a set of native parameters */

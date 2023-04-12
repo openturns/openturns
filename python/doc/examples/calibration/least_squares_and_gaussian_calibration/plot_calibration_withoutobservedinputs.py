@@ -158,7 +158,7 @@ for i in range(outputDimension):
     if i == 0:
         cloud.setLegend("Observations")
     graph.add(cloud)
-viewer = viewer.View(graph)
+view = viewer.View(graph)
 
 plt.show()
 

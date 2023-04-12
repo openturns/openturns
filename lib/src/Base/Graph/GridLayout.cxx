@@ -32,6 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(GridLayout)
 
 static const Factory<GridLayout> Factory_GridLayout;
+static const Factory<PersistentCollection<Graph> > Factory_PersistentCollection_Graph;
 
 /* Default constructor */
 GridLayout::GridLayout(const UnsignedInteger nbRows,

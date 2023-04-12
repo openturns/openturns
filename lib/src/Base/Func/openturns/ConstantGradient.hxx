@@ -54,6 +54,7 @@ public:
   ConstantGradient * clone() const override;
 
   /** Comparison operator */
+  using GradientImplementation::operator ==;
   Bool operator ==(const ConstantGradient & other) const;
 
   /** String converter */
