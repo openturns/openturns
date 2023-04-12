@@ -283,4 +283,4 @@ myGraph.add(mycontour)
 view = viewer.View(myGraph)
 
 # %%
-# The optimized auxiliary distribution with the dependency between the two margins allows to better fit the failure domain resulting a lower coefficient of variation.
+# The optimized auxiliary distribution with the dependency between the two margins allows one to better fit the failure domain resulting a lower coefficient of variation.
