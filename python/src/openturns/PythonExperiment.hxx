@@ -56,6 +56,7 @@ public:
   virtual ~PythonExperiment();
 
   /** Comparison operator */
+  using ExperimentImplementation::operator ==;
   Bool operator ==(const PythonExperiment & other) const;
 
   /** String converter */
