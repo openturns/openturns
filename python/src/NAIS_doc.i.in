@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-event : :class:`~openturns.RandomVector`
+event : :class:`~openturns.ThresholdEvent`
     Event we are computing the probability of.
 
 rhoQuantile : float  :math:`0<\rho<1`
