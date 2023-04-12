@@ -156,7 +156,10 @@ view = viewer.View(myGraph)
 # The parameters to be optimized are the parameters of the native distribution. It is necessary to define among all the distribution parameters, which ones will be optimized through the indices of the parameters. In this case, all the parameters will be optimized. 
 
 # %%
-# Be careful that the native parameters of the auxiliary distribution will be considered. Here for the :class:`~openturns.LogNormalMuSigma` distribution, this corresponds to muLog, sigmaLog and gamma. The user can use `getParameterDescription()` method to access to the parameters of the auxiliary distribution.
+# Be careful that the native parameters of the auxiliary distribution will be considered. Here for the :class:`~openturns.LogNormalMuSigma` distribution, this corresponds to muLog, sigmaLog and gamma.
+
+# %%
+# The user can use `getParameterDescription()` method to access to the parameters of the auxiliary distribution.
 
 # %%
 ot.RandomGenerator.SetSeed(0)
@@ -206,7 +209,7 @@ print('Coefficient of variation:', myPhysicalSpaceISResult_1.getCoefficientOfVar
 ot.RandomGenerator.SetSeed(0)
 distribution_marginR = ot.LogNormalMuSigma(3e6, 3e5, 0.0).getDistribution()
 distribution_marginF = ot.Normal(750., 50.)
-aux_marginals = [distribution_marginR, distribution_marginF]
+aux_marginals = [distribution_margi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nR, distribution_marginF]
 aux_distribution = ot.ComposedDistribution(aux_marginals)
 print('Parameters of initial distribution', aux_distribution.getParameter())
 
