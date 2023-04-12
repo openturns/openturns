@@ -48,6 +48,7 @@ public:
   GammaMuSigma * clone() const override;
 
   /** Comparison operator */
+  using DistributionParametersImplementation::operator ==;
   Bool operator ==(const GammaMuSigma & other) const;
 
   /** Build a distribution based on a set of native parameters */

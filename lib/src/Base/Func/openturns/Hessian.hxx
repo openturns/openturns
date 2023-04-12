@@ -56,6 +56,7 @@ public:
 #endif
 
   /** Comparison operator */
+  using TypedInterfaceObject<HessianImplementation>::operator ==;
   Bool operator ==(const Hessian & other) const;
 
   /** String converter */

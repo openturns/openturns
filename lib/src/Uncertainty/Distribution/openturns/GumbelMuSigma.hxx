@@ -46,6 +46,7 @@ public:
   GumbelMuSigma * clone() const override;
 
   /** Comparison operator */
+  using DistributionParametersImplementation::operator ==;
   Bool operator ==(const GumbelMuSigma & other) const;
 
   /** Build a distribution based on a set of native parameters */

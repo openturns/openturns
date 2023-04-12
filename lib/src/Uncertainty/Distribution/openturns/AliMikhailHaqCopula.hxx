@@ -43,6 +43,7 @@ public:
   explicit AliMikhailHaqCopula(const Scalar theta);
 
   /** Comparison operator */
+  using ArchimedeanCopula::operator ==;
   Bool operator ==(const AliMikhailHaqCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

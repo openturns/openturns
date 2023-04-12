@@ -48,6 +48,7 @@ public:
   ProductFunction * clone() const override;
 
   /** Comparison operator */
+  using FunctionImplementation::operator ==;
   Bool operator ==(const ProductFunction & other) const;
 
   /** String converter */

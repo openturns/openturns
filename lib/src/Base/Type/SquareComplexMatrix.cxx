@@ -135,11 +135,6 @@ SquareComplexMatrix SquareComplexMatrix::operator* (const SquareComplexMatrix & 
   return Implementation((getImplementation()->genProd(*(m.getImplementation())) ).clone());
 }
 
-ComplexMatrix SquareComplexMatrix::operator* (const ComplexMatrix & m) const
-{
-  return Implementation((getImplementation()->genProd(*(m.getImplementation())) ).clone());
-
-}
 SquareComplexMatrix SquareComplexMatrix::operator* (const HermitianMatrix & m) const
 {
   return Implementation(getImplementation()->hermProd(*(m.getImplementation()), 'R').conjugateTranspose().clone());

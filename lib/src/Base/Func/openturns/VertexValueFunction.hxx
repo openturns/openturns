@@ -61,6 +61,7 @@ public:
   VertexValueFunction * clone() const override;
 
   /** Comparison operator */
+  using FieldFunctionImplementation::operator ==;
   Bool operator ==(const VertexValueFunction & other) const;
 
   /** String converter */

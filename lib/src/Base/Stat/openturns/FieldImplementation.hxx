@@ -69,6 +69,7 @@ public:
   RegularGrid getTimeGrid() const;
 
   /** Comparison operator */
+  using PersistentObject::operator ==;
   Bool operator ==(const FieldImplementation & other) const;
 
   /**

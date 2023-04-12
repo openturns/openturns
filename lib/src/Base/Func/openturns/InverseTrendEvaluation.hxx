@@ -53,6 +53,7 @@ public:
   InverseTrendEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const InverseTrendEvaluation & other) const;
 
   /** String converter */

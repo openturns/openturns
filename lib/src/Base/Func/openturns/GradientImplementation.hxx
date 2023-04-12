@@ -58,6 +58,7 @@ public:
   GradientImplementation * clone() const override;
 
   /** Comparison operator */
+  using PersistentObject::operator ==;
   Bool operator ==(const GradientImplementation & other) const;
 
   /** String converter */

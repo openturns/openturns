@@ -57,6 +57,7 @@ public:
   PointToFieldFunctionImplementation * clone() const override;
 
   /** Comparison operator */
+  using PersistentObject::operator ==;
   Bool operator ==(const PointToFieldFunctionImplementation & other) const;
 
   /** String converter */

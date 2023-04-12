@@ -49,6 +49,7 @@ public:
                       const Bool parametersSet = true);
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const ParametricFunction & other) const;
 
   /** String converter */

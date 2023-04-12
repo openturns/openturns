@@ -50,6 +50,7 @@ public:
   ArchimedeanCopula * clone() const override;
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const ArchimedeanCopula & other) const;
 
   /** String converter */

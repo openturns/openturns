@@ -129,7 +129,7 @@ cdf(quantile)=0.250000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.17082]
 Survival(inverseSurvival)=0.950000
 entropy=0.905465
-Minimum volume interval= [2.5, 2.5]
+Minimum volume interval= [0.170825, 2.5]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 1.90333} with f=
 MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = 2.5, b = 2.5))

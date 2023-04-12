@@ -67,6 +67,7 @@ public:
   QuadraticEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const QuadraticEvaluation & other) const;
 
   /** String converter */

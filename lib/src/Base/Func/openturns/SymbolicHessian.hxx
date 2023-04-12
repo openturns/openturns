@@ -54,6 +54,7 @@ public:
   SymbolicHessian * clone() const override;
 
   /** Comparison operator */
+  using HessianImplementation::operator ==;
   Bool operator ==(const SymbolicHessian & other) const;
 
   /** String converter */

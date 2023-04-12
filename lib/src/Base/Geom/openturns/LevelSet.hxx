@@ -66,6 +66,7 @@ public:
   LevelSet join(const LevelSet & other) const;
 
   /** Comparison operator */
+  using DomainImplementation::operator ==;
   Bool operator == (const LevelSet & other) const;
 
   /** Function accessor */

@@ -54,6 +54,7 @@ public:
   KrigingGradient * clone() const override;
 
   /** Comparison operator */
+  using GradientImplementation::operator ==;
   Bool operator ==(const KrigingGradient & other) const;
 
   /** String converter */

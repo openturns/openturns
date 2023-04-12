@@ -61,6 +61,7 @@ public:
       const Bool checkMarginals = ResourceMap::GetAsBool("MaximumEntropyOrderStatisticsDistribution-CheckMarginals"));
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const MaximumEntropyOrderStatisticsDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

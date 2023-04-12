@@ -310,10 +310,10 @@ Scalar OrdinalSumCopula::computeCDF(const Point & point) const
   // The first component is negative, CDF==0
   if (index == -1) return 0.0;
   // The first component is greater than 1, the ordinal sum is the min copula
-  if (index == -2) return std::max(0.0, std::min(1.0, *std::min_element(point.begin(), point.end())));
+  if (index == -2) return SpecFunc::Clip01(*std::min_element(point.begin(), point.end()));
   // The point is not in the candidate, the ordinal sum is the min copula
   // We separate this case from the previous one because the test is expansive
-  if (!isInBlock(point, index)) return std::max(0.0, std::min(1.0, *std::min_element(point.begin(), point.end())));
+  if (!isInBlock(point, index)) return SpecFunc::Clip01(*std::min_element(point.begin(), point.end()));
   // The point is in the candidate, compute the value of the corresponding copula
   if (index == 0) return blockLengths_[0] * copulaCollection_[0].computeCDF(point / blockLengths_[0]);
   return bounds_[index - 1] + blockLengths_[index] * copulaCollection_[index].computeCDF((point - Point(dimension, bounds_[index - 1])) / blockLengths_[index]);

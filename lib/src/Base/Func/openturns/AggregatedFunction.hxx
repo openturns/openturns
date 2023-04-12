@@ -45,6 +45,7 @@ public:
   explicit AggregatedFunction(const FunctionCollection & functionCollection);
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const AggregatedFunction & other) const;
 
   /** String converter */

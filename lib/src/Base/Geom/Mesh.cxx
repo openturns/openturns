@@ -726,7 +726,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
   // Fourth, draw the triangles in decreasing depth
   Graph graph(String(OSS() << "Mesh " << getName()), getDescription()[0], getDescription()[1], true, "topright");
   std::sort(trianglesAndDepth.begin(), trianglesAndDepth.end());
-  Scalar clippedRho = std::min(1.0, std::max(0.0, rho));
+  const Scalar clippedRho = SpecFunc::Clip01(rho);
   if (rho != clippedRho) LOGWARN(OSS() << "The shrinking factor must be in (0,1), here rho=" << rho);
   Sample face(3, 2);
   Sample data;

@@ -112,6 +112,7 @@ public:
   UnsignedInteger getNbSheets() const;
 
   /** Comparison operators */
+  using TypedInterfaceObject<TensorImplementation>::operator ==;
   Bool operator == (const Tensor & rhs) const;
 
   /** Empty returns true if there is no element in the tensor */

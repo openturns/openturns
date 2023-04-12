@@ -27,7 +27,7 @@ import io
 __all__ = ["View", "PlotDesign"]
 
 
-class View(object):
+class View:
 
     """
     Create the figure.
@@ -112,7 +112,7 @@ class View(object):
         """Check that the argument is a Python dictionary."""
         result = arg
         if arg is None:
-            result = dict()
+            result = {}
         elif not isinstance(arg, dict):
             raise TypeError("Argument is not a dict")
         return result
@@ -362,7 +362,7 @@ class View(object):
             if "marker" not in plot_kw_default:
                 try:
                     plot_kw["marker"] = pointStyleDict[drawable.getPointStyle()]
-                except Exception:
+                except KeyError:
                     warnings.warn("-- Unknown marker: " + drawable.getPointStyle())
 
             # set line style
@@ -377,12 +377,12 @@ class View(object):
             if ("linestyle" not in plot_kw_default) and ("ls" not in plot_kw_default):
                 try:
                     plot_kw["linestyle"] = lineStyleDict[drawable.getLineStyle()]
-                except Exception:
+                except KeyError:
                     warnings.warn("-- Unknown line style")
             if ("linestyle" not in step_kw_default) and ("ls" not in step_kw_default):
                 try:
                     step_kw["linestyle"] = lineStyleDict[drawable.getLineStyle()]
-                except Exception:
+                except KeyError:
                     warnings.warn("-- Unknown line style")
 
             # set line width
@@ -510,7 +510,7 @@ class View(object):
                         contour_kw["linestyles"] = lineStyleDict[
                             drawable.getLineStyle()
                         ]
-                    except Exception:
+                    except KeyError:
                         warnings.warn("-- Unknown line style")
                 if "colors" not in contour_kw_default:
                     contour_kw["colors"] = [drawable.getColorCode()]
@@ -607,7 +607,7 @@ class View(object):
                         "center": "center",
                     }
                     legend_kw["loc"] = legendPositionDict[graph.getLegendPosition()]
-                except Exception:
+                except KeyError:
                     warnings.warn(
                         "-- Unknown legend position: " + graph.getLegendPosition()
                     )
@@ -624,7 +624,7 @@ class View(object):
             # by default legend is a bit too large
             legend_kw.setdefault("prop", {"size": 10})
 
-            if len(legend_handles):
+            if len(legend_handles) > 0:
                 self._ax[0].legend(legend_handles, legend_labels, **legend_kw)
             else:
                 self._ax[0].legend(**legend_kw)

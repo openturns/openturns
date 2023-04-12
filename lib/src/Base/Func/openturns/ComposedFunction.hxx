@@ -54,6 +54,7 @@ public:
   ComposedFunction * clone() const override;
 
   /** Comparison operator */
+  using FunctionImplementation::operator ==;
   Bool operator ==(const ComposedFunction & other) const;
 
   /** String converter */

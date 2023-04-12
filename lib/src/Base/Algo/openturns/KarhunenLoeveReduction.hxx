@@ -53,6 +53,7 @@ public:
   KarhunenLoeveReduction * clone() const override;
 
   /** Comparison operator */
+  using FieldFunctionImplementation::operator ==;
   Bool operator ==(const KarhunenLoeveReduction & other) const;
 
   /** String converter */

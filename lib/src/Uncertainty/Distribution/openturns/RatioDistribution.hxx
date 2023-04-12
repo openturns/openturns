@@ -46,6 +46,7 @@ public:
                     const Distribution & right);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const RatioDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

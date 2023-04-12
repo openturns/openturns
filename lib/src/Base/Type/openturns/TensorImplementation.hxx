@@ -121,6 +121,7 @@ public:
   void symmetrize() const;
 
   /** Comparison operators */
+  using PersistentCollection::operator ==;
   Bool operator == (const TensorImplementation & rhs) const;
 
   /** Empty returns true if there is no element in the tensor */

@@ -48,7 +48,7 @@ public:
                  const Scalar s);
 
   /** Comparison operator */
-  using DistributionImplementation::operator ==;
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const ZipfMandelbrot & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

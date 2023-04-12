@@ -226,7 +226,7 @@ void SystemFORM::run()
   // store results
   multiFORMResult_ = MultiFORMResult(formResultCollection);
   // Clip the sum to [0, 1]
-  const Scalar eventProbability = std::min(1.0, std::max(0.0, SpecFunc::AccurateSum(signedProbabilities)));
+  const Scalar eventProbability = SpecFunc::Clip01(SpecFunc::AccurateSum(signedProbabilities));
   multiFORMResult_.setEventProbability(eventProbability);
 }
 

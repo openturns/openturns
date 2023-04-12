@@ -46,6 +46,7 @@ public:
   UniformMuSigma * clone() const override;
 
   /** Comparison operator */
+  using DistributionParametersImplementation::operator ==;
   Bool operator ==(const UniformMuSigma & other) const;
 
   /** Build a distribution based on a set of native parameters */

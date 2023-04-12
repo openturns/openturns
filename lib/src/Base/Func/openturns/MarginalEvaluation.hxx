@@ -57,6 +57,7 @@ public:
   MarginalEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const MarginalEvaluation & other) const;
 
   /** String converter */

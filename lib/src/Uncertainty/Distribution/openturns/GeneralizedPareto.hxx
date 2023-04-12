@@ -49,6 +49,7 @@ public:
   GeneralizedPareto(const Pareto & pareto);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const GeneralizedPareto & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

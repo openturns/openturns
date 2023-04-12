@@ -58,6 +58,7 @@ public:
   BoxCoxHessian * clone() const override;
 
   /** Comparison operator */
+  using HessianImplementation::operator ==;
   Bool operator ==(const BoxCoxHessian & other) const;
 
   /** String converter */

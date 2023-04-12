@@ -80,6 +80,7 @@ public:
   FunctionImplementation * clone() const override;
 
   /** Comparison operator */
+  using PersistentObject::operator ==;
   Bool operator ==(const FunctionImplementation & other) const;
 
   /** String converter */

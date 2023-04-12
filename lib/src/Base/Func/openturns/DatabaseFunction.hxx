@@ -47,6 +47,7 @@ public:
                     const Sample & outputSample);
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const DatabaseFunction & other) const;
 
   /** String converter */

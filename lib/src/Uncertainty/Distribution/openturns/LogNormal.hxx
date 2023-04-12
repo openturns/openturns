@@ -47,6 +47,7 @@ public:
             const Scalar gamma = 0.0);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const LogNormal & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

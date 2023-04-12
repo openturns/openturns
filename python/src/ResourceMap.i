@@ -6,8 +6,6 @@
 
 %include ResourceMap_doc.i
 
-%template(StringStringMap) std::map<OT::String, OT::String>;
-
 %nodefaultctor ResourceMap;
 
 %ignore OT::ResourceMap_init;

@@ -49,6 +49,7 @@ public:
   /** String converter */
   String __repr__() const override;
 
+protected:
   /** Compute the block sample */
   Sample computeBlockSample() override;
 

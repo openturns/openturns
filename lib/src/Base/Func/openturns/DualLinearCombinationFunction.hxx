@@ -46,6 +46,7 @@ public:
                                 const Sample & coefficients);
 
   /** Comparison operator */
+  using Function::operator ==;
   Bool operator ==(const DualLinearCombinationFunction & other) const;
 
   /** String converter */

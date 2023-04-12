@@ -67,6 +67,7 @@ public:
   CenteredFiniteDifferenceHessian * clone() const override;
 
   /* Comparison operator */
+  using FiniteDifferenceHessian::operator ==;
   Bool operator ==(const CenteredFiniteDifferenceHessian & other) const;
 
   /* String converter */

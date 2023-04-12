@@ -45,6 +45,7 @@ public:
 
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const ChiSquare & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

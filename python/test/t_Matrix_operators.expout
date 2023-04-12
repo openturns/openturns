@@ -542,22 +542,28 @@ a/s= [[    (0.2,0) (0,0)      ]
 a*x= [(6,0),(3.5,0)]
 a**3= [[ (1,0)        (0,0)        ]
  [ (0,0)           (0.125,0) ]]
-no mul for SquareComplexMatrix Matrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for SquareComplexMatrix Matrix
 no sub for Matrix
-no mul for SquareComplexMatrix SquareMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for SquareComplexMatrix SquareMatrix
 no sub for SquareMatrix
-no mul for SquareComplexMatrix TriangularMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for SquareComplexMatrix TriangularMatrix
 no sub for TriangularMatrix
-no mul for SquareComplexMatrix SymmetricMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for SquareComplexMatrix SymmetricMatrix
 no sub for SymmetricMatrix
-no mul for SquareComplexMatrix CovarianceMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for SquareComplexMatrix CovarianceMatrix
 no sub for CovarianceMatrix
-no mul for SquareComplexMatrix CorrelationMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for SquareComplexMatrix CorrelationMatrix
 no sub for CorrelationMatrix
 a*b= [[ (1,0)       (0,0)       ]
