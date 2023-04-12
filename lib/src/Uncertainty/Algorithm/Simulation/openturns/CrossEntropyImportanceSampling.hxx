@@ -47,7 +47,7 @@ public:
                  const Scalar rhoQuantile = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultRhoQuantile"));
 
   /** Virtual constructor */
-  virtual CrossEntropyImportanceSampling * clone() const;
+  virtual CrossEntropyImportanceSampling * clone() const override;
 
   /** Get rhoQuantile */
   Scalar getRhoQuantile() const;
@@ -56,7 +56,7 @@ public:
   void setRhoQuantile(const Scalar & rhoQuantile);
   
   /** Main function that computes the failure probability */
-  void run();
+  void run() override;
 
   /** Accessor to results */
   CrossEntropyResult getResult() const;

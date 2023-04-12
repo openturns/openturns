@@ -51,7 +51,6 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
                                                          const Scalar rhoQuantile)
   : CrossEntropyImportanceSampling(event, rhoQuantile)
   , solver_(new NLopt("LD_LBFGS"))
-  , useDefaultSolver_(true)
   {
     auxiliaryDistribution_ = auxiliaryDistribution;
     rhoQuantile_ = (event.getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);

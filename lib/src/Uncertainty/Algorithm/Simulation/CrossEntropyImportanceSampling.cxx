@@ -68,19 +68,19 @@ void CrossEntropyImportanceSampling::setRhoQuantile(const Scalar & rhoQuantile)
 }
 
 // Compute Output Samples
-Sample CrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples) const
+Sample CrossEntropyImportanceSampling::computeOutputSamples(const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples)";
 }
 
 // Update auxiliary distribution
-void CrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters)
+void CrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & )
 {
   throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters)";
 } 
   
 // Optimize auxiliary distribution parameters
-Point CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryInputSamples) const
+Point CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryInputSamples, const Sample & auxiliaryOutputSamples, const Scalar & eventThresholdLocal, const Point & currentAuxiliaryDistributionParameters)";
 } 

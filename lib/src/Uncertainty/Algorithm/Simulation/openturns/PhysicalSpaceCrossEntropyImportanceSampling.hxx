@@ -82,9 +82,7 @@ private:
   
   // Optimization solver
   mutable OptimizationAlgorithm solver_;
-  
-  // whether the solver was set
-  mutable Bool useDefaultSolver_;
+
 
 }; /* class PhysicalSpaceCrossEntropyImportanceSampling */
 
