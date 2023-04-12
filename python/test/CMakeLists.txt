@@ -790,7 +790,10 @@ ot_pyinstallcheck_test (ExpectationSimulationAlgorithm_std)
 ot_pyinstallcheck_test (SobolSimulationAlgorithm_std)
 ot_pyinstallcheck_test (NAIS_std IGNOREOUT)
 ot_pyinstallcheck_test (StandardSpaceCrossEntropyImportanceSampling_std IGNOREOUT)
-ot_pyinstallcheck_test (PhysicalSpaceCrossEntropyImportanceSampling_std IGNOREOUT)
+if (NLopt_FOUND)
+  ot_pyinstallcheck_test (PhysicalSpaceCrossEntropyImportanceSampling_std IGNOREOUT)
+endif ()
+
 
 ## StatTests
 ot_pyinstallcheck_test (VisualTest_std)
