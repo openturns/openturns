@@ -28,4 +28,4 @@ my_IS_physical = ot.PhysicalSpaceCrossEntropyImportanceSampling(event, active_pa
 my_IS_physical.setSolver(ot.TNC())
 my_IS_physical.run()
 myResult = my_IS_physical.getResult()
-assert_almost_equal(myResult.getProbabilityEstimate(), 0.0001249)
+assert_almost_equal(myResult.getProbabilityEstimate(), 0.0001249, 1e-6)
