@@ -22,7 +22,7 @@ The Importance Sampling (IS) probability estimate :math:`\widehat{P}^\text{IS}` 
     \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{h_0(\mathbf{x}_i)}{h(\mathbf{x}_i)},
 
 with :math:`h_0 = f_\mathbf{X}` the PDF of :math:`\mathbf{X}`, :math:`h` the auxiliary PDF of Importance Sampling, 
-:math:`N`the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
+:math:`N` the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
 indicator function of the failure domain. 
 
 The optimal density minimizing the variance of the estimator :math:`h_{opt}` is defined as:

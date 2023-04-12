@@ -3,16 +3,14 @@
 
 Parameters
 ----------
-
-event : :class:`~openturns.RandomVector`
+event : :class:`~openturns.ThresholdEvent`
     Event we are computing the probability of.
 
 rhoQuantile : float  :math:`0<\rho<1`
     Intermediate quantile level.
     
 Notes
------    
-
+-----
 The following explanations are given for a failure event defined as :math:`g(\mathbf{X})<T` with :math:`\mathbf{X}` 
 a random vector following a joint PDF :math:`f_\mathbf{X}`, :math:`T` a threshold and :math:`g` a limit state function,
 without loss of generality.
@@ -21,45 +19,46 @@ The Importance Sampling (IS) probability estimate :math:`\widehat{P}^\text{IS}` 
 
 .. math::
 
-    \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{h_0(\mathbf{x}_i)}{h(\mathbf{x}_i)},
+    \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{f_\mathbf{X}(\mathbf{x}_i)}{h(\mathbf{x}_i)},
 
 with :math:`h` the auxiliary PDF of Importance Sampling, 
-:math:`N`the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
+:math:`N` the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
 indicator function of the failure domain. 
 
-The optimal density minimizing the variance of the estimator :math:`h_{opt}` is defined as:
+The optimal density :math:`h_{opt}` minimizing the variance of the estimator :math:`h_{opt}` is defined as:
 
 .. math::
 
-    h_{opt}=\frac{{\mathbf{1}}_{g(x)<T}f_\mathbf{X}}{P},
+    h_{opt}=\frac{{\mathbf{1}}_{g(\mathbf{x})<T}f_\mathbf{X}}{P},
 
-with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest
-and unknown.
+with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest and unknown.
 
-The Standard Space Cross-Entropy Importance Sampling  uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. This process is performed in the standard space use a Normal distribution as the auxiliary distribution. Indeed, in the standard space, the optimal value of the mean and standard deviations are given analytically, see [morio2015]_ for details. We note  :math:`G(u)` the limit state function in standard space and  :math:`g(x)` its counterpart in the physical space. :math:`f_\mathbf{U}` stands for the initial distribution in standard space, i.e. the Normal law.
+The Standard Space Cross-Entropy Importance Sampling  uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. This process is performed in the standard space using a Normal distribution as the auxiliary distribution. Indeed, in the standard space, the optimal value of the mean and standard deviations are given analytically, see [morio2015]_ for details. We note  :math:`G(\mathbf{u})` the limit state function in standard space and  :math:`g(\mathbf{x})` its counterpart in the physical space. :math:`f_\mathbf{U}` stands for the initial distribution in standard space, i.e. the Normal law. The algorithm is as follows:
 
 
-1. :math:`k=1` and set :math:`\rho \in [0,1]`
+1. :math:`k=1`, set :math:`\rho \in [0,1]` and :math:`h_0 = f_{\mathbf{U}}`
 
 2. Generate the population :math:`\mathbf{u}_1^{(k)},...,\mathbf{u}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the 
-   function :math:`g` in order to have :math:`y_1^{(k)}=G(\mathbf{u}_1^{(k)}),...,y_N^{(k)} = G(\mathbf{u}_N^{(k)})`
+   function :math:`G` in order to have :math:`y_1^{(k)}=G(\mathbf{u}_1^{(k)}),...,y_N^{(k)} = G(\mathbf{u}_N^{(k)})`
 
-3. Compute the empirical :math:`\rho`-quantile :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})`
+3. Compute the empirical :math:`\rho`-quantile :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})` using the floor of :math:`\rho N`.
+
+4. If :math:`q_k>T`, go to Step 7
 
 4. Update the means and standard deviations of the auxiliary distribution:
 
 .. math::
 
-       \mu_{j}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{g(\mathbf{u}_i^{(j)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(j)})}{h_{\mathbf{\lambda}_{j-1}}(\mathbf{u}_i^{(j)})} U_{ij}}{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{g(\mathbf{u}_i^{(j)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(j)})}{h_{\mathbf{\lambda}_{j-1}}(\mathbf{u}_i^{(j)})} }
+       \mu_{k}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{G(\mathbf{u}_i^{(k)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}}(\mathbf{u}_i^{(k)})} U_{ik}}{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{G(\mathbf{u}_i^{(k)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}}(\mathbf{u}_i^{(k)})} }
        
 .. math::
 
-       \nu_{j}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{g(\mathbf{u}_i^{(j)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(j)})}{h_{\mathbf{\lambda}_{j-1}}(\mathbf{u}_i^{(j)})} (U_{ij}-\mu_j)^2}{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{g(\mathbf{u}_i^{(j)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(j)})}{h_{\mathbf{\lambda}_{j-1}}(\mathbf{u}_i^{(j)})} }
+       \sigma_{k}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{G(\mathbf{u}_i^{(k)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}}(\mathbf{u}_i^{(k)})} (U_{ik}-\mu_k)^2}{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{G(\mathbf{u}_i^{(k)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}}(\mathbf{u}_i^{(k)})} }
        
 
-6. If :math:`q_k>T`, :math:`k\leftarrow k+1`, go to Step 2
+6. :math:`k\leftarrow k+1`, go to Step 2
 
-7. Estimate the probability :math:`\widehat{P}^{CE}(g(\mathbf{\mathbf{X}}<T))=\widehat{P}^{CE}(G(\mathbf{\mathbf{U}}<T))=\frac{1}{N}\displaystyle \sum_{i=1}^{N} \mathbf{1}_{G(\mathbf{u}_i^{(k)})<T} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{j}(\mathbf{u}_i^{(k)})}}`.
+7. Estimate the probability :math:`\widehat{P}^{CE}(g(\mathbf{\mathbf{X}})<T)=\widehat{P}^{CE}(G(\mathbf{\mathbf{U}})<T)=\frac{1}{N}\displaystyle \sum_{i=1}^{N} \mathbf{1}_{G(\mathbf{u}_i^{(k)})<T} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}(\mathbf{u}_i^{(k)})}}`
 
 
 See also
@@ -81,7 +80,7 @@ Examples
 >>> #create the event 
 >>> vect = ot.RandomVector(distribution)
 >>> G = ot.CompositeRandomVector(model, vect)
->>> event = ot.ThresholdEvent(G, ot.Less(), -50.0)
+>>> event = ot.ThresholdEvent(G, ot.Less(), 0.0)
 >>> myIS = ot.StandardSpaceCrossEntropyImportanceSampling(event,0.3)
 >>> #run StandardSpaceCrossEntropyImportanceSampling
 >>> myIS.run()

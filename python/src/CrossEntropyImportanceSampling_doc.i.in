@@ -8,7 +8,7 @@ StandardSpaceCrossEntropyImportanceSampling, PhysicalSpaceCrossEntropyImportance
 
 Notes
 -----
-This class inherits from EventSimulation.
+This class inherits from class:`~openturns.EventSimulation`.
 
 The principle is to perform a simulation study to evaluate the threshold exceedance probability according to an importance density obtained using Cross Entropy algorithm.
 

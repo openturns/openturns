@@ -3,11 +3,11 @@
 
 Parameters
 ----------
-event : :class:`~openturns.RandomVector`
+event : :class:`~openturns.ThresholdEvent`
     Event we are computing the probability of.
 
 activeParameters : :class:`~openturns.Point`
-    Point composed of list of active parameters indexes for the auxiliary distribution.
+    Point composed of the list of active parameters indices for the auxiliary distribution.
 
 initialAuxiliaryDistributionParameters : :class:`~openturns.Point`
     Initial value of active parameters of the auxiliary distribution.
@@ -16,7 +16,7 @@ bounds : :class:`~openturns.Interval`
     Bounds on the active parameters of the auxiliary distribution.
 
 auxiliaryDistribution : :class:`~openturns.Distribution`
-    Auxiliary distribution family for the Cross Entropy Importance Sampling algorithm.
+    Auxiliary distribution for the Cross Entropy Importance Sampling algorithm.
 
 rhoQuantile : float  :math:`0<\rho<1`
     Intermediate quantile level.
@@ -32,43 +32,44 @@ The Importance Sampling (IS) probability estimate :math:`\widehat{P}^\text{IS}` 
 
 .. math::
 
-    \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{h_0(\mathbf{x}_i)}{h(\mathbf{x}_i)},
+    \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{f_\mathbf{X}(\mathbf{x}_i)}{h(\mathbf{x}_i)},
 
 with :math:`h` the auxiliary PDF of Importance Sampling, 
-:math:`N`the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
+:math:`N` the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
 indicator function of the failure domain. 
 
-The optimal density minimizing the variance of the estimator :math:`h_{opt}` is defined as:
+The optimal density :math:`h_{opt}` minimizing the variance of the estimator is defined as:
 
 .. math::
 
-    h_{opt}=\frac{{\mathbf{1}}_{g(x)<T}f_\mathbf{X}}{P},
+    h_{opt}=\frac{{\mathbf{1}}_{g(\mathbf{x})<T}f_\mathbf{X}}{P},
 
 with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest
 and unknown.
 
-The Physical Space Cross-Entropy Importance Sampling algorithm [morio2015]_ uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. It involves an auxiliary optimization problem to find the auxiliary distribution parameters :math:`\mathbf{\lambda}` minimizing the Kullback-Leibler divergence with respect to :math:`h_{opt}`.
+The Physical Space Cross-Entropy Importance Sampling algorithm [morio2015]_ uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. It involves an auxiliary optimization problem to find the auxiliary distribution parameters :math:`\mathbf{\lambda}` minimizing the Kullback-Leibler divergence with respect to :math:`h_{opt}`. The following algorithm is used:
 
-1. :math:`k=1` and set :math:`\rho \in [0,1]`
+1. :math:`k=1`, set :math:`\rho \in [0,1]` and :math:`h_0 = f_{\mathbf{X}}`
 
 2. Generate the population :math:`\mathbf{x}_1^{(k)},...,\mathbf{x}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the 
    function :math:`g` in order to have :math:`y_1^{(k)}=g(\mathbf{x}_1^{(k)}),...,y_N^{(k)} = g(\mathbf{x}_N^{(k)})`
 
-3. Compute the empirical :math:`\rho`-quantile :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})`
+3. Compute the empirical :math:`\rho`-quantile :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})` using the floor of :math:`\rho N`.
 
-4. Estimate the auxiliary distribution parameters:
+4. If :math:`q_k>T`: go to Step 7
+
+5. Estimate the auxiliary distribution parameters:
 
    .. math::
 
-       \mathbf{\lambda}_{j}= \frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{f_\mathbf{X}(\mathbf{x}_i^{(j)})}{h_{\mathbf{\lambda}_{j-1}}(\mathbf{x}_i^{(j)})} \log(h_{\mathbf{\lambda}_{j}}(\mathbf{x}_i^{(j)}))
+       \mathbf{\lambda}_{k}= \textrm{argmax}_{\lambda} \frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{g(\mathbf{x}_i^{(k)}) \leq q_k} \frac{f_\mathbf{X}(\mathbf{x}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}}(\mathbf{x}_i^{(k)})} \log(h_{\mathbf{\lambda}}(\mathbf{x}_i^{(k)}))
 
-6. If :math:`q_k>T`, :math:`k\leftarrow k+1`, go to Step 2
+6. :math:`k\leftarrow k+1`, go to Step 2
 
-7. Estimate the probability :math:`\widehat{P}^{CE}(g(\mathbf{\mathbf{X}}<T))=\frac{1}{N}\displaystyle \sum_{i=1}^{N} \mathbf{1}_{g(\mathbf{x}_i^{(k)})<T} \frac{f_\mathbf{X}(\mathbf{x}_i^{(k)})}{h_{\mathbf{\lambda}_{j}(\mathbf{x}_i^{(k)})}}`.
+7. Estimate the probability :math:`\widehat{P}^{CE}(g(\mathbf{\mathbf{X}})<T)=\frac{1}{N}\displaystyle \sum_{i=1}^{N} \mathbf{1}_{g(\mathbf{x}_i^{(k)})<T} \frac{f_\mathbf{X}(\mathbf{x}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}(\mathbf{x}_i^{(k)})}}`.
 
 
-
-Default solver for the optimization of auxiliary distribution is 'LD_LBFGS' from :class:`~openturns.NLopt`.
+Default solver for the optimization of auxiliary distribution is `LD_LBFGS` from :class:`~openturns.NLopt`.
 
 See also
 --------
@@ -89,10 +90,10 @@ Examples
 >>> #create the event 
 >>> vect = ot.RandomVector(distribution)
 >>> G = ot.CompositeRandomVector(model, vect)
->>> event = ot.ThresholdEvent(G, ot.Less(), -50.0)
->>> distribution_margin1 = ot.LogNormalMuSigma().getDistribution()
->>> distribution_margin2 = ot.Normal()
->>> aux_marginals = [distribution_margin1, distribution_margin2]
+>>> event = ot.ThresholdEvent(G, ot.Less(), 0.0)
+>>> distribution_marginR = ot.LogNormalMuSigma().getDistribution()
+>>> distribution_marginF = ot.Normal()
+>>> aux_marginals = [distribution_marginR, distribution_marginF]
 >>> aux_distribution = ot.ComposedDistribution(aux_marginals)
 >>> ## Definition of parameters to be optimized
 >>> active_parameters = [0,1,2,3,4] # active parameters from the auxiliary distribution which will be optimized
