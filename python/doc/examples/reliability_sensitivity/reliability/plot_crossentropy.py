@@ -165,7 +165,7 @@ distribution_marginF = ot.Normal()
 aux_marginals = [distribution_marginR, distribution_marginF]
 aux_distribution = ot.ComposedDistribution(aux_marginals)
 
-print('Parameters of the auxiliary distribution:',aux_distribution.getParameterDescription())
+print('Parameters of the auxiliary distribution:', aux_distribution.getParameterDescription())
 # Definition of parameters to be optimized
 active_parameters = [0, 1, 2, 3, 4]
 # WARNING : native parameters of distribution have to be considered
