@@ -209,7 +209,7 @@ print('Coefficient of variation:', myPhysicalSpaceISResult_1.getCoefficientOfVar
 ot.RandomGenerator.SetSeed(0)
 distribution_marginR = ot.LogNormalMuSigma(3e6, 3e5, 0.0).getDistribution()
 distribution_marginF = ot.Normal(750., 50.)
-aux_marginals = [distribution_margi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nR, distribution_marginF]
+aux_marginals = [distribution_marginR, distribution_marginF]
 aux_distribution = ot.ComposedDistribution(aux_marginals)
 print('Parameters of initial distribution', aux_distribution.getParameter())
 
