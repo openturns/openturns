@@ -44,6 +44,7 @@ public:
   ContinuousDistribution * clone() const override;
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const ContinuousDistribution & other) const;
 
   /** Get the PDF of the distribution */

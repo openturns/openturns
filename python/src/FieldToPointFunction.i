@@ -77,7 +77,7 @@ FieldToPointFunction(const FieldToPointFunction & other) { return new OT::FieldT
 
 %pythoncode %{
 
-class OpenTURNSPythonFieldToPointFunction(object):
+class OpenTURNSPythonFieldToPointFunction:
     """
     Override FieldToPointFunction from Python.
 

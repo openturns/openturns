@@ -509,7 +509,7 @@ MatrixImplementation & MatrixImplementation::operator*= (const Scalar s)
 /* Division by a Scalar*/
 MatrixImplementation MatrixImplementation::operator/ (const Scalar s) const
 {
-  if (!(s < 0.0 || s > 0.0)) throw InvalidArgumentException(HERE);
+  if (!(s < 0.0 || s > 0.0)) throw InvalidArgumentException(HERE) << "Trying to divide matrix by 0";
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
   MatrixImplementation scalprod(*this);
   double alpha(1.0 / s);
@@ -523,7 +523,7 @@ MatrixImplementation MatrixImplementation::operator/ (const Scalar s) const
 /* In-place division by a Scalar */
 MatrixImplementation & MatrixImplementation::operator/= (const Scalar s)
 {
-  if (!(s < 0.0 || s > 0.0)) throw InvalidArgumentException(HERE);
+  if (!(s < 0.0 || s > 0.0)) throw InvalidArgumentException(HERE) << "Trying to divide matrix by 0 in place";
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
   double alpha(1.0 / s);
   int one(1);

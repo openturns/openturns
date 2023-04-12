@@ -79,7 +79,7 @@ FieldFunction(const FieldFunction & other) { return new OT::FieldFunction( other
 # We have to make sure the submodule is loaded with absolute path
 import openturns.geom
 
-class OpenTURNSPythonFieldFunction(object):
+class OpenTURNSPythonFieldFunction:
     r"""
     Override FieldFunction from Python.
 

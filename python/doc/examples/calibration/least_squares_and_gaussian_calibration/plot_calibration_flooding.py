@@ -638,7 +638,7 @@ algo = ot.GaussianNonLinearCalibration(
 algo.run()
 calibrationResult = algo.getResult()
 graph = calibrationResult.drawParameterDistributions()
-viewer = viewer.View(
+view = viewer.View(
     graph,
     figure_kw={"figsize": (8.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},

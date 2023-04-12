@@ -46,6 +46,7 @@ public:
                  const UnsignedInteger m);
 
   /** Comparison operator */
+  using DiscreteDistribution::operator ==;
   Bool operator ==(const Hypergeometric & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

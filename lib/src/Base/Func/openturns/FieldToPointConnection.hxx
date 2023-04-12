@@ -54,6 +54,7 @@ public:
   FieldToPointConnection * clone() const override;
 
   /** Comparison operator */
+  using FieldToPointFunctionImplementation::operator ==;
   Bool operator ==(const FieldToPointConnection & other) const;
 
   /** Operator () */

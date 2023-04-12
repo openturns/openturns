@@ -59,6 +59,7 @@ public:
   String __str__(const String & offset = "") const override;
 
   /** Comparison operator */
+  using PersistentObject::operator ==;
   Bool operator == (const DrawableImplementation & other) const;
 
   /** Code for point style accessor */

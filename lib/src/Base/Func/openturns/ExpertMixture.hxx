@@ -58,6 +58,7 @@ public:
   ExpertMixture * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const ExpertMixture & other) const;
 
   /** String converter */

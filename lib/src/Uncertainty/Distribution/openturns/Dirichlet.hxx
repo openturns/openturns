@@ -43,6 +43,7 @@ public:
   Dirichlet(const Point & theta);
 
   /** Comparison operator */
+  using ContinuousDistribution::operator ==;
   Bool operator ==(const Dirichlet & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

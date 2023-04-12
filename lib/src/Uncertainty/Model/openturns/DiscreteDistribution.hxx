@@ -46,6 +46,7 @@ public:
   DiscreteDistribution * clone() const override;
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const DiscreteDistribution & other) const;
 
   /** String converter */

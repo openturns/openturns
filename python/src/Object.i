@@ -15,7 +15,7 @@ namespace OT{ %extend Object { Object(const Object & other) { return new OT::Obj
 def Object___getstate__(self):
     import tempfile
     import os
-    state = dict()
+    state = {}
     study = Study()
 
     # assume xml support

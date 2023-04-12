@@ -57,6 +57,7 @@ public:
   PointToPointEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const PointToPointEvaluation & other) const;
 
   /** String converter */

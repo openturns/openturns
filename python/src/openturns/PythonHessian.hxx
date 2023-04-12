@@ -55,6 +55,7 @@ public:
   virtual ~PythonHessian();
 
   /** Comparison operator */
+  using HessianImplementation::operator ==;
   Bool operator ==(const PythonHessian & other) const;
 
   /** String converter */

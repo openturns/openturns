@@ -57,6 +57,7 @@ public:
   BoxCoxGradient * clone() const override;
 
   /** Comparison operator */
+  using GradientImplementation::operator ==;
   Bool operator ==(const BoxCoxGradient & other) const;
 
   /** String converter */

@@ -245,6 +245,9 @@ OT_API UnsignedInteger BinomialCoefficient(const UnsignedInteger n,
 // Accurate summation
 OT_API Scalar AccurateSum(const Point & v);
 
+// clip value on [0, 1]
+OT_API Scalar Clip01(const Scalar prob, const Bool tail = false);
+
 } /* SpecFunc */
 
 END_NAMESPACE_OPENTURNS

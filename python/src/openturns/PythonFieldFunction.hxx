@@ -54,6 +54,7 @@ public:
   virtual ~PythonFieldFunction();
 
   /** Comparison operator */
+  using FieldFunctionImplementation::operator ==;
   Bool operator ==(const PythonFieldFunction & other) const;
 
   /** String converter */

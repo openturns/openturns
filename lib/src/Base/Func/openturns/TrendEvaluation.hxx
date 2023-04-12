@@ -53,6 +53,7 @@ public:
   TrendEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const TrendEvaluation & other) const;
 
   /** String converter */

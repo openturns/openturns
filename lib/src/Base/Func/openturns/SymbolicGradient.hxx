@@ -55,6 +55,7 @@ public:
   SymbolicGradient * clone() const override;
 
   /** Comparison operator */
+  using GradientImplementation::operator ==;
   Bool operator ==(const SymbolicGradient & other) const;
 
   /** String converter */

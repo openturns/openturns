@@ -50,6 +50,7 @@ public:
   MaximumEntropyOrderStatisticsCopula(const MaximumEntropyOrderStatisticsDistribution & distribution);
 
   /** Comparison operator */
+  using SklarCopula::operator ==;
   Bool operator ==(const MaximumEntropyOrderStatisticsCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

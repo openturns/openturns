@@ -127,7 +127,7 @@ cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.53617]
 Survival(inverseSurvival)=0.950000
 entropy=1.608447
-Minimum volume interval= [4, 4]
+Minimum volume interval= [-0.536165, 4]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.65813} with f=
 MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = ]-inf (-9.47594), 4]))

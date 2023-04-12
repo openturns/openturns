@@ -59,6 +59,7 @@ public:
   KrigingEvaluation * clone() const override;
 
   /** Comparison operator */
+  using EvaluationImplementation::operator ==;
   Bool operator ==(const KrigingEvaluation & other) const;
 
   /** String converter */

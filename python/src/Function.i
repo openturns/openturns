@@ -77,7 +77,7 @@ Function(const Function & other)
 # We have to make sure the submodule is loaded with absolute path
 import openturns.typ
 
-class OpenTURNSPythonFunction(object):
+class OpenTURNSPythonFunction:
     """
     Override Function from Python.
 

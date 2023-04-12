@@ -77,6 +77,7 @@ public:
 #endif
 
   /** Comparison operator */
+  using TypedInterfaceObject<FunctionImplementation>::operator ==;
   Bool operator ==(const Function & other) const;
 
   /** String converter */

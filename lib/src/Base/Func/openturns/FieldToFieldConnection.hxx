@@ -58,6 +58,7 @@ public:
   FieldToFieldConnection * clone() const override;
 
   /** Comparison operator */
+  using FieldFunctionImplementation::operator ==;
   Bool operator ==(const FieldToFieldConnection & other) const;
 
   /** String converter */

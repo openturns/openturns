@@ -53,6 +53,7 @@ public:
   ProductGradient * clone() const override;
 
   /** Comparison operator */
+  using GradientImplementation::operator ==;
   Bool operator ==(const ProductGradient & other) const;
 
   /** String converter */

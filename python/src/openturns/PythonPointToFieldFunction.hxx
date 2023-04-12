@@ -54,6 +54,7 @@ public:
   virtual ~PythonPointToFieldFunction();
 
   /** Comparison operator */
+  using PointToFieldFunctionImplementation::operator ==;
   Bool operator ==(const PythonPointToFieldFunction & other) const;
 
   /** String converter */

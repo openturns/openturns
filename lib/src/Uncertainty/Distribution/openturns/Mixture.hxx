@@ -54,6 +54,7 @@ public:
           const Point & weights);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const Mixture & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

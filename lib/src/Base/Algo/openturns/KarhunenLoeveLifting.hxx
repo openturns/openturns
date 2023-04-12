@@ -50,6 +50,7 @@ public:
   KarhunenLoeveLifting * clone() const override;
 
   /** Comparison operator */
+  using PointToFieldFunctionImplementation::operator ==;
   Bool operator ==(const KarhunenLoeveLifting & other) const;
 
   /** String converter */

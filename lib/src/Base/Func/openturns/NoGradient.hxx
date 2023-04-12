@@ -50,6 +50,7 @@ public:
   NoGradient * clone() const override;
 
   /** Comparison operator */
+  using GradientImplementation::operator ==;
   Bool operator ==(const NoGradient & other) const;
 
   /** String converter */

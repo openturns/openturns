@@ -44,6 +44,7 @@ graph1 = result.drawParameterDistributions()
 graph2 = result.drawResiduals()
 graph3 = result.drawObservationsVsInputs()
 graph4 = result.drawObservationsVsPredictions()
+graph5 = result.drawResidualsNormalPlot()
 
 if len(sys.argv) > 1:
     from openturns.viewer import View
@@ -52,3 +53,4 @@ if len(sys.argv) > 1:
     View(graph2).save("res.png")
     View(graph3).save("obsvspred.png")
     View(graph4).save("obsvsin.png")
+    View(graph5).save("resqqplot.png")

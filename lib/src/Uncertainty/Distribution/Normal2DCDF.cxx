@@ -23,7 +23,7 @@
 
 #include "openturns/Normal2DCDF.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/Point.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -117,7 +117,7 @@ Scalar Normal2DCDF(const Scalar x1,
     }
     cdf *= arcSinRho / (4.0 * M_PI);
     cdf += DistFunc::pNormal(-u1) * DistFunc::pNormal(-u2);
-    return std::max(0.0, std::min(1.0, cdf));
+    return SpecFunc::Clip01(cdf);
   } // absRho < 0.925
   if (rho < 0.0)
   {
@@ -161,7 +161,7 @@ Scalar Normal2DCDF(const Scalar x1,
   cdf /= -2.0 * M_PI;
   if (rho > 0.0) cdf = cdf + DistFunc::pNormal(-std::max(u1, u2));
   else cdf = -cdf + std::max(0.0, DistFunc::pNormal(-u1) - DistFunc::pNormal(-u2));
-  return std::max(0.0, std::min(1.0, cdf));
+  return SpecFunc::Clip01(cdf);
 }
 
 #undef NORMAL2DCDF_INF

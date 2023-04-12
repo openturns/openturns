@@ -48,6 +48,7 @@ public:
   explicit SklarCopula(const Distribution & distribution);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const SklarCopula & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

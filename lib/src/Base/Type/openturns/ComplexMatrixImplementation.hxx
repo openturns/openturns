@@ -209,7 +209,10 @@ public:
   virtual ComplexMatrixImplementation computeCholesky(const Bool keepIntact = true);
 
   /** Comparison operators */
+  using PersistentCollection::operator ==;
   Bool operator == (const ComplexMatrixImplementation & rhs) const;
+
+  using PersistentCollection::operator !=;
   inline Bool operator != (const ComplexMatrixImplementation & rhs) const
   {
     return !((*this) == rhs);

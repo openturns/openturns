@@ -71,7 +71,10 @@ public:
   virtual UnsignedInteger getSize() const;
 
   /** Comparison operators */
+  using PersistentObject::operator ==;
   Bool operator == (const IndicesCollectionImplementation & rhs) const;
+  
+  using PersistentObject::operator !=;
   inline Bool operator != (const IndicesCollectionImplementation & rhs) const
   {
     return !((*this) == rhs);

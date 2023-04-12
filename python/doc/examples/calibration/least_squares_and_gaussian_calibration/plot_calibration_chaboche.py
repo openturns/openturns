@@ -281,17 +281,12 @@ plt.subplots_adjust(right=0.6)
 # %%
 # Check that the results are Gaussian, using a Normal-plot.
 # This is a QQ-plot applied to the normal distribution.
-# We can use the :meth:`~openturns.VisualTest.DrawHenryLine`
-# method to plot it.
-residualFunction = calibrationResult.getResidualFunction()
-residualsPoint = residualFunction(thetaMAP)
-residualsSample = ot.Sample.BuildFromPoint(residualsPoint)
-graph = ot.VisualTest.DrawHenryLine(residualsSample)
-graph.setXTitle("Residuals samples")
-graph.setTitle("Normal plot, after calibration")
+# We could use the :meth:`~openturns.VisualTest.DrawHenryLine`
+# method to plot it, but :meth:`~openturns.CalibrationResult.drawResidualsNormalPlot`
+# does it directly.
+graph = calibrationResult.drawResidualsNormalPlot()
 view = viewer.View(graph)
 
-# %%
 # We see that the residuals fit to the Normal distribution,
 # according to the normal plot.
 
@@ -426,6 +421,10 @@ view = viewer.View(
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(right=0.8)
+
+# %%
+graph = calibrationResult.drawResidualsNormalPlot()
+view = viewer.View(graph)
 
 # %%
 # We see that the parameters are relatively well estimated,
@@ -567,6 +566,11 @@ plt.subplots_adjust(right=0.8)
 # in practice).
 
 # %%
+# We can check that if the residuals after calibration are normal.
+graph = calibrationResult.drawResidualsNormalPlot()
+view = viewer.View(graph)
+
+# %%
 # Gaussian nonlinear calibration
 # ------------------------------
 # The :class:`~openturns.GaussianNonLinearCalibration` class
@@ -656,6 +660,10 @@ view = viewer.View(
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(right=0.8)
+
+# %%
+graph = calibrationResult.drawResidualsNormalPlot()
+view = viewer.View(graph)
 
 plt.show()
 # %%

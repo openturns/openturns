@@ -23,6 +23,7 @@
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
+#include "openturns/VisualTest.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -351,9 +352,6 @@ GridLayout CalibrationResult::drawParameterDistributions() const
 
 GridLayout CalibrationResult::drawResiduals() const
 {
-  if (!outputAtPriorMean_.getDimension())
-    throw NotDefinedException(HERE) << "Output at prior not available";
-
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   grid.setTitle("Residual analysis");
@@ -443,9 +441,6 @@ GridLayout CalibrationResult::drawResiduals() const
 
 GridLayout CalibrationResult::drawObservationsVsInputs() const
 {
-  if (!outputAtPriorMean_.getDimension())
-    throw NotDefinedException(HERE) << "Output at prior not available";
-
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(outputDimension, inputDimension);
@@ -503,9 +498,6 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
 
 GridLayout CalibrationResult::drawObservationsVsPredictions() const
 {
-  if (!outputAtPriorMean_.getDimension())
-    throw NotDefinedException(HERE) << "Output at prior not available";
-
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   const Description yDescription(outputObservations_.getDescription());
@@ -551,6 +543,19 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
 }
 
 
+GridLayout CalibrationResult::drawResidualsNormalPlot() const
+{
+  const UnsignedInteger outputDimension = outputObservations_.getDimension();
+  GridLayout grid(1, outputDimension);
+  const Sample postResiduals(outputObservations_ - outputAtPosteriorMean_);
+  for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+  {
+    Graph graph(VisualTest::DrawHenryLine(postResiduals.getMarginal(j)));
+    graph.setTitle("Residual vs Gaussian hypothesis QQ-plot");
+    grid.setGraph(0, j, graph);
+  }
+  return grid;
+}
+
 
 END_NAMESPACE_OPENTURNS
-

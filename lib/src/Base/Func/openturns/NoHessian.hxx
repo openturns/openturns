@@ -50,6 +50,7 @@ public:
   NoHessian * clone() const override;
 
   /** Comparison operator */
+  using HessianImplementation::operator ==;
   Bool operator ==(const NoHessian & other) const;
 
   /** String converter */

@@ -3,7 +3,7 @@
 import openturns as ot
 
 
-class RandomExp(object):
+class RandomExp:
     def __init__(self, size, dim):
         self.size = size
         self.dim = dim
