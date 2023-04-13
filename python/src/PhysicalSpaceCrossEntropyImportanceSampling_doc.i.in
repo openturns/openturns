@@ -79,7 +79,6 @@ StandardSpaceCrossEntropyImportanceSampling, CrossEntropyImportanceSampling, Cro
 Examples
 --------
 >>> import openturns as ot
->>> from openturns.testing import assert_almost_equal
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution_R = ot.LogNormalMuSigma(300.0, 30.0, 0.0).getDistribution()
 >>> distribution_F = ot.Normal(75e3, 5e3)
