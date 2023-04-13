@@ -249,7 +249,7 @@ calibrationResult = algo.getResult()
 # %%
 # Analysis of the results
 # -----------------------
-# The `getParameterMAP()` method returns the optimized parameters.
+# The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the optimized parameters.
 thetaMAP = calibrationResult.getParameterMAP()
 print("theta After = ", thetaMAP)
 print("theta Before = ", thetaPrior)
