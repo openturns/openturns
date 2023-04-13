@@ -44,10 +44,10 @@ public:
 
   /** Default constructor */
   PhysicalSpaceCrossEntropyImportanceSampling(const RandomVector & event,
+                                              const Distribution &auxiliaryDistribution,
                                               const Indices &activeParameters,
                                               const Point &initialAuxiliaryDistributionParameters,
                                               const Interval &bounds,
-                                              const Distribution &auxiliaryDistribution,
                                               const Scalar rhoQuantile = ResourceMap::GetAsScalar("PhysicalSpaceCrossEntropyImportanceSampling-DefaultRhoQuantile"));
 
   /** Virtual constructor */

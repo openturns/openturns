@@ -44,10 +44,10 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
 
 
 PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportanceSampling(const RandomVector & event,
+                                                                                         const Distribution & auxiliaryDistribution,
                                                                                          const Indices & activeParameters,
                                                                                          const Point & initialAuxiliaryDistributionParameters,
                                                                                          const Interval & bounds,
-                                                                                         const Distribution & auxiliaryDistribution,
                                                                                          const Scalar rhoQuantile)
   : CrossEntropyImportanceSampling(event, rhoQuantile)
   , solver_(new NLopt("LD_LBFGS"))

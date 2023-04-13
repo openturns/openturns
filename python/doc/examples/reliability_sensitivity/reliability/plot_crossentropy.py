@@ -189,7 +189,7 @@ print(
 )
 
 physicalSpaceIS1 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
-    event, activeParameters, initialParameters, bounds, auxiliaryDistribution
+    event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 
 # %%
@@ -230,7 +230,7 @@ activeParameters = ot.Indices([0, 3])
 bounds = ot.Interval([14, 500], [16, 1000])
 initialParameters = [15, 750]
 physicalSpaceIS2 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
-    event, activeParameters, initialParameters, bounds, auxiliaryDistribution
+    event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 physicalSpaceIS2.run()
 physicalSpaceISResult2 = physicalSpaceIS2.getResult()
@@ -285,7 +285,7 @@ bounds = ot.Interval(
 initialParameters = distribution.getParameter()
 
 physicalSpaceIS3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
-    event, activeParameters, initialParameters, bounds, auxiliaryDistribution
+    event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 physicalSpaceIS3.run()
 physicalSpaceISResult3 = physicalSpaceIS3.getResult()

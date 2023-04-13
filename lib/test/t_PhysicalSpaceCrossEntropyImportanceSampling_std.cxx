@@ -81,10 +81,10 @@ int main()
 
   // Definition of the algorithm
   PhysicalSpaceCrossEntropyImportanceSampling algoPhysicalSpaceCE(event,
+                                                                  aux_distrib,
                                                                   active_parameters,
                                                                   initial_theta,
-                                                                  bounds,
-                                                                  aux_distrib);
+                                                                  bounds,;
   
   // Run of the algorithm           
   RandomGenerator::SetSeed(1); 
