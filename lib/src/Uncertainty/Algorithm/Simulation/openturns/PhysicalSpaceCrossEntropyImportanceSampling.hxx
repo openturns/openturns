@@ -44,11 +44,11 @@ public:
 
   /** Default constructor */
   PhysicalSpaceCrossEntropyImportanceSampling(const RandomVector & event,
-                                                         const Point &activeParameters,
-                                                         const Point &initialAuxiliaryDistributionParameters,
-                                                         const Interval &bounds,
-                                                         const Distribution &auxiliaryDistribution,
-                                                         const Scalar rhoQuantile = ResourceMap::GetAsScalar("PhysicalSpaceCrossEntropyImportanceSampling-DefaultRhoQuantile"));
+                                              const Indices &activeParameters,
+                                              const Point &initialAuxiliaryDistributionParameters,
+                                              const Interval &bounds,
+                                              const Distribution &auxiliaryDistribution,
+                                              const Scalar rhoQuantile = ResourceMap::GetAsScalar("PhysicalSpaceCrossEntropyImportanceSampling-DefaultRhoQuantile"));
 
   /** Virtual constructor */
   PhysicalSpaceCrossEntropyImportanceSampling * clone() const override;
@@ -75,7 +75,7 @@ protected:
 private:
 
   // active parameters
-  Point activeParameters_;
+  Indices activeParameters_;
 
   // bounds for optimization algorithm
   Interval bounds_;

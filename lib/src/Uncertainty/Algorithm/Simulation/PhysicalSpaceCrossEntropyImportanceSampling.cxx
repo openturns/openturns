@@ -44,11 +44,11 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
 
 
 PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportanceSampling(const RandomVector & event,
-                                                         const Point & activeParameters,
-                                                         const Point & initialAuxiliaryDistributionParameters,
-                                                         const Interval & bounds,
-                                                         const Distribution & auxiliaryDistribution,
-                                                         const Scalar rhoQuantile)
+                                                                                         const Indices & activeParameters,
+                                                                                         const Point & initialAuxiliaryDistributionParameters,
+                                                                                         const Interval & bounds,
+                                                                                         const Distribution & auxiliaryDistribution,
+                                                                                         const Scalar rhoQuantile)
   : CrossEntropyImportanceSampling(event, rhoQuantile)
   , solver_(new NLopt("LD_LBFGS"))
   {
@@ -59,7 +59,7 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
     activeParameters_ = activeParameters;
   
     Point parameters_(auxiliaryDistribution_.getParameter());
-    for (UnsignedInteger i = 0; i < activeParameters_.getDimension(); ++i)
+    for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
     {
       parameters_[activeParameters_[i]] = initialAuxiliaryDistributionParameters[i];
     }      
@@ -80,7 +80,7 @@ public:
   KullbackLeiblerDivergenceObjective(const Sample auxiliaryCriticInputSample,
                                     const Point & initialCriticInputSamplePDFValue,
                                     const Distribution & auxiliaryDistribution,
-                                    const Point & activeParameters,
+                                    const Indices & activeParameters,
                                     const Scalar numberSamples)
   : EvaluationImplementation()
   , auxiliaryCriticInputSample_(auxiliaryCriticInputSample)
@@ -104,7 +104,7 @@ public:
     // update auxiliary distribution
     Point parameters_(auxiliaryDistribution_.getParameter());
   
-    for (UnsignedInteger i = 0; i < activeParameters_.getDimension(); ++i)
+    for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
     {
       parameters_[activeParameters_[i]] = x[i];
     }
@@ -126,7 +126,7 @@ public:
   
   UnsignedInteger getInputDimension() const
   {
-    return activeParameters_.getDimension();
+    return activeParameters_.getSize();
   }
   
   UnsignedInteger getOutputDimension() const
@@ -137,7 +137,7 @@ public:
   
 protected :
 Sample auxiliaryCriticInputSample_;
-Point activeParameters_;
+Indices activeParameters_;
 Distribution auxiliaryDistribution_;
 Point initialCriticInputSamplePDFValue_;
 Scalar numberSamples_;
@@ -171,7 +171,7 @@ void PhysicalSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(co
 {
 
   Point parameters_(auxiliaryDistribution_.getParameter());
-  for (UnsignedInteger i = 0; i < activeParameters_.getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
   {
     parameters_[activeParameters_[i]] = auxiliaryDistributionParameters[i];
   }
@@ -200,9 +200,9 @@ Point PhysicalSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   solver_.setProblem(problem);
 
 
-  Point param(activeParameters_.getDimension());
+  Point param(activeParameters_.getSize());
 
-  for (UnsignedInteger i = 0; i < activeParameters_.getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
   {
     param[i] = auxiliaryDistribution_.getParameter()[activeParameters_[i]];
   }
