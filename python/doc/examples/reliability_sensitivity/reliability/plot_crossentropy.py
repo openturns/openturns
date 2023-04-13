@@ -243,7 +243,7 @@ myGraph.add(mycontour)
 view = viewer.View(myGraph)
 
 # %%
-# By analyzing the failure samples, one may want to include correlation parameters in the auxiliary distribution. In this last example, we add a Normal copula. The correlation parameter will be optimized with associated interval between -1 and 1.
+# By analyzing the failure samples, one may want to include correlation parameters in the auxiliary distribution. In this last example, we add a Normal copula. The correlation parameter will be optimized with associated interval between 0 and 1.
 
 # %%
 ot.RandomGenerator.SetSeed(0)
@@ -255,8 +255,8 @@ aux_distribution = ot.ComposedDistribution(aux_marginals, copula)
 print('Initial parameters of auxiliary distribution:', aux_distribution.getParameter())
 # Definition of parameters to be optimized
 active_parameters = [0, 1, 2, 3, 4, 5]
-bounds = ot.Interval([14, 0.01, 0., 500, 20, -1],
-                     [16, 0.2, 0.1, 1000, 70, 1])
+bounds = ot.Interval([14, 0.01, 0., 500., 20., 0.],
+                     [16, 0.2, 0.1, 1000., 70., 1.])
 initial_theta = distribution.getParameter()
 myPhysicalSpaceIS_3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
                                                                      active_parameters,
