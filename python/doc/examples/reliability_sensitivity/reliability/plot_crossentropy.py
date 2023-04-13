@@ -14,32 +14,26 @@ Cross Entropy Importance Sampling
 # %%
 import openturns as ot
 import openturns.viewer as viewer
+from openturns.usecases import stressed_beam
+
 ot.RandomGenerator.SetSeed(0)
-# %%
-# Create the probabilistic model :math:`Y = g(R,F)`
-# -------------------------------------------------
 
 # %%
-# Create the input random variables :math:`R` and :math:`F`.
+# Create the probabilistic model
+# ------------------------------
 
 # %%
-distribution_R = ot.LogNormalMuSigma(3e6, 3e5, 0.0).getDistribution()
-distribution_F = ot.Normal(750., 50.)
-marginals = [distribution_R, distribution_F]
-distribution = ot.ComposedDistribution(marginals)
+axialBeam = stressed_beam.AxialStressedBeam()
+distribution = axialBeam.distribution
+print("Initial distribution:", distribution)
 
 # %%
-# Create the function :math:`g`.
+# Draw the limit state function :math:`g` to help to understand the shape of the limit state.
 
 # %%
-g = ot.SymbolicFunction(['R', 'F'], ['R - F/(pi_*1e-4)'])
-
-# %%
-# Draw the function :math:`g` to help to understand the shape of the limit state function.
-
-# %%
+g = axialBeam.model
 graph = ot.Graph("Simple stress beam", "R", "F", True, "topright")
-drawfunction = g.draw([1.8e6, 600], [4e6, 950.], [100] * 2)
+drawfunction = g.draw([1.8e6, 600], [4e6, 950.0], [100] * 2)
 graph.add(drawfunction)
 view = viewer.View(graph)
 
@@ -66,24 +60,27 @@ event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 # We choose to set the intermediate quantile level to 0.35.
 
 # %%
-myStandardSpaceIS = ot.StandardSpaceCrossEntropyImportanceSampling(event, 0.35)
+standardSpaceIS = ot.StandardSpaceCrossEntropyImportanceSampling(event, 0.35)
 
 # %%
 # Now we can run the algorithm and get the results.
 
 # %%
-myStandardSpaceIS.run()
-myStandardSpaceISResult = myStandardSpaceIS.getResult()
-proba = myStandardSpaceISResult.getProbabilityEstimate()
+standardSpaceIS.run()
+standardSpaceISResult = standardSpaceIS.getResult()
+proba = standardSpaceISResult.getProbabilityEstimate()
 print("Proba Standard Space Cross Entropy IS = ", proba)
-print("Current coefficient of variation = ", myStandardSpaceISResult.getCoefficientOfVariation())
+print(
+    "Current coefficient of variation = ",
+    standardSpaceISResult.getCoefficientOfVariation(),
+)
 
 # %%
 # The length of the confidence interval of level :math:`95\%` is:
 
 # %%
-length95 = myStandardSpaceISResult.getConfidenceLength()
-print("Confidence length (0.95) = ", myStandardSpaceISResult.getConfidenceLength())
+length95 = standardSpaceISResult.getConfidenceLength()
+print("Confidence length (0.95) = ", standardSpaceISResult.getConfidenceLength())
 
 # %%
 # which enables to build the confidence interval.
@@ -101,13 +98,19 @@ print(
 # We can analyze the simulation budget.
 
 # %%
-print('Numerical budget: ', myStandardSpaceISResult.getBlockSize() * myStandardSpaceISResult.getOuterSampling())
+print(
+    "Numerical budget: ",
+    standardSpaceISResult.getBlockSize() * standardSpaceISResult.getOuterSampling(),
+)
 
 # %%
 # We can also retrieve the optimal auxiliary distribution in Standard Space.
 
 # %%
-print('Auxiliary distribution in Standard space: ', myStandardSpaceISResult.getAuxiliaryDistribution())
+print(
+    "Auxiliary distribution in Standard space: ",
+    standardSpaceISResult.getAuxiliaryDistribution(),
+)
 
 
 # %%
@@ -119,23 +122,29 @@ print('Auxiliary distribution in Standard space: ', myStandardSpaceISResult.getA
 # First we get the auxiliary samples in Standard Space and we project them in Physical Space.
 
 # %%
-auxiliaryInputSamples = myStandardSpaceISResult.getAuxiliaryInputSample()
-auxiliaryInputSamplesPhysicalSpace = distribution.getInverseIsoProbabilisticTransformation()(auxiliaryInputSamples)
+auxiliaryInputSamples = standardSpaceISResult.getAuxiliaryInputSample()
+auxiliaryInputSamplesPhysicalSpace = distribution.getInverseIsoProbabilisticTransformation()(
+    auxiliaryInputSamples
+)
 
 
 # %%
 myGraph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "topright")
 # Generation of samples with initial distribution
-InitialSamples = ot.Cloud(distribution.getSample(1000), "blue", "plus", "Initial samples")
-AuxiliarySamples = ot.Cloud(auxiliaryInputSamplesPhysicalSpace, "orange", "fsquare", "Auxiliary samples")
+InitialSamples = ot.Cloud(
+    distribution.getSample(1000), "blue", "plus", "Initial samples"
+)
+AuxiliarySamples = ot.Cloud(
+    auxiliaryInputSamplesPhysicalSpace, "orange", "fsquare", "Auxiliary samples"
+)
 # Plot failure domain
 nx, ny = 50, 50
 xx = ot.Box([nx], ot.Interval([1.80e6], [4e6])).generate()
-yy = ot.Box([ny], ot.Interval([600.], [950.])).generate()
-inputData = ot.Box([nx, ny], ot.Interval([1.80e6, 600.], [4e6, 950.])).generate()
+yy = ot.Box([ny], ot.Interval([600.0], [950.0])).generate()
+inputData = ot.Box([nx, ny], ot.Interval([1.80e6, 600.0], [4e6, 950.0])).generate()
 outputData = g(inputData)
 mycontour = ot.Contour(xx, yy, outputData, [0.0], ["0.0"], True)
-mycontour.setLegend('Failure domain')
+mycontour.setLegend("Failure domain")
 myGraph.add(InitialSamples)
 myGraph.add(AuxiliarySamples)
 myGraph.add(mycontour)
@@ -167,40 +176,42 @@ distribution_marginR = ot.LogNormalMuSigma().getDistribution()
 distribution_marginF = ot.Normal()
 aux_marginals = [distribution_marginR, distribution_marginF]
 aux_distribution = ot.ComposedDistribution(aux_marginals)
-
-print('Parameters of the auxiliary distribution:', aux_distribution.getParameterDescription())
 # Definition of parameters to be optimized
 active_parameters = [0, 1, 2, 3, 4]
 # WARNING : native parameters of distribution have to be considered
-bounds = ot.Interval([14, 0.01, 0., 500, 20],
-                     [16, 0.2, 0.1, 1000, 70])
+bounds = ot.Interval([14, 0.01, 0.0, 500, 20], [16, 0.2, 0.1, 1000, 70])
 initial_theta = distribution.getParameter()
-myPhysicalSpaceIS_1 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
-                                                                     active_parameters,
-                                                                     initial_theta,
-                                                                     bounds,
-                                                                     aux_distribution)
+desc = aux_distribution.getParameterDescription()
+p = aux_distribution.getParameter()
+print(
+    "Parameters of the auxiliary distribution:",
+    ", ".join([f"{param}: {value:.3f}" for param, value in zip(desc, p)]),
+)
+
+physicalSpaceIS1 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
+    event, active_parameters, initial_theta, bounds, aux_distribution
+)
 
 # %%
 # Custom solver can be also specified for the auxiliary distribution parameters optimization, here for example we choose :class:`~openturns.TNC`.
 
 # %%
-myPhysicalSpaceIS_1.setSolver(ot.TNC())
+physicalSpaceIS1.setSolver(ot.TNC())
 
 # %%
 # The number of samples per step can also be specified.
 
 # %%
-myPhysicalSpaceIS_1.setMaximumOuterSampling(1000)
+physicalSpaceIS1.setMaximumOuterSampling(1000)
 
 # %%
 # Finally, we run the algorithm and get the results.
 
 # %%
-myPhysicalSpaceIS_1.run()
-myPhysicalSpaceISResult_1 = myPhysicalSpaceIS_1.getResult()
-print('Probability of failure:', myPhysicalSpaceISResult_1.getProbabilityEstimate())
-print('Coefficient of variation:', myPhysicalSpaceISResult_1.getCoefficientOfVariation())
+physicalSpaceIS1.run()
+physicalSpaceISResult1 = physicalSpaceIS1.getResult()
+print("Probability of failure:", physicalSpaceISResult1.getProbabilityEstimate())
+print("Coefficient of variation:", physicalSpaceISResult1.getCoefficientOfVariation())
 
 # %%
 # We can also decide to optimize only the means of the margins and keep the other parameters identical to the initial distribution.
@@ -208,34 +219,41 @@ print('Coefficient of variation:', myPhysicalSpaceISResult_1.getCoefficientOfVar
 # %%
 ot.RandomGenerator.SetSeed(0)
 distribution_marginR = ot.LogNormalMuSigma(3e6, 3e5, 0.0).getDistribution()
-distribution_marginF = ot.Normal(750., 50.)
+distribution_marginF = ot.Normal(750.0, 50.0)
 aux_marginals = [distribution_marginR, distribution_marginF]
 aux_distribution = ot.ComposedDistribution(aux_marginals)
-print('Parameters of initial distribution', aux_distribution.getParameter())
+print("Parameters of initial distribution", aux_distribution.getParameter())
 
 # Definition of parameters to be optimized
 active_parameters = [0, 3]
 # WARNING : native parameters of distribution have to be considered
-bounds = ot.Interval([14, 500],
-                     [16, 1000])
+bounds = ot.Interval([14, 500], [16, 1000])
 initial_theta = [15, 750]
-myPhysicalSpaceIS_2 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
-                                                                     active_parameters,
-                                                                     initial_theta,
-                                                                     bounds,
-                                                                     aux_distribution)
-myPhysicalSpaceIS_2.run()
-myPhysicalSpaceISResult_2 = myPhysicalSpaceIS_2.getResult()
-print('Probability of failure:', myPhysicalSpaceISResult_2.getProbabilityEstimate())
-print('Coefficient of variation:', myPhysicalSpaceISResult_2.getCoefficientOfVariation())
+physicalSpaceIS2 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
+    event, active_parameters, initial_theta, bounds, aux_distribution
+)
+physicalSpaceIS2.run()
+physicalSpaceISResult2 = physicalSpaceIS2.getResult()
+print("Probability of failure:", physicalSpaceISResult2.getProbabilityEstimate())
+print("Coefficient of variation:", physicalSpaceISResult2.getCoefficientOfVariation())
 
 # %%
 # Let analyze the auxiliary output samples for the two previous simulations. We can plot initial (in blue) and auxiliary samples in physical space (orange for the first simulation and black for the second simulation).
 
 # %%
 myGraph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "topright")
-AuxiliarySamples1 = ot.Cloud(myPhysicalSpaceISResult_1.getAuxiliaryInputSample(), "orange", "fsquare", "Auxiliary samples, first case")
-AuxiliarySamples2 = ot.Cloud(myPhysicalSpaceISResult_2.getAuxiliaryInputSample(), "black", "bullet", "Auxiliary samples, second case")
+AuxiliarySamples1 = ot.Cloud(
+    physicalSpaceISResult1.getAuxiliaryInputSample(),
+    "orange",
+    "fsquare",
+    "Auxiliary samples, first case",
+)
+AuxiliarySamples2 = ot.Cloud(
+    physicalSpaceISResult2.getAuxiliaryInputSample(),
+    "black",
+    "bullet",
+    "Auxiliary samples, second case",
+)
 myGraph.add(InitialSamples)
 myGraph.add(AuxiliarySamples1)
 myGraph.add(AuxiliarySamples2)
@@ -248,38 +266,61 @@ view = viewer.View(myGraph)
 # %%
 ot.RandomGenerator.SetSeed(0)
 distribution_marginR = ot.LogNormalMuSigma(3e6, 3e5, 0.0).getDistribution()
-distribution_marginF = ot.Normal(750., 50.)
+distribution_marginF = ot.Normal(750.0, 50.0)
 aux_marginals = [distribution_marginR, distribution_marginF]
 copula = ot.NormalCopula()
 aux_distribution = ot.ComposedDistribution(aux_marginals, copula)
-print('Initial parameters of auxiliary distribution:', aux_distribution.getParameter())
+desc = aux_distribution.getParameterDescription()
+p = aux_distribution.getParameter()
+print(
+    "Initial parameters of the auxiliary distribution:",
+    ", ".join([f"{param}: {value:.3f}" for param, value in zip(desc, p)]),
+)
+
 # Definition of parameters to be optimized
 active_parameters = [0, 1, 2, 3, 4, 5]
-bounds = ot.Interval([14, 0.01, 0., 500., 20., 0.],
-                     [16, 0.2, 0.1, 1000., 70., 1.])
+bounds = ot.Interval(
+    [14, 0.01, 0.0, 500.0, 20.0, 0.0], [16, 0.2, 0.1, 1000.0, 70.0, 1.0]
+)
 initial_theta = distribution.getParameter()
-myPhysicalSpaceIS_3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(event,
-                                                                     active_parameters,
-                                                                     initial_theta,
-                                                                     bounds,
-                                                                     aux_distribution)
-myPhysicalSpaceIS_3.run()
-myPhysicalSpaceISResult_3 = myPhysicalSpaceIS_3.getResult()
-print('Optimized parameters of auxiliary distribution: ', myPhysicalSpaceISResult_3.getAuxiliaryDistribution().getParameter())
-print('Probability of failure: ', myPhysicalSpaceISResult_3.getProbabilityEstimate())
-print('Coefficient of variation: ', myPhysicalSpaceISResult_3.getCoefficientOfVariation())
+
+physicalSpaceIS3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
+    event, active_parameters, initial_theta, bounds, aux_distribution
+)
+physicalSpaceIS3.run()
+physicalSpaceISResult3 = physicalSpaceIS3.getResult()
+desc = physicalSpaceISResult3.getAuxiliaryDistribution().getParameterDescription()
+p = physicalSpaceISResult3.getAuxiliaryDistribution().getParameter()
+print(
+    "Optimized parameters of the auxiliary distribution:",
+    ", ".join([f"{param}: {value:.3f}" for param, value in zip(desc, p)]),
+)
+print("Probability of failure: ", physicalSpaceISResult3.getProbabilityEstimate())
+print("Coefficient of variation: ", physicalSpaceISResult3.getCoefficientOfVariation())
 
 # %%
 # Finally, we plot the new auxiliary samples in black.
 
 # %%
 myGraph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "topright")
-AuxiliarySamples1 = ot.Cloud(myPhysicalSpaceISResult_1.getAuxiliaryInputSample(), "orange", "fsquare", "Auxiliary samples, first case")
-AuxiliarySamples3 = ot.Cloud(myPhysicalSpaceISResult_3.getAuxiliaryInputSample(), "black", "bullet", "Auxiliary samples, second case")
+AuxiliarySamples1 = ot.Cloud(
+    physicalSpaceISResult1.getAuxiliaryInputSample(),
+    "orange",
+    "fsquare",
+    "Auxiliary samples, first case",
+)
+AuxiliarySamples3 = ot.Cloud(
+    physicalSpaceISResult3.getAuxiliaryInputSample(),
+    "black",
+    "bullet",
+    "Auxiliary samples, second case",
+)
 myGraph.add(InitialSamples)
 myGraph.add(AuxiliarySamples1)
 myGraph.add(AuxiliarySamples3)
 myGraph.add(mycontour)
+
+# sphinx_gallery_thumbnail_number = 4
 view = viewer.View(myGraph)
 
 # %%

@@ -33,7 +33,7 @@ The optimal density :math:`h_{opt}` minimizing the variance of the estimator :ma
 
 with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest and unknown.
 
-The Standard Space Cross-Entropy Importance Sampling  uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. This process is performed in the standard space using a Normal distribution as the auxiliary distribution. Indeed, in the standard space, the optimal value of the mean and standard deviations are given analytically, see [morio2015]_ for details. We note  :math:`G(\mathbf{u})` the limit state function in standard space and  :math:`g(\mathbf{x})` its counterpart in the physical space. :math:`f_\mathbf{U}` stands for the initial distribution in standard space, i.e. the Normal law. The algorithm is as follows:
+The Standard Space Cross-Entropy Importance Sampling [rubinstein2017]_ uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. This process is performed in the standard space using a Normal distribution as the auxiliary distribution. Indeed, in the standard space, the optimal value of the mean and standard deviations are given analytically, see [morio2015]_ for details. We note  :math:`G(\mathbf{u})` the limit state function in standard space and  :math:`g(\mathbf{x})` its counterpart in the physical space. :math:`f_\mathbf{U}` stands for the initial distribution in standard space, i.e. the Normal law. The algorithm is as follows:
 
 
 1. :math:`k=1`, set :math:`\rho \in [0,1]` and :math:`h_0 = f_{\mathbf{U}}`

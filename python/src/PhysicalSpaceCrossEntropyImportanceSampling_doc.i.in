@@ -47,7 +47,7 @@ The optimal density :math:`h_{opt}` minimizing the variance of the estimator is 
 with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest
 and unknown.
 
-The Physical Space Cross-Entropy Importance Sampling algorithm [morio2015]_ uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. It involves an auxiliary optimization problem to find the auxiliary distribution parameters :math:`\mathbf{\lambda}` minimizing the Kullback-Leibler divergence with respect to :math:`h_{opt}`. The following algorithm is used:
+The Physical Space Cross-Entropy Importance Sampling algorithm [rubinstein2017]_ uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. It involves an auxiliary optimization problem to find the auxiliary distribution parameters :math:`\mathbf{\lambda}` minimizing the Kullback-Leibler divergence with respect to :math:`h_{opt}`. The following algorithm is used:
 
 1. :math:`k=1`, set :math:`\rho \in [0,1]` and :math:`h_0 = f_{\mathbf{X}}`
 
