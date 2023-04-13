@@ -364,6 +364,11 @@ print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0
 # computed.
 
 # %%
+# Increase the default number of points in the plots.
+# This produces smoother spiky distributions.
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
+
+# %%
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
 view = viewer.View(graph)
@@ -411,6 +416,52 @@ view = viewer.View(
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(right=0.8)
+
+def plotDistributionGridPDF(distribution):
+    """
+    Plot the marginal and bi-dimensional iso-PDF on a grid.
+
+    Parameters
+    ----------
+    distribution : ot.Distribution
+        The distribution.
+
+    Returns
+    -------
+    grid : ot.GridLayout(dimension)
+        The grid of plots.
+
+    """
+    dimension = distribution.getDimension()
+    grid = ot.GridLayout(dimension, dimension)
+    for i in range(dimension):
+        for j in range(dimension):
+            if i == j:
+                distributionI = distribution.getMarginal([i])
+                graph = distributionI.drawPDF()
+            else:
+                distributionJI = distribution.getMarginal([j, i])
+                graph = distributionJI.drawPDF()
+            graph.setLegends([""])
+            graph.setTitle("")
+            if i < dimension - 1:
+                graph.setXTitle("")
+            if j > 0:
+                graph.setYTitle("")
+            grid.setGraph(i, j, graph)
+    grid.setTitle("Iso-PDF values")
+    return grid
+
+# %%
+# Plot the PDF values of the distribution of the optimum parameters.
+grid = plotDistributionPDF(thetaPosterior)
+view = viewer.View(
+    grid,
+    figure_kw={"figsize": (6.0, 6.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plot_space = 0.5
+plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 
 # %%
 # Gaussian linear calibration
@@ -520,9 +571,20 @@ plt.subplots_adjust(right=0.8)
 # sensitive to the observations (if the observations were not sensitive, the
 # two distributions were superimposed).
 # Moreover, the two distributions are quite close, which implies that the prior
-# distribution has played a roled in the calibration (otherwise the two
+# distribution has played a role in the calibration (otherwise the two
 # distributions would be completely different,
 # indicating that only the observations were taken into account).
+
+# %%
+# Plot the PDF values of the distribution of the optimum parameters.
+grid = plotDistributionPDF(thetaPosterior)
+view = viewer.View(
+    grid,
+    figure_kw={"figsize": (6.0, 6.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plot_space = 0.5
+plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 
 # %%
 # Gaussian nonlinear calibration
@@ -607,6 +669,17 @@ plt.subplots_adjust(right=0.8)
 # This shows that the calibration is very sensitive to the observations.
 
 # %%
+# Plot the PDF values of the distribution of the optimum parameters.
+grid = plotDistributionPDF(thetaPosterior)
+view = viewer.View(
+    grid,
+    figure_kw={"figsize": (6.0, 6.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plot_space = 0.5
+plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
+
+# %%
 # Tuning the posterior distribution estimation
 # --------------------------------------------
 #
@@ -645,6 +718,18 @@ view = viewer.View(
 )
 plt.subplots_adjust(right=0.8)
 
-plt.show()
 # %%
 # As we can see, this does not change much the posterior distribution, which remains spiky.
+
+# %%
+# Plot the PDF values of the distribution of the optimum parameters.
+grid = plotDistributionPDF(thetaPosterior)
+view = viewer.View(
+    grid,
+    figure_kw={"figsize": (6.0, 6.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plot_space = 0.5
+plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
+
+plt.show()

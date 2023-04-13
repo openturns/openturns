@@ -136,12 +136,9 @@ private:
   Sample outputAtPosteriorMean_;
 
   /* Bayesian */
-  Bool bayesian_;
+  Bool bayesian_ = false;
 
   /* Colors */
-  String priorLineStyle_;
-  String posteriorLineStyle_;
-  String observationLineStyle_;
   String priorColor_;
   String posteriorColor_;
   String observationColor_;

@@ -299,6 +299,11 @@ if calibrationResult.getInputObservations().getSize() == 1:
     )
 
 # %%
+# Increase the default number of points in the plots.
+# This produces smoother spiky distributions.
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
+
+# %%
 # The next plot presents the U.S. population depending on the time.
 # We see that the calibrated model fits to the data more
 # than the uncalibrated model, especially on the second part

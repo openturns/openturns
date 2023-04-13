@@ -268,6 +268,11 @@ for i in range(dim):
 # We see that the parameters are accurately estimated in this case.
 
 # %%
+# Increase the default number of points in the plots.
+# This produces smoother spiky distributions.
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
+
+# %%
 # In order to see how the predicted outputs first to the observed
 # outputs, we plot the outputs depending on the inputs.
 
@@ -357,6 +362,15 @@ plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
 # that we used.
 # This is because we used 0.3e-6 as the hypothesis while the
 # true value is 0.05e-5.
+
+# %%
+# Check that the results are Gaussian, using a Normal-plot.
+graph = calibrationResult.drawResidualsNormalPlot()
+view = viewer.View(graph,
+    figure_kw={"figsize": (10.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
 
 # %%
 # Finally, we observe the prior and posterior distribution of each

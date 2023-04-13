@@ -57,9 +57,6 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   , outputObservations_(outputObservations)
   , residualFunction_(residualFunction)
   , bayesian_(bayesian)
-  , priorLineStyle_(ResourceMap::GetAsString( "CalibrationResult-PriorLineStyle" ))
-  , posteriorLineStyle_(ResourceMap::GetAsString( "CalibrationResult-PosteriorLineStyle" ))
-  , observationLineStyle_(ResourceMap::GetAsString( "CalibrationResult-ObservationLineStyle" ))
 {
   // compute output at prior/posterior mean using the fact that model(inputObs)|p = residualFunction(p) + outputObs as the model is not available
   SampleImplementation outputAtPriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
@@ -71,7 +68,7 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   outputAtPosteriorMean_ = outputAtPosteriorMean;
   
   // Set default colors
-  Description colors = DrawableImplementation::BuildDefaultPalette(3);
+  const Description colors = DrawableImplementation::BuildDefaultPalette(3);
   priorColor_ = colors[0];
   posteriorColor_ = colors[1];
   observationColor_ = colors[2];
@@ -171,7 +168,11 @@ String CalibrationResult::__repr__() const
       << " parameter MAP=" << parameterMAP_
       << " observations error=" << observationsError_
       << " output observation=" << outputObservations_
-      << " residual function=" << residualFunction_;
+      << " residual function=" << residualFunction_
+      << " bayesian=" << bayesian_
+      << " priorColor_=" << priorColor_
+      << " posteriorColor_=" << posteriorColor_
+      << " observationColor_=" << observationColor_;
   return oss;
 }
 
@@ -188,6 +189,10 @@ void CalibrationResult::save(Advocate & adv) const
   adv.saveAttribute( "residualFunction_", residualFunction_ );
   adv.saveAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
   adv.saveAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
+  adv.saveAttribute( "bayesian_", bayesian_ );
+  adv.saveAttribute( "priorColor_", priorColor_ );
+  adv.saveAttribute( "posteriorColor_", posteriorColor_ );
+  adv.saveAttribute( "observationColor_", observationColor_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -203,6 +208,21 @@ void CalibrationResult::load(Advocate & adv)
   adv.loadAttribute( "residualFunction_", residualFunction_ );
   adv.loadAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
   adv.loadAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
+  if (adv.getStudyVersion() >= 102100)
+  {
+    adv.loadAttribute( "bayesian_", bayesian_ );
+    adv.loadAttribute( "priorColor_", priorColor_ );
+    adv.loadAttribute( "posteriorColor_", posteriorColor_ );
+    adv.loadAttribute( "observationColor_", observationColor_ );
+  }
+  else
+  {
+    bayesian_ = false;
+    Description colors = DrawableImplementation::BuildDefaultPalette(3);
+    priorColor_ = colors[0];
+    posteriorColor_ = colors[1];
+    observationColor_ = colors[2];
+  }
 }
 
 void CalibrationResult::setOutputAtPriorAndPosteriorMean(const Sample & outputAtPrior, const Sample & outputAtPosterior)
@@ -224,13 +244,12 @@ Sample CalibrationResult::getOutputAtPosteriorMean() const
 GridLayout CalibrationResult::drawParameterDistributions() const
 {
   const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("CalibrationResult-xRangeMarginFactor");
-
   const UnsignedInteger dimension = parameterMAP_.getDimension();
   GridLayout grid(1, dimension);
   const Point candidate(getParameterPrior().getMean());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    bool upperRightGraph = (j == dimension - 1);
+    const bool upperRightGraph = (j == dimension - 1);
     Graph graph("", getParameterPrior().getDescription()[j], "", true, "topright");
     if (j == 0)
     {
@@ -258,7 +277,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
         data(0, 0) = xCandidate;
         cloudCandidate = Cloud(data);
         cloudCandidate.setColor(priorColor_);
-        cloudCandidate.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-PriorPointStyle" ));
+        cloudCandidate.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
         if (upperRightGraph)
         {
             cloudCandidate.setLegend("Candidate");
@@ -313,7 +332,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
         postPDF.setLegend("");
     }
     postPDF.setColor(posteriorColor_);
-    postPDF.setLineStyle(posteriorLineStyle_);
+    postPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorLineStyle"));
 
     Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0));
     if (upperRightGraph)
@@ -332,7 +351,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
         priorPDF.setLegend("");
     }
     priorPDF.setColor(priorColor_);
-    priorPDF.setLineStyle(priorLineStyle_);
+    priorPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PriorLineStyle"));
 
     // assemble the graphs in the correct order
     if (bayesian_)
@@ -352,6 +371,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
 
 GridLayout CalibrationResult::drawResiduals() const
 {
+  //
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   grid.setTitle("Residual analysis");
@@ -359,7 +379,7 @@ GridLayout CalibrationResult::drawResiduals() const
   const Sample postResiduals(outputObservations_ - outputAtPosteriorMean_);
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    bool upperRightGraph = (j == outputDimension - 1);
+    const bool upperRightGraph = (j == outputDimension - 1);
     Graph graph("", outputObservations_.getDescription()[j] + " residuals", "PDF", true, "topright");
 
     // Get the distributions
@@ -402,35 +422,35 @@ GridLayout CalibrationResult::drawResiduals() const
       obsPDF.setLegend("");
     }
     obsPDF.setColor(observationColor_);
-    obsPDF.setLineStyle(observationLineStyle_);
+    obsPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-ObservationLineStyle"));
     graph.add(obsPDF);
 
     // prior
     priorPDF = priorResidualsJ.drawPDF(xMin, xMax).getDrawable(0);
     if (upperRightGraph)
     {
-      priorPDF.setLegend("Initial");
+      priorPDF.setLegend("Initial (kernel smoothing)");
     }
     else
     {
       priorPDF.setLegend("");
     }
     priorPDF.setColor(priorColor_);
-    priorPDF.setLineStyle(priorLineStyle_);
+    priorPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PriorLineStyle"));
     graph.add(priorPDF);
 
     // posterior
     postPDF = postResidualsJ.drawPDF(xMin, xMax).getDrawable(0);
     if (upperRightGraph)
     {
-      postPDF.setLegend("Calibrated");
+      postPDF.setLegend("Calibrated (kernel smoothing)");
     }
     else
     {
       postPDF.setLegend("");
     }
     postPDF.setColor(posteriorColor_);
-    postPDF.setLineStyle(posteriorLineStyle_);
+    postPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorLineStyle"));
     graph.add(postPDF);
 
     grid.setGraph(0, j, graph);
@@ -450,7 +470,7 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++ j)
     {
-      bool upperRightGraph = (i == 0 and j == inputDimension - 1);
+      const bool upperRightGraph = (i == 0 and j == inputDimension - 1);
       // Only the last row
       String xTitle = (i == outputDimension - 1) ? xDescription[j] : "";
       // Only the first column
@@ -466,7 +486,7 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
           obsCloud.setLegend("Observations");
       }
       obsCloud.setColor(observationColor_);
-      obsCloud.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-ObservationPointStyle" ));
+      obsCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-ObservationPointStyle" ));
       graph.add(obsCloud);
 
       // model outputs before calibration
@@ -476,7 +496,7 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
           priorCloud.setLegend("Initial");
       }
       priorCloud.setColor(priorColor_);
-      priorCloud.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-PriorPointStyle" ));
+      priorCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
       graph.add(priorCloud);
 
       // model outputs after calibration
@@ -486,7 +506,7 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
           postCloud.setLegend("Calibrated");
       }
       postCloud.setColor(posteriorColor_);
-      postCloud.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-PosteriorPointStyle" ));
+      postCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorPointStyle" ));
       graph.add(postCloud);
 
       grid.setGraph(i, j, graph);
@@ -506,7 +526,7 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
     Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions", true, "topleft");
     const Sample outputObservations_j(outputObservations_.getMarginal(j));
 
-    bool upperRightGraph = (j == outputDimension - 1);
+    const bool upperRightGraph = (j == outputDimension - 1);
     // observation diagonal
     Sample diagonalPoints(2, 2);
     diagonalPoints(0, 0) = outputObservations_j.getMin()[0];
@@ -524,7 +544,7 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
       priorCloud.setLegend("Initial");
     }
     priorCloud.setColor(priorColor_);
-    priorCloud.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-PriorPointStyle" ));
+    priorCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
     graph.add(priorCloud);
 
     // predictions after
@@ -534,7 +554,7 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
       postCloud.setLegend("Calibrated");
     }
     postCloud.setColor(posteriorColor_);
-    postCloud.setPointStyle(ResourceMap::GetAsString( "CalibrationResult-PosteriorPointStyle" ));
+    postCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorPointStyle" ));
     graph.add(postCloud);
 
     grid.setGraph(0, j, graph);
@@ -551,9 +571,19 @@ GridLayout CalibrationResult::drawResidualsNormalPlot() const
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
     Graph graph(VisualTest::DrawHenryLine(postResiduals.getMarginal(j)));
-    graph.setTitle("Residual vs Gaussian hypothesis QQ-plot");
+    if (j < outputDimension - 1)
+    {
+      graph.setLegendPosition("");
+    }
+    if (j > 0)
+    {
+      graph.setYTitle("");
+    }
+    graph.setXTitle("Residuals");
+    graph.setTitle("");
     grid.setGraph(0, j, graph);
   }
+  grid.setTitle("Residuals after calibration vs Gaussian hypothesis");
   return grid;
 }
 

@@ -225,6 +225,11 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 # This is why this parameter seems to be the most important in this case.
 
 # %%
+# Increase the default number of points in the plots.
+# This produces smoother spiky distributions.
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
+
+# %%
 # We now plot the predicted output stress depending on the input
 # strain before and after calibration.
 
@@ -289,6 +294,7 @@ plt.subplots_adjust(right=0.6)
 graph = calibrationResult.drawResidualsNormalPlot()
 view = viewer.View(graph)
 
+# %%
 # We see that the residuals fit to the Normal distribution,
 # according to the normal plot.
 
@@ -313,6 +319,52 @@ plt.subplots_adjust(right=0.8)
 # be seen from the very large spread of the distribution of this parameter.
 # This may reveal that there are identifiability issues with this parameter
 # when we use a linearization of the model.
+
+def plotDistributionGridPDF(distribution):
+    """
+    Plot the marginal and bi-dimensional iso-PDF on a grid.
+
+    Parameters
+    ----------
+    distribution : ot.Distribution
+        The distribution.
+
+    Returns
+    -------
+    grid : ot.GridLayout(dimension)
+        The grid of plots.
+
+    """
+    dimension = distribution.getDimension()
+    grid = ot.GridLayout(dimension, dimension)
+    for i in range(dimension):
+        for j in range(dimension):
+            if i == j:
+                distributionI = distribution.getMarginal([i])
+                graph = distributionI.drawPDF()
+            else:
+                distributionJI = distribution.getMarginal([j, i])
+                graph = distributionJI.drawPDF()
+            graph.setLegends([""])
+            graph.setTitle("")
+            if i < dimension - 1:
+                graph.setXTitle("")
+            if j > 0:
+                graph.setYTitle("")
+            grid.setGraph(i, j, graph)
+    grid.setTitle("Iso-PDF values")
+    return grid
+
+# %%
+# Plot the PDF values of the distribution of the optimum parameters.
+grid = plotDistributionPDF(thetaPosterior)
+view = viewer.View(
+    grid,
+    figure_kw={"figsize": (6.0, 6.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plot_space = 0.5
+plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 
 # %%
 # Since linear least squares calibration perform well, the study
@@ -427,6 +479,17 @@ plt.subplots_adjust(right=0.8)
 # %%
 graph = calibrationResult.drawResidualsNormalPlot()
 view = viewer.View(graph)
+
+# %%
+# Plot the PDF values of the distribution of the optimum parameters.
+grid = plotDistributionPDF(thetaPosterior)
+view = viewer.View(
+    grid,
+    figure_kw={"figsize": (6.0, 6.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plot_space = 0.5
+plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 
 # %%
 # We see that the parameters are relatively well estimated,
@@ -573,6 +636,17 @@ graph = calibrationResult.drawResidualsNormalPlot()
 view = viewer.View(graph)
 
 # %%
+# Plot the PDF values of the distribution of the optimum parameters.
+grid = plotDistributionPDF(thetaPosterior)
+view = viewer.View(
+    grid,
+    figure_kw={"figsize": (6.0, 6.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plot_space = 0.5
+plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
+
+# %%
 # Gaussian nonlinear calibration
 # ------------------------------
 # The :class:`~openturns.GaussianNonLinearCalibration` class
@@ -668,6 +742,18 @@ graph = calibrationResult.drawResidualsNormalPlot()
 view = viewer.View(graph)
 
 plt.show()
+
+# %%
+# Plot the PDF values of the distribution of the optimum parameters.
+grid = plotDistributionPDF(thetaPosterior)
+view = viewer.View(
+    grid,
+    figure_kw={"figsize": (6.0, 6.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plot_space = 0.5
+plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
+
 # %%
 # We see that the prior and posterior distribution for the :math:`\gamma`
 # parameter are close to each other, but not superimposed: the observations
