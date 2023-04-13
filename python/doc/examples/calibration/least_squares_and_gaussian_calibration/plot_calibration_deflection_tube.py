@@ -270,6 +270,7 @@ for i in range(dim):
 # %%
 # In order to see how the predicted outputs first to the observed
 # outputs, we plot the outputs depending on the inputs.
+
 # sphinx_gallery_thumbnail_number = 2
 graph = calibrationResult.drawObservationsVsInputs()
 view = viewer.View(

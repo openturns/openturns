@@ -293,7 +293,7 @@ view = viewer.View(graph)
 # %%
 # The parameters which best fit to the data may be sensitive to the random
 # noise in the observed outputs.
-# In order to see how this source of randomness change the optimum
+# In order to see how this source of randomness changes the optimum
 # parameter, we use
 # :meth:`~openturns.CalibrationResult.drawParameterDistributions`.
 graph = calibrationResult.drawParameterDistributions()
