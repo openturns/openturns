@@ -366,7 +366,8 @@ plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
 # %%
 # Check that the results are Gaussian, using a Normal-plot.
 graph = calibrationResult.drawResidualsNormalPlot()
-view = viewer.View(graph,
+view = viewer.View(
+    graph,
     figure_kw={"figsize": (10.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )

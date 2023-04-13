@@ -8,7 +8,7 @@ Introduction
 
 In this page, we present the method used in the :class:`~openturns.GaussianLinearCalibration`
 and :class:`~openturns.GaussianNonLinearCalibration` classes.
-The Gaussian calibration is a particular case of Bayesian calibration 
+The Gaussian calibration is a particular case of Bayesian calibration
 (see :ref:`bayesian_calibration`) where
 the prior has a Gaussian distribution and the observation error has a Gaussian
 distribution.

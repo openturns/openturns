@@ -320,6 +320,7 @@ plt.subplots_adjust(right=0.8)
 # This may reveal that there are identifiability issues with this parameter
 # when we use a linearization of the model.
 
+
 def plotDistributionGridPDF(distribution):
     """
     Plot the marginal and bi-dimensional iso-PDF on a grid.
@@ -355,9 +356,10 @@ def plotDistributionGridPDF(distribution):
     grid.setTitle("Iso-PDF values")
     return grid
 
+
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
-grid = plotDistributionPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaPosterior)
 view = viewer.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
@@ -482,7 +484,7 @@ view = viewer.View(graph)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
-grid = plotDistributionPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaPosterior)
 view = viewer.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
@@ -637,7 +639,7 @@ view = viewer.View(graph)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
-grid = plotDistributionPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaPosterior)
 view = viewer.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
@@ -745,7 +747,7 @@ plt.show()
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
-grid = plotDistributionPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaPosterior)
 view = viewer.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
