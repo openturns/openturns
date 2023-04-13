@@ -1,4 +1,4 @@
-"""
+r"""
 Calibration of the Chaboche mechanical model
 ============================================
 
@@ -22,7 +22,7 @@ The vector of parameters to calibrate is:
 
 .. math::
 
-   \\theta = (R,C,\\gamma).
+   \theta = (R,C,\gamma).
 
 We consider a data set where the number of observations is equal to:
 
@@ -31,16 +31,16 @@ We consider a data set where the number of observations is equal to:
    n = 10.
 
 
-The observations are the pairs :math:`\\{(\\epsilon_i,\\sigma_i)\\}_{i=1,...,n}`,
+The observations are the pairs :math:`\{(\epsilon_i,\sigma_i)\}_{i=1,...,n}`,
 i.e. each observation is a couple made of the strain and the corresponding stress.
 
 In the particular situation where we want to calibrate this model, the following
 list presents which variables are observed input variables, input calibrated
 variables and observed output variables.
 
-- :math:`\\epsilon`: Input. Observed.
-- :math:`R`, :math:`C`, :math:`\\gamma` : Inputs. Calibrated.
-- :math:`\\sigma`: Output. Observed.
+- :math:`\epsilon`: Input. Observed.
+- :math:`R`, :math:`C`, :math:`\gamma` : Inputs. Calibrated.
+- :math:`\sigma`: Output. Observed.
 """
 
 # %%
@@ -76,6 +76,7 @@ print("Outputs:", cm.model.getOutputDescription())
 # output.
 # Using these observations, we want to estimate the parameters `R`, `C`
 # and `Gamma`.
+
 # %%
 # Set the calibration parameters
 # ------------------------------
@@ -217,15 +218,16 @@ thetaPosterior = calibrationResult.getParameterPosterior()
 thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
 
 # %%
-# We can see that the `Gamma` parameter has a large confidence interval:
+# We can see that the :math:`\gamma` parameter has a large confidence interval:
 # even the sign of the parameter is unknown.
 # The parameter which is calibrated with the smallest confidence
-# interval is `R`, which confidence interval is [741, 758] (MPa).
+# interval is :math:`R`.
 # This is why this parameter seems to be the most important in this case.
 
 # %%
 # We now plot the predicted output stress depending on the input
 # strain before and after calibration.
+
 # sphinx_gallery_thumbnail_number = 3
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
