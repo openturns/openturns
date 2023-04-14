@@ -323,6 +323,7 @@ plt.subplots_adjust(right=0.8)
 # when we use a linearization of the model.
 
 
+# %%
 def plotDistributionGridPDF(distribution):
     """
     Plot the marginal and bi-dimensional iso-PDF on a grid.
@@ -334,7 +335,7 @@ def plotDistributionGridPDF(distribution):
 
     Returns
     -------
-    grid : ot.GridLayout(dimension)
+    grid : ot.GridLayout(dimension, dimension)
         The grid of plots.
 
     """

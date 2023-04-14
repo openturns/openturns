@@ -38,6 +38,7 @@ from openturns.usecases import logistic_model
 import openturns as ot
 import numpy as np
 import openturns.viewer as otv
+from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -216,9 +217,9 @@ graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 view = otv.View(graph)
 
 # %%
-# We see that the fit is not good: the observations continue to grow after 1950, while the growth of the prediction seem to fade.
+# We see that the fit is not good: the observations continue to grow after 1950, while the growth of the prediction seems to fade.
 
-# %% [markdown]
+# %%
 # Calibration with linear least squares
 # -------------------------------------
 
@@ -227,15 +228,18 @@ view = otv.View(graph)
 # In this case, we choose to consider one single observation in dimension 22.
 # In order to perform calibration, we create a `Sample` of input times which has
 # one observation in dimension 22.
+
+# %%
 timeObservationsSample = ot.Sample([timeObservations.asPoint()])
-timeObservationsSample[0, 0:5]
+print(timeObservationsSample[0, 0:5])
 
 # %%
 # Similarly, we create a `Sample` of output populations which has
 # one observation in dimension 22.
-populationObservationsSample = ot.Sample([populationObservations.asPoint()])
-populationObservationsSample[0, 0:5]
 
+# %%
+populationObservationsSample = ot.Sample([populationObservations.asPoint()])
+print(populationObservationsSample[0, 0:5])
 
 # %%
 logisticParametric = ot.ParametricFunction(logisticModelPy, [22, 23], thetaPrior)
@@ -245,7 +249,7 @@ logisticParametric = ot.ParametricFunction(logisticModelPy, [22, 23], thetaPrior
 
 # %%
 populationPredicted = logisticParametric(timeObservationsSample)
-populationPredicted[0, 0:5]
+print(populationPredicted[0, 0:5])
 
 # %%
 #  Calibration
@@ -270,8 +274,10 @@ print("theta Before = ", thetaPrior)
 # %%
 # In order to see if the optimum parameters are sensitive to the
 # observation errors, we compute 95% confidence intervals.
+
+# %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
 
 # %%
 # The 95% confidence intervals of the optimum are relatively narrow:
@@ -348,6 +354,11 @@ view = otv.View(graph)
 # after the calibration: the initial point is very different
 # from the distribution of the optimum parameter.
 graph = calibrationResult.drawParameterDistributions()
-view = otv.View(graph)
+view = otv.View(
+    graph,
+    figure_kw={"figsize": (8.0, 4.0)},
+    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
+)
+plt.subplots_adjust(right=0.8)
 
 otv.View.ShowAll()

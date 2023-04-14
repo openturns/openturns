@@ -418,6 +418,7 @@ view = otv.View(
 plt.subplots_adjust(right=0.8)
 
 
+# %%
 def plotDistributionGridPDF(distribution):
     """
     Plot the marginal and bi-dimensional iso-PDF on a grid.
@@ -429,7 +430,7 @@ def plotDistributionGridPDF(distribution):
 
     Returns
     -------
-    grid : ot.GridLayout(dimension)
+    grid : ot.GridLayout(dimension, dimension)
         The grid of plots.
 
     """
