@@ -208,7 +208,7 @@ void CalibrationResult::load(Advocate & adv)
   adv.loadAttribute( "residualFunction_", residualFunction_ );
   adv.loadAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
   adv.loadAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
-  if (adv.getStudyVersion() >= 102100)
+  if (adv.hasAttribute("bayesian_"))
   {
     adv.loadAttribute( "bayesian_", bayesian_ );
     adv.loadAttribute( "priorColor_", priorColor_ );
