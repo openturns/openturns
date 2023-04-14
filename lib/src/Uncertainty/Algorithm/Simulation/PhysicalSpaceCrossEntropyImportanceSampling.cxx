@@ -103,12 +103,12 @@ public:
     // Nothing to do
   }
   
-  virtual KullbackLeiblerDivergenceObjective * clone () const
+  KullbackLeiblerDivergenceObjective * clone () const override
   {
     return new KullbackLeiblerDivergenceObjective(*this);
   }
   
-  Point operator()(const Point & x) const
+  Point operator()(const Point & x) const override
   {
     Distribution distrib = auxiliaryDistribution_;
   
@@ -135,12 +135,12 @@ public:
     return Point(1,objectiveFunction);
   }
   
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return activeParameters_.getSize();
   }
   
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }

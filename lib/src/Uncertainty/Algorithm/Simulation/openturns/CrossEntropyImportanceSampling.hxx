@@ -47,7 +47,7 @@ public:
                  const Scalar rhoQuantile = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultRhoQuantile"));
 
   /** Virtual constructor */
-  virtual CrossEntropyImportanceSampling * clone() const override;
+  CrossEntropyImportanceSampling * clone() const override;
 
   /** Get rhoQuantile */
   Scalar getRhoQuantile() const;
