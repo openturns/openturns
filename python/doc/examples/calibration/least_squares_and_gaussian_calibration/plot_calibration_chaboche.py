@@ -417,7 +417,7 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 # interval.
 # Notice, however, that the interval is much more narrow than the
 # one with obtained using linear least squares.
-# This is because the optimization algorithm that we used implicitely
+# This is because the optimization algorithm that we used implicitly
 # introduced some regularization that was absent from
 # linear least squares.
 
