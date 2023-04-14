@@ -49,8 +49,8 @@ print("Inputs:", lm.model.getInputDescription())
 print("Outputs: ", lm.model.getOutputDescription())
 
 # %%
-# We see that there 24 inputs.
-# The first 22 inputs are the times and the last two inputs are the
+# We see that there are 24 inputs.
+# The first 22 inputs are the timestamps and the last two inputs are the
 # a and c parameters to calibrate.
 # The 22 outputs are the population of the U.S. in millions.
 
@@ -317,15 +317,15 @@ view = otv.View(graph)
 # As a metamodel, we can compare the predicted U.S. population
 # depending on the observed U.S. population.
 # We see that the model fits to the data accurately for
-# a population up to 150 Millions, but diverges when the population
+# a population up to 150 million people, but diverges when the population
 # gets larger.
 # On the other hand, the calibrated model under-predicts the
 # population for the [0,150] population interval, and
 # over-predicts for the [150,300] interval, balancing the errors
 # so that the model globally fits.
 # The "S" shape of the graph after calibration reveals that
-# the calibrated model has a structure so that the residuals
-# are not from the normal distribution (otherwise the calibrated
+# the calibrated model has a structure with residuals that do
+# not follow a normal distribution (otherwise the calibrated
 # cloud would be spread over and under the diagonal).
 # In other words, the model and the data do not fit very well.
 graph = calibrationResult.drawObservationsVsPredictions()
@@ -335,8 +335,7 @@ view = otv.View(graph)
 # The residuals analysis shows that some residuals were very
 # large before calibration.
 # After calibration, most residuals are in the [-20,20] interval,
-# which explains why the calibrated model better fits to the
-# data.
+# which explains why the calibrated model fits the data better.
 # We notice that the distribution of the
 # calibrated residuals is relatively close to a normal distribution.
 # This may show that the least squares model is appropriate in
