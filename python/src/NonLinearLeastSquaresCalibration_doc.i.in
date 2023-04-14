@@ -40,8 +40,7 @@ Otherwise, the algorithm :class:`~openturns.TNC` is used combined with
 a multistart algorithm which makes use of the `NonLinearLeastSquaresCalibration-MultiStartSize`
 key in the :class:`~openturns.ResourceMap`.
 
-Please read :ref:`code_calibration` for more details on code calibration
-and least squares.
+Please read :ref:`code_calibration` for more details.
 
 See also
 --------

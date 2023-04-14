@@ -20,13 +20,13 @@ class LogisticModel:
     a : Constant
         Parameter of the model a=0.03134
 
-    b : Constant
+    b : float
         Parameter of the model b=1.5887e-10
 
-    nbdates : Constant
+    nbdates : float
         The number of years in the dataset.
 
-    distY0 : `Normal` distribution
+    distY0 : :class:`~openturns.Normal` distribution
              ot.Normal(y0, 0.1 * y0)
 
     distA : `Normal` distribution

@@ -35,7 +35,7 @@ class FloodModel:
     dim : The dimension of the problem
           dim=4
 
-    Q : `TruncatedDistribution` of a `Gumbel` distribution
+    Q : :class:`~openturns.TruncatedDistribution` of a :class:`~openturns.Gumbel` distribution
         ot.TruncatedDistribution(ot.Gumbel(558., 1013.), 0, ot.TruncatedDistribution.LOWER)
 
     Ks : `TruncatedDistribution` of a `Normal` distribution
@@ -50,10 +50,10 @@ class FloodModel:
     model : `SymbolicFunction`
             The flood model.
 
-    distribution : `ComposedDistribution`
+    distribution : :class:`~openturns.ComposedDistribution`
                    The joint distribution of the input parameters.
 
-    data : ot.Sample(10, 2)
+    data : :class:`~openturns.Sample` of size 10 and dimension 2
         A dataset which contains noisy observations of the flowrate (column 0)
         and the height (column 1).
 
