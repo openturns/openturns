@@ -24,6 +24,7 @@
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/VisualTest.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -217,7 +218,8 @@ void CalibrationResult::load(Advocate & adv)
   }
   else
   {
-    bayesian_ = false;
+    const CovarianceMatrix priorCovariance(parameterPrior_.getCovariance());
+    bayesian_ = (priorCovariance(0, 0) < SpecFunc::MaxScalar);
     Description colors = DrawableImplementation::BuildDefaultPalette(3);
     priorColor_ = colors[0];
     posteriorColor_ = colors[1];
