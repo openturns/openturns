@@ -36,16 +36,16 @@ class FloodModel:
           dim=4
 
     Q : :class:`~openturns.TruncatedDistribution` of a :class:`~openturns.Gumbel` distribution
-        ot.TruncatedDistribution(ot.Gumbel(558.0, 1013.0), 0.0, ot.TruncatedDistribution.LOWER)
+        `ot.TruncatedDistribution(ot.Gumbel(558.0, 1013.0), 0.0, ot.TruncatedDistribution.LOWER)`
 
     Ks : :class:`~openturns.TruncatedDistribution` of a :class:`~openturns.Normal` distribution
          `ot.TruncatedDistribution(ot.Normal(30.0, 7.5), 0.0, ot.TruncatedDistribution.LOWER)`
 
     Zv : :class:`~openturns.Uniform` distribution
-         ot.Uniform(49.0, 51.0)
+         `ot.Uniform(49.0, 51.0)`
 
     Zm : :class:`~openturns.Uniform` distribution
-         ot.Uniform(54.0, 56.0)
+         `ot.Uniform(54.0, 56.0)`
 
     model : :class:`~openturns.SymbolicFunction`
             The flood model.

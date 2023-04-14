@@ -24,13 +24,13 @@ class LogisticModel:
         Parameter of the model. The default is 1.5887e-10.
 
     distY0 : :class:`~openturns.Normal` distribution
-             ot.Normal(y0, 0.1 * y0)
+             `ot.Normal(y0, 0.1 * y0)`
 
     distA : :class:`~openturns.Normal` distribution
-            ot.Normal(a, 0.3 * a)
+            `ot.Normal(a, 0.3 * a)`
 
     distB : :class:`~openturns.Normal` distribution
-            ot.Normal(b, 0.3 * b)
+            `ot.Normal(b, 0.3 * b)`
 
     distX : :class:`~openturns.ComposedDistribution`
             The joint distribution of the input parameters.
