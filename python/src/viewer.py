@@ -451,10 +451,16 @@ class View:
 
             elif drawableKind == "Cloud":
                 plot_kw["linestyle"] = "None"
-                self._ax[0].plot(x, y, **plot_kw)
+                lines = self._ax[0].plot(x, y, **plot_kw)
+                if len(drawable.getLegend()) > 0:
+                    legend_handles.append(lines[0])
+                    legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Curve":
-                self._ax[0].plot(x, y, **plot_kw)
+                lines = self._ax[0].plot(x, y, **plot_kw)
+                if len(drawable.getLegend()) > 0:
+                    legend_handles.append(lines[0])
+                    legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Polygon":
 
@@ -533,11 +539,15 @@ class View:
                         # https://github.com/matplotlib/matplotlib/pull/10710
                         warnings.warn("pyplot.clabel likely failed as in #10710")
                 artists, _ = contourset.legend_elements()
-                legend_handles.append(artists[0])
-                legend_labels.append(drawable.getLegend())
+                if len(drawable.getLegend()) > 0:
+                    legend_handles.append(artists[0])
+                    legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Staircase":
-                self._ax[0].step(x, y, **step_kw)
+                lines = self._ax[0].step(x, y, **step_kw)
+                if len(drawable.getLegend()) > 0:
+                    legend_handles.append(lines[0])
+                    legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Text":
                 # adjust font
