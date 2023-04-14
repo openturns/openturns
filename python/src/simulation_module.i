@@ -79,10 +79,6 @@
 %include SobolSimulationAlgorithm.i
 %include NAISResult.i
 %include NAIS.i
-%include CrossEntropyResult.i
-%include CrossEntropyImportanceSampling.i
-%include StandardSpaceCrossEntropyImportanceSampling.i
-%include PhysicalSpaceCrossEntropyImportanceSampling.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i

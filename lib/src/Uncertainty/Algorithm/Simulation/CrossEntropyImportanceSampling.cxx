@@ -224,7 +224,7 @@ void CrossEntropyImportanceSampling::run()
   const Scalar variancenonCritic = (numberOfSample - indicesCritic.getSize()) * (failureProbability * failureProbability);
   const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (numberOfSample - 1) / numberOfSample ;
 
-  // Save of data in Simulation naisResult_ structure
+  // Save of data in Simulation crossEntropyResult_ structure
   crossEntropyResult_.setProbabilityEstimate(failureProbability);
   crossEntropyResult_.setAuxiliaryDistribution(auxiliaryDistribution_);
   crossEntropyResult_.setAuxiliaryInputSample(auxiliaryInputSample);

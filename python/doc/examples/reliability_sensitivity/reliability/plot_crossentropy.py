@@ -13,6 +13,7 @@ Cross Entropy Importance Sampling
 
 # %%
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.viewer as viewer
 from openturns.usecases import stressed_beam
 
@@ -60,7 +61,7 @@ event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 # We choose to set the intermediate quantile level to 0.35.
 
 # %%
-standardSpaceIS = ot.StandardSpaceCrossEntropyImportanceSampling(event, 0.35)
+standardSpaceIS = otexp.StandardSpaceCrossEntropyImportanceSampling(event, 0.35)
 
 # %%
 # Now we can run the algorithm and get the results.
@@ -188,7 +189,7 @@ print(
     ", ".join([f"{param}: {value:.3f}" for param, value in zip(desc, p)]),
 )
 
-physicalSpaceIS1 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
+physicalSpaceIS1 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 
@@ -229,7 +230,7 @@ activeParameters = ot.Indices([0, 3])
 # WARNING : native parameters of distribution have to be considered
 bounds = ot.Interval([14, 500], [16, 1000])
 initialParameters = [15, 750]
-physicalSpaceIS2 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
+physicalSpaceIS2 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 physicalSpaceIS2.run()
@@ -284,7 +285,7 @@ bounds = ot.Interval(
 )
 initialParameters = distribution.getParameter()
 
-physicalSpaceIS3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
+physicalSpaceIS3 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 physicalSpaceIS3.run()
