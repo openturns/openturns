@@ -34,14 +34,9 @@ int main()
 
   const Function beam = SymbolicFunction(input, Description(1, formula));
   // Definition of input variable PDF
-  Point mean(2);
-  mean[0] = 0.2;
-  mean[1] = 0.0;
+  const Point mean = {0.2, 0.};
   
-  Point sigma(2) ;
-  sigma[0] = 0.1;
-  sigma[1] = 0.1;
-    
+  const Point sigma = {0.1, 0.1};
 
   const Normal distX(mean, sigma);
 
@@ -51,40 +46,22 @@ int main()
 
   Normal aux_distrib(mean, sigma);
   
-  Point active_parameters(4);
-  active_parameters[0]=0;
-  active_parameters[1]=1;
-  active_parameters[2]=2;
-  active_parameters[3]=3;
+  const Indices active_parameters = {0, 1, 2, 3};
+
+  const Point lowerBnd = {0.1, 0.05, 0., 0.05};
   
-  Point lowerBnd(4);
-  
-  lowerBnd[0]=0.1;
-  lowerBnd[1]=0.05;
-  lowerBnd[2]=0.;
-  lowerBnd[3]=0.05;
-  
-  Point upperBnd(4);
-  
-  upperBnd[0]=0.3;
-  upperBnd[1]=0.2;
-  upperBnd[2]=0.3;
-  upperBnd[3]=0.2;  
+  const Point  upperBnd = {0.3, 0.2, 0.3, 0.2};
 
   const Interval bounds(lowerBnd,upperBnd);
                      
-  Point initial_theta(4);
-  initial_theta[0]=0.2;
-  initial_theta[1]=0.1;
-  initial_theta[2]=0.;
-  initial_theta[3]=0.1;
+  const Point initial_theta = {0.2, 0.1, 0.0, 0.1};
 
   // Definition of the algorithm
   PhysicalSpaceCrossEntropyImportanceSampling algoPhysicalSpaceCE(event,
                                                                   aux_distrib,
                                                                   active_parameters,
                                                                   initial_theta,
-                                                                  bounds,;
+                                                                  bounds);
   
   // Run of the algorithm           
   RandomGenerator::SetSeed(1); 
