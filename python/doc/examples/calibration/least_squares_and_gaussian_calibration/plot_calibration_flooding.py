@@ -350,10 +350,11 @@ print(thetaMAP)
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
 #
 # This confidence interval is based on bootstrap, based on a sample size equal
-# to 100 (as long as the value of the `ResourceMap` key
+# to 100 (as long as the value of the :class:`~openturns.ResourceMap` key
 # "NonLinearLeastSquaresCalibration-BootstrapSize" is unchanged).
 # This confidence interval reflects the sensitivity of the optimum
 # to the variability in the observations.
+print(ot.ResourceMap.GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
@@ -407,6 +408,7 @@ view = viewer.View(graph)
 # checking that this hypothesis occurs in the study is an important
 # verification.
 
+# %%
 graph = calibrationResult.drawParameterDistributions()
 view = viewer.View(
     graph,
@@ -699,7 +701,7 @@ plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 # The default value of the key is nonzero, meaning that bootstrap is used.
 # This can be costly in some cases, because it requires to repeat the
 # optimization several times.
-ot.ResourceMap.GetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize")
+print(ot.ResourceMap.GetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize"))
 
 # %%
 # We must configure the key before creating the object (otherwise changing
