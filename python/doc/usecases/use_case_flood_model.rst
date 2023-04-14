@@ -124,9 +124,8 @@ by Bayesian methods.
 References
 ----------
 
-- Iooss B., Lemaître P. (2015) A review on global sensitivity analysis methods. In: Meloni C., Dellino G. (eds) Uncertainty management in Simulation-Optimization of Complex Systems: Algorithmsand Applications, Springer
-- Baudin M., Dutfoy A., Iooss B., Popelin A.-L. (2015) OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation. In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
-
+* [iooss2015]_
+* [baudin2015]_
 
 API documentation
 -----------------
