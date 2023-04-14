@@ -391,6 +391,15 @@ algo = ot.NonLinearLeastSquaresCalibration(
 )
 
 # %%
+# The optimization algorithm is automatically selected using
+# the default solver which can build a :class:`~openturns.LeastSquaresProblem`.
+# We can see which solved is used using
+# :meth:`~openturns.NonLinearLeastSquaresCalibration.getOptimizationAlgorithm`.
+
+# %%
+print(algo.getOptimizationAlgorithm())
+
+# %%
 # The :meth:`~openturns.NonLinearLeastSquaresCalibration.run` method computes
 # the solution of the problem.
 algo.run()
