@@ -57,8 +57,6 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
     rhoQuantile_ = (event.getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
     bounds_ = bounds;
 
-    
-  
     Point parameters(auxiliaryDistribution_.getParameter());
     
     if (activeParameters_.getSize() != initialAuxiliaryDistributionParameters.getSize())
