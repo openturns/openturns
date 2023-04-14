@@ -54,7 +54,6 @@ StandardSpaceCrossEntropyImportanceSampling::StandardSpaceCrossEntropyImportance
   : CrossEntropyImportanceSampling(event,rhoQuantile)
   {
 
-  //ev = EventSimulation(event)
   initialDistribution_ = Normal(initialDistribution_.getDimension());
 
   auxiliaryDistribution_ = Normal(initialDistribution_.getDimension());
@@ -107,7 +106,7 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   }
   
   // Calculation of updated mean of auxiliary distribution
-  Point mean_(auxiliaryCriticInputSamples.getDimension());
+  Point mean(auxiliaryCriticInputSamples.getDimension());
   
   for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
   {
@@ -119,11 +118,11 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
       numeratorMeanCalculation += std::exp(criticSamplesInitialLogPDFValue[j] - criticSamplesAuxiliaryLogPDFValue[j])* auxiliaryCriticInputSamples(j,i);
       }
     
-    mean_[i]= numeratorMeanCalculation / sumPdfCritic; 
+    mean[i]= numeratorMeanCalculation / sumPdfCritic; 
   }
  
   // Calculation of updated standard deviation of auxiliary distribution
-  Point standardDeviation_(auxiliaryCriticInputSamples.getDimension());
+  Point standardDeviation(auxiliaryCriticInputSamples.getDimension());
   
   for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
   {
@@ -131,7 +130,7 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   
     for(UnsignedInteger k=0; k < auxiliaryCriticInputSamples.getSize();++k)
     {
-      diff[k] = std::pow(auxiliaryCriticInputSamples.getMarginal(i)(k,0) - mean_[i],2);
+      diff[k] = std::pow(auxiliaryCriticInputSamples.getMarginal(i)(k,0) - mean[i],2);
     }
 
     Scalar numeratorStdCalculation = 0.0;
@@ -139,15 +138,15 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
     {
       numeratorStdCalculation += criticSamplesInitialPDFValue[j]*diff[j] / criticSamplesAuxiliaryPDFValue[j];
     }
-    standardDeviation_[i] = std::sqrt(numeratorStdCalculation/sumPdfCritic);
+    standardDeviation[i] = std::sqrt(numeratorStdCalculation/sumPdfCritic);
   }
 
  Point auxiliaryParameters = Point(2*auxiliaryCriticInputSamples.getDimension());
  
  for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
  {
-   auxiliaryParameters[2*i] = mean_[i];
-   auxiliaryParameters[2*i+1] = standardDeviation_[i]; 
+   auxiliaryParameters[2*i] = mean[i];
+   auxiliaryParameters[2*i+1] = standardDeviation[i]; 
  } 
 
  

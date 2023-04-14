@@ -58,12 +58,12 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
 
     activeParameters_ = activeParameters;
   
-    Point parameters_(auxiliaryDistribution_.getParameter());
+    Point parameters(auxiliaryDistribution_.getParameter());
     for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
     {
-      parameters_[activeParameters_[i]] = initialAuxiliaryDistributionParameters[i];
+      parameters[activeParameters_[i]] = initialAuxiliaryDistributionParameters[i];
     }      
-    auxiliaryDistribution_.setParameter(parameters_);
+    auxiliaryDistribution_.setParameter(parameters);
   }
 
 
@@ -78,10 +78,10 @@ class KullbackLeiblerDivergenceObjective : public EvaluationImplementation
 {
 public:
   KullbackLeiblerDivergenceObjective(const Sample auxiliaryCriticInputSample,
-                                    const Point & initialCriticInputSamplePDFValue,
-                                    const Distribution & auxiliaryDistribution,
-                                    const Indices & activeParameters,
-                                    const Scalar numberSamples)
+                                     const Point & initialCriticInputSamplePDFValue,
+                                     const Distribution & auxiliaryDistribution,
+                                     const Indices & activeParameters,
+                                     const Scalar numberSamples)
   : EvaluationImplementation()
   , auxiliaryCriticInputSample_(auxiliaryCriticInputSample)
   , activeParameters_(activeParameters)
@@ -99,19 +99,19 @@ public:
   
   Point operator()(const Point & x) const
   {
-    Distribution myDistrib = auxiliaryDistribution_;
+    Distribution distrib = auxiliaryDistribution_;
   
     // update auxiliary distribution
-    Point parameters_(auxiliaryDistribution_.getParameter());
+    Point parameters(auxiliaryDistribution_.getParameter());
   
     for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
     {
-      parameters_[activeParameters_[i]] = x[i];
+      parameters[activeParameters_[i]] = x[i];
     }
-    myDistrib.setParameter(parameters_);
+    distrib.setParameter(parameters);
   
-    Point criticSamplesAuxiliaryPDFValue = myDistrib.computePDF(auxiliaryCriticInputSample_).asPoint();
-    Point criticSamplesAuxiliaryLogPDFValue = myDistrib.computeLogPDF(auxiliaryCriticInputSample_).asPoint();
+    Point criticSamplesAuxiliaryPDFValue = distrib.computePDF(auxiliaryCriticInputSample_).asPoint();
+    Point criticSamplesAuxiliaryLogPDFValue = distrib.computeLogPDF(auxiliaryCriticInputSample_).asPoint();
   
     Scalar objectiveFunction = 0.0;
   
@@ -147,7 +147,7 @@ Scalar numberSamples_;
 /** Set solver */
 void PhysicalSpaceCrossEntropyImportanceSampling::setSolver(const OptimizationAlgorithm & solver)
 {
-   solver_=solver;
+   solver_= solver;
 }
 
 /** Get solver */
@@ -170,12 +170,12 @@ Sample PhysicalSpaceCrossEntropyImportanceSampling::computeOutputSamples(const S
 void PhysicalSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters)
 {
 
-  Point parameters_(auxiliaryDistribution_.getParameter());
+  Point parameters(auxiliaryDistribution_.getParameter());
   for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
   {
-    parameters_[activeParameters_[i]] = auxiliaryDistributionParameters[i];
+    parameters[activeParameters_[i]] = auxiliaryDistributionParameters[i];
   }
-  auxiliaryDistribution_.setParameter(parameters_);
+  auxiliaryDistribution_.setParameter(parameters);
 } 
 
 // Optimize auxiliary distribution parameters

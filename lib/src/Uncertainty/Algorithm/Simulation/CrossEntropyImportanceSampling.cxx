@@ -41,7 +41,7 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling()
 
 // Default constructor
 CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVector & event,
-                                                                                 const Scalar rhoQuantile)
+                                                               const Scalar rhoQuantile)
   : EventSimulation(event)
   , initialDistribution_(event.getAntecedent().getDistribution())
 {
