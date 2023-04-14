@@ -59,6 +59,10 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
     activeParameters_ = activeParameters;
   
     Point parameters(auxiliaryDistribution_.getParameter());
+    
+    if (activeParameters_.getSize() != initialAuxiliaryDistributionParameters.getSize())
+    throw InvalidArgumentException(HERE) << "In PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportanceSampling, input sample size (" << activeParameters_.getSize() << ") does not match initial auxiliary distribution parameters size (" << initialAuxiliaryDistributionParameters.getSize() << ").";
+    
     for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
     {
       parameters[activeParameters_[i]] = initialAuxiliaryDistributionParameters[i];
