@@ -298,6 +298,7 @@ view = viewer.View(graph)
 
 # %%
 # %%
+# %%
 # We see that the residuals fit to the Normal distribution,
 # according to the normal plot.
 
