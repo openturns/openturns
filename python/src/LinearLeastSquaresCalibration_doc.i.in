@@ -2,9 +2,9 @@
 "Linear least squares calibration algorithm.
 
 Available constructors:
-    LinearLeastSquaresCalibration(*model, inputObservations, outputObservations, candidate, methodName*)
+    LinearLeastSquaresCalibration(*model, inputObservations, outputObservations, startingPoint, methodName*)
 
-    LinearLeastSquaresCalibration(*modelObservations, gradientObservations, outputObservations, candidate, methodName*)
+    LinearLeastSquaresCalibration(*modelObservations, gradientObservations, outputObservations, startingPoint, methodName*)
 
 Parameters
 ----------
@@ -15,8 +15,9 @@ inputObservations : 2-d sequence of float
     Can have dimension 0 to specify no observations.
 outputObservations : 2-d sequence of float
     The sample of output observations.
-candidate : sequence of float
-    The reference value of the parameter.
+startingPoint : sequence of float
+    The reference value of the parameter, where the linearization
+    of the parametric model is evaluated.
 methodName : str
     The name of the least-squares method to use for the calibration.
     By default, equal to *QR*. Possible values are *SVD*, *QR*, *Cholesky*.
@@ -30,7 +31,7 @@ Notes
 LinearLeastSquaresCalibration is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
 
 The prior distribution of the parameter is a noninformative prior
-emulated using a flat :class:`~openturns.Normal` centered on the candidate and with a variance equal to SpecFunc.MaxScalar.
+emulated using a flat :class:`~openturns.Normal` centered on the `startingPoint` and with a variance equal to SpecFunc.MaxScalar.
 
 The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
 variability of the optimum parameter depending on the observation sample. 
@@ -45,7 +46,7 @@ then all singular values of the covariance matrix are increased by :math:`\epsil
 The resulting distribution of the output error is :class:`~openturns.Normal` with a zero mean
 and a diagonal covariance matrix computed from the residuals.
 The residuals are computed based on the linearization of the model,
-where the Jacobian matrix is evaluated at the candidate point.
+where the Jacobian matrix is evaluated at the `startingPoint`.
 The diagonal of the covariance matrix of the output error
 is constant and is estimated with the unbiased variance estimator.
 
@@ -71,9 +72,9 @@ Calibrate a nonlinear model using linear least-squares:
 >>> modelX = ot.ParametricFunction(model, params, p_ref)
 >>> y = modelX(x)
 >>> y += ot.Normal(0.0, 0.05).getSample(m)
->>> candidate = [1.0]*3
+>>> startingPoint = [1.0]*3
 >>> method = 'SVD'
->>> algo = ot.LinearLeastSquaresCalibration(modelX, x, y, candidate, method)
+>>> algo = ot.LinearLeastSquaresCalibration(modelX, x, y, startingPoint, method)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
 [8.24019,0.0768046,0.992957]"
@@ -81,32 +82,32 @@ Calibrate a nonlinear model using linear least-squares:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearLeastSquaresCalibration::getModelObservations
-"Accessor to the model evaluation at the candidate.
+"Accessor to the model evaluation at the `startingPoint`.
 
 Returns
 -------
 modelObservation : :class:`~openturns.Sample`
-    Evaluation of the model at the candidate point."
+    Evaluation of the model at the `startingPoint`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearLeastSquaresCalibration::getGradientObservations
-"Accessor to the model gradient at the candidate.
+"Accessor to the model gradient at the startingPoint.
 
 Returns
 -------
 gradientObservation : :class:`~openturns.Matrix`
-    Gradient of the model at the candidate point."
+    Gradient of the model at the startingPoint point."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearLeastSquaresCalibration::getCandidate
-"Accessor to the parameter candidate.
+%feature("docstring") OT::LinearLeastSquaresCalibration::getStartingPoint
+"Accessor to the parameter startingPoint.
 
 Returns
 -------
-candidate : :class:`~openturns.Point`
-    Parameter candidate."
+startingPoint : :class:`~openturns.Point`
+    Parameter startingPoint."
 
 // ---------------------------------------------------------------------
 

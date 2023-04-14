@@ -51,17 +51,17 @@ GaussianNonLinearCalibration::GaussianNonLinearCalibration()
 GaussianNonLinearCalibration::GaussianNonLinearCalibration(const Function & model,
     const Sample & inputObservations,
     const Sample & outputObservations,
-    const Point & candidate,
+    const Point & parameterMean,
     const CovarianceMatrix & parameterCovariance,
     const CovarianceMatrix & errorCovariance)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(candidate, parameterCovariance))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(parameterMean, parameterCovariance))
   , algorithm_()
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize"))
   , errorCovariance_(errorCovariance)
   , globalErrorCovariance_(false)
 {
   // Check the input
-  const UnsignedInteger parameterDimension = candidate.getDimension();
+  const UnsignedInteger parameterDimension = parameterMean.getDimension();
   if (model.getParameterDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of parameter dimension=" << parameterDimension << ", got parameter dimension=" << model.getParameterDimension();
   if (parameterCovariance.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a parameter covariance of dimension=" << parameterDimension << ", got dimension=" << parameterCovariance.getDimension();
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
@@ -85,14 +85,14 @@ public:
   CalibrationModelEvaluation(const Function & model,
                              const Sample & inputObservations,
                              const Sample & outputObservations,
-                             const Point & candidate,
+                             const Point & parameterMean,
                              const TriangularMatrix & parameterInverseCholesky,
                              const TriangularMatrix & errorInverseCholesky)
     : EvaluationImplementation()
     , model_(model)
     , inputObservations_(inputObservations)
     , outputObservations_(outputObservations)
-    , candidate_(candidate)
+    , parameterMean_(parameterMean)
     , parameterInverseCholesky_(parameterInverseCholesky)
     , errorInverseCholesky_(errorInverseCholesky)
     , globalErrorInverseCholesky_(errorInverseCholesky.getDimension() != outputObservations_.getDimension())
@@ -120,7 +120,7 @@ public:
     Point result;
     if (globalErrorInverseCholesky_) result = errorInverseCholesky_ * residualModel;
     else result = errorInverseCholesky_.getImplementation()->triangularProd(MatrixImplementation(localModel.getOutputDimension(), inputObservations_.getSize(), Collection<Scalar>(residualModel)));
-    result.add(parameterInverseCholesky_ * (point - candidate_));
+    result.add(parameterInverseCholesky_ * (point - parameterMean_));
     return result;
   }
 
@@ -186,9 +186,9 @@ public:
     return outputObservations_;
   }
 
-  Point getCandidate() const
+  Point getParameterMean() const
   {
-    return candidate_;
+    return parameterMean_;
   }
 
   TriangularMatrix getParameterInverseCholesky() const
@@ -210,7 +210,7 @@ private:
   const Function model_;
   const Sample inputObservations_;
   const Sample outputObservations_;
-  const Point candidate_;
+  const Point parameterMean_;
   const TriangularMatrix parameterInverseCholesky_;
   const TriangularMatrix errorInverseCholesky_;
   const Bool globalErrorInverseCholesky_;
@@ -331,7 +331,7 @@ void GaussianNonLinearCalibration::run()
   Normal error(Point(errorCovariance_.getDimension()), errorCovariance_);
   const TriangularMatrix parameterInverseCholesky(getParameterPrior().getInverseCholesky());
   const TriangularMatrix errorInverseCholesky(error.getInverseCholesky());
-  const Point thetaStar(run(inputObservations_, outputObservations_, getCandidate(), parameterInverseCholesky, errorInverseCholesky));
+  const Point thetaStar(run(inputObservations_, outputObservations_, getParameterMean(), parameterInverseCholesky, errorInverseCholesky));
   // Build the residual function this way to benefit from the automatic Hessian
   const Function residualFunction(NonLinearLeastSquaresCalibration::BuildResidualFunction(model_, inputObservations_, outputObservations_));
   const Point residuals(residualFunction(thetaStar));
@@ -377,12 +377,12 @@ void GaussianNonLinearCalibration::run()
 /* Perform a unique estimation */
 Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
                                         const Sample & outputObservations,
-                                        const Point & candidate,
+                                        const Point & parameterMean,
                                         const TriangularMatrix & parameterInverseCholesky,
                                         const TriangularMatrix & errorInverseCholesky)
 {
   // Build the residual function this way to benefit from the automatic Hessian
-  const GaussianNonLinearFunctions::CalibrationModelEvaluation residualEvaluation(model_, inputObservations, outputObservations, candidate, parameterInverseCholesky, errorInverseCholesky);
+  const GaussianNonLinearFunctions::CalibrationModelEvaluation residualEvaluation(model_, inputObservations, outputObservations, parameterMean, parameterInverseCholesky, errorInverseCholesky);
   const Function residualFunction(Function(residualEvaluation, GaussianNonLinearFunctions::CalibrationModelGradient(residualEvaluation), CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), residualEvaluation)));
   LeastSquaresProblem problem(residualFunction);
   algorithm_.setVerbose(true);
@@ -390,11 +390,11 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
   try
   {
     // If the solver is single start, we can use its setStartingPoint method
-    algorithm_.setStartingPoint(getCandidate());
+    algorithm_.setStartingPoint(getParameterMean());
   }
   catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
   {
-    LOGWARN(OSS() << "Candidate=" << getCandidate() << " is ignored because algorithm "
+    LOGWARN(OSS() << "ParameterMean=" << getParameterMean() << " is ignored because algorithm "
             << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");
   }
   algorithm_.run();
@@ -402,10 +402,10 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
   return thetaStar;
 }
 
-/* Candidate accessor */
-Point GaussianNonLinearCalibration::getCandidate() const
+/* ParameterMean accessor */
+Point GaussianNonLinearCalibration::getParameterMean() const
 {
-  // The candidate is stored in the prior distribution, which is a Normal distribution
+  // The parameterMean is stored in the prior distribution, which is a Normal distribution
   return getParameterPrior().getMean();
 }
 

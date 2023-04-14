@@ -248,7 +248,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
   const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("CalibrationResult-xRangeMarginFactor");
   const UnsignedInteger dimension = parameterMAP_.getDimension();
   GridLayout grid(1, dimension);
-  const Point candidate(getParameterPrior().getMean());
+  const Point initialPoint(getParameterPrior().getMean());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     const bool upperRightGraph = (j == dimension - 1);
@@ -262,7 +262,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     // The graph must show:
     // + the full posterior PDF
     // + the full prior PDF if it does not shrink too much the posterior graph
-    // + the candidate
+    // + the initial point
 
     // Dry run: draw everything using the natural parameters
     // posterior
@@ -270,25 +270,8 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     const Scalar xMinPost = postPDF.getData().getMin()[0];
     const Scalar xMaxPost = postPDF.getData().getMax()[0];
 
-    // candidate
-    const Scalar xCandidate = candidate[j];
-    Cloud cloudCandidate;
-    if (not bayesian_)
-    {
-        Sample data(1, 2);
-        data(0, 0) = xCandidate;
-        cloudCandidate = Cloud(data);
-        cloudCandidate.setColor(priorColor_);
-        cloudCandidate.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
-        if (upperRightGraph)
-        {
-            cloudCandidate.setLegend("Initial");
-        }
-        else
-        {
-            cloudCandidate.setLegend("");
-        }
-    }
+    // initialPoint
+    const Scalar xInitialPoint = initialPoint[j];
 
     // Compute min and max bounds of graphics
     Scalar xMin;
@@ -305,17 +288,51 @@ GridLayout CalibrationResult::drawParameterDistributions() const
         xMin = std::min(xMinPrior, xMinPost);
         xMax = std::max(xMaxPrior, xMaxPost);
     } else {
-        // In the Least Squares framework, only the candidate and posterior matters.
-        // The candidate is just a point: this is why we need a margin here.
+        // In the Least Squares framework, only the initial point and posterior matters.
+        // The initial point is just a point: this is why we need a margin here.
         // The prior is flat: ignore it to compute the bounds.
         // Now, build the common range
-        const Scalar xMinRaw = std::min(xMinPost, xCandidate);
-        const Scalar xMaxRaw = std::max(xMaxPost, xCandidate);
+        const Scalar xMinRaw = std::min(xMinPost, xInitialPoint);
+        const Scalar xMaxRaw = std::max(xMaxPost, xInitialPoint);
         const Scalar xScaledRange = xRangeMarginFactor * (xMaxRaw - xMinRaw);
         xMin = xMinRaw - xScaledRange;
         xMax = xMaxRaw + xScaledRange;
     }
     
+    if (bayesian_)
+    {
+        Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0));
+        if (upperRightGraph)
+        {
+            priorPDF.setLegend("Prior");
+        }
+        else
+        {
+            priorPDF.setLegend("");
+        }
+        priorPDF.setColor(priorColor_);
+        priorPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PriorLineStyle"));
+        graph.add(priorPDF);
+    }
+    else
+    {
+        Sample data(1, 2);
+        data(0, 0) = xInitialPoint;
+        Cloud cloudStartingPoint;
+        cloudStartingPoint = Cloud(data);
+        cloudStartingPoint.setColor(priorColor_);
+        cloudStartingPoint.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
+        if (upperRightGraph)
+        {
+            cloudStartingPoint.setLegend("Starting point");
+        }
+        else
+        {
+            cloudStartingPoint.setLegend("");
+        }
+        graph.add(cloudStartingPoint);
+    }
+
     // Now draw everything using the common range
     postPDF = getParameterPosterior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0);
     if (upperRightGraph)
@@ -335,36 +352,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     }
     postPDF.setColor(posteriorColor_);
     postPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorLineStyle"));
-
-    Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0));
-    if (upperRightGraph)
-    {
-        if (bayesian_)
-        {
-            priorPDF.setLegend("Prior");
-        }
-        else
-        {
-            priorPDF.setLegend("Initial");
-        }
-    }
-    else
-    {
-        priorPDF.setLegend("");
-    }
-    priorPDF.setColor(priorColor_);
-    priorPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PriorLineStyle"));
-
-    // assemble the graphs in the correct order
-    if (bayesian_)
-    {
-        graph.add(priorPDF);
-    }
     graph.add(postPDF);
-    if (not bayesian_)
-    {
-        graph.add(cloudCandidate);
-    }
 
     grid.setGraph(0, j, graph);
   }

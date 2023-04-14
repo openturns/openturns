@@ -10,23 +10,22 @@ inputObservations : 2-d sequence of float
     Can have dimension 0 to specify no observations.
 outputObservations : 2-d sequence of float
     The sample of output observations.
-candidate : sequence of float
-    The mean of the gaussian prior distribution of the parameter.
+parameterMean : sequence of float
+    The mean of the Gaussian prior distribution of the parameter.
 parameterCovariance : 2-d sequence of float
-    The covariance matrix of the gaussian prior distribution of the parameter.
+    The covariance matrix of the Gaussian prior distribution of the parameter.
 errorCovariance : 2-d sequence of float
-    The covariance matrix of the gaussian distribution of the observations error.
+    The covariance matrix of the Gaussian distribution of the observations error.
 
 Notes
 -----
-GaussianNonLinearCalibration is the minimum variance estimator of the parameter of a given model
-under the assumption that this parameter is dispersed according to a known
-covariance matrix. 
+GaussianNonLinearCalibration implements the Maximum A Posteriori (MAP) estimator for a nonlinear model
+under the Bayesian hypothesis that the prior and the observation errors have Gaussian distributions. 
 This algorithm is also known as *3DVAR*. 
 
 The given observation error covariance can be either *local*,
-ie the same matrix applies for each observation and is of dimension the output
-dimension of the model, or *global*, ie the matrix describes the full set of
+i.e. the same matrix applies for each observation and is of dimension the output
+dimension of the model, or *global*, i.e. the matrix describes the full set of
 observation errors, in which case its dimension is the product of the output
 dimension of the model and the number of observations.
 
@@ -80,10 +79,10 @@ Calibrate a nonlinear model using 3DVAR:
 >>> modelX = ot.ParametricFunction(model, params, p_ref)
 >>> y = modelX(x)
 >>> y += ot.Normal(0.0, 0.05).getSample(m)
->>> candidate = [1.0]*3
+>>> parameterMean = [1.0]*3
 >>> priorCovariance = ot.CovarianceMatrix(3)
 >>> errorCovariance = ot.CovarianceMatrix(1, [0.1])
->>> algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance)
+>>> algo = ot.GaussianNonLinearCalibration(modelX, x, y, parameterMean, priorCovariance, errorCovariance)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
 [2.705...,1.212...,0.499...]"
@@ -91,32 +90,32 @@ Calibrate a nonlinear model using 3DVAR:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GaussianNonLinearCalibration::getModelObservations
-"Accessor to the model evaluation at the candidate.
+"Accessor to the model evaluation at the parameterMean.
 
 Returns
 -------
 modelObservation : :class:`~openturns.Sample`
-    Evaluation of the model at the candidate point."
+    Evaluation of the model at the parameterMean point."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GaussianNonLinearCalibration::getGradientObservations
-"Accessor to the model gradient at the candidate.
+"Accessor to the model gradient at the `parameterMean`.
 
 Returns
 -------
 gradientObservation : :class:`~openturns.Matrix`
-    Gradient of the model at the candidate point."
+    Gradient of the model at the `parameterMean` point."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianNonLinearCalibration::getCandidate
-"Accessor to the parameter candidate.
+%feature("docstring") OT::GaussianNonLinearCalibration::getParameterMean
+"Accessor to the parameter `parameterMean`.
 
 Returns
 -------
-candidate : :class:`~openturns.Point`
-    Parameter candidate."
+parameterMean : :class:`~openturns.Point`
+    Parameter `parameterMean`."
 
 // ---------------------------------------------------------------------
 

@@ -50,7 +50,7 @@ public:
   GaussianNonLinearCalibration(const Function & model,
                                const Sample & inputObservations,
                                const Sample & outputObservations,
-                               const Point & candidate,
+                               const Point & parameterMean,
                                const CovarianceMatrix & parameterCovariance,
                                const CovarianceMatrix & errorCovariance);
 
@@ -61,7 +61,7 @@ public:
   void run() override;
   Point run(const Sample & inputObservations,
             const Sample & outputObservations,
-            const Point & candidate,
+            const Point & parameterMean,
             const TriangularMatrix & parameterInverseCholesky,
             const TriangularMatrix & errorInverseCholesky);
 
@@ -69,8 +69,8 @@ public:
   OptimizationAlgorithm getOptimizationAlgorithm() const;
   void setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm);
 
-  /** Candidate accessor */
-  Point getCandidate() const;
+  /** ParameterMean accessor */
+  Point getParameterMean() const;
 
   /** Parameter covariance accessor */
   CovarianceMatrix getParameterCovariance() const;

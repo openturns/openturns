@@ -43,11 +43,11 @@ GaussianLinearCalibration::GaussianLinearCalibration()
 GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
     const Sample & inputObservations,
     const Sample & outputObservations,
-    const Point & candidate,
+    const Point & parameterMean,
     const CovarianceMatrix & parameterCovariance,
     const CovarianceMatrix & errorCovariance,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(candidate, parameterCovariance))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(parameterMean, parameterCovariance))
   , modelObservations_(0, 0)
   , gradientObservations_(0, 0)
   , errorCovariance_(errorCovariance)
@@ -55,7 +55,7 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
   , methodName_(methodName)
 {
   // Check the input
-  const UnsignedInteger parameterDimension = candidate.getDimension();
+  const UnsignedInteger parameterDimension = parameterMean.getDimension();
   if (model.getParameterDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of parameter dimension=" << parameterDimension << ", got parameter dimension=" << model.getParameterDimension();
   if (parameterCovariance.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a parameter covariance of dimension=" << parameterDimension << ", got dimension=" << parameterCovariance.getDimension();
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
@@ -72,11 +72,11 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
 GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObservations,
     const Matrix & gradientObservations,
     const Sample & outputObservations,
-    const Point & candidate,
+    const Point & parameterMean,
     const CovarianceMatrix & parameterCovariance,
     const CovarianceMatrix & errorCovariance,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(candidate, parameterCovariance))
+  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(parameterMean, parameterCovariance))
   , modelObservations_(modelObservations)
   , gradientObservations_(gradientObservations)
   , errorCovariance_(errorCovariance)
@@ -84,7 +84,7 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
   , methodName_(methodName)
 {
   // Check the input
-  const UnsignedInteger parameterDimension = candidate.getDimension();
+  const UnsignedInteger parameterDimension = parameterMean.getDimension();
   if (parameterCovariance.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a parameter covariance of dimension=" << parameterDimension << ", got dimension=" << parameterCovariance.getDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   const UnsignedInteger size = outputObservations.getSize();
@@ -146,7 +146,7 @@ void GaussianLinearCalibration::run()
   // Compute errorInverseCholesky*J, the second part of the extended design matrix
   const Matrix invLRJ(errorInverseCholesky * gradientObservations_);
   // Create the extended design matrix of the linear least squares problem
-  const UnsignedInteger parameterDimension = getCandidate().getDimension();
+  const UnsignedInteger parameterDimension = getParameterMean().getDimension();
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   Matrix Abar(parameterDimension + size * outputDimension, parameterDimension);
   for (UnsignedInteger i = 0; i < parameterDimension; ++i)
@@ -169,12 +169,12 @@ void GaussianLinearCalibration::run()
   for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
     if (!SpecFunc::IsNormal(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
 
-  const Point thetaStar(getCandidate() + deltaTheta);
+  const Point thetaStar(getParameterMean() + deltaTheta);
   const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
   // Create the result object
   Normal parameterPosterior(thetaStar, covarianceThetaStar);
   parameterPosterior.setDescription(parameterPrior_.getDescription());
-  const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
+  const LinearFunction residualFunction(getParameterMean(), deltaY, gradientObservations_);
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, Normal(Point(errorCovariance_.getDimension()), errorCovariance_), inputObservations_, outputObservations_, residualFunction, true);
 }
 
@@ -191,10 +191,10 @@ Matrix GaussianLinearCalibration::getGradientObservations() const
   return gradientObservations_;
 }
 
-/* Candidate accessor */
-Point GaussianLinearCalibration::getCandidate() const
+/* ParameterMean accessor */
+Point GaussianLinearCalibration::getParameterMean() const
 {
-  // The candidate is stored in the prior distribution, which is a Normal distribution
+  // The parameterMean is stored in the prior distribution, which is a Normal distribution
   return getParameterPrior().getMean();
 }
 

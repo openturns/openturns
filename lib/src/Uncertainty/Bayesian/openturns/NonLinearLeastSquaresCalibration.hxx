@@ -49,7 +49,7 @@ public:
   NonLinearLeastSquaresCalibration(const Function & model,
                                    const Sample & inputObservations,
                                    const Sample & outputObservations,
-                                   const Point & candidate);
+                                   const Point & startingPoint);
 
   /** String converter */
   String __repr__() const override;
@@ -58,15 +58,15 @@ public:
   void run() override;
   Point run(const Sample & inputObservations,
             const Sample & outputObservations,
-            const Point & candidate,
+            const Point & startingPoint,
             Sample & residual);
 
   /** Algorithm accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;
   void setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm);
 
-  /** Candidate accessor */
-  Point getCandidate() const;
+  /** StartingPoint accessor */
+  Point getStartingPoint() const;
 
   /** Bootstrap size accessor */
   UnsignedInteger getBootstrapSize() const;
