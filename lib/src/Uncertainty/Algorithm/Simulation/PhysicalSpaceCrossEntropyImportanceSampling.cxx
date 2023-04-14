@@ -51,12 +51,13 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
                                                                                          const Scalar rhoQuantile)
   : CrossEntropyImportanceSampling(event, rhoQuantile)
   , solver_(new NLopt("LD_LBFGS"))
+  , activeParameters_(activeParameters)
   {
     auxiliaryDistribution_ = auxiliaryDistribution;
     rhoQuantile_ = (event.getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
     bounds_ = bounds;
 
-    activeParameters_ = activeParameters;
+    
   
     Point parameters(auxiliaryDistribution_.getParameter());
     
