@@ -68,7 +68,7 @@ nbobs = fm.data.getSize()
 # %%
 # Create the physical model
 # -------------------------
-# We define the model :math:`g` which has 3 inputs and one output H.
+# We define the model :math:`g` which has 3 inputs and one output `H`.
 # This model has a parametric shape that may correspond to the data,
 # which has some power shape.
 # In the model, the parameters are `a` and `b`, the input is `Q`
@@ -186,7 +186,7 @@ view = viewer.View(graph)
 # %%
 # Calibration with non linear least squares
 # -----------------------------------------
-# The :class:`~openturns.NonLinearLeastSquaresCalibration` class performs the
+# The :class:`~openturns.NonLinearLeastSquaresCalibration` class performs
 # non linear least squares calibration by minimizing the squared Euclidian norm
 # between the predictions and the observations.
 
@@ -215,6 +215,7 @@ print(thetaMAP)
 # %%
 # In order to see if the parameters fit the data,
 # we plot the input depending on the output before and after calibration.
+
 # sphinx_gallery_thumbnail_number = 2
 graph = calibrationResult.drawObservationsVsInputs()
 aEstimated, bEstimated = thetaMAP
@@ -226,7 +227,7 @@ view = viewer.View(graph)
 
 # %%
 # One of the hypotheses of the least squares method is that
-# the residuals have the Gaussian distribution: the next
+# the residuals follow a normal distribution: the next
 # cell checks if this hypothesis is satisfied here.
 graph = calibrationResult.drawResiduals()
 graph.setLegendPosition("topleft")
