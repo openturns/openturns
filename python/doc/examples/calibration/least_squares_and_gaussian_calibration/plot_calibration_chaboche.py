@@ -57,7 +57,9 @@ ot.Log.Show(ot.Log.NONE)
 # In practice, we generally use a data set which has been obtained from
 # measurements.
 # This data set can be loaded using e.g. :meth:`~openturns.Sample.ImportFromCSVFile`.
-# Here we define the data directly.
+# Here we import the data from the
+# :class:`~openturns.usecases.chaboche_model.ChabocheModel`
+# class.
 cm = chaboche_model.ChabocheModel()
 print(cm.data)
 observedStrain = cm.data[:, 0]
@@ -197,7 +199,7 @@ calibrationResult = algo.getResult()
 # Analysis of the results
 # -----------------------
 # The :meth:`~openturns.CalibrationResult.getParameterMAP` method
-# returns the maximum of the posterior distribution of :math:`\theta`.
+# returns the maximum of the posterior density of :math:`\theta`.
 thetaMAP = calibrationResult.getParameterMAP()
 print("theta After = ")
 print("    R = %.2f (MPa)" % (thetaMAP[0] / 1.0e6))
@@ -286,7 +288,7 @@ plt.subplots_adjust(right=0.6)
 # This shows that the distribution of the residuals is close to being Gaussian.
 
 # %%
-# Check that the results are Gaussian, using a Normal-plot.
+# This can also be seen on a Normal-plot.
 # This is a QQ-plot applied to the normal distribution.
 # We could use the :meth:`~openturns.VisualTest.DrawHenryLine`
 # method to plot it, but :meth:`~openturns.CalibrationResult.drawResidualsNormalPlot`
@@ -294,6 +296,7 @@ plt.subplots_adjust(right=0.6)
 graph = calibrationResult.drawResidualsNormalPlot()
 view = viewer.View(graph)
 
+# %%
 # %%
 # We see that the residuals fit to the Normal distribution,
 # according to the normal plot.
@@ -415,8 +418,8 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 # interval.
 # Notice, however, that the interval is much more narrow than the
 # one with obtained using linear least squares.
-# This is because the optimization algorithm that we used introduced
-# implicitly some regularization that was not introduced with
+# This is because the optimization algorithm that we used implicitely
+# introduced some regularization that was absent from
 # linear least squares.
 
 # %%
