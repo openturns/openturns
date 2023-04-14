@@ -637,7 +637,7 @@ view = otv.View(
     figure_kw={"figsize": (8.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(right=0.7)
+plt.subplots_adjust(right=0.6)
 
 # %%
 # We see that the distribution of the residual is centered on zero.

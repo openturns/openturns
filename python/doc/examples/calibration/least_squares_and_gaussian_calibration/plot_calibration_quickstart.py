@@ -78,6 +78,8 @@ nbobs = fm.data.getSize()
 # and the output is `H`:
 # - `Q` : the flowrate of the river,
 # - `a`, `b` : the parameters.
+
+# %%
 def functionSimpleFlooding(X):
     Q, a, b = X
     H = a * Q**b
@@ -98,6 +100,8 @@ g.setOutputDescription(["H"])
 # Define the value of the reference values of the :math:`\theta` parameter.
 # There is no particular method to set these values: we used
 # trial-and-error to see the order of magnitude of the parameters.
+
+# %%
 aInitial = 0.1
 bInitial = 0.5
 thetaPrior = [aInitial, bInitial]
@@ -127,6 +131,8 @@ thetaPrior = [aInitial, bInitial]
 #
 # **Table 1.** Indices and names of the inputs and parameters of the physical model.
 #
+
+# %%
 print("Physical Model Inputs:", g.getInputDescription())
 print("Physical Model Parameters:", g.getParameterDescription())
 
@@ -161,11 +167,15 @@ print("Physical Model Parameters:", g.getParameterDescription())
 # The following statement create the calibrated function from the model.
 # The calibrated parameters :math:`a`, :math:`b` are at
 # indices 1, 2 in the inputs arguments of the model.
+
+# %%
 calibratedIndices = [1, 2]
 mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
 
 # %%
 # Plot the Y observations versus the X observations.
+
+# %%
 title = "Before calibration : a = %.4f, b = %.4f" % (aInitial, bInitial)
 graph = ot.Graph(title, "Q", "H", True)
 # Plot the model before calibration
@@ -199,6 +209,8 @@ algo = ot.NonLinearLeastSquaresCalibration(mycf, Qobs, Hobs, thetaPrior)
 # %%
 # The :meth:`~openturns.NonLinearLeastSquaresCalibration.run` method computes
 # the solution of the problem.
+
+# %%
 algo.run()
 calibrationResult = algo.getResult()
 
@@ -232,6 +244,8 @@ view = otv.View(graph)
 # One of the hypotheses of the least squares method is that
 # the residuals follow a normal distribution: the next
 # cell checks if this hypothesis is satisfied here.
+
+# %%
 graph = calibrationResult.drawResiduals()
 graph.setLegendPosition("topleft")
 view = otv.View(graph)

@@ -39,6 +39,8 @@ ot.Log.Show(ot.Log.NONE)
 # Create a calibration problem
 # ----------------------------
 # We load the model from the use case module :
+
+# %%
 dt = deflection_tube.DeflectionTube()
 print("Inputs:", dt.model.getInputDescription())
 print("Outputs:", dt.model.getOutputDescription())
@@ -51,20 +53,26 @@ print("Outputs:", dt.model.getOutputDescription())
 
 # %%
 # We create a sample out of our input distribution :
+
+# %%
 sampleSize = 100
 inputSample = dt.inputDistribution.getSample(sampleSize)
-inputSample[0:5]
+print(inputSample[0:5])
 
 # %%
 # We take the image of our input sample by the model :
+
+# %%
 outputDeflection = dt.model(inputSample)
-outputDeflection[0:5]
+print(outputDeflection[0:5])
 
 # %%
 # We now define the observed noise of the output.
 # Since there are three observed outputs, there are
 # three different standard deviations to define.
 # Then we define a 3x3 covariance matrix of the observed outputs.
+
+# %%
 observationNoiseSigma = [0.1e-6, 0.5e-6, 0.5e-6]
 observationNoiseCovariance = ot.CovarianceMatrix(3)
 for i in range(3):
@@ -75,28 +83,34 @@ for i in range(3):
 # observed output and get a sample from it.
 # We add this noise to the output of the model, which
 # defines the observed output.
+
+# %%
 noiseSigma = ot.Normal([0.0, 0.0, 0.0], observationNoiseCovariance)
 sampleObservationNoise = noiseSigma.getSample(sampleSize)
 observedOutput = outputDeflection + sampleObservationNoise
-observedOutput[0:5]
+print(observedOutput[0:5])
 
 # %%
 # We now extract the observed inputs from the input sample.
+
+# %%
 observedInput = ot.Sample(sampleSize, 2)
 observedInput[:, 0] = inputSample[:, 0]  # F
 observedInput[:, 1] = inputSample[:, 5]  # E
 observedInput.setDescription(["Force", "Young Modulus"])
-observedInput[0:5]
+print(observedInput[0:5])
 
 # %%
 # We would like to see how the observed output depend on the
 # observed inputs.
-# To do this, we use the `DrawPairs` method.
+# To do this, we use the :meth:`~openturns.VisualTest.DrawPairs` method.
+
+# %%
 fullSample = ot.Sample(sampleSize, 5)
 fullSample[:, 0:2] = observedInput
 fullSample[:, 2:5] = observedOutput
 fullSample.setDescription(["Force", "Young", "Deflection", "Left Angle", "Right Angle"])
-fullSample[0:5]
+print(fullSample[0:5])
 
 # %%
 graph = ot.VisualTest.DrawPairs(fullSample)
@@ -113,6 +127,8 @@ plt.subplots_adjust(wspace=0.3, hspace=0.3)
 # We set it with a slight difference with the true values, because,
 # in general, we do not know the exact value (otherwise we would
 # not use a calibration method).
+
+# %%
 XL = 1.4  # Exact : 1.5
 Xa = 1.2  # Exact : 1.0
 XD = 0.7  # Exact : 0.8
@@ -125,9 +141,11 @@ thetaPrior = [XL, Xa, XD, Xd]
 # of the parameters.
 # We compute the standard deviation as 10% of the value of the parameter.
 # This ensures that the prior normal distribution has a spread
-# which scales correctly with the mean of the gaussian distribution.
+# which scales correctly with the mean of the Gaussian distribution.
 # In other words, this setting corresponds to a 10% coefficient of
 # variation.
+
+# %%
 sigmaXL = 0.1 * XL
 sigmaXa = 0.1 * Xa
 sigmaXD = 0.1 * XD
@@ -137,7 +155,7 @@ parameterCovariance[0, 0] = sigmaXL**2
 parameterCovariance[1, 1] = sigmaXa**2
 parameterCovariance[2, 2] = sigmaXD**2
 parameterCovariance[3, 3] = sigmaXd**2
-parameterCovariance
+print(parameterCovariance)
 
 # %%
 # In the physical model, the inputs and parameters are ordered as
@@ -168,6 +186,8 @@ parameterCovariance
 #
 # **Table 1.** Indices and names of the inputs and parameters of the physical model.
 #
+
+# %%
 print("Physical Model Inputs:", dt.model.getInputDescription())
 print("Physical Model Parameters:", dt.model.getParameterDescription())
 
@@ -200,6 +220,8 @@ print("Physical Model Parameters:", dt.model.getParameterDescription())
 #
 # **Table 2.** Indices and names of the inputs and parameters of the parametric model.
 #
+
+# %%
 calibratedIndices = [1, 2, 3, 4]  # [L, a, De, di]
 calibrationFunction = ot.ParametricFunction(dt.model, calibratedIndices, thetaPrior)
 print("Parametric Model Inputs:", calibrationFunction.getInputDescription())
@@ -215,7 +237,9 @@ print("Parametric Model Parameters:", calibrationFunction.getParameterDescriptio
 # different values because the value of the true standard deviation of
 # the observation error is not known in general.
 # We will be able to check if these hypotheses are correct
-# after calibration, using the `drawResiduals()` method.
+# after calibration, using the :meth:`~openturns.CalibrationResult.drawResiduals()` method.
+
+# %%
 sigmaObservation = [0.2e-6, 0.3e-6, 0.3e-6]  # Exact : [0.1e-6, 0.5e-6, 0.5e-6]
 # Set the diagonal of the covariance matrix.
 errorCovariance = ot.CovarianceMatrix(3)
@@ -226,12 +250,14 @@ errorCovariance[2, 2] = sigmaObservation[2] ** 2
 # %%
 calibrationFunction.setParameter(thetaPrior)
 predictedOutput = calibrationFunction(observedInput)
-predictedOutput[0:5]
+print(predictedOutput[0:5])
 
 # %%
 # Calibration with Gaussian non linear calibration
 # ------------------------------------------------
 # We are finally able to use the :class:`~openturns.GaussianNonLinearCalibration`.
+
+# %%
 algo = ot.GaussianNonLinearCalibration(
     calibrationFunction,
     observedInput,
@@ -242,7 +268,9 @@ algo = ot.GaussianNonLinearCalibration(
 )
 
 # %%
-# The `run` method launches the optimization algorithm.
+# The :meth:`~openturns.GaussianNonLinearCalibration.run` method launches the optimization algorithm.
+
+# %%
 algo.run()
 calibrationResult = algo.getResult()
 
@@ -250,6 +278,8 @@ calibrationResult = algo.getResult()
 # Analysis of the results
 # -----------------------
 # The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the optimized parameters.
+
+# %%
 thetaMAP = calibrationResult.getParameterMAP()
 print("theta After = ", thetaMAP)
 print("theta Before = ", thetaPrior)
@@ -293,6 +323,8 @@ plt.subplots_adjust(wspace=0.3, hspace=0.7, right=0.8)
 # %%
 # The next cell plots the predicted outputs depending on
 # the observed outputs.
+
+# %%
 graph = calibrationResult.drawObservationsVsPredictions()
 view = otv.View(
     graph,
@@ -336,13 +368,15 @@ plt.subplots_adjust(wspace=0.3, left=0.05, right=0.85)
 # Furthermore, we plot the distribution of the observation
 # errors, which is an hypothesis of the Gaussian calibration.
 # Since there are three output, there are three residuals to check.
+
+# %%
 graph = calibrationResult.drawResiduals()
 view = otv.View(
     graph,
     figure_kw={"figsize": (13.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
+plt.subplots_adjust(wspace=0.3, left=0.05, right=0.7)
 
 # %%
 # We see that the distribution of the residuals after calibration
@@ -365,6 +399,8 @@ plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
 
 # %%
 # Check that the results are Gaussian, using a Normal-plot.
+
+# %%
 graph = calibrationResult.drawResidualsNormalPlot()
 view = otv.View(
     graph,
@@ -376,6 +412,8 @@ plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
 # %%
 # Finally, we observe the prior and posterior distribution of each
 # parameter.
+
+# %%
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,

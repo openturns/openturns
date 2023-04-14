@@ -87,6 +87,8 @@ g.setOutputDescription(["H (m)"])
 
 # %%
 # Print the true values of the parameters.
+
+# %%
 fm = flood_model.FloodModel()
 print("Parameters")
 print("   Ks = ", fm.trueKs)
@@ -95,12 +97,16 @@ print("   Zm = ", fm.trueZm)
 
 # %%
 # Create the parametric function.
+
+# %%
 calibratedIndices = [1, 2, 3]
 thetaTrue = [fm.trueKs, fm.trueZv, fm.trueZm]
 mycf = ot.ParametricFunction(g, calibratedIndices, thetaTrue)
 
 # %%
 # Create a regular grid of the flowrates and evaluate the corresponding outputs.
+
+# %%
 nbobs = 10
 minQ = 100.0
 maxQ = 4000.0
@@ -111,6 +117,8 @@ outputH = mycf(Qobs)
 
 # %%
 # Generate the observation noise and add it to the output of the model.
+
+# %%
 sigmaObservationNoiseH = 0.1  # (m)
 noiseH = ot.Normal(0.0, sigmaObservationNoiseH)
 sampleNoiseH = noiseH.getSample(nbobs)
@@ -118,6 +126,8 @@ Hobs = outputH + sampleNoiseH
 
 # %%
 # Gather the data into a sample.
+
+# %%
 data = ot.Sample(nbobs, 2)
 data[:, 0] = Qobs
 data[:, 1] = Hobs
@@ -125,6 +135,8 @@ print(data)
 
 # %%
 # Plot the Y observations versus the X observations.
+
+# %%
 graph = ot.Graph("Observations", "Q (m3/s)", "H (m)", True)
 # Plot the model before calibration
 curve = mycf.draw(100.0, 4000.0).getDrawable(0)

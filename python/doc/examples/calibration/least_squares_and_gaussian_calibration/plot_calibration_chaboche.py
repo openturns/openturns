@@ -60,6 +60,8 @@ ot.Log.Show(ot.Log.NONE)
 # Here we import the data from the
 # :class:`~openturns.usecases.chaboche_model.ChabocheModel`
 # class.
+
+# %%
 cm = chaboche_model.ChabocheModel()
 print(cm.data)
 observedStrain = cm.data[:, 0]
@@ -68,6 +70,8 @@ nbobs = cm.data.getSize()
 
 # %%
 # Print the Chaboche model
+
+# %%
 print("Inputs:", cm.model.getInputDescription())
 print("Outputs:", cm.model.getOutputDescription())
 
@@ -86,6 +90,8 @@ print("Outputs:", cm.model.getOutputDescription())
 # Define the value of the reference values of the :math:`\theta` parameter.
 # In the Bayesian framework, this is called the mean of the *prior* Gaussian
 # distribution. In the data assimilation framework, this is called the *background*.
+
+# %%
 R = 700e6  # Exact : 750e6
 C = 2500e6  # Exact : 2750e6
 Gamma = 8.0  # Exact : 10
@@ -116,6 +122,8 @@ thetaPrior = [R, C, Gamma]
 #
 # **Table 1.** Indices and names of the inputs and parameters of the physical model.
 #
+
+# %%
 print("Physical Model Inputs:", cm.model.getInputDescription())
 print("Physical Model Parameters:", cm.model.getParameterDescription())
 
@@ -148,11 +156,15 @@ print("Physical Model Parameters:", cm.model.getParameterDescription())
 # The following statement create the calibrated function from the model.
 # The calibrated parameters `R`, `C`, `Gamma` are at indices 1, 2, 3 in
 # the inputs arguments of the model.
+
+# %%
 calibratedIndices = [1, 2, 3]
 mycf = ot.ParametricFunction(cm.model, calibratedIndices, thetaPrior)
 
 # %%
 # Then we plot the model and compare it to the observations.
+
+# %%
 graph = ot.Graph("Model before calibration", "Strain", "Stress (MPa)", True)
 # Plot the model
 curve = mycf.draw(cm.strainMin, cm.strainMax, 50).getDrawable(
@@ -185,6 +197,8 @@ view = otv.View(graph)
 # The :class:`~openturns.LinearLeastSquaresCalibration` class performs the
 # linear least squares
 # calibration by linearizing the model in the neighbourhood of the reference point.
+
+# %%
 algo = ot.LinearLeastSquaresCalibration(
     mycf, observedStrain, observedStress, thetaPrior, "SVD"
 )
@@ -192,6 +206,8 @@ algo = ot.LinearLeastSquaresCalibration(
 # %%
 # The :meth:`~openturns.LinearLeastSquaresCalibration.run` method computes
 # the solution of the problem.
+
+# %%
 algo.run()
 calibrationResult = algo.getResult()
 
@@ -200,6 +216,8 @@ calibrationResult = algo.getResult()
 # -----------------------
 # The :meth:`~openturns.CalibrationResult.getParameterMAP` method
 # returns the maximum of the posterior density of :math:`\theta`.
+
+# %%
 thetaMAP = calibrationResult.getParameterMAP()
 print("theta After = ")
 print("    R = %.2f (MPa)" % (thetaMAP[0] / 1.0e6))
@@ -216,8 +234,10 @@ print("    Gamma = %.4f" % (cm.trueGamma))
 
 # %%
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
+
+# %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
 
 # %%
 # We can see that the :math:`\gamma` parameter has a large confidence interval:
@@ -229,6 +249,8 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 # %%
 # Increase the default number of points in the plots.
 # This produces smoother spiky distributions.
+
+# %%
 ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
 
 # %%
@@ -246,6 +268,8 @@ view = otv.View(graph)
 
 # %%
 # We can also plot the predicted stress depending on the observed stress.
+
+# %%
 graph = calibrationResult.drawObservationsVsPredictions()
 view = otv.View(graph)
 
@@ -261,17 +285,21 @@ view = otv.View(graph)
 # By hypothesis, the distribution has a zero mean (this is a property
 # of linear least squares).
 # The standard deviation is estimated from the residuals after calibration.
+
+# %%
 observationError = calibrationResult.getObservationsError()
-observationError
+print(observationError)
 
 # %%
 # In order to validate that the distribution of the residuals is
 # Gaussian after calibration, we use the
 # :meth:`~openturns.CalibrationResult.drawResiduals` method.
+
+# %%
 graph = calibrationResult.drawResiduals()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (6.0, 4.0)},
+    figure_kw={"figsize": (7.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(right=0.6)
@@ -293,6 +321,8 @@ plt.subplots_adjust(right=0.6)
 # We could use the :meth:`~openturns.VisualTest.DrawHenryLine`
 # method to plot it, but :meth:`~openturns.CalibrationResult.drawResidualsNormalPlot`
 # does it directly.
+
+# %%
 graph = calibrationResult.drawResidualsNormalPlot()
 view = otv.View(graph)
 
@@ -306,6 +336,8 @@ view = otv.View(graph)
 # In order to see how this source of randomness changes the optimum
 # parameter, we use
 # :meth:`~openturns.CalibrationResult.drawParameterDistributions`.
+
+# %%
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
@@ -403,6 +435,8 @@ print(algo.getOptimizationAlgorithm())
 # %%
 # The :meth:`~openturns.NonLinearLeastSquaresCalibration.run` method computes
 # the solution of the problem.
+
+# %%
 algo.run()
 calibrationResult = algo.getResult()
 
@@ -413,13 +447,17 @@ calibrationResult = algo.getResult()
 # %%
 # The :meth:`~openturns.CalibrationResult.getParameterMAP` method
 # returns the maximum of the posterior distribution of :math:`\theta`.
+
+# %%
 thetaMAP = calibrationResult.getParameterMAP()
-thetaMAP
+print(thetaMAP)
 
 # %%
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
+
+# %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
 
 # %%
 # We can see that :math:`R` and :math:`C` are accurately estimated
@@ -433,6 +471,8 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 
 # %%
 # We now check the observations depending on the inputs.
+
+# %%
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
 view = otv.View(graph)
@@ -451,8 +491,10 @@ view = otv.View(graph)
 
 # %%
 # We now focus on the distribution of the errors.
+
+# %%
 observationError = calibrationResult.getObservationsError()
-observationError
+print(observationError)
 
 # %%
 # We see that the distribution is Gaussian (this is by hypothesis)
@@ -469,7 +511,7 @@ view = otv.View(graph)
 graph = calibrationResult.drawResiduals()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (6.0, 4.0)},
+    figure_kw={"figsize": (7.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(right=0.6)
@@ -496,6 +538,8 @@ view = otv.View(graph)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
+
+# %%
 grid = plotDistributionGridPDF(thetaPosterior)
 view = otv.View(
     grid,
@@ -519,17 +563,23 @@ plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 # -------------------------------
 # In this part, we set the parameters of the Gaussian calibration.
 # We first set the standard deviation of the observations errors.
+
+# %%
 sigmaStress = 1.0e7  # (Pa)
 
 # %%
 # Define the covariance matrix of the output Y of the model.
 # Since the dimension of the output is equal to 1, this must be
 # a 1-by-1 covariance matrix.
+
+# %%
 errorCovariance = ot.CovarianceMatrix(1)
 errorCovariance[0, 0] = sigmaStress**2
 
 # %%
 # Define the covariance matrix of the parameters :math:`\theta` to calibrate.
+
+# %%
 sigmaR = 0.1 * R
 sigmaC = 0.1 * C
 sigmaGamma = 0.1 * Gamma
@@ -537,11 +587,13 @@ sigmaGamma = 0.1 * Gamma
 # %%
 # Since there are 3 parameters, the prior covariance matrix is a
 # 3-by-3 covariance matrix.
+
+# %%
 sigma = ot.CovarianceMatrix(3)
 sigma[0, 0] = sigmaR**2
 sigma[1, 1] = sigmaC**2
 sigma[2, 2] = sigmaGamma**2
-sigma
+print(sigma)
 
 # %%
 # Gaussian linear calibration
@@ -549,6 +601,8 @@ sigma
 # The :class:`~openturns.GaussianLinearCalibration` class performs the Gaussian
 # linear calibration by linearizing the model in the neighbourhood of the prior.
 # This is also known as the Kalman filter.
+
+# %%
 algo = ot.GaussianLinearCalibration(
     mycf, observedStrain, observedStress, thetaPrior, sigma, errorCovariance
 )
@@ -556,6 +610,8 @@ algo = ot.GaussianLinearCalibration(
 # %%
 # The :meth:`~openturns.GaussianLinearCalibration.run` method computes
 # the solution of the problem.
+
+# %%
 algo.run()
 calibrationResult = algo.getResult()
 
@@ -564,8 +620,10 @@ calibrationResult = algo.getResult()
 # -----------------------
 # The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
 # maximum of the posterior distribution of :math:`\theta`.
+
+# %%
 thetaMAP = calibrationResult.getParameterMAP()
-thetaMAP
+print(thetaMAP)
 
 # %%
 # We can compute a 95% credibility interval of the parameter :math:`\theta^\star`
@@ -573,8 +631,10 @@ thetaMAP
 # credibility intervals).
 # This interval reflects the interval that contains 95%
 # of the posterior distribution.
+
+# %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
 
 # %%
 # We can see that all three parameters are estimated with a relatively
@@ -582,6 +642,8 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 
 # %%
 # Let us analyze the validation graphics.
+
+# %%
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
 view = otv.View(graph)
@@ -602,14 +664,16 @@ view = otv.View(graph)
 # The observation error is an hypothesis of the Gaussian calibration.
 # This is the Gaussian distribution that we introduced in the
 # model.
+
+# %%
 observationError = calibrationResult.getObservationsError()
-observationError
+print(observationError)
 
 # %%
 graph = calibrationResult.drawResiduals()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (6.0, 4.0)},
+    figure_kw={"figsize": (7.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(right=0.6)
@@ -624,6 +688,8 @@ plt.subplots_adjust(right=0.6)
 # The posterior distribution of the parameters allows one to see if
 # the observations bring significant information compared to the prior
 # Gaussian distributions.
+
+# %%
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
@@ -646,11 +712,15 @@ plt.subplots_adjust(right=0.8)
 
 # %%
 # We can check that if the residuals after calibration are normal.
+
+# %%
 graph = calibrationResult.drawResidualsNormalPlot()
 view = otv.View(graph)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
+
+# %%
 grid = plotDistributionGridPDF(thetaPosterior)
 view = otv.View(
     grid,
@@ -666,6 +736,8 @@ plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 # The :class:`~openturns.GaussianNonLinearCalibration` class
 # performs the Gaussian nonlinear calibration.
 # This algorithm is also known as 3DVar.
+
+# %%
 algo = ot.GaussianNonLinearCalibration(
     mycf, observedStrain, observedStress, thetaPrior, sigma, errorCovariance
 )
@@ -673,6 +745,8 @@ algo = ot.GaussianNonLinearCalibration(
 # %%
 # The :meth:`~openturns.GaussianNonLinearCalibration.run` method computes
 # the solution of the problem.
+
+# %%
 algo.run()
 calibrationResult = algo.getResult()
 
@@ -683,8 +757,10 @@ calibrationResult = algo.getResult()
 # %%
 # The :meth:`~openturns.CalibrationResult.getParameterMAP` method
 # returns the maximum of the posterior distribution of :math:`\theta`.
+
+# %%
 thetaMAP = calibrationResult.getParameterMAP()
-thetaMAP
+print(thetaMAP)
 
 # %%
 # We can compute a 95% credibility interval of the parameter :math:`\theta^\star`.
@@ -724,8 +800,10 @@ print("Bootstrap size : ", algo.getBootstrapSize())
 # %%
 # By default, the observation error is predicted by bootstraping the
 # problem at the posterior.
+
+# %%
 observationError = calibrationResult.getObservationsError()
-observationError
+print(observationError)
 
 # %%
 # This can be compared to the residuals distribution, which is computed at the posterior.
@@ -734,7 +812,7 @@ observationError
 graph = calibrationResult.drawResiduals()
 view = otv.View(
     graph,
-    figure_kw={"figsize": (6.0, 4.0)},
+    figure_kw={"figsize": (7.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(right=0.6)
@@ -757,6 +835,8 @@ view = otv.View(graph)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
+
+# %%
 grid = plotDistributionGridPDF(thetaPosterior)
 view = otv.View(
     grid,

@@ -258,6 +258,8 @@ print(populationPredicted[0, 0:5])
 # %%
 # We are now able to perform the calibration, using linear least squares
 # using the :class:`~openturns.LinearLeastSquaresCalibration` class.
+
+# %%
 algo = ot.LinearLeastSquaresCalibration(
     logisticParametric, timeObservationsSample, populationObservationsSample, thetaPrior
 )
@@ -290,6 +292,8 @@ print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0
 # create a large number of plots.
 # Transpose samples to interpret the data as a Sample in dimension 1
 # with 22 observations.
+
+# %%
 if calibrationResult.getInputObservations().getSize() == 1:
     calibrationResult.setInputObservations(timeObservations)
     calibrationResult.setOutputObservations(populationObservations)
@@ -306,6 +310,8 @@ if calibrationResult.getInputObservations().getSize() == 1:
 # %%
 # Increase the default number of points in the plots.
 # This produces smoother spiky distributions.
+
+# %%
 ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
 
 # %%
@@ -334,6 +340,8 @@ view = otv.View(graph)
 # not follow a normal distribution (otherwise the calibrated
 # cloud would be spread over and under the diagonal).
 # In other words, the model and the data do not fit very well.
+
+# %%
 graph = calibrationResult.drawObservationsVsPredictions()
 view = otv.View(graph)
 
@@ -346,6 +354,8 @@ view = otv.View(graph)
 # calibrated residuals is relatively close to a normal distribution.
 # This may show that the least squares model is appropriate in
 # this case with respect to this criterion.
+
+# %%
 graph = calibrationResult.drawResiduals()
 view = otv.View(graph)
 
@@ -353,6 +363,8 @@ view = otv.View(graph)
 # The next plot shows that there is a significant improvement
 # after the calibration: the initial point is very different
 # from the distribution of the optimum parameter.
+
+# %%
 graph = calibrationResult.drawParameterDistributions()
 view = otv.View(
     graph,
