@@ -12,9 +12,9 @@ The Gaussian calibration is a particular case of Bayesian calibration
 (see :ref:`bayesian_calibration`) where
 the prior has a Gaussian distribution and the observation error has a Gaussian
 distribution.
-In this case, simplifications occur which can lead to an efficient
-algorithm, which can require less model evaluations compared to Monte-Carlo
-Markov Chains.
+In this case, simplifications occur which lead to an efficient
+algorithm that requires fewer model evaluations compared to Monte-Carlo
+Markov Chains (MCMC).
 
 We consider a computer model :math:`\vect{h}` (i.e. a deterministic function)
 to calibrate:
@@ -66,7 +66,7 @@ This is why we simplify the equation into:
 Bayesian calibration
 ~~~~~~~~~~~~~~~~~~~~
 
-The bayesian calibration framework is based on two hypotheses.
+The Bayesian calibration framework is based on two hypotheses.
 The first hypothesis is that the parameter :math:`\vect{\theta}` has
 a known distribution, called the *prior* distribution, and denoted by :math:`p(\vect{\theta})`.
 The second hypothesis is that the output observations :math:`(\vect{y}^1, \ldots, \vect{y}^n)`
@@ -88,9 +88,9 @@ the posterior distribution is proportional to the numerator:
 
 for any :math:`\vect{\theta}\in\Rset^{d_h}`.
 
-In the gaussian calibration, the two previous distributions are assumed to be gaussian.
+In Gaussian calibration, the two previous distributions are assumed to be gaussian.
 More precisely, we make the hypothesis that the parameter :math:`\vect{\theta}`
-has the gaussian distribution:
+follows the normal distribution:
 
 .. math::
 
@@ -99,7 +99,7 @@ has the gaussian distribution:
 where :math:`\vect{\mu}\in\Rset^{d_h}` is the mean of the gaussian prior distribution,
 which is named the *background* and :math:`B\in\Rset^{d_h \times d_h}` is the covariance
 matrix of the parameter.
-Secondly, we make the hypothesis that the output observations have the conditional gaussian distribution:
+Secondly, we make the hypothesis that the output observations follow the conditional normal distribution:
 
 .. math::
 
@@ -144,7 +144,7 @@ reached at :
 
 .. math::
 
-    \hat{\vect{\theta}}_{MAP} = \operatorname{arg} \min_{\vect{\theta}\in\Rset^{d_h}} \frac{1}{2} \left( \|\vect{y} - H(\vect{\theta})\|^2_R
+    \hat{\vect{\theta}}_{MAP} = \argmin_{\vect{\theta}\in\Rset^{d_h}} \frac{1}{2} \left( \|\vect{y} - H(\vect{\theta})\|^2_R
     + \|\vect{\theta}-\vect{\mu} \|^2_B \right).
 
 It is called the *maximum a posteriori posterior* estimator or
@@ -172,7 +172,7 @@ The cost function of the gaussian nonlinear calibration problem is :
     + \frac{1}{2}\|\vect{\theta}-\vect{\mu} \|^2_B
 
 for any :math:`\vect{\theta}\in\Rset^{d_h}`.
-The goal of the non linear gaussian calibration is to find the
+The goal of non-linear Gaussian calibration is to find the
 value of :math:`\vect{\theta}` which minimizes the cost function :math:`C`.
 In general, this involves using a nonlinear unconstrained optimization solver.
 Let :math:`J \in \Rset^{n \times d_h}` be the Jacobian matrix made of the
@@ -212,13 +212,13 @@ The implementation of the resolution of the Gaussian non linear calibration
 problem involves the Cholesky decomposition of the covariance matrices :math:`B`
 and :math:`R`.
 This allows one to transform the sum of two Mahalanobis distances into a single
-Euclidian norm.
+Euclidean norm.
 This leads to a classical non linear least squares problem.
 
 Linear Gaussian Calibration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the Gaussian linear calibration, we assume that the parametric
+In Gaussian linear calibration, we assume that the parametric
 function is linear with respect to the parameters.
 This method is known as the Kalman filter in data assimilation.
 We make the hypothesis that :math:`h` is linear with respect to :math:`\vect{\theta}`,
@@ -280,10 +280,9 @@ The MAP estimator is biased and the bias is:
     = (KJ - \operatorname{I})\left(\vect{\theta}^\star - \vect{\mu}\right).
 
 This bias is introduced as a consequence of the regularization properties
-of the Gaussian calibration.
-In the tradeoff between the bias and the variance in the estimator of the
-parameters, the reduction of the variance come at the price of an increase
-of the bias.
+of Gaussian calibration.
+Due to the trade-off between bias and variance of the estimator of the
+parameters, reducing the variance comes at the price of an increased bias.
 
 .. topic:: API:
 

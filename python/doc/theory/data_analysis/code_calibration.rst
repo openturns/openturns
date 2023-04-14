@@ -171,7 +171,7 @@ Non Linear Least squares
 In the general case where the function :math:`\vect{h}` is non linear
 with respect to the parameter :math:`\vect{\theta}`, then the resolution
 involves a non linear least squares optimization algorithm.
-Instead of directly minimizing the squared Euclidian norm of the residuals,
+Instead of directly minimizing the squared Euclidean norm of the residuals,
 most implementations rely on the residual vector, which lead to an improved accuracy.
 
 One problem with non linear least squares is that, compared to the
