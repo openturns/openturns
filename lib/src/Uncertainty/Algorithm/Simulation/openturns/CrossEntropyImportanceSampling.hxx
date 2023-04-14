@@ -77,9 +77,6 @@ protected:
   
   // Auxiliary distribution
   Distribution auxiliaryDistribution_;
-  
-  // Current auxiliary distribution parameters
-  Point currentAuxiliaryDistributionParameters;
 
   // Quantile
   Scalar rhoQuantile_ = 0.0;
