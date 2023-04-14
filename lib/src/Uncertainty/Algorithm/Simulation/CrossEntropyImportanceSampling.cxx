@@ -82,7 +82,7 @@ void CrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & )
 // Optimize auxiliary distribution parameters
 Point CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & ) const
 {
-  throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryInputSamples, const Sample & auxiliaryOutputSamples, const Scalar & eventThresholdLocal, const Point & currentAuxiliaryDistributionParameters)";
+  throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample &)";
 } 
   
 
