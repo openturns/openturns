@@ -282,7 +282,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
         cloudCandidate.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
         if (upperRightGraph)
         {
-            cloudCandidate.setLegend("Candidate");
+            cloudCandidate.setLegend("Initial");
         }
         else
         {
