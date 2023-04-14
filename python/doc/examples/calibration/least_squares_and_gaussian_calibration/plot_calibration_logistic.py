@@ -308,6 +308,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
 # We see that the calibrated model fits to the data more
 # than the uncalibrated model, especially on the second part
 # of the time interval.
+
 # sphinx_gallery_thumbnail_number = 3
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")

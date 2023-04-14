@@ -393,7 +393,6 @@ print(observationError)
 # We can see that the observation error has a sample mean close to zero and a
 # sample standard deviation approximately equal to 0.11.
 
-# %%
 # sphinx_gallery_thumbnail_number = 5
 graph = calibrationResult.drawResiduals()
 graph.setLegendPosition("topleft")
@@ -408,7 +407,6 @@ view = viewer.View(graph)
 # checking that this hypothesis occurs in the study is an important
 # verification.
 
-# %%
 graph = calibrationResult.drawParameterDistributions()
 view = viewer.View(
     graph,

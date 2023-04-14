@@ -65,7 +65,7 @@ calibratedIndices = [0, 1, 2]
 model = ot.ParametricFunction(g, calibratedIndices, candidate)
 
 # %%
-# We consider a multivariate gaussian noise with zero mean, standard deviation
+# We consider a multivariate Gaussian noise with zero mean, standard deviation
 # equal to 0.05 and independent copula.
 # The independent copula implies that the errors of the 6 outputs are independent.
 outputObservationNoiseSigma = 1.0
