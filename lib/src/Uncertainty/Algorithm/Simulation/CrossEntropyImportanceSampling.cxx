@@ -225,13 +225,13 @@ void CrossEntropyImportanceSampling::run()
   const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (numberOfSample - 1) / numberOfSample ;
 
   // Save of data in Simulation naisResult_ structure
-  CrossEntropyResult_.setProbabilityEstimate(failureProbability);
-  CrossEntropyResult_.setAuxiliaryDistribution(auxiliaryDistribution_);
-  CrossEntropyResult_.setAuxiliaryInputSample(auxiliaryInputSample);
-  CrossEntropyResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
-  CrossEntropyResult_.setOuterSampling(getMaximumOuterSampling() * iterationNumber);
-  CrossEntropyResult_.setBlockSize(getBlockSize());
-  CrossEntropyResult_.setVarianceEstimate(varianceEstimate);
+  crossEntropyResult_.setProbabilityEstimate(failureProbability);
+  crossEntropyResult_.setAuxiliaryDistribution(auxiliaryDistribution_);
+  crossEntropyResult_.setAuxiliaryInputSample(auxiliaryInputSample);
+  crossEntropyResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
+  crossEntropyResult_.setOuterSampling(getMaximumOuterSampling() * iterationNumber);
+  crossEntropyResult_.setBlockSize(getBlockSize());
+  crossEntropyResult_.setVarianceEstimate(varianceEstimate);
 }
 
 
@@ -239,7 +239,7 @@ void CrossEntropyImportanceSampling::run()
 // Accessor to CrossEntropyImportanceSampling Result_s
 CrossEntropyResult CrossEntropyImportanceSampling::getResult() const
 {
-  return CrossEntropyResult_;
+  return crossEntropyResult_;
 }
 
 END_NAMESPACE_OPENTURNS

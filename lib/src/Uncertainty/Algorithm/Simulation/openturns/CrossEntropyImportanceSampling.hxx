@@ -85,7 +85,7 @@ protected:
   Scalar rhoQuantile_ = 0.0;
 
   // Result of CrossEntropyImportanceSampling algorithm
-  CrossEntropyResult CrossEntropyResult_;
+  CrossEntropyResult crossEntropyResult_;
 
 }; /* class CrossEntropyImportanceSampling */
 
