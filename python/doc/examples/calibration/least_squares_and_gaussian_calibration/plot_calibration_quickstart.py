@@ -56,7 +56,11 @@ ot.Log.Show(ot.Log.NONE)
 # In practice, we generally use a data set which has been obtained from
 # measurements.
 # This data set can be loaded using e.g. :meth:`~openturns.Sample.ImportFromCSVFile`.
-# Here we define the data directly.
+# Here we import the data from the
+# :class:`~openturns.usecases.flood_model.FloodModel`
+# class.
+
+# %%
 fm = flood_model.FloodModel()
 print(fm.data)
 Qobs = fm.data[:, 0]
