@@ -14,7 +14,6 @@ Calibration without observed inputs
 # In this example there are, however, several outputs to be calibrated.
 
 import openturns as ot
-from matplotlib import pylab as plt
 import openturns.viewer as otv
 
 # %%

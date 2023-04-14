@@ -21,8 +21,8 @@ Bibliography
 .. [au2001] Au, S. K. *Estimation of small failure probabilities in high
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://jimbeck.caltech.edu/papers_pdf/estimation_of_small_failure_probabilities.pdf>`__
-.. [baudin2015] Baudin M., Dutfoy A., Iooss B., Popelin A.-L. (2015) 
-    *OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation.* 
+.. [baudin2015] Baudin M., Dutfoy A., Iooss B., Popelin A.-L. (2015)
+    *OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation.*
     In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
     `pdf <https://arxiv.org/pdf/1501.05242>`__
 .. [bhattacharyya1997] Bhattacharyya G.K., and R.A. Johnson, *Statistical

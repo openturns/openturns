@@ -78,7 +78,6 @@ variables and observed output variables.
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
 from openturns.usecases import chaboche_model
 
 ot.Log.Show(ot.Log.NONE)

@@ -45,7 +45,6 @@ the other examples if this is relevant.
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
 from openturns.usecases import flood_model
 
 ot.Log.Show(ot.Log.NONE)

@@ -66,7 +66,6 @@ import openturns as ot
 import openturns.viewer as otv
 import numpy as np
 from openturns.usecases import flood_model
-from matplotlib import pylab as plt
 
 # %%
 # Create the flooding model.
