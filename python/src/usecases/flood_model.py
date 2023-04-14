@@ -13,20 +13,20 @@ class FloodModel:
     Parameters
     ----------
 
-    L : float
-        Length of the river. Default L = 5000.0.
+    L : float, optional
+        Length of the river. The default is 5000.0.
 
-    B : float
-        Width of the river. Default B = 300.0.
+    B : float, optional
+        Width of the river. The default is 300.0.
 
-    trueKs : float
-        The true value of the Ks parameter.
+    trueKs : float, optional
+        The true value of the Ks parameter. The default is 30.0.
 
-    trueZv : float
-        The true value of the Zv parameter.
+    trueZv : float, optional
+        The true value of the Zv parameter. The default is 50.0.
 
-    trueZm : float
-        The true value of the Zm parameter.
+    trueZm : float, optional
+        The true value of the Zm parameter. The default is 55.0.
 
 
     Attributes
@@ -36,25 +36,25 @@ class FloodModel:
           dim=4
 
     Q : :class:`~openturns.TruncatedDistribution` of a :class:`~openturns.Gumbel` distribution
-        ot.TruncatedDistribution(ot.Gumbel(558., 1013.), 0, ot.TruncatedDistribution.LOWER)
+        ot.TruncatedDistribution(ot.Gumbel(558.0, 1013.0), 0.0, ot.TruncatedDistribution.LOWER)
 
-    Ks : `TruncatedDistribution` of a `Normal` distribution
-         ot.TruncatedDistribution(ot.Normal(30.0, 7.5), 0, ot.TruncatedDistribution.LOWER)
+    Ks : :class:`~openturns.TruncatedDistribution` of a :class:`~openturns.Normal` distribution
+         `ot.TruncatedDistribution(ot.Normal(30.0, 7.5), 0.0, ot.TruncatedDistribution.LOWER)`
 
-    Zv : `Uniform` distribution
+    Zv : :class:`~openturns.Uniform` distribution
          ot.Uniform(49.0, 51.0)
 
-    Zm : `Uniform` distribution
+    Zm : :class:`~openturns.Uniform` distribution
          ot.Uniform(54.0, 56.0)
 
-    model : `SymbolicFunction`
+    model : :class:`~openturns.SymbolicFunction`
             The flood model.
 
     distribution : :class:`~openturns.ComposedDistribution`
                    The joint distribution of the input parameters.
 
     data : :class:`~openturns.Sample` of size 10 and dimension 2
-        A dataset which contains noisy observations of the flowrate (column 0)
+        A data set which contains noisy observations of the flow rate (column 0)
         and the height (column 1).
 
     Examples

@@ -14,35 +14,32 @@ class LogisticModel:
     Attributes
     ----------
 
-    y0 : Constant
-         Initial population (in 1790) y0=3.9e6
+    y0 : float, optional
+         Initial population (in 1790). The default is 3.9e6.
 
-    a : Constant
-        Parameter of the model a=0.03134
+    a : float, optional
+        Parameter of the model. The default is 0.03134.
 
-    b : float
-        Parameter of the model b=1.5887e-10
-
-    nbdates : float
-        The number of years in the dataset.
+    b : float, optional
+        Parameter of the model. The default is 1.5887e-10.
 
     distY0 : :class:`~openturns.Normal` distribution
              ot.Normal(y0, 0.1 * y0)
 
-    distA : `Normal` distribution
+    distA : :class:`~openturns.Normal` distribution
             ot.Normal(a, 0.3 * a)
 
-    distB : `Normal` distribution
+    distB : :class:`~openturns.Normal` distribution
             ot.Normal(b, 0.3 * b)
 
-    distX : `ComposedDistribution`
+    distX : :class:`~openturns.ComposedDistribution`
             The joint distribution of the input parameters.
 
-    model : `SymbolicFunction`
+    model : :class:`~openturns.PythonFunction`
             The logistic model of growth.
 
-    data : `Sample`
-           22 dates from 1790 to 2000.
+    data : :class:`~openturns.Sample` of size 22 and dimension 2
+           A data set containing 22 dates from 1790 to 2000.
            First marginal represents dates and second marginal the population in millions.
 
     Examples
@@ -52,11 +49,11 @@ class LogisticModel:
     >>> lm = logistic_model.LogisticModel()
     """
 
-    def __init__(self):
+    def __init__(self, y0=3.9e6, a=0.03134, b=1.5887e-10):
         # Initial value of the population
-        self.y0 = 3.9e6
-        self.a = 0.03134
-        self.b = 1.5887e-10
+        self.y0 = y0
+        self.a = a
+        self.b = b
         self.distY0 = ot.Normal(self.y0, 0.1 * self.y0)
         self.distA = ot.Normal(self.a, 0.3 * self.a)
         self.distB = ot.Normal(self.b, 0.3 * self.b)
@@ -89,24 +86,25 @@ class LogisticModel:
             ]
         )
         self.data.setDescription(["Time", "U.S. Population"])
-        self.nbdates = self.data.getSize()
+        nbdates = self.data.getSize()
 
         def logisticModel(X):
-            t = [X[i] for i in range(self.nbdates)]
+            t = [X[i] for i in range(nbdates)]
             a = X[22]
             c = X[23]
             t0 = 1790.0
-            y0 = 3.9e6
+            y0 = y0
             b = math.exp(c)
-            y = [0.0] * self.nbdates
-            for i in range(self.nbdates):
+            y = [0.0] * nbdates
+            for i in range(nbdates):
                 y[i] = a * y0 / (b * y0 + (a - b * y0) * math.exp(-a * (t[i] - t0)))
             z = [yi / 1.0e6 for yi in y]  # Convert into millions
             return z
-        self.model = ot.PythonFunction(24, self.nbdates, logisticModel)
-        inputLabels = ["t%d" % (i) for i in range(self.nbdates)]
+
+        self.model = ot.PythonFunction(24, nbdates, logisticModel)
+        inputLabels = ["t%d" % (i) for i in range(nbdates)]
         inputLabels.append("a")
         inputLabels.append("c")
-        outputLabels = ["z%d" % (i) for i in range(self.nbdates)]
+        outputLabels = ["z%d" % (i) for i in range(nbdates)]
         self.model.setInputDescription(inputLabels)
         self.model.setOutputDescription(outputLabels)

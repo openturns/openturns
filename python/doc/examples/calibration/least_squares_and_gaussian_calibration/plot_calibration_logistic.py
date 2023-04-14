@@ -102,7 +102,7 @@ view = viewer.View(graph)
 
 # %%
 # Print the number of dates:
-print(lm.nbdates)
+print(lm.data.getSize())
 
 # %%
 # Get the physical model to calibrate.

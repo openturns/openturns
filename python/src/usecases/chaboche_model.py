@@ -18,20 +18,20 @@ class ChabocheModel:
 
     Parameters
     ----------
-    strainMin : float
-        The minimum value of the strain. Default is 0.0.
+    strainMin : float, optional
+        The minimum value of the strain. The default is 0.0.
 
-    strainMax : float
-        The maximum value of the strain. Default is 0.07
+    strainMax : float, optional
+        The maximum value of the strain. The default is 0.07
 
-    trueR : float
-        The true value of the R parameter. Default is 750.0e6.
+    trueR : float, optional
+        The true value of the R parameter. The default is 750.0e6.
 
-    trueC : float
-        The true value of the C parameter. Default is 2750.0e6.
+    trueC : float, optional
+        The true value of the C parameter. The default is 2750.0e6.
 
-    trueGamma : float
-        The true value of the Gamma parameter. Default is 10.0.
+    trueGamma : float, optional
+        The true value of the Gamma parameter. The default is 10.0.
 
 
     Attributes
@@ -40,16 +40,16 @@ class ChabocheModel:
           dim=4.
 
     Strain : :class:`~openturns.Uniform` distribution
-              ot.Uniform(strainMin, strainMax)
+              `ot.Uniform(strainMin, strainMax)`
 
     R : :class:`~openturns.Dirac` distribution
-        ot.Dirac(trueR)
+        `ot.Dirac(trueR)`
 
     C : :class:`~openturns.Dirac` distribution
-        ot.Dirac(trueC)
+        `ot.Dirac(trueC)`
 
     Gamma : :class:`~openturns.Dirac` distribution
-            ot.Dirac(trueGamma)
+            `ot.Dirac(trueGamma)`
 
     inputDistribution : :class:`~openturns.ComposedDistribution`
                         The joint distribution of the input parameters.
@@ -58,7 +58,7 @@ class ChabocheModel:
             The Chaboche mechanical law.
 
     data : :class:`~openturns.Sample` of size 10 and dimension 2
-        A dataset which contains noisy observations of the strain (column 0)
+        A data set which contains noisy observations of the strain (column 0)
         and the stress (column 1).
 
     Examples
