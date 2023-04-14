@@ -61,7 +61,14 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
     Point parameters(auxiliaryDistribution_.getParameter());
     
     if (activeParameters_.getSize() != initialAuxiliaryDistributionParameters.getSize())
-    throw InvalidArgumentException(HERE) << "In PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportanceSampling, input sample size (" << activeParameters_.getSize() << ") does not match initial auxiliary distribution parameters size (" << initialAuxiliaryDistributionParameters.getSize() << ").";
+    throw InvalidArgumentException(HERE) << "In PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportanceSampling, active parameters size (" << activeParameters_.getSize() << ") does not match initial auxiliary distribution parameters size (" << initialAuxiliaryDistributionParameters.getSize() << ").";
+    
+    if (activeParameters_.getSize() > auxiliaryDistribution_.getParameter().getSize())
+    throw InvalidArgumentException(HERE) << "In PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportanceSampling, active parameters size (" << activeParameters_.getSize() << ") is greater than auxiliary distribution size (" << initialAuxiliaryDistributionParameters.getSize() << ").";
+
+    if (activeParameters_.getSize() == 0)
+    throw InvalidArgumentException(HERE) << "In PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportanceSampling, active parameters size (" << activeParameters_.getSize() << " has to be greater than zero";    
+    
     
     for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
     {
