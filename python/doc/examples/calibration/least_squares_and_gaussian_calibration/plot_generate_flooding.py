@@ -63,7 +63,7 @@ algorithms.
 # couple made of the flowrate and the corresponding river height.
 
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import numpy as np
 from openturns.usecases import flood_model
 from matplotlib import pylab as plt
@@ -142,11 +142,11 @@ graph.add(cloud)
 #
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
-
-plt.show()
+view = otv.View(graph)
 
 # %%
 # The data which are actually used in
 # :doc:`Calibration of the flooding model </auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_flooding>`
 # are simplified so that the minimum number of significant digits is printed.
+
+otv.View.ShowAll()

@@ -45,7 +45,7 @@ variables and observed output variables.
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pylab as plt
 from openturns.usecases import chaboche_model
 
@@ -170,7 +170,7 @@ cloud.setPointStyle(
 graph.add(cloud)
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the observations are relatively noisy, but that the
@@ -238,7 +238,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
 # sphinx_gallery_thumbnail_number = 3
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a good fit after calibration, since the predictions
@@ -247,7 +247,7 @@ view = viewer.View(graph)
 # %%
 # We can also plot the predicted stress depending on the observed stress.
 graph = calibrationResult.drawObservationsVsPredictions()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a much better fit after calibration, since the
@@ -269,7 +269,7 @@ observationError
 # Gaussian after calibration, we use the
 # :meth:`~openturns.CalibrationResult.drawResiduals` method.
 graph = calibrationResult.drawResiduals()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (6.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -294,7 +294,7 @@ plt.subplots_adjust(right=0.6)
 # method to plot it, but :meth:`~openturns.CalibrationResult.drawResidualsNormalPlot`
 # does it directly.
 graph = calibrationResult.drawResidualsNormalPlot()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the residuals fit to the Normal distribution,
@@ -307,7 +307,7 @@ view = viewer.View(graph)
 # parameter, we use
 # :meth:`~openturns.CalibrationResult.drawParameterDistributions`.
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (10.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -362,7 +362,7 @@ def plotDistributionGridPDF(distribution):
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
 grid = plotDistributionGridPDF(thetaPosterior)
-view = viewer.View(
+view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -425,7 +425,7 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 # We now check the observations depending on the inputs.
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a good fit after calibration, since the predictions
@@ -433,7 +433,7 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawObservationsVsPredictions()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a much better fit after calibration, since the
@@ -453,11 +453,11 @@ observationError
 # %%
 # As with any other distribution, we can draw its PDF.
 graph = observationError.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 graph = calibrationResult.drawResiduals()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (6.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -473,7 +473,7 @@ plt.subplots_adjust(right=0.6)
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (10.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -482,12 +482,12 @@ plt.subplots_adjust(right=0.8)
 
 # %%
 graph = calibrationResult.drawResidualsNormalPlot()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
 grid = plotDistributionGridPDF(thetaPosterior)
-view = viewer.View(
+view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -574,7 +574,7 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 # Let us analyze the validation graphics.
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a good fit after calibration, since the predictions
@@ -582,7 +582,7 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawObservationsVsPredictions()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a much better fit after calibration, since the
@@ -597,7 +597,7 @@ observationError
 
 # %%
 graph = calibrationResult.drawResiduals()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (6.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -615,7 +615,7 @@ plt.subplots_adjust(right=0.6)
 # the observations bring significant information compared to the prior
 # Gaussian distributions.
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (10.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -637,12 +637,12 @@ plt.subplots_adjust(right=0.8)
 # %%
 # We can check that if the residuals after calibration are normal.
 graph = calibrationResult.drawResidualsNormalPlot()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
 grid = plotDistributionGridPDF(thetaPosterior)
-view = viewer.View(
+view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -688,7 +688,7 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a good fit after calibration, since the predictions
@@ -696,7 +696,7 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawObservationsVsPredictions()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a much better fit after calibration, since the
@@ -722,7 +722,7 @@ observationError
 
 # %%
 graph = calibrationResult.drawResiduals()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (6.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -734,7 +734,7 @@ plt.subplots_adjust(right=0.6)
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (10.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -743,14 +743,12 @@ plt.subplots_adjust(right=0.8)
 
 # %%
 graph = calibrationResult.drawResidualsNormalPlot()
-view = viewer.View(graph)
-
-plt.show()
+view = otv.View(graph)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
 grid = plotDistributionGridPDF(thetaPosterior)
-view = viewer.View(
+view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -763,3 +761,5 @@ plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 # parameter are close to each other, but not superimposed: the observations
 # significantly brought information to the variable :math:`\gamma` during
 # the calibration.
+
+otv.View.ShowAll()

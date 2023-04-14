@@ -93,7 +93,6 @@ class LogisticModel:
             a = X[22]
             c = X[23]
             t0 = 1790.0
-            y0 = y0
             b = math.exp(c)
             y = [0.0] * nbdates
             for i in range(nbdates):

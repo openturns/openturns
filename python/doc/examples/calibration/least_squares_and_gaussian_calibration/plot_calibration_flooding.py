@@ -48,7 +48,7 @@ The observations that we use in this study are simulated with the script
 
 from openturns.usecases import flood_model
 from matplotlib import pylab as plt
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import numpy as np
 import openturns as ot
 
@@ -195,7 +195,7 @@ graph.add(cloud)
 #
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Wee see that the model does not fit to the data.
@@ -372,7 +372,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a good fit after calibration, since the predictions after calibration
@@ -380,7 +380,7 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawObservationsVsPredictions()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a much better fit after calibration, since the
@@ -397,7 +397,7 @@ print(observationError)
 # sphinx_gallery_thumbnail_number = 5
 graph = calibrationResult.drawResiduals()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The analysis of the residuals shows that the distribution is centered on
@@ -410,7 +410,7 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (8.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -457,7 +457,7 @@ def plotDistributionGridPDF(distribution):
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
 grid = plotDistributionGridPDF(thetaPosterior)
-view = viewer.View(
+view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -514,7 +514,7 @@ print(thetaMAP)
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the output of the model after calibration is closer to the
@@ -522,7 +522,7 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawObservationsVsPredictions()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # In this case, the fit is satisfactory after calibration.
@@ -530,7 +530,7 @@ view = viewer.View(graph)
 # %%
 graph = calibrationResult.drawResiduals()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the distribution of the residual is centered on zero after
@@ -561,7 +561,7 @@ print(
 
 # %%
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (8.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -580,7 +580,7 @@ plt.subplots_adjust(right=0.8)
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
 grid = plotDistributionGridPDF(thetaPosterior)
-view = viewer.View(
+view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -614,7 +614,7 @@ print(thetaMAP)
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the output of the model after calibration is in the middle of the
@@ -622,14 +622,14 @@ view = viewer.View(graph)
 
 # %%
 graph = calibrationResult.drawObservationsVsPredictions()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The fit is excellent after calibration. Indeed, the cloud of points after calibration is on the diagonal.
 
 # %%
 graph = calibrationResult.drawResiduals()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (8.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -659,7 +659,7 @@ print(
 # %%
 # We can compare the prior and posterior distributions of the marginals of :math:`\theta`.
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (8.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -673,7 +673,7 @@ plt.subplots_adjust(right=0.8)
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
 grid = plotDistributionGridPDF(thetaPosterior)
-view = viewer.View(
+view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -713,7 +713,7 @@ algo = ot.GaussianNonLinearCalibration(
 algo.run()
 calibrationResult = algo.getResult()
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (8.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -726,7 +726,7 @@ plt.subplots_adjust(right=0.8)
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
 grid = plotDistributionGridPDF(thetaPosterior)
-view = viewer.View(
+view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -734,4 +734,4 @@ view = viewer.View(
 plot_space = 0.5
 plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 
-plt.show()
+otv.View.ShowAll()

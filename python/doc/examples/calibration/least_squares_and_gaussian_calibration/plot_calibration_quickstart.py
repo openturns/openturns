@@ -44,7 +44,7 @@ the other examples if this is relevant.
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pylab as plt
 from openturns.usecases import flood_model
 
@@ -176,7 +176,7 @@ graph.add(cloud)
 #
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Wee see that the model does not fit to the data.
@@ -222,7 +222,7 @@ aEstimated, bEstimated = thetaMAP
 title = "After calibration : a = %.4f, b = %.4f" % (aEstimated, bEstimated)
 graph.setTitle(title)
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -231,7 +231,7 @@ view = viewer.View(graph)
 # cell checks if this hypothesis is satisfied here.
 graph = calibrationResult.drawResiduals()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The analysis of the residuals shows that the distribution is centered on
@@ -252,4 +252,4 @@ view = viewer.View(graph)
 # of number of function evaluations.
 #
 
-plt.show()
+otv.View.ShowAll()

@@ -37,7 +37,7 @@ input calibrated variables and observed output variables.
 from openturns.usecases import logistic_model
 import openturns as ot
 import numpy as np
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
@@ -87,7 +87,7 @@ curve.setLegend("")
 curve.setLineStyle(ot.ResourceMap.GetAsString("CalibrationResult-ObservationLineStyle"))
 graph.add(curve)
 graph.setColors([palette[0]] * 2)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that there is a very smooth growth of the U.S. population.
@@ -214,7 +214,7 @@ cloud.setLegend("Predictions")
 cloud.setPointStyle(ot.ResourceMap.GetAsString("CalibrationResult-PriorPointStyle"))
 graph.add(cloud)
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the fit is not good: the observations continue to grow after 1950, while the growth of the prediction seem to fade.
@@ -312,7 +312,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
 # sphinx_gallery_thumbnail_number = 3
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # As a metamodel, we can compare the predicted U.S. population
@@ -330,7 +330,7 @@ view = viewer.View(graph)
 # cloud would be spread over and under the diagonal).
 # In other words, the model and the data do not fit very well.
 graph = calibrationResult.drawObservationsVsPredictions()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The residuals analysis shows that some residuals were very
@@ -343,13 +343,13 @@ view = viewer.View(graph)
 # This may show that the least squares model is appropriate in
 # this case with respect to this criterion.
 graph = calibrationResult.drawResiduals()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The next plot shows that there is a significant improvement
 # after the calibration: the initial point is very different
 # from the distribution of the optimum parameter.
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(graph)
+view = otv.View(graph)
 
-plt.show()
+otv.View.ShowAll()

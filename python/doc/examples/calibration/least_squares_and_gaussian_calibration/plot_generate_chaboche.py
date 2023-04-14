@@ -56,7 +56,7 @@ We generate a Monte-Carlo sample with size :math:`n`:
 
 .. math::
 
-   \\sigma_i = G(\\epsilon_i,R,C,\\gamma) + (\\epsilon_\\sigma)_i,
+   \\sigma_i = g(\\epsilon_i,R,C,\\gamma) + (\\epsilon_\\sigma)_i,
 
 
 for :math:`i = 1,..., n`.
@@ -77,7 +77,7 @@ variables and observed output variables.
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pylab as plt
 from openturns.usecases import chaboche_model
 
@@ -109,7 +109,6 @@ print("Outputs:", cm.model.getOutputDescription())
 
 # %%
 # We get the Chaboche model and the joint input distribution :
-g = cm.model
 inputDistribution = cm.inputDistribution
 print("inputDistribution:", inputDistribution)
 
@@ -132,7 +131,7 @@ print("    Gamma = %.4f" % (cm.trueGamma))
 # The calibrated parameters `R`, `C`, `Gamma` are at indices 1, 2, 3 in
 # the inputs arguments of the model.
 calibratedIndices = [1, 2, 3]
-mycf = ot.ParametricFunction(g, calibratedIndices, thetaTrue)
+mycf = ot.ParametricFunction(cm.model, calibratedIndices, thetaTrue)
 
 # %%
 # Create a regular grid of the strains and evaluate the corresponding outputs.
@@ -177,12 +176,12 @@ cloud.setPointStyle(
 graph.add(cloud)
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
-
-plt.show()
+view = otv.View(graph)
 
 # %%
 # We see that the observations are relatively noisy, but that the
 # trend is clear: this shows that it may be possible to fit the model.
 # At this point, we have a data set that we can use for calibration
 # and a model to calibrate.
+
+otv.View.ShowAll()

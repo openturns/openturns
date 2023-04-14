@@ -15,7 +15,7 @@ Calibration without observed inputs
 
 import openturns as ot
 from matplotlib import pylab as plt
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 # %%
 # The vector of parameters is
@@ -158,9 +158,7 @@ for i in range(outputDimension):
     if i == 0:
         cloud.setLegend("Observations")
     graph.add(cloud)
-view = viewer.View(graph)
-
-plt.show()
+view = otv.View(graph)
 
 
 # %%
@@ -172,3 +170,5 @@ plt.show()
 # If the model were non linear w.r.t. :math:`a`, :math:`b`, :math:`c`, then the linear least
 # squares method would not work that well and the parameters would be estimated
 # with less accuracy.
+
+otv.View.ShowAll()

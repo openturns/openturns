@@ -29,7 +29,7 @@ and observed output variables.
 # %%
 from openturns.usecases import deflection_tube
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
@@ -100,7 +100,7 @@ fullSample[0:5]
 
 # %%
 graph = ot.VisualTest.DrawPairs(fullSample)
-view = viewer.View(graph, figure_kw={"figsize": (10.0, 8.0)})
+view = otv.View(graph, figure_kw={"figsize": (10.0, 8.0)})
 plt.subplots_adjust(wspace=0.3, hspace=0.3)
 
 # %%
@@ -278,7 +278,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
 
 # sphinx_gallery_thumbnail_number = 2
 graph = calibrationResult.drawObservationsVsInputs()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (8.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -294,7 +294,7 @@ plt.subplots_adjust(wspace=0.3, hspace=0.7, right=0.8)
 # The next cell plots the predicted outputs depending on
 # the observed outputs.
 graph = calibrationResult.drawObservationsVsPredictions()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (12.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -337,7 +337,7 @@ plt.subplots_adjust(wspace=0.3, left=0.05, right=0.85)
 # errors, which is an hypothesis of the Gaussian calibration.
 # Since there are three output, there are three residuals to check.
 graph = calibrationResult.drawResiduals()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (13.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -366,7 +366,7 @@ plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
 # %%
 # Check that the results are Gaussian, using a Normal-plot.
 graph = calibrationResult.drawResidualsNormalPlot()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (10.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -377,11 +377,11 @@ plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
 # Finally, we observe the prior and posterior distribution of each
 # parameter.
 graph = calibrationResult.drawParameterDistributions()
-view = viewer.View(
+view = otv.View(
     graph,
     figure_kw={"figsize": (10.0, 4.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(wspace=0.3, left=0.05, right=0.8)
 
-plt.show()
+otv.View.ShowAll()
