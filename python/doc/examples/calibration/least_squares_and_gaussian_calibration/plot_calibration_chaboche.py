@@ -167,9 +167,7 @@ mycf = ot.ParametricFunction(cm.model, calibratedIndices, thetaPrior)
 # %%
 graph = ot.Graph("Model before calibration", "Strain", "Stress (MPa)", True)
 # Plot the model
-curve = mycf.draw(cm.strainMin, cm.strainMax, 50).getDrawable(
-    0
-)
+curve = mycf.draw(cm.strainMin, cm.strainMax, 50).getDrawable(0)
 curve.setLegend("Model before calibration")
 curve.setLineStyle(ot.ResourceMap.GetAsString("CalibrationResult-ObservationLineStyle"))
 graph.add(curve)
@@ -217,32 +215,63 @@ calibrationResult = algo.getResult()
 # The :meth:`~openturns.CalibrationResult.getParameterMAP` method
 # returns the maximum of the posterior density of :math:`\theta`.
 
+
+def printRCGamma(parameter, indentation="   "):
+    """
+    Print the [R, C, Gamma] vector with readable units.
+    """
+    print(indentation, "R = %.1f (MPa)" % (parameter[0] / 1.0e6))
+    print(indentation, "C = %.1f (MPa)" % (parameter[1] / 1.0e6))
+    print(indentation, "Gamma = %.4f" % (parameter[2]))
+    return None
+
+
 # %%
 thetaMAP = calibrationResult.getParameterMAP()
 print("theta After = ")
-print("    R = %.2f (MPa)" % (thetaMAP[0] / 1.0e6))
-print("    C = %.2f (MPa)" % (thetaMAP[1] / 1.0e6))
-print("    Gamma = %.4f" % (thetaMAP[2]))
+printRCGamma(thetaMAP)
 print("theta Before = ")
-print("    R = %.2f (MPa)" % (thetaPrior[0] / 1.0e6))
-print("    C = %.2f (MPa)" % (thetaPrior[1] / 1.0e6))
-print("    Gamma = %.4f" % (thetaPrior[2]))
+printRCGamma(thetaPrior)
 print("theta True = ")
-print("    R = %.2f (MPa)" % (cm.trueR / 1.0e6))
-print("    C = %.2f (MPa)" % (cm.trueC / 1.0e6))
-print("    Gamma = %.4f" % (cm.trueGamma))
+thetaTrue = [cm.trueR, cm.trueC, cm.trueGamma]
+printRCGamma(thetaTrue)
 
 # %%
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
 
-# %%
-thetaPosterior = calibrationResult.getParameterPosterior()
-print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
+
+def printRCGammaInterval(interval, indentation="   "):
+    """
+    Print the [R, C, Gamma] C.I. with readable units.
+    """
+    lowerBound = interval.getLowerBound()
+    upperBound = interval.getUpperBound()
+    print(
+        indentation,
+        "R in [%.1f, %.1f]" % (lowerBound[0] / 1.0e6, upperBound[0] / 1.0e6),
+    )
+    print(
+        indentation,
+        "C in [%.1f, %.1f]" % (lowerBound[1] / 1.0e6, upperBound[1] / 1.0e6),
+    )
+    print(indentation, "Gamma in [%.4f, %.4f]" % (lowerBound[2], upperBound[2]))
+    return None
+
 
 # %%
-# We can see that the :math:`\gamma` parameter has a large confidence interval:
+thetaPosterior = calibrationResult.getParameterPosterior()
+interval = thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95
+)[0]
+print("95% C.I.:")
+printRCGammaInterval(interval)
+
+
+# %%
+# We can see that the :math:`\gamma` parameter has a large confidence interval
+# relative to the true value of the parameter:
 # even the sign of the parameter is unknown.
-# The parameter which is calibrated with the smallest confidence
+# The parameter which is calibrated with the smallest (relative) confidence
 # interval is :math:`R`.
 # This is why this parameter seems to be the most important in this case.
 
@@ -457,7 +486,11 @@ print(thetaMAP)
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
+interval = thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95
+)[0]
+print("95% C.I.:")
+printRCGammaInterval(interval)
 
 # %%
 # We can see that :math:`R` and :math:`C` are accurately estimated
@@ -634,7 +667,11 @@ print(thetaMAP)
 
 # %%
 thetaPosterior = calibrationResult.getParameterPosterior()
-print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
+interval = thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95
+)[0]
+print("95% C.I.:")
+printRCGammaInterval(interval)
 
 # %%
 # We can see that all three parameters are estimated with a relatively
@@ -765,7 +802,11 @@ print(thetaMAP)
 # %%
 # We can compute a 95% credibility interval of the parameter :math:`\theta^\star`.
 thetaPosterior = calibrationResult.getParameterPosterior()
-thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0]
+interval = thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95
+)[0]
+print("95% C.I.:")
+printRCGammaInterval(interval)
 
 # %%
 # The previous credibility interval can be compared to the one that we previously
