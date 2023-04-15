@@ -48,18 +48,16 @@ The estimators of the first and total order Sobol' indices used by this class ar
 
 .. math::
 
-   \begin{array}{ccc}
-   \hat{S}_i & = & \rho_n(\tilde{\vect{g}}(\mat{B}), \tilde{\vect{g}}(\mat{E}^i)) \\
-   \widehat{ST}_i & = & 1 - \rho_n(\tilde{\vect{g}}(\mat{A}), \tilde{\vect{g}}(\mat{E}^i)) \\
-   \end{array}
+   \hat{S}_i & = \rho_n\left(\tilde{\vect{g}}(\mat{B}), \tilde{\vect{g}}(\mat{E}^i)\right) \\
+   \widehat{S}_i^T & = 1 - \rho_n\left(\tilde{\vect{g}}(\mat{A}), \tilde{\vect{g}}(\mat{E}^i)\right) \\
 
-where :math:`\rho_n` is the empirical correlation defined by:
+where :math:`\rho_n` is the sample correlation defined by:
 
 .. math::
 
-   \rho_n(\vect{Z}, \vect{Z}') = 
-   \frac{\sum_{k=1}^N \vect{Z}_k \vect{Z}_k'}
-   {\sqrt{\sum_{k=1}^N \vect{Z}_k^2} \sqrt{\sum_{k=1}^N \left( \vect{Z}_k' \right)^2}}
+   \rho_n \left(\vect{z}, \vect{z}'\right) = 
+   \frac{\sum_{k=1}^N z_k z_k'}
+   {\sqrt{\sum_{k=1}^N z_k^2} \sqrt{\sum_{k=1}^N \left( z_k' \right)^2}}
 
 and :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
 

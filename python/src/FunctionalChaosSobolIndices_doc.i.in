@@ -21,83 +21,9 @@ This class provides methods to estimate the Sobol' indices which
 are presented in :ref:`sensitivity_sobol`.
 These indices can be easily computed from the polynomial chaos expansion: 
 these algorithm is documented for each of the methods presented below.
+The theory and notations for the methods implemented in this 
+class is introduced in :ref:`sensitivity_sobol_from_pce`.
 
-In this help page, we use the following notations.
-Let :math:`d` be the dimension of the input random vector.
-Let :math:`P \in \Nset` be the number of coefficients in the functional 
-basis.
-Let :math:`\mathcal{J}_P \subseteq \Nset^d` the set of multi-indices up
-to the index :math:`P`.
-Depending on the way the coefficients are computed, the set of multi-indices
-is the consequence of the choice of the polynomial degree, the enumeration rule,
-and, if necessary, the selection method (e.g. the LARS selection method).
-Let :math:`\tilde{h}(\bdZ)` be the polynomial chaos expansion:
-
-.. math::
-    \tilde{h}(\bdZ)
-    &= \sum_{\idx \in \mathcal{J}_P} a_\idx \psi_\idx(\bdZ)
-
-where :math:`\bdZ` is the standardized input random vector,
-:math:`\{a_\idx\}_{\idx \in \mathcal{J}_P}` are the coefficients
-and :math:`\{\psi_\idx\}_{\idx \in \mathcal{J}_P}` are the functions in the
-functional basis.
-
-The variance of the polynomial chaos expansion is:
-
-.. math::
-    \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2 \|\psi_\idx\|^2.
-
-In the previous expression, let us emphasise that the variance is a sum 
-of squares, excepted the :math:`a_0` coefficient. 
-If the polynomial basis is orthonormal, the expression is particularly 
-simple:
-
-.. math::
-    \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
-
-The part of variance of the multi-index :math:`\idx` is:
-
-.. math::
-    \operatorname{PoV}_\idx
-    = \frac{a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
-
-The sum of the part of variances of all multi-indices is equal to 1:
-
-.. math::
-    \sum_{\idx \in \mathcal{J}_P} \operatorname{PoV}_\idx = 1.
-
-Hence, we can identify the multi-indices which contribute
-more significantly to the variance of the output by sorting the
-multi-indices by decreasing order of their part of variance.
-This result is printed by the `str` representation of the
-`FunctionalChaosSobolIndices` class and is accessed by the 
-`print` function: see an example of this below.
-
-All the Sobol' indices that we introduce in this section depend on a 
-specific set of multi-indices. 
-Let :math:`\mathcal{J}^S \subseteq \mathcal{J}_P` a subset of the multi-indices 
-involved in the polynomial chaos expansion.
-Let :math:`\operatorname{S}^{PCE}` be the function of the coefficients associated 
-to the multi-indices :math:`\mathcal{J}^S`, defined by: 
-
-.. math::
-    \operatorname{S}^{PCE}\left(\mathcal{J}^S\right) 
-    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
-
-Then any Sobol' index :math:`S` can be defined by the equation:
-
-.. math::
-    S = \operatorname{S}^{PCE}\left(\mathcal{J}^S\right).
-
-If the polynomial basis is orthonormal, therefore:
-
-.. math::
-    \operatorname{S}^{PCE}\left(\mathcal{J}^S\right) 
-    = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
-
-
-Hence, in the methods presented below, each Sobol' index is defined
-by its corresponding set of multi-indices.
 
 Examples
 --------
@@ -194,37 +120,14 @@ argument.
 *Case 1: single variable.* 
 Let :math:`i \in \{0, ..., d - 1\}` the index of an input 
 variable. 
-Let :math:`\mathcal{J}_i^S` the set of multi-indices such that 
-:math:`\alpha_i > 0` and the other components of the multi-indices are zero:
-
-.. math::
-    \mathcal{J}_i^S
-    =\left\{\idx=(0, ..., 0, \alpha_i, 0, ..., 0) \in \mathcal{J}_P, \quad 
-    \alpha_i > 0 \right\}.
-
-Therefore, the first order Sobol' index :math:`S_i` of the variable 
-:math:`X_i` is: 
-
-.. math::
-    S_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^S\right).
+Therefore, the method computes the first order Sobol' index :math:`S_i`
+of the variable :math:`X_i`.
 
 *Case 2: group of variables.*
 Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
-Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
-
-.. math::
-    \mathcal{J}_\bdu
-    =\left\{\idx \in \mathcal{J}_P, 
-    \quad \idx \neq \boldsymbol{0}, \quad 
-    \alpha_i > 0 \textrm{ if } i \in \bdu, \quad
-    \alpha_i = 0 \textrm{ if } i \not \in \bdu, \quad
-    i = 0, \ldots, d - 1 \right\}.
-
-Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is: 
-
-.. math::
-    S_\bdu = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu\right).
+Therefore, the method computes the interaction (high order) Sobol'
+index :math:`S_\bdu` of the group :math:`\bdu`.
 
 Parameters
 ----------
@@ -242,39 +145,22 @@ s : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolTotalIndex
-"Get the total Sobol' index of an input variable.
+"Get the total Sobol' index of an input variable or the interaction total
+index of a group of variables.
+This function can take a single variable or a group of variables as input
+argument.
 
 *Case 1: single variable.* 
 Let :math:`i \in \{0, ..., d - 1\}` the index of an input 
 variable. 
-Let :math:`\mathcal{J}_i^T` the set of multi-indices such that 
-:math:`\alpha_i > 0`:
-
-.. math::
-    \mathcal{J}_i^T
-    =\left\{\idx = (\alpha_0,...,\alpha_i,...,\alpha_{d - 1}) \in \mathcal{J}_P, \quad 
-    \alpha_i > 0 \right\}.
-
-Therefore, the total index :math:`S^T_i` is: 
-
-.. math::
-    S^T_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^T\right).
+Therefore, the method computes the total index :math:`S^T_i`
+of the variable :math:`X_i`.
 
 *Case 2: group of variables.*
 Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
-Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
-
-.. math::
-    \mathcal{J}_\bdu^{T, i}
-    = \left\{\boldsymbol{\alpha} \in \mathcal{J}_P, \quad \boldsymbol{\alpha} \neq \boldsymbol{0}, \quad 
-    \alpha_i > 0 \textrm{ if } i \in \bdu, \quad
-    i = 0, \ldots, d - 1 \right\}.
-
-Therefore, the total interaction (high order) Sobol' index :math:`S_\bdu` is: 
-
-.. math::
-    S_\bdu^{T, i} = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^{T, i}\right).
+Therefore, the method computes the total interaction (high order)
+Sobol' index :math:`S_\bdu` of the group :math:`\bdu`.
 
 Parameters
 ----------
@@ -296,22 +182,8 @@ s : float
 
 Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
-Let :math:`\mathcal{J}_\bdu^{S, \operatorname{cl}}` the set of multi-indices such that 
-each component of :math:`\idx` is contained in the group :math:`\bdu`:
-
-.. math::
-    \mathcal{J}_\bdu^{S, \operatorname{cl}}
-    = \left\{\idx \in \mathcal{J}_P, \quad 
-      \idx \neq \boldsymbol{0}, \quad \alpha_i = 0 \quad \textrm{ if } \quad 
-      i \not \in \bdu, \quad 
-      i = 0, \ldots, d - 1 \right\}.
-
-Therefore, the first order (closed) Sobol' index :math:`S^{\operatorname{cl}}_\bdu` 
-is: 
-
-.. math::
-    S^{\operatorname{cl}}_\bdu 
-    = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^{S, \operatorname{cl}}\right).
+Therefore, the method computes the first order (closed) Sobol' index 
+:math:`S^{\operatorname{cl}}_\bdu` of the group :math:`\bdu`.
 
 Parameters
 ----------
@@ -333,18 +205,8 @@ s : float
 
 Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
-Let :math:`\mathcal{J}_\bdu^T` the set of multi-indices:
-
-.. math::
-    \mathcal{J}_\bdu^T 
-    = \left\{\idx \in\mathcal{J}_P, \quad \idx \neq \boldsymbol{0}, \quad 
-      \exists i \in \{0, \ldots, d - 1\} \quad 
-      \textrm{s.t.}  \quad i \in \bdu \textrm{ and } \alpha_i > 0 \right\}.
-
-Therefore, the total Sobol' index :math:`S^T_\bdu` is: 
-
-.. math::
-    S^T_\bdu = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^T\right).
+Therefore, the method computes the total Sobol' index :math:`S^T_\bdu` of
+the group :math:`\bdu`.
 
 Parameters
 ----------

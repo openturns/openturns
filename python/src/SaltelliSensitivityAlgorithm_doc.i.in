@@ -48,10 +48,12 @@ The estimators of :math:`V_i` and :math:`V_{-i}` used by this class are respecti
 
 .. math::
 
-   \begin{array}{ccc}
-   \hat{V}_i & = & \frac{1}{N-1}\sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k)  \tilde{\vect{g}}(\vect{E}_k) - (\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)) (\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k)) \\
-   \hat{V}_{-i} & = & \frac{1}{N-1}\sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)  \tilde{\vect{g}}(\vect{E}_k) - (\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)) (\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k))
-   \end{array}
+   \widehat{V}_i & =  \frac{1}{N-1}\sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k)  \tilde{\vect{g}}(\vect{E}_k) 
+   - \left(\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)\right) 
+   \left(\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k)\right) \\
+   \widehat{V}_{-i} & =  \frac{1}{N-1}\sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)  \tilde{\vect{g}}(\vect{E}_k) 
+   - \left(\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)\right) 
+   \left(\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k)\right)
 
 where :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
 

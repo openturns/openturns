@@ -29,7 +29,7 @@ Hence, the model is simplified to:
 
 The Sobol' decomposition is described more easily when the domain of the input
 is the unit interval :math:`[0,1]^{n_X}`.
-It can be easily extended to any input domain using expectations, variances a
+It can be easily extended to any input domain using expectations, variances
 and variance of conditional expectations.
 
 We assume that the input marginal variables :math:`X_1,\ldots,X_{n_X}` are
@@ -143,7 +143,6 @@ More generally, the interaction variance of a group of variables is:
     V_\bdu = \Var{h_\bdu(\bdx_\bdu)},
 
 for any :math:`\bdu \subseteq \{1,2,\ldots,n_X\}`.
-
 Using the Hoeffding decomposition, we get:
 
 .. math::
@@ -182,7 +181,6 @@ The first order Sobol' sensitivity index is:
     S_i &= \frac{\Var{\Expect{Y|X_i}}}{\Var{Y}}
 
 for :math:`i=1,\ldots, n_X`.
-
 The total  Sobol' sensitivity index is:
 
 .. math::
@@ -199,26 +197,26 @@ The total  Sobol' sensitivity index is:
     S^T_i &= 1 - \frac{\Var{\Expect{Y|X_{\overline{\{i\}}}}}}{\Var{Y}}
 
 for :math:`i=1,\ldots, n_X`.
-
-
 For any :math:`i=1,\ldots,n_X`, let us define
 
 .. math::
 
-    VT_i   & = \sum_{I \ni i} V_I \\
+    V_i^T   & = \sum_{\bdu \ni i} V_\bdu \\
     V_{-i} & = \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_{n_X}} }.
 
 Total order Sobol' indices are defined as follows:
 
 .. math::
 
-    ST_i = \frac{VT_i}{\Var{Y}} = 1 - \frac{V_{-i}}{\Var{Y}}
+    S_i^T = \frac{V_i^T}{\Var{Y}} = 1 - \frac{V_{-i}}{\Var{Y}}
 
 for :math:`i=1,\ldots,n_X`.
 
-The total order Sobol' index :math:`ST_i` quantifies the part of the variance of :math:`Y` that is due to the effect of :math:`X_i`
+The total order Sobol' index :math:`S_i^T` quantifies the part of the variance
+of :math:`Y` that is due to the effect of :math:`X_i`
 and its interactions with all the other input variables.
-It can also be viewed as the part of the variance of :math:`Y` that cannot be explained without :math:`X_i`.
+It can also be viewed as the part of the variance of :math:`Y` that cannot
+be explained without :math:`X_i`.
 
 
 Sensitivity indices of a group of variables
@@ -266,40 +264,52 @@ Summary of Sobol' indices
 The next table presents a summary of the 6 different Sobol' indices that
 we have presented.
 
-+--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-| Single variable or group | Sensitivity Index    | Formula                                                                                                                  |
-+==========================+======================+==========================================================================================================================+
-| Interaction of a group   | First order          | :math:`S_\bdu = \frac{V_\bdu}{\Var{Y}}`                                                                                  |
-+--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-|                          | Total                | :math:`S^{T,i}_\bdu = \sum_{\bdv \supseteq \bdu} S_{\bdv}`                                                               |
-+--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-| One single variable      | First order          | :math:`S_i = \frac{\Var{\Expect{Y|X_i}}}{\Var{Y}}= \frac{V_i}{\Var{Y}}`                                                  |
-+--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-|                          | Total                | :math:`S^T_i = \sum_{\bdu \ni i} S_\bdu = 1 - S_{\overline{\{i\}}}^{\operatorname{cl}}`                                  |
-+--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-| Group                    | First order (closed) | :math:`S_\bdu^{\operatorname{cl}} = \frac{\Var{\Expect{Y|\bdX_\bdu}}}{\Var{Y}} = \sum_{\bdv \subseteq \bdu} S_\bdv`      |
-+--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-|                          | Total                | :math:`S^T_\bdu = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} V_\bdv}{\Var{Y}} = 1 - S_{\overline{\bdu}}^{\operatorname{cl}}` |
-+--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
++--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+| Single variable or group             | Sensitivity Index    | Formula                                                                                                                  |
++======================================+======================+==========================================================================================================================+
+| One single variable :math:`i`        | First order          | :math:`S_i = \frac{\Var{\Expect{Y|X_i}}}{\Var{Y}}= \frac{V_i}{\Var{Y}}`                                                  |
++--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+|                                      | Total                | :math:`S^T_i = \sum_{\bdu \ni i} S_\bdu = 1 - S_{\overline{\{i\}}}^{\operatorname{cl}}`                                  |
++--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+| Interaction of a group :math:`\bdu`  | First order          | :math:`S_\bdu = \frac{V_\bdu}{\Var{Y}}`                                                                                  |
++--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+|                                      | Total interaction    | :math:`S^{T,i}_\bdu = \sum_{\bdv \supseteq \bdu} S_{\bdv}`                                                               |
++--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+| Group (closed) :math:`\bdu`          | First order closed   | :math:`S_\bdu^{\operatorname{cl}} = \frac{\Var{\Expect{Y|\bdX_\bdu}}}{\Var{Y}} = \sum_{\bdv \subseteq \bdu} S_\bdv`      |
++--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+|                                      | Total                | :math:`S^T_\bdu = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} V_\bdv}{\Var{Y}} = 1 - S_{\overline{\bdu}}^{\operatorname{cl}}` |
++--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
 
-All these indices are in the :math:`[0, 1]` interval.
+**Table 1.** First order and total Sobol' indices of a single variable :math:`i` or a group :math:`\bdu`.
 
-The sum of interaction first order Sobol' indices is equal to 1:
+Let us summarize the properties of the Sobol' indices.
+
+- All these indices are in the :math:`[0, 1]` interval.
+
+- The sum of interaction first order Sobol' indices is equal to 1:
 
 .. math::
     \sum_{\bdu \subseteq \{1,2,\ldots,n_X\}} S_\bdu = 1.
 
-Each first order index is lower than its total couterpart:
+- Each first order index is lower than its total counterpart:
 
 .. math::
     S_\bdu & \leq S^{T,i}_\bdu \\
     S_i & \leq S^T_i \\
     S_\bdu^{\operatorname{cl}} & \leq S^T_\bdu
 
+- If :math:`S_i < S^T_i`, there are interactions between the variable :math:`X_i` and other variables.
+
+- If :math:`S_i = S^T_i` for :math:`i = 1, ..., n_X`, then the function is additive, i.e.
+  the function :math:`g` is the sum of functions :math:`g_1, ..., g_{n_X}` of input dimension 1:
+
+.. math::
+    Y = \sum_{i = 1}^{n_X} g_i(X_i).
+
 Example
 ~~~~~~~
 
-Let us consider a function :math:`g` which has :math:`p = 3` inputs 
+Let us consider a function :math:`g` which has :math:`n_X = 3` inputs 
 :math:`(X_1, X_2, X_3)`.
 The full set of interaction indices is:
 
@@ -321,7 +331,7 @@ table.
 | :math:`X_3`           | :math:`S_3`           | :math:`S_3^T = S_3 + S_{1,3} + S_{2,3} + S_{1,2,3}` |
 +-----------------------+-----------------------+-----------------------------------------------------+
 
-**Table 1.** First order and total Sobol' indices of the variables :math:`X_1`, :math:`X_2` and :math:`X_3`.
+**Table 2.** First order and total Sobol' indices of the variables :math:`X_1`, :math:`X_2` and :math:`X_3`.
 
 The list of possible groups is :math:`\{1,2\}`, :math:`\{1,3\}`, :math:`\{2,3\}` and  :math:`\{1,2,3\}`. 
 The next table presents the Sobol' indices of the group :math:`\bdu = \{1, 2\}`. 
@@ -338,7 +348,7 @@ The next table presents the Sobol' indices of the group :math:`\bdu = \{1, 2\}`.
 | Group total                                   | :math:`S_{\{1,2\}}^T = S_1 + S_2 + S_{\{1, 2\}} + S_{\{1, 2, 3\}}`     |
 +-----------------------------------------------+------------------------------------------------------------------------+
 
-**Table 2.** Sobol' indices of the group :math:`\bdu = \{1, 2\}`.
+**Table 3.** Sobol' indices of the group :math:`\bdu = \{1, 2\}`.
 
 Aggregated Sobol' indices
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -353,14 +363,15 @@ expectation of the k-th output :math:`Y^{(k)}`:
     V_i^{(k)} & = \Var{ \Expect{Y^{(k)} \vert X_i} }
 
 for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
-Similarly, let :math:`VT_i^{(k)}` be the total variance of the conditional expectation of :math:`Y^{(k)}` for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
+Similarly, let :math:`V_i^{(T, k)}` be the total variance of the conditional expectation 
+of :math:`Y^{(k)}` for :math:`i = 1, \ldots, n_X` and :math:`k = 1, \ldots, n_Y`.
 
 The indices can be aggregated with the following formulas:
 
 .. math::
 
     S_i^{(a)}  & =  \frac{ \sum_{k=1}^{n_Y} V_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }  \\
-    ST_i^{(a)} & =  \frac{ \sum_{k=1}^{n_Y} VT_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }
+    S_i^{(T, a)} & =  \frac{ \sum_{k=1}^{n_Y} VT_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }
 
 for :math:`i=1,\ldots,n_X`.
 
@@ -415,7 +426,7 @@ We are now going to mix these two samples to get an estimate of the sensitivity 
    \end{array}
    \right)
 
-Several estimators of :math:`V_i`, :math:`VT_i` and :math:`V_{-i}` are provided by the :class:`SobolIndicesAlgorithm` implementations:
+Several estimators of :math:`V_i`, :math:`V_i^T` and :math:`V_{-i}` are provided by the :class:`SobolIndicesAlgorithm` implementations:
 
 - :class:`~openturns.SaltelliSensitivityAlgorithm` for the `Saltelli` method,
 - :class:`~openturns.JansenSensitivityAlgorithm` for the `Jansen` method,
@@ -423,6 +434,14 @@ Several estimators of :math:`V_i`, :math:`VT_i` and :math:`V_{-i}` are provided 
 - :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method.
 
 Specific formulas for :math:`\widehat{V}_i`, :math:`\widehat{VT}_i` and :math:`\widehat{V}_{-i}` are given in the corresponding documentation pages.
+
+The estimator :math:`\widehat{V}_{i,j}` of :math:`V_{i,j}` is the same for all these classes:
+
+.. math::
+
+    \widehat{V}_{i,j} = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{g}(\vect{E}_k^i) \tilde{g}(\vect{C}_k^j) - \frac{1}{N} \sum_{k=1}^{N} \tilde{g}(\vect{A}_k) \tilde{g}(\vect{B}_k) - \widehat{V}_i - \widehat{V}_j.
+
+Notice that the value of the second order conditional variance depends on the estimators :math:`\widehat{V}_i` and :math:`\widehat{V}_j` which are method-dependent. This implies that the value of the second order indices may depend on the specific Sobol' estimator we use. 
 
 Centering the output
 ~~~~~~~~~~~~~~~~~~~~
@@ -437,8 +456,8 @@ for any :math:`\vect{x} \in \Rset^{n_X}`, by:
 
    \tilde{\vect{g}}(\vect{x}) = \vect{g}(\vect{x}) - \overline{\vect{g}}.
 
-
-
+To estimate the total variance :math:`\Var{Y}`,
+we use the :meth:`~openturns.Sample.computeVariance` method of the :class:`~openturns.Sample` :math:`\tilde{g}(\mat{A})`.
 
 .. topic:: API:
 
@@ -455,3 +474,4 @@ for any :math:`\vect{x} \in \Rset^{n_X}`, by:
     - [saltelli2002]_
     - [daveiga2022]_
     - [sobol1993]_
+    - Knio, O. M., & Le Maitre, O. P. (2006). Uncertainty propagation in CFD using polynomial chaos decomposition. *Fluid dynamics research*, *38* (9), 616.
