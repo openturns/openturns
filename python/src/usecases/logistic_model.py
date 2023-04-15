@@ -10,6 +10,25 @@ class LogisticModel:
     """
     Data class for the logistic model.
 
+    In the physical model, the inputs and parameters are ordered as
+    presented in the next table.
+    Notice that there are no parameters in the physical model.
+
+    +-------+----------------+
+    | Index | Input variable |
+    +=======+================+
+    | 0     | t1             |
+    +-------+----------------+
+    | 1     | t2             |
+    +-------+----------------+
+    | ...   | ...            |
+    +-------+----------------+
+    | 21    | t22            |
+    +-------+----------------+
+    | 22    | a              |
+    +-------+----------------+
+    | 23    | c              |
+    +-------+----------------+
 
     Attributes
     ----------
@@ -37,6 +56,8 @@ class LogisticModel:
 
     model : :class:`~openturns.PythonFunction`
             The logistic model of growth.
+            The input has dimension 24 :math:`\boldsymbol{X} = (t_1, ..., t_{22}, a, c)`
+            and the output has dimension 22 :math:`\boldsymbol{Y} = (y_1, ..., y_{22})`.
 
     data : :class:`~openturns.Sample` of size 22 and dimension 2
            A data set containing 22 dates from 1790 to 2000.
@@ -47,6 +68,17 @@ class LogisticModel:
     >>> from openturns.usecases import logistic_model
     >>> # Load the logistic model
     >>> lm = logistic_model.LogisticModel()
+    >>> print(lm.data[:5])
+        [ Time            U.S. Population ]
+    0 : [ 1790               3.9          ]
+    1 : [ 1800               5.3          ]
+    2 : [ 1810               7.2          ]
+    3 : [ 1820               9.6          ]
+    4 : [ 1830              13            ]
+    >>> print("Inputs:", lm.model.getInputDescription())
+    Inputs: [t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20,t21,a,c]#24
+    >>> print("Outputs:", lm.model.getOutputDescription())
+    Outputs: [z0,z1,z2,z3,z4,z5,z6,z7,z8,z9,z10,z11,z12,z13,z14,z15,z16,z17,z18,z19,z20,z21]#22
     """
 
     def __init__(self, y0=3.9e6, a=0.03134, b=1.5887e-10):

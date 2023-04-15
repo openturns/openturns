@@ -39,19 +39,22 @@ class FloodModel:
         `ot.TruncatedDistribution(ot.Gumbel(558.0, 1013.0), 0.0, ot.TruncatedDistribution.LOWER)`
 
     Ks : :class:`~openturns.TruncatedDistribution` of a :class:`~openturns.Normal` distribution
-         `ot.TruncatedDistribution(ot.Normal(30.0, 7.5), 0.0, ot.TruncatedDistribution.LOWER)`
+        `ot.TruncatedDistribution(ot.Normal(30.0, 7.5), 0.0, ot.TruncatedDistribution.LOWER)`
 
     Zv : :class:`~openturns.Uniform` distribution
-         `ot.Uniform(49.0, 51.0)`
+        `ot.Uniform(49.0, 51.0)`
 
     Zm : :class:`~openturns.Uniform` distribution
-         `ot.Uniform(54.0, 56.0)`
+        `ot.Uniform(54.0, 56.0)`
 
-    model : :class:`~openturns.SymbolicFunction`
-            The flood model.
+    model : :class:`~openturns.ParametricFunction`
+        The flood model.
+        The function has input dimension 4 :math:`\boldsymbol{X} = (Q, K_s, Z_v, Z_m)`
+        and output dimension 1 :math:`Y = (H)`.
+        Its parameters are :math:`\theta = (B, L)`.
 
     distribution : :class:`~openturns.ComposedDistribution`
-                   The joint distribution of the input parameters.
+        The joint distribution of the input parameters.
 
     data : :class:`~openturns.Sample` of size 10 and dimension 2
         A data set which contains noisy observations of the flow rate (column 0)
@@ -62,6 +65,19 @@ class FloodModel:
     >>> from openturns.usecases import flood_model
     >>> # Load the flood model
     >>> fm = flood_model.FloodModel()
+    >>> print(fm.data[:5])
+        [ Q ($m^3/s$) H (m)       ]
+    0 : [  130           0.59     ]
+    1 : [  530           1.33     ]
+    2 : [  960           2.03     ]
+    3 : [ 1400           2.72     ]
+    4 : [ 1830           2.83     ]
+    >>> print("Inputs:", fm.model.getInputDescription())
+    Inputs: [Q,Ks,Zv,Zm]
+    >>> print("Parameters:", fm.model.getParameterDescription())
+    Parameters: [B,L]
+    >>> print("Outputs:", fm.model.getOutputDescription())
+    Outputs: [H]
     """
 
     def __init__(self, L=5000.0, B=300.0, trueKs=30.0, trueZv=50.0, trueZm=55.0):
@@ -100,6 +116,7 @@ class FloodModel:
             ["(Q / (Ks * B * sqrt((Zm - Zv) / L)))^(3.0 / 5.0) + Zv - 58.5"],
         )
         self.model = ot.ParametricFunction(g, [4, 5], [L, B])
+        self.model.setOutputDescription(["H"])
 
         self.distribution = ot.ComposedDistribution([self.Q, self.Ks, self.Zv, self.Zm])
         self.distribution.setDescription(["Q", "Ks", "Zv", "Zm"])

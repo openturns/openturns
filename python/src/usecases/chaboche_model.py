@@ -56,6 +56,8 @@ class ChabocheModel:
 
     model : :class:`~openturns.PythonFunction`
             The Chaboche mechanical law.
+            The model has input dimension 4 :math:`\boldsymbol{X} = (\epsilon, R,
+            C, \gamma)` and output dimension 1 :math:`Y = \sigma`.
 
     data : :class:`~openturns.Sample` of size 10 and dimension 2
         A data set which contains noisy observations of the strain (column 0)
@@ -66,6 +68,17 @@ class ChabocheModel:
     >>> from openturns.usecases import chaboche_model
     >>> # Load the Chaboche model
     >>> cm = chaboche_model.ChabocheModel()
+    >>> print(cm.data[:5])
+            [ Strain      Stress (Pa) ]
+    0 : [ 0           7.56e+08    ]
+    1 : [ 0.0077      7.57e+08    ]
+    2 : [ 0.0155      7.85e+08    ]
+    3 : [ 0.0233      8.19e+08    ]
+    4 : [ 0.0311      8.01e+08    ]
+    >>> print("Inputs:", cm.model.getInputDescription())
+    Inputs: [Strain,R,C,Gamma]
+    >>> print("Outputs:", cm.model.getOutputDescription())
+    Outputs: [Sigma]
     """
 
     def __init__(
