@@ -24,6 +24,26 @@ these algorithm is documented for each of the methods presented below.
 The theory and notations for the methods implemented in this 
 class is introduced in :ref:`sensitivity_sobol_from_pce`.
 
+The next table presents the map from the Sobol' index to the method
+which computes it.
+
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+| Single variable or group            | Sensitivity Index    | Notation                           | Method                                       |
++=====================================+======================+====================================+==============================================+
+| One single variable :math:`i`       | First order          | :math:`S_i`                        | `getSobolIndex(i)`                           |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+|                                     | Total                | :math:`S^T_i`                      | `getSobolTotalIndex(i)`                      |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+| Group interaction :math:`\bdu`      | First order          | :math:`S_\bdu`                     | `getSobolIndex(variableIndices)`             |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+|                                     | Total interaction    | :math:`S^{T,i}_\bdu`               | `getSobolIndex(variableIndices)`             |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+| Group (closed) :math:`\bdu`         | First order closed   | :math:`S_\bdu^{\operatorname{cl}}` | `getSobolGroupedIndex(variableIndices)`      |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+|                                     | Total                | :math:`S^T_\bdu`                   | `getSobolGroupedTotalIndex(variableIndices)` |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+
+**Table 1.** Sobol' indices and the corresponding methods.
 
 Examples
 --------
