@@ -143,7 +143,7 @@ Get first order Sobol' index for X0:
 >>> print('S(0) = ', s0)
 S(0) =  0.26...
 
-Get total order Sobol' index for X0:
+Get total Sobol' index for X0:
 
 >>> st0 = chaosSI.getSobolTotalIndex(0)
 >>> print('ST(0) = ', st0)
@@ -167,7 +167,7 @@ Get first order Sobol' index for group [X0,X1]:
 >>> print('SG([0, 1]) = ', sg01)
 SG([0, 1]) =  0.76...
 
-Get total order Sobol' index for group [X0,X1]:
+Get total Sobol' index for group [X0,X1]:
 
 >>> stg01 = chaosSI.getSobolGroupedTotalIndex([0,1])
 >>> print('STG([0, 1]) = ', stg01)
@@ -186,20 +186,21 @@ functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolIndex
-"Get the first order Sobol' index of an input variable.
-
-This function can manage either a single variable or a group of variables.
+"Get the first order Sobol' index of an input variable
+or the interaction (high order) index of a group of variables.
+This function can take a single variable or a group of variables as input
+argument.
 
 *Case 1: single variable.* 
 Let :math:`i \in \{0, ..., d - 1\}` the index of an input 
 variable. 
 Let :math:`\mathcal{J}_i^S` the set of multi-indices such that 
-:math:`\alpha_i>0` and the other components of the multi-indices are zero:
+:math:`\alpha_i > 0` and the other components of the multi-indices are zero:
 
 .. math::
     \mathcal{J}_i^S
-    =\left\{\idx=(0,..., 0,\alpha_i,0,...,0) \in \mathcal{J}_P, 
-    \quad \alpha_i > 0\right\}.
+    =\left\{\idx=(0, ..., 0, \alpha_i, 0, ..., 0) \in \mathcal{J}_P, \quad 
+    \alpha_i > 0 \right\}.
 
 Therefore, the first order Sobol' index :math:`S_i` of the variable 
 :math:`X_i` is: 
@@ -208,7 +209,7 @@ Therefore, the first order Sobol' index :math:`S_i` of the variable
     S_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^S\right).
 
 *Case 2: group of variables.*
-Let :math:`\bdu \subseteq \{0, ..., d-1\}` the list of variable indices
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
 Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
 
@@ -216,7 +217,9 @@ Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
     \mathcal{J}_\bdu
     =\left\{\idx \in \mathcal{J}_P, 
     \quad \idx \neq \boldsymbol{0}, \quad 
-    \alpha_i = 0 \textrm{ if } i \not\in \bdu\right\}.
+    \alpha_i > 0 \textrm{ if } i \in \bdu, \quad
+    \alpha_i = 0 \textrm{ if } i \not \in \bdu, \quad
+    i = 0, \ldots, d - 1 \right\}.
 
 Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is: 
 
@@ -225,7 +228,7 @@ Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is:
 
 Parameters
 ----------
-i : int or sequence of int, :math:`0 \leq i < d - 1`
+i : int or sequence of int, :math:`0 \leq i \leq d - 1`
     Indice(s) of the variable(s). 
 marginalIndex : int
     Output marginal index.
@@ -245,28 +248,28 @@ s : float
 Let :math:`i \in \{0, ..., d - 1\}` the index of an input 
 variable. 
 Let :math:`\mathcal{J}_i^T` the set of multi-indices such that 
-:math:`\alpha_i> 0`:
+:math:`\alpha_i > 0`:
 
 .. math::
     \mathcal{J}_i^T
-    =\left\{\idx = (\alpha_1,...,\alpha_i,...,\alpha_p) \in \mathcal{J}_P, 
-    \quad \alpha_i > 0\right\}.
+    =\left\{\idx = (\alpha_0,...,\alpha_i,...,\alpha_{d - 1}) \in \mathcal{J}_P, \quad 
+    \alpha_i > 0 \right\}.
 
-Therefore, the total order index :math:`S^T_i` is: 
+Therefore, the total index :math:`S^T_i` is: 
 
 .. math::
     S^T_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^T\right).
 
 *Case 2: group of variables.*
-Let :math:`\bdu \subseteq \{0, ..., d-1\}` the list of variable indices
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
 Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
 
 .. math::
     \mathcal{J}_\bdu^{T, i}
-    = \left\{\boldsymbol{\alpha} \in \mathcal{J}_P, \quad \boldsymbol{\alpha} \neq \boldsymbol{0}, 
-    \quad \alpha_i > 0 \textrm{ if } i \in \bdu, \quad \alpha_i = 0 \textrm{ if } i \not \in \bdu, 
-    \quad i = 0, \ldots, d - 1 \right\}.
+    = \left\{\boldsymbol{\alpha} \in \mathcal{J}_P, \quad \boldsymbol{\alpha} \neq \boldsymbol{0}, \quad 
+    \alpha_i > 0 \textrm{ if } i \in \bdu, \quad
+    i = 0, \ldots, d - 1 \right\}.
 
 Therefore, the total interaction (high order) Sobol' index :math:`S_\bdu` is: 
 
@@ -275,7 +278,7 @@ Therefore, the total interaction (high order) Sobol' index :math:`S_\bdu` is:
 
 Parameters
 ----------
-i : int or sequence of int, :math:`0 \leq i < d - 1`
+i : int or sequence of int, :math:`0 \leq i \leq d - 1`
     Indice(s) of the variable(s).
 marginalIndex : int
     Output marginal index.
@@ -289,16 +292,19 @@ s : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedIndex
-"Get the grouped Sobol first order (closed) indices of a group of input variables.
+"Get the Sobol first order (closed) indices of a group of input variables.
 
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
+in the group. 
 Let :math:`\mathcal{J}_\bdu^{S, \operatorname{cl}}` the set of multi-indices such that 
 each component of :math:`\idx` is contained in the group :math:`\bdu`:
 
 .. math::
     \mathcal{J}_\bdu^{S, \operatorname{cl}}
-    = \left\{\idx \in \mathcal{J}_P, 
-      \quad \idx \neq \boldsymbol{0}, \quad \alpha_i=0 \quad \textrm{or} 
-      \quad i \in \bdu, \quad i=0, \ldots, d - 1\right\}.
+    = \left\{\idx \in \mathcal{J}_P, \quad 
+      \idx \neq \boldsymbol{0}, \quad \alpha_i = 0 \quad \textrm{ if } \quad 
+      i \not \in \bdu, \quad 
+      i = 0, \ldots, d - 1 \right\}.
 
 Therefore, the first order (closed) Sobol' index :math:`S^{\operatorname{cl}}_\bdu` 
 is: 
@@ -309,7 +315,7 @@ is:
 
 Parameters
 ----------
-variableIndices : sequence of int, :math:`0 \leq i < d - 1`
+variableIndices : sequence of int, :math:`0 \leq i \leq d - 1`
     Indice(s) of the variable(s) in the group.
 marginalIndex : int
     Output marginal index.
@@ -323,24 +329,27 @@ s : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedTotalIndex
-"Get the grouped Sobol' total order index of a group of input variables.
+"Get the Sobol' total index of a group of input variables.
 
-
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
+in the group. 
 Let :math:`\mathcal{J}_\bdu^T` the set of multi-indices:
 
 .. math::
     \mathcal{J}_\bdu^T 
-    = \left\{\idx \in\mathcal{J}_P, \quad \idx \neq \boldsymbol{0}, \quad \exists i \in \{0,\ldots, d - 1\} \quad \textrm{s.t.}  \quad i \in \bdu\right\}.
+    = \left\{\idx \in\mathcal{J}_P, \quad \idx \neq \boldsymbol{0}, \quad 
+      \exists i \in \{0, \ldots, d - 1\} \quad 
+      \textrm{s.t.}  \quad i \in \bdu \textrm{ and } \alpha_i > 0 \right\}.
 
-Therefore, the first order Sobol' index :math:`S^{\operatorname{cl}}_\bdu` is: 
+Therefore, the total Sobol' index :math:`S^T_\bdu` is: 
 
 .. math::
     S^T_\bdu = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^T\right).
 
 Parameters
 ----------
-variableIndices : sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated grouped total Sobol' indices.
+variableIndices : sequence of int, :math:`0 \leq i \leq d - 1`
+    Indice(s) of the variable(s) in the group.
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -348,6 +357,6 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The grouped Sobol' total order index."
+    The grouped Sobol' total index."
 
 // ---------------------------------------------------------------------
