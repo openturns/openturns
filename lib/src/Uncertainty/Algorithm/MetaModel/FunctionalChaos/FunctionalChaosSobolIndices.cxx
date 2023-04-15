@@ -154,7 +154,7 @@ String FunctionalChaosSobolIndices::__str__(const String & /*offset*/) const
 
     // table of first/total order indices for each input
     oss << String(60, '-') << "\n";
-    oss << "Component | Sobol index            | Sobol total index      \n";
+    oss << "Component | Sobol' index            | Sobol total index      \n";
     oss << String(60, '-') << "\n";
     for (UnsignedInteger i = 0; i < inputDimension; ++ i)
     {
@@ -173,13 +173,13 @@ String FunctionalChaosSobolIndices::__str__(const String & /*offset*/) const
   return oss;
 }
 
-/* Sobol index accessor */
+/* Sobol' index accessor */
 Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variablesGroup,
     const UnsignedInteger marginalIndex) const
 {
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
   const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
-  if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
+  if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol' index must be in the range [0, dim-1] and must be different.";
   if (marginalIndex >= outputDimension) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
   // Check if the measure defining the basis has an independent copula else
   // the conditional covariance cannot be extracted from the decomposition
@@ -193,43 +193,54 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variablesGroup
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
   Scalar totalVariance = 0.0;
+  bool mustInclude;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
     {
       const Scalar coefficientI = coefficients(i, 0);
-      if (coefficientI != 0.0)
+      Indices multiIndices(enumerateFunction(coefficientIndices[i]));
+      // Compute denominator
+      if (multiIndices.normInfinite() > 0) totalVariance += coefficientI * coefficientI;
+      // Compute numerator
+      if (multiIndices.normInfinite() == 0)
       {
-        Indices multiIndices(enumerateFunction(coefficientIndices[i]));
-        // Take into account only nonzero multi indices
-        if (*std::max_element(multiIndices.begin(), multiIndices.end()) > 0)
+        // Exclude the zero indices
+        mustInclude = false;
+      }
+      else
+      {
+        mustInclude = true;
+        for (UnsignedInteger variableIndex = 0; variableIndex < inputDimension; ++variableIndex)
         {
-          totalVariance += coefficientI * coefficientI;
-          Bool isProperSubset = true;
-          // First check that the exponents associated to the selected variables are > 0
-          for (UnsignedInteger j = 0; j < groupDimension; ++j)
+          if (variablesGroup.contains(variableIndex))
           {
-            const UnsignedInteger varJ = variablesGroup[j];
-            isProperSubset = isProperSubset && (multiIndices[varJ] > 0);
-            // We must set the value of the current variable index to 0 for the next test
-            multiIndices[varJ] = 0;
+            // Check that any variable in the group has a nonzero degree
+            if (multiIndices[variableIndex] == 0) 
+            {
+              mustInclude = false;
+              break;
+            }
           }
-          // At this step, the current index could be associated to a function that does not involve all the variables
-          if (isProperSubset)
+          else
           {
-            // Second, check that the other coefficients are 0
-            if (*std::max_element(multiIndices.begin(), multiIndices.end()) == 0)
-              covarianceVariables += coefficientI * coefficientI;
+            // Check that any variable not in the group has a zero degree
+            if (multiIndices[variableIndex] > 0) 
+            {
+              mustInclude = false;
+              break;
+            }
           }
-        } // *std::max_element(multiIndices.begin(), multiIndices.end())s > 0
-      } // if coefficientI <> 0
+        }
+      }
+      if (mustInclude) covarianceVariables += coefficientI * coefficientI;
     } // coefficientIndices[i] > 0
   } // Loop over the coefficients
   if (totalVariance > 0.0) return covarianceVariables / totalVariance;
   else return 0.0;
 }
 
-/* Sobol index accessor */
+/* Sobol' index accessor */
 Scalar FunctionalChaosSobolIndices::getSobolIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
@@ -243,7 +254,7 @@ Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & variables
 {
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
   const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
-  if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
+  if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol' index must be in the range [0, dim-1] and must be different.";
   if (marginalIndex >= outputDimension) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
   // Check if the measure defining the basis has an independent copula else
   // the conditional covariance cannot be extracted from the decomposition
@@ -300,7 +311,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
   Log::Show(Log::ALL);
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
   const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
-  if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
+  if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol' index must be in the range [0, dim-1] and must be different.";
   if (marginalIndex >= outputDimension) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
   // Check if the measure defining the basis has an independent copula else
   // the conditional covariance cannot be extracted from the decomposition
@@ -353,7 +364,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
     const UnsignedInteger marginalIndex) const
 {
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
-  if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
+  if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol' index must be in the range [0, dim-1] and must be different.";
   const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
@@ -397,67 +408,6 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
   if (totalVariance > 0.0) return covarianceVariables / totalVariance;
   else return 0.0;
 }
-
-/* Sobol grouped interaction index accessor */
-Scalar FunctionalChaosSobolIndices::getSobolGroupedInteractionIndex(const Indices & variablesGroup,
-    const UnsignedInteger marginalIndex) const
-{
-  const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
-  if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
-  const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
-  const Indices coefficientIndices(functionalChaosResult_.getIndices());
-  const UnsignedInteger size = coefficients.getSize();
-  Scalar covarianceVariables = 0.0;
-  const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
-  // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
-  Scalar totalVariance = 0.0;
-  bool mustInclude;
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    if (coefficientIndices[i] > 0)
-    {
-      const Scalar coefficientI = coefficients(i, 0);
-      Indices multiIndices(enumerateFunction(coefficientIndices[i]));
-      // Compute denominator
-      if (multiIndices.normInfinite() > 0) totalVariance += coefficientI * coefficientI;
-      // Compute numerator
-      if (multiIndices.normInfinite() == 0)
-      {
-        // Exclude the zero indices
-        mustInclude = false;
-      }
-      else
-      {
-        mustInclude = true;
-        for (UnsignedInteger variableIndex = 0; variableIndex < inputDimension; ++variableIndex)
-        {
-          if (variablesGroup.contains(variableIndex))
-          {
-            // Check that any variable in the group has a nonzero degree
-            if (multiIndices[variableIndex] == 0) 
-            {
-              mustInclude = false;
-              break;
-            }
-          }
-          else
-          {
-            // Check that any variable not in the group has a zero degree
-            if (multiIndices[variableIndex] > 0) 
-            {
-              mustInclude = false;
-              break;
-            }
-          }
-        }
-      }
-      if (mustInclude) covarianceVariables += coefficientI * coefficientI;
-    } // coefficientIndices[i] > 0
-  } // Loop over the coefficients
-  if (totalVariance > 0.0) return covarianceVariables / totalVariance;
-  else return 0.0;
-}
-
 /* Functional chaos result accessor */
 FunctionalChaosResult FunctionalChaosSobolIndices::getFunctionalChaosResult() const
 {

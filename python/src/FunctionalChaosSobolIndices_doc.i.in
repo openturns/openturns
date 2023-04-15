@@ -214,8 +214,8 @@ Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
 
 .. math::
     \mathcal{J}_\bdu
-    =\left\{\idx\in\mathcal{J}_P, 
-    \quad \idx\neq \boldsymbol{0}, \quad 
+    =\left\{\idx \in \mathcal{J}_P, 
+    \quad \idx \neq \boldsymbol{0}, \quad 
     \alpha_i = 0 \textrm{ if } i \not\in \bdu\right\}.
 
 Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is: 
@@ -249,7 +249,7 @@ Let :math:`\mathcal{J}_i^T` the set of multi-indices such that
 
 .. math::
     \mathcal{J}_i^T
-    =\left\{\idx=(\alpha_1,...,\alpha_i,...,\alpha_p) \in \mathcal{J}_P, 
+    =\left\{\idx = (\alpha_1,...,\alpha_i,...,\alpha_p) \in \mathcal{J}_P, 
     \quad \alpha_i > 0\right\}.
 
 Therefore, the total order index :math:`S^T_i` is: 
@@ -264,9 +264,9 @@ Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
 
 .. math::
     \mathcal{J}_\bdu^{T, i}
-    =\left\{\boldsymbol{\alpha}\in\mathcal{J}_P, 
-    \quad \boldsymbol{\alpha}\neq \boldsymbol{0}, \quad 
-    \alpha_i >0 \textrm{ if } i \in \boldsymbol{u}\right\}.
+    = \left\{\boldsymbol{\alpha} \in \mathcal{J}_P, \quad \boldsymbol{\alpha} \neq \boldsymbol{0}, 
+    \quad \alpha_i > 0 \textrm{ if } i \in \bdu, \quad \alpha_i = 0 \textrm{ if } i \not \in \bdu, 
+    \quad i = 0, \ldots, d - 1 \right\}.
 
 Therefore, the total interaction (high order) Sobol' index :math:`S_\bdu` is: 
 
@@ -296,9 +296,9 @@ each component of :math:`\idx` is contained in the group :math:`\bdu`:
 
 .. math::
     \mathcal{J}_\bdu^{S, \operatorname{cl}}
-    = \left\{\idx\in\mathcal{J}_P, 
-      \quad \idx\neq \boldsymbol{0}, \quad \alpha_i=0 \quad \textrm{or} 
-      \quad i \in \bdu, \quad i=0,\ldots, d - 1\right\}.
+    = \left\{\idx \in \mathcal{J}_P, 
+      \quad \idx \neq \boldsymbol{0}, \quad \alpha_i=0 \quad \textrm{or} 
+      \quad i \in \bdu, \quad i=0, \ldots, d - 1\right\}.
 
 Therefore, the first order (closed) Sobol' index :math:`S^{\operatorname{cl}}_\bdu` 
 is: 
@@ -330,9 +330,7 @@ Let :math:`\mathcal{J}_\bdu^T` the set of multi-indices:
 
 .. math::
     \mathcal{J}_\bdu^T 
-    = \left\{\idx\in\mathcal{J}_P, 
-    \quad \idx\neq \boldsymbol{0}, \quad \exists i\in\{0,\ldots, d - 1\} \quad \textrm{s.t.} 
-    \quad i \in \bdu\right\}.
+    = \left\{\idx \in\mathcal{J}_P, \quad \idx \neq \boldsymbol{0}, \quad \exists i \in \{0,\ldots, d - 1\} \quad \textrm{s.t.}  \quad i \in \bdu\right\}.
 
 Therefore, the first order Sobol' index :math:`S^{\operatorname{cl}}_\bdu` is: 
 
@@ -353,32 +351,3 @@ s : float
     The grouped Sobol' total order index."
 
 // ---------------------------------------------------------------------
-
-%feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedInteractionIndex
-"Get the grouped Sobol' interaction indices.
-
-Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
-
-.. math::
-    \mathcal{J}_\bdu
-    =\left\{\idx\in\mathcal{J}_P, 
-    \quad \idx\neq \boldsymbol{0}, \quad 
-    \alpha_i = 0 \textrm{ if } i \not\in \bdu\right\}.
-
-Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is: 
-
-.. math::
-    S_\bdu = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu\right).
-
-Parameters
-----------
-variableIndices : sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s).
-marginalIndex : int
-    Output marginal index.
-    Default value is 0, i.e. the first output.
-
-Returns
--------
-s : float
-    The grouped Sobol' interaction index."

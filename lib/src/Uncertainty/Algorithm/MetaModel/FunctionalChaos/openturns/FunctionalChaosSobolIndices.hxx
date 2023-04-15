@@ -72,10 +72,6 @@ public:
   Scalar getSobolGroupedTotalIndex(const Indices & variableIndices,
                                    const UnsignedInteger marginalIndex = 0) const;
 
-  /** Sobol grouped interaction index accessor */
-  Scalar getSobolGroupedInteractionIndex(const Indices & variableIndices,
-                                         const UnsignedInteger marginalIndex = 0) const;
-
   /** Functional chaos result accessor */
   FunctionalChaosResult getFunctionalChaosResult() const;
 

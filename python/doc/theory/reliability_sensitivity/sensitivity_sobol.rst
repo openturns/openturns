@@ -43,7 +43,7 @@ Sobol' decomposition
 In this section, we introduce the Sobol'-Hoeffding decomposition [sobol1993]_.
 Let  :math:`i\in\{1,\ldots, n_X\}`, the vector :math:`\bdx_{\overline{\{i\}}}` be
 the vector made of components of :math:`\bdx=(x_1,x_2,` :math:`\ldots,x_p)` which
-indices are different from :math:`i`.
+/indices are different from :math:`i`.
 Hence, if :math:`\bdx\in[0,1]^{n_X}`, then:
 
 .. math::
@@ -259,6 +259,42 @@ is:
 
 where :math:`h_\bdu` is the function of the input variables in the group :math:`\bdu`
 of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
+
+Summary of Sobol' indices
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The next table presents a summary of the 6 different Sobol' indices that
+we have presented.
+
++--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+| Single variable or group | Sensitivity Index    | Formula                                                                                                                  |
++==========================+======================+==========================================================================================================================+
+| Interaction of a group   | First order          | :math:`S_\bdu = \frac{V_\bdu}{\Var{Y}}`                                                                                  |
++--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+|                          | Total                | :math:`S^{T,i}_\bdu = \sum_{\bdv \supseteq \bdu} S_{\bdv}`                                                               |
++--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+| One single variable      | First order          | :math:`S_i = \frac{\Var{\Expect{Y|X_i}}}{\Var{Y}}= \frac{V_i}{\Var{Y}}`                                                  |
++--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+|                          | Total                | :math:`S^T_i = \sum_{\bdu \ni i} S_\bdu = 1 - S_{\overline{\{i\}}}^{\operatorname{cl}}`                                  |
++--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+| Group                    | First order (closed) | :math:`S_\bdu^{\operatorname{cl}} = \frac{\Var{\Expect{Y|\bdX_\bdu}}}{\Var{Y}} = \sum_{\bdv \subseteq \bdu} S_\bdv`      |
++--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+|                          | Total                | :math:`S^T_\bdu = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} V_\bdv}{\Var{Y}} = 1 - S_{\overline{\bdu}}^{\operatorname{cl}}` |
++--------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+
+All these indices are in the :math:`[0, 1]` interval.
+
+The sum of interaction first order Sobol' indices is equal to 1:
+
+.. math::
+    \sum_{\bdu \subseteq \{1,2,\ldots,n_X\}} S_\bdu = 1.
+
+Each first order index is lower than its total couterpart:
+
+.. math::
+    S_\bdu & \leq S^{T,i}_\bdu \\
+    S_i & \leq S^T_i \\
+    S_\bdu^{\operatorname{cl}} & \leq S^T_\bdu
 
 Aggregated Sobol' indices
 ~~~~~~~~~~~~~~~~~~~~~~~~~
