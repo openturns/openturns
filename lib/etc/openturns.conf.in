@@ -602,6 +602,10 @@
   <!-- OT::UserDefined parameters -->
   <UserDefined-SmallSize value_int="10000" />
   
+  <!-- OT::UniformOverMesh parameters -->
+  <UniformOverMesh-MarginalIntegrationNodesNumber value_int="64" />
+  <UniformOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
+
   <!-- OT::VonMisesFactory parameters -->
   <VonMisesFactory-AbsolutePrecision value_float="1e-12"        />
   <VonMisesFactory-RelativePrecision value_float="1e-12"        />

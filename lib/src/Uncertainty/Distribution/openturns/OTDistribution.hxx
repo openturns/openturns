@@ -169,6 +169,7 @@
 #include "openturns/TruncatedNormal.hxx"
 #include "openturns/TruncatedNormalFactory.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/UniformOverMesh.hxx"
 #include "openturns/UniformFactory.hxx"
 #include "openturns/UniformMuSigma.hxx"
 #include "openturns/UserDefined.hxx"

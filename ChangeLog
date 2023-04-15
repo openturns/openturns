@@ -14,6 +14,7 @@
  * StandardSpaceCrossEntropyImportanceSampling (openturns.experimental)
  * CrossEntropyResult (openturns.experimental)
  * LeastSquaresExpansion, IntegrationExpansion (openturns.experimental)
+ * UniformOverMesh (openturns.experimental)
 
 ==== API changes ====
  * Deprecated LinearLeastSquaresCalibration::getCandidate, use getStartingPoint

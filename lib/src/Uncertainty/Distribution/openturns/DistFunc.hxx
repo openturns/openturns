@@ -287,6 +287,12 @@ OT_API Point qStudent(const Scalar nu,
 OT_API Scalar rStudent(const Scalar nu);
 OT_API Point rStudent(const Scalar nu,
                       const UnsignedInteger size);
+// For uniform distribution over a segment
+OT_API Point rUniformSegment(const Point & a,
+                             const Point & b);
+OT_API Sample rUniformSegment(const Point & a,
+                              const Point & b,
+                              const UnsignedInteger size);
 // For uniform distribution over a triangle
 OT_API Point rUniformTriangle(const Point & a,
                               const Point & b,
@@ -295,8 +301,20 @@ OT_API Sample rUniformTriangle(const Point & a,
                                const Point & b,
                                const Point & c,
                                const UnsignedInteger size);
-// For TruncatedNormal distribution
-//      Scalar rTruncatedNormal(const Scalar a, const Scalar b);
+// For uniform distribution over a tetrahedron
+OT_API Point rUniformTetrahedron(const Point & a,
+                                 const Point & b,
+                                 const Point & c,
+                                 const Point & cd);
+OT_API Sample rUniformTetrahedron(const Point & a,
+                                  const Point & b,
+                                  const Point & c,
+                                  const Point & d,
+                                  const UnsignedInteger size);
+// For uniform distribution over a simplex
+OT_API Point rUniformSimplex(const Sample & vertices);
+OT_API Sample rUniformSimplex(const Sample & vertices,
+                              const UnsignedInteger size);
 // Compute the expectation of the min of n independent standard normal random variables
 OT_API Scalar eZ1(const UnsignedInteger n);
 

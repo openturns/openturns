@@ -1958,6 +1958,69 @@ Scalar DistFunc::qDickeyFullerNoConstant(const Scalar p,
   throw NotYetImplementedException(HERE) << "In DistFunc::qDickeyFullerNoConstant(const Scalar p, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
 }
 
+// For uniform distribution over a segment
+Point DistFunc::rUniformSegment(const Point & a,
+                                const Point & b)
+{
+  const UnsignedInteger dimension = a.getDimension();
+  if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
+  const Scalar u = RandomGenerator::Generate();
+  return u * a + (1.0 - u) * b;
+}
+
+Sample DistFunc::rUniformSegment(const Point & a,
+                                 const Point & b,
+                                 const UnsignedInteger size)
+{
+  const UnsignedInteger dimension = a.getDimension();
+  if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
+  Sample result(size, dimension);
+  for (UnsignedInteger n = 0; n < size; ++n)
+  {
+    const Scalar u = RandomGenerator::Generate();
+    const Scalar v = 1.0 - u;
+    for (UnsignedInteger i = 0; i < dimension; ++i) result(n, i) = u * a[i] + v * b[i];
+  } // n
+  return result;  
+}
+
+// For uniform distribution over a triangle
+// Many algorithms are possible:
+// 1) Using sorted uniform [0, 1] coordinates:
+//    Scalar u = RandomGenerator::Generate();
+//    Scalar v = RandomGenerator::Generate();
+//    if (u > v) std::swap(u, v);
+//    then the barycentric coordinates are (u, v-u, 1-v)
+//    The resulting speed is 38.6M points/s
+// 2) Using reflection along the line 1-u-v:
+//    Scalar u = RandomGenerator::Generate();
+//    Scalar v = RandomGenerator::Generate();
+//    Scalar w = 1.0 - u - v;
+//    if (w < 0.0)
+//      {
+//        u = 1.0 - u;
+//        v = 1.0 - v;
+//        w = -w;
+//      }
+//    then the barycentric coordinates are (u, v, w)
+//    The resulting speed is 40.9M points/s
+// 3) Using a sampling on a cut parallel to the base then a point on the cut
+//    const Scalar u = RandomGenerator::Generate();
+//    const Scalar v = RandomGenerator::Generate();
+//    const Scalar sqrtU = std::sqrt(u);
+//    Scalar x = 1.0 - sqrtU;
+//    Scalar y = v * sqrtU;
+//    Scalar z = 1.0 - x - y;
+//    if (z < 0.0)
+//    {
+//      x = sqrtU;
+//      y = 1.0 - sqrtU;
+//      z = -z;
+//    }
+//    then the barycentric coordinates are (x, y, z)
+//    The resulting speed is 44.5M points/s
+//
+//    Surprisingly, the fastest involves a square root!
 Point DistFunc::rUniformTriangle(const Point & a,
                                  const Point & b,
                                  const Point & c)
@@ -1966,17 +2029,10 @@ Point DistFunc::rUniformTriangle(const Point & a,
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
   if (c.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the third point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
   const Scalar u = RandomGenerator::Generate();
-  const Scalar v = RandomGenerator::Generate();
-  const Scalar sqrtU = std::sqrt(u);
-  Scalar x = 1.0 - sqrtU;
-  Scalar y = v * sqrtU;
-  Scalar z = 1.0 - x - y;
-  if (z < 0.0)
-  {
-    x = sqrtU;
-    y = 1.0 - sqrtU;
-    z = -z;
-  }
+  const Scalar sqrtV = std::sqrt(RandomGenerator::Generate());
+  const Scalar x = 1.0 - sqrtV;
+  const Scalar y = (1.0 - u) * sqrtV;
+  const Scalar z = u * sqrtV;
   Point result(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = x * a[i] + y * b[i] + z * c[i];
   return result;
@@ -1995,19 +2051,101 @@ Sample DistFunc::rUniformTriangle(const Point & a,
   for (UnsignedInteger n = 0; n < size; ++n)
   {
     const Scalar u = RandomGenerator::Generate();
-    const Scalar v = RandomGenerator::Generate();
-    const Scalar sqrtU = std::sqrt(u);
-    Scalar x = 1.0 - sqrtU;
-    Scalar y = v * sqrtU;
-    Scalar z = 1.0 - x - y;
-    if (z < 0.0)
-    {
-      x = sqrtU;
-      y = 1.0 - sqrtU;
-      z = -z;
-    }
+    const Scalar sqrtV = std::sqrt(RandomGenerator::Generate());
+    const Scalar x = 1.0 - sqrtV;
+    const Scalar y = (1.0 - u) * sqrtV;
+    const Scalar z = u * sqrtV;
     for (UnsignedInteger i = 0; i < dimension; ++i) result(n, i) = x * a[i] + y * b[i] + z * c[i];
   } // n
+  return result;
+}
+
+// For uniform distribution over a tetrahedron
+Point DistFunc::rUniformTetrahedron(const Point & a,
+                                    const Point & b,
+                                    const Point & c,
+                                    const Point & d)
+{
+  const UnsignedInteger dimension = a.getDimension();
+  if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
+  if (c.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the third point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
+  if (d.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the fourth point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
+  const Scalar u = RandomGenerator::Generate();
+  const Scalar sqrtV = std::sqrt(RandomGenerator::Generate());
+  const Scalar cbrtW = std::cbrt(RandomGenerator::Generate());
+  const Scalar x = u * sqrtV * cbrtW;
+  const Scalar y = (1.0 - u) * sqrtV * cbrtW;
+  const Scalar z = (1.0 - sqrtV) * cbrtW;
+  const Scalar t = 1.0 - cbrtW;
+  Point result(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = x * a[i] + y * b[i] + z * c[i] + t * d[i];
+  return result;
+}
+
+Sample DistFunc::rUniformTetrahedron(const Point & a,
+                                     const Point & b,
+                                     const Point & c,
+                                     const Point & d,
+                                     const UnsignedInteger size)
+{
+  // Here we reproduce the algorithm in order to avoid costly data copy and tests
+  const UnsignedInteger dimension = a.getDimension();
+  if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
+  if (c.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the third point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
+  Sample result(size, dimension);
+  for (UnsignedInteger n = 0; n < size; ++n)
+  {
+    const Scalar u = RandomGenerator::Generate();
+    const Scalar sqrtV = std::sqrt(RandomGenerator::Generate());
+    const Scalar cbrtW = std::cbrt(RandomGenerator::Generate());
+    const Scalar x = u * sqrtV * cbrtW;
+    const Scalar y = (1.0 - u) * sqrtV * cbrtW;
+    const Scalar z = (1.0 - sqrtV) * cbrtW;
+    const Scalar t = 1.0 - cbrtW;
+    for (UnsignedInteger i = 0; i < dimension; ++i) result(n, i) = x * a[i] + y * b[i] + z * c[i] + t * d[i];
+  } // n
+  return result;
+}
+
+// For uniform distribution over a simplex
+Point DistFunc::rUniformSimplex(const Sample & vertices)
+{
+  const UnsignedInteger dimension = vertices.getDimension();
+  const UnsignedInteger numVertices = vertices.getSize();
+  if (numVertices == 0) throw InvalidArgumentException(HERE) << "Error: expected at least one vertex to define a simplex.";
+  if (numVertices == 1) return vertices[0];
+  if (numVertices == 2) return rUniformSegment(vertices[0], vertices[1]);
+  if (numVertices == 3) return rUniformTriangle(vertices[0], vertices[1], vertices[2]);
+  if (numVertices == 4) return rUniformTetrahedron(vertices[0], vertices[1], vertices[2], vertices[3]);
+  Point result(vertices[0]);
+  for (UnsignedInteger i = 1; i < numVertices; ++i)
+    {
+      const Scalar u = std::pow(RandomGenerator::Generate(), 1.0 / i);
+      for (UnsignedInteger j = 0; j < dimension; ++j) result[j] = u * result[j] + (1.0 - u) * vertices(i, j);
+    }
+  return result;
+}
+
+Sample DistFunc::rUniformSimplex(const Sample & vertices,
+                                 const UnsignedInteger size)
+{
+  const UnsignedInteger dimension = vertices.getDimension();
+  const UnsignedInteger numVertices = vertices.getSize();
+  if (numVertices == 0) throw InvalidArgumentException(HERE) << "Error: expected at least one vertex to define a simplex.";
+  if (numVertices == 1) return Sample(size, vertices[0]);
+  if (numVertices == 2) return rUniformSegment(vertices[0], vertices[1], size);
+  if (numVertices == 3) return rUniformTriangle(vertices[0], vertices[1], vertices[2], size);
+  if (numVertices == 4) return rUniformTetrahedron(vertices[0], vertices[1], vertices[2], vertices[3], size);
+  Sample result(size, dimension);
+  for (UnsignedInteger n = 0; n < size; ++n)
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++j) result(n, j) = vertices(0, j);
+    for (UnsignedInteger i = 1; i < numVertices; ++i)
+      {
+        const Scalar u = std::pow(RandomGenerator::Generate(), 1.0 / i);
+        for (UnsignedInteger j = 0; j < dimension; ++j) result(n, j) = u * result(n, j) + (1.0 - u) * vertices(i, j);
+      }
+  }
   return result;
 }
 
