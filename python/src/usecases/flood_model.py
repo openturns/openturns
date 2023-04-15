@@ -49,8 +49,9 @@ class FloodModel:
 
     model : :class:`~openturns.ParametricFunction`
         The flood model.
-        The function has input dimension 4 :math:`\boldsymbol{X} = (Q, K_s, Z_v, Z_m)`
-        and output dimension 1 :math:`Y = (H)`.
+        The function has input dimension 4 and output dimension 1.
+        More precisely, we have  :math:`\boldsymbol{X} = (Q, K_s, Z_v, Z_m)` and
+         :math:`Y = H`.
         Its parameters are :math:`\theta = (B, L)`.
 
     distribution : :class:`~openturns.ComposedDistribution`

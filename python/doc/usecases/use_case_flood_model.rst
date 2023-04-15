@@ -82,7 +82,7 @@ The following figure presents the model with more details.
 If we substitute the parameters into the equation, we get:
 
  .. math::
-    S = \left(\frac{Q}{300 Ks \sqrt{(Zm-Zv)/5000}}\right)^{3/5} +Zv-58.5.
+    S = \left(\frac{Q}{300 K_s \sqrt{\frac{Z_m - Z_v}{5000}}}\right)^{3/5} + Z_v - 58.5.
 
 
 We assume that the four inputs have the following distributions:
@@ -97,7 +97,7 @@ Moreover, we assume that the input random variables are independent.
 We want to estimate the flood probability:
 
  .. math::
-    P_f = P(S>0).
+    P_f = P(S > 0).
 
 Analysis of the calibration problem
 -----------------------------------
