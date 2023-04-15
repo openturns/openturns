@@ -33,8 +33,11 @@ class LogisticModel:
     Attributes
     ----------
 
+    t0 : float, optional
+         Initial time. The default is 1790.
+
     y0 : float, optional
-         Initial population (in 1790). The default is 3.9e6.
+         Initial population (at t0). The default is 3.9e6.
 
     a : float, optional
         Parameter of the model. The default is 0.03134.
@@ -42,6 +45,10 @@ class LogisticModel:
     b : float, optional
         Parameter of the model. The default is 1.5887e-10.
 
+    populationFactor : float, optional
+        The multiplication factor to scale the population.
+        The default is 1.0e6.
+    
     distY0 : :class:`~openturns.Normal` distribution
              `ot.Normal(y0, 0.1 * y0)`
 
@@ -82,9 +89,12 @@ class LogisticModel:
     Outputs: [z0,z1,z2,z3,z4,z5,z6,z7,z8,z9,z10,z11,z12,z13,z14,z15,z16,z17,z18,z19,z20,z21]#22
     """
 
-    def __init__(self, y0=3.9e6, a=0.03134, b=1.5887e-10):
+    def __init__(self, t0=1790.0, y0=3.9e6, a=0.03134, b=1.5887e-10, 
+                 populationFactor=1.0e6):
         # Initial value of the population
+        self.t0 = t0
         self.y0 = y0
+        self.populationFactor = populationFactor
         self.a = a
         self.b = b
         self.distY0 = ot.Normal(self.y0, 0.1 * self.y0)
@@ -125,12 +135,11 @@ class LogisticModel:
             t = [X[i] for i in range(nbdates)]
             a = X[22]
             c = X[23]
-            t0 = 1790.0
             b = math.exp(c)
             y = [0.0] * nbdates
             for i in range(nbdates):
                 y[i] = a * y0 / (b * y0 + (a - b * y0) * math.exp(-a * (t[i] - t0)))
-            z = [yi / 1.0e6 for yi in y]  # Convert into millions
+            z = [yi / populationFactor for yi in y]  # Convert into millions
             return z
 
         self.model = ot.PythonFunction(24, nbdates, logisticModel)

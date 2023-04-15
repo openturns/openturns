@@ -48,7 +48,6 @@ The slope :math:`\alpha` of the river is assumed to be close to zero, which impl
     \alpha = \frac{Z_m - Z_v}{L},
 
 if :math:`Z_m \geq Z_v`.
-
 The water depth is:
 
  .. math::
@@ -56,7 +55,6 @@ The water depth is:
 
 
 for any :math:`K_s, Q>0`.
-
 The flood altitude is:
 
  .. math::
