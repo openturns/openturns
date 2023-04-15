@@ -68,13 +68,13 @@ int main(int, char *[])
     assert(!indices5.contains(0));
     assert(!indices5.contains(1));
     
-    // Test normInfinite() and normOne()
+    // Test normInf() and norm1()
     Indices indices6 = {};
-    assert(indices6.normInfinite(0));
-    assert(indices6.normOne(0));
+    assert(indices6.normInf(0));
+    assert(indices6.norm1(0));
     Indices indices7 = {1, 2, 3};
-    assert(indices7.normInfinite() == 3);
-    assert(indices7.normOne() == 6);
+    assert(indices7.normInf() == 3);
+    assert(indices7.norm1() == 6);
 
 }
   catch (TestFailed & ex)

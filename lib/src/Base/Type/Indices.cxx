@@ -91,7 +91,7 @@ Bool Indices::contains(const UnsignedInteger n) const
 }
 
 /* Returns the infinite-norm of the indices */
-UnsignedInteger Indices::normInfinite() const
+UnsignedInteger Indices::normInf() const
 {
   const UnsignedInteger size = getSize();
   UnsignedInteger norm = 0;
@@ -103,7 +103,7 @@ UnsignedInteger Indices::normInfinite() const
 }
 
 /* Returns the 1-norm of the indices */
-UnsignedInteger Indices::normOne() const
+UnsignedInteger Indices::norm1() const
 {
   const UnsignedInteger size = getSize();
   UnsignedInteger norm = 0;

@@ -92,10 +92,10 @@ public:
   Bool contains(const UnsignedInteger n) const;
 
   /** Compute infinite-norm */
-  UnsignedInteger normInfinite() const;
+  UnsignedInteger normInf() const;
 
   /** Compute 1-norm */
-  UnsignedInteger normOne() const;
+  UnsignedInteger norm1() const;
 
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
