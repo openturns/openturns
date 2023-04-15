@@ -37,7 +37,7 @@ class ChabocheModel:
     Attributes
     ----------
     dim : The dimension of the problem
-          dim=4.
+        dim=4.
 
     Strain : :class:`~openturns.Uniform` distribution
         `ot.Uniform(strainMin, strainMax)`

@@ -23,25 +23,25 @@ class DeflectionTube:
         and  :math:`Y = (y, \theta_L, \theta_R)`.
 
     XF : `Normal` distribution
-         `ot.Normal(1, 0.1)`
+        `ot.Normal(1, 0.1)`
 
     XE : `Normal` distribution
-         `ot.Normal(200000, 2000)`
+        `ot.Normal(200000, 2000)`
 
     XL : `Dirac` distribution
-         `ot.Dirac(1.5)`
+        `ot.Dirac(1.5)`
 
     Xa : `Dirac` distribution
-         `ot.Dirac(1.0)`
+        `ot.Dirac(1.0)`
 
     XD : `Dirac` distribution
-         `ot.Dirac(0.8)`
+        `ot.Dirac(0.8)`
 
     Xd : `Dirac` distribution
-         `ot.Dirac(0.1)`
+        `ot.Dirac(0.1)`
 
     inputDistribution : `ComposedDistribution`
-                        The joint distribution of the input parameters.
+        The joint distribution of the input parameters.
 
     Examples
     --------

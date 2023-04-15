@@ -33,7 +33,7 @@ class FloodModel:
     ----------
 
     dim : The dimension of the problem
-          dim=4
+        dim=4
 
     Q : :class:`~openturns.TruncatedDistribution` of a :class:`~openturns.Gumbel` distribution
         `ot.TruncatedDistribution(ot.Gumbel(558.0, 1013.0), 0.0, ot.TruncatedDistribution.LOWER)`

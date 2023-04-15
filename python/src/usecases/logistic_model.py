@@ -34,13 +34,13 @@ class LogisticModel:
     ----------
 
     t0 : float, optional
-         Initial time. The default is 1790.
+        Initial time. The default is 1790.
 
     y0 : float, optional
-         Initial population (at t0). The default is 3.9e6.
+        Initial population (at t0). The default is 3.9e6.
 
     a : float, optional
-        Parameter of the model. The default is 0.03134.
+        8Parameter of the model. The default is 0.03134.
 
     b : float, optional
         Parameter of the model. The default is 1.5887e-10.
@@ -48,28 +48,28 @@ class LogisticModel:
     populationFactor : float, optional
         The multiplication factor to scale the population.
         The default is 1.0e6.
-    
+
     distY0 : :class:`~openturns.Normal` distribution
-             `ot.Normal(y0, 0.1 * y0)`
+        `ot.Normal(y0, 0.1 * y0)`
 
     distA : :class:`~openturns.Normal` distribution
-            `ot.Normal(a, 0.3 * a)`
+        `ot.Normal(a, 0.3 * a)`
 
     distB : :class:`~openturns.Normal` distribution
-            `ot.Normal(b, 0.3 * b)`
+        `ot.Normal(b, 0.3 * b)`
 
     distX : :class:`~openturns.ComposedDistribution`
-            The joint distribution of the input parameters.
+        The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
-            The logistic model of growth.
-            The input has input dimension 24 and output dimension 22.
-            More precisely, we have :math:`\boldsymbol{X} = (t_1, ..., t_{22}, a, c)`
-            and  :math:`\boldsymbol{Y} = (y_1, ..., y_{22})`.
+        The logistic model of growth.
+        The input has input dimension 24 and output dimension 22.
+        More precisely, we have :math:`\boldsymbol{X} = (t_1, ..., t_{22}, a, c)`
+        and  :math:`\boldsymbol{Y} = (y_1, ..., y_{22})`.
 
     data : :class:`~openturns.Sample` of size 22 and dimension 2
-           A data set containing 22 dates from 1790 to 2000.
-           First marginal represents dates and second marginal the population in millions.
+        A data set containing 22 dates from 1790 to 2000.
+        First marginal represents dates and second marginal the population in millions.
 
     Examples
     --------
@@ -89,8 +89,9 @@ class LogisticModel:
     Outputs: [z0,z1,z2,z3,z4,z5,z6,z7,z8,z9,z10,z11,z12,z13,z14,z15,z16,z17,z18,z19,z20,z21]#22
     """
 
-    def __init__(self, t0=1790.0, y0=3.9e6, a=0.03134, b=1.5887e-10, 
-                 populationFactor=1.0e6):
+    def __init__(
+        self, t0=1790.0, y0=3.9e6, a=0.03134, b=1.5887e-10, populationFactor=1.0e6
+    ):
         # Initial value of the population
         self.t0 = t0
         self.y0 = y0
