@@ -6,7 +6,7 @@ import openturns as ot
 
 
 class FloodModel:
-    """
+    r"""
     Data class for the flood model.
 
 

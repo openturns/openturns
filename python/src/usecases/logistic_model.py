@@ -7,7 +7,7 @@ import math
 
 
 class LogisticModel:
-    """
+    r"""
     Data class for the logistic model.
 
     In the physical model, the inputs and parameters are ordered as

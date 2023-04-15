@@ -13,7 +13,7 @@ def g(X):
 
 
 class ChabocheModel:
-    """
+    r"""
     Data class for the Chaboche mechanical model.
 
     Parameters
