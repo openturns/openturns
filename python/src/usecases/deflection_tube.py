@@ -14,10 +14,13 @@ class DeflectionTube:
     ----------
 
     dim : Constant, the dimension of the problem.
-          dim=6
+        dim=6
 
     model : `SymbolicFunction`
-            Model of the deflection.
+        Model of the deflection.
+        The model has input dimension 6 and output dimension 3.
+        More precisely, we have :math:`\boldsymbol{X} = (F, L, a, D, d, E)`
+        and  :math:`Y = (y, \theta_L, \theta_R)`.
 
     XF : `Normal` distribution
          `ot.Normal(1, 0.1)`

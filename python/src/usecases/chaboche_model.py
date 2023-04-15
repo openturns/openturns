@@ -40,7 +40,7 @@ class ChabocheModel:
           dim=4.
 
     Strain : :class:`~openturns.Uniform` distribution
-              `ot.Uniform(strainMin, strainMax)`
+        `ot.Uniform(strainMin, strainMax)`
 
     R : :class:`~openturns.Dirac` distribution
         `ot.Dirac(trueR)`
@@ -49,16 +49,16 @@ class ChabocheModel:
         `ot.Dirac(trueC)`
 
     Gamma : :class:`~openturns.Dirac` distribution
-            `ot.Dirac(trueGamma)`
+        `ot.Dirac(trueGamma)`
 
     inputDistribution : :class:`~openturns.ComposedDistribution`
-                        The joint distribution of the input parameters.
+        The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
-            The Chaboche mechanical law.
-            The model has input dimension 4 and output dimension 1.
-            More precisely, we have :math:`\boldsymbol{X} = (\epsilon, R,
-            C, \gamma)` and  :math:`Y = \sigma`.
+        The Chaboche mechanical law.
+        The model has input dimension 4 and output dimension 1.
+        More precisely, we have :math:`\boldsymbol{X} = (\epsilon, R,
+        C, \gamma)` and  :math:`Y = \sigma`.
 
     data : :class:`~openturns.Sample` of size 10 and dimension 2
         A data set which contains noisy observations of the strain (column 0)
