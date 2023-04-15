@@ -68,7 +68,7 @@ void Indices::fill(const UnsignedInteger initialValue,
 Indices Indices::complement(const UnsignedInteger n) const
 {
   // Check if the values are in the given bound
-  const UnsignedInteger maxIndex = isEmpty() ? 0 : *max_element(begin(), end());
+  const UnsignedInteger maxIndex = normInf();
   if (!(maxIndex < n)) throw InvalidArgumentException(HERE) << "Error: the given bound=" << n << " must be greater than the maximum index=" << maxIndex;
   Indices flags(n, 1);
   for (UnsignedInteger i = 0; i < getSize(); ++i)
@@ -93,13 +93,8 @@ Bool Indices::contains(const UnsignedInteger n) const
 /* Returns the infinite-norm of the indices */
 UnsignedInteger Indices::normInf() const
 {
-  const UnsignedInteger size = getSize();
-  UnsignedInteger norm = 0;
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    if (operator[](i) > norm) norm = operator[](i);
-  }
-  return norm;
+  const UnsignedInteger maxIndex = isEmpty() ? 0 : *max_element(begin(), end());
+  return maxIndex;
 }
 
 /* Returns the 1-norm of the indices */
