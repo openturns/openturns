@@ -31,19 +31,11 @@ computeSecondOrder : bool
 Notes
 -----
 This class analyzes the influence of each component of a random vector
-:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` on a random vector
-:math:`\vect{Y} = \left( Y^1, \ldots, Y^{n_Y} \right)` by computing Sobol' indices (see also [sobol1993]_).
-
+:math:`\vect{X} = \left( X_1, \ldots, X_{n_X} \right)` on a random vector
+:math:`\vect{Y} = \left( Y_1, \ldots, Y_{n_Y} \right)` by computing Sobol' indices (see also [sobol1993]_).
 The [sobol2007]_ method is used to estimate both first
 and total order indices.
-
-The class constructor ``MauntzKucherenkoSensitivityAlgorithm(inputDesign, outputDesign, N)``
-requires a specific structure for the ``outputDesign``, and therefore for the  ``inputDesign``.
-The latter should be generated using :class:`~openturns.SobolIndicesExperiment`
-(see example below). Otherwise, results will be **worthless**.
-
 Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.
-
 The estimators of :math:`V_i` and :math:`V_{-i}` used by this class are respectively:
 
 .. math::
@@ -52,6 +44,11 @@ The estimators of :math:`V_i` and :math:`V_{-i}` used by this class are respecti
    \widehat{VT}_{i} & = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k) \left( \tilde{\vect{g}}(\vect{A}_k) -  \tilde{\vect{g}}(\vect{E}_k) \right)
 
 where :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
+
+The class constructor ``MauntzKucherenkoSensitivityAlgorithm(inputDesign, outputDesign, N)``
+requires a specific structure for the ``outputDesign``, and therefore for the  ``inputDesign``.
+The latter should be generated using :class:`~openturns.SobolIndicesExperiment`
+(see example below). Otherwise, results will be **worthless**.
 
 See also
 --------

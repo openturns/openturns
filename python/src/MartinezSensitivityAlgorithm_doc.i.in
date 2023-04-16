@@ -31,19 +31,11 @@ computeSecondOrder : bool
 Notes
 -----
 This class analyzes the influence of each component of a random vector
-:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` on a random vector
-:math:`\vect{Y} = \left( Y^1, \ldots, Y^{n_Y} \right)` by computing Sobol' indices (see also [sobol1993]_).
-
+:math:`\vect{X} = \left( X_1, \ldots, X_{n_X} \right)` on a random vector
+:math:`\vect{Y} = \left( Y_1, \ldots, Y_{n_Y} \right)` by computing Sobol' indices (see also [sobol1993]_).
 The [martinez2011]_ method is used to estimate both first
 and total order indices.
-
-The class constructor ``MartinezSensitivityAlgorithm(inputDesign, outputDesign, N)``
-requires a specific structure for the ``outputDesign``, and therefore for the  ``inputDesign``.
-The latter should be generated using :class:`~openturns.SobolIndicesExperiment`
-(see example below). Otherwise, results will be **worthless**.
-
 Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.
-
 The estimators of the first and total order Sobol' indices used by this class are respectively:
 
 .. math::
@@ -61,6 +53,13 @@ sample has a zero mean) defined by:
    {\sqrt{\sum_{k=1}^N z_k^2} \sqrt{\sum_{k=1}^N \left( z_k' \right)^2}}
 
 and :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
+
+The class constructor ``MartinezSensitivityAlgorithm(inputDesign, outputDesign, N)``
+requires a specific structure for the ``outputDesign``, and therefore for the  ``inputDesign``.
+The latter should be generated using :class:`~openturns.SobolIndicesExperiment`
+(see example below). Otherwise, results will be **worthless**.
+
+
 
 See also
 --------
