@@ -12,20 +12,20 @@ be the output of the physical model:
     \vect{Y} = \operatorname{g}(\vect{X}).
 
 We consider the output :math:`Y_k` for any index :math:`k \in \{1, \ldots, n_Y\}`.
-Sobol' indices measure the influence of the input :math:`\vect{X}` 
+Sobol' indices measure the influence of the input :math:`\vect{X}`
 to the output :math:`Y_k`.
 The method considers the part of the variance of the output :math:`Y_k` produced by
 the different inputs :math:`X_i`.
 
-In the first part of this document, we introduce the Sobol' indices of a 
+In the first part of this document, we introduce the Sobol' indices of a
 scalar output :math:`Y_k`.
 Hence, the model is simplified to:
 
 .. math::
     Y = \operatorname{g}(\vect{X}).
 
-In the second part of the document, we consider the general case where the 
-output is multivariate. 
+In the second part of the document, we consider the general case where the
+output is multivariate.
 In this case, aggregated Sobol' indices can be used [gamboa2013]_.
 
 The Sobol' decomposition is described more easily when the domain of the input
@@ -35,7 +35,7 @@ and variance of conditional expectations.
 
 We assume that the input marginal variables :math:`X_1,\ldots,X_{n_X}` are
 independent.
-This restrictive hypothesis implies that the only copula of the input 
+This restrictive hypothesis implies that the only copula of the input
 random vector :math:`\bdX` for which the
 Sobol' indices are easy to interpret is the independent copula.
 If the input variables are dependent, then the Sobol' indices can be defined,
@@ -63,22 +63,22 @@ With this notation, we can partition the input of :math:`g`:
 .. math::
     \operatorname{g}(\bdx) = \operatorname{g} \left(x_i,\bdx_{\overline{\{i\}}} \right).
 
-The goal of sensitivity analysis is to measure the sensitivity of the variance 
-of the output :math:`Y` depending on the variable :math:`X_i`. 
+The goal of sensitivity analysis is to measure the sensitivity of the variance
+of the output :math:`Y` depending on the variable :math:`X_i`.
 This may take into account the dependence of the output to the interactions
-of :math:`X_i` and :math:`\bdX_{\overline{\{i\}}}` through the function :math:`g`. 
+of :math:`X_i` and :math:`\bdX_{\overline{\{i\}}}` through the function :math:`g`.
 
-More generally, let :math:`\bdu \subseteq \{1,2,\ldots,n_X\}` be a group of 
+More generally, let :math:`\bdu \subseteq \{1,2,\ldots,n_X\}` be a group of
 variables.
 Therefore:
 
 .. math::
     \operatorname{g}(\bdx) = \operatorname{g} \left(\bdx_\bdu,\bdx_{\overline{\bdu}} \right).
 
-The goal of sensitivity analysis is to measure the sensitivity of the variance 
-of the output :math:`Y` depending on the group of variables :math:`\bdX_\bdu`. 
+The goal of sensitivity analysis is to measure the sensitivity of the variance
+of the output :math:`Y` depending on the group of variables :math:`\bdX_\bdu`.
 This may take into account the dependence of the output to the interactions
-of :math:`\bdX_\bdu` and :math:`\bdX_{\bdu}` through the function :math:`g`. 
+of :math:`\bdX_\bdu` and :math:`\bdX_{\bdu}` through the function :math:`g`.
 
 
 Sobol' decomposition
@@ -127,7 +127,7 @@ variables of lower dimensionality:
     = \int_{[0,1]^{|\overline{\bdu}|}} \operatorname{g}(\bdx_\bdu,\bdx_{\overline{\bdu}}) d\bdx_{\overline{\bdu}}
     -  \sum_{\bdv \subsetneq \bdu} h_\bdv(\bdx_\bdv)
 
-where :math:`\subsetneq` denotes a proper subset. 
+where :math:`\subsetneq` denotes a proper subset.
 Let :math:`\boldsymbol{x} \in [0,1]^{n_X}` be a point and
 let :math:`\bdu \subseteq \{1, \ldots, n_X\}` be a group of variables.
 Therefore:
@@ -210,7 +210,7 @@ of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
 This index measures the sensitivity of the variance of the output explained
 by interactions within the group.
 
-The total interaction sensitivity index of the group :math:`\bdu` 
+The total interaction sensitivity index of the group :math:`\bdu`
 is (see (Liu & Owen, 2006)):
 
 .. math::
@@ -229,7 +229,7 @@ interaction index of the group :math:`\{i\}`:
     S_i &= S_{\{i\}}
 
 for :math:`i=1,\ldots, n_X`.
-The first order Sobol' index :math:`S_i` measures the sensitivity of the 
+The first order Sobol' index :math:`S_i` measures the sensitivity of the
 output variance explained by the effect of :math:`X_i` alone.
 We can alternatively define the first order Sobol' sensitivity index using
 the variance of a conditional expectation.
@@ -291,7 +291,7 @@ is:
 The first order closed Sobol' index of a group of input variables :math:`\bdu`
 measures the sensitivity of the variance of :math:`Y` explained by the
 variables within the group.
-This index is useful when the group contains random variables parameterizing 
+This index is useful when the group contains random variables parameterizing
 a single uncertainty source (see (Knio & Le Maitre, 2006) page 139).
 
 The total Sobol' index of a group of variables :math:`\bdu`
@@ -305,7 +305,7 @@ where :math:`h_\bdv` is the function of the variables in the group :math:`\bdv`
 of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
 The total Sobol' index of a group of input variables :math:`\bdu`
 measures the sensitivity of the variance of :math:`Y` explained by the
-variables within the group and any group of variables containing any variable in the 
+variables within the group and any group of variables containing any variable in the
 group.
 It can also be viewed as the part of the variance of :math:`Y` that cannot
 be explained without :math:`X_\bdu`.
