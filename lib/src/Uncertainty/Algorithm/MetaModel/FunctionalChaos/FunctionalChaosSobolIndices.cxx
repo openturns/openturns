@@ -198,7 +198,7 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variablesGroup
     if (coefficientIndices[i] > 0)
     {
       const Scalar coefficientI = coefficients(i, 0);
-      Indices multiIndices(enumerateFunction(coefficientIndices[i]));
+      const Indices multiIndices(enumerateFunction(coefficientIndices[i]));
       // Compute denominator
       if (multiIndices.normInf() > 0) totalVariance += coefficientI * coefficientI;
       // Compute numerator
@@ -329,7 +329,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
     if (coefficientIndices[i] > 0)
     {
       const Scalar coefficientI = coefficients(i, 0);
-      Indices multiIndices(enumerateFunction(coefficientIndices[i]));
+      const Indices multiIndices(enumerateFunction(coefficientIndices[i]));
       // Compute denominator
       if (multiIndices.normInf() > 0) totalVariance += coefficientI * coefficientI;
       // Compute numerator
@@ -378,7 +378,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
     if (coefficientIndices[i] > 0)
     {
       const Scalar coefficientI = coefficients(i, 0);
-      Indices multiIndices(enumerateFunction(coefficientIndices[i]));
+      const Indices multiIndices(enumerateFunction(coefficientIndices[i]));
       // Compute denominator
       if (multiIndices.normInf() > 0) totalVariance += coefficientI * coefficientI;
       // Compute numerator
