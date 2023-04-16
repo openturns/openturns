@@ -48,14 +48,15 @@ The estimators of the first and total order Sobol' indices used by this class ar
 
 .. math::
 
-   \hat{S}_i & = \rho_n\left(\tilde{\vect{g}}(\mat{B}), \tilde{\vect{g}}(\mat{E}^i)\right) \\
-   \widehat{S}_i^T & = 1 - \rho_n\left(\tilde{\vect{g}}(\mat{A}), \tilde{\vect{g}}(\mat{E}^i)\right) \\
+   \hat{S}_i & = \tilde{\rho}_n\left(\tilde{\vect{g}}(\mat{B}), \tilde{\vect{g}}(\mat{E}^i)\right) \\
+   \widehat{S}_i^T & = 1 - \tilde{\rho}_n\left(\tilde{\vect{g}}(\mat{A}), \tilde{\vect{g}}(\mat{E}^i)\right) \\
 
-where :math:`\rho_n` is the sample correlation defined by:
+where :math:`\tilde{\rho}_n` is the modified sample correlation (under the assumption that the
+sample has a zero mean) defined by:
 
 .. math::
 
-   \rho_n \left(\vect{z}, \vect{z}'\right) = 
+   \tilde{\rho}_n \left(\vect{z}, \vect{z}'\right) = 
    \frac{\sum_{k=1}^N z_k z_k'}
    {\sqrt{\sum_{k=1}^N z_k^2} \sqrt{\sum_{k=1}^N \left( z_k' \right)^2}}
 
