@@ -177,17 +177,20 @@ int main(int, char *[])
     //
     fullprint << "Test first order (closed) group Sobol' indices" << std::endl;
     fullprint << "X0" << std::endl;
-    S_computed = sensitivity.getSobolGroupedIndex({0});
+    Indices indices0 = {0};
+    S_computed = sensitivity.getSobolGroupedIndex(indices0);
     printSobolResult(S_computed, S0);
     assert_almost_equal(S_computed, S0, rtol, atol);
     //
     fullprint << "X1" << std::endl;
-    S_computed = sensitivity.getSobolGroupedIndex({1});
+    Indices indices1 = {1};
+    S_computed = sensitivity.getSobolGroupedIndex(indices1);
     printSobolResult(S_computed, S1);
     assert_almost_equal(S_computed, S1, rtol, atol);
     //
     fullprint << "X2" << std::endl;
-    S_computed = sensitivity.getSobolGroupedIndex({2});
+    Indices indices2 = {2};
+    S_computed = sensitivity.getSobolGroupedIndex(indices2);
     printSobolResult(S_computed, S2);
     assert_almost_equal(S_computed, S2, rtol, atol);
     //
@@ -217,17 +220,17 @@ int main(int, char *[])
     //
     fullprint << "Test total group Sobol' indices" << std::endl;
     fullprint << "X0" << std::endl;
-    S_computed = sensitivity.getSobolGroupedTotalIndex({0});
+    S_computed = sensitivity.getSobolGroupedTotalIndex(indices0);
     printSobolResult(S_computed, ST0);
     assert_almost_equal(S_computed, ST0, rtol, atol);
     //
     fullprint << "X1" << std::endl;
-    S_computed = sensitivity.getSobolGroupedTotalIndex({1});
+    S_computed = sensitivity.getSobolGroupedTotalIndex(indices1);
     printSobolResult(S_computed, ST1);
     assert_almost_equal(S_computed, ST1, rtol, atol);
     //
     fullprint << "X2" << std::endl;
-    S_computed = sensitivity.getSobolGroupedTotalIndex({2});
+    S_computed = sensitivity.getSobolGroupedTotalIndex(indices2);
     printSobolResult(S_computed, ST2);
     assert_almost_equal(S_computed, ST2, rtol, atol);
     //
@@ -257,17 +260,17 @@ int main(int, char *[])
     //
     fullprint << "Test interaction group Sobol' indices" << std::endl;
     fullprint << "X0" << std::endl;
-    S_computed = sensitivity.getSobolIndex({0});
+    S_computed = sensitivity.getSobolIndex(indices0);
     printSobolResult(S_computed, S0);
     assert_almost_equal(S_computed, S0, rtol, atol);
     // 
     fullprint << "X1" << std::endl;
-    S_computed = sensitivity.getSobolIndex({1});
+    S_computed = sensitivity.getSobolIndex(indices1);
     printSobolResult(S_computed, S1);
     assert_almost_equal(S_computed, S1, rtol, atol);
     // 
     fullprint << "X2" << std::endl;
-    S_computed = sensitivity.getSobolIndex({2});
+    S_computed = sensitivity.getSobolIndex(indices2);
     printSobolResult(S_computed, S2);
     assert_almost_equal(S_computed, S2, rtol, atol);
     // 
@@ -293,19 +296,19 @@ int main(int, char *[])
     //
     fullprint << "Test interaction total group Sobol' indices" << std::endl;
     fullprint << "X0" << std::endl;
-    S_computed = sensitivity.getSobolTotalIndex({0});
+    S_computed = sensitivity.getSobolTotalIndex(indices0);
     S_exact = S0 + S01 + S02 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
     // 
     fullprint << "X1" << std::endl;
-    S_computed = sensitivity.getSobolTotalIndex({1});
+    S_computed = sensitivity.getSobolTotalIndex(indices1);
     S_exact = S1 + S01 + S12 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
     // 
     fullprint << "X2" << std::endl;
-    S_computed = sensitivity.getSobolTotalIndex({2});
+    S_computed = sensitivity.getSobolTotalIndex(indices2);
     S_exact = S2 + S02 + S12 + S012;
     printSobolResult(S_computed, S_exact);
     assert_almost_equal(S_computed, S_exact, rtol, atol);
