@@ -5,27 +5,28 @@ Sensitivity analysis using Sobol' indices
 
 Consider the input random vector
 :math:`\vect{X} = \left( X_1,\ldots,X_{n_X} \right)`
-and the output random vector :math:`\vect{Y} = \left( Y_1,\ldots,Y_{n_Y} \right)`
+and let :math:`\vect{Y} = \left( Y_1,\ldots,Y_{n_Y} \right)`
 be the output of the physical model:
 
 .. math::
     \vect{Y} = \operatorname{g}(\vect{X}).
 
 We consider the output :math:`Y_k` for any index :math:`k \in \{1, \ldots, n_Y\}`.
-Sobol' indices measure the influence the input :math:`\vect{X}` has
-on the output :math:`Y_k`.
+Sobol' indices measure the influence of the input :math:`\vect{X}` 
+to the output :math:`Y_k`.
 The method considers the part of the variance of the output :math:`Y_k` produced by
 the different inputs :math:`X_i`.
 
-When the output is multivariate, then aggregated Sobol' indices can be
-used [gamboa2013]_.
-See :class:`~openturns.SobolIndicesAlgorithm` for details.
-In this document, we introduce the Sobol' indices of a scalar output :math:`Y_k`.
+In the first part of this document, we introduce the Sobol' indices of a 
+scalar output :math:`Y_k`.
 Hence, the model is simplified to:
 
 .. math::
     Y = \operatorname{g}(\vect{X}).
 
+In the second part of the document, we consider the general case where the 
+output is multivariate. 
+In this case, aggregated Sobol' indices can be used [gamboa2013]_.
 
 The Sobol' decomposition is described more easily when the domain of the input
 is the unit interval :math:`[0,1]^{n_X}`.
@@ -34,16 +35,18 @@ and variance of conditional expectations.
 
 We assume that the input marginal variables :math:`X_1,\ldots,X_{n_X}` are
 independent.
+This restrictive hypothesis implies that the only copula of the input 
+random vector :math:`\bdX` for which the
+Sobol' indices are easy to interpret is the independent copula.
 If the input variables are dependent, then the Sobol' indices can be defined,
 but some of their properties are lost.
 
-Sobol' decomposition
-~~~~~~~~~~~~~~~~~~~~
+Partition of the input
+~~~~~~~~~~~~~~~~~~~~~~
 
-In this section, we introduce the Sobol'-Hoeffding decomposition [sobol1993]_.
 For any  :math:`i\in\{1,\ldots, n_X\}`, let :math:`\bdx_{\overline{\{i\}}} \in [0,1]^{n_X - 1}` be
 the vector made of components of :math:`\bdx=(x_1,x_2,` :math:`\ldots,x_p)\in [0,1]^{n_X }` which
-/indices are different from :math:`i`.
+indices are different from :math:`i`.
 Hence, if :math:`\bdx\in[0,1]^{n_X}`, then:
 
 .. math::
@@ -52,14 +55,36 @@ Hence, if :math:`\bdx\in[0,1]^{n_X}`, then:
 Consider the function :math:`\operatorname{g}` defined by the equation:
 
 .. math::
-    Y = \operatorname{g}(\bdx),
+    y = \operatorname{g}(\bdx)
 
 where :math:`\bdx=(x_1,\ldots,x_p)^T \in [0,1]^{n_X}`.
-With this notation, we can write:
+With this notation, we can partition the input of :math:`g`:
 
 .. math::
     \operatorname{g}(\bdx) = \operatorname{g} \left(x_i,\bdx_{\overline{\{i\}}} \right).
 
+The goal of sensitivity analysis is to measure the sensitivity of the variance 
+of the output :math:`Y` depending on the variable :math:`X_i`. 
+This may take into account the dependence of the output to the interactions
+of :math:`X_i` and :math:`\bdX_{\overline{\{i\}}}` through the function :math:`g`. 
+
+More generally, let :math:`\bdu \subseteq \{1,2,\ldots,n_X\}` be a group of 
+variables.
+Therefore:
+
+.. math::
+    \operatorname{g}(\bdx) = \operatorname{g} \left(\bdx_\bdu,\bdx_{\overline{\bdu}} \right).
+
+The goal of sensitivity analysis is to measure the sensitivity of the variance 
+of the output :math:`Y` depending on the group of variables :math:`\bdX_\bdu`. 
+This may take into account the dependence of the output to the interactions
+of :math:`\bdX_\bdu` and :math:`\bdX_{\bdu}` through the function :math:`g`. 
+
+
+Sobol' decomposition
+~~~~~~~~~~~~~~~~~~~~
+
+In this section, we introduce the Sobol'-Hoeffding decomposition [sobol1993]_.
 If :math:`\operatorname{g}` can be integrated in :math:`[0,1]^{n_X}`, then there is a unique
 decomposition:
 
@@ -81,7 +106,7 @@ Extension to any input distribution with independent marginals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this section, we extend the previous definitions to an input random vector
-that is not necessarily in the unit cube :math:`[0,1]^{n_X}`.
+that is not necessarily defined on the input unit cube :math:`[0,1]^{n_X}`.
 To do this, we define the functions :math:`h_\bdu` using conditional
 expectations.
 
@@ -89,28 +114,29 @@ The functions :math:`h_\bdu` satisfy the equality:
 
 .. math::
     \int_{[0,1]^{|\overline{\bdu}|}} \operatorname{g}(\bdx) d\bdx_{\overline{\bdu}}
-    = \sum_{\bdv\subseteq \bdu} h_\bdv(\bdx_\bdv),
+    = \sum_{\bdv \subseteq \bdu} h_\bdv(\bdx_\bdv),
 
-for any group of variables :math:`\bdu\subseteq \{1,2,\ldots,n_X\}` with
-size lower or equal to :math:`n_X`.
+for any group of variables :math:`\bdu \subseteq \{1,2,\ldots,n_X\}` with
+size lower or equal to :math:`n_X`, where :math:`|\overline{\bdu}|` is the
+cardinal of the subset :math:`\overline{\bdu}`.
 The functions :math:`h_\bdu` can be defined recursively, using groups of
 variables of lower dimensionality:
 
 .. math::
     h_\bdu(\bdx_\bdu)
     = \int_{[0,1]^{|\overline{\bdu}|}} \operatorname{g}(\bdx_\bdu,\bdx_{\overline{\bdu}}) d\bdx_{\overline{\bdu}}
-    -  \sum_{\bdv\subsetneq \bdu} h_\bdv(\bdx_\bdv).
+    -  \sum_{\bdv \subsetneq \bdu} h_\bdv(\bdx_\bdv)
 
-Let :math:`\boldsymbol{x} \in [0,1]^{n_X}` be a point.
-Let :math:`\bdu \subseteq \{1, \ldots, n_X\}` be a group of variables.
+where :math:`\subsetneq` denotes a proper subset. 
+Let :math:`\boldsymbol{x} \in [0,1]^{n_X}` be a point and
+let :math:`\bdu \subseteq \{1, \ldots, n_X\}` be a group of variables.
 Therefore:
 
 .. math::
     \Expect{Y|\bdX_\bdu=\bdx_\bdu}
-    = \sum_{\bdv \subseteq \bdu} h_\bdv(\bdx_\bdv),
+    = \sum_{\bdv \subseteq \bdu} h_\bdv(\bdx_\bdv).
 
 The Möbius inversion formula implies (see [daveiga2022]_ Theorem 3.3 page 49):
-
 .. math::
     h_\bdu(\bdx_\bdu)
     = \sum_{\bdv \subseteq \bdu} (-1)^{|\bdu| - |\bdv|} \Expect{Y|\bdX_\bdv=\bdx_\bdv}.
@@ -126,7 +152,7 @@ decomposed into:
 
 .. math::
     \Var{Y}=\sum_{i=1}^{n_X} V_{i}
-    + \sum_{1\leq i < j\leq n_X} V_{\{i,j\}} + \ldots + V_{\{1,2,\ldots,n_X\}},
+    + \sum_{1\leq i < j\leq n_X} V_{\{i,j\}} + \ldots + V_{\{1,2,\ldots,n_X\}}
 
 where the interaction variances are:
 
@@ -155,8 +181,8 @@ The Möbius inversion formula implies (see [daveiga2022]_ corrollary 3.5 page 52
 
     V_\bdu = \sum_{\bdv \subseteq \bdu} (-1)^{ |\bdu| - |\bdv| } \Var{\Expect{ Y \vert \mat{X}_\bdv} }.
 
-Sensitivity indices of a variable
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Interaction sensitivity indices of a variable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The first order interaction sensitivity indices are equal to:
 
@@ -173,14 +199,47 @@ The first order interaction sensitivity indices are equal to:
 The first order Sobol' index :math:`S_i` measures the part of the variance of :math:`Y` explained by :math:`X_i` alone.
 The second order Sobol' index :math:`S_{i,j}`  measures the part of the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
 
-We can alternatively define the Sobol' sensitivity indices using
-the variance of the conditional expectation.
-The first order Sobol' sensitivity index is:
+More generally, the first order interaction Sobol' index of a group
+of variables :math:`\bdu` is:
+
+.. math::
+    S_\bdu = \frac{V_\bdu}{\Var{Y}} = \frac{\Var{h_\bdu(\bdX_\bdu)}}{\Var{Y}}.
+
+where :math:`h_\bdu` is the function of the input variables in the group :math:`\bdu`
+of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
+This index measures the sensitivity of the variance of the output explained
+by interactions within the group.
+
+The total interaction sensitivity index of the group :math:`\bdu` 
+is (see (Liu & Owen, 2006)):
+
+.. math::
+    S^{T,i}_\bdu = \sum_{\bdv \supseteq \bdu} S_{\bdv}
+
+This index measures the sensitivity of the variance of the output explained
+by interactions within the group and groups of variables containing it.
+
+First order and total sensitivity indices of a variable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The first order Sobol' sensitivity index is equal to the corresponding
+interaction index of the group :math:`\{i\}`:
+
+.. math::
+    S_i &= S_{\{i\}}
+
+for :math:`i=1,\ldots, n_X`.
+The first order Sobol' index :math:`S_i` measures the sensitivity of the 
+output variance explained by the effect of :math:`X_i` alone.
+We can alternatively define the first order Sobol' sensitivity index using
+the variance of a conditional expectation.
+The first order Sobol' sensitivity index satisfies the equation:
 
 .. math::
     S_i &= \frac{\Var{\Expect{Y|X_i}}}{\Var{Y}}
 
 for :math:`i=1,\ldots, n_X`.
+
 The total  Sobol' sensitivity index is:
 
 .. math::
@@ -188,10 +247,9 @@ The total  Sobol' sensitivity index is:
     V_{1, 2,\ldots, n_X}}{\Var{Y}}
 
 for :math:`i=1,\ldots, n_X`.
-
 The total Sobol' sensitivity index can be equivalently defined in terms
 of the variance of a conditional expectation.
-The total  Sobol' sensitivity index is:
+The total  Sobol' sensitivity index satisfies the equation:
 
 .. math::
     S^T_i &= 1 - \frac{\Var{\Expect{Y|X_{\overline{\{i\}}}}}}{\Var{Y}}
@@ -204,7 +262,7 @@ For any :math:`i=1,\ldots,n_X`, let us define
     V_i^T   & = \sum_{\bdu \ni i} V_\bdu \\
     V_{-i} & = \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_{n_X}} }.
 
-Total order Sobol' indices are defined as follows:
+Total order Sobol' indices satisfy the equality:
 
 .. math::
 
@@ -212,9 +270,9 @@ Total order Sobol' indices are defined as follows:
 
 for :math:`i=1,\ldots,n_X`.
 
-The total order Sobol' index :math:`S_i^T` quantifies the part of the variance
-of :math:`Y` that is due to the effect of :math:`X_i`
-and its interactions with all the other input variables.
+The total order Sobol' index :math:`S_i^T` measures the part of the variance
+of :math:`Y` explained by :math:`X_i`
+and its interactions with other input variables.
 It can also be viewed as the part of the variance of :math:`Y` that cannot
 be explained without :math:`X_i`.
 
@@ -230,7 +288,13 @@ is:
     S_{\bdu}^{\operatorname{cl}}
     = \frac{\Var{\Expect{Y|\vect{X}_{\bdu}}}}{\Var{Y}}
 
-The first order (closed) Sobol' index of a group of variables :math:`\bdu`
+The first order closed Sobol' index of a group of input variables :math:`\bdu`
+measures the sensitivity of the variance of :math:`Y` explained by the
+variables within the group.
+This index is useful when the group contains random variables parameterizing 
+a single uncertainty source (see (Knio & Le Maitre, 2006) page 139).
+
+The total Sobol' index of a group of variables :math:`\bdu`
 is:
 
 .. math::
@@ -239,6 +303,13 @@ is:
 
 where :math:`h_\bdv` is the function of the variables in the group :math:`\bdv`
 of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
+The total Sobol' index of a group of input variables :math:`\bdu`
+measures the sensitivity of the variance of :math:`Y` explained by the
+variables within the group and any group of variables containing any variable in the 
+group.
+It can also be viewed as the part of the variance of :math:`Y` that cannot
+be explained without :math:`X_\bdu`.
+
 
 For any group of variables :math:`\bdu`,
 the total and first order (closed) Sobol' indices are related by the equation:
@@ -247,16 +318,6 @@ the total and first order (closed) Sobol' indices are related by the equation:
     S^T_\bdu + S_{\overline{\bdu}}^{\operatorname{cl}} = 1
 
 where :math:`\overline{\bdu}` is the complementary group of :math:`\bdu`.
-
-
-The first order interaction Sobol' index of a group of variables :math:`\bdu`
-is:
-
-.. math::
-    S_\bdu = \frac{V_\bdu}{\Var{Y}} = \frac{\Var{h_\bdu(\bdX_\bdu)}}{\Var{Y}}.
-
-where :math:`h_\bdu` is the function of the input variables in the group :math:`\bdu`
-of the functional Sobol'-Hoeffding ANOVA decomposition of the physical model.
 
 Summary of Sobol' indices
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -474,4 +535,6 @@ we use the :meth:`~openturns.Sample.computeVariance` method of the :class:`~open
     - [saltelli2002]_
     - [daveiga2022]_
     - [sobol1993]_
+    - Knio, O. M., & Le Maitre, O. P. (2006). Uncertainty propagation in CFD using polynomial chaos decomposition. *Fluid dynamics research*, *38* (9), 616.
+    - Liu, R., & Owen, A. B. (2006). Estimating mean dimensionality of analysis of variance decompositions. *Journal of the American Statistical Association*, 101(474), 712-721.
     - Knio, O. M., & Le Maitre, O. P. (2006). Uncertainty propagation in CFD using polynomial chaos decomposition. *Fluid dynamics research*, *38* (9), 616.
