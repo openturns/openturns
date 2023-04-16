@@ -13,7 +13,7 @@ Introduction
 
 Sobol'-Hoeffding is the decomposition of a function on a basis
 made of orthogonal functions.
-Since the PCE expansion is also an orthogonal decomposition, 
+Since the PCE expansion is also an orthogonal decomposition,
 the Sobol' decomposition of a function can be expressed depending
 on its PCE (see (Knio & Le Maitre, 2006) page 139).
 As a result, Sobol' indices can be obtained analytically from the
@@ -30,7 +30,7 @@ Variance and part of variance of a PCE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let :math:`n_X` be the dimension of the input random vector.
-Let :math:`P \in \Nset` be the number of coefficients in the functional 
+Let :math:`P \in \Nset` be the number of coefficients in the functional
 basis.
 Let :math:`\mathcal{J}_P \subseteq \Nset^{n_X}` the set of multi-indices up
 to the index :math:`P`.
@@ -53,9 +53,9 @@ The variance of the polynomial chaos expansion is:
 .. math::
     \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2 \|\psi_\idx\|^2.
 
-In the previous expression, let us emphasise that the variance is a sum 
-of squares, excepted the :math:`a_0` coefficient. 
-If the polynomial basis is orthonormal, the expression is particularly 
+In the previous expression, let us emphasise that the variance is a sum
+of squares, excepted the :math:`a_0` coefficient.
+If the polynomial basis is orthonormal, the expression is particularly
 simple (see (Le Gratiet, et. al., 2017) eq. 38.43 page 1301):
 
 .. math::
@@ -76,22 +76,22 @@ Hence, we can identify the multi-indices which contribute
 more significantly to the variance of the output by sorting the
 multi-indices by decreasing order of their part of variance.
 This result is printed by the `str` representation of the
-`FunctionalChaosSobolIndices` class and is accessed by the 
+`FunctionalChaosSobolIndices` class and is accessed by the
 `print` function: see an example of this below.
 
-All the Sobol' indices that we introduce in this section depend on a 
-specific set of multi-indices. 
+All the Sobol' indices that we introduce in this section depend on a
+specific set of multi-indices.
 
 Sets of multi-indices
 ~~~~~~~~~~~~~~~~~~~~~
 
-Let :math:`\mathcal{J}^S \subseteq \mathcal{J}_P` a subset of the multi-indices 
+Let :math:`\mathcal{J}^S \subseteq \mathcal{J}_P` a subset of the multi-indices
 involved in the polynomial chaos expansion.
-Let :math:`\operatorname{S}^{PCE}` be the function of the coefficients associated 
-to the multi-indices :math:`\mathcal{J}^S`, defined by: 
+Let :math:`\operatorname{S}^{PCE}` be the function of the coefficients associated
+to the multi-indices :math:`\mathcal{J}^S`, defined by:
 
 .. math::
-    \operatorname{S}^{PCE}\left(\mathcal{J}^S\right) 
+    \operatorname{S}^{PCE}\left(\mathcal{J}^S\right)
     = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2 \|\psi_\idx\|^2}{\Var{\tilde{h}(\bdZ)}}.
 
 Then any Sobol' index :math:`S` can be defined by the equation:
@@ -102,7 +102,7 @@ Then any Sobol' index :math:`S` can be defined by the equation:
 If the polynomial basis is orthonormal, therefore:
 
 .. math::
-    \operatorname{S}^{PCE}\left(\mathcal{J}^S\right) 
+    \operatorname{S}^{PCE}\left(\mathcal{J}^S\right)
     = \frac{\sum_{\idx \in \mathcal{J}^S} a_\idx^2}{\Var{\tilde{h}(\bdZ)}}.
 
 
@@ -112,32 +112,32 @@ by its corresponding set of multi-indices.
 Classical Sobol' indices of a single variable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let :math:`i \in \{0, ..., n_X - 1\}` the index of an input 
-variable. 
-Let :math:`\mathcal{J}_i^S` the set of multi-indices such that 
+Let :math:`i \in \{0, ..., n_X - 1\}` the index of an input
+variable.
+Let :math:`\mathcal{J}_i^S` the set of multi-indices such that
 :math:`\alpha_i > 0` and the other components of the multi-indices are
 zero (see (Le Gratiet, et. al., 2017) eq. 38.44 page 1301):
 
 .. math::
     \mathcal{J}_i^S
-    =\left\{\idx=(0, ..., 0, \alpha_i, 0, ..., 0) \in \mathcal{J}_P, \quad 
+    =\left\{\idx=(0, ..., 0, \alpha_i, 0, ..., 0) \in \mathcal{J}_P, \quad
     \alpha_i > 0 \right\}.
 
-Therefore, the first order Sobol' index :math:`S_i` of the variable 
-:math:`X_i` is: 
+Therefore, the first order Sobol' index :math:`S_i` of the variable
+:math:`X_i` is:
 
 .. math::
     S_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^S\right).
 
-Let :math:`\mathcal{J}_i^T` the set of multi-indices such that 
+Let :math:`\mathcal{J}_i^T` the set of multi-indices such that
 :math:`\alpha_i > 0` (see (Le Gratiet, et. al., 2017) eq. 38.45 page 1301):
 
 .. math::
     \mathcal{J}_i^T
-    =\left\{\idx = (\alpha_0,...,\alpha_i,...,\alpha_{n_X - 1}) \in \mathcal{J}_P, \quad 
+    =\left\{\idx = (\alpha_0,...,\alpha_i,...,\alpha_{n_X - 1}) \in \mathcal{J}_P, \quad
     \alpha_i > 0 \right\}.
 
-Therefore, the total index :math:`S^T_i` is: 
+Therefore, the total index :math:`S^T_i` is:
 
 .. math::
     S^T_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^T\right).
@@ -146,18 +146,18 @@ Interaction Sobol' indices of a group of variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let :math:`\bdu \subseteq \{0, ..., n_X - 1\}` the list of variable indices
-in the group. 
+in the group.
 Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
 
 .. math::
     \mathcal{J}_\bdu
-    =\left\{\idx \in \mathcal{J}_P, 
-    \quad \idx \neq \boldsymbol{0}, \quad 
+    =\left\{\idx \in \mathcal{J}_P,
+    \quad \idx \neq \boldsymbol{0}, \quad
     \alpha_i > 0 \textrm{ if } i \in \bdu, \quad
     \alpha_i = 0 \textrm{ if } i \not \in \bdu, \quad
     i = 1, \ldots, n_X \right\}.
 
-Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is: 
+Therefore, the interaction (high order) Sobol' index :math:`S_\bdu` is:
 
 .. math::
     S_\bdu = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu\right).
@@ -167,11 +167,11 @@ Let :math:`\mathcal{J}_\bdu` the set of multi-indices:
 
 .. math::
     \mathcal{J}_\bdu^{T, i}
-    = \left\{\boldsymbol{\alpha} \in \mathcal{J}_P, \quad \boldsymbol{\alpha} \neq \boldsymbol{0}, \quad 
+    = \left\{\boldsymbol{\alpha} \in \mathcal{J}_P, \quad \boldsymbol{\alpha} \neq \boldsymbol{0}, \quad
     \alpha_i > 0 \textrm{ if } i \in \bdu, \quad
     i = 1, \ldots, n_X \right\}.
 
-Therefore, the total interaction (high order) Sobol' index :math:`S_\bdu` is: 
+Therefore, the total interaction (high order) Sobol' index :math:`S_\bdu` is:
 
 .. math::
     S_\bdu^{T, i} = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^{T, i}\right).
@@ -179,32 +179,32 @@ Therefore, the total interaction (high order) Sobol' index :math:`S_\bdu` is:
 Closed first order and total Sobol' indices of a group of variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let :math:`\mathcal{J}_\bdu^{S, \operatorname{cl}}` the set of multi-indices such that 
+Let :math:`\mathcal{J}_\bdu^{S, \operatorname{cl}}` the set of multi-indices such that
 each component of :math:`\idx` is contained in the group :math:`\bdu`:
 
 .. math::
     \mathcal{J}_\bdu^{S, \operatorname{cl}}
-    = \left\{\idx \in \mathcal{J}_P, \quad 
-      \idx \neq \boldsymbol{0}, \quad \alpha_i = 0 \quad \textrm{ if } \quad 
-      i \not \in \bdu, \quad 
+    = \left\{\idx \in \mathcal{J}_P, \quad
+      \idx \neq \boldsymbol{0}, \quad \alpha_i = 0 \quad \textrm{ if } \quad
+      i \not \in \bdu, \quad
       i = 1, \ldots, n_X \right\}.
 
-Therefore, the first order (closed) Sobol' index :math:`S^{\operatorname{cl}}_\bdu` 
-is: 
+Therefore, the first order (closed) Sobol' index :math:`S^{\operatorname{cl}}_\bdu`
+is:
 
 .. math::
-    S^{\operatorname{cl}}_\bdu 
+    S^{\operatorname{cl}}_\bdu
     = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^{S, \operatorname{cl}}\right).
 
 Let :math:`\mathcal{J}_\bdu^T` the set of multi-indices:
 
 .. math::
-    \mathcal{J}_\bdu^T 
-    = \left\{\idx \in\mathcal{J}_P, \quad \idx \neq \boldsymbol{0}, \quad 
-      \exists i \in \{1, \ldots, n_X\} \quad 
+    \mathcal{J}_\bdu^T
+    = \left\{\idx \in\mathcal{J}_P, \quad \idx \neq \boldsymbol{0}, \quad
+      \exists i \in \{1, \ldots, n_X\} \quad
       \textrm{s.t.}  \quad i \in \bdu \textrm{ and } \alpha_i > 0 \right\}.
 
-Therefore, the total Sobol' index :math:`S^T_\bdu` is: 
+Therefore, the total Sobol' index :math:`S^T_\bdu` is:
 
 .. math::
     S^T_\bdu = \operatorname{S}^{PCE}\left(\mathcal{J}_\bdu^T\right).

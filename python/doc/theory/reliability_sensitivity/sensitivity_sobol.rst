@@ -309,12 +309,12 @@ Let us summarize the properties of the Sobol' indices.
 Example
 ~~~~~~~
 
-Let us consider a function :math:`g` which has :math:`n_X = 3` inputs 
+Let us consider a function :math:`g` which has :math:`n_X = 3` inputs
 :math:`(X_1, X_2, X_3)`.
 The full set of interaction indices is:
 
 .. math::
-    S_1, \; S_2, \; S_3, \; S_{\{1, 2\}}, \; S_{\{1, 3\}}, \; S_{\{2, 3\}}, 
+    S_1, \; S_2, \; S_3, \; S_{\{1, 2\}}, \; S_{\{1, 3\}}, \; S_{\{2, 3\}},
     \; S_{\{1, 2, 3\}}.
 
 Each Sobol' index combines a subset of the previous interaction indices.
@@ -333,8 +333,8 @@ table.
 
 **Table 2.** First order and total Sobol' indices of the variables :math:`X_1`, :math:`X_2` and :math:`X_3`.
 
-The list of possible groups is :math:`\{1,2\}`, :math:`\{1,3\}`, :math:`\{2,3\}` and  :math:`\{1,2,3\}`. 
-The next table presents the Sobol' indices of the group :math:`\bdu = \{1, 2\}`. 
+The list of possible groups is :math:`\{1,2\}`, :math:`\{1,3\}`, :math:`\{2,3\}` and  :math:`\{1,2,3\}`.
+The next table presents the Sobol' indices of the group :math:`\bdu = \{1, 2\}`.
 
 +-----------------------------------------------+------------------------------------------------------------------------+
 | Sobol' index of group :math:`\bdu = \{1, 2\}` | Value                                                                  |
@@ -363,7 +363,7 @@ expectation of the k-th output :math:`Y^{(k)}`:
     V_i^{(k)} & = \Var{ \Expect{Y^{(k)} \vert X_i} }
 
 for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
-Similarly, let :math:`V_i^{(T, k)}` be the total variance of the conditional expectation 
+Similarly, let :math:`V_i^{(T, k)}` be the total variance of the conditional expectation
 of :math:`Y^{(k)}` for :math:`i = 1, \ldots, n_X` and :math:`k = 1, \ldots, n_Y`.
 
 The indices can be aggregated with the following formulas:
@@ -441,7 +441,7 @@ The estimator :math:`\widehat{V}_{i,j}` of :math:`V_{i,j}` is the same for all t
 
     \widehat{V}_{i,j} = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{g}(\vect{E}_k^i) \tilde{g}(\vect{C}_k^j) - \frac{1}{N} \sum_{k=1}^{N} \tilde{g}(\vect{A}_k) \tilde{g}(\vect{B}_k) - \widehat{V}_i - \widehat{V}_j.
 
-Notice that the value of the second order conditional variance depends on the estimators :math:`\widehat{V}_i` and :math:`\widehat{V}_j` which are method-dependent. This implies that the value of the second order indices may depend on the specific Sobol' estimator we use. 
+Notice that the value of the second order conditional variance depends on the estimators :math:`\widehat{V}_i` and :math:`\widehat{V}_j` which are method-dependent. This implies that the value of the second order indices may depend on the specific Sobol' estimator we use.
 
 Centering the output
 ~~~~~~~~~~~~~~~~~~~~
