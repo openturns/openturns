@@ -276,7 +276,7 @@ Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & variables
       {
         const Indices multiIndices(enumerateFunction(coefficientIndices[i]));
         // Take into account only nonzero multi indices
-        if (*std::max_element(multiIndices.begin(), multiIndices.end()) > 0)
+        if (multiIndices.normInf() > 0)
         {
           totalVariance += coefficientI * coefficientI;
           Bool isProperSubset = true;
@@ -287,7 +287,7 @@ Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & variables
             isProperSubset = isProperSubset && (multiIndices[varJ] > 0);
           }
           if (isProperSubset) covarianceVariables += coefficientI * coefficientI;
-        } // *std::max_element(multiIndices.begin(), multiIndices.end()) > 0
+        } // multiIndices.normInf() > 0
       } // if coefficientI <> 0
     } // coefficientIndices[i] > 0
   } // Loop over the coefficients
