@@ -18,7 +18,7 @@ Index   | Multi-indice                  | Part of variance
 
 
 ------------------------------------------------------------
-Component | Sobol index            | Sobol total index      
+Component | Sobol' index           | Sobol' total index     
 ------------------------------------------------------------
         0 | 0.318079               | 0.555274              
         1 | 0.444395               | 0.444477              

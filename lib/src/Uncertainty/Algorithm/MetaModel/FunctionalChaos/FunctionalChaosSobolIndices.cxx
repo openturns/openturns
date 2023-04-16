@@ -154,7 +154,7 @@ String FunctionalChaosSobolIndices::__str__(const String & /*offset*/) const
 
     // table of first/total order indices for each input
     oss << String(60, '-') << "\n";
-    oss << "Component | Sobol' index            | Sobol total index      \n";
+    oss << "Component | Sobol' index           | Sobol' total index     \n";
     oss << String(60, '-') << "\n";
     for (UnsignedInteger i = 0; i < inputDimension; ++ i)
     {
