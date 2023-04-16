@@ -11,7 +11,7 @@ be the output of the physical model:
 .. math::
     \vect{Y} = \operatorname{g}(\vect{X}).
 
-We consider the output :math:`Y_k` for any index :math:`k \in \{1, ..., n_Y\}`.
+We consider the output :math:`Y_k` for any index :math:`k \in \{1, \ldots, n_Y\}`.
 Sobol' indices measure the influence the input :math:`\vect{X}` has
 on the output :math:`Y_k`.
 The method considers the part of the variance of the output :math:`Y_k` produced by
@@ -41,8 +41,8 @@ Sobol' decomposition
 ~~~~~~~~~~~~~~~~~~~~
 
 In this section, we introduce the Sobol'-Hoeffding decomposition [sobol1993]_.
-Let  :math:`i\in\{1,\ldots, n_X\}`, the vector :math:`\bdx_{\overline{\{i\}}}` be
-the vector made of components of :math:`\bdx=(x_1,x_2,` :math:`\ldots,x_p)` which
+For any  :math:`i\in\{1,\ldots, n_X\}`, let :math:`\bdx_{\overline{\{i\}}} \in [0,1]^{n_X - 1}` be
+the vector made of components of :math:`\bdx=(x_1,x_2,` :math:`\ldots,x_p)\in [0,1]^{n_X }` which
 /indices are different from :math:`i`.
 Hence, if :math:`\bdx\in[0,1]^{n_X}`, then:
 
@@ -102,14 +102,14 @@ variables of lower dimensionality:
     -  \sum_{\bdv\subsetneq \bdu} h_\bdv(\bdx_\bdv).
 
 Let :math:`\boldsymbol{x} \in [0,1]^{n_X}` be a point.
-Let :math:`\bdu \subseteq \{1, ..., n_X\}` be a group of variables.
-Therefore :
+Let :math:`\bdu \subseteq \{1, \ldots, n_X\}` be a group of variables.
+Therefore:
 
 .. math::
     \Expect{Y|\bdX_\bdu=\bdx_\bdu}
     = \sum_{\bdv \subseteq \bdu} h_\bdv(\bdx_\bdv),
 
-The inverse relationship is:
+The Möbius inversion formula implies (see [daveiga2022]_ Theorem 3.3 page 49):
 
 .. math::
     h_\bdu(\bdx_\bdu)
@@ -149,11 +149,11 @@ Using the Hoeffding decomposition, we get:
 
    \Var{Y} = \sum_{ \bdu \subseteq \{1, \ldots, n_X\} } V_\bdu.
 
-The Möbius inversion formula implies:
+The Möbius inversion formula implies (see [daveiga2022]_ corrollary 3.5 page 52):
 
 .. math::
 
-    V_\bdu = \Var{ \sum_{\bdv \subseteq \bdu} (-1)^{ |\bdu| - |\bdv| } \Expect{ Y \vert \mat{X}_\bdv} }.
+    V_\bdu = \sum_{\bdv \subseteq \bdu} (-1)^{ |\bdu| - |\bdv| } \Var{\Expect{ Y \vert \mat{X}_\bdv} }.
 
 Sensitivity indices of a variable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -222,7 +222,7 @@ be explained without :math:`X_i`.
 Sensitivity indices of a group of variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let :math:`\bdu \subseteq \{1, ..., n_X\}` be a group of input variables.
+Let :math:`\bdu \subseteq \{1, \ldots, n_X\}` be a group of input variables.
 The first order (closed) Sobol' index of a group of input variables :math:`\bdu`
 is:
 
@@ -300,8 +300,8 @@ Let us summarize the properties of the Sobol' indices.
 
 - If :math:`S_i < S^T_i`, there are interactions between the variable :math:`X_i` and other variables.
 
-- If :math:`S_i = S^T_i` for :math:`i = 1, ..., n_X`, then the function is additive, i.e.
-  the function :math:`g` is the sum of functions :math:`g_1, ..., g_{n_X}` of input dimension 1:
+- If :math:`S_i = S^T_i` for :math:`i = 1, \ldots, n_X`, then the function is additive, i.e.
+  the function :math:`g` is the sum of functions :math:`g_1, \ldots, g_{n_X}` of input dimension 1:
 
 .. math::
     Y = \sum_{i = 1}^{n_X} g_i(X_i).
