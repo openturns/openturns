@@ -32,7 +32,7 @@ Index   | Multi-indice                  | Part of variance
 
 
 ------------------------------------------------------------
-Component | Sobol index            | Sobol total index      
+Component | Sobol' index           | Sobol' total index     
 ------------------------------------------------------------
         0 | 0.313901               | 0.557582              
         1 | 0.442418               | 0.442418              
@@ -137,6 +137,35 @@ X3
    S (PCE) 0.0000
    S (exact) 0.0000
    Abs. Error 0.0000e+00
+X1, X2
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 1.2428e-08
+X1, X3
+   S (PCE) 0.2437
+   S (exact) 0.2437
+   Abs. Error 3.1461e-06
+X2, X3
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 1.9147e-08
+X1, X2, X3
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 0.0000e+00
+Test total interaction group Sobol' indices
+X1
+   S (PCE) 0.5576
+   S (exact) 0.5576
+   Abs. Error 7.0515e-06
+X2
+   S (PCE) 0.4424
+   S (exact) 0.4424
+   Abs. Error 7.0639e-06
+X3
+   S (PCE) 0.2437
+   S (exact) 0.2437
+   Abs. Error 3.1269e-06
 X1, X2
    S (PCE) 0.0000
    S (exact) 0.0000
