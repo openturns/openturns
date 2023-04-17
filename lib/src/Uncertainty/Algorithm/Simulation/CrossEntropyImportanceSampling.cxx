@@ -124,7 +124,7 @@ void CrossEntropyImportanceSampling::run()
 
     // Update auxiliary Distribution Parameters
     updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
-  }
+  } // if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
 
   UnsignedInteger iterationNumber  = 0;
   
