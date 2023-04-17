@@ -63,7 +63,6 @@ StandardSpaceCrossEntropyImportanceSampling::StandardSpaceCrossEntropyImportance
 // Compute Output Samples
 Sample StandardSpaceCrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples) const
 {
-
   Sample outputSamples = getEvent().getFunction()(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(inputSamples));
   return outputSamples;
 }
