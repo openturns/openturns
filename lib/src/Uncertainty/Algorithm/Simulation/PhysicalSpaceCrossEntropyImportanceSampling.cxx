@@ -91,7 +91,7 @@ public:
                                      const Point & initialCriticInputSamplePDFValue,
                                      const Distribution & auxiliaryDistribution,
                                      const Indices & activeParameters,
-                                     const Scalar numberSamples)
+                                     const UnsignedInteger numberSamples)
   : EvaluationImplementation()
   , auxiliaryCriticInputSample_(auxiliaryCriticInputSample)
   , activeParameters_(activeParameters)
