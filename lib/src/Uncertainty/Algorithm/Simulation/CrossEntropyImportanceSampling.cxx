@@ -45,7 +45,6 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVecto
   : EventSimulation(event)
   , initialDistribution_(event.getAntecedent().getDistribution())
 {
-  event_ = event;
   rhoQuantile_ = (event.getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
 }
 
