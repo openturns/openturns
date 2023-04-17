@@ -55,7 +55,6 @@ StandardSpaceCrossEntropyImportanceSampling::StandardSpaceCrossEntropyImportance
   {
 
   initialDistribution_ = Normal(initialDistribution_.getDimension());
-
   auxiliaryDistribution_ = Normal(initialDistribution_.getDimension());
   rhoQuantile_ = (event.getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
 }
