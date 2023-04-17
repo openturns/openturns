@@ -113,7 +113,6 @@ public:
   
     // update auxiliary distribution
     Point parameters(auxiliaryDistribution_.getParameter());
-  
     for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
     {
       parameters[activeParameters_[i]] = x[i];
