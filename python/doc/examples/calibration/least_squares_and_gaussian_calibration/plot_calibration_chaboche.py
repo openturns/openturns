@@ -280,7 +280,7 @@ printRCGammaInterval(interval)
 # This produces smoother spiky distributions.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 
 # %%
 # We now plot the predicted output stress depending on the input

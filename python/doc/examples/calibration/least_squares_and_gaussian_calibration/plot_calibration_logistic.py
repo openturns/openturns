@@ -312,7 +312,7 @@ if calibrationResult.getInputObservations().getSize() == 1:
 # This produces smoother spiky distributions.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 
 # %%
 # The next plot presents the U.S. population depending on the time.

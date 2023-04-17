@@ -369,7 +369,7 @@ print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0
 # %%
 # Increase the default number of points in the plots.
 # This produces smoother spiky distributions.
-ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 
 # %%
 graph = calibrationResult.drawObservationsVsInputs()
@@ -737,4 +737,4 @@ view = otv.View(
 plot_space = 0.5
 plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 
-otv.View.ShowAll()
+#otv.View.ShowAll()

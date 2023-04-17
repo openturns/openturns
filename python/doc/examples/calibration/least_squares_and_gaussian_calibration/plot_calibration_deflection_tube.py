@@ -300,7 +300,7 @@ for i in range(dim):
 # %%
 # Increase the default number of points in the plots.
 # This produces smoother spiky distributions.
-ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 1000)
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 
 # %%
 # In order to see how the predicted outputs first to the observed
