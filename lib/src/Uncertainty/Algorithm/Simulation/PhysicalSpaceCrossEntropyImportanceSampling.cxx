@@ -120,8 +120,8 @@ public:
     }
     distrib.setParameter(parameters);
   
-    Point criticSamplesAuxiliaryPDFValue = distrib.computePDF(auxiliaryCriticInputSample_).asPoint();
-    Point criticSamplesAuxiliaryLogPDFValue = distrib.computeLogPDF(auxiliaryCriticInputSample_).asPoint();
+    const Point criticSamplesAuxiliaryPDFValue = distrib.computePDF(auxiliaryCriticInputSample_).asPoint();
+    const Point criticSamplesAuxiliaryLogPDFValue = distrib.computeLogPDF(auxiliaryCriticInputSample_).asPoint();
   
     Scalar objectiveFunction = 0.0;
   

@@ -45,6 +45,13 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVecto
   : EventSimulation(event)
   , initialDistribution_(event.getAntecedent().getDistribution())
 {
+    if (rhoQuantile_> 1.)
+    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, rhoQuantile parameter value should be between 0.0 and 1.0";
+    
+    if (rhoQuantile_< 0.)
+    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, rhoQuantile parameter value should be between 0.0 and 1.0";
+    
+    
   rhoQuantile_ = (event.getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
 }
 
@@ -213,6 +220,13 @@ void CrossEntropyImportanceSampling::run()
   }  // for i
 
   const Scalar variancenonCritic = (sampleSize - indicesCritic.getSize()) * (failureProbability * failureProbability);
+  
+  
+  if (sampleSize == 1)
+    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one vor variance estimation";
+    
+    
+     
   const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (sampleSize - 1) / sampleSize ;
 
   // Save of data in Simulation crossEntropyResult_ structure
