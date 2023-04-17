@@ -124,7 +124,6 @@ void CrossEntropyImportanceSampling::run()
 
     // Update auxiliary Distribution Parameters
     updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
-
   }
 
   UnsignedInteger iterationNumber  = 0;
