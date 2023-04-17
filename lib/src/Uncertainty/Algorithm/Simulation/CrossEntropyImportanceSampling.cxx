@@ -109,7 +109,7 @@ void CrossEntropyImportanceSampling::run()
   }
   else
   {
-  Indices indiceCritic(0);
+    Indices indiceCritic(0);
 
     for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
       {
