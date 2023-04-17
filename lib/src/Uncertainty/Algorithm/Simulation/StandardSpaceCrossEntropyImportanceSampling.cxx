@@ -116,7 +116,6 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
  
   // Calculation of updated standard deviation of auxiliary distribution
   Point standardDeviation(auxiliaryCriticInputSamples.getDimension());
-  
   for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
   {
     Point diff(auxiliaryCriticInputSamples.getSize());
