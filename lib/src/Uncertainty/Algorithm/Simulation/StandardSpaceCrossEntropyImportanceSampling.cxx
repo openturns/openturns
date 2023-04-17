@@ -134,7 +134,6 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   }
 
  Point auxiliaryParameters = Point(2*auxiliaryCriticInputSamples.getDimension());
- 
  for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
  {
    auxiliaryParameters[2*i] = mean[i];
