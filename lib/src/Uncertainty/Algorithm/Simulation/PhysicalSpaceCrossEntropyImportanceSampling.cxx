@@ -176,7 +176,6 @@ Sample PhysicalSpaceCrossEntropyImportanceSampling::computeOutputSamples(const S
 // Update auxiliary distribution
 void PhysicalSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters)
 {
-
   Point parameters(auxiliaryDistribution_.getParameter());
   for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
   {
