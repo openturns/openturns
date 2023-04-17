@@ -60,7 +60,6 @@ public:
   /** Get solver */
   OptimizationAlgorithm getSolver() const;
   
-  
 protected:
 
 

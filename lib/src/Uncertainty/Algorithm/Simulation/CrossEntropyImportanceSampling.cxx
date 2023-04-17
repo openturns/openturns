@@ -83,7 +83,6 @@ Point CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(co
 {
   throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample &)";
 } 
-  
 
 
 // Main function that computes the failure probability
@@ -105,11 +104,10 @@ void CrossEntropyImportanceSampling::run()
   if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
   {
     currentQuantile = getEvent().getThreshold();
-    //auxiliaryDistribution_ = initialDistribution_;
   }
   else
   {
-  Indices indiceCritic(0);
+    Indices indiceCritic(0);
 
     for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
       {
@@ -120,27 +118,23 @@ void CrossEntropyImportanceSampling::run()
 
      const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
      
-   // Optimize auxiliary distribution parameters
+    // Optimize auxiliary distribution parameters
     auxiliaryDistributionParameters = optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples);
 
     // Update auxiliary Distribution Parameters
     updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
-
-  }
+  } // if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
 
   UnsignedInteger iterationNumber  = 0;
   
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
     ++iterationNumber ;
-    
     Point currentAuxiliaryDistributionParameters = auxiliaryDistributionParameters;
 
     // Drawing of samples using auxiliary density and evaluation on limit state function
     auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());
     auxiliaryOutputSample = Sample(0, 1);
-
-
 
     for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++i)
     {
@@ -162,8 +156,8 @@ void CrossEntropyImportanceSampling::run()
     }
     else
     {
-    Indices indiceCritic(0);
-    for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
+      Indices indiceCritic(0);
+      for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
       {
         const Bool weightBool = getEvent().getOperator()(auxiliaryOutputSample(i, 0), currentQuantile);
         if (weightBool)
@@ -173,14 +167,12 @@ void CrossEntropyImportanceSampling::run()
    // Extract the relevant sample
    const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
   
-  
    // Optimize auxiliary distribution parameters
    Point auxiliaryDistributionParameters = optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples);
   
    // Update auxiliary Distribution Parameters
    updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
 
-    //throw InternalException(HERE) << "User stopped simulation"; 
       
     }
 

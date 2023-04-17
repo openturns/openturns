@@ -25,7 +25,6 @@ using namespace OT;
 
 int main()
 {
-  
   // Definition of function
   const String formula = "R-F";
 
@@ -34,7 +33,7 @@ int main()
 
   const Function beam = SymbolicFunction(input, Description(1, formula));
   // Definition of input variable PDF
-  const Point mean = {0.2, 0.};
+  const Point mean = {0.2, 0.0};
   
   const Point sigma = {0.1, 0.1};
 
@@ -48,7 +47,7 @@ int main()
   
   const Indices active_parameters = {0, 1, 2, 3};
 
-  const Point lowerBnd = {0.1, 0.05, 0., 0.05};
+  const Point lowerBnd = {0.1, 0.05, 0.0, 0.05};
   
   const Point  upperBnd = {0.3, 0.2, 0.3, 0.2};
 
