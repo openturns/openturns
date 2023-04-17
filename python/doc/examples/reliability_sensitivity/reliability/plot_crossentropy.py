@@ -65,6 +65,12 @@ event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 standardSpaceIS = otexp.StandardSpaceCrossEntropyImportanceSampling(event, 0.35)
 
 # %%
+# The sample size at each iteration can be changed by the following accessor:
+
+# %%
+standardSpaceIS.setMaximumOuterSampling(1000)
+
+# %%
 # Now we can run the algorithm and get the results.
 
 # %%
@@ -329,7 +335,8 @@ graph.add(mycontour)
 view = otv.View(graph)
 
 # %%
-# RhoQuantile parameter can be also changed using the :class:`~openturns.ResourceMap` key : `CrossEntropyImportanceSampling-DefaultRhoQuantile`. Be careful that this key changes the value number of both :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
+# RhoQuantile parameter can be also changed using the :class:`~openturns.ResourceMap` key : `CrossEntropyImportanceSampling-DefaultRhoQuantile`. 
+# Be careful that this key changes the value number of both :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
 
 # %%
 ot.ResourceMap.SetAsScalar("CrossEntropyImportanceSampling-DefaultRhoQuantile", 0.4)
