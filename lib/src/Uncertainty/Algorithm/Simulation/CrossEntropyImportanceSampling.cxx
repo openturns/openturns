@@ -138,7 +138,6 @@ void CrossEntropyImportanceSampling::run()
     auxiliaryOutputSample = Sample(0, 1);
 
 
-
     for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++i)
     {
       const Sample blockSample(auxiliaryDistribution_.getSample(getBlockSize()));
