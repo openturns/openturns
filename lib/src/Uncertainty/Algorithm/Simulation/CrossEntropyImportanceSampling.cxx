@@ -173,7 +173,6 @@ void CrossEntropyImportanceSampling::run()
    // Update auxiliary Distribution Parameters
    updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
 
-    //throw InternalException(HERE) << "User stopped simulation"; 
       
     }
 
