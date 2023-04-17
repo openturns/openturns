@@ -113,10 +113,10 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   
     Scalar numeratorMeanCalculation = 0.0;
   
-      for(UnsignedInteger j = 0; j < auxiliaryCriticInputSamples.getSize(); ++j)
-      {
+    for(UnsignedInteger j = 0; j < auxiliaryCriticInputSamples.getSize(); ++j)
+    {
       numeratorMeanCalculation += std::exp(criticSamplesInitialLogPDFValue[j] - criticSamplesAuxiliaryLogPDFValue[j])* auxiliaryCriticInputSamples(j,i);
-      }
+    }
     
     mean[i]= numeratorMeanCalculation / sumPdfCritic; 
   }
