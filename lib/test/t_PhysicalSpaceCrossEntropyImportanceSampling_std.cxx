@@ -33,7 +33,7 @@ int main()
 
   const Function beam = SymbolicFunction(input, Description(1, formula));
   // Definition of input variable PDF
-  const Point mean = {0.2, 0.};
+  const Point mean = {0.2, 0.0};
   
   const Point sigma = {0.1, 0.1};
 
