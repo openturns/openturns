@@ -125,7 +125,7 @@ public:
     Scalar objectiveFunction = 0.0;
     for(UnsignedInteger j = 0; j < auxiliaryCriticInputSample_.getSize(); ++j)
     {  
-      objectiveFunction += initialCriticInputSamplePDFValue_[j]/criticSamplesAuxiliaryPDFValue[j]*criticSamplesAuxiliaryLogPDFValue[j];
+      objectiveFunction += initialCriticInputSamplePDFValue_[j] / criticSamplesAuxiliaryPDFValue[j] * criticSamplesAuxiliaryLogPDFValue[j];
     }
     objectiveFunction = 1/numberSamples_*objectiveFunction;
   
