@@ -204,10 +204,11 @@ Point PhysicalSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
                                                             numberOfSample));
 
 
+  OptimizationAlgorithm solver = solver_;
   OptimizationProblem problem(objective);
   problem.setBounds(bounds_);
   problem.setMinimization(false);
-  solver_.setProblem(problem);
+  solver.setProblem(problem);
 
 
   Point param(activeParameters_.getSize());
@@ -215,13 +216,12 @@ Point PhysicalSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
   {
     param[i] = auxiliaryDistribution_.getParameter()[activeParameters_[i]];
-  }
+  }  
+  solver.setStartingPoint(param);
 
-  solver_.setStartingPoint(param);
+  solver.run();
 
-  solver_.run();
-
-  Point auxiliaryParameters = solver_.getResult().getOptimalPoint();
+  Point auxiliaryParameters = solver.getResult().getOptimalPoint();
 
   return auxiliaryParameters;
 }

@@ -81,7 +81,7 @@ private:
   Interval bounds_;
   
   // Optimization solver
-  mutable OptimizationAlgorithm solver_;
+  OptimizationAlgorithm solver_;
 
 
 }; /* class PhysicalSpaceCrossEntropyImportanceSampling */
