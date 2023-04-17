@@ -113,7 +113,6 @@ public:
   
     // update auxiliary distribution
     Point parameters(auxiliaryDistribution_.getParameter());
-  
     for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
     {
       parameters[activeParameters_[i]] = x[i];
@@ -124,10 +123,9 @@ public:
     const Point criticSamplesAuxiliaryLogPDFValue = distrib.computeLogPDF(auxiliaryCriticInputSample_).asPoint();
   
     Scalar objectiveFunction = 0.0;
-  
     for(UnsignedInteger j = 0; j < auxiliaryCriticInputSample_.getSize(); ++j)
     {  
-      objectiveFunction += initialCriticInputSamplePDFValue_[j]/criticSamplesAuxiliaryPDFValue[j]*criticSamplesAuxiliaryLogPDFValue[j];
+      objectiveFunction += initialCriticInputSamplePDFValue_[j] / criticSamplesAuxiliaryPDFValue[j] * criticSamplesAuxiliaryLogPDFValue[j];
     }
     objectiveFunction = 1/numberSamples_*objectiveFunction;
   

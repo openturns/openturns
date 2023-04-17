@@ -216,7 +216,7 @@ void CrossEntropyImportanceSampling::run()
   for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
   {
     const Scalar varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0)) - failureProbability;
-    varianceCritic += varianceCriticTemporary * varianceCriticTemporary;
+    varianceCritic += pow(varianceCriticTemporary, 2);
   }  // for i
 
   const Scalar variancenonCritic = (sampleSize - indicesCritic.getSize()) * (failureProbability * failureProbability);
@@ -238,8 +238,6 @@ void CrossEntropyImportanceSampling::run()
   crossEntropyResult_.setBlockSize(getBlockSize());
   crossEntropyResult_.setVarianceEstimate(varianceEstimate);
 }
-
-
 
 // Accessor to CrossEntropyImportanceSampling Result_s
 CrossEntropyResult CrossEntropyImportanceSampling::getResult() const
