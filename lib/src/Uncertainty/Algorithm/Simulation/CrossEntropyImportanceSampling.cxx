@@ -131,7 +131,6 @@ void CrossEntropyImportanceSampling::run()
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
     ++iterationNumber ;
-    
     Point currentAuxiliaryDistributionParameters = auxiliaryDistributionParameters;
 
     // Drawing of samples using auxiliary density and evaluation on limit state function
