@@ -158,7 +158,7 @@ void CrossEntropyImportanceSampling::run()
     else
     {
       Indices indiceCritic(0);
-    for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
+      for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
       {
         const Bool weightBool = getEvent().getOperator()(auxiliaryOutputSample(i, 0), currentQuantile);
         if (weightBool)
