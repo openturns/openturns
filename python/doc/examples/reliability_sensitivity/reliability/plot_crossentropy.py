@@ -4,7 +4,7 @@ Cross Entropy Importance Sampling
 """
 # %%
 #
-# The objective is to evaluate a failure probability using Cross Entropy Importance Sampling. 
+# The objective is to evaluate a failure probability using Cross Entropy Importance Sampling.
 # Two versions working in Standard or Physical spaces are implemented. see :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
 # We consider the simple stress beam example: :ref:`axial stressed beam <use-case-stressed-beam>`.
 
@@ -15,7 +15,7 @@ Cross Entropy Importance Sampling
 # %%
 import openturns as ot
 import openturns.experimental as otexp
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from openturns.usecases import stressed_beam
 
 ot.RandomGenerator.SetSeed(0)
@@ -37,7 +37,7 @@ g = axialBeam.model
 graph = ot.Graph("Simple stress beam", "R", "F", True, "topright")
 drawfunction = g.draw([1.8e6, 600], [4e6, 950.0], [100] * 2)
 graph.add(drawfunction)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Create the output random vector :math:`Y = g(\vect{X})` with :math:`\vect{X} = [R,F]`.
@@ -150,7 +150,7 @@ mycontour.setLegend("Failure domain")
 graph.add(initialSamples)
 graph.add(auxiliarySamples)
 graph.add(mycontour)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # In the previous graph, the blue crosses stand for samples drawn with the initial distribution and the orange squares stand for the samples drawn at the final iteration.
@@ -260,7 +260,7 @@ graph.add(initialSamples)
 graph.add(auxiliarySamples1)
 graph.add(auxiliarySamples2)
 graph.add(mycontour)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # By analyzing the failure samples, one may want to include correlation parameters in the auxiliary distribution. In this last example, we add a Normal copula. The correlation parameter will be optimized with associated interval between 0 and 1.
@@ -323,17 +323,17 @@ graph.add(auxiliarySamples3)
 graph.add(mycontour)
 
 # sphinx_gallery_thumbnail_number = 4
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # RhoQuantile parameter can be also changed using the :class:`~openturns.ResourceMap` key : `CrossEntropyImportanceSampling-DefaultRhoQuantile`. Be careful that this key changes the value number of both :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
 
 # %%
-ot.ResourceMap.SetAsScalar('CrossEntropyImportanceSampling-DefaultRhoQuantile',0.4)
+ot.ResourceMap.SetAsScalar("CrossEntropyImportanceSampling-DefaultRhoQuantile", 0.4)
 physicalSpaceIS4 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
-print('Modified quantile level:', physicalSpaceIS4.getRhoQuantile())
+print("Modified quantile level:", physicalSpaceIS4.getRhoQuantile())
 
 
 # %%
