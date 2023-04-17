@@ -93,7 +93,6 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   // calculation of denominator of estimators
   Scalar sumPdfCritic = 0.0;
   Point PDFRatio(auxiliaryCriticInputSamples.getSize()) ;
-  
   for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getSize(); ++i)
   {
     PDFRatio[i] = std::exp(criticSamplesInitialLogPDFValue[i] - criticSamplesAuxiliaryLogPDFValue[i]);
