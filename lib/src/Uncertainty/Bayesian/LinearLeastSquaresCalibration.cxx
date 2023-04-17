@@ -162,6 +162,14 @@ Matrix LinearLeastSquaresCalibration::getGradientObservations() const
   return gradientObservations_;
 }
 
+/** Candidate accessor */
+Point LinearLeastSquaresCalibration::getCandidate() const
+{
+  // The candidate is stored in the prior distribution, which is a flat Normal distribution
+  LOGWARN(OSS() << "getCandidate is deprecated");
+  return getParameterPrior().getMean();
+}
+
 /* StartingPoint accessor */
 Point LinearLeastSquaresCalibration::getStartingPoint() const
 {

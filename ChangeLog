@@ -11,6 +11,8 @@
  * SmolyakExperiment (openturns.experimental)
 
 ==== API changes ====
+ * Deprecated LinearLeastSquaresCalibration::getCandidate
+ * Deprecated NonLinearLeastSquaresCalibration::getCandidate
  * Removed SequentialStrategy
  * Removed TensorApproximationAlgorithm, TensorApproximationResult, CanonicalTensorEvaluation, CanonicalTensorGradient
  * Removed FunctionalChaosSobolIndices.getSobolGrouped(Total)Index(int)
@@ -45,6 +47,7 @@
 
 === Bug fixes ===
  * HSIC Target sensitivity bad filtering
+ * #2252 (The examples of calibration are difficult to understand)
 
 == 1.20 release (2022-11-08) == #release-1.20
 
