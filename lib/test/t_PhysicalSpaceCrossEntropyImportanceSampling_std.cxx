@@ -47,7 +47,7 @@ int main()
   
   const Indices active_parameters = {0, 1, 2, 3};
 
-  const Point lowerBnd = {0.1, 0.05, 0., 0.05};
+  const Point lowerBnd = {0.1, 0.05, 0.0, 0.05};
   
   const Point  upperBnd = {0.3, 0.2, 0.3, 0.2};
 
