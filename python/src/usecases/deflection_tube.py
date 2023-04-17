@@ -6,7 +6,7 @@ import openturns as ot
 
 
 class DeflectionTube:
-    """
+    r"""
     Data class for the deflection of a tube model.
 
 
@@ -19,7 +19,7 @@ class DeflectionTube:
     model : `SymbolicFunction`
         Model of the deflection.
         The model has input dimension 6 and output dimension 3.
-        More precisely, we have :math:`\boldsymbol{X} = (F, L, a, D, d, E)`
+        More precisely, we have :math:`\vect{X} = (F, L, a, D, d, E)`
         and  :math:`Y = (y, \theta_L, \theta_R)`.
 
     XF : `Normal` distribution

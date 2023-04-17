@@ -64,8 +64,8 @@ class LogisticModel:
     model : :class:`~openturns.PythonFunction`
         The logistic model of growth.
         The input has input dimension 24 and output dimension 22.
-        More precisely, we have :math:`\boldsymbol{X} = (t_1, ..., t_{22}, a, c)`
-        and  :math:`\boldsymbol{Y} = (y_1, ..., y_{22})`.
+        More precisely, we have :math:`\vect{X} = (t_1, ..., t_{22}, a, c)`
+        and  :math:`\vect{Y} = (y_1, ..., y_{22})`.
 
     data : :class:`~openturns.Sample` of size 22 and dimension 2
         A data set containing 22 dates from 1790 to 2000.

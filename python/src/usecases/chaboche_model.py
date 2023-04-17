@@ -57,7 +57,7 @@ class ChabocheModel:
     model : :class:`~openturns.PythonFunction`
         The Chaboche mechanical law.
         The model has input dimension 4 and output dimension 1.
-        More precisely, we have :math:`\boldsymbol{X} = (\epsilon, R,
+        More precisely, we have :math:`\vect{X} = (\epsilon, R,
         C, \gamma)` and  :math:`Y = \sigma`.
 
     data : :class:`~openturns.Sample` of size 10 and dimension 2
