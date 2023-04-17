@@ -25,7 +25,6 @@ using namespace OT;
 
 int main()
 {
-  
   // Definition of function
   const String formula = "R-F";
 
