@@ -179,7 +179,8 @@ marginF = ot.Normal()
 auxiliaryMarginals = [marginR, marginF]
 auxiliaryDistribution = ot.ComposedDistribution(auxiliaryMarginals)
 # Definition of parameters to be optimized
-activeParameters = ot.Indices([0, 1, 2, 3, 4])
+activeParameters = ot.Indices(5)
+activeParameters.fill()
 # WARNING : native parameters of distribution have to be considered
 bounds = ot.Interval([14, 0.01, 0.0, 500, 20], [16, 0.2, 0.1, 1000, 70])
 initialParameters = distribution.getParameter()
@@ -280,7 +281,9 @@ print(
 )
 
 # Definition of parameters to be optimized
-activeParameters = ot.Indices([0, 1, 2, 3, 4, 5])
+activeParameters = ot.Indices(6)
+activeParameters.fill()
+
 bounds = ot.Interval(
     [14, 0.01, 0.0, 500.0, 20.0, 0.0], [16, 0.2, 0.1, 1000.0, 70.0, 1.0]
 )
