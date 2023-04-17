@@ -167,7 +167,6 @@ void CrossEntropyImportanceSampling::run()
    // Extract the relevant sample
    const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
   
-  
    // Optimize auxiliary distribution parameters
    Point auxiliaryDistributionParameters = optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples);
   
