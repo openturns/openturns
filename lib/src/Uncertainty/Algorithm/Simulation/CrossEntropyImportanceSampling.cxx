@@ -105,7 +105,6 @@ void CrossEntropyImportanceSampling::run()
   if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
   {
     currentQuantile = getEvent().getThreshold();
-    //auxiliaryDistribution_ = initialDistribution_;
   }
   else
   {
