@@ -80,7 +80,6 @@ private:
 
   // The output Auxiliary sample
   Sample auxiliaryOutputSample_;
-  
 
   // Current weights samples
   Point weights_;
