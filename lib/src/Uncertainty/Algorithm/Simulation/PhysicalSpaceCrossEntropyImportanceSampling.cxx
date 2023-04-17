@@ -123,7 +123,6 @@ public:
     Point criticSamplesAuxiliaryLogPDFValue = distrib.computeLogPDF(auxiliaryCriticInputSample_).asPoint();
   
     Scalar objectiveFunction = 0.0;
-  
     for(UnsignedInteger j = 0; j < auxiliaryCriticInputSample_.getSize(); ++j)
     {  
       objectiveFunction += initialCriticInputSamplePDFValue_[j]/criticSamplesAuxiliaryPDFValue[j]*criticSamplesAuxiliaryLogPDFValue[j];
