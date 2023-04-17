@@ -88,10 +88,10 @@ Point CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(co
 // Main function that computes the failure probability
 void CrossEntropyImportanceSampling::run()
 {
-  const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
+  const UnsignedInteger sampleSize = getMaximumOuterSampling() * getBlockSize();
 
   // Drawing of samples using initial density
-  Sample auxiliaryInputSample = auxiliaryDistribution_.getSample(numberOfSample);
+  Sample auxiliaryInputSample = auxiliaryDistribution_.getSample(sampleSize);
 
   // Evaluation on limit state function
   Sample auxiliaryOutputSample = computeOutputSamples(auxiliaryInputSample);
@@ -204,7 +204,7 @@ void CrossEntropyImportanceSampling::run()
   {
     sumPdfCritic += std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0));
   }
-  const Scalar failureProbability = sumPdfCritic / numberOfSample;
+  const Scalar failureProbability = sumPdfCritic / sampleSize;
   Scalar varianceCritic = 0.0;
   for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
   {
@@ -212,8 +212,8 @@ void CrossEntropyImportanceSampling::run()
     varianceCritic += varianceCriticTemporary * varianceCriticTemporary;
   }  // for i
 
-  const Scalar variancenonCritic = (numberOfSample - indicesCritic.getSize()) * (failureProbability * failureProbability);
-  const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (numberOfSample - 1) / numberOfSample ;
+  const Scalar variancenonCritic = (sampleSize - indicesCritic.getSize()) * (failureProbability * failureProbability);
+  const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (sampleSize - 1) / sampleSize ;
 
   // Save of data in Simulation crossEntropyResult_ structure
   crossEntropyResult_.setProbabilityEstimate(failureProbability);
