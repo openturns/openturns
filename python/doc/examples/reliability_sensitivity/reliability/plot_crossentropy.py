@@ -4,7 +4,8 @@ Cross Entropy Importance Sampling
 """
 # %%
 #
-# The objective is to evaluate a failure probability from the two versions of Cross Entropy Importance Sampling working in Standard or Physical spaces, see :class:`~openturns.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.PhysicalSpaceCrossEntropyImportanceSampling`.
+# The objective is to evaluate a failure probability using Cross Entropy Importance Sampling. 
+# Two versions working in Standard or Physical spaces are implemented. see :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
 # We consider the simple stress beam example: :ref:`axial stressed beam <use-case-stressed-beam>`.
 
 
@@ -323,6 +324,17 @@ graph.add(mycontour)
 
 # sphinx_gallery_thumbnail_number = 4
 view = viewer.View(graph)
+
+# %%
+# RhoQuantile parameter can be also changed using the :class:`~openturns.ResourceMap` key : `CrossEntropyImportanceSampling-DefaultRhoQuantile`. Be careful that this key changes the value number of both :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
+
+# %%
+ot.ResourceMap.SetAsScalar('CrossEntropyImportanceSampling-DefaultRhoQuantile',0.4)
+physicalSpaceIS4 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
+    event, auxiliaryDistribution, activeParameters, initialParameters, bounds
+)
+print('Modified quantile level:', physicalSpaceIS4.getRhoQuantile())
+
 
 # %%
 # The optimized auxiliary distribution with the dependency between the two margins allows one to better fit the failure domain resulting a lower coefficient of variation.

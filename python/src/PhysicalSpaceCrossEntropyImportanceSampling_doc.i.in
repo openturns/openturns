@@ -1,6 +1,10 @@
 %feature("docstring") OT::PhysicalSpaceCrossEntropyImportanceSampling
 "Physical Space Cross-Entropy Importance Sampling.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 Parameters
 ----------
 event : :class:`~openturns.ThresholdEvent`
@@ -19,7 +23,7 @@ auxiliaryDistribution : :class:`~openturns.Distribution`
     Auxiliary distribution for the Cross Entropy Importance Sampling algorithm.
 
 rhoQuantile : float  :math:`0<\rho<1`
-    Intermediate quantile level.
+    Intermediate quantile level. The default number can be tweaked with the `CrossEntropyImportanceSampling-DefaultRhoQuantile` key from class:`~openturns.ResourceMap`.
     
 Notes
 -----    

@@ -1,13 +1,17 @@
 %feature("docstring") OT::StandardSpaceCrossEntropyImportanceSampling
 "Standard Space Cross-Entropy Importance Sampling.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 Parameters
 ----------
 event : :class:`~openturns.ThresholdEvent`
     Event we are computing the probability of.
 
 rhoQuantile : float  :math:`0<\rho<1`
-    Intermediate quantile level.
+    Intermediate quantile level. The default number can be tweaked with the `CrossEntropyImportanceSampling-DefaultRhoQuantile` key from class:`~openturns.ResourceMap`.
     
 Notes
 -----
@@ -59,6 +63,8 @@ The Standard Space Cross-Entropy Importance Sampling [rubinstein2017]_ uses a pa
 6. :math:`k\leftarrow k+1`, go to Step 2
 
 7. Estimate the probability :math:`\widehat{P}^{CE}(g(\mathbf{\mathbf{X}})<T)=\widehat{P}^{CE}(G(\mathbf{\mathbf{U}})<T)=\frac{1}{N}\displaystyle \sum_{i=1}^{N} \mathbf{1}_{G(\mathbf{u}_i^{(k)})<T} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}(\mathbf{u}_i^{(k)})}}`
+
+
 
 
 See also
