@@ -142,7 +142,6 @@ public:
     return 1;
   }
   
-  
 protected :
 Sample auxiliaryCriticInputSample_;
 Indices activeParameters_;
