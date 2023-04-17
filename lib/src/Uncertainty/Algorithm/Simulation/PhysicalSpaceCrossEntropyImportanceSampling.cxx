@@ -192,7 +192,6 @@ Point PhysicalSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
 
   const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
 
-
   Function objective(new KullbackLeiblerDivergenceObjective(auxiliaryCriticInputSamples,
                                                             initialCriticInputSamplePDFValue,
                                                             auxiliaryDistribution_,
