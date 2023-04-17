@@ -83,7 +83,6 @@ Point CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(co
 {
   throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample &)";
 } 
-  
 
 
 // Main function that computes the failure probability
