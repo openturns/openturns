@@ -104,7 +104,6 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   
   for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
   {
-  
     Scalar numeratorMeanCalculation = 0.0;
   
     for(UnsignedInteger j = 0; j < auxiliaryCriticInputSamples.getSize(); ++j)
