@@ -225,7 +225,6 @@ void CrossEntropyImportanceSampling::run()
   crossEntropyResult_.setVarianceEstimate(varianceEstimate);
 }
 
-
 // Accessor to CrossEntropyImportanceSampling Result_s
 CrossEntropyResult CrossEntropyImportanceSampling::getResult() const
 {
