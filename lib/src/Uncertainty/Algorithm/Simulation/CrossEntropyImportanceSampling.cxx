@@ -223,7 +223,7 @@ void CrossEntropyImportanceSampling::run()
   
   
   if (sampleSize == 1)
-    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one vor variance estimation";
+    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
     
     
      

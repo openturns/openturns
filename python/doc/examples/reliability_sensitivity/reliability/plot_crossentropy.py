@@ -335,7 +335,7 @@ graph.add(mycontour)
 view = otv.View(graph)
 
 # %%
-# RhoQuantile parameter can be also changed using the :class:`~openturns.ResourceMap` key : `CrossEntropyImportanceSampling-DefaultRhoQuantile`. 
+# RhoQuantile parameter can be also changed using the :class:`~openturns.ResourceMap` key : `CrossEntropyImportanceSampling-DefaultRhoQuantile`.
 # Be careful that this key changes the value number of both :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
 
 # %%

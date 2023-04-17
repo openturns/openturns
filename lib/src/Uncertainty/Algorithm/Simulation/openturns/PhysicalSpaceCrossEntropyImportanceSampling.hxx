@@ -62,7 +62,6 @@ public:
   
 protected:
 
-
   /** Function computing the output samples from the input samples*/
   Sample computeOutputSamples(const Sample & inputSamples) const override;
 
@@ -81,7 +80,6 @@ private:
   
   // Optimization solver
   OptimizationAlgorithm solver_;
-
 
 }; /* class PhysicalSpaceCrossEntropyImportanceSampling */
 
