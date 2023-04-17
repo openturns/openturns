@@ -70,7 +70,6 @@ Sample StandardSpaceCrossEntropyImportanceSampling::computeOutputSamples(const S
 void StandardSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters)
 {
   Point temporaryParameters = auxiliaryDistribution_.getParameter();
-  
   for (UnsignedInteger i = 0; i < auxiliaryDistributionParameters.getDimension(); ++i)
   {
     temporaryParameters[i] = auxiliaryDistributionParameters[i];
