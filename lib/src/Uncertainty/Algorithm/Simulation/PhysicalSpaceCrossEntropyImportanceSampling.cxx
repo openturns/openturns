@@ -142,7 +142,6 @@ public:
     return 1;
   }
   
-  
 protected :
   Sample auxiliaryCriticInputSample_;
   Indices activeParameters_;
@@ -177,7 +176,6 @@ Sample PhysicalSpaceCrossEntropyImportanceSampling::computeOutputSamples(const S
 // Update auxiliary distribution
 void PhysicalSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters)
 {
-
   Point parameters(auxiliaryDistribution_.getParameter());
   for (UnsignedInteger i = 0; i < activeParameters_.getSize(); ++i)
   {
@@ -193,7 +191,6 @@ Point PhysicalSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   Point initialCriticInputSamplePDFValue = initialDistribution_.computePDF(auxiliaryCriticInputSamples).asPoint();
 
   const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
-
 
   Function objective(new KullbackLeiblerDivergenceObjective(auxiliaryCriticInputSamples,
                                                             initialCriticInputSamplePDFValue,

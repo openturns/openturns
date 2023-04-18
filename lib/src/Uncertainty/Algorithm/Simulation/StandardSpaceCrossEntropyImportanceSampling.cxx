@@ -55,7 +55,6 @@ StandardSpaceCrossEntropyImportanceSampling::StandardSpaceCrossEntropyImportance
   {
 
   initialDistribution_ = Normal(initialDistribution_.getDimension());
-
   auxiliaryDistribution_ = Normal(initialDistribution_.getDimension());
   rhoQuantile_ = (event.getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
 }
@@ -63,18 +62,14 @@ StandardSpaceCrossEntropyImportanceSampling::StandardSpaceCrossEntropyImportance
 // Compute Output Samples
 Sample StandardSpaceCrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples) const
 {
-
   Sample outputSamples = getEvent().getFunction()(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(inputSamples));
-
   return outputSamples;
 }
 
 // Update auxiliary distribution
 void StandardSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters)
 {
-
   Point temporaryParameters = auxiliaryDistribution_.getParameter();
-  
   for (UnsignedInteger i = 0; i < auxiliaryDistributionParameters.getDimension(); ++i)
   {
     temporaryParameters[i] = auxiliaryDistributionParameters[i];
@@ -98,7 +93,6 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   // calculation of denominator of estimators
   Scalar sumPdfCritic = 0.0;
   Point PDFRatio(auxiliaryCriticInputSamples.getSize()) ;
-  
   for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getSize(); ++i)
   {
     PDFRatio[i] = std::exp(criticSamplesInitialLogPDFValue[i] - criticSamplesAuxiliaryLogPDFValue[i]);
@@ -110,7 +104,6 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   
   for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
   {
-  
     Scalar numeratorMeanCalculation = 0.0;
   
     for(UnsignedInteger j = 0; j < auxiliaryCriticInputSamples.getSize(); ++j)
@@ -123,7 +116,6 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
  
   // Calculation of updated standard deviation of auxiliary distribution
   Point standardDeviation(auxiliaryCriticInputSamples.getDimension());
-  
   for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
   {
     Point diff(auxiliaryCriticInputSamples.getSize());
@@ -142,11 +134,10 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   }
 
  Point auxiliaryParameters = Point(2*auxiliaryCriticInputSamples.getDimension());
- 
  for(UnsignedInteger i = 0; i < auxiliaryCriticInputSamples.getDimension(); ++i)
  {
-   auxiliaryParameters[2*i] = mean[i];
-   auxiliaryParameters[2*i+1] = standardDeviation[i]; 
+   auxiliaryParameters[2 * i] = mean[i];
+   auxiliaryParameters[2 * i + 1] = standardDeviation[i]; 
  } 
 
  
