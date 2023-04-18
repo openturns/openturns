@@ -132,7 +132,7 @@ void CrossEntropyImportanceSampling::run()
     updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
   } // if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
 
-  UnsignedInteger iterationNumber  = 1;
+  UnsignedInteger iterationNumber  = 0;
   
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
@@ -234,7 +234,7 @@ void CrossEntropyImportanceSampling::run()
   crossEntropyResult_.setAuxiliaryDistribution(auxiliaryDistribution_);
   crossEntropyResult_.setAuxiliaryInputSample(auxiliaryInputSample);
   crossEntropyResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
-  crossEntropyResult_.setOuterSampling(getMaximumOuterSampling() * iterationNumber);
+  crossEntropyResult_.setOuterSampling(getMaximumOuterSampling() * (iterationNumber+1));
   crossEntropyResult_.setBlockSize(getBlockSize());
   crossEntropyResult_.setVarianceEstimate(varianceEstimate);
 }
