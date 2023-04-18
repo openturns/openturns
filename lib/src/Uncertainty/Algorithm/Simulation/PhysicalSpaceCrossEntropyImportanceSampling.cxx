@@ -155,13 +155,13 @@ protected :
 }
 
 /** Set solver */
-void PhysicalSpaceCrossEntropyImportanceSampling::setSolver(const OptimizationAlgorithm & solver)
+void PhysicalSpaceCrossEntropyImportanceSampling::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
    solver_= solver;
 }
 
 /** Get solver */
-OptimizationAlgorithm PhysicalSpaceCrossEntropyImportanceSampling::getSolver() const
+OptimizationAlgorithm PhysicalSpaceCrossEntropyImportanceSampling::getOptimizationAlgorithm() const
 {
   return solver_;
 }

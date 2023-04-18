@@ -202,10 +202,10 @@ physicalSpaceIS1 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
 )
 
 # %%
-# Custom solver can be also specified for the auxiliary distribution parameters optimization, here for example we choose :class:`~openturns.TNC`.
+# Custom optimization algorithm can be also specified for the auxiliary distribution parameters optimization, here for example we choose :class:`~openturns.TNC`.
 
 # %%
-physicalSpaceIS1.setSolver(ot.TNC())
+physicalSpaceIS1.setOptimizationAlgorithm(ot.TNC())
 
 # %%
 # The number of samples per step can also be specified.

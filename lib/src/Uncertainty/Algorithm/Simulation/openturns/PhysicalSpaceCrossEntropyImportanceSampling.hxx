@@ -54,11 +54,11 @@ public:
   PhysicalSpaceCrossEntropyImportanceSampling * clone() const override;
   
   /** Set solver */
-  void setSolver(const OptimizationAlgorithm & solver);
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   
   
   /** Get solver */
-  OptimizationAlgorithm getSolver() const;
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
   
 protected:
 
