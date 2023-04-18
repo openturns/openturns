@@ -84,12 +84,12 @@ Examples
 >>> distribution = ot.ComposedDistribution(marginals)
 >>> # create the model
 >>> model = ot.SymbolicFunction(['R', 'F'], ['R-F/(pi_*100.0)'])  
->>> #create the event 
+>>> # create the event 
 >>> vect = ot.RandomVector(distribution)
 >>> G = ot.CompositeRandomVector(model, vect)
 >>> event = ot.ThresholdEvent(G, ot.Less(), 0.0)
->>> myIS = otexp.StandardSpaceCrossEntropyImportanceSampling(event,0.3)
->>> #run StandardSpaceCrossEntropyImportanceSampling
+>>> myIS = otexp.StandardSpaceCrossEntropyImportanceSampling(event, 0.3)
+>>> # run StandardSpaceCrossEntropyImportanceSampling
 >>> myIS.run()
 >>> myResult = myIS.getResult()"
 

@@ -10,10 +10,10 @@ Parameters
 event : :class:`~openturns.ThresholdEvent`
     Event we are computing the probability of.
 
-activeParameters : :class:`~openturns.Point`
-    Point composed of the list of active parameters indices for the auxiliary distribution.
+activeParameters : sequence of integers
+    List of active parameters indices for the auxiliary distribution.
 
-initialAuxiliaryDistributionParameters : :class:`~openturns.Point`
+initialAuxiliaryDistributionParameters : sequence of floats
     Initial value of active parameters of the auxiliary distribution.
 
 bounds : :class:`~openturns.Interval`
@@ -91,7 +91,7 @@ Examples
 >>> distribution = ot.ComposedDistribution(marginals)
 >>> # create the model
 >>> model = ot.SymbolicFunction(['R', 'F'], ['R-F/(pi_*100.0)'])   
->>> #create the event 
+>>> # create the event 
 >>> vect = ot.RandomVector(distribution)
 >>> G = ot.CompositeRandomVector(model, vect)
 >>> event = ot.ThresholdEvent(G, ot.Less(), 0.0)
@@ -99,8 +99,8 @@ Examples
 >>> distribution_marginF = ot.Normal()
 >>> aux_marginals = [distribution_marginR, distribution_marginF]
 >>> aux_distribution = ot.ComposedDistribution(aux_marginals)
->>> ## Definition of parameters to be optimized
->>> active_parameters = ot.Indices([0,1,2,3,4]) # active parameters from the auxiliary distribution which will be optimized
+>>> # definition of parameters to be optimized
+>>> active_parameters = [0,1,2,3,4] # active parameters from the auxiliary distribution which will be optimized
 >>> ### WARNING : native parameters of distribution have to be considered
 >>> bounds = ot.Interval([3,0.09,0.,50e3,2e3], [7,0.5,0.5,100e3,10e3])# bounds on the active parameters
 >>> initial_theta= [5.70,0.1,0.,75e3,5e3] # initial value of the active parameters
