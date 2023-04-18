@@ -111,6 +111,9 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
       numeratorMeanCalculation += std::exp(criticSamplesInitialLogPDFValue[j] - criticSamplesAuxiliaryLogPDFValue[j])* auxiliaryCriticInputSamples(j,i);
     }
     
+    if (sumPdfCritic == 0.)
+    throw(InvalidRangeException(HERE) << "In PhysicalSpaceCrossEntropyImportanceSampling::run, sumPdfCritic is equal to zero.";
+    
     mean[i]= numeratorMeanCalculation / sumPdfCritic; 
   }
  
