@@ -43,7 +43,19 @@ FiniteBasis::FiniteBasis(const FunctionCollection & collection)
   : BasisImplementation()
   , collection_(collection)
 {
-  // Nothing to do
+  const UnsignedInteger size = collection.getSize();
+  if (size > 1)
+  {
+    const UnsignedInteger inputDimension = collection[0].getInputDimension();
+    const UnsignedInteger outputDimension = collection[0].getOutputDimension();
+    for (UnsignedInteger i = 1; i < size; ++ i)
+    {
+      if (collection[i].getInputDimension() != inputDimension)
+        throw InvalidArgumentException(HERE) << "Basis elements cannot have different input dimensions";
+      if (collection[i].getOutputDimension() != outputDimension)
+        throw InvalidArgumentException(HERE) << "Basis elements cannot have different output dimensions";
+    }
+  }
 }
 
 
@@ -88,6 +100,15 @@ UnsignedInteger FiniteBasis::getSize() const
 
 void FiniteBasis::add(const Function & elt)
 {
+  if (getSize())
+  {
+    const UnsignedInteger inputDimension = collection_[0].getInputDimension();
+    const UnsignedInteger outputDimension = collection_[0].getOutputDimension();
+    if (elt.getInputDimension() != inputDimension)
+      throw InvalidArgumentException(HERE) << "Basis elements cannot have different input dimensions";
+    if (elt.getOutputDimension() != outputDimension)
+      throw InvalidArgumentException(HERE) << "Basis elements cannot have different output dimensions";
+  }
   collection_.add(elt);
 }
 

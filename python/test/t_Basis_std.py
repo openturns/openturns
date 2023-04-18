@@ -14,17 +14,10 @@ for j in range(basisSize):
 basis = ot.Basis(phis)
 print("basis =", basis)
 
-print(basis.getSize())
-print(basis.getSubBasis([1, 2]))
-print(basis.isFinite())
-print(basis.isOrthogonal())
-# print(basis[1])
-# print(basis[0:2])
-
-# basis[1] = ot.Function(['x'], ['z'], ['x^42'])
-# print('basis =', basis)
-# basis[0:2] = basis[1:3]
-# print('basis =', basis)
+assert basis.getSize() == 3, "wrong size"
+assert basis.getSubBasis([1, 2]).getSize() == 2, "wrong subsize"
+assert basis.isFinite(), "!finite"
+assert not basis.isOrthogonal(), "orthogonal"
 
 try:
     degree = 2
@@ -33,5 +26,21 @@ try:
     for i in range(degree + 1):
         poly.append(factory.build(i))
     basis = ot.Basis(poly)
+    raise AssertionError('should not go there')
 except RuntimeError:
+    print("ok")
+
+# check basis dimensions
+f1 = ot.SymbolicFunction(['x', 'y'], ['x+y'])
+f2 = ot.SymbolicFunction(['x', 'y'], ['x+y', 'x-y'])
+f3 = ot.SymbolicFunction(['x'], ['x+1'])
+try:
+    b = ot.Basis([f1, f2])
+    raise AssertionError('should not go there')
+except TypeError:
+    print("ok")
+try:
+    b = ot.Basis([f1, f3])
+    raise AssertionError('should not go there')
+except TypeError:
     print("ok")
