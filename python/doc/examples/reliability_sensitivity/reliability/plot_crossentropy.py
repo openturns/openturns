@@ -293,7 +293,7 @@ activeParameters.fill()
 bounds = ot.Interval(
     [14, 0.01, 0.0, 500.0, 20.0, 0.0], [16, 0.2, 0.1, 1000.0, 70.0, 1.0]
 )
-initialParameters = distribution.getParameter()
+initialParameters = auxiliaryDistribution.getParameter()
 
 physicalSpaceIS3 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
