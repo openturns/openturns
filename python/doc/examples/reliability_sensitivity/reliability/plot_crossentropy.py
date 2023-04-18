@@ -335,15 +335,15 @@ graph.add(mycontour)
 view = otv.View(graph)
 
 # %%
-# RhoQuantile parameter can be also changed using the :class:`~openturns.ResourceMap` key : `CrossEntropyImportanceSampling-DefaultRhoQuantile`.
+# quantileLevel parameter can be also changed using the :class:`~openturns.ResourceMap` key : `CrossEntropyImportanceSampling-DefaultQuantileLevel`.
 # Be careful that this key changes the value number of both :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
 
 # %%
-ot.ResourceMap.SetAsScalar("CrossEntropyImportanceSampling-DefaultRhoQuantile", 0.4)
+ot.ResourceMap.SetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel", 0.4)
 physicalSpaceIS4 = otexp.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
-print("Modified quantile level:", physicalSpaceIS4.getRhoQuantile())
+print("Modified quantile level:", physicalSpaceIS4.getQuantileLevel())
 
 
 # %%

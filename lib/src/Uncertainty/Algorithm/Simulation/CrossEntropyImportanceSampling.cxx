@@ -41,18 +41,18 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling()
 
 // Default constructor
 CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVector & event,
-                                                               const Scalar rhoQuantile)
+                                                               const Scalar quantileLevel)
   : EventSimulation(event)
   , initialDistribution_(event.getAntecedent().getDistribution())
 {
-    if (rhoQuantile_> 1.)
-    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, rhoQuantile parameter value should be between 0.0 and 1.0";
+    if (quantileLevel> 1.)
+    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";
     
-    if (rhoQuantile_< 0.)
-    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, rhoQuantile parameter value should be between 0.0 and 1.0";
+    if (quantileLevel< 0.)
+    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";
     
     
-  rhoQuantile_ = (event.getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
+  quantileLevel_ = (event.getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
 }
 
 /* Virtual constructor */
@@ -61,16 +61,16 @@ CrossEntropyImportanceSampling * CrossEntropyImportanceSampling::clone() const
   return new CrossEntropyImportanceSampling(*this);
 }
 
-// Get rhoQuantile
-Scalar CrossEntropyImportanceSampling::getRhoQuantile() const
+// Get quantileLevel
+Scalar CrossEntropyImportanceSampling::getQuantileLevel() const
 {
-  return rhoQuantile_;
+  return quantileLevel_;
 }
 
-// Set rhoQuantile
-void CrossEntropyImportanceSampling::setRhoQuantile(const Scalar & rhoQuantile)
+// Set quantileLevel
+void CrossEntropyImportanceSampling::setQuantileLevel(const Scalar & quantileLevel)
 {
-  rhoQuantile_ = rhoQuantile;
+  quantileLevel_ = quantileLevel;
 }
 
 // Compute Output Samples
@@ -104,7 +104,7 @@ void CrossEntropyImportanceSampling::run()
   Sample auxiliaryOutputSample = computeOutputSamples(auxiliaryInputSample);
   
   // Computation of current quantile
-  Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(rhoQuantile_)[0];
+  Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
   
   Point  auxiliaryDistributionParameters;
 
@@ -154,7 +154,7 @@ void CrossEntropyImportanceSampling::run()
     }
 
     // Computation of current quantile
-    currentQuantile = auxiliaryOutputSample.computeQuantile(rhoQuantile_)[0];
+    currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
     
     // If failure probability reached, stop the adaptation
     if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))

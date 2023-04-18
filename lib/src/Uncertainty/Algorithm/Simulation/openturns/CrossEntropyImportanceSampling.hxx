@@ -44,16 +44,16 @@ public:
 
   /** Default constructor */
   explicit  CrossEntropyImportanceSampling(const RandomVector & event,
-                 const Scalar rhoQuantile = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultRhoQuantile"));
+                 const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
 
   /** Virtual constructor */
   CrossEntropyImportanceSampling * clone() const override;
 
-  /** Get rhoQuantile */
-  Scalar getRhoQuantile() const;
+  /** Get quantileLevel */
+  Scalar getQuantileLevel() const;
 
-  /** Set rhoQuantile */
-  void setRhoQuantile(const Scalar & rhoQuantile);
+  /** Set quantileLevel */
+  void setQuantileLevel(const Scalar & quantileLevel);
   
   /** Main function that computes the failure probability */
   void run() override;
@@ -79,7 +79,7 @@ protected:
   Distribution auxiliaryDistribution_;
 
   // Quantile
-  Scalar rhoQuantile_ = 0.0;
+  Scalar quantileLevel_ = 0.0;
 
   // Result of CrossEntropyImportanceSampling algorithm
   CrossEntropyResult crossEntropyResult_;

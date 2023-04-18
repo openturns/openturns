@@ -1318,7 +1318,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("NAIS-DefaultRhoQuantile", 0.25);
 
   // Cross Entropy Importance Sampling parameters //
-  addAsScalar("CrossEntropyImportanceSampling-DefaultRhoQuantile", 0.25); 
+  addAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel", 0.25); 
   
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);

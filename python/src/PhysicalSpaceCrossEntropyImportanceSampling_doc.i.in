@@ -22,8 +22,8 @@ bounds : :class:`~openturns.Interval`
 auxiliaryDistribution : :class:`~openturns.Distribution`
     Auxiliary distribution for the Cross Entropy Importance Sampling algorithm.
 
-rhoQuantile : float  :math:`0<\rho<1`
-    Intermediate quantile level. The default number can be tweaked with the `CrossEntropyImportanceSampling-DefaultRhoQuantile` key from class:`~openturns.ResourceMap`.
+quantileLevel : float  :math:`0<quantileLevel<1`
+    Intermediate quantile level. The default number can be tweaked with the `CrossEntropyImportanceSampling-DefaultQuantileLevel` key from class:`~openturns.ResourceMap`.
     
 Notes
 -----    
@@ -53,7 +53,7 @@ and unknown.
 
 The Physical Space Cross-Entropy Importance Sampling algorithm [rubinstein2017]_ uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. It involves an auxiliary optimization problem to find the auxiliary distribution parameters :math:`\mathbf{\lambda}` minimizing the Kullback-Leibler divergence with respect to :math:`h_{opt}`. The following algorithm is used:
 
-1. :math:`k=1`, set :math:`\rho \in [0,1]` and :math:`h_0 = f_{\mathbf{X}}`
+1. :math:`k=1`, set the quantile level :math:`\rho \in [0,1]` and :math:`h_0 = f_{\mathbf{X}}`
 
 2. Generate the population :math:`\mathbf{x}_1^{(k)},...,\mathbf{x}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the 
    function :math:`g` in order to have :math:`y_1^{(k)}=g(\mathbf{x}_1^{(k)}),...,y_N^{(k)} = g(\mathbf{x}_N^{(k)})`

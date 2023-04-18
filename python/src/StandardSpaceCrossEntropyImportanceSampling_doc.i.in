@@ -10,8 +10,8 @@ Parameters
 event : :class:`~openturns.ThresholdEvent`
     Event we are computing the probability of.
 
-rhoQuantile : float  :math:`0<\rho<1`
-    Intermediate quantile level. The default number can be tweaked with the `CrossEntropyImportanceSampling-DefaultRhoQuantile` key from class:`~openturns.ResourceMap`.
+quantileLevel : float  :math:`0<quantileLevel<1`
+    Intermediate quantile level. The default number can be tweaked with the `CrossEntropyImportanceSampling-DefaultQuantileLevel` key from class:`~openturns.ResourceMap`.
     
 Notes
 -----
@@ -40,12 +40,12 @@ with :math:`P` the failure probability which is inaccessible in practice since t
 The Standard Space Cross-Entropy Importance Sampling [rubinstein2017]_ uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. This process is performed in the standard space using a Normal distribution as the auxiliary distribution. Indeed, in the standard space, the optimal value of the mean and standard deviations are given analytically, see [morio2015]_ for details. We note  :math:`G(\mathbf{u})` the limit state function in standard space and  :math:`g(\mathbf{x})` its counterpart in the physical space. :math:`f_\mathbf{U}` stands for the initial distribution in standard space, i.e. the Normal law. The algorithm is as follows:
 
 
-1. :math:`k=1`, set :math:`\rho \in [0,1]` and :math:`h_0 = f_{\mathbf{U}}`
+1. :math:`k=1`, set the quantile level :math:`\rho \in [0,1]` and :math:`h_0 = f_{\mathbf{U}}`
 
 2. Generate the population :math:`\mathbf{u}_1^{(k)},...,\mathbf{u}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the 
    function :math:`G` in order to have :math:`y_1^{(k)}=G(\mathbf{u}_1^{(k)}),...,y_N^{(k)} = G(\mathbf{u}_N^{(k)})`
 
-3. Compute the empirical :math:`\rho`-quantile :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})` using the floor of :math:`\rho N`.
+3. Compute the   :math:`\rho`-quantile :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})` using the floor of :math:`\rho N`.
 
 4. If :math:`q_k>T`, go to Step 7
 

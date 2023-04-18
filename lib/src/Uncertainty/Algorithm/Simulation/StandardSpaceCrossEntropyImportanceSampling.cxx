@@ -50,13 +50,13 @@ StandardSpaceCrossEntropyImportanceSampling * StandardSpaceCrossEntropyImportanc
 
 // Default constructor
 StandardSpaceCrossEntropyImportanceSampling::StandardSpaceCrossEntropyImportanceSampling(const RandomVector & event,
-                                                                                         const Scalar rhoQuantile)
-  : CrossEntropyImportanceSampling(event,rhoQuantile)
+                                                                                         const Scalar quantileLevel)
+  : CrossEntropyImportanceSampling(event, quantileLevel)
   {
 
   initialDistribution_ = Normal(initialDistribution_.getDimension());
   auxiliaryDistribution_ = Normal(initialDistribution_.getDimension());
-  rhoQuantile_ = (event.getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
+  quantileLevel_ = (event.getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
 }
 
 // Compute Output Samples

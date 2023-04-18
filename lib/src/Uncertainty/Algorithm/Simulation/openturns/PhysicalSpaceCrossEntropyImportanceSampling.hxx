@@ -48,7 +48,7 @@ public:
                                               const Indices &activeParameters,
                                               const Point &initialAuxiliaryDistributionParameters,
                                               const Interval &bounds,
-                                              const Scalar rhoQuantile = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultRhoQuantile"));
+                                              const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
 
   /** Virtual constructor */
   PhysicalSpaceCrossEntropyImportanceSampling * clone() const override;
