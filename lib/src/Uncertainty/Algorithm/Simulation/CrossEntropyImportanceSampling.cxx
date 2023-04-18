@@ -197,14 +197,14 @@ void CrossEntropyImportanceSampling::run()
       indicesCritic.add(i);
   } // for i
 
-  const Sample resp_sampleCritic(auxiliaryOutputSample.select(indicesCritic));
-  const Sample sampleCritic(auxiliaryInputSample.select(indicesCritic));
+
+  const Sample inputSampleCritic(auxiliaryInputSample.select(indicesCritic));
 
   // Evaluate initial log PDF in parallel on failure sample
-  Sample logPDFInitCritic(initialDistribution_.computeLogPDF(sampleCritic));
+  const Sample logPDFInitCritic(initialDistribution_.computeLogPDF(inputSampleCritic));
 
   // Evaluate auxiliary log PDF in parallel on failure sample
-  Sample logPDFAuxiliaryCritic(auxiliaryDistribution_.computeLogPDF(sampleCritic));
+  const Sample logPDFAuxiliaryCritic(auxiliaryDistribution_.computeLogPDF(inputSampleCritic));
 
   Scalar sumPdfCritic = 0.0;
   for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
