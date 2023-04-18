@@ -144,11 +144,11 @@ public:
   
   
 protected :
-Sample auxiliaryCriticInputSample_;
-Indices activeParameters_;
-Distribution auxiliaryDistribution_;
-Point initialCriticInputSamplePDFValue_;
-Scalar numberSamples_;
+  Sample auxiliaryCriticInputSample_;
+  Indices activeParameters_;
+  Distribution auxiliaryDistribution_;
+  Point initialCriticInputSamplePDFValue_;
+  Scalar numberSamples_;
 };
 }
 
