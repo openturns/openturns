@@ -162,7 +162,7 @@ void NAIS::run()
     auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
   }
 
-  UnsignedInteger iterationNumber  = 0;
+  UnsignedInteger iterationNumber  = 1;
 
   while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
