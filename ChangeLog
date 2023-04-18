@@ -9,6 +9,10 @@
 
 ==== New classes ====
  * SmolyakExperiment (openturns.experimental)
+ * CrossEntropyImportanceSampling (openturns.experimental)
+ * PhysicalSpaceCrossEntropyImportanceSampling (openturns.experimental)
+ * StandardSpaceCrossEntropyImportanceSampling (openturns.experimental)
+ * CrossEntropyResult (openturns.experimental)
 
 ==== API changes ====
  * Removed SequentialStrategy
