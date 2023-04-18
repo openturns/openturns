@@ -112,7 +112,7 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
     }
     
     if (sumPdfCritic == 0.)
-    throw(InvalidRangeException(HERE) << "In PhysicalSpaceCrossEntropyImportanceSampling::run, sumPdfCritic is equal to zero.";
+    throw InvalidRangeException(HERE) << "In PhysicalSpaceCrossEntropyImportanceSampling::run, sumPdfCritic is equal to zero.";
     
     mean[i]= numeratorMeanCalculation / sumPdfCritic; 
   }

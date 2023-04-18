@@ -58,5 +58,8 @@ int main()
 
   const CrossEntropyResult resultCE(algoStandardSpaceCE.getResult());
   OT::Test::assert_almost_equal(resultCE.getProbabilityEstimate(), 0.0805575);
+  OT::Test::assert_almost_equal(resultCE.getCoefficientOfVariation(), 0.0475189);
+  OT::Test::assert_almost_equal(resultCE.getStandardDeviation(), 0.003828);
+  OT::Test::assert_almost_equal(resultCE.getVarianceEstimate(), 0.00001465);
   return 0;
 }
