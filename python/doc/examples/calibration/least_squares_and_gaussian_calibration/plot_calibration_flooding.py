@@ -737,4 +737,4 @@ view = otv.View(
 plot_space = 0.5
 plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 
-#otv.View.ShowAll()
+otv.View.ShowAll()
