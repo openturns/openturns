@@ -488,12 +488,9 @@ class View:
 
                 polygonsNumber = drawable.getPalette().getSize()
                 verticesNumber = drawable.getData().getSize() // polygonsNumber
-                colorsRGBA = drawable.getPaletteAsNormalizedRGBA()
-                if "facecolors" not in polygoncollection_kw_default:
-                    polygoncollection_kw["facecolors"] = colorsRGBA
+                if "facecolors" not in polygoncollection_kw_default and "fc" not in polygoncollection_kw_default:
+                    polygoncollection_kw["facecolors"] = drawable.getPaletteAsNormalizedRGBA()
 
-                if "edgecolors" not in polygoncollection_kw_default:
-                    polygoncollection_kw["edgecolors"] = colorsRGBA
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(
                         np.array(data).reshape((polygonsNumber, verticesNumber, 2)),
