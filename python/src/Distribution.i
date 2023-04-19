@@ -52,6 +52,11 @@ Distribution __rsub__(Scalar s)
   return (*self * (-1.0)) + s;
 }
 
+Distribution __neg__()
+{
+  return *self * (-1.0);
+}
+
 Distribution __mul__(Scalar s)
 {
  return (*self) * s;
