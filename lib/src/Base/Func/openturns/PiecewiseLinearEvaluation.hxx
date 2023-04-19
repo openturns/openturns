@@ -88,8 +88,15 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Check if the locations grid is regular to the given tolerance */
+  static Bool IsRegular(const Point & locations,
+                        const Scalar & epsilon);
 
-protected:
+  /** Find the segment containing value by bisection */
+  static UnsignedInteger FindSegmentIndex(const Point & locations,
+                                          const Scalar value,
+                                          const UnsignedInteger start,
+                                          const Bool isRegular);
 
 private:
   // The locations
@@ -100,6 +107,7 @@ private:
 
   // Are locations regularly spaced?
   Bool isRegular_;
+
 } ; /* class PiecewiseLinearEvaluation */
 
 

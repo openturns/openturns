@@ -25,6 +25,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PiecewiseLinearEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,9 +37,6 @@ static const Factory<PiecewiseHermiteEvaluation> Factory_PiecewiseHermiteEvaluat
 /* Default constructor */
 PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation()
   : EvaluationImplementation()
-  , locations_(1)
-  , values_(1, 1)
-  , derivatives_(1, 1)
 {
   // Nothing to do
 }
@@ -49,16 +47,13 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const Point & locations,
     const Point & values,
     const Point & derivatives)
   : EvaluationImplementation()
-  , locations_(0)
-  , values_(0, 0)
-  , derivatives_(0, 0)
 {
   const UnsignedInteger sizeValues = values.getSize();
-  Sample sampleValues(sizeValues, 1);
-  for (UnsignedInteger i = 0; i < sizeValues; ++i) sampleValues(i, 0) = values[i];
+  SampleImplementation sampleValues(sizeValues, 1);
+  sampleValues.setData(values);
   const UnsignedInteger sizeDerivatives = derivatives.getSize();
-  Sample sampleDerivatives(sizeDerivatives, 1);
-  for (UnsignedInteger i = 0; i < sizeDerivatives; ++i) sampleDerivatives(i, 0) = derivatives[i];
+  SampleImplementation sampleDerivatives(sizeDerivatives, 1);
+  sampleDerivatives.setData(derivatives);
   // Check the input
   setLocationsValuesAndDerivatives(locations, sampleValues, sampleDerivatives);
 }
@@ -69,9 +64,6 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const Point & locations,
     const Sample & values,
     const Sample & derivatives)
   : EvaluationImplementation()
-  , locations_(0)
-  , values_(0, 0)
-  , derivatives_(0, 0)
 {
   // Check the input
   setLocationsValuesAndDerivatives(locations, values, derivatives);
@@ -102,48 +94,6 @@ String PiecewiseHermiteEvaluation::__str__(const String & ) const
          << ", derivatives=" << derivatives_ << ")";
 }
 
-namespace
-{
-Bool computeRegularHermite(const Point & locations)
-{
-  const UnsignedInteger size = locations.getSize();
-  if (size < 2) return true;
-  const Scalar step = locations[1] - locations[0];
-  const Scalar relativeEpsilon = ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
-  for (UnsignedInteger i = 2; i < size; ++i)
-  {
-    if (!(std::abs(locations[i] - locations[0] - i * step) < relativeEpsilon))
-      return false;
-  }
-  return true;
-}
-
-// Find the segment containing value by bisection
-UnsignedInteger findSegmentIndexHermite(const Point & locations, const Scalar value, const UnsignedInteger start)
-{
-  UnsignedInteger iRight = locations.getSize() - 1;
-  UnsignedInteger iLeft  = start;
-  if (value >= locations[start])
-  {
-    // Shortcuts for the most common cases when looping over a Sample
-    if (start == iRight || value < locations[start + 1])
-      return start;
-    else if (start + 1 == iRight || value < locations[start + 2])
-      return start + 1 ;
-  }
-  else
-    iLeft = 0;
-
-  while (iRight > iLeft + 1)
-  {
-    const UnsignedInteger im = (iRight + iLeft) / 2;
-    if (value < locations[im]) iRight = im;
-    else iLeft = im;
-  }
-  return  iLeft;
-}
-} // anonymous namespace
-
 
 /* Evaluation operator */
 Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
@@ -154,10 +104,7 @@ Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
   if (x <= locations_[iLeft]) return values_[iLeft];
   const UnsignedInteger iRight = locations_.getSize() - 1;
   if (x >= locations_[iRight]) return values_[iRight];
-  if (isRegular_)
-    iLeft = static_cast<UnsignedInteger>(floor((x - locations_[0]) / (locations_[1] - locations_[0])));
-  else
-    iLeft = findSegmentIndexHermite(locations_, x, 0);
+  iLeft = PiecewiseLinearEvaluation::FindSegmentIndex(locations_, x, 0, isRegular_);
 
   const Scalar h = locations_[iLeft + 1] - locations_[iLeft];
   const Scalar theta = (x - locations_[iLeft]) / h;
@@ -191,10 +138,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
       for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
       continue;
     }
-    if (isRegular_)
-      iLeft = static_cast<UnsignedInteger>(floor((x - locations_[0]) / (locations_[1] - locations_[0])));
-    else
-      iLeft = findSegmentIndexHermite(locations_, x, iLeft);
+    iLeft = PiecewiseLinearEvaluation::FindSegmentIndex(locations_, x, iLeft, isRegular_);
 
     const Scalar h = locations_[iLeft + 1] - locations_[iLeft];
     const Scalar theta = (x - locations_[iLeft]) / h;
@@ -215,10 +159,7 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
   if (x <= locations_[iLeft]) return values_[iLeft];
   UnsignedInteger iRight = locations_.getSize() - 1;
   if (x >= locations_[iRight]) return values_[iRight];
-  if (isRegular_)
-    iLeft = static_cast<UnsignedInteger>(trunc((x - locations_[0]) / (locations_[1] - locations_[0])));
-  else
-    iLeft = findSegmentIndexHermite(locations_, x, 0);
+  iLeft = PiecewiseLinearEvaluation::FindSegmentIndex(locations_, x, 0, isRegular_);
 
   const Scalar h = locations_[iLeft + 1] - locations_[iLeft];
   const Scalar theta = (x - locations_[iLeft]) / h;
@@ -266,7 +207,7 @@ void PiecewiseHermiteEvaluation::setLocations(const Point & locations)
       }
     }
   }
-  isRegular_ = computeRegularHermite(locations_);
+  isRegular_ = PiecewiseLinearEvaluation::IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular"));
 }
 
 /* Values accessor */
@@ -324,7 +265,7 @@ void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const Point & 
       derivatives_(i, j) = derivatives(locationAndIndex[i].second, j);
     }
   }
-  isRegular_ = computeRegularHermite(locations_);
+  isRegular_ = PiecewiseLinearEvaluation::IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular"));
 }
 
 /* Input dimension accessor */
@@ -357,7 +298,7 @@ void PiecewiseHermiteEvaluation::load(Advocate & adv)
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
   adv.loadAttribute( "derivatives_", derivatives_ );
-  isRegular_ = computeRegularHermite(locations_);
+  isRegular_ = PiecewiseLinearEvaluation::IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular"));
 }
 
 
