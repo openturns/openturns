@@ -179,10 +179,10 @@ for i in range(Ns):
 # And get all the levels defining the intermediate and final thresholds given by the empirical quantiles of each NAIS output sample:
 
 # %%
-levels = ot.Point()
+levels = []
 for i in range(Ns - 1):
-    levels.add(listOutputNAISSamples[i].computeQuantile(quantileLevel)[0])
-levels.add(threshold)
+    levels.append(listOutputNAISSamples[i].computeQuantile(quantileLevel)[0])
+levels.append(threshold)
 
 # %%
 # The following graph draws each NAIS sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
@@ -207,10 +207,10 @@ graph.setColors(col)
 # %%
 gIsoLines = g.draw([-8] * 2, [8] * 2, [128] * 2)
 dr = gIsoLines.getDrawable(2)
-for i in range(levels.getSize()):
-    dr.setLevels([levels[i]])
+for i, lv in enumerate(levels):
+    dr.setLevels([lv])
     dr.setLineStyle("solid")
-    dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
+    dr.setLegend(r"$g(X) = $" + str(round(lv, 2)))
     dr.setLineWidth(3)
     dr.setColor(col[i])
     graph.add(dr)
@@ -228,10 +228,10 @@ view = View(graph)
 graph = ot.Graph("NAIS thresholds", "x1", "x2", True, "bottomleft")
 graph.setGrid(True)
 dr = gIsoLines.getDrawable(0)
-for i in range(levels.getSize()):
-    dr.setLevels([levels[i]])
+for i, lv in enumerate(levels):
+    dr.setLevels([lv])
     dr.setLineStyle("solid")
-    dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
+    dr.setLegend(r"$g(X) = $" + str(round(lv, 2)))
     dr.setLineWidth(3)
     graph.add(dr)
 

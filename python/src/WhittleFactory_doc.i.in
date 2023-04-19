@@ -124,9 +124,8 @@ Estimate the ARMA process specifying a range for the orders:
 
 p = [1, 2, 4] and q = [4,5,6]:
 
->>> pIndices = ot.Indices([1, 2, 4])
->>> qIndices =  ot.Indices(3)
->>> qIndices.fill(4,1)
+>>> pIndices = [1, 2, 4]
+>>> qIndices = [4, 5, 6]
 >>> myFactory_Range = ot.WhittleFactory(pIndices, qIndices)
 
 To get the quantified AICc, AIC and BIC criteria:

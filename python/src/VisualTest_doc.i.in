@@ -370,8 +370,8 @@ Examples
 >>> firstSample = ot.Sample(size, 1)
 >>> secondSample = ot.Sample(size, 1)
 >>> for i in range(size):
-...     firstSample[i] = ot.Point(1, sample2D[i, 0])
-...     secondSample[i] = ot.Point(1, sample2D[i, 1])
+...     firstSample[i] = [sample2D[i, 0]]
+...     secondSample[i] = [sample2D[i, 1]]
 >>> # Generate training Samples
 >>> inputTrainSample = firstSample[0:size//2]
 >>> outputTrainSample = secondSample[0:size//2]
@@ -420,8 +420,8 @@ Examples
 >>> firstSample = ot.Sample(size, 1)
 >>> secondSample = ot.Sample(size, 1)
 >>> for i in range(size):
-...     firstSample[i] = ot.Point(1, sample2D[i, 0])
-...     secondSample[i] = ot.Point(1, sample2D[i, 1])
+...     firstSample[i] = [sample2D[i, 0]]
+...     secondSample[i] = [sample2D[i, 1]]
 >>> # Generate training Samples
 >>> inputTrainSample = firstSample[0:size//2]
 >>> outputTrainSample = secondSample[0:size//2]

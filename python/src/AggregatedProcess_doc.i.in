@@ -19,7 +19,7 @@ Examples
 Create an aggregated process:
 
 >>> import openturns as ot
->>> myMesher = ot.IntervalMesher(ot.Indices([5,10]))
+>>> myMesher = ot.IntervalMesher([5, 10])
 >>> lowerbound = [0.0, 0.0]
 >>> upperBound = [2.0, 4.0]
 >>> myInterval = ot.Interval(lowerbound, upperBound)
