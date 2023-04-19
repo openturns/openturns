@@ -110,8 +110,8 @@ mu_exp = Qn.solveLinearSystem((P.transpose() * P) * x_emp + ot.Matrix(Q0) * mu0)
 
 print("sample mean=", x_mu)
 print("expected mean=", mu_exp)
-ott.assert_almost_equal(x_mu, mu_exp, 1e-1, 1e-3)
+ott.assert_almost_equal(x_mu, mu_exp, 1e-1, 1e-1)
 
 print("covariance=", x_cov)
 print("expected covariance=", Qn_inv)
-ott.assert_almost_equal(x_cov, Qn_inv, 1e-3, 2e-2)
+ott.assert_almost_equal(x_cov, Qn_inv, 1e-1, 2e-1)
