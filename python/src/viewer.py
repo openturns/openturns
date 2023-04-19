@@ -241,8 +241,15 @@ class View:
                         figure=self._fig,
                         axes=axes,
                         plot_kw=plot_kw,
+                        axes_kw=axes_kw,
+                        bar_kw=bar_kw,
+                        pie_kw=pie_kw,
+                        polygon_kw=polygon_kw,
+                        polygoncollection_kw=polygoncollection_kw,
                         contour_kw=contour_kw,
+                        step_kw=step_kw,
                         clabel_kw=clabel_kw,
+                        text_kw=text_kw,
                         legend_kw=legend_kw,
                     )
                     self._ax += axes
