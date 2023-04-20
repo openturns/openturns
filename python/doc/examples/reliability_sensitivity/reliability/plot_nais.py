@@ -105,8 +105,8 @@ myEvent = ot.ThresholdEvent(Y, ot.Less(), threshold)
 # ------------------------------------------------
 
 # %%
-rhoQuantile = 0.1
-algo = ot.NAIS(myEvent, rhoQuantile)
+quantileLevel = 0.1
+algo = ot.NAIS(myEvent, quantileLevel)
 
 # %%
 # Now you can run the algorithm.
@@ -181,7 +181,7 @@ for i in range(Ns):
 # %%
 levels = ot.Point()
 for i in range(Ns - 1):
-    levels.add(listOutputNAISSamples[i].computeQuantile(rhoQuantile)[0])
+    levels.add(listOutputNAISSamples[i].computeQuantile(quantileLevel)[0])
 levels.add(threshold)
 
 # %%
@@ -205,6 +205,7 @@ graph.setColors(col)
 # Add the frontiers :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
+
 gIsoLines = g.draw([-8] * 2, [8] * 2, [128] * 2)
 dr = gIsoLines.getDrawable(2)
 for i in range(levels.getSize()):
@@ -214,6 +215,8 @@ for i in range(levels.getSize()):
     dr.setLineWidth(3)
     dr.setColor(col[i])
     graph.add(dr)
+
+# sphinx_gallery_thumbnail_number = 2
 view = View(graph)
 
 # %%
