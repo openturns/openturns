@@ -308,7 +308,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.ResourceMap.GetAsUnsignedInteger('MetropolisHastings-DefaultBurnIn')
-0..."
+1000"
 
 // ---------------------------------------------------------------------
 
