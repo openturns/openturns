@@ -111,18 +111,21 @@ int main(int, char *[])
       coll.add(mh);
     }
     Gibbs sampler(coll);
-    sampler.setBurnIn(2000);
+    sampler.setBurnIn(3000);
 
     // get a realization
     Point realization(sampler.getRealization());
     std::cout << "y1=" << realization << std::endl;
 
     // try to generate a sample
-    UnsignedInteger sampleSize = 1000;
+    //sampler.setBurnIn(0);
+    UnsignedInteger sampleSize = 5000;
     Sample sample(sampler.getSample(sampleSize));
+    Indices indices(2000);
+    indices.fill(3000,1);
 
-    Point x_mu(sample.computeMean());
-    Point x_sigma(sample.computeStandardDeviation());
+    Point x_mu(sample.select(indices).computeMean());
+    Point x_sigma(sample.select(indices).computeStandardDeviation());
 
     // compute covariance
     CovarianceMatrix x_cov(sample.computeCovariance());
@@ -161,17 +164,19 @@ int main(int, char *[])
 
     std::cout << "sample mean=" << x_mu << std::endl;
     std::cout << "expected mean=" << mu_exp << std::endl;
-    assert_almost_equal(x_mu, mu_exp, 1e-1, 1e-3);
+    assert_almost_equal(x_mu, mu_exp, 1e-1, 0.0);
 
     std::cout << "covariance=" << x_cov << std::endl;
     std::cout << "expected covariance=" << Qn_inv << std::endl;
-    assert_almost_equal(x_cov, Qn_inv, 1e-3, 2e-2);
+    assert_almost_equal(x_cov, Qn_inv, 1e-1, 0.0);
 
     // check log-pdf is recomputed by the correct blocks
     const Point initialState({0.5, 0.5, 0.5, 0.5});
     RandomVectorMetropolisHastings rvmh1(RandomVector(Dirac({0.5, 0.5})), initialState, Indices({0, 1}));
     RandomVectorMetropolisHastings rvmh2(RandomVector(Uniform(0.0, 1.0)), initialState, Indices({2}));
     RandomWalkMetropolisHastings rwmh(SymbolicFunction({"x", "y", "z", "t"}, {"1"}), Interval(4), initialState, Uniform(), Indices({3}));
+    // De-activate adaptation to retain step size
+    rwmh.setBurnIn(0);
     Gibbs::MetropolisHastingsCollection coll2;
     coll2.add(rvmh1);
     coll2.add(rvmh2);
