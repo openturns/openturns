@@ -69,6 +69,17 @@ int main(int, char *[])
     // Manual bounding box
     Mesh mesh3D = mesher3D.build(levelSet3D, Interval(Point(3, -10.0), Point(3, 10.0)));
     fullprint << "mesh3D=" << mesh3D << std::endl;
+
+    // The 4D mesher
+    LevelSetMesher mesher4D(Indices(4, 5));
+    fullprint << "mesher4D=" << mesher4D << std::endl;
+
+    SymbolicFunction function4D(Description::BuildDefault(4, "x"), Description(1, "sqrt(x0^2+x1^2+x2^2+x3^2)"));
+    LevelSet levelSet4D(function4D, LessOrEqual(), level);
+
+    // Manual bounding box
+    Mesh mesh4D = mesher4D.build(levelSet4D, Interval(Point(4, -0.5), Point(4, 0.5)));
+    fullprint << "mesh4D=" << mesh4D << std::endl;
   }
   catch (TestFailed & ex)
   {

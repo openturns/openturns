@@ -22,3 +22,19 @@ for diamond in [False, True]:
         print("mesh3D=", mesh3D)
     except RuntimeError:
         print("notyetimpl")
+
+    mesher4D = ot.IntervalMesher([2] * 4)
+    print("mesher4D=", mesher4D)
+    try:
+        mesh4D = mesher4D.build(ot.Interval(4), diamond)
+        print("mesh4D=", mesh4D)
+    except RuntimeError:
+        print("notyetimpl")
+
+    mesher5D = ot.IntervalMesher([2] * 5)
+    print("mesher5D=", mesher5D)
+    try:
+        mesh5D = mesher5D.build(ot.Interval(5), diamond)
+        print("mesh5D=", mesh5D)
+    except RuntimeError:
+        print("notyetimpl")
