@@ -41,7 +41,7 @@ NAIS::NAIS()
 
 // Default constructor
 NAIS::NAIS(const RandomVector & event,
-           const Scalar rhoQuantile)
+           const Scalar quantileLevel)
   : EventSimulation(event)
   , initialDistribution_(getEvent().getAntecedent().getDistribution())
 {
@@ -50,7 +50,7 @@ NAIS::NAIS(const RandomVector & event,
   const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
   for (UnsignedInteger i = 0; i < rangeUpper.getSize(); ++i)
     if (rangeUpper[i] || rangeLower[i]) throw InvalidArgumentException(HERE) << "Current version of NAIS is only adapted to unbounded distribution" ;
-  rhoQuantile_ = (getEvent().getOperator()(0, 1) ? rhoQuantile : 1.0 - rhoQuantile);
+  quantileLevel_ = (getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
 }
 
 /* Virtual constructor */
@@ -59,16 +59,16 @@ NAIS * NAIS::clone() const
   return new NAIS(*this);
 }
 
-// Get rhoQuantile
-Scalar NAIS::getRhoQuantile() const
+// Get quantileLevel
+Scalar NAIS::getQuantileLevel() const
 {
-  return rhoQuantile_;
+  return quantileLevel_;
 }
 
-// Set rhoQuantile
-void NAIS::setRhoQuantile(const Scalar & rhoQuantile)
+// Set quantileLevel
+void NAIS::setQuantileLevel(const Scalar & quantileLevel)
 {
-  rhoQuantile_ = rhoQuantile;
+  quantileLevel_ = quantileLevel;
 }
 
 // Function computing the auxiliary distribution as a function of current sample and associated weights
@@ -146,7 +146,7 @@ void NAIS::run()
   Sample auxiliaryOutputSample(getEvent().getFunction()(auxiliaryInputSample));
 
   // Computation of current quantile
-  Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(rhoQuantile_)[0];
+  Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
   Distribution auxiliaryDistribution;
   if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
   {
@@ -183,7 +183,7 @@ void NAIS::run()
     }
 
     // Computation of current quantile
-    currentQuantile = auxiliaryOutputSample.computeQuantile(rhoQuantile_)[0];
+    currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
     // If failure probability reached, stop the adaptation
     if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
