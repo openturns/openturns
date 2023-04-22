@@ -18,7 +18,7 @@ event = ot.ThresholdEvent(g, ot.Less(), -50.0)
 distributionMargin1 = ot.LogNormalMuSigma().getDistribution()
 distributionMargin2 = ot.Normal()
 auxMarginals = [distributionMargin1, distributionMargin2]
-aux_distribution = ot.ComposedDistribution(aux_marginals)
+auxDistribution = ot.ComposedDistribution(auxMarginals)
 
 active_parameters = [0, 1, 2, 3, 4]
 bounds = ot.Interval([3, 0.09, 0., 50e3, 2e3],
