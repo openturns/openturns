@@ -14,7 +14,7 @@ model = ot.SymbolicFunction(['R', 'F'], ['R - F/(pi_*100.0)'])
 
 vect = ot.RandomVector(distribution)
 g = ot.CompositeRandomVector(model, vect)
-event = ot.ThresholdEvent(G, ot.Less(), -50.0)
+event = ot.ThresholdEvent(g, ot.Less(), -50.0)
 myIS = otexp.StandardSpaceCrossEntropyImportanceSampling(event, 0.3)
 
 myIS.run()
