@@ -5,7 +5,8 @@ Cross Entropy Importance Sampling
 # %%
 #
 # The objective is to evaluate a failure probability using Cross Entropy Importance Sampling.
-# Two versions working in Standard or Physical spaces are implemented. see :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
+# Two versions working in standard or physical spaces are implemented.
+# See :class:`~openturns.experimental.StandardSpaceCrossEntropyImportanceSampling` and :class:`~openturns.experimental.PhysicalSpaceCrossEntropyImportanceSampling`.
 # We consider the simple stress beam example: :ref:`axial stressed beam <use-case-stressed-beam>`.
 
 
