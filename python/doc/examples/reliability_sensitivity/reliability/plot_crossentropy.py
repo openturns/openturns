@@ -128,7 +128,7 @@ print(
 #
 
 # %%
-# First we get the auxiliary samples in Standard Space and we project them in Physical Space.
+# First we get the auxiliary samples in standard space and we project them in physical space.
 
 # %%
 auxiliaryInputSamples = standardSpaceISResult.getAuxiliaryInputSample()
