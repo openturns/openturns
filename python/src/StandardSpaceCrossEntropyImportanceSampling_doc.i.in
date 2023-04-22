@@ -91,7 +91,7 @@ Examples
 >>> # create the event 
 >>> vect = ot.RandomVector(distribution)
 >>> g = ot.CompositeRandomVector(model, vect)
->>> event = ot.ThresholdEvent(G, ot.Less(), 0.0)
+>>> event = ot.ThresholdEvent(g, ot.Less(), 0.0)
 >>> myIS = otexp.StandardSpaceCrossEntropyImportanceSampling(event, 0.3)
 >>> # run StandardSpaceCrossEntropyImportanceSampling
 >>> myIS.run()
