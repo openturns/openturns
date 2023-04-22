@@ -15,7 +15,7 @@ vect = ot.RandomVector(distribution)
 g = ot.CompositeRandomVector(model, vect)
 event = ot.ThresholdEvent(g, ot.Less(), -50.0)
 
-distribution_margin1 = ot.LogNormalMuSigma().getDistribution()
+distributionMargin1 = ot.LogNormalMuSigma().getDistribution()
 distribution_margin2 = ot.Normal()
 aux_marginals = [distribution_margin1, distribution_margin2]
 aux_distribution = ot.ComposedDistribution(aux_marginals)
