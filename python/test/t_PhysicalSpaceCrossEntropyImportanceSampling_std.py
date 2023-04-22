@@ -25,7 +25,7 @@ bounds = ot.Interval([3, 0.09, 0., 50e3, 2e3],
                      [7, 0.5, 0.5, 100e3, 10e3])
 initial_theta = [5.70, 0.1, 0., 75e3, 5e3]
 
-my_IS_physical = otexp.PhysicalSpaceCrossEntropyImportanceSampling(event, aux_distribution, active_parameters, initial_theta, bounds, 0.3)
+myISphysical = otexp.PhysicalSpaceCrossEntropyImportanceSampling(event, auxDistribution, activeParameters, initialTheta, bounds, 0.3)
 my_IS_physical.setOptimizationAlgorithm(ot.TNC())
 my_IS_physical.run()
 myResult = my_IS_physical.getResult()
