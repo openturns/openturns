@@ -62,7 +62,7 @@ sigma[0, 0] = sigmaKs**2
 sigma[1, 1] = sigmaZv**2
 sigma[2, 2] = sigmaZm**2
 
-ot.ResourceMap.GetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize")
+defaultBootstrapSize = ot.ResourceMap.GetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize")
 
 ot.ResourceMap.SetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 0)
 
@@ -84,3 +84,5 @@ plt.subplots_adjust(bottom = 0.2, left = 0.2)
 view.getFigure().savefig("calibration.png", bbox_inches="tight")
 plt.show()
 
+# Set back to default
+ot.ResourceMap.SetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", defaultBootstrapSize)
