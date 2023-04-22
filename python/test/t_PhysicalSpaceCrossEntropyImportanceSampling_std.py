@@ -10,7 +10,7 @@ distribution_F = ot.Normal(75.0e3, 5.0e3)
 marginals = [distributionR, distributionF]
 distribution = ot.ComposedDistribution(marginals)
 
-model = ot.SymbolicFunction(['R', 'F'], ['R - F/(pi_*100.0)'])
+model = ot.SymbolicFunction(['R', 'F'], ['R - F / (pi_ * 100.0)'])
 vect = ot.RandomVector(distribution)
 g = ot.CompositeRandomVector(model, vect)
 event = ot.ThresholdEvent(g, ot.Less(), -50.0)
