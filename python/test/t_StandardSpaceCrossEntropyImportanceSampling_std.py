@@ -10,7 +10,7 @@ marginals = [distribution_R, distribution_F]
 distribution = ot.ComposedDistribution(marginals)
 
 
-model = ot.SymbolicFunction(['R', 'F'], ['R - F/(pi_*100.0)'])
+model = ot.SymbolicFunction(['R', 'F'], ['R - F / (pi_ * 100.0)'])
 
 vect = ot.RandomVector(distribution)
 g = ot.CompositeRandomVector(model, vect)
