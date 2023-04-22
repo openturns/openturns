@@ -13,7 +13,7 @@ distribution = ot.ComposedDistribution(marginals)
 model = ot.SymbolicFunction(['R', 'F'], ['R - F/(pi_*100.0)'])
 vect = ot.RandomVector(distribution)
 g = ot.CompositeRandomVector(model, vect)
-event = ot.ThresholdEvent(G, ot.Less(), -50.0)
+event = ot.ThresholdEvent(g, ot.Less(), -50.0)
 
 distribution_margin1 = ot.LogNormalMuSigma().getDistribution()
 distribution_margin2 = ot.Normal()
