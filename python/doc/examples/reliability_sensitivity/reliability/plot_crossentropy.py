@@ -113,7 +113,7 @@ print(
 )
 
 # %%
-# We can also retrieve the optimal auxiliary distribution in Standard Space.
+# We can also retrieve the optimal auxiliary distribution in standard space.
 
 # %%
 print(
