@@ -250,7 +250,9 @@ print("Probability of failure:", physicalSpaceISResult2.getProbabilityEstimate()
 print("Coefficient of variation:", physicalSpaceISResult2.getCoefficientOfVariation())
 
 # %%
-# Let analyze the auxiliary output samples for the two previous simulations. We can plot initial (in blue) and auxiliary samples in physical space (orange for the first simulation and black for the second simulation).
+# Let us analyze the auxiliary output samples for the two previous simulations.
+# We can plot initial (in blue) and auxiliary samples in physical space (orange
+# for the first simulation and black for the second simulation).
 
 # %%
 graph = ot.Graph("Cloud of samples and failure domain", "R", "F", True, "topright")
