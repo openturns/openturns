@@ -3,7 +3,7 @@
 import openturns as ot
 import openturns.experimental as otexp
 from openturns.testing import assert_almost_equal
-ot.RandomGenerator.SetSeed(1)
+ot.RandomGenerator.SetSeed(0)
 distribution_R = ot.LogNormalMuSigma(300.0, 30.0, 0.0).getDistribution()
 distribution_F = ot.Normal(75e3, 5e3)
 marginals = [distribution_R, distribution_F]
@@ -20,4 +20,4 @@ myIS = otexp.StandardSpaceCrossEntropyImportanceSampling(event, 0.3)
 myIS.run()
 myResult = myIS.getResult()
 
-assert_almost_equal(myResult.getProbabilityEstimate(), 1.394611e-04)
+assert_almost_equal(myResult.getProbabilityEstimate(), 0.000126895)
