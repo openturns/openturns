@@ -13,7 +13,7 @@ distribution = ot.ComposedDistribution(marginals)
 model = ot.SymbolicFunction(['R', 'F'], ['R - F/(pi_*100.0)'])
 
 vect = ot.RandomVector(distribution)
-G = ot.CompositeRandomVector(model, vect)
+g = ot.CompositeRandomVector(model, vect)
 event = ot.ThresholdEvent(G, ot.Less(), -50.0)
 myIS = otexp.StandardSpaceCrossEntropyImportanceSampling(event, 0.3)
 
