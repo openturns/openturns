@@ -41,7 +41,7 @@ graph.add(drawfunction)
 view = otv.View(graph)
 
 # %%
-# Create the output random vector :math:`Y = g(\vect{X})` with :math:`\vect{X} = [R,F]`.
+# Create the output random vector :math:`Y = g(\vect{X})` with :math:`\vect{X} = (R,F)`.
 
 # %%
 X = ot.RandomVector(distribution)
