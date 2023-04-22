@@ -174,7 +174,9 @@ view = otv.View(graph)
 # The parameters to be optimized are the parameters of the native distribution. It is necessary to define among all the distribution parameters, which ones will be optimized through the indices of the parameters. In this case, all the parameters will be optimized.
 
 # %%
-# Be careful that the native parameters of the auxiliary distribution will be considered. Here for the :class:`~openturns.LogNormalMuSigma` distribution, this corresponds to muLog, sigmaLog and gamma.
+# Be careful that the native parameters of the auxiliary distribution will be considered.
+# Here for the :class:`~openturns.LogNormalMuSigma` distribution, this corresponds
+# to `muLog`, `sigmaLog` and `gamma`.
 
 # %%
 # The user can use `getParameterDescription()` method to access to the parameters of the auxiliary distribution.
