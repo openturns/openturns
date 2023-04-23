@@ -112,7 +112,7 @@ String FunctionalChaosResult::__str__(const String & offset) const
   oss << " input dimension: " << inputDimension << "\n"
       << " output dimension: " << outputDimension << "\n"
       << " basis size: " << basisSize << "\n";
-  oss << "| Index | Rank | Multi-index | Value             |" << "\n";
+  oss << "| Index | Rank | Multi-index | Coefficient       |" << "\n";
   oss << "|-------|------|-------------|-------------------|" << "\n";
   const Scalar verboseThreshold = ResourceMap::GetAsScalar("FunctionalChaosResult-CoefficientThreshold");
   const int verboseMaximumIndices = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-MaximumPrint");
