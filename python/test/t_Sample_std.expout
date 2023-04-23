@@ -16,12 +16,19 @@ selection=     [ v0 ]
 2 : [ 2  ]
 3 : [ 3  ]
 4 : [ 2  ]
-<TABLE><TR><TD></TD><TH>a0</TH><TH>a1</TH></TR>
-<TR><TH>0</TH><TD>10</TD><TD>20</TD></TR>
-<TR><TH>1</TH><TD>11</TD><TD>21</TD></TR>
-<TR><TH>2</TH><TD>1000</TD><TD>2000</TD></TR>
-</TABLE>
+<table>
+  <tr><td></td><th>a0</th><th>a1</th></tr>
+  <tr><th>0</th><td>10</td><td>20</td></tr>
+  <tr><th>1</th><td>11</td><td>21</td></tr>
+  <tr><th>2</th><td>1000</td><td>2000</td></tr>
+</table>
 ok
 ok
 indices =  [3,2,0,1]
 indices =  [1,0,2,3]
+<table>
+  <tr><td></td><th>v0</th><th>v1</th></tr>
+  <tr><th>0</th><td>0.1234568</td><td>0.3333333</td></tr>
+  <tr><th>1</th><td>-123456.8</td><td>0.6666667</td></tr>
+  <tr><th>2</th><td>1.234568e+10</td><td>-1.234568e-12</td></tr>
+</table>

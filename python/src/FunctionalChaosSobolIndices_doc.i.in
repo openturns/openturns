@@ -115,7 +115,11 @@ Get total Sobol' index for group [X0,X1]:
 
 >>> stg01 = chaosSI.getSobolGroupedTotalIndex([0,1])
 >>> print('STG([0, 1]) = ', stg01)
-STG([0, 1]) =  0.99..."
+STG([0, 1]) =  0.99...
+
+Get the part of variance of first multi-indices:
+
+>>> partOfVariance = chaosSI.getPartOfVariance()"
 
 // ---------------------------------------------------------------------
 
@@ -240,3 +244,26 @@ s : float
     The grouped Sobol' total index."
 
 // ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosSobolIndices::getPartOfVariance
+"Get the part of variance corresponding to each multi-index.
+
+
+Parameters
+----------
+marginalIndex : int
+    Output marginal index.
+    Default value is 0, i.e. the first output.
+
+Returns
+-------
+partOfVariance : :class:`~openturns.Point`
+    The part of variance `partOfVariance[i]` of each multi-index, 
+    for `i = 0, ..., indicesSize - 1` where `indicesSize` is the 
+    number of indices.
+    The part of variance of a given multi-index is in the [0, 1] interval.
+    This is a sensitivity index which represents 
+    the part of the variance explained by the corresponding function.
+    The sum of part of variances is equal to 1.
+    If the corresponding multi-index has total degree equal to 0,
+    then the corresponding part of variance is equal to zero."

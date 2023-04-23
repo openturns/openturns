@@ -273,7 +273,9 @@ void Logistic::computeCovariance() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Logistic::getStandardRepresentative() const
 {
-  return new Logistic(0.0, 1.0);
+  Logistic standard(0.0, 1.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Parameters value accessor */

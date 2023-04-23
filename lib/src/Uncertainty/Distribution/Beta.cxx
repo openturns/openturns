@@ -308,10 +308,22 @@ void Beta::computeCovariance() const
 Distribution Beta::getStandardRepresentative() const
 {
   // Two special cases
-  if (alpha_ == 1.0 && beta_ == 1.0) return Uniform(-1.0, 1.0);
-  if (alpha_ == -0.5 && beta_ == -0.5) return Arcsine(-1.0, 1.0);
+  if (alpha_ == 1.0 && beta_ == 1.0) 
+  {
+    Uniform standard(-1.0, 1.0);
+    standard.setDescription(getDescription());
+    return standard;
+  }
+  if (alpha_ == -0.5 && beta_ == -0.5) 
+  {
+    Arcsine standard(-1.0, 1.0);
+    standard.setDescription(getDescription());
+    return standard;
+  }
   // General case
-  return new Beta(alpha_, beta_, -1.0, 1.0);
+  Beta standard(alpha_, beta_, -1.0, 1.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Parameters value accessor */

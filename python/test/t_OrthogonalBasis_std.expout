@@ -1,4 +1,70 @@
-basis= class=OrthogonalProductPolynomialFactory univariate polynomial collection=[class=OrthogonalUniVariatePolynomialFamily implementation=class=LaguerreFactory k=2.5 measure=class=Gamma name=Gamma dimension=1 k=3.5 lambda=1 gamma=0,class=OrthogonalUniVariatePolynomialFamily implementation=class=LegendreFactory measure=class=Uniform name=Uniform dimension=1 a=-1 b=1,class=OrthogonalUniVariatePolynomialFamily implementation=class=HermiteFactory measure=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] measure=class=ComposedDistribution name=ComposedDistribution dimension=3 copula=class=IndependentCopula name=IndependentCopula dimension=3 marginal[0]=class=Gamma name=Gamma dimension=1 k=3.5 lambda=1 gamma=0 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+basisFactory=
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LaguerreFactory |
+|     1 | LegendreFactory |
+|     2 | HermiteFactory  |
+
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LaguerreFactory |
+|     1 | LegendreFactory |
+|     2 | HermiteFactory  |
+
+<ul>
+  <li>dimension: 3</li>
+  <li>enumerate function: class=LinearEnumerateFunction dimension=3</li>
+</ul>
+
+<table>
+  <tr>
+    <th>Index</th>
+    <th>Name</th>
+    <th>Distribution</th>
+    <th>Univariate polynomial</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>X0</td>
+    <td>Gamma</td>
+    <td>LaguerreFactory</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>X1</td>
+    <td>Uniform</td>
+    <td>LegendreFactory</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>X2</td>
+    <td>Normal</td>
+    <td>HermiteFactory</td>
+  </tr>
+</table>
+
+basis=
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LaguerreFactory |
+|     1 | LegendreFactory |
+|     2 | HermiteFactory  |
+
 i= 0 f(X)= [1]
 i= 1 f(X)= [-1.60357]
 i= 2 f(X)= [0.866025]
@@ -40,3 +106,58 @@ indices= [1,0,1] f(X)= [-1.08723]
 indices= [0,2,0] f(X)= [0]
 indices= [0,1,1] f(X)= [-0.67801]
 indices= [0,0,2] f(X)= [1.24109]
+basisFactory=
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type                       |
+|-------|----------------------------|
+|     0 | HermiteFactory             |
+|     1 | AdaptiveStieltjesAlgorithm |
+|     2 | LegendreFactory            |
+
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type                       |
+|-------|----------------------------|
+|     0 | HermiteFactory             |
+|     1 | AdaptiveStieltjesAlgorithm |
+|     2 | LegendreFactory            |
+
+<ul>
+  <li>dimension: 3</li>
+  <li>enumerate function: class=LinearEnumerateFunction dimension=3</li>
+</ul>
+
+<table>
+  <tr>
+    <th>Index</th>
+    <th>Name</th>
+    <th>Distribution</th>
+    <th>Univariate polynomial</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>X0</td>
+    <td>Normal</td>
+    <td>HermiteFactory</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>X1</td>
+    <td>TruncatedDistribution</td>
+    <td>AdaptiveStieltjesAlgorithm</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>X2</td>
+    <td>Uniform</td>
+    <td>LegendreFactory</td>
+  </tr>
+</table>
+

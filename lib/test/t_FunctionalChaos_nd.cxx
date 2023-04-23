@@ -196,6 +196,7 @@ int main(int, char *[])
 
         // Examine the results
         FunctionalChaosResult result(algo.getResult());
+        fullprint << result.__str__() << std::endl;
         fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
         fullprint << algo.getAdaptiveStrategy() << std::endl;
         fullprint << algo.getProjectionStrategy() << std::endl;

@@ -113,7 +113,8 @@ print("Outputs:", cm.model.getOutputDescription())
 
 # %%
 inputDistribution = cm.inputDistribution
-print("inputDistribution:", inputDistribution)
+print("inputDistribution:")
+inputDistribution
 
 # %%
 # Set the calibration parameters
@@ -168,7 +169,8 @@ observedStress = predictedStress + sampleNoiseStress
 data = ot.Sample(nbobs, 2)
 data[:, 0] = observedStrain
 data[:, 1] = observedStress
-print(data)
+data.setDescription(["Strain", "Stress (Pa)"])
+data
 
 # %%
 # Then we plot the model and compare it to the observations.

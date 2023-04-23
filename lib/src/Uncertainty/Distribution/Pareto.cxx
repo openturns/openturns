@@ -253,7 +253,9 @@ Point Pareto::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Pareto::getStandardRepresentative() const
 {
-  return new Pareto(1.0, alpha_, 0.0);
+  Pareto standard(1.0, alpha_, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

@@ -299,7 +299,9 @@ Point Frechet::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Frechet::getStandardRepresentative() const
 {
-  return new Frechet(1.0, alpha_, 0.0);
+  Frechet standard(1.0, alpha_, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Alpha accessor */

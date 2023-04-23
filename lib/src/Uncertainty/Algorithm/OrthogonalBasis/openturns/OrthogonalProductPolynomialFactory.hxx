@@ -82,7 +82,9 @@ public:
 
   /** String converter */
   String __repr__() const override;
-
+  String __str__(const String & offset = "") const override;
+  String __repr_markdown__() const;
+  
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -94,6 +96,9 @@ protected:
 private:
   /** Build the measure based on the one found in the family collection */
   void buildMeasure();
+
+  /** Get the input marginal polynomial class name */
+  String getMarginalPolynomialName(const UnsignedInteger marginalIndex) const;
 
   /** The 1D polynomial family collection */
   PolynomialFamilyPersistentCollection coll_;

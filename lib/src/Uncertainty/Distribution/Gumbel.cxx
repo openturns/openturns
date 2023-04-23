@@ -262,7 +262,9 @@ Point Gumbel::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Gumbel::getStandardRepresentative() const
 {
-  return new Gumbel(1.0, 0.0);
+  Gumbel standard(1.0, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

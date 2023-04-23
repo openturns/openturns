@@ -329,7 +329,9 @@ Point GeneralizedPareto::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution GeneralizedPareto::getStandardRepresentative() const
 {
-  return new GeneralizedPareto(1.0, xi_, 0.0);
+  GeneralizedPareto standard(1.0, xi_, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

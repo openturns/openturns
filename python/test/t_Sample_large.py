@@ -23,6 +23,8 @@ except Exception:
 sample = ot.Sample(1, 2)
 sample.setName("SmallSample")
 print("sample=", repr(sample))
+print(sample)
+print(sample._repr_html_())
 
 # We access the element of the sample
 p = ot.Point(sample[0])
@@ -47,3 +49,13 @@ for i in range(sample.getSize()):
 
 print("sample first point=", repr(sample[0]))
 print("sample last  point=", repr(sample[sample.getSize() - 1]))
+
+# Test pretty-print or a sample with relatively large dimension
+size = 49
+dimension = 50
+sample = ot.Sample(size, dimension)
+sample.setName("BigSample50x50")
+for i in range(size):
+    sample[i] = ot.Point(list(range(dimension))) / size
+
+print(sample._repr_html_())

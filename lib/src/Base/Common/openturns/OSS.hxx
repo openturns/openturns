@@ -199,6 +199,12 @@ public:
 
   void clear();
 
+    /** String formatter with blank space right padding */
+  static String PadString(const String & string, const UnsignedInteger columnWidth);
+  
+  /** Repeat a String */
+  static String RepeatString(const UnsignedInteger repeatNb, const String & string);
+
 }; /* class OSS */
 
 template <typename _Tp>

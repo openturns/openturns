@@ -82,6 +82,7 @@ int main(int, char *[])
 
     LinearEnumerateFunction enumerateFunction(dimension);
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
+    fullprint << productBasis.__str__() << std::endl;
 
     // Create the adaptive strategy
     // We can choose amongst several strategies
@@ -130,6 +131,8 @@ int main(int, char *[])
 
           // Examine the results
           result = algo.getResult();
+          fullprint << result.__str__() << std::endl;
+          fullprint << result.__repr_markdown__() << std::endl;
           fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
           fullprint << algo.getAdaptiveStrategy() << std::endl;
           fullprint << algo.getProjectionStrategy() << std::endl;
@@ -189,6 +192,27 @@ int main(int, char *[])
           indices.fill();
           value = sensitivity.getSobolTotalIndex(indices);
           fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T3[0]) << std::endl;
+          // Print part of variance
+          // If the exact coefficients of the PCE on Legendre polynomial of the Ishigami function
+          // were known, we could check.
+          const Point partOfVariance(sensitivity.getPartOfVariance());
+          fullprint << "Part of variance" << std::endl;
+          indices = result.getIndices();
+          const UnsignedInteger basisSize = indices.getSize();
+          for (UnsignedInteger i = 0; i < basisSize; ++i)
+          {
+            UnsignedInteger globalIndex = indices[i];
+            Indices multiIndex(enumerateFunction(globalIndex));
+            if (partOfVariance[i] > 1.e-3)
+            {
+              fullprint << i << " " << globalIndex << " " << multiIndex << " " 
+                        << std::fixed << std::setprecision(4) << partOfVariance[i]
+                        << std::endl;
+            }
+          } // loop over the multi-indices
+          // Print summary
+          fullprint << "Summary" << std::endl;
+          fullprint << sensitivity.__str__() << std::endl;
         }
       }
     }

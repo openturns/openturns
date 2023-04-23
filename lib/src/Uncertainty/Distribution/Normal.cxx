@@ -704,7 +704,9 @@ Point Normal::getSkewness() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Normal::getStandardRepresentative() const
 {
-  return Normal(0.0, 1.0);
+  Normal standard(getDimension());
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */

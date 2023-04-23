@@ -83,7 +83,8 @@ Comparison with another member false
 *** Case 2 ***
 
 Parameters collection=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[R_1_0 : 0.5]]
-Standard representative=Normal(mu = 0, sigma = 1)
+Standard representative=Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]])
 Distribution class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1,2] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
 Distribution Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]])
@@ -132,7 +133,8 @@ correlation=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.482584,0.482584,1]
 kendall=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.333333,0.333333,1]
 parameters=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[R_1_0 : 0.5]]
-Standard representative=Normal(mu = 0, sigma = 1)
+Standard representative=Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]])
 density generator=0.12395
 pdf via density generator=0.081091
 density generator derivative     =-0.061975
@@ -176,7 +178,9 @@ Comparison with another member false
 *** Case 3 ***
 
 Parameters collection=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[mean_2 : 0, standard_deviation_2 : 3],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5]]
-Standard representative=Normal(mu = 0, sigma = 1)
+Standard representative=Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
 Distribution class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0,0,0] sigma=class=Point name=Unnamed dimension=3 values=[1,2,3] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1]
 Distribution Normal(mu = [0,0,0], sigma = [1,2,3], R = [[ 1   0.5 0   ]
  [ 0.5 1   0.5 ]
@@ -213,7 +217,9 @@ correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.482584,0,0.482584,1,0.482584,0,0.482584,1]
 kendall=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.333333,0,0.333333,1,0.333333,0,0.333333,1]
 parameters=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[mean_2 : 0, standard_deviation_2 : 3],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5]]
-Standard representative=Normal(mu = 0, sigma = 1)
+Standard representative=Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
 density generator=0.043638
 pdf via density generator=0.012935
 density generator derivative     =-0.021819
@@ -262,7 +268,10 @@ Comparison with another member false
 *** Case 4 ***
 
 Parameters collection=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[mean_2 : 0, standard_deviation_2 : 3],[mean_3 : 0, standard_deviation_3 : 4],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5, R_3_0 : 0, R_3_1 : 0, R_3_2 : 0.5]]
-Standard representative=Normal(mu = 0, sigma = 1)
+Standard representative=Normal(mu = [0,0,0,0], sigma = [1,1,1,1], R = [[ 1 0 0 0 ]
+ [ 0 1 0 0 ]
+ [ 0 0 1 0 ]
+ [ 0 0 0 1 ]])
 Distribution class=Normal name=Normal dimension=4 mean=class=Point name=Unnamed dimension=4 values=[0,0,0,0] sigma=class=Point name=Unnamed dimension=4 values=[1,2,3,4] correlationMatrix=class=CorrelationMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0.5,0,0,0.5,1,0.5,0,0,0.5,1,0.5,0,0,0.5,1]
 Distribution Normal(mu = [0,0,0,0], sigma = [1,2,3,4], R = [[ 1   0.5 0   0   ]
  [ 0.5 1   0.5 0   ]
@@ -298,7 +307,10 @@ correlation=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0.482584,0,0,0.482584,1,0.482584,0,0,0.482584,1,0.482584,0,0,0.482584,1]
 kendall=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0.333333,0,0,0.333333,1,0.333333,0,0,0.333333,1,0.333333,0,0,0.333333,1]
 parameters=[[mean_0 : 0, standard_deviation_0 : 1],[mean_1 : 0, standard_deviation_1 : 2],[mean_2 : 0, standard_deviation_2 : 3],[mean_3 : 0, standard_deviation_3 : 4],[R_1_0 : 0.5, R_2_0 : 0, R_2_1 : 0.5, R_3_0 : 0, R_3_1 : 0, R_3_2 : 0.5]]
-Standard representative=Normal(mu = 0, sigma = 1)
+Standard representative=Normal(mu = [0,0,0,0], sigma = [1,1,1,1], R = [[ 1 0 0 0 ]
+ [ 0 1 0 0 ]
+ [ 0 0 1 0 ]
+ [ 0 0 0 1 ]])
 density generator=0.015364
 pdf via density generator=0.0016318
 density generator derivative     =-0.0076818

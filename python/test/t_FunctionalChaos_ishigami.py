@@ -198,3 +198,18 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
             "=%.8f" % value,
             "absolute error=%.10f" % abs(value - 1.0),
         )
+        # Get part of variance indices
+        print("Part of variance")
+        partOfVariance = sensitivity.getPartOfVariance()
+        result = sensitivity.getFunctionalChaosResult()
+        orthogonalBasis = result.getOrthogonalBasis()
+        enumerateFunction = orthogonalBasis.getEnumerateFunction()
+        indices = result.getIndices()
+        basisSize = indices.getSize()
+        for i in range(basisSize):
+            globalIndex = indices[i]
+            multiIndex = enumerateFunction(globalIndex)
+            if partOfVariance[i] > 1.e-3:
+                print("%d, %d, %s, %.4f" % (i, globalIndex, multiIndex, partOfVariance[i]))
+        # Print summary
+        print(sensitivity)

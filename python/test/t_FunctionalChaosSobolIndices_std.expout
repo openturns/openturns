@@ -1,112 +1,175 @@
- input dimension: 3
- output dimension: 1
- basis size: 16
- mean: [3.48949]
- std-dev: [3.71411]
-------------------------------------------------------------
-Index   | Multi-indice                  | Part of variance  
-------------------------------------------------------------
-      5 | [0,4,0]                       | 0.276864
-      1 | [1,0,0]                       | 0.192702
-      9 | [1,0,2]                       | 0.138614
-     10 | [0,6,0]                       | 0.133538
-      3 | [3,0,0]                       | 0.122047
-     14 | [3,0,2]                       | 0.0864134
-      2 | [0,2,0]                       | 0.0243772
-     13 | [1,0,4]                       | 0.0121672
-------------------------------------------------------------
+FunctionalChaosSobolIndices
+- input dimension=3
+- output dimension=1
+- basis size=16
+- mean=[3.48949]
+- std-dev=[3.71411]
+
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     5 | [0,4,0]       | 0.276864      |
+|     1 | [1,0,0]       | 0.192702      |
+|     9 | [1,0,2]       | 0.138614      |
+|    10 | [0,6,0]       | 0.133538      |
+|     3 | [3,0,0]       | 0.122047      |
+|    14 | [3,0,2]       | 0.0864134     |
+|     2 | [0,2,0]       | 0.0243772     |
+|    13 | [1,0,4]       | 0.0121672     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | X1            | 0.318079      | 0.555274      |
+|     1 | X2            | 0.444395      | 0.444477      |
+|     2 | X3            | 0.000248397   | 0.237525      |
 
 
-------------------------------------------------------------
-Component | Sobol' index           | Sobol' total index     
-------------------------------------------------------------
-        0 | 0.318079               | 0.555274              
-        1 | 0.444395               | 0.444477              
-        2 | 0.000248397            | 0.237525              
-------------------------------------------------------------
+<ul>
+  <li>input dimension: 3</li>
+  <li>output dimension: 1</li>
+  <li>basis size: 16</li>
+  <li>mean: [3.48949]</li>
+  <li>std-dev: [3.71411]</li>
+</ul>
+<table>
+  <tr>
+    <th>Input</th>
+    <th>Variable</th>
+    <th>Sobol' index</th>
+    <th>Total index</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>X1</td>
+    <td>0.318079</td>
+    <td>0.555274</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>X2</td>
+    <td>0.444395</td>
+    <td>0.444477</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>X3</td>
+    <td>0.000248</td>
+    <td>0.237525</td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <th>Index</th>
+    <th>Multi-index</th>
+    <th>Part of variance</th>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>[0,4,0]</td>
+    <td>0.276864</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>[1,0,0]</td>
+    <td>0.192702</td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td>[1,0,2]</td>
+    <td>0.138614</td>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td>[0,6,0]</td>
+    <td>0.133538</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>[3,0,0]</td>
+    <td>0.122047</td>
+  </tr>
+  <tr>
+    <td>14</td>
+    <td>[3,0,2]</td>
+    <td>0.086413</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>[0,2,0]</td>
+    <td>0.024377</td>
+  </tr>
+  <tr>
+    <td>13</td>
+    <td>[1,0,4]</td>
+    <td>0.012167</td>
+  </tr>
+</table>
+
+FunctionalChaosSobolIndices
+- input dimension=3
+- output dimension=1
+- basis size=16
+- mean=[3.48949]
+- std-dev=[3.71411]
+
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     5 | [0,4,0]       | 0.276864      |
+|     1 | [1,0,0]       | 0.192702      |
+|     9 | [1,0,2]       | 0.138614      |
+|    10 | [0,6,0]       | 0.133538      |
+|     3 | [3,0,0]       | 0.122047      |
+|    14 | [3,0,2]       | 0.0864134     |
+|     2 | [0,2,0]       | 0.0243772     |
+|    13 | [1,0,4]       | 0.0121672     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | X1            | 0.318079      | 0.555274      |
+|     1 | X2            | 0.444395      | 0.444477      |
+|     2 | X3            | 0.000248397   | 0.237525      |
 
 
 1. Check first order Sobol' indices
 First order, X1
-   S (PCE)    = 0.3140
-   S (exact)  = 0.3139
-   Abs. Error = 5.4494e-05
+   S (PCE)    = 0.3140    S (exact)  = 0.3139    Abs. Error = 5.4494e-05
 First order, X2
-   S (PCE)    = 0.4424
-   S (exact)  = 0.4424
-   Abs. Error = 6.0054e-06
+   S (PCE)    = 0.4424    S (exact)  = 0.4424    Abs. Error = 6.0054e-06
 First order, X3
-   S (PCE)    = 0.0000
-   S (exact)  = 0.0000
-   Abs. Error = 0.0000e+00
+   S (PCE)    = 0.0000    S (exact)  = 0.0000    Abs. Error = 0.0000e+00
 2. Check total Sobol' indices
 Total, X1
-   S (PCE)    = 0.5576
-   S (exact)  = 0.5576
-   Abs. Error = 6.0464e-06
+   S (PCE)    = 0.5576    S (exact)  = 0.5576    Abs. Error = 6.0464e-06
 Total, X2
-   S (PCE)    = 0.4424
-   S (exact)  = 0.4424
-   Abs. Error = 6.3033e-06
+   S (PCE)    = 0.4424    S (exact)  = 0.4424    Abs. Error = 6.3033e-06
 Total, X3
-   S (PCE)    = 0.2436
-   S (exact)  = 0.2437
-   Abs. Error = 6.0562e-05
+   S (PCE)    = 0.2436    S (exact)  = 0.2437    Abs. Error = 6.0562e-05
 3. Check first order (closed) Sobol' indices of groups
 Group =  [0]
-   S (PCE)    = 0.3140
-   S (exact)  = 0.3139
-   Abs. Error = 5.4494e-05
+   S (PCE)    = 0.3140    S (exact)  = 0.3139    Abs. Error = 5.4494e-05
 Group =  [1]
-   S (PCE)    = 0.4424
-   S (exact)  = 0.4424
-   Abs. Error = 6.0054e-06
+   S (PCE)    = 0.4424    S (exact)  = 0.4424    Abs. Error = 6.0054e-06
 Group =  [2]
-   S (PCE)    = 0.0000
-   S (exact)  = 0.0000
-   Abs. Error = 0.0000e+00
+   S (PCE)    = 0.0000    S (exact)  = 0.0000    Abs. Error = 0.0000e+00
 Group =  [0, 1]
-   S (PCE)    = 0.7564
-   S (exact)  = 0.7563
-   Abs. Error = 6.0562e-05
+   S (PCE)    = 0.7564    S (exact)  = 0.7563    Abs. Error = 6.0562e-05
 Group =  [1, 2]
-   S (PCE)    = 0.4424
-   S (exact)  = 0.4424
-   Abs. Error = 6.0464e-06
+   S (PCE)    = 0.4424    S (exact)  = 0.4424    Abs. Error = 6.0464e-06
 Group =  [0, 2]
-   S (PCE)    = 0.5576
-   S (exact)  = 0.5576
-   Abs. Error = 6.3033e-06
+   S (PCE)    = 0.5576    S (exact)  = 0.5576    Abs. Error = 6.3033e-06
 Group =  [0, 1, 2]
-   S (PCE)    = 1.0000
-   S (exact)  = 1.0000
-   Abs. Error = 0.0000e+00
+   S (PCE)    = 1.0000    S (exact)  = 1.0000    Abs. Error = 0.0000e+00
 4. Check total order index of a group
 Group =  [0]
-   S (PCE)    = 0.5576
-   S (exact)  = 0.5576
-   Abs. Error = 6.0464e-06
+   S (PCE)    = 0.5576    S (exact)  = 0.5576    Abs. Error = 6.0464e-06
 Group =  [1]
-   S (PCE)    = 0.4424
-   S (exact)  = 0.4424
-   Abs. Error = 6.3033e-06
+   S (PCE)    = 0.4424    S (exact)  = 0.4424    Abs. Error = 6.3033e-06
 Group =  [2]
-   S (PCE)    = 0.2436
-   S (exact)  = 0.2437
-   Abs. Error = 6.0562e-05
+   S (PCE)    = 0.2436    S (exact)  = 0.2437    Abs. Error = 6.0562e-05
 Group =  [0, 1]
-   S (PCE)    = 1.0000
-   S (exact)  = 1.0000
-   Abs. Error = 0.0000e+00
+   S (PCE)    = 1.0000    S (exact)  = 1.0000    Abs. Error = 0.0000e+00
 Group =  [1, 2]
-   S (PCE)    = 0.6860
-   S (exact)  = 0.6861
-   Abs. Error = 5.4494e-05
+   S (PCE)    = 0.6860    S (exact)  = 0.6861    Abs. Error = 5.4494e-05
 Group =  [0, 2]
-   S (PCE)    = 0.5576
-   S (exact)  = 0.5576
-   Abs. Error = 6.0054e-06
+   S (PCE)    = 0.5576    S (exact)  = 0.5576    Abs. Error = 6.0054e-06
 Group =  [0, 1, 2]
-   S (PCE)    = 1.0000
-   S (exact)  = 1.0000
-   Abs. Error = 0.0000e+00
+   S (PCE)    = 1.0000    S (exact)  = 1.0000    Abs. Error = 0.0000e+00

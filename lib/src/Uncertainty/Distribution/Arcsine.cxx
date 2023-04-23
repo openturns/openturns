@@ -262,7 +262,9 @@ Point Arcsine::getKurtosis() const /*throw(NotDefinedException)*/
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Arcsine::getStandardRepresentative() const
 {
-  return new Arcsine(-1.0, 1.0);
+  Arcsine standard(-1.0, 1.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

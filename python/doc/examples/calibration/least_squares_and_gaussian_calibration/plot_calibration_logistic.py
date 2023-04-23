@@ -59,7 +59,7 @@ print("Outputs: ", lm.model.getOutputDescription())
 # The data is based on 22 dates from 1790 to 2000. The observation points are
 # stored in the `data` field :
 observedSample = lm.data
-print(observedSample[:5])
+observedSample[:5]
 
 # %%
 nbobs = observedSample.getSize()
@@ -231,7 +231,7 @@ view = otv.View(graph)
 
 # %%
 timeObservationsSample = ot.Sample([timeObservations.asPoint()])
-print(timeObservationsSample[0, 0:5])
+timeObservationsSample[0, 0:5]
 
 # %%
 # Similarly, we create a `Sample` of output populations which has
@@ -239,7 +239,7 @@ print(timeObservationsSample[0, 0:5])
 
 # %%
 populationObservationsSample = ot.Sample([populationObservations.asPoint()])
-print(populationObservationsSample[0, 0:5])
+populationObservationsSample[0, 0:5]
 
 # %%
 logisticParametric = ot.ParametricFunction(logisticModelPy, [22, 23], thetaPrior)
@@ -249,7 +249,7 @@ logisticParametric = ot.ParametricFunction(logisticModelPy, [22, 23], thetaPrior
 
 # %%
 populationPredicted = logisticParametric(timeObservationsSample)
-print(populationPredicted[0, 0:5])
+populationPredicted[0, 0:5]
 
 # %%
 #  Calibration

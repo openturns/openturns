@@ -44,8 +44,14 @@ print("Copula = ", aCopula)
 # Instantiate one distribution object
 distribution = ot.ComposedDistribution(aCollection, aCopula)
 distribution.setName("myDist")
-print("Distribution = ", repr(distribution))
-print("Distribution = ", distribution)
+print("Distribution = ")
+print(repr(distribution))
+print("Distribution = ")
+print(distribution)
+print("Distribution (Markdown) = ")
+print(distribution._repr_markdown_())
+print("Distribution (HTML) = ")
+print(distribution._repr_html_())
 print("Parameters = ", repr(distribution.getParametersCollection()))
 print("Mean = ", repr(distribution.getMean()))
 print("Covariance = ", repr(distribution.getCovariance()))
@@ -257,3 +263,18 @@ dist_b.setDescription(["b"])
 dist_list = [dist_a, dist_b] + [ot.Normal()] * 3
 composed = ot.ComposedDistribution(dist_list)
 assert composed.getDescription() == ["a", "b", "X0", "X1", "X2"], "wrong description"
+
+# Create and print a composed distribution with different
+# complexities and print them
+aCollection = [
+    ot.Uniform(),
+    ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0),
+    ot.Normal(),
+]
+distribution = ot.ComposedDistribution(aCollection)
+print("Distribution = ")
+print(distribution)
+print("Distribution (Markdown) = ")
+print(distribution._repr_markdown_())
+print("Distribution (HTML) = ")
+print(distribution._repr_html_())

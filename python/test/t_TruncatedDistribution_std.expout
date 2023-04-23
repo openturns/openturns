@@ -248,7 +248,8 @@ parameters (ref)= [class=PointWithDescription name=X0 dimension=2 description=[m
 parameter       = class=Point name=Unnamed dimension=9 values=[0,1,0,1,0,-0.5,-0.5,2,2]
 parameter desc  = [mean_0,standard_deviation_0,mean_1,standard_deviation_1,R_1_0,lowerBound_0,lowerBound_1,upperBound_0,upperBound_1]
 marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.5] upper bound=class=Point name=Unnamed dimension=1 values=[2] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5
-Standard representative= Normal(mu = 0, sigma = 1)
+Standard representative= Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]])
 Distribution  TruncatedDistribution(WeibullMin(beta = 2, alpha = 3, gamma = 0), bounds = [0, (6.36519) +inf[)
 Elliptical =  False
 Continuous =  True

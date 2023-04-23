@@ -196,7 +196,9 @@ Point Epanechnikov::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Epanechnikov::getStandardRepresentative() const
 {
-  return new Beta(2.0, 2.0, -1.0, 1.0);
+  Beta standard(2.0, 2.0, -1.0, 1.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

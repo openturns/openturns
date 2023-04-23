@@ -61,6 +61,15 @@ public:
       Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
 
+  /** hasSpecificFamily_ accessor */
+  Bool getHasSpecificFamily() const;
+
+  /** orthonormalizationAlgorithm_ accessor */
+  OrthonormalizationAlgorithm getOrthonormalizationAlgorithm() const;
+
+  /** specificFamily_ accessor */
+  OrthogonalUniVariatePolynomialFamily getSpecificFamily() const;
+
   /** String converter */
   String __repr__() const override;
 

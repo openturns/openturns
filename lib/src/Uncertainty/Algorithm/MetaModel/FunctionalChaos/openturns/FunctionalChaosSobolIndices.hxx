@@ -49,6 +49,7 @@ public:
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
+  String __repr_markdown__() const;
 
   /* Here is the interface that all derived class must implement */
 
@@ -74,6 +75,9 @@ public:
 
   /** Functional chaos result accessor */
   FunctionalChaosResult getFunctionalChaosResult() const;
+
+  /** Part of variance accessor */
+  Point getPartOfVariance(const UnsignedInteger marginalIndex = 0) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

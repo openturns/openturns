@@ -25,6 +25,8 @@ result = algo.getResult()
 sensitivity = ot.FunctionalChaosSobolIndices(result)
 
 print(sensitivity)
+print(sensitivity._repr_html_())
+print(sensitivity._repr_markdown_())
 
 # Create consistent PCE of Ishigami
 # build basis
@@ -50,9 +52,9 @@ sensitivity = ot.FunctionalChaosSobolIndices(result)
 #
 def printSobolResult(S_computed, S_exact):
     absolute_error = abs(S_computed - S_exact)
-    print("   S (PCE)    = %.4f" % (S_computed))
-    print("   S (exact)  = %.4f" % (S_exact))
-    print("   Abs. Error = %.4e" % (absolute_error))
+    print("   S (PCE)    = %.4f" % (S_computed),
+          "   S (exact)  = %.4f" % (S_exact),
+          "   Abs. Error = %.4e" % (absolute_error))
     return None
 
 

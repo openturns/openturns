@@ -75,7 +75,10 @@ int main(int, char *[])
     distribution.setName("myDist");
     UnsignedInteger dim = distribution.getDimension();
     fullprint << "Distribution " << distribution << std::endl;
-    std::cout << "Distribution " << distribution << std::endl;
+    std::cout << "Distribution " << std::endl;
+    std::cout << distribution << std::endl;
+    std::cout << "Distribution (Markdown)" << std::endl;
+    std::cout << distribution.__repr_markdown__() << std::endl;
     fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
     fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
     fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
@@ -246,6 +249,37 @@ int main(int, char *[])
     anotherSample = distribution.getSample(size);
     fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
     fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
+    // Create and print a complex distribution
+    ComposedDistribution::DistributionCollection aCollection2;
+    Normal marginalN(0.0, 1.0);
+    marginalN.setName("First");
+    Description componentN(1);
+    componentN[0] = "One";
+    marginalN.setDescription(componentN);
+    aCollection2.add( Distribution(marginalN) );
+    aCollection2[0].setName("First");
+    Uniform marginalU(12345.6, 123456.7);
+    marginalU.setName("Second");
+    Description componentU(1);
+    componentU[0] = "Two";
+    marginalU.setDescription(componentU);
+    aCollection2.add( Distribution(marginalU) );
+    aCollection2[1].setName("Second");
+    TruncatedDistribution marginalTN(Normal(2.0, 1.5), 1.0, 4.0);
+    marginalTN.setName("Third");
+    Description componentTN(1);
+    componentTN[0] = "Three";
+    marginalTN.setDescription(componentTN);
+    aCollection2.add( Distribution(marginalTN) );
+    aCollection2[2].setName("Third");
+    ComposedDistribution distribution2(aCollection2);
+    distribution2.setName("myDist2");
+    fullprint << "Distribution " << distribution2 << std::endl;
+    std::cout << "Distribution " << std::endl;
+    std::cout << distribution2 << std::endl;
+    std::cout << "Distribution (Markdown)" << std::endl;
+    std::cout << distribution2.__repr_markdown__() << std::endl;
+    
   }
   catch (TestFailed & ex)
   {

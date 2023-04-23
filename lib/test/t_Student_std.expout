@@ -110,7 +110,8 @@ covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.25,0.25,1]
 kendall=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.160861,0.160861,1]
 parameters=[[nu : 4.5, mean_0 : 0, standard_deviation_0 : 0.5],[nu : 4.5, mean_1 : 1, standard_deviation_1 : 1],[nu : 4.5, R_1_0 : 0.25]]
-Standard representative=Student(nu = 4.5, mu = 0, sigma = 1)
+Standard representative=Student(nu = 4.5, mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]])
 density generator=0.0481717
 pdf via density generator=0.0376351
 density generator derivative     =-0.0240859

@@ -67,7 +67,8 @@ invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed row
 chol*t(chol)= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 chol*invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mean_1,standard_deviation_1] values=[0,2],class=PointWithDescription name=dependence dimension=1 description=[R_1_0] values=[0.5]]
-Standard representative= Normal(mu = 0, sigma = 1)
+Standard representative= Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]])
 Distribution  class=Normal name=A normal distribution dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1,2] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
 Distribution  Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]])
@@ -152,7 +153,9 @@ invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed row
 chol*t(chol)= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,1,4]
 chol*invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
 Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mean_1,standard_deviation_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mean_2,standard_deviation_2] values=[0,3],class=PointWithDescription name=dependence dimension=3 description=[R_1_0,R_2_0,R_2_1] values=[0.5,0,0.5]]
-Standard representative= Normal(mu = 0, sigma = 1)
+Standard representative= Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
 Distribution  class=Normal name=A normal distribution dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0,0,0] sigma=class=Point name=Unnamed dimension=3 values=[1,2,3] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1]
 Distribution  Normal(mu = [0,0,0], sigma = [1,2,3], R = [[ 1   0.5 0   ]
  [ 0.5 1   0.5 ]
@@ -227,7 +230,10 @@ invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed row
 chol*t(chol)= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,4,3,0,3,9]
 chol*invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mean_1,standard_deviation_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mean_2,standard_deviation_2] values=[0,3],class=PointWithDescription name=Marginal 4 dimension=2 description=[mean_3,standard_deviation_3] values=[0,4],class=PointWithDescription name=dependence dimension=6 description=[R_1_0,R_2_0,R_2_1,R_3_0,R_3_1,R_3_2] values=[0.5,0,0.5,0,0,0.5]]
-Standard representative= Normal(mu = 0, sigma = 1)
+Standard representative= Normal(mu = [0,0,0,0], sigma = [1,1,1,1], R = [[ 1 0 0 0 ]
+ [ 0 1 0 0 ]
+ [ 0 0 1 0 ]
+ [ 0 0 0 1 ]])
 Distribution  class=Normal name=A normal distribution dimension=4 mean=class=Point name=Unnamed dimension=4 values=[0,0,0,0] sigma=class=Point name=Unnamed dimension=4 values=[1,2,3,4] correlationMatrix=class=CorrelationMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0.5,0,0,0.5,1,0.5,0,0,0.5,1,0.5,0,0,0.5,1]
 Distribution  Normal(mu = [0,0,0,0], sigma = [1,2,3,4], R = [[ 1   0.5 0   0   ]
  [ 0.5 1   0.5 0   ]

@@ -261,7 +261,9 @@ void Exponential::computeCovariance() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Exponential::getStandardRepresentative() const
 {
-  return new Gamma(1.0, 1.0, 0.0);
+  Gamma standard(1.0, 1.0, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Parameters value accessor */

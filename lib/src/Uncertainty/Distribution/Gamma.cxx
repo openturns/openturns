@@ -363,7 +363,9 @@ Point Gamma::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Gamma::getStandardRepresentative() const
 {
-  return new Gamma(k_, 1.0, 0.0);
+  Gamma standard(k_, 1.0, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

@@ -95,14 +95,17 @@ class IshigamiModel:
         # First marginal : X1
         self.X1 = ot.Uniform(-m.pi, m.pi)
         self.X1.setName("X1")
+        self.X1.setDescription(["X1"])
 
         # Second marginal : X2
         self.X2 = ot.Uniform(-m.pi, m.pi)
         self.X2.setName("X2")
+        self.X2.setDescription(["X2"])
 
         # Third marginal : X3
         self.X3 = ot.Uniform(-m.pi, m.pi)
-        self.X3.setName("X1")
+        self.X3.setName("X3")
+        self.X3.setDescription(["X3"])
 
         # Input distribution
         self.distributionX = ot.ComposedDistribution([self.X1, self.X2, self.X3])
@@ -112,6 +115,7 @@ class IshigamiModel:
             ["X1", "X2", "X3", "a", "b"],
             ["sin(X1) + a * sin(X2)^2 + b * X3^4 * sin(X1)"],
         )
+        self.ishigami.setOutputDescription(["y"])
         # The Ishigami model
         self.model = ot.ParametricFunction(self.ishigami, [3, 4], [self.a, self.b])
 

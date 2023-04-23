@@ -1002,6 +1002,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Sample-CommentMarkers", "#");
   addAsUnsignedInteger("Sample-PrintEllipsisSize", 3);
   addAsUnsignedInteger("Sample-PrintEllipsisThreshold", 1000);
+  addAsString("Sample-PrintFormat", "{:.7g}");
   addAsUnsignedInteger("Sample-SmallKendallTau", 23);
 
   // DomainImplementation parameters
@@ -1364,8 +1365,17 @@ void ResourceMap::loadDefaultConfiguration()
   // LeastSquaresExpansion parameters //
   addAsString("LeastSquaresExpansion-DecompositionMethod", "QR");
 
+  // FunctionalChaosResult parameters //
+  addAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisSize", 3);
+  addAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold", 1000);
+  addAsString("FunctionalChaosResult-PrintFormat", "{:.7g}");
+  addAsUnsignedInteger("FunctionalChaosResult-PrintColumnWidth", 15);
+
   // FunctionalChaosSobolIndices parameters //
   addAsScalar("FunctionalChaosSobolIndices-VariancePartThreshold", 1.0e-2);
+  addAsString("FunctionalChaosSobolIndices-PrintFormat", "{:.6f}");
+  addAsUnsignedInteger("FunctionalChaosSobolIndices-MaximumNumberOfOutput", 1000);
+  addAsUnsignedInteger("FunctionalChaosSobolIndices-PrintColumnWidth", 15);
 
   // LinearModelAlgorithm parameters //
   addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");

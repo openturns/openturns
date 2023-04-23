@@ -131,7 +131,8 @@ Hobs = outputH + sampleNoiseH
 data = ot.Sample(nbobs, 2)
 data[:, 0] = Qobs
 data[:, 1] = Hobs
-print(data)
+data.setDescription(["Q (m3/s)", "H (m)"])
+data
 
 # %%
 # Plot the Y observations versus the X observations.

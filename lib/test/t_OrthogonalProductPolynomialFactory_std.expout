@@ -1,0 +1,88 @@
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LegendreFactory |
+|     1 | LegendreFactory |
+|     2 | LegendreFactory |
+
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LegendreFactory |
+|     1 | LegendreFactory |
+|     2 | LegendreFactory |
+
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LaguerreFactory |
+|     1 | LegendreFactory |
+|     2 | HermiteFactory  |
+
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LaguerreFactory |
+|     1 | LegendreFactory |
+|     2 | HermiteFactory  |
+
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LegendreFactory |
+|     1 | LegendreFactory |
+|     2 | LegendreFactory |
+
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type            |
+|-------|-----------------|
+|     0 | LegendreFactory |
+|     1 | LegendreFactory |
+|     2 | LegendreFactory |
+
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type                       |
+|-------|----------------------------|
+|     0 | HermiteFactory             |
+|     1 | LegendreFactory            |
+|     2 | AdaptiveStieltjesAlgorithm |
+
+OrthogonalProductPolynomialFactory
+- measure=Distribution
+- isOrthogonal=true
+- enumerateFunction=class=LinearEnumerateFunction dimension=3
+
+| Index | Type                       |
+|-------|----------------------------|
+|     0 | HermiteFactory             |
+|     1 | LegendreFactory            |
+|     2 | AdaptiveStieltjesAlgorithm |
+

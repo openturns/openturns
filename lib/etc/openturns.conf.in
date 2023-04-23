@@ -379,6 +379,7 @@
   <Sample-CommentMarkers         value_str="#"    />
   <Sample-PrintEllipsisSize      value_int="3"    />
   <Sample-PrintEllipsisThreshold value_int="1000" />
+  <Sample-PrintFormat            value_str="{:.7g}" />
   <Sample-SmallKendallTau        value_int="23"   />
 
   <!-- OT::DomainImplementation parameters -->
@@ -735,8 +736,17 @@
   <FunctionalChaosAlgorithm-Sparse                 value_bool="false" />
   <FunctionalChaosAlgorithm-FittingAlgorithm       value_str="CorrectedLeaveOneOut" />
 
+  <!-- OT::FunctionalChaosResult parameters -->
+  <FunctionalChaosResult-PrintEllipsisSize      value_int="3"    />
+  <FunctionalChaosResult-PrintEllipsisThreshold value_int="1000" />
+  <FunctionalChaosResult-PrintFormat            value_str="{:.7g}" />
+  <FunctionalChaosResult-PrintColumnWidth       value_int="15" />
+
   <!-- OT::FunctionalChaosSobolIndices parameters -->
   <FunctionalChaosSobolIndices-VariancePartThreshold value_float="1.0e-2" />
+  <FunctionalChaosSobolIndices-PrintFormat           value_str="{:.6f}" />
+  <FunctionalChaosSobolIndices-MaximumNumberOfOutput value_int="1000" />
+  <FunctionalChaosSobolIndices-PrintColumnWidth value_int="15" />
 
   <!-- OT::LeastSquaresExpansion parameters -->
   <LeastSquaresExpansion-DecompositionMethod       value_str="QR" />

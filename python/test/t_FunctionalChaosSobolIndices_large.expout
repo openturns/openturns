@@ -1,0 +1,501 @@
+FunctionalChaosSobolIndices
+- input dimension=4
+- output dimension=1
+- basis size=36
+- mean=[-8.29758]
+- std-dev=[0.589354]
+
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983584      |
+|     1 | [1,0,0,0]     | 0.0116691     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121919     | 0.0125743     |
+|     1 | Ks            | 0.00367959    | 0.00404365    |
+|     2 | Zv            | 0.983585      | 0.983609      |
+|     3 | Zm            | 0.000149306   | 0.000173132   |
+
+
+<ul>
+  <li>input dimension: 4</li>
+  <li>output dimension: 1</li>
+  <li>basis size: 36</li>
+  <li>mean: [-8.29758]</li>
+  <li>std-dev: [0.589354]</li>
+</ul>
+<table>
+  <tr>
+    <th>Input</th>
+    <th>Variable</th>
+    <th>Sobol' index</th>
+    <th>Total index</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>Q</td>
+    <td>0.012192</td>
+    <td>0.012574</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Ks</td>
+    <td>0.003680</td>
+    <td>0.004044</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Zv</td>
+    <td>0.983585</td>
+    <td>0.983609</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Zm</td>
+    <td>0.000149</td>
+    <td>0.000173</td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <th>Index</th>
+    <th>Multi-index</th>
+    <th>Part of variance</th>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>[0,0,1,0]</td>
+    <td>0.983584</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>[1,0,0,0]</td>
+    <td>0.011669</td>
+  </tr>
+</table>
+
+FunctionalChaosSobolIndices
+- input dimension=4
+- output dimension=1
+- basis size=36
+- mean=[-8.29758]
+- std-dev=[0.589354]
+
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983584      |
+|     1 | [1,0,0,0]     | 0.0116691     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121919     | 0.0125743     |
+|     1 | Ks            | 0.00367959    | 0.00404365    |
+|     2 | Zv            | 0.983585      | 0.983609      |
+|     3 | Zm            | 0.000149306   | 0.000173132   |
+
+
+FunctionalChaosSobolIndices
+- input dimension=4
+- output dimension=5
+- basis size=16
+- mean=[-8.29756,-7.29756,-6.29756,-5.29756,-4.29756]
+- std-dev=[0.589092,0.589092,0.589092,0.589092,0.589092]
+
+Marginal: 0
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983677      |
+|     1 | [1,0,0,0]     | 0.0117846     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121182     | 0.0124378     |
+|     1 | Ks            | 0.00369201    | 0.0040598     |
+|     2 | Zv            | 0.983677      | 0.983677      |
+|     3 | Zm            | 0.000144733   | 0.000193126   |
+
+Marginal: 1
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983677      |
+|     1 | [1,0,0,0]     | 0.0117846     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121182     | 0.0124378     |
+|     1 | Ks            | 0.00369201    | 0.0040598     |
+|     2 | Zv            | 0.983677      | 0.983677      |
+|     3 | Zm            | 0.000144733   | 0.000193126   |
+
+Marginal: 2
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983677      |
+|     1 | [1,0,0,0]     | 0.0117846     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121182     | 0.0124378     |
+|     1 | Ks            | 0.00369201    | 0.0040598     |
+|     2 | Zv            | 0.983677      | 0.983677      |
+|     3 | Zm            | 0.000144733   | 0.000193126   |
+
+Marginal: 3
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983677      |
+|     1 | [1,0,0,0]     | 0.0117846     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121182     | 0.0124378     |
+|     1 | Ks            | 0.00369201    | 0.0040598     |
+|     2 | Zv            | 0.983677      | 0.983677      |
+|     3 | Zm            | 0.000144733   | 0.000193126   |
+
+Marginal: 4
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983677      |
+|     1 | [1,0,0,0]     | 0.0117846     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121182     | 0.0124378     |
+|     1 | Ks            | 0.00369201    | 0.0040598     |
+|     2 | Zv            | 0.983677      | 0.983677      |
+|     3 | Zm            | 0.000144733   | 0.000193126   |
+
+
+<ul>
+  <li>input dimension: 4</li>
+  <li>output dimension: 5</li>
+  <li>basis size: 16</li>
+  <li>mean: [-8.29756,-7.29756,-6.29756,-5.29756,-4.29756]</li>
+  <li>std-dev: [0.589092,0.589092,0.589092,0.589092,0.589092]</li>
+</ul>
+Output marginal: 0
+<table>
+  <tr>
+    <th>Input</th>
+    <th>Variable</th>
+    <th>Sobol' index</th>
+    <th>Total index</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>Q</td>
+    <td>0.012118</td>
+    <td>0.012438</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Ks</td>
+    <td>0.003692</td>
+    <td>0.004060</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Zv</td>
+    <td>0.983677</td>
+    <td>0.983677</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Zm</td>
+    <td>0.000145</td>
+    <td>0.000193</td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <th>Index</th>
+    <th>Multi-index</th>
+    <th>Part of variance</th>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>[0,0,1,0]</td>
+    <td>0.983677</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>[1,0,0,0]</td>
+    <td>0.011785</td>
+  </tr>
+</table>
+Output marginal: 1
+<table>
+  <tr>
+    <th>Input</th>
+    <th>Variable</th>
+    <th>Sobol' index</th>
+    <th>Total index</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>Q</td>
+    <td>0.012118</td>
+    <td>0.012438</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Ks</td>
+    <td>0.003692</td>
+    <td>0.004060</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Zv</td>
+    <td>0.983677</td>
+    <td>0.983677</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Zm</td>
+    <td>0.000145</td>
+    <td>0.000193</td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <th>Index</th>
+    <th>Multi-index</th>
+    <th>Part of variance</th>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>[0,0,1,0]</td>
+    <td>0.983677</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>[1,0,0,0]</td>
+    <td>0.011785</td>
+  </tr>
+</table>
+Output marginal: 2
+<table>
+  <tr>
+    <th>Input</th>
+    <th>Variable</th>
+    <th>Sobol' index</th>
+    <th>Total index</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>Q</td>
+    <td>0.012118</td>
+    <td>0.012438</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Ks</td>
+    <td>0.003692</td>
+    <td>0.004060</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Zv</td>
+    <td>0.983677</td>
+    <td>0.983677</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Zm</td>
+    <td>0.000145</td>
+    <td>0.000193</td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <th>Index</th>
+    <th>Multi-index</th>
+    <th>Part of variance</th>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>[0,0,1,0]</td>
+    <td>0.983677</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>[1,0,0,0]</td>
+    <td>0.011785</td>
+  </tr>
+</table>
+Output marginal: 3
+<table>
+  <tr>
+    <th>Input</th>
+    <th>Variable</th>
+    <th>Sobol' index</th>
+    <th>Total index</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>Q</td>
+    <td>0.012118</td>
+    <td>0.012438</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Ks</td>
+    <td>0.003692</td>
+    <td>0.004060</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Zv</td>
+    <td>0.983677</td>
+    <td>0.983677</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Zm</td>
+    <td>0.000145</td>
+    <td>0.000193</td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <th>Index</th>
+    <th>Multi-index</th>
+    <th>Part of variance</th>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>[0,0,1,0]</td>
+    <td>0.983677</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>[1,0,0,0]</td>
+    <td>0.011785</td>
+  </tr>
+</table>
+Output marginal: 4
+<table>
+  <tr>
+    <th>Input</th>
+    <th>Variable</th>
+    <th>Sobol' index</th>
+    <th>Total index</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>Q</td>
+    <td>0.012118</td>
+    <td>0.012438</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Ks</td>
+    <td>0.003692</td>
+    <td>0.004060</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Zv</td>
+    <td>0.983677</td>
+    <td>0.983677</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Zm</td>
+    <td>0.000145</td>
+    <td>0.000193</td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <th>Index</th>
+    <th>Multi-index</th>
+    <th>Part of variance</th>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>[0,0,1,0]</td>
+    <td>0.983677</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>[1,0,0,0]</td>
+    <td>0.011785</td>
+  </tr>
+</table>
+
+FunctionalChaosSobolIndices
+- input dimension=4
+- output dimension=5
+- basis size=16
+- mean=[-8.29756,-7.29756,-6.29756,-5.29756,-4.29756]
+- std-dev=[0.589092,0.589092,0.589092,0.589092,0.589092]
+
+Marginal: 0
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983677      |
+|     1 | [1,0,0,0]     | 0.0117846     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121182     | 0.0124378     |
+|     1 | Ks            | 0.00369201    | 0.0040598     |
+|     2 | Zv            | 0.983677      | 0.983677      |
+|     3 | Zm            | 0.000144733   | 0.000193126   |
+
+Marginal: 1
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983677      |
+|     1 | [1,0,0,0]     | 0.0117846     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121182     | 0.0124378     |
+|     1 | Ks            | 0.00369201    | 0.0040598     |
+|     2 | Zv            | 0.983677      | 0.983677      |
+|     3 | Zm            | 0.000144733   | 0.000193126   |
+
+Marginal: 2
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983677      |
+|     1 | [1,0,0,0]     | 0.0117846     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121182     | 0.0124378     |
+|     1 | Ks            | 0.00369201    | 0.0040598     |
+|     2 | Zv            | 0.983677      | 0.983677      |
+|     3 | Zm            | 0.000144733   | 0.000193126   |
+
+Marginal: 3
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983677      |
+|     1 | [1,0,0,0]     | 0.0117846     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121182     | 0.0124378     |
+|     1 | Ks            | 0.00369201    | 0.0040598     |
+|     2 | Zv            | 0.983677      | 0.983677      |
+|     3 | Zm            | 0.000144733   | 0.000193126   |
+
+Marginal: 4
+| Index | Multi-index   | Variance part |
+|-------|---------------|---------------|
+|     3 | [0,0,1,0]     | 0.983677      |
+|     1 | [1,0,0,0]     | 0.0117846     |
+
+| Input | Name          | Sobol' index  | Total index   |
+|-------|---------------|---------------|---------------|
+|     0 | Q             | 0.0121182     | 0.0124378     |
+|     1 | Ks            | 0.00369201    | 0.0040598     |
+|     2 | Zv            | 0.983677      | 0.983677      |
+|     3 | Zm            | 0.000144733   | 0.000193126   |
+
+

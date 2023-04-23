@@ -157,32 +157,43 @@ def compute_Q2_score_by_kfold(X, Y, basis, totalDegree, distribution, n_folds=5)
 
 # %%
 # We start by generating the input and output sample. We use a sample size equal to 1000.
+
+# %%
 im = ishigami_function.IshigamiModel()
-im.distributionX.setDescription(["$X_0$", "$X_1$", "$X_2$"])
+im.distributionX.setDescription(["X0", "X1", "X2"])
 im.model.setOutputDescription(["$Y$"])
 ot.RandomGenerator.SetSeed(0)
 sample_size = 1000
 X = im.distributionX.getSample(sample_size)
 print("Input sample:")
-print(X[:5])
+X[:5]
+
+# %%
 Y = im.model(X)
-Y.setDescription(["$Y$"])
+Y.setDescription(["Y"])
 print("Output sample:")
-print(Y[:5])
+Y[:5]
 
 
 # %%
 # We compute a polynomial chaos decomposition with a total degree equal to 5.
 # In order to reduce the number of coefficients, the `compute_sparse_least_squares_chaos`
 # function creates a sparse chaos using regression and the LARS method.
+
+# %%
 dimension = im.distributionX.getDimension()
 basis = ot.OrthogonalProductPolynomialFactory(
     [im.distributionX.getMarginal(i) for i in range(dimension)]
 )
 totalDegree = 5  # Polynomial degree
 result = compute_sparse_least_squares_chaos(X, Y, basis, totalDegree, im.distributionX)
-metamodel = result.getMetaModel()
+result
 
+# %%
+# Get the metamodel.
+
+# %%
+metamodel = result.getMetaModel()
 
 # %%
 # In order to validate our polynomial chaos, we generate an extra pair of
