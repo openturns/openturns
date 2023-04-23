@@ -124,7 +124,7 @@ String FunctionalChaosResult::__str__(const String & offset) const
     bool mustPrint = false;
     for (UnsignedInteger m = 0; m < outputDimension; ++ m)
     {
-      if (std::abs(alpha_k_[k][m]))
+      if (std::abs(alpha_k_[k][m]) > verboseThreshold)
       {
         mustPrint = true;
         break;
