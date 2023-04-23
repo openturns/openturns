@@ -732,6 +732,10 @@
   <FunctionalChaosAlgorithm-FittingAlgorithm       value_str="CorrectedLeaveOneOut" />
 
   <!-- OT::FunctionalChaosSobolIndices parameters -->
+  <FunctionalChaosResult-MaximumPrint         value_int="1000" />
+  <FunctionalChaosResult-CoefficientThreshold value_float="1.0e-6" />
+
+  <!-- OT::FunctionalChaosSobolIndices parameters -->
   <FunctionalChaosSobolIndices-VariancePartThreshold value_float="1.0e-2" />
 
   <!-- OT::LinearModelAlgorithm parameters -->

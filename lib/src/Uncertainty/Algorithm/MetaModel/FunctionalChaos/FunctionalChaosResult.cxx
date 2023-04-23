@@ -105,8 +105,46 @@ String FunctionalChaosResult::__repr__() const
 String FunctionalChaosResult::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "meta model=" << metaModel_ << Os::GetEndOfLine() << offset;
-  oss << "orthogonal basis=" << orthogonalBasis_;
+  const int basisSize = I_.getSize();
+  EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
+  const UnsignedInteger outputDimension = metaModel_.getOutputDimension();
+  const UnsignedInteger inputDimension = distribution_.getDimension();
+  oss << " input dimension: " << inputDimension << "\n"
+      << " output dimension: " << outputDimension << "\n"
+      << " basis size: " << basisSize << "\n";
+  oss << "| Index | Rank | Multi-index | Value             |" << "\n";
+  oss << "|-------|------|-------------|-------------------|" << "\n";
+  const Scalar verboseThreshold = ResourceMap::GetAsScalar("FunctionalChaosResult-CoefficientThreshold");
+  const int verboseMaximumIndices = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-MaximumPrint");
+  int printIndex = 0;
+  for (UnsignedInteger k = 0; k < basisSize; ++ k)
+  {
+    const int rank = I_[k];
+    const Indices multiindex = enumerateFunction(rank);
+    bool mustPrint = false;
+    for (UnsignedInteger m = 0; m < outputDimension; ++ m)
+    {
+      if (std::abs(alpha_k_[k][m]))
+      {
+        mustPrint = true;
+        break;
+      }
+    }
+    if (mustPrint)
+    {
+      oss << "|" << std::setw(6) << k << " |" << std::setw(5) << rank << " |" 
+      << std::setw(12) <<  multiindex << " | [" << std::setw(15);
+      for (UnsignedInteger m = 0; m < outputDimension; ++ m)
+      {
+        oss << alpha_k_[k][m];
+        if (m != outputDimension - 1)
+            oss << ", ";
+      }
+      oss << "] |\n";
+    }
+    printIndex += 1;
+    if (printIndex > verboseMaximumIndices) break;
+  }
   return oss;
 }
 

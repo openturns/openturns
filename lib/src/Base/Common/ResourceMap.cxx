@@ -1359,6 +1359,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("FunctionalChaosAlgorithm-Sparse", false);
   addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut");
 
+  // FunctionalChaosResult parameters //
+  addAsUnsignedInteger("FunctionalChaosResult-MaximumPrint", 1000);
+  addAsScalar("FunctionalChaosResult-CoefficientThreshold", 1.0e-6);
+
   // FunctionalChaosSobolIndices parameters //
   addAsScalar("FunctionalChaosSobolIndices-VariancePartThreshold", 1.0e-2);
 
