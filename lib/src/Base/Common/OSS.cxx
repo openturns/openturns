@@ -43,4 +43,22 @@ void OSS::clear()
   oss_.clear();
 }
 
+/* String formatter with blank space right padding */
+String OSS::PadString(const String & string, const UnsignedInteger columnWidth)
+{
+  const UnsignedInteger rightPadding = string.size() < columnWidth ? columnWidth - string.size() : 0;
+  OSS oss;
+  oss << string << String(rightPadding, ' ');
+  return oss;
+}
+
+/* Repeat a String */
+String OSS::RepeatString(const UnsignedInteger repeatNb, const String & string)
+{
+  String result = OSS();
+  for (UnsignedInteger i = 0 ; i < repeatNb; ++ i)
+    result += string;
+  return result;
+}
+
 END_NAMESPACE_OPENTURNS

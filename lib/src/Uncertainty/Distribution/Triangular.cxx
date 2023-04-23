@@ -310,7 +310,9 @@ void Triangular::computeCovariance() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Triangular::getStandardRepresentative() const
 {
-  return new Triangular(-1.0, ((m_ - a_) + (m_ - b_)) / (b_ - a_), 1.0);
+  Triangular standard(-1.0, ((m_ - a_) + (m_ - b_)) / (b_ - a_), 1.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Parameters value accessor */

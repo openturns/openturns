@@ -325,7 +325,9 @@ Point InverseGamma::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution InverseGamma::getStandardRepresentative() const
 {
-  return new InverseGamma(k_, 1.0);
+  InverseGamma standard(k_, 1.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

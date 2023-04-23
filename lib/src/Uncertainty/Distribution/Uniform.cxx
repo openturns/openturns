@@ -295,7 +295,9 @@ void Uniform::computeCovariance() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Uniform::getStandardRepresentative() const
 {
-  return new Uniform(-1.0, 1.0);
+  Uniform standard(-1.0, 1.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Parameters value accessor */

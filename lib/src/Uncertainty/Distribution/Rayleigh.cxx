@@ -248,7 +248,9 @@ Point Rayleigh::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Rayleigh::getStandardRepresentative() const
 {
-  return new Rayleigh(1.0, 0.0);
+  Rayleigh standard(1.0, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

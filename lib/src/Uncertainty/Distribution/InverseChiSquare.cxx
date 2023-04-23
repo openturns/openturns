@@ -290,7 +290,9 @@ Point InverseChiSquare::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution InverseChiSquare::getStandardRepresentative() const
 {
-  return new InverseChiSquare(nu_);
+  InverseChiSquare standard(nu_);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

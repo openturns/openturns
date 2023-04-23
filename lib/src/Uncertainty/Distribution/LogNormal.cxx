@@ -335,7 +335,9 @@ Point LogNormal::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution LogNormal::getStandardRepresentative() const
 {
-  return new LogNormal(muLog_, sigmaLog_, 0.0);
+  LogNormal standard(muLog_, sigmaLog_, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

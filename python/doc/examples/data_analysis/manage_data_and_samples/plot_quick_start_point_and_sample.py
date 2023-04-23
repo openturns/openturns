@@ -6,7 +6,7 @@ A quick start guide to the `Point` and `Sample` classes
 # Abstract
 # --------
 #
-# In this example, we present the `Point` and `Sample` classes, two fundamental objects in the library.
+# In this example, we present the :class:`~openturns.Point` and :class:`~openturns.Sample` classes, two fundamental objects in the library.
 # We present the principles behind these classes and the way to create and use these objects.
 # We show how to extract a row or a column with the slicing operator.
 # We show how these objects interacts with Python variables and with the `numpy` module.
@@ -74,7 +74,7 @@ p.getDimension()
 #
 # A `Sample` can be seen as an array of with :math:`N` rows and :math:`D` columns.
 #
-# *Remark.* The `ProcessSample` class can be used to manage a sample of stochastic processes.
+# *Remark.* The :class:`~openturns.ProcessSample` class can be used to manage a sample of stochastic processes.
 
 # %%
 # The script below creates a `Sample` with size :math:`N=5` and dimension :math:`D=3`.
@@ -95,6 +95,16 @@ data.getDimension()
 # %%
 data[3, 2] = 32
 data
+
+# %%
+# Notice that the rendering is different when we use the `print` statement.
+
+# %%
+print(data)
+
+# %%
+# We can customize the format used to print the floating point numbers
+# with the `Sample-PrintFormat` key of the :class:`~openturns.ResourceMap`.
 
 # %%
 # Get a row or a column of a `Sample`
@@ -267,10 +277,13 @@ sample = ot.Sample([u[i: i + 5] for i in range(len(u) // 5)])
 sample
 
 # %%
-# If we do not set the optional `size` parameter, the library cannot solve the case and an InvalidArgumentException is generated.
+# If we do not set the optional `size` parameter, the library cannot solve the
+# case and an `InvalidArgumentException` is generated.
+# More precisely, the code::
 #
-
-# %%
-# Generates an expected exception
-# TypeError: InvalidArgumentException : Invalid array dimension: 1
-# sample = ot.Sample (u)
+#     sample = ot.Sample(u)
+#
+# produces the exception::
+#
+#     TypeError: InvalidArgumentException : Invalid array dimension: 1
+#

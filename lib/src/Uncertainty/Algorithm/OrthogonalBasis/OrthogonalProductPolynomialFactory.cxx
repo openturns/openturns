@@ -31,6 +31,7 @@
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -154,6 +155,65 @@ String OrthogonalProductPolynomialFactory::__repr__() const
          << " measure=" << measure_;
 }
 
+String OrthogonalProductPolynomialFactory::__str__(const String & /*offset*/) const
+{
+  return __repr_markdown__();
+}
+
+/* Get the input marginal polynomial class name */
+String OrthogonalProductPolynomialFactory::getMarginalPolynomialName(const UnsignedInteger marginalIndex) const
+{
+  String className;
+  const OrthogonalUniVariatePolynomialFamily univariatePolynomial(coll_[marginalIndex]);
+  const String basicClassName(univariatePolynomial.getImplementation()->getClassName());
+  if (basicClassName == "StandardDistributionPolynomialFactory")
+  {
+    const StandardDistributionPolynomialFactory* p_factory = dynamic_cast<const StandardDistributionPolynomialFactory*>(univariatePolynomial.getImplementation().get());
+    if (p_factory)
+    {
+      const Bool hasSpecificFamily = p_factory->getHasSpecificFamily();
+      if (hasSpecificFamily)
+        className = p_factory->getSpecificFamily().getImplementation()->getClassName();
+      else
+        className = p_factory->getOrthonormalizationAlgorithm().getImplementation()->getClassName();
+    }
+    else
+      className = basicClassName;
+  }
+  else
+    className = basicClassName;
+  return className;
+}
+
+String OrthogonalProductPolynomialFactory::__repr_markdown__() const
+{
+  OSS oss(false);
+  oss << getClassName() << Os::GetEndOfLine();
+  oss << "- measure=" << getMeasure().getClassName() << Os::GetEndOfLine();
+  oss << "- isOrthogonal=" << isOrthogonal() << Os::GetEndOfLine();
+  oss << "- enumerateFunction=" << phi_ << Os::GetEndOfLine();
+  oss << Os::GetEndOfLine();
+  // Compute maximum column width
+  const UnsignedInteger size = coll_.getSize();
+  String intermediateString;
+  UnsignedInteger maximumColumnWidth = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    intermediateString = OSS() << " " << getMarginalPolynomialName(i) << " ";
+    if (intermediateString.size() > maximumColumnWidth) 
+      maximumColumnWidth = intermediateString.size();
+  }
+  // Create table
+  oss << "| Index |" << OSS::PadString(" Type", maximumColumnWidth) << "|" << Os::GetEndOfLine();
+  oss << "|-------|" << String(maximumColumnWidth, '-') << "|" << Os::GetEndOfLine();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    oss << "| " << std::setw(5) << i << " |";
+    intermediateString = OSS() << " " << getMarginalPolynomialName(i) << " ";
+    oss << OSS::PadString(intermediateString, maximumColumnWidth) << "|" << Os::GetEndOfLine();
+  }
+  return oss;
+}
 
 /* Method save() stores the object through the StorageManager */
 void OrthogonalProductPolynomialFactory::save(Advocate & adv) const

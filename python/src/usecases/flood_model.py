@@ -94,23 +94,25 @@ class FloodModel:
         self.Q = ot.TruncatedDistribution(
             ot.Gumbel(558.0, 1013.0), 0, ot.TruncatedDistribution.LOWER
         )
-        self.Q.setDescription(["Q (m3/s)"])
         self.Q.setName("Q")
+        self.Q.setDescription(["Q (m3/s)"])
 
         # Ks
         self.Ks = ot.TruncatedDistribution(
             ot.Normal(30.0, 7.5), 0, ot.TruncatedDistribution.LOWER
         )
         self.Ks.setName("Ks")
+        self.Ks.setDescription(["Ks"])
 
         # Zv
         self.Zv = ot.Uniform(49.0, 51.0)
         self.Zv.setName("Zv")
+        self.Zv.setDescription(["Zv (m)"])
 
         # Zm
         self.Zm = ot.Uniform(54.0, 56.0)
-        # Zm.setDescription(["Zm (m)"])
         self.Zm.setName("Zm")
+        self.Zm.setDescription(["Zm (m)"])
 
         g = ot.SymbolicFunction(
             ["Q", "Ks", "Zv", "Zm", "B", "L"],

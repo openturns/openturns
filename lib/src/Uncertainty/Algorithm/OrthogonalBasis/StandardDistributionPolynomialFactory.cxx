@@ -271,6 +271,25 @@ String StandardDistributionPolynomialFactory::__repr__() const
   return oss;
 }
 
+/* hasSpecificFamily_ accessor */
+Bool StandardDistributionPolynomialFactory::getHasSpecificFamily() const
+{
+  return hasSpecificFamily_;
+}
+
+/** orthonormalizationAlgorithm_ accessor */
+OrthonormalizationAlgorithm StandardDistributionPolynomialFactory::getOrthonormalizationAlgorithm() const
+{
+  return orthonormalizationAlgorithm_;
+}
+
+/** specificFamily_ accessor */
+OrthogonalUniVariatePolynomialFamily StandardDistributionPolynomialFactory::getSpecificFamily() const
+{
+  return specificFamily_;
+}
+
+
 /* Method save() stores the object through the StorageManager */
 void StandardDistributionPolynomialFactory::save(Advocate & adv) const
 {

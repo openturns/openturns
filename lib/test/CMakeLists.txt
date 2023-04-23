@@ -651,6 +651,7 @@ ot_check_test (GeneralLinearModelAlgorithm_std IGNOREOUT)
 ot_check_test (LinearModelAlgorithm_std)
 ot_check_test (LinearModelAnalysis_std)
 ot_check_test (KrigingAlgorithm_isotropic_std IGNOREOUT)
+ot_check_test (OrthogonalProductPolynomialFactory_std)
 
 if (HMAT_FOUND)
 ot_check_test (KrigingAlgorithm_std_hmat)

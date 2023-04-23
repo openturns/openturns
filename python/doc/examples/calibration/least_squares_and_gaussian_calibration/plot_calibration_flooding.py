@@ -65,11 +65,10 @@ ot.Log.Show(ot.Log.NONE)
 # :class:`~openturns.usecases.flood_model.FloodModel`
 # class.
 fm = flood_model.FloodModel()
-print(fm.data)
 Qobs = fm.data[:, 0]
 Hobs = fm.data[:, 1]
 nbobs = fm.data.getSize()
-
+fm.data
 
 # %%
 # Create the physical model
@@ -86,6 +85,10 @@ nbobs = fm.data.getSize()
 #
 # In these cases, we return an infinite number, so that the optimization
 # algorithm does not get trapped.
+
+# %%
+
+
 def functionFlooding(X):
     L = 5.0e3
     B = 300.0

@@ -126,7 +126,7 @@ Sample.BuildFromDataFrame = __Sample_BuildFromDataFrame
 
 def __Sample_repr_html(self):
     """Get HTML representation."""
-    html = '<TABLE>'
+    html = '<table>\n'
     desc = self.getDescription()
     ell_threshold = openturns.common.ResourceMap.GetAsUnsignedInteger("Sample-PrintEllipsisThreshold")
     ell_size = openturns.common.ResourceMap.GetAsUnsignedInteger("Sample-PrintEllipsisSize")
@@ -135,37 +135,37 @@ def __Sample_repr_html(self):
     ellipsis = size * dim > ell_threshold
     if not desc.isBlank():
         if ellipsis and dim > 2 * ell_size:
-            html += '<TR><TH></TH><TH>'
-            html += '</TH><TH>'.join(desc[0:ell_size])
-            html += '</TH><TH COLSPAN="%d">...</TH><TH>' % (dim - 2 * ell_size)
-            html += '</TH><TH>'.join(desc[-ell_size:])
-            html += '</TH></TR>\n'
+            html += '  <tr><th></th><th>'
+            html += '</th><th>'.join(desc[0:ell_size])
+            html += f'</th><th colspan="{dim - 2 * ell_size}">...</th><th>'
+            html += '</th><th>'.join(desc[-ell_size:])
+            html += '</th></tr>\n'
         else:
-            html += '<TR><TD></TD><TH>' + '</TH><TH>'.join(desc) + '</TH></TR>\n'
+            html += '  <tr><td></td><th>' + '</th><th>'.join(desc) + '</th></tr>\n'
     for i in range(size):
         if ellipsis and size > 2 * ell_size:
             if i == ell_size:
-                html += '<TR><TD COLSPAN="%d">...</TD></TR>\n' % (dim + 1)
+                html += f'<tr><td colspan="{dim + 1}">...</td></tr>\n'
                 continue
             else:
                 if i > ell_size and i < size - ell_size:
                     continue
         # Write row
-        fmt = "%.7g"
+        fmt = openturns.common.ResourceMap.GetAsString("Sample-PrintFormat")
         if ellipsis and dim > 2 * ell_size:
-            html += '<TR><TH>' + str(i)
+            html += '  <tr><th>' + str(i)
             if dim > 0:
-                html += '</TH><TD>'
-            html += '</TD><TD>'.join([fmt % x for x in self[i, 0:ell_size]])
-            html += '<TD COLSPAN="%d">...</TD><TD>' % (dim - 2 * ell_size)
-            html += '</TD><TD>'.join([fmt % x for x in self[i, -ell_size:]])
-            html += '</TD></TR>\n'
+                html += '</th><td>'
+            html += '</td><td>'.join([fmt.format(x) for x in self[i, 0:ell_size]])
+            html += f'<td colspan="{dim - 2 * ell_size}">...</td><td>'
+            html += '</td><td>'.join([fmt.format(x) for x in self[i, -ell_size:]])
+            html += '</td></tr>\n'
         else:
-            html += '<TR><TH>' + str(i)
+            html += '  <tr><th>' + str(i)
             if dim > 0:
-                html += '</TH><TD>' + '</TD><TD>'.join([fmt % x for x in self[i]])
-            html += '</TD></TR>\n'
-    html += '</TABLE>'
+                html += '</th><td>' + '</td><td>'.join([fmt.format(x) for x in self[i]])
+            html += '</td></tr>\n'
+    html += '</table>'
     return html
 
 Sample._repr_html_ = __Sample_repr_html

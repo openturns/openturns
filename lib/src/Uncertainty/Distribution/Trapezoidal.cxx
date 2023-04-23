@@ -388,7 +388,9 @@ Point Trapezoidal::getKurtosis() const /*throw(NotDefinedException)*/
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Trapezoidal::getStandardRepresentative() const
 {
-  return new Trapezoidal(-1.0, 1.0 - 2.0 * (d_ - b_) / (d_ - a_), 1.0 - 2.0 * (d_ - c_) / (d_ - a_), 1.0);
+  Trapezoidal standard(-1.0, 1.0 - 2.0 * (d_ - b_) / (d_ - a_), 1.0 - 2.0 * (d_ - c_) / (d_ - a_), 1.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

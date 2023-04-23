@@ -21,8 +21,11 @@
 #include <algorithm>
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/FunctionalChaosSobolIndices.hxx"
+#include "openturns/FunctionalChaosRandomVector.hxx"
 #include "openturns/EnumerateFunction.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/OSS.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -60,116 +63,113 @@ String FunctionalChaosSobolIndices::__repr__() const
 }
 
 
-inline bool varianceComparison(const std::pair<UnsignedInteger, Scalar> &a, const std::pair<UnsignedInteger, Scalar> &b)
+inline Bool varianceComparison(const std::pair<UnsignedInteger, Scalar> &a, const std::pair<UnsignedInteger, Scalar> &b)
 {
   return a.second > b.second;
 }
 
 String FunctionalChaosSobolIndices::__str__(const String & /*offset*/) const
 {
-  const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
+  return __repr_markdown__();
+}
+
+String FunctionalChaosSobolIndices::__repr_markdown__() const
+{
+  const Distribution inputDistribution = functionalChaosResult_.getDistribution();
+  const UnsignedInteger inputDimension = inputDistribution.getDimension();
+  const Description inputDescription = inputDistribution.getDescription();
   const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
-  OSS oss;
+  OSS oss(false);
+  oss << FunctionalChaosSobolIndices::GetClassName() << Os::GetEndOfLine();
 
   const Indices indices(functionalChaosResult_.getIndices());
   const Sample coefficients(functionalChaosResult_.getCoefficients());
   const UnsignedInteger basisSize = indices.getSize();
+  EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
 
-  // compute the variance
-  Point variance(outputDimension);
-  Point mean(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    for (UnsignedInteger k = 0; k < basisSize; ++ k)
-      // Take into account only non-zero indices as the null index is the mean of the vector
-      if (indices[k] > 0)
-        variance[i] += coefficients(k, i) * coefficients(k, i);
-      else
-        mean[i] = coefficients(k, i);
-  }
-
-  // standard deviation
+  // compute the mean, the variance, the standard deviation
+  const FunctionalChaosRandomVector fcRandomVector(functionalChaosResult_);
+  const Point mean(fcRandomVector.getMean());
+  const CovarianceMatrix covarianceMatrix(fcRandomVector.getCovariance());
   Point stdDev(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++ i)
-    stdDev[i] = std::sqrt(variance[i]);
+  for (UnsignedInteger i = 0; i < outputDimension; ++i)
+    stdDev[i] = std::sqrt(covarianceMatrix(i, i));
 
   // quick summary
-  oss << " input dimension: " << inputDimension << "\n"
-      << " output dimension: " << outputDimension << "\n"
-      << " basis size: " << functionalChaosResult_.getReducedBasis().getSize() << "\n"
-      << " mean: " << mean.__str__() << "\n"
-      << " std-dev: " << stdDev.__str__() << "\n";
-  oss << String(60, '-') << "\n";
-  String st;
-
-  EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
+  oss << "- input dimension=" << inputDimension << Os::GetEndOfLine()
+      << "- output dimension=" << outputDimension << Os::GetEndOfLine()
+      << "- basis size=" << functionalChaosResult_.getReducedBasis().getSize() << Os::GetEndOfLine()
+      << "- mean=" << mean << Os::GetEndOfLine()
+      << "- std-dev=" << stdDev << Os::GetEndOfLine();
+  oss << Os::GetEndOfLine();
+  String intermediateString;
+  const Scalar varianceThreshold = ResourceMap::GetAsScalar("FunctionalChaosSobolIndices-VariancePartThreshold");
+  const UnsignedInteger maximumNumberOfOutput = ResourceMap::GetAsUnsignedInteger("FunctionalChaosSobolIndices-MaximumNumberOfOutput");
+  const UnsignedInteger columnWidth = ResourceMap::GetAsUnsignedInteger("FunctionalChaosSobolIndices-PrintColumnWidth");
 
   for (UnsignedInteger m = 0; m < outputDimension; ++ m)
   {
-    UnsignedInteger maxdegree = 0;
-
-    std::vector< std::pair<UnsignedInteger, Scalar > > varianceOrder;
-
-    // compute part of contribution of each basis term
-    for (UnsignedInteger i = 1; i < basisSize; ++ i)
-    {
-      Scalar coefI = coefficients(i, m);
-      Indices multiIndices(enumerateFunction(indices[i]));
-      UnsignedInteger degreeI = 0;
-      for (UnsignedInteger k = 0; k < multiIndices.getSize(); ++ k) degreeI += multiIndices[k];
-
-      maxdegree = std::max(maxdegree, degreeI);
-      const Scalar varianceRatio = coefI * coefI / variance[m];
-      varianceOrder.push_back(std::pair<UnsignedInteger, Scalar >(i, varianceRatio));
-    }
-
-    // sort basis terms by descending variance contribution
-    std::sort(varianceOrder.begin(), varianceOrder.end(), varianceComparison);
-
+    if (m > maximumNumberOfOutput) break;
     if (outputDimension > 1)
-      oss << "Marginal: " << m << "\n";
+      oss << "Marginal: " << m << Os::GetEndOfLine();
+
+    const Point partOfVariance(getPartOfVariance(m));
+    const Sample partOfVarianceSample(Sample::BuildFromPoint(partOfVariance));
+    const Indices order(partOfVarianceSample.argsort(false));
 
     // table of part of variance for each basis term
-    oss << "Index   | Multi-indice                  | Part of variance  \n";
-    oss << String(60, '-') << "\n";
-    for (UnsignedInteger i = 0; i < varianceOrder.size(); ++ i)
+    // Print header
+    oss << "| Index |"
+        << OSS::PadString(" Multi-index", columnWidth) << "|"
+        << OSS::PadString(" Variance part", columnWidth) << "|"
+        << Os::GetEndOfLine();
+    // Print dashes
+    oss << "|-------|";
+    const String dashesSeparator(String(columnWidth, '-') + "|");
+    oss << dashesSeparator << dashesSeparator << Os::GetEndOfLine();
+    // Print table content
+    for (UnsignedInteger i = 0; i < basisSize; ++ i)
     {
-      // stop when the variance contribution becomes less than epsilon
-      if (varianceOrder[i].second < ResourceMap::GetAsScalar("FunctionalChaosSobolIndices-VariancePartThreshold"))
-        break;
+      const UnsignedInteger sortedIndex = order[i];
+      const UnsignedInteger rankIndex = indices[sortedIndex];
+      // stop when the part of variance becomes less than epsilon
+      if (partOfVariance[sortedIndex] < varianceThreshold) break;      
+      Indices multiIndices(enumerateFunction(rankIndex));
 
-      Indices multiIndices(enumerateFunction(indices[varianceOrder[i].first]));
+      oss << "|" << std::setw(6) << sortedIndex << " |";
 
-      st = OSS() << std::setw(7) << varianceOrder[i].first;
-      oss << st << " | ";
+      intermediateString = OSS() << " " << multiIndices;
+      oss << OSS::PadString(intermediateString, columnWidth) << "|";
 
-      st = OSS() << multiIndices;
-      oss << st << String(st.size() < 29 ? 29 - st.size() : 0, ' ') << " | ";
-
-      st = OSS() << varianceOrder[i].second;
-      oss << st << "\n";
-    }
-    oss << String(60, '-') << "\n";
-    oss << "\n\n";
+      intermediateString = OSS() << " " << partOfVariance[sortedIndex];
+      oss << OSS::PadString(intermediateString, columnWidth) << "|" << Os::GetEndOfLine();
+    } // loop over the multi-indices
+    oss << Os::GetEndOfLine();
 
     // table of first/total order indices for each input
-    oss << String(60, '-') << "\n";
-    oss << "Component | Sobol' index           | Sobol' total index     \n";
-    oss << String(60, '-') << "\n";
+    // print table header
+    oss << "| Input |" << OSS::PadString(" Name", columnWidth) << "|";
+    oss << OSS::PadString(" Sobol' index", columnWidth) << "|";
+    oss << OSS::PadString(" Total index", columnWidth) << "|";
+    oss << Os::GetEndOfLine();
+    // print table dashes
+    oss << "|-------|" 
+        << dashesSeparator << dashesSeparator << dashesSeparator << Os::GetEndOfLine();
     for (UnsignedInteger i = 0; i < inputDimension; ++ i)
     {
-      st = OSS() << std::setw(9) << i;
-      oss << st << " | ";
+      oss << "|" << std::setw(6) << i << " |";
 
-      st = OSS() << getSobolIndex(i, m);
-      oss << st << String(22 - st.size(), ' ') << " | ";
+      intermediateString = OSS() << " " << inputDescription[i];
+      oss << OSS::PadString(intermediateString, columnWidth) << "|";
 
-      st = OSS() << getSobolTotalIndex(i, m);
-      oss << st << String(22 - st.size(), ' ') << "\n";
-    }
-    oss << String(60, '-') << "\n";
-    oss << "\n";
-  }
+      intermediateString = OSS() << " " << getSobolIndex(i, m);
+      oss << OSS::PadString(intermediateString, columnWidth) << "|";
+
+      intermediateString = OSS() << " " << getSobolTotalIndex(i, m);
+      oss << OSS::PadString(intermediateString, columnWidth) << "|" << Os::GetEndOfLine();
+    } // Loop over the input marginals
+    oss << Os::GetEndOfLine();
+  } // Loop over the output marginals
   return oss;
 }
 
@@ -192,7 +192,7 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variablesGroup
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
   Scalar totalVariance = 0.0;
-  bool mustInclude = false;
+  Bool mustInclude = false;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
@@ -323,7 +323,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
   Scalar totalVariance = 0.0;
-  bool mustInclude = false;
+  Bool mustInclude = false;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
@@ -373,7 +373,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
   Scalar totalVariance = 0.0;
   const UnsignedInteger groupDimension = variablesGroup.getSize();
-  bool mustInclude = false;
+  Bool mustInclude = false;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
@@ -413,6 +413,39 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
 FunctionalChaosResult FunctionalChaosSobolIndices::getFunctionalChaosResult() const
 {
   return functionalChaosResult_;
+}
+
+/** Part of variance accessor */
+Point FunctionalChaosSobolIndices::getPartOfVariance(const UnsignedInteger marginalIndex) const
+{
+  const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
+  const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
+  if (marginalIndex >= outputDimension) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
+  // Check if the measure defining the basis has an independent copula else
+  // the conditional covariance cannot be extracted from the decomposition
+  if (!functionalChaosResult_.getOrthogonalBasis().getMeasure().hasIndependentCopula()) throw InternalException(HERE) << "Error: cannot compute Sobol indices from a non-tensorized basis.";
+  if (!functionalChaosResult_.getDistribution().hasIndependentCopula()) LOGWARN(OSS(false) << "The Sobol indices are computed wrt the basis measure, and there is no one-to-one transformation between this measure and the input distribution. The interpretation of the indices may be misleading.");
+  const Indices indices(functionalChaosResult_.getIndices());
+  const Sample coefficients(functionalChaosResult_.getCoefficients());
+  const UnsignedInteger basisSize = indices.getSize();
+  const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
+
+  // compute the variance
+  const FunctionalChaosRandomVector fcRandomVector(functionalChaosResult_);
+  const CovarianceMatrix covarianceMatrix = fcRandomVector.getCovariance();
+  const Scalar variance = covarianceMatrix(marginalIndex, marginalIndex);
+  Point partOfVariance(basisSize);
+  // compute part of contribution of each multi-index
+  for (UnsignedInteger i = 0; i < basisSize; ++ i)
+  {
+    const Scalar coefI = coefficients(i, marginalIndex);
+    const UnsignedInteger rankIndex = indices[i];
+    const Indices multiIndices(enumerateFunction(rankIndex));
+    UnsignedInteger totalDegree = 0;
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) totalDegree += multiIndices[j];
+    if (totalDegree > 0) partOfVariance[i] = coefI * coefI / variance;
+  } // Loop over the multi-indices
+  return partOfVariance;
 }
 
 /* Method save() stores the object through the StorageManager */

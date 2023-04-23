@@ -141,3 +141,7 @@ def centeredSumOfProduct(sampleA, sampleB, center):
 YA = ot.Sample(10, 1)
 center = 0.0
 sumOfSquaresOfG = centeredSumOfProduct(YA, YA, center)
+
+# html conversion of a Sample with fractional numbers
+sampleFractional = ot.Sample([[0.1234567890, 0.3333333333], [-123456.78901, 0.6666666666], [1.2345678901e10, -1.2345678901e-12]])
+print(sampleFractional._repr_html_())

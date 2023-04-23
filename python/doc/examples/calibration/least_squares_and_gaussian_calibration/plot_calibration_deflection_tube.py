@@ -57,14 +57,14 @@ print("Outputs:", dt.model.getOutputDescription())
 # %%
 sampleSize = 100
 inputSample = dt.inputDistribution.getSample(sampleSize)
-print(inputSample[0:5])
+inputSample[0:5]
 
 # %%
 # We take the image of our input sample by the model :
 
 # %%
 outputDeflection = dt.model(inputSample)
-print(outputDeflection[0:5])
+outputDeflection[0:5]
 
 # %%
 # We now define the observed noise of the output.
@@ -88,7 +88,7 @@ for i in range(3):
 noiseSigma = ot.Normal([0.0, 0.0, 0.0], observationNoiseCovariance)
 sampleObservationNoise = noiseSigma.getSample(sampleSize)
 observedOutput = outputDeflection + sampleObservationNoise
-print(observedOutput[0:5])
+observedOutput[0:5]
 
 # %%
 # We now extract the observed inputs from the input sample.
@@ -98,7 +98,7 @@ observedInput = ot.Sample(sampleSize, 2)
 observedInput[:, 0] = inputSample[:, 0]  # F
 observedInput[:, 1] = inputSample[:, 5]  # E
 observedInput.setDescription(["Force", "Young Modulus"])
-print(observedInput[0:5])
+observedInput[0:5]
 
 # %%
 # We would like to see how the observed output depend on the
@@ -110,7 +110,7 @@ fullSample = ot.Sample(sampleSize, 5)
 fullSample[:, 0:2] = observedInput
 fullSample[:, 2:5] = observedOutput
 fullSample.setDescription(["Force", "Young", "Deflection", "Left Angle", "Right Angle"])
-print(fullSample[0:5])
+fullSample[0:5]
 
 # %%
 graph = ot.VisualTest.DrawPairs(fullSample)
@@ -250,7 +250,7 @@ errorCovariance[2, 2] = sigmaObservation[2] ** 2
 # %%
 calibrationFunction.setParameter(thetaPrior)
 predictedOutput = calibrationFunction(observedInput)
-print(predictedOutput[0:5])
+predictedOutput[0:5]
 
 # %%
 # Calibration with Gaussian non linear calibration

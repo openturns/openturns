@@ -309,12 +309,19 @@ void Histogram::computeCovariance() const
 Distribution Histogram::getStandardRepresentative() const
 {
   const UnsignedInteger size = width_.getSize();
-  if (size == 1) return Uniform(-1.0, 1.0);
+  if (size == 1) 
+  {
+    Uniform standard(-1.0, 1.0);
+    standard.setDescription(getDescription());
+    return standard;
+  }
   // No need to transform an histogram if its range is already [-1.0, 1.0]
   if (first_ == -1.0 && std::abs(cumulatedWidth_[size - 1] - 2.0) <= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) return clone();
   const Scalar first = -1.0;
   const Scalar factor = 2.0 / cumulatedWidth_[size - 1];
-  return new Histogram(first, factor * width_, height_ / factor);
+  Histogram standard(first, factor * width_, height_ / factor);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Parameters value and description accessor */

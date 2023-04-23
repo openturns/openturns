@@ -50,7 +50,7 @@ correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[beta : 5, nu : 4]]
-Standard representative=Rice(beta = 5, nu = 4)
+Standard representative=Rice(beta = 1, nu = 0)
 nu=4
 standard deviation=class=Point name=Unnamed dimension=1 values=[3.70276]
 skewness=class=Point name=Unnamed dimension=1 values=[0.569607]

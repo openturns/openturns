@@ -115,8 +115,8 @@ int main(int, char *[])
     fullprint << "GetResult()" << std::endl;
     FunctionalChaosResult result = algo.getResult();
     FunctionalChaosSobolIndices sensitivity(result);
-    String report(sensitivity.__str__());
-    fullprint << report << std::endl;
+    fullprint << sensitivity.__str__() << std::endl;
+    fullprint << sensitivity.__repr_markdown__() << std::endl;
     //
     const Scalar rtol = 0.0;
     const Scalar atol = 0.001;

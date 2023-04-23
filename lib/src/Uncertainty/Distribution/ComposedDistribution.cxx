@@ -40,6 +40,8 @@
 #include "openturns/Log.hxx"
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/OSS.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -158,6 +160,41 @@ String ComposedDistribution::__str__(const String & ) const
   }
   if (getDimension() > 1) oss << ", " << copula_.__str__();
   oss << ")";
+  return oss;
+}
+
+String ComposedDistribution::__repr_markdown__() const
+{
+  OSS oss(false);
+  oss << getClassName() << Os::GetEndOfLine();
+  oss << "- name=" << getName() << Os::GetEndOfLine();
+  oss << "- dimension=" << getDimension() << Os::GetEndOfLine();
+  oss << "- description=" << description_ << Os::GetEndOfLine();
+  if (getDimension() > 1) oss << "- copula=" << copula_.__str__() << Os::GetEndOfLine();
+  // Compute maximum distribution's column width
+  String intermediateString;
+  UnsignedInteger maximumColumnWidth = 0;
+  for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
+  {
+    intermediateString = OSS() << " " << distributionCollection_[i].__str__() << " ";
+    if (intermediateString.size() > maximumColumnWidth) 
+      maximumColumnWidth = intermediateString.size();
+  }
+  intermediateString = OSS() << " Distribution ";
+  if (intermediateString.size() > maximumColumnWidth) 
+    maximumColumnWidth = intermediateString.size();
+  // Format the table
+  oss << Os::GetEndOfLine();
+  oss << "| Index | Variable |"
+      << OSS::PadString(" Distribution ", maximumColumnWidth) << "|" << Os::GetEndOfLine();
+  oss << "|-------|----------|" << String(maximumColumnWidth, '-') << "|" << Os::GetEndOfLine();
+  for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
+  {
+    oss << "| " << std::setw(5) << i << " |" 
+        << " " << std::setw(8) << description_[i] << " |";
+    intermediateString = OSS() << " " << distributionCollection_[i].__str__() << " ";
+    oss << OSS::PadString(intermediateString, maximumColumnWidth) << "|" << Os::GetEndOfLine();
+  }
   return oss;
 }
 

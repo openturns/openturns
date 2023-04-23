@@ -633,7 +633,9 @@ CovarianceMatrix Student::getCovariance() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Student::getStandardRepresentative() const
 {
-  return new Student(nu_);
+  Student standard(nu_, getDimension());
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Parameters value and description accessor */

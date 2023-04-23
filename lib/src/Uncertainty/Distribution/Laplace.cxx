@@ -232,7 +232,9 @@ Point Laplace::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Laplace::getStandardRepresentative() const
 {
-  return new Laplace(0.0, 1.0);
+  Laplace standard(0.0, 1.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

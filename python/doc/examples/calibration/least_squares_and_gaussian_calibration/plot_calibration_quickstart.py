@@ -62,10 +62,10 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 fm = flood_model.FloodModel()
-print(fm.data)
 Qobs = fm.data[:, 0]
 Hobs = fm.data[:, 1]
 nbobs = fm.data.getSize()
+fm.data
 
 
 # %%

@@ -113,3 +113,33 @@ Chebychev's othonormalization algorithm:
 -1 + X
 1 - 2 * X + 0.5 * X^2
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StandardDistributionPolynomialFactory::getHasSpecificFamily
+"Accessor to the specific family boolean.
+
+Returns
+-------
+hasSpecificFamily: bool
+    True if the factory has a specific orthogonal polynomial family."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StandardDistributionPolynomialFactory::getOrthonormalizationAlgorithm
+"Accessor to the orthonormalization algorithm.
+
+Returns
+-------
+orthonormalizationAlgorithm: :class:`~openturns.OrthonormalizationAlgorithm`
+    The univariate polynomial orthonormalization algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StandardDistributionPolynomialFactory::getSpecificFamily
+"Accessor to the specific orthonormal polynomial family.
+
+Returns
+-------
+specificFamily: :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
+    The specific orthonormal univariate polynomial family."

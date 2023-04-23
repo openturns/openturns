@@ -271,7 +271,9 @@ void ChiSquare::computeCovariance() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution ChiSquare::getStandardRepresentative() const
 {
-  return Gamma(0.5 * nu_, 1.0, 0.0);
+  Gamma standard(0.5 * nu_, 1.0, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Parameters value accessor */

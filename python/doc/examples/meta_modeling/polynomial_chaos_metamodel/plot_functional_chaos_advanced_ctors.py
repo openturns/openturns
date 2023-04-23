@@ -93,19 +93,22 @@ polyColl[3] = ot.JacobiFactory(2.5, 3.5, 1)
 
 # %%
 enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
+multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+multivariateBasis
 
 # %%
 # Another possibility is to use the `HyperbolicAnisotropicEnumerateFunction`, which gives less weight to interactions.
 
 # %%
 q = 0.4
-enumerateFunction_1 = ot.HyperbolicAnisotropicEnumerateFunction(inputDimension, q)
+enumerateFunction = ot.HyperbolicAnisotropicEnumerateFunction(inputDimension, q)
 
 # %%
 # Create the multivariate orthonormal basis which is the cartesian product of the univariate basis.
 
 # %%
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+multivariateBasis
 
 # %%
 # Ask how many basis terms there are in the 6-th strata.
@@ -135,7 +138,7 @@ Psi_i
 
 # %%
 distributionStandard = multivariateBasis.getMeasure()
-print(distributionStandard)
+distributionStandard
 
 # %%
 # STEP 2: Truncature strategy of the multivariate orthonormal basis

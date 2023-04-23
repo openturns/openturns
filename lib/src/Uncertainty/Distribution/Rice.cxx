@@ -222,7 +222,9 @@ Point Rice::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Rice::getStandardRepresentative() const
 {
-  return clone();
+  Rice standard(1.0, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 

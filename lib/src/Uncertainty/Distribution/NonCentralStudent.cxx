@@ -171,7 +171,9 @@ Point NonCentralStudent::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution NonCentralStudent::getStandardRepresentative() const
 {
-  return new NonCentralStudent(nu_, delta_, 0.0);
+  NonCentralStudent standard(nu_, delta_, 0.0);
+  standard.setDescription(getDescription());
+  return standard;
 }
 
 /* Compute the covariance of the distribution */

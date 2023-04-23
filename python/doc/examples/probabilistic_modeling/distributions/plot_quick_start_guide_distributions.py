@@ -1,6 +1,6 @@
 """
-Quick start guide
-=================
+Quick start guide to distributions
+==================================
 """
 # %%
 # Abstract
@@ -11,9 +11,9 @@ Quick start guide
 # For univariate distributions, we show how to compute the probability density,
 # the cumulated probability density and the quantiles.
 # We also show how to create graphics.
-# The `ComposedDistribution` class, which creates a distribution based on its
+# The :class:`~openturns.ComposedDistribution` class, which creates a distribution based on its
 # marginals and its copula, is presented.
-# We show how to truncate any distribution with the `TruncatedDistribution` class.
+# We show how to truncate any distribution with the :class:`~openturns.TruncatedDistribution` class.
 
 # %%
 # Univariate distribution
@@ -23,12 +23,12 @@ Quick start guide
 #
 # In the OpenTURNS platform, several *univariate distributions* are implemented. The most commonly used are:
 #
-#  - `Uniform`,
-#  - `Normal`,
-#  - `Beta`,
-#  - `LogNormal`,
-#  - `Exponential`,
-#  - `Weibull`.
+# - :class:`~openturns.Uniform`,
+# - :class:`~openturns.Normal`,
+# - :class:`~openturns.Beta`,
+# - :class:`~openturns.LogNormal`,
+# - :class:`~openturns.Exponential`,
+# - :class:`~openturns.Weibull`.
 
 # %%
 import openturns.viewer as otv
@@ -48,33 +48,33 @@ ot.Log.Show(ot.Log.NONE)
 uniform = ot.Uniform(2, 5)
 
 # %%
-# The `drawPDF` method plots the probability density function.
+# The :meth:`~openturns.Distribution.drawPDF` method plots the probability density function.
 
 # %%
 graph = uniform.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# The `computePDF` method computes the probability distribution at a specific point.
+# The :meth:`~openturns.Distribution.computePDF` method computes the probability distribution at a specific point.
 
 # %%
 uniform.computePDF(3.5)
 
 # %%
-# The `drawCDF` method plots the cumulated distribution function.
+# The :meth:`~openturns.Distribution.drawCDF` method plots the cumulated distribution function.
 
 # %%
 graph = uniform.drawCDF()
 view = viewer.View(graph)
 
 # %%
-# The `computeCDF` method computes the value of the cumulated distribution function a given point.
+# The :meth:`~openturns.Distribution.computeCDF` method computes the value of the cumulated distribution function a given point.
 
 # %%
 uniform.computeCDF(3.5)
 
 # %%
-# The `getSample` method generates a sample.
+# The :meth:`~openturns.Distribution.getSample` method generates a sample.
 
 # %%
 sample = uniform.getSample(10)
@@ -96,15 +96,19 @@ view = viewer.View(graph)
 # We can create multivariate distributions by two different methods:
 #
 # - we can also create a multivariate distribution by combining a list of univariate marginal distribution and a copula,
-# - some distributions are defined as multivariate distributions: `Normal`, `Dirichlet`, `Student`.
-#
+# - some distributions are defined as multivariate distributions: :class:`~openturns.Normal`, :class:`~openturns.Dirichlet`, :class:`~openturns.Student`.
+
+# %%
+# Define a multivariate Normal distribution in dimension 4
+
+# %%
+distribution = ot.Normal(4)
+distribution
+
+# %%
 # Since the method based on a marginal and a copula is more flexible, we illustrate below this principle.
-
-# %%
 # In the following script, we define a bivariate distribution made of two univariate distributions (Gaussian and uniform) and an independent copula.
-
-# %%
-# The second input argument of the `ComposedDistribution` class is optional: if it is not specified, the copula is independent by default.
+# The second input argument of the :class:`~openturns.ComposedDistribution` class is optional: if it is not specified, the copula is independent by default.
 
 # %%
 normal = ot.Normal()
@@ -113,7 +117,7 @@ distribution = ot.ComposedDistribution([normal, uniform])
 distribution
 
 # %%
-# We can also use the `IndependentCopula` class.
+# We can also use the :class:`~openturns.IndependentCopula` class.
 
 # %%
 normal = ot.Normal()
@@ -126,13 +130,13 @@ distribution
 # We see that this produces the same result: in the end of this section, we will change the copula and see what happens.
 
 # %%
-# The `getSample` method produces a sample from this distribution.
+# The :meth:`~openturns.Distribution.getSample` method produces a sample from this distribution.
 
 # %%
 distribution.getSample(10)
 
 # %%
-# In order to visualize a bivariate sample, we can use the `Cloud` class.
+# In order to visualize a bivariate sample, we can use the :class:`~openturns.Cloud` class.
 
 # %%
 sample = distribution.getSample(1000)
@@ -150,7 +154,7 @@ view = viewer.View(graph)
 # ----------------------
 
 # %%
-# The `NormalCopula` class allows one to create a Gaussian copula. Such a copula is defined by its correlation matrix.
+# The :class:`~openturns.NormalCopula` class allows one to create a Gaussian copula. Such a copula is defined by its correlation matrix.
 
 # %%
 R = ot.CorrelationMatrix(2)
@@ -159,7 +163,7 @@ copula = ot.NormalCopula(R)
 copula
 
 # %%
-# We can draw the contours of a copula with the `drawPDF` method.
+# We can draw the contours of a copula with the :meth:`~openturns.NormalCopula.drawPDF` method.
 
 # %%
 graph = copula.drawPDF()
@@ -210,27 +214,26 @@ cdfexp = exponential.drawCDF()
 # %%
 
 # %% slideshow={"slide_type": "subslide"}
-fig = plt.figure(figsize=(12, 4))
-ax = fig.add_subplot(2, 2, 1)
-_ = otv.View(pdfbeta, figure=fig, axes=[ax])
-ax = fig.add_subplot(2, 2, 2)
-_ = otv.View(cdfbeta, figure=fig, axes=[ax])
-ax = fig.add_subplot(2, 2, 3)
-_ = otv.View(pdfexp, figure=fig, axes=[ax])
-ax = fig.add_subplot(2, 2, 4)
-_ = otv.View(cdfexp, figure=fig, axes=[ax])
+grid = ot.GridLayout(2, 2)
+grid.setGraph(0, 0, pdfbeta)
+grid.setGraph(0, 1, cdfbeta)
+grid.setGraph(1, 0, pdfexp)
+grid.setGraph(1, 1, cdfexp)
+view = otv.View(grid)
 
 # %%
 # Truncate a distribution
 # -----------------------
 #
-# Any distribution can be truncated with the `TruncatedDistribution` class.
-#
+# Any distribution can be truncated with the :class:`~openturns.TruncatedDistribution` class.
 # Let :math:`f_X` (resp. :math:`F_X`) the PDF (resp. the CDF) of the real
 # random variable :math:`X`. Let :math:`a` and :math:`b` two reals with :math:`a<b`.
-# Let :math:`Y` be the random variable :math:`max(a, min(b, X))`.
-# Its distribution is the distribution of :math:`X` truncated to the :math:`[a,b]` interval.
+# Let :math:`Y` be the random variable defined by:
 #
+# .. math::
+#     Y = \max(a, \min(b, X)).
+#
+# Its distribution is the distribution of :math:`X` truncated to the :math:`[a,b]` interval.
 # Therefore, the PDF of :math:`Y` is:
 #
 # .. math::
@@ -273,4 +276,4 @@ view = viewer.View(graph)
 
 plt.show()
 # %%
-# In the specific case of the Gaussian distribution, the specialized `TruncatedNormal` distribution can be used instead of the generic `TruncatedDistribution` class.
+# In the specific case of the Gaussian distribution, the specialized :class:`~openturns.TruncatedNormal` distribution can be used instead of the generic :class:`~openturns.TruncatedDistribution` class.
