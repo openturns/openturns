@@ -30,6 +30,8 @@
 #include "openturns/Pie.hxx"
 #include "openturns/Text.hxx"
 #include "openturns/TBBImplementation.hxx"
+#include "openturns/KernelSmoothing.hxx"
+#include "openturns/ComposedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HSICEstimatorImplementation)
@@ -52,7 +54,13 @@ HSICEstimatorImplementation::HSICEstimatorImplementation()
   , PValuesPermutation_()
   , inputCovarianceMatrixCollection_()
   , outputCovarianceMatrix_()
+  , hsicBootstratSample_()
+  , hsicR2BootstratSample_()
+  , pValuesPermutationBootstratSample_()
+  , pValuesAsymptoticBootstratSample_()
+  , confidenceLevel_(ResourceMap::GetAsScalar("HSICEstimator-DefaultBootstrapConfidenceLevel"))
   , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
+  , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-DefaultBootstrapSize"))
 {
 // Nothing
 }
@@ -75,9 +83,16 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(
   , HSIC_XX_ ()
   , HSIC_YY_ ()
   , R2HSICIndices_ ()
+  , PValuesPermutation_()
   , inputCovarianceMatrixCollection_(n_)
   , outputCovarianceMatrix_ ()
+  , hsicBootstratSample_()
+  , hsicR2BootstratSample_()
+  , pValuesPermutationBootstratSample_()
+  , pValuesAsymptoticBootstratSample_()
+  , confidenceLevel_(ResourceMap::GetAsScalar("HSICEstimator-DefaultBootstrapConfidenceLevel"))
   , permutationSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-PermutationSize"))
+  , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("HSICEstimator-DefaultBootstrapSize"))
 {
   if (covarianceModelCollection_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
   if (outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";
@@ -158,43 +173,42 @@ UnsignedInteger HSICEstimatorImplementation::getPermutationSize() const
   return permutationSize_;
 }
 
-/* Compute p-value with permutation */
-void HSICEstimatorImplementation::computePValuesPermutationSequential() const
+/* Compute p-value with permutation */ 
+Point HSICEstimatorImplementation::computePValuesPermutationSequential(const Sample & outputSample, const CovarianceMatrixCollection & inputCovarianceMatrixCollection, const CovarianceMatrix & outputCovarianceMatrix) const
 {
-  const SquareMatrix Wobs(computeWeightMatrix(outputSample_));
+  const SquareMatrix Wobs(computeWeightMatrix(outputSample));
   Point HSICobs(inputDimension_);
   for (UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
-    HSICobs[dim] = computeHSICIndex(inputCovarianceMatrixCollection_[dim], outputCovarianceMatrix_, Wobs);
+    HSICobs[dim] = computeHSICIndex(inputCovarianceMatrixCollection[dim], outputCovarianceMatrix, Wobs);
   }
   
-  PValuesPermutation_ = Point(inputDimension_);
-  Sample shuffledSample(outputSample_);
-  CovarianceMatrix shuffledCovariance(outputCovarianceMatrix_);
+  Point PValuesPermutation(inputDimension_);
+  Sample shuffledSample(outputSample);
+  CovarianceMatrix shuffledCovariance(outputCovarianceMatrix);
   SquareMatrix shuffledWeight(Wobs);
   for (UnsignedInteger b = 0; b < permutationSize_; ++b)
   {
-    const Indices indices(shuffleIndices(outputSample_.getSize()));
-    for (UnsignedInteger j = 0; j < outputCovarianceMatrix_.getDimension(); ++j)
+    const Indices indices(shuffleIndices(outputSample.getSize()));
+    for (UnsignedInteger j = 0; j < outputCovarianceMatrix.getDimension(); ++j)
       {
         const UnsignedInteger newJ = indices[j];
-        shuffledSample(j, 0) = outputSample_(newJ, 0);
-        for (UnsignedInteger i = j; i < outputCovarianceMatrix_.getDimension(); ++i)
+        shuffledSample(j, 0) = outputSample(newJ, 0);
+        for (UnsignedInteger i = j; i < outputCovarianceMatrix.getDimension(); ++i)
           {
             const UnsignedInteger newI = indices[i];
-            shuffledCovariance(i, j) = outputCovarianceMatrix_(newI, newJ);
+            shuffledCovariance(i, j) = outputCovarianceMatrix(newI, newJ);
           } // i
       } // j
     shuffledWeight = computeWeightMatrix(shuffledSample);
     for (UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
       {
-        const Scalar HSICloc = computeHSICIndex(inputCovarianceMatrixCollection_[dim], shuffledCovariance, shuffledWeight);
-        if (HSICloc > HSICobs[dim]) ++PValuesPermutation_[dim];
+        const Scalar HSICloc = computeHSICIndex(inputCovarianceMatrixCollection[dim], shuffledCovariance, shuffledWeight);
+        if (HSICloc > HSICobs[dim]) ++PValuesPermutation[dim];
       }
   } // b
-  PValuesPermutation_ /= (permutationSize_ + 1.0);
-
-  isAlreadyComputedPValuesPermutation_ = true;
+  PValuesPermutation /= (permutationSize_ + 1.0);
+  return PValuesPermutation;
 }
 
 // Helper for the parallel version of the pvalue-permutation computation
@@ -210,9 +224,15 @@ struct HSICPValuesPermutationFunctor
 
   HSICPValuesPermutationFunctor(const Collection<Indices> & indicesCollection,
                                 const Point & HSICobs,
+                                const Sample & outputSample,
+                                const Collection<CovarianceMatrix> & inputCovarianceMatrixCollection,
+                                const CovarianceMatrix & outputCovarianceMatrix,
                                 const HSICEstimatorImplementation & hsic)
     : indicesCollection_(indicesCollection)
     , HSICobs_(HSICobs)
+    , outputSample_(outputSample)
+    , inputCovarianceMatrixCollection_(inputCovarianceMatrixCollection)
+    , outputCovarianceMatrix_(outputCovarianceMatrix)
     , p_hsic_(hsic.clone())
     , accumulator_(HSICobs.getDimension())
   {}
@@ -227,26 +247,26 @@ struct HSICPValuesPermutationFunctor
 
   inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
   {
-    Sample shuffledSample(p_hsic_->outputSample_.getSize(), p_hsic_->outputSample_.getDimension());
-    CovarianceMatrix shuffledCovariance(p_hsic_->outputCovarianceMatrix_.getDimension());
+    Sample shuffledSample(outputSample_.getSize(), outputSample_.getDimension());
+    CovarianceMatrix shuffledCovariance(outputCovarianceMatrix_.getDimension());
     SquareMatrix shuffledWeight;
     for (UnsignedInteger b = r.begin(); b != r.end(); ++b)
       {
         const Indices indices(indicesCollection_[b]);
-        for (UnsignedInteger j = 0; j < p_hsic_->outputCovarianceMatrix_.getDimension(); ++j)
+        for (UnsignedInteger j = 0; j < outputCovarianceMatrix_.getDimension(); ++j)
         {
             const UnsignedInteger newJ = indices[j];
-            shuffledSample(j, 0) = p_hsic_->outputSample_(newJ, 0);
-            for (UnsignedInteger i = j; i < p_hsic_->outputCovarianceMatrix_.getDimension(); ++i)
+            shuffledSample(j, 0) = outputSample_(newJ, 0);
+            for (UnsignedInteger i = j; i < outputCovarianceMatrix_.getDimension(); ++i)
               {
                 const UnsignedInteger newI = indices[i];
-                shuffledCovariance(i, j) = p_hsic_->outputCovarianceMatrix_(newI, newJ);
+                shuffledCovariance(i, j) = outputCovarianceMatrix_(newI, newJ);
               } // i
           } // j
         shuffledWeight = p_hsic_->computeWeightMatrix(shuffledSample);
         for (UnsignedInteger dim = 0; dim < accumulator_.getDimension(); ++dim)
           {
-            const Scalar HSICloc = p_hsic_->computeHSICIndex(p_hsic_->inputCovarianceMatrixCollection_[dim], shuffledCovariance, shuffledWeight);
+            const Scalar HSICloc = p_hsic_->computeHSICIndex(inputCovarianceMatrixCollection_[dim], shuffledCovariance, shuffledWeight);
             if (HSICloc > HSICobs_[dim]) ++accumulator_[dim];
           }
       } // b
@@ -260,26 +280,30 @@ struct HSICPValuesPermutationFunctor
 }; // struct HSICPValuesPermutationFunctor
 
 /* Compute p-value with permutation */
-void HSICEstimatorImplementation::computePValuesPermutationParallel() const
+Point HSICEstimatorImplementation::computePValuesPermutationParallel(const Sample & outputSample, const CovarianceMatrixCollection & inputCovarianceMatrixCollection, const CovarianceMatrix & outputCovarianceMatrix) const
 {
-  const SquareMatrix Wobs(computeWeightMatrix(outputSample_));
+  const SquareMatrix Wobs(computeWeightMatrix(outputSample));
   Point HSICobs(inputDimension_);
   for (UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
-    HSICobs[dim] = computeHSICIndex(inputCovarianceMatrixCollection_[dim], outputCovarianceMatrix_, Wobs);
+    HSICobs[dim] = computeHSICIndex(inputCovarianceMatrixCollection[dim], outputCovarianceMatrix, Wobs);
   }
   Collection<Indices> indicesCollection(permutationSize_);
   for (UnsignedInteger b = 0; b < permutationSize_; ++b)
   {
-    const Indices indices(shuffleIndices(outputSample_.getSize()));
+    const Indices indices(shuffleIndices(outputSample.getSize()));
     indicesCollection[b] = indices;
   }
+//  TBBImplementation::Disable();
   HSICPValuesPermutationFunctor functor(indicesCollection,
                                         HSICobs,
+                                        outputSample,
+                                        inputCovarianceMatrixCollection,
+                                        outputCovarianceMatrix,
                                         *this);
-  TBBImplementation::ParallelReduceIf(weightFunction_.getImplementation()->isParallel(), 0, permutationSize_, functor );
-  PValuesPermutation_ = functor.accumulator_ / (permutationSize_ + 1.0);
-  isAlreadyComputedPValuesPermutation_ = true;
+  TBBImplementation::ParallelReduceIf(weightFunction_.getImplementation()->isParallel(), 0, permutationSize_, functor);
+  Point PValuesPermutation(functor.accumulator_ / (permutationSize_ + 1.0));
+  return PValuesPermutation;
 }
 
 /* Compute the asymptotic p-values */
@@ -323,7 +347,7 @@ void HSICEstimatorImplementation::computePValuesAsymptotic() const
   const Point sumKyRows(outputCovarianceMatrix_ * ones);
 
   const Scalar Ey = (sumKy - traceKy) / n_ / (n_ - 1 );
-  //const Matrix By(H * outputCovarianceMatrix_ * H);
+  //const Matrix By(H * outputCovarianceMatrix * H);
   const Point HSICobsPt(getHSICIndices());
   // Scaling factor for varHSIC
   const Scalar factor = 2.0 * (n_ - 4) * (n_ - 5) / n_ / (n_ - 1) / (n_ - 2) / (n_ - 3) / n_ / (n_ - 1);
@@ -386,16 +410,152 @@ Point HSICEstimatorImplementation::getR2HSICIndices() const
 /* Get the p-values by permutation */
 Point HSICEstimatorImplementation::getPValuesPermutation() const
 {
+
   if( !(isAlreadyComputedPValuesPermutation_))
   {
     if (ResourceMap::GetAsBool("HSICEstimator-ParallelPValues"))
-      computePValuesPermutationParallel();
+    {
+    PValuesPermutation_ = computePValuesPermutationParallel(outputSample_, inputCovarianceMatrixCollection_, outputCovarianceMatrix_);
+    }    
     else
-      computePValuesPermutationSequential();
-      
+    {
+    PValuesPermutation_ = computePValuesPermutationSequential(outputSample_, inputCovarianceMatrixCollection_, outputCovarianceMatrix_);
+    }
     isAlreadyComputedPValuesPermutation_ = true ;
   }
   return PValuesPermutation_;
+}
+
+/** void method that computes confidence interval */
+void HSICEstimatorImplementation::computeBootstrapIndices() const
+{
+  if (bootstrapSize_ > 0)
+  {
+    Sample bsHSIC(0, inputDimension_);
+    hsicBootstratSample_ = Sample(0, inputDimension_);
+    hsicBootstratSample_.add(getHSICIndices());
+    hsicR2BootstratSample_ = Sample(0, inputDimension_);
+    hsicR2BootstratSample_.add(getR2HSICIndices());
+    CovarianceMatrix inputCovarianceMatrix(n_);
+    CovarianceMatrix outputCovarianceMatrix(n_); 
+    Point localHSIC_XX(inputDimension_);
+    Point localHSIC_XY(inputDimension_);
+    Point localHSIC_YY(1);
+    Point localR2HSIC(inputDimension_);
+    for(UnsignedInteger i = 0; i < bootstrapSize_; ++i)
+    {
+      const RandomGenerator::UnsignedIntegerCollection randomIndices(RandomGenerator::IntegerGenerate(n_, n_));
+      const Sample bsOutputSample(outputSample_.select(randomIndices));
+      const SquareMatrix W(computeWeightMatrix(bsOutputSample));
+      localHSIC_YY[0] = computeHSICIndex(outputCovarianceMatrix, outputCovarianceMatrix, W);
+
+      for(UnsignedInteger k = 0; k < n_; ++k)
+      {
+        for(UnsignedInteger l = 0; l <= k; ++l)
+        {
+          outputCovarianceMatrix(k,l) = outputCovarianceMatrix_(randomIndices[k],randomIndices[l]);
+        } // l
+      } // k
+
+      for(UnsignedInteger j = 0; j < inputDimension_; ++j)
+      {
+        for(UnsignedInteger k = 0; k < n_; ++k)
+        {
+          for(UnsignedInteger l = 0; l <= k; ++l)
+          {
+            inputCovarianceMatrix(k,l) = inputCovarianceMatrixCollection_[j](randomIndices[k],randomIndices[l]);
+          } // l
+        } // k
+
+        localHSIC_XY[j] = computeHSICIndex(inputCovarianceMatrix, outputCovarianceMatrix, W);
+        localHSIC_XX[j] = computeHSICIndex(inputCovarianceMatrix, inputCovarianceMatrix, W);
+        localR2HSIC[j] = localHSIC_XY[j] / std::sqrt(localHSIC_XX[j] * localHSIC_YY[0]);
+      } // j
+      hsicBootstratSample_.add(localHSIC_XY);
+      hsicR2BootstratSample_.add(localR2HSIC);
+    } // i
+  isAlreadyComputedIndicesBootstrap_ = true;
+  } // if
+}
+
+/** void method that computes confidence interval */
+void HSICEstimatorImplementation::computeBootstrapPValuesPermutation() const
+{
+  if (bootstrapSize_ > 0)
+  {
+    Sample bsPvals(0, inputDimension_);
+    pValuesAsymptoticBootstratSample_ = Sample(0, inputDimension_);
+    pValuesAsymptoticBootstratSample_.add(getPValuesPermutation());
+    CovarianceMatrix inputCovarianceMatrix(n_);
+    CovarianceMatrix outputCovarianceMatrix(n_); 
+    Point localPValues(inputDimension_);
+    CovarianceMatrixCollection inputCovarianceMatrixCollection(inputDimension_);
+    for(UnsignedInteger i = 0; i < bootstrapSize_; ++i)
+    {
+      const RandomGenerator::UnsignedIntegerCollection randomIndices(RandomGenerator::IntegerGenerate(n_, n_));
+      const Sample bsOutputSample(outputSample_.select(randomIndices));
+      const SquareMatrix W(computeWeightMatrix(bsOutputSample));
+
+      for(UnsignedInteger k = 0; k < n_; ++k)
+      {
+        for(UnsignedInteger l = 0; l <= k; ++l)
+        {
+          outputCovarianceMatrix(k,l) = outputCovarianceMatrix_(randomIndices[k],randomIndices[l]);
+        } // l
+      } // k
+
+      for(UnsignedInteger j = 0; j < inputDimension_; ++j)
+      {
+        for(UnsignedInteger k = 0; k < n_; ++k)
+        {
+          for(UnsignedInteger l = 0; l <= k; ++l)
+          {
+            inputCovarianceMatrix(k,l) = inputCovarianceMatrixCollection_[j](randomIndices[k],randomIndices[l]);
+          } // l
+        } // k
+      inputCovarianceMatrixCollection[j] = inputCovarianceMatrix;
+      if (ResourceMap::GetAsBool("HSICEstimator-ParallelPValues"))
+        localPValues = computePValuesPermutationParallel(bsOutputSample, inputCovarianceMatrixCollection, outputCovarianceMatrix);
+      else
+        localPValues = computePValuesPermutationSequential(bsOutputSample, inputCovarianceMatrixCollection, outputCovarianceMatrix);
+      } // j
+      pValuesPermutationBootstratSample_.add(localPValues);
+    } // i
+  } // if
+}
+
+/* Interval for the HSIC indices accessor */
+Interval HSICEstimatorImplementation::getHSICIndicesInterval() const
+{
+  if(!isAlreadyComputedIndicesBootstrap_) computeBootstrapIndices();
+  Point lowerBound(hsicBootstratSample_.computeQuantilePerComponent(0.5 * (1.0 - confidenceLevel_)));
+  Point upperBound(hsicBootstratSample_.computeQuantilePerComponent(0.5 * (1.0 + confidenceLevel_)));
+
+  return Interval(lowerBound, upperBound);
+}
+
+/* Interval for the R2 HSIC indices accessor */
+Interval HSICEstimatorImplementation::getR2HSICIndicesInterval() const
+{
+  if(!isAlreadyComputedIndicesBootstrap_) computeBootstrapIndices();
+  Point lowerBound(hsicR2BootstratSample_.computeQuantilePerComponent(0.5 * (1.0 - confidenceLevel_)));
+  Point upperBound(hsicR2BootstratSample_.computeQuantilePerComponent(0.5 * (1.0 + confidenceLevel_)));
+
+  return Interval(lowerBound, upperBound);
+}
+
+/* Interval for the R2 HSIC indices accessor */
+Interval HSICEstimatorImplementation::getPermutationPValuesInterval() const
+{
+  if(!isAlreadyComputedPValuesPermutationBootstrap_) 
+  {
+    computeBootstrapPValuesPermutation();
+    isAlreadyComputedPValuesPermutationBootstrap_ = true;
+  }
+  Point lowerBound(pValuesPermutationBootstratSample_.computeQuantilePerComponent(0.5 * (1.0 - confidenceLevel_)));
+  Point upperBound(pValuesPermutationBootstratSample_.computeQuantilePerComponent(0.5 * (1.0 + confidenceLevel_)));
+
+  return Interval(lowerBound, upperBound);
 }
 
 /* Draw the HSIC indices */
@@ -528,6 +688,9 @@ void HSICEstimatorImplementation::resetIndices()
   isAlreadyComputedIndices_ = false;
   isAlreadyComputedPValuesPermutation_ = false;
   isAlreadyComputedPValuesAsymptotic_ = false;
+  isAlreadyComputedIndicesBootstrap_ = false;
+  isAlreadyComputedPValuesPermutationBootstrap_ = false;
+  isAlreadyComputedPValuesAsymptoticBootstrap_ = false;
 }
 
 /* Get the dimension of the indices: the number of marginals */
