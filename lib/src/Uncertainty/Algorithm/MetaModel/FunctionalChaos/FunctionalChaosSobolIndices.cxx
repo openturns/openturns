@@ -192,7 +192,7 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variablesGroup
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
   Scalar totalVariance = 0.0;
-  bool mustInclude;
+  bool mustInclude = false;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
@@ -324,7 +324,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
   Scalar totalVariance = 0.0;
-  bool mustInclude;
+  bool mustInclude = false;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
@@ -374,7 +374,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
   Scalar totalVariance = 0.0;
   const UnsignedInteger groupDimension = variablesGroup.getSize();
-  bool mustInclude;
+  bool mustInclude = false;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
