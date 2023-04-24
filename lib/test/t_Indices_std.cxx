@@ -70,8 +70,8 @@ int main(int, char *[])
     
     // Test normInf() and norm1()
     Indices indices6 = {};
-    assert(indices6.normInf(0));
-    assert(indices6.norm1(0));
+    assert(indices6.normInf());
+    assert(indices6.norm1());
     Indices indices7 = {1, 2, 3};
     assert(indices7.normInf() == 3);
     assert(indices7.norm1() == 6);
