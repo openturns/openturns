@@ -331,11 +331,12 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
     {
       const Scalar coefficientI = coefficients(i, 0);
       const Indices multiIndices(enumerateFunction(coefficientIndices[i]));
+      const UnsignedInteger normInf = multiIndices.normInf();
       // Compute denominator
-      if (multiIndices.normInf() > 0) totalVariance += coefficientI * coefficientI;
+      if (normInf > 0) totalVariance += coefficientI * coefficientI;
       // Compute numerator
       mustInclude = true;
-      if (multiIndices.normInf() == 0)
+      if (normInf == 0)
       {
         // Exclude the zero indices
         mustInclude = false;
@@ -380,10 +381,11 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & va
     {
       const Scalar coefficientI = coefficients(i, 0);
       const Indices multiIndices(enumerateFunction(coefficientIndices[i]));
+      const UnsignedInteger normInf = multiIndices.normInf();
       // Compute denominator
-      if (multiIndices.normInf() > 0) totalVariance += coefficientI * coefficientI;
+      if (normInf > 0) totalVariance += coefficientI * coefficientI;
       // Compute numerator
-      if (multiIndices.normInf() == 0)
+      if (normInf == 0)
       {
         // Exclude the zero indices
         mustInclude = false;
