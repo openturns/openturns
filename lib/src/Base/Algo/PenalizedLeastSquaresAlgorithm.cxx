@@ -281,4 +281,10 @@ void PenalizedLeastSquaresAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "penalizationMatrix_", penalizationMatrix_ );
 }
 
+Collection<Indices> PenalizedLeastSquaresAlgorithm::getSelectionHistory(Collection<Point> & coefficientsHistory) const
+{
+  coefficientsHistory = Collection<Point>(1, coefficients_);
+  return Collection<Indices>(1, currentIndices_);
+}
+
 END_NAMESPACE_OPENTURNS

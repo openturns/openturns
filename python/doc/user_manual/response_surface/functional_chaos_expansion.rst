@@ -42,7 +42,11 @@ Computation of the polynomial chaos coefficients
     LeastSquaresMetaModelSelectionFactory
     LeastSquaresMetaModelSelection
     BasisSequenceFactory
+
+    :template: classWithPlot.rst_t
     LARS
+
+    :template: class.rst_t
     FittingAlgorithm
     CorrectedLeaveOneOut
     KFold

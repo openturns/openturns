@@ -22,7 +22,7 @@
 #define OPENTURNS_APPROXIMATIONALGORITHMIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
+#include "openturns/IndicesCollection.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/DesignProxy.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -43,7 +43,6 @@ class OT_API ApproximationAlgorithmImplementation
 public:
   typedef Collection<Function> FunctionCollection;
   typedef PersistentCollection<Function> FunctionPersistentCollection;
-
 
   /** Default constructor */
   ApproximationAlgorithmImplementation();
@@ -105,6 +104,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Selection history accessor */
+  virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
+
 protected:
 
   void setCoefficients(const Point & coefficients);
@@ -131,10 +133,10 @@ protected:
 
   mutable Bool isAlreadyComputedCoefficients_;
 
-private:
   /** Regression coefficients */
   Point coefficients_;
 
+private:
   /** Residual */
   Scalar residual_;
 

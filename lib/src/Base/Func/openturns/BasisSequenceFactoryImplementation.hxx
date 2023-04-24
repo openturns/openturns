@@ -89,6 +89,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Selection history accessor */
+  virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
+
 protected:
   /** Verbosity flag */
   Bool verbose_;

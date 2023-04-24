@@ -25,6 +25,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
+#include "openturns/Curve.hxx"
+#include <unordered_map>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -300,6 +302,66 @@ void FunctionalChaosResult::load(Advocate & adv)
   adv.loadAttribute( "composedMetaModel_", composedMetaModel_ );
 }
 
+IndicesCollection FunctionalChaosResult::getIndicesHistory() const
+{
+  if (metaModel_.getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "getIndicesHistory is only available for 1-d output dimension "
+      << "but the current output dimension is " << metaModel_.getOutputDimension();
+  return IndicesCollection(indicesHistory_);
+}
 
+Collection<Point> FunctionalChaosResult::getCoefficientsHistory() const
+{
+  if (metaModel_.getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "getCoefficientsHistory is only available for 1-d output dimension "
+      << "but the current output dimension is " << metaModel_.getOutputDimension();
+  return coefficientsHistory_;
+}
+
+void FunctionalChaosResult::setSelectionHistory(Collection<Indices> & indicesHistory, Collection<Point> & coefficientsHistory)
+{
+  indicesHistory_ = indicesHistory;
+  coefficientsHistory_ = coefficientsHistory;
+}
+
+Graph FunctionalChaosResult::drawSelectionHistory() const
+{
+  if (metaModel_.getOutputDimension() > 1)
+    throw NotYetImplementedException(HERE) << "drawSelectionHistory is only available for 1-d output dimension"
+      << "but the current output dimension is " << metaModel_.getOutputDimension();
+  const UnsignedInteger size = indicesHistory_.getSize();
+  if (!size)
+    throw InvalidArgumentException(HERE) << "No selection history available";
+
+  // compute union of basis terms
+  std::unordered_map <UnsignedInteger, UnsignedInteger> indicesMap;
+  UnsignedInteger coefId = 0;
+  Indices uniqueBasisIndices;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
+      if (indicesMap.find(indicesHistory_[i][j]) == indicesMap.end())
+      {
+        indicesMap[indicesHistory_[i][j]] = coefId;
+        ++ coefId;
+        uniqueBasisIndices.add(indicesHistory_[i][j]);
+      }
+  const Description colors(Drawable::BuildDefaultPalette(coefId));
+  Sample valuesY(size + 1, coefId);
+  Sample valuesX(size + 1, 1);
+  for (UnsignedInteger i = 0; i < size + 1; ++ i)
+    valuesX(i, 0) = i;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
+      valuesY(i + 1, indicesMap[indicesHistory_[i][j]]) = coefficientsHistory_[i][j];
+  Graph result("Selection history", "iteration", "coefficient", true, "topright");
+  for (UnsignedInteger i = 0; i < coefId; ++ i)
+  {
+    Curve curve(valuesX, valuesY.getMarginal(i));
+    curve.setColor(colors[i]);
+    curve.setLegend(OSS() << "Coef. #" << uniqueBasisIndices[i]);
+    result.add(curve);
+  }
+  return result;
+}
 
 END_NAMESPACE_OPENTURNS

@@ -75,7 +75,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-
+  /** Selection history accessor */
+  Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   void computeCoefficients(const Function & function,
@@ -86,7 +87,8 @@ protected:
                            const Indices & removedRanks,
                            const UnsignedInteger marginalIndex = 0) override;
 private:
-
+  Collection<Indices> indicesHistory_;
+  PersistentCollection<Point> coefficientsHistory_;
 } ; /* class IntegrationStrategy */
 
 

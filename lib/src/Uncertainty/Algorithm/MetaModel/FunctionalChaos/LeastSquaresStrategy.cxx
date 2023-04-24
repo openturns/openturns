@@ -145,6 +145,7 @@ void LeastSquaresStrategy::computeCoefficients(const Function & function,
   alpha_k_p_ = approximationAlgorithm.getCoefficients();
   residual_p_ = approximationAlgorithm.getResidual();
   relativeError_p_ = approximationAlgorithm.getRelativeError();
+  indicesHistory_ = approximationAlgorithm.getImplementation()->getSelectionHistory(coefficientsHistory_);
 }
 
 
@@ -155,7 +156,6 @@ void LeastSquaresStrategy::save(Advocate & adv) const
   adv.saveAttribute( "p_approximationAlgorithmImplementationFactory_", *p_approximationAlgorithmImplementationFactory_ );
 }
 
-
 /* Method load() reloads the object from the StorageManager */
 void LeastSquaresStrategy::load(Advocate & adv)
 {
@@ -165,5 +165,11 @@ void LeastSquaresStrategy::load(Advocate & adv)
   p_approximationAlgorithmImplementationFactory_ = approximationAlgorithmImplementationFactory.clone();
 }
 
+/* Selection history accessor */
+Collection<Indices> LeastSquaresStrategy::getSelectionHistory(Collection<Point> & coefficientsHistory) const
+{
+  coefficientsHistory = coefficientsHistory_;
+  return indicesHistory_;
+}
 
 END_NAMESPACE_OPENTURNS

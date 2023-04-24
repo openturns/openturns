@@ -25,6 +25,7 @@
 
 === Miscellaneous ===
  * Added IterativeThresholdExceedance::getRatio
+ * Added FunctionalChaosResult::drawSelectionHistory to plot LARS coefs paths
 
 
 == 1.21 release (2023-06-20) == #release-1.21

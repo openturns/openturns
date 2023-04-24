@@ -41,3 +41,12 @@ assert result.getRelativeErrors()[0] < 1e-10, "relative error too high"
 assert (
     algo.getResult().getMetaModel().getOutputDescription() == y.getDescription()
 ), "wrong output description"
+
+# selection history
+indices = result.getIndicesHistory()
+coefs = result.getCoefficientsHistory()
+assert indices.getSize() > 0, "no indices selection"
+assert indices.getSize() == coefs.getSize(), "not same size"
+print(indices)
+print(coefs)
+graph = result.drawSelectionHistory()

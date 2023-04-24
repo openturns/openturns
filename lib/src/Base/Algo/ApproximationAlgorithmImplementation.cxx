@@ -238,5 +238,9 @@ void ApproximationAlgorithmImplementation::load(Advocate & adv)
   setWeight(weight);
 }
 
+Collection<Indices> ApproximationAlgorithmImplementation::getSelectionHistory(Collection<Point> & /*coefficientsHistory*/) const
+{
+  throw NotYetImplementedException(HERE) << "in ApproximationAlgorithmImplementation::getSelectionHistory";
+}
 
 END_NAMESPACE_OPENTURNS

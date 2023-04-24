@@ -40,6 +40,7 @@ class OT_API LeastSquaresMetaModelSelection
   CLASSNAME
 
 public:
+
   /** Default constructor */
   LeastSquaresMetaModelSelection();
 
@@ -84,6 +85,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
+
 protected:
 
   /** Algorithm that builds the BasisSequence */
@@ -91,7 +94,6 @@ protected:
 
   /** Basis selection algorithm */
   FittingAlgorithm fittingAlgorithm_;
-
 
 }; /* class LeastSquaresMetaModelSelection */
 

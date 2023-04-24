@@ -160,3 +160,55 @@ Returns
 -------
 transformation : :class:`~openturns.Function`
     Transformation :math:`T` such that :math:`T(\vect{X}) = \vect{Z}`."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::drawSelectionHistory
+"Draw the basis selection history.
+
+This is only available with :class:`~openturns.LARS`, and when the output dimension is 1.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The evolution of the basis coefficients at each selection iteration"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getCoefficientsHistory
+"The coefficients values selection history accessor.
+
+This is only available with :class:`~openturns.LARS`, and when the output dimension is 1.
+
+Returns
+-------
+coefficientsHistory : 2-d sequence of float
+    The coefficients values selection history, for each iteration.
+    Each inner list gives the coefficients values of the basis terms at i-th iteration."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getIndicesHistory
+"The basis indices selection history accessor.
+
+This is only available with :class:`~openturns.LARS`, and when the output dimension is 1.
+
+Returns
+-------
+indicesHistory : 2-d sequence of int
+    The basis indices selection history, for each iteration.
+    Each inner list gives the indices of the basis terms at i-th iteration."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::setSelectionHistory
+"The basis coefficients and indices accessor.
+
+Parameters
+----------
+indicesHistory : 2-d sequence of int
+    The basis indices selection history
+coefficientsHistory : 2-d sequence of float
+    The coefficients values selection history
+    Must be of same size as indicesHistory."
+

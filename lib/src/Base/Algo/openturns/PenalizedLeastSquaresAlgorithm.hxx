@@ -89,6 +89,9 @@ public:
   void run(const DesignProxy & proxy) override;
 #endif
 
+  /** Selection history accessor */
+  Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
+
 protected:
 
 private:

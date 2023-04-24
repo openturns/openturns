@@ -245,4 +245,9 @@ void ProjectionStrategyImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
 }
 
+Collection<Indices> ProjectionStrategyImplementation::getSelectionHistory(Collection<Point> & /*coefficientsHistory*/) const
+{
+  throw NotYetImplementedException(HERE) << "in ProjectionStrategyImplementation::getSelectionHistory";
+}
+
 END_NAMESPACE_OPENTURNS
