@@ -19,6 +19,7 @@
  *
  */
 #include <algorithm>
+#include <numeric>
 #include "openturns/Indices.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -90,12 +91,7 @@ UnsignedInteger Indices::normInf() const
 /* Returns the 1-norm of the indices */
 UnsignedInteger Indices::norm1() const
 {
-  const UnsignedInteger size = getSize();
-  UnsignedInteger norm = 0;
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    norm += operator[](i);
-  }
+  const UnsignedInteger norm = std::accumulate(begin(), end(), 0);
   return norm;
 }
 
