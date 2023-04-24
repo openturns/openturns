@@ -109,9 +109,11 @@ String FunctionalChaosResult::__str__(const String & offset) const
   EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
   const UnsignedInteger outputDimension = metaModel_.getOutputDimension();
   const UnsignedInteger inputDimension = distribution_.getDimension();
-  oss << " input dimension: " << inputDimension << "\n"
-      << " output dimension: " << outputDimension << "\n"
-      << " basis size: " << basisSize << "\n";
+  oss << "Input dimension: " << inputDimension << "\n"
+      << "Output dimension: " << outputDimension << "\n"
+      << "Basis size: " << basisSize << "\n"
+      << "Relative errors: " << relativeErrors_ << "\n"
+      << "Residuals: " << residuals_ << "\n\n";
   oss << "| Index | Rank | Multi-index | Coefficient       |" << "\n";
   oss << "|-------|------|-------------|-------------------|" << "\n";
   const Scalar verboseThreshold = ResourceMap::GetAsScalar("FunctionalChaosResult-CoefficientThreshold");

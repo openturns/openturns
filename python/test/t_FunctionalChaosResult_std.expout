@@ -1,7 +1,10 @@
- input dimension: 4
- output dimension: 1
- basis size: 36
-| Index | Rank | Multi-index | Value             |
+Input dimension: 4
+Output dimension: 1
+Basis size: 36
+Relative errors: [1.55489e-06]
+Residuals: [0.000791442]
+
+| Index | Rank | Multi-index | Coefficient       |
 |-------|------|-------------|-------------------|
 |     0 |    0 |   [0,0,0,0] | [       -5.95366] |
 |     1 |    1 |   [1,0,0,0] | [       0.800863] |
