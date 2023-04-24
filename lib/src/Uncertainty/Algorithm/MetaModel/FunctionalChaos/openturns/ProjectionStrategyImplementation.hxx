@@ -115,6 +115,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  virtual Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const;
+
 protected:
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   virtual void computeCoefficients(const Function & function,

@@ -68,6 +68,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Selection history accessor */
+  Collection<Indices> getSelectionHistory(Collection<Point> & coefficientsHistory) const override;
+
 private:
   Scalar relativeConvergence_;
 
@@ -80,6 +83,11 @@ private:
   Indices inPredictors_;
 
   mutable Matrix mPsiX_;
+
+  /** Selection history */
+  Collection<Indices> indicesHistory_;
+  PersistentCollection<Point> coefficientsHistory_;
+
 }; /* class LARS */
 
 

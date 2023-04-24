@@ -339,6 +339,11 @@ void FunctionalChaosAlgorithm::run()
   }
   // Build the result
   result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
+
+  // set selection history
+  Collection<Point> coefficientsHistory;
+  Collection<Indices> indicesHistory(projectionStrategy_.getImplementation()->getSelectionHistory(coefficientsHistory));
+  result_.setSelectionHistory(indicesHistory, coefficientsHistory);
 }
 
 /* Marginal computation */

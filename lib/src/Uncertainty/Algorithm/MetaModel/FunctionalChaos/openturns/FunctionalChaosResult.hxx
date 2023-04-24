@@ -106,6 +106,11 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Selection history accessor */
+  IndicesCollection getIndicesHistory() const;
+  Collection<Point> getCoefficientsHistory() const;
+  void setSelectionHistory(Collection<Indices> & indicesHistory, Collection<Point> & coefficientsHistory);
+  Graph drawSelectionHistory() const;
 
 protected:
 
@@ -133,6 +138,10 @@ private:
 
   /** Composed meta model */
   Function composedMetaModel_;
+
+  /** Selection history */
+  Collection<Indices> indicesHistory_;
+  PersistentCollection<Point> coefficientsHistory_;
 
 } ; /* class FunctionalChaosResult */
 

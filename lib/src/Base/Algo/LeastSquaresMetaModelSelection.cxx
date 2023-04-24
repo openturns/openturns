@@ -209,5 +209,9 @@ void LeastSquaresMetaModelSelection::load(Advocate & adv)
   adv.loadAttribute( "fittingAlgorithm_", fittingAlgorithm_ );
 }
 
+Collection<Indices> LeastSquaresMetaModelSelection::getSelectionHistory(Collection<Point> & coefficientsHistory) const
+{
+  return basisSequenceFactory_.getImplementation()->getSelectionHistory(coefficientsHistory);
+}
 
 END_NAMESPACE_OPENTURNS

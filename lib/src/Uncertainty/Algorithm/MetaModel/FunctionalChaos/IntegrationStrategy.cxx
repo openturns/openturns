@@ -202,6 +202,12 @@ void IntegrationStrategy::load(Advocate & adv)
   ProjectionStrategyImplementation::load(adv);
 }
 
+/* Selection history accessor */
+Collection<Indices> IntegrationStrategy::getSelectionHistory(Collection<Point> & coefficientsHistory) const
+{
+  coefficientsHistory = Collection<Point>();
+  return Collection<Indices>();
+}
 
 
 END_NAMESPACE_OPENTURNS

@@ -146,4 +146,9 @@ void BasisSequenceFactoryImplementation::load(Advocate & adv)
 }
 
 
+Collection<Indices> BasisSequenceFactoryImplementation::getSelectionHistory(Collection<Point> & /*coefficientsHistory*/) const
+{
+  throw NotYetImplementedException(HERE) << "in BasisSequenceFactoryImplementation::getSelectionHistory";
+}
+
 END_NAMESPACE_OPENTURNS
