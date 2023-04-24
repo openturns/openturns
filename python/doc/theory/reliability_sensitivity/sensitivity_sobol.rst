@@ -137,6 +137,7 @@ Therefore:
     = \sum_{\bdv \subseteq \bdu} h_\bdv(\bdx_\bdv).
 
 The Möbius inversion formula implies (see [daveiga2022]_ Theorem 3.3 page 49):
+
 .. math::
     h_\bdu(\bdx_\bdu)
     = \sum_{\bdv \subseteq \bdu} (-1)^{|\bdu| - |\bdv|} \Expect{Y|\bdX_\bdv=\bdx_\bdv}.
