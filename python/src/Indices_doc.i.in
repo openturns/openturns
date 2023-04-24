@@ -76,7 +76,6 @@ Parameters
 ----------
 bound : positive int
     The value of :math:`n`.
-    Why does Sphinx hide this line ????
 
 Returns
 -------
