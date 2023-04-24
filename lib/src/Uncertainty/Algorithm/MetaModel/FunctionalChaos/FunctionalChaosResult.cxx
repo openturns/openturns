@@ -102,7 +102,7 @@ String FunctionalChaosResult::__repr__() const
          << " metaModel=" << metaModel_;
 }
 
-String FunctionalChaosResult::__str__(const String & offset) const
+String FunctionalChaosResult::__str__(const String & /*offset*/) const
 {
   OSS oss(false);
   const UnsignedInteger basisSize = I_.getSize();
