@@ -665,12 +665,12 @@ marginal with respect to the variation of :math:`x_i` in the interval
 Then OpenTURNS draws the graph:
 
 .. math::
-    y = f_k{(i)}(s)
+    y = f_k^{(i)}(s)
 
-for any :math:`s \in [x_i^{min}, x_i^{max}]` where :math:`f_k{(i)}(s)` is defined by the equation:
+for any :math:`s \in [x_i^{min}, x_i^{max}]` where :math:`f_k^{(i)}(s)` is defined by the equation:
 
 .. math::
-    f_k{(i)}(s) = f_k(c_1, \dots, c_{i-1}, s,  c_{i+1} \dots, c_n).
+    f_k^{(i)}(s) = f_k(c_1, \dots, c_{i-1}, s,  c_{i+1} \dots, c_n).
 
 - In the second usage:
 
@@ -679,17 +679,17 @@ function of the given 2D *firstInputMarg* and *secondInputMarg* marginals
 with respect to the variation of :math:`(x_i, x_j)` in the interval
 :math:`[x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}]`, when all the
 other components of :math:`\vect{x}` are fixed to the corresponding ones of the
-central point *centralPoint* :math:`c`.
+*centralPoint* :math:`c`.
 Then OpenTURNS draws the graph:
 
 .. math::
-    y = f_k^{(i,j)}(c_1, \dots, c_{i-1}, s, c_{i+1}, \dots, c_{j-1}, t,  c_{j+1} \dots, c_n)
+    y = f_k^{(i,j)}(s, t)
 
-for any :math:`(s, t) \in [x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}]` where :math:f_k^{(i,j)}` 
+for any :math:`(s, t) \in [x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}]` where :math:`f_k^{(i,j)}` 
 is defined by the equation:
 
 .. math::
-    f_k^{(i,j)}(s,t) = f_k(c_1, \dots, c_{i-1}, s, c_{i+1}, \dots, c_{j-1}, t,  c_{j+1} \dots, c_n)`.
+    f_k^{(i,j)}(s,t) = f_k(c_1, \dots, c_{i-1}, s, c_{i+1}, \dots, c_{j-1}, t,  c_{j+1} \dots, c_n).
 
 - In the third usage:
 
