@@ -105,7 +105,7 @@ String FunctionalChaosResult::__repr__() const
 String FunctionalChaosResult::__str__(const String & offset) const
 {
   OSS oss(false);
-  const int basisSize = I_.getSize();
+  const UnsignedInteger basisSize = I_.getSize();
   EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
   const UnsignedInteger outputDimension = metaModel_.getOutputDimension();
   const UnsignedInteger inputDimension = distribution_.getDimension();
@@ -115,11 +115,11 @@ String FunctionalChaosResult::__str__(const String & offset) const
   oss << "| Index | Rank | Multi-index | Coefficient       |" << "\n";
   oss << "|-------|------|-------------|-------------------|" << "\n";
   const Scalar verboseThreshold = ResourceMap::GetAsScalar("FunctionalChaosResult-CoefficientThreshold");
-  const int verboseMaximumIndices = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-MaximumPrint");
-  int printIndex = 0;
+  const UnsignedInteger verboseMaximumIndices = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-MaximumPrint");
+  UnsignedInteger printIndex = 0;
   for (UnsignedInteger k = 0; k < basisSize; ++ k)
   {
-    const int rank = I_[k];
+    const UnsignedInteger rank = I_[k];
     const Indices multiindex = enumerateFunction(rank);
     bool mustPrint = false;
     for (UnsignedInteger m = 0; m < outputDimension; ++ m)
