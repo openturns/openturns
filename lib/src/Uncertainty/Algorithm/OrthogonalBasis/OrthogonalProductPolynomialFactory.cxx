@@ -154,6 +154,21 @@ String OrthogonalProductPolynomialFactory::__repr__() const
          << " measure=" << measure_;
 }
 
+String OrthogonalProductPolynomialFactory::__str__(const String & /*offset*/) const
+{
+  OSS oss(false);
+  oss << "Measure=" << getMeasure().getClassName() << "\n";
+  oss << "IsOrthogonal=" << isOrthogonal() << "\n";
+  oss << "EnumerateFunction=" << phi_ << "\n";
+  const UnsignedInteger size = coll_.getSize();
+  oss << "| Index | Type |\n";
+  oss << "|-------|------|\n";
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    oss << "| " << std::setw(5) << i << " | " 
+        << coll_[i]
+        << " |\n";
+  return oss;
+}
 
 /* Method save() stores the object through the StorageManager */
 void OrthogonalProductPolynomialFactory::save(Advocate & adv) const

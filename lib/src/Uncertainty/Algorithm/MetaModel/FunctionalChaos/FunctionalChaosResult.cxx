@@ -109,11 +109,11 @@ String FunctionalChaosResult::__str__(const String & /*offset*/) const
   const EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
   const UnsignedInteger outputDimension = metaModel_.getOutputDimension();
   const UnsignedInteger inputDimension = distribution_.getDimension();
-  oss << "Input dimension: " << inputDimension << "\n"
-      << "Output dimension: " << outputDimension << "\n"
-      << "Basis size: " << basisSize << "\n"
-      << "Relative errors: " << relativeErrors_ << "\n"
-      << "Residuals: " << residuals_ << "\n\n";
+  oss << "Input dimension=" << inputDimension << "\n"
+      << "Output dimension=" << outputDimension << "\n"
+      << "Basis size=" << basisSize << "\n"
+      << "Relative errors=" << relativeErrors_ << "\n"
+      << "Residuals=" << residuals_ << "\n\n";
   oss << "| Index | Rank | Multi-index | Coefficient       |" << "\n";
   oss << "|-------|------|-------------|-------------------|" << "\n";
   const Scalar verboseThreshold = ResourceMap::GetAsScalar("FunctionalChaosResult-CoefficientThreshold");
@@ -134,8 +134,10 @@ String FunctionalChaosResult::__str__(const String & /*offset*/) const
     }
     if (mustPrint)
     {
-      oss << "|" << std::setw(6) << k << " |" << std::setw(5) << rank << " |" 
-      << std::setw(12) <<  multiindex << " | [" << std::setw(15);
+      oss << "|" << std::setw(6) << k 
+          << " |" << std::setw(5) << rank 
+          << " |" << std::setw(12) <<  multiindex 
+          << " | [" << std::setw(15);
       for (UnsignedInteger m = 0; m < outputDimension; ++ m)
       {
         oss << alpha_k_[k][m];

@@ -148,16 +148,20 @@ String ComposedDistribution::__repr__() const
 
 String ComposedDistribution::__str__(const String & ) const
 {
-  OSS oss;
-  oss << getClassName() << "(";
-  String separator("");
+  OSS oss(false);
+  oss << "Class=" << DistributionImplementation::GetClassName() << "\n";
+  oss << "Dimension=" << getDimension() << "\n";
+  oss << "Description= " << description_ << "\n";
+  if (getDimension() > 1) oss << "Copula=" << copula_.__str__() << "\n";
+  oss << "\n";
+  oss << "| Index | Variable | Distribution |\n";
+  oss << "|-------|----------|--------------|\n";
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {
-    oss << separator << distributionCollection_[i].__str__();
-    separator = ", ";
+    oss << "| " << std::setw(5) << i << " | " 
+        << std::setw(8) << description_[i] << " | " 
+        << std::setw(20) << distributionCollection_[i].__str__() << " |\n";
   }
-  if (getDimension() > 1) oss << ", " << copula_.__str__();
-  oss << ")";
   return oss;
 }
 

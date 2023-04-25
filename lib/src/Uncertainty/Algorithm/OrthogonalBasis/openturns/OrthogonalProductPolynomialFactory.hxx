@@ -82,7 +82,8 @@ public:
 
   /** String converter */
   String __repr__() const override;
-
+  String __str__(const String & offset = "") const override;
+  
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
