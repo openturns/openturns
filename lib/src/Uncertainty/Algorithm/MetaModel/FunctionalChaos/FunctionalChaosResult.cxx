@@ -106,7 +106,7 @@ String FunctionalChaosResult::__str__(const String & /*offset*/) const
 {
   OSS oss(false);
   const UnsignedInteger basisSize = I_.getSize();
-  EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
+  const EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
   const UnsignedInteger outputDimension = metaModel_.getOutputDimension();
   const UnsignedInteger inputDimension = distribution_.getDimension();
   oss << "Input dimension: " << inputDimension << "\n"
@@ -122,8 +122,8 @@ String FunctionalChaosResult::__str__(const String & /*offset*/) const
   for (UnsignedInteger k = 0; k < basisSize; ++ k)
   {
     const UnsignedInteger rank = I_[k];
-    const Indices multiindex = enumerateFunction(rank);
-    bool mustPrint = false;
+    const Indices multiindex(enumerateFunction(rank));
+    Bool mustPrint = false;
     for (UnsignedInteger m = 0; m < outputDimension; ++ m)
     {
       if (std::abs(alpha_k_[k][m]) > verboseThreshold)
