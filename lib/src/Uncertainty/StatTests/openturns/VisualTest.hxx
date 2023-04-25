@@ -109,6 +109,12 @@ OT_API Graph DrawKendallPlot(const Sample & data,
 OT_API Graph DrawKendallPlot(const Sample & firstSample,
                              const Sample & secondSample);
 
+/** Draw dependence functions */
+OT_API Graph DrawUpperTailDependenceFunction(const Sample & data);
+OT_API Graph DrawUpperExtremalDependenceFunction(const Sample & data);
+OT_API Graph DrawLowerTailDependenceFunction(const Sample & data);
+OT_API Graph DrawLowerExtremalDependenceFunction(const Sample & data);
+
 } /* VisualTest */
 
 END_NAMESPACE_OPENTURNS

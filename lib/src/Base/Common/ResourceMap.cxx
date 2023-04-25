@@ -1540,6 +1540,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // VisualTest parameters //
   addAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 100);
+  addAsScalar("VisualTest-DependenceConfidenceLevel", 0.95);
 
   // RandomWalkMetropolisHastings parameters //
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor", 1.2);

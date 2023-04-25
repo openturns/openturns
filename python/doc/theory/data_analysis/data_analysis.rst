@@ -62,6 +62,7 @@ Detection and quantification of dependencies
     spearman_test
     chi2_independence_test
     linear_regression
+    tail_dependence
 
 Estimating a quantile
 ---------------------

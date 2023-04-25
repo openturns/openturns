@@ -25,6 +25,8 @@ Bibliography
     *OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation.*
     In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
     `pdf <https://arxiv.org/pdf/1501.05242>`__
+.. [beirlant2004] Beirlant J., Goegebeur Y., Teugels J., Segers J.,
+    *Statistics of extremes: theory and applications*, Wiley, 2004
 .. [bhattacharyya1997] Bhattacharyya G.K., and R.A. Johnson, *Statistical
     Concepts and Methods*, John Wiley and Sons, New York, 1997.
 .. [blatman2009] Blatman, G. *Adaptive sparse polynomial chaos expansions for

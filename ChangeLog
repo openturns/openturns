@@ -59,6 +59,7 @@
 === Miscellaneous ===
  * Add HypothesisTest::LikelihoodRatioTest for nested model selection
  * Add VisualTest::DrawPPplot
+ * Add VisualTest.Draw(Upper|Lower)(Tail|Extremal)DependenceFunction methods to plot dependence coefficients
 
 === Bug fixes ===
  * #2250 (HSIC Target sensitivity bad filtering)

@@ -579,3 +579,94 @@ Examples
 >>> clouds = ot.VisualTest.DrawPairsMarginals(sample, distribution)
 >>> View(clouds).show()"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawUpperTailDependenceFunction
+"Draw upper tail dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawUpperTailDependenceFunction(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawUpperExtremalDependenceFunction
+"Draw upper extremal dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawUpperExtremalDependenceFunction(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawLowerTailDependenceFunction
+"Draw lower tail dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawLowerTailDependenceFunction(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawLowerExtremalDependenceFunction
+"Draw lower extremal dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawLowerExtremalDependenceFunction(sample)"

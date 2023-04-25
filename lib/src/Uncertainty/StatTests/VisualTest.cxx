@@ -27,6 +27,8 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/HistogramFactory.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -114,8 +116,8 @@ Graph VisualTest::DrawPPplot(const Sample & sample1,
   for (UnsignedInteger i = 0; i < pointNumber; ++ i)
   {
     const Scalar p = sample1.getMin()[0] + (i + 0.5) * step;
-    data(i, 0) = sample1.computeEmpiricalCDF(Point(1, p));
-    data(i, 1) = sample2.computeEmpiricalCDF(Point(1, p));
+    data(i, 0) = sample1.computeEmpiricalCDF(Point({p}));
+    data(i, 1) = sample2.computeEmpiricalCDF(Point({p}));
   }
   Cloud cloud(data, "Data");
   if (pointNumber < 100) cloud.setPointStyle("fcircle");
@@ -609,6 +611,116 @@ Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
   // Draw the Kendall curve
   graph.add(Curve(firstEmpiricalStatistics, secondEmpiricalStatistics));
   return graph;
+}
+
+/* Draw dependence functions */
+Graph VisualTestDrawDependenceFunction(const Sample & data,
+                                       const String & linkFormula,
+                                       const String & legend,
+                                       const Bool survival = false)
+{
+  if (!data.getSize())
+    throw InvalidArgumentException(HERE) << "The sample must not be empty";
+  if (data.getDimension() != 2)
+    throw InvalidArgumentException(HERE) << "The sample must be of dimension 2";
+  const UnsignedInteger size = data.getSize();
+  const Sample ranked((data.rank() + 1.0) / size);
+  Graph graph("n/a", "u", legend, true, "bottom");
+  const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber");
+  Sample valuesU(pointNumber, 1);
+  Sample valuesXu(pointNumber, 1);
+  Sample valuesXuLow(pointNumber, 1);
+  Sample valuesXuUp(pointNumber, 1);
+  const Scalar level = ResourceMap::GetAsScalar("VisualTest-DependenceConfidenceLevel");
+  const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
+  const SymbolicFunction link(Description({"u", "cuu"}), Description(1, linkFormula));
+  for (UnsignedInteger i = 0; i < pointNumber; ++ i)
+  {
+    const Scalar u = (i + 1) * 1.0 / (pointNumber + 1);
+    valuesU(i, 0) = u;
+    Scalar cuu = 0.0;
+    for (UnsignedInteger j = 0; j < size; ++ j)
+    {
+      if (survival)
+      {
+        if (u < std::min(ranked(j, 0), ranked(j, 1)))
+          cuu += 1.0 / size;
+      }
+      else
+      {
+        if (u > std::max(ranked(j, 0), ranked(j, 1)))
+          cuu += 1.0 / size;
+      }
+    }
+    if ((cuu > 0.0) && (cuu < 1.0))
+    {
+      // estimate
+      valuesXu[i] = link(Point({u, cuu}));
+
+      // confidence interval of cuu, then xu
+      Scalar lb = cuu - xq * std::sqrt((cuu * (1.0 - cuu)) / size);
+      // might be < 0, set something positive below cuu
+      const Scalar epsilon = SpecFunc::Precision;
+      if (lb < 0.0)
+        lb = epsilon;
+      Scalar ub = cuu + xq * std::sqrt((cuu * (1.0 - cuu)) / size);
+      if (ub > 1.0)
+        ub = 1.0 - epsilon;
+      valuesXuLow[i] = link(Point({u, lb}));
+      valuesXuUp [i] = link(Point({u, ub}));
+
+      // clip CI in [-1,1]
+      valuesXuLow(i, 0) = std::max(valuesXuLow(i, 0), -1.0);
+      valuesXuUp(i, 0) = std::min(valuesXuUp(i, 0), 1.0);
+    }
+  }
+
+  // estimate
+  Curve curveXu(valuesU, valuesXu);
+  curveXu.setColor("red");
+  curveXu.setLegend(legend);
+  graph.add(curveXu);
+  // confidence lower bound
+  Curve curveXuLow(valuesU, valuesXuLow);
+  curveXuLow.setColor("blue");
+  curveXuLow.setLineStyle("dashed");
+  curveXuLow.setLegend("CI low");
+  graph.add(curveXuLow);
+  // confidence upper bound
+  Curve curveXuUp(valuesU, valuesXuUp);
+  curveXuUp.setColor("blue");
+  curveXuUp.setLineStyle("dashed");
+  curveXuUp.setLegend("CI up");
+  graph.add(curveXuUp);
+  return graph;
+}
+
+Graph VisualTest::DrawUpperTailDependenceFunction(const Sample & data)
+{
+  Graph result(VisualTestDrawDependenceFunction(data, "2-log(cuu)/log(u)", "$\\chi(u)$"));
+  result.setTitle("Upper tail dependence function");
+  return result;
+}
+
+Graph VisualTest::DrawUpperExtremalDependenceFunction(const Sample & data)
+{
+  Graph result(VisualTestDrawDependenceFunction(data, "-2*log1p(u)/log(cuu)-1", "$\\bar{\\chi}(u)$", true));
+  result.setTitle("Upper extremal dependence function");
+  return result;
+}
+
+Graph VisualTest::DrawLowerTailDependenceFunction(const Sample & data)
+{
+  Graph result(VisualTestDrawDependenceFunction(data, "log1p(cuu)/log1p(u)", "$\\chi_L(u)$"));
+  result.setTitle("Lower tail dependence function");
+  return result;
+}
+
+Graph VisualTest::DrawLowerExtremalDependenceFunction(const Sample & data)
+{
+  Graph result(VisualTestDrawDependenceFunction(data, "2*log(u)/log(cuu)-1", "$\\bar{\\chi}_L(u)$"));
+  result.setTitle("Lower extremal dependence function");
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS

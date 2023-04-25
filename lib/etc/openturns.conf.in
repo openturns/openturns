@@ -918,7 +918,8 @@
 
   <!-- OT::VisualTest parameters -->
   <VisualTest-KendallPlot-MonteCarloSize value_int="100" />
-  
+  <VisualTest-DependenceConfidenceLevel value_float="0.95" />
+
   <!--  OT::RandomWalkMetropolisHastings parameters -->
   <RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor   value_float="1.2" />
   <RandomWalkMetropolisHastings-DefaultAdaptationLowerBound        value_float="0.117" /> <!-- = 0.5 * 0.234 -->
