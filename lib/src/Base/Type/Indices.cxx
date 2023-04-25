@@ -91,7 +91,7 @@ UnsignedInteger Indices::normInf() const
 /* Returns the 1-norm of the indices */
 UnsignedInteger Indices::norm1() const
 {
-  const UnsignedInteger norm = std::accumulate(begin(), end(), 0);
+  const UnsignedInteger norm = isEmpty() ? 0 : std::accumulate(begin(), end(), 0);
   return norm;
 }
 
