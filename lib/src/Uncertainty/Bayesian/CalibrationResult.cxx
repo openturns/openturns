@@ -460,7 +460,7 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++ j)
     {
-      const bool upperRightGraph = (i == 0 and j == inputDimension - 1);
+      const bool upperRightGraph = (i == 0 && j == inputDimension - 1);
       // Only the last row
       String xTitle = (i == outputDimension - 1) ? xDescription[j] : "";
       // Only the first column
