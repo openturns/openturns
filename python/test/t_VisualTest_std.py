@@ -93,3 +93,10 @@ distribution = ot.ComposedDistribution(
 )
 cloudsMarginals = ot.VisualTest.DrawPairsMarginals(sample, distribution)
 print("CloudsMarginals = ", cloudsMarginals)
+
+# dependence functions
+data = ot.FrankCopula().getSample(100)
+graph1 = ot.VisualTest.DrawUpperTailDependenceFunction(data)
+graph2 = ot.VisualTest.DrawUpperExtremalDependenceFunction(data)
+graph3 = ot.VisualTest.DrawLowerTailDependenceFunction(data)
+graph4 = ot.VisualTest.DrawLowerExtremalDependenceFunction(data)

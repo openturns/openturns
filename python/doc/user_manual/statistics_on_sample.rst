@@ -222,6 +222,10 @@ Graphical tests
     VisualTest.DrawLinearModelResidual
     VisualTest.DrawQQplot
     VisualTest.DrawCDFplot
+    VisualTest.DrawUpperTailDependenceFunction
+    VisualTest.DrawUpperExtremalDependenceFunction
+    VisualTest.DrawLowerTailDependenceFunction
+    VisualTest.DrawLowerExtremalDependenceFunction
 
 Hypothesis tests
 ----------------
