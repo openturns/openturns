@@ -4576,6 +4576,99 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
   return graphQuantile;
 }
 
+
+/* Draw dependence functions */
+class DistributionImplementationDependenceEvaluation : public EvaluationImplementation
+{
+public:
+  DistributionImplementationDependenceEvaluation(const DistributionImplementation & distribution,
+                                                 const Function & link,
+                                                 const Bool survival)
+  : EvaluationImplementation()
+  , distribution_(distribution)
+  , link_(link)
+  , survival_(survival)
+  {}
+
+  DistributionImplementationDependenceEvaluation * clone() const override
+  {
+    return new DistributionImplementationDependenceEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator()(const Point & inP) const override
+  {
+    const Scalar u = inP[0];
+    const Point uu = {u, u};
+    const Scalar cuu = survival_ ? distribution_.computeSurvivalFunction(uu) : distribution_.computeCDF(uu);
+    Point xu(1, 0);
+    if ((cuu > 0.0) && (cuu < 1.0))
+      xu = link_(Point({u, cuu}));
+    return xu;
+  }
+
+private:
+  const DistributionImplementation & distribution_;
+  const Function & link_;
+  Bool survival_ = false;
+};
+
+Graph DistributionImplementation::drawDependenceFunction(const Function & link, const String & legend, const Bool survival) const
+{
+  if (getDimension() != 2)
+    throw InvalidArgumentException(HERE) << "Can only draw dependence function of a bivariate distribution";
+
+  const Function dependenceFunction(DistributionImplementationDependenceEvaluation(*this, link, survival));
+  const Scalar epsilon = 1e-3;
+  Graph graph(dependenceFunction.draw(epsilon, 1.0 - epsilon));
+  graph.setLegendPosition("bottom");
+  graph.setLegends(Description({legend}));
+  graph.setXTitle("u");
+  graph.setYTitle(legend);
+  return graph;
+}
+
+Graph DistributionImplementation::drawUpperTailDependenceFunction() const
+{
+  const SymbolicFunction link(Description({"u", "cuu"}), Description({"2-log(cuu)/log(u)"}));
+  Graph graph(drawDependenceFunction(link, "$\\chi(u)$"));
+  graph.setTitle("Upper tail dependence function");
+  return graph;
+}
+
+Graph DistributionImplementation::drawUpperExtremalDependenceFunction() const
+{
+  const SymbolicFunction link(Description({"u", "cuu"}), Description({"2*log(1-u)/log(cuu)-1"}));
+  Graph result(drawDependenceFunction(link, "$\\bar{\\chi}(u)$", true));
+  result.setTitle("Upper extremal dependence function");
+  return result;
+}
+
+Graph DistributionImplementation::drawLowerTailDependenceFunction() const
+{
+  const SymbolicFunction link(Description({"u", "cuu"}), Description({"log(1-cuu)/log(1-u)"}));
+  Graph result(drawDependenceFunction(link, "$\\chi_L(u)$"));
+  result.setTitle("Lower tail dependence function");
+  return result;
+}
+
+Graph DistributionImplementation::drawLowerExtremalDependenceFunction() const
+{
+  const SymbolicFunction link(Description({"u", "cuu"}), Description({"2*log(u)/log(cuu)-1"}));
+  Graph result(drawDependenceFunction(link, "$\\bar{\\chi}_L(u)$", true));
+  result.setTitle("Lower extremal dependence function");
+  return result;
+}
+
 /* Parameters value and description accessor */
 DistributionImplementation::PointWithDescriptionCollection DistributionImplementation::getParametersCollection() const
 {

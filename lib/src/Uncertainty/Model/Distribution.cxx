@@ -1180,6 +1180,27 @@ Graph Distribution::drawQuantile(const Scalar qMin,
   return getImplementation()->drawQuantile(qMin, qMax, pointNumber, logScale);
 }
 
+/* Draw dependence functions */
+Graph Distribution::drawUpperTailDependenceFunction() const
+{
+  return getImplementation()->drawUpperTailDependenceFunction();
+}
+
+Graph Distribution::drawUpperExtremalDependenceFunction() const
+{
+  return getImplementation()->drawUpperExtremalDependenceFunction();
+}
+
+Graph Distribution::drawLowerTailDependenceFunction() const
+{
+  return getImplementation()->drawLowerTailDependenceFunction();
+}
+
+Graph Distribution::drawLowerExtremalDependenceFunction() const
+{
+  return getImplementation()->drawLowerExtremalDependenceFunction();
+}
+
 /* Parameters value and description accessor */
 Distribution::PointWithDescriptionCollection Distribution::getParametersCollection() const
 {

@@ -719,7 +719,14 @@ protected:
                                const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
                                const Bool logScaleX = false,
                                const Bool logScaleY = false) const;
+
+  virtual Graph drawDependenceFunction(const Function & transfer, const String & legend, const Bool tail = false) const;
 public:
+  /** Draw dependence functions */
+  virtual Graph drawUpperTailDependenceFunction() const;
+  virtual Graph drawUpperExtremalDependenceFunction() const;
+  virtual Graph drawLowerTailDependenceFunction() const;
+  virtual Graph drawLowerExtremalDependenceFunction() const;
 
   /** Parameters value and description accessor */
   virtual PointWithDescriptionCollection getParametersCollection() const;

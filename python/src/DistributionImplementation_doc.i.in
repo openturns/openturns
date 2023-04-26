@@ -3236,3 +3236,86 @@ Examples
 %feature("docstring") OT::DistributionImplementation::drawMarginal2DSurvivalFunction
 OT_Distribution_drawMarginal2DSurvivalFunction_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawUpperTailDependenceFunction_doc
+"Draw upper tail dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> copula = ot.FrankCopula()
+>>> graph = copula.drawUpperTailDependenceFunction()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawUpperTailDependenceFunction
+OT_Distribution_drawUpperTailDependenceFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawUpperExtremalDependenceFunction_doc
+"Draw upper extremal dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> copula = ot.FrankCopula()
+>>> graph = copula.drawUpperExtremalDependenceFunction()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawUpperExtremalDependenceFunction
+OT_Distribution_drawUpperExtremalDependenceFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawLowerTailDependenceFunction_doc
+"Draw lower tail dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> copula = ot.FrankCopula()
+>>> graph = copula.drawLowerTailDependenceFunction()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawLowerTailDependenceFunction
+OT_Distribution_drawLowerTailDependenceFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawLowerExtremalDependenceFunction_doc
+"Draw lower extremal dependence.
+
+Refer to :ref:`tail_dependence`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> copula = ot.FrankCopula()
+>>> graph = copula.drawLowerExtremalDependenceFunction()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawLowerExtremalDependenceFunction
+OT_Distribution_drawLowerExtremalDependenceFunction_doc
