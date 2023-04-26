@@ -342,6 +342,17 @@ Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorSecondDerivative(const Sc
   return (-theta_ * theta_ / (u * u) - 2.0 * theta_ / (t * u) + 2.0 * std::log(u) / (t * t)) / t;
 }
 
+/* Dependence coefficients */
+CorrelationMatrix AliMikhailHaqCopula::computeUpperTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
+CorrelationMatrix AliMikhailHaqCopula::computeLowerTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
 /* Parameters value accessor */
 Point AliMikhailHaqCopula::getParameter() const
 {

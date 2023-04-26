@@ -831,6 +831,7 @@
   <Distribution-DefaultCDFEpsilon                 value_float="1.0e-14"           />
   <Distribution-DefaultPDFEpsilon                 value_float="1.0e-14"           />
   <Distribution-DefaultQuantileEpsilon            value_float="1.0e-12"           />
+  <Distribution-DependenceEpsilon                 value_float="1.0e-12"           />
   <Distribution-DiscreteDrawPDFScaling            value_float="0.25"              />
   <Distribution-QMax                              value_float="0.85"              />
   <Distribution-QMin                              value_float="0.15"              />

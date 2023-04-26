@@ -47,3 +47,7 @@ margins CDF=0.160538
 margins quantile= class=Point name=Unnamed dimension=2 values=[0.961873,0.961873]
 margins CDF(qantile)=0.950000
 margins realization= class=Point name=Unnamed dimension=2 values=[0.281456,0.596274]
+chi= [[ 1        0.680492 ]
+ [ 0.680492 1        ]]
+chiL= [[ 1 0 ]
+ [ 0 1 ]]

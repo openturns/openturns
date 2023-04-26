@@ -106,6 +106,22 @@ OT_Distribution_drawSurvivalFunction_doc
 OT_Distribution_drawMarginal1DSurvivalFunction_doc
 %feature("docstring") OT::Distribution::drawMarginal1DPDF
 OT_Distribution_drawMarginal1DPDF_doc
+%feature("docstring") OT::Distribution::computeUpperTailDependenceMatrix
+OT_Distribution_computeUpperTailDependenceMatrix_doc
+%feature("docstring") OT::Distribution::computeUpperExtremalDependenceMatrix
+OT_Distribution_computeUpperExtremalDependenceMatrix_doc
+%feature("docstring") OT::Distribution::computeLowerTailDependenceMatrix
+OT_Distribution_computeLowerTailDependenceMatrix_doc
+%feature("docstring") OT::Distribution::computeLowerExtremalDependenceMatrix
+OT_Distribution_computeLowerExtremalDependenceMatrix_doc
+%feature("docstring") OT::Distribution::drawUpperTailDependenceFunction
+OT_Distribution_drawUpperTailDependenceFunction_doc
+%feature("docstring") OT::Distribution::drawUpperExtremalDependenceFunction
+OT_Distribution_drawUpperExtremalDependenceFunction_doc
+%feature("docstring") OT::Distribution::drawLowerTailDependenceFunction
+OT_Distribution_drawLowerTailDependenceFunction_doc
+%feature("docstring") OT::Distribution::drawLowerExtremalDependenceFunction
+OT_Distribution_drawLowerExtremalDependenceFunction_doc
 %feature("docstring") OT::Distribution::getCDFEpsilon
 OT_Distribution_getCDFEpsilon_doc
 %feature("docstring") OT::Distribution::getCentralMoment

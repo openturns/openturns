@@ -585,6 +585,17 @@ Bool NormalCopula::hasIndependentCopula() const
   return normal_.hasIndependentCopula();
 }
 
+/* Dependence coefficients */
+CorrelationMatrix NormalCopula::computeUpperTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
+CorrelationMatrix NormalCopula::computeLowerTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
 void NormalCopula::setParametersCollection(const PointCollection & parametersCollection)
 {
   // Check if the given parameters are ok

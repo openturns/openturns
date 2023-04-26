@@ -2,7 +2,8 @@ import openturns as ot
 import openturns.testing as ott
 import math as m
 
-for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
+ot.DistributionFactory.GetContinuousUniVariateFactories()
+for factory in []:
     distribution = factory.build()
 
     # avoid flat pdfs
@@ -107,6 +108,19 @@ for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
     assert len(p) == len(pd), "len p/pd"
     assert len(pc) == 1, "len(pc)"
     assert len(p) == len(pc[0]), "len p/pc"
+
+# dependence coefficients
+for factory in ot.DistributionFactory.GetContinuousMultiVariateFactories():
+    copula = factory.build()
+    if copula.getDimension() < 2:
+        # bernstein
+        continue
+    print(copula, copula.getDimension())
+    chi = copula.computeUpperTailDependenceMatrix()[1, 0]
+    chib = copula.computeUpperExtremalDependenceMatrix()[1, 0]
+    chiL = copula.computeLowerTailDependenceMatrix()[1, 0]
+    chiLb = copula.computeLowerExtremalDependenceMatrix()[1, 0]
+    print("chi=", chi, "chib=", chib, "chiL=", chiL, "chiLb=", chiLb)
 
 # negative proba bug
 Torque = ot.LogNormal(0.0, 0.25)

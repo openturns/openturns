@@ -1454,6 +1454,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Distribution-DefaultQuantileEpsilon", 1.0e-12);
   addAsScalar("Distribution-DefaultPDFEpsilon", 1.0e-14);
   addAsScalar("Distribution-DefaultCDFEpsilon", 1.0e-14);
+  addAsScalar("Distribution-DependenceEpsilon", 1.0e-12);
   addAsScalar("Distribution-DiscreteDrawPDFScaling", 0.25);
   addAsString("Distribution-EntropySamplingMethod", "MonteCarlo");
   addAsUnsignedInteger("Distribution-CharacteristicFunctionBlockMax", 20);

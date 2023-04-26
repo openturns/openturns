@@ -4576,6 +4576,147 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
   return graphQuantile;
 }
 
+
+/* Draw dependence functions */
+class DistributionImplementationDependenceEvaluation : public EvaluationImplementation
+{
+public:
+  DistributionImplementationDependenceEvaluation(const Distribution & distribution,
+                                                 const String & linkFormula,
+                                                 const Bool survival = false)
+  : EvaluationImplementation()
+  , distribution_(distribution)
+  , link_(SymbolicFunction(Description({"u", "cuu"}), Description(1, linkFormula)))
+  , survival_(survival)
+  {}
+
+  DistributionImplementationDependenceEvaluation * clone() const override
+  {
+    return new DistributionImplementationDependenceEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator()(const Point & inP) const override
+  {
+    const Scalar u = inP[0];
+    const Point uu = {u, u};
+    const Scalar cuu = survival_ ? distribution_.computeSurvivalFunction(uu) : distribution_.computeCDF(uu);
+    Point xu(1, 0);
+    if ((cuu > 0.0) && (cuu < 1.0))
+      xu = link_(Point({u, cuu}));
+    return xu;
+  }
+
+private:
+  Distribution distribution_;
+  Function link_;
+  Bool survival_ = false;
+};
+
+Function DistributionImplementation::getUpperTailDependenceFunction() const
+{
+  return DistributionImplementationDependenceEvaluation(*this, "2-log(cuu)/log(u)");
+}
+
+Function DistributionImplementation::getUpperExtremalDependenceFunction() const
+{
+  return DistributionImplementationDependenceEvaluation(*this, "-2*log1p(u)/log(cuu)-1", true);
+}
+
+Function DistributionImplementation::getLowerTailDependenceFunction() const
+{
+  return DistributionImplementationDependenceEvaluation(*this, "log1p(cuu)/log1p(u)");
+}
+
+Function DistributionImplementation::getLowerExtremalDependenceFunction() const
+{
+  return DistributionImplementationDependenceEvaluation(*this, "2*log(u)/log(cuu)-1");
+}
+
+CorrelationMatrix DistributionImplementation::computeDependenceMatrix(const Function & dependenceFunction, const Bool lower) const
+{
+  if (getDimension() < 2)
+    throw InvalidArgumentException(HERE) << "Can only compute dependence matrix of a multivariate distribution";
+  CorrelationMatrix dependence(getDimension());
+  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DependenceEpsilon");
+  const Scalar u = lower ? epsilon : 1.0 - epsilon;
+  for (UnsignedInteger i = 0; i < getDimension(); ++ i)
+    for (UnsignedInteger j = 0; j < i; ++ j)
+      dependence(i, j) = dependenceFunction(Point({u}))[0];
+  return dependence;
+}
+
+CorrelationMatrix DistributionImplementation::computeUpperTailDependenceMatrix() const
+{
+  return computeDependenceMatrix(getUpperTailDependenceFunction());
+}
+
+CorrelationMatrix DistributionImplementation::computeUpperExtremalDependenceMatrix() const
+{
+  return computeDependenceMatrix(getUpperExtremalDependenceFunction());
+}
+
+CorrelationMatrix DistributionImplementation::computeLowerTailDependenceMatrix() const
+{
+  return computeDependenceMatrix(getLowerTailDependenceFunction(), true);
+}
+
+CorrelationMatrix DistributionImplementation::computeLowerExtremalDependenceMatrix() const
+{
+  return computeDependenceMatrix(getLowerExtremalDependenceFunction(), true);
+}
+
+Graph DistributionImplementation::drawDependenceFunction(const Function & dependenceFunction, const String & legend) const
+{
+  if (getDimension() != 2)
+    throw InvalidArgumentException(HERE) << "Can only draw dependence function of a bivariate distribution";
+
+  const Scalar epsilon = 1e-3;
+  Graph graph(dependenceFunction.draw(epsilon, 1.0 - epsilon));
+  graph.setLegendPosition("bottom");
+  graph.setLegends(Description({legend}));
+  graph.setXTitle("u");
+  graph.setYTitle(legend);
+  return graph;
+}
+
+Graph DistributionImplementation::drawUpperTailDependenceFunction() const
+{
+  Graph graph(drawDependenceFunction(getUpperTailDependenceFunction(), "$\\chi(u)$"));
+  graph.setTitle("Upper tail dependence function");
+  return graph;
+}
+
+Graph DistributionImplementation::drawUpperExtremalDependenceFunction() const
+{
+  Graph result(drawDependenceFunction(getUpperExtremalDependenceFunction(), "$\\bar{\\chi}(u)$"));
+  result.setTitle("Upper extremal dependence function");
+  return result;
+}
+
+Graph DistributionImplementation::drawLowerTailDependenceFunction() const
+{
+  Graph result(drawDependenceFunction(getLowerTailDependenceFunction(), "$\\chi_L(u)$"));
+  result.setTitle("Lower tail dependence function");
+  return result;
+}
+
+Graph DistributionImplementation::drawLowerExtremalDependenceFunction() const
+{
+  Graph result(drawDependenceFunction(getLowerExtremalDependenceFunction(), "$\\bar{\\chi}_L(u)$"));
+  result.setTitle("Lower extremal dependence function");
+  return result;
+}
+
 /* Parameters value and description accessor */
 DistributionImplementation::PointWithDescriptionCollection DistributionImplementation::getParametersCollection() const
 {

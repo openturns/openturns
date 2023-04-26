@@ -248,6 +248,17 @@ Bool FarlieGumbelMorgensternCopula::hasIndependentCopula() const
   return (theta_ == 0.0);
 }
 
+/* Dependence coefficients */
+CorrelationMatrix FarlieGumbelMorgensternCopula::computeUpperTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
+CorrelationMatrix FarlieGumbelMorgensternCopula::computeLowerTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
 /* Parameters value accessor */
 Point FarlieGumbelMorgensternCopula::getParameter() const
 {

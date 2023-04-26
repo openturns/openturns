@@ -302,6 +302,32 @@ CorrelationMatrix GumbelCopula::getKendallTau() const
   return tau;
 }
 
+/* Dependence coefficients */
+CorrelationMatrix GumbelCopula::computeUpperTailDependenceMatrix() const
+{
+  CorrelationMatrix result(getDimension());
+  const Scalar coef = 2.0 - std::pow(1.0 * getDimension(), 1.0 / theta_);
+  for (UnsignedInteger i = 0; i < getDimension(); ++ i)
+    for (UnsignedInteger j = 0; j < i; ++ j)
+      result(i, j) = coef;
+  return result;
+}
+
+CorrelationMatrix GumbelCopula::computeLowerTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
+CorrelationMatrix GumbelCopula::computeLowerExtremalDependenceMatrix() const
+{
+  CorrelationMatrix result(getDimension());
+  const Scalar coef = 2.0 * std::pow(2.0, -1.0 / theta_) - 1.0;
+  for (UnsignedInteger i = 0; i < getDimension(); ++ i)
+    for (UnsignedInteger j = 0; j < i; ++ j)
+      result(i, j) = coef;
+  return result;
+}
+
 /* Parameters value accessor */
 Point GumbelCopula::getParameter() const
 {

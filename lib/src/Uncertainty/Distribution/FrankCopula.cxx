@@ -344,6 +344,17 @@ Scalar FrankCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) 
   return ratio * ratio * std::exp(thetaT);
 }
 
+/* Dependence coefficients */
+CorrelationMatrix FrankCopula::computeUpperTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
+CorrelationMatrix FrankCopula::computeLowerTailDependenceMatrix() const
+{
+  return CorrelationMatrix(getDimension());
+}
+
 /* Parameters value accessor */
 Point FrankCopula::getParameter() const
 {
