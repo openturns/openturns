@@ -53,32 +53,39 @@ g2 = ot.ParametricFunction(foo, [1], [0.1 * stdDev])
 # The weight function
 weight = ot.ComposedFunction(g2, g)
 
-# We eventually build the HSIC object
-# HSICVStat event is already embedded as it is the only one available
-# for that kind of analysis
-CSA = ot.HSICEstimatorConditionalSensitivity(covarianceModelCollection, X, Y, weight)
+# random generator state
+# use the same state for parallel/sequential validation
+state = ot.RandomGenerator.GetState()
 
-# We get the R2-HSIC
-R2HSIC = CSA.getR2HSICIndices()
-ott.assert_almost_equal(R2HSIC, [0.03717355, 0.00524130, 0.23551919])
+for key in [True, False]:
+    ot.ResourceMap.SetAsBool("HSICEstimator-ParallelPValues", key)
+    ot.RandomGenerator.SetState(state)
 
+    # We eventually build the HSIC object
+    # HSICVStat event is already embedded as it is the only one available
+    # for that kind of analysis
+    CSA = ot.HSICEstimatorConditionalSensitivity(covarianceModelCollection, X, Y, weight)
 
-# and the HSIC indices
-HSICIndices = CSA.getHSICIndices()
-ott.assert_almost_equal(HSICIndices, [0.00064033, 0.00025769, 0.01105157])
+    # We get the R2-HSIC
+    R2HSIC = CSA.getR2HSICIndices()
+    ott.assert_almost_equal(R2HSIC, [0.03717355, 0.00524130, 0.23551919])
 
-# We set the number of permutations for the pvalue estimate
-b = 100
-CSA.setPermutationSize(b)
+    # and the HSIC indices
+    HSICIndices = CSA.getHSICIndices()
+    ott.assert_almost_equal(HSICIndices, [0.00064033, 0.00025769, 0.01105157])
 
-# We get the pvalue estimate by permutations
-pvaluesPerm = CSA.getPValuesPermutation()
-ott.assert_almost_equal(pvaluesPerm, [0.74257426, 0.94059406, 0.00000000])
+    # We set the number of permutations for the pvalue estimate
+    b = 100
+    CSA.setPermutationSize(b)
 
-# Change the weight function and recompute everything
-squaredExponential = ot.SymbolicFunction("x", "exp(-x^2)")
-alternateWeight = ot.ComposedFunction(squaredExponential, g)
-CSA.setWeightFunction(alternateWeight)
-ott.assert_almost_equal(CSA.getR2HSICIndices(), [0.0910527, 0.00738055, 0.166624])
-ott.assert_almost_equal(CSA.getHSICIndices(), [0.00218376, 0.000419288, 0.00898721])
-ott.assert_almost_equal(CSA.getPValuesPermutation(), [0.287129, 0.881188, 0.00000000])
+    # We get the pvalue estimate by permutations
+    pvaluesPerm = CSA.getPValuesPermutation()
+    ott.assert_almost_equal(pvaluesPerm, [0.74257426, 0.94059406, 0.00000000])
+
+    # Change the weight function and recompute everything
+    squaredExponential = ot.SymbolicFunction("x", "exp(-x^2)")
+    alternateWeight = ot.ComposedFunction(squaredExponential, g)
+    CSA.setWeightFunction(alternateWeight)
+    ott.assert_almost_equal(CSA.getR2HSICIndices(), [0.0910527, 0.00738055, 0.166624])
+    ott.assert_almost_equal(CSA.getHSICIndices(), [0.00218376, 0.000419288, 0.00898721])
+    ott.assert_almost_equal(CSA.getPValuesPermutation(), [0.287129, 0.881188, 0.00000000])

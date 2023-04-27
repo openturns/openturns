@@ -39,6 +39,7 @@ HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity(
   : HSICEstimatorImplementation(covarianceModelCollection, X, Y, estimatorType)
 {
   computeCovarianceMatrices();
+  computeWeights();
 }
 
 /* Virtual constructor */
@@ -47,75 +48,10 @@ HSICEstimatorGlobalSensitivity* HSICEstimatorGlobalSensitivity::clone() const
   return new HSICEstimatorGlobalSensitivity(*this);
 }
 
-/* Compute the weight matrix */
-SquareMatrix HSICEstimatorGlobalSensitivity::computeWeightMatrix(const Sample&) const
+/** Compute the weights from the weight function */
+void HSICEstimatorGlobalSensitivity::computeWeights()
 {
-  return IdentityMatrix(n_);
-}
-
-/* Get the asymptotic p-values */
-Point HSICEstimatorGlobalSensitivity::getPValuesAsymptotic() const
-{
-  if(!(isAlreadyComputedPValuesAsymptotic_))
-  {
-    computePValuesAsymptotic();
-    isAlreadyComputedPValuesAsymptotic_ = true ;
-  }
-  return PValuesAsymptotic_;
-}
-
-/* Reset all indices to void */
-void HSICEstimatorGlobalSensitivity::resetIndices()
-{
-  HSICEstimatorImplementation::resetIndices();
-  PValuesAsymptotic_ = Point();
-  isAlreadyComputedPValuesAsymptotic_ = false;
-}
-
-/* Draw the asymptotic p-values */
-Graph HSICEstimatorGlobalSensitivity::drawPValuesAsymptotic() const
-{
-  return drawValues(getPValuesAsymptotic(), "Asymptotic p-values");
-}
-
-/* Compute all indices at once */
-void HSICEstimatorGlobalSensitivity::run() const
-{
-  /* Compute the HSIC and R2-HSIC indices */
-  if(!(isAlreadyComputedIndices_))
-  {
-    computeIndices();
-  }
-
-  /* Compute the p-values by permutation */
-  if(!(isAlreadyComputedPValuesPermutation_))
-  {
-    // In order to avoid th
-    (void) getPValuesPermutation();
-  }
-
-  /* Compute the p-values asymptotically */
-  if(!(isAlreadyComputedPValuesAsymptotic_))
-  {
-    computePValuesAsymptotic();
-  }
-
-}
-
-/* Method save() stores the object through the StorageManager */
-void HSICEstimatorGlobalSensitivity::save(Advocate & adv) const
-{
-  HSICEstimatorImplementation::save(adv);
-  adv.saveAttribute( "PValuesAsymptotic_", PValuesAsymptotic_ );
-  adv.saveAttribute( "isAlreadyComputedPValuesAsymptotic_", isAlreadyComputedPValuesAsymptotic_ );
-}
-
-/* Method load() reloads the object from the StorageManager */
-void HSICEstimatorGlobalSensitivity::load(Advocate & adv)
-{
-  HSICEstimatorImplementation::load(adv);
-  adv.loadAttribute( "PValuesAsymptotic_", PValuesAsymptotic_ );
-  adv.loadAttribute( "isAlreadyComputedPValuesAsymptotic_", isAlreadyComputedPValuesAsymptotic_ );
+  weights_ = Point(n_, 1.0);
 }
 
 END_NAMESPACE_OPENTURNS

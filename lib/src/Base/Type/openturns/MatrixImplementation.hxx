@@ -335,8 +335,17 @@ public:
   /** Extract diagonal */
   MatrixImplementation getDiagonal(const SignedInteger k = 0) const;
 
+  /** Extract diagonal */
+  Point getDiagonalAsPoint(const SignedInteger k = 0) const;
+
+  /** Fill diagonal with values */
+  void setDiagonal(const MatrixImplementation &diag, const SignedInteger k = 0);
+
   /** Fill diagonal with values */
   void setDiagonal(const Point &diag, const SignedInteger k = 0);
+
+  /** Fill diagonal with the same value */
+  void setDiagonal(const Scalar value, const SignedInteger k = 0);
 
   /** Hadamard product aka elementwise product */
   MatrixImplementation computeHadamardProduct(const MatrixImplementation &other) const;

@@ -46,31 +46,13 @@ HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity(
   /* apply filter */
   outputSample_ = filterFunction_(unfilteredSample_);
   computeCovarianceMatrices();
+  computeWeights();
 }
 
 /* Virtual constructor */
 HSICEstimatorTargetSensitivity* HSICEstimatorTargetSensitivity::clone() const
 {
   return new HSICEstimatorTargetSensitivity(*this);
-}
-
-/* Compute the weight matrix from a sample */
-SquareMatrix HSICEstimatorTargetSensitivity::computeWeightMatrix(const Sample&) const
-{
-  /* Identity matrix */
-  const IdentityMatrix mat(n_);
-  return mat;
-}
-
-/* Get the asymptotic p-values */
-Point HSICEstimatorTargetSensitivity::getPValuesAsymptotic() const
-{
-  if(!(isAlreadyComputedPValuesAsymptotic_))
-  {
-    computePValuesAsymptotic();
-    isAlreadyComputedPValuesAsymptotic_ = true ;
-  }
-  return PValuesAsymptotic_;
 }
 
 /* Get the filter function */
@@ -89,11 +71,12 @@ void HSICEstimatorTargetSensitivity::setFilterFunction(const Function & filterFu
   outputCovarianceMatrix_ = covarianceModelCollection_[inputDimension_].discretize(outputSample_);
 }
 
-/* Draw the asymptotic p-values */
-Graph HSICEstimatorTargetSensitivity::drawPValuesAsymptotic() const
+/** Compute the weights from the weight function */
+void HSICEstimatorTargetSensitivity::computeWeights()
 {
-  return drawValues(getPValuesAsymptotic(), "Asymptotic p-values");
+  weights_ = Point(n_, 1.0);
 }
+
 
 /* Method save() stores the object through the StorageManager */
 void HSICEstimatorTargetSensitivity::save(Advocate & adv) const

@@ -24,7 +24,9 @@ See also
 
 Notes
 -----
-Conditional sensitivity analysis relies on the :class:`~openturns.HSICVStat` estimator.
+Conditional sensitivity analysis relies on the :class:`~openturns.HSICVStat` estimator. Also it does not provides an
+asymptotic estimate of the p-values thus the generic methods `getPValuesAsymptotic` and `drawPValuesAsymptotic`
+throws an exception in that case.
 
 Examples
 --------

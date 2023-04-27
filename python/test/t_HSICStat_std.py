@@ -33,7 +33,7 @@ Cov2 = ot.SquaredExponential(1)
 Cov2.setScale(Y.computeStandardDeviation())
 
 # This is the GSA-type estimator: weight is 1.
-W = ot.IdentityMatrix(size)
+W = ot.Point(size, 1.0)
 
 # Using a biased estimator
 estimatorTypeV = ot.HSICVStat()
