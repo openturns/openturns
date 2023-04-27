@@ -191,6 +191,13 @@ Matrix GaussianLinearCalibration::getGradientObservations() const
   return gradientObservations_;
 }
 
+/* Candidate accessor */
+Point GaussianLinearCalibration::getCandidate() const
+{
+  LOGWARN(OSS() << "getCandidate is deprecated");
+  return getParameterMean();
+}
+
 /* ParameterMean accessor */
 Point GaussianLinearCalibration::getParameterMean() const
 {

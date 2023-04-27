@@ -11,8 +11,10 @@
  * SmolyakExperiment (openturns.experimental)
 
 ==== API changes ====
- * Deprecated LinearLeastSquaresCalibration::getCandidate
- * Deprecated NonLinearLeastSquaresCalibration::getCandidate
+ * Deprecated LinearLeastSquaresCalibration::getCandidate, use getStartingPoint
+ * Deprecated NonLinearLeastSquaresCalibration::getCandidate, use getStartingPoint
+ * Deprecated GaussianLinearCalibration::getCandidate, use getParameterMean
+ * Deprecated NonGaussianLinearCalibration::getCandidate, use getParameterMean
  * Removed SequentialStrategy
  * Removed TensorApproximationAlgorithm, TensorApproximationResult, CanonicalTensorEvaluation, CanonicalTensorGradient
  * Removed FunctionalChaosSobolIndices.getSobolGrouped(Total)Index(int)

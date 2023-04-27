@@ -71,7 +71,7 @@ public:
   /** Model gradient wrt the parameter accessor */
   Matrix getGradientObservations() const;
 
-  /** Candidate accessor */
+  /** @deprecated Candidate accessor */
   Point getCandidate() const;
 
   /** StartingPoint accessor */

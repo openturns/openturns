@@ -65,7 +65,7 @@ public:
   OptimizationAlgorithm getOptimizationAlgorithm() const;
   void setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm);
 
-  /** Candidate accessor */
+  /** @deprecated Candidate accessor */
   Point getCandidate() const;
 
   /** StartingPoint accessor */

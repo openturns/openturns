@@ -330,9 +330,8 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
 /* Candidate accessor */
 Point NonLinearLeastSquaresCalibration::getCandidate() const
 {
-  // The startingPoint is stored in the prior distribution, which is a Normal distribution
   LOGWARN(OSS() << "getCandidate is deprecated");
-  return getParameterPrior().getMean();
+  return getStartingPoint();
 }
 
 /* StartingPoint accessor */

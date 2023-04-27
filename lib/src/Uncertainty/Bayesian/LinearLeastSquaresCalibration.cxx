@@ -165,9 +165,8 @@ Matrix LinearLeastSquaresCalibration::getGradientObservations() const
 /** Candidate accessor */
 Point LinearLeastSquaresCalibration::getCandidate() const
 {
-  // The candidate is stored in the prior distribution, which is a flat Normal distribution
   LOGWARN(OSS() << "getCandidate is deprecated");
-  return getParameterPrior().getMean();
+  return getStartingPoint();
 }
 
 /* StartingPoint accessor */
