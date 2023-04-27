@@ -1523,7 +1523,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultAdaptationPeriod", 30);
 
   // MetropolisHastingsImplementation parameters //
-  addAsUnsignedInteger("MetropolisHastings-DefaultBurnIn", 1000);
+  addAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn", 1000);
 
   // GaussianLinearCalibration parameters //
   addAsString("GaussianLinearCalibration-Method", "QR");

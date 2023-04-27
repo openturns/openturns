@@ -47,7 +47,6 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Point &
   , initialState_(initialState)
   , currentState_(initialState)
   , history_(Full())
-  , burnIn_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultBurnIn"))
 {
   setMarginalIndices(marginalIndices);
   history_.setDimension(initialState.getDimension());
@@ -62,7 +61,6 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Distrib
   , initialState_(initialState)
   , currentState_(initialState)
   , history_(Full())
-  , burnIn_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultBurnIn"))
 {
   setTargetDistribution(targetDistribution);
   setMarginalIndices(marginalIndices);
@@ -80,7 +78,6 @@ MetropolisHastingsImplementation::MetropolisHastingsImplementation(const Functio
   , history_(Full())
   , targetLogPDF_(targetLogPDF)
   , support_(support)
-  , burnIn_(ResourceMap::GetAsUnsignedInteger("MetropolisHastings-DefaultBurnIn"))
 {
   setTargetLogPDF(targetLogPDF, support);
   setMarginalIndices(marginalIndices);
@@ -137,8 +134,7 @@ String MetropolisHastingsImplementation::__repr__() const
          << " conditional=" << conditional_
          << " linkFunction=" << linkFunction_
          << " covariates=" << covariates_
-         << " observations=" << observations_
-         << " burnIn=" << burnIn_;
+         << " observations=" << observations_;
 }
 
 
@@ -331,18 +327,6 @@ Sample MetropolisHastingsImplementation::getCovariates() const
 }
 
 
-void MetropolisHastingsImplementation::setBurnIn(const UnsignedInteger burnIn)
-{
-  burnIn_ = burnIn;
-}
-
-
-UnsignedInteger MetropolisHastingsImplementation::getBurnIn() const
-{
-  return burnIn_;
-}
-
-
 void MetropolisHastingsImplementation::setVerbose(const Bool verbose)
 {
   verbose_ = verbose;
@@ -398,7 +382,6 @@ void MetropolisHastingsImplementation::save(Advocate & adv) const
   adv.saveAttribute("linkFunction_", linkFunction_);
   adv.saveAttribute("covariates_", covariates_);
   adv.saveAttribute("observations_", observations_);
-  adv.saveAttribute("burnIn_", burnIn_);
   adv.saveAttribute("verbose_", verbose_);
 }
 
@@ -419,7 +402,6 @@ void MetropolisHastingsImplementation::load(Advocate & adv)
   adv.loadAttribute("linkFunction_", linkFunction_);
   adv.loadAttribute("covariates_", covariates_);
   adv.loadAttribute("observations_", observations_);
-  adv.loadAttribute("burnIn_", burnIn_);
   adv.loadAttribute("verbose_", verbose_);
 }
 

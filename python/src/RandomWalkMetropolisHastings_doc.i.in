@@ -101,43 +101,65 @@ proposal : :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::RandomWalkMetropolisHastings::getBurnIn
+"Get the length of the burn-in period.
+
+Returns
+-------
+burnin : int
+    Length of the burn-in period: this is
+    the number of iterations after which adaptation stops."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::setBurnIn
+"Set the length of the burn-in period.
+
+Parameters
+----------
+burnin : int
+    Length of the burn-in period: this is
+    the number of iterations after which adaptation stops."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationPeriod
-"Get the calibration step.
+"Get the adaptation step.
 
 Returns
 -------
 period : positive int
-    Number of samples before the adaptation occurs"
+    During burn-in, adaptation is performed once every *period* iterations."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationPeriod
-"Set the calibration step.
+"Set the adaptation period.
 
 Parameters
 ----------
 period : positive int
-    Number of samples before the adaptation occurs"
+    During burn-in, adaptation is performed once every *period* iterations."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationExpansionFactor
+%feature("docstring") OT::RandomWalkMetropolisHastings::getExpansionFactor
 "Get the expansion factor.
 
 Returns
 -------
 expansionFactor : float
-    Expansion factor :math:`e` for the adaptation"
+    Expansion factor :math:`e` of the adaptation factor."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationExpansionFactor
+%feature("docstring") OT::RandomWalkMetropolisHastings::setExpansionFactor
 "Set the expansion factor.
 
 Parameters
 ----------
 expansionFactor : float, :math:`e > 1`
-    Expansion factor :math:`e` for the adaptation"
+    Expansion factor :math:`e` of the adaptation factor."
 
 // ---------------------------------------------------------------------
 
@@ -147,8 +169,7 @@ expansionFactor : float, :math:`e > 1`
 Returns
 -------
 range : :class:`~openturns.Interval` of dimension 1
-    Range :math:`[m,M]` in the description of the method
-    :meth:`computeUpdateFactor`."
+    Range :math:`[m,M]` of the adaptation factor."
 
 // ---------------------------------------------------------------------
 
@@ -158,28 +179,28 @@ range : :class:`~openturns.Interval` of dimension 1
 Parameters
 ----------
 range : :class:`~openturns.Interval` of dimension 1
-    Range :math:`[m,M]` for the adaptation"
+    Range :math:`[m,M]` of the adaptation factor."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationShrinkFactor
+%feature("docstring") OT::RandomWalkMetropolisHastings::getShrinkFactor
 "Get the shrink factor.
 
 Returns
 -------
 shrinkFactor : float
-    Shrink factor :math:`s` for the adaptation"
+    Shrink factor :math:`s` of the adaptation factor."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomWalkMetropolisHastings::setAdaptationShrinkFactor
+%feature("docstring") OT::RandomWalkMetropolisHastings::setShrinkFactor
 "Set the shrink factor.
 
 Parameters
 ----------
 shrinkFactor : float, :math:`0 < s < 1`
-    Shrink factor :math:`s` for the adaptation"
-    
+    Shrink factor :math:`s` of the adaptation factor."
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RandomWalkMetropolisHastings::getAdaptationFactor
