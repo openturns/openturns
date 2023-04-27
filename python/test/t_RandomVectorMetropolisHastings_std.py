@@ -10,6 +10,7 @@ ot.TESTPREAMBLE()
 randomVector = ot.RandomVector(ot.Normal())
 initialState = [0.0]
 sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState)
+x = sampler.getSample(10000)[sampler.getBurnIn():]
 mean = x.computeMean()
 stddev = x.computeStandardDeviation()
 print(mean, stddev)
@@ -19,7 +20,7 @@ print(mean, stddev)
 # with link function
 slf = ot.SymbolicFunction(["x"], ["0.0", "0.1"])
 sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState, [0], slf)
-x = sampler.getSample(10000)[
+x = sampler.getSample(10000)
 mean = x.computeMean()
 stddev = x.computeStandardDeviation()
 print(mean, stddev)

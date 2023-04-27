@@ -111,14 +111,12 @@ int main(int, char *[])
       coll.add(mh);
     }
     Gibbs sampler(coll);
-    sampler.setBurnIn(3000);
 
     // get a realization
     Point realization(sampler.getRealization());
     std::cout << "y1=" << realization << std::endl;
 
     // try to generate a sample
-    //sampler.setBurnIn(0);
     UnsignedInteger sampleSize = 5000;
     Sample sample(sampler.getSample(sampleSize));
     Indices indices(2000);
