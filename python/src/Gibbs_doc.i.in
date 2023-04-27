@@ -134,28 +134,6 @@ updatingMethod : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Gibbs::getBurnIn
-"Get the length of the burn-in period.
-
-Returns
--------
-length : int
-    Length of the burn-in period, that is the number of first iterates of the
-    MCMC chain which will be thrown away when generating the sample."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Gibbs::setBurnIn
-"Set the length of the burn-in period.
-
-Parameters
-----------
-length : int
-    Length of the burn-in period, that is the number of first iterates of the
-    MCMC chain which will be thrown away when generating the sample."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Gibbs::getRecomputeLogPosterior
 "Get the posterior recompute flags.
 

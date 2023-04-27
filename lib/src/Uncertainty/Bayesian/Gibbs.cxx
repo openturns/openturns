@@ -208,18 +208,6 @@ Gibbs::UpdatingMethod Gibbs::getUpdatingMethod() const
   return static_cast<UpdatingMethod>(updatingMethod_);
 }
 
-void Gibbs::setBurnIn(const UnsignedInteger burnIn)
-{
-  burnIn_ = burnIn;
-}
-
-
-UnsignedInteger Gibbs::getBurnIn() const
-{
-  return burnIn_;
-}
-
-
 /* Indices for which the posterior is recomputed */
 Indices Gibbs::getRecomputeLogPosterior() const
 {
@@ -245,7 +233,6 @@ void Gibbs::save(Advocate & adv) const
   adv.saveAttribute("updatingMethod_", updatingMethod_);
   adv.saveAttribute("previouslyChosenSampler_", previouslyChosenSampler_);
   adv.saveAttribute("currentState_", currentState_);
-  adv.saveAttribute("burnIn_", burnIn_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -256,7 +243,6 @@ void Gibbs::load(Advocate & adv)
   adv.loadAttribute("updatingMethod_", updatingMethod_);
   adv.loadAttribute("previouslyChosenSampler_", previouslyChosenSampler_);
   adv.loadAttribute("currentState_", currentState_);
-  adv.loadAttribute("burnIn_", burnIn_);
 }
 
 
