@@ -10,7 +10,7 @@ ot.TESTPREAMBLE()
 randomVector = ot.RandomVector(ot.Normal())
 initialState = [0.0]
 sampler = ot.RandomVectorMetropolisHastings(randomVector, initialState)
-x = sampler.getSample(10000)[sampler.getBurnIn():]
+x = sampler.getSample(10000)
 mean = x.computeMean()
 stddev = x.computeStandardDeviation()
 print(mean, stddev)

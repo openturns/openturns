@@ -153,11 +153,9 @@ rwmh_alpha = ot.RandomWalkMetropolisHastings(
 )
 rwmh_alpha.setLikelihood(conditional, x)
 gibbs = ot.Gibbs([rwmh_beta, rwmh_alpha])
-sample = gibbs.getSample(2000)
+sample = gibbs.getSample(2000)[rwmh_alpha.getBurnIn():]
 print("mu=", sample.computeMean())
 print("sigma=", sample.computeStandardDeviation())
-
-#ot.ResourceMap.SetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn", 0)
 
 # check recompute indices, update bug
 initial_state = [0.0, 0.0, 20.0]
@@ -174,14 +172,15 @@ dirac_rwmh = ot.RandomWalkMetropolisHastings(
 )  # samples from Dirac(20)
 # samples from Normal(0,1) x Normal(0,1) x Dirac(20)
 gibbs = ot.Gibbs([normal0_rwmh, normal1_rwmh, dirac_rwmh])
+sample = gibbs.getSample(5000)
 recompute = gibbs.getRecomputeLogPosterior()
 print(recompute)
 assert recompute == ot.Indices([1, 0, 1]), "wrong recompute indices"
 mean = sample.computeMean()
 stddev = sample.computeStandardDeviation()
 print(mean, stddev)
-ott.assert_almost_equal(mean, [-0.0138686, 0.0949951, 20], 0.1)
-ott.assert_almost_equal(stddev, [0.956516, 1.05469, 0], 0.9)
+ott.assert_almost_equal(mean, [0.0, 0.0, 20.0], 0.0, 0.1)
+ott.assert_almost_equal(stddev, [1.0, 1.0, 0], 0.0, 0.1)
 
 # check log-pdf is recomputed by the correct blocks
 initialState = [0.5] * 4
