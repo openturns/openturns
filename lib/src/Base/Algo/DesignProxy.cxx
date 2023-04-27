@@ -109,6 +109,9 @@ MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
   // Quick return if the cache is *exactly* the design matrix
   if ((indices == alreadyComputed_) && !hasRowFilter() && !hasWeight())
     return *designCache_.getImplementation();
+  const UnsignedInteger allowedSize = basis_.getSize() ? basis_.getSize() : designCache_.getNbColumns();
+  if (!indices.check(allowedSize))
+    throw InvalidArgumentException(HERE) << "Requested indices exceed basis size (" << allowedSize << ")";
   MatrixImplementation design;
   const UnsignedInteger indicesSize = indices.getSize();
   const UnsignedInteger xSize = x_.getSize();
