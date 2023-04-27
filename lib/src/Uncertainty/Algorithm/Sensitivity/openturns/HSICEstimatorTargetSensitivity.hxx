@@ -60,17 +60,14 @@ public:
   /** Virtual constructor */
   HSICEstimatorTargetSensitivity* clone() const override;
 
-  /** Get the p-values with asymptotic formula */
-  Point getPValuesAsymptotic() const;
-
-  /** Draw the asymptotic p-values */
-  Graph drawPValuesAsymptotic() const;
-
   /** Get the filter function */
   Function getFilterFunction() const;
 
   /** Get the filter function */
   void setFilterFunction(const Function & filterFunction);
+
+  /** Compute the weights from the weight function */
+  void computeWeights() override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -82,11 +79,6 @@ protected:
 
   /* data */
   Function filterFunction_ ;
-
-private:
-
-  /** Compute the weight matrix from the weight function */
-  SquareMatrix computeWeightMatrix(const Sample & Y) const override;
 
   // unfiltered sample
   Sample unfilteredSample_;

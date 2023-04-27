@@ -76,6 +76,9 @@ public:
    * */
   Point getPValuesPermutation() const;
 
+  // Get the asymptotic p-values.
+  Point getPValuesAsymptotic() const;
+
   /** Graphic methods */
   Graph drawHSICIndices() const;
 
@@ -84,6 +87,12 @@ public:
 
   /** Graphic methods */
   Graph drawPValuesPermutation() const;
+
+  /** Graphic methods */
+  Graph drawPValuesAsymptotic() const;
+
+  // run all
+  void run() const;
 
   /** Set the number of permutation used */
   void setPermutationSize(const UnsignedInteger B);
@@ -117,23 +126,6 @@ public:
 
   /** Get the underlying estimator: biased or unbiased*/
   HSICStat getEstimator() const;
-
-protected:
-
-  /** Compute the weight matrix from the weight function */
-  SquareMatrix computeWeightMatrix(const Sample & Y) const;
-
-  /** Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
-  Scalar computeHSICIndex( const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
-
-  /** Compute p-value with permutation */
-  void computePValuesPermutation() const;
-
-  /** Compute HSIC and R2-HSIC indices */
-  void computeIndices() const;
-
-  /** Reset indices to void */
-  void resetIndices();
 
 };
 

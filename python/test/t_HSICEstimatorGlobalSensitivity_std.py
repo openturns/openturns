@@ -46,24 +46,32 @@ covarianceModelCollection.add(Cov2)
 #
 estimatorType = ot.HSICUStat()
 
-# We eventually build the HSIC object!
-hsic = ot.HSICEstimatorGlobalSensitivity(covarianceModelCollection, X, Y, estimatorType)
+# random generator state
+# use the same state for parallel/sequential validation
+state = ot.RandomGenerator.GetState()
 
-# We get the HSIC indices
-HSICIndices = hsic.getHSICIndices()
-ott.assert_almost_equal(HSICIndices, [0.02228377, 0.00025668, 0.00599247])
+for key in [True, False]:
+    ot.ResourceMap.SetAsBool("HSICEstimator-ParallelPValues", key)
+    ot.RandomGenerator.SetState(state)
 
-# and the R2-HSIC
-R2HSIC = hsic.getR2HSICIndices()
-ott.assert_almost_equal(R2HSIC, [0.29807297, 0.00344498, 0.07726572])
+    # We eventually build the HSIC object!
+    hsic = ot.HSICEstimatorGlobalSensitivity(covarianceModelCollection, X, Y, estimatorType)
 
-# We set the bootstrap size for the pvalue estimate
-b = 1000
-hsic.setPermutationSize(b)
+    # We get the HSIC indices
+    HSICIndices = hsic.getHSICIndices()
+    ott.assert_almost_equal(HSICIndices, [0.02228377, 0.00025668, 0.00599247])
 
-# We get the pvalue estimate by permutations
-pvaluesPerm = hsic.getPValuesPermutation()
-ott.assert_almost_equal(pvaluesPerm, [0.00000000, 0.29670330, 0.00199800])
+    # and the R2-HSIC
+    R2HSIC = hsic.getR2HSICIndices()
+    ott.assert_almost_equal(R2HSIC, [0.29807297, 0.00344498, 0.07726572])
 
-pvaluesAs = hsic.getPValuesAsymptotic()
-ott.assert_almost_equal(pvaluesAs, [0.00000000, 0.33271992, 0.00165620])
+    # We set the bootstrap size for the pvalue estimate
+    b = 1000
+    hsic.setPermutationSize(b)
+
+    # We get the pvalue estimate by permutations
+    pvaluesPerm = hsic.getPValuesPermutation()
+    ott.assert_almost_equal(pvaluesPerm, [0.00000000, 0.29670330, 0.00199800])
+
+    pvaluesAs = hsic.getPValuesAsymptotic()
+    ott.assert_almost_equal(pvaluesAs, [0.00000000, 0.33271992, 0.00165620])

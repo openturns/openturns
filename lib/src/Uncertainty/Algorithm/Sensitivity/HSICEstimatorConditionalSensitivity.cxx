@@ -39,8 +39,8 @@ HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity(
   , const Function & weightFunction)
   : HSICEstimatorImplementation(covarianceModelCollection, X, Y, HSICVStat())
 {
-  weightFunction_ = weightFunction;
   computeCovarianceMatrices();
+  setWeightFunction(weightFunction);
 }
 
 /* Virtual constructor */
@@ -55,16 +55,6 @@ void HSICEstimatorConditionalSensitivity::computePValuesAsymptotic() const
   throw NotYetImplementedException(HERE) << "HSICEstimatorConditionalSensitivity cannot compute asymptotic p-values.";
 }
 
-/* Compute the weight matrix from the weight function */
-SquareMatrix HSICEstimatorConditionalSensitivity::computeWeightMatrix(const Sample & Y) const
-{
-  const Sample wY(weightFunction_(Y));
-  const Scalar meanWY(wY.computeMean()[0]);
-  SquareMatrix mat(n_);
-  mat.setDiagonal(wY.asPoint() / meanWY);
-  return mat;
-}
-
 /* Get the weight function */
 Function HSICEstimatorConditionalSensitivity::getWeightFunction() const
 {
@@ -76,18 +66,15 @@ void HSICEstimatorConditionalSensitivity::setWeightFunction(const Function & wei
 {
   weightFunction_ = weightFunction;
   resetIndices();
+  computeWeights();
 }
 
-/* Method save() stores the object through the StorageManager */
-void HSICEstimatorConditionalSensitivity::save(Advocate & adv) const
+/** Compute the weights from the weight function */
+void HSICEstimatorConditionalSensitivity::computeWeights()
 {
-  HSICEstimatorImplementation::save(adv);
-}
-
-/* Method load() reloads the object from the StorageManager */
-void HSICEstimatorConditionalSensitivity::load(Advocate & adv)
-{
-  HSICEstimatorImplementation::load(adv);
+  const Sample wY(weightFunction_(outputSample_));
+  const Scalar meanWY(wY.computeMean()[0]);
+  weights_ = wY.asPoint() / meanWY;
 }
 
 END_NAMESPACE_OPENTURNS
