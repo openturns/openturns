@@ -58,10 +58,6 @@ public:
   /** Samplers accessor */
   MetropolisHastingsCollection getMetropolisHastingsCollection() const;
 
-  /** Burnin accessor */
-  void setBurnIn(const UnsignedInteger burnIn);
-  UnsignedInteger getBurnIn() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -108,9 +104,6 @@ private:
 
   // which MH sampler was previously called (used when updatingMethod_ is RANDOM_UPDATING)
   mutable UnsignedInteger previouslyChosenSampler_ = 0;
-
-  // number of first samples discarded to reach stationary regime
-  UnsignedInteger burnIn_ = 0;
 
   mutable Indices recomputeLogPosterior_;
 
