@@ -48,6 +48,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Distribution & 
   , adaptationExpansionFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor"))
   , adaptationShrinkFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor"))
   , adaptationPeriod_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultAdaptationPeriod"))
+  , burnIn_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn"))
 {
   setProposal(proposal);
 }
@@ -63,6 +64,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Function & targ
   , adaptationExpansionFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor"))
   , adaptationShrinkFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor"))
   , adaptationPeriod_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultAdaptationPeriod"))
+  , burnIn_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn"))
 {
   setProposal(proposal);
 }
@@ -74,7 +76,8 @@ String RandomWalkMetropolisHastings::__repr__() const
   return OSS() << "class=" << RandomWalkMetropolisHastings::GetClassName()
          << " name=" << getName()
          << " derived from " << MetropolisHastingsImplementation::__repr__()
-         << " proposal=" << proposal_;
+         << " proposal=" << proposal_
+         << " burnIn=" << burnIn_;
 }
 
 
@@ -146,6 +149,17 @@ Distribution RandomWalkMetropolisHastings::getProposal() const
   return proposal_;
 }
 
+void RandomWalkMetropolisHastings::setBurnIn(const UnsignedInteger burnIn)
+{
+  burnIn_ = burnIn;
+}
+
+
+UnsignedInteger RandomWalkMetropolisHastings::getBurnIn() const
+{
+  return burnIn_;
+}
+
 
 void RandomWalkMetropolisHastings::setAdaptationRange(const Interval & adaptationRange)
 {
@@ -209,6 +223,7 @@ void RandomWalkMetropolisHastings::save(Advocate & adv) const
   MetropolisHastingsImplementation::save(adv);
   adv.saveAttribute("proposal_", proposal_);
   adv.saveAttribute("isProposalSymmetric_", isProposalSymmetric_);
+  adv.saveAttribute("burnIn_", burnIn_);
   adv.saveAttribute("adaptationFactor_", adaptationFactor_);
   adv.saveAttribute("adaptationRange_", adaptationRange_);
   adv.saveAttribute("adaptationExpansionFactor_", adaptationExpansionFactor_);
@@ -222,6 +237,7 @@ void RandomWalkMetropolisHastings::load(Advocate & adv)
   MetropolisHastingsImplementation::load(adv);
   adv.loadAttribute("proposal_", proposal_);
   adv.loadAttribute("isProposalSymmetric_", isProposalSymmetric_);
+  adv.loadAttribute("burnIn_", burnIn_);
   adv.loadAttribute("adaptationFactor_", adaptationFactor_);
   adv.loadAttribute("adaptationRange_", adaptationRange_);
   adv.loadAttribute("adaptationExpansionFactor_", adaptationExpansionFactor_);

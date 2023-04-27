@@ -894,7 +894,7 @@
   <RandomWalkMetropolisHastings-DefaultAdaptationPeriod            value_int="30" />
   
   <!-- OT::MetropolisHastingsImplementation parameters -->
-  <MetropolisHastings-DefaultBurnIn   value_int="1000" />
+  <RandomWalkMetropolisHastings-DefaultBurnIn   value_int="1000" />
 
   <!-- OT::GaussianLinearCalibration parameters -->
   <GaussianLinearCalibration-Method   value_str="QR" />

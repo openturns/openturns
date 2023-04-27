@@ -66,6 +66,10 @@ public:
   void setProposal(const Distribution & proposal);
   Distribution getProposal() const;
 
+  /** Burnin accessor */
+  void setBurnIn(const UnsignedInteger burnIn);
+  UnsignedInteger getBurnIn() const;
+
   /** Adaptation range accessor */
   void setAdaptationRange(const Interval & range);
   Interval getAdaptationRange() const;
@@ -104,6 +108,7 @@ private:
   mutable Scalar adaptationFactor_ = 1.0;
 
   // adaptation parameters
+  UnsignedInteger burnIn_ = 0; // number of iterations during which adaptation occurs
   Interval adaptationRange_;
   Scalar adaptationExpansionFactor_ = 0.0;
   Scalar adaptationShrinkFactor_ = 0.0;

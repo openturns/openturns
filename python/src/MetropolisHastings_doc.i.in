@@ -14,10 +14,6 @@ OT_MetropolisHastings_getTargetLogPDFSupport_doc
 OT_MetropolisHastings_getMarginalIndices_doc
 %feature("docstring") OT::MetropolisHastings::setLikelihood
 OT_MetropolisHastings_setLikelihood_doc
-%feature("docstring") OT::MetropolisHastings::setBurnIn
-OT_MetropolisHastings_setBurnIn_doc
-%feature("docstring") OT::MetropolisHastings::getBurnIn
-OT_MetropolisHastings_getBurnIn_doc
 %feature("docstring") OT::MetropolisHastings::getAcceptanceRate
 OT_MetropolisHastings_getAcceptanceRate_doc
 %feature("docstring") OT::MetropolisHastings::computeLogLikelihood

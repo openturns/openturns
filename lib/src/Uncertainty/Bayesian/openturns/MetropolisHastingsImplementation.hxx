@@ -103,10 +103,6 @@ public:
   /** Covariates accessor */
   Sample getCovariates() const;
 
-  /** Burnin accessor */
-  void setBurnIn(const UnsignedInteger burnIn);
-  UnsignedInteger getBurnIn() const;
-
   /** History accessor */
   void setHistory(const HistoryStrategy & strategy);
   HistoryStrategy getHistory() const;
@@ -164,9 +160,6 @@ private:
   Function linkFunction_;
   Sample covariates_;
   Sample observations_;
-
-  // number of first samples discarded to reach stationary regime
-  UnsignedInteger burnIn_ = 0;
 
   // verbosity flag
   Bool verbose_ = false;

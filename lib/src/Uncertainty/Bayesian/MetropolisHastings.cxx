@@ -83,17 +83,6 @@ UnsignedInteger MetropolisHastings::getDimension() const
   return getImplementation()->getDimension();
 }
 
-void MetropolisHastings::setBurnIn(const UnsignedInteger burnIn)
-{
-  copyOnWrite();
-  getImplementation()->setBurnIn(burnIn);
-}
-
-UnsignedInteger MetropolisHastings::getBurnIn() const
-{
-  return getImplementation()->getBurnIn();
-}
-
 void MetropolisHastings::setHistory(const HistoryStrategy & history)
 {
   copyOnWrite();

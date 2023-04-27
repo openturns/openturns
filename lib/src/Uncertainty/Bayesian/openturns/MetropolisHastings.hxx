@@ -68,10 +68,6 @@ public:
   /** Marginal indices accessor */
   virtual Indices getMarginalIndices() const;
 
-  /** Burnin accessor */
-  void setBurnIn(const UnsignedInteger burnIn);
-  UnsignedInteger getBurnIn() const;
-
   /** History accessor */
   void setHistory(const HistoryStrategy & strategy);
   HistoryStrategy getHistory() const;
