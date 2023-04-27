@@ -157,6 +157,7 @@ sample = gibbs.getSample(2000)
 print("mu=", sample.computeMean())
 print("sigma=", sample.computeStandardDeviation())
 
+#ot.ResourceMap.SetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn", 0)
 
 # check recompute indices, update bug
 initial_state = [0.0, 0.0, 20.0]
