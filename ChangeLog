@@ -37,6 +37,7 @@
  * LeastSquaresExpansion, IntegrationExpansion (openturns.experimental)
  * UniformOverMesh (openturns.experimental)
  * GeneralizedExtremeValueValidation (openturns.experimental)
+ * LinthurstDataset
 
 ==== API changes ====
  * Deprecated LinearLeastSquaresCalibration::getCandidate, use getStartingPoint
