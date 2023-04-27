@@ -231,12 +231,6 @@ for mh in mh_coll:
 sampler = ot.Gibbs(mh_coll)
 
 # %%
-# Tuning of the Gibbs algorithm:
-
-# %%
-sampler.setBurnIn(2000)
-
-# %%
 # Generate a sample from the posterior distribution of the parameters :math:`\vect \theta`.
 
 # %%
