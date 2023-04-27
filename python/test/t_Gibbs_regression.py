@@ -70,7 +70,6 @@ mh_coll = [
 for mh in mh_coll:
     mh.setLikelihood(conditional, y_obs, linkFunction, p)
 sampler = ot.Gibbs(mh_coll)
-sampler.setBurnIn(1000)
 
 # get a realization
 realization = sampler.getRealization()
@@ -78,7 +77,7 @@ print("y1=", realization)
 
 # try to generate a sample
 sampleSize = 10000
-sample = sampler.getSample(sampleSize)[sampler.getBurnIn():]
+sample = sampler.getSample(sampleSize)
 
 x_mu = sample.computeMean()
 x_sigma = sample.computeStandardDeviation()

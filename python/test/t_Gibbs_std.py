@@ -60,7 +60,6 @@ for i in range(len(sigma0s)):
     )
     std_sampler.setLikelihood(conditional, data)
     sampler = ot.Gibbs([mean_sampler, std_sampler])
-    sampler.setBurnIn(500)
     realization = sampler.getRealization()
 
     sigmay = ot.ConditionalDistribution(ot.Normal(), prior).getStandardDeviation()[0]
@@ -154,7 +153,7 @@ rwmh_alpha = ot.RandomWalkMetropolisHastings(
 )
 rwmh_alpha.setLikelihood(conditional, x)
 gibbs = ot.Gibbs([rwmh_beta, rwmh_alpha])
-sample = gibbs.getSample(2000)[rwmh_beta.getBurnIn():]
+sample = gibbs.getSample(2000)
 print("mu=", sample.computeMean())
 print("sigma=", sample.computeStandardDeviation())
 
@@ -174,7 +173,6 @@ dirac_rwmh = ot.RandomWalkMetropolisHastings(
 )  # samples from Dirac(20)
 # samples from Normal(0,1) x Normal(0,1) x Dirac(20)
 gibbs = ot.Gibbs([normal0_rwmh, normal1_rwmh, dirac_rwmh])
-sample = gibbs.getSample(2000)[rwmh_beta.getBurnIn():]
 recompute = gibbs.getRecomputeLogPosterior()
 print(recompute)
 assert recompute == ot.Indices([1, 0, 1]), "wrong recompute indices"
@@ -213,7 +211,7 @@ assert gibbs.getRecomputeLogPosterior() == [1, 1, 1]
 # 3) a RandomWalkMetropolisHastings with average acceptance probability 1/2
 # If 1) is selected or 3) is selected and the proposal is rejected, the chain does not move
 # This happens with probability 1/3 + 1/3 * 1/2 = 1/2.
-sample = gibbs.getSample(2000)[rwmh_beta.getBurnIn():]
+sample = gibbs.getSample(2000)
 diffs = sample[1:] - sample[:-1]
 zeros = ot.Point(4)
 null_diffs = [point == zeros for point in diffs]
