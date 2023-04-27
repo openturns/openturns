@@ -38,6 +38,7 @@
  * UniformOverMesh (openturns.experimental)
  * GeneralizedExtremeValueValidation (openturns.experimental)
  * Coles (openturns.usecases.coles)
+ * Linthurst (openturns.usescases.linthurst)
 
 ==== API changes ====
  * Deprecated LinearLeastSquaresCalibration::getCandidate, use getStartingPoint
@@ -79,6 +80,7 @@
 
 === Documentation ===
  * Add API documentation to common use cases pages
+ * Added new use case: Linthurst
 
 === Python module ===
 
