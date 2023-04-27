@@ -44,11 +44,11 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Distribution & 
     const Distribution & proposal,
     const Indices & marginalIndices)
   : MetropolisHastingsImplementation(targetDistribution, initialState, marginalIndices)
+  , burnIn_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn"))
   , adaptationRange_(Interval(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound"), ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationUpperBound")))
   , adaptationExpansionFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor"))
   , adaptationShrinkFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor"))
   , adaptationPeriod_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultAdaptationPeriod"))
-  , burnIn_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn"))
 {
   setProposal(proposal);
 }
@@ -60,11 +60,11 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Function & targ
     const Distribution & proposal,
     const Indices & marginalIndices)
   : MetropolisHastingsImplementation(targetLogPDF, support, initialState, marginalIndices)
+  , burnIn_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn"))
   , adaptationRange_(Interval(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound"), ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationUpperBound")))
   , adaptationExpansionFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor"))
   , adaptationShrinkFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor"))
   , adaptationPeriod_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultAdaptationPeriod"))
-  , burnIn_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn"))
 {
   setProposal(proposal);
 }
