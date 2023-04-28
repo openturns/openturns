@@ -1,7 +1,6 @@
 %feature("docstring") OT::TaylorExpansionMoments
 "First and second order Taylor expansion formulas.
 
-Refer to :ref:`taylor_importance_factors`.
 
 Parameters
 ----------
@@ -12,87 +11,13 @@ limitStateVariable : :class:`~openturns.RandomVector`
 Notes
 -----
 Assuming that :math:`\uX` has its two first moments finite and that :math:`h` is sufficiently regular,
-the Taylor expansion method is used to approximate the mean and variance of a random variable :math:`\uY = h(\uX)`
-with respect to the mean and variance of the input random vector :math:`\uX`.
+the Taylor expansion method is used to approximate the mean and variance of the random variable :math:`\uY = h(\uX)`.
 
-We note:
+Refer to :ref:`taylor_expansion_moments` to get details on the expressions of the approximations:
 
-- :math:`\mu_X = \Expect{\uX}` the mean of the random vector :math:`\uX`
+- The one order  expansion of :math:`h` yields to an approximation of the mean and the variance of :math:`\uY`.
+- The second order  expansion of :math:`h` yields to an approximation of the mean :math:`\uY`.
 
-- :math:`\Cov \uX` the covariance matrix of the random vector :math:`\uX`. The
-  elements are the followings :
-  :math:`(\Cov \uX)_{ij} = \Expect{\left(X^i - \Expect{X^i} \right) \left(X^j - \Expect{X^j} \right) }`
-
-- :math:`\vect{\vect{\nabla}} h(\muX) = \: \Tr{\left( \frac{\partial y^i}{\partial x^j}\right)}_{\ux\: =\: \muX} = \: \Tr{\left( \frac{\partial h^i(\ux)}{\partial x^j}\right)}_{\ux\: =\: \muX}`
-  is the transposed Jacobian matrix with :math:`i=1,\ldots,n_Y` and
-  :math:`j=1,\ldots,n_X`.
-
-- :math:`\vect{\vect{\vect{\nabla^2}}} h(\ux\:,\ux)` is a tensor of order 3. It
-  is composed by the second order derivative towards the :math:`i^\textrm{th}`
-  and :math:`j^\textrm{th}` components of :math:`\ux` of the
-  :math:`k^\textrm{th}` component of the output vector :math:`h(\ux)`. It
-  yields to:
-  :math:`\left( \nabla^2 h(\ux) \right)_{ijk} = \frac{\partial^2 (h^k(\ux))}{\partial x^i \partial x^j}`
-
-Then we have:
-
-  .. math::
-
-      <\vect{\vect{\nabla}}h(\muX) , \: \uX - \muX> = \sum_{j=1}^{n_X} \left( \frac{\partial {\uy}}{\partial {x^j}}\right)_{\ux = \muX} . \left( X^j-\muX^j \right)
-
-and
-
-  .. math::
-
-      <<\vect{\vect{\vect{\nabla }}}^2 h(\muX,\: \vect{\mu}_{X}),\: \uX - \muX>,\: \uX - \muX> = \left( \Tr{(\uX^i - \muX^i)}. \left(\frac{\partial^2 y^k}{\partial x^i \partial x^k}\right)_{\ux = \muX}. (\uX^j - \muX^j) \right)_{ijk}
-
-The Taylor expansion of order 2 of the model :math:`h` is:
-
-.. math::
-
-    \uY = h(\muX) + <\vect{\vect{\nabla}}h(\muX) , \: \uX - \muX> + \frac{1}{2}<<\vect{\vect{\vect{\nabla }}}^2 h(\muX,\: \vect{\mu}_{\:X}),\: \uX - \muX>,\: \uX - \muX> + o(\Cov \uX)
-
-
-Depending on the order of the Taylor expansion (classically
-first order or second order), one can obtain different formulas introduced
-hereafter.
-
-**Approximation at the order 1:**
-
-Expectation:
-
-.. math::
-
-    \Expect{\uY} \approx \vect{h}(\muX)
-
-Pay attention that :math:`\Expect{\uY}` is a vector. The :math:`k^\textrm{th}`
-component of this vector is equal to the :math:`k^\textrm{th}` component of the
-output vector computed by the model :math:`h` at the mean value.
-:math:`\Expect{\uY}` is thus the computation of the model at mean.
-
-Variance:
-
-.. math::
-
-    \Cov \uY \approx \Tr{\vect{\vect{\nabla}}}\:\vect{h}(\muX).\Cov \uX.\vect{\vect{\nabla}}\:\vect{h}(\muX)
-
-**Approximation at the order 2:**
-
-Expectation:
-
-.. math::
-
-    (\Expect{\uY})_k \approx (\vect{h}(\muX))_k +
-                              \left(
-                              \sum_{i=1}^{n_X}\frac{1}{2} (\Cov \uX)_{ii}.{(\nabla^2\:h(\uX))}_{iik} +
-                              \sum_{i=1}^{n_X} \sum_{j=1}^{i-1} (\Cov X)_{ij}.{(\nabla^2\:h(\uX))}_{ijk}
-                              \right)_k
-
-Variance:
-
-The decomposition of the variance at the order 2 is not implemented.
-It requires both the knowledge of higher order derivatives of the model and the
-knowledge of moments of order strictly greater than 2 of the PDF.
 
 Examples
 --------
