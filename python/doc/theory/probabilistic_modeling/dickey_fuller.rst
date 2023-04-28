@@ -3,7 +3,8 @@
 Dickey-Fuller stationarity test
 ===============================
 
-The Dickey-Fuller test checks the stationarity of a scalar time series using one time series. It assumes that the :math:`X: \Omega \times \cD \rightarrow \Rset` process with :math:`\cD \in \Rset`, discretized on the time grid :math:`(t_0, \dots, t_{N-1})` writes:
+The Dickey-Fuller test checks the stationarity of a scalar time series using one time series.
+It assumes that the :math:`X: \Omega \times \cD \rightarrow \Rset` process with :math:`\cD \in \Rset`, discretized on the time grid :math:`(t_0, \dots, t_{N-1})` writes:
 
 .. math::
     :label: DFmodel
@@ -28,7 +29,8 @@ The strategy implemented is recommended by Enders (*Applied Econometric Times Se
 
 
 
-We note :math:`(X_1, \hdots, X_n)` the data, by :math:`W(r)` the Wiener process, and :math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}`, :math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s)\di{s}`.
+We note :math:`(X_1, \hdots, X_n)` the data, by :math:`W(r)` the Wiener process, and :math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}`,
+:math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s)\di{s}`.
 
 
 **1.** We assume the model :eq:`Model1`:
@@ -278,7 +280,8 @@ We test whether :math:`a=0`:
     \end{array}
     \right.
 
-where the statistics :math:`t_n = \frac{|\hat{a}_n|}{\sigma_{a_n}}` converges in distribution to the Student distribution :class:`~openturns.Student` with :math:`\nu=n-3`, where :math:`\sigma_{a_n}` is the least square estimate of the standard deviation of :math:`\Hat{a}_n`, given by:
+where the statistics :math:`t_n = \frac{|\hat{a}_n|}{\sigma_{a_n}}` converges in distribution to the Student distribution :class:`~openturns.Student` with :math:`\nu=n-3`,
+where :math:`\sigma_{a_n}` is the least square estimate of the standard deviation of :math:`\Hat{a}_n`, given by:
 
 .. math::
 

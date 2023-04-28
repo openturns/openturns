@@ -6,7 +6,8 @@ Create a stationary covariance model
 # This use case illustrates how the user can define his own stationary covariance model thanks to the object *UserDefinedStationaryCovarianceModel* defined from:
 #
 # - a mesh :math:`\mathcal{M}` of dimension :math:`n` defined by the vertices :math:`(\underline{\tau}_0,\dots, \underline{\tau}_{N-1})` and the associated simplices,
-# - a collection of covariance matrices stored in the object *CovarianceMatrixCollection* noted :math:`\underline{\underline{C}}_0, \dots, \underline{\underline{C}}_{N-1}` where :math:`\underline{\underline{C}}_k` :math:`\in \mathcal{M}_{d \times d}(\mathbb{R})` for :math:`0 \leq k \leq N-1`
+# - a collection of covariance matrices stored in the object *CovarianceMatrixCollection* noted :math:`\underline{\underline{C}}_0, \dots, \underline{\underline{C}}_{N-1}`
+#   where :math:`\underline{\underline{C}}_k` :math:`\in \mathcal{M}_{d \times d}(\mathbb{R})` for :math:`0 \leq k \leq N-1`
 #
 # Then we build a stationary covariance function which is a piecewise constant function on :math:`\mathcal{D}` defined by:
 #

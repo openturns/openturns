@@ -3,7 +3,9 @@ Draw fields
 ===========
 """
 # %%
-# The objective here is to manipulate a multivariate stochastic process :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d`, where :math:`\mathcal{D} \in \mathbb{R}^n` is discretized on the mesh :math:`\mathcal{M}` and exhibit some of the services exposed by the *Process* objects:
+# The objective here is to manipulate a multivariate stochastic process :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d`,
+# where :math:`\mathcal{D} \in \mathbb{R}^n` is discretized on the mesh :math:`\mathcal{M}`
+# and exhibit some of the services exposed by the *Process* objects:
 #
 # - ask for the dimension, with the method getOutputDimension
 # - ask for the mesh, with the method getMesh

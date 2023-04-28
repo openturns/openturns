@@ -3,7 +3,8 @@ Kriging : cantilever beam model
 ===============================
 """
 # %%
-# In this example, we create a Kriging metamodel of the :ref:`cantilever beam <use-case-cantilever-beam>`. We use a squared exponential covariance kernel for the Gaussian process. In order to estimate the hyper-parameters, we use a design of experiments of size is 20.
+# In this example, we create a Kriging metamodel of the :ref:`cantilever beam <use-case-cantilever-beam>`.
+# We use a squared exponential covariance kernel for the Gaussian process. In order to estimate the hyper-parameters, we use a design of experiments of size is 20.
 
 
 # %%
@@ -36,7 +37,8 @@ myDistribution = cb.distribution
 # --------------------------------
 
 # %%
-# We consider a simple Monte-Carlo sample as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution. Then we evaluate the output using the `model` function.
+# We consider a simple Monte-Carlo sample as a design of experiments.
+# This is why we generate an input sample using the `getSample` method of the distribution. Then we evaluate the output using the `model` function.
 
 # %%
 sampleSize_train = 20
@@ -59,7 +61,8 @@ view = viewer.View(histo)
 
 # %%
 # In order to create the Kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance kernel.
-# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients. This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
+# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients.
+# This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
 
 # %%
 basis = ot.ConstantBasisFactory(dim).build()

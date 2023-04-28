@@ -3,7 +3,9 @@ Kriging : multiple input dimensions
 ===================================
 """
 # %%
-# In this example we are going to create an approximation of a model response using a kriging model. We consider a bidimensional function with gaussian inputs. Then we create a kriging metamodel with a constant basis and a `SquaredExponential` covariance.
+# In this example we are going to create an approximation of a model response using a kriging model.
+# We consider a bidimensional function with gaussian inputs.
+# Then we create a kriging metamodel with a constant basis and a `SquaredExponential` covariance.
 #
 # We consider the function
 #
@@ -55,7 +57,8 @@ result = algo.getResult()
 metamodel = result.getMetaModel()
 
 # %%
-# It is not so easy to visualize a bidimensional function. In order to simplify the graphics, we consider the value of the function at the input :math:`x_{1,ref}=0.5`. This amounts to create a `ParametricFunction` where the first variable :math:`x_1` (at input index 0) is set to :math:`0.5`.
+# It is not so easy to visualize a bidimensional function. In order to simplify the graphics, we consider the value of the function at the input :math:`x_{1,ref}=0.5`.
+# This amounts to create a `ParametricFunction` where the first variable :math:`x_1` (at input index 0) is set to :math:`0.5`.
 
 # %%
 x1ref = 0.5
@@ -63,7 +66,8 @@ metamodelAtXref = ot.ParametricFunction(metamodel, [0], [x1ref])
 modelAtXref = ot.ParametricFunction(model, [0], [x1ref])
 
 # %%
-# For this given value of :math:`x_1`, we plot the model and the metamodel with :math:`x_2` from its 1% up to its 99% quantile. We configure the X title to "X2" because the default setting would state that this axis is the first value of the parametric function, which default name is "X0".
+# For this given value of :math:`x_1`, we plot the model and the metamodel with :math:`x_2` from its 1% up to its 99% quantile.
+# We configure the X title to "X2" because the default setting would state that this axis is the first value of the parametric function, which default name is "X0".
 
 # %%
 x2min = ot.Normal().computeQuantile(0.01)[0]

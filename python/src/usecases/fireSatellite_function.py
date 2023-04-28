@@ -43,21 +43,23 @@ class FireSatelliteModel:
     Cd : Drag coefficient (-), :class:`~openturns.Normal` distribution
          Nineth marginal, ot.Normal(1.0,0.3)
 
-
     distributionX : :class:`~openturns.ComposedDistribution`
-                    The joint distribution of the input parameters.
+        The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
-               The Fire Satellite model with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables. This function retrieves three outputs : the total torque, the total power and the area of solar array
+        The Fire Satellite model with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables.
+        This function retrieves three outputs : the total torque, the total power and the area of solar array
 
     modelTotalTorque : :class:`~openturns.PythonFunction`
-               The Fire Satellite model retrieving only the  Total Torque as output, with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables.
+        The Fire Satellite model retrieving only the  Total Torque as output, with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables.
 
     modelTotalPower : :class:`~openturns.PythonFunction`
-               The Fire Satellite model retrieving only the  Total Power as output, with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables. This function retrieves three outputs : the total torque, the total power and the area of solar array
+        The Fire Satellite model retrieving only the  Total Power as output, with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables.
+        This function retrieves three outputs : the total torque, the total power and the area of solar array
 
     modelSolarArrayArea : :class:`~openturns.PythonFunction`
-               The Fire Satellite model retrieving only the  Solar Array Area as output, with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables. This function retrieves three outputs : the total torque, the total power and the area of solar array
+        The Fire Satellite model retrieving only the  Solar Array Area as output, with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables.
+        This function retrieves three outputs : the total torque, the total power and the area of solar array
 
     c : Speed of light, constant
         c = 2.9979e8 m/s

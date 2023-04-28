@@ -72,7 +72,9 @@ def AltiFunc(X):
 
 
 # %%
-# In order to create a `Function` from this Python function, we use the `PythonPointToFieldFunction` class. Since the altitude is the only output field, the third argument `outputDimension` is equal to `1`. If we had computed the speed as an extra output field, we would have set `2` instead.
+# In order to create a `Function` from this Python function, we use the `PythonPointToFieldFunction` class.
+# Since the altitude is the only output field, the third argument `outputDimension` is equal to `1`.
+# If we had computed the speed as an extra output field, we would have set `2` instead.
 
 # %%
 outputDimension = 1

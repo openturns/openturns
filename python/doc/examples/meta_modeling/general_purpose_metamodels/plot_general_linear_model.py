@@ -73,4 +73,5 @@ plt.show()
 # %%
 # We see that the metamodel is equal to the trend because it takes into account the fact that the mean of the gaussian process is zero.
 #
-# This `GeneralLinearModelAlgorithm` class is the main building block of the `KrigingAlgorithm`. This is why most basic use cases are based on the `KrigingAlgorithm` instead of the `GeneralLinearModelAlgorithm`, because this allows one to condition the gaussian process.
+# This `GeneralLinearModelAlgorithm` class is the main building block of the `KrigingAlgorithm`.
+# This is why most basic use cases are based on the `KrigingAlgorithm` instead of the `GeneralLinearModelAlgorithm`, because this allows one to condition the gaussian process.

@@ -3,7 +3,9 @@ Analyse the central tendency of a cantilever beam
 =================================================
 """
 # %%
-# In this example we perform a central tendency analysis of a random variable Y using the various methods available. We consider the :ref:`cantilever beam <use-case-cantilever-beam>` example and show how to use the `TaylorExpansionMoments` and `ExpectationSimulationAlgorithm` classes.
+# In this example we perform a central tendency analysis of a random variable Y using the various methods available.
+# We consider the :ref:`cantilever beam <use-case-cantilever-beam>` example and show
+# how to use the `TaylorExpansionMoments` and `ExpectationSimulationAlgorithm` classes.
 
 # %%
 from openturns.usecases import cantilever_beam

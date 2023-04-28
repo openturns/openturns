@@ -503,7 +503,8 @@ The estimator :math:`\widehat{V}_{i,j}` of :math:`V_{i,j}` is the same for all t
 
     \widehat{V}_{i,j} = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{g}(\vect{E}_k^i) \tilde{g}(\vect{C}_k^j) - \frac{1}{N} \sum_{k=1}^{N} \tilde{g}(\vect{A}_k) \tilde{g}(\vect{B}_k) - \widehat{V}_i - \widehat{V}_j.
 
-Notice that the value of the second order conditional variance depends on the estimators :math:`\widehat{V}_i` and :math:`\widehat{V}_j` which are method-dependent. This implies that the value of the second order indices may depend on the specific Sobol' estimator we use.
+Notice that the value of the second order conditional variance depends on the estimators :math:`\widehat{V}_i` and :math:`\widehat{V}_j` which are method-dependent.
+This implies that the value of the second order indices may depend on the specific Sobol' estimator we use.
 
 Centering the output
 ~~~~~~~~~~~~~~~~~~~~
