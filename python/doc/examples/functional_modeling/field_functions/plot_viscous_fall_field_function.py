@@ -111,3 +111,7 @@ plt.show()
 # Not all objects, however, achieve the same maximum altitude.
 # We see that some trajectories reach a higher maximum altitude than others.
 # Moreover, at the final time :math:`t_{max}`, one trajectory hits the ground: :math:`z(t_{max})=0` for this trajectory.
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

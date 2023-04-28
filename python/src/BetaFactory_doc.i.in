@@ -138,4 +138,5 @@ Determine the right unilateral confidence interval al level 0.9:
 Determine the left unilateral confidence interval al level 0.9:
 
 >>> confInt, level = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9, True)
+>>> ot.ResourceMap.Reload()
 "

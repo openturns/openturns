@@ -93,3 +93,7 @@ graph.add(cloud)
 graph.setLegendPosition("topleft")
 view = viewer.View(graph)
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

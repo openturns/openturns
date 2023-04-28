@@ -738,3 +738,7 @@ plot_space = 0.5
 plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 
 otv.View.ShowAll()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

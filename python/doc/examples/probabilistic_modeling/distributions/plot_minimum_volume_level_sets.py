@@ -258,6 +258,7 @@ numberOfPointsInXAxis = 50
 graph = drawLevelSetContour2D(mixture, numberOfPointsInXAxis, alpha, threshold)
 view = viewer.View(graph)
 plt.show()
-# %%
 
-plt.show()
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

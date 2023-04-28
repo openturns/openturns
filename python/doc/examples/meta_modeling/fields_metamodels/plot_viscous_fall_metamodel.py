@@ -167,3 +167,7 @@ plt.show()
 # This shows that the metamodel is quite accurate.
 # However, we observe that the trajectory singularity that occurs when the object
 # touches the ground (i.e. when :math:`z` is equal to zero), makes the metamodel less accurate.
+
+# %%
+# Reset ResourceMap
+ot.ResourceMap.Reload()

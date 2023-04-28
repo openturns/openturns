@@ -577,4 +577,5 @@ class=TestResult name=Unnamed type=Lilliefors Normal binaryQualityMeasure=true p
 >>> quality = test_result.getBinaryQualityMeasure()
 >>> quality
 True
+>>> ot.ResourceMap.Reload()
 "

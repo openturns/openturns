@@ -234,3 +234,7 @@ graph_sample_Y.setXTitle(r"$t$")
 graph_sample_Y.setYTitle(r"$Y$")
 view = viewer.View(graph_sample_Y)
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

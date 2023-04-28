@@ -326,4 +326,7 @@ graph = result.drawOptimalValueHistory()
 view = viewer.View(graph, axes_kw={"xticks": range(0, result.getIterationNumber(), 5)})
 
 plt.show()
+
 # %%
+# Reset default settings
+ot.ResourceMap.Reload()

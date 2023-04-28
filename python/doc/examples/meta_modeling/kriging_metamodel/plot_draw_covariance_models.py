@@ -453,3 +453,7 @@ _ = fig.suptitle("The Matern model : variation of the correlation length")
 # %%
 # Display figures
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

@@ -224,3 +224,7 @@ print(result.getConditionalMarginalVariance(xdata, 0)[0:5])
 # %%
 # Display all figures
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()
