@@ -6,11 +6,11 @@ Metamodel of a field function
 #
 # In this example we are going to create a metamodel of a field function following these steps:
 #
-# 1. creation of a field model over an 1-d mesh ;
-# 2. creation of a Gaussian process ;
+# 1. create a field model over an 1-d mesh ;
+# 2. create a Gaussian process ;
 # 3. Karhunen-Loeve decomposition of a process with known covariance function ;
 # 4. Karhunen-Loeve decomposition of a process with known trajectories ;
-# 5. projection of fields ;
+# 5. fields projection ;
 # 6. functional chaos decomposition between the coefficients of the input and output processes ;
 # 7. build a metamodel of the whole field model ;
 # 8. validate the metamodel.
@@ -42,7 +42,7 @@ process_X = ot.GaussianProcess(covariance_X, mesh)
 
 
 # %%
-# The next function plots the K.-L. modes.
+# The next function plots the Karhunen-Loève. modes.
 def drawKL(scaledKL, KLev, mesh, title="Scaled KL modes"):
     graph_modes = scaledKL.drawMarginal()
     graph_modes.setTitle(title + " scaled KL modes")
@@ -86,7 +86,7 @@ size = 500
 sample_X = process_X.getSample(size)
 
 # %%
-# Create a class to perform the convolution over an 1-d mesh.
+# Create a class to perform the convolution over a 1-d mesh.
 
 
 class ConvolutionP1(ot.OpenTURNSPythonFieldFunction):
@@ -145,7 +145,7 @@ graph_ev_X.setLegendPosition("topright")
 view = viewer.View(graph_ev_X)
 
 # %%
-# Perform the polynomial chaos expansion between KL coefficients.
+# Perform the polynomial chaos expansion between Karhunen-Loève coefficients.
 print("project sample_X")
 sample_xi_X = result_X.project(sample_X)
 
@@ -201,7 +201,7 @@ meta_model_field = ot.FieldToFieldConnection(
 
 
 # %%
-# Perform the validation of the metamodel.
+# Validate the metamodel.
 iMax = 10
 sample_X_validation = process_X.getSample(iMax)
 sample_Y_validation = myConvolution(sample_X_validation)

@@ -138,7 +138,7 @@ index : int
 Notes
 -----
 In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
-this is the strata of index `max_deg`.
+this is the strata of index *max_deg*.
 
 Examples
 --------
@@ -196,11 +196,11 @@ strataIndex : int
 Returns
 -------
 cardinal : int
-    Number of multi-indices in the basis inside the stratas of index lower of equal to *strataIndex*.
+    Number of multi-indices in the basis inside the stratas of index lower or equal to *strataIndex*.
 
 Notes
 -----
-The number of multi-indices is the total of multi-indices inside each consecutive stratas.
+The number of multi-indices is the total of multi-indices inside the stratas.
 In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
 this returns the number of multi-indices of maximal total degree *strataIndex*.
 
@@ -283,7 +283,7 @@ size : int
 Notes
 -----
 In the specific context of a linear enumeration (:class:`LinearEnumerateFunction`)
-this is also the cumulated cardinal of stratas up to `max_deg`.
+this is also the cumulated cardinal of stratas up to *max_deg*.
     
 Examples
 --------

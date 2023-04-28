@@ -14,7 +14,7 @@ Create a linear least squares model
 # where :math:`h : \Rset^2 \rightarrow \Rset^2` is defined by:
 #
 # .. math::
-#    h(\vect{x}) = \left(\cos(x_1 + x_2), (x_2 + 1) e^{x_1 - 2 x_2} \right)
+#    h(x_1, x_2) = \left(\cos(x_1 + x_2), (x_2 + 1) e^{x_1 - 2 x_2} \right)
 #
 
 # %%
@@ -52,7 +52,7 @@ algo.getConstant()
 responseSurface = algo.getMetaModel()
 
 # %%
-# Plot 2nd output of our model with x1=0.5.
+# Plot the second output of our model with :math:`x_1=0.5`.
 graph = (
     ot.ParametricFunction(responseSurface, [0], [0.5]).getMarginal(1).draw(-0.5, 0.5)
 )

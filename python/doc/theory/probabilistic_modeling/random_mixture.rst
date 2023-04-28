@@ -13,10 +13,10 @@ More precisely, consider:
    \vect{Y}=\vect{y}_0+\mat{M}\,\vect{X}
 
 where :math:`\vect{y}_0\in\mathbb{R}^d` is a deterministic vector with
-:math:`d\in\{1,2,3\}`, :math:`\mat{M}\in\mathcal{M}_{d,n}(\mathbb{R})` a
+:math:`d\in\{1,2,3\}`, :math:`\mat{M}\in\mathcal{M}_{d,n}(\mathbb{R})` is a
 deterministic matrix and :math:`\left(X_k\right)_{ 1 \leq k \leq n}` are
 independent random variables.
-In this case, it is possible to evaluate directly the distribution of
+In this case, it is possible to directly evaluate the distribution of
 :math:`\vect{Y}` and then to ask :math:`\vect{Y}` any request compatible
 with a distribution: moments, probability and cumulative density
 functions, quantiles (in dimension 1 only)...
@@ -38,7 +38,7 @@ easily defined from the characteristic function of :math:`X_k` denoted
    = \prod_{j=1}^d e^{iu_j{y_0}_j} \prod_{k=1}^n\phi_{X_k}\left(\left(M^t u\right)_k\right),
 
 for any :math:`\vect{u}\in\mathbb{R}^d`.
-Once :math:`\phi_Y` evaluated, it is possible to evaluate the
+Once :math:`\phi_Y` is evaluated, it is possible to evaluate the
 probability density function of :math:`Y`, denoted :math:`p_Y` :
 several techniques are possible, as the inversion of the Fourier
 transformation, but this method is not easy to implement.
@@ -64,14 +64,14 @@ term of :eq:`PoissonSum` are reduced to the central term
 :math:`j_1=\hdots=j_d = 0`: the left term is approximately equal to
 :math:`p_Y(y)`.
 Furthermore, the right term of :eq:`PoissonSum` is a series which
-converges very fast: only few terms of the series are enough to get
+converges very fast: few terms of the series are enough to get
 machine-precision accuracy. Let us note that the factors
 :math:`\phi_Y(k_1 h_1,\hdots,k_d,h_d)`, which are expensive to
 evaluate, do not depend on :math:`y` and are evaluated once only.
 
 It is also possible to greatly improve the performance of the
-algorithm by noticing that equation is linear between :math:`p_Y` and
-:math:`\phi_Y`. We denote :math:`q_Y` and :math:`\psi_Y` respectively
+algorithm by noticing that the equation is linear between :math:`p_Y` and
+:math:`\phi_Y`. We denote by :math:`q_Y` and :math:`\psi_Y` respectively
 the density and the characteristic function of the multivariate normal
 distribution with the same mean :math:`\vect{\mu}` and same covariance
 matrix :math:`\vect{C}` as the random mixture. By applying this
