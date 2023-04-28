@@ -312,6 +312,15 @@ class FireSatelliteModel:
         # Fixed Point Iteration maximum iteration
         self.maxFPIIter = int(50)
 
+    def __getstate__(self):
+        state = {}
+        for k, v in self.__dict__.items():
+            # avoid recursive serialization of PythonFunction
+            if isinstance(v, ot.Function):
+                continue
+            state[k] = v
+        return state
+
     def power(self, inputs):
         """
         Function computing the power discipline outputs to retrieve the inertia, the total power and the area of solar array
