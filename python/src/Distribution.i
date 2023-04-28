@@ -336,4 +336,40 @@ class ChaospyDistribution(PythonDistribution):
         p = 1.0 - prob if tail else prob
         q = self._dist.inv(p).flatten()
         return q
+
+def __Distribution_repr_html(self):
+    """Get HTML representation."""
+    dimension = self.getDimension()
+    if dimension == 1:
+        html = str(self)
+    else:
+        copula = self.getCopula()
+        description = self.getDescription()
+        html = ""
+        html += "<ul>\n"
+        html += "  <li>Dimension : %d</li>\n" % (dimension)
+        html += "  <li>Copula : %s</li>\n" % (copula.getName())
+        html += "</ul>\n"
+        html += "\n"
+        # Table of marginals
+        html += "<table>\n"
+        # Header
+        html += "<tr>\n"
+        html += "  <th>Index</th>\n"
+        html += "  <th>Variable</th>\n"
+        html += "  <th>Distribution</th>\n"
+        html += "</tr>\n"
+        # Content
+        for i in range(dimension):
+            marginal = self.getMarginal(i)
+            html += "<tr>\n"
+            html += "  <td>%d</td>\n" % (i)
+            html += "  <td>%s</td>\n" % (description[i])
+            html += "  <td>%s</td>\n" % (marginal)
+            html += "</tr>\n"
+        html += "</table>\n"
+
+    return html
+
+Distribution._repr_html_ = __Distribution_repr_html
 %}
