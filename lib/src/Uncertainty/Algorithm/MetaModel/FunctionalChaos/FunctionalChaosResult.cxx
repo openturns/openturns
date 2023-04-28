@@ -102,53 +102,11 @@ String FunctionalChaosResult::__repr__() const
          << " metaModel=" << metaModel_;
 }
 
-String FunctionalChaosResult::__str__(const String & /*offset*/) const
+String FunctionalChaosResult::__str__(const String & offset) const
 {
   OSS oss(false);
-  const UnsignedInteger basisSize = I_.getSize();
-  const EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
-  const UnsignedInteger outputDimension = metaModel_.getOutputDimension();
-  const UnsignedInteger inputDimension = distribution_.getDimension();
-  oss << "Input dimension=" << inputDimension << "\n"
-      << "Output dimension=" << outputDimension << "\n"
-      << "Basis size=" << basisSize << "\n"
-      << "Relative errors=" << relativeErrors_ << "\n"
-      << "Residuals=" << residuals_ << "\n\n";
-  oss << "| Index | Rank | Multi-index | Coefficient       |" << "\n";
-  oss << "|-------|------|-------------|-------------------|" << "\n";
-  const Scalar verboseThreshold = ResourceMap::GetAsScalar("FunctionalChaosResult-CoefficientThreshold");
-  const UnsignedInteger verboseMaximumIndices = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-MaximumPrint");
-  UnsignedInteger printIndex = 0;
-  for (UnsignedInteger k = 0; k < basisSize; ++ k)
-  {
-    const UnsignedInteger rank = I_[k];
-    const Indices multiindex(enumerateFunction(rank));
-    Bool mustPrint = false;
-    for (UnsignedInteger m = 0; m < outputDimension; ++ m)
-    {
-      if (std::abs(alpha_k_[k][m]) > verboseThreshold)
-      {
-        mustPrint = true;
-        break;
-      }
-    }
-    if (mustPrint)
-    {
-      oss << "|" << std::setw(6) << k 
-          << " |" << std::setw(5) << rank 
-          << " |" << std::setw(12) <<  multiindex 
-          << " | [" << std::setw(15);
-      for (UnsignedInteger m = 0; m < outputDimension; ++ m)
-      {
-        oss << alpha_k_[k][m];
-        if (m != outputDimension - 1)
-            oss << ", ";
-      }
-      oss << "] |\n";
-    }
-    printIndex += 1;
-    if (printIndex > verboseMaximumIndices) break;
-  }
+  oss << "meta model=" << metaModel_ << Os::GetEndOfLine() << offset;
+  oss << "orthogonal basis=" << orthogonalBasis_;
   return oss;
 }
 
