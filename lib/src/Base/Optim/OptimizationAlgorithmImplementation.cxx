@@ -34,7 +34,6 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   : PersistentObject()
   , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
-  , startingPoint_(Point(0))
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber"))
   , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
   , maximumAbsoluteError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
@@ -317,8 +316,7 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
           case OptimizationProblemImplementation::CONTINUOUS:
             break;
           case OptimizationProblemImplementation::BINARY:
-	    // TODO: use Clip01
-            constraintError = std::max(constraintError, std::abs(inP[j] - std::max(0.0, std::min(1.0, std::round(inP[j])))));
+            constraintError = std::max(constraintError, std::abs(inP[j] - SpecFunc::Clip01(std::round(inP[j]))));
             break;
           case OptimizationProblemImplementation::INTEGER:
             constraintError = std::max(constraintError, std::abs(inP[j] - std::round(inP[j])));

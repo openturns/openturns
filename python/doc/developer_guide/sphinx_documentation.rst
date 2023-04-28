@@ -187,6 +187,13 @@ results::
     import openturns as ot
     ot.RandomGenerator.SetSeed(0)
 
+For the same reason you might want to reset the ResourceMap default values at
+the end if your example sets specific settings::
+
+   # %%
+   # Reset default settings
+   ot.ResourceMap.Reload()
+
 The special variable `sphinx_gallery_thumbnail_number <https://sphinx-gallery.github.io/stable/configuration.html#choosing-thumbnail>`_
 can be used to determine which figure is used as thumbnail in the examples gallery::
 

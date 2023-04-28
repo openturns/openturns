@@ -205,3 +205,7 @@ otv.View.ShowAll()
 #
 # In practice, we often test several values of the parameter q, in the [0.5, 0.9] range,
 # for example :math:`q \in \{0.5, 0.6, 0.7, 0.8, 0.9\}`.
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

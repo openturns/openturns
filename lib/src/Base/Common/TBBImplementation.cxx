@@ -20,12 +20,10 @@
  */
 
 #include <iostream>
-#include <cassert>
 #include <cstdlib>
-#include <errno.h>
+#include <mutex>
 
 #include "openturns/OTconfig.hxx"
-#include "openturns/OTthread.hxx"
 
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -45,7 +43,6 @@ extern "C" {
 
 BEGIN_NAMESPACE_OPENTURNS
 
-static pthread_mutex_t TBBImplementation_InstanceMutex_;
 static TBBImplementation * TBBImplementation_P_instance_ = 0;
 static const TBB_init initializer_TBBImplementation;
 UnsignedInteger TBBImplementation::ThreadsNumber_ = 1;
@@ -92,30 +89,22 @@ void TBBImplementation::Disable()
 
 TBB_init::TBB_init()
 {
-  if (!TBBImplementation_P_instance_)
-  {
-#ifndef OT_MUTEXINIT_NOCHECK
-    pthread_mutexattr_t attr;
-    pthread_mutexattr_init( &attr );
-    pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_ERRORCHECK );
-    pthread_mutex_init( &TBBImplementation_InstanceMutex_, &attr );
-#else
-    pthread_mutex_init( &TBBImplementation_InstanceMutex_, NULL );
-#endif
-
+  static std::once_flag flag;
+  std::call_once(flag, [&]() {
     TBBImplementation_P_instance_ = new TBBImplementation;
-  }
-  TBBImplementation::Enable();
+    TBBImplementation::Enable();
+  });
 }
 
 TBB_init::~TBB_init()
 {
-  if (TBBImplementation_P_instance_)
-    pthread_mutex_destroy(&TBBImplementation_InstanceMutex_);
-  delete TBBImplementation_P_instance_;
-  TBBImplementation_P_instance_ = 0;
-  delete TBBImplementation::P_task_arena_;
-  TBBImplementation::P_task_arena_ = 0;
+  static std::once_flag flag;
+  std::call_once(flag, [&]() {
+    delete TBBImplementation_P_instance_;
+    TBBImplementation_P_instance_ = 0;
+    delete TBBImplementation::P_task_arena_;
+    TBBImplementation::P_task_arena_ = 0;
+  });
 }
 
 

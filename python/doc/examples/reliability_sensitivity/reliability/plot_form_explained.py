@@ -451,3 +451,7 @@ print("Probability of failure (SORM Tvedt) Pf = ", pfTvedt)
 # %%
 # Display all figures
 otv.View.ShowAll()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

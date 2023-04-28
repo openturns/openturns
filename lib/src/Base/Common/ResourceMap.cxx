@@ -18,9 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <unistd.h>                 // for sysconf
-#include "openturns/OTthread.hxx"
+#include <mutex>
 #include "openturns/OTconfig.hxx"
+#ifdef OPENTURNS_HAVE_UNISTD_H
+#include <unistd.h>                 // for sysconf
+#endif
 #include "openturns/OSS.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Exception.hxx"
@@ -42,33 +44,26 @@ static const char * XMLTag_value_int              = "value_int";
 static const char * XMLTag_value_bool             = "value_bool";
 #endif
 
-static pthread_mutex_t ResourceMap_InstanceMutex_;
+static std::mutex ResourceMap_InstanceMutex_;
 static ResourceMap * ResourceMap_P_instance_ = 0;
 static const ResourceMap_init static_initializer_ResourceMap;
 
 ResourceMap_init::ResourceMap_init()
 {
-  if (!ResourceMap_P_instance_)
-  {
-#ifndef OT_MUTEXINIT_NOCHECK
-    pthread_mutexattr_t attr;
-    pthread_mutexattr_init( &attr);
-    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
-    pthread_mutex_init(&ResourceMap_InstanceMutex_, &attr);
-#else
-    pthread_mutex_init(&ResourceMap_InstanceMutex_, NULL);
-#endif
+  static std::once_flag flag;
+  std::call_once(flag, [&]() {
     ResourceMap_P_instance_ = new ResourceMap;
-  }
+  });
   assert(ResourceMap_P_instance_);
 }
 
 ResourceMap_init::~ResourceMap_init()
 {
-  if (ResourceMap_P_instance_)
-    pthread_mutex_destroy(&ResourceMap_InstanceMutex_);
-  delete ResourceMap_P_instance_;
-  ResourceMap_P_instance_ = 0;
+  static std::once_flag flag;
+  std::call_once(flag, [&]() {
+    delete ResourceMap_P_instance_;
+    ResourceMap_P_instance_ = 0;
+  });
 }
 
 

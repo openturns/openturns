@@ -894,3 +894,7 @@ plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 # the calibration.
 
 otv.View.ShowAll()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

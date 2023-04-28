@@ -18,11 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include "openturns/IdFactory.hxx"
-#include "openturns/OSS.hxx"
-#include "openturns/OTthread.hxx"
-#include "openturns/MutexLock.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

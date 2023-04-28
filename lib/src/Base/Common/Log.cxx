@@ -23,17 +23,15 @@
 #include <cassert>
 #include <errno.h>
 
-#include "openturns/OTthread.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/MutexLock.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-static pthread_mutex_t Log_InstanceMutex_;
+static std::mutex Log_InstanceMutex_;
 static Log * Log_P_instance_ = 0;
 static const Log_init static_initializer_Log;
-
 
 static inline
 _Prefix make_prefix( const _Prefix::Value & color, const _Prefix::Value & nocolor, const _Prefix::Value & prefix)
@@ -49,31 +47,22 @@ std::ostream & operator << ( std::ostream & os, const _Prefix & pfx )
 
 Log_init::Log_init()
 {
-  if (!Log_P_instance_)
-  {
-#ifndef OT_MUTEXINIT_NOCHECK
-    pthread_mutexattr_t attr;
-    pthread_mutexattr_init( &attr );
-    pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
-    pthread_mutex_init( &Log_InstanceMutex_, &attr );
-#else
-    pthread_mutex_init( &Log_InstanceMutex_, NULL );
-#endif
+  static std::once_flag flag;
+  std::call_once(flag, [&]() {
     Log_P_instance_ = new Log;
     Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log Beginning ***"));
-  }
+  });
   assert(Log_P_instance_);
 }
 
 Log_init::~Log_init()
 {
-  if (Log_P_instance_)
-  {
+  static std::once_flag flag;
+  std::call_once(flag, [&]() {
     Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log End ***"));
-    pthread_mutex_destroy(&Log_InstanceMutex_);
-  }
-  delete Log_P_instance_;
-  Log_P_instance_ = 0;
+    delete Log_P_instance_;
+    Log_P_instance_ = 0;
+  });
 }
 
 

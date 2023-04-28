@@ -9,7 +9,7 @@ Time variant system reliability problem
 #
 # We consider the following limit state function, defined as the difference between a degrading resistance :math:`r(t) = R - bt`  and a time-varying load :math:`S(t)`:
 #
-# ..math:
+# .. math:
 #   \begin{align*}
 #   g(t)= r(t) - S(t) = R - bt - S(t) \quad \forall t \in [0,T]
 #   \end{align*}
@@ -62,7 +62,7 @@ Time variant system reliability problem
 # - with mean :math:`[bt, b(t+\delta t)]` and
 # - with covariance matrix :math:`\Sigma` defined by:
 #
-# ..math::
+# .. math::
 #   \begin{align*}
 #   \Sigma = \left(
 #   \begin{array}{cc}

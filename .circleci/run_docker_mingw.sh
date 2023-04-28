@@ -27,6 +27,6 @@ CXXFLAGS="-Wall -Wextra -Werror -D_GLIBCXX_ASSERTIONS" ${ARCH}-w64-mingw32-cmake
 make install
 ${ARCH}-w64-mingw32-strip --strip-unneeded ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/openturns/*.pyd
 echo lib/test ${PREFIX}/Lib/site-packages/openturns | xargs -n 1 cp ${PREFIX}/bin/*.dll
-ctest -R pyinstallcheck --output-on-failure ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
+OPENTURNS_NUM_THREADS=2 ctest -R pyinstallcheck --output-on-failure ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 make tests
-ctest -R cppcheck --output-on-failure --timeout 1000 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
+OPENTURNS_NUM_THREADS=2 ctest -R cppcheck --output-on-failure --timeout 1000 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random

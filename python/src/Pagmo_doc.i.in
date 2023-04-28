@@ -94,8 +94,8 @@ Sample the initial population inside a box:
 
 Run GACO on our problem:
 
->>> algo = ot.Pagmo(problem, 'gaco', init_pop)
->>> algo.setGenerationNumber(5)
+>>> algo = ot.Pagmo(problem, 'gaco', init_pop) # doctest: +SKIP
+>>> algo.setGenerationNumber(5) # doctest: +SKIP
 >>> algo.run() # doctest: +SKIP
 >>> result = algo.getResult() # doctest: +SKIP
 >>> x_star = result.getOptimalPoint() # doctest: +SKIP
@@ -122,8 +122,8 @@ Sample the initial population inside a box:
 
 Run NSGA2 on our problem:
 
->>> algo = ot.Pagmo(problem, 'nsga2', init_pop)
->>> algo.setGenerationNumber(5)
+>>> algo = ot.Pagmo(problem, 'nsga2', init_pop) # doctest: +SKIP
+>>> algo.setGenerationNumber(5) # doctest: +SKIP
 >>> algo.run() # doctest: +SKIP
 >>> result = algo.getResult() # doctest: +SKIP
 >>> final_pop_x = result.getFinalPoints() # doctest: +SKIP

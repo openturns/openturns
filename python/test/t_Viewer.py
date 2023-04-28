@@ -199,7 +199,7 @@ view = View(graph)
 graph = ot.BipartiteGraph([[0, 1, 2], [0, 1, 2]]).draw()
 view = View(graph)
 
-# FORM reliability index marginal parameter sensitivity
+# BarPlot: FORM reliability index marginal parameter sensitivity
 f = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 dim = f.getInputDimension()
 mean = [50.0, 1.0, 10.0, 5.0]
@@ -218,11 +218,8 @@ solver.setMaximumConstraintError(1.0e-10)
 algo = ot.FORM(solver, event, mean)
 algo.run()
 result = algo.getResult()
-(
-    marginalSensitivity,
-    otherSensitivity,
-) = result.drawHasoferReliabilityIndexSensitivity()
-view = View(marginalSensitivity)
+graph, _ = result.drawHasoferReliabilityIndexSensitivity()
+view = View(graph)
 
 # Optimization error history
 opt_result = result.getOptimizationResult()
@@ -253,7 +250,6 @@ view = View(graph, square_axes=True)
 graph = ot.Normal().drawPDF()
 graph.setAxes(False)
 view = View(graph)
-view.ShowAll(block=True)
 
 # test _repr_png_
 png = graph._repr_png_()
@@ -275,3 +271,16 @@ view = View(graph)
 palette = ot.Drawable.BuildTableauPalette(ncurves)
 graph.setColors(palette)
 view = View(graph)
+
+# mixed legend
+f = ot.SymbolicFunction(["x", "y"], ["sin(x)*sin(y)"])
+graph = f.draw([-4.0] * 2, [4.0] * 2, [64] * 2)
+curve = ot.Curve([-4.0, 4.0], [1.0, 1.0], 'curve')
+curve.setColor('black')
+curve.setLineStyle('dashed')
+graph.add(curve)
+cloud = ot.Cloud(ot.Normal(2).getSample(100), "cloud")
+graph.add(cloud)
+view = View(graph)
+
+view.ShowAll(block=True)

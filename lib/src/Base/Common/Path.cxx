@@ -36,7 +36,6 @@
 // It also defines INSTALL_PATH, SYSCONFIG_PATH, DATA_PATH, OPENTURNS_HOME_ENV_VAR
 #include "openturns/OTconfig.hxx"
 
-#include "openturns/OTthread.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/Exception.hxx"

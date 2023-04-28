@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/Histogram.hxx"
-#include "openturns/BarPlot.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

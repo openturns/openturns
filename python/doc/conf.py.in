@@ -118,6 +118,9 @@ sphinx_gallery_conf = {
     # is an empty set, i.e. exclude nothing.
     'exclude_implicit_doc': {},
 
+    # The duration of scripts that ran faster than that amount will not be
+    # logged nor embedded in the html output
+    'min_reported_time': 2,
 }
 
 

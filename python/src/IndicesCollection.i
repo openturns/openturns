@@ -13,7 +13,7 @@ OTTypedInterfaceObjectHelper(IndicesCollection)
     try {
       temp = OT::convert<OT::_PySequence_, OT::IndicesCollection>($input);
       $1 = &temp;
-    } catch (OT::InvalidArgumentException &) {
+    } catch (const OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to an IndicesCollection");
     }
   }

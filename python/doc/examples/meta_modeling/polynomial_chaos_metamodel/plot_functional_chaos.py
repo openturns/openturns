@@ -196,3 +196,7 @@ plt.show()
 # * Since the distribution of the input is known, we may want to give this information to the `FunctionalChaosAlgorithm`. This prevents the algorithm from trying to fit the distribution which best fit to the data.
 # * We may want to customize the `adaptiveStrategy` by selecting an enumerate function which best fit to this particular situation. In this specific example, the interactions plays a great role so that the linear enumerate function may provide better results than the hyperbolic rule.
 # * We may want to customize the `projectionStrategy` by selecting an method to compute the coefficient which improves the estimation. Given that the function is symbolic and fast, it might be interesting to try an integration rule instead of the least squares method.
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

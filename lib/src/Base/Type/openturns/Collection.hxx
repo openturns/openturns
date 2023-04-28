@@ -228,8 +228,7 @@ public:
   inline
   Bool contains(T val) const
   {
-    for (UnsignedInteger i = 0; i < coll__.size(); ++i) if ( coll__[i] == val ) return true;
-    return false;
+    return (std::find(begin(), end(), val) != end());
   }
 
   inline

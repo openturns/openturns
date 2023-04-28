@@ -194,3 +194,7 @@ print("Basic estimator : %.4f" % (sum(samples)[0] / N))
 # %%
 # Display all figures
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()
