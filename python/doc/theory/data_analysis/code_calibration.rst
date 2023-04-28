@@ -6,14 +6,14 @@ Code calibration
 Introduction
 ~~~~~~~~~~~~
 
+In this page, we present the method used in the :class:`~openturns.LinearLeastSquaresCalibration`
+and :class:`~openturns.NonLinearLeastSquaresCalibration` classes.
 We consider a computer model :math:`\vect{h}` (i.e. a deterministic function)
 to calibrate:
 
 .. math::
 
-   \begin{aligned}
        \vect{z} = \vect{h}(\vect{x}, \vect{\theta}),
-   \end{aligned}
 
 where
 
@@ -29,17 +29,13 @@ The standard hypothesis of the probabilistic calibration is:
 
 .. math::
 
-   \begin{aligned}
        \vect{Y}^i = \vect{z}^i + \vect{\varepsilon}^i,
-   \end{aligned}
 
 for :math:`i=1,...,n` where :math:`\vect{\varepsilon}^i` is a random measurement error such that:
 
 .. math::
 
-   \begin{aligned}
-       E(\varepsilon)=\vect{0} \in \Rset^{d_z}, \qquad Cov(\varepsilon)=\Sigma \in \Rset^{d_z\times d_z},
-   \end{aligned}
+       \Expect{\varepsilon} = \vect{0} \in \Rset^{d_z}, \qquad \Cov{\varepsilon} = \Sigma \in \Rset^{d_z\times d_z},
 
 where :math:`\Sigma` is the error covariance matrix.
 
@@ -62,9 +58,7 @@ of the error is diagonal, i.e.
 
 .. math::
 
-   \begin{aligned}
        \Sigma = \sigma^2 {\bf I}
-   \end{aligned}
 
 where :math:`\sigma^2 \in \Rset` is the constant observation error variance.
 
@@ -74,9 +68,7 @@ This is why we simplify the equation into:
 
 .. math::
 
-   \begin{aligned}
        \vect{z} = \vect{h}(\vect{\theta}).
-   \end{aligned}
 
 Least squares
 ~~~~~~~~~~~~~
@@ -85,9 +77,7 @@ The residuals is the difference between the observations and the predictions:
 
 .. math::
 
-   \begin{aligned}
        \vect{r}^i = \vect{y}^i - \vect{h}(\vect{\theta})^i
-   \end{aligned}
 
 for :math:`i=1,...,n`.
 The method of least squares minimizes the square of the euclidian norm
@@ -96,27 +86,20 @@ This is why the least squares method is based on the cost function :math:`C` def
 
 .. math::
 
-   \begin{aligned}
-       C(\vect{\theta}) = \frac{1}{2} \|\vect{y} - \vect{h}(\vect{\theta})\|^2 = \frac{1}{2} \sum_{i=1}^n \left( \vect{y}^i - \vect{h}(\vect{\theta})^i \right)^2,
-   \end{aligned}
+       c(\vect{\theta}) = \frac{1}{2} \|\vect{y} - \vect{h}(\vect{\theta})\|^2 = \frac{1}{2} \sum_{i=1}^n \left( \vect{y}^i - \vect{h}(\vect{\theta})^i \right)^2,
 
 for any :math:`\vect{\theta} \in \Rset^{d_h}`.
-
-The least squares method minimizes the cost function :math:`C`:
+The least squares method minimizes the cost function :math:`c`:
 
 .. math::
 
-   \begin{aligned}
        \hat{\vect{\theta}} = \argmin_{\vect{\theta} \in \Rset^{d_h}} \frac{1}{2} \|\vect{y} - \vect{h}(\vect{\theta})\|^2.
-   \end{aligned}
 
 The unbiased estimator of the variance is:
 
 .. math::
 
-   \begin{aligned}
        \hat{\sigma}^2 = \frac{\|\vect{y} - \vect{h}(\vect{\theta})\|^2}{n - d_h}.
-   \end{aligned}
 
 Notice that the previous estimator is not the maximum likelihood estimator (which is biased).
 
@@ -131,9 +114,7 @@ partial derivatives of :math:`\vect{h}` with respect to :math:`\vect{\theta}`:
 
 .. math::
 
-   \begin{aligned}
        J(\vect{\theta}) = \frac{\partial \vect{h}}{\partial \vect{\theta}}.
-   \end{aligned}
 
 Let :math:`\vect{\mu} \in \Rset^{d_h}` be a reference value of the parameter :math:`\vect{\theta}`.
 Let us denote by :math:`J=J(\vect{\mu})` the value of the Jacobian at the reference point :math:`\vect{\mu}`.
@@ -143,27 +124,20 @@ Since :math:`\vect{h}` is linear, it is equal to its Taylor expansion:
 
 .. math::
 
-   \begin{aligned}
        \vect{h}(\vect{\theta}) = \vect{h}(\vect{\mu}) + J (\vect{\theta} - \vect{\mu}),
-   \end{aligned}
 
 for any :math:`\vect{\theta} \in \Rset^{d_h}`.
-
 The corresponding linear least squares problem is:
 
 .. math::
 
-   \begin{aligned}
        \hat{\vect{\theta}} = \argmin_{\vect{\theta} \in \Rset^{d_h}} \frac{1}{2} \|\vect{y} - \vect{h}(\vect{\mu}) - J (\vect{\theta} - \vect{\mu})\|^2.
-   \end{aligned}
 
 The Gauss-Markov theorem applied to this problem states that the solution is:
 
 .. math::
 
-   \begin{aligned}
        \hat{\vect{\theta}} = \vect{\mu} + \left(J^T J\right)^{-1} J^T ( \vect{y} - \vect{h}(\vect{\mu})).
-   \end{aligned}
 
 The previous equations are the *normal equations*.
 Notice, however, that the previous linear system of equations is not implemented as is,
@@ -175,21 +149,21 @@ of the normal equations is mitigated.
 This estimator can be proved to be the best linear unbiased estimator, the *BLUE*, that is,
 among the unbiased linear estimators, it is the one which minimizes the variance of the estimator.
 
-Assume that the random observations are gaussian:
+Assume that the random observations are Gaussian:
 
 .. math::
 
-   \begin{aligned}
-       \varepsilon \sim \mathcal{N}(\vect{0},\sigma^2 {\bf I}).
-   \end{aligned}
+       \varepsilon \sim \mathcal{N}\left(\vect{0}, \; \sigma^2 {\bf I}\right).
 
 Therefore, the distribution of :math:`\hat{\vect{\theta}}` is:
 
 .. math::
 
-   \begin{aligned}
-       \hat{\vect{\theta}} \sim \mathcal{N}(\vect{\theta},\sigma^2 J^T J).
-   \end{aligned}
+       \hat{\vect{\theta}} \sim \mathcal{N}\left(\vect{\theta}, \; \sigma^2 J^T J\right).
+
+The distribution of the estimator :math:`\hat{\vect{\theta}}` is the distribution
+of the value of the parameters which best predicts the output, given the
+variability in the observation generated by the random observation errors.
 
 Non Linear Least squares
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -197,13 +171,12 @@ Non Linear Least squares
 In the general case where the function :math:`\vect{h}` is non linear
 with respect to the parameter :math:`\vect{\theta}`, then the resolution
 involves a non linear least squares optimization algorithm.
-Instead of directly minimizing the squared euclidian norm of the residuals,
+Instead of directly minimizing the squared Euclidean norm of the residuals,
 most implementations rely on the residual vector, which lead to an improved accuracy.
 
-The difficulty in the nonlinear least squares is that, compared to the
+One problem with non linear least squares is that, compared to the
 linear situation, the theory does not provide the distribution
 of :math:`\hat{\vect{\theta}}` anymore.
-
 There are two practical solutions to overcome this limitation.
 
 - bootstrap,
@@ -230,7 +203,7 @@ time consuming.
 
 Alternatively, we can linearize the function :math:`\vect{h}`
 in the neighborhood of the solution :math:`\hat{\vect{\theta}}` and use the
-gaussian distribution associated with the linear least squares.
+Gaussian distribution associated with the linear least squares.
 This method is efficient, but only accurate when the function :math:`\vect{h}`
 is approximately linear with respect to :math:`\vect{\theta}` in the
 neighborhood of :math:`\hat{\vect{\theta}}`.
@@ -242,15 +215,20 @@ A link between the method of least squares and the method of maximum
 likelihood can be done provided that two hypotheses are satisfied.
 The first hypothesis is that the random output observations :math:`\vect{y}^i` are independent.
 The second hypothesis is that the random measurement error :math:`\vect{\varepsilon}`
-has the gaussian distribution.
+has the Gaussian distribution.
 In this particular case, it can be shown that the solution of the least squares
 problem maximizes the likelihood.
+In other words, the least squares estimator is equivalent to the maximum
+likelihood estimator.
 
 This is the reason why, after a least squares calibration has been performed,
 the distribution of the residuals may be interesting to analyze.
-Indeed, if the distribution of the residuals is gaussian and if the outputs
+Indeed, if the distribution of the residuals is Gaussian and if the outputs
 are independent, then the least squares estimator is the maximum likelihood estimator,
 which gives a richer interpretation to the solution.
+This validation can be done by visually comparing the distribution of the residuals
+to the Gaussian distribution or by creating the QQ-Plot
+against the Gaussian distribution (see :ref:`qqplot_graph`).
 
 Regularization and ill-conditioned problems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

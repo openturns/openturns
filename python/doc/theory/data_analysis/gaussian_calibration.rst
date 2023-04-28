@@ -6,6 +6,16 @@ Gaussian calibration
 Introduction
 ~~~~~~~~~~~~
 
+In this page, we present the method used in the :class:`~openturns.GaussianLinearCalibration`
+and :class:`~openturns.GaussianNonLinearCalibration` classes.
+Gaussian calibration is a particular case of Bayesian calibration
+(see :ref:`bayesian_calibration`) where
+the prior has a Gaussian distribution and the observation error has a Gaussian
+distribution.
+In this case, simplifications occur which lead to an efficient
+algorithm that requires fewer model evaluations compared to Monte-Carlo
+Markov Chains (MCMC).
+
 We consider a computer model :math:`\vect{h}` (i.e. a deterministic function)
 to calibrate:
 
@@ -31,7 +41,7 @@ The standard hypothesis of the probabilistic calibration is:
 
 for :math:`i=1,...,n` where :math:`\vect{\varepsilon}^i` is a random measurement error.
 
-The goal of gaussian calibration is to estimate :math:`\vect{\theta}`, based on
+The goal of Gaussian calibration is to estimate :math:`\vect{\theta}`, based on
 observations of :math:`n` inputs :math:`(\vect{x}^1, \ldots, \vect{x}^n)`
 and the associated :math:`n` observations of the output
 :math:`(\vect{y}^1, \ldots, \vect{y}^n)`.
@@ -56,14 +66,11 @@ This is why we simplify the equation into:
 Bayesian calibration
 ~~~~~~~~~~~~~~~~~~~~
 
-The bayesian calibration framework is based on two hypotheses.
-
+The Bayesian calibration framework is based on two hypotheses.
 The first hypothesis is that the parameter :math:`\vect{\theta}` has
 a known distribution, called the *prior* distribution, and denoted by :math:`p(\vect{\theta})`.
-
 The second hypothesis is that the output observations :math:`(\vect{y}^1, \ldots, \vect{y}^n)`
 are sampled from a known conditional distribution denoted by :math:`p(\vect{y} | \vect{\theta})`.
-
 For any :math:`\vect{y}\in\Rset^{d_z}` such that :math:`p(\vect{y})>0`, the Bayes theorem implies
 that the conditional distribution of :math:`\vect{\theta}` given :math:`\vect{y}` is:
 
@@ -72,7 +79,6 @@ that the conditional distribution of :math:`\vect{\theta}` given :math:`\vect{y}
     p(\vect{\theta} | \vect{y}) = \frac{p(\vect{y} | \vect{\theta}) p(\vect{\theta})}{p(\vect{y})}
 
 for any :math:`\vect{\theta}\in\Rset^{d_h}`.
-
 The denominator of the previous Bayes fraction is independent of :math:`\vect{\theta}`, so that
 the posterior distribution is proportional to the numerator:
 
@@ -82,10 +88,9 @@ the posterior distribution is proportional to the numerator:
 
 for any :math:`\vect{\theta}\in\Rset^{d_h}`.
 
-In the gaussian calibration, the two previous distributions are assumed to be gaussian.
-
+In Gaussian calibration, the two previous distributions are assumed to be gaussian.
 More precisely, we make the hypothesis that the parameter :math:`\vect{\theta}`
-has the gaussian distribution:
+follows the normal distribution:
 
 .. math::
 
@@ -94,12 +99,11 @@ has the gaussian distribution:
 where :math:`\vect{\mu}\in\Rset^{d_h}` is the mean of the gaussian prior distribution,
 which is named the *background* and :math:`B\in\Rset^{d_h \times d_h}` is the covariance
 matrix of the parameter.
-
-Secondly, we make the hypothesis that the output observations have the conditional gaussian distribution:
+Secondly, we make the hypothesis that the output observations follow the conditional normal distribution:
 
 .. math::
 
-    \vect{y} | \vect{\theta} \sim \mathcal{N}(\vect{h}(\vect{\theta}), R),
+    \vect{y} | \vect{\theta} \sim \mathcal{N}(\vect{h}(\vect{\theta}), \; R),
 
 where :math:`R\in\Rset^{d_z \times d_z}` is the covariance
 matrix of the output observations.
@@ -107,23 +111,23 @@ matrix of the output observations.
 Posterior distribution
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Denote by :math:`\|\cdot\|_B` the Mahalanobis distance associated with the matrix
-:math:`B` :
+Let :math:`\|\cdot\|_B` be the Mahalanobis distance associated with the matrix
+:math:`B`:
 
 .. math::
 
-    \|\vect{\theta}-\vect{\mu} \|^2_B = (\vect{\theta}-\vect{\mu} )^T B^{-1} (\vect{\theta}-\vect{\mu} ),
+    \|\vect{\theta} - \vect{\mu} \|^2_B = (\vect{\theta} - \vect{\mu} )^T B^{-1} (\vect{\theta} - \vect{\mu} ),
 
 for any :math:`\vect{\theta},\vect{\mu} \in \Rset^{d_h}`.
 Denote by :math:`\|\cdot\|_R` the Mahalanobis distance associated with the matrix
-:math:`R` :
+:math:`R`:
 
 .. math::
 
-    \|\vect{y}-H(\vect{\theta})\|^2_R = (\vect{y}-H(\vect{\theta}))^T R^{-1} (\vect{y}-H(\vect{\theta})).
+    \|\vect{y} - h(\vect{\theta})\|^2_R = (\vect{y} - h(\vect{\theta}))^T R^{-1} (\vect{y} - h(\vect{\theta})).
 
 for any :math:`\vect{\theta} \in \Rset^{d_h}` and any :math:`\vect{y} \in \Rset^{d_z}`.
-Therefore, the posterior distribution of :math:`\vect{\theta}` given the observations :math:`\vect{y}` is :
+Therefore, the posterior distribution of :math:`\vect{\theta}` given the observations :math:`\vect{y}` is:
 
 .. math::
 
@@ -140,7 +144,7 @@ reached at :
 
 .. math::
 
-    \hat{\vect{\theta}} = arg min_{\vect{\theta}\in\Rset^{d_h}} \frac{1}{2} \left( \|\vect{y} - H(\vect{\theta})\|^2_R
+    \hat{\vect{\theta}}_{MAP} = \argmin_{\vect{\theta}\in\Rset^{d_h}} \frac{1}{2} \left( \|\vect{y} - H(\vect{\theta})\|^2_R
     + \|\vect{\theta}-\vect{\mu} \|^2_B \right).
 
 It is called the *maximum a posteriori posterior* estimator or
@@ -164,15 +168,13 @@ The cost function of the gaussian nonlinear calibration problem is :
 
 .. math::
 
-    C(\vect{\theta}) = \frac{1}{2}\|\vect{y}-H(\vect{\theta})\|^2_R
+    c(\vect{\theta}) = \frac{1}{2}\|\vect{y} - h(\vect{\theta})\|^2_R
     + \frac{1}{2}\|\vect{\theta}-\vect{\mu} \|^2_B
 
 for any :math:`\vect{\theta}\in\Rset^{d_h}`.
-
-The goal of the non linear gaussian calibration is to find the
+The goal of non-linear Gaussian calibration is to find the
 value of :math:`\vect{\theta}` which minimizes the cost function :math:`C`.
 In general, this involves using a nonlinear unconstrained optimization solver.
-
 Let :math:`J \in \Rset^{n \times d_h}` be the Jacobian matrix made of the
 partial derivatives of :math:`\vect{h}` with respect to :math:`\vect{\theta}`:
 
@@ -186,37 +188,39 @@ of the function :math:`h`:
 
 .. math::
 
-    \frac{d }{d\vect{\theta}} C(\vect{\theta})
+    \frac{d }{d\vect{\theta}} c(\vect{\theta})
     = B^{-1} (\vect{\theta}-\vect{\mu}) + J(\vect{\theta})^T R^{-1} (H(\vect{\theta}) - \vect{y})
 
 for any :math:`\vect{\theta}\in\Rset^{d_h}`.
-
-The Hessian matrix of the cost function is
+The Hessian matrix of the cost function is:
 
 .. math::
 
-    \frac{d^2 }{d\vect{\theta}^2} C(\vect{\theta})
+    \frac{d^2 }{d\vect{\theta}^2} c(\vect{\theta})
     = B^{-1}  + J(\vect{\theta})^T R^{-1} J(\vect{\theta})
 
 for any :math:`\vect{\theta}\in\Rset^{d_h}`.
 
 If the covariance matrix :math:`B` is positive definite,
 then the Hessian matrix of the cost function is positive definite.
-Under this hypothesis, the solution of the nonlinear gaussian calibration is unique.
+Under this hypothesis, the solution of the nonlinear Gaussian calibration is unique.
 
 Solving the Non Linear Gaussian Calibration Problem
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The implementation of the resolution of the gaussian non linear calibration
+The implementation of the resolution of the Gaussian non linear calibration
 problem involves the Cholesky decomposition of the covariance matrices :math:`B`
 and :math:`R`.
 This allows one to transform the sum of two Mahalanobis distances into a single
-euclidian norm.
+Euclidean norm.
 This leads to a classical non linear least squares problem.
 
-Linear Gaussian Calibration : bayesian BLUE
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear Gaussian Calibration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+In Gaussian linear calibration, we assume that the parametric
+function is linear with respect to the parameters.
+This method is known as the Kalman filter in data assimilation.
 We make the hypothesis that :math:`h` is linear with respect to :math:`\vect{\theta}`,
 i.e., for any :math:`\vect{\theta}\in\Rset^{d_h}`, we have:
 
@@ -243,7 +247,7 @@ observations :math:`\vect{y}` is:
 
 .. math::
 
-    \hat{\vect{\theta}} = \vect{\mu} + K (\vect{y} - H(\vect{\mu})).
+    \hat{\vect{\theta}}_{MAP} = \vect{\mu} + K (\vect{y} - h(\vect{\mu})).
 
 It can be proved that:
 
@@ -253,12 +257,32 @@ It can be proved that:
     \exp\left(\frac{1}{2} (\vect{\theta} - \hat{\vect{\theta}})^T A^{-1} (\vect{\theta} - \hat{\vect{\theta}}) \right)
 
 for any :math:`\vect{\theta}\in\Rset^{d_h}`.
-
 This implies:
 
 .. math::
 
-    \hat{\vect{\theta}} \sim \mathcal{N}(\vect{\theta},A)
+    \vect{\theta} \; | \; \vect{y} \sim \mathcal{N}\left(\hat{\vect{\theta}}_{MAP}, \; A\right)
+
+Bias of Linear Gaussian Calibration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Assume that there is a true value of the parameter :math:`\vect{\theta}^\star`
+that generated the output observations :math:`\vect{y}`.
+Consider the MAP estimator :math:`\hat{\vect{\theta}}_{MAP}` as an
+estimator of :math:`\vect{\theta}^\star`.
+This estimator is a random variable which depends on the random sample of
+output observations.
+The MAP estimator is biased and the bias is:
+
+.. math::
+
+    \operatorname{Bias}\left(\hat{\vect{\theta}}_{MAP}\right)
+    = (KJ - \operatorname{I})\left(\vect{\theta}^\star - \vect{\mu}\right).
+
+This bias is introduced as a consequence of the regularization properties
+of Gaussian calibration.
+Due to the trade-off between bias and variance of the estimator of the
+parameters, reducing the variance comes at the price of an increased bias.
 
 .. topic:: API:
 
@@ -277,4 +301,3 @@ This implies:
     - N. H. Bingham and John M. Fry (2010). *Regression, Linear Models in Statistics*, Springer Undergraduate Mathematics Series. Springer.
     - S. Huet, A. Bouvier, M.A. Poursat, and E. Jolivet (2004). *Statistical Tools for Nonlinear Regression*, Springer.
     - C. E. Rasmussen and C. K. I. Williams (2006), *Gaussian Processes for Machine Learning*, The MIT Press.
-

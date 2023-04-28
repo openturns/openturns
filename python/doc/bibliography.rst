@@ -21,6 +21,10 @@ Bibliography
 .. [au2001] Au, S. K. *Estimation of small failure probabilities in high
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://jimbeck.caltech.edu/papers_pdf/estimation_of_small_failure_probabilities.pdf>`__
+.. [baudin2015] Baudin M., Dutfoy A., Iooss B., Popelin A.-L. (2015)
+    *OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation.*
+    In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
+    `pdf <https://arxiv.org/pdf/1501.05242>`__
 .. [bhattacharyya1997] Bhattacharyya G.K., and R.A. Johnson, *Statistical
     Concepts and Methods*, John Wiley and Sons, New York, 1997.
 .. [blatman2009] Blatman, G. *Adaptive sparse polynomial chaos expansions for
@@ -96,6 +100,9 @@ Bibliography
     *Latin Hypercube sampling and the propagation of uncertainty analyses of complex systems*,
     Reliability Engineering and System Safety 81, 23-69.
     `pdf <https://web.archive.org/web/20141222122431id_/http://www.stat.unm.edu:80/~storlie/st579/articles/RESS_2003_LHS.pdf>`__
+.. [iooss2015] Iooss B., Lemaître P. (2015) *A review on global sensitivity
+    analysis methods.* In: Meloni C., Dellino G. (eds) Uncertainty management in Simulation-Optimization of Complex Systems: Algorithms and Applications, Springer.
+    `pdf <https://arxiv.org/pdf/1404.2405>`__
 .. [janon2014] Janon A., Klein T., Lagnoux-Renaudie A., Prieur C., *Asymptotic
     normality and efficiency of two Sobol index estimators*,
     ESAIM: Probability and Statistics, EDP Sciences, 2014, 18, pp.342-364.

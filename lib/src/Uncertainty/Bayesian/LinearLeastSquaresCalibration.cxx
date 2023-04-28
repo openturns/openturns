@@ -43,15 +43,15 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration()
 LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & model,
     const Sample & inputObservations,
     const Sample & outputObservations,
-    const Point & candidate,
+    const Point & startingPoint,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(candidate, CovarianceMatrix((IdentityMatrix(candidate.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
   , modelObservations_(0, 0)
   , gradientObservations_(0, 0)
   , methodName_(methodName)
 {
   // Check the input
-  const UnsignedInteger parameterDimension = candidate.getDimension();
+  const UnsignedInteger parameterDimension = startingPoint.getDimension();
   if (model.getParameterDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of parameter dimension=" << parameterDimension << ", got parameter dimension=" << model.getParameterDimension();
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
   if (model.getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << inputDimension << ", got input dimension=" << model.getInputDimension();
@@ -65,15 +65,15 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & mo
 LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & modelObservations,
     const Matrix & gradientObservations,
     const Sample & outputObservations,
-    const Point & candidate,
+    const Point & startingPoint,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(candidate, CovarianceMatrix((IdentityMatrix(candidate.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
   , modelObservations_(modelObservations)
   , gradientObservations_(gradientObservations)
   , methodName_(methodName)
 {
   // Check the input
-  const UnsignedInteger parameterDimension = candidate.getDimension();
+  const UnsignedInteger parameterDimension = startingPoint.getDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   const UnsignedInteger size = outputObservations.getSize();
   if (gradientObservations.getNbColumns() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a gradient parameter of columns number=" << parameterDimension << ", got columns number=" << gradientObservations.getNbColumns();
@@ -113,7 +113,7 @@ void LinearLeastSquaresCalibration::run()
   for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
     if (!SpecFunc::IsNormal(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
 
-  const Point thetaStar(getCandidate() - deltaTheta);
+  const Point thetaStar(getStartingPoint() - deltaTheta);
   const Point r(deltaY - gradientObservations_ * deltaTheta);
   const Scalar varianceError = r.normSquare() / (deltaY.getDimension() - deltaTheta.getDimension());
   CovarianceMatrix covarianceThetaStar;
@@ -145,8 +145,8 @@ void LinearLeastSquaresCalibration::run()
     error = Normal(Point(dimension), CovarianceMatrix((IdentityMatrix(dimension) * SpecFunc::MaxScalar).getImplementation()));
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
-  const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction);
+  const LinearFunction residualFunction(getStartingPoint(), deltaY, gradientObservations_);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, false);
 }
 
 /* Model observations accessor */
@@ -162,10 +162,17 @@ Matrix LinearLeastSquaresCalibration::getGradientObservations() const
   return gradientObservations_;
 }
 
-/* Candidate accessor */
+/** Candidate accessor */
 Point LinearLeastSquaresCalibration::getCandidate() const
 {
-  // The candidate is stored in the prior distribution, which is a flat Normal distribution
+  LOGWARN(OSS() << "getCandidate is deprecated");
+  return getStartingPoint();
+}
+
+/* StartingPoint accessor */
+Point LinearLeastSquaresCalibration::getStartingPoint() const
+{
+  // The startingPoint is stored in the prior distribution, which is a flat Normal distribution
   return getParameterPrior().getMean();
 }
 

@@ -48,7 +48,6 @@ The slope :math:`\alpha` of the river is assumed to be close to zero, which impl
     \alpha = \frac{Z_m - Z_v}{L},
 
 if :math:`Z_m \geq Z_v`.
-
 The water depth is:
 
  .. math::
@@ -56,7 +55,6 @@ The water depth is:
 
 
 for any :math:`K_s, Q>0`.
-
 The flood altitude is:
 
  .. math::
@@ -82,7 +80,7 @@ The following figure presents the model with more details.
 If we substitute the parameters into the equation, we get:
 
  .. math::
-    S = \left(\frac{Q}{300 Ks \sqrt{(Zm-Zv)/5000}}\right)^{3/5} +Zv-58.5.
+    S = \left(\frac{Q}{300 K_s \sqrt{\frac{Z_m - Z_v}{5000}}}\right)^{3/5} + Z_v - 58.5.
 
 
 We assume that the four inputs have the following distributions:
@@ -97,7 +95,7 @@ Moreover, we assume that the input random variables are independent.
 We want to estimate the flood probability:
 
  .. math::
-    P_f = P(S>0).
+    P_f = P(S > 0).
 
 Analysis of the calibration problem
 -----------------------------------
@@ -124,9 +122,8 @@ by Bayesian methods.
 References
 ----------
 
- * Iooss B, Lemaître P (2015) A review on global sensitivity analysis methods. In: Meloni C., Dellino G. (eds) Uncertainty management in Simulation-Optimization of Complex Systems: Algorithmsand Applications, Springer
- * Baudin M., Dutfoy A., Iooss B., Popelin AL. (2015) OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation. In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
-
+* [iooss2015]_
+* [baudin2015]_
 
 API documentation
 -----------------
