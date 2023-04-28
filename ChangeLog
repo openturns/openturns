@@ -41,6 +41,7 @@
  * Deprecated EllipticalDistribution::getInverseCorrelation
  * HSICStat arguments updated (covariance matrices instead of data + covariance models)
  * Deprecated HSICStat relying on weight matrix
+ * Deprecated Basis::getDimension, use getInputDimension instead
 
 === Documentation ===
  * Add API documentation to common use cases pages

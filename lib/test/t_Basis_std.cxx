@@ -52,7 +52,7 @@ int main(int, char *[])
 
   fullprint << "basis = " << myBasis << std::endl;
 
-  fullprint << "dimension = " << myBasis.getDimension() << std::endl;
+  fullprint << "dimension = " << myBasis.getInputDimension() << std::endl;
 
   return ExitCode::Success;
 }

@@ -46,8 +46,8 @@ FiniteBasis::FiniteBasis(const FunctionCollection & collection)
   const UnsignedInteger size = collection.getSize();
   if (size > 1)
   {
-    const UnsignedInteger inputDimension = collection[0].getInputDimension();
-    const UnsignedInteger outputDimension = collection[0].getOutputDimension();
+    const UnsignedInteger inputDimension = getInputDimension();
+    const UnsignedInteger outputDimension = getOutputDimension();
     for (UnsignedInteger i = 1; i < size; ++ i)
     {
       if (collection[i].getInputDimension() != inputDimension)
@@ -88,9 +88,14 @@ String FiniteBasis::__str__(const String & offset) const
   return OSS() << "Basis( " << collection_.__str__(offset) << " )";
 }
 
-UnsignedInteger FiniteBasis::getDimension() const
+UnsignedInteger FiniteBasis::getInputDimension() const
 {
   return (collection_.getSize() > 0) ? collection_[0].getInputDimension() : 0;
+}
+
+UnsignedInteger FiniteBasis::getOutputDimension() const
+{
+  return (collection_.getSize() > 0) ? collection_[0].getOutputDimension() : 0;
 }
 
 UnsignedInteger FiniteBasis::getSize() const
@@ -102,11 +107,9 @@ void FiniteBasis::add(const Function & elt)
 {
   if (getSize())
   {
-    const UnsignedInteger inputDimension = collection_[0].getInputDimension();
-    const UnsignedInteger outputDimension = collection_[0].getOutputDimension();
-    if (elt.getInputDimension() != inputDimension)
+    if (elt.getInputDimension() != getInputDimension())
       throw InvalidArgumentException(HERE) << "Basis elements cannot have different input dimensions";
-    if (elt.getOutputDimension() != outputDimension)
+    if (elt.getOutputDimension() != getOutputDimension())
       throw InvalidArgumentException(HERE) << "Basis elements cannot have different output dimensions";
   }
   collection_.add(elt);

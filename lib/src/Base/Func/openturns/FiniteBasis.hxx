@@ -59,7 +59,10 @@ public:
   String __str__(const String & offset = "") const override;
 
   /** Dimension accessor */
-  UnsignedInteger getDimension() const override;
+  UnsignedInteger getInputDimension() const override;
+  UnsignedInteger getOutputDimension() const override;
+
+  /** Size accessor */
   UnsignedInteger getSize() const override;
 
   /** Tells whether the basis is finite */

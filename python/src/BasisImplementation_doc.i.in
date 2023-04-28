@@ -58,16 +58,29 @@ OT_Basis_build_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Basis_getDimension_doc
-"Get the dimension of the Basis.
+%define OT_Basis_getInputDimension_doc
+"Get the input dimension of the Basis.
 
 Returns
 -------
-dimension : int
-    Dimension of the Basis."
+inDim : int
+    Input dimension of the Basis."
 %enddef
-%feature("docstring") OT::BasisImplementation::getDimension
-OT_Basis_getDimension_doc
+%feature("docstring") OT::BasisImplementation::getInputDimension
+OT_Basis_getInputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_getOutputDimension_doc
+"Get the output dimension of the Basis.
+
+Returns
+-------
+outDim : int
+    Output dimension of the Basis."
+%enddef
+%feature("docstring") OT::BasisImplementation::getOutputDimension
+OT_Basis_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 

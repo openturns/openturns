@@ -15,6 +15,8 @@ basis = ot.Basis(phis)
 print("basis =", basis)
 
 assert basis.getSize() == 3, "wrong size"
+assert basis.getInputDimension() == 1, "wrong input dim"
+assert basis.getOutputDimension() == 1, "wrong output dim"
 assert basis.getSubBasis([1, 2]).getSize() == 2, "wrong subsize"
 assert basis.isFinite(), "!finite"
 assert not basis.isOrthogonal(), "orthogonal"
