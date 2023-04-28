@@ -1,7 +1,7 @@
 .. _quantile_estimation_wilks:
 
-Estimating a quantile by Wilks' method
---------------------------------------
+Estimation of a quantile by Wilks' method
+-----------------------------------------
 
 Let us denote
 :math:`\underline{Y} = h\left( \vect{X},\vect{d} \right) = \left( Y^1,\ldots,Y^{n_Y} \right)`,
