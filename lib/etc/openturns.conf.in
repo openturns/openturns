@@ -379,6 +379,7 @@
   <Sample-CommentMarkers         value_str="#"    />
   <Sample-PrintEllipsisSize      value_int="3"    />
   <Sample-PrintEllipsisThreshold value_int="1000" />
+  <Sample-PrintFormat            value_str="%.7g" />
   <Sample-SmallKendallTau        value_int="23"   />
 
   <!-- OT::DomainImplementation parameters -->

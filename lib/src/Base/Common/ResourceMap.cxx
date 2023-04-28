@@ -1007,6 +1007,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Sample-CommentMarkers", "#");
   addAsUnsignedInteger("Sample-PrintEllipsisSize", 3);
   addAsUnsignedInteger("Sample-PrintEllipsisThreshold", 1000);
+  addAsString("Sample-PrintFormat", "%.7g");
   addAsUnsignedInteger("Sample-SmallKendallTau", 23);
 
   // DomainImplementation parameters

@@ -96,6 +96,9 @@ print("selection=", sample5.select(indices))
 # html conversion
 print(sample1._repr_html_())
 
+# markdown conversion
+print(sample1._repr_markdown_())
+
 # check conversion
 v1 = [ot.Point([12.0]), ot.Point([1.0])]
 v2 = [ot.Point([13.0]), ot.Point([2.0])]

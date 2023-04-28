@@ -151,7 +151,7 @@ def __Sample_repr_html(self):
                 if i > ell_size and i < size - ell_size:
                     continue
         # Write row
-        fmt = "%.7g"
+        fmt = openturns.common.ResourceMap.GetAsString("Sample-PrintFormat")
         if ellipsis and dim > 2 * ell_size:
             html += '<TR><TH>' + str(i)
             if dim > 0:
@@ -169,6 +169,56 @@ def __Sample_repr_html(self):
     return html
 
 Sample._repr_html_ = __Sample_repr_html
+
+def __Sample_repr_markdown(self):
+    """Get Markdown representation."""
+    markdown = ""
+    desc = self.getDescription()
+    ell_threshold = openturns.common.ResourceMap.GetAsUnsignedInteger(
+        "Sample-PrintEllipsisThreshold"
+    )
+    ell_size = openturns.common.ResourceMap.GetAsUnsignedInteger("Sample-PrintEllipsisSize")
+    dashed_str = "---"
+    size = self.getSize()
+    dim = self.getDimension()
+    ellipsis = size * dim > ell_threshold
+    if desc.isBlank():
+        description = ["v%d" % i for i in range(dim)]
+
+    if ellipsis and dim > 2 * ell_size:
+        markdown += "|   | " + "|".join(desc[0:ell_size]) + "|...|"
+        markdown += "|".join(desc[-ell_size:]) + "|\n"
+        markdown += "|" + "|".join([dashed_str] * (2 * ell_size + 2)) + "|\n"
+    else:
+        markdown += "|   |" + "|".join(desc) + "|\n"
+        markdown += "|" + dashed_str + "|" + "|".join([dashed_str] * dim) + "|\n"
+
+    for i in range(size):
+        if ellipsis and size > 2 * ell_size:
+            if i == ell_size:
+                markdown += "|...|\n"
+                continue
+            else:
+                if i > ell_size and i < size - ell_size:
+                    continue
+        # Write row
+        fmt = openturns.common.ResourceMap.GetAsString("Sample-PrintFormat")
+        if ellipsis and dim > 2 * ell_size:
+            markdown += "|" + str(i)
+            if dim > 0:
+                markdown += "|"
+            markdown += "|".join([fmt % x for x in self[i, 0:ell_size]])
+            markdown += "|...|"
+            markdown += "|".join([fmt % x for x in self[i, -ell_size:]])
+            markdown += "|\n"
+        else:
+            markdown += "|" + str(i)
+            if dim > 0:
+                markdown += "|" + "|".join([fmt % x for x in self[i]])
+            markdown += "|\n"
+    return markdown
+
+Sample._repr_markdown_ = __Sample_repr_markdown
 %}
 
 namespace OT {
