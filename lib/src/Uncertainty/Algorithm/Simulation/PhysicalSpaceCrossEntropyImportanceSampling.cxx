@@ -51,7 +51,7 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
                                                                                          const Scalar quantileLevel)
   : CrossEntropyImportanceSampling(event, quantileLevel)
   , activeParameters_(activeParameters)
-  , solver_(new NLopt("LD_LBFGS"))
+  , solver_(NLopt("LD_LBFGS"))
   {
     auxiliaryDistribution_ = auxiliaryDistribution;
     quantileLevel_ = (event.getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
@@ -170,9 +170,8 @@ OptimizationAlgorithm PhysicalSpaceCrossEntropyImportanceSampling::getOptimizati
 // Compute Output Samples
 Sample PhysicalSpaceCrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples) const
 {
-  Sample outputSamples = getEvent().getFunction()(inputSamples);
 
-  return outputSamples;
+  return getEvent().getFunction()(inputSamples);
 }
 
 
@@ -195,14 +194,14 @@ Point PhysicalSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
 
   const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
 
-  Function objective(new KullbackLeiblerDivergenceObjective(auxiliaryCriticInputSamples,
+  Function objective(KullbackLeiblerDivergenceObjective(auxiliaryCriticInputSamples,
                                                             initialCriticInputSamplePDFValue,
                                                             auxiliaryDistribution_,
                                                             activeParameters_,
                                                             numberOfSample));
 
 
-  OptimizationAlgorithm solver = solver_;
+  OptimizationAlgorithm solver(solver_);
   OptimizationProblem problem(objective);
   problem.setBounds(bounds_);
   problem.setMinimization(false);

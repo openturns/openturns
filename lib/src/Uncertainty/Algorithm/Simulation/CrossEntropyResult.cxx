@@ -86,6 +86,7 @@ void CrossEntropyResult::setAuxiliaryDistribution(const Distribution & auxiliary
 // Coefficient of variation estimate accessor
 Scalar CrossEntropyResult::getCoefficientOfVariation() const
 {
+  if (!(probabilityEstimate_ > 0.0)) throw NotDefinedException(HERE) << "Error: cannot estimate the coefficient of variation if the probability estimate is not positive.";
   return sqrt(varianceEstimate_) / probabilityEstimate_;
 }
 

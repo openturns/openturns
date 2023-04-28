@@ -108,9 +108,13 @@ void CrossEntropyImportanceSampling::run()
   
   Point  auxiliaryDistributionParameters;
 
-  if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
+
+  const ComparisonOperator comparator(getEvent().getOperator());
+  const Scalar threshold(getEvent().getThreshold());
+  
+  if (comparator(currentQuantile, threshold))
   {
-    currentQuantile = getEvent().getThreshold();
+    currentQuantile = threshold;
   }
   else
   {
@@ -118,7 +122,7 @@ void CrossEntropyImportanceSampling::run()
 
     for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
       {
-        const Bool weightBool = getEvent().getOperator()(auxiliaryOutputSample(i, 0), currentQuantile);
+        const Bool weightBool = comparator(auxiliaryOutputSample(i, 0), currentQuantile);
         if (weightBool)
           indiceCritic.add(i);
       } 
@@ -134,7 +138,7 @@ void CrossEntropyImportanceSampling::run()
 
   UnsignedInteger iterationNumber  = 0;
   
-  while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
+  while ((comparator(threshold, currentQuantile)) && (currentQuantile != threshold))
   {
     ++iterationNumber ;
     Point currentAuxiliaryDistributionParameters = auxiliaryDistributionParameters;
@@ -151,22 +155,22 @@ void CrossEntropyImportanceSampling::run()
 
       if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
         throw InternalException(HERE) << "User stopped simulation";
-    }
+    } // for i
 
     // Computation of current quantile
     currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
     
     // If failure probability reached, stop the adaptation
-    if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
+    if (comparator(currentQuantile, threshold))
     {
-      currentQuantile = getEvent().getThreshold();
+      currentQuantile = threshold;
     }
     else
     {
       Indices indiceCritic(0);
       for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
       {
-        const Bool weightBool = getEvent().getOperator()(auxiliaryOutputSample(i, 0), currentQuantile);
+        const Bool weightBool = comparator(auxiliaryOutputSample(i, 0), currentQuantile);
         if (weightBool)
           indiceCritic.add(i);
       } 
@@ -175,13 +179,13 @@ void CrossEntropyImportanceSampling::run()
    const Sample auxiliaryCriticInputSamples(auxiliaryInputSample.select(indiceCritic));
   
    // Optimize auxiliary distribution parameters
-   Point auxiliaryDistributionParameters = optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples);
-  
+   Point auxiliaryDistributionParameters(optimizeAuxiliaryDistributionParameters(auxiliaryCriticInputSamples));
+   
    // Update auxiliary Distribution Parameters
    updateAuxiliaryDistribution(auxiliaryDistributionParameters); 
 
       
-    }
+    } // if comparator(currentQuantile, threshold) 
 
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
       throw InternalException(HERE) << "User stopped simulation";
@@ -193,7 +197,7 @@ void CrossEntropyImportanceSampling::run()
   for (UnsignedInteger i = 0; i < auxiliaryOutputSample.getSize(); ++i)
   {
     // Find failure Points
-    if (getEvent().getOperator()(auxiliaryOutputSample(i, 0), getEvent().getThreshold()))
+    if (comparator(auxiliaryOutputSample(i, 0), threshold))
       indicesCritic.add(i);
   } // for i
 
