@@ -75,6 +75,8 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
     metaModel_ = composedMetaModel_;
   else
     metaModel_ = ComposedFunction(composedMetaModel_, transformation);
+  metaModel_.setInputDescription(inputSample.getDescription());
+  metaModel_.setOutputDescription(outputSample.getDescription());
 }
 
 /* Virtual constructor */
