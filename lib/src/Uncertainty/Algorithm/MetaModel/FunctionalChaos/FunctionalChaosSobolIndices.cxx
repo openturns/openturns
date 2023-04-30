@@ -308,7 +308,6 @@ Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const UnsignedInteger var
 Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variablesGroup,
     const UnsignedInteger marginalIndex) const
 {
-  Log::Show(Log::ALL);
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
   const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
   if (!variablesGroup.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol' index must be in the range [0, dim-1] and must be different.";
