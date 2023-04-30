@@ -212,7 +212,7 @@ This index measures the sensitivity of the variance of the output explained
 by interactions within the group.
 
 The total interaction sensitivity index of the group :math:`\bdu`
-is (see (Liu & Owen, 2006)):
+is (see [liu2006]_):
 
 .. math::
     S^{T,i}_\bdu = \sum_{\bdv \supseteq \bdu} S_{\bdv}
@@ -293,7 +293,7 @@ The first order closed Sobol' index of a group of input variables :math:`\bdu`
 measures the sensitivity of the variance of :math:`Y` explained by the
 variables within the group.
 This index is useful when the group contains random variables parameterizing
-a single uncertainty source (see (Knio & Le Maitre, 2006) page 139).
+a single uncertainty source (see [knio2010]_ page 139).
 
 The total Sobol' index of a group of variables :math:`\bdu`
 is:
@@ -490,10 +490,10 @@ We are now going to mix these two samples to get an estimate of the sensitivity 
 
 Several estimators of :math:`V_i`, :math:`V_i^T` and :math:`V_{-i}` are provided by the :class:`SobolIndicesAlgorithm` implementations:
 
-- :class:`~openturns.SaltelliSensitivityAlgorithm` for the `Saltelli` method,
-- :class:`~openturns.JansenSensitivityAlgorithm` for the `Jansen` method,
-- :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
-- :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method.
+- :class:`~openturns.SaltelliSensitivityAlgorithm` based on [saltelli2002]_,
+- :class:`~openturns.JansenSensitivityAlgorithm` based on [jansen1999]_,
+- :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` based on [sobol2007]_,
+- :class:`~openturns.MartinezSensitivityAlgorithm` based on [martinez2011]_.
 
 Specific formulas for :math:`\widehat{V}_i`, :math:`\widehat{VT}_i` and :math:`\widehat{V}_{-i}` are given in the corresponding documentation pages.
 
@@ -536,5 +536,10 @@ we use the :meth:`~openturns.Sample.computeVariance` method of the :class:`~open
     - [saltelli2002]_
     - [daveiga2022]_
     - [sobol1993]_
-    - Knio, O. M., & Le Maitre, O. P. (2006). Uncertainty propagation in CFD using polynomial chaos decomposition. *Fluid dynamics research*, *38* (9), 616.
-    - Liu, R., & Owen, A. B. (2006). Estimating mean dimensionality of analysis of variance decompositions. *Journal of the American Statistical Association*, 101(474), 712-721.
+    - [knio2006]_
+    - [knio2010]_
+    - [liu2006]_
+    - [saltelli2002]_
+    - [jansen1999]_
+    - [sobol2007]_
+    - [martinez2011]_

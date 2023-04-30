@@ -15,9 +15,9 @@ Sobol'-Hoeffding is the decomposition of a function on a basis
 made of orthogonal functions.
 Since the PCE expansion is also an orthogonal decomposition,
 the Sobol' decomposition of a function can be expressed depending
-on its PCE (see (Knio & Le Maitre, 2006) page 139).
+on its PCE (see [knio2010]_ page 139).
 As a result, Sobol' indices can be obtained analytically from the
-coefficients of the PCE (see (Sudret, 2006), (Sudret, 2008)).
+coefficients of the PCE (see [sudret2006]_, [sudret2008]_).
 
 Consider the input random vector
 :math:`\vect{X} = \left( X_1,\ldots,X_{n_X} \right)`
@@ -56,7 +56,7 @@ The variance of the polynomial chaos expansion is:
 In the previous expression, let us emphasise that the variance is a sum
 of squares, excepted the :math:`a_0` coefficient.
 If the polynomial basis is orthonormal, the expression is particularly
-simple (see (Le Gratiet, et. al., 2017) eq. 38.43 page 1301):
+simple (see [legratiet2017]_ eq. 38.43 page 1301):
 
 .. math::
     \Var{\tilde{h}(\bdZ)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
@@ -80,7 +80,7 @@ This result is printed by the `str` representation of the
 `print` function: see an example of this below.
 
 All the Sobol' indices that we introduce in this section depend on a
-specific set of multi-indices.
+specific set of multi-indices which are presented in the next section.
 
 Sets of multi-indices
 ~~~~~~~~~~~~~~~~~~~~~
@@ -116,7 +116,7 @@ Let :math:`i \in \{0, ..., n_X - 1\}` the index of an input
 variable.
 Let :math:`\mathcal{J}_i^S` the set of multi-indices such that
 :math:`\alpha_i > 0` and the other components of the multi-indices are
-zero (see (Le Gratiet, et. al., 2017) eq. 38.44 page 1301):
+zero (see [legratiet2017]_ eq. 38.44 page 1301):
 
 .. math::
     \mathcal{J}_i^S
@@ -130,7 +130,7 @@ Therefore, the first order Sobol' index :math:`S_i` of the variable
     S_i = \operatorname{S}^{PCE}\left(\mathcal{J}_i^S\right).
 
 Let :math:`\mathcal{J}_i^T` the set of multi-indices such that
-:math:`\alpha_i > 0` (see (Le Gratiet, et. al., 2017) eq. 38.45 page 1301):
+:math:`\alpha_i > 0` (see [legratiet2017]_ eq. 38.45 page 1301):
 
 .. math::
     \mathcal{J}_i^T
@@ -246,8 +246,8 @@ The next table presents the multi-indices involved in each Sobol' index.
 
 .. topic:: References:
 
-    - Sudret, B. (2006). Global sensitivity analysis using polynomial chaos expansions. In. Proceedings of the 5th International Conference on Computational Stochastic Mechanics (CSM5), Rhodos (2006)
-    - Sudret, B. (2008). Global sensitivity analysis using polynomial chaos expansions. *Reliability engineering & system safety*, *93* (7), 964-979.
-    - Knio, O. M., & Le Maitre, O. P. (2006). Uncertainty propagation in CFD using polynomial chaos decomposition. *Fluid dynamics research*, *38* (9), 616.
-    - Le Gratiet, L., Marelli, S., & Sudret, B. (2017). Metamodel-based sensitivity analysis: polynomial chaos expansions and Gaussian processes. In Handbook of uncertainty quantification (pp. 1289-1325). Springer, Cham.
-
+    - [sudret2006]_
+    - [sudret2008]_
+    - [knio2006]_
+    - [knio2010]_
+    - [legratiet2017]_
