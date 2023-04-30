@@ -131,9 +131,9 @@ Bibliography
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.
     `pdf <https://openturns.github.io/openturns/papers/knight1966.pdf>`__
-.. [knio2006] Knio, O. M., & Le Maitre, O. P. (2006). *Uncertainty propagation in 
+.. [knio2006] Knio, O. M., & Le Maitre, O. P. (2006). *Uncertainty propagation in
     CFD using polynomial chaos decomposition.* Fluid dynamics research, *38* (9), 616.
-.. [knio2010] Le Maître, O., & Knio, O. M. (2010). *Spectral methods for uncertainty 
+.. [knio2010] Le Maître, O., & Knio, O. M. (2010). *Spectral methods for uncertainty
     quantification: with applications to computational fluid dynamics.* Springer
     Science & Business Media.
 .. [koay2006] Koay C.G., Basser P.J.,
