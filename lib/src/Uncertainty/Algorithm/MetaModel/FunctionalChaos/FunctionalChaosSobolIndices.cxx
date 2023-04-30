@@ -346,7 +346,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
         for (UnsignedInteger variableIndex = 0; variableIndex < inputDimension; ++variableIndex)
         {
           // Check that each variable having a nonzero degree is in the group
-          if (multiIndices[variableIndex] > 0 and not variablesGroup.contains(variableIndex)) 
+          if (multiIndices[variableIndex] > 0 && ! variablesGroup.contains(variableIndex)) 
           {
             mustInclude = false;
             break;
