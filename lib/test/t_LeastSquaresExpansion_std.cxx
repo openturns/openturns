@@ -99,8 +99,8 @@ int main(int, char *[])
           Point ref(coeffs.getSize());
           std::copy(expectedCoefficientsLinear.begin(), expectedCoefficientsLinear.begin() + coeffs.getSize(), ref.begin());
           Scalar err = (coeffs - ref).norm();
-          const Scalar rtol = 5.0e-2;
-          const Scalar atol = 5.0e-2;
+          const Scalar rtol = 1.0e-3;
+          const Scalar atol = 1.0e-3;
           assert_almost_equal(err, 0.0, rtol, atol);
           // Check the function restriction
           algo.setActiveFunctions(condensedIndices);
@@ -112,8 +112,8 @@ int main(int, char *[])
             Point ref(coeffs.getSize());
             std::copy(expectedCoefficientsCondensed.begin(), expectedCoefficientsCondensed.begin() + coeffs.getSize(), ref.begin());
             Scalar err = (coeffs - ref).norm();
-            const Scalar rtol = 5.0e-2;
-            const Scalar atol = 5.0e-2;
+            const Scalar rtol = 1.0e-3;
+            const Scalar atol = 1.0e-3;
             assert_almost_equal(err, 0.0, rtol, atol);
           } // reduced set of functions
         } // full constructor with weights

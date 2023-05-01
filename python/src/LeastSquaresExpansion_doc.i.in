@@ -79,23 +79,3 @@ Parameters
 ----------
 activeFunctions : sequence of `int`
     The indices of the functions used for the approximation in the basis."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LeastSquaresExpansion::getSelectedPoints
-"Accessor to the points to use in the learning database.
-
-Returns
--------
-selectedPoints : sequence of `int`
-    The indices of the points to use in the database."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LeastSquaresExpansion::setSelectedPoints
-"Accessor to the points to use in the learning database.
-
-Parameters
-----------
-selectedPoints : sequence of `int`
-    The indices of the points to use in the database."

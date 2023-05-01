@@ -28,15 +28,16 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DesignProxy)
 
+static const Factory<DesignProxy> Factory_DesignProxy;
+
 /* Default constructor */
 DesignProxy::DesignProxy ()
-  : Object()
+  : PersistentObject()
   , x_()
   , basis_()
   , designCache_(0, 0)
   , alreadyComputed_(0)
   , rowFilter_(0)
-  , weight_(0)
 {
   // Nothing to do
 }
@@ -44,13 +45,12 @@ DesignProxy::DesignProxy ()
 /* Parameters constructor */
 DesignProxy::DesignProxy(const Sample & x,
                          const FunctionCollection & basis)
-  : Object()
+  : PersistentObject()
   , x_(x)
   , basis_(basis)
   , designCache_(0, 0)
   , alreadyComputed_(0)
   , rowFilter_(0)
-  , weight_(0)
 {
   // keep initialization in the ctor for designCache_ to be shared among DesignProxy copies
   initialize();
@@ -59,13 +59,12 @@ DesignProxy::DesignProxy(const Sample & x,
 
 /* Parameters constructor */
 DesignProxy::DesignProxy(const Matrix & matrix)
-  : Object()
+  : PersistentObject()
   , x_()
   , basis_()
   , designCache_(matrix)
   , alreadyComputed_(0)
   , rowFilter_(0)
-  , weight_(0)
 {
   // Here we bypass the size constraint on the cache so we don't call initialize()
   alreadyComputed_ = Indices(matrix.getNbColumns());
@@ -107,7 +106,9 @@ String DesignProxy::__repr__() const
 MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
 {
   // Quick return if the cache is *exactly* the design matrix
-  if ((indices == alreadyComputed_) && !hasRowFilter() && !hasWeight())
+  // In particular, it is the case if the DesignProxy has been
+  // built from a matrix
+  if ((indices == alreadyComputed_) && !hasRowFilter())
     return *designCache_.getImplementation();
   const UnsignedInteger allowedSize = basis_.getSize() ? basis_.getSize() : designCache_.getNbColumns();
   if (!indices.check(allowedSize))
@@ -174,19 +175,6 @@ MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
     }
     design = filteredDesign;
   } // hasRowFilter()
-  if (hasWeight())
-  {
-    UnsignedInteger linearIndex = 0;
-    for (UnsignedInteger j = 0; j < design.getNbColumns(); ++ j)
-    {
-      for (UnsignedInteger i = 0; i < design.getNbRows(); ++ i)
-      {
-        const UnsignedInteger newI = hasRowFilter() ? rowFilter_[i] : i;
-        design[linearIndex] *= weight_[newI];
-        ++ linearIndex;
-      } // i
-    } // j
-  } // hasWeight()
   return design;
 }
 
@@ -202,10 +190,21 @@ DesignProxy::FunctionCollection DesignProxy::getBasis() const
   return basis_;
 }
 
+DesignProxy::FunctionCollection DesignProxy::getBasis(const Indices & indices) const
+{
+  if (!indices.check(basis_.getSize()))
+    throw InvalidArgumentException(HERE) << "Requested indices exceed basis size (" << basis_.getSize() << ")";
+  const UnsignedInteger activeSize = indices.getSize();
+  FunctionCollection selectedBasis(activeSize);
+  for (UnsignedInteger i = 0; i < activeSize; ++i)
+    selectedBasis[i] = basis_[indices[i]];
+  return selectedBasis;
+}
+
 /* Row filter accessor */
 void DesignProxy::setRowFilter(const Indices & rowFilter)
 {
-  rowFilter.check(x_.getSize());
+  rowFilter.check(designCache_.getNbRows());
   rowFilter_ = rowFilter;
 }
 
@@ -223,26 +222,33 @@ Bool DesignProxy::hasRowFilter() const
 /* Effective size of sample */
 UnsignedInteger DesignProxy::getSampleSize() const
 {
-  return hasRowFilter() ? rowFilter_.getSize() : x_.getSize();
+  // Here we use the number of rows in design cache as it covers
+  // both cases when the DesignProxy is constructed using a sample
+  // or a matrix
+  return hasRowFilter() ? rowFilter_.getSize() : designCache_.getNbRows();
 }
 
 
-/* Weight accessor */
-void DesignProxy::setWeight(const Point & weight)
+/* Method save() stores the object through the StorageManager */
+void DesignProxy::save(Advocate & adv) const
 {
-  if (weight.getDimension() > 0 && !(weight.getDimension() == x_.getSize())) throw InvalidArgumentException(HERE) << "Error: the weight dimension=" << weight.getDimension() << " is different from the sample size=" << x_.getSize();
-  weight_ = weight;
+  PersistentObject::save(adv);
+  adv.saveAttribute( "x_", x_ );
+  adv.saveAttribute( "basis_", basis_ );
+  adv.saveAttribute( "designCache_", designCache_ );
+  adv.saveAttribute( "alreadyComputed_", alreadyComputed_ );
+  adv.saveAttribute( "rowFilter_", rowFilter_ );
 }
 
-Point DesignProxy::getWeight() const
+
+/* Method load() reloads the object from the StorageManager */
+void DesignProxy::load(Advocate & adv)
 {
-  return weight_;
+  PersistentObject::load(adv);
+  adv.loadAttribute( "x_", x_ );
+  adv.loadAttribute( "basis_", basis_ );
+  adv.loadAttribute( "designCache_", designCache_ );
+  adv.loadAttribute( "alreadyComputed_", alreadyComputed_ );
+  adv.loadAttribute( "rowFilter_", rowFilter_ );
 }
-
-/* Weight flag accessor */
-Bool DesignProxy::hasWeight() const
-{
-  return weight_.getSize() > 0;
-}
-
 END_NAMESPACE_OPENTURNS
