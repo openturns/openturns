@@ -45,16 +45,16 @@ public:
 
   /** Default constructor */
   explicit  NAIS(const RandomVector & event,
-                 const Scalar rhoQuantile = ResourceMap::GetAsScalar("NAIS-DefaultRhoQuantile"));
+                 const Scalar quantileLevel = ResourceMap::GetAsScalar("NAIS-DefaultQuantileLevel"));
 
   /** Virtual constructor */
   NAIS * clone() const override;
 
-  /** Get rhoQuantile */
-  Scalar getRhoQuantile() const;
+  /** Get quantileLevel */
+  Scalar getQuantileLevel() const;
 
-  /** Set rhoQuantile */
-  void setRhoQuantile(const Scalar & rhoQuantile);
+  /** Set quantileLevel */
+  void setQuantileLevel(const Scalar & quantileLevel);
 
   /** Main function that computes the failure probability */
   void run() override;
@@ -78,7 +78,7 @@ private:
   Distribution initialDistribution_;
 
   // Quantile
-  Scalar rhoQuantile_ = 0.0;
+  Scalar quantileLevel_ = 0.0;
 
   // Result of NAIS algorithm
   NAISResult naisResult_;
