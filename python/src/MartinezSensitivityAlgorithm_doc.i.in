@@ -31,37 +31,35 @@ computeSecondOrder : bool
 Notes
 -----
 This class analyzes the influence of each component of a random vector
-:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` on a random vector
-:math:`\vect{Y} = \left( Y^1, \ldots, Y^{n_Y} \right)` by computing Sobol' indices (see also [sobol1993]_).
-
+:math:`\vect{X} = \left( X_1, \ldots, X_{n_X} \right)` on a random vector
+:math:`\vect{Y} = \left( Y_1, \ldots, Y_{n_Y} \right)` by computing Sobol' indices (see also [sobol1993]_).
 The [martinez2011]_ method is used to estimate both first
 and total order indices.
+Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.
+The estimators of the first and total order Sobol' indices used by this class are respectively:
+
+.. math::
+
+   \hat{S}_i & = \tilde{\rho}_n\left(\tilde{\vect{g}}(\mat{B}), \tilde{\vect{g}}(\mat{E}^i)\right) \\
+   \widehat{S}_i^T & = 1 - \tilde{\rho}_n\left(\tilde{\vect{g}}(\mat{A}), \tilde{\vect{g}}(\mat{E}^i)\right) \\
+
+where :math:`\tilde{\rho}_n` is the modified sample correlation (under the assumption that the
+sample has a zero mean) defined by:
+
+.. math::
+
+   \tilde{\rho}_n \left(\vect{z}, \vect{z}'\right) = 
+   \frac{\sum_{k=1}^N z_k z_k'}
+   {\sqrt{\sum_{k=1}^N z_k^2} \sqrt{\sum_{k=1}^N \left( z_k' \right)^2}}
+
+and :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
 
 The class constructor ``MartinezSensitivityAlgorithm(inputDesign, outputDesign, N)``
 requires a specific structure for the ``outputDesign``, and therefore for the  ``inputDesign``.
 The latter should be generated using :class:`~openturns.SobolIndicesExperiment`
 (see example below). Otherwise, results will be **worthless**.
 
-Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.
 
-The estimators of the first and total order Sobol' indices used by this class are respectively:
-
-.. math::
-
-   \begin{array}{ccc}
-   \hat{S}_i & = & \rho_n(\tilde{\vect{g}}(\mat{B}), \tilde{\vect{g}}(\mat{E}^i)) \\
-   \widehat{ST}_i & = & 1 - \rho_n(\tilde{\vect{g}}(\mat{A}), \tilde{\vect{g}}(\mat{E}^i)) \\
-   \end{array}
-
-where :math:`\rho_n` is the empirical correlation defined by:
-
-.. math::
-
-   \rho_n(\vect{Z}, \vect{Z}') = 
-   \frac{\sum_{k=1}^N \vect{Z}_k \vect{Z}_k'}
-   {\sqrt{\sum_{k=1}^N \vect{Z}_k^2} \sqrt{\sum_{k=1}^N \left( \vect{Z}_k' \right)^2}}
-
-and :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
 
 See also
 --------

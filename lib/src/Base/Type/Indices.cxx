@@ -19,6 +19,7 @@
  *
  */
 #include <algorithm>
+#include <numeric>
 #include "openturns/Indices.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -68,7 +69,7 @@ void Indices::fill(const UnsignedInteger initialValue,
 Indices Indices::complement(const UnsignedInteger n) const
 {
   // Check if the values are in the given bound
-  const UnsignedInteger maxIndex = isEmpty() ? 0 : *max_element(begin(), end());
+  const UnsignedInteger maxIndex = normInf();
   if (!(maxIndex < n)) throw InvalidArgumentException(HERE) << "Error: the given bound=" << n << " must be greater than the maximum index=" << maxIndex;
   Indices flags(n, 1);
   for (UnsignedInteger i = 0; i < getSize(); ++i)
@@ -78,6 +79,20 @@ Indices Indices::complement(const UnsignedInteger n) const
   for (UnsignedInteger i = 0; i < n; ++i)
     if (flags[i] == 1) result.add(i);
   return result;
+}
+
+/* Returns the infinite-norm of the indices */
+UnsignedInteger Indices::normInf() const
+{
+  const UnsignedInteger maxIndex = isEmpty() ? 0 : *max_element(begin(), end());
+  return maxIndex;
+}
+
+/* Returns the 1-norm of the indices */
+UnsignedInteger Indices::norm1() const
+{
+  const UnsignedInteger norm = isEmpty() ? 0 : std::accumulate(begin(), end(), 0);
+  return norm;
 }
 
 END_NAMESPACE_OPENTURNS

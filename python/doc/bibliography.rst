@@ -52,6 +52,9 @@ Bibliography
     `pdf <https://arxiv.org/pdf/1307.6835.pdf>`__
 .. [daveiga2015] Da Veiga, S. (2015). *Global sensitivity analysis with dependence measures.*
     Journal of Statistical Computation and Simulation, 85(7), 1283-1305.
+.. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
+    *Basics and trends in sensitivity analysis: theory and practice in R.*
+    Society for Industrial and Applied Mathematics.
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
     `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
@@ -135,6 +138,11 @@ Bibliography
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.
     `pdf <https://openturns.github.io/openturns/papers/knight1966.pdf>`__
+.. [knio2006] Knio, O. M., & Le Maitre, O. P. (2006). *Uncertainty propagation in
+    CFD using polynomial chaos decomposition.* Fluid dynamics research, *38* (9), 616.
+.. [knio2010] Le Maître, O., & Knio, O. M. (2010). *Spectral methods for uncertainty
+    quantification: with applications to computational fluid dynamics.* Springer
+    Science & Business Media.
 .. [koay2006] Koay C.G., Basser P.J.,
     *Analytically exact correction scheme for signal extraction from noisy magnitude MR signals*,
     Journal of magnetics Resonance 179, 317-322, 2006.
@@ -153,6 +161,10 @@ Bibliography
     isoprobabilistic transformations really differ?* Prob. Eng. Mech., 2009,
     24, 577-584.
     `pdf <https://openturns.github.io/openturns/papers/lebrun2009c.pdf>`__
+.. [legratiet2017] Le Gratiet, L., Marelli, S., & Sudret, B. (2017).
+    *Metamodel-based sensitivity analysis: polynomial chaos expansions and
+    Gaussian processes.* In Handbook of uncertainty quantification
+    1289-1325. Springer, Cham.
 .. [lecuyer2005] L’Ecuyer P., Lemieux C. (2005) Recent Advances in Randomized
     Quasi-Monte Carlo Methods. In: Dror M., L’Ecuyer P., Szidarovszky F. (eds)
     Modeling Uncertainty. International Series in Operations Research &
@@ -161,6 +173,9 @@ Bibliography
 .. [lemaire2009] Lemaire M., *Structural reliability*, John Wiley & Sons, 2009.
 .. [lemaitre2010] Le Maître, O., & Knio, O. M. (2010).
     *Spectral methods for uncertainty quantification: with applications to computational fluid dynamics*. Springer Science & Business Media.
+.. [liu2006] Liu, R., & Owen, A. B. (2006). *Estimating mean dimensionality of
+    analysis of variance decompositions.* Journal of the American Statistical
+    Association, 101 (474), 712-721.
 .. [Lilliefors1967] *On the Kolmogorov-Smirnov Test for Normality with Mean and Variance Unknown*
     Hubert W. Lilliefors
     Journal of the American Statistical Association,
@@ -244,6 +259,9 @@ Bibliography
 .. [rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__
+.. [rota1964] Rota, G. C. (1964). *On the foundations of combinatorial theory I.*
+    *Theory of Möbius functions.*.
+    Z. Wahrseheinlichkeitstheorie, volume 2, pages 340-368.
 .. [rubinstein2017] Rubinstein, R. Y., & Kroese, D. P. (2017). *Simulation and the Monte Carlo method.* John Wiley & Sons.
    `pdf <http://www.ru.ac.bd/wp-content/uploads/soites/25/2019/03/308_03_Rubinstein_Simulation-and-the-Monte-Carlo-Method-Wiley-2017.pdf>`__
 .. [saltelli1999] Saltelli, A., Tarantola, S. and Chan, K. *A quantitative, model
@@ -290,6 +308,11 @@ Bibliography
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
+.. [sudret2006] Sudret, B. (2006). *Global sensitivity analysis using polynomial
+    chaos expansions.* In. Proceedings of the 5th International Conference
+    on Computational Stochastic Mechanics (CSM5), Rhodos (2006)
+.. [sudret2008] Sudret, B. (2008). *Global sensitivity analysis using polynomial
+    chaos expansions.* Reliability engineering & system safety, *93* (7), 964-979.
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.

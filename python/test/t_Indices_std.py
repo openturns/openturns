@@ -31,3 +31,27 @@ assert indices2[index] == 88, "wrong index"
 
 index = indices2.find(77777)
 assert index == indices2.getSize(), "wrong index"
+
+# Check contains
+indices = ot.Indices()
+assert not (0 in indices), "wrong contains"
+assert not (1 in indices), "wrong contains"
+indices = ot.Indices((1, 2, 3, 4, 5))
+assert (1 in indices), "wrong contains"
+assert (5 in indices), "wrong contains"
+indices = ot.Indices((3, 5, 7))
+assert (3 in indices), "wrong contains"
+assert (5 in indices), "wrong contains"
+assert (7 in indices), "wrong contains"
+assert not (2 in indices), "wrong contains"
+assert not (4 in indices), "wrong contains"
+assert not (0 in indices), "wrong contains"
+assert not (1 in indices), "wrong contains"
+
+# Check norm1() and normInf()
+indices = ot.Indices(())
+assert indices.norm1() == 0, "wrong norm1"
+assert indices.normInf() == 0, "wrong norm1"
+indices = ot.Indices((3, 5, 7))
+assert indices.norm1() == 15, "wrong norm1"
+assert indices.normInf() == 7, "wrong norm1"
