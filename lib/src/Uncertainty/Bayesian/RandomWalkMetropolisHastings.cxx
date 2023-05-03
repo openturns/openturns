@@ -149,6 +149,7 @@ Distribution RandomWalkMetropolisHastings::getProposal() const
   return proposal_;
 }
 
+/* BurnIn accessor */
 void RandomWalkMetropolisHastings::setBurnIn(const UnsignedInteger burnIn)
 {
   burnIn_ = burnIn;
