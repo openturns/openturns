@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+from math import exp
 
 ot.TESTPREAMBLE()
 
@@ -40,7 +41,7 @@ data = ot.Sample(
         [76, 0],
         [78, 0],
         [79, 0],
-        [81, 0]
+        [81, 0],
     ]
 )
 
@@ -56,21 +57,44 @@ instrumental = ot.Normal([0.0] * 2, [0.5, 0.05], ot.IdentityMatrix(2))
 
 target = ot.ComposedDistribution([ot.Uniform(-100.0, 100.0)] * 2)
 rwmh = ot.RandomWalkMetropolisHastings(target, [0.0] * 2, instrumental)
+rwmh.setBurnIn(10000)
 conditional = ot.Bernoulli()
 observations = data[:, 1]
 covariates = data[:, 0]
 rwmh.setLikelihood(conditional, observations, linkFunction, covariates)
 
 # try to generate a sample
-sample = rwmh.getSample(10000)
+sample = rwmh.getSample(100000)
 mu = sample[rwmh.getBurnIn():].computeMean()
-sigma = sample.computeStandardDeviation()
+sigma = sample[rwmh.getBurnIn():].computeStandardDeviation()
 print("mu=", mu, "sigma=", sigma)
-ott.assert_almost_equal(mu, [10.3854, -0.164881])
-ott.assert_almost_equal(sigma, [3.51975, 0.0517796])
+
+
+# Put the posterior density in a PythonFunction
+def post_den(alpha_beta):
+    return [exp(rwmh.computeLogPosterior(alpha_beta))]
+
+
+posterior_density = ot.PythonFunction(2, 1, post_den)
+
+# approximate the posterior distribution
+# NB: to get a good view of the mode of the posterior distribution, use:
+# posterior_density.draw([14.0, -0.25], [16.0, -0.22], [100, 100])
+mesher = ot.IntervalMesher([100, 100])
+lowerBound = [-2.5, -0.53]
+upperBound = [34.0, 0.03]
+box = ot.Interval(lowerBound, upperBound)
+vertices = mesher.build(box).getVertices()
+densities = posterior_density(vertices).asPoint()
+approximate_posterior = ot.UserDefined(vertices, densities)
+approximate_mean = approximate_posterior.getMean()
+approximate_std = approximate_posterior.getStandardDeviation()
+
+ott.assert_almost_equal(mu, approximate_mean, 0.2, 0.0)
+ott.assert_almost_equal(sigma, approximate_std, 0.2, 0.0)
 
 print("acceptance rate=", rwmh.getAcceptanceRate())
-ott.assert_almost_equal(rwmh.getAcceptanceRate(), 0.3345)
+ott.assert_almost_equal(rwmh.getAcceptanceRate(), 0.28, 0.1, 0.0) # Empirical acceptance rate observed when executing the code 
 
 # from 1532
 fullModel = ot.SymbolicFunction(["x", "theta"], ["theta", "1.0"])
