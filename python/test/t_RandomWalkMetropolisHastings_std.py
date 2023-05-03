@@ -94,7 +94,7 @@ ott.assert_almost_equal(mu, approximate_mean, 0.2, 0.0)
 ott.assert_almost_equal(sigma, approximate_std, 0.2, 0.0)
 
 print("acceptance rate=", rwmh.getAcceptanceRate())
-ott.assert_almost_equal(rwmh.getAcceptanceRate(), 0.28, 0.1, 0.0) # Empirical acceptance rate observed when executing the code 
+ott.assert_almost_equal(rwmh.getAcceptanceRate(), 0.28, 0.1, 0.0)  # Empirical acceptance rate observed when executing the code
 
 # from 1532
 fullModel = ot.SymbolicFunction(["x", "theta"], ["theta", "1.0"])
