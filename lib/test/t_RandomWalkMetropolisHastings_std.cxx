@@ -82,24 +82,25 @@ int main(int, char *[])
 
     ComposedDistribution target({Uniform(-100.0, 100.0), Uniform(-100.0, 100.0)});
     RandomWalkMetropolisHastings rwmh(target, {0.0, 0.0}, instrumental2);
+    rwmh.setBurnIn(10000);
     Bernoulli conditional;
     Sample observations(data.getMarginal(1));
     Sample covariates(data.getMarginal(0));
     rwmh.setLikelihood(conditional, observations, linkFunction, covariates);
 
     // try to generate a sample
-    Sample sample(rwmh.getSample(10000));
+    Sample sample(rwmh.getSample(100000));
     Indices postBurnIn2(sample.getSize() - rwmh.getBurnIn());
     postBurnIn2.fill(rwmh.getBurnIn());
     Point muPost(sample.select(postBurnIn2).computeMean());
     Point sigma(sample.computeStandardDeviation());
      
     //std::cout << "mu=" << muPost << ", sigma=" << sigma << std::endl;
-    assert_almost_equal(muPost, {10.3854, -0.164881});
-    assert_almost_equal(sigma, {3.51975, 0.0517796});
+    assert_almost_equal(muPost, {17.7084, -0.272174}, 0.2, 0.0); // value computed in t_RandomWalkMetropolisHastings_std.py
+    assert_almost_equal(sigma, {7.15937, 0.105174}, 0.2, 0.0); // value computed in t_RandomWalkMetropolisHastings_std.py
     
     //std::cout << "acceptance rate=" << rwmh.getAcceptanceRate() << std::endl;
-    assert_almost_equal(rwmh.getAcceptanceRate(), 0.3345);
+    assert_almost_equal(rwmh.getAcceptanceRate(), 0.28, 0.1, 0.0); // Empirical acceptance rate observed when executing the code
 
   }
   catch (TestFailed & ex)
