@@ -188,7 +188,6 @@ Point MetropolisHastingsImplementation::getRealization() const
 
   const Scalar newLogPosterior = computeLogPosterior(newState);
 
-  // alpha = posterior(newstate)/posterior(oldstate)
   const Scalar alphaLog = newLogPosterior - currentLogPosterior_ + logProbCurrentConditionedToNew_ - logProbNewConditionedToCurrent_;
   const Scalar uLog = log(RandomGenerator::Generate());
   if (uLog < alphaLog)
