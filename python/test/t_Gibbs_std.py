@@ -216,4 +216,4 @@ diffs = sample[1:] - sample[:-1]
 zeros = ot.Point(4)
 null_diffs = [point == zeros for point in diffs]
 frequency_nomove = sum(null_diffs) / len(null_diffs)
-ott.assert_almost_equal(frequency_nomove, 0.5, 0.02, 0.9)
+ott.assert_almost_equal(frequency_nomove, 0.5, 0.02, 0.0)
