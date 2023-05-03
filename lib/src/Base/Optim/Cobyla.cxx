@@ -138,6 +138,8 @@ void Cobyla::run()
     else
       throw InternalException(HERE) << "Solving problem by cobyla method failed (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
   }
+  if (!evaluationInputHistory_.getSize())
+    throw InternalException(HERE) << "Cobyla error at starting point x=" << x << " (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
 }
