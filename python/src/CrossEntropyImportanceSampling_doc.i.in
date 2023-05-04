@@ -45,8 +45,8 @@ quantileLevel : : float
 
 Parameters
 ----------
-quantileLevel : : float  :math:`0<quantileLevel<1`
-    Intermediate quantile level."
+quantileLevel : : float
+    Intermediate quantile level, must belong to the interval (0,1)."
     
 // ---------------------------------------------------------------------------
 
