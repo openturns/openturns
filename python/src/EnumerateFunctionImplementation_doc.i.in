@@ -3,30 +3,28 @@
 
 Notes
 -----
-*EnumerateFunction* represents a bijection :math:`\tau`  from :math:`\Nset` to
-:math:`\Nset^{dim}`. This bijection is based on a particular enumeration rule
+*EnumerateFunction* is a bijection :math:`\vect{\alpha}`  from :math:`\Nset` to
+:math:`\Nset^{n_X}`. This bijection is based on a particular enumeration rule
 of the set of multi-indices.
-
-For every integer :math:`i \in \Nset`, we associate a multi-index
-
-.. math::
-
-    \boldsymbol{\tau}(i) = (\alpha_1,\dots, \alpha_{n_X}) \in {\Nset}^{n_X}.
-
-The first multi-index is
+For any integer :math:`i \in \Nset`, the value of the enumerate function is:
 
 .. math::
 
-    \boldsymbol{\alpha}(0) = (0, 0, \dots, 0).
+    \vect{\alpha}(i) = (\alpha_1(i),\dots, \alpha_{n_X}(i)) \in {\Nset}^{n_X}.
 
-Let :math:`i, j \in \Nset` be any pair of indices. If :math:`|i - j|\leq 1` then
+The first multi-index is:
+
+.. math::
+
+    \vect{\alpha}(0) = (0, 0, \dots, 0).
+
+Let :math:`i, j \in \Nset` be any pair of indices. If :math:`|i - j|\leq 1` then:
 
 .. math::
 
     \left|\sum_{k=1}^{n_X} \left[ \alpha_k(i) - \alpha_k(j) \right]\right| \leq 1
 
-where :math:`\alpha_k(i)` represents the k-th component of the multi-index :math:`\boldsymbol{\alpha}(i)`.
-    
+where :math:`\alpha_k(i)` is the k-th component of the multi-index :math:`\vect{\alpha}(i)`.
 This provides a necessary but insufficient condition 
 for the construction of the bijection: 
 a supplementary hypothesis must be made. 
@@ -36,24 +34,44 @@ The following mapping is an enumerate function:
 
 .. math::
 
-    \phi(0) &= (0, \; 0) \\
-    \phi(1) &= (1, \; 0) \\
-    \phi(2) &= (0, \; 1) \\
-    \phi(3) &= (2, \; 0) \\
-    \phi(4) &= (1, \; 1) \\
-    \phi(5) &= (0, \; 2) \\
-    \phi(6) &= (3, \; 0)
+    \vect{\alpha}(0) &= (0, \; 0) \\
+    \vect{\alpha}(1) &= (1, \; 0) \\
+    \vect{\alpha}(2) &= (0, \; 1) \\
+    \vect{\alpha}(3) &= (2, \; 0) \\
+    \vect{\alpha}(4) &= (1, \; 1) \\
+    \vect{\alpha}(5) &= (0, \; 2) \\
+    \vect{\alpha}(6) &= (3, \; 0)
 
 For the functional expansion (respectively polynomial chaos expansion), the
-multi-index :math:`\vect{i_p}` represents the collection of degrees of the
+multi-index :math:`\vect{\alpha}` is the collection of marginal degrees of the
 selected orthogonal functions (respectively orthogonal polynomials). 
 More precisely, after the selection of the type of orthogonal functions (respectively
 orthogonal polynomials) for the construction of the orthogonal basis, the
-*EnumerateFunction* characterizes the term of the basis by providing the
-degrees of the univariate functions (respectively univariate polynomials).
+*EnumerateFunction* defines the
+marginal degrees of the univariate functions (respectively univariate polynomials).
+The multivariate tensor product function
+is based on the product of marginal univariate functions:
 
-The total degree of the :math:`k^{th}` polynomial of the
-multivariate basis is equal to the sum of all the integers given in the list.
+.. math::
+
+    \psi_{\vect{\alpha}}(\vect{x}) = \prod_{i = 1}^{n_X} \pi_{\alpha_i}^{(i)}(x_i)
+
+for any point :math:`\vect{x}` where :math:`\pi_{\alpha_i}^{(i)}` is the
+polynomial of degree :math:`\alpha_i` for the i-th marginal.
+The total degree of the polynomial is equal to the sum of the integers 
+in the multi-index:
+
+.. math::
+
+    \operatorname{degree} \left(\psi_{\vect{\alpha}} \right) 
+    = \sum_{i = 1}^{n_X} \alpha_i = \|\vect{\alpha}\|_1.
+
+For example, consider the multi-index :math:`\vect{\alpha} = (2, 0, 3)`. 
+This multi-index defines a multivariate polynomial which has a input
+vector of dimension 3.
+The marginal degree of the polynomial of the first dimension is equal to 2, 
+the marginal degree of the polynomial of the second dimension is equal to 0 
+and the marginal degree of the polynomial of the third dimension is equal to 3.
 
 Examples
 --------
