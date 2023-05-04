@@ -1,5 +1,5 @@
 """
-Fit a distribution with customized maximum likelihood
+Fitting a distribution with customized maximum likelihood
 =====================================================
 """
 # %%
@@ -7,27 +7,26 @@ Fit a distribution with customized maximum likelihood
 # ------------
 #
 # When we perform distribution fitting using the :class:`~openturns.MaximumLikelihoodFactory`
-# class, the default optimization solver sometimes fail to
+# class, the default optimization solver sometimes fails to
 # maximize the likelihood.
-# This might because the optimization solver is not appropriate in
+# This might be because the optimization solver is not appropriate in
 # this particular case, or because the bounds of the problem
-# are not appropriate for the particular case.
+# are not properly set.
 # In this example, we configure the optimization solver by two different
 # methods.
 #
 # - The first method sets a specific solver among the NLopt solvers.
-#   Moreover, we customize the bounds of the parameters of the
-#   distribution.
+#   Moreover, we customize the distribution parameters bounds.
 #   This helps the solver to avoid the part of the domain where
 #   the distribution cannot be built.
 # - The second method sets the :class:`~openturns.ResourceMap` key
-#   that is used by the :class:`~openturns.MaximumLikelihoodFactory` as
-#   the default solver.
+#   that is used by the :class:`~openturns.MaximumLikelihoodFactory` in
+#   order to select the default solver.
 
 import openturns as ot
 
 # %%
-# Simulate a sample
+# Simulating a sample
 # -----------------
 
 # %%
@@ -48,11 +47,11 @@ print("Fitted distribution=", fittedDistribution)
 # But this method sometimes fails for specific distributions, for example
 # when the sample size is very small or when the distribution has
 # specific properties (e.g. some parameter is known beforehand).
-# In these cases, general-purpose methods cannot be used, so that the
-# next methods can be relevant.
+# In these cases, general-purpose methods cannot be used, and the
+# methods presented below may be relevant.
 
 # %%
-# Define the estimation problem
+# Defining the estimation problem
 # -----------------------------
 
 # %%
@@ -64,9 +63,9 @@ print("Fitted distribution=", fittedDistribution)
 #
 # Estimating the parameters will be easier if two conditions are met:
 #
-# - the starting point (ie the initial value of the parameters)
-#   of the optimization corresponds to the sample,
-# - the bounds corresponds to the distribution.
+# - the starting point (i.e., the initial values of the parameters)
+#   of the optimization is compatible with the sample,
+# - the bounds are compatible with the distribution.
 #
 # First, we define the starting point of the optimization,
 # using statistics from the sample.
@@ -117,12 +116,12 @@ print("bounds_upper=", bounds_upper)
 # The boolean `False` means unbounded and `True` means bounded.
 
 # %%
-finiteLowerBound = [True, True, True, True]
-finiteUpperBound = [True, True, True, True]
+finiteLowerBound = [True] * 4
+finiteUpperBound = [True] * 4
 interval = ot.Interval(bounds_lower, bounds_upper, finiteLowerBound, finiteUpperBound)
 
 # %%
-# Set the solver and bounds
+# Setting the solver and bounds
 # -------------------------
 
 # %%
@@ -167,7 +166,7 @@ printTruncatedNormalParameters(distribution_MLE)
 
 
 # %%
-# Use ResourceMap to set the solver
+# Using ResourceMap to set the solver
 # ---------------------------------
 
 # %%
@@ -190,7 +189,7 @@ print("Fitted distribution:")
 printTruncatedNormalParameters(distribution_MLE)
 
 # %%
-# Fit a LogNormal with zero location parameter
+# Fitting a LogNormal with zero location parameter
 # --------------------------------------------
 
 # %%
