@@ -44,6 +44,8 @@ Bibliography
     http://ceres-solver.org
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
+.. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
+    Springer, 2001.
 .. [dagostino1986] D'Agostino, R.B. and Stephens, M.A. *Goodness-of-Fit Techniques*,
     Marcel Dekker, Inc., New York, 1986.
 .. [damblin2013] G. Damblin, M. Couplet and B. Iooss. *Numerical studies

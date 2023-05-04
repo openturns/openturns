@@ -1073,7 +1073,7 @@ if (SPHINX_FOUND)
   endforeach ()
 
   # copy usecases python files
-  file(GLOB usecases "${CMAKE_CURRENT_SOURCE_DIR}/usecases/*.py")
+  file(GLOB usecases "${CMAKE_CURRENT_SOURCE_DIR}/usecases/*.py" "${CMAKE_CURRENT_SOURCE_DIR}/usecases/*.csv")
   foreach(file ${usecases})
     get_filename_component(fname ${file} NAME)
     execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/usecases/${fname} ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/usecases/${fname})
