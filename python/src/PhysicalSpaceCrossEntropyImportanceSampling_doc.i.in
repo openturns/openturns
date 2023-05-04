@@ -125,7 +125,7 @@ algorithm : :class:`~openturns.OptimizationAlgorithm`"
 // ---------------------------------------------------------------------------
 
 %feature("docstring") OT::PhysicalSpaceCrossEntropyImportanceSampling::getOptimizationAlgorithm
-"Accessor to optimization algorithm used to update auxiliary distribution parameters.
+"Accessor to the optimization algorithm used to update auxiliary distribution parameters.
 
 Returns
 -------
