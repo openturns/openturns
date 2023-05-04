@@ -55,7 +55,7 @@ quantileLevel : : float
 
 Returns
 -------
-CrossEntropyResult : : class:`~CrossEntropyResult`
+CrossEntropyResult : : class:`~openturns.CrossEntropyResult`
     Class containing all the results of the Cross Entropy algorithm simulation."    
     
         
