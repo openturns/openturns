@@ -231,6 +231,7 @@ Hypothesis tests
     :template: function.rst_t
 
     HypothesisTest.ChiSquared
+    HypothesisTest.LikelihoodRatioTest
     HypothesisTest.FullPearson
     HypothesisTest.FullSpearman
     HypothesisTest.PartialPearson

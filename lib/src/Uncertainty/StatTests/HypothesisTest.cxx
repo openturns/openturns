@@ -21,14 +21,12 @@
 #include <cmath>
 #include <fstream>
 #include "openturns/HypothesisTest.hxx"
-#include "openturns/Path.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/UserDefined.hxx"
-#include "openturns/Log.hxx"
 #include "openturns/LinearModelTest.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -330,5 +328,21 @@ HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Sample &
   return PartialSpearman(firstSample, secondSample, selection, level);
 }
 
+TestResult HypothesisTest::LikelihoodRatioTest(const Scalar model0LogLikelihood,
+                                    const Scalar model1LogLikelihood,
+                                    const Scalar level)
+{
+  const Scalar dp = 2.0 * (model1LogLikelihood - model0LogLikelihood);
+
+  // quantile of ChiSquare(1.0)
+  const Scalar cAlpha = 2.0 * DistFunc::qGamma(0.5, level, true);
+
+  const Bool binMeasure = (dp < cAlpha);
+  const Scalar pVal = dp;
+  const Scalar pThreshold = cAlpha;
+  const Scalar statistic = dp;
+  TestResult result("ratio", binMeasure, pVal, pThreshold, statistic);
+  return result;
+}
 
 END_NAMESPACE_OPENTURNS
