@@ -29,4 +29,4 @@ myISphysical = otexp.PhysicalSpaceCrossEntropyImportanceSampling(event, auxDistr
 myISphysical.setOptimizationAlgorithm(ot.TNC())
 myISphysical.run()
 myResult = myISphysical.getResult()
-assert_almost_equal(myResult.getProbabilityEstimate(), 0.00012452, 1e-2)
+assert_almost_equal(myResult.getProbabilityEstimate(), 0.00012452, 1.0e-2, 0.0)
