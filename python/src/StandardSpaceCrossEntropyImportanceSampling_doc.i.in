@@ -52,7 +52,7 @@ We note  :math:`G(\mathbf{u})` the limit state function in standard space and  :
 
 4. If :math:`q_k>T`, go to Step 7
 
-4. Update the means and standard deviations of the auxiliary distribution:
+4. Update the mean and standard deviation of the auxiliary distribution:
 
 .. math::
 
