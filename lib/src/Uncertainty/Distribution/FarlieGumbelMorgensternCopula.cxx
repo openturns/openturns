@@ -81,6 +81,13 @@ String FarlieGumbelMorgensternCopula::__repr__() const
   return oss;
 }
 
+String FarlieGumbelMorgensternCopula::__str__(const String & ) const
+{
+  OSS oss(false);
+  oss << getClassName() << "(theta = " << theta_ << ")";
+  return oss;
+}
+
 /* Virtual constructor */
 FarlieGumbelMorgensternCopula * FarlieGumbelMorgensternCopula::clone() const
 {

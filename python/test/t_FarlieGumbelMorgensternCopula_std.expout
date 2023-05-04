@@ -1,5 +1,5 @@
 Copula  class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7
-Copula  class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7
+Copula  FarlieGumbelMorgensternCopula(theta = 0.7)
 Mean  [0.5,0.5]
 Covariance  [[ 0.0833333 0.0194444 ]
  [ 0.0194444 0.0833333 ]]
@@ -31,7 +31,7 @@ Minimum volume interval= [0.0126603, 0.98734]
 [0.0126603, 0.98734]
 threshold= [0.974679]
 Minimum volume level set= {x | f(x) <= 0.402105} with f=
-MinimumVolumeLevelSetEvaluation(class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7)
+MinimumVolumeLevelSetEvaluation(FarlieGumbelMorgensternCopula(theta = 0.7))
 beta= [0.66891]
 Bilateral confidence interval= [0.0126603, 0.98734]
 [0.0126603, 0.98734]
@@ -53,7 +53,7 @@ margin CDF= 0.25
 margin quantile= [0.95]
 margin realization= [0.219923]
 indices= [1,0]
-margins= class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7
+margins= FarlieGumbelMorgensternCopula(theta = 0.7)
 margins PDF= 1.175
 margins CDF= 0.087109375
 margins quantile= [0.974457,0.974457]
