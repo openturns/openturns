@@ -136,3 +136,7 @@ print("    wrt design point 2 : ", pf2)
 # %%
 # Display the figures
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

@@ -24,6 +24,8 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TBBImplementation.hxx"
 
+
+#include "openturns/OTwindows.h" // exprtk includes windows.h
 #define exprtk_disable_caseinsensitivity
 #include "openturns/exprtk.hpp"
 

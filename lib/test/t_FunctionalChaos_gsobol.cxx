@@ -90,6 +90,7 @@ int main(int, char *[])
     listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold, false));
     // Second, the most used (and most basic!) strategy
     listAdaptiveStrategy.add(FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)));
+    //
 
     for(UnsignedInteger adaptiveStrategyIndex = 0; adaptiveStrategyIndex < listAdaptiveStrategy.getSize(); ++adaptiveStrategyIndex)
     {
@@ -163,20 +164,7 @@ int main(int, char *[])
           indices.fill();
           Scalar value = sensitivity.getSobolIndex(indices);
           fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
-          // First order grouped indice
-          indices = Indices(2);
-          indices.fill();
-          Scalar exactS = sobol(indices, a) / covTh;
-          value = sensitivity.getSobolGroupedIndex(indices);
-          fullprint << "Grouped First Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - exactS) << std::endl;
-          // Total order grouped indice
-          indices = Indices(2);
-          indices.fill();
-          value = sensitivity.getSobolGroupedTotalIndex(indices);
-          Indices complementaryindices(3);
-          complementaryindices.fill(2);
-          exactS = 1 - sensitivity.getSobolGroupedIndex(complementaryindices);
-          fullprint << "Grouped Total Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - exactS) << std::endl;
+
         }
       }
     }

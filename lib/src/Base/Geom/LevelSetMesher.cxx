@@ -122,7 +122,6 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
 {
   const UnsignedInteger dimension = levelSet.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
-  if (!(dimension <= 3)) throw NotYetImplementedException(HERE) << "In LevelSetMesher::build(const LevelSet & levelSet, const Interval & boundingBox, const Bool project) const";
   if (boundingBox.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the bounding box is of dimension=" << boundingBox.getDimension() << ", expected dimension=" << dimension;
   // First, mesh the bounding box
   const Mesh boundingMesh(IntervalMesher(discretization_).build(boundingBox));

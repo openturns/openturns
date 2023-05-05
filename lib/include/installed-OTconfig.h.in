@@ -25,9 +25,6 @@
 
 #define OPENTURNS_VERSION_STR "@PACKAGE_VERSION@"
 
-/* Define to 1 if you have the <pthread.h> header file. */
-#cmakedefine OPENTURNS_HAVE_PTHREAD_H
-
 /* Define to 1 if UnsignedLong and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
 

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class MutexLock manages the lock/unlock of Pthread mutexes
+ *  @brief The class MutexLock manages the lock/unlock of thread mutexes
  *         This file is intended to be only include in .cxx files (avoid .hxx)
  *
  *  Copyright 2005-2023 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -22,50 +22,62 @@
 #ifndef OPENTURNS_MUTEXLOCK_HXX
 #define OPENTURNS_MUTEXLOCK_HXX
 
-#include <cerrno>  // for errno(3)
-#include <cstdio>  // for perror(3)
+#include <mutex>
 #include <cstdlib> // for exit(3)
-#include <cstring> // for strerror(3)
+#include <iostream>
 #include "openturns/OTprivate.hxx"
-#include "openturns/OTthread.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API MutexLock
 {
-  pthread_mutex_t & mtx_;
 public:
-  MutexLock( pthread_mutex_t & mtx )
-    : mtx_(mtx)
+  MutexLock (std::mutex & mtx)
+  : mtx_(mtx)
   {
-    int rc = pthread_mutex_lock( &mtx_ );
-    if (rc != 0)
+    try
     {
-      fprintf( stderr, "(MutexLock ctor) rc=%d : %s\n", rc, strerror(rc) );
+      lock_ = new std::unique_lock<std::mutex>(mtx, std::defer_lock);
+    }
+    catch (const std::exception & ex)
+    {
+      std::cerr << "(MutexLock ctor) err=" << ex.what() << std::endl;
       exit(1);
     }
   }
 
-  MutexLock( const MutexLock & other )
-    : mtx_(other.mtx_)
+  MutexLock (const MutexLock & other)
+  : mtx_(other.mtx_)
   {
-    int rc = pthread_mutex_lock( &mtx_ );
-    if (rc != 0)
+    try
     {
-      fprintf( stderr, "(MutexLock copy ctor) rc=%d : %s\n", rc, strerror(rc) );
+      lock_ = new std::unique_lock<std::mutex>(mtx_, std::defer_lock);
+    }
+    catch (const std::exception & ex)
+    {
+      std::cerr << "(MutexLock copy ctor) err=" << ex.what() << std::endl;
       exit(1);
     }
   }
+
+  MutexLock & operator=(const MutexLock & other) = delete;
 
   virtual ~MutexLock()
   {
-    int rc = pthread_mutex_unlock( &mtx_ );
-    if (rc != 0)
+    try
     {
-      fprintf( stderr, "(MutexLock dtor) rc=%d : %s\n", rc, strerror(rc) );
+      delete lock_;
+    }
+    catch (const std::exception & ex)
+    {
+      std::cerr << "(MutexLock dtor) err=" << ex.what() << std::endl;
       exit(1);
     }
   }
+
+private:
+  std::mutex & mtx_;
+  std::unique_lock<std::mutex> * lock_ = nullptr;
 
 }; /* class MutexLock */
 
@@ -77,13 +89,15 @@ class MutexLockSingleton
 
 public:
   // Default constructor, defined by client classes
-  MutexLockSingleton(T & singleton);
+  MutexLockSingleton (T & singleton);
+
   // Default copy-constructor
-  MutexLockSingleton( const MutexLockSingleton<T> & other ) : singleton_(other.singleton_), lock_(other.lock_) {}
+  MutexLockSingleton (const MutexLockSingleton<T> & other)
+  : singleton_(other.singleton_), lock_(other.lock_) {}
 
 private:
   // Disable copy-assignment
-  MutexLockSingleton& operator=( const MutexLockSingleton<T> & other );
+  MutexLockSingleton& operator=(const MutexLockSingleton<T> & other);
 
 public:
   /** @copydoc Object::__repr__() const */

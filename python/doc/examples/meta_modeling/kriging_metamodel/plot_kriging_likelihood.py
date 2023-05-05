@@ -74,3 +74,7 @@ graph.setLegends([r"Matern $\nu = 1.5$", r"$\theta$ estimate"])
 # Display figures
 view = otv.View(graph)
 otv.View.ShowAll()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

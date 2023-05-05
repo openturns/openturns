@@ -66,6 +66,12 @@ Point HSICEstimator::getPValuesPermutation() const
   return getImplementation()->getPValuesPermutation();
 }
 
+/* Get the asymptotic p-values  */
+Point HSICEstimator::getPValuesAsymptotic() const
+{
+  return getImplementation()->getPValuesAsymptotic();
+}
+
 /* Draw the HSIC indices */
 Graph HSICEstimator::drawHSICIndices() const
 {
@@ -84,8 +90,20 @@ Graph HSICEstimator::drawPValuesPermutation() const
   return getImplementation()->drawPValuesPermutation();
 }
 
+/* Draw the p-values asymptotic with permutation */
+Graph HSICEstimator::drawPValuesAsymptotic() const
+{
+  return getImplementation()->drawPValuesAsymptotic();
+}
+
+// run all
+void HSICEstimator::run() const
+{
+  getImplementation()->run();
+}
+
 /* Get the covariance models */
-HSICEstimatorImplementation::CovarianceModelCollection HSICEstimator::getCovarianceModelCollection() const
+HSICEstimator::CovarianceModelCollection HSICEstimator::getCovarianceModelCollection() const
 {
   return getImplementation()->getCovarianceModelCollection();
 }

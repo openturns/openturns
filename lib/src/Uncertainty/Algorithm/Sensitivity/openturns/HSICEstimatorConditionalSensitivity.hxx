@@ -67,19 +67,13 @@ public:
   /** Set the weight function */
   void setWeightFunction(const Function & weightFunction);
 
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;
+  /** Compute the weights from the weight function */
+  void computeWeights() override;
 
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;
-
-private:
+protected:
 
   /** Compute the p-values with asymptotic formula */
   void computePValuesAsymptotic() const override;
-
-  /** Compute the weight matrix from the weight function */
-  SquareMatrix computeWeightMatrix(const Sample & Y) const override;
 
 };
 

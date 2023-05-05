@@ -1,2 +1,7 @@
 Remove DomainIntersection|Union|DisjunctiveUnion(Domain, Domain) ctors
 Remove EllipticalDistribution::getInverseCorrelation
+Remove LinearLeastSquaresCalibration::getCandidate
+Remove NonLinearLeastSquaresCalibration::getCandidate
+Remove GaussianLinearCalibration::getCandidate
+Remove NonGaussianLinearCalibration::getCandidate
+Drop HSICStat::computeHSICIndex(cov, cov, squareMat)

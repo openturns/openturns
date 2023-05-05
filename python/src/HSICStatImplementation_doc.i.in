@@ -29,12 +29,14 @@ covarianceMatrixY : :class:`~openturns.CovarianceMatrix`
     The covariance model associated with the output sample, discretized
     over the last one.
 
-weightMatrix : :class:`~openturns.Matrix`
-    A weight matrix used for the statistic.
+weights : :class:`~openturns.Point` or :class:`~openturns.Matrix` (deprecated)
+    The weight argument used for the statistic.
 
 Returns
 -------
-hsicIndex : the HSIC index of the two :class:`~openturns.Sample`."
+hsicIndex : the HSIC index of the two :class:`~openturns.Sample`.
+
+"
 %enddef
 %feature("docstring") OT::HSICStatImplementation::computeHSICIndex
 OT_HSICStat_computeHSICIndex_doc

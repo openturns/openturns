@@ -62,23 +62,3 @@ Build and use the HSIC estimator for global sensitivity analysis.
 [0.404051,0.0206756,0.0846069]"
 
 // ---------------------------------------------------------------------
-
-%feature("docstring") OT::HSICEstimatorGlobalSensitivity::getPValuesAsymptotic
-"Get the p-values obtained with an asymptotic formula.
-
-Returns
--------
-pval : sequence of float
-    The p-values for all components."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::HSICEstimatorGlobalSensitivity::drawPValuesAsymptotic
-"Draw the p-values obtained with an asymptotic formula.
-
-Returns
--------
-graph : :class:`~openturns.Graph`
-    The graph of all p-values estimated with an asymptotic formula."
-
-// ---------------------------------------------------------------------

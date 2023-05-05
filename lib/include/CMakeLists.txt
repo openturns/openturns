@@ -56,10 +56,3 @@ install (FILES ${CMAKE_CURRENT_BINARY_DIR}/openturns/installed-OTconfig.h
        )
 install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
 
-if (MSVC OR WINTEL)
-    install (FILES pthread_win32/pthread.h
-                    pthread_win32/semaphore.h
-                    pthread_win32/unistd.h
-              DESTINATION ${OPENTURNS_INCLUDE_PATH}
-           )
-endif ()

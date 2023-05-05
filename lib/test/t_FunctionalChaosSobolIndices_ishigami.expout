@@ -1,0 +1,184 @@
+mean = 3.5
+variance = 13.8446
+S1 = 0.3139
+S2 = 0.4424
+S3 = 0.0000
+S13 = 0.2437
+ST1 = 0.5576
+ST2 = 0.4424
+ST3 = 0.2437
+size = 1024
+basisSize = 207
+Create object
+Run()
+GetResult()
+ input dimension: 3
+ output dimension: 1
+ basis size: 27
+ mean: [3.49999]
+ std-dev: [3.72086]
+------------------------------------------------------------
+Index   | Multi-indice                  | Part of variance  
+------------------------------------------------------------
+      4 | [0,4,0]                       | 0.275304
+      1 | [1,0,0]                       | 0.190844
+      5 | [1,0,2]                       | 0.136064
+      7 | [0,6,0]                       | 0.133096
+      3 | [3,0,0]                       | 0.120299
+     11 | [3,0,2]                       | 0.0857565
+      2 | [0,2,0]                       | 0.0255459
+     10 | [1,0,4]                       | 0.0120992
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+Component | Sobol' index           | Sobol' total index     
+------------------------------------------------------------
+        0 | 0.313901               | 0.557582              
+        1 | 0.442418               | 0.442418              
+        2 | 0                      | 0.243681              
+------------------------------------------------------------
+
+
+Test first order Sobol' indices
+First order, X1
+   S (PCE) 0.3139
+   S (exact) 0.3139
+   Abs. Error 3.9178e-06
+First order, X2
+   S (PCE) 0.4424
+   S (exact) 0.4424
+   Abs. Error 7.0323e-06
+First order, X3
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 0.0000e+00
+Test total order Sobol' indices
+Total, X1
+   S (PCE) 0.5576
+   S (exact) 0.5576
+   Abs. Error 7.0515e-06
+Total, X2
+   S (PCE) 0.4424
+   S (exact) 0.4424
+   Abs. Error 7.0639e-06
+Total, X3
+   S (PCE) 0.2437
+   S (exact) 0.2437
+   Abs. Error 3.1269e-06
+Test first order (closed) group Sobol' indices
+X1
+   S (PCE) 0.3139
+   S (exact) 0.3139
+   Abs. Error 3.9178e-06
+X2
+   S (PCE) 0.4424
+   S (exact) 0.4424
+   Abs. Error 7.0323e-06
+X3
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 0.0000e+00
+(X1, X2)
+   S (PCE) 0.7563
+   S (exact) 0.7563
+   Abs. Error 3.1269e-06
+(X1, X3)
+   S (PCE) 0.5576
+   S (exact) 0.5576
+   Abs. Error 7.0639e-06
+(X2, X3)
+   S (PCE) 0.4424
+   S (exact) 0.4424
+   Abs. Error 7.0515e-06
+(X1, X2, X3)
+   S (PCE) 1.0000
+   S (exact) 1.0000
+   Abs. Error 0.0000e+00
+Test total group Sobol' indices
+X1
+   S (PCE) 0.5576
+   S (exact) 0.5576
+   Abs. Error 7.0515e-06
+X2
+   S (PCE) 0.4424
+   S (exact) 0.4424
+   Abs. Error 7.0639e-06
+X3
+   S (PCE) 0.2437
+   S (exact) 0.2437
+   Abs. Error 3.1269e-06
+(X1, X2)
+   S (PCE) 1.0000
+   S (exact) 1.0000
+   Abs. Error 0.0000e+00
+(X1, X3)
+   S (PCE) 0.5576
+   S (exact) 0.5576
+   Abs. Error 7.0323e-06
+(X2, X3)
+   S (PCE) 0.6861
+   S (exact) 0.6861
+   Abs. Error 3.9178e-06
+(X1, X2, X3)
+   S (PCE) 1.0000
+   S (exact) 1.0000
+   Abs. Error 0.0000e+00
+Test interaction group Sobol' indices
+X1
+   S (PCE) 0.3139
+   S (exact) 0.3139
+   Abs. Error 3.9178e-06
+X2
+   S (PCE) 0.4424
+   S (exact) 0.4424
+   Abs. Error 7.0323e-06
+X3
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 0.0000e+00
+X1, X2
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 1.2428e-08
+X1, X3
+   S (PCE) 0.2437
+   S (exact) 0.2437
+   Abs. Error 3.1461e-06
+X2, X3
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 1.9147e-08
+X1, X2, X3
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 0.0000e+00
+Test total interaction group Sobol' indices
+X1
+   S (PCE) 0.5576
+   S (exact) 0.5576
+   Abs. Error 7.0515e-06
+X2
+   S (PCE) 0.4424
+   S (exact) 0.4424
+   Abs. Error 7.0639e-06
+X3
+   S (PCE) 0.2437
+   S (exact) 0.2437
+   Abs. Error 3.1269e-06
+X1, X2
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 1.2428e-08
+X1, X3
+   S (PCE) 0.2437
+   S (exact) 0.2437
+   Abs. Error 3.1461e-06
+X2, X3
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 1.9147e-08
+X1, X2, X3
+   S (PCE) 0.0000
+   S (exact) 0.0000
+   Abs. Error 0.0000e+00

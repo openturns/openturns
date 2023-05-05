@@ -124,8 +124,8 @@ Point MemoizeEvaluation::operator() (const Point & inPoint) const
 
   if (isHistoryEnabled_)
   {
-    inputStrategy_.store(inPoint);
-    outputStrategy_.store(outPoint);
+    inputStrategy_.getImplementation()->store(inPoint);
+    outputStrategy_.getImplementation()->store(outPoint);
   }
   return outPoint;
 }
@@ -192,8 +192,8 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
   outSample.setDescription(evaluation_.getOutputDescription());
   if (isHistoryEnabled_)
   {
-    inputStrategy_.store(inSample);
-    outputStrategy_.store(outSample);
+    inputStrategy_.getImplementation()->store(inSample);
+    outputStrategy_.getImplementation()->store(outSample);
   }
   return outSample;
 }

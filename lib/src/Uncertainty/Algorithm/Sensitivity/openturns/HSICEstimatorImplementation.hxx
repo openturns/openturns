@@ -33,7 +33,8 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/HSICStat.hxx"
-#include "openturns/RandomGenerator.hxx"
+#include "openturns/Point.hxx"
+
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
@@ -109,6 +110,9 @@ public:
   /** Get the p-values by permutation */
   Point getPValuesPermutation() const;
 
+  /** Get the asymptotic p-values */
+  virtual Point getPValuesAsymptotic() const;
+
   /** Compute all indices at once */
   virtual void run() const;
 
@@ -120,6 +124,9 @@ public:
 
   /** Draw the p-values by permutation */
   Graph drawPValuesPermutation() const;
+
+  /** Draw the asymptotic p-values */
+  virtual Graph drawPValuesAsymptotic() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -144,13 +151,16 @@ protected:
   /** Compute the p-values with asymptotic formula */
   virtual void computePValuesAsymptotic() const;
 
-  /** Compute the weight matrix from the weight function */
-  virtual SquareMatrix computeWeightMatrix(const Sample & Y) const;
+  /** Compute the weights from the weight function */
+  virtual void computeWeights();
+
+  /** Get the weights function as Point */
+  virtual Point getWeights() const;
 
   /** Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
-  virtual Scalar computeHSICIndex(const CovarianceMatrix & covMat1,
-                                  const CovarianceMatrix & covMat2,
-                                  const SquareMatrix & weightMatrix) const;
+  virtual Scalar computeHSICIndex(const CovarianceMatrix &covMat1,
+                                  const CovarianceMatrix &covMat2,
+                                  const Point &weights) const;
 
   /** Compute HSIC and R2-HSIC indices */
   virtual void computeIndices() const;
@@ -166,6 +176,7 @@ protected:
   Sample outputSample_ ;
   HSICStat estimatorType_;
   Function weightFunction_ ;
+  Point weights_;
   UnsignedInteger n_ ;
   UnsignedInteger inputDimension_ ;
   mutable Point HSIC_XY_ ;

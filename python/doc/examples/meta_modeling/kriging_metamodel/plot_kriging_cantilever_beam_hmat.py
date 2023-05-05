@@ -174,3 +174,7 @@ graph.setTitle("Q2 = %.2f%%" % (100 * Q2))
 view = viewer.View(graph)
 
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

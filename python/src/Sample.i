@@ -18,7 +18,7 @@
     try {
       temp = OT::convert<OT::_PySequence_, OT::Sample>($input);
       $1 = &temp;
-    } catch (OT::InvalidArgumentException &) {
+    } catch (const OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a Sample");
     }
   }
@@ -37,7 +37,7 @@
     try {
       temp = OT::convert<OT::_PySequence_, OT::Collection<OT::UnsignedInteger> >($input);
       $1 = &temp;
-    } catch (OT::InvalidArgumentException &) {
+    } catch (const OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of UnsignedInteger");
     }
   }
@@ -58,7 +58,7 @@
     try {
       temp = OT::convert<OT::_PySequence_, OT::Collection<OT::Sample> >($input);
       $1 = &temp;
-    } catch (OT::InvalidArgumentException &) {
+    } catch (const OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Sample");
     }
   }
@@ -99,7 +99,7 @@ def __Sample_asDataFrame(self):
         The converted data
     """
     from pandas import DataFrame
-    df = DataFrame.from_records(self, columns=self.getDescription())
+    df = DataFrame.from_records(self, columns=list(self.getDescription()))
     return df
 Sample.asDataFrame = __Sample_asDataFrame
 

@@ -1034,6 +1034,7 @@ Fit a Normal distribution and extract the asymptotic parameters distribution:
 Determine the confidence region of minimum volume of the native parameters at level 0.9:
 
 >>> levelSet = paramDist.computeMinimumVolumeLevelSet(0.9)
+>>> ot.ResourceMap.Reload()
 "
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeMinimumVolumeLevelSet
@@ -1135,6 +1136,7 @@ Determine the confidence interval of the native parameters at level 0.9 with min
 
 >>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVolumeLevelSetSamplingSize', 1000)
 >>> confInt = paramDist.computeMinimumVolumeInterval(0.9)
+>>> ot.ResourceMap.Reload()
 "
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeMinimumVolumeInterval
@@ -1176,6 +1178,7 @@ Determine the confidence interval of the native parameters at level 0.9 with min
 
 >>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVolumeLevelSetSamplingSize', 1000)
 >>> confInt, marginalProb = paramDist.computeMinimumVolumeIntervalWithMarginalProbability(0.9)
+>>> ot.ResourceMap.Reload()
 "
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeMinimumVolumeIntervalWithMarginalProbability
@@ -1359,6 +1362,7 @@ Determine the right unilateral confidence interval at level 0.9:
 Determine the left unilateral confidence interval at level 0.9:
 
 >>> confInt, marginalProb = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9, True)
+>>> ot.ResourceMap.Reload()
 "
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeUnilateralConfidenceIntervalWithMarginalProbability

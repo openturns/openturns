@@ -44,6 +44,10 @@ int main(int, char *[])
     fullprint << "mesher3D=" << mesher3D << std::endl;
     Mesh mesh3D(mesher3D.build(Interval(Point(3, -1.0), Point(3, 2.0))));
     fullprint << "mesh3D=" << mesh3D << std::endl;
+    IntervalMesher mesher4D(Indices(4, 2));
+    fullprint << "mesher4D=" << mesher4D << std::endl;
+    Mesh mesh4D(mesher4D.build(Interval(Point(4, -1.0), Point(4, 2.0))));
+    fullprint << "mesh4D=" << mesh4D << std::endl;
   }
   catch (TestFailed & ex)
   {

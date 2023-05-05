@@ -229,7 +229,8 @@ grid : :class:`~openturns.GridLayout`
 %feature("docstring") OT::CalibrationResult::drawResiduals
 "Draw residuals.
 
-Plot the distribution of the residuals and the distribution of the observation errors.
+Plot the distribution of the sample residuals before and after calibration 
+using kernel smoothing and the distribution of the observation errors.
 
 Returns
 -------
@@ -267,8 +268,8 @@ grid : :class:`~openturns.GridLayout`
 %feature("docstring") OT::CalibrationResult::drawResidualsNormalPlot
 "Draw residuals normal plot.
 
-Plots the quantile-quantile graphs of the empirical residual vs
-the Gaussian distribution.
+Plots the quantile-quantile graphs of the empirical residual 
+after calibration vs the Gaussian distribution.
 
 Returns
 -------

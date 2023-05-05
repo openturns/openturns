@@ -1723,78 +1723,118 @@ UnsignedInteger MatrixImplementation::stride(const UnsignedInteger dim) const
 /** Diagonal extraction */
 MatrixImplementation MatrixImplementation::getDiagonal(const SignedInteger k) const
 {
-  SignedInteger m = nbRows_;
-  SignedInteger n = nbColumns_;
+  const SignedInteger m = nbRows_;
+  const SignedInteger n = nbColumns_;
   if (k >= n) throw OutOfBoundException(HERE) << "One must have k < nbColumns";
   if (-k > m) throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
 
   /* First step: the size of the diagonal */
-  UnsignedInteger nElt;
-  /* Extraction */
-  if(k >= 0)
-  {
-    nElt = std::min(m, n - k);
-  }
-  else
-  {
-    nElt = std::min(m + k, n);
-  }
-
+  const UnsignedInteger nElt = (k >= 0 ? std::min(m, n - k) : std::min(m + k, n));
+  
   /* Extraction */
   MatrixImplementation diag(nElt, 1);
-  if(k >= 0)
+  UnsignedInteger index = (k >= 0 ? k * m : -k);
+  const SignedInteger stride = m + 1;
+  for(UnsignedInteger l = 0; l < nElt; ++l)
   {
-    for(UnsignedInteger l = 0; l < nElt; ++l)
-    {
-      diag(l, 0) = (*this)(l, l + k);
-    }
-  }
-  else
-  {
-    for(UnsignedInteger l = 0; l < nElt; ++l)
-    {
-      diag(l, 0) = (*this)(l - k, l);
-    }
+    diag(l, 0) = (*this)[index];//(l, l + k);
+    index += stride;
   }
   return diag;
+}
+
+/** Extract diagonal */
+Point MatrixImplementation::getDiagonalAsPoint(const SignedInteger k) const
+{
+  const SignedInteger m = nbRows_;
+  const SignedInteger n = nbColumns_;
+  if (k >= n)
+    throw OutOfBoundException(HERE) << "One must have k < nbColumns";
+  if (-k > m)
+    throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
+
+  /* First step: the size of the diagonal */
+  const UnsignedInteger nElt = (k >= 0 ? std::min(m, n - k) : std::min(m + k, n));
+
+  /* Extraction */
+  Point diag(nElt);
+  UnsignedInteger index = (k >= 0 ? k * m : -k);
+  const SignedInteger stride = m + 1;
+  for (UnsignedInteger l = 0; l < nElt; ++l)
+  {
+    diag[l] = (*this)[index]; //(l, l + k);
+    index += stride;
+  }
+  return diag;
+}
+
+/** Fill diagonal with values */
+void MatrixImplementation::setDiagonal(const MatrixImplementation &diag, const SignedInteger k)
+{
+  const SignedInteger m = nbRows_;
+  const SignedInteger n = nbColumns_;
+  if (k >= n)
+    throw OutOfBoundException(HERE) << "One must have k < nbColumns";
+  if (-k > m)
+    throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
+  if ((diag.getNbRows() > 1) && (diag.getNbColumns() > 1))
+    throw InvalidDimensionException(HERE) << "Diag matrix must have one dimension equals to 1.";
+  /* First step: the size of the diagonal */
+  const SignedInteger nElt = (k >= 0 ? std::min(m, n - k) : std::min(m + k, n));
+
+  /* Extraction */
+  const SignedInteger stride = m + 1;
+  UnsignedInteger index = (k >= 0 ? k * m : -k);
+  for (SignedInteger l = 0; l < nElt; ++l)
+  {
+    (*this)[index] = diag[l];
+    index += stride;
+  }
 }
 
 /** Fill a diagonal with values */
 void MatrixImplementation::setDiagonal(const Point &diag, const SignedInteger k)
 {
-  SignedInteger m = nbRows_;
-  SignedInteger n = nbColumns_;
-  if (k >= n) throw OutOfBoundException(HERE) << "One must have k < nbColumns";
-  if (-k > m) throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
-
+  const SignedInteger m = nbRows_;
+  const SignedInteger n = nbColumns_;
+  if (k >= n)
+    throw OutOfBoundException(HERE) << "One must have k < nbColumns";
+  if (-k > m)
+    throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
   /* First step: the size of the diagonal */
-  UnsignedInteger nElt;
-  if(k >= 0)
-  {
-    nElt = std::min(m, n - k);
-  }
-  else
-  {
-    nElt = std::min(m + k, n);
-  }
+  const UnsignedInteger nElt = (k >= 0 ? std::min(m, n - k) : std::min(m + k, n));
 
-  /* Check dimensions */
-  if (nElt != diag.getSize()) throw InvalidDimensionException(HERE) << "Dimension mismatch";
-
-  /* Fill with values */
-  if(k >= 0)
+  /* Extraction */
+  if (diag.getSize() != nElt)
+    throw InvalidDimensionException(HERE) << "Dimension mismatch.";
+  const SignedInteger stride = m + 1;
+  UnsignedInteger index = (k >= 0 ? k * m : -k);
+  for (UnsignedInteger l = 0; l < nElt; ++l)
   {
-    for(UnsignedInteger l = 0; l < nElt; ++l)
-    {
-      (*this)(l, l + k) = diag[l];
-    }
+    (*this)[index] = diag[l];
+    index += stride;
   }
-  else
+}
+
+/** Fill diagonal with the same value */
+void MatrixImplementation::setDiagonal(const Scalar value, const SignedInteger k)
+{
+  const SignedInteger m = nbRows_;
+  const SignedInteger n = nbColumns_;
+  if (k >= n)
+    throw OutOfBoundException(HERE) << "One must have k < nbColumns";
+  if (-k > m)
+    throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
+  /* First step: the size of the diagonal */
+  const SignedInteger nElt = (k >= 0 ? std::min(m, n - k) : std::min(m + k, n));
+
+  /* Extraction */
+  const SignedInteger stride = m + 1;
+  UnsignedInteger index = (k >= 0 ? k * m : -k);
+  for (SignedInteger l = 0; l < nElt; ++l)
   {
-    for(UnsignedInteger l = 0; l < nElt; ++l)
-    {
-      (*this)(l - k, l) = diag[l];
-    }
+    (*this)[index] = value;
+    index += stride;
   }
 }
 

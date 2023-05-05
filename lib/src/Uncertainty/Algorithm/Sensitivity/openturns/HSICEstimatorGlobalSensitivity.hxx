@@ -60,30 +60,8 @@ public:
   /** Virtual constructor */
   HSICEstimatorGlobalSensitivity* clone() const override;
 
-  /** Get the asymptotic p-values */
-  Point getPValuesAsymptotic() const;
-
-  /** Draw the asymptotic p-values */
-  Graph drawPValuesAsymptotic() const;
-
-  /** Compute all indices at once */
-  void run() const override;
-
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;
-
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;
-
-protected:
-
-  /** Reset all indices to void */
-  void resetIndices() override;
-
-private:
-
-  /** Compute the weight matrix from the weight function */
-  SquareMatrix computeWeightMatrix(const Sample & Y) const override;
+  /** Compute the weights from the weight function */
+  void computeWeights() override;
 
 };
 

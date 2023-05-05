@@ -4,173 +4,30 @@ Sensitivity analysis.
 
 Notes
 -----
-This method analyzes the influence of each component of an input random vector
-:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` on an output random vector
-:math:`\vect{Y} = \left( Y^1, \ldots, Y^{n_Y} \right)` by computing Sobol' indices (see [sobol1993]_).
-It computes, for every output random variable :math:`Y^k` (:math:`1 \leqslant k \leqslant n_Y`),
-the part of its variance due to each input component :math:`X^i` (:math:`1 \leqslant i \leqslant n_X`) of :math:`\vect{X}`.
+This method measures the influence of each component of an input random vector
+:math:`\vect{X} = \left( X_1, \ldots, X_{n_X} \right)` on an output random vector
+:math:`\vect{Y} = \left( Y_1, \ldots, Y_{n_Y} \right)` by computing Sobol' indices (see [sobol1993]_).
+It computes, for every output random variable :math:`Y_k` (:math:`1 \leqslant k \leqslant n_Y`),
+the part of its variance due to each input component :math:`X_i` (:math:`1 \leqslant i \leqslant n_X`) of :math:`\vect{X}`.
+Sobol' indices are introduced in :ref:`sensitivity_sobol`. 
 
-Let :math:`\vect{g}` be the physical model such as :math:`\vect{Y}=\vect{g}(\vect{X})`. Let us first consider the case where :math:`n_Y=1`.
-In that case, we denote :math:`\vect{Y}` by :math:`Y`.
-Let us write the variance of :math:`Y` as a function of :math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)`. 
-For any subset :math:`I \subseteq \{1, \ldots, n_X\}`, define :math:`\vect{X}_I = \left( X^i \right)_{i \in I}`.
-
-Using the Hoeffding decomposition, we get:
-
-.. math::
-
-   \Var{Y} = \sum_{ I \subseteq \{1, \ldots, n_X\} } V_I
-
-where:
-
-.. math::
-
-    V_I = \Var{ \sum_{J \subseteq I} (-1)^{ |I| - |J| } \Expect{ Y \vert \mat{X}_J} }.
-
-For the sake of conciseness, for any integers :math:`1 \leqslant i, j \leqslant n_X`,
-define :math:`V_i = V_{\{i\}}` and :math:`V_{i,j} = V_{\{i,j\}}`. We have:
-
-.. math::
-
-    V_i     & = \Var{ \Expect{Y \vert X_i} } \\
-    V_{i,j} & = \Var{ \Expect{ Y \vert X_i, X_j}  - \Expect{Y \vert X_i} - \Expect{Y \vert X_j} } \\
-            & = \Var{ \Expect{ Y \vert X_i, X_j} } - V_i - V_j
-
-for :math:`i=1,\ldots,n_X`.
-
-First and second order Sobol' indices are defined as follows:
-
-.. math::
-
-    S_i     & = \frac{V_i}{\Var{Y}} \\
-    S_{i,j} & = \frac{V_{i,j}}{\Var{Y}}
-
-for :math:`i, j = 1,\ldots,n_X`.
-
-The first order Sobol' index :math:`S_i` measures the part of the variance of :math:`Y` explained by :math:`X_i` alone.
-The second order Sobol' index :math:`S_{i,j}`  measures the part of the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
-
-For any :math:`i=1,\ldots,n_X`, let us define
-
-.. math::
-
-    VT_i   & = \sum_{I \ni i} V_I \\
-    V_{-i} & = \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_{n_X}} }.
-
-Total order Sobol' indices are defined as follows:
-
-.. math::
-
-    ST_i = \frac{VT_i}{\Var{Y}} = 1 - \frac{V_{-i}}{\Var{Y}}
-
-for :math:`i=1,\ldots,n_X`.
-
-The total order Sobol' index :math:`ST_i` quantifies the part of the variance of :math:`Y` that is due to the effect of :math:`X_i`
-and its interactions with all the other input variables.
-It can also be viewed as the part of the variance of :math:`Y` that cannot be explained without :math:`X_i`.
-
-In practice, to estimate these quantities,
-Sobol' proposes to use numerical methods that rely on two independent realizations of the random vector :math:`\vect{X}`.
-Let :math:`\mat{A}` and :math:`\mat{B}` be two independent samples (of size :math:`N`) of :math:`\vect{X}` :
-
-.. math::
-
-   \mat{A} = \left(
-   \begin{array}{cccc}
-   a_{1,1} & a_{1,2} & \cdots & a_{1, n_X} \\
-   a_{2,1} & a_{2,2} & \cdots & a_{2, n_X} \\
-   \vdots  & \vdots  & \ddots  & \vdots \\
-   a_{N,1} & a_{1,2} & \cdots & a_{N, n_X}
-   \end{array}
-   \right), \  \mat{B} = \left(
-   \begin{array}{cccc}
-   b_{1,1} & b_{1,2} & \cdots & b_{1, n_X} \\
-   b_{2,1} & b_{2,2} & \cdots & b_{2, n_X} \\
-   \vdots  & \vdots  & \vdots  & \vdots \\
-   b_{N,1} & b_{1,2} & \cdots & b_{N, n_X}
-   \end{array}
-   \right)
-
-Each line is a realization of the random vector :math:`\vect{X}`. 
-
-We are now going to mix these two samples to get an estimate of the sensitivity indices.
-
-.. math::
-
-   \mat{E}^i = \left(
-   \begin{array}{cccccc}
-   a_{1,1} & a_{1,2} & \cdots & b_{1,i} & \cdots & a_{1, n_X} \\
-   a_{2,1} & a_{2,2} & \cdots & b_{2,i} & \cdots & a_{2, n_X} \\
-   \vdots  & \vdots  &        & \vdots  & \ddots & \vdots \\
-   a_{N,1} & a_{1,2} & \cdots & b_{N,i} & \cdots & a_{N, n_X}
-   \end{array}
-   \right),
-   \mat{C}^i = \left(
-   \begin{array}{cccccc}
-   b_{1,1} & b_{1,2} & \cdots & a_{1,i} & \cdots & b_{1, n_X} \\
-   b_{2,1} & b_{2,2} & \cdots & a_{2,i} & \cdots & b_{2, n_X} \\
-   \vdots  & \vdots  &        & \vdots  & \ddots  & \vdots \\
-   b_{N,1} & b_{1,2} & \cdots & a_{N,i} & \cdots & b_{N, n_X}
-   \end{array}
-   \right)
-
-For the sake of stability, computations will be performed with centered output.
-Let :math:`\overline{\vect{g}}` be the mean of the combined samples 
-:math:`\vect{g}(\mat{A})` and :math:`\vect{g}(\mat{B})`.
-Let :math:`\tilde{\vect{g}}` be the empirically centered function defined,
-for any :math:`\vect{x} \in \Rset^{n_X}`, by:
-
-.. math::
-
-   \tilde{\vect{g}}(\vect{x}) = \vect{g}(\vect{x}) - \overline{\vect{g}}.
-
-To estimate the total variance :math:`\Var{Y}`,
-we use the :meth:`~openturns.Sample.computeVariance` method of the :class:`~openturns.Sample` :math:`\tilde{g}(\mat{A})`.
-
-Several estimators of :math:`V_i`, :math:`VT_i` and :math:`V_{-i}` are provided by the :class:`SobolIndicesAlgorithm` implementations:
+Several estimators of :math:`V_i`, :math:`V_i^T` and :math:`V_{-i}` are provided by the :class:`SobolIndicesAlgorithm` implementations:
 
 - :class:`~openturns.SaltelliSensitivityAlgorithm` for the `Saltelli` method,
 - :class:`~openturns.JansenSensitivityAlgorithm` for the `Jansen` method,
 - :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
 - :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method.
 
-Specific formulas for :math:`\hat{V}_i`, :math:`\widehat{VT}_i` and :math:`\hat{V}_{-i}` are given in the corresponding documentation pages.
+Specific formulas for :math:`\widehat{V}_i`, :math:`\widehat{V}_i^T` and :math:`\widehat{V}_{-i}` are given in the corresponding documentation pages.
 
-The estimator :math:`\hat{V}_{i,j}` of :math:`V_{i,j}` is the same for all these classes:
-
-.. math::
-
-    \hat{V}_{i,j} = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{g}(\vect{E}_k^i) \tilde{g}(\vect{C}_k^j) - \frac{1}{N} \sum_{k=1}^{N} \tilde{g}(\vect{A}_k) \tilde{g}(\vect{B}_k) - \hat{V}_i - \hat{V}_j.
-
-Notice that the value of the second order conditional variance depends on the estimators :math:`\hat{V}_i` and :math:`\hat{V}_j` which are method-dependent. This implies that the value of the second order indices may depend on the specific Sobol' estimator we use. 
 
 For multivariate outputs i.e. when :math:`n_Y>1`, we compute the Sobol' indices with respect to each output variable. 
 In this case, the methods :meth:`getFirstOrderIndices` and 
 :meth:`getTotalOrderIndices` return the Sobol' indices of the first output, 
 but the index of the output can be specified as input argument.
-Moreover, the indices can be aggregated [gamboa2013]_. 
-Let :math:`V_i^{(k)}` be the (first order) variance of the conditional expectation of the k-th output :math:`Y^{(k)}`:
-
-.. math::
-
-    V_i^{(k)} & = \Var{ \Expect{Y^{(k)} \vert X_i} }
-
-for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
-Similarly, let :math:`VT_i^{(k)}` be the total variance of the conditional expectation of :math:`Y^{(k)}` for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`. 
-
-The indices can be aggregated with the following formulas:
-
-.. math::
-
-    S_i^{(a)}  & =  \frac{ \sum_{k=1}^{n_Y} V_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }  \\
-    ST_i^{(a)} & =  \frac{ \sum_{k=1}^{n_Y} VT_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }
-
-for :math:`i=1,\ldots,n_X`.
-
 Aggregated indices can be retrieved with the :meth:`getAggregatedFirstOrderIndices` 
 and :meth:`getAggregatedTotalOrderIndices` methods. 
 
-|
 
 Notice that the distribution of the estimators of the first
 and total order indices can be estimated

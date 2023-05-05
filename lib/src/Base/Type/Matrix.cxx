@@ -322,11 +322,31 @@ Matrix Matrix::getDiagonal(const SignedInteger k) const
   return getImplementation()->getDiagonal(k);
 }
 
+/** Extract diagonal */
+Point Matrix::getDiagonalAsPoint(const SignedInteger k) const
+{
+  return getImplementation()->getDiagonalAsPoint(k);
+}
+
 /** Fill a diagonal */
 void Matrix::setDiagonal(const Point &diag, const SignedInteger k)
 {
   copyOnWrite();
   getImplementation()->setDiagonal(diag, k);
+}
+
+/** Fill diagonal with the same value */
+void Matrix::setDiagonal(const Scalar value, const SignedInteger k)
+{
+  copyOnWrite();
+  getImplementation()->setDiagonal(value, k);
+}
+
+/** Fill diagonal with values */
+void Matrix::Matrix::setDiagonal(const Matrix &diag, const SignedInteger k)
+{
+  copyOnWrite();
+  getImplementation()->setDiagonal(*diag.getImplementation(), k);
 }
 
 /** Sum all coefficients */

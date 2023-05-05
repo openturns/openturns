@@ -34,7 +34,7 @@ static const Factory<UniformMuSigma> Factory_UniformMuSigma;
 UniformMuSigma::UniformMuSigma()
   : DistributionParametersImplementation()
   , mu_(0.0)
-  , sigma_(2.0 / std::sqrt(12.0))
+  , sigma_(1.0 / std::sqrt(3.0))
 {
   // Nothing to do
 }
@@ -71,7 +71,7 @@ Distribution UniformMuSigma::getDistribution() const
 Matrix UniformMuSigma::gradient() const
 {
   const Scalar dadmu = 1.0;
-  const Scalar dadsigma = -0.5 * std::sqrt(12.0);
+  const Scalar dadsigma = -std::sqrt(3.0);
   const Scalar dbdmu = 1.0;
   const Scalar dbdsigma = -dadsigma;
 
@@ -95,8 +95,8 @@ Point UniformMuSigma::operator () (const Point & inP) const
 
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 
-  const Scalar a = mu - sigma * 0.5 * std::sqrt(12.0);
-  const Scalar b = mu + sigma * 0.5 * std::sqrt(12.0);
+  const Scalar a = mu - sigma * std::sqrt(3.0);
+  const Scalar b = mu + sigma * std::sqrt(3.0);
 
   return {a, b};
 }

@@ -156,7 +156,7 @@ if (BISON_FOUND AND FLEX_FOUND)
   add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.cc ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.h
                       MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/csv_lexer.ll
                       COMMAND ${FLEX_EXECUTABLE}
-                      ARGS    -o ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.cc
+                      ARGS    --nounistd -o ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.cc
                               --header-file=${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.h
                               ${CMAKE_CURRENT_SOURCE_DIR}/csv_lexer.ll
                       COMMENT "CSV lexer generation"

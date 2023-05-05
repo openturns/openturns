@@ -15,7 +15,7 @@
     try {
       temp = OT::buildCollectionFromPySequence< OT::Basis >($input);
       $1 = temp.get();
-    } catch (OT::InvalidArgumentException &) {
+    } catch (const OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Basis");
     }
   }
@@ -76,7 +76,7 @@ Basis(PyObject * pyObj)
     OT::Pointer<OT::Collection<OT::Function> > p_coll =  OT::buildCollectionFromPySequence<OT::Function>( pyObj );
   return new OT::Basis( *p_coll );
   }
-  catch (OT::InvalidArgumentException &)
+  catch (const OT::InvalidArgumentException &)
   {
     return new OT::Basis(OT::convert<OT::_PyObject_, OT::Basis >(pyObj));
   }

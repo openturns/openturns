@@ -23,10 +23,11 @@ for bootstrapSize in bootstrapSizes:
     algo = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
+    result = algo.getResult()
     # To avoid discrepance between the platforms with or without CMinpack
-    print("result (Auto)=", algo.getResult().getParameterMAP())
+    print("result (Auto)=", result.getParameterMAP())
     ott.assert_almost_equal(
-        algo.getResult().getObservationsError().getMean(), [0.0051, -0.0028], 1e-1, 1e-3
+        result.getObservationsError().getMean(), [0.0051, -0.0028], 1e-1, 1e-3
     )
     algo.setOptimizationAlgorithm(
         ot.MultiStart(
@@ -43,8 +44,14 @@ for bootstrapSize in bootstrapSizes:
         )
     )
     algo.run()
+    result = algo.getResult()
     # To avoid discrepance between the platforms with or without CMinpack
-    print("result  (TNC)=", algo.getResult().getParameterMAP())
+    print("result  (TNC)=", result.getParameterMAP())
     ott.assert_almost_equal(
-        algo.getResult().getObservationsError().getMean(), [0.0051, -0.0028], 1e-1, 1e-3
+        result.getObservationsError().getMean(), [0.0051, -0.0028], 1e-1, 1e-3
     )
+    # Draw result
+    graph = result.drawParameterDistributions()
+    graph = result.drawResiduals()
+    graph = result.drawObservationsVsInputs()
+    graph = result.drawObservationsVsPredictions()

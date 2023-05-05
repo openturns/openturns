@@ -108,3 +108,7 @@ view = viewer.View(myGraph)
 # %%
 # Display figures
 plt.show()
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()

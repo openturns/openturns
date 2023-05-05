@@ -49,14 +49,14 @@ public:
   LinearLeastSquaresCalibration(const Function & model,
                                 const Sample & inputObservations,
                                 const Sample & outputObservations,
-                                const Point & candidate,
+                                const Point & startingPoint,
                                 const String & methodName = ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
 
   /** Parameter constructor */
   LinearLeastSquaresCalibration(const Sample & modelObservations,
                                 const Matrix & gradientObservations,
                                 const Sample & outputObservations,
-                                const Point & candidate,
+                                const Point & startingPoint,
                                 const String & methodName = ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
 
   /** String converter */
@@ -71,8 +71,11 @@ public:
   /** Model gradient wrt the parameter accessor */
   Matrix getGradientObservations() const;
 
-  /** Candidate accessor */
+  /** @deprecated Candidate accessor */
   Point getCandidate() const;
+
+  /** StartingPoint accessor */
+  Point getStartingPoint() const;
 
   /** Least squares method name accessor */
   String getMethodName() const;

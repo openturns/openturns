@@ -51,8 +51,8 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration()
 NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Function & model,
     const Sample & inputObservations,
     const Sample & outputObservations,
-    const Point & candidate)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(candidate, CovarianceMatrix((IdentityMatrix(candidate.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+    const Point & startingPoint)
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
   , algorithm_()
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
 {
@@ -261,7 +261,7 @@ void NonLinearLeastSquaresCalibration::run()
   // Compute the posterior MAP
   // Non-zero size to tell the algorithm to return the residual at the optimal parameter
   Sample residual(1, 0);
-  const Point thetaStar(run(inputObservations_, outputObservations_, getCandidate(), residual));
+  const Point thetaStar(run(inputObservations_, outputObservations_, getStartingPoint(), residual));
   // Recover the residuals
   const Normal error(NormalFactory().buildAsNormal(residual));
   // Compute the posterior distribution
@@ -293,13 +293,13 @@ void NonLinearLeastSquaresCalibration::run()
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const Function residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, false);
 }
 
 /* Perform a unique estimation */
 Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
     const Sample & outputObservations,
-    const Point & candidate,
+    const Point & startingPoint,
     Sample & residual)
 {
   const Function residualFunction(BuildResidualFunction(model_, inputObservations, outputObservations));
@@ -309,11 +309,11 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
   try
   {
     // If the solver is single start, we can use its setStartingPoint method
-    algorithm_.setStartingPoint(candidate);
+    algorithm_.setStartingPoint(startingPoint);
   }
   catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
   {
-    LOGWARN(OSS() << "Candidate=" << candidate << " is ignored because algorithm "
+    LOGWARN(OSS() << "startingPoint=" << startingPoint << " is ignored because algorithm "
             << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");
   }
   algorithm_.run();
@@ -330,7 +330,14 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
 /* Candidate accessor */
 Point NonLinearLeastSquaresCalibration::getCandidate() const
 {
-  // The candidate is stored in the prior distribution, which is a Normal distribution
+  LOGWARN(OSS() << "getCandidate is deprecated");
+  return getStartingPoint();
+}
+
+/* StartingPoint accessor */
+Point NonLinearLeastSquaresCalibration::getStartingPoint() const
+{
+  // The startingPoint is stored in the prior distribution, which is a Normal distribution
   return getParameterPrior().getMean();
 }
 

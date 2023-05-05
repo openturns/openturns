@@ -4,7 +4,7 @@
 Parameters
 ----------
 result : :class:`~openturns.FunctionalChaosResult`
-    A functional chaos result resulting from a polynomial chaos decomposition.
+    A functional chaos result resulting from a polynomial chaos expansion.
 
 See also
 --------
@@ -12,10 +12,36 @@ FunctionalChaosAlgorithm, FunctionalChaosResult
 
 Notes
 -----
-This structure is created from a FunctionalChaosResult in order to evaluate the
-Sobol indices associated to the polynomial chaos decomposition of the model. 
-The SobolIndicesAlgorithm.DrawSobolIndices static method can be used to 
+This structure is created from a :class:`~openturns.FunctionalChaosResult` in order to evaluate the
+Sobol' indices associated to the polynomial chaos expansion of the model. 
+The :meth:`~openturns.SobolIndicesAlgorithm.DrawSobolIndices` static method can be used to 
 draw the indices.
+
+This class provides methods to estimate the Sobol' indices which
+are presented in :ref:`sensitivity_sobol`.
+These indices can be easily computed from the polynomial chaos expansion
+using the methods presented in :ref:`sensitivity_sobol_from_pce`.
+
+The next table presents the map from the Sobol' index to the
+corresponding method.
+
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+| Single variable or group            | Sensitivity Index    | Notation                           | Method                                       |
++=====================================+======================+====================================+==============================================+
+| One single variable :math:`i`       | First order          | :math:`S_i`                        | `getSobolIndex(i)`                           |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+|                                     | Total                | :math:`S^T_i`                      | `getSobolTotalIndex(i)`                      |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+| Group interaction :math:`\bdu`      | First order          | :math:`S_\bdu`                     | `getSobolIndex(variableIndices)`             |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+|                                     | Total interaction    | :math:`S^{T,i}_\bdu`               | `getSobolIndex(variableIndices)`             |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+| Group (closed) :math:`\bdu`         | First order closed   | :math:`S_\bdu^{\operatorname{cl}}` | `getSobolGroupedIndex(variableIndices)`      |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+|                                     | Total                | :math:`S^T_\bdu`                   | `getSobolGroupedTotalIndex(variableIndices)` |
++-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+
+**Table 1.** Sobol' indices and the corresponding methods.
 
 Examples
 --------
@@ -45,30 +71,51 @@ Create a training sample:
 
 Create the chaos:
 
->>> chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
+>>> chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain, distribution)
 >>> chaosalgo.run()
 >>> result = chaosalgo.getResult()
 
-Print Sobol' indices :
+Print Sobol' indices (see :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_ishigami_grouped_indices`
+for details):
 
 >>> chaosSI = ot.FunctionalChaosSobolIndices(result) 
->>> #print( chaosSI.summary() )
+>>> #print(chaosSI)  # Prints a table of multi-indices
 
-Get first order Sobol' indices for X0:
+Get first order Sobol' index for X0:
 
 >>> s0 = chaosSI.getSobolIndex(0)
+>>> print('S(0) = ', s0)
+S(0) =  0.26...
 
-Get total order Sobol' indices for X0:
+Get total Sobol' index for X0:
 
 >>> st0 = chaosSI.getSobolTotalIndex(0)
+>>> print('ST(0) = ', st0)
+ST(0) =  0.48...
 
-Get first order Sobol' indices for group [X0,X1]:
+Get interaction Sobol' index for the group (X0, X1):
 
->>> stg01 = chaosSI.getSobolGroupedIndex([0,1])
+>>> s01 = chaosSI.getSobolIndex([0, 1])
+>>> print('S([0, 1]) = ', s01)
+S([0, 1]) =  0.00...
 
-Get total order Sobol' indices for group [X1,X2]:
+Get total interaction Sobol' index for the group (X0, X1):
 
->>> stg12 = chaosSI.getSobolGroupedTotalIndex([1,2])"
+>>> st01 = chaosSI.getSobolTotalIndex([0, 1])
+>>> print('ST([0, 1]) = ', st01)
+ST([0, 1]) =  0.00...
+
+Get first order Sobol' index for group [X0,X1]:
+
+>>> sg01 = chaosSI.getSobolGroupedIndex([0,1])
+>>> print('SG([0, 1]) = ', sg01)
+SG([0, 1]) =  0.76...
+
+Get total Sobol' index for group [X0,X1]:
+
+>>> stg01 = chaosSI.getSobolGroupedTotalIndex([0,1])
+>>> print('STG([0, 1]) = ', stg01)
+STG([0, 1]) =  0.99..."
 
 // ---------------------------------------------------------------------
 
@@ -83,13 +130,27 @@ functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolIndex
-"Get the Sobol indices.
+"Get the first order Sobol' index of an input variable
+or the interaction (high order) index of a group of variables.
+This function can take a single variable or a group of variables as input
+argument.
+
+*Case 1: single variable.* 
+Let :math:`i \in \{0, ..., d - 1\}` the index of an input 
+variable. 
+Therefore, the method computes the first order Sobol' index :math:`S_i`
+of the variable :math:`X_i`.
+
+*Case 2: group of variables.*
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
+in the group. 
+Therefore, the method computes the interaction (high order) Sobol'
+index :math:`S_\bdu` of the group :math:`\bdu`.
 
 Parameters
 ----------
-i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated Sobol indices. :math:`d`
-    is the dimension of the input variables.
+i : int or sequence of int, :math:`0 \leq i \leq d - 1`
+    Indice(s) of the variable(s). 
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -97,18 +158,32 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The first order Sobol index."
+    The first order Sobol' index."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolTotalIndex
-"Get the total Sobol indices.
+"Get the total Sobol' index of an input variable or the interaction total
+index of a group of variables.
+This function can take a single variable or a group of variables as input
+argument.
+
+*Case 1: single variable.* 
+Let :math:`i \in \{0, ..., d - 1\}` the index of an input 
+variable. 
+Therefore, the method computes the total index :math:`S^T_i`
+of the variable :math:`X_i`.
+
+*Case 2: group of variables.*
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
+in the group. 
+Therefore, the method computes the total interaction (high order)
+Sobol' index :math:`S_\bdu` of the group :math:`\bdu`.
 
 Parameters
 ----------
-i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated total Sobol indices.
-    :math:`d` is the dimension of the input variables.
+i : int or sequence of int, :math:`0 \leq i \leq d - 1`
+    Indice(s) of the variable(s).
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -116,18 +191,22 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The total Sobol index."
+    The total Sobol' index."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedIndex
-"Get the grouped Sobol first order indices.
+"Get the Sobol first order (closed) indices of a group of input variables.
+
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
+in the group. 
+Therefore, the method computes the first order (closed) Sobol' index 
+:math:`S^{\operatorname{cl}}_\bdu` of the group :math:`\bdu`.
 
 Parameters
 ----------
-i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated grouped Sobol indices.
-    :math:`d` is the dimension of the input variables.
+variableIndices : sequence of int, :math:`0 \leq i \leq d - 1`
+    Indice(s) of the variable(s) in the group.
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -135,18 +214,22 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The grouped Sobol first order index."
+    The grouped Sobol' first order index."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedTotalIndex
-"Get the grouped Sobol total order indices.
+"Get the Sobol' total index of a group of input variables.
+
+Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
+in the group. 
+Therefore, the method computes the total Sobol' index :math:`S^T_\bdu` of
+the group :math:`\bdu`.
 
 Parameters
 ----------
-i : int or sequence of int, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated grouped Sobol indices.
-    :math:`d` is the dimension of the input variables.
+variableIndices : sequence of int, :math:`0 \leq i \leq d - 1`
+    Indice(s) of the variable(s) in the group.
 marginalIndex : int
     Output marginal index.
     Default value is 0, i.e. the first output.
@@ -154,4 +237,6 @@ marginalIndex : int
 Returns
 -------
 s : float
-    The grouped Sobol total order index."
+    The grouped Sobol' total index."
+
+// ---------------------------------------------------------------------

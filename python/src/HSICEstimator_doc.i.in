@@ -26,15 +26,17 @@ OT_HSICEstimator_getEstimator_doc
 OT_HSICEstimator_getHSICIndices_doc
 %feature("docstring") OT::HSICEstimator::getR2HSICIndices
 OT_HSICEstimator_getR2HSICIndices_doc
+%feature("docstring") OT::HSICEstimator::getPValuesAsymptotic
+OT_HSICEstimator_getPValuesAsymptotic_doc
 %feature("docstring") OT::HSICEstimator::getPValuesPermutation
 OT_HSICEstimator_getPValuesPermutation_doc
 %feature("docstring") OT::HSICEstimator::drawHSICIndices
 OT_HSICEstimator_drawHSICIndices_doc
 %feature("docstring") OT::HSICEstimator::drawR2HSICIndices
 OT_HSICEstimator_drawR2HSICIndices_doc
+%feature("docstring") OT::HSICEstimator::drawPValuesAsymptotic
+OT_HSICEstimator_drawPValuesAsymptotic_doc
 %feature("docstring") OT::HSICEstimator::drawPValuesPermutation
 OT_HSICEstimator_drawPValuesPermutation_doc
-%feature("docstring") OT::HSICEstimator::drawValues
-OT_HSICEstimator_drawValues_doc
 %feature("docstring") OT::HSICEstimator::run
 OT_HSICEstimator_run_doc

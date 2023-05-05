@@ -50,7 +50,7 @@ public:
   GaussianLinearCalibration(const Function & model,
                             const Sample & inputObservations,
                             const Sample & outputObservations,
-                            const Point & candidate,
+                            const Point & parameterMean,
                             const CovarianceMatrix & parameterCovariance,
                             const CovarianceMatrix & errorCovariance,
                             const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
@@ -59,7 +59,7 @@ public:
   GaussianLinearCalibration(const Sample & modelObservations,
                             const Matrix & gradientObservations,
                             const Sample & outputObservations,
-                            const Point & candidate,
+                            const Point & parameterMean,
                             const CovarianceMatrix & parameterCovariance,
                             const CovarianceMatrix & errorCovariance,
                             const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
@@ -76,8 +76,11 @@ public:
   /** Model gradient wrt the parameter accessor */
   Matrix getGradientObservations() const;
 
-  /** Candidate accessor */
+  /** @deprecated Candidate accessor */
   Point getCandidate() const;
+
+  /** ParameterMean accessor */
+  Point getParameterMean() const;
 
   /** Parameter covariance accessor */
   CovarianceMatrix getParameterCovariance() const;

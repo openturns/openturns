@@ -56,3 +56,7 @@ distribution.getCopula()
 
 # %%
 algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
+
+# %%
+# Reset default settings
+ot.ResourceMap.Reload()
