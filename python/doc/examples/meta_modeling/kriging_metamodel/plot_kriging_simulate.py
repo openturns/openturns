@@ -63,7 +63,9 @@ n_train = len(x_train)
 n_train
 
 # %%
-# In order to compare the function and its metamodel, we use a test (i.e. validation) design of experiments made of a regular grid of 100 points from 0 to 12. Then we convert this grid into a `Sample` and we compute the outputs of the function on this sample.
+# In order to compare the function and its metamodel, we use a test (i.e. validation) design of experiments
+# made of a regular grid of 100 points from 0 to 12.
+# Then we convert this grid into a `Sample` and we compute the outputs of the function on this sample.
 
 # %%
 xmin = 0.0

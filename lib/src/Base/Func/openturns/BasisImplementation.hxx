@@ -61,7 +61,12 @@ public:
 //   String __str__(const String & offset = "") const override;
 
   /** Dimension accessor */
+  virtual UnsignedInteger getInputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
+  // @deprecated
   virtual UnsignedInteger getDimension() const;
+
+  /** Size accessor */
   virtual UnsignedInteger getSize() const;
 
   /** Tells whether the basis is orthogonal */

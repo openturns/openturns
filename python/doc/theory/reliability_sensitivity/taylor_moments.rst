@@ -103,7 +103,8 @@ where:
 
 -  :math:`<\underline{\underline{\nabla}}h(\muX) , \: \uX - \muX> = \sum_{j=1}^{n_X} \left( \frac{\partial {\uy}}{\partial {x^j}}\right)_{\ux = \muX} . \left( X^j-\muX^j \right)`
 
--  :math:`<<\underline{\underline{\underline{\nabla }}}^2 h(\muX,\: \underline{\mu}_{X}),\: \uX - \muX>,\: \uX - \muX> = \left( ^t (\uX^i - \muX^i). \left(\frac{\partial^2 y^k}{\partial x^i \partial x^k}\right)_{\ux = \muX}. (\uX^j - \muX^j) \right)_{ijk}`
+-  :math:`<<\underline{\underline{\underline{\nabla }}}^2 h(\muX,\: \underline{\mu}_{X}),\: \uX - \muX>,\: \uX - \muX> =
+   \left( ^t (\uX^i - \muX^i). \left(\frac{\partial^2 y^k}{\partial x^i \partial x^k}\right)_{\ux = \muX}. (\uX^j - \muX^j) \right)_{ijk}`
 
 | **Approximation at the order 1 - Case** :math:`n_Y>1`
 

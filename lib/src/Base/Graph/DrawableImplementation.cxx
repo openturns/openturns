@@ -1338,7 +1338,7 @@ Scalar DrawableImplementation::getLineWidth() const
 /* Accessor for line width */
 void DrawableImplementation::setLineWidth(const Scalar lineWidth)
 {
-  if (!(lineWidth > 0.0)) throw InvalidArgumentException(HERE) << "Given line width=" << lineWidth << " is incorrect";
+  if (!(lineWidth >= 0.0)) throw InvalidArgumentException(HERE) << "Line width must be positive";
   lineWidth_ = lineWidth;
 }
 

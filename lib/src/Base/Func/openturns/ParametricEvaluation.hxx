@@ -88,6 +88,14 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
+  /** Input description accessor, i.e. the names of the input parameters */
+  Description getInputDescription() const override;
+  void setInputDescription(const Description & inputDescription) override;
+
+  /** Output description accessor, i.e. the names of the output parameters */
+  Description getOutputDescription() const override;
+  void setOutputDescription(const Description & outputDescription) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

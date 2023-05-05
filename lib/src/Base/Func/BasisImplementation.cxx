@@ -77,9 +77,20 @@ void BasisImplementation::add(const Function & )
   throw NotYetImplementedException(HERE) << "In BasisImplementation::add(const Function & elt)";
 }
 
-UnsignedInteger BasisImplementation::getDimension() const
+UnsignedInteger BasisImplementation::getInputDimension() const
 {
   throw NotYetImplementedException(HERE) << "In BasisImplementation::getDimension() const";
+}
+
+UnsignedInteger BasisImplementation::getOutputDimension() const
+{
+  throw NotYetImplementedException(HERE) << "In BasisImplementation::getDimension() const";
+}
+
+UnsignedInteger BasisImplementation::getDimension() const
+{
+  LOGWARN(OSS() << "Basis.getDimension is deprecated, use getInputDimension");
+  return getInputDimension();
 }
 
 UnsignedInteger BasisImplementation::getSize() const

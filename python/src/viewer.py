@@ -241,8 +241,15 @@ class View:
                         figure=self._fig,
                         axes=axes,
                         plot_kw=plot_kw,
+                        axes_kw=axes_kw,
+                        bar_kw=bar_kw,
+                        pie_kw=pie_kw,
+                        polygon_kw=polygon_kw,
+                        polygoncollection_kw=polygoncollection_kw,
                         contour_kw=contour_kw,
+                        step_kw=step_kw,
                         clabel_kw=clabel_kw,
+                        text_kw=text_kw,
                         legend_kw=legend_kw,
                     )
                     self._ax += axes
@@ -481,12 +488,9 @@ class View:
 
                 polygonsNumber = drawable.getPalette().getSize()
                 verticesNumber = drawable.getData().getSize() // polygonsNumber
-                colorsRGBA = drawable.getPaletteAsNormalizedRGBA()
-                if "facecolors" not in polygoncollection_kw_default:
-                    polygoncollection_kw["facecolors"] = colorsRGBA
+                if "facecolors" not in polygoncollection_kw_default and "fc" not in polygoncollection_kw_default:
+                    polygoncollection_kw["facecolors"] = drawable.getPaletteAsNormalizedRGBA()
 
-                if "edgecolors" not in polygoncollection_kw_default:
-                    polygoncollection_kw["edgecolors"] = colorsRGBA
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(
                         np.array(data).reshape((polygonsNumber, verticesNumber, 2)),

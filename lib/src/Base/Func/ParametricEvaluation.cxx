@@ -83,9 +83,6 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
   // Set the relevant part of the reference point in the parameters
   parameter_ = referencePoint;
   parameterDescription_ = function.getInputDescription().select(parametersPositions_);
-  // And finally the input/output descriptions
-  setInputDescription(function.getInputDescription().select(inputPositions_));
-  setOutputDescription(function_.getOutputDescription());
 }
 
 /* Virtual constructor method */
@@ -272,6 +269,34 @@ String ParametricEvaluation::__str__(const String & ) const
       << ", parameters=" << parameters
       << ", input positions=" << inputPositions_ << ")";
   return oss;
+}
+
+/* Input description accessor, i.e. the names of the input parameters */
+void ParametricEvaluation::setInputDescription(const Description & inputDescription)
+{
+  const UnsignedInteger inputDimension = getInputDimension();
+  if (inputDescription.getSize() != inputDimension)
+    throw InvalidArgumentException(HERE) << "Input description size must match the input dimension (" << inputDimension << ")";
+  Description fullInputDescription(function_.getInputDescription());
+  for (UnsignedInteger i = 0; i < inputDimension; ++ i)
+    fullInputDescription[inputPositions_[i]] = inputDescription[i];
+  function_.setInputDescription(fullInputDescription);
+}
+
+Description ParametricEvaluation::getInputDescription() const
+{
+  return function_.getInputDescription().select(inputPositions_);
+}
+
+/* Output description accessor, i.e. the names of the output parameters */
+void ParametricEvaluation::setOutputDescription(const Description & outputDescription)
+{
+  function_.setOutputDescription(outputDescription);
+}
+
+Description ParametricEvaluation::getOutputDescription() const
+{
+  return function_.getOutputDescription();
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -25,7 +25,8 @@ for algo in ot.Dlib.GetAlgorithmNames():
 # Solving an unconstrained problem with conjugate gradient algorithm
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# The following example will demonstrate the use of dlib conjugate gradient algorithm to find the minimum of `Rosenbrock function <https://en.wikipedia.org/wiki/Rosenbrock_function>`_. The optimal point can be computed analytically, and its value is [1.0, 1.0].
+# The following example will demonstrate the use of dlib conjugate gradient algorithm to find the minimum of `Rosenbrock function <https://en.wikipedia.org/wiki/Rosenbrock_function>`_.
+# The optimal point can be computed analytically, and its value is [1.0, 1.0].
 
 # %%
 # Define the problem based on Rosebrock function

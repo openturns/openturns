@@ -142,7 +142,8 @@ graph.setLegends(
 view = viewer.View(graph)
 
 # %%
-# We observe that all the kernels produce very similar results in practice. The Uniform kernel may be seen as the worst of them all while the Epanechnikov one is said to be a good theoritical choice. In practice the standard normal kernel is a fine choice.
+# We observe that all the kernels produce very similar results in practice.
+# The Uniform kernel may be seen as the worst of them all while the Epanechnikov one is said to be a good theoritical choice. In practice the standard normal kernel is a fine choice.
 # The most important aspect of kernel smoothing is the choice of the bandwidth.
 
 

@@ -58,7 +58,9 @@ linear_basis = ot.LinearBasisFactory(m.dim).build()
 basis = ot.Basis([ot.AggregatedFunction([linear_basis.build(k)] * 3) for k in range(linear_basis.getSize())])
 
 # %%
-# We would like to have separate covariance models for the three outputs. To do so, we use the `TensorizedCovarianceModel`. For the purpose of illustration, we consider `MaternModel` for the first and third outputs, and `SquaredExponential` for the second output.
+# We would like to have separate covariance models for the three outputs.
+# To do so, we use the `TensorizedCovarianceModel`.
+# For the purpose of illustration, we consider `MaternModel` for the first and third outputs, and `SquaredExponential` for the second output.
 
 # %%
 myCov1 = ot.MaternModel([1.0] * m.dim, 2.5)

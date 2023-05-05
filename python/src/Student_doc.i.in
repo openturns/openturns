@@ -83,8 +83,8 @@ Create a multivariate Student distribution with constant :math:`\sigma` and iden
 
 >>> dimension = 5
 >>> nu = 3.0
->>> mu = ot.Point(dimension)
->>> sigma = ot.Point(dimension, 0.1)
+>>> mu = [0.0] * dimension
+>>> sigma = [0.1] * dimension
 >>> R = ot.CorrelationMatrix(dimension)
 >>> distribution = ot.Student(nu, mu, sigma, R)
 >>> print('distribution=', distribution)

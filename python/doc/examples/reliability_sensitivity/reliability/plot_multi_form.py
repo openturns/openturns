@@ -119,7 +119,8 @@ graphModel.setLegendPosition("")
 view = otv.View(graphModel)
 
 # %%
-# We recall that the FORM approximate is based on the substitution of the failure domain by the half-space defined by the tangent at the design point. Here we can clearly see that this would miss half of the information. That is why both design points are needed.
+# We recall that the FORM approximate is based on the substitution of the failure domain by the half-space defined by the tangent at the design point.
+# Here we can clearly see that this would miss half of the information. That is why both design points are needed.
 
 # %%
 # For each design point we have a probability associated to the approximation by the half-space :
