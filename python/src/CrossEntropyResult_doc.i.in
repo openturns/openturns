@@ -1,6 +1,10 @@
 %feature("docstring") OT::CrossEntropyResult
 "Cross Entropy result.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+    
 See also
 --------
 CrossEntropyImportanceSampling, PhysicalSpaceCrossEntropyImportanceSampling, StandardSpaceCrossEntropyImportanceSampling, SimulationResult"
@@ -9,7 +13,7 @@ CrossEntropyImportanceSampling, PhysicalSpaceCrossEntropyImportanceSampling, Sta
 // ---------------------------------------------------------------------------
 
 %feature("docstring") OT::CrossEntropyResult::getAuxiliaryDistribution
-"Accessor of the auxiliary distribution at the final Cross Entropy algorithm step.
+"Accessor to the auxiliary distribution at the final Cross Entropy algorithm step.
 
 Returns
 -------
@@ -21,7 +25,7 @@ auxiliaryDistribution : :class:`~openturns.Distribution`
 // ---------------------------------------------------------------------------
 
 %feature("docstring") OT::CrossEntropyResult::getAuxiliaryInputSample
-"Accessor of the auxiliary distribution input sample at the final Cross Entropy algorithm step.
+"Accessor to the auxiliary distribution input sample at the final Cross Entropy algorithm step.
 
 Returns
 -------
@@ -31,7 +35,7 @@ auxiliaryInputSample : :class:`~openturns.Sample`
 // ---------------------------------------------------------------------------
 
 %feature("docstring") OT::CrossEntropyResult::getAuxiliaryOutputSample
-"Accessor of the auxiliary distribution output sample at the final Cross Entropy algorithm step.
+"Accessor to the auxiliary distribution output sample at the final Cross Entropy algorithm step.
 
 Returns
 -------
@@ -41,7 +45,7 @@ auxiliaryOutputSample : :class:`~openturns.Sample`
 // ---------------------------------------------------------------------------
 
 %feature("docstring") OT::CrossEntropyResult::setAuxiliaryInputSample
-"Accessor of the auxiliary distribution input sample at the final Cross Entropy algorithm step.
+"Accessor to the auxiliary distribution input sample at the final Cross Entropy algorithm step.
 
 Parameters
 ----------
@@ -51,7 +55,7 @@ auxiliaryInputSample : :class:`~openturns.Sample`
 // ---------------------------------------------------------------------------
 
 %feature("docstring") OT::CrossEntropyResult::setAuxiliaryOutputSample
-"Accessor of the auxiliary distribution output sample at the final Cross Entropy algorithm step.
+"Accessor to the auxiliary distribution output sample at the final Cross Entropy algorithm step.
 
 Parameters
 ----------
@@ -61,7 +65,7 @@ auxiliaryOutputSample : :class:`~openturns.Sample`
 // ---------------------------------------------------------------------------
 
 %feature("docstring") OT::CrossEntropyResult::setAuxiliaryDistribution
-"Accessor of the auxiliary distribution at the final Cross Entropy algorithm step.
+"Accessor to the auxiliary distribution at the final Cross Entropy algorithm step.
 
 Parameters
 ----------

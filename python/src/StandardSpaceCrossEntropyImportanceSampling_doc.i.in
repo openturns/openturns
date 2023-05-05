@@ -15,38 +15,38 @@ quantileLevel : float  :math:`0<quantileLevel<1`
     
 Notes
 -----
-The following explanations are given for a failure event defined as :math:`g(\mathbf{X})<T` with :math:`\mathbf{X}` 
-a random vector following a joint PDF :math:`f_\mathbf{X}`, :math:`T` a threshold and :math:`g` a limit state function,
+The following explanations are given for a failure event defined as :math:`g(\vect{X})<T` with :math:`\vect{X}` 
+a random vector following a joint PDF :math:`f_\vect{X}`, :math:`T` a threshold and :math:`g` a limit state function,
 without loss of generality.
 
 The Importance Sampling (IS) probability estimate :math:`\widehat{P}^\text{IS}` is given by:
 
 .. math::
 
-    \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{f_\mathbf{X}(\mathbf{x}_i)}{h(\mathbf{x}_i)},
+    \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\vect{1}}_{g(\vect{x}_i)<T} \frac{f_\vect{X}(\vect{x}_i)}{h(\vect{x}_i)},
 
 with :math:`h` the auxiliary PDF of Importance Sampling, 
-:math:`N` the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
+:math:`N` the number of independent samples generated with :math:`h` and :math:`{\vect{1}}_{g(\vect{x}_i)<T}` the 
 indicator function of the failure domain. 
 
 The optimal density :math:`h_{opt}` minimizing the variance of the estimator :math:`h_{opt}` is defined as:
 
 .. math::
 
-    h_{opt}=\frac{{\mathbf{1}}_{g(\mathbf{x})<T}f_\mathbf{X}}{P},
+    h_{opt}=\frac{{\vect{1}}_{g(\vect{x})<T}f_\vect{X}}{P},
 
 with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest and unknown.
 
-The Standard Space Cross-Entropy Importance Sampling [rubinstein2017]_ uses a parametric auxiliary distribution :math:`h_\mathbf{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. 
+The Standard Space Cross-Entropy Importance Sampling [rubinstein2017]_ uses a parametric auxiliary distribution :math:`h_\vect{\lambda}` in order to optimize its parameters to compute the probability of interest with accuracy. 
 This process is performed in the standard space using a Normal distribution as the auxiliary distribution. Indeed, in the standard space, the optimal value of the mean and standard deviations are given analytically, see [morio2015]_ for details. 
 
-We note  :math:`G(\mathbf{u})` the limit state function in standard space and  :math:`g(\mathbf{x})` its counterpart in the physical space. :math:`f_\mathbf{U}` stands for the initial distribution in standard space, i.e. the Normal law. The algorithm is as follows:
+We note  :math:`G(\vect{u})` the limit state function in standard space and  :math:`g(\vect{x})` its counterpart in the physical space. :math:`f_\vect{U}` stands for the initial distribution in standard space, i.e. the Normal law. The algorithm is as follows:
 
 
-1. :math:`k=1`, set the quantile level :math:`\rho \in [0,1]` and :math:`h_0 = f_{\mathbf{U}}`
+1. :math:`k=1`, set the quantile level :math:`\rho \in [0,1]` and :math:`h_0 = f_{\vect{U}}`
 
-2. Generate the population :math:`\mathbf{u}_1^{(k)},...,\mathbf{u}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the 
-   function :math:`G` in order to have :math:`y_1^{(k)}=G(\mathbf{u}_1^{(k)}),...,y_N^{(k)} = G(\mathbf{u}_N^{(k)})`
+2. Generate the population :math:`\vect{u}_1^{(k)},...,\vect{u}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the 
+   function :math:`G` in order to have :math:`y_1^{(k)}=G(\vect{u}_1^{(k)}),...,y_N^{(k)} = G(\vect{u}_N^{(k)})`
 
 3. Compute the   :math:`\rho`-quantile :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})` using the floor of :math:`\rho N`.
 
@@ -56,16 +56,16 @@ We note  :math:`G(\mathbf{u})` the limit state function in standard space and  :
 
 .. math::
 
-       \mu_{k}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{G(\mathbf{u}_i^{(k)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}}(\mathbf{u}_i^{(k)})} U_{ik}}{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{G(\mathbf{u}_i^{(k)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}}(\mathbf{u}_i^{(k)})} }
+       \mu_{k}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} U_{ik}}{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} }
        
 .. math::
 
-       \sigma_{k}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{G(\mathbf{u}_i^{(k)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}}(\mathbf{u}_i^{(k)})} (U_{ik}-\mu_k)^2}{\frac{1}{N} \sum_{i=1}^{N}{\mathbf{1}}_{G(\mathbf{u}_i^{(k)}) \leq q_k} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}}(\mathbf{u}_i^{(k)})} }
+       \sigma_{k}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} (U_{ik}-\mu_k)^2}{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} }
        
 
 6. :math:`k\leftarrow k+1`, go to Step 2
 
-7. Estimate the probability :math:`\widehat{P}^{CE}(g(\mathbf{\mathbf{X}})<T)=\widehat{P}^{CE}(G(\mathbf{\mathbf{U}})<T)=\frac{1}{N}\displaystyle \sum_{i=1}^{N} \mathbf{1}_{G(\mathbf{u}_i^{(k)})<T} \frac{f_\mathbf{U}(\mathbf{u}_i^{(k)})}{h_{\mathbf{\lambda}_{k-1}(\mathbf{u}_i^{(k)})}}`
+7. Estimate the probability :math:`\widehat{P}^{CE}(g(\vect{\vect{X}})<T)=\widehat{P}^{CE}(G(\vect{\vect{U}})<T)=\frac{1}{N}\displaystyle \sum_{i=1}^{N} \vect{1}_{G(\vect{u}_i^{(k)})<T} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}(\vect{u}_i^{(k)})}}`
 
 
 
