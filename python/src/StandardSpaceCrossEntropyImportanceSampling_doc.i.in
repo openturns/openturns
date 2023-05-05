@@ -56,11 +56,11 @@ We note  :math:`G(\vect{u})` the limit state function in standard space and  :ma
 
 .. math::
 
-       \mu_{k}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} U_{ik}}{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} }
+       \mu_{k}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} \vect{u}_i^{(k)}}{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} }
        
 .. math::
 
-       \sigma_{k}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} (U_{ik}-\mu_k)^2}{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} }
+       \sigma_{k}= \frac{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} (\vect{u}_i^{(k)}-\mu_k)^2}{\frac{1}{N} \sum_{i=1}^{N}{\vect{1}}_{G(\vect{u}_i^{(k)}) \leq q_k} \frac{f_\vect{U}(\vect{u}_i^{(k)})}{h_{\vect{\lambda}_{k-1}}(\vect{u}_i^{(k)})} }
        
 
 6. :math:`k\leftarrow k+1`, go to Step 2
