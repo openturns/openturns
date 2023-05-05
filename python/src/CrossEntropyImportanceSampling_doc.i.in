@@ -20,16 +20,6 @@ A CrossEntropyImportanceSampling object can be created only through its derivati
     
 // -------------------------------------------------------------------------------
 
-%feature("docstring") OT::CrossEntropyImportanceSampling::getOutputSample
-"Output sample accessor of the final Cross Entropy algorithm step.
-
-Returns
--------
-outputSample : :class:`~openturns.Sample`
-    Output sample that realize the event."
-
-// -------------------------------------------------------------------------------
-
 %feature("docstring") OT::CrossEntropyImportanceSampling::getQuantileLevel
 "Accessor to the intermediate quantile level.
 
