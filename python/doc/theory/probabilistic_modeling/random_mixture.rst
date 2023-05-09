@@ -1,19 +1,22 @@
 .. _random_mixture:
 
-Random Mixture: affine combination of independent univariate distributions
---------------------------------------------------------------------------
+Affine combination of independent univariate random variables
+-------------------------------------------------------------
+
+Introduction
+~~~~~~~~~~~~
 
 Let :math:`\vect{Y}` be the random vector defined as the
-affine transform of :math:`n` independent univariate random variable.
+affine transform of :math:`n` independent univariate random variables.
 More precisely, consider:
 
 .. math::
-  :label: RandomMixtureFormula
+  :label: LinearCombinationFormula
 
    \vect{Y}=\vect{y}_0+\mat{M}\,\vect{X}
 
-where :math:`\vect{y}_0\in\mathbb{R}^d` is a deterministic vector with
-:math:`d\in\{1,2,3\}`, :math:`\mat{M}\in\mathcal{M}_{d,n}(\mathbb{R})` is a
+where :math:`\vect{y}_0 \in \Rset^d` is a deterministic vector with
+:math:`d \in \{1,2,3\}`, :math:`\mat{M} \in \mathcal{M}_{d,n}(\Rset)` is a
 deterministic matrix and :math:`\left(X_k\right)_{ 1 \leq k \leq n}` are
 independent random variables.
 In this case, it is possible to directly evaluate the distribution of
@@ -23,23 +26,23 @@ functions, quantiles (in dimension 1 only)...
 In this document, we present a method using the Poisson summation
 formula to evaluate the distribution of :math:`\vect{Y}`.
 
-Evaluation of the probability density function of the Random Mixture
---------------------------------------------------------------------
+Evaluation of the probability density function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Since, by hypothesis, the univariate random variables :math:`X_i` are independent, the
-characteristic function of :math:`\vect{Y}`, denoted :math:`\phi_Y`, is
+characteristic function of :math:`\vect{Y}`, denoted :math:`\phi_{\vect{Y}}`, is
 easily defined from the characteristic function of :math:`X_k` denoted
 :math:`\phi_{X_k}` as follows:
 
 .. math::
   :label: CharactFuncY
 
-   \phi_Y(u_1,\hdots,u_d)
+   \phi_{\vect{Y}}(u_1,\hdots,u_d)
    = \prod_{j=1}^d e^{iu_j{y_0}_j} \prod_{k=1}^n\phi_{X_k}\left(\left(M^t u\right)_k\right),
 
-for any :math:`\vect{u}\in\mathbb{R}^d`.
-Once :math:`\phi_Y` is evaluated, it is possible to evaluate the
-probability density function of :math:`Y`, denoted :math:`p_Y` :
+for any :math:`\vect{u} \in \Rset^d`.
+Once :math:`\phi_{\vect{Y}}` is evaluated, it is possible to evaluate the
+probability density function of :math:`\vect{Y}`, denoted :math:`p_{\vect{Y}}` :
 several techniques are possible, as the inversion of the Fourier
 transformation, but this method is not easy to implement.
 We can alternatively use the Poisson summation formula:
@@ -47,46 +50,47 @@ We can alternatively use the Poisson summation formula:
 .. math::
   :label: PoissonSum
 
-   & \sum_{j_1\in\mathbb{Z}}\hdots\sum_{j_d\in\mathbb{Z}} p_Y\left(y_1+\frac{2\pi j_1}{h_1},\hdots,y_d+\frac{2\pi j_d}{h_d}\right) \\
-   & = \left(\prod_{j=1}^d \frac{h_j}{2 \pi} \right) \sum_{k_1\in\mathbb{Z}}\hdots\sum_{k_d\in\mathbb{Z}}\phi\left(k_1h_1,\hdots,k_dh_d\right)e^{-\imath \left(\sum_{m=1}^{d}k_m h_m y_m\right)}
+   & \sum_{j_1 \in \Zset}\hdots\sum_{j_d \in \Zset} p_{\vect{Y}}\left(y_1+\frac{2\pi j_1}{h_1},\hdots,y_d+\frac{2\pi j_d}{h_d}\right) \\
+   & = \left(\prod_{j=1}^d \frac{h_j}{2 \pi} \right) \sum_{k_1 \in \Zset}\hdots\sum_{k_d \in \Zset}\phi\left(k_1h_1,\hdots,k_dh_d\right)e^{-\imath \left(\sum_{m=1}^{d}k_m h_m y_m\right)}
 
-where :math:`\imath` is the complex imaginary number, i.e. :math:`\imath^2 = -1`.
+where :math:`h_1, \hdots, h_d \in \Rset` and
+:math:`\imath` is the complex imaginary number, i.e. :math:`\imath^2 = -1`.
 If :math:`h_1,\hdots,h_d` are close to zero, then:
 
-.. math:: \frac{2k\pi}{h_j} \approx +\infty
+.. math:: \frac{2k\pi}{h_j} \approx + \in fty
 
 and:
 
-.. math:: p_Y\left(\hdots,\frac{2k\pi}{h_j},\hdots\right) \approx 0
+.. math:: p_{\vect{Y}}\left(\hdots,\frac{2k\pi}{h_j},\hdots\right) \approx 0
 
-because of the decreasing properties of :math:`p_Y`. Thus the nested sums of the left
+because of the decreasing properties of :math:`p_{\vect{Y}}`. Thus the nested sums of the left
 term of :eq:`PoissonSum` are reduced to the central term
 :math:`j_1=\hdots=j_d = 0`: the left term is approximately equal to
-:math:`p_Y(y)`.
+:math:`p_{\vect{Y}}(y)`.
 Furthermore, the right term of :eq:`PoissonSum` is a series which
 converges very fast: few terms of the series are enough to get
 machine-precision accuracy. Let us note that the factors
-:math:`\phi_Y(k_1 h_1,\hdots,k_d,h_d)`, which are expensive to
+:math:`\phi_{\vect{Y}}(k_1 h_1,\hdots,k_d,h_d)`, which are expensive to
 evaluate, do not depend on :math:`y` and are evaluated once only.
 
 It is also possible to greatly improve the performance of the
-algorithm by noticing that the equation is linear between :math:`p_Y` and
-:math:`\phi_Y`. We denote by :math:`q_Y` and :math:`\psi_Y` respectively
+algorithm by noticing that the equation is linear between :math:`p_{\vect{Y}}` and
+:math:`\phi_{\vect{Y}}`. We denote by :math:`q_Y` and :math:`\psi_Y` respectively
 the density and the characteristic function of the multivariate normal
 distribution with the same mean :math:`\vect{\mu}` and same covariance
-matrix :math:`\vect{C}` as the random mixture. By applying this
+matrix :math:`\vect{C}` as the affine combination. By applying this
 multivariate normal distribution to the equation, we obtain by
 subtraction:
 
 .. math::
     :label: algoPoisson
 
-     p_Y\left(y\right)
-     & = \sum_{j\in\mathbb{Z}^d} q_Y\left(y_1+\frac{2\pi j_1}{h_1},\cdots,y_d+\frac{2\pi j_d}{h_d}\right) \\
+     p_{\vect{Y}}\left(y\right)
+     & = \sum_{j \in \Zset^d} q_Y\left(y_1+\frac{2\pi j_1}{h_1},\cdots,y_d+\frac{2\pi j_d}{h_d}\right) \\
      & \quad + \frac{H}{2^d\pi^d}\sum_{|k_1|\leq N}\cdots\sum_{|k_d|\leq N} \delta_Y\left(k_1h_1,\cdots,k_dh_d\right)e^{-\imath \left(\sum_{m=1}^{d}k_m h_m y_m\right)}
 
 where :math:`H = h_1\times\cdots\times h_d`,
-:math:`j=(j_1,\cdots,j_d)` and :math:`\delta_Y:=\phi_Y - \psi_Y`.
+:math:`j=(j_1,\cdots,j_d)` and :math:`\delta_Y:=\phi_{\vect{Y}} - \psi_Y`.
 In the case where :math:`n \gg 1`, using the limit central theorem,
 the law of :math:`\vect{Y}` tends to the normal distribution density
 :math:`q`, which will drastically reduce :math:`N`. The sum on
@@ -109,11 +113,11 @@ The parameter :math:`N` is dynamically calibrated: we start with
 :math:`N=8` then we double :math:`N` value until the total contribution
 of the additional terms is negligible.
 
-Evaluation of the moments of the Random Mixture
------------------------------------------------
+Evaluation of the moments
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The relation :eq:`RandomMixtureFormula` enables to evaluate all the
-moments of the random mixture, if mathematically defined. For example,
+The relation :eq:`LinearCombinationFormula` enables to evaluate all the
+moments of the affine combination, if mathematically defined. For example,
 we have:
 
 .. math::
@@ -122,7 +126,7 @@ we have:
       \Cov{\vect{Y}} & = \mat{M}\,\Cov{\vect{X}}\mat{M}^t
 
 Computation on a regular grid
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We want to compute the density function on a regular grid and
 to get an approximation quickly.
@@ -133,7 +137,7 @@ The regular grid is:
 
    \:y_{r,m}=\mu_r+b\left(\frac{2m+1}{M} - 1\right)\sigma_r
 
-for all :math:`r\in\{1,\hdots,d\}` and :math:`m\in\{0,\hdots,M-1\}`.
+for all :math:`r \in \{1,\hdots,d\}` and :math:`m \in \{0,\hdots,M-1\}`.
 Denoting :math:`p_{m_1,\hdots,m_d}=p_{\vect{Y}}(y_{1,m_1},\hdots,y_{d,m_d})`:
 
 .. math::
@@ -159,7 +163,7 @@ The aim is to rewrite the previous expression as a :math:`d`- discrete
 Fourier transform, in order to apply Fast Fourier Transform (*FFT*) for
 its evaluation.
 We set :math:`M=N` and
-:math:`\forall j \in\{1,\hdots,d\},\: h_j=\frac{\pi}{b\sigma_j}` and
+:math:`\forall j  \in \{1,\hdots,d\},\: h_j=\frac{\pi}{b\sigma_j}` and
 :math:`\tau_j=\frac{\mu_j}{b\sigma_j}`. For convenience, we introduce
 the functions:
 
