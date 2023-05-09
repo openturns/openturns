@@ -21,7 +21,7 @@ following dot-products: :math:`R_n=\langle Q_n, Q_n\rangle` and
 :math:`S_n=\langle xQ_n, Q_n\rangle` where :math:`Q_n` is the monic polynomial
 associated to the orthonormal polynomial :math:`P_n`, needed to compute the
 coefficients of the three-terms recurrence relation that defines :math:`P_n`
-(see :class:`~openturns.OrthogonalUnivariatePolynomialFamily`):
+(see :class:`~openturns.OrthogonalUniVariatePolynomialFamily`):
 
 .. math::
 
