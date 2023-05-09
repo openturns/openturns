@@ -306,11 +306,11 @@ void LatentVariableModel::setNuggetFactor(const Scalar nuggetFactor)
 }
 
 /* Drawing method */
-Graph LatentVariableModel::draw(const UnsignedInteger rowIndex,
-    const UnsignedInteger columnIndex,
+Graph LatentVariableModel::draw(const UnsignedInteger /*rowIndex*/,
+    const UnsignedInteger /*columnIndex*/,
     const Scalar /*zMin*/,
     const Scalar /*zMax*/,
-    const UnsignedInteger pointNumber,
+    const UnsignedInteger /*pointNumber*/,
     const Bool /*asStationary*/,
     const Bool /*correlationFlag*/) const
 {
