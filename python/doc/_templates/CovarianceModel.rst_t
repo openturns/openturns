@@ -7,71 +7,61 @@
     import openturns as ot
     from matplotlib import pyplot as plt
     from openturns.viewer import View
-    if ot.{{ objname }}().__class__.__name__ == 'LatentVariableModel':
-        covarianceModel = ot.LatentVariableModel(3, 2)
-        covarianceModel.setLatentVariables([0.1, -0.3, 0.2])
-        cov_graph = covarianceModel.draw()
-        View(cov_graph)   
-    elif ot.{{ objname }}().__class__.__name__ == 'GowerDistanceModel':
-        covarianceModel = ot.GowerDistanceModel(3)
-        cov_graph = covarianceModel.draw()
-        View(cov_graph)   
-    else:
-		if ot.{{ objname }}().__class__.__name__ == 'ExponentialModel':
-		    covarianceModel = ot.ExponentialModel([0.5], [5.0])
-		elif ot.{{ objname }}().__class__.__name__ == 'GeneralizedExponential':
-		    covarianceModel = ot.GeneralizedExponential([2.0], [3.0], 1.5)
-		elif ot.{{ objname }}().__class__.__name__ == 'ProductCovarianceModel':
-		    amplitude = [1.0]
-		    scale1 = [4.0]
-		    scale2 = [4.0]
-		    cov1 = ot.ExponentialModel(scale1, amplitude)
-		    cov2 = ot.ExponentialModel(scale2, amplitude)
-		    covarianceModel = ot.ProductCovarianceModel([cov1, cov2])
-		elif ot.{{ objname }}().__class__.__name__ == 'RankMCovarianceModel':
-		    variance = [1.0, 2.0]
-		    basis = ot.LinearBasisFactory().build()
-		    covarianceModel = ot.RankMCovarianceModel(variance, basis)
-		elif ot.{{ objname }}().__class__.__name__ == 'StationaryFunctionalCovarianceModel':
-		    rho = ot.SymbolicFunction(['tau'], ['exp(-tau)*cos(2*pi_*tau)'])
-		    covarianceModel = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
-		else:
-		    covarianceModel = ot.{{ objname }}()
-		title = str(covarianceModel)[:100]
-		if covarianceModel.getInputDimension() == 1:
-		    scale = covarianceModel.getScale()[0]
-		    if covarianceModel.isStationary():
-		        def f(x):
-		            return [covarianceModel(x)[0, 0]]
-		        func = ot.PythonFunction(1, 1, f)
-		        func.setDescription(['$tau$', '$cov$'])
-		        cov_graph = func.draw(-3.0 * scale, 3.0 * scale, 129)
-		        cov_graph.setTitle(title)
-		        fig = plt.figure(figsize=(10, 4))
-		        cov_axis = fig.add_subplot(111)
-		        View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
-		    else:
-		        def f(x):
-		            return [covarianceModel([x[0]], [x[1]])[0, 0]]
-		        func = ot.PythonFunction(2, 1, f)
-		        func.setDescription(['$s$', '$t$', '$cov$'])
-		        cov_graph = func.draw([-3.0 * scale]*2, [3.0 * scale]*2, [129]*2)
-		        cov_graph.setTitle(title)
-		        fig = plt.figure(figsize=(10, 4))
-		        cov_axis = fig.add_subplot(111)
-		        View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
-		elif covarianceModel.getInputDimension() == 2:
-		    scale = covarianceModel.getScale()
-		    if covarianceModel.isStationary():
-		        def f(x):
-		            return [covarianceModel(x)[0, 0]]
-		        func = ot.PythonFunction(2, 1, f)
-		        func.setDescription(['$s$', '$t$', '$cov$'])
-		        cov_graph = func.draw(-3.0 * scale, 3.0 * scale, [129]*2)
-		        cov_graph.setTitle(title)
-		        fig = plt.figure(figsize=(10, 4))
-		        cov_axis = fig.add_subplot(111)
-		        View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
+	if ot.{{ objname }}().__class__.__name__ == 'ExponentialModel':
+	    covarianceModel = ot.ExponentialModel([0.5], [5.0])
+	elif ot.{{ objname }}().__class__.__name__ == 'GeneralizedExponential':
+	    covarianceModel = ot.GeneralizedExponential([2.0], [3.0], 1.5)
+	elif ot.{{ objname }}().__class__.__name__ == 'ProductCovarianceModel':
+	    amplitude = [1.0]
+	    scale1 = [4.0]
+	    scale2 = [4.0]
+	    cov1 = ot.ExponentialModel(scale1, amplitude)
+	    cov2 = ot.ExponentialModel(scale2, amplitude)
+	    covarianceModel = ot.ProductCovarianceModel([cov1, cov2])
+	elif ot.{{ objname }}().__class__.__name__ == 'RankMCovarianceModel':
+	    variance = [1.0, 2.0]
+	    basis = ot.LinearBasisFactory().build()
+	    covarianceModel = ot.RankMCovarianceModel(variance, basis)
+	elif ot.{{ objname }}().__class__.__name__ == 'StationaryFunctionalCovarianceModel':
+	    rho = ot.SymbolicFunction(['tau'], ['exp(-tau)*cos(2*pi_*tau)'])
+	    covarianceModel = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
+	else:
+	    covarianceModel = ot.{{ objname }}()
+	title = str(covarianceModel)[:100]
+	if covarianceModel.getInputDimension() == 1:
+	    scale = covarianceModel.getScale()[0]
+	    if covarianceModel.isStationary():
+	        def f(x):
+	            return [covarianceModel(x)[0, 0]]
+	        func = ot.PythonFunction(1, 1, f)
+	        func.setDescription(['$tau$', '$cov$'])
+	        cov_graph = func.draw(-3.0 * scale, 3.0 * scale, 129)
+	        cov_graph.setTitle(title)
+	        fig = plt.figure(figsize=(10, 4))
+	        cov_axis = fig.add_subplot(111)
+	        View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
+	    else:
+	        def f(x):
+	            return [covarianceModel([x[0]], [x[1]])[0, 0]]
+	        func = ot.PythonFunction(2, 1, f)
+	        func.setDescription(['$s$', '$t$', '$cov$'])
+	        cov_graph = func.draw([-3.0 * scale]*2, [3.0 * scale]*2, [129]*2)
+	        cov_graph.setTitle(title)
+	        fig = plt.figure(figsize=(10, 4))
+	        cov_axis = fig.add_subplot(111)
+	        View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
+	elif covarianceModel.getInputDimension() == 2:
+	    scale = covarianceModel.getScale()
+	    if covarianceModel.isStationary():
+	        def f(x):
+	            return [covarianceModel(x)[0, 0]]
+	        func = ot.PythonFunction(2, 1, f)
+	        func.setDescription(['$s$', '$t$', '$cov$'])
+	        cov_graph = func.draw(-3.0 * scale, 3.0 * scale, [129]*2)
+	        cov_graph.setTitle(title)
+	        fig = plt.figure(figsize=(10, 4))
+	        cov_axis = fig.add_subplot(111)
+	        View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
 
 .. currentmodule:: {{ module }}
 

@@ -50,8 +50,6 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     SquaredExponential
     TensorizedCovarianceModel
     StationaryFunctionalCovarianceModel
-    LatentVariableModel
-    GowerDistanceModel
 
     :template: classWithPlot.rst_t
     UserDefinedCovarianceModel
@@ -60,6 +58,16 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     UserDefinedStationaryCovarianceModel
     NonStationaryCovarianceModelFactory
     StationaryCovarianceModelFactory
+
+Categorical variables
+=====================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    LatentVariableModel
+    GowerDistanceModel
 
 Spectral information
 ====================

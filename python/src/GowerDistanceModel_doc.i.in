@@ -1,5 +1,5 @@
 %feature("docstring") OT::GowerDistanceModel
-"Latent variable covariance function.
+"Gower distance based covariance function.
 
 Available constructors:
     GowerDistanceModel(*nLevels=2*)

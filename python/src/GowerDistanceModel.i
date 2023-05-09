@@ -1,4 +1,4 @@
-// SWIG file LatentVariableModel.i
+// SWIG file GowerDistanceModel.i
 
 %{
 #include "openturns/GowerDistanceModel.hxx"
